@@ -1,0 +1,29 @@
+version: 2
+
+models:
+  - name: mart_player_point_in_time_features
+    description: >-
+      Pregame rolling features. Window frames end at one preceding row, so a game's own
+      box score cannot contribute to its feature vector.
+    columns:
+      - name: source_stat_id
+        data_tests: [unique, not_null]
+      - name: calculated_as_of
+        data_tests: [not_null]
+  - name: mart_player_recent_form
+    description: Descriptive last-ten form as of warehouse build time.
+    columns:
+      - name: player_key
+        data_tests: [unique, not_null]
+  - name: mart_team_week_schedule
+    description: Team/week schedule counts, light-day games, and back-to-backs.
+    columns:
+      - name: team_key
+        data_tests: [not_null]
+      - name: week_start
+        data_tests: [not_null]
+  - name: mart_data_status
+    description: Latest successful source run and warehouse coverage.
+    columns:
+      - name: data_snapshot_id
+        data_tests: [unique, not_null]

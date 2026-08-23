@@ -1,0 +1,6 @@
+FROM python:3.12-slim
+
+ENV PIP_NO_CACHE_DIR=1
+WORKDIR /usr/app
+RUN pip install "dbt-postgres>=1.9,<2"
+ENTRYPOINT ["dbt"]

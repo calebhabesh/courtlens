@@ -1,0 +1,117 @@
+version: 2
+
+sources:
+  - name: operational
+    description: >-
+      Source-traceable operational tables loaded by the CourtLoad ingestion service.
+      Records can be real BALLDONTLIE observations or explicitly labeled fixtures.
+    schema: public
+    tables:
+      - name: ingestion_runs
+        columns:
+          - name: run_id
+            data_tests: [unique, not_null]
+          - name: status
+            data_tests:
+              - accepted_values:
+                  arguments:
+                    values: [running, succeeded, failed]
+      - name: raw_objects
+        columns:
+          - name: object_id
+            data_tests: [unique, not_null]
+          - name: content_sha256
+            data_tests: [not_null]
+          - name: ingestion_run_id
+            data_tests:
+              - relationships:
+                  arguments:
+                    to: source('operational', 'ingestion_runs')
+                    field: run_id
+      - name: dim_teams
+        columns:
+          - name: team_key
+            data_tests: [unique, not_null]
+          - name: source_team_id
+            data_tests: [unique, not_null]
+      - name: dim_players
+        columns:
+          - name: player_key
+            data_tests: [unique, not_null]
+          - name: source_player_id
+            data_tests: [unique, not_null]
+          - name: full_name
+            data_tests: [not_null]
+      - name: bridge_player_observed_team_stints
+        columns:
+          - name: stint_id
+            data_tests: [unique, not_null]
+          - name: player_key
+            data_tests:
+              - relationships:
+                  arguments:
+                    to: source('operational', 'dim_players')
+                    field: player_key
+          - name: team_key
+            data_tests:
+              - relationships:
+                  arguments:
+                    to: source('operational', 'dim_teams')
+                    field: team_key
+      - name: fct_games
+        loaded_at_field: last_observed_at
+        freshness:
+          warn_after: {count: 36, period: hour}
+          error_after: {count: 72, period: hour}
+        columns:
+          - name: game_key
+            data_tests: [unique, not_null]
+          - name: source_game_id
+            data_tests: [unique, not_null]
+          - name: home_team_key
+            data_tests:
+              - relationships:
+                  arguments:
+                    to: source('operational', 'dim_teams')
+                    field: team_key
+          - name: away_team_key
+            data_tests:
+              - relationships:
+                  arguments:
+                    to: source('operational', 'dim_teams')
+                    field: team_key
+          - name: status_state
+            data_tests:
+              - accepted_values:
+                  arguments:
+                    values:
+                      - scheduled
+                      - in_progress
+                      - final
+                      - postponed
+                      - canceled
+                      - delayed
+                      - suspended
+                      - abandoned
+                      - unknown
+      - name: fct_player_games
+        columns:
+          - name: source_stat_id
+            data_tests: [unique, not_null]
+          - name: game_key
+            data_tests:
+              - relationships:
+                  arguments:
+                    to: source('operational', 'fct_games')
+                    field: game_key
+          - name: player_key
+            data_tests:
+              - relationships:
+                  arguments:
+                    to: source('operational', 'dim_players')
+                    field: player_key
+          - name: appearance_status
+            data_tests:
+              - accepted_values:
+                  arguments:
+                    values: [reported, reported_zero_minutes]

@@ -1,0 +1,19 @@
+version: 2
+
+models:
+  - name: int_team_games
+    description: Two team-perspective rows per game.
+    columns:
+      - name: game_key
+        data_tests: [not_null]
+      - name: team_key
+        data_tests: [not_null]
+  - name: int_player_games_scored
+    description: >-
+      Full-game stat lines scored with CourtLoad's published default fixture formula.
+      Product requests recalculate using the user's versioned formula.
+    columns:
+      - name: source_stat_id
+        data_tests: [unique, not_null]
+      - name: fantasy_points_default
+        data_tests: [not_null]

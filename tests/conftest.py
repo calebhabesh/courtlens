@@ -1,0 +1,123 @@
+from __future__ import annotations
+
+import json
+from collections.abc import Generator
+from pathlib import Path
+
+import pytest
+from fastapi.testclient import TestClient
+from sqlalchemy import Engine, create_engine
+from sqlalchemy.orm import Session
+from sqlalchemy.pool import StaticPool
+
+from courtload.api.app import create_app
+from courtload.database import Base, get_db
+from courtload.demo import DEMO_EMAIL, DEMO_PASSWORD, DEMO_WEEK_START, fixture_documents
+from courtload.domain.scoring import DEFAULT_POINTS_RULES, scoring_rules_hash
+from courtload.ingestion.loader import IngestionService
+from courtload.ingestion.raw_store import RawStore
+from courtload.models import (
+    FantasyLeague,
+    FantasyRosterEntry,
+    FantasyWatchlistEntry,
+    FantasyWeekState,
+    User,
+)
+from courtload.security import hash_password
+
+
+@pytest.fixture
+def test_engine() -> Generator[Engine, None, None]:
+    engine = create_engine(
+        "sqlite+pysqlite:///:memory:",
+        connect_args={"check_same_thread": False},
+        poolclass=StaticPool,
+    )
+    Base.metadata.create_all(engine)
+    yield engine
+    Base.metadata.drop_all(engine)
+    engine.dispose()
+
+
+@pytest.fixture
+def session(test_engine: Engine) -> Generator[Session, None, None]:
+    with Session(test_engine, expire_on_commit=False) as database_session:
+        yield database_session
+
+
+def load_demo(session: Session, temporary_path: Path) -> FantasyLeague:
+    paths: list[Path] = []
+    for index, document in enumerate(fixture_documents()):
+        path = temporary_path / f"{index:02d}-{document['resource']}.json"
+        path.write_text(json.dumps(document), encoding="utf-8")
+        paths.append(path)
+    IngestionService(session, RawStore(temporary_path / "raw")).load_fixture_pages(paths)
+
+    user = User(email=DEMO_EMAIL, password_hash=hash_password(DEMO_PASSWORD))
+    session.add(user)
+    session.flush()
+    league = FantasyLeague(
+        owner_id=user.id,
+        name="Fixture Points League",
+        timezone="America/Toronto",
+        week_starts_on=0,
+        lineup_mode="daily",
+        lineup_slots_json={"G": 1, "F": 1, "UTIL": 1},
+        acquisition_limit=4,
+        scoring_mode="points",
+        scoring_rules_json=DEFAULT_POINTS_RULES,
+        scoring_rules_version=scoring_rules_hash(DEFAULT_POINTS_RULES),
+        roster_version=1,
+    )
+    session.add(league)
+    session.flush()
+    for player_id, eligibility in (
+        (9101, ["PG", "G"]),
+        (9102, ["SG", "G"]),
+        (9103, ["SF", "F"]),
+        (9105, ["C"]),
+        (9107, ["PF", "F"]),
+        (9108, ["C"]),
+    ):
+        session.add(
+            FantasyRosterEntry(
+                league_id=league.id,
+                player_key=player_id,
+                eligible_slot_types_json=eligibility,
+                roster_version=1,
+            )
+        )
+    for player_id in (9104, 9106):
+        session.add(
+            FantasyWatchlistEntry(
+                league_id=league.id,
+                player_key=player_id,
+                label="Fixture comparison candidate",
+            )
+        )
+    session.add(
+        FantasyWeekState(
+            league_id=league.id,
+            week_start=DEMO_WEEK_START,
+            acquisitions_used=1,
+        )
+    )
+    session.commit()
+    return league
+
+
+@pytest.fixture
+def demo_league(session: Session, tmp_path: Path) -> FantasyLeague:
+    return load_demo(session, tmp_path)
+
+
+@pytest.fixture
+def api_client(session: Session) -> Generator[TestClient, None, None]:
+    application = create_app()
+
+    def override_database() -> Generator[Session, None, None]:
+        yield session
+
+    application.dependency_overrides[get_db] = override_database
+    with TestClient(application) as client:
+        yield client

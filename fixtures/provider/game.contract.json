@@ -1,0 +1,34 @@
+{
+  "classification": "hand-authored contract fixture",
+  "source_contract": "https://www.balldontlie.io/openapi/nba.yml",
+  "data": {
+    "id": 990001,
+    "date": "2025-01-05",
+    "season": 2024,
+    "status": "Final",
+    "status_state": "final",
+    "datetime": "2025-01-05T23:00:00.000Z",
+    "postseason": false,
+    "postponed": false,
+    "home_team_score": 115,
+    "visitor_team_score": 105,
+    "home_team": {
+      "id": 9901,
+      "conference": "East",
+      "division": "Fixture",
+      "city": "North",
+      "name": "Stars",
+      "full_name": "North Stars",
+      "abbreviation": "NST"
+    },
+    "visitor_team": {
+      "id": 9902,
+      "conference": "East",
+      "division": "Fixture",
+      "city": "Harbour",
+      "name": "Waves",
+      "full_name": "Harbour Waves",
+      "abbreviation": "HBR"
+    }
+  }
+}

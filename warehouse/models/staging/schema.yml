@@ -1,0 +1,25 @@
+version: 2
+
+models:
+  - name: stg_teams
+    description: Cleaned one-row-per-provider-team identities.
+    columns:
+      - name: team_key
+        data_tests: [unique, not_null]
+  - name: stg_players
+    description: Cleaned one-row-per-provider-player identities.
+    columns:
+      - name: player_key
+        data_tests: [unique, not_null]
+  - name: stg_games
+    description: One row per provider game with an explicit UTC tipoff and reporting-local date.
+    columns:
+      - name: game_key
+        data_tests: [unique, not_null]
+      - name: scheduled_start_utc
+        data_tests: [not_null]
+  - name: stg_player_games
+    description: One row per provider-supplied full-game player stat line.
+    columns:
+      - name: source_stat_id
+        data_tests: [unique, not_null]
