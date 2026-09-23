@@ -8,19 +8,21 @@
     "start": "next start",
     "lint": "eslint . --max-warnings=0",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run"
+    "test": "vitest run lib",
+    "test:browser": "playwright test"
   },
   "dependencies": {
-    "next": "16.3.2",
+    "next": "^16.3.5",
     "react": "19.2.8",
     "react-dom": "19.2.8"
   },
   "devDependencies": {
+    "@playwright/test": "^1.63.0",
     "@types/node": "^24.0.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "eslint": "9.39.5",
-    "eslint-config-next": "16.3.2",
+    "eslint-config-next": "^16.3.5",
     "typescript": "^5.9.0",
     "vitest": "4.1.11"
   }

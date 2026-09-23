@@ -18,22 +18,23 @@ export default async function HomePage() {
         <div className="shell hero-grid">
           <div className="hero-copy">
             <DataBadge status={status} />
-            <p className="kicker">NBA fantasy week planning · Toronto</p>
+            <p className="kicker">NBA player intelligence · fantasy decision support</p>
             <h1>
-              Win the week,
+              Understand the player.
               <br />
-              <span>not the schedule.</span>
+              <span>Plan the week.</span>
             </h1>
             <p className="hero-lede">
-              CourtLoad turns source-traceable schedules, your league rules, and transparent
-              recent form into the games your roster can actually start.
+              CourtLoad turns source-traceable box scores into understandable recent form, then
+              applies that evidence with schedules and league rules to the games a roster can
+              actually start.
             </p>
             <div className="hero-actions">
-              <Link className="button" href="/planner">
-                Plan a scoring week <span aria-hidden="true">→</span>
+              <Link className="button" href="/players">
+                Explore player form <span aria-hidden="true">→</span>
               </Link>
-              <Link className="text-link" href="/methodology">
-                Read the methodology
+              <Link className="text-link" href="/planner">
+                Open the fantasy planner
               </Link>
             </div>
           </div>
@@ -78,30 +79,29 @@ export default async function HomePage() {
       <section className="section shell">
         <div className="section-heading split-heading">
           <div>
-            <p className="kicker">The useful distinction</p>
-            <h2>Four games on paper can be two games in your lineup.</h2>
+            <p className="kicker">Statistics with context</p>
+            <h2>Understand the evidence before acting on the number.</h2>
           </div>
           <p>
-            CourtLoad matches each scheduled player to your actual daily slot instances. Full
-            compatible slots become visible conflicts instead of disappearing inside a weekly
-            total.
+            CourtLoad keeps the sample, cutoff, scoring rules, and source trace visible—then adds
+            schedule and lineup constraints when you want to apply that evidence to fantasy.
           </p>
         </div>
         <div className="principle-grid">
           <article>
             <span className="principle-number">01</span>
-            <h3>Traceable schedule</h3>
-            <p>Loaded games retain source status, UTC tipoff, local date, and snapshot lineage.</p>
+            <h3>Traceable form</h3>
+            <p>Recent production links back to its game-level stats, source object, and checksum.</p>
           </article>
           <article>
             <span className="principle-number">02</span>
-            <h3>Your constraints</h3>
-            <p>Daily slots, eligibility, acquisition limits, and scoring weights are versioned.</p>
+            <h3>Visible context</h3>
+            <p>Samples, as-of cutoffs, scoring weights, schedule, and freshness stay explicit.</p>
           </article>
           <article>
             <span className="principle-number">03</span>
-            <h3>Explainable delta</h3>
-            <p>Scenarios separate scheduled games, usable games, conflicts, and recent production.</p>
+            <h3>Applied decisions</h3>
+            <p>Fantasy scenarios separate scheduled games, usable games, conflicts, and form.</p>
           </article>
         </div>
       </section>

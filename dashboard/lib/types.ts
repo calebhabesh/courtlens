@@ -154,3 +154,153 @@ export type Scenario = {
   };
   explanation: string;
 };
+
+export type AnalyticsCatalog = {
+  snapshot_id: string;
+  dataset_id: string;
+  replay_date: string;
+  mode: "historical_reconstruction" | string;
+  source: string;
+  coverage_start: string;
+  coverage_end: string;
+  default_replay_date: string;
+  supported_replay_dates: string[];
+  supported_seasons: string[];
+  published_at: string | null;
+  metric_version: string;
+  feature_version: string;
+  scoring_version: string;
+  estimator: { status: string; version: string | null };
+  warnings: string[];
+};
+
+export type AnalyticsSummary = {
+  n: number;
+  minutes_n: number | null;
+  minutes_per_game: number | null;
+  points_n: number;
+  points_per_game: number | null;
+  reference_points_n: number;
+  reference_points_per_game: number | null;
+  reference_points_stddev?: number | null;
+  reference_points_per_minute: number | null;
+  fg_pct: number | null;
+  fg3_pct: number | null;
+  ft_pct: number | null;
+};
+
+export type AnalyticsProfile = {
+  snapshot_id: string;
+  dataset_id: string;
+  replay_date: string;
+  cutoff_utc: string | null;
+  mode: string;
+  source: string;
+  coverage_end: string;
+  metric_version: string;
+  scoring_version: string;
+  warnings: string[];
+  player: { id: string; name: string; season: string };
+  last_observed: { team_id: string; date: string; association: string } | null;
+  summaries: {
+    last_5: AnalyticsSummary | null;
+    last_10: AnalyticsSummary | null;
+    season: AnalyticsSummary | null;
+  };
+  target: {
+    game_id: string;
+    date: string;
+    team_id: string;
+    team: string | null;
+    opponent_id: string;
+    opponent: string | null;
+    side: "home" | "away" | null;
+    lead_days: number;
+    rest_days: number | null;
+    reconstruction: string;
+  } | null;
+  opponent_context: {
+    eligible_games: number;
+    values: Record<string, number | null>;
+    max_history_date: string | null;
+  } | null;
+  estimate: {
+    status: string;
+    history_n: number;
+    point: number | null;
+    interval: { lower: number; upper: number; nominal_coverage: number } | null;
+    estimator?: string;
+    prediction_mode?: string;
+  };
+};
+
+export type AnalyticsGame = {
+  game_id: string;
+  date: string;
+  season: string;
+  team_id: string;
+  team: string | null;
+  opponent_id: string;
+  opponent: string | null;
+  appearance: string;
+  minutes: number | null;
+  stats: Record<string, number | null>;
+  reference_points: number | null;
+  lineage_url: string;
+};
+
+export type AnalyticsGames = {
+  snapshot_id: string;
+  dataset_id: string;
+  replay_date: string;
+  player_id: string;
+  games: AnalyticsGame[];
+  next_cursor: string | null;
+};
+
+export type AnalyticsCompare = {
+  snapshot_id: string;
+  dataset_id: string;
+  replay_date: string;
+  cutoff_utc: string;
+  mode: string;
+  source: string;
+  coverage_end: string;
+  warnings: string[];
+  player_a: AnalyticsProfile;
+  player_b: AnalyticsProfile;
+  estimate_gap: number | null;
+};
+
+export type AnalyticsEvaluation = {
+  snapshot_id: string;
+  dataset_id: string;
+  run_id: string;
+  report_sha256: string;
+  coverage_start: string;
+  coverage_end: string;
+  published_at: string | null;
+  source: string;
+  validation: Record<string, unknown>;
+  final_test: {
+    metrics: Record<string, { forecast_rows: number; mae: number; rmse: number }>;
+    intervals: Record<string, { coverage: number | null; mean_width: number | null; rows: number }>;
+    counts: Record<string, number>;
+    paired_uncertainty: { lower: number; upper: number };
+    prespecified_slices: Record<string, unknown>;
+  };
+  promotion: Record<string, unknown>;
+  serving_policy: { historical_s3_primary: string; challenger_is_serving: boolean };
+  limitations: string[];
+  record_counts: Record<string, number>;
+  latest_build: { status: string; created_at: string; finished_at: string | null } | null;
+  warnings: string[];
+};
+
+export type AnalyticsSearch = {
+  snapshot_id: string;
+  dataset_id: string;
+  query: string;
+  season: string | null;
+  players: Array<{ id: string; name: string; last_observed_date: string }>;
+};

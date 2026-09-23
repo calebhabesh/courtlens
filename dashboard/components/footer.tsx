@@ -12,9 +12,7 @@ export function Footer() {
         <div className="footer-links">
           <Link href="/methodology">Definitions</Link>
           <Link href="/data-status">Source health</Link>
-          <a href="https://docs.balldontlie.io/" rel="noreferrer" target="_blank">
-            Data provider
-          </a>
+          <Link href="/players">Historical players</Link>
         </div>
       </div>
     </footer>

@@ -17,14 +17,18 @@ const plexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: { default: "CourtLoad — Win the week, not the schedule", template: "%s · CourtLoad" },
+  title: { default: "CourtLoad — Understand the player. Plan the week.", template: "%s · CourtLoad" },
   description:
-    "A source-traceable NBA fantasy week planner for startable games, schedule conflicts, and explainable add/drop scenarios."
+    "Source-traceable NBA player analytics and fantasy decision support with transparent recent form, schedule context, and explainable roster scenarios."
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${spaceGrotesk.variable} ${plexMono.variable}`}>
+    <html
+      lang="en"
+      className={`${spaceGrotesk.variable} ${plexMono.variable}`}
+      data-scroll-behavior="smooth"
+    >
       <body>
         <a className="skip-link" href="#content">
           Skip to content

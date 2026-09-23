@@ -2,11 +2,9 @@ import Link from "next/link";
 import { Brand } from "./brand";
 
 const links = [
-  ["Planner", "/planner"],
-  ["Schedule", "/schedule"],
   ["Players", "/players"],
-  ["Methodology", "/methodology"],
-  ["Data status", "/data-status"]
+  ["Compare", "/compare"],
+  ["Evaluation", "/evaluation"]
 ];
 
 export function Header() {
@@ -21,8 +19,8 @@ export function Header() {
             </Link>
           ))}
         </nav>
-        <Link className="button button-small" href="/planner">
-          Open planner <span aria-hidden="true">↗</span>
+        <Link className="button button-small" href="/players">
+          Find a player <span aria-hidden="true">→</span>
         </Link>
       </div>
     </header>

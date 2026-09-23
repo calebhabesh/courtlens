@@ -1,4 +1,12 @@
-import type { DataStatus, ScheduleWeek } from "./types";
+import type {
+  AnalyticsCatalog,
+  AnalyticsCompare,
+  AnalyticsEvaluation,
+  AnalyticsGames,
+  AnalyticsProfile,
+  DataStatus,
+  ScheduleWeek
+} from "./types";
 
 const internalApi =
   process.env.COURTLOAD_API_INTERNAL_URL ??
@@ -19,6 +27,78 @@ async function safeFetch<T>(path: string, fallback: T): Promise<T> {
   } catch {
     return fallback;
   }
+}
+
+export class AnalyticsApiError extends Error {
+  constructor(
+    public status: number,
+    public detail: unknown
+  ) {
+    super("Analytics request failed");
+  }
+}
+
+async function analyticsFetch<T>(path: string): Promise<T> {
+  let response: Response;
+  try {
+    response = await fetch(`${internalApi}${path}`, {
+      cache: "no-store",
+      signal: AbortSignal.timeout(6000)
+    });
+  } catch {
+    throw new AnalyticsApiError(503, { reason: "api_unavailable" });
+  }
+  if (!response.ok) {
+    const body = (await response.json().catch(() => null)) as { detail?: unknown } | null;
+    throw new AnalyticsApiError(response.status, body?.detail);
+  }
+  return (await response.json()) as T;
+}
+
+export function getAnalyticsCatalog(snapshotId?: string): Promise<AnalyticsCatalog> {
+  const query = snapshotId ? `?snapshotId=${encodeURIComponent(snapshotId)}` : "";
+  return analyticsFetch<AnalyticsCatalog>(`/api/analytics/catalog${query}`);
+}
+
+export function getAnalyticsProfile(
+  playerId: string,
+  date?: string,
+  snapshotId?: string
+): Promise<AnalyticsProfile> {
+  const query = new URLSearchParams();
+  if (date) query.set("date", date);
+  if (snapshotId) query.set("snapshotId", snapshotId);
+  return analyticsFetch<AnalyticsProfile>(
+    `/api/analytics/players/${encodeURIComponent(playerId)}?${query}`
+  );
+}
+
+export function getAnalyticsCompare(
+  playerA: string,
+  playerB: string,
+  date: string,
+  snapshotId: string
+): Promise<AnalyticsCompare> {
+  const query = new URLSearchParams({ playerA, playerB, date, snapshotId });
+  return analyticsFetch<AnalyticsCompare>(`/api/analytics/compare?${query}`);
+}
+
+export function getAnalyticsEvaluation(snapshotId: string): Promise<AnalyticsEvaluation> {
+  return analyticsFetch<AnalyticsEvaluation>(
+    `/api/analytics/evaluations?snapshotId=${encodeURIComponent(snapshotId)}`
+  );
+}
+
+export function getAnalyticsGames(
+  playerId: string,
+  date: string,
+  snapshotId: string,
+  limit = 20
+): Promise<AnalyticsGames> {
+  const query = new URLSearchParams({ date, snapshotId, limit: String(limit) });
+  return analyticsFetch<AnalyticsGames>(
+    `/api/analytics/players/${encodeURIComponent(playerId)}/games?${query}`
+  );
 }
 
 export async function getDataStatus(): Promise<DataStatus> {

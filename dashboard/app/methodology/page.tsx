@@ -4,96 +4,41 @@ import Link from "next/link";
 export const metadata: Metadata = { title: "Methodology" };
 
 const definitions = [
-  [
-    "Scheduled player-game",
-    "The player’s observed or current team has a non-cancelled game in the selected league-local range. It does not assert that the player will be active or appear."
-  ],
-  [
-    "Startable player-game",
-    "A scheduled player-game assigned to one compatible active slot by the deterministic daily matcher. Real-world availability remains external."
-  ],
-  [
-    "Lineup conflict",
-    "A scheduled roster player is left unassigned because other scheduled players consume all compatible active slot instances."
-  ],
-  [
-    "Recent production",
-    "Descriptive fantasy output from final games strictly before the displayed as-of cutoff, with the sample size and window completeness shown."
-  ],
-  [
-    "Watchlist candidate",
-    "A player the user wants to compare. CourtLoad does not claim the player is available, healthy, or eligible for a transaction."
-  ],
-  [
-    "Light-slate day",
-    "A league-local date with no more than the visible threshold of NBA games. It is schedule context, not medical rest analysis."
-  ]
+  ["Replay cutoff", "Midnight at the start of the selected NBA game date in America/New_York. Every game on that date is excluded from history."],
+  ["Reference points", "PTS + 1.2 REB + 1.5 AST + 3 STL + 3 BLK − TOV. This fixed CourtLoad metric is not a claim about every fantasy platform."],
+  ["Reconstructed target", "The next recorded team game within six days, using the player’s last observed team when that association is no more than 30 days old."],
+  ["Conditional estimate", "Estimated reference points if the player appears in that reconstructed team game. It does not estimate availability or a guaranteed next appearance."],
+  ["Empirical interval", "The point estimate plus or minus an absolute-error quantile calibrated on the separate 2022–23 calibration block."],
+  ["Opponent allowance", "Prior production recorded by opponents against that team over as many as ten eligible team games. It is not defensive efficiency or position defense."]
 ];
 
 export default function MethodologyPage() {
-  return (
-    <section className="page shell reading-shell">
-      <div className="page-heading">
-        <div>
-          <p className="kicker">Version 1.0.0</p>
-          <h1>Methodology</h1>
-          <p>What CourtLoad calculates, what it deliberately refuses to infer, and why.</p>
-        </div>
-      </div>
+  return <section className="page shell reading-shell">
+    <div className="page-heading"><div><p className="kicker">Historical replay · baseline-v1</p><h1>Methodology</h1><p>How CourtLoad creates comparable, cutoff-safe player evidence and where its claims stop.</p></div></div>
+    <article className="prose">
+      <h2>One snapshot and cutoff</h2>
+      <p>Both sides of a comparison resolve one immutable published snapshot and one replay date. Summaries use completed appearances strictly before that date. Shared URLs keep the snapshot, date, and both player IDs so the same retained inputs reproduce the view.</p>
+      <div className="definition-list">{definitions.map(([term, definition]) => <div key={term}><h3>{term}</h3><p>{definition}</p></div>)}</div>
 
-      <article className="prose">
-        <h2>Fantasy planning before prediction</h2>
-        <p>
-          CourtLoad is useful without an ML model. It combines a source-backed operational
-          schedule—or an explicitly labeled fixture schedule—with user-owned league configuration,
-          manually supplied fantasy eligibility, and time-correct recent form. No projection is
-          promoted in v1 because a projection must first beat transparent rolling baselines in
-          held-out time windows and match the league&apos;s scoring-rule hash.
-        </p>
+      <h2>Descriptive windows</h2>
+      <p>Last-5, last-10, and season-to-date values are calculated in the warehouse from prior appearances. Shooting percentages use summed makes and attempts. Sample counts stay beside each value, and missing opponent coverage remains missing rather than becoming zero.</p>
 
-        <div className="definition-list">
-          {definitions.map(([term, definition]) => (
-            <div key={term}>
-              <h3>{term}</h3>
-              <p>{definition}</p>
-            </div>
-          ))}
-        </div>
+      <div className="code-rule"><span>Temporal invariant</span><code>source_game_date &lt; replay_date</code><p>A selected date’s outcomes cannot contribute to its profile, matchup context, or estimate features.</p></div>
 
-        <h2>Daily matching</h2>
-        <ol>
-          <li>Resolve each roster player&apos;s team for the selected local date.</li>
-          <li>Keep non-cancelled team games and respect only user-entered inactive overrides.</li>
-          <li>Create individual slot instances from the league configuration.</li>
-          <li>Connect players only to slots allowed by user-supplied fantasy eligibility.</li>
-          <li>Maximize assigned players, then use trailing fantasy points as a visible tie-break.</li>
-          <li>Apply a stable identifier tie-break so the same inputs always produce the same plan.</li>
-        </ol>
-        <p>
-          The same algorithm and source snapshot are used before and after an add/drop scenario.
-          The product does not optimize a speculative chain of transactions or submit a lineup.
-        </p>
+      <h2>Serving policy</h2>
+      <p>Players with fewer than five valid same-season appearances receive no numeric estimate. Five to nine appearances receive a labeled available-history mean without a calibrated interval. With ten or more appearances, CourtLoad serves EWMA over as many as 20 appearances with a five-appearance half-life when a registered out-of-time replay artifact exists for the cutoff.</p>
+      <p>The boosted player-plus-context challenger was evaluated once on the untouched 2023–24 final season and was not promoted. EWMA had lower error overall and in the required comparison gates. The evaluation page reports the measured result and artifact identity.</p>
 
-        <div className="code-rule">
-          <span>Temporal invariant</span>
-          <code>source_game.tipoff_utc &lt; feature.calculated_as_of</code>
-          <p>A game&apos;s own minutes and stats cannot contribute to its pregame feature row.</p>
-        </div>
+      <h2>Historical reconstruction limits</h2>
+      <ul>
+        <li>The archive contains revised historical records rather than contemporaneous pregame observations.</li>
+        <li>Team association and target schedules are reconstructed from completed records; they are not verified historical rosters or original schedule publications.</li>
+        <li>The estimate does not model injuries, availability, trades after the cutoff, or appearance probability.</li>
+        <li>Empirical coverage on held-out history is not a guarantee for a future live setting.</li>
+        <li>M6 did not count observed final-season appearances for which no candidate existed, so total player coverage is unknown.</li>
+      </ul>
 
-        <h2>Known limits</h2>
-        <ul>
-          <li>Daily-lineup points leagues only in v1; weekly-lock behavior is rejected explicitly.</li>
-          <li>Eligibility, injuries, waiver availability, and transaction acceptance remain authoritative in the fantasy platform.</li>
-          <li>An absent box-score row is shown as unknown, never silently converted into a DNP.</li>
-          <li>Provider data is best effort, can be corrected, and is not an official league feed.</li>
-          <li>Schedule and rest context is not medical, injury, betting, or financial advice.</li>
-        </ul>
-
-        <div className="prose-cta">
-          <div><h2>Inspect the evidence.</h2><p>See coverage, freshness, quality checks, and the latest source run.</p></div>
-          <Link className="button button-dark" href="/data-status">Open data status</Link>
-        </div>
-      </article>
-    </section>
-  );
+      <div className="prose-cta"><div><h2>Inspect the measured result.</h2><p>See validation, final-test metrics, promotion gates, data health, and the immutable run hash.</p></div><Link className="button button-dark" href="/evaluation">Open evaluation</Link></div>
+    </article>
+  </section>;
 }
