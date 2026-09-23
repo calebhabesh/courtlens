@@ -98,10 +98,15 @@ def build_week_plan(
     week_start: date,
     light_slate_threshold: int = 5,
     scenario: ScenarioChange | None = None,
+    planning_as_of: datetime | None = None,
 ) -> dict[str, Any]:
     if league.lineup_mode != "daily":
         raise ValueError("weekly-lock leagues are unsupported in CourtLoad v1")
     zone = timezone_for(league.timezone)
+    observed_at = planning_as_of or datetime.now(UTC)
+    if observed_at.tzinfo is None:
+        observed_at = observed_at.replace(tzinfo=UTC)
+    current_local_date = observed_at.astimezone(zone).date()
     dates = week_dates(week_start)
     roster_entries = list(
         session.scalars(
@@ -181,7 +186,14 @@ def build_week_plan(
         for player, eligibility, roster_role in candidates:
             as_of = local_midnight_utc(day + timedelta(days=1), zone)
             historical_team = _historical_team_as_of(session, player.player_key, as_of)
-            team_id = historical_team or player.current_team_key
+            # Historical weeks must retain the team observed as of that date. For today and
+            # upcoming dates, however, a newer provider current-team identity wins so a trade is
+            # reflected before the player's first box score for the new team.
+            team_id = (
+                player.current_team_key
+                if day >= current_local_date and player.current_team_key is not None
+                else historical_team or player.current_team_key
+            )
             scheduled_game = team_game_by_date.get((day, team_id)) if team_id is not None else None
             if scheduled_game is None:
                 cells[player.player_key] = {"status": "no_game"}
@@ -342,8 +354,17 @@ def build_scenario_result(
     week_start: date,
     change: ScenarioChange,
 ) -> dict[str, Any]:
-    before = build_week_plan(session, league=league, week_start=week_start)
-    after = build_week_plan(session, league=league, week_start=week_start, scenario=change)
+    planning_as_of = datetime.now(UTC)
+    before = build_week_plan(
+        session, league=league, week_start=week_start, planning_as_of=planning_as_of
+    )
+    after = build_week_plan(
+        session,
+        league=league,
+        week_start=week_start,
+        scenario=change,
+        planning_as_of=planning_as_of,
+    )
     before_summary = before["summary"]
     after_summary = after["summary"]
     dropped_form = next(

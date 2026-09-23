@@ -5,7 +5,7 @@ from datetime import UTC, datetime, timedelta
 from sqlalchemy.orm import Session
 
 from courtload.demo import DEMO_WEEK_START
-from courtload.models import FantasyPlayerStatusOverride, PlayerGame
+from courtload.models import FantasyPlayerStatusOverride, Player, PlayerGame
 from courtload.services.planner import ScenarioChange, build_scenario_result, build_week_plan
 from courtload.services.recent_form import recent_form
 
@@ -103,3 +103,28 @@ def test_current_game_stat_cannot_change_its_own_prior_form(demo_league, session
     )
 
     assert before == after
+
+
+def test_upcoming_week_uses_new_current_team_before_first_post_trade_box_score(
+    demo_league, session: Session
+) -> None:  # type: ignore[no-untyped-def]
+    player = session.get(Player, 9101)
+    assert player is not None
+    player.current_team_key = 9003
+    session.commit()
+
+    upcoming = build_week_plan(
+        session,
+        league=demo_league,
+        week_start=DEMO_WEEK_START,
+        planning_as_of=datetime(2025, 2, 2, 12, tzinfo=UTC),
+    )
+    historical = build_week_plan(
+        session,
+        league=demo_league,
+        week_start=DEMO_WEEK_START,
+        planning_as_of=datetime(2025, 2, 10, 12, tzinfo=UTC),
+    )
+
+    assert upcoming["days"][0]["cells"]["9101"]["opponent"] == "CAP"
+    assert historical["days"][0]["cells"]["9101"]["opponent"] == "HBR"

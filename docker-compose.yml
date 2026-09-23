@@ -25,6 +25,7 @@ services:
       COURTLOAD_JWT_SECRET: ${COURTLOAD_JWT_SECRET:-local-development-secret-change-before-deploy}
       COURTLOAD_CORS_ORIGINS: '["http://localhost:3000","http://localhost:${COURTLOAD_DASHBOARD_PORT:-3000}"]'
       COURTLOAD_RAW_STORE_PATH: /app/data/raw
+      COURTLOAD_PROJECT_ROOT: /app
       COURTLOAD_BDL_BASE_URL: https://api.balldontlie.io/v1
       COURTLOAD_BDL_REQUESTS_PER_MINUTE: ${COURTLOAD_BDL_REQUESTS_PER_MINUTE:-5}
       BALLDONTLIE_API_KEY: ${BALLDONTLIE_API_KEY:-}
@@ -40,6 +41,7 @@ services:
       - "8000:8000"
     volumes:
       - courtload-raw:/app/data/raw
+      - ./data/artifacts/evaluation:/app/data/artifacts/evaluation:ro
     depends_on:
       migrate:
         condition: service_completed_successfully

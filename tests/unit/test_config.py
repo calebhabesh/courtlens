@@ -21,3 +21,9 @@ def test_production_rejects_wildcard_cors() -> None:
             jwt_secret="a-unique-production-secret-that-is-long-enough",
             cors_origins=["*"],
         )
+
+
+def test_dbt_schema_uses_the_warehouse_environment_name(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("DBT_SCHEMA", "portfolio")
+
+    assert Settings().dbt_schema == "portfolio"

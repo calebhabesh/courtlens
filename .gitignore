@@ -21,6 +21,7 @@ dashboard/node_modules/
 dashboard/.next/
 dashboard/out/
 dashboard/.vercel/
+dashboard/test-results/
 *.tsbuildinfo
 
 # Runtime data; committed fixtures are intentionally separate
@@ -28,6 +29,8 @@ data/raw/*
 !data/raw/.gitkeep
 data/artifacts/*
 !data/artifacts/.gitkeep
+data/backups/*
+!data/backups/.gitkeep
 data/*.db
 logs/
 

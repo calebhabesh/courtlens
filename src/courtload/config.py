@@ -30,6 +30,13 @@ class Settings(BaseSettings):
     bdl_base_url: str = "https://api.balldontlie.io/v1"
     bdl_requests_per_minute: int = Field(default=5, ge=1, le=600)
     raw_store_path: Path = Path("data/raw")
+    dbt_schema: str = Field(
+        default="analytics",
+        validation_alias="DBT_SCHEMA",
+        min_length=1,
+        max_length=48,
+        pattern=r"^[A-Za-z_][A-Za-z0-9_$]*$",
+    )
 
     @field_validator("environment")
     @classmethod

@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "courtload"
 version = "0.1.0"
-description = "A source-traceable NBA fantasy week planner"
+description = "Source-traceable NBA player intelligence and fantasy decision support"
 readme = "README.md"
 requires-python = ">=3.12"
 license = { text = "MIT" }
@@ -19,7 +19,9 @@ dependencies = [
   "prometheus-client>=0.21,<1",
   "psycopg[binary]>=3.2,<4",
   "pydantic-settings>=2.8,<3",
+  "PyYAML>=6.0,<7",
   "PyJWT>=2.10,<3",
+  "scikit-learn==1.6.1",
   "sqlalchemy>=2.0.38,<3",
   "typer>=0.15,<1",
   "uvicorn[standard]>=0.34,<1",
@@ -31,6 +33,7 @@ dev = [
   "pytest>=8.3,<9",
   "pytest-cov>=6,<8",
   "ruff>=0.11,<1",
+  "types-PyYAML>=6.0,<7",
 ]
 warehouse = ["dbt-postgres>=1.9,<2"]
 
@@ -43,6 +46,7 @@ packages = ["src/courtload"]
 [tool.pytest.ini_options]
 addopts = "-ra --strict-markers --strict-config"
 testpaths = ["tests"]
+markers = ["postgres: requires a disposable PostgreSQL database"]
 
 [tool.ruff]
 line-length = 100

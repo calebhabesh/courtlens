@@ -13,6 +13,7 @@ COPY src ./src
 COPY migrations ./migrations
 COPY alembic.ini ./
 COPY fixtures ./fixtures
+COPY evaluation ./evaluation
 
 RUN pip install --upgrade pip && pip install .
 
