@@ -16,7 +16,7 @@ integration only. They are not claims about live NBA coverage, latency, or user 
 | Check | Result |
 | --- | --- |
 | Alembic upgrade against a clean PostgreSQL database | Passed |
-| Python unit/contract/integration suite | 36 passed; 79% line coverage |
+| Python unit/contract/integration suite | 37 passed; 79% line coverage |
 | Frontend component suite | 2 passed |
 | Ruff format and lint | Passed |
 | Strict mypy check | Passed |
@@ -41,6 +41,8 @@ remain scheduled but are neither startable nor mislabeled as slot conflicts.
 - A provider-reported zero-minute row is retained distinctly; an absent row remains absent/unknown.
 - Postponed/cancelled/suspended games do not count toward schedule opportunities.
 - Current-game mutation cannot alter that game's own prior form.
+- An upcoming date prefers a newer current-team identity after a trade while a historical date
+  retains the team observed at that time.
 - The add/drop before/after views use the same snapshot and scoring/roster versions.
 - Acquisition exhaustion returns an explained invalid state, and cross-owner reads return `404`.
 
@@ -56,7 +58,8 @@ remain scheduled but are neither startable nor mislabeled as slot conflicts.
 - Live corrections, reschedules, trades, reported DNP patterns, or season completeness.
 - Real-fantasy-platform eligibility accuracy or waiver availability.
 - Production throughput, p50/p95 latency, uptime, or cost.
-- A real manager decision or optional model improvement.
+- Rich real-player profile/comparison behavior, a real manager decision, or a completed
+  baseline/model evaluation and promotion decision.
 
 Those items stay pending until the credentialed source spike and two-week private user workflow are
 recorded in this directory.

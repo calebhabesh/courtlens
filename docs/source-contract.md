@@ -1,5 +1,7 @@
 # BALLDONTLIE source contract
 
+> **Optional legacy adapter (2026-09-20):** This document describes BALLDONTLIE, not the baseline's selected acquisition path. The approved baseline uses a pinned free archive subject to validation. See [source research](research/zero-cost-data-sources.md), [data contracts](design/data-serving-contracts.md), and the [implementation plan](implementation-plan.md). Paid credentials are not a baseline prerequisite; the historical check below is not a current pricing guarantee.
+
 Last checked: **2026-08-23**
 
 CourtLoad uses only the provider's documented NBA API and records this contract in every operational
@@ -28,8 +30,8 @@ Authoritative references:
 The current terms explicitly list analytics and fantasy sports among permitted uses and allow
 lawfully retrieved data to be cached, stored, analyzed, displayed, and used in derivative products.
 The full terms also prohibit credential sharing, access-control/rate-limit bypass, false official
-status, competing services, and resale of unmodified raw data. CourtLoad therefore exposes a
-derived planner—not a raw-data proxy—and identifies itself as unofficial.
+status, competing services, and resale of unmodified raw data. CourtLoad therefore exposes derived
+player analytics and planning workflows—not a raw-data proxy—and identifies itself as unofficial.
 
 There is a wording tension between the page's plain-language summary and the detailed competing/raw
 resale restriction. The detailed restriction is treated as controlling and the implementation uses

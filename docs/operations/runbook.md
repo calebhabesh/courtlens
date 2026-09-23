@@ -1,65 +1,142 @@
 # Operations runbook
 
-## Start and verify
+Status: **M8 operations and reproduction guide**, 2026-09-23.  
+Describes verified local and container operations for CourtLoad on pinned historical NBA archives.
+
+---
+
+## 1. Quick Start & Verification
+
+### Prerequisites
+- Docker with Compose v2
+- Python 3.12+ (local venv optional if using Docker)
+- Node.js 24 (for dashboard development)
 
 ```bash
+# Clone and setup environment
 cp .env.example .env
+
+# Start database and application services
 docker compose up --build -d db migrate api dashboard
+
+# Verify health
 curl --fail http://localhost:8000/api/health
+curl --fail http://localhost:8000/api/analytics/catalog
 ./scripts/smoke.sh
 ```
 
-If port 3000 is occupied, set `COURTLOAD_DASHBOARD_PORT=3100` in `.env` and include that origin in
-`COURTLOAD_CORS_ORIGINS`.
+By default:
+- Dashboard: <http://localhost:3000> (or set `COURTLOAD_DASHBOARD_PORT=3100` if port 3000 is occupied)
+- API: <http://localhost:8000>
+- API Documentation: <http://localhost:8000/api/docs>
 
-## Initial backfill
+---
 
-Choose a bounded permitted range. Game-player stats require the recorded paid entitlement.
+## 2. Historical Data Lifecycle
 
+CourtLoad runs on an independently verified historical NBA dataset spanning the 2021–22, 2022–23, and 2023–24 regular seasons. Rebuilding is completely offline after initial archive acquisition.
+
+### Step 1: Acquire Pinned Archive
+Downloads or copies the four pinned CSV files, verifying exact byte lengths and SHA-256 digests:
 ```bash
-docker compose exec api courtload ingest \
-  --start 2025-10-01 --end 2026-04-30 \
-  --include-stats --include-players
-docker compose --profile tools run --rm dbt build --profiles-dir .
+courtload acquire-archive --destination data/raw/nocturnebear-a5f108b5
 ```
 
-Re-run the same command and retain the idempotency counts as evidence.
+### Step 2: Import Archive Facts
+Parses CSV streams, applies strict time and score reconciliation, isolates malformed rows in quarantine, and commits immutable facts:
+```bash
+COURTLOAD_DATABASE_URL=postgresql+psycopg://courtload:courtload@localhost:5432/courtload \
+  courtload import-archive --root data/raw/nocturnebear-a5f108b5
+```
 
-## Daily correction window
+### Step 3: Warehouse Build and Atomic Publication
+Executes dbt in a candidate build schema, verifies two-sided reconciliation, grain invariants, and temporal discipline, copies serving facts, and atomically updates the publication pointer:
+```bash
+COURTLOAD_DATABASE_URL=postgresql+psycopg://courtload:courtload@localhost:5432/courtload \
+  courtload publish-archive --code-version "$(git rev-parse HEAD)"
+```
 
-`scripts/refresh.sh` reloads the last three days (to catch late corrections), the next fourteen days,
-runs operational checks, and then builds/tests dbt. Schedule it once daily during the season using
-cron, systemd, a scheduled container, or the hosting platform's job runner.
+### Rollback (if needed)
+Atomically points the publication channel back to a retained ready snapshot without deleting rows:
+```bash
+COURTLOAD_DATABASE_URL=postgresql+psycopg://courtload:courtload@localhost:5432/courtload \
+  courtload rollback-publication <SNAPSHOT_ID>
+```
 
-## Failure triage
+---
 
-| Symptom | Meaning | Action |
-| --- | --- | --- |
-| HTTP 401 on teams/games | invalid/missing credential | replace the server-side key; do not expose it in UI |
-| Entitlement error on stats | NBA ALL-STAR access absent/expired | keep schedule current, mark player form stale, renew or disable paid refresh |
-| HTTP 429 | configured/requested rate too high | lower requests/minute and respect `Retry-After` |
-| Schema error | upstream contract drift | preserve raw response/error, update fixture and parser deliberately |
-| dbt test failure | transformed data violates an invariant | do not publish the affected mart until investigated |
-| Dashboard says fixture | most recent successful run is a fixture | do not call it current/operational data |
+## 3. Offline Evaluation & Replay Calibration
 
-## Backup and restore
+Offline evaluation is deterministic, thread-pinned, and leakage-safe:
+
+```bash
+# Rebuild M5 rolling baselines (last-10, EWMA-20) and empirical intervals
+courtload evaluate \
+  --config evaluation/config/baseline-v1.yaml \
+  --dataset evaluation/manifests/accepted-archive-v1.json
+
+# Evaluate frozen challenger and open S3 holdout
+OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 \
+  courtload evaluate-final \
+  --baseline-run 3cf4ae8eb331ac02d3b3 \
+  --open-final-test
+```
+
+All evaluation runs write immutable artifacts with cryptographic checksums into `data/artifacts/evaluation/<run_id>/`.
+
+---
+
+## 4. Backup, Restore, and Disaster Recovery
+
+### Create a Complete Backup Bundle
+`scripts/backup.sh` bundles:
+1. Complete PostgreSQL database dump (`database.sql.gz`)
+2. Raw historical CSV files and retrieval manifest (`data/raw/`)
+3. Evaluation manifests (`evaluation/manifests/`)
+4. Model evaluation artifacts (`data/artifacts/evaluation/`)
+5. Backup metadata manifest (`backup-manifest.json`) with snapshot pointer and checksums
 
 ```bash
 ./scripts/backup.sh
-gunzip -c data/backups/courtload-TIMESTAMP.sql.gz | \
-  docker compose exec -T db psql -U courtload -d courtload
+# Created ./data/backups/courtload-backup-<TIMESTAMP>.tar.gz
 ```
 
-Back up the raw-object volume with the database. A database row without its content-addressed object
-loses the audit trace. Test restore to a separate database before relying on a backup policy.
+### Restore to a Target Database
+`scripts/restore.sh` extracts the bundle, restores relations into PostgreSQL, restores artifact files, and runs automated end-to-end reconciliation:
 
-## Production checklist
+```bash
+./scripts/restore.sh ./data/backups/courtload-backup-<TIMESTAMP>.tar.gz
+```
 
-- unique JWT and database secrets; TLS at the edge;
-- exact CORS origin and edge rate limits;
-- no fixture seeding or demo credentials;
-- persistent raw volume/object bucket and automated PostgreSQL backups;
-- scheduled refresh with a private failure webhook;
-- health, request latency, failed ingest, freshness, disk, and database alerts;
-- source tier/cost/terms rechecked and recorded;
-- smoke test plus dbt build after each deployment.
+### Verification
+`courtload verify-restore` validates:
+- Published pointer points to an accepted dataset and ready snapshot
+- Evaluation report, calibration, and replay artifacts match registered SHA-256 hashes
+- Reconstructs a live two-player comparison (LeBron James vs. Stephen Curry) and verifies exact mathematical match
+
+```bash
+courtload verify-restore
+```
+
+---
+
+## 5. Performance Benchmarking
+
+Run the repeatable latency benchmark across all primary endpoints:
+```bash
+python scripts/benchmark_api.py
+```
+Outputs min, p50, p95, p99, max, mean, sample counts, and error counts. See `docs/evidence/performance.md` for target workstation results.
+
+---
+
+## 6. Operational Failure Triage
+
+| Symptom | Root Cause | Remediation |
+| :--- | :--- | :--- |
+| HTTP 503 `no_published_data` | No active snapshot on `public` channel | Run `courtload publish-archive` or restore from backup |
+| HTTP 410 `snapshot_retired` | Requested snapshot ID is no longer in `ready` state | Navigate without `snapshotId` parameter to resolve current pointer |
+| HTTP 422 on replay date | Replay date outside supported regular seasons | Select a date within 2021-10-19 to 2024-04-14 |
+| Port 3000 occupied | Another local service using port 3000 | Set `COURTLOAD_DASHBOARD_PORT=3100` in `.env` |
+| Evaluation artifact missing | Volume mount missing in container | Mount `./data/artifacts/evaluation:/app/data/artifacts/evaluation:ro` |
+| Advisory lock conflict | Concurrent publication or build in progress | Wait for active build to finish; advisory lock automatically releases on disconnect |
