@@ -9,6 +9,15 @@ from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy import func, select, text
 from sqlalchemy.orm import Session, selectinload
 
+from courtload.api.schemas import (
+    AnalyticsCatalogResponse,
+    AnalyticsCompareResponse,
+    AnalyticsEvaluationResponse,
+    AnalyticsLineageResponse,
+    AnalyticsPlayerGamesResponse,
+    AnalyticsPlayerResponse,
+    AnalyticsPlayerSearchResponse,
+)
 from courtload.database import get_db
 from courtload.domain.scoring import DEFAULT_POINTS_RULES, scoring_rules_hash
 from courtload.models import (
@@ -20,10 +29,143 @@ from courtload.models import (
     RawObject,
     Team,
 )
+from courtload.services.evaluation_public import public_evaluation
 from courtload.services.planner import NON_SCHEDULED_STATES
+from courtload.services.player_analytics import (
+    catalog as analytics_catalog,
+)
+from courtload.services.player_analytics import (
+    lineage as analytics_lineage,
+)
+from courtload.services.player_analytics import metadata as analytics_metadata
+from courtload.services.player_analytics import (
+    player_games as analytics_player_games,
+)
+from courtload.services.player_analytics import (
+    player_profile as analytics_player_profile,
+)
+from courtload.services.player_analytics import (
+    resolve_replay_date,
+    resolve_snapshot,
+)
+from courtload.services.player_analytics import (
+    search_players as analytics_search_players,
+)
 from courtload.services.recent_form import recent_form
 
 router = APIRouter(tags=["public data"])
+
+
+@router.get(
+    "/analytics/evaluations", tags=["analytics"], response_model=AnalyticsEvaluationResponse
+)
+def published_analytics_evaluations(
+    run_id: Annotated[str | None, Query(alias="runId", max_length=32)] = None,
+    snapshot_id: Annotated[str | None, Query(alias="snapshotId", max_length=36)] = None,
+    session: Session = Depends(get_db),
+) -> dict[str, Any]:
+    context = resolve_snapshot(session, snapshot_id)
+    return public_evaluation(session, context, run_id)
+
+
+@router.get("/analytics/compare", tags=["analytics"], response_model=AnalyticsCompareResponse)
+def published_analytics_compare(
+    player_a: Annotated[str, Query(alias="playerA", min_length=1, max_length=100)],
+    player_b: Annotated[str, Query(alias="playerB", min_length=1, max_length=100)],
+    replay_date: Annotated[date | None, Query(alias="date")] = None,
+    snapshot_id: Annotated[str | None, Query(alias="snapshotId", max_length=36)] = None,
+    session: Session = Depends(get_db),
+) -> dict[str, Any]:
+    if player_a == player_b:
+        raise HTTPException(status_code=422, detail={"reason": "identical_players"})
+    context = resolve_snapshot(session, snapshot_id)
+    selected_date = resolve_replay_date(context.snapshot, replay_date)
+    first = analytics_player_profile(session, context, player_a, selected_date)
+    second = analytics_player_profile(session, context, player_b, selected_date)
+    first_point = first["estimate"]["point"]
+    second_point = second["estimate"]["point"]
+    result = analytics_metadata(context, selected_date)
+    result.update(
+        {
+            "player_a": first,
+            "player_b": second,
+            "estimate_gap": first_point - second_point
+            if isinstance(first_point, (int, float)) and isinstance(second_point, (int, float))
+            else None,
+        }
+    )
+    return result
+
+
+@router.get("/analytics/catalog", tags=["analytics"], response_model=AnalyticsCatalogResponse)
+def published_analytics_catalog(
+    snapshot_id: Annotated[str | None, Query(alias="snapshotId", max_length=36)] = None,
+    session: Session = Depends(get_db),
+) -> dict[str, Any]:
+    return analytics_catalog(session, snapshot_id)
+
+
+@router.get("/analytics/players", tags=["analytics"], response_model=AnalyticsPlayerSearchResponse)
+def published_analytics_players(
+    query: Annotated[str, Query(min_length=1, max_length=80)],
+    season: Annotated[str | None, Query(max_length=10)] = None,
+    snapshot_id: Annotated[str | None, Query(alias="snapshotId", max_length=36)] = None,
+    limit: Annotated[int, Query(ge=1, le=50)] = 20,
+    session: Session = Depends(get_db),
+) -> dict[str, Any]:
+    context = resolve_snapshot(session, snapshot_id)
+    return {
+        "snapshot_id": context.snapshot.id,
+        "dataset_id": context.snapshot.dataset_id,
+        "query": query,
+        "season": season,
+        "players": analytics_search_players(session, context, query, season, limit),
+    }
+
+
+@router.get(
+    "/analytics/players/{player_id}", tags=["analytics"], response_model=AnalyticsPlayerResponse
+)
+def published_analytics_player(
+    player_id: str,
+    replay_date: Annotated[date | None, Query(alias="date")] = None,
+    snapshot_id: Annotated[str | None, Query(alias="snapshotId", max_length=36)] = None,
+    session: Session = Depends(get_db),
+) -> dict[str, Any]:
+    context = resolve_snapshot(session, snapshot_id)
+    selected_date = resolve_replay_date(context.snapshot, replay_date)
+    return analytics_player_profile(session, context, player_id, selected_date)
+
+
+@router.get(
+    "/analytics/players/{player_id}/games",
+    tags=["analytics"],
+    response_model=AnalyticsPlayerGamesResponse,
+)
+def published_analytics_player_games(
+    player_id: str,
+    replay_date: Annotated[date | None, Query(alias="date")] = None,
+    snapshot_id: Annotated[str | None, Query(alias="snapshotId", max_length=36)] = None,
+    cursor: Annotated[str | None, Query(max_length=1000)] = None,
+    limit: Annotated[int, Query(ge=1, le=100)] = 20,
+    session: Session = Depends(get_db),
+) -> dict[str, Any]:
+    context = resolve_snapshot(session, snapshot_id)
+    selected_date = resolve_replay_date(context.snapshot, replay_date)
+    return analytics_player_games(
+        session, context, player_id, selected_date, cursor=cursor, limit=limit
+    )
+
+
+@router.get("/analytics/lineage", tags=["analytics"], response_model=AnalyticsLineageResponse)
+def published_analytics_lineage(
+    player_id: Annotated[str, Query(alias="playerId", min_length=1, max_length=100)],
+    game_id: Annotated[str, Query(alias="gameId", min_length=1, max_length=10)],
+    snapshot_id: Annotated[str | None, Query(alias="snapshotId", max_length=36)] = None,
+    session: Session = Depends(get_db),
+) -> dict[str, Any]:
+    context = resolve_snapshot(session, snapshot_id)
+    return analytics_lineage(session, context, player_id, game_id)
 
 
 @router.get("/health")

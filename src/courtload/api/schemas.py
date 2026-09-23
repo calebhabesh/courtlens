@@ -11,6 +11,145 @@ from courtload.domain.scoring import DEFAULT_POINTS_RULES, validate_scoring_rule
 ALLOWED_SLOTS = frozenset({"PG", "SG", "SF", "PF", "C", "G", "F", "UTIL"})
 
 
+class AnalyticsCatalogResponse(BaseModel):
+    snapshot_id: str
+    dataset_id: str
+    replay_date: date
+    cutoff_utc: str
+    mode: str
+    source: str
+    coverage_start: date
+    coverage_end: date
+    default_replay_date: date
+    supported_replay_dates: list[date]
+    supported_seasons: list[str]
+    published_at: str | None
+    metric_version: str
+    feature_version: str
+    scoring_version: str
+    estimator: dict[str, str | None]
+    warnings: list[str]
+
+
+class AnalyticsPlayerSearchItem(BaseModel):
+    id: str
+    name: str
+    last_observed_date: date
+
+
+class AnalyticsPlayerSearchResponse(BaseModel):
+    snapshot_id: str
+    dataset_id: str
+    query: str
+    season: str | None
+    players: list[AnalyticsPlayerSearchItem]
+
+
+class AnalyticsSummary(BaseModel):
+    n: int
+    minutes_n: int | None = None
+    minutes_per_game: float | None = None
+    points_n: int
+    points_per_game: float | None
+    reference_points_n: int
+    reference_points_per_game: float | None
+    reference_points_stddev: float | None = None
+    reference_points_per_minute: float | None
+    fg_pct: float | None
+    fg3_pct: float | None
+    ft_pct: float | None
+
+
+class AnalyticsPlayerResponse(BaseModel):
+    snapshot_id: str
+    dataset_id: str
+    replay_date: date
+    cutoff_utc: str | None
+    mode: str
+    source: str
+    coverage_end: date
+    metric_version: str
+    scoring_version: str
+    warnings: list[str]
+    player: dict[str, str]
+    last_observed: dict[str, str] | None
+    summaries: dict[str, AnalyticsSummary | None]
+    target: dict[str, str | int | None] | None
+    opponent_context: dict[str, object] | None
+    estimate: dict[str, object]
+
+
+class AnalyticsCompareResponse(BaseModel):
+    snapshot_id: str
+    dataset_id: str
+    replay_date: date
+    cutoff_utc: str
+    mode: str
+    source: str
+    coverage_end: date
+    metric_version: str
+    scoring_version: str
+    warnings: list[str]
+    player_a: AnalyticsPlayerResponse
+    player_b: AnalyticsPlayerResponse
+    estimate_gap: float | None
+
+
+class AnalyticsEvaluationResponse(BaseModel):
+    snapshot_id: str
+    dataset_id: str
+    replay_date: date
+    cutoff_utc: str
+    mode: str
+    source: str
+    coverage_start: date
+    coverage_end: date
+    metric_version: str
+    scoring_version: str
+    warnings: list[str]
+    run_id: str
+    report_sha256: str
+    validation: dict[str, object]
+    final_test: dict[str, object]
+    promotion: dict[str, object]
+    serving_policy: dict[str, object]
+    limitations: list[str]
+    published_at: str | None
+    record_counts: dict[str, int]
+    latest_build: dict[str, str | None] | None
+
+
+class AnalyticsPlayerGamesResponse(BaseModel):
+    snapshot_id: str
+    dataset_id: str
+    replay_date: date
+    cutoff_utc: str
+    mode: str
+    source: str
+    coverage_end: date
+    metric_version: str
+    scoring_version: str
+    warnings: list[str]
+    player_id: str
+    games: list[dict[str, object]]
+    next_cursor: str | None
+
+
+class AnalyticsLineageResponse(BaseModel):
+    snapshot_id: str
+    dataset_id: str
+    player_id: str
+    game_id: str
+    source: str
+    source_version_id: str
+    content_sha256: str
+    parser_version: str
+    observed_at: str
+    artifact: dict[str, str | int]
+    transform: dict[str, str]
+    raw_payload_exposed: bool
+
+
 class RegisterRequest(BaseModel):
     email: EmailStr
     password: str = Field(min_length=12, max_length=128)
