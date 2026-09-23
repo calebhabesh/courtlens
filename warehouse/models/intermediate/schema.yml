@@ -17,3 +17,13 @@ models:
         data_tests: [unique, not_null]
       - name: fantasy_points_default
         data_tests: [not_null]
+  - name: fct_archive_player_game
+    description: Immutable dataset/player/game facts using reference-points v1.
+    columns:
+      - name: dataset_id
+        data_tests: [not_null]
+  - name: fct_archive_team_game
+    description: Immutable dataset/team/game facts with two perspectives per game.
+    columns:
+      - name: dataset_id
+        data_tests: [not_null]

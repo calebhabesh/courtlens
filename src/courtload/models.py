@@ -297,3 +297,6 @@ class DataQualityRun(Base):
     passed_count: Mapped[int] = mapped_column(Integer, default=0)
     failed_count: Mapped[int] = mapped_column(Integer, default=0)
     results_json: Mapped[list[dict[str, Any]]] = mapped_column(JSON, default=list)
+
+
+from courtload import archive_models, warehouse_models  # noqa: E402,F401

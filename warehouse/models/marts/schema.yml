@@ -27,3 +27,12 @@ models:
     columns:
       - name: data_snapshot_id
         data_tests: [unique, not_null]
+  - name: mart_archive_player_profile
+    description: Prior-day player windows and reconstructed next-team-game targets.
+    columns:
+      - name: replay_date
+        data_tests: [not_null]
+      - name: max_history_date
+        data_tests: [not_null]
+  - name: mart_archive_opponent_context
+    description: Prior-game opponent production allowed, with minimum coverage in payload values.

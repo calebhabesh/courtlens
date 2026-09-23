@@ -115,3 +115,31 @@ sources:
               - accepted_values:
                   arguments:
                     values: [reported, reported_zero_minutes]
+      - name: archive_datasets
+        columns:
+          - name: id
+            data_tests: [unique, not_null]
+      - name: archive_versions
+        columns:
+          - name: id
+            data_tests: [unique, not_null]
+      - name: archive_player_games
+        columns:
+          - name: id
+            data_tests: [unique, not_null]
+          - name: dataset_id
+            data_tests:
+              - relationships:
+                  arguments:
+                    to: source('operational', 'archive_datasets')
+                    field: id
+      - name: archive_team_games
+        columns:
+          - name: id
+            data_tests: [unique, not_null]
+          - name: dataset_id
+            data_tests:
+              - relationships:
+                  arguments:
+                    to: source('operational', 'archive_datasets')
+                    field: id

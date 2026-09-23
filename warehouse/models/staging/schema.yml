@@ -23,3 +23,23 @@ models:
     columns:
       - name: source_stat_id
         data_tests: [unique, not_null]
+  - name: stg_archive_player_games
+    description: Dataset-selected archive player/game facts with nullable counts preserved.
+    columns:
+      - name: dataset_id
+        data_tests: [not_null]
+      - name: game_id
+        data_tests: [not_null]
+      - name: player_id
+        data_tests: [not_null]
+      - name: player_name
+        data_tests: [not_null]
+  - name: stg_archive_team_games
+    description: Dataset-selected authoritative team/game totals.
+    columns:
+      - name: dataset_id
+        data_tests: [not_null]
+      - name: game_id
+        data_tests: [not_null]
+      - name: team_id
+        data_tests: [not_null]
