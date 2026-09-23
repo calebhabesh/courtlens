@@ -1,0 +1,50 @@
+version: baseline-v1
+status: frozen
+frozen_at: "2026-09-21"
+dataset:
+  content_sha256: be2dae2706f9c90d37fef4c70e523e5925c247a2f091d6b885a65255d0b92c4a
+  observation_sha256: 8e9528b5a8fb153934e6b4c7b4ed6034e60ed8bd329b5c9294d422670272e2ee
+  source_namespace: github:NocturneBear/NBA-Data-2010-2024@a5f108b5b1f08074d78b9e8e901926a9ce4c06c5
+  seasons: ["2021-22", "2022-23", "2023-24"]
+snapshot_id: 5b14b7ed-353b-499d-a37a-6887b5f6c715
+target:
+  name: reference_points
+  version: reference-points-v1
+  formula: PTS+1.2*REB+1.5*AST+3*STL+3*BLK-TOV
+  scoring_sha256: 99ae314454a067a93fe16c4c06076adaeb9a36673b46e160455e4e9b14fc1805
+eligibility:
+  core_min_history: 10
+  fallback_min_history: 5
+  team_association_days: 30
+  target_horizon_days: 6
+baselines:
+  last_10: {window: 10}
+  ewma_20_hl5: {window: 20, half_life_appearances: 5}
+splits:
+  s1: {season: "2021-22", start: "2021-10-19", end: "2022-04-10", role: training}
+  v1: {season: "2022-23", start: "2022-10-18", end: "2022-12-14", role: validation}
+  v2: {season: "2022-23", start: "2022-12-15", end: "2023-02-10", role: validation}
+  calibration: {season: "2022-23", start: "2023-02-11", end: "2023-04-09", role: calibration}
+  s3: {season: "2023-24", start: "2023-10-24", end: "2024-04-14", role: final_test}
+validation_selection:
+  metric: mae
+  folds: [v1, v2]
+  tie_break_order: [last_10, ewma_20_hl5]
+intervals: {nominal_coverage: 0.8, minimum_rows: 200, minimum_target_dates: 20}
+uncertainty: {bootstrap_replicates: 1000, moving_block_calendar_days: 7, seed: 20260920}
+challenger:
+  random_seed: 20260920
+  learning_rate: 0.05
+  max_iter: 200
+  early_stopping: false
+  max_leaf_nodes: [15, 31]
+  l2_regularization: [0, 1]
+promotion:
+  validation_min_relative_mae_improvement: 0.05
+  maximum_supported_slice_relative_mae_regression: 0.05
+  supported_slice_min_rows: 200
+  supported_slice_min_player_games: 100
+  supported_slice_min_target_dates: 20
+  final_min_interval_coverage: 0.75
+  final_max_interval_width_ratio: 1.10
+runtime: {timezone: America/New_York, float_tolerance: 1.0e-10, cpu_threads: 1}
