@@ -8,7 +8,7 @@ services:
       POSTGRES_USER: courtload
       POSTGRES_PASSWORD: courtload
     ports:
-      - "5432:5432"
+      - "127.0.0.1:5432:5432"
     volumes:
       - courtload-postgres:/var/lib/postgresql/data
     healthcheck:
@@ -23,7 +23,8 @@ services:
       COURTLOAD_ENVIRONMENT: development
       COURTLOAD_DATABASE_URL: postgresql+psycopg://courtload:courtload@db:5432/courtload
       COURTLOAD_JWT_SECRET: ${COURTLOAD_JWT_SECRET:-local-development-secret-change-before-deploy}
-      COURTLOAD_CORS_ORIGINS: '["http://localhost:3000","http://localhost:${COURTLOAD_DASHBOARD_PORT:-3000}"]'
+      COURTLOAD_OPERATOR_TOKEN: ${COURTLOAD_OPERATOR_TOKEN:-local-operator-secret-change-before-deploy}
+      COURTLOAD_CORS_ORIGINS: '["http://localhost:3000","http://127.0.0.1:3000","http://localhost:${COURTLOAD_DASHBOARD_PORT:-3000}"]'
       COURTLOAD_RAW_STORE_PATH: /app/data/raw
       COURTLOAD_PROJECT_ROOT: /app
       COURTLOAD_BDL_BASE_URL: https://api.balldontlie.io/v1
@@ -38,9 +39,11 @@ services:
     build: .
     environment: *api-environment
     ports:
-      - "8000:8000"
+      - "127.0.0.1:8000:8000"
     volumes:
       - courtload-raw:/app/data/raw
+      - courtload-artifacts:/app/data/artifacts
+      - courtload-cache:/app/data/cache
       - ./data/artifacts/evaluation:/app/data/artifacts/evaluation:ro
     depends_on:
       migrate:
@@ -51,6 +54,19 @@ services:
       timeout: 5s
       retries: 10
 
+  worker:
+    build: .
+    environment: *api-environment
+    volumes:
+      - courtload-raw:/app/data/raw
+      - courtload-artifacts:/app/data/artifacts
+      - courtload-cache:/app/data/cache
+      - ./data/artifacts/evaluation:/app/data/artifacts/evaluation:ro
+    command: ["courtload", "worker"]
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+
   dashboard:
     build:
       context: dashboard
@@ -60,8 +76,9 @@ services:
       COURTLOAD_API_INTERNAL_URL: http://api:8000
       NEXT_PUBLIC_COURTLOAD_API_URL: http://localhost:8000
       NEXT_PUBLIC_DEMO_MODE: "true"
+      COURTLOAD_OPERATOR_TOKEN: ${COURTLOAD_OPERATOR_TOKEN:-local-operator-secret-change-before-deploy}
     ports:
-      - "${COURTLOAD_DASHBOARD_PORT:-3000}:3000"
+      - "127.0.0.1:${COURTLOAD_DASHBOARD_PORT:-3000}:3000"
     depends_on:
       api:
         condition: service_healthy
@@ -90,3 +107,5 @@ services:
 volumes:
   courtload-postgres:
   courtload-raw:
+  courtload-artifacts:
+  courtload-cache:

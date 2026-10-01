@@ -14,10 +14,11 @@ COPY migrations ./migrations
 COPY alembic.ini ./
 COPY fixtures ./fixtures
 COPY evaluation ./evaluation
+COPY warehouse ./warehouse
 
-RUN pip install --upgrade pip && pip install .
+RUN pip install --upgrade pip && pip install ".[warehouse]"
 
-RUN mkdir -p /app/data/raw /app/data/artifacts && chown -R courtload:courtload /app
+RUN mkdir -p /app/data/raw /app/data/artifacts /app/data/cache && chown -R courtload:courtload /app
 USER courtload
 
 EXPOSE 8000

@@ -8,6 +8,7 @@ import os
 import re
 import shutil
 import subprocess
+import sys
 from collections.abc import Callable, Iterator
 from contextlib import contextmanager
 from datetime import UTC, datetime
@@ -15,7 +16,7 @@ from pathlib import Path
 from typing import Any
 
 from sqlalchemy import Select, func, select, text
-from sqlalchemy.engine import Engine, make_url
+from sqlalchemy.engine import Connection, Engine, make_url
 from sqlalchemy.orm import Session
 
 from courtload.archive_models import ArchiveDataset, ArchivePlayerGame, ArchiveTeamGame
@@ -41,9 +42,14 @@ class CandidateValidationError(RuntimeError):
 
 
 @contextmanager
-def publication_lock(session: Session) -> Iterator[None]:
+def publication_lock(bind_or_session: Session | Engine | Connection) -> Iterator[Connection]:
     """Hold one PostgreSQL session advisory lock across build and publication."""
-    bind = session.get_bind()
+    if isinstance(bind_or_session, Session):
+        bind = bind_or_session.get_bind()
+    elif isinstance(bind_or_session, Connection):
+        bind = bind_or_session.engine
+    else:
+        bind = bind_or_session
     if not isinstance(bind, Engine) or bind.dialect.name != "postgresql":
         raise RuntimeError("warehouse publication requires PostgreSQL session advisory locks")
     # This connection must never return to the pool while the lock is held. The work
@@ -54,7 +60,7 @@ def publication_lock(session: Session) -> Iterator[None]:
         if not acquired:
             raise BuildInProgressError("another warehouse build already holds the publication lock")
         try:
-            yield
+            yield lock_connection
         finally:
             lock_connection.rollback()
             lock_connection.scalar(select(func.pg_advisory_unlock(PUBLICATION_LOCK_KEY)))
@@ -91,7 +97,11 @@ def run_dbt_candidate(build: WarehouseBuild) -> None:
     """Build only archive-tagged relations in a private build-specific schema."""
     executable = shutil.which("dbt")
     if executable is None:
-        raise RuntimeError("dbt executable is unavailable; install the warehouse extra")
+        candidate = Path(sys.executable).parent / "dbt"
+        if candidate.is_file() and os.access(candidate, os.X_OK):
+            executable = str(candidate)
+        else:
+            raise RuntimeError("dbt executable is unavailable; install the warehouse extra")
     warehouse = Path(__file__).resolve().parents[3] / "warehouse"
     command = [
         executable,
@@ -315,7 +325,7 @@ def _point_channel(
         pointer.published_at = published_at
 
 
-def build_and_publish(
+def build_and_publish_unlocked(
     session: Session,
     dataset_id: str,
     *,
@@ -323,95 +333,127 @@ def build_and_publish(
     code_version: str = "working-tree",
     runner: Callable[[WarehouseBuild], None] = run_dbt_candidate,
 ) -> ServingSnapshot:
-    """Build privately and atomically publish one validated immutable snapshot."""
+    """Build privately and publish one snapshot assuming the publication lock is already held."""
     if len(channel) > 30 or not _IDENTIFIER.fullmatch(channel):
         raise ValueError("publication channel must be a safe lowercase identifier")
     dataset = session.get(ArchiveDataset, dataset_id)
     if dataset is None or dataset.status != "accepted":
         raise ValueError("dataset must exist and be accepted")
-    with publication_lock(session):
-        existing = session.scalar(
-            select(ServingSnapshot)
-            .join(WarehouseBuild, ServingSnapshot.build_id == WarehouseBuild.id)
-            .where(
-                ServingSnapshot.dataset_id == dataset_id,
-                ServingSnapshot.status == "ready",
-                WarehouseBuild.code_version == code_version,
-                WarehouseBuild.metric_version == METRIC_VERSION,
-                WarehouseBuild.feature_version == FEATURE_VERSION,
-                WarehouseBuild.scoring_version == SCORING_VERSION,
-            )
-            .order_by(ServingSnapshot.created_at.desc())
-            .limit(1)
+    existing = session.scalar(
+        select(ServingSnapshot)
+        .join(WarehouseBuild, ServingSnapshot.build_id == WarehouseBuild.id)
+        .where(
+            ServingSnapshot.dataset_id == dataset_id,
+            ServingSnapshot.status == "ready",
+            WarehouseBuild.code_version == code_version,
+            WarehouseBuild.metric_version == METRIC_VERSION,
+            WarehouseBuild.feature_version == FEATURE_VERSION,
+            WarehouseBuild.scoring_version == SCORING_VERSION,
         )
-        if existing is not None:
-            _point_channel(session, channel, existing, datetime.now(UTC))
-            session.commit()
-            return existing
-        build_id = new_uuid()
-        build = WarehouseBuild(
-            id=build_id,
-            dataset_id=dataset_id,
-            status="created",
-            candidate_schema=_candidate_schema(build_id),
-            code_version=code_version,
-            metric_version=METRIC_VERSION,
-            feature_version=FEATURE_VERSION,
-            scoring_version=SCORING_VERSION,
-        )
-        session.add(build)
+        .order_by(ServingSnapshot.created_at.desc())
+        .limit(1)
+    )
+    if existing is not None:
+        _point_channel(session, channel, existing, datetime.now(UTC))
         session.commit()
-        try:
-            runner(build)
-            build.status = "built"
-            session.commit()
-            report = validate_candidate(session, build)
-            metadata = _snapshot_metadata(session, build)
-            build.status = "validated"
-            build.validation_report_json = report
-            snapshot = ServingSnapshot(
-                build_id=build.id,
-                dataset_id=dataset.id,
-                status="ready",
-                mode="historical_reconstruction",
-                source=dataset.source_namespace,
-                coverage_start=metadata["coverage_start"],
-                coverage_end=metadata["coverage_end"],
-                default_replay_date=metadata["default_replay_date"],
-                supported_replay_dates_json=[
-                    value.isoformat() for value in metadata["replay_dates"]
-                ],
-                code_version=build.code_version,
-                metric_version=build.metric_version,
-                feature_version=build.feature_version,
-                scoring_version=build.scoring_version,
-                quality_report_json=report,
+        return existing
+    build_id = new_uuid()
+    build = WarehouseBuild(
+        id=build_id,
+        dataset_id=dataset_id,
+        status="created",
+        candidate_schema=_candidate_schema(build_id),
+        code_version=code_version,
+        metric_version=METRIC_VERSION,
+        feature_version=FEATURE_VERSION,
+        scoring_version=SCORING_VERSION,
+    )
+    session.add(build)
+    session.commit()
+    try:
+        runner(build)
+        build.status = "built"
+        session.commit()
+        report = validate_candidate(session, build)
+        metadata = _snapshot_metadata(session, build)
+        build.status = "validated"
+        build.validation_report_json = report
+        snapshot = ServingSnapshot(
+            build_id=build.id,
+            dataset_id=dataset.id,
+            status="ready",
+            mode="historical_reconstruction",
+            source=dataset.source_namespace,
+            coverage_start=metadata["coverage_start"],
+            coverage_end=metadata["coverage_end"],
+            default_replay_date=metadata["default_replay_date"],
+            supported_replay_dates_json=[value.isoformat() for value in metadata["replay_dates"]],
+            code_version=build.code_version,
+            metric_version=build.metric_version,
+            feature_version=build.feature_version,
+            scoring_version=build.scoring_version,
+            quality_report_json=report,
+        )
+        session.add(snapshot)
+        session.flush()
+        _install_candidate(session, build, snapshot)
+        now = datetime.now(UTC)
+        _point_channel(session, channel, snapshot, now)
+        build.status = "ready"
+        build.finished_at = now
+        session.commit()
+        return snapshot
+    except Exception as error:
+        session.rollback()
+        stored = session.get(WarehouseBuild, build.id)
+        assert stored is not None
+        stored.status = "failed"
+        stored.finished_at = datetime.now(UTC)
+        stored.error = f"{type(error).__name__}: {str(error)[:500]}"
+        session.commit()
+        raise
+
+
+def build_and_publish(
+    session: Session,
+    dataset_id: str,
+    *,
+    channel: str = DEFAULT_CHANNEL,
+    code_version: str = "working-tree",
+    runner: Callable[[WarehouseBuild], None] = run_dbt_candidate,
+    acquire_lock: bool = True,
+) -> ServingSnapshot:
+    """Build privately and atomically publish one validated immutable snapshot."""
+    if len(channel) > 30 or not _IDENTIFIER.fullmatch(channel):
+        raise ValueError("publication channel must be a safe lowercase identifier")
+    if acquire_lock:
+        with publication_lock(session):
+            return build_and_publish_unlocked(
+                session,
+                dataset_id,
+                channel=channel,
+                code_version=code_version,
+                runner=runner,
             )
-            session.add(snapshot)
-            session.flush()
-            _install_candidate(session, build, snapshot)
-            now = datetime.now(UTC)
-            _point_channel(session, channel, snapshot, now)
-            build.status = "ready"
-            build.finished_at = now
-            session.commit()
-            return snapshot
-        except Exception as error:
-            session.rollback()
-            stored = session.get(WarehouseBuild, build.id)
-            assert stored is not None
-            stored.status = "failed"
-            stored.finished_at = datetime.now(UTC)
-            stored.error = f"{type(error).__name__}: {str(error)[:500]}"
-            session.commit()
-            raise
+    return build_and_publish_unlocked(
+        session,
+        dataset_id,
+        channel=channel,
+        code_version=code_version,
+        runner=runner,
+    )
 
 
 def rollback_publication(
-    session: Session, snapshot_id: str, *, channel: str = DEFAULT_CHANNEL
+    session: Session,
+    snapshot_id: str,
+    *,
+    channel: str = DEFAULT_CHANNEL,
+    acquire_lock: bool = True,
 ) -> ServingSnapshot:
     """Move a channel pointer to a retained ready snapshot without editing history."""
-    with publication_lock(session):
+
+    def _do_rollback() -> ServingSnapshot:
         snapshot = session.get(ServingSnapshot, snapshot_id)
         if snapshot is None or snapshot.status != "ready":
             raise ValueError("rollback target must be a retained ready snapshot")
@@ -419,6 +461,11 @@ def rollback_publication(
         _point_channel(session, channel, snapshot, now)
         session.commit()
         return snapshot
+
+    if acquire_lock:
+        with publication_lock(session):
+            return _do_rollback()
+    return _do_rollback()
 
 
 def published_snapshot_query(channel: str = DEFAULT_CHANNEL) -> Select[tuple[ServingSnapshot]]:

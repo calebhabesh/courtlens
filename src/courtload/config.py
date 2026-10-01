@@ -3,7 +3,7 @@ from __future__ import annotations
 from functools import lru_cache
 from pathlib import Path
 
-from pydantic import Field, SecretStr, field_validator, model_validator
+from pydantic import AliasChoices, Field, SecretStr, field_validator, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -30,12 +30,27 @@ class Settings(BaseSettings):
     bdl_base_url: str = "https://api.balldontlie.io/v1"
     bdl_requests_per_minute: int = Field(default=5, ge=1, le=600)
     raw_store_path: Path = Path("data/raw")
+    artifacts_root: Path = Path("data/artifacts")
+    portraits_cache_path: Path = Path("data/cache/portraits")
+    operator_token: SecretStr = SecretStr("local-operator-secret-change-before-deploy")
+    worker_refresh_time_utc: str = "09:00"
+    worker_poll_interval_seconds: int = Field(default=5, ge=1, le=300)
+    worker_heartbeat_interval_seconds: int = Field(default=15, ge=2, le=300)
+    worker_lease_timeout_seconds: int = Field(default=60, ge=10, le=3600)
     dbt_schema: str = Field(
         default="analytics",
         validation_alias="DBT_SCHEMA",
         min_length=1,
         max_length=48,
         pattern=r"^[A-Za-z_][A-Za-z0-9_$]*$",
+    )
+    gemini_api_key: SecretStr | None = Field(
+        default=None,
+        validation_alias=AliasChoices("COURTLOAD_GEMINI_API_KEY", "GEMINI_API_KEY"),
+    )
+    gemini_model: str = Field(
+        default="gemini-2.5-flash",
+        validation_alias=AliasChoices("COURTLOAD_GEMINI_MODEL", "GEMINI_MODEL"),
     )
 
     @field_validator("environment")
@@ -56,6 +71,13 @@ class Settings(BaseSettings):
         ):
             raise ValueError(
                 "COURTLOAD_JWT_SECRET must be a unique 32+ character value in production"
+            )
+        op_secret = self.operator_token.get_secret_value()
+        if len(op_secret) < 32 or any(
+            marker in op_secret.lower() for marker in ("development", "replace")
+        ):
+            raise ValueError(
+                "COURTLOAD_OPERATOR_TOKEN must be a unique 32+ character value in production"
             )
         if "*" in self.cors_origins:
             raise ValueError("wildcard CORS is not permitted in production")
