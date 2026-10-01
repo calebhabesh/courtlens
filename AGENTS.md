@@ -2,6 +2,8 @@
 
 CourtLoad is an NBA analytics and player comparison system emphasizing backend/data engineering rigor, temporal discipline, reproducible offline machine learning evaluation, and clear presentation under uncertainty.
 
+For the local research-workbench realignment, read [the implementation handoff](docs/workbench-implementation-plan.md) before changing data sources, analytics, forecasting, dashboard, or operations. Follow its ordered milestones and linked contracts; it supersedes earlier product-scope plans while preserving the guardrails below. Workbench milestones are pending, not completion evidence.
+
 ## Architecture and Stack
 
 - **Backend:** Python 3.12+ / FastAPI with typed Pydantic models and SQLAlchemy 2.0.

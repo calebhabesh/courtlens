@@ -1,5 +1,7 @@
 # CourtLoad product and portfolio alignment
 
+> **Current direction, 2026-10-01:** The [local workbench handoff](workbench-implementation-plan.md) governs next-release implementation. The earlier fantasy/public-product discussion below is retained as historical context.
+
 > Superseded for future scope by [course correction](course-correction.md) and [locked scope](portfolio-scope.md), 2026-09-12. Retained as historical implementation context.
 
 Review date: **2026-08-23**

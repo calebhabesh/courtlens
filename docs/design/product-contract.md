@@ -1,5 +1,7 @@
 # CourtLoad public comparison experience
 
+> **Next release, 2026-10-01:** Follow the [workbench interface contract](workbench-interface-contract.md). This earlier public-style comparison specification remains historical context; preserve existing behavior while realigning the application incrementally.
+
 Status: implementation specification, 2026-09-20. Parent: [implementation handover](../implementation-plan.md). This specifies product behavior and acceptance criteria; it is not a claim that these pages exist.
 
 ## Product and visual direction

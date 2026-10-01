@@ -1,5 +1,7 @@
 # CourtLoad baseline implementation handover
 
+> **Next-release scope superseded 2026-10-01:** Implement the [local workbench handoff](workbench-implementation-plan.md) for current work. This document records the historical baseline's original plan; retain its contracts and evidence for sealed M5/M6 reproduction. Historical-only experience, public-style presentation, and no-LLM assumptions no longer define the next release.
+
 Status: **approved direction; implementation pending**. Prepared 2026-09-20 after repository inspection and an owner interview. Intended for the implementing AI agent, including Gemini Flash or Sol. This is an incremental build in the existing repository, not a rewrite.
 
 ## Start here
@@ -183,9 +185,9 @@ Run existing Ruff, mypy, pytest, frontend lint/typecheck/test/build, dbt and smo
 All required boxes need evidence links in the implementation progress file:
 
 - [x] Free source passes M1; selected seasons, provenance limitations, hashes and row counts recorded ([historical source spike](evidence/historical-source-spike.md)).
-- [x] Corrected/repeated/failed imports preserve lineage and stable identities ([raw import lineage](evidence/raw-import-lineage.md)).
+- [x] Corrected/repeated/failed imports preserve lineage and stable identities ([M2 implementation evidence](implementation-progress.md)).
 - [x] Warehouse facts and profiles reconcile; future/same-day data cannot leak into prior features ([real-player analytics](evidence/real-player-analytics.md)).
-- [x] Published snapshots remain consistent through failed/concurrent refreshes and restore ([serving and publication](evidence/serving-and-publication.md), [performance & restore](evidence/performance.md)).
+- [x] Published snapshots remain consistent through failed/concurrent refreshes and restore ([M3 implementation evidence](implementation-progress.md), [performance & restore](evidence/performance.md)).
 - [x] Real player detail and two-player historical comparison work without authentication ([real-player analytics](evidence/real-player-analytics.md), [comparison and evaluation](evidence/comparison-evaluation.md)).
 - [x] Baselines, challenger and context ablation are completed with an untouched final test ([baseline evaluation](evidence/baseline-evaluation.md), [model evaluation](evidence/model-evaluation.md)).
 - [x] Intervals, coverage, exclusions and promotion/no-promotion are documented honestly ([model evaluation](evidence/model-evaluation.md)).

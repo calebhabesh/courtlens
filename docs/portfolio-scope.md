@@ -1,5 +1,7 @@
 # Locked Portfolio Scope
 
+> **Current direction, 2026-10-01:** The owner selected a local NBA research and forecast workbench with fresh in-season batch data, dark dense UI, a new points experiment, and optional tool-backed AI. Use the [workbench handoff](workbench-implementation-plan.md) for next-release scope. Earlier decisions below remain historical context and sealed-experiment requirements where applicable.
+
 > **Amended 2026-09-20:** The owner approved a zero-cost historical-archive baseline, with local operation required and live refresh/public hosting optional. Use the [implementation handover](implementation-plan.md) and [ADR 0003](decisions/0003-zero-cost-historical-baseline.md) for current requirements. The September 12 snapshot below is retained as historical context; its paid-source-first assumptions are superseded.
 
 Captured 2026-09-12 from the workspace v2 blueprint. This copy travels with the repository. Status: approved requirements, not evidence of completed implementation. Update this copy alongside future scope decisions.

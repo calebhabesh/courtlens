@@ -1,205 +1,160 @@
-# CourtLoad — NBA Player Comparison & Analytics
+# CourtLoad — Local NBA Research & Forecast Workbench
 
-CourtLoad is a source-traceable NBA player intelligence and two-player comparison platform engineered with strict temporal discipline, a reproducible analytical warehouse, and transparent offline machine learning evaluation.
+CourtLoad is an engineer's local NBA research and forecasting workbench engineered with strict temporal discipline, source-traceable box-score lineage, out-of-time machine learning evaluation, and an optional tool-backed analytical assistant.
 
-Operating on three complete historical NBA regular seasons (2021–22, 2022–23, and 2023–24), CourtLoad turns raw box scores and schedules into multi-window player summaries, minutes and attempt trends, reconstructed opponent allowances, and—when validated out of time—calibrated empirical prediction intervals.
+Operating on six complete NBA regular seasons (2019–20 through 2024–25) and prospective 2025–26 schedules, CourtLoad turns 104,533 player-game records into reproducible cohort explorations, multi-team trade stint reconciliations, contextual opponent metrics, calibrated empirical forecast intervals, and verified natural-language answers.
 
 ![Desktop Comparison](docs/assets/real-comparison.png)
 
-> **Demonstration:** A 25-second walkthrough video of the interactive user journey (Search $\rightarrow$ Profile $\rightarrow$ Compare $\rightarrow$ Evaluation) is available at [docs/assets/demo.webm](docs/assets/demo.webm).
+> **Demonstration & Walkthrough:** A comprehensive step-by-step user journey across Explorer, Profiles, Comparisons, Forecasting Ledger, Assistant, and Disaster Recovery is documented in [docs/evidence/workbench-demo-walkthrough.md](docs/evidence/workbench-demo-walkthrough.md).
 
 ---
 
 ## 1. What Is Built
 
-- **Pinned Historical Archive Acquisition:** Pinned retrieval of 4 canonical CSV files (73.9 MB total) from `NocturneBear/NBA-Data-2010-2024` with verified SHA-256 checksums and immutable file locators.
-- **Idempotent Ingestion & Strict Normalization:** Streaming parser handling 3,511 admitted games, 7,022 team-game facts, and 90,609 player-game facts. Strict `m:ss` minute validation quarantines 184 `:60` malformed rows and 179 affected games as atomic units. Preserves explicit numeric zeros distinct from missing counts and date-only precision without inventing tipoff times.
-- **dbt Analytical Warehouse & Serving Marts:** 25 models and schema tests building player facts, team facts, 220,942 dated player profiles across 485 replay cutoffs, and 14,447 dated opponent contexts.
+- **Comprehensive NBA Historical & Prospective Scope:** 104,533 normalized player-game facts, 7,924 team-game facts, and 5,470 schedules across 6 complete regular seasons plus 2025–26 prospective schedules.
+- **dbt Warehouse & Serving Layer:** 39 layered dbt models and schema tests building staging (`stg_`), intermediate facts (`fct_`), and analytical serving marts (`mart_`).
 - **Atomic Pointer Publication & Safe Rollback:** Dedicated PostgreSQL session advisory locks protect candidate schema building, candidate validation, serving-row copy, and pointer swap. Rollback is atomic and non-destructive.
-- **Frozen Offline Machine Learning Experiment:** Dataset-bound evaluation runner with separate leakage-safe features and labels, 7-day calendar block purging, and rolling baselines (Last-10, EWMA-20). M6 GBDT challenger evaluation on the S3 holdout resulted in an honest **Do Not Promote** decision (failing 3 of 4 frozen gates), keeping the negative result visible and serving the winning EWMA-20 baseline.
-- **FastAPI Public Analytics API:** Resolves the mutable publication pointer once per request, serving dataset-pinned profiles, paginated cursor-bound game logs, two-player comparison in matchup context, and verified evaluation reports. Benchmarked at **79.66 ms p50** for two-player comparisons with **0.0% error rate**.
-- **Responsive Next.js 15 Dashboard:** Interactive Player Explorer with autocomplete search, player detail with trend charts, side-by-side comparison with differing target dates and empirical intervals, and transparent evaluation and data health views. Keyboard accessible and verified at a 375 px viewport with no horizontal overflow.
-- **Complete Disaster Recovery:** Atomic backup and restore scripts bundling PostgreSQL dump, raw archives, manifests, and evaluation artifacts, validated by an automated verification command (`courtload verify-restore`).
+- **Strict Temporal Discipline:** Feature calculation strictly excludes target and future dates ($game\_date < replay\_date$). Replaying historical cutoffs reproduces profiles deterministically without future information leakage.
+- **Prospective Points Forecasting & DNP Conditionality:** Out-of-time evaluation across 10 chronological folds with an active prior-blend model (MAE 4.88 vs. baseline MAE 5.09; 81.2% empirical 80% interval coverage). Features an immutable prospective issuance ledger (489 issuances, 489 scores) that strictly separates DNP injuries from 0-point appearances.
+- **Tool-Backed Analytical Assistant:** Read-only analytical assistant backed by 8 allowlisted domain functions, strict input validation, loop bounds ($\le 4$ rounds, $\le 8$ tool calls, $\le 100$ rows), numerical tolerance claim verification ($\pm 0.05$), and a zero-cost deterministic offline fixture provider.
+- **Reproducible Saved Investigations:** Persists parameterized research queries with cryptographic SHA-256 result digests, enabling one-click reproduction and JSON audit export.
+- **Dense Dark Dashboard (Next.js 15):** High-density desktop and 375px mobile layouts featuring Player Explorer, Multi-Stint Player Profiles (e.g. Pascal Siakam's TOR/IND trade split), Head-to-Head Comparisons without forced winners, Team Research, Forecasting Ledger, and Ask CourtLoad AI.
+- **Complete Disaster Recovery:** Atomic backup and restore commands (`courtload backup-archive` / `courtload restore-archive`) coordinated under a PostgreSQL mutation lock, verified by automated restore testing against fresh disposable databases.
 
 ---
 
-## 2. Honest Project Status
+## 2. Portfolio Highlights & Resume Evidence
 
-All milestones **M0 through M8 are complete and evidenced**. The project meets all portfolio readiness criteria without requiring paid third-party API dependencies or cloud hosting spend.
+- **Data Engineering:** Built a local NBA research workbench using Python 3.14, PostgreSQL 17, and dbt, versioning 104,533 player-game records across 6 NBA seasons and exposing reproducible player/team investigations with upstream transform lineage.
+- **Offline ML & Forecasting:** Evaluated next-game points baselines and challengers across 10 chronological holdout folds, reporting an active prior-blend MAE of 4.88 (vs. baseline 5.09) with 81.2% empirical interval coverage; implemented immutable prospective forecast logging separating DNP injuries from 0 PTS appearances.
+- **AI Systems & Guardrails:** Engineered an optional tool-backed assistant over 8 allowlisted read-only analytical tools, enforcing strict domain guardrails (rejecting synthetic defensive impact ratings, deferring conference winner forecasts), numerical tolerance claim verification, and 100% benchmark inquiry accuracy while preserving a zero-cost offline core.
+- **Performance & Reliability:** Benchmarked 15 FastAPI endpoints under concurrency with median latencies under 55 ms for core research views and 0.0% error rate across 450 requests.
 
-| Milestone | Area | Status | Evidence Document / Artifact |
+---
+
+## 3. Project Status and Milestones
+
+All milestones across the foundational build (**M0–M8**) and the research workbench implementation (**P1–P9**) are **100% complete, verified, and evidenced**.
+
+| Milestone | Scope / Deliverable | Status | Evidence Document / Artifact |
 | :---: | :--- | :---: | :--- |
-| **M1** | Historical Source Acquisition | **Complete** | [Historical source spike](docs/evidence/historical-source-spike.md) (95.1% coverage, 184 quarantined rows) |
-| **M2** | Immutable Archive & Safe Migration | **Complete** | Alembic `8ffd4c5912e2`, 90,609 player facts, idempotent re-import |
-| **M3** | Warehouse & Atomic Publication | **Complete** | [Real player analytics](docs/evidence/real-player-analytics.md) (LeBron James M3 reconciliation) |
-| **M4** | Player Detail & Replay Controls | **Complete** | [Desktop profile](docs/assets/real-player-profile.png), [Mobile profile](docs/assets/real-player-profile-mobile.png) |
-| **M5** | Frozen Baseline Evaluation | **Complete** | [Baseline evaluation](docs/evidence/baseline-evaluation.md) (EWMA-20 MAE 7.7095 vs. Last-10 7.8264) |
-| **M6** | Challenger & S3 Final Test | **Complete** | [Model card](docs/evidence/model-evaluation.md) (No-promotion decision: 3 of 4 gates failed) |
-| **M7** | Two-Player Comparison & Evaluation | **Complete** | [Comparison & evaluation](docs/evidence/comparison-evaluation.md), [Desktop](docs/assets/real-comparison.png), [Mobile](docs/assets/real-comparison-mobile.png) |
-| **M8** | Historical Case Studies | **Complete** | [Case studies](docs/evidence/case-studies.md) (Thomas Bryant role surge; Chris Paul vs. Scottie Barnes) |
-| **M8** | Performance Benchmarking | **Complete** | [Performance evidence](docs/evidence/performance.md) (Pipeline timings, storage, API p50/p95) |
-| **M8** | Interactive Demo Recording | **Complete** | [Demonstration recording](docs/assets/demo.webm) (25s, 1280x720 25fps WebM) |
-| **M8** | Backup & Restore Recovery | **Complete** | `scripts/backup.sh`, `scripts/restore.sh`, `courtload verify-restore` |
-
-> *Note on legacy features:* BALLDONTLIE ingestion and the fantasy weekly planner are preserved as historical functionality and labeled fixture workflows; they do not gate baseline completion.
+| **P1** | Clean Local Environment Bootstrap | **Complete** | Idempotent setup, verified package locks, `.env` contract |
+| **P2** | Multi-Season Acquisition & Validation | **Complete** | 6 complete seasons (104,533 player games, 7,924 team games, 5,470 schedules) |
+| **P3** | Daily Worker & In-Season Catch-Up | **Complete** | Ingestion pipeline, mutation lock, freshness tracking |
+| **P4** | dbt Warehouse & Unified Marts | **Complete** | 39 dbt models & tests passed in 1.93s, zero warnings |
+| **P5** | Dense Dark Dashboard & Explorer | **Complete** | Explorer, multi-stint profiles, head-to-head comparison, 375px mobile verified |
+| **P6** | Points Forecasting Offline Evaluation | **Complete** | 10 chronological folds, active `points-v1-prior_blend` (MAE 4.88, coverage 81.2%) |
+| **P7** | Prospective Issuance & Scoring Ledger | **Complete** | 489 prospective issuances, 489 scores, explicit DNP conditionality |
+| **P8** | Tool-Backed Assistant & Guardrails | **Complete** | 8 allowlisted tools, evidence citations, offline fixtures, smoke suite passed |
+| **P9** | Evidence Package & Disaster Recovery | **Complete** | [Case studies](docs/evidence/workbench-case-studies.md), [Performance](docs/evidence/performance.md), [Walkthrough](docs/evidence/workbench-demo-walkthrough.md), [Disaster Recovery](tests/integration/test_restore_postgres.py) |
 
 ---
 
-## 3. Architecture
+## 4. Architecture
 
 ```mermaid
 flowchart TD
-    subgraph Data Pipeline
-        RAW[Pinned GitHub Archive<br/>3 Seasons CSVs] -->|acquire-archive| ACQ[Local Raw Storage<br/>data/raw/]
-        ACQ -->|import-archive| NORM[Streaming Normalization<br/>Minute Quarantine]
-        NORM -->|PostgreSQL Facts| FACTS[(archive_player_games<br/>archive_team_games)]
-        FACTS -->|publish-archive| DBT[dbt Candidate Build<br/>Staging & Marts]
-        DBT -->|Candidate Validation| PUBLISH{Session Advisory Lock}
-        PUBLISH -->|Pass| SERVE[(Serving Tables<br/>Published Pointer)]
+    subgraph Data Acquisition & Ingestion
+        RAW[SportsDataverse NBA Parquet<br/>6 Seasons: 2019-20 to 2024-25] -->|acquire-workbench| STG_FILES[Local Storage<br/>data/raw/]
+        STG_FILES -->|bootstrap-workbench| FACTS[(PostgreSQL 17<br/>workbench_player_games<br/>workbench_team_games<br/>workbench_schedules)]
+        FACTS -->|dbt build| WAREHOUSE[dbt Serving Marts<br/>mart_player_game_profile<br/>mart_team_game_profile]
     end
 
-    subgraph Offline ML Evaluation
-        FACTS -.->|Frozen S1/S2/S3 Splits| EVAL[courtload evaluate<br/>Baseline & GBDT Challenger]
-        EVAL --> ARTIFACTS[Hashed Evaluation Artifacts<br/>Replay & Calibration]
-        ARTIFACTS -.->|Mount / Verify| SERVE
+    subgraph Analytical Governance
+        WAREHOUSE --> LOCK{Session Advisory Lock}
+        LOCK -->|Atomic Pointer Swap| SNAPSHOTS[(Published Serving Releases<br/>workbench_release_bindings)]
     end
 
-    subgraph Public Serving Layer
-        SERVE --> API[FastAPI Analytics Service<br/>/api/analytics]
-        API --> WEB[Next.js 15 Dashboard<br/>Search, Profile, Compare, Eval]
+    subgraph Prospective Forecasting
+        WAREHOUSE -.->|10 Chronological Folds| EVAL[courtload evaluate-points<br/>Prior Blend vs. Rolling Baselines]
+        EVAL --> POLICY[Active Policy Registration<br/>points-v1-prior_blend]
+        POLICY --> ISSUANCE[forecast_issuances<br/>Immutable Prospective Ledgers]
+        ISSUANCE --> SCORING[forecast_scores<br/>DNP Injury Conditionality]
+    end
+
+    subgraph Serving & Assistant
+        SNAPSHOTS --> API[FastAPI Research API<br/>/api/workbench/*]
+        API --> ASST[Tool-Backed Assistant<br/>8 Allowlisted Analytical Tools<br/>Numerical Claim Verification]
+        API --> DASH[Next.js 15 Dark Dashboard<br/>Explorer, Profiles, Compare, Teams, Forecasts]
     end
 ```
 
 ---
 
-## 4. Quick Start
+## 5. Quick Start
 
-### Option A: Packaged Docker Compose (Recommended)
+### Option A: Local Python & Dashboard (Recommended)
 
-Requires Docker with Compose v2.
-
-```bash
-# 1. Setup environment
-cp .env.example .env
-
-# 2. Start services (PostgreSQL, migrations, API, and Dashboard)
-docker compose up --build -d db migrate api dashboard
-
-# 3. Verify health
-curl -f http://localhost:8000/api/health
-```
-
-If port 3000 is in use, set `COURTLOAD_DASHBOARD_PORT=3100` in `.env` and restart.
-
-- **Dashboard:** <http://localhost:3000>
-- **API Documentation:** <http://localhost:8000/api/docs>
-- **Metrics:** <http://localhost:8000/metrics>
-
-### Option B: Local Python & Node Setup
-
-Prerequisites: Python 3.12+, Node.js 24, PostgreSQL 17.
+Prerequisites: Python 3.12+ (Python 3.14 tested), Node.js 20+ (Node.js 24 tested), Docker (for PostgreSQL 17).
 
 ```bash
-# 1. Install dependencies
-make install-locked      # installs exact pinned Python packages from requirements-lock.txt
-make install-dashboard   # installs exact frontend dependencies from package-lock.json
+# 1. Clone repository and install dependencies
+git clone https://github.com/ethioking/courtload.git
+cd courtload
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -e ".[dev]"
+npm --prefix dashboard install
 
-# 2. Run migrations
-alembic upgrade head
+# 2. Start PostgreSQL container & run migrations
+docker compose up -d db
+courtload migrate
 
-# 3. Build & publish historical archive
-courtload acquire-archive
-courtload import-archive
-courtload publish-archive
+# 3. Bootstrap 6-season workbench dataset & build dbt marts
+courtload acquire-workbench
+courtload bootstrap-workbench
+dbt build --project-dir warehouse --profiles-dir warehouse --select tag:workbench
 
-# 4. Start local development servers
-./scripts/dev-live-backend.sh
-./scripts/dev-live-frontend.sh
+# 4. Evaluate points forecasting & issue prospective forecasts
+courtload evaluate-points
+courtload issue-forecasts
+courtload score-forecasts
+
+# 5. Start backend API and frontend dashboard
+courtload serve --port 8000 &
+npm --prefix dashboard run dev -- -p 3000
 ```
+
+Open <http://localhost:3000> in your browser.
 
 ---
 
-## 5. Operations & Disaster Recovery
+## 6. Operations & Disaster Recovery
 
-### Data Pipeline Commands
-
+### Create Backup Bundle under Mutation Lock
 ```bash
-# Download/verify pinned historical archive
-courtload acquire-archive
-
-# Ingest and normalize facts into PostgreSQL
-courtload import-archive
-
-# Execute dbt build and atomically publish ready snapshot
-courtload publish-archive
-
-# Roll back to a previous snapshot without downtime
-courtload rollback-publication <SNAPSHOT_ID>
-```
-
-### Offline Evaluation
-
-```bash
-# Run frozen baseline evaluation (S1/S2 splits + calibration)
-make evaluate
-
-# Run challenger grid search and open S3 holdout
-make evaluate-final
-```
-
-### Backup and Restore
-
-```bash
-# Create complete backup bundle (database, manifests, artifacts, raw data)
 ./scripts/backup.sh
-# -> Created ./data/backups/courtload-backup-<TIMESTAMP>.tar.gz
+# Bundles PostgreSQL dump, raw parquet inputs, evaluation configs, points-v1 artifacts,
+# and saved investigations into data/backups/courtload-backup-<TIMESTAMP>.tar.gz
+```
 
-# Restore to target database and verify all invariants
-./scripts/restore.sh ./data/backups/courtload-backup-<TIMESTAMP>.tar.gz
+### Restore to a Target Database
+```bash
+./scripts/restore.sh data/backups/courtload-backup-<TIMESTAMP>.tar.gz
+```
 
-# Verify restored integrity and live comparison reconciliation
+### Automated Restore Verification
+```bash
 courtload verify-restore
+# Verifies database relations, artifact checksums, live player profile queries, and forecast ledgers
 ```
 
 ### Performance Benchmarking
-
 ```bash
-# Run repeatable API latency benchmark across 8 primary endpoints
-python scripts/benchmark_api.py
-```
-
----
-
-## 6. Verification & Test Suite
-
-The test suite enforces mathematical reconciliation, temporal isolation, and contract integrity:
-
-```bash
-# Python unit, integration, and PostgreSQL contract tests
-pytest -v
-
-# Static analysis and linting
-ruff check .
-ruff format --check .
-mypy src/courtload
-
-# Frontend tests (Vitest + Playwright)
-npm --prefix dashboard test
-PW_CHROMIUM_PATH=$(command -v chromium) npm --prefix dashboard run test:browser
-
-# Production build check
-npm --prefix dashboard run build
+.venv/bin/python scripts/benchmark_workbench.py
 ```
 
 ---
 
 ## 7. Data and Model Guardrails
 
-- **Zero Information Leakage:** Historical replay operates strictly as of the start of the NBA game date in `America/New_York` (`game_date < replay_date`). Future box scores and same-day outcomes are excluded from feature calculation.
-- **Absence Is Not Zero:** An absent box-score row is treated as unknown, not zero. Missing scoring inputs leave targets unavailable rather than asserting a scoreless appearance.
-- **Empirical Uncertainty Over Spurious Precision:** CourtLoad serves calibrated 80% empirical intervals. Overlapping intervals never produce an invented "win probability" or automated start/sit recommendation.
-- **Unpromoted Models Stay Visible:** When the M6 gradient-boosted challenger failed out-of-time promotion gates, CourtLoad retained the baseline EWMA policy and made the negative experimental outcome prominently visible on the Evaluation view.
-- **Independent Provenance:** Underlying NBA game statistics originate from the pinned NocturneBear archive and are processed under strict schema validation. CourtLoad is an unofficial analytical tool and is not affiliated with or endorsed by the NBA.
+- **Zero Information Leakage:** Historical queries operate strictly prior to the requested cutoff date (`game_date < replay_date`).
+- **DNP Conditionality:** Absent box-score rows (DNP due to injury or rest) are recorded as unobserved, never fabricated into 0 PTS.
+- **Empirical Uncertainty:** Predictions serve calibrated 80% empirical intervals; overlapping intervals never compute synthetic "win probabilities".
+- **Defensive Modeling Honesty:** CourtLoad serves exact box-score event totals (steals, blocks, rebounds) and rejects composite "best defender" impact ratings.
+- **Deferred Out-of-Scope Forecasting:** Requests for conference-winner or championship forecasts return typed `model_not_available` explanations with factual team standings.
+- **Zero-Cost Core:** The full research workbench, including the assistant via deterministic offline fixtures, operates 100% locally without external API dependencies.
 
 ---
 
@@ -207,23 +162,23 @@ npm --prefix dashboard run build
 
 ```text
 ├── src/courtload/         # Application core (API, CLI, ingestion, services, models)
-│   ├── api/               # FastAPI routers, OpenAPI schemas, middleware
-│   ├── evaluation/        # Offline ML runners, baselines, GBDT challenger, calibration
-│   ├── ingestion/         # Bounded archive acquisition, streaming normalization
-│   └── services/          # Player analytics, publication state machine, backup/restore
-├── warehouse/             # dbt models (staging, intermediate facts, serving marts, tests)
+│   ├── api/               # FastAPI routers (/api/workbench/*), OpenAPI schemas
+│   ├── evaluation/        # Points forecasting runner, baselines, prior blend, calibration
+│   ├── ingestion/         # SportsDataverse parquet ingestion, streaming normalization
+│   └── services/          # Workbench analytics, assistant orchestration, backup/restore
+├── warehouse/             # dbt models (staging, intermediate facts, serving marts, schema tests)
 ├── dashboard/             # Next.js 15 App Router web application
-│   ├── app/               # Routes: /players, /players/[id], /compare, /evaluation
-│   ├── components/        # Player search, comparison tables, trend charts
-│   └── e2e/               # Playwright browser tests and demo recorder
-├── docs/                  # Architectural documentation, decisions, and operations
-│   ├── assets/            # Screenshots and demonstration video (demo.webm)
-│   ├── evidence/          # Measured evidence for all completed milestones (M1–M8)
+│   ├── app/               # Routes: /players, /players/[id], /compare, /teams, /forecasts, /analyses
+│   ├── components/        # Explorer, comparison tables, assistant panel, lineage modal
+│   └── e2e/               # Playwright browser test suite
+├── docs/                  # Architectural documentation, decisions, and evidence
+│   ├── assets/            # Screenshots and demonstration video
+│   ├── evidence/          # Measured benchmarks, case studies, demo walkthrough, checksums
 │   └── operations/        # Operations runbook, backup, and restore procedures
-├── evaluation/            # Frozen evaluation configuration and accepted dataset manifests
-├── migrations/            # Alembic schema versions (legacy, archive facts, publication)
-├── scripts/               # Backup, restore, benchmarking, and demo recording scripts
-└── tests/                 # Unit, integration, and PostgreSQL contract test suite
+├── evaluation/            # Evaluation configurations and manifests
+├── migrations/            # Alembic schema versions
+├── scripts/               # Backup, restore, benchmarking, and smoke test scripts
+└── tests/                 # Unit, integration, PostgreSQL contract, and disposable DB restore tests
 ```
 
 ---
