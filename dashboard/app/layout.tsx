@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { IBM_Plex_Mono, Space_Grotesk } from "next/font/google";
-import { Footer } from "@/components/footer";
-import { Header } from "@/components/header";
+import { NavRail } from "@/components/nav-rail";
 import "./globals.css";
 
 const spaceGrotesk = Space_Grotesk({
@@ -17,9 +16,16 @@ const plexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: { default: "CourtLoad — Understand the player. Plan the week.", template: "%s · CourtLoad" },
+  title: {
+    default: "CourtLoad · NBA Research & Forecast Workbench",
+    template: "%s · CourtLoad"
+  },
   description:
-    "Source-traceable NBA player analytics and fantasy decision support with transparent recent form, schedule context, and explainable roster scenarios."
+    "Local NBA research and forecast workbench. Investigate player production, explore team cohorts, inspect prospective points estimates under uncertainty, and reproduce evidence-backed findings.",
+  icons: {
+    icon: "/icon.svg",
+    apple: "/apple-icon.svg"
+  }
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
@@ -33,9 +39,12 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <a className="skip-link" href="#content">
           Skip to content
         </a>
-        <Header />
-        <main id="content">{children}</main>
-        <Footer />
+        <div className="workbench-layout">
+          <NavRail />
+          <div className="workbench-main">
+            <main id="content">{children}</main>
+          </div>
+        </div>
       </body>
     </html>
   );

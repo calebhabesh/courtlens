@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 
 test("search opens a snapshot-pinned real route and changes replay date", async ({ page }) => {
-  await page.goto("/players");
+  await page.goto(`/players?snapshotId=${snapshotId}`);
   await page.getByLabel("Player name").fill("Fixture");
   await page.getByRole("button", { name: "Search" }).click();
   await page.getByRole("link", { name: /Fixture Star/ }).click();

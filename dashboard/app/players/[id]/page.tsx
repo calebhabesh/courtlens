@@ -8,37 +8,126 @@ import {
   getAnalyticsGames,
   getAnalyticsProfile
 } from "@/lib/api";
-import type { AnalyticsProfile, AnalyticsSummary } from "@/lib/types";
-import type { AnalyticsCatalog, AnalyticsGame } from "@/lib/types";
+import type { AnalyticsGame, AnalyticsProfile, AnalyticsSummary, PlayerGameLogResponse, PlayerProfile } from "@/lib/types";
+
+import { ContextBar } from "@/components/context-bar";
+import { WorkbenchPlayerProfile } from "@/components/workbench-player-profile";
+import { getPlayerProfile, getPlayerGameLog } from "@/lib/workbench-api";
 
 export const dynamic = "force-dynamic";
-export const metadata: Metadata = { title: "Historical player profile" };
+export const metadata: Metadata = { title: "Player Research Profile" };
 
 export default async function PlayerPage({
   params,
   searchParams
 }: {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ date?: string; snapshotId?: string }>;
+  searchParams: Promise<{
+    date?: string;
+    snapshotId?: string;
+    season?: string;
+    phase?: string;
+    beforeDate?: string;
+    window?: string;
+    releaseId?: string;
+  }>;
 }) {
   const [{ id }, selected] = await Promise.all([params, searchParams]);
-  let loaded: { catalog: AnalyticsCatalog; profile: AnalyticsProfile; games: AnalyticsGame[] };
+  let legacyData: { profile: AnalyticsProfile; games: AnalyticsGame[]; dates: string[] } | null = null;
+  let loadError: unknown = null;
+
+  // If explicitly requested with fixture snapshot or only date without workbench context
+  if (selected.snapshotId === "snapshot-browser-fixture" || (selected.date && !selected.season)) {
+    try {
+      const catalog = await getAnalyticsCatalog(selected.snapshotId);
+      const replayDate = selected.date ?? catalog.default_replay_date;
+      const profile = await getAnalyticsProfile(id, replayDate, catalog.snapshot_id);
+      const log = await getAnalyticsGames(id, replayDate, catalog.snapshot_id, 20);
+      legacyData = { profile, games: log.games, dates: catalog.supported_replay_dates };
+    } catch (err) {
+      loadError = err;
+    }
+
+    if (legacyData) {
+      return (
+        <ProfileView
+          profile={legacyData.profile}
+          games={legacyData.games}
+          catalogDates={legacyData.dates}
+        />
+      );
+    }
+    return <PlayerError error={loadError} id={id} date={selected.date} />;
+  }
+
+  // Modern Workbench Research Mode
+  const season = selected.season || "2025-26";
+  const phase = selected.phase || "regular_season";
+  const beforeDate = selected.beforeDate || "2026-06-30";
+  const windowParam = selected.window || "season";
+
+  let wbLoaded: { profile: PlayerProfile; log: PlayerGameLogResponse } | null = null;
+
+  try {
+    const profile = await getPlayerProfile(id, {
+      season,
+      phase,
+      beforeDate,
+      window: windowParam,
+      releaseId: selected.releaseId
+    });
+    const log = await getPlayerGameLog(id, {
+      season,
+      phase,
+      beforeDate,
+      releaseId: selected.releaseId,
+      limit: 50
+    });
+    wbLoaded = { profile, log };
+  } catch (err) {
+    loadError = err;
+  }
+
+  if (wbLoaded) {
+    return (
+      <>
+        <ContextBar
+          initialSeason={season}
+          initialPhase={phase}
+          initialBeforeDate={beforeDate}
+          initialWindow={windowParam}
+          sampleSize={wbLoaded.log.games.length}
+          lastIncludedDate={wbLoaded.profile.last_observed_date}
+        />
+        <div className="workbench-content">
+          <WorkbenchPlayerProfile profile={wbLoaded.profile} games={wbLoaded.log.games} />
+        </div>
+      </>
+    );
+  }
+
+  // Fallback to legacy profile if workbench failed
   try {
     const catalog = await getAnalyticsCatalog(selected.snapshotId);
     const replayDate = selected.date ?? catalog.default_replay_date;
     const profile = await getAnalyticsProfile(id, replayDate, catalog.snapshot_id);
     const log = await getAnalyticsGames(id, replayDate, catalog.snapshot_id, 20);
-    loaded = { catalog, profile, games: log.games };
-  } catch (error) {
-    return <PlayerError error={error} id={id} date={selected.date} />;
+    legacyData = { profile, games: log.games, dates: catalog.supported_replay_dates };
+  } catch (err) {
+    loadError = err;
   }
-  return (
-    <ProfileView
-      profile={loaded.profile}
-      games={loaded.games}
-      catalogDates={loaded.catalog.supported_replay_dates}
-    />
-  );
+
+  if (legacyData) {
+    return (
+      <ProfileView
+        profile={legacyData.profile}
+        games={legacyData.games}
+        catalogDates={legacyData.dates}
+      />
+    );
+  }
+
+  return <PlayerError error={loadError} id={id} date={selected.date} />;
 }
 
 function ProfileView({

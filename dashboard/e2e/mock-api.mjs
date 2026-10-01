@@ -50,8 +50,358 @@ function json(response, status, body) {
   response.end(JSON.stringify(body));
 }
 
+const workbenchStatus = {
+  status: "healthy",
+  release: {
+    channel: "public",
+    snapshot_id: "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+    dataset_id: "17251a08-a4eb-4f46-b356-999fcf37c65d",
+    semantic_signature: "mock-signature",
+    published_at: "2026-09-21T00:00:00Z",
+    coverage_start: "2023-10-24",
+    coverage_end: "2026-06-13"
+  },
+  source: {
+    namespace: "sportsdataverse",
+    admitted_seasons: ["2023-24", "2024-25", "2025-26", "2026-27"],
+    latest_finalized_date: "2026-06-13"
+  },
+  worker: {
+    scheduled_refresh_utc: "09:00",
+    active_job: null,
+    latest_job: {
+      id: "mock-job-1",
+      job_type: "refresh",
+      status: "succeeded",
+      stage: "completed",
+      finished_at: "2026-09-21T09:05:00Z"
+    }
+  },
+  capabilities: {
+    research: true,
+    forecasting: "points-v1-prior_blend",
+    teams_count: 30,
+    portraits: {
+      total_cached: 200,
+      active: 200,
+      total_players: 816,
+      storage_path: "data/cache/portraits"
+    }
+  }
+};
+
+const playerMetrics = {
+  gp: 70, min: 2500, min_per_game: 35.7, pts: 1960, pts_per_game: 28.0,
+  oreb: 70, oreb_per_game: 1.0, dreb: 490, dreb_per_game: 7.0, reb: 560, reb_per_game: 8.0,
+  ast: 490, ast_per_game: 7.0, stl: 70, stl_per_game: 1.0, blk: 35, blk_per_game: 0.5,
+  tov: 140, tov_per_game: 2.0, pf: 140, pf_per_game: 2.0,
+  fgm: 700, fga: 1400, fg_pct: 0.5, fg3m: 140, fg3a: 400, fg3_pct: 0.35,
+  ftm: 420, fta: 500, ft_pct: 0.84, pts_per_36: 28.2, reb_per_36: 8.1, ast_per_36: 7.1,
+  stl_per_36: 1.0, blk_per_36: 0.5, legacy_fantasy_score: 3200, legacy_fantasy_score_per_game: 45.7
+};
+
+const workbenchContext = {
+  release_id: "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+  snapshot_id: "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+  dataset_id: "17251a08-a4eb-4f46-b356-999fcf37c65d",
+  dataset_type: "workbench",
+  semantic_signature: "mock-signature",
+  mode: "workbench_recent",
+  source: "sportsdataverse",
+  season: "2025-26",
+  phase: "regular_season",
+  before_date: "2026-06-30",
+  cutoff_utc: "2026-06-30T04:00:00Z",
+  window: "season",
+  coverage_start: "2023-10-24",
+  coverage_end: "2026-06-13",
+  metric_version: "v1",
+  published_at: "2026-09-21T00:00:00Z",
+  last_included_date: "2026-04-14",
+  sample_size: 2,
+  warnings: []
+};
+
+const workbenchPlayers = {
+  context: workbenchContext,
+  query: {
+    release_id: "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+    season: "2025-26",
+    phase: "regular_season",
+    before_date: "2026-06-30",
+    window: "season",
+    sort_metric: "pts",
+    sort_direction: "desc",
+    limit: 50
+  },
+  total_eligible_players: 2,
+  items: [
+    {
+      player_id: "23",
+      player_name: "Fixture Star",
+      team_id: "100",
+      team_abbreviation: "TOR",
+      team_name: "Toronto Raptors",
+      teams: ["TOR"],
+      games_played: 70,
+      total_minutes: 2500,
+      stints_count: 1,
+      sample_sizes: { gp: 70 },
+      stints: [{ team_id: "100", tricode: "TOR", name: "Toronto Raptors", games_played: 70 }],
+      metrics: playerMetrics,
+      portrait_available: true,
+      lineage_url: "/api/workbench/lineage?playerId=23"
+    },
+    {
+      player_id: "24",
+      player_name: "Fixture Guard",
+      team_id: "200",
+      team_abbreviation: "BOS",
+      team_name: "Boston Celtics",
+      teams: ["BOS"],
+      games_played: 68,
+      total_minutes: 2278,
+      stints_count: 1,
+      sample_sizes: { gp: 68 },
+      stints: [{ team_id: "200", tricode: "BOS", name: "Boston Celtics", games_played: 68 }],
+      metrics: { ...playerMetrics, pts: 1500, pts_per_game: 22.0 },
+      portrait_available: false,
+      lineage_url: "/api/workbench/lineage?playerId=24"
+    }
+  ],
+  next_cursor: null,
+  has_more: false,
+  warnings: ["Historical reconstruction from completed records."]
+};
+
+const workbenchTeams = {
+  context: workbenchContext,
+  teams: [
+    {
+      team_id: "100",
+      tricode: "TOR",
+      name: "Toronto Raptors",
+      games_played: 72,
+      wins: 45,
+      losses: 27,
+      win_pct: 0.625,
+      production: { pts_per_game: 115.4, reb_per_game: 44.2, ast_per_game: 28.1 },
+      allowance: { pts_allowed_per_game: 110.2, reb_allowed_per_game: 42.1, ast_allowed_per_game: 24.5 },
+      observed_games: 72,
+      exclusions: 0
+    },
+    {
+      team_id: "200",
+      tricode: "BOS",
+      name: "Boston Celtics",
+      games_played: 72,
+      wins: 55,
+      losses: 17,
+      win_pct: 0.764,
+      production: { pts_per_game: 118.9, reb_per_game: 45.6, ast_per_game: 27.4 },
+      allowance: { pts_allowed_per_game: 108.5, reb_allowed_per_game: 41.8, ast_allowed_per_game: 23.9 },
+      observed_games: 72,
+      exclusions: 0
+    }
+  ],
+  warnings: ["Historical reconstruction from completed records."],
+  order_notice: "Ties in record ordering do not establish official conference placement. Standings are presented by win percentage without tiebreaker resolution."
+};
+
+const workbenchTeamDetail = {
+  team: { id: "100", tricode: "TOR", name: "Toronto Raptors" },
+  context: workbenchContext,
+  record: { games_played: 72, wins: 45, losses: 27, win_pct: 0.625 },
+  production: { pts_per_game: 115.4, reb_per_game: 44.2, ast_per_game: 28.1 },
+  allowance: { pts_allowed_per_game: 110.2, reb_allowed_per_game: 42.1, ast_allowed_per_game: 24.5 },
+  player_cohort: [
+    {
+      player_id: "23",
+      player_name: "Fixture Star",
+      games_played: 70,
+      min_per_game: 35.7,
+      total_minutes: 2500,
+      points: 1960,
+      points_per_game: 28.0,
+      reb_per_game: 8.0,
+      ast_per_game: 7.0
+    }
+  ],
+  recent_games: [
+    {
+      game_id: "0022500001",
+      game_date: "2026-04-12",
+      opponent_id: "200",
+      opponent_tricode: "BOS",
+      side: "home",
+      team_points: 112,
+      opponent_points: 104,
+      is_win: true
+    }
+  ]
+};
+
+function workbenchPlayerProfile(id) {
+  const isGuard = id === "24";
+  return {
+    player: {
+      id,
+      name: isGuard ? "Fixture Guard" : "Fixture Star",
+      portrait_url: isGuard ? null : `/api/workbench/media/players/mock-hash-23`
+    },
+    context: workbenchContext,
+    summaries: {
+      season: playerMetrics,
+      last_5: { ...playerMetrics, gp: 5, pts_per_game: 30.2 },
+      last_10: { ...playerMetrics, gp: 10, pts_per_game: 29.1 }
+    },
+    stints: [
+      {
+        team_id: isGuard ? "200" : "100",
+        team_tricode: isGuard ? "BOS" : "TOR",
+        team_name: isGuard ? "Boston Celtics" : "Toronto Raptors",
+        games_played: isGuard ? 68 : 70,
+        metrics: playerMetrics
+      }
+    ],
+    latest_team: {
+      id: isGuard ? "200" : "100",
+      tricode: isGuard ? "BOS" : "TOR",
+      name: isGuard ? "Boston Celtics" : "Toronto Raptors"
+    },
+    last_observed_date: "2026-04-14",
+    forecast_status: {
+      status: "no_policy_registered",
+      message: "No forecast policy activated for current release",
+      horizon_days: 1
+    },
+    target: null,
+    lineage_url: `/api/workbench/lineage?playerId=${id}`
+  };
+}
+
+function workbenchPlayerGames(id) {
+  return {
+    player: { id, name: id === "24" ? "Fixture Guard" : "Fixture Star" },
+    context: workbenchContext,
+    games: [
+      {
+        game_id: "0022500001",
+        game_date: "2026-04-12",
+        season: "2025-26",
+        phase: "regular_season",
+        team_id: "100",
+        team_tricode: "TOR",
+        opponent_id: "200",
+        opponent_tricode: "BOS",
+        side: "home",
+        appearance: "appeared",
+        minutes: 36.5,
+        points: 32,
+        stats: { pts: 32, reb: 8, ast: 7, fgm: 11, fga: 22, fg3m: 3, fg3a: 8, ftm: 7, fta: 8 },
+        legacy_fantasy_score: 52.5,
+        lineage_ref: "wb-game-0022500001"
+      }
+    ],
+    next_cursor: null,
+    has_more: false,
+    warnings: []
+  };
+}
+
 createServer((request, response) => {
   const url = new URL(request.url ?? "/", "http://127.0.0.1:4100");
+  if (url.pathname === "/api/workbench/status") return json(response, 200, workbenchStatus);
+  if (url.pathname === "/api/workbench/players") {
+    const q = (url.searchParams.get("name") ?? "").toLowerCase();
+    const filtered = q
+      ? workbenchPlayers.items.filter(p => p.player_name.toLowerCase().includes(q))
+      : workbenchPlayers.items;
+    return json(response, 200, { ...workbenchPlayers, items: filtered, total_eligible_players: filtered.length });
+  }
+  if (url.pathname === "/api/workbench/players/23") return json(response, 200, workbenchPlayerProfile("23"));
+  if (url.pathname === "/api/workbench/players/24") return json(response, 200, workbenchPlayerProfile("24"));
+  if (url.pathname === "/api/workbench/players/23/games") return json(response, 200, workbenchPlayerGames("23"));
+  if (url.pathname === "/api/workbench/players/24/games") return json(response, 200, workbenchPlayerGames("24"));
+  if (url.pathname === "/api/workbench/teams") return json(response, 200, workbenchTeams);
+  if (url.pathname === "/api/workbench/teams/100") return json(response, 200, workbenchTeamDetail);
+  if (url.pathname === "/api/workbench/compare") {
+    const pA = {
+      id: "23",
+      name: "Fixture Star",
+      teams: ["TOR"],
+      games_played: 70,
+      total_minutes: 2500
+    };
+    const pB = {
+      id: "24",
+      name: "Fixture Guard",
+      teams: ["BOS"],
+      games_played: 68,
+      total_minutes: 2278
+    };
+    return json(response, 200, {
+      player_a: pA,
+      player_b: pB,
+      context: workbenchContext,
+      no_forced_winner_notice: "CourtLoad displays descriptive differences and prediction intervals without declaring an automated start/sit decision or forced winner.",
+      aligned_metrics: [
+        {
+          metric: "pts_per_game",
+          display_name: "Points Per Game",
+          unit: "pts/g",
+          val_a: 28.0,
+          val_b: 22.0,
+          diff: 6.0,
+          n_a: 70,
+          n_b: 68
+        },
+        {
+          metric: "reb_total",
+          display_name: "Rebounds Total",
+          unit: "reb",
+          val_a: 560,
+          val_b: 306,
+          diff: 254,
+          n_a: 70,
+          n_b: 68
+        }
+      ]
+    });
+  }
+  if (url.pathname === "/api/workbench/metrics") return json(response, 200, { version: "v1", count: 35, metrics: [] });
+  if (url.pathname === "/api/workbench/analyses") return json(response, 200, []);
+  if (url.pathname === "/api/workbench/jobs") return json(response, 200, [workbenchStatus.worker.latest_job]);
+  if (url.pathname === "/api/workbench/lineage") {
+    return json(response, 200, {
+      release_id: workbenchContext.release_id,
+      dataset_id: workbenchContext.dataset_id,
+      semantic_signature: workbenchContext.semantic_signature,
+      source_namespace: "sportsdataverse",
+      contributing_facts: [
+        {
+          kind: "player_game",
+          fact_id: "fact-001",
+          source_version_id: "ver-001",
+          source_observation_id: "obs-001",
+          observation_id: "obs-001",
+          source_file: "nba_player_box_2025.csv.gz",
+          content_sha256: "mock-sha256-obs",
+          game_id: "0022500001",
+          game_date: "2026-04-12",
+          player_id: "23",
+          minutes: 36.5,
+          points: 32
+        }
+      ],
+      transform_path: [
+        "stg_workbench_player_games",
+        "fct_workbench_player_game",
+        "mart_workbench_player_season_stats"
+      ],
+      warnings: []
+    });
+  }
   if (url.pathname === "/api/analytics/catalog") return json(response, 200, catalog);
   if (url.pathname === "/api/analytics/players") {
     const query = url.searchParams.get("query") ?? "";
@@ -120,7 +470,142 @@ createServer((request, response) => {
       }
     }, final_test: { metrics: { ewma_20_hl5: metric(7.82, 10.06), player_only: metric(7.97, 10.15), player_plus_context: metric(7.96, 10.12) }, intervals: { ewma_20_hl5: interval(0.802, 24.79), player_only: interval(0.806, 25.26), player_plus_context: interval(0.805, 25.21) }, counts: { candidate_rows: 73506 }, paired_uncertainty: { lower: 0.108, upper: 0.175 }, prespecified_slices: {} }, promotion: { decision: "do_not_promote", gates: { validation_improvement: { passed: false }, final_paired_superiority: { passed: false }, supported_slices: { passed: false }, interval_guardrails: { passed: true } } }, serving_policy: { historical_s3_primary: "ewma_20_hl5", challenger_is_serving: false }, limitations: ["Historical reconstruction"], record_counts: {}, latest_build: { status: "failed", created_at: "2026-09-21", finished_at: "2026-09-21" } });
   }
+  if (url.pathname === "/api/workbench/forecasts/evaluation") {
+    return json(response, 200, {
+      available: true,
+      run_id: "b0e4bb3300011b5a3499",
+      task: "conditional next-team-game basketball points estimation",
+      limitations: [
+        "Revised historical NBA Stats mirror data; original real-time publication timestamps unavailable.",
+        "Schedule and opponent context are reconstructed from prior regular season outcomes strictly.",
+        "Conditional on confirmed recorded appearance; does not estimate availability, injuries, or team placement."
+      ],
+      active_policy: {
+        id: "bbf90110-097c-4421-8658-41b158c83b8b",
+        policy_name: "points-v1-prior_blend",
+        target_metric: "points",
+        estimator_identity: "prior_blend",
+        calibration_identity: "order_statistic_80pct",
+        eligibility_criteria: { min_history: 1 },
+        activated_at: "2026-10-01T12:38:00Z",
+        experiment_run_id: "b0e4bb3300011b5a3499"
+      },
+      promotion: {
+        decision: "do_not_promote",
+        gates: {
+          validation_improvement: {
+            passed: false,
+            pooled_relative_improvement: -0.0043,
+            fold_differences: { v1: 0.0165, v2: -0.0527 }
+          },
+          final_paired_superiority: {
+            passed: false,
+            mae_difference: -0.0154,
+            lower: -0.0522,
+            upper: 0.0135,
+            estimand: "player_only_MAE - prior_blend_MAE"
+          },
+          supported_slices: {
+            passed: true,
+            supported_count: 19,
+            regressions_over_limit: []
+          },
+          interval_guardrails: {
+            passed: true,
+            challenger_coverage: 0.8036,
+            width_ratio: 0.985
+          }
+        }
+      },
+      final_test: {
+        split: {
+          season: "2025-26",
+          start: "2025-10-21",
+          end: "2026-04-12",
+          role: "final_test"
+        },
+        metrics: {
+          prior_blend: { mae: 4.643, rmse: 6.071, player_balanced_mae: 4.505, forecast_rows: 48870, players: 530, target_dates: 162, unique_player_games: 24519 },
+          player_only: { mae: 4.628, rmse: 6.027, player_balanced_mae: 4.476, forecast_rows: 48870, players: 530, target_dates: 162, unique_player_games: 24519 },
+          player_plus_context: { mae: 4.625, rmse: 6.025, player_balanced_mae: 4.476, forecast_rows: 48870, players: 530, target_dates: 162, unique_player_games: 24519 }
+        },
+        intervals: {
+          prior_blend: { core: { coverage: 0.8059, mean_width: 14.81, rows: 41806 }, early_season: { coverage: 0.7966, mean_width: 14.39, rows: 7064 } },
+          player_only: { core: { coverage: 0.8036, mean_width: 14.59, rows: 41806 }, early_season: { coverage: 0.8212, mean_width: 14.57, rows: 7064 } }
+        },
+        prespecified_slices: {
+          location_slice: {
+            home: {
+              prior_blend: { mae: 4.630, forecast_rows: 24435, players: 528 },
+              player_only: { mae: 4.615, forecast_rows: 24435, players: 528 }
+            },
+            away: {
+              prior_blend: { mae: 4.657, forecast_rows: 24435, players: 528 },
+              player_only: { mae: 4.641, forecast_rows: 24435, players: 528 }
+            }
+          },
+          team_rest_slice: {
+            "1_day": {
+              prior_blend: { mae: 4.636, forecast_rows: 30301, players: 526 },
+              player_only: { mae: 4.613, forecast_rows: 30301, players: 526 }
+            },
+            back_to_back: {
+              prior_blend: { mae: 4.729, forecast_rows: 4384, players: 502 },
+              player_only: { mae: 4.750, forecast_rows: 4384, players: 502 }
+            }
+          }
+        }
+      },
+      model_card_markdown: "# CourtLoad model card: basketball-points-v1 evaluation\n\nRun `b0e4bb3300011b5a3499`. Promotion Decision: **do_not_promote**.\nServing policy: `prior_blend`."
+    });
+  }
+  if (url.pathname === "/api/workbench/forecasts") {
+    return json(response, 200, {
+      items: [
+        {
+          id: "fc_iss_001",
+          policy_id: "bbf90110-097c-4421-8658-41b158c83b8b",
+          player_id: "23",
+          player_name: "Fixture Star",
+          team_id: "100",
+          team_tricode: "TOR",
+          target_game_id: "0022600001",
+          target_game_date: "2026-10-21",
+          target_opponent_id: "200",
+          target_opponent_tricode: "BOS",
+          issued_at_utc: "2026-10-01T12:00:00Z",
+          dataset_id: "ds_wb_mock",
+          features_hash: "mock_feat_hash_1",
+          point_estimate: 25.4,
+          interval_lower: 18.0,
+          interval_upper: 32.8,
+          availability_reason: "eligible_core",
+          issuance_status: "issued",
+          latest_score: null
+        }
+      ],
+      summary: {
+        total_issued: 1,
+        total_scored: 0,
+        total_pending: 1,
+        total_unscored_dnp: 0,
+        total_unscored_cancelled: 0,
+        prospective_accuracy_status: "not_yet_observed",
+        accuracy_metrics: null,
+        active_policy: {
+          policy_name: "points-v1-prior_blend",
+          estimator_identity: "prior_blend"
+        },
+        message: "Prospective accuracy not yet observed: Awaiting 2026-27 regular season tipoff."
+      },
+      page: 1,
+      page_size: 50,
+      total_items: 1,
+      warnings: []
+    });
+  }
   return json(response, 404, { detail: "not found" });
+
 }).listen(4100, "127.0.0.1");
 
 function fixtureProfile(id, date) {

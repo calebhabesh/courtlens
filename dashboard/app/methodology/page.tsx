@@ -1,44 +1,135 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { getMetricCatalog } from "@/lib/workbench-api";
+import type { MetricCatalog } from "@/lib/types";
 
-export const metadata: Metadata = { title: "Methodology" };
+export const metadata: Metadata = { title: "Methodology & Catalog · CourtLoad" };
+export const dynamic = "force-dynamic";
 
-const definitions = [
-  ["Replay cutoff", "Midnight at the start of the selected NBA game date in America/New_York. Every game on that date is excluded from history."],
-  ["Reference points", "PTS + 1.2 REB + 1.5 AST + 3 STL + 3 BLK − TOV. This fixed CourtLoad metric is not a claim about every fantasy platform."],
-  ["Reconstructed target", "The next recorded team game within six days, using the player’s last observed team when that association is no more than 30 days old."],
-  ["Conditional estimate", "Estimated reference points if the player appears in that reconstructed team game. It does not estimate availability or a guaranteed next appearance."],
-  ["Empirical interval", "The point estimate plus or minus an absolute-error quantile calibrated on the separate 2022–23 calibration block."],
-  ["Opponent allowance", "Prior production recorded by opponents against that team over as many as ten eligible team games. It is not defensive efficiency or position defense."]
-];
+export default async function MethodologyPage() {
+  let catalog: MetricCatalog | null = null;
+  try {
+    catalog = await getMetricCatalog();
+  } catch {
+    // Fallback if backend offline
+  }
 
-export default function MethodologyPage() {
-  return <section className="page shell reading-shell">
-    <div className="page-heading"><div><p className="kicker">Historical replay · baseline-v1</p><h1>Methodology</h1><p>How CourtLoad creates comparable, cutoff-safe player evidence and where its claims stop.</p></div></div>
-    <article className="prose">
-      <h2>One snapshot and cutoff</h2>
-      <p>Both sides of a comparison resolve one immutable published snapshot and one replay date. Summaries use completed appearances strictly before that date. Shared URLs keep the snapshot, date, and both player IDs so the same retained inputs reproduce the view.</p>
-      <div className="definition-list">{definitions.map(([term, definition]) => <div key={term}><h3>{term}</h3><p>{definition}</p></div>)}</div>
+  const metrics = catalog?.metrics ?? [];
 
-      <h2>Descriptive windows</h2>
-      <p>Last-5, last-10, and season-to-date values are calculated in the warehouse from prior appearances. Shooting percentages use summed makes and attempts. Sample counts stay beside each value, and missing opponent coverage remains missing rather than becoming zero.</p>
+  return (
+    <div className="workbench-content">
+      <div className="page-header">
+        <div>
+          <span className="text-xs text-muted font-mono uppercase">System Principles & Metrics</span>
+          <h1 className="page-title">Methodology & Metric Catalog</h1>
+          <p className="page-subtitle">
+            Formal mathematical formulas, zero-inferred principles, and temporal discipline guardrails governing CourtLoad.
+          </p>
+        </div>
+      </div>
 
-      <div className="code-rule"><span>Temporal invariant</span><code>source_game_date &lt; replay_date</code><p>A selected date’s outcomes cannot contribute to its profile, matchup context, or estimate features.</p></div>
+      {/* Core Principles Grid */}
+      <div className="grid-3" style={{ marginBottom: "1.5rem" }}>
+        <div className="panel">
+          <span className="text-accent font-mono text-xs font-bold uppercase">Principle 1</span>
+          <h2 className="panel-title" style={{ margin: "0.4rem 0" }}>Temporal Discipline</h2>
+          <p className="text-xs text-muted" style={{ lineHeight: 1.5 }}>
+            Every feature, metric window, and profile strictly excludes the target date and all subsequent outcomes (<code>game_date &lt; before_date</code>). Changing future games never alters historical profiles.
+          </p>
+        </div>
 
-      <h2>Serving policy</h2>
-      <p>Players with fewer than five valid same-season appearances receive no numeric estimate. Five to nine appearances receive a labeled available-history mean without a calibrated interval. With ten or more appearances, CourtLoad serves EWMA over as many as 20 appearances with a five-appearance half-life when a registered out-of-time replay artifact exists for the cutoff.</p>
-      <p>The boosted player-plus-context challenger was evaluated once on the untouched 2023–24 final season and was not promoted. EWMA had lower error overall and in the required comparison gates. The evaluation page reports the measured result and artifact identity.</p>
+        <div className="panel">
+          <span className="text-accent font-mono text-xs font-bold uppercase">Principle 2</span>
+          <h2 className="panel-title" style={{ margin: "0.4rem 0" }}>Zero Inferred Claims</h2>
+          <p className="text-xs text-muted" style={{ lineHeight: 1.5 }}>
+            An absent box-score row is unknown, not a zero outcome or injury confirmation. Defensive output reflects named box-score metrics, never a fabricated composite impact rating.
+          </p>
+        </div>
 
-      <h2>Historical reconstruction limits</h2>
-      <ul>
-        <li>The archive contains revised historical records rather than contemporaneous pregame observations.</li>
-        <li>Team association and target schedules are reconstructed from completed records; they are not verified historical rosters or original schedule publications.</li>
-        <li>The estimate does not model injuries, availability, trades after the cutoff, or appearance probability.</li>
-        <li>Empirical coverage on held-out history is not a guarantee for a future live setting.</li>
-        <li>M6 did not count observed final-season appearances for which no candidate existed, so total player coverage is unknown.</li>
-      </ul>
+        <div className="panel">
+          <span className="text-accent font-mono text-xs font-bold uppercase">Principle 3</span>
+          <h2 className="panel-title" style={{ margin: "0.4rem 0" }}>Calibrated Uncertainty</h2>
+          <p className="text-xs text-muted" style={{ lineHeight: 1.5 }}>
+            Prediction intervals represent empirical calibrated dispersion from out-of-time chronological validation blocks, not subjective confidence scores or betting odds.
+          </p>
+        </div>
+      </div>
 
-      <div className="prose-cta"><div><h2>Inspect the measured result.</h2><p>See validation, final-test metrics, promotion gates, data health, and the immutable run hash.</p></div><Link className="button button-dark" href="/evaluation">Open evaluation</Link></div>
-    </article>
-  </section>;
+      {/* Versioned Metric Catalog v1 */}
+      <div className="panel">
+        <div className="panel-header">
+          <div>
+            <h2 className="panel-title">Canonical Metric Catalog (v1)</h2>
+            <p className="text-muted text-xs" style={{ margin: "0.2rem 0 0" }}>
+              Single source of mathematical truth across backend services, warehouse marts, and dashboard presentation.
+            </p>
+          </div>
+          <span className="badge badge-accent font-mono">{metrics.length || 35} Metrics</span>
+        </div>
+
+        <div className="table-wrapper">
+          <table className="data-table">
+            <thead>
+              <tr>
+                <th>Display Name</th>
+                <th>Key</th>
+                <th>Category</th>
+                <th>Unit</th>
+                <th>Mathematical Formula</th>
+                <th>Denominator</th>
+                <th>Limitations</th>
+              </tr>
+            </thead>
+            <tbody>
+              {metrics.length === 0 ? (
+                <tr>
+                  <td colSpan={7} style={{ textAlign: "center", padding: "2rem" }} className="text-muted">
+                    Loading metric catalog specifications...
+                  </td>
+                </tr>
+              ) : (
+                metrics.map((m) => (
+                  <tr key={m.key}>
+                    <td><strong>{m.display_name}</strong></td>
+                    <td className="font-mono text-xs text-accent">{m.key}</td>
+                    <td>
+                      <span className="badge">{m.category}</span>
+                    </td>
+                    <td className="text-xs text-muted font-mono">{m.unit}</td>
+                    <td className="font-mono text-xs">{m.formula}</td>
+                    <td className="font-mono text-xs text-muted">{m.denominator || "None"}</td>
+                    <td className="text-xs text-muted" style={{ maxWidth: "260px", whiteSpace: "normal" }}>
+                      {m.limitations.join("; ")}
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* Historical vs Prospective Seams */}
+      <div className="panel">
+        <div className="panel-header">
+          <h2 className="panel-title">Historical Reconstruction vs Prospective Forecasts</h2>
+        </div>
+        <div className="text-sm text-muted" style={{ lineHeight: 1.6 }}>
+          <p>
+            Historical analysis utilizes verified completed game logs acquired from open archives.
+            Target opponent matchups are reconstructed from schedule outcomes; they are not real-time roster announcements.
+          </p>
+          <p>
+            Genuine prospective forecasts are issued prior to game tipoffs and recorded in append-only storage.
+            Before in-season outcomes are played, live prospective accuracy is reported as <strong>not yet observed</strong>.
+          </p>
+          <div style={{ marginTop: "1rem" }}>
+            <Link href="/forecasts" className="button button-small button-primary">
+              Inspect Forecast Protocol →
+            </Link>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }

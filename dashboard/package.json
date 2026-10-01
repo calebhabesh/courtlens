@@ -8,8 +8,9 @@
     "start": "next start",
     "lint": "eslint . --max-warnings=0",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run lib",
-    "test:browser": "playwright test"
+    "test": "vitest run",
+    "test:browser": "playwright test",
+    "test:browser:real": "PLAYWRIGHT_EXTERNAL_SERVER=true playwright test"
   },
   "dependencies": {
     "next": "^16.3.5",
