@@ -1,0 +1,321 @@
+{
+  "timestamp_utc": "2026-10-01T18:01:36Z",
+  "hardware": {
+    "os": "Linux",
+    "release": "7.2.7-arch1-1",
+    "machine": "x86_64",
+    "python_version": "3.14.7",
+    "logical_cpus": 16,
+    "memory_total_kb": 63401196,
+    "memory_total_gb": 60.46,
+    "cpu_model": "AMD Ryzen 7 9700X 8-Core Processor"
+  },
+  "database_storage": {
+    "total_database_bytes": 3593164467,
+    "total_database_mb": 3426.71,
+    "table_stats": [
+      {
+        "table": "workbench_player_games",
+        "rows": 104533,
+        "size_bytes": 98369536,
+        "size_mb": 93.81
+      },
+      {
+        "table": "workbench_team_games",
+        "rows": 7924,
+        "size_bytes": 7446528,
+        "size_mb": 7.1
+      },
+      {
+        "table": "workbench_schedules",
+        "rows": 5470,
+        "size_bytes": 2580480,
+        "size_mb": 2.46
+      },
+      {
+        "table": "workbench_identities",
+        "rows": 896,
+        "size_bytes": 499712,
+        "size_mb": 0.48
+      },
+      {
+        "table": "workbench_datasets",
+        "rows": 30,
+        "size_bytes": 81920,
+        "size_mb": 0.08
+      },
+      {
+        "table": "workbench_dataset_members",
+        "rows": 1,
+        "size_bytes": 40960,
+        "size_mb": 0.04
+      },
+      {
+        "table": "workbench_versions",
+        "rows": 18,
+        "size_bytes": 49152,
+        "size_mb": 0.05
+      },
+      {
+        "table": "workbench_observations",
+        "rows": 18,
+        "size_bytes": 73728,
+        "size_mb": 0.07
+      },
+      {
+        "table": "workbench_acquisitions",
+        "rows": 18,
+        "size_bytes": 32768,
+        "size_mb": 0.03
+      },
+      {
+        "table": "workbench_artifacts",
+        "rows": 18,
+        "size_bytes": 49152,
+        "size_mb": 0.05
+      },
+      {
+        "table": "workbench_release_bindings",
+        "rows": 1,
+        "size_bytes": 49152,
+        "size_mb": 0.05
+      },
+      {
+        "table": "workbench_jobs",
+        "rows": 57,
+        "size_bytes": 73728,
+        "size_mb": 0.07
+      },
+      {
+        "table": "forecast_issuances",
+        "rows": 489,
+        "size_bytes": 1163264,
+        "size_mb": 1.11
+      },
+      {
+        "table": "forecast_scores",
+        "rows": 489,
+        "size_bytes": 188416,
+        "size_mb": 0.18
+      },
+      {
+        "table": "model_policy_activations",
+        "rows": 1,
+        "size_bytes": 32768,
+        "size_mb": 0.03
+      },
+      {
+        "table": "saved_investigations",
+        "rows": 30,
+        "size_bytes": 114688,
+        "size_mb": 0.11
+      },
+      {
+        "table": "player_portraits",
+        "rows": 200,
+        "size_bytes": 155648,
+        "size_mb": 0.15
+      }
+    ],
+    "entity_counts": {
+      "player_games": 104533,
+      "team_games": 7924,
+      "schedules": 5470,
+      "forecast_issuances": 489,
+      "forecast_scores": 489,
+      "policy_activations": 1,
+      "saved_investigations": 30,
+      "datasets": 30,
+      "release_bindings": 1
+    }
+  },
+  "disk_storage": {
+    "raw_data_mb": 107.0,
+    "artifacts_mb": 956.91,
+    "cache_mb": 3.06,
+    "backups_mb": 747.92,
+    "total_on_disk_mb": 1814.89
+  },
+  "api_latencies": [
+    {
+      "name": "Health Check",
+      "path": "/api/health",
+      "samples": 30,
+      "errors": 0,
+      "min_ms": 4.03,
+      "p50_ms": 6.12,
+      "p95_ms": 61.13,
+      "p99_ms": 64.3,
+      "max_ms": 64.3,
+      "mean_ms": 13.28
+    },
+    {
+      "name": "Workbench Status",
+      "path": "/api/workbench/status",
+      "samples": 30,
+      "errors": 0,
+      "min_ms": 17.53,
+      "p50_ms": 24.85,
+      "p95_ms": 27.75,
+      "p99_ms": 28.73,
+      "max_ms": 28.73,
+      "mean_ms": 24.39
+    },
+    {
+      "name": "Catalog Definition",
+      "path": "/api/workbench/catalog",
+      "samples": 30,
+      "errors": 0,
+      "min_ms": 33.06,
+      "p50_ms": 37.06,
+      "p95_ms": 41.68,
+      "p99_ms": 43.7,
+      "max_ms": 43.7,
+      "mean_ms": 37.19
+    },
+    {
+      "name": "Metric Catalog (35 metrics)",
+      "path": "/api/workbench/metrics",
+      "samples": 30,
+      "errors": 0,
+      "min_ms": 1.52,
+      "p50_ms": 2.72,
+      "p95_ms": 4.04,
+      "p99_ms": 4.59,
+      "max_ms": 4.59,
+      "mean_ms": 2.84
+    },
+    {
+      "name": "Player Explorer (min_games=10)",
+      "path": "/api/workbench/players?min_games=10&page_size=50",
+      "samples": 30,
+      "errors": 0,
+      "min_ms": 47.05,
+      "p50_ms": 52.41,
+      "p95_ms": 58.97,
+      "p99_ms": 62.18,
+      "max_ms": 62.18,
+      "mean_ms": 52.84
+    },
+    {
+      "name": "Player Search ('Barnes')",
+      "path": "/api/workbench/players?search=Barnes",
+      "samples": 30,
+      "errors": 0,
+      "min_ms": 46.24,
+      "p50_ms": 49.8,
+      "p95_ms": 52.96,
+      "p99_ms": 53.37,
+      "max_ms": 53.37,
+      "mean_ms": 49.98
+    },
+    {
+      "name": "Player Profile (Scottie Barnes 2023-24)",
+      "path": "/api/workbench/players/1630567?season=2023-24",
+      "samples": 30,
+      "errors": 0,
+      "min_ms": 37.26,
+      "p50_ms": 45.37,
+      "p95_ms": 47.81,
+      "p99_ms": 49.38,
+      "max_ms": 49.38,
+      "mean_ms": 44.52
+    },
+    {
+      "name": "Player Game Log (Scottie Barnes 2023-24)",
+      "path": "/api/workbench/players/1630567/games?season=2023-24&limit=25",
+      "samples": 30,
+      "errors": 0,
+      "min_ms": 33.65,
+      "p50_ms": 42.98,
+      "p95_ms": 48.59,
+      "p99_ms": 49.77,
+      "max_ms": 49.77,
+      "mean_ms": 42.96
+    },
+    {
+      "name": "Team Research (All Teams 2023-24)",
+      "path": "/api/workbench/teams?season=2023-24",
+      "samples": 30,
+      "errors": 0,
+      "min_ms": 74.27,
+      "p50_ms": 122.48,
+      "p95_ms": 201.64,
+      "p99_ms": 212.45,
+      "max_ms": 212.45,
+      "mean_ms": 132.6
+    },
+    {
+      "name": "Team Detail (Toronto Raptors 2023-24)",
+      "path": "/api/workbench/teams/1610612761?season=2023-24",
+      "samples": 30,
+      "errors": 0,
+      "min_ms": 47.6,
+      "p50_ms": 51.78,
+      "p95_ms": 56.47,
+      "p99_ms": 56.53,
+      "max_ms": 56.53,
+      "mean_ms": 52.09
+    },
+    {
+      "name": "Player Comparison (Barnes vs Barrett)",
+      "path": "/api/workbench/compare?playerA=1630567&playerB=1629628&season=2023-24",
+      "samples": 30,
+      "errors": 0,
+      "min_ms": 45.56,
+      "p50_ms": 54.65,
+      "p95_ms": 60.91,
+      "p99_ms": 62.25,
+      "max_ms": 62.25,
+      "mean_ms": 54.59
+    },
+    {
+      "name": "Prospective Forecasts Ledger",
+      "path": "/api/workbench/forecasts?limit=25",
+      "samples": 30,
+      "errors": 0,
+      "min_ms": 40.68,
+      "p50_ms": 72.83,
+      "p95_ms": 87.4,
+      "p99_ms": 90.02,
+      "max_ms": 90.02,
+      "mean_ms": 71.75
+    },
+    {
+      "name": "Saved Investigations Hub",
+      "path": "/api/workbench/analyses",
+      "samples": 30,
+      "errors": 0,
+      "min_ms": 7.07,
+      "p50_ms": 11.86,
+      "p95_ms": 14.01,
+      "p99_ms": 16.53,
+      "max_ms": 16.53,
+      "mean_ms": 11.28
+    },
+    {
+      "name": "Assistant Status",
+      "path": "/api/workbench/assistant/status",
+      "samples": 30,
+      "errors": 0,
+      "min_ms": 1.56,
+      "p50_ms": 2.58,
+      "p95_ms": 3.85,
+      "p99_ms": 5.3,
+      "max_ms": 5.3,
+      "mean_ms": 2.69
+    },
+    {
+      "name": "Assistant Query (Toronto Defense Offline)",
+      "path": "/api/workbench/assistant/query",
+      "samples": 30,
+      "errors": 0,
+      "min_ms": 33.28,
+      "p50_ms": 37.69,
+      "p95_ms": 41.8,
+      "p99_ms": 42.67,
+      "max_ms": 42.67,
+      "mean_ms": 37.79
+    }
+  ]
+}

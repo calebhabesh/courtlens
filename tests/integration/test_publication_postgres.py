@@ -21,6 +21,11 @@ pytestmark = pytest.mark.postgres
 def postgres_engine():  # type: ignore[no-untyped-def]
     url = os.getenv("COURTLOAD_TEST_POSTGRES_URL")
     if not url:
+        if os.getenv("CI") or os.getenv("COURTLOAD_REQUIRE_POSTGRES_TESTS"):
+            pytest.fail(
+                "COURTLOAD_TEST_POSTGRES_URL must be configured when CI or "
+                "COURTLOAD_REQUIRE_POSTGRES_TESTS is set"
+            )
         pytest.skip("COURTLOAD_TEST_POSTGRES_URL is not configured")
     engine = create_engine(url)
     Base.metadata.create_all(engine)
