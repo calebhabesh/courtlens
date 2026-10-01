@@ -8,7 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from courtload import __version__
 from courtload.api.metrics import metrics_response, observe_request
-from courtload.api.routers import auth, fantasy, public
+from courtload.api.routers import auth, fantasy, public, workbench
 from courtload.config import get_settings
 
 
@@ -34,7 +34,7 @@ def create_app() -> FastAPI:
         allow_origins=settings.cors_origins,
         allow_credentials=True,
         allow_methods=["GET", "POST", "PUT", "OPTIONS"],
-        allow_headers=["Authorization", "Content-Type", "X-Request-ID"],
+        allow_headers=["Authorization", "Content-Type", "X-Request-ID", "X-Operator-Token"],
     )
 
     @application.middleware("http")
@@ -47,6 +47,7 @@ def create_app() -> FastAPI:
         return response
 
     application.include_router(public.router, prefix="/api")
+    application.include_router(workbench.router, prefix="/api")
     application.include_router(auth.router, prefix="/api")
     application.include_router(fantasy.router, prefix="/api")
     application.add_api_route(

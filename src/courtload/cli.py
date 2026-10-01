@@ -34,7 +34,12 @@ from courtload.models import (
     User,
 )
 from courtload.security import hash_password
-from courtload.services.backup_restore import create_backup_manifest, verify_restored_state
+from courtload.services.backup_restore import (
+    create_backup_archive,
+    create_backup_manifest,
+    restore_backup_archive,
+    verify_restored_state,
+)
 from courtload.services.publication import build_and_publish, rollback_publication
 from courtload.services.quality import run_operational_checks
 
@@ -152,6 +157,9 @@ def backup_manifest_command(
         Path("data/artifacts/evaluation"), help="Path to evaluation artifacts directory."
     ),
     code_version: str = typer.Option("working-tree", help="Git revision or code version ID."),
+    with_lock: bool = typer.Option(
+        False, help="Acquire publication advisory lock during manifest generation."
+    ),
 ) -> None:
     """Generate a backup manifest describing database, dataset, pointer, and artifact hashes."""
     with SessionLocal() as session:
@@ -161,8 +169,48 @@ def backup_manifest_command(
             raw_dir=raw_dir,
             channel=channel,
             code_version=code_version,
+            with_lock=with_lock,
         )
         typer.echo(json.dumps(manifest, indent=2))
+
+
+@app.command("backup-archive")
+def backup_archive_command(
+    backup_dir: Path = typer.Option(
+        Path("data/backups"), help="Directory where backup tar.gz will be saved."
+    ),
+    channel: str = typer.Option("public", help="Publication channel to backup."),
+    code_version: str = typer.Option("working-tree", help="Code version identifier."),
+) -> None:
+    """Produce a complete, self-contained backup archive bundle coordinated with mutation lock."""
+    with SessionLocal() as session:
+        archive_path, manifest = create_backup_archive(
+            session,
+            backup_dir=backup_dir,
+            channel=channel,
+            code_version=code_version,
+        )
+        typer.echo(f"Backup archive created: {archive_path}")
+        typer.echo(json.dumps(manifest, indent=2))
+
+
+@app.command("restore-archive")
+def restore_archive_command(
+    archive_path: Path = typer.Argument(..., help="Path to backup tar.gz archive."),
+    channel: str = typer.Option("public", help="Publication channel to verify."),
+    database_name: str | None = typer.Option(
+        None, help="Target PostgreSQL database name (defaults to courtload)."
+    ),
+) -> None:
+    """Restore database, configs, artifacts, and raw inputs from a backup archive bundle."""
+    with SessionLocal() as session:
+        result = restore_backup_archive(
+            session,
+            archive_path,
+            channel=channel,
+            target_database_name=database_name,
+        )
+        typer.echo(json.dumps(result, indent=2))
 
 
 @app.command("verify-restore")
@@ -174,6 +222,8 @@ def verify_restore_command(
     artifacts_dir: Path = typer.Option(
         Path("data/artifacts/evaluation"), help="Path to evaluation artifacts directory."
     ),
+    test_player_a: str = typer.Option("2544", help="Player A ID for verification query."),
+    test_player_b: str = typer.Option("201939", help="Player B ID for verification query."),
 ) -> None:
     """Verify that a restored database and evaluation artifacts satisfy all CourtLoad invariants."""
     with SessionLocal() as session:
@@ -182,6 +232,8 @@ def verify_restore_command(
             artifacts_dir=artifacts_dir,
             expected_snapshot_id=snapshot_id,
             channel=channel,
+            test_player_a=test_player_a,
+            test_player_b=test_player_b,
         )
         typer.echo(json.dumps(report, indent=2))
 
@@ -459,3 +511,320 @@ def evaluate_final_command(
             open_final_test=open_final_test,
         )
     typer.echo(json.dumps(result, indent=2, default=str))
+
+
+@app.command("worker")
+def worker_command(
+    once: bool = typer.Option(False, "--once", help="Execute queued jobs once and exit."),
+    worker_id: str | None = typer.Option(None, help="Explicit worker ID."),
+) -> None:
+    """Run the CourtLoad background worker for job queue processing and daily refresh."""
+    from courtload.worker import start_worker
+
+    start_worker(worker_id=worker_id, once=once)
+
+
+@app.command("bootstrap")
+def bootstrap_command(
+    raw_root: Path | None = typer.Option(None, help="Directory containing raw data assets."),
+    execute_now: bool = typer.Option(
+        True, "--execute-now/--queue-only", help="Execute immediately or only enqueue."
+    ),
+) -> None:
+    """Bootstrap recent research data, run dbt workbench models, and publish release."""
+    from courtload.services.workbench_jobs import enqueue_job, execute_job
+
+    with SessionLocal() as session:
+        job = enqueue_job(
+            session, "bootstrap", arguments={"raw_root": str(raw_root) if raw_root else None}
+        )
+        job_id = job.id
+    if execute_now:
+        job = execute_job(engine, job_id)
+    typer.echo(
+        json.dumps(
+            {
+                "job_id": job.id,
+                "job_type": job.job_type,
+                "status": job.status,
+                "stage": job.stage,
+                "timings": job.timings_json,
+                "output_refs": job.output_refs_json,
+                "error": job.error_summary,
+            },
+            indent=2,
+            default=str,
+        )
+    )
+
+
+@app.command("refresh-workbench")
+def refresh_workbench_command(
+    execute_now: bool = typer.Option(
+        True, "--execute-now/--queue-only", help="Execute immediately or only enqueue."
+    ),
+) -> None:
+    """Refresh recent data and publish updated release if changed."""
+    from courtload.services.workbench_jobs import enqueue_job, execute_job
+
+    with SessionLocal() as session:
+        job = enqueue_job(session, "refresh")
+        job_id = job.id
+    if execute_now:
+        job = execute_job(engine, job_id)
+    typer.echo(
+        json.dumps(
+            {
+                "job_id": job.id,
+                "job_type": job.job_type,
+                "status": job.status,
+                "stage": job.stage,
+                "timings": job.timings_json,
+                "output_refs": job.output_refs_json,
+                "error": job.error_summary,
+            },
+            indent=2,
+            default=str,
+        )
+    )
+
+
+@app.command("acquire-portraits")
+def acquire_portraits_command(
+    execute_now: bool = typer.Option(
+        True, "--execute-now/--queue-only", help="Execute immediately or only enqueue."
+    ),
+) -> None:
+    """Acquire and cache headshot portraits for active players."""
+    from courtload.services.workbench_jobs import enqueue_job, execute_job
+
+    with SessionLocal() as session:
+        job = enqueue_job(session, "portraits")
+        job_id = job.id
+    if execute_now:
+        job = execute_job(engine, job_id)
+    typer.echo(
+        json.dumps(
+            {
+                "job_id": job.id,
+                "job_type": job.job_type,
+                "status": job.status,
+                "output_refs": job.output_refs_json,
+            },
+            indent=2,
+            default=str,
+        )
+    )
+
+
+@app.command("jobs")
+def jobs_command(
+    status: str | None = typer.Option(
+        None, help="Filter by status (queued, running, succeeded, failed, interrupted)."
+    ),
+    limit: int = typer.Option(20, min=1, max=100),
+) -> None:
+    """List recent background worker jobs."""
+    from courtload.workbench_models import WorkbenchJob
+
+    with SessionLocal() as session:
+        query = select(WorkbenchJob).order_by(WorkbenchJob.created_at.desc()).limit(limit)
+        if status:
+            query = query.where(WorkbenchJob.status == status)
+        records = session.scalars(query).all()
+        typer.echo(
+            json.dumps(
+                [
+                    {
+                        "id": r.id,
+                        "job_type": r.job_type,
+                        "status": r.status,
+                        "stage": r.stage,
+                        "owner": r.owner,
+                        "started_at": r.started_at.isoformat() if r.started_at else None,
+                        "finished_at": r.finished_at.isoformat() if r.finished_at else None,
+                        "timings": r.timings_json,
+                        "error": r.error_summary,
+                    }
+                    for r in records
+                ],
+                indent=2,
+            )
+        )
+
+
+@app.command("evaluate-points")
+def evaluate_points_command(
+    config: Path = typer.Option(
+        Path("evaluation/config/points-v1.yaml"),
+        exists=True,
+        dir_okay=False,
+        help="Frozen points evaluation protocol configuration.",
+    ),
+    dataset: Path = typer.Option(
+        Path("evaluation/manifests/accepted-points-v1.json"),
+        exists=True,
+        dir_okay=False,
+        help="Pinned accepted-dataset manifest.",
+    ),
+    output: Path = typer.Option(
+        Path("data/artifacts/evaluation"),
+        file_okay=False,
+        help="Local directory for immutable run artifacts.",
+    ),
+    stage: str = typer.Option(
+        "validate",
+        help="Stage to execute: validate, calibrate, or final.",
+    ),
+    registered_run: str | None = typer.Option(
+        None, "--registered-run", help="Registered run ID for calibrate or final stage."
+    ),
+    open_final_test: bool = typer.Option(
+        False, "--open-final-test", help="Explicitly open the frozen Block F holdout once."
+    ),
+) -> None:
+    """Execute points-v1 forecasting evaluation by stage (validate, calibrate, final)."""
+    from courtload.evaluation.points_config import load_points_config
+    from courtload.evaluation.points_runner import (
+        run_points_calibration,
+        run_points_final_test,
+        run_points_validation,
+    )
+
+    points_cfg = load_points_config(config)
+
+    if stage == "validate":
+        result = run_points_validation(
+            config=points_cfg,
+            dataset_manifest=dataset,
+            output_root=output,
+        )
+        typer.echo(json.dumps(result, indent=2, default=str))
+    elif stage == "calibrate":
+        target_run_id = registered_run
+        if not target_run_id:
+            # If not provided, run validation first to obtain run_id
+            v_res = run_points_validation(
+                config=points_cfg,
+                dataset_manifest=dataset,
+                output_root=output,
+            )
+            target_run_id = v_res["run_id"]
+        result = run_points_calibration(
+            run_id=target_run_id,
+            output_root=output,
+            dataset_manifest=dataset,
+            config=points_cfg,
+        )
+        typer.echo(json.dumps(result, indent=2, default=str))
+    elif stage == "final":
+        if not registered_run:
+            raise typer.BadParameter("--registered-run <run-id> is required for final stage")
+        result = run_points_final_test(
+            run_id=registered_run,
+            output_root=output,
+            dataset_manifest=dataset,
+            config=points_cfg,
+            open_final_test=open_final_test,
+        )
+        typer.echo(json.dumps(result, indent=2, default=str))
+    else:
+        raise typer.BadParameter(f"unknown stage '{stage}'; must be validate, calibrate, or final")
+
+
+@app.command("activate-points-policy")
+def activate_points_policy_command(
+    registered_run: str = typer.Option(
+        ..., "--registered-run", help="Completed points experiment run ID."
+    ),
+    output: Path = typer.Option(
+        Path("data/artifacts/evaluation"),
+        file_okay=False,
+        help="Local directory containing evaluation artifacts.",
+    ),
+) -> None:
+    """Activate the evaluated points-v1 forecasting policy in database."""
+    from courtload.evaluation.points_runner import activate_points_policy_record
+
+    with SessionLocal() as session:
+        policy = activate_points_policy_record(session, run_id=registered_run, output_root=output)
+        typer.echo(
+            json.dumps(
+                {
+                    "status": "activated",
+                    "policy_id": policy.id,
+                    "policy_name": policy.policy_name,
+                    "target_metric": policy.target_metric,
+                    "estimator_identity": policy.estimator_identity,
+                    "calibration_identity": policy.calibration_identity,
+                    "is_active": policy.is_active,
+                    "experiment_run_id": policy.experiment_run_id,
+                },
+                indent=2,
+                default=str,
+            )
+        )
+
+
+@app.command("issue-forecasts")
+def issue_forecasts_command(
+    release: str | None = typer.Option(
+        None,
+        "--release",
+        help="Snapshot/release ID to issue forecasts for (defaults to public channel).",
+    ),
+    as_of_date: str | None = typer.Option(
+        None,
+        "--as-of-date",
+        help="Evaluation / cutoff date (YYYY-MM-DD).",
+    ),
+) -> None:
+    """Issue genuine prospective points forecasts against active policy and published inputs."""
+    from datetime import date as dt_date
+
+    from courtload.services.workbench_forecasts import issue_prospective_forecasts
+
+    parsed_date = dt_date.fromisoformat(as_of_date) if as_of_date else None
+    with SessionLocal() as session:
+        result = issue_prospective_forecasts(session, release_id=release, as_of_date=parsed_date)
+        typer.echo(json.dumps(result, indent=2, default=str))
+
+
+@app.command("score-forecasts")
+def score_forecasts_command(
+    dataset: str | None = typer.Option(
+        None,
+        "--dataset",
+        help="Dataset ID to score against (defaults to all datasets).",
+    ),
+    as_of_date: str | None = typer.Option(
+        None,
+        "--as-of-date",
+        help="Scoring evaluation date (YYYY-MM-DD).",
+    ),
+) -> None:
+    """Score pending forecast issuances against observed final box score outcomes."""
+    from datetime import date as dt_date
+
+    from courtload.services.workbench_forecasts import score_forecast_issuances
+
+    parsed_date = dt_date.fromisoformat(as_of_date) if as_of_date else None
+    with SessionLocal() as session:
+        result = score_forecast_issuances(session, dataset_id=dataset, as_of_date=parsed_date)
+        typer.echo(json.dumps(result, indent=2, default=str))
+
+
+@app.command("smoke-assistant")
+def smoke_assistant_command(
+    live: bool = typer.Option(
+        False,
+        "--live",
+        help="Run live verification against Gemini API using COURTLOAD_GEMINI_API_KEY.",
+    ),
+) -> None:
+    """Run curated benchmark verification suite for analytical research assistant."""
+    from courtload.services.assistant.smoke import run_assistant_smoke
+
+    exit_code = run_assistant_smoke(live=live)
+    if exit_code != 0:
+        raise typer.Exit(code=exit_code)
