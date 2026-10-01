@@ -1,0 +1,53 @@
+version: points-v1
+status: frozen
+frozen_at: "2026-10-01"
+dataset:
+  content_sha256: 51715459ed0de03252a7fac32f4a6ff6194344f261dec31dfe09455b271c6ad0
+  membership_sha256: 7a61d56c6f8f5640b45c36f8eae15896291f1f7efdac3b769cb41d6697d22243
+  source_namespace: sportsdataverse
+  seasons: ["2021-22", "2022-23", "2023-24", "2024-25", "2025-26"]
+target:
+  name: basketball_points
+  version: basketball-points-v1
+  formula: PTS
+  scoring_sha256: f1cf752668fc723df7a6b8259074b77ae4b4b216f4c3ea81335c0ad095cebe5c
+eligibility:
+  core_min_history: 10
+  early_season_min_history: 1
+  early_season_max_history: 9
+  early_season_min_prior_history: 20
+  fallback_min_history: 5
+  team_association_days: 30
+  target_horizon_days: 6
+baselines:
+  rolling_mean: {window: 10, min_appearances: 5}
+  ewma_20_hl5: {window: 20, half_life_appearances: 5, min_appearances: 5}
+  prior_blend: {blend_threshold: 10, blend_weight: 10, ewma_window: 20, ewma_half_life: 5}
+splits:
+  t: {seasons: ["2021-22", "2022-23"], start: "2021-10-19", end: "2023-04-09", role: training}
+  v1: {season: "2023-24", start: "2023-10-24", end: "2024-01-15", role: validation}
+  v2: {season: "2023-24", start: "2024-01-16", end: "2024-04-14", role: validation}
+  c: {season: "2024-25", start: "2024-10-22", end: "2025-04-13", role: calibration}
+  f: {season: "2025-26", start: "2025-10-21", end: "2026-04-12", role: final_test}
+validation_selection:
+  metric: mae
+  folds: [v1, v2]
+  tie_break_order: [ewma_20_hl5, rolling_mean, prior_blend]
+intervals: {nominal_coverage: 0.8, minimum_rows: 200, minimum_target_dates: 20}
+uncertainty: {bootstrap_replicates: 1000, moving_block_calendar_days: 7, seed: 20261001}
+challenger:
+  random_seed: 20261001
+  learning_rate: 0.05
+  max_iter: 200
+  early_stopping: false
+  max_leaf_nodes: [15, 31]
+  l2_regularization: [0, 1]
+promotion:
+  validation_min_relative_mae_improvement: 0.05
+  maximum_supported_slice_relative_mae_regression: 0.05
+  supported_slice_min_rows: 200
+  supported_slice_min_player_games: 100
+  supported_slice_min_target_dates: 20
+  final_min_interval_coverage: 0.75
+  final_max_interval_width_ratio: 1.10
+runtime: {timezone: America/New_York, float_tolerance: 1.0e-10, cpu_threads: 1}

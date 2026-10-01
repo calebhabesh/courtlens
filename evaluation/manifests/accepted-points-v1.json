@@ -1,0 +1,29 @@
+{
+  "dataset_identity": "sportsdataverse-nba-2022-2026",
+  "content_sha256": "51715459ed0de03252a7fac32f4a6ff6194344f261dec31dfe09455b271c6ad0",
+  "membership_sha256": "7a61d56c6f8f5640b45c36f8eae15896291f1f7efdac3b769cb41d6697d22243",
+  "source_namespace": "sportsdataverse",
+  "parser_version": "workbench-v1",
+  "selected_seasons": ["2021-22", "2022-23", "2023-24", "2024-25", "2025-26"],
+  "total_seasons": 5,
+  "regular_season_games": 6150,
+  "admitted_player_rows": 172276,
+  "admitted_team_rows": 13210,
+  "artifact_sha256": {
+    "sportsdataverse_2022/nba_schedule_2022.csv.gz": "fab3ed1ce98f0407651add307607280520da770cc98c2931009d6449fa12c2f0",
+    "sportsdataverse_2022/player_boxscores_2022.csv": "8d2960d33fd0a9c787f00da915ccb74419d5d46e2d7dddf05a9d93ed9f9f6b40",
+    "sportsdataverse_2022/team_boxscores_2022.csv": "af46dd3d3e6c73c29b3747c4a1fdbf3d911296118036365153a8dfedd4891c17",
+    "sportsdataverse_2023/nba_schedule_2023.csv.gz": "ef6fb13bfd82ddaac2b2898b967fefa4e0448b5a3c7f5c1c16e3d1414a194b8a",
+    "sportsdataverse_2023/player_boxscores_2023.csv": "33bd3f9813429d2f3a57e4453196e734b5ddcc99c7e1be09c4a616cfd1ea628d",
+    "sportsdataverse_2023/team_boxscores_2023.csv": "526d1eb44860eb6612383588dc3018b5bebe5b5afc8246b28f0d0ec56d1c2348",
+    "sportsdataverse_2024/nba_schedule_2024.csv.gz": "2b0a6eea3292c224771c702ba26813294cfd6dab7996f1d6f5d3d2b0b630c250",
+    "sportsdataverse_2024/player_boxscores_2024.csv": "7a2a57f37309a067d77fd3acd72b70aeb71366006b41e8c9a3544c4f7ea03e27",
+    "sportsdataverse_2024/team_boxscores_2024.csv": "d48c29dabcfecb4d746c663ab2ccdb925c60242bac1a0381a4fbe49fc1020ff2",
+    "sportsdataverse_2025/nba_schedule_2025.csv.gz": "639e8145a750b80a4394d2e7044545019bcc0e39a979618c7ff9edbfcac02c9b",
+    "sportsdataverse_2025/player_boxscores_2025.csv": "71645d3569e0c0a94e51d136c6454f20d59d70f4b518c62c6bbbdb9e905cb7c0",
+    "sportsdataverse_2025/team_boxscores_2025.csv": "5c426deb97a203492070e03bd40040a6b1180c243986a6ed26abfc78bb942268",
+    "sportsdataverse_2026/nba_schedule_2026.csv.gz": "c1ff3711ef8b8ec4310c60159d1225a400facc7ce1e29bc64f09ae4130496509",
+    "sportsdataverse_2026/player_boxscores_2026.csv": "decaee33440ec8bd26d21152d61b4b69970bed45c3d07ede42f2700b7bd364e7",
+    "sportsdataverse_2026/team_boxscores_2026.csv": "b5133e5602d1ab9c4a4b4240aced7af3b6587e124f7ab7335b5de961c897ade8"
+  }
+}
