@@ -120,8 +120,18 @@ def profile_estimate(
     except (OSError, ValueError):
         return {**base, "status": "artifact_not_available_for_cutoff"}
     dataset = session.get(ArchiveDataset, snapshot.dataset_id)
+    from courtload.services.workbench_registry import check_snapshot_equivalence
+
+    is_equiv = check_snapshot_equivalence(
+        session,
+        local_snapshot_id=snapshot.id,
+        authoritative_snapshot_id=config.snapshot_id,
+        content_sha256=config.dataset.content_sha256,
+        observation_sha256=config.dataset.observation_sha256,
+        scoring_version=config.target.scoring_sha256,
+    )
     if (
-        snapshot.id != config.snapshot_id
+        not is_equiv
         or dataset is None
         or dataset.content_sha256 != config.dataset.content_sha256
         or dataset.observation_sha256 != config.dataset.observation_sha256

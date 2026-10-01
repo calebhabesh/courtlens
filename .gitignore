@@ -17,6 +17,7 @@ build/
 *.egg-info/
 
 # Node / Next.js
+node_modules/
 dashboard/node_modules/
 dashboard/.next/
 dashboard/out/
@@ -31,6 +32,8 @@ data/artifacts/*
 !data/artifacts/.gitkeep
 data/backups/*
 !data/backups/.gitkeep
+data/cache/*
+!data/cache/.gitkeep
 data/*.db
 logs/
 

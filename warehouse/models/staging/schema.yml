@@ -43,3 +43,35 @@ models:
         data_tests: [not_null]
       - name: team_id
         data_tests: [not_null]
+  - name: stg_workbench_player_games
+    description: Cleaned and typed workbench player-game facts.
+    columns:
+      - name: id
+        data_tests: [unique, not_null]
+      - name: dataset_id
+        data_tests: [not_null]
+      - name: game_id
+        data_tests: [not_null]
+      - name: player_id
+        data_tests: [not_null]
+  - name: stg_workbench_team_games
+    description: Cleaned and typed workbench team-game facts.
+    columns:
+      - name: id
+        data_tests: [unique, not_null]
+      - name: dataset_id
+        data_tests: [not_null]
+      - name: game_id
+        data_tests: [not_null]
+      - name: team_id
+        data_tests: [not_null]
+  - name: stg_workbench_schedules
+    description: Cleaned workbench schedule records.
+    columns:
+      - name: id
+        data_tests: [unique, not_null]
+      - name: dataset_id
+        data_tests: [not_null]
+      - name: game_id
+        data_tests: [not_null]
+

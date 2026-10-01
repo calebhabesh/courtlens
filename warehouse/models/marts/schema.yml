@@ -36,3 +36,28 @@ models:
         data_tests: [not_null]
   - name: mart_archive_opponent_context
     description: Prior-game opponent production allowed, with minimum coverage in payload values.
+  - name: mart_workbench_player_season_stats
+    description: Aggregated season-level player research facts independent of next-game target.
+    columns:
+      - name: dataset_id
+        data_tests: [not_null]
+      - name: season
+        data_tests: [not_null]
+      - name: phase
+        data_tests: [not_null]
+      - name: player_id
+        data_tests: [not_null]
+      - name: team_id
+        data_tests: [not_null]
+  - name: mart_workbench_team_season_stats
+    description: Aggregated season-level team research facts with record, production, and allowance.
+    columns:
+      - name: dataset_id
+        data_tests: [not_null]
+      - name: season
+        data_tests: [not_null]
+      - name: phase
+        data_tests: [not_null]
+      - name: team_id
+        data_tests: [not_null]
+

@@ -27,6 +27,8 @@ jobs:
     env:
       COURTLOAD_ENVIRONMENT: test
       COURTLOAD_DATABASE_URL: postgresql+psycopg://courtload:courtload@localhost:5432/courtload
+      COURTLOAD_TEST_POSTGRES_URL: postgresql+psycopg://courtload:courtload@localhost:5432/courtload
+      COURTLOAD_REQUIRE_POSTGRES_TESTS: "true"
       COURTLOAD_JWT_SECRET: ci-only-secret-with-more-than-thirty-two-characters
       DBT_HOST: localhost
       DBT_PORT: 5432

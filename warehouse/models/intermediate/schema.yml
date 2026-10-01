@@ -27,3 +27,18 @@ models:
     columns:
       - name: dataset_id
         data_tests: [not_null]
+  - name: fct_workbench_player_game
+    description: Workbench player-game facts with legacy fantasy score.
+    columns:
+      - name: id
+        data_tests: [unique, not_null]
+      - name: dataset_id
+        data_tests: [not_null]
+  - name: fct_workbench_team_game
+    description: Workbench team-game facts with outcome win/loss flag.
+    columns:
+      - name: id
+        data_tests: [unique, not_null]
+      - name: dataset_id
+        data_tests: [not_null]
+

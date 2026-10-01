@@ -143,3 +143,68 @@ sources:
                   arguments:
                     to: source('operational', 'archive_datasets')
                     field: id
+      - name: workbench_datasets
+        columns:
+          - name: id
+            data_tests: [unique, not_null]
+          - name: content_sha256
+            data_tests: [not_null]
+          - name: membership_sha256
+            data_tests: [not_null]
+          - name: semantic_signature
+            data_tests: [not_null]
+      - name: workbench_identities
+        columns:
+          - name: id
+            data_tests: [unique, not_null]
+          - name: external_id
+            data_tests: [not_null]
+          - name: kind
+            data_tests: [not_null]
+      - name: workbench_versions
+        columns:
+          - name: id
+            data_tests: [unique, not_null]
+          - name: content_sha256
+            data_tests: [not_null]
+      - name: workbench_schedules
+        columns:
+          - name: id
+            data_tests: [unique, not_null]
+          - name: dataset_id
+            data_tests:
+              - relationships:
+                  arguments:
+                    to: source('operational', 'workbench_datasets')
+                    field: id
+          - name: game_id
+            data_tests: [not_null]
+      - name: workbench_team_games
+        columns:
+          - name: id
+            data_tests: [unique, not_null]
+          - name: dataset_id
+            data_tests:
+              - relationships:
+                  arguments:
+                    to: source('operational', 'workbench_datasets')
+                    field: id
+          - name: game_id
+            data_tests: [not_null]
+          - name: team_id
+            data_tests: [not_null]
+      - name: workbench_player_games
+        columns:
+          - name: id
+            data_tests: [unique, not_null]
+          - name: dataset_id
+            data_tests:
+              - relationships:
+                  arguments:
+                    to: source('operational', 'workbench_datasets')
+                    field: id
+          - name: game_id
+            data_tests: [not_null]
+          - name: player_id
+            data_tests: [not_null]
+
