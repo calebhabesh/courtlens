@@ -1,0 +1,26 @@
+[
+  {
+    "box_root": "data/raw/sportsdataverse_2024",
+    "ledger": "data/raw/b26-official-observations/reviewed-2023-v3/ledger.json",
+    "manifest_sha256": "cdb22cdb1dcdf80a34f4b87f5bec2d92e84b23959b7aa81be2c0814fa55be09a",
+    "root": "data/artifacts/research-shots/b26-three-season-2023",
+    "shot_root": "data/raw/b26-shotchart/e829d4678be1e075f99e5d41a1c5f97089be446b/2023",
+    "starting_year": 2023
+  },
+  {
+    "box_root": "data/raw/sportsdataverse_2025",
+    "ledger": "data/raw/b26-official-observations/reviewed-653-v2/ledger.json",
+    "manifest_sha256": "27068bbbc0a419b91f4872a9ced026d8701a755c46c99908018806512dbd7baf",
+    "root": "data/artifacts/research-shots/b26-three-season-2024",
+    "shot_root": "data/raw/b26-shotchart/e829d4678be1e075f99e5d41a1c5f97089be446b/2024",
+    "starting_year": 2024
+  },
+  {
+    "box_root": "data/raw/sportsdataverse_2026",
+    "ledger": "data/raw/b26-official-observations/reviewed-403-v1/ledger.json",
+    "manifest_sha256": "aaaea8a18e65b2d50a9b9e73778aba85bfde30351bd365fbaeaa722038fdefff",
+    "root": "data/artifacts/research-shots/b26-three-season-2025",
+    "shot_root": "data/raw/b26-shotchart/e829d4678be1e075f99e5d41a1c5f97089be446b",
+    "starting_year": 2025
+  }
+]

@@ -309,6 +309,216 @@ function workbenchPlayerGames(id) {
   };
 }
 
+const mockPlayoffSeriesSummary = {
+  series_id: "004230040",
+  slug: "2024-finals-bos-dal",
+  season: "2023-24",
+  round_number: 4,
+  round_name: "NBA Finals",
+  conference: null,
+  matchup_index: 0,
+  team1: { team_id: "100", tricode: "BOS", name: "Boston Celtics", seed: 1, wins: 4 },
+  team2: { team_id: "200", tricode: "DAL", name: "Dallas Mavericks", seed: 5, wins: 1 },
+  series_score: "4-1",
+  status: "final",
+  winner_team_id: "100",
+  winner_tricode: "BOS",
+  games_count: 5,
+  total_scheduled: 7,
+  is_sweep: false,
+  summary_text: "Boston Celtics won 4-1"
+};
+
+const mockPlayoffBracket = {
+  season: "2023-24",
+  season_year: 2024,
+  cutoff_date: null,
+  rounds: [
+    {
+      round_number: 4,
+      round_name: "NBA Finals",
+      eastern_series: [],
+      western_series: [],
+      finals_series: [mockPlayoffSeriesSummary],
+      series: [mockPlayoffSeriesSummary]
+    }
+  ],
+  seeds: {
+    East: [
+      {
+        team_id: "100",
+        tricode: "BOS",
+        team_name: "Boston Celtics",
+        conference: "East",
+        seed: 1,
+        wins: 64,
+        losses: 18,
+        win_pct: 0.78,
+        is_tied: false,
+        tie_note: null,
+        source_label: "reconstructed_regular_season_standings"
+      }
+    ],
+    West: [
+      {
+        team_id: "200",
+        tricode: "DAL",
+        team_name: "Dallas Mavericks",
+        conference: "West",
+        seed: 5,
+        wins: 50,
+        losses: 32,
+        win_pct: 0.61,
+        is_tied: false,
+        tie_note: null,
+        source_label: "reconstructed_regular_season_standings"
+      }
+    ]
+  },
+  capabilities: {
+    bracket_hierarchy: "completed_rounds_1_to_4",
+    box_scores: "factual_completed_games_only",
+    matchups_gated: "B23_B24_pending",
+    rotations_gated: "B19_B22_pending"
+  },
+  disclaimers: ["CourtLoad strictly reports completed-game descriptive playoff facts."]
+};
+
+const mockPlayoffSeriesDetail = {
+  series_id: "004230040",
+  slug: "2024-finals-bos-dal",
+  season: "2023-24",
+  season_year: 2024,
+  round_number: 4,
+  round_name: "NBA Finals",
+  conference: null,
+  matchup_index: 0,
+  status: "final",
+  series_score: "4-1",
+  winner_team_id: "100",
+  winner_tricode: "BOS",
+  cutoff_date: null,
+  team1: {
+    team_id: "100",
+    tricode: "BOS",
+    team_name: "Boston Celtics",
+    seed: 1,
+    wins: 4,
+    losses: 1,
+    games_played: 5,
+    points_per_game: 106.8,
+    opponent_points_per_game: 99.2,
+    average_margin: 7.6,
+    pace: 91.2,
+    off_rating: 114.5,
+    def_rating: 106.2,
+    net_rating: 8.3,
+    efg_pct: 0.542,
+    tov_pct: 0.105,
+    oreb_pct: 0.284,
+    ftr: 0.245,
+    totals: {}
+  },
+  team2: {
+    team_id: "200",
+    tricode: "DAL",
+    team_name: "Dallas Mavericks",
+    seed: 5,
+    wins: 1,
+    losses: 4,
+    games_played: 5,
+    points_per_game: 99.2,
+    opponent_points_per_game: 106.8,
+    average_margin: -7.6,
+    pace: 91.2,
+    off_rating: 106.2,
+    def_rating: 114.5,
+    net_rating: -8.3,
+    efg_pct: 0.512,
+    tov_pct: 0.132,
+    oreb_pct: 0.245,
+    ftr: 0.21,
+    totals: {}
+  },
+  game_cards: [
+    {
+      game_id: "0042300401",
+      game_number: 1,
+      game_date: "2024-06-06",
+      home_team_id: "100",
+      home_team_tricode: "BOS",
+      away_team_id: "200",
+      away_team_tricode: "DAL",
+      home_score: 107,
+      away_score: 89,
+      status: "final",
+      venue: "TD Garden",
+      winner_team_id: "100",
+      margin: 18
+    },
+    {
+      game_id: "0042300406",
+      game_number: 6,
+      game_date: null,
+      home_team_id: "200",
+      home_team_tricode: "DAL",
+      away_team_id: "100",
+      away_team_tricode: "BOS",
+      home_score: null,
+      away_score: null,
+      status: "unplayed_placeholder",
+      venue: null,
+      winner_team_id: null,
+      margin: null
+    }
+  ],
+  team1_players: [
+    {
+      player_id: "23",
+      player_name: "Fixture Star",
+      team_id: "100",
+      team_tricode: "BOS",
+      games_played: 5,
+      games_started: 5,
+      minutes_total_seconds: 12060,
+      minutes_per_game: 40.2,
+      points_total: 111,
+      points_per_game: 22.2,
+      rebounds_total: 39,
+      rebounds_per_game: 7.8,
+      offensive_rebounds: 5,
+      defensive_rebounds: 34,
+      assists_total: 36,
+      assists_per_game: 7.2,
+      steals_total: 6,
+      steals_per_game: 1.2,
+      blocks_total: 3,
+      blocks_per_game: 0.6,
+      turnovers_total: 16,
+      turnovers_per_game: 3.2,
+      fouls_total: 14,
+      fouls_per_game: 2.8,
+      fgm: 37,
+      fga: 95,
+      fg_pct: 0.389,
+      fg3m: 11,
+      fg3a: 42,
+      fg3_pct: 0.262,
+      ftm: 26,
+      fta: 35,
+      ft_pct: 0.743,
+      efg_pct: 0.447,
+      ts_pct: 0.503
+    }
+  ],
+  team2_players: [],
+  capabilities: {
+    bracket_hierarchy: "completed_rounds_1_to_4",
+    box_scores: "factual_completed_games_only"
+  },
+  disclaimers: ["Descriptive completed-game facts only."]
+};
+
 createServer((request, response) => {
   const url = new URL(request.url ?? "/", "http://127.0.0.1:4100");
   if (url.pathname === "/api/workbench/status") return json(response, 200, workbenchStatus);
@@ -325,6 +535,12 @@ createServer((request, response) => {
   if (url.pathname === "/api/workbench/players/24/games") return json(response, 200, workbenchPlayerGames("24"));
   if (url.pathname === "/api/workbench/teams") return json(response, 200, workbenchTeams);
   if (url.pathname === "/api/workbench/teams/100") return json(response, 200, workbenchTeamDetail);
+  if (url.pathname === "/api/workbench/playoffs") {
+    return json(response, 200, mockPlayoffBracket);
+  }
+  if (url.pathname.startsWith("/api/workbench/playoffs/series/")) {
+    return json(response, 200, mockPlayoffSeriesDetail);
+  }
   if (url.pathname === "/api/workbench/compare") {
     const pA = {
       id: "23",

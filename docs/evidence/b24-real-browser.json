@@ -1,0 +1,36 @@
+{
+  "verification_date": "2026-10-03",
+  "kind": "Real browser HTTP to isolated API process using retained database; no browser response mocks",
+  "checks": [
+    {
+      "path": "/shot-profile-twin",
+      "operation": "shot-profile-peers",
+      "http_status": 200,
+      "source": "source_blocked",
+      "observed_games": 0,
+      "expected_games": 1230,
+      "evidence_hash": "7299f6d3bb9ba1880334201b3c94dc53ff8be7879477fd21ab468428a2974f74",
+      "export_identity_matches": true
+    },
+    {
+      "path": "/matchups",
+      "operation": "matchups",
+      "http_status": 200,
+      "source": "source_blocked",
+      "observed_games": 0,
+      "expected_games": 1230,
+      "evidence_hash": "1fc19cb5c38459f832108f0192bb3aa86b5953a11365d966ccc5246e21f200f6",
+      "export_identity_matches": true
+    },
+    {
+      "path": "/shot-aftermath",
+      "operation": "shot-aftermath",
+      "http_status": 200,
+      "source": "source_blocked",
+      "observed_games": 0,
+      "expected_games": 1230,
+      "evidence_hash": "37899723091105fb1d90d34cc6e9cb4a7b6a05394700122db9b2ad3bae2a2d37",
+      "export_identity_matches": true
+    }
+  ]
+}

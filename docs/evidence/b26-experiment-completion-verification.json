@@ -1,0 +1,42 @@
+{
+  "all_publication_pointers_unchanged_live_probe": true,
+  "calibration_fits": 0,
+  "candidate_fits": 1,
+  "candidate_promoted": false,
+  "evidence": {
+    "docs/evidence/b26-expected-shot-result.json": "043acaeb3dcb5b1a94527304547e5c90c68b85e2f1b14b13b94dac40ffd5e720",
+    "docs/evidence/b26-live-sealing-probe.json": "70acd0508d00094b8058e208b57db40c87c21842424ac7eb3e7b6b524d94959b",
+    "docs/evidence/b26-results-api-smoke.json": "b8dd22d2242199f598bb94bef273ab0334c68aa1b457a31d2b5311dc5bb1c135",
+    "docs/evidence/b26-run-package.json": "6d0b7d4fab0858211283af85b61270bb56322da707f379df63094210d869fe0b",
+    "docs/evidence/b26-three-season-admission-v2.json": "343064fd12fecfbb91fa4a9f84d171d92e86ebf86a653ab4b93ed8149f96c6dd"
+  },
+  "expected_shot_status": "completed_negative_result",
+  "final_model_error_report_opened": false,
+  "git_diff_check": "pass",
+  "implementation": {
+    "src/courtload/api/routers/research.py": "8a28603ac5fe117cf48febf8b5ac3bdb1df56d22a2ec183da610bea1f9a8b56c",
+    "src/courtload/evaluation/research_package.py": "941c26342f8a91a6e26a7096c432673c15a3d2eadd16b23287e61c65757fc253",
+    "src/courtload/evaluation/research_reproduce.py": "380262b07e84b511b117b8fd1031457d7957c8fa800044f81b899a730191bfec",
+    "src/courtload/evaluation/research_runner.py": "65d1b6ebbe67fd696d9a109d783642677d0ff1e3974ce2885dcd5b3dd6d20938"
+  },
+  "mypy_source_files": 118,
+  "normal_backend_suite": {
+    "passed": 448,
+    "skipped": 74,
+    "warnings": 1
+  },
+  "original_b25_protocols_verified": 4,
+  "original_run_artifacts_reverified_unchanged": true,
+  "parent_block_status": "partially_complete_independent_source_gates",
+  "postgres_focused_and_regression_suite": {
+    "passed": 138,
+    "skipped": 0,
+    "warnings": 1
+  },
+  "predictions_replayed_exactly": 106080,
+  "public_snapshot_unchanged": true,
+  "ruff": "pass",
+  "ruff_format_files": 270,
+  "schema_version": "courtload-b26-completion-verification-v1",
+  "warning": "existing Starlette/httpx deprecation; zero-warning release gate remains open"
+}

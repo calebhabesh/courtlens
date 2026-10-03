@@ -1,0 +1,15 @@
+{
+  "all_publication_pointers_unchanged": true,
+  "duplicate_admission_refused": "research input already admitted; refusing membership replacement",
+  "live_guard_probes": [
+    {
+      "rejected": true,
+      "statement": "UPDATE research_datasets SET content_sha256=content_sha256 WHERE id='3d64fe04-dc9a-4a45-bf96-182371a94f7b'"
+    },
+    {
+      "rejected": true,
+      "statement": "INSERT INTO research_shot_members VALUES ('3d64fe04-dc9a-4a45-bf96-182371a94f7b','0022500792',999999,true,'{}')"
+    }
+  ],
+  "transaction_changes_committed": 0
+}

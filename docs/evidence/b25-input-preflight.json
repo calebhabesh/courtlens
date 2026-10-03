@@ -1,0 +1,61 @@
+{
+  "binding_status": "source_blocked; no exact split bindings or model fits",
+  "darko_crosswalk_rows": 0,
+  "kind": "B25 read-only retained-input preflight; not source admission or model evaluation",
+  "observed_at": "2026-10-03T10:47:51.690610+00:00",
+  "operations": {
+    "matchups": {
+      "coverage_status": "source_blocked",
+      "evidence_hash": "1fc19cb5c38459f832108f0192bb3aa86b5953a11365d966ccc5246e21f200f6",
+      "expected_games": 1230,
+      "input_counts": {
+        "workbench_matchups": 0
+      },
+      "input_hash": "7d5c435deeac908804383585186b10ae60be811ab5141fa19a01cb8f9026df40",
+      "observed_games": 0
+    },
+    "shot-aftermath": {
+      "coverage_status": "source_blocked",
+      "evidence_hash": "37899723091105fb1d90d34cc6e9cb4a7b6a05394700122db9b2ad3bae2a2d37",
+      "expected_games": 1230,
+      "input_counts": {
+        "workbench_pbp_events": 2,
+        "workbench_possessions": 0,
+        "workbench_shots": 0
+      },
+      "input_hash": "3b05b02bfff27ce845e680dfbcbaa89e826424d37d88f7c8a582d884d6cbaf14",
+      "observed_games": 0
+    },
+    "shot-profile": {
+      "coverage_status": "source_blocked",
+      "evidence_hash": "c5c629d29b0f342c7203007f4d6dca08cf91519d8fb78fe46be29b74fbdfd426",
+      "expected_games": 1230,
+      "input_counts": {
+        "workbench_shots": 0
+      },
+      "input_hash": "9e5148dac637dca5cecb78e42800d74798761027d159b9a7cbee1d097f9be1e1",
+      "observed_games": 0
+    }
+  },
+  "python": "3.14.7",
+  "request": {
+    "before_date": "2024-04-15",
+    "defender_id": null,
+    "limit": 10,
+    "lower_date": null,
+    "min_attempts": 100,
+    "min_games": 5,
+    "phase": "regular_season",
+    "player_id": "1627751",
+    "release_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+    "season": "2023-24"
+  },
+  "retained_rows": {
+    "workbench_identity_crosswalks": 19,
+    "workbench_lineup_stints": 0,
+    "workbench_matchups": 1,
+    "workbench_pbp_events": 4,
+    "workbench_possessions": 1,
+    "workbench_shots": 2
+  }
+}
