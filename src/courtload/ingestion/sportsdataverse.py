@@ -16,13 +16,18 @@ import httpx
 from courtload.ingestion.workbench_source_config import (
     ADMITTED_SEASONS,
     canonical_season_name,
+    lineups_url,
+    matchups_url,
+    pbp_url,
     player_boxscores_url,
+    possessions_url,
     raw_schedule_json_url,
     schedule_csv_url,
+    shots_url,
     team_boxscores_url,
 )
 
-MAX_DOWNLOAD_BYTES: int = 50_000_000
+MAX_DOWNLOAD_BYTES: int = 150_000_000
 MAX_DOWNLOAD_SECONDS: float = 120.0
 USER_AGENT: str = "CourtLoad-workbench/1.0"
 
@@ -161,6 +166,63 @@ def acquire_season_assets(
         "canonical_season": season_name,
         "acquired_at_utc": datetime.now(UTC).isoformat(),
         "license_declared": "CC BY 4.0; underlying NBA data rights unverified",
+        "files": acquired_files,
+    }
+    manifest_path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+    return manifest
+
+
+def acquire_rich_season_assets(
+    ending_year: int,
+    raw_root: Path,
+    *,
+    client: httpx.Client | None = None,
+) -> dict[str, Any]:
+    """Acquire and verify all rich source assets (PBP, possessions, lineups, shots, matchups)."""
+    season_name = canonical_season_name(ending_year)
+    season_dir = raw_root / f"sportsdataverse_{ending_year}"
+    season_dir.mkdir(parents=True, exist_ok=True)
+
+    acquired_files: dict[str, dict[str, Any]] = {}
+
+    # 1. PBP
+    pbp_dest = season_dir / f"nba_play_by_play_{ending_year}.csv.gz"
+    acquired_files["pbp"] = acquire_file(
+        pbp_url(ending_year), pbp_dest, max_bytes=MAX_DOWNLOAD_BYTES, client=client
+    )
+
+    # 2. Possessions
+    poss_dest = season_dir / f"nba_possessions_{ending_year}.csv.gz"
+    acquired_files["possessions"] = acquire_file(
+        possessions_url(ending_year), poss_dest, max_bytes=MAX_DOWNLOAD_BYTES, client=client
+    )
+
+    # 3. Game Lineups
+    lineups_dest = season_dir / f"nba_lineups_{ending_year}.csv.gz"
+    acquired_files["lineups"] = acquire_file(
+        lineups_url(ending_year), lineups_dest, max_bytes=MAX_DOWNLOAD_BYTES, client=client
+    )
+
+    # 4. Shots
+    shots_dest = season_dir / f"shots_{ending_year}.csv"
+    acquired_files["shots"] = acquire_file(
+        shots_url(ending_year), shots_dest, max_bytes=MAX_DOWNLOAD_BYTES, client=client
+    )
+
+    # 5. Game Matchups
+    matchups_dest = season_dir / f"game_matchups_{ending_year}.csv"
+    acquired_files["matchups"] = acquire_file(
+        matchups_url(ending_year), matchups_dest, max_bytes=MAX_DOWNLOAD_BYTES, client=client
+    )
+
+    manifest_path = season_dir / "rich-retrieval-manifest.json"
+    manifest: dict[str, Any] = {
+        "source": "sportsdataverse/sportsdataverse-data",
+        "ending_year": ending_year,
+        "canonical_season": season_name,
+        "acquired_at_utc": datetime.now(UTC).isoformat(),
+        "license_declared": "CC BY 4.0; underlying NBA data rights unverified",
+        "rich_source_family": "sdv_rich_v1",
         "files": acquired_files,
     }
     manifest_path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")

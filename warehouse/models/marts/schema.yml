@@ -60,4 +60,30 @@ models:
         data_tests: [not_null]
       - name: team_id
         data_tests: [not_null]
+  - name: mart_workbench_lineup_exposure
+    description: Aggregated 5-man lineup exposure facts with offensive/defensive ratings.
+    columns:
+      - name: dataset_id
+        data_tests: [not_null]
+      - name: season
+        data_tests: [not_null]
+      - name: phase
+        data_tests: [not_null]
+      - name: team_id
+        data_tests: [not_null]
+      - name: lineup_key
+        data_tests: [not_null]
+  - name: mart_workbench_player_possession_exposure
+    description: Aggregated player on-court possession exposure facts and on-court net ratings.
+    columns:
+      - name: dataset_id
+        data_tests: [not_null]
+      - name: season
+        data_tests: [not_null]
+      - name: phase
+        data_tests: [not_null]
+      - name: team_id
+        data_tests: [not_null]
+      - name: player_id
+        data_tests: [not_null]
 

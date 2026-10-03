@@ -207,4 +207,62 @@ sources:
             data_tests: [not_null]
           - name: player_id
             data_tests: [not_null]
+      - name: workbench_possessions
+        columns:
+          - name: id
+            data_tests: [unique, not_null]
+          - name: dataset_id
+            data_tests:
+              - relationships:
+                  arguments:
+                    to: source('operational', 'workbench_datasets')
+                    field: id
+          - name: game_id
+            data_tests: [not_null]
+          - name: possession_number
+            data_tests: [not_null]
+      - name: workbench_lineup_stints
+        columns:
+          - name: id
+            data_tests: [unique, not_null]
+          - name: dataset_id
+            data_tests:
+              - relationships:
+                  arguments:
+                    to: source('operational', 'workbench_datasets')
+                    field: id
+          - name: game_id
+            data_tests: [not_null]
+          - name: stint_index
+            data_tests: [not_null]
+      - name: workbench_stint_players
+        columns:
+          - name: id
+            data_tests: [unique, not_null]
+          - name: dataset_id
+            data_tests:
+              - relationships:
+                  arguments:
+                    to: source('operational', 'workbench_datasets')
+                    field: id
+          - name: stint_id
+            data_tests:
+              - relationships:
+                  arguments:
+                    to: source('operational', 'workbench_lineup_stints')
+                    field: id
+          - name: player_id
+            data_tests: [not_null]
+      - name: workbench_reconstruction_overrides
+        columns:
+          - name: id
+            data_tests: [unique, not_null]
+          - name: dataset_id
+            data_tests:
+              - relationships:
+                  arguments:
+                    to: source('operational', 'workbench_datasets')
+                    field: id
+          - name: game_id
+            data_tests: [not_null]
 
