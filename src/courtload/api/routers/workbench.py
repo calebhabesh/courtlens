@@ -13,40 +13,141 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from courtload.api.workbench_schemas import (
+    AggregateRankingBoardsRequest,
     AssistantAnswer,
     AssistantQueryRequest,
     AssistantStatusResponse,
+    BackfillStatusResponse,
+    BoardAggregationResult,
+    ComparePeriodsRequest,
+    ComparePeriodsResponse,
+    CreateCustomViewRequest,
     CreateJobRequest,
+    CreateRankingBoardRequest,
+    CreateTierListRequest,
+    CrosswalkItem,
+    CrosswalkResponse,
+    CustomViewDefinition,
+    DistributionMeasure,
+    DistributionRequest,
+    DistributionResponse,
     ForecastIssuanceDetailResponse,
     ForecastsListResponse,
+    ImportWorkspaceRequest,
     InvestigationDetailResponse,
     InvestigationReproduceResponse,
     JobResponse,
     LineageResponse,
+    LookupResponse,
+    MeasurementsQueryResponse,
     MetricCatalogResponse,
     MetricComparisonItem,
     MetricDefinitionSchema,
+    OpponentContextRequest,
+    OpponentContextResponse,
+    PeriodMode,
+    PersonalWorkspaceState,
     PlayerComparisonResponse,
     PlayerGameLogItem,
     PlayerGameLogResponse,
+    PlayerMeasurementsDetailResponse,
     PlayerProfileResponse,
     PlayerProfileStint,
     PlayerResearchItem,
     PlayerResearchResponse,
+    PlayoffBracketResponse,
+    PlayoffSeriesDetailResponse,
     PointsForecastEvaluationResponse,
+    RankingBoardDefinition,
+    RankOperationRequest,
+    RankOperationResponse,
+    ReorderViewsRequest,
     ResearchQuerySchema,
     SavedInvestigationResponse,
     SaveInvestigationRequest,
+    SplitProfileRequest,
+    SplitProfileResponse,
+    SplitType,
+    StatisticalPeersRequest,
+    StatisticalPeersResponse,
     TeamDetailResponse,
+    TeamFourFactorsResponse,
+    TeamPeersResponse,
     TeamResearchItem,
     TeamResearchResponse,
+    TeamScheduleResponse,
+    ThreePointVariationResponse,
+    TierListDefinition,
+    UpdateCompareTrayRequest,
+    UpdateCustomViewRequest,
+    UpdateFavoritesRequest,
+    UpdatePreferencesRequest,
     WorkbenchCatalogResponse,
+    WorkbenchQueryRequest,
+    WorkbenchQueryResponse,
     WorkbenchStatusResponse,
+    WorkspaceBundle,
+    WorkspacePreferences,
 )
 from courtload.config import get_settings
 from courtload.database import get_db
-from courtload.domain.metrics import list_metric_definitions
+from courtload.domain.context import CapabilityEntry, CapabilityStatus
+from courtload.domain.metrics import (
+    METRIC_CATALOG,
+    METRIC_CATALOG_VERSION,
+    SUPPORTED_PHASES,
+    list_metric_definitions,
+)
+from courtload.domain.personal_state import CANONICAL_BUILTIN_VIEWS
+from courtload.domain.query_spec import ALLOWED_METADATA_FIELDS
+from courtload.domain.query_url import deserialize_params_to_query, query_spec_to_research_query
+from courtload.services.analytical_ops import (
+    compare_periods_service,
+    distribution_service,
+    opponent_context_service,
+    rank_operation_service,
+    split_profile_service,
+    statistical_peers_service,
+)
 from courtload.services.assistant import get_assistant_status, run_assistant_query
+from courtload.services.entity_lookup import lookup_entities
+from courtload.services.identity_crosswalk import resolve_crosswalk
+from courtload.services.measurements import (
+    get_player_measurements_detail_service,
+    query_measurements_service,
+)
+from courtload.services.personal_state import (
+    VersionConflictError,
+    add_custom_view,
+    add_favorite_player,
+    add_to_compare_tray,
+    aggregate_ranking_boards_service,
+    clear_compare_tray,
+    delete_custom_view,
+    delete_ranking_board,
+    delete_tier_list,
+    export_workspace_bundle,
+    get_or_create_workspace,
+    import_workspace_bundle,
+    remove_favorite_player,
+    remove_from_compare_tray,
+    reorder_custom_views,
+    reset_workspace,
+    save_ranking_board,
+    save_tier_list,
+    update_compare_tray,
+    update_custom_view,
+    update_favorites,
+    update_preferences_service,
+    update_workspace_state,
+)
+from courtload.services.stats_engine import execute_stats_query
+from courtload.services.team_analytics import (
+    get_team_four_factors,
+    get_team_peers,
+    get_team_schedule,
+    get_team_three_point_variation,
+)
 from courtload.services.workbench_analytics import (
     ResearchQuery,
     compare_players,
@@ -62,11 +163,16 @@ from courtload.services.workbench_analytics import (
     resolve_workbench_context,
     save_investigation,
 )
+from courtload.services.workbench_backfill import get_backfill_status
 from courtload.services.workbench_forecasts import (
     get_forecast_issuance_detail,
     query_forecast_issuances,
 )
 from courtload.services.workbench_jobs import enqueue_job, get_workbench_status
+from courtload.services.workbench_playoffs import (
+    get_playoff_bracket,
+    get_playoff_series_detail,
+)
 from courtload.workbench_models import (
     ModelPolicyActivation,
     PlayerPortrait,
@@ -105,6 +211,18 @@ def verify_operator_access(
         raise HTTPException(status_code=401, detail="Operator token required for mutations")
 
 
+def verify_workspace_operator_access(
+    request: Request,
+    x_operator_token: str | None = Header(None, alias="X-Operator-Token"),
+) -> None:
+    """Workspace writes always require server operator credentials, including loopback."""
+    if not x_operator_token:
+        raise HTTPException(
+            status_code=401, detail="Operator token required for workspace mutations"
+        )
+    verify_operator_access(request, x_operator_token=x_operator_token)
+
+
 @router.get("/catalog", response_model=WorkbenchCatalogResponse)
 def get_catalog(
     release_id: str | None = Query(None, alias="releaseId"),
@@ -112,6 +230,51 @@ def get_catalog(
 ) -> WorkbenchCatalogResponse:
     """Retrieve ready release, semantic signature, supported seasons, and capabilities."""
     context = resolve_workbench_context(session, release_id=release_id)
+    capabilities = {
+        "core_stats": CapabilityEntry(
+            name="core_stats",
+            status=CapabilityStatus.AVAILABLE,
+            seasons=(context.supported_dates and [context.season]) or ["2023-24"],
+            phases=[context.phase],
+            coverage_start=context.coverage_start,
+            coverage_end=context.coverage_end,
+        ),
+        "schedules": CapabilityEntry(
+            name="schedules",
+            status=CapabilityStatus.AVAILABLE,
+            seasons=(context.supported_dates and [context.season]) or ["2023-24"],
+            phases=[context.phase],
+            coverage_start=context.coverage_start,
+            coverage_end=context.coverage_end,
+        ),
+        "measurements": CapabilityEntry(
+            name="measurements",
+            status=CapabilityStatus.AVAILABLE,
+            limitations=[
+                (
+                    "Listed roster measurements reflect team-reported values and are not "
+                    "interchangeable with combine measurements."
+                ),
+                "Missing measurements are null, never zero.",
+            ],
+        ),
+        "draft_metadata": CapabilityEntry(
+            name="draft_metadata",
+            status=CapabilityStatus.AVAILABLE,
+            limitations=["Undrafted players have draft_type='undrafted' with null round/pick."],
+        ),
+        "identity_crosswalk": CapabilityEntry(
+            name="identity_crosswalk",
+            status=CapabilityStatus.AVAILABLE,
+            limitations=[
+                "Verified crosswalk mappings across NBA, ESPN, BRef, and Spotrac namespaces."
+            ],
+        ),
+        "hypothetical": CapabilityEntry(
+            name="hypothetical",
+            status=CapabilityStatus.NOT_IMPLEMENTED,
+        ),
+    }
     return WorkbenchCatalogResponse(
         release_id=context.release_id,
         snapshot_id=context.snapshot_id,
@@ -130,57 +293,201 @@ def get_catalog(
         metric_version="v1",
         published_at=context.published_at,
         warnings=context.warnings,
+        capabilities=capabilities,
     )
 
 
 @router.get("/metrics", response_model=MetricCatalogResponse)
-def get_metrics() -> MetricCatalogResponse:
+def get_metrics(version: str | None = None) -> MetricCatalogResponse:
     """Retrieve versioned metric definitions and formula capabilities."""
-    definitions = [MetricDefinitionSchema(**m.to_dict()) for m in list_metric_definitions()]
-    return MetricCatalogResponse(version="v1", metrics=definitions)
+    target_version = version or METRIC_CATALOG_VERSION
+    definitions = [
+        MetricDefinitionSchema(**m.to_dict())
+        for m in list_metric_definitions(version=target_version)
+    ]
+    return MetricCatalogResponse(version=target_version, metrics=definitions)
+
+
+@router.post("/query", response_model=WorkbenchQueryResponse)
+def execute_query_endpoint(
+    payload: WorkbenchQueryRequest,
+    session: Session = Depends(get_db),
+) -> WorkbenchQueryResponse:
+    """Read-only typed v2 query execution under canonical QuerySpec."""
+    spec = payload.query
+
+    # Validate metric selectors and sort metric against catalog
+    for s in spec.sort:
+        if s.field not in METRIC_CATALOG and s.field not in ALLOWED_METADATA_FIELDS:
+            valid_metrics = ", ".join(sorted(METRIC_CATALOG.keys()))
+            raise HTTPException(
+                status_code=422,
+                detail=f"unsupported sort metric '{s.field}'; valid metrics are: {valid_metrics}",
+            )
+    for selector in spec.metric_selectors:
+        if selector.key not in METRIC_CATALOG:
+            valid_metrics = ", ".join(sorted(METRIC_CATALOG.keys()))
+            raise HTTPException(
+                status_code=422,
+                detail=(
+                    f"unsupported metric selector '{selector.key}'; "
+                    f"valid metrics are: {valid_metrics}"
+                ),
+            )
+
+    context = resolve_workbench_context(
+        session,
+        release_id=spec.release_id,
+        requested_season=spec.season,
+        requested_phase=spec.phase,
+        requested_before_date=spec.before_date,
+        requested_window=spec.window.kind.value,
+    )
+
+    items_raw, total_count, next_cursor, has_more = execute_stats_query(session, context, spec)
+
+    items = [
+        PlayerResearchItem(
+            player_id=r["player_id"],
+            player_name=r["player_name"],
+            teams=r["teams"],
+            stints_count=r["stints_count"],
+            games_played=r["games_played"],
+            total_minutes=r["total_minutes"],
+            metrics=r["metrics"],
+            sample_sizes=r["sample_sizes"],
+        )
+        for r in items_raw
+    ]
+
+    return WorkbenchQueryResponse(
+        context=context.to_dict(),
+        query=spec,
+        total_eligible_players=total_count,
+        items=items,
+        next_cursor=next_cursor,
+        has_more=has_more,
+        warnings=context.warnings,
+    )
+
+
+@router.get("/lookup", response_model=LookupResponse)
+def get_lookup(
+    q: str = Query("", description="Search query string"),
+    release_id: str | None = Query(None, alias="releaseId"),
+    release_id_alt: str | None = Query(None, alias="release_id"),
+    season: str | None = Query(None, description="Optional season context"),
+    kinds: str | None = Query(
+        None, description="Optional comma-separated kinds: player, team, page"
+    ),
+    limit: int = Query(10, ge=1, le=20, description="Maximum matches to return (1-20)"),
+    session: Session = Depends(get_db),
+) -> LookupResponse:
+    """Incremental entity discovery API for players, teams, and navigation pages."""
+    effective_release = release_id or release_id_alt
+    dataset_id = None
+    if effective_release:
+        try:
+            resolved_ctx = resolve_workbench_context(session, release_id=effective_release)
+            dataset_id = resolved_ctx.dataset_id
+        except Exception:
+            pass
+    else:
+        try:
+            resolved_ctx = resolve_workbench_context(session)
+            dataset_id = resolved_ctx.dataset_id
+            if not effective_release:
+                effective_release = resolved_ctx.release_id
+        except Exception:
+            pass
+
+    allowed_kinds = None
+    if kinds:
+        allowed_kinds = [k.strip().lower() for k in kinds.split(",") if k.strip()]
+
+    return lookup_entities(
+        session=session,
+        query=q,
+        release_id=effective_release,
+        dataset_id=dataset_id,
+        season=season,
+        kinds=allowed_kinds,
+        limit=limit,
+    )
 
 
 @router.get("/players", response_model=PlayerResearchResponse)
 def get_players(
     release_id: str | None = Query(None, alias="releaseId"),
+    release_id_alt: str | None = Query(None, alias="release_id"),
     season: str | None = Query(None),
     phase: str = Query("regular_season"),
     before_date: date | None = Query(None, alias="beforeDate"),
+    before_date_alt: date | None = Query(None, alias="before_date"),
     window: str = Query("season"),
     team_id: str | None = Query(None, alias="teamId"),
+    team_id_alt: str | None = Query(None, alias="team_id"),
     name: str | None = Query(None),
     min_games: int | None = Query(None, alias="minGames", ge=0),
+    min_games_alt: int | None = Query(None, alias="min_games", ge=0),
     min_minutes: float | None = Query(None, alias="minMinutes", ge=0.0),
+    min_minutes_alt: float | None = Query(None, alias="min_minutes", ge=0.0),
     min_avg_minutes: float | None = Query(None, alias="minAvgMinutes", ge=0.0),
+    min_avg_minutes_alt: float | None = Query(None, alias="min_avg_minutes", ge=0.0),
     sort_metric: str = Query("pts", alias="sortMetric"),
+    sort_metric_alt: str | None = Query(None, alias="sort_metric"),
     sort_direction: str = Query("desc", alias="sortDirection"),
+    sort_direction_alt: str | None = Query(None, alias="sort_direction"),
     limit: int = Query(50, ge=1, le=100),
     cursor: str | None = Query(None),
     session: Session = Depends(get_db),
 ) -> PlayerResearchResponse:
     """Browse, search, filter, and sort player research statistics."""
+    eff_release_id = release_id or release_id_alt
+    eff_before_date = before_date or before_date_alt
+    eff_team_id = team_id or team_id_alt
+    eff_min_games = min_games if min_games is not None else min_games_alt
+    eff_min_minutes = min_minutes if min_minutes is not None else min_minutes_alt
+    eff_min_avg_minutes = min_avg_minutes if min_avg_minutes is not None else min_avg_minutes_alt
+    eff_sort_metric = (sort_metric_alt or sort_metric).strip().lower()
+    eff_sort_direction = (sort_direction_alt or sort_direction).strip().lower()
+
+    if eff_sort_metric not in METRIC_CATALOG and eff_sort_metric not in ALLOWED_METADATA_FIELDS:
+        valid_keys = ", ".join(sorted(METRIC_CATALOG.keys()))
+        raise HTTPException(
+            status_code=422,
+            detail=f"unsupported metric '{eff_sort_metric}'; valid metrics are: {valid_keys}",
+        )
+
+    if phase not in SUPPORTED_PHASES:
+        valid_phases = ", ".join(SUPPORTED_PHASES)
+        raise HTTPException(
+            status_code=422,
+            detail=f"unsupported phase '{phase}'; valid phases are: {valid_phases}",
+        )
+
     context = resolve_workbench_context(
         session,
-        release_id=release_id,
+        release_id=eff_release_id,
         requested_season=season,
         requested_phase=phase,
-        requested_before_date=before_date,
+        requested_before_date=eff_before_date,
         requested_window=window,
     )
 
     query = ResearchQuery(
-        release_id=release_id,
+        release_id=eff_release_id,
         season=context.season,
         phase=context.phase,
         before_date=context.before_date,
         window=context.window,
-        team_id=team_id,
+        team_id=eff_team_id,
         name=name,
-        min_games=min_games,
-        min_minutes=min_minutes,
-        min_avg_minutes=min_avg_minutes,
-        sort_metric=sort_metric,
-        sort_direction=sort_direction,
+        min_games=eff_min_games,
+        min_minutes=eff_min_minutes,
+        min_avg_minutes=eff_min_avg_minutes,
+        sort_metric=eff_sort_metric,
+        sort_direction=eff_sort_direction,
         limit=limit,
         cursor=cursor,
     )
@@ -211,14 +518,15 @@ def get_players(
             phase=context.phase,
             before_date=context.before_date.isoformat(),
             window=context.window,
-            team_id=team_id,
+            team_id=eff_team_id,
             name=name,
-            min_games=min_games,
-            min_minutes=min_minutes,
-            min_avg_minutes=min_avg_minutes,
-            sort_metric=sort_metric,
-            sort_direction=sort_direction,
+            min_games=eff_min_games,
+            min_minutes=eff_min_minutes,
+            min_avg_minutes=eff_min_avg_minutes,
+            sort_metric=eff_sort_metric,
+            sort_direction=eff_sort_direction,
             limit=limit,
+            cursor=cursor,
         ),
         total_eligible_players=total_count,
         items=items,
@@ -324,7 +632,7 @@ def get_teams(
         requested_before_date=before_date,
     )
 
-    teams_data = get_teams_research(session, context)
+    teams_data, league_averages = get_teams_research(session, context)
     teams = [TeamResearchItem(**t) for t in teams_data]
 
     return TeamResearchResponse(
@@ -335,6 +643,7 @@ def get_teams(
             "Teams are sorted by win percentage descending, then point differential. "
             "Ties in record ordering do not establish official conference placement."
         ),
+        league_averages=league_averages,
     )
 
 
@@ -358,6 +667,126 @@ def get_team_detail_endpoint(
 
     detail = get_team_detail(session, context, team_id=id)
     return TeamDetailResponse(**detail)
+
+
+@router.get("/teams/{id}/schedule", response_model=TeamScheduleResponse)
+def get_team_schedule_endpoint(
+    id: str,
+    release_id: str | None = Query(None, alias="releaseId"),
+    season: str | None = Query(None),
+    phase: str = Query("regular_season"),
+    before_date: date | None = Query(None, alias="beforeDate"),
+    session: Session = Depends(get_db),
+) -> TeamScheduleResponse:
+    """Retrieve canonical team schedule, rest days, back-to-backs, and splits prior to cutoff."""
+    context = resolve_workbench_context(
+        session,
+        release_id=release_id,
+        requested_season=season,
+        requested_phase=phase,
+        requested_before_date=before_date,
+    )
+    result = get_team_schedule(session, context, team_id=id)
+    return TeamScheduleResponse(**result)
+
+
+@router.get("/teams/{id}/four-factors", response_model=TeamFourFactorsResponse)
+def get_team_four_factors_endpoint(
+    id: str,
+    release_id: str | None = Query(None, alias="releaseId"),
+    season: str | None = Query(None),
+    phase: str = Query("regular_season"),
+    before_date: date | None = Query(None, alias="beforeDate"),
+    session: Session = Depends(get_db),
+) -> TeamFourFactorsResponse:
+    """Retrieve Dean Oliver Four Factors (offense & defense) with league ranks and percentiles."""
+    context = resolve_workbench_context(
+        session,
+        release_id=release_id,
+        requested_season=season,
+        requested_phase=phase,
+        requested_before_date=before_date,
+    )
+    result = get_team_four_factors(session, context, team_id=id)
+    return TeamFourFactorsResponse(**result)
+
+
+@router.get("/teams/{id}/peers", response_model=TeamPeersResponse)
+def get_team_peers_endpoint(
+    id: str,
+    limit: int = Query(10, ge=1, le=30),
+    release_id: str | None = Query(None, alias="releaseId"),
+    season: str | None = Query(None),
+    phase: str = Query("regular_season"),
+    before_date: date | None = Query(None, alias="beforeDate"),
+    session: Session = Depends(get_db),
+) -> TeamPeersResponse:
+    """Retrieve statistical peer teams based on Four Factors, tempo, and ratings."""
+    context = resolve_workbench_context(
+        session,
+        release_id=release_id,
+        requested_season=season,
+        requested_phase=phase,
+        requested_before_date=before_date,
+    )
+    result = get_team_peers(session, context, team_id=id, limit=limit)
+    return TeamPeersResponse(**result)
+
+
+@router.get("/teams/{id}/three-point-variation", response_model=ThreePointVariationResponse)
+def get_team_three_point_variation_endpoint(
+    id: str,
+    release_id: str | None = Query(None, alias="releaseId"),
+    season: str | None = Query(None),
+    phase: str = Query("regular_season"),
+    before_date: date | None = Query(None, alias="beforeDate"),
+    session: Session = Depends(get_db),
+) -> ThreePointVariationResponse:
+    """Retrieve Feature F18 Three-Point Variation scenario holding volume constant."""
+    context = resolve_workbench_context(
+        session,
+        release_id=release_id,
+        requested_season=season,
+        requested_phase=phase,
+        requested_before_date=before_date,
+    )
+    result = get_team_three_point_variation(session, context, team_id=id)
+    return ThreePointVariationResponse(**result)
+
+
+# --- Block B17: Playoff / Series Endpoints ---
+
+
+@router.get("/playoffs", response_model=PlayoffBracketResponse)
+def get_playoffs_endpoint(
+    season: int | str = Query(
+        2024, description="Playoff season ending year (e.g. 2024) or string (e.g. 2023-24)"
+    ),
+    cutoff_date: date | None = Query(
+        None, description="Optional temporal replay cutoff date (YYYY-MM-DD)"
+    ),
+    cutoffDate: date | None = Query(None, description="CamelCase alias for cutoff_date"),
+    session: Session = Depends(get_db),
+) -> PlayoffBracketResponse:
+    """Retrieve canonical playoff bracket hierarchy, rounds 1-4, and seed evidence."""
+    effective_cutoff = cutoff_date or cutoffDate
+    return get_playoff_bracket(session, season=season, cutoff_date=effective_cutoff)
+
+
+@router.get("/playoffs/series/{series_id}", response_model=PlayoffSeriesDetailResponse)
+def get_playoff_series_detail_endpoint(
+    series_id: str,
+    cutoff_date: date | None = Query(
+        None, description="Optional temporal replay cutoff date (YYYY-MM-DD)"
+    ),
+    cutoffDate: date | None = Query(None, description="CamelCase alias for cutoff_date"),
+    session: Session = Depends(get_db),
+) -> PlayoffSeriesDetailResponse:
+    """Retrieve playoff series detail with 7-game cards, Four Factors, and player stats."""
+    effective_cutoff = cutoff_date or cutoffDate
+    return get_playoff_series_detail(
+        session, series_id_or_slug=series_id, cutoff_date=effective_cutoff
+    )
 
 
 @router.get("/compare", response_model=PlayerComparisonResponse)
@@ -427,35 +856,16 @@ def create_saved_analysis(
     session: Session = Depends(get_db),
 ) -> SavedInvestigationResponse:
     """Save an analytical investigation manifest and reproducible result."""
-    q_dict = payload.query
+    spec = deserialize_params_to_query(payload.query)
     context = resolve_workbench_context(
         session,
-        release_id=q_dict.get("releaseId") or q_dict.get("release_id"),
-        requested_season=q_dict.get("season"),
-        requested_phase=q_dict.get("phase", "regular_season"),
-        requested_before_date=(
-            date.fromisoformat(q_dict["beforeDate"])
-            if "beforeDate" in q_dict
-            else (date.fromisoformat(q_dict["before_date"]) if "before_date" in q_dict else None)
-        ),
-        requested_window=q_dict.get("window", "season"),
+        release_id=spec.release_id,
+        requested_season=spec.season,
+        requested_phase=spec.phase,
+        requested_before_date=spec.before_date,
+        requested_window=spec.window.kind.value,
     )
-
-    query = ResearchQuery(
-        release_id=context.release_id,
-        season=context.season,
-        phase=context.phase,
-        before_date=context.before_date,
-        window=context.window,
-        team_id=q_dict.get("teamId") or q_dict.get("team_id"),
-        name=q_dict.get("name"),
-        min_games=q_dict.get("minGames") or q_dict.get("min_games"),
-        min_minutes=q_dict.get("minMinutes") or q_dict.get("min_minutes"),
-        min_avg_minutes=q_dict.get("minAvgMinutes") or q_dict.get("min_avg_minutes"),
-        sort_metric=q_dict.get("sortMetric") or q_dict.get("sort_metric", "pts"),
-        sort_direction=q_dict.get("sortDirection") or q_dict.get("sort_direction"),
-    )
-
+    query = query_spec_to_research_query(spec)
     inv = save_investigation(session, context, title=payload.title, query=query)
     inv_data = get_investigation(session, inv.id)
 
@@ -791,3 +1201,1164 @@ def assistant_query_endpoint(
         )
     except ValueError as exc:
         raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+
+# ---------------------------------------------------------------------------
+# Personal Workspace State Persistence Endpoints (Block B08)
+# ---------------------------------------------------------------------------
+
+
+@router.get("/workspace", response_model=PersonalWorkspaceState)
+def get_workspace_endpoint(
+    workspace_id: str = Query(
+        "default", alias="workspaceId", min_length=1, max_length=36, pattern=r"^[a-zA-Z0-9_-]+$"
+    ),
+    session: Session = Depends(get_db),
+) -> PersonalWorkspaceState:
+    """Retrieve personal workspace state (views, favorites, tray, boards, preferences)."""
+    return get_or_create_workspace(session, workspace_id=workspace_id)
+
+
+@router.put("/workspace", response_model=PersonalWorkspaceState)
+def update_workspace_endpoint(
+    payload: PersonalWorkspaceState,
+    expected_version: int = Query(..., alias="expectedVersion", ge=1),
+    _auth: None = Depends(verify_workspace_operator_access),
+    session: Session = Depends(get_db),
+) -> PersonalWorkspaceState:
+    """Update complete personal workspace state with optimistic concurrency version check."""
+    try:
+        return update_workspace_state(session, payload, expected_version=expected_version)
+    except VersionConflictError as err:
+        raise HTTPException(
+            status_code=409,
+            detail={
+                "message": str(err),
+                "current_version": err.current_version,
+                "expected_version": err.expected_version,
+            },
+        ) from err
+    except ValueError as err:
+        raise HTTPException(status_code=422, detail=str(err)) from err
+
+
+@router.post("/workspace/reset", response_model=PersonalWorkspaceState)
+def reset_workspace_endpoint(
+    workspace_id: str = Query(
+        "default", alias="workspaceId", min_length=1, max_length=36, pattern=r"^[a-zA-Z0-9_-]+$"
+    ),
+    expected_version: int = Query(..., alias="expectedVersion", ge=1),
+    _auth: None = Depends(verify_workspace_operator_access),
+    session: Session = Depends(get_db),
+) -> PersonalWorkspaceState:
+    """Reset workspace state to canonical defaults (recovering built-in presets)."""
+    try:
+        return reset_workspace(
+            session, expected_version=expected_version, workspace_id=workspace_id
+        )
+    except VersionConflictError as err:
+        raise HTTPException(
+            status_code=409,
+            detail={
+                "message": str(err),
+                "current_version": err.current_version,
+                "expected_version": err.expected_version,
+            },
+        ) from err
+    except ValueError as err:
+        raise HTTPException(status_code=422, detail=str(err)) from err
+
+
+@router.get("/workspace/export", response_model=WorkspaceBundle)
+def export_workspace_endpoint(
+    workspace_id: str = Query(
+        "default", alias="workspaceId", min_length=1, max_length=36, pattern=r"^[a-zA-Z0-9_-]+$"
+    ),
+    session: Session = Depends(get_db),
+) -> WorkspaceBundle:
+    """Export complete personal workspace bundle with cryptographic SHA-256 integrity checksum."""
+    return export_workspace_bundle(session, workspace_id=workspace_id)
+
+
+@router.post("/workspace/import", response_model=PersonalWorkspaceState)
+def import_workspace_endpoint(
+    payload: ImportWorkspaceRequest,
+    workspace_id: str = Query(
+        "default", alias="workspaceId", min_length=1, max_length=36, pattern=r"^[a-zA-Z0-9_-]+$"
+    ),
+    expected_version: int = Query(..., alias="expectedVersion", ge=1),
+    _auth: None = Depends(verify_workspace_operator_access),
+    session: Session = Depends(get_db),
+) -> PersonalWorkspaceState:
+    """Import a workspace bundle into personal state, supporting replace or merge mode."""
+    try:
+        return import_workspace_bundle(
+            session,
+            bundle=payload.bundle,
+            mode=payload.mode,
+            expected_version=expected_version,
+            workspace_id=workspace_id,
+        )
+    except VersionConflictError as err:
+        raise HTTPException(
+            status_code=409,
+            detail={
+                "message": str(err),
+                "current_version": err.current_version,
+                "expected_version": err.expected_version,
+            },
+        ) from err
+    except ValueError as err:
+        raise HTTPException(status_code=422, detail=str(err)) from err
+
+
+# ---------------------------------------------------------------------------
+# Custom Views Endpoints (F04)
+# ---------------------------------------------------------------------------
+
+
+@router.get("/workspace/presets", response_model=list[CustomViewDefinition])
+def get_workspace_presets_endpoint() -> list[CustomViewDefinition]:
+    """Recover the canonical built-in definitions without consuming custom-view slots."""
+    return CANONICAL_BUILTIN_VIEWS
+
+
+@router.get("/workspace/views", response_model=list[CustomViewDefinition])
+def get_custom_views_endpoint(
+    workspace_id: str = Query(
+        "default", alias="workspaceId", min_length=1, max_length=36, pattern=r"^[a-zA-Z0-9_-]+$"
+    ),
+    session: Session = Depends(get_db),
+) -> list[CustomViewDefinition]:
+    """List all custom views in the personal workspace."""
+    workspace = get_or_create_workspace(session, workspace_id=workspace_id)
+    return workspace.views
+
+
+@router.post("/workspace/views", response_model=PersonalWorkspaceState, status_code=201)
+def add_custom_view_endpoint(
+    payload: CreateCustomViewRequest,
+    workspace_id: str = Query(
+        "default", alias="workspaceId", min_length=1, max_length=36, pattern=r"^[a-zA-Z0-9_-]+$"
+    ),
+    expected_version: int = Query(..., alias="expectedVersion", ge=1),
+    _auth: None = Depends(verify_workspace_operator_access),
+    session: Session = Depends(get_db),
+) -> PersonalWorkspaceState:
+    """Add a custom view (up to 10 views, max 25 columns, validated metrics)."""
+    try:
+        view = CustomViewDefinition(
+            name=payload.name,
+            columns=payload.columns,
+            unavailable_columns=payload.unavailable_columns,
+            sort_field=payload.sort_field,
+            sort_direction=payload.sort_direction,
+            is_default=payload.is_default,
+        )
+        return add_custom_view(
+            session, view, expected_version=expected_version, workspace_id=workspace_id
+        )
+    except VersionConflictError as err:
+        raise HTTPException(
+            status_code=409,
+            detail={
+                "message": str(err),
+                "current_version": err.current_version,
+                "expected_version": err.expected_version,
+            },
+        ) from err
+    except ValueError as err:
+        raise HTTPException(status_code=422, detail=str(err)) from err
+
+
+@router.get("/workspace/views/{view_id}", response_model=CustomViewDefinition)
+def get_custom_view_detail_endpoint(
+    view_id: str,
+    workspace_id: str = Query(
+        "default", alias="workspaceId", min_length=1, max_length=36, pattern=r"^[a-zA-Z0-9_-]+$"
+    ),
+    session: Session = Depends(get_db),
+) -> CustomViewDefinition:
+    """Get a specific custom view by ID."""
+    workspace = get_or_create_workspace(session, workspace_id=workspace_id)
+    for v in workspace.views:
+        if v.id == view_id:
+            return v
+    raise HTTPException(status_code=404, detail=f"View with id '{view_id}' not found")
+
+
+@router.put("/workspace/views/{view_id}", response_model=PersonalWorkspaceState)
+def update_custom_view_endpoint(
+    view_id: str,
+    payload: UpdateCustomViewRequest,
+    workspace_id: str = Query(
+        "default", alias="workspaceId", min_length=1, max_length=36, pattern=r"^[a-zA-Z0-9_-]+$"
+    ),
+    expected_version: int = Query(..., alias="expectedVersion", ge=1),
+    _auth: None = Depends(verify_workspace_operator_access),
+    session: Session = Depends(get_db),
+) -> PersonalWorkspaceState:
+    """Update an existing custom view."""
+    try:
+        update_data = payload.model_dump(exclude_unset=True)
+        return update_custom_view(
+            session,
+            view_id,
+            update_data,
+            expected_version=expected_version,
+            workspace_id=workspace_id,
+        )
+    except VersionConflictError as err:
+        raise HTTPException(
+            status_code=409,
+            detail={
+                "message": str(err),
+                "current_version": err.current_version,
+                "expected_version": err.expected_version,
+            },
+        ) from err
+    except KeyError as err:
+        raise HTTPException(status_code=404, detail=str(err)) from err
+    except ValueError as err:
+        raise HTTPException(status_code=422, detail=str(err)) from err
+
+
+@router.delete("/workspace/views/{view_id}", response_model=PersonalWorkspaceState)
+def delete_custom_view_endpoint(
+    view_id: str,
+    workspace_id: str = Query(
+        "default", alias="workspaceId", min_length=1, max_length=36, pattern=r"^[a-zA-Z0-9_-]+$"
+    ),
+    expected_version: int = Query(..., alias="expectedVersion", ge=1),
+    _auth: None = Depends(verify_workspace_operator_access),
+    session: Session = Depends(get_db),
+) -> PersonalWorkspaceState:
+    """Delete a custom view by ID."""
+    try:
+        return delete_custom_view(
+            session, view_id, expected_version=expected_version, workspace_id=workspace_id
+        )
+    except VersionConflictError as err:
+        raise HTTPException(
+            status_code=409,
+            detail={
+                "message": str(err),
+                "current_version": err.current_version,
+                "expected_version": err.expected_version,
+            },
+        ) from err
+    except KeyError as err:
+        raise HTTPException(status_code=404, detail=str(err)) from err
+    except ValueError as err:
+        raise HTTPException(status_code=422, detail=str(err)) from err
+
+
+@router.post("/workspace/views/reorder", response_model=PersonalWorkspaceState)
+def reorder_custom_views_endpoint(
+    payload: ReorderViewsRequest,
+    workspace_id: str = Query(
+        "default", alias="workspaceId", min_length=1, max_length=36, pattern=r"^[a-zA-Z0-9_-]+$"
+    ),
+    expected_version: int = Query(..., alias="expectedVersion", ge=1),
+    _auth: None = Depends(verify_workspace_operator_access),
+    session: Session = Depends(get_db),
+) -> PersonalWorkspaceState:
+    """Reorder custom views to match the supplied ID ordering."""
+    try:
+        return reorder_custom_views(
+            session,
+            payload.ordered_view_ids,
+            expected_version=expected_version,
+            workspace_id=workspace_id,
+        )
+    except VersionConflictError as err:
+        raise HTTPException(
+            status_code=409,
+            detail={
+                "message": str(err),
+                "current_version": err.current_version,
+                "expected_version": err.expected_version,
+            },
+        ) from err
+    except ValueError as err:
+        raise HTTPException(status_code=422, detail=str(err)) from err
+
+
+# ---------------------------------------------------------------------------
+# Favorites & Compare Tray Endpoints (F05)
+# ---------------------------------------------------------------------------
+
+
+@router.get("/workspace/favorites", response_model=list[str])
+def get_favorites_endpoint(
+    workspace_id: str = Query(
+        "default", alias="workspaceId", min_length=1, max_length=36, pattern=r"^[a-zA-Z0-9_-]+$"
+    ),
+    session: Session = Depends(get_db),
+) -> list[str]:
+    """List favorite player IDs."""
+    workspace = get_or_create_workspace(session, workspace_id=workspace_id)
+    return workspace.favorites
+
+
+@router.put("/workspace/favorites", response_model=PersonalWorkspaceState)
+def update_favorites_endpoint(
+    payload: UpdateFavoritesRequest,
+    workspace_id: str = Query(
+        "default", alias="workspaceId", min_length=1, max_length=36, pattern=r"^[a-zA-Z0-9_-]+$"
+    ),
+    expected_version: int = Query(..., alias="expectedVersion", ge=1),
+    _auth: None = Depends(verify_workspace_operator_access),
+    session: Session = Depends(get_db),
+) -> PersonalWorkspaceState:
+    """Replace entire favorite player list."""
+    try:
+        return update_favorites(
+            session, payload.favorites, expected_version=expected_version, workspace_id=workspace_id
+        )
+    except VersionConflictError as err:
+        raise HTTPException(
+            status_code=409,
+            detail={
+                "message": str(err),
+                "current_version": err.current_version,
+                "expected_version": err.expected_version,
+            },
+        ) from err
+    except ValueError as err:
+        raise HTTPException(status_code=422, detail=str(err)) from err
+
+
+@router.post("/workspace/favorites/{player_id}", response_model=PersonalWorkspaceState)
+def add_favorite_player_endpoint(
+    player_id: str,
+    workspace_id: str = Query(
+        "default", alias="workspaceId", min_length=1, max_length=36, pattern=r"^[a-zA-Z0-9_-]+$"
+    ),
+    expected_version: int = Query(..., alias="expectedVersion", ge=1),
+    _auth: None = Depends(verify_workspace_operator_access),
+    session: Session = Depends(get_db),
+) -> PersonalWorkspaceState:
+    """Add a player ID to favorites."""
+    try:
+        return add_favorite_player(
+            session, player_id, expected_version=expected_version, workspace_id=workspace_id
+        )
+    except VersionConflictError as err:
+        raise HTTPException(
+            status_code=409,
+            detail={
+                "message": str(err),
+                "current_version": err.current_version,
+                "expected_version": err.expected_version,
+            },
+        ) from err
+    except ValueError as err:
+        raise HTTPException(status_code=422, detail=str(err)) from err
+
+
+@router.delete("/workspace/favorites/{player_id}", response_model=PersonalWorkspaceState)
+def remove_favorite_player_endpoint(
+    player_id: str,
+    workspace_id: str = Query(
+        "default", alias="workspaceId", min_length=1, max_length=36, pattern=r"^[a-zA-Z0-9_-]+$"
+    ),
+    expected_version: int = Query(..., alias="expectedVersion", ge=1),
+    _auth: None = Depends(verify_workspace_operator_access),
+    session: Session = Depends(get_db),
+) -> PersonalWorkspaceState:
+    """Remove a player ID from favorites."""
+    try:
+        return remove_favorite_player(
+            session, player_id, expected_version=expected_version, workspace_id=workspace_id
+        )
+    except VersionConflictError as err:
+        raise HTTPException(
+            status_code=409,
+            detail={
+                "message": str(err),
+                "current_version": err.current_version,
+                "expected_version": err.expected_version,
+            },
+        ) from err
+    except ValueError as err:
+        raise HTTPException(status_code=422, detail=str(err)) from err
+
+
+@router.get("/workspace/compare-tray", response_model=list[str])
+def get_compare_tray_endpoint(
+    workspace_id: str = Query(
+        "default", alias="workspaceId", min_length=1, max_length=36, pattern=r"^[a-zA-Z0-9_-]+$"
+    ),
+    session: Session = Depends(get_db),
+) -> list[str]:
+    """List player IDs in compare tray."""
+    workspace = get_or_create_workspace(session, workspace_id=workspace_id)
+    return workspace.compare_tray
+
+
+@router.put("/workspace/compare-tray", response_model=PersonalWorkspaceState)
+def update_compare_tray_endpoint(
+    payload: UpdateCompareTrayRequest,
+    workspace_id: str = Query(
+        "default", alias="workspaceId", min_length=1, max_length=36, pattern=r"^[a-zA-Z0-9_-]+$"
+    ),
+    expected_version: int = Query(..., alias="expectedVersion", ge=1),
+    _auth: None = Depends(verify_workspace_operator_access),
+    session: Session = Depends(get_db),
+) -> PersonalWorkspaceState:
+    """Replace compare tray list (enforcing max 8 players)."""
+    try:
+        return update_compare_tray(
+            session,
+            payload.compare_tray,
+            expected_version=expected_version,
+            workspace_id=workspace_id,
+        )
+    except VersionConflictError as err:
+        raise HTTPException(
+            status_code=409,
+            detail={
+                "message": str(err),
+                "current_version": err.current_version,
+                "expected_version": err.expected_version,
+            },
+        ) from err
+    except ValueError as err:
+        raise HTTPException(status_code=422, detail=str(err)) from err
+
+
+@router.post("/workspace/compare-tray/{player_id}", response_model=PersonalWorkspaceState)
+def add_to_compare_tray_endpoint(
+    player_id: str,
+    workspace_id: str = Query(
+        "default", alias="workspaceId", min_length=1, max_length=36, pattern=r"^[a-zA-Z0-9_-]+$"
+    ),
+    expected_version: int = Query(..., alias="expectedVersion", ge=1),
+    _auth: None = Depends(verify_workspace_operator_access),
+    session: Session = Depends(get_db),
+) -> PersonalWorkspaceState:
+    """Add a player to comparison tray (enforcing max 8 players)."""
+    try:
+        return add_to_compare_tray(
+            session, player_id, expected_version=expected_version, workspace_id=workspace_id
+        )
+    except VersionConflictError as err:
+        raise HTTPException(
+            status_code=409,
+            detail={
+                "message": str(err),
+                "current_version": err.current_version,
+                "expected_version": err.expected_version,
+            },
+        ) from err
+    except ValueError as err:
+        raise HTTPException(status_code=422, detail=str(err)) from err
+
+
+@router.delete("/workspace/compare-tray/{player_id}", response_model=PersonalWorkspaceState)
+def remove_from_compare_tray_endpoint(
+    player_id: str,
+    workspace_id: str = Query(
+        "default", alias="workspaceId", min_length=1, max_length=36, pattern=r"^[a-zA-Z0-9_-]+$"
+    ),
+    expected_version: int = Query(..., alias="expectedVersion", ge=1),
+    _auth: None = Depends(verify_workspace_operator_access),
+    session: Session = Depends(get_db),
+) -> PersonalWorkspaceState:
+    """Remove a player from comparison tray."""
+    try:
+        return remove_from_compare_tray(
+            session, player_id, expected_version=expected_version, workspace_id=workspace_id
+        )
+    except VersionConflictError as err:
+        raise HTTPException(
+            status_code=409,
+            detail={
+                "message": str(err),
+                "current_version": err.current_version,
+                "expected_version": err.expected_version,
+            },
+        ) from err
+    except ValueError as err:
+        raise HTTPException(status_code=422, detail=str(err)) from err
+
+
+@router.delete("/workspace/compare-tray", response_model=PersonalWorkspaceState)
+def clear_compare_tray_endpoint(
+    workspace_id: str = Query(
+        "default", alias="workspaceId", min_length=1, max_length=36, pattern=r"^[a-zA-Z0-9_-]+$"
+    ),
+    expected_version: int = Query(..., alias="expectedVersion", ge=1),
+    _auth: None = Depends(verify_workspace_operator_access),
+    session: Session = Depends(get_db),
+) -> PersonalWorkspaceState:
+    """Clear all players from comparison tray."""
+    try:
+        return clear_compare_tray(
+            session, expected_version=expected_version, workspace_id=workspace_id
+        )
+    except VersionConflictError as err:
+        raise HTTPException(
+            status_code=409,
+            detail={
+                "message": str(err),
+                "current_version": err.current_version,
+                "expected_version": err.expected_version,
+            },
+        ) from err
+    except ValueError as err:
+        raise HTTPException(status_code=422, detail=str(err)) from err
+
+
+# ---------------------------------------------------------------------------
+# Ranking Boards Endpoints (F16)
+# ---------------------------------------------------------------------------
+
+
+@router.get("/workspace/ranking-boards", response_model=list[RankingBoardDefinition])
+def list_ranking_boards_endpoint(
+    workspace_id: str = Query(
+        "default", alias="workspaceId", min_length=1, max_length=36, pattern=r"^[a-zA-Z0-9_-]+$"
+    ),
+    session: Session = Depends(get_db),
+) -> list[RankingBoardDefinition]:
+    """List all personal ranking boards."""
+    workspace = get_or_create_workspace(session, workspace_id=workspace_id)
+    return workspace.ranking_boards
+
+
+@router.post("/workspace/ranking-boards", response_model=PersonalWorkspaceState, status_code=201)
+def create_ranking_board_endpoint(
+    payload: CreateRankingBoardRequest,
+    workspace_id: str = Query(
+        "default", alias="workspaceId", min_length=1, max_length=36, pattern=r"^[a-zA-Z0-9_-]+$"
+    ),
+    expected_version: int = Query(..., alias="expectedVersion", ge=1),
+    _auth: None = Depends(verify_workspace_operator_access),
+    session: Session = Depends(get_db),
+) -> PersonalWorkspaceState:
+    """Create a new personal ranking board."""
+    try:
+        board = RankingBoardDefinition(
+            title=payload.title,
+            board_type=payload.board_type,
+            scope=payload.scope,
+            notes=payload.notes,
+            entries=payload.entries,
+        )
+        return save_ranking_board(
+            session, board, expected_version=expected_version, workspace_id=workspace_id
+        )
+    except VersionConflictError as err:
+        raise HTTPException(
+            status_code=409,
+            detail={
+                "message": str(err),
+                "current_version": err.current_version,
+                "expected_version": err.expected_version,
+            },
+        ) from err
+    except ValueError as err:
+        raise HTTPException(status_code=422, detail=str(err)) from err
+
+
+@router.get("/workspace/ranking-boards/{board_id}", response_model=RankingBoardDefinition)
+def get_ranking_board_endpoint(
+    board_id: str,
+    workspace_id: str = Query(
+        "default", alias="workspaceId", min_length=1, max_length=36, pattern=r"^[a-zA-Z0-9_-]+$"
+    ),
+    session: Session = Depends(get_db),
+) -> RankingBoardDefinition:
+    """Get a specific ranking board by ID."""
+    workspace = get_or_create_workspace(session, workspace_id=workspace_id)
+    for b in workspace.ranking_boards:
+        if b.id == board_id:
+            return b
+    raise HTTPException(status_code=404, detail=f"Ranking board with id '{board_id}' not found")
+
+
+@router.put("/workspace/ranking-boards/{board_id}", response_model=PersonalWorkspaceState)
+def update_ranking_board_endpoint(
+    board_id: str,
+    payload: CreateRankingBoardRequest,
+    workspace_id: str = Query(
+        "default", alias="workspaceId", min_length=1, max_length=36, pattern=r"^[a-zA-Z0-9_-]+$"
+    ),
+    expected_version: int = Query(..., alias="expectedVersion", ge=1),
+    _auth: None = Depends(verify_workspace_operator_access),
+    session: Session = Depends(get_db),
+) -> PersonalWorkspaceState:
+    """Update an existing ranking board."""
+    try:
+        board = RankingBoardDefinition(
+            id=board_id,
+            title=payload.title,
+            board_type=payload.board_type,
+            scope=payload.scope,
+            notes=payload.notes,
+            entries=payload.entries,
+        )
+        return save_ranking_board(
+            session, board, expected_version=expected_version, workspace_id=workspace_id
+        )
+    except VersionConflictError as err:
+        raise HTTPException(
+            status_code=409,
+            detail={
+                "message": str(err),
+                "current_version": err.current_version,
+                "expected_version": err.expected_version,
+            },
+        ) from err
+    except ValueError as err:
+        raise HTTPException(status_code=422, detail=str(err)) from err
+
+
+@router.delete("/workspace/ranking-boards/{board_id}", response_model=PersonalWorkspaceState)
+def delete_ranking_board_endpoint(
+    board_id: str,
+    workspace_id: str = Query(
+        "default", alias="workspaceId", min_length=1, max_length=36, pattern=r"^[a-zA-Z0-9_-]+$"
+    ),
+    expected_version: int = Query(..., alias="expectedVersion", ge=1),
+    _auth: None = Depends(verify_workspace_operator_access),
+    session: Session = Depends(get_db),
+) -> PersonalWorkspaceState:
+    """Delete a ranking board by ID."""
+    try:
+        return delete_ranking_board(
+            session, board_id, expected_version=expected_version, workspace_id=workspace_id
+        )
+    except VersionConflictError as err:
+        raise HTTPException(
+            status_code=409,
+            detail={
+                "message": str(err),
+                "current_version": err.current_version,
+                "expected_version": err.expected_version,
+            },
+        ) from err
+    except KeyError as err:
+        raise HTTPException(status_code=404, detail=str(err)) from err
+    except ValueError as err:
+        raise HTTPException(status_code=422, detail=str(err)) from err
+
+
+@router.post("/workspace/ranking-boards/aggregate", response_model=BoardAggregationResult)
+def aggregate_ranking_boards_endpoint(
+    payload: AggregateRankingBoardsRequest,
+    workspace_id: str = Query(
+        "default", alias="workspaceId", min_length=1, max_length=36, pattern=r"^[a-zA-Z0-9_-]+$"
+    ),
+    session: Session = Depends(get_db),
+) -> BoardAggregationResult:
+    """Aggregate selected personal boards with explicit missing-rank rules."""
+    try:
+        return aggregate_ranking_boards_service(
+            session,
+            board_ids=payload.board_ids,
+            method=payload.method,
+            missing_rank_penalty=payload.missing_rank_penalty,
+            workspace_id=workspace_id,
+        )
+    except ValueError as err:
+        raise HTTPException(status_code=422, detail=str(err)) from err
+
+
+# ---------------------------------------------------------------------------
+# Tier Lists Endpoints (F27)
+# ---------------------------------------------------------------------------
+
+
+@router.get("/workspace/tier-lists", response_model=list[TierListDefinition])
+def list_tier_lists_endpoint(
+    workspace_id: str = Query(
+        "default", alias="workspaceId", min_length=1, max_length=36, pattern=r"^[a-zA-Z0-9_-]+$"
+    ),
+    session: Session = Depends(get_db),
+) -> list[TierListDefinition]:
+    """List all personal tier lists."""
+    workspace = get_or_create_workspace(session, workspace_id=workspace_id)
+    return workspace.tier_lists
+
+
+@router.post("/workspace/tier-lists", response_model=PersonalWorkspaceState, status_code=201)
+def create_tier_list_endpoint(
+    payload: CreateTierListRequest,
+    workspace_id: str = Query(
+        "default", alias="workspaceId", min_length=1, max_length=36, pattern=r"^[a-zA-Z0-9_-]+$"
+    ),
+    expected_version: int = Query(..., alias="expectedVersion", ge=1),
+    _auth: None = Depends(verify_workspace_operator_access),
+    session: Session = Depends(get_db),
+) -> PersonalWorkspaceState:
+    """Create a new personal tier list."""
+    try:
+        tier_list = TierListDefinition(
+            title=payload.title,
+            description=payload.description,
+            tiers=payload.tiers,
+        )
+        return save_tier_list(
+            session, tier_list, expected_version=expected_version, workspace_id=workspace_id
+        )
+    except VersionConflictError as err:
+        raise HTTPException(
+            status_code=409,
+            detail={
+                "message": str(err),
+                "current_version": err.current_version,
+                "expected_version": err.expected_version,
+            },
+        ) from err
+    except ValueError as err:
+        raise HTTPException(status_code=422, detail=str(err)) from err
+
+
+@router.get("/workspace/tier-lists/{tier_list_id}", response_model=TierListDefinition)
+def get_tier_list_endpoint(
+    tier_list_id: str,
+    workspace_id: str = Query(
+        "default", alias="workspaceId", min_length=1, max_length=36, pattern=r"^[a-zA-Z0-9_-]+$"
+    ),
+    session: Session = Depends(get_db),
+) -> TierListDefinition:
+    """Get a specific tier list by ID."""
+    workspace = get_or_create_workspace(session, workspace_id=workspace_id)
+    for t in workspace.tier_lists:
+        if t.id == tier_list_id:
+            return t
+    raise HTTPException(status_code=404, detail=f"Tier list with id '{tier_list_id}' not found")
+
+
+@router.put("/workspace/tier-lists/{tier_list_id}", response_model=PersonalWorkspaceState)
+def update_tier_list_endpoint(
+    tier_list_id: str,
+    payload: CreateTierListRequest,
+    workspace_id: str = Query(
+        "default", alias="workspaceId", min_length=1, max_length=36, pattern=r"^[a-zA-Z0-9_-]+$"
+    ),
+    expected_version: int = Query(..., alias="expectedVersion", ge=1),
+    _auth: None = Depends(verify_workspace_operator_access),
+    session: Session = Depends(get_db),
+) -> PersonalWorkspaceState:
+    """Update an existing tier list."""
+    try:
+        tier_list = TierListDefinition(
+            id=tier_list_id,
+            title=payload.title,
+            description=payload.description,
+            tiers=payload.tiers,
+        )
+        return save_tier_list(
+            session, tier_list, expected_version=expected_version, workspace_id=workspace_id
+        )
+    except VersionConflictError as err:
+        raise HTTPException(
+            status_code=409,
+            detail={
+                "message": str(err),
+                "current_version": err.current_version,
+                "expected_version": err.expected_version,
+            },
+        ) from err
+    except ValueError as err:
+        raise HTTPException(status_code=422, detail=str(err)) from err
+
+
+@router.delete("/workspace/tier-lists/{tier_list_id}", response_model=PersonalWorkspaceState)
+def delete_tier_list_endpoint(
+    tier_list_id: str,
+    workspace_id: str = Query(
+        "default", alias="workspaceId", min_length=1, max_length=36, pattern=r"^[a-zA-Z0-9_-]+$"
+    ),
+    expected_version: int = Query(..., alias="expectedVersion", ge=1),
+    _auth: None = Depends(verify_workspace_operator_access),
+    session: Session = Depends(get_db),
+) -> PersonalWorkspaceState:
+    """Delete a tier list by ID."""
+    try:
+        return delete_tier_list(
+            session, tier_list_id, expected_version=expected_version, workspace_id=workspace_id
+        )
+    except VersionConflictError as err:
+        raise HTTPException(
+            status_code=409,
+            detail={
+                "message": str(err),
+                "current_version": err.current_version,
+                "expected_version": err.expected_version,
+            },
+        ) from err
+    except KeyError as err:
+        raise HTTPException(status_code=404, detail=str(err)) from err
+    except ValueError as err:
+        raise HTTPException(status_code=422, detail=str(err)) from err
+
+
+# ---------------------------------------------------------------------------
+# Workspace Preferences Endpoints
+# ---------------------------------------------------------------------------
+
+
+@router.get("/workspace/preferences", response_model=WorkspacePreferences)
+def get_preferences_endpoint(
+    workspace_id: str = Query(
+        "default", alias="workspaceId", min_length=1, max_length=36, pattern=r"^[a-zA-Z0-9_-]+$"
+    ),
+    session: Session = Depends(get_db),
+) -> WorkspacePreferences:
+    """Get personal workspace preferences (density, identity mode, counting mode, theme)."""
+    workspace = get_or_create_workspace(session, workspace_id=workspace_id)
+    return workspace.preferences
+
+
+@router.patch("/workspace/preferences", response_model=PersonalWorkspaceState)
+def patch_preferences_endpoint(
+    payload: UpdatePreferencesRequest,
+    workspace_id: str = Query(
+        "default", alias="workspaceId", min_length=1, max_length=36, pattern=r"^[a-zA-Z0-9_-]+$"
+    ),
+    expected_version: int = Query(..., alias="expectedVersion", ge=1),
+    _auth: None = Depends(verify_workspace_operator_access),
+    session: Session = Depends(get_db),
+) -> PersonalWorkspaceState:
+    """Update workspace presentation and layout preferences."""
+    try:
+        update_data = payload.model_dump(exclude_unset=True)
+        return update_preferences_service(
+            session,
+            update_data,
+            expected_version=expected_version,
+            workspace_id=workspace_id,
+        )
+    except VersionConflictError as err:
+        raise HTTPException(
+            status_code=409,
+            detail={
+                "message": str(err),
+                "current_version": err.current_version,
+                "expected_version": err.expected_version,
+            },
+        ) from err
+    except ValueError as err:
+        raise HTTPException(status_code=422, detail=str(err)) from err
+
+
+# ---------------------------------------------------------------------------
+# Block B12: Analytical Operations Endpoints
+# ---------------------------------------------------------------------------
+
+
+@router.post("/operations/compare-periods", response_model=ComparePeriodsResponse)
+def post_compare_periods_endpoint(
+    payload: ComparePeriodsRequest,
+    session: Session = Depends(get_db),
+) -> ComparePeriodsResponse:
+    """Disjoint period comparison with strict sample validation and percentage deltas."""
+    return compare_periods_service(session, payload)
+
+
+@router.get("/operations/compare-periods", response_model=ComparePeriodsResponse)
+def get_compare_periods_endpoint(
+    player_id: str = Query(..., alias="playerId"),
+    season: str | None = Query(None),
+    phase: str = Query("regular_season"),
+    before_date: date | None = Query(None, alias="beforeDate"),
+    release_id: str | None = Query(None, alias="releaseId"),
+    mode: PeriodMode = Query(PeriodMode.APPEARANCES),
+    period_a_n: int = Query(10, alias="periodAN", ge=1, le=82),
+    period_b_n: int = Query(10, alias="periodBN", ge=1, le=82),
+    period_a_from: date | None = Query(None, alias="periodAFrom"),
+    period_a_to: date | None = Query(None, alias="periodATo"),
+    period_b_from: date | None = Query(None, alias="periodBFrom"),
+    period_b_to: date | None = Query(None, alias="periodBTo"),
+    metrics: list[str] | None = Query(None),
+    session: Session = Depends(get_db),
+) -> ComparePeriodsResponse:
+    """GET variant of period comparison for query-string navigation."""
+    req = ComparePeriodsRequest(
+        player_id=player_id,
+        season=season,
+        phase=phase,
+        before_date=before_date,
+        release_id=release_id,
+        mode=mode,
+        period_a_n=period_a_n,
+        period_b_n=period_b_n,
+        period_a_from=period_a_from,
+        period_a_to=period_a_to,
+        period_b_from=period_b_from,
+        period_b_to=period_b_to,
+        metrics=metrics,
+    )
+    return compare_periods_service(session, req)
+
+
+@router.post("/operations/distribution", response_model=DistributionResponse)
+def post_distribution_endpoint(
+    payload: DistributionRequest,
+    session: Session = Depends(get_db),
+) -> DistributionResponse:
+    """Descriptive quantile distribution analysis with n >= 5 sample rule."""
+    return distribution_service(session, payload)
+
+
+@router.get("/operations/distribution", response_model=DistributionResponse)
+def get_distribution_endpoint(
+    player_id: str = Query(..., alias="playerId"),
+    metric: str = Query("pts"),
+    season: str | None = Query(None),
+    phase: str = Query("regular_season"),
+    before_date: date | None = Query(None, alias="beforeDate"),
+    release_id: str | None = Query(None, alias="releaseId"),
+    window_n: int = Query(20, alias="windowN", ge=1, le=82),
+    from_date: date | None = Query(None, alias="fromDate"),
+    to_date: date | None = Query(None, alias="toDate"),
+    session: Session = Depends(get_db),
+) -> DistributionResponse:
+    """GET variant of distribution analysis for query-string navigation."""
+    req = DistributionRequest(
+        player_id=player_id,
+        metric=metric,
+        season=season,
+        phase=phase,
+        before_date=before_date,
+        release_id=release_id,
+        window_n=window_n,
+        from_date=from_date,
+        to_date=to_date,
+    )
+    return distribution_service(session, req)
+
+
+@router.post("/operations/splits", response_model=SplitProfileResponse)
+def post_splits_endpoint(
+    payload: SplitProfileRequest,
+    session: Session = Depends(get_db),
+) -> SplitProfileResponse:
+    """Contextual splits across venue, team rest days, and opponent team."""
+    return split_profile_service(session, payload)
+
+
+@router.get("/operations/splits", response_model=SplitProfileResponse)
+def get_splits_endpoint(
+    player_id: str = Query(..., alias="playerId"),
+    split_type: SplitType = Query(SplitType.ALL, alias="splitType"),
+    season: str | None = Query(None),
+    phase: str = Query("regular_season"),
+    before_date: date | None = Query(None, alias="beforeDate"),
+    release_id: str | None = Query(None, alias="releaseId"),
+    session: Session = Depends(get_db),
+) -> SplitProfileResponse:
+    """GET variant of contextual splits for query-string navigation."""
+    req = SplitProfileRequest(
+        player_id=player_id,
+        split_type=split_type,
+        season=season,
+        phase=phase,
+        before_date=before_date,
+        release_id=release_id,
+    )
+    return split_profile_service(session, req)
+
+
+@router.post("/operations/opponent-context", response_model=OpponentContextResponse)
+def post_opponent_context_endpoint(
+    payload: OpponentContextRequest,
+    session: Session = Depends(get_db),
+) -> OpponentContextResponse:
+    """Opponent team defensive allowance across completed games prior to cutoff."""
+    return opponent_context_service(session, payload)
+
+
+@router.get("/operations/opponent-context", response_model=OpponentContextResponse)
+def get_opponent_context_endpoint(
+    team_id: str | None = Query(None, alias="teamId"),
+    season: str | None = Query(None),
+    phase: str = Query("regular_season"),
+    before_date: date | None = Query(None, alias="beforeDate"),
+    release_id: str | None = Query(None, alias="releaseId"),
+    session: Session = Depends(get_db),
+) -> OpponentContextResponse:
+    """GET variant of opponent allowance for query-string navigation."""
+    req = OpponentContextRequest(
+        team_id=team_id,
+        season=season,
+        phase=phase,
+        before_date=before_date,
+        release_id=release_id,
+    )
+    return opponent_context_service(session, req)
+
+
+@router.post("/operations/similarity", response_model=StatisticalPeersResponse)
+def post_similarity_endpoint(
+    payload: StatisticalPeersRequest,
+    session: Session = Depends(get_db),
+) -> StatisticalPeersResponse:
+    """Statistical peer similarity across standardized per-36 production & efficiency."""
+    return statistical_peers_service(session, payload)
+
+
+@router.get("/operations/similarity", response_model=StatisticalPeersResponse)
+def get_similarity_endpoint(
+    player_id: str = Query(..., alias="playerId"),
+    season: str | None = Query(None),
+    phase: str = Query("regular_season"),
+    before_date: date | None = Query(None, alias="beforeDate"),
+    release_id: str | None = Query(None, alias="releaseId"),
+    window: Literal["last_10", "season"] = Query("last_10"),
+    min_appearances: int = Query(10, alias="minAppearances", ge=1, le=82),
+    min_minutes: float = Query(150.0, alias="minMinutes", ge=0.0),
+    top_k: int = Query(5, alias="topK", ge=1, le=25),
+    dimensions: list[str] | None = Query(None),
+    session: Session = Depends(get_db),
+) -> StatisticalPeersResponse:
+    """GET variant of statistical peer similarity for query-string navigation."""
+    req = StatisticalPeersRequest(
+        target_player_id=player_id,
+        season=season,
+        phase=phase,
+        before_date=before_date,
+        release_id=release_id,
+        window=window,
+        min_appearances=min_appearances,
+        min_minutes=min_minutes,
+        top_k=top_k,
+        dimensions=dimensions,
+    )
+    return statistical_peers_service(session, req)
+
+
+@router.post("/operations/rank", response_model=RankOperationResponse)
+def post_rank_operation_endpoint(
+    payload: RankOperationRequest,
+    session: Session = Depends(get_db),
+) -> RankOperationResponse:
+    """Rank and sort analytical operation outputs across players in the cohort."""
+    return rank_operation_service(session, payload)
+
+
+@router.get("/operations/rank", response_model=RankOperationResponse)
+def get_rank_operation_endpoint(
+    operation_type: Literal["compare_periods", "distribution"] = Query(
+        "compare_periods", alias="operationType"
+    ),
+    metric: str = Query("pts"),
+    season: str | None = Query(None),
+    phase: str = Query("regular_season"),
+    before_date: date | None = Query(None, alias="beforeDate"),
+    release_id: str | None = Query(None, alias="releaseId"),
+    sort_direction: Literal["asc", "desc"] = Query("desc", alias="sortDirection"),
+    min_games: int = Query(10, alias="minGames", ge=1, le=82),
+    min_minutes: float = Query(150.0, alias="minMinutes", ge=0.0),
+    limit: int = Query(50, ge=1, le=100),
+    measure: DistributionMeasure = Query(DistributionMeasure.IQR),
+    session: Session = Depends(get_db),
+) -> RankOperationResponse:
+    """GET variant of analytical rank operation for query-string navigation."""
+    req = RankOperationRequest(
+        operation_type=operation_type,
+        metric=metric,
+        season=season,
+        phase=phase,
+        before_date=before_date,
+        release_id=release_id,
+        sort_direction=sort_direction,
+        min_games=min_games,
+        min_minutes=min_minutes,
+        limit=limit,
+        measure=measure,
+    )
+    return rank_operation_service(session, req)
+
+
+@router.get("/measurements", response_model=MeasurementsQueryResponse)
+def get_measurements_endpoint(
+    player_id: str | None = Query(None, alias="playerId"),
+    draft_year: int | None = Query(None, alias="draftYear"),
+    min_wingspan: float | None = Query(None, alias="minWingspan"),
+    max_wingspan: float | None = Query(None, alias="maxWingspan"),
+    min_height: float | None = Query(None, alias="minHeight"),
+    max_height: float | None = Query(None, alias="maxHeight"),
+    measurement_type: str = Query("all", alias="measurementType"),
+    limit: int = Query(50, ge=1, le=200),
+    session: Session = Depends(get_db),
+) -> MeasurementsQueryResponse:
+    """Query anthropometric combine and listed roster measurements with wingspan filters."""
+    res = query_measurements_service(
+        session=session,
+        player_id=player_id,
+        draft_year=draft_year,
+        min_wingspan=min_wingspan,
+        max_wingspan=max_wingspan,
+        min_height=min_height,
+        max_height=max_height,
+        measurement_type=measurement_type,
+        limit=limit,
+    )
+    return MeasurementsQueryResponse(**res)
+
+
+@router.get("/players/{player_id}/measurements", response_model=PlayerMeasurementsDetailResponse)
+def get_player_measurements_endpoint(
+    player_id: str,
+    session: Session = Depends(get_db),
+) -> PlayerMeasurementsDetailResponse:
+    """Retrieve full anthropometric combine, listed roster, and draft profile for a player."""
+    res = get_player_measurements_detail_service(session, player_id)
+    return PlayerMeasurementsDetailResponse(**res)
+
+
+@router.get("/crosswalk", response_model=CrosswalkResponse)
+def get_crosswalk_endpoint(
+    source_namespace: str = Query(..., alias="sourceNamespace"),
+    source_id: str = Query(..., alias="sourceId"),
+    target_namespace: str = Query("nba", alias="targetNamespace"),
+    kind: str = Query("player"),
+    session: Session = Depends(get_db),
+) -> CrosswalkResponse:
+    """Resolve an external identifier (e.g. ESPN, BRef, Spotrac) to canonical NBA entity."""
+    cw = resolve_crosswalk(
+        session=session,
+        source_namespace=source_namespace,
+        source_id=source_id,
+        target_namespace=target_namespace,
+        kind=kind,
+    )
+    if cw:
+        item = CrosswalkItem(
+            source_namespace=cw.source_namespace,
+            source_id=cw.source_id,
+            target_namespace=cw.target_namespace,
+            target_id=cw.target_id,
+            kind=cw.kind,
+            confidence=cw.confidence,
+            mapping_method=cw.mapping_method,
+            evidence=cw.evidence_json or {},
+        )
+        return CrosswalkResponse(item=item, resolved=True)
+    return CrosswalkResponse(item=None, resolved=False)
+
+
+@router.get("/backfill/status", response_model=BackfillStatusResponse)
+def get_backfill_status_endpoint(
+    start_year: int = Query(2001, alias="startYear"),
+    end_year: int = Query(2023, alias="endYear"),
+    session: Session = Depends(get_db),
+) -> BackfillStatusResponse:
+    """Inspect progress and status of resumable historical backfill toward 2000-01."""
+    res = get_backfill_status(session, start_year=start_year, end_year=end_year)
+    return BackfillStatusResponse(
+        range=res["range"],
+        total_seasons=res["total_seasons"],
+        imported_count=res["imported_count"],
+        acquired_count=res["acquired_count"],
+        pending_count=res["pending_count"],
+        imported_years=res["imported_years"],
+        acquired_years=res["acquired_years"],
+        pending_years=res["pending_years"],
+    )

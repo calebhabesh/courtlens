@@ -46,6 +46,7 @@ from courtload.workbench_models import (
     ModelPolicyActivation,
     SavedInvestigation,
     WorkbenchDataset,
+    WorkbenchPersonalWorkspace,
     WorkbenchPlayerGame,
     WorkbenchReleaseBinding,
     WorkbenchSchedule,
@@ -208,6 +209,7 @@ def _create_backup_manifest_internal(
         tg_count = session.scalar(select(func.count()).select_from(WorkbenchTeamGame)) or 0
         sch_count = session.scalar(select(func.count()).select_from(WorkbenchSchedule)) or 0
         inv_count = session.scalar(select(func.count()).select_from(SavedInvestigation)) or 0
+        pw_count = session.scalar(select(func.count()).select_from(WorkbenchPersonalWorkspace)) or 0
         act_policies = [
             {
                 "id": p.id,
@@ -228,6 +230,7 @@ def _create_backup_manifest_internal(
             "team_games_count": tg_count,
             "schedules_count": sch_count,
             "saved_investigations_count": inv_count,
+            "personal_workspaces_count": pw_count,
             "model_policy_activations": act_policies,
             "forecast_issuances_count": f_iss_count,
             "forecast_scores_count": f_sco_count,
@@ -327,6 +330,7 @@ def verify_restored_state(
         iss_count = session.scalar(select(func.count()).select_from(ForecastIssuance)) or 0
         sco_count = session.scalar(select(func.count()).select_from(ForecastScore)) or 0
         inv_count = session.scalar(select(func.count()).select_from(SavedInvestigation)) or 0
+        pw_count = session.scalar(select(func.count()).select_from(WorkbenchPersonalWorkspace)) or 0
 
         # Artifact validation
         verified_artifacts: dict[str, Any] = {"run_id": run_id}
@@ -466,6 +470,7 @@ def verify_restored_state(
                 "forecast_issuances": iss_count,
                 "forecast_scores": sco_count,
                 "saved_investigations": inv_count,
+                "personal_workspaces": pw_count,
             },
             "verified_artifacts": verified_artifacts,
             "verified_profile": {

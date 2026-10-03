@@ -6,7 +6,7 @@ from datetime import date, timedelta
 from pathlib import Path
 
 import typer
-from sqlalchemy import Connection, Engine, select
+from sqlalchemy import Connection, Engine, func, select
 
 from courtload.archive_models import ArchiveDataset
 from courtload.config import get_settings
@@ -589,17 +589,60 @@ def refresh_workbench_command(
     )
 
 
+@app.command("backfill-historical")
+def backfill_historical_command(
+    start_year: int = typer.Option(2001, help="Starting ending year (e.g. 2001 for 2000-01)."),
+    end_year: int = typer.Option(
+        2023, help="Ending year for historical range (e.g. 2023 for 2022-23)."
+    ),
+    batch_size: int = typer.Option(
+        2, min=1, max=10, help="Number of seasons to process per batch."
+    ),
+    execute_now: bool = typer.Option(
+        True, "--execute-now/--queue-only", help="Execute immediately or only enqueue."
+    ),
+) -> None:
+    """Backfill historical NBA seasons toward 2000-01 in resumable batches."""
+    from courtload.services.workbench_jobs import enqueue_job, execute_job
+
+    with SessionLocal() as session:
+        job = enqueue_job(
+            session,
+            "backfill",
+            {"start_year": start_year, "end_year": end_year, "batch_size": batch_size},
+        )
+        job_id = job.id
+    if execute_now:
+        job = execute_job(engine, job_id)
+    typer.echo(
+        json.dumps(
+            {
+                "job_id": job.id,
+                "job_type": job.job_type,
+                "status": job.status,
+                "stage": job.stage,
+                "timings": job.timings_json,
+                "output_refs": job.output_refs_json,
+                "error": job.error_summary,
+            },
+            indent=2,
+            default=str,
+        )
+    )
+
+
 @app.command("acquire-portraits")
 def acquire_portraits_command(
     execute_now: bool = typer.Option(
         True, "--execute-now/--queue-only", help="Execute immediately or only enqueue."
     ),
+    limit: int = typer.Option(200, min=1, max=2000, help="Maximum uncached players to attempt."),
 ) -> None:
     """Acquire and cache headshot portraits for active players."""
     from courtload.services.workbench_jobs import enqueue_job, execute_job
 
     with SessionLocal() as session:
-        job = enqueue_job(session, "portraits")
+        job = enqueue_job(session, "portraits", {"limit": limit})
         job_id = job.id
     if execute_now:
         job = execute_job(engine, job_id)
@@ -615,6 +658,228 @@ def acquire_portraits_command(
             default=str,
         )
     )
+
+
+@app.command("acquire-rich-sources")
+def acquire_rich_sources_command(
+    season: int = typer.Option(2024, help="Season ending year (e.g. 2024 for 2023-24)."),
+) -> None:
+    """Acquire and verify rich source files (PBP, possessions, lineups, shots, matchups)."""
+    from courtload.ingestion.sportsdataverse import acquire_rich_season_assets
+
+    settings = get_settings()
+    manifest = acquire_rich_season_assets(season, settings.raw_store_path)
+    typer.echo(json.dumps(manifest, indent=2, default=str))
+
+
+@app.command("admit-rich-sources")
+def admit_rich_sources_command(
+    season: int = typer.Option(2024, help="Season ending year (e.g. 2024 for 2023-24)."),
+    dataset_id: str | None = typer.Option(None, help="Target workbench dataset ID."),
+    limit_games: int | None = typer.Option(None, help="Optional limit on admitted games."),
+    execute_now: bool = typer.Option(
+        True, "--execute-now/--queue-only", help="Execute immediately or only enqueue."
+    ),
+) -> None:
+    """Admit and verify rich source data into immutable workbench facts."""
+    from courtload.services.workbench_jobs import enqueue_job, execute_job
+
+    with SessionLocal() as session:
+        job = enqueue_job(
+            session,
+            "rich_admission",
+            {"ending_year": season, "dataset_id": dataset_id, "limit_games": limit_games},
+        )
+        job_id = job.id
+    if execute_now:
+        job = execute_job(engine, job_id)
+    typer.echo(
+        json.dumps(
+            {
+                "job_id": job.id,
+                "job_type": job.job_type,
+                "status": job.status,
+                "stage": job.stage,
+                "timings": job.timings_json,
+                "output_refs": job.output_refs_json,
+                "error": job.error_summary,
+            },
+            indent=2,
+            default=str,
+        )
+    )
+
+
+@app.command("verify-rich-admission")
+def verify_rich_admission_command(
+    dataset_id: str | None = typer.Option(None, help="Target workbench dataset ID."),
+    season: str | None = typer.Option(None, help="Canonical season string (e.g. 2023-24)."),
+) -> None:
+    """Inspect admitted rich sources, lineage hashes, policy versions, and quarantine reports."""
+    from courtload.services.publication import DEFAULT_CHANNEL
+    from courtload.services.rich_source_admission import get_rich_admissions_report
+    from courtload.warehouse_models import PublishedSnapshot
+    from courtload.workbench_models import WorkbenchDataset, WorkbenchReleaseBinding
+
+    with SessionLocal() as session:
+        target_id = dataset_id
+        if not target_id:
+            pub = session.scalar(
+                select(PublishedSnapshot).where(PublishedSnapshot.channel == DEFAULT_CHANNEL)
+            )
+            if pub:
+                binding = session.scalar(
+                    select(WorkbenchReleaseBinding).where(
+                        WorkbenchReleaseBinding.snapshot_id == pub.snapshot_id
+                    )
+                )
+                if binding:
+                    target_id = binding.dataset_id
+            if not target_id:
+                ds = session.scalar(
+                    select(WorkbenchDataset).order_by(WorkbenchDataset.created_at.desc())
+                )
+                if ds:
+                    target_id = ds.id
+
+        if not target_id:
+            typer.echo(json.dumps({"error": "No workbench dataset found"}, indent=2))
+            return
+
+        report = get_rich_admissions_report(session, target_id, season=season)
+        typer.echo(json.dumps({"dataset_id": target_id, "admissions": report}, indent=2))
+
+
+@app.command("reconstruct-stints")
+def reconstruct_stints_command(
+    season: str = typer.Option("2023-24", help="Canonical season string (e.g. 2023-24)."),
+    dataset_id: str | None = typer.Option(None, help="Target workbench dataset ID."),
+    game_id: str | None = typer.Option(None, help="Target NBA game ID for single-game run."),
+    limit_games: int | None = typer.Option(None, help="Optional limit on processed games."),
+    execute_now: bool = typer.Option(
+        True, "--execute-now/--queue-only", help="Execute immediately or only enqueue."
+    ),
+) -> None:
+    """Reconstruct 5-on-5 continuous lineup stints under possession-policy-v1."""
+    from courtload.services.workbench_jobs import enqueue_job, execute_job
+
+    with SessionLocal() as session:
+        job = enqueue_job(
+            session,
+            "possession_warehouse",
+            {
+                "season": season,
+                "dataset_id": dataset_id,
+                "game_id": game_id,
+                "limit_games": limit_games,
+            },
+        )
+        job_id = job.id
+    if execute_now:
+        job = execute_job(engine, job_id)
+    typer.echo(
+        json.dumps(
+            {
+                "job_id": job.id,
+                "job_type": job.job_type,
+                "status": job.status,
+                "stage": job.stage,
+                "timings": job.timings_json,
+                "output_refs": job.output_refs_json,
+                "error": job.error_summary,
+            },
+            indent=2,
+            default=str,
+        )
+    )
+
+
+@app.command("verify-possession-warehouse")
+def verify_possession_warehouse_command(
+    dataset_id: str | None = typer.Option(None, help="Target workbench dataset ID."),
+    season: str = typer.Option("2023-24", help="Canonical season string."),
+    player_id: str | None = typer.Option(None, help="Player ID to verify cutoff-safe exposure."),
+) -> None:
+    """Inspect reconstructed lineup stints, invariant status, and cutoff-safe exposure."""
+    from courtload.services.possession_warehouse import (
+        get_cutoff_safe_player_exposure,
+        get_reconstruction_overrides,
+    )
+    from courtload.services.publication import DEFAULT_CHANNEL
+    from courtload.warehouse_models import PublishedSnapshot
+    from courtload.workbench_models import (
+        WorkbenchDataset,
+        WorkbenchLineupStint,
+        WorkbenchReleaseBinding,
+        WorkbenchStintPlayer,
+    )
+
+    with SessionLocal() as session:
+        target_id = dataset_id
+        if not target_id:
+            pub = session.scalar(
+                select(PublishedSnapshot).where(PublishedSnapshot.channel == DEFAULT_CHANNEL)
+            )
+            if pub:
+                binding = session.scalar(
+                    select(WorkbenchReleaseBinding).where(
+                        WorkbenchReleaseBinding.snapshot_id == pub.snapshot_id
+                    )
+                )
+                if binding:
+                    target_id = binding.dataset_id
+            if not target_id:
+                ds = session.scalar(
+                    select(WorkbenchDataset).order_by(WorkbenchDataset.created_at.desc())
+                )
+                if ds:
+                    target_id = ds.id
+
+        if not target_id:
+            typer.echo(json.dumps({"error": "No workbench dataset found"}, indent=2))
+            return
+
+        stint_count = (
+            session.scalar(
+                select(func.count(WorkbenchLineupStint.id)).where(
+                    WorkbenchLineupStint.dataset_id == target_id
+                )
+            )
+            or 0
+        )
+        stint_player_count = (
+            session.scalar(
+                select(func.count(WorkbenchStintPlayer.id)).where(
+                    WorkbenchStintPlayer.dataset_id == target_id
+                )
+            )
+            or 0
+        )
+        overrides = get_reconstruction_overrides(session, dataset_id=target_id)
+
+        sample_player_exposure = None
+        if player_id:
+            sample_player_exposure = get_cutoff_safe_player_exposure(
+                session,
+                dataset_id=target_id,
+                player_id=player_id,
+                season=season,
+            )
+
+        typer.echo(
+            json.dumps(
+                {
+                    "dataset_id": target_id,
+                    "season": season,
+                    "total_lineup_stints": stint_count,
+                    "total_stint_player_records": stint_player_count,
+                    "active_overrides_count": len(overrides),
+                    "player_exposure": sample_player_exposure,
+                },
+                indent=2,
+                default=str,
+            )
+        )
 
 
 @app.command("jobs")

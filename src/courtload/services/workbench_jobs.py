@@ -48,7 +48,14 @@ from courtload.workbench_models import (
 
 logger = logging.getLogger(__name__)
 
-ALLOWLISTED_JOB_TYPES = {"bootstrap", "refresh", "portraits"}
+ALLOWLISTED_JOB_TYPES = {
+    "bootstrap",
+    "refresh",
+    "portraits",
+    "backfill",
+    "rich_admission",
+    "possession_warehouse",
+}
 _SECRET_PATTERN = re.compile(r"(password|token|secret|key)=([^\s&]+)", re.IGNORECASE)
 
 
@@ -414,7 +421,15 @@ def execute_job(
                                 .where(
                                     WorkbenchIdentity.kind == "player",
                                     ~WorkbenchIdentity.external_id.like("test_%"),
+                                    ~select(PlayerPortrait.id)
+                                    .where(
+                                        PlayerPortrait.player_id == WorkbenchIdentity.external_id,
+                                        PlayerPortrait.source_name == "nba_cdn",
+                                    )
+                                    .exists(),
                                 )
+                                .distinct()
+                                .order_by(WorkbenchIdentity.external_id)
                                 .limit(limit_count)
                             ).all()
                         )
@@ -469,6 +484,183 @@ def execute_job(
                             "portraits_acquired": acquired_count,
                             "portraits_failed": failed_count,
                         }
+                        s.commit()
+                        return j
+
+                elif job_type == "backfill":
+                    t0 = time.monotonic()
+                    update_heartbeat("backfilling")
+                    start_yr = int(job_args.get("start_year", 2001))
+                    end_yr = int(job_args.get("end_year", 2023))
+                    b_size = int(job_args.get("batch_size", 2))
+                    tgt_yrs = job_args.get("target_years")
+                    if tgt_yrs is not None:
+                        tgt_yrs = [int(y) for y in tgt_yrs]
+
+                    from courtload.services.workbench_backfill import execute_backfill_batch
+
+                    with Session(engine, expire_on_commit=False) as s:
+                        backfill_res = execute_backfill_batch(
+                            s,
+                            start_year=start_yr,
+                            end_year=end_yr,
+                            batch_size=b_size,
+                            target_years=tgt_yrs,
+                            raw_root=settings.raw_store_path,
+                        )
+
+                    timings["backfill"] = round(time.monotonic() - t0, 3)
+                    timings["total"] = round(time.monotonic() - start_total, 3)
+                    with Session(engine, expire_on_commit=False) as s:
+                        j = s.get(WorkbenchJob, job_id)
+                        assert j is not None
+                        j.status = "succeeded"
+                        j.stage = "completed"
+                        j.finished_at = utc_now()
+                        j.timings_json = timings
+                        j.output_refs_json = backfill_res
+                        s.commit()
+                        return j
+
+                elif job_type == "rich_admission":
+                    from courtload.services.rich_source_admission import (
+                        admit_rich_sources_for_season,
+                    )
+
+                    year = int(job_args.get("ending_year", 2024))
+                    tgt_dataset_id = job_args.get("dataset_id")
+                    lim_games = job_args.get("limit_games")
+                    tgt_families = job_args.get("families")
+
+                    update_heartbeat("resolving_dataset")
+                    with Session(engine, expire_on_commit=False) as s:
+                        if not tgt_dataset_id:
+                            # Resolve published dataset or newest candidate
+                            pub = s.scalar(
+                                select(PublishedSnapshot).where(
+                                    PublishedSnapshot.channel == DEFAULT_CHANNEL
+                                )
+                            )
+                            if pub:
+                                binding = s.scalar(
+                                    select(WorkbenchReleaseBinding).where(
+                                        WorkbenchReleaseBinding.snapshot_id == pub.snapshot_id
+                                    )
+                                )
+                                if binding:
+                                    tgt_dataset_id = binding.dataset_id
+
+                            if not tgt_dataset_id:
+                                ds = s.scalar(
+                                    select(WorkbenchDataset).order_by(
+                                        WorkbenchDataset.created_at.desc()
+                                    )
+                                )
+                                if ds:
+                                    tgt_dataset_id = ds.id
+
+                        if not tgt_dataset_id:
+                            raise ValueError("No dataset found for rich admission")
+
+                    t0 = time.monotonic()
+                    update_heartbeat("admitting_rich_sources")
+                    with Session(engine, expire_on_commit=False) as s:
+                        summaries = admit_rich_sources_for_season(
+                            session=s,
+                            dataset_id=tgt_dataset_id,
+                            season_ending_year=year,
+                            raw_root=settings.raw_store_path,
+                            limit_games=lim_games,
+                            families=tgt_families,
+                        )
+
+                    timings["rich_admission"] = round(time.monotonic() - t0, 3)
+                    timings["total"] = round(time.monotonic() - start_total, 3)
+
+                    out_refs = {
+                        fam: {
+                            "season": summ.season,
+                            "source_family": summ.source_family,
+                            "expected": summ.total_games_expected,
+                            "observed": summ.total_games_observed,
+                            "admitted": summ.total_games_admitted,
+                            "rejected": summ.total_games_rejected,
+                            "policy": summ.policy_version,
+                            "reconciliation": summ.reconciliation_summary,
+                        }
+                        for fam, summ in summaries.items()
+                    }
+
+                    with Session(engine, expire_on_commit=False) as s:
+                        j = s.get(WorkbenchJob, job_id)
+                        assert j is not None
+                        j.status = "succeeded"
+                        j.stage = "completed"
+                        j.finished_at = utc_now()
+                        j.timings_json = timings
+                        j.output_refs_json = out_refs
+                        s.commit()
+                        return j
+
+                elif job_type == "possession_warehouse":
+                    from courtload.services.possession_warehouse import (
+                        build_possession_warehouse_for_season,
+                    )
+
+                    season_str = str(job_args.get("season", "2023-24"))
+                    tgt_dataset_id = job_args.get("dataset_id")
+                    lim_games = job_args.get("limit_games")
+
+                    update_heartbeat("resolving_dataset")
+                    with Session(engine, expire_on_commit=False) as s:
+                        if not tgt_dataset_id:
+                            pub = s.scalar(
+                                select(PublishedSnapshot).where(
+                                    PublishedSnapshot.channel == DEFAULT_CHANNEL
+                                )
+                            )
+                            if pub:
+                                binding = s.scalar(
+                                    select(WorkbenchReleaseBinding).where(
+                                        WorkbenchReleaseBinding.snapshot_id == pub.snapshot_id
+                                    )
+                                )
+                                if binding:
+                                    tgt_dataset_id = binding.dataset_id
+
+                            if not tgt_dataset_id:
+                                ds = s.scalar(
+                                    select(WorkbenchDataset).order_by(
+                                        WorkbenchDataset.created_at.desc()
+                                    )
+                                )
+                                if ds:
+                                    tgt_dataset_id = ds.id
+
+                        if not tgt_dataset_id:
+                            raise ValueError("No dataset found for possession warehouse build")
+
+                    t0 = time.monotonic()
+                    update_heartbeat("building_possession_warehouse")
+                    with Session(engine, expire_on_commit=False) as s:
+                        summary = build_possession_warehouse_for_season(
+                            session=s,
+                            dataset_id=tgt_dataset_id,
+                            season=season_str,
+                            limit_games=lim_games,
+                        )
+
+                    timings["possession_warehouse"] = round(time.monotonic() - t0, 3)
+                    timings["total"] = round(time.monotonic() - start_total, 3)
+
+                    with Session(engine, expire_on_commit=False) as s:
+                        j = s.get(WorkbenchJob, job_id)
+                        assert j is not None
+                        j.status = "succeeded"
+                        j.stage = "completed"
+                        j.finished_at = utc_now()
+                        j.timings_json = timings
+                        j.output_refs_json = summary
                         s.commit()
                         return j
 

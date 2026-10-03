@@ -9,6 +9,13 @@ ALEMBIC="$VENV_DIR/bin/alembic"
 COURTLOAD="$VENV_DIR/bin/courtload"
 UVICORN="$VENV_DIR/bin/uvicorn"
 
+if [ -f "$REPO_ROOT/.env" ]; then
+  COURTLOAD_DASHBOARD_PORT="${COURTLOAD_DASHBOARD_PORT:-$(grep -E '^COURTLOAD_DASHBOARD_PORT=' "$REPO_ROOT/.env" | cut -d= -f2- | tr -d ' "\r')}"
+  COURTLOAD_API_PORT="${COURTLOAD_API_PORT:-$(grep -E '^COURTLOAD_API_PORT=' "$REPO_ROOT/.env" | cut -d= -f2- | tr -d ' "\r')}"
+  COURTLOAD_API_HOST="${COURTLOAD_API_HOST:-$(grep -E '^COURTLOAD_API_HOST=' "$REPO_ROOT/.env" | cut -d= -f2- | tr -d ' "\r')}"
+  COURTLOAD_CORS_ORIGINS="${COURTLOAD_CORS_ORIGINS:-$(grep -E '^COURTLOAD_CORS_ORIGINS=' "$REPO_ROOT/.env" | cut -d= -f2- | tr -d '\r')}"
+fi
+
 API_HOST="${COURTLOAD_API_HOST:-127.0.0.1}"
 API_PORT="${COURTLOAD_API_PORT:-8000}"
 DASHBOARD_PORT="${COURTLOAD_DASHBOARD_PORT:-3000}"

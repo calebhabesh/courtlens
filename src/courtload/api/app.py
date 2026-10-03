@@ -8,7 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from courtload import __version__
 from courtload.api.metrics import metrics_response, observe_request
-from courtload.api.routers import auth, fantasy, public, workbench
+from courtload.api.routers import auth, fantasy, public, research, shared_floor, shooting, workbench
 from courtload.config import get_settings
 
 
@@ -48,6 +48,9 @@ def create_app() -> FastAPI:
 
     application.include_router(public.router, prefix="/api")
     application.include_router(workbench.router, prefix="/api")
+    application.include_router(shared_floor.router, prefix="/api")
+    application.include_router(shooting.router, prefix="/api")
+    application.include_router(research.router, prefix="/api")
     application.include_router(auth.router, prefix="/api")
     application.include_router(fantasy.router, prefix="/api")
     application.add_api_route(
