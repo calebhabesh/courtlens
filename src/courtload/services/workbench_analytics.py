@@ -27,9 +27,8 @@ from courtload.domain.metrics import (
     METRIC_CATALOG,
     METRIC_CATALOG_VERSION,
     compute_metrics,
-    get_metric_definition,
-    validate_metric_keys,
 )
+from courtload.domain.team_analytics import compute_team_schedule_context
 from courtload.domain.teams import get_team_info, resolve_team_label, resolve_team_tricode
 from courtload.models import new_uuid, utc_now
 from courtload.services.publication import DEFAULT_CHANNEL
@@ -618,115 +617,23 @@ def execute_player_research_query(
     context: ResolvedContext,
     query: ResearchQuery,
 ) -> tuple[list[dict[str, Any]], int, str | None, bool]:
-    """Execute typed ResearchQuery and return (items, total_count, next_cursor, has_more)."""
-    # 1. Validate metrics
-    if query.sort_metric not in METRIC_CATALOG:
-        valid_keys = ", ".join(sorted(METRIC_CATALOG.keys()))
-        raise HTTPException(
-            status_code=422,
-            detail=f"unsupported metric '{query.sort_metric}'; valid metrics are: {valid_keys}",
-        )
-    if query.metrics:
-        try:
-            validate_metric_keys(query.metrics)
-        except ValueError as err:
-            raise HTTPException(status_code=422, detail=str(err)) from err
+    """Execute typed ResearchQuery and return (items, total_count, next_cursor, has_more).
 
-    # 2. Check cursor if provided
-    context_hash = compute_query_context_hash(context, query)
-    start_offset = 0
-    if query.cursor:
-        start_offset = decode_cursor(query.cursor, context_hash)
+    Delegates to the SQL-backed stats_engine to ensure query computation executes
+    inside the database engine using analytical windows and indexed fact tables.
+    """
+    from courtload.domain.query_url import research_query_to_query_spec
+    from courtload.services.stats_engine import execute_stats_query
 
-    # 3. Load all candidate player games before cutoff
-    raw_games = _load_player_games(
+    spec = research_query_to_query_spec(query)
+    is_export = query.limit > 100
+    return execute_stats_query(
         session,
         context,
-        team_id=query.team_id,
-        name_query=query.name,
+        spec,
+        is_export=is_export,
+        max_export_rows=query.limit if is_export else MAX_EXPORT_ROWS,
     )
-
-    # 4. Group by player
-    games_by_player: dict[str, list[dict[str, Any]]] = {}
-    player_names: dict[str, str] = {}
-    player_teams: dict[str, set[str]] = {}
-
-    for g in raw_games:
-        pid = g["player_id"]
-        games_by_player.setdefault(pid, []).append(g)
-        player_names[pid] = g["player_name"]
-        player_teams.setdefault(pid, set()).add(g["team_id"])
-
-    # 5. Compute window metrics & apply eligibility filters
-    player_rows: list[dict[str, Any]] = []
-
-    for pid, all_games in games_by_player.items():
-        all_games.sort(key=lambda x: (x["game_date"], x["game_id"]))
-        appeared = [g for g in all_games if g.get("appearance") == "appeared"]
-
-        if query.window == "last_5":
-            window_games = appeared[-5:]
-        elif query.window == "last_10":
-            window_games = appeared[-10:]
-        else:
-            window_games = all_games
-
-        metrics, sample_sizes = compute_metrics(window_games)
-        gp = metrics["gp"]
-        tot_min = metrics["min"]
-        mpg = metrics["min_per_game"] or 0.0
-
-        if query.min_games is not None and gp < query.min_games:
-            continue
-        if query.min_minutes is not None and tot_min < query.min_minutes:
-            continue
-        if query.min_avg_minutes is not None and mpg < query.min_avg_minutes:
-            continue
-
-        team_tricodes = [resolve_team_tricode(tid) for tid in sorted(player_teams[pid])]
-
-        player_rows.append(
-            {
-                "player_id": pid,
-                "player_name": player_names[pid],
-                "teams": team_tricodes,
-                "stints_count": len(player_teams[pid]),
-                "games_played": gp,
-                "total_minutes": tot_min,
-                "metrics": metrics,
-                "sample_sizes": sample_sizes,
-                "portrait_url": f"/api/workbench/players/{pid}/portrait",
-            }
-        )
-
-    total_eligible = len(player_rows)
-
-    # 6. Sort rows
-    sort_key = query.sort_metric
-    sort_defn = get_metric_definition(sort_key)
-    direction = query.sort_direction or sort_defn.default_sort_direction
-
-    def _sort_key(item: dict[str, Any]) -> tuple[int, Any, str]:
-        val = item["metrics"].get(sort_key)
-        if val is None:
-            # Sort nulls last
-            return (1, 0, item["player_id"])
-        if direction == "desc":
-            # For descending, negate numeric or invert
-            if isinstance(val, (int, float)):
-                return (0, -val, item["player_id"])
-            return (0, val, item["player_id"])
-        return (0, val, item["player_id"])
-
-    player_rows.sort(key=_sort_key)
-
-    # 7. Apply bounded pagination
-    limit = min(max(1, query.limit), 100)
-    visible = player_rows[start_offset : start_offset + limit]
-    has_more = (start_offset + limit) < total_eligible
-    next_cursor = encode_cursor(context_hash, start_offset + limit) if has_more else None
-
-    return visible, total_eligible, next_cursor, has_more
 
 
 def get_player_profile(
@@ -925,12 +832,21 @@ def get_player_game_log(
 def get_teams_research(
     session: Session,
     context: ResolvedContext,
-) -> list[dict[str, Any]]:
-    """Retrieve team research facts with records, production, and allowance."""
+) -> tuple[list[dict[str, Any]], dict[str, float]]:
+    """Retrieve team research facts with records, production, allowance, and four factors."""
+    from courtload.services.team_analytics import _compute_all_team_four_factors
+
+    all_factors, league_averages, _ = _compute_all_team_four_factors(session, context)
     team_games = _load_team_games(session, context)
     games_by_team: dict[str, list[dict[str, Any]]] = {}
+    games_by_game_and_team: dict[tuple[str, str], dict[str, Any]] = {}
     for g in team_games:
         games_by_team.setdefault(g["team_id"], []).append(g)
+        games_by_game_and_team[(g["game_id"], g["team_id"])] = g
+        t_info = get_team_info(g["team_id"])
+        if t_info:
+            games_by_game_and_team[(g["game_id"], t_info.tricode)] = g
+            games_by_game_and_team[(g["game_id"], t_info.team_id)] = g
 
     team_items: list[dict[str, Any]] = []
 
@@ -955,19 +871,73 @@ def get_teams_research(
         pts_for = sum(g["points"] for g in games if g["points"] is not None)
         pts_against = sum(g["opponent_points"] for g in games if g["opponent_points"] is not None)
 
+        total_fgm = sum(float(g["stats"].get("field_goals_made", 0) or 0) for g in games)
+        total_fga = sum(float(g["stats"].get("field_goals_attempted", 0) or 0) for g in games)
+        total_fg3m = sum(float(g["stats"].get("three_pointers_made", 0) or 0) for g in games)
+        total_fg3a = sum(float(g["stats"].get("three_pointers_attempted", 0) or 0) for g in games)
+        total_ftm = sum(float(g["stats"].get("free_throws_made", 0) or 0) for g in games)
+        total_fta = sum(float(g["stats"].get("free_throws_attempted", 0) or 0) for g in games)
+
+        opp_fgm = 0.0
+        opp_fga = 0.0
+        opp_fg3m = 0.0
+        opp_fg3a = 0.0
+        for g in games:
+            opp_g = games_by_game_and_team.get((g["game_id"], g.get("opponent_id", "")))
+            if opp_g:
+                o_st = opp_g.get("stats") or {}
+                opp_fgm += float(o_st.get("field_goals_made", 0) or 0)
+                opp_fga += float(o_st.get("field_goals_attempted", 0) or 0)
+                opp_fg3m += float(o_st.get("three_pointers_made", 0) or 0)
+                opp_fg3a += float(o_st.get("three_pointers_attempted", 0) or 0)
+
         production = {
             "pts_per_game": round(pts_for / gp, 1) if gp > 0 else None,
             "pts_total": pts_for,
+            "fg_pct": round(total_fgm / total_fga, 4) if total_fga > 0 else None,
+            "fg3_pct": round(total_fg3m / total_fg3a, 4) if total_fg3a > 0 else None,
+            "ft_pct": round(total_ftm / total_fta, 4) if total_fta > 0 else None,
+            "efg_pct": (
+                round((total_fgm + 0.5 * total_fg3m) / total_fga, 4) if total_fga > 0 else None
+            ),
         }
         allowance = {
             "pts_allowed_per_game": round(pts_against / gp, 1) if gp > 0 else None,
             "pts_allowed_total": pts_against,
+            "fg_pct_allowed": round(opp_fgm / opp_fga, 4) if opp_fga > 0 else None,
+            "fg3_pct_allowed": round(opp_fg3m / opp_fg3a, 4) if opp_fg3a > 0 else None,
+            "efg_pct_allowed": (
+                round((opp_fgm + 0.5 * opp_fg3m) / opp_fga, 4) if opp_fga > 0 else None
+            ),
         }
 
         team_info = get_team_info(tid)
         canonical_id = team_info.team_id if team_info else tid
         tricode = team_info.tricode if team_info else resolve_team_tricode(tid)
         name = team_info.name if team_info else resolve_team_label(tid)
+
+        team_factors = (
+            all_factors.get(tricode) or all_factors.get(canonical_id) or all_factors.get(tid)
+        )
+        ratings = None
+        four_factors = None
+        if team_factors:
+            ratings = {
+                "off_rating": team_factors.get("off_rating"),
+                "def_rating": team_factors.get("def_rating"),
+                "net_rating": team_factors.get("net_rating"),
+                "pace": team_factors.get("pace"),
+            }
+            four_factors = {
+                "efg_pct": team_factors.get("efg_pct"),
+                "tov_pct": team_factors.get("tov_pct"),
+                "oreb_pct": team_factors.get("oreb_pct"),
+                "ftr": team_factors.get("ftr"),
+                "opp_efg_pct": team_factors.get("opp_efg_pct"),
+                "opp_tov_pct": team_factors.get("opp_tov_pct"),
+                "opp_oreb_pct": team_factors.get("opp_oreb_pct"),
+                "opp_ftr": team_factors.get("opp_ftr"),
+            }
 
         team_items.append(
             {
@@ -982,6 +952,10 @@ def get_teams_research(
                 "allowance": allowance,
                 "observed_games": gp,
                 "exclusions": 0,
+                "conference": team_info.conference if team_info else None,
+                "division": team_info.division if team_info else None,
+                "ratings": ratings,
+                "four_factors": four_factors,
             }
         )
 
@@ -996,7 +970,7 @@ def get_teams_research(
         return (0, -wp, -diff, t["team_id"])
 
     team_items.sort(key=_team_sort_key)
-    return team_items
+    return team_items, league_averages
 
 
 def get_team_detail(
@@ -1078,6 +1052,15 @@ def get_team_detail(
     tricode = team_info.tricode if team_info else resolve_team_tricode(team_id)
     name = team_info.name if team_info else resolve_team_label(team_id)
 
+    sched_context = compute_team_schedule_context(team_games)
+
+    total_fgm = sum(float(g["stats"].get("field_goals_made", 0) or 0) for g in team_games)
+    total_fga = sum(float(g["stats"].get("field_goals_attempted", 0) or 0) for g in team_games)
+    total_fg3m = sum(float(g["stats"].get("three_pointers_made", 0) or 0) for g in team_games)
+    total_fg3a = sum(float(g["stats"].get("three_pointers_attempted", 0) or 0) for g in team_games)
+    total_ftm = sum(float(g["stats"].get("free_throws_made", 0) or 0) for g in team_games)
+    total_fta = sum(float(g["stats"].get("free_throws_attempted", 0) or 0) for g in team_games)
+
     return {
         "team": {
             "id": canonical_id,
@@ -1095,11 +1078,20 @@ def get_team_detail(
         "production": {
             "pts_per_game": round(pts_for / gp, 1) if gp > 0 else None,
             "pts_total": pts_for,
+            "fg_pct": round(total_fgm / total_fga, 4) if total_fga > 0 else None,
+            "fg3_pct": round(total_fg3m / total_fg3a, 4) if total_fg3a > 0 else None,
+            "ft_pct": round(total_ftm / total_fta, 4) if total_fta > 0 else None,
+            "efg_pct": (
+                round((total_fgm + 0.5 * total_fg3m) / total_fga, 4) if total_fga > 0 else None
+            ),
         },
         "allowance": {
             "pts_allowed_per_game": round(pts_against / gp, 1) if gp > 0 else None,
             "pts_allowed_total": pts_against,
         },
+        "home_split": sched_context["home_split"],
+        "away_split": sched_context["away_split"],
+        "current_streak": sched_context["overall_record"]["current_streak"],
         "player_cohort": cohort,
         "recent_games": recent_games,
         "warnings": list(context.warnings),

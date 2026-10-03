@@ -515,3 +515,42 @@ def model_runs() -> dict[str, Any]:
         "runs": [],
         "decision": "No ML estimate is promoted in v1; the planner uses descriptive trailing form.",
     }
+
+
+# --- Block B17: Playoff / Series Routes (public /api/playoffs) ---
+
+
+@router.get("/playoffs", tags=["playoffs"])
+def public_playoffs_endpoint(
+    season: int | str = Query(
+        2024, description="Playoff season ending year (e.g. 2024) or string (e.g. 2023-24)"
+    ),
+    cutoff_date: date | None = Query(
+        None, description="Optional temporal replay cutoff date (YYYY-MM-DD)"
+    ),
+    cutoffDate: date | None = Query(None, description="CamelCase alias for cutoff_date"),
+    session: Session = Depends(get_db),
+) -> Any:
+    """Retrieve canonical playoff bracket hierarchy, rounds 1-4, and seed evidence."""
+    from courtload.services.workbench_playoffs import get_playoff_bracket
+
+    effective_cutoff = cutoff_date or cutoffDate
+    return get_playoff_bracket(session, season=season, cutoff_date=effective_cutoff)
+
+
+@router.get("/playoffs/series/{series_id}", tags=["playoffs"])
+def public_playoff_series_detail_endpoint(
+    series_id: str,
+    cutoff_date: date | None = Query(
+        None, description="Optional temporal replay cutoff date (YYYY-MM-DD)"
+    ),
+    cutoffDate: date | None = Query(None, description="CamelCase alias for cutoff_date"),
+    session: Session = Depends(get_db),
+) -> Any:
+    """Retrieve playoff series detail with 7-game cards, Four Factors, and player stats."""
+    from courtload.services.workbench_playoffs import get_playoff_series_detail
+
+    effective_cutoff = cutoff_date or cutoffDate
+    return get_playoff_series_detail(
+        session, series_id_or_slug=series_id, cutoff_date=effective_cutoff
+    )
