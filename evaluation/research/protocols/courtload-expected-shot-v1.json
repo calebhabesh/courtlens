@@ -1,0 +1,77 @@
+{
+  "acceptance": [
+    "Selection Brier must improve >=1% versus baseline; otherwise stop and record negative result.",
+    "Calibrated final Brier improves >=1% with bootstrap upper Brier difference <0; log-loss cannot regress >1%, and supported zone/type slices cannot regress >5% Brier.",
+    "Report fixed ten equal-width calibration bins, counts, observed rates, mean probability, ECE and expected-point MAE; final ECE <=0.05. No vendor-equivalent claim."
+  ],
+  "artifacts": [
+    "protocol.json and semantic SHA-256",
+    "binding.json with release/dataset/source/transform versions, facts and exact game/row membership hashes",
+    "exclusions.json including every rejected game and reason",
+    "attempts.json with every config, seed, rows/dimensions, peak RSS, wall time and stop reason",
+    "baseline-predictions.jsonl and candidate-predictions.jsonl with role and immutable target keys",
+    "model artifact, dependency versions and reproduction command",
+    "evaluation.json and model-card.md with errors/slices/support/limitations"
+  ],
+  "baseline_recipes": [
+    "Beta(1,1) smoothed training make rate by shot-zones-v1 zone and 2/3 type. Unseen cell falls back to training type rate, then league rate; all references training-only."
+  ],
+  "budget": {
+    "breach_policy": "stop_record_failure_amend_before_evaluation",
+    "cpu_threads": 2,
+    "max_candidate_fits": 2,
+    "max_features": 5000,
+    "max_peak_rss_mib": 4096,
+    "max_rows": 1000000,
+    "max_wall_seconds": 1800,
+    "sparse_lineup_matrix": true
+  },
+  "calibration_recipe": "Within validation season split unique game dates at median date: earlier half selects candidate against baseline, later half fits intercept-only logit calibration. Do not refit on validation. Final predictions frozen after calibration; calibration needs >=1000 attempts and both outcomes, otherwise fail. Probabilities clipped to [1e-6,1-1e-6] only for log-loss.",
+  "candidate_recipes": [
+    "One logistic location/type model C=1; one intercept-only logit calibration on validation tail after selection."
+  ],
+  "error_slices": [
+    "shot-zones-v1 zone",
+    "2/3-point type",
+    "distance bands [0,8), [8,16), [16,24), [24,infinity)",
+    "calendar month",
+    "home/away"
+  ],
+  "estimand": "Held-out probability of a made field goal and expected observed field-goal points from shot type and normalized location; free throws and foul value excluded.",
+  "exclusions": [
+    "Exclude scheduled/nonfinal games, mixed phases, duplicate identity/event grains, quarantined games and incompatible source policies.",
+    "Exclude rows with unknown required target/exposure fields; absent rows are never zero.",
+    "Finalize complete game membership before splitting; never split one game across roles."
+  ],
+  "experiment": "courtload-expected-shot-v1",
+  "feature_recipe": "Training-standardized x,y,distance,distance-squared and a 3-point indicator with unpenalized intercept; logistic regression L2 C=1, solver=lbfgs, max_iter=200, no class weighting or player ID. No candidate grid. Reject nonconvergence.",
+  "input_gates": [
+    "Three complete reconciled shot seasons with NBA/event/game identity and shot-zones-v1.",
+    "Complete outcomes and jointly valid normalized coordinates/type/distance; correct orientation and observed makes reconcile to final team boxes.",
+    "Current release joins have zero eligible shots in the checked 2023-24 scope: source_blocked."
+  ],
+  "input_grains": [
+    "finalized game",
+    "unique admitted field-goal attempt with make flag, 2/3-point type, normalized x/y feet and distance"
+  ],
+  "limitations": [
+    "Historical reconstruction does not establish publication-time availability.",
+    "Registered design is not a trained model or a cleared source gate.",
+    "Latest seasons previously inspected cannot be advertised as unexposed final tests."
+  ],
+  "membership_binding": "required_before_any_candidate_comparison",
+  "minimum_complete_seasons": 3,
+  "phase": "regular_season",
+  "preprocessing_recipe": "Fit vocabularies, centering, scaling and reference rates on training only. Unknown validation/final players get zero coefficient plus unsupported flag; no future identity or full-season prior enters an earlier prediction.",
+  "registered_on": "2026-10-03",
+  "sample_policy": ">=10000 training and >=1000 attempts each selection/calibration/final; >=30 games per role. Unknown/off-court location excluded and disclosed. Slice summaries require >=200 attempts; unknown coverage retained as exclusions.",
+  "schema_version": "courtload-research-preregistration-v1",
+  "seed": 2501,
+  "selection_metric": "Uncalibrated selection-half Brier score; final evaluates both uncalibrated and calibrated frozen probabilities with no final choice.",
+  "serving_policy": "B26 artifacts are retrospective research only until separately promoted. Show fit/input/calibration horizons; forbid earlier-cutoff decoration by later-fit artifacts. No active points policy, forecast issuance or publication pointer changes.",
+  "split_policy": "latest_unexposed_complete_season_final_previous_validation_earlier_fit",
+  "target_recipe": "Binary observed made flag; point target 2*made or 3*made. No vendor expected value, optical tracking or inferred nearest defender.",
+  "tie_break": "Prefer baseline on equality; otherwise candidate order as listed. No final-test selection.",
+  "uncertainty_recipe": "200 game-cluster bootstrap resamples, seed 2501, of Brier/log-loss and expected-point error differences; no shot-level independent bootstrap or individual-shot interval.",
+  "units": "make probability in [0,1]; expected field-goal points = shot value * probability"
+}

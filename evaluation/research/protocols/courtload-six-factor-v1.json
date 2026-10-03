@@ -1,0 +1,80 @@
+{
+  "acceptance": [
+    "All three targets must improve validation RMSE >=1% against both respective baselines; otherwise record negative result with no six-factor promotion.",
+    "Final criteria identical per target, with bootstrap upper candidate-minus-baseline RMSE bound <0 and no >=30-game supported slice regression >5%.",
+    "Report correlations and training-half sign stability of supported coefficients; in-sample R-squared is not forecast accuracy."
+  ],
+  "artifacts": [
+    "protocol.json and semantic SHA-256",
+    "binding.json with release/dataset/source/transform versions, facts and exact game/row membership hashes",
+    "exclusions.json including every rejected game and reason",
+    "attempts.json with every config, seed, rows/dimensions, peak RSS, wall time and stop reason",
+    "baseline-predictions.jsonl and candidate-predictions.jsonl with role and immutable target keys",
+    "model artifact, dependency versions and reproduction command",
+    "evaluation.json and model-card.md with errors/slices/support/limitations"
+  ],
+  "baseline_recipes": [
+    "Three training pooled league rates plus home adjustment.",
+    "Three training team/context ridge alpha=100 rate models."
+  ],
+  "budget": {
+    "breach_policy": "stop_record_failure_amend_before_evaluation",
+    "cpu_threads": 2,
+    "max_candidate_fits": 9,
+    "max_features": 5000,
+    "max_peak_rss_mib": 4096,
+    "max_rows": 1000000,
+    "max_wall_seconds": 1800,
+    "sparse_lineup_matrix": true
+  },
+  "calibration_recipe": "None; disclose raw unbounded ridge rates and count out-of-[0,1] predictions, no post-hoc clipping.",
+  "candidate_recipes": [
+    "Three weighted ridge models sharing alpha=10.",
+    "Three weighted ridge models sharing alpha=100.",
+    "Three weighted ridge models sharing alpha=1000."
+  ],
+  "error_slices": [
+    "season",
+    "calendar month",
+    "home/away",
+    "training exposure quartile",
+    "known/unknown player identity support"
+  ],
+  "estimand": "Three held-out stint rate reconstructions with separate offensive/defensive player coefficients: conventional true shooting, turnover opportunity share, offensive rebound opportunity share.",
+  "exclusions": [
+    "Exclude scheduled/nonfinal games, mixed phases, duplicate identity/event grains, quarantined games and incompatible source policies.",
+    "Exclude rows with unknown required target/exposure fields; absent rows are never zero.",
+    "Finalize complete game membership before splitting; never split one game across roles."
+  ],
+  "experiment": "courtload-six-factor-v1",
+  "feature_recipe": "Same sparse offensive/defensive indicator, intercept/home design and centering as courtload-rapm-v1; fit three independent weighted ridge models. One shared alpha selected by mean relative validation RMSE across three targets, no hidden per-target grid.",
+  "input_gates": [
+    "RAPM lineup/reconciliation gates and three complete seasons.",
+    "New jointly valid event-to-stint opportunity counts must reconcile to final team boxes, including technical FT and team-rebound policies. Current B20 stint points/exposure alone are insufficient."
+  ],
+  "input_grains": [
+    "finalized game",
+    "constant lineup stint",
+    "event-attributed FGA, FGM, points, FTA, TOV, OREB and opponent DREB"
+  ],
+  "limitations": [
+    "Historical reconstruction does not establish publication-time availability.",
+    "Registered design is not a trained model or a cleared source gate.",
+    "Latest seasons previously inspected cannot be advertised as unexposed final tests."
+  ],
+  "membership_binding": "required_before_any_candidate_comparison",
+  "minimum_complete_seasons": 3,
+  "phase": "regular_season",
+  "preprocessing_recipe": "Fit vocabularies, centering, scaling and reference rates on training only. Unknown validation/final players get zero coefficient plus unsupported flag; no future identity or full-season prior enters an earlier prediction.",
+  "registered_on": "2026-10-03",
+  "sample_policy": "Coefficient display requires >=1000 jointly valid target opportunities and >=20 games on each side; target-specific support. Held-out rows with missing components excluded from only that target and counted.",
+  "schema_version": "courtload-research-preregistration-v1",
+  "seed": 2501,
+  "selection_metric": "Mean target-wise validation RMSE divided by same-target league-baseline RMSE; zero baseline error blocks selection.",
+  "serving_policy": "B26 artifacts are retrospective research only until separately promoted. Show fit/input/calibration horizons; forbid earlier-cutoff decoration by later-fit artifacts. No active points policy, forecast issuance or publication pointer changes.",
+  "split_policy": "latest_unexposed_complete_season_final_previous_validation_earlier_fit",
+  "target_recipe": "Three separate targets/weights: shooting PTS/[2*(FGA+0.44*FTA)] weighted by 2*(FGA+0.44*FTA); turnover TOV/(FGA+0.44*FTA+TOV) weighted by that denominator; rebounding OREB/(OREB+opponent DREB) weighted by that denominator. Conventional coefficients are approximations, not exact true possessions. Require all numerator/denominator components valid and denominator>0 for each target independently.",
+  "tie_break": "Prefer baseline on equality; otherwise candidate order as listed. No final-test selection.",
+  "uncertainty_recipe": "Seed 2501; 200 game-cluster bootstrap resamples of held-out errors with frozen predictions, percentile 2.5/97.5 differences. For coefficients report sign/rank variation across chronological training halves; no causal confidence interval.",
+  "units": "rate units; six coefficients are separate components, never an additive overall impact score"
+}

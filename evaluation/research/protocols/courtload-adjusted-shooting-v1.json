@@ -1,0 +1,78 @@
+{
+  "acceptance": [
+    "Publish descriptive artifact only if full game point/opportunity conservation, required priors and >=95% supported coverage pass.",
+    "Report period differences, Spearman stability on the identical supported player cohort and bootstrap dispersion; no accuracy/causal claim or stability threshold chosen from results.",
+    "Do not promote to points policy or player-quality rank. Failed coverage is an unavailable adjustment, not zero difficulty."
+  ],
+  "artifacts": [
+    "protocol.json and semantic SHA-256",
+    "binding.json with release/dataset/source/transform versions, facts and exact game/row membership hashes",
+    "exclusions.json including every rejected game and reason",
+    "attempts.json with every config, seed, rows/dimensions, peak RSS, wall time and stop reason",
+    "baseline-predictions.jsonl and candidate-predictions.jsonl with role and immutable target keys",
+    "model artifact, dependency versions and reproduction command",
+    "evaluation.json and model-card.md with errors/slices/support/limitations"
+  ],
+  "baseline_recipes": [
+    "Unadjusted observed points/valid scoring opportunities with exactly the same membership."
+  ],
+  "budget": {
+    "breach_policy": "stop_record_failure_amend_before_evaluation",
+    "cpu_threads": 2,
+    "max_candidate_fits": 1,
+    "max_features": 5000,
+    "max_peak_rss_mib": 4096,
+    "max_rows": 1000000,
+    "max_wall_seconds": 1800,
+    "sparse_lineup_matrix": true
+  },
+  "calibration_recipe": "None; descriptive measurement only. Any predictive task requires a separate preregistration.",
+  "candidate_recipes": [
+    "One prior-reference centered adjustment; no tuning or predictive model."
+  ],
+  "error_slices": [
+    "season",
+    "calendar month",
+    "home/away",
+    "training exposure quartile",
+    "known/unknown player identity support"
+  ],
+  "estimand": "Descriptive scoring-playtype difficulty adjustment: observed points per admitted scoring opportunity minus training league playtype-reference expected points per opportunity plus the training pooled league rate.",
+  "exclusions": [
+    "Exclude scheduled/nonfinal games, mixed phases, duplicate identity/event grains, quarantined games and incompatible source policies.",
+    "Exclude rows with unknown required target/exposure fields; absent rows are never zero.",
+    "Finalize complete game membership before splitting; never split one game across roles."
+  ],
+  "experiment": "courtload-adjusted-shooting-v1",
+  "feature_recipe": "Actually observed playtype frequencies only; no fitted talent coefficients, neighboring-year fill, inferred labels or scenario substitutions. Freeze taxonomy before binding.",
+  "input_gates": [
+    "Three complete reconciled playtype seasons with NBA identity, taxonomy/version and exact opportunity definition.",
+    "One terminal scoring opportunity per possession-ending field goal/turnover/shooting-foul trip; and-one stays one opportunity, technical FT excluded; no overlapping playtype counts or duplicated FT points.",
+    "No admitted playtype/foul-trip mart currently establishes these gates: source_blocked."
+  ],
+  "input_grains": [
+    "unique scoring opportunity",
+    "admitted versioned playtype label",
+    "observed points and complete foul/free-throw trip attribution"
+  ],
+  "limitations": [
+    "Historical reconstruction does not establish publication-time availability.",
+    "Registered design is not a trained model or a cleared source gate.",
+    "Latest seasons previously inspected cannot be advertised as unexposed final tests."
+  ],
+  "membership_binding": "required_before_any_candidate_comparison",
+  "minimum_complete_seasons": 3,
+  "phase": "regular_season",
+  "preprocessing_recipe": "Fit vocabularies, centering, scaling and reference rates on training only. Unknown validation/final players get zero coefficient plus unsupported flag; no future identity or full-season prior enters an earlier prediction.",
+  "registered_on": "2026-10-03",
+  "sample_policy": ">=200 valid opportunities and >=10 games per player-period. Unknown playtypes/FT attribution stay unknown; display only if >=95% of observed scoring opportunities have admitted supported playtypes. Return known and unknown counts.",
+  "schema_version": "courtload-research-preregistration-v1",
+  "seed": 2501,
+  "selection_metric": "No model selection. Report game-cluster bootstrap measurement dispersion and first-half versus second-half calendar stability for adjustment and baseline; instability is evidence, not an alternate candidate trigger.",
+  "serving_policy": "B26 artifacts are retrospective research only until separately promoted. Show fit/input/calibration horizons; forbid earlier-cutoff decoration by later-fit artifacts. No active points policy, forecast issuance or publication pointer changes.",
+  "split_policy": "latest_unexposed_complete_season_final_previous_validation_earlier_fit",
+  "target_recipe": "For a player scope, observed_points/valid_opportunities - sum(playtype_count*training_playtype_mean_points)/valid_opportunities + training_league_mean_points. Each required playtype reference needs >=1000 training opportunities; no future-season frequencies or imputation.",
+  "tie_break": "Prefer baseline on equality; otherwise candidate order as listed. No final-test selection.",
+  "uncertainty_recipe": "Seed 2501; 200 game-cluster bootstrap resamples of held-out errors with frozen predictions, percentile 2.5/97.5 differences. For coefficients report sign/rank variation across chronological training halves; no causal confidence interval.",
+  "units": "points per admitted scoring opportunity; not vendor zTS or conventional TS"
+}
