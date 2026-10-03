@@ -12,7 +12,8 @@ import type { AnalyticsGame, AnalyticsProfile, AnalyticsSummary, PlayerGameLogRe
 
 import { ContextBar } from "@/components/context-bar";
 import { WorkbenchPlayerProfile } from "@/components/workbench-player-profile";
-import { getPlayerProfile, getPlayerGameLog } from "@/lib/workbench-api";
+import { getPlayerProfile, getPlayerGameLog, getWorkbenchCatalog } from "@/lib/workbench-api";
+import { aggregateCareerStats, type SeasonCareerRow } from "@/lib/player-pages";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = { title: "Player Research Profile" };
@@ -61,34 +62,98 @@ export default async function PlayerPage({
   }
 
   // Modern Workbench Research Mode
-  const season = selected.season || "2025-26";
-  const phase = selected.phase || "regular_season";
-  const beforeDate = selected.beforeDate || "2026-06-30";
+  const catalog = await getWorkbenchCatalog(selected.releaseId).catch(() => null);
+  const admittedSeasons = catalog?.seasons || ["2023-24", "2024-25", "2025-26"];
+
+  const season = selected.season || catalog?.default_season || "2024-25";
+  const phase = selected.phase || catalog?.default_phase || "regular_season";
+  const beforeDate = selected.beforeDate || catalog?.default_before_date || "2026-06-30";
   const windowParam = selected.window || "season";
 
   let wbLoaded: { profile: PlayerProfile; log: PlayerGameLogResponse } | null = null;
 
   try {
-    const profile = await getPlayerProfile(id, {
-      season,
-      phase,
-      beforeDate,
-      window: windowParam,
-      releaseId: selected.releaseId
-    });
-    const log = await getPlayerGameLog(id, {
-      season,
-      phase,
-      beforeDate,
-      releaseId: selected.releaseId,
-      limit: 50
-    });
+    const [profile, log] = await Promise.all([
+      getPlayerProfile(id, {
+        season,
+        phase,
+        beforeDate,
+        window: windowParam,
+        releaseId: selected.releaseId
+      }),
+      getPlayerGameLog(id, {
+        season,
+        phase,
+        beforeDate,
+        releaseId: selected.releaseId,
+        limit: 50
+      })
+    ]);
     wbLoaded = { profile, log };
   } catch (err) {
     loadError = err;
   }
 
   if (wbLoaded) {
+    // Fetch profiles for other admitted seasons in parallel to assemble career overview
+    const otherSeasons = admittedSeasons.filter((s) => s !== season);
+    const otherResults = await Promise.allSettled(
+      otherSeasons.map((s) =>
+        getPlayerProfile(id, {
+          season: s,
+          phase,
+          beforeDate,
+          releaseId: selected.releaseId
+        })
+      )
+    );
+
+    const careerRows: SeasonCareerRow[] = [];
+
+    // Helper to convert profile to SeasonCareerRow
+    const profileToCareerRow = (p: PlayerProfile, s: string): SeasonCareerRow => {
+      const sum = p.summaries.season;
+      const teamList = p.stints && p.stints.length > 0
+        ? p.stints.map((st) => st.team_tricode).join(" / ")
+        : p.latest_team?.tricode ?? "NBA";
+
+      return {
+        season: s,
+        teams: teamList,
+        gamesPlayed: sum?.gp ?? 0,
+        minutes: sum?.min ?? null,
+        minPerGame: sum?.min_per_game ?? null,
+        ptsPerGame: sum?.pts_per_game ?? null,
+        rebPerGame: sum?.reb_total_per_game ?? null,
+        astPerGame: sum?.ast_per_game ?? null,
+        stlPerGame: sum?.stl_per_game ?? null,
+        blkPerGame: sum?.blk_per_game ?? null,
+        fgPct: sum?.fg_pct ?? null,
+        fg3Pct: sum?.fg3_pct ?? null,
+        ftPct: sum?.ft_pct ?? null,
+        tsPct: sum?.ts_pct ?? null,
+        efgPct: sum?.efg_pct ?? null,
+        fantasyPerGame: sum?.legacy_fantasy_score_per_game ?? null
+      };
+    };
+
+    // Add current season row
+    careerRows.push(profileToCareerRow(wbLoaded.profile, season));
+
+    // Add successfully retrieved other seasons
+    for (let i = 0; i < otherResults.length; i++) {
+      const res = otherResults[i];
+      if (res.status === "fulfilled" && res.value) {
+        careerRows.push(profileToCareerRow(res.value, otherSeasons[i]));
+      }
+    }
+
+    // Sort seasons chronologically
+    careerRows.sort((a, b) => a.season.localeCompare(b.season));
+
+    // Compute aggregated career rollup with explicit incomplete career disclosures
+    const careerRollup = aggregateCareerStats(careerRows, admittedSeasons);
+
     return (
       <>
         <ContextBar
@@ -100,7 +165,12 @@ export default async function PlayerPage({
           lastIncludedDate={wbLoaded.profile.last_observed_date}
         />
         <div className="workbench-content">
-          <WorkbenchPlayerProfile profile={wbLoaded.profile} games={wbLoaded.log.games} />
+          <WorkbenchPlayerProfile
+            profile={wbLoaded.profile}
+            games={wbLoaded.log.games}
+            careerRows={careerRows}
+            careerRollup={careerRollup}
+          />
         </div>
       </>
     );
