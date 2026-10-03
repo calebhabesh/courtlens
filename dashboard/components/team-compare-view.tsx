@@ -1,0 +1,1139 @@
+"use client";
+
+import { useState, useMemo } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { PlayerPortrait } from "./player-portrait";
+import type {
+  TeamDetailResponse,
+  TeamFourFactorsResponse,
+  TeamScheduleResponse,
+  TeamPeersResponse,
+  TeamResearchItem,
+} from "@/lib/types";
+
+interface TeamCompareViewProps {
+  teamsList: TeamResearchItem[];
+  teamAId: string;
+  teamBId: string;
+  teamADetail: TeamDetailResponse | null;
+  teamAFourFactors: TeamFourFactorsResponse | null;
+  teamASchedule: TeamScheduleResponse | null;
+  teamAPeers: TeamPeersResponse | null;
+  teamBDetail: TeamDetailResponse | null;
+  teamBFourFactors: TeamFourFactorsResponse | null;
+  teamBSchedule: TeamScheduleResponse | null;
+  teamBPeers: TeamPeersResponse | null;
+  season: string;
+  phase: string;
+  beforeDate: string;
+}
+
+export function TeamCompareView({
+  teamsList,
+  teamAId,
+  teamBId,
+  teamADetail,
+  teamAFourFactors,
+  teamASchedule,
+  teamAPeers,
+  teamBDetail,
+  teamBFourFactors,
+  teamBSchedule,
+  teamBPeers,
+  season,
+  phase,
+  beforeDate,
+}: TeamCompareViewProps) {
+  const router = useRouter();
+
+  // Selected teams
+  const [selectedA, setSelectedA] = useState(teamAId);
+  const [selectedB, setSelectedB] = useState(teamBId);
+
+  // F18 Three-point variation scenario sliders (0% = observed, 100% = full regression to league avg)
+  const [regressionPctA, setRegressionPctA] = useState<number>(100);
+  const [regressionPctB, setRegressionPctB] = useState<number>(100);
+
+  // Active section tab
+  const [activeTab, setActiveTab] = useState<"overview" | "factors" | "three_point" | "roster" | "peers">("overview");
+
+  // Navigation on team select
+  const handleTeamChange = (newA: string, newB: string) => {
+    setSelectedA(newA);
+    setSelectedB(newB);
+    router.push(`/team-compare?teamA=${newA}&teamB=${newB}&season=${season}&phase=${phase}&beforeDate=${beforeDate}`);
+  };
+
+  const handleSwap = () => {
+    handleTeamChange(selectedB, selectedA);
+  };
+
+  // Find head-to-head completed games
+  const headToHeadGames = useMemo(() => {
+    if (!teamASchedule?.games || !teamBDetail?.team) return [];
+    const bId = teamBDetail.team.id;
+    const bTri = teamBDetail.team.tricode;
+
+    return teamASchedule.games.filter(
+      (g) => g.opponent_id === bId || g.opponent_tricode === bTri
+    );
+  }, [teamASchedule, teamBDetail]);
+
+  const h2hRecord = useMemo(() => {
+    let aWins = 0;
+    let bWins = 0;
+    let aPtsTotal = 0;
+    let bPtsTotal = 0;
+
+    for (const g of headToHeadGames) {
+      if (g.is_win === true) aWins++;
+      else if (g.is_win === false) bWins++;
+
+      if (g.team_points != null && g.opponent_points != null) {
+        aPtsTotal += g.team_points;
+        bPtsTotal += g.opponent_points;
+      }
+    }
+
+    const totalGames = aWins + bWins;
+    const avgMargin = totalGames > 0 ? (aPtsTotal - bPtsTotal) / totalGames : 0;
+
+    return { aWins, bWins, totalGames, avgMargin };
+  }, [headToHeadGames]);
+
+  // Three point scenario dynamic calculations
+  const calculate3PScenario = (
+    factors: TeamFourFactorsResponse | null,
+    pctRegression: number
+  ) => {
+    if (!factors?.three_point_scenario) return null;
+    const s = factors.three_point_scenario;
+    const regFraction = pctRegression / 100;
+    const target3pPct = s.observed_3p_pct + regFraction * (s.league_3p_pct - s.observed_3p_pct);
+    const hypothetical3pm = target3pPct * s.observed_fg3a;
+    const deltaPoints = Math.round((hypothetical3pm - s.observed_fg3m) * 3);
+    const gp = factors.games_played || 1;
+    const hypotheticalPpg = (s.actual_ppg * gp + deltaPoints) / gp;
+    const poss = (factors.pace ? (factors.pace * (gp * 48)) / 48 : 0) || gp * 100;
+    const deltaOffRating = poss > 0 ? (deltaPoints * 100) / poss : 0;
+
+    return {
+      target3pPct,
+      hypothetical3pm,
+      deltaPoints,
+      hypotheticalPpg,
+      deltaOffRating,
+      hypotheticalOffRating: (factors.off_rating ?? 110) + deltaOffRating,
+    };
+  };
+
+  const scenarioA = useMemo(
+    () => calculate3PScenario(teamAFourFactors, regressionPctA),
+    [teamAFourFactors, regressionPctA]
+  );
+  const scenarioB = useMemo(
+    () => calculate3PScenario(teamBFourFactors, regressionPctB),
+    [teamBFourFactors, regressionPctB]
+  );
+
+  return (
+    <div className="team-compare-container" style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
+      {/* Team Selection Header Bar */}
+      <div
+        className="panel"
+        style={{
+          padding: "1rem",
+          display: "flex",
+          flexWrap: "wrap",
+          gap: "1rem",
+          alignItems: "center",
+          justifyContent: "space-between",
+          borderTop: "3px solid var(--accent)",
+        }}
+      >
+        <div style={{ display: "flex", alignItems: "center", gap: "1rem", flex: "1 1 300px" }}>
+          {/* Team A Select */}
+          <div style={{ flex: 1 }}>
+            <label className="text-xs text-muted font-mono" style={{ display: "block", marginBottom: "0.25rem" }}>
+              TEAM A
+            </label>
+            <select
+              value={selectedA}
+              onChange={(e) => handleTeamChange(e.target.value, selectedB)}
+              className="input-field"
+              style={{ width: "100%", fontWeight: 600, fontSize: "0.95rem" }}
+            >
+              {teamsList.map((t) => (
+                <option key={t.team_id} value={t.team_id} disabled={t.team_id === selectedB}>
+                  {t.tricode} — {t.name} ({t.wins}-{t.losses})
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Swap Button */}
+          <button
+            type="button"
+            className="button button-small"
+            onClick={handleSwap}
+            title="Swap Teams"
+            style={{ marginTop: "1rem" }}
+          >
+            ⇄ Swap
+          </button>
+
+          {/* Team B Select */}
+          <div style={{ flex: 1 }}>
+            <label className="text-xs text-muted font-mono" style={{ display: "block", marginBottom: "0.25rem" }}>
+              TEAM B
+            </label>
+            <select
+              value={selectedB}
+              onChange={(e) => handleTeamChange(selectedA, e.target.value)}
+              className="input-field"
+              style={{ width: "100%", fontWeight: 600, fontSize: "0.95rem" }}
+            >
+              {teamsList.map((t) => (
+                <option key={t.team_id} value={t.team_id} disabled={t.team_id === selectedA}>
+                  {t.tricode} — {t.name} ({t.wins}-{t.losses})
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+
+        {/* Section Tabs */}
+        <div className="button-group" role="group" aria-label="Comparison tabs">
+          <button
+            type="button"
+            className={`button button-small ${activeTab === "overview" ? "button-primary" : ""}`}
+            onClick={() => setActiveTab("overview")}
+          >
+            Overview & H2H
+          </button>
+          <button
+            type="button"
+            className={`button button-small ${activeTab === "factors" ? "button-primary" : ""}`}
+            onClick={() => setActiveTab("factors")}
+          >
+            Four Factors
+          </button>
+          <button
+            type="button"
+            className={`button button-small ${activeTab === "three_point" ? "button-primary" : ""}`}
+            onClick={() => setActiveTab("three_point")}
+          >
+            3P Variation (F18)
+          </button>
+          <button
+            type="button"
+            className={`button button-small ${activeTab === "roster" ? "button-primary" : ""}`}
+            onClick={() => setActiveTab("roster")}
+          >
+            Participation Cohorts
+          </button>
+          <button
+            type="button"
+            className={`button button-small ${activeTab === "peers" ? "button-primary" : ""}`}
+            onClick={() => setActiveTab("peers")}
+          >
+            Similar Peers
+          </button>
+        </div>
+      </div>
+
+      {/* Zero Inferred Claims & Standings Guardrails */}
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem" }}>
+        <div className="notice-box" style={{ margin: 0 }}>
+          <strong>Official Standings Notice:</strong> Ties in record ordering do not establish official conference placement. Standings reflect verified box scores strictly prior to {beforeDate}.
+        </div>
+        <div className="notice-box" style={{ margin: 0, borderLeftColor: "var(--accent)" }}>
+          <strong>Zero Inferred Claims:</strong> CourtLoad never invents a &ldquo;winner probability&rdquo; or automated matchup prediction from overlapping prediction intervals or descriptive differences.
+        </div>
+      </div>
+
+      {/* Head-to-Head Banner */}
+      <div className="panel" style={{ padding: "1rem" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.75rem" }}>
+          <div>
+            <h2 style={{ fontSize: "1rem", fontWeight: 700, margin: 0 }}>
+              Head-to-Head Series & Matchup History
+            </h2>
+            <p className="text-muted text-xs" style={{ margin: "0.15rem 0 0 0" }}>
+              Completed head-to-head encounters between {teamADetail?.team.tricode ?? "Team A"} and {teamBDetail?.team.tricode ?? "Team B"} strictly before cutoff.
+            </p>
+          </div>
+          <div style={{ textAlign: "right" }}>
+            {h2hRecord.totalGames > 0 ? (
+              <span className="badge badge-accent font-mono" style={{ fontSize: "0.85rem" }}>
+                {h2hRecord.aWins > h2hRecord.bWins
+                  ? `${teamADetail?.team.tricode} leads ${h2hRecord.aWins}-${h2hRecord.bWins}`
+                  : h2hRecord.bWins > h2hRecord.aWins
+                  ? `${teamBDetail?.team.tricode} leads ${h2hRecord.bWins}-${h2hRecord.aWins}`
+                  : `Series Tied ${h2hRecord.aWins}-${h2hRecord.bWins}`}
+                {" "}({h2hRecord.avgMargin > 0 ? `+${h2hRecord.avgMargin.toFixed(1)}` : h2hRecord.avgMargin.toFixed(1)} avg margin)
+              </span>
+            ) : (
+              <span className="badge text-muted font-mono text-xs">
+                0 Head-to-Head matchups observed before cutoff
+              </span>
+            )}
+          </div>
+        </div>
+
+        {headToHeadGames.length > 0 ? (
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))", gap: "0.75rem" }}>
+            {headToHeadGames.map((g) => {
+              const aPts = g.team_points;
+              const bPts = g.opponent_points;
+              const isWin = g.is_win;
+              return (
+                <div
+                  key={g.game_id}
+                  style={{
+                    background: "var(--surface)",
+                    border: "1px solid var(--border)",
+                    borderRadius: "6px",
+                    padding: "0.75rem",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "0.3rem",
+                  }}
+                >
+                  <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.8rem" }}>
+                    <span className="font-mono text-muted">{g.game_date}</span>
+                    <span className="badge font-mono text-xs">{g.side === "home" ? "Team A Home" : "Team A Away"}</span>
+                  </div>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", margin: "0.25rem 0" }}>
+                    <div style={{ display: "flex", gap: "0.4rem", alignItems: "center" }}>
+                      <strong className="text-accent">{teamADetail?.team.tricode}</strong>
+                      <span className="font-mono font-bold text-lg">{aPts ?? "—"}</span>
+                    </div>
+                    <span className="text-muted text-xs">vs</span>
+                    <div style={{ display: "flex", gap: "0.4rem", alignItems: "center" }}>
+                      <span className="font-mono font-bold text-lg">{bPts ?? "—"}</span>
+                      <strong className="text-accent">{teamBDetail?.team.tricode}</strong>
+                    </div>
+                  </div>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: "0.75rem" }}>
+                    <span className="text-muted">
+                      Margin: {aPts != null && bPts != null ? (aPts > bPts ? `+${aPts - bPts}` : `${aPts - bPts}`) : "—"}
+                    </span>
+                    <span className={`badge ${isWin ? "badge-positive" : "badge-warning"}`}>
+                      {isWin ? `${teamADetail?.team.tricode} WIN` : `${teamBDetail?.team.tricode} WIN`}
+                    </span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        ) : (
+          <div className="text-muted text-sm" style={{ padding: "0.5rem 0" }}>
+            No verified two-sided head-to-head games were recorded prior to {beforeDate} for this season and phase.
+          </div>
+        )}
+      </div>
+
+      {/* TAB 1: OVERVIEW & ALIGNED RECORDS */}
+      {activeTab === "overview" && (
+        <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+          {/* Side by Side Franchise Headers */}
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+            {/* Team A Card */}
+            <div className="panel" style={{ padding: "1.25rem", borderTop: "3px solid var(--accent)" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+                <div>
+                  <span
+                    className="font-mono font-bold text-accent"
+                    style={{
+                      fontSize: "1.4rem",
+                      background: "var(--surface-raised)",
+                      padding: "0.2rem 0.6rem",
+                      borderRadius: "6px",
+                      display: "inline-block",
+                      marginBottom: "0.4rem",
+                    }}
+                  >
+                    {teamADetail?.team.tricode}
+                  </span>
+                  <h3 style={{ fontSize: "1.2rem", fontWeight: 700, margin: 0 }}>
+                    {teamADetail?.team.name}
+                  </h3>
+                  <div className="text-xs text-muted font-mono" style={{ marginTop: "0.2rem" }}>
+                    NBA Franchise ID: {teamADetail?.team.id}
+                  </div>
+                </div>
+                <div style={{ textAlign: "right" }}>
+                  <div className="font-mono font-bold text-2xl">
+                    {teamADetail?.record.wins}-{teamADetail?.record.losses}
+                  </div>
+                  <div className="text-muted text-xs font-mono">
+                    Win%: {teamADetail?.record.win_pct != null ? teamADetail.record.win_pct.toFixed(3) : "—"}
+                  </div>
+                </div>
+              </div>
+
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.5rem", marginTop: "1rem" }}>
+                <div className="stat-card" style={{ padding: "0.75rem" }}>
+                  <span className="stat-value font-mono" style={{ fontSize: "1.25rem" }}>
+                    {teamADetail?.production.pts_per_game?.toFixed(1) ?? "—"}
+                  </span>
+                  <span className="stat-label">PPG Scored</span>
+                </div>
+                <div className="stat-card" style={{ padding: "0.75rem" }}>
+                  <span className="stat-value font-mono" style={{ fontSize: "1.25rem" }}>
+                    {teamADetail?.allowance.pts_allowed_per_game?.toFixed(1) ?? "—"}
+                  </span>
+                  <span className="stat-label">Opponent PPG</span>
+                </div>
+              </div>
+
+              <div style={{ marginTop: "0.75rem", fontSize: "0.85rem", display: "flex", flexDirection: "column", gap: "0.3rem" }}>
+                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                  <span className="text-muted">Home Record:</span>
+                  <span className="font-mono">
+                    {teamASchedule?.home_split.wins}-{teamASchedule?.home_split.losses} ({teamASchedule?.home_split.win_pct?.toFixed(3) ?? "—"})
+                  </span>
+                </div>
+                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                  <span className="text-muted">Away Record:</span>
+                  <span className="font-mono">
+                    {teamASchedule?.away_split.wins}-{teamASchedule?.away_split.losses} ({teamASchedule?.away_split.win_pct?.toFixed(3) ?? "—"})
+                  </span>
+                </div>
+                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                  <span className="text-muted">Streak:</span>
+                  <span className="font-mono">{teamADetail?.current_streak ?? "—"}</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Team B Card */}
+            <div className="panel" style={{ padding: "1.25rem", borderTop: "3px solid var(--positive)" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+                <div>
+                  <span
+                    className="font-mono font-bold text-positive"
+                    style={{
+                      fontSize: "1.4rem",
+                      background: "var(--surface-raised)",
+                      padding: "0.2rem 0.6rem",
+                      borderRadius: "6px",
+                      display: "inline-block",
+                      marginBottom: "0.4rem",
+                    }}
+                  >
+                    {teamBDetail?.team.tricode}
+                  </span>
+                  <h3 style={{ fontSize: "1.2rem", fontWeight: 700, margin: 0 }}>
+                    {teamBDetail?.team.name}
+                  </h3>
+                  <div className="text-xs text-muted font-mono" style={{ marginTop: "0.2rem" }}>
+                    NBA Franchise ID: {teamBDetail?.team.id}
+                  </div>
+                </div>
+                <div style={{ textAlign: "right" }}>
+                  <div className="font-mono font-bold text-2xl">
+                    {teamBDetail?.record.wins}-{teamBDetail?.record.losses}
+                  </div>
+                  <div className="text-muted text-xs font-mono">
+                    Win%: {teamBDetail?.record.win_pct != null ? teamBDetail.record.win_pct.toFixed(3) : "—"}
+                  </div>
+                </div>
+              </div>
+
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.5rem", marginTop: "1rem" }}>
+                <div className="stat-card" style={{ padding: "0.75rem" }}>
+                  <span className="stat-value font-mono" style={{ fontSize: "1.25rem" }}>
+                    {teamBDetail?.production.pts_per_game?.toFixed(1) ?? "—"}
+                  </span>
+                  <span className="stat-label">PPG Scored</span>
+                </div>
+                <div className="stat-card" style={{ padding: "0.75rem" }}>
+                  <span className="stat-value font-mono" style={{ fontSize: "1.25rem" }}>
+                    {teamBDetail?.allowance.pts_allowed_per_game?.toFixed(1) ?? "—"}
+                  </span>
+                  <span className="stat-label">Opponent PPG</span>
+                </div>
+              </div>
+
+              <div style={{ marginTop: "0.75rem", fontSize: "0.85rem", display: "flex", flexDirection: "column", gap: "0.3rem" }}>
+                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                  <span className="text-muted">Home Record:</span>
+                  <span className="font-mono">
+                    {teamBSchedule?.home_split.wins}-{teamBSchedule?.home_split.losses} ({teamBSchedule?.home_split.win_pct?.toFixed(3) ?? "—"})
+                  </span>
+                </div>
+                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                  <span className="text-muted">Away Record:</span>
+                  <span className="font-mono">
+                    {teamBSchedule?.away_split.wins}-{teamBSchedule?.away_split.losses} ({teamBSchedule?.away_split.win_pct?.toFixed(3) ?? "—"})
+                  </span>
+                </div>
+                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                  <span className="text-muted">Streak:</span>
+                  <span className="font-mono">{teamBDetail?.current_streak ?? "—"}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Aligned Descriptive Metrics Comparison Table */}
+          <div className="panel">
+            <div className="panel-header" style={{ padding: "0.75rem 1rem", borderBottom: "1px solid var(--border)" }}>
+              <h3 style={{ fontSize: "0.95rem", fontWeight: 700, margin: 0 }}>
+                Descriptive Statistical Comparison
+              </h3>
+            </div>
+            <div className="table-wrapper">
+              <table className="data-table">
+                <thead>
+                  <tr>
+                    <th style={{ width: "35%" }}>Metric</th>
+                    <th className="num" style={{ width: "25%", color: "var(--accent)" }}>
+                      {teamADetail?.team.tricode}
+                    </th>
+                    <th className="num" style={{ width: "25%", color: "var(--positive)" }}>
+                      {teamBDetail?.team.tricode}
+                    </th>
+                    <th className="num" style={{ width: "15%" }}>
+                      Difference
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {[
+                    {
+                      label: "Games Played",
+                      valA: teamADetail?.record.games_played ?? 0,
+                      valB: teamBDetail?.record.games_played ?? 0,
+                      fmt: (v: number) => v.toString(),
+                    },
+                    {
+                      label: "Wins",
+                      valA: teamADetail?.record.wins ?? 0,
+                      valB: teamBDetail?.record.wins ?? 0,
+                      fmt: (v: number) => v.toString(),
+                    },
+                    {
+                      label: "Win Percentage",
+                      valA: teamADetail?.record.win_pct ?? 0,
+                      valB: teamBDetail?.record.win_pct ?? 0,
+                      fmt: (v: number) => v.toFixed(3),
+                    },
+                    {
+                      label: "Points Per Game",
+                      valA: teamADetail?.production.pts_per_game ?? 0,
+                      valB: teamBDetail?.production.pts_per_game ?? 0,
+                      fmt: (v: number) => v.toFixed(1),
+                    },
+                    {
+                      label: "Opponent PPG Allowed",
+                      valA: teamADetail?.allowance.pts_allowed_per_game ?? 0,
+                      valB: teamBDetail?.allowance.pts_allowed_per_game ?? 0,
+                      fmt: (v: number) => v.toFixed(1),
+                      invertDiff: true, // lower is better
+                    },
+                    {
+                      label: "Net Scoring Margin",
+                      valA: (teamADetail?.production.pts_per_game ?? 0) - (teamADetail?.allowance.pts_allowed_per_game ?? 0),
+                      valB: (teamBDetail?.production.pts_per_game ?? 0) - (teamBDetail?.allowance.pts_allowed_per_game ?? 0),
+                      fmt: (v: number) => (v > 0 ? `+${v.toFixed(1)}` : v.toFixed(1)),
+                    },
+                    {
+                      label: "Field Goal %",
+                      valA: teamADetail?.production.fg_pct ?? 0,
+                      valB: teamBDetail?.production.fg_pct ?? 0,
+                      fmt: (v: number) => `${(v * 100).toFixed(1)}%`,
+                    },
+                    {
+                      label: "Opponent FG % Allowed",
+                      valA: teamADetail?.allowance.fg_pct_allowed ?? 0,
+                      valB: teamBDetail?.allowance.fg_pct_allowed ?? 0,
+                      fmt: (v: number) => `${(v * 100).toFixed(1)}%`,
+                      invertDiff: true,
+                    },
+                    {
+                      label: "Three-Point %",
+                      valA: teamADetail?.production.fg3_pct ?? 0,
+                      valB: teamBDetail?.production.fg3_pct ?? 0,
+                      fmt: (v: number) => `${(v * 100).toFixed(1)}%`,
+                    },
+                    {
+                      label: "Free Throw %",
+                      valA: teamADetail?.production.ft_pct ?? 0,
+                      valB: teamBDetail?.production.ft_pct ?? 0,
+                      fmt: (v: number) => `${(v * 100).toFixed(1)}%`,
+                    },
+                  ].map((row) => {
+                    const diff = row.valA - row.valB;
+                    const isPositive = row.invertDiff ? diff < 0 : diff > 0;
+                    return (
+                      <tr key={row.label}>
+                        <td><strong>{row.label}</strong></td>
+                        <td className="num font-mono font-semibold">{row.fmt(row.valA)}</td>
+                        <td className="num font-mono font-semibold">{row.fmt(row.valB)}</td>
+                        <td className={`num font-mono ${Math.abs(diff) > 0.0001 ? (isPositive ? "text-positive" : "text-negative") : "text-muted"}`}>
+                          {diff > 0 ? `+${row.fmt(diff)}` : diff < 0 ? row.fmt(diff) : "0.0"}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* TAB 2: FOUR FACTORS HEAD-TO-HEAD WITH COMPARATIVE BARS */}
+      {activeTab === "factors" && (
+        <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
+          {/* Ratings & Tempo Bar Comparison */}
+          <div className="panel" style={{ padding: "1.25rem" }}>
+            <h3 style={{ fontSize: "1rem", fontWeight: 700, margin: "0 0 1rem 0", color: "var(--accent)" }}>
+              Pace & Efficiency Ratings
+            </h3>
+
+            <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+              {[
+                {
+                  label: "Offensive Rating (ORTG)",
+                  sub: "Points scored per 100 estimated possessions",
+                  valA: teamAFourFactors?.off_rating ?? null,
+                  valB: teamBFourFactors?.off_rating ?? null,
+                  min: 105,
+                  max: 125,
+                  higherIsBetter: true,
+                },
+                {
+                  label: "Defensive Rating (DRTG)",
+                  sub: "Points allowed per 100 estimated possessions (lower is better)",
+                  valA: teamAFourFactors?.def_rating ?? null,
+                  valB: teamBFourFactors?.def_rating ?? null,
+                  min: 105,
+                  max: 125,
+                  higherIsBetter: false,
+                },
+                {
+                  label: "Net Rating (NET)",
+                  sub: "ORTG minus DRTG margin per 100 possessions",
+                  valA: teamAFourFactors?.net_rating ?? null,
+                  valB: teamBFourFactors?.net_rating ?? null,
+                  min: -12,
+                  max: 14,
+                  higherIsBetter: true,
+                },
+                {
+                  label: "Pace (Tempo)",
+                  sub: "Estimated possessions per 48 minutes",
+                  valA: teamAFourFactors?.pace ?? null,
+                  valB: teamBFourFactors?.pace ?? null,
+                  min: 94,
+                  max: 105,
+                  higherIsBetter: true,
+                },
+              ].map((m) => {
+                const a = m.valA ?? 0;
+                const b = m.valB ?? 0;
+                const aAdvantage = m.higherIsBetter ? a > b : a < b;
+                const bAdvantage = m.higherIsBetter ? b > a : b < a;
+
+                return (
+                  <div key={m.label} style={{ background: "var(--surface)", padding: "0.75rem", borderRadius: "6px" }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.35rem" }}>
+                      <div>
+                        <strong>{m.label}</strong>
+                        <span className="text-xs text-muted" style={{ marginLeft: "0.5rem" }}>{m.sub}</span>
+                      </div>
+                      <div style={{ display: "flex", gap: "1.5rem" }}>
+                        <span className={`font-mono font-bold ${aAdvantage ? "text-accent" : "text-muted"}`}>
+                          {teamADetail?.team.tricode}: {m.valA != null ? m.valA.toFixed(1) : "—"}
+                        </span>
+                        <span className={`font-mono font-bold ${bAdvantage ? "text-positive" : "text-muted"}`}>
+                          {teamBDetail?.team.tricode}: {m.valB != null ? m.valB.toFixed(1) : "—"}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Comparative Visual Bar */}
+                    <div style={{ display: "flex", height: "10px", width: "100%", background: "var(--border)", borderRadius: "4px", overflow: "hidden" }}>
+                      <div
+                        style={{
+                          width: `${Math.max(10, Math.min(90, (a / (a + b || 1)) * 100))}%`,
+                          background: aAdvantage ? "var(--accent)" : "var(--border-subtle)",
+                          transition: "width 0.3s ease",
+                        }}
+                      />
+                      <div
+                        style={{
+                          width: `${Math.max(10, Math.min(90, (b / (a + b || 1)) * 100))}%`,
+                          background: bAdvantage ? "var(--positive)" : "var(--border-subtle)",
+                          transition: "width 0.3s ease",
+                        }}
+                      />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Dean Oliver Offensive Four Factors */}
+          <div className="panel" style={{ padding: "1.25rem" }}>
+            <h3 style={{ fontSize: "1rem", fontWeight: 700, margin: "0 0 0.5rem 0", color: "var(--accent)" }}>
+              Offensive Four Factors Comparison
+            </h3>
+            <p className="text-muted text-xs" style={{ margin: "0 0 1rem 0" }}>
+              Dean Oliver Four Factors weights: Shooting (eFG% 40%), Turnovers (TOV% 25%), Rebounding (ORB% 20%), Free Throws (FTR 15%).
+            </p>
+
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+              {/* Factors for Team A */}
+              <div style={{ background: "var(--surface)", padding: "1rem", borderRadius: "8px", border: "1px solid var(--border)" }}>
+                <h4 style={{ margin: "0 0 0.75rem 0", color: "var(--accent)", fontSize: "0.9rem" }}>
+                  {teamADetail?.team.tricode} Offensive Factors
+                </h4>
+                <div style={{ display: "flex", flexDirection: "column", gap: "0.6rem" }}>
+                  {teamAFourFactors?.offense_factors.map((f) => (
+                    <div key={f.key} style={{ display: "flex", justifyContent: "space-between", borderBottom: "1px solid var(--border-subtle)", paddingBottom: "0.4rem" }}>
+                      <div>
+                        <div style={{ fontWeight: 600, fontSize: "0.85rem" }}>{f.display_name}</div>
+                        <div className="text-muted text-xs font-mono">Weight: {(f.weight ?? 0) * 100}%</div>
+                      </div>
+                      <div style={{ textAlign: "right" }}>
+                        <span className="font-mono font-bold">
+                          {f.unit === "percentage" && f.value != null ? `${(f.value * 100).toFixed(1)}%` : f.value?.toFixed(3) ?? "—"}
+                        </span>
+                        <div style={{ display: "flex", gap: "0.25rem", justifyContent: "flex-end" }}>
+                          <span className="badge badge-accent text-xs font-mono">#{f.rank ?? "—"}</span>
+                          <span className="badge text-xs font-mono text-muted">{f.percentile?.toFixed(0)}%ile</span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Factors for Team B */}
+              <div style={{ background: "var(--surface)", padding: "1rem", borderRadius: "8px", border: "1px solid var(--border)" }}>
+                <h4 style={{ margin: "0 0 0.75rem 0", color: "var(--positive)", fontSize: "0.9rem" }}>
+                  {teamBDetail?.team.tricode} Offensive Factors
+                </h4>
+                <div style={{ display: "flex", flexDirection: "column", gap: "0.6rem" }}>
+                  {teamBFourFactors?.offense_factors.map((f) => (
+                    <div key={f.key} style={{ display: "flex", justifyContent: "space-between", borderBottom: "1px solid var(--border-subtle)", paddingBottom: "0.4rem" }}>
+                      <div>
+                        <div style={{ fontWeight: 600, fontSize: "0.85rem" }}>{f.display_name}</div>
+                        <div className="text-muted text-xs font-mono">Weight: {(f.weight ?? 0) * 100}%</div>
+                      </div>
+                      <div style={{ textAlign: "right" }}>
+                        <span className="font-mono font-bold">
+                          {f.unit === "percentage" && f.value != null ? `${(f.value * 100).toFixed(1)}%` : f.value?.toFixed(3) ?? "—"}
+                        </span>
+                        <div style={{ display: "flex", gap: "0.25rem", justifyContent: "flex-end" }}>
+                          <span className="badge badge-accent text-xs font-mono">#{f.rank ?? "—"}</span>
+                          <span className="badge text-xs font-mono text-muted">{f.percentile?.toFixed(0)}%ile</span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Defensive Four Factors */}
+          <div className="panel" style={{ padding: "1.25rem" }}>
+            <h3 style={{ fontSize: "1rem", fontWeight: 700, margin: "0 0 0.5rem 0", color: "var(--accent)" }}>
+              Defensive Four Factors (Allowed) Comparison
+            </h3>
+
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+              {/* Factors for Team A Defense */}
+              <div style={{ background: "var(--surface)", padding: "1rem", borderRadius: "8px", border: "1px solid var(--border)" }}>
+                <h4 style={{ margin: "0 0 0.75rem 0", color: "var(--accent)", fontSize: "0.9rem" }}>
+                  {teamADetail?.team.tricode} Defensive Factors
+                </h4>
+                <div style={{ display: "flex", flexDirection: "column", gap: "0.6rem" }}>
+                  {teamAFourFactors?.defense_factors.map((f) => (
+                    <div key={f.key} style={{ display: "flex", justifyContent: "space-between", borderBottom: "1px solid var(--border-subtle)", paddingBottom: "0.4rem" }}>
+                      <div>
+                        <div style={{ fontWeight: 600, fontSize: "0.85rem" }}>{f.display_name}</div>
+                        <div className="text-muted text-xs font-mono">Good: {f.good_direction === "low" ? "Lower is better" : "Higher is better"}</div>
+                      </div>
+                      <div style={{ textAlign: "right" }}>
+                        <span className="font-mono font-bold">
+                          {f.unit === "percentage" && f.value != null ? `${(f.value * 100).toFixed(1)}%` : f.value?.toFixed(3) ?? "—"}
+                        </span>
+                        <div style={{ display: "flex", gap: "0.25rem", justifyContent: "flex-end" }}>
+                          <span className="badge badge-accent text-xs font-mono">#{f.rank ?? "—"}</span>
+                          <span className="badge text-xs font-mono text-muted">{f.percentile?.toFixed(0)}%ile</span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Factors for Team B Defense */}
+              <div style={{ background: "var(--surface)", padding: "1rem", borderRadius: "8px", border: "1px solid var(--border)" }}>
+                <h4 style={{ margin: "0 0 0.75rem 0", color: "var(--positive)", fontSize: "0.9rem" }}>
+                  {teamBDetail?.team.tricode} Defensive Factors
+                </h4>
+                <div style={{ display: "flex", flexDirection: "column", gap: "0.6rem" }}>
+                  {teamBFourFactors?.defense_factors.map((f) => (
+                    <div key={f.key} style={{ display: "flex", justifyContent: "space-between", borderBottom: "1px solid var(--border-subtle)", paddingBottom: "0.4rem" }}>
+                      <div>
+                        <div style={{ fontWeight: 600, fontSize: "0.85rem" }}>{f.display_name}</div>
+                        <div className="text-muted text-xs font-mono">Good: {f.good_direction === "low" ? "Lower is better" : "Higher is better"}</div>
+                      </div>
+                      <div style={{ textAlign: "right" }}>
+                        <span className="font-mono font-bold">
+                          {f.unit === "percentage" && f.value != null ? `${(f.value * 100).toFixed(1)}%` : f.value?.toFixed(3) ?? "—"}
+                        </span>
+                        <div style={{ display: "flex", gap: "0.25rem", justifyContent: "flex-end" }}>
+                          <span className="badge badge-accent text-xs font-mono">#{f.rank ?? "—"}</span>
+                          <span className="badge text-xs font-mono text-muted">{f.percentile?.toFixed(0)}%ile</span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* TAB 3: FEATURE F18 THREE-POINT VARIATION SCENARIO */}
+      {activeTab === "three_point" && (
+        <div className="panel" style={{ padding: "1.25rem" }}>
+          <div style={{ marginBottom: "1rem" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+              <span className="badge badge-accent">F18</span>
+              <h3 style={{ fontSize: "1.1rem", fontWeight: 700, margin: 0 }}>
+                Three-Point Variation What-If Scenario Comparison
+              </h3>
+            </div>
+            <p className="text-muted text-xs" style={{ margin: "0.3rem 0 0 0" }}>
+              Counterfactual what-if arithmetic evaluating scoring and rating shifts if 3-point conversion regressed toward the league mean, holding attempt volumes constant.
+            </p>
+          </div>
+
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.5rem" }}>
+            {/* Team A Scenario Box */}
+            <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: "8px", padding: "1rem" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.75rem" }}>
+                <h4 style={{ margin: 0, color: "var(--accent)" }}>{teamADetail?.team.tricode} 3P Scenario</h4>
+                <span className="badge font-mono text-xs">
+                  Observed: {teamAFourFactors?.three_point_scenario ? `${(teamAFourFactors.three_point_scenario.observed_3p_pct * 100).toFixed(1)}%` : "—"}
+                </span>
+              </div>
+
+              {/* Slider for Team A */}
+              <div style={{ marginBottom: "1rem" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.8rem", marginBottom: "0.25rem" }}>
+                  <span>Regression to League Mean:</span>
+                  <strong className="font-mono">{regressionPctA}%</strong>
+                </div>
+                <input
+                  type="range"
+                  min="0"
+                  max="100"
+                  step="5"
+                  value={regressionPctA}
+                  onChange={(e) => setRegressionPctA(Number(e.target.value))}
+                  style={{ width: "100%", accentColor: "var(--accent)" }}
+                />
+                <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.7rem", color: "var(--text-muted)" }}>
+                  <span>0% (Actual)</span>
+                  <span>50%</span>
+                  <span>100% (League Mean)</span>
+                </div>
+              </div>
+
+              {/* Calculated Results Team A */}
+              {scenarioA && (
+                <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem", fontSize: "0.85rem" }}>
+                  <div style={{ display: "flex", justifyContent: "space-between" }}>
+                    <span className="text-muted">Simulated 3P%:</span>
+                    <strong className="font-mono">{(scenarioA.target3pPct * 100).toFixed(1)}%</strong>
+                  </div>
+                  <div style={{ display: "flex", justifyContent: "space-between" }}>
+                    <span className="text-muted">Point Differential (Season):</span>
+                    <strong className={`font-mono ${scenarioA.deltaPoints >= 0 ? "text-positive" : "text-negative"}`}>
+                      {scenarioA.deltaPoints >= 0 ? `+${scenarioA.deltaPoints}` : scenarioA.deltaPoints} PTS
+                    </strong>
+                  </div>
+                  <div style={{ display: "flex", justifyContent: "space-between" }}>
+                    <span className="text-muted">Hypothetical PPG:</span>
+                    <strong className="font-mono">{scenarioA.hypotheticalPpg.toFixed(1)} PPG</strong>
+                  </div>
+                  <div style={{ display: "flex", justifyContent: "space-between" }}>
+                    <span className="text-muted">Simulated ORTG Impact:</span>
+                    <strong className={`font-mono ${scenarioA.deltaOffRating >= 0 ? "text-positive" : "text-negative"}`}>
+                      {scenarioA.deltaOffRating >= 0 ? `+${scenarioA.deltaOffRating.toFixed(2)}` : scenarioA.deltaOffRating.toFixed(2)}
+                    </strong>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Team B Scenario Box */}
+            <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: "8px", padding: "1rem" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.75rem" }}>
+                <h4 style={{ margin: 0, color: "var(--positive)" }}>{teamBDetail?.team.tricode} 3P Scenario</h4>
+                <span className="badge font-mono text-xs">
+                  Observed: {teamBFourFactors?.three_point_scenario ? `${(teamBFourFactors.three_point_scenario.observed_3p_pct * 100).toFixed(1)}%` : "—"}
+                </span>
+              </div>
+
+              {/* Slider for Team B */}
+              <div style={{ marginBottom: "1rem" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.8rem", marginBottom: "0.25rem" }}>
+                  <span>Regression to League Mean:</span>
+                  <strong className="font-mono">{regressionPctB}%</strong>
+                </div>
+                <input
+                  type="range"
+                  min="0"
+                  max="100"
+                  step="5"
+                  value={regressionPctB}
+                  onChange={(e) => setRegressionPctB(Number(e.target.value))}
+                  style={{ width: "100%", accentColor: "var(--positive)" }}
+                />
+                <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.7rem", color: "var(--text-muted)" }}>
+                  <span>0% (Actual)</span>
+                  <span>50%</span>
+                  <span>100% (League Mean)</span>
+                </div>
+              </div>
+
+              {/* Calculated Results Team B */}
+              {scenarioB && (
+                <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem", fontSize: "0.85rem" }}>
+                  <div style={{ display: "flex", justifyContent: "space-between" }}>
+                    <span className="text-muted">Simulated 3P%:</span>
+                    <strong className="font-mono">{(scenarioB.target3pPct * 100).toFixed(1)}%</strong>
+                  </div>
+                  <div style={{ display: "flex", justifyContent: "space-between" }}>
+                    <span className="text-muted">Point Differential (Season):</span>
+                    <strong className={`font-mono ${scenarioB.deltaPoints >= 0 ? "text-positive" : "text-negative"}`}>
+                      {scenarioB.deltaPoints >= 0 ? `+${scenarioB.deltaPoints}` : scenarioB.deltaPoints} PTS
+                    </strong>
+                  </div>
+                  <div style={{ display: "flex", justifyContent: "space-between" }}>
+                    <span className="text-muted">Hypothetical PPG:</span>
+                    <strong className="font-mono">{scenarioB.hypotheticalPpg.toFixed(1)} PPG</strong>
+                  </div>
+                  <div style={{ display: "flex", justifyContent: "space-between" }}>
+                    <span className="text-muted">Simulated ORTG Impact:</span>
+                    <strong className={`font-mono ${scenarioB.deltaOffRating >= 0 ? "text-positive" : "text-negative"}`}>
+                      {scenarioB.deltaOffRating >= 0 ? `+${scenarioB.deltaOffRating.toFixed(2)}` : scenarioB.deltaOffRating.toFixed(2)}
+                    </strong>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="notice-box" style={{ marginTop: "1.25rem", fontStyle: "italic", fontSize: "0.8rem" }}>
+            <strong>Non-Inferential Disclaimer:</strong> Feature F18 evaluates counterfactual what-if arithmetic holding observed 3P attempt volumes strictly constant. It is not an injury adjustment, luck-removal guarantee, or causal predictor.
+          </div>
+        </div>
+      )}
+
+      {/* TAB 4: PARTICIPATION COHORTS WITH TORONTO CASE STUDY DISTINCTION */}
+      {activeTab === "roster" && (
+        <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+          {/* Prominent Participation vs Roster Notice */}
+          <div className="notice-box" style={{ borderLeftColor: "var(--accent)" }}>
+            <strong>Participation / Current-Roster Distinction:</strong> Player rows represent all individuals with verified on-court minutes for the franchise during this season window (for example, Toronto&rsquo;s 31-player cohort across in-season trades). This is an empirical accounting of court exposure, not a contractual or end-of-season roster claim.
+          </div>
+
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+            {/* Team A Cohort */}
+            <div className="panel">
+              <div className="panel-header" style={{ padding: "0.75rem 1rem", borderBottom: "1px solid var(--border)" }}>
+                <h3 style={{ fontSize: "0.95rem", fontWeight: 700, margin: 0, color: "var(--accent)" }}>
+                  {teamADetail?.team.tricode} Participation Cohort
+                </h3>
+                <span className="badge font-mono text-xs">{teamADetail?.player_cohort.length ?? 0} players</span>
+              </div>
+
+              <div className="table-wrapper">
+                <table className="data-table">
+                  <thead>
+                    <tr>
+                      <th>Player</th>
+                      <th className="num">Stint GP</th>
+                      <th className="num">Minutes</th>
+                      <th className="num">PPG</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {(teamADetail?.player_cohort ?? []).slice(0, 15).map((p) => (
+                      <tr key={p.player_id}>
+                        <td>
+                          <div className="player-cell">
+                            <PlayerPortrait playerId={p.player_id} name={p.player_name} size="sm" />
+                            <Link
+                              href={`/players/${p.player_id}?season=${season}&phase=${phase}&beforeDate=${beforeDate}`}
+                              className="player-cell-name text-accent font-semibold"
+                            >
+                              {p.player_name}
+                            </Link>
+                          </div>
+                        </td>
+                        <td className="num font-mono">{p.games_played}</td>
+                        <td className="num font-mono">{p.total_minutes?.toFixed(0) ?? "—"}</td>
+                        <td className="num font-mono font-semibold">{p.points_per_game?.toFixed(1) ?? "—"}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            {/* Team B Cohort */}
+            <div className="panel">
+              <div className="panel-header" style={{ padding: "0.75rem 1rem", borderBottom: "1px solid var(--border)" }}>
+                <h3 style={{ fontSize: "0.95rem", fontWeight: 700, margin: 0, color: "var(--positive)" }}>
+                  {teamBDetail?.team.tricode} Participation Cohort
+                </h3>
+                <span className="badge font-mono text-xs">{teamBDetail?.player_cohort.length ?? 0} players</span>
+              </div>
+
+              <div className="table-wrapper">
+                <table className="data-table">
+                  <thead>
+                    <tr>
+                      <th>Player</th>
+                      <th className="num">Stint GP</th>
+                      <th className="num">Minutes</th>
+                      <th className="num">PPG</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {(teamBDetail?.player_cohort ?? []).slice(0, 15).map((p) => (
+                      <tr key={p.player_id}>
+                        <td>
+                          <div className="player-cell">
+                            <PlayerPortrait playerId={p.player_id} name={p.player_name} size="sm" />
+                            <Link
+                              href={`/players/${p.player_id}?season=${season}&phase=${phase}&beforeDate=${beforeDate}`}
+                              className="player-cell-name text-accent font-semibold"
+                            >
+                              {p.player_name}
+                            </Link>
+                          </div>
+                        </td>
+                        <td className="num font-mono">{p.games_played}</td>
+                        <td className="num font-mono">{p.total_minutes?.toFixed(0) ?? "—"}</td>
+                        <td className="num font-mono font-semibold">{p.points_per_game?.toFixed(1) ?? "—"}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* TAB 5: SIMILAR PEERS COMPARISON */}
+      {activeTab === "peers" && (
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+          {/* Team A Peers */}
+          <div className="panel">
+            <div className="panel-header" style={{ padding: "0.75rem 1rem", borderBottom: "1px solid var(--border)" }}>
+              <h3 style={{ fontSize: "0.95rem", fontWeight: 700, margin: 0, color: "var(--accent)" }}>
+                {teamADetail?.team.tricode} Statistical Peers
+              </h3>
+              <span className="badge font-mono text-xs">Four Factors & Tempo Twins</span>
+            </div>
+
+            <div className="table-wrapper">
+              <table className="data-table">
+                <thead>
+                  <tr>
+                    <th>Franchise</th>
+                    <th className="num">Similarity</th>
+                    <th className="num">Distance</th>
+                    <th style={{ textAlign: "right" }}>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {(teamAPeers?.peers ?? []).map((peer) => (
+                    <tr key={peer.team_id}>
+                      <td>
+                        <strong className="text-accent">{peer.tricode}</strong> {peer.name}
+                      </td>
+                      <td className="num font-mono font-bold">{(peer.similarity_score * 100).toFixed(1)}%</td>
+                      <td className="num font-mono text-muted">{peer.distance.toFixed(3)}</td>
+                      <td style={{ textAlign: "right" }}>
+                        <button
+                          type="button"
+                          className="button button-small"
+                          onClick={() => handleTeamChange(selectedA, peer.team_id)}
+                        >
+                          Compare ⇄
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          {/* Team B Peers */}
+          <div className="panel">
+            <div className="panel-header" style={{ padding: "0.75rem 1rem", borderBottom: "1px solid var(--border)" }}>
+              <h3 style={{ fontSize: "0.95rem", fontWeight: 700, margin: 0, color: "var(--positive)" }}>
+                {teamBDetail?.team.tricode} Statistical Peers
+              </h3>
+              <span className="badge font-mono text-xs">Four Factors & Tempo Twins</span>
+            </div>
+
+            <div className="table-wrapper">
+              <table className="data-table">
+                <thead>
+                  <tr>
+                    <th>Franchise</th>
+                    <th className="num">Similarity</th>
+                    <th className="num">Distance</th>
+                    <th style={{ textAlign: "right" }}>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {(teamBPeers?.peers ?? []).map((peer) => (
+                    <tr key={peer.team_id}>
+                      <td>
+                        <strong className="text-positive">{peer.tricode}</strong> {peer.name}
+                      </td>
+                      <td className="num font-mono font-bold">{(peer.similarity_score * 100).toFixed(1)}%</td>
+                      <td className="num font-mono text-muted">{peer.distance.toFixed(3)}</td>
+                      <td style={{ textAlign: "right" }}>
+                        <button
+                          type="button"
+                          className="button button-small"
+                          onClick={() => handleTeamChange(peer.team_id, selectedB)}
+                        >
+                          Compare ⇄
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
