@@ -2,6 +2,8 @@
 
 Prepared 2026-10-01 for Gemini 3.8 Flash. Status: **owner-approved direction; implementation pending**. This document specifies the next release. Inspection and source sampling informed it; application checks were not rerun during planning.
 
+Subsequent product handoff: the owner-confirmed [Databallr replica plan](databallr-replica-implementation-plan.md) supersedes this document's narrower feature/layout scope. Read it for new UI/search/richer analytics/finance/Live work. Retain this handoff and linked contracts for preserved behavior, temporal/integrity rules and sealed experiments; do not restart these milestones or infer completion from their prose.
+
 ## Start here
 
 Build CourtLoad into a local NBA research and forecast workbench. A user should be able to investigate a player or team, inspect a next-game points estimate where eligible, and save enough evidence to reproduce the analysis. The main product works without an LLM, paid data access, or public hosting.

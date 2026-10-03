@@ -4,6 +4,8 @@ CourtLoad is an NBA analytics and player comparison system emphasizing backend/d
 
 For the local research-workbench realignment, read [the implementation handoff](docs/workbench-implementation-plan.md) before changing data sources, analytics, forecasting, dashboard, or operations. Follow its ordered milestones and linked contracts; it supersedes earlier product-scope plans while preserving the guardrails below. Workbench milestones are pending, not completion evidence.
 
+For the subsequent Databallr replica, UI/capability expansion, search/chatbot, finance, or Live work, read [the replica handoff](docs/databallr-replica-implementation-plan.md) and its block-specific contracts before implementing. It supersedes the workbench handoff's narrower product/layout scope; retain the workbench contracts for preserved behavior and sealed evidence. Execute the replica blocks by dependency and record measured completion in [the replica progress log](docs/databallr-replica-implementation-progress.md). Plans and prior completion prose are not runtime verification.
+
 ## Architecture and Stack
 
 - **Backend:** Python 3.12+ / FastAPI with typed Pydantic models and SQLAlchemy 2.0.
