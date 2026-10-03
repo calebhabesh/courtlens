@@ -299,4 +299,9 @@ class DataQualityRun(Base):
     results_json: Mapped[list[dict[str, Any]]] = mapped_column(JSON, default=list)
 
 
-from courtload import archive_models, warehouse_models, workbench_models  # noqa: E402,F401
+from courtload import (  # noqa: E402,F401
+    archive_models,
+    research_models,
+    warehouse_models,
+    workbench_models,
+)
