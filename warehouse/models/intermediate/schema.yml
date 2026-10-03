@@ -41,4 +41,28 @@ models:
         data_tests: [unique, not_null]
       - name: dataset_id
         data_tests: [not_null]
+  - name: fct_workbench_lineup_stint
+    description: Team-perspective continuous lineup stint facts with points and possession exposure.
+    columns:
+      - name: stint_id
+        data_tests: [not_null]
+      - name: dataset_id
+        data_tests: [not_null]
+      - name: game_id
+        data_tests: [not_null]
+      - name: team_id
+        data_tests: [not_null]
+      - name: side
+        data_tests: [not_null]
+  - name: fct_workbench_possession
+    description: Possession facts with schedule attributes under possession-policy-v1.
+    columns:
+      - name: possession_id
+        data_tests: [not_null]
+      - name: dataset_id
+        data_tests: [not_null]
+      - name: game_id
+        data_tests: [not_null]
+      - name: offense_team_id
+        data_tests: [not_null]
 

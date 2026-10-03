@@ -74,4 +74,39 @@ models:
         data_tests: [not_null]
       - name: game_id
         data_tests: [not_null]
+  - name: stg_workbench_lineup_stints
+    description: Cleaned continuous 5-on-5 lineup stint observations.
+    columns:
+      - name: id
+        data_tests: [unique, not_null]
+      - name: dataset_id
+        data_tests: [not_null]
+      - name: game_id
+        data_tests: [not_null]
+      - name: stint_index
+        data_tests: [not_null]
+      - name: duration_seconds
+        data_tests: [not_null]
+  - name: stg_workbench_possessions
+    description: Cleaned workbench possession records under possession-policy-v1.
+    columns:
+      - name: id
+        data_tests: [unique, not_null]
+      - name: dataset_id
+        data_tests: [not_null]
+      - name: game_id
+        data_tests: [not_null]
+      - name: possession_number
+        data_tests: [not_null]
+  - name: stg_workbench_stint_players
+    description: Cleaned player exposure during continuous lineup stints.
+    columns:
+      - name: id
+        data_tests: [unique, not_null]
+      - name: dataset_id
+        data_tests: [not_null]
+      - name: stint_id
+        data_tests: [not_null]
+      - name: player_id
+        data_tests: [not_null]
 
