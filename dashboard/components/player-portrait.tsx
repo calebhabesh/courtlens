@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { browserApi } from "@/lib/workbench-api";
 
 interface PlayerPortraitProps {
   playerId?: string;
@@ -33,7 +34,10 @@ export function PlayerPortrait({
   const fontSize = size === "lg" ? "1.5rem" : size === "md" ? "1rem" : "0.75rem";
 
   // Use explicit portraitUrl, or player endpoint if playerId provided
-  const source = portraitUrl || (playerId ? `/api/workbench/players/${playerId}/portrait` : null);
+  const portraitPath = portraitUrl || (playerId ? `/api/workbench/players/${playerId}/portrait` : null);
+  const source = portraitPath?.startsWith("/")
+    ? `${browserApi.replace(/\/$/, "")}${portraitPath}`
+    : portraitPath;
 
   if (error || !source) {
     return (

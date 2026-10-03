@@ -4,6 +4,7 @@ import { PlayerSearch } from "@/components/player-search";
 import { WorkbenchPlayerExplorer } from "@/components/workbench-player-explorer";
 import { getAnalyticsCatalog } from "@/lib/api";
 import { queryPlayerResearch } from "@/lib/workbench-api";
+import { decodeSearchParamsToQuery, querySpecToLegacyQuery } from "@/lib/query-url";
 import type { AnalyticsCatalog, PlayerResearchResponse } from "@/lib/types";
 
 export const metadata: Metadata = { title: "Player Explorer · CourtLoad" };
@@ -15,15 +16,25 @@ interface PlayersPageProps {
     season?: string;
     phase?: string;
     beforeDate?: string;
+    before_date?: string;
     window?: string;
     teamId?: string;
+    team_id?: string;
     name?: string;
     minGames?: string;
+    min_games?: string;
     minMinutes?: string;
+    min_minutes?: string;
     minAvgMinutes?: string;
+    min_avg_minutes?: string;
     sortMetric?: string;
+    sort_metric?: string;
     sortDirection?: string;
+    sort_direction?: string;
     cursor?: string;
+    releaseId?: string;
+    release_id?: string;
+    [key: string]: string | string[] | undefined;
   }>;
 }
 
@@ -55,31 +66,14 @@ export default async function PlayersPage({ searchParams }: PlayersPageProps) {
     );
   }
 
-  const season = params.season || "2025-26";
-  const phase = params.phase || "regular_season";
-  const beforeDate = params.beforeDate || "2026-06-30";
-  const windowParam = params.window || "season";
-  const sortMetric = params.sortMetric || "pts";
-  const sortDirection = params.sortDirection || "desc";
+  const querySpec = decodeSearchParamsToQuery(params);
+  const researchQuery = querySpecToLegacyQuery(querySpec);
 
   let researchData: PlayerResearchResponse | null = null;
   let loadError: string | null = null;
 
   try {
-    researchData = await queryPlayerResearch({
-      season,
-      phase,
-      before_date: beforeDate,
-      window: windowParam,
-      name: params.name,
-      team_id: params.teamId,
-      min_games: params.minGames ? parseInt(params.minGames, 10) : undefined,
-      min_minutes: params.minMinutes ? parseFloat(params.minMinutes) : undefined,
-      min_avg_minutes: params.minAvgMinutes ? parseFloat(params.minAvgMinutes) : undefined,
-      sort_metric: sortMetric,
-      sort_direction: sortDirection,
-      limit: 50
-    });
+    researchData = await queryPlayerResearch(researchQuery);
   } catch (err) {
     loadError = err instanceof Error ? err.message : "Failed to load players";
   }
@@ -109,10 +103,11 @@ export default async function PlayersPage({ searchParams }: PlayersPageProps) {
   return (
     <>
       <ContextBar
-        initialSeason={season}
-        initialPhase={phase}
-        initialBeforeDate={beforeDate}
-        initialWindow={windowParam}
+        initialReleaseId={querySpec.release_id ?? undefined}
+        initialSeason={researchQuery.season}
+        initialPhase={researchQuery.phase}
+        initialBeforeDate={researchQuery.before_date}
+        initialWindow={researchQuery.window}
         sampleSize={researchData?.total_eligible_players}
         lastIncludedDate={researchData?.context?.last_included_date}
       />
@@ -136,8 +131,8 @@ export default async function PlayersPage({ searchParams }: PlayersPageProps) {
         {researchData && (
           <WorkbenchPlayerExplorer
             data={researchData}
-            currentSortMetric={sortMetric}
-            currentSortDirection={sortDirection}
+            currentSortMetric={researchQuery.sort_metric}
+            currentSortDirection={researchQuery.sort_direction}
           />
         )}
       </div>

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { CompareSelector } from "@/components/compare-selector";
-import { WorkbenchCompareView } from "@/components/workbench-compare-view";
+import { PlayerCompareView } from "@/components/player-compare-view";
 import { AnalyticsApiError, getAnalyticsCatalog, getAnalyticsCompare } from "@/lib/api";
 import { comparePlayers } from "@/lib/workbench-api";
 import type { AnalyticsCompare, AnalyticsProfile, AnalyticsSummary, PlayerComparisonResponse } from "@/lib/types";
@@ -13,12 +13,14 @@ export default async function ComparePage({ searchParams }: {
   searchParams: Promise<{
     playerA?: string;
     playerB?: string;
+    players?: string;
     date?: string;
     snapshotId?: string;
     season?: string;
     phase?: string;
     beforeDate?: string;
     window?: string;
+    releaseId?: string;
   }>;
 }) {
   const selected = await searchParams;
@@ -35,59 +37,69 @@ export default async function ComparePage({ searchParams }: {
     );
   }
 
-  const { catalog, date, comparison, wbComparison, error } = loaded;
+  const { catalog, date, comparison, wbComparison, error, targetA, targetB, additionalPlayerIds } = loaded;
 
   return (
     <div className="workbench-content">
       <header className="page-header">
         <div>
-          <span className="text-xs text-muted font-mono uppercase">Player Comparison</span>
+          <span className="text-xs text-muted font-mono uppercase">Player Comparison · PvP</span>
           <h1 className="page-title">Compare Players</h1>
           <p className="page-subtitle">
-            Side-by-side descriptive metrics under an identical cutoff and calculation formula.
+            Side-by-side descriptive metrics, visual comparison bars, and game-log progression under an identical cutoff.
           </p>
         </div>
       </header>
 
-      <div className="notice-box">
-        <strong>Temporal discipline & no forced winner:</strong> Reconstructed matchup estimates are conditional on appearing. CourtLoad does not declare an automated start/sit decision.
-      </div>
-
+      {/* Player Selector Bar */}
       <CompareSelector
         catalog={catalog}
         date={date}
         initialA={
           wbComparison ? { id: wbComparison.player_a.id, name: wbComparison.player_a.name } :
           comparison ? comparison.player_a.player :
-          selected.playerA ? { id: selected.playerA, name: `Player ${selected.playerA}` } : null
+          targetA ? { id: targetA, name: `Player ${targetA}` } : null
         }
         initialB={
           wbComparison ? { id: wbComparison.player_b.id, name: wbComparison.player_b.name } :
           comparison ? comparison.player_b.player :
-          selected.playerB ? { id: selected.playerB, name: `Player ${selected.playerB}` } : null
+          targetB ? { id: targetB, name: `Player ${targetB}` } : null
         }
       />
 
       {error && (
-        <div className="empty-state" role="alert">
+        <div className="empty-state" role="alert" style={{ marginTop: "1rem" }}>
           <h2>Unable to compare</h2>
           <p>{error}</p>
           <p>Your date and snapshot remain in the URL.</p>
         </div>
       )}
 
+      {/* Interactive Player Comparison View with Presets, Comparative Bars, and Lines */}
       {wbComparison && (
-        <div style={{ marginTop: "1.5rem" }}>
-          <WorkbenchCompareView comparison={wbComparison} />
+        <div style={{ marginTop: "1.25rem" }}>
+          <PlayerCompareView
+            comparison={wbComparison}
+            catalog={catalog}
+            additionalPlayerIds={additionalPlayerIds}
+            context={{
+              season: selected.season || (wbComparison.context?.season as string) || "2024-25",
+              phase: selected.phase || (wbComparison.context?.phase as string) || "regular_season",
+              before_date: selected.beforeDate || (wbComparison.context?.before_date as string) || date,
+              window: selected.window || (wbComparison.context?.window as string) || "season",
+              release_id: selected.releaseId || (wbComparison.context?.release_id as string) || catalog.snapshot_id
+            }}
+          />
         </div>
       )}
 
+      {/* Legacy Fallback View when Workbench API is unavailable */}
       {comparison && !wbComparison && (
         <ComparisonView comparison={comparison} />
       )}
 
       {!comparison && !wbComparison && !error && (
-        <div className="empty-state" role="status">
+        <div className="empty-state" role="status" style={{ marginTop: "1.5rem" }}>
           <h2>Select two players</h2>
           <p>Search by name and choose a shared replay date to compare their prior form and reconstructed matchups.</p>
         </div>
@@ -103,50 +115,76 @@ export default async function ComparePage({ searchParams }: {
 async function loadComparison(selected: {
   playerA?: string;
   playerB?: string;
+  players?: string;
   date?: string;
   snapshotId?: string;
   season?: string;
   phase?: string;
   beforeDate?: string;
   window?: string;
+  releaseId?: string;
 }) {
   try {
     const catalog = await getAnalyticsCatalog(selected.snapshotId);
     const date = selected.date ?? catalog.default_replay_date;
+
+    // Resolve Player IDs from playerA/playerB or comma-separated players param
+    const parsedPlayers = selected.players
+      ? selected.players.split(",").map((s) => s.trim()).filter(Boolean)
+      : [];
+
+    const targetA = selected.playerA || parsedPlayers[0];
+    const targetB = selected.playerB || parsedPlayers[1];
+    const additionalPlayerIds = parsedPlayers.filter((id) => id !== targetA && id !== targetB);
+
     let comparison: AnalyticsCompare | null = null;
     let wbComparison: PlayerComparisonResponse | null = null;
     let error: string | null = null;
 
-    if (selected.playerA && selected.playerB) {
-      // First try workbench comparison if not explicitly locked to mock fixture
-      if (selected.snapshotId !== "snapshot-browser-fixture") {
-        try {
-          wbComparison = await comparePlayers(selected.playerA, selected.playerB, {
-            season: selected.season,
-            phase: selected.phase,
-            beforeDate: selected.beforeDate || date,
-            window: selected.window
-          });
-        } catch {
-          // Fall through to legacy comparison
+    if (targetA && targetB) {
+      if (targetA === targetB) {
+        error = "Please select two different players to compare.";
+      } else {
+        // First try workbench comparison if not explicitly locked to mock fixture
+        if (selected.snapshotId !== "snapshot-browser-fixture") {
+          try {
+            wbComparison = await comparePlayers(targetA, targetB, {
+              season: selected.season,
+              phase: selected.phase,
+              beforeDate: selected.beforeDate || date,
+              window: selected.window,
+              releaseId: selected.releaseId
+            });
+          } catch {
+            // Fall through to legacy comparison
+          }
         }
-      }
 
-      if (!wbComparison) {
-        try {
-          comparison = await getAnalyticsCompare(selected.playerA, selected.playerB, date, catalog.snapshot_id);
-        } catch (reason) {
-          const apiError = reason instanceof AnalyticsApiError ? reason : null;
-          error =
-            apiError?.status === 422
-              ? `Replay date ${date} is unsupported, or the same player was selected twice.`
-              : apiError?.status === 404
-              ? "One selected player is absent from this snapshot."
-              : "Comparison is unavailable. Try again.";
+        if (!wbComparison) {
+          try {
+            comparison = await getAnalyticsCompare(targetA, targetB, date, catalog.snapshot_id);
+          } catch (reason) {
+            const apiError = reason instanceof AnalyticsApiError ? reason : null;
+            error =
+              apiError?.status === 422
+                ? `Replay date ${date} is unsupported, or the same player was selected twice.`
+                : apiError?.status === 404
+                ? "One selected player is absent from this snapshot."
+                : "Comparison is unavailable. Try again.";
+          }
         }
       }
     }
-    return { catalog, date, comparison, wbComparison, error };
+    return {
+      catalog,
+      date,
+      comparison,
+      wbComparison,
+      error,
+      targetA,
+      targetB,
+      additionalPlayerIds
+    };
   } catch {
     return null;
   }
