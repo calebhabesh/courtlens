@@ -5,6 +5,7 @@ import type {
   AnalyticsGames,
   AnalyticsProfile,
   DataStatus,
+  LookupResponse,
   ScheduleWeek
 } from "./types";
 
@@ -142,4 +143,31 @@ export function mondayFor(input = new Date()): string {
   const day = date.getUTCDay();
   date.setUTCDate(date.getUTCDate() - ((day + 6) % 7));
   return date.toISOString().slice(0, 10);
+}
+
+export async function fetchLookup(options: {
+  q?: string;
+  releaseId?: string;
+  season?: string;
+  kinds?: string;
+  limit?: number;
+  signal?: AbortSignal;
+} = {}): Promise<LookupResponse> {
+  const params = new URLSearchParams();
+  if (options.q !== undefined && options.q !== "") params.set("q", options.q);
+  if (options.releaseId) params.set("releaseId", options.releaseId);
+  if (options.season) params.set("season", options.season);
+  if (options.kinds) params.set("kinds", options.kinds);
+  if (options.limit !== undefined) params.set("limit", String(options.limit));
+
+  const qs = params.toString() ? `?${params.toString()}` : "";
+  const response = await fetch(`${browserApi}/api/workbench/lookup${qs}`, {
+    cache: "no-store",
+    signal: options.signal ?? AbortSignal.timeout(4000),
+  });
+  if (!response.ok) {
+    const body = (await response.json().catch(() => null)) as { detail?: unknown } | null;
+    throw new AnalyticsApiError(response.status, body?.detail);
+  }
+  return (await response.json()) as LookupResponse;
 }

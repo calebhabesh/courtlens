@@ -4,6 +4,7 @@ import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { useCallback, useState } from "react";
 
 interface ContextBarProps {
+  initialReleaseId?: string;
   initialSeason?: string;
   initialPhase?: string;
   initialBeforeDate?: string;
@@ -25,6 +26,7 @@ const WINDOWS = [
 ];
 
 export function ContextBar({
+  initialReleaseId,
   initialSeason = "2025-26",
   initialPhase = "regular_season",
   initialBeforeDate = "2026-06-30",
@@ -36,9 +38,12 @@ export function ContextBar({
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
+  const releaseId =
+    searchParams?.get("releaseId") || searchParams?.get("release_id") || initialReleaseId;
   const season = searchParams?.get("season") || initialSeason;
   const phase = searchParams?.get("phase") || initialPhase;
-  const beforeDate = searchParams?.get("beforeDate") || initialBeforeDate;
+  const beforeDate =
+    searchParams?.get("beforeDate") || searchParams?.get("before_date") || initialBeforeDate;
   const windowParam = searchParams?.get("window") || initialWindow;
 
   const [localBeforeDate, setLocalBeforeDate] = useState(beforeDate);
@@ -51,11 +56,14 @@ export function ContextBar({
       } else {
         params.delete(key);
       }
+      if (releaseId && !params.has("releaseId") && !params.has("release_id")) {
+        params.set("releaseId", releaseId);
+      }
       // Reset cursor pagination when context parameters change
       params.delete("cursor");
       router.push(`${pathname}?${params.toString()}`);
     },
-    [router, pathname, searchParams]
+    [router, pathname, searchParams, releaseId]
   );
 
   const handleDateBlurOrSubmit = () => {

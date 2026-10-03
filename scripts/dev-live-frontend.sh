@@ -4,6 +4,12 @@ set -eu
 SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 REPO_ROOT=$(CDPATH= cd -- "$SCRIPT_DIR/.." && pwd)
 
+if [ -f "$REPO_ROOT/.env" ]; then
+  COURTLOAD_DASHBOARD_PORT="${COURTLOAD_DASHBOARD_PORT:-$(grep -E '^COURTLOAD_DASHBOARD_PORT=' "$REPO_ROOT/.env" | cut -d= -f2- | tr -d ' "\r')}"
+  COURTLOAD_DASHBOARD_HOST="${COURTLOAD_DASHBOARD_HOST:-$(grep -E '^COURTLOAD_DASHBOARD_HOST=' "$REPO_ROOT/.env" | cut -d= -f2- | tr -d ' "\r')}"
+  COURTLOAD_API_PORT="${COURTLOAD_API_PORT:-$(grep -E '^COURTLOAD_API_PORT=' "$REPO_ROOT/.env" | cut -d= -f2- | tr -d ' "\r')}"
+fi
+
 DASHBOARD_HOST="${COURTLOAD_DASHBOARD_HOST:-127.0.0.1}"
 DASHBOARD_PORT="${COURTLOAD_DASHBOARD_PORT:-3000}"
 API_PORT="${COURTLOAD_API_PORT:-8000}"
