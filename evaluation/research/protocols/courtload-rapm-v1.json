@@ -1,0 +1,81 @@
+{
+  "acceptance": [
+    "Candidate must reduce validation RMSE by >=1% relative to both baselines; otherwise retain negative result.",
+    "One selected candidate evaluated once on final; promotion requires >=1% final RMSE improvement against both baselines and bootstrap upper bound of candidate-minus-baseline RMSE <0.",
+    "No supported slice (>=30 games) may regress >5% RMSE; computational caps and source reconciliation must pass."
+  ],
+  "artifacts": [
+    "protocol.json and semantic SHA-256",
+    "binding.json with release/dataset/source/transform versions, facts and exact game/row membership hashes",
+    "exclusions.json including every rejected game and reason",
+    "attempts.json with every config, seed, rows/dimensions, peak RSS, wall time and stop reason",
+    "baseline-predictions.jsonl and candidate-predictions.jsonl with role and immutable target keys",
+    "model artifact, dependency versions and reproduction command",
+    "evaluation.json and model-card.md with errors/slices/support/limitations"
+  ],
+  "baseline_recipes": [
+    "Training pooled league points/possession with training home adjustment.",
+    "Training offensive-team and defensive-team ridge context model alpha=100 with intercept/home; unknown teams zero-centered."
+  ],
+  "budget": {
+    "breach_policy": "stop_record_failure_amend_before_evaluation",
+    "cpu_threads": 2,
+    "max_candidate_fits": 3,
+    "max_features": 5000,
+    "max_peak_rss_mib": 4096,
+    "max_rows": 1000000,
+    "max_wall_seconds": 1800,
+    "sparse_lineup_matrix": true
+  },
+  "calibration_recipe": "None; point rates are regression outputs, not probability intervals.",
+  "candidate_recipes": [
+    "Weighted ridge alpha=10 on player columns; unpenalized intercept/home.",
+    "Weighted ridge alpha=100 on player columns; unpenalized intercept/home.",
+    "Weighted ridge alpha=1000 on player columns; unpenalized intercept/home."
+  ],
+  "error_slices": [
+    "season",
+    "calendar month",
+    "home/away",
+    "training exposure quartile",
+    "known/unknown player identity support"
+  ],
+  "estimand": "Exposure-weighted held-out offensive stint points per 100 reconstructed offensive possessions conditional on the recorded ten-player lineup; report fitted offense and opponent-defense coefficients separately.",
+  "exclusions": [
+    "Exclude scheduled/nonfinal games, mixed phases, duplicate identity/event grains, quarantined games and incompatible source policies.",
+    "Exclude rows with unknown required target/exposure fields; absent rows are never zero.",
+    "Finalize complete game membership before splitting; never split one game across roles."
+  ],
+  "experiment": "courtload-rapm-v1",
+  "feature_recipe": "CSR ten-player indicator row: five offensive +1 columns and five opponent defensive +1 columns, separate column namespaces, intercept and home flag. No player box prior, tracking, future roster or time decay. Weighted fit; penalize player coefficients only, unpenalized intercept/home; center reported offense/defense coefficients against training exposure without altering predictions.",
+  "input_gates": [
+    "At least three reconciled complete seasons with admitted game identities, events, possession-policy-v1 and reconstruction/override versions.",
+    "Five distinct players per side, no gaps/overlaps and per-game team/player minutes, scores and possession exposure reconciled.",
+    "B20 retained database currently has zero stints: source_blocked."
+  ],
+  "input_grains": [
+    "finalized game",
+    "constant five-versus-five lineup stint",
+    "fractional offensive possession exposure and event-scored stint points"
+  ],
+  "limitations": [
+    "Historical reconstruction does not establish publication-time availability.",
+    "Registered design is not a trained model or a cleared source gate.",
+    "Latest seasons previously inspected cannot be advertised as unexposed final tests."
+  ],
+  "membership_binding": "required_before_any_candidate_comparison",
+  "minimum_complete_seasons": 3,
+  "phase": "regular_season",
+  "preprocessing_recipe": "Fit vocabularies, centering, scaling and reference rates on training only. Unknown validation/final players get zero coefficient plus unsupported flag; no future identity or full-season prior enters an earlier prediction.",
+  "registered_on": "2026-10-03",
+  "sample_policy": "Fit positive complete exposure rows. Display player coefficients only with >=1000 training offensive possessions and >=1000 training defensive possessions over >=20 games. Include unsupported rows in held-out errors using zero unseen coefficients and report their share.",
+  "schema_version": "courtload-research-preregistration-v1",
+  "seed": 2501,
+  "selection_metric": "Exposure-weighted validation RMSE of stint point rate; compare both baselines using identical rows.",
+  "serving_policy": "B26 artifacts are retrospective research only until separately promoted. Show fit/input/calibration horizons; forbid earlier-cutoff decoration by later-fit artifacts. No active points policy, forecast issuance or publication pointer changes.",
+  "split_policy": "latest_unexposed_complete_season_final_previous_validation_earlier_fit",
+  "target_recipe": "For each offensive team/stint with exposure e>0, y=100*event-attributed points/e and weight=e. No duration-derived possession estimate. Offense and defense rows from one game share a split.",
+  "tie_break": "Prefer baseline on equality; otherwise candidate order as listed. No final-test selection.",
+  "uncertainty_recipe": "Seed 2501; 200 game-cluster bootstrap resamples of held-out errors with frozen predictions, percentile 2.5/97.5 differences. For coefficients report sign/rank variation across chronological training halves; no causal confidence interval.",
+  "units": "points per 100 offensive possessions; defensive coefficient increases points allowed (lower is favorable)"
+}
