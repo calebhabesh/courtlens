@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { IBM_Plex_Mono, Space_Grotesk } from "next/font/google";
-import { NavRail } from "@/components/nav-rail";
+import { Suspense } from "react";
+import { ReplicaNav } from "@/components/replica-nav";
+import { WorkspaceProvider } from "@/lib/workspace-context";
 import "./globals.css";
 
 const spaceGrotesk = Space_Grotesk({
@@ -17,11 +19,11 @@ const plexMono = IBM_Plex_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "CourtLoad · NBA Research & Forecast Workbench",
+    default: "CourtLoad · NBA Analytics & Replica Workbench",
     template: "%s · CourtLoad"
   },
   description:
-    "Local NBA research and forecast workbench. Investigate player production, explore team cohorts, inspect prospective points estimates under uncertainty, and reproduce evidence-backed findings.",
+    "Dense local NBA analytics and research workbench. Investigate player production, explore team cohorts, inspect prospective points estimates under uncertainty, and reproduce evidence-backed findings.",
   icons: {
     icon: "/icon.svg",
     apple: "/apple-icon.svg"
@@ -39,12 +41,16 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <a className="skip-link" href="#content">
           Skip to content
         </a>
-        <div className="workbench-layout">
-          <NavRail />
-          <div className="workbench-main">
-            <main id="content">{children}</main>
+        <WorkspaceProvider>
+          <div className="replica-shell">
+            <Suspense fallback={<div style={{ height: "84px", background: "var(--surface)" }} />}>
+              <ReplicaNav />
+            </Suspense>
+            <main id="content" className="replica-main">
+              {children}
+            </main>
           </div>
-        </div>
+        </WorkspaceProvider>
       </body>
     </html>
   );

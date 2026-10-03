@@ -21,6 +21,45 @@ const nextConfig: NextConfig = {
         ]
       }
     ];
+  },
+  async redirects() {
+    return [
+      {
+        source: "/pvp",
+        destination: "/compare",
+        permanent: false
+      },
+      {
+        source: "/StatLineShift",
+        destination: "/stat-line-shift",
+        permanent: false
+      },
+      {
+        source: "/zts",
+        destination: "/research/adjusted-shooting",
+        permanent: false
+      },
+      {
+        source: "/shotquality",
+        destination: "/research/expected-shots",
+        permanent: false
+      },
+      {
+        source: "/d-shotquality",
+        destination: "/research/defensive-matchups",
+        permanent: false
+      },
+      {
+        source: "/kawhifiles",
+        destination: "/research/case-studies",
+        permanent: false
+      },
+      {
+        source: "/dashboard",
+        destination: "/players",
+        permanent: false
+      }
+    ];
   }
 };
 

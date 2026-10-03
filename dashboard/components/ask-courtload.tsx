@@ -9,6 +9,7 @@ import type {
 } from "@/lib/types";
 
 interface AskCourtLoadProps {
+  initialReleaseId?: string;
   initialSeason?: string;
   initialPhase?: string;
   initialBeforeDate?: string;
@@ -43,6 +44,7 @@ const BENCHMARK_PROMPTS = [
 ];
 
 export function AskCourtLoad({
+  initialReleaseId,
   initialSeason,
   initialPhase,
   initialBeforeDate,
@@ -76,6 +78,7 @@ export function AskCourtLoad({
       const res = await queryAssistant({
         question: q,
         context: {
+          release_id: initialReleaseId,
           season: initialSeason,
           phase: initialPhase,
           before_date: initialBeforeDate,

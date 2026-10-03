@@ -318,6 +318,14 @@ export type MetricDefinition = {
   phase_scope: string[];
   default_sort_direction: "asc" | "desc";
   limitations: string[];
+  required_fields?: string[];
+  compatible_normalizations?: string[];
+  aggregation_recipe?: string;
+  validity_definition?: string;
+  aliases?: string[];
+  capability_requirement?: string;
+  classification?: string;
+  good_direction?: "high" | "low" | null;
 };
 
 export type MetricCatalog = {
@@ -342,6 +350,184 @@ export type WorkbenchCatalog = {
   coverage_end: string;
   metric_version: string;
   published_at: string | null;
+  capabilities?: Record<string, CapabilityEntry>;
+  warnings: string[];
+};
+
+export type CapabilityStatus =
+  | "available"
+  | "partial"
+  | "source_blocked"
+  | "not_configured"
+  | "not_yet_observed"
+  | "not_implemented";
+
+export type CapabilityEntry = {
+  name: string;
+  status: CapabilityStatus;
+  seasons: string[];
+  phases: string[];
+  coverage_start?: string | null;
+  coverage_end?: string | null;
+  expected_grains: string[];
+  metric_requirements: string[];
+  source_freshness?: string | null;
+  limitations: string[];
+};
+
+export type FinalizedResearchContext = {
+  release_id: string;
+  snapshot_id: string;
+  dataset_id: string;
+  dataset_type: "archive" | "workbench";
+  semantic_signature: string;
+  mode: string;
+  source: string;
+  season: string;
+  seasons: string[];
+  phase: string;
+  phases: string[];
+  before_date: string;
+  lower_date?: string | null;
+  cutoff_utc: string;
+  window: string;
+  coverage_start: string;
+  coverage_end: string;
+  default_before_date: string;
+  supported_dates: string[];
+  metric_version: string;
+  published_at?: string | null;
+  capabilities?: Record<string, CapabilityEntry>;
+  warnings: string[];
+};
+
+export type EntityKind =
+  | "player"
+  | "team"
+  | "player_season"
+  | "team_season"
+  | "game"
+  | "stint"
+  | "assignment";
+
+export type WindowKind =
+  | "season"
+  | "last_5"
+  | "last_10"
+  | "last_n_appearances"
+  | "last_n_team_games"
+  | "date_range";
+
+export type WindowSpec = {
+  kind: WindowKind;
+  n?: number | null;
+  from_date?: string | null;
+  to_date?: string | null;
+};
+
+export type SeasonScope = {
+  seasons: string[];
+  aggregate_multi_season?: boolean;
+};
+
+export type TeamScope = {
+  team_id?: string | null;
+  participation_only?: boolean;
+  current_roster_only?: boolean;
+};
+
+export type NormalizationMode =
+  | "raw"
+  | "per_game"
+  | "per_minute"
+  | "per_36"
+  | "per_75"
+  | "per_100"
+  | "totals";
+
+export type MetricSelector = {
+  key: string;
+  version?: string | null;
+  normalization?: NormalizationMode;
+  denominator_type?: string | null;
+};
+
+export type PredicateOp =
+  | "eq"
+  | "ne"
+  | "lt"
+  | "lte"
+  | "gt"
+  | "gte"
+  | "between"
+  | "in";
+
+export type PredicateLeaf = {
+  field: string;
+  op: PredicateOp;
+  value: unknown;
+};
+
+export type PredicateGroup = {
+  conjunction: "and" | "or";
+  predicates: Array<PredicateLeaf | PredicateGroup>;
+};
+
+export type SampleFilter = {
+  min_games?: number | null;
+  min_minutes?: number | null;
+  min_avg_minutes?: number | null;
+  min_possessions?: number | null;
+  min_attempts?: number | null;
+};
+
+export type SortSpec = {
+  field: string;
+  direction: "asc" | "desc";
+  nulls_last?: boolean;
+};
+
+export type ViewState = {
+  view_id?: string | null;
+  columns?: string[];
+  density?: "compact" | "standard" | "expanded" | null;
+  identity_mode?: "photos" | "logos" | "initials" | "none" | null;
+};
+
+export type PagingSpec = {
+  limit: number;
+  cursor?: string | null;
+};
+
+export type QuerySpec = {
+  release_id?: string | null;
+  season: string;
+  phase: string;
+  before_date?: string | null;
+  name?: string | null;
+  entity_kind?: EntityKind;
+  window?: WindowSpec;
+  season_scope?: SeasonScope;
+  team_scope?: TeamScope;
+  metric_selectors?: MetricSelector[];
+  predicates?: PredicateGroup | null;
+  sample_filters?: SampleFilter;
+  sort?: SortSpec[];
+  view_state?: ViewState | null;
+  page?: PagingSpec;
+};
+
+export type WorkbenchQueryRequest = {
+  query: QuerySpec;
+};
+
+export type WorkbenchQueryResponse = {
+  context: Record<string, unknown>;
+  query: QuerySpec;
+  total_eligible_players: number;
+  items: PlayerResearchItem[];
+  next_cursor: string | null;
+  has_more: boolean;
   warnings: string[];
 };
 
@@ -355,6 +541,49 @@ export type PlayerResearchItem = {
   metrics: Record<string, number | null>;
   sample_sizes: Record<string, number>;
   portrait_url?: string | null;
+};
+
+export type LookupAvailability = {
+  has_current_season: boolean;
+  status: string;
+  seasons: string[];
+  latest_team_id?: string | null;
+  latest_tricode?: string | null;
+  conference?: string | null;
+  division?: string | null;
+};
+
+export type LookupItem = {
+  id: string;
+  kind: "player" | "team" | "page";
+  canonical_id: string;
+  display_name: string;
+  subtitle?: string | null;
+  match_basis: "exact" | "prefix" | "token_prefix" | "substring" | "typo" | "suggestion";
+  match_score: number;
+  matched_alias?: string | null;
+  portrait_url?: string | null;
+  portrait_fallback?: string | null;
+  availability: LookupAvailability;
+  destination_url: string;
+  metadata?: Record<string, unknown>;
+};
+
+export type QueryNormalizationInfo = {
+  raw: string;
+  normalized: string;
+  tokens: string[];
+  version: string;
+};
+
+export type LookupResponse = {
+  query: QueryNormalizationInfo;
+  catalog_version: string;
+  release_id?: string | null;
+  season?: string | null;
+  total_matches: number;
+  items: LookupItem[];
+  latency_ms?: number | null;
 };
 
 export type PlayerResearchQuery = {
@@ -371,6 +600,7 @@ export type PlayerResearchQuery = {
   sort_metric: string;
   sort_direction?: string;
   limit: number;
+  cursor?: string | null;
 };
 
 export type PlayerResearchResponse = {
@@ -478,6 +708,24 @@ export type TeamResearchItem = {
   allowance: Record<string, number | null>;
   observed_games: number;
   exclusions: number;
+  conference?: string | null;
+  division?: string | null;
+  ratings?: {
+    off_rating?: number | null;
+    def_rating?: number | null;
+    net_rating?: number | null;
+    pace?: number | null;
+  } | null;
+  four_factors?: {
+    efg_pct?: number | null;
+    tov_pct?: number | null;
+    oreb_pct?: number | null;
+    ftr?: number | null;
+    opp_efg_pct?: number | null;
+    opp_tov_pct?: number | null;
+    opp_oreb_pct?: number | null;
+    opp_ftr?: number | null;
+  } | null;
 };
 
 export type TeamResearchResponse = {
@@ -485,6 +733,7 @@ export type TeamResearchResponse = {
   teams: TeamResearchItem[];
   warnings: string[];
   order_notice: string;
+  league_averages?: Record<string, number> | null;
 };
 
 export type TeamDetailResponse = {
@@ -495,9 +744,29 @@ export type TeamDetailResponse = {
     wins: number;
     losses: number;
     win_pct: number | null;
+    differential?: number;
   };
   production: Record<string, number | null>;
   allowance: Record<string, number | null>;
+  home_split?: {
+    games_played: number;
+    wins: number;
+    losses: number;
+    win_pct: number | null;
+    ppg: number | null;
+    opp_ppg: number | null;
+    differential: number;
+  } | null;
+  away_split?: {
+    games_played: number;
+    wins: number;
+    losses: number;
+    win_pct: number | null;
+    ppg: number | null;
+    opp_ppg: number | null;
+    differential: number;
+  } | null;
+  current_streak?: string | null;
   player_cohort: Array<{
     player_id: string;
     player_name: string;
@@ -516,6 +785,165 @@ export type TeamDetailResponse = {
     opponent_points: number | null;
     is_win: boolean | null;
   }>;
+  warnings: string[];
+};
+
+export type TeamScheduleGameItem = {
+  game_id: string;
+  game_date: string;
+  side: "home" | "away";
+  opponent_id?: string | null;
+  opponent_tricode: string;
+  opponent_name: string;
+  team_points?: number | null;
+  opponent_points?: number | null;
+  differential?: number | null;
+  is_win?: boolean | null;
+  result?: string | null;
+  rest_days?: number | null;
+  is_back_to_back: boolean;
+  rest_bucket: string;
+  streak?: string | null;
+  venue_streak?: string | null;
+};
+
+export type TeamRestSplitItem = {
+  bucket_key: string;
+  bucket_label: string;
+  games_played: number;
+  wins: number;
+  losses: number;
+  win_pct: number | null;
+  ppg: number | null;
+  opp_ppg: number | null;
+  differential: number;
+};
+
+export type TeamBackToBackSummary = {
+  second_leg_games: {
+    games: number;
+    wins: number;
+    losses: number;
+    win_pct: number | null;
+  };
+  first_leg_games: {
+    games: number;
+    wins: number;
+    losses: number;
+    win_pct: number | null;
+  };
+};
+
+export type TeamScheduleResponse = {
+  team: { id: string; tricode: string; name: string; city?: string; conference?: string; division?: string };
+  context: Record<string, unknown>;
+  overall_record: {
+    games_played: number;
+    wins: number;
+    losses: number;
+    win_pct: number | null;
+    differential: number;
+    current_streak?: string | null;
+  };
+  home_split: {
+    games_played: number;
+    wins: number;
+    losses: number;
+    win_pct: number | null;
+    ppg: number | null;
+    opp_ppg: number | null;
+    differential: number;
+  };
+  away_split: {
+    games_played: number;
+    wins: number;
+    losses: number;
+    win_pct: number | null;
+    ppg: number | null;
+    opp_ppg: number | null;
+    differential: number;
+  };
+  rest_splits: TeamRestSplitItem[];
+  back_to_back_summary: TeamBackToBackSummary;
+  longest_homestand: number;
+  longest_road_trip: number;
+  games: TeamScheduleGameItem[];
+  warnings: string[];
+};
+
+export type FourFactorMetricItem = {
+  key: string;
+  display_name: string;
+  factor?: string | null;
+  weight?: number | null;
+  value?: number | null;
+  league_avg?: number | null;
+  rank?: number | null;
+  percentile?: number | null;
+  total_teams: number;
+  good_direction: string;
+  unit: string;
+  formula: string;
+};
+
+export type ThreePointVariationScenario = {
+  observed_fg3m: number;
+  observed_fg3a: number;
+  observed_3p_pct: number;
+  league_3p_pct: number;
+  hypothetical_fg3m: number;
+  delta_points: number;
+  actual_ppg: number;
+  hypothetical_ppg: number;
+  actual_off_rating?: number | null;
+  hypothetical_off_rating?: number | null;
+  delta_off_rating?: number | null;
+  actual_net_rating?: number | null;
+  hypothetical_net_rating?: number | null;
+  delta_net_rating?: number | null;
+  disclaimer: string;
+};
+
+export type TeamFourFactorsResponse = {
+  team: { id: string; tricode: string; name: string; city?: string; conference?: string; division?: string };
+  context: Record<string, unknown>;
+  games_played: number;
+  pace?: number | null;
+  off_rating?: number | null;
+  def_rating?: number | null;
+  net_rating?: number | null;
+  ratings: FourFactorMetricItem[];
+  offense_factors: FourFactorMetricItem[];
+  defense_factors: FourFactorMetricItem[];
+  shooting_percentages: Record<string, number | null>;
+  league_averages: Record<string, number>;
+  three_point_scenario: ThreePointVariationScenario;
+  warnings: string[];
+};
+
+export type TeamPeerItem = {
+  team_id: string;
+  tricode: string;
+  name: string;
+  city?: string;
+  conference?: string;
+  distance: number;
+  similarity_score: number;
+  dimension_diffs: Record<string, Record<string, number>>;
+};
+
+export type TeamPeersResponse = {
+  team: { id: string; tricode: string; name: string };
+  context: Record<string, unknown>;
+  peers: TeamPeerItem[];
+  dimensions_used: string[];
+  warnings: string[];
+};
+
+export type ThreePointVariationResponse = {
+  team: { id: string; tricode: string; name: string };
+  context: Record<string, unknown>;
+  scenario: ThreePointVariationScenario;
   warnings: string[];
 };
 
@@ -919,7 +1347,674 @@ export type AssistantAnswer = {
     evidence_cells_count: number;
     explorer_query?: Record<string, unknown>;
   } | null;
-  error_detail?: string | null;
-};
+  };
+
+// =========================================================================
+// Personal Workspace & State Persistence Types (Block B08/B09)
+// =========================================================================
+
+export type DensityMode = "compact" | "standard" | "expanded";
+export type IdentityPresentationMode = "photos" | "logos" | "initials" | "none";
+export type CountingMode = "per_game" | "raw" | "per_36" | "per_75" | "per_100";
+export type RankingBoardType = "overall" | "offense" | "defense" | "position" | "custom";
+export type ImportConflictMode = "replace" | "merge";
+export type AggregationMethod = "borda" | "average_rank";
+
+export interface CustomViewDefinition {
+  id: string;
+  name: string;
+  metric_version?: "v2";
+  unavailable_columns?: string[];
+  columns: string[];
+  sort_field?: string | null;
+  sort_direction?: "asc" | "desc";
+  is_default?: boolean;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface RankingEntry {
+  rank: number;
+  player_id: string;
+  player_name?: string | null;
+  notes?: string | null;
+  tags?: string[];
+}
+
+export interface RankingBoardDefinition {
+  id: string;
+  title: string;
+  board_type: RankingBoardType;
+  scope?: Record<string, unknown> | null;
+  notes?: string | null;
+  entries: RankingEntry[];
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface TierGroup {
+  tier_id: string;
+  label: string;
+  color?: string | null;
+  player_ids: string[];
+}
+
+export interface TierListDefinition {
+  id: string;
+  title: string;
+  description?: string | null;
+  tiers: TierGroup[];
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface WorkspacePreferences {
+  density: DensityMode;
+  identity_mode: IdentityPresentationMode;
+  counting_mode: CountingMode;
+  default_view_id: string;
+  table_expanded: boolean;
+  theme: string;
+  updated_at?: string;
+}
+
+export interface PersonalWorkspaceState {
+  workspace_id: string;
+  name: string;
+  version: number;
+  views: CustomViewDefinition[];
+  favorites: string[];
+  compare_tray: string[];
+  ranking_boards: RankingBoardDefinition[];
+  tier_lists: TierListDefinition[];
+  preferences: WorkspacePreferences;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface WorkspaceBundle {
+  bundle_version: "1.0";
+  exported_at: string;
+  workspace_id: string;
+  name: string;
+  version: number;
+  views: CustomViewDefinition[];
+  favorites: string[];
+  compare_tray: string[];
+  ranking_boards: RankingBoardDefinition[];
+  tier_lists: TierListDefinition[];
+  preferences: WorkspacePreferences;
+  checksum_sha256?: string | null;
+}
+
+export interface AggregatedRankingItem {
+  player_id: string;
+  player_name?: string | null;
+  aggregated_rank: number;
+  borda_score: number;
+  average_rank: number;
+  boards_present_count: number;
+  total_boards_count: number;
+  best_rank: number;
+  worst_rank: number;
+}
+
+export interface BoardAggregationResult {
+  method: AggregationMethod;
+  boards_evaluated: string[];
+  missing_rank_penalty: number;
+  ranked_players: AggregatedRankingItem[];
+  methodology_notes: string;
+}
+
+// =========================================================================
+// Analytical Operations & Investigation Tools Types (Block B12/B13)
+// =========================================================================
+
+export type PeriodMode = "appearances" | "date_range";
+export type SplitType = "venue" | "rest" | "opponent" | "all";
+export type DistributionMeasure = "iqr" | "population_sd" | "mean" | "median";
+
+export interface MetricDelta {
+  metric_key: string;
+  display_name: string;
+  period_a_value: number | null;
+  period_b_value: number | null;
+  absolute_delta: number | null;
+  percentage_delta: number | null;
+  period_a_n: number;
+  period_b_n: number;
+}
+
+export interface PeriodSummary {
+  label: string;
+  mode: PeriodMode;
+  start_date: string | null;
+  end_date: string | null;
+  appearances_count: number;
+  total_minutes: number;
+  min_per_game: number | null;
+  stints: string[];
+  metrics: Record<string, number | null>;
+  sample_counts: Record<string, number>;
+}
+
+export interface ComparePeriodsRequest {
+  player_id: string;
+  season?: string | null;
+  phase?: string;
+  before_date?: string | null;
+  release_id?: string | null;
+  mode?: PeriodMode;
+  period_a_n?: number;
+  period_b_n?: number;
+  period_a_from?: string | null;
+  period_a_to?: string | null;
+  period_b_from?: string | null;
+  period_b_to?: string | null;
+  metrics?: string[] | null;
+}
+
+export interface ComparePeriodsResponse {
+  operation_version: string;
+  evidence_hash: string;
+  player_id: string;
+  player_name: string;
+  season: string;
+  phase: string;
+  before_date: string;
+  period_a: PeriodSummary;
+  period_b: PeriodSummary;
+  deltas: MetricDelta[];
+  has_calendar_overlap: boolean;
+  disclosures: string[];
+}
+
+export interface DistributionSamplePoint {
+  game_id: string;
+  game_date: string;
+  team_tricode: string;
+  opponent_tricode: string;
+  is_home: boolean;
+  minutes: number | null;
+  value: number | null;
+}
+
+export interface DistributionSummary {
+  summary_available: boolean;
+  reason: string | null;
+  n: number;
+  mean: number | null;
+  median: number | null;
+  min: number | null;
+  max: number | null;
+  population_sd: number | null;
+  p10: number | null;
+  p25: number | null;
+  p75: number | null;
+  p90: number | null;
+  iqr: number | null;
+}
+
+export interface DistributionRequest {
+  player_id: string;
+  metric?: string;
+  season?: string | null;
+  phase?: string;
+  before_date?: string | null;
+  release_id?: string | null;
+  window_n?: number;
+  from_date?: string | null;
+  to_date?: string | null;
+}
+
+export interface DistributionResponse {
+  operation_version: string;
+  evidence_hash: string;
+  player_id: string;
+  player_name: string;
+  metric: string;
+  metric_display_name: string;
+  metric_unit: string;
+  season: string;
+  phase: string;
+  before_date: string;
+  summary: DistributionSummary;
+  samples: DistributionSamplePoint[];
+  disclosures: string[];
+}
+
+export interface SplitBucketSummary {
+  bucket_key: string;
+  bucket_label: string;
+  games_played: number;
+  total_minutes: number;
+  min_per_game: number | null;
+  appearance_gap_days_avg: number | null;
+  metrics: Record<string, number | null>;
+  sample_counts: Record<string, number>;
+}
+
+export interface SplitProfileRequest {
+  player_id: string;
+  split_type?: SplitType;
+  season?: string | null;
+  phase?: string;
+  before_date?: string | null;
+  release_id?: string | null;
+}
+
+export interface SplitProfileResponse {
+  operation_version: string;
+  evidence_hash: string;
+  player_id: string;
+  player_name: string;
+  season: string;
+  phase: string;
+  before_date: string;
+  venue_splits: SplitBucketSummary[];
+  rest_splits: SplitBucketSummary[];
+  opponent_splits: SplitBucketSummary[];
+  disclosures: string[];
+}
+
+export interface TeamDefensiveAllowance {
+  opponent_team_id: string;
+  opponent_tricode: string;
+  opponent_name: string;
+  games_observed: number;
+  pts_allowed_per_game: number;
+  fg_pct_allowed: number | null;
+  fg3_pct_allowed: number | null;
+  reb_allowed_per_game: number;
+  ast_allowed_per_game: number;
+  tov_forced_per_game: number;
+  league_rank_pts_allowed: number | null;
+  total_teams_in_rank: number | null;
+}
+
+export interface OpponentContextRequest {
+  team_id?: string | null;
+  season?: string | null;
+  phase?: string;
+  before_date?: string | null;
+  release_id?: string | null;
+}
+
+export interface OpponentContextResponse {
+  operation_version: string;
+  evidence_hash: string;
+  season: string;
+  phase: string;
+  before_date: string;
+  teams_analyzed: number;
+  allowances: TeamDefensiveAllowance[];
+  disclosures: string[];
+}
+
+export interface DimensionStats {
+  dimension_key: string;
+  display_name: string;
+  cohort_mean: number;
+  cohort_sd: number;
+  is_active: boolean;
+  exclusion_reason: string | null;
+}
+
+export interface CohortSummary {
+  cohort_size: number;
+  window_description: string;
+  min_appearances: number;
+  min_minutes: number;
+  active_dimensions_count: number;
+  dimensions: DimensionStats[];
+}
+
+export interface TargetPlayerProfile {
+  player_id: string;
+  player_name: string;
+  team_tricode: string | null;
+  games_played: number;
+  total_minutes: number;
+  raw_values: Record<string, number | null>;
+  standardized_values: Record<string, number | null>;
+}
+
+export interface PeerMatchItem {
+  player_id: string;
+  player_name: string;
+  team_tricode: string | null;
+  games_played: number;
+  total_minutes: number;
+  distance: number;
+  overlapping_dimensions_count: number;
+  raw_values: Record<string, number | null>;
+  standardized_values: Record<string, number | null>;
+  dimension_contributions: Record<string, number>;
+}
+
+export interface StatisticalPeersRequest {
+  target_player_id: string;
+  season?: string | null;
+  phase?: string;
+  before_date?: string | null;
+  release_id?: string | null;
+  window?: "last_10" | "season";
+  min_appearances?: number;
+  min_minutes?: number;
+  top_k?: number;
+  dimensions?: string[] | null;
+}
+
+export interface StatisticalPeersResponse {
+  operation_version: string;
+  evidence_hash: string;
+  target: TargetPlayerProfile;
+  cohort: CohortSummary;
+  peers: PeerMatchItem[];
+  disclosures: string[];
+}
+
+export interface RankOperationItem {
+  rank: number;
+  player_id: string;
+  player_name: string;
+  team_tricode: string | null;
+  games_played: number;
+  total_minutes: number;
+  baseline_value: number | null;
+  comparison_value: number | null;
+  delta_value: number | null;
+  metric_key: string;
+  details: Record<string, unknown>;
+}
+
+export interface RankOperationRequest {
+  operation_type: "compare_periods" | "distribution";
+  metric?: string;
+  season?: string | null;
+  phase?: string;
+  before_date?: string | null;
+  release_id?: string | null;
+  sort_direction?: "asc" | "desc";
+  min_games?: number;
+  min_minutes?: number;
+  limit?: number;
+  measure?: DistributionMeasure;
+}
+
+export interface RankOperationResponse {
+  operation_version: string;
+  evidence_hash: string;
+  operation_type: string;
+  metric: string;
+  season: string;
+  phase: string;
+  before_date: string;
+  total_eligible: number;
+  items: RankOperationItem[];
+  disclosures: string[];
+}
+
+// ---------------------------------------------------------------------------
+// Measurements, Draft, Crosswalk, and Backfill Types (Block B14)
+// ---------------------------------------------------------------------------
+
+export interface PlayerMeasurementItem {
+  player_id: string;
+  display_name: string;
+  measurement_type: string;
+  source_name: string;
+  draft_year: number | null;
+  pick_overall: number | null;
+  drafting_team_id: string | null;
+  height_no_shoes_inches: number | null;
+  height_shoes_inches: number | null;
+  wingspan_inches: number | null;
+  standing_reach_inches: number | null;
+  weight_lbs: number | null;
+  body_fat_pct: number | null;
+  wingspan_to_height_ratio: number | null;
+}
+
+export interface MeasurementsQueryResponse {
+  items: PlayerMeasurementItem[];
+  count: number;
+  disclaimer: string;
+}
+
+export interface PlayerCombineDetail {
+  draft_year: number | null;
+  height_no_shoes_inches: number | null;
+  height_shoes_inches: number | null;
+  wingspan_inches: number | null;
+  standing_reach_inches: number | null;
+  weight_lbs: number | null;
+  body_fat_pct: number | null;
+  standing_vertical_inches: number | null;
+  max_vertical_inches: number | null;
+  lane_agility_seconds: number | null;
+  three_quarter_sprint_seconds: number | null;
+  wingspan_to_height_ratio: number | null;
+  source_attribution: string;
+}
+
+export interface PlayerListedDetail {
+  season: string | null;
+  height_shoes_inches: number | null;
+  weight_lbs: number | null;
+  source_attribution: string;
+}
+
+export interface PlayerDraftDetail {
+  draft_year: number;
+  round_number: number | null;
+  pick_overall: number | null;
+  drafting_team_id: string | null;
+  drafting_team_name: string | null;
+  draft_type: string;
+  college_or_prior_team: string | null;
+}
+
+export interface PlayerMeasurementsDetailResponse {
+  player_id: string;
+  display_name: string;
+  has_measurements: boolean;
+  combine: PlayerCombineDetail | null;
+  listed: PlayerListedDetail | null;
+  draft: PlayerDraftDetail | null;
+  disclaimer: string;
+}
+
+export interface CrosswalkItem {
+  source_namespace: string;
+  source_id: string;
+  target_namespace: string;
+  target_id: string;
+  kind: string;
+  confidence: string;
+  mapping_method: string;
+  evidence: Record<string, unknown>;
+}
+
+export interface CrosswalkResponse {
+  item: CrosswalkItem | null;
+  resolved: boolean;
+}
+
+export interface BackfillStatusResponse {
+  range: [number, number];
+  total_seasons: number;
+  imported_count: number;
+  acquired_count: number;
+  pending_count: number;
+  imported_years: number[];
+  acquired_years: number[];
+  pending_years: number[];
+}
+
+// ---------------------------------------------------------------------------
+// Playoff Series and Bracket Types (Blocks B17–B18)
+// ---------------------------------------------------------------------------
+
+export interface PlayoffSeedEvidence {
+  team_id: string;
+  tricode: string;
+  team_name: string;
+  conference: string;
+  seed: number;
+  wins: number;
+  losses: number;
+  win_pct: number;
+  is_tied: boolean;
+  tie_note: string | null;
+  source_label: string;
+}
+
+export interface TeamSeriesHeader {
+  team_id: string;
+  tricode: string;
+  name: string;
+  seed: number | null;
+  wins: number;
+}
+
+export interface PlayoffSeriesSummary {
+  series_id: string;
+  slug: string;
+  season: string;
+  round_number: number;
+  round_name: string;
+  conference: string | null;
+  matchup_index: number;
+  team1: TeamSeriesHeader;
+  team2: TeamSeriesHeader;
+  series_score: string;
+  status: "final" | "in_progress" | "scheduled" | string;
+  winner_team_id: string | null;
+  winner_tricode: string | null;
+  games_count: number;
+  total_scheduled: number;
+  is_sweep: boolean;
+  summary_text: string;
+}
+
+export interface PlayoffRoundResponse {
+  round_number: number;
+  round_name: string;
+  eastern_series: PlayoffSeriesSummary[];
+  western_series: PlayoffSeriesSummary[];
+  finals_series: PlayoffSeriesSummary[];
+  series: PlayoffSeriesSummary[];
+}
+
+export interface PlayoffBracketResponse {
+  season: string;
+  season_year: number;
+  cutoff_date: string | null;
+  rounds: PlayoffRoundResponse[];
+  seeds: Record<string, PlayoffSeedEvidence[]>;
+  capabilities: Record<string, string>;
+  disclaimers: string[];
+}
+
+export interface PlayoffGameCard {
+  game_id: string;
+  game_number: number;
+  game_date: string | null;
+  home_team_id: string;
+  home_team_tricode: string;
+  away_team_id: string;
+  away_team_tricode: string;
+  home_score: number | null;
+  away_score: number | null;
+  status: "final" | "scheduled" | "unplayed_placeholder" | string;
+  venue: string | null;
+  winner_team_id: string | null;
+  margin: number | null;
+}
+
+export interface TeamSeriesStats {
+  team_id: string;
+  tricode: string;
+  team_name: string;
+  seed: number | null;
+  wins: number;
+  losses: number;
+  games_played: number;
+  points_per_game: number | null;
+  opponent_points_per_game: number | null;
+  average_margin: number | null;
+  pace: number | null;
+  off_rating: number | null;
+  def_rating: number | null;
+  net_rating: number | null;
+  efg_pct: number | null;
+  tov_pct: number | null;
+  oreb_pct: number | null;
+  ftr: number | null;
+  totals: Record<string, unknown>;
+}
+
+export interface PlayerSeriesStats {
+  player_id: string;
+  player_name: string;
+  team_id: string;
+  team_tricode: string;
+  games_played: number;
+  games_started: number | null;
+  minutes_total_seconds: number;
+  minutes_per_game: number;
+  points_total: number;
+  points_per_game: number;
+  rebounds_total: number;
+  rebounds_per_game: number;
+  offensive_rebounds: number;
+  defensive_rebounds: number;
+  assists_total: number;
+  assists_per_game: number;
+  steals_total: number;
+  steals_per_game: number;
+  blocks_total: number;
+  blocks_per_game: number;
+  turnovers_total: number;
+  turnovers_per_game: number;
+  fouls_total: number;
+  fouls_per_game: number;
+  fgm: number;
+  fga: number;
+  fg_pct: number | null;
+  fg3m: number;
+  fg3a: number;
+  fg3_pct: number | null;
+  ftm: number;
+  fta: number;
+  ft_pct: number | null;
+  efg_pct: number | null;
+  ts_pct: number | null;
+}
+
+export interface PlayoffSeriesDetailResponse {
+  series_id: string;
+  slug: string;
+  season: string;
+  season_year: number;
+  round_number: number;
+  round_name: string;
+  conference: string | null;
+  matchup_index: number;
+  status: "final" | "in_progress" | "scheduled" | string;
+  series_score: string;
+  winner_team_id: string | null;
+  winner_tricode: string | null;
+  cutoff_date: string | null;
+  team1: TeamSeriesStats;
+  team2: TeamSeriesStats;
+  game_cards: PlayoffGameCard[];
+  team1_players: PlayerSeriesStats[];
+  team2_players: PlayerSeriesStats[];
+  capabilities: Record<string, string>;
+  disclaimers: string[];
+}
 
 

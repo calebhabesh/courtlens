@@ -2,23 +2,48 @@ import type {
   AssistantAnswer,
   AssistantQueryRequest,
   AssistantStatusResponse,
+  BackfillStatusResponse,
+  ComparePeriodsRequest,
+  ComparePeriodsResponse,
+  CrosswalkResponse,
+  DistributionRequest,
+  DistributionResponse,
   ForecastIssuanceDetailResponse,
   ForecastsListResponse,
   InvestigationDetail,
   InvestigationReproduce,
   LineageResponse,
+  LookupResponse,
+  MeasurementsQueryResponse,
   MetricCatalog,
+  OpponentContextRequest,
+  OpponentContextResponse,
   PlayerComparisonResponse,
   PlayerGameLogResponse,
+  PlayerMeasurementsDetailResponse,
   PlayerProfile,
   PlayerResearchQuery,
   PlayerResearchResponse,
+  PlayoffBracketResponse,
+  PlayoffSeriesDetailResponse,
   PointsForecastEvaluation,
+  RankOperationRequest,
+  RankOperationResponse,
   SavedInvestigation,
+  QuerySpec,
+  SplitProfileRequest,
+  SplitProfileResponse,
+  StatisticalPeersRequest,
+  StatisticalPeersResponse,
   TeamDetailResponse,
+  TeamFourFactorsResponse,
+  TeamPeersResponse,
   TeamResearchResponse,
+  TeamScheduleResponse,
+  ThreePointVariationResponse,
   WorkbenchCatalog,
   WorkbenchJobItem,
+  WorkbenchQueryResponse,
   WorkbenchStatus
 } from "./types";
 
@@ -109,8 +134,19 @@ export async function queryPlayerResearch(
   if (query.sort_metric) sp.set("sortMetric", query.sort_metric);
   if (query.sort_direction) sp.set("sortDirection", query.sort_direction);
   if (query.limit !== undefined) sp.set("limit", String(query.limit));
+  if (query.cursor) sp.set("cursor", query.cursor);
 
   return wbFetch<PlayerResearchResponse>(`/api/workbench/players?${sp}`);
+}
+
+export async function executeWorkbenchQuery(
+  query: QuerySpec
+): Promise<WorkbenchQueryResponse> {
+  return wbFetch<WorkbenchQueryResponse>("/api/workbench/query", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ query })
+  });
 }
 
 export async function getPlayerProfile(
@@ -191,6 +227,88 @@ export async function getTeamDetail(
 
   return wbFetch<TeamDetailResponse>(
     `/api/workbench/teams/${encodeURIComponent(id)}?${sp}`
+  );
+}
+
+export async function getTeamSchedule(
+  id: string,
+  params?: {
+    season?: string;
+    phase?: string;
+    beforeDate?: string;
+    releaseId?: string;
+  }
+): Promise<TeamScheduleResponse> {
+  const sp = new URLSearchParams();
+  if (params?.releaseId) sp.set("releaseId", params.releaseId);
+  if (params?.season) sp.set("season", params.season);
+  if (params?.phase) sp.set("phase", params.phase);
+  if (params?.beforeDate) sp.set("beforeDate", params.beforeDate);
+
+  return wbFetch<TeamScheduleResponse>(
+    `/api/workbench/teams/${encodeURIComponent(id)}/schedule?${sp}`
+  );
+}
+
+export async function getTeamFourFactors(
+  id: string,
+  params?: {
+    season?: string;
+    phase?: string;
+    beforeDate?: string;
+    releaseId?: string;
+  }
+): Promise<TeamFourFactorsResponse> {
+  const sp = new URLSearchParams();
+  if (params?.releaseId) sp.set("releaseId", params.releaseId);
+  if (params?.season) sp.set("season", params.season);
+  if (params?.phase) sp.set("phase", params.phase);
+  if (params?.beforeDate) sp.set("beforeDate", params.beforeDate);
+
+  return wbFetch<TeamFourFactorsResponse>(
+    `/api/workbench/teams/${encodeURIComponent(id)}/four-factors?${sp}`
+  );
+}
+
+export async function getTeamPeers(
+  id: string,
+  params?: {
+    limit?: number;
+    season?: string;
+    phase?: string;
+    beforeDate?: string;
+    releaseId?: string;
+  }
+): Promise<TeamPeersResponse> {
+  const sp = new URLSearchParams();
+  if (params?.limit) sp.set("limit", String(params.limit));
+  if (params?.releaseId) sp.set("releaseId", params.releaseId);
+  if (params?.season) sp.set("season", params.season);
+  if (params?.phase) sp.set("phase", params.phase);
+  if (params?.beforeDate) sp.set("beforeDate", params.beforeDate);
+
+  return wbFetch<TeamPeersResponse>(
+    `/api/workbench/teams/${encodeURIComponent(id)}/peers?${sp}`
+  );
+}
+
+export async function getTeamThreePointVariation(
+  id: string,
+  params?: {
+    season?: string;
+    phase?: string;
+    beforeDate?: string;
+    releaseId?: string;
+  }
+): Promise<ThreePointVariationResponse> {
+  const sp = new URLSearchParams();
+  if (params?.releaseId) sp.set("releaseId", params.releaseId);
+  if (params?.season) sp.set("season", params.season);
+  if (params?.phase) sp.set("phase", params.phase);
+  if (params?.beforeDate) sp.set("beforeDate", params.beforeDate);
+
+  return wbFetch<ThreePointVariationResponse>(
+    `/api/workbench/teams/${encodeURIComponent(id)}/three-point-variation?${sp}`
   );
 }
 
@@ -335,5 +453,362 @@ export async function queryAssistant(req: AssistantQueryRequest): Promise<Assist
   return response.json();
 }
 
+export interface LookupQueryOptions {
+  query: string;
+  releaseId?: string | null;
+  season?: string | null;
+  kinds?: Array<"player" | "team" | "page">;
+  limit?: number;
+  signal?: AbortSignal;
+}
+
+export async function queryLookup(options: LookupQueryOptions): Promise<LookupResponse> {
+  const base = typeof window !== "undefined" ? browserApi : internalApi;
+  const sp = new URLSearchParams();
+  sp.set("q", options.query);
+  if (options.releaseId) sp.set("releaseId", options.releaseId);
+  if (options.season) sp.set("season", options.season);
+  if (options.kinds && options.kinds.length > 0) sp.set("kinds", options.kinds.join(","));
+  if (options.limit !== undefined) sp.set("limit", String(options.limit));
+
+  const url = `${base}/api/workbench/lookup?${sp.toString()}`;
+  const response = await fetch(url, {
+    method: "GET",
+    headers: { Accept: "application/json" },
+    cache: "no-store",
+    signal: options.signal ?? AbortSignal.timeout(5000)
+  });
+
+  if (!response.ok) {
+    let detail = "Lookup request failed";
+    try {
+      const errJson = await response.json();
+      detail = errJson.detail || detail;
+    } catch {
+      // fallback
+    }
+    throw new WorkbenchApiError(response.status, detail);
+  }
+
+  return response.json();
+}
+
+export async function comparePeriods(
+  req: ComparePeriodsRequest
+): Promise<ComparePeriodsResponse> {
+  const base = typeof window !== "undefined" ? browserApi : internalApi;
+  const response = await fetch(`${base}/api/workbench/operations/compare-periods`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(req),
+    cache: "no-store",
+    signal: AbortSignal.timeout(10000)
+  });
+
+  if (!response.ok) {
+    const body = (await response.json().catch(() => null)) as { detail?: unknown } | null;
+    throw new WorkbenchApiError(response.status, body?.detail ?? body);
+  }
+
+  return response.json();
+}
+
+export async function getDistribution(
+  req: DistributionRequest
+): Promise<DistributionResponse> {
+  const base = typeof window !== "undefined" ? browserApi : internalApi;
+  const response = await fetch(`${base}/api/workbench/operations/distribution`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(req),
+    cache: "no-store",
+    signal: AbortSignal.timeout(10000)
+  });
+
+  if (!response.ok) {
+    const body = (await response.json().catch(() => null)) as { detail?: unknown } | null;
+    throw new WorkbenchApiError(response.status, body?.detail ?? body);
+  }
+
+  return response.json();
+}
+
+export async function getSplitProfile(
+  req: SplitProfileRequest
+): Promise<SplitProfileResponse> {
+  const base = typeof window !== "undefined" ? browserApi : internalApi;
+  const response = await fetch(`${base}/api/workbench/operations/splits`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(req),
+    cache: "no-store",
+    signal: AbortSignal.timeout(10000)
+  });
+
+  if (!response.ok) {
+    const body = (await response.json().catch(() => null)) as { detail?: unknown } | null;
+    throw new WorkbenchApiError(response.status, body?.detail ?? body);
+  }
+
+  return response.json();
+}
+
+export async function getOpponentContext(
+  req: OpponentContextRequest = {}
+): Promise<OpponentContextResponse> {
+  const base = typeof window !== "undefined" ? browserApi : internalApi;
+  const response = await fetch(`${base}/api/workbench/operations/opponent-context`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(req),
+    cache: "no-store",
+    signal: AbortSignal.timeout(10000)
+  });
+
+  if (!response.ok) {
+    const body = (await response.json().catch(() => null)) as { detail?: unknown } | null;
+    throw new WorkbenchApiError(response.status, body?.detail ?? body);
+  }
+
+  return response.json();
+}
+
+export async function getStatisticalPeers(
+  req: StatisticalPeersRequest
+): Promise<StatisticalPeersResponse> {
+  const base = typeof window !== "undefined" ? browserApi : internalApi;
+  const response = await fetch(`${base}/api/workbench/operations/similarity`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(req),
+    cache: "no-store",
+    signal: AbortSignal.timeout(10000)
+  });
+
+  if (!response.ok) {
+    const body = (await response.json().catch(() => null)) as { detail?: unknown } | null;
+    throw new WorkbenchApiError(response.status, body?.detail ?? body);
+  }
+
+  return response.json();
+}
+
+export async function getRankOperation(
+  req: RankOperationRequest
+): Promise<RankOperationResponse> {
+  const base = typeof window !== "undefined" ? browserApi : internalApi;
+  const response = await fetch(`${base}/api/workbench/operations/rank`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(req),
+    cache: "no-store",
+    signal: AbortSignal.timeout(15000)
+  });
+
+  if (!response.ok) {
+    const body = (await response.json().catch(() => null)) as { detail?: unknown } | null;
+    throw new WorkbenchApiError(response.status, body?.detail ?? body);
+  }
+
+  return response.json();
+}
+
+export async function getMeasurements(params?: {
+  playerId?: string;
+  draftYear?: number;
+  minWingspan?: number;
+  maxWingspan?: number;
+  minHeight?: number;
+  maxHeight?: number;
+  measurementType?: string;
+  limit?: number;
+}): Promise<MeasurementsQueryResponse> {
+  const base = typeof window !== "undefined" ? browserApi : internalApi;
+  const sp = new URLSearchParams();
+  if (params?.playerId) sp.set("playerId", params.playerId);
+  if (params?.draftYear) sp.set("draftYear", String(params.draftYear));
+  if (params?.minWingspan != null) sp.set("minWingspan", String(params.minWingspan));
+  if (params?.maxWingspan != null) sp.set("maxWingspan", String(params.maxWingspan));
+  if (params?.minHeight != null) sp.set("minHeight", String(params.minHeight));
+  if (params?.maxHeight != null) sp.set("maxHeight", String(params.maxHeight));
+  if (params?.measurementType) sp.set("measurementType", params.measurementType);
+  if (params?.limit != null) sp.set("limit", String(params.limit));
+
+  const qs = sp.toString();
+  const url = `${base}/api/workbench/measurements${qs ? `?${qs}` : ""}`;
+  const response = await fetch(url, {
+    cache: "no-store",
+    signal: AbortSignal.timeout(10000)
+  });
+
+  if (!response.ok) {
+    const body = (await response.json().catch(() => null)) as { detail?: unknown } | null;
+    throw new WorkbenchApiError(response.status, body?.detail ?? body);
+  }
+
+  return response.json();
+}
+
+export async function getPlayerMeasurements(
+  playerId: string
+): Promise<PlayerMeasurementsDetailResponse> {
+  const base = typeof window !== "undefined" ? browserApi : internalApi;
+  const response = await fetch(
+    `${base}/api/workbench/players/${encodeURIComponent(playerId)}/measurements`,
+    {
+      cache: "no-store",
+      signal: AbortSignal.timeout(10000)
+    }
+  );
+
+  if (!response.ok) {
+    const body = (await response.json().catch(() => null)) as { detail?: unknown } | null;
+    throw new WorkbenchApiError(response.status, body?.detail ?? body);
+  }
+
+  return response.json();
+}
+
+export async function getCrosswalk(params: {
+  sourceNamespace: string;
+  sourceId: string;
+  targetNamespace?: string;
+  kind?: string;
+}): Promise<CrosswalkResponse> {
+  const base = typeof window !== "undefined" ? browserApi : internalApi;
+  const sp = new URLSearchParams({
+    sourceNamespace: params.sourceNamespace,
+    sourceId: params.sourceId,
+    targetNamespace: params.targetNamespace ?? "nba",
+    kind: params.kind ?? "player"
+  });
+  const response = await fetch(`${base}/api/workbench/crosswalk?${sp.toString()}`, {
+    cache: "no-store",
+    signal: AbortSignal.timeout(10000)
+  });
+
+  if (!response.ok) {
+    const body = (await response.json().catch(() => null)) as { detail?: unknown } | null;
+    throw new WorkbenchApiError(response.status, body?.detail ?? body);
+  }
+
+  return response.json();
+}
+
+export async function getBackfillStatus(params?: {
+  startYear?: number;
+  endYear?: number;
+}): Promise<BackfillStatusResponse> {
+  const base = typeof window !== "undefined" ? browserApi : internalApi;
+  const sp = new URLSearchParams();
+  if (params?.startYear != null) sp.set("startYear", String(params.startYear));
+  if (params?.endYear != null) sp.set("endYear", String(params.endYear));
+
+  const qs = sp.toString();
+  const url = `${base}/api/workbench/backfill/status${qs ? `?${qs}` : ""}`;
+  const response = await fetch(url, {
+    cache: "no-store",
+    signal: AbortSignal.timeout(10000)
+  });
+
+  if (!response.ok) {
+    const body = (await response.json().catch(() => null)) as { detail?: unknown } | null;
+    throw new WorkbenchApiError(response.status, body?.detail ?? body);
+  }
+
+  return response.json();
+}
+
+export async function getPlayoffBracket(params?: {
+  season?: string | number;
+  cutoffDate?: string;
+  releaseId?: string;
+}): Promise<PlayoffBracketResponse> {
+  const sp = new URLSearchParams();
+  if (params?.season) sp.set("season", String(params.season));
+  if (params?.cutoffDate) sp.set("cutoff_date", params.cutoffDate);
+  if (params?.releaseId) sp.set("releaseId", params.releaseId);
+
+  const qs = sp.toString();
+  const base = typeof window !== "undefined" ? browserApi : internalApi;
+  const url = `${base}/api/workbench/playoffs${qs ? `?${qs}` : ""}`;
+  const response = await fetch(url, {
+    cache: "no-store",
+    signal: AbortSignal.timeout(10000)
+  });
+
+  if (!response.ok) {
+    const body = (await response.json().catch(() => null)) as { detail?: unknown } | null;
+    throw new WorkbenchApiError(response.status, body?.detail ?? body);
+  }
+
+  return response.json();
+}
+
+export async function getPlayoffSeriesDetail(
+  seriesId: string,
+  params?: {
+    cutoffDate?: string;
+    releaseId?: string;
+  }
+): Promise<PlayoffSeriesDetailResponse> {
+  const sp = new URLSearchParams();
+  if (params?.cutoffDate) sp.set("cutoff_date", params.cutoffDate);
+  if (params?.releaseId) sp.set("releaseId", params.releaseId);
+
+  const qs = sp.toString();
+  const base = typeof window !== "undefined" ? browserApi : internalApi;
+  const url = `${base}/api/workbench/playoffs/series/${encodeURIComponent(seriesId)}${qs ? `?${qs}` : ""}`;
+  const response = await fetch(url, {
+    cache: "no-store",
+    signal: AbortSignal.timeout(10000)
+  });
+
+  if (!response.ok) {
+    const body = (await response.json().catch(() => null)) as { detail?: unknown } | null;
+    throw new WorkbenchApiError(response.status, body?.detail ?? body);
+  }
+
+  return response.json();
+}
 
 
+
+
+export async function runSharedFloor(
+  operation: import("./shared-floor").FloorOperation,
+  request: import("./shared-floor").FloorRequest,
+  signal?: AbortSignal
+): Promise<import("./shared-floor").FloorResponse> {
+  const base = typeof window !== "undefined" ? browserApi : internalApi;
+  const response = await fetch(`${base}/api/workbench/operations/${operation}`, {
+    method: "POST", headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(request), cache: "no-store",
+    signal: signal ? AbortSignal.any([signal, AbortSignal.timeout(15000)]) : AbortSignal.timeout(15000)
+  });
+  if (!response.ok) {
+    const body = await response.json().catch(() => null);
+    const detail = body?.detail;
+    throw new WorkbenchApiError(response.status,
+      typeof detail === "string" ? detail : JSON.stringify(detail ?? body ?? "Shared-floor request failed"));
+  }
+  return response.json();
+}
+
+export async function runShooting(
+  operation: import("./shooting-types").ShootingOperation,
+  request: import("./shooting-types").ShootingInput,
+  signal?: AbortSignal
+): Promise<import("./shooting-types").ShootingResponse> {
+  const base = typeof window !== "undefined" ? browserApi : internalApi;
+  const response = await fetch(`${base}/api/workbench/operations/${operation}`, {
+    method: "POST", headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(request), cache: "no-store",
+    signal: signal ? AbortSignal.any([signal, AbortSignal.timeout(15000)]) : AbortSignal.timeout(15000)
+  });
+  if (!response.ok) {
+    const body = await response.json().catch(() => null);
+    throw new WorkbenchApiError(response.status, typeof body?.detail === "string" ? body.detail : JSON.stringify(body?.detail ?? body ?? "Shooting request failed"));
+  }
+  return response.json();
+}
