@@ -48,11 +48,12 @@ def test_workbench_catalog(client: TestClient) -> None:
 
 
 def test_workbench_metrics(client: TestClient) -> None:
-    """Metrics endpoint returns versioned definitions and limitations."""
+    """Metrics endpoint returns versioned definitions and limitations for both v2 and v1."""
+    # Default is active v2 catalog
     response = client.get("/api/workbench/metrics")
     assert response.status_code == 200
     data = response.json()
-    assert data["version"] == "v1"
+    assert data["version"] == "v2"
     metrics = {m["key"]: m for m in data["metrics"]}
     assert "pts" in metrics
     assert "reb" in metrics
@@ -61,9 +62,70 @@ def test_workbench_metrics(client: TestClient) -> None:
     assert "blk" in metrics
     assert "tov" in metrics
     assert "fg_pct" in metrics
+    assert "ts_pct" in metrics
+    assert "efg_pct" in metrics
+    assert "ftr" in metrics
     assert "legacy_fantasy_score" in metrics
     assert metrics["pts"]["unit"] == "points"
     assert metrics["tov"]["default_sort_direction"] == "asc"
+    assert metrics["ts_pct"]["unit"] == "percentage"
+    assert metrics["efg_pct"]["unit"] == "percentage"
+
+    # Preserved v1 catalog remains accessible for reproducible evidence
+    resp_v1 = client.get("/api/workbench/metrics?version=v1")
+    assert resp_v1.status_code == 200
+    data_v1 = resp_v1.json()
+    assert data_v1["version"] == "v1"
+
+
+def test_workbench_lookup_endpoint(client: TestClient) -> None:
+    """Incremental lookup endpoint discovers players, teams, and navigation pages."""
+    # 1. Empty query returns navigation suggestions
+    resp_empty = client.get("/api/workbench/lookup")
+    assert resp_empty.status_code == 200
+    data_empty = resp_empty.json()
+    assert data_empty["catalog_version"] == "v1"
+    assert len(data_empty["items"]) == 10
+    assert all(i["match_basis"] == "suggestion" for i in data_empty["items"])
+    destinations = [i["destination_url"] for i in data_empty["items"]]
+    assert any("/stats" in d for d in destinations)
+
+    # 2. Query player with diacritics folding ('Jokic' finds Nikola Jokić)
+    resp_jokic = client.get("/api/workbench/lookup?q=Jokic")
+    assert resp_jokic.status_code == 200
+    data_jokic = resp_jokic.json()
+    assert len(data_jokic["items"]) >= 1
+    top_jokic = data_jokic["items"][0]
+    assert top_jokic["display_name"] == "Nikola Jokić"
+    assert top_jokic["kind"] == "player"
+    assert top_jokic["match_basis"] == "exact"
+    assert top_jokic["portrait_fallback"] == "NJ"
+    assert "/api/workbench/players/203999/portrait" in (top_jokic["portrait_url"] or "")
+    assert "/players/203999" in top_jokic["destination_url"]
+
+    # 3. Query team via tricode and nickname ('TOR' and 'Raptors')
+    resp_tor = client.get("/api/workbench/lookup?q=TOR")
+    assert resp_tor.status_code == 200
+    data_tor = resp_tor.json()
+    assert any(i["display_name"] == "Toronto Raptors" for i in data_tor["items"])
+
+    resp_raptors = client.get("/api/workbench/lookup?q=Raptors")
+    assert resp_raptors.status_code == 200
+    assert resp_raptors.json()["items"][0]["display_name"] == "Toronto Raptors"
+
+    # 4. Kinds filter: only pages
+    resp_pages = client.get("/api/workbench/lookup?q=stats&kinds=page")
+    assert resp_pages.status_code == 200
+    data_pages = resp_pages.json()
+    assert all(i["kind"] == "page" for i in data_pages["items"])
+    assert any(i["canonical_id"] == "stats" for i in data_pages["items"])
+
+    # 5. Context preservation
+    resp_ctx = client.get("/api/workbench/lookup?q=Jokic&season=2023-24&release_id=rel-test-123")
+    assert resp_ctx.status_code == 200
+    dest = resp_ctx.json()["items"][0]["destination_url"]
+    assert "season=2023-24" in dest
+    assert "release_id=rel-test-123" in dest
 
 
 def test_two_real_players_reconciled(client: TestClient) -> None:
@@ -491,3 +553,152 @@ def test_workbench_assistant_query_offline_provider(client: TestClient) -> None:
         assert "limitations" in data
         assert "explorer_query" in data
         assert data["explorer_query"]["target_url"].startswith("/")
+
+
+def test_workbench_catalog_capabilities(client: TestClient) -> None:
+    """Catalog endpoint includes capability status metadata (B01 contract)."""
+    response = client.get("/api/workbench/catalog")
+    assert response.status_code == 200
+    data = response.json()
+    assert "capabilities" in data
+    assert isinstance(data["capabilities"], dict)
+    assert "core_stats" in data["capabilities"]
+    assert "status" in data["capabilities"]["core_stats"]
+
+
+def test_workbench_players_snake_and_camel_case_parity(client: TestClient) -> None:
+    """GET /api/workbench/players produces identical results with camelCase and snake_case params.
+
+    Resolves Findings 5 & 6.
+    """
+    camel_resp = client.get(
+        "/api/workbench/players?season=2025-26&phase=regular_season&beforeDate=2026-02-10&minGames=5&sortMetric=pts&sortDirection=desc&limit=5"
+    )
+    assert camel_resp.status_code == 200
+    camel_data = camel_resp.json()
+
+    snake_resp = client.get(
+        "/api/workbench/players?season=2025-26&phase=regular_season&before_date=2026-02-10&min_games=5&sort_metric=pts&sort_direction=desc&limit=5"
+    )
+    assert snake_resp.status_code == 200
+    snake_data = snake_resp.json()
+
+    assert camel_data["total_eligible_players"] == snake_data["total_eligible_players"]
+    assert len(camel_data["items"]) == len(snake_data["items"])
+    if camel_data["items"]:
+        assert camel_data["items"][0]["player_id"] == snake_data["items"][0]["player_id"]
+        assert camel_data["items"][0]["metrics"]["pts"] == snake_data["items"][0]["metrics"]["pts"]
+
+    assert "has_more" in camel_data
+    assert "next_cursor" in camel_data
+
+
+def test_workbench_players_validation_rejection(client: TestClient) -> None:
+    """GET /api/workbench/players returns 422 on invalid phase or unknown sort metric."""
+    resp_phase = client.get("/api/workbench/players?phase=completely_invalid_phase_name")
+    assert resp_phase.status_code == 422
+
+    resp_metric = client.get("/api/workbench/players?sortMetric=bogus_stat_metric")
+    assert resp_metric.status_code == 422
+
+
+def test_workbench_query_v2_endpoint_success(client: TestClient) -> None:
+    """POST /api/workbench/query executes typed QuerySpec and returns WorkbenchQueryResponse."""
+    req_payload = {
+        "query": {
+            "season": "2025-26",
+            "phase": "regular_season",
+            "before_date": "2026-02-10",
+            "name": "LeBron",
+            "page": {"limit": 5},
+        }
+    }
+    response = client.post("/api/workbench/query", json=req_payload)
+    assert response.status_code == 200
+    data = response.json()
+    assert "query" in data
+    assert "context" in data
+    assert "items" in data
+    assert "total_eligible_players" in data
+    assert "has_more" in data
+    assert "next_cursor" in data
+    assert len(data["items"]) >= 1
+    assert any("LeBron" in item["player_name"] for item in data["items"])
+
+
+def test_workbench_query_v2_cursor_pagination(client: TestClient) -> None:
+    """POST /api/workbench/query advances cursor correctly across pages (Finding 3)."""
+    first_page_resp = client.post(
+        "/api/workbench/query",
+        json={
+            "query": {
+                "season": "2025-26",
+                "phase": "regular_season",
+                "before_date": "2026-02-10",
+                "page": {"limit": 2},
+            }
+        },
+    )
+    assert first_page_resp.status_code == 200
+    first_data = first_page_resp.json()
+    assert len(first_data["items"]) == 2
+
+    if first_data["has_more"]:
+        cursor = first_data["next_cursor"]
+        assert cursor is not None
+
+        second_page_resp = client.post(
+            "/api/workbench/query",
+            json={
+                "query": {
+                    "season": "2025-26",
+                    "phase": "regular_season",
+                    "before_date": "2026-02-10",
+                    "page": {"limit": 2, "cursor": cursor},
+                }
+            },
+        )
+        assert second_page_resp.status_code == 200
+        second_data = second_page_resp.json()
+        assert len(second_data["items"]) == 2
+        # Different items on page 2
+        assert first_data["items"][0]["player_id"] != second_data["items"][0]["player_id"]
+
+
+def test_workbench_query_v2_validation_rejections(client: TestClient) -> None:
+    """POST /api/workbench/query returns 422 on invalid metrics, phases, and corrupted cursor."""
+    # 1. Invalid sort metric
+    resp = client.post(
+        "/api/workbench/query",
+        json={"query": {"sort": [{"field": "unregistered_fantasy_score"}]}},
+    )
+    assert resp.status_code == 422
+
+    # 2. Invalid phase
+    resp = client.post(
+        "/api/workbench/query",
+        json={"query": {"phase": "not_a_valid_phase"}},
+    )
+    assert resp.status_code == 422
+
+    # 3. Excessive predicates (>12 leaves)
+    excessive_leaves = [{"field": "pts", "op": "gte", "value": i} for i in range(13)]
+    resp = client.post(
+        "/api/workbench/query",
+        json={
+            "query": {
+                "predicates": {
+                    "combinator": "and",
+                    "predicates": excessive_leaves,
+                }
+            }
+        },
+    )
+    assert resp.status_code == 422
+
+    # 4. Corrupted cursor
+    resp = client.post(
+        "/api/workbench/query",
+        json={"query": {"page": {"cursor": "corrupted_bad_cursor_token"}}},
+    )
+    assert resp.status_code == 422

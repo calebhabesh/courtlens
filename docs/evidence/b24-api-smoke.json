@@ -1,0 +1,720 @@
+{
+  "verification_date": "2026-10-03",
+  "kind": "B24 real-database read-only API smoke; frontend browser populated states remain fixtures",
+  "retained_rows": {
+    "workbench_shots": 2,
+    "workbench_matchups": 1,
+    "workbench_pbp_events": 4,
+    "workbench_possessions": 1,
+    "workbench_lineup_stints": 0
+  },
+  "request": {
+    "release_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+    "season": "2023-24",
+    "phase": "regular_season",
+    "before_date": "2024-04-15",
+    "player_id": "1627751"
+  },
+  "operations": {
+    "shot-profile": {
+      "http_status": 200,
+      "response": {
+        "operation": "shot-profile",
+        "operation_version": "courtload-shooting-sequences-v1",
+        "context": {
+          "release_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+          "snapshot_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+          "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+          "dataset_type": "workbench",
+          "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666",
+          "mode": "workbench_recent",
+          "source": "sportsdataverse",
+          "season": "2023-24",
+          "phase": "regular_season",
+          "before_date": "2024-04-15",
+          "cutoff_utc": "2024-04-15T04:00:00+00:00",
+          "window": "season",
+          "coverage_start": "2023-10-24",
+          "coverage_end": "2026-06-13",
+          "metric_version": "v2",
+          "published_at": null
+        },
+        "request": {
+          "release_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+          "season": "2023-24",
+          "phase": "regular_season",
+          "before_date": "2024-04-15",
+          "lower_date": null,
+          "player_id": "1627751",
+          "defender_id": null,
+          "min_attempts": 100,
+          "min_games": 5,
+          "limit": 10
+        },
+        "coverage_status": "source_blocked",
+        "expected_games": 1230,
+        "observed_games": 0,
+        "excluded_rows": 0,
+        "input_counts": {
+          "workbench_shots": 0
+        },
+        "profile": {
+          "player_id": "1627751",
+          "games": 0,
+          "attempts": 0,
+          "makes": 0,
+          "points": 0,
+          "located_attempts": 0,
+          "unknown_attempts": 0,
+          "sample_status": "empty",
+          "zones": [
+            {
+              "zone": "Restricted Area",
+              "attempts": 0,
+              "makes": 0,
+              "points": 0,
+              "fg_pct": null,
+              "attempt_share": null
+            },
+            {
+              "zone": "In The Paint (Non-RA)",
+              "attempts": 0,
+              "makes": 0,
+              "points": 0,
+              "fg_pct": null,
+              "attempt_share": null
+            },
+            {
+              "zone": "Mid-Range",
+              "attempts": 0,
+              "makes": 0,
+              "points": 0,
+              "fg_pct": null,
+              "attempt_share": null
+            },
+            {
+              "zone": "Left Corner 3",
+              "attempts": 0,
+              "makes": 0,
+              "points": 0,
+              "fg_pct": null,
+              "attempt_share": null
+            },
+            {
+              "zone": "Right Corner 3",
+              "attempts": 0,
+              "makes": 0,
+              "points": 0,
+              "fg_pct": null,
+              "attempt_share": null
+            },
+            {
+              "zone": "Above the Break 3",
+              "attempts": 0,
+              "makes": 0,
+              "points": 0,
+              "fg_pct": null,
+              "attempt_share": null
+            },
+            {
+              "zone": "Backcourt",
+              "attempts": 0,
+              "makes": 0,
+              "points": 0,
+              "fg_pct": null,
+              "attempt_share": null
+            },
+            {
+              "zone": "Unknown",
+              "attempts": 0,
+              "makes": 0,
+              "points": 0,
+              "fg_pct": null,
+              "attempt_share": null
+            }
+          ]
+        },
+        "peers": [],
+        "assignments": [],
+        "shots": [],
+        "anchors": [],
+        "aftermath_summary": [],
+        "provenance": [
+          {
+            "source_family": "lineups",
+            "source_url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_game_lineups/nba_lineups_2024.csv.gz",
+            "source_sha256": "bf4b9270d0b30523de89e6f63e7071add3ffdfea6e6af2ff30d32d1118fc0444",
+            "parser_signature": "courtload-sdv-rich-v1",
+            "policy_version": "possession-policy-v1",
+            "status": "admitted"
+          },
+          {
+            "source_family": "matchups",
+            "source_url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_game_matchups/game_matchups_2024.csv",
+            "source_sha256": "9c118805eac465d389fee317a5c9b246d741388faf780fb3f3d9a1a97ffd6a62",
+            "parser_signature": "courtload-sdv-rich-v1",
+            "policy_version": "matchup-pair-v1",
+            "status": "admitted"
+          },
+          {
+            "source_family": "pbp",
+            "source_url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_pbp/nba_play_by_play_2024.csv.gz",
+            "source_sha256": "b9c1a4c63c48d0734a5bbb23ed8801edbcf4c53e6d63e9c381b88eab34d58ccb",
+            "parser_signature": "courtload-sdv-rich-v1",
+            "policy_version": "possession-policy-v1",
+            "status": "rejected"
+          },
+          {
+            "source_family": "possessions",
+            "source_url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_possessions/nba_possessions_2024.csv.gz",
+            "source_sha256": "929cc15a238519c775ca6f74a6a8978afe6191b923fd62335f058c0476e2c88a",
+            "parser_signature": "courtload-sdv-rich-v1",
+            "policy_version": "possession-policy-v1",
+            "status": "rejected"
+          },
+          {
+            "source_family": "shots",
+            "source_url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_shots/shots_2024.csv",
+            "source_sha256": "d82f910d6937377b9b22aa02368388cce5fa352426f3cb42b6d18a29af1920ae",
+            "parser_signature": "courtload-sdv-rich-v1",
+            "policy_version": "shot-zones-v1",
+            "status": "admitted"
+          }
+        ],
+        "branch_counts": {},
+        "input_hash": "9e5148dac637dca5cecb78e42800d74798761027d159b9a7cbee1d097f9be1e1",
+        "evidence_hash": "c5c629d29b0f342c7203007f4d6dca08cf91519d8fb78fe46be29b74fbdfd426",
+        "disclosures": [
+          "Historical reconstruction; original publication-time availability is not established.",
+          "Coordinates are feet relative to the attacking basket; missing coordinates are Unknown.",
+          "Zones reuse shot-zones-v1. Peers compare located attempt shares by Euclidean distance.",
+          "Assignments are source-established pairs with fractional exposure, not inferred guarding.",
+          "Aftermath is partial same-possession accounting, not net rating or causal impact.",
+          "Continued points include all containing-possession free throws; foul attribution unavailable.",
+          "Next opponent possession is number +1 in the same period; missing branches stay unknown.",
+          "No tracking, nearest defender, uncertainty interval or verified video mapping is available."
+        ]
+      }
+    },
+    "shot-profile-peers": {
+      "http_status": 200,
+      "response": {
+        "operation": "shot-profile-peers",
+        "operation_version": "courtload-shooting-sequences-v1",
+        "context": {
+          "release_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+          "snapshot_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+          "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+          "dataset_type": "workbench",
+          "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666",
+          "mode": "workbench_recent",
+          "source": "sportsdataverse",
+          "season": "2023-24",
+          "phase": "regular_season",
+          "before_date": "2024-04-15",
+          "cutoff_utc": "2024-04-15T04:00:00+00:00",
+          "window": "season",
+          "coverage_start": "2023-10-24",
+          "coverage_end": "2026-06-13",
+          "metric_version": "v2",
+          "published_at": null
+        },
+        "request": {
+          "release_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+          "season": "2023-24",
+          "phase": "regular_season",
+          "before_date": "2024-04-15",
+          "lower_date": null,
+          "player_id": "1627751",
+          "defender_id": null,
+          "min_attempts": 100,
+          "min_games": 5,
+          "limit": 10
+        },
+        "coverage_status": "source_blocked",
+        "expected_games": 1230,
+        "observed_games": 0,
+        "excluded_rows": 0,
+        "input_counts": {
+          "workbench_shots": 0
+        },
+        "profile": {
+          "player_id": "1627751",
+          "games": 0,
+          "attempts": 0,
+          "makes": 0,
+          "points": 0,
+          "located_attempts": 0,
+          "unknown_attempts": 0,
+          "sample_status": "empty",
+          "zones": [
+            {
+              "zone": "Restricted Area",
+              "attempts": 0,
+              "makes": 0,
+              "points": 0,
+              "fg_pct": null,
+              "attempt_share": null
+            },
+            {
+              "zone": "In The Paint (Non-RA)",
+              "attempts": 0,
+              "makes": 0,
+              "points": 0,
+              "fg_pct": null,
+              "attempt_share": null
+            },
+            {
+              "zone": "Mid-Range",
+              "attempts": 0,
+              "makes": 0,
+              "points": 0,
+              "fg_pct": null,
+              "attempt_share": null
+            },
+            {
+              "zone": "Left Corner 3",
+              "attempts": 0,
+              "makes": 0,
+              "points": 0,
+              "fg_pct": null,
+              "attempt_share": null
+            },
+            {
+              "zone": "Right Corner 3",
+              "attempts": 0,
+              "makes": 0,
+              "points": 0,
+              "fg_pct": null,
+              "attempt_share": null
+            },
+            {
+              "zone": "Above the Break 3",
+              "attempts": 0,
+              "makes": 0,
+              "points": 0,
+              "fg_pct": null,
+              "attempt_share": null
+            },
+            {
+              "zone": "Backcourt",
+              "attempts": 0,
+              "makes": 0,
+              "points": 0,
+              "fg_pct": null,
+              "attempt_share": null
+            },
+            {
+              "zone": "Unknown",
+              "attempts": 0,
+              "makes": 0,
+              "points": 0,
+              "fg_pct": null,
+              "attempt_share": null
+            }
+          ]
+        },
+        "peers": [],
+        "assignments": [],
+        "shots": [],
+        "anchors": [],
+        "aftermath_summary": [],
+        "provenance": [
+          {
+            "source_family": "lineups",
+            "source_url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_game_lineups/nba_lineups_2024.csv.gz",
+            "source_sha256": "bf4b9270d0b30523de89e6f63e7071add3ffdfea6e6af2ff30d32d1118fc0444",
+            "parser_signature": "courtload-sdv-rich-v1",
+            "policy_version": "possession-policy-v1",
+            "status": "admitted"
+          },
+          {
+            "source_family": "matchups",
+            "source_url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_game_matchups/game_matchups_2024.csv",
+            "source_sha256": "9c118805eac465d389fee317a5c9b246d741388faf780fb3f3d9a1a97ffd6a62",
+            "parser_signature": "courtload-sdv-rich-v1",
+            "policy_version": "matchup-pair-v1",
+            "status": "admitted"
+          },
+          {
+            "source_family": "pbp",
+            "source_url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_pbp/nba_play_by_play_2024.csv.gz",
+            "source_sha256": "b9c1a4c63c48d0734a5bbb23ed8801edbcf4c53e6d63e9c381b88eab34d58ccb",
+            "parser_signature": "courtload-sdv-rich-v1",
+            "policy_version": "possession-policy-v1",
+            "status": "rejected"
+          },
+          {
+            "source_family": "possessions",
+            "source_url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_possessions/nba_possessions_2024.csv.gz",
+            "source_sha256": "929cc15a238519c775ca6f74a6a8978afe6191b923fd62335f058c0476e2c88a",
+            "parser_signature": "courtload-sdv-rich-v1",
+            "policy_version": "possession-policy-v1",
+            "status": "rejected"
+          },
+          {
+            "source_family": "shots",
+            "source_url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_shots/shots_2024.csv",
+            "source_sha256": "d82f910d6937377b9b22aa02368388cce5fa352426f3cb42b6d18a29af1920ae",
+            "parser_signature": "courtload-sdv-rich-v1",
+            "policy_version": "shot-zones-v1",
+            "status": "admitted"
+          }
+        ],
+        "branch_counts": {},
+        "input_hash": "9e5148dac637dca5cecb78e42800d74798761027d159b9a7cbee1d097f9be1e1",
+        "evidence_hash": "7299f6d3bb9ba1880334201b3c94dc53ff8be7879477fd21ab468428a2974f74",
+        "disclosures": [
+          "Historical reconstruction; original publication-time availability is not established.",
+          "Coordinates are feet relative to the attacking basket; missing coordinates are Unknown.",
+          "Zones reuse shot-zones-v1. Peers compare located attempt shares by Euclidean distance.",
+          "Assignments are source-established pairs with fractional exposure, not inferred guarding.",
+          "Aftermath is partial same-possession accounting, not net rating or causal impact.",
+          "Continued points include all containing-possession free throws; foul attribution unavailable.",
+          "Next opponent possession is number +1 in the same period; missing branches stay unknown.",
+          "No tracking, nearest defender, uncertainty interval or verified video mapping is available."
+        ]
+      }
+    },
+    "matchups": {
+      "http_status": 200,
+      "response": {
+        "operation": "matchups",
+        "operation_version": "courtload-shooting-sequences-v1",
+        "context": {
+          "release_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+          "snapshot_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+          "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+          "dataset_type": "workbench",
+          "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666",
+          "mode": "workbench_recent",
+          "source": "sportsdataverse",
+          "season": "2023-24",
+          "phase": "regular_season",
+          "before_date": "2024-04-15",
+          "cutoff_utc": "2024-04-15T04:00:00+00:00",
+          "window": "season",
+          "coverage_start": "2023-10-24",
+          "coverage_end": "2026-06-13",
+          "metric_version": "v2",
+          "published_at": null
+        },
+        "request": {
+          "release_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+          "season": "2023-24",
+          "phase": "regular_season",
+          "before_date": "2024-04-15",
+          "lower_date": null,
+          "player_id": "1627751",
+          "defender_id": null,
+          "min_attempts": 100,
+          "min_games": 5,
+          "limit": 10
+        },
+        "coverage_status": "source_blocked",
+        "expected_games": 1230,
+        "observed_games": 0,
+        "excluded_rows": 0,
+        "input_counts": {
+          "workbench_matchups": 0
+        },
+        "profile": null,
+        "peers": [],
+        "assignments": [],
+        "shots": [],
+        "anchors": [],
+        "aftermath_summary": [],
+        "provenance": [
+          {
+            "source_family": "lineups",
+            "source_url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_game_lineups/nba_lineups_2024.csv.gz",
+            "source_sha256": "bf4b9270d0b30523de89e6f63e7071add3ffdfea6e6af2ff30d32d1118fc0444",
+            "parser_signature": "courtload-sdv-rich-v1",
+            "policy_version": "possession-policy-v1",
+            "status": "admitted"
+          },
+          {
+            "source_family": "matchups",
+            "source_url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_game_matchups/game_matchups_2024.csv",
+            "source_sha256": "9c118805eac465d389fee317a5c9b246d741388faf780fb3f3d9a1a97ffd6a62",
+            "parser_signature": "courtload-sdv-rich-v1",
+            "policy_version": "matchup-pair-v1",
+            "status": "admitted"
+          },
+          {
+            "source_family": "pbp",
+            "source_url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_pbp/nba_play_by_play_2024.csv.gz",
+            "source_sha256": "b9c1a4c63c48d0734a5bbb23ed8801edbcf4c53e6d63e9c381b88eab34d58ccb",
+            "parser_signature": "courtload-sdv-rich-v1",
+            "policy_version": "possession-policy-v1",
+            "status": "rejected"
+          },
+          {
+            "source_family": "possessions",
+            "source_url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_possessions/nba_possessions_2024.csv.gz",
+            "source_sha256": "929cc15a238519c775ca6f74a6a8978afe6191b923fd62335f058c0476e2c88a",
+            "parser_signature": "courtload-sdv-rich-v1",
+            "policy_version": "possession-policy-v1",
+            "status": "rejected"
+          },
+          {
+            "source_family": "shots",
+            "source_url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_shots/shots_2024.csv",
+            "source_sha256": "d82f910d6937377b9b22aa02368388cce5fa352426f3cb42b6d18a29af1920ae",
+            "parser_signature": "courtload-sdv-rich-v1",
+            "policy_version": "shot-zones-v1",
+            "status": "admitted"
+          }
+        ],
+        "branch_counts": {},
+        "input_hash": "7d5c435deeac908804383585186b10ae60be811ab5141fa19a01cb8f9026df40",
+        "evidence_hash": "1fc19cb5c38459f832108f0192bb3aa86b5953a11365d966ccc5246e21f200f6",
+        "disclosures": [
+          "Historical reconstruction; original publication-time availability is not established.",
+          "Coordinates are feet relative to the attacking basket; missing coordinates are Unknown.",
+          "Zones reuse shot-zones-v1. Peers compare located attempt shares by Euclidean distance.",
+          "Assignments are source-established pairs with fractional exposure, not inferred guarding.",
+          "Aftermath is partial same-possession accounting, not net rating or causal impact.",
+          "Continued points include all containing-possession free throws; foul attribution unavailable.",
+          "Next opponent possession is number +1 in the same period; missing branches stay unknown.",
+          "No tracking, nearest defender, uncertainty interval or verified video mapping is available."
+        ]
+      }
+    },
+    "shot-aftermath": {
+      "http_status": 200,
+      "response": {
+        "operation": "shot-aftermath",
+        "operation_version": "courtload-shooting-sequences-v1",
+        "context": {
+          "release_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+          "snapshot_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+          "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+          "dataset_type": "workbench",
+          "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666",
+          "mode": "workbench_recent",
+          "source": "sportsdataverse",
+          "season": "2023-24",
+          "phase": "regular_season",
+          "before_date": "2024-04-15",
+          "cutoff_utc": "2024-04-15T04:00:00+00:00",
+          "window": "season",
+          "coverage_start": "2023-10-24",
+          "coverage_end": "2026-06-13",
+          "metric_version": "v2",
+          "published_at": null
+        },
+        "request": {
+          "release_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+          "season": "2023-24",
+          "phase": "regular_season",
+          "before_date": "2024-04-15",
+          "lower_date": null,
+          "player_id": "1627751",
+          "defender_id": null,
+          "min_attempts": 100,
+          "min_games": 5,
+          "limit": 10
+        },
+        "coverage_status": "source_blocked",
+        "expected_games": 1230,
+        "observed_games": 0,
+        "excluded_rows": 0,
+        "input_counts": {
+          "workbench_shots": 0,
+          "workbench_pbp_events": 2,
+          "workbench_possessions": 0
+        },
+        "profile": {
+          "player_id": "1627751",
+          "games": 0,
+          "attempts": 0,
+          "makes": 0,
+          "points": 0,
+          "located_attempts": 0,
+          "unknown_attempts": 0,
+          "sample_status": "empty",
+          "zones": [
+            {
+              "zone": "Restricted Area",
+              "attempts": 0,
+              "makes": 0,
+              "points": 0,
+              "fg_pct": null,
+              "attempt_share": null
+            },
+            {
+              "zone": "In The Paint (Non-RA)",
+              "attempts": 0,
+              "makes": 0,
+              "points": 0,
+              "fg_pct": null,
+              "attempt_share": null
+            },
+            {
+              "zone": "Mid-Range",
+              "attempts": 0,
+              "makes": 0,
+              "points": 0,
+              "fg_pct": null,
+              "attempt_share": null
+            },
+            {
+              "zone": "Left Corner 3",
+              "attempts": 0,
+              "makes": 0,
+              "points": 0,
+              "fg_pct": null,
+              "attempt_share": null
+            },
+            {
+              "zone": "Right Corner 3",
+              "attempts": 0,
+              "makes": 0,
+              "points": 0,
+              "fg_pct": null,
+              "attempt_share": null
+            },
+            {
+              "zone": "Above the Break 3",
+              "attempts": 0,
+              "makes": 0,
+              "points": 0,
+              "fg_pct": null,
+              "attempt_share": null
+            },
+            {
+              "zone": "Backcourt",
+              "attempts": 0,
+              "makes": 0,
+              "points": 0,
+              "fg_pct": null,
+              "attempt_share": null
+            },
+            {
+              "zone": "Unknown",
+              "attempts": 0,
+              "makes": 0,
+              "points": 0,
+              "fg_pct": null,
+              "attempt_share": null
+            }
+          ]
+        },
+        "peers": [],
+        "assignments": [],
+        "shots": [],
+        "anchors": [],
+        "aftermath_summary": [
+          {
+            "branch": "made",
+            "anchors": 0,
+            "games": 0,
+            "continued_samples": 0,
+            "opponent_samples": 0,
+            "missing_opponent": 0,
+            "censored_opponent": 0,
+            "first_chance_points": null,
+            "continued_points": null,
+            "next_opponent_points": null,
+            "sample_status": "empty"
+          },
+          {
+            "branch": "missed_recovery",
+            "anchors": 0,
+            "games": 0,
+            "continued_samples": 0,
+            "opponent_samples": 0,
+            "missing_opponent": 0,
+            "censored_opponent": 0,
+            "first_chance_points": null,
+            "continued_points": null,
+            "next_opponent_points": null,
+            "sample_status": "empty"
+          },
+          {
+            "branch": "missed_no_observed_recovery",
+            "anchors": 0,
+            "games": 0,
+            "continued_samples": 0,
+            "opponent_samples": 0,
+            "missing_opponent": 0,
+            "censored_opponent": 0,
+            "first_chance_points": null,
+            "continued_points": null,
+            "next_opponent_points": null,
+            "sample_status": "empty"
+          },
+          {
+            "branch": "unknown",
+            "anchors": 0,
+            "games": 0,
+            "continued_samples": 0,
+            "opponent_samples": 0,
+            "missing_opponent": 0,
+            "censored_opponent": 0,
+            "first_chance_points": null,
+            "continued_points": null,
+            "next_opponent_points": null,
+            "sample_status": "empty"
+          }
+        ],
+        "provenance": [
+          {
+            "source_family": "lineups",
+            "source_url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_game_lineups/nba_lineups_2024.csv.gz",
+            "source_sha256": "bf4b9270d0b30523de89e6f63e7071add3ffdfea6e6af2ff30d32d1118fc0444",
+            "parser_signature": "courtload-sdv-rich-v1",
+            "policy_version": "possession-policy-v1",
+            "status": "admitted"
+          },
+          {
+            "source_family": "matchups",
+            "source_url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_game_matchups/game_matchups_2024.csv",
+            "source_sha256": "9c118805eac465d389fee317a5c9b246d741388faf780fb3f3d9a1a97ffd6a62",
+            "parser_signature": "courtload-sdv-rich-v1",
+            "policy_version": "matchup-pair-v1",
+            "status": "admitted"
+          },
+          {
+            "source_family": "pbp",
+            "source_url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_pbp/nba_play_by_play_2024.csv.gz",
+            "source_sha256": "b9c1a4c63c48d0734a5bbb23ed8801edbcf4c53e6d63e9c381b88eab34d58ccb",
+            "parser_signature": "courtload-sdv-rich-v1",
+            "policy_version": "possession-policy-v1",
+            "status": "rejected"
+          },
+          {
+            "source_family": "possessions",
+            "source_url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_possessions/nba_possessions_2024.csv.gz",
+            "source_sha256": "929cc15a238519c775ca6f74a6a8978afe6191b923fd62335f058c0476e2c88a",
+            "parser_signature": "courtload-sdv-rich-v1",
+            "policy_version": "possession-policy-v1",
+            "status": "rejected"
+          },
+          {
+            "source_family": "shots",
+            "source_url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_shots/shots_2024.csv",
+            "source_sha256": "d82f910d6937377b9b22aa02368388cce5fa352426f3cb42b6d18a29af1920ae",
+            "parser_signature": "courtload-sdv-rich-v1",
+            "policy_version": "shot-zones-v1",
+            "status": "admitted"
+          }
+        ],
+        "branch_counts": {},
+        "input_hash": "3b05b02bfff27ce845e680dfbcbaa89e826424d37d88f7c8a582d884d6cbaf14",
+        "evidence_hash": "37899723091105fb1d90d34cc6e9cb4a7b6a05394700122db9b2ad3bae2a2d37",
+        "disclosures": [
+          "Historical reconstruction; original publication-time availability is not established.",
+          "Coordinates are feet relative to the attacking basket; missing coordinates are Unknown.",
+          "Zones reuse shot-zones-v1. Peers compare located attempt shares by Euclidean distance.",
+          "Assignments are source-established pairs with fractional exposure, not inferred guarding.",
+          "Aftermath is partial same-possession accounting, not net rating or causal impact.",
+          "Continued points include all containing-possession free throws; foul attribution unavailable.",
+          "Next opponent possession is number +1 in the same period; missing branches stay unknown.",
+          "No tracking, nearest defender, uncertainty interval or verified video mapping is available."
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,586 @@
+{
+  "correction_reviews": [
+    {
+      "path": "data/raw/b26-official-observations/reviewed-403-v1/ledger.json",
+      "reviewed_ledger": {
+        "archive_sha256": "dcb6c29edda8463132ab62f63118b5cee80d751bcbee9ad98fa38ebe12e6d33c",
+        "correction_contract_sha256": "66f96970dc1dfa1a85f7745524c8a0cae18b8a9f9105b13d12e22c991861e3fb",
+        "entries": [
+          {
+            "event_id": 403,
+            "evidence": {
+              "bytes": 503831,
+              "name": "official-houcha.html",
+              "observed_at": "2026-10-03T13:22:04.393195Z",
+              "sha256": "b3a9f3f1323ae289380773955732cb84262f93b1f4580b8848db649f15dd534d",
+              "url": "https://www.nba.com/game/hou-vs-cha-0022500792/play-by-play"
+            },
+            "game_id": "0022500792",
+            "operation": "exclude_not_official_attempt",
+            "raw_fields_sha256": "26cdbdce507d3d5babfd09fcda423eaf7b555bd24ae217594365c4a3ad9b04be",
+            "reason": "Complete official final event observation contains no field-goal actionNumber 403; all 169 remaining archived shots match exact NBA event/player/team/outcome/type and whole-second clocks. Q3 book shows substitutions at 4:46 and two Smith attempts. Official PBP distance encodings differ and are not substituted.",
+            "review_locator": "props.pageProps.playByPlay.actions; actionNumber namespace, all 169 field goals; official book printed pp. 5, 13-14"
+          }
+        ],
+        "quality_contract_sha256": "01f71657a713a98d938be4b3564b166b8c364a7033d5236aa61e23e428752780",
+        "reviewed_at": "2026-10-03T13:30:16.348188Z",
+        "reviewer": "Codex B26 full-game primary-observation review",
+        "schema_version": "courtload-shot-correction-ledger-v1"
+      },
+      "sha256": "a134104412ad3bd9e8b3bf5fa483f9ab629688a0daf088202d554dc916964639"
+    },
+    {
+      "path": "data/raw/b26-official-observations/reviewed-653-v2/ledger.json",
+      "reviewed_ledger": {
+        "archive_sha256": "950100f9c84fe750ae2ac8eaeb82d24cdfb9f60a9ed04ceaa66f64789d7c216e",
+        "correction_contract_sha256": "cc2b646ac5add1df0dabd32b0d48cfbbad2c1838f8a0498a43fff6a08faec4a7",
+        "entries": [
+          {
+            "event_id": 653,
+            "evidence": {
+              "bytes": 512579,
+              "name": "official-dalmem.html",
+              "observed_at": "2026-10-03T13:33:23.531452Z",
+              "sha256": "335fc0fab5386b2012bcb804983290c7b75fbebf75b859601c2e0df3fab8275c",
+              "url": "https://www.nba.com/game/dal-vs-mem-0022401194/play-by-play"
+            },
+            "game_id": "0022401194",
+            "operation": "replace_observed_shot_type",
+            "raw_fields_sha256": "e7b52883453bb822df33b6c126ad20e2705ebbcb4f409545d2116e6e6e2ba18c",
+            "reason": "Only one observed type differs among all 191 official field goals; official event653 is missed 2PT, not archive3PT. All identities/outcomes/clocks and other190 types match. Official Memphis box confirms40 3PA. Geometry is retained from archive.",
+            "replacement_shot_value": 2,
+            "review_locator": "props.pageProps.playByPlay.actions[actionNumber=653]; game.homeTeam.statistics.threePointersAttempted=40"
+          }
+        ],
+        "quality_contract_sha256": "01f71657a713a98d938be4b3564b166b8c364a7033d5236aa61e23e428752780",
+        "reviewed_at": "2026-10-03T13:36:09.710197Z",
+        "reviewer": "Codex B26 complete official event and box review",
+        "schema_version": "courtload-shot-correction-ledger-v2"
+      },
+      "sha256": "79f754592ddbfd3a1d6d40c69b5ae1079db03fc143891396942413cc8c088503"
+    },
+    {
+      "path": "data/raw/b26-official-observations/reviewed-2023-v3/ledger.json",
+      "reviewed_ledger": {
+        "archive_sha256": "303e71f967c199568b345cd73a75e595f1f99532cca3e6ce59afb286b63f840d",
+        "correction_contract_sha256": "2e8f48d2cc3639845bfa6fdee38fb12900b24daa02aa649b7365b60ce04200d5",
+        "entries": [
+          {
+            "event_id": 715,
+            "evidence": {
+              "bytes": 524291,
+              "name": "official-0022300078.html",
+              "observed_at": "2026-10-03T13:40:52.155549Z",
+              "sha256": "555dacad9a96a4dc08dc61911304a12a2685d2ffeba3c4fda25c6d1d5dc3a173",
+              "url": "https://www.nba.com/game/den-vs-mem-0022300078/play-by-play"
+            },
+            "game_id": "0022300078",
+            "official_raw_action": {
+              "actionId": 385,
+              "actionNumber": 715,
+              "actionType": "Missed Shot",
+              "clock": "PT01M05.00S",
+              "description": "MISS Jackson Jr. 2' Putback Layup",
+              "isFieldGoal": 1,
+              "location": "h",
+              "period": 3,
+              "personId": 1628991,
+              "playerName": "Jackson Jr.",
+              "playerNameI": "J. Jackson Jr.",
+              "pointsTotal": 0,
+              "scoreAway": "",
+              "scoreHome": "",
+              "shotDistance": 2,
+              "shotResult": "Missed",
+              "shotValue": 2,
+              "subType": "Putback Layup Shot",
+              "teamId": 1610612763,
+              "teamTricode": "MEM",
+              "videoAvailable": 0,
+              "xLegacy": -1,
+              "yLegacy": 20
+            },
+            "operation": "append_official_attempt",
+            "original_game_membership_sha256": "bdaac61dc6954c8765e09996404bd8bd4b13fdc557b3d3665b15f059502d937a",
+            "raw_fields_sha256": null,
+            "reason": "Official complete game contains this explicit missed two-point attempt absent from the archive. Every existing shot identity/outcome/type/clock matches. Supplement geometry remains unadmitted, not guessed.",
+            "replacement_seconds_remaining": null,
+            "replacement_shot_value": null,
+            "review_locator": "full official game field-goal actions, actionNumber=715"
+          },
+          {
+            "event_id": 351,
+            "evidence": {
+              "bytes": 510198,
+              "name": "official-0022300091.html",
+              "observed_at": "2026-10-03T13:40:53.260040Z",
+              "sha256": "317131af047a3dc0d2ba90ba2ebd1e8dccb3ed63a5456a11b3b4ce624753eadf",
+              "url": "https://www.nba.com/game/ind-vs-cle-0022300091/play-by-play"
+            },
+            "game_id": "0022300091",
+            "official_raw_action": null,
+            "operation": "exclude_not_official_attempt",
+            "original_game_membership_sha256": null,
+            "raw_fields_sha256": "b597a46366813fea25ffd68fb02350314c0861176938270f6e8570aa06cab803",
+            "reason": "Archive event351 is absent from the complete final official field-goal extract; all remaining events match after separately evidenced clock correction.",
+            "replacement_seconds_remaining": null,
+            "replacement_shot_value": null,
+            "review_locator": "complete official field-goal event set"
+          },
+          {
+            "event_id": 346,
+            "evidence": {
+              "bytes": 510198,
+              "name": "official-0022300091.html",
+              "observed_at": "2026-10-03T13:40:53.260040Z",
+              "sha256": "317131af047a3dc0d2ba90ba2ebd1e8dccb3ed63a5456a11b3b4ce624753eadf",
+              "url": "https://www.nba.com/game/ind-vs-cle-0022300091/play-by-play"
+            },
+            "game_id": "0022300091",
+            "official_raw_action": null,
+            "operation": "replace_observed_clock",
+            "original_game_membership_sha256": null,
+            "raw_fields_sha256": "451a0b6c8670f133e3e95073ad649a4a4ee786358b567391b4be3756e3854c5f",
+            "reason": "Official event346 records 11:19 Q3, archive11:16; exact event/player/team/outcome/type match. Correct only the directly observed clock.",
+            "replacement_seconds_remaining": 679,
+            "replacement_shot_value": null,
+            "review_locator": "official actionNumber346 clock PT11M19.00S"
+          },
+          {
+            "event_id": 499,
+            "evidence": {
+              "bytes": 500408,
+              "name": "official-0022300465.html",
+              "observed_at": "2026-10-03T13:40:52.848549Z",
+              "sha256": "144d87593a553f40c7c23b78d96f105d777f7fe62f12783bc6d5135352cb5bb1",
+              "url": "https://www.nba.com/game/was-vs-cle-0022300465/play-by-play"
+            },
+            "game_id": "0022300465",
+            "official_raw_action": {
+              "actionId": 368,
+              "actionNumber": 499,
+              "actionType": "Missed Shot",
+              "clock": "PT10M35.00S",
+              "description": "MISS Thompson 2' Driving Layup",
+              "isFieldGoal": 1,
+              "location": "h",
+              "period": 4,
+              "personId": 202684,
+              "playerName": "Thompson",
+              "playerNameI": "T. Thompson",
+              "pointsTotal": 0,
+              "scoreAway": "",
+              "scoreHome": "",
+              "shotDistance": 2,
+              "shotResult": "Missed",
+              "shotValue": 2,
+              "subType": "Driving Layup Shot",
+              "teamId": 1610612739,
+              "teamTricode": "CLE",
+              "videoAvailable": 1,
+              "xLegacy": -1,
+              "yLegacy": 16
+            },
+            "operation": "append_official_attempt",
+            "original_game_membership_sha256": "648933817b84417a7573ff583b7d3ff363303f06653033005c190e00e2a957ad",
+            "raw_fields_sha256": null,
+            "reason": "Official complete game contains this explicit missed two-point attempt absent from the archive. Every existing shot identity/outcome/type/clock matches. Supplement geometry remains unadmitted, not guessed.",
+            "replacement_seconds_remaining": null,
+            "replacement_shot_value": null,
+            "review_locator": "full official game field-goal actions, actionNumber=499"
+          }
+        ],
+        "quality_contract_sha256": "01f71657a713a98d938be4b3564b166b8c364a7033d5236aa61e23e428752780",
+        "reviewed_at": "2026-10-03T13:46:41.951302Z",
+        "reviewer": "Codex B26 full-game primary-observation review",
+        "schema_version": "courtload-shot-correction-ledger-v3"
+      },
+      "sha256": "346f8a63cd7c3a7f19b7e9d2156f973d461799cc579a45b6139bd3a1f57e72c6"
+    }
+  ],
+  "database_admission": {
+    "binding_path": "data/artifacts/research-bindings/78e9ea2a5365206485610dcbfdffd21826f71d6518072bc332dbd9785bc10ad7.json",
+    "binding_sha256": "78e9ea2a5365206485610dcbfdffd21826f71d6518072bc332dbd9785bc10ad7",
+    "calibration_games": 633,
+    "calibration_membership_sha256": "c08f8ec8ab8de9cf04f46889a7a010819ef0cb4c4935faa1db3b697d113400ce",
+    "dataset_content_sha256": "680f8291296f2f3c52758ece1678c5be0fae0f5431dfce2ad41780a4dcd06e19",
+    "dataset_id": "3d64fe04-dc9a-4a45-bf96-182371a94f7b",
+    "eligible_rows": 657386,
+    "fit_authorized_by_admission": false,
+    "games": 3690,
+    "publication_pointer_unchanged": true,
+    "seasons": [
+      "2023-24",
+      "2024-25",
+      "2025-26"
+    ],
+    "selection_games": 597,
+    "selection_membership_sha256": "73fcdc3e188ee299f10531fff88999af42c2bbea932bac412d2beae3ab6d6ba5"
+  },
+  "denmin_policy_book_receipt": {
+    "bytes": 118087,
+    "observed_at": "2026-10-03T14:33:12.501388+00:00",
+    "scope": "event-order policy corroboration only",
+    "sha256": "ca57101a5393d1b8c1c9ca212f36b78709211981f6a74c809d9f2c6db9e4c44f",
+    "url": "https://statsdmz.nba.com/pdfs/20251027/20251027_DENMIN_book.pdf"
+  },
+  "eligible_attempts": 657386,
+  "game_0022500792": "Houston at Charlotte, 2026-02-19",
+  "games": 3690,
+  "historical_checksums_verified": 26,
+  "houcha_book_receipt": {
+    "bytes": 117944,
+    "observed_at": "2026-10-03T13:22:03.848565+00:00",
+    "sha256": "a19aabd44838d9fd737c63c5bb1c0b06979b91b5ea1f4fc418d1165ca984f498",
+    "url": "https://statsdmz.nba.com/pdfs/20260219/20260219_HOUCHA_book.pdf"
+  },
+  "observed_attempts": 657388,
+  "official_namespace": "actionNumber, not actionId",
+  "original_archives_and_v1_results_preserved": true,
+  "original_b25_registrations": [
+    {
+      "experiment": "courtload-adjusted-shooting-v1",
+      "original_bytes_unchanged": true,
+      "semantic_sha256": "df1c8a26f00704101397af19947ab2213934c6e23b53eb53a3e053938a01237b"
+    },
+    {
+      "experiment": "courtload-expected-shot-v1",
+      "original_bytes_unchanged": true,
+      "semantic_sha256": "e6b47c6c158e13b5daa274d158adfc0d7c8d1cc5642bec89585a0829fd956d0b"
+    },
+    {
+      "experiment": "courtload-rapm-v1",
+      "original_bytes_unchanged": true,
+      "semantic_sha256": "06ab95316d64cc4b792c15753bb4b32024c948a68d0b5e7fad20d586372a6ed9"
+    },
+    {
+      "experiment": "courtload-six-factor-v1",
+      "original_bytes_unchanged": true,
+      "semantic_sha256": "919815b24d1ec5856bf22c1ad0ad1006b177238be17094413f16431a082236d2"
+    }
+  ],
+  "schema_version": "courtload-b26-three-season-evidence-v2",
+  "seasons": [
+    {
+      "artifacts": {
+        "attempts.jsonl": {
+          "bytes": 241714929,
+          "sha256": "9552825e191228443aa1663d1a19e3010b672efb12947677240571df4a2ddf9e"
+        },
+        "correction-ledger.json": {
+          "bytes": 5699,
+          "sha256": "346f8a63cd7c3a7f19b7e9d2156f973d461799cc579a45b6139bd3a1f57e72c6"
+        },
+        "corrections.json": {
+          "bytes": 5469,
+          "sha256": "ab4ca1e629bae22aacf41b8ebd6f7c9f514de7517b5c224388a53c5c05961331"
+        },
+        "games.json": {
+          "bytes": 9217640,
+          "sha256": "e5bec5ffd6bfe5cfeec5d6d8f0bfa09fc6a9a62a9b5bd48f0187d0508badc222"
+        },
+        "policy-registration.json": {
+          "bytes": 940,
+          "sha256": "42ef07b40663ad8e6114c4d3842a4c4ca1a1d141233b96cfc1ccba3281da3bfe"
+        },
+        "rejected-rows.json": {
+          "bytes": 3,
+          "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+        },
+        "source-games.json": {
+          "bytes": 25833,
+          "sha256": "e831c091b220d1c2622cc1d51133e6d635d85d4e8700cae22a3a1b2b9910ac52"
+        }
+      },
+      "clock_order_diagnostic_count": 1394,
+      "complete_reconciled_season": true,
+      "correction_ledger_sha256": "346f8a63cd7c3a7f19b7e9d2156f973d461799cc579a45b6139bd3a1f57e72c6",
+      "corrections_applied": 4,
+      "independent_sources": {
+        "assets": [
+          {
+            "bytes": 22876,
+            "kind": "schedule",
+            "name": "nba_schedule_2024.csv.gz",
+            "sha256": "2b0a6eea3292c224771c702ba26813294cfd6dab7996f1d6f5d3d2b0b630c250",
+            "url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_schedules/nba_schedule_2024.csv.gz"
+          },
+          {
+            "bytes": 356488,
+            "kind": "teams",
+            "name": "team_boxscores_2024.csv",
+            "sha256": "d48c29dabcfecb4d746c663ab2ccdb925c60242bac1a0381a4fbe49fc1020ff2",
+            "url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_team_boxscores/team_boxscores_2024.csv"
+          },
+          {
+            "bytes": 6146662,
+            "kind": "players",
+            "name": "player_boxscores_2024.csv",
+            "sha256": "7a2a57f37309a067d77fd3acd72b70aeb71366006b41e8c9a3544c4f7ea03e27",
+            "url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_player_boxscores/player_boxscores_2024.csv"
+          }
+        ],
+        "observation_limit": "retained receipt reports acquisition/reuse; not historical availability proof",
+        "receipt_acquired_at_utc": "2026-10-01T17:47:29.145791+00:00",
+        "receipt_sha256": "754c0a5e02afdf5e7d23131df8ed78dbdd5da26105aed22f8dd6b899e8df2d6c"
+      },
+      "manifest_sha256": "cdb22cdb1dcdf80a34f4b87f5bec2d92e84b23959b7aa81be2c0814fa55be09a",
+      "model_eligible_attempts": 218700,
+      "observed_attempts": 218702,
+      "quality_contract_sha256": "01f71657a713a98d938be4b3564b166b8c364a7033d5236aa61e23e428752780",
+      "quarantined_games": 0,
+      "reconciled_games": 1230,
+      "root": "data/artifacts/research-shots/b26-three-season-2023",
+      "sequence_analytics_authorized": false,
+      "source": {
+        "assets": [
+          {
+            "bytes": 11980,
+            "name": "README.md",
+            "observed_at": "2026-10-03T13:36:37.140335+00:00",
+            "sha256": "646fba3e21464fac92afe6c286637a55d5f68456487052be22be1d5a145c3687",
+            "url": "https://raw.githubusercontent.com/shufinskiy/nba_data/e829d4678be1e075f99e5d41a1c5f97089be446b/README.md"
+          },
+          {
+            "bytes": 6363,
+            "name": "description_fields.md",
+            "observed_at": "2026-10-03T13:36:37.224477+00:00",
+            "sha256": "003b485fffa9df32d18e29916a6c48074f9071f25d07686d9970231990ee473f",
+            "url": "https://raw.githubusercontent.com/shufinskiy/nba_data/e829d4678be1e075f99e5d41a1c5f97089be446b/description_fields.md"
+          },
+          {
+            "bytes": 11357,
+            "name": "LICENSE",
+            "observed_at": "2026-10-03T13:36:37.304939+00:00",
+            "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+            "url": "https://raw.githubusercontent.com/shufinskiy/nba_data/e829d4678be1e075f99e5d41a1c5f97089be446b/LICENSE"
+          },
+          {
+            "bytes": 2812692,
+            "name": "datasets/shotdetail_2023.tar.xz",
+            "observed_at": "2026-10-03T13:36:37.875385+00:00",
+            "sha256": "303e71f967c199568b345cd73a75e595f1f99532cca3e6ce59afb286b63f840d",
+            "url": "https://raw.githubusercontent.com/shufinskiy/nba_data/e829d4678be1e075f99e5d41a1c5f97089be446b/datasets/shotdetail_2023.tar.xz"
+          }
+        ],
+        "receipt_sha256": "2368c90963ccb1cea863efc90f10afdaf62e002e315b61ef3f42da735464092f",
+        "revision": "e829d4678be1e075f99e5d41a1c5f97089be446b"
+      },
+      "starting_year": 2023
+    },
+    {
+      "artifacts": {
+        "attempts.jsonl": {
+          "bytes": 242856786,
+          "sha256": "3f5b0c0c5c66210d712b1a9db248438beb61c3979c779ce5f98c862815059807"
+        },
+        "correction-ledger.json": {
+          "bytes": 1432,
+          "sha256": "79f754592ddbfd3a1d6d40c69b5ae1079db03fc143891396942413cc8c088503"
+        },
+        "corrections.json": {
+          "bytes": 1403,
+          "sha256": "c62e40445db373f4ad5a9c4d7522f70797c08299fb48d116189ec569a060a054"
+        },
+        "games.json": {
+          "bytes": 9210264,
+          "sha256": "0f6996726b2635e7aa91424063ca77adc10e354e30e0cb4b7d8037bf2326d8c0"
+        },
+        "policy-registration.json": {
+          "bytes": 940,
+          "sha256": "25a87bac91eec1f3343c27190eb2630535fd0acad6a5b2852588d7703598f20d"
+        },
+        "rejected-rows.json": {
+          "bytes": 3,
+          "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+        },
+        "source-games.json": {
+          "bytes": 25833,
+          "sha256": "7c4b077ec1768a008c40bd4a1b5c0884949c3597e8cd8312123fcf91d3356570"
+        }
+      },
+      "clock_order_diagnostic_count": 1289,
+      "complete_reconciled_season": true,
+      "correction_ledger_sha256": "79f754592ddbfd3a1d6d40c69b5ae1079db03fc143891396942413cc8c088503",
+      "corrections_applied": 1,
+      "independent_sources": {
+        "assets": [
+          {
+            "bytes": 22929,
+            "kind": "schedule",
+            "name": "nba_schedule_2025.csv.gz",
+            "sha256": "639e8145a750b80a4394d2e7044545019bcc0e39a979618c7ff9edbfcac02c9b",
+            "url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_schedules/nba_schedule_2025.csv.gz"
+          },
+          {
+            "bytes": 357762,
+            "kind": "teams",
+            "name": "team_boxscores_2025.csv",
+            "sha256": "5c426deb97a203492070e03bd40040a6b1180c243986a6ed26abfc78bb942268",
+            "url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_team_boxscores/team_boxscores_2025.csv"
+          },
+          {
+            "bytes": 6191431,
+            "kind": "players",
+            "name": "player_boxscores_2025.csv",
+            "sha256": "71645d3569e0c0a94e51d136c6454f20d59d70f4b518c62c6bbbdb9e905cb7c0",
+            "url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_player_boxscores/player_boxscores_2025.csv"
+          }
+        ],
+        "observation_limit": "retained receipt reports acquisition/reuse; not historical availability proof",
+        "receipt_acquired_at_utc": "2026-10-01T17:47:29.148761+00:00",
+        "receipt_sha256": "f6f563afa1bea31fb5c71380f544c3bd84fc8fd1bbf53e259609f39226f3b029"
+      },
+      "manifest_sha256": "27068bbbc0a419b91f4872a9ced026d8701a755c46c99908018806512dbd7baf",
+      "model_eligible_attempts": 219527,
+      "observed_attempts": 219527,
+      "quality_contract_sha256": "01f71657a713a98d938be4b3564b166b8c364a7033d5236aa61e23e428752780",
+      "quarantined_games": 0,
+      "reconciled_games": 1230,
+      "root": "data/artifacts/research-shots/b26-three-season-2024",
+      "sequence_analytics_authorized": false,
+      "source": {
+        "assets": [
+          {
+            "bytes": 11980,
+            "name": "README.md",
+            "observed_at": "2026-10-03T13:31:21.957501+00:00",
+            "sha256": "646fba3e21464fac92afe6c286637a55d5f68456487052be22be1d5a145c3687",
+            "url": "https://raw.githubusercontent.com/shufinskiy/nba_data/e829d4678be1e075f99e5d41a1c5f97089be446b/README.md"
+          },
+          {
+            "bytes": 6363,
+            "name": "description_fields.md",
+            "observed_at": "2026-10-03T13:31:22.034829+00:00",
+            "sha256": "003b485fffa9df32d18e29916a6c48074f9071f25d07686d9970231990ee473f",
+            "url": "https://raw.githubusercontent.com/shufinskiy/nba_data/e829d4678be1e075f99e5d41a1c5f97089be446b/description_fields.md"
+          },
+          {
+            "bytes": 11357,
+            "name": "LICENSE",
+            "observed_at": "2026-10-03T13:31:22.107316+00:00",
+            "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+            "url": "https://raw.githubusercontent.com/shufinskiy/nba_data/e829d4678be1e075f99e5d41a1c5f97089be446b/LICENSE"
+          },
+          {
+            "bytes": 2832144,
+            "name": "datasets/shotdetail_2024.tar.xz",
+            "observed_at": "2026-10-03T13:31:22.594802+00:00",
+            "sha256": "950100f9c84fe750ae2ac8eaeb82d24cdfb9f60a9ed04ceaa66f64789d7c216e",
+            "url": "https://raw.githubusercontent.com/shufinskiy/nba_data/e829d4678be1e075f99e5d41a1c5f97089be446b/datasets/shotdetail_2024.tar.xz"
+          }
+        ],
+        "receipt_sha256": "11d45b12172e6b3159907ea9cb0e4eb36dd2244d5586dd533d82e1386cf10306",
+        "revision": "e829d4678be1e075f99e5d41a1c5f97089be446b"
+      },
+      "starting_year": 2024
+    },
+    {
+      "artifacts": {
+        "attempts.jsonl": {
+          "bytes": 242408431,
+          "sha256": "a55fffa457807fa076e9c1e88c6f69324602c929678d6aec63de23b2fb8f6fd4"
+        },
+        "correction-ledger.json": {
+          "bytes": 1475,
+          "sha256": "a134104412ad3bd9e8b3bf5fa483f9ab629688a0daf088202d554dc916964639"
+        },
+        "corrections.json": {
+          "bytes": 1403,
+          "sha256": "0ec6379a713ec49f89400d387cd6a0132d30a2981b5fb2d731478e50a6bc0f94"
+        },
+        "games.json": {
+          "bytes": 9110314,
+          "sha256": "2d8cdfbffb5b30ef991fc6d019adcf1fcc1f0f4e25671c04b7e5514f8e3f6a4f"
+        },
+        "policy-registration.json": {
+          "bytes": 940,
+          "sha256": "b92f2d580c038ffb7676b3dfb3f7a81583b408df1a159a7e81100b03b060b503"
+        },
+        "rejected-rows.json": {
+          "bytes": 3,
+          "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+        },
+        "source-games.json": {
+          "bytes": 25833,
+          "sha256": "44e542624ff5431a6c598b57d8448876716251ddf972ce07fec179e8bca0abfe"
+        }
+      },
+      "clock_order_diagnostic_count": 1184,
+      "complete_reconciled_season": true,
+      "correction_ledger_sha256": "a134104412ad3bd9e8b3bf5fa483f9ab629688a0daf088202d554dc916964639",
+      "corrections_applied": 1,
+      "independent_sources": {
+        "assets": [
+          {
+            "bytes": 23071,
+            "kind": "schedule",
+            "name": "nba_schedule_2026.csv.gz",
+            "sha256": "c1ff3711ef8b8ec4310c60159d1225a400facc7ce1e29bc64f09ae4130496509",
+            "url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_schedules/nba_schedule_2026.csv.gz"
+          },
+          {
+            "bytes": 358439,
+            "kind": "teams",
+            "name": "team_boxscores_2026.csv",
+            "sha256": "b5133e5602d1ab9c4a4b4240aced7af3b6587e124f7ab7335b5de961c897ade8",
+            "url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_team_boxscores/team_boxscores_2026.csv"
+          },
+          {
+            "bytes": 6131057,
+            "kind": "players",
+            "name": "player_boxscores_2026.csv",
+            "sha256": "decaee33440ec8bd26d21152d61b4b69970bed45c3d07ede42f2700b7bd364e7",
+            "url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_player_boxscores/player_boxscores_2026.csv"
+          }
+        ],
+        "observation_limit": "retained receipt reports acquisition/reuse; not historical availability proof",
+        "receipt_acquired_at_utc": "2026-10-01T17:47:29.151743+00:00",
+        "receipt_sha256": "113d63d6260874e2d4069f1f6b092dc56374c8cfa4bd43971b8f05ef832c964b"
+      },
+      "manifest_sha256": "aaaea8a18e65b2d50a9b9e73778aba85bfde30351bd365fbaeaa722038fdefff",
+      "model_eligible_attempts": 219159,
+      "observed_attempts": 219159,
+      "quality_contract_sha256": "01f71657a713a98d938be4b3564b166b8c364a7033d5236aa61e23e428752780",
+      "quarantined_games": 0,
+      "reconciled_games": 1230,
+      "root": "data/artifacts/research-shots/b26-three-season-2025",
+      "sequence_analytics_authorized": false,
+      "source": {
+        "assets": [
+          {
+            "bytes": 11980,
+            "name": "README.md",
+            "observed_at": "2026-10-03T12:34:25.842749+00:00",
+            "sha256": "646fba3e21464fac92afe6c286637a55d5f68456487052be22be1d5a145c3687",
+            "url": "https://raw.githubusercontent.com/shufinskiy/nba_data/e829d4678be1e075f99e5d41a1c5f97089be446b/README.md"
+          },
+          {
+            "bytes": 6363,
+            "name": "description_fields.md",
+            "observed_at": "2026-10-03T12:34:25.934468+00:00",
+            "sha256": "003b485fffa9df32d18e29916a6c48074f9071f25d07686d9970231990ee473f",
+            "url": "https://raw.githubusercontent.com/shufinskiy/nba_data/e829d4678be1e075f99e5d41a1c5f97089be446b/description_fields.md"
+          },
+          {
+            "bytes": 11357,
+            "name": "LICENSE",
+            "observed_at": "2026-10-03T12:34:26.017424+00:00",
+            "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+            "url": "https://raw.githubusercontent.com/shufinskiy/nba_data/e829d4678be1e075f99e5d41a1c5f97089be446b/LICENSE"
+          },
+          {
+            "bytes": 2825192,
+            "name": "datasets/shotdetail_2025.tar.xz",
+            "observed_at": "2026-10-03T12:34:26.265530+00:00",
+            "sha256": "dcb6c29edda8463132ab62f63118b5cee80d751bcbee9ad98fa38ebe12e6d33c",
+            "url": "https://raw.githubusercontent.com/shufinskiy/nba_data/e829d4678be1e075f99e5d41a1c5f97089be446b/datasets/shotdetail_2025.tar.xz"
+          }
+        ],
+        "receipt_sha256": "a2d07fb7c13373e9d8d8586e4c46a1f5e1fbd6cc418a381172fa90b207a5346f",
+        "revision": "e829d4678be1e075f99e5d41a1c5f97089be446b"
+      },
+      "starting_year": 2025
+    }
+  ]
+}

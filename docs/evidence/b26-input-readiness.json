@@ -1,0 +1,308 @@
+{
+  "admission_metadata_not_independently_verified": [
+    {
+      "admitted_games": 1,
+      "expected_games": 1396,
+      "family": "lineups",
+      "observed_games": 1,
+      "parser_signature": "courtload-sdv-rich-v1",
+      "policy_version": "possession-policy-v1",
+      "season": "2023-24",
+      "source_bytes": 153,
+      "source_sha256": "bf4b9270d0b30523de89e6f63e7071add3ffdfea6e6af2ff30d32d1118fc0444",
+      "status": "admitted"
+    },
+    {
+      "admitted_games": 1,
+      "expected_games": 1396,
+      "family": "matchups",
+      "observed_games": 1,
+      "parser_signature": "courtload-sdv-rich-v1",
+      "policy_version": "matchup-pair-v1",
+      "season": "2023-24",
+      "source_bytes": 874,
+      "source_sha256": "9c118805eac465d389fee317a5c9b246d741388faf780fb3f3d9a1a97ffd6a62",
+      "status": "admitted"
+    },
+    {
+      "admitted_games": 0,
+      "expected_games": 1396,
+      "family": "pbp",
+      "observed_games": 1,
+      "parser_signature": "courtload-sdv-rich-v1",
+      "policy_version": "possession-policy-v1",
+      "season": "2023-24",
+      "source_bytes": 298,
+      "source_sha256": "b9c1a4c63c48d0734a5bbb23ed8801edbcf4c53e6d63e9c381b88eab34d58ccb",
+      "status": "rejected"
+    },
+    {
+      "admitted_games": 0,
+      "expected_games": 1396,
+      "family": "possessions",
+      "observed_games": 1,
+      "parser_signature": "courtload-sdv-rich-v1",
+      "policy_version": "possession-policy-v1",
+      "season": "2023-24",
+      "source_bytes": 320,
+      "source_sha256": "929cc15a238519c775ca6f74a6a8978afe6191b923fd62335f058c0476e2c88a",
+      "status": "rejected"
+    },
+    {
+      "admitted_games": 1,
+      "expected_games": 1396,
+      "family": "shots",
+      "observed_games": 1,
+      "parser_signature": "courtload-sdv-rich-v1",
+      "policy_version": "shot-zones-v1",
+      "season": "2023-24",
+      "source_bytes": 356,
+      "source_sha256": "d82f910d6937377b9b22aa02368388cce5fa352426f3cb42b6d18a29af1920ae",
+      "status": "admitted"
+    }
+  ],
+  "dataset": {
+    "content_sha256": "68bc89a115a025f84ca93f34aa50072696ed316490fa9e4d226cf0578c4a5c6d",
+    "declared_seasons": [
+      "2023-24",
+      "2024-25",
+      "2025-26",
+      "2026-27"
+    ],
+    "membership_sha256": "d77520348b95269d63c3841091d34016e92a41f9b45692ad89b930cc26a9076d",
+    "release_ids": [
+      "5bbb6035-6794-4bb0-b894-7208f52ef7ad"
+    ],
+    "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666",
+    "status": "ready"
+  },
+  "experiments": [
+    {
+      "additional_evidence_required": [
+        "Independent source-byte, identity, field, game and season reconciliation",
+        "Final-exposure audit and an honest chronology amendment when exposed",
+        "Exact game/row splits; expected-shot selection/calibration sub-memberships"
+      ],
+      "experiment": "courtload-adjusted-shooting-v1",
+      "fit_authorized": false,
+      "input_gates": [
+        "Three complete reconciled playtype seasons with NBA identity, taxonomy/version and exact opportunity definition.",
+        "One terminal scoring opportunity per possession-ending field goal/turnover/shooting-foul trip; and-one stays one opportunity, technical FT excluded; no overlapping playtype counts or duplicated FT points.",
+        "No admitted playtype/foul-trip mart currently establishes these gates: source_blocked."
+      ],
+      "minimum_complete_seasons": 3,
+      "protocol_sha256": "df1c8a26f00704101397af19947ab2213934c6e23b53eb53a3e053938a01237b",
+      "required_families": [
+        "possessions",
+        "pbp"
+      ],
+      "sample_policy": ">=200 valid opportunities and >=10 games per player-period. Unknown playtypes/FT attribution stay unknown; display only if >=95% of observed scoring opportunities have admitted supported playtypes. Return known and unknown counts.",
+      "status": "source_blocked"
+    },
+    {
+      "additional_evidence_required": [
+        "Independent source-byte, identity, field, game and season reconciliation",
+        "Final-exposure audit and an honest chronology amendment when exposed",
+        "Exact game/row splits; expected-shot selection/calibration sub-memberships"
+      ],
+      "experiment": "courtload-expected-shot-v1",
+      "fit_authorized": false,
+      "input_gates": [
+        "Three complete reconciled shot seasons with NBA/event/game identity and shot-zones-v1.",
+        "Complete outcomes and jointly valid normalized coordinates/type/distance; correct orientation and observed makes reconcile to final team boxes.",
+        "Current release joins have zero eligible shots in the checked 2023-24 scope: source_blocked."
+      ],
+      "minimum_complete_seasons": 3,
+      "protocol_sha256": "e6b47c6c158e13b5daa274d158adfc0d7c8d1cc5642bec89585a0829fd956d0b",
+      "required_families": [
+        "shots"
+      ],
+      "sample_policy": ">=10000 training and >=1000 attempts each selection/calibration/final; >=30 games per role. Unknown/off-court location excluded and disclosed. Slice summaries require >=200 attempts; unknown coverage retained as exclusions.",
+      "status": "source_blocked"
+    },
+    {
+      "additional_evidence_required": [
+        "Independent source-byte, identity, field, game and season reconciliation",
+        "Final-exposure audit and an honest chronology amendment when exposed",
+        "Exact game/row splits; expected-shot selection/calibration sub-memberships"
+      ],
+      "experiment": "courtload-rapm-v1",
+      "fit_authorized": false,
+      "input_gates": [
+        "At least three reconciled complete seasons with admitted game identities, events, possession-policy-v1 and reconstruction/override versions.",
+        "Five distinct players per side, no gaps/overlaps and per-game team/player minutes, scores and possession exposure reconciled.",
+        "B20 retained database currently has zero stints: source_blocked."
+      ],
+      "minimum_complete_seasons": 3,
+      "protocol_sha256": "06ab95316d64cc4b792c15753bb4b32024c948a68d0b5e7fad20d586372a6ed9",
+      "required_families": [
+        "stints",
+        "possessions"
+      ],
+      "sample_policy": "Fit positive complete exposure rows. Display player coefficients only with >=1000 training offensive possessions and >=1000 training defensive possessions over >=20 games. Include unsupported rows in held-out errors using zero unseen coefficients and report their share.",
+      "status": "source_blocked"
+    },
+    {
+      "additional_evidence_required": [
+        "Independent source-byte, identity, field, game and season reconciliation",
+        "Final-exposure audit and an honest chronology amendment when exposed",
+        "Exact game/row splits; expected-shot selection/calibration sub-memberships"
+      ],
+      "experiment": "courtload-six-factor-v1",
+      "fit_authorized": false,
+      "input_gates": [
+        "RAPM lineup/reconciliation gates and three complete seasons.",
+        "New jointly valid event-to-stint opportunity counts must reconcile to final team boxes, including technical FT and team-rebound policies. Current B20 stint points/exposure alone are insufficient."
+      ],
+      "minimum_complete_seasons": 3,
+      "protocol_sha256": "919815b24d1ec5856bf22c1ad0ad1006b177238be17094413f16431a082236d2",
+      "required_families": [
+        "stints",
+        "possessions",
+        "pbp"
+      ],
+      "sample_policy": "Coefficient display requires >=1000 jointly valid target opportunities and >=20 games on each side; target-specific support. Held-out rows with missing components excluded from only that target and counted.",
+      "status": "source_blocked"
+    }
+  ],
+  "exposure_audit_limit": "Positive retained exposure evidence only; absence of a run is not evidence of an untouched final.",
+  "family_inventory": {
+    "lineups": {
+      "by_season": [
+        {
+          "games_with_rows": 1,
+          "rows": 1,
+          "season": "2023-24"
+        }
+      ],
+      "retained_rows": 2,
+      "valid_rows": 2,
+      "valid_rows_outside_scope": 1
+    },
+    "matchups": {
+      "by_season": [],
+      "retained_rows": 1,
+      "valid_rows": 1,
+      "valid_rows_outside_scope": 1
+    },
+    "pbp": {
+      "by_season": [
+        {
+          "games_with_rows": 1,
+          "rows": 2,
+          "season": "2023-24"
+        }
+      ],
+      "retained_rows": 4,
+      "valid_rows": 4,
+      "valid_rows_outside_scope": 2
+    },
+    "possessions": {
+      "by_season": [],
+      "retained_rows": 1,
+      "valid_rows": 1,
+      "valid_rows_outside_scope": 1
+    },
+    "shots": {
+      "by_season": [],
+      "retained_rows": 2,
+      "valid_rows": 2,
+      "valid_rows_outside_scope": 2
+    },
+    "stints": {
+      "by_season": [],
+      "retained_rows": 0,
+      "valid_rows": 0,
+      "valid_rows_outside_scope": 0
+    }
+  },
+  "fit_authorized": false,
+  "limitations": [
+    "Schedule counts do not certify complete seasons; row counts do not certify games.",
+    "Admission metadata and valid/ready labels require independent evidence.",
+    "Existing shots do not retain provider event IDs; event uniqueness is not established.",
+    "Six-factor denominators and adjusted-shooting opportunity marts are unverified.",
+    "Inventory does not validate bindings, reconstruct stints, fit models or publish."
+  ],
+  "observed_at": "2026-10-03T12:04:25.251256+00:00",
+  "retained_exposure_metadata": [
+    {
+      "final_boundary": null,
+      "final_test_opened": false,
+      "manifest": "3cf4ae8eb331ac02d3b3/run-manifest.json",
+      "manifest_sha256": "3c416fb315f10759c1b28172c07fe49763622ee0f5424680ea98e3d0740aca39",
+      "registration_hash_matches_manifest": null,
+      "registration_sha256": null,
+      "run_id": "3cf4ae8eb331ac02d3b3"
+    },
+    {
+      "final_boundary": {
+        "end": "2024-04-14",
+        "role": "final_test",
+        "season": "2023-24",
+        "start": "2023-10-24"
+      },
+      "final_test_opened": true,
+      "manifest": "6f7af9e63f27aada910d/run-manifest.json",
+      "manifest_sha256": "ce60e0cbce89f52e266dfc233cb85b5b466fa9a2d695deaf4ab017fb76fc09a9",
+      "registration_hash_matches_manifest": true,
+      "registration_sha256": "af076346ecfd1edb5f3f1fff33c08451d14ad1ca784730b97cbe84f0fdb02e23",
+      "run_id": "6f7af9e63f27aada910d"
+    },
+    {
+      "final_boundary": {
+        "end": "2026-04-12",
+        "role": "final_test",
+        "season": "2025-26",
+        "seasons": null,
+        "start": "2025-10-21"
+      },
+      "final_test_opened": true,
+      "manifest": "b0e4bb3300011b5a3499/run-manifest.json",
+      "manifest_sha256": "ac1f091315d46d9dd23c1d4782b256e07b901a7744cb5763fd2a240bf3243ec7",
+      "registration_hash_matches_manifest": true,
+      "registration_sha256": "f0334cb257bb9f7fcca706cd1389efbda5d0f645b8d9eb86d11702015bcf5498",
+      "run_id": "b0e4bb3300011b5a3499"
+    }
+  ],
+  "schedule_inventory": [
+    {
+      "finalized_schedule_games": 1230,
+      "first_date": "2023-10-24",
+      "last_date": "2024-04-14",
+      "season": "2023-24"
+    },
+    {
+      "finalized_schedule_games": 1230,
+      "first_date": "2024-10-22",
+      "last_date": "2025-04-13",
+      "season": "2024-25"
+    },
+    {
+      "finalized_schedule_games": 1230,
+      "first_date": "2025-10-21",
+      "last_date": "2026-04-12",
+      "season": "2025-26"
+    }
+  ],
+  "scope": {
+    "before_date": "2026-10-03",
+    "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+    "phase": "regular_season"
+  },
+  "status": "source_blocked",
+  "team_box_inventory": [
+    {
+      "games_with_reciprocal_final_team_boxes": 1230,
+      "season": "2023-24"
+    },
+    {
+      "games_with_reciprocal_final_team_boxes": 1230,
+      "season": "2024-25"
+    },
+    {
+      "games_with_reciprocal_final_team_boxes": 1230,
+      "season": "2025-26"
+    }
+  ]
+}

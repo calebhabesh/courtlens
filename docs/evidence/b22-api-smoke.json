@@ -1,0 +1,342 @@
+{
+  "verification_date": "2026-10-03",
+  "kind": "B22 real-database read-only API smoke; no populated-season availability claim",
+  "retained_stint_rows": 0,
+  "endpoint": "/api/workbench/operations/on-off",
+  "request": {
+    "release_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+    "season": "2023-24",
+    "phase": "regular_season",
+    "before_date": "2024-04-15",
+    "team_id": "1610612761",
+    "together": [
+      "1627751"
+    ]
+  },
+  "http_status": 200,
+  "response": {
+    "operation": "on-off",
+    "operation_version": "courtload-shared-floor-v1",
+    "context": {
+      "release_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+      "snapshot_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+      "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+      "dataset_type": "workbench",
+      "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666",
+      "mode": "workbench_recent",
+      "source": "sportsdataverse",
+      "season": "2023-24",
+      "phase": "regular_season",
+      "before_date": "2024-04-15",
+      "cutoff_utc": "2024-04-15T04:00:00+00:00",
+      "window": "season",
+      "coverage_start": "2023-10-24",
+      "coverage_end": "2026-06-13",
+      "metric_version": "v2",
+      "published_at": null
+    },
+    "request": {
+      "team_id": "1610612761",
+      "release_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+      "season": "2023-24",
+      "phase": "regular_season",
+      "before_date": "2024-04-15",
+      "lower_date": null,
+      "together": [
+        "1627751"
+      ],
+      "apart": [],
+      "exact_unit": [],
+      "player_id": null,
+      "min_possessions": 100.0,
+      "min_games": 5
+    },
+    "coverage_status": "source_blocked",
+    "expected_games": 82,
+    "observed_games": 0,
+    "excluded_stints": 0,
+    "cells": [
+      {
+        "key": "selected",
+        "present": [],
+        "absent": [],
+        "games": 0,
+        "stints": 0,
+        "seconds": 0.0,
+        "minutes": 0.0,
+        "offensive_possessions": 0.0,
+        "defensive_possessions": 0.0,
+        "points": null,
+        "points_allowed": null,
+        "sample_status": "empty",
+        "reason": "Insufficient shared-floor exposure",
+        "event_totals": {},
+        "raw_metrics": {
+          "offensive_rating": null,
+          "defensive_rating": null,
+          "net_rating": null
+        },
+        "metric_denominators": {
+          "offensive_rating": 0.0,
+          "defensive_rating": 0.0
+        },
+        "metric_valid_stints": {
+          "offensive_rating": 0,
+          "defensive_rating": 0
+        },
+        "intervals": {
+          "offensive_rating": {
+            "lower": null,
+            "upper": null,
+            "level": 0.95,
+            "method": "game-cluster ratio linearization, normal approximation",
+            "games": 0,
+            "reason": "Requires at least 10 games and positive exposure"
+          },
+          "defensive_rating": {
+            "lower": null,
+            "upper": null,
+            "level": 0.95,
+            "method": "game-cluster ratio linearization, normal approximation",
+            "games": 0,
+            "reason": "Requires at least 10 games and positive exposure"
+          },
+          "net_rating": {
+            "lower": null,
+            "upper": null,
+            "level": 0.95,
+            "method": "game-cluster ratio linearization, normal approximation",
+            "games": 0,
+            "reason": "Each directional split requires 10 valid games"
+          }
+        }
+      },
+      {
+        "key": "complement",
+        "present": [],
+        "absent": [],
+        "games": 0,
+        "stints": 0,
+        "seconds": 0.0,
+        "minutes": 0.0,
+        "offensive_possessions": 0.0,
+        "defensive_possessions": 0.0,
+        "points": null,
+        "points_allowed": null,
+        "sample_status": "empty",
+        "reason": "Insufficient shared-floor exposure",
+        "event_totals": {},
+        "raw_metrics": {
+          "offensive_rating": null,
+          "defensive_rating": null,
+          "net_rating": null
+        },
+        "metric_denominators": {
+          "offensive_rating": 0.0,
+          "defensive_rating": 0.0
+        },
+        "metric_valid_stints": {
+          "offensive_rating": 0,
+          "defensive_rating": 0
+        },
+        "intervals": {
+          "offensive_rating": {
+            "lower": null,
+            "upper": null,
+            "level": 0.95,
+            "method": "game-cluster ratio linearization, normal approximation",
+            "games": 0,
+            "reason": "Requires at least 10 games and positive exposure"
+          },
+          "defensive_rating": {
+            "lower": null,
+            "upper": null,
+            "level": 0.95,
+            "method": "game-cluster ratio linearization, normal approximation",
+            "games": 0,
+            "reason": "Requires at least 10 games and positive exposure"
+          },
+          "net_rating": {
+            "lower": null,
+            "upper": null,
+            "level": 0.95,
+            "method": "game-cluster ratio linearization, normal approximation",
+            "games": 0,
+            "reason": "Each directional split requires 10 valid games"
+          }
+        }
+      }
+    ],
+    "partitions": [
+      {
+        "key": "0",
+        "present": [],
+        "absent": [
+          "1627751"
+        ],
+        "games": 0,
+        "stints": 0,
+        "seconds": 0.0,
+        "minutes": 0.0,
+        "offensive_possessions": 0.0,
+        "defensive_possessions": 0.0,
+        "points": null,
+        "points_allowed": null,
+        "sample_status": "empty",
+        "reason": "Insufficient shared-floor exposure",
+        "event_totals": {},
+        "raw_metrics": {
+          "offensive_rating": null,
+          "defensive_rating": null,
+          "net_rating": null
+        },
+        "metric_denominators": {
+          "offensive_rating": 0.0,
+          "defensive_rating": 0.0
+        },
+        "metric_valid_stints": {
+          "offensive_rating": 0,
+          "defensive_rating": 0
+        },
+        "intervals": {
+          "offensive_rating": {
+            "lower": null,
+            "upper": null,
+            "level": 0.95,
+            "method": "game-cluster ratio linearization, normal approximation",
+            "games": 0,
+            "reason": "Requires at least 10 games and positive exposure"
+          },
+          "defensive_rating": {
+            "lower": null,
+            "upper": null,
+            "level": 0.95,
+            "method": "game-cluster ratio linearization, normal approximation",
+            "games": 0,
+            "reason": "Requires at least 10 games and positive exposure"
+          },
+          "net_rating": {
+            "lower": null,
+            "upper": null,
+            "level": 0.95,
+            "method": "game-cluster ratio linearization, normal approximation",
+            "games": 0,
+            "reason": "Each directional split requires 10 valid games"
+          }
+        }
+      },
+      {
+        "key": "1",
+        "present": [
+          "1627751"
+        ],
+        "absent": [],
+        "games": 0,
+        "stints": 0,
+        "seconds": 0.0,
+        "minutes": 0.0,
+        "offensive_possessions": 0.0,
+        "defensive_possessions": 0.0,
+        "points": null,
+        "points_allowed": null,
+        "sample_status": "empty",
+        "reason": "Insufficient shared-floor exposure",
+        "event_totals": {},
+        "raw_metrics": {
+          "offensive_rating": null,
+          "defensive_rating": null,
+          "net_rating": null
+        },
+        "metric_denominators": {
+          "offensive_rating": 0.0,
+          "defensive_rating": 0.0
+        },
+        "metric_valid_stints": {
+          "offensive_rating": 0,
+          "defensive_rating": 0
+        },
+        "intervals": {
+          "offensive_rating": {
+            "lower": null,
+            "upper": null,
+            "level": 0.95,
+            "method": "game-cluster ratio linearization, normal approximation",
+            "games": 0,
+            "reason": "Requires at least 10 games and positive exposure"
+          },
+          "defensive_rating": {
+            "lower": null,
+            "upper": null,
+            "level": 0.95,
+            "method": "game-cluster ratio linearization, normal approximation",
+            "games": 0,
+            "reason": "Requires at least 10 games and positive exposure"
+          },
+          "net_rating": {
+            "lower": null,
+            "upper": null,
+            "level": 0.95,
+            "method": "game-cluster ratio linearization, normal approximation",
+            "games": 0,
+            "reason": "Each directional split requires 10 valid games"
+          }
+        }
+      }
+    ],
+    "shifts": [
+      {
+        "metric": "offensive_rating",
+        "selected_value": null,
+        "complement_value": null,
+        "difference": null,
+        "interval": {
+          "lower": null,
+          "upper": null,
+          "level": 0.95,
+          "method": "game-cluster ratio linearization, normal approximation",
+          "games": 0,
+          "reason": "Insufficient sample or joint interval unavailable"
+        }
+      },
+      {
+        "metric": "defensive_rating",
+        "selected_value": null,
+        "complement_value": null,
+        "difference": null,
+        "interval": {
+          "lower": null,
+          "upper": null,
+          "level": 0.95,
+          "method": "game-cluster ratio linearization, normal approximation",
+          "games": 0,
+          "reason": "Insufficient sample or joint interval unavailable"
+        }
+      },
+      {
+        "metric": "net_rating",
+        "selected_value": null,
+        "complement_value": null,
+        "difference": null,
+        "interval": {
+          "lower": null,
+          "upper": null,
+          "level": 0.95,
+          "method": "game-cluster ratio linearization, normal approximation",
+          "games": 0,
+          "reason": "Insufficient sample or joint interval unavailable"
+        }
+      }
+    ],
+    "input_hash": "88efe75c5f5c9f0501f608066ad23442d1b59b3778c5ef1e27f756b22e50e3ab",
+    "evidence_hash": "7b55ba42d03e9ac4cde2d5f24590e59a4c84a5b293adcdeb4a9b874edb8b5ed9",
+    "disclosures": [
+      "Shared-floor splits describe lineup, opponent and role context; they are not causal impact or RAPM.",
+      "Historical reconstruction does not establish original publication-time availability.",
+      "Raw estimates remain visible below sample gates; gated differences are unavailable.",
+      "Default gates: 100 offensive and defensive possessions and 5 games per cell; adjustable, not tuned.",
+      "95% intervals use game-cluster ratio linearization with a normal approximation and at least 10 games per split; they are not calibrated forecast intervals.",
+      "No leverage filter or shrinkage is applied. Missing event production remains unknown.",
+      "2-4 player units require all members together; 5-player units match the full side exactly."
+    ]
+  }
+}

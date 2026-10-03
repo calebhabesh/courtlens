@@ -1,0 +1,50 @@
+{
+  "api_status": 200,
+  "candidate_fits": 0,
+  "completed_binding_rerun_refused": true,
+  "exact_split_prediction_pairs_verified": 106080,
+  "geometry_excluded_rows": 2,
+  "new_error_evaluations": 0,
+  "original_run_manifest_sha256": "a18efaeeaf136c986d201d74d6004e41713a1fbd7131516c5eb1d3d88ffb4835",
+  "original_run_manifest_unchanged": true,
+  "overwrite_refused": true,
+  "package_manifest": {
+    "artifacts": {
+      "attempts.json": {
+        "bytes": 1872,
+        "sha256": "fae9563f504ada600778a9a97137335a31a5729e350b566be4d38c0c6c67740a"
+      },
+      "baseline-predictions.jsonl": {
+        "bytes": 11869321,
+        "sha256": "c8afbdbde3022aaff9e8075e2d896ee004825c30b11e1aeee6c0767cf4670300"
+      },
+      "candidate-predictions.jsonl": {
+        "bytes": 11881594,
+        "sha256": "f6fde744343f78d965b0e08f578f9709a8c3430109429250fe8016d88732b4ba"
+      },
+      "exclusions.json": {
+        "bytes": 8639,
+        "sha256": "34c3857a1a32bee5850eba584c3c17b238d531d3fa62d3a96069ad308aa96883"
+      },
+      "model-card.md": {
+        "bytes": 1737,
+        "sha256": "1dadf2bf76ab31e69f54072ea968a2b433f2632b104ae5cf9f3aaf0e54d79df4"
+      }
+    },
+    "binding_sha256": "78e9ea2a5365206485610dcbfdffd21826f71d6518072bc332dbd9785bc10ad7",
+    "candidate_fits": 0,
+    "implementation_sha256": "941c26342f8a91a6e26a7096c432673c15a3d2eadd16b23287e61c65757fc253",
+    "new_error_evaluations": 0,
+    "packaged_at": "2026-10-03T14:48:03.778415+00:00",
+    "parent_manifest_sha256": "a18efaeeaf136c986d201d74d6004e41713a1fbd7131516c5eb1d3d88ffb4835",
+    "prediction_role_counts": {
+      "selection": 106080
+    },
+    "run_id": "de8dbe44-daef-4c8b-a36b-527c0a6fd603",
+    "schema_version": "courtload-research-package-v1"
+  },
+  "package_manifest_sha256": "3b8366ba18d9b9a13e8e076ef6d87e52b998cdba69307335a0e37cd96c9c834c",
+  "package_root": "data/artifacts/research-run-packages/de8dbe44-daef-4c8b-a36b-527c0a6fd603",
+  "rejected_games": 0,
+  "reviewed_source_corrections": 6
+}

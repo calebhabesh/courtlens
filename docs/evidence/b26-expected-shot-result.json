@@ -1,0 +1,364 @@
+{
+  "api_smoke_sha256": "b8dd22d2242199f598bb94bef273ab0334c68aa1b457a31d2b5311dc5bb1c135",
+  "attempts": {
+    "candidate_fits": 1,
+    "features": 5,
+    "process_peak_rss_kib": 2052132,
+    "process_tree": {
+      "aggregate_memory_peak_bytes": 2046316544,
+      "cpu_affinity": [
+        0,
+        1
+      ],
+      "cpu_max": "200000 100000",
+      "memory_events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0\nsock_throttled 0",
+      "memory_limit_bytes": 4294967296,
+      "pids_max": "16"
+    },
+    "role_rows": {
+      "calibration": 113447,
+      "final_test": 219159,
+      "selection": 106080,
+      "training": 218700
+    },
+    "seed": 2501,
+    "versions": {
+      "numpy": "2.5.3",
+      "python": "3.14.7",
+      "scikit-learn": "1.6.1",
+      "scipy": "1.18.1"
+    },
+    "wall_seconds": 39.72464425198268
+  },
+  "evaluation": {
+    "classification": "retrospective_research",
+    "final_previously_exposed": true,
+    "final_report_opened": false,
+    "prospective_promotion_authorized": false,
+    "selection": {
+      "baseline": {
+        "brier": 0.23396131498165826,
+        "calibration_bins": [
+          {
+            "lower": 0.0,
+            "mean_probability": 0.02331002331002331,
+            "observed_rate": 0.015748031496062992,
+            "rows": 254,
+            "upper": 0.1
+          },
+          {
+            "lower": 0.1,
+            "mean_probability": null,
+            "observed_rate": null,
+            "rows": 0,
+            "upper": 0.2
+          },
+          {
+            "lower": 0.2,
+            "mean_probability": null,
+            "observed_rate": null,
+            "rows": 0,
+            "upper": 0.3
+          },
+          {
+            "lower": 0.3,
+            "mean_probability": 0.3673887312113182,
+            "observed_rate": 0.36154621848739493,
+            "rows": 44625,
+            "upper": 0.4
+          },
+          {
+            "lower": 0.4,
+            "mean_probability": 0.4316435037749901,
+            "observed_rate": 0.42477454358823963,
+            "rows": 27278,
+            "upper": 0.5
+          },
+          {
+            "lower": 0.5,
+            "mean_probability": null,
+            "observed_rate": null,
+            "rows": 0,
+            "upper": 0.6
+          },
+          {
+            "lower": 0.6,
+            "mean_probability": 0.6385216304899982,
+            "observed_rate": 0.6355864752527783,
+            "rows": 33923,
+            "upper": 0.7
+          },
+          {
+            "lower": 0.7,
+            "mean_probability": null,
+            "observed_rate": null,
+            "rows": 0,
+            "upper": 0.8
+          },
+          {
+            "lower": 0.8,
+            "mean_probability": null,
+            "observed_rate": null,
+            "rows": 0,
+            "upper": 0.9
+          },
+          {
+            "lower": 0.9,
+            "mean_probability": null,
+            "observed_rate": null,
+            "rows": 0,
+            "upper": 1.0
+          }
+        ],
+        "ece": 0.005180841283109085,
+        "expected_points_mae": 1.1320325327594862,
+        "log_loss": 0.6603487917579671,
+        "rows": 106080
+      },
+      "candidate": {
+        "brier": 0.2337711826581986,
+        "calibration_bins": [
+          {
+            "lower": 0.0,
+            "mean_probability": null,
+            "observed_rate": null,
+            "rows": 0,
+            "upper": 0.1
+          },
+          {
+            "lower": 0.1,
+            "mean_probability": null,
+            "observed_rate": null,
+            "rows": 0,
+            "upper": 0.2
+          },
+          {
+            "lower": 0.2,
+            "mean_probability": 0.28233782524682766,
+            "observed_rate": 0.2648221343873518,
+            "rows": 1265,
+            "upper": 0.3
+          },
+          {
+            "lower": 0.3,
+            "mean_probability": 0.36336245641735043,
+            "observed_rate": 0.36820739549839226,
+            "rows": 49760,
+            "upper": 0.4
+          },
+          {
+            "lower": 0.4,
+            "mean_probability": 0.4478375336266917,
+            "observed_rate": 0.4313584965758879,
+            "rows": 12558,
+            "upper": 0.5
+          },
+          {
+            "lower": 0.5,
+            "mean_probability": 0.5656538008574663,
+            "observed_rate": 0.456450887839964,
+            "rows": 17796,
+            "upper": 0.6
+          },
+          {
+            "lower": 0.6,
+            "mean_probability": 0.6400287924684815,
+            "observed_rate": 0.6918343386907413,
+            "rows": 24701,
+            "upper": 0.7
+          },
+          {
+            "lower": 0.7,
+            "mean_probability": null,
+            "observed_rate": null,
+            "rows": 0,
+            "upper": 0.8
+          },
+          {
+            "lower": 0.8,
+            "mean_probability": null,
+            "observed_rate": null,
+            "rows": 0,
+            "upper": 0.9
+          },
+          {
+            "lower": 0.9,
+            "mean_probability": null,
+            "observed_rate": null,
+            "rows": 0,
+            "upper": 1.0
+          }
+        ],
+        "ece": 0.03481531959077471,
+        "expected_points_mae": 1.1317306663294184,
+        "log_loss": 0.6600613128252033,
+        "rows": 106080
+      }
+    },
+    "selection_passed": false,
+    "status": "selection_failed_negative_result"
+  },
+  "manifest": {
+    "artifacts": {
+      "implementation/expected_shot.py": {
+        "bytes": 19624,
+        "sha256": "4288ec8c3fdcfd02524267431037e8554e5c0bd1bc4e7c1fd09d44fd2782cea6"
+      },
+      "implementation/research_binding.py": {
+        "bytes": 3887,
+        "sha256": "0903fcaed72d30ddb6378b30e46c51a89521b1577d29908b8c4c206a76dd339e"
+      },
+      "implementation/research_inputs.py": {
+        "bytes": 11763,
+        "sha256": "6e73af7e1f2c22b98b0d01f614372d29b12e5bf8b5c2d88e4c89cf9f4a6ab342"
+      },
+      "implementation/research_limits.py": {
+        "bytes": 4382,
+        "sha256": "b50c605ab941fe3015d347ec57d54318a778488670752fa3472a2ca6d21e166c"
+      },
+      "implementation/research_runner.py": {
+        "bytes": 7324,
+        "sha256": "c758dab51a4f23feb97f2840388a7a9d24c476674f29820bf206cf552d4d6cda"
+      },
+      "run/attempts.json": {
+        "bytes": 681,
+        "sha256": "2eac8d3eabcd92322826026e52fc632fe6677f537d514100be205045c019bee3"
+      },
+      "run/binding.json": {
+        "bytes": 939775,
+        "sha256": "ea4bb51a3dcd375a9dff6e6fef2040a5808db07327d3877d897f0c9586f38412"
+      },
+      "run/evaluation.json": {
+        "bytes": 4191,
+        "sha256": "bae891b38f05b793e294ead3c94e3d0fd4de974c111cca9393f8152cff6c2275"
+      },
+      "run/fit-started.json": {
+        "bytes": 36,
+        "sha256": "117631aa060ec7e7f2e5d7e7126cbdada6e372b321008aa257f0d2f5cfdbf6b6"
+      },
+      "run/model-card.md": {
+        "bytes": 823,
+        "sha256": "230953632398491be2a40c6a18719450e384520f160d3a8fb077503f1eaa3efa"
+      },
+      "run/model.json": {
+        "bytes": 1095,
+        "sha256": "4320c3b0376c7386d408e0bdeb343dd6e7e4b93cdcd48c3e430cb7e6f8b6cc32"
+      },
+      "run/predictions.jsonl": {
+        "bytes": 15070923,
+        "sha256": "10c53a7b7afb892a67be5e27384b4f2551ce396e6c07c425915e2b5375913952"
+      },
+      "run/protocol.json": {
+        "bytes": 5692,
+        "sha256": "97718f7f66e03497be7f43d2bfe59dffea2e08cd338946535751253e4095f459"
+      },
+      "supervisor/limits.json": {
+        "bytes": 284,
+        "sha256": "51e2df90d9552db37c184e946b3f7305831e37242cbd8b20a4b263678aeb9725"
+      },
+      "supervisor/stdout.log": {
+        "bytes": 47,
+        "sha256": "2fa663ecba509e77c11c53c28ccd4e0c318dd1d52582138eff6d7d26262eccbf"
+      },
+      "supervisor/supervisor.log": {
+        "bytes": 494,
+        "sha256": "f81d8173df235c27ee0edaa67ec06159dbe91954bdb7b1e4ccc6ebd9ff2dd706"
+      }
+    },
+    "binding_sha256": "78e9ea2a5365206485610dcbfdffd21826f71d6518072bc332dbd9785bc10ad7",
+    "classification": "retrospective_research",
+    "dataset_content_sha256": "680f8291296f2f3c52758ece1678c5be0fae0f5431dfce2ad41780a4dcd06e19",
+    "dataset_id": "3d64fe04-dc9a-4a45-bf96-182371a94f7b",
+    "experiment": "courtload-expected-shot-retrospective-v2",
+    "final_previously_exposed": true,
+    "final_report_opened": false,
+    "horizons": {
+      "final_test": "2026-04-12",
+      "training": "2024-04-14",
+      "validation": "2025-04-13"
+    },
+    "implementation_sha256": {
+      "expected_shot.py": "4288ec8c3fdcfd02524267431037e8554e5c0bd1bc4e7c1fd09d44fd2782cea6",
+      "research_binding.py": "0903fcaed72d30ddb6378b30e46c51a89521b1577d29908b8c4c206a76dd339e",
+      "research_inputs.py": "6e73af7e1f2c22b98b0d01f614372d29b12e5bf8b5c2d88e4c89cf9f4a6ab342",
+      "research_limits.py": "b50c605ab941fe3015d347ec57d54318a778488670752fa3472a2ca6d21e166c",
+      "research_runner.py": "c758dab51a4f23feb97f2840388a7a9d24c476674f29820bf206cf552d4d6cda"
+    },
+    "limits": {
+      "cpu_threads": 2,
+      "enforcement": "systemd_user_service_cgroup_v2",
+      "exit_code": 0,
+      "max_aggregate_memory_mib": 4096,
+      "max_wall_seconds": 1800,
+      "status": "completed",
+      "unit": "courtload-research-d41507c5a69b44f0875d42844acde2b2",
+      "wall_seconds": 41.432175257999916
+    },
+    "prospective_promotion_authorized": false,
+    "protocol_sha256": "ce40518f8eebe240db250b60890df1a9f104e442559ce494a77c57cc0e47e805",
+    "registered_at": "2026-10-03T14:25:27.736607+00:00",
+    "report_through_date": "2025-01-15",
+    "reproduction_command": "python -m courtload.evaluation.research_reproduce --run data/artifacts/research-runs/de8dbe44-daef-4c8b-a36b-527c0a6fd603",
+    "run_id": "de8dbe44-daef-4c8b-a36b-527c0a6fd603",
+    "schema_version": "courtload-research-run-v1",
+    "status": "selection_failed_negative_result"
+  },
+  "manifest_sha256": "a18efaeeaf136c986d201d74d6004e41713a1fbd7131516c5eb1d3d88ffb4835",
+  "other_experiments": {
+    "adjusted_shooting": "source_blocked: playtype/foul-trip seasons absent",
+    "rapm": "source_blocked: complete reconciled lineup/possession seasons absent",
+    "six_factor": "source_blocked: lineup and event-attributed opportunity seasons absent"
+  },
+  "relative_brier_gain": 0.0008126656472013938,
+  "reproduction": {
+    "candidate_fits": 0,
+    "manifest_sha256": "a18efaeeaf136c986d201d74d6004e41713a1fbd7131516c5eb1d3d88ffb4835",
+    "maximum_absolute_error": 0.0,
+    "predictions": 106080,
+    "process_tree": {
+      "aggregate_memory_peak_bytes": 155930624,
+      "cpu_affinity": [
+        0,
+        1
+      ],
+      "cpu_max": "200000 100000",
+      "memory_events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0\nsock_throttled 0",
+      "memory_limit_bytes": 4294967296,
+      "pids_max": "16"
+    },
+    "run_id": "de8dbe44-daef-4c8b-a36b-527c0a6fd603",
+    "status": "reproduced"
+  },
+  "reproduction_sha256": "feae76a1a25743f3c4d80401c42bf3e634798cccb0cd1e33876f0ea9a2886c8b",
+  "retained_preflight_failure": "d1dbc7ee-0a4d-4a98-9433-c44fa89f1482",
+  "run_root": "data/artifacts/research-runs/de8dbe44-daef-4c8b-a36b-527c0a6fd603",
+  "schema_version": "courtload-b26-expected-shot-result-v2",
+  "verification": {
+    "dashboard_checks": "not rerun; no frontend changes; existing browser failures retained",
+    "empty_postgres_full_suite_attempt": {
+      "failed": 48,
+      "passed": 415,
+      "reason": "baseline-dependent historical tests require seeded source metadata and a published release; empty migrated scratch database had neither",
+      "scratch_database_removed": true,
+      "setup_errors": 19,
+      "status": "interrupted after fixture failures"
+    },
+    "git_diff_check": "pass",
+    "historical_checksums_verified": 26,
+    "mypy_source_files": 117,
+    "normal_backend_suite": {
+      "passed": 446,
+      "skipped": 74,
+      "warnings": 1
+    },
+    "original_b25_protocols_verified": 4,
+    "postgres_focused_and_regression_suite": {
+      "passed": 136,
+      "skipped": 0,
+      "warnings": 1
+    },
+    "ruff": "pass",
+    "ruff_format_files": 268,
+    "warning": "existing Starlette/httpx deprecation"
+  }
+}

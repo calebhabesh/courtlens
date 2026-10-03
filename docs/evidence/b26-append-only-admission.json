@@ -1,0 +1,19 @@
+{
+  "binding_path": "data/artifacts/research-bindings/78e9ea2a5365206485610dcbfdffd21826f71d6518072bc332dbd9785bc10ad7.json",
+  "binding_sha256": "78e9ea2a5365206485610dcbfdffd21826f71d6518072bc332dbd9785bc10ad7",
+  "calibration_games": 633,
+  "calibration_membership_sha256": "c08f8ec8ab8de9cf04f46889a7a010819ef0cb4c4935faa1db3b697d113400ce",
+  "dataset_content_sha256": "680f8291296f2f3c52758ece1678c5be0fae0f5431dfce2ad41780a4dcd06e19",
+  "dataset_id": "3d64fe04-dc9a-4a45-bf96-182371a94f7b",
+  "eligible_rows": 657386,
+  "fit_authorized_by_admission": false,
+  "games": 3690,
+  "publication_pointer_unchanged": true,
+  "seasons": [
+    "2023-24",
+    "2024-25",
+    "2025-26"
+  ],
+  "selection_games": 597,
+  "selection_membership_sha256": "73fcdc3e188ee299f10531fff88999af42c2bbea932bac412d2beae3ab6d6ba5"
+}

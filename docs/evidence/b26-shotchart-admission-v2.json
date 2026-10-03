@@ -1,0 +1,3514 @@
+{
+  "acquisition_attempts": {
+    "official_json": {
+      "http_status": 403,
+      "official_bytes_retained": false,
+      "response_bytes": 447,
+      "url": "https://cdn.nba.com/static/json/liveData/playbyplay/playbyplay_0022500792.json"
+    },
+    "official_pdfs": {
+      "browser_screenshot_result": "cache miss / no image payload",
+      "direct_result": "timeouts (25-second HTTPX requests, 12-second curl HEAD and 15-second curl range request)",
+      "official_bytes_retained": false,
+      "urls": [
+        "https://statsdmz.nba.com/pdfs/20260219/20260219_HOUCHA_book.pdf",
+        "https://statsdmz.nba.com/pdfs/20251027/20251027_DENMIN_book.pdf"
+      ]
+    },
+    "time_precision": "during this session; this timestamp records the summary, not a historical source observation"
+  },
+  "b25_registration_integrity": [
+    {
+      "experiment": "courtload-adjusted-shooting-v1",
+      "protocol_and_retained_bytes_verified": true
+    },
+    {
+      "experiment": "courtload-expected-shot-v1",
+      "protocol_and_retained_bytes_verified": true
+    },
+    {
+      "experiment": "courtload-rapm-v1",
+      "protocol_and_retained_bytes_verified": true
+    },
+    {
+      "experiment": "courtload-six-factor-v1",
+      "protocol_and_retained_bytes_verified": true
+    }
+  ],
+  "corrections_applied": 0,
+  "database_admissions": 0,
+  "fits_performed": 0,
+  "game_proofs": {
+    "0022500001": {
+      "games": [
+        {
+          "clock_order_violations": [],
+          "comparisons": [
+            {
+              "box_counts": [
+                12,
+                2,
+                8,
+                0
+              ],
+              "id": "1629652",
+              "kind": "player",
+              "shot_counts": [
+                12,
+                2,
+                8,
+                0
+              ]
+            },
+            {
+              "box_counts": [
+                17,
+                11,
+                5,
+                2
+              ],
+              "id": "1631096",
+              "kind": "player",
+              "shot_counts": [
+                17,
+                11,
+                5,
+                2
+              ]
+            },
+            {
+              "box_counts": [
+                5,
+                2,
+                1,
+                0
+              ],
+              "id": "1628392",
+              "kind": "player",
+              "shot_counts": [
+                5,
+                2,
+                1,
+                0
+              ]
+            },
+            {
+              "box_counts": [
+                10,
+                5,
+                8,
+                3
+              ],
+              "id": "1641717",
+              "kind": "player",
+              "shot_counts": [
+                10,
+                5,
+                8,
+                3
+              ]
+            },
+            {
+              "box_counts": [
+                26,
+                12,
+                9,
+                1
+              ],
+              "id": "1628983",
+              "kind": "player",
+              "shot_counts": [
+                26,
+                12,
+                9,
+                1
+              ]
+            },
+            {
+              "box_counts": [
+                5,
+                1,
+                4,
+                0
+              ],
+              "id": "1631119",
+              "kind": "player",
+              "shot_counts": [
+                5,
+                1,
+                4,
+                0
+              ]
+            },
+            {
+              "box_counts": [
+                8,
+                4,
+                5,
+                2
+              ],
+              "id": "1630598",
+              "kind": "player",
+              "shot_counts": [
+                8,
+                4,
+                5,
+                2
+              ]
+            },
+            {
+              "box_counts": [
+                9,
+                3,
+                6,
+                2
+              ],
+              "id": "1627936",
+              "kind": "player",
+              "shot_counts": [
+                9,
+                3,
+                6,
+                2
+              ]
+            },
+            {
+              "box_counts": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "id": "1642964",
+              "kind": "player",
+              "shot_counts": [
+                0,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "box_counts": [
+                12,
+                6,
+                6,
+                3
+              ],
+              "id": "1642349",
+              "kind": "player",
+              "shot_counts": [
+                12,
+                6,
+                6,
+                3
+              ]
+            },
+            {
+              "box_counts": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "id": "1642959",
+              "kind": "player",
+              "shot_counts": [
+                0,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "box_counts": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "id": "1631172",
+              "kind": "player",
+              "shot_counts": [
+                0,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "box_counts": [
+                15,
+                7,
+                6,
+                2
+              ],
+              "id": "1631095",
+              "kind": "player",
+              "shot_counts": [
+                15,
+                7,
+                6,
+                2
+              ]
+            },
+            {
+              "box_counts": [
+                24,
+                12,
+                8,
+                5
+              ],
+              "id": "1630578",
+              "kind": "player",
+              "shot_counts": [
+                24,
+                12,
+                8,
+                5
+              ]
+            },
+            {
+              "box_counts": [
+                4,
+                1,
+                0,
+                0
+              ],
+              "id": "203500",
+              "kind": "player",
+              "shot_counts": [
+                4,
+                1,
+                0,
+                0
+              ]
+            },
+            {
+              "box_counts": [
+                16,
+                9,
+                4,
+                0
+              ],
+              "id": "201142",
+              "kind": "player",
+              "shot_counts": [
+                16,
+                9,
+                4,
+                0
+              ]
+            },
+            {
+              "box_counts": [
+                17,
+                8,
+                7,
+                0
+              ],
+              "id": "1641708",
+              "kind": "player",
+              "shot_counts": [
+                17,
+                8,
+                7,
+                0
+              ]
+            },
+            {
+              "box_counts": [
+                6,
+                1,
+                4,
+                1
+              ],
+              "id": "1631106",
+              "kind": "player",
+              "shot_counts": [
+                6,
+                1,
+                4,
+                1
+              ]
+            },
+            {
+              "box_counts": [
+                11,
+                3,
+                7,
+                2
+              ],
+              "id": "1642263",
+              "kind": "player",
+              "shot_counts": [
+                11,
+                3,
+                7,
+                2
+              ]
+            },
+            {
+              "box_counts": [
+                1,
+                1,
+                0,
+                0
+              ],
+              "id": "203991",
+              "kind": "player",
+              "shot_counts": [
+                1,
+                1,
+                0,
+                0
+              ]
+            },
+            {
+              "box_counts": [
+                3,
+                1,
+                3,
+                1
+              ],
+              "id": "1629006",
+              "kind": "player",
+              "shot_counts": [
+                3,
+                1,
+                3,
+                1
+              ]
+            },
+            {
+              "box_counts": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "id": "1631120",
+              "kind": "player",
+              "shot_counts": [
+                0,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "box_counts": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "id": "1627827",
+              "kind": "player",
+              "shot_counts": [
+                0,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "box_counts": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "id": "201145",
+              "kind": "player",
+              "shot_counts": [
+                0,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "box_counts": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "id": "1630284",
+              "kind": "player",
+              "shot_counts": [
+                0,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "box_counts": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "id": "1628988",
+              "kind": "player",
+              "shot_counts": [
+                0,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "box_counts": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "id": "1630256",
+              "kind": "player",
+              "shot_counts": [
+                0,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "box_counts": [
+                104,
+                46,
+                52,
+                13
+              ],
+              "id": "1610612760",
+              "kind": "team",
+              "shot_counts": [
+                104,
+                46,
+                52,
+                13
+              ]
+            },
+            {
+              "box_counts": [
+                97,
+                43,
+                39,
+                11
+              ],
+              "id": "1610612745",
+              "kind": "team",
+              "shot_counts": [
+                97,
+                43,
+                39,
+                11
+              ]
+            }
+          ],
+          "game_date": "2025-10-21",
+          "game_id": "0022500001",
+          "geometry_eligible_attempts": 201,
+          "geometry_exclusions": [],
+          "model_eligible_attempts": 201,
+          "observed_attempts": 201,
+          "reasons": [],
+          "row_membership_sha256": "3cb344b09fa7ea09259042a35fc515a2c589534dbfded3f2d68a2d2e9acaabbe",
+          "status": "reconciled"
+        }
+      ],
+      "manifest": {
+        "artifacts": {
+          "attempts.jsonl": {
+            "bytes": 222663,
+            "sha256": "17a3fd181c081251aeb8a33df00f4a3777c3ee3130a18f1dc63d1698d0798237"
+          },
+          "games.json": {
+            "bytes": 7414,
+            "sha256": "3a515bcc52d8d650dfb3e485f996e56e4f9f2a557447e40a0daa1654169a00e7"
+          },
+          "policy-registration.json": {
+            "bytes": 834,
+            "sha256": "e0649c4e7eea4133ed752cbcd103556111a43d9d89861a2c6e2d5bd608d6c3a5"
+          },
+          "rejected-rows.json": {
+            "bytes": 3,
+            "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+          },
+          "source-games.json": {
+            "bytes": 25833,
+            "sha256": "44e542624ff5431a6c598b57d8448876716251ddf972ce07fec179e8bca0abfe"
+          }
+        },
+        "before_date": "2026-10-03",
+        "candidate_content_sha256": "84c2ee19da754bc30fb44d8572213402194e77b5ae3c9fdbd74d3799893721a1",
+        "candidate_id": "66e28330-d44b-403c-8e43-147c3366efd7",
+        "clock_order_diagnostic_count": 0,
+        "complete_reconciled_season": false,
+        "corrections_applied": 0,
+        "database_admitted": false,
+        "denominator": {
+          "denominator_verified": true,
+          "expected_games": 1230,
+          "membership_sha256": "afe431f32d07a657c1d1d6ff403f2b6f04856c33cc62fa08521a11e4f670037b",
+          "team_games": {
+            "1610612737": 82,
+            "1610612738": 82,
+            "1610612739": 82,
+            "1610612740": 82,
+            "1610612741": 82,
+            "1610612742": 82,
+            "1610612743": 82,
+            "1610612744": 82,
+            "1610612745": 82,
+            "1610612746": 82,
+            "1610612747": 82,
+            "1610612748": 82,
+            "1610612749": 82,
+            "1610612750": 82,
+            "1610612751": 82,
+            "1610612752": 82,
+            "1610612753": 82,
+            "1610612754": 82,
+            "1610612755": 82,
+            "1610612756": 82,
+            "1610612757": 82,
+            "1610612758": 82,
+            "1610612759": 82,
+            "1610612760": 82,
+            "1610612761": 82,
+            "1610612762": 82,
+            "1610612763": 82,
+            "1610612764": 82,
+            "1610612765": 82,
+            "1610612766": 82
+          },
+          "teams": 30
+        },
+        "expected_games": 1,
+        "extra_source_games": [],
+        "fit_authorized": false,
+        "game_id": "0022500001",
+        "game_proof_sha256": null,
+        "game_reason_counts": {},
+        "games_with_clock_order_diagnostics": 0,
+        "geometry_excluded_attempts": 0,
+        "implementation_sha256": {
+          "domain/shotchart.py": "ea507eb3350eddd8e556a3a55ac96a9dbca68fa0a75afeddd25c6bb97ead209d",
+          "evaluation/shotchart_admission.py": "3cd4e78d482d0e3ad66d663673438a49bd21e5f208f34a4c4692a0fb28f9e890",
+          "ingestion/shotchart.py": "7d38edaa7934a4872275435442dc8f11516bfc9c015ab97226922ad32d21dc9f"
+        },
+        "independent_sources": {
+          "assets": [
+            {
+              "bytes": 23071,
+              "kind": "schedule",
+              "name": "nba_schedule_2026.csv.gz",
+              "sha256": "c1ff3711ef8b8ec4310c60159d1225a400facc7ce1e29bc64f09ae4130496509",
+              "url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_schedules/nba_schedule_2026.csv.gz"
+            },
+            {
+              "bytes": 358439,
+              "kind": "teams",
+              "name": "team_boxscores_2026.csv",
+              "sha256": "b5133e5602d1ab9c4a4b4240aced7af3b6587e124f7ab7335b5de961c897ade8",
+              "url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_team_boxscores/team_boxscores_2026.csv"
+            },
+            {
+              "bytes": 6131057,
+              "kind": "players",
+              "name": "player_boxscores_2026.csv",
+              "sha256": "decaee33440ec8bd26d21152d61b4b69970bed45c3d07ede42f2700b7bd364e7",
+              "url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_player_boxscores/player_boxscores_2026.csv"
+            }
+          ],
+          "observation_limit": "retained receipt reports acquisition/reuse; not historical availability proof",
+          "receipt_acquired_at_utc": "2026-10-01T17:47:29.151743+00:00",
+          "receipt_sha256": "113d63d6260874e2d4069f1f6b092dc56374c8cfa4bd43971b8f05ef832c964b"
+        },
+        "model_eligible_attempts": 201,
+        "observed_at": "2026-10-03T13:18:44.466828+00:00",
+        "observed_attempts": 201,
+        "quality_contract_sha256": "01f71657a713a98d938be4b3564b166b8c364a7033d5236aa61e23e428752780",
+        "quarantined_games": 0,
+        "reconciled_games": 1,
+        "rejected_rows": 0,
+        "remaining_gates": [
+          "independent reuse/admission review",
+          "append-only database membership",
+          "three complete seasons",
+          "chronology amendment and exact split binding"
+        ],
+        "reuse_scope": "local research diagnostic; public redistribution unresolved",
+        "schema_version": "courtload-shotchart-audit-v1",
+        "scope": "one_game",
+        "season": "2025-26",
+        "sequence_analytics_authorized": false,
+        "source": {
+          "assets": [
+            {
+              "bytes": 11980,
+              "name": "README.md",
+              "observed_at": "2026-10-03T12:34:25.842749+00:00",
+              "sha256": "646fba3e21464fac92afe6c286637a55d5f68456487052be22be1d5a145c3687",
+              "url": "https://raw.githubusercontent.com/shufinskiy/nba_data/e829d4678be1e075f99e5d41a1c5f97089be446b/README.md"
+            },
+            {
+              "bytes": 6363,
+              "name": "description_fields.md",
+              "observed_at": "2026-10-03T12:34:25.934468+00:00",
+              "sha256": "003b485fffa9df32d18e29916a6c48074f9071f25d07686d9970231990ee473f",
+              "url": "https://raw.githubusercontent.com/shufinskiy/nba_data/e829d4678be1e075f99e5d41a1c5f97089be446b/description_fields.md"
+            },
+            {
+              "bytes": 11357,
+              "name": "LICENSE",
+              "observed_at": "2026-10-03T12:34:26.017424+00:00",
+              "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+              "url": "https://raw.githubusercontent.com/shufinskiy/nba_data/e829d4678be1e075f99e5d41a1c5f97089be446b/LICENSE"
+            },
+            {
+              "bytes": 2825192,
+              "name": "datasets/shotdetail_2025.tar.xz",
+              "observed_at": "2026-10-03T12:34:26.265530+00:00",
+              "sha256": "dcb6c29edda8463132ab62f63118b5cee80d751bcbee9ad98fa38ebe12e6d33c",
+              "url": "https://raw.githubusercontent.com/shufinskiy/nba_data/e829d4678be1e075f99e5d41a1c5f97089be446b/datasets/shotdetail_2025.tar.xz"
+            }
+          ],
+          "receipt_sha256": "a2d07fb7c13373e9d8d8586e4c46a1f5e1fbd6cc418a381172fa90b207a5346f",
+          "revision": "e829d4678be1e075f99e5d41a1c5f97089be446b"
+        },
+        "source_games": 1230,
+        "source_rows_scanned": 219160,
+        "status": "reconciled_offline_candidate",
+        "transform_version": "courtload-shotchart-v2",
+        "unscoped_identity_failure": false
+      },
+      "manifest_sha256": "cac90ff18d8b9bbd89a62caeb6c6f5d3ccbc943649027944cea8ed6421546798"
+    },
+    "0022500006": {
+      "games": [
+        {
+          "clock_order_violations": [
+            {
+              "event_id": 327,
+              "period": 2,
+              "previous_event_id": 323,
+              "previous_period": 2,
+              "previous_seconds_remaining": 1,
+              "seconds_remaining": 4
+            },
+            {
+              "event_id": 497,
+              "period": 3,
+              "previous_event_id": 493,
+              "previous_period": 3,
+              "previous_seconds_remaining": 1,
+              "seconds_remaining": 81
+            }
+          ],
+          "comparisons": [
+            {
+              "box_counts": [
+                16,
+                6,
+                4,
+                2
+              ],
+              "id": "202710",
+              "kind": "player",
+              "shot_counts": [
+                16,
+                6,
+                4,
+                2
+              ]
+            },
+            {
+              "box_counts": [
+                11,
+                6,
+                4,
+                1
+              ],
+              "id": "1630228",
+              "kind": "player",
+              "shot_counts": [
+                11,
+                6,
+                4,
+                1
+              ]
+            },
+            {
+              "box_counts": [
+                8,
+                5,
+                5,
+                2
+              ],
+              "id": "203110",
+              "kind": "player",
+              "shot_counts": [
+                8,
+                5,
+                5,
+                2
+              ]
+            },
+            {
+              "box_counts": [
+                9,
+                4,
+                6,
+                2
+              ],
+              "id": "1641764",
+              "kind": "player",
+              "shot_counts": [
+                9,
+                4,
+                6,
+                2
+              ]
+            },
+            {
+              "box_counts": [
+                25,
+                14,
+                12,
+                6
+              ],
+              "id": "201939",
+              "kind": "player",
+              "shot_counts": [
+                25,
+                14,
+                12,
+                6
+              ]
+            },
+            {
+              "box_counts": [
+                13,
+                5,
+                7,
+                1
+              ],
+              "id": "1627741",
+              "kind": "player",
+              "shot_counts": [
+                13,
+                5,
+                7,
+                1
+              ]
+            },
+            {
+              "box_counts": [
+                5,
+                3,
+                1,
+                0
+              ],
+              "id": "1627780",
+              "kind": "player",
+              "shot_counts": [
+                5,
+                3,
+                1,
+                0
+              ]
+            },
+            {
+              "box_counts": [
+                7,
+                5,
+                4,
+                3
+              ],
+              "id": "201143",
+              "kind": "player",
+              "shot_counts": [
+                7,
+                5,
+                4,
+                3
+              ]
+            },
+            {
+              "box_counts": [
+                5,
+                2,
+                4,
+                1
+              ],
+              "id": "1642954",
+              "kind": "player",
+              "shot_counts": [
+                5,
+                2,
+                4,
+                1
+              ]
+            },
+            {
+              "box_counts": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "id": "1642366",
+              "kind": "player",
+              "shot_counts": [
+                0,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "box_counts": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "id": "1631218",
+              "kind": "player",
+              "shot_counts": [
+                0,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "box_counts": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "id": "1630611",
+              "kind": "player",
+              "shot_counts": [
+                0,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "box_counts": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "id": "1630311",
+              "kind": "player",
+              "shot_counts": [
+                0,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "box_counts": [
+                8,
+                2,
+                6,
+                1
+              ],
+              "id": "1629661",
+              "kind": "player",
+              "shot_counts": [
+                8,
+                2,
+                6,
+                1
+              ]
+            },
+            {
+              "box_counts": [
+                21,
+                17,
+                11,
+                10
+              ],
+              "id": "203932",
+              "kind": "player",
+              "shot_counts": [
+                21,
+                17,
+                11,
+                10
+              ]
+            },
+            {
+              "box_counts": [
+                23,
+                8,
+                13,
+                2
+              ],
+              "id": "203999",
+              "kind": "player",
+              "shot_counts": [
+                23,
+                8,
+                13,
+                2
+              ]
+            },
+            {
+              "box_counts": [
+                7,
+                3,
+                1,
+                0
+              ],
+              "id": "1631128",
+              "kind": "player",
+              "shot_counts": [
+                7,
+                3,
+                1,
+                0
+              ]
+            },
+            {
+              "box_counts": [
+                20,
+                11,
+                4,
+                1
+              ],
+              "id": "1627750",
+              "kind": "player",
+              "shot_counts": [
+                20,
+                11,
+                4,
+                1
+              ]
+            },
+            {
+              "box_counts": [
+                8,
+                4,
+                5,
+                2
+              ],
+              "id": "203501",
+              "kind": "player",
+              "shot_counts": [
+                8,
+                4,
+                5,
+                2
+              ]
+            },
+            {
+              "box_counts": [
+                3,
+                2,
+                0,
+                0
+              ],
+              "id": "1628971",
+              "kind": "player",
+              "shot_counts": [
+                3,
+                2,
+                0,
+                0
+              ]
+            },
+            {
+              "box_counts": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "id": "1631212",
+              "kind": "player",
+              "shot_counts": [
+                0,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "box_counts": [
+                5,
+                4,
+                0,
+                0
+              ],
+              "id": "202685",
+              "kind": "player",
+              "shot_counts": [
+                5,
+                4,
+                0,
+                0
+              ]
+            },
+            {
+              "box_counts": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "id": "1642461",
+              "kind": "player",
+              "shot_counts": [
+                0,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "box_counts": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "id": "1641747",
+              "kind": "player",
+              "shot_counts": [
+                0,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "box_counts": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "id": "1630192",
+              "kind": "player",
+              "shot_counts": [
+                0,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "box_counts": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "id": "1629618",
+              "kind": "player",
+              "shot_counts": [
+                0,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "box_counts": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "id": "1631124",
+              "kind": "player",
+              "shot_counts": [
+                0,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "box_counts": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "id": "1641816",
+              "kind": "player",
+              "shot_counts": [
+                0,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "box_counts": [
+                99,
+                50,
+                47,
+                18
+              ],
+              "id": "1610612744",
+              "kind": "team",
+              "shot_counts": [
+                99,
+                50,
+                47,
+                18
+              ]
+            },
+            {
+              "box_counts": [
+                95,
+                51,
+                40,
+                16
+              ],
+              "id": "1610612743",
+              "kind": "team",
+              "shot_counts": [
+                95,
+                51,
+                40,
+                16
+              ]
+            }
+          ],
+          "game_date": "2025-10-23",
+          "game_id": "0022500006",
+          "geometry_eligible_attempts": 194,
+          "geometry_exclusions": [],
+          "model_eligible_attempts": 194,
+          "observed_attempts": 194,
+          "reasons": [],
+          "row_membership_sha256": "b3e793299bc6524d55f342a1814d3565ed35c04961b757f3fb68aae4b00bf073",
+          "status": "reconciled"
+        }
+      ],
+      "manifest": {
+        "artifacts": {
+          "attempts.jsonl": {
+            "bytes": 214584,
+            "sha256": "6a15d283a0c122507945bf053cf4bde8a7b2f72027f808926a845ac7a2cbe288"
+          },
+          "games.json": {
+            "bytes": 8053,
+            "sha256": "759cbc1139466c53eafa158bbb5d930e7a587137737fc933329f5bf12465b44d"
+          },
+          "policy-registration.json": {
+            "bytes": 834,
+            "sha256": "686302ed94d8b1ec500791b9cdc9715b186a359fed24afab97b29e7a18c16278"
+          },
+          "rejected-rows.json": {
+            "bytes": 3,
+            "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+          },
+          "source-games.json": {
+            "bytes": 25833,
+            "sha256": "44e542624ff5431a6c598b57d8448876716251ddf972ce07fec179e8bca0abfe"
+          }
+        },
+        "before_date": "2026-10-03",
+        "candidate_content_sha256": "8517cdfb1348e5cff916fed4701681a087e13191662fa894ff89f1ee27455b3e",
+        "candidate_id": "5f0c2dc6-46a4-4244-970a-051bd7ae3543",
+        "clock_order_diagnostic_count": 2,
+        "complete_reconciled_season": false,
+        "corrections_applied": 0,
+        "database_admitted": false,
+        "denominator": {
+          "denominator_verified": true,
+          "expected_games": 1230,
+          "membership_sha256": "afe431f32d07a657c1d1d6ff403f2b6f04856c33cc62fa08521a11e4f670037b",
+          "team_games": {
+            "1610612737": 82,
+            "1610612738": 82,
+            "1610612739": 82,
+            "1610612740": 82,
+            "1610612741": 82,
+            "1610612742": 82,
+            "1610612743": 82,
+            "1610612744": 82,
+            "1610612745": 82,
+            "1610612746": 82,
+            "1610612747": 82,
+            "1610612748": 82,
+            "1610612749": 82,
+            "1610612750": 82,
+            "1610612751": 82,
+            "1610612752": 82,
+            "1610612753": 82,
+            "1610612754": 82,
+            "1610612755": 82,
+            "1610612756": 82,
+            "1610612757": 82,
+            "1610612758": 82,
+            "1610612759": 82,
+            "1610612760": 82,
+            "1610612761": 82,
+            "1610612762": 82,
+            "1610612763": 82,
+            "1610612764": 82,
+            "1610612765": 82,
+            "1610612766": 82
+          },
+          "teams": 30
+        },
+        "expected_games": 1,
+        "extra_source_games": [],
+        "fit_authorized": false,
+        "game_id": "0022500006",
+        "game_proof_sha256": null,
+        "game_reason_counts": {},
+        "games_with_clock_order_diagnostics": 1,
+        "geometry_excluded_attempts": 0,
+        "implementation_sha256": {
+          "domain/shotchart.py": "ea507eb3350eddd8e556a3a55ac96a9dbca68fa0a75afeddd25c6bb97ead209d",
+          "evaluation/shotchart_admission.py": "3cd4e78d482d0e3ad66d663673438a49bd21e5f208f34a4c4692a0fb28f9e890",
+          "ingestion/shotchart.py": "7d38edaa7934a4872275435442dc8f11516bfc9c015ab97226922ad32d21dc9f"
+        },
+        "independent_sources": {
+          "assets": [
+            {
+              "bytes": 23071,
+              "kind": "schedule",
+              "name": "nba_schedule_2026.csv.gz",
+              "sha256": "c1ff3711ef8b8ec4310c60159d1225a400facc7ce1e29bc64f09ae4130496509",
+              "url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_schedules/nba_schedule_2026.csv.gz"
+            },
+            {
+              "bytes": 358439,
+              "kind": "teams",
+              "name": "team_boxscores_2026.csv",
+              "sha256": "b5133e5602d1ab9c4a4b4240aced7af3b6587e124f7ab7335b5de961c897ade8",
+              "url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_team_boxscores/team_boxscores_2026.csv"
+            },
+            {
+              "bytes": 6131057,
+              "kind": "players",
+              "name": "player_boxscores_2026.csv",
+              "sha256": "decaee33440ec8bd26d21152d61b4b69970bed45c3d07ede42f2700b7bd364e7",
+              "url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_player_boxscores/player_boxscores_2026.csv"
+            }
+          ],
+          "observation_limit": "retained receipt reports acquisition/reuse; not historical availability proof",
+          "receipt_acquired_at_utc": "2026-10-01T17:47:29.151743+00:00",
+          "receipt_sha256": "113d63d6260874e2d4069f1f6b092dc56374c8cfa4bd43971b8f05ef832c964b"
+        },
+        "model_eligible_attempts": 194,
+        "observed_at": "2026-10-03T13:18:45.609576+00:00",
+        "observed_attempts": 194,
+        "quality_contract_sha256": "01f71657a713a98d938be4b3564b166b8c364a7033d5236aa61e23e428752780",
+        "quarantined_games": 0,
+        "reconciled_games": 1,
+        "rejected_rows": 0,
+        "remaining_gates": [
+          "independent reuse/admission review",
+          "append-only database membership",
+          "three complete seasons",
+          "chronology amendment and exact split binding"
+        ],
+        "reuse_scope": "local research diagnostic; public redistribution unresolved",
+        "schema_version": "courtload-shotchart-audit-v1",
+        "scope": "one_game",
+        "season": "2025-26",
+        "sequence_analytics_authorized": false,
+        "source": {
+          "assets": [
+            {
+              "bytes": 11980,
+              "name": "README.md",
+              "observed_at": "2026-10-03T12:34:25.842749+00:00",
+              "sha256": "646fba3e21464fac92afe6c286637a55d5f68456487052be22be1d5a145c3687",
+              "url": "https://raw.githubusercontent.com/shufinskiy/nba_data/e829d4678be1e075f99e5d41a1c5f97089be446b/README.md"
+            },
+            {
+              "bytes": 6363,
+              "name": "description_fields.md",
+              "observed_at": "2026-10-03T12:34:25.934468+00:00",
+              "sha256": "003b485fffa9df32d18e29916a6c48074f9071f25d07686d9970231990ee473f",
+              "url": "https://raw.githubusercontent.com/shufinskiy/nba_data/e829d4678be1e075f99e5d41a1c5f97089be446b/description_fields.md"
+            },
+            {
+              "bytes": 11357,
+              "name": "LICENSE",
+              "observed_at": "2026-10-03T12:34:26.017424+00:00",
+              "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+              "url": "https://raw.githubusercontent.com/shufinskiy/nba_data/e829d4678be1e075f99e5d41a1c5f97089be446b/LICENSE"
+            },
+            {
+              "bytes": 2825192,
+              "name": "datasets/shotdetail_2025.tar.xz",
+              "observed_at": "2026-10-03T12:34:26.265530+00:00",
+              "sha256": "dcb6c29edda8463132ab62f63118b5cee80d751bcbee9ad98fa38ebe12e6d33c",
+              "url": "https://raw.githubusercontent.com/shufinskiy/nba_data/e829d4678be1e075f99e5d41a1c5f97089be446b/datasets/shotdetail_2025.tar.xz"
+            }
+          ],
+          "receipt_sha256": "a2d07fb7c13373e9d8d8586e4c46a1f5e1fbd6cc418a381172fa90b207a5346f",
+          "revision": "e829d4678be1e075f99e5d41a1c5f97089be446b"
+        },
+        "source_games": 1230,
+        "source_rows_scanned": 219160,
+        "status": "reconciled_offline_candidate",
+        "transform_version": "courtload-shotchart-v2",
+        "unscoped_identity_failure": false
+      },
+      "manifest_sha256": "a31afb5fcf0c2289966757e65b4b840c8fa2ce6282a63a91af216efac0c968b8"
+    },
+    "0022500008": {
+      "games": [
+        {
+          "clock_order_violations": [
+            {
+              "event_id": 674,
+              "period": 4,
+              "previous_event_id": 663,
+              "previous_period": 4,
+              "previous_seconds_remaining": 170,
+              "seconds_remaining": 206
+            }
+          ],
+          "comparisons": [
+            {
+              "box_counts": [
+                16,
+                10,
+                3,
+                1
+              ],
+              "id": "1630183",
+              "kind": "player",
+              "shot_counts": [
+                16,
+                10,
+                3,
+                1
+              ]
+            },
+            {
+              "box_counts": [
+                15,
+                8,
+                4,
+                1
+              ],
+              "id": "203944",
+              "kind": "player",
+              "shot_counts": [
+                15,
+                8,
+                4,
+                1
+              ]
+            },
+            {
+              "box_counts": [
+                7,
+                3,
+                0,
+                0
+              ],
+              "id": "203497",
+              "kind": "player",
+              "shot_counts": [
+                7,
+                3,
+                0,
+                0
+              ]
+            },
+            {
+              "box_counts": [
+                10,
+                3,
+                8,
+                3
+              ],
+              "id": "1628978",
+              "kind": "player",
+              "shot_counts": [
+                10,
+                3,
+                8,
+                3
+              ]
+            },
+            {
+              "box_counts": [
+                8,
+                3,
+                3,
+                1
+              ],
+              "id": "201144",
+              "kind": "player",
+              "shot_counts": [
+                8,
+                3,
+                3,
+                1
+              ]
+            },
+            {
+              "box_counts": [
+                8,
+                3,
+                3,
+                1
+              ],
+              "id": "1630545",
+              "kind": "player",
+              "shot_counts": [
+                8,
+                3,
+                3,
+                1
+              ]
+            },
+            {
+              "box_counts": [
+                12,
+                7,
+                6,
+                2
+              ],
+              "id": "1629675",
+              "kind": "player",
+              "shot_counts": [
+                12,
+                7,
+                6,
+                2
+              ]
+            },
+            {
+              "box_counts": [
+                2,
+                2,
+                0,
+                0
+              ],
+              "id": "1642265",
+              "kind": "player",
+              "shot_counts": [
+                2,
+                2,
+                0,
+                0
+              ]
+            },
+            {
+              "box_counts": [
+                6,
+                1,
+                5,
+                1
+              ],
+              "id": "1630538",
+              "kind": "player",
+              "shot_counts": [
+                6,
+                1,
+                5,
+                1
+              ]
+            },
+            {
+              "box_counts": [
+                1,
+                0,
+                0,
+                0
+              ],
+              "id": "1630548",
+              "kind": "player",
+              "shot_counts": [
+                1,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "box_counts": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "id": "1631159",
+              "kind": "player",
+              "shot_counts": [
+                0,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "box_counts": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "id": "1642866",
+              "kind": "player",
+              "shot_counts": [
+                0,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "box_counts": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "id": "1641740",
+              "kind": "player",
+              "shot_counts": [
+                0,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "box_counts": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "id": "204060",
+              "kind": "player",
+              "shot_counts": [
+                0,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "box_counts": [
+                5,
+                2,
+                3,
+                1
+              ],
+              "id": "1629661",
+              "kind": "player",
+              "shot_counts": [
+                5,
+                2,
+                3,
+                1
+              ]
+            },
+            {
+              "box_counts": [
+                10,
+                3,
+                2,
+                0
+              ],
+              "id": "203932",
+              "kind": "player",
+              "shot_counts": [
+                10,
+                3,
+                2,
+                0
+              ]
+            },
+            {
+              "box_counts": [
+                10,
+                9,
+                0,
+                0
+              ],
+              "id": "203999",
+              "kind": "player",
+              "shot_counts": [
+                10,
+                9,
+                0,
+                0
+              ]
+            },
+            {
+              "box_counts": [
+                9,
+                3,
+                3,
+                1
+              ],
+              "id": "1631128",
+              "kind": "player",
+              "shot_counts": [
+                9,
+                3,
+                3,
+                1
+              ]
+            },
+            {
+              "box_counts": [
+                29,
+                16,
+                9,
+                5
+              ],
+              "id": "1627750",
+              "kind": "player",
+              "shot_counts": [
+                29,
+                16,
+                9,
+                5
+              ]
+            },
+            {
+              "box_counts": [
+                11,
+                7,
+                6,
+                4
+              ],
+              "id": "203501",
+              "kind": "player",
+              "shot_counts": [
+                11,
+                7,
+                6,
+                4
+              ]
+            },
+            {
+              "box_counts": [
+                6,
+                4,
+                2,
+                2
+              ],
+              "id": "1631212",
+              "kind": "player",
+              "shot_counts": [
+                6,
+                4,
+                2,
+                2
+              ]
+            },
+            {
+              "box_counts": [
+                4,
+                1,
+                0,
+                0
+              ],
+              "id": "1628971",
+              "kind": "player",
+              "shot_counts": [
+                4,
+                1,
+                0,
+                0
+              ]
+            },
+            {
+              "box_counts": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "id": "1642461",
+              "kind": "player",
+              "shot_counts": [
+                0,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "box_counts": [
+                3,
+                1,
+                0,
+                0
+              ],
+              "id": "202685",
+              "kind": "player",
+              "shot_counts": [
+                3,
+                1,
+                0,
+                0
+              ]
+            },
+            {
+              "box_counts": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "id": "1631124",
+              "kind": "player",
+              "shot_counts": [
+                0,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "box_counts": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "id": "1641816",
+              "kind": "player",
+              "shot_counts": [
+                0,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "box_counts": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "id": "1641747",
+              "kind": "player",
+              "shot_counts": [
+                0,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "box_counts": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "id": "1629618",
+              "kind": "player",
+              "shot_counts": [
+                0,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "box_counts": [
+                1,
+                0,
+                1,
+                0
+              ],
+              "id": "1630192",
+              "kind": "player",
+              "shot_counts": [
+                1,
+                0,
+                1,
+                0
+              ]
+            },
+            {
+              "box_counts": [
+                85,
+                40,
+                32,
+                10
+              ],
+              "id": "1610612750",
+              "kind": "team",
+              "shot_counts": [
+                85,
+                40,
+                32,
+                10
+              ]
+            },
+            {
+              "box_counts": [
+                88,
+                46,
+                26,
+                13
+              ],
+              "id": "1610612743",
+              "kind": "team",
+              "shot_counts": [
+                88,
+                46,
+                26,
+                13
+              ]
+            }
+          ],
+          "game_date": "2025-10-27",
+          "game_id": "0022500008",
+          "geometry_eligible_attempts": 173,
+          "geometry_exclusions": [],
+          "model_eligible_attempts": 173,
+          "observed_attempts": 173,
+          "reasons": [],
+          "row_membership_sha256": "d7f56e9570807cb783c8b7b66b3bdb4db13a75c5d4f46afe937dd489fb0321ad",
+          "status": "reconciled"
+        }
+      ],
+      "manifest": {
+        "artifacts": {
+          "attempts.jsonl": {
+            "bytes": 191762,
+            "sha256": "d3b3825c3e94e88a00784848ed64d7ba7689ab7b346016e8128bf347110b594e"
+          },
+          "games.json": {
+            "bytes": 8089,
+            "sha256": "1dd277552ae16b17195728ec6c895c5a579e3173d7885134e584aae15bae75a9"
+          },
+          "policy-registration.json": {
+            "bytes": 834,
+            "sha256": "92e3a9b199ea9cf74708350bc7ff3f65766330f74957c28aeab60bfd5f5b94df"
+          },
+          "rejected-rows.json": {
+            "bytes": 3,
+            "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+          },
+          "source-games.json": {
+            "bytes": 25833,
+            "sha256": "44e542624ff5431a6c598b57d8448876716251ddf972ce07fec179e8bca0abfe"
+          }
+        },
+        "before_date": "2026-10-03",
+        "candidate_content_sha256": "6ee166a22f8953bea1fb0d37dbb19755858e25bb3d5082596861e8de96cc1ade",
+        "candidate_id": "1dc5e56f-b238-4eb3-b5ba-017b7dc0ce69",
+        "clock_order_diagnostic_count": 1,
+        "complete_reconciled_season": false,
+        "corrections_applied": 0,
+        "database_admitted": false,
+        "denominator": {
+          "denominator_verified": true,
+          "expected_games": 1230,
+          "membership_sha256": "afe431f32d07a657c1d1d6ff403f2b6f04856c33cc62fa08521a11e4f670037b",
+          "team_games": {
+            "1610612737": 82,
+            "1610612738": 82,
+            "1610612739": 82,
+            "1610612740": 82,
+            "1610612741": 82,
+            "1610612742": 82,
+            "1610612743": 82,
+            "1610612744": 82,
+            "1610612745": 82,
+            "1610612746": 82,
+            "1610612747": 82,
+            "1610612748": 82,
+            "1610612749": 82,
+            "1610612750": 82,
+            "1610612751": 82,
+            "1610612752": 82,
+            "1610612753": 82,
+            "1610612754": 82,
+            "1610612755": 82,
+            "1610612756": 82,
+            "1610612757": 82,
+            "1610612758": 82,
+            "1610612759": 82,
+            "1610612760": 82,
+            "1610612761": 82,
+            "1610612762": 82,
+            "1610612763": 82,
+            "1610612764": 82,
+            "1610612765": 82,
+            "1610612766": 82
+          },
+          "teams": 30
+        },
+        "expected_games": 1,
+        "extra_source_games": [],
+        "fit_authorized": false,
+        "game_id": "0022500008",
+        "game_proof_sha256": null,
+        "game_reason_counts": {},
+        "games_with_clock_order_diagnostics": 1,
+        "geometry_excluded_attempts": 0,
+        "implementation_sha256": {
+          "domain/shotchart.py": "ea507eb3350eddd8e556a3a55ac96a9dbca68fa0a75afeddd25c6bb97ead209d",
+          "evaluation/shotchart_admission.py": "3cd4e78d482d0e3ad66d663673438a49bd21e5f208f34a4c4692a0fb28f9e890",
+          "ingestion/shotchart.py": "7d38edaa7934a4872275435442dc8f11516bfc9c015ab97226922ad32d21dc9f"
+        },
+        "independent_sources": {
+          "assets": [
+            {
+              "bytes": 23071,
+              "kind": "schedule",
+              "name": "nba_schedule_2026.csv.gz",
+              "sha256": "c1ff3711ef8b8ec4310c60159d1225a400facc7ce1e29bc64f09ae4130496509",
+              "url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_schedules/nba_schedule_2026.csv.gz"
+            },
+            {
+              "bytes": 358439,
+              "kind": "teams",
+              "name": "team_boxscores_2026.csv",
+              "sha256": "b5133e5602d1ab9c4a4b4240aced7af3b6587e124f7ab7335b5de961c897ade8",
+              "url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_team_boxscores/team_boxscores_2026.csv"
+            },
+            {
+              "bytes": 6131057,
+              "kind": "players",
+              "name": "player_boxscores_2026.csv",
+              "sha256": "decaee33440ec8bd26d21152d61b4b69970bed45c3d07ede42f2700b7bd364e7",
+              "url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_player_boxscores/player_boxscores_2026.csv"
+            }
+          ],
+          "observation_limit": "retained receipt reports acquisition/reuse; not historical availability proof",
+          "receipt_acquired_at_utc": "2026-10-01T17:47:29.151743+00:00",
+          "receipt_sha256": "113d63d6260874e2d4069f1f6b092dc56374c8cfa4bd43971b8f05ef832c964b"
+        },
+        "model_eligible_attempts": 173,
+        "observed_at": "2026-10-03T13:18:46.735965+00:00",
+        "observed_attempts": 173,
+        "quality_contract_sha256": "01f71657a713a98d938be4b3564b166b8c364a7033d5236aa61e23e428752780",
+        "quarantined_games": 0,
+        "reconciled_games": 1,
+        "rejected_rows": 0,
+        "remaining_gates": [
+          "independent reuse/admission review",
+          "append-only database membership",
+          "three complete seasons",
+          "chronology amendment and exact split binding"
+        ],
+        "reuse_scope": "local research diagnostic; public redistribution unresolved",
+        "schema_version": "courtload-shotchart-audit-v1",
+        "scope": "one_game",
+        "season": "2025-26",
+        "sequence_analytics_authorized": false,
+        "source": {
+          "assets": [
+            {
+              "bytes": 11980,
+              "name": "README.md",
+              "observed_at": "2026-10-03T12:34:25.842749+00:00",
+              "sha256": "646fba3e21464fac92afe6c286637a55d5f68456487052be22be1d5a145c3687",
+              "url": "https://raw.githubusercontent.com/shufinskiy/nba_data/e829d4678be1e075f99e5d41a1c5f97089be446b/README.md"
+            },
+            {
+              "bytes": 6363,
+              "name": "description_fields.md",
+              "observed_at": "2026-10-03T12:34:25.934468+00:00",
+              "sha256": "003b485fffa9df32d18e29916a6c48074f9071f25d07686d9970231990ee473f",
+              "url": "https://raw.githubusercontent.com/shufinskiy/nba_data/e829d4678be1e075f99e5d41a1c5f97089be446b/description_fields.md"
+            },
+            {
+              "bytes": 11357,
+              "name": "LICENSE",
+              "observed_at": "2026-10-03T12:34:26.017424+00:00",
+              "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+              "url": "https://raw.githubusercontent.com/shufinskiy/nba_data/e829d4678be1e075f99e5d41a1c5f97089be446b/LICENSE"
+            },
+            {
+              "bytes": 2825192,
+              "name": "datasets/shotdetail_2025.tar.xz",
+              "observed_at": "2026-10-03T12:34:26.265530+00:00",
+              "sha256": "dcb6c29edda8463132ab62f63118b5cee80d751bcbee9ad98fa38ebe12e6d33c",
+              "url": "https://raw.githubusercontent.com/shufinskiy/nba_data/e829d4678be1e075f99e5d41a1c5f97089be446b/datasets/shotdetail_2025.tar.xz"
+            }
+          ],
+          "receipt_sha256": "a2d07fb7c13373e9d8d8586e4c46a1f5e1fbd6cc418a381172fa90b207a5346f",
+          "revision": "e829d4678be1e075f99e5d41a1c5f97089be446b"
+        },
+        "source_games": 1230,
+        "source_rows_scanned": 219160,
+        "status": "reconciled_offline_candidate",
+        "transform_version": "courtload-shotchart-v2",
+        "unscoped_identity_failure": false
+      },
+      "manifest_sha256": "c18cf3de4533e9b6f80eaaf57f879c26e00726e07e638d22dae8fffc920688e7"
+    },
+    "0022500792": {
+      "games": [
+        {
+          "clock_order_violations": [
+            {
+              "event_id": 555,
+              "period": 3,
+              "previous_event_id": 550,
+              "previous_period": 4,
+              "previous_seconds_remaining": 397,
+              "seconds_remaining": 110
+            }
+          ],
+          "comparisons": [
+            {
+              "box_counts": [
+                11,
+                5,
+                6,
+                3
+              ],
+              "id": "1642851",
+              "kind": "player",
+              "shot_counts": [
+                11,
+                5,
+                6,
+                3
+              ]
+            },
+            {
+              "box_counts": [
+                10,
+                7,
+                5,
+                4
+              ],
+              "id": "1629684",
+              "kind": "player",
+              "shot_counts": [
+                10,
+                7,
+                5,
+                4
+              ]
+            },
+            {
+              "box_counts": [
+                6,
+                5,
+                0,
+                0
+              ],
+              "id": "1641750",
+              "kind": "player",
+              "shot_counts": [
+                6,
+                5,
+                0,
+                0
+              ]
+            },
+            {
+              "box_counts": [
+                22,
+                5,
+                12,
+                1
+              ],
+              "id": "1641706",
+              "kind": "player",
+              "shot_counts": [
+                22,
+                5,
+                12,
+                1
+              ]
+            },
+            {
+              "box_counts": [
+                14,
+                5,
+                6,
+                1
+              ],
+              "id": "1630163",
+              "kind": "player",
+              "shot_counts": [
+                14,
+                5,
+                6,
+                1
+              ]
+            },
+            {
+              "box_counts": [
+                2,
+                1,
+                1,
+                0
+              ],
+              "id": "1630182",
+              "kind": "player",
+              "shot_counts": [
+                2,
+                1,
+                1,
+                0
+              ]
+            },
+            {
+              "box_counts": [
+                5,
+                3,
+                3,
+                2
+              ],
+              "id": "1642275",
+              "kind": "player",
+              "shot_counts": [
+                5,
+                3,
+                3,
+                2
+              ]
+            },
+            {
+              "box_counts": [
+                7,
+                3,
+                5,
+                2
+              ],
+              "id": "1642883",
+              "kind": "player",
+              "shot_counts": [
+                7,
+                3,
+                5,
+                2
+              ]
+            },
+            {
+              "box_counts": [
+                1,
+                0,
+                0,
+                0
+              ],
+              "id": "1641790",
+              "kind": "player",
+              "shot_counts": [
+                1,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "box_counts": [
+                6,
+                2,
+                4,
+                1
+              ],
+              "id": "1630544",
+              "kind": "player",
+              "shot_counts": [
+                6,
+                2,
+                4,
+                1
+              ]
+            },
+            {
+              "box_counts": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "id": "1630214",
+              "kind": "player",
+              "shot_counts": [
+                0,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "box_counts": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "id": "1628970",
+              "kind": "player",
+              "shot_counts": [
+                0,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "box_counts": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "id": "1626192",
+              "kind": "player",
+              "shot_counts": [
+                0,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "box_counts": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "id": "1631217",
+              "kind": "player",
+              "shot_counts": [
+                0,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "box_counts": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "id": "1641810",
+              "kind": "player",
+              "shot_counts": [
+                0,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "box_counts": [
+                20,
+                14,
+                4,
+                2
+              ],
+              "id": "201142",
+              "kind": "player",
+              "shot_counts": [
+                20,
+                14,
+                4,
+                2
+              ]
+            },
+            {
+              "box_counts": [
+                8,
+                6,
+                3,
+                2
+              ],
+              "id": "1631095",
+              "kind": "player",
+              "shot_counts": [
+                9,
+                6,
+                3,
+                2
+              ]
+            },
+            {
+              "box_counts": [
+                16,
+                6,
+                3,
+                0
+              ],
+              "id": "1630578",
+              "kind": "player",
+              "shot_counts": [
+                16,
+                6,
+                3,
+                0
+              ]
+            },
+            {
+              "box_counts": [
+                9,
+                2,
+                6,
+                1
+              ],
+              "id": "1631106",
+              "kind": "player",
+              "shot_counts": [
+                9,
+                2,
+                6,
+                1
+              ]
+            },
+            {
+              "box_counts": [
+                8,
+                3,
+                3,
+                0
+              ],
+              "id": "1641708",
+              "kind": "player",
+              "shot_counts": [
+                8,
+                3,
+                3,
+                0
+              ]
+            },
+            {
+              "box_counts": [
+                12,
+                5,
+                5,
+                1
+              ],
+              "id": "1642263",
+              "kind": "player",
+              "shot_counts": [
+                12,
+                5,
+                5,
+                1
+              ]
+            },
+            {
+              "box_counts": [
+                1,
+                0,
+                0,
+                0
+              ],
+              "id": "203991",
+              "kind": "player",
+              "shot_counts": [
+                1,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "box_counts": [
+                7,
+                3,
+                6,
+                2
+              ],
+              "id": "1627827",
+              "kind": "player",
+              "shot_counts": [
+                7,
+                3,
+                6,
+                2
+              ]
+            },
+            {
+              "box_counts": [
+                4,
+                3,
+                2,
+                1
+              ],
+              "id": "1630256",
+              "kind": "player",
+              "shot_counts": [
+                4,
+                3,
+                2,
+                1
+              ]
+            },
+            {
+              "box_counts": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "id": "1642384",
+              "kind": "player",
+              "shot_counts": [
+                0,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "box_counts": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "id": "201145",
+              "kind": "player",
+              "shot_counts": [
+                0,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "box_counts": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "id": "1628988",
+              "kind": "player",
+              "shot_counts": [
+                0,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "box_counts": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "id": "1629006",
+              "kind": "player",
+              "shot_counts": [
+                0,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "box_counts": [
+                84,
+                36,
+                42,
+                14
+              ],
+              "id": "1610612766",
+              "kind": "team",
+              "shot_counts": [
+                84,
+                36,
+                42,
+                14
+              ]
+            },
+            {
+              "box_counts": [
+                85,
+                42,
+                32,
+                9
+              ],
+              "id": "1610612745",
+              "kind": "team",
+              "shot_counts": [
+                86,
+                42,
+                32,
+                9
+              ]
+            }
+          ],
+          "game_date": "2026-02-19",
+          "game_id": "0022500792",
+          "geometry_eligible_attempts": 170,
+          "geometry_exclusions": [],
+          "model_eligible_attempts": 0,
+          "observed_attempts": 170,
+          "reasons": [
+            "player_counts_mismatch:1631095",
+            "team_counts_mismatch:1610612745"
+          ],
+          "row_membership_sha256": "4bf29e7d9c1e843141f0002678adebf5f2a8af8f321233e14924ab349fe29a04",
+          "status": "quarantined"
+        }
+      ],
+      "manifest": {
+        "artifacts": {
+          "attempts.jsonl": {
+            "bytes": 187728,
+            "sha256": "8ee90cceeef7c8653b7cc313fb540270bfcb10e498e74d3b8f8cf9f829eca0d0"
+          },
+          "games.json": {
+            "bytes": 7934,
+            "sha256": "39e5d7d66cc43412865642ea106d5856f1e91690298a8071b179fbd6f5557102"
+          },
+          "policy-registration.json": {
+            "bytes": 834,
+            "sha256": "6c7dd88376ba7c2ec9d6fc8a5e4f13965a7e1f8b2daf84166bf642d984410c2c"
+          },
+          "rejected-rows.json": {
+            "bytes": 3,
+            "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+          },
+          "source-games.json": {
+            "bytes": 25833,
+            "sha256": "44e542624ff5431a6c598b57d8448876716251ddf972ce07fec179e8bca0abfe"
+          }
+        },
+        "before_date": "2026-10-03",
+        "candidate_content_sha256": "c7710ee5eef0d4a107f992dda98fcc16a058a59fc0d66506510254ccaa6fe9a9",
+        "candidate_id": "da311e79-bbe6-40e7-b5ee-f7b20465b8e8",
+        "clock_order_diagnostic_count": 1,
+        "complete_reconciled_season": false,
+        "corrections_applied": 0,
+        "database_admitted": false,
+        "denominator": {
+          "denominator_verified": true,
+          "expected_games": 1230,
+          "membership_sha256": "afe431f32d07a657c1d1d6ff403f2b6f04856c33cc62fa08521a11e4f670037b",
+          "team_games": {
+            "1610612737": 82,
+            "1610612738": 82,
+            "1610612739": 82,
+            "1610612740": 82,
+            "1610612741": 82,
+            "1610612742": 82,
+            "1610612743": 82,
+            "1610612744": 82,
+            "1610612745": 82,
+            "1610612746": 82,
+            "1610612747": 82,
+            "1610612748": 82,
+            "1610612749": 82,
+            "1610612750": 82,
+            "1610612751": 82,
+            "1610612752": 82,
+            "1610612753": 82,
+            "1610612754": 82,
+            "1610612755": 82,
+            "1610612756": 82,
+            "1610612757": 82,
+            "1610612758": 82,
+            "1610612759": 82,
+            "1610612760": 82,
+            "1610612761": 82,
+            "1610612762": 82,
+            "1610612763": 82,
+            "1610612764": 82,
+            "1610612765": 82,
+            "1610612766": 82
+          },
+          "teams": 30
+        },
+        "expected_games": 1,
+        "extra_source_games": [],
+        "fit_authorized": false,
+        "game_id": "0022500792",
+        "game_proof_sha256": null,
+        "game_reason_counts": {
+          "player_counts_mismatch": 1,
+          "team_counts_mismatch": 1
+        },
+        "games_with_clock_order_diagnostics": 1,
+        "geometry_excluded_attempts": 0,
+        "implementation_sha256": {
+          "domain/shotchart.py": "ea507eb3350eddd8e556a3a55ac96a9dbca68fa0a75afeddd25c6bb97ead209d",
+          "evaluation/shotchart_admission.py": "3cd4e78d482d0e3ad66d663673438a49bd21e5f208f34a4c4692a0fb28f9e890",
+          "ingestion/shotchart.py": "7d38edaa7934a4872275435442dc8f11516bfc9c015ab97226922ad32d21dc9f"
+        },
+        "independent_sources": {
+          "assets": [
+            {
+              "bytes": 23071,
+              "kind": "schedule",
+              "name": "nba_schedule_2026.csv.gz",
+              "sha256": "c1ff3711ef8b8ec4310c60159d1225a400facc7ce1e29bc64f09ae4130496509",
+              "url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_schedules/nba_schedule_2026.csv.gz"
+            },
+            {
+              "bytes": 358439,
+              "kind": "teams",
+              "name": "team_boxscores_2026.csv",
+              "sha256": "b5133e5602d1ab9c4a4b4240aced7af3b6587e124f7ab7335b5de961c897ade8",
+              "url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_team_boxscores/team_boxscores_2026.csv"
+            },
+            {
+              "bytes": 6131057,
+              "kind": "players",
+              "name": "player_boxscores_2026.csv",
+              "sha256": "decaee33440ec8bd26d21152d61b4b69970bed45c3d07ede42f2700b7bd364e7",
+              "url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_player_boxscores/player_boxscores_2026.csv"
+            }
+          ],
+          "observation_limit": "retained receipt reports acquisition/reuse; not historical availability proof",
+          "receipt_acquired_at_utc": "2026-10-01T17:47:29.151743+00:00",
+          "receipt_sha256": "113d63d6260874e2d4069f1f6b092dc56374c8cfa4bd43971b8f05ef832c964b"
+        },
+        "model_eligible_attempts": 0,
+        "observed_at": "2026-10-03T13:18:47.883088+00:00",
+        "observed_attempts": 170,
+        "quality_contract_sha256": "01f71657a713a98d938be4b3564b166b8c364a7033d5236aa61e23e428752780",
+        "quarantined_games": 1,
+        "reconciled_games": 0,
+        "rejected_rows": 0,
+        "remaining_gates": [
+          "independent reuse/admission review",
+          "append-only database membership",
+          "three complete seasons",
+          "chronology amendment and exact split binding"
+        ],
+        "reuse_scope": "local research diagnostic; public redistribution unresolved",
+        "schema_version": "courtload-shotchart-audit-v1",
+        "scope": "one_game",
+        "season": "2025-26",
+        "sequence_analytics_authorized": false,
+        "source": {
+          "assets": [
+            {
+              "bytes": 11980,
+              "name": "README.md",
+              "observed_at": "2026-10-03T12:34:25.842749+00:00",
+              "sha256": "646fba3e21464fac92afe6c286637a55d5f68456487052be22be1d5a145c3687",
+              "url": "https://raw.githubusercontent.com/shufinskiy/nba_data/e829d4678be1e075f99e5d41a1c5f97089be446b/README.md"
+            },
+            {
+              "bytes": 6363,
+              "name": "description_fields.md",
+              "observed_at": "2026-10-03T12:34:25.934468+00:00",
+              "sha256": "003b485fffa9df32d18e29916a6c48074f9071f25d07686d9970231990ee473f",
+              "url": "https://raw.githubusercontent.com/shufinskiy/nba_data/e829d4678be1e075f99e5d41a1c5f97089be446b/description_fields.md"
+            },
+            {
+              "bytes": 11357,
+              "name": "LICENSE",
+              "observed_at": "2026-10-03T12:34:26.017424+00:00",
+              "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+              "url": "https://raw.githubusercontent.com/shufinskiy/nba_data/e829d4678be1e075f99e5d41a1c5f97089be446b/LICENSE"
+            },
+            {
+              "bytes": 2825192,
+              "name": "datasets/shotdetail_2025.tar.xz",
+              "observed_at": "2026-10-03T12:34:26.265530+00:00",
+              "sha256": "dcb6c29edda8463132ab62f63118b5cee80d751bcbee9ad98fa38ebe12e6d33c",
+              "url": "https://raw.githubusercontent.com/shufinskiy/nba_data/e829d4678be1e075f99e5d41a1c5f97089be446b/datasets/shotdetail_2025.tar.xz"
+            }
+          ],
+          "receipt_sha256": "a2d07fb7c13373e9d8d8586e4c46a1f5e1fbd6cc418a381172fa90b207a5346f",
+          "revision": "e829d4678be1e075f99e5d41a1c5f97089be446b"
+        },
+        "source_games": 1230,
+        "source_rows_scanned": 219160,
+        "status": "source_blocked",
+        "transform_version": "courtload-shotchart-v2",
+        "unscoped_identity_failure": false
+      },
+      "manifest_sha256": "9596bb5174c473935feeea714937ddced5a3b0c145a5e1d2d936b490e0f1e2fc"
+    }
+  },
+  "older_season_expansion": false,
+  "pending_correction": {
+    "applied": false,
+    "approved": false,
+    "evidence_gate": "full immutable official observations plus explicit review required; browser text/count fitting insufficient",
+    "game_identity": "Houston at Charlotte, 2026-02-19",
+    "official_url": "https://statsdmz.nba.com/pdfs/20260219/20260219_HOUCHA_book.pdf",
+    "original_row": {
+      "attempt": {
+        "away_tricode": "HOU",
+        "distance_feet": 5.0,
+        "event_id": 403,
+        "game_date": "2026-02-19",
+        "game_id": "0022500792",
+        "geometry_exclusions": [],
+        "home_tricode": "CHA",
+        "made": false,
+        "period": 3,
+        "player_id": "1631095",
+        "raw_fields_sha256": "26cdbdce507d3d5babfd09fcda423eaf7b555bd24ae217594365c4a3ad9b04be",
+        "seconds_remaining": 286,
+        "shot_value": 2,
+        "source_line": 77793,
+        "team_id": "1610612745",
+        "x_feet": -1.8,
+        "y_feet": 5.3,
+        "zone": "In The Paint (Non-RA)"
+      },
+      "raw_fields": {
+        "ACTION_TYPE": "Running Layup Shot",
+        "EVENT_TYPE": "Missed Shot",
+        "GAME_DATE": "20260219",
+        "GAME_EVENT_ID": "403",
+        "GAME_ID": "22500792",
+        "GRID_TYPE": "Shot Chart Detail",
+        "HTM": "CHA",
+        "LOC_X": "-18",
+        "LOC_Y": "53",
+        "MINUTES_REMAINING": "4",
+        "PERIOD": "3",
+        "PLAYER_ID": "1631095",
+        "PLAYER_NAME": "Jabari Smith Jr.",
+        "SECONDS_REMAINING": "46",
+        "SHOT_ATTEMPTED_FLAG": "1",
+        "SHOT_DISTANCE": "5",
+        "SHOT_MADE_FLAG": "0",
+        "SHOT_TYPE": "2PT Field Goal",
+        "SHOT_ZONE_AREA": "Center(C)",
+        "SHOT_ZONE_BASIC": "In The Paint (Non-RA)",
+        "SHOT_ZONE_RANGE": "Less Than 8 ft.",
+        "TEAM_ID": "1610612745",
+        "TEAM_NAME": "Houston Rockets",
+        "VTM": "HOU"
+      }
+    },
+    "source_archive_sha256": "dcb6c29edda8463132ab62f63118b5cee80d751bcbee9ad98fa38ebe12e6d33c"
+  },
+  "preserved_v1": [
+    {
+      "artifact_count": 4,
+      "artifacts_verified": true,
+      "bundle": "data/artifacts/research-shots/b26-game-0022500001-final",
+      "manifest_sha256": "31a06b733a7d8716a2407fb5787b72ac4e68a1170691d4b16b66842e5cf73e49"
+    },
+    {
+      "artifact_count": 4,
+      "artifacts_verified": true,
+      "bundle": "data/artifacts/research-shots/b26-season-2025-final",
+      "manifest_sha256": "ee101b37cad3625452f96aa2873ff48272ab307f7debb0e363884eaf9094782a"
+    }
+  ],
+  "publication_changes": 0,
+  "quarantined_games": [
+    {
+      "clock_order_violations": [
+        {
+          "event_id": 555,
+          "period": 3,
+          "previous_event_id": 550,
+          "previous_period": 4,
+          "previous_seconds_remaining": 397,
+          "seconds_remaining": 110
+        }
+      ],
+      "comparisons": [
+        {
+          "box_counts": [
+            11,
+            5,
+            6,
+            3
+          ],
+          "id": "1642851",
+          "kind": "player",
+          "shot_counts": [
+            11,
+            5,
+            6,
+            3
+          ]
+        },
+        {
+          "box_counts": [
+            10,
+            7,
+            5,
+            4
+          ],
+          "id": "1629684",
+          "kind": "player",
+          "shot_counts": [
+            10,
+            7,
+            5,
+            4
+          ]
+        },
+        {
+          "box_counts": [
+            6,
+            5,
+            0,
+            0
+          ],
+          "id": "1641750",
+          "kind": "player",
+          "shot_counts": [
+            6,
+            5,
+            0,
+            0
+          ]
+        },
+        {
+          "box_counts": [
+            22,
+            5,
+            12,
+            1
+          ],
+          "id": "1641706",
+          "kind": "player",
+          "shot_counts": [
+            22,
+            5,
+            12,
+            1
+          ]
+        },
+        {
+          "box_counts": [
+            14,
+            5,
+            6,
+            1
+          ],
+          "id": "1630163",
+          "kind": "player",
+          "shot_counts": [
+            14,
+            5,
+            6,
+            1
+          ]
+        },
+        {
+          "box_counts": [
+            2,
+            1,
+            1,
+            0
+          ],
+          "id": "1630182",
+          "kind": "player",
+          "shot_counts": [
+            2,
+            1,
+            1,
+            0
+          ]
+        },
+        {
+          "box_counts": [
+            5,
+            3,
+            3,
+            2
+          ],
+          "id": "1642275",
+          "kind": "player",
+          "shot_counts": [
+            5,
+            3,
+            3,
+            2
+          ]
+        },
+        {
+          "box_counts": [
+            7,
+            3,
+            5,
+            2
+          ],
+          "id": "1642883",
+          "kind": "player",
+          "shot_counts": [
+            7,
+            3,
+            5,
+            2
+          ]
+        },
+        {
+          "box_counts": [
+            1,
+            0,
+            0,
+            0
+          ],
+          "id": "1641790",
+          "kind": "player",
+          "shot_counts": [
+            1,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "box_counts": [
+            6,
+            2,
+            4,
+            1
+          ],
+          "id": "1630544",
+          "kind": "player",
+          "shot_counts": [
+            6,
+            2,
+            4,
+            1
+          ]
+        },
+        {
+          "box_counts": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "id": "1630214",
+          "kind": "player",
+          "shot_counts": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "box_counts": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "id": "1628970",
+          "kind": "player",
+          "shot_counts": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "box_counts": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "id": "1626192",
+          "kind": "player",
+          "shot_counts": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "box_counts": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "id": "1631217",
+          "kind": "player",
+          "shot_counts": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "box_counts": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "id": "1641810",
+          "kind": "player",
+          "shot_counts": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "box_counts": [
+            20,
+            14,
+            4,
+            2
+          ],
+          "id": "201142",
+          "kind": "player",
+          "shot_counts": [
+            20,
+            14,
+            4,
+            2
+          ]
+        },
+        {
+          "box_counts": [
+            8,
+            6,
+            3,
+            2
+          ],
+          "id": "1631095",
+          "kind": "player",
+          "shot_counts": [
+            9,
+            6,
+            3,
+            2
+          ]
+        },
+        {
+          "box_counts": [
+            16,
+            6,
+            3,
+            0
+          ],
+          "id": "1630578",
+          "kind": "player",
+          "shot_counts": [
+            16,
+            6,
+            3,
+            0
+          ]
+        },
+        {
+          "box_counts": [
+            9,
+            2,
+            6,
+            1
+          ],
+          "id": "1631106",
+          "kind": "player",
+          "shot_counts": [
+            9,
+            2,
+            6,
+            1
+          ]
+        },
+        {
+          "box_counts": [
+            8,
+            3,
+            3,
+            0
+          ],
+          "id": "1641708",
+          "kind": "player",
+          "shot_counts": [
+            8,
+            3,
+            3,
+            0
+          ]
+        },
+        {
+          "box_counts": [
+            12,
+            5,
+            5,
+            1
+          ],
+          "id": "1642263",
+          "kind": "player",
+          "shot_counts": [
+            12,
+            5,
+            5,
+            1
+          ]
+        },
+        {
+          "box_counts": [
+            1,
+            0,
+            0,
+            0
+          ],
+          "id": "203991",
+          "kind": "player",
+          "shot_counts": [
+            1,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "box_counts": [
+            7,
+            3,
+            6,
+            2
+          ],
+          "id": "1627827",
+          "kind": "player",
+          "shot_counts": [
+            7,
+            3,
+            6,
+            2
+          ]
+        },
+        {
+          "box_counts": [
+            4,
+            3,
+            2,
+            1
+          ],
+          "id": "1630256",
+          "kind": "player",
+          "shot_counts": [
+            4,
+            3,
+            2,
+            1
+          ]
+        },
+        {
+          "box_counts": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "id": "1642384",
+          "kind": "player",
+          "shot_counts": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "box_counts": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "id": "201145",
+          "kind": "player",
+          "shot_counts": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "box_counts": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "id": "1628988",
+          "kind": "player",
+          "shot_counts": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "box_counts": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "id": "1629006",
+          "kind": "player",
+          "shot_counts": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "box_counts": [
+            84,
+            36,
+            42,
+            14
+          ],
+          "id": "1610612766",
+          "kind": "team",
+          "shot_counts": [
+            84,
+            36,
+            42,
+            14
+          ]
+        },
+        {
+          "box_counts": [
+            85,
+            42,
+            32,
+            9
+          ],
+          "id": "1610612745",
+          "kind": "team",
+          "shot_counts": [
+            86,
+            42,
+            32,
+            9
+          ]
+        }
+      ],
+      "game_date": "2026-02-19",
+      "game_id": "0022500792",
+      "geometry_eligible_attempts": 170,
+      "geometry_exclusions": [],
+      "model_eligible_attempts": 0,
+      "observed_attempts": 170,
+      "reasons": [
+        "player_counts_mismatch:1631095",
+        "team_counts_mismatch:1610612745"
+      ],
+      "row_membership_sha256": "4bf29e7d9c1e843141f0002678adebf5f2a8af8f321233e14924ab349fe29a04",
+      "status": "quarantined"
+    }
+  ],
+  "recorded_at": "2026-10-03T13:20:36.426816+00:00",
+  "schema_version": "courtload-b26-shotchart-v2-evidence-v1",
+  "scope": "versioned admission and pending correction evidence; correction application unimplemented",
+  "season_manifest": {
+    "artifacts": {
+      "attempts.jsonl": {
+        "bytes": 242409552,
+        "sha256": "993d325c5f0522858b233ff6b515ac7dee5ca4b78877abaae522252a8804fe22"
+      },
+      "games.json": {
+        "bytes": 9101438,
+        "sha256": "b94a9787d1fd8c2736335132a5e88d071b5fbcc3727e430a580b28e9eb7c8d16"
+      },
+      "policy-registration.json": {
+        "bytes": 834,
+        "sha256": "9cc493a1dbe34f0de9588327bd2e5c6ee205a4632021bebdcba90400311ab0ea"
+      },
+      "rejected-rows.json": {
+        "bytes": 3,
+        "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+      },
+      "source-games.json": {
+        "bytes": 25833,
+        "sha256": "44e542624ff5431a6c598b57d8448876716251ddf972ce07fec179e8bca0abfe"
+      }
+    },
+    "before_date": "2026-10-03",
+    "candidate_content_sha256": "6f2d4b8884882a10d5bbfe6689538f47a95ad36095e4c396c2d6082ba27da35b",
+    "candidate_id": "6b13ba0c-d273-4f35-aa72-9cbf08b6d0e4",
+    "clock_order_diagnostic_count": 1184,
+    "complete_reconciled_season": false,
+    "corrections_applied": 0,
+    "database_admitted": false,
+    "denominator": {
+      "denominator_verified": true,
+      "expected_games": 1230,
+      "membership_sha256": "afe431f32d07a657c1d1d6ff403f2b6f04856c33cc62fa08521a11e4f670037b",
+      "team_games": {
+        "1610612737": 82,
+        "1610612738": 82,
+        "1610612739": 82,
+        "1610612740": 82,
+        "1610612741": 82,
+        "1610612742": 82,
+        "1610612743": 82,
+        "1610612744": 82,
+        "1610612745": 82,
+        "1610612746": 82,
+        "1610612747": 82,
+        "1610612748": 82,
+        "1610612749": 82,
+        "1610612750": 82,
+        "1610612751": 82,
+        "1610612752": 82,
+        "1610612753": 82,
+        "1610612754": 82,
+        "1610612755": 82,
+        "1610612756": 82,
+        "1610612757": 82,
+        "1610612758": 82,
+        "1610612759": 82,
+        "1610612760": 82,
+        "1610612761": 82,
+        "1610612762": 82,
+        "1610612763": 82,
+        "1610612764": 82,
+        "1610612765": 82,
+        "1610612766": 82
+      },
+      "teams": 30
+    },
+    "expected_games": 1230,
+    "extra_source_games": [],
+    "fit_authorized": false,
+    "game_id": null,
+    "game_proof_sha256": "cac90ff18d8b9bbd89a62caeb6c6f5d3ccbc943649027944cea8ed6421546798",
+    "game_reason_counts": {
+      "player_counts_mismatch": 1,
+      "team_counts_mismatch": 1
+    },
+    "games_with_clock_order_diagnostics": 712,
+    "geometry_excluded_attempts": 0,
+    "implementation_sha256": {
+      "domain/shotchart.py": "ea507eb3350eddd8e556a3a55ac96a9dbca68fa0a75afeddd25c6bb97ead209d",
+      "evaluation/shotchart_admission.py": "3cd4e78d482d0e3ad66d663673438a49bd21e5f208f34a4c4692a0fb28f9e890",
+      "ingestion/shotchart.py": "7d38edaa7934a4872275435442dc8f11516bfc9c015ab97226922ad32d21dc9f"
+    },
+    "independent_sources": {
+      "assets": [
+        {
+          "bytes": 23071,
+          "kind": "schedule",
+          "name": "nba_schedule_2026.csv.gz",
+          "sha256": "c1ff3711ef8b8ec4310c60159d1225a400facc7ce1e29bc64f09ae4130496509",
+          "url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_schedules/nba_schedule_2026.csv.gz"
+        },
+        {
+          "bytes": 358439,
+          "kind": "teams",
+          "name": "team_boxscores_2026.csv",
+          "sha256": "b5133e5602d1ab9c4a4b4240aced7af3b6587e124f7ab7335b5de961c897ade8",
+          "url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_team_boxscores/team_boxscores_2026.csv"
+        },
+        {
+          "bytes": 6131057,
+          "kind": "players",
+          "name": "player_boxscores_2026.csv",
+          "sha256": "decaee33440ec8bd26d21152d61b4b69970bed45c3d07ede42f2700b7bd364e7",
+          "url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_player_boxscores/player_boxscores_2026.csv"
+        }
+      ],
+      "observation_limit": "retained receipt reports acquisition/reuse; not historical availability proof",
+      "receipt_acquired_at_utc": "2026-10-01T17:47:29.151743+00:00",
+      "receipt_sha256": "113d63d6260874e2d4069f1f6b092dc56374c8cfa4bd43971b8f05ef832c964b"
+    },
+    "model_eligible_attempts": 218990,
+    "observed_at": "2026-10-03T13:19:01.108464+00:00",
+    "observed_attempts": 219160,
+    "quality_contract_sha256": "01f71657a713a98d938be4b3564b166b8c364a7033d5236aa61e23e428752780",
+    "quarantined_games": 1,
+    "reconciled_games": 1229,
+    "rejected_rows": 0,
+    "remaining_gates": [
+      "independent reuse/admission review",
+      "append-only database membership",
+      "three complete seasons",
+      "chronology amendment and exact split binding"
+    ],
+    "reuse_scope": "local research diagnostic; public redistribution unresolved",
+    "schema_version": "courtload-shotchart-audit-v1",
+    "scope": "season",
+    "season": "2025-26",
+    "sequence_analytics_authorized": false,
+    "source": {
+      "assets": [
+        {
+          "bytes": 11980,
+          "name": "README.md",
+          "observed_at": "2026-10-03T12:34:25.842749+00:00",
+          "sha256": "646fba3e21464fac92afe6c286637a55d5f68456487052be22be1d5a145c3687",
+          "url": "https://raw.githubusercontent.com/shufinskiy/nba_data/e829d4678be1e075f99e5d41a1c5f97089be446b/README.md"
+        },
+        {
+          "bytes": 6363,
+          "name": "description_fields.md",
+          "observed_at": "2026-10-03T12:34:25.934468+00:00",
+          "sha256": "003b485fffa9df32d18e29916a6c48074f9071f25d07686d9970231990ee473f",
+          "url": "https://raw.githubusercontent.com/shufinskiy/nba_data/e829d4678be1e075f99e5d41a1c5f97089be446b/description_fields.md"
+        },
+        {
+          "bytes": 11357,
+          "name": "LICENSE",
+          "observed_at": "2026-10-03T12:34:26.017424+00:00",
+          "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+          "url": "https://raw.githubusercontent.com/shufinskiy/nba_data/e829d4678be1e075f99e5d41a1c5f97089be446b/LICENSE"
+        },
+        {
+          "bytes": 2825192,
+          "name": "datasets/shotdetail_2025.tar.xz",
+          "observed_at": "2026-10-03T12:34:26.265530+00:00",
+          "sha256": "dcb6c29edda8463132ab62f63118b5cee80d751bcbee9ad98fa38ebe12e6d33c",
+          "url": "https://raw.githubusercontent.com/shufinskiy/nba_data/e829d4678be1e075f99e5d41a1c5f97089be446b/datasets/shotdetail_2025.tar.xz"
+        }
+      ],
+      "receipt_sha256": "a2d07fb7c13373e9d8d8586e4c46a1f5e1fbd6cc418a381172fa90b207a5346f",
+      "revision": "e829d4678be1e075f99e5d41a1c5f97089be446b"
+    },
+    "source_games": 1230,
+    "source_rows_scanned": 219160,
+    "status": "source_blocked",
+    "transform_version": "courtload-shotchart-v2",
+    "unscoped_identity_failure": false
+  },
+  "season_manifest_sha256": "00849c5c6deb360872c24ab3c9bb2453eb5085799a5c8490adfdd65509480d17",
+  "verification": {
+    "backend_tests_passed": 423,
+    "backend_tests_skipped": 67,
+    "dashboard_browser_tests": "not rerun; no frontend change",
+    "focused_tests_passed": 59,
+    "mypy": "pass, 108 source files",
+    "ruff": "pass",
+    "ruff_format": "pass, 246 files",
+    "skip_reason": "PostgreSQL test URL not configured",
+    "warning": "existing Starlette/httpx deprecation",
+    "warnings": 1
+  }
+}

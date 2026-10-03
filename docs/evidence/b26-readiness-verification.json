@@ -1,0 +1,51 @@
+{
+  "b25_registration_integrity": [
+    {
+      "experiment": "courtload-adjusted-shooting-v1",
+      "protocol_bytes_match": true,
+      "retained_bytes_match": true,
+      "semantic_hash_matches": true
+    },
+    {
+      "experiment": "courtload-expected-shot-v1",
+      "protocol_bytes_match": true,
+      "retained_bytes_match": true,
+      "semantic_hash_matches": true
+    },
+    {
+      "experiment": "courtload-rapm-v1",
+      "protocol_bytes_match": true,
+      "retained_bytes_match": true,
+      "semantic_hash_matches": true
+    },
+    {
+      "experiment": "courtload-six-factor-v1",
+      "protocol_bytes_match": true,
+      "retained_bytes_match": true,
+      "semantic_hash_matches": true
+    }
+  ],
+  "checks": {
+    "focused_and_regression_tests_passed": 64,
+    "mypy_source_files": 105,
+    "retained_historical_checksums_passed": 26,
+    "ruff": "pass",
+    "ruff_format_files": 238,
+    "test_skips": 0,
+    "test_warning": "Existing Starlette/httpx deprecation"
+  },
+  "database_imports": 0,
+  "exclusive_output_refusal": {
+    "exit_code": 2,
+    "file_exists_error": true,
+    "unchanged_bytes": true
+  },
+  "fits_performed": 0,
+  "input_inventory_sha256": "dee55e3eb416a4a706e1c850a61856c4d876d66dc8c9756e8e37c2b46c31842f",
+  "postgres_transaction_probe": {
+    "isolation": "repeatable read",
+    "read_only": "on"
+  },
+  "publication_changes": 0,
+  "schema_version": "courtload-b26-readiness-verification-v1"
+}

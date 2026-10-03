@@ -1,0 +1,46 @@
+{
+  "exact_split_bindings": [],
+  "external_outputs_imported": 0,
+  "fits_performed": 0,
+  "registered_at": "2026-10-03T10:50:00.288132+00:00",
+  "registrations": [
+    {
+      "experiment": "courtload-adjusted-shooting-v1",
+      "file_sha256": "c80f4cb2c6153d44bd99a585125c19318bba72f2ca9c6cab068e6b5b1ee5d66e",
+      "protocol_path": "evaluation/research/protocols/courtload-adjusted-shooting-v1.json",
+      "protocol_sha256": "df1c8a26f00704101397af19947ab2213934c6e23b53eb53a3e053938a01237b",
+      "retained_file_sha256": "c80f4cb2c6153d44bd99a585125c19318bba72f2ca9c6cab068e6b5b1ee5d66e",
+      "retained_path": "data/artifacts/research-registration/df1c8a26f00704101397af19947ab2213934c6e23b53eb53a3e053938a01237b.json",
+      "status": "design_registered_input_memberships_unbound_no_fit_authorized"
+    },
+    {
+      "experiment": "courtload-expected-shot-v1",
+      "file_sha256": "31a4e6d84714d48a37aab11a698699fdbdc61248ad00e5fb2984e5980b9e1148",
+      "protocol_path": "evaluation/research/protocols/courtload-expected-shot-v1.json",
+      "protocol_sha256": "e6b47c6c158e13b5daa274d158adfc0d7c8d1cc5642bec89585a0829fd956d0b",
+      "retained_file_sha256": "31a4e6d84714d48a37aab11a698699fdbdc61248ad00e5fb2984e5980b9e1148",
+      "retained_path": "data/artifacts/research-registration/e6b47c6c158e13b5daa274d158adfc0d7c8d1cc5642bec89585a0829fd956d0b.json",
+      "status": "design_registered_input_memberships_unbound_no_fit_authorized"
+    },
+    {
+      "experiment": "courtload-rapm-v1",
+      "file_sha256": "47b75440072f9169c3fe8bfae6b46df164fe6672709eaf6c19c27bc9c531e6c2",
+      "protocol_path": "evaluation/research/protocols/courtload-rapm-v1.json",
+      "protocol_sha256": "06ab95316d64cc4b792c15753bb4b32024c948a68d0b5e7fad20d586372a6ed9",
+      "retained_file_sha256": "47b75440072f9169c3fe8bfae6b46df164fe6672709eaf6c19c27bc9c531e6c2",
+      "retained_path": "data/artifacts/research-registration/06ab95316d64cc4b792c15753bb4b32024c948a68d0b5e7fad20d586372a6ed9.json",
+      "status": "design_registered_input_memberships_unbound_no_fit_authorized"
+    },
+    {
+      "experiment": "courtload-six-factor-v1",
+      "file_sha256": "ee077c1ba00e504cdd94dbe8afcdfb04c8103e680eddac8563f61702727789c5",
+      "protocol_path": "evaluation/research/protocols/courtload-six-factor-v1.json",
+      "protocol_sha256": "919815b24d1ec5856bf22c1ad0ad1006b177238be17094413f16431a082236d2",
+      "retained_file_sha256": "ee077c1ba00e504cdd94dbe8afcdfb04c8103e680eddac8563f61702727789c5",
+      "retained_path": "data/artifacts/research-registration/919815b24d1ec5856bf22c1ad0ad1006b177238be17094413f16431a082236d2.json",
+      "status": "design_registered_input_memberships_unbound_no_fit_authorized"
+    }
+  ],
+  "schema_version": "courtload-b25-registration-manifest-v1",
+  "source_state": "source_blocked"
+}
