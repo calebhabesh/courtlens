@@ -1,0 +1,323 @@
+{
+  "schema_version": "b28-evidence-v1",
+  "capture_kind": "real PostgreSQL tracked local imports using retained manual factual notes",
+  "checks": [
+    {
+      "release_id": "96b89635-82b4-47c7-b4f6-52ab85c0f0bc",
+      "content_sha256": "b425f46cfa002bf79c79a63b5b6e05fc3db478f441f87a48dd233437e00816e4",
+      "selected_rows": 6,
+      "source_bytes_verified": 1108,
+      "status": "verified"
+    },
+    {
+      "release_id": "256f66b1-129d-4904-be30-7b946f6e92fc",
+      "content_sha256": "a5052df00f96420d722bcfcf5fa91df0c90394e570ceb5bf85de2f61f2b9ebc2",
+      "selected_rows": 6,
+      "source_bytes_verified": 1108,
+      "status": "verified"
+    }
+  ],
+  "jobs": [
+    {
+      "id": "b0f561f7-b49b-4b65-8a49-0b840aa8d456",
+      "status": "succeeded",
+      "arguments": {
+        "bundle_hash": "6e77a9ecd53e50feb3bb8afbeda25e2b7501de8efb241a10c3c454482844fd33"
+      },
+      "output": {
+        "finance_release_id": "96b89635-82b4-47c7-b4f6-52ab85c0f0bc",
+        "content_sha256": "b425f46cfa002bf79c79a63b5b6e05fc3db478f441f87a48dd233437e00816e4"
+      }
+    },
+    {
+      "id": "eaa3d8f3-05e4-46ae-b844-d625d0c6ddc1",
+      "status": "succeeded",
+      "arguments": {
+        "bundle_hash": "bc891bdc77ef677d67d38aa3766dd101cdec543a39d18a8b04c9dc0b681ec9c7"
+      },
+      "output": {
+        "finance_release_id": "256f66b1-129d-4904-be30-7b946f6e92fc",
+        "content_sha256": "a5052df00f96420d722bcfcf5fa91df0c90394e570ceb5bf85de2f61f2b9ebc2"
+      }
+    }
+  ],
+  "selected_observations": [
+    {
+      "id": "4f745c61-faa5-4ce5-9ca7-e292952f080a",
+      "content_sha256": "9a750017d169bd42050c5061cb99bfd451d9f96d0c932e226a0c1047c06bbf1e",
+      "cents": null,
+      "row": {
+        "row_id": "association",
+        "kind": "association",
+        "source_namespace": "nba",
+        "source_entity_id": "1627742",
+        "nba_player_id": "1627742",
+        "contract_id": "nba:1627742:tor-extension-2025-02",
+        "financial_season": null,
+        "team_id": "1610612761",
+        "effective_date": "2025-02-12",
+        "announced_at": null,
+        "observed_at": "2026-10-03T16:52:13.022436Z",
+        "source_sha256": "14a5ddb88b666c567d57937ec476e7a3bc85cba8d848e62b99528f5e4048f9eb",
+        "source_locator": "indexed announcement excerpt; terms not enumerated",
+        "original_label": "multi-year extension announcement",
+        "amount_kind": null,
+        "currency": null,
+        "value": null,
+        "status": null,
+        "option": null,
+        "option_state": null,
+        "guarantee": null,
+        "years": null,
+        "supersedes_id": null,
+        "correction_reason": null
+      }
+    },
+    {
+      "id": "58517719-9123-4039-9656-be65f6e2e5d7",
+      "content_sha256": "0d7200eeb50a7206fd29312978d7b076a336d0072695203359a55ccee2f9bf73",
+      "cents": null,
+      "row": {
+        "row_id": "option",
+        "kind": "option",
+        "source_namespace": "nba",
+        "source_entity_id": "1627742",
+        "nba_player_id": "1627742",
+        "contract_id": "nba:1627742:tor-extension-2025-02",
+        "financial_season": null,
+        "team_id": null,
+        "effective_date": null,
+        "announced_at": null,
+        "observed_at": "2026-10-03T16:52:13.022436Z",
+        "source_sha256": "14a5ddb88b666c567d57937ec476e7a3bc85cba8d848e62b99528f5e4048f9eb",
+        "source_locator": "indexed announcement excerpt; terms not enumerated",
+        "original_label": "multi-year extension announcement",
+        "amount_kind": null,
+        "currency": null,
+        "value": null,
+        "status": null,
+        "option": null,
+        "option_state": null,
+        "guarantee": null,
+        "years": null,
+        "supersedes_id": null,
+        "correction_reason": null
+      }
+    },
+    {
+      "id": "69d0f845-acb4-44d5-a549-a102cace0089",
+      "content_sha256": "d100a292805736c5402964b66aad34f8ce9d7f137a468fe2f53f4d347931a5b6",
+      "cents": null,
+      "row": {
+        "row_id": "guarantee",
+        "kind": "guarantee",
+        "source_namespace": "nba",
+        "source_entity_id": "1627742",
+        "nba_player_id": "1627742",
+        "contract_id": "nba:1627742:tor-extension-2025-02",
+        "financial_season": null,
+        "team_id": null,
+        "effective_date": null,
+        "announced_at": null,
+        "observed_at": "2026-10-03T16:52:13.022436Z",
+        "source_sha256": "14a5ddb88b666c567d57937ec476e7a3bc85cba8d848e62b99528f5e4048f9eb",
+        "source_locator": "indexed announcement excerpt; terms not enumerated",
+        "original_label": "multi-year extension announcement",
+        "amount_kind": null,
+        "currency": null,
+        "value": null,
+        "status": null,
+        "option": null,
+        "option_state": null,
+        "guarantee": null,
+        "years": null,
+        "supersedes_id": null,
+        "correction_reason": null
+      }
+    },
+    {
+      "id": "b2268b81-cdfb-403c-bfd6-21666b6a1cc7",
+      "content_sha256": "82ed17924cf10de617d3b15f9dd0bafe031743a8d421090fe49478550677fd52",
+      "cents": null,
+      "row": {
+        "row_id": "contract",
+        "kind": "contract",
+        "source_namespace": "nba",
+        "source_entity_id": "1627742",
+        "nba_player_id": "1627742",
+        "contract_id": "nba:1627742:tor-extension-2025-02",
+        "financial_season": null,
+        "team_id": null,
+        "effective_date": null,
+        "announced_at": null,
+        "observed_at": "2026-10-03T16:53:27.511033Z",
+        "source_sha256": "43c5ba5c1ad009fdebc55823cf9c9d7f4a1d3a4fe6dfb731a48272b5c791d1b3",
+        "source_locator": "article title and announcement paragraph; reported total only",
+        "original_label": "reported three-year extension; USD 120 million total",
+        "amount_kind": null,
+        "currency": null,
+        "value": null,
+        "status": null,
+        "option": null,
+        "option_state": null,
+        "guarantee": null,
+        "years": 3,
+        "supersedes_id": "ca0e2aba-15c6-4a95-8a4d-10f4cd9e062b",
+        "correction_reason": "Retain NBA-hosted AP reported terms as separate reviewed source; original announcement remains unchanged."
+      }
+    },
+    {
+      "id": "b83790da-e83c-4a1d-84dd-76f77fb13203",
+      "content_sha256": "2f40b6c533846d7ee4fcdffbec1ad4fd52b666987d8adf2d2dfc51e4c950bf4d",
+      "cents": null,
+      "row": {
+        "row_id": "status",
+        "kind": "status",
+        "source_namespace": "nba",
+        "source_entity_id": "1627742",
+        "nba_player_id": "1627742",
+        "contract_id": "nba:1627742:tor-extension-2025-02",
+        "financial_season": null,
+        "team_id": null,
+        "effective_date": null,
+        "announced_at": null,
+        "observed_at": "2026-10-03T16:52:13.022436Z",
+        "source_sha256": "14a5ddb88b666c567d57937ec476e7a3bc85cba8d848e62b99528f5e4048f9eb",
+        "source_locator": "indexed announcement excerpt; terms not enumerated",
+        "original_label": "multi-year extension announcement",
+        "amount_kind": null,
+        "currency": null,
+        "value": null,
+        "status": "signed",
+        "option": null,
+        "option_state": null,
+        "guarantee": null,
+        "years": null,
+        "supersedes_id": null,
+        "correction_reason": null
+      }
+    },
+    {
+      "id": "ee6a56dc-c213-4690-960a-4cbe4baa2d9a",
+      "content_sha256": "43645b206be7629fca499eec48c2975e0efd7c21886a9fb58f7ce63ceb29eb35",
+      "cents": 12000000000,
+      "row": {
+        "row_id": "amount",
+        "kind": "amount",
+        "source_namespace": "nba",
+        "source_entity_id": "1627742",
+        "nba_player_id": "1627742",
+        "contract_id": "nba:1627742:tor-extension-2025-02",
+        "financial_season": null,
+        "team_id": null,
+        "effective_date": null,
+        "announced_at": null,
+        "observed_at": "2026-10-03T16:53:27.510900Z",
+        "source_sha256": "43c5ba5c1ad009fdebc55823cf9c9d7f4a1d3a4fe6dfb731a48272b5c791d1b3",
+        "source_locator": "article title and announcement paragraph; reported total only",
+        "original_label": "reported three-year extension; USD 120 million total",
+        "amount_kind": "total_value",
+        "currency": "USD",
+        "value": "120000000.00",
+        "status": null,
+        "option": null,
+        "option_state": null,
+        "guarantee": null,
+        "years": null,
+        "supersedes_id": "3e535722-00fb-4e40-9da8-e1655c6d80ac",
+        "correction_reason": "Retain NBA-hosted AP reported terms as separate reviewed source; original announcement remains unchanged."
+      }
+    }
+  ],
+  "original_amount_still_unknown": true,
+  "known_seasonal_salary_rows": 0,
+  "sql_sealing": [
+    {
+      "statement": "UPDATE finance_observations SET amount_cents=0 WHERE release_id=:id",
+      "rejected": true,
+      "reason": "finance books are append-only"
+    },
+    {
+      "statement": "INSERT INTO finance_sources VALUES (:id,'new','bytes','{}')",
+      "rejected": true,
+      "reason": "finance release already sealed"
+    }
+  ],
+  "idempotent_import": true,
+  "publication_pointers": {
+    "public": "5bbb6035-6794-4bb0-b894-7208f52ef7ad"
+  },
+  "preview": {
+    "parser_version": "finance-csv-v1",
+    "csv_sha256": "33813b3c6436f150520975e217f5665c707a50f432c427e402af6d118474f03a",
+    "rows": 2,
+    "resolved_rows": 6,
+    "players": 1,
+    "source_bytes": 1108,
+    "known_amount_rows": 1,
+    "unknown_amount_rows": 0,
+    "corrections": 2,
+    "coverage_note": "One historical Toronto extension announcement; status is extension signing, not present free-agent classification. No seasonal salary, cap hit, roster completeness, or option/guarantee schedule admitted.",
+    "warnings": [
+      "bounded source book; no complete payroll or current free-agent coverage claim"
+    ]
+  },
+  "direct_access_receipts": [
+    {
+      "url": "https://www.nba.com/raptors/news/raptors-extend-ingram",
+      "status": 403,
+      "bytes": 415,
+      "sha256": "ea2e4b8de2e9a125b62b0b41e7c4925952b417af2b393cb3ca6ef2299091398b",
+      "observed_at": "2026-10-03T16:49:45.881656+00:00",
+      "final_url": "https://www.nba.com/raptors/news/raptors-extend-ingram"
+    },
+    {
+      "url": "https://www.nba.com/raptors/news/raptors-extend-poeltl",
+      "status": 403,
+      "bytes": 415,
+      "sha256": "b684e61d172a493c9137b7f49f19cfea9496346a0c1daaee81a5b207a64796ee",
+      "observed_at": "2026-10-03T16:49:45.912402+00:00",
+      "final_url": "https://www.nba.com/raptors/news/raptors-extend-poeltl"
+    },
+    {
+      "url": "https://www.nba.com/news/raptors-brandon-ingram-extension",
+      "status": 403,
+      "bytes": 418,
+      "sha256": "ef30b70ac898ff8f1ae65e3d6cb869f8ee92a421922dd1fbf891f3b3b0470d5f",
+      "observed_at": "2026-10-03T16:49:46.014480+00:00",
+      "final_url": "https://www.nba.com/news/raptors-brandon-ingram-extension"
+    },
+    {
+      "url": "https://www.nba.com/player/1627742/brandon-ingram",
+      "status": 403,
+      "bytes": 406,
+      "sha256": "6e19cba4c019bba6ad432a5cebdab0c24abd15e0c88aec49558c400fe44bb2e5",
+      "observed_at": "2026-10-03T16:49:46.043406+00:00",
+      "final_url": "https://www.nba.com/player/1627742/brandon-ingram"
+    },
+    {
+      "url": "https://www.basketball-reference.com/contracts/players.html",
+      "status": 200,
+      "bytes": 521324,
+      "sha256": "2dfc8c5ae7182ebb5028a51482b0f0eec4bd01336d58d1a115b4d797a068ecf6",
+      "observed_at": "2026-10-03T16:49:46.133508+00:00",
+      "final_url": "https://www.basketball-reference.com/contracts/players.html"
+    },
+    {
+      "url": "https://www.spotrac.com/nba/free-agents/_/_/_/year/2026/type/ufa",
+      "status": 403,
+      "bytes": 919,
+      "sha256": "41af57cc5eea6d2e4e710b0d2eb8e4809179db0808da4a8aa548b2b49734ece0",
+      "observed_at": "2026-10-03T16:49:46.237967+00:00",
+      "final_url": "https://www.spotrac.com/nba/free-agents/_/_/_/year/2026/type/ufa"
+    }
+  ],
+  "limits": [
+    "Source notes, not full-page acquisitions",
+    "Historical extension signing; no current free-agent or current-roster assertion",
+    "Options and guarantees unknown in actual-source rows; exercised/unexercised validation also covered synthetically",
+    "No comprehensive automated finance source or B29 calculation verified",
+    "No fresh database backup restore acceptance claimed"
+  ],
+  "other_retained_pointer_count": 147
+}

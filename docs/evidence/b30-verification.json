@@ -1,0 +1,102 @@
+{
+  "schema_version": "b30-verification-v1",
+  "measured_on": "2026-10-03",
+  "implementation_choice": "current Codex session; no delegated agents or model override",
+  "backend": {
+    "command": ".venv/bin/pytest -q",
+    "passed": 484,
+    "skipped": 85,
+    "duration_seconds": 20.37
+  },
+  "focused_finance": {
+    "passed": 47,
+    "skipped": 0,
+    "postgresql_checks": 11,
+    "duration_seconds": 1.11,
+    "scope": "unit finance/import/catalog plus disposable-schema PostgreSQL finance tests"
+  },
+  "dashboard": {
+    "unit_tests": 137,
+    "test_files": 22,
+    "typecheck": "pass",
+    "eslint_zero_warnings": "pass",
+    "production_build": "pass",
+    "focused_browser": {
+      "passed": 8,
+      "duration_seconds": 3.3,
+      "command": "PLAYWRIGHT_EXTERNAL_SERVER=true PLAYWRIGHT_BASE_URL=http://localhost:3100 npm --prefix dashboard run test:browser -- e2e/finance.spec.ts --workers=2",
+      "scope": "deterministic retained-book fixture, synthetic option/job states and separate Stats/stale-response checks"
+    }
+  },
+  "real_browser": {
+    "evidence": "b30-browser-final/real-browser.json",
+    "book_id": "256f66b1-129d-4904-be30-7b946f6e92fc",
+    "capture_kind": "real Chromium browser; network Next.js and FastAPI; retained PostgreSQL books; no mocked finance responses",
+    "mobile_body_width": {
+      "width": 375,
+      "scrollWidth": 375
+    },
+    "derived_aav_usd": "40000000",
+    "known_seasonal_salary": null,
+    "basketball_season": "2024-25",
+    "basketball_games": 18,
+    "financial_season": "2025-26",
+    "as_of_empty": true,
+    "job_mutations": "not executed in real smoke; tested via same-origin proxy and browser fixtures; existing B28 worker evidence retained"
+  },
+  "integrity": {
+    "finance_books": "retained bytes and memberships verified unchanged",
+    "public_snapshot": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+    "retained_historical_checksums": 26,
+    "evidence_overwrite_refused": true
+  },
+  "ruff_check": "pass",
+  "ruff_format": {
+    "status": "pass",
+    "files": 288
+  },
+  "mypy": {
+    "status": "pass",
+    "source_files": 125
+  },
+  "diff_check": "pass",
+  "known_warnings": [
+    "existing Starlette/httpx TestClient deprecation",
+    "Playwright NO_COLOR/FORCE_COLOR environment warning"
+  ],
+  "open_gates": [
+    "comprehensive seasonal salary/current free-agent sources and daily automation",
+    "UFA/RFA, market movement and dated financial positions",
+    "official thresholds/legal component completeness",
+    "external monetary value/surplus/ROI",
+    "full PostgreSQL and broad-browser acceptance",
+    "fresh backup/restore",
+    "three independent B26 source gates",
+    "B35 generic saved-operation/export integration"
+  ],
+  "sha256": {
+    "dashboard/components/finance-workspace.tsx": "c19f50cc33babfe1f707a0a680c5ffc137dd995c6c3dd0f60919586fa97318b1",
+    "dashboard/components/finance-contract-drawer.tsx": "402a234e03c7c0c813ed2447178bc4a88b0b06846f70b899594c64b782d569eb",
+    "dashboard/components/finance-import.tsx": "3f1fcc3882527a48eb21b0c9bab983807c80050ecbd637f622445d192235b7b4",
+    "dashboard/lib/finance.ts": "bcbb66d60d2855dfa3cb440a43f698ed115b2a6c6a0357d026b0aec1416d3df1",
+    "dashboard/lib/finance-teams.ts": "a9fbe1ddcb8029faa2d07f03fe1cef6f184aab4fec937c93ed7d5d1401b34fc1",
+    "dashboard/lib/finance.test.ts": "77702b4cdeda503a30673923729f6d56bddfa75351c2b62036e474b2e6458b03",
+    "dashboard/lib/query-url.ts": "1163b21542ab0558e3c6655ec6926f1f81bdbacb473880ff2ebfe8e64ddc896f",
+    "dashboard/app/contracts/page.tsx": "f01b407582b8c33867335070f6fdda6e9868d2457eb46c8f43c2639896fef908",
+    "dashboard/app/contracts/[team]/page.tsx": "f7c9d8d9fad389854a7935b9d911c8c9362c1549df9e4364fbc054a367f6b769",
+    "dashboard/app/free-agency/page.tsx": "102556ffb2b22d2ad6e3320e949817c45be466f57ba1d9c0f7463d85ec5612b8",
+    "dashboard/app/api/finance-import/route.ts": "62f8f16b23a3f563aab2dc7d3e2068485870d2d90d11faeb6e60f517ff30c5f2",
+    "dashboard/app/api/jobs/[id]/route.ts": "6badf1deb967b2fcc5a491f0bb9c80561a863c67617791f48ea3e20b68798871",
+    "dashboard/e2e/finance.spec.ts": "979f532fc67253a9ab7d1bc990d37b650926531c3be24a6882eaa88cb11244fd",
+    "src/courtload/services/finance_catalog.py": "995f67b4bd55f57ddac973121fc5c2f4cecb65a524cc0e696214923c944ebb2c",
+    "src/courtload/api/routers/finance.py": "bad23008f0807b448625efcee61c8dbd19aa6d7ca52671c0516bf48dc3f53971",
+    "tests/unit/test_finance_catalog.py": "b9d52d6b3a14ff8479fb3f085c881cff7d4a7637cd44505fac90490de723e410",
+    "scripts/verify_b30_finance_browser.cjs": "2226faf6adbbc06a11e2ce921408bbbc28e670bfd8507699f2c4792d02ab4081",
+    "docs/design/finance-ui-v1.md": "49300e475fc59de1dfafc5f49417d4f5f063d6394bc0a8b7ec0b856ba6930e24",
+    "docs/evidence/b30-finance-integrity.json": "71b7927362b88fba4c5ac4598b1266cdb5bea4ffdbfb9f614c9cf2a895981f1d",
+    "docs/evidence/b30-browser-final/contracts-desktop.png": "6894001afaa7dcfe8c986d18503bb529713e3d736e7e3503ed3f5a2985d923d0",
+    "docs/evidence/b30-browser-final/contract-drawer.png": "d04916c4be122bb9baafde0474258112fa18a1416d9c25895b8ecc2ddede778b",
+    "docs/evidence/b30-browser-final/free-agency-mobile.png": "d4e690b8408a23e32e2bb983144b5324c6e96760a5d6491d37ebca1849b1e8d8",
+    "docs/evidence/b30-browser-final/real-browser.json": "6ad4ab7635a4f15e9e8d18c25b6b1defc4ea312f7fc8b0d359a06a5baaddced6"
+  }
+}

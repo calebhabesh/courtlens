@@ -1,0 +1,51 @@
+{
+  "capture_kind": "real Chromium browser; network Next.js and FastAPI; retained PostgreSQL books; no mocked finance responses",
+  "book_id": "256f66b1-129d-4904-be30-7b946f6e92fc",
+  "result_sha256": "5a2c8002e647ad6acb265bca5bd137415548b33ef2fb7b35918a48fd02c08fd7",
+  "contract_body": "TOR · financial 2025-26\n\nOne historical Toronto extension announcement; status is extension signing, not present free-agent classification. No seasonal salary, cap hit, roster completeness, or option/guarantee schedule admitted.\n\nKnown at 2026-10-03T16:53:28.511033Z · effective through 2025-02-12. Historical reconstruction: acquired after the effective date.\n\nKnown base salary subtotal\nUnknown\nKnown / represented contracts\n0 / 1\nUnknown amount contracts\n1\nExternal roster denominator\nUnknown\n\nIncomplete book coverage · cap / tax / apron status pending. Official thresholds and legal room are unavailable. Modeled value, surplus and ROI: unavailable (source-blocked).\n\nSmall vs Big · reported base salary\n\nSmall below $12,000,000.00; Big at or above. Conditional or missing amounts stay Unknown. This split is a grouping choice.\n\nsmall · 0 contracts\nUnknown\n0 known; modeled value / surplus / ROI unavailable\nbig · 0 contracts\nUnknown\n0 known; modeled value / surplus / ROI unavailable\nunknown · 1 contracts\nUnknown\n0 known; modeled value / surplus / ROI unavailable\nReview / unknown: 0 / 0\nUnsigned: 0 / 0\nSigned: 1 / 1\nReturned: 0 / 0\nOption pending: 0 / 0\nTwo-way: 0 / 0\n\nStatus counts: filtered / before status filter; per contract, not current free-agent players. 1 filtered / 1 before status filter.\n\nSearch player, team, or source note\nObserved term family\nall\ncontract\namount\noption\nguarantee\nstatus\nassociation\nSmall vs Big group\nall\nsmall\nbig\nunknown\nSort contracts\nPlayer name\nKnown amount descending\nStatus\n\n1 visible of 1 returned contracts. Text/type/size filters change visible rows only; totals above retain the query denominator. UFA/RFA, market movement and dated positions are unknown in this schema.\n\nPLAYER / CONTRACT\tTEAM / STATUS\tKNOWN SELECTED AMOUNT\tSMALL VS BIG\tDERIVED AAV\tTERMS / SOURCES\nBrandon Ingram\nNBA:1627742:TOR-EXTENSION-2025-02\nPLAYER STATS\tTOR\nexplicit\nSigned\tUnknown\nmissing\tunknown\tUSD 40000000\nReported total / years; not salary\t\nreported three-year extension; USD 120 million total\n2026-10-03T16:53:27.510900Z\nmulti-year extension announcement\n2026-10-03T16:52:13.022436Z\nreported three-year extension; USD 120 million total\n2026-10-03T16:53:27.511033Z\nmulti-year extension announcement\n2026-10-03T16:52:13.022436Z\nmulti-year extension announcement\n2026-10-03T16:52:13.022436Z\nmulti-year extension announcement\n2026-10-03T16:52:13.022436Z\nAllocation, multi-year timeline and evidence",
+  "drawer_body": "Brandon Ingram · contract details\nClose details\n\nnba:1627742:tor-extension-2025-02 · TOR (explicit) · Signed\n\nFinancial season 2025-26. base salary: Unknown (missing).\n\nDerived AAV: USD 40000000 · reported total / documented years; not seasonal salary\n\nOptions, guarantees and cash/cap terms below remain separate source reports. Unreported fields are unknown.\n\nSelected source reports, including future and unresolved terms. Option reports are not realized outcomes.\nSEASON / EFFECTIVE DATE\tTERM FAMILY / REPORTED VALUE\tSOURCE / OBSERVATION\nContract-wide\nUnknown\nunknown effective date\tamount · total_value\nReported USD 120000000.00\nreported three-year extension; USD 120 million total\tAssociated Press via NBA.com; reported terms, not an official salary schedule\narticle title and announcement paragraph; reported total only\nObserved 2026-10-03T16:53:27.510900Z\n\nCorrection: Retain NBA-hosted AP reported terms as separate reviewed source; original announcement remains unchanged.\nReplaces 3e535722-00fb-4e40-9da8-e1655c6d80ac\n\nEvidence identities\n\nContract-wide\n2025-02-12\ndated report\tassociation · terms\nTOR\nmulti-year extension announcement\tToronto Raptors announcement, observed through indexed web excerpt\nindexed announcement excerpt; terms not enumerated\nObserved 2026-10-03T16:52:13.022436Z\nEvidence identities\n\nContract-wide\nUnknown\nunknown effective date\tcontract · terms\n3 years\nreported three-year extension; USD 120 million total\tAssociated Press via NBA.com; reported terms, not an official salary schedule\narticle title and announcement paragraph; reported total only\nObserved 2026-10-03T16:53:27.511033Z\n\nCorrection: Retain NBA-hosted AP reported terms as separate reviewed source; original announcement remains unchanged.\nReplaces ca0e2aba-15c6-4a95-8a4d-10f4cd9e062b\n\nEvidence identities\n\nContract-wide\nUnknown\nunknown effective date\tguarantee · terms\nUnknown\nmulti-year extension announcement\tToronto Raptors announcement, observed through indexed web excerpt\nindexed announcement excerpt; terms not enumerated\nObserved 2026-10-03T16:52:13.022436Z\nEvidence identities\n\nContract-wide\nUnknown\nunknown effective date\toption · terms\nUnknown · Unknown\nmulti-year extension announcement\tToronto Raptors announcement, observed through indexed web excerpt\nindexed announcement excerpt; terms not enumerated\nObserved 2026-10-03T16:52:13.022436Z\nEvidence identities\n\nContract-wide\nUnknown\nunknown effective date\tstatus · terms\nsigned\nmulti-year extension announcement\tToronto Raptors announcement, observed through indexed web excerpt\nindexed announcement excerpt; terms not enumerated\nObserved 2026-10-03T16:52:13.022436Z\nEvidence identities\nEmbedded player Stats · separate basketball context\nBasketball season\nBasketball phase\nRegular season\nPlayoffs\nPreseason\nBasketball exclusive cutoff\nBasketball release (blank resolves public)\nLoad player Stats",
+  "embeddedStats": "Basketball season 2024-25 · regular_season · before 2025-04-15 · 18 appearances · release 5bbb6035-6794-4bb0-b894-7208f52ef7ad\n\ngp\n18\nmin\n595\nmin_per_game\n33.1\npts\n400\npts_per_game\n22.2\noreb\n17\noreb_per_game\n0.9\ndreb\n83\ndreb_per_game\n4.6\nreb\n100\nreb_per_game\n5.6\nast\n93\nast_per_game\n5.2\nstl\n16\nstl_per_game\n0.9\nblk\n11\nblk_per_game\n0.6\ntov\n69\ntov_per_game\n3.8\npf\n45\npf_per_game\n2.5\nfgm\n155\nfga\n333\nfg3m\n43\nfg3a\n115\nftm\n47\nfta\n55\nreb_total\n100\nreb_total_per_game\n5.6\nfg_pct\n0.4655\nfg3_pct\n0.3739\nft_pct\n0.8545\nefg_pct\n0.53\nts_pct\n0.5599\nftr\n0.1652\npts_per_36\n24.2\nreb_per_36\n6\nast_per_36\n5.6\nstl_per_36\n1\nblk_per_36\n0.7\ntov_per_36\n4.2\npf_per_36\n2.7\noreb_per_36\n1\ndreb_per_36\n5\nfga_per_36\n20.1\nfg3a_per_36\n7\nfta_per_36\n3.3\nlegacy_fantasy_score\n671.5\nlegacy_fantasy_score_per_game\n37.3\n\nHistorical reconstruction from completed records.\n\nPrior-day boundary: game_date < before_date is strictly enforced.",
+  "mobileOverflow": {
+    "width": 375,
+    "scrollWidth": 375
+  },
+  "requests": [
+    {
+      "url": "http://localhost:8000/api/workbench/operations/finance/books",
+      "status": 200,
+      "method": "GET"
+    },
+    {
+      "url": "http://localhost:8000/api/workbench/operations/finance/books/256f66b1-129d-4904-be30-7b946f6e92fc",
+      "status": 200,
+      "method": "GET"
+    },
+    {
+      "url": "http://localhost:8000/api/workbench/operations/finance",
+      "status": 200,
+      "method": "POST"
+    },
+    {
+      "url": "http://localhost:8000/api/workbench/operations/finance/books",
+      "status": 200,
+      "method": "GET"
+    },
+    {
+      "url": "http://localhost:8000/api/workbench/operations/finance/books/256f66b1-129d-4904-be30-7b946f6e92fc",
+      "status": 200,
+      "method": "GET"
+    },
+    {
+      "url": "http://localhost:8000/api/workbench/operations/finance",
+      "status": 200,
+      "method": "POST"
+    },
+    {
+      "url": "http://localhost:8000/api/workbench/operations/finance",
+      "status": 200,
+      "method": "POST"
+    }
+  ],
+  "as_of_empty": true,
+  "import_job_mutations": "not executed in this read-only real-browser smoke"
+}

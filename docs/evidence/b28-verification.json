@@ -1,0 +1,50 @@
+{
+  "date": "2026-10-03",
+  "backend": {
+    "passed": 471,
+    "skipped": 82,
+    "warnings": 1,
+    "duration_seconds": 20.76,
+    "command": ".venv/bin/pytest -q"
+  },
+  "focused_finance": {
+    "passed": 31,
+    "skipped": 0,
+    "warnings": 1,
+    "duration_seconds": 0.4,
+    "postgres_fixture_scope": "unique disposable schemas; migrations, triggers, raw SQL; removed afterward"
+  },
+  "ruff_check": "pass",
+  "ruff_format": {
+    "status": "pass",
+    "files": 278
+  },
+  "mypy": {
+    "status": "pass",
+    "source_files": 121
+  },
+  "diff_check": "pass",
+  "retained_historical_checksums": {
+    "passed": 26
+  },
+  "dashboard": "unchanged; not rerun",
+  "known_warning": "existing Starlette/httpx TestClient deprecation",
+  "open_gates": [
+    "full PostgreSQL acceptance",
+    "historical broad-browser failures",
+    "full fresh backup/restore",
+    "comprehensive automated finance source",
+    "B26 three independent experiments"
+  ],
+  "hashes": {
+    "docs/design/finance-import-v1.md": "3fc283b4cc39adb3383b14431a1530d6394e6644950cb92f8752d94f38854dda",
+    "docs/evidence/b28-finance-import.json": "2d031aa60d7d4f6dce7a038decf54387b96350ee2ee14f4882da6cf0928b6a60",
+    "docs/evidence/b28-manual-input/manifest.json": "71e6fdc9a780aab735af22b981f393dd89cd24daf236e4aee7f12c150f97f27c",
+    "docs/evidence/b28-manual-input/observations.csv": "74d43817d8aa4f953eda674b6d87eccfcd9a18b4a309cb1c6384aa104f3078b2",
+    "docs/evidence/b28-manual-correction/manifest.json": "33f7e3b381ea6fea6629f0961fa628e8360aba03e2b5981a80fcb4e4faa84a9b",
+    "docs/evidence/b28-manual-correction/observations.csv": "33813b3c6436f150520975e217f5665c707a50f432c427e402af6d118474f03a",
+    "migrations/versions/27b810a4f001_finance_books.py": "8c09212d124d4c3b7f972ea8fd78f73dff372d4e4d041f3b0642ca5f47bba268",
+    "src/courtload/domain/finance.py": "5aa5cd101e41c3a342e32dd353d8404238ffef40302b286af6da0ad7b10cb5b8",
+    "src/courtload/services/finance_import.py": "47dbb695a701c919c93c786a4734b37df541d5a374a71cee7e1b285271b25ccf"
+  }
+}

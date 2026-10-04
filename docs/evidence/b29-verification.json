@@ -1,0 +1,58 @@
+{
+  "date": "2026-10-03",
+  "backend": {
+    "command": ".venv/bin/pytest -q",
+    "passed": 482,
+    "skipped": 85,
+    "warnings": 1,
+    "duration_seconds": 20.05
+  },
+  "focused_finance": {
+    "passed": 45,
+    "skipped": 0,
+    "warnings": 1,
+    "duration_seconds": 1.08,
+    "postgres_fixture_scope": "unique disposable schemas; B28 migration and real B29 HTTP reads; removed afterward",
+    "command": "COURTLOAD_TEST_POSTGRES_URL=<settings database URL, not logged> .venv/bin/pytest -q tests/unit/test_finance_import.py tests/unit/test_finance_query.py tests/integration/test_finance_postgres.py tests/integration/test_finance_query_postgres.py"
+  },
+  "ruff_check": "pass",
+  "ruff_format": {
+    "status": "pass",
+    "files": 285
+  },
+  "mypy": {
+    "status": "pass",
+    "source_files": 124
+  },
+  "diff_check": "pass",
+  "retained_historical_checksums": {
+    "passed": 26
+  },
+  "evidence_overwrite_refused": {
+    "exit_code": 1,
+    "prior_bytes_unchanged": true
+  },
+  "dashboard": "unchanged; not rerun",
+  "known_warning": "existing Starlette/httpx TestClient deprecation",
+  "open_gates": [
+    "comprehensive seasonal salaries/current free-agent source",
+    "dated financial position binding",
+    "official thresholds and versioned legal component rules",
+    "external monetary conversion/value/ROI",
+    "full PostgreSQL acceptance",
+    "historical broad-browser failures and zero-warning gate",
+    "full fresh backup/restore",
+    "B26 three independent experiments"
+  ],
+  "hashes": {
+    "src/courtload/domain/finance_query.py": "7c68ae6e008feb1b6fe6252505768490f48eb597764bced07be0353db47b9657",
+    "src/courtload/services/finance_query.py": "68479937936e96cf227bab235dd7a2a70eae39ccd0efd8c9689f8df7aa93af00",
+    "src/courtload/api/routers/finance.py": "a711764daf5dc7285a0d120092560c571b193a34f6ed0edd24bcfe9f6a6f0f6d",
+    "src/courtload/api/app.py": "430208912d7e0262b67e736d99927961b580f70509a8806078b7f015853ab645",
+    "scripts/verify_b29_finance.py": "c894d11659d64f230548e6f7e2b626326404f44e6798c700137b915593f0eb90",
+    "tests/unit/test_finance_query.py": "be2c4b31c5e17db4a95990de2ae5105ecb9b441b0d8c926b892e17a422860e60",
+    "tests/integration/test_finance_query_postgres.py": "9b5c6318993e4ac745fa8a367e622e873a31dd43b7e9a35289a9f68512e56a79",
+    "docs/design/finance-query-v1.md": "1b1b04ea4b0dd2136bd2b39220a82dcf2b7ec9a7f9b724232557b6710497d23a",
+    "docs/evidence/b29-finance-query.json": "c2c2af491ad09c536d9e21a6b3b9451d74f5abb0b2d688cea57938ef5b4f5917"
+  }
+}
