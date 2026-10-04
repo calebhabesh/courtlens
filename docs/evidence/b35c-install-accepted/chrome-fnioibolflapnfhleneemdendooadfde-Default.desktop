@@ -1,0 +1,17 @@
+[Desktop Entry]
+Version=1.0
+Terminal=false
+Type=Application
+Name=CourtLoad NBA Research
+Exec=/usr/bin/chromium --user-data-dir=/tmp/courtload-b35-install-tOMoRh/profile --profile-directory=Default --app-id=fnioibolflapnfhleneemdendooadfde
+Icon=/tmp/courtload-b35-install-tOMoRh/data/icons/hicolor/512x512/apps/chrome-fnioibolflapnfhleneemdendooadfde-Default.png
+StartupWMClass=crx_fnioibolflapnfhleneemdendooadfde
+Actions=Manual-research;Saved-investigations
+
+[Desktop Action Manual-research]
+Name=Manual research
+Exec=/usr/bin/chromium --user-data-dir=/tmp/courtload-b35-install-tOMoRh/profile --profile-directory=Default --app-id=fnioibolflapnfhleneemdendooadfde --app-launch-url-for-shortcuts-menu-item=http://127.0.0.1:3135/research/ask
+
+[Desktop Action Saved-investigations]
+Name=Saved investigations
+Exec=/usr/bin/chromium --user-data-dir=/tmp/courtload-b35-install-tOMoRh/profile --profile-directory=Default --app-id=fnioibolflapnfhleneemdendooadfde --app-launch-url-for-shortcuts-menu-item=http://127.0.0.1:3135/investigations

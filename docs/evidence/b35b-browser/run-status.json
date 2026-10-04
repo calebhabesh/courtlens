@@ -1,0 +1,1 @@
+{"status":"failed integration probe","reason":"Implicit public-pointer publication timestamp differed from explicit-release resolution; UI save returned HTTP 409","superseded_by":"../b35b-browser-final/verification.json","prior_artifacts_preserved":true}

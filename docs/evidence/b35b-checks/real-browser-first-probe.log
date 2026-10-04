@@ -1,0 +1,5 @@
+locator.waitFor: Timeout 60000ms exceeded.
+Call log:
+[2m  - waiting for getByRole('link', { name: 'B35b production-browser: scoring distribution', exact: true }) to be visible[22m
+
+    at /home/ethioking/dev/nba-analytics/scripts/verify_b35b_browser.cjs:61:122

@@ -1,0 +1,179 @@
+============================= test session starts ==============================
+platform linux -- Python 3.14.7, pytest-8.4.2, pluggy-1.6.0
+rootdir: /home/ethioking/dev/nba-analytics
+configfile: pyproject.toml
+testpaths: tests
+plugins: anyio-4.14.2, cov-7.1.0
+collected 741 items
+
+tests/integration/test_analytical_ops_api.py ssssss                      [  0%]
+tests/integration/test_analytics_api.py ......                           [  1%]
+tests/integration/test_api.py .........                                  [  2%]
+tests/integration/test_b14_api.py ssssss.                                [  3%]
+tests/integration/test_b15_api.py ssssssss                               [  4%]
+tests/integration/test_b16_api.py ssss                                   [  5%]
+tests/integration/test_b17_api.py sssss                                  [  6%]
+tests/integration/test_b21_api.py ......                                 [  6%]
+tests/integration/test_b23_api.py ........                               [  7%]
+tests/integration/test_conversation_postgres.py ssssss                   [  8%]
+tests/integration/test_finance_postgres.py ssssssss                      [  9%]
+tests/integration/test_finance_query_postgres.py sss                     [ 10%]
+tests/integration/test_ingestion.py ....                                 [ 10%]
+tests/integration/test_live_postgres.py sssssssssssss                    [ 12%]
+tests/integration/test_migration_b14.py s                                [ 12%]
+tests/integration/test_personal_workspace_api.py .....                   [ 13%]
+tests/integration/test_personal_workspace_migration.py ssssssss          [ 14%]
+tests/integration/test_personal_workspace_postgres.py ss                 [ 14%]
+tests/integration/test_planner.py .....                                  [ 15%]
+tests/integration/test_possession_warehouse_postgres.py ssss             [ 15%]
+tests/integration/test_publication_postgres.py ss                        [ 16%]
+tests/integration/test_research_input_sealing.py sssssss                 [ 17%]
+tests/integration/test_research_limits.py .....                          [ 17%]
+tests/integration/test_research_readiness_postgres.py ...                [ 18%]
+tests/integration/test_research_results_api.py ..                        [ 18%]
+tests/integration/test_restore_postgres.py sssss                         [ 19%]
+tests/integration/test_rich_admission_postgres.py sssss                  [ 19%]
+tests/integration/test_saved_conversation_postgres.py ssssssssssssssssss [ 22%]
+sss                                                                      [ 22%]
+tests/integration/test_workbench_api.py ..........................       [ 26%]
+tests/integration/test_workbench_jobs_postgres.py ssssss.....s           [ 27%]
+tests/integration/test_workbench_postgres.py ss                          [ 28%]
+tests/unit/test_analytical_ops.py ...............                        [ 30%]
+tests/unit/test_archive_spike.py .....                                   [ 30%]
+tests/unit/test_assistant.py .....ss                                     [ 31%]
+tests/unit/test_backfill_resumable.py ...                                [ 32%]
+tests/unit/test_challenger.py ....                                       [ 32%]
+tests/unit/test_cli.py ...                                               [ 33%]
+tests/unit/test_config.py ...                                            [ 33%]
+tests/unit/test_contract_fixture.py .                                    [ 33%]
+tests/unit/test_conversations.py ....................................... [ 38%]
+.....................................................                    [ 46%]
+tests/unit/test_entity_lookup.py ..............                          [ 47%]
+tests/unit/test_evaluation.py ....                                       [ 48%]
+tests/unit/test_expected_shot.py ...                                     [ 48%]
+tests/unit/test_finance_catalog.py ..                                    [ 49%]
+tests/unit/test_finance_import.py .......................                [ 52%]
+tests/unit/test_finance_query.py ...........                             [ 53%]
+tests/unit/test_identity_crosswalk.py ...                                [ 54%]
+tests/unit/test_live.py ......................                           [ 57%]
+tests/unit/test_live_history.py ...                                      [ 57%]
+tests/unit/test_matching.py ....                                         [ 58%]
+tests/unit/test_measurements.py ...                                      [ 58%]
+tests/unit/test_metrics_v2.py ......................                     [ 61%]
+tests/unit/test_on_off.py ...................                            [ 63%]
+tests/unit/test_personal_state.py ....                                   [ 64%]
+tests/unit/test_playoffs.py .........                                    [ 65%]
+tests/unit/test_points_forecast.py ....                                  [ 66%]
+tests/unit/test_portrait_jobs.py .                                       [ 66%]
+tests/unit/test_prospective_forecasts.py ........                        [ 67%]
+tests/unit/test_provider_client.py ........                              [ 68%]
+tests/unit/test_publication.py ....                                      [ 69%]
+tests/unit/test_query_contracts.py ..............                        [ 70%]
+tests/unit/test_raw_store.py .                                           [ 71%]
+tests/unit/test_research_readiness.py ....                               [ 71%]
+tests/unit/test_research_registration.py ..............................  [ 75%]
+tests/unit/test_research_reproduce.py .                                  [ 75%]
+tests/unit/test_retrospective_binding.py .....                           [ 76%]
+tests/unit/test_rich_sources.py ..........                               [ 77%]
+tests/unit/test_saved_conversations.py ...............                   [ 79%]
+tests/unit/test_scoring.py ...                                           [ 80%]
+tests/unit/test_season_discovery.py ......                               [ 81%]
+tests/unit/test_shooting.py ...................                          [ 83%]
+tests/unit/test_shot_corrections.py .........                            [ 84%]
+tests/unit/test_shotchart_admission.py ................................. [ 89%]
+..........................                                               [ 92%]
+tests/unit/test_sportsdataverse.py ........                              [ 93%]
+tests/unit/test_stats_engine.py ...........                              [ 95%]
+tests/unit/test_stints.py ...........                                    [ 96%]
+tests/unit/test_team_analytics.py ...........                            [ 98%]
+tests/unit/test_workbench_contracts.py .......                           [ 99%]
+tests/unit/test_workbench_metrics.py .....                               [100%]
+
+=============================== warnings summary ===============================
+.venv/lib/python3.14/site-packages/fastapi/testclient.py:1
+  /home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+SKIPPED [1] tests/integration/test_analytical_ops_api.py:40: PostgreSQL database required for integration tests
+SKIPPED [1] tests/integration/test_analytical_ops_api.py:75: PostgreSQL database required for integration tests
+SKIPPED [1] tests/integration/test_analytical_ops_api.py:115: PostgreSQL database required for integration tests
+SKIPPED [1] tests/integration/test_analytical_ops_api.py:138: PostgreSQL database required for integration tests
+SKIPPED [1] tests/integration/test_analytical_ops_api.py:162: PostgreSQL database required for integration tests
+SKIPPED [1] tests/integration/test_analytical_ops_api.py:207: PostgreSQL database required for integration tests
+SKIPPED [1] tests/integration/test_b14_api.py:67: COURTLOAD_TEST_POSTGRES_URL is not configured
+SKIPPED [1] tests/integration/test_b14_api.py:82: COURTLOAD_TEST_POSTGRES_URL is not configured
+SKIPPED [1] tests/integration/test_b14_api.py:97: COURTLOAD_TEST_POSTGRES_URL is not configured
+SKIPPED [1] tests/integration/test_b14_api.py:130: COURTLOAD_TEST_POSTGRES_URL is not configured
+SKIPPED [1] tests/integration/test_b14_api.py:144: COURTLOAD_TEST_POSTGRES_URL is not configured
+SKIPPED [1] tests/integration/test_b14_api.py:162: COURTLOAD_TEST_POSTGRES_URL is not configured
+SKIPPED [1] tests/integration/test_b15_api.py:32: COURTLOAD_TEST_POSTGRES_URL is not configured
+SKIPPED [1] tests/integration/test_b15_api.py:61: COURTLOAD_TEST_POSTGRES_URL is not configured
+SKIPPED [1] tests/integration/test_b15_api.py:95: COURTLOAD_TEST_POSTGRES_URL is not configured
+SKIPPED [1] tests/integration/test_b15_api.py:144: COURTLOAD_TEST_POSTGRES_URL is not configured
+SKIPPED [1] tests/integration/test_b15_api.py:161: COURTLOAD_TEST_POSTGRES_URL is not configured
+SKIPPED [1] tests/integration/test_b15_api.py:212: COURTLOAD_TEST_POSTGRES_URL is not configured
+SKIPPED [1] tests/integration/test_b15_api.py:232: COURTLOAD_TEST_POSTGRES_URL is not configured
+SKIPPED [1] tests/integration/test_b15_api.py:245: COURTLOAD_TEST_POSTGRES_URL is not configured
+SKIPPED [4] tests/integration/test_b16_api.py:21: COURTLOAD_TEST_POSTGRES_URL is not configured
+SKIPPED [5] tests/integration/test_b17_api.py:31: Database is not configured
+SKIPPED [1] tests/integration/test_conversation_postgres.py:189: disposable PostgreSQL URL required
+SKIPPED [1] tests/integration/test_conversation_postgres.py:217: disposable PostgreSQL URL required
+SKIPPED [1] tests/integration/test_conversation_postgres.py:229: disposable PostgreSQL URL required
+SKIPPED [1] tests/integration/test_conversation_postgres.py:267: disposable PostgreSQL URL required
+SKIPPED [1] tests/integration/test_conversation_postgres.py:306: disposable PostgreSQL URL required
+SKIPPED [1] tests/integration/test_conversation_postgres.py:328: disposable PostgreSQL URL required
+SKIPPED [7] tests/integration/test_finance_postgres.py:65: disposable PostgreSQL URL required
+SKIPPED [1] tests/integration/test_finance_postgres.py:83: disposable PostgreSQL URL required
+SKIPPED [3] tests/integration/test_finance_query_postgres.py:56: disposable PostgreSQL URL required
+SKIPPED [1] tests/integration/test_live_postgres.py:68: disposable PostgreSQL URL required
+SKIPPED [1] tests/integration/test_live_postgres.py:91: disposable PostgreSQL URL required
+SKIPPED [4] tests/integration/test_live_postgres.py:108: disposable PostgreSQL URL required
+SKIPPED [1] tests/integration/test_live_postgres.py:125: disposable PostgreSQL URL required
+SKIPPED [1] tests/integration/test_live_postgres.py:142: disposable PostgreSQL URL required
+SKIPPED [4] tests/integration/test_live_postgres.py:268: disposable PostgreSQL URL required
+SKIPPED [1] tests/integration/test_live_postgres.py:318: disposable PostgreSQL URL required
+SKIPPED [1] tests/integration/test_migration_b14.py:57: PostgreSQL URL is not configured
+SKIPPED [2] tests/integration/test_personal_workspace_migration.py:52: PostgreSQL URL is not configured
+SKIPPED [6] tests/integration/test_personal_workspace_migration.py:77: PostgreSQL URL is not configured
+SKIPPED [2] tests/integration/test_personal_workspace_postgres.py:29: PostgreSQL URL is not configured
+SKIPPED [1] tests/integration/test_possession_warehouse_postgres.py:123: PostgreSQL URL is not configured
+SKIPPED [1] tests/integration/test_possession_warehouse_postgres.py:332: PostgreSQL URL is not configured
+SKIPPED [1] tests/integration/test_possession_warehouse_postgres.py:398: PostgreSQL URL is not configured
+SKIPPED [1] tests/integration/test_possession_warehouse_postgres.py:447: PostgreSQL URL is not configured
+SKIPPED [1] tests/integration/test_publication_postgres.py:38: COURTLOAD_TEST_POSTGRES_URL is not configured
+SKIPPED [1] tests/integration/test_publication_postgres.py:49: COURTLOAD_TEST_POSTGRES_URL is not configured
+SKIPPED [7] tests/integration/test_research_input_sealing.py:64: disposable PostgreSQL URL required
+SKIPPED [1] tests/integration/test_restore_postgres.py:49: COURTLOAD_TEST_POSTGRES_URL is not configured
+SKIPPED [1] tests/integration/test_restore_postgres.py:149: COURTLOAD_TEST_POSTGRES_URL is not configured
+SKIPPED [1] tests/integration/test_restore_postgres.py:197: COURTLOAD_TEST_POSTGRES_URL is not configured
+SKIPPED [1] tests/integration/test_restore_postgres.py:232: COURTLOAD_TEST_POSTGRES_URL is not configured
+SKIPPED [1] tests/integration/test_restore_postgres.py:244: COURTLOAD_TEST_POSTGRES_URL is not configured
+SKIPPED [1] tests/integration/test_rich_admission_postgres.py:488: PostgreSQL URL is not configured
+SKIPPED [1] tests/integration/test_rich_admission_postgres.py:623: PostgreSQL URL is not configured
+SKIPPED [1] tests/integration/test_rich_admission_postgres.py:776: PostgreSQL URL is not configured
+SKIPPED [1] tests/integration/test_rich_admission_postgres.py:881: PostgreSQL URL is not configured
+SKIPPED [1] tests/integration/test_rich_admission_postgres.py:925: PostgreSQL URL is not configured
+SKIPPED [11] tests/integration/test_saved_conversation_postgres.py:44: disposable PostgreSQL URL required
+SKIPPED [2] tests/integration/test_saved_conversation_postgres.py:96: disposable PostgreSQL URL required
+SKIPPED [1] tests/integration/test_saved_conversation_postgres.py:149: disposable PostgreSQL URL required
+SKIPPED [1] tests/integration/test_saved_conversation_postgres.py:178: disposable PostgreSQL URL required
+SKIPPED [1] tests/integration/test_saved_conversation_postgres.py:208: disposable PostgreSQL URL required
+SKIPPED [1] tests/integration/test_saved_conversation_postgres.py:230: disposable PostgreSQL URL required
+SKIPPED [1] tests/integration/test_saved_conversation_postgres.py:261: disposable PostgreSQL URL required
+SKIPPED [1] tests/integration/test_saved_conversation_postgres.py:287: disposable PostgreSQL URL required
+SKIPPED [1] tests/integration/test_saved_conversation_postgres.py:324: disposable PostgreSQL URL required
+SKIPPED [1] tests/integration/test_saved_conversation_postgres.py:400: disposable PostgreSQL URL required
+SKIPPED [1] tests/integration/test_workbench_jobs_postgres.py:63: COURTLOAD_TEST_POSTGRES_URL is not configured
+SKIPPED [1] tests/integration/test_workbench_jobs_postgres.py:75: COURTLOAD_TEST_POSTGRES_URL is not configured
+SKIPPED [1] tests/integration/test_workbench_jobs_postgres.py:144: COURTLOAD_TEST_POSTGRES_URL is not configured
+SKIPPED [1] tests/integration/test_workbench_jobs_postgres.py:165: COURTLOAD_TEST_POSTGRES_URL is not configured
+SKIPPED [1] tests/integration/test_workbench_jobs_postgres.py:176: COURTLOAD_TEST_POSTGRES_URL is not configured
+SKIPPED [1] tests/integration/test_workbench_jobs_postgres.py:224: COURTLOAD_TEST_POSTGRES_URL is not configured
+SKIPPED [1] tests/integration/test_workbench_jobs_postgres.py:359: COURTLOAD_TEST_POSTGRES_URL is not configured
+SKIPPED [1] tests/integration/test_workbench_postgres.py:47: COURTLOAD_TEST_POSTGRES_URL is not configured
+SKIPPED [1] tests/integration/test_workbench_postgres.py:161: COURTLOAD_TEST_POSTGRES_URL is not configured
+SKIPPED [1] tests/unit/test_assistant.py:152: COURTLOAD_TEST_POSTGRES_URL is not configured
+SKIPPED [1] tests/unit/test_assistant.py:167: COURTLOAD_TEST_POSTGRES_URL is not configured
+================= 616 passed, 125 skipped, 1 warning in 23.91s =================

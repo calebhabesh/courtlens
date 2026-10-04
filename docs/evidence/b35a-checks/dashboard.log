@@ -1,0 +1,21 @@
+
+> courtload-dashboard@0.1.0 lint
+> eslint . --max-warnings=0
+
+
+> courtload-dashboard@0.1.0 typecheck
+> tsc --noEmit
+
+
+> courtload-dashboard@0.1.0 test
+> vitest run
+
+
+ RUN  v4.1.11 /home/ethioking/dev/nba-analytics/dashboard
+
+
+ Test Files  24 passed (24)
+      Tests  158 passed (158)
+   Start at  07:02:23
+   Duration  337ms (transform 899ms, setup 0ms, import 1.34s, tests 368ms, environment 2ms)
+

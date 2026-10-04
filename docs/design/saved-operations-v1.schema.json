@@ -1,0 +1,680 @@
+{
+  "SaveConversationRequest": {
+    "additionalProperties": false,
+    "description": "Explicit retention of a server-held result; client numerical payloads are forbidden.",
+    "properties": {
+      "context_fingerprint": {
+        "pattern": "^[a-f0-9]{64}$",
+        "title": "Context Fingerprint",
+        "type": "string"
+      },
+      "conversation_id": {
+        "format": "uuid",
+        "title": "Conversation Id",
+        "type": "string"
+      },
+      "include_question": {
+        "default": false,
+        "title": "Include Question",
+        "type": "boolean"
+      },
+      "request_id": {
+        "format": "uuid",
+        "title": "Request Id",
+        "type": "string"
+      },
+      "title": {
+        "maxLength": 255,
+        "minLength": 1,
+        "title": "Title",
+        "type": "string"
+      },
+      "turn_id": {
+        "format": "uuid",
+        "title": "Turn Id",
+        "type": "string"
+      }
+    },
+    "required": [
+      "request_id",
+      "conversation_id",
+      "turn_id",
+      "context_fingerprint",
+      "title"
+    ],
+    "title": "SaveConversationRequest",
+    "type": "object"
+  },
+  "SavedConversationDetail": {
+    "$defs": {
+      "AnalysisPlan": {
+        "additionalProperties": false,
+        "properties": {
+          "clarification": {
+            "anyOf": [
+              {
+                "enum": [
+                  "identity",
+                  "consistency",
+                  "defense_metric",
+                  "floor_or_game",
+                  "context",
+                  "capability"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Clarification"
+          },
+          "context_changes": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/ConversationContext"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "output_kind": {
+            "default": "table",
+            "enum": [
+              "table",
+              "definition",
+              "comparison"
+            ],
+            "title": "Output Kind",
+            "type": "string"
+          },
+          "plan_version": {
+            "const": "courtload-analysis-plan-v1",
+            "default": "courtload-analysis-plan-v1",
+            "title": "Plan Version",
+            "type": "string"
+          },
+          "status": {
+            "default": "execute",
+            "enum": [
+              "execute",
+              "clarification_required",
+              "unsupported"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "steps": {
+            "items": {
+              "$ref": "#/$defs/OperationStep"
+            },
+            "maxItems": 8,
+            "title": "Steps",
+            "type": "array"
+          }
+        },
+        "title": "AnalysisPlan",
+        "type": "object"
+      },
+      "ConversationContext": {
+        "additionalProperties": false,
+        "properties": {
+          "before_date": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Before Date"
+          },
+          "phase": {
+            "default": "regular_season",
+            "enum": [
+              "regular_season",
+              "playoffs",
+              "preseason",
+              "play_in",
+              "cup_final",
+              "summer_league"
+            ],
+            "title": "Phase",
+            "type": "string"
+          },
+          "release_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Release Id"
+          },
+          "season": {
+            "anyOf": [
+              {
+                "pattern": "^\\d{4}-\\d{2}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Season"
+          },
+          "window": {
+            "default": "season",
+            "enum": [
+              "season",
+              "last_10",
+              "last_5"
+            ],
+            "title": "Window",
+            "type": "string"
+          }
+        },
+        "title": "ConversationContext",
+        "type": "object"
+      },
+      "EvidenceCell": {
+        "additionalProperties": false,
+        "properties": {
+          "context_fingerprint": {
+            "title": "Context Fingerprint",
+            "type": "string"
+          },
+          "entity_id": {
+            "title": "Entity Id",
+            "type": "string"
+          },
+          "evidence_id": {
+            "title": "Evidence Id",
+            "type": "string"
+          },
+          "input_identity": {
+            "additionalProperties": true,
+            "title": "Input Identity",
+            "type": "object"
+          },
+          "metric": {
+            "title": "Metric",
+            "type": "string"
+          },
+          "metric_version": {
+            "title": "Metric Version",
+            "type": "string"
+          },
+          "null_reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Null Reason"
+          },
+          "operation_hash": {
+            "title": "Operation Hash",
+            "type": "string"
+          },
+          "operation_version": {
+            "title": "Operation Version",
+            "type": "string"
+          },
+          "path": {
+            "title": "Path",
+            "type": "string"
+          },
+          "result_hash": {
+            "title": "Result Hash",
+            "type": "string"
+          },
+          "row_identity": {
+            "title": "Row Identity",
+            "type": "string"
+          },
+          "sample": {
+            "additionalProperties": true,
+            "title": "Sample",
+            "type": "object"
+          },
+          "unit": {
+            "title": "Unit",
+            "type": "string"
+          },
+          "value": {
+            "title": "Value"
+          }
+        },
+        "required": [
+          "evidence_id",
+          "result_hash",
+          "operation_hash",
+          "operation_version",
+          "context_fingerprint",
+          "entity_id",
+          "row_identity",
+          "path",
+          "metric",
+          "metric_version",
+          "unit",
+          "value",
+          "input_identity"
+        ],
+        "title": "EvidenceCell",
+        "type": "object"
+      },
+      "OperationResult": {
+        "additionalProperties": false,
+        "properties": {
+          "arguments": {
+            "additionalProperties": true,
+            "title": "Arguments",
+            "type": "object"
+          },
+          "data": {
+            "additionalProperties": true,
+            "title": "Data",
+            "type": "object"
+          },
+          "eligible_count": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Eligible Count"
+          },
+          "evidence": {
+            "items": {
+              "$ref": "#/$defs/EvidenceCell"
+            },
+            "title": "Evidence",
+            "type": "array"
+          },
+          "limitations": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Limitations",
+            "type": "array"
+          },
+          "open_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Open Url"
+          },
+          "operation": {
+            "title": "Operation",
+            "type": "string"
+          },
+          "operation_hash": {
+            "title": "Operation Hash",
+            "type": "string"
+          },
+          "operation_version": {
+            "title": "Operation Version",
+            "type": "string"
+          },
+          "result_hash": {
+            "title": "Result Hash",
+            "type": "string"
+          },
+          "rows": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Rows",
+            "type": "array"
+          },
+          "step_id": {
+            "title": "Step Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "step_id",
+          "operation",
+          "operation_version",
+          "arguments",
+          "operation_hash",
+          "result_hash",
+          "data",
+          "rows",
+          "evidence"
+        ],
+        "title": "OperationResult",
+        "type": "object"
+      },
+      "OperationStep": {
+        "additionalProperties": false,
+        "properties": {
+          "arguments": {
+            "additionalProperties": true,
+            "title": "Arguments",
+            "type": "object"
+          },
+          "depends_on": {
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 0,
+            "title": "Depends On",
+            "type": "array"
+          },
+          "operation": {
+            "maxLength": 48,
+            "minLength": 1,
+            "title": "Operation",
+            "type": "string"
+          },
+          "step_id": {
+            "pattern": "^[a-z][a-z0-9_]{0,31}$",
+            "title": "Step Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "step_id",
+          "operation"
+        ],
+        "title": "OperationStep",
+        "type": "object"
+      },
+      "SavedOperationManifest": {
+        "additionalProperties": false,
+        "properties": {
+          "context": {
+            "additionalProperties": true,
+            "title": "Context",
+            "type": "object"
+          },
+          "context_fingerprint": {
+            "pattern": "^[a-f0-9]{64}$",
+            "title": "Context Fingerprint",
+            "type": "string"
+          },
+          "limitations": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Limitations",
+            "type": "array"
+          },
+          "metric_version": {
+            "title": "Metric Version",
+            "type": "string"
+          },
+          "origin_manifest_sha256": {
+            "pattern": "^[a-f0-9]{64}$",
+            "title": "Origin Manifest Sha256",
+            "type": "string"
+          },
+          "origin_plan": {
+            "$ref": "#/$defs/AnalysisPlan"
+          },
+          "plan": {
+            "$ref": "#/$defs/AnalysisPlan"
+          },
+          "result_scope": {
+            "const": "complete_stats_cohort_and_declared_operation_bounds",
+            "title": "Result Scope",
+            "type": "string"
+          },
+          "results": {
+            "items": {
+              "$ref": "#/$defs/OperationResult"
+            },
+            "maxItems": 8,
+            "minItems": 1,
+            "title": "Results",
+            "type": "array"
+          },
+          "schema_version": {
+            "const": "courtload-saved-operation-v1",
+            "title": "Schema Version",
+            "type": "string"
+          }
+        },
+        "required": [
+          "schema_version",
+          "context",
+          "context_fingerprint",
+          "plan",
+          "origin_plan",
+          "origin_manifest_sha256",
+          "metric_version",
+          "result_scope",
+          "results",
+          "limitations"
+        ],
+        "title": "SavedOperationManifest",
+        "type": "object"
+      },
+      "SavedQuestionMetadata": {
+        "additionalProperties": false,
+        "properties": {
+          "question": {
+            "anyOf": [
+              {
+                "maxLength": 2000,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Question"
+          },
+          "question_saved": {
+            "title": "Question Saved",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "question_saved"
+        ],
+        "title": "SavedQuestionMetadata",
+        "type": "object"
+      }
+    },
+    "additionalProperties": false,
+    "properties": {
+      "created_at": {
+        "title": "Created At",
+        "type": "string"
+      },
+      "id": {
+        "title": "Id",
+        "type": "string"
+      },
+      "manifest": {
+        "$ref": "#/$defs/SavedOperationManifest"
+      },
+      "manifest_sha256": {
+        "pattern": "^[a-f0-9]{64}$",
+        "title": "Manifest Sha256",
+        "type": "string"
+      },
+      "metadata": {
+        "$ref": "#/$defs/SavedQuestionMetadata"
+      },
+      "title": {
+        "title": "Title",
+        "type": "string"
+      }
+    },
+    "required": [
+      "id",
+      "title",
+      "manifest_sha256",
+      "manifest",
+      "metadata",
+      "created_at"
+    ],
+    "title": "SavedConversationDetail",
+    "type": "object"
+  },
+  "SavedConversationReproduction": {
+    "$defs": {
+      "SavedOperationReproduction": {
+        "additionalProperties": false,
+        "properties": {
+          "match": {
+            "title": "Match",
+            "type": "boolean"
+          },
+          "operation": {
+            "title": "Operation",
+            "type": "string"
+          },
+          "recomputed_result_sha256": {
+            "title": "Recomputed Result Sha256",
+            "type": "string"
+          },
+          "saved_result_sha256": {
+            "title": "Saved Result Sha256",
+            "type": "string"
+          },
+          "step_id": {
+            "title": "Step Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "step_id",
+          "operation",
+          "saved_result_sha256",
+          "recomputed_result_sha256",
+          "match"
+        ],
+        "title": "SavedOperationReproduction",
+        "type": "object"
+      }
+    },
+    "additionalProperties": false,
+    "properties": {
+      "id": {
+        "title": "Id",
+        "type": "string"
+      },
+      "manifest_sha256": {
+        "title": "Manifest Sha256",
+        "type": "string"
+      },
+      "match": {
+        "title": "Match",
+        "type": "boolean"
+      },
+      "operations": {
+        "items": {
+          "$ref": "#/$defs/SavedOperationReproduction"
+        },
+        "title": "Operations",
+        "type": "array"
+      },
+      "provider_calls": {
+        "const": 0,
+        "default": 0,
+        "title": "Provider Calls",
+        "type": "integer"
+      },
+      "reason": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "title": "Reason"
+      }
+    },
+    "required": [
+      "id",
+      "manifest_sha256",
+      "match",
+      "reason",
+      "operations"
+    ],
+    "title": "SavedConversationReproduction",
+    "type": "object"
+  },
+  "SavedConversationSummary": {
+    "additionalProperties": false,
+    "properties": {
+      "context": {
+        "additionalProperties": true,
+        "title": "Context",
+        "type": "object"
+      },
+      "created_at": {
+        "title": "Created At",
+        "type": "string"
+      },
+      "id": {
+        "title": "Id",
+        "type": "string"
+      },
+      "manifest_sha256": {
+        "pattern": "^[a-f0-9]{64}$",
+        "title": "Manifest Sha256",
+        "type": "string"
+      },
+      "operations": {
+        "items": {
+          "type": "string"
+        },
+        "title": "Operations",
+        "type": "array"
+      },
+      "question_saved": {
+        "title": "Question Saved",
+        "type": "boolean"
+      },
+      "title": {
+        "title": "Title",
+        "type": "string"
+      }
+    },
+    "required": [
+      "id",
+      "title",
+      "manifest_sha256",
+      "created_at",
+      "context",
+      "operations",
+      "question_saved"
+    ],
+    "title": "SavedConversationSummary",
+    "type": "object"
+  }
+}

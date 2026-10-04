@@ -1,0 +1,7 @@
+{
+  "status": "failed",
+  "reason": "Default all-splits response exceeded existing B33 cumulative row budget. Accepted probe selects venue splits explicitly, as B34 did.",
+  "retained_saves": 8,
+  "provider_calls": 0,
+  "cleanup": "API process stopped; append-only verification investigations retained."
+}

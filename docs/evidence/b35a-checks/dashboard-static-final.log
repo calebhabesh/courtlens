@@ -1,0 +1,8 @@
+
+> courtload-dashboard@0.1.0 lint
+> eslint . --max-warnings=0
+
+
+> courtload-dashboard@0.1.0 typecheck
+> tsc --noEmit
+

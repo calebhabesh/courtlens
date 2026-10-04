@@ -1,0 +1,68 @@
+============================= test session starts ==============================
+platform linux -- Python 3.14.7, pytest-8.4.2, pluggy-1.6.0
+rootdir: /home/ethioking/dev/nba-analytics
+configfile: pyproject.toml
+plugins: anyio-4.14.2, cov-7.1.0
+collected 21 items / 20 deselected / 1 selected
+
+tests/integration/test_saved_conversation_postgres.py F                  [100%]
+
+=================================== FAILURES ===================================
+_ test_pointer_resolved_timestamp_is_retained_without_requiring_current_pointer _
+
+postgres_conversation = (<sqlalchemy.orm.session.Session object at 0x7f887210ef90>, ResolvedContext(release_id='39b42bad-7ca2-47e4-8095-ed1653...torical reconstruction from completed records.', 'Prior-day boundary: game_date < before_date is strictly enforced.']))
+
+    def test_pointer_resolved_timestamp_is_retained_without_requiring_current_pointer(
+        postgres_conversation,
+    ):
+        """Current-pointer provenance differs from explicit-release resolution on replay."""
+        from dataclasses import replace
+    
+        session, context = postgres_conversation
+        published = replace(context, published_at="2026-10-01T17:47:29+00:00")
+        # The active turn resolved the public pointer. Subsequent save/reproduce must
+        # resolve the immutable release and keep its observed publication provenance.
+        with patch(
+            "courtload.services.assistant.conversations.resolve_workbench_context",
+            return_value=published,
+        ):
+            answer = run_conversation_turn(
+                session,
+                request(context, [OperationStep(step_id="a", operation="definition", arguments={"metric": "pts"})]),
+            )
+>       retained = saved.save_conversation(session, save_request(answer))
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/integration/test_saved_conversation_postgres.py:418: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/courtload/services/assistant/saved.py:70: in save_conversation
+    context = _context(session, answer.context)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+session = <sqlalchemy.orm.session.Session object at 0x7f887210ef90>
+saved = {'before_date': '2025-04-15', 'coverage_end': '2025-03-30', 'coverage_start': '2025-03-01', 'cutoff_utc': '2025-04-15T04:00:00+00:00', ...}
+
+    def _context(session: Session, saved: dict[str, Any]) -> ResolvedContext:
+        context = resolve_workbench_context(
+            session,
+            release_id=saved["release_id"],
+            requested_season=saved["season"],
+            requested_phase=saved["phase"],
+            requested_before_date=date.fromisoformat(saved["before_date"]),
+            requested_window=saved["window"],
+        )
+        if context.to_dict() != saved:
+>           raise HTTPException(409, "Retained input context or metric version is unavailable.")
+E           fastapi.exceptions.HTTPException: 409: Retained input context or metric version is unavailable.
+
+src/courtload/services/assistant/saved.py:44: HTTPException
+=============================== warnings summary ===============================
+.venv/lib/python3.14/site-packages/fastapi/testclient.py:1
+  /home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/integration/test_saved_conversation_postgres.py::test_pointer_resolved_timestamp_is_retained_without_requiring_current_pointer
+================= 1 failed, 20 deselected, 1 warning in 0.86s ==================

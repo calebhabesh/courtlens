@@ -1,0 +1,505 @@
+INFO:     Started server process [2324494]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/sqlalchemy/engine/base.py", line 1969, in _exec_single_context
+    self.dialect.do_execute(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        cursor, str_statement, effective_parameters, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/sqlalchemy/engine/default.py", line 952, in do_execute
+    cursor.execute(statement, parameters)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/psycopg/cursor.py", line 117, in execute
+    raise ex.with_traceback(None)
+psycopg.errors.UndefinedColumn: column wi.display_name does not exist
+LINE 4:             coalesce(wi.display_name, wpg.player_id) AS play...
+                             ^
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/uvicorn/protocols/http/httptools_impl.py", line 422, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        self.scope, self.receive, self.send
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/uvicorn/middleware/proxy_headers.py", line 63, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/fastapi/applications.py", line 1163, in __call__
+    await super().__call__(scope, receive, send)
+  File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/starlette/applications.py", line 96, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/starlette/middleware/errors.py", line 186, in __call__
+    raise exc
+  File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/starlette/middleware/base.py", line 193, in __call__
+    response = await self.dispatch_func(request, call_next)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ethioking/dev/nba-analytics/src/courtload/api/app.py", line 56, in request_context
+    response = await observe_request(request, call_next)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ethioking/dev/nba-analytics/src/courtload/api/metrics.py", line 25, in observe_request
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/starlette/middleware/base.py", line 168, in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+  File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/starlette/middleware/base.py", line 144, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/starlette/middleware/cors.py", line 88, in __call__
+    await self.app(scope, receive, send)
+  File "/home/ethioking/dev/nba-analytics/src/courtload/api/assistant_limits.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/starlette/middleware/exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/starlette/routing.py", line 670, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/fastapi/routing.py", line 2734, in app
+    await route.handle(scope, receive, send)
+  File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/fastapi/routing.py", line 1780, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/fastapi/routing.py", line 2789, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/fastapi/routing.py", line 1800, in _handle_selected
+    await original_route.handle(scope, receive, send)
+  File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/fastapi/routing.py", line 1279, in handle
+    await app(scope, receive, send)
+  File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/fastapi/routing.py", line 158, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/fastapi/routing.py", line 144, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/fastapi/routing.py", line 706, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/fastapi/routing.py", line 354, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/starlette/concurrency.py", line 34, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/anyio/to_thread.py", line 65, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/anyio/_backends/_asyncio.py", line 2641, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/anyio/_backends/_asyncio.py", line 1033, in run
+    result = context.run(func, *args)
+  File "/home/ethioking/dev/nba-analytics/src/courtload/api/routers/workbench.py", line 495, in get_players
+    items_raw, total_count, next_cursor, has_more = execute_player_research_query(
+                                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        session, context, query
+        ^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/ethioking/dev/nba-analytics/src/courtload/services/workbench_analytics.py", line 630, in execute_player_research_query
+    return execute_stats_query(
+        session,
+    ...<3 lines>...
+        max_export_rows=query.limit if is_export else MAX_EXPORT_ROWS,
+    )
+  File "/home/ethioking/dev/nba-analytics/src/courtload/services/stats_engine.py", line 819, in execute_stats_query
+    total_count = session.execute(text(count_sql), count_params).scalar() or 0
+                  ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/sqlalchemy/orm/session.py", line 2373, in execute
+    return self._execute_internal(
+           ~~~~~~~~~~~~~~~~~~~~~~^
+        statement,
+        ^^^^^^^^^^
+    ...<4 lines>...
+        _add_event=_add_event,
+        ^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/sqlalchemy/orm/session.py", line 2280, in _execute_internal
+    result = conn.execute(
+        statement, params or {}, execution_options=execution_options
+    )
+  File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/sqlalchemy/engine/base.py", line 1421, in execute
+    return meth(
+        self,
+        distilled_parameters,
+        execution_options or NO_OPTIONS,
+    )
+  File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/sqlalchemy/sql/elements.py", line 526, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self, distilled_params, execution_options
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/sqlalchemy/engine/base.py", line 1643, in _execute_clauseelement
+    ret = self._execute_context(
+        dialect,
+    ...<8 lines>...
+        cache_hit=cache_hit,
+    )
+  File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/sqlalchemy/engine/base.py", line 1848, in _execute_context
+    return self._exec_single_context(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~^
+        dialect, context, statement, parameters
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/sqlalchemy/engine/base.py", line 1988, in _exec_single_context
+    self._handle_dbapi_exception(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        e, str_statement, effective_parameters, cursor, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/sqlalchemy/engine/base.py", line 2365, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/sqlalchemy/engine/base.py", line 1969, in _exec_single_context
+    self.dialect.do_execute(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        cursor, str_statement, effective_parameters, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/sqlalchemy/engine/default.py", line 952, in do_execute
+    cursor.execute(statement, parameters)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/psycopg/cursor.py", line 117, in execute
+    raise ex.with_traceback(None)
+sqlalchemy.exc.ProgrammingError: (psycopg.errors.UndefinedColumn) column wi.display_name does not exist
+LINE 4:             coalesce(wi.display_name, wpg.player_id) AS play...
+                             ^
+[SQL: WITH ranked_games AS (
+        SELECT
+            wpg.player_id,
+            coalesce(wi.display_name, wpg.player_id) AS player_name,
+            wpg.team_id,
+            wpg.game_id,
+            wpg.game_date,
+            wpg.appearance,
+            wpg.minutes_seconds,
+            (wpg.stats_json->>'points')::int AS points,
+            (wpg.stats_json->>'reboundsTotal')::int AS rebounds_total,
+            (wpg.stats_json->>'reboundsOffensive')::int AS rebounds_offensive,
+            (wpg.stats_json->>'reboundsDefensive')::int AS rebounds_defensive,
+            (wpg.stats_json->>'assists')::int AS assists,
+            (wpg.stats_json->>'steals')::int AS steals,
+            (wpg.stats_json->>'blocks')::int AS blocks,
+            (wpg.stats_json->>'turnovers')::int AS turnovers,
+            (wpg.stats_json->>'foulsPersonal')::int AS fouls_personal,
+            (wpg.stats_json->>'fieldGoalsMade')::int AS fgm,
+            (wpg.stats_json->>'fieldGoalsAttempted')::int AS fga,
+            (wpg.stats_json->>'threePointersMade')::int AS fg3m,
+            (wpg.stats_json->>'threePointersAttempted')::int AS fg3a,
+            (wpg.stats_json->>'freeThrowsMade')::int AS ftm,
+            (wpg.stats_json->>'freeThrowsAttempted')::int AS fta,
+            ROW_NUMBER() OVER (
+                PARTITION BY wpg.player_id
+                ORDER BY wpg.game_date DESC, wpg.game_id DESC
+            ) AS app_rank
+        FROM archive_player_games wpg
+        LEFT JOIN archive_identities wi
+            ON wi.external_id = wpg.player_id AND wi.kind = 'player'
+        WHERE wpg.dataset_id = %(dataset_id)s AND wpg.phase = %(phase)s AND wpg.game_date < %(before_date)s AND wpg.season = %(season)s
+    ),
+    candidate_games AS (
+        SELECT * FROM ranked_games WHERE 1=1
+    ),
+    aggregated AS (
+        SELECT
+            player_id,
+            max(player_name) AS player_name,
+            array_agg(distinct team_id) AS teams,
+            count(distinct team_id) AS stints_count,
+            count(*) FILTER (WHERE appearance = 'appeared') AS games_played,
+            round(coalesce(sum(minutes_seconds), 0)::numeric / 60.0, 1) AS total_minutes,
+            round(
+                avg(minutes_seconds::numeric / 60.0)
+                FILTER (WHERE appearance = 'appeared' AND minutes_seconds IS NOT NULL),
+                1
+            ) AS min_per_game,
+            sum(points) AS pts,
+            count(points) AS n_pts,
+            round(avg(points) FILTER (WHERE points IS NOT NULL), 1) AS pts_per_game,
+            sum(rebounds_total) AS reb,
+            count(rebounds_total) AS n_reb,
+            round(
+                avg(rebounds_total) FILTER (WHERE rebounds_total IS NOT NULL),
+                1
+            ) AS reb_per_game,
+            sum(rebounds_offensive) AS oreb,
+            count(rebounds_offensive) AS n_oreb,
+            round(
+                avg(rebounds_offensive) FILTER (WHERE rebounds_offensive IS NOT NULL),
+                1
+            ) AS oreb_per_game,
+            sum(rebounds_defensive) AS dreb,
+            count(rebounds_defensive) AS n_dreb,
+            round(
+                avg(rebounds_defensive) FILTER (WHERE rebounds_defensive IS NOT NULL),
+                1
+            ) AS dreb_per_game,
+            sum(assists) AS ast,
+            count(assists) AS n_ast,
+            round(avg(assists) FILTER (WHERE assists IS NOT NULL), 1) AS ast_per_game,
+            sum(steals) AS stl,
+            count(steals) AS n_stl,
+            round(avg(steals) FILTER (WHERE steals IS NOT NULL), 1) AS stl_per_game,
+            sum(blocks) AS blk,
+            count(blocks) AS n_blk,
+            round(avg(blocks) FILTER (WHERE blocks IS NOT NULL), 1) AS blk_per_game,
+            sum(turnovers) AS tov,
+            count(turnovers) AS n_tov,
+            round(avg(turnovers) FILTER (WHERE turnovers IS NOT NULL), 1) AS tov_per_game,
+            sum(fouls_personal) AS pf,
+            count(fouls_personal) AS n_pf,
+            round(
+                avg(fouls_personal) FILTER (WHERE fouls_personal IS NOT NULL),
+                1
+            ) AS pf_per_game,
+            sum(fgm) FILTER (WHERE fgm IS NOT NULL AND fga IS NOT NULL) AS fgm,
+            sum(fga) FILTER (WHERE fgm IS NOT NULL AND fga IS NOT NULL) AS fga,
+            count(*) FILTER (WHERE fgm IS NOT NULL AND fga IS NOT NULL) AS n_fg,
+            case when sum(fga) FILTER (WHERE fgm IS NOT NULL AND fga IS NOT NULL) > 0
+                 then round(sum(fgm)::numeric / sum(fga)::numeric, 4) else null end as fg_pct,
+            sum(fg3m) FILTER (WHERE fg3m IS NOT NULL AND fg3a IS NOT NULL) AS fg3m,
+            sum(fg3a) FILTER (WHERE fg3m IS NOT NULL AND fg3a IS NOT NULL) AS fg3a,
+            count(*) FILTER (WHERE fg3m IS NOT NULL AND fg3a IS NOT NULL) AS n_fg3,
+            case when sum(fg3a) FILTER (WHERE fg3m IS NOT NULL AND fg3a IS NOT NULL) > 0
+                 then round(sum(fg3m)::numeric / sum(fg3a)::numeric, 4) else null end as fg3_pct,
+            sum(ftm) FILTER (WHERE ftm IS NOT NULL AND fta IS NOT NULL) AS ftm,
+            sum(fta) FILTER (WHERE ftm IS NOT NULL AND fta IS NOT NULL) AS fta,
+            count(*) FILTER (WHERE ftm IS NOT NULL AND fta IS NOT NULL) AS n_ft,
+            case when sum(fta) FILTER (WHERE ftm IS NOT NULL AND fta IS NOT NULL) > 0
+                 then round(sum(ftm)::numeric / sum(fta)::numeric, 4) else null end as ft_pct,
+            count(*) FILTER (
+                WHERE fgm IS NOT NULL AND fg3m IS NOT NULL AND fga IS NOT NULL
+            ) AS n_efg,
+            case when sum(fga) FILTER (
+                WHERE fgm IS NOT NULL AND fg3m IS NOT NULL AND fga IS NOT NULL
+            ) > 0
+                 then round(
+                     (sum(fgm)::numeric + 0.5 * sum(fg3m)::numeric) / sum(fga)::numeric,
+                     4
+                 ) else null end as efg_pct,
+            count(*) FILTER (
+                WHERE points IS NOT NULL AND fga IS NOT NULL AND fta IS NOT NULL
+            ) AS n_ts,
+            case when (
+                sum(fga) FILTER (WHERE points IS NOT NULL AND fga IS NOT NULL AND fta IS NOT NULL)
+                + 0.44 * sum(fta) FILTER (
+                    WHERE points IS NOT NULL AND fga IS NOT NULL AND fta IS NOT NULL
+                )
+            ) > 0
+                 then round(
+                     sum(points)::numeric / (2.0 * (
+                         sum(fga) FILTER (
+                             WHERE points IS NOT NULL AND fga IS NOT NULL AND fta IS NOT NULL
+                         )::numeric
+                         + 0.44 * sum(fta) FILTER (
+                             WHERE points IS NOT NULL AND fga IS NOT NULL AND fta IS NOT NULL
+                         )::numeric
+                     )),
+                     4
+                 ) else null end as ts_pct,
+            count(*) FILTER (WHERE fta IS NOT NULL AND fga IS NOT NULL) AS n_ftr,
+            case when sum(fga) FILTER (WHERE fta IS NOT NULL AND fga IS NOT NULL) > 0
+                 then round(sum(fta)::numeric / sum(fga)::numeric, 4) else null end as ftr,
+            case when sum(minutes_seconds) FILTER (
+        WHERE minutes_seconds > 0 AND points IS NOT NULL
+    ) > 0
+    then round(
+        (sum(points)::numeric / (
+            sum(minutes_seconds) FILTER (
+                WHERE minutes_seconds > 0 AND points IS NOT NULL
+            )::numeric / 60.0
+        )) * 36.0,
+        1
+    ) else null end as pts_per_36,
+    count(*) FILTER (WHERE minutes_seconds > 0 AND points IS NOT NULL) AS n_pts_per_36,
+            case when sum(minutes_seconds) FILTER (
+        WHERE minutes_seconds > 0 AND rebounds_total IS NOT NULL
+    ) > 0
+    then round(
+        (sum(rebounds_total)::numeric / (
+            sum(minutes_seconds) FILTER (
+                WHERE minutes_seconds > 0 AND rebounds_total IS NOT NULL
+            )::numeric / 60.0
+        )) * 36.0,
+        1
+    ) else null end as reb_per_36,
+    count(*) FILTER (WHERE minutes_seconds > 0 AND rebounds_total IS NOT NULL) AS n_reb_per_36,
+            case when sum(minutes_seconds) FILTER (
+        WHERE minutes_seconds > 0 AND assists IS NOT NULL
+    ) > 0
+    then round(
+        (sum(assists)::numeric / (
+            sum(minutes_seconds) FILTER (
+                WHERE minutes_seconds > 0 AND assists IS NOT NULL
+            )::numeric / 60.0
+        )) * 36.0,
+        1
+    ) else null end as ast_per_36,
+    count(*) FILTER (WHERE minutes_seconds > 0 AND assists IS NOT NULL) AS n_ast_per_36,
+            case when sum(minutes_seconds) FILTER (
+        WHERE minutes_seconds > 0 AND steals IS NOT NULL
+    ) > 0
+    then round(
+        (sum(steals)::numeric / (
+            sum(minutes_seconds) FILTER (
+                WHERE minutes_seconds > 0 AND steals IS NOT NULL
+            )::numeric / 60.0
+        )) * 36.0,
+        1
+    ) else null end as stl_per_36,
+    count(*) FILTER (WHERE minutes_seconds > 0 AND steals IS NOT NULL) AS n_stl_per_36,
+            case when sum(minutes_seconds) FILTER (
+        WHERE minutes_seconds > 0 AND blocks IS NOT NULL
+    ) > 0
+    then round(
+        (sum(blocks)::numeric / (
+            sum(minutes_seconds) FILTER (
+                WHERE minutes_seconds > 0 AND blocks IS NOT NULL
+            )::numeric / 60.0
+        )) * 36.0,
+        1
+    ) else null end as blk_per_36,
+    count(*) FILTER (WHERE minutes_seconds > 0 AND blocks IS NOT NULL) AS n_blk_per_36,
+            case when sum(minutes_seconds) FILTER (
+        WHERE minutes_seconds > 0 AND turnovers IS NOT NULL
+    ) > 0
+    then round(
+        (sum(turnovers)::numeric / (
+            sum(minutes_seconds) FILTER (
+                WHERE minutes_seconds > 0 AND turnovers IS NOT NULL
+            )::numeric / 60.0
+        )) * 36.0,
+        1
+    ) else null end as tov_per_36,
+    count(*) FILTER (WHERE minutes_seconds > 0 AND turnovers IS NOT NULL) AS n_tov_per_36,
+            case when sum(minutes_seconds) FILTER (
+        WHERE minutes_seconds > 0 AND fouls_personal IS NOT NULL
+    ) > 0
+    then round(
+        (sum(fouls_personal)::numeric / (
+            sum(minutes_seconds) FILTER (
+                WHERE minutes_seconds > 0 AND fouls_personal IS NOT NULL
+            )::numeric / 60.0
+        )) * 36.0,
+        1
+    ) else null end as pf_per_36,
+    count(*) FILTER (WHERE minutes_seconds > 0 AND fouls_personal IS NOT NULL) AS n_pf_per_36,
+            case when sum(minutes_seconds) FILTER (
+        WHERE minutes_seconds > 0 AND rebounds_offensive IS NOT NULL
+    ) > 0
+    then round(
+        (sum(rebounds_offensive)::numeric / (
+            sum(minutes_seconds) FILTER (
+                WHERE minutes_seconds > 0 AND rebounds_offensive IS NOT NULL
+            )::numeric / 60.0
+        )) * 36.0,
+        1
+    ) else null end as oreb_per_36,
+    count(*) FILTER (WHERE minutes_seconds > 0 AND rebounds_offensive IS NOT NULL) AS n_oreb_per_36,
+            case when sum(minutes_seconds) FILTER (
+        WHERE minutes_seconds > 0 AND rebounds_defensive IS NOT NULL
+    ) > 0
+    then round(
+        (sum(rebounds_defensive)::numeric / (
+            sum(minutes_seconds) FILTER (
+                WHERE minutes_seconds > 0 AND rebounds_defensive IS NOT NULL
+            )::numeric / 60.0
+        )) * 36.0,
+        1
+    ) else null end as dreb_per_36,
+    count(*) FILTER (WHERE minutes_seconds > 0 AND rebounds_defensive IS NOT NULL) AS n_dreb_per_36,
+            case when sum(minutes_seconds) FILTER (
+        WHERE minutes_seconds > 0 AND fga IS NOT NULL
+    ) > 0
+    then round(
+        (sum(fga)::numeric / (
+            sum(minutes_seconds) FILTER (
+                WHERE minutes_seconds > 0 AND fga IS NOT NULL
+            )::numeric / 60.0
+        )) * 36.0,
+        1
+    ) else null end as fga_per_36,
+    count(*) FILTER (WHERE minutes_seconds > 0 AND fga IS NOT NULL) AS n_fga_per_36,
+            case when sum(minutes_seconds) FILTER (
+        WHERE minutes_seconds > 0 AND fg3a IS NOT NULL
+    ) > 0
+    then round(
+        (sum(fg3a)::numeric / (
+            sum(minutes_seconds) FILTER (
+                WHERE minutes_seconds > 0 AND fg3a IS NOT NULL
+            )::numeric / 60.0
+        )) * 36.0,
+        1
+    ) else null end as fg3a_per_36,
+    count(*) FILTER (WHERE minutes_seconds > 0 AND fg3a IS NOT NULL) AS n_fg3a_per_36,
+            case when sum(minutes_seconds) FILTER (
+        WHERE minutes_seconds > 0 AND fta IS NOT NULL
+    ) > 0
+    then round(
+        (sum(fta)::numeric / (
+            sum(minutes_seconds) FILTER (
+                WHERE minutes_seconds > 0 AND fta IS NOT NULL
+            )::numeric / 60.0
+        )) * 36.0,
+        1
+    ) else null end as fta_per_36,
+    count(*) FILTER (WHERE minutes_seconds > 0 AND fta IS NOT NULL) AS n_fta_per_36,
+            round(
+                avg(
+                    points + 1.2 * rebounds_total + 1.5 * assists
+                    + 3.0 * steals + 3.0 * blocks - turnovers
+                ) FILTER (
+                    WHERE points IS NOT NULL
+                    AND rebounds_total IS NOT NULL
+                    AND assists IS NOT NULL
+                    AND steals IS NOT NULL
+                    AND blocks IS NOT NULL
+                    AND turnovers IS NOT NULL
+                ),
+                1
+            ) AS legacy_fantasy_score_per_game,
+            count(*) FILTER (
+                WHERE points IS NOT NULL
+                AND rebounds_total IS NOT NULL
+                AND assists IS NOT NULL
+                AND steals IS NOT NULL
+                AND blocks IS NOT NULL
+                AND turnovers IS NOT NULL
+            ) AS n_legacy_fantasy_score_per_game
+        FROM candidate_games
+        GROUP BY player_id
+    )
+    SELECT count(*) FROM aggregated ;]
+[parameters: {'dataset_id': '2e99f37c-231a-4748-9f48-5b9ffa99f228', 'phase': 'regular_season', 'before_date': datetime.date(2024, 4, 15), 'season': '2023-24'}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [2324494]

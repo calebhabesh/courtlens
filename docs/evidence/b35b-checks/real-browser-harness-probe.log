@@ -1,0 +1,5 @@
+AssertionError [ERR_ASSERTION]: [{"method":"POST","path":"/api/workbench/operations/finance"},{"method":"POST","path":"/api/workbench/assistant/turn"},{"method":"POST","path":"/api/workbench/assistant/turn"},{"method":"POST","path":"/api/workbench/assistant/turn"}]
+
+1 !== 0
+
+    at /home/ethioking/dev/nba-analytics/scripts/verify_b35b_browser.cjs:82:10

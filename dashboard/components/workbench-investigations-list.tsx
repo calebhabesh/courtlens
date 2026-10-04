@@ -81,14 +81,14 @@ export function WorkbenchInvestigationsList({ items }: { items: SavedInvestigati
                   disabled={rep?.loading}
                   title="Verify exact SHA-256 match against bound dataset"
                 >
-                  {rep?.loading ? "Verifying…" : "🔍 Verify Reproduction"}
+                  {rep?.loading ? "Verifying…" : "Verify Reproduction"}
                 </button>
                 <a
                   href={getExportUrl(item.id, "csv")}
                   download={`investigation-${item.id}.csv`}
                   className="button button-small"
                 >
-                  📥 Export CSV
+                  Export CSV
                 </a>
                 <a
                   href={getExportUrl(item.id, "json")}

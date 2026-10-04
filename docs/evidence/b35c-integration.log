@@ -1,0 +1,153 @@
+AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
++ actual - expected
+
++ [
++   {
++     error: 'net::ERR_ABORTED',
++     url: 'http://127.0.0.1:3135/learning?_rsc=HzWsK4yFUoZLFyoa'
++   },
++   {
++     error: 'net::ERR_ABORTED',
++     url: 'http://127.0.0.1:3135/evaluation?_rsc=HzWsK4yFUoZLFyoa'
++   },
++   {
++     error: 'net::ERR_ABORTED',
++     url: 'http://127.0.0.1:3135/?_rsc=GUkK8V6TTy-GcSBa'
++   },
++   {
++     error: 'net::ERR_ABORTED',
++     url: 'http://127.0.0.1:3135/stats?_rsc=GUkK8V6TTy-GcSBa'
++   },
++   {
++     error: 'net::ERR_ABORTED',
++     url: 'http://127.0.0.1:3135/data-status?_rsc=GUkK8V6TTy-GcSBa'
++   },
++   {
++     error: 'net::ERR_ABORTED',
++     url: 'http://127.0.0.1:3135/settings?_rsc=GUkK8V6TTy-GcSBa'
++   },
++   {
++     error: 'net::ERR_ABORTED',
++     url: 'http://127.0.0.1:3135/?_rsc=TpKb-WxlVvQRPC-7'
++   },
++   {
++     error: 'net::ERR_ABORTED',
++     url: 'http://127.0.0.1:3135/stats?_rsc=TpKb-WxlVvQRPC-7'
++   },
++   {
++     error: 'net::ERR_ABORTED',
++     url: 'http://127.0.0.1:3135/data-status?_rsc=TpKb-WxlVvQRPC-7'
++   },
++   {
++     error: 'net::ERR_ABORTED',
++     url: 'http://127.0.0.1:3135/settings?_rsc=TpKb-WxlVvQRPC-7'
++   },
++   {
++     error: 'net::ERR_ABORTED',
++     url: 'http://127.0.0.1:3135/methodology?_rsc=GUkK8V6TTy-GcSBa'
++   },
++   {
++     error: 'net::ERR_ABORTED',
++     url: 'http://127.0.0.1:3135/methodology?_rsc=TpKb-WxlVvQRPC-7'
++   },
++   {
++     error: 'net::ERR_ABORTED',
++     url: 'http://127.0.0.1:3135/stats?_rsc=oz-_Q2BhlE850NaL'
++   },
++   {
++     error: 'net::ERR_ABORTED',
++     url: 'http://127.0.0.1:3135/research/ask?_rsc=oz-_Q2BhlE850NaL'
++   },
++   {
++     error: 'net::ERR_ABORTED',
++     url: 'http://127.0.0.1:3135/investigations?_rsc=oz-_Q2BhlE850NaL'
++   },
++   {
++     error: 'net::ERR_ABORTED',
++     url: 'http://127.0.0.1:3135/methodology?_rsc=oz-_Q2BhlE850NaL'
++   },
++   {
++     error: 'net::ERR_ABORTED',
++     url: 'http://127.0.0.1:3135/evaluation?_rsc=oz-_Q2BhlE850NaL'
++   },
++   {
++     error: 'net::ERR_ABORTED',
++     url: 'http://127.0.0.1:3135/investigations?_rsc=nkeszgOmBjH2MJ4W'
++   },
++   {
++     error: 'net::ERR_ABORTED',
++     url: 'http://127.0.0.1:3135/learning?_rsc=nkeszgOmBjH2MJ4W'
++   },
++   {
++     error: 'net::ERR_ABORTED',
++     url: 'http://127.0.0.1:3135/data-status?_rsc=F63Kj8CGs-HqEnGx'
++   },
++   {
++     error: 'net::ERR_ABORTED',
++     url: 'http://127.0.0.1:3135/evaluation?_rsc=nkeszgOmBjH2MJ4W'
++   },
++   {
++     error: 'net::ERR_ABORTED',
++     url: 'http://127.0.0.1:3135/forecasts?_rsc=nkeszgOmBjH2MJ4W'
++   },
++   {
++     error: 'net::ERR_ABORTED',
++     url: 'http://127.0.0.1:3135/?_rsc=DQxjArDrgutTG17x'
++   },
++   {
++     error: 'net::ERR_ABORTED',
++     url: 'http://127.0.0.1:3135/stats?_rsc=DQxjArDrgutTG17x'
++   },
++   {
++     error: 'net::ERR_ABORTED',
++     url: 'http://127.0.0.1:3135/methodology?_rsc=DQxjArDrgutTG17x'
++   },
++   {
++     error: 'net::ERR_ABORTED',
++     url: 'http://127.0.0.1:3135/investigations?_rsc=DQxjArDrgutTG17x'
++   },
++   {
++     error: 'net::ERR_ABORTED',
++     url: 'http://127.0.0.1:3135/?_rsc=j-_vjoKOn8bxlRO7'
++   },
++   {
++     error: 'net::ERR_ABORTED',
++     url: 'http://127.0.0.1:3135/investigations?_rsc=j-_vjoKOn8bxlRO7'
++   },
++   {
++     error: 'net::ERR_ABORTED',
++     url: 'http://127.0.0.1:3135/?_rsc=D0wSLfMGVl7dLfSf'
++   },
++   {
++     error: 'net::ERR_ABORTED',
++     url: 'http://127.0.0.1:3135/stats?_rsc=D0wSLfMGVl7dLfSf'
++   },
++   {
++     error: 'net::ERR_ABORTED',
++     url: 'http://127.0.0.1:3135/players?season=2023-24&phase=regular_season&window=season&sort_metric=pts&sort_direction=desc&limit=10&_rsc=D0wSLfMGVl7dLfSf'
++   },
++   {
++     error: 'net::ERR_ABORTED',
++     url: 'http://127.0.0.1:3135/investigations/saved/3bcb37c9-b410-44b1-be7f-c3b368fbe28c?_rsc=D0wSLfMGVl7dLfSf'
++   },
++   {
++     error: 'net::ERR_ABORTED',
++     url: 'http://127.0.0.1:3135/investigations/saved/1ec05206-2490-4922-becc-5e519483bf2e?_rsc=D0wSLfMGVl7dLfSf'
++   },
++   {
++     error: 'net::ERR_ABORTED',
++     url: 'http://127.0.0.1:3135/investigations/saved/05efbfee-8d3d-490b-81d3-fc0a08e0460d?_rsc=PQ-MqL3RjT0ZvORi'
++   },
++   {
++     error: 'net::ERR_ABORTED',
++     url: 'http://127.0.0.1:3135/investigations/saved/3bcb37c9-b410-44b1-be7f-c3b368fbe28c?_rsc=PQ-MqL3RjT0ZvORi'
++   },
++   {
++     error: 'net::ERR_ABORTED',
++     url: 'http://127.0.0.1:3135/investigations/saved/1ec05206-2490-4922-becc-5e519483bf2e?_rsc=PQ-MqL3RjT0ZvORi'
++   }
++ ]
+- []
+
+    at /home/ethioking/dev/nba-analytics/scripts/verify_b35_integration.cjs:61:12
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)

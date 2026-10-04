@@ -1,0 +1,33 @@
+{
+  "before": {
+    "public_snapshot": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+    "pointer_count": 149,
+    "pointers_sha256": "39eafb2e8165546913f92fe4aea432cea7641410d06b617ee44efcf08e77ee0b",
+    "books": [
+      [
+        "256f66b1-129d-4904-be30-7b946f6e92fc",
+        "a5052df00f96420d722bcfcf5fa91df0c90394e570ceb5bf85de2f61f2b9ebc2"
+      ],
+      [
+        "96b89635-82b4-47c7-b4f6-52ab85c0f0bc",
+        "b425f46cfa002bf79c79a63b5b6e05fc3db478f441f87a48dd233437e00816e4"
+      ]
+    ]
+  },
+  "after": {
+    "public_snapshot": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+    "pointer_count": 149,
+    "pointers_sha256": "39eafb2e8165546913f92fe4aea432cea7641410d06b617ee44efcf08e77ee0b",
+    "books": [
+      [
+        "256f66b1-129d-4904-be30-7b946f6e92fc",
+        "a5052df00f96420d722bcfcf5fa91df0c90394e570ceb5bf85de2f61f2b9ebc2"
+      ],
+      [
+        "96b89635-82b4-47c7-b4f6-52ab85c0f0bc",
+        "b425f46cfa002bf79c79a63b5b6e05fc3db478f441f87a48dd233437e00816e4"
+      ]
+    ]
+  },
+  "match": true
+}

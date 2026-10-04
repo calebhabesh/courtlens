@@ -1,0 +1,111 @@
+{
+  "block": "B35a",
+  "recorded_at": "2026-10-04T11:15:05.808045+00:00",
+  "status": "retained-operation backend and recovery verified; parent B35 in progress",
+  "implementation_choice": "Current Codex session; no delegated agent, model override or provider inference",
+  "revision": "6c82e7da33e0008b37627d179e2548955551f658",
+  "dirty_work_preserved": true,
+  "migration": "35b810a4f003",
+  "checks": {
+    "backend": {
+      "passed": 616,
+      "skipped": 124,
+      "seconds": 23.0,
+      "warnings": 1
+    },
+    "focused_postgres": {
+      "passed": 215,
+      "skipped": 0,
+      "seconds": 51.17,
+      "warnings": 1
+    },
+    "fresh_database_restore": {
+      "passed": 1,
+      "seconds": 156.37,
+      "saved_records_reproduced": 32,
+      "warnings": 1
+    },
+    "dashboard": {
+      "passed": 158,
+      "files": 24
+    },
+    "browser": {
+      "passed": 20,
+      "seconds": 5.0,
+      "mode": "retained conversational/Live mock regression"
+    },
+    "ruff": "passed (329 Python files)",
+    "mypy": "passed (144 source files)",
+    "eslint": "passed, zero warnings",
+    "typescript": "passed",
+    "production_build": "passed",
+    "diff_check": "passed",
+    "retained_checksums": {
+      "passed": 26
+    },
+    "positive_forecast_pinning": {
+      "passed": 1,
+      "seconds": 2.69,
+      "warnings": 1,
+      "mode": "additional disposable PostgreSQL check; later policy/score leaves retained issuance unchanged"
+    }
+  },
+  "real_service": {
+    "operation_types_saved_and_reproduced": 12,
+    "provider_calls": 0,
+    "process_restart_verified": true,
+    "stats_rows": 577,
+    "publication_pointers_unchanged": 148,
+    "finance_book_hashes_unchanged": 2,
+    "retained_records_after_final": 32
+  },
+  "limits": [
+    "B35b UI/content/installability pending",
+    "Real Gemini evaluation remains open, no key configured",
+    "Full PostgreSQL suite not run",
+    "Forecast probe observed no issuance",
+    "Existing warnings persist",
+    "All-splits conversation row budget remains restrictive; accepted probe explicitly selects venue",
+    "Upstream rounded aggregate precision remains a B33 limitation",
+    "Existing rich source/model and in-game Live gates unchanged"
+  ],
+  "code_and_schema_sha256": {
+    "src/courtload/conversation_models.py": "55c4b53b81d9016c89920ea8838b467ba6b40b0ed92c78605b5d3c1d1f4a7e0a",
+    "src/courtload/models.py": "84bf359f34f2a4adf2a3b58111d3e4e39ff9be02d7925c75af9b98c096b78bba",
+    "src/courtload/domain/conversation.py": "e3f930d0313bf591ff335ab87dcd7fa031c8c4a8bc2e73d259e3f1737172316b",
+    "src/courtload/domain/saved_conversation.py": "744a7cd22437ce6fd61762644582987cf340e87333991290dd469d57868b1e8c",
+    "src/courtload/services/assistant/conversations.py": "3607a11cb5ba2d30d84883fe18782e9c7fb4b70761955c704d2535f27a7dc96c",
+    "src/courtload/services/assistant/execution.py": "792dce70320213d474b6d76ad085cbe64f1374dd239c54fd02869e6ba1fb04a0",
+    "src/courtload/services/assistant/operations.py": "7d753d8a794ad354d3f6bd2b84940d33d3d039ed617c676a863cac5700e47daa",
+    "src/courtload/services/assistant/saved.py": "4eac8633df01b66c4481167cf11e2e732da78604007ebc7576b3c1827e9e3267",
+    "src/courtload/api/routers/conversation.py": "f2dab0d66ae1858272d619120b1afc1c8a18c5e3033ba1bc0cb2e3fc2ed0ac8b",
+    "src/courtload/services/backup_restore.py": "1bdefd9bf67075f66ca7b5de2aac8eab63ad35a086ca09b4023e2e8740de8355",
+    "migrations/versions/35b810a4f003_saved_conversations.py": "45d511fd6b52a151d0915b478f099db109deff9bb54bdc0a251b61a2b472f92c",
+    "scripts/verify_b35_saved.py": "9c059188a8af20d820719477ac8085318cb4707058c26761101e90f9f450aea2",
+    "docs/design/saved-operations-v1.md": "8bb2a3e158352dff963db0d250d362a667fb2e162960b1d40d5a5dca38737acb",
+    "docs/design/saved-operations-v1.schema.json": "6f8439b1c3e55a44e802f5d947ffa5e400b5ce61698cb6ebf1f8b82cec4fb298",
+    "tests/unit/test_saved_conversations.py": "f2a3177f37ef91491ccbcac3377802cc80f40002f8b33a6c1f7b692c410b3fd8",
+    "tests/unit/test_conversations.py": "66914d69fed9614ced2368ff681c9ddf5dea0a3e60eff35ed4f5fa0999a04384",
+    "tests/integration/test_saved_conversation_postgres.py": "e934204df00d1397658826c1493678a5ed38bd0959200c24c886e7537b4a52d4",
+    "tests/integration/test_restore_postgres.py": "5a237842fe95a2b1eda8d0ebc37256ee8f4fd4e51b94a75aa98b284a7ca54d3d"
+  },
+  "evidence_sha256": {
+    "docs/evidence/b35a-checks/backend-final.log": "436588215d3ab1f86f2e1d903cf9f73f89e3b0b3037881a5a2bd413e71c8d617",
+    "docs/evidence/b35a-checks/backend.log": "2eebb4fd21bab7ce5cd40b12d153f78e5557aa67a0fe5e164d3c52d8a36ef1a1",
+    "docs/evidence/b35a-checks/browser.log": "15d8b1f3460fda08a4e7a2735027c22cf166f6d0d5f943d5590a3232d2ca8571",
+    "docs/evidence/b35a-checks/build.log": "17bba18dd89e5fc7a0fb3ab4decb1b26c50e9ee06c854d77fc7aa44119721d3c",
+    "docs/evidence/b35a-checks/checksums.log": "a1ab52f49d8e67be7b30748cc0f64d41dc7b16ec16f66598f3d013ecc1eb0eae",
+    "docs/evidence/b35a-checks/dashboard-static-final.log": "4a01f685fb49e91faa8cb126e064ca28689af1d040539b9868c6cc20efffff36",
+    "docs/evidence/b35a-checks/dashboard.log": "a1e00a1b522d10bc5aed000dba7b9048c5896a49b6f02aa22d0315d1393f713b",
+    "docs/evidence/b35a-checks/focused-postgres-final.log": "a40ebfc6238e29901dd7a6f20553c4b676e361db746025dff4a1e294b5dab5dc",
+    "docs/evidence/b35a-checks/focused-postgres.log": "a7abaf8db6b0a9fbecf0dfddc5385a8be581ae43766fff623a506b88899aa1e9",
+    "docs/evidence/b35a-checks/fresh-restore.log": "944ec7c82af09edf29262f30478f44773233a020eedd585b4e7741baaf2037a1",
+    "docs/evidence/b35a-checks/python-static-final.log": "802de400c37ea096b95ab8cfb8b8b6c5aa89d6b9de31f938ea1ab3f09fafef57",
+    "docs/evidence/b35a-checks/python-static.log": "78be477a8512596d262b706e4820691860b11bbd9d27408be247a90acb3cd777",
+    "docs/evidence/b35a-checks/retained-checksums-final.log": "a1ab52f49d8e67be7b30748cc0f64d41dc7b16ec16f66598f3d013ecc1eb0eae",
+    "docs/evidence/b35a-first-probe.run-status.json": "0f7b11832f5a743f6de0ff5abfcabe7df78ecb45fc86132884d9cdea3152e0f3",
+    "docs/evidence/b35a-real-service.json": "74ea621f0a7f99f1dae881133b46ddbd0c88c9f4e73ece6183a2d45c872fab46",
+    "docs/evidence/b35a-real-service-final.json": "a1a0d6eed2c5b9d1ed0596ebe2ea490aa8e4e371a254fc03523cba6ea4708ef0",
+    "docs/evidence/b35a-checks/forecast-pinning.log": "fe2e25987a3bbae71c7226d165b063bdb5020266389b59031adcb58b029294fd"
+  }
+}

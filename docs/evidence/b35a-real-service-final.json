@@ -1,0 +1,851 @@
+{
+  "block": "B35a",
+  "context": {
+    "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+    "snapshot_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+    "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+    "dataset_type": "workbench",
+    "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666",
+    "mode": "workbench_recent",
+    "source": "sportsdataverse",
+    "season": "2024-25",
+    "phase": "regular_season",
+    "before_date": "2025-06-23",
+    "cutoff_utc": "2025-06-23T04:00:00+00:00",
+    "window": "season",
+    "coverage_start": "2023-10-24",
+    "coverage_end": "2026-06-13",
+    "metric_version": "v2",
+    "published_at": "2026-10-01T17:47:29.173164+00:00"
+  },
+  "workflows": [
+    {
+      "operation": "query",
+      "id": "20bc7459-d2f4-482d-a846-3f1114ebf2d4",
+      "manifest_sha256": "cdebb257811066185ca320a07f0a9a6e5b1c56ec2af6c3b710b10af2db8668fe",
+      "arguments": {
+        "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+        "season": "2024-25",
+        "phase": "regular_season",
+        "before_date": "2025-06-23",
+        "name": null,
+        "entity_kind": "player",
+        "window": {
+          "kind": "season",
+          "n": null,
+          "from_date": null,
+          "to_date": null
+        },
+        "season_scope": {
+          "seasons": [],
+          "aggregate_multi_season": false
+        },
+        "team_scope": {
+          "team_id": null,
+          "participation_only": true,
+          "current_roster_only": false
+        },
+        "metric_selectors": [
+          {
+            "key": "pts_per_game",
+            "version": null,
+            "normalization": "raw",
+            "denominator_type": null
+          }
+        ],
+        "predicates": null,
+        "sample_filters": {
+          "min_games": null,
+          "min_minutes": null,
+          "min_avg_minutes": null,
+          "min_possessions": null,
+          "min_attempts": null
+        },
+        "sort": [
+          {
+            "field": "pts",
+            "direction": "desc",
+            "nulls_last": true
+          }
+        ],
+        "view_state": null,
+        "page": {
+          "limit": 10,
+          "cursor": null
+        }
+      },
+      "result_hash": "d566690b20acee5d5f7eeeade55800f7ced01cd0b7d027b21ca23d7c9eecf5f6",
+      "rows": 577,
+      "evidence_cells": 2887,
+      "open_url": "/stats?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2024-25&phase=regular_season&beforeDate=2025-06-23&window=season&sortMetric=pts&sortDirection=desc&limit=10&metrics=%5B%7B%22key%22%3A+%22pts_per_game%22%2C+%22version%22%3A+null%2C+%22normalization%22%3A+%22raw%22%2C+%22denominator_type%22%3A+null%7D%5D",
+      "execute_and_save_ms": 3419.647,
+      "reproduction": {
+        "id": "20bc7459-d2f4-482d-a846-3f1114ebf2d4",
+        "manifest_sha256": "cdebb257811066185ca320a07f0a9a6e5b1c56ec2af6c3b710b10af2db8668fe",
+        "match": true,
+        "reason": null,
+        "operations": [
+          {
+            "step_id": "a",
+            "operation": "query",
+            "saved_result_sha256": "d566690b20acee5d5f7eeeade55800f7ced01cd0b7d027b21ca23d7c9eecf5f6",
+            "recomputed_result_sha256": "d566690b20acee5d5f7eeeade55800f7ced01cd0b7d027b21ca23d7c9eecf5f6",
+            "match": true
+          }
+        ],
+        "provider_calls": 0
+      },
+      "reproduce_ms": 872.494,
+      "exports": {
+        "json": {
+          "bytes": 5901311,
+          "sha256": "8bab1ae4a5c46c70e9d14d08d0c4e1699e0e7536bbd5082d1a889d5527a701d1"
+        },
+        "csv": {
+          "bytes": 7326496,
+          "sha256": "15bb7314a1d46079f957cb9aed79cdf6ee2b270492baa6280d4c9c005bd27d40"
+        }
+      }
+    },
+    {
+      "operation": "definition",
+      "id": "21555371-b276-4cf7-b067-2f8a527d240a",
+      "manifest_sha256": "ef8ecfca6b6ee083ca43502a446afba3b267e678ac8f338254b93dcfdde1c25c",
+      "arguments": {
+        "metric": "ts_pct"
+      },
+      "result_hash": "49ff2e09d9040c2dbad29dcbb34f8d9c7bb15dcee9d24c72189899a86959b4ff",
+      "rows": 1,
+      "evidence_cells": 0,
+      "open_url": null,
+      "execute_and_save_ms": 980.111,
+      "reproduction": {
+        "id": "21555371-b276-4cf7-b067-2f8a527d240a",
+        "manifest_sha256": "ef8ecfca6b6ee083ca43502a446afba3b267e678ac8f338254b93dcfdde1c25c",
+        "match": true,
+        "reason": null,
+        "operations": [
+          {
+            "step_id": "a",
+            "operation": "definition",
+            "saved_result_sha256": "49ff2e09d9040c2dbad29dcbb34f8d9c7bb15dcee9d24c72189899a86959b4ff",
+            "recomputed_result_sha256": "49ff2e09d9040c2dbad29dcbb34f8d9c7bb15dcee9d24c72189899a86959b4ff",
+            "match": true
+          }
+        ],
+        "provider_calls": 0
+      },
+      "reproduce_ms": 511.868,
+      "exports": {
+        "json": {
+          "bytes": 6280,
+          "sha256": "e0489c4edafb391a93590cb12476da01a2cbb00231bbc35f8257a17890ef4f62"
+        },
+        "csv": {
+          "bytes": 5156,
+          "sha256": "4eeca3d1c39f3aa52898362b35fc5b0955d8fb319cdcd6f6a0473b7bafb2187d"
+        }
+      }
+    },
+    {
+      "operation": "profile",
+      "id": "75c7167a-6e8e-4257-97bc-b35392779a84",
+      "manifest_sha256": "b8ade85acf97b6b326afedd5d98979789dfc4ad7a9bee26cc4a9d7afbfec9d2b",
+      "arguments": {
+        "player_id": "1630567"
+      },
+      "result_hash": "297119f07aaec735229e92468ec96f9dcfcaa7c927e2b4add2ff49cd9ff11830",
+      "rows": 1,
+      "evidence_cells": 295,
+      "open_url": "/players/1630567?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2024-25&phase=regular_season&beforeDate=2025-06-23&window=season",
+      "execute_and_save_ms": 1115.297,
+      "reproduction": {
+        "id": "75c7167a-6e8e-4257-97bc-b35392779a84",
+        "manifest_sha256": "b8ade85acf97b6b326afedd5d98979789dfc4ad7a9bee26cc4a9d7afbfec9d2b",
+        "match": true,
+        "reason": null,
+        "operations": [
+          {
+            "step_id": "a",
+            "operation": "profile",
+            "saved_result_sha256": "297119f07aaec735229e92468ec96f9dcfcaa7c927e2b4add2ff49cd9ff11830",
+            "recomputed_result_sha256": "297119f07aaec735229e92468ec96f9dcfcaa7c927e2b4add2ff49cd9ff11830",
+            "match": true
+          }
+        ],
+        "provider_calls": 0
+      },
+      "reproduce_ms": 623.117,
+      "exports": {
+        "json": {
+          "bytes": 2052505,
+          "sha256": "8a7a47df4bf3d1fe479fb895a3ac4ade68047d80e8fe823852d447be5da48f2e"
+        },
+        "csv": {
+          "bytes": 2189891,
+          "sha256": "6d4443df11ce4dfaa24c07beb5759d9ff21d45c10705617159eb778465fc27aa"
+        }
+      }
+    },
+    {
+      "operation": "compare",
+      "id": "3d8b41f5-2eb9-49ac-abfc-ead0c48035ab",
+      "manifest_sha256": "48f8617ef4cd78243598eb07454be530675e503a910488a3f5054448bf290d78",
+      "arguments": {
+        "player_a": "1630567",
+        "player_b": "1628369"
+      },
+      "result_hash": "0127f015726272e15805f624df488e402e10aa9ac0a78b052e63107afde51a26",
+      "rows": 58,
+      "evidence_cells": 491,
+      "open_url": "/compare?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2024-25&phase=regular_season&beforeDate=2025-06-23&window=season&playerA=1630567&playerB=1628369",
+      "execute_and_save_ms": 1132.755,
+      "reproduction": {
+        "id": "3d8b41f5-2eb9-49ac-abfc-ead0c48035ab",
+        "manifest_sha256": "48f8617ef4cd78243598eb07454be530675e503a910488a3f5054448bf290d78",
+        "match": true,
+        "reason": null,
+        "operations": [
+          {
+            "step_id": "a",
+            "operation": "compare",
+            "saved_result_sha256": "0127f015726272e15805f624df488e402e10aa9ac0a78b052e63107afde51a26",
+            "recomputed_result_sha256": "0127f015726272e15805f624df488e402e10aa9ac0a78b052e63107afde51a26",
+            "match": true
+          }
+        ],
+        "provider_calls": 0
+      },
+      "reproduce_ms": 587.062,
+      "exports": {
+        "json": {
+          "bytes": 1228463,
+          "sha256": "a5a926a9394f886eecd0ba0124746670e812440635c30d6078bf75861df36a29"
+        },
+        "csv": {
+          "bytes": 1511397,
+          "sha256": "3ddd42eba2427020b1dfbe51e7b7613db844a61d2c20b001ebd24189f5b042d5"
+        }
+      }
+    },
+    {
+      "operation": "team",
+      "id": "d9919314-aed4-46f5-a49c-8eeab37a26fa",
+      "manifest_sha256": "895dfad0719cd7fcb76c84606a46524967e59e75997beaafb0277f4693b1104b",
+      "arguments": {
+        "team_id": "1610612761"
+      },
+      "result_hash": "ffe8a04d41435cc9c208d2c415bfaef2502b82c815fb923b98d16ed429a6a442",
+      "rows": 1,
+      "evidence_cells": 173,
+      "open_url": "/teams/1610612761?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2024-25&phase=regular_season&beforeDate=2025-06-23&window=season",
+      "execute_and_save_ms": 1186.786,
+      "reproduction": {
+        "id": "d9919314-aed4-46f5-a49c-8eeab37a26fa",
+        "manifest_sha256": "895dfad0719cd7fcb76c84606a46524967e59e75997beaafb0277f4693b1104b",
+        "match": true,
+        "reason": null,
+        "operations": [
+          {
+            "step_id": "a",
+            "operation": "team",
+            "saved_result_sha256": "ffe8a04d41435cc9c208d2c415bfaef2502b82c815fb923b98d16ed429a6a442",
+            "recomputed_result_sha256": "ffe8a04d41435cc9c208d2c415bfaef2502b82c815fb923b98d16ed429a6a442",
+            "match": true
+          }
+        ],
+        "provider_calls": 0
+      },
+      "reproduce_ms": 618.305,
+      "exports": {
+        "json": {
+          "bytes": 329943,
+          "sha256": "36b223ffe7ddac4c708058396db801adb9b1feb4804327af47359a9014b1e213"
+        },
+        "csv": {
+          "bytes": 418850,
+          "sha256": "41fbeb475d226c7b59ba84b460306519ec47a6b9205f6e9abdbe7c72899b988c"
+        }
+      }
+    },
+    {
+      "operation": "forecast",
+      "id": "4491c3b2-3223-4262-8e37-7edf246ded2c",
+      "manifest_sha256": "da6e75f2ea34e24fe79ba26d5d7c0f6f7461202a1bb5b715e77a3d60c3f171bc",
+      "arguments": {
+        "player_id": "1630567",
+        "issuance_id": null
+      },
+      "result_hash": "b4e8b70119a7e9c69c2b88a7e4e76ae8a84fd733ecfed4f17d890e9fc58778f8",
+      "rows": 1,
+      "evidence_cells": 0,
+      "open_url": null,
+      "execute_and_save_ms": 1076.441,
+      "reproduction": {
+        "id": "4491c3b2-3223-4262-8e37-7edf246ded2c",
+        "manifest_sha256": "da6e75f2ea34e24fe79ba26d5d7c0f6f7461202a1bb5b715e77a3d60c3f171bc",
+        "match": true,
+        "reason": null,
+        "operations": [
+          {
+            "step_id": "a",
+            "operation": "forecast",
+            "saved_result_sha256": "b4e8b70119a7e9c69c2b88a7e4e76ae8a84fd733ecfed4f17d890e9fc58778f8",
+            "recomputed_result_sha256": "b4e8b70119a7e9c69c2b88a7e4e76ae8a84fd733ecfed4f17d890e9fc58778f8",
+            "match": true
+          }
+        ],
+        "provider_calls": 0
+      },
+      "reproduce_ms": 562.985,
+      "exports": {
+        "json": {
+          "bytes": 3765,
+          "sha256": "33ad6c8bdf6ab9c835e44a7a81bd4c75a4f015481f1f75d8519fe72ab181f815"
+        },
+        "csv": {
+          "bytes": 3318,
+          "sha256": "397ea08af99b1d52ecdbae5d27fe91ba69967c5715e05c16037af4b5be10efb3"
+        }
+      }
+    },
+    {
+      "operation": "distribution",
+      "id": "316ece01-cb14-4586-8efc-6f440565d1b7",
+      "manifest_sha256": "91c2a9f0ef6ac9b8fc26f828bf1c956ca39dbf9eb2c76ea0174365b089dcd0cd",
+      "arguments": {
+        "player_id": "1630567",
+        "metric": "pts",
+        "season": "2024-25",
+        "phase": "regular_season",
+        "before_date": "2025-06-23",
+        "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+        "window_n": 20,
+        "from_date": null,
+        "to_date": null
+      },
+      "result_hash": "0ee42c345b99d82e2d272e21d979d4abadbc079f4582f1a78eea8b82b6a86689",
+      "rows": 21,
+      "evidence_cells": 52,
+      "open_url": "/research/operation?operation=distribution&arguments=%7B%22before_date%22%3A%222025-06-23%22%2C%22from_date%22%3Anull%2C%22metric%22%3A%22pts%22%2C%22phase%22%3A%22regular_season%22%2C%22player_id%22%3A%221630567%22%2C%22release_id%22%3A%225bbb6035-6794-4bb0-b894-7208f52ef7ad%22%2C%22season%22%3A%222024-25%22%2C%22to_date%22%3Anull%2C%22window_n%22%3A20%7D&release_id=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2024-25&phase=regular_season&before_date=2025-06-23&window=season",
+      "execute_and_save_ms": 1234.305,
+      "reproduction": {
+        "id": "316ece01-cb14-4586-8efc-6f440565d1b7",
+        "manifest_sha256": "91c2a9f0ef6ac9b8fc26f828bf1c956ca39dbf9eb2c76ea0174365b089dcd0cd",
+        "match": true,
+        "reason": null,
+        "operations": [
+          {
+            "step_id": "a",
+            "operation": "distribution",
+            "saved_result_sha256": "0ee42c345b99d82e2d272e21d979d4abadbc079f4582f1a78eea8b82b6a86689",
+            "recomputed_result_sha256": "0ee42c345b99d82e2d272e21d979d4abadbc079f4582f1a78eea8b82b6a86689",
+            "match": true
+          }
+        ],
+        "provider_calls": 0
+      },
+      "reproduce_ms": 671.329,
+      "exports": {
+        "json": {
+          "bytes": 103823,
+          "sha256": "374d117c8d7915abb9c61bba948c2d3c25ee816e65c68d9d30901991d57bd7cd"
+        },
+        "csv": {
+          "bytes": 128052,
+          "sha256": "a6de2306d85054ef19058597cb32d968542faed68bb1cb8816e0a9b724f27e0a"
+        }
+      }
+    },
+    {
+      "operation": "compare_periods",
+      "id": "ed0c4c82-9b31-4527-962e-012d180ec2ba",
+      "manifest_sha256": "a69b64a20e03f6e1e0214ee16b908e0549e97a94126c8fa879d7d28545e67429",
+      "arguments": {
+        "player_id": "1630567",
+        "season": "2024-25",
+        "phase": "regular_season",
+        "before_date": "2025-06-23",
+        "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+        "mode": "appearances",
+        "period_a_n": 10,
+        "period_b_n": 10,
+        "period_a_from": null,
+        "period_a_to": null,
+        "period_b_from": null,
+        "period_b_to": null,
+        "metrics": [
+          "pts_per_game",
+          "min_per_game"
+        ]
+      },
+      "result_hash": "68133a7711dc44e3c168a801c85f65c3f20ca0fcca9a4d005248663f4d9939a1",
+      "rows": 2,
+      "evidence_cells": 150,
+      "open_url": "/research/operation?operation=compare_periods&arguments=%7B%22before_date%22%3A%222025-06-23%22%2C%22metrics%22%3A%5B%22pts_per_game%22%2C%22min_per_game%22%5D%2C%22mode%22%3A%22appearances%22%2C%22period_a_from%22%3Anull%2C%22period_a_n%22%3A10%2C%22period_a_to%22%3Anull%2C%22period_b_from%22%3Anull%2C%22period_b_n%22%3A10%2C%22period_b_to%22%3Anull%2C%22phase%22%3A%22regular_season%22%2C%22player_id%22%3A%221630567%22%2C%22release_id%22%3A%225bbb6035-6794-4bb0-b894-7208f52ef7ad%22%2C%22season%22%3A%222024-25%22%7D&release_id=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2024-25&phase=regular_season&before_date=2025-06-23&window=season",
+      "execute_and_save_ms": 1122.785,
+      "reproduction": {
+        "id": "ed0c4c82-9b31-4527-962e-012d180ec2ba",
+        "manifest_sha256": "a69b64a20e03f6e1e0214ee16b908e0549e97a94126c8fa879d7d28545e67429",
+        "match": true,
+        "reason": null,
+        "operations": [
+          {
+            "step_id": "a",
+            "operation": "compare_periods",
+            "saved_result_sha256": "68133a7711dc44e3c168a801c85f65c3f20ca0fcca9a4d005248663f4d9939a1",
+            "recomputed_result_sha256": "68133a7711dc44e3c168a801c85f65c3f20ca0fcca9a4d005248663f4d9939a1",
+            "match": true
+          }
+        ],
+        "provider_calls": 0
+      },
+      "reproduce_ms": 561.514,
+      "exports": {
+        "json": {
+          "bytes": 425087,
+          "sha256": "aa79e539be731b2c2122ef4458daf50a2267289c0d04d30beeefaee5e0132556"
+        },
+        "csv": {
+          "bytes": 516877,
+          "sha256": "1d81b065b138b06d116115796b0af52cd8acd7bf099af82c4fe05b8279c8312d"
+        }
+      }
+    },
+    {
+      "operation": "splits",
+      "id": "be611173-e250-44cc-bd72-7e64f24341ec",
+      "manifest_sha256": "e85533a41c3a5c0a8dad522cb9cdfcf3903266a8c43fc4140c56cd674fe5c56f",
+      "arguments": {
+        "player_id": "1630567",
+        "split_type": "venue",
+        "season": "2024-25",
+        "phase": "regular_season",
+        "before_date": "2025-06-23",
+        "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad"
+      },
+      "result_hash": "79ad6b90171638a921660ee86907d99b054ff1ba09af75d2cc560537e968905c",
+      "rows": 2,
+      "evidence_cells": 140,
+      "open_url": "/research/operation?operation=splits&arguments=%7B%22before_date%22%3A%222025-06-23%22%2C%22phase%22%3A%22regular_season%22%2C%22player_id%22%3A%221630567%22%2C%22release_id%22%3A%225bbb6035-6794-4bb0-b894-7208f52ef7ad%22%2C%22season%22%3A%222024-25%22%2C%22split_type%22%3A%22venue%22%7D&release_id=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2024-25&phase=regular_season&before_date=2025-06-23&window=season",
+      "execute_and_save_ms": 1263.506,
+      "reproduction": {
+        "id": "be611173-e250-44cc-bd72-7e64f24341ec",
+        "manifest_sha256": "e85533a41c3a5c0a8dad522cb9cdfcf3903266a8c43fc4140c56cd674fe5c56f",
+        "match": true,
+        "reason": null,
+        "operations": [
+          {
+            "step_id": "a",
+            "operation": "splits",
+            "saved_result_sha256": "79ad6b90171638a921660ee86907d99b054ff1ba09af75d2cc560537e968905c",
+            "recomputed_result_sha256": "79ad6b90171638a921660ee86907d99b054ff1ba09af75d2cc560537e968905c",
+            "match": true
+          }
+        ],
+        "provider_calls": 0
+      },
+      "reproduce_ms": 643.217,
+      "exports": {
+        "json": {
+          "bytes": 419246,
+          "sha256": "585b18f10211906f390ec804754d99ffc498315fb1c8adfb677602db3397632b"
+        },
+        "csv": {
+          "bytes": 505008,
+          "sha256": "ccdb7655eaa3f750f392029baa8043bc94c1978dea7a00a2e700ad4534590b7a"
+        }
+      }
+    },
+    {
+      "operation": "similarity",
+      "id": "fff8adb1-f205-4fdf-a353-8618ac567440",
+      "manifest_sha256": "25539cd248c0fa43be506070f1eb9db46f0f3afcf0dc1a7801521edba3d61236",
+      "arguments": {
+        "target_player_id": "1630567",
+        "season": "2024-25",
+        "phase": "regular_season",
+        "before_date": "2025-06-23",
+        "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+        "window": "last_10",
+        "min_appearances": 10,
+        "min_minutes": 150.0,
+        "top_k": 5,
+        "dimensions": null
+      },
+      "result_hash": "3aafc235ba63b996155359c2e8d1556bc59bc620dfd0be90619d71a6b9889c0b",
+      "rows": 6,
+      "evidence_cells": 192,
+      "open_url": "/research/operation?operation=similarity&arguments=%7B%22before_date%22%3A%222025-06-23%22%2C%22dimensions%22%3Anull%2C%22min_appearances%22%3A10%2C%22min_minutes%22%3A150.0%2C%22phase%22%3A%22regular_season%22%2C%22release_id%22%3A%225bbb6035-6794-4bb0-b894-7208f52ef7ad%22%2C%22season%22%3A%222024-25%22%2C%22target_player_id%22%3A%221630567%22%2C%22top_k%22%3A5%2C%22window%22%3A%22last_10%22%7D&release_id=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2024-25&phase=regular_season&before_date=2025-06-23&window=season",
+      "execute_and_save_ms": 1445.472,
+      "reproduction": {
+        "id": "fff8adb1-f205-4fdf-a353-8618ac567440",
+        "manifest_sha256": "25539cd248c0fa43be506070f1eb9db46f0f3afcf0dc1a7801521edba3d61236",
+        "match": true,
+        "reason": null,
+        "operations": [
+          {
+            "step_id": "a",
+            "operation": "similarity",
+            "saved_result_sha256": "3aafc235ba63b996155359c2e8d1556bc59bc620dfd0be90619d71a6b9889c0b",
+            "recomputed_result_sha256": "3aafc235ba63b996155359c2e8d1556bc59bc620dfd0be90619d71a6b9889c0b",
+            "match": true
+          }
+        ],
+        "provider_calls": 0
+      },
+      "reproduce_ms": 713.045,
+      "exports": {
+        "json": {
+          "bytes": 371462,
+          "sha256": "8eb50de60a6c972ab2920e459949207f7eccc255e50400b2f44cd1cfca321971"
+        },
+        "csv": {
+          "bytes": 479343,
+          "sha256": "e22d53bb62fe2ea46cafcd4b38ac9bd686c0eb3fc35993dd68df9df76a3c6e87"
+        }
+      }
+    },
+    {
+      "operation": "workload_shifts",
+      "id": "05efbfee-8d3d-490b-81d3-fc0a08e0460d",
+      "manifest_sha256": "a36647d3de0ec72b4d9f7e84cdcf6b1d67469e64507ba1494da0e6904f0b46c2",
+      "arguments": {
+        "period_n": 10,
+        "min_minutes": 0.0,
+        "limit": 20
+      },
+      "result_hash": "329b93f0bc94347b2e85d92facc07fdfdb07605fb31b5740a809cbfa33debe4a",
+      "rows": 20,
+      "evidence_cells": 182,
+      "open_url": "/research/operation?operation=workload_shifts&arguments=%7B%22limit%22%3A20%2C%22min_minutes%22%3A0.0%2C%22period_n%22%3A10%7D&release_id=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2024-25&phase=regular_season&before_date=2025-06-23&window=season",
+      "execute_and_save_ms": 2103.663,
+      "reproduction": {
+        "id": "05efbfee-8d3d-490b-81d3-fc0a08e0460d",
+        "manifest_sha256": "a36647d3de0ec72b4d9f7e84cdcf6b1d67469e64507ba1494da0e6904f0b46c2",
+        "match": true,
+        "reason": null,
+        "operations": [
+          {
+            "step_id": "a",
+            "operation": "workload_shifts",
+            "saved_result_sha256": "329b93f0bc94347b2e85d92facc07fdfdb07605fb31b5740a809cbfa33debe4a",
+            "recomputed_result_sha256": "329b93f0bc94347b2e85d92facc07fdfdb07605fb31b5740a809cbfa33debe4a",
+            "match": true
+          }
+        ],
+        "provider_calls": 0
+      },
+      "reproduce_ms": 1075.301,
+      "exports": {
+        "json": {
+          "bytes": 347300,
+          "sha256": "8c3fe4aa3c823835704d4bd5ab120ca51dcd0ad9cc38372754f933ba5659b203"
+        },
+        "csv": {
+          "bytes": 441668,
+          "sha256": "543cda4e8f25c205f307e3cdf8df03c0ff3c4e2cfcf99dd4ce91f5088eaf2006"
+        }
+      }
+    },
+    {
+      "operation": "finance",
+      "id": "1ec05206-2490-4922-becc-5e519483bf2e",
+      "manifest_sha256": "1307b333338d924dddb8766871cc752c04b934fcc2f93cecce819a01cdb183e6",
+      "arguments": {
+        "operation_version": "finance-query-v1",
+        "book_id": "256f66b1-129d-4904-be30-7b946f6e92fc",
+        "financial_season": "2025-26",
+        "known_at": "2026-10-03T16:53:27.511033Z",
+        "effective_on": "2025-02-12",
+        "unknown_dates": "include_labelled",
+        "team_id": null,
+        "player_ids": [],
+        "statuses": [],
+        "amount_kind": "base_salary",
+        "small_big_threshold_cents": 1200000000,
+        "scenario": "reported-v1"
+      },
+      "result_hash": "802ae43e3e36b1d435db793ba0fdd682394e9acaafd9551de4c4f5b71c6ebee7",
+      "rows": 1,
+      "evidence_cells": 189,
+      "open_url": "/contracts?finance_operation_version=finance-query-v1&finance_book_id=256f66b1-129d-4904-be30-7b946f6e92fc&finance_financial_season=2025-26&finance_known_at=2026-10-03T16%3A53%3A27.511033Z&finance_effective_on=2025-02-12&finance_unknown_dates=include_labelled&finance_amount_kind=base_salary&finance_small_big_threshold_cents=1200000000&finance_scenario=reported-v1&releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2024-25&phase=regular_season&beforeDate=2025-06-23&window=season",
+      "execute_and_save_ms": 1084.697,
+      "reproduction": {
+        "id": "1ec05206-2490-4922-becc-5e519483bf2e",
+        "manifest_sha256": "1307b333338d924dddb8766871cc752c04b934fcc2f93cecce819a01cdb183e6",
+        "match": true,
+        "reason": null,
+        "operations": [
+          {
+            "step_id": "a",
+            "operation": "finance",
+            "saved_result_sha256": "802ae43e3e36b1d435db793ba0fdd682394e9acaafd9551de4c4f5b71c6ebee7",
+            "recomputed_result_sha256": "802ae43e3e36b1d435db793ba0fdd682394e9acaafd9551de4c4f5b71c6ebee7",
+            "match": true
+          }
+        ],
+        "provider_calls": 0
+      },
+      "reproduce_ms": 547.727,
+      "exports": {
+        "json": {
+          "bytes": 537789,
+          "sha256": "e41dd1932b96a95f2cd36e50f54a99e27737e4f25317df2a051f80b05321df48"
+        },
+        "csv": {
+          "bytes": 726823,
+          "sha256": "81c0a931d5d715e1f778045898ae64077ab81b9e85c733ef202f345ce844ea37"
+        }
+      }
+    }
+  ],
+  "provider_calls": 0,
+  "process_restart_verified": true,
+  "integrity_before": {
+    "public_snapshot": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+    "pointer_count": 148,
+    "pointers_sha256": "7abeb7c6c1ece9a5492c7b32f7ef16c5bd7190c698b8947d28a9f312ac495650",
+    "books": [
+      [
+        "256f66b1-129d-4904-be30-7b946f6e92fc",
+        "a5052df00f96420d722bcfcf5fa91df0c90394e570ceb5bf85de2f61f2b9ebc2"
+      ],
+      [
+        "96b89635-82b4-47c7-b4f6-52ab85c0f0bc",
+        "b425f46cfa002bf79c79a63b5b6e05fc3db478f441f87a48dd233437e00816e4"
+      ]
+    ]
+  },
+  "integrity_after": {
+    "public_snapshot": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+    "pointer_count": 148,
+    "pointers_sha256": "7abeb7c6c1ece9a5492c7b32f7ef16c5bd7190c698b8947d28a9f312ac495650",
+    "books": [
+      [
+        "256f66b1-129d-4904-be30-7b946f6e92fc",
+        "a5052df00f96420d722bcfcf5fa91df0c90394e570ceb5bf85de2f61f2b9ebc2"
+      ],
+      [
+        "96b89635-82b4-47c7-b4f6-52ab85c0f0bc",
+        "b425f46cfa002bf79c79a63b5b6e05fc3db478f441f87a48dd233437e00816e4"
+      ]
+    ]
+  },
+  "retained_before": [
+    {
+      "id": "1a89561c-6402-4a84-b9ff-716f9ac33bff",
+      "manifest_sha256": "cdebb257811066185ca320a07f0a9a6e5b1c56ec2af6c3b710b10af2db8668fe"
+    },
+    {
+      "id": "21610191-6c56-4360-9d38-758522444e55",
+      "manifest_sha256": "da6e75f2ea34e24fe79ba26d5d7c0f6f7461202a1bb5b715e77a3d60c3f171bc"
+    },
+    {
+      "id": "2be2c945-10fc-49f6-8c9d-299c1555d6b9",
+      "manifest_sha256": "895dfad0719cd7fcb76c84606a46524967e59e75997beaafb0277f4693b1104b"
+    },
+    {
+      "id": "3145deec-7e4a-4646-a23d-45dcba4f79a0",
+      "manifest_sha256": "48f8617ef4cd78243598eb07454be530675e503a910488a3f5054448bf290d78"
+    },
+    {
+      "id": "322511a8-3228-4689-83f6-f61baaa93233",
+      "manifest_sha256": "a69b64a20e03f6e1e0214ee16b908e0549e97a94126c8fa879d7d28545e67429"
+    },
+    {
+      "id": "59e40c0e-e557-4934-9e4d-b5f3dfa7ab04",
+      "manifest_sha256": "da6e75f2ea34e24fe79ba26d5d7c0f6f7461202a1bb5b715e77a3d60c3f171bc"
+    },
+    {
+      "id": "5ca449e6-6860-4760-affd-4a1c8eefcaeb",
+      "manifest_sha256": "91c2a9f0ef6ac9b8fc26f828bf1c956ca39dbf9eb2c76ea0174365b089dcd0cd"
+    },
+    {
+      "id": "64cd33c9-b3e5-41e5-a0b6-190522dd353c",
+      "manifest_sha256": "e85533a41c3a5c0a8dad522cb9cdfcf3903266a8c43fc4140c56cd674fe5c56f"
+    },
+    {
+      "id": "7dad6ad2-8f34-4a64-a5f6-6bffb5e07389",
+      "manifest_sha256": "48f8617ef4cd78243598eb07454be530675e503a910488a3f5054448bf290d78"
+    },
+    {
+      "id": "7f34ae31-f36f-4e1f-8733-fd2f9e9a9ec6",
+      "manifest_sha256": "b8ade85acf97b6b326afedd5d98979789dfc4ad7a9bee26cc4a9d7afbfec9d2b"
+    },
+    {
+      "id": "8549f5c3-16a3-4518-9196-ca16897ddac0",
+      "manifest_sha256": "a69b64a20e03f6e1e0214ee16b908e0549e97a94126c8fa879d7d28545e67429"
+    },
+    {
+      "id": "89ea241c-7238-4358-952c-289f05b731f0",
+      "manifest_sha256": "91c2a9f0ef6ac9b8fc26f828bf1c956ca39dbf9eb2c76ea0174365b089dcd0cd"
+    },
+    {
+      "id": "8a593a43-2dad-4c23-9cd8-5d7451b097bc",
+      "manifest_sha256": "25539cd248c0fa43be506070f1eb9db46f0f3afcf0dc1a7801521edba3d61236"
+    },
+    {
+      "id": "8b5511d7-4413-4c3e-b1c0-8b6d650ac2b3",
+      "manifest_sha256": "895dfad0719cd7fcb76c84606a46524967e59e75997beaafb0277f4693b1104b"
+    },
+    {
+      "id": "a708911f-7f26-49a8-82aa-0288697fdef3",
+      "manifest_sha256": "cdebb257811066185ca320a07f0a9a6e5b1c56ec2af6c3b710b10af2db8668fe"
+    },
+    {
+      "id": "a9ffaef6-adf0-47d8-98f5-1ba23fea3fa9",
+      "manifest_sha256": "b8ade85acf97b6b326afedd5d98979789dfc4ad7a9bee26cc4a9d7afbfec9d2b"
+    },
+    {
+      "id": "c493bc73-20d9-4d46-8f3b-5ddee3991fd3",
+      "manifest_sha256": "a36647d3de0ec72b4d9f7e84cdcf6b1d67469e64507ba1494da0e6904f0b46c2"
+    },
+    {
+      "id": "d4fb9cdb-2bc1-4c85-aa48-4ac172c0b70d",
+      "manifest_sha256": "1307b333338d924dddb8766871cc752c04b934fcc2f93cecce819a01cdb183e6"
+    },
+    {
+      "id": "e01422b7-4884-4400-b40f-b07a9eccd3c3",
+      "manifest_sha256": "ef8ecfca6b6ee083ca43502a446afba3b267e678ac8f338254b93dcfdde1c25c"
+    },
+    {
+      "id": "f9fe3910-16cf-404a-866d-2e2a1353b8ba",
+      "manifest_sha256": "ef8ecfca6b6ee083ca43502a446afba3b267e678ac8f338254b93dcfdde1c25c"
+    }
+  ],
+  "retained_after": [
+    {
+      "id": "05efbfee-8d3d-490b-81d3-fc0a08e0460d",
+      "manifest_sha256": "a36647d3de0ec72b4d9f7e84cdcf6b1d67469e64507ba1494da0e6904f0b46c2"
+    },
+    {
+      "id": "1a89561c-6402-4a84-b9ff-716f9ac33bff",
+      "manifest_sha256": "cdebb257811066185ca320a07f0a9a6e5b1c56ec2af6c3b710b10af2db8668fe"
+    },
+    {
+      "id": "1ec05206-2490-4922-becc-5e519483bf2e",
+      "manifest_sha256": "1307b333338d924dddb8766871cc752c04b934fcc2f93cecce819a01cdb183e6"
+    },
+    {
+      "id": "20bc7459-d2f4-482d-a846-3f1114ebf2d4",
+      "manifest_sha256": "cdebb257811066185ca320a07f0a9a6e5b1c56ec2af6c3b710b10af2db8668fe"
+    },
+    {
+      "id": "21555371-b276-4cf7-b067-2f8a527d240a",
+      "manifest_sha256": "ef8ecfca6b6ee083ca43502a446afba3b267e678ac8f338254b93dcfdde1c25c"
+    },
+    {
+      "id": "21610191-6c56-4360-9d38-758522444e55",
+      "manifest_sha256": "da6e75f2ea34e24fe79ba26d5d7c0f6f7461202a1bb5b715e77a3d60c3f171bc"
+    },
+    {
+      "id": "2be2c945-10fc-49f6-8c9d-299c1555d6b9",
+      "manifest_sha256": "895dfad0719cd7fcb76c84606a46524967e59e75997beaafb0277f4693b1104b"
+    },
+    {
+      "id": "3145deec-7e4a-4646-a23d-45dcba4f79a0",
+      "manifest_sha256": "48f8617ef4cd78243598eb07454be530675e503a910488a3f5054448bf290d78"
+    },
+    {
+      "id": "316ece01-cb14-4586-8efc-6f440565d1b7",
+      "manifest_sha256": "91c2a9f0ef6ac9b8fc26f828bf1c956ca39dbf9eb2c76ea0174365b089dcd0cd"
+    },
+    {
+      "id": "322511a8-3228-4689-83f6-f61baaa93233",
+      "manifest_sha256": "a69b64a20e03f6e1e0214ee16b908e0549e97a94126c8fa879d7d28545e67429"
+    },
+    {
+      "id": "3d8b41f5-2eb9-49ac-abfc-ead0c48035ab",
+      "manifest_sha256": "48f8617ef4cd78243598eb07454be530675e503a910488a3f5054448bf290d78"
+    },
+    {
+      "id": "4491c3b2-3223-4262-8e37-7edf246ded2c",
+      "manifest_sha256": "da6e75f2ea34e24fe79ba26d5d7c0f6f7461202a1bb5b715e77a3d60c3f171bc"
+    },
+    {
+      "id": "59e40c0e-e557-4934-9e4d-b5f3dfa7ab04",
+      "manifest_sha256": "da6e75f2ea34e24fe79ba26d5d7c0f6f7461202a1bb5b715e77a3d60c3f171bc"
+    },
+    {
+      "id": "5ca449e6-6860-4760-affd-4a1c8eefcaeb",
+      "manifest_sha256": "91c2a9f0ef6ac9b8fc26f828bf1c956ca39dbf9eb2c76ea0174365b089dcd0cd"
+    },
+    {
+      "id": "64cd33c9-b3e5-41e5-a0b6-190522dd353c",
+      "manifest_sha256": "e85533a41c3a5c0a8dad522cb9cdfcf3903266a8c43fc4140c56cd674fe5c56f"
+    },
+    {
+      "id": "75c7167a-6e8e-4257-97bc-b35392779a84",
+      "manifest_sha256": "b8ade85acf97b6b326afedd5d98979789dfc4ad7a9bee26cc4a9d7afbfec9d2b"
+    },
+    {
+      "id": "7dad6ad2-8f34-4a64-a5f6-6bffb5e07389",
+      "manifest_sha256": "48f8617ef4cd78243598eb07454be530675e503a910488a3f5054448bf290d78"
+    },
+    {
+      "id": "7f34ae31-f36f-4e1f-8733-fd2f9e9a9ec6",
+      "manifest_sha256": "b8ade85acf97b6b326afedd5d98979789dfc4ad7a9bee26cc4a9d7afbfec9d2b"
+    },
+    {
+      "id": "8549f5c3-16a3-4518-9196-ca16897ddac0",
+      "manifest_sha256": "a69b64a20e03f6e1e0214ee16b908e0549e97a94126c8fa879d7d28545e67429"
+    },
+    {
+      "id": "89ea241c-7238-4358-952c-289f05b731f0",
+      "manifest_sha256": "91c2a9f0ef6ac9b8fc26f828bf1c956ca39dbf9eb2c76ea0174365b089dcd0cd"
+    },
+    {
+      "id": "8a593a43-2dad-4c23-9cd8-5d7451b097bc",
+      "manifest_sha256": "25539cd248c0fa43be506070f1eb9db46f0f3afcf0dc1a7801521edba3d61236"
+    },
+    {
+      "id": "8b5511d7-4413-4c3e-b1c0-8b6d650ac2b3",
+      "manifest_sha256": "895dfad0719cd7fcb76c84606a46524967e59e75997beaafb0277f4693b1104b"
+    },
+    {
+      "id": "a708911f-7f26-49a8-82aa-0288697fdef3",
+      "manifest_sha256": "cdebb257811066185ca320a07f0a9a6e5b1c56ec2af6c3b710b10af2db8668fe"
+    },
+    {
+      "id": "a9ffaef6-adf0-47d8-98f5-1ba23fea3fa9",
+      "manifest_sha256": "b8ade85acf97b6b326afedd5d98979789dfc4ad7a9bee26cc4a9d7afbfec9d2b"
+    },
+    {
+      "id": "be611173-e250-44cc-bd72-7e64f24341ec",
+      "manifest_sha256": "e85533a41c3a5c0a8dad522cb9cdfcf3903266a8c43fc4140c56cd674fe5c56f"
+    },
+    {
+      "id": "c493bc73-20d9-4d46-8f3b-5ddee3991fd3",
+      "manifest_sha256": "a36647d3de0ec72b4d9f7e84cdcf6b1d67469e64507ba1494da0e6904f0b46c2"
+    },
+    {
+      "id": "d4fb9cdb-2bc1-4c85-aa48-4ac172c0b70d",
+      "manifest_sha256": "1307b333338d924dddb8766871cc752c04b934fcc2f93cecce819a01cdb183e6"
+    },
+    {
+      "id": "d9919314-aed4-46f5-a49c-8eeab37a26fa",
+      "manifest_sha256": "895dfad0719cd7fcb76c84606a46524967e59e75997beaafb0277f4693b1104b"
+    },
+    {
+      "id": "e01422b7-4884-4400-b40f-b07a9eccd3c3",
+      "manifest_sha256": "ef8ecfca6b6ee083ca43502a446afba3b267e678ac8f338254b93dcfdde1c25c"
+    },
+    {
+      "id": "ed0c4c82-9b31-4527-962e-012d180ec2ba",
+      "manifest_sha256": "a69b64a20e03f6e1e0214ee16b908e0549e97a94126c8fa879d7d28545e67429"
+    },
+    {
+      "id": "f9fe3910-16cf-404a-866d-2e2a1353b8ba",
+      "manifest_sha256": "ef8ecfca6b6ee083ca43502a446afba3b267e678ac8f338254b93dcfdde1c25c"
+    },
+    {
+      "id": "fff8adb1-f205-4fdf-a353-8618ac567440",
+      "manifest_sha256": "25539cd248c0fa43be506070f1eb9db46f0f3afcf0dc1a7801521edba3d61236"
+    }
+  ],
+  "limits": [
+    "Backend-only acceptance; B35b UI/content/installability remain pending.",
+    "Forecast absence is not successful prospective issuance or accuracy."
+  ]
+}
