@@ -1,0 +1,85 @@
+
+> courtload-dashboard@0.1.0 test:browser
+> playwright test e2e/saved-operations.spec.ts e2e/conversation.spec.ts
+
+[WebServer] (node:969016) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:969041) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:969077) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 30 tests using 8 workers
+
+(node:969196) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:969195) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:969202) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:969203) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:969209) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:969227) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:969233) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:969215) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:970702) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   6 e2e/conversation.spec.ts:55:7 › unsupported preserves manual alternatives and entered question (1.6s)
+  ✓   5 e2e/conversation.spec.ts:37:5 › network retry reuses the request identity (1.7s)
+  ✓   3 e2e/conversation.spec.ts:34:5 › quota, unsupported and empty states preserve question and manual execution (1.8s)
+  ✓   1 e2e/conversation.spec.ts:28:5 › natural follow-ups and canonical identity choices retain conversation fingerprints (1.8s)
+  ✓   2 e2e/conversation.spec.ts:21:5 › AI disabled manual paired distributions preserve zero, unknown and exact evidence (1.9s)
+  ✓   7 e2e/conversation.spec.ts:46:5 › drawer traps keyboard focus, escapes, and supports narrow reduced-motion layout (1.9s)
+  ✓   4 e2e/conversation.spec.ts:42:5 › exact Research destination reruns executed arguments and clears ephemeral state (2.0s)
+  ✓   8 e2e/conversation.spec.ts:50:5 › unmounted pending answer is discarded and its local state is cleared (1.9s)
+[WebServer] (node:970893) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:971125) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  10 e2e/conversation.spec.ts:55:7 › timeout preserves manual alternatives and entered question (1.4s)
+  ✓  11 e2e/conversation.spec.ts:55:7 › busy preserves manual alternatives and entered question (1.4s)
+  ✓  12 e2e/conversation.spec.ts:55:7 › provider_error preserves manual alternatives and entered question (1.4s)
+  ✓   9 e2e/conversation.spec.ts:55:7 › insufficient_sample preserves manual alternatives and entered question (1.5s)
+  ✓  13 e2e/conversation.spec.ts:59:5 › proposed context needs an explicit new conversation (1.4s)
+[WebServer] (node:971241) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  16 e2e/saved-operations.spec.ts:40:5 › combined library keeps legacy section and opens exact retained namespace (2.1s)
+[WebServer] (node:971508) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:971539) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  20 e2e/saved-operations.spec.ts:43:39 › compare retained result exposes evidence, pinned reopening, exports and reproduction (1.3s)
+  ✓  14 e2e/saved-operations.spec.ts:29:5 › explicit save excludes question by default, reuses identity after failure and survives clearing (2.6s)
+  ✓  18 e2e/saved-operations.spec.ts:43:39 › definition retained result exposes evidence, pinned reopening, exports and reproduction (1.4s)
+  ✓  19 e2e/saved-operations.spec.ts:43:39 › profile retained result exposes evidence, pinned reopening, exports and reproduction (1.4s)
+  ✓  21 e2e/saved-operations.spec.ts:43:39 › team retained result exposes evidence, pinned reopening, exports and reproduction (1.3s)
+  ✓  17 e2e/saved-operations.spec.ts:43:39 › query retained result exposes evidence, pinned reopening, exports and reproduction (1.6s)
+[WebServer] (node:971803) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  15 e2e/saved-operations.spec.ts:37:5 › question opt-in is independent from execution and title (3.0s)
+[WebServer] (node:971910) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  22 e2e/saved-operations.spec.ts:43:39 › forecast retained result exposes evidence, pinned reopening, exports and reproduction (966ms)
+[WebServer] (node:972056) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:972113) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  23 e2e/saved-operations.spec.ts:43:39 › compare_periods retained result exposes evidence, pinned reopening, exports and reproduction (1.4s)
+  ✓  27 e2e/saved-operations.spec.ts:43:39 › workload_shifts retained result exposes evidence, pinned reopening, exports and reproduction (1.4s)
+  ✓  26 e2e/saved-operations.spec.ts:43:39 › similarity retained result exposes evidence, pinned reopening, exports and reproduction (1.5s)
+  ✓  24 e2e/saved-operations.spec.ts:43:39 › distribution retained result exposes evidence, pinned reopening, exports and reproduction (1.5s)
+  ✓  28 e2e/saved-operations.spec.ts:43:39 › finance retained result exposes evidence, pinned reopening, exports and reproduction (1.4s)
+  ✓  25 e2e/saved-operations.spec.ts:43:39 › splits retained result exposes evidence, pinned reopening, exports and reproduction (1.6s)
+  ✓  29 e2e/saved-operations.spec.ts:49:5 › reproduction mismatch keeps exports and retained evidence usable on narrow screens (1.2s)
+[WebServer] (node:972236) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:972324) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  30 e2e/saved-operations.spec.ts:52:5 › original content, live catalog version and installation metadata are local and truthful (1.8s)
+
+  30 passed (8.2s)

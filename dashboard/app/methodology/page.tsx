@@ -28,13 +28,14 @@ export default async function MethodologyPage() {
         </div>
       </div>
 
+      <div className="page-actions"><Link href="/learning">Worked lessons</Link><Link href="/data-status">Source coverage and lineage</Link><Link href="/evaluation">Model evaluation</Link><Link href="/investigations">Retained investigations</Link></div>
       {/* Core Principles Grid */}
       <div className="grid-3" style={{ marginBottom: "1.5rem" }}>
         <div className="panel">
           <span className="text-accent font-mono text-xs font-bold uppercase">Principle 1</span>
           <h2 className="panel-title" style={{ margin: "0.4rem 0" }}>Temporal Discipline</h2>
           <p className="text-xs text-muted" style={{ lineHeight: 1.5 }}>
-            Every feature, metric window, and profile strictly excludes the target date and all subsequent outcomes (<code>game_date &lt; before_date</code>). Changing future games never alters historical profiles.
+            Historical feature and profile windows strictly exclude the replay target date and subsequent outcomes (<code>game_date &lt; before_date</code>). Changing future games never alters historical profiles.
           </p>
         </div>
 
@@ -59,12 +60,12 @@ export default async function MethodologyPage() {
       <div className="panel">
         <div className="panel-header">
           <div>
-            <h2 className="panel-title">Canonical Metric Catalog (v1)</h2>
+            <h2 className="panel-title">Canonical Metric Catalog ({catalog?.version ?? "unavailable"})</h2>
             <p className="text-muted text-xs" style={{ margin: "0.2rem 0 0" }}>
               Single source of mathematical truth across backend services, warehouse marts, and dashboard presentation.
             </p>
           </div>
-          <span className="badge badge-accent font-mono">{metrics.length || 35} Metrics</span>
+          <span className="badge badge-accent font-mono">{catalog ? `${metrics.length} Metrics` : "Catalog unavailable"}</span>
         </div>
 
         <div className="table-wrapper">
@@ -84,7 +85,7 @@ export default async function MethodologyPage() {
               {metrics.length === 0 ? (
                 <tr>
                   <td colSpan={7} style={{ textAlign: "center", padding: "2rem" }} className="text-muted">
-                    Loading metric catalog specifications...
+                    Metric catalog unavailable. Restore the local API connection to inspect definitions.
                   </td>
                 </tr>
               ) : (
@@ -97,7 +98,7 @@ export default async function MethodologyPage() {
                     </td>
                     <td className="text-xs text-muted font-mono">{m.unit}</td>
                     <td className="font-mono text-xs">{m.formula}</td>
-                    <td className="font-mono text-xs text-muted">{m.denominator || "None"}</td>
+                    <td className="font-mono text-xs text-muted">{m.denominator || "None"}<p>{m.validity_definition}</p></td>
                     <td className="text-xs text-muted" style={{ maxWidth: "260px", whiteSpace: "normal" }}>
                       {m.limitations.join("; ")}
                     </td>

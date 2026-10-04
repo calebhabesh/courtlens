@@ -1,0 +1,450 @@
+{
+  "block": "B35c",
+  "recorded_at": "2026-10-04T16:26:08.490Z",
+  "status": "passed",
+  "site": "http://127.0.0.1:3135",
+  "api": "http://127.0.0.1:8000",
+  "pages": [
+    {
+      "route": "/methodology",
+      "heading": "Methodology & Metric Catalog",
+      "local_links": 13
+    },
+    {
+      "route": "/learning",
+      "heading": "Learn with CourtLoad evidence",
+      "local_links": 17
+    },
+    {
+      "route": "/blog",
+      "heading": "Evidence before narrative",
+      "local_links": 15
+    },
+    {
+      "route": "/patch-notes",
+      "heading": "Patch notes: retained analytical operations",
+      "local_links": 15
+    },
+    {
+      "route": "/settings",
+      "heading": "Settings & Operational Health",
+      "local_links": 16
+    },
+    {
+      "route": "/investigations",
+      "heading": "Saved Investigations",
+      "local_links": 312
+    }
+  ],
+  "checked_links": [
+    {
+      "url": "http://127.0.0.1:3135/",
+      "status": 200,
+      "final_url": "http://127.0.0.1:3135/"
+    },
+    {
+      "url": "http://127.0.0.1:3135/blog",
+      "status": 200,
+      "final_url": "http://127.0.0.1:3135/blog"
+    },
+    {
+      "url": "http://127.0.0.1:3135/blog#content",
+      "status": 200,
+      "final_url": "http://127.0.0.1:3135/blog"
+    },
+    {
+      "url": "http://127.0.0.1:3135/data-status",
+      "status": 200,
+      "final_url": "http://127.0.0.1:3135/data-status"
+    },
+    {
+      "url": "http://127.0.0.1:3135/evaluation",
+      "status": 200,
+      "final_url": "http://127.0.0.1:3135/evaluation"
+    },
+    {
+      "url": "http://127.0.0.1:3135/forecasts",
+      "status": 200,
+      "final_url": "http://127.0.0.1:3135/forecasts"
+    },
+    {
+      "url": "http://127.0.0.1:3135/investigations",
+      "status": 200,
+      "final_url": "http://127.0.0.1:3135/investigations"
+    },
+    {
+      "url": "http://127.0.0.1:3135/investigations#content",
+      "status": 200,
+      "final_url": "http://127.0.0.1:3135/investigations"
+    },
+    {
+      "url": "http://127.0.0.1:3135/learning",
+      "status": 200,
+      "final_url": "http://127.0.0.1:3135/learning"
+    },
+    {
+      "url": "http://127.0.0.1:3135/learning#content",
+      "status": 200,
+      "final_url": "http://127.0.0.1:3135/learning"
+    },
+    {
+      "url": "http://127.0.0.1:3135/live",
+      "status": 200,
+      "final_url": "http://127.0.0.1:3135/live"
+    },
+    {
+      "url": "http://127.0.0.1:3135/methodology",
+      "status": 200,
+      "final_url": "http://127.0.0.1:3135/methodology"
+    },
+    {
+      "url": "http://127.0.0.1:3135/methodology#content",
+      "status": 200,
+      "final_url": "http://127.0.0.1:3135/methodology"
+    },
+    {
+      "url": "http://127.0.0.1:3135/patch-notes",
+      "status": 200,
+      "final_url": "http://127.0.0.1:3135/patch-notes"
+    },
+    {
+      "url": "http://127.0.0.1:3135/patch-notes#content",
+      "status": 200,
+      "final_url": "http://127.0.0.1:3135/patch-notes"
+    },
+    {
+      "url": "http://127.0.0.1:3135/players?release_id=4ea4a228-b8bc-4a4c-b4c1-93e809a8a32d&season=2023-24&phase=regular_season&before_date=2024-04-15&window=season&sort_metric=pts&sort_direction=desc&limit=50",
+      "status": 200,
+      "final_url": "http://127.0.0.1:3135/players?release_id=4ea4a228-b8bc-4a4c-b4c1-93e809a8a32d&season=2023-24&phase=regular_season&before_date=2024-04-15&window=season&sort_metric=pts&sort_direction=desc&limit=50"
+    },
+    {
+      "url": "http://127.0.0.1:3135/players?release_id=5b14b7ed-353b-499d-a37a-6887b5f6c715&season=2023-24&phase=regular_season&before_date=2023-01-09&window=season&sort_metric=pts&sort_direction=desc&limit=50",
+      "status": 200,
+      "final_url": "http://127.0.0.1:3135/players?release_id=5b14b7ed-353b-499d-a37a-6887b5f6c715&season=2023-24&phase=regular_season&before_date=2023-01-09&window=season&sort_metric=pts&sort_direction=desc&limit=50"
+    },
+    {
+      "url": "http://127.0.0.1:3135/players?release_id=5b14b7ed-353b-499d-a37a-6887b5f6c715&season=2023-24&phase=regular_season&before_date=2024-04-15&window=season&sort_metric=pts&sort_direction=desc&limit=50",
+      "status": 200,
+      "final_url": "http://127.0.0.1:3135/players?release_id=5b14b7ed-353b-499d-a37a-6887b5f6c715&season=2023-24&phase=regular_season&before_date=2024-04-15&window=season&sort_metric=pts&sort_direction=desc&limit=50"
+    },
+    {
+      "url": "http://127.0.0.1:3135/players?release_id=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2023-24&phase=regular_season&before_date=2024-06-18&window=season&sort_metric=pts&sort_direction=desc&limit=50",
+      "status": 200,
+      "final_url": "http://127.0.0.1:3135/players?release_id=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2023-24&phase=regular_season&before_date=2024-06-18&window=season&sort_metric=pts&sort_direction=desc&limit=50"
+    },
+    {
+      "url": "http://127.0.0.1:3135/players?season=2023-24&phase=regular_season&window=season&sort_metric=pts&sort_direction=desc&limit=10",
+      "status": 200,
+      "final_url": "http://127.0.0.1:3135/players?season=2023-24&phase=regular_season&window=season&sort_metric=pts&sort_direction=desc&limit=10"
+    },
+    {
+      "url": "http://127.0.0.1:3135/players?season=2023-24&phase=regular_season&window=season&sort_metric=pts&sort_direction=desc&limit=50",
+      "status": 200,
+      "final_url": "http://127.0.0.1:3135/players?season=2023-24&phase=regular_season&window=season&sort_metric=pts&sort_direction=desc&limit=50"
+    },
+    {
+      "url": "http://127.0.0.1:3135/research/ask",
+      "status": 200,
+      "final_url": "http://127.0.0.1:3135/research/ask"
+    },
+    {
+      "url": "http://127.0.0.1:3135/research/case-studies",
+      "status": 200,
+      "final_url": "http://127.0.0.1:3135/research/case-studies"
+    },
+    {
+      "url": "http://127.0.0.1:3135/research/operation?operation=distribution&arguments=%7B%22player_id%22%3A%221630567%22%2C%22metric%22%3A%22pts%22%2C%22window_n%22%3A20%7D&release_id=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2023-24&phase=regular_season&before_date=2024-06-18&window=season",
+      "status": 200,
+      "final_url": "http://127.0.0.1:3135/research/operation?operation=distribution&arguments=%7B%22player_id%22%3A%221630567%22%2C%22metric%22%3A%22pts%22%2C%22window_n%22%3A20%7D&release_id=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2023-24&phase=regular_season&before_date=2024-06-18&window=season"
+    },
+    {
+      "url": "http://127.0.0.1:3135/settings",
+      "status": 200,
+      "final_url": "http://127.0.0.1:3135/settings"
+    },
+    {
+      "url": "http://127.0.0.1:3135/settings#content",
+      "status": 200,
+      "final_url": "http://127.0.0.1:3135/settings"
+    },
+    {
+      "url": "http://127.0.0.1:3135/stats",
+      "status": 200,
+      "final_url": "http://127.0.0.1:3135/stats"
+    },
+    {
+      "url": "http://127.0.0.1:3135/wowy",
+      "status": 200,
+      "final_url": "http://127.0.0.1:3135/wowy"
+    }
+  ],
+  "assets": [
+    {
+      "path": "/_next/static/chunks/0t61jaxvpj2i0.css",
+      "bytes": 56151,
+      "sha256": "2cb65f5ecc8acb91b6a9a2c9da13e8bf56c24781dd2c9f2d14cc7a7449ef4687",
+      "cache_control": "public, max-age=31536000, immutable"
+    },
+    {
+      "path": "/_next/static/chunks/310vm2bl3xxpt.js",
+      "bytes": 5364,
+      "sha256": "8a943b00599e56b53569f36f4341e3465ae7705c1391562cd6c7e1f290c0c387",
+      "cache_control": "public, max-age=31536000, immutable"
+    },
+    {
+      "path": "/_next/static/media/99e609270109b47d-s.p.40sczeszzbjw1.woff2",
+      "bytes": 10052,
+      "sha256": "c36f509c0a8f9f85f29cb44bc8701d8a9e0b14c499e77a884f789ead7093a7ac",
+      "cache_control": "public, max-age=31536000, immutable"
+    },
+    {
+      "path": "/_next/static/media/23b7a97ae3b5c134-s.p.226pwps5o-gq_.woff2",
+      "bytes": 10120,
+      "sha256": "ad4580d8cb4b5f627c2d18457656732f7f7b070f7837fbc380e08054157e6f6c",
+      "cache_control": "public, max-age=31536000, immutable"
+    },
+    {
+      "path": "/_next/static/media/effe91970fc4db64-s.p.0oace-s_gkfks.woff2",
+      "bytes": 10060,
+      "sha256": "a76f53ca6612e7b3828eec2311098675b7f9849ae4169a8bcef6302aec02a6c0",
+      "cache_control": "public, max-age=31536000, immutable"
+    },
+    {
+      "path": "/_next/static/media/0c89a48fa5027cee-s.p.2cyn07wtgehh0.woff2",
+      "bytes": 22320,
+      "sha256": "a0d054c4af557de20afd6ca59f47ab353bcaec49c63ff04b6c9d39d0f8910557",
+      "cache_control": "public, max-age=31536000, immutable"
+    },
+    {
+      "path": "/_next/static/chunks/turbopack-1b6uko1cu_h42.js",
+      "bytes": 9721,
+      "sha256": "bff34d0184addb24fc687b1d5f5751fef21c6ecf5520236859f3a8f4cac02a16",
+      "cache_control": "public, max-age=31536000, immutable"
+    },
+    {
+      "path": "/_next/static/chunks/3fntmmi971322.js",
+      "bytes": 14377,
+      "sha256": "34ed6abf4c6d0d1bb3dc56d3f133d2a5dbc3a3c89c791deab314e27143ac14ce",
+      "cache_control": "public, max-age=31536000, immutable"
+    },
+    {
+      "path": "/_next/static/chunks/19mx3mg6lkumu.js",
+      "bytes": 28907,
+      "sha256": "170f3982866674a829571beec30cc23c69fcd36196739ff34b9d586b3ad73cd7",
+      "cache_control": "public, max-age=31536000, immutable"
+    },
+    {
+      "path": "/_next/static/chunks/0gjvfwnd_7rze.js",
+      "bytes": 50612,
+      "sha256": "4431b28462b5bf4c324617c28b137cc8d5b6c8371d072e38f0cf40ec876354a1",
+      "cache_control": "public, max-age=31536000, immutable"
+    },
+    {
+      "path": "/_next/static/chunks/2-rtuqsgzmno4.js",
+      "bytes": 165743,
+      "sha256": "4d2bfb13eedd0cf43d07810d7790ce423e01097d1406ef604e7c4f3ab4db8d79",
+      "cache_control": "public, max-age=31536000, immutable"
+    },
+    {
+      "path": "/_next/static/chunks/0fkqt3_ycj_di.js",
+      "bytes": 28636,
+      "sha256": "f4b996865671758ca27d2c80091de4414edb2044f3524a129871161e605088ea",
+      "cache_control": "public, max-age=31536000, immutable"
+    },
+    {
+      "path": "/_next/static/chunks/27t_qfc-3_lzs.js",
+      "bytes": 229156,
+      "sha256": "f71552684e86daa3e94faad9002fb69d4e8d308a997ca88fdde74e54b5191870",
+      "cache_control": "public, max-age=31536000, immutable"
+    },
+    {
+      "path": "/_next/static/chunks/3y8xvvmrsj8na.js",
+      "bytes": 1696,
+      "sha256": "fe78306237b8fdfa3acb5e9452ba833707f95c7d3199f8c78d7e6e6f5d684ec9",
+      "cache_control": "public, max-age=31536000, immutable"
+    },
+    {
+      "path": "/_next/static/chunks/3t4k5_uj0ofwh.js",
+      "bytes": 13205,
+      "sha256": "9fc3aaec8e5f4979bb57f686e444912a2ea57404068ce1ee546f6cf7ad423c0b",
+      "cache_control": "public, max-age=31536000, immutable"
+    },
+    {
+      "path": "/_next/static/chunks/1rwvhi2vpnvpm.js",
+      "bytes": 45324,
+      "sha256": "799b2ac85fb8acdabc213420348514c230f3e516574edf4caf2f79cfd907c93c",
+      "cache_control": "public, max-age=31536000, immutable"
+    },
+    {
+      "path": "/_next/static/chunks/0_pepb-gnn3sz.js",
+      "bytes": 1592,
+      "sha256": "5a34ffb7701a97f6498dfcdf8c83c16a853aa20a70ab3d9e792114078c7410c5",
+      "cache_control": "public, max-age=31536000, immutable"
+    },
+    {
+      "path": "/_next/static/chunks/32ewvq77h_2mo.js",
+      "bytes": 4946,
+      "sha256": "a64fd92e95375f803acc43b7b78a823ddb7f973e6e28a1ce7c6839c7135dd2cc",
+      "cache_control": "public, max-age=31536000, immutable"
+    },
+    {
+      "path": "/_next/static/chunks/3omwkr-i2l-19.js",
+      "bytes": 6371,
+      "sha256": "183d55b4237a80b796fc85501483366e080f9de98f039600aef927c64e566600",
+      "cache_control": "public, max-age=31536000, immutable"
+    },
+    {
+      "path": "/icons/courtload-192.png",
+      "bytes": 6744,
+      "sha256": "66c803e30e05bc3a9bba843bad9b2cdd60a8d80202202c669a7131eba440ace0"
+    },
+    {
+      "path": "/icons/courtload-512.png",
+      "bytes": 24210,
+      "sha256": "843c3b21ef2c90a37e391182d36250b8c4b8c7e895c395b9b9f38612debb663e"
+    },
+    {
+      "path": "/icons/courtload-maskable-512.png",
+      "bytes": 19371,
+      "sha256": "d7859d783412769fe79e6697a0bc275d99457957d138b7ceb4918f1bf3f2bbee"
+    }
+  ],
+  "page_errors": [],
+  "failed_requests": [],
+  "cancelled_rsc_requests": [
+    {
+      "url": "http://127.0.0.1:3135/learning?_rsc=HzWsK4yFUoZLFyoa",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "url": "http://127.0.0.1:3135/?_rsc=GUkK8V6TTy-GcSBa",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "url": "http://127.0.0.1:3135/stats?_rsc=GUkK8V6TTy-GcSBa",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "url": "http://127.0.0.1:3135/settings?_rsc=GUkK8V6TTy-GcSBa",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "url": "http://127.0.0.1:3135/?_rsc=TpKb-WxlVvQRPC-7",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "url": "http://127.0.0.1:3135/stats?_rsc=TpKb-WxlVvQRPC-7",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "url": "http://127.0.0.1:3135/data-status?_rsc=TpKb-WxlVvQRPC-7",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "url": "http://127.0.0.1:3135/settings?_rsc=TpKb-WxlVvQRPC-7",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "url": "http://127.0.0.1:3135/methodology?_rsc=GUkK8V6TTy-GcSBa",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "url": "http://127.0.0.1:3135/methodology?_rsc=TpKb-WxlVvQRPC-7",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "url": "http://127.0.0.1:3135/research/ask?_rsc=oz-_Q2BhlE850NaL",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "url": "http://127.0.0.1:3135/investigations?_rsc=oz-_Q2BhlE850NaL",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "url": "http://127.0.0.1:3135/forecasts?_rsc=oz-_Q2BhlE850NaL",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "url": "http://127.0.0.1:3135/evaluation?_rsc=oz-_Q2BhlE850NaL",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "url": "http://127.0.0.1:3135/?_rsc=nkeszgOmBjH2MJ4W",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "url": "http://127.0.0.1:3135/stats?_rsc=nkeszgOmBjH2MJ4W",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "url": "http://127.0.0.1:3135/stats?_rsc=j-_vjoKOn8bxlRO7",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "url": "http://127.0.0.1:3135/?_rsc=j-_vjoKOn8bxlRO7",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "url": "http://127.0.0.1:3135/data-status?_rsc=j-_vjoKOn8bxlRO7",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "url": "http://127.0.0.1:3135/methodology?_rsc=DQxjArDrgutTG17x",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "url": "http://127.0.0.1:3135/investigations?_rsc=DQxjArDrgutTG17x",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "url": "http://127.0.0.1:3135/methodology?_rsc=j-_vjoKOn8bxlRO7",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "url": "http://127.0.0.1:3135/?_rsc=D0wSLfMGVl7dLfSf",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "url": "http://127.0.0.1:3135/stats?_rsc=D0wSLfMGVl7dLfSf",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "url": "http://127.0.0.1:3135/research/ask?_rsc=D0wSLfMGVl7dLfSf",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "url": "http://127.0.0.1:3135/?_rsc=PQ-MqL3RjT0ZvORi",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "url": "http://127.0.0.1:3135/stats?_rsc=PQ-MqL3RjT0ZvORi",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "url": "http://127.0.0.1:3135/research/ask?_rsc=PQ-MqL3RjT0ZvORi",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "url": "http://127.0.0.1:3135/settings?_rsc=PQ-MqL3RjT0ZvORi",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "url": "http://127.0.0.1:3135/players?season=2023-24&phase=regular_season&window=season&sort_metric=pts&sort_direction=desc&limit=50&_rsc=PQ-MqL3RjT0ZvORi",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "url": "http://127.0.0.1:3135/players?_rsc=D0wSLfMGVl7dLfSf",
+      "error": "net::ERR_ABORTED"
+    },
+    {
+      "url": "http://127.0.0.1:3135/players?season=2023-24&phase=regular_season&window=season&sort_metric=pts&sort_direction=desc&limit=10&_rsc=PQ-MqL3RjT0ZvORi",
+      "error": "net::ERR_ABORTED"
+    }
+  ],
+  "ai_configured": false,
+  "limits": [
+    "Linked destinations HTTP-checked; detailed feature behavior uses its separately recorded block evidence",
+    "Live view not hydrated; no new live source acquisition",
+    "No provider inference"
+  ]
+}

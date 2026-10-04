@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { SavedOperationLibrary } from "@/components/saved-operation-library";
 import { WorkbenchInvestigationsList } from "@/components/workbench-investigations-list";
 import { listSavedInvestigations } from "@/lib/workbench-api";
 import type { SavedInvestigation } from "@/lib/types";
@@ -28,7 +29,7 @@ export default async function InvestigationsPage() {
           </p>
         </div>
         <div className="page-actions">
-          <Link href="/players" className="button button-primary">
+          <Link href="/research/ask" className="button button-primary">
             + New Investigation
           </Link>
         </div>
@@ -40,7 +41,8 @@ export default async function InvestigationsPage() {
         </div>
       )}
 
-      <WorkbenchInvestigationsList items={items} />
+      <SavedOperationLibrary />
+      <section aria-label="Legacy saved investigations"><h2>Legacy saved investigations</h2><p>Existing archive investigations retain their original IDs, result signatures and export contracts.</p>{error ? <p>Legacy investigations are unavailable until the local API connection is restored.</p> : <WorkbenchInvestigationsList items={items} />}</section>
     </div>
   );
 }

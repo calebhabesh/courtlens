@@ -1,0 +1,566 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+_______________ test_archive_stats_executes_with_versioned_names _______________
+
+self = <sqlalchemy.engine.base.Connection object at 0x7f758b123cb0>
+dialect = <sqlalchemy.dialects.postgresql.psycopg.PGDialect_psycopg object at 0x7f758b125e50>
+context = <sqlalchemy.dialects.postgresql.psycopg.PGExecutionContext_psycopg object at 0x7f758af1cd50>
+statement = <sqlalchemy.dialects.postgresql.psycopg.PGCompiler_psycopg object at 0x7f758afee990>
+parameters = [{'before_date': datetime.date(2021, 10, 20), 'dataset_id': '2e99f37c-231a-4748-9f48-5b9ffa99f228', 'name_pattern': '%khris middleton%', 'p_leaf_5': '203114', ...}]
+
+    def _exec_single_context(
+        self,
+        dialect: Dialect,
+        context: ExecutionContext,
+        statement: Union[str, Compiled],
+        parameters: Optional[_AnyMultiExecuteParams],
+    ) -> CursorResult[Any]:
+        """continue the _execute_context() method for a single DBAPI
+        cursor.execute() or cursor.executemany() call.
+    
+        """
+        if dialect.bind_typing is BindTyping.SETINPUTSIZES:
+            generic_setinputsizes = context._prepare_set_input_sizes()
+    
+            if generic_setinputsizes:
+                try:
+                    dialect.do_set_input_sizes(
+                        context.cursor, generic_setinputsizes, context
+                    )
+                except BaseException as e:
+                    self._handle_dbapi_exception(
+                        e, str(statement), parameters, None, context
+                    )
+    
+        cursor, str_statement, parameters = (
+            context.cursor,
+            context.statement,
+            context.parameters,
+        )
+    
+        effective_parameters: Optional[_AnyExecuteParams]
+    
+        if not context.executemany:
+            effective_parameters = parameters[0]
+        else:
+            effective_parameters = parameters
+    
+        if self._has_events or self.engine._has_events:
+            for fn in self.dispatch.before_cursor_execute:
+                str_statement, effective_parameters = fn(
+                    self,
+                    cursor,
+                    str_statement,
+                    effective_parameters,
+                    context,
+                    context.executemany,
+                )
+    
+        if self._echo:
+            self._log_info(str_statement)
+    
+            stats = context._get_cache_stats()
+    
+            if not self.engine.hide_parameters:
+                self._log_info(
+                    "[%s] %r",
+                    stats,
+                    sql_util._repr_params(
+                        effective_parameters,
+                        batches=10,
+                        ismulti=context.executemany,
+                    ),
+                )
+            else:
+                self._log_info(
+                    "[%s] [SQL parameters hidden due to hide_parameters=True]",
+                    stats,
+                )
+    
+        evt_handled: bool = False
+        try:
+            if context.execute_style is ExecuteStyle.EXECUTEMANY:
+                effective_parameters = cast(
+                    "_CoreMultiExecuteParams", effective_parameters
+                )
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_executemany:
+                        if fn(
+                            cursor,
+                            str_statement,
+                            effective_parameters,
+                            context,
+                        ):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+                    self.dialect.do_executemany(
+                        cursor,
+                        str_statement,
+                        effective_parameters,
+                        context,
+                    )
+            elif not effective_parameters and context.no_parameters:
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_execute_no_params:
+                        if fn(cursor, str_statement, context):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+                    self.dialect.do_execute_no_params(
+                        cursor, str_statement, context
+                    )
+            else:
+                effective_parameters = cast(
+                    "_CoreSingleExecuteParams", effective_parameters
+                )
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_execute:
+                        if fn(
+                            cursor,
+                            str_statement,
+                            effective_parameters,
+                            context,
+                        ):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+>                   self.dialect.do_execute(
+                        cursor, str_statement, effective_parameters, context
+                    )
+
+.venv/lib/python3.14/site-packages/sqlalchemy/engine/base.py:1969: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+.venv/lib/python3.14/site-packages/sqlalchemy/engine/default.py:952: in do_execute
+    cursor.execute(statement, parameters)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <psycopg.Cursor [closed] [INERROR] (host=localhost database=courtload) at 0x7f758b02d250>
+query = 'WITH ranked_games AS (\n        SELECT\n            wpg.player_id,\n            coalesce(wi.display_name, wpg.player_...date_games\n        GROUP BY player_id\n    )\n    SELECT count(*) FROM aggregated WHERE ((player_id = %(p_leaf_5)s));'
+params = {'before_date': datetime.date(2021, 10, 20), 'dataset_id': '2e99f37c-231a-4748-9f48-5b9ffa99f228', 'name_pattern': '%khris middleton%', 'p_leaf_5': '203114', ...}
+
+    def execute(
+        self,
+        query: Query,
+        params: Params | None = None,
+        *,
+        prepare: bool | None = None,
+        binary: bool | None = None,
+    ) -> Self:
+        """
+        Execute a query or command to the database.
+        """
+        try:
+            with self._conn.lock:
+                self._conn.wait(
+                    self._execute_gen(query, params, prepare=prepare, binary=binary)
+                )
+        except e._NO_TRACEBACK as ex:
+>           raise ex.with_traceback(None)
+E           psycopg.errors.UndefinedColumn: column wi.display_name does not exist
+E           LINE 4:             coalesce(wi.display_name, wpg.player_id) AS play...
+E                                        ^
+
+.venv/lib/python3.14/site-packages/psycopg/cursor.py:117: UndefinedColumn
+
+The above exception was the direct cause of the following exception:
+
+db_session = <sqlalchemy.orm.session.Session object at 0x7f758b122e40>
+
+    def test_archive_stats_executes_with_versioned_names(db_session: Session) -> None:
+        """Historical saved links query retained archive schemas, names and cutoff rows."""
+        from datetime import timedelta
+    
+        from sqlalchemy import select
+    
+        from courtload.archive_models import ArchivePlayerGame, ArchiveVersion
+    
+        game, payload = db_session.execute(
+            select(ArchivePlayerGame, ArchiveVersion.payload_json)
+            .join(ArchiveVersion, ArchiveVersion.id == ArchivePlayerGame.source_version_id)
+            .order_by(ArchivePlayerGame.game_date)
+            .limit(1)
+        ).one()
+        context = resolve_workbench_context(
+            db_session,
+            release_id=game.dataset_id,
+            requested_season=game.season,
+            requested_before_date=game.game_date + timedelta(days=1),
+        )
+        assert context.dataset_type == "archive"
+        name = str(payload.get("player") or game.player_id)
+        query = QuerySpec(
+            season=game.season,
+            name=name,
+            predicates=PredicateGroup(
+                predicates=[PredicateLeaf(field="player_id", op=PredicateOp.EQ, value=game.player_id)]
+            ),
+        )
+>       rows, total, _, _ = execute_stats_query(db_session, context, query)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/unit/test_stats_engine.py:387: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/courtload/services/stats_engine.py:819: in execute_stats_query
+    total_count = session.execute(text(count_sql), count_params).scalar() or 0
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv/lib/python3.14/site-packages/sqlalchemy/orm/session.py:2373: in execute
+    return self._execute_internal(
+.venv/lib/python3.14/site-packages/sqlalchemy/orm/session.py:2280: in _execute_internal
+    result = conn.execute(
+.venv/lib/python3.14/site-packages/sqlalchemy/engine/base.py:1421: in execute
+    return meth(
+.venv/lib/python3.14/site-packages/sqlalchemy/sql/elements.py:526: in _execute_on_connection
+    return connection._execute_clauseelement(
+.venv/lib/python3.14/site-packages/sqlalchemy/engine/base.py:1643: in _execute_clauseelement
+    ret = self._execute_context(
+.venv/lib/python3.14/site-packages/sqlalchemy/engine/base.py:1848: in _execute_context
+    return self._exec_single_context(
+.venv/lib/python3.14/site-packages/sqlalchemy/engine/base.py:1988: in _exec_single_context
+    self._handle_dbapi_exception(
+.venv/lib/python3.14/site-packages/sqlalchemy/engine/base.py:2365: in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+.venv/lib/python3.14/site-packages/sqlalchemy/engine/base.py:1969: in _exec_single_context
+    self.dialect.do_execute(
+.venv/lib/python3.14/site-packages/sqlalchemy/engine/default.py:952: in do_execute
+    cursor.execute(statement, parameters)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <psycopg.Cursor [closed] [INERROR] (host=localhost database=courtload) at 0x7f758b02d250>
+query = 'WITH ranked_games AS (\n        SELECT\n            wpg.player_id,\n            coalesce(wi.display_name, wpg.player_...date_games\n        GROUP BY player_id\n    )\n    SELECT count(*) FROM aggregated WHERE ((player_id = %(p_leaf_5)s));'
+params = {'before_date': datetime.date(2021, 10, 20), 'dataset_id': '2e99f37c-231a-4748-9f48-5b9ffa99f228', 'name_pattern': '%khris middleton%', 'p_leaf_5': '203114', ...}
+
+    def execute(
+        self,
+        query: Query,
+        params: Params | None = None,
+        *,
+        prepare: bool | None = None,
+        binary: bool | None = None,
+    ) -> Self:
+        """
+        Execute a query or command to the database.
+        """
+        try:
+            with self._conn.lock:
+                self._conn.wait(
+                    self._execute_gen(query, params, prepare=prepare, binary=binary)
+                )
+        except e._NO_TRACEBACK as ex:
+>           raise ex.with_traceback(None)
+E           sqlalchemy.exc.ProgrammingError: (psycopg.errors.UndefinedColumn) column wi.display_name does not exist
+E           LINE 4:             coalesce(wi.display_name, wpg.player_id) AS play...
+E                                        ^
+E           [SQL: WITH ranked_games AS (
+E                   SELECT
+E                       wpg.player_id,
+E                       coalesce(wi.display_name, wpg.player_id) AS player_name,
+E                       wpg.team_id,
+E                       wpg.game_id,
+E                       wpg.game_date,
+E                       wpg.appearance,
+E                       wpg.minutes_seconds,
+E                       (wpg.stats_json->>'points')::int AS points,
+E                       (wpg.stats_json->>'reboundsTotal')::int AS rebounds_total,
+E                       (wpg.stats_json->>'reboundsOffensive')::int AS rebounds_offensive,
+E                       (wpg.stats_json->>'reboundsDefensive')::int AS rebounds_defensive,
+E                       (wpg.stats_json->>'assists')::int AS assists,
+E                       (wpg.stats_json->>'steals')::int AS steals,
+E                       (wpg.stats_json->>'blocks')::int AS blocks,
+E                       (wpg.stats_json->>'turnovers')::int AS turnovers,
+E                       (wpg.stats_json->>'foulsPersonal')::int AS fouls_personal,
+E                       (wpg.stats_json->>'fieldGoalsMade')::int AS fgm,
+E                       (wpg.stats_json->>'fieldGoalsAttempted')::int AS fga,
+E                       (wpg.stats_json->>'threePointersMade')::int AS fg3m,
+E                       (wpg.stats_json->>'threePointersAttempted')::int AS fg3a,
+E                       (wpg.stats_json->>'freeThrowsMade')::int AS ftm,
+E                       (wpg.stats_json->>'freeThrowsAttempted')::int AS fta,
+E                       ROW_NUMBER() OVER (
+E                           PARTITION BY wpg.player_id
+E                           ORDER BY wpg.game_date DESC, wpg.game_id DESC
+E                       ) AS app_rank
+E                   FROM archive_player_games wpg
+E                   LEFT JOIN archive_identities wi
+E                       ON wi.external_id = wpg.player_id AND wi.kind = 'player'
+E                   WHERE wpg.dataset_id = %(dataset_id)s AND wpg.phase = %(phase)s AND wpg.game_date < %(before_date)s AND wpg.season = %(season)s AND LOWER(coalesce(wi.display_name, wpg.player_id)) LIKE %(name_pattern)s
+E               ),
+E               candidate_games AS (
+E                   SELECT * FROM ranked_games WHERE 1=1
+E               ),
+E               aggregated AS (
+E                   SELECT
+E                       player_id,
+E                       max(player_name) AS player_name,
+E                       array_agg(distinct team_id) AS teams,
+E                       count(distinct team_id) AS stints_count,
+E                       count(*) FILTER (WHERE appearance = 'appeared') AS games_played,
+E                       round(coalesce(sum(minutes_seconds), 0)::numeric / 60.0, 1) AS total_minutes,
+E                       round(
+E                           avg(minutes_seconds::numeric / 60.0)
+E                           FILTER (WHERE appearance = 'appeared' AND minutes_seconds IS NOT NULL),
+E                           1
+E                       ) AS min_per_game,
+E                       sum(points) AS pts,
+E                       count(points) AS n_pts,
+E                       round(avg(points) FILTER (WHERE points IS NOT NULL), 1) AS pts_per_game,
+E                       sum(rebounds_total) AS reb,
+E                       count(rebounds_total) AS n_reb,
+E                       round(
+E                           avg(rebounds_total) FILTER (WHERE rebounds_total IS NOT NULL),
+E                           1
+E                       ) AS reb_per_game,
+E                       sum(rebounds_offensive) AS oreb,
+E                       count(rebounds_offensive) AS n_oreb,
+E                       round(
+E                           avg(rebounds_offensive) FILTER (WHERE rebounds_offensive IS NOT NULL),
+E                           1
+E                       ) AS oreb_per_game,
+E                       sum(rebounds_defensive) AS dreb,
+E                       count(rebounds_defensive) AS n_dreb,
+E                       round(
+E                           avg(rebounds_defensive) FILTER (WHERE rebounds_defensive IS NOT NULL),
+E                           1
+E                       ) AS dreb_per_game,
+E                       sum(assists) AS ast,
+E                       count(assists) AS n_ast,
+E                       round(avg(assists) FILTER (WHERE assists IS NOT NULL), 1) AS ast_per_game,
+E                       sum(steals) AS stl,
+E                       count(steals) AS n_stl,
+E                       round(avg(steals) FILTER (WHERE steals IS NOT NULL), 1) AS stl_per_game,
+E                       sum(blocks) AS blk,
+E                       count(blocks) AS n_blk,
+E                       round(avg(blocks) FILTER (WHERE blocks IS NOT NULL), 1) AS blk_per_game,
+E                       sum(turnovers) AS tov,
+E                       count(turnovers) AS n_tov,
+E                       round(avg(turnovers) FILTER (WHERE turnovers IS NOT NULL), 1) AS tov_per_game,
+E                       sum(fouls_personal) AS pf,
+E                       count(fouls_personal) AS n_pf,
+E                       round(
+E                           avg(fouls_personal) FILTER (WHERE fouls_personal IS NOT NULL),
+E                           1
+E                       ) AS pf_per_game,
+E                       sum(fgm) FILTER (WHERE fgm IS NOT NULL AND fga IS NOT NULL) AS fgm,
+E                       sum(fga) FILTER (WHERE fgm IS NOT NULL AND fga IS NOT NULL) AS fga,
+E                       count(*) FILTER (WHERE fgm IS NOT NULL AND fga IS NOT NULL) AS n_fg,
+E                       case when sum(fga) FILTER (WHERE fgm IS NOT NULL AND fga IS NOT NULL) > 0
+E                            then round(sum(fgm)::numeric / sum(fga)::numeric, 4) else null end as fg_pct,
+E                       sum(fg3m) FILTER (WHERE fg3m IS NOT NULL AND fg3a IS NOT NULL) AS fg3m,
+E                       sum(fg3a) FILTER (WHERE fg3m IS NOT NULL AND fg3a IS NOT NULL) AS fg3a,
+E                       count(*) FILTER (WHERE fg3m IS NOT NULL AND fg3a IS NOT NULL) AS n_fg3,
+E                       case when sum(fg3a) FILTER (WHERE fg3m IS NOT NULL AND fg3a IS NOT NULL) > 0
+E                            then round(sum(fg3m)::numeric / sum(fg3a)::numeric, 4) else null end as fg3_pct,
+E                       sum(ftm) FILTER (WHERE ftm IS NOT NULL AND fta IS NOT NULL) AS ftm,
+E                       sum(fta) FILTER (WHERE ftm IS NOT NULL AND fta IS NOT NULL) AS fta,
+E                       count(*) FILTER (WHERE ftm IS NOT NULL AND fta IS NOT NULL) AS n_ft,
+E                       case when sum(fta) FILTER (WHERE ftm IS NOT NULL AND fta IS NOT NULL) > 0
+E                            then round(sum(ftm)::numeric / sum(fta)::numeric, 4) else null end as ft_pct,
+E                       count(*) FILTER (
+E                           WHERE fgm IS NOT NULL AND fg3m IS NOT NULL AND fga IS NOT NULL
+E                       ) AS n_efg,
+E                       case when sum(fga) FILTER (
+E                           WHERE fgm IS NOT NULL AND fg3m IS NOT NULL AND fga IS NOT NULL
+E                       ) > 0
+E                            then round(
+E                                (sum(fgm)::numeric + 0.5 * sum(fg3m)::numeric) / sum(fga)::numeric,
+E                                4
+E                            ) else null end as efg_pct,
+E                       count(*) FILTER (
+E                           WHERE points IS NOT NULL AND fga IS NOT NULL AND fta IS NOT NULL
+E                       ) AS n_ts,
+E                       case when (
+E                           sum(fga) FILTER (WHERE points IS NOT NULL AND fga IS NOT NULL AND fta IS NOT NULL)
+E                           + 0.44 * sum(fta) FILTER (
+E                               WHERE points IS NOT NULL AND fga IS NOT NULL AND fta IS NOT NULL
+E                           )
+E                       ) > 0
+E                            then round(
+E                                sum(points)::numeric / (2.0 * (
+E                                    sum(fga) FILTER (
+E                                        WHERE points IS NOT NULL AND fga IS NOT NULL AND fta IS NOT NULL
+E                                    )::numeric
+E                                    + 0.44 * sum(fta) FILTER (
+E                                        WHERE points IS NOT NULL AND fga IS NOT NULL AND fta IS NOT NULL
+E                                    )::numeric
+E                                )),
+E                                4
+E                            ) else null end as ts_pct,
+E                       count(*) FILTER (WHERE fta IS NOT NULL AND fga IS NOT NULL) AS n_ftr,
+E                       case when sum(fga) FILTER (WHERE fta IS NOT NULL AND fga IS NOT NULL) > 0
+E                            then round(sum(fta)::numeric / sum(fga)::numeric, 4) else null end as ftr,
+E                       case when sum(minutes_seconds) FILTER (
+E                   WHERE minutes_seconds > 0 AND points IS NOT NULL
+E               ) > 0
+E               then round(
+E                   (sum(points)::numeric / (
+E                       sum(minutes_seconds) FILTER (
+E                           WHERE minutes_seconds > 0 AND points IS NOT NULL
+E                       )::numeric / 60.0
+E                   )) * 36.0,
+E                   1
+E               ) else null end as pts_per_36,
+E               count(*) FILTER (WHERE minutes_seconds > 0 AND points IS NOT NULL) AS n_pts_per_36,
+E                       case when sum(minutes_seconds) FILTER (
+E                   WHERE minutes_seconds > 0 AND rebounds_total IS NOT NULL
+E               ) > 0
+E               then round(
+E                   (sum(rebounds_total)::numeric / (
+E                       sum(minutes_seconds) FILTER (
+E                           WHERE minutes_seconds > 0 AND rebounds_total IS NOT NULL
+E                       )::numeric / 60.0
+E                   )) * 36.0,
+E                   1
+E               ) else null end as reb_per_36,
+E               count(*) FILTER (WHERE minutes_seconds > 0 AND rebounds_total IS NOT NULL) AS n_reb_per_36,
+E                       case when sum(minutes_seconds) FILTER (
+E                   WHERE minutes_seconds > 0 AND assists IS NOT NULL
+E               ) > 0
+E               then round(
+E                   (sum(assists)::numeric / (
+E                       sum(minutes_seconds) FILTER (
+E                           WHERE minutes_seconds > 0 AND assists IS NOT NULL
+E                       )::numeric / 60.0
+E                   )) * 36.0,
+E                   1
+E               ) else null end as ast_per_36,
+E               count(*) FILTER (WHERE minutes_seconds > 0 AND assists IS NOT NULL) AS n_ast_per_36,
+E                       case when sum(minutes_seconds) FILTER (
+E                   WHERE minutes_seconds > 0 AND steals IS NOT NULL
+E               ) > 0
+E               then round(
+E                   (sum(steals)::numeric / (
+E                       sum(minutes_seconds) FILTER (
+E                           WHERE minutes_seconds > 0 AND steals IS NOT NULL
+E                       )::numeric / 60.0
+E                   )) * 36.0,
+E                   1
+E               ) else null end as stl_per_36,
+E               count(*) FILTER (WHERE minutes_seconds > 0 AND steals IS NOT NULL) AS n_stl_per_36,
+E                       case when sum(minutes_seconds) FILTER (
+E                   WHERE minutes_seconds > 0 AND blocks IS NOT NULL
+E               ) > 0
+E               then round(
+E                   (sum(blocks)::numeric / (
+E                       sum(minutes_seconds) FILTER (
+E                           WHERE minutes_seconds > 0 AND blocks IS NOT NULL
+E                       )::numeric / 60.0
+E                   )) * 36.0,
+E                   1
+E               ) else null end as blk_per_36,
+E               count(*) FILTER (WHERE minutes_seconds > 0 AND blocks IS NOT NULL) AS n_blk_per_36,
+E                       case when sum(minutes_seconds) FILTER (
+E                   WHERE minutes_seconds > 0 AND turnovers IS NOT NULL
+E               ) > 0
+E               then round(
+E                   (sum(turnovers)::numeric / (
+E                       sum(minutes_seconds) FILTER (
+E                           WHERE minutes_seconds > 0 AND turnovers IS NOT NULL
+E                       )::numeric / 60.0
+E                   )) * 36.0,
+E                   1
+E               ) else null end as tov_per_36,
+E               count(*) FILTER (WHERE minutes_seconds > 0 AND turnovers IS NOT NULL) AS n_tov_per_36,
+E                       case when sum(minutes_seconds) FILTER (
+E                   WHERE minutes_seconds > 0 AND fouls_personal IS NOT NULL
+E               ) > 0
+E               then round(
+E                   (sum(fouls_personal)::numeric / (
+E                       sum(minutes_seconds) FILTER (
+E                           WHERE minutes_seconds > 0 AND fouls_personal IS NOT NULL
+E                       )::numeric / 60.0
+E                   )) * 36.0,
+E                   1
+E               ) else null end as pf_per_36,
+E               count(*) FILTER (WHERE minutes_seconds > 0 AND fouls_personal IS NOT NULL) AS n_pf_per_36,
+E                       case when sum(minutes_seconds) FILTER (
+E                   WHERE minutes_seconds > 0 AND rebounds_offensive IS NOT NULL
+E               ) > 0
+E               then round(
+E                   (sum(rebounds_offensive)::numeric / (
+E                       sum(minutes_seconds) FILTER (
+E                           WHERE minutes_seconds > 0 AND rebounds_offensive IS NOT NULL
+E                       )::numeric / 60.0
+E                   )) * 36.0,
+E                   1
+E               ) else null end as oreb_per_36,
+E               count(*) FILTER (WHERE minutes_seconds > 0 AND rebounds_offensive IS NOT NULL) AS n_oreb_per_36,
+E                       case when sum(minutes_seconds) FILTER (
+E                   WHERE minutes_seconds > 0 AND rebounds_defensive IS NOT NULL
+E               ) > 0
+E               then round(
+E                   (sum(rebounds_defensive)::numeric / (
+E                       sum(minutes_seconds) FILTER (
+E                           WHERE minutes_seconds > 0 AND rebounds_defensive IS NOT NULL
+E                       )::numeric / 60.0
+E                   )) * 36.0,
+E                   1
+E               ) else null end as dreb_per_36,
+E               count(*) FILTER (WHERE minutes_seconds > 0 AND rebounds_defensive IS NOT NULL) AS n_dreb_per_36,
+E                       case when sum(minutes_seconds) FILTER (
+E                   WHERE minutes_seconds > 0 AND fga IS NOT NULL
+E               ) > 0
+E               then round(
+E                   (sum(fga)::numeric / (
+E                       sum(minutes_seconds) FILTER (
+E                           WHERE minutes_seconds > 0 AND fga IS NOT NULL
+E                       )::numeric / 60.0
+E                   )) * 36.0,
+E                   1
+E               ) else null end as fga_per_36,
+E               count(*) FILTER (WHERE minutes_seconds > 0 AND fga IS NOT NULL) AS n_fga_per_36,
+E                       case when sum(minutes_seconds) FILTER (
+E                   WHERE minutes_seconds > 0 AND fg3a IS NOT NULL
+E               ) > 0
+E               then round(
+E                   (sum(fg3a)::numeric / (
+E                       sum(minutes_seconds) FILTER (
+E                           WHERE minutes_seconds > 0 AND fg3a IS NOT NULL
+E                       )::numeric / 60.0
+E                   )) * 36.0,
+E                   1
+E               ) else null end as fg3a_per_36,
+E               count(*) FILTER (WHERE minutes_seconds > 0 AND fg3a IS NOT NULL) AS n_fg3a_per_36,
+E                       case when sum(minutes_seconds) FILTER (
+E                   WHERE minutes_seconds > 0 AND fta IS NOT NULL
+E               ) > 0
+E               then round(
+E                   (sum(fta)::numeric / (
+E                       sum(minutes_seconds) FILTER (
+E                           WHERE minutes_seconds > 0 AND fta IS NOT NULL
+E                       )::numeric / 60.0
+E                   )) * 36.0,
+E                   1
+E               ) else null end as fta_per_36,
+E               count(*) FILTER (WHERE minutes_seconds > 0 AND fta IS NOT NULL) AS n_fta_per_36,
+E                       round(
+E                           avg(
+E                               points + 1.2 * rebounds_total + 1.5 * assists
+E                               + 3.0 * steals + 3.0 * blocks - turnovers
+E                           ) FILTER (
+E                               WHERE points IS NOT NULL
+E                               AND rebounds_total IS NOT NULL
+E                               AND assists IS NOT NULL
+E                               AND steals IS NOT NULL
+E                               AND blocks IS NOT NULL
+E                               AND turnovers IS NOT NULL
+E                           ),
+E                           1
+E                       ) AS legacy_fantasy_score_per_game,
+E                       count(*) FILTER (
+E                           WHERE points IS NOT NULL
+E                           AND rebounds_total IS NOT NULL
+E                           AND assists IS NOT NULL
+E                           AND steals IS NOT NULL
+E                           AND blocks IS NOT NULL
+E                           AND turnovers IS NOT NULL
+E                       ) AS n_legacy_fantasy_score_per_game
+E                   FROM candidate_games
+E                   GROUP BY player_id
+E               )
+E               SELECT count(*) FROM aggregated WHERE ((player_id = %(p_leaf_5)s));]
+E           [parameters: {'dataset_id': '2e99f37c-231a-4748-9f48-5b9ffa99f228', 'phase': 'regular_season', 'before_date': datetime.date(2021, 10, 20), 'season': '2021-22', 'name_pattern': '%khris middleton%', 'p_leaf_5': '203114'}]
+E           (Background on this error at: https://sqlalche.me/e/20/f405)
+
+.venv/lib/python3.14/site-packages/psycopg/cursor.py:117: ProgrammingError
+=========================== short test summary info ============================
+FAILED tests/unit/test_stats_engine.py::test_archive_stats_executes_with_versioned_names
+1 failed in 0.19s

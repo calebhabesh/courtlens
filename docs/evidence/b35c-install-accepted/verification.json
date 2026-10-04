@@ -1,0 +1,145 @@
+{
+  "block": "B35c",
+  "recorded_at": "2026-10-04T16:24:14.467Z",
+  "site": "http://127.0.0.1:3135",
+  "manifest_id": "http://127.0.0.1:3135/",
+  "isolated_desktop": true,
+  "synthetic_events": false,
+  "media_emulation": false,
+  "steps": [
+    {
+      "name": "browser_version",
+      "value": {
+        "protocolVersion": "1.3",
+        "product": "Chrome/153.0.8010.52",
+        "revision": "@78e5e45d4bb41035e17ea4da2cc257f496416ac9",
+        "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.0.0 Safari/537.36",
+        "jsVersion": "15.3.76.13"
+      }
+    },
+    {
+      "name": "before_install",
+      "value": {
+        "secure_origin": true,
+        "standalone": false,
+        "browser": true,
+        "workers": 0,
+        "caches": [],
+        "url": "http://127.0.0.1:3135/stats"
+      }
+    },
+    {
+      "name": "manifest",
+      "value": {
+        "url": "http://127.0.0.1:3135/manifest.webmanifest",
+        "errors": [],
+        "data": "{\"id\":\"/\",\"name\":\"CourtLoad NBA Research\",\"short_name\":\"CourtLoad\",\"lang\":\"en\",\"description\":\"Local NBA research and retained analytical evidence. Requires the local API for data views.\",\"start_url\":\"/stats\",\"scope\":\"/\",\"display\":\"standalone\",\"background_color\":\"#0b0d10\",\"theme_color\":\"#0b0d10\",\"icons\":[{\"src\":\"/icons/courtload-192.png\",\"sizes\":\"192x192\",\"type\":\"image/png\",\"purpose\":\"any\"},{\"src\":\"/icons/courtload-512.png\",\"sizes\":\"512x512\",\"type\":\"image/png\",\"purpose\":\"any\"},{\"src\":\"/icons/courtload-maskable-512.png\",\"sizes\":\"512x512\",\"type\":\"image/png\",\"purpose\":\"maskable\"}],\"shortcuts\":[{\"name\":\"Saved investigations\",\"url\":\"/investigations\"},{\"name\":\"Manual research\",\"url\":\"/research/ask\"}]}",
+        "parsed": {
+          "scope": "http://127.0.0.1:3135/"
+        },
+        "manifest": {
+          "backgroundColor": "rgba(11,13,16,1)",
+          "description": "Local NBA research and retained analytical evidence. Requires the local API for data views.",
+          "display": "kStandalone",
+          "icons": [
+            {
+              "url": "http://127.0.0.1:3135/icons/courtload-192.png",
+              "sizes": "192x192",
+              "type": "image/png"
+            },
+            {
+              "url": "http://127.0.0.1:3135/icons/courtload-512.png",
+              "sizes": "512x512",
+              "type": "image/png"
+            },
+            {
+              "url": "http://127.0.0.1:3135/icons/courtload-maskable-512.png",
+              "sizes": "512x512",
+              "type": "image/png"
+            }
+          ],
+          "id": "http://127.0.0.1:3135/",
+          "name": "CourtLoad NBA Research",
+          "orientation": "DEFAULT",
+          "preferRelatedApplications": false,
+          "scope": "http://127.0.0.1:3135/",
+          "shortcuts": [
+            {
+              "name": "Saved investigations",
+              "url": "http://127.0.0.1:3135/investigations"
+            },
+            {
+              "name": "Manual research",
+              "url": "http://127.0.0.1:3135/research/ask"
+            }
+          ],
+          "startUrl": "http://127.0.0.1:3135/stats",
+          "themeColor": "rgba(11,13,16,1)"
+        }
+      }
+    },
+    {
+      "name": "installability",
+      "value": {
+        "installabilityErrors": []
+      }
+    },
+    {
+      "name": "installed_os_state",
+      "value": {
+        "badgeCount": 0,
+        "fileHandlers": []
+      }
+    },
+    {
+      "name": "launch",
+      "value": {
+        "targetId": "27CC4C029136278D9F4FE1475153FCFB"
+      }
+    },
+    {
+      "name": "installed_launch",
+      "value": {
+        "secure_origin": true,
+        "standalone": true,
+        "browser": false,
+        "workers": 0,
+        "caches": [],
+        "url": "http://127.0.0.1:3135/stats"
+      }
+    },
+    {
+      "name": "desktop_launchers",
+      "value": [
+        {
+          "filename": "chrome-fnioibolflapnfhleneemdendooadfde-Default.desktop",
+          "content": "[Desktop Entry]\nVersion=1.0\nTerminal=false\nType=Application\nName=CourtLoad NBA Research\nExec=/usr/bin/chromium --user-data-dir=/tmp/courtload-b35-install-tOMoRh/profile --profile-directory=Default --app-id=fnioibolflapnfhleneemdendooadfde\nIcon=/tmp/courtload-b35-install-tOMoRh/data/icons/hicolor/512x512/apps/chrome-fnioibolflapnfhleneemdendooadfde-Default.png\nStartupWMClass=crx_fnioibolflapnfhleneemdendooadfde\nActions=Manual-research;Saved-investigations\n\n[Desktop Action Manual-research]\nName=Manual research\nExec=/usr/bin/chromium --user-data-dir=/tmp/courtload-b35-install-tOMoRh/profile --profile-directory=Default --app-id=fnioibolflapnfhleneemdendooadfde --app-launch-url-for-shortcuts-menu-item=http://127.0.0.1:3135/research/ask\n\n[Desktop Action Saved-investigations]\nName=Saved investigations\nExec=/usr/bin/chromium --user-data-dir=/tmp/courtload-b35-install-tOMoRh/profile --profile-directory=Default --app-id=fnioibolflapnfhleneemdendooadfde --app-launch-url-for-shortcuts-menu-item=http://127.0.0.1:3135/investigations\n"
+        }
+      ]
+    },
+    {
+      "name": "restart_app_id_launch",
+      "value": {
+        "app_id": "fnioibolflapnfhleneemdendooadfde",
+        "secure_origin": true,
+        "standalone": true,
+        "browser": false,
+        "workers": 0,
+        "caches": [],
+        "url": "http://127.0.0.1:3135/stats"
+      }
+    },
+    {
+      "name": "uninstalled",
+      "value": {
+        "remaining_desktop_launchers": 0
+      }
+    }
+  ],
+  "limits": [
+    "Linux Chromium only; CDP installs without exercising a human install dialog",
+    "No offline database operation promised",
+    "B32 live observations and B36 typography remain independent"
+  ],
+  "status": "passed"
+}

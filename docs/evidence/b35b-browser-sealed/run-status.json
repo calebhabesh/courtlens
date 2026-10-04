@@ -1,0 +1,1 @@
+{"status":"verification harness rejected a permitted read-only request","reason":"Canonical finance reopening executes the existing read-only POST /api/workbench/operations/finance; the harness incorrectly classified every non-assistant POST as a mutation","superseded_by":"../b35b-browser-accepted/verification.json"}
