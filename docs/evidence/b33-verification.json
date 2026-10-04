@@ -1,0 +1,160 @@
+{
+  "block": "B33",
+  "recorded_at": "2026-10-03T20:05:29.833809+00:00",
+  "status": "bounded backend verified; real-provider language and B34 interface acceptance remain open",
+  "checks": {
+    "backend": {
+      "command": ".venv/bin/pytest -q",
+      "passed": 595,
+      "skipped": 104,
+      "seconds": 25.52,
+      "warnings": 1
+    },
+    "focused_postgres": {
+      "command": "pytest B33 + retained Finance/Live files with COURTLOAD_TEST_POSTGRES_URL configured",
+      "passed": 177,
+      "skipped": 0,
+      "seconds": 13.21,
+      "postgres_checks": 30,
+      "warnings": 1
+    },
+    "b33_unit": {
+      "passed": 86
+    },
+    "b33_postgres": {
+      "passed": 6
+    },
+    "dashboard": {
+      "command": "npm --prefix dashboard test",
+      "passed": 145,
+      "files": 23
+    },
+    "browser": {
+      "command": "PLAYWRIGHT_EXTERNAL_SERVER=true npm --prefix dashboard run test:browser -- live.spec.ts --workers=2",
+      "passed": 7,
+      "seconds": 3.1,
+      "scope": "mocked retained Live regression"
+    },
+    "dashboard_types": "passed",
+    "dashboard_zero_warning_lint": "passed",
+    "dashboard_build": "passed",
+    "mypy": {
+      "command": ".venv/bin/mypy src/courtload",
+      "status": "passed",
+      "source_files": 141
+    },
+    "ruff": {
+      "command": ".venv/bin/ruff check . && .venv/bin/ruff format --check .",
+      "status": "passed",
+      "python_files": 318
+    },
+    "git_diff_check": "passed",
+    "retained_checksums": {
+      "status": "passed",
+      "count": 26
+    },
+    "corpus_checksum": "passed"
+  },
+  "real_http": {
+    "path": "docs/evidence/b33-real-conversation-final.json",
+    "answered_workflows": 6,
+    "provider_calls": 0,
+    "manual_equivalence": [
+      "similarity",
+      "distribution:pts",
+      "distribution:min_per_game",
+      "finance"
+    ],
+    "cache_hits": 1,
+    "repeat_tool_calls": 0,
+    "repeat_manifest_unchanged": true,
+    "publication_and_finance_integrity_unchanged": true,
+    "active_conversations_cleared": true
+  },
+  "retained_integrity_after": {
+    "public_snapshot": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+    "pointer_count": 148,
+    "pointers_sha256": "7abeb7c6c1ece9a5492c7b32f7ef16c5bd7190c698b8947d28a9f312ac495650",
+    "books": [
+      [
+        "256f66b1-129d-4904-be30-7b946f6e92fc",
+        "a5052df00f96420d722bcfcf5fa91df0c90394e570ceb5bf85de2f61f2b9ebc2"
+      ],
+      [
+        "96b89635-82b4-47c7-b4f6-52ab85c0f0bc",
+        "b425f46cfa002bf79c79a63b5b6e05fc3db478f441f87a48dd233437e00816e4"
+      ]
+    ]
+  },
+  "corpus": {
+    "cases": 45,
+    "supported": 25,
+    "clarification_or_data_limited": 10,
+    "unsupported": 10,
+    "held_out": 12,
+    "language_accuracy_claim": false
+  },
+  "warnings": [
+    "Existing Starlette/httpx TestClient deprecation warning",
+    "Playwright NO_COLOR/FORCE_COLOR environment warnings"
+  ],
+  "limits": [
+    "Real Gemini evaluation not run; no project/tier eligibility claim",
+    "Research operation links are exact manual API links; B34 UI serializer required",
+    "Existing analytical service aggregate rounding preserved; full raw precision not recovered",
+    "State/concurrency are API-process-local; current one-worker deployment only",
+    "Full PostgreSQL/broad browser/fresh restore not asserted",
+    "B32 real in-game/final reconciliation remains open"
+  ],
+  "capture_status": {
+    "docs/evidence/b33-real-conversation.json": "superseded: before minutes-distribution correction",
+    "docs/evidence/b33-real-conversation-verified.json": "retained intermediate: original four workflows verified",
+    "docs/evidence/b33-real-conversation-final.json": "final: six workflows, including finance and comparison"
+  },
+  "probe_setup_attempts": [
+    "Two unretained pre-execution attempts assumed a financial-season discovery value in a book with undated terms; final uses explicit retained book and financial year. No acceptance artifact was overwritten."
+  ],
+  "file_sha256": {
+    "docs/design/conversational-analytics-v1.md": "d96e46c88287d6d3d5537fec1e954a41034468a97fd9cb456c036ea5fd68dba5",
+    "docs/design/conversational-analytics-v1.schema.json": "a5f91c3902e1777d89bc1729ce95fbf346782b72c5705be896328341e89ad972",
+    "docs/evidence/b33-real-conversation-final.json": "dcc3064527f8816a424443f11c816ecd6ea94c19afecd5e99ceab6969bdb996d",
+    "docs/evidence/b33-real-conversation-verified.json": "ce5a477b69db785a6867cf4c5e6c1e802345ddea847cd8c648b650bcb3c817c8",
+    "docs/evidence/b33-real-conversation.json": "8c515f3cb2bddb37553ab009d178335f27b721fd794542a3238d2f865714f57b",
+    "scripts/verify_b33_conversation.py": "614017dc76ba6d00930513ffb26c8fea64b01ae1bf4867e1e08e98a28264b757",
+    "src/courtload/api/app.py": "c631e47b7cfd26a6c023f1fdb365748190ef3198d3b1b2a8d73107e3c5c6e0f7",
+    "src/courtload/api/assistant_limits.py": "f511c23ad0ccaa687b79ff28b9590999e9d81c4461a687a305210e551e4473b0",
+    "src/courtload/api/routers/conversation.py": "8b6637fddfc31f7fe123c7fbb8aad6728b225b6c1ac55627c5aa76ba3c72272f",
+    "src/courtload/api/routers/workbench.py": "72e8be31c199485994c0421b4b2bc823d4e2ab8c335c4c4c8082c2de263be980",
+    "src/courtload/api/workbench_schemas.py": "f5f8dd42ab9ffdf7daecf7b396814c183f5c935434e0090f0e6d58f92384a2ba",
+    "src/courtload/domain/conversation.py": "26bcca1c698eeef618759afa6bd9a51166192d6a0eef987fbfe215a9e9df3084",
+    "src/courtload/domain/query_url.py": "d7f4df646fc3323a9571e50b179a5a44437e3a206867515e52ca9ee1dcf4f102",
+    "src/courtload/services/analytical_ops.py": "61fdbc3ea3966e474fc6eeb1a17ce2c64f6fdb8acf145f4013544ab9685969e3",
+    "src/courtload/services/assistant/__init__.py": "ace6b8e7a1876cd9a12cfe824bffadde2e3d061bcd40e777502fd9dd412efffd",
+    "src/courtload/services/assistant/conversations.py": "43e28eee045381503e5fc7c3a7c94bbc6a89c19035978955024138a2b7a22b01",
+    "src/courtload/services/assistant/curated_questions.py": "c6eacb43fd7705b97312ea69c241f19dda66fef609b91be622160f50c569712e",
+    "src/courtload/services/assistant/execution.py": "24e94b45346d31456cd7ea52c3c1ec0d53826a906b0326e142984d7da19c7b85",
+    "src/courtload/services/assistant/operations.py": "3ddbbcc131641cfa1ac49df9d9e94a25c3fc9978dc9307d9c47638a18312c874",
+    "src/courtload/services/assistant/planner.py": "6b8bfb1437c078bc03b107ac156cabb8e9044853c8898e65a23382b6f0ecba07",
+    "src/courtload/services/assistant/provider.py": "b5c470e2ea38d81605ef9026f940aa6a35d20efc37ca6e98e34a06c03c6de362",
+    "src/courtload/services/assistant/rendering.py": "91701d2613459c2b2ade2d806c93a0943e3e8fa53d9216db8b01ce1dcd911933",
+    "src/courtload/services/assistant/service.py": "316af54ef0fd13507a901ff6226df3973a79ca6aaeb88e667ac752fbe5289a7e",
+    "src/courtload/services/assistant/smoke.py": "7d5461a81f447d66438f252a44582b6aeaa48aa9526b85e193879074f0afb22f",
+    "src/courtload/services/assistant/tools.py": "3bef0c4167ed5e4b6a80f00c9d65299b7e1ff380c5e5ab8094acd51694bebd94",
+    "src/courtload/services/workbench_analytics.py": "e6603fc96253c0cded013124d2be88b6377c5592523f1c16f0bf9a499609f2b4",
+    "tests/fixtures/assistant/b33-corpus-v1.json": "17178b8b6bd579f0ff4e6ca1b1addd37bd2ee043c63fb95bae8fba11ca37838f",
+    "tests/fixtures/assistant/b33-corpus-v1.sha256": "c65c833b0d8cb2471303e5a39eeb4b912c6ee63bde049a2a700d8ea25d284ec8",
+    "tests/integration/test_conversation_postgres.py": "cd7fe866b3d856a138eddd06f82cdc2ba0415a7e02d6c94d240aa86ff54d7125",
+    "tests/integration/test_workbench_api.py": "deabbcc8d4fe1eeb6f89ea0187676dd19b204e1fb5919e93d0ea04cec3b00b3e",
+    "tests/unit/test_assistant.py": "1b4f6824104cb9becd10c7a11700c3b98ace4931e34719718f453b4d146cc1a6",
+    "tests/unit/test_conversations.py": "085af5dee56e4fc63a1380a5a76342bcb53f8c1d9e129e05cdf4e6454795d14f"
+  },
+  "verification_log_sha256": {
+    "/tmp/b33-pytest-final2.log": "a90e9a1836c2e73badf0f012c04628c0202a8770325405c5381a66c52fc19314",
+    "/tmp/b33-focused-postgres-final.log": "f2f560087f7ecb2ccde24bdd17335c27d7f37b68d8331a1e76e0257b299ba037",
+    "/tmp/b33-dashboard-tests.log": "80ecc5c58a47f45fcbbfd6423c559dfa6193b1364c50191c1576659370519c32",
+    "/tmp/b33-dashboard-types.log": "0e50cbc8030fefe57a0dffa062a6133b1a4ab7005fd7bd8f32ac140d315d9281",
+    "/tmp/b33-dashboard-lint.log": "53857398bee2b94424eefbadefdad59b64e0bd9c315884f4680289eea5d3f42c",
+    "/tmp/b33-dashboard-build.log": "6698ce5b3baad2c0abc13207f117071ba0d2b7a0a533236a4576045a71bf515e",
+    "/tmp/b33-live-browser.log": "dc0f27427dff19637bc547a6ff96fe14154851a5cb6f933bc0d2c0b9535b2d39"
+  }
+}

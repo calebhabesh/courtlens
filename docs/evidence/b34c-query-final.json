@@ -1,0 +1,721 @@
+{
+  "started_at": "2026-10-04T18:54:37.614007+00:00",
+  "mode": "real_provider",
+  "model": "gemini-3.5-flash-lite",
+  "sdk_version": "2.26.0",
+  "project_tier": "owner_declared_free_not_independently_verified",
+  "corpus_sha256": "17178b8b6bd579f0ff4e6ca1b1addd37bd2ee043c63fb95bae8fba11ca37838f",
+  "corpus_path": "tests/fixtures/assistant/b33-corpus-v1.json",
+  "corrections": [
+    {
+      "case": "b33-23",
+      "field": "player_b",
+      "original": "1628369",
+      "corrected": "1629628",
+      "reason": "Question names RJ Barrett; original fixture uses Jayson Tatum ID."
+    }
+  ],
+  "limits": {
+    "cases": 45,
+    "calls_per_case": 1,
+    "provider_seconds": 20,
+    "turn_seconds": 45,
+    "stop_on_quota_or_provider_failure": true,
+    "pause_seconds": 4.5
+  },
+  "cases": [
+    {
+      "id": "b33-11",
+      "split": "held_out",
+      "category": "supported",
+      "status": "answered",
+      "passed": true,
+      "observed_model_version": "gemini-3.5-flash-lite",
+      "elapsed_ms": 1843.816,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 10,
+        "cache_hits": 1,
+        "elapsed_ms": 1842.804,
+        "provider_usage": {
+          "prompt_token_count": 8247,
+          "candidates_token_count": 198,
+          "total_token_count": 8445
+        },
+        "usage_basis": "provider metadata"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "execute",
+        "clarification": null,
+        "context_changes": null,
+        "steps": [
+          {
+            "step_id": "step_1",
+            "operation": "query",
+            "arguments": {
+              "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+              "season": "2024-25",
+              "phase": "regular_season",
+              "before_date": "2025-06-23",
+              "name": null,
+              "entity_kind": "player",
+              "window": {
+                "kind": "season",
+                "n": null,
+                "from_date": null,
+                "to_date": null
+              },
+              "season_scope": {
+                "seasons": [],
+                "aggregate_multi_season": false
+              },
+              "team_scope": {
+                "team_id": null,
+                "participation_only": true,
+                "current_roster_only": false
+              },
+              "metric_selectors": [
+                {
+                  "key": "pts_per_game",
+                  "version": null,
+                  "normalization": "raw",
+                  "denominator_type": null
+                }
+              ],
+              "predicates": null,
+              "sample_filters": {
+                "min_games": null,
+                "min_minutes": null,
+                "min_avg_minutes": null,
+                "min_possessions": null,
+                "min_attempts": null
+              },
+              "sort": [
+                {
+                  "field": "pts_per_game",
+                  "direction": "desc",
+                  "nulls_last": true
+                }
+              ],
+              "view_state": null,
+              "page": {
+                "limit": 10,
+                "cursor": null
+              }
+            },
+            "depends_on": []
+          }
+        ],
+        "output_kind": "table"
+      },
+      "result_hashes": [
+        "05b494827da882ed59fbefdbfadf1528d56c0bde40956c9b8c8d23066c3700eb"
+      ],
+      "manual_result_hashes": [
+        "05b494827da882ed59fbefdbfadf1528d56c0bde40956c9b8c8d23066c3700eb"
+      ]
+    },
+    {
+      "id": "b33-12",
+      "split": "development",
+      "category": "supported",
+      "status": "answered",
+      "passed": true,
+      "observed_model_version": "gemini-3.5-flash-lite",
+      "elapsed_ms": 1670.78,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 10,
+        "cache_hits": 1,
+        "elapsed_ms": 1669.612,
+        "provider_usage": {
+          "prompt_token_count": 8247,
+          "candidates_token_count": 199,
+          "total_token_count": 8446
+        },
+        "usage_basis": "provider metadata"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "execute",
+        "clarification": null,
+        "context_changes": null,
+        "steps": [
+          {
+            "step_id": "rank_rebounds",
+            "operation": "query",
+            "arguments": {
+              "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+              "season": "2024-25",
+              "phase": "regular_season",
+              "before_date": "2025-06-23",
+              "name": null,
+              "entity_kind": "player",
+              "window": {
+                "kind": "season",
+                "n": null,
+                "from_date": null,
+                "to_date": null
+              },
+              "season_scope": {
+                "seasons": [],
+                "aggregate_multi_season": false
+              },
+              "team_scope": {
+                "team_id": null,
+                "participation_only": true,
+                "current_roster_only": false
+              },
+              "metric_selectors": [
+                {
+                  "key": "reb_per_game",
+                  "version": null,
+                  "normalization": "raw",
+                  "denominator_type": null
+                }
+              ],
+              "predicates": null,
+              "sample_filters": {
+                "min_games": null,
+                "min_minutes": null,
+                "min_avg_minutes": null,
+                "min_possessions": null,
+                "min_attempts": null
+              },
+              "sort": [
+                {
+                  "field": "reb_per_game",
+                  "direction": "desc",
+                  "nulls_last": true
+                }
+              ],
+              "view_state": null,
+              "page": {
+                "limit": 10,
+                "cursor": null
+              }
+            },
+            "depends_on": []
+          }
+        ],
+        "output_kind": "table"
+      },
+      "result_hashes": [
+        "6c62d115777ed05cbdcfa95ff1f247444acc04514b891b89f1d7545198cedad3"
+      ],
+      "manual_result_hashes": [
+        "6c62d115777ed05cbdcfa95ff1f247444acc04514b891b89f1d7545198cedad3"
+      ]
+    },
+    {
+      "id": "b33-13",
+      "split": "development",
+      "category": "supported",
+      "status": "answered",
+      "passed": true,
+      "observed_model_version": "gemini-3.5-flash-lite",
+      "elapsed_ms": 1220.867,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 10,
+        "cache_hits": 1,
+        "elapsed_ms": 1219.772,
+        "provider_usage": {
+          "prompt_token_count": 8247,
+          "candidates_token_count": 198,
+          "total_token_count": 8445
+        },
+        "usage_basis": "provider metadata"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "execute",
+        "clarification": null,
+        "context_changes": null,
+        "steps": [
+          {
+            "step_id": "step_1",
+            "operation": "query",
+            "arguments": {
+              "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+              "season": "2024-25",
+              "phase": "regular_season",
+              "before_date": "2025-06-23",
+              "name": null,
+              "entity_kind": "player",
+              "window": {
+                "kind": "season",
+                "n": null,
+                "from_date": null,
+                "to_date": null
+              },
+              "season_scope": {
+                "seasons": [],
+                "aggregate_multi_season": false
+              },
+              "team_scope": {
+                "team_id": null,
+                "participation_only": true,
+                "current_roster_only": false
+              },
+              "metric_selectors": [
+                {
+                  "key": "ast_per_game",
+                  "version": null,
+                  "normalization": "raw",
+                  "denominator_type": null
+                }
+              ],
+              "predicates": null,
+              "sample_filters": {
+                "min_games": null,
+                "min_minutes": null,
+                "min_avg_minutes": null,
+                "min_possessions": null,
+                "min_attempts": null
+              },
+              "sort": [
+                {
+                  "field": "ast_per_game",
+                  "direction": "desc",
+                  "nulls_last": true
+                }
+              ],
+              "view_state": null,
+              "page": {
+                "limit": 10,
+                "cursor": null
+              }
+            },
+            "depends_on": []
+          }
+        ],
+        "output_kind": "table"
+      },
+      "result_hashes": [
+        "444322800c65675c976161adc99250b7d2de52103daf443529612be3802c172e"
+      ],
+      "manual_result_hashes": [
+        "444322800c65675c976161adc99250b7d2de52103daf443529612be3802c172e"
+      ]
+    },
+    {
+      "id": "b33-14",
+      "split": "held_out",
+      "category": "supported",
+      "status": "answered",
+      "passed": true,
+      "observed_model_version": "gemini-3.5-flash-lite",
+      "elapsed_ms": 1695.033,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 10,
+        "cache_hits": 1,
+        "elapsed_ms": 1694.014,
+        "provider_usage": {
+          "prompt_token_count": 8248,
+          "candidates_token_count": 232,
+          "total_token_count": 8480
+        },
+        "usage_basis": "provider metadata"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "execute",
+        "clarification": null,
+        "context_changes": null,
+        "steps": [
+          {
+            "step_id": "step_1",
+            "operation": "query",
+            "arguments": {
+              "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+              "season": "2024-25",
+              "phase": "regular_season",
+              "before_date": "2025-06-23",
+              "name": null,
+              "entity_kind": "player",
+              "window": {
+                "kind": "season",
+                "n": null,
+                "from_date": null,
+                "to_date": null
+              },
+              "season_scope": {
+                "seasons": [],
+                "aggregate_multi_season": false
+              },
+              "team_scope": {
+                "team_id": null,
+                "participation_only": true,
+                "current_roster_only": false
+              },
+              "metric_selectors": [
+                {
+                  "key": "stl_per_game",
+                  "version": null,
+                  "normalization": "raw",
+                  "denominator_type": null
+                }
+              ],
+              "predicates": null,
+              "sample_filters": {
+                "min_games": null,
+                "min_minutes": null,
+                "min_avg_minutes": null,
+                "min_possessions": null,
+                "min_attempts": null
+              },
+              "sort": [
+                {
+                  "field": "stl_per_game",
+                  "direction": "desc",
+                  "nulls_last": true
+                }
+              ],
+              "view_state": null,
+              "page": {
+                "limit": 10,
+                "cursor": null
+              }
+            },
+            "depends_on": []
+          }
+        ],
+        "output_kind": "table"
+      },
+      "result_hashes": [
+        "fae381130ab610989cee885722ac6ad1710c842497c2e749fa2bed6819f31886"
+      ],
+      "manual_result_hashes": [
+        "fae381130ab610989cee885722ac6ad1710c842497c2e749fa2bed6819f31886"
+      ]
+    },
+    {
+      "id": "b33-15",
+      "split": "development",
+      "category": "supported",
+      "status": "answered",
+      "passed": true,
+      "observed_model_version": "gemini-3.5-flash-lite",
+      "elapsed_ms": 1395.733,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 10,
+        "cache_hits": 1,
+        "elapsed_ms": 1394.66,
+        "provider_usage": {
+          "prompt_token_count": 8248,
+          "candidates_token_count": 198,
+          "total_token_count": 8446
+        },
+        "usage_basis": "provider metadata"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "execute",
+        "clarification": null,
+        "context_changes": null,
+        "steps": [
+          {
+            "step_id": "rank_blocks",
+            "operation": "query",
+            "arguments": {
+              "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+              "season": "2024-25",
+              "phase": "regular_season",
+              "before_date": "2025-06-23",
+              "name": null,
+              "entity_kind": "player",
+              "window": {
+                "kind": "season",
+                "n": null,
+                "from_date": null,
+                "to_date": null
+              },
+              "season_scope": {
+                "seasons": [],
+                "aggregate_multi_season": false
+              },
+              "team_scope": {
+                "team_id": null,
+                "participation_only": true,
+                "current_roster_only": false
+              },
+              "metric_selectors": [
+                {
+                  "key": "blk_per_game",
+                  "version": null,
+                  "normalization": "raw",
+                  "denominator_type": null
+                }
+              ],
+              "predicates": null,
+              "sample_filters": {
+                "min_games": null,
+                "min_minutes": null,
+                "min_avg_minutes": null,
+                "min_possessions": null,
+                "min_attempts": null
+              },
+              "sort": [
+                {
+                  "field": "blk_per_game",
+                  "direction": "desc",
+                  "nulls_last": true
+                }
+              ],
+              "view_state": null,
+              "page": {
+                "limit": 10,
+                "cursor": null
+              }
+            },
+            "depends_on": []
+          }
+        ],
+        "output_kind": "table"
+      },
+      "result_hashes": [
+        "c9123e24068f7485ed51905f342342e25aedb2abee77af09ea75d44f8dc2f6ec"
+      ],
+      "manual_result_hashes": [
+        "c9123e24068f7485ed51905f342342e25aedb2abee77af09ea75d44f8dc2f6ec"
+      ]
+    },
+    {
+      "id": "b33-16",
+      "split": "development",
+      "category": "supported",
+      "status": "answered",
+      "passed": true,
+      "observed_model_version": "gemini-3.5-flash-lite",
+      "elapsed_ms": 929.546,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 10,
+        "cache_hits": 1,
+        "elapsed_ms": 927.612,
+        "provider_usage": {
+          "prompt_token_count": 8249,
+          "candidates_token_count": 155,
+          "total_token_count": 8404
+        },
+        "usage_basis": "provider metadata"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "execute",
+        "clarification": null,
+        "context_changes": null,
+        "steps": [
+          {
+            "step_id": "step_1",
+            "operation": "query",
+            "arguments": {
+              "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+              "season": "2024-25",
+              "phase": "regular_season",
+              "before_date": "2025-06-23",
+              "name": null,
+              "entity_kind": "player",
+              "window": {
+                "kind": "season",
+                "n": null,
+                "from_date": null,
+                "to_date": null
+              },
+              "season_scope": {
+                "seasons": [],
+                "aggregate_multi_season": false
+              },
+              "team_scope": {
+                "team_id": null,
+                "participation_only": true,
+                "current_roster_only": false
+              },
+              "metric_selectors": [
+                {
+                  "key": "pts_per_game",
+                  "version": null,
+                  "normalization": "raw",
+                  "denominator_type": null
+                },
+                {
+                  "key": "min_per_game",
+                  "version": null,
+                  "normalization": "raw",
+                  "denominator_type": null
+                }
+              ],
+              "predicates": null,
+              "sample_filters": {
+                "min_games": null,
+                "min_minutes": 300.0,
+                "min_avg_minutes": null,
+                "min_possessions": null,
+                "min_attempts": null
+              },
+              "sort": [
+                {
+                  "field": "pts",
+                  "direction": "desc",
+                  "nulls_last": true
+                }
+              ],
+              "view_state": null,
+              "page": {
+                "limit": 10,
+                "cursor": null
+              }
+            },
+            "depends_on": []
+          }
+        ],
+        "output_kind": "table"
+      },
+      "result_hashes": [
+        "0847ed320d0f8c806815094920c1d7110239376988d559dcabeb1b802c66b2c4"
+      ],
+      "manual_result_hashes": [
+        "0847ed320d0f8c806815094920c1d7110239376988d559dcabeb1b802c66b2c4"
+      ]
+    },
+    {
+      "id": "b33-17",
+      "split": "held_out",
+      "category": "supported",
+      "status": "answered",
+      "passed": true,
+      "observed_model_version": "gemini-3.5-flash-lite",
+      "elapsed_ms": 1601.306,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 10,
+        "cache_hits": 1,
+        "elapsed_ms": 1599.877,
+        "provider_usage": {
+          "prompt_token_count": 8242,
+          "candidates_token_count": 168,
+          "total_token_count": 8410
+        },
+        "usage_basis": "provider metadata"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "execute",
+        "clarification": null,
+        "context_changes": null,
+        "steps": [
+          {
+            "step_id": "toronto_participants",
+            "operation": "query",
+            "arguments": {
+              "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+              "season": "2024-25",
+              "phase": "regular_season",
+              "before_date": "2025-06-23",
+              "name": null,
+              "entity_kind": "player",
+              "window": {
+                "kind": "season",
+                "n": null,
+                "from_date": null,
+                "to_date": null
+              },
+              "season_scope": {
+                "seasons": [],
+                "aggregate_multi_season": false
+              },
+              "team_scope": {
+                "team_id": "1610612761",
+                "participation_only": true,
+                "current_roster_only": false
+              },
+              "metric_selectors": [
+                {
+                  "key": "pts_per_game",
+                  "version": null,
+                  "normalization": "raw",
+                  "denominator_type": null
+                },
+                {
+                  "key": "min_per_game",
+                  "version": null,
+                  "normalization": "raw",
+                  "denominator_type": null
+                }
+              ],
+              "predicates": null,
+              "sample_filters": {
+                "min_games": null,
+                "min_minutes": null,
+                "min_avg_minutes": null,
+                "min_possessions": null,
+                "min_attempts": null
+              },
+              "sort": [
+                {
+                  "field": "pts",
+                  "direction": "desc",
+                  "nulls_last": true
+                }
+              ],
+              "view_state": null,
+              "page": {
+                "limit": 10,
+                "cursor": null
+              }
+            },
+            "depends_on": []
+          }
+        ],
+        "output_kind": "table"
+      },
+      "result_hashes": [
+        "5028be231e6025224bc05bb1f0f2d7843b56d105455ec629f40baae9455f2c54"
+      ],
+      "manual_result_hashes": [
+        "5028be231e6025224bc05bb1f0f2d7843b56d105455ec629f40baae9455f2c54"
+      ]
+    }
+  ],
+  "context": {
+    "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+    "snapshot_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+    "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+    "dataset_type": "workbench",
+    "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666",
+    "mode": "workbench_recent",
+    "source": "sportsdataverse",
+    "season": "2024-25",
+    "phase": "regular_season",
+    "before_date": "2025-06-23",
+    "cutoff_utc": "2025-06-23T04:00:00+00:00",
+    "window": "season",
+    "coverage_start": "2023-10-24",
+    "coverage_end": "2026-06-13",
+    "metric_version": "v2",
+    "published_at": "2026-10-01T17:47:29.173164+00:00"
+  },
+  "counts": {
+    "supported:pass": 7
+  },
+  "provider_calls": 7,
+  "real_provider_calls": 7,
+  "supported_accuracy": 1.0,
+  "language_gate": "unmet",
+  "limitations": [
+    "Original 45-case language corpus has no finance or current empty-season cases; supplemental evaluation is required before full chatbot acceptance.",
+    "Fixture planner invocations are simulated; remote inference calls are counted separately.",
+    "Observed provider model version is reported only when returned by the SDK; unavailable metadata is null."
+  ]
+}

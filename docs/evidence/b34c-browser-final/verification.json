@@ -1,0 +1,211 @@
+{
+  "workflows": [
+    {
+      "question": "Whose minutes increased recently without scoring increasing?",
+      "status": "answered",
+      "plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "execute",
+        "clarification": null,
+        "context_changes": null,
+        "steps": [
+          {
+            "step_id": "shifts_step",
+            "operation": "workload_shifts",
+            "arguments": {
+              "period_n": 10,
+              "min_minutes": 0,
+              "limit": 20
+            },
+            "depends_on": []
+          }
+        ],
+        "output_kind": "table"
+      },
+      "context": {
+        "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+        "snapshot_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+        "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+        "dataset_type": "workbench",
+        "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666",
+        "mode": "workbench_recent",
+        "source": "sportsdataverse",
+        "season": "2024-25",
+        "phase": "regular_season",
+        "before_date": "2025-06-23",
+        "cutoff_utc": "2025-06-23T04:00:00+00:00",
+        "window": "season",
+        "coverage_start": "2023-10-24",
+        "coverage_end": "2026-06-13",
+        "metric_version": "v2",
+        "published_at": null
+      },
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 20,
+        "cache_hits": 1,
+        "elapsed_ms": 1243.443,
+        "provider_usage": {
+          "prompt_token_count": 8248,
+          "candidates_token_count": 94,
+          "total_token_count": 8342
+        },
+        "usage_basis": "provider metadata"
+      },
+      "result_hashes": [
+        "329b93f0bc94347b2e85d92facc07fdfdb07605fb31b5740a809cbfa33debe4a"
+      ],
+      "manual_match": true
+    },
+    {
+      "question": "Which players have produced similarly to Scottie Barnes over their last ten appearances?",
+      "status": "answered",
+      "plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "execute",
+        "clarification": null,
+        "context_changes": null,
+        "steps": [
+          {
+            "step_id": "sim_step",
+            "operation": "similarity",
+            "arguments": {
+              "target_player_id": "1630567",
+              "season": "2024-25",
+              "phase": "regular_season",
+              "before_date": "2025-06-23",
+              "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+              "window": "last_10",
+              "min_appearances": 10,
+              "min_minutes": 150,
+              "top_k": 5,
+              "dimensions": null
+            },
+            "depends_on": []
+          }
+        ],
+        "output_kind": "table"
+      },
+      "context": {
+        "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+        "snapshot_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+        "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+        "dataset_type": "workbench",
+        "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666",
+        "mode": "workbench_recent",
+        "source": "sportsdataverse",
+        "season": "2024-25",
+        "phase": "regular_season",
+        "before_date": "2025-06-23",
+        "cutoff_utc": "2025-06-23T04:00:00+00:00",
+        "window": "season",
+        "coverage_start": "2023-10-24",
+        "coverage_end": "2026-06-13",
+        "metric_version": "v2",
+        "published_at": null
+      },
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 13,
+        "cache_hits": 1,
+        "elapsed_ms": 1331.497,
+        "provider_usage": {
+          "prompt_token_count": 8254,
+          "candidates_token_count": 125,
+          "total_token_count": 8379
+        },
+        "usage_basis": "provider metadata"
+      },
+      "result_hashes": [
+        "3aafc235ba63b996155359c2e8d1556bc59bc620dfd0be90619d71a6b9889c0b"
+      ],
+      "manual_match": true
+    },
+    {
+      "question": "How variable has Scottie Barnes’s scoring been, and did his minutes vary too?",
+      "status": "answered",
+      "plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "execute",
+        "clarification": null,
+        "context_changes": null,
+        "steps": [
+          {
+            "step_id": "step_pts_dist",
+            "operation": "distribution",
+            "arguments": {
+              "player_id": "1630567",
+              "metric": "pts",
+              "season": "2024-25",
+              "phase": "regular_season",
+              "before_date": "2025-06-23",
+              "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+              "window_n": 20,
+              "from_date": null,
+              "to_date": null
+            },
+            "depends_on": []
+          },
+          {
+            "step_id": "step_min_dist",
+            "operation": "distribution",
+            "arguments": {
+              "player_id": "1630567",
+              "metric": "min_per_game",
+              "season": "2024-25",
+              "phase": "regular_season",
+              "before_date": "2025-06-23",
+              "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+              "window_n": 20,
+              "from_date": null,
+              "to_date": null
+            },
+            "depends_on": []
+          }
+        ],
+        "output_kind": "comparison"
+      },
+      "context": {
+        "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+        "snapshot_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+        "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+        "dataset_type": "workbench",
+        "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666",
+        "mode": "workbench_recent",
+        "source": "sportsdataverse",
+        "season": "2024-25",
+        "phase": "regular_season",
+        "before_date": "2025-06-23",
+        "cutoff_utc": "2025-06-23T04:00:00+00:00",
+        "window": "season",
+        "coverage_start": "2023-10-24",
+        "coverage_end": "2026-06-13",
+        "metric_version": "v2",
+        "published_at": null
+      },
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 42,
+        "cache_hits": 2,
+        "elapsed_ms": 1238.863,
+        "provider_usage": {
+          "prompt_token_count": 8262,
+          "candidates_token_count": 183,
+          "total_token_count": 8445
+        },
+        "usage_basis": "provider metadata"
+      },
+      "result_hashes": [
+        "0ee42c345b99d82e2d272e21d979d4abadbc079f4582f1a78eea8b82b6a86689",
+        "b11e37e6d9187387060e7a124207a753445b202c75b048343746b6cadf85e5ce"
+      ],
+      "manual_match": true
+    }
+  ],
+  "page_errors": [],
+  "real_provider_calls": 3,
+  "immutable_save_actions": 0
+}

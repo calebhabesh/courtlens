@@ -1,0 +1,110 @@
+INFO:     Started server process [2744914]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8036 (Press CTRL+C to quit)
+INFO:     127.0.0.1:41500 - "GET /api/workbench/assistant/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41512 - "GET /api/workbench/assistant/operations HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41490 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41512 - "OPTIONS /api/workbench/assistant/turn HTTP/1.1" 200 OK
+2026-10-04 14:55:29,118 INFO httpx HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent "HTTP/1.1 200 OK"
+INFO:     127.0.0.1:41500 - "POST /api/workbench/assistant/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41518 - "POST /api/workbench/assistant/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41518 - "DELETE /api/workbench/assistant/conversations/77b75dd2-f495-457b-b5b7-bb016c2ea78f HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41500 - "OPTIONS /api/workbench/assistant/conversations/39282856-2fb5-46c9-92b4-a806e25ee85b HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41512 - "DELETE /api/workbench/assistant/conversations/39282856-2fb5-46c9-92b4-a806e25ee85b HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41512 - "OPTIONS /api/workbench/assistant/turn HTTP/1.1" 200 OK
+2026-10-04 14:55:31,617 INFO httpx HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent "HTTP/1.1 200 OK"
+INFO:     127.0.0.1:41500 - "POST /api/workbench/assistant/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41518 - "POST /api/workbench/assistant/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41518 - "DELETE /api/workbench/assistant/conversations/87cf4b4d-54b1-49fb-9052-d8f902509b0d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41500 - "OPTIONS /api/workbench/assistant/conversations/dd8aa696-24de-441b-a0d2-b99c20ec6d66 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41512 - "DELETE /api/workbench/assistant/conversations/dd8aa696-24de-441b-a0d2-b99c20ec6d66 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41512 - "OPTIONS /api/workbench/assistant/turn HTTP/1.1" 200 OK
+2026-10-04 14:55:33,774 INFO httpx HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent "HTTP/1.1 200 OK"
+INFO:     127.0.0.1:41500 - "POST /api/workbench/assistant/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41518 - "POST /api/workbench/assistant/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41518 - "DELETE /api/workbench/assistant/conversations/16150592-8127-423c-b6ee-8ce59a9a5acf HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35042 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35048 - "GET /api/workbench/assistant/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35064 - "GET /api/workbench/assistant/operations HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35064 - "OPTIONS /api/workbench/assistant/turn HTTP/1.1" 200 OK
+2026-10-04 14:56:57,275 INFO httpx HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent "HTTP/1.1 200 OK"
+INFO:     127.0.0.1:35048 - "POST /api/workbench/assistant/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35070 - "POST /api/workbench/assistant/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35070 - "DELETE /api/workbench/assistant/conversations/94e2e695-906e-4ea0-b49c-df883da29e25 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35048 - "OPTIONS /api/workbench/assistant/conversations/2a2651a7-a2a3-4273-9328-b31e49254725 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35064 - "DELETE /api/workbench/assistant/conversations/2a2651a7-a2a3-4273-9328-b31e49254725 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35064 - "OPTIONS /api/workbench/assistant/turn HTTP/1.1" 200 OK
+2026-10-04 14:56:58,906 INFO httpx HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent "HTTP/1.1 200 OK"
+INFO:     127.0.0.1:35048 - "POST /api/workbench/assistant/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35070 - "POST /api/workbench/assistant/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35070 - "DELETE /api/workbench/assistant/conversations/16ddc9cc-1d2b-4d97-8094-30be17808e14 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35048 - "OPTIONS /api/workbench/assistant/conversations/c1287be1-ba93-4a11-9bc1-57cdc6440ff7 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35064 - "DELETE /api/workbench/assistant/conversations/c1287be1-ba93-4a11-9bc1-57cdc6440ff7 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35064 - "OPTIONS /api/workbench/assistant/turn HTTP/1.1" 200 OK
+2026-10-04 14:57:00,296 INFO httpx HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent "HTTP/1.1 200 OK"
+INFO:     127.0.0.1:35048 - "POST /api/workbench/assistant/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35070 - "POST /api/workbench/assistant/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35070 - "DELETE /api/workbench/assistant/conversations/0c9ecbba-197d-460a-a49d-f4ed6f298d94 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35048 - "OPTIONS /api/workbench/assistant/conversations/30fb073d-4260-4ffa-ac89-3c3938d5fedf HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35064 - "DELETE /api/workbench/assistant/conversations/30fb073d-4260-4ffa-ac89-3c3938d5fedf HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46818 - "GET /api/workbench/assistant/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36670 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36676 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36670 - "GET /api/workbench/players?season=2025-26&phase=regular_season&beforeDate=2026-06-30&window=season&sortMetric=pts&sortDirection=desc&limit=50 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36686 - "GET /api/workbench/players/1629029/portrait HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36688 - "GET /api/workbench/players/1628983/portrait HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36688 - "GET /api/workbench/players/1628973/portrait HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36686 - "GET /api/workbench/players/1627750/portrait HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36702 - "GET /api/workbench/players/201142/portrait HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36708 - "GET /api/workbench/players/1627759/portrait HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36724 - "GET /api/workbench/players/1628378/portrait HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36688 - "GET /api/workbench/players/202695/portrait HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36710 - "GET /api/workbench/players/1630178/portrait HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36686 - "GET /api/workbench/players/203999/portrait HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36702 - "GET /api/workbench/players/1630162/portrait HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36708 - "GET /api/workbench/players/201935/portrait HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36710 - "GET /api/workbench/players/1626164/portrait HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36724 - "GET /api/workbench/players/1627742/portrait HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36688 - "GET /api/workbench/players/1630217/portrait HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36702 - "GET /api/workbench/players/1629638/portrait HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36708 - "GET /api/workbench/players/1641705/portrait HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36688 - "GET /api/workbench/players/1630552/portrait HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36686 - "GET /api/workbench/players/203944/portrait HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36710 - "GET /api/workbench/players/1631094/portrait HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36702 - "GET /api/workbench/players/1630595/portrait HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36686 - "GET /api/workbench/players/1626157/portrait HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36708 - "GET /api/workbench/players/1642851/portrait HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36724 - "GET /api/workbench/players/1630166/portrait HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36702 - "GET /api/workbench/players/1627783/portrait HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36710 - "GET /api/workbench/players/1642843/portrait HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36688 - "GET /api/workbench/players/1628389/portrait HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36724 - "GET /api/workbench/players/1630578/portrait HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36708 - "GET /api/workbench/players/1630163/portrait HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36686 - "GET /api/workbench/players/1630567/portrait HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36702 - "GET /api/workbench/players/1641708/portrait HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36710 - "GET /api/workbench/players/203468/portrait HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36688 - "GET /api/workbench/players/1630530/portrait HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36708 - "GET /api/workbench/players/201942/portrait HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36702 - "GET /api/workbench/players/1631105/portrait HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36686 - "GET /api/workbench/players/1628368/portrait HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36724 - "GET /api/workbench/players/1630202/portrait HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36708 - "GET /api/workbench/players/1629627/portrait HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36710 - "GET /api/workbench/players/1628970/portrait HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36688 - "GET /api/workbench/players/1641706/portrait HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36702 - "GET /api/workbench/players/1631157/portrait HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36686 - "GET /api/workbench/players/1641718/portrait HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36724 - "GET /api/workbench/players/1630180/portrait HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36708 - "GET /api/workbench/players/1628401/portrait HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44048 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44056 - "GET /api/workbench/assistant/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44064 - "GET /api/workbench/assistant/operations HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55374 - "OPTIONS /api/workbench/assistant/turn HTTP/1.1" 200 OK
+2026-10-04 15:07:00,493 INFO httpx HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent "HTTP/1.1 200 OK"
+INFO:     127.0.0.1:55374 - "POST /api/workbench/assistant/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53036 - "OPTIONS /api/workbench/assistant/turn HTTP/1.1" 200 OK
+2026-10-04 15:07:34,976 INFO httpx HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent "HTTP/1.1 200 OK"
+INFO:     127.0.0.1:53036 - "POST /api/workbench/assistant/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43708 - "OPTIONS /api/workbench/assistant/turn HTTP/1.1" 200 OK
+2026-10-04 15:08:32,299 INFO httpx HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent "HTTP/1.1 200 OK"
+INFO:     127.0.0.1:43708 - "POST /api/workbench/assistant/turn HTTP/1.1" 200 OK

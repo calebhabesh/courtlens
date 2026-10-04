@@ -1,0 +1,29 @@
+INFO:     Started server process [2699698]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8036 (Press CTRL+C to quit)
+INFO:     127.0.0.1:39666 - "GET /api/workbench/assistant/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48508 - "GET /api/workbench/assistant/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48516 - "GET /api/workbench/assistant/operations HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48492 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48516 - "OPTIONS /api/workbench/assistant/turn HTTP/1.1" 200 OK
+2026-10-04 14:44:15,954 INFO httpx HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent "HTTP/1.1 200 OK"
+INFO:     127.0.0.1:48508 - "POST /api/workbench/assistant/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48528 - "POST /api/workbench/assistant/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48528 - "DELETE /api/workbench/assistant/conversations/47f5460d-1e19-495b-9359-3d7872c7aadb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48508 - "OPTIONS /api/workbench/assistant/conversations/43a67e98-5705-4fd7-94ec-af7c3959e864 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48516 - "DELETE /api/workbench/assistant/conversations/43a67e98-5705-4fd7-94ec-af7c3959e864 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48516 - "OPTIONS /api/workbench/assistant/turn HTTP/1.1" 200 OK
+2026-10-04 14:44:18,998 INFO httpx HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent "HTTP/1.1 200 OK"
+INFO:     127.0.0.1:48508 - "POST /api/workbench/assistant/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48528 - "POST /api/workbench/assistant/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48528 - "DELETE /api/workbench/assistant/conversations/7c5edb0a-2bff-4b2e-898f-dce8b095b9bb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48508 - "OPTIONS /api/workbench/assistant/conversations/397af753-c060-49dd-a983-e56ce4627fec HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48516 - "DELETE /api/workbench/assistant/conversations/397af753-c060-49dd-a983-e56ce4627fec HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48516 - "OPTIONS /api/workbench/assistant/turn HTTP/1.1" 200 OK
+2026-10-04 14:44:21,310 INFO httpx HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent "HTTP/1.1 200 OK"
+INFO:     127.0.0.1:48508 - "POST /api/workbench/assistant/turn HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [2699698]

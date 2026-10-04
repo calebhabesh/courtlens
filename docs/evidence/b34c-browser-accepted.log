@@ -1,0 +1,4 @@
+locator.waitFor: Timeout 30000ms exceeded.
+Call log:
+[2m  - waiting for getByRole('main').getByRole('region', { name: 'distribution data table', exact: true }).first() to be visible[22m
+

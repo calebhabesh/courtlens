@@ -5,6 +5,7 @@ import { usePathname, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Brand } from "./brand";
 import { GlobalLookup } from "./global-lookup";
+import { AskDrawer } from "./ask-drawer";
 import { HotkeysModal } from "./hotkeys-modal";
 import { buildPreservedContextUrl } from "@/lib/query-url";
 
@@ -26,6 +27,7 @@ export function ReplicaNav() {
 
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [askOpen, setAskOpen] = useState(false);
   const [hotkeysOpen, setHotkeysOpen] = useState(false);
 
   const searchInputRef = useRef<HTMLInputElement>(null);
@@ -232,13 +234,8 @@ export function ReplicaNav() {
 
         {/* Right: Operational Actions & Mobile Toggle */}
         <div className="replica-actions-group">
-          <Link
-            href={preserveContextUrl("/research/ask")}
-            className={`replica-action-link ${pathname === "/research/ask" ? "active" : ""}`}
-            title="Ask CourtLoad AI conversational analyst"
-          >
-            Ask
-          </Link>
+          <button type="button" className="replica-action-link" aria-haspopup="dialog" onClick={() => setAskOpen(true)}>Ask</button>
+          {askOpen && <AskDrawer onClose={() => setAskOpen(false)} />}
           <Link
             href={preserveContextUrl("/data-status")}
             className={`replica-action-link ${pathname === "/data-status" ? "active" : ""}`}

@@ -1,0 +1,9 @@
+{
+  "manual_http_status": 200,
+  "manual_status": "answered",
+  "manual_provider_calls": 0,
+  "manual_result_count": 1,
+  "api_health_status": 200,
+  "configured": true,
+  "model": "gemini-flash-latest"
+}

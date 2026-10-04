@@ -1,0 +1,26 @@
+{
+  "checked_at": "2026-10-04T12:52:28.356036+00:00",
+  "configured": true,
+  "model": "gemini-flash-latest",
+  "request_timeout_seconds": 20,
+  "inference_requests": 1,
+  "http_status": 200,
+  "error_status": null,
+  "error_message": "",
+  "model_version": "gemini-3.8-flash",
+  "usage": {
+    "promptTokenCount": 5,
+    "candidatesTokenCount": 1,
+    "totalTokenCount": 65,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 5
+      }
+    ],
+    "thoughtsTokenCount": 59,
+    "serviceTier": "standard"
+  },
+  "response_text": "OK",
+  "elapsed_ms": 2203.4
+}

@@ -1,378 +1,101 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import { getAssistantStatus, queryAssistant } from "@/lib/workbench-api";
-import type {
-  AssistantAnswer,
-  AssistantStatusResponse,
-} from "@/lib/types";
+import { useEffect, useId, useRef, useState } from "react";
+import { getAssistantStatus } from "@/lib/workbench-api";
+import type { AssistantStatusResponse } from "@/lib/types";
+import { clearConversation, conversationRequest, pinnedContext, sendTurn, statusLabels, type Context, type Turn, type TurnRequest } from "@/lib/conversation";
+import { ConversationResult } from "./conversation-result";
+import { SaveOperation } from "./save-operation";
 
-interface AskCourtLoadProps {
-  initialReleaseId?: string;
-  initialSeason?: string;
-  initialPhase?: string;
-  initialBeforeDate?: string;
-  initialWindow?: string;
-}
-
-const BENCHMARK_PROMPTS = [
-  {
-    label: "Raptors Defense",
-    query: "Who are the best defenders on the Raptors?",
-  },
-  {
-    label: "Scottie Barnes Forecast",
-    query: "Explain the next-game points forecast for Scottie Barnes",
-  },
-  {
-    label: "Eastern Conference Winner?",
-    query: "Who will win the Eastern Conference and what are the playoff seeds?",
-  },
-  {
-    label: "Compare Barnes & Barrett",
-    query: "Compare Scottie Barnes and RJ Barrett under current season",
-  },
-  {
-    label: "Scoring Leaders",
-    query: "Who leads the league in scoring points per game?",
-  },
-  {
-    label: "True Shooting %",
-    query: "What is the formula and definition for true shooting percentage ts_pct?",
-  },
-];
-
-export function AskCourtLoad({
-  initialReleaseId,
-  initialSeason,
-  initialPhase,
-  initialBeforeDate,
-  initialWindow,
-}: AskCourtLoadProps) {
+interface AskCourtLoadProps { initialReleaseId?: string; initialSeason?: string; initialPhase?: string; initialBeforeDate?: string; initialWindow?: string }
+const prompts = ["Whose minutes increased recently without scoring increasing?", "Which players have produced similarly to Scottie Barnes over their last ten appearances?", "How variable has Scottie Barnes’s scoring been, and did his minutes vary too?"];
+const examples: Record<string, Record<string, unknown>> = {
+  workload_shifts: {period_n:10,min_minutes:0,limit:20}, similarity:{target_player_id:"1630567",window:"last_10",top_k:5}, distribution:{player_id:"1630567",metric:"pts",window_n:20}, compare_periods:{player_id:"1630567",mode:"appearances",period_a_n:10,period_b_n:10}, splits:{player_id:"1630567"}, definition:{metric:"ts_pct"}, query:{metric_selectors:[{key:"pts_per_game"}],page:{limit:10}}, profile:{player_id:"1630567"}, compare:{player_a:"1630567",player_b:"1629628"}, team:{team_id:"1610612761"}, forecast:{player_id:"1630567"}, finance:{}
+};
+export function AskCourtLoad(props: AskCourtLoadProps) {
+  const id = useId();
+  const [context, setContext] = useState<Context>({release_id:props.initialReleaseId,season:props.initialSeason,phase:props.initialPhase,before_date:props.initialBeforeDate,window:props.initialWindow});
   const [question, setQuestion] = useState("");
+  const [history, setHistory] = useState<{message: string; turn: Turn}[]>([]);
+  const [status, setStatus] = useState<AssistantStatusResponse | null>(null);
+  const [operations, setOperations] = useState<{name: string; description: string; parameters: unknown}[]>([]);
+  const [manual, setManual] = useState(true);
+  const [operation, setOperation] = useState("workload_shifts");
+  const [includeMinutes, setIncludeMinutes] = useState(false);
+  const [argumentsText, setArgumentsText] = useState(JSON.stringify(examples.workload_shifts, null, 2));
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [answer, setAnswer] = useState<AssistantAnswer | null>(null);
-  const [status, setStatus] = useState<AssistantStatusResponse | null>(null);
-
+  const [retry, setRetry] = useState<TurnRequest | null>(null);
+  const latest = history.at(-1)?.turn;
+  const proposed = latest?.plan?.context_changes;
+  const confirmedContext = proposed ? {...context,...proposed,release_id: proposed.release_id ?? (proposed.season && proposed.season !== context.season ? undefined : context.release_id)} : null;
+  const current = useRef<Turn | null>(null);
+  const generation = useRef(0);
+  const busy = useRef(false);
+  const input = useRef<HTMLTextAreaElement>(null);
   useEffect(() => {
-    getAssistantStatus()
-      .then(setStatus)
-      .catch(() => {
-        // Fallback default status
-      });
+    let active = true;
+    const epoch = generation;
+    getAssistantStatus().then(value => {if (active) {setStatus(value);setManual(!value.configured);}}).catch(() => {if(active) setError("Could not read AI configuration. Manual research remains available.");});
+    conversationRequest<typeof operations>("operations", {}).then(value => {if(active) setOperations(value);}).catch(() => {if(active) setError("Could not read operation definitions. Retry by reopening this page.");});
+    return () => { active=false; epoch.current++; if(current.current && !busy.current) void clearConversation(current.current.conversation_id).catch(() => {}); };
   }, []);
-
-  const handleAsk = async (promptQuery?: string) => {
-    const q = (promptQuery ?? question).trim();
-    if (!q || loading) return;
-
-    setLoading(true);
-    setError(null);
-    if (promptQuery) {
-      setQuestion(promptQuery);
-    }
-
+  async function execute(request: TurnRequest) {
+    if(busy.current) return;
+    const owned = generation.current;
+    busy.current=true;setLoading(true);setError(null);setRetry(null);
     try {
-      const res = await queryAssistant({
-        question: q,
-        context: {
-          release_id: initialReleaseId,
-          season: initialSeason,
-          phase: initialPhase,
-          before_date: initialBeforeDate,
-          window: initialWindow,
-        },
-      });
-      setAnswer(res);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Assistant query failed");
-    } finally {
-      setLoading(false);
+      const turn = await sendTurn(request);
+      if(generation.current !== owned) {await clearConversation(turn.conversation_id);return;}
+      current.current=turn;setContext(pinnedContext(turn.context));
+      setHistory(previous => [...previous, {message:request.message,turn}].slice(-8));
+      input.current?.focus();
+    } catch(cause) {
+      if(generation.current === owned) {setError(cause instanceof Error ? cause.message : "Investigation failed");setRetry(request);}
+    } finally { if(generation.current===owned) {busy.current=false;setLoading(false);} }
+  }
+  function submit(choice?: string, prompt?: string) {
+    const message = (prompt ?? question).trim() || (choice ? "Use the selected canonical identity" : "Run the selected manual research operation");
+    let plan: TurnRequest["plan"];
+    if(manual && !choice) {
+      try {
+        const args: unknown = JSON.parse(argumentsText);
+        if(!args || typeof args!=="object" || Array.isArray(args)) throw new Error("Arguments must be a JSON object.");
+        const argumentsObject = args as Record<string, unknown>;
+        plan={steps:[{step_id:"manual",operation,arguments:argumentsObject}, ...(operation === "distribution" && includeMinutes ? [{step_id:"minutes",operation:"distribution",arguments:{...argumentsObject,metric:"min_per_game"}}] : [])]};
+      } catch(cause) {setError(cause instanceof Error ? cause.message : "Invalid arguments");return;}
     }
-  };
-
-  return (
-    <div className="panel" style={{ marginTop: "1rem" }}>
-      <div className="panel-header" style={{ alignItems: "flex-start", gap: "0.5rem" }}>
-        <div>
-          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.25rem" }}>
-            <span style={{ fontSize: "1.25rem" }} aria-hidden="true">💡</span>
-            <h2 className="panel-title" style={{ margin: 0 }}>Ask CourtLoad</h2>
-          </div>
-          <p className="text-muted text-xs" style={{ margin: 0 }}>
-            Analytical assistant bounded by allowlisted read-only tools, verified evidence cells, and domain discipline.
-          </p>
-        </div>
-        <div style={{ marginLeft: "auto", display: "flex", alignItems: "center", gap: "0.5rem" }}>
-          {status?.configured ? (
-            <span className="badge badge-positive">
-              Ready · {status.model}
-            </span>
-          ) : (
-            <span className="badge">
-              Offline Core · Optional Key
-            </span>
-          )}
-        </div>
-      </div>
-
-      {/* Benchmark Prompt Chips */}
-      <div style={{ display: "flex", flexWrap: "wrap", gap: "0.4rem", margin: "0.75rem 0" }}>
-        {BENCHMARK_PROMPTS.map((bp) => (
-          <button
-            key={bp.label}
-            type="button"
-            className="button button-small"
-            style={{ fontSize: "0.75rem", padding: "0.25rem 0.6rem" }}
-            onClick={() => handleAsk(bp.query)}
-            disabled={loading}
-          >
-            {bp.label}
-          </button>
-        ))}
-      </div>
-
-      {/* Query Input Box */}
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          handleAsk();
-        }}
-        style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}
-      >
-        <div style={{ position: "relative" }}>
-          <textarea
-            value={question}
-            onChange={(e) => setQuestion(e.target.value)}
-            placeholder="Ask a question (e.g. Compare Scottie Barnes and RJ Barrett, or Explain Scottie Barnes forecast)..."
-            rows={2}
-            maxLength={2000}
-            style={{
-              width: "100%",
-              resize: "vertical",
-              padding: "0.6rem 0.75rem",
-              fontFamily: "inherit",
-              fontSize: "0.875rem",
-            }}
-            disabled={loading}
-          />
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              marginTop: "0.3rem",
-            }}
-          >
-            <span className="text-xs text-muted">
-              {question.length} / 2000 characters · Max 4 rounds
-            </span>
-            <button
-              type="submit"
-              className="button button-primary button-small"
-              disabled={loading || !question.trim() || question.length > 2000}
-            >
-              {loading ? "Querying Tools..." : "Ask Assistant →"}
-            </button>
-          </div>
-        </div>
-      </form>
-
-      {/* Error state */}
-      {error && (
-        <div className="notice-box" style={{ marginTop: "1rem", borderLeftColor: "var(--danger)" }}>
-          <strong>Error:</strong> {error}
-        </div>
-      )}
-
-      {/* Loading state */}
-      {loading && (
-        <div style={{ padding: "1.5rem", textAlign: "center" }} className="text-muted text-sm">
-          <div style={{ display: "inline-block", marginBottom: "0.5rem", fontSize: "1.5rem" }}>
-            ⚙️
-          </div>
-          <div>Executing allowlisted analytical tools and verifying evidence ledger...</div>
-        </div>
-      )}
-
-      {/* Answer Container */}
-      {answer && !loading && (
-        <div style={{ marginTop: "1.25rem", borderTop: "1px solid var(--border)", paddingTop: "1rem" }}>
-          {/* Status & Interpretation */}
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "flex-start",
-              gap: "0.75rem",
-              marginBottom: "0.75rem",
-            }}
-          >
-            <div>
-              <span className="text-xs font-mono uppercase text-muted">Assistant Interpretation</span>
-              <p style={{ margin: "0.2rem 0 0", fontWeight: 500, fontSize: "0.95rem" }}>
-                {answer.interpretation}
-              </p>
-            </div>
-            <div>
-              {answer.status === "answered" && (
-                <span className="badge badge-positive">Answered</span>
-              )}
-              {answer.status === "model_not_available" && (
-                <span className="badge" style={{ backgroundColor: "rgba(234, 179, 8, 0.15)", color: "#ca8a04", borderColor: "#ca8a04" }}>
-                  Model Not Available
-                </span>
-              )}
-              {answer.status === "disabled" && (
-                <span className="badge">Assistant Disabled</span>
-              )}
-            </div>
-          </div>
-
-          {/* Disabled Notice */}
-          {answer.status === "disabled" && (
-            <div className="notice-box" style={{ borderLeftColor: "var(--accent)" }}>
-              <strong>Zero-cost core offline:</strong> {answer.interpretation} Ordinary structured search, player profiles, and prospective forecasts work without any external API key.
-            </div>
-          )}
-
-          {/* Model Not Available Notice (e.g. Conference Prediction) */}
-          {answer.status === "model_not_available" && (
-            <div
-              className="notice-box"
-              style={{ borderLeftColor: "#ca8a04", backgroundColor: "rgba(234, 179, 8, 0.05)" }}
-            >
-              <strong>Capability Deferred:</strong> Conference placement and playoff seeding forecasting are not available in this release. Verified team production and standings figures are shown below.
-            </div>
-          )}
-
-          {/* Supported Claims */}
-          {answer.supported_claims.length > 0 && (
-            <div style={{ marginBottom: "1rem" }}>
-              <span className="text-xs font-mono uppercase text-muted">Verified Claims</span>
-              <ul style={{ margin: "0.4rem 0 0 1.2rem", padding: 0, fontSize: "0.875rem" }}>
-                {answer.supported_claims.map((claim, idx) => (
-                  <li key={idx} style={{ marginBottom: "0.25rem" }}>
-                    <span>{claim.statement}</span>
-                    {claim.evidence_ref_ids.length > 0 && (
-                      <span
-                        className="badge"
-                        style={{ marginLeft: "0.4rem", fontSize: "0.7rem", padding: "0.1rem 0.35rem" }}
-                        title={`Evidence references: ${claim.evidence_ref_ids.join(", ")}`}
-                      >
-                        verified {claim.evidence_ref_ids.join(", ")}
-                      </span>
-                    )}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-
-          {/* Result Tables */}
-          {answer.result_tables.map((table, tIdx) => (
-            <div key={tIdx} style={{ marginBottom: "1rem" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.4rem" }}>
-                <span className="text-xs font-semibold">{table.title}</span>
-                <span className="text-xs text-muted font-mono">{table.row_count} rows</span>
-              </div>
-              <div className="table-wrapper" style={{ overflowX: "auto" }}>
-                <table className="data-table" style={{ width: "100%", fontSize: "0.825rem" }}>
-                  <thead>
-                    <tr>
-                      {table.columns.map((col) => (
-                        <th
-                          key={col.key}
-                          style={{ textAlign: col.align === "right" ? "right" : "left", padding: "0.4rem 0.6rem" }}
-                        >
-                          {col.label}
-                        </th>
-                      ))}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {table.rows.map((row, rIdx) => (
-                      <tr key={rIdx}>
-                        {table.columns.map((col) => {
-                          const val = row[col.key];
-                          return (
-                            <td
-                              key={col.key}
-                              style={{ textAlign: col.align === "right" ? "right" : "left", padding: "0.4rem 0.6rem" }}
-                            >
-                              {val !== null && val !== undefined ? String(val) : "—"}
-                            </td>
-                          );
-                        })}
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          ))}
-
-          {/* Limitations & Disclaimers */}
-          {answer.limitations.length > 0 && (
-            <div
-              style={{
-                backgroundColor: "rgba(0, 0, 0, 0.02)",
-                border: "1px solid var(--border)",
-                borderRadius: "4px",
-                padding: "0.6rem 0.8rem",
-                marginBottom: "1rem",
-              }}
-            >
-              <span className="text-xs font-mono uppercase text-muted" style={{ display: "block", marginBottom: "0.25rem" }}>
-                Analytical Limitations & Guardrails
-              </span>
-              <ul style={{ margin: "0.2rem 0 0 1.2rem", padding: 0, fontSize: "0.8rem", color: "var(--muted)" }}>
-                {answer.limitations.map((lim, lIdx) => (
-                  <li key={lIdx} style={{ marginBottom: "0.2rem" }}>
-                    {lim}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-
-          {/* Action Footer: Explorer Link & Manifest */}
-          <div
-            style={{
-              display: "flex",
-              flexWrap: "wrap",
-              justifyContent: "space-between",
-              alignItems: "center",
-              gap: "0.75rem",
-              borderTop: "1px dashed var(--border)",
-              paddingTop: "0.75rem",
-            }}
-          >
-            {answer.explorer_query && (
-              <Link
-                href={answer.explorer_query.target_url}
-                className="button button-primary button-small"
-                style={{ textDecoration: "none" }}
-              >
-                Open in Workbench Explorer ({answer.explorer_query.view}) →
-              </Link>
-            )}
-
-            {answer.reproducible_manifest && (
-              <div style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
-                <span className="text-xs text-muted font-mono">
-                  SHA-256: {answer.reproducible_manifest.manifest_sha256.slice(0, 12)}…
-                </span>
-                <span className="badge" style={{ fontSize: "0.7rem" }}>
-                  {answer.reproducible_manifest.tool_rounds} rounds · {answer.reproducible_manifest.evidence_cells_count} cells
-                </span>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
-    </div>
-  );
+    const retained = current.current;
+    void execute({request_id:crypto.randomUUID(),message,context,...(retained ? {conversation_id:retained.conversation_id,context_fingerprint:retained.context_fingerprint}:{}),...(choice ? {clarification_choice:choice}:{}),...(plan ? {plan}:{})});
+  }
+  async function reset(nextContext?: Context) {
+    if(busy.current) return;
+    try {
+      if(current.current) await clearConversation(current.current.conversation_id);
+      generation.current++;current.current=null;setHistory([]);setRetry(null);setError(null);setQuestion("");
+      if(nextContext) setContext(nextContext);
+      input.current?.focus();
+    } catch(cause) {setError(cause instanceof Error ? cause.message : "Could not clear local conversation");}
+  }
+  return <div className="conversation panel">
+    <div className="conversation-row"><h2>Ask CourtLoad</h2><button type="button" className="button button-small" disabled={loading} onClick={() => void reset()}>Clear conversation</button></div>
+    <p role="status">{status ? status.configured ? `AI configured · ${status.model}` : "AI disabled · manual research available" : "Checking AI configuration…"}</p>
+    <p className="text-muted">With AI enabled, your question, pinned context and bounded analytical definitions are sent to Google. Working conversation state stays local and expires after 30 minutes. Clearing it does not erase provider records. No web search or paid fallback is enabled.</p>
+    {status && !status.configured && <details><summary>Configure optional AI</summary><p>{status.setup_instructions}</p><p>{status.privacy_notice}</p><Link href="/settings">Open settings</Link></details>}
+    <fieldset disabled={!!latest || loading} className="conversation-controls"><legend>{latest ? "Pinned analytical context · clear to change" : "Analytical context"}</legend>
+      <label>Release<input value={context.release_id ?? ""} placeholder="Resolve current release once" onChange={e=>setContext({...context,release_id:e.target.value || undefined})} /></label>
+      <label>Season<input value={context.season ?? ""} onChange={e=>setContext({...context,season:e.target.value || undefined})} /></label>
+      <label>Phase<select value={context.phase ?? "regular_season"} onChange={e=>setContext({...context,phase:e.target.value})}>{["regular_season","playoffs","preseason","play_in","cup_final","summer_league"].map(p=><option key={p}>{p}</option>)}</select></label>
+      <label>Before date (exclusive)<input type="date" value={context.before_date ?? ""} onChange={e=>setContext({...context,before_date:e.target.value || undefined})} /></label>
+      <label>Window<select value={context.window ?? "season"} onChange={e=>setContext({...context,window:e.target.value})}>{["season","last_10","last_5"].map(w=><option key={w}>{w}</option>)}</select></label>
+    </fieldset>
+    <div className="conversation-row"><label><input type="checkbox" checked={manual} disabled={loading} onChange={e=>{setManual(e.target.checked);setRetry(null);}} /> Run manually without AI</label><Link href="/investigations">Saved investigations</Link></div>
+    {manual ? <div className="conversation-manual"><label htmlFor={`${id}-operation`}>Research operation</label><select id={`${id}-operation`} value={operation} disabled={loading} onChange={e=>{setOperation(e.target.value);setArgumentsText(JSON.stringify(examples[e.target.value] ?? {},null,2));}}>{Object.keys(examples).map(name=><option key={name} value={name}>{name.replaceAll("_"," ")}</option>)}</select><p>{operations.find(o=>o.name===operation)?.description}</p><label htmlFor={`${id}-arguments`}>Operation arguments (JSON)</label><textarea id={`${id}-arguments`} rows={6} maxLength={32768} disabled={loading} value={argumentsText} onChange={e=>setArgumentsText(e.target.value)} />{operation === "distribution" && <label><input type="checkbox" checked={includeMinutes} disabled={loading} onChange={e=>setIncludeMinutes(e.target.checked)} /> Include a minutes distribution with the same window</label>}<details><summary>Accepted arguments and definitions</summary><pre>{JSON.stringify(operations.find(o=>o.name===operation)?.parameters ?? {},null,2)}</pre></details></div> : <div className="conversation-prompts">{prompts.map(prompt=><button className="button button-small" disabled={loading} key={prompt} onClick={()=>{setQuestion(prompt);submit(undefined,prompt);}}>{prompt}</button>)}</div>}
+    <form onSubmit={e=>{e.preventDefault();submit();}}><label htmlFor={`${id}-question`}>{latest ? "Follow-up question" : "Research question"}{manual ? " (optional label)" : ""}</label><textarea ref={input} id={`${id}-question`} rows={2} maxLength={2000} value={question} onChange={e=>setQuestion(e.target.value)} disabled={loading} /><div className="conversation-row"><span>{question.length} / 2000</span><button className="button button-primary" disabled={loading || (!manual && !question.trim())}>{loading ? "Investigating…" : manual ? "Run manual operation" : "Ask CourtLoad"}</button></div></form>
+    {error && <div role="alert"><p>{error}</p>{retry && <button className="button" disabled={loading} onClick={()=>void execute(retry)}>Retry this request</button>}</div>}
+    <p role="status" aria-live="polite">{loading ? "Reading the pinned analytical inputs…" : latest ? statusLabels[latest.status] : "Ready for research"}</p>
+    <div aria-label="Conversation history">{history.map(({message,turn})=><article key={turn.turn_id} className="conversation-turn"><p><strong>You:</strong> {message}</p><p><strong>{statusLabels[turn.status]}:</strong> {turn.interpretation}</p><p className="conversation-context">Release {String(turn.context.release_id)} · {String(turn.context.season)} · {String(turn.context.phase)} · before {String(turn.context.before_date)} · {String(turn.context.window)}</p>{turn.results.map(result=><ConversationResult key={result.step_id} result={result} />)}{turn === latest && <SaveOperation turn={turn} disabled={loading} />}{turn.limitations.length>0 && <ul>{turn.limitations.map((text,i)=><li key={i}>{text}</li>)}</ul>}{turn === latest && turn.status==="clarification_required" && <div className="conversation-prompts">{turn.choices.map(choice=><button className="button" key={choice.value} disabled={loading} onClick={()=>submit(choice.value)}>{choice.label ?? choice.name ?? choice.value}</button>)}{confirmedContext && <><p>Proposed: season {confirmedContext.season ?? "resolve from release"}, phase {confirmedContext.phase}, before {confirmedContext.before_date ?? "the release cutoff"}, window {confirmedContext.window}, release {confirmedContext.release_id ?? "resolve for the requested season"}.</p><button className="button" disabled={loading} onClick={()=>void reset(confirmedContext)}>Use proposed context in a new conversation</button></>}{turn.choices.length===0 && !turn.plan?.context_changes && <p>Specify your intended metric or meaning in the follow-up, or choose a manual operation.</p>}</div>}<details><summary>Verified analytical manifest</summary><pre>{JSON.stringify(turn.manifest,null,2)}</pre></details></article>)}</div>
+    <p className="text-muted">Active conversations are temporary. Retaining conversational plans and evidence is scheduled for the saved-investigation block; opening a view does not save this conversation.</p>
+  </div>;
 }
