@@ -1,0 +1,721 @@
+{
+  "block": "B35b",
+  "recorded_at": "2026-10-04T17:35:47.804Z",
+  "mode": "production browser against real local PostgreSQL API; AI disabled",
+  "retained_types": [
+    {
+      "operation": "distribution",
+      "id": "3bcb37c9-b410-44b1-be7f-c3b368fbe28c",
+      "manifest_sha256": "d57b681befad0017f83b5ca57af3a55bf4dded71403bc7af3d48a4c30c8c85c3",
+      "evidence_cells": 22,
+      "rows": 6,
+      "open_url": "/research/operation?operation=distribution&arguments=%7B%22before_date%22%3A%222026-06-30%22%2C%22from_date%22%3Anull%2C%22metric%22%3A%22pts%22%2C%22phase%22%3A%22regular_season%22%2C%22player_id%22%3A%221630567%22%2C%22release_id%22%3A%225bbb6035-6794-4bb0-b894-7208f52ef7ad%22%2C%22season%22%3A%222024-25%22%2C%22to_date%22%3Anull%2C%22window_n%22%3A5%7D&release_id=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2024-25&phase=regular_season&before_date=2026-06-30&window=season",
+      "reproduction": "match",
+      "exports": {
+        "json": {
+          "bytes": 46920,
+          "filename": "courtload-investigation-3bcb37c9-b410-44b1-be7f-c3b368fbe28c.json"
+        },
+        "csv": {
+          "bytes": 57953,
+          "filename": "courtload-investigation-3bcb37c9-b410-44b1-be7f-c3b368fbe28c.csv"
+        }
+      }
+    },
+    {
+      "operation": "finance",
+      "id": "1ec05206-2490-4922-becc-5e519483bf2e",
+      "manifest_sha256": "1307b333338d924dddb8766871cc752c04b934fcc2f93cecce819a01cdb183e6",
+      "evidence_cells": 189,
+      "rows": 1,
+      "open_url": "/contracts?finance_operation_version=finance-query-v1&finance_book_id=256f66b1-129d-4904-be30-7b946f6e92fc&finance_financial_season=2025-26&finance_known_at=2026-10-03T16%3A53%3A27.511033Z&finance_effective_on=2025-02-12&finance_unknown_dates=include_labelled&finance_amount_kind=base_salary&finance_small_big_threshold_cents=1200000000&finance_scenario=reported-v1&releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2024-25&phase=regular_season&beforeDate=2025-06-23&window=season",
+      "reproduction": "match",
+      "exports": {
+        "json": {
+          "bytes": 537789,
+          "filename": "courtload-investigation-1ec05206-2490-4922-becc-5e519483bf2e.json"
+        },
+        "csv": {
+          "bytes": 726823,
+          "filename": "courtload-investigation-1ec05206-2490-4922-becc-5e519483bf2e.csv"
+        }
+      }
+    },
+    {
+      "operation": "workload_shifts",
+      "id": "05efbfee-8d3d-490b-81d3-fc0a08e0460d",
+      "manifest_sha256": "a36647d3de0ec72b4d9f7e84cdcf6b1d67469e64507ba1494da0e6904f0b46c2",
+      "evidence_cells": 182,
+      "rows": 20,
+      "open_url": "/research/operation?operation=workload_shifts&arguments=%7B%22limit%22%3A20%2C%22min_minutes%22%3A0.0%2C%22period_n%22%3A10%7D&release_id=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2024-25&phase=regular_season&before_date=2025-06-23&window=season",
+      "reproduction": "match",
+      "exports": {
+        "json": {
+          "bytes": 347300,
+          "filename": "courtload-investigation-05efbfee-8d3d-490b-81d3-fc0a08e0460d.json"
+        },
+        "csv": {
+          "bytes": 441668,
+          "filename": "courtload-investigation-05efbfee-8d3d-490b-81d3-fc0a08e0460d.csv"
+        }
+      }
+    },
+    {
+      "operation": "similarity",
+      "id": "fff8adb1-f205-4fdf-a353-8618ac567440",
+      "manifest_sha256": "25539cd248c0fa43be506070f1eb9db46f0f3afcf0dc1a7801521edba3d61236",
+      "evidence_cells": 192,
+      "rows": 6,
+      "open_url": "/research/operation?operation=similarity&arguments=%7B%22before_date%22%3A%222025-06-23%22%2C%22dimensions%22%3Anull%2C%22min_appearances%22%3A10%2C%22min_minutes%22%3A150.0%2C%22phase%22%3A%22regular_season%22%2C%22release_id%22%3A%225bbb6035-6794-4bb0-b894-7208f52ef7ad%22%2C%22season%22%3A%222024-25%22%2C%22target_player_id%22%3A%221630567%22%2C%22top_k%22%3A5%2C%22window%22%3A%22last_10%22%7D&release_id=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2024-25&phase=regular_season&before_date=2025-06-23&window=season",
+      "reproduction": "match",
+      "exports": {
+        "json": {
+          "bytes": 371462,
+          "filename": "courtload-investigation-fff8adb1-f205-4fdf-a353-8618ac567440.json"
+        },
+        "csv": {
+          "bytes": 479343,
+          "filename": "courtload-investigation-fff8adb1-f205-4fdf-a353-8618ac567440.csv"
+        }
+      }
+    },
+    {
+      "operation": "splits",
+      "id": "be611173-e250-44cc-bd72-7e64f24341ec",
+      "manifest_sha256": "e85533a41c3a5c0a8dad522cb9cdfcf3903266a8c43fc4140c56cd674fe5c56f",
+      "evidence_cells": 140,
+      "rows": 2,
+      "open_url": "/research/operation?operation=splits&arguments=%7B%22before_date%22%3A%222025-06-23%22%2C%22phase%22%3A%22regular_season%22%2C%22player_id%22%3A%221630567%22%2C%22release_id%22%3A%225bbb6035-6794-4bb0-b894-7208f52ef7ad%22%2C%22season%22%3A%222024-25%22%2C%22split_type%22%3A%22venue%22%7D&release_id=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2024-25&phase=regular_season&before_date=2025-06-23&window=season",
+      "reproduction": "match",
+      "exports": {
+        "json": {
+          "bytes": 419246,
+          "filename": "courtload-investigation-be611173-e250-44cc-bd72-7e64f24341ec.json"
+        },
+        "csv": {
+          "bytes": 505008,
+          "filename": "courtload-investigation-be611173-e250-44cc-bd72-7e64f24341ec.csv"
+        }
+      }
+    },
+    {
+      "operation": "compare_periods",
+      "id": "ed0c4c82-9b31-4527-962e-012d180ec2ba",
+      "manifest_sha256": "a69b64a20e03f6e1e0214ee16b908e0549e97a94126c8fa879d7d28545e67429",
+      "evidence_cells": 150,
+      "rows": 2,
+      "open_url": "/research/operation?operation=compare_periods&arguments=%7B%22before_date%22%3A%222025-06-23%22%2C%22metrics%22%3A%5B%22pts_per_game%22%2C%22min_per_game%22%5D%2C%22mode%22%3A%22appearances%22%2C%22period_a_from%22%3Anull%2C%22period_a_n%22%3A10%2C%22period_a_to%22%3Anull%2C%22period_b_from%22%3Anull%2C%22period_b_n%22%3A10%2C%22period_b_to%22%3Anull%2C%22phase%22%3A%22regular_season%22%2C%22player_id%22%3A%221630567%22%2C%22release_id%22%3A%225bbb6035-6794-4bb0-b894-7208f52ef7ad%22%2C%22season%22%3A%222024-25%22%7D&release_id=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2024-25&phase=regular_season&before_date=2025-06-23&window=season",
+      "reproduction": "match",
+      "exports": {
+        "json": {
+          "bytes": 425087,
+          "filename": "courtload-investigation-ed0c4c82-9b31-4527-962e-012d180ec2ba.json"
+        },
+        "csv": {
+          "bytes": 516877,
+          "filename": "courtload-investigation-ed0c4c82-9b31-4527-962e-012d180ec2ba.csv"
+        }
+      }
+    },
+    {
+      "operation": "forecast",
+      "id": "4491c3b2-3223-4262-8e37-7edf246ded2c",
+      "manifest_sha256": "da6e75f2ea34e24fe79ba26d5d7c0f6f7461202a1bb5b715e77a3d60c3f171bc",
+      "evidence_cells": 0,
+      "rows": 1,
+      "open_url": null,
+      "reproduction": "match",
+      "exports": {
+        "json": {
+          "bytes": 3765,
+          "filename": "courtload-investigation-4491c3b2-3223-4262-8e37-7edf246ded2c.json"
+        },
+        "csv": {
+          "bytes": 3318,
+          "filename": "courtload-investigation-4491c3b2-3223-4262-8e37-7edf246ded2c.csv"
+        }
+      }
+    },
+    {
+      "operation": "team",
+      "id": "d9919314-aed4-46f5-a49c-8eeab37a26fa",
+      "manifest_sha256": "895dfad0719cd7fcb76c84606a46524967e59e75997beaafb0277f4693b1104b",
+      "evidence_cells": 173,
+      "rows": 1,
+      "open_url": "/teams/1610612761?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2024-25&phase=regular_season&beforeDate=2025-06-23&window=season",
+      "reproduction": "match",
+      "exports": {
+        "json": {
+          "bytes": 329943,
+          "filename": "courtload-investigation-d9919314-aed4-46f5-a49c-8eeab37a26fa.json"
+        },
+        "csv": {
+          "bytes": 418850,
+          "filename": "courtload-investigation-d9919314-aed4-46f5-a49c-8eeab37a26fa.csv"
+        }
+      }
+    },
+    {
+      "operation": "compare",
+      "id": "3d8b41f5-2eb9-49ac-abfc-ead0c48035ab",
+      "manifest_sha256": "48f8617ef4cd78243598eb07454be530675e503a910488a3f5054448bf290d78",
+      "evidence_cells": 491,
+      "rows": 58,
+      "open_url": "/compare?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2024-25&phase=regular_season&beforeDate=2025-06-23&window=season&playerA=1630567&playerB=1628369",
+      "reproduction": "match",
+      "exports": {
+        "json": {
+          "bytes": 1228463,
+          "filename": "courtload-investigation-3d8b41f5-2eb9-49ac-abfc-ead0c48035ab.json"
+        },
+        "csv": {
+          "bytes": 1511397,
+          "filename": "courtload-investigation-3d8b41f5-2eb9-49ac-abfc-ead0c48035ab.csv"
+        }
+      }
+    },
+    {
+      "operation": "profile",
+      "id": "75c7167a-6e8e-4257-97bc-b35392779a84",
+      "manifest_sha256": "b8ade85acf97b6b326afedd5d98979789dfc4ad7a9bee26cc4a9d7afbfec9d2b",
+      "evidence_cells": 295,
+      "rows": 1,
+      "open_url": "/players/1630567?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2024-25&phase=regular_season&beforeDate=2025-06-23&window=season",
+      "reproduction": "match",
+      "exports": {
+        "json": {
+          "bytes": 2052505,
+          "filename": "courtload-investigation-75c7167a-6e8e-4257-97bc-b35392779a84.json"
+        },
+        "csv": {
+          "bytes": 2189891,
+          "filename": "courtload-investigation-75c7167a-6e8e-4257-97bc-b35392779a84.csv"
+        }
+      }
+    },
+    {
+      "operation": "definition",
+      "id": "21555371-b276-4cf7-b067-2f8a527d240a",
+      "manifest_sha256": "ef8ecfca6b6ee083ca43502a446afba3b267e678ac8f338254b93dcfdde1c25c",
+      "evidence_cells": 0,
+      "rows": 1,
+      "open_url": null,
+      "reproduction": "match",
+      "exports": {
+        "json": {
+          "bytes": 6280,
+          "filename": "courtload-investigation-21555371-b276-4cf7-b067-2f8a527d240a.json"
+        },
+        "csv": {
+          "bytes": 5156,
+          "filename": "courtload-investigation-21555371-b276-4cf7-b067-2f8a527d240a.csv"
+        }
+      }
+    },
+    {
+      "operation": "query",
+      "id": "20bc7459-d2f4-482d-a846-3f1114ebf2d4",
+      "manifest_sha256": "cdebb257811066185ca320a07f0a9a6e5b1c56ec2af6c3b710b10af2db8668fe",
+      "evidence_cells": 2887,
+      "rows": 577,
+      "open_url": "/stats?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2024-25&phase=regular_season&beforeDate=2025-06-23&window=season&sortMetric=pts&sortDirection=desc&limit=10&metrics=%5B%7B%22key%22%3A+%22pts_per_game%22%2C+%22version%22%3A+null%2C+%22normalization%22%3A+%22raw%22%2C+%22denominator_type%22%3A+null%7D%5D",
+      "reproduction": "match",
+      "exports": {
+        "json": {
+          "bytes": 5901311,
+          "filename": "courtload-investigation-20bc7459-d2f4-482d-a846-3f1114ebf2d4.json"
+        },
+        "csv": {
+          "bytes": 7326496,
+          "filename": "courtload-investigation-20bc7459-d2f4-482d-a846-3f1114ebf2d4.csv"
+        }
+      }
+    }
+  ],
+  "new_save": {
+    "id": "3bcb37c9-b410-44b1-be7f-c3b368fbe28c",
+    "manifest_sha256": "d57b681befad0017f83b5ca57af3a55bf4dded71403bc7af3d48a4c30c8c85c3",
+    "question_saved": false,
+    "reproduced_after_clear_and_reload": true,
+    "reused_existing_record": true
+  },
+  "inventory_before": 33,
+  "inventory_after": 33,
+  "learning_release": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+  "manifest": {
+    "id": "/",
+    "name": "CourtLoad NBA Research",
+    "short_name": "CourtLoad",
+    "lang": "en",
+    "description": "Local NBA research and retained analytical evidence. Requires the local API for data views.",
+    "start_url": "/stats",
+    "scope": "/",
+    "display": "standalone",
+    "background_color": "#0b0d10",
+    "theme_color": "#0b0d10",
+    "icons": [
+      {
+        "src": "/icons/courtload-192.png",
+        "sizes": "192x192",
+        "type": "image/png",
+        "purpose": "any"
+      },
+      {
+        "src": "/icons/courtload-512.png",
+        "sizes": "512x512",
+        "type": "image/png",
+        "purpose": "any"
+      },
+      {
+        "src": "/icons/courtload-maskable-512.png",
+        "sizes": "512x512",
+        "type": "image/png",
+        "purpose": "maskable"
+      }
+    ],
+    "shortcuts": [
+      {
+        "name": "Saved investigations",
+        "url": "/investigations"
+      },
+      {
+        "name": "Manual research",
+        "url": "/research/ask"
+      }
+    ]
+  },
+  "cache": {
+    "workers": 0,
+    "caches": []
+  },
+  "page_errors": [],
+  "mutations": [
+    {
+      "method": "POST",
+      "path": "/api/workbench/operations/finance"
+    },
+    {
+      "method": "POST",
+      "path": "/api/workbench/assistant/turn"
+    },
+    {
+      "method": "POST",
+      "path": "/api/workbench/assistant/turn"
+    },
+    {
+      "method": "POST",
+      "path": "/api/workbench/assistant/turn"
+    },
+    {
+      "method": "POST",
+      "path": "/api/workbench/assistant/turn"
+    }
+  ],
+  "requests": [
+    {
+      "method": "GET",
+      "path": "/api/workspace"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workbench/assistant/investigations/3bcb37c9-b410-44b1-be7f-c3b368fbe28c"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workbench/assistant/investigations/3bcb37c9-b410-44b1-be7f-c3b368fbe28c/reproduce"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workbench/assistant/investigations/3bcb37c9-b410-44b1-be7f-c3b368fbe28c/export"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workbench/assistant/investigations/3bcb37c9-b410-44b1-be7f-c3b368fbe28c/export"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workspace"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workspace"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workbench/assistant/investigations/1ec05206-2490-4922-becc-5e519483bf2e"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workbench/assistant/investigations/1ec05206-2490-4922-becc-5e519483bf2e/reproduce"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workbench/assistant/investigations/1ec05206-2490-4922-becc-5e519483bf2e/export"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workbench/assistant/investigations/1ec05206-2490-4922-becc-5e519483bf2e/export"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workspace"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workbench/operations/finance/books"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workbench/operations/finance/books/256f66b1-129d-4904-be30-7b946f6e92fc"
+    },
+    {
+      "method": "POST",
+      "path": "/api/workbench/operations/finance"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workspace"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workbench/assistant/investigations/05efbfee-8d3d-490b-81d3-fc0a08e0460d"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workbench/assistant/investigations/05efbfee-8d3d-490b-81d3-fc0a08e0460d/reproduce"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workbench/assistant/investigations/05efbfee-8d3d-490b-81d3-fc0a08e0460d/export"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workbench/assistant/investigations/05efbfee-8d3d-490b-81d3-fc0a08e0460d/export"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workspace"
+    },
+    {
+      "method": "POST",
+      "path": "/api/workbench/assistant/turn"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workspace"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workbench/assistant/investigations/fff8adb1-f205-4fdf-a353-8618ac567440"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workbench/assistant/investigations/fff8adb1-f205-4fdf-a353-8618ac567440/reproduce"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workbench/assistant/investigations/fff8adb1-f205-4fdf-a353-8618ac567440/export"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workbench/assistant/investigations/fff8adb1-f205-4fdf-a353-8618ac567440/export"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workspace"
+    },
+    {
+      "method": "POST",
+      "path": "/api/workbench/assistant/turn"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workspace"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workbench/assistant/investigations/be611173-e250-44cc-bd72-7e64f24341ec"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workbench/assistant/investigations/be611173-e250-44cc-bd72-7e64f24341ec/reproduce"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workbench/assistant/investigations/be611173-e250-44cc-bd72-7e64f24341ec/export"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workbench/assistant/investigations/be611173-e250-44cc-bd72-7e64f24341ec/export"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workspace"
+    },
+    {
+      "method": "POST",
+      "path": "/api/workbench/assistant/turn"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workspace"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workbench/assistant/investigations/ed0c4c82-9b31-4527-962e-012d180ec2ba"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workbench/assistant/investigations/ed0c4c82-9b31-4527-962e-012d180ec2ba/reproduce"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workbench/assistant/investigations/ed0c4c82-9b31-4527-962e-012d180ec2ba/export"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workbench/assistant/investigations/ed0c4c82-9b31-4527-962e-012d180ec2ba/export"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workspace"
+    },
+    {
+      "method": "POST",
+      "path": "/api/workbench/assistant/turn"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workspace"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workbench/assistant/investigations/4491c3b2-3223-4262-8e37-7edf246ded2c"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workbench/assistant/investigations/4491c3b2-3223-4262-8e37-7edf246ded2c/reproduce"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workbench/assistant/investigations/4491c3b2-3223-4262-8e37-7edf246ded2c/export"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workbench/assistant/investigations/4491c3b2-3223-4262-8e37-7edf246ded2c/export"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workspace"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workbench/assistant/investigations/d9919314-aed4-46f5-a49c-8eeab37a26fa"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workbench/assistant/investigations/d9919314-aed4-46f5-a49c-8eeab37a26fa/reproduce"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workbench/assistant/investigations/d9919314-aed4-46f5-a49c-8eeab37a26fa/export"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workbench/assistant/investigations/d9919314-aed4-46f5-a49c-8eeab37a26fa/export"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workspace"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workspace"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workbench/assistant/investigations/3d8b41f5-2eb9-49ac-abfc-ead0c48035ab"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workbench/assistant/investigations/3d8b41f5-2eb9-49ac-abfc-ead0c48035ab/reproduce"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workbench/assistant/investigations/3d8b41f5-2eb9-49ac-abfc-ead0c48035ab/export"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workbench/assistant/investigations/3d8b41f5-2eb9-49ac-abfc-ead0c48035ab/export"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workspace"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workspace"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workbench/assistant/investigations/75c7167a-6e8e-4257-97bc-b35392779a84"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workbench/assistant/investigations/75c7167a-6e8e-4257-97bc-b35392779a84/reproduce"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workbench/assistant/investigations/75c7167a-6e8e-4257-97bc-b35392779a84/export"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workbench/assistant/investigations/75c7167a-6e8e-4257-97bc-b35392779a84/export"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workspace"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workbench/players/1630567/portrait"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workspace"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workbench/assistant/investigations/21555371-b276-4cf7-b067-2f8a527d240a"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workbench/assistant/investigations/21555371-b276-4cf7-b067-2f8a527d240a/reproduce"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workbench/assistant/investigations/21555371-b276-4cf7-b067-2f8a527d240a/export"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workbench/assistant/investigations/21555371-b276-4cf7-b067-2f8a527d240a/export"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workspace"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workbench/assistant/investigations/20bc7459-d2f4-482d-a846-3f1114ebf2d4"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workbench/assistant/investigations/20bc7459-d2f4-482d-a846-3f1114ebf2d4/reproduce"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workbench/assistant/investigations/20bc7459-d2f4-482d-a846-3f1114ebf2d4/export"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workbench/assistant/investigations/20bc7459-d2f4-482d-a846-3f1114ebf2d4/export"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workspace"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workbench/players/1628983/portrait"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workbench/players/1630162/portrait"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workbench/players/203999/portrait"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workbench/players/203507/portrait"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workbench/players/1628369/portrait"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workbench/players/1626164/portrait"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workbench/players/1629027/portrait"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workbench/players/1629639/portrait"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workbench/players/1630595/portrait"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workbench/players/201935/portrait"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workspace"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workspace"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workspace"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workspace"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workspace"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workspace"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workbench/assistant/investigations/3bcb37c9-b410-44b1-be7f-c3b368fbe28c"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workspace"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workbench/assistant/investigations/3bcb37c9-b410-44b1-be7f-c3b368fbe28c"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workbench/assistant/investigations/3bcb37c9-b410-44b1-be7f-c3b368fbe28c/reproduce"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workspace"
+    },
+    {
+      "method": "GET",
+      "path": "/api/workbench/assistant/investigations"
+    }
+  ],
+  "limits": [
+    "Actual OS installation not automated",
+    "No real Gemini evaluation",
+    "No release-wide source/model acceptance"
+  ]
+}

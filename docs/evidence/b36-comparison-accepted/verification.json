@@ -1,0 +1,6523 @@
+{
+  "block": "B36a",
+  "recorded_at": "2026-10-04T17:04:24.603Z",
+  "browser": "153.0.8010.52",
+  "site": "http://127.0.0.1:3135",
+  "api": "http://127.0.0.1:8000",
+  "mode": "Existing B35 production build; read-only real retained data; isolated browser CSS font comparison",
+  "candidates": [
+    {
+      "id": "existing",
+      "label": "Current · Space Grotesk + IBM Plex Mono"
+    },
+    {
+      "id": "switzer-clash",
+      "label": "Switzer UI/data + Clash Grotesk headings",
+      "sans": "switzer",
+      "mono": "switzer",
+      "heading": "clash-grotesk"
+    },
+    {
+      "id": "public-sans",
+      "label": "Public Sans · tabular data",
+      "sans": "public-sans",
+      "mono": "public-sans",
+      "heading": "public-sans"
+    },
+    {
+      "id": "public-jetbrains",
+      "label": "Public Sans + JetBrains Mono data",
+      "sans": "public-sans",
+      "mono": "jet-brains-mono",
+      "heading": "public-sans"
+    }
+  ],
+  "fonts": [
+    {
+      "slug": "switzer",
+      "name": "Switzer",
+      "version": "1.2",
+      "license": "itf_ffl",
+      "metadata_url": "https://api.fontshare.com/v2/fonts/slug/switzer",
+      "metadata_sha256": "b6a9e7f85baa8c2490910b52ccd34eb0b149274f4f8d606e22eecdc829bfd832",
+      "url": "https://cdn.fontshare.com/wf/HJHZ26OECMTXRH7JXPFC7EVIHDSLT2RA/LJRNLR7WCPF3PY3SZ7B2LHNUTQMFNCHL/4MCJYGQDIOOXHWSIIB2OYNDBEALJSOGN.woff2",
+      "bytes": 43220,
+      "sha256": "d1bf801ffb1a6096def70a7c532255722ad87d948b13a8a586e342f7091f8ee4",
+      "weight": "100 900",
+      "declared_features": [
+        "aalt",
+        "frac",
+        "liga",
+        "locl",
+        "ordn",
+        "salt",
+        "sups"
+      ]
+    },
+    {
+      "slug": "clash-grotesk",
+      "name": "Clash Grotesk",
+      "version": "1.0",
+      "license": "itf_ffl",
+      "metadata_url": "https://api.fontshare.com/v2/fonts/slug/clash-grotesk",
+      "metadata_sha256": "f32f9168f6a33334a7725c16c91344ff1ae40a257bc1e54c9828bfd85515553f",
+      "url": "https://cdn.fontshare.com/wf/5TRO2J3HJNIQODLQ4CTSMGSLAWSE5YUY/GHXENXHZCDIOE5E73364PNNASRNO3JVW/GLZTRU2GIKPV5HYT3E6HDLWOXAWPNZDV.woff2",
+      "bytes": 47264,
+      "sha256": "3c56fcff3a74054781e42a712f7dc2b874eec7a646c7282464c5d4cad1a36186",
+      "weight": "200 700",
+      "declared_features": [
+        "aalt",
+        "case",
+        "ccmp",
+        "dlig",
+        "frac",
+        "liga",
+        "locl",
+        "ordn",
+        "salt",
+        "sups"
+      ]
+    },
+    {
+      "slug": "public-sans",
+      "name": "Public Sans",
+      "version": "2.001",
+      "license": "sil_ofl",
+      "metadata_url": "https://api.fontshare.com/v2/fonts/slug/public-sans",
+      "metadata_sha256": "c91a3d2e23c3355cf7afc7da28bb45cb17c7ac683d612f9868b79ec12632a72a",
+      "url": "https://cdn.fontshare.com/wf/AB3W4RTJDTV2YGSHJ3RYQNITFFFTVTHJ/HMR5BYPT5TY2T3WCBIBJNUHOZ7BZTM5T/JCGGIZDCUA7N5MMORGBTNWUTQEZEM2D3.woff2",
+      "bytes": 41944,
+      "sha256": "5b51cd397718e82956721fa3da846367c4bfdf2ed502ed1fd03d07a4e74b9cb3",
+      "weight": "100 900",
+      "declared_features": [
+        "aalt",
+        "calt",
+        "ccmp",
+        "dnom",
+        "frac",
+        "liga",
+        "lnum",
+        "locl",
+        "numr",
+        "onum",
+        "ordn",
+        "pnum",
+        "salt",
+        "sinf",
+        "ss01",
+        "subs",
+        "sups",
+        "tnum"
+      ]
+    },
+    {
+      "slug": "jet-brains-mono",
+      "name": "JetBrains Mono",
+      "version": "2.251",
+      "license": "sil_ofl",
+      "metadata_url": "https://api.fontshare.com/v2/fonts/slug/jet-brains-mono",
+      "metadata_sha256": "f9cec1e7731437309bfebe22ede537e8e859198dbf6b075e64f9fdc3186ac3e6",
+      "url": "https://cdn.fontshare.com/wf/NETZQ54ZOKLTIGCF4PEMSPBMZ4WH6PJS/IU37JRVORJNT7W7AFXSHPFH7UV2F5ZWX/ZFWC2YLUJ7YZ5NZDUAYWIG2A6AZGG5QH.woff2",
+      "bytes": 91484,
+      "sha256": "03025ea79e854ffd735e15a166c4d86e3d9183fafd6f29927eb12d759d1bee2d",
+      "weight": "100 800",
+      "declared_features": [
+        "aalt",
+        "calt",
+        "case",
+        "ccmp",
+        "frac",
+        "locl",
+        "ordn",
+        "sinf",
+        "subs",
+        "sups",
+        "zero"
+      ]
+    }
+  ],
+  "licenses": [
+    {
+      "url": "https://www.fontshare.com/licenses/itf-ffl",
+      "sha256": "93697582a84dea6ff88d6611ce500fac2b0035d607c53b2f2b6c8bcda1ca7eb7"
+    },
+    {
+      "url": "https://www.fontshare.com/licenses/sil-ofl",
+      "sha256": "9d309c8fb0da2a899defe56e2cc8ccb42c84c8cad52f5b0f8d816801fd87a00b"
+    }
+  ],
+  "measurements": [
+    {
+      "candidate": "existing",
+      "route": "stats",
+      "url": "/stats?release_id=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2023-24&phase=regular_season&before_date=2024-04-15",
+      "baseline": {
+        "family": "\"Space Grotesk\", \"Space Grotesk Fallback\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif",
+        "table_width": 1390,
+        "row_height": 45.6875
+      },
+      "families": {
+        "ui": "\"Space Grotesk\", \"Space Grotesk Fallback\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif",
+        "data": "\"IBM Plex Mono\", \"IBM Plex Mono Fallback\"",
+        "heading": "\"Space Grotesk\", \"Space Grotesk Fallback\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif"
+      },
+      "numerals": [
+        {
+          "role": "ui",
+          "weight": 400,
+          "default_widths": [
+            8.973968505859375,
+            5.8519744873046875,
+            8.441970825195312,
+            8.455963134765625,
+            8.749969482421875,
+            8.385971069335938,
+            8.567962646484375,
+            7.895965576171875,
+            8.721969604492188,
+            8.567962646484375
+          ],
+          "tabular_widths": [
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "ui",
+          "weight": 500,
+          "default_widths": [
+            9.02996826171875,
+            6.0899810791015625,
+            8.371963500976562,
+            8.483963012695312,
+            8.819961547851562,
+            8.385971069335938,
+            8.609970092773438,
+            7.8259735107421875,
+            8.553970336914062,
+            8.609970092773438
+          ],
+          "tabular_widths": [
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "ui",
+          "weight": 600,
+          "default_widths": [
+            9.043960571289062,
+            6.215972900390625,
+            8.343963623046875,
+            8.497970581054688,
+            8.861968994140625,
+            8.39996337890625,
+            8.637969970703125,
+            7.783966064453125,
+            8.483963012695312,
+            8.637969970703125
+          ],
+          "tabular_widths": [
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "data",
+          "weight": 400,
+          "default_widths": [
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625
+          ],
+          "tabular_widths": [
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "data",
+          "weight": 500,
+          "default_widths": [
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625
+          ],
+          "tabular_widths": [
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "data",
+          "weight": 600,
+          "default_widths": [
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625
+          ],
+          "tabular_widths": [
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "heading",
+          "weight": 400,
+          "default_widths": [
+            8.973968505859375,
+            5.8519744873046875,
+            8.441970825195312,
+            8.455963134765625,
+            8.749969482421875,
+            8.385971069335938,
+            8.567962646484375,
+            7.895965576171875,
+            8.721969604492188,
+            8.567962646484375
+          ],
+          "tabular_widths": [
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "heading",
+          "weight": 500,
+          "default_widths": [
+            9.02996826171875,
+            6.0899810791015625,
+            8.371963500976562,
+            8.483963012695312,
+            8.819961547851562,
+            8.385971069335938,
+            8.609970092773438,
+            7.8259735107421875,
+            8.553970336914062,
+            8.609970092773438
+          ],
+          "tabular_widths": [
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "heading",
+          "weight": 600,
+          "default_widths": [
+            9.043960571289062,
+            6.215972900390625,
+            8.343963623046875,
+            8.497970581054688,
+            8.861968994140625,
+            8.39996337890625,
+            8.637969970703125,
+            7.783966064453125,
+            8.483963012695312,
+            8.637969970703125
+          ],
+          "tabular_widths": [
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875
+          ],
+          "tabular_spread": 0
+        }
+      ],
+      "glyphs": [
+        {
+          "role": "ui",
+          "fallback_dependent_characters": []
+        },
+        {
+          "role": "data",
+          "fallback_dependent_characters": [
+            "ć",
+            "č",
+            "ņ",
+            "ģ",
+            "Ş"
+          ]
+        },
+        {
+          "role": "heading",
+          "fallback_dependent_characters": []
+        }
+      ],
+      "swap_layout_shift_sum": 0,
+      "shifts": [],
+      "body_overflow": false,
+      "table_width": 1390,
+      "row_height": 45.6875,
+      "table_rows": 50,
+      "samples": [
+        "Player Identity",
+        "Participation",
+        "Scoring",
+        "Rebounding",
+        "Playmaking",
+        "Defense",
+        "Efficiency",
+        "Actions",
+        "✓",
+        "#",
+        "Player ",
+        "Team",
+        "GP",
+        "MIN",
+        "MPG",
+        "PTS",
+        "REB",
+        "AST",
+        "STL",
+        "BLK",
+        "FG%",
+        "3P%",
+        "FT%",
+        "TS%",
+        "eFG%",
+        "Detail",
+        "",
+        "1",
+        "☆Luka Dončić",
+        "DAL"
+      ],
+      "glyph_sample": "Nikola Jokić · Luka Dončić · Kristaps Porziņģis · Alperen Şengün · +−%– · 1Il0O · −12.5% · USD 40,000,000",
+      "keyboard_focus": {
+        "tag": "A",
+        "text": "Skip to content"
+      },
+      "sizes": [
+        {
+          "id": "mobile",
+          "width": 375,
+          "height": 812,
+          "body_overflow": false
+        },
+        {
+          "id": "landscape",
+          "width": 812,
+          "height": 375,
+          "body_overflow": false
+        },
+        {
+          "id": "zoom",
+          "width": 1440,
+          "height": 1000,
+          "zoom": "2",
+          "body_overflow": false
+        }
+      ],
+      "screenshot": "existing-stats.png"
+    },
+    {
+      "candidate": "existing",
+      "route": "scatter",
+      "url": "/stats?release_id=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2023-24&phase=regular_season&before_date=2024-04-15&viewMode=scatter",
+      "baseline": {
+        "family": "\"Space Grotesk\", \"Space Grotesk Fallback\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif",
+        "table_width": null,
+        "row_height": null
+      },
+      "families": {
+        "ui": "\"Space Grotesk\", \"Space Grotesk Fallback\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif",
+        "data": "\"IBM Plex Mono\", \"IBM Plex Mono Fallback\"",
+        "heading": "\"Space Grotesk\", \"Space Grotesk Fallback\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif"
+      },
+      "numerals": [
+        {
+          "role": "ui",
+          "weight": 400,
+          "default_widths": [
+            8.973968505859375,
+            5.8519744873046875,
+            8.441970825195312,
+            8.455963134765625,
+            8.749969482421875,
+            8.385971069335938,
+            8.567962646484375,
+            7.895965576171875,
+            8.721969604492188,
+            8.567962646484375
+          ],
+          "tabular_widths": [
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "ui",
+          "weight": 500,
+          "default_widths": [
+            9.02996826171875,
+            6.0899810791015625,
+            8.371963500976562,
+            8.483963012695312,
+            8.819961547851562,
+            8.385971069335938,
+            8.609970092773438,
+            7.8259735107421875,
+            8.553970336914062,
+            8.609970092773438
+          ],
+          "tabular_widths": [
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "ui",
+          "weight": 600,
+          "default_widths": [
+            9.043960571289062,
+            6.215972900390625,
+            8.343963623046875,
+            8.497970581054688,
+            8.861968994140625,
+            8.39996337890625,
+            8.637969970703125,
+            7.783966064453125,
+            8.483963012695312,
+            8.637969970703125
+          ],
+          "tabular_widths": [
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "data",
+          "weight": 400,
+          "default_widths": [
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625
+          ],
+          "tabular_widths": [
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "data",
+          "weight": 500,
+          "default_widths": [
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625
+          ],
+          "tabular_widths": [
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "data",
+          "weight": 600,
+          "default_widths": [
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625
+          ],
+          "tabular_widths": [
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "heading",
+          "weight": 400,
+          "default_widths": [
+            8.973968505859375,
+            5.8519744873046875,
+            8.441970825195312,
+            8.455963134765625,
+            8.749969482421875,
+            8.385971069335938,
+            8.567962646484375,
+            7.895965576171875,
+            8.721969604492188,
+            8.567962646484375
+          ],
+          "tabular_widths": [
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "heading",
+          "weight": 500,
+          "default_widths": [
+            9.02996826171875,
+            6.0899810791015625,
+            8.371963500976562,
+            8.483963012695312,
+            8.819961547851562,
+            8.385971069335938,
+            8.609970092773438,
+            7.8259735107421875,
+            8.553970336914062,
+            8.609970092773438
+          ],
+          "tabular_widths": [
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "heading",
+          "weight": 600,
+          "default_widths": [
+            9.043960571289062,
+            6.215972900390625,
+            8.343963623046875,
+            8.497970581054688,
+            8.861968994140625,
+            8.39996337890625,
+            8.637969970703125,
+            7.783966064453125,
+            8.483963012695312,
+            8.637969970703125
+          ],
+          "tabular_widths": [
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875
+          ],
+          "tabular_spread": 0
+        }
+      ],
+      "glyphs": [
+        {
+          "role": "ui",
+          "fallback_dependent_characters": []
+        },
+        {
+          "role": "data",
+          "fallback_dependent_characters": [
+            "ć",
+            "č",
+            "ņ",
+            "ģ",
+            "Ş"
+          ]
+        },
+        {
+          "role": "heading",
+          "fallback_dependent_characters": []
+        }
+      ],
+      "swap_layout_shift_sum": 0,
+      "shifts": [],
+      "body_overflow": false,
+      "table_width": null,
+      "row_height": null,
+      "table_rows": 0,
+      "samples": [],
+      "glyph_sample": "Nikola Jokić · Luka Dončić · Kristaps Porziņģis · Alperen Şengün · +−%– · 1Il0O · −12.5% · USD 40,000,000",
+      "sizes": [],
+      "screenshot": "existing-scatter.png"
+    },
+    {
+      "candidate": "existing",
+      "route": "finance",
+      "url": "/contracts/TOR?finance_book_id=256f66b1-129d-4904-be30-7b946f6e92fc&finance_financial_season=2025-26&finance_known_at=2026-10-03T16%3A53%3A28.511033Z&finance_effective_on=2025-02-12&finance_team_id=1610612761&season=2024-25",
+      "baseline": {
+        "family": "\"Space Grotesk\", \"Space Grotesk Fallback\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif",
+        "table_width": 1396,
+        "row_height": 262.78125
+      },
+      "families": {
+        "ui": "\"Space Grotesk\", \"Space Grotesk Fallback\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif",
+        "data": "\"IBM Plex Mono\", \"IBM Plex Mono Fallback\"",
+        "heading": "\"Space Grotesk\", \"Space Grotesk Fallback\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif"
+      },
+      "numerals": [
+        {
+          "role": "ui",
+          "weight": 400,
+          "default_widths": [
+            8.973968505859375,
+            5.8519744873046875,
+            8.441970825195312,
+            8.455963134765625,
+            8.749969482421875,
+            8.385971069335938,
+            8.567962646484375,
+            7.895965576171875,
+            8.721969604492188,
+            8.567962646484375
+          ],
+          "tabular_widths": [
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "ui",
+          "weight": 500,
+          "default_widths": [
+            9.02996826171875,
+            6.0899810791015625,
+            8.371963500976562,
+            8.483963012695312,
+            8.819961547851562,
+            8.385971069335938,
+            8.609970092773438,
+            7.8259735107421875,
+            8.553970336914062,
+            8.609970092773438
+          ],
+          "tabular_widths": [
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "ui",
+          "weight": 600,
+          "default_widths": [
+            9.043960571289062,
+            6.215972900390625,
+            8.343963623046875,
+            8.497970581054688,
+            8.861968994140625,
+            8.39996337890625,
+            8.637969970703125,
+            7.783966064453125,
+            8.483963012695312,
+            8.637969970703125
+          ],
+          "tabular_widths": [
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "data",
+          "weight": 400,
+          "default_widths": [
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625
+          ],
+          "tabular_widths": [
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "data",
+          "weight": 500,
+          "default_widths": [
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625
+          ],
+          "tabular_widths": [
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "data",
+          "weight": 600,
+          "default_widths": [
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625
+          ],
+          "tabular_widths": [
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "heading",
+          "weight": 400,
+          "default_widths": [
+            8.973968505859375,
+            5.8519744873046875,
+            8.441970825195312,
+            8.455963134765625,
+            8.749969482421875,
+            8.385971069335938,
+            8.567962646484375,
+            7.895965576171875,
+            8.721969604492188,
+            8.567962646484375
+          ],
+          "tabular_widths": [
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "heading",
+          "weight": 500,
+          "default_widths": [
+            9.02996826171875,
+            6.0899810791015625,
+            8.371963500976562,
+            8.483963012695312,
+            8.819961547851562,
+            8.385971069335938,
+            8.609970092773438,
+            7.8259735107421875,
+            8.553970336914062,
+            8.609970092773438
+          ],
+          "tabular_widths": [
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "heading",
+          "weight": 600,
+          "default_widths": [
+            9.043960571289062,
+            6.215972900390625,
+            8.343963623046875,
+            8.497970581054688,
+            8.861968994140625,
+            8.39996337890625,
+            8.637969970703125,
+            7.783966064453125,
+            8.483963012695312,
+            8.637969970703125
+          ],
+          "tabular_widths": [
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875
+          ],
+          "tabular_spread": 0
+        }
+      ],
+      "glyphs": [
+        {
+          "role": "ui",
+          "fallback_dependent_characters": []
+        },
+        {
+          "role": "data",
+          "fallback_dependent_characters": [
+            "ć",
+            "č",
+            "ņ",
+            "ģ",
+            "Ş"
+          ]
+        },
+        {
+          "role": "heading",
+          "fallback_dependent_characters": []
+        }
+      ],
+      "swap_layout_shift_sum": 0,
+      "shifts": [],
+      "body_overflow": false,
+      "table_width": 1396,
+      "row_height": 262.78125,
+      "table_rows": 7,
+      "samples": [
+        "Player / contract",
+        "Team / status",
+        "Known selected amount",
+        "Small vs Big",
+        "Derived AAV",
+        "Terms / sources",
+        "Brandon Ingramnba:1627742:tor-extension-2025-02Player Stats",
+        "TORexplicitSigned",
+        "Unknownmissing",
+        "unknown",
+        "USD 40000000Reported total / years; not salary",
+        "reported three-year extension; USD 120 million total2026-10-03T16:53:27.510900Zmulti-year extension announcement2026-10-03T16:52:13.022436Zreported three-year extension; USD 120 million total2026-10-03T16:53:27.511033Zmulti-year extension announcement2026-10-03T16:52:13.022436Zmulti-year extension announcement2026-10-03T16:52:13.022436Zmulti-year extension announcement2026-10-03T16:52:13.022436Z",
+        "Season / effective date",
+        "Term family / reported value",
+        "Source / observation",
+        "Contract-wideUnknownunknown effective date",
+        "amount · total_valueReported USD 120000000.00reported three-year extension; USD 120 million total",
+        "Associated Press via NBA.com; reported terms, not an official salary schedulearticle title and announcement paragraph; reported total onlyObserved 2026-10-03T16:53:27.510900ZCorrection: Retain NBA-hosted AP reported terms as separate reviewed source; original announcement remains unchanged.Replaces 3e535722-00fb-4e40-9da8-e1655c6d80acEvidence identitiesOrigin book: 256f66b1-129d-4904-be30-7b946f6e92fcObservation: ee6a56dc-c213-4690-960a-4cbe4baa2d9aContent SHA-256: 43645b206be7629fca499eec48c2975e0efd7c21886a9fb58f7ce63ceb29eb35Source SHA-256: 43c5ba5c1ad009fdebc55823cf9c9d7f4a1d3a4fe6dfb731a48272b5c791d1b3Source observed: 2026-10-03T16:52:13.022436ZUse basis: Local factual research note; no full article text redistributed; not automation/reuse permission for source pages",
+        "Contract-wide2025-02-12dated report",
+        "association · termsTORmulti-year extension announcement",
+        "Toronto Raptors announcement, observed through indexed web excerptindexed announcement excerpt; terms not enumeratedObserved 2026-10-03T16:52:13.022436ZEvidence identitiesOrigin book: 96b89635-82b4-47c7-b4f6-52ab85c0f0bcObservation: 4f745c61-faa5-4ce5-9ca7-e292952f080aContent SHA-256: 9a750017d169bd42050c5061cb99bfd451d9f96d0c932e226a0c1047c06bbf1eSource SHA-256: 14a5ddb88b666c567d57937ec476e7a3bc85cba8d848e62b99528f5e4048f9ebSource observed: 2026-10-03T16:52:13.022436ZUse basis: Local factual research note; no full article text redistributed; not automation/reuse permission for source pages",
+        "Contract-wideUnknownunknown effective date",
+        "contract · terms3 yearsreported three-year extension; USD 120 million total",
+        "Associated Press via NBA.com; reported terms, not an official salary schedulearticle title and announcement paragraph; reported total onlyObserved 2026-10-03T16:53:27.511033ZCorrection: Retain NBA-hosted AP reported terms as separate reviewed source; original announcement remains unchanged.Replaces ca0e2aba-15c6-4a95-8a4d-10f4cd9e062bEvidence identitiesOrigin book: 256f66b1-129d-4904-be30-7b946f6e92fcObservation: b2268b81-cdfb-403c-bfd6-21666b6a1cc7Content SHA-256: 82ed17924cf10de617d3b15f9dd0bafe031743a8d421090fe49478550677fd52Source SHA-256: 43c5ba5c1ad009fdebc55823cf9c9d7f4a1d3a4fe6dfb731a48272b5c791d1b3Source observed: 2026-10-03T16:52:13.022436ZUse basis: Local factual research note; no full article text redistributed; not automation/reuse permission for source pages",
+        "Contract-wideUnknownunknown effective date",
+        "guarantee · termsUnknownmulti-year extension announcement",
+        "Toronto Raptors announcement, observed through indexed web excerptindexed announcement excerpt; terms not enumeratedObserved 2026-10-03T16:52:13.022436ZEvidence identitiesOrigin book: 96b89635-82b4-47c7-b4f6-52ab85c0f0bcObservation: 69d0f845-acb4-44d5-a549-a102cace0089Content SHA-256: d100a292805736c5402964b66aad34f8ce9d7f137a468fe2f53f4d347931a5b6Source SHA-256: 14a5ddb88b666c567d57937ec476e7a3bc85cba8d848e62b99528f5e4048f9ebSource observed: 2026-10-03T16:52:13.022436ZUse basis: Local factual research note; no full article text redistributed; not automation/reuse permission for source pages",
+        "Contract-wideUnknownunknown effective date",
+        "option · termsUnknown · Unknownmulti-year extension announcement",
+        "Toronto Raptors announcement, observed through indexed web excerptindexed announcement excerpt; terms not enumeratedObserved 2026-10-03T16:52:13.022436ZEvidence identitiesOrigin book: 96b89635-82b4-47c7-b4f6-52ab85c0f0bcObservation: 58517719-9123-4039-9656-be65f6e2e5d7Content SHA-256: 0d7200eeb50a7206fd29312978d7b076a336d0072695203359a55ccee2f9bf73Source SHA-256: 14a5ddb88b666c567d57937ec476e7a3bc85cba8d848e62b99528f5e4048f9ebSource observed: 2026-10-03T16:52:13.022436ZUse basis: Local factual research note; no full article text redistributed; not automation/reuse permission for source pages"
+      ],
+      "glyph_sample": "Nikola Jokić · Luka Dončić · Kristaps Porziņģis · Alperen Şengün · +−%– · 1Il0O · −12.5% · USD 40,000,000",
+      "sizes": [],
+      "screenshot": "existing-finance.png"
+    },
+    {
+      "candidate": "existing",
+      "route": "conversation",
+      "url": "/investigations/saved/3bcb37c9-b410-44b1-be7f-c3b368fbe28c",
+      "baseline": {
+        "family": "\"Space Grotesk\", \"Space Grotesk Fallback\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif",
+        "table_width": 1392,
+        "row_height": 38.984375
+      },
+      "families": {
+        "ui": "\"Space Grotesk\", \"Space Grotesk Fallback\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif",
+        "data": "\"IBM Plex Mono\", \"IBM Plex Mono Fallback\"",
+        "heading": "\"Space Grotesk\", \"Space Grotesk Fallback\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif"
+      },
+      "numerals": [
+        {
+          "role": "ui",
+          "weight": 400,
+          "default_widths": [
+            8.973968505859375,
+            5.8519744873046875,
+            8.441970825195312,
+            8.455963134765625,
+            8.749969482421875,
+            8.385971069335938,
+            8.567962646484375,
+            7.895965576171875,
+            8.721969604492188,
+            8.567962646484375
+          ],
+          "tabular_widths": [
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "ui",
+          "weight": 500,
+          "default_widths": [
+            9.02996826171875,
+            6.0899810791015625,
+            8.371963500976562,
+            8.483963012695312,
+            8.819961547851562,
+            8.385971069335938,
+            8.609970092773438,
+            7.8259735107421875,
+            8.553970336914062,
+            8.609970092773438
+          ],
+          "tabular_widths": [
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "ui",
+          "weight": 600,
+          "default_widths": [
+            9.043960571289062,
+            6.215972900390625,
+            8.343963623046875,
+            8.497970581054688,
+            8.861968994140625,
+            8.39996337890625,
+            8.637969970703125,
+            7.783966064453125,
+            8.483963012695312,
+            8.637969970703125
+          ],
+          "tabular_widths": [
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "data",
+          "weight": 400,
+          "default_widths": [
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625
+          ],
+          "tabular_widths": [
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "data",
+          "weight": 500,
+          "default_widths": [
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625
+          ],
+          "tabular_widths": [
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "data",
+          "weight": 600,
+          "default_widths": [
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625
+          ],
+          "tabular_widths": [
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "heading",
+          "weight": 400,
+          "default_widths": [
+            8.973968505859375,
+            5.8519744873046875,
+            8.441970825195312,
+            8.455963134765625,
+            8.749969482421875,
+            8.385971069335938,
+            8.567962646484375,
+            7.895965576171875,
+            8.721969604492188,
+            8.567962646484375
+          ],
+          "tabular_widths": [
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "heading",
+          "weight": 500,
+          "default_widths": [
+            9.02996826171875,
+            6.0899810791015625,
+            8.371963500976562,
+            8.483963012695312,
+            8.819961547851562,
+            8.385971069335938,
+            8.609970092773438,
+            7.8259735107421875,
+            8.553970336914062,
+            8.609970092773438
+          ],
+          "tabular_widths": [
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "heading",
+          "weight": 600,
+          "default_widths": [
+            9.043960571289062,
+            6.215972900390625,
+            8.343963623046875,
+            8.497970581054688,
+            8.861968994140625,
+            8.39996337890625,
+            8.637969970703125,
+            7.783966064453125,
+            8.483963012695312,
+            8.637969970703125
+          ],
+          "tabular_widths": [
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875,
+            8.6875
+          ],
+          "tabular_spread": 0
+        }
+      ],
+      "glyphs": [
+        {
+          "role": "ui",
+          "fallback_dependent_characters": []
+        },
+        {
+          "role": "data",
+          "fallback_dependent_characters": [
+            "ć",
+            "č",
+            "ņ",
+            "ģ",
+            "Ş"
+          ]
+        },
+        {
+          "role": "heading",
+          "fallback_dependent_characters": []
+        }
+      ],
+      "swap_layout_shift_sum": 0,
+      "shifts": [],
+      "body_overflow": false,
+      "table_width": 1392,
+      "row_height": 38.984375,
+      "table_rows": 27,
+      "samples": [
+        "game date",
+        "value",
+        "minutes",
+        "team tricode",
+        "opponent tricode",
+        "is home",
+        "game id",
+        "2025-04-13",
+        "35",
+        "36.6",
+        "TOR",
+        "SAS",
+        "false",
+        "0022401197",
+        "2025-04-11",
+        "26",
+        "30.5",
+        "TOR",
+        "DAL",
+        "false",
+        "0022401178",
+        "2025-04-09",
+        "17",
+        "20.4",
+        "TOR",
+        "CHA",
+        "true",
+        "0022401158",
+        "2025-04-03",
+        "5"
+      ],
+      "glyph_sample": "Nikola Jokić · Luka Dončić · Kristaps Porziņģis · Alperen Şengün · +−%– · 1Il0O · −12.5% · USD 40,000,000",
+      "sizes": [],
+      "screenshot": "existing-conversation.png"
+    },
+    {
+      "candidate": "switzer-clash",
+      "route": "stats",
+      "url": "/stats?release_id=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2023-24&phase=regular_season&before_date=2024-04-15",
+      "baseline": {
+        "family": "\"Space Grotesk\", \"Space Grotesk Fallback\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif",
+        "table_width": 1390,
+        "row_height": 45.6875
+      },
+      "families": {
+        "ui": "B36-switzer",
+        "data": "B36-switzer",
+        "heading": "B36-clash-grotesk"
+      },
+      "numerals": [
+        {
+          "role": "ui",
+          "weight": 400,
+          "default_widths": [
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375
+          ],
+          "tabular_widths": [
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "ui",
+          "weight": 500,
+          "default_widths": [
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375
+          ],
+          "tabular_widths": [
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "ui",
+          "weight": 600,
+          "default_widths": [
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375
+          ],
+          "tabular_widths": [
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "data",
+          "weight": 400,
+          "default_widths": [
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375
+          ],
+          "tabular_widths": [
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "data",
+          "weight": 500,
+          "default_widths": [
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375
+          ],
+          "tabular_widths": [
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "data",
+          "weight": 600,
+          "default_widths": [
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375
+          ],
+          "tabular_widths": [
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "heading",
+          "weight": 400,
+          "default_widths": [
+            9.085968017578125,
+            4.087982177734375,
+            8.02197265625,
+            8.06396484375,
+            8.497970581054688,
+            8.427963256835938,
+            8.679962158203125,
+            7.2099761962890625,
+            8.427963256835938,
+            8.679962158203125
+          ],
+          "tabular_widths": [
+            9.09375,
+            4.09375,
+            8.03125,
+            8.078125,
+            8.5,
+            8.4375,
+            8.6875,
+            7.21875,
+            8.4375,
+            8.6875
+          ],
+          "tabular_spread": 5
+        },
+        {
+          "role": "heading",
+          "weight": 500,
+          "default_widths": [
+            9.617965698242188,
+            4.59197998046875,
+            8.511962890625,
+            8.441970825195312,
+            8.833969116210938,
+            8.903961181640625,
+            8.987960815429688,
+            7.5319671630859375,
+            8.609970092773438,
+            8.987960815429688
+          ],
+          "tabular_widths": [
+            9.625,
+            4.59375,
+            8.515625,
+            8.453125,
+            8.84375,
+            8.90625,
+            9,
+            7.546875,
+            8.625,
+            9
+          ],
+          "tabular_spread": 5.03125
+        },
+        {
+          "role": "heading",
+          "weight": 600,
+          "default_widths": [
+            9.869964599609375,
+            5.0679779052734375,
+            8.861968994140625,
+            8.721969604492188,
+            9.127960205078125,
+            9.1839599609375,
+            9.155960083007812,
+            7.8119659423828125,
+            8.791961669921875,
+            9.155960083007812
+          ],
+          "tabular_widths": [
+            9.875,
+            5.078125,
+            8.875,
+            8.734375,
+            9.140625,
+            9.1875,
+            9.15625,
+            7.8125,
+            8.796875,
+            9.15625
+          ],
+          "tabular_spread": 4.796875
+        }
+      ],
+      "glyphs": [
+        {
+          "role": "ui",
+          "fallback_dependent_characters": []
+        },
+        {
+          "role": "data",
+          "fallback_dependent_characters": []
+        },
+        {
+          "role": "heading",
+          "fallback_dependent_characters": []
+        }
+      ],
+      "swap_layout_shift_sum": 0.028656349894205728,
+      "shifts": [
+        {
+          "value": 0.007394005300262828,
+          "time": 752.1000000014901
+        },
+        {
+          "value": 0.0212623445939429,
+          "time": 787
+        }
+      ],
+      "body_overflow": false,
+      "table_width": 1390,
+      "row_height": 45.6875,
+      "table_rows": 50,
+      "samples": [
+        "Player Identity",
+        "Participation",
+        "Scoring",
+        "Rebounding",
+        "Playmaking",
+        "Defense",
+        "Efficiency",
+        "Actions",
+        "✓",
+        "#",
+        "Player ",
+        "Team",
+        "GP",
+        "MIN",
+        "MPG",
+        "PTS",
+        "REB",
+        "AST",
+        "STL",
+        "BLK",
+        "FG%",
+        "3P%",
+        "FT%",
+        "TS%",
+        "eFG%",
+        "Detail",
+        "",
+        "1",
+        "☆Luka Dončić",
+        "DAL"
+      ],
+      "glyph_sample": "Nikola Jokić · Luka Dončić · Kristaps Porziņģis · Alperen Şengün · +−%– · 1Il0O · −12.5% · USD 40,000,000",
+      "keyboard_focus": {
+        "tag": "A",
+        "text": "Skip to content"
+      },
+      "sizes": [
+        {
+          "id": "mobile",
+          "width": 375,
+          "height": 812,
+          "body_overflow": false
+        },
+        {
+          "id": "landscape",
+          "width": 812,
+          "height": 375,
+          "body_overflow": false
+        },
+        {
+          "id": "zoom",
+          "width": 1440,
+          "height": 1000,
+          "zoom": "2",
+          "body_overflow": false
+        }
+      ],
+      "screenshot": "switzer-clash-stats.png"
+    },
+    {
+      "candidate": "switzer-clash",
+      "route": "scatter",
+      "url": "/stats?release_id=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2023-24&phase=regular_season&before_date=2024-04-15&viewMode=scatter",
+      "baseline": {
+        "family": "\"Space Grotesk\", \"Space Grotesk Fallback\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif",
+        "table_width": null,
+        "row_height": null
+      },
+      "families": {
+        "ui": "B36-switzer",
+        "data": "B36-switzer",
+        "heading": "B36-clash-grotesk"
+      },
+      "numerals": [
+        {
+          "role": "ui",
+          "weight": 400,
+          "default_widths": [
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375
+          ],
+          "tabular_widths": [
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "ui",
+          "weight": 500,
+          "default_widths": [
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375
+          ],
+          "tabular_widths": [
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "ui",
+          "weight": 600,
+          "default_widths": [
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375
+          ],
+          "tabular_widths": [
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "data",
+          "weight": 400,
+          "default_widths": [
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375
+          ],
+          "tabular_widths": [
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "data",
+          "weight": 500,
+          "default_widths": [
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375
+          ],
+          "tabular_widths": [
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "data",
+          "weight": 600,
+          "default_widths": [
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375
+          ],
+          "tabular_widths": [
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "heading",
+          "weight": 400,
+          "default_widths": [
+            9.085968017578125,
+            4.087982177734375,
+            8.02197265625,
+            8.06396484375,
+            8.497970581054688,
+            8.427963256835938,
+            8.679962158203125,
+            7.2099761962890625,
+            8.427963256835938,
+            8.679962158203125
+          ],
+          "tabular_widths": [
+            9.09375,
+            4.09375,
+            8.03125,
+            8.078125,
+            8.5,
+            8.4375,
+            8.6875,
+            7.21875,
+            8.4375,
+            8.6875
+          ],
+          "tabular_spread": 5
+        },
+        {
+          "role": "heading",
+          "weight": 500,
+          "default_widths": [
+            9.617965698242188,
+            4.59197998046875,
+            8.511962890625,
+            8.441970825195312,
+            8.833969116210938,
+            8.903961181640625,
+            8.987960815429688,
+            7.5319671630859375,
+            8.609970092773438,
+            8.987960815429688
+          ],
+          "tabular_widths": [
+            9.625,
+            4.59375,
+            8.515625,
+            8.453125,
+            8.84375,
+            8.90625,
+            9,
+            7.546875,
+            8.625,
+            9
+          ],
+          "tabular_spread": 5.03125
+        },
+        {
+          "role": "heading",
+          "weight": 600,
+          "default_widths": [
+            9.869964599609375,
+            5.0679779052734375,
+            8.861968994140625,
+            8.721969604492188,
+            9.127960205078125,
+            9.1839599609375,
+            9.155960083007812,
+            7.8119659423828125,
+            8.791961669921875,
+            9.155960083007812
+          ],
+          "tabular_widths": [
+            9.875,
+            5.078125,
+            8.875,
+            8.734375,
+            9.140625,
+            9.1875,
+            9.15625,
+            7.8125,
+            8.796875,
+            9.15625
+          ],
+          "tabular_spread": 4.796875
+        }
+      ],
+      "glyphs": [
+        {
+          "role": "ui",
+          "fallback_dependent_characters": []
+        },
+        {
+          "role": "data",
+          "fallback_dependent_characters": []
+        },
+        {
+          "role": "heading",
+          "fallback_dependent_characters": []
+        }
+      ],
+      "swap_layout_shift_sum": 0.009553787879472898,
+      "shifts": [
+        {
+          "value": 0.004791422812379437,
+          "time": 644.1999999955297
+        },
+        {
+          "value": 0.00476236506709346,
+          "time": 657.6999999955297
+        }
+      ],
+      "body_overflow": false,
+      "table_width": null,
+      "row_height": null,
+      "table_rows": 0,
+      "samples": [],
+      "glyph_sample": "Nikola Jokić · Luka Dončić · Kristaps Porziņģis · Alperen Şengün · +−%– · 1Il0O · −12.5% · USD 40,000,000",
+      "sizes": [],
+      "screenshot": "switzer-clash-scatter.png"
+    },
+    {
+      "candidate": "switzer-clash",
+      "route": "finance",
+      "url": "/contracts/TOR?finance_book_id=256f66b1-129d-4904-be30-7b946f6e92fc&finance_financial_season=2025-26&finance_known_at=2026-10-03T16%3A53%3A28.511033Z&finance_effective_on=2025-02-12&finance_team_id=1610612761&season=2024-25",
+      "baseline": {
+        "family": "\"Space Grotesk\", \"Space Grotesk Fallback\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif",
+        "table_width": 1396,
+        "row_height": 262.78125
+      },
+      "families": {
+        "ui": "B36-switzer",
+        "data": "B36-switzer",
+        "heading": "B36-clash-grotesk"
+      },
+      "numerals": [
+        {
+          "role": "ui",
+          "weight": 400,
+          "default_widths": [
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375
+          ],
+          "tabular_widths": [
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "ui",
+          "weight": 500,
+          "default_widths": [
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375
+          ],
+          "tabular_widths": [
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "ui",
+          "weight": 600,
+          "default_widths": [
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375
+          ],
+          "tabular_widths": [
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "data",
+          "weight": 400,
+          "default_widths": [
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375
+          ],
+          "tabular_widths": [
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "data",
+          "weight": 500,
+          "default_widths": [
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375
+          ],
+          "tabular_widths": [
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "data",
+          "weight": 600,
+          "default_widths": [
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375
+          ],
+          "tabular_widths": [
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "heading",
+          "weight": 400,
+          "default_widths": [
+            9.085968017578125,
+            4.087982177734375,
+            8.02197265625,
+            8.06396484375,
+            8.497970581054688,
+            8.427963256835938,
+            8.679962158203125,
+            7.2099761962890625,
+            8.427963256835938,
+            8.679962158203125
+          ],
+          "tabular_widths": [
+            9.09375,
+            4.09375,
+            8.03125,
+            8.078125,
+            8.5,
+            8.4375,
+            8.6875,
+            7.21875,
+            8.4375,
+            8.6875
+          ],
+          "tabular_spread": 5
+        },
+        {
+          "role": "heading",
+          "weight": 500,
+          "default_widths": [
+            9.617965698242188,
+            4.59197998046875,
+            8.511962890625,
+            8.441970825195312,
+            8.833969116210938,
+            8.903961181640625,
+            8.987960815429688,
+            7.5319671630859375,
+            8.609970092773438,
+            8.987960815429688
+          ],
+          "tabular_widths": [
+            9.625,
+            4.59375,
+            8.515625,
+            8.453125,
+            8.84375,
+            8.90625,
+            9,
+            7.546875,
+            8.625,
+            9
+          ],
+          "tabular_spread": 5.03125
+        },
+        {
+          "role": "heading",
+          "weight": 600,
+          "default_widths": [
+            9.869964599609375,
+            5.0679779052734375,
+            8.861968994140625,
+            8.721969604492188,
+            9.127960205078125,
+            9.1839599609375,
+            9.155960083007812,
+            7.8119659423828125,
+            8.791961669921875,
+            9.155960083007812
+          ],
+          "tabular_widths": [
+            9.875,
+            5.078125,
+            8.875,
+            8.734375,
+            9.140625,
+            9.1875,
+            9.15625,
+            7.8125,
+            8.796875,
+            9.15625
+          ],
+          "tabular_spread": 4.796875
+        }
+      ],
+      "glyphs": [
+        {
+          "role": "ui",
+          "fallback_dependent_characters": []
+        },
+        {
+          "role": "data",
+          "fallback_dependent_characters": []
+        },
+        {
+          "role": "heading",
+          "fallback_dependent_characters": []
+        }
+      ],
+      "swap_layout_shift_sum": 0.014332057299201872,
+      "shifts": [
+        {
+          "value": 0.013362860860942323,
+          "time": 387.8999999985099
+        },
+        {
+          "value": 0.0009691964382595487,
+          "time": 400.5
+        }
+      ],
+      "body_overflow": false,
+      "table_width": 1396,
+      "row_height": 262.78125,
+      "table_rows": 7,
+      "samples": [
+        "Player / contract",
+        "Team / status",
+        "Known selected amount",
+        "Small vs Big",
+        "Derived AAV",
+        "Terms / sources",
+        "Brandon Ingramnba:1627742:tor-extension-2025-02Player Stats",
+        "TORexplicitSigned",
+        "Unknownmissing",
+        "unknown",
+        "USD 40000000Reported total / years; not salary",
+        "reported three-year extension; USD 120 million total2026-10-03T16:53:27.510900Zmulti-year extension announcement2026-10-03T16:52:13.022436Zreported three-year extension; USD 120 million total2026-10-03T16:53:27.511033Zmulti-year extension announcement2026-10-03T16:52:13.022436Zmulti-year extension announcement2026-10-03T16:52:13.022436Zmulti-year extension announcement2026-10-03T16:52:13.022436Z",
+        "Season / effective date",
+        "Term family / reported value",
+        "Source / observation",
+        "Contract-wideUnknownunknown effective date",
+        "amount · total_valueReported USD 120000000.00reported three-year extension; USD 120 million total",
+        "Associated Press via NBA.com; reported terms, not an official salary schedulearticle title and announcement paragraph; reported total onlyObserved 2026-10-03T16:53:27.510900ZCorrection: Retain NBA-hosted AP reported terms as separate reviewed source; original announcement remains unchanged.Replaces 3e535722-00fb-4e40-9da8-e1655c6d80acEvidence identitiesOrigin book: 256f66b1-129d-4904-be30-7b946f6e92fcObservation: ee6a56dc-c213-4690-960a-4cbe4baa2d9aContent SHA-256: 43645b206be7629fca499eec48c2975e0efd7c21886a9fb58f7ce63ceb29eb35Source SHA-256: 43c5ba5c1ad009fdebc55823cf9c9d7f4a1d3a4fe6dfb731a48272b5c791d1b3Source observed: 2026-10-03T16:52:13.022436ZUse basis: Local factual research note; no full article text redistributed; not automation/reuse permission for source pages",
+        "Contract-wide2025-02-12dated report",
+        "association · termsTORmulti-year extension announcement",
+        "Toronto Raptors announcement, observed through indexed web excerptindexed announcement excerpt; terms not enumeratedObserved 2026-10-03T16:52:13.022436ZEvidence identitiesOrigin book: 96b89635-82b4-47c7-b4f6-52ab85c0f0bcObservation: 4f745c61-faa5-4ce5-9ca7-e292952f080aContent SHA-256: 9a750017d169bd42050c5061cb99bfd451d9f96d0c932e226a0c1047c06bbf1eSource SHA-256: 14a5ddb88b666c567d57937ec476e7a3bc85cba8d848e62b99528f5e4048f9ebSource observed: 2026-10-03T16:52:13.022436ZUse basis: Local factual research note; no full article text redistributed; not automation/reuse permission for source pages",
+        "Contract-wideUnknownunknown effective date",
+        "contract · terms3 yearsreported three-year extension; USD 120 million total",
+        "Associated Press via NBA.com; reported terms, not an official salary schedulearticle title and announcement paragraph; reported total onlyObserved 2026-10-03T16:53:27.511033ZCorrection: Retain NBA-hosted AP reported terms as separate reviewed source; original announcement remains unchanged.Replaces ca0e2aba-15c6-4a95-8a4d-10f4cd9e062bEvidence identitiesOrigin book: 256f66b1-129d-4904-be30-7b946f6e92fcObservation: b2268b81-cdfb-403c-bfd6-21666b6a1cc7Content SHA-256: 82ed17924cf10de617d3b15f9dd0bafe031743a8d421090fe49478550677fd52Source SHA-256: 43c5ba5c1ad009fdebc55823cf9c9d7f4a1d3a4fe6dfb731a48272b5c791d1b3Source observed: 2026-10-03T16:52:13.022436ZUse basis: Local factual research note; no full article text redistributed; not automation/reuse permission for source pages",
+        "Contract-wideUnknownunknown effective date",
+        "guarantee · termsUnknownmulti-year extension announcement",
+        "Toronto Raptors announcement, observed through indexed web excerptindexed announcement excerpt; terms not enumeratedObserved 2026-10-03T16:52:13.022436ZEvidence identitiesOrigin book: 96b89635-82b4-47c7-b4f6-52ab85c0f0bcObservation: 69d0f845-acb4-44d5-a549-a102cace0089Content SHA-256: d100a292805736c5402964b66aad34f8ce9d7f137a468fe2f53f4d347931a5b6Source SHA-256: 14a5ddb88b666c567d57937ec476e7a3bc85cba8d848e62b99528f5e4048f9ebSource observed: 2026-10-03T16:52:13.022436ZUse basis: Local factual research note; no full article text redistributed; not automation/reuse permission for source pages",
+        "Contract-wideUnknownunknown effective date",
+        "option · termsUnknown · Unknownmulti-year extension announcement",
+        "Toronto Raptors announcement, observed through indexed web excerptindexed announcement excerpt; terms not enumeratedObserved 2026-10-03T16:52:13.022436ZEvidence identitiesOrigin book: 96b89635-82b4-47c7-b4f6-52ab85c0f0bcObservation: 58517719-9123-4039-9656-be65f6e2e5d7Content SHA-256: 0d7200eeb50a7206fd29312978d7b076a336d0072695203359a55ccee2f9bf73Source SHA-256: 14a5ddb88b666c567d57937ec476e7a3bc85cba8d848e62b99528f5e4048f9ebSource observed: 2026-10-03T16:52:13.022436ZUse basis: Local factual research note; no full article text redistributed; not automation/reuse permission for source pages"
+      ],
+      "glyph_sample": "Nikola Jokić · Luka Dončić · Kristaps Porziņģis · Alperen Şengün · +−%– · 1Il0O · −12.5% · USD 40,000,000",
+      "sizes": [],
+      "screenshot": "switzer-clash-finance.png"
+    },
+    {
+      "candidate": "switzer-clash",
+      "route": "conversation",
+      "url": "/investigations/saved/3bcb37c9-b410-44b1-be7f-c3b368fbe28c",
+      "baseline": {
+        "family": "\"Space Grotesk\", \"Space Grotesk Fallback\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif",
+        "table_width": 1392,
+        "row_height": 38.984375
+      },
+      "families": {
+        "ui": "B36-switzer",
+        "data": "B36-switzer",
+        "heading": "B36-clash-grotesk"
+      },
+      "numerals": [
+        {
+          "role": "ui",
+          "weight": 400,
+          "default_widths": [
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375
+          ],
+          "tabular_widths": [
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "ui",
+          "weight": 500,
+          "default_widths": [
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375
+          ],
+          "tabular_widths": [
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "ui",
+          "weight": 600,
+          "default_widths": [
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375
+          ],
+          "tabular_widths": [
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "data",
+          "weight": 400,
+          "default_widths": [
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375
+          ],
+          "tabular_widths": [
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "data",
+          "weight": 500,
+          "default_widths": [
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375
+          ],
+          "tabular_widths": [
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "data",
+          "weight": 600,
+          "default_widths": [
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375,
+            8.06396484375
+          ],
+          "tabular_widths": [
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125,
+            8.078125
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "heading",
+          "weight": 400,
+          "default_widths": [
+            9.085968017578125,
+            4.087982177734375,
+            8.02197265625,
+            8.06396484375,
+            8.497970581054688,
+            8.427963256835938,
+            8.679962158203125,
+            7.2099761962890625,
+            8.427963256835938,
+            8.679962158203125
+          ],
+          "tabular_widths": [
+            9.09375,
+            4.09375,
+            8.03125,
+            8.078125,
+            8.5,
+            8.4375,
+            8.6875,
+            7.21875,
+            8.4375,
+            8.6875
+          ],
+          "tabular_spread": 5
+        },
+        {
+          "role": "heading",
+          "weight": 500,
+          "default_widths": [
+            9.617965698242188,
+            4.59197998046875,
+            8.511962890625,
+            8.441970825195312,
+            8.833969116210938,
+            8.903961181640625,
+            8.987960815429688,
+            7.5319671630859375,
+            8.609970092773438,
+            8.987960815429688
+          ],
+          "tabular_widths": [
+            9.625,
+            4.59375,
+            8.515625,
+            8.453125,
+            8.84375,
+            8.90625,
+            9,
+            7.546875,
+            8.625,
+            9
+          ],
+          "tabular_spread": 5.03125
+        },
+        {
+          "role": "heading",
+          "weight": 600,
+          "default_widths": [
+            9.869964599609375,
+            5.0679779052734375,
+            8.861968994140625,
+            8.721969604492188,
+            9.127960205078125,
+            9.1839599609375,
+            9.155960083007812,
+            7.8119659423828125,
+            8.791961669921875,
+            9.155960083007812
+          ],
+          "tabular_widths": [
+            9.875,
+            5.078125,
+            8.875,
+            8.734375,
+            9.140625,
+            9.1875,
+            9.15625,
+            7.8125,
+            8.796875,
+            9.15625
+          ],
+          "tabular_spread": 4.796875
+        }
+      ],
+      "glyphs": [
+        {
+          "role": "ui",
+          "fallback_dependent_characters": []
+        },
+        {
+          "role": "data",
+          "fallback_dependent_characters": []
+        },
+        {
+          "role": "heading",
+          "fallback_dependent_characters": []
+        }
+      ],
+      "swap_layout_shift_sum": 0.006893411985797647,
+      "shifts": [
+        {
+          "value": 0.005949409096800251,
+          "time": 366.59999999403954
+        },
+        {
+          "value": 0.0009440028889973959,
+          "time": 376.69999999552965
+        }
+      ],
+      "body_overflow": false,
+      "table_width": 1392,
+      "row_height": 38.984375,
+      "table_rows": 27,
+      "samples": [
+        "game date",
+        "value",
+        "minutes",
+        "team tricode",
+        "opponent tricode",
+        "is home",
+        "game id",
+        "2025-04-13",
+        "35",
+        "36.6",
+        "TOR",
+        "SAS",
+        "false",
+        "0022401197",
+        "2025-04-11",
+        "26",
+        "30.5",
+        "TOR",
+        "DAL",
+        "false",
+        "0022401178",
+        "2025-04-09",
+        "17",
+        "20.4",
+        "TOR",
+        "CHA",
+        "true",
+        "0022401158",
+        "2025-04-03",
+        "5"
+      ],
+      "glyph_sample": "Nikola Jokić · Luka Dončić · Kristaps Porziņģis · Alperen Şengün · +−%– · 1Il0O · −12.5% · USD 40,000,000",
+      "sizes": [],
+      "screenshot": "switzer-clash-conversation.png"
+    },
+    {
+      "candidate": "public-sans",
+      "route": "stats",
+      "url": "/stats?release_id=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2023-24&phase=regular_season&before_date=2024-04-15",
+      "baseline": {
+        "family": "\"Space Grotesk\", \"Space Grotesk Fallback\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif",
+        "table_width": 1390,
+        "row_height": 45.6875
+      },
+      "families": {
+        "ui": "B36-public-sans",
+        "data": "B36-public-sans",
+        "heading": "B36-public-sans"
+      },
+      "numerals": [
+        {
+          "role": "ui",
+          "weight": 400,
+          "default_widths": [
+            8.567962646484375,
+            5.6979827880859375,
+            8.343963623046875,
+            8.819961547851562,
+            8.798965454101562,
+            8.966964721679688,
+            8.7149658203125,
+            8.406967163085938,
+            9.064956665039062,
+            8.742965698242188
+          ],
+          "tabular_widths": [
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "ui",
+          "weight": 500,
+          "default_widths": [
+            8.6939697265625,
+            5.7749786376953125,
+            8.490966796875,
+            8.952957153320312,
+            8.903961181640625,
+            9.099960327148438,
+            8.861968994140625,
+            8.504959106445312,
+            9.155960083007812,
+            8.875961303710938
+          ],
+          "tabular_widths": [
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "ui",
+          "weight": 600,
+          "default_widths": [
+            8.812957763671875,
+            5.858978271484375,
+            8.64495849609375,
+            9.085968017578125,
+            9.008956909179688,
+            9.225967407226562,
+            9.001968383789062,
+            8.60296630859375,
+            9.246963500976562,
+            9.001968383789062
+          ],
+          "tabular_widths": [
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "data",
+          "weight": 400,
+          "default_widths": [
+            8.567962646484375,
+            5.6979827880859375,
+            8.343963623046875,
+            8.819961547851562,
+            8.798965454101562,
+            8.966964721679688,
+            8.7149658203125,
+            8.406967163085938,
+            9.064956665039062,
+            8.742965698242188
+          ],
+          "tabular_widths": [
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "data",
+          "weight": 500,
+          "default_widths": [
+            8.6939697265625,
+            5.7749786376953125,
+            8.490966796875,
+            8.952957153320312,
+            8.903961181640625,
+            9.099960327148438,
+            8.861968994140625,
+            8.504959106445312,
+            9.155960083007812,
+            8.875961303710938
+          ],
+          "tabular_widths": [
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "data",
+          "weight": 600,
+          "default_widths": [
+            8.812957763671875,
+            5.858978271484375,
+            8.64495849609375,
+            9.085968017578125,
+            9.008956909179688,
+            9.225967407226562,
+            9.001968383789062,
+            8.60296630859375,
+            9.246963500976562,
+            9.001968383789062
+          ],
+          "tabular_widths": [
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "heading",
+          "weight": 400,
+          "default_widths": [
+            8.567962646484375,
+            5.6979827880859375,
+            8.343963623046875,
+            8.819961547851562,
+            8.798965454101562,
+            8.966964721679688,
+            8.7149658203125,
+            8.406967163085938,
+            9.064956665039062,
+            8.742965698242188
+          ],
+          "tabular_widths": [
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "heading",
+          "weight": 500,
+          "default_widths": [
+            8.6939697265625,
+            5.7749786376953125,
+            8.490966796875,
+            8.952957153320312,
+            8.903961181640625,
+            9.099960327148438,
+            8.861968994140625,
+            8.504959106445312,
+            9.155960083007812,
+            8.875961303710938
+          ],
+          "tabular_widths": [
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "heading",
+          "weight": 600,
+          "default_widths": [
+            8.812957763671875,
+            5.858978271484375,
+            8.64495849609375,
+            9.085968017578125,
+            9.008956909179688,
+            9.225967407226562,
+            9.001968383789062,
+            8.60296630859375,
+            9.246963500976562,
+            9.001968383789062
+          ],
+          "tabular_widths": [
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125
+          ],
+          "tabular_spread": 0
+        }
+      ],
+      "glyphs": [
+        {
+          "role": "ui",
+          "fallback_dependent_characters": []
+        },
+        {
+          "role": "data",
+          "fallback_dependent_characters": []
+        },
+        {
+          "role": "heading",
+          "fallback_dependent_characters": []
+        }
+      ],
+      "swap_layout_shift_sum": 0.028814326925395446,
+      "shifts": [
+        {
+          "value": 0.007394005300262828,
+          "time": 715
+        },
+        {
+          "value": 0.02142032162513262,
+          "time": 749.0999999940395
+        }
+      ],
+      "body_overflow": false,
+      "table_width": 1415.3125,
+      "row_height": 45.6875,
+      "table_rows": 50,
+      "samples": [
+        "Player Identity",
+        "Participation",
+        "Scoring",
+        "Rebounding",
+        "Playmaking",
+        "Defense",
+        "Efficiency",
+        "Actions",
+        "✓",
+        "#",
+        "Player ",
+        "Team",
+        "GP",
+        "MIN",
+        "MPG",
+        "PTS",
+        "REB",
+        "AST",
+        "STL",
+        "BLK",
+        "FG%",
+        "3P%",
+        "FT%",
+        "TS%",
+        "eFG%",
+        "Detail",
+        "",
+        "1",
+        "☆Luka Dončić",
+        "DAL"
+      ],
+      "glyph_sample": "Nikola Jokić · Luka Dončić · Kristaps Porziņģis · Alperen Şengün · +−%– · 1Il0O · −12.5% · USD 40,000,000",
+      "keyboard_focus": {
+        "tag": "A",
+        "text": "Skip to content"
+      },
+      "sizes": [
+        {
+          "id": "mobile",
+          "width": 375,
+          "height": 812,
+          "body_overflow": false
+        },
+        {
+          "id": "landscape",
+          "width": 812,
+          "height": 375,
+          "body_overflow": false
+        },
+        {
+          "id": "zoom",
+          "width": 1440,
+          "height": 1000,
+          "zoom": "2",
+          "body_overflow": false
+        }
+      ],
+      "screenshot": "public-sans-stats.png"
+    },
+    {
+      "candidate": "public-sans",
+      "route": "scatter",
+      "url": "/stats?release_id=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2023-24&phase=regular_season&before_date=2024-04-15&viewMode=scatter",
+      "baseline": {
+        "family": "\"Space Grotesk\", \"Space Grotesk Fallback\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif",
+        "table_width": null,
+        "row_height": null
+      },
+      "families": {
+        "ui": "B36-public-sans",
+        "data": "B36-public-sans",
+        "heading": "B36-public-sans"
+      },
+      "numerals": [
+        {
+          "role": "ui",
+          "weight": 400,
+          "default_widths": [
+            8.567962646484375,
+            5.6979827880859375,
+            8.343963623046875,
+            8.819961547851562,
+            8.798965454101562,
+            8.966964721679688,
+            8.7149658203125,
+            8.406967163085938,
+            9.064956665039062,
+            8.742965698242188
+          ],
+          "tabular_widths": [
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "ui",
+          "weight": 500,
+          "default_widths": [
+            8.6939697265625,
+            5.7749786376953125,
+            8.490966796875,
+            8.952957153320312,
+            8.903961181640625,
+            9.099960327148438,
+            8.861968994140625,
+            8.504959106445312,
+            9.155960083007812,
+            8.875961303710938
+          ],
+          "tabular_widths": [
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "ui",
+          "weight": 600,
+          "default_widths": [
+            8.812957763671875,
+            5.858978271484375,
+            8.64495849609375,
+            9.085968017578125,
+            9.008956909179688,
+            9.225967407226562,
+            9.001968383789062,
+            8.60296630859375,
+            9.246963500976562,
+            9.001968383789062
+          ],
+          "tabular_widths": [
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "data",
+          "weight": 400,
+          "default_widths": [
+            8.567962646484375,
+            5.6979827880859375,
+            8.343963623046875,
+            8.819961547851562,
+            8.798965454101562,
+            8.966964721679688,
+            8.7149658203125,
+            8.406967163085938,
+            9.064956665039062,
+            8.742965698242188
+          ],
+          "tabular_widths": [
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "data",
+          "weight": 500,
+          "default_widths": [
+            8.6939697265625,
+            5.7749786376953125,
+            8.490966796875,
+            8.952957153320312,
+            8.903961181640625,
+            9.099960327148438,
+            8.861968994140625,
+            8.504959106445312,
+            9.155960083007812,
+            8.875961303710938
+          ],
+          "tabular_widths": [
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "data",
+          "weight": 600,
+          "default_widths": [
+            8.812957763671875,
+            5.858978271484375,
+            8.64495849609375,
+            9.085968017578125,
+            9.008956909179688,
+            9.225967407226562,
+            9.001968383789062,
+            8.60296630859375,
+            9.246963500976562,
+            9.001968383789062
+          ],
+          "tabular_widths": [
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "heading",
+          "weight": 400,
+          "default_widths": [
+            8.567962646484375,
+            5.6979827880859375,
+            8.343963623046875,
+            8.819961547851562,
+            8.798965454101562,
+            8.966964721679688,
+            8.7149658203125,
+            8.406967163085938,
+            9.064956665039062,
+            8.742965698242188
+          ],
+          "tabular_widths": [
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "heading",
+          "weight": 500,
+          "default_widths": [
+            8.6939697265625,
+            5.7749786376953125,
+            8.490966796875,
+            8.952957153320312,
+            8.903961181640625,
+            9.099960327148438,
+            8.861968994140625,
+            8.504959106445312,
+            9.155960083007812,
+            8.875961303710938
+          ],
+          "tabular_widths": [
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "heading",
+          "weight": 600,
+          "default_widths": [
+            8.812957763671875,
+            5.858978271484375,
+            8.64495849609375,
+            9.085968017578125,
+            9.008956909179688,
+            9.225967407226562,
+            9.001968383789062,
+            8.60296630859375,
+            9.246963500976562,
+            9.001968383789062
+          ],
+          "tabular_widths": [
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125
+          ],
+          "tabular_spread": 0
+        }
+      ],
+      "glyphs": [
+        {
+          "role": "ui",
+          "fallback_dependent_characters": []
+        },
+        {
+          "role": "data",
+          "fallback_dependent_characters": []
+        },
+        {
+          "role": "heading",
+          "fallback_dependent_characters": []
+        }
+      ],
+      "swap_layout_shift_sum": 0.008715632331753955,
+      "shifts": [
+        {
+          "value": 0.004791422812379437,
+          "time": 647.3999999985099
+        },
+        {
+          "value": 0.003924209519374518,
+          "time": 660.8000000044703
+        }
+      ],
+      "body_overflow": false,
+      "table_width": null,
+      "row_height": null,
+      "table_rows": 0,
+      "samples": [],
+      "glyph_sample": "Nikola Jokić · Luka Dončić · Kristaps Porziņģis · Alperen Şengün · +−%– · 1Il0O · −12.5% · USD 40,000,000",
+      "sizes": [],
+      "screenshot": "public-sans-scatter.png"
+    },
+    {
+      "candidate": "public-sans",
+      "route": "finance",
+      "url": "/contracts/TOR?finance_book_id=256f66b1-129d-4904-be30-7b946f6e92fc&finance_financial_season=2025-26&finance_known_at=2026-10-03T16%3A53%3A28.511033Z&finance_effective_on=2025-02-12&finance_team_id=1610612761&season=2024-25",
+      "baseline": {
+        "family": "\"Space Grotesk\", \"Space Grotesk Fallback\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif",
+        "table_width": 1396,
+        "row_height": 262.78125
+      },
+      "families": {
+        "ui": "B36-public-sans",
+        "data": "B36-public-sans",
+        "heading": "B36-public-sans"
+      },
+      "numerals": [
+        {
+          "role": "ui",
+          "weight": 400,
+          "default_widths": [
+            8.567962646484375,
+            5.6979827880859375,
+            8.343963623046875,
+            8.819961547851562,
+            8.798965454101562,
+            8.966964721679688,
+            8.7149658203125,
+            8.406967163085938,
+            9.064956665039062,
+            8.742965698242188
+          ],
+          "tabular_widths": [
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "ui",
+          "weight": 500,
+          "default_widths": [
+            8.6939697265625,
+            5.7749786376953125,
+            8.490966796875,
+            8.952957153320312,
+            8.903961181640625,
+            9.099960327148438,
+            8.861968994140625,
+            8.504959106445312,
+            9.155960083007812,
+            8.875961303710938
+          ],
+          "tabular_widths": [
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "ui",
+          "weight": 600,
+          "default_widths": [
+            8.812957763671875,
+            5.858978271484375,
+            8.64495849609375,
+            9.085968017578125,
+            9.008956909179688,
+            9.225967407226562,
+            9.001968383789062,
+            8.60296630859375,
+            9.246963500976562,
+            9.001968383789062
+          ],
+          "tabular_widths": [
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "data",
+          "weight": 400,
+          "default_widths": [
+            8.567962646484375,
+            5.6979827880859375,
+            8.343963623046875,
+            8.819961547851562,
+            8.798965454101562,
+            8.966964721679688,
+            8.7149658203125,
+            8.406967163085938,
+            9.064956665039062,
+            8.742965698242188
+          ],
+          "tabular_widths": [
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "data",
+          "weight": 500,
+          "default_widths": [
+            8.6939697265625,
+            5.7749786376953125,
+            8.490966796875,
+            8.952957153320312,
+            8.903961181640625,
+            9.099960327148438,
+            8.861968994140625,
+            8.504959106445312,
+            9.155960083007812,
+            8.875961303710938
+          ],
+          "tabular_widths": [
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "data",
+          "weight": 600,
+          "default_widths": [
+            8.812957763671875,
+            5.858978271484375,
+            8.64495849609375,
+            9.085968017578125,
+            9.008956909179688,
+            9.225967407226562,
+            9.001968383789062,
+            8.60296630859375,
+            9.246963500976562,
+            9.001968383789062
+          ],
+          "tabular_widths": [
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "heading",
+          "weight": 400,
+          "default_widths": [
+            8.567962646484375,
+            5.6979827880859375,
+            8.343963623046875,
+            8.819961547851562,
+            8.798965454101562,
+            8.966964721679688,
+            8.7149658203125,
+            8.406967163085938,
+            9.064956665039062,
+            8.742965698242188
+          ],
+          "tabular_widths": [
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "heading",
+          "weight": 500,
+          "default_widths": [
+            8.6939697265625,
+            5.7749786376953125,
+            8.490966796875,
+            8.952957153320312,
+            8.903961181640625,
+            9.099960327148438,
+            8.861968994140625,
+            8.504959106445312,
+            9.155960083007812,
+            8.875961303710938
+          ],
+          "tabular_widths": [
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "heading",
+          "weight": 600,
+          "default_widths": [
+            8.812957763671875,
+            5.858978271484375,
+            8.64495849609375,
+            9.085968017578125,
+            9.008956909179688,
+            9.225967407226562,
+            9.001968383789062,
+            8.60296630859375,
+            9.246963500976562,
+            9.001968383789062
+          ],
+          "tabular_widths": [
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125
+          ],
+          "tabular_spread": 0
+        }
+      ],
+      "glyphs": [
+        {
+          "role": "ui",
+          "fallback_dependent_characters": []
+        },
+        {
+          "role": "data",
+          "fallback_dependent_characters": []
+        },
+        {
+          "role": "heading",
+          "fallback_dependent_characters": []
+        }
+      ],
+      "swap_layout_shift_sum": 0.015843027712975022,
+      "shifts": [
+        {
+          "value": 0.013362860860942323,
+          "time": 388.80000000447035
+        },
+        {
+          "value": 0.002480166852032697,
+          "time": 400.40000000596046
+        }
+      ],
+      "body_overflow": false,
+      "table_width": 1396,
+      "row_height": 262.78125,
+      "table_rows": 7,
+      "samples": [
+        "Player / contract",
+        "Team / status",
+        "Known selected amount",
+        "Small vs Big",
+        "Derived AAV",
+        "Terms / sources",
+        "Brandon Ingramnba:1627742:tor-extension-2025-02Player Stats",
+        "TORexplicitSigned",
+        "Unknownmissing",
+        "unknown",
+        "USD 40000000Reported total / years; not salary",
+        "reported three-year extension; USD 120 million total2026-10-03T16:53:27.510900Zmulti-year extension announcement2026-10-03T16:52:13.022436Zreported three-year extension; USD 120 million total2026-10-03T16:53:27.511033Zmulti-year extension announcement2026-10-03T16:52:13.022436Zmulti-year extension announcement2026-10-03T16:52:13.022436Zmulti-year extension announcement2026-10-03T16:52:13.022436Z",
+        "Season / effective date",
+        "Term family / reported value",
+        "Source / observation",
+        "Contract-wideUnknownunknown effective date",
+        "amount · total_valueReported USD 120000000.00reported three-year extension; USD 120 million total",
+        "Associated Press via NBA.com; reported terms, not an official salary schedulearticle title and announcement paragraph; reported total onlyObserved 2026-10-03T16:53:27.510900ZCorrection: Retain NBA-hosted AP reported terms as separate reviewed source; original announcement remains unchanged.Replaces 3e535722-00fb-4e40-9da8-e1655c6d80acEvidence identitiesOrigin book: 256f66b1-129d-4904-be30-7b946f6e92fcObservation: ee6a56dc-c213-4690-960a-4cbe4baa2d9aContent SHA-256: 43645b206be7629fca499eec48c2975e0efd7c21886a9fb58f7ce63ceb29eb35Source SHA-256: 43c5ba5c1ad009fdebc55823cf9c9d7f4a1d3a4fe6dfb731a48272b5c791d1b3Source observed: 2026-10-03T16:52:13.022436ZUse basis: Local factual research note; no full article text redistributed; not automation/reuse permission for source pages",
+        "Contract-wide2025-02-12dated report",
+        "association · termsTORmulti-year extension announcement",
+        "Toronto Raptors announcement, observed through indexed web excerptindexed announcement excerpt; terms not enumeratedObserved 2026-10-03T16:52:13.022436ZEvidence identitiesOrigin book: 96b89635-82b4-47c7-b4f6-52ab85c0f0bcObservation: 4f745c61-faa5-4ce5-9ca7-e292952f080aContent SHA-256: 9a750017d169bd42050c5061cb99bfd451d9f96d0c932e226a0c1047c06bbf1eSource SHA-256: 14a5ddb88b666c567d57937ec476e7a3bc85cba8d848e62b99528f5e4048f9ebSource observed: 2026-10-03T16:52:13.022436ZUse basis: Local factual research note; no full article text redistributed; not automation/reuse permission for source pages",
+        "Contract-wideUnknownunknown effective date",
+        "contract · terms3 yearsreported three-year extension; USD 120 million total",
+        "Associated Press via NBA.com; reported terms, not an official salary schedulearticle title and announcement paragraph; reported total onlyObserved 2026-10-03T16:53:27.511033ZCorrection: Retain NBA-hosted AP reported terms as separate reviewed source; original announcement remains unchanged.Replaces ca0e2aba-15c6-4a95-8a4d-10f4cd9e062bEvidence identitiesOrigin book: 256f66b1-129d-4904-be30-7b946f6e92fcObservation: b2268b81-cdfb-403c-bfd6-21666b6a1cc7Content SHA-256: 82ed17924cf10de617d3b15f9dd0bafe031743a8d421090fe49478550677fd52Source SHA-256: 43c5ba5c1ad009fdebc55823cf9c9d7f4a1d3a4fe6dfb731a48272b5c791d1b3Source observed: 2026-10-03T16:52:13.022436ZUse basis: Local factual research note; no full article text redistributed; not automation/reuse permission for source pages",
+        "Contract-wideUnknownunknown effective date",
+        "guarantee · termsUnknownmulti-year extension announcement",
+        "Toronto Raptors announcement, observed through indexed web excerptindexed announcement excerpt; terms not enumeratedObserved 2026-10-03T16:52:13.022436ZEvidence identitiesOrigin book: 96b89635-82b4-47c7-b4f6-52ab85c0f0bcObservation: 69d0f845-acb4-44d5-a549-a102cace0089Content SHA-256: d100a292805736c5402964b66aad34f8ce9d7f137a468fe2f53f4d347931a5b6Source SHA-256: 14a5ddb88b666c567d57937ec476e7a3bc85cba8d848e62b99528f5e4048f9ebSource observed: 2026-10-03T16:52:13.022436ZUse basis: Local factual research note; no full article text redistributed; not automation/reuse permission for source pages",
+        "Contract-wideUnknownunknown effective date",
+        "option · termsUnknown · Unknownmulti-year extension announcement",
+        "Toronto Raptors announcement, observed through indexed web excerptindexed announcement excerpt; terms not enumeratedObserved 2026-10-03T16:52:13.022436ZEvidence identitiesOrigin book: 96b89635-82b4-47c7-b4f6-52ab85c0f0bcObservation: 58517719-9123-4039-9656-be65f6e2e5d7Content SHA-256: 0d7200eeb50a7206fd29312978d7b076a336d0072695203359a55ccee2f9bf73Source SHA-256: 14a5ddb88b666c567d57937ec476e7a3bc85cba8d848e62b99528f5e4048f9ebSource observed: 2026-10-03T16:52:13.022436ZUse basis: Local factual research note; no full article text redistributed; not automation/reuse permission for source pages"
+      ],
+      "glyph_sample": "Nikola Jokić · Luka Dončić · Kristaps Porziņģis · Alperen Şengün · +−%– · 1Il0O · −12.5% · USD 40,000,000",
+      "sizes": [],
+      "screenshot": "public-sans-finance.png"
+    },
+    {
+      "candidate": "public-sans",
+      "route": "conversation",
+      "url": "/investigations/saved/3bcb37c9-b410-44b1-be7f-c3b368fbe28c",
+      "baseline": {
+        "family": "\"Space Grotesk\", \"Space Grotesk Fallback\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif",
+        "table_width": 1392,
+        "row_height": 38.984375
+      },
+      "families": {
+        "ui": "B36-public-sans",
+        "data": "B36-public-sans",
+        "heading": "B36-public-sans"
+      },
+      "numerals": [
+        {
+          "role": "ui",
+          "weight": 400,
+          "default_widths": [
+            8.567962646484375,
+            5.6979827880859375,
+            8.343963623046875,
+            8.819961547851562,
+            8.798965454101562,
+            8.966964721679688,
+            8.7149658203125,
+            8.406967163085938,
+            9.064956665039062,
+            8.742965698242188
+          ],
+          "tabular_widths": [
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "ui",
+          "weight": 500,
+          "default_widths": [
+            8.6939697265625,
+            5.7749786376953125,
+            8.490966796875,
+            8.952957153320312,
+            8.903961181640625,
+            9.099960327148438,
+            8.861968994140625,
+            8.504959106445312,
+            9.155960083007812,
+            8.875961303710938
+          ],
+          "tabular_widths": [
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "ui",
+          "weight": 600,
+          "default_widths": [
+            8.812957763671875,
+            5.858978271484375,
+            8.64495849609375,
+            9.085968017578125,
+            9.008956909179688,
+            9.225967407226562,
+            9.001968383789062,
+            8.60296630859375,
+            9.246963500976562,
+            9.001968383789062
+          ],
+          "tabular_widths": [
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "data",
+          "weight": 400,
+          "default_widths": [
+            8.567962646484375,
+            5.6979827880859375,
+            8.343963623046875,
+            8.819961547851562,
+            8.798965454101562,
+            8.966964721679688,
+            8.7149658203125,
+            8.406967163085938,
+            9.064956665039062,
+            8.742965698242188
+          ],
+          "tabular_widths": [
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "data",
+          "weight": 500,
+          "default_widths": [
+            8.6939697265625,
+            5.7749786376953125,
+            8.490966796875,
+            8.952957153320312,
+            8.903961181640625,
+            9.099960327148438,
+            8.861968994140625,
+            8.504959106445312,
+            9.155960083007812,
+            8.875961303710938
+          ],
+          "tabular_widths": [
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "data",
+          "weight": 600,
+          "default_widths": [
+            8.812957763671875,
+            5.858978271484375,
+            8.64495849609375,
+            9.085968017578125,
+            9.008956909179688,
+            9.225967407226562,
+            9.001968383789062,
+            8.60296630859375,
+            9.246963500976562,
+            9.001968383789062
+          ],
+          "tabular_widths": [
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "heading",
+          "weight": 400,
+          "default_widths": [
+            8.567962646484375,
+            5.6979827880859375,
+            8.343963623046875,
+            8.819961547851562,
+            8.798965454101562,
+            8.966964721679688,
+            8.7149658203125,
+            8.406967163085938,
+            9.064956665039062,
+            8.742965698242188
+          ],
+          "tabular_widths": [
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "heading",
+          "weight": 500,
+          "default_widths": [
+            8.6939697265625,
+            5.7749786376953125,
+            8.490966796875,
+            8.952957153320312,
+            8.903961181640625,
+            9.099960327148438,
+            8.861968994140625,
+            8.504959106445312,
+            9.155960083007812,
+            8.875961303710938
+          ],
+          "tabular_widths": [
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "heading",
+          "weight": 600,
+          "default_widths": [
+            8.812957763671875,
+            5.858978271484375,
+            8.64495849609375,
+            9.085968017578125,
+            9.008956909179688,
+            9.225967407226562,
+            9.001968383789062,
+            8.60296630859375,
+            9.246963500976562,
+            9.001968383789062
+          ],
+          "tabular_widths": [
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125
+          ],
+          "tabular_spread": 0
+        }
+      ],
+      "glyphs": [
+        {
+          "role": "ui",
+          "fallback_dependent_characters": []
+        },
+        {
+          "role": "data",
+          "fallback_dependent_characters": []
+        },
+        {
+          "role": "heading",
+          "fallback_dependent_characters": []
+        }
+      ],
+      "swap_layout_shift_sum": 0.00940366894380546,
+      "shifts": [
+        {
+          "value": 0.005949409096800251,
+          "time": 373.80000000447035
+        },
+        {
+          "value": 0.0034542598470052085,
+          "time": 388.5
+        }
+      ],
+      "body_overflow": false,
+      "table_width": 1392,
+      "row_height": 38.984375,
+      "table_rows": 27,
+      "samples": [
+        "game date",
+        "value",
+        "minutes",
+        "team tricode",
+        "opponent tricode",
+        "is home",
+        "game id",
+        "2025-04-13",
+        "35",
+        "36.6",
+        "TOR",
+        "SAS",
+        "false",
+        "0022401197",
+        "2025-04-11",
+        "26",
+        "30.5",
+        "TOR",
+        "DAL",
+        "false",
+        "0022401178",
+        "2025-04-09",
+        "17",
+        "20.4",
+        "TOR",
+        "CHA",
+        "true",
+        "0022401158",
+        "2025-04-03",
+        "5"
+      ],
+      "glyph_sample": "Nikola Jokić · Luka Dončić · Kristaps Porziņģis · Alperen Şengün · +−%– · 1Il0O · −12.5% · USD 40,000,000",
+      "sizes": [],
+      "screenshot": "public-sans-conversation.png"
+    },
+    {
+      "candidate": "public-jetbrains",
+      "route": "stats",
+      "url": "/stats?release_id=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2023-24&phase=regular_season&before_date=2024-04-15",
+      "baseline": {
+        "family": "\"Space Grotesk\", \"Space Grotesk Fallback\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif",
+        "table_width": 1390,
+        "row_height": 45.6875
+      },
+      "families": {
+        "ui": "B36-public-sans",
+        "data": "B36-jet-brains-mono",
+        "heading": "B36-public-sans"
+      },
+      "numerals": [
+        {
+          "role": "ui",
+          "weight": 400,
+          "default_widths": [
+            8.567962646484375,
+            5.6979827880859375,
+            8.343963623046875,
+            8.819961547851562,
+            8.798965454101562,
+            8.966964721679688,
+            8.7149658203125,
+            8.406967163085938,
+            9.064956665039062,
+            8.742965698242188
+          ],
+          "tabular_widths": [
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "ui",
+          "weight": 500,
+          "default_widths": [
+            8.6939697265625,
+            5.7749786376953125,
+            8.490966796875,
+            8.952957153320312,
+            8.903961181640625,
+            9.099960327148438,
+            8.861968994140625,
+            8.504959106445312,
+            9.155960083007812,
+            8.875961303710938
+          ],
+          "tabular_widths": [
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "ui",
+          "weight": 600,
+          "default_widths": [
+            8.812957763671875,
+            5.858978271484375,
+            8.64495849609375,
+            9.085968017578125,
+            9.008956909179688,
+            9.225967407226562,
+            9.001968383789062,
+            8.60296630859375,
+            9.246963500976562,
+            9.001968383789062
+          ],
+          "tabular_widths": [
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "data",
+          "weight": 400,
+          "default_widths": [
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625
+          ],
+          "tabular_widths": [
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "data",
+          "weight": 500,
+          "default_widths": [
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625
+          ],
+          "tabular_widths": [
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "data",
+          "weight": 600,
+          "default_widths": [
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625
+          ],
+          "tabular_widths": [
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "heading",
+          "weight": 400,
+          "default_widths": [
+            8.567962646484375,
+            5.6979827880859375,
+            8.343963623046875,
+            8.819961547851562,
+            8.798965454101562,
+            8.966964721679688,
+            8.7149658203125,
+            8.406967163085938,
+            9.064956665039062,
+            8.742965698242188
+          ],
+          "tabular_widths": [
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "heading",
+          "weight": 500,
+          "default_widths": [
+            8.6939697265625,
+            5.7749786376953125,
+            8.490966796875,
+            8.952957153320312,
+            8.903961181640625,
+            9.099960327148438,
+            8.861968994140625,
+            8.504959106445312,
+            9.155960083007812,
+            8.875961303710938
+          ],
+          "tabular_widths": [
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "heading",
+          "weight": 600,
+          "default_widths": [
+            8.812957763671875,
+            5.858978271484375,
+            8.64495849609375,
+            9.085968017578125,
+            9.008956909179688,
+            9.225967407226562,
+            9.001968383789062,
+            8.60296630859375,
+            9.246963500976562,
+            9.001968383789062
+          ],
+          "tabular_widths": [
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125
+          ],
+          "tabular_spread": 0
+        }
+      ],
+      "glyphs": [
+        {
+          "role": "ui",
+          "fallback_dependent_characters": []
+        },
+        {
+          "role": "data",
+          "fallback_dependent_characters": []
+        },
+        {
+          "role": "heading",
+          "fallback_dependent_characters": []
+        }
+      ],
+      "swap_layout_shift_sum": 0.008520476835274403,
+      "shifts": [
+        {
+          "value": 0.007394005300262828,
+          "time": 720.8999999985099
+        },
+        {
+          "value": 0.001126471535011574,
+          "time": 755.7999999970198
+        }
+      ],
+      "body_overflow": false,
+      "table_width": 1400.421875,
+      "row_height": 45.6875,
+      "table_rows": 50,
+      "samples": [
+        "Player Identity",
+        "Participation",
+        "Scoring",
+        "Rebounding",
+        "Playmaking",
+        "Defense",
+        "Efficiency",
+        "Actions",
+        "✓",
+        "#",
+        "Player ",
+        "Team",
+        "GP",
+        "MIN",
+        "MPG",
+        "PTS",
+        "REB",
+        "AST",
+        "STL",
+        "BLK",
+        "FG%",
+        "3P%",
+        "FT%",
+        "TS%",
+        "eFG%",
+        "Detail",
+        "",
+        "1",
+        "☆Luka Dončić",
+        "DAL"
+      ],
+      "glyph_sample": "Nikola Jokić · Luka Dončić · Kristaps Porziņģis · Alperen Şengün · +−%– · 1Il0O · −12.5% · USD 40,000,000",
+      "keyboard_focus": {
+        "tag": "A",
+        "text": "Skip to content"
+      },
+      "sizes": [
+        {
+          "id": "mobile",
+          "width": 375,
+          "height": 812,
+          "body_overflow": false
+        },
+        {
+          "id": "landscape",
+          "width": 812,
+          "height": 375,
+          "body_overflow": false
+        },
+        {
+          "id": "zoom",
+          "width": 1440,
+          "height": 1000,
+          "zoom": "2",
+          "body_overflow": false
+        }
+      ],
+      "screenshot": "public-jetbrains-stats.png"
+    },
+    {
+      "candidate": "public-jetbrains",
+      "route": "scatter",
+      "url": "/stats?release_id=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2023-24&phase=regular_season&before_date=2024-04-15&viewMode=scatter",
+      "baseline": {
+        "family": "\"Space Grotesk\", \"Space Grotesk Fallback\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif",
+        "table_width": null,
+        "row_height": null
+      },
+      "families": {
+        "ui": "B36-public-sans",
+        "data": "B36-jet-brains-mono",
+        "heading": "B36-public-sans"
+      },
+      "numerals": [
+        {
+          "role": "ui",
+          "weight": 400,
+          "default_widths": [
+            8.567962646484375,
+            5.6979827880859375,
+            8.343963623046875,
+            8.819961547851562,
+            8.798965454101562,
+            8.966964721679688,
+            8.7149658203125,
+            8.406967163085938,
+            9.064956665039062,
+            8.742965698242188
+          ],
+          "tabular_widths": [
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "ui",
+          "weight": 500,
+          "default_widths": [
+            8.6939697265625,
+            5.7749786376953125,
+            8.490966796875,
+            8.952957153320312,
+            8.903961181640625,
+            9.099960327148438,
+            8.861968994140625,
+            8.504959106445312,
+            9.155960083007812,
+            8.875961303710938
+          ],
+          "tabular_widths": [
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "ui",
+          "weight": 600,
+          "default_widths": [
+            8.812957763671875,
+            5.858978271484375,
+            8.64495849609375,
+            9.085968017578125,
+            9.008956909179688,
+            9.225967407226562,
+            9.001968383789062,
+            8.60296630859375,
+            9.246963500976562,
+            9.001968383789062
+          ],
+          "tabular_widths": [
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "data",
+          "weight": 400,
+          "default_widths": [
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625
+          ],
+          "tabular_widths": [
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "data",
+          "weight": 500,
+          "default_widths": [
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625
+          ],
+          "tabular_widths": [
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "data",
+          "weight": 600,
+          "default_widths": [
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625
+          ],
+          "tabular_widths": [
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "heading",
+          "weight": 400,
+          "default_widths": [
+            8.567962646484375,
+            5.6979827880859375,
+            8.343963623046875,
+            8.819961547851562,
+            8.798965454101562,
+            8.966964721679688,
+            8.7149658203125,
+            8.406967163085938,
+            9.064956665039062,
+            8.742965698242188
+          ],
+          "tabular_widths": [
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "heading",
+          "weight": 500,
+          "default_widths": [
+            8.6939697265625,
+            5.7749786376953125,
+            8.490966796875,
+            8.952957153320312,
+            8.903961181640625,
+            9.099960327148438,
+            8.861968994140625,
+            8.504959106445312,
+            9.155960083007812,
+            8.875961303710938
+          ],
+          "tabular_widths": [
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "heading",
+          "weight": 600,
+          "default_widths": [
+            8.812957763671875,
+            5.858978271484375,
+            8.64495849609375,
+            9.085968017578125,
+            9.008956909179688,
+            9.225967407226562,
+            9.001968383789062,
+            8.60296630859375,
+            9.246963500976562,
+            9.001968383789062
+          ],
+          "tabular_widths": [
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125
+          ],
+          "tabular_spread": 0
+        }
+      ],
+      "glyphs": [
+        {
+          "role": "ui",
+          "fallback_dependent_characters": []
+        },
+        {
+          "role": "data",
+          "fallback_dependent_characters": []
+        },
+        {
+          "role": "heading",
+          "fallback_dependent_characters": []
+        }
+      ],
+      "swap_layout_shift_sum": 0.0070215542112750775,
+      "shifts": [
+        {
+          "value": 0.004791422812379437,
+          "time": 644.1000000014901
+        },
+        {
+          "value": 0.0022301313988956403,
+          "time": 658.6999999955297
+        }
+      ],
+      "body_overflow": false,
+      "table_width": null,
+      "row_height": null,
+      "table_rows": 0,
+      "samples": [],
+      "glyph_sample": "Nikola Jokić · Luka Dončić · Kristaps Porziņģis · Alperen Şengün · +−%– · 1Il0O · −12.5% · USD 40,000,000",
+      "sizes": [],
+      "screenshot": "public-jetbrains-scatter.png"
+    },
+    {
+      "candidate": "public-jetbrains",
+      "route": "finance",
+      "url": "/contracts/TOR?finance_book_id=256f66b1-129d-4904-be30-7b946f6e92fc&finance_financial_season=2025-26&finance_known_at=2026-10-03T16%3A53%3A28.511033Z&finance_effective_on=2025-02-12&finance_team_id=1610612761&season=2024-25",
+      "baseline": {
+        "family": "\"Space Grotesk\", \"Space Grotesk Fallback\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif",
+        "table_width": 1396,
+        "row_height": 262.78125
+      },
+      "families": {
+        "ui": "B36-public-sans",
+        "data": "B36-jet-brains-mono",
+        "heading": "B36-public-sans"
+      },
+      "numerals": [
+        {
+          "role": "ui",
+          "weight": 400,
+          "default_widths": [
+            8.567962646484375,
+            5.6979827880859375,
+            8.343963623046875,
+            8.819961547851562,
+            8.798965454101562,
+            8.966964721679688,
+            8.7149658203125,
+            8.406967163085938,
+            9.064956665039062,
+            8.742965698242188
+          ],
+          "tabular_widths": [
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "ui",
+          "weight": 500,
+          "default_widths": [
+            8.6939697265625,
+            5.7749786376953125,
+            8.490966796875,
+            8.952957153320312,
+            8.903961181640625,
+            9.099960327148438,
+            8.861968994140625,
+            8.504959106445312,
+            9.155960083007812,
+            8.875961303710938
+          ],
+          "tabular_widths": [
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "ui",
+          "weight": 600,
+          "default_widths": [
+            8.812957763671875,
+            5.858978271484375,
+            8.64495849609375,
+            9.085968017578125,
+            9.008956909179688,
+            9.225967407226562,
+            9.001968383789062,
+            8.60296630859375,
+            9.246963500976562,
+            9.001968383789062
+          ],
+          "tabular_widths": [
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "data",
+          "weight": 400,
+          "default_widths": [
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625
+          ],
+          "tabular_widths": [
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "data",
+          "weight": 500,
+          "default_widths": [
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625
+          ],
+          "tabular_widths": [
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "data",
+          "weight": 600,
+          "default_widths": [
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625
+          ],
+          "tabular_widths": [
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "heading",
+          "weight": 400,
+          "default_widths": [
+            8.567962646484375,
+            5.6979827880859375,
+            8.343963623046875,
+            8.819961547851562,
+            8.798965454101562,
+            8.966964721679688,
+            8.7149658203125,
+            8.406967163085938,
+            9.064956665039062,
+            8.742965698242188
+          ],
+          "tabular_widths": [
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "heading",
+          "weight": 500,
+          "default_widths": [
+            8.6939697265625,
+            5.7749786376953125,
+            8.490966796875,
+            8.952957153320312,
+            8.903961181640625,
+            9.099960327148438,
+            8.861968994140625,
+            8.504959106445312,
+            9.155960083007812,
+            8.875961303710938
+          ],
+          "tabular_widths": [
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "heading",
+          "weight": 600,
+          "default_widths": [
+            8.812957763671875,
+            5.858978271484375,
+            8.64495849609375,
+            9.085968017578125,
+            9.008956909179688,
+            9.225967407226562,
+            9.001968383789062,
+            8.60296630859375,
+            9.246963500976562,
+            9.001968383789062
+          ],
+          "tabular_widths": [
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125
+          ],
+          "tabular_spread": 0
+        }
+      ],
+      "glyphs": [
+        {
+          "role": "ui",
+          "fallback_dependent_characters": []
+        },
+        {
+          "role": "data",
+          "fallback_dependent_characters": []
+        },
+        {
+          "role": "heading",
+          "fallback_dependent_characters": []
+        }
+      ],
+      "swap_layout_shift_sum": 0.01607904305163725,
+      "shifts": [
+        {
+          "value": 0.013362860860942323,
+          "time": 390.3999999985099
+        },
+        {
+          "value": 0.0027161821906949266,
+          "time": 403.1000000014901
+        }
+      ],
+      "body_overflow": false,
+      "table_width": 1396,
+      "row_height": 262.78125,
+      "table_rows": 7,
+      "samples": [
+        "Player / contract",
+        "Team / status",
+        "Known selected amount",
+        "Small vs Big",
+        "Derived AAV",
+        "Terms / sources",
+        "Brandon Ingramnba:1627742:tor-extension-2025-02Player Stats",
+        "TORexplicitSigned",
+        "Unknownmissing",
+        "unknown",
+        "USD 40000000Reported total / years; not salary",
+        "reported three-year extension; USD 120 million total2026-10-03T16:53:27.510900Zmulti-year extension announcement2026-10-03T16:52:13.022436Zreported three-year extension; USD 120 million total2026-10-03T16:53:27.511033Zmulti-year extension announcement2026-10-03T16:52:13.022436Zmulti-year extension announcement2026-10-03T16:52:13.022436Zmulti-year extension announcement2026-10-03T16:52:13.022436Z",
+        "Season / effective date",
+        "Term family / reported value",
+        "Source / observation",
+        "Contract-wideUnknownunknown effective date",
+        "amount · total_valueReported USD 120000000.00reported three-year extension; USD 120 million total",
+        "Associated Press via NBA.com; reported terms, not an official salary schedulearticle title and announcement paragraph; reported total onlyObserved 2026-10-03T16:53:27.510900ZCorrection: Retain NBA-hosted AP reported terms as separate reviewed source; original announcement remains unchanged.Replaces 3e535722-00fb-4e40-9da8-e1655c6d80acEvidence identitiesOrigin book: 256f66b1-129d-4904-be30-7b946f6e92fcObservation: ee6a56dc-c213-4690-960a-4cbe4baa2d9aContent SHA-256: 43645b206be7629fca499eec48c2975e0efd7c21886a9fb58f7ce63ceb29eb35Source SHA-256: 43c5ba5c1ad009fdebc55823cf9c9d7f4a1d3a4fe6dfb731a48272b5c791d1b3Source observed: 2026-10-03T16:52:13.022436ZUse basis: Local factual research note; no full article text redistributed; not automation/reuse permission for source pages",
+        "Contract-wide2025-02-12dated report",
+        "association · termsTORmulti-year extension announcement",
+        "Toronto Raptors announcement, observed through indexed web excerptindexed announcement excerpt; terms not enumeratedObserved 2026-10-03T16:52:13.022436ZEvidence identitiesOrigin book: 96b89635-82b4-47c7-b4f6-52ab85c0f0bcObservation: 4f745c61-faa5-4ce5-9ca7-e292952f080aContent SHA-256: 9a750017d169bd42050c5061cb99bfd451d9f96d0c932e226a0c1047c06bbf1eSource SHA-256: 14a5ddb88b666c567d57937ec476e7a3bc85cba8d848e62b99528f5e4048f9ebSource observed: 2026-10-03T16:52:13.022436ZUse basis: Local factual research note; no full article text redistributed; not automation/reuse permission for source pages",
+        "Contract-wideUnknownunknown effective date",
+        "contract · terms3 yearsreported three-year extension; USD 120 million total",
+        "Associated Press via NBA.com; reported terms, not an official salary schedulearticle title and announcement paragraph; reported total onlyObserved 2026-10-03T16:53:27.511033ZCorrection: Retain NBA-hosted AP reported terms as separate reviewed source; original announcement remains unchanged.Replaces ca0e2aba-15c6-4a95-8a4d-10f4cd9e062bEvidence identitiesOrigin book: 256f66b1-129d-4904-be30-7b946f6e92fcObservation: b2268b81-cdfb-403c-bfd6-21666b6a1cc7Content SHA-256: 82ed17924cf10de617d3b15f9dd0bafe031743a8d421090fe49478550677fd52Source SHA-256: 43c5ba5c1ad009fdebc55823cf9c9d7f4a1d3a4fe6dfb731a48272b5c791d1b3Source observed: 2026-10-03T16:52:13.022436ZUse basis: Local factual research note; no full article text redistributed; not automation/reuse permission for source pages",
+        "Contract-wideUnknownunknown effective date",
+        "guarantee · termsUnknownmulti-year extension announcement",
+        "Toronto Raptors announcement, observed through indexed web excerptindexed announcement excerpt; terms not enumeratedObserved 2026-10-03T16:52:13.022436ZEvidence identitiesOrigin book: 96b89635-82b4-47c7-b4f6-52ab85c0f0bcObservation: 69d0f845-acb4-44d5-a549-a102cace0089Content SHA-256: d100a292805736c5402964b66aad34f8ce9d7f137a468fe2f53f4d347931a5b6Source SHA-256: 14a5ddb88b666c567d57937ec476e7a3bc85cba8d848e62b99528f5e4048f9ebSource observed: 2026-10-03T16:52:13.022436ZUse basis: Local factual research note; no full article text redistributed; not automation/reuse permission for source pages",
+        "Contract-wideUnknownunknown effective date",
+        "option · termsUnknown · Unknownmulti-year extension announcement",
+        "Toronto Raptors announcement, observed through indexed web excerptindexed announcement excerpt; terms not enumeratedObserved 2026-10-03T16:52:13.022436ZEvidence identitiesOrigin book: 96b89635-82b4-47c7-b4f6-52ab85c0f0bcObservation: 58517719-9123-4039-9656-be65f6e2e5d7Content SHA-256: 0d7200eeb50a7206fd29312978d7b076a336d0072695203359a55ccee2f9bf73Source SHA-256: 14a5ddb88b666c567d57937ec476e7a3bc85cba8d848e62b99528f5e4048f9ebSource observed: 2026-10-03T16:52:13.022436ZUse basis: Local factual research note; no full article text redistributed; not automation/reuse permission for source pages"
+      ],
+      "glyph_sample": "Nikola Jokić · Luka Dončić · Kristaps Porziņģis · Alperen Şengün · +−%– · 1Il0O · −12.5% · USD 40,000,000",
+      "sizes": [],
+      "screenshot": "public-jetbrains-finance.png"
+    },
+    {
+      "candidate": "public-jetbrains",
+      "route": "conversation",
+      "url": "/investigations/saved/3bcb37c9-b410-44b1-be7f-c3b368fbe28c",
+      "baseline": {
+        "family": "\"Space Grotesk\", \"Space Grotesk Fallback\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif",
+        "table_width": 1392,
+        "row_height": 38.984375
+      },
+      "families": {
+        "ui": "B36-public-sans",
+        "data": "B36-jet-brains-mono",
+        "heading": "B36-public-sans"
+      },
+      "numerals": [
+        {
+          "role": "ui",
+          "weight": 400,
+          "default_widths": [
+            8.567962646484375,
+            5.6979827880859375,
+            8.343963623046875,
+            8.819961547851562,
+            8.798965454101562,
+            8.966964721679688,
+            8.7149658203125,
+            8.406967163085938,
+            9.064956665039062,
+            8.742965698242188
+          ],
+          "tabular_widths": [
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "ui",
+          "weight": 500,
+          "default_widths": [
+            8.6939697265625,
+            5.7749786376953125,
+            8.490966796875,
+            8.952957153320312,
+            8.903961181640625,
+            9.099960327148438,
+            8.861968994140625,
+            8.504959106445312,
+            9.155960083007812,
+            8.875961303710938
+          ],
+          "tabular_widths": [
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "ui",
+          "weight": 600,
+          "default_widths": [
+            8.812957763671875,
+            5.858978271484375,
+            8.64495849609375,
+            9.085968017578125,
+            9.008956909179688,
+            9.225967407226562,
+            9.001968383789062,
+            8.60296630859375,
+            9.246963500976562,
+            9.001968383789062
+          ],
+          "tabular_widths": [
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "data",
+          "weight": 400,
+          "default_widths": [
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625
+          ],
+          "tabular_widths": [
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "data",
+          "weight": 500,
+          "default_widths": [
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625
+          ],
+          "tabular_widths": [
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "data",
+          "weight": 600,
+          "default_widths": [
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625,
+            8.39996337890625
+          ],
+          "tabular_widths": [
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "heading",
+          "weight": 400,
+          "default_widths": [
+            8.567962646484375,
+            5.6979827880859375,
+            8.343963623046875,
+            8.819961547851562,
+            8.798965454101562,
+            8.966964721679688,
+            8.7149658203125,
+            8.406967163085938,
+            9.064956665039062,
+            8.742965698242188
+          ],
+          "tabular_widths": [
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "heading",
+          "weight": 500,
+          "default_widths": [
+            8.6939697265625,
+            5.7749786376953125,
+            8.490966796875,
+            8.952957153320312,
+            8.903961181640625,
+            9.099960327148438,
+            8.861968994140625,
+            8.504959106445312,
+            9.155960083007812,
+            8.875961303710938
+          ],
+          "tabular_widths": [
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125
+          ],
+          "tabular_spread": 0
+        },
+        {
+          "role": "heading",
+          "weight": 600,
+          "default_widths": [
+            8.812957763671875,
+            5.858978271484375,
+            8.64495849609375,
+            9.085968017578125,
+            9.008956909179688,
+            9.225967407226562,
+            9.001968383789062,
+            8.60296630859375,
+            9.246963500976562,
+            9.001968383789062
+          ],
+          "tabular_widths": [
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125
+          ],
+          "tabular_spread": 0
+        }
+      ],
+      "glyphs": [
+        {
+          "role": "ui",
+          "fallback_dependent_characters": []
+        },
+        {
+          "role": "data",
+          "fallback_dependent_characters": []
+        },
+        {
+          "role": "heading",
+          "fallback_dependent_characters": []
+        }
+      ],
+      "swap_layout_shift_sum": 0.009605511391722126,
+      "shifts": [
+        {
+          "value": 0.005949409096800251,
+          "time": 359.3999999985099
+        },
+        {
+          "value": 0.0036561022949218747,
+          "time": 372.6000000014901
+        }
+      ],
+      "body_overflow": false,
+      "table_width": 1392,
+      "row_height": 38.984375,
+      "table_rows": 27,
+      "samples": [
+        "game date",
+        "value",
+        "minutes",
+        "team tricode",
+        "opponent tricode",
+        "is home",
+        "game id",
+        "2025-04-13",
+        "35",
+        "36.6",
+        "TOR",
+        "SAS",
+        "false",
+        "0022401197",
+        "2025-04-11",
+        "26",
+        "30.5",
+        "TOR",
+        "DAL",
+        "false",
+        "0022401178",
+        "2025-04-09",
+        "17",
+        "20.4",
+        "TOR",
+        "CHA",
+        "true",
+        "0022401158",
+        "2025-04-03",
+        "5"
+      ],
+      "glyph_sample": "Nikola Jokić · Luka Dončić · Kristaps Porziņģis · Alperen Şengün · +−%– · 1Il0O · −12.5% · USD 40,000,000",
+      "sizes": [],
+      "screenshot": "public-jetbrains-conversation.png"
+    }
+  ],
+  "requests": [
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:3135/api/workspace?workspaceId=default"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1629029/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1628983/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/203507/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1628973/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/203999/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1630162/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/201142/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1628368/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/201939/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1628369/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/201942/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/203076/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1626164/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/2544/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1630178/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1631094/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/203081/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1627749/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1627783/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/202331/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/202695/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1627759/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1630224/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1628969/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1629627/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1627734/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1628398/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1641705/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1629632/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/202681/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1628991/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1628378/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1629012/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1628970/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1630560/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1630532/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1630595/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1629027/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1630169/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/202696/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1626156/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1628389/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1631096/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1629008/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1629673/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/203954/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1626157/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/202691/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1631114/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/203992/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:3135/api/workspace?workspaceId=default"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:3135/api/workspace?workspaceId=default"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/operations/finance/books"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/operations/finance/books/256f66b1-129d-4904-be30-7b946f6e92fc"
+    },
+    {
+      "method": "POST",
+      "url": "http://127.0.0.1:8000/api/workbench/operations/finance"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:3135/api/workspace?workspaceId=default"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/assistant/investigations/3bcb37c9-b410-44b1-be7f-c3b368fbe28c"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:3135/api/workspace?workspaceId=default"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1629029/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1628983/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/203507/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1628973/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/203999/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1630162/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/201142/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1628368/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/201939/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1628369/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/201942/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/203076/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1626164/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/2544/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1630178/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1631094/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/203081/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1627749/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1627783/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/202331/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/202695/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1627759/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1630224/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1628969/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1629627/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1627734/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1628398/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1641705/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1629632/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/202681/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1628991/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1628378/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1629012/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1628970/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1630560/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1630532/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1630595/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1629027/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1630169/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/202696/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1626156/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1628389/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1631096/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1629008/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1629673/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/203954/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1626157/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/202691/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1631114/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/203992/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:3135/api/workspace?workspaceId=default"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:3135/api/workspace?workspaceId=default"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/operations/finance/books"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/operations/finance/books/256f66b1-129d-4904-be30-7b946f6e92fc"
+    },
+    {
+      "method": "POST",
+      "url": "http://127.0.0.1:8000/api/workbench/operations/finance"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:3135/api/workspace?workspaceId=default"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/assistant/investigations/3bcb37c9-b410-44b1-be7f-c3b368fbe28c"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:3135/api/workspace?workspaceId=default"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1629029/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1628983/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/203507/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1628973/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/203999/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1630162/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/201142/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1628368/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/201939/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1628369/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/201942/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/203076/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1626164/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/2544/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1630178/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1631094/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/203081/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1627749/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1627783/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/202331/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/202695/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1627759/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1630224/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1628969/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1629627/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1627734/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1628398/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1641705/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1629632/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/202681/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1628991/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1628378/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1629012/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1628970/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1630560/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1630532/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1630595/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1629027/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1630169/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/202696/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1626156/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1628389/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1631096/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1629008/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1629673/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/203954/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1626157/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/202691/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1631114/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/203992/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:3135/api/workspace?workspaceId=default"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:3135/api/workspace?workspaceId=default"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/operations/finance/books"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/operations/finance/books/256f66b1-129d-4904-be30-7b946f6e92fc"
+    },
+    {
+      "method": "POST",
+      "url": "http://127.0.0.1:8000/api/workbench/operations/finance"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:3135/api/workspace?workspaceId=default"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/assistant/investigations/3bcb37c9-b410-44b1-be7f-c3b368fbe28c"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:3135/api/workspace?workspaceId=default"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1629029/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1628983/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/203507/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1628973/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/203999/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1630162/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/201142/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1628368/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/201939/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1628369/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/201942/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/203076/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1626164/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/2544/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1630178/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1631094/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/203081/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1627749/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1627783/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/202331/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/202695/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1627759/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1630224/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1628969/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1629627/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1627734/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1628398/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1641705/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1629632/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/202681/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1628991/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1628378/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1629012/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1628970/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1630560/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1630532/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1630595/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1629027/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1630169/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/202696/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1626156/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1628389/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1631096/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1629008/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1629673/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/203954/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1626157/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/202691/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/1631114/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/players/203992/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:3135/api/workspace?workspaceId=default"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:3135/api/workspace?workspaceId=default"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/operations/finance/books"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/operations/finance/books/256f66b1-129d-4904-be30-7b946f6e92fc"
+    },
+    {
+      "method": "POST",
+      "url": "http://127.0.0.1:8000/api/workbench/operations/finance"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:3135/api/workspace?workspaceId=default"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8000/api/workbench/assistant/investigations/3bcb37c9-b410-44b1-be7f-c3b368fbe28c"
+    }
+  ],
+  "page_errors": [],
+  "saved_inventory_unchanged": true,
+  "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+  "limits": [
+    "No owner selection or application font change",
+    "Font-swap shift is an isolated post-hydration experiment, not production CLS",
+    "Responsive and keyboard measurements bounded to Stats",
+    "Screenshots require owner readability review",
+    "Final local-font packaging and cold-load CLS remain pending"
+  ]
+}

@@ -1,0 +1,17 @@
+
+> courtload-dashboard@0.1.0 test:browser
+> playwright test e2e/workbench.spec.ts
+
+
+Running 8 tests using 8 workers
+
+  ✓  5 e2e/workbench.spec.ts:120:7 › Workbench Dark Research Interface › dense dark research layout fits a 375px mobile viewport without horizontal overflow (1.1s)
+  ✓  2 e2e/workbench.spec.ts:79:7 › Workbench Dark Research Interface › comparison view displays head-to-head metrics without declaring forced winners (1.2s)
+  ✓  3 e2e/workbench.spec.ts:91:7 › Workbench Dark Research Interface › forecasts view displays active policy, promotion decision, gates, and prespecified slices (1.3s)
+  ✓  7 e2e/workbench.spec.ts:46:7 › Workbench Dark Research Interface › player detail presents profile summaries, game logs, and lineage trigger (1.5s)
+  ✓  6 e2e/workbench.spec.ts:63:7 › Workbench Dark Research Interface › team research lists cohorts and navigates to team detail (1.5s)
+  ✓  1 e2e/workbench.spec.ts:132:7 › Workbench Dark Research Interface › Ask drawer offers manual research and links to optional configuration (1.9s)
+  ✓  8 e2e/workbench.spec.ts:5:7 › Workbench Dark Research Interface › home opens Stats with dark theme, horizontal navigation, context and data (1.9s)
+  ✓  4 e2e/workbench.spec.ts:25:7 › Workbench Dark Research Interface › player explorer allows filtering and links to detail view (2.4s)
+
+  8 passed (3.6s)

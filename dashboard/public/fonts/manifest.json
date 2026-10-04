@@ -1,0 +1,85 @@
+{
+  "selection": "Owner approved Public Sans + JetBrains Mono on 2026-10-04",
+  "modified": false,
+  "fonts": [
+    {
+      "slug": "public-sans",
+      "name": "Public Sans",
+      "version": "2.001",
+      "license": "sil_ofl",
+      "metadata_url": "https://api.fontshare.com/v2/fonts/slug/public-sans",
+      "metadata_sha256": "c91a3d2e23c3355cf7afc7da28bb45cb17c7ac683d612f9868b79ec12632a72a",
+      "url": "https://cdn.fontshare.com/wf/AB3W4RTJDTV2YGSHJ3RYQNITFFFTVTHJ/HMR5BYPT5TY2T3WCBIBJNUHOZ7BZTM5T/JCGGIZDCUA7N5MMORGBTNWUTQEZEM2D3.woff2",
+      "bytes": 41944,
+      "sha256": "5b51cd397718e82956721fa3da846367c4bfdf2ed502ed1fd03d07a4e74b9cb3",
+      "weight": "100 900",
+      "declared_features": [
+        "aalt",
+        "calt",
+        "ccmp",
+        "dnom",
+        "frac",
+        "liga",
+        "lnum",
+        "locl",
+        "numr",
+        "onum",
+        "ordn",
+        "pnum",
+        "salt",
+        "sinf",
+        "ss01",
+        "subs",
+        "sups",
+        "tnum"
+      ],
+      "file": "public-sans-variable.woff2",
+      "license_file": "public-sans-LICENSE.txt",
+      "license_source": "https://raw.githubusercontent.com/uswds/public-sans/master/LICENSE.md",
+      "license_sha256": "82f0d3cad45f264192db156360b4a710fe7060885f6aa261e6539f13cb9eb0d9",
+      "embedded_notices": {
+        "0": "Copyright 2015 The Public Sans Project Authors (https://github.com/uswds/public-sans)",
+        "5": "Version 2.001",
+        "13": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: https://scripts.sil.org/OFL. The license for USWDS\u2019s Modified Version, covering USWDS\u2019s modifications to Public Sans, is available at https://github.com/uswds/public-sans/blob/master/LICENSE.md.",
+        "14": "SIL Open Font License, Version 1.1: https://scripts.sil.org/cms/scripts/page.php?site_id=nrsi&id=OFL_web; USWDS Modified Version: https://github.com/uswds/public-sans/blob/master/LICENSE.md"
+      },
+      "bounded_cmap_missing": []
+    },
+    {
+      "slug": "jet-brains-mono",
+      "name": "JetBrains Mono",
+      "version": "2.251",
+      "license": "sil_ofl",
+      "metadata_url": "https://api.fontshare.com/v2/fonts/slug/jet-brains-mono",
+      "metadata_sha256": "f9cec1e7731437309bfebe22ede537e8e859198dbf6b075e64f9fdc3186ac3e6",
+      "url": "https://cdn.fontshare.com/wf/NETZQ54ZOKLTIGCF4PEMSPBMZ4WH6PJS/IU37JRVORJNT7W7AFXSHPFH7UV2F5ZWX/ZFWC2YLUJ7YZ5NZDUAYWIG2A6AZGG5QH.woff2",
+      "bytes": 91484,
+      "sha256": "03025ea79e854ffd735e15a166c4d86e3d9183fafd6f29927eb12d759d1bee2d",
+      "weight": "100 800",
+      "declared_features": [
+        "aalt",
+        "calt",
+        "case",
+        "ccmp",
+        "frac",
+        "locl",
+        "ordn",
+        "sinf",
+        "subs",
+        "sups",
+        "zero"
+      ],
+      "file": "jet-brains-mono-variable.woff2",
+      "license_file": "jet-brains-mono-LICENSE.txt",
+      "license_source": "https://raw.githubusercontent.com/JetBrains/JetBrainsMono/master/OFL.txt",
+      "license_sha256": "a76abf002c49097d146e86740a3105a5d00450b1592e820a1109a8c5680cd697",
+      "embedded_notices": {
+        "0": "Copyright 2020 The JetBrains Mono Project Authors (https://github.com/JetBrains/JetBrainsMono)",
+        "5": "Version 2.251",
+        "13": "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: https://scripts.sil.org/OFL",
+        "14": "https://scripts.sil.org/OFL"
+      },
+      "bounded_cmap_missing": []
+    }
+  ]
+}

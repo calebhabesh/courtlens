@@ -1,0 +1,1003 @@
+{
+  "block": "B36b",
+  "recorded_at": "2026-10-04T17:32:38.169Z",
+  "browser": "153.0.8010.52",
+  "site": "http://127.0.0.1:3137",
+  "api": "http://127.0.0.1:8036",
+  "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+  "mode": "Fresh standalone production; cold contexts and disabled cache; real retained services, inference disabled",
+  "fonts": [
+    {
+      "route": "stats",
+      "url": "http://127.0.0.1:3137/_next/static/media/jet_brains_mono_variable.p.45c1zvry19db5.woff2",
+      "sha256": "03025ea79e854ffd735e15a166c4d86e3d9183fafd6f29927eb12d759d1bee2d",
+      "bytes": 91484,
+      "family": "JetBrains Mono",
+      "cache_control": "public, max-age=31536000, immutable"
+    },
+    {
+      "route": "stats",
+      "url": "http://127.0.0.1:3137/_next/static/media/public_sans_variable-s.p.3n8-w08qz3v3k.woff2",
+      "sha256": "5b51cd397718e82956721fa3da846367c4bfdf2ed502ed1fd03d07a4e74b9cb3",
+      "bytes": 41944,
+      "family": "Public Sans",
+      "cache_control": "public, max-age=31536000, immutable"
+    },
+    {
+      "route": "scatter",
+      "url": "http://127.0.0.1:3137/_next/static/media/jet_brains_mono_variable.p.45c1zvry19db5.woff2",
+      "sha256": "03025ea79e854ffd735e15a166c4d86e3d9183fafd6f29927eb12d759d1bee2d",
+      "bytes": 91484,
+      "family": "JetBrains Mono",
+      "cache_control": "public, max-age=31536000, immutable"
+    },
+    {
+      "route": "scatter",
+      "url": "http://127.0.0.1:3137/_next/static/media/public_sans_variable-s.p.3n8-w08qz3v3k.woff2",
+      "sha256": "5b51cd397718e82956721fa3da846367c4bfdf2ed502ed1fd03d07a4e74b9cb3",
+      "bytes": 41944,
+      "family": "Public Sans",
+      "cache_control": "public, max-age=31536000, immutable"
+    },
+    {
+      "route": "finance",
+      "url": "http://127.0.0.1:3137/_next/static/media/jet_brains_mono_variable.p.45c1zvry19db5.woff2",
+      "sha256": "03025ea79e854ffd735e15a166c4d86e3d9183fafd6f29927eb12d759d1bee2d",
+      "bytes": 91484,
+      "family": "JetBrains Mono",
+      "cache_control": "public, max-age=31536000, immutable"
+    },
+    {
+      "route": "finance",
+      "url": "http://127.0.0.1:3137/_next/static/media/public_sans_variable-s.p.3n8-w08qz3v3k.woff2",
+      "sha256": "5b51cd397718e82956721fa3da846367c4bfdf2ed502ed1fd03d07a4e74b9cb3",
+      "bytes": 41944,
+      "family": "Public Sans",
+      "cache_control": "public, max-age=31536000, immutable"
+    },
+    {
+      "route": "conversation",
+      "url": "http://127.0.0.1:3137/_next/static/media/jet_brains_mono_variable.p.45c1zvry19db5.woff2",
+      "sha256": "03025ea79e854ffd735e15a166c4d86e3d9183fafd6f29927eb12d759d1bee2d",
+      "bytes": 91484,
+      "family": "JetBrains Mono",
+      "cache_control": "public, max-age=31536000, immutable"
+    },
+    {
+      "route": "conversation",
+      "url": "http://127.0.0.1:3137/_next/static/media/public_sans_variable-s.p.3n8-w08qz3v3k.woff2",
+      "sha256": "5b51cd397718e82956721fa3da846367c4bfdf2ed502ed1fd03d07a4e74b9cb3",
+      "bytes": 41944,
+      "family": "Public Sans",
+      "cache_control": "public, max-age=31536000, immutable"
+    }
+  ],
+  "measurements": [
+    {
+      "route": "stats",
+      "url": "/stats?release_id=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2023-24&phase=regular_season&before_date=2024-04-15",
+      "families": {
+        "ui": "\"publicSans\", \"publicSans Fallback\"",
+        "data": "\"jetBrainsMono\", monospace"
+      },
+      "numerals": [
+        {
+          "role": "ui",
+          "weight": 400,
+          "widths": [
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125
+          ],
+          "spread": 0
+        },
+        {
+          "role": "ui",
+          "weight": 500,
+          "widths": [
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125
+          ],
+          "spread": 0
+        },
+        {
+          "role": "ui",
+          "weight": 600,
+          "widths": [
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125
+          ],
+          "spread": 0
+        },
+        {
+          "role": "data",
+          "weight": 400,
+          "widths": [
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625
+          ],
+          "spread": 0
+        },
+        {
+          "role": "data",
+          "weight": 500,
+          "widths": [
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625
+          ],
+          "spread": 0
+        },
+        {
+          "role": "data",
+          "weight": 600,
+          "widths": [
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625
+          ],
+          "spread": 0
+        }
+      ],
+      "glyphs": [
+        {
+          "role": "ui",
+          "fallback_dependent": []
+        },
+        {
+          "role": "data",
+          "fallback_dependent": []
+        }
+      ],
+      "cls": 0,
+      "shifts": [],
+      "body_overflow": false,
+      "row_height": 45.6875,
+      "table_width": 1400.421875,
+      "table_rows": 50,
+      "preloads": [
+        "http://127.0.0.1:3137/_next/static/media/jet_brains_mono_variable.p.45c1zvry19db5.woff2",
+        "http://127.0.0.1:3137/_next/static/media/public_sans_variable-s.p.3n8-w08qz3v3k.woff2"
+      ],
+      "mono_ligatures": "none",
+      "sizes": [
+        {
+          "id": "mobile",
+          "width": 375,
+          "height": 812,
+          "body_overflow": false
+        },
+        {
+          "id": "landscape",
+          "width": 812,
+          "height": 375,
+          "body_overflow": false
+        },
+        {
+          "id": "zoom",
+          "width": 1440,
+          "height": 1000,
+          "zoom": "2",
+          "body_overflow": false
+        }
+      ],
+      "keyboard_skip_link": true
+    },
+    {
+      "route": "scatter",
+      "url": "/stats?release_id=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2023-24&phase=regular_season&before_date=2024-04-15&viewMode=scatter",
+      "families": {
+        "ui": "\"publicSans\", \"publicSans Fallback\"",
+        "data": "\"jetBrainsMono\", monospace"
+      },
+      "numerals": [
+        {
+          "role": "ui",
+          "weight": 400,
+          "widths": [
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125
+          ],
+          "spread": 0
+        },
+        {
+          "role": "ui",
+          "weight": 500,
+          "widths": [
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125
+          ],
+          "spread": 0
+        },
+        {
+          "role": "ui",
+          "weight": 600,
+          "widths": [
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125
+          ],
+          "spread": 0
+        },
+        {
+          "role": "data",
+          "weight": 400,
+          "widths": [
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625
+          ],
+          "spread": 0
+        },
+        {
+          "role": "data",
+          "weight": 500,
+          "widths": [
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625
+          ],
+          "spread": 0
+        },
+        {
+          "role": "data",
+          "weight": 600,
+          "widths": [
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625
+          ],
+          "spread": 0
+        }
+      ],
+      "glyphs": [
+        {
+          "role": "ui",
+          "fallback_dependent": []
+        },
+        {
+          "role": "data",
+          "fallback_dependent": []
+        }
+      ],
+      "cls": 0,
+      "shifts": [],
+      "body_overflow": false,
+      "row_height": null,
+      "table_width": null,
+      "table_rows": 0,
+      "preloads": [
+        "http://127.0.0.1:3137/_next/static/media/jet_brains_mono_variable.p.45c1zvry19db5.woff2",
+        "http://127.0.0.1:3137/_next/static/media/public_sans_variable-s.p.3n8-w08qz3v3k.woff2"
+      ],
+      "mono_ligatures": "none",
+      "sizes": [
+        {
+          "id": "mobile",
+          "width": 375,
+          "height": 812,
+          "body_overflow": false
+        },
+        {
+          "id": "landscape",
+          "width": 812,
+          "height": 375,
+          "body_overflow": false
+        },
+        {
+          "id": "zoom",
+          "width": 1440,
+          "height": 1000,
+          "zoom": "2",
+          "body_overflow": false
+        }
+      ],
+      "keyboard_skip_link": true
+    },
+    {
+      "route": "finance",
+      "url": "/contracts/TOR?finance_book_id=256f66b1-129d-4904-be30-7b946f6e92fc&finance_financial_season=2025-26&finance_known_at=2026-10-03T16%3A53%3A28.511033Z&finance_effective_on=2025-02-12&finance_team_id=1610612761&season=2024-25",
+      "families": {
+        "ui": "\"publicSans\", \"publicSans Fallback\"",
+        "data": "\"jetBrainsMono\", monospace"
+      },
+      "numerals": [
+        {
+          "role": "ui",
+          "weight": 400,
+          "widths": [
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125
+          ],
+          "spread": 0
+        },
+        {
+          "role": "ui",
+          "weight": 500,
+          "widths": [
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125
+          ],
+          "spread": 0
+        },
+        {
+          "role": "ui",
+          "weight": 600,
+          "widths": [
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125
+          ],
+          "spread": 0
+        },
+        {
+          "role": "data",
+          "weight": 400,
+          "widths": [
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625
+          ],
+          "spread": 0
+        },
+        {
+          "role": "data",
+          "weight": 500,
+          "widths": [
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625
+          ],
+          "spread": 0
+        },
+        {
+          "role": "data",
+          "weight": 600,
+          "widths": [
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625
+          ],
+          "spread": 0
+        }
+      ],
+      "glyphs": [
+        {
+          "role": "ui",
+          "fallback_dependent": []
+        },
+        {
+          "role": "data",
+          "fallback_dependent": []
+        }
+      ],
+      "cls": 0.05213837890625,
+      "shifts": [
+        {
+          "value": 0.05213837890625,
+          "time": 355.8999999985099
+        }
+      ],
+      "body_overflow": false,
+      "row_height": 262.78125,
+      "table_width": 1396,
+      "table_rows": 7,
+      "preloads": [
+        "http://127.0.0.1:3137/_next/static/media/jet_brains_mono_variable.p.45c1zvry19db5.woff2",
+        "http://127.0.0.1:3137/_next/static/media/public_sans_variable-s.p.3n8-w08qz3v3k.woff2"
+      ],
+      "mono_ligatures": null,
+      "sizes": [
+        {
+          "id": "mobile",
+          "width": 375,
+          "height": 812,
+          "body_overflow": false
+        },
+        {
+          "id": "landscape",
+          "width": 812,
+          "height": 375,
+          "body_overflow": false
+        },
+        {
+          "id": "zoom",
+          "width": 1440,
+          "height": 1000,
+          "zoom": "2",
+          "body_overflow": false
+        }
+      ],
+      "keyboard_skip_link": true
+    },
+    {
+      "route": "conversation",
+      "url": "/investigations/saved/3bcb37c9-b410-44b1-be7f-c3b368fbe28c",
+      "families": {
+        "ui": "\"publicSans\", \"publicSans Fallback\"",
+        "data": "\"jetBrainsMono\", monospace"
+      },
+      "numerals": [
+        {
+          "role": "ui",
+          "weight": 400,
+          "widths": [
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125
+          ],
+          "spread": 0
+        },
+        {
+          "role": "ui",
+          "weight": 500,
+          "widths": [
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125
+          ],
+          "spread": 0
+        },
+        {
+          "role": "ui",
+          "weight": 600,
+          "widths": [
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125,
+            9.8125
+          ],
+          "spread": 0
+        },
+        {
+          "role": "data",
+          "weight": 400,
+          "widths": [
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625
+          ],
+          "spread": 0
+        },
+        {
+          "role": "data",
+          "weight": 500,
+          "widths": [
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625
+          ],
+          "spread": 0
+        },
+        {
+          "role": "data",
+          "weight": 600,
+          "widths": [
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625,
+            8.40625
+          ],
+          "spread": 0
+        }
+      ],
+      "glyphs": [
+        {
+          "role": "ui",
+          "fallback_dependent": []
+        },
+        {
+          "role": "data",
+          "fallback_dependent": []
+        }
+      ],
+      "cls": 0,
+      "shifts": [],
+      "body_overflow": false,
+      "row_height": 38.984375,
+      "table_width": 1392,
+      "table_rows": 27,
+      "preloads": [
+        "http://127.0.0.1:3137/_next/static/media/jet_brains_mono_variable.p.45c1zvry19db5.woff2",
+        "http://127.0.0.1:3137/_next/static/media/public_sans_variable-s.p.3n8-w08qz3v3k.woff2"
+      ],
+      "mono_ligatures": null,
+      "sizes": [
+        {
+          "id": "mobile",
+          "width": 375,
+          "height": 812,
+          "body_overflow": false
+        },
+        {
+          "id": "landscape",
+          "width": 812,
+          "height": 375,
+          "body_overflow": false
+        },
+        {
+          "id": "zoom",
+          "width": 1440,
+          "height": 1000,
+          "zoom": "2",
+          "body_overflow": false
+        }
+      ],
+      "keyboard_skip_link": true
+    }
+  ],
+  "fallback_checks": [
+    {
+      "mode": "delayed",
+      "intercepted": 2,
+      "unique_fonts": 2,
+      "cls": 0.0010800161102671683,
+      "shifts": [
+        {
+          "value": 0.0010800161102671683,
+          "time": 1668.6000000014901
+        }
+      ],
+      "rows": 50,
+      "overflow": false,
+      "text": "Stats Explorer",
+      "fonts": [
+        {
+          "family": "publicSans",
+          "status": "loaded"
+        },
+        {
+          "family": "publicSans Fallback",
+          "status": "error"
+        },
+        {
+          "family": "jetBrainsMono",
+          "status": "loaded"
+        }
+      ],
+      "row_height": 45.6875
+    },
+    {
+      "mode": "blocked",
+      "intercepted": 4,
+      "unique_fonts": 2,
+      "cls": 0,
+      "shifts": [],
+      "rows": 50,
+      "overflow": false,
+      "text": "Stats Explorer",
+      "fonts": [
+        {
+          "family": "publicSans",
+          "status": "error"
+        },
+        {
+          "family": "publicSans Fallback",
+          "status": "error"
+        },
+        {
+          "family": "jetBrainsMono",
+          "status": "error"
+        }
+      ],
+      "row_height": 45.6875
+    }
+  ],
+  "requests": [
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:3137/api/workspace?workspaceId=default"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8036/api/workbench/players/1629029/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8036/api/workbench/players/1628983/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8036/api/workbench/players/203507/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8036/api/workbench/players/1628973/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8036/api/workbench/players/203999/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8036/api/workbench/players/1630162/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8036/api/workbench/players/201142/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8036/api/workbench/players/1628368/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8036/api/workbench/players/201939/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8036/api/workbench/players/1628369/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8036/api/workbench/players/201942/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8036/api/workbench/players/203076/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8036/api/workbench/players/1626164/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8036/api/workbench/players/2544/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8036/api/workbench/players/1630178/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8036/api/workbench/players/1631094/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8036/api/workbench/players/203081/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8036/api/workbench/players/1627749/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8036/api/workbench/players/1627783/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8036/api/workbench/players/202331/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8036/api/workbench/players/202695/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8036/api/workbench/players/1627759/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8036/api/workbench/players/1630224/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8036/api/workbench/players/1628969/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8036/api/workbench/players/1629627/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8036/api/workbench/players/1627734/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8036/api/workbench/players/1628398/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8036/api/workbench/players/1641705/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8036/api/workbench/players/1629632/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8036/api/workbench/players/202681/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8036/api/workbench/players/1628991/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8036/api/workbench/players/1628378/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8036/api/workbench/players/1629012/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8036/api/workbench/players/1628970/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8036/api/workbench/players/1630560/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8036/api/workbench/players/1630532/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8036/api/workbench/players/1630595/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8036/api/workbench/players/1629027/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8036/api/workbench/players/1630169/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8036/api/workbench/players/202696/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8036/api/workbench/players/1626156/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8036/api/workbench/players/1628389/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8036/api/workbench/players/1631096/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8036/api/workbench/players/1629008/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8036/api/workbench/players/1629673/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8036/api/workbench/players/203954/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8036/api/workbench/players/1626157/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8036/api/workbench/players/202691/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8036/api/workbench/players/1631114/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8036/api/workbench/players/203992/portrait"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:3137/api/workspace?workspaceId=default"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:3137/api/workspace?workspaceId=default"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8036/api/workbench/operations/finance/books"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8036/api/workbench/operations/finance/books/256f66b1-129d-4904-be30-7b946f6e92fc"
+    },
+    {
+      "method": "POST",
+      "url": "http://127.0.0.1:8036/api/workbench/operations/finance"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:3137/api/workspace?workspaceId=default"
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:8036/api/workbench/assistant/investigations/3bcb37c9-b410-44b1-be7f-c3b368fbe28c"
+    }
+  ],
+  "external_requests": [],
+  "page_errors": [],
+  "saved_inventory_unchanged": true,
+  "cls_observation": "Initial navigation through real-data ready + fonts ready + 1.2 seconds; maximum CLS session window, excludes recent input; bounded lab measurement",
+  "limits": [
+    "Chromium/Linux only",
+    "Bounded glyph sample, not all names",
+    "CSS 200% zoom",
+    "B32 and language/source/model gates remain open"
+  ]
+}
