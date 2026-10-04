@@ -1,0 +1,113 @@
+{
+  "measured_at": "2026-10-03T19:06:30.722515+00:00",
+  "scope": "B32 bounded local Live interface; scheduled-only real source; retained admitted historical final",
+  "implementation_choice": "current Codex session instead of Flash assignment; no delegated agents or model override",
+  "backend": {
+    "command": ".venv/bin/pytest -q",
+    "passed": 509,
+    "skipped": 98,
+    "warnings": 1,
+    "seconds": 23.55
+  },
+  "focused_live": {
+    "passed": 38,
+    "skipped": 0,
+    "postgresql_checks": 13,
+    "seconds": 4.53,
+    "new_history_tests": 3,
+    "history_missingness_after_correction": "3 tests passed in full suite and standalone run"
+  },
+  "dashboard": {
+    "unit_files": 23,
+    "unit_passed": 145,
+    "fixture_browser_passed": 7,
+    "fixture_browser_seconds": 3.0,
+    "fixture_browser_command": "PLAYWRIGHT_EXTERNAL_SERVER=true npm --prefix dashboard run test:browser -- live.spec.ts --workers=2",
+    "typecheck": "pass",
+    "lint": "pass with zero warnings",
+    "production_build": "pass"
+  },
+  "real_browser": {
+    "directory": "docs/evidence/b32-browser-final-verified",
+    "tabs": 3,
+    "visibility": [
+      "visible",
+      "visible",
+      "visible"
+    ],
+    "steady_window_seconds": 65,
+    "total_browser_seconds": 68.464,
+    "worker_upstream_requests": 2,
+    "idle_acquisitions": 0,
+    "leases_after_window": 3,
+    "leases_after_cleanup": 0,
+    "all_leases_after_probe": 0,
+    "historical_game_id": "0022301188",
+    "historical_scores": {
+      "Atlanta Hawks": 115,
+      "Indiana Pacers": 157
+    },
+    "historical_player_rows": 27,
+    "nonappearance_placeholders_suppressed": [
+      "Isaiah Jackson",
+      "Clint Capela"
+    ],
+    "mobile": {
+      "width": 375,
+      "scrollWidth": 375
+    },
+    "landscape": {
+      "width": 812,
+      "scrollWidth": 812
+    },
+    "all_publication_pointers_and_finance_books_unchanged": true
+  },
+  "ruff_check": "pass",
+  "ruff_format": {
+    "status": "pass",
+    "files": 306
+  },
+  "mypy": {
+    "status": "pass",
+    "source_files": 133
+  },
+  "retained_historical_checksums": 26,
+  "diff_check": "pass",
+  "warnings": [
+    "Existing Starlette/httpx TestClient deprecation remains",
+    "Playwright reports existing NO_COLOR/FORCE_COLOR tooling warnings",
+    "Isolated real-smoke Next start logs standalone-output launch advisory; production build passes"
+  ],
+  "open_gates": [
+    "genuine changing in-game freshness and real later final/correction reconciliation",
+    "source consumer-use permission and sustained reliability",
+    "populated active three-box resource/storage/retention",
+    "full player-stat final reconciliation",
+    "release-wide zero-warning/full PostgreSQL/broad-browser/fresh backup-restore acceptance"
+  ],
+  "sha256": {
+    "dashboard/app/live/page.tsx": "5b7c07568fa21e6814d89a1708cb5457d324ea38d31fc58e40cfaa825b7891d8",
+    "dashboard/app/live/[date]/page.tsx": "8d1a8dea48e7ad0219888c8ac0d65ad6238df16d12eecbf20044d072f0ffe851",
+    "dashboard/app/live/games/[id]/page.tsx": "efea8cc3844d8e31cfb8363e562eddd05c42cd9cede214d1d2986bfb5d6bcaad",
+    "dashboard/app/api/live/[[...path]]/route.ts": "ccc5bcb7a8bae38bd50eae00cbe761c43b3a2adf1d16306d21a6a58f07404f3d",
+    "dashboard/components/live-workspace.tsx": "afc8f6083fd3808184f2d42a637aee64383c5deada578caec1f09b3b89e8a46d",
+    "dashboard/lib/live.ts": "bcdea6cbb953b6d85d27e7d3febc2c9d0c8411b994569ea794c0b203e57eead8",
+    "dashboard/lib/live.test.ts": "ccc83a5ba9f10d92243d5f2a727bb3d7bb28ee38dae2a200d5df9350e10c0f89",
+    "dashboard/e2e/live.spec.ts": "19901cb0da0cfe43fa835c09884fa18ccd931eb3a102640df9bcfdb9f90a72a8",
+    "dashboard/app/globals.css": "b21b53e88180d0d00871a1ae5fc46ad9a02ae2c0d8e62fa23d960d86f7f302a1",
+    "src/courtload/api/routers/live.py": "9ea3b2bd689fcfe4e38fc078f7c8f08942560f81eac56932ee11f513c9192897",
+    "src/courtload/domain/live_history.py": "51c53cadcf45457930de7181c25b82545584e3537314c432034b8519efb4621b",
+    "src/courtload/services/live_history.py": "667c08005518ee2eb342a5c38d2132dcc034a734cc11901517fc5c1917dbe5a1",
+    "tests/unit/test_live_history.py": "09fac52c327521a9323186eda39f11330d7135bd045fe7505d2a7a5cb7aba09d",
+    "scripts/verify_b32_live.py": "81c48a86b095b303ab7de6ab6d974984cd23d8718c399947f82d1e170d61101c",
+    "scripts/verify_b32_live_browser.cjs": "1f3ea1c8dd85a6bb33ec3de4f2136d28b069232f2420e0c8f4cf5342fd3e5857",
+    "docs/design/live-ui-v1.md": "45cce2c395bdec10913af1ceec7ff672b6195c56b21a5f741f1fc19d07455269",
+    "docs/evidence/b32-browser-final-verified/historical-final-desktop.png": "497f4df647d392ac8dc7c0800f686f4b8ae698768db295495b6203ddccb4dd0d",
+    "docs/evidence/b32-browser-final-verified/historical-final-mobile.png": "0f89c3bb2428b80a16b2425f3fa0f10c192233652c57e091e4188262e0b05877",
+    "docs/evidence/b32-browser-final-verified/live-desktop.png": "38a2a54d9bb035734e684438c5e12f48c6bdda5478a9d34aeb0b9358f1da203f",
+    "docs/evidence/b32-browser-final-verified/real-browser.json": "cde68c568a00f0b71ddd6221ce97a5d233a6e71ee925d23dd4c574d23c4f6e8e",
+    "docs/evidence/b32-browser-final-verified/owned-leases.json": "20ed945fb85022a604c0d4fcc5f683cd474350a500939aba1d3f87d12244197d",
+    "docs/evidence/b32-browser-final-verified/real-service.json": "ec9ab1b70145a209649a40f46518cd8dfc25227ba26e101f1ee2ccd1a15bdb03",
+    "docs/evidence/b32-browser-final-verified/requests.json": "f0f51df9ddec04f9fb4c1d7833aed5ad9963d21cae91d9d01dd6352215bd05fc"
+  }
+}

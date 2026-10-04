@@ -1,0 +1,38 @@
+{
+  "capture_kind": "real three-browser coalescing; scheduled-only source evidence",
+  "poller_requests": 2,
+  "poller_ticks": 14,
+  "idle_acquisitions": 0,
+  "observations_before": 4,
+  "observations_after": 6,
+  "integrity_before": {
+    "public_snapshot": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+    "pointer_count": 148,
+    "pointers_sha256": "7abeb7c6c1ece9a5492c7b32f7ef16c5bd7190c698b8947d28a9f312ac495650",
+    "books": [
+      [
+        "256f66b1-129d-4904-be30-7b946f6e92fc",
+        "a5052df00f96420d722bcfcf5fa91df0c90394e570ceb5bf85de2f61f2b9ebc2"
+      ],
+      [
+        "96b89635-82b4-47c7-b4f6-52ab85c0f0bc",
+        "b425f46cfa002bf79c79a63b5b6e05fc3db478f441f87a48dd233437e00816e4"
+      ]
+    ]
+  },
+  "integrity_after": {
+    "public_snapshot": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+    "pointer_count": 148,
+    "pointers_sha256": "7abeb7c6c1ece9a5492c7b32f7ef16c5bd7190c698b8947d28a9f312ac495650",
+    "books": [
+      [
+        "256f66b1-129d-4904-be30-7b946f6e92fc",
+        "a5052df00f96420d722bcfcf5fa91df0c90394e570ceb5bf85de2f61f2b9ebc2"
+      ],
+      [
+        "96b89635-82b4-47c7-b4f6-52ab85c0f0bc",
+        "b425f46cfa002bf79c79a63b5b6e05fc3db478f441f87a48dd233437e00816e4"
+      ]
+    ]
+  }
+}

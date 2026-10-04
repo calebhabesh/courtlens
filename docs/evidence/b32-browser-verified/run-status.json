@@ -1,0 +1,5 @@
+{
+  "status": "superseded",
+  "reason": "Legitimate 127.0.0.1 requests rejected by internal-host Origin comparison; fixed with incoming Host regression test",
+  "final_evidence": "b32-browser-final-verified"
+}
