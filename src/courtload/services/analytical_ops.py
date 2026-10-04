@@ -550,7 +550,7 @@ def distribution_service(session: Session, request: DistributionRequest) -> Dist
         field_accessor = "blocks"
     elif metric_key in ("turnovers", "tov"):
         field_accessor = "turnovers"
-    elif metric_key in ("minutes", "min"):
+    elif metric_key in ("minutes", "min", "min_per_game"):
         field_accessor = "minutes_seconds"
     elif metric_key in ("three_pointers_made", "fg3m", "3pm"):
         field_accessor = "three_pointers_made"

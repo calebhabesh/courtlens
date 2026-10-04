@@ -1,0 +1,121 @@
+
+> courtload-dashboard@0.1.0 test:browser
+> playwright test
+
+
+Running 83 tests using 8 workers
+
+  ✓   5 e2e/advanced-research.spec.ts:58:5 › roster keeps observed and projected inputs separate and exports context (1.3s)
+  ✓   8 e2e/comparison-evaluation.spec.ts:32:5 › evaluation presents the no-promotion decision and failed build state (1.3s)
+  ✓   2 e2e/advanced-research.spec.ts:68:5 › measurements preserve unknown picks, null lengths and units in bounded sample (1.4s)
+  ✓   7 e2e/advanced-research.spec.ts:47:5 › calculator rejects invalid scenarios and shows checked finite differences on mobile (1.3s)
+  ✓   4 e2e/advanced-research.spec.ts:15:5 › completed negative report shows amended identity, honest horizons, metrics and export (1.5s)
+  ✓   6 e2e/advanced-research.spec.ts:40:5 › integrity rejection hides numerical outputs and retry recovers (1.6s)
+  ✓   3 e2e/advanced-research.spec.ts:33:5 › each unavailable model names its independent requirement (2.3s)
+  ✓   1 e2e/comparison-evaluation.spec.ts:11:5 › shared-cutoff comparison keeps different target dates and missing context visible (2.4s)
+  ✓  10 e2e/comparison-evaluation.spec.ts:70:5 › invalid date preserves selections and recovers to sparse history (1.3s)
+  ✓  14 e2e/conversation.spec.ts:37:5 › network retry reuses the request identity (1.0s)
+  ✓  12 e2e/conversation.spec.ts:28:5 › natural follow-ups and canonical identity choices retain conversation fingerprints (1.4s)
+  ✓  11 e2e/conversation.spec.ts:21:5 › AI disabled manual paired distributions preserve zero, unknown and exact evidence (1.4s)
+  ✓  13 e2e/conversation.spec.ts:34:5 › quota, unsupported and empty states preserve question and manual execution (1.3s)
+  ✓   9 e2e/comparison-evaluation.spec.ts:40:5 › comparison controls work by keyboard and fit a 375px viewport (1.9s)
+  ✓  16 e2e/conversation.spec.ts:46:5 › drawer traps keyboard focus, escapes, and supports narrow reduced-motion layout (1.1s)
+  ✓  15 e2e/conversation.spec.ts:42:5 › exact Research destination reruns executed arguments and clears ephemeral state (1.4s)
+  ✓  20 e2e/conversation.spec.ts:55:7 › timeout preserves manual alternatives and entered question (1.1s)
+  ✓  19 e2e/conversation.spec.ts:55:7 › insufficient_sample preserves manual alternatives and entered question (1.2s)
+  ✓  18 e2e/conversation.spec.ts:55:7 › unsupported preserves manual alternatives and entered question (1.2s)
+  ✓  21 e2e/conversation.spec.ts:55:7 › provider_error preserves manual alternatives and entered question (1.2s)
+  ✓  17 e2e/conversation.spec.ts:50:5 › unmounted pending answer is discarded and its local state is cleared (1.3s)
+  ✓  22 e2e/conversation.spec.ts:55:7 › busy preserves manual alternatives and entered question (982ms)
+  ✓  23 e2e/conversation.spec.ts:59:5 › proposed context needs an explicit new conversation (988ms)
+  ✓  26 e2e/finance.spec.ts:42:5 › option scenario stays separate from reported money and groups (1.2s)
+  ✓  28 e2e/finance.spec.ts:56:5 › mobile and landscape table/drawer preserve keyboard access without body overflow (1.2s)
+  ✓  30 e2e/finance.spec.ts:70:5 › embedded Stats uses a separate basketball season and retains its resolved release (1.1s)
+  ✓  31 e2e/finance.spec.ts:82:5 › a delayed old financial response cannot replace a newer financial context (861ms)
+  ✓  27 e2e/finance.spec.ts:49:5 › query rejection has retry, and book chooser never silently chooses newest (1.4s)
+  ✓  24 e2e/finance.spec.ts:22:5 › retained historical terms stay unknown, drawer sources and financial context survive navigation (1.7s)
+  ✓  25 e2e/finance.spec.ts:35:5 › filters, as-of emptiness and changed context hide stale totals (1.6s)
+  ✓  29 e2e/finance.spec.ts:63:5 › Refresh staged import returns a tracked job and exposes failed worker state (1.7s)
+  ✓  32 e2e/live.spec.ts:21:5 › selected source boxes keep zero, missingness, clock and errors explicit (1.1s)
+  ✓  35 e2e/live.spec.ts:48:5 › mobile and landscape source box regions contain overflow and keyboard focus (979ms)
+  ✓  34 e2e/live.spec.ts:37:5 › offline retains last observation; capacity and disabled acquisition stay usable (1.2s)
+  ✓  37 e2e/live.spec.ts:53:5 › a delayed old selection cannot overwrite new date observations (1.2s)
+  ✓  33 e2e/live.spec.ts:28:5 › pause, visibility and navigation release leases and prevent hidden renewals (2.0s)
+  ✓  40 e2e/player-profile.spec.ts:19:5 › unsupported replay date keeps the input and offers recovery (1.1s)
+  ✓  36 e2e/live.spec.ts:42:5 › historical final detail has no demand and pins resolved release in links (2.0s)
+  ✓  38 e2e/live.spec.ts:58:5 › disabled acquisition, observed empty slate and invalid dates stay distinct (2.1s)
+  ✓  42 e2e/saved-operations.spec.ts:37:5 › question opt-in is independent from execution and title (1.1s)
+  ✓  39 e2e/player-profile.spec.ts:3:5 › search opens a snapshot-pinned real route and changes replay date (2.0s)
+  ✓  43 e2e/saved-operations.spec.ts:40:5 › combined library keeps legacy section and opens exact retained namespace (1.7s)
+  ✓  45 e2e/saved-operations.spec.ts:43:39 › definition retained result exposes evidence, pinned reopening, exports and reproduction (1.2s)
+  ✓  44 e2e/saved-operations.spec.ts:43:39 › query retained result exposes evidence, pinned reopening, exports and reproduction (1.3s)
+  ✓  47 e2e/saved-operations.spec.ts:43:39 › compare retained result exposes evidence, pinned reopening, exports and reproduction (977ms)
+  ✓  46 e2e/saved-operations.spec.ts:43:39 › profile retained result exposes evidence, pinned reopening, exports and reproduction (1.2s)
+  ✓  48 e2e/saved-operations.spec.ts:43:39 › team retained result exposes evidence, pinned reopening, exports and reproduction (937ms)
+  ✓  49 e2e/saved-operations.spec.ts:43:39 › forecast retained result exposes evidence, pinned reopening, exports and reproduction (906ms)
+  ✓  50 e2e/saved-operations.spec.ts:43:39 › distribution retained result exposes evidence, pinned reopening, exports and reproduction (1.1s)
+  ✓  55 e2e/saved-operations.spec.ts:43:39 › finance retained result exposes evidence, pinned reopening, exports and reproduction (1.2s)
+  ✓  56 e2e/saved-operations.spec.ts:49:5 › reproduction mismatch keeps exports and retained evidence usable on narrow screens (1.2s)
+  ✓  54 e2e/saved-operations.spec.ts:43:39 › workload_shifts retained result exposes evidence, pinned reopening, exports and reproduction (1.2s)
+  ✓  51 e2e/saved-operations.spec.ts:43:39 › compare_periods retained result exposes evidence, pinned reopening, exports and reproduction (1.3s)
+  ✓  53 e2e/saved-operations.spec.ts:43:39 › similarity retained result exposes evidence, pinned reopening, exports and reproduction (1.3s)
+  ✓  52 e2e/saved-operations.spec.ts:43:39 › splits retained result exposes evidence, pinned reopening, exports and reproduction (1.4s)
+  ✓  41 e2e/saved-operations.spec.ts:29:5 › explicit save excludes question by default, reuses identity after failure and survives clearing (4.3s)
+  ✓  63 e2e/shared-floor.spec.ts:69:5 › bounded leaders pin a resolved release across candidates (1.2s)
+  ✓  58 e2e/saved-operations.spec.ts:60:5 › saved-operation pagination preserves boundaries and failed pages stay explicit (1.4s)
+  ✓  62 e2e/shared-floor.spec.ts:58:5 › stat shifts reject focal contradictions and request per-possession production (1.4s)
+  ✓  61 e2e/shared-floor.spec.ts:44:5 › two and five player units use the same operation with all partitions (1.5s)
+  ✓  60 e2e/shared-floor.spec.ts:23:5 › empty source preserves unknown values, exact downloads and resolved links (1.7s)
+  ✓  59 e2e/saved-operations.spec.ts:69:5 › install prompt accepts a browser event and exposes installed state (1.9s)
+  ✓  57 e2e/saved-operations.spec.ts:52:5 › original content, live catalog version and installation metadata are local and truthful (2.3s)
+  ✓  64 e2e/shared-floor.spec.ts:82:5 › Stats on/off preset opens actual shared-floor operation (1.1s)
+  ✓  66 e2e/shared-floor.spec.ts:120:5 › query overflow is actionable and exports are unavailable after failed queries (1.2s)
+  ✓  65 e2e/shared-floor.spec.ts:89:5 › partial samples show raw rates and directional denominators while gating differences (1.4s)
+  ✓  71 e2e/shooting.spec.ts:72:5 › query overflow is actionable and cannot export a partial result (1.0s)
+  ✓  69 e2e/shooting.spec.ts:45:5 › assignment matrix shows fractional exposure and null pooled rates at 375px (1.2s)
+  ✓  70 e2e/shooting.spec.ts:58:5 › aftermath keeps branch samples, unknown membership and censoring distinct (1.1s)
+  ✓  67 e2e/shooting.spec.ts:13:5 › blocked source exports complete evidence and pins resolved links (1.5s)
+  ✓  72 e2e/shooting.spec.ts:76:5 › cancelling an abandoned request prevents stale results (1.6s)
+  ✓  73 e2e/shooting.spec.ts:81:5 › shooting tabs and name lookup resolve IDs without analytical requests (1.3s)
+  ✓  77 e2e/workbench.spec.ts:52:7 › Workbench Dark Research Interface › player detail presents profile summaries, game logs, and lineage trigger (1.1s)
+  ✓  74 e2e/shooting.spec.ts:95:5 › shot pagination bounds the court/table while exports retain all facts (1.2s)
+  ✓  79 e2e/workbench.spec.ts:85:7 › Workbench Dark Research Interface › comparison view displays head-to-head metrics without declaring forced winners (712ms)
+  -  83 e2e/workspace-persistence.spec.ts:3:5 › real workspace proxy persists, conflicts, exports and restores
+  ✓  78 e2e/workbench.spec.ts:69:7 › Workbench Dark Research Interface › team research lists cohorts and navigates to team detail (1.4s)
+  ✓  75 e2e/workbench.spec.ts:11:7 › Workbench Dark Research Interface › home opens Stats with dark theme, horizontal navigation, context and data (1.6s)
+  ✓  81 e2e/workbench.spec.ts:126:7 › Workbench Dark Research Interface › dense dark research layout fits a 375px mobile viewport without horizontal overflow (520ms)
+  ✓  80 e2e/workbench.spec.ts:97:7 › Workbench Dark Research Interface › forecasts view displays active policy, promotion decision, gates, and prespecified slices (776ms)
+  ✓  82 e2e/workbench.spec.ts:138:7 › Workbench Dark Research Interface › Ask drawer offers manual research and links to optional configuration (981ms)
+  ✓  76 e2e/workbench.spec.ts:31:7 › Workbench Dark Research Interface › player explorer allows filtering and links to detail view (2.5s)
+  ✘  68 e2e/shooting.spec.ts:26:5 › court and table preserve zero versus unknown; exports and peer zones agree (6.2s)
+
+
+  1) e2e/shooting.spec.ts:26:5 › court and table preserve zero versus unknown; exports and peer zones agree 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByText('2 displayed attempts; 1 unplotted')
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByText('2 displayed attempts; 1 unplotted') with timeout 5000ms
+      - waiting for getByText('2 displayed attempts; 1 unplotted')
+
+
+      34 |   });
+      35 |   await page.goto("/shot-profile-twin?player_id=1"); await page.getByRole("button", { name: "Run shooting analysis" }).click();
+    > 36 |   await expect(page.getByText("2 displayed attempts; 1 unplotted", { exact: false })).toBeVisible();
+         |                                                                                       ^
+      37 |   const pending = page.waitForEvent("download"); await page.getByRole("button", { name: "Export court SVG" }).click();
+      38 |   const svg = readFileSync((await (await pending).path())!, "utf8"); expect(svg).toContain("fixture-release"); expect(svg).toContain("Evidence"); expect(svg).not.toContain("var(--");
+      39 |   await page.getByRole("button", { name: "Compare 2", exact: true }).click(); await expect(page.getByRole("region", { name: "Zone profile 2", exact: true })).toContainText("50.0%");
+        at /home/ethioking/dev/nba-analytics/dashboard/e2e/shooting.spec.ts:36:87
+
+    Error Context: test-results/shooting-court-and-table-p-ce054-xports-and-peer-zones-agree/error-context.md
+
+  1 failed
+    e2e/shooting.spec.ts:26:5 › court and table preserve zero versus unknown; exports and peer zones agree 
+  1 skipped
+  81 passed (18.8s)

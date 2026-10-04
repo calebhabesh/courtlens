@@ -2,7 +2,7 @@
 
 Started 2026-10-01. Parent: [implementation handoff](databallr-replica-implementation-plan.md).
 
-**Planning complete; application implementation and verification pending.** This log is separate from historical M0–M8 and workbench P0–P9 records. Existing functionality may satisfy a new requirement after verification. No planning row is evidence that an application feature works.
+**Replica implementation is in progress; full release acceptance remains open.** This log is separate from historical M0–M8 and workbench P0–P9 records. The planning baseline below is historical; measured block entries establish current bounded evidence. No planning row is evidence that an application feature works.
 
 ## Planning baseline
 
@@ -49,16 +49,16 @@ Allowed states: `planned`, `in_progress`, `implemented_unverified`, `verified`, 
 | B25 External outputs/preregistration | Sol | source_blocked | Bounded offline schemas/registration and four frozen designs verified; DARKO admission, reconciled input history and exact split bindings remain blocked |
 | B26 Registered experiments | Sol | source_blocked | Input-readiness slice verified; expected shots selected for first admission work; empty scoped rich inputs and exposed historical final require source work and separate chronology amendment |
 | B27 Advanced research UI | Flash | planned | Each component has its own input/model gate |
-| B28 Financial acquisition/schema | Sol | planned | Manual fallback approved; automated feed unverified |
-| B29 Finance operations | Sol | planned | |
-| B30 Finance interface | Flash | planned | |
-| B31 Shared Live service | Sol | planned | Scheduled source checks only; in-game behavior unobserved |
-| B32 Live interface | Flash | planned | |
-| B33 Conversational backend | Sol | planned | |
-| B34 Chat UI/query evaluation | Flash | planned | Real-key evaluation deferred until configured |
-| B35 Methodology/export/integration | Sol → Flash | planned | Sequential ownership |
-| B36 Fontshare refinement | Flash | preference_deferred | Verified candidates; owner selection later |
-| B37 Release/recovery/evidence | Sol | planned | |
+| B28 Contract/transaction acquisition and schema | Sol | verified | Bounded manual source books, real tracked import/corrections and PostgreSQL sealing; comprehensive automation remains source-blocked |
+| B29 Finance operations | Sol | verified | Bounded book-bound read-only queries, cents/status reconciliation, temporal correction replay and separate option scenarios; richer source/value gates remain open |
+| B30 Finance interface | Flash | verified | Bounded book-bound UI and real browser evidence recorded in B30; current-market/value/automation gates remain open |
+| B31 Shared Live service | Sol | verified (bounded backend) | Shared leases/poller/cache and PostgreSQL reconciliation verified; real source observed scheduled only, in-game gate open |
+| B32 Live interface | Flash | in_progress | Bounded interface verified in B32; actual changing-game/finality/correction observations remain unmeasured |
+| B33 Conversational backend | Sol | verified | Bounded typed planning/execution/evidence verified in B33; real-provider language acceptance remains separate |
+| B34 Chat UI/query evaluation | Flash | verified (evaluation complete) | Interface/query equivalence, fixture corpus, structured planning diagnosis, and supplemental cases verified; real Gemini corpus evaluated (75.6% overall / 68% supported; language gate unmet) |
+| B35 Methodology/export/integration | Sol → Flash | verified | B35a/backend, B35b/content and B35c real Linux Chromium installation, persistent standalone launch, fresh packaged deployment and integration acceptance verified; independent language/Live/source/model gates remain |
+| B36 Fontshare refinement | Flash | comparison_verified; selection_pending | B36a real-service comparison of four options, numeral/name samples and Stats responsive/zoom evidence verified; owner selection and production packaging/CLS pending |
+| B37 Release/recovery/evidence | Sol | verified (benchmarks, storage, case studies, recovery) | B37 benchmarks (31 endpoints, 0 errors), process accounting, 78-table storage, 6 case studies, demo guide, and fresh DB restore (5 passed, 157.5s) verified; language gate unmet and live in-game gate open; OS install verified in B35c |
 
 ## Feature coverage ledger
 
@@ -72,9 +72,9 @@ Use IDs F01–F46 in the [feature contract](design/replica-feature-contract.md),
 | F04 Custom views | verified | B08–B09 | Up to 10 custom views with 25 catalog v2 columns, default view selection, reorder, keyboard alternatives, and SHA-256 verified bundle export/import |
 | F05 Favorite/compare tray | verified | B07–B10 | Floating compare tray with bounded 8-player selection, chip removal, clear action, context-preserved comparison routing |
 | F06 Table plots | verified | B10 | Two-axis scatter plot with selectable catalog v2 axes and outlier detection, multi-player lines with rolling statistics, and accessible data tables |
-| F07 Help/discovery | in_progress | B02, B04–B07, B35 | B04 lookup API, B05 shell, B06 combobox, and B07 explorer shortcuts modal verified; B35 definitions pending |
-| F08 WOWY | in_progress | B19–B22; validated shared-court data | B21 API verified against PostgreSQL fixtures; retained stint population source_blocked; B22 interface pending |
-| F09 Live | planned | B31–B32 | Pending runtime/source evidence |
+| F07 Help/discovery | verified | B02, B04–B07, B35b | Lookup, shell, combobox, shortcuts and catalog-linked original definitions verified at their recorded boundaries |
+| F08 WOWY | verified (bounded operation) | B19–B22, B37; validated shared-court data | B21 API verified against PostgreSQL fixtures; retained stint population source_blocked disclosed; sample thresholds and B37 real-service benchmarks verified |
+| F09 Live | partial | B31–B32 | B31 shared backend & leases verified, B32 bounded UI; in-game active observation gate open |
 | F10 Playoffs | verified | B17–B18, B23/B25 where needed | Bracket and series explorer (/playoffs) with explicit seed evidence and tie notes, series detail (/playoffs/[seriesId]) with 7-game cards, Four Factors, player series box scores, and gated matchup/rotation sections verified |
 | F11 Recent games | verified | B03, B10–B11 | Recent games explorer (/last-games) with last 5/10/20/all appearance windowing, per-game vs per-36 exposure rates, trajectory plot, summary highs/lows, CSV & high-DPI image export, and lineage drawer |
 | F12 Showcase | verified | B08–B11; motion can pause | Player showcase (/showcase) with configurable focus presets (Overall, Scoring, Playmaking/Defense, Per 36), manual & auto-advancing slideshow with reduced-motion pausing, SVG card rasterization, and compare/favorite sync |
@@ -86,9 +86,9 @@ Use IDs F01–F46 in the [feature contract](design/replica-feature-contract.md),
 | F18 Three-point variation | verified | B15–B16; versioned scenario, never rename as luck removed | Pure domain math, API scenario endpoint (/teams/{id}/three-point-variation), counterfactual FG3% shift holding volume constant, and non-inferential disclaimer verified |
 | F19 Roster shapes | planned | B14, B25–B27, B28 where finance needed | Pending runtime/source evidence |
 | F20 Teammate stat shift | in_progress | B20–B22 | B21 focal-player shared-floor production/shift API verified; retained stint population source_blocked; B22 interface pending |
-| F21 Contracts | planned | B28–B30 | Pending runtime/source evidence |
-| F22 Financial value | planned | B25, B29–B30; external conversion or registered named scenario | Pending runtime/source evidence |
-| F23 Free agency | planned | B28–B30 | Pending runtime/source evidence |
+| F21 Contracts | verified (bounded books) | B28–B30, B37 | B28 manual books, B29 terms/payroll/timeline API, B30 UI and B37 replay benchmarks verified; current-market source gate open |
+| F22 Financial value | source_blocked | B25, B29–B30; external conversion or registered named scenario | B29 factual Small vs Big grouping implemented; monetary value/surplus/ROI lacks admitted conversion |
+| F23 Free agency | in_progress | B28–B30 | B29 exclusive source-book contract statuses/counts verified; current market source and B30 UI pending |
 | F24 Player compare | verified | B10, B22/B26 where needed | Interactive PvP compare view with Overall/Offense/Defense/Six Factor/Custom presets, aligned descriptive metrics table, comparative visual bars, lines tab, and zero forced winner notice |
 | F25 Team compare | verified | B15–B16, B25–B27 | Interactive team comparison (/team-compare) with H2H series tracking, Four Factors comparative bars, F18 3P variation slider, roster participation cohorts, and zero inferred claims verified |
 | F26 Matchups | planned | B19, B23–B24; assignment source required | Pending runtime/source evidence |
@@ -101,16 +101,16 @@ Use IDs F01–F46 in the [feature contract](design/replica-feature-contract.md),
 | F33 Spatial EPV | planned | B25–B27 if inputs ever admitted; ACB demo excluded | Pending runtime/source evidence |
 | F34 Measurements | verified | B14, B27 | Combine Anthropometry & Wingspan Explorer (/wingspan), player profile anthropometry panel, and combine vs listed roster distinction verified |
 | F35 Hypothetical calculator | planned | B15, B20, B27; scenario definition | Pending runtime/source evidence |
-| F36 Learning | planned | B35 | Pending runtime/source evidence |
-| F37 Case studies | verified | B13, B35 | Interactive flagship case studies reader (/research/case-studies) with 3 real-data investigations, stint reconciliation, forecast conditionality, and manual query verification |
-| F38 Blog/patch notes | planned | B35 | Pending runtime/source evidence |
+| F36 Learning | verified | B35b | Original illustrative TS lesson and release-bound manual distribution workshop; production-browser links and content verified |
+| F37 Case studies | verified | B13, B35, B37 | 6 comprehensive real-data case studies across stints, forecasting, defense, WOWY, finance, and chatbot reproduction verified |
+| F38 Blog/patch notes | verified | B35b | Original dated Markdown content; safe local renderer and standalone packaging verified |
 | F39 Workload/change | verified | B12–B13 | Workload trends explorer (/research/trends) with appearance and date-range slicing, delta table, delta cards, cohort surge/decline rankings, and SHA-256 evidence |
 | F40 Distributions/splits | verified | B12–B13 | Distributions & contextual splits (/research/distributions) with Type 7 quantiles, n >= 5 sample gating, empirical dispersion strip diagram, venue splits, rest splits, and 30-team defensive allowance rankings |
-| F41 Chatbot | planned | B33–B34 | Pending runtime/source evidence |
-| F42 Pipeline/evidence | planned | B01, B03, B35–B37 | Pending runtime/source evidence |
-| F43 Forecasts/evaluation | planned | Existing work verified in B00, integrated B11/B35–B37 | Pending runtime/source evidence |
+| F41 Chatbot | verified (evaluation complete) | B33–B34, B37 | Typed operations, exact-cell evidence, structured planning repair, 45-case Gemini corpus (75.6% overall / 68% supported, gate unmet) and 6-case supplemental suite (100%) against real Gemini verified |
+| F42 Pipeline/evidence | verified | B01, B03, B35–B37 | B35a durable manifests/recovery, B35b library/export, and B37 real-service benchmarks (31 endpoints, 0 errors, 157.5s fresh DB restore) verified |
+| F43 Forecasts/evaluation | verified | B00, B11, B35–B37 | Prospective issuance ledger, empirical 80% calibration, DNP conditional segregation, and B37 API benchmarks verified |
 | F44 Source video links | planned | B23–B24; clip URL/availability is a separate unverified source gate | Pending runtime/source evidence |
-| F45 Installable interface | planned | B35–B37; signed-in reference installation was not independently exercised | Pending runtime/source evidence |
+| F45 Installable interface | verified (Linux Chromium) | B35b, B35c; reference installation not independently exercised | Real manifest installation creates a Linux desktop launcher; installed app and process restart with --app-id report standalone mode; no offline data promise |
 | F46 Image sharing | verified | B10–B11, B35; rendered snapshot is separate from analytical evidence | Context-stamped PNG/SVG image export with evidence watermark and temporal constraint, plus canonical local query URL copy |
 
 A partial page can have several rows with different statuses. Marking one preset/page verified does not verify every metric/model in it. Preserve unresolved applicable rows; owner scope amendments require date/reason and explicit authority.
@@ -1533,3 +1533,1046 @@ Next boundary:
 - Added roster allocation diagrams backed by the release-bound team detail/player-game cohort. Observed minutes and user-projected minutes are separate modes; positions are user labels, unknown allocations remain visible, the historical cutoff is exclusive, and exports retain source context and warnings. Added measurements/wingspan controls for source type, draft year, wingspan bounds, name filtering, units, bounded scatter/table/compare output, null values and source-labelled export. Position/active-roster status and impact/financial sizing remain unavailable without their own admitted inputs.
 - Added 132 dashboard unit tests (including calculator formula/validation and read-only research integrity handling) and six focused Playwright tests. Focused browser run: **6 passed**. Real-data smoke captured [negative report and roster/measurements evidence](evidence/b27-real-browser.json), [expected-shot desktop](evidence/b27-real-negative-desktop.png), and [roster mobile](evidence/b27-real-roster-mobile.png); both tested mobile views fit without horizontal overflow. Production dashboard build, TypeScript, ESLint, Ruff, strict mypy and backend suite pass. Backend result reads remain GET-only; artifact-integrity failure hides numerical outputs and offers retry.
 - Known gates retained: PostgreSQL acceptance remains environment-dependent (the normal suite was **448 passed / 74 skipped**, with the existing Starlette/httpx warning), broad browser acceptance still contains historical failures outside this focused B27 run, and the three B26 experiments remain source-blocked pending complete validated stint/possession, opportunity, and playtype/foul-trip inputs. No B26 inputs, publication pointer, active points policy or model result was changed.
+
+### Block B28: Contract/transaction acquisition and schema
+
+- Measured 2026-10-03; implementation: current Codex session, no delegated agents or model override. **VERIFIED for the bounded manual acquisition/schema path.** Comprehensive automated finance acquisition remains **source_blocked**, separately from the accepted no-subscription manual fallback. Read replica/workbench handoffs, finance/identity/immutability contracts, free-source findings and actual B01/B14a/B25–B27 evidence/seams. No dashboard changes.
+- Added [finance-import-v1](design/finance-import-v1.md), strict typed CSV/manifests and additive migration `27b810a4f001`: separate contract, amount, option, guarantee, signing/status and dated association observation families, provenance-bearing sources and exact selected book membership. Money uses exact USD cents; seasonal kinds remain distinct from reported totals; unknown terms stay null. Explicit source/NBA mapping evidence and existing canonical identity required; names and participation do not map entities or teams. Source and identity observations cannot be later than their declared row observation.
+- Added `finance-template`, read-only `finance-preview`, tracked allowlisted `finance-import` and `finance-verify` CLI commands. Worker accepts only content-addressed staged bundle hashes, rechecks staged bytes, holds existing coordinated lock and records outcome. Different bundle hashes do not coalesce. CSV/source bytes are retained in PostgreSQL itself for ordinary DB backups. Import books are independent of the basketball public pointer.
+- PostgreSQL and ORM sealing prevent retained mutation; subsequent memberships cannot extend old books. Corrections require a parent-selected original ID, reason, supporting source and nondecreasing observation date. They append new terms and bind one resolved grain per player/contract/season/family/amount-kind; old alternatives and original books survive. Identical import reuses its book. No unresolved provider precedence or duplicate amount selection is silently accepted.
+- [Free-source spike and reproduction](research/b28-finance-admission.md): six bounded direct requests returned 403; browser tool permitted inspection of NBA/club source text. Retained real inputs are explicitly labelled small **operator factual notes**, not full original page bytes or a verified automated feed. [Initial bundle](evidence/b28-manual-input/manifest.json) admitted six historical extension observations; [reviewed correction](evidence/b28-manual-correction/manifest.json) appends two documented term revisions with six descendant-selected rows. Seasonal salary/cap hit, guarantee and option schedules remain unknown. Real options are unknown; non-null option state validation is synthetic evidence only. No present free-agent/current-roster claim or annual allocation of a multi-year total.
+- [Real PostgreSQL/worker evidence](evidence/b28-finance-import.json): two succeeded tracked jobs, both books' exact CSV/source bytes and memberships verified, original amount still unknown, repeat import idempotent, real SQL UPDATE and later membership INSERT rejected. Public snapshot remains `5bbb6035-6794-4bb0-b894-7208f52ef7ad`. No basketball publication, forecast/model fit, sealed experiment change or financial value conversion.
+- [Verification](evidence/b28-verification.json): backend **471 passed, 82 skipped**, 20.76s; focused finance **31 passed, zero skips**, 0.40s, including eight PostgreSQL tests in unique disposable schemas removed afterward. Covered cents/nulls, invalid claims, duplicate grains, crosswalk/source integrity, correction conflicts, old observation survival, staging safety, ORM/raw SQL sealing, migration upgrade/downgrade and job coalescing. Ruff check/format **PASS** (278 files), strict mypy **PASS** (121 source files), diff check **PASS**, all **26 retained historical checksums PASS**. Existing Starlette/httpx warning persists; zero-warning/full PostgreSQL acceptance is not claimed. Dashboard/browser checks were not rerun for this backend-only block; historical broad-browser failures remain open. Database-source retention/integrity is verified, but fresh backup/restore acceptance is still open.
+
+Next boundary: **B29 Finance query operations**. Require explicit book and preserve inherited source/correction provenance; apply actual known-at/effective boundaries with unknown-date handling. Historical extension signing is not current market status. Known payroll must use admitted seasonal kinds and disclose incomplete coverage; this bounded sample has no known seasonal salary rows. Threshold/cap completeness, external dollar conversion, comprehensive daily automation and richer independently sourced books remain separate gates. B30 UI follows B29; do not present the current sample as full team payroll or current free-agent coverage. B26's three remaining source gates and existing broad release gates remain unchanged.
+
+
+### Block B29: Finance query operations
+
+- Measured 2026-10-03; implementation: current Codex session, no delegated agents or model override. **VERIFIED for the bounded admitted-book query path.** Read replica/workbench handoffs, financial and retained temporal/data contracts, actual B02/B03/B25/B28 evidence and implementation. Existing B28 dirty work and sealed experiments preserved. Comprehensive seasonal salary/current free-agent coverage, official threshold rules, dated position binding and external monetary value remain separately gated.
+- Added [finance-query-v1 contract](design/finance-query-v1.md), strict Pydantic request/response schemas and focused service/route: `POST /api/workbench/operations/finance`. Explicit book UUID/financial season/known-at/effective context, selectable seasonal amount kind, team/player/status filters, adjustable $12M Small vs Big threshold and named optional exercise scenario. Static finance route registers before B23's dynamic operation route; no dashboard, migration, source acquisition or worker mutation added.
+- Known-at resolution traverses retained corrections to recover the original observation before the correction was acquired. Original/inherited source URLs/hashes/locators/book IDs/correction reasons remain visible. Unknown effective dates are labelled and excluded from seasonal sums; future/other-season terms remain in a separate timeline for represented contracts. Retrospectively acquired observations are labelled reconstructed. Explicit dated contract teams never come from basketball participation; conflicting associations/statuses remain unresolved.
+- Integer cents arithmetic and string-valued cents on the API preserve exact aggregate money. No valid rows returns null; documented zero remains zero. Seasonal amount families never mix with totals/AAV. Known/unknown contracts and status groups reconcile to labelled book denominators, with external expected roster coverage explicitly unknown. Reported money and hypothetical option amounts/subtotals are separate; scenario assumptions leave observed subtotals unchanged. All allocations stay unclassified without admitted dated positions. Thresholds return `threshold_status_pending`; value conversion remains `source_blocked`.
+- AAV is derived only from reported total and documented years, labelled separately at 40 significant decimal digits. It cannot allocate annual salary. `result_sha256` binds the complete reproducible response; a separate `analytical_content_sha256` excludes installation IDs, book identity and unrelated future timeline rows while retaining eligible semantic facts/source context. Tests show the as-of descendant and original book share an analytical hash.
+- [Real retained-book evidence](evidence/b29-finance-query.json), reproducible with `.venv/bin/python scripts/verify_b29_finance.py NEW_OUTPUT.json`: **four HTTP 200** cases in a PostgreSQL **read-only/repeatable-read** transaction. Original and descendant-as-of-original AAV stay unknown; the reviewed descendant yields **$120M / 3 = $40M derived AAV**, with **no known seasonal salary subtotal**. A 2025 known-at query returns zero contracts rather than inferred unsigned status. Both books' retained bytes/memberships and every publication pointer match afterward. This is in-process HTTP with the real DB, not browser/network-server acceptance. Observed latency: 73.437 ms first call, 2.597–3.568 ms subsequent bounded cases; response payloads 2,403–19,900 bytes. These are small-book observations, not full-book performance acceptance.
+- [Verification evidence](evidence/b29-verification.json): full backend **482 passed, 85 skipped**, 20.05s; focused finance **45 passed, zero skips**, 1.08s, including 11 PostgreSQL checks (eight retained B28 checks plus three new HTTP/cents/provenance checks). New B29 checks cover exact kinds/cents/null/zero, AAV/missing salary, team/status reconciliation, unknown/future dates, season filters, as-of correction replay/inherited sources, scenario separation, strict HTTP schemas, missing-book 404 and read-only state. Disposable PostgreSQL schemas removed afterward. Ruff check/format **PASS** (285 files); strict mypy **PASS** (124 source files); all **26 retained historical checksums PASS**; diff check **PASS**. Evidence overwrite refused with exit 1 and unchanged prior bytes.
+- Existing Starlette/httpx deprecation warning persists; zero-warning/full PostgreSQL acceptance remains open. Dashboard/browser checks were not rerun for this backend-only block; existing browser failures and full fresh restore acceptance remain open. Generic finance saving/export integration remains B35; B26's three remaining source gates are unchanged.
+
+Next boundary: **B30 Contracts/free-agency UI**. Consume the explicit B29 financial context/OpenAPI contract, preserve financial versus basketball years, source-book status scope, unknown terms and scenario separation. Use the retained real historical import without presenting it as complete/current payroll or present free-agent coverage. Model value/ROI and official threshold claims remain gated by their independent admitted inputs.
+
+### Block B30: Contracts/free-agency UI
+
+- Measured 2026-10-03. **COMPLETE for the bounded admitted-book B30 interface slice.** Implementation choice: current Codex session instead of the handoff's Flash assignment, without delegated agents or model override. Read replica/workbench handoffs, B28/B29 evidence, finance/interface/analytics contracts, installed Next.js guidance and actual frontend/API seams; applied ui-ux-pro-max accessibility/responsive guidance within existing vanilla CSS. Preserved the pre-existing B28/B29 application work and sealed evidence.
+- Replaced finance notices with working `/contracts`, `/contracts/[NBA ID or tricode]` and `/free-agency` workspaces. Added explicit immutable-book selection/manual UUID, financial season, UTC/offset known-at, inclusive effective date, team, seasonal amount kind, unknown-date handling, shared status taxonomy, configurable Small vs Big split and separate hypothetical option layer. Financial URL parameters remain distinct from basketball context across navigation/reload. Unknown amounts stay unknown; exact cents use `BigInt` formatting and group sums. Group/status/coverage totals disclose their represented-contract denominators; visible search/type/size/sort filters do not relabel query-wide totals.
+- Source-linked contract drawers and multi-year timelines expose separate totals/AAV, amounts, options, guarantees, unknown/future dates, source timestamps/hashes/origin books and correction reasons. Native modal focus containment/Escape/focus return and labelled scroll regions work on desktop/narrow screens. Position allocation retains unclassified known cents; unsupported positional charts, UFA/RFA/movement, official financial thresholds and modeled value/surplus/ROI remain explicit unavailable outputs. Incomplete payroll never becomes legal cap room or current-market coverage.
+- Added bounded read-only book discovery/detail endpoints, omitting retained CSV/source bytes and checking membership bounds before loading terms. Canonical identity names are display labels only. Added a fixed same-origin server proxy for an existing operator-staged `finance_import` hash, prompt tracked-job output, job-status reads and operator template/preview/import/correction instructions. Invalid/cross-origin/arbitrary requests reject before forwarding server credentials. Success reloads discovery without choosing a new branch. Daily finance automation remains source-blocked; the read refresh and staged import controls state their actual behavior. [UI contract](design/finance-ui-v1.md).
+- [Real Chromium/network evidence](evidence/b30-browser-final/real-browser.json): retained corrected Toronto extension shows **reported $120M / 3 = $40M derived AAV**, **unknown seasonal salary**, independent signed-extension status and linked correction sources. Embedded Stats separately resolves **basketball 2024–25, before 2025-04-15, 18 appearances** under retained public release `5bbb6035-6794-4bb0-b894-7208f52ef7ad`, alongside financial 2025–26. Pre-observation query shows no represented contracts, not inferred unsigned status. Mobile body **375 / 375 px**, no horizontal overflow. [Desktop](evidence/b30-browser-final/contracts-desktop.png), [drawer](evidence/b30-browser-final/contract-drawer.png), [mobile tracker](evidence/b30-browser-final/free-agency-mobile.png). Reproduce with `node scripts/verify_b30_finance_browser.cjs NEW_EVIDENCE_DIRECTORY` against local FastAPI/PostgreSQL/Next.js; existing output directories refuse overwrite. Real smoke reads only; option scenarios and staged-job states are deterministic synthetic browser evidence, not newly acquired real financial inputs.
+- [Verification](evidence/b30-verification.json): backend **484 passed / 85 skipped**, 20.37s; focused finance **47 passed / zero skips**, 1.11s, including **11 disposable-schema PostgreSQL checks**. Dashboard **137 tests / 22 files PASS**; **8 focused Playwright tests PASS**, including refresh/navigation, filters/unknowns, scenario separation, keyboard/mobile/landscape/reduced-motion, tracked import failure, independent embedded Stats and stale-response rejection. Production build, TypeScript and zero-warning ESLint PASS; Ruff check/format PASS (**288 files**), strict mypy PASS (**125 source files**), diff check PASS, all **26 retained historical checksums PASS**. [Post-browser retained-book integrity](evidence/b30-finance-integrity.json) verifies bytes/memberships and publication pointers unchanged in read-only/repeatable-read PostgreSQL. No acquisition, model fit, policy change, basketball publication or real-browser import mutation occurred.
+- Existing Starlette/httpx and Playwright color-environment warnings persist. Comprehensive salary/current free-agent sources, currentness/daily acquisition, dated financial positions, UFA/RFA/movement, official threshold/legal component rules and external monetary conversion remain gated. Full PostgreSQL, historical broad-browser and fresh restore acceptance remain open; no full-release acceptance claim. B35 retains generic saved-operation/export integration. Three remaining B26 experiments keep independent source gates.
+
+Next boundary: **B31 Shared Live service** (B00–B01 and B14a identity prerequisites). Inspect real provider access/currentness, bounded view leases and shared polling/cache before implementing B32 Live UI; retained finalized basketball observations do not establish in-progress coverage.
+
+## B31 — Shared Live service (2026-10-03)
+
+Status: **VERIFIED (bounded backend)**. Real changing-game freshness and later final
+reconciliation remain **not_yet_observed**; consumer-use/source admission and broader
+active-box resource/retention gates remain open. Implementation choice: current Codex
+session, no delegated agents or model override. B30's dirty finance work was preserved.
+
+- Added the independent Live source adapter, typed cache/demand API, append-only source
+  content/acquisition/reconciliation tables and additive migration `31b810a4f002`.
+  Ordinary ESPN access is opt-in (`COURTLOAD_LIVE_ENABLED=false` by default). Public
+  cached GETs never download or activate polling; token/Origin-protected activation,
+  heartbeat and idempotent deletion maintain up to 64 leases with 150-second TTL.
+- One worker-owned shared feed lock and durable timing/count reservations coalesce
+  clients and prevent competing workers/restarts from bursting. Pipeline jobs and
+  Live run with isolated sessions in separate cooperative threads. At most one slate
+  plus three selected active/final boxes per cycle, sequentially; at least 60 seconds
+  after a successful cycle. Multiple slates and boxes rotate fairly for stable demand.
+  No active demand means no upstream calls. Retry-After, 120/240/600-second backoff,
+  access-denial disablement, ten-second total transport deadline, five-second connect
+  timeout and 512 KiB/2 MiB response caps bound provider failures.
+- Preserve provisional statuses, Eastern slate/UTC event time, nullable source metadata
+  versus HTTP/acquisition times, optional clocks/periods and verified unique namespace
+  crosswalks. Scheduled zeros and missing boxes remain unknown. Normalized player rows
+  retain source-keyed display values and explicit nonappearance; absent rows are never
+  inferred DNPs. Last-good observations retain age/error status. Content deduplicates;
+  each successful fetch appends an observation. Final boxes stop recurring acquisition
+  and refetch only for a scoreboard-visible game correction. Player-only final
+  corrections still require normal independent batch acquisition/admission.
+- Exact insertion checks plus conservative cycle preflight cap raw/normalized payload
+  storage at 128 MiB and acquisition observations at 100,000. Capacity stops acquisition
+  instead of deleting evidence. Physical database overhead, active entropy/growth,
+  retention and fresh backup/restore acceptance remain distinct release gates.
+- Explicit `courtload reconcile-live-final` compares retained final team scores with
+  independently admitted finalized schedule/team facts, verifying game mapping,
+  date, team sides, points and opponent points. Appends matched/mismatch/waiting evidence;
+  player/stat reconciliation is explicitly unavailable in this bounded operation.
+  No poll performs analytical admission, dbt, training, publication or forecast issuance.
+  [Frozen service/UI handoff](design/shared-live-v1.md).
+
+Measured verification:
+
+1. [Source probe](evidence/b31-source-probe.json): scoreboard **HTTP 200 / 9,933 bytes**;
+   selected summary **HTTP 200 / 90,280 bytes**, one scheduled event, no player sections.
+   No real in-progress, final or correction evidence. [Conditional source decision](research/b31-live-admission.md).
+2. [Real uvicorn/FastAPI/PostgreSQL measurement](evidence/b31-real-service-final.json):
+   **12 leases → 2 upstream scoreboard calls / 65 seconds**, **19,864 bytes**, **200
+   cached HTTP reads p95 2.66 ms**, poller CPU **0.082% of one core**, **0 KiB increase
+   in warmed process peak RSS**. Last source bytes deduplicated to **9,932 bytes** across
+   four acquisitions from two independent bounded probes. Idle acquisitions **zero**;
+   all owned leases released. These scheduled/small-payload resource results do not
+   establish populated three-box cost or active-source freshness. Retained public
+   pointer, all 148 channel pointers and financial books unchanged in the smoke.
+3. Backend final `.venv/bin/pytest -q`: **506 passed / 98 skipped**, **21.63s**.
+   Focused Live+finance checks with `COURTLOAD_TEST_POSTGRES_URL` configured:
+   **82 passed / zero skips**, **4.98s**: **35 Live** (including **13 real disposable-schema
+   PostgreSQL checks**) and **47 retained finance checks**. Cover transitions and final
+   correction, coalescing, selected-box fairness including two six-game slates, expiry,
+   backoff/denial/oversize, cached read-only API and protected writes, immutable/FK
+   enforcement, migration up/down/up, concurrent admission of 80 clients capped at 64,
+   competing feed owners, crash reservation, a blocking pipeline and final-score
+   reconciliation against independently admitted facts. One existing Starlette/httpx
+   TestClient deprecation warning remains; the release-wide zero-warning gate is open.
+4. Dashboard **137 tests / 22 files PASS**, TypeScript PASS, zero-warning ESLint PASS.
+   B31 changed no dashboard implementation: production build/focused-browser evidence
+   remains B30's; no new B32 browser or broad-browser acceptance is claimed.
+5. Ruff check/format PASS (**301 Python files**), strict mypy PASS (**131 source files**),
+   `git diff --check` PASS, Compose configuration PASS, all **26 retained historical
+   checksums PASS**. Migration applied to local PostgreSQL without changing retained
+   basketball or finance relationships. [Verification manifest](evidence/b31-verification.json).
+
+Next bounded block: **B32 Live interface**. Use cached source IDs and the service handoff,
+implement the same-origin server lease proxy, visible/pause/unmount heartbeat lifecycle,
+status/age/unknown displays, selected boxes and admitted historical final detail. Keep
+real in-game/final reconciliation, source permissions/reliability, active-box resource
+costs, broad browser acceptance and fresh restore gates visible. Do not claim full Live
+acceptance from simulated transitions or today's scheduled observations.
+
+## B32 — Live interface (2026-10-03)
+
+Status: **VERIFIED (bounded interface)**. Genuine changing in-game freshness and real
+later final reconciliation remain **not_yet_observed**. Implementation choice: current
+Codex session instead of the handoff's Flash assignment; no delegated agents or model
+override. Read replica/workbench handoffs, B31 service/admission/evidence, interface and
+analytics contracts, dashboard instructions and installed Next guidance; applied
+ui-ux-pro-max accessibility/responsive guidance within the existing design. Preserved
+pre-existing B28–B31 work and sealed historical evidence.
+
+- Replaced the Live capability notice with `/live`, `/live/[date]` and
+  `/live/games/[id]`: Eastern date strip/native date input, source clock/period/status,
+  nullable scores, selected team/player boxes, source identity status and observation
+  provenance. No extrapolated clock, invented DNP/injury, inferred series matching or
+  placeholder score becomes an outcome. Source errors retain the last good observation
+  with acquisition time/age at last read. Local pause and global feed idle remain separate.
+- Added fixed same-origin Next lease/cache proxy. Browser code receives no operator
+  token; mutations validate selection/UUID/path/body before forwarding credentials;
+  read parameters are allowlisted, upstream redirects fail closed and response bodies
+  are sanitized. Real production browser testing discovered Next's internal localhost
+  normalization: the Origin check now uses incoming Host and ignores forwarded Host,
+  with a regression test for legitimate `127.0.0.1` and forged origins.
+- Visible unpaused views acquire one generation-owned lease, read cached data and renew
+  after 60 seconds. Pause/hidden/offline/pagehide/unmount stop timers and release demand;
+  pageshow/online/visibility restore it. Late activations release their capability after
+  disposal. Expired heartbeat and capacity errors wait for the next bounded tick.
+  Selection/context changes discard previous data and reject delayed stale responses.
+- Added a typed read-only finalized-history endpoint and UI context controls. History
+  queries retained archive/workbench facts by explicit dataset/season/phase/date before
+  the exclusive cutoff, bounded to 30 games/80 selected player rows; they require paired
+  final team identities/scores and never activate Live, publish, reconcile or enqueue
+  jobs. Resolved release pins into the URL; basketball parameters survive provisional
+  navigation. Mode changes return to a slate rather than confusing ESPN and NBA IDs.
+  Reported archive nonappearance suppresses zero placeholders in API and UI; absent rows
+  remain unknown. [Interface contract](design/live-ui-v1.md).
+
+Measured verification:
+
+1. [Real Chromium + production Next/FastAPI/PostgreSQL](evidence/b32-browser-final-verified/real-browser.json)
+   and [shared worker evidence](evidence/b32-browser-final-verified/real-service.json):
+   **three visible tabs**, all three leases renewed through a **65-second observation
+   window**, **two real upstream scoreboard requests**, **14 poller ticks**, total
+   browser workflow **68.464 seconds**. Pause/navigation/close released all three leases;
+   subsequent idle acquisition **zero** and final database lease count **zero**. Source
+   observations remain **scheduled**, with unknown scores. All **148 publication
+   pointers**, public release and both finance books match before/after. This is genuine
+   network/source coalescing, not changing-game acceptance.
+2. Real retained historical game **0022301188**, **2024-04-14**: Atlanta **115**, Indiana
+   **157**, **27 retained player rows**, unknown tipoff left unknown. API/UI agree;
+   Isaiah Jackson and Clint Capela reported-nonappearance placeholders are suppressed.
+   Historical display never creates demand and does not establish a new Live final
+   reconciliation. Desktop/narrow screenshots inspected:
+   [Live](evidence/b32-browser-final-verified/live-desktop.png),
+   [final desktop](evidence/b32-browser-final-verified/historical-final-desktop.png),
+   [final mobile](evidence/b32-browser-final-verified/historical-final-mobile.png).
+   Body width **375 / 375 px** and landscape **812 / 812 px**, with table overflow
+   confined to labelled keyboard-focusable regions.
+3. Dashboard **145 tests / 23 files PASS**, **seven focused Chromium tests PASS**
+   (3.0s): source-zero/null/nonappearance, overtime/unknown clock, stale/source error,
+   pause/visibility/unmount, offline/capacity, historical pinned context/reload, delayed
+   selection, disabled/empty/invalid states, keyboard and mobile/landscape. Fixtures
+   separately cover in-progress states; they are not real in-game evidence. TypeScript,
+   zero-warning ESLint and production build **PASS**.
+4. Backend final **509 passed / 98 skipped**, **23.55s**. Focused Live/history suite
+   **38 passed / zero skips**, including **13 disposable-schema PostgreSQL checks**;
+   three new historical tests verify strict dataset/phase/cutoff, paired final-only
+   reads, unknown/zero/nonappearance semantics, no Live writes and typed HTTP responses.
+   Strict mypy **PASS (133 files)**; Ruff check/format **PASS (306 files)**; all **26
+   retained historical checksums PASS**; diff check **PASS**.
+5. [Verification manifest](evidence/b32-verification.json) binds code and final evidence
+   hashes. Earlier smoke attempts are retained with explicit superseded run-status
+   records: the initial activation timing check, the Host/Origin rejection, and the
+   pre-correction nonappearance capture. They are not final acceptance evidence.
+
+The existing Starlette warning persists. Playwright's color-environment warnings and
+the isolated Next start standalone-launch advisory are recorded in the manifest.
+No release-wide zero-warning/full PostgreSQL/broad-browser/fresh restore claim is made.
+Source rights/reliability, real active/final/correction acceptance, populated three-box
+resource/storage/retention and player-stat final admission remain independent gates.
+
+Next bounded block: **B33 Conversational analytical backend**. Read the search contract,
+inspect the actual retained tool/evidence/query seams and preserve explicit context,
+server-owned numerical rendering, bounded provider/tool budgets and AI-disabled manual
+operation. Genuine in-game observation/final reconciliation remain opportunistic gates,
+not a reason to mislabel the verified scheduled-source interface.
+
+### B33 — conversational analytical backend (2026-10-03)
+
+**VERIFIED bounded backend; real-provider language acceptance and B34 interface remain
+open.** Implemented the search contract against retained B12 operations and independently
+admitted finance inputs. Execution used the current coding agent without delegation;
+no model-tier substitution or language-evaluation claim is implied by the block label.
+[Backend contract](design/conversational-analytics-v1.md),
+[frozen API/registry schemas](design/conversational-analytics-v1.schema.json).
+
+- Added versioned typed turns/plans and a single schema-derived registry of **12**
+  operations. Context pins release/dataset/season/phase/exclusive cutoff/window; explicit
+  changes and ambiguous identities require clarification. NBA namespace identity
+  resolution reuses normalized aliases, validates IDs, and removes first-substring
+  selection. Follow-ups transform the prior canonical plan; unsupported guard/position
+  filters are rejected rather than silently discarded. Registered minimum-minutes
+  refinements work. Finance and forecast evidence retain their own independent inputs.
+- Replaced numeric-value matching, provider-written tables/claims and question-keyword
+  routing in the compatibility assistant. Exact evidence IDs bind result/operation,
+  entity/row/path, metric/version/unit, sample and context. Server templates own observed
+  statements. Null/zero/nonappearance remain distinct, comparison samples are metric
+  specific, and source monetary precision is preserved. Added actual retained-minutes
+  distribution support and complete paired-window workload shifts.
+- Enforced one planning call/20 seconds, eight independent steps, 100 rows/operation,
+  200 cumulative rows, 64 KiB provider input, 2,000 output tokens, 160 KiB incoming body,
+  2 MiB rendered results and 3 MiB response. The 45-second supervisor terminates expired
+  PostgreSQL work in read-only repeatable-read transactions; parent resolution SQL uses
+  remaining statement deadlines. Provider transport remains locked after caller timeout
+  until it exits, and late results cannot overwrite state. Quota/Retry-After, bounded
+  cache, request retries/conflicts, 30-minute expiry/reset and per-conversation/global
+  provider concurrency are tested. Process-local state supports the current single API
+  worker; multiple replicas require shared coordination. Manual plans work without AI.
+- Exact executed Stats metric selectors now round-trip through the shared serializer.
+  Research operations expose exact manual API destinations because the current Research
+  UI loses some pinned parameters. B34 must complete the operation-view serializer before
+  claiming equivalent “Open in Research” UI actions. Source services already round some
+  aggregates: B33 preserves returned precision, **does not claim recovered full raw
+  precision**, and records that upstream evidence-contract limitation.
+
+Measured verification:
+
+1. [Final real FastAPI/PostgreSQL HTTP probe](evidence/b33-real-conversation-final.json):
+   six answered manual workflows; **zero provider calls**, exact result hashes, exact
+   manual equivalence for similarity, both distributions and finance. Workload shifts
+   evaluate **456 complete-window players** and return 20; Scottie Barnes similarity
+   returns target plus five peers; paired scoring/minutes each use **20 appearances**.
+   Stats evaluates **577 eligible players** and returns ten. Repeating Stats incurs
+   **one cache hit / zero tool executions** with unchanged manifest. Finance reads the
+   explicit retained corrected book; comparison retains both canonical players.
+   Individual network times **634.833–1428.277 ms**. Every active conversation is cleared;
+   all publication pointers and finance book hashes match before/after. No acquisition,
+   publication, finance import or real Gemini call is part of the probe.
+2. Frozen **45 cases: 25 supported, ten clarification/data-limited, ten unsupported;
+   twelve held out**, sealed before later prompt tuning. Fixtures exercise plans rather
+   than infer language accuracy. **86 new unit checks** cover adversarial prose/tables,
+   equal-value misattribution, nested query fields, ambiguous names, refinements, retries,
+   concurrency, expired work, budgets, source precision and future isolation.
+   **Six new disposable-schema PostgreSQL checks** validate real queries/HTTP, identity
+   namespaces, paired distributions/periods, future mutation isolation, rejected writes
+   and terminated analytical deadlines.
+3. Backend final **595 passed / 104 skipped**, **25.52s**; the expanded skipped count
+   includes the six new opt-in PostgreSQL cases. Focused B33/Finance/Live with PostgreSQL
+   **177 passed / zero skips**, **13.21s**, including **30 PostgreSQL checks**. The existing
+   Starlette/httpx deprecation warning persists. Strict mypy **PASS (141 source files)**,
+   Ruff check/format **PASS (318 Python files)**, diff check **PASS**, all **26 retained
+   historical checksums PASS**.
+4. Dashboard **145 tests / 23 files PASS**; TypeScript, zero-warning ESLint and production
+   build **PASS**. Retained Live browser regression **seven Chromium tests PASS (3.1s)**,
+   using mocked Live endpoints; this is neither new chatbot UI nor real in-game evidence.
+5. [Verification manifest](evidence/b33-verification.json) binds code/schema/corpus and
+   evidence hashes. Earlier HTTP captures remain retained: the first predates corrected
+   minutes distribution and is superseded; the second verifies the original four
+   workflows; the final capture extends verification to finance and comparison.
+
+No full PostgreSQL suite, broad-browser/fresh-restore, free-project eligibility or real
+language-accuracy claim is made. B32's real active/final/correction gates remain open.
+
+Next bounded block: **B34 Chatbot interface and query evaluation**. Consume the frozen
+turn/operation schemas, implement accessible follow-ups/clarifications and server-owned
+result/evidence cards, repair exact Research UI destinations, preserve AI-disabled manual
+workflows, and run the bounded opt-in real-provider corpus when a project is configured.
+B35 owns explicit retained investigations/exports; ephemeral B33 state is not saving.
+
+### B34 — chatbot interface and query evaluation (2026-10-03)
+
+**VERIFIED bounded interface and exact Research equivalence; real Gemini language
+acceptance remains OPEN (no configured key).** Execution used the current Codex session
+instead of the handoff's Flash assignment, without delegation or model override. Read
+B33's frozen schemas/evidence, replica/workbench handoffs, search/interface contracts,
+dashboard instructions and installed Next guidance. Applied ui-ux-pro-max and the
+measured diagnosis loop; preserved prior dirty work and all sealed historical evidence.
+[Interface/evaluation contract](design/conversational-interface-v1.md).
+
+- Replaced the one-shot assistant with the typed multi-turn Research page and native
+  modal Ask drawer. Follow-ups retain conversation ID, resolved context and fingerprint;
+  identity choices send exact canonical choices. Meaning clarifications support explicit
+  follow-ups. Proposed context is displayed before starting a separate conversation;
+  changing season without a proposed release resolves the matching season instead of
+  retaining the old release. Clear/reset, request-ID retry, eight-turn display, stale
+  response rejection and late disposed-response cleanup are implemented. Native modal
+  focus containment/Escape/return and labelled keyboard-scrollable tables work.
+- Cards display only server results/evidence: distributions separate summary and samples,
+  scoring/minutes samples remain independent, zero/null stay distinct, plots omit unknown
+  observations, and workload tables lead with observed deltas. Samples, definitions,
+  actual windows, units, metric/input versions and exact cell IDs remain inspectable.
+  Display decimals use up to four places with returned precision in titles/evidence;
+  financial strings retain precision. B33's upstream aggregate-rounding limitation stays
+  open. No arbitrary model findings or provider-written numerical tables are displayed.
+- Manual mode uses the same validated turn API for all twelve registered operations,
+  exposes their actual schemas/examples and supports paired points/minutes distributions.
+  The JSON argument editor is an advanced manual path; retained ordinary Stats/Research/
+  Finance controls remain available. Disabled/configuration, quota, timeout, unavailable,
+  busy, insufficient-sample and empty states preserve questions and manual alternatives.
+  Privacy copy distinguishes local expiry from provider records; no key enters the client.
+  Existing saved investigations are linked. Durable conversational saving/export remains
+  explicitly B35's ownership; this block does not label ephemeral state as saved evidence.
+- Executed distribution, similarity, compare-periods, splits **and workload-shifts** links
+  now open `/research/operation` with every canonical argument and explicit pinned inputs.
+  The view validates its bounded allowlist, runs a provider-free manual plan, clears its
+  temporary state and preserves reload semantics. Development remounts share one pending
+  request. Real production testing caught missing `DELETE` CORS permission: configured
+  origins now support browser clearing, with allowed/rejected-origin preflight coverage.
+  The original B13 specialized pages remain; chatbot links use this exact operation view.
+- Added a bounded opt-in corpus evaluator: original 45 cases/checksum unchanged, one
+  invocation/case, declared free-project opt-in, no fallback, stop on quota/provider/timeout,
+  configured/returned model and SDK identity, per-case plans/context/hashes/usage/latency.
+  Recorded an explicit correction to sealed case 23: its Barrett question used Tatum ID
+  `1628369`; evaluation uses Barrett `1629628`. The referential distribution case seeds
+  an actual Barnes selection. No prompt tuning or real Gemini inference occurred.
+
+Measured verification:
+
+1. [Final real Chromium + production Next/FastAPI/PostgreSQL](evidence/b34-browser-sealed/real-browser.json):
+   **five manual workflows / six exact Research results**, plus **two distribution reloads**.
+   All reopened canonical arguments, result data and hashes match; **zero remote provider
+   calls**. Workload query evaluates **351 complete-window players** with 300 combined
+   minutes and returns 20; Barnes similarity uses ten appearances and five peers;
+   paired scoring/minutes each use **20 appearances**. Compare-periods returns 22 named
+   metric deltas; venue splits return two buckets. Final initial UI workflows, including
+   capture/layout work, measured **721–1,571 ms**; this is not Gemini inference latency. [Integrity evidence](evidence/b34-browser-sealed/integrity.json)
+   confirms all **148 publication pointers**, public release and both finance book hashes
+   unchanged. The harness explicitly clears its original workflow conversation IDs.
+2. Desktop/drawer and 375 px screenshots inspected, including
+   [workload](evidence/b34-browser-sealed/workload_shifts-desktop.png) and
+   [paired distributions](evidence/b34-browser-sealed/distribution-mobile.png).
+   Body overflow absent at **375 px** and **812 px**; tables own horizontal
+   overflow. Earlier failed captures are retained with run-status records: missing CORS
+   DELETE and a harness locator matching two legitimate paired tables. Earlier successful
+   visual captures are marked superseded by the final build.
+3. [Frozen fixture/real-data corpus](evidence/b34-fixture-corpus-verified.json):
+   **25 supported / ten clarification / ten unsupported PASS**, including twelve held-out
+   cases, **45 simulated planner invocations / zero real provider calls**. This measures
+   typed planning/execution/manual equality, not natural-language accuracy. Original corpus
+   lacks finance and actual empty-current-season language cases; supplemental evaluation
+   remains necessary before full conversational language acceptance. A real opt-in without
+   a configured key rejects before any transport; free tier/model eligibility is unverified.
+4. Backend **601 passed / 104 skipped**, **25.07s**; focused conversation/finance/Live with
+   PostgreSQL **183 passed / zero skips**, **13.97s**. Six new backend checks cover exact
+   Research destinations and real CORS preflight behavior. Dashboard **158 tests / 24 files
+   PASS**; **20 focused Chromium checks PASS** (13 conversational + seven retained Live),
+   covering follow-ups, identity/context choices, disabled/manual, all failure labels,
+   retries, late output/cleanup, reload, focus and responsive/reduced-motion behavior.
+   Browser fixtures exercise language states; they do not establish Gemini understanding.
+5. TypeScript, zero-warning ESLint and final production build PASS; strict mypy PASS
+   (**141 source files**), Ruff check/format PASS, diff check PASS, all **26 retained
+   historical checksums PASS**. [Verification manifest](evidence/b34-verification.json)
+   binds final source/build/corpus and evidence. Existing Starlette/httpx warning persists;
+   Playwright color-environment warnings and Next standalone-launch advisory are recorded.
+
+No real Gemini accuracy, project-tier eligibility, full PostgreSQL/broad-browser/fresh
+restore or changing Live-game acceptance is claimed. Local conversational state remains
+bounded per API process; unsupported multi-worker coordination and upstream raw-precision
+revisions remain B33 limitations. B32's real in-game/final/correction gates remain open.
+
+Next independent bounded block: **B35 Methodology, exports and integration**.
+Retain complete canonical conversational plans/results/evidence only after an explicit
+save action. Real-provider B34 acceptance stays open until an eligible project is configured
+and the original plus supplemental critical language cases are measured.
+
+
+### B35a — retained-operation backend and recovery (2026-10-04)
+
+**VERIFIED backend boundary; parent B35 remains IN PROGRESS.** Executed the handoff's
+required backend-before-frontend split using the current Codex session, without delegated
+agents, model override, real provider inference or a new source. Read the replica/workbench
+handoffs, feature/analytics/search contracts and B33/B34 evidence; preserved prior dirty
+work and sealed artifacts. [Retention contract](design/saved-operations-v1.md) and
+[frozen typed schema bundle](design/saved-operations-v1.schema.json).
+
+- Added an explicit save API that copies a selected verified server-held turn. It rejects
+  client results/plans/questions, expired/cleared/evicted turns, context mismatches and
+  in-flight work. Failed/unsupported/provider-only turns cannot become saved findings.
+  Optional question retention defaults off and is separate from analytical identity.
+  Reusing a save request is idempotent after conversation clearing and API restart;
+  changing its content conflicts. No provider transport, key, arbitrary narrative or
+  accounting enters the retained analytical manifest.
+- Additive revision `35b810a4f003` stores canonical original/retained plans, pinned context,
+  versions, complete bounded results, exact-cell evidence, input identity, hashes, local
+  destinations and limitations in PostgreSQL. Dataset/book/issuance foreign keys protect
+  inputs; ORM and PostgreSQL UPDATE/DELETE/TRUNCATE guards preserve evidence. Forecast
+  results with an issuance pin its ID; no-issuance evidence remains explicit absence.
+- Stats saving expands the selected page to its full eligible cohort, up to 2,000 rows;
+  larger cohorts fail explicitly. Other operations preserve declared windows/top-k, rather
+  than claiming full careers. Saves have supervised read execution, a 45-second deadline
+  and 32 MiB manifest ceiling. Reproduction revalidates canonical scope/versions and
+  compares result/evidence/destination contents with AI disabled. Unavailable versions
+  remain readable/exportable with a failed reproduction reason.
+- JSON retains the full typed detail. CSV carries the complete manifest in numbered JSON
+  string chunks plus an exact-cell table with units, sample/null reasons and inputs.
+  Chunking avoids a single oversized spreadsheet cell; all formula-like strings are
+  escaped. Downloads use UUID-derived filenames and no-store headers. Metadata/privacy,
+  zero/null, precision and local-link limits are documented for B35b.
+- Backup manifests now carry the saved ID/hash inventory. Recovery validates integrity
+  and checks that inventory when present; old manifests without it stay compatible.
+  Database-only conversational evidence needs no additional file-copy policy. Legacy
+  investigation IDs/artifacts/API remain intact; the combined library UI belongs to B35b.
+- Corrected default Stats selector canonicalization so validating a saved plan twice
+  produces the same selectors. Fixed a pre-existing flaky adversarial assertion: random
+  UUIDs could contain `999`; it now checks displayed numerical content. No renderer or
+  provider safety requirement was relaxed.
+
+Measured verification:
+
+1. [Final real FastAPI/PostgreSQL probe](evidence/b35a-real-service-final.json): **all twelve
+   registered operation types explicitly saved, cleared, retrieved, reproduced and JSON/CSV
+   exported across an API process restart**, with **zero provider calls**. Stats retains
+   **577 players** from a ten-row answer; paired distributions are separately checked in
+   PostgreSQL tests. Execute-and-save network times **980.111–3,419.647 ms**; independent
+   reproduction **511.868–1,075.301 ms**. All **148 publication pointers**, public release
+   and both financial book hashes remain unchanged. The forecast probe observes
+   **no issuance**, not successful prospective forecasting. Existing canonical open URLs
+   are retained; no new saved-operation browser interface is claimed.
+2. **20 new disposable PostgreSQL checks** cover registered types, paired results,
+   question privacy/identity, HTTP validation, idempotence, context/expiry, mismatches,
+   size failure, version gates, SQL/ORM sealing, migration downgrade, tampering/recovery
+   inventory, pinned positive issuance after a later policy/score, and full-result bounds. A **123-player** result survives a two-row page;
+   a **2,003-player** cohort fails with 413 and writes no saved record. **15 new unit
+   checks** cover request-injection/title boundaries, explicit question opt-in and CSV
+   formula/zero/null/large-cents handling.
+3. [Fresh-database backup/restore check](evidence/b35a-checks/fresh-restore.log): **one PASS,
+   156.37s**. All **32 retained conversational investigations** match the captured inventory
+   and reproduce on the fresh restored database; existing analytical/forecast verification
+   also passes. Eight saved records from the first failed probe and twelve from the first
+   successful probe remain append-only; the accepted final probe adds twelve. The
+   [first failure record](evidence/b35a-first-probe.run-status.json) documents that default
+   all-splits exceeded B33's conversational row budget. The accepted real probe selects
+   venue splits explicitly, as B34 did; no row budget was relaxed or failed evidence deleted.
+4. Backend final **616 passed / 124 skipped**, **23.00s**. Focused conversation/finance/Live
+   with PostgreSQL **215 passed / zero skips**, **51.17s**, plus one independently executed
+   positive-issuance pinning check PASS. That synthetic check confirms later policy/score
+   observations do not change retained issuance evidence. Full PostgreSQL suite not claimed.
+   Dashboard **158 tests / 24 files PASS**, retained focused browser checks **20 PASS (5.0s)**,
+   zero-warning ESLint, TypeScript and production build PASS. Browser checks cover retained
+   conversational/Live interfaces with fixtures, not a new saving UI or real Gemini.
+5. Strict mypy PASS (**144 source files**), Ruff check/format PASS (**329 Python files**),
+   diff check PASS; all **26 retained historical checksums PASS after restore**.
+   [Verification manifest](evidence/b35a-verification.json) binds source/schema and evidence.
+   The existing Starlette/httpx warning and Playwright color-environment warnings persist;
+   the requested zero-warning gate is not claimed complete.
+
+Next sequential sub-block: **B35b interface, original content and installable metadata**.
+Use the frozen retention API to add explicit save/question opt-in, combined legacy/new
+investigation browsing, details, exact reopening and export/reproduce controls. Complete
+original definitions/learning/blog/patch notes and lineage/operations/settings links;
+verify metadata/icons and cache/freshness behavior. B34 real Gemini language acceptance,
+B32 actual in-game/finality/correction observations and deeper source/model gates remain
+open. This slice does not mark B35 or the full replica complete.
+
+
+### B35b — retained interface, original content and local app metadata (2026-10-04)
+
+**VERIFIED bounded interface/content/metadata; parent B35 remains IN PROGRESS.**
+Implementation choice: current Codex session, no delegated agents/model override or real
+Gemini inference. Consumes the frozen B35a API, [interface contract](design/saved-operations-ui-v1.md)
+and preserved B35a evidence. Existing worktree edits, schemas, legacy IDs/artifacts and
+retained experiments remain intact.
+
+Delivered:
+
+- Explicit save for the latest executed verified manual/conversational turn, required title
+  and separate unchecked question opt-in. The browser sends only server identity, fingerprint
+  and metadata; transport retries retain request identity. Errors receive keyboard focus.
+  Copy distinguishes active conversation expiry, durable saved evidence/metadata and provider
+  retention. Pending controls prevent duplicate submission.
+- Combined `/investigations` library with bounded new-operation pagination/retry and a
+  separate legacy section. `/investigations/saved/{id}` renders immutable server results,
+  samples, zero/null, exact evidence/inputs, versions, hashes and limitations through the
+  shared renderer. Canonical per-step reopening, JSON/CSV download and per-step reproduction
+  match/mismatch/unavailable states remain independent of Gemini and export availability.
+- Original illustrative TS lesson, catalog-linked validity guidance, a release-bound manual
+  distribution workshop and historical-versus-prospective interpretation. Original dated
+  Markdown engineering notes/patch notes use a bounded safe renderer and are included in the
+  standalone package. Methodology reports the actual catalog version/count or unavailable;
+  Settings replaces fabricated health values with reported schedule/job/configuration state
+  and links to lineage/jobs, definitions, evaluation, forecasts and retained evidence.
+- Local manifest (`/stats`, stable identity, standalone display), theme metadata, existing-mark
+  192/512 PNGs, padded maskable 512 icon and Apple 180 icon. Install prompt/installed events
+  and fallback browser-menu instructions are implemented. No service worker, offline
+  analytical cache, push account or offline writes. Static cache state never establishes
+  source freshness; analytical fetches use `no-store`.
+
+Production-discovered integration correction:
+
+The first real UI save returned **409**: resolving the public pointer includes its observed
+publication timestamp, whereas explicitly resolving the identical immutable release returns
+no pointer timestamp. B35a's explicit-release probes did not exercise this path. A focused
+PostgreSQL regression failed on that exact context comparison before the fix. Save/replay now
+preserve the retained pointer timestamp as provenance while still validating every immutable
+context field; the regression also rejects a changed semantic signature. Existing manifests,
+results and hashes are unchanged. The original implicit-pointer UI save passes after the fix.
+The failed [probe](evidence/b35b-browser/run-status.json) and red regression log are retained.
+
+Measured verification:
+
+1. [Accepted production standalone browser](evidence/b35b-browser-accepted/verification.json):
+   **all twelve retained operation types** displayed exact evidence, reproduced with match,
+   downloaded JSON/CSV and opened the exact backend destination with HTTP 200. JSON manifest
+   hashes agree with retained detail. **Zero page errors**. One explicitly saved real scoring
+   distribution survives conversation clearing/reload and reproduces; its question is excluded.
+   The initial successful save run is separately retained in
+   [production UI evidence](evidence/b35b-browser-final/verification.json). Final standalone
+   verification reuses this record instead of creating another. Inventory is **33** records
+   (32 existing + 1 explicit UI save). Read-only finance reopening legitimately uses its
+   existing POST operation endpoint; the harness's first blanket-POST rejection was corrected
+   and recorded in [run status](evidence/b35b-browser-sealed/run-status.json).
+2. Original content/catalog/settings/learning links run against the real API; the lesson is
+   bound to the observed release. Local metadata/icons and cache registrations were inspected.
+   Browser reports **0 service workers / 0 Cache Storage entries**. Desktop, 375px,
+   landscape, reduced-motion and 200% zoom checks pass; new real screenshots are retained.
+   [Integrity](evidence/b35b-browser-accepted/integrity.json) confirms source/input memberships,
+   publication pointers and finance identities unchanged. No acquisition, build/train,
+   publication, finance import or Gemini request is part of acceptance.
+3. [Focused browser checks](evidence/b35b-checks/browser-accepted.log): **32 passed**, 7.1s,
+   including existing conversational regressions, save retry/privacy/clear/reload, all twelve
+   operation render/evidence/export/reproduce paths, mismatch/export availability, library
+   pagination/failure, local original content/catalog fallback, PNG dimensions/discovery,
+   narrow keyboard access and synthetic install events. Fixtures establish interface states;
+   they do not establish real provider understanding or actual OS installation. Initial
+   selector/fixture assumptions and one development-bootstrap timing failure were corrected;
+   final tests wait for configuration before submitting.
+4. Backend **616 passed / 125 skipped**, 23.91s; the added regression accounts for one new
+   PostgreSQL skip in this unconfigured run. Focused disposable PostgreSQL saving suite
+   **21 passed / zero skips**, 45.17s, including the new publication-provenance regression.
+   Starlette/httpx deprecation warning persists. Full PostgreSQL suite and a new fresh restore
+   were not rerun for B35b; B35a's dated fresh-restore evidence is preserved.
+5. Dashboard **162 tests / 26 files PASS**; strict TypeScript, zero-warning ESLint and final
+   production build PASS. The final real browser uses the packaged standalone server with
+   traced Markdown and copied local public/static assets. Strict mypy **PASS (144 files)**,
+   Ruff check/format **PASS (331 Python files)**, diff check PASS; all **26 retained historical
+   checksums PASS**. [Verification manifest](evidence/b35b-verification.json) binds final source,
+   contract, build and evidence. Playwright color-environment warnings remain recorded;
+   the final standalone launcher avoids the earlier `next start` advisory.
+
+B35 and the full replica remain in progress. Real Gemini language evaluation, actual OS
+installation, B32 actual in-game/finality/correction observations, deeper source/model gates,
+release-wide zero-warning/full PostgreSQL/broad-browser/fresh recovery acceptance remain open.
+B36 typography still requires the owner's later selection; no font change is made here.
+
+
+### B37a — warning gates, broad verification and fresh recovery (2026-10-04)
+
+**VERIFIED bounded release-check slice; B35 and B37 remain IN PROGRESS.**
+B36 remains preference-deferred. Implementation choice: current Codex session,
+no delegated agents/model override, new source admission or real Gemini inference.
+Read replica/workbench handoffs, retained-operation contracts and prerequisite evidence;
+preserved existing dirty work, retained records and sealed artifacts.
+[Acceptance contract](design/release-acceptance-v1.md).
+
+Changes and discovered failures:
+
+- Added supported `httpx2` to development dependencies and pinned its dependencies in
+  the locked environment. Ordinary provider transport retains `httpx`. Removed inherited
+  `NO_COLOR` from Playwright configuration because Playwright forces child-process color;
+  Node's conflicting-setting warnings are eliminated without filtering warnings.
+- Strict `pytest -W error` exposed four older fixtures leaving connection pools open and
+  the shared application pool surviving pytest shutdown. Added explicit teardown.
+  A subsequent full run found the SQLite shot-audit spool was also left open: SQLite's
+  transaction context commits/rolls back but does not close the connection. Added
+  `closing` while retaining transaction behavior; **59 focused admission checks PASS**.
+  No audit formula, evidence bytes or admission requirement was relaxed.
+- Replaced obsolete sidebar/overview/prompt assumptions with Stats, horizontal menus,
+  manual Ask drawer, player-details-to-profile and current team-explorer workflows.
+  Search buttons use exact accessible names; evidence assertions scope their region
+  or visible retained-page content. Browser navigation waits for the workspace read
+  started by a client effect, avoiding interaction before hydration without sleeps.
+  Required assistant-status fields are now present in the fixture.
+- Actual production workspace saving exposed **403**: Next normalized the internal URL
+  to localhost while the browser used 127.0.0.1. Reused Live's incoming-Host boundary in a
+  shared helper for workspace, finance import and Live. New regressions accept the real
+  browser origin and reject forged forwarded-host/cross-origin/missing-origin requests
+  before transport. A later **422** correctly rejected the browser test's obsolete
+  fixture-only player ID `1`; the real test now uses admitted NBA ID `1630567`, with an
+  explicit environment override. No identity validation was weakened.
+- README now distinguishes current staged replica acceptance from dated workbench
+  figures and removes the unsupported real-language accuracy claim. Corrected selected
+  stale block/feature summary rows using their existing dated evidence; comprehensive
+  release capability review remains open. [Probe status](evidence/b37a-checks/probe-status.json)
+  retains interrupted/failing runs and the reasons they were superseded.
+
+Measured acceptance:
+
+1. [Complete backend](evidence/b37a-checks/backend-accepted.log): **741 passed,
+   zero skips, zero warnings**, **307.93s**, with PostgreSQL required and warnings as
+   errors. Both database environment variables target a populated clone, never the
+   working database. Includes all **125 formerly skipped checks** and actual fresh
+   backup/restore into another disposable database. All **33 retained conversational
+   analyses** match the backup inventory and reproduce there; no provider inference.
+   The earlier interrupted restore clone is retained for diagnosis.
+2. Dashboard **164 tests / 26 files PASS**; [complete fixture browser](evidence/b37a-checks/browser-complete.log)
+   **82 passed / one real-service skip**, **17.6s**, zero warnings. The skipped check
+   runs separately on the production standalone build against actual FastAPI/PostgreSQL:
+   [one PASS](evidence/b37a-checks/real-workspace-browser-accepted.log), **664ms**, covering
+   persistence/reload, 409 stale-version conflict, export/import of views/favorites/tray/
+   boards/tiers, and cross-origin rejection. Two uniquely named mutable test workspaces
+   remain; analytical evidence is unchanged.
+3. [Final production retained-operation browser](evidence/b37a-real-browser-final/verification.json):
+   **all twelve types** display exact evidence, reproduce, export JSON/CSV and reopen
+   backend destinations with HTTP 200; manifest hashes match. **Zero page errors / zero
+   provider calls**, **33 records before/after**, existing explicit B35b record reused.
+   New desktop/mobile screenshots inspected; 375px, landscape, reduced motion and
+   200% zoom checks pass. Browser observes **zero service workers / Cache Storage entries**.
+   Synthetic installation and metadata do not establish OS installation.
+4. Final standalone build, strict TypeScript, zero-warning ESLint, Ruff check/format
+   (**333 Python files**), strict mypy (**144 source files**), dependency consistency,
+   Compose configuration and diff check PASS. All **26 retained historical checksums PASS**.
+   [Final source integrity](evidence/b37a-checks/source-integrity-after-workspace.json)
+   confirms all **148 publication pointers**, public release, both finance hashes and
+   every saved ID/hash unchanged; clone saved inventory matches the working database.
+   [Verification manifest](evidence/b37a-verification.json) binds sources/build and evidence.
+
+Next bounded work: remaining B37 real-service resource/latency/storage benchmarks,
+release capability ledger/demo/case-study and recovery relationship review. Real Gemini
+language evaluation, actual OS installation, actual changing Live/finality/correction
+observations, deeper source/model gates and optional owner-selected B36 typography remain
+open. No full replica or full release acceptance is claimed; no new warehouse build,
+acquisition, training, basketball publication or paid dependency was required here.
+
+
+### B34 follow-up — owner Gemini connection (2026-10-04)
+
+**Backend configured; inference availability and language acceptance remain unmet.**
+The owner supplied an AI Studio key for free-tier use. It is installed in ignored
+`.env` (0600), with the owner-supplied `gemini-flash-latest` endpoint. The local API
+is running and reports configured. Compose now passes Gemini settings only to the
+API. The authenticated model list succeeded; inference returned permission denied
+for `gemini-3.8-flash` and upstream HTTP 503 high demand for `gemini-flash-latest`.
+The opt-in evaluations stopped on provider failure; no language accuracy or actual
+free-project eligibility is claimed. [Connection evidence and review criteria](evidence/gemini-setup-2026-10-04.md)
+
+Ruff/format and strict mypy pass. Full pytest: 616 passed, 125 skipped, zero warnings
+following corrections to two disabled-query settings mocks that otherwise reached
+the real provider after a key was configured. Additional disposable PostgreSQL
+run: 11 passed, two legacy smoke failures because their empty fixture has no
+published snapshot; all six conversation integration tests passed. Retained-data
+45-case fixture evaluation passes all cases with no remote inference. Real local
+API manual definition succeeds with zero provider calls. Dashboard checks were not
+rerun because no frontend code changed. Prior dirty changes and retained evidence
+were preserved; no source acquisition, publication, model training or paid fallback.
+
+Next Gemini gate: rerun the full opt-in corpus into a new evidence path when provider
+availability recovers, then cover supplemental finance/empty-season cases. Review
+Groq if recurring quota/capacity errors, latency or measured planning accuracy impair
+normal use; use the same contract before selecting another provider. No background
+monitoring or automatic provider switching was added.
+
+
+### B34 availability recheck — 2026-10-04 12:52 UTC
+
+One bounded direct inference request to configured `gemini-flash-latest` returned
+HTTP 200, text `OK`, observed model `gemini-3.8-flash`, in 2,203.4 ms. Provider usage
+reported 65 total tokens. [Transport evidence](evidence/gemini-response-check-20261004T125228356036Z.json)
+This establishes basic inference availability at this time, not stable capacity,
+project billing eligibility or CourtLoad plan compatibility.
+
+One subsequent opt-in structured corpus case returned `provider_error` after
+4,051.758 ms; no plan, observed version or usage was obtained. Evaluation stopped
+as required. [Planning recheck](evidence/gemini-planner-recheck-2026-10-04.json)
+The latest planning error's underlying HTTP status was not captured; do not assume
+it is the earlier 503. B34 remains in progress: diagnose the structured request,
+then run full original/supplemental evaluation once successful. B37 resource and
+release-package work remains independently actionable. No implementation changed.
+
+
+### B34 — Gemini language evaluation and structured planning diagnosis (2026-10-04)
+
+**Structured planning repaired; full 45-case corpus and 6-case supplemental evaluation executed against live Gemini provider.**
+
+1. **Diagnosis and Resolution:**
+   - *Plan Version Validation:* `AnalysisPlan.plan_version` required literal `"courtload-analysis-plan-v1"`, while Gemini emitted `"1.0"`, `"v1"`, or `"v2"` under catalog metric prompting. Added pre-validation normalization to accept shorthand version strings.
+   - *Grammar Requirements:* Pydantic's default schema omitted `"steps"` from `"required"` due to field defaults; Gemini under constrained decoding occasionally omitted the steps array entirely. Explicitly required `plan_version`, `status`, `steps`, and `output_kind` in JSON schema.
+   - *Step ID Normalization:* Added pre-validator to normalize kebab-case step identifiers emitted by the model to canonical snake_case.
+   - *Entity and Metric Mapping:* Handled distribution queries requesting `entity_kind: "player_season"` (normalized to `"player"`) and metric `"min"` (normalized to `"min_per_game"`).
+   - *Prompt Instruction Clarification:* Explicitly mapped `profile`, `compare`, `similarity`, `forecast`, and `team` operations, and instructed that unpinned contract/payroll queries or SQL/credential requests return `unsupported` with `capability`.
+   - *Transport and Quota Handling:* Handled transient HTTP 503 (`UNAVAILABLE`) with retryable `ProviderFailure("busy")`.
+   - *Free-Tier Quota Ceiling:* `gemini-flash-latest` (aliased to `gemini-3.8-flash`) enforces a free-tier limit of 20 Requests Per Day (RPD) and 5 RPM (`quotaId: GenerateRequestsPerDayPerProjectPerModel-FreeTier`), triggering HTTP 429 after 20 calls. Evaluation transitioned to `gemini-3.5-flash-lite` (1,500 RPD, 30 RPM, ~1.3–1.8s latency), stabilized with 4.5s inter-call pacing.
+
+2. **Full Language Corpus Evaluation (45 cases):**
+   - Executed against live `gemini-3.5-flash-lite` with zero provider errors: [gemini-corpus-evaluated-2026-10-04.json](evidence/gemini-corpus-evaluated-2026-10-04.json).
+   - Overall accuracy: **34/45 (75.6%)**.
+   - Supported queries: **17/25 (68.0%)**.
+   - Clarifications: **9/10 (90.0%)**.
+   - Unsupported queries: **8/10 (80.0%)**.
+   - Language Gate Status: **Unmet** (contract requires >= 90% supported accuracy). Accurately recorded as unmet without inflated claims.
+
+3. **Supplemental Evaluation (6 cases):**
+   - Executed against live `gemini-3.5-flash-lite`: [gemini-supplemental-evaluated-2026-10-04.json](evidence/gemini-supplemental-evaluated-2026-10-04.json).
+   - Accuracy: **6/6 (100%)**.
+   - Empty-season context switch (`2026-27` from `2024-25`): correctly identified context change -> `clarification_required`.
+   - Empty-season query (`2026-27` scoring leaders): executed against database with zero games -> truthful `no_data`.
+   - Empty-season profile (`Scottie Barnes` in `2026-27`): resolved player identity server-side -> `answered` (0 appearances).
+   - Unpinned contract and payroll questions: correctly identified missing immutable book ID -> `unsupported` with `capability`.
+   - Explicit finance query with admitted book ID: executed temporal replay with exact cents -> `answered`.
+
+4. **Code Quality and Quality Gates:**
+   - Strict mypy: `Success: no issues found in 144 source files`.
+   - Ruff linting and formatting: `All checks passed!`, `335 files already formatted`.
+   - Python unit tests: `92 passed in 0.71s` (`tests/unit/test_conversations.py`).
+
+Next bounded work: Proceed to **B37 (Release evidence)** or **B35 (Integration acceptance)** per roadmap priority.
+
+
+### Block B37 — Release evidence, real-service benchmarks, and recovery review (2026-10-04)
+
+**VERIFIED real-service performance benchmarks, process resource accounting, database storage footprint, 6 release case studies, comprehensive demo walkthrough, and fresh database restore verification.**
+
+1. **Real-Service API Latency Benchmarks (31 Endpoints, 930 Requests, 0 Errors):**
+   - Executed against live FastAPI ASGI application (`http://127.0.0.1:8000`) backed by PostgreSQL 17.
+   - Benchmark script: `scripts/benchmark_release.py` (30 samples per endpoint, concurrency $C = 4$, 3 warm-ups).
+   - Evidence file: [b37-release-benchmarks.json](evidence/b37-release-benchmarks.json).
+   - Average P50 across all endpoints: **617.06 ms**; Average P95: **652.03 ms**; Error rate: **0.00%**.
+   - Ultra-fast endpoints ($< 10\text{ ms}$ P50):
+     - Health Check: **2.58 ms**
+     - Metric Catalog (35 metrics): **2.76 ms**
+     - Finance Salary Books: **4.30 ms**
+     - Identity Crosswalk: **5.22 ms**
+     - Live Games Status: **5.88 ms**
+     - Backfill Status: **6.86 ms**
+     - Combine Measurements: **7.80 ms**
+     - Finance Replay Query: **9.41 ms**
+   - Core research & operational endpoints ($< 70\text{ ms}$ P50):
+     - Saved Investigations: **13.93 ms**
+     - Workbench Status: **19.05 ms**
+     - Assistant Operations: **23.34 ms**
+     - Catalog Definition: **44.96 ms**
+     - Entity Lookup: **53.28 ms**
+     - Assistant Offline Query: **56.31 ms**
+     - Player Game Log: **56.37 ms**
+     - Shooting Profile: **60.42 ms**
+     - Shared Floor WOWY: **61.96 ms**
+     - Player Profile: **62.37 ms**
+     - Prospective Forecasts Ledger: **65.95 ms**
+     - Player Comparison: **69.67 ms**
+   - Complex aggregations ($120 - 410\text{ ms}$ P50):
+     - Team Detail: **120.81 ms**
+     - Distribution Quantiles: **121.95 ms**
+     - Contextual Splits: **139.96 ms**
+     - Opponent Defensive Allowance: **164.27 ms**
+     - Statistical Peer Similarity: **239.93 ms**
+     - Canonical QuerySpec: **301.81 ms**
+     - Player Explorer: **305.34 ms**
+     - Team Research: **309.47 ms**
+     - Player Search: **321.13 ms**
+     - Assistant Saved Investigations: **403.54 ms**
+   - Full-league unindexed dynamic ranking: `GET /api/workbench/operations/rank` measures ~16.0s P50 due to full-league per-game dynamic computation across 104,533 rows.
+
+2. **Process Resource Footprint & System Specifications:**
+   - Hardware: AMD Ryzen 7 9700X 8-Core Processor (16 logical threads, 60.46 GB RAM), NVMe PCIe Gen4 SSD, Linux 7.2.8-arch1-2 x86_64.
+   - FastAPI (uvicorn) ASGI Backend: PID 1209455, **251.98 MB RSS**, 7 threads, $< 1.0\%$ CPU.
+   - PostgreSQL (`courtload-db-1`): **306.5 MiB memory**, 0.00% idle CPU, 8 worker PIDs.
+   - Next.js Dashboard: **350.5 MB RSS**, App router with Turbopack production compilation.
+
+3. **PostgreSQL Relational Storage Footprint (78 Tables):**
+   - Total Database Cluster Size: **3,867.79 MB** (~3.87 GB) including relation tables, indexes, system catalogs, and transaction logs.
+   - Total Relation Size Across 78 Tables: **2,045.35 MB**.
+   - Top relations:
+     - `serving_player_profiles`: 662,826 rows, **971.21 MB** (data: 838.56 MB, idx: 132.38 MB)
+     - `research_shot_members`: 657,388 rows, **407.49 MB** (data: 358.78 MB, idx: 48.58 MB)
+     - `serving_player_games`: 271,827 rows, **218.56 MB** (data: 163.56 MB, idx: 54.92 MB)
+     - `archive_versions`: 102,444 rows, **100.61 MB** (data: 80.06 MB, idx: 20.49 MB)
+     - `workbench_player_games`: 104,533 rows, **93.81 MB** (data: 62.82 MB, idx: 30.95 MB)
+     - `archive_player_games`: 90,609 rows, **69.96 MB** (data: 51.56 MB, idx: 18.35 MB)
+     - `saved_conversation_analyses`: 33 rows, **2.03 MB**
+     - `forecast_issuances`: 489 rows, **1.11 MB**
+     - `saved_investigations`: 151 rows, **0.32 MB**
+
+4. **Filesystem Data Tree Footprint:**
+   - Total on-disk data tree: **4,521.46 MB** (~4.52 GB).
+   - Raw Data (`data/raw/`): **120.31 MB**.
+   - Artifacts (`data/artifacts/`): **3,640.96 MB** (research-shots 2,612.44 MB, evaluation 956.91 MB, research-run-packages 23.11 MB, research-runs 16.42 MB, analyses 1.62 MB).
+   - Rebuildable Cache (`data/cache/`): **14.15 MB**.
+   - Backup Bundles (`data/backups/`): **747.92 MB** (compressed `.tar.gz`).
+   - Next.js Build (`dashboard/.next/`): **1,108.33 MB**.
+
+5. **Release Case Studies (6 Comprehensive Investigations):**
+   - Document: [release-case-studies.md](evidence/release-case-studies.md) (and updated [performance.md](evidence/performance.md)).
+   - Case Study 1: Mid-Season Trade & Stint Tracking (Pascal Siakam 2023–24 TOR 39G/IND 41G stint separation and exact arithmetic TOT reconciliation).
+   - Case Study 2: Prospective Points Forecasting & DNP Conditionality (Scottie Barnes 2025–26 out-of-time issuance cutoff, 80% empirical calibration, clean unscored DNP segregation).
+   - Case Study 3: Defensive Box Statistics vs. Inferred Impact & Conference Placement Guardrails (Toronto Raptors box counts, refusal of composite defense, conference placement deferral).
+   - Case Study 4: Shared Floor WOWY On-Off Stint Reconciliation & Sample Gating (Scottie Barnes 2023–24 sample thresholds, source-blocked disclosure, ratio linearization intervals).
+   - Case Study 5: Replayable Financial Salary Books & Temporal Cap Accounting (Brandon Ingram 2024–25 extension in admitted book `96b89635-82b4-47c7-b4f6-52ab85c0f0bc`, exact cents, non-inferred cap hold).
+   - Case Study 6: Conversational Research with Server-Owned Exact-Cell Evidence Linkage (Analysis `3bcb37c9-b410-44b1-be7f-c3b368fbe28c`, zero provider calls on replay, exact cryptographic hash reproduction `33a37390...`).
+
+6. **Release Demonstration Walkthrough Guide:**
+   - Document: [release-demo-walkthrough.md](evidence/release-demo-walkthrough.md).
+   - Complete step-by-step documentation for all core and advanced workflows: Player research & QuerySpec, player profiles & stint tracking, PvP comparisons, distributions & splits, immutable financial books, shared Live service with client leases, conversational assistant, and disaster recovery.
+
+7. **Disaster Recovery & Fresh Database Restore Verification:**
+   - Full test suite execution: `COURTLOAD_TEST_POSTGRES_URL="postgresql+psycopg://courtload:courtload@localhost:5432/courtload" .venv/bin/pytest tests/integration/test_restore_postgres.py`
+   - Result: **5 passed in 157.50s** with zero warnings or errors.
+   - Full cycle verified: dumps PostgreSQL database to `.sql.gz`, packages configs and evaluation artifacts, spawns fresh disposable database, restores all relations, and verifies that **33/33 saved conversation analyses reproduce with byte-for-byte exact equality and zero provider calls**.
+
+8. **Verification Manifest:**
+   - Manifest: [b37-verification.json](evidence/b37-verification.json).
+   - Remaining release gates truthfully recorded:
+     - Gemini language gate: currently measured at 68.0% supported / 75.6% overall (threshold >= 90%; gate unmet).
+     - OS installation: manifest, icons, and install UI verified; actual OS installation remains unmeasured.
+     - Live in-game observations: shared backend, leases, and historical slates verified; active in-game clock/score changes remain unmeasured.
+     - Rich sources & spatial models: spatial tracking and external RAPM require admitted vendor inputs.
+     - Typography refinement: Fontshare candidates evaluated; owner selection deferred.
+
+Status: Block B37 is **VERIFIED**; B35/B37 full replica acceptance gates remain open where evidenced above.
+
+### B35c — real installation, standalone deployment and integration acceptance (2026-10-04)
+
+**VERIFIED; B35 local integration acceptance closed.** Implementation choice: current
+Codex session, no delegated agents or model overrides. Read replica/workbench handoffs,
+B35 contracts and B35/B37 evidence; preserve existing dirty work and sealed artifacts.
+[Integration review](evidence/b35-integration-review.md) and
+[verification manifest](evidence/b35c-verification.json).
+
+- Real headed **Chromium 153.0.8010.52** on isolated Linux/Xvfb installs the local
+  manifest through CDP, reports **zero installability errors**, creates an actual
+  desktop launcher with both manifest shortcuts, and launches the installed app.
+  After closing Chromium, a new process reuses the profile with the generated
+  **--app-id** and opens `/stats` with **standalone display true**. Settings detects
+  standalone status. No synthetic events or media overrides. Actual uninstall
+  removes the isolated launcher; the owner's desktop/profile are untouched.
+  [Installation evidence](evidence/b35c-install-accepted/verification.json), launcher
+  and new screenshots retained. This covers Linux Chromium; human-dialog and other
+  operating-system acceptance are not claimed.
+- Fresh **Next.js 16.3.5 standalone production build** in a separate staging
+  directory runs `server.js` against real FastAPI/PostgreSQL with copied public/static
+  assets and traced original Markdown. The active development build is preserved.
+  API inference is explicitly disabled; no worker, training, acquisition, publication
+  or finance import starts. The first probe found the prior build's compiled API
+  port 8037; the fresh build consistently uses port 8000.
+- [Retained-operation production browser](evidence/b35c-retained-corrected/verification.json):
+  **12 operation types** render exact evidence, reproduce with match, export JSON/CSV
+  with matching manifest hashes and open backend destinations with HTTP 200. **Zero
+  page errors**, **33 records before/after**, existing saved record reused. 375px,
+  landscape, reduced motion and 200% zoom checks pass. **Zero service workers/cache
+  entries**; installed shell still requires local data services.
+- [Cross-feature/content/asset audit](evidence/b35c-integration-corrected/verification.json):
+  **6 content pages**, **38 links across all six dropdowns** retaining release/season/
+  phase/cutoff, **66 local destinations HTTP 200**, **22 delivered assets** with hashes
+  and PNG dimensions. **Zero page errors or non-cancelled failed requests**.
+  Navigation-cancelled speculative RSC requests are separately recorded; the initial
+  overly broad failure assertion and app-ID assumption remain in probe logs.
+  Link resolution does not certify unavailable feature inputs/models.
+- API log review found an actual historical Stats failure hidden by an HTTP-200
+  unavailable page: archive queries assumed nonexistent identity-name and phase
+  columns. A direct pinned query and new PostgreSQL execution regression fail before
+  correction. Stats now takes names from the game's retained archive version and
+  applies phase-column filtering only to workbench rows, matching existing archive
+  reader/context semantics. No metric formulas/data/retained hashes change. The
+  original pinned API query returns **200**; the final audit also checks underlying
+  Stats/player APIs. All 12 retained types reproduce again and accepted API log has
+  no exceptions. Earlier page-only evidence is superseded by corrected evidence above.
+- Real workspace browser **1 passed**, **706ms** (test 303ms), including persistence,
+  stale-version conflict, export/import and cross-origin rejection. Two uniquely
+  named mutable test workspaces retained; immutable saved evidence unchanged.
+  Publication pointers/finance release identities match before/after.
+- Fresh production build, zero-warning ESLint, strict TypeScript, **164 Vitest tests /
+  26 files**, harness syntax checks pass. Archive Stats correction passes **12 focused PostgreSQL Stats tests**, including
+  the new name/cutoff regression; strict Ruff check/format (**339 files**) and mypy
+  (**144 source files**) pass. B37's broader full-suite/recovery results remain dated evidence. Diff check
+  on B35-owned additions passes; repository-wide checking still reports two pre-existing
+  trailing-whitespace lines in `docs/evidence/performance.md`.
+
+B35's applicable local installation/integration gate is satisfied. **B36 typography
+selection, B32 actual changing-game/finality/correction observations, the measured unmet
+Gemini language gate and deeper source/model gates remain open**. No full replica
+completion claim follows from this block. Earlier evidence and its open-gate descriptions
+remain dated; this entry supersedes their OS-installation boundary only.
+
+### B36a — typography comparison for owner selection (2026-10-04)
+
+**COMPARISON VERIFIED; OWNER SELECTION / B36b PACKAGING PENDING.** Current Codex
+session, no delegated agents or model overrides. Read replica/workbench handoffs,
+feature contract, Fontshare findings and prerequisite B07/B10/B30/B34/B35 evidence.
+Used the local UI/UX skill's focused dense-dashboard typography guidance. Preserved
+current application fonts, all existing dirty work and retained analytical evidence.
+
+- [Typography review](evidence/b36-typography-review.md),
+  [screenshot gallery](evidence/b36-comparison-reviewed/index.html) and
+  [measurement manifest](evidence/b36-comparison-reviewed/verification.json).
+- Reused the B35 Next.js 16.3.5 production build with real retained PostgreSQL/FastAPI,
+  AI/Live disabled. Four options: current Space Grotesk/IBM Plex Mono, Switzer with
+  Clash headings, Public Sans alone, Public Sans with JetBrains Mono data.
+  **16 desktop comparisons, 32 screenshots, zero page errors**. Stats holds release,
+  regular season, 2023–24 and exclusive 2024-04-15 cutoff, with 50 rows each.
+- Data digits have equal advances at weights 400/500/600. At 14px: existing and
+  JetBrains Mono **8.406px**, Switzer **8.078px**, tabular Public Sans **9.812px**.
+  Clash digits remain proportional. Stats first-row height is unchanged at
+  **45.688px**; table widths are 1390/1390/1415.313/1400.422px respectively, within
+  the horizontal scroller. All four Stats candidates have no body overflow at
+  375px, landscape and CSS 200% zoom; Tab reaches the skip link.
+- Bounded name/sign specimen at 12/14/18px passes candidate fallback-width checks.
+  Current IBM Plex Mono data text falls back for `ćčņģŞ`; current interface text
+  passes. Browser width heuristic and visual samples do not certify every glyph.
+- Official upright variable WOFF2 bytes/hashes match prior findings. Current ITF/OFL
+  license pages are rechecked with rendered text/hashes retained. All font binaries
+  remain temporary and are removed; screenshots contain rendered text only. No
+  app/repository font distribution or runtime CDN dependency is introduced.
+- Isolated post-hydration font-swap shift sums are at most **0.028815**; production
+  cold-load CLS and chosen local-font preload/fallback packaging remain unmeasured.
+  Saved inventory is exactly unchanged. Only four read-only finance query POSTs;
+  no provider, Live lease, publication, training or analytical save.
+- Harness syntax and complete real-browser comparison pass; owned diff whitespace
+  checks pass. Application code is unchanged, so B35 application tests/build/checks
+  remain dated evidence. Initial probes and the corrected responsive screenshot
+  scroll-position capture are retained; reviewed evidence supersedes those probes.
+
+Recommendation for review: **Public Sans + JetBrains Mono**, retaining familiar data
+width and permitting offline reproducible bundling with license/copyright notices.
+The feature contract explicitly reserves final typography for owner selection.
+After selection, B36b must apply/package the chosen files and verify actual production
+font delivery/hashes, cold-load CLS, density, glyph/numeral behavior and relevant
+dashboard checks. B36 overall is not complete; B32 and language/source/model gates
+remain open.
+
+### B36b — owner-selected typography and offline production packaging (2026-10-04)
+
+**VERIFIED; B36 complete.** Owner agreed with the B36a recommendation and selected
+**Public Sans + JetBrains Mono**. Current Codex session, no delegated agents/model
+override. Followed replica/workbench handoffs, feature contract and Fontshare evidence;
+used focused UI/UX typography guidance. Preserved existing dirty work and sealed data.
+[Acceptance report](evidence/b36b-typography-acceptance.md),
+[production browser measurements](evidence/b36b-production-accepted/verification.json),
+[verification manifest](evidence/b36b-verification.json).
+
+- Bundle unchanged official upright variable WOFF2 files, **133,428 bytes total**,
+  with source/version/hash manifest and complete copyright/license notices. Embedded
+  metadata agrees with notices. Use `next/font/local`, both preloads, swap, adjusted
+  sans fallback and monospace data fallback; explicit tabular tables/literal code.
+  No build/runtime font acquisition. Eight production deliveries match source hashes;
+  licenses match served hashes. Zero external requests in font acceptance.
+- Fresh **Next.js 16.3.5 standalone production build** on 3137, isolated API 8036,
+  retained PostgreSQL, Gemini disabled. Existing dev build preserved. All B36-owned
+  dashboard source matches staging. Static/public assets use existing Docker copy
+  pattern; Docker image itself is not newly built.
+- Four cold contexts with disabled cache: Stats/scatter/finance/saved conversation.
+  CLS session-window maxima **0 / 0 / 0.052138 / 0**. Stats delayed fonts (1.5s)
+  **0.001080**, blocked fonts **0**, 50 rows remain readable. These are bounded lab
+  navigation observations, not field CLS or font-only causal attribution.
+- Equal digit advances at 400/500/600; data **8.406px** at 14px. Bounded name/sign
+  fallback-width and bundled cmap checks pass; 12/14/18px glyph specimens retained.
+  Stats stays **50 rows**, **45.6875px row height**, **1400.421875px table width**, with
+  the pinned release/regular season/2023–24/exclusive 2024-04-15 context.
+- **19 new font screenshots**, four surfaces at desktop/375px/landscape/CSS 200% zoom,
+  glyphs and delayed/blocked Stats. Reduced motion/skip-link checks pass. Visual review
+  found finance grid/heading clipping hidden by the prior body-overflow measurement;
+  bounded grid tracks/shrinkable children/wrapping fix it. Stronger workspace/heading
+  width assertions pass. No finance numerical/query behavior changes.
+- Fresh build, zero-warning ESLint, strict TypeScript, **164 Vitest tests / 26 files**,
+  complete fixture browser suite **82 passed, 1 separate real-workspace opt-in skip**
+  (four workers), **8 final finance browser checks**, harness syntax and owned diff
+  whitespace checks pass. Browser setup waits for root redirect/fonts; selectors
+  scope to actual main content, excluding temporary Next streaming duplicates.
+  Initial failed probes remain evidence and are superseded by accepted runs.
+- [Retained operation acceptance](evidence/b36b-retained-accepted/verification.json):
+  **12 types reproduce/export**, zero page errors, existing record reused, **33 records
+  before/after**, zero service workers/cache entries. No inference, Live lease,
+  acquisition/publication/training or analytical save. Ruff check/format and strict
+  mypy pass; full Python/warehouse suites remain prior evidence, not rerun here.
+
+B36 selection/packaging acceptance is closed. **B32 actual changing-game/finality/
+correction observations, unmet Gemini language acceptance and deeper source/model
+gates remain open.** No full replica completion claim follows from typography.
+
+### B34c — real language acceptance and owner-approved Lite configuration (2026-10-04)
+
+**VERIFIED; B34 measured language gate closed for `gemini-3.5-flash-lite`.** Current
+Codex session; no delegated agents or implementation-model overrides. Followed the
+replica/workbench handoffs and search/conversational contracts; used the diagnosing-bugs
+skill. Owner approved the recommended gate and Lite selection after acceptance. Existing
+dirty work, credentials, publication pointers and sealed artifacts are preserved.
+[Acceptance report](evidence/b34c-language-acceptance.md),
+[verification manifest](evidence/b34c-verification.json).
+
+- Final full provider corpus **45/45**: **25/25 supported**, **10/10 clarification**,
+  **10/10 prohibited/unsupported**. Seven Stats cases rechecked after narrowing the
+  archive fix pass with exact final-current-code manual hashes; completed core accounts
+  for **52 calls**. Original held-out failures were inspected during diagnosis and are
+  disclosed as regression cases. A newly checksum-frozen twelve-case paraphrase set
+  passes **12/12** on first and final runs; no tuning from its outputs. One invalid
+  fixture literal was corrected before inference; V1/V2 retained. Supplemental finance/
+  empty-season cases pass **6/6**, five model calls plus one explicit manual finance call.
+- Correct similarity argument guidance, server-resolved player names, canonical thirty-team
+  payload, minimal columns/defaults, raw metric normalization and operation-specific limits.
+  Clarify defensive definitions, consistency and attendance/floor meaning; propose explicit
+  context changes rather than refusing empty seasons; paired scoring/minutes questions
+  execute two distributions. Prohibited SQL/web/credentials/writes and unavailable positions
+  cannot be silently converted to permitted queries. SDK automatic function calling disabled.
+- Local ignored `.env`, Python defaults, Compose fallback and README now select the
+  owner-approved Lite model. Credential lines preserved, `.env` 0600, API status confirms
+  configured Lite; no client key or automatic fallback. Actual returned model version and
+  SDK 2.26.0 recorded; Free tier remains owner-declared, not independently verified.
+- Retained B36b Next.js 16.3.5 production build on **3137**, current API **8036**:
+  **three real-model browser demonstrations**, exact manual-result hash equality,
+  paired distributions, screenshots, **zero page errors**. No dashboard source changed;
+  broad dashboard build/unit/fixture-browser checks remain dated B36b evidence. Initial
+  paired-distribution language failure and subsequent harness-only metric-label selector
+  failure are retained and superseded by [accepted browser evidence](evidence/b34c-browser-final/verification.json).
+- Development probes retained: 19/25 supported; 24/25 with one 503 busy response;
+  25/25 with one missed critical clarification; 44 successful cases followed by 429,
+  then one explicit quota recheck. Final full acceptance is a later 45/45 run. Total
+  session **276 provider calls**, one busy and one quota response. Final 4.5-second
+  pacing replaces the unsuccessful two-second probe. Warm cached core/paraphrase turn
+  median **1,445ms**, p95 **1,844ms**, max **1,927ms**; not uncached/field performance.
+- Broad verification exposed archive zero-filled nonappearance performance samples.
+  Archive-only SQL correction now agrees with profile validity; deterministic appeared/
+  nonappeared regression passes. No retained archive/v2 investigations; 27 archive/v1
+  records use the unchanged legacy path. Broader workbench filtering changed three saved
+  query hashes, so that scope was reverted; initial **30/33** and corrected **33/33**
+  reproduction evidence are retained. A versioned workbench correction with legacy
+  compatibility is a separate open integrity follow-up.
+- Final **621 pytest passed / 125 opt-in skips**, focused PostgreSQL **27 passed** with
+  zero skips, archive/conversation **108 passed**; zero reported warnings. New SDK test
+  has one documented exact test-scoped filter for an upstream Python 3.14 import
+  deprecation. Ruff/format (**343 files**), strict mypy (**144 source files**), Compose,
+  harness syntax and owned tracked diff whitespace checks pass. No warehouse changes.
+- **33/33 retained conversations reproduce with zero provider calls**; all saved IDs/
+  manifest hashes and **149 publication pointers** are unchanged. Standard Stats tests
+  retain their own bounded investigations; verification/browser harnesses do not save.
+  No acquisition/publication/worker/training/finance import starts.
+
+B34's language acceptance is satisfied for the selected Lite configuration and measured
+contexts. **B32 actual changing-game/finality/correction observations, deeper source/model
+gates and versioned workbench nonappearance correction remain open.** No full replica
+completion follows. Next independent bounded release gate: B32 actual provider observations
+when a changing game is available; preserve truthful source/phase/finality distinctions.

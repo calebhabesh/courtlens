@@ -5,6 +5,7 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: process.cwd()
   },
+  outputFileTracingIncludes: { "/blog": ["./content/*.md"], "/patch-notes": ["./content/*.md"] },
   poweredByHeader: false,
   reactStrictMode: true,
   experimental: {

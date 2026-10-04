@@ -7,8 +7,20 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 
 from courtload import __version__
+from courtload.api.assistant_limits import AssistantRequestLimit
 from courtload.api.metrics import metrics_response, observe_request
-from courtload.api.routers import auth, fantasy, public, research, shared_floor, shooting, workbench
+from courtload.api.routers import (
+    auth,
+    conversation,
+    fantasy,
+    finance,
+    live,
+    public,
+    research,
+    shared_floor,
+    shooting,
+    workbench,
+)
 from courtload.config import get_settings
 
 
@@ -29,11 +41,12 @@ def create_app() -> FastAPI:
         openapi_url="/api/openapi.json",
         redoc_url=None,
     )
+    application.add_middleware(AssistantRequestLimit)
     application.add_middleware(
         CORSMiddleware,
         allow_origins=settings.cors_origins,
         allow_credentials=True,
-        allow_methods=["GET", "POST", "PUT", "OPTIONS"],
+        allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
         allow_headers=["Authorization", "Content-Type", "X-Request-ID", "X-Operator-Token"],
     )
 
@@ -48,7 +61,10 @@ def create_app() -> FastAPI:
 
     application.include_router(public.router, prefix="/api")
     application.include_router(workbench.router, prefix="/api")
+    application.include_router(conversation.router, prefix="/api")
     application.include_router(shared_floor.router, prefix="/api")
+    application.include_router(finance.router, prefix="/api")
+    application.include_router(live.router, prefix="/api")
     application.include_router(shooting.router, prefix="/api")
     application.include_router(research.router, prefix="/api")
     application.include_router(auth.router, prefix="/api")

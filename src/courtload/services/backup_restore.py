@@ -19,6 +19,7 @@ from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
 from courtload.archive_models import ArchiveDataset
+from courtload.services.assistant.saved import saved_inventory
 from courtload.services.evaluation_public import REGISTERED_REPORT_SHA256
 from courtload.services.player_analytics import (
     metadata as analytics_metadata,
@@ -272,6 +273,7 @@ def _create_backup_manifest_internal(
         },
         "workbench_raw_inputs": workbench_raw_inputs,
         "workbench_records": workbench_records,
+        "saved_conversation_analyses": saved_inventory(session),
         "media_policy": media_policy,
     }
 
@@ -288,8 +290,15 @@ def verify_restored_state(
     test_player_a: str = "2544",
     test_player_b: str = "201939",
     test_date: date | None = None,
+    expected_saved_conversations: list[dict[str, str]] | None = None,
 ) -> dict[str, Any]:
     """Verify that a restored database and artifact directory satisfy all CourtLoad invariants."""
+    conversation_inventory = saved_inventory(session)
+    if (
+        expected_saved_conversations is not None
+        and conversation_inventory != expected_saved_conversations
+    ):
+        raise ValueError("Restored conversational investigation inventory differs from backup")
     if expected_snapshot_id:
         snapshot = session.get(ServingSnapshot, expected_snapshot_id)
         if snapshot is None:
@@ -470,6 +479,7 @@ def verify_restored_state(
                 "forecast_issuances": iss_count,
                 "forecast_scores": sco_count,
                 "saved_investigations": inv_count,
+                "saved_conversation_analyses": conversation_inventory,
                 "personal_workspaces": pw_count,
             },
             "verified_artifacts": verified_artifacts,
@@ -912,6 +922,7 @@ def restore_backup_archive(
                 session,
                 artifacts_dir=artifacts_dir,
                 channel=channel,
+                expected_saved_conversations=manifest.get("saved_conversation_analyses"),
             )
 
         return {

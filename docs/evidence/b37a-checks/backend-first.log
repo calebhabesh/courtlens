@@ -1,0 +1,34 @@
+============================= test session starts ==============================
+platform linux -- Python 3.14.7, pytest-8.4.2, pluggy-1.6.0
+rootdir: /home/ethioking/dev/nba-analytics
+configfile: pyproject.toml
+testpaths: tests
+plugins: anyio-4.14.2, cov-7.1.0
+collected 741 items
+
+tests/integration/test_analytical_ops_api.py ......                      [  0%]
+tests/integration/test_analytics_api.py ......                           [  1%]
+tests/integration/test_api.py .........                                  [  2%]
+tests/integration/test_b14_api.py .......                                [  3%]
+tests/integration/test_b15_api.py ........                               [  4%]
+tests/integration/test_b16_api.py ....                                   [  5%]
+tests/integration/test_b17_api.py .....                                  [  6%]
+tests/integration/test_b21_api.py ......                                 [  6%]
+tests/integration/test_b23_api.py ........                               [  7%]
+tests/integration/test_conversation_postgres.py ......                   [  8%]
+tests/integration/test_finance_postgres.py ........                      [  9%]
+tests/integration/test_finance_query_postgres.py ...                     [ 10%]
+tests/integration/test_ingestion.py ....                                 [ 10%]
+tests/integration/test_live_postgres.py .............                    [ 12%]
+tests/integration/test_migration_b14.py .                                [ 12%]
+tests/integration/test_personal_workspace_api.py .....                   [ 13%]
+tests/integration/test_personal_workspace_migration.py ........          [ 14%]
+tests/integration/test_personal_workspace_postgres.py ..                 [ 14%]
+tests/integration/test_planner.py .....                                  [ 15%]
+tests/integration/test_possession_warehouse_postgres.py ....             [ 15%]
+tests/integration/test_publication_postgres.py ..                        [ 16%]
+tests/integration/test_research_input_sealing.py .......                 [ 17%]
+tests/integration/test_research_limits.py .....                          [ 17%]
+tests/integration/test_research_readiness_postgres.py ...                [ 18%]
+tests/integration/test_research_results_api.py ..                        [ 18%]
+tests/integration/test_restore_postgres.py ....

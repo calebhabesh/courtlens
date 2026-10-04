@@ -1,0 +1,18 @@
+INFO:     Started server process [1126668]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8037 (Press CTRL+C to quit)
+INFO:     127.0.0.1:58182 - "GET /api/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58186 - "GET /api/workbench/players?season=2025-26&phase=regular_season&beforeDate=2026-06-30&window=season&sortMetric=pts&sortDirection=desc&limit=50 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58186 - "GET /api/workbench/workspace?workspaceId=b08-1791115728835 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58186 - "GET /api/workbench/workspace?workspaceId=b08-1791115728835 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58186 - "PUT /api/workbench/workspace?workspaceId=b08-1791115728835&expectedVersion=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58186 - "GET /api/workbench/workspace?workspaceId=b08-1791115728835 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58186 - "GET /api/workbench/workspace?workspaceId=b08-1791115728835 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58186 - "PUT /api/workbench/workspace?workspaceId=b08-1791115728835&expectedVersion=1 HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:58186 - "GET /api/workbench/workspace/export?workspaceId=b08-1791115728835 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58186 - "POST /api/workbench/workspace/import?workspaceId=b08-1791115728835-copy&expectedVersion=1 HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [1126668]

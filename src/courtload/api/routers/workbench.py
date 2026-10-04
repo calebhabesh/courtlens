@@ -568,6 +568,7 @@ def get_player(
     ]
 
     return PlayerProfileResponse(
+        sample_sizes=profile["sample_sizes"],
         player=profile["player"],
         context=profile["context"],
         summaries=profile["summaries"],

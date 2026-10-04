@@ -1,0 +1,1098 @@
+{
+  "benchmark_block": "B37",
+  "recorded_at": "2026-10-04T14:09:23.321741+00:00",
+  "base_url": "http://127.0.0.1:8000",
+  "summary": {
+    "total_endpoints": 31,
+    "total_requests": 930,
+    "total_errors": 0,
+    "average_p50_ms": 617.06,
+    "average_p95_ms": 652.03
+  },
+  "hardware": {
+    "os": "Linux",
+    "release": "7.2.8-arch1-2",
+    "machine": "x86_64",
+    "python_version": "3.14.7",
+    "logical_cpus": 16,
+    "memory_total_kb": 63401180,
+    "memory_total_gb": 60.46,
+    "cpu_model": "AMD Ryzen 7 9700X 8-Core Processor"
+  },
+  "process_resources": {
+    "uvicorn_api": {
+      "pid": 1209455,
+      "name": "uvicorn",
+      "rss_mb": 251.98,
+      "threads": 7
+    },
+    "postgres_container": {
+      "BlockIO": "8.36GB / 59.7GB",
+      "CPUPerc": "0.00%",
+      "Container": "courtload-db-1",
+      "ID": "122db06124a3",
+      "MemPerc": "0.50%",
+      "MemUsage": "306.5MiB / 60.46GiB",
+      "Name": "courtload-db-1",
+      "NetIO": "235MB / 6.5GB",
+      "PIDs": "8"
+    }
+  },
+  "database_storage": {
+    "total_database_bytes": 4055668403,
+    "total_database_mb": 3867.79,
+    "table_count": 78,
+    "total_tables_mb": 2045.35,
+    "table_stats": [
+      {
+        "table": "serving_player_profiles",
+        "rows": 662826,
+        "total_bytes": 1018388480,
+        "total_mb": 971.21,
+        "table_mb": 838.56,
+        "index_mb": 132.38
+      },
+      {
+        "table": "research_shot_members",
+        "rows": 657388,
+        "total_bytes": 427286528,
+        "total_mb": 407.49,
+        "table_mb": 358.78,
+        "index_mb": 48.58
+      },
+      {
+        "table": "serving_player_games",
+        "rows": 271827,
+        "total_bytes": 229179392,
+        "total_mb": 218.56,
+        "table_mb": 163.56,
+        "index_mb": 54.92
+      },
+      {
+        "table": "archive_versions",
+        "rows": 102444,
+        "total_bytes": 105496576,
+        "total_mb": 100.61,
+        "table_mb": 80.06,
+        "index_mb": 20.49
+      },
+      {
+        "table": "workbench_player_games",
+        "rows": 104533,
+        "total_bytes": 98369536,
+        "total_mb": 93.81,
+        "table_mb": 62.82,
+        "index_mb": 30.95
+      },
+      {
+        "table": "archive_player_games",
+        "rows": 90609,
+        "total_bytes": 73359360,
+        "total_mb": 69.96,
+        "table_mb": 51.56,
+        "index_mb": 18.35
+      },
+      {
+        "table": "archive_observations",
+        "rows": 102444,
+        "total_bytes": 48062464,
+        "total_mb": 45.84,
+        "table_mb": 23.06,
+        "index_mb": 22.74
+      },
+      {
+        "table": "archive_identities",
+        "rows": 107001,
+        "total_bytes": 41099264,
+        "total_mb": 39.2,
+        "table_mb": 18.69,
+        "index_mb": 20.48
+      },
+      {
+        "table": "archive_members",
+        "rows": 97631,
+        "total_bytes": 37756928,
+        "total_mb": 36.01,
+        "table_mb": 20.62,
+        "index_mb": 15.35
+      },
+      {
+        "table": "serving_opponent_contexts",
+        "rows": 43341,
+        "total_bytes": 36716544,
+        "total_mb": 35.02,
+        "table_mb": 26.06,
+        "index_mb": 8.91
+      },
+      {
+        "table": "workbench_team_games",
+        "rows": 7924,
+        "total_bytes": 7479296,
+        "total_mb": 7.13,
+        "table_mb": 4.77,
+        "index_mb": 2.33
+      },
+      {
+        "table": "archive_team_games",
+        "rows": 7022,
+        "total_bytes": 5914624,
+        "total_mb": 5.64,
+        "table_mb": 4.06,
+        "index_mb": 1.54
+      },
+      {
+        "table": "workbench_schedules",
+        "rows": 5470,
+        "total_bytes": 3284992,
+        "total_mb": 3.13,
+        "table_mb": 1.48,
+        "index_mb": 1.62
+      },
+      {
+        "table": "saved_conversation_analyses",
+        "rows": 33,
+        "total_bytes": 2129920,
+        "total_mb": 2.03,
+        "table_mb": 0.02,
+        "index_mb": 0.05
+      },
+      {
+        "table": "archive_quarantine",
+        "rows": 4997,
+        "total_bytes": 1949696,
+        "total_mb": 1.86,
+        "table_mb": 0.88,
+        "index_mb": 0.95
+      },
+      {
+        "table": "research_games",
+        "rows": 3690,
+        "total_bytes": 1196032,
+        "total_mb": 1.14,
+        "table_mb": 0.85,
+        "index_mb": 0.26
+      },
+      {
+        "table": "forecast_issuances",
+        "rows": 489,
+        "total_bytes": 1163264,
+        "total_mb": 1.11,
+        "table_mb": 0.96,
+        "index_mb": 0.12
+      },
+      {
+        "table": "workbench_identities",
+        "rows": 913,
+        "total_bytes": 499712,
+        "total_mb": 0.48,
+        "table_mb": 0.23,
+        "index_mb": 0.21
+      },
+      {
+        "table": "player_portraits",
+        "rows": 816,
+        "total_bytes": 442368,
+        "total_mb": 0.42,
+        "table_mb": 0.24,
+        "index_mb": 0.15
+      },
+      {
+        "table": "saved_investigations",
+        "rows": 151,
+        "total_bytes": 335872,
+        "total_mb": 0.32,
+        "table_mb": 0.23,
+        "index_mb": 0.05
+      },
+      {
+        "table": "workbench_lineup_stints",
+        "rows": 0,
+        "total_bytes": 253952,
+        "total_mb": 0.24,
+        "table_mb": 0.0,
+        "index_mb": 0.22
+      },
+      {
+        "table": "workbench_player_measurements",
+        "rows": 268,
+        "total_bytes": 229376,
+        "total_mb": 0.22,
+        "table_mb": 0.09,
+        "index_mb": 0.1
+      },
+      {
+        "table": "serving_snapshots",
+        "rows": 171,
+        "total_bytes": 212992,
+        "total_mb": 0.2,
+        "table_mb": 0.08,
+        "index_mb": 0.08
+      },
+      {
+        "table": "forecast_scores",
+        "rows": 489,
+        "total_bytes": 188416,
+        "total_mb": 0.18,
+        "table_mb": 0.1,
+        "index_mb": 0.05
+      },
+      {
+        "table": "warehouse_builds",
+        "rows": 224,
+        "total_bytes": 188416,
+        "total_mb": 0.18,
+        "table_mb": 0.07,
+        "index_mb": 0.08
+      },
+      {
+        "table": "workbench_shots",
+        "rows": 2,
+        "total_bytes": 180224,
+        "total_mb": 0.17,
+        "table_mb": 0.01,
+        "index_mb": 0.12
+      },
+      {
+        "table": "workbench_possessions",
+        "rows": 1,
+        "total_bytes": 180224,
+        "total_mb": 0.17,
+        "table_mb": 0.01,
+        "index_mb": 0.12
+      },
+      {
+        "table": "workbench_stint_players",
+        "rows": 0,
+        "total_bytes": 163840,
+        "total_mb": 0.16,
+        "table_mb": 0.04,
+        "index_mb": 0.08
+      },
+      {
+        "table": "workbench_datasets",
+        "rows": 61,
+        "total_bytes": 147456,
+        "total_mb": 0.14,
+        "table_mb": 0.04,
+        "index_mb": 0.06
+      },
+      {
+        "table": "workbench_matchups",
+        "rows": 1,
+        "total_bytes": 131072,
+        "total_mb": 0.12,
+        "table_mb": 0.01,
+        "index_mb": 0.08
+      },
+      {
+        "table": "archive_datasets",
+        "rows": 122,
+        "total_bytes": 131072,
+        "total_mb": 0.12,
+        "table_mb": 0.03,
+        "index_mb": 0.06
+      },
+      {
+        "table": "workbench_snapshot_equivalences",
+        "rows": 33,
+        "total_bytes": 114688,
+        "total_mb": 0.11,
+        "table_mb": 0.02,
+        "index_mb": 0.06
+      },
+      {
+        "table": "workbench_pbp_events",
+        "rows": 4,
+        "total_bytes": 114688,
+        "total_mb": 0.11,
+        "table_mb": 0.01,
+        "index_mb": 0.06
+      },
+      {
+        "table": "workbench_observations",
+        "rows": 34,
+        "total_bytes": 106496,
+        "total_mb": 0.1,
+        "table_mb": 0.02,
+        "index_mb": 0.06
+      },
+      {
+        "table": "raw_objects",
+        "rows": 50,
+        "total_bytes": 98304,
+        "total_mb": 0.09,
+        "table_mb": 0.02,
+        "index_mb": 0.05
+      },
+      {
+        "table": "workbench_jobs",
+        "rows": 121,
+        "total_bytes": 90112,
+        "total_mb": 0.09,
+        "table_mb": 0.04,
+        "index_mb": 0.02
+      },
+      {
+        "table": "live_leases",
+        "rows": 1,
+        "total_bytes": 90112,
+        "total_mb": 0.09,
+        "table_mb": 0.01,
+        "index_mb": 0.05
+      },
+      {
+        "table": "fct_games",
+        "rows": 14,
+        "total_bytes": 90112,
+        "total_mb": 0.09,
+        "table_mb": 0.01,
+        "index_mb": 0.08
+      },
+      {
+        "table": "workbench_identity_crosswalks",
+        "rows": 19,
+        "total_bytes": 81920,
+        "total_mb": 0.08,
+        "table_mb": 0.01,
+        "index_mb": 0.06
+      },
+      {
+        "table": "workbench_rich_admissions",
+        "rows": 5,
+        "total_bytes": 81920,
+        "total_mb": 0.08,
+        "table_mb": 0.01,
+        "index_mb": 0.03
+      },
+      {
+        "table": "finance_observations",
+        "rows": 8,
+        "total_bytes": 81920,
+        "total_mb": 0.08,
+        "table_mb": 0.02,
+        "index_mb": 0.03
+      },
+      {
+        "table": "workbench_player_drafts",
+        "rows": 4,
+        "total_bytes": 81920,
+        "total_mb": 0.08,
+        "table_mb": 0.01,
+        "index_mb": 0.06
+      },
+      {
+        "table": "bridge_player_observed_team_stints",
+        "rows": 8,
+        "total_bytes": 73728,
+        "total_mb": 0.07,
+        "table_mb": 0.01,
+        "index_mb": 0.06
+      },
+      {
+        "table": "finance_releases",
+        "rows": 2,
+        "total_bytes": 65536,
+        "total_mb": 0.06,
+        "table_mb": 0.01,
+        "index_mb": 0.03
+      },
+      {
+        "table": "workbench_lineups",
+        "rows": 2,
+        "total_bytes": 65536,
+        "total_mb": 0.06,
+        "table_mb": 0.01,
+        "index_mb": 0.05
+      },
+      {
+        "table": "workbench_reconstruction_overrides",
+        "rows": 0,
+        "total_bytes": 65536,
+        "total_mb": 0.06,
+        "table_mb": 0.01,
+        "index_mb": 0.05
+      },
+      {
+        "table": "published_snapshots",
+        "rows": 148,
+        "total_bytes": 57344,
+        "total_mb": 0.05,
+        "table_mb": 0.02,
+        "index_mb": 0.02
+      },
+      {
+        "table": "dim_players",
+        "rows": 8,
+        "total_bytes": 57344,
+        "total_mb": 0.05,
+        "table_mb": 0.01,
+        "index_mb": 0.05
+      },
+      {
+        "table": "dim_teams",
+        "rows": 4,
+        "total_bytes": 57344,
+        "total_mb": 0.05,
+        "table_mb": 0.01,
+        "index_mb": 0.05
+      },
+      {
+        "table": "fct_player_games",
+        "rows": 24,
+        "total_bytes": 57344,
+        "total_mb": 0.05,
+        "table_mb": 0.01,
+        "index_mb": 0.05
+      },
+      {
+        "table": "live_observations",
+        "rows": 8,
+        "total_bytes": 57344,
+        "total_mb": 0.05,
+        "table_mb": 0.01,
+        "index_mb": 0.05
+      },
+      {
+        "table": "archive_artifacts",
+        "rows": 4,
+        "total_bytes": 49152,
+        "total_mb": 0.05,
+        "table_mb": 0.01,
+        "index_mb": 0.03
+      },
+      {
+        "table": "workbench_release_bindings",
+        "rows": 1,
+        "total_bytes": 49152,
+        "total_mb": 0.05,
+        "table_mb": 0.01,
+        "index_mb": 0.03
+      },
+      {
+        "table": "workbench_artifacts",
+        "rows": 34,
+        "total_bytes": 49152,
+        "total_mb": 0.05,
+        "table_mb": 0.01,
+        "index_mb": 0.03
+      },
+      {
+        "table": "ingestion_runs",
+        "rows": 1,
+        "total_bytes": 49152,
+        "total_mb": 0.05,
+        "table_mb": 0.01,
+        "index_mb": 0.03
+      },
+      {
+        "table": "live_contents",
+        "rows": 2,
+        "total_bytes": 49152,
+        "total_mb": 0.05,
+        "table_mb": 0.01,
+        "index_mb": 0.02
+      },
+      {
+        "table": "workbench_versions",
+        "rows": 34,
+        "total_bytes": 49152,
+        "total_mb": 0.05,
+        "table_mb": 0.01,
+        "index_mb": 0.03
+      },
+      {
+        "table": "fantasy_leagues",
+        "rows": 1,
+        "total_bytes": 49152,
+        "total_mb": 0.05,
+        "table_mb": 0.01,
+        "index_mb": 0.03
+      },
+      {
+        "table": "fantasy_roster_entries",
+        "rows": 6,
+        "total_bytes": 49152,
+        "total_mb": 0.05,
+        "table_mb": 0.01,
+        "index_mb": 0.03
+      },
+      {
+        "table": "users",
+        "rows": 1,
+        "total_bytes": 49152,
+        "total_mb": 0.05,
+        "table_mb": 0.01,
+        "index_mb": 0.03
+      },
+      {
+        "table": "research_datasets",
+        "rows": 1,
+        "total_bytes": 49152,
+        "total_mb": 0.05,
+        "table_mb": 0.01,
+        "index_mb": 0.03
+      },
+      {
+        "table": "fantasy_week_states",
+        "rows": 1,
+        "total_bytes": 40960,
+        "total_mb": 0.04,
+        "table_mb": 0.01,
+        "index_mb": 0.03
+      },
+      {
+        "table": "workbench_dataset_members",
+        "rows": 1,
+        "total_bytes": 40960,
+        "total_mb": 0.04,
+        "table_mb": 0.01,
+        "index_mb": 0.03
+      },
+      {
+        "table": "fantasy_watchlist_entries",
+        "rows": 2,
+        "total_bytes": 40960,
+        "total_mb": 0.04,
+        "table_mb": 0.01,
+        "index_mb": 0.03
+      },
+      {
+        "table": "finance_members",
+        "rows": 12,
+        "total_bytes": 40960,
+        "total_mb": 0.04,
+        "table_mb": 0.01,
+        "index_mb": 0.03
+      },
+      {
+        "table": "workbench_acquisitions",
+        "rows": 34,
+        "total_bytes": 32768,
+        "total_mb": 0.03,
+        "table_mb": 0.01,
+        "index_mb": 0.02
+      },
+      {
+        "table": "finance_sources",
+        "rows": 6,
+        "total_bytes": 32768,
+        "total_mb": 0.03,
+        "table_mb": 0.01,
+        "index_mb": 0.02
+      },
+      {
+        "table": "workbench_dated_metadata",
+        "rows": 0,
+        "total_bytes": 32768,
+        "total_mb": 0.03,
+        "table_mb": 0.0,
+        "index_mb": 0.02
+      },
+      {
+        "table": "data_quality_runs",
+        "rows": 1,
+        "total_bytes": 32768,
+        "total_mb": 0.03,
+        "table_mb": 0.01,
+        "index_mb": 0.02
+      },
+      {
+        "table": "archive_imports",
+        "rows": 1,
+        "total_bytes": 32768,
+        "total_mb": 0.03,
+        "table_mb": 0.01,
+        "index_mb": 0.02
+      },
+      {
+        "table": "workbench_personal_workspaces",
+        "rows": 3,
+        "total_bytes": 32768,
+        "total_mb": 0.03,
+        "table_mb": 0.01,
+        "index_mb": 0.02
+      },
+      {
+        "table": "model_policy_activations",
+        "rows": 1,
+        "total_bytes": 32768,
+        "total_mb": 0.03,
+        "table_mb": 0.01,
+        "index_mb": 0.02
+      },
+      {
+        "table": "live_feeds",
+        "rows": 1,
+        "total_bytes": 24576,
+        "total_mb": 0.02,
+        "table_mb": 0.01,
+        "index_mb": 0.02
+      },
+      {
+        "table": "alembic_version",
+        "rows": 1,
+        "total_bytes": 24576,
+        "total_mb": 0.02,
+        "table_mb": 0.01,
+        "index_mb": 0.02
+      },
+      {
+        "table": "saved_conversation_inputs",
+        "rows": 33,
+        "total_bytes": 24576,
+        "total_mb": 0.02,
+        "table_mb": 0.01,
+        "index_mb": 0.02
+      },
+      {
+        "table": "planner_scenarios",
+        "rows": 0,
+        "total_bytes": 16384,
+        "total_mb": 0.02,
+        "table_mb": 0.0,
+        "index_mb": 0.01
+      },
+      {
+        "table": "live_reconciliations",
+        "rows": 0,
+        "total_bytes": 16384,
+        "total_mb": 0.02,
+        "table_mb": 0.0,
+        "index_mb": 0.01
+      },
+      {
+        "table": "fantasy_player_status_overrides",
+        "rows": 0,
+        "total_bytes": 8192,
+        "total_mb": 0.01,
+        "table_mb": 0.0,
+        "index_mb": 0.01
+      }
+    ]
+  },
+  "disk_storage": {
+    "raw_data_mb": 120.31,
+    "artifacts_mb": 3640.96,
+    "artifacts_breakdown_mb": {
+      "analyses": 1.54,
+      "b28-source-spike": 0.5,
+      "evaluation": 956.43,
+      "finance-import": 0.01,
+      "research-bindings": 0.9,
+      "research-registration": 0.03,
+      "research-reproductions": 0.0,
+      "research-run-packages": 22.66,
+      "research-runs": 15.33,
+      "research-shots": 2643.56
+    },
+    "cache_mb": 12.26,
+    "backups_mb": 747.92,
+    "next_build_mb": 1108.33,
+    "total_data_tree_mb": 4521.46
+  },
+  "api_latencies": [
+    {
+      "name": "Health Check",
+      "method": "GET",
+      "path": "/api/health",
+      "samples": 30,
+      "errors": 0,
+      "min_ms": 1.22,
+      "p50_ms": 2.58,
+      "p95_ms": 7.64,
+      "p99_ms": 8.43,
+      "max_ms": 8.43,
+      "mean_ms": 2.97
+    },
+    {
+      "name": "Workbench Status",
+      "method": "GET",
+      "path": "/api/workbench/status",
+      "samples": 30,
+      "errors": 0,
+      "min_ms": 13.57,
+      "p50_ms": 19.05,
+      "p95_ms": 22.96,
+      "p99_ms": 23.05,
+      "max_ms": 23.05,
+      "mean_ms": 18.81
+    },
+    {
+      "name": "Catalog Definition",
+      "method": "GET",
+      "path": "/api/workbench/catalog",
+      "samples": 30,
+      "errors": 0,
+      "min_ms": 41.11,
+      "p50_ms": 44.96,
+      "p95_ms": 46.72,
+      "p99_ms": 46.76,
+      "max_ms": 46.76,
+      "mean_ms": 44.6
+    },
+    {
+      "name": "Metric Catalog (35 metrics)",
+      "method": "GET",
+      "path": "/api/workbench/metrics",
+      "samples": 30,
+      "errors": 0,
+      "min_ms": 1.37,
+      "p50_ms": 2.76,
+      "p95_ms": 3.42,
+      "p99_ms": 3.77,
+      "max_ms": 3.77,
+      "mean_ms": 2.74
+    },
+    {
+      "name": "Player Explorer (min_games=10)",
+      "method": "GET",
+      "path": "/api/workbench/players?min_games=10&page_size=50",
+      "samples": 30,
+      "errors": 0,
+      "min_ms": 264.61,
+      "p50_ms": 305.34,
+      "p95_ms": 391.89,
+      "p99_ms": 395.99,
+      "max_ms": 395.99,
+      "mean_ms": 314.28
+    },
+    {
+      "name": "Player Search ('Barnes')",
+      "method": "GET",
+      "path": "/api/workbench/players?search=Barnes",
+      "samples": 30,
+      "errors": 0,
+      "min_ms": 292.81,
+      "p50_ms": 321.13,
+      "p95_ms": 409.32,
+      "p99_ms": 467.92,
+      "max_ms": 467.92,
+      "mean_ms": 335.57
+    },
+    {
+      "name": "Entity Lookup ('Barnes')",
+      "method": "GET",
+      "path": "/api/workbench/lookup?q=Barnes",
+      "samples": 30,
+      "errors": 0,
+      "min_ms": 48.73,
+      "p50_ms": 53.28,
+      "p95_ms": 55.88,
+      "p99_ms": 56.31,
+      "max_ms": 56.31,
+      "mean_ms": 52.74
+    },
+    {
+      "name": "Canonical QuerySpec (Scoring Leaders)",
+      "method": "POST",
+      "path": "/api/workbench/query",
+      "samples": 30,
+      "errors": 0,
+      "min_ms": 270.58,
+      "p50_ms": 301.81,
+      "p95_ms": 385.07,
+      "p99_ms": 393.2,
+      "max_ms": 393.2,
+      "mean_ms": 311.52
+    },
+    {
+      "name": "Player Profile (Scottie Barnes 2023-24)",
+      "method": "GET",
+      "path": "/api/workbench/players/1630567?season=2023-24",
+      "samples": 30,
+      "errors": 0,
+      "min_ms": 54.48,
+      "p50_ms": 62.37,
+      "p95_ms": 65.01,
+      "p99_ms": 66.03,
+      "max_ms": 66.03,
+      "mean_ms": 61.84
+    },
+    {
+      "name": "Player Game Log (Scottie Barnes 2023-24)",
+      "method": "GET",
+      "path": "/api/workbench/players/1630567/games?season=2023-24&limit=25",
+      "samples": 30,
+      "errors": 0,
+      "min_ms": 50.08,
+      "p50_ms": 56.37,
+      "p95_ms": 60.18,
+      "p99_ms": 61.26,
+      "max_ms": 61.26,
+      "mean_ms": 56.49
+    },
+    {
+      "name": "Player Comparison (Barnes vs Barrett)",
+      "method": "GET",
+      "path": "/api/workbench/compare?playerA=1630567&playerB=1629628&season=2023-24",
+      "samples": 30,
+      "errors": 0,
+      "min_ms": 58.79,
+      "p50_ms": 69.67,
+      "p95_ms": 74.25,
+      "p99_ms": 78.26,
+      "max_ms": 78.26,
+      "mean_ms": 69.71
+    },
+    {
+      "name": "Team Research (All Teams 2023-24)",
+      "method": "GET",
+      "path": "/api/workbench/teams?season=2023-24",
+      "samples": 30,
+      "errors": 0,
+      "min_ms": 145.32,
+      "p50_ms": 309.47,
+      "p95_ms": 371.39,
+      "p99_ms": 416.88,
+      "max_ms": 416.88,
+      "mean_ms": 295.93
+    },
+    {
+      "name": "Team Detail (Toronto Raptors 2023-24)",
+      "method": "GET",
+      "path": "/api/workbench/teams/1610612761?season=2023-24",
+      "samples": 30,
+      "errors": 0,
+      "min_ms": 103.8,
+      "p50_ms": 120.81,
+      "p95_ms": 210.82,
+      "p99_ms": 226.66,
+      "max_ms": 226.66,
+      "mean_ms": 130.52
+    },
+    {
+      "name": "Distribution Analysis (Barnes PTS 2023-24)",
+      "method": "GET",
+      "path": "/api/workbench/operations/distribution?playerId=1630567&season=2023-24&metric=pts",
+      "samples": 30,
+      "errors": 0,
+      "min_ms": 81.63,
+      "p50_ms": 121.95,
+      "p95_ms": 219.16,
+      "p99_ms": 224.12,
+      "max_ms": 224.12,
+      "mean_ms": 145.97
+    },
+    {
+      "name": "Contextual Splits (Barnes 2023-24)",
+      "method": "GET",
+      "path": "/api/workbench/operations/splits?playerId=1630567&season=2023-24",
+      "samples": 30,
+      "errors": 0,
+      "min_ms": 83.2,
+      "p50_ms": 139.96,
+      "p95_ms": 242.79,
+      "p99_ms": 260.5,
+      "max_ms": 260.5,
+      "mean_ms": 159.64
+    },
+    {
+      "name": "Opponent Defensive Allowance (Raptors 2023-24)",
+      "method": "GET",
+      "path": "/api/workbench/operations/opponent-context?teamId=1610612761&season=2023-24",
+      "samples": 30,
+      "errors": 0,
+      "min_ms": 97.73,
+      "p50_ms": 164.27,
+      "p95_ms": 280.33,
+      "p99_ms": 283.41,
+      "max_ms": 283.41,
+      "mean_ms": 177.94
+    },
+    {
+      "name": "Statistical Peer Similarity (Barnes 2023-24)",
+      "method": "GET",
+      "path": "/api/workbench/operations/similarity?playerId=1630567&season=2023-24",
+      "samples": 30,
+      "errors": 0,
+      "min_ms": 212.52,
+      "p50_ms": 239.93,
+      "p95_ms": 285.1,
+      "p99_ms": 288.62,
+      "max_ms": 288.62,
+      "mean_ms": 243.53
+    },
+    {
+      "name": "Rank Operation (PTS Leaders 2023-24)",
+      "method": "GET",
+      "path": "/api/workbench/operations/rank?season=2023-24&metric=pts",
+      "samples": 30,
+      "errors": 0,
+      "min_ms": 14547.63,
+      "p50_ms": 16068.32,
+      "p95_ms": 16234.51,
+      "p99_ms": 16269.33,
+      "max_ms": 16269.33,
+      "mean_ms": 15961.85
+    },
+    {
+      "name": "Physical Measurements ('Barnes')",
+      "method": "GET",
+      "path": "/api/workbench/measurements?query=Barnes",
+      "samples": 30,
+      "errors": 0,
+      "min_ms": 5.1,
+      "p50_ms": 7.8,
+      "p95_ms": 9.94,
+      "p99_ms": 11.71,
+      "max_ms": 11.71,
+      "mean_ms": 7.85
+    },
+    {
+      "name": "Identity Crosswalk (ESPN -> NBA)",
+      "method": "GET",
+      "path": "/api/workbench/crosswalk?sourceNamespace=espn&sourceId=4433134",
+      "samples": 30,
+      "errors": 0,
+      "min_ms": 2.76,
+      "p50_ms": 5.22,
+      "p95_ms": 5.98,
+      "p99_ms": 5.99,
+      "max_ms": 5.99,
+      "mean_ms": 5.01
+    },
+    {
+      "name": "Backfill Status",
+      "method": "GET",
+      "path": "/api/workbench/backfill/status",
+      "samples": 30,
+      "errors": 0,
+      "min_ms": 4.16,
+      "p50_ms": 6.86,
+      "p95_ms": 7.97,
+      "p99_ms": 8.33,
+      "max_ms": 8.33,
+      "mean_ms": 6.71
+    },
+    {
+      "name": "Shared Floor WOWY (Barnes On-Off 2023-24)",
+      "method": "POST",
+      "path": "/api/workbench/operations/wowy",
+      "samples": 30,
+      "errors": 0,
+      "min_ms": 55.6,
+      "p50_ms": 61.96,
+      "p95_ms": 63.94,
+      "p99_ms": 64.57,
+      "max_ms": 64.57,
+      "mean_ms": 61.52
+    },
+    {
+      "name": "Shooting Profile (Barnes 2023-24)",
+      "method": "POST",
+      "path": "/api/workbench/operations/shot-profile",
+      "samples": 30,
+      "errors": 0,
+      "min_ms": 52.59,
+      "p50_ms": 60.42,
+      "p95_ms": 63.94,
+      "p99_ms": 65.62,
+      "max_ms": 65.62,
+      "mean_ms": 60.04
+    },
+    {
+      "name": "Finance Salary Books",
+      "method": "GET",
+      "path": "/api/workbench/operations/finance/books",
+      "samples": 30,
+      "errors": 0,
+      "min_ms": 3.09,
+      "p50_ms": 4.3,
+      "p95_ms": 5.38,
+      "p99_ms": 7.63,
+      "max_ms": 7.63,
+      "mean_ms": 4.38
+    },
+    {
+      "name": "Finance Replay Query",
+      "method": "POST",
+      "path": "/api/workbench/operations/finance",
+      "samples": 30,
+      "errors": 0,
+      "min_ms": 6.23,
+      "p50_ms": 9.41,
+      "p95_ms": 12.11,
+      "p99_ms": 12.61,
+      "max_ms": 12.61,
+      "mean_ms": 9.49
+    },
+    {
+      "name": "Live Games Status",
+      "method": "GET",
+      "path": "/api/live?slate_date=2024-04-14",
+      "samples": 30,
+      "errors": 0,
+      "min_ms": 3.68,
+      "p50_ms": 5.88,
+      "p95_ms": 7.12,
+      "p99_ms": 8.01,
+      "max_ms": 8.01,
+      "mean_ms": 5.85
+    },
+    {
+      "name": "Prospective Forecasts Ledger",
+      "method": "GET",
+      "path": "/api/workbench/forecasts?limit=25",
+      "samples": 30,
+      "errors": 0,
+      "min_ms": 38.9,
+      "p50_ms": 65.95,
+      "p95_ms": 70.84,
+      "p99_ms": 71.51,
+      "max_ms": 71.51,
+      "mean_ms": 63.64
+    },
+    {
+      "name": "Saved Investigations Hub",
+      "method": "GET",
+      "path": "/api/workbench/analyses",
+      "samples": 30,
+      "errors": 0,
+      "min_ms": 6.84,
+      "p50_ms": 13.93,
+      "p95_ms": 18.61,
+      "p99_ms": 19.59,
+      "max_ms": 19.59,
+      "mean_ms": 13.75
+    },
+    {
+      "name": "Assistant Operations Catalog",
+      "method": "GET",
+      "path": "/api/workbench/assistant/operations",
+      "samples": 30,
+      "errors": 0,
+      "min_ms": 12.31,
+      "p50_ms": 23.34,
+      "p95_ms": 26.96,
+      "p99_ms": 27.69,
+      "max_ms": 27.69,
+      "mean_ms": 22.38
+    },
+    {
+      "name": "Assistant Saved Investigations",
+      "method": "GET",
+      "path": "/api/workbench/assistant/investigations",
+      "samples": 30,
+      "errors": 0,
+      "min_ms": 202.56,
+      "p50_ms": 403.54,
+      "p95_ms": 494.62,
+      "p99_ms": 494.95,
+      "max_ms": 494.95,
+      "mean_ms": 411.03
+    },
+    {
+      "name": "Assistant Query (Offline Deterministic)",
+      "method": "POST",
+      "path": "/api/workbench/assistant/query",
+      "samples": 30,
+      "errors": 0,
+      "min_ms": 49.61,
+      "p50_ms": 56.31,
+      "p95_ms": 59.19,
+      "p99_ms": 59.34,
+      "max_ms": 59.34,
+      "mean_ms": 55.71
+    }
+  ]
+}

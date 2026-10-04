@@ -7,6 +7,19 @@ const context = { params: Promise.resolve({ path: [] }) };
 afterEach(() => vi.unstubAllGlobals());
 
 describe("workspace server proxy", () => {
+  it("accepts the browser Host after normalization and rejects forged or absent origins", async () => {
+    const fetch = vi.fn().mockResolvedValue(Response.json({ version: 2 }));
+    vi.stubGlobal("fetch", fetch);
+    const makeRequest = (origin?: string) => new NextRequest("http://localhost:3137/api/workspace", {
+      method: "PUT",
+      headers: { host: "127.0.0.1:3137", "x-forwarded-host": "attacker.test", ...(origin ? { origin } : {}) },
+      body: "{}",
+    });
+    expect((await PUT(makeRequest("http://127.0.0.1:3137"), context)).status).toBe(200);
+    expect((await PUT(makeRequest("http://attacker.test"), context)).status).toBe(403);
+    expect((await PUT(makeRequest(), context)).status).toBe(403);
+    expect(fetch).toHaveBeenCalledTimes(1);
+  });
   it("rejects cross-origin writes before contacting the backend", async () => {
     const fetch = vi.fn();
     vi.stubGlobal("fetch", fetch);

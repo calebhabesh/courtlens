@@ -2,24 +2,25 @@ import { expect, test } from "@playwright/test";
 
 test("real workspace proxy persists, conflicts, exports and restores", async ({ page, request }) => {
   test.skip(!process.env.COURTLOAD_REAL_WORKSPACE_TEST, "Requires migrated real FastAPI/PostgreSQL service");
+  const playerId = process.env.COURTLOAD_REAL_WORKSPACE_PLAYER_ID || "1630567";
   const workspaceId = `b08-${Date.now()}`;
   const root = `/api/workspace?workspaceId=${workspaceId}`;
   await page.goto(root);
   const state = await (await request.get(root)).json();
   expect(state.version).toBe(1);
   state.preferences.density = "compact";
-  state.favorites = ["1"];
-  state.compare_tray = ["1"];
+  state.favorites = [playerId];
+  state.compare_tray = [playerId];
   state.views = [{ id: "custom", name: "My scoring", columns: ["pts_per_game"] }];
-  state.ranking_boards = [{ id: "board", title: "Personal", entries: [{ rank: 1, player_id: "1" }] }];
-  state.tier_lists = [{ id: "tiers", title: "Personal tiers", tiers: [{ tier_id: "a", label: "A", player_ids: ["1"] }] }];
+  state.ranking_boards = [{ id: "board", title: "Personal", entries: [{ rank: 1, player_id: playerId }] }];
+  state.tier_lists = [{ id: "tiers", title: "Personal tiers", tiers: [{ tier_id: "a", label: "A", player_ids: [playerId] }] }];
   const saved = await page.evaluate(async ({ root, state }) => {
     const response = await fetch(`${root}&expectedVersion=1`, {
       method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(state),
     });
     return { status: response.status, data: await response.json() };
   }, { root, state });
-  expect(saved.status).toBe(200);
+  expect(saved.status, JSON.stringify(saved.data)).toBe(200);
   expect(saved.data.version).toBe(2);
   await page.reload();
   expect(await (await request.get(root)).json()).toEqual(saved.data);
@@ -36,7 +37,7 @@ test("real workspace proxy persists, conflicts, exports and restores", async ({ 
     return { status: response.status, data: await response.json() };
   }, { workspaceId, bundle });
   expect(restored.status).toBe(200);
-  expect(restored.data.favorites).toEqual(["1"]);
+  expect(restored.data.favorites).toEqual([playerId]);
   expect(restored.data.preferences.density).toBe("compact");
   for (const key of ["views", "compare_tray", "ranking_boards", "tier_lists"]) {
     expect(restored.data[key]).toEqual(saved.data[key]);

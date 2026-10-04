@@ -1,0 +1,161 @@
+{
+  "block": "B37",
+  "recorded_at": "2026-10-04T14:15:00.000000+00:00",
+  "status": "verified real-service benchmarks, process accounting, storage footprint, release case studies, demo walkthrough, and fresh database restore verification",
+  "implementation_choice": "current Codex session, live service http://127.0.0.1:8000, real PostgreSQL 17, and fresh disposable restore test",
+  "environment": {
+    "python": "3.14.7",
+    "fastapi": "0.141.1",
+    "starlette": "1.6.0",
+    "httpx": "0.28.1",
+    "pytest": "8.4.2",
+    "sqlalchemy": "2.0.52",
+    "postgres": "17.11 (courtload-db-1 container)",
+    "next": "16.3.5",
+    "os": "Linux 7.2.8-arch1-2 x86_64",
+    "hardware": "AMD Ryzen 7 9700X 8-Core Processor (16 logical threads, 60.46 GB RAM)"
+  },
+  "benchmarks": {
+    "evidence_file": "docs/evidence/b37-release-benchmarks.json",
+    "base_url": "http://127.0.0.1:8000",
+    "total_endpoints": 31,
+    "total_requests": 930,
+    "total_errors": 0,
+    "average_p50_ms": 617.06,
+    "average_p95_ms": 652.03,
+    "sub_10ms_endpoints": [
+      "Health Check (2.58 ms)",
+      "Metric Catalog (2.76 ms)",
+      "Finance Salary Books (4.30 ms)",
+      "Identity Crosswalk (5.22 ms)",
+      "Live Games Status (5.88 ms)",
+      "Backfill Status (6.86 ms)",
+      "Physical Measurements (7.80 ms)",
+      "Finance Replay Query (9.41 ms)"
+    ],
+    "sub_70ms_endpoints": [
+      "Saved Investigations Hub (13.93 ms)",
+      "Workbench Status (19.05 ms)",
+      "Assistant Operations Catalog (23.34 ms)",
+      "Catalog Definition (44.96 ms)",
+      "Entity Lookup (53.28 ms)",
+      "Assistant Query Deterministic (56.31 ms)",
+      "Player Game Log (56.37 ms)",
+      "Shooting Profile (60.42 ms)",
+      "Shared Floor WOWY (61.96 ms)",
+      "Player Profile (62.37 ms)",
+      "Prospective Forecasts Ledger (65.95 ms)",
+      "Player Comparison (69.67 ms)"
+    ]
+  },
+  "process_resources": {
+    "uvicorn_api": {
+      "pid": 1209455,
+      "rss_mb": 251.98,
+      "threads": 7,
+      "cpu_percent": "< 1.0%"
+    },
+    "postgres_container": {
+      "name": "courtload-db-1",
+      "memory_usage": "306.5 MiB / 60.46 GiB (0.50%)",
+      "cpu_percent": "0.00%",
+      "block_io": "8.36GB / 59.7GB",
+      "pids": 8
+    }
+  },
+  "storage_footprint": {
+    "database": {
+      "cluster_size_bytes": 4055668403,
+      "cluster_size_mb": 3867.79,
+      "total_tables": 78,
+      "total_table_bytes": 2144706560,
+      "total_table_mb": 2045.35,
+      "top_relations": {
+        "serving_player_profiles": "971.21 MB (662,826 rows)",
+        "research_shot_members": "407.49 MB (657,388 rows)",
+        "serving_player_games": "218.56 MB (271,827 rows)",
+        "archive_versions": "100.61 MB (102,444 rows)",
+        "workbench_player_games": "93.81 MB (104,533 rows)",
+        "archive_player_games": "69.96 MB (90,609 rows)"
+      }
+    },
+    "filesystem": {
+      "total_data_tree_mb": 4521.46,
+      "raw_data_mb": 120.31,
+      "artifacts_mb": 3640.96,
+      "cache_mb": 14.15,
+      "backups_mb": 747.92,
+      "next_build_mb": 1108.33,
+      "artifacts_breakdown": {
+        "research-shots": "2612.44 MB",
+        "evaluation": "956.91 MB",
+        "research-run-packages": "23.11 MB",
+        "research-runs": "16.42 MB",
+        "analyses": "1.62 MB"
+      }
+    }
+  },
+  "backup_and_recovery": {
+    "test_suite": "tests/integration/test_restore_postgres.py",
+    "passed": 5,
+    "elapsed_seconds": 157.50,
+    "disposable_database_restore": "verified",
+    "saved_conversation_analyses_reproduced": 33,
+    "saved_conversation_analyses_matching": 33,
+    "reproduction_match_rate": 1.0,
+    "reproduction_provider_calls": 0
+  },
+  "case_studies": {
+    "document": "docs/evidence/release-case-studies.md",
+    "total_case_studies": 6,
+    "cases": [
+      "Case Study 1: Mid-Season Trade & Stint Tracking (Pascal Siakam 2023-24)",
+      "Case Study 2: Prospective Points Forecasting & DNP Conditionality (Scottie Barnes 2025-26)",
+      "Case Study 3: Defensive Box Statistics vs. Inferred Impact & Conference Placement Guardrails (Toronto Raptors)",
+      "Case Study 4: Shared Floor WOWY On-Off Stint Reconciliation & Sample Gating (Scottie Barnes 2023-24)",
+      "Case Study 5: Replayable Financial Salary Books & Temporal Cap Accounting (Brandon Ingram Extension 2024-25)",
+      "Case Study 6: Conversational Research with Server-Owned Exact-Cell Evidence Linkage (Analysis 3bcb37c9)"
+    ]
+  },
+  "demo_walkthrough": {
+    "document": "docs/evidence/release-demo-walkthrough.md",
+    "workflows_covered": [
+      "Multi-Metric Player Research & Canonical QuerySpec",
+      "Player Profile, Game Log & Multi-Team Stint Tracking",
+      "Side-by-Side Player & Team Comparison",
+      "Advanced Research (Distributions, Splits, WOWY, & Shots)",
+      "Immutable Financial Books & Salary Cap Sheets",
+      "Shared Live Monitoring Service & Leases",
+      "Conversational Analytical Assistant & Evidence Linkage",
+      "Disaster Recovery & Fresh Database Restore Verification"
+    ]
+  },
+  "remaining_release_gates": [
+    {
+      "gate": "Gemini language gate",
+      "status": "unmet",
+      "measured_accuracy": "34/45 (75.6% overall, 17/25 68.0% supported queries; supplemental suite 6/6 100%)",
+      "evidence": "docs/evidence/gemini-corpus-evaluated-2026-10-04.json"
+    },
+    {
+      "gate": "OS installation",
+      "status": "in_progress",
+      "measured": "manifest, icons, and install UI verified; actual OS installation remains unmeasured"
+    },
+    {
+      "gate": "Live in-game observations",
+      "status": "in_progress",
+      "measured": "shared backend, client leases, and historical slates verified; active in-game clock/score changes remain unmeasured"
+    },
+    {
+      "gate": "Rich sources & spatial models",
+      "status": "gated",
+      "measured": "spatial tracking and external RAPM require admitted vendor inputs"
+    },
+    {
+      "gate": "Typography refinement",
+      "status": "preference_deferred",
+      "measured": "font candidates evaluated; owner selection deferred"
+    }
+  ]
+}

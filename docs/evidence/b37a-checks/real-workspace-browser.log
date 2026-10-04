@@ -1,0 +1,30 @@
+
+> courtload-dashboard@0.1.0 test:browser:real
+> PLAYWRIGHT_EXTERNAL_SERVER=true playwright test e2e/workspace-persistence.spec.ts
+
+
+Running 1 test using 1 worker
+
+  ✘  1 e2e/workspace-persistence.spec.ts:3:5 › real workspace proxy persists, conflicts, exports and restores (141ms)
+
+
+  1) e2e/workspace-persistence.spec.ts:3:5 › real workspace proxy persists, conflicts, exports and restores 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: 200
+    Received: 403
+
+      20 |     return { status: response.status, data: await response.json() };
+      21 |   }, { root, state });
+    > 22 |   expect(saved.status).toBe(200);
+         |                        ^
+      23 |   expect(saved.data.version).toBe(2);
+      24 |   await page.reload();
+      25 |   expect(await (await request.get(root)).json()).toEqual(saved.data);
+        at /home/ethioking/dev/nba-analytics/dashboard/e2e/workspace-persistence.spec.ts:22:24
+
+    Error Context: test-results/workspace-persistence-real-c6683-flicts-exports-and-restores/error-context.md
+
+  1 failed
+    e2e/workspace-persistence.spec.ts:3:5 › real workspace proxy persists, conflicts, exports and restores 

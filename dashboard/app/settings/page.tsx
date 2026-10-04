@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import Link from "next/link";
+import { InstallInterface } from "@/components/install-interface";
 import { WorkbenchPortraitSettings } from "@/components/workbench-portrait-settings";
 import { getAssistantStatus, getWorkbenchStatus } from "@/lib/workbench-api";
 import type { AssistantStatusResponse, WorkbenchStatus } from "@/lib/types";
@@ -24,10 +26,7 @@ export default async function SettingsPage() {
   }
 
   const portraits = status?.capabilities?.portraits;
-  const isKeyConfigured = Boolean(
-    assistantStatus?.configured ??
-    (process.env.COURTLOAD_GEMINI_API_KEY || process.env.GEMINI_API_KEY)
-  );
+  const isKeyConfigured = assistantStatus?.configured ?? false;
 
   return (
     <div className="workbench-content">
@@ -43,43 +42,18 @@ export default async function SettingsPage() {
 
       {loadError && (
         <div className="notice-box" style={{ borderLeftColor: "var(--warning)" }}>
-          <strong>Notice:</strong> {loadError}. Operating in local offline mode.
+          <strong>Notice:</strong> {loadError}. Live configuration and health values are unavailable.
         </div>
       )}
 
-      {/* Local Worker Daemon Status */}
-      <div className="panel">
-        <div className="panel-header">
-          <h2 className="panel-title">Local Worker Daemon</h2>
-          <span className="badge badge-positive">Active Background Service</span>
-        </div>
-        <div className="grid-3" style={{ marginBottom: "1rem" }}>
-          <div className="stat-card">
-            <span className="stat-value font-mono">09:00 UTC</span>
-            <span className="stat-label">Daily Refresh</span>
-            <span className="stat-subtext">Post-upstream build window</span>
-          </div>
-          <div className="stat-card">
-            <span className="stat-value font-mono">Loopback</span>
-            <span className="stat-label">Port Binding</span>
-            <span className="stat-subtext">127.0.0.1 (Strict local)</span>
-          </div>
-          <div className="stat-card">
-            <span className="stat-value font-mono">Configured</span>
-            <span className="stat-label">Operator Token</span>
-            <span className="stat-subtext">Server-side mutation guard</span>
-          </div>
-        </div>
-        <p className="text-xs text-muted">
-          The background worker catches up on startup when due and handles graceful shutdown signals (SIGINT/SIGTERM). Expired leases automatically recover interrupted jobs.
-        </p>
-      </div>
-
+      <div className="page-actions"><Link href="/data-status">Source lineage, freshness and jobs</Link><Link href="/methodology">Definitions</Link><Link href="/investigations">Saved evidence</Link><Link href="/patch-notes">Dated changes</Link></div>
+      <div className="panel"><h2>Reported local worker state</h2><p>Scheduled refresh: {status?.worker.scheduled_refresh_utc ?? "Unavailable"}</p><p>Active job: {status?.worker.active_job ? `${status.worker.active_job.job_type} · ${status.worker.active_job.stage ?? "stage unavailable"}` : status ? "No active job reported" : "Unavailable"}</p><p>Latest job: {status?.worker.latest_job ? `${status.worker.latest_job.job_type} · ${status.worker.latest_job.status}` : "Unavailable"}</p><p>An idle job queue does not establish worker liveness. Inspect job heartbeats and source coverage in Data status.</p></div>
+      <InstallInterface />
       {/* Player Portrait Cache Coverage */}
       <WorkbenchPortraitSettings
         totalCached={portraits?.total_cached ?? 0}
         active={portraits?.active ?? 0}
-        totalPlayers={portraits?.total_players ?? 816}
+        totalPlayers={portraits?.total_players ?? 0}
         storagePath={portraits?.storage_path ?? "data/cache/portraits"}
       />
 
@@ -89,11 +63,11 @@ export default async function SettingsPage() {
           <div>
             <h2 className="panel-title">Optional AI Assistant (Gemini Adapter)</h2>
             <p className="text-muted text-xs" style={{ margin: "0.2rem 0 0" }}>
-              Milestone P8 optional read-only natural language interface over verified analytical services.
+              Optional language planning over validated read-only analytical operations. Configuration alone does not establish real-provider language accuracy.
             </p>
           </div>
           <span className={`badge ${isKeyConfigured ? "badge-positive" : ""}`}>
-            {isKeyConfigured ? "API Key Configured" : "Disabled (No Key Required)"}
+            {assistantStatus ? isKeyConfigured ? "API Key Configured" : "Disabled (No Key Required)" : "Configuration unavailable"}
           </span>
         </div>
 
@@ -105,21 +79,21 @@ export default async function SettingsPage() {
           <div className="meta-row">
             <span className="meta-label">Assistant Status</span>
             <span className="meta-value font-semibold">
-              {isKeyConfigured ? "Ready for analytical queries" : "Disabled (Ordinary structured search remains complete)"}
+              {assistantStatus ? isKeyConfigured ? "Configured; provider evaluation remains separate" : "Disabled; manual research available" : "Configuration status unavailable"}
             </span>
           </div>
           <div className="meta-row">
             <span className="meta-label">Configured Model</span>
-            <span className="meta-value font-mono text-xs">{assistantStatus?.model ?? "gemini-2.5-flash"}</span>
+            <span className="meta-value font-mono text-xs">{assistantStatus?.model ?? "Unavailable"}</span>
           </div>
           <div className="meta-row">
             <span className="meta-label">Setup Environment Variable</span>
             <span className="meta-value font-mono text-xs">COURTLOAD_GEMINI_API_KEY</span>
           </div>
           <div className="meta-row">
-            <span className="meta-label">Allowlisted Tools ({assistantStatus?.allowed_tools.length ?? 8})</span>
+            <span className="meta-label">Allowlisted Tools ({assistantStatus?.allowed_tools.length ?? 0})</span>
             <span className="meta-value text-xs font-mono">
-              {assistantStatus?.allowed_tools.join(", ") ?? "get_catalog, search_players, get_forecast, compare_players, ..."}
+              {assistantStatus?.allowed_tools.join(", ") ?? "Unavailable"}
             </span>
           </div>
           <div className="meta-row">
@@ -127,7 +101,7 @@ export default async function SettingsPage() {
             <span className="meta-value text-xs">
               {assistantStatus?.limits
                 ? `Max ${assistantStatus.limits.max_question_length} chars, ≤${assistantStatus.limits.max_rounds} rounds, ≤${assistantStatus.limits.max_total_tool_calls} calls, ${assistantStatus.limits.timeout_seconds}s deadline`
-                : "Max 2000 chars, ≤4 rounds, ≤8 calls, 45s deadline"}
+                : "Unavailable"}
             </span>
           </div>
         </div>

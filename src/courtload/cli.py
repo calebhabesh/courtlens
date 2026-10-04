@@ -1093,3 +1093,62 @@ def smoke_assistant_command(
     exit_code = run_assistant_smoke(live=live)
     if exit_code != 0:
         raise typer.Exit(code=exit_code)
+
+
+@app.command("finance-template")
+def finance_template_command(destination: Path) -> None:
+    """Write the strict manual import CSV header without overwriting files."""
+    from courtload.domain.finance import export_csv
+
+    with destination.open("xb") as stream:
+        stream.write(export_csv(()))
+    typer.echo(str(destination))
+
+
+@app.command("finance-preview")
+def finance_preview_command(bundle: Path) -> None:
+    """Validate retained source bytes, crosswalks and corrections without writes."""
+    from courtload.services.finance_import import preview_bundle
+
+    with SessionLocal() as session:
+        typer.echo(json.dumps(preview_bundle(session, bundle), indent=2))
+
+
+@app.command("finance-import")
+def finance_import_command(bundle: Path, execute_now: bool = False) -> None:
+    """Stage and enqueue the allowlisted local operator import; never publish basketball."""
+    from courtload.services.finance_import import preview_bundle, stage_bundle
+    from courtload.services.workbench_jobs import enqueue_job, execute_job
+
+    with SessionLocal() as session:
+        preview_bundle(session, bundle)
+    key = stage_bundle(bundle, get_settings().artifacts_root)
+    with SessionLocal() as session:
+        job = enqueue_job(session, "finance_import", {"bundle_hash": key})
+        job_id = job.id
+    if execute_now:
+        job = execute_job(engine, job_id, worker_id="finance-cli")
+    typer.echo(
+        json.dumps(
+            {"job_id": job_id, "status": job.status, "output": job.output_refs_json}, indent=2
+        )
+    )
+
+
+@app.command("finance-verify")
+def finance_verify_command(release_id: str) -> None:
+    """Verify retained finance source bytes and resolved memberships after restore."""
+    from courtload.services.finance_import import verify_release
+
+    with SessionLocal() as session:
+        typer.echo(json.dumps(verify_release(session, release_id), indent=2))
+
+
+@app.command("reconcile-live-final")
+def reconcile_live_final_command(observation_id: str, dataset_id: str) -> None:
+    """Compare retained final Live team scores to admitted batch facts without publishing."""
+    from courtload.services.live_reconciliation import reconcile_final
+
+    with SessionLocal() as session:
+        result = reconcile_final(session, observation_id, dataset_id)
+    typer.echo(json.dumps(result, indent=2))

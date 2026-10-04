@@ -1,5 +1,12 @@
 # CourtLoad — Local NBA Research & Forecast Workbench
 
+**Current stage:** the Databallr replica is in progress. B35a/B35b retained operations,
+original content and installable metadata are verified; real Gemini language evaluation,
+actual OS installation, changing Live-game observations and deeper source/model gates
+remain open. See the [current capability ledger and measured evidence](docs/databallr-replica-implementation-progress.md).
+The historical figures and milestone table below describe earlier workbench evidence,
+not current source coverage or full replica acceptance.
+
 CourtLoad is an engineer's local NBA research and forecasting workbench engineered with strict temporal discipline, source-traceable box-score lineage, out-of-time machine learning evaluation, and an optional tool-backed analytical assistant.
 
 Operating on six complete NBA regular seasons (2019–20 through 2024–25) and prospective 2025–26 schedules, CourtLoad turns 104,533 player-game records into reproducible cohort explorations, multi-team trade stint reconciliations, contextual opponent metrics, calibrated empirical forecast intervals, and verified natural-language answers.
@@ -28,14 +35,14 @@ Operating on six complete NBA regular seasons (2019–20 through 2024–25) and 
 
 - **Data Engineering:** Built a local NBA research workbench using Python 3.14, PostgreSQL 17, and dbt, versioning 104,533 player-game records across 6 NBA seasons and exposing reproducible player/team investigations with upstream transform lineage.
 - **Offline ML & Forecasting:** Evaluated next-game points baselines and challengers across 10 chronological holdout folds, reporting an active prior-blend MAE of 4.88 (vs. baseline 5.09) with 81.2% empirical interval coverage; implemented immutable prospective forecast logging separating DNP injuries from 0 PTS appearances.
-- **AI Systems & Guardrails:** Engineered an optional tool-backed assistant over 8 allowlisted read-only analytical tools, enforcing strict domain guardrails (rejecting synthetic defensive impact ratings, deferring conference winner forecasts), numerical tolerance claim verification, and 100% benchmark inquiry accuracy while preserving a zero-cost offline core.
+- **AI Systems & Guardrails:** Optional read-only conversational planning with registered analytical operations, server-rendered exact-cell evidence, bounded execution and deterministic fixture evaluation. Fixture results do not establish real Gemini language accuracy; that acceptance gate remains open.
 - **Performance & Reliability:** Benchmarked 15 FastAPI endpoints under concurrency with median latencies under 55 ms for core research views and 0.0% error rate across 450 requests.
 
 ---
 
 ## 3. Project Status and Milestones
 
-All milestones across the foundational build (**M0–M8**) and the research workbench implementation (**P1–P9**) are **100% complete, verified, and evidenced**.
+The table below preserves historical foundational/workbench milestone reports. Their completion prose is not fresh runtime verification; the replica progress log records current measured boundaries and remaining gates.
 
 | Milestone | Scope / Deliverable | Status | Evidence Document / Artifact |
 | :---: | :--- | :---: | :--- |
@@ -118,6 +125,30 @@ npm --prefix dashboard run dev -- -p 3000
 
 Open <http://localhost:3000> in your browser.
 
+### Optional Gemini connection
+
+Set `COURTLOAD_GEMINI_API_KEY` in the ignored root `.env` and set
+`COURTLOAD_GEMINI_MODEL` to a model your AI Studio project can access (the example
+uses the locally evaluated `gemini-3.5-flash-lite`). Keep the project on the Free tier; CourtLoad cannot
+enforce the project's billing tier. Local Python reads `.env`; Compose passes
+these settings only to the API. Restart the local API or recreate the Compose
+API after changing them. The dashboard never receives the key.
+
+Run the existing opt-in evaluation with a new evidence path:
+
+```bash
+.venv/bin/python scripts/evaluate_b34_conversation.py \
+  docs/evidence/gemini-evaluation-NEW.json --real-provider --project-tier free
+```
+
+It stops on provider errors, quota or timeout and records model/version,
+token usage, latency and per-case results. A configured key alone does not
+establish language accuracy. See [connection evidence and provider review criteria](docs/evidence/gemini-setup-2026-10-04.md).
+
+The owner-approved Lite configuration passes the [B34c language acceptance](docs/evidence/b34c-language-acceptance.md):
+45 core cases, twelve additional paraphrases and six finance/empty-season cases. Failed
+probes, quota/capacity observations and remaining capability gates are retained there.
+
 ---
 
 ## 6. Operations & Disaster Recovery
@@ -186,3 +217,8 @@ courtload verify-restore
 ## 9. License
 
 CourtLoad is open-source software licensed under the [MIT License](LICENSE).
+
+The dashboard bundles Public Sans and JetBrains Mono locally. Their font files retain
+their own copyright and license notices under [dashboard/public/fonts](dashboard/public/fonts/manifest.json).
+See [B36 production typography acceptance](docs/evidence/b36b-typography-acceptance.md)
+for the selected files and measured loading/rendering checks.

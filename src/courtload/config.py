@@ -33,6 +33,7 @@ class Settings(BaseSettings):
     artifacts_root: Path = Path("data/artifacts")
     portraits_cache_path: Path = Path("data/cache/portraits")
     operator_token: SecretStr = SecretStr("local-operator-secret-change-before-deploy")
+    live_enabled: bool = False
     worker_refresh_time_utc: str = "09:00"
     worker_poll_interval_seconds: int = Field(default=5, ge=1, le=300)
     worker_heartbeat_interval_seconds: int = Field(default=15, ge=2, le=300)
@@ -49,7 +50,7 @@ class Settings(BaseSettings):
         validation_alias=AliasChoices("COURTLOAD_GEMINI_API_KEY", "GEMINI_API_KEY"),
     )
     gemini_model: str = Field(
-        default="gemini-2.5-flash",
+        default="gemini-3.5-flash-lite",
         validation_alias=AliasChoices("COURTLOAD_GEMINI_MODEL", "GEMINI_MODEL"),
     )
 

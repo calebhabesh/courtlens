@@ -161,6 +161,13 @@ def serialize_query_to_params(query: QuerySpec, *, style: str = "camelCase") -> 
         pred_dict = query.predicates.model_dump(mode="json")
         set_param("predicates", "predicates", json.dumps(pred_dict))
 
+    if query.metric_selectors:
+        set_param(
+            "metrics",
+            "metrics",
+            json.dumps([m.model_dump(mode="json") for m in query.metric_selectors]),
+        )
+
     # View state
     if query.view_state:
         vs = query.view_state

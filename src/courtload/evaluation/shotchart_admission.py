@@ -11,6 +11,7 @@ import sqlite3
 import tarfile
 import tempfile
 from collections import Counter, defaultdict
+from contextlib import closing
 from datetime import UTC, date, datetime
 from pathlib import Path
 from typing import Any
@@ -311,7 +312,8 @@ def audit_source(
     corrections: list[dict[str, Any]] = []
     with (
         tempfile.TemporaryDirectory(prefix="courtload-shotchart-") as temporary,
-        sqlite3.connect(Path(temporary) / "spool.sqlite") as spool,
+        closing(sqlite3.connect(Path(temporary) / "spool.sqlite")) as spool,
+        spool,
     ):
         spool.execute(
             "CREATE TABLE attempts (game_id TEXT, event_id INTEGER, payload TEXT, raw TEXT)"

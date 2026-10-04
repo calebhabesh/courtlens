@@ -1,0 +1,61 @@
+I001 [*] Import block is un-sorted or un-formatted
+  --> src/courtload/evaluation/shotchart_admission.py:3:1
+   |
+ 1 |   """Offline B26 shot input audit with exclusive evidence retention; never fits or publishes."""
+ 2 |
+ 3 | / from __future__ import annotations
+ 4 | |
+ 5 | | import argparse
+ 6 | | import csv
+ 7 | | import gzip
+ 8 | | import json
+ 9 | | import lzma
+10 | | import sqlite3
+11 | | from contextlib import closing
+12 | | import tarfile
+13 | | import tempfile
+14 | | from collections import Counter, defaultdict
+15 | | from datetime import UTC, date, datetime
+16 | | from pathlib import Path
+17 | | from typing import Any
+18 | | from uuid import uuid4
+19 | |
+20 | | from courtload.domain.rich_sources import compute_payload_hash
+21 | | from courtload.domain.shotchart import (
+22 | |     POLICY_VERSIONS,
+23 | |     REQUIRED_COLUMNS,
+24 | |     TRANSFORM_VERSION,
+25 | |     ShotAttempt,
+26 | |     game_identity,
+27 | |     integer,
+28 | |     parse_shot,
+29 | |     reconcile_game,
+30 | | )
+31 | | from courtload.evaluation.shot_corrections import apply_reviewed_corrections, load_ledger
+32 | | from courtload.ingestion.shotchart import (
+33 | |     MAX_EXPANDED_BYTES,
+34 | |     MAX_FIELD_BYTES,
+35 | |     acquire_source,
+36 | |     shot_rows,
+37 | |     verify_source,
+38 | | )
+39 | | from courtload.ingestion.sportsdataverse import hash_file
+40 | | from courtload.ingestion.workbench_source_config import (
+41 | |     player_boxscores_url,
+42 | |     schedule_csv_url,
+43 | |     team_boxscores_url,
+44 | | )
+   | |_^
+help: Organize imports
+   |
+10 | import sqlite3
+   - from contextlib import closing
+11 | import tarfile
+12 | import tempfile
+13 | from collections import Counter, defaultdict
+14 + from contextlib import closing
+15 | from datetime import UTC, date, datetime
+   |
+
+Found 1 error.
+[*] 1 fixable with the `--fix` option.

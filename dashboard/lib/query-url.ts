@@ -282,7 +282,10 @@ export const CONTEXT_PARAMS = [
   "before_date",
   "window",
   "releaseId",
-  "release_id"
+  "release_id",
+  "finance_book_id", "finance_financial_season", "finance_known_at", "finance_effective_on",
+  "finance_unknown_dates", "finance_team_id", "finance_player_ids", "finance_statuses",
+  "finance_amount_kind", "finance_small_big_threshold_cents", "finance_scenario"
 ] as const;
 
 export function buildPreservedContextUrl(

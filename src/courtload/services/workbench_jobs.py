@@ -55,6 +55,7 @@ ALLOWLISTED_JOB_TYPES = {
     "backfill",
     "rich_admission",
     "possession_warehouse",
+    "finance_import",
 }
 _SECRET_PATTERN = re.compile(r"(password|token|secret|key)=([^\s&]+)", re.IGNORECASE)
 
@@ -78,16 +79,19 @@ def enqueue_job(
             f"job_type '{job_type}' is not allowlisted; allowed: {sorted(ALLOWLISTED_JOB_TYPES)}"
         )
 
-    # Check for active existing job of same type
-    existing = session.scalar(
-        select(WorkbenchJob)
-        .where(
-            WorkbenchJob.job_type == job_type,
-            WorkbenchJob.status.in_(["queued", "running"]),
-        )
-        .order_by(WorkbenchJob.created_at.asc())
-        .limit(1)
+    # Finance imports coalesce only the same staged bytes; distinct books keep their jobs.
+    statement = select(WorkbenchJob).where(
+        WorkbenchJob.job_type == job_type,
+        WorkbenchJob.status.in_(["queued", "running"]),
     )
+    if job_type == "finance_import":
+        bundle_hash = (arguments or {}).get("bundle_hash")
+        if not isinstance(bundle_hash, str) or not re.fullmatch(r"[a-f0-9]{64}", bundle_hash):
+            raise ValueError("finance import requires staged bundle hash")
+        statement = statement.where(
+            WorkbenchJob.arguments_json["bundle_hash"].as_string() == bundle_hash
+        )
+    existing = session.scalar(statement.order_by(WorkbenchJob.created_at.asc()).limit(1))
     if existing is not None:
         logger.info(
             "Coalesced job %s of type %s with existing job %s",
@@ -661,6 +665,42 @@ def execute_job(
                         j.finished_at = utc_now()
                         j.timings_json = timings
                         j.output_refs_json = summary
+                        s.commit()
+                        return j
+
+                elif job_type == "finance_import":
+                    from courtload.services.finance_import import admit_bundle
+
+                    update_heartbeat("finance_validation")
+                    bundle_hash = str(job_args.get("bundle_hash", ""))
+                    if not re.fullmatch(r"[a-f0-9]{64}", bundle_hash):
+                        raise ValueError("finance import requires staged bundle hash")
+                    bundle_root = settings.artifacts_root / "finance-import" / bundle_hash
+                    import hashlib
+
+                    from courtload.services.finance_import import bounded_read
+
+                    if (
+                        hashlib.sha256(bounded_read(bundle_root / "manifest.json")).hexdigest()
+                        != bundle_hash
+                    ):
+                        raise ValueError("staged finance manifest hash mismatch")
+                    with Session(engine, expire_on_commit=False) as s:
+                        release = admit_bundle(s, bundle_root)
+                        s.commit()
+                        refs = {
+                            "finance_release_id": release.id,
+                            "content_sha256": release.content_sha256,
+                        }
+                    timings["total"] = round(time.monotonic() - start_total, 3)
+                    with Session(engine, expire_on_commit=False) as s:
+                        j = s.get(WorkbenchJob, job_id)
+                        assert j is not None
+                        j.status = "succeeded"
+                        j.stage = "completed"
+                        j.finished_at = utc_now()
+                        j.timings_json = timings
+                        j.output_refs_json = refs
                         s.commit()
                         return j
 

@@ -1,0 +1,1203 @@
+============================= test session starts ==============================
+platform linux -- Python 3.14.7, pytest-8.4.2, pluggy-1.6.0
+rootdir: /home/ethioking/dev/nba-analytics
+configfile: pyproject.toml
+testpaths: tests
+plugins: anyio-4.14.2, cov-7.1.0
+collected 741 items / 1 deselected / 740 selected
+
+tests/integration/test_analytical_ops_api.py ......                      [  0%]
+tests/integration/test_analytics_api.py ......                           [  1%]
+tests/integration/test_api.py .........                                  [  2%]
+tests/integration/test_b14_api.py .......                                [  3%]
+tests/integration/test_b15_api.py ........                               [  4%]
+tests/integration/test_b16_api.py ....                                   [  5%]
+tests/integration/test_b17_api.py .....                                  [  6%]
+tests/integration/test_b21_api.py ......                                 [  6%]
+tests/integration/test_b23_api.py ........                               [  7%]
+tests/integration/test_conversation_postgres.py ......                   [  8%]
+tests/integration/test_finance_postgres.py ........                      [  9%]
+tests/integration/test_finance_query_postgres.py ...                     [ 10%]
+tests/integration/test_ingestion.py ....                                 [ 10%]
+tests/integration/test_live_postgres.py .............                    [ 12%]
+tests/integration/test_migration_b14.py .                                [ 12%]
+tests/integration/test_personal_workspace_api.py .....                   [ 13%]
+tests/integration/test_personal_workspace_migration.py ........          [ 14%]
+tests/integration/test_personal_workspace_postgres.py ..                 [ 14%]
+tests/integration/test_planner.py .....                                  [ 15%]
+tests/integration/test_possession_warehouse_postgres.py ....             [ 15%]
+tests/integration/test_publication_postgres.py ..                        [ 16%]
+tests/integration/test_research_input_sealing.py .......                 [ 17%]
+tests/integration/test_research_limits.py .....                          [ 17%]
+tests/integration/test_research_readiness_postgres.py ...                [ 18%]
+tests/integration/test_research_results_api.py ..                        [ 18%]
+tests/integration/test_restore_postgres.py ....                          [ 19%]
+tests/integration/test_rich_admission_postgres.py .....                  [ 19%]
+tests/integration/test_saved_conversation_postgres.py .................. [ 22%]
+...                                                                      [ 22%]
+tests/integration/test_workbench_api.py ..........................       [ 26%]
+tests/integration/test_workbench_jobs_postgres.py ............           [ 27%]
+tests/integration/test_workbench_postgres.py ..                          [ 27%]
+tests/unit/test_analytical_ops.py ...............                        [ 30%]
+tests/unit/test_archive_spike.py .....                                   [ 30%]
+tests/unit/test_assistant.py .......                                     [ 31%]
+tests/unit/test_backfill_resumable.py .E.                                [ 32%]
+tests/unit/test_challenger.py ....                                       [ 32%]
+tests/unit/test_cli.py ..F                                               [ 32%]
+tests/unit/test_config.py ...                                            [ 33%]
+tests/unit/test_contract_fixture.py .                                    [ 33%]
+tests/unit/test_conversations.py ....................................... [ 38%]
+.....................................................                    [ 45%]
+tests/unit/test_entity_lookup.py ..............                          [ 47%]
+tests/unit/test_evaluation.py ....                                       [ 48%]
+tests/unit/test_expected_shot.py ...                                     [ 48%]
+tests/unit/test_finance_catalog.py ..                                    [ 49%]
+tests/unit/test_finance_import.py .......................                [ 52%]
+tests/unit/test_finance_query.py ...........                             [ 53%]
+tests/unit/test_identity_crosswalk.py ..E                                [ 54%]
+tests/unit/test_live.py ............F.........                           [ 57%]
+tests/unit/test_live_history.py ...                                      [ 57%]
+tests/unit/test_matching.py ....                                         [ 57%]
+tests/unit/test_measurements.py .E.                                      [ 58%]
+tests/unit/test_metrics_v2.py ......................                     [ 61%]
+tests/unit/test_on_off.py .............F.....                            [ 63%]
+tests/unit/test_personal_state.py ....                                   [ 64%]
+tests/unit/test_playoffs.py .........                                    [ 65%]
+tests/unit/test_points_forecast.py ....                                  [ 66%]
+tests/unit/test_portrait_jobs.py .                                       [ 66%]
+tests/unit/test_prospective_forecasts.py ........                        [ 67%]
+tests/unit/test_provider_client.py ........                              [ 68%]
+tests/unit/test_publication.py ....                                      [ 69%]
+tests/unit/test_query_contracts.py ..............                        [ 70%]
+tests/unit/test_raw_store.py .                                           [ 71%]
+tests/unit/test_research_readiness.py ....                               [ 71%]
+tests/unit/test_research_registration.py ..............................  [ 75%]
+tests/unit/test_research_reproduce.py .                                  [ 75%]
+tests/unit/test_retrospective_binding.py .....                           [ 76%]
+tests/unit/test_rich_sources.py ..........                               [ 77%]
+tests/unit/test_saved_conversations.py ...............                   [ 79%]
+tests/unit/test_scoring.py ...                                           [ 80%]
+tests/unit/test_season_discovery.py ......                               [ 81%]
+tests/unit/test_shooting.py ...................                          [ 83%]
+tests/unit/test_shot_corrections.py .........                            [ 84%]
+tests/unit/test_shotchart_admission.py ................................. [ 89%]
+.........................F                                               [ 92%]
+tests/unit/test_sportsdataverse.py ........                              [ 93%]
+tests/unit/test_stats_engine.py ........F.F                              [ 95%]
+tests/unit/test_stints.py ...........                                    [ 96%]
+tests/unit/test_team_analytics.py ...........                            [ 98%]
+tests/unit/test_workbench_contracts.py .......                           [ 99%]
+tests/unit/test_workbench_metrics.py .....                               [100%]
+
+==================================== ERRORS ====================================
+___________ ERROR at setup of test_execute_backfill_batch_resumption ___________
+
+tuples = {(Table('fantasy_leagues', MetaData(), Column('id', String(length=36), table=<fantasy_leagues>, primary_key=True, null... Integer(), table=<fantasy_roster_entries>, nullable=False, default=ScalarElementColumnDefault(1)), schema=None)), ...}
+allitems = [Table('users', MetaData(), Column('id', String(length=36), table=<users>, primary_key=True, nullable=False, default=C...ridge_player_observed_team_stints>, nullable=False, default=ScalarElementColumnDefault('observed')), schema=None), ...]
+
+    def sort_as_subsets(
+        tuples: Collection[Tuple[_T, _T]], allitems: Collection[_T]
+    ) -> Iterator[Sequence[_T]]:
+        edges: DefaultDict[_T, Set[_T]] = util.defaultdict(set)
+        for parent, child in tuples:
+            edges[child].add(parent)
+    
+        todo = list(allitems)
+        todo_set = set(allitems)
+    
+        while todo_set:
+            output = []
+            for node in todo:
+>               if todo_set.isdisjoint(edges[node]):
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E               ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7f74c41a35b0>
+
+.venv/lib/python3.14/site-packages/sqlalchemy/util/topological.py:43: ResourceWarning
+
+The above exception was the direct cause of the following exception:
+
+cls = <class '_pytest.runner.CallInfo'>
+func = <function call_and_report.<locals>.<lambda> at 0x7f74a2abd220>
+when = 'setup'
+reraise = (<class '_pytest.outcomes.Exit'>, <class 'KeyboardInterrupt'>)
+
+    @classmethod
+    def from_call(
+        cls,
+        func: Callable[[], TResult],
+        when: Literal["collect", "setup", "call", "teardown"],
+        reraise: type[BaseException] | tuple[type[BaseException], ...] | None = None,
+    ) -> CallInfo[TResult]:
+        """Call func, wrapping the result in a CallInfo.
+    
+        :param func:
+            The function to call. Called without arguments.
+        :type func: Callable[[], _pytest.runner.TResult]
+        :param when:
+            The phase in which the function is called.
+        :param reraise:
+            Exception or exceptions that shall propagate if raised by the
+            function, instead of being wrapped in the CallInfo.
+        """
+        excinfo = None
+        instant = timing.Instant()
+        try:
+>           result: TResult | None = func()
+                                     ^^^^^^
+
+.venv/lib/python3.14/site-packages/_pytest/runner.py:344: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+.venv/lib/python3.14/site-packages/_pytest/runner.py:246: in <lambda>
+    lambda: runtest_hook(item=item, **kwds), when=when, reraise=reraise
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv/lib/python3.14/site-packages/pluggy/_hooks.py:512: in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv/lib/python3.14/site-packages/pluggy/_manager.py:120: in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv/lib/python3.14/site-packages/_pytest/logging.py:843: in pytest_runtest_setup
+    yield
+.venv/lib/python3.14/site-packages/_pytest/capture.py:895: in pytest_runtest_setup
+    return (yield)
+            ^^^^^
+.venv/lib/python3.14/site-packages/_pytest/unraisableexception.py:153: in pytest_runtest_setup
+    collect_unraisable(item.config)
+.venv/lib/python3.14/site-packages/_pytest/unraisableexception.py:79: in collect_unraisable
+    raise errors[0]
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+config = <_pytest.config.Config object at 0x7f7529077cb0>
+
+    def collect_unraisable(config: Config) -> None:
+        pop_unraisable = config.stash[unraisable_exceptions].pop
+        errors: list[pytest.PytestUnraisableExceptionWarning | RuntimeError] = []
+        meta = None
+        hook_error = None
+        try:
+            while True:
+                try:
+                    meta = pop_unraisable()
+                except IndexError:
+                    break
+    
+                if isinstance(meta, BaseException):
+                    hook_error = RuntimeError("Failed to process unraisable exception")
+                    hook_error.__cause__ = meta
+                    errors.append(hook_error)
+                    continue
+    
+                msg = meta.msg
+                try:
+>                   warnings.warn(pytest.PytestUnraisableExceptionWarning(msg))
+E                   pytest.PytestUnraisableExceptionWarning: Exception ignored while finalizing database connection <sqlite3.Connection object at 0x7f74c41a35b0>: None
+
+.venv/lib/python3.14/site-packages/_pytest/unraisableexception.py:67: PytestUnraisableExceptionWarning
+__________ ERROR at setup of test_dated_metadata_temporal_discipline ___________
+  + Exception Group Traceback (most recent call last):
+  |   File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/_pytest/runner.py", line 344, in from_call
+  |     result: TResult | None = func()
+  |                              ~~~~^^
+  |   File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/_pytest/runner.py", line 246, in <lambda>
+  |     lambda: runtest_hook(item=item, **kwds), when=when, reraise=reraise
+  |             ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  |   File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/pluggy/_hooks.py", line 512, in __call__
+  |     return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  |            ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |   File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/pluggy/_manager.py", line 120, in _hookexec
+  |     return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  |            ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |   File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/pluggy/_callers.py", line 167, in _multicall
+  |     raise exception
+  |   File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/pluggy/_callers.py", line 139, in _multicall
+  |     teardown.throw(exception)
+  |     ~~~~~~~~~~~~~~^^^^^^^^^^^
+  |   File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/_pytest/logging.py", line 843, in pytest_runtest_setup
+  |     yield
+  |   File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/pluggy/_callers.py", line 139, in _multicall
+  |     teardown.throw(exception)
+  |     ~~~~~~~~~~~~~~^^^^^^^^^^^
+  |   File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/_pytest/capture.py", line 895, in pytest_runtest_setup
+  |     return (yield)
+  |             ^^^^^
+  |   File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/pluggy/_callers.py", line 121, in _multicall
+  |     res = hook_impl.function(*args)
+  |   File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/_pytest/unraisableexception.py", line 153, in pytest_runtest_setup
+  |     collect_unraisable(item.config)
+  |     ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  |   File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/_pytest/unraisableexception.py", line 81, in collect_unraisable
+  |     raise ExceptionGroup("multiple unraisable exception warnings", errors)
+  | ExceptionGroup: multiple unraisable exception warnings (2 sub-exceptions)
+  +-+---------------- 1 ----------------
+    | Traceback (most recent call last):
+    |   File "/usr/lib/python3.14/weakref.py", line 326, in __getitem__
+    |     return self.data[ref(key)]
+    |                      ~~~^^^^^
+    | ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7f74bf770f40>
+    | 
+    | The above exception was the direct cause of the following exception:
+    | 
+    | Traceback (most recent call last):
+    |   File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/_pytest/unraisableexception.py", line 67, in collect_unraisable
+    |     warnings.warn(pytest.PytestUnraisableExceptionWarning(msg))
+    |     ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    | pytest.PytestUnraisableExceptionWarning: Exception ignored while finalizing database connection <sqlite3.Connection object at 0x7f74bf770f40>: None
+    | 
+    +---------------- 2 ----------------
+    | Traceback (most recent call last):
+    |   File "/usr/lib/python3.14/weakref.py", line 326, in __getitem__
+    |     return self.data[ref(key)]
+    |                      ~~~^^^^^
+    | ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7f74bf7726b0>
+    | 
+    | The above exception was the direct cause of the following exception:
+    | 
+    | Traceback (most recent call last):
+    |   File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/_pytest/unraisableexception.py", line 67, in collect_unraisable
+    |     warnings.warn(pytest.PytestUnraisableExceptionWarning(msg))
+    |     ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    | pytest.PytestUnraisableExceptionWarning: Exception ignored while finalizing database connection <sqlite3.Connection object at 0x7f74bf7726b0>: None
+    | 
+    +------------------------------------
+_______________ ERROR at setup of test_undrafted_player_handling _______________
+
+self = Float()
+dialect = <sqlalchemy.dialects.sqlite.pysqlite.SQLiteDialect_pysqlite object at 0x7f74928dd1d0>
+
+>   def _dialect_info(self, dialect: Dialect) -> _TypeMemoDict:
+E   ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7f7497b03c40>
+
+.venv/lib/python3.14/site-packages/sqlalchemy/sql/type_api.py:975: ResourceWarning
+
+The above exception was the direct cause of the following exception:
+
+cls = <class '_pytest.runner.CallInfo'>
+func = <function call_and_report.<locals>.<lambda> at 0x7f74a25354e0>
+when = 'setup'
+reraise = (<class '_pytest.outcomes.Exit'>, <class 'KeyboardInterrupt'>)
+
+    @classmethod
+    def from_call(
+        cls,
+        func: Callable[[], TResult],
+        when: Literal["collect", "setup", "call", "teardown"],
+        reraise: type[BaseException] | tuple[type[BaseException], ...] | None = None,
+    ) -> CallInfo[TResult]:
+        """Call func, wrapping the result in a CallInfo.
+    
+        :param func:
+            The function to call. Called without arguments.
+        :type func: Callable[[], _pytest.runner.TResult]
+        :param when:
+            The phase in which the function is called.
+        :param reraise:
+            Exception or exceptions that shall propagate if raised by the
+            function, instead of being wrapped in the CallInfo.
+        """
+        excinfo = None
+        instant = timing.Instant()
+        try:
+>           result: TResult | None = func()
+                                     ^^^^^^
+
+.venv/lib/python3.14/site-packages/_pytest/runner.py:344: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+.venv/lib/python3.14/site-packages/_pytest/runner.py:246: in <lambda>
+    lambda: runtest_hook(item=item, **kwds), when=when, reraise=reraise
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv/lib/python3.14/site-packages/pluggy/_hooks.py:512: in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv/lib/python3.14/site-packages/pluggy/_manager.py:120: in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv/lib/python3.14/site-packages/_pytest/logging.py:843: in pytest_runtest_setup
+    yield
+.venv/lib/python3.14/site-packages/_pytest/capture.py:895: in pytest_runtest_setup
+    return (yield)
+            ^^^^^
+.venv/lib/python3.14/site-packages/_pytest/unraisableexception.py:153: in pytest_runtest_setup
+    collect_unraisable(item.config)
+.venv/lib/python3.14/site-packages/_pytest/unraisableexception.py:79: in collect_unraisable
+    raise errors[0]
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+config = <_pytest.config.Config object at 0x7f7529077cb0>
+
+    def collect_unraisable(config: Config) -> None:
+        pop_unraisable = config.stash[unraisable_exceptions].pop
+        errors: list[pytest.PytestUnraisableExceptionWarning | RuntimeError] = []
+        meta = None
+        hook_error = None
+        try:
+            while True:
+                try:
+                    meta = pop_unraisable()
+                except IndexError:
+                    break
+    
+                if isinstance(meta, BaseException):
+                    hook_error = RuntimeError("Failed to process unraisable exception")
+                    hook_error.__cause__ = meta
+                    errors.append(hook_error)
+                    continue
+    
+                msg = meta.msg
+                try:
+>                   warnings.warn(pytest.PytestUnraisableExceptionWarning(msg))
+E                   pytest.PytestUnraisableExceptionWarning: Exception ignored while finalizing database connection <sqlite3.Connection object at 0x7f7497b03c40>: None
+
+.venv/lib/python3.14/site-packages/_pytest/unraisableexception.py:67: PytestUnraisableExceptionWarning
+=================================== FAILURES ===================================
+_________________________ test_acquire_archive_command _________________________
+
+t = <class 'pathlib.Path'>
+globalns = {'ArchiveDataset': <class 'courtload.archive_models.ArchiveDataset'>, 'BalldontlieClient': <class 'courtload.ingestion...lieClient'>, 'Base': <class 'courtload.database.Base'>, 'Connection': <class 'sqlalchemy.engine.base.Connection'>, ...}
+localns = {'ArchiveDataset': <class 'courtload.archive_models.ArchiveDataset'>, 'BalldontlieClient': <class 'courtload.ingestion...lieClient'>, 'Base': <class 'courtload.database.Base'>, 'Connection': <class 'sqlalchemy.engine.base.Connection'>, ...}
+type_params = ()
+
+>   def _eval_type(t, globalns, localns, type_params=_sentinel, *, recursive_guard=frozenset(),
+    
+                   format=None, owner=None, parent_fwdref=None, prefer_fwd_module=False):
+E                  ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7f74bfd8f790>
+
+/usr/lib/python3.14/typing.py:433: ResourceWarning
+
+The above exception was the direct cause of the following exception:
+
+cls = <class '_pytest.runner.CallInfo'>
+func = <function call_and_report.<locals>.<lambda> at 0x7f749873a1f0>
+when = 'call'
+reraise = (<class '_pytest.outcomes.Exit'>, <class 'KeyboardInterrupt'>)
+
+    @classmethod
+    def from_call(
+        cls,
+        func: Callable[[], TResult],
+        when: Literal["collect", "setup", "call", "teardown"],
+        reraise: type[BaseException] | tuple[type[BaseException], ...] | None = None,
+    ) -> CallInfo[TResult]:
+        """Call func, wrapping the result in a CallInfo.
+    
+        :param func:
+            The function to call. Called without arguments.
+        :type func: Callable[[], _pytest.runner.TResult]
+        :param when:
+            The phase in which the function is called.
+        :param reraise:
+            Exception or exceptions that shall propagate if raised by the
+            function, instead of being wrapped in the CallInfo.
+        """
+        excinfo = None
+        instant = timing.Instant()
+        try:
+>           result: TResult | None = func()
+                                     ^^^^^^
+
+.venv/lib/python3.14/site-packages/_pytest/runner.py:344: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+.venv/lib/python3.14/site-packages/_pytest/runner.py:246: in <lambda>
+    lambda: runtest_hook(item=item, **kwds), when=when, reraise=reraise
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv/lib/python3.14/site-packages/pluggy/_hooks.py:512: in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv/lib/python3.14/site-packages/pluggy/_manager.py:120: in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv/lib/python3.14/site-packages/_pytest/logging.py:850: in pytest_runtest_call
+    yield
+.venv/lib/python3.14/site-packages/_pytest/capture.py:900: in pytest_runtest_call
+    return (yield)
+            ^^^^^
+.venv/lib/python3.14/site-packages/_pytest/skipping.py:263: in pytest_runtest_call
+    return (yield)
+            ^^^^^
+.venv/lib/python3.14/site-packages/_pytest/unraisableexception.py:158: in pytest_runtest_call
+    collect_unraisable(item.config)
+.venv/lib/python3.14/site-packages/_pytest/unraisableexception.py:79: in collect_unraisable
+    raise errors[0]
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+config = <_pytest.config.Config object at 0x7f7529077cb0>
+
+    def collect_unraisable(config: Config) -> None:
+        pop_unraisable = config.stash[unraisable_exceptions].pop
+        errors: list[pytest.PytestUnraisableExceptionWarning | RuntimeError] = []
+        meta = None
+        hook_error = None
+        try:
+            while True:
+                try:
+                    meta = pop_unraisable()
+                except IndexError:
+                    break
+    
+                if isinstance(meta, BaseException):
+                    hook_error = RuntimeError("Failed to process unraisable exception")
+                    hook_error.__cause__ = meta
+                    errors.append(hook_error)
+                    continue
+    
+                msg = meta.msg
+                try:
+>                   warnings.warn(pytest.PytestUnraisableExceptionWarning(msg))
+E                   pytest.PytestUnraisableExceptionWarning: Exception ignored while finalizing database connection <sqlite3.Connection object at 0x7f74bfd8f790>: None
+
+.venv/lib/python3.14/site-packages/_pytest/unraisableexception.py:67: PytestUnraisableExceptionWarning
+___________________ test_protected_api_cache_does_not_fetch ____________________
+
+self = TypeAdapter(Annotated[str, MinLen, MaxLen, _PydanticGeneralMetadata(pattern='^[a-zA-Z0-9_-]+$'), FieldInfo(annotation=NoneType, required=False, default='default', alias='workspaceId', alias_priority=2, json_schema_extra={})])
+ns_resolver = <pydantic._internal._namespace_utils.NsResolver object at 0x7f74a2688750>
+force = False, raise_errors = False
+
+    def _init_core_attrs(
+        self, ns_resolver: _namespace_utils.NsResolver, force: bool, raise_errors: bool = False
+    ) -> bool:
+        """Initialize the core schema, validator, and serializer for the type.
+    
+        Args:
+            ns_resolver: The namespace resolver to use when building the core schema for the adapted type.
+            force: Whether to force the construction of the core schema, validator, and serializer.
+                If `force` is set to `False` and `_defer_build` is `True`, the core schema, validator, and serializer will be set to mocks.
+            raise_errors: Whether to raise errors if initializing any of the core attrs fails.
+    
+        Returns:
+            `True` if the core schema, validator, and serializer were successfully initialized, otherwise `False`.
+    
+        Raises:
+            PydanticUndefinedAnnotation: If `PydanticUndefinedAnnotation` occurs in`__get_pydantic_core_schema__`
+                and `raise_errors=True`.
+        """
+        if not force and self._defer_build:
+            _mock_val_ser.set_type_adapter_mocks(self)
+            self.pydantic_complete = False
+            return False
+    
+        try:
+>           self.core_schema = _getattr_no_parents(self._type, '__pydantic_core_schema__')
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.venv/lib/python3.14/site-packages/pydantic/type_adapter.py:287: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+obj = typing.Annotated[str, MinLen(min_length=1), MaxLen(max_length=36), _PydanticGeneralMetadata(pattern='^[a-zA-Z0-9_-]+$'...o(annotation=NoneType, required=False, default='default', alias='workspaceId', alias_priority=2, json_schema_extra={})]
+attribute = '__pydantic_core_schema__'
+
+    def _getattr_no_parents(obj: Any, attribute: str) -> Any:
+        """Returns the attribute value without attempting to look up attributes from parent types."""
+        if hasattr(obj, '__dict__'):
+            try:
+                return obj.__dict__[attribute]
+            except KeyError:
+                pass
+    
+        slots = getattr(obj, '__slots__', None)
+        if slots is not None and attribute in slots:
+            return getattr(obj, attribute)
+        else:
+>           raise AttributeError(attribute)
+E           AttributeError: __pydantic_core_schema__
+
+.venv/lib/python3.14/site-packages/pydantic/type_adapter.py:56: AttributeError
+
+During handling of the above exception, another exception occurred:
+
+self = <pydantic._internal._generate_schema.GenerateSchema object at 0x7f74981c34c0>
+get_inner_schema = <pydantic._internal._schema_generation_shared.CallbackGetCoreSchemaHandler object at 0x7f74951c9f10>
+annotation = MinLen(min_length=1), pydantic_js_annotation_functions = []
+check_unsupported_field_info_attributes = True
+
+>   def _get_wrapped_inner_schema(
+    
+        self,
+        get_inner_schema: GetCoreSchemaHandler,
+        annotation: Any,
+        pydantic_js_annotation_functions: list[GetJsonSchemaFunction],
+        check_unsupported_field_info_attributes: bool = False,
+    ) -> CallbackGetCoreSchemaHandler:
+E   ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7f74bee81e40>
+
+.venv/lib/python3.14/site-packages/pydantic/_internal/_generate_schema.py:2412: ResourceWarning
+
+The above exception was the direct cause of the following exception:
+
+cls = <class '_pytest.runner.CallInfo'>
+func = <function call_and_report.<locals>.<lambda> at 0x7f74a2ad7480>
+when = 'call'
+reraise = (<class '_pytest.outcomes.Exit'>, <class 'KeyboardInterrupt'>)
+
+    @classmethod
+    def from_call(
+        cls,
+        func: Callable[[], TResult],
+        when: Literal["collect", "setup", "call", "teardown"],
+        reraise: type[BaseException] | tuple[type[BaseException], ...] | None = None,
+    ) -> CallInfo[TResult]:
+        """Call func, wrapping the result in a CallInfo.
+    
+        :param func:
+            The function to call. Called without arguments.
+        :type func: Callable[[], _pytest.runner.TResult]
+        :param when:
+            The phase in which the function is called.
+        :param reraise:
+            Exception or exceptions that shall propagate if raised by the
+            function, instead of being wrapped in the CallInfo.
+        """
+        excinfo = None
+        instant = timing.Instant()
+        try:
+>           result: TResult | None = func()
+                                     ^^^^^^
+
+.venv/lib/python3.14/site-packages/_pytest/runner.py:344: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+.venv/lib/python3.14/site-packages/_pytest/runner.py:246: in <lambda>
+    lambda: runtest_hook(item=item, **kwds), when=when, reraise=reraise
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv/lib/python3.14/site-packages/pluggy/_hooks.py:512: in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv/lib/python3.14/site-packages/pluggy/_manager.py:120: in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv/lib/python3.14/site-packages/_pytest/logging.py:850: in pytest_runtest_call
+    yield
+.venv/lib/python3.14/site-packages/_pytest/capture.py:900: in pytest_runtest_call
+    return (yield)
+            ^^^^^
+.venv/lib/python3.14/site-packages/_pytest/skipping.py:263: in pytest_runtest_call
+    return (yield)
+            ^^^^^
+.venv/lib/python3.14/site-packages/_pytest/unraisableexception.py:158: in pytest_runtest_call
+    collect_unraisable(item.config)
+.venv/lib/python3.14/site-packages/_pytest/unraisableexception.py:79: in collect_unraisable
+    raise errors[0]
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+config = <_pytest.config.Config object at 0x7f7529077cb0>
+
+    def collect_unraisable(config: Config) -> None:
+        pop_unraisable = config.stash[unraisable_exceptions].pop
+        errors: list[pytest.PytestUnraisableExceptionWarning | RuntimeError] = []
+        meta = None
+        hook_error = None
+        try:
+            while True:
+                try:
+                    meta = pop_unraisable()
+                except IndexError:
+                    break
+    
+                if isinstance(meta, BaseException):
+                    hook_error = RuntimeError("Failed to process unraisable exception")
+                    hook_error.__cause__ = meta
+                    errors.append(hook_error)
+                    continue
+    
+                msg = meta.msg
+                try:
+>                   warnings.warn(pytest.PytestUnraisableExceptionWarning(msg))
+E                   pytest.PytestUnraisableExceptionWarning: Exception ignored while finalizing database connection <sqlite3.Connection object at 0x7f74bee81e40>: None
+
+.venv/lib/python3.14/site-packages/_pytest/unraisableexception.py:67: PytestUnraisableExceptionWarning
+__________ test_focal_player_exposure_missing_stats_and_metric_gates ___________
+
+self = ExposureCell(key='selected', present=[], absent=[], games=1, stints=2, seconds=180.0, minutes=3.0, offensive_possessio...cluster ratio linearization, normal approximation', games=1, reason='Each directional split requires 10 valid games')})
+
+    def model_dump(
+        self,
+        *,
+        mode: Literal['json', 'python'] | str = 'python',
+        include: IncEx | None = None,
+        exclude: IncEx | None = None,
+        context: Any | None = None,
+        by_alias: bool | None = None,
+        exclude_unset: bool = False,
+        exclude_defaults: bool = False,
+        exclude_none: bool = False,
+        exclude_computed_fields: bool = False,
+        round_trip: bool = False,
+        warnings: bool | Literal['none', 'warn', 'error'] = True,
+        fallback: Callable[[Any], Any] | None = None,
+        serialize_as_any: bool = False,
+        polymorphic_serialization: bool | None = None,
+    ) -> dict[str, Any]:
+        """!!! abstract "Usage Documentation"
+            [`model_dump`](../concepts/serialization.md#python-mode)
+    
+        Generate a dictionary representation of the model, optionally specifying which fields to include or exclude.
+    
+        Args:
+            mode: The mode in which `to_python` should run.
+                If mode is 'json', the output will only contain JSON serializable types.
+                If mode is 'python', the output may contain non-JSON-serializable Python objects.
+            include: A set of fields to include in the output.
+            exclude: A set of fields to exclude from the output.
+            context: Additional context to pass to the serializer.
+            by_alias: Whether to use the field's alias in the dictionary key if defined.
+            exclude_unset: Whether to exclude fields that have not been explicitly set.
+            exclude_defaults: Whether to exclude fields that are set to their default value.
+            exclude_none: Whether to exclude fields that have a value of `None`.
+            exclude_computed_fields: Whether to exclude computed fields.
+                While this can be useful for round-tripping, it is usually recommended to use the dedicated
+                `round_trip` parameter instead.
+            round_trip: If True, dumped values should be valid as input for non-idempotent types such as Json[T].
+            warnings: How to handle serialization errors. False/"none" ignores them, True/"warn" logs errors,
+                "error" raises a [`PydanticSerializationError`][pydantic_core.PydanticSerializationError].
+            fallback: A function to call when an unknown value is encountered. If not provided,
+                a [`PydanticSerializationError`][pydantic_core.PydanticSerializationError] error is raised.
+            serialize_as_any: Whether to serialize fields with duck-typing serialization behavior.
+            polymorphic_serialization: Whether to use model and dataclass polymorphic serialization for this call.
+    
+        Returns:
+            A dictionary representation of the model.
+        """
+>       return self.__pydantic_serializer__.to_python(
+            self,
+            mode=mode,
+            by_alias=by_alias,
+            include=include,
+            exclude=exclude,
+            context=context,
+            exclude_unset=exclude_unset,
+            exclude_defaults=exclude_defaults,
+            exclude_none=exclude_none,
+            exclude_computed_fields=exclude_computed_fields,
+            round_trip=round_trip,
+            warnings=warnings,
+            fallback=fallback,
+            serialize_as_any=serialize_as_any,
+            polymorphic_serialization=polymorphic_serialization,
+        )
+E       ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7f7497b00d60>
+
+.venv/lib/python3.14/site-packages/pydantic/main.py:475: ResourceWarning
+
+The above exception was the direct cause of the following exception:
+
+cls = <class '_pytest.runner.CallInfo'>
+func = <function call_and_report.<locals>.<lambda> at 0x7f74a2ad40f0>
+when = 'call'
+reraise = (<class '_pytest.outcomes.Exit'>, <class 'KeyboardInterrupt'>)
+
+    @classmethod
+    def from_call(
+        cls,
+        func: Callable[[], TResult],
+        when: Literal["collect", "setup", "call", "teardown"],
+        reraise: type[BaseException] | tuple[type[BaseException], ...] | None = None,
+    ) -> CallInfo[TResult]:
+        """Call func, wrapping the result in a CallInfo.
+    
+        :param func:
+            The function to call. Called without arguments.
+        :type func: Callable[[], _pytest.runner.TResult]
+        :param when:
+            The phase in which the function is called.
+        :param reraise:
+            Exception or exceptions that shall propagate if raised by the
+            function, instead of being wrapped in the CallInfo.
+        """
+        excinfo = None
+        instant = timing.Instant()
+        try:
+>           result: TResult | None = func()
+                                     ^^^^^^
+
+.venv/lib/python3.14/site-packages/_pytest/runner.py:344: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+.venv/lib/python3.14/site-packages/_pytest/runner.py:246: in <lambda>
+    lambda: runtest_hook(item=item, **kwds), when=when, reraise=reraise
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv/lib/python3.14/site-packages/pluggy/_hooks.py:512: in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv/lib/python3.14/site-packages/pluggy/_manager.py:120: in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv/lib/python3.14/site-packages/_pytest/logging.py:850: in pytest_runtest_call
+    yield
+.venv/lib/python3.14/site-packages/_pytest/capture.py:900: in pytest_runtest_call
+    return (yield)
+            ^^^^^
+.venv/lib/python3.14/site-packages/_pytest/skipping.py:263: in pytest_runtest_call
+    return (yield)
+            ^^^^^
+.venv/lib/python3.14/site-packages/_pytest/unraisableexception.py:158: in pytest_runtest_call
+    collect_unraisable(item.config)
+.venv/lib/python3.14/site-packages/_pytest/unraisableexception.py:79: in collect_unraisable
+    raise errors[0]
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+config = <_pytest.config.Config object at 0x7f7529077cb0>
+
+    def collect_unraisable(config: Config) -> None:
+        pop_unraisable = config.stash[unraisable_exceptions].pop
+        errors: list[pytest.PytestUnraisableExceptionWarning | RuntimeError] = []
+        meta = None
+        hook_error = None
+        try:
+            while True:
+                try:
+                    meta = pop_unraisable()
+                except IndexError:
+                    break
+    
+                if isinstance(meta, BaseException):
+                    hook_error = RuntimeError("Failed to process unraisable exception")
+                    hook_error.__cause__ = meta
+                    errors.append(hook_error)
+                    continue
+    
+                msg = meta.msg
+                try:
+>                   warnings.warn(pytest.PytestUnraisableExceptionWarning(msg))
+E                   pytest.PytestUnraisableExceptionWarning: Exception ignored while finalizing database connection <sqlite3.Connection object at 0x7f7497b00d60>: None
+
+.venv/lib/python3.14/site-packages/_pytest/unraisableexception.py:67: PytestUnraisableExceptionWarning
+_ test_independent_denominator_detects_missing_game_duplicates_and_future_dates _
+  + Exception Group Traceback (most recent call last):
+  |   File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/_pytest/runner.py", line 344, in from_call
+  |     result: TResult | None = func()
+  |                              ~~~~^^
+  |   File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/_pytest/runner.py", line 246, in <lambda>
+  |     lambda: runtest_hook(item=item, **kwds), when=when, reraise=reraise
+  |             ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  |   File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/pluggy/_hooks.py", line 512, in __call__
+  |     return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  |            ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |   File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/pluggy/_manager.py", line 120, in _hookexec
+  |     return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  |            ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |   File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/pluggy/_callers.py", line 167, in _multicall
+  |     raise exception
+  |   File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/pluggy/_callers.py", line 139, in _multicall
+  |     teardown.throw(exception)
+  |     ~~~~~~~~~~~~~~^^^^^^^^^^^
+  |   File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/_pytest/logging.py", line 850, in pytest_runtest_call
+  |     yield
+  |   File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/pluggy/_callers.py", line 139, in _multicall
+  |     teardown.throw(exception)
+  |     ~~~~~~~~~~~~~~^^^^^^^^^^^
+  |   File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/_pytest/capture.py", line 900, in pytest_runtest_call
+  |     return (yield)
+  |             ^^^^^
+  |   File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/pluggy/_callers.py", line 139, in _multicall
+  |     teardown.throw(exception)
+  |     ~~~~~~~~~~~~~~^^^^^^^^^^^
+  |   File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/_pytest/skipping.py", line 263, in pytest_runtest_call
+  |     return (yield)
+  |             ^^^^^
+  |   File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/pluggy/_callers.py", line 121, in _multicall
+  |     res = hook_impl.function(*args)
+  |   File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/_pytest/unraisableexception.py", line 158, in pytest_runtest_call
+  |     collect_unraisable(item.config)
+  |     ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  |   File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/_pytest/unraisableexception.py", line 81, in collect_unraisable
+  |     raise ExceptionGroup("multiple unraisable exception warnings", errors)
+  | ExceptionGroup: multiple unraisable exception warnings (4 sub-exceptions)
+  +-+---------------- 1 ----------------
+    | Traceback (most recent call last):
+    |   File "/home/ethioking/dev/nba-analytics/tests/unit/test_shotchart_admission.py", line 553, in test_independent_denominator_detects_missing_game_duplicates_and_future_dates
+    |     rows.append(
+    |     ~~~~~~~~~~~^
+    |         schedule(
+    |         ^^^^^^^^^
+    |     ...<3 lines>...
+    |         )
+    |         ^
+    |     )
+    |     ^
+    | ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7f74983632e0>
+    | 
+    | The above exception was the direct cause of the following exception:
+    | 
+    | Traceback (most recent call last):
+    |   File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/_pytest/unraisableexception.py", line 67, in collect_unraisable
+    |     warnings.warn(pytest.PytestUnraisableExceptionWarning(msg))
+    |     ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    | pytest.PytestUnraisableExceptionWarning: Exception ignored while finalizing database connection <sqlite3.Connection object at 0x7f74983632e0>: None
+    | 
+    +---------------- 2 ----------------
+    | Traceback (most recent call last):
+    |   File "/home/ethioking/dev/nba-analytics/tests/unit/test_shotchart_admission.py", line 553, in test_independent_denominator_detects_missing_game_duplicates_and_future_dates
+    |     rows.append(
+    |     ~~~~~~~~~~~^
+    |         schedule(
+    |         ^^^^^^^^^
+    |     ...<3 lines>...
+    |         )
+    |         ^
+    |     )
+    |     ^
+    | ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7f74983636a0>
+    | 
+    | The above exception was the direct cause of the following exception:
+    | 
+    | Traceback (most recent call last):
+    |   File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/_pytest/unraisableexception.py", line 67, in collect_unraisable
+    |     warnings.warn(pytest.PytestUnraisableExceptionWarning(msg))
+    |     ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    | pytest.PytestUnraisableExceptionWarning: Exception ignored while finalizing database connection <sqlite3.Connection object at 0x7f74983636a0>: None
+    | 
+    +---------------- 3 ----------------
+    | Traceback (most recent call last):
+    |   File "/home/ethioking/dev/nba-analytics/tests/unit/test_shotchart_admission.py", line 553, in test_independent_denominator_detects_missing_game_duplicates_and_future_dates
+    |     rows.append(
+    |     ~~~~~~~~~~~^
+    |         schedule(
+    |         ^^^^^^^^^
+    |     ...<3 lines>...
+    |         )
+    |         ^
+    |     )
+    |     ^
+    | ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7f74983623e0>
+    | 
+    | The above exception was the direct cause of the following exception:
+    | 
+    | Traceback (most recent call last):
+    |   File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/_pytest/unraisableexception.py", line 67, in collect_unraisable
+    |     warnings.warn(pytest.PytestUnraisableExceptionWarning(msg))
+    |     ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    | pytest.PytestUnraisableExceptionWarning: Exception ignored while finalizing database connection <sqlite3.Connection object at 0x7f74983623e0>: None
+    | 
+    +---------------- 4 ----------------
+    | Traceback (most recent call last):
+    |   File "/home/ethioking/dev/nba-analytics/tests/unit/test_shotchart_admission.py", line 553, in test_independent_denominator_detects_missing_game_duplicates_and_future_dates
+    |     rows.append(
+    |     ~~~~~~~~~~~^
+    |         schedule(
+    |         ^^^^^^^^^
+    |     ...<3 lines>...
+    |         )
+    |         ^
+    |     )
+    |     ^
+    | ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7f7498363f10>
+    | 
+    | The above exception was the direct cause of the following exception:
+    | 
+    | Traceback (most recent call last):
+    |   File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/_pytest/unraisableexception.py", line 67, in collect_unraisable
+    |     warnings.warn(pytest.PytestUnraisableExceptionWarning(msg))
+    |     ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    | pytest.PytestUnraisableExceptionWarning: Exception ignored while finalizing database connection <sqlite3.Connection object at 0x7f7498363f10>: None
+    | 
+    +------------------------------------
+_ TestStatsQueryEngineRuntime.test_saved_investigation_reproduces_over_100_rows _
+  + Exception Group Traceback (most recent call last):
+  |   File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/_pytest/runner.py", line 344, in from_call
+  |     result: TResult | None = func()
+  |                              ~~~~^^
+  |   File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/_pytest/runner.py", line 246, in <lambda>
+  |     lambda: runtest_hook(item=item, **kwds), when=when, reraise=reraise
+  |             ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+  |   File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/pluggy/_hooks.py", line 512, in __call__
+  |     return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  |            ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |   File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/pluggy/_manager.py", line 120, in _hookexec
+  |     return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  |            ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |   File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/pluggy/_callers.py", line 167, in _multicall
+  |     raise exception
+  |   File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/pluggy/_callers.py", line 139, in _multicall
+  |     teardown.throw(exception)
+  |     ~~~~~~~~~~~~~~^^^^^^^^^^^
+  |   File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/_pytest/logging.py", line 850, in pytest_runtest_call
+  |     yield
+  |   File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/pluggy/_callers.py", line 139, in _multicall
+  |     teardown.throw(exception)
+  |     ~~~~~~~~~~~~~~^^^^^^^^^^^
+  |   File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/_pytest/capture.py", line 900, in pytest_runtest_call
+  |     return (yield)
+  |             ^^^^^
+  |   File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/pluggy/_callers.py", line 139, in _multicall
+  |     teardown.throw(exception)
+  |     ~~~~~~~~~~~~~~^^^^^^^^^^^
+  |   File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/_pytest/skipping.py", line 263, in pytest_runtest_call
+  |     return (yield)
+  |             ^^^^^
+  |   File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/pluggy/_callers.py", line 121, in _multicall
+  |     res = hook_impl.function(*args)
+  |   File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/_pytest/unraisableexception.py", line 158, in pytest_runtest_call
+  |     collect_unraisable(item.config)
+  |     ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  |   File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/_pytest/unraisableexception.py", line 81, in collect_unraisable
+  |     raise ExceptionGroup("multiple unraisable exception warnings", errors)
+  | ExceptionGroup: multiple unraisable exception warnings (2 sub-exceptions)
+  +-+---------------- 1 ----------------
+    | Traceback (most recent call last):
+    |   File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/psycopg/_connection_base.py", line 153, in __del__
+    |     __warn(
+    |     ~~~~~~^
+    |         f"{object.__repr__(self)} was deleted while still open."
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |         " Please use 'with' or '.close()' to close the connection properly",
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |         ResourceWarning,
+    |         ^^^^^^^^^^^^^^^^
+    |     )
+    |     ^
+    | ResourceWarning: <psycopg.Connection object at 0x7f7498363020> was deleted while still open. Please use 'with' or '.close()' to close the connection properly
+    | 
+    | The above exception was the direct cause of the following exception:
+    | 
+    | Traceback (most recent call last):
+    |   File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/_pytest/unraisableexception.py", line 67, in collect_unraisable
+    |     warnings.warn(pytest.PytestUnraisableExceptionWarning(msg))
+    |     ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    | pytest.PytestUnraisableExceptionWarning: Exception ignored while calling deallocator <function BaseConnection.__del__ at 0x7f7523bc9640>: None
+    | 
+    +---------------- 2 ----------------
+    | Traceback (most recent call last):
+    |   File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/psycopg/_connection_base.py", line 153, in __del__
+    |     __warn(
+    |     ~~~~~~^
+    |         f"{object.__repr__(self)} was deleted while still open."
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |         " Please use 'with' or '.close()' to close the connection properly",
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |         ResourceWarning,
+    |         ^^^^^^^^^^^^^^^^
+    |     )
+    |     ^
+    | ResourceWarning: <psycopg.Connection object at 0x7f74983627b0> was deleted while still open. Please use 'with' or '.close()' to close the connection properly
+    | 
+    | The above exception was the direct cause of the following exception:
+    | 
+    | Traceback (most recent call last):
+    |   File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/_pytest/unraisableexception.py", line 67, in collect_unraisable
+    |     warnings.warn(pytest.PytestUnraisableExceptionWarning(msg))
+    |     ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    | pytest.PytestUnraisableExceptionWarning: Exception ignored while calling deallocator <function BaseConnection.__del__ at 0x7f7523bc9640>: None
+    | 
+    +------------------------------------
+___ TestStatsQueryEngineRuntime.test_predicates_and_sample_filters_reconcile ___
+
+self = <psycopg.Connection [IDLE] (host=localhost user=courtload database=courtload_b37a_tests) at 0x7f74983625d0>
+_BaseConnection__warn = <built-in function warn>
+
+    def __del__(self, __warn: Any = warn) -> None:
+        # If fails on connection we might not have this attribute yet
+        if not hasattr(self, "pgconn"):
+            return
+    
+        # Connection correctly closed
+        if self.closed:
+            return
+    
+        # Connection in a pool so terminating with the program is normal
+        if hasattr(self, "_pool"):
+            return
+    
+>       __warn(
+            f"{object.__repr__(self)} was deleted while still open."
+            " Please use 'with' or '.close()' to close the connection properly",
+            ResourceWarning,
+        )
+E       ResourceWarning: <psycopg.Connection object at 0x7f74983625d0> was deleted while still open. Please use 'with' or '.close()' to close the connection properly
+
+.venv/lib/python3.14/site-packages/psycopg/_connection_base.py:153: ResourceWarning
+
+The above exception was the direct cause of the following exception:
+
+cls = <class '_pytest.runner.CallInfo'>
+func = <function call_and_report.<locals>.<lambda> at 0x7f74a1bc09e0>
+when = 'call'
+reraise = (<class '_pytest.outcomes.Exit'>, <class 'KeyboardInterrupt'>)
+
+    @classmethod
+    def from_call(
+        cls,
+        func: Callable[[], TResult],
+        when: Literal["collect", "setup", "call", "teardown"],
+        reraise: type[BaseException] | tuple[type[BaseException], ...] | None = None,
+    ) -> CallInfo[TResult]:
+        """Call func, wrapping the result in a CallInfo.
+    
+        :param func:
+            The function to call. Called without arguments.
+        :type func: Callable[[], _pytest.runner.TResult]
+        :param when:
+            The phase in which the function is called.
+        :param reraise:
+            Exception or exceptions that shall propagate if raised by the
+            function, instead of being wrapped in the CallInfo.
+        """
+        excinfo = None
+        instant = timing.Instant()
+        try:
+>           result: TResult | None = func()
+                                     ^^^^^^
+
+.venv/lib/python3.14/site-packages/_pytest/runner.py:344: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+.venv/lib/python3.14/site-packages/_pytest/runner.py:246: in <lambda>
+    lambda: runtest_hook(item=item, **kwds), when=when, reraise=reraise
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv/lib/python3.14/site-packages/pluggy/_hooks.py:512: in __call__
+    return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv/lib/python3.14/site-packages/pluggy/_manager.py:120: in _hookexec
+    return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv/lib/python3.14/site-packages/_pytest/logging.py:850: in pytest_runtest_call
+    yield
+.venv/lib/python3.14/site-packages/_pytest/capture.py:900: in pytest_runtest_call
+    return (yield)
+            ^^^^^
+.venv/lib/python3.14/site-packages/_pytest/skipping.py:263: in pytest_runtest_call
+    return (yield)
+            ^^^^^
+.venv/lib/python3.14/site-packages/_pytest/unraisableexception.py:158: in pytest_runtest_call
+    collect_unraisable(item.config)
+.venv/lib/python3.14/site-packages/_pytest/unraisableexception.py:79: in collect_unraisable
+    raise errors[0]
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+config = <_pytest.config.Config object at 0x7f7529077cb0>
+
+    def collect_unraisable(config: Config) -> None:
+        pop_unraisable = config.stash[unraisable_exceptions].pop
+        errors: list[pytest.PytestUnraisableExceptionWarning | RuntimeError] = []
+        meta = None
+        hook_error = None
+        try:
+            while True:
+                try:
+                    meta = pop_unraisable()
+                except IndexError:
+                    break
+    
+                if isinstance(meta, BaseException):
+                    hook_error = RuntimeError("Failed to process unraisable exception")
+                    hook_error.__cause__ = meta
+                    errors.append(hook_error)
+                    continue
+    
+                msg = meta.msg
+                try:
+>                   warnings.warn(pytest.PytestUnraisableExceptionWarning(msg))
+E                   pytest.PytestUnraisableExceptionWarning: Exception ignored while calling deallocator <function BaseConnection.__del__ at 0x7f7523bc9640>: None
+
+.venv/lib/python3.14/site-packages/_pytest/unraisableexception.py:67: PytestUnraisableExceptionWarning
+=========================== short test summary info ============================
+ERROR tests/unit/test_backfill_resumable.py::test_execute_backfill_batch_resumption
+ERROR tests/unit/test_identity_crosswalk.py::test_dated_metadata_temporal_discipline
+ERROR tests/unit/test_measurements.py::test_undrafted_player_handling - pytes...
+FAILED tests/unit/test_cli.py::test_acquire_archive_command - pytest.PytestUn...
+FAILED tests/unit/test_live.py::test_protected_api_cache_does_not_fetch - pyt...
+FAILED tests/unit/test_on_off.py::test_focal_player_exposure_missing_stats_and_metric_gates
+FAILED tests/unit/test_shotchart_admission.py::test_independent_denominator_detects_missing_game_duplicates_and_future_dates
+FAILED tests/unit/test_stats_engine.py::TestStatsQueryEngineRuntime::test_saved_investigation_reproduces_over_100_rows
+FAILED tests/unit/test_stats_engine.py::TestStatsQueryEngineRuntime::test_predicates_and_sample_filters_reconcile
+====== 6 failed, 731 passed, 1 deselected, 3 errors in 151.17s (0:02:31) =======
+  + Exception Group Traceback (most recent call last):
+  |   File "/home/ethioking/dev/nba-analytics/.venv/bin/pytest", line 6, in <module>
+  |     sys.exit(console_main())
+  |              ~~~~~~~~~~~~^^
+  |   File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/_pytest/config/__init__.py", line 201, in console_main
+  |     code = main()
+  |   File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/_pytest/config/__init__.py", line 175, in main
+  |     ret: ExitCode | int = config.hook.pytest_cmdline_main(config=config)
+  |                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  |   File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/pluggy/_hooks.py", line 512, in __call__
+  |     return self._hookexec(self.name, self._hookimpls.copy(), kwargs, firstresult)
+  |            ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |   File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/pluggy/_manager.py", line 120, in _hookexec
+  |     return self._inner_hookexec(hook_name, methods, kwargs, firstresult)
+  |            ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |   File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/pluggy/_callers.py", line 167, in _multicall
+  |     raise exception
+  |   File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/pluggy/_callers.py", line 121, in _multicall
+  |     res = hook_impl.function(*args)
+  |   File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/_pytest/main.py", line 336, in pytest_cmdline_main
+  |     return wrap_session(config, _main)
+  |   File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/_pytest/main.py", line 331, in wrap_session
+  |     config._ensure_unconfigure()
+  |     ~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  |   File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/_pytest/config/__init__.py", line 1131, in _ensure_unconfigure
+  |     self._cleanup_stack.close()
+  |     ~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  |   File "/usr/lib/python3.14/contextlib.py", line 627, in close
+  |     self.__exit__(None, None, None)
+  |     ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  |   File "/usr/lib/python3.14/contextlib.py", line 619, in __exit__
+  |     raise exc
+  |   File "/usr/lib/python3.14/contextlib.py", line 604, in __exit__
+  |     if cb(*exc_details):
+  |        ~~^^^^^^^^^^^^^^
+  |   File "/usr/lib/python3.14/contextlib.py", line 482, in _exit_wrapper
+  |     callback(*args, **kwds)
+  |     ~~~~~~~~^^^^^^^^^^^^^^^
+  |   File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/_pytest/unraisableexception.py", line 95, in cleanup
+  |     collect_unraisable(config)
+  |     ~~~~~~~~~~~~~~~~~~^^^^^^^^
+  |   File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/_pytest/unraisableexception.py", line 81, in collect_unraisable
+  |     raise ExceptionGroup("multiple unraisable exception warnings", errors)
+  | ExceptionGroup: multiple unraisable exception warnings (3 sub-exceptions)
+  +-+---------------- 1 ----------------
+    | Traceback (most recent call last):
+    |   File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/psycopg/_connection_base.py", line 153, in __del__
+    |     __warn(
+    |     ~~~~~~^
+    |         f"{object.__repr__(self)} was deleted while still open."
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |         " Please use 'with' or '.close()' to close the connection properly",
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |         ResourceWarning,
+    |         ^^^^^^^^^^^^^^^^
+    |     )
+    |     ^
+    | ResourceWarning: <psycopg.Connection object at 0x7f7497b02030> was deleted while still open. Please use 'with' or '.close()' to close the connection properly
+    | 
+    | The above exception was the direct cause of the following exception:
+    | 
+    | Traceback (most recent call last):
+    |   File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/_pytest/unraisableexception.py", line 67, in collect_unraisable
+    |     warnings.warn(pytest.PytestUnraisableExceptionWarning(msg))
+    |     ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    | pytest.PytestUnraisableExceptionWarning: Exception ignored while calling deallocator <function BaseConnection.__del__ at 0x7f7523bc9640>: None
+    | 
+    +---------------- 2 ----------------
+    | Traceback (most recent call last):
+    |   File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/psycopg/_connection_base.py", line 153, in __del__
+    |     __warn(
+    |     ~~~~~~^
+    |         f"{object.__repr__(self)} was deleted while still open."
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |         " Please use 'with' or '.close()' to close the connection properly",
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |         ResourceWarning,
+    |         ^^^^^^^^^^^^^^^^
+    |     )
+    |     ^
+    | ResourceWarning: <psycopg.Connection object at 0x7f74bf772e40> was deleted while still open. Please use 'with' or '.close()' to close the connection properly
+    | 
+    | The above exception was the direct cause of the following exception:
+    | 
+    | Traceback (most recent call last):
+    |   File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/_pytest/unraisableexception.py", line 67, in collect_unraisable
+    |     warnings.warn(pytest.PytestUnraisableExceptionWarning(msg))
+    |     ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    | pytest.PytestUnraisableExceptionWarning: Exception ignored while calling deallocator <function BaseConnection.__del__ at 0x7f7523bc9640>: None
+    | 
+    +---------------- 3 ----------------
+    | Traceback (most recent call last):
+    |   File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/_pytest/unraisableexception.py", line 33, in gc_collect_harder
+    |     gc.collect()
+    |     ~~~~~~~~~~^^
+    | ResourceWarning: unclosed database in <sqlite3.Connection object at 0x7f7497b02a70>
+    | 
+    | The above exception was the direct cause of the following exception:
+    | 
+    | Traceback (most recent call last):
+    |   File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/_pytest/unraisableexception.py", line 67, in collect_unraisable
+    |     warnings.warn(pytest.PytestUnraisableExceptionWarning(msg))
+    |     ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    | pytest.PytestUnraisableExceptionWarning: Exception ignored while finalizing database connection <sqlite3.Connection object at 0x7f7497b02a70>: None
+    | 
+    +------------------------------------
