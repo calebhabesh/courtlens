@@ -1,0 +1,2288 @@
+{
+  "started_at": "2026-10-04T18:33:01.542836+00:00",
+  "mode": "real_provider",
+  "model": "gemini-3.5-flash-lite",
+  "sdk_version": "2.26.0",
+  "project_tier": "owner_declared_free_not_independently_verified",
+  "corpus_sha256": "17178b8b6bd579f0ff4e6ca1b1addd37bd2ee043c63fb95bae8fba11ca37838f",
+  "corpus_path": "tests/fixtures/assistant/b33-corpus-v1.json",
+  "corrections": [
+    {
+      "case": "b33-23",
+      "field": "player_b",
+      "original": "1628369",
+      "corrected": "1629628",
+      "reason": "Question names RJ Barrett; original fixture uses Jayson Tatum ID."
+    }
+  ],
+  "limits": {
+    "cases": 45,
+    "calls_per_case": 1,
+    "provider_seconds": 20,
+    "turn_seconds": 45,
+    "stop_on_quota_or_provider_failure": true
+  },
+  "cases": [
+    {
+      "id": "b33-01",
+      "split": "development",
+      "category": "supported",
+      "status": "answered",
+      "passed": true,
+      "observed_model_version": "gemini-3.5-flash-lite",
+      "elapsed_ms": 1691.784,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 1,
+        "cache_hits": 1,
+        "elapsed_ms": 1691.219,
+        "provider_usage": {
+          "prompt_token_count": 8038,
+          "candidates_token_count": 108,
+          "total_token_count": 8146
+        },
+        "usage_basis": "provider metadata"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "execute",
+        "clarification": null,
+        "context_changes": null,
+        "steps": [
+          {
+            "step_id": "def_pts",
+            "operation": "definition",
+            "arguments": {
+              "metric": "pts"
+            },
+            "depends_on": []
+          }
+        ],
+        "output_kind": "definition"
+      },
+      "result_hashes": [
+        "0b8202f361e9bfc0d3c19c6da370a7b4cb73de8c28abaf8df81d02deecc1c84a"
+      ],
+      "manual_result_hashes": [
+        "0b8202f361e9bfc0d3c19c6da370a7b4cb73de8c28abaf8df81d02deecc1c84a"
+      ]
+    },
+    {
+      "id": "b33-02",
+      "split": "held_out",
+      "category": "supported",
+      "status": "answered",
+      "passed": true,
+      "observed_model_version": "gemini-3.5-flash-lite",
+      "elapsed_ms": 1591.769,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 1,
+        "cache_hits": 1,
+        "elapsed_ms": 1591.231,
+        "provider_usage": {
+          "prompt_token_count": 8040,
+          "candidates_token_count": 116,
+          "total_token_count": 8156
+        },
+        "usage_basis": "provider metadata"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "execute",
+        "clarification": null,
+        "context_changes": null,
+        "steps": [
+          {
+            "step_id": "def_pts_per_game",
+            "operation": "definition",
+            "arguments": {
+              "metric": "pts_per_game"
+            },
+            "depends_on": []
+          }
+        ],
+        "output_kind": "definition"
+      },
+      "result_hashes": [
+        "faa88f715a61979f3e7f2479c6e225456137384dde519d6b337d0de6fe044741"
+      ],
+      "manual_result_hashes": [
+        "faa88f715a61979f3e7f2479c6e225456137384dde519d6b337d0de6fe044741"
+      ]
+    },
+    {
+      "id": "b33-03",
+      "split": "development",
+      "category": "supported",
+      "status": "answered",
+      "passed": true,
+      "observed_model_version": "gemini-3.5-flash-lite",
+      "elapsed_ms": 1224.462,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 1,
+        "cache_hits": 1,
+        "elapsed_ms": 1223.918,
+        "provider_usage": {
+          "prompt_token_count": 8040,
+          "candidates_token_count": 116,
+          "total_token_count": 8156
+        },
+        "usage_basis": "provider metadata"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "execute",
+        "clarification": null,
+        "context_changes": null,
+        "steps": [
+          {
+            "step_id": "def_min_per_game",
+            "operation": "definition",
+            "arguments": {
+              "metric": "min_per_game"
+            },
+            "depends_on": []
+          }
+        ],
+        "output_kind": "definition"
+      },
+      "result_hashes": [
+        "6a61157f8674100d675f9df37cd19ed77beafa61d89fd387d16906d51abc0af0"
+      ],
+      "manual_result_hashes": [
+        "6a61157f8674100d675f9df37cd19ed77beafa61d89fd387d16906d51abc0af0"
+      ]
+    },
+    {
+      "id": "b33-04",
+      "split": "development",
+      "category": "supported",
+      "status": "answered",
+      "passed": true,
+      "observed_model_version": "gemini-3.5-flash-lite",
+      "elapsed_ms": 1553.024,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 1,
+        "cache_hits": 1,
+        "elapsed_ms": 1552.44,
+        "provider_usage": {
+          "prompt_token_count": 8038,
+          "candidates_token_count": 109,
+          "total_token_count": 8147
+        },
+        "usage_basis": "provider metadata"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "execute",
+        "clarification": null,
+        "context_changes": null,
+        "steps": [
+          {
+            "step_id": "def_rebounds",
+            "operation": "definition",
+            "arguments": {
+              "metric": "reb"
+            },
+            "depends_on": []
+          }
+        ],
+        "output_kind": "definition"
+      },
+      "result_hashes": [
+        "9a06ebc701fe8a954d956ae190785c46cc2d83c219abfd95dcfe68b248d0910b"
+      ],
+      "manual_result_hashes": [
+        "9a06ebc701fe8a954d956ae190785c46cc2d83c219abfd95dcfe68b248d0910b"
+      ]
+    },
+    {
+      "id": "b33-05",
+      "split": "held_out",
+      "category": "supported",
+      "status": "answered",
+      "passed": true,
+      "observed_model_version": "gemini-3.5-flash-lite",
+      "elapsed_ms": 1540.714,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 1,
+        "cache_hits": 1,
+        "elapsed_ms": 1540.154,
+        "provider_usage": {
+          "prompt_token_count": 8038,
+          "candidates_token_count": 108,
+          "total_token_count": 8146
+        },
+        "usage_basis": "provider metadata"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "execute",
+        "clarification": null,
+        "context_changes": null,
+        "steps": [
+          {
+            "step_id": "step_1",
+            "operation": "definition",
+            "arguments": {
+              "metric": "ast"
+            },
+            "depends_on": []
+          }
+        ],
+        "output_kind": "definition"
+      },
+      "result_hashes": [
+        "18faa2930e5275323050292ba46e2b2b4f20510df951f3edca39112bd5323945"
+      ],
+      "manual_result_hashes": [
+        "18faa2930e5275323050292ba46e2b2b4f20510df951f3edca39112bd5323945"
+      ]
+    },
+    {
+      "id": "b33-06",
+      "split": "development",
+      "category": "supported",
+      "status": "answered",
+      "passed": true,
+      "observed_model_version": "gemini-3.5-flash-lite",
+      "elapsed_ms": 1796.338,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 1,
+        "cache_hits": 1,
+        "elapsed_ms": 1795.764,
+        "provider_usage": {
+          "prompt_token_count": 8038,
+          "candidates_token_count": 108,
+          "total_token_count": 8146
+        },
+        "usage_basis": "provider metadata"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "execute",
+        "clarification": null,
+        "context_changes": null,
+        "steps": [
+          {
+            "step_id": "step_1",
+            "operation": "definition",
+            "arguments": {
+              "metric": "stl"
+            },
+            "depends_on": []
+          }
+        ],
+        "output_kind": "definition"
+      },
+      "result_hashes": [
+        "43ca3a85c15da0359ae083f0539ba0dc39cf83767e6818ff039836a7e49b1ffa"
+      ],
+      "manual_result_hashes": [
+        "43ca3a85c15da0359ae083f0539ba0dc39cf83767e6818ff039836a7e49b1ffa"
+      ]
+    },
+    {
+      "id": "b33-07",
+      "split": "development",
+      "category": "supported",
+      "status": "answered",
+      "passed": true,
+      "observed_model_version": "gemini-3.5-flash-lite",
+      "elapsed_ms": 1283.937,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 1,
+        "cache_hits": 1,
+        "elapsed_ms": 1283.403,
+        "provider_usage": {
+          "prompt_token_count": 8038,
+          "candidates_token_count": 108,
+          "total_token_count": 8146
+        },
+        "usage_basis": "provider metadata"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "execute",
+        "clarification": null,
+        "context_changes": null,
+        "steps": [
+          {
+            "step_id": "def_blocks",
+            "operation": "definition",
+            "arguments": {
+              "metric": "blk"
+            },
+            "depends_on": []
+          }
+        ],
+        "output_kind": "definition"
+      },
+      "result_hashes": [
+        "fca4a5c3c92988450736ef45bbb04f63f933a4e0e64c58f33b6d2a54ae631551"
+      ],
+      "manual_result_hashes": [
+        "fca4a5c3c92988450736ef45bbb04f63f933a4e0e64c58f33b6d2a54ae631551"
+      ]
+    },
+    {
+      "id": "b33-08",
+      "split": "held_out",
+      "category": "supported",
+      "status": "answered",
+      "passed": true,
+      "observed_model_version": "gemini-3.5-flash-lite",
+      "elapsed_ms": 1619.879,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 1,
+        "cache_hits": 1,
+        "elapsed_ms": 1619.291,
+        "provider_usage": {
+          "prompt_token_count": 8039,
+          "candidates_token_count": 110,
+          "total_token_count": 8149
+        },
+        "usage_basis": "provider metadata"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "execute",
+        "clarification": null,
+        "context_changes": null,
+        "steps": [
+          {
+            "step_id": "def_ts",
+            "operation": "definition",
+            "arguments": {
+              "metric": "ts_pct"
+            },
+            "depends_on": []
+          }
+        ],
+        "output_kind": "definition"
+      },
+      "result_hashes": [
+        "49ff2e09d9040c2dbad29dcbb34f8d9c7bb15dcee9d24c72189899a86959b4ff"
+      ],
+      "manual_result_hashes": [
+        "49ff2e09d9040c2dbad29dcbb34f8d9c7bb15dcee9d24c72189899a86959b4ff"
+      ]
+    },
+    {
+      "id": "b33-09",
+      "split": "development",
+      "category": "supported",
+      "status": "answered",
+      "passed": true,
+      "observed_model_version": "gemini-3.5-flash-lite",
+      "elapsed_ms": 1506.4,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 1,
+        "cache_hits": 1,
+        "elapsed_ms": 1505.788,
+        "provider_usage": {
+          "prompt_token_count": 8040,
+          "candidates_token_count": 111,
+          "total_token_count": 8151
+        },
+        "usage_basis": "provider metadata"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "execute",
+        "clarification": null,
+        "context_changes": null,
+        "steps": [
+          {
+            "step_id": "step_1",
+            "operation": "definition",
+            "arguments": {
+              "metric": "efg_pct"
+            },
+            "depends_on": []
+          }
+        ],
+        "output_kind": "definition"
+      },
+      "result_hashes": [
+        "43e903518f171e6277c4b3d80806a77b6f859192f2b9c8691cc14880279943bc"
+      ],
+      "manual_result_hashes": [
+        "43e903518f171e6277c4b3d80806a77b6f859192f2b9c8691cc14880279943bc"
+      ]
+    },
+    {
+      "id": "b33-10",
+      "split": "development",
+      "category": "supported",
+      "status": "answered",
+      "passed": true,
+      "observed_model_version": "gemini-3.5-flash-lite",
+      "elapsed_ms": 1552.499,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 1,
+        "cache_hits": 1,
+        "elapsed_ms": 1551.905,
+        "provider_usage": {
+          "prompt_token_count": 8040,
+          "candidates_token_count": 110,
+          "total_token_count": 8150
+        },
+        "usage_basis": "provider metadata"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "execute",
+        "clarification": null,
+        "context_changes": null,
+        "steps": [
+          {
+            "step_id": "def_ftr",
+            "operation": "definition",
+            "arguments": {
+              "metric": "ftr"
+            },
+            "depends_on": []
+          }
+        ],
+        "output_kind": "definition"
+      },
+      "result_hashes": [
+        "33e84913caebcaae0205480ae264a90eb965f4c5d6fe74085448a971cca54c6a"
+      ],
+      "manual_result_hashes": [
+        "33e84913caebcaae0205480ae264a90eb965f4c5d6fe74085448a971cca54c6a"
+      ]
+    },
+    {
+      "id": "b33-11",
+      "split": "held_out",
+      "category": "supported",
+      "status": "answered",
+      "passed": true,
+      "observed_model_version": "gemini-3.5-flash-lite",
+      "elapsed_ms": 1608.583,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 10,
+        "cache_hits": 1,
+        "elapsed_ms": 1606.678,
+        "provider_usage": {
+          "prompt_token_count": 8044,
+          "candidates_token_count": 208,
+          "total_token_count": 8252
+        },
+        "usage_basis": "provider metadata"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "execute",
+        "clarification": null,
+        "context_changes": null,
+        "steps": [
+          {
+            "step_id": "step_1",
+            "operation": "query",
+            "arguments": {
+              "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+              "season": "2024-25",
+              "phase": "regular_season",
+              "before_date": "2025-06-23",
+              "name": null,
+              "entity_kind": "player",
+              "window": {
+                "kind": "season",
+                "n": null,
+                "from_date": null,
+                "to_date": null
+              },
+              "season_scope": {
+                "seasons": [],
+                "aggregate_multi_season": false
+              },
+              "team_scope": {
+                "team_id": null,
+                "participation_only": true,
+                "current_roster_only": false
+              },
+              "metric_selectors": [
+                {
+                  "key": "pts_per_game",
+                  "version": null,
+                  "normalization": "raw",
+                  "denominator_type": null
+                }
+              ],
+              "predicates": null,
+              "sample_filters": {
+                "min_games": null,
+                "min_minutes": null,
+                "min_avg_minutes": null,
+                "min_possessions": null,
+                "min_attempts": null
+              },
+              "sort": [
+                {
+                  "field": "pts_per_game",
+                  "direction": "desc",
+                  "nulls_last": true
+                }
+              ],
+              "view_state": null,
+              "page": {
+                "limit": 10,
+                "cursor": null
+              }
+            },
+            "depends_on": []
+          }
+        ],
+        "output_kind": "table"
+      },
+      "result_hashes": [
+        "05b494827da882ed59fbefdbfadf1528d56c0bde40956c9b8c8d23066c3700eb"
+      ],
+      "manual_result_hashes": [
+        "05b494827da882ed59fbefdbfadf1528d56c0bde40956c9b8c8d23066c3700eb"
+      ]
+    },
+    {
+      "id": "b33-12",
+      "split": "development",
+      "category": "supported",
+      "status": "answered",
+      "passed": true,
+      "observed_model_version": "gemini-3.5-flash-lite",
+      "elapsed_ms": 1629.62,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 10,
+        "cache_hits": 1,
+        "elapsed_ms": 1628.549,
+        "provider_usage": {
+          "prompt_token_count": 8044,
+          "candidates_token_count": 189,
+          "total_token_count": 8233
+        },
+        "usage_basis": "provider metadata"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "execute",
+        "clarification": null,
+        "context_changes": null,
+        "steps": [
+          {
+            "step_id": "step_1",
+            "operation": "query",
+            "arguments": {
+              "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+              "season": "2024-25",
+              "phase": "regular_season",
+              "before_date": "2025-06-23",
+              "name": null,
+              "entity_kind": "player",
+              "window": {
+                "kind": "season",
+                "n": null,
+                "from_date": null,
+                "to_date": null
+              },
+              "season_scope": {
+                "seasons": [],
+                "aggregate_multi_season": false
+              },
+              "team_scope": {
+                "team_id": null,
+                "participation_only": true,
+                "current_roster_only": false
+              },
+              "metric_selectors": [
+                {
+                  "key": "reb_per_game",
+                  "version": null,
+                  "normalization": "raw",
+                  "denominator_type": null
+                }
+              ],
+              "predicates": null,
+              "sample_filters": {
+                "min_games": null,
+                "min_minutes": null,
+                "min_avg_minutes": null,
+                "min_possessions": null,
+                "min_attempts": null
+              },
+              "sort": [
+                {
+                  "field": "reb_per_game",
+                  "direction": "desc",
+                  "nulls_last": true
+                }
+              ],
+              "view_state": null,
+              "page": {
+                "limit": 10,
+                "cursor": null
+              }
+            },
+            "depends_on": []
+          }
+        ],
+        "output_kind": "table"
+      },
+      "result_hashes": [
+        "6c62d115777ed05cbdcfa95ff1f247444acc04514b891b89f1d7545198cedad3"
+      ],
+      "manual_result_hashes": [
+        "6c62d115777ed05cbdcfa95ff1f247444acc04514b891b89f1d7545198cedad3"
+      ]
+    },
+    {
+      "id": "b33-13",
+      "split": "development",
+      "category": "supported",
+      "status": "answered",
+      "passed": true,
+      "observed_model_version": "gemini-3.5-flash-lite",
+      "elapsed_ms": 1688.723,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 10,
+        "cache_hits": 1,
+        "elapsed_ms": 1687.577,
+        "provider_usage": {
+          "prompt_token_count": 8044,
+          "candidates_token_count": 198,
+          "total_token_count": 8242
+        },
+        "usage_basis": "provider metadata"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "execute",
+        "clarification": null,
+        "context_changes": null,
+        "steps": [
+          {
+            "step_id": "step_1",
+            "operation": "query",
+            "arguments": {
+              "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+              "season": "2024-25",
+              "phase": "regular_season",
+              "before_date": "2025-06-23",
+              "name": null,
+              "entity_kind": "player",
+              "window": {
+                "kind": "season",
+                "n": null,
+                "from_date": null,
+                "to_date": null
+              },
+              "season_scope": {
+                "seasons": [],
+                "aggregate_multi_season": false
+              },
+              "team_scope": {
+                "team_id": null,
+                "participation_only": true,
+                "current_roster_only": false
+              },
+              "metric_selectors": [
+                {
+                  "key": "ast_per_game",
+                  "version": null,
+                  "normalization": "raw",
+                  "denominator_type": null
+                }
+              ],
+              "predicates": null,
+              "sample_filters": {
+                "min_games": null,
+                "min_minutes": null,
+                "min_avg_minutes": null,
+                "min_possessions": null,
+                "min_attempts": null
+              },
+              "sort": [
+                {
+                  "field": "ast_per_game",
+                  "direction": "desc",
+                  "nulls_last": true
+                }
+              ],
+              "view_state": null,
+              "page": {
+                "limit": 10,
+                "cursor": null
+              }
+            },
+            "depends_on": []
+          }
+        ],
+        "output_kind": "table"
+      },
+      "result_hashes": [
+        "444322800c65675c976161adc99250b7d2de52103daf443529612be3802c172e"
+      ],
+      "manual_result_hashes": [
+        "444322800c65675c976161adc99250b7d2de52103daf443529612be3802c172e"
+      ]
+    },
+    {
+      "id": "b33-14",
+      "split": "held_out",
+      "category": "supported",
+      "status": "answered",
+      "passed": true,
+      "observed_model_version": "gemini-3.5-flash-lite",
+      "elapsed_ms": 1562.057,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 10,
+        "cache_hits": 1,
+        "elapsed_ms": 1560.776,
+        "provider_usage": {
+          "prompt_token_count": 8045,
+          "candidates_token_count": 208,
+          "total_token_count": 8253
+        },
+        "usage_basis": "provider metadata"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "execute",
+        "clarification": null,
+        "context_changes": null,
+        "steps": [
+          {
+            "step_id": "step_1",
+            "operation": "query",
+            "arguments": {
+              "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+              "season": "2024-25",
+              "phase": "regular_season",
+              "before_date": "2025-06-23",
+              "name": null,
+              "entity_kind": "player",
+              "window": {
+                "kind": "season",
+                "n": null,
+                "from_date": null,
+                "to_date": null
+              },
+              "season_scope": {
+                "seasons": [],
+                "aggregate_multi_season": false
+              },
+              "team_scope": {
+                "team_id": null,
+                "participation_only": true,
+                "current_roster_only": false
+              },
+              "metric_selectors": [
+                {
+                  "key": "stl_per_game",
+                  "version": null,
+                  "normalization": "raw",
+                  "denominator_type": null
+                }
+              ],
+              "predicates": null,
+              "sample_filters": {
+                "min_games": null,
+                "min_minutes": null,
+                "min_avg_minutes": null,
+                "min_possessions": null,
+                "min_attempts": null
+              },
+              "sort": [
+                {
+                  "field": "stl_per_game",
+                  "direction": "desc",
+                  "nulls_last": true
+                }
+              ],
+              "view_state": null,
+              "page": {
+                "limit": 10,
+                "cursor": null
+              }
+            },
+            "depends_on": []
+          }
+        ],
+        "output_kind": "table"
+      },
+      "result_hashes": [
+        "fae381130ab610989cee885722ac6ad1710c842497c2e749fa2bed6819f31886"
+      ],
+      "manual_result_hashes": [
+        "fae381130ab610989cee885722ac6ad1710c842497c2e749fa2bed6819f31886"
+      ]
+    },
+    {
+      "id": "b33-15",
+      "split": "development",
+      "category": "supported",
+      "status": "answered",
+      "passed": true,
+      "observed_model_version": "gemini-3.5-flash-lite",
+      "elapsed_ms": 1623.961,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 10,
+        "cache_hits": 1,
+        "elapsed_ms": 1622.864,
+        "provider_usage": {
+          "prompt_token_count": 8045,
+          "candidates_token_count": 208,
+          "total_token_count": 8253
+        },
+        "usage_basis": "provider metadata"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "execute",
+        "clarification": null,
+        "context_changes": null,
+        "steps": [
+          {
+            "step_id": "step_1",
+            "operation": "query",
+            "arguments": {
+              "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+              "season": "2024-25",
+              "phase": "regular_season",
+              "before_date": "2025-06-23",
+              "name": null,
+              "entity_kind": "player",
+              "window": {
+                "kind": "season",
+                "n": null,
+                "from_date": null,
+                "to_date": null
+              },
+              "season_scope": {
+                "seasons": [],
+                "aggregate_multi_season": false
+              },
+              "team_scope": {
+                "team_id": null,
+                "participation_only": true,
+                "current_roster_only": false
+              },
+              "metric_selectors": [
+                {
+                  "key": "blk_per_game",
+                  "version": null,
+                  "normalization": "raw",
+                  "denominator_type": null
+                }
+              ],
+              "predicates": null,
+              "sample_filters": {
+                "min_games": null,
+                "min_minutes": null,
+                "min_avg_minutes": null,
+                "min_possessions": null,
+                "min_attempts": null
+              },
+              "sort": [
+                {
+                  "field": "blk_per_game",
+                  "direction": "desc",
+                  "nulls_last": true
+                }
+              ],
+              "view_state": null,
+              "page": {
+                "limit": 10,
+                "cursor": null
+              }
+            },
+            "depends_on": []
+          }
+        ],
+        "output_kind": "table"
+      },
+      "result_hashes": [
+        "c9123e24068f7485ed51905f342342e25aedb2abee77af09ea75d44f8dc2f6ec"
+      ],
+      "manual_result_hashes": [
+        "c9123e24068f7485ed51905f342342e25aedb2abee77af09ea75d44f8dc2f6ec"
+      ]
+    },
+    {
+      "id": "b33-16",
+      "split": "development",
+      "category": "supported",
+      "status": "answered",
+      "passed": true,
+      "observed_model_version": "gemini-3.5-flash-lite",
+      "elapsed_ms": 1685.48,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 10,
+        "cache_hits": 1,
+        "elapsed_ms": 1684.339,
+        "provider_usage": {
+          "prompt_token_count": 8046,
+          "candidates_token_count": 151,
+          "total_token_count": 8197
+        },
+        "usage_basis": "provider metadata"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "execute",
+        "clarification": null,
+        "context_changes": null,
+        "steps": [
+          {
+            "step_id": "step_1",
+            "operation": "query",
+            "arguments": {
+              "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+              "season": "2024-25",
+              "phase": "regular_season",
+              "before_date": "2025-06-23",
+              "name": null,
+              "entity_kind": "player",
+              "window": {
+                "kind": "season",
+                "n": null,
+                "from_date": null,
+                "to_date": null
+              },
+              "season_scope": {
+                "seasons": [],
+                "aggregate_multi_season": false
+              },
+              "team_scope": {
+                "team_id": null,
+                "participation_only": true,
+                "current_roster_only": false
+              },
+              "metric_selectors": [
+                {
+                  "key": "pts_per_game",
+                  "version": null,
+                  "normalization": "raw",
+                  "denominator_type": null
+                },
+                {
+                  "key": "min_per_game",
+                  "version": null,
+                  "normalization": "raw",
+                  "denominator_type": null
+                }
+              ],
+              "predicates": null,
+              "sample_filters": {
+                "min_games": null,
+                "min_minutes": 300.0,
+                "min_avg_minutes": null,
+                "min_possessions": null,
+                "min_attempts": null
+              },
+              "sort": [
+                {
+                  "field": "pts",
+                  "direction": "desc",
+                  "nulls_last": true
+                }
+              ],
+              "view_state": null,
+              "page": {
+                "limit": 10,
+                "cursor": null
+              }
+            },
+            "depends_on": []
+          }
+        ],
+        "output_kind": "table"
+      },
+      "result_hashes": [
+        "0847ed320d0f8c806815094920c1d7110239376988d559dcabeb1b802c66b2c4"
+      ],
+      "manual_result_hashes": [
+        "0847ed320d0f8c806815094920c1d7110239376988d559dcabeb1b802c66b2c4"
+      ]
+    },
+    {
+      "id": "b33-17",
+      "split": "held_out",
+      "category": "supported",
+      "status": "answered",
+      "passed": true,
+      "observed_model_version": "gemini-3.5-flash-lite",
+      "elapsed_ms": 1526.713,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 10,
+        "cache_hits": 1,
+        "elapsed_ms": 1524.874,
+        "provider_usage": {
+          "prompt_token_count": 8039,
+          "candidates_token_count": 167,
+          "total_token_count": 8206
+        },
+        "usage_basis": "provider metadata"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "execute",
+        "clarification": null,
+        "context_changes": null,
+        "steps": [
+          {
+            "step_id": "step_1",
+            "operation": "query",
+            "arguments": {
+              "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+              "season": "2024-25",
+              "phase": "regular_season",
+              "before_date": "2025-06-23",
+              "name": null,
+              "entity_kind": "player",
+              "window": {
+                "kind": "season",
+                "n": null,
+                "from_date": null,
+                "to_date": null
+              },
+              "season_scope": {
+                "seasons": [],
+                "aggregate_multi_season": false
+              },
+              "team_scope": {
+                "team_id": "1610612761",
+                "participation_only": true,
+                "current_roster_only": false
+              },
+              "metric_selectors": [
+                {
+                  "key": "pts_per_game",
+                  "version": null,
+                  "normalization": "raw",
+                  "denominator_type": null
+                },
+                {
+                  "key": "min_per_game",
+                  "version": null,
+                  "normalization": "raw",
+                  "denominator_type": null
+                }
+              ],
+              "predicates": null,
+              "sample_filters": {
+                "min_games": null,
+                "min_minutes": null,
+                "min_avg_minutes": null,
+                "min_possessions": null,
+                "min_attempts": null
+              },
+              "sort": [
+                {
+                  "field": "pts",
+                  "direction": "desc",
+                  "nulls_last": true
+                }
+              ],
+              "view_state": null,
+              "page": {
+                "limit": 10,
+                "cursor": null
+              }
+            },
+            "depends_on": []
+          }
+        ],
+        "output_kind": "table"
+      },
+      "result_hashes": [
+        "5028be231e6025224bc05bb1f0f2d7843b56d105455ec629f40baae9455f2c54"
+      ],
+      "manual_result_hashes": [
+        "5028be231e6025224bc05bb1f0f2d7843b56d105455ec629f40baae9455f2c54"
+      ]
+    },
+    {
+      "id": "b33-18",
+      "split": "development",
+      "category": "supported",
+      "status": "answered",
+      "passed": true,
+      "observed_model_version": "gemini-3.5-flash-lite",
+      "elapsed_ms": 1562.92,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 20,
+        "cache_hits": 1,
+        "elapsed_ms": 1560.342,
+        "provider_usage": {
+          "prompt_token_count": 8045,
+          "candidates_token_count": 94,
+          "total_token_count": 8139
+        },
+        "usage_basis": "provider metadata"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "execute",
+        "clarification": null,
+        "context_changes": null,
+        "steps": [
+          {
+            "step_id": "step_1",
+            "operation": "workload_shifts",
+            "arguments": {
+              "period_n": 10,
+              "min_minutes": 0.0,
+              "limit": 20
+            },
+            "depends_on": []
+          }
+        ],
+        "output_kind": "table"
+      },
+      "result_hashes": [
+        "329b93f0bc94347b2e85d92facc07fdfdb07605fb31b5740a809cbfa33debe4a"
+      ],
+      "manual_result_hashes": [
+        "329b93f0bc94347b2e85d92facc07fdfdb07605fb31b5740a809cbfa33debe4a"
+      ]
+    },
+    {
+      "id": "b33-19",
+      "split": "development",
+      "category": "supported",
+      "status": "answered",
+      "passed": true,
+      "observed_model_version": "gemini-3.5-flash-lite",
+      "elapsed_ms": 1539.533,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 13,
+        "cache_hits": 1,
+        "elapsed_ms": 1537.603,
+        "provider_usage": {
+          "prompt_token_count": 8051,
+          "candidates_token_count": 125,
+          "total_token_count": 8176
+        },
+        "usage_basis": "provider metadata"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "execute",
+        "clarification": null,
+        "context_changes": null,
+        "steps": [
+          {
+            "step_id": "step_similarity",
+            "operation": "similarity",
+            "arguments": {
+              "target_player_id": "1630567",
+              "season": "2024-25",
+              "phase": "regular_season",
+              "before_date": "2025-06-23",
+              "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+              "window": "last_10",
+              "min_appearances": 10,
+              "min_minutes": 150.0,
+              "top_k": 5,
+              "dimensions": null
+            },
+            "depends_on": []
+          }
+        ],
+        "output_kind": "table"
+      },
+      "result_hashes": [
+        "3aafc235ba63b996155359c2e8d1556bc59bc620dfd0be90619d71a6b9889c0b"
+      ],
+      "manual_result_hashes": [
+        "3aafc235ba63b996155359c2e8d1556bc59bc620dfd0be90619d71a6b9889c0b"
+      ]
+    },
+    {
+      "id": "b33-20",
+      "split": "development",
+      "category": "supported",
+      "status": "answered",
+      "passed": true,
+      "observed_model_version": "gemini-3.5-flash-lite",
+      "elapsed_ms": 1306.096,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 42,
+        "cache_hits": 2,
+        "elapsed_ms": 1302.967,
+        "provider_usage": {
+          "prompt_token_count": 8240,
+          "candidates_token_count": 183,
+          "total_token_count": 8423
+        },
+        "usage_basis": "provider metadata"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "execute",
+        "clarification": null,
+        "context_changes": null,
+        "steps": [
+          {
+            "step_id": "scoring_dist",
+            "operation": "distribution",
+            "arguments": {
+              "player_id": "1630567",
+              "metric": "pts",
+              "season": "2024-25",
+              "phase": "regular_season",
+              "before_date": "2025-06-23",
+              "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+              "window_n": 20,
+              "from_date": null,
+              "to_date": null
+            },
+            "depends_on": []
+          },
+          {
+            "step_id": "minutes_dist",
+            "operation": "distribution",
+            "arguments": {
+              "player_id": "1630567",
+              "metric": "min_per_game",
+              "season": "2024-25",
+              "phase": "regular_season",
+              "before_date": "2025-06-23",
+              "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+              "window_n": 20,
+              "from_date": null,
+              "to_date": null
+            },
+            "depends_on": []
+          }
+        ],
+        "output_kind": "table"
+      },
+      "result_hashes": [
+        "0ee42c345b99d82e2d272e21d979d4abadbc079f4582f1a78eea8b82b6a86689",
+        "b11e37e6d9187387060e7a124207a753445b202c75b048343746b6cadf85e5ce"
+      ],
+      "manual_result_hashes": [
+        "0ee42c345b99d82e2d272e21d979d4abadbc079f4582f1a78eea8b82b6a86689",
+        "b11e37e6d9187387060e7a124207a753445b202c75b048343746b6cadf85e5ce"
+      ]
+    },
+    {
+      "id": "b33-21",
+      "split": "development",
+      "category": "supported",
+      "status": "answered",
+      "passed": true,
+      "observed_model_version": "gemini-3.5-flash-lite",
+      "elapsed_ms": 1596.482,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 22,
+        "cache_hits": 1,
+        "elapsed_ms": 1593.962,
+        "provider_usage": {
+          "prompt_token_count": 8045,
+          "candidates_token_count": 139,
+          "total_token_count": 8184
+        },
+        "usage_basis": "provider metadata"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "execute",
+        "clarification": null,
+        "context_changes": null,
+        "steps": [
+          {
+            "step_id": "step_1",
+            "operation": "compare_periods",
+            "arguments": {
+              "player_id": "1630567",
+              "season": "2024-25",
+              "phase": "regular_season",
+              "before_date": "2025-06-23",
+              "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+              "mode": "appearances",
+              "period_a_n": 10,
+              "period_b_n": 10,
+              "period_a_from": null,
+              "period_a_to": null,
+              "period_b_from": null,
+              "period_b_to": null,
+              "metrics": null
+            },
+            "depends_on": []
+          }
+        ],
+        "output_kind": "comparison"
+      },
+      "result_hashes": [
+        "0c7953fd4e9fd82ce366922d982a1a3b7cb2d0d870aabbb0a779c8dbb2eae06f"
+      ],
+      "manual_result_hashes": [
+        "0c7953fd4e9fd82ce366922d982a1a3b7cb2d0d870aabbb0a779c8dbb2eae06f"
+      ]
+    },
+    {
+      "id": "b33-22",
+      "split": "development",
+      "category": "supported",
+      "status": "answered",
+      "passed": true,
+      "observed_model_version": "gemini-3.5-flash-lite",
+      "elapsed_ms": 1195.972,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 2,
+        "cache_hits": 1,
+        "elapsed_ms": 1194.323,
+        "provider_usage": {
+          "prompt_token_count": 8045,
+          "candidates_token_count": 122,
+          "total_token_count": 8167
+        },
+        "usage_basis": "provider metadata"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "execute",
+        "clarification": null,
+        "context_changes": null,
+        "steps": [
+          {
+            "step_id": "step_1",
+            "operation": "splits",
+            "arguments": {
+              "player_id": "1630567",
+              "split_type": "venue",
+              "season": "2024-25",
+              "phase": "regular_season",
+              "before_date": "2025-06-23",
+              "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad"
+            },
+            "depends_on": []
+          }
+        ],
+        "output_kind": "table"
+      },
+      "result_hashes": [
+        "79ad6b90171638a921660ee86907d99b054ff1ba09af75d2cc560537e968905c"
+      ],
+      "manual_result_hashes": [
+        "79ad6b90171638a921660ee86907d99b054ff1ba09af75d2cc560537e968905c"
+      ]
+    },
+    {
+      "id": "b33-23",
+      "split": "development",
+      "category": "supported",
+      "status": "answered",
+      "passed": true,
+      "observed_model_version": "gemini-3.5-flash-lite",
+      "elapsed_ms": 1467.93,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 58,
+        "cache_hits": 1,
+        "elapsed_ms": 1463.521,
+        "provider_usage": {
+          "prompt_token_count": 8043,
+          "candidates_token_count": 123,
+          "total_token_count": 8166
+        },
+        "usage_basis": "provider metadata"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "execute",
+        "clarification": null,
+        "context_changes": null,
+        "steps": [
+          {
+            "step_id": "compare_players",
+            "operation": "compare",
+            "arguments": {
+              "player_a": "1630567",
+              "player_b": "1629628"
+            },
+            "depends_on": []
+          }
+        ],
+        "output_kind": "comparison"
+      },
+      "result_hashes": [
+        "0fe07de9b2a7abb1e913a85a8857b25329e674b87a916093a17aea38288dcf4e"
+      ],
+      "manual_result_hashes": [
+        "0fe07de9b2a7abb1e913a85a8857b25329e674b87a916093a17aea38288dcf4e"
+      ]
+    },
+    {
+      "id": "b33-24",
+      "split": "development",
+      "category": "supported",
+      "status": "no_data",
+      "passed": true,
+      "observed_model_version": "gemini-3.5-flash-lite",
+      "elapsed_ms": 1623.901,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 1,
+        "cache_hits": 1,
+        "elapsed_ms": 1623.136,
+        "provider_usage": {
+          "prompt_token_count": 8045,
+          "candidates_token_count": 112,
+          "total_token_count": 8157
+        },
+        "usage_basis": "provider metadata"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "execute",
+        "clarification": null,
+        "context_changes": null,
+        "steps": [
+          {
+            "step_id": "step_1",
+            "operation": "forecast",
+            "arguments": {
+              "player_id": "1630567",
+              "issuance_id": null
+            },
+            "depends_on": []
+          }
+        ],
+        "output_kind": "comparison"
+      },
+      "result_hashes": [
+        "b4e8b70119a7e9c69c2b88a7e4e76ae8a84fd733ecfed4f17d890e9fc58778f8"
+      ],
+      "manual_result_hashes": [
+        "b4e8b70119a7e9c69c2b88a7e4e76ae8a84fd733ecfed4f17d890e9fc58778f8"
+      ]
+    },
+    {
+      "id": "b33-25",
+      "split": "development",
+      "category": "supported",
+      "status": "answered",
+      "passed": true,
+      "observed_model_version": "gemini-3.5-flash-lite",
+      "elapsed_ms": 1543.068,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 35,
+        "cache_hits": 1,
+        "elapsed_ms": 1540.835,
+        "provider_usage": {
+          "prompt_token_count": 8040,
+          "candidates_token_count": 119,
+          "total_token_count": 8159
+        },
+        "usage_basis": "provider metadata"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "execute",
+        "clarification": null,
+        "context_changes": null,
+        "steps": [
+          {
+            "step_id": "step_1",
+            "operation": "team",
+            "arguments": {
+              "team_id": "1610612761"
+            },
+            "depends_on": []
+          }
+        ],
+        "output_kind": "table"
+      },
+      "result_hashes": [
+        "ffe8a04d41435cc9c208d2c415bfaef2502b82c815fb923b98d16ed429a6a442"
+      ],
+      "manual_result_hashes": [
+        "ffe8a04d41435cc9c208d2c415bfaef2502b82c815fb923b98d16ed429a6a442"
+      ]
+    },
+    {
+      "id": "b33-26",
+      "split": "held_out",
+      "category": "clarification",
+      "status": "clarification_required",
+      "passed": true,
+      "observed_model_version": "gemini-3.5-flash-lite",
+      "elapsed_ms": 1001.109,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 0,
+        "cache_hits": 0,
+        "elapsed_ms": 1000.509,
+        "provider_usage": {
+          "prompt_token_count": 8040,
+          "candidates_token_count": 66,
+          "total_token_count": 8106
+        },
+        "usage_basis": "provider metadata"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "clarification_required",
+        "clarification": "consistency",
+        "context_changes": null,
+        "steps": [],
+        "output_kind": "table"
+      },
+      "result_hashes": [],
+      "manual_result_hashes": []
+    },
+    {
+      "id": "b33-27",
+      "split": "development",
+      "category": "clarification",
+      "status": "clarification_required",
+      "passed": true,
+      "observed_model_version": "gemini-3.5-flash-lite",
+      "elapsed_ms": 1393.314,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 0,
+        "cache_hits": 0,
+        "elapsed_ms": 1392.747,
+        "provider_usage": {
+          "prompt_token_count": 8040,
+          "candidates_token_count": 66,
+          "total_token_count": 8106
+        },
+        "usage_basis": "provider metadata"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "clarification_required",
+        "clarification": "consistency",
+        "context_changes": null,
+        "steps": [],
+        "output_kind": "table"
+      },
+      "result_hashes": [],
+      "manual_result_hashes": []
+    },
+    {
+      "id": "b33-28",
+      "split": "development",
+      "category": "clarification",
+      "status": "clarification_required",
+      "passed": true,
+      "observed_model_version": "gemini-3.5-flash-lite",
+      "elapsed_ms": 1523.479,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 0,
+        "cache_hits": 0,
+        "elapsed_ms": 1522.746,
+        "provider_usage": {
+          "prompt_token_count": 8039,
+          "candidates_token_count": 68,
+          "total_token_count": 8107
+        },
+        "usage_basis": "provider metadata"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "clarification_required",
+        "clarification": "defense_metric",
+        "context_changes": null,
+        "steps": [],
+        "output_kind": "table"
+      },
+      "result_hashes": [],
+      "manual_result_hashes": []
+    },
+    {
+      "id": "b33-29",
+      "split": "held_out",
+      "category": "clarification",
+      "status": "answered",
+      "passed": false,
+      "observed_model_version": "gemini-3.5-flash-lite",
+      "elapsed_ms": 2050.37,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 1,
+        "rows": 10,
+        "cache_hits": 0,
+        "elapsed_ms": 2049.51,
+        "provider_usage": {
+          "prompt_token_count": 8040,
+          "candidates_token_count": 220,
+          "total_token_count": 8260
+        },
+        "usage_basis": "provider metadata"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "execute",
+        "clarification": null,
+        "context_changes": null,
+        "steps": [
+          {
+            "step_id": "step_1",
+            "operation": "query",
+            "arguments": {
+              "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+              "season": "2024-25",
+              "phase": "regular_season",
+              "before_date": "2025-06-23",
+              "name": null,
+              "entity_kind": "player",
+              "window": {
+                "kind": "season",
+                "n": null,
+                "from_date": null,
+                "to_date": null
+              },
+              "season_scope": {
+                "seasons": [],
+                "aggregate_multi_season": false
+              },
+              "team_scope": {
+                "team_id": "1610612761",
+                "participation_only": true,
+                "current_roster_only": false
+              },
+              "metric_selectors": [
+                {
+                  "key": "stl",
+                  "version": null,
+                  "normalization": "raw",
+                  "denominator_type": null
+                }
+              ],
+              "predicates": null,
+              "sample_filters": {
+                "min_games": null,
+                "min_minutes": null,
+                "min_avg_minutes": null,
+                "min_possessions": null,
+                "min_attempts": null
+              },
+              "sort": [
+                {
+                  "field": "stl",
+                  "direction": "desc",
+                  "nulls_last": true
+                }
+              ],
+              "view_state": null,
+              "page": {
+                "limit": 10,
+                "cursor": null
+              }
+            },
+            "depends_on": []
+          }
+        ],
+        "output_kind": "table"
+      },
+      "result_hashes": [
+        "9bba80ba762c61041b2a5264ebde89251e6c08e40639fc88fd6b889f938fc295"
+      ],
+      "manual_result_hashes": []
+    },
+    {
+      "id": "b33-30",
+      "split": "development",
+      "category": "clarification",
+      "status": "clarification_required",
+      "passed": true,
+      "observed_model_version": "gemini-3.5-flash-lite",
+      "elapsed_ms": 1353.444,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 0,
+        "cache_hits": 0,
+        "elapsed_ms": 1352.86,
+        "provider_usage": {
+          "prompt_token_count": 8041,
+          "candidates_token_count": 70,
+          "total_token_count": 8111
+        },
+        "usage_basis": "provider metadata"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "clarification_required",
+        "clarification": "floor_or_game",
+        "context_changes": null,
+        "steps": [],
+        "output_kind": "comparison"
+      },
+      "result_hashes": [],
+      "manual_result_hashes": []
+    },
+    {
+      "id": "b33-31",
+      "split": "development",
+      "category": "clarification",
+      "status": "clarification_required",
+      "passed": true,
+      "observed_model_version": "gemini-3.5-flash-lite",
+      "elapsed_ms": 1296.497,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 0,
+        "cache_hits": 0,
+        "elapsed_ms": 1295.993,
+        "provider_usage": {
+          "prompt_token_count": 8038,
+          "candidates_token_count": 70,
+          "total_token_count": 8108
+        },
+        "usage_basis": "provider metadata"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "clarification_required",
+        "clarification": "floor_or_game",
+        "context_changes": null,
+        "steps": [],
+        "output_kind": "table"
+      },
+      "result_hashes": [],
+      "manual_result_hashes": []
+    },
+    {
+      "id": "b33-32",
+      "split": "held_out",
+      "category": "clarification",
+      "status": "clarification_required",
+      "passed": true,
+      "observed_model_version": "gemini-3.5-flash-lite",
+      "elapsed_ms": 1318.148,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 0,
+        "cache_hits": 0,
+        "elapsed_ms": 1317.494,
+        "provider_usage": {
+          "prompt_token_count": 8039,
+          "candidates_token_count": 66,
+          "total_token_count": 8105
+        },
+        "usage_basis": "provider metadata"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "clarification_required",
+        "clarification": "context",
+        "context_changes": null,
+        "steps": [],
+        "output_kind": "table"
+      },
+      "result_hashes": [],
+      "manual_result_hashes": []
+    },
+    {
+      "id": "b33-33",
+      "split": "development",
+      "category": "clarification",
+      "status": "clarification_required",
+      "passed": true,
+      "observed_model_version": "gemini-3.5-flash-lite",
+      "elapsed_ms": 1153.613,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 0,
+        "cache_hits": 0,
+        "elapsed_ms": 1153.091,
+        "provider_usage": {
+          "prompt_token_count": 8041,
+          "candidates_token_count": 66,
+          "total_token_count": 8107
+        },
+        "usage_basis": "provider metadata"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "clarification_required",
+        "clarification": "context",
+        "context_changes": null,
+        "steps": [],
+        "output_kind": "definition"
+      },
+      "result_hashes": [],
+      "manual_result_hashes": []
+    },
+    {
+      "id": "b33-34",
+      "split": "development",
+      "category": "clarification",
+      "status": "clarification_required",
+      "passed": true,
+      "observed_model_version": "gemini-3.5-flash-lite",
+      "elapsed_ms": 1368.555,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 0,
+        "cache_hits": 0,
+        "elapsed_ms": 1368.024,
+        "provider_usage": {
+          "prompt_token_count": 8039,
+          "candidates_token_count": 66,
+          "total_token_count": 8105
+        },
+        "usage_basis": "provider metadata"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "clarification_required",
+        "clarification": "identity",
+        "context_changes": null,
+        "steps": [],
+        "output_kind": "table"
+      },
+      "result_hashes": [],
+      "manual_result_hashes": []
+    },
+    {
+      "id": "b33-35",
+      "split": "development",
+      "category": "clarification",
+      "status": "clarification_required",
+      "passed": true,
+      "observed_model_version": "gemini-3.5-flash-lite",
+      "elapsed_ms": 1417.359,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 0,
+        "cache_hits": 0,
+        "elapsed_ms": 1416.846,
+        "provider_usage": {
+          "prompt_token_count": 8039,
+          "candidates_token_count": 66,
+          "total_token_count": 8105
+        },
+        "usage_basis": "provider metadata"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "clarification_required",
+        "clarification": "identity",
+        "context_changes": null,
+        "steps": [],
+        "output_kind": "table"
+      },
+      "result_hashes": [],
+      "manual_result_hashes": []
+    },
+    {
+      "id": "b33-36",
+      "split": "held_out",
+      "category": "unsupported",
+      "status": "unsupported",
+      "passed": true,
+      "observed_model_version": "gemini-3.5-flash-lite",
+      "elapsed_ms": 1261.137,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 0,
+        "cache_hits": 0,
+        "elapsed_ms": 1260.626,
+        "provider_usage": {
+          "prompt_token_count": 8041,
+          "candidates_token_count": 64,
+          "total_token_count": 8105
+        },
+        "usage_basis": "provider metadata"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "unsupported",
+        "clarification": "capability",
+        "context_changes": null,
+        "steps": [],
+        "output_kind": "table"
+      },
+      "result_hashes": [],
+      "manual_result_hashes": []
+    },
+    {
+      "id": "b33-37",
+      "split": "development",
+      "category": "unsupported",
+      "status": "unsupported",
+      "passed": true,
+      "observed_model_version": "gemini-3.5-flash-lite",
+      "elapsed_ms": 1006.99,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 0,
+        "cache_hits": 0,
+        "elapsed_ms": 1006.431,
+        "provider_usage": {
+          "prompt_token_count": 8040,
+          "candidates_token_count": 63,
+          "total_token_count": 8103
+        },
+        "usage_basis": "provider metadata"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "unsupported",
+        "clarification": null,
+        "context_changes": null,
+        "steps": [],
+        "output_kind": "table"
+      },
+      "result_hashes": [],
+      "manual_result_hashes": []
+    },
+    {
+      "id": "b33-38",
+      "split": "development",
+      "category": "unsupported",
+      "status": "unsupported",
+      "passed": true,
+      "observed_model_version": "gemini-3.5-flash-lite",
+      "elapsed_ms": 1469.565,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 0,
+        "cache_hits": 0,
+        "elapsed_ms": 1468.978,
+        "provider_usage": {
+          "prompt_token_count": 8039,
+          "candidates_token_count": 63,
+          "total_token_count": 8102
+        },
+        "usage_basis": "provider metadata"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "unsupported",
+        "clarification": null,
+        "context_changes": null,
+        "steps": [],
+        "output_kind": "table"
+      },
+      "result_hashes": [],
+      "manual_result_hashes": []
+    },
+    {
+      "id": "b33-39",
+      "split": "development",
+      "category": "unsupported",
+      "status": "unsupported",
+      "passed": true,
+      "observed_model_version": "gemini-3.5-flash-lite",
+      "elapsed_ms": 1328.797,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 0,
+        "cache_hits": 0,
+        "elapsed_ms": 1328.249,
+        "provider_usage": {
+          "prompt_token_count": 8040,
+          "candidates_token_count": 63,
+          "total_token_count": 8103
+        },
+        "usage_basis": "provider metadata"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "unsupported",
+        "clarification": null,
+        "context_changes": null,
+        "steps": [],
+        "output_kind": "table"
+      },
+      "result_hashes": [],
+      "manual_result_hashes": []
+    },
+    {
+      "id": "b33-40",
+      "split": "held_out",
+      "category": "unsupported",
+      "status": "unsupported",
+      "passed": true,
+      "observed_model_version": "gemini-3.5-flash-lite",
+      "elapsed_ms": 1031.464,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 0,
+        "cache_hits": 0,
+        "elapsed_ms": 1030.882,
+        "provider_usage": {
+          "prompt_token_count": 8039,
+          "candidates_token_count": 64,
+          "total_token_count": 8103
+        },
+        "usage_basis": "provider metadata"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "unsupported",
+        "clarification": "capability",
+        "context_changes": null,
+        "steps": [],
+        "output_kind": "table"
+      },
+      "result_hashes": [],
+      "manual_result_hashes": []
+    },
+    {
+      "id": "b33-41",
+      "split": "development",
+      "category": "unsupported",
+      "status": "unsupported",
+      "passed": true,
+      "observed_model_version": "gemini-3.5-flash-lite",
+      "elapsed_ms": 1016.687,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 0,
+        "cache_hits": 0,
+        "elapsed_ms": 1016.099,
+        "provider_usage": {
+          "prompt_token_count": 8039,
+          "candidates_token_count": 63,
+          "total_token_count": 8102
+        },
+        "usage_basis": "provider metadata"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "unsupported",
+        "clarification": null,
+        "context_changes": null,
+        "steps": [],
+        "output_kind": "table"
+      },
+      "result_hashes": [],
+      "manual_result_hashes": []
+    },
+    {
+      "id": "b33-42",
+      "split": "development",
+      "category": "unsupported",
+      "status": "unsupported",
+      "passed": true,
+      "observed_model_version": "gemini-3.5-flash-lite",
+      "elapsed_ms": 1620.387,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 0,
+        "cache_hits": 0,
+        "elapsed_ms": 1619.756,
+        "provider_usage": {
+          "prompt_token_count": 8041,
+          "candidates_token_count": 63,
+          "total_token_count": 8104
+        },
+        "usage_basis": "provider metadata"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "unsupported",
+        "clarification": null,
+        "context_changes": null,
+        "steps": [],
+        "output_kind": "table"
+      },
+      "result_hashes": [],
+      "manual_result_hashes": []
+    },
+    {
+      "id": "b33-43",
+      "split": "development",
+      "category": "unsupported",
+      "status": "unsupported",
+      "passed": true,
+      "observed_model_version": "gemini-3.5-flash-lite",
+      "elapsed_ms": 1329.267,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 0,
+        "cache_hits": 0,
+        "elapsed_ms": 1328.753,
+        "provider_usage": {
+          "prompt_token_count": 8038,
+          "candidates_token_count": 64,
+          "total_token_count": 8102
+        },
+        "usage_basis": "provider metadata"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "unsupported",
+        "clarification": "capability",
+        "context_changes": null,
+        "steps": [],
+        "output_kind": "table"
+      },
+      "result_hashes": [],
+      "manual_result_hashes": []
+    },
+    {
+      "id": "b33-44",
+      "split": "held_out",
+      "category": "unsupported",
+      "status": "unsupported",
+      "passed": true,
+      "observed_model_version": "gemini-3.5-flash-lite",
+      "elapsed_ms": 1318.972,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 0,
+        "cache_hits": 0,
+        "elapsed_ms": 1318.37,
+        "provider_usage": {
+          "prompt_token_count": 8041,
+          "candidates_token_count": 63,
+          "total_token_count": 8104
+        },
+        "usage_basis": "provider metadata"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "unsupported",
+        "clarification": null,
+        "context_changes": null,
+        "steps": [],
+        "output_kind": "table"
+      },
+      "result_hashes": [],
+      "manual_result_hashes": []
+    },
+    {
+      "id": "b33-45",
+      "split": "development",
+      "category": "unsupported",
+      "status": "unsupported",
+      "passed": true,
+      "observed_model_version": "gemini-3.5-flash-lite",
+      "elapsed_ms": 1424.0,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 0,
+        "cache_hits": 0,
+        "elapsed_ms": 1423.375,
+        "provider_usage": {
+          "prompt_token_count": 8046,
+          "candidates_token_count": 64,
+          "total_token_count": 8110
+        },
+        "usage_basis": "provider metadata"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "unsupported",
+        "clarification": "capability",
+        "context_changes": null,
+        "steps": [],
+        "output_kind": "table"
+      },
+      "result_hashes": [],
+      "manual_result_hashes": []
+    }
+  ],
+  "context": {
+    "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+    "snapshot_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+    "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+    "dataset_type": "workbench",
+    "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666",
+    "mode": "workbench_recent",
+    "source": "sportsdataverse",
+    "season": "2024-25",
+    "phase": "regular_season",
+    "before_date": "2025-06-23",
+    "cutoff_utc": "2025-06-23T04:00:00+00:00",
+    "window": "season",
+    "coverage_start": "2023-10-24",
+    "coverage_end": "2026-06-13",
+    "metric_version": "v2",
+    "published_at": "2026-10-01T17:47:29.173164+00:00"
+  },
+  "counts": {
+    "supported:pass": 25,
+    "clarification:pass": 9,
+    "clarification:fail": 1,
+    "unsupported:pass": 10
+  },
+  "provider_calls": 45,
+  "real_provider_calls": 45,
+  "supported_accuracy": 1.0,
+  "language_gate": "unmet",
+  "limitations": [
+    "Original 45-case language corpus has no finance or current empty-season cases; supplemental evaluation is required before full chatbot acceptance.",
+    "Fixture planner invocations are simulated; remote inference calls are counted separately.",
+    "Observed provider model version is reported only when returned by the SDK; unavailable metadata is null."
+  ]
+}

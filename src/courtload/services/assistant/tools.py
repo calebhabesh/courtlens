@@ -88,27 +88,6 @@ class EvidenceLedger:
     def all_cells(self) -> list[EvidenceCellRef]:
         return list(self._cells.values())
 
-    def find_matching_cell(self, val: Any, tolerance: float = 0.05) -> EvidenceCellRef | None:
-        """Find a cell matching a numeric or string value within tolerance."""
-        if val is None:
-            return None
-        if isinstance(val, (int, float)):
-            for cell in self._cells.values():
-                if (
-                    isinstance(cell.raw_value, (int, float))
-                    and abs(cell.raw_value - val) <= tolerance
-                ):
-                    return cell
-        elif isinstance(val, str):
-            clean_val = val.strip().lower()
-            for cell in self._cells.values():
-                if (
-                    str(cell.raw_value).strip().lower() == clean_val
-                    or cell.formatted_value.strip().lower() == clean_val
-                ):
-                    return cell
-        return None
-
 
 # -----------------------------------------------------------------------------
 # Tool Argument Schemas (Strict validation against malicious or invalid inputs)
@@ -181,34 +160,19 @@ class GetEvaluationSummaryArgs(BaseModel):
 
 def resolve_player_identifier(session: Session, identifier: str) -> tuple[str, str]:
     """Resolve an identifier (numeric ID or player name) to (player_id, player_name)."""
-    clean = identifier.strip()
-    if clean.isdigit():
-        ident = session.scalar(
-            select(WorkbenchIdentity)
-            .where(
-                WorkbenchIdentity.namespace == "nba",
-                WorkbenchIdentity.kind == "player",
-                WorkbenchIdentity.external_id == clean,
-            )
-            .limit(1)
-        )
-        if ident:
-            return ident.external_id, ident.display_name
-        return clean, f"Player {clean}"
+    from courtload.services.assistant.operations import resolve_entity
 
-    # Search by display name substring
-    ident = session.scalar(
-        select(WorkbenchIdentity)
-        .where(
+    player_id = resolve_entity(session, None, identifier.strip(), "player_id")
+    identity = session.scalar(
+        select(WorkbenchIdentity).where(
             WorkbenchIdentity.namespace == "nba",
             WorkbenchIdentity.kind == "player",
-            WorkbenchIdentity.display_name.ilike(f"%{clean}%"),
+            WorkbenchIdentity.external_id == player_id,
         )
-        .limit(1)
     )
-    if ident:
-        return ident.external_id, ident.display_name
-    return clean, clean
+    if identity is None:
+        raise ValueError("canonical NBA player not found")
+    return player_id, identity.display_name
 
 
 def resolve_team_identifier(team_id: str) -> str:

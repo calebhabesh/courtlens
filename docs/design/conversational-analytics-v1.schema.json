@@ -1,0 +1,2160 @@
+{
+  "schema_version": "courtload-conversation-v1",
+  "request": {
+    "$defs": {
+      "AnalysisPlan": {
+        "additionalProperties": false,
+        "properties": {
+          "plan_version": {
+            "const": "courtload-analysis-plan-v1",
+            "default": "courtload-analysis-plan-v1",
+            "title": "Plan Version",
+            "type": "string"
+          },
+          "status": {
+            "default": "execute",
+            "enum": [
+              "execute",
+              "clarification_required",
+              "unsupported"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "clarification": {
+            "anyOf": [
+              {
+                "enum": [
+                  "identity",
+                  "consistency",
+                  "defense_metric",
+                  "floor_or_game",
+                  "context",
+                  "capability"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Clarification"
+          },
+          "context_changes": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/ConversationContext"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "steps": {
+            "items": {
+              "$ref": "#/$defs/OperationStep"
+            },
+            "maxItems": 8,
+            "title": "Steps",
+            "type": "array"
+          },
+          "output_kind": {
+            "default": "table",
+            "enum": [
+              "table",
+              "definition",
+              "comparison"
+            ],
+            "title": "Output Kind",
+            "type": "string"
+          }
+        },
+        "title": "AnalysisPlan",
+        "type": "object"
+      },
+      "ConversationContext": {
+        "additionalProperties": false,
+        "properties": {
+          "release_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Release Id"
+          },
+          "season": {
+            "anyOf": [
+              {
+                "pattern": "^\\d{4}-\\d{2}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Season"
+          },
+          "phase": {
+            "default": "regular_season",
+            "enum": [
+              "regular_season",
+              "playoffs",
+              "preseason",
+              "play_in",
+              "cup_final",
+              "summer_league"
+            ],
+            "title": "Phase",
+            "type": "string"
+          },
+          "before_date": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Before Date"
+          },
+          "window": {
+            "default": "season",
+            "enum": [
+              "season",
+              "last_10",
+              "last_5"
+            ],
+            "title": "Window",
+            "type": "string"
+          }
+        },
+        "title": "ConversationContext",
+        "type": "object"
+      },
+      "OperationStep": {
+        "additionalProperties": false,
+        "properties": {
+          "step_id": {
+            "pattern": "^[a-z][a-z0-9_]{0,31}$",
+            "title": "Step Id",
+            "type": "string"
+          },
+          "operation": {
+            "maxLength": 48,
+            "minLength": 1,
+            "title": "Operation",
+            "type": "string"
+          },
+          "arguments": {
+            "additionalProperties": true,
+            "title": "Arguments",
+            "type": "object"
+          },
+          "depends_on": {
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 0,
+            "title": "Depends On",
+            "type": "array"
+          }
+        },
+        "required": [
+          "step_id",
+          "operation"
+        ],
+        "title": "OperationStep",
+        "type": "object"
+      }
+    },
+    "additionalProperties": false,
+    "properties": {
+      "schema_version": {
+        "const": "courtload-conversation-v1",
+        "default": "courtload-conversation-v1",
+        "title": "Schema Version",
+        "type": "string"
+      },
+      "message": {
+        "maxLength": 2000,
+        "minLength": 1,
+        "title": "Message",
+        "type": "string"
+      },
+      "conversation_id": {
+        "anyOf": [
+          {
+            "format": "uuid",
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Conversation Id"
+      },
+      "request_id": {
+        "format": "uuid",
+        "title": "Request Id",
+        "type": "string"
+      },
+      "context": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/ConversationContext"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null
+      },
+      "context_fingerprint": {
+        "anyOf": [
+          {
+            "pattern": "^[a-f0-9]{64}$",
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Context Fingerprint"
+      },
+      "clarification_choice": {
+        "anyOf": [
+          {
+            "maxLength": 100,
+            "minLength": 1,
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Clarification Choice"
+      },
+      "plan": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/AnalysisPlan"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null
+      }
+    },
+    "required": [
+      "message",
+      "request_id"
+    ],
+    "title": "ConversationTurnRequest",
+    "type": "object"
+  },
+  "response": {
+    "$defs": {
+      "AnalysisPlan": {
+        "additionalProperties": false,
+        "properties": {
+          "plan_version": {
+            "const": "courtload-analysis-plan-v1",
+            "default": "courtload-analysis-plan-v1",
+            "title": "Plan Version",
+            "type": "string"
+          },
+          "status": {
+            "default": "execute",
+            "enum": [
+              "execute",
+              "clarification_required",
+              "unsupported"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "clarification": {
+            "anyOf": [
+              {
+                "enum": [
+                  "identity",
+                  "consistency",
+                  "defense_metric",
+                  "floor_or_game",
+                  "context",
+                  "capability"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Clarification"
+          },
+          "context_changes": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/ConversationContext"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "steps": {
+            "items": {
+              "$ref": "#/$defs/OperationStep"
+            },
+            "maxItems": 8,
+            "title": "Steps",
+            "type": "array"
+          },
+          "output_kind": {
+            "default": "table",
+            "enum": [
+              "table",
+              "definition",
+              "comparison"
+            ],
+            "title": "Output Kind",
+            "type": "string"
+          }
+        },
+        "title": "AnalysisPlan",
+        "type": "object"
+      },
+      "ConversationContext": {
+        "additionalProperties": false,
+        "properties": {
+          "release_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Release Id"
+          },
+          "season": {
+            "anyOf": [
+              {
+                "pattern": "^\\d{4}-\\d{2}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Season"
+          },
+          "phase": {
+            "default": "regular_season",
+            "enum": [
+              "regular_season",
+              "playoffs",
+              "preseason",
+              "play_in",
+              "cup_final",
+              "summer_league"
+            ],
+            "title": "Phase",
+            "type": "string"
+          },
+          "before_date": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Before Date"
+          },
+          "window": {
+            "default": "season",
+            "enum": [
+              "season",
+              "last_10",
+              "last_5"
+            ],
+            "title": "Window",
+            "type": "string"
+          }
+        },
+        "title": "ConversationContext",
+        "type": "object"
+      },
+      "EvidenceCell": {
+        "additionalProperties": false,
+        "properties": {
+          "evidence_id": {
+            "title": "Evidence Id",
+            "type": "string"
+          },
+          "result_hash": {
+            "title": "Result Hash",
+            "type": "string"
+          },
+          "operation_hash": {
+            "title": "Operation Hash",
+            "type": "string"
+          },
+          "operation_version": {
+            "title": "Operation Version",
+            "type": "string"
+          },
+          "context_fingerprint": {
+            "title": "Context Fingerprint",
+            "type": "string"
+          },
+          "entity_id": {
+            "title": "Entity Id",
+            "type": "string"
+          },
+          "row_identity": {
+            "title": "Row Identity",
+            "type": "string"
+          },
+          "path": {
+            "title": "Path",
+            "type": "string"
+          },
+          "metric": {
+            "title": "Metric",
+            "type": "string"
+          },
+          "metric_version": {
+            "title": "Metric Version",
+            "type": "string"
+          },
+          "unit": {
+            "title": "Unit",
+            "type": "string"
+          },
+          "value": {
+            "title": "Value"
+          },
+          "sample": {
+            "additionalProperties": true,
+            "title": "Sample",
+            "type": "object"
+          },
+          "input_identity": {
+            "additionalProperties": true,
+            "title": "Input Identity",
+            "type": "object"
+          },
+          "null_reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Null Reason"
+          }
+        },
+        "required": [
+          "evidence_id",
+          "result_hash",
+          "operation_hash",
+          "operation_version",
+          "context_fingerprint",
+          "entity_id",
+          "row_identity",
+          "path",
+          "metric",
+          "metric_version",
+          "unit",
+          "value",
+          "input_identity"
+        ],
+        "title": "EvidenceCell",
+        "type": "object"
+      },
+      "OperationResult": {
+        "additionalProperties": false,
+        "properties": {
+          "step_id": {
+            "title": "Step Id",
+            "type": "string"
+          },
+          "operation": {
+            "title": "Operation",
+            "type": "string"
+          },
+          "operation_version": {
+            "title": "Operation Version",
+            "type": "string"
+          },
+          "arguments": {
+            "additionalProperties": true,
+            "title": "Arguments",
+            "type": "object"
+          },
+          "operation_hash": {
+            "title": "Operation Hash",
+            "type": "string"
+          },
+          "result_hash": {
+            "title": "Result Hash",
+            "type": "string"
+          },
+          "data": {
+            "additionalProperties": true,
+            "title": "Data",
+            "type": "object"
+          },
+          "rows": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Rows",
+            "type": "array"
+          },
+          "evidence": {
+            "items": {
+              "$ref": "#/$defs/EvidenceCell"
+            },
+            "title": "Evidence",
+            "type": "array"
+          },
+          "open_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Open Url"
+          },
+          "eligible_count": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Eligible Count"
+          },
+          "limitations": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Limitations",
+            "type": "array"
+          }
+        },
+        "required": [
+          "step_id",
+          "operation",
+          "operation_version",
+          "arguments",
+          "operation_hash",
+          "result_hash",
+          "data",
+          "rows",
+          "evidence"
+        ],
+        "title": "OperationResult",
+        "type": "object"
+      },
+      "OperationStep": {
+        "additionalProperties": false,
+        "properties": {
+          "step_id": {
+            "pattern": "^[a-z][a-z0-9_]{0,31}$",
+            "title": "Step Id",
+            "type": "string"
+          },
+          "operation": {
+            "maxLength": 48,
+            "minLength": 1,
+            "title": "Operation",
+            "type": "string"
+          },
+          "arguments": {
+            "additionalProperties": true,
+            "title": "Arguments",
+            "type": "object"
+          },
+          "depends_on": {
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 0,
+            "title": "Depends On",
+            "type": "array"
+          }
+        },
+        "required": [
+          "step_id",
+          "operation"
+        ],
+        "title": "OperationStep",
+        "type": "object"
+      }
+    },
+    "additionalProperties": false,
+    "properties": {
+      "schema_version": {
+        "const": "courtload-conversation-v1",
+        "default": "courtload-conversation-v1",
+        "title": "Schema Version",
+        "type": "string"
+      },
+      "status": {
+        "enum": [
+          "answered",
+          "clarification_required",
+          "unsupported",
+          "no_data",
+          "insufficient_sample",
+          "disabled",
+          "quota_exceeded",
+          "timeout",
+          "provider_error",
+          "busy"
+        ],
+        "title": "Status",
+        "type": "string"
+      },
+      "conversation_id": {
+        "format": "uuid",
+        "title": "Conversation Id",
+        "type": "string"
+      },
+      "turn_id": {
+        "format": "uuid",
+        "title": "Turn Id",
+        "type": "string"
+      },
+      "context": {
+        "additionalProperties": true,
+        "title": "Context",
+        "type": "object"
+      },
+      "context_fingerprint": {
+        "title": "Context Fingerprint",
+        "type": "string"
+      },
+      "interpretation": {
+        "title": "Interpretation",
+        "type": "string"
+      },
+      "plan": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/AnalysisPlan"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null
+      },
+      "results": {
+        "items": {
+          "$ref": "#/$defs/OperationResult"
+        },
+        "title": "Results",
+        "type": "array"
+      },
+      "choices": {
+        "items": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "type": "object"
+        },
+        "title": "Choices",
+        "type": "array"
+      },
+      "limitations": {
+        "items": {
+          "type": "string"
+        },
+        "title": "Limitations",
+        "type": "array"
+      },
+      "manifest": {
+        "anyOf": [
+          {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Manifest"
+      },
+      "accounting": {
+        "additionalProperties": true,
+        "title": "Accounting",
+        "type": "object"
+      }
+    },
+    "required": [
+      "status",
+      "conversation_id",
+      "turn_id",
+      "context",
+      "context_fingerprint",
+      "interpretation"
+    ],
+    "title": "ConversationTurnResponse",
+    "type": "object"
+  },
+  "plan": {
+    "$defs": {
+      "ConversationContext": {
+        "additionalProperties": false,
+        "properties": {
+          "release_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Release Id"
+          },
+          "season": {
+            "anyOf": [
+              {
+                "pattern": "^\\d{4}-\\d{2}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Season"
+          },
+          "phase": {
+            "default": "regular_season",
+            "enum": [
+              "regular_season",
+              "playoffs",
+              "preseason",
+              "play_in",
+              "cup_final",
+              "summer_league"
+            ],
+            "title": "Phase",
+            "type": "string"
+          },
+          "before_date": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Before Date"
+          },
+          "window": {
+            "default": "season",
+            "enum": [
+              "season",
+              "last_10",
+              "last_5"
+            ],
+            "title": "Window",
+            "type": "string"
+          }
+        },
+        "title": "ConversationContext",
+        "type": "object"
+      },
+      "OperationStep": {
+        "additionalProperties": false,
+        "properties": {
+          "step_id": {
+            "pattern": "^[a-z][a-z0-9_]{0,31}$",
+            "title": "Step Id",
+            "type": "string"
+          },
+          "operation": {
+            "maxLength": 48,
+            "minLength": 1,
+            "title": "Operation",
+            "type": "string"
+          },
+          "arguments": {
+            "additionalProperties": true,
+            "title": "Arguments",
+            "type": "object"
+          },
+          "depends_on": {
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 0,
+            "title": "Depends On",
+            "type": "array"
+          }
+        },
+        "required": [
+          "step_id",
+          "operation"
+        ],
+        "title": "OperationStep",
+        "type": "object"
+      }
+    },
+    "additionalProperties": false,
+    "properties": {
+      "plan_version": {
+        "const": "courtload-analysis-plan-v1",
+        "default": "courtload-analysis-plan-v1",
+        "title": "Plan Version",
+        "type": "string"
+      },
+      "status": {
+        "default": "execute",
+        "enum": [
+          "execute",
+          "clarification_required",
+          "unsupported"
+        ],
+        "title": "Status",
+        "type": "string"
+      },
+      "clarification": {
+        "anyOf": [
+          {
+            "enum": [
+              "identity",
+              "consistency",
+              "defense_metric",
+              "floor_or_game",
+              "context",
+              "capability"
+            ],
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Clarification"
+      },
+      "context_changes": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/ConversationContext"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null
+      },
+      "steps": {
+        "items": {
+          "$ref": "#/$defs/OperationStep"
+        },
+        "maxItems": 8,
+        "title": "Steps",
+        "type": "array"
+      },
+      "output_kind": {
+        "default": "table",
+        "enum": [
+          "table",
+          "definition",
+          "comparison"
+        ],
+        "title": "Output Kind",
+        "type": "string"
+      }
+    },
+    "title": "AnalysisPlan",
+    "type": "object"
+  },
+  "operations": [
+    {
+      "name": "finance",
+      "description": "Explicit immutable contract book and financial year, effective date and known-at. Separate from basketball context. Unknown money stays unknown; no inferred cap room.",
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {
+          "operation_version": {
+            "const": "finance-query-v1",
+            "default": "finance-query-v1",
+            "title": "Operation Version",
+            "type": "string"
+          },
+          "book_id": {
+            "format": "uuid",
+            "title": "Book Id",
+            "type": "string"
+          },
+          "financial_season": {
+            "pattern": "^20\\d{2}-\\d{2}$",
+            "title": "Financial Season",
+            "type": "string"
+          },
+          "known_at": {
+            "format": "date-time",
+            "title": "Known At",
+            "type": "string"
+          },
+          "effective_on": {
+            "format": "date",
+            "title": "Effective On",
+            "type": "string"
+          },
+          "unknown_dates": {
+            "default": "include_labelled",
+            "enum": [
+              "include_labelled",
+              "exclude"
+            ],
+            "title": "Unknown Dates",
+            "type": "string"
+          },
+          "team_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Team Id"
+          },
+          "player_ids": {
+            "default": [],
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 100,
+            "title": "Player Ids",
+            "type": "array"
+          },
+          "statuses": {
+            "default": [],
+            "items": {
+              "enum": [
+                "unknown_review",
+                "unsigned",
+                "signed",
+                "returned",
+                "option_pending",
+                "two_way"
+              ],
+              "type": "string"
+            },
+            "maxItems": 6,
+            "title": "Statuses",
+            "type": "array"
+          },
+          "amount_kind": {
+            "default": "base_salary",
+            "enum": [
+              "base_salary",
+              "cash",
+              "cap_hit",
+              "cap_hold",
+              "dead_money",
+              "tax_component"
+            ],
+            "title": "Amount Kind",
+            "type": "string"
+          },
+          "small_big_threshold_cents": {
+            "default": 1200000000,
+            "maximum": 99999999999999,
+            "minimum": 0,
+            "title": "Small Big Threshold Cents",
+            "type": "integer"
+          },
+          "scenario": {
+            "default": "reported-v1",
+            "enum": [
+              "reported-v1",
+              "include-unexercised-options-v1"
+            ],
+            "title": "Scenario",
+            "type": "string"
+          }
+        },
+        "required": [
+          "book_id",
+          "financial_season",
+          "known_at",
+          "effective_on"
+        ],
+        "title": "FinanceQuery",
+        "type": "object"
+      }
+    },
+    {
+      "name": "profile",
+      "description": "Historical player summaries under the pinned cutoff; no future outcomes.",
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {
+          "player_id": {
+            "title": "Player Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "player_id"
+        ],
+        "title": "PlayerArgs",
+        "type": "object"
+      }
+    },
+    {
+      "name": "compare",
+      "description": "Aligned descriptive comparison without a forced winner.",
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {
+          "player_a": {
+            "title": "Player A",
+            "type": "string"
+          },
+          "player_b": {
+            "title": "Player B",
+            "type": "string"
+          }
+        },
+        "required": [
+          "player_a",
+          "player_b"
+        ],
+        "title": "CompareArgs",
+        "type": "object"
+      }
+    },
+    {
+      "name": "team",
+      "description": "Observed team outcomes and participation, not current roster or seed evidence.",
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {
+          "team_id": {
+            "pattern": "^[0-9]{10}$",
+            "title": "Team Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "team_id"
+        ],
+        "title": "TeamArgs",
+        "type": "object"
+      }
+    },
+    {
+      "name": "forecast",
+      "description": "Registered prospective points issuance with separate actual inputs; conditional on appearance.",
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {
+          "player_id": {
+            "title": "Player Id",
+            "type": "string"
+          },
+          "issuance_id": {
+            "anyOf": [
+              {
+                "pattern": "^[a-f0-9-]{36}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Issuance Id"
+          }
+        },
+        "required": [
+          "player_id"
+        ],
+        "title": "ForecastArgs",
+        "type": "object"
+      }
+    },
+    {
+      "name": "query",
+      "description": "SQL Stats ranking; named metrics and valid samples, nulls preserved.",
+      "parameters": {
+        "$defs": {
+          "EntityKind": {
+            "enum": [
+              "player",
+              "team",
+              "player_season",
+              "team_season",
+              "game",
+              "stint",
+              "assignment"
+            ],
+            "title": "EntityKind",
+            "type": "string"
+          },
+          "MetricSelector": {
+            "description": "Requested metric key, version, and exposure normalization.",
+            "properties": {
+              "key": {
+                "title": "Key",
+                "type": "string"
+              },
+              "version": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Version"
+              },
+              "normalization": {
+                "$ref": "#/$defs/NormalizationMode",
+                "default": "raw"
+              },
+              "denominator_type": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Denominator Type"
+              }
+            },
+            "required": [
+              "key"
+            ],
+            "title": "MetricSelector",
+            "type": "object"
+          },
+          "NormalizationMode": {
+            "enum": [
+              "raw",
+              "per_game",
+              "per_minute",
+              "per_36",
+              "per_75",
+              "per_100",
+              "totals"
+            ],
+            "title": "NormalizationMode",
+            "type": "string"
+          },
+          "PagingSpec": {
+            "description": "Bounded pagination request.",
+            "properties": {
+              "limit": {
+                "default": 50,
+                "maximum": 100,
+                "minimum": 1,
+                "title": "Limit",
+                "type": "integer"
+              },
+              "cursor": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Cursor"
+              }
+            },
+            "title": "PagingSpec",
+            "type": "object"
+          },
+          "PredicateGroup": {
+            "description": "Boolean combination of predicates with max leaf depth controls.",
+            "properties": {
+              "conjunction": {
+                "default": "and",
+                "enum": [
+                  "and",
+                  "or"
+                ],
+                "title": "Conjunction",
+                "type": "string"
+              },
+              "predicates": {
+                "items": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/$defs/PredicateLeaf"
+                    },
+                    {
+                      "$ref": "#/$defs/PredicateGroup"
+                    }
+                  ]
+                },
+                "title": "Predicates",
+                "type": "array"
+              }
+            },
+            "title": "PredicateGroup",
+            "type": "object"
+          },
+          "PredicateLeaf": {
+            "description": "Leaf comparison predicate against an allowlisted field.",
+            "properties": {
+              "field": {
+                "title": "Field",
+                "type": "string"
+              },
+              "op": {
+                "$ref": "#/$defs/PredicateOp"
+              },
+              "value": {
+                "title": "Value"
+              }
+            },
+            "required": [
+              "field",
+              "op",
+              "value"
+            ],
+            "title": "PredicateLeaf",
+            "type": "object"
+          },
+          "PredicateOp": {
+            "enum": [
+              "eq",
+              "ne",
+              "lt",
+              "lte",
+              "gt",
+              "gte",
+              "between",
+              "in"
+            ],
+            "title": "PredicateOp",
+            "type": "string"
+          },
+          "SampleFilter": {
+            "description": "Sample thresholds on appearances, minutes, possessions, or attempts.",
+            "properties": {
+              "min_games": {
+                "anyOf": [
+                  {
+                    "minimum": 0,
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Min Games"
+              },
+              "min_minutes": {
+                "anyOf": [
+                  {
+                    "minimum": 0.0,
+                    "type": "number"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Min Minutes"
+              },
+              "min_avg_minutes": {
+                "anyOf": [
+                  {
+                    "minimum": 0.0,
+                    "type": "number"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Min Avg Minutes"
+              },
+              "min_possessions": {
+                "anyOf": [
+                  {
+                    "minimum": 0,
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Min Possessions"
+              },
+              "min_attempts": {
+                "anyOf": [
+                  {
+                    "minimum": 0,
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Min Attempts"
+              }
+            },
+            "title": "SampleFilter",
+            "type": "object"
+          },
+          "SeasonScope": {
+            "description": "Season scope covering one or bounded multi-season/career queries.",
+            "properties": {
+              "seasons": {
+                "items": {
+                  "type": "string"
+                },
+                "title": "Seasons",
+                "type": "array"
+              },
+              "aggregate_multi_season": {
+                "default": false,
+                "title": "Aggregate Multi Season",
+                "type": "boolean"
+              }
+            },
+            "title": "SeasonScope",
+            "type": "object"
+          },
+          "SortSpec": {
+            "description": "Sort key with direction and null ordering.",
+            "properties": {
+              "field": {
+                "title": "Field",
+                "type": "string"
+              },
+              "direction": {
+                "default": "desc",
+                "enum": [
+                  "asc",
+                  "desc"
+                ],
+                "title": "Direction",
+                "type": "string"
+              },
+              "nulls_last": {
+                "default": true,
+                "title": "Nulls Last",
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "field"
+            ],
+            "title": "SortSpec",
+            "type": "object"
+          },
+          "TeamScope": {
+            "description": "Team participation scope.",
+            "properties": {
+              "team_id": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Team Id"
+              },
+              "participation_only": {
+                "default": true,
+                "title": "Participation Only",
+                "type": "boolean"
+              },
+              "current_roster_only": {
+                "default": false,
+                "title": "Current Roster Only",
+                "type": "boolean"
+              }
+            },
+            "title": "TeamScope",
+            "type": "object"
+          },
+          "ViewState": {
+            "description": "Presentation preferences reference that does not change analytical truth.",
+            "properties": {
+              "view_id": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "View Id"
+              },
+              "columns": {
+                "items": {
+                  "type": "string"
+                },
+                "title": "Columns",
+                "type": "array"
+              },
+              "density": {
+                "anyOf": [
+                  {
+                    "enum": [
+                      "compact",
+                      "standard",
+                      "expanded"
+                    ],
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Density"
+              },
+              "identity_mode": {
+                "anyOf": [
+                  {
+                    "enum": [
+                      "photos",
+                      "logos",
+                      "initials",
+                      "none"
+                    ],
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Identity Mode"
+              }
+            },
+            "title": "ViewState",
+            "type": "object"
+          },
+          "WindowKind": {
+            "enum": [
+              "season",
+              "last_5",
+              "last_10",
+              "last_n_appearances",
+              "last_n_team_games",
+              "date_range"
+            ],
+            "title": "WindowKind",
+            "type": "string"
+          },
+          "WindowSpec": {
+            "description": "Temporal window specification for aggregation.",
+            "properties": {
+              "kind": {
+                "$ref": "#/$defs/WindowKind",
+                "default": "season"
+              },
+              "n": {
+                "anyOf": [
+                  {
+                    "maximum": 82,
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "N"
+              },
+              "from_date": {
+                "anyOf": [
+                  {
+                    "format": "date",
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "From Date"
+              },
+              "to_date": {
+                "anyOf": [
+                  {
+                    "format": "date",
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "To Date"
+              }
+            },
+            "title": "WindowSpec",
+            "type": "object"
+          }
+        },
+        "description": "Canonical Query Specification v2 for all analytical research queries.",
+        "properties": {
+          "release_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Release Id"
+          },
+          "season": {
+            "default": "2025-26",
+            "title": "Season",
+            "type": "string"
+          },
+          "phase": {
+            "default": "regular_season",
+            "title": "Phase",
+            "type": "string"
+          },
+          "before_date": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Before Date"
+          },
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Name"
+          },
+          "entity_kind": {
+            "$ref": "#/$defs/EntityKind",
+            "default": "player"
+          },
+          "window": {
+            "$ref": "#/$defs/WindowSpec"
+          },
+          "season_scope": {
+            "$ref": "#/$defs/SeasonScope"
+          },
+          "team_scope": {
+            "$ref": "#/$defs/TeamScope"
+          },
+          "metric_selectors": {
+            "items": {
+              "$ref": "#/$defs/MetricSelector"
+            },
+            "title": "Metric Selectors",
+            "type": "array"
+          },
+          "predicates": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/PredicateGroup"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "sample_filters": {
+            "$ref": "#/$defs/SampleFilter"
+          },
+          "sort": {
+            "items": {
+              "$ref": "#/$defs/SortSpec"
+            },
+            "title": "Sort",
+            "type": "array"
+          },
+          "view_state": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/ViewState"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "page": {
+            "$ref": "#/$defs/PagingSpec"
+          }
+        },
+        "title": "QuerySpec",
+        "type": "object"
+      }
+    },
+    {
+      "name": "definition",
+      "description": "Catalog metric definition/formula/unit; no statistical query.",
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {
+          "metric": {
+            "title": "Metric",
+            "type": "string"
+          }
+        },
+        "required": [
+          "metric"
+        ],
+        "title": "DefinitionArgs",
+        "type": "object"
+      }
+    },
+    {
+      "name": "compare_periods",
+      "description": "Disjoint recent/previous appearances, with samples.",
+      "parameters": {
+        "$defs": {
+          "PeriodMode": {
+            "enum": [
+              "appearances",
+              "date_range"
+            ],
+            "title": "PeriodMode",
+            "type": "string"
+          }
+        },
+        "properties": {
+          "player_id": {
+            "title": "Player Id",
+            "type": "string"
+          },
+          "season": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Season"
+          },
+          "phase": {
+            "default": "regular_season",
+            "title": "Phase",
+            "type": "string"
+          },
+          "before_date": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Before Date"
+          },
+          "release_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Release Id"
+          },
+          "mode": {
+            "$ref": "#/$defs/PeriodMode",
+            "default": "appearances"
+          },
+          "period_a_n": {
+            "default": 10,
+            "maximum": 82,
+            "minimum": 1,
+            "title": "Period A N",
+            "type": "integer"
+          },
+          "period_b_n": {
+            "default": 10,
+            "maximum": 82,
+            "minimum": 1,
+            "title": "Period B N",
+            "type": "integer"
+          },
+          "period_a_from": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Period A From"
+          },
+          "period_a_to": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Period A To"
+          },
+          "period_b_from": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Period B From"
+          },
+          "period_b_to": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Period B To"
+          },
+          "metrics": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Metrics"
+          }
+        },
+        "required": [
+          "player_id"
+        ],
+        "title": "ComparePeriodsRequest",
+        "type": "object"
+      }
+    },
+    {
+      "name": "distribution",
+      "description": "Historical distribution, type-7 quantiles and population SD; n >= 5.",
+      "parameters": {
+        "properties": {
+          "player_id": {
+            "title": "Player Id",
+            "type": "string"
+          },
+          "metric": {
+            "default": "pts",
+            "title": "Metric",
+            "type": "string"
+          },
+          "season": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Season"
+          },
+          "phase": {
+            "default": "regular_season",
+            "title": "Phase",
+            "type": "string"
+          },
+          "before_date": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Before Date"
+          },
+          "release_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Release Id"
+          },
+          "window_n": {
+            "default": 20,
+            "maximum": 82,
+            "minimum": 1,
+            "title": "Window N",
+            "type": "integer"
+          },
+          "from_date": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "From Date"
+          },
+          "to_date": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "To Date"
+          }
+        },
+        "required": [
+          "player_id"
+        ],
+        "title": "DistributionRequest",
+        "type": "object"
+      }
+    },
+    {
+      "name": "splits",
+      "description": "Historical venue/rest/opponent splits; descriptive, not causal.",
+      "parameters": {
+        "$defs": {
+          "SplitType": {
+            "enum": [
+              "venue",
+              "rest",
+              "opponent",
+              "all"
+            ],
+            "title": "SplitType",
+            "type": "string"
+          }
+        },
+        "properties": {
+          "player_id": {
+            "title": "Player Id",
+            "type": "string"
+          },
+          "split_type": {
+            "$ref": "#/$defs/SplitType",
+            "default": "all"
+          },
+          "season": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Season"
+          },
+          "phase": {
+            "default": "regular_season",
+            "title": "Phase",
+            "type": "string"
+          },
+          "before_date": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Before Date"
+          },
+          "release_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Release Id"
+          }
+        },
+        "required": [
+          "player_id"
+        ],
+        "title": "SplitProfileRequest",
+        "type": "object"
+      }
+    },
+    {
+      "name": "similarity",
+      "description": "Statistical production/workload peers; standardized dimensions, not projected playstyle.",
+      "parameters": {
+        "properties": {
+          "target_player_id": {
+            "title": "Target Player Id",
+            "type": "string"
+          },
+          "season": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Season"
+          },
+          "phase": {
+            "default": "regular_season",
+            "title": "Phase",
+            "type": "string"
+          },
+          "before_date": {
+            "anyOf": [
+              {
+                "format": "date",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Before Date"
+          },
+          "release_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Release Id"
+          },
+          "window": {
+            "default": "last_10",
+            "enum": [
+              "last_10",
+              "season"
+            ],
+            "title": "Window",
+            "type": "string"
+          },
+          "min_appearances": {
+            "default": 10,
+            "maximum": 82,
+            "minimum": 1,
+            "title": "Min Appearances",
+            "type": "integer"
+          },
+          "min_minutes": {
+            "default": 150.0,
+            "minimum": 0.0,
+            "title": "Min Minutes",
+            "type": "number"
+          },
+          "top_k": {
+            "default": 5,
+            "maximum": 25,
+            "minimum": 1,
+            "title": "Top K",
+            "type": "integer"
+          },
+          "dimensions": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Dimensions"
+          }
+        },
+        "required": [
+          "target_player_id"
+        ],
+        "title": "StatisticalPeersRequest",
+        "type": "object"
+      }
+    },
+    {
+      "name": "workload_shifts",
+      "description": "Last N versus previous N appearances; minutes/game increased and points/game did not increase, both periods complete. No position filter.",
+      "parameters": {
+        "additionalProperties": false,
+        "properties": {
+          "period_n": {
+            "default": 10,
+            "maximum": 41,
+            "minimum": 5,
+            "title": "Period N",
+            "type": "integer"
+          },
+          "min_minutes": {
+            "default": 0,
+            "maximum": 10000,
+            "minimum": 0,
+            "title": "Min Minutes",
+            "type": "number"
+          },
+          "limit": {
+            "default": 20,
+            "maximum": 100,
+            "minimum": 1,
+            "title": "Limit",
+            "type": "integer"
+          }
+        },
+        "title": "ShiftsArgs",
+        "type": "object"
+      }
+    }
+  ]
+}

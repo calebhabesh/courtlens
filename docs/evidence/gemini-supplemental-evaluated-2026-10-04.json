@@ -1,0 +1,351 @@
+{
+  "started_at": "2026-10-04T13:25:14.146289+00:00",
+  "mode": "real_provider",
+  "model": "gemini-3.5-flash-lite",
+  "sdk_version": "2.26.0",
+  "project_tier": "owner_declared_free_not_independently_verified",
+  "total_cases": 6,
+  "cases": [
+    {
+      "id": "b34-supp-01",
+      "category": "empty_season_cross_context",
+      "description": "Cross-season query asking for 2026-27 scoring leaders from 2024-25 context",
+      "question": "Show scoring leaders in 2026-27",
+      "context_season": "2024-25",
+      "status": "clarification_required",
+      "expected_status": "clarification_required",
+      "passed": true,
+      "elapsed_ms": 2186.148,
+      "observed_model_version": "gemini-3.5-flash-lite",
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 0,
+        "cache_hits": 0,
+        "elapsed_ms": 2185.083,
+        "provider_usage": {
+          "prompt_token_count": 6613,
+          "candidates_token_count": 124,
+          "total_token_count": 6737
+        },
+        "usage_basis": "provider metadata"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "execute",
+        "clarification": null,
+        "context_changes": {
+          "release_id": null,
+          "season": "2026-27",
+          "phase": "regular_season",
+          "before_date": null,
+          "window": "season"
+        },
+        "steps": [
+          {
+            "step_id": "step_1",
+            "operation": "query",
+            "arguments": {
+              "entity_kind": "player",
+              "metric_selectors": [
+                {
+                  "key": "pts"
+                },
+                {
+                  "key": "pts_per_game"
+                }
+              ],
+              "page": {
+                "limit": 10
+              },
+              "season": "2026-27",
+              "sort": [
+                {
+                  "direction": "desc",
+                  "field": "pts_per_game",
+                  "nulls_last": true
+                }
+              ]
+            },
+            "depends_on": []
+          }
+        ],
+        "output_kind": "table"
+      },
+      "results_count": 0,
+      "result_hashes": []
+    },
+    {
+      "id": "b34-supp-02",
+      "category": "empty_season_query",
+      "description": "Scoring leaders query executed under pinned 2026-27 empty season context",
+      "question": "Show points per game leaders",
+      "context_season": "2026-27",
+      "status": "no_data",
+      "expected_status": "no_data",
+      "passed": true,
+      "elapsed_ms": 2197.189,
+      "observed_model_version": "gemini-3.5-flash-lite",
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 1,
+        "rows": 0,
+        "cache_hits": 0,
+        "elapsed_ms": 2196.613,
+        "provider_usage": {
+          "prompt_token_count": 6603,
+          "candidates_token_count": 238,
+          "total_token_count": 6841
+        },
+        "usage_basis": "provider metadata"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "execute",
+        "clarification": null,
+        "context_changes": null,
+        "steps": [
+          {
+            "step_id": "step_1",
+            "operation": "query",
+            "arguments": {
+              "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+              "season": "2026-27",
+              "phase": "regular_season",
+              "before_date": "2026-06-13",
+              "name": null,
+              "entity_kind": "player",
+              "window": {
+                "kind": "season",
+                "n": null,
+                "from_date": null,
+                "to_date": null
+              },
+              "season_scope": {
+                "seasons": [],
+                "aggregate_multi_season": false
+              },
+              "team_scope": {
+                "team_id": null,
+                "participation_only": true,
+                "current_roster_only": false
+              },
+              "metric_selectors": [
+                {
+                  "key": "pts_per_game",
+                  "version": null,
+                  "normalization": "raw",
+                  "denominator_type": null
+                },
+                {
+                  "key": "gp",
+                  "version": null,
+                  "normalization": "raw",
+                  "denominator_type": null
+                }
+              ],
+              "predicates": null,
+              "sample_filters": {
+                "min_games": null,
+                "min_minutes": null,
+                "min_avg_minutes": null,
+                "min_possessions": null,
+                "min_attempts": null
+              },
+              "sort": [
+                {
+                  "field": "pts_per_game",
+                  "direction": "desc",
+                  "nulls_last": true
+                }
+              ],
+              "view_state": null,
+              "page": {
+                "limit": 10,
+                "cursor": null
+              }
+            },
+            "depends_on": []
+          }
+        ],
+        "output_kind": "table"
+      },
+      "results_count": 1,
+      "result_hashes": [
+        "6a649e7691778570110be68d5314e32d7646a4996421dccfcb4d185b7e76c62f"
+      ]
+    },
+    {
+      "id": "b34-supp-03",
+      "category": "empty_season_profile",
+      "description": "Player profile executed under pinned 2026-27 empty season context",
+      "question": "Profile Scottie Barnes",
+      "context_season": "2026-27",
+      "status": "answered",
+      "expected_status": "answered",
+      "passed": true,
+      "elapsed_ms": 1922.921,
+      "observed_model_version": "gemini-3.5-flash-lite",
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 1,
+        "rows": 1,
+        "cache_hits": 0,
+        "elapsed_ms": 1918.882,
+        "provider_usage": {
+          "prompt_token_count": 6602,
+          "candidates_token_count": 120,
+          "total_token_count": 6722
+        },
+        "usage_basis": "provider metadata"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "execute",
+        "clarification": null,
+        "context_changes": null,
+        "steps": [
+          {
+            "step_id": "step_profile",
+            "operation": "profile",
+            "arguments": {
+              "player_id": "1630567"
+            },
+            "depends_on": []
+          }
+        ],
+        "output_kind": "table"
+      },
+      "results_count": 1,
+      "result_hashes": [
+        "0c607e6d91a2bdef7650aca4c20cd3de7642deb017500ddbe1d7d5f0cb6640f4"
+      ]
+    },
+    {
+      "id": "b34-supp-04",
+      "category": "finance_unpinned_contract",
+      "description": "Natural language contract question without pinned contract book ID",
+      "question": "What is Scottie Barnes contract?",
+      "context_season": "2024-25",
+      "status": "unsupported",
+      "expected_status": "unsupported",
+      "passed": true,
+      "elapsed_ms": 1156.01,
+      "observed_model_version": "gemini-3.5-flash-lite",
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 0,
+        "cache_hits": 0,
+        "elapsed_ms": 1155.175,
+        "provider_usage": {
+          "prompt_token_count": 6608,
+          "candidates_token_count": 64,
+          "total_token_count": 6672
+        },
+        "usage_basis": "provider metadata"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "unsupported",
+        "clarification": "capability",
+        "context_changes": null,
+        "steps": [],
+        "output_kind": "comparison"
+      },
+      "results_count": 0,
+      "result_hashes": []
+    },
+    {
+      "id": "b34-supp-05",
+      "category": "finance_unpinned_payroll",
+      "description": "Natural language payroll question without pinned contract book ID",
+      "question": "Show Toronto Raptors payroll for 2024-25",
+      "context_season": "2024-25",
+      "status": "unsupported",
+      "expected_status": "unsupported",
+      "passed": true,
+      "elapsed_ms": 1564.954,
+      "observed_model_version": "gemini-3.5-flash-lite",
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 0,
+        "cache_hits": 0,
+        "elapsed_ms": 1564.283,
+        "provider_usage": {
+          "prompt_token_count": 6614,
+          "candidates_token_count": 64,
+          "total_token_count": 6678
+        },
+        "usage_basis": "provider metadata"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "unsupported",
+        "clarification": "capability",
+        "context_changes": null,
+        "steps": [],
+        "output_kind": "table"
+      },
+      "results_count": 0,
+      "result_hashes": []
+    },
+    {
+      "id": "b34-supp-06",
+      "category": "finance_admitted_book",
+      "description": "Explicit finance operation using admitted contract book ID",
+      "question": "Inspect admitted 2024-25 contracts",
+      "context_season": "2024-25",
+      "status": "answered",
+      "expected_status": "answered",
+      "passed": true,
+      "elapsed_ms": 578.741,
+      "observed_model_version": null,
+      "accounting": {
+        "provider_calls": 0,
+        "tool_calls": 1,
+        "rows": 13,
+        "cache_hits": 0,
+        "elapsed_ms": 576.435,
+        "provider_usage": {},
+        "usage_basis": "unavailable"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "execute",
+        "clarification": null,
+        "context_changes": null,
+        "steps": [
+          {
+            "step_id": "fin_book",
+            "operation": "finance",
+            "arguments": {
+              "operation_version": "finance-query-v1",
+              "book_id": "96b89635-82b4-47c7-b4f6-52ab85c0f0bc",
+              "financial_season": "2024-25",
+              "known_at": "2026-10-04T00:00:00Z",
+              "effective_on": "2025-02-12",
+              "unknown_dates": "include_labelled",
+              "team_id": null,
+              "player_ids": [],
+              "statuses": [],
+              "amount_kind": "base_salary",
+              "small_big_threshold_cents": 1200000000,
+              "scenario": "reported-v1"
+            },
+            "depends_on": []
+          }
+        ],
+        "output_kind": "table"
+      },
+      "results_count": 1,
+      "result_hashes": [
+        "29b84002bb3821c534c2fe2e52e9de145e967eec43986759d7d3e7ffaede2cd2"
+      ]
+    }
+  ],
+  "passed_count": 6,
+  "accuracy": 1.0,
+  "all_passed": true
+}

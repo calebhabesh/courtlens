@@ -8,9 +8,8 @@ from courtload.config import get_settings
 from courtload.database import SessionLocal
 from courtload.services.assistant.curated_questions import CURATED_QUESTIONS
 from courtload.services.assistant.provider import (
-    AssistantProvider,
     GeminiAssistantProvider,
-    OfflineFixtureAssistantProvider,
+    OfflinePlanFixtureProvider,
 )
 from courtload.services.assistant.service import (
     get_assistant_status,
@@ -31,7 +30,7 @@ def run_assistant_smoke(live: bool = False) -> int:
     print(f"Mode:            {'Live API' if live else 'Deterministic Offline Fixture'}")
     print("-" * 80)
 
-    provider: AssistantProvider
+    provider: GeminiAssistantProvider | OfflinePlanFixtureProvider
     if live:
         if not settings.gemini_api_key:
             print("ERROR: --live requested but COURTLOAD_GEMINI_API_KEY is not set.")
@@ -42,7 +41,7 @@ def run_assistant_smoke(live: bool = False) -> int:
             model=settings.gemini_model,
         )
     else:
-        provider = OfflineFixtureAssistantProvider()
+        provider = OfflinePlanFixtureProvider()
 
     failures = 0
     passed_count = 0

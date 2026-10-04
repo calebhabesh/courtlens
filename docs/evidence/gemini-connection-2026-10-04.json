@@ -1,0 +1,81 @@
+{
+  "started_at": "2026-10-04T12:30:12.117882+00:00",
+  "mode": "real_provider",
+  "model": "gemini-3.8-flash",
+  "sdk_version": "2.26.0",
+  "project_tier": "owner_declared_free_not_independently_verified",
+  "corpus_sha256": "17178b8b6bd579f0ff4e6ca1b1addd37bd2ee043c63fb95bae8fba11ca37838f",
+  "corrections": [
+    {
+      "case": "b33-23",
+      "field": "player_b",
+      "original": "1628369",
+      "corrected": "1629628",
+      "reason": "Question names RJ Barrett; original fixture uses Jayson Tatum ID."
+    }
+  ],
+  "limits": {
+    "cases": 45,
+    "calls_per_case": 1,
+    "provider_seconds": 20,
+    "turn_seconds": 45,
+    "stop_on_quota_or_provider_failure": true
+  },
+  "cases": [
+    {
+      "id": "b33-01",
+      "split": "development",
+      "category": "supported",
+      "status": "provider_error",
+      "passed": false,
+      "observed_model_version": null,
+      "elapsed_ms": 3214.549,
+      "accounting": {
+        "retry_after_seconds": null,
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 0,
+        "cache_hits": 0,
+        "elapsed_ms": 3213.777,
+        "provider_usage": {},
+        "usage_basis": "unavailable"
+      },
+      "canonical_plan": null,
+      "result_hashes": [],
+      "manual_result_hashes": [
+        "0b8202f361e9bfc0d3c19c6da370a7b4cb73de8c28abaf8df81d02deecc1c84a"
+      ]
+    }
+  ],
+  "context": {
+    "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+    "snapshot_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+    "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+    "dataset_type": "workbench",
+    "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666",
+    "mode": "workbench_recent",
+    "source": "sportsdataverse",
+    "season": "2024-25",
+    "phase": "regular_season",
+    "before_date": "2025-06-23",
+    "cutoff_utc": "2025-06-23T04:00:00+00:00",
+    "window": "season",
+    "coverage_start": "2023-10-24",
+    "coverage_end": "2026-06-13",
+    "metric_version": "v2",
+    "published_at": "2026-10-01T17:47:29.173164+00:00"
+  },
+  "stopped_on": "provider_error",
+  "counts": {
+    "supported:fail": 1
+  },
+  "provider_calls": 1,
+  "real_provider_calls": 1,
+  "supported_accuracy": 0.0,
+  "language_gate": "unmet",
+  "limitations": [
+    "Original 45-case language corpus has no finance or current empty-season cases; supplemental evaluation is required before full chatbot acceptance.",
+    "Fixture planner invocations are simulated; remote inference calls are counted separately.",
+    "Observed provider model version is reported only when returned by the SDK; unavailable metadata is null."
+  ]
+}

@@ -8,6 +8,8 @@ import re
 from dataclasses import dataclass
 from typing import Any, Protocol
 
+from courtload.services.assistant.planner import PlanningOutput
+
 logger = logging.getLogger(__name__)
 
 
@@ -69,7 +71,7 @@ def extract_json_payload(text: str) -> dict[str, Any] | None:
 class GeminiAssistantProvider:
     """Official google-genai SDK adapter for Gemini models with tool calling."""
 
-    def __init__(self, api_key: str, model: str = "gemini-2.5-flash") -> None:
+    def __init__(self, api_key: str, model: str = "gemini-3.5-flash-lite") -> None:
         self.api_key = api_key
         self.model = model
         # Lazy import of google.genai so offline code has zero runtime dependency
@@ -653,4 +655,61 @@ class OfflineFixtureAssistantProvider:
         }
         return ProviderCallResult(
             tool_calls=[], content=json.dumps(structured), structured_data=structured
+        )
+
+
+class OfflinePlanFixtureProvider:
+    """Explicit development fixtures, not a natural-language interpreter."""
+
+    def plan(self, payload: str, *, timeout_seconds: float) -> PlanningOutput:
+
+        question = json.loads(payload)["message"]
+        fixtures: dict[str, dict[str, Any]] = {
+            "Who are the best defenders on the Raptors?": {
+                "status": "clarification_required",
+                "clarification": "defense_metric",
+            },
+            "Explain the next-game points forecast for Scottie Barnes": {
+                "steps": [
+                    {
+                        "step_id": "forecast",
+                        "operation": "forecast",
+                        "arguments": {"player_id": "1630567"},
+                    }
+                ]
+            },
+            "Who will win the Eastern Conference and what are the playoff seeds?": {
+                "status": "unsupported",
+                "clarification": "capability",
+            },
+            "Compare Scottie Barnes and RJ Barrett under current season": {
+                "steps": [
+                    {
+                        "step_id": "compare",
+                        "operation": "compare",
+                        "arguments": {"player_a": "1630567", "player_b": "1628369"},
+                    }
+                ]
+            },
+            "Who leads the league in scoring points per game?": {
+                "steps": [
+                    {
+                        "step_id": "rank",
+                        "operation": "query",
+                        "arguments": {"sort": [{"field": "pts_per_game"}], "page": {"limit": 10}},
+                    }
+                ]
+            },
+            "What is the formula and definition for true shooting percentage ts_pct?": {
+                "steps": [
+                    {
+                        "step_id": "definition",
+                        "operation": "definition",
+                        "arguments": {"metric": "ts_pct"},
+                    }
+                ]
+            },
+        }
+        return PlanningOutput(
+            fixtures.get(question, {"status": "unsupported", "clarification": "capability"})
         )

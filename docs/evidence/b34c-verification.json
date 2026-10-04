@@ -1,0 +1,108 @@
+{
+  "block": "B34c",
+  "recorded_at": "2026-10-04T19:01:06.404591+00:00",
+  "status": "verified language acceptance for owner-approved gemini-3.5-flash-lite",
+  "implementation_choice": "Current Codex session; no delegated agents or implementation-model overrides",
+  "runtime_model": "gemini-3.5-flash-lite",
+  "observed_models": [
+    "gemini-3.5-flash-lite"
+  ],
+  "sdk_version": "2.26.0",
+  "project_tier": "owner_declared_free_not_independently_verified",
+  "core": {
+    "unique_cases": 45,
+    "supported_passed": 25,
+    "clarification_passed": 10,
+    "unsupported_passed": 10,
+    "provider_calls": 52,
+    "seven_queries_rechecked_under_final_stats_scope": true
+  },
+  "holdout": {
+    "cases": 12,
+    "passed": 12,
+    "supported": 8,
+    "clarification": 2,
+    "unsupported": 2,
+    "provider_calls": 12,
+    "original_heldout_diagnosis_disclosed": true
+  },
+  "supplemental": {
+    "cases": 6,
+    "passed": 6,
+    "provider_calls": 5,
+    "explicit_finance_manual_calls": 1
+  },
+  "production_browser": {
+    "workflows": 3,
+    "provider_calls": 3,
+    "page_errors": [],
+    "manual_result_hash_matches": 3,
+    "build": "Retained B36b Next.js 16.3.5 standalone; frontend source unchanged",
+    "site": "http://127.0.0.1:3137",
+    "api": "http://127.0.0.1:8036"
+  },
+  "all_session_provider_calls": 276,
+  "all_session_provider_failures": {
+    "busy_503": 1,
+    "quota_429": 1
+  },
+  "core_plus_holdout_turn_latency_ms": {
+    "median": 1445.389,
+    "p95_nearest_rank": 1843.816,
+    "max": 1927.377,
+    "scope": "Warm evaluation turns: manual baselines populate operation caches; not uncached, provider-only or field latency."
+  },
+  "checks": {
+    "ruff": "pass",
+    "ruff_format": "pass, 343 files",
+    "mypy": "pass, 144 source files",
+    "pytest": "621 passed, 125 opt-in skips; zero warnings",
+    "focused_postgres": "27 passed, zero skips/warnings",
+    "archive_and_conversation": "108 passed",
+    "compose": "pass",
+    "harness_syntax": "pass",
+    "saved_reproduction": "33/33, zero provider calls",
+    "saved_inventory": "33 unchanged",
+    "publication_pointers": "149 unchanged",
+    "frontend_build_unit_browser_suite": "Not rerun; no dashboard source changes. B36b evidence retained; three fresh real-provider production browser workflows run.",
+    "sdk_warning_filter": "One exact test-scoped upstream google.genai.types Python 3.14 deprecation filter; no application-warning suppression."
+  },
+  "remaining_gates": [
+    "B32 actual changing-game/finality/correction observations",
+    "Deeper admitted-source/model capability gates",
+    "Versioned workbench nonappearance metric correction: broader attempted change altered three retained query hashes; reverted outside archive scope. Requires compatibility/evidence revision before changing sealed workbench queries."
+  ],
+  "full_replica_complete": false,
+  "evidence": {
+    "core": "docs/evidence/b34c-language-final-core.json",
+    "holdout": "docs/evidence/b34c-holdout-final.json",
+    "supplemental": "docs/evidence/b34c-supplemental-accepted.json",
+    "browser": "docs/evidence/b34c-browser-final/verification.json",
+    "retained": "docs/evidence/b34c-retained-accepted.json",
+    "integrity": "docs/evidence/b34c-integrity-after.json"
+  },
+  "sha256": {
+    ".env.example": "52f25e4a2846e1d8ee4583a1749dd3be72dcc3a779c773f8a3f408d235f506eb",
+    "README.md": "17ef017c5537cfb814c8b25ebaa013825bef38806cea1ab70047ddbd48a99d73",
+    "docker-compose.yml": "00780b483cf7ed4d92733f380e4fb244f2b65f90960687b4b763f47091659c17",
+    "src/courtload/config.py": "22b629c2fd3e18527bb8daa9e2bfcc1741bab9e08e537ae50f5777c0a018f45d",
+    "src/courtload/services/assistant/provider.py": "712945fab0fc44439a51d310352302f7ff9272a709e1f1fe9186fcb86638889e",
+    "src/courtload/services/assistant/planner.py": "8b14f133d957c165bc58b018a784c915623d8f0e695028f154b10492882f3bec",
+    "src/courtload/services/assistant/conversations.py": "e359e123ab3bcc6b187a655bba44a54ef1d064ce47a718b5c36426ba229ee4ab",
+    "src/courtload/services/stats_engine.py": "6529132d28737b5a63abd391b7fceaab9731dca42680966334ed5de716ed40d3",
+    "tests/unit/test_conversations.py": "757e5ab3ea07923c8eee841b73d48c056fff8be45f5d45aeb9b88132ebb1bc5e",
+    "tests/unit/test_stats_engine.py": "7bcba74769d924dfd0d1c1e7f7f06ea8c72ba0368d37b61a73927f0007fb0f32",
+    "scripts/evaluate_b34_conversation.py": "86b791c82e8f31c474ac004b38c6442c35074f7ef768ef4b65f3cecd60263ea1",
+    "scripts/verify_b34c_language_browser.cjs": "e9b0abe6bf699f714c13798888081db4eb3dfcf8be368a1b37be20af643ed2d9",
+    "scripts/verify_b34c_retained.py": "be9964da407443efb8a3d5f4e95871b39a36b6fc0029a451aceaee90011984c9",
+    "tests/fixtures/assistant/b34c-holdout-v1.json": "5f37ad7809c3aa3ab341de8c5999276663682f21ce91176a5c05137fffb96394",
+    "tests/fixtures/assistant/b34c-holdout-v2.json": "6fcccf36096f9002c8d6ee53685c7b650e8a6dadcbbd1c6b9033185360137b0f",
+    "docs/evidence/b34c-language-final-core.json": "7cf404540e377a01cb06ec4a5afce7d68b082f93824c6ba410a98e5e382ad012",
+    "docs/evidence/b34c-holdout-final.json": "666c1881e114916a7be9390e16ce7d761ac6c214fbc87ece4735af756fa60ad4",
+    "docs/evidence/b34c-supplemental-accepted.json": "057ca9e1152204f4cf3383b2b8d737ffac0005563ec7eb0b17403242d99ccf36",
+    "docs/evidence/b34c-browser-final/verification.json": "1d1ecde63c09c9c41d43cf376af0609b6e6904c7455310a7c67cdf62dde99719",
+    "docs/evidence/b34c-retained-accepted.json": "6cd8bbfdad9a60a617df588596c152cba9dd7c1cb8060e4531798ead7cb97909",
+    "docs/evidence/b34c-language-acceptance.md": "3d58985e81f1a0f9051ac7d04c39565a40b8cec375b3b57f2327297ba83160bb",
+    "docs/databallr-replica-implementation-progress.md": "b16fd5f5b5dc75445dea31b302d1d28b1efca46892921fa4ebb101d9546402df"
+  }
+}

@@ -1,0 +1,132 @@
+{
+  "block": "B34",
+  "recorded_at": "2026-10-04T01:38:41.425415+00:00",
+  "status": "bounded conversational interface and exact Research equivalence verified; real-provider language gate open",
+  "implementation_choice": "Current Codex session; no delegated agent, model override or runtime AI model substitution",
+  "revision": "6c82e7da33e0008b37627d179e2548955551f658",
+  "dirty_work_preserved": true,
+  "build_id": "0BDsc6QvDG7uz27PQRQwY",
+  "checks": {
+    "backend": {
+      "command": ".venv/bin/pytest -q",
+      "passed": 601,
+      "skipped": 104,
+      "seconds": 25.07,
+      "warnings": 1
+    },
+    "focused_postgres": {
+      "command": "Conversation + retained Finance/Live checks with COURTLOAD_TEST_POSTGRES_URL configured",
+      "passed": 183,
+      "skipped": 0,
+      "seconds": 13.97,
+      "warnings": 1
+    },
+    "dashboard": {
+      "command": "npm --prefix dashboard test",
+      "passed": 158,
+      "files": 24
+    },
+    "browser": {
+      "command": "npm --prefix dashboard run test:browser -- e2e/conversation.spec.ts e2e/live.spec.ts",
+      "passed": 20,
+      "conversation": 13,
+      "retained_live": 7,
+      "seconds": 4.8,
+      "scope": "mocked endpoint browser regressions, not Gemini semantic accuracy"
+    },
+    "real_browser": {
+      "workflows": 5,
+      "exact_research_results": 6,
+      "reloads": 2,
+      "remote_provider_calls": 0,
+      "publication_finance_integrity": "unchanged"
+    },
+    "fixture_corpus": {
+      "supported": 25,
+      "clarification": 10,
+      "unsupported": 10,
+      "held_out": 12,
+      "simulated_planner_invocations": 45,
+      "remote_provider_calls": 0,
+      "original_corpus_unchanged": true,
+      "explicit_correction": "b33-23: Barrett 1629628 replaces erroneous Tatum 1628369 in evaluator only"
+    },
+    "mypy": {
+      "status": "passed",
+      "source_files": 141
+    },
+    "ruff_check": "passed",
+    "ruff_format": "passed",
+    "dashboard_types": "passed",
+    "dashboard_zero_warning_lint": "passed",
+    "production_build": "passed",
+    "diff_check": "passed",
+    "retained_checksums": {
+      "passed": 26
+    }
+  },
+  "provider_gate": {
+    "configured": false,
+    "real_calls": 0,
+    "project_tier": "unverified",
+    "language_accuracy": "not_run",
+    "configured_model_default": "gemini-2.5-flash",
+    "fallback": "none",
+    "original_corpus_supplemental_finance_empty_season_language_cases": "open"
+  },
+  "known_warnings": [
+    "Existing Starlette/httpx TestClient deprecation",
+    "Playwright inherited NO_COLOR/FORCE_COLOR warning",
+    "Next start standalone-launch advisory in real harness"
+  ],
+  "limits": [
+    "Durable conversational investigation save/export belongs to B35",
+    "Upstream aggregates may already be rounded; no recovered full raw precision claim",
+    "B33 coordination remains process-local; full-page interrupted state can remain until bounded expiry",
+    "No full PostgreSQL, broad-browser, fresh-restore, real Gemini or changing-game Live acceptance claim"
+  ],
+  "source_sha256": {
+    "dashboard/app/research/ask/page.tsx": "2021210cf18a01b350af255effbe3e67243d762ad7ae7d899decefedfbd7ad65",
+    "dashboard/app/research/operation/page.tsx": "792c5a263ac43560173ee002295e4622d1c06451a60299257a76431e8df26af9",
+    "dashboard/app/globals.css": "ac70a21d6d66defa0fcbc894bdbcbb0d2060db3a98e2001cedc11a792c1468d7",
+    "dashboard/components/ask-courtload.tsx": "0fecd416faccaf0ee8b400fa5e5a864098a15d59e0bb19b86a3e4518806c76f2",
+    "dashboard/components/ask-drawer.tsx": "78b16ef1deb4b4c01925101b420a106b7bb7c653a95e4d3021df133273518310",
+    "dashboard/components/replica-nav.tsx": "6ae134b755f4720d1dc2b1488595a17073509980c103a40766dc49332ca1e300",
+    "dashboard/components/conversation-result.tsx": "b6bdf03be7662cf5b3d8d82b14def2f477a4d1e517e1c920c494c2754cfbaa5e",
+    "dashboard/components/research-operation-view.tsx": "db39aa9e76bc76c14301335405b5583f168f720cf6fa910d48e83232267896c4",
+    "dashboard/lib/conversation.ts": "2680f7ed951accdbfbf9483b1a81bc6a1e847dd06994f7ca6ae57783fdbe9af7",
+    "dashboard/lib/conversation.test.ts": "10df200c1f3366c10d634fe8278b29cb16e1b1c39b5c0d0c55445b4ddc8431f1",
+    "dashboard/e2e/conversation.spec.ts": "134b81913421c8b8a7abe289030f953bf030905f574b00adfd7311d0ccbbc35e",
+    "src/courtload/api/app.py": "21dcbdd3bc0698789c11448efceb73a54ceafe61069f73b5105b24df75720eea",
+    "src/courtload/services/assistant/operations.py": "0ecd289b3c83023e4e5444e32b50400e962324f9b99c0629f5086a42b84edc4e",
+    "src/courtload/services/assistant/planner.py": "800f698f0b82846207b9b867d977ff6efa05ed6f4d849557608dbce98ac42ef3",
+    "tests/unit/test_conversations.py": "e9d7fdaa2055234317804a4b17a33871fc1eddafa0f186c411335f7df4a8b01b",
+    "scripts/evaluate_b34_conversation.py": "b5ed248b993eda0f4c614456902ed8564812f337957a4dd78e16ff8034fb8ad5",
+    "scripts/verify_b34_conversation.py": "2b3ab1396c4dd1824588ff98049589a7a7d2dd774e1eeadab40f5626be2baca8",
+    "scripts/verify_b34_browser.cjs": "9d584b6c4f8bac34adad6830a726f52d0ab4f19393beb0b186848a67cad93abc",
+    "docs/design/conversational-interface-v1.md": "5360224085421208b5a8bd112144f4cddba851c50101bba0f9d922ffc6293e9f",
+    "docs/design/conversational-analytics-v1.schema.json": "a5f91c3902e1777d89bc1729ce95fbf346782b72c5705be896328341e89ad972",
+    "tests/fixtures/assistant/b33-corpus-v1.json": "17178b8b6bd579f0ff4e6ca1b1addd37bd2ee043c63fb95bae8fba11ca37838f",
+    "tests/fixtures/assistant/b33-corpus-v1.sha256": "c65c833b0d8cb2471303e5a39eeb4b912c6ee63bde049a2a700d8ea25d284ec8",
+    "docs/databallr-replica-implementation-progress.md": "b1756df91e7b9cda3ed6a807d3b7109b4de1c93a56799d9ccc46fc3f4974e024"
+  },
+  "evidence_sha256": {
+    "docs/evidence/b34-browser-sealed/compare_periods-desktop.png": "ca8e935792a2f2dbe3076b9c36f1080559709c83368ea6ff9e4ec3ff037d769d",
+    "docs/evidence/b34-browser-sealed/distribution-desktop.png": "7fa74fb28d6f7b8989dc1b0d4eba90773210b0c450c0942d74ae0678d21e5f8c",
+    "docs/evidence/b34-browser-sealed/distribution-mobile.png": "1c0ea0beb9f68927cac4a230c9785a49bcaeed13ac2f9ddd63f5a9d974daac9f",
+    "docs/evidence/b34-browser-sealed/drawer-desktop.png": "de08866feda1fb62eab4aafab08a478ef3e093f73ede20b9d930bbaf4a577531",
+    "docs/evidence/b34-browser-sealed/integrity.json": "38f7a7550d11890364d145dd709222cea8da6ca17ddc45b9843553bf661a671b",
+    "docs/evidence/b34-browser-sealed/real-browser.json": "643326025a056da2b1e7967c359ccf772b64ff0d79710a3490b70e70006de91f",
+    "docs/evidence/b34-browser-sealed/similarity-desktop.png": "ba19b211f78a7067ba7be68ec1609185a142cedce2af6f5ed8bdca89d6d325da",
+    "docs/evidence/b34-browser-sealed/splits-desktop.png": "094ed164342c98fb701da27abea0faa6e92d5e30eaa7008da9aeead12251462c",
+    "docs/evidence/b34-browser-sealed/workload_shifts-desktop.png": "6362fd323cea70c1b98fec92b31496fdf639b80899f475111bb9b8dae460c86a",
+    "docs/evidence/b34-checks/backend.log": "e47f43857b8dbfe2d7226c89d69302715f5b0fab0f174ec9cda317583bc97b33",
+    "docs/evidence/b34-checks/browser.log": "79f6f70e6da19939533c329eb68fe231436827f845af164e24c627cfd70f917c",
+    "docs/evidence/b34-checks/build.log": "1685748e06987197336ca0ffee84dbfc82d9bec49e0eff177a45deb30a43687a",
+    "docs/evidence/b34-checks/dashboard-lint.log": "53857398bee2b94424eefbadefdad59b64e0bd9c315884f4680289eea5d3f42c",
+    "docs/evidence/b34-checks/focused-postgres.log": "6ce35f83252901bcf6b9fdefbb89200aa07451bd61e6ad8996b9a033bd1a7c0b",
+    "docs/evidence/b34-checks/real-provider-not-configured.log": "16acf196d3032a4eccdb4963d59706ed56d73b190693cd8f41c300aacc758bf6",
+    "docs/evidence/b34-checks/retained-checksums.log": "a1ab52f49d8e67be7b30748cc0f64d41dc7b16ec16f66598f3d013ecc1eb0eae",
+    "docs/evidence/b34-fixture-corpus-verified.json": "6913b19454dee4b8ae5f15bf1003a4e4374ce341bca1c744976c84211a4bdeaa"
+  }
+}

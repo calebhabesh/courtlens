@@ -1,0 +1,13 @@
+{"case": "b34c-01", "status": "answered", "passed": true}
+{"case": "b34c-02", "status": "answered", "passed": true}
+{"case": "b34c-03", "status": "answered", "passed": true}
+{"case": "b34c-04", "status": "answered", "passed": true}
+{"case": "b34c-05", "status": "answered", "passed": true}
+{"case": "b34c-06", "status": "answered", "passed": true}
+{"case": "b34c-07", "status": "answered", "passed": true}
+{"case": "b34c-08", "status": "answered", "passed": true}
+{"case": "b34c-09", "status": "clarification_required", "passed": true}
+{"case": "b34c-10", "status": "clarification_required", "passed": true}
+{"case": "b34c-11", "status": "unsupported", "passed": true}
+{"case": "b34c-12", "status": "unsupported", "passed": true}
+{"counts": {"supported:pass": 8, "clarification:pass": 2, "unsupported:pass": 2}, "provider_calls": 12, "language_gate": "supplemental_only"}

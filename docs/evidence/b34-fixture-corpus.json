@@ -1,0 +1,2052 @@
+{
+  "started_at": "2026-10-04T01:22:31.587038+00:00",
+  "mode": "fixture_execution_not_language_accuracy",
+  "model": null,
+  "project_tier": null,
+  "corpus_sha256": "17178b8b6bd579f0ff4e6ca1b1addd37bd2ee043c63fb95bae8fba11ca37838f",
+  "corrections": [
+    {
+      "case": "b33-23",
+      "field": "player_b",
+      "original": "1628369",
+      "corrected": "1629628",
+      "reason": "Question names RJ Barrett; original fixture uses Jayson Tatum ID."
+    }
+  ],
+  "limits": {
+    "cases": 45,
+    "calls_per_case": 1,
+    "provider_seconds": 20,
+    "turn_seconds": 45,
+    "stop_on_quota_or_provider_failure": true
+  },
+  "cases": [
+    {
+      "id": "b33-01",
+      "split": "development",
+      "category": "supported",
+      "status": "answered",
+      "passed": true,
+      "elapsed_ms": 34.099,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 1,
+        "cache_hits": 1,
+        "elapsed_ms": 33.534,
+        "provider_usage": {},
+        "usage_basis": "unavailable"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "execute",
+        "clarification": null,
+        "context_changes": null,
+        "steps": [
+          {
+            "step_id": "a",
+            "operation": "definition",
+            "arguments": {
+              "metric": "pts"
+            },
+            "depends_on": []
+          }
+        ],
+        "output_kind": "table"
+      },
+      "result_hashes": [
+        "0b8202f361e9bfc0d3c19c6da370a7b4cb73de8c28abaf8df81d02deecc1c84a"
+      ],
+      "manual_result_hashes": [
+        "0b8202f361e9bfc0d3c19c6da370a7b4cb73de8c28abaf8df81d02deecc1c84a"
+      ]
+    },
+    {
+      "id": "b33-02",
+      "split": "held_out",
+      "category": "supported",
+      "status": "answered",
+      "passed": true,
+      "elapsed_ms": 37.093,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 1,
+        "cache_hits": 1,
+        "elapsed_ms": 36.578,
+        "provider_usage": {},
+        "usage_basis": "unavailable"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "execute",
+        "clarification": null,
+        "context_changes": null,
+        "steps": [
+          {
+            "step_id": "a",
+            "operation": "definition",
+            "arguments": {
+              "metric": "pts_per_game"
+            },
+            "depends_on": []
+          }
+        ],
+        "output_kind": "table"
+      },
+      "result_hashes": [
+        "faa88f715a61979f3e7f2479c6e225456137384dde519d6b337d0de6fe044741"
+      ],
+      "manual_result_hashes": [
+        "faa88f715a61979f3e7f2479c6e225456137384dde519d6b337d0de6fe044741"
+      ]
+    },
+    {
+      "id": "b33-03",
+      "split": "development",
+      "category": "supported",
+      "status": "answered",
+      "passed": true,
+      "elapsed_ms": 33.213,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 1,
+        "cache_hits": 1,
+        "elapsed_ms": 32.713,
+        "provider_usage": {},
+        "usage_basis": "unavailable"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "execute",
+        "clarification": null,
+        "context_changes": null,
+        "steps": [
+          {
+            "step_id": "a",
+            "operation": "definition",
+            "arguments": {
+              "metric": "min_per_game"
+            },
+            "depends_on": []
+          }
+        ],
+        "output_kind": "table"
+      },
+      "result_hashes": [
+        "6a61157f8674100d675f9df37cd19ed77beafa61d89fd387d16906d51abc0af0"
+      ],
+      "manual_result_hashes": [
+        "6a61157f8674100d675f9df37cd19ed77beafa61d89fd387d16906d51abc0af0"
+      ]
+    },
+    {
+      "id": "b33-04",
+      "split": "development",
+      "category": "supported",
+      "status": "answered",
+      "passed": true,
+      "elapsed_ms": 37.233,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 1,
+        "cache_hits": 1,
+        "elapsed_ms": 36.628,
+        "provider_usage": {},
+        "usage_basis": "unavailable"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "execute",
+        "clarification": null,
+        "context_changes": null,
+        "steps": [
+          {
+            "step_id": "a",
+            "operation": "definition",
+            "arguments": {
+              "metric": "reb"
+            },
+            "depends_on": []
+          }
+        ],
+        "output_kind": "table"
+      },
+      "result_hashes": [
+        "9a06ebc701fe8a954d956ae190785c46cc2d83c219abfd95dcfe68b248d0910b"
+      ],
+      "manual_result_hashes": [
+        "9a06ebc701fe8a954d956ae190785c46cc2d83c219abfd95dcfe68b248d0910b"
+      ]
+    },
+    {
+      "id": "b33-05",
+      "split": "held_out",
+      "category": "supported",
+      "status": "answered",
+      "passed": true,
+      "elapsed_ms": 43.418,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 1,
+        "cache_hits": 1,
+        "elapsed_ms": 42.875,
+        "provider_usage": {},
+        "usage_basis": "unavailable"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "execute",
+        "clarification": null,
+        "context_changes": null,
+        "steps": [
+          {
+            "step_id": "a",
+            "operation": "definition",
+            "arguments": {
+              "metric": "ast"
+            },
+            "depends_on": []
+          }
+        ],
+        "output_kind": "table"
+      },
+      "result_hashes": [
+        "18faa2930e5275323050292ba46e2b2b4f20510df951f3edca39112bd5323945"
+      ],
+      "manual_result_hashes": [
+        "18faa2930e5275323050292ba46e2b2b4f20510df951f3edca39112bd5323945"
+      ]
+    },
+    {
+      "id": "b33-06",
+      "split": "development",
+      "category": "supported",
+      "status": "answered",
+      "passed": true,
+      "elapsed_ms": 40.131,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 1,
+        "cache_hits": 1,
+        "elapsed_ms": 39.535,
+        "provider_usage": {},
+        "usage_basis": "unavailable"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "execute",
+        "clarification": null,
+        "context_changes": null,
+        "steps": [
+          {
+            "step_id": "a",
+            "operation": "definition",
+            "arguments": {
+              "metric": "stl"
+            },
+            "depends_on": []
+          }
+        ],
+        "output_kind": "table"
+      },
+      "result_hashes": [
+        "43ca3a85c15da0359ae083f0539ba0dc39cf83767e6818ff039836a7e49b1ffa"
+      ],
+      "manual_result_hashes": [
+        "43ca3a85c15da0359ae083f0539ba0dc39cf83767e6818ff039836a7e49b1ffa"
+      ]
+    },
+    {
+      "id": "b33-07",
+      "split": "development",
+      "category": "supported",
+      "status": "answered",
+      "passed": true,
+      "elapsed_ms": 34.27,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 1,
+        "cache_hits": 1,
+        "elapsed_ms": 33.683,
+        "provider_usage": {},
+        "usage_basis": "unavailable"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "execute",
+        "clarification": null,
+        "context_changes": null,
+        "steps": [
+          {
+            "step_id": "a",
+            "operation": "definition",
+            "arguments": {
+              "metric": "blk"
+            },
+            "depends_on": []
+          }
+        ],
+        "output_kind": "table"
+      },
+      "result_hashes": [
+        "fca4a5c3c92988450736ef45bbb04f63f933a4e0e64c58f33b6d2a54ae631551"
+      ],
+      "manual_result_hashes": [
+        "fca4a5c3c92988450736ef45bbb04f63f933a4e0e64c58f33b6d2a54ae631551"
+      ]
+    },
+    {
+      "id": "b33-08",
+      "split": "held_out",
+      "category": "supported",
+      "status": "answered",
+      "passed": true,
+      "elapsed_ms": 32.282,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 1,
+        "cache_hits": 1,
+        "elapsed_ms": 31.802,
+        "provider_usage": {},
+        "usage_basis": "unavailable"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "execute",
+        "clarification": null,
+        "context_changes": null,
+        "steps": [
+          {
+            "step_id": "a",
+            "operation": "definition",
+            "arguments": {
+              "metric": "ts_pct"
+            },
+            "depends_on": []
+          }
+        ],
+        "output_kind": "table"
+      },
+      "result_hashes": [
+        "49ff2e09d9040c2dbad29dcbb34f8d9c7bb15dcee9d24c72189899a86959b4ff"
+      ],
+      "manual_result_hashes": [
+        "49ff2e09d9040c2dbad29dcbb34f8d9c7bb15dcee9d24c72189899a86959b4ff"
+      ]
+    },
+    {
+      "id": "b33-09",
+      "split": "development",
+      "category": "supported",
+      "status": "answered",
+      "passed": true,
+      "elapsed_ms": 33.019,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 1,
+        "cache_hits": 1,
+        "elapsed_ms": 32.576,
+        "provider_usage": {},
+        "usage_basis": "unavailable"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "execute",
+        "clarification": null,
+        "context_changes": null,
+        "steps": [
+          {
+            "step_id": "a",
+            "operation": "definition",
+            "arguments": {
+              "metric": "efg_pct"
+            },
+            "depends_on": []
+          }
+        ],
+        "output_kind": "table"
+      },
+      "result_hashes": [
+        "43e903518f171e6277c4b3d80806a77b6f859192f2b9c8691cc14880279943bc"
+      ],
+      "manual_result_hashes": [
+        "43e903518f171e6277c4b3d80806a77b6f859192f2b9c8691cc14880279943bc"
+      ]
+    },
+    {
+      "id": "b33-10",
+      "split": "development",
+      "category": "supported",
+      "status": "answered",
+      "passed": true,
+      "elapsed_ms": 33.689,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 1,
+        "cache_hits": 1,
+        "elapsed_ms": 33.217,
+        "provider_usage": {},
+        "usage_basis": "unavailable"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "execute",
+        "clarification": null,
+        "context_changes": null,
+        "steps": [
+          {
+            "step_id": "a",
+            "operation": "definition",
+            "arguments": {
+              "metric": "ftr"
+            },
+            "depends_on": []
+          }
+        ],
+        "output_kind": "table"
+      },
+      "result_hashes": [
+        "33e84913caebcaae0205480ae264a90eb965f4c5d6fe74085448a971cca54c6a"
+      ],
+      "manual_result_hashes": [
+        "33e84913caebcaae0205480ae264a90eb965f4c5d6fe74085448a971cca54c6a"
+      ]
+    },
+    {
+      "id": "b33-11",
+      "split": "held_out",
+      "category": "supported",
+      "status": "answered",
+      "passed": true,
+      "elapsed_ms": 150.478,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 10,
+        "cache_hits": 1,
+        "elapsed_ms": 72.339,
+        "provider_usage": {},
+        "usage_basis": "unavailable"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "execute",
+        "clarification": null,
+        "context_changes": null,
+        "steps": [
+          {
+            "step_id": "a",
+            "operation": "query",
+            "arguments": {
+              "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+              "season": "2024-25",
+              "phase": "regular_season",
+              "before_date": "2025-06-23",
+              "name": null,
+              "entity_kind": "player",
+              "window": {
+                "kind": "season",
+                "n": null,
+                "from_date": null,
+                "to_date": null
+              },
+              "season_scope": {
+                "seasons": [],
+                "aggregate_multi_season": false
+              },
+              "team_scope": {
+                "team_id": null,
+                "participation_only": true,
+                "current_roster_only": false
+              },
+              "metric_selectors": [
+                {
+                  "key": "pts_per_game",
+                  "version": null,
+                  "normalization": "raw",
+                  "denominator_type": null
+                }
+              ],
+              "predicates": null,
+              "sample_filters": {
+                "min_games": null,
+                "min_minutes": null,
+                "min_avg_minutes": null,
+                "min_possessions": null,
+                "min_attempts": null
+              },
+              "sort": [
+                {
+                  "field": "pts_per_game",
+                  "direction": "desc",
+                  "nulls_last": true
+                }
+              ],
+              "view_state": null,
+              "page": {
+                "limit": 10,
+                "cursor": null
+              }
+            },
+            "depends_on": []
+          }
+        ],
+        "output_kind": "table"
+      },
+      "result_hashes": [
+        "05b494827da882ed59fbefdbfadf1528d56c0bde40956c9b8c8d23066c3700eb"
+      ],
+      "manual_result_hashes": [
+        "05b494827da882ed59fbefdbfadf1528d56c0bde40956c9b8c8d23066c3700eb"
+      ]
+    },
+    {
+      "id": "b33-12",
+      "split": "development",
+      "category": "supported",
+      "status": "answered",
+      "passed": true,
+      "elapsed_ms": 35.821,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 10,
+        "cache_hits": 1,
+        "elapsed_ms": 34.964,
+        "provider_usage": {},
+        "usage_basis": "unavailable"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "execute",
+        "clarification": null,
+        "context_changes": null,
+        "steps": [
+          {
+            "step_id": "a",
+            "operation": "query",
+            "arguments": {
+              "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+              "season": "2024-25",
+              "phase": "regular_season",
+              "before_date": "2025-06-23",
+              "name": null,
+              "entity_kind": "player",
+              "window": {
+                "kind": "season",
+                "n": null,
+                "from_date": null,
+                "to_date": null
+              },
+              "season_scope": {
+                "seasons": [],
+                "aggregate_multi_season": false
+              },
+              "team_scope": {
+                "team_id": null,
+                "participation_only": true,
+                "current_roster_only": false
+              },
+              "metric_selectors": [
+                {
+                  "key": "reb_per_game",
+                  "version": null,
+                  "normalization": "raw",
+                  "denominator_type": null
+                }
+              ],
+              "predicates": null,
+              "sample_filters": {
+                "min_games": null,
+                "min_minutes": null,
+                "min_avg_minutes": null,
+                "min_possessions": null,
+                "min_attempts": null
+              },
+              "sort": [
+                {
+                  "field": "reb_per_game",
+                  "direction": "desc",
+                  "nulls_last": true
+                }
+              ],
+              "view_state": null,
+              "page": {
+                "limit": 10,
+                "cursor": null
+              }
+            },
+            "depends_on": []
+          }
+        ],
+        "output_kind": "table"
+      },
+      "result_hashes": [
+        "6c62d115777ed05cbdcfa95ff1f247444acc04514b891b89f1d7545198cedad3"
+      ],
+      "manual_result_hashes": [
+        "6c62d115777ed05cbdcfa95ff1f247444acc04514b891b89f1d7545198cedad3"
+      ]
+    },
+    {
+      "id": "b33-13",
+      "split": "development",
+      "category": "supported",
+      "status": "answered",
+      "passed": true,
+      "elapsed_ms": 35.204,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 10,
+        "cache_hits": 1,
+        "elapsed_ms": 34.233,
+        "provider_usage": {},
+        "usage_basis": "unavailable"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "execute",
+        "clarification": null,
+        "context_changes": null,
+        "steps": [
+          {
+            "step_id": "a",
+            "operation": "query",
+            "arguments": {
+              "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+              "season": "2024-25",
+              "phase": "regular_season",
+              "before_date": "2025-06-23",
+              "name": null,
+              "entity_kind": "player",
+              "window": {
+                "kind": "season",
+                "n": null,
+                "from_date": null,
+                "to_date": null
+              },
+              "season_scope": {
+                "seasons": [],
+                "aggregate_multi_season": false
+              },
+              "team_scope": {
+                "team_id": null,
+                "participation_only": true,
+                "current_roster_only": false
+              },
+              "metric_selectors": [
+                {
+                  "key": "ast_per_game",
+                  "version": null,
+                  "normalization": "raw",
+                  "denominator_type": null
+                }
+              ],
+              "predicates": null,
+              "sample_filters": {
+                "min_games": null,
+                "min_minutes": null,
+                "min_avg_minutes": null,
+                "min_possessions": null,
+                "min_attempts": null
+              },
+              "sort": [
+                {
+                  "field": "ast_per_game",
+                  "direction": "desc",
+                  "nulls_last": true
+                }
+              ],
+              "view_state": null,
+              "page": {
+                "limit": 10,
+                "cursor": null
+              }
+            },
+            "depends_on": []
+          }
+        ],
+        "output_kind": "table"
+      },
+      "result_hashes": [
+        "444322800c65675c976161adc99250b7d2de52103daf443529612be3802c172e"
+      ],
+      "manual_result_hashes": [
+        "444322800c65675c976161adc99250b7d2de52103daf443529612be3802c172e"
+      ]
+    },
+    {
+      "id": "b33-14",
+      "split": "held_out",
+      "category": "supported",
+      "status": "answered",
+      "passed": true,
+      "elapsed_ms": 36.415,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 10,
+        "cache_hits": 1,
+        "elapsed_ms": 35.51,
+        "provider_usage": {},
+        "usage_basis": "unavailable"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "execute",
+        "clarification": null,
+        "context_changes": null,
+        "steps": [
+          {
+            "step_id": "a",
+            "operation": "query",
+            "arguments": {
+              "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+              "season": "2024-25",
+              "phase": "regular_season",
+              "before_date": "2025-06-23",
+              "name": null,
+              "entity_kind": "player",
+              "window": {
+                "kind": "season",
+                "n": null,
+                "from_date": null,
+                "to_date": null
+              },
+              "season_scope": {
+                "seasons": [],
+                "aggregate_multi_season": false
+              },
+              "team_scope": {
+                "team_id": null,
+                "participation_only": true,
+                "current_roster_only": false
+              },
+              "metric_selectors": [
+                {
+                  "key": "stl_per_game",
+                  "version": null,
+                  "normalization": "raw",
+                  "denominator_type": null
+                }
+              ],
+              "predicates": null,
+              "sample_filters": {
+                "min_games": null,
+                "min_minutes": null,
+                "min_avg_minutes": null,
+                "min_possessions": null,
+                "min_attempts": null
+              },
+              "sort": [
+                {
+                  "field": "stl_per_game",
+                  "direction": "desc",
+                  "nulls_last": true
+                }
+              ],
+              "view_state": null,
+              "page": {
+                "limit": 10,
+                "cursor": null
+              }
+            },
+            "depends_on": []
+          }
+        ],
+        "output_kind": "table"
+      },
+      "result_hashes": [
+        "fae381130ab610989cee885722ac6ad1710c842497c2e749fa2bed6819f31886"
+      ],
+      "manual_result_hashes": [
+        "fae381130ab610989cee885722ac6ad1710c842497c2e749fa2bed6819f31886"
+      ]
+    },
+    {
+      "id": "b33-15",
+      "split": "development",
+      "category": "supported",
+      "status": "answered",
+      "passed": true,
+      "elapsed_ms": 39.094,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 10,
+        "cache_hits": 1,
+        "elapsed_ms": 38.131,
+        "provider_usage": {},
+        "usage_basis": "unavailable"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "execute",
+        "clarification": null,
+        "context_changes": null,
+        "steps": [
+          {
+            "step_id": "a",
+            "operation": "query",
+            "arguments": {
+              "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+              "season": "2024-25",
+              "phase": "regular_season",
+              "before_date": "2025-06-23",
+              "name": null,
+              "entity_kind": "player",
+              "window": {
+                "kind": "season",
+                "n": null,
+                "from_date": null,
+                "to_date": null
+              },
+              "season_scope": {
+                "seasons": [],
+                "aggregate_multi_season": false
+              },
+              "team_scope": {
+                "team_id": null,
+                "participation_only": true,
+                "current_roster_only": false
+              },
+              "metric_selectors": [
+                {
+                  "key": "blk_per_game",
+                  "version": null,
+                  "normalization": "raw",
+                  "denominator_type": null
+                }
+              ],
+              "predicates": null,
+              "sample_filters": {
+                "min_games": null,
+                "min_minutes": null,
+                "min_avg_minutes": null,
+                "min_possessions": null,
+                "min_attempts": null
+              },
+              "sort": [
+                {
+                  "field": "blk_per_game",
+                  "direction": "desc",
+                  "nulls_last": true
+                }
+              ],
+              "view_state": null,
+              "page": {
+                "limit": 10,
+                "cursor": null
+              }
+            },
+            "depends_on": []
+          }
+        ],
+        "output_kind": "table"
+      },
+      "result_hashes": [
+        "c9123e24068f7485ed51905f342342e25aedb2abee77af09ea75d44f8dc2f6ec"
+      ],
+      "manual_result_hashes": [
+        "c9123e24068f7485ed51905f342342e25aedb2abee77af09ea75d44f8dc2f6ec"
+      ]
+    },
+    {
+      "id": "b33-16",
+      "split": "development",
+      "category": "supported",
+      "status": "answered",
+      "passed": true,
+      "elapsed_ms": 39.384,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 10,
+        "cache_hits": 1,
+        "elapsed_ms": 38.229,
+        "provider_usage": {},
+        "usage_basis": "unavailable"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "execute",
+        "clarification": null,
+        "context_changes": null,
+        "steps": [
+          {
+            "step_id": "a",
+            "operation": "query",
+            "arguments": {
+              "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+              "season": "2024-25",
+              "phase": "regular_season",
+              "before_date": "2025-06-23",
+              "name": null,
+              "entity_kind": "player",
+              "window": {
+                "kind": "season",
+                "n": null,
+                "from_date": null,
+                "to_date": null
+              },
+              "season_scope": {
+                "seasons": [],
+                "aggregate_multi_season": false
+              },
+              "team_scope": {
+                "team_id": null,
+                "participation_only": true,
+                "current_roster_only": false
+              },
+              "metric_selectors": [
+                {
+                  "key": "pts_per_game"
+                },
+                {
+                  "key": "min_per_game"
+                }
+              ],
+              "predicates": null,
+              "sample_filters": {
+                "min_games": null,
+                "min_minutes": 300.0,
+                "min_avg_minutes": null,
+                "min_possessions": null,
+                "min_attempts": null
+              },
+              "sort": [
+                {
+                  "field": "pts",
+                  "direction": "desc",
+                  "nulls_last": true
+                }
+              ],
+              "view_state": null,
+              "page": {
+                "limit": 10,
+                "cursor": null
+              }
+            },
+            "depends_on": []
+          }
+        ],
+        "output_kind": "table"
+      },
+      "result_hashes": [
+        "0847ed320d0f8c806815094920c1d7110239376988d559dcabeb1b802c66b2c4"
+      ],
+      "manual_result_hashes": [
+        "0847ed320d0f8c806815094920c1d7110239376988d559dcabeb1b802c66b2c4"
+      ]
+    },
+    {
+      "id": "b33-17",
+      "split": "held_out",
+      "category": "supported",
+      "status": "answered",
+      "passed": true,
+      "elapsed_ms": 40.094,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 10,
+        "cache_hits": 1,
+        "elapsed_ms": 38.989,
+        "provider_usage": {},
+        "usage_basis": "unavailable"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "execute",
+        "clarification": null,
+        "context_changes": null,
+        "steps": [
+          {
+            "step_id": "a",
+            "operation": "query",
+            "arguments": {
+              "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+              "season": "2024-25",
+              "phase": "regular_season",
+              "before_date": "2025-06-23",
+              "name": null,
+              "entity_kind": "player",
+              "window": {
+                "kind": "season",
+                "n": null,
+                "from_date": null,
+                "to_date": null
+              },
+              "season_scope": {
+                "seasons": [],
+                "aggregate_multi_season": false
+              },
+              "team_scope": {
+                "team_id": "1610612761",
+                "participation_only": true,
+                "current_roster_only": false
+              },
+              "metric_selectors": [
+                {
+                  "key": "pts_per_game"
+                },
+                {
+                  "key": "min_per_game"
+                }
+              ],
+              "predicates": null,
+              "sample_filters": {
+                "min_games": null,
+                "min_minutes": null,
+                "min_avg_minutes": null,
+                "min_possessions": null,
+                "min_attempts": null
+              },
+              "sort": [
+                {
+                  "field": "pts",
+                  "direction": "desc",
+                  "nulls_last": true
+                }
+              ],
+              "view_state": null,
+              "page": {
+                "limit": 10,
+                "cursor": null
+              }
+            },
+            "depends_on": []
+          }
+        ],
+        "output_kind": "table"
+      },
+      "result_hashes": [
+        "5028be231e6025224bc05bb1f0f2d7843b56d105455ec629f40baae9455f2c54"
+      ],
+      "manual_result_hashes": [
+        "5028be231e6025224bc05bb1f0f2d7843b56d105455ec629f40baae9455f2c54"
+      ]
+    },
+    {
+      "id": "b33-18",
+      "split": "development",
+      "category": "supported",
+      "status": "answered",
+      "passed": true,
+      "elapsed_ms": 36.222,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 20,
+        "cache_hits": 1,
+        "elapsed_ms": 34.315,
+        "provider_usage": {},
+        "usage_basis": "unavailable"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "execute",
+        "clarification": null,
+        "context_changes": null,
+        "steps": [
+          {
+            "step_id": "a",
+            "operation": "workload_shifts",
+            "arguments": {
+              "period_n": 10,
+              "min_minutes": 0.0,
+              "limit": 20
+            },
+            "depends_on": []
+          }
+        ],
+        "output_kind": "table"
+      },
+      "result_hashes": [
+        "329b93f0bc94347b2e85d92facc07fdfdb07605fb31b5740a809cbfa33debe4a"
+      ],
+      "manual_result_hashes": [
+        "329b93f0bc94347b2e85d92facc07fdfdb07605fb31b5740a809cbfa33debe4a"
+      ]
+    },
+    {
+      "id": "b33-19",
+      "split": "development",
+      "category": "supported",
+      "status": "answered",
+      "passed": true,
+      "elapsed_ms": 40.243,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 13,
+        "cache_hits": 1,
+        "elapsed_ms": 38.523,
+        "provider_usage": {},
+        "usage_basis": "unavailable"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "execute",
+        "clarification": null,
+        "context_changes": null,
+        "steps": [
+          {
+            "step_id": "a",
+            "operation": "similarity",
+            "arguments": {
+              "target_player_id": "1630567",
+              "season": "2024-25",
+              "phase": "regular_season",
+              "before_date": "2025-06-23",
+              "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+              "window": "last_10",
+              "min_appearances": 10,
+              "min_minutes": 150.0,
+              "top_k": 5,
+              "dimensions": null
+            },
+            "depends_on": []
+          }
+        ],
+        "output_kind": "table"
+      },
+      "result_hashes": [
+        "3aafc235ba63b996155359c2e8d1556bc59bc620dfd0be90619d71a6b9889c0b"
+      ],
+      "manual_result_hashes": [
+        "3aafc235ba63b996155359c2e8d1556bc59bc620dfd0be90619d71a6b9889c0b"
+      ]
+    },
+    {
+      "id": "b33-20",
+      "split": "development",
+      "category": "supported",
+      "status": "answered",
+      "passed": true,
+      "elapsed_ms": 19.798,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 42,
+        "cache_hits": 2,
+        "elapsed_ms": 16.681,
+        "provider_usage": {},
+        "usage_basis": "unavailable"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "execute",
+        "clarification": null,
+        "context_changes": null,
+        "steps": [
+          {
+            "step_id": "points",
+            "operation": "distribution",
+            "arguments": {
+              "player_id": "1630567",
+              "metric": "pts",
+              "season": "2024-25",
+              "phase": "regular_season",
+              "before_date": "2025-06-23",
+              "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+              "window_n": 20,
+              "from_date": null,
+              "to_date": null
+            },
+            "depends_on": []
+          },
+          {
+            "step_id": "minutes",
+            "operation": "distribution",
+            "arguments": {
+              "player_id": "1630567",
+              "metric": "min_per_game",
+              "season": "2024-25",
+              "phase": "regular_season",
+              "before_date": "2025-06-23",
+              "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+              "window_n": 20,
+              "from_date": null,
+              "to_date": null
+            },
+            "depends_on": []
+          }
+        ],
+        "output_kind": "table"
+      },
+      "result_hashes": [
+        "0ee42c345b99d82e2d272e21d979d4abadbc079f4582f1a78eea8b82b6a86689",
+        "b11e37e6d9187387060e7a124207a753445b202c75b048343746b6cadf85e5ce"
+      ],
+      "manual_result_hashes": [
+        "0ee42c345b99d82e2d272e21d979d4abadbc079f4582f1a78eea8b82b6a86689",
+        "b11e37e6d9187387060e7a124207a753445b202c75b048343746b6cadf85e5ce"
+      ]
+    },
+    {
+      "id": "b33-21",
+      "split": "development",
+      "category": "supported",
+      "status": "answered",
+      "passed": true,
+      "elapsed_ms": 46.572,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 22,
+        "cache_hits": 1,
+        "elapsed_ms": 44.31,
+        "provider_usage": {},
+        "usage_basis": "unavailable"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "execute",
+        "clarification": null,
+        "context_changes": null,
+        "steps": [
+          {
+            "step_id": "a",
+            "operation": "compare_periods",
+            "arguments": {
+              "player_id": "1630567",
+              "season": "2024-25",
+              "phase": "regular_season",
+              "before_date": "2025-06-23",
+              "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+              "mode": "appearances",
+              "period_a_n": 10,
+              "period_b_n": 10,
+              "period_a_from": null,
+              "period_a_to": null,
+              "period_b_from": null,
+              "period_b_to": null,
+              "metrics": null
+            },
+            "depends_on": []
+          }
+        ],
+        "output_kind": "table"
+      },
+      "result_hashes": [
+        "0c7953fd4e9fd82ce366922d982a1a3b7cb2d0d870aabbb0a779c8dbb2eae06f"
+      ],
+      "manual_result_hashes": [
+        "0c7953fd4e9fd82ce366922d982a1a3b7cb2d0d870aabbb0a779c8dbb2eae06f"
+      ]
+    },
+    {
+      "id": "b33-22",
+      "split": "development",
+      "category": "supported",
+      "status": "answered",
+      "passed": true,
+      "elapsed_ms": 85.681,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 2,
+        "cache_hits": 1,
+        "elapsed_ms": 83.621,
+        "provider_usage": {},
+        "usage_basis": "unavailable"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "execute",
+        "clarification": null,
+        "context_changes": null,
+        "steps": [
+          {
+            "step_id": "a",
+            "operation": "splits",
+            "arguments": {
+              "player_id": "1630567",
+              "split_type": "venue",
+              "season": "2024-25",
+              "phase": "regular_season",
+              "before_date": "2025-06-23",
+              "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad"
+            },
+            "depends_on": []
+          }
+        ],
+        "output_kind": "table"
+      },
+      "result_hashes": [
+        "79ad6b90171638a921660ee86907d99b054ff1ba09af75d2cc560537e968905c"
+      ],
+      "manual_result_hashes": [
+        "79ad6b90171638a921660ee86907d99b054ff1ba09af75d2cc560537e968905c"
+      ]
+    },
+    {
+      "id": "b33-23",
+      "split": "development",
+      "category": "supported",
+      "status": "answered",
+      "passed": true,
+      "elapsed_ms": 97.761,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 58,
+        "cache_hits": 1,
+        "elapsed_ms": 88.454,
+        "provider_usage": {},
+        "usage_basis": "unavailable"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "execute",
+        "clarification": null,
+        "context_changes": null,
+        "steps": [
+          {
+            "step_id": "a",
+            "operation": "compare",
+            "arguments": {
+              "player_a": "1630567",
+              "player_b": "1629628"
+            },
+            "depends_on": []
+          }
+        ],
+        "output_kind": "table"
+      },
+      "result_hashes": [
+        "0fe07de9b2a7abb1e913a85a8857b25329e674b87a916093a17aea38288dcf4e"
+      ],
+      "manual_result_hashes": [
+        "0fe07de9b2a7abb1e913a85a8857b25329e674b87a916093a17aea38288dcf4e"
+      ]
+    },
+    {
+      "id": "b33-24",
+      "split": "development",
+      "category": "supported",
+      "status": "no_data",
+      "passed": true,
+      "elapsed_ms": 69.293,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 1,
+        "cache_hits": 1,
+        "elapsed_ms": 68.145,
+        "provider_usage": {},
+        "usage_basis": "unavailable"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "execute",
+        "clarification": null,
+        "context_changes": null,
+        "steps": [
+          {
+            "step_id": "a",
+            "operation": "forecast",
+            "arguments": {
+              "player_id": "1630567",
+              "issuance_id": null
+            },
+            "depends_on": []
+          }
+        ],
+        "output_kind": "table"
+      },
+      "result_hashes": [
+        "b4e8b70119a7e9c69c2b88a7e4e76ae8a84fd733ecfed4f17d890e9fc58778f8"
+      ],
+      "manual_result_hashes": [
+        "b4e8b70119a7e9c69c2b88a7e4e76ae8a84fd733ecfed4f17d890e9fc58778f8"
+      ]
+    },
+    {
+      "id": "b33-25",
+      "split": "development",
+      "category": "supported",
+      "status": "answered",
+      "passed": true,
+      "elapsed_ms": 40.383,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 35,
+        "cache_hits": 1,
+        "elapsed_ms": 38.217,
+        "provider_usage": {},
+        "usage_basis": "unavailable"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "execute",
+        "clarification": null,
+        "context_changes": null,
+        "steps": [
+          {
+            "step_id": "a",
+            "operation": "team",
+            "arguments": {
+              "team_id": "1610612761"
+            },
+            "depends_on": []
+          }
+        ],
+        "output_kind": "table"
+      },
+      "result_hashes": [
+        "ffe8a04d41435cc9c208d2c415bfaef2502b82c815fb923b98d16ed429a6a442"
+      ],
+      "manual_result_hashes": [
+        "ffe8a04d41435cc9c208d2c415bfaef2502b82c815fb923b98d16ed429a6a442"
+      ]
+    },
+    {
+      "id": "b33-26",
+      "split": "held_out",
+      "category": "clarification",
+      "status": "clarification_required",
+      "passed": true,
+      "elapsed_ms": 35.487,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 0,
+        "cache_hits": 0,
+        "elapsed_ms": 34.957,
+        "provider_usage": {},
+        "usage_basis": "unavailable"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "clarification_required",
+        "clarification": "consistency",
+        "context_changes": null,
+        "steps": [],
+        "output_kind": "table"
+      },
+      "result_hashes": [],
+      "manual_result_hashes": []
+    },
+    {
+      "id": "b33-27",
+      "split": "development",
+      "category": "clarification",
+      "status": "clarification_required",
+      "passed": true,
+      "elapsed_ms": 33.959,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 0,
+        "cache_hits": 0,
+        "elapsed_ms": 33.534,
+        "provider_usage": {},
+        "usage_basis": "unavailable"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "clarification_required",
+        "clarification": "consistency",
+        "context_changes": null,
+        "steps": [],
+        "output_kind": "table"
+      },
+      "result_hashes": [],
+      "manual_result_hashes": []
+    },
+    {
+      "id": "b33-28",
+      "split": "development",
+      "category": "clarification",
+      "status": "clarification_required",
+      "passed": true,
+      "elapsed_ms": 34.283,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 0,
+        "cache_hits": 0,
+        "elapsed_ms": 33.905,
+        "provider_usage": {},
+        "usage_basis": "unavailable"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "clarification_required",
+        "clarification": "defense_metric",
+        "context_changes": null,
+        "steps": [],
+        "output_kind": "table"
+      },
+      "result_hashes": [],
+      "manual_result_hashes": []
+    },
+    {
+      "id": "b33-29",
+      "split": "held_out",
+      "category": "clarification",
+      "status": "clarification_required",
+      "passed": true,
+      "elapsed_ms": 33.17,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 0,
+        "cache_hits": 0,
+        "elapsed_ms": 32.803,
+        "provider_usage": {},
+        "usage_basis": "unavailable"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "clarification_required",
+        "clarification": "defense_metric",
+        "context_changes": null,
+        "steps": [],
+        "output_kind": "table"
+      },
+      "result_hashes": [],
+      "manual_result_hashes": []
+    },
+    {
+      "id": "b33-30",
+      "split": "development",
+      "category": "clarification",
+      "status": "clarification_required",
+      "passed": true,
+      "elapsed_ms": 33.12,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 0,
+        "cache_hits": 0,
+        "elapsed_ms": 32.733,
+        "provider_usage": {},
+        "usage_basis": "unavailable"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "clarification_required",
+        "clarification": "floor_or_game",
+        "context_changes": null,
+        "steps": [],
+        "output_kind": "table"
+      },
+      "result_hashes": [],
+      "manual_result_hashes": []
+    },
+    {
+      "id": "b33-31",
+      "split": "development",
+      "category": "clarification",
+      "status": "clarification_required",
+      "passed": true,
+      "elapsed_ms": 34.313,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 0,
+        "cache_hits": 0,
+        "elapsed_ms": 33.943,
+        "provider_usage": {},
+        "usage_basis": "unavailable"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "clarification_required",
+        "clarification": "floor_or_game",
+        "context_changes": null,
+        "steps": [],
+        "output_kind": "table"
+      },
+      "result_hashes": [],
+      "manual_result_hashes": []
+    },
+    {
+      "id": "b33-32",
+      "split": "held_out",
+      "category": "clarification",
+      "status": "clarification_required",
+      "passed": true,
+      "elapsed_ms": 32.707,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 0,
+        "cache_hits": 0,
+        "elapsed_ms": 32.36,
+        "provider_usage": {},
+        "usage_basis": "unavailable"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "clarification_required",
+        "clarification": "context",
+        "context_changes": null,
+        "steps": [],
+        "output_kind": "table"
+      },
+      "result_hashes": [],
+      "manual_result_hashes": []
+    },
+    {
+      "id": "b33-33",
+      "split": "development",
+      "category": "clarification",
+      "status": "clarification_required",
+      "passed": true,
+      "elapsed_ms": 35.105,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 0,
+        "cache_hits": 0,
+        "elapsed_ms": 34.757,
+        "provider_usage": {},
+        "usage_basis": "unavailable"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "clarification_required",
+        "clarification": "context",
+        "context_changes": null,
+        "steps": [],
+        "output_kind": "table"
+      },
+      "result_hashes": [],
+      "manual_result_hashes": []
+    },
+    {
+      "id": "b33-34",
+      "split": "development",
+      "category": "clarification",
+      "status": "clarification_required",
+      "passed": true,
+      "elapsed_ms": 32.967,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 0,
+        "cache_hits": 0,
+        "elapsed_ms": 32.608,
+        "provider_usage": {},
+        "usage_basis": "unavailable"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "clarification_required",
+        "clarification": "identity",
+        "context_changes": null,
+        "steps": [],
+        "output_kind": "table"
+      },
+      "result_hashes": [],
+      "manual_result_hashes": []
+    },
+    {
+      "id": "b33-35",
+      "split": "development",
+      "category": "clarification",
+      "status": "clarification_required",
+      "passed": true,
+      "elapsed_ms": 33.616,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 0,
+        "cache_hits": 0,
+        "elapsed_ms": 33.204,
+        "provider_usage": {},
+        "usage_basis": "unavailable"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "clarification_required",
+        "clarification": "identity",
+        "context_changes": null,
+        "steps": [],
+        "output_kind": "table"
+      },
+      "result_hashes": [],
+      "manual_result_hashes": []
+    },
+    {
+      "id": "b33-36",
+      "split": "held_out",
+      "category": "unsupported",
+      "status": "unsupported",
+      "passed": true,
+      "elapsed_ms": 32.535,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 0,
+        "cache_hits": 0,
+        "elapsed_ms": 32.153,
+        "provider_usage": {},
+        "usage_basis": "unavailable"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "execute",
+        "clarification": null,
+        "context_changes": null,
+        "steps": [
+          {
+            "step_id": "a",
+            "operation": "sql",
+            "arguments": {},
+            "depends_on": []
+          }
+        ],
+        "output_kind": "table"
+      },
+      "result_hashes": [],
+      "manual_result_hashes": []
+    },
+    {
+      "id": "b33-37",
+      "split": "development",
+      "category": "unsupported",
+      "status": "unsupported",
+      "passed": true,
+      "elapsed_ms": 32.784,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 0,
+        "cache_hits": 0,
+        "elapsed_ms": 32.445,
+        "provider_usage": {},
+        "usage_basis": "unavailable"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "execute",
+        "clarification": null,
+        "context_changes": null,
+        "steps": [
+          {
+            "step_id": "a",
+            "operation": "read_keys",
+            "arguments": {},
+            "depends_on": []
+          }
+        ],
+        "output_kind": "table"
+      },
+      "result_hashes": [],
+      "manual_result_hashes": []
+    },
+    {
+      "id": "b33-38",
+      "split": "development",
+      "category": "unsupported",
+      "status": "unsupported",
+      "passed": true,
+      "elapsed_ms": 32.103,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 0,
+        "cache_hits": 0,
+        "elapsed_ms": 31.747,
+        "provider_usage": {},
+        "usage_basis": "unavailable"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "execute",
+        "clarification": null,
+        "context_changes": null,
+        "steps": [
+          {
+            "step_id": "a",
+            "operation": "refresh",
+            "arguments": {},
+            "depends_on": []
+          }
+        ],
+        "output_kind": "table"
+      },
+      "result_hashes": [],
+      "manual_result_hashes": []
+    },
+    {
+      "id": "b33-39",
+      "split": "development",
+      "category": "unsupported",
+      "status": "unsupported",
+      "passed": true,
+      "elapsed_ms": 32.404,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 0,
+        "cache_hits": 0,
+        "elapsed_ms": 32.063,
+        "provider_usage": {},
+        "usage_basis": "unavailable"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "execute",
+        "clarification": null,
+        "context_changes": null,
+        "steps": [
+          {
+            "step_id": "a",
+            "operation": "train",
+            "arguments": {},
+            "depends_on": []
+          }
+        ],
+        "output_kind": "table"
+      },
+      "result_hashes": [],
+      "manual_result_hashes": []
+    },
+    {
+      "id": "b33-40",
+      "split": "held_out",
+      "category": "unsupported",
+      "status": "unsupported",
+      "passed": true,
+      "elapsed_ms": 33.834,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 0,
+        "cache_hits": 0,
+        "elapsed_ms": 33.492,
+        "provider_usage": {},
+        "usage_basis": "unavailable"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "execute",
+        "clarification": null,
+        "context_changes": null,
+        "steps": [
+          {
+            "step_id": "a",
+            "operation": "activate",
+            "arguments": {},
+            "depends_on": []
+          }
+        ],
+        "output_kind": "table"
+      },
+      "result_hashes": [],
+      "manual_result_hashes": []
+    },
+    {
+      "id": "b33-41",
+      "split": "development",
+      "category": "unsupported",
+      "status": "unsupported",
+      "passed": true,
+      "elapsed_ms": 32.86,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 0,
+        "cache_hits": 0,
+        "elapsed_ms": 32.502,
+        "provider_usage": {},
+        "usage_basis": "unavailable"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "execute",
+        "clarification": null,
+        "context_changes": null,
+        "steps": [
+          {
+            "step_id": "a",
+            "operation": "web",
+            "arguments": {},
+            "depends_on": []
+          }
+        ],
+        "output_kind": "table"
+      },
+      "result_hashes": [],
+      "manual_result_hashes": []
+    },
+    {
+      "id": "b33-42",
+      "split": "development",
+      "category": "unsupported",
+      "status": "unsupported",
+      "passed": true,
+      "elapsed_ms": 33.2,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 0,
+        "cache_hits": 0,
+        "elapsed_ms": 32.855,
+        "provider_usage": {},
+        "usage_basis": "unavailable"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "execute",
+        "clarification": null,
+        "context_changes": null,
+        "steps": [
+          {
+            "step_id": "a",
+            "operation": "shell",
+            "arguments": {},
+            "depends_on": []
+          }
+        ],
+        "output_kind": "table"
+      },
+      "result_hashes": [],
+      "manual_result_hashes": []
+    },
+    {
+      "id": "b33-43",
+      "split": "development",
+      "category": "unsupported",
+      "status": "unsupported",
+      "passed": true,
+      "elapsed_ms": 33.804,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 0,
+        "cache_hits": 0,
+        "elapsed_ms": 33.435,
+        "provider_usage": {},
+        "usage_basis": "unavailable"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "execute",
+        "clarification": null,
+        "context_changes": null,
+        "steps": [
+          {
+            "step_id": "a",
+            "operation": "delete",
+            "arguments": {},
+            "depends_on": []
+          }
+        ],
+        "output_kind": "table"
+      },
+      "result_hashes": [],
+      "manual_result_hashes": []
+    },
+    {
+      "id": "b33-44",
+      "split": "held_out",
+      "category": "unsupported",
+      "status": "unsupported",
+      "passed": true,
+      "elapsed_ms": 34.921,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 0,
+        "cache_hits": 0,
+        "elapsed_ms": 34.534,
+        "provider_usage": {},
+        "usage_basis": "unavailable"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "execute",
+        "clarification": null,
+        "context_changes": null,
+        "steps": [
+          {
+            "step_id": "a",
+            "operation": "winner_probability",
+            "arguments": {},
+            "depends_on": []
+          }
+        ],
+        "output_kind": "table"
+      },
+      "result_hashes": [],
+      "manual_result_hashes": []
+    },
+    {
+      "id": "b33-45",
+      "split": "development",
+      "category": "unsupported",
+      "status": "unsupported",
+      "passed": true,
+      "elapsed_ms": 35.258,
+      "accounting": {
+        "provider_calls": 1,
+        "tool_calls": 0,
+        "rows": 0,
+        "cache_hits": 0,
+        "elapsed_ms": 34.878,
+        "provider_usage": {},
+        "usage_basis": "unavailable"
+      },
+      "canonical_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "status": "execute",
+        "clarification": null,
+        "context_changes": null,
+        "steps": [
+          {
+            "step_id": "a",
+            "operation": "unadmitted_position_filter",
+            "arguments": {},
+            "depends_on": []
+          }
+        ],
+        "output_kind": "table"
+      },
+      "result_hashes": [],
+      "manual_result_hashes": []
+    }
+  ],
+  "context": {
+    "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+    "snapshot_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+    "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+    "dataset_type": "workbench",
+    "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666",
+    "mode": "workbench_recent",
+    "source": "sportsdataverse",
+    "season": "2024-25",
+    "phase": "regular_season",
+    "before_date": "2025-06-23",
+    "cutoff_utc": "2025-06-23T04:00:00+00:00",
+    "window": "season",
+    "coverage_start": "2023-10-24",
+    "coverage_end": "2026-06-13",
+    "metric_version": "v2",
+    "published_at": "2026-10-01T17:47:29.173164+00:00"
+  },
+  "counts": {
+    "supported:pass": 25,
+    "clarification:pass": 10,
+    "unsupported:pass": 10
+  },
+  "provider_calls": 45,
+  "language_gate": "not_run"
+}

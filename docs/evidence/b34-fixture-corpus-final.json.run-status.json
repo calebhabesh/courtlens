@@ -1,0 +1,5 @@
+{
+  "status": "superseded_fixture_capture",
+  "reason": "Final evaluator metadata distinguishes remote calls, records SDK/version and corpus limitations. No real language calls occurred.",
+  "final_evidence": "b34-fixture-corpus-verified.json"
+}

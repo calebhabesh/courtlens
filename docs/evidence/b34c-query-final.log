@@ -1,0 +1,8 @@
+{"case": "b33-11", "status": "answered", "passed": true}
+{"case": "b33-12", "status": "answered", "passed": true}
+{"case": "b33-13", "status": "answered", "passed": true}
+{"case": "b33-14", "status": "answered", "passed": true}
+{"case": "b33-15", "status": "answered", "passed": true}
+{"case": "b33-16", "status": "answered", "passed": true}
+{"case": "b33-17", "status": "answered", "passed": true}
+{"counts": {"supported:pass": 7}, "provider_calls": 7, "language_gate": "unmet"}

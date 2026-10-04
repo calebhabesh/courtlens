@@ -1,0 +1,131 @@
+...........FF                                                            [100%]
+=================================== FAILURES ===================================
+______________________ test_assistant_query_when_disabled ______________________
+
+postgres_session = <sqlalchemy.orm.session.Session object at 0x7f72007de8b0>
+
+    def test_assistant_query_when_disabled(postgres_session: Session):
+        """Verify run_assistant_query returns typed disabled answer when key is unset."""
+        with (
+            patch("courtload.services.assistant.service.get_settings") as mock_settings,
+            patch("courtload.services.assistant.conversations.get_settings") as conversation_settings,
+        ):
+            mock_settings.return_value.gemini_api_key = None
+            mock_settings.return_value.gemini_model = "gemini-2.5-flash"
+            conversation_settings.return_value = mock_settings.return_value
+>           answer = run_assistant_query(
+                session=postgres_session,
+                question="Who leads the league in scoring?",
+            )
+
+tests/unit/test_assistant.py:161: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/courtload/services/assistant/service.py:154: in run_assistant_query
+    result = run_conversation_turn(session, request, planner)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/courtload/services/assistant/conversations.py:271: in run_conversation_turn
+    return _resolved_turn(session, request, provider, start)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/courtload/services/assistant/conversations.py:277: in _resolved_turn
+    cid, state = _resolve(session, request)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/courtload/services/assistant/conversations.py:175: in _resolve
+    context = resolve_workbench_context(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+session = <sqlalchemy.orm.session.Session object at 0x7f72007de8b0>
+release_id = None, requested_season = None, requested_phase = None
+requested_before_date = None, requested_window = None
+
+    def resolve_workbench_context(
+        session: Session,
+        release_id: str | None = None,
+        requested_season: str | None = None,
+        requested_phase: str | None = None,
+        requested_before_date: date | None = None,
+        requested_window: str | None = None,
+        *,
+        channel: str = DEFAULT_CHANNEL,
+    ) -> ResolvedContext:
+        """Resolve release context, temporal boundaries, and dataset binding."""
+        published_at: str | None = None
+        target_id = release_id
+    
+        if target_id is None:
+            pointer = session.get(PublishedSnapshot, channel)
+            if pointer is None:
+>               raise HTTPException(
+                    status_code=503,
+                    detail={
+                        "reason": "no_published_data",
+                        "message": "No analytics snapshot is published.",
+                    },
+                )
+E               fastapi.exceptions.HTTPException: 503: {'reason': 'no_published_data', 'message': 'No analytics snapshot is published.'}
+
+src/courtload/services/workbench_analytics.py:199: HTTPException
+_________________ test_curated_questions_offline_verification __________________
+
+postgres_session = <sqlalchemy.orm.session.Session object at 0x7f7200621550>
+
+    def test_curated_questions_offline_verification(postgres_session: Session):
+        """Verify all 6 curated benchmark inquiries pass under OfflineFixtureAssistantProvider."""
+        provider = OfflinePlanFixtureProvider()
+    
+        for spec in CURATED_QUESTIONS:
+>           answer = run_assistant_query(
+                session=postgres_session,
+                question=spec.question,
+                provider=provider,
+            )
+
+tests/unit/test_assistant.py:176: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/courtload/services/assistant/service.py:154: in run_assistant_query
+    result = run_conversation_turn(session, request, planner)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/courtload/services/assistant/conversations.py:271: in run_conversation_turn
+    return _resolved_turn(session, request, provider, start)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/courtload/services/assistant/conversations.py:277: in _resolved_turn
+    cid, state = _resolve(session, request)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^
+src/courtload/services/assistant/conversations.py:175: in _resolve
+    context = resolve_workbench_context(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+session = <sqlalchemy.orm.session.Session object at 0x7f7200621550>
+release_id = None, requested_season = None, requested_phase = None
+requested_before_date = None, requested_window = None
+
+    def resolve_workbench_context(
+        session: Session,
+        release_id: str | None = None,
+        requested_season: str | None = None,
+        requested_phase: str | None = None,
+        requested_before_date: date | None = None,
+        requested_window: str | None = None,
+        *,
+        channel: str = DEFAULT_CHANNEL,
+    ) -> ResolvedContext:
+        """Resolve release context, temporal boundaries, and dataset binding."""
+        published_at: str | None = None
+        target_id = release_id
+    
+        if target_id is None:
+            pointer = session.get(PublishedSnapshot, channel)
+            if pointer is None:
+>               raise HTTPException(
+                    status_code=503,
+                    detail={
+                        "reason": "no_published_data",
+                        "message": "No analytics snapshot is published.",
+                    },
+                )
+E               fastapi.exceptions.HTTPException: 503: {'reason': 'no_published_data', 'message': 'No analytics snapshot is published.'}
+
+src/courtload/services/workbench_analytics.py:199: HTTPException
+=========================== short test summary info ============================
+FAILED tests/unit/test_assistant.py::test_assistant_query_when_disabled - fas...
+FAILED tests/unit/test_assistant.py::test_curated_questions_offline_verification
+2 failed, 11 passed in 6.05s

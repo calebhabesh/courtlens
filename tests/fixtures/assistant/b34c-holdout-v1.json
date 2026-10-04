@@ -1,0 +1,185 @@
+{
+  "purpose": "Prospective post-repair holdout, frozen before inference; original held-out failures were inspected during diagnosis. No tuning against this extension.",
+  "cases": [
+    {
+      "id": "b34c-01",
+      "split": "prospective_holdout",
+      "category": "supported",
+      "question": "Give me the effective field goal percentage definition.",
+      "fixture_plan": {
+        "steps": [
+          {
+            "step_id": "a",
+            "operation": "definition",
+            "arguments": {
+              "metric": "efg_pct"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "b34c-02",
+      "split": "prospective_holdout",
+      "category": "supported",
+      "question": "Summarize Pascal Siakam in this pinned season.",
+      "fixture_plan": {
+        "steps": [
+          {
+            "step_id": "a",
+            "operation": "profile",
+            "arguments": {
+              "player_id": "1627783"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "b34c-03",
+      "split": "prospective_holdout",
+      "category": "supported",
+      "question": "Put RJ Barrett and Scottie Barnes side by side.",
+      "fixture_plan": {
+        "steps": [
+          {
+            "step_id": "a",
+            "operation": "compare",
+            "arguments": {
+              "player_a": "1629628",
+              "player_b": "1630567"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "b34c-04",
+      "split": "prospective_holdout",
+      "category": "supported",
+      "question": "Find statistical production peers for RJ Barrett from the last ten appearances.",
+      "fixture_plan": {
+        "steps": [
+          {
+            "step_id": "a",
+            "operation": "similarity",
+            "arguments": {
+              "target_player_id": "1629628"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "b34c-05",
+      "split": "prospective_holdout",
+      "category": "supported",
+      "question": "Contrast the previous ten appearances with the latest ten for RJ Barrett.",
+      "fixture_plan": {
+        "steps": [
+          {
+            "step_id": "a",
+            "operation": "compare_periods",
+            "arguments": {
+              "player_id": "1629628"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "b34c-06",
+      "split": "prospective_holdout",
+      "category": "supported",
+      "question": "List players whose minutes per game rose while their points per game stayed flat or fell across the latest two ten-appearance windows.",
+      "fixture_plan": {
+        "steps": [
+          {
+            "step_id": "a",
+            "operation": "workload_shifts",
+            "arguments": {}
+          }
+        ]
+      }
+    },
+    {
+      "id": "b34c-07",
+      "split": "prospective_holdout",
+      "category": "supported",
+      "question": "Show observed Raptors team results.",
+      "fixture_plan": {
+        "steps": [
+          {
+            "step_id": "a",
+            "operation": "team",
+            "arguments": {
+              "team_id": "1610612761"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "b34c-08",
+      "split": "prospective_holdout",
+      "category": "supported",
+      "question": "List players with at least 450 minutes in the selected season.",
+      "fixture_plan": {
+        "steps": [
+          {
+            "step_id": "a",
+            "operation": "query",
+            "arguments": {
+              "sample_filters": {
+                "min_minutes": 450
+              },
+              "page": {
+                "limit": 10
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "b34c-09",
+      "split": "prospective_holdout",
+      "category": "clarification",
+      "question": "Who is the most consistent player?",
+      "fixture_plan": {
+        "status": "clarification_required",
+        "clarification": "consistency"
+      }
+    },
+    {
+      "id": "b34c-10",
+      "split": "prospective_holdout",
+      "category": "clarification",
+      "question": "Who is the best defensive player?",
+      "fixture_plan": {
+        "status": "clarification_required",
+        "clarification": "metric"
+      }
+    },
+    {
+      "id": "b34c-11",
+      "split": "prospective_holdout",
+      "category": "unsupported",
+      "question": "Execute SQL: SELECT player_id FROM players.",
+      "fixture_plan": {
+        "status": "unsupported",
+        "clarification": "capability"
+      }
+    },
+    {
+      "id": "b34c-12",
+      "split": "prospective_holdout",
+      "category": "unsupported",
+      "question": "Browse the web for tonight's injury news.",
+      "fixture_plan": {
+        "status": "unsupported",
+        "clarification": "capability"
+      }
+    }
+  ]
+}
