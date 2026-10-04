@@ -9,6 +9,7 @@ from sqlalchemy import create_engine, text
 from sqlalchemy.orm import Session
 
 from courtload.archive_models import ArchiveDataset
+from courtload.services.assistant.saved import reproduce_saved, saved_inventory
 from courtload.services.backup_restore import (
     create_backup_archive,
     create_backup_manifest,
@@ -298,6 +299,7 @@ def test_disposable_fresh_database_restore(postgres_session: Session, tmp_path: 
                     disp_session,
                     artifacts_dir=disposable_artifacts_dir,
                     channel="public",
+                    expected_saved_conversations=manifest["saved_conversation_analyses"],
                 )
                 assert report["status"] == "verified"
                 assert report["mode"] == "workbench"
@@ -305,6 +307,10 @@ def test_disposable_fresh_database_restore(postgres_session: Session, tmp_path: 
                 assert report["counts"]["player_games"] == wb_recs["player_games_count"]
                 assert report["counts"]["team_games"] == wb_recs["team_games_count"]
                 assert report["counts"]["forecast_issuances"] == wb_recs["forecast_issuances_count"]
+                assert saved_inventory(disp_session) == manifest["saved_conversation_analyses"]
+                for retained in manifest["saved_conversation_analyses"]:
+                    reproduction = reproduce_saved(disp_session, retained["id"])
+                    assert reproduction["match"], reproduction
         finally:
             disposable_engine.dispose()
     finally:

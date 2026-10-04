@@ -11,7 +11,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy.pool import StaticPool
 
 from courtload.api.app import create_app
-from courtload.database import Base, get_db
+from courtload.database import Base, engine, get_db
 from courtload.demo import DEMO_EMAIL, DEMO_PASSWORD, DEMO_WEEK_START, fixture_documents
 from courtload.domain.scoring import DEFAULT_POINTS_RULES, scoring_rules_hash
 from courtload.ingestion.loader import IngestionService
@@ -24,6 +24,13 @@ from courtload.models import (
     User,
 )
 from courtload.security import hash_password
+
+
+@pytest.fixture(scope="session", autouse=True)
+def close_application_pool() -> Generator[None, None, None]:
+    """Release the shared API/CLI pool before pytest's final garbage collection."""
+    yield
+    engine.dispose()
 
 
 @pytest.fixture

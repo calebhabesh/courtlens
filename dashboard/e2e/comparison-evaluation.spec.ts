@@ -11,18 +11,19 @@ async function tabTo(page: Page, selector: string) {
 test("shared-cutoff comparison keeps different target dates and missing context visible", async ({ page }) => {
   await page.goto("/compare");
   await page.getByLabel("Player A").fill("Fixture");
-  await page.getByRole("button", { name: "Search" }).first().click();
+  await page.getByRole("button", { name: "Search", exact: true }).first().click();
   await page.getByRole("button", { name: "Fixture Star" }).click();
   await page.getByLabel("Player B").fill("Fixture");
-  await page.getByRole("button", { name: "Search" }).last().click();
+  await page.getByRole("button", { name: "Search", exact: true }).last().click();
   await page.getByRole("button", { name: "Fixture Guard" }).click();
   await page.getByRole("button", { name: "Compare players" }).click();
 
   await expect(page).toHaveURL(/playerA=23&playerB=24/);
-  await expect(page.getByText(/2023-01-11 · TOR/)).toBeVisible();
-  await expect(page.getByText(/2023-01-12 · BOS/)).toBeVisible();
-  await expect(page.getByText("Insufficient opponent coverage")).toBeVisible();
-  await expect(page.getByText("Estimate unavailable at this cutoff")).toBeVisible();
+  const evidence = page.getByRole("region", { name: "Side by side" });
+  await expect(evidence.getByText(/2023-01-11 · TOR/)).toBeVisible();
+  await expect(evidence.getByText(/2023-01-12 · BOS/)).toBeVisible();
+  await expect(evidence.getByText("Insufficient opponent coverage")).toBeVisible();
+  await expect(evidence.getByText("Estimate unavailable at this cutoff")).toBeVisible();
   await page.getByRole("button", { name: "Swap players" }).click();
   await page.getByRole("button", { name: "Compare players" }).click();
   await expect(page).toHaveURL(/playerA=24&playerB=23/);

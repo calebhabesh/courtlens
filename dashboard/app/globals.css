@@ -2711,3 +2711,105 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
   .allocation-row { grid-template-columns: 5rem minmax(0, 1fr) 6rem; gap: .4rem; }
 }
 .advanced-research select { max-width: 100%; }
+
+/* B30 finance: bounded source books, exact money and responsive evidence tables. */
+.finance-workspace { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1rem; min-width: 0; }
+.finance-workspace > * { min-width: 0; }
+.finance-heading { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; align-items: center; }
+.finance-heading > div { min-width: 0; max-width: 100%; }
+.finance-heading nav, .finance-statuses { display: flex; flex-wrap: wrap; gap: .8rem; }
+.finance-controls { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr)); gap: .7rem; align-items: end; }
+.finance-controls label { display: grid; gap: .35rem; min-width: 0; font-size: .85rem; }
+.finance-controls input, .finance-controls select { width: 100%; min-width: 0; min-height: 40px; padding: .4rem; background: var(--surface); color: var(--text); border: 1px solid var(--border); border-radius: var(--radius); }
+.finance-summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr)); gap: .8rem; }
+.finance-summary > div { display: grid; gap: .4rem; padding: .8rem; background: var(--surface-raised); border: 1px solid var(--border); }
+.finance-summary strong { font-family: var(--font-mono); font-size: 1.2rem; }
+.finance-workspace .table-wrapper { max-width: 100%; overflow-x: auto; }
+.finance-workspace p, .finance-workspace details, .finance-workspace th, .finance-workspace td, .finance-dialog p, .finance-dialog td { overflow-wrap: anywhere; }
+.finance-workspace pre { white-space: pre-wrap; overflow-wrap: anywhere; }
+.finance-detail-button { color: var(--accent); background: none; border: none; cursor: pointer; min-height: 40px; text-align: left; font: inherit; text-decoration: underline; }
+.finance-workspace :focus-visible, .finance-dialog :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.finance-dialog { width: min(980px, calc(100vw - 24px)); max-height: calc(100dvh - 32px); overflow: auto; color: var(--text); background: var(--surface); border: 1px solid var(--border); padding: 1rem; border-radius: var(--radius); }
+.finance-dialog::backdrop { background: rgb(0 0 0 / 75%); }
+.finance-dialog-head { display: flex; justify-content: space-between; flex-wrap: wrap; align-items: center; gap: 1rem; }
+.finance-dialog .table-wrapper { max-width: 100%; overflow: auto; }
+.finance-dialog dl, .finance-workspace dl { display: flex; flex-wrap: wrap; gap: 1rem; }
+.finance-workspace .data-table { min-width: 880px; }
+.finance-dialog .data-table { min-width: 740px; }
+@media (max-width: 600px) { .finance-workspace .panel { padding: .7rem; } .finance-statuses { font-size: .8rem; } }
+
+/* B32: bounded Live workspace */
+.live-workspace { min-width: 0; }
+.live-workspace .page-header, .live-mode, .live-date-strip { display: flex; flex-wrap: wrap; gap: .75rem; align-items: center; margin-bottom: 1rem; }
+.live-date-strip a { padding: .65rem; border: 1px solid var(--border); border-radius: 4px; font-variant-numeric: tabular-nums; }
+.live-date-strip a[aria-current], .live-game-card[aria-current] { border-color: var(--accent); background: var(--surface-raised, var(--surface)); }
+.live-date-strip label { display: flex; align-items: center; gap: .5rem; }
+.live-observation { display: grid; gap: .4rem; padding: .85rem; margin-bottom: 1rem; background: var(--surface); border: 1px solid var(--border); font-size: .8rem; overflow-wrap: anywhere; }
+.live-game-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: .75rem; }
+.live-game-card { display: grid; gap: .75rem; border: 1px solid var(--border); border-radius: 5px; padding: 1rem; background: var(--surface); color: var(--text); text-decoration: none; }
+.live-game-card:hover { border-color: var(--accent); }
+.live-game-status { font-weight: 600; color: var(--accent); }
+.live-score-row { display: flex; justify-content: space-between; gap: .75rem; align-items: center; }
+.live-score-row strong { font-size: 1.5rem; font-variant-numeric: tabular-nums; }
+.live-score-row small { display: block; font-size: .75rem; color: var(--text-muted); }
+.live-game-card > small { overflow-wrap: anywhere; font-size: .75rem; }
+.live-selected { margin-top: 1.5rem; min-width: 0; }
+.live-team-boxes { display: flex; flex-wrap: wrap; gap: 1rem; }
+.live-table-scroll { max-width: 100%; overflow-x: auto; margin: .75rem 0 1.25rem; }
+.live-table-scroll table { width: 100%; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.live-table-scroll td, .live-table-scroll th { padding: .5rem .75rem; text-align: right; }
+.live-table-scroll th:first-child { text-align: left; }
+.live-workspace a:focus-visible, .live-workspace button:focus-visible, .live-table-scroll:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+@media (max-width: 600px) { .live-workspace .page-header { align-items: start; } .live-date-strip a { font-size: .75rem; } .live-mode { font-size: .8rem; } }
+.live-history-context { display: flex; flex-wrap: wrap; align-items: end; gap: .75rem; margin: 1rem 0; }
+.live-history-context label { display: grid; gap: .35rem; font-size: .8rem; max-width: 100%; }
+.live-history-context input { max-width: 100%; }
+.live-team-boxes dl > div { display: flex; justify-content: space-between; gap: 1rem; }
+
+/* B34: bounded conversation and exact retained Research views. */
+.conversation { min-width: 0; padding: 1rem; }
+.conversation-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .75rem; margin: .75rem 0; }
+.conversation-controls { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: .75rem; margin: 1rem 0; }
+.conversation label { display: grid; gap: .3rem; }
+.conversation .conversation-row label { display: flex; align-items: center; gap: .5rem; }
+.conversation input:not([type=checkbox]), .conversation select, .conversation textarea { width: 100%; min-width: 0; padding: .5rem; font: inherit; }
+.conversation textarea { resize: vertical; }
+.conversation-manual { display: grid; gap: .5rem; margin: 1rem 0; }
+.conversation-prompts { display: flex; flex-wrap: wrap; gap: .5rem; margin: .75rem 0; }
+.conversation-prompts button { white-space: normal; text-align: left; }
+.conversation-result, .conversation-turn { border-top: 1px solid var(--border); padding: .75rem 0; min-width: 0; }
+.conversation-table { overflow-x: auto; max-width: 100%; margin: .5rem 0; }
+.conversation-table td { max-width: 28rem; overflow-wrap: anywhere; white-space: normal; vertical-align: top; }
+.conversation pre, .conversation code, .conversation-context { overflow-wrap: anywhere; white-space: pre-wrap; word-break: break-word; }
+.conversation-plot { display: block; width: 100%; max-height: 180px; }
+.conversation figure { margin: .75rem 0; }
+.conversation summary { cursor: pointer; padding: .5rem 0; }
+.conversation-dialog { margin: 0 0 0 auto; width: min(760px, 100vw); max-width: 100vw; height: 100dvh; max-height: 100dvh; border: 1px solid var(--border); background: var(--surface, #282f3b); color: var(--text, #f1f3f6); padding: .75rem; overflow-y: auto; }
+.conversation-dialog::backdrop { background: rgb(0 0 0 / 55%); }
+.conversation-summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); gap: .75rem; margin: .75rem 0; }
+.conversation-summary dt { color: var(--muted); font-size: .8rem; }
+.conversation-summary dd { margin: .2rem 0 0; font-variant-numeric: tabular-nums; font-weight: 600; }
+
+/* B35b retained evidence and original local content */
+.saved-operation-form { display: grid; gap: .75rem; padding: 1rem; border: 1px solid var(--border); border-radius: var(--radius); }
+.saved-operation-form p { margin: 0; }
+.saved-operation-form input:not([type="checkbox"]) { width: 100%; min-width: 0; }
+.saved-hash, .saved-operation-detail pre, .original-article pre { overflow-wrap: anywhere; word-break: break-word; white-space: pre-wrap; }
+.saved-operation-detail, .saved-operation-detail > *, .original-article { min-width: 0; }
+.original-article { max-width: 960px; line-height: 1.65; }
+.original-article h2 { margin-top: 1.5rem; }
+.original-article pre { padding: 1rem; background: var(--surface); border: 1px solid var(--border); }
+.saved-operation-detail .page-actions, .original-article .page-actions { flex-wrap: wrap; }
+
+/* B36: tabular interface figures and literal data/code operators. */
+table {
+  font-variant-numeric: tabular-nums;
+}
+
+.font-mono,
+code,
+pre,
+kbd,
+samp {
+  font-variant-ligatures: none;
+}

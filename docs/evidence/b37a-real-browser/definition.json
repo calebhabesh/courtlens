@@ -1,0 +1,176 @@
+{
+  "id": "21555371-b276-4cf7-b067-2f8a527d240a",
+  "title": "B35a verification: definition",
+  "manifest_sha256": "ef8ecfca6b6ee083ca43502a446afba3b267e678ac8f338254b93dcfdde1c25c",
+  "manifest": {
+    "schema_version": "courtload-saved-operation-v1",
+    "context": {
+      "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+      "snapshot_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+      "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+      "dataset_type": "workbench",
+      "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666",
+      "mode": "workbench_recent",
+      "source": "sportsdataverse",
+      "season": "2024-25",
+      "phase": "regular_season",
+      "before_date": "2025-06-23",
+      "cutoff_utc": "2025-06-23T04:00:00+00:00",
+      "window": "season",
+      "coverage_start": "2023-10-24",
+      "coverage_end": "2026-06-13",
+      "metric_version": "v2",
+      "published_at": null
+    },
+    "context_fingerprint": "b55232878a9dfc8f049b13a335326fb0af7f4574b0aefb0dbde83290c85ef80d",
+    "plan": {
+      "plan_version": "courtload-analysis-plan-v1",
+      "status": "execute",
+      "clarification": null,
+      "context_changes": null,
+      "steps": [
+        {
+          "step_id": "a",
+          "operation": "definition",
+          "arguments": {
+            "metric": "ts_pct"
+          },
+          "depends_on": []
+        }
+      ],
+      "output_kind": "table"
+    },
+    "origin_plan": {
+      "plan_version": "courtload-analysis-plan-v1",
+      "status": "execute",
+      "clarification": null,
+      "context_changes": null,
+      "steps": [
+        {
+          "step_id": "a",
+          "operation": "definition",
+          "arguments": {
+            "metric": "ts_pct"
+          },
+          "depends_on": []
+        }
+      ],
+      "output_kind": "table"
+    },
+    "origin_manifest_sha256": "a59802e6e7040c171c0beb57f2f6927412ac03d98f8904eec40af81676576f9c",
+    "metric_version": "v2",
+    "result_scope": "complete_stats_cohort_and_declared_operation_bounds",
+    "results": [
+      {
+        "step_id": "a",
+        "operation": "definition",
+        "operation_version": "courtload-assistant-operations-v1",
+        "arguments": {
+          "metric": "ts_pct"
+        },
+        "operation_hash": "6c29224f650e279fc5f7d8ad864fb42ddb9445e14776e3fcf36d8f4e73087b22",
+        "result_hash": "49ff2e09d9040c2dbad29dcbb34f8d9c7bb15dcee9d24c72189899a86959b4ff",
+        "data": {
+          "metric": "ts_pct",
+          "definition": {
+            "key": "ts_pct",
+            "version": "v2",
+            "display_name": "True Shooting Percentage",
+            "short_name": "TS%",
+            "category": "efficiency",
+            "unit": "percentage",
+            "formula": "sum(PTS) / (2 * (sum(FGA) + 0.44 * sum(FTA)))",
+            "denominator": "2 * (fga + 0.44 * fta)",
+            "phase_scope": [
+              "regular_season",
+              "preseason",
+              "playoffs",
+              "play_in",
+              "cup_final",
+              "summer_league"
+            ],
+            "default_sort_direction": "desc",
+            "limitations": [
+              "Conventional TS approximation using standard 0.44 free throw factor.",
+              "Event-based true possessions are a distinct later metric.",
+              "Requires jointly valid points, FGA, and FTA on the same game records.",
+              "Null when valid denominator is 0."
+            ],
+            "required_fields": [
+              "points",
+              "field_goals_attempted",
+              "free_throws_attempted"
+            ],
+            "compatible_normalizations": [
+              "raw"
+            ],
+            "aggregation_recipe": "ratio",
+            "validity_definition": "jointly valid points, fga, and fta; 2*(fga+0.44*fta) > 0",
+            "aliases": [],
+            "capability_requirement": "core_stats",
+            "classification": "observed",
+            "good_direction": "high"
+          }
+        },
+        "rows": [
+          {
+            "metric": "ts_pct",
+            "definition": {
+              "key": "ts_pct",
+              "version": "v2",
+              "display_name": "True Shooting Percentage",
+              "short_name": "TS%",
+              "category": "efficiency",
+              "unit": "percentage",
+              "formula": "sum(PTS) / (2 * (sum(FGA) + 0.44 * sum(FTA)))",
+              "denominator": "2 * (fga + 0.44 * fta)",
+              "phase_scope": [
+                "regular_season",
+                "preseason",
+                "playoffs",
+                "play_in",
+                "cup_final",
+                "summer_league"
+              ],
+              "default_sort_direction": "desc",
+              "limitations": [
+                "Conventional TS approximation using standard 0.44 free throw factor.",
+                "Event-based true possessions are a distinct later metric.",
+                "Requires jointly valid points, FGA, and FTA on the same game records.",
+                "Null when valid denominator is 0."
+              ],
+              "required_fields": [
+                "points",
+                "field_goals_attempted",
+                "free_throws_attempted"
+              ],
+              "compatible_normalizations": [
+                "raw"
+              ],
+              "aggregation_recipe": "ratio",
+              "validity_definition": "jointly valid points, fga, and fta; 2*(fga+0.44*fta) > 0",
+              "aliases": [],
+              "capability_requirement": "core_stats",
+              "classification": "observed",
+              "good_direction": "high"
+            }
+          }
+        ],
+        "evidence": [],
+        "open_url": null,
+        "eligible_count": null,
+        "limitations": []
+      }
+    ],
+    "limitations": [
+      "Stats retains the complete eligible cohort up to 2,000 rows. Other operations retain their declared windows/top-k; these are not full career exports.",
+      "Returned source precision is retained; upstream rounded aggregates are not recovered.",
+      "Local links require the same retained inputs and application."
+    ]
+  },
+  "metadata": {
+    "question_saved": false,
+    "question": null
+  },
+  "created_at": "2026-10-04T11:05:18.947378+00:00"
+}

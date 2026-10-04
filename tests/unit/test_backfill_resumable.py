@@ -30,8 +30,11 @@ def memory_session() -> Session:
         poolclass=StaticPool,
     )
     Base.metadata.create_all(engine)
-    with Session(engine) as session:
-        yield session
+    try:
+        with Session(engine) as session:
+            yield session
+    finally:
+        engine.dispose()
 
 
 def test_get_backfill_status(memory_session: Session, tmp_path: Path) -> None:

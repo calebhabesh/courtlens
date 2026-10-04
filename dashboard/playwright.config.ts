@@ -1,6 +1,10 @@
 import fs from "node:fs";
 import { defineConfig } from "@playwright/test";
 
+// Playwright forces color in its workers and web servers. Inheriting NO_COLOR
+// as well makes Node emit a warning for every child process.
+delete process.env.NO_COLOR;
+
 const defaultChromiumPath = process.env.PW_CHROMIUM_PATH || (fs.existsSync("/usr/bin/chromium") ? "/usr/bin/chromium" : undefined);
 
 export default defineConfig({

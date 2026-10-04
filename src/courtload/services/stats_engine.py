@@ -294,24 +294,41 @@ def build_stats_query_sql(
     # 1. Fact Table & Dialect Settings
     is_workbench = context.dataset_type == "workbench"
     table_name = "workbench_player_games" if is_workbench else "archive_player_games"
-    identity_table = "workbench_identities" if is_workbench else "archive_identities"
 
     def json_extract(col_name: str, key_wb: str, key_ar: str) -> str:
         key = key_wb if is_workbench else key_ar
         if is_sqlite:
-            return f"CAST(json_extract({col_name}, '$.{key}') AS INTEGER)"
-        return f"({col_name}->>'{key}')::int"
+            value = f"CAST(json_extract({col_name}, '$.{key}') AS INTEGER)"
+        else:
+            value = f"({col_name}->>'{key}')::int"
+        if is_workbench:
+            return value
+        return f"CASE WHEN wpg.appearance = 'appeared' THEN {value} ELSE NULL END"
 
     teams_agg = "group_concat(distinct team_id)" if is_sqlite else "array_agg(distinct team_id)"
 
-    player_name_expr = "coalesce(wi.display_name, wpg.player_id)"
+    if is_workbench:
+        player_name_expr = "coalesce(wi.display_name, wpg.player_id)"
+        identity_join = """LEFT JOIN workbench_identities wi
+            ON wi.external_id = wpg.player_id AND wi.kind = 'player'"""
+    else:
+        # Archive names are retained in the game source version, not the identity row.
+        archive_name = (
+            "json_extract(av.payload_json, '$.player')"
+            if is_sqlite
+            else "av.payload_json->>'player'"
+        )
+        player_name_expr = f"coalesce({archive_name}, wpg.player_id)"
+        identity_join = "JOIN archive_versions av ON av.id = wpg.source_version_id"
 
     # 2. Candidate Filters
     candidate_filters = [
         "wpg.dataset_id = :dataset_id",
-        "wpg.phase = :phase",
         "wpg.game_date < :before_date",
     ]
+
+    if is_workbench:
+        candidate_filters.append("wpg.phase = :phase")
 
     # Seasons filter
     if query.season_scope.seasons:
@@ -462,8 +479,7 @@ def build_stats_query_sql(
                 ORDER BY wpg.game_date DESC, wpg.game_id DESC
             ) AS app_rank
         FROM {table_name} wpg
-        LEFT JOIN {identity_table} wi
-            ON wi.external_id = wpg.player_id AND wi.kind = 'player'
+        {identity_join}
         WHERE {where_candidate_clause}
     ),
     candidate_games AS (

@@ -37,7 +37,10 @@ services:
 
   api:
     build: .
-    environment: *api-environment
+    environment:
+      <<: *api-environment
+      COURTLOAD_GEMINI_API_KEY: ${COURTLOAD_GEMINI_API_KEY:-}
+      COURTLOAD_GEMINI_MODEL: ${COURTLOAD_GEMINI_MODEL:-gemini-3.5-flash-lite}
     ports:
       - "127.0.0.1:8000:8000"
     volumes:

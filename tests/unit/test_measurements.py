@@ -23,39 +23,42 @@ def memory_session() -> Session:
         poolclass=StaticPool,
     )
     Base.metadata.create_all(engine)
-    with Session(engine) as session:
-        # Seed test player identities
-        session.add_all(
-            [
-                WorkbenchIdentity(
-                    namespace="nba",
-                    external_id="1628389",
-                    kind="player",
-                    display_name="Bam Adebayo",
-                ),
-                WorkbenchIdentity(
-                    namespace="nba",
-                    external_id="1630567",
-                    kind="player",
-                    display_name="Scottie Barnes",
-                ),
-                WorkbenchIdentity(
-                    namespace="nba",
-                    external_id="1627783",
-                    kind="player",
-                    display_name="Pascal Siakam",
-                ),
-                WorkbenchIdentity(
-                    namespace="nba",
-                    external_id="1628424",
-                    kind="player",
-                    display_name="Kobi Simmons",
-                ),
-            ]
-        )
-        session.commit()
-        seed_flagship_measurements(session)
-        yield session
+    try:
+        with Session(engine) as session:
+            # Seed test player identities
+            session.add_all(
+                [
+                    WorkbenchIdentity(
+                        namespace="nba",
+                        external_id="1628389",
+                        kind="player",
+                        display_name="Bam Adebayo",
+                    ),
+                    WorkbenchIdentity(
+                        namespace="nba",
+                        external_id="1630567",
+                        kind="player",
+                        display_name="Scottie Barnes",
+                    ),
+                    WorkbenchIdentity(
+                        namespace="nba",
+                        external_id="1627783",
+                        kind="player",
+                        display_name="Pascal Siakam",
+                    ),
+                    WorkbenchIdentity(
+                        namespace="nba",
+                        external_id="1628424",
+                        kind="player",
+                        display_name="Kobi Simmons",
+                    ),
+                ]
+            )
+            session.commit()
+            seed_flagship_measurements(session)
+            yield session
+    finally:
+        engine.dispose()
 
 
 def test_combine_vs_listed_distinction(memory_session: Session) -> None:

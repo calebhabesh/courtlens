@@ -489,7 +489,7 @@ def test_workbench_assistant_status(client: TestClient) -> None:
     assert "limits" in data
     assert "allowed_tools" in data
     assert len(data["allowed_tools"]) >= 8
-    assert "search_players" in data["allowed_tools"]
+    assert "query" in data["allowed_tools"]
     assert "privacy_notice" in data
     assert "setup_instructions" in data
 
@@ -498,9 +498,13 @@ def test_workbench_assistant_query_disabled(client: TestClient) -> None:
     """Assistant query returns typed disabled response when server API key is not configured."""
     from unittest.mock import patch
 
-    with patch("courtload.services.assistant.service.get_settings") as mock_settings:
+    with (
+        patch("courtload.services.assistant.service.get_settings") as mock_settings,
+        patch("courtload.services.assistant.conversations.get_settings") as conversation_settings,
+    ):
         mock_settings.return_value.gemini_api_key = None
         mock_settings.return_value.gemini_model = "gemini-2.5-flash"
+        conversation_settings.return_value = mock_settings.return_value
         response = client.post(
             "/api/workbench/assistant/query",
             json={"question": "Who scored the most points?"},

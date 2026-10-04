@@ -670,9 +670,9 @@ def get_player_profile(
     all_games.sort(key=lambda x: (x["game_date"], x["game_id"]))
     appeared = [g for g in all_games if g.get("appearance") == "appeared"]
 
-    season_metrics, _ = compute_metrics(all_games)
-    last_5_metrics, _ = compute_metrics(appeared[-5:])
-    last_10_metrics, _ = compute_metrics(appeared[-10:])
+    season_metrics, season_samples = compute_metrics(all_games)
+    last_5_metrics, last_5_samples = compute_metrics(appeared[-5:])
+    last_10_metrics, last_10_samples = compute_metrics(appeared[-10:])
 
     # Multi-team stint breakdown (for traded players)
     teams_observed: set[str] = set(g["team_id"] for g in all_games)
@@ -731,6 +731,11 @@ def get_player_profile(
             "season": season_metrics,
             "last_5": last_5_metrics,
             "last_10": last_10_metrics,
+        },
+        "sample_sizes": {
+            "season": season_samples,
+            "last_5": last_5_samples,
+            "last_10": last_10_samples,
         },
         "stints": stints,
         "latest_team": latest_team,
@@ -1111,6 +1116,8 @@ def compare_players(
     metrics_a = profile_a["summaries"][context.window]
     metrics_b = profile_b["summaries"][context.window]
 
+    samples_a = profile_a["sample_sizes"][context.window]
+    samples_b = profile_b["sample_sizes"][context.window]
     aligned_metrics: list[dict[str, Any]] = []
 
     for defn in METRIC_CATALOG.values():
@@ -1129,8 +1136,8 @@ def compare_players(
                 "value_a": va,
                 "value_b": vb,
                 "diff": diff,
-                "n_a": metrics_a.get("gp", 0),
-                "n_b": metrics_b.get("gp", 0),
+                "n_a": samples_a.get(k, 0),
+                "n_b": samples_b.get(k, 0),
             }
         )
 
@@ -1142,6 +1149,7 @@ def compare_players(
             "games_played": metrics_a.get("gp", 0),
             "total_minutes": metrics_a.get("min", 0.0),
             "metrics": metrics_a,
+            "sample_sizes": samples_a,
             "forecast_status": profile_a["forecast_status"],
         },
         "player_b": {
@@ -1150,6 +1158,7 @@ def compare_players(
             "games_played": metrics_b.get("gp", 0),
             "total_minutes": metrics_b.get("min", 0.0),
             "metrics": metrics_b,
+            "sample_sizes": samples_b,
             "forecast_status": profile_b["forecast_status"],
         },
         "aligned_metrics": aligned_metrics,

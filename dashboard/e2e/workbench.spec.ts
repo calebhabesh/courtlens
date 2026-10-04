@@ -1,54 +1,44 @@
 import { expect, test } from "@playwright/test";
+import { openWorkbench } from "./workbench-navigation";
 
 test.describe("Workbench Dark Research Interface", () => {
-  test("overview renders dense dark theme, navigation rail, context bar, and data", async ({ page }) => {
-    await page.goto("/");
-
-    // Verify dark mode & brand
-    await expect(page.locator("aside.nav-rail")).toBeVisible();
-    await expect(page.locator("aside.nav-rail .brand-title")).toHaveText("COURTLOAD");
-    await expect(page.locator("aside.nav-rail .brand-subtitle")).toHaveText("Workbench");
-
-    // Verify navigation links
-    await expect(page.locator("nav.nav-rail-body a[href='/']")).toBeVisible();
-    await expect(page.locator("nav.nav-rail-body a[href='/players']")).toBeVisible();
-    await expect(page.locator("nav.nav-rail-body a[href='/teams']")).toBeVisible();
-    await expect(page.locator("nav.nav-rail-body a[href='/compare']")).toBeVisible();
-    await expect(page.locator("nav.nav-rail-body a[href='/forecasts']")).toBeVisible();
-    await expect(page.locator("nav.nav-rail-body a[href='/data-status']")).toBeVisible();
-    await expect(page.locator("nav.nav-rail-body a[href='/investigations']")).toBeVisible();
-    await expect(page.locator("nav.nav-rail-body a[href='/settings']")).toBeVisible();
-    await expect(page.locator("nav.nav-rail-body a[href='/methodology']")).toBeVisible();
-
-    // Verify context bar
-    await expect(page.locator(".context-bar")).toBeVisible();
-    await expect(page.locator("select[aria-label='Filter by season']")).toHaveValue("2025-26");
-
-    // Verify stat cards
-    await expect(page.getByText("Serving Release")).toBeVisible();
-    await expect(page.getByText("Eligible Players")).toBeVisible();
-    await expect(page.getByText("Cached Portraits")).toBeVisible();
-
-    // Verify player production leaders table
-    await expect(page.getByText("Fixture Star")).toBeVisible();
-    await expect(page.getByText("Fixture Guard")).toBeVisible();
+  test("home opens Stats with dark theme, horizontal navigation, context and data", async ({ page }) => {
+    await openWorkbench(page);
+    await expect(page).toHaveURL(/\/stats$/);
+    await expect(page.getByRole("banner").getByRole("link", { name: "CourtLoad Research Workbench home" })).toContainText("COURTLOAD");
+    const navigation = page.getByRole("navigation", { name: "Workspace Navigation" });
+    await expect(navigation.getByRole("link", { name: "Stats", exact: true })).toBeVisible();
+    for (const name of ["Players", "Teams", "Compare", "Research", "Help"]) {
+      await navigation.getByRole("button", { name, exact: true }).click();
+      await expect(navigation.getByRole("button", { name, exact: true })).toHaveAttribute("aria-expanded", "true");
+      await page.keyboard.press("Escape");
+      await expect(navigation.getByRole("button", { name, exact: true })).toHaveAttribute("aria-expanded", "false");
+    }
+    await expect(page.getByRole("banner").getByRole("link", { name: "Data status" })).toBeVisible();
+    await expect(page.getByRole("banner").getByRole("link", { name: "Settings" })).toBeVisible();
+    await expect(page.getByLabel("Filter by season")).toHaveValue("2025-26");
+    await expect(page.getByRole("heading", { name: "Stats Explorer" })).toBeVisible();
+    await expect(page.getByText("Fixture Star", { exact: true })).toBeVisible();
+    await expect(page.getByText("Fixture Guard", { exact: true })).toBeVisible();
   });
 
   test("player explorer allows filtering and links to detail view", async ({ page }) => {
     await page.goto("/players");
 
     await expect(page.locator("h1.page-title")).toHaveText("Player Explorer");
-    await expect(page.getByText("Fixture Star")).toBeVisible();
+    await expect(page.getByRole("button", { name: "Fixture Star", exact: true })).toBeVisible();
 
     // Filter by name
-    const searchInput = page.locator("input[placeholder*='Search by name']");
+    const searchInput = page.getByLabel("Filter players by name");
     await searchInput.fill("Guard");
-    await page.locator("button[type='submit']").click();
+    await searchInput.press("Enter");
+    await expect(page).toHaveURL(/name=Guard/);
 
-    await expect(page.getByText("Fixture Guard")).toBeVisible();
+    await expect(page.getByRole("button", { name: "Fixture Guard", exact: true })).toBeVisible();
 
     // Navigate to player detail
-    await page.locator("a[href*='/players/24']").first().click();
+    await page.getByRole("button", { name: "Open details for Fixture Guard" }).click();
+    await page.getByRole("link", { name: "View Full Profile →" }).click();
     await page.waitForURL("**/players/24**");
     await expect(page.locator("h1.player-identity-name")).toContainText("Fixture Guard");
   });
@@ -73,7 +63,7 @@ test.describe("Workbench Dark Research Interface", () => {
   test("team research lists cohorts and navigates to team detail", async ({ page }) => {
     await page.goto("/teams");
 
-    await expect(page.locator("h1.page-title")).toHaveText("Team Research");
+    await expect(page.locator("h1.page-title")).toHaveText("Team Explorer");
     await expect(page.getByText("Toronto Raptors")).toBeVisible();
     await expect(page.getByText("Boston Celtics")).toBeVisible();
 
@@ -102,7 +92,7 @@ test.describe("Workbench Dark Research Interface", () => {
     await page.goto("/forecasts");
 
     await expect(page.locator("h1.page-title")).toHaveText("Points Forecasts & Protocol");
-    await expect(page.getByText("Active Forecast Policy")).toBeVisible();
+    await expect(page.locator("main").getByRole("heading", { name: "Active Forecast Policy" })).toBeVisible();
     await expect(page.locator(".panel-header .badge:has-text('points-v1-prior_blend')")).toBeVisible();
 
     // Verify promotion decision banner and gates
@@ -139,25 +129,19 @@ test.describe("Workbench Dark Research Interface", () => {
     expect(dimensions.scroll).toBe(dimensions.client);
   });
 
-  test("ask courtload assistant panel renders prompt chips and handles interaction", async ({ page }) => {
-    await page.goto("/");
-
-    // Verify Ask CourtLoad card
-    await expect(page.getByRole("heading", { name: "Ask CourtLoad" })).toBeVisible();
-    await expect(page.getByRole("button", { name: "Raptors Defense" })).toBeVisible();
-    await expect(page.getByRole("button", { name: "Scottie Barnes Forecast" })).toBeVisible();
-
-    // Verify typing into textarea
-    const textarea = page.locator("textarea[placeholder*='Ask a question']");
-    await expect(textarea).toBeVisible();
+  test("Ask drawer offers manual research and links to optional configuration", async ({ page }) => {
+    await openWorkbench(page);
+    await page.getByRole("button", { name: "Ask", exact: true }).click();
+    const dialog = page.getByRole("dialog", { name: "Research conversation" });
+    await expect(dialog.getByRole("heading", { name: "Ask CourtLoad" })).toBeVisible();
+    await expect(dialog.getByLabel("Research operation", { exact: true })).toBeVisible();
+    const textarea = dialog.getByLabel("Research question (optional label)", { exact: true });
     await textarea.fill("Compare Scottie Barnes and RJ Barrett");
-    await expect(page.getByText("37 / 2000 characters")).toBeVisible();
-
-    // Verify Settings page shows assistant configuration
+    await expect(dialog.getByText("37 / 2000", { exact: true })).toBeVisible();
+    await page.keyboard.press("Escape");
+    await expect(dialog).not.toBeVisible();
     await page.goto("/settings");
     await expect(page.getByRole("heading", { name: "Optional AI Assistant (Gemini Adapter)" })).toBeVisible();
-    await expect(page.getByText("COURTLOAD_GEMINI_API_KEY")).toBeVisible();
+    await expect(page.getByText("Disabled; manual research available", { exact: true }).filter({ visible: true })).toBeVisible();
   });
 });
-
-

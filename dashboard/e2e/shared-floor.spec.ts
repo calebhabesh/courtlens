@@ -1,4 +1,5 @@
 import { expect, test } from "@playwright/test";
+import { openWorkbench } from "./workbench-navigation";
 import { readFileSync } from "node:fs";
 const empty = JSON.parse(readFileSync("../docs/evidence/b21-api-smoke.json", "utf8")).response;
 
@@ -21,7 +22,7 @@ test.beforeEach(async ({ page }) => {
 });
 
 test("empty source preserves unknown values, exact downloads and resolved links", async ({ page }) => {
-  await page.goto("/wowy?team_id=TOR&together=1627751");
+  await openWorkbench(page, "/wowy?team_id=TOR&together=1627751");
   await page.getByRole("button", { name: "Run shared-floor analysis" }).click();
   await expect(page.getByText("Real analytics are unavailable", { exact: false })).toBeVisible();
   await expect(page.getByText("0 / 82 finalized games reconstructed", { exact: false })).toBeVisible();
@@ -44,7 +45,7 @@ test("empty source preserves unknown values, exact downloads and resolved links"
 test("two and five player units use the same operation with all partitions", async ({ page }) => {
   const requests: unknown[] = [];
   page.on("request", req => { if (req.url().endsWith("/operations/wowy")) requests.push(req.postDataJSON()); });
-  await page.goto("/wowy");
+  await openWorkbench(page, "/wowy");
   await page.getByRole("combobox", { name: "View", exact: true }).selectOption("unit");
   for (const ids of ["1,2", "1,2,3,4,5"]) {
     await page.getByLabel("Unit player IDs").fill(ids);
@@ -56,7 +57,7 @@ test("two and five player units use the same operation with all partitions", asy
 });
 
 test("stat shifts reject focal contradictions and request per-possession production", async ({ page }) => {
-  await page.goto("/stat-line-shift");
+  await openWorkbench(page, "/stat-line-shift");
   await page.getByLabel("Focal player ID", { exact: true }).fill("1");
   await page.getByLabel("Together player IDs").fill("1");
   await page.getByRole("button", { name: "Run shared-floor analysis" }).click();
@@ -69,7 +70,7 @@ test("stat shifts reject focal contradictions and request per-possession product
 test("bounded leaders pin a resolved release across candidates", async ({ page }) => {
   const requests: Record<string, unknown>[] = [];
   page.on("request", req => { if (req.url().endsWith("/operations/on-off")) requests.push(req.postDataJSON()); });
-  await page.goto("/wowy");
+  await openWorkbench(page, "/wowy");
   await page.getByRole("combobox", { name: "View", exact: true }).selectOption("leaders");
   await page.getByLabel("Candidate player IDs").fill("1,2,3");
   await page.getByRole("button", { name: "Run shared-floor analysis" }).click();
@@ -80,7 +81,7 @@ test("bounded leaders pin a resolved release across candidates", async ({ page }
 });
 
 test("Stats on/off preset opens actual shared-floor operation", async ({ page }) => {
-  await page.goto("/stats?preset=onoff&together=1");
+  await openWorkbench(page, "/stats?preset=onoff&together=1");
   await expect(page.getByRole("heading", { name: "Stats · On/off" })).toBeVisible();
   await page.getByRole("button", { name: "Run shared-floor analysis" }).click();
   await expect(page.getByRole("heading", { name: "on-off · TOR · 1" })).toBeVisible();
@@ -103,7 +104,7 @@ test("partial samples show raw rates and directional denominators while gating d
     await route.fulfill({ json: response });
   });
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto("/wowy?together=1&team_id=TOR");
+  await openWorkbench(page, "/wowy?together=1&team_id=TOR");
   await page.getByRole("button", { name: "Run shared-floor analysis" }).click();
   const exposure = page.locator("table").first();
   await expect(exposure).toContainText("80.50");
@@ -119,7 +120,7 @@ test("partial samples show raw rates and directional denominators while gating d
 
 test("query overflow is actionable and exports are unavailable after failed queries", async ({ page }) => {
   await page.route("**/api/workbench/operations/wowy", route => route.fulfill({ status: 422, json: { detail: { reason: "query_bound_exceeded", detail: "Narrow with lower/cutoff dates" } } }));
-  await page.goto("/wowy?together=1");
+  await openWorkbench(page, "/wowy?together=1");
   await page.getByRole("button", { name: "Run shared-floor analysis" }).click();
   await expect(page.locator(".shared-floor").getByRole("alert")).toContainText("query_bound_exceeded");
   await expect(page.locator(".shared-floor").getByRole("alert")).toContainText("Narrow");

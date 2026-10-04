@@ -301,6 +301,9 @@ class DataQualityRun(Base):
 
 from courtload import (  # noqa: E402,F401
     archive_models,
+    conversation_models,
+    finance_models,
+    live_models,
     research_models,
     warehouse_models,
     workbench_models,

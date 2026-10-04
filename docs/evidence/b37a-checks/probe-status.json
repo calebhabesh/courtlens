@@ -1,0 +1,19 @@
+{
+  "backend-first.log": "Interrupted during fresh restore; incomplete, no acceptance claimed. Its disposable database is retained for diagnosis.",
+  "backend.log": "Strict warning probe: 731 passed, 6 failures and 3 setup errors caused by unclosed test connection pools; superseded after fixture teardown fixes.",
+  "browser-first.log": "Seven failures from obsolete layout/locator assumptions and configuration readiness; zero color warnings.",
+  "browser-regression.log": "Three remaining test assumptions corrected; retained failure evidence.",
+  "browser-second.log": "Fixture status omitted required allowed_tools; three failures, corrected fixture.",
+  "browser.log": "Four transient hydration/hidden retained-page locator failures; superseded.",
+  "browser-final.log": "Two hidden retained-page locator failures; visible scoped locators corrected.",
+  "browser-accepted.log": "82 passed, one real-workspace skip, zero warnings; predates proxy integration correction.",
+  "real-workspace-browser.log": "Production browser discovered same-origin 403 with normalized localhost URL versus incoming 127.0.0.1 Host; corrected using existing Live boundary.",
+  "real-retained-browser.log": "All twelve retained types passed on production build before proxy correction; retained as dated evidence.",
+  "backend-final.log": "740 passed, one failure from four unclosed SQLite shot-audit spool connections; actual fresh restore passed. Superseded after explicit closing of spool.",
+  "browser-proxy-final.log": "81 passed, one hydration race in the shell interaction; client-effect workspace readiness added.",
+  "browser-sealed.log": "81 passed, one shooting hydration race; shared readiness helper applied to shooting/shared-floor browser navigation.",
+  "browser-complete.log": "82 passed, one real-service workspace skip, zero warnings on final application code.",
+  "real-workspace-browser-final.log": "Normalized-origin fix reached the backend; rejected obsolete fixture-only player ID 1 with 422. Test now uses admitted canonical ID 1630567, overridable by COURTLOAD_REAL_WORKSPACE_PLAYER_ID.",
+  "real-workspace-browser-accepted.log": "One actual production FastAPI/PostgreSQL browser test passed; two uniquely named personal workspace records intentionally retained.",
+  "real-retained-browser-final.log": "All twelve retained types passed on the corrected production build; no new analytical saved record or provider calls."
+}

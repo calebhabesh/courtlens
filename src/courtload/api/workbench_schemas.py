@@ -328,6 +328,7 @@ class PlayerProfileStint(BaseModel):
 
 
 class PlayerProfileResponse(BaseModel):
+    sample_sizes: dict[str, dict[str, int]] = Field(default_factory=dict)
     player: dict[str, str]
     context: dict[str, Any]
     summaries: dict[str, Any]

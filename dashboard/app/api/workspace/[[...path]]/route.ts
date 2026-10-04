@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { isSameBrowserOrigin } from "../../../../lib/same-origin";
 
 // A fixed workspace-only target keeps server credentials out of arbitrary upstream requests.
 const allowedPaths = /^(?:|reset|export|import|preferences|presets|views(?:\/(?:reorder|[\w-]+))?|favorites(?:\/[\w-]+)?|compare-tray(?:\/[\w-]+)?|ranking-boards(?:\/(?:aggregate|[\w-]+))?|tier-lists(?:\/[\w-]+)?)$/;
@@ -12,7 +13,7 @@ async function proxy(request: NextRequest, context: Context) {
     return NextResponse.json({ detail: "Unknown workspace route" }, { status: 404 });
   }
   const mutates = request.method !== "GET";
-  if (mutates && request.headers.get("origin") !== request.nextUrl.origin) {
+  if (mutates && !isSameBrowserOrigin(request)) {
     return NextResponse.json({ detail: "Same-origin workspace mutation required" }, { status: 403 });
   }
   const apiUrl = process.env.COURTLOAD_API_INTERNAL_URL ||

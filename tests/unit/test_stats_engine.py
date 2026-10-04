@@ -51,8 +51,11 @@ def db_session() -> Session:
     default_url = "postgresql+psycopg://courtload:courtload@localhost:5432/courtload"
     url = os.getenv("COURTLOAD_TEST_POSTGRES_URL", default_url)
     engine = create_engine(url)
-    with Session(engine) as session:
-        yield session
+    try:
+        with Session(engine) as session:
+            yield session
+    finally:
+        engine.dispose()
 
 
 @pytest.fixture
@@ -350,3 +353,52 @@ class TestStatsQueryEngineRuntime:
             assert it["total_minutes"] >= 200.0
             assert m["min_per_game"] >= 15.0
             assert 18.0 <= m["pts_per_game"] <= 28.0
+
+
+@pytest.mark.parametrize("appeared", [True, False])
+def test_archive_stats_executes_with_versioned_names(db_session: Session, appeared: bool) -> None:
+    """Historical saved links query retained archive schemas, names and cutoff rows."""
+    from datetime import timedelta
+
+    from sqlalchemy import select
+
+    from courtload.archive_models import ArchivePlayerGame, ArchiveVersion
+
+    game, payload = db_session.execute(
+        select(ArchivePlayerGame, ArchiveVersion.payload_json)
+        .join(ArchiveVersion, ArchiveVersion.id == ArchivePlayerGame.source_version_id)
+        .where(
+            ArchivePlayerGame.appearance == "appeared"
+            if appeared
+            else ArchivePlayerGame.appearance != "appeared"
+        )
+        .order_by(
+            ArchivePlayerGame.game_date,
+            ArchivePlayerGame.dataset_id,
+            ArchivePlayerGame.player_id,
+            ArchivePlayerGame.game_id,
+        )
+        .limit(1)
+    ).one()
+    context = resolve_workbench_context(
+        db_session,
+        release_id=game.dataset_id,
+        requested_season=game.season,
+        requested_before_date=game.game_date + timedelta(days=1),
+    )
+    assert context.dataset_type == "archive"
+    name = str(payload.get("player") or game.player_id)
+    query = QuerySpec(
+        season=game.season,
+        name=name,
+        predicates=PredicateGroup(
+            predicates=[PredicateLeaf(field="player_id", op=PredicateOp.EQ, value=game.player_id)]
+        ),
+    )
+    rows, total, _, _ = execute_stats_query(db_session, context, query)
+    assert total == 1
+    assert rows[0]["player_name"] == name
+    expected, _ = compute_metrics_v2(
+        _load_player_games(db_session, context, player_id=game.player_id)
+    )
+    assert rows[0]["metrics"]["pts_per_game"] == expected["pts_per_game"]

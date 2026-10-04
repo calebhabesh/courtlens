@@ -521,6 +521,18 @@ const mockPlayoffSeriesDetail = {
 
 createServer((request, response) => {
   const url = new URL(request.url ?? "/", "http://127.0.0.1:4100");
+  if (url.pathname === "/api/workbench/assistant/status") return json(response, 200, {
+    configured: false,
+    model: "fixture-disabled",
+    provider: "gemini",
+    limits: { max_question_length: 2000, max_rounds: 4, max_total_tool_calls: 8, timeout_seconds: 45 },
+    allowed_tools: [],
+    setup_instructions: "Set a server-side Gemini key to opt in.",
+    privacy_notice: "Provider retention is separate from local saved evidence."
+  });
+  if (url.pathname === "/api/workbench/assistant/operations") return json(response, 200, [
+    { name: "workload_shifts", description: "Historical workload changes", parameters: { type: "object" } }
+  ]);
   if (url.pathname === "/api/workbench/status") return json(response, 200, workbenchStatus);
   if (url.pathname === "/api/workbench/players") {
     const q = (url.searchParams.get("name") ?? "").toLowerCase();

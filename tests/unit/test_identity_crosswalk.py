@@ -26,8 +26,11 @@ def memory_session() -> Session:
         poolclass=StaticPool,
     )
     Base.metadata.create_all(engine)
-    with Session(engine) as session:
-        yield session
+    try:
+        with Session(engine) as session:
+            yield session
+    finally:
+        engine.dispose()
 
 
 def test_crosswalk_registration_and_resolution(memory_session: Session) -> None:

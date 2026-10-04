@@ -3,7 +3,7 @@ import { expect, test } from "@playwright/test";
 test("search opens a snapshot-pinned real route and changes replay date", async ({ page }) => {
   await page.goto(`/players?snapshotId=${snapshotId}`);
   await page.getByLabel("Player name").fill("Fixture");
-  await page.getByRole("button", { name: "Search" }).click();
+  await page.getByRole("button", { name: "Search", exact: true }).click();
   await page.getByRole("link", { name: /Fixture Star/ }).click();
 
   await expect(page).toHaveURL(/players\/23\?date=2023-01-10&snapshotId=snapshot-browser-fixture/);
@@ -20,7 +20,7 @@ test("unsupported replay date keeps the input and offers recovery", async ({ pag
   await page.goto(`/players/23?date=2023-01-09&snapshotId=${snapshotId}`);
 
   await expect(page.getByRole("heading", { name: "Replay date not supported" })).toBeVisible();
-  await expect(page.getByText("2023-01-09 is outside the available replay dates.")).toBeVisible();
+  await expect(page.locator("main").getByText("2023-01-09 is outside the available replay dates.")).toBeVisible();
   await expect(page.getByRole("link", { name: "Return to player search" })).toBeVisible();
 });
 
