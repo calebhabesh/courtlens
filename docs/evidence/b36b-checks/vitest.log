@@ -1,0 +1,13 @@
+
+> courtload-dashboard@0.1.0 test
+> vitest run
+
+
+ RUN  v4.1.11 /tmp/courtload-b36b-production-kcrjosmb/dashboard
+
+
+ Test Files  26 passed (26)
+      Tests  164 passed (164)
+   Start at  13:27:00
+   Duration  345ms (transform 921ms, setup 0ms, import 1.41s, tests 393ms, environment 2ms)
+

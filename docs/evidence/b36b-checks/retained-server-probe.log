@@ -1,0 +1,5 @@
+page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:3137/stats?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2024-25&phase=regular_season&beforeDate=2025-06-23&window=season&sortMetric=pts&sortDirection=desc&limit=10&metrics=%5B%7B%22key%22%3A+%22pts_per_game%22%2C+%22version%22%3A+null%2C+%22normalization%22%3A+%22raw%22%2C+%22denominator_type%22%3A+null%7D%5D
+Call log:
+[2m  - navigating to "http://127.0.0.1:3137/stats?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2024-25&phase=regular_season&beforeDate=2025-06-23&window=season&sortMetric=pts&sortDirection=desc&limit=10&metrics=%5B%7B%22key%22%3A+%22pts_per_game%22%2C+%22version%22%3A+null%2C+%22normalization%22%3A+%22raw%22%2C+%22denominator_type%22%3A+null%7D%5D", waiting until "load"[22m
+
+    at /home/ethioking/dev/nba-analytics/scripts/verify_b35b_browser.cjs:46:112

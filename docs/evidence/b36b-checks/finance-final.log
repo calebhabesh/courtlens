@@ -1,0 +1,17 @@
+
+> courtload-dashboard@0.1.0 test:browser
+> playwright test --workers=4 e2e/finance.spec.ts
+
+
+Running 8 tests using 4 workers
+
+  ✓  1 e2e/finance.spec.ts:42:5 › option scenario stays separate from reported money and groups (1.0s)
+  ✓  2 e2e/finance.spec.ts:49:5 › query rejection has retry, and book chooser never silently chooses newest (1.1s)
+  ✓  4 e2e/finance.spec.ts:22:5 › retained historical terms stay unknown, drawer sources and financial context survive navigation (1.4s)
+  ✓  3 e2e/finance.spec.ts:35:5 › filters, as-of emptiness and changed context hide stale totals (1.5s)
+  ✓  5 e2e/finance.spec.ts:56:5 › mobile and landscape table/drawer preserve keyboard access without body overflow (717ms)
+  ✓  7 e2e/finance.spec.ts:70:5 › embedded Stats uses a separate basketball season and retains its resolved release (654ms)
+  ✓  8 e2e/finance.spec.ts:82:5 › a delayed old financial response cannot replace a newer financial context (652ms)
+  ✓  6 e2e/finance.spec.ts:63:5 › Refresh staged import returns a tracked job and exposes failed worker state (1.2s)
+
+  8 passed (3.6s)

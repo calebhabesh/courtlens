@@ -1,20 +1,28 @@
-import type { Metadata } from "next";
-import { IBM_Plex_Mono, Space_Grotesk } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import localFont from "next/font/local";
 import { Suspense } from "react";
 import { ReplicaNav } from "@/components/replica-nav";
 import { WorkspaceProvider } from "@/lib/workspace-context";
 import "./globals.css";
 
-const spaceGrotesk = Space_Grotesk({
-  subsets: ["latin"],
+const publicSans = localFont({
+  src: "../public/fonts/public-sans-variable.woff2",
+  weight: "100 900",
+  style: "normal",
   variable: "--font-sans",
-  display: "swap"
+  display: "swap",
+  preload: true,
+  adjustFontFallback: "Arial"
 });
-const plexMono = IBM_Plex_Mono({
-  subsets: ["latin"],
+const jetBrainsMono = localFont({
+  src: "../public/fonts/jet-brains-mono-variable.woff2",
+  weight: "100 800",
+  style: "normal",
   variable: "--font-mono",
-  weight: ["400", "500", "600"],
-  display: "swap"
+  display: "swap",
+  preload: true,
+  fallback: ["monospace"],
+  adjustFontFallback: false
 });
 
 export const metadata: Metadata = {
@@ -26,15 +34,17 @@ export const metadata: Metadata = {
     "Dense local NBA analytics and research workbench. Investigate player production, explore team cohorts, inspect prospective points estimates under uncertainty, and reproduce evidence-backed findings.",
   icons: {
     icon: "/icon.svg",
-    apple: "/apple-icon.svg"
+    apple: "/icons/courtload-apple-180.png"
   }
 };
+
+export const viewport: Viewport = { themeColor: "#0b0d10" };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html
       lang="en"
-      className={`${spaceGrotesk.variable} ${plexMono.variable}`}
+      className={`${publicSans.variable} ${jetBrainsMono.variable}`}
       data-scroll-behavior="smooth"
     >
       <body>

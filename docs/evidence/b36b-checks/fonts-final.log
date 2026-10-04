@@ -1,0 +1,9 @@
+stats
+scatter
+finance
+conversation
+AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+4 !== 2
+
+    at /home/ethioking/dev/nba-analytics/scripts/verify_b36_fonts.cjs:179:14
