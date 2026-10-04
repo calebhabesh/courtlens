@@ -1,0 +1,77 @@
+{
+  "schema_version": "b31-verification-v1",
+  "measured_on": "2026-10-03",
+  "implementation_choice": "current Codex session; no delegated agents or model override",
+  "scope": "bounded backend verified; real in-game and final source acceptance remain open",
+  "backend": {
+    "command": ".venv/bin/pytest -q",
+    "passed": 506,
+    "skipped": 98,
+    "duration_seconds": 21.63
+  },
+  "focused": {
+    "passed": 82,
+    "skipped": 0,
+    "duration_seconds": 4.98,
+    "live": 35,
+    "live_postgres": 13,
+    "finance": 47,
+    "finance_postgres": 11,
+    "database": "disposable PostgreSQL schemas on PostgreSQL 17; Live demand concurrency uses REPEATABLE READ engine with READ COMMITTED admission"
+  },
+  "dashboard": {
+    "unit_tests": 137,
+    "test_files": 22,
+    "typecheck": "pass",
+    "eslint_zero_warnings": "pass",
+    "build_browser": "not rerun: no B31 dashboard changes; B30 retained evidence remains separate"
+  },
+  "real_service": "b31-real-service-final.json",
+  "prior_smoke": "b31-real-service.json",
+  "source_probe": "b31-source-probe.json",
+  "ruff_check": "pass",
+  "ruff_format": {
+    "status": "pass",
+    "files": 301
+  },
+  "mypy": {
+    "status": "pass",
+    "source_files": 131
+  },
+  "compose_config": "pass",
+  "diff_check": "pass",
+  "retained_checksums": 26,
+  "local_migration": "31b810a4f002 applied; disposable migration up/down/up verified",
+  "known_warnings": [
+    "existing Starlette/httpx TestClient deprecation; release-wide zero-warning gate remains open"
+  ],
+  "open_gates": [
+    "genuine changing in-game observation and later real final/correction reconciliation",
+    "consumer sustained-integration/reuse permission and source reliability",
+    "full identity and player/stat final admission/reconciliation",
+    "populated active three-box resource and physical disk growth/retention",
+    "B32 browser demand lifecycle and Live UI",
+    "full PostgreSQL, broad-browser and fresh backup/restore acceptance"
+  ],
+  "sha256": {
+    "src/courtload/domain/live.py": "83f14ea21530a84f6da94d096fdcf3155476f6cbedead13505577e55eddecd84",
+    "src/courtload/live_models.py": "2be36197baa716b048256a5f2f418fb5699ad9bb4d128d4cfd6d9805e7da5d2a",
+    "src/courtload/services/live.py": "e44c18182dafdf29cf703e2a75fac0c7bde670d11bf693e0b0c0692eb58e5f88",
+    "src/courtload/services/live_provider.py": "b149c73153d24a5616f20bc953589f443538e862a2eda7025e73d658faf40bd9",
+    "src/courtload/services/live_reconciliation.py": "73afb2db204d5a35bbfb588470481f027f5c2c88cbef70a8e33f03bb2e0f05ec",
+    "src/courtload/api/routers/live.py": "71a98bbcec3fac74bbce175e181ece88de0513dbf55c440755ec8e56c4f1f607",
+    "src/courtload/worker.py": "bae466ce4b79aeb56f239d9d0505f1421acb3dc488aaca13a47397c374745f49",
+    "src/courtload/config.py": "7289a0b5aa256ace486df88cc3097498e90e1a6ac3f80bb9a2770949630e0cf0",
+    "src/courtload/api/app.py": "7e62a624eec2007ea73320808fbd3654ccc479c0a1bf9d76d25cf45fbd8f74c9",
+    "src/courtload/models.py": "ef89b9b6648ea9c41421767bbaf896343f5535fd0eb2d63466c65d4986e20470",
+    "src/courtload/cli.py": "adc41810980737a2ce9e96d06384666cbe8785f1890c1a5741171634fb1d2ecd",
+    "migrations/versions/31b810a4f002_shared_live.py": "4a2c8ff37ac4129c12916b44a22b7fce7a29e083e5e8214e49a7ff425c8e524a",
+    "tests/unit/test_live.py": "b2d612b8f556f91b4aa85aec5fb16fb1abfbcda7e9d42c738897d5fb4d0baffa",
+    "tests/integration/test_live_postgres.py": "721cd3f6901218beca0a2693455372554dd238faa0a1bda36c2d6b6f4559b2da",
+    "tests/live_fakes.py": "3d64e3f3d0ac01306234132ac665a6be0684055d9e713482b74ccbe5fa8c87f6",
+    "scripts/verify_b31_live.py": "acc30c8c0a50c65f127111c6e2628f6888fa01ac8c765785a8086c01df9a58b7",
+    "docs/design/shared-live-v1.md": "7a020be95f33756ee1bab95714655fedc950c059c59e3c816bd3a23257187d68",
+    "docs/research/b31-live-admission.md": "963cd59456ba84e563c5a46bc40f2652173cdd598f460f07571945f282790218",
+    ".env.example": "1895e47b1c516cc8eac1bed75e156b5db67461d1fc1234483591a8fe691d2835"
+  }
+}

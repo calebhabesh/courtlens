@@ -1,0 +1,92 @@
+[
+  {
+    "tab": 0,
+    "url": "http://127.0.0.1:3140/api/live?slate_date=2026-10-03",
+    "method": "GET",
+    "status": 200
+  },
+  {
+    "tab": 1,
+    "url": "http://127.0.0.1:3140/api/live?slate_date=2026-10-03",
+    "method": "GET",
+    "status": 200
+  },
+  {
+    "tab": 0,
+    "url": "http://127.0.0.1:3140/api/live/subscriptions",
+    "method": "POST",
+    "status": 200
+  },
+  {
+    "tab": 1,
+    "url": "http://127.0.0.1:3140/api/live/subscriptions",
+    "method": "POST",
+    "status": 200
+  },
+  {
+    "tab": 2,
+    "url": "http://127.0.0.1:3140/api/live/subscriptions",
+    "method": "POST",
+    "status": 200
+  },
+  {
+    "tab": 2,
+    "url": "http://127.0.0.1:3140/api/live?slate_date=2026-10-03",
+    "method": "GET",
+    "status": 200
+  },
+  {
+    "tab": 0,
+    "url": "http://127.0.0.1:3140/api/live?slate_date=2026-10-03",
+    "method": "GET",
+    "status": 200
+  },
+  {
+    "tab": 1,
+    "url": "http://127.0.0.1:3140/api/live?slate_date=2026-10-03",
+    "method": "GET",
+    "status": 200
+  },
+  {
+    "tab": 0,
+    "url": "http://127.0.0.1:3140/api/live/subscriptions/158f7e5f-4634-42d8-b800-d033aee03625/heartbeat",
+    "method": "POST",
+    "status": 200
+  },
+  {
+    "tab": 2,
+    "url": "http://127.0.0.1:3140/api/live?slate_date=2026-10-03",
+    "method": "GET",
+    "status": 200
+  },
+  {
+    "tab": 1,
+    "url": "http://127.0.0.1:3140/api/live/subscriptions/f4e6f506-a7cc-4d73-8040-60192a156045/heartbeat",
+    "method": "POST",
+    "status": 200
+  },
+  {
+    "tab": 2,
+    "url": "http://127.0.0.1:3140/api/live/subscriptions/feb96a61-f566-48b0-885c-280762a6be8c/heartbeat",
+    "method": "POST",
+    "status": 200
+  },
+  {
+    "tab": 0,
+    "url": "http://127.0.0.1:3140/api/live?slate_date=2026-10-03",
+    "method": "GET",
+    "status": 200
+  },
+  {
+    "tab": 0,
+    "url": "http://127.0.0.1:3140/api/live/subscriptions/158f7e5f-4634-42d8-b800-d033aee03625",
+    "method": "DELETE",
+    "status": 204
+  },
+  {
+    "tab": 0,
+    "url": "http://127.0.0.1:3140/api/live/historical?date=2024-04-14&live_mode=history&releaseId=2e99f37c-231a-4748-9f48-5b9ffa99f228&season=2023-24&slate_date=2024-04-14&game_id=0022301188",
+    "method": "GET",
+    "status": 200
+  }
+]

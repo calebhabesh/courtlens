@@ -1,0 +1,38 @@
+[
+  {
+    "tab": 1,
+    "url": "http://127.0.0.1:3140/api/live/subscriptions",
+    "method": "POST",
+    "status": 403
+  },
+  {
+    "tab": 0,
+    "url": "http://127.0.0.1:3140/api/live/subscriptions",
+    "method": "POST",
+    "status": 403
+  },
+  {
+    "tab": 1,
+    "url": "http://127.0.0.1:3140/api/live?slate_date=2026-10-03",
+    "method": "GET",
+    "status": 200
+  },
+  {
+    "tab": 2,
+    "url": "http://127.0.0.1:3140/api/live?slate_date=2026-10-03",
+    "method": "GET",
+    "status": 200
+  },
+  {
+    "tab": 0,
+    "url": "http://127.0.0.1:3140/api/live?slate_date=2026-10-03",
+    "method": "GET",
+    "status": 200
+  },
+  {
+    "tab": 2,
+    "url": "http://127.0.0.1:3140/api/live/subscriptions",
+    "method": "POST",
+    "status": 403
+  }
+]

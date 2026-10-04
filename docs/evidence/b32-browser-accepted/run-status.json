@@ -1,0 +1,5 @@
+{
+  "status": "superseded",
+  "reason": "Three-browser coalescing passed; historical nonappearance placeholder correction followed, superseded by b32-browser-final-verified",
+  "final_evidence": "b32-browser-final-verified"
+}

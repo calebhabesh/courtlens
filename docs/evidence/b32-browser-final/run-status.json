@@ -1,0 +1,5 @@
+{
+  "status": "superseded",
+  "reason": "Initial demand-count harness race; not acceptance evidence",
+  "final_evidence": "b32-browser-final-verified"
+}
