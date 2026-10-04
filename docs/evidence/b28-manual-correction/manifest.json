@@ -1,0 +1,38 @@
+{
+  "schema_version": "finance-import-v1",
+  "csv_sha256": "33813b3c6436f150520975e217f5665c707a50f432c427e402af6d118474f03a",
+  "sources": [
+    {
+      "sha256": "27f79d3e94d15f11457f84cc009284d6c3208cf95bb38b5dcd2f2b177f63994b",
+      "url": "https://www.nba.com/player/1627742/brandon-ingram",
+      "observed_at": "2026-10-03T16:52:13.022436+00:00",
+      "attribution": "NBA canonical player page; identity only",
+      "use_basis": "Local factual research note; no full article text redistributed; not automation/reuse permission for source pages"
+    },
+    {
+      "sha256": "14a5ddb88b666c567d57937ec476e7a3bc85cba8d848e62b99528f5e4048f9eb",
+      "url": "https://www.nba.com/raptors/news/raptors-extend-ingram",
+      "observed_at": "2026-10-03T16:52:13.022436+00:00",
+      "attribution": "Toronto Raptors announcement, observed through indexed web excerpt",
+      "use_basis": "Local factual research note; no full article text redistributed; not automation/reuse permission for source pages"
+    },
+    {
+      "sha256": "43c5ba5c1ad009fdebc55823cf9c9d7f4a1d3a4fe6dfb731a48272b5c791d1b3",
+      "url": "https://www.nba.com/news/raptors-brandon-ingram-extension",
+      "observed_at": "2026-10-03T16:52:13.022436+00:00",
+      "attribution": "Associated Press via NBA.com; reported terms, not an official salary schedule",
+      "use_basis": "Local factual research note; no full article text redistributed; not automation/reuse permission for source pages"
+    }
+  ],
+  "mappings": [
+    {
+      "source_namespace": "nba",
+      "source_entity_id": "1627742",
+      "nba_player_id": "1627742",
+      "evidence_sha256": "27f79d3e94d15f11457f84cc009284d6c3208cf95bb38b5dcd2f2b177f63994b",
+      "method": "direct_nba_id"
+    }
+  ],
+  "coverage_note": "One historical Toronto extension announcement; status is extension signing, not present free-agent classification. No seasonal salary, cap hit, roster completeness, or option/guarantee schedule admitted.",
+  "parent_release_id": "96b89635-82b4-47c7-b4f6-52ab85c0f0bc"
+}
