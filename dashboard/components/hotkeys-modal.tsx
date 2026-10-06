@@ -70,7 +70,7 @@ export function HotkeysModal({ isOpen, onClose }: HotkeysModalProps) {
               Keyboard Shortcuts
             </h2>
             <p className="modal-subtitle">
-              Quick keyboard access across the CourtLoad replica workspace.
+              Quick keyboard access across the CourtLens replica workspace.
             </p>
           </div>
           <button

@@ -2,7 +2,7 @@
  * Domain calculations, mathematical aggregations, and preset definitions
  * for Player Pages, Recent Games, Showcase Cards, and Multi-Season Career Views (Block B11).
  *
- * Adheres strictly to CourtLoad core principles:
+ * Adheres strictly to CourtLens core principles:
  * 1. Temporal discipline: only appearances strictly prior to cutoff are evaluated.
  * 2. Zero inferred claims: absent box-score rows are unknown, not zero outcomes.
  * 3. Incomplete careers labelled: careers are explicitly bounded to admitted dataset seasons.

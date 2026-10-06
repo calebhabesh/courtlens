@@ -1,4 +1,4 @@
-# CourtLoad — Local NBA Research & Forecast Workbench
+# CourtLens — Local NBA Research & Forecast Workbench
 
 **Current stage:** the Databallr replica is in progress. B35a/B35b retained operations,
 original content and installable metadata are verified; real Gemini language evaluation,
@@ -7,15 +7,17 @@ remain open. See the [current capability ledger and measured evidence](docs/data
 The historical figures and milestone table below describe earlier workbench evidence,
 not current source coverage or full replica acceptance.
 
-CourtLoad is an engineer's local NBA research and forecasting workbench engineered with strict temporal discipline, source-traceable box-score lineage, out-of-time machine learning evaluation, and an optional tool-backed analytical assistant.
+CourtLens is an engineer's local NBA research and forecasting workbench engineered with strict temporal discipline, source-traceable box-score lineage, out-of-time machine learning evaluation, and an optional tool-backed analytical assistant.
 
-Operating on six complete NBA regular seasons (2019–20 through 2024–25) and prospective 2025–26 schedules, CourtLoad turns 104,533 player-game records into reproducible cohort explorations, multi-team trade stint reconciliations, contextual opponent metrics, calibrated empirical forecast intervals, and verified natural-language answers.
+Operating on six complete NBA regular seasons (2019–20 through 2024–25) and prospective 2025–26 schedules, CourtLens turns 104,533 player-game records into reproducible cohort explorations, multi-team trade stint reconciliations, contextual opponent metrics, calibrated empirical forecast intervals, and verified natural-language answers.
 
 ![Desktop Comparison](docs/assets/real-comparison.png)
 
 > **Demonstration & Walkthrough:** A comprehensive step-by-step user journey across Explorer, Profiles, Comparisons, Forecasting Ledger, Assistant, and Disaster Recovery is documented in [docs/evidence/workbench-demo-walkthrough.md](docs/evidence/workbench-demo-walkthrough.md).
 
 ---
+
+> **Naming:** the project was renamed from CourtLoad to CourtLens on 2026-10-06. The Python package, `courtload` CLI, `COURTLOAD_*` environment variables, database and Docker service names keep the old identifier until a separate internals rename; historical evidence keeps its original names so recorded hashes verify.
 
 ## 1. What Is Built
 
@@ -26,7 +28,7 @@ Operating on six complete NBA regular seasons (2019–20 through 2024–25) and 
 - **Prospective Points Forecasting & DNP Conditionality:** Out-of-time evaluation across 10 chronological folds with an active prior-blend model (MAE 4.88 vs. baseline MAE 5.09; 81.2% empirical 80% interval coverage). Features an immutable prospective issuance ledger (489 issuances, 489 scores) that strictly separates DNP injuries from 0-point appearances.
 - **Tool-Backed Analytical Assistant:** Read-only analytical assistant backed by 8 allowlisted domain functions, strict input validation, loop bounds ($\le 4$ rounds, $\le 8$ tool calls, $\le 100$ rows), numerical tolerance claim verification ($\pm 0.05$), and a zero-cost deterministic offline fixture provider.
 - **Reproducible Saved Investigations:** Persists parameterized research queries with cryptographic SHA-256 result digests, enabling one-click reproduction and JSON audit export.
-- **Dense Dark Dashboard (Next.js 15):** High-density desktop and 375px mobile layouts featuring Player Explorer, Multi-Stint Player Profiles (e.g. Pascal Siakam's TOR/IND trade split), Head-to-Head Comparisons without forced winners, Team Research, Forecasting Ledger, and Ask CourtLoad AI.
+- **Dense Dark Dashboard (Next.js 15):** High-density desktop and 375px mobile layouts featuring Player Explorer, Multi-Stint Player Profiles (e.g. Pascal Siakam's TOR/IND trade split), Head-to-Head Comparisons without forced winners, Team Research, Forecasting Ledger, and Ask CourtLens AI.
 - **Complete Disaster Recovery:** Atomic backup and restore commands (`courtload backup-archive` / `courtload restore-archive`) coordinated under a PostgreSQL mutation lock, verified by automated restore testing against fresh disposable databases.
 
 ---
@@ -130,9 +132,9 @@ Open <http://localhost:3000> in your browser.
 Set `COURTLOAD_GEMINI_API_KEY` in the ignored root `.env` and set
 `COURTLOAD_GEMINI_MODEL` to a model your AI Studio project can access (the example
 uses the locally evaluated `gemini-3.5-flash-lite`). The owner's installation uses a Free-tier
-project. Confirm Free in Google AI Studio's Billing Tier column; CourtLoad cannot enforce
+project. Confirm Free in Google AI Studio's Billing Tier column; CourtLens cannot enforce
 Google's billing tier. Normal usage follows Google's project/model quotas rather than a
-CourtLoad daily call allowance. Quota exhaustion shows a useful response without switching
+CourtLens daily call allowance. Quota exhaustion shows a useful response without switching
 to a paid provider; a timeout remains a separate failure.
 [Google quota rules](https://ai.google.dev/gemini-api/docs/rate-limits),
 [billing-tier verification](https://ai.google.dev/gemini-api/docs/billing#verify-billing-status).
@@ -197,7 +199,7 @@ courtload verify-restore
 - **Zero Information Leakage:** Historical queries operate strictly prior to the requested cutoff date (`game_date < replay_date`).
 - **DNP Conditionality:** Absent box-score rows (DNP due to injury or rest) are recorded as unobserved, never fabricated into 0 PTS.
 - **Empirical Uncertainty:** Predictions serve calibrated 80% empirical intervals; overlapping intervals never compute synthetic "win probabilities".
-- **Defensive Modeling Honesty:** CourtLoad serves exact box-score event totals (steals, blocks, rebounds) and rejects composite "best defender" impact ratings.
+- **Defensive Modeling Honesty:** CourtLens serves exact box-score event totals (steals, blocks, rebounds) and rejects composite "best defender" impact ratings.
 - **Deferred Out-of-Scope Forecasting:** Requests for conference-winner or championship forecasts return typed `model_not_available` explanations with factual team standings.
 - **Zero-Cost Core:** The full research workbench, including the assistant via deterministic offline fixtures, operates 100% locally without external API dependencies.
 
@@ -230,7 +232,7 @@ courtload verify-restore
 
 ## 9. License
 
-CourtLoad is open-source software licensed under the [MIT License](LICENSE).
+CourtLens is open-source software licensed under the [MIT License](LICENSE).
 
 The dashboard bundles Public Sans and JetBrains Mono locally. Their font files retain
 their own copyright and license notices under [dashboard/public/fonts](dashboard/public/fonts/manifest.json).

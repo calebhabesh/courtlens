@@ -255,7 +255,7 @@ function ProfileView({
               { label: "FGA", value: (game) => game.stats.fieldGoalsAttempted ?? null, className: "series-primary" },
               { label: "FTA", value: (game) => game.stats.freeThrowsAttempted ?? null, className: "series-secondary" }
             ]} />
-            <TrendChart title="Reference production" unit="CourtLoad points" games={games} series={[{ label: "REF", value: (game) => game.reference_points, className: "series-primary" }]} />
+            <TrendChart title="Reference production" unit="CourtLens points" games={games} series={[{ label: "REF", value: (game) => game.reference_points, className: "series-primary" }]} />
           </div>
         </section>
       ) : <EmptyHistory />}
@@ -285,7 +285,7 @@ function ProfileView({
       <section aria-labelledby="estimate-title" className="profile-section estimate-card">
         <div><p className="kicker">Next team-game estimate</p><h2 id="estimate-title">{profile.estimate.point == null ? "Estimate unavailable" : `${profile.estimate.point.toFixed(1)} points`}</h2></div>
         <div><p>{estimateDescription(profile.estimate.status)}</p>
-          {profile.estimate.interval && <p>80% empirical interval: {profile.estimate.interval.lower.toFixed(1)}–{profile.estimate.interval.upper.toFixed(1)} CourtLoad points.</p>}
+          {profile.estimate.interval && <p>80% empirical interval: {profile.estimate.interval.lower.toFixed(1)}–{profile.estimate.interval.upper.toFixed(1)} CourtLens points.</p>}
           {profile.estimate.point != null && <p>Conditional on appearance in the reconstructed next team game. Based on {profile.estimate.history_n} valid same-season appearances.</p>}
           <Link href="/evaluation">Read the evaluation →</Link>
         </div>
@@ -315,7 +315,7 @@ function SummaryCard({ label, summary }: { label: string; summary: AnalyticsSumm
     <article className="summary-card">
       <div><span>{label}</span><small>n={summary?.n ?? 0}</small></div>
       <strong>{formatNumber(summary?.reference_points_per_game)}</strong>
-      <span>CourtLoad points / game</span>
+      <span>CourtLens points / game</span>
       <dl>
         <div><dt>Minutes</dt><dd>{formatNumber(summary?.minutes_per_game)}</dd></div>
         <div><dt>Per minute</dt><dd>{formatNumber(summary?.reference_points_per_minute)}</dd></div>
@@ -364,7 +364,7 @@ function PlayerError({ error, id, date }: { error: unknown; id: string; date?: s
       <div className="empty-state tall" role="alert">
         <span className="empty-code">{apiError?.status ?? "ERROR"}</span>
         <h1>{unsupported ? "Replay date not supported" : apiError?.status === 404 ? "Player not found" : "Profile unavailable"}</h1>
-        <p>{unsupported ? `${date ?? "This date"} is outside the available replay dates.` : `CourtLoad could not open player ${id} from this snapshot.`}</p>
+        <p>{unsupported ? `${date ?? "This date"} is outside the available replay dates.` : `CourtLens could not open player ${id} from this snapshot.`}</p>
         {Array.isArray(detail?.nearest_supported_dates) && <p>Nearest dates: {(detail.nearest_supported_dates as string[]).join(" or ")}</p>}
         <Link className="button button-dark" href="/players">Return to player search</Link>
       </div>

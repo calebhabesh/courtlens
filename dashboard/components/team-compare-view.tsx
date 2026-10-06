@@ -234,7 +234,7 @@ export function TeamCompareView({
           <strong>Official Standings Notice:</strong> Ties in record ordering do not establish official conference placement. Standings reflect verified box scores strictly prior to {beforeDate}.
         </div>
         <div className="notice-box" style={{ margin: 0, borderLeftColor: "var(--accent)" }}>
-          <strong>Zero Inferred Claims:</strong> CourtLoad never invents a &ldquo;winner probability&rdquo; or automated matchup prediction from overlapping prediction intervals or descriptive differences.
+          <strong>Zero Inferred Claims:</strong> CourtLens never invents a &ldquo;winner probability&rdquo; or automated matchup prediction from overlapping prediction intervals or descriptive differences.
         </div>
       </div>
 

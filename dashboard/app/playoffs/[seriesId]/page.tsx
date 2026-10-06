@@ -6,7 +6,7 @@ import { getPlayoffSeriesDetail } from "@/lib/workbench-api";
 import type { PlayoffSeriesDetailResponse } from "@/lib/types";
 
 export const metadata: Metadata = {
-  title: "Playoff Series Detail · CourtLoad",
+  title: "Playoff Series Detail · CourtLens",
   description:
     "Postseason 7-game cards, Dean Oliver Four Factors, player box-score averages, and matchup breakdown."
 };

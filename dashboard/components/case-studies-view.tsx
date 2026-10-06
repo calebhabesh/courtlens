@@ -207,9 +207,9 @@ const CASE_STUDIES: CaseStudy[] = [
       }
     ],
     guarantees: [
-      "No Fabricated Composite Defender Rating: When asked for 'best defender', CourtLoad presents verified box-score event counts: Steals (Barnes 1.29 SPG, Trent Jr 1.07 SPG), Blocks (Barnes 1.47 BPG, Poeltl 1.52 BPG), Rebounds (Barnes 6.02 DRPG).",
-      "Explicit Domain Limitation: Appends mandatory notice: 'CourtLoad does not provide an inferred composite best defender rating. Defensive production is presented as factual box-score event totals.'",
-      "Playoff Odds Rejection: When asked 'Can Toronto win the Eastern Conference?', CourtLoad server returns status='model_not_available'. CourtLoad never fabricates playoff probabilities or simulates future brackets from regular-season records."
+      "No Fabricated Composite Defender Rating: When asked for 'best defender', CourtLens presents verified box-score event counts: Steals (Barnes 1.29 SPG, Trent Jr 1.07 SPG), Blocks (Barnes 1.47 BPG, Poeltl 1.52 BPG), Rebounds (Barnes 6.02 DRPG).",
+      "Explicit Domain Limitation: Appends mandatory notice: 'CourtLens does not provide an inferred composite best defender rating. Defensive production is presented as factual box-score event totals.'",
+      "Playoff Odds Rejection: When asked 'Can Toronto win the Eastern Conference?', CourtLens server returns status='model_not_available'. CourtLens never fabricates playoff probabilities or simulates future brackets from regular-season records."
     ],
     manualAnswerSteps: [
       "Open Opponent Context (/research/distributions?tab=opponent) to see where Toronto ranks in points and shooting allowed relative to all 30 NBA teams.",
@@ -244,7 +244,7 @@ export function CaseStudiesView() {
           </div>
           <h1 className="page-title">Flagship Research Case Studies</h1>
           <p className="page-subtitle">
-            Empirical investigations demonstrating CourtLoad&apos;s data integrity guarantees: mid-season stint reconciliation, prospective forecast conditionality, and zero-inferred defensive guardrails.
+            Empirical investigations demonstrating CourtLens&apos;s data integrity guarantees: mid-season stint reconciliation, prospective forecast conditionality, and zero-inferred defensive guardrails.
           </p>
         </div>
 
@@ -428,7 +428,7 @@ export function CaseStudiesView() {
             </span>
           </div>
           <span className="text-muted text-xs">
-            Sealed under CourtLoad temporal verification contracts. Recomputed from frozen source acquisitions.
+            Sealed under CourtLens temporal verification contracts. Recomputed from frozen source acquisitions.
           </span>
         </div>
       </div>

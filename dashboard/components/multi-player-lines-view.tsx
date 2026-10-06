@@ -345,11 +345,11 @@ export function MultiPlayerLinesView({
       setExporting(true);
       const names = seriesList.map((s) => s.playerName).join(" vs ");
       await exportSvgAsPng(svgRef.current, {
-        title: `CourtLoad Multi-Player Lines: ${metricDef.label}`,
+        title: `CourtLens Multi-Player Lines: ${metricDef.label}`,
         subtitle: `${names} · ${rollingMode === "none" ? "Single-Game Actuals" : `${rollingMode}-Game Rolling Avg`}`,
         context,
         evidenceId: context.release_id,
-        filename: `courtload-lines-${metricDef.key}-${context.before_date || "cutoff"}`
+        filename: `courtlens-lines-${metricDef.key}-${context.before_date || "cutoff"}`
       });
     } catch (err) {
       alert(err instanceof Error ? err.message : "Failed to export PNG image");
@@ -360,10 +360,10 @@ export function MultiPlayerLinesView({
 
   const handleExportSvg = () => {
     if (!svgRef.current) return;
-    exportSvgFile(svgRef.current, `courtload-lines-${metricDef.key}.svg`, {
-      title: `CourtLoad Multi-Player Lines: ${metricDef.label}`,
+    exportSvgFile(svgRef.current, `courtlens-lines-${metricDef.key}.svg`, {
+      title: `CourtLens Multi-Player Lines: ${metricDef.label}`,
       context,
-      filename: `courtload-lines-${metricDef.key}`
+      filename: `courtlens-lines-${metricDef.key}`
     });
   };
 

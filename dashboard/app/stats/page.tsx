@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { StatsWorkspace } from "@/components/stats-workspace";
 
 export const metadata: Metadata = {
-  title: "Stats Explorer · CourtLoad",
+  title: "Stats Explorer · CourtLens",
   description: "Dense player statistics explorer with SQL-backed analytical windowing and metric integrity."
 };
 export const dynamic = "force-dynamic";

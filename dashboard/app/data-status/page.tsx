@@ -3,7 +3,7 @@ import { WorkbenchJobsPanel } from "@/components/workbench-jobs-panel";
 import { getWorkbenchJobs, getWorkbenchStatus } from "@/lib/workbench-api";
 import type { WorkbenchJobItem, WorkbenchStatus } from "@/lib/types";
 
-export const metadata: Metadata = { title: "Data & Pipelines · CourtLoad" };
+export const metadata: Metadata = { title: "Data & Pipelines · CourtLens" };
 export const dynamic = "force-dynamic";
 
 export default async function DataStatusPage() {

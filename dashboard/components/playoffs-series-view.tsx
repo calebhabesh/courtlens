@@ -286,7 +286,7 @@ export function PlayoffsSeriesView({ detail, cutoffDate }: PlayoffsSeriesViewPro
 
       {/* Disclaimers & Zero Inferred Forecasts */}
       <div className="notice-box">
-        <strong>Descriptive Postseason Facts Only:</strong> CourtLoad strictly reports verified completed-game box scores and series facts. Automated series winner projections and subjective win probabilities are prohibited. Unplayed placeholder games (Games 6–7) are excluded from team ratings and player denominators.
+        <strong>Descriptive Postseason Facts Only:</strong> CourtLens strictly reports verified completed-game box scores and series facts. Automated series winner projections and subjective win probabilities are prohibited. Unplayed placeholder games (Games 6–7) are excluded from team ratings and player denominators.
       </div>
 
       {/* 7-Game Cards Grid */}

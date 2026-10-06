@@ -3,7 +3,7 @@ import Link from "next/link";
 import { getMetricCatalog } from "@/lib/workbench-api";
 import type { MetricCatalog } from "@/lib/types";
 
-export const metadata: Metadata = { title: "Methodology & Catalog · CourtLoad" };
+export const metadata: Metadata = { title: "Methodology & Catalog · CourtLens" };
 export const dynamic = "force-dynamic";
 
 export default async function MethodologyPage() {
@@ -23,7 +23,7 @@ export default async function MethodologyPage() {
           <span className="text-xs text-muted font-mono uppercase">System Principles & Metrics</span>
           <h1 className="page-title">Methodology & Metric Catalog</h1>
           <p className="page-subtitle">
-            Formal mathematical formulas, zero-inferred principles, and temporal discipline guardrails governing CourtLoad.
+            Formal mathematical formulas, zero-inferred principles, and temporal discipline guardrails governing CourtLens.
           </p>
         </div>
       </div>

@@ -7,7 +7,7 @@ import type { PlayerResearchResponse, WorkbenchCatalog } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
-  title: "Player Showcase & Cards · CourtLoad"
+  title: "Player Showcase & Cards · CourtLens"
 };
 
 interface ShowcasePageProps {
