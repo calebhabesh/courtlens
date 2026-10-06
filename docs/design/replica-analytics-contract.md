@@ -146,6 +146,29 @@ Normalize shot coordinates/units/orientation through the source adapter. Validat
 
 Assignment metrics use source-established pair identities and exposure. Fractional possessions/help responsibilities need not sum to ordinary player totals; define aggregation carefully and preserve coverage. Co-occurring players do not establish a guarding matchup. Nearest/second defender is unavailable unless that actual input is admitted.
 
+B19b freezes `assignment-exposure-v1` in independent append-only
+`assignment_datasets`/`assignment_games`/`assignment_members` inputs, with local
+`assignment_observations`. A source member is the retained artifact SHA-256 plus
+its one-based CSV data-row locator; the complete decoded row is hashed and retained.
+Dataset/game memberships seal in their admission transaction. Corrections create
+new datasets; repeated identical admissions reuse the dataset and append an
+observation. No existing workbench or published dataset membership is extended.
+
+Arithmetic exposure uses exact decimal `matchup_minutes_sort` seconds and source
+fractional `partial_possessions`, stored as PostgreSQL `NUMERIC`. Retain display
+MM:SS and all source fields independently. Provider time shares refer to defender
+floor time, offensive-player floor time and shared floor time respectively; their
+tracking denominators are source-reported, not reconstructed CourtLoad exposure.
+Aggregate shooting rates use summed makes/attempts, with unknown results at zero
+attempts. Missing source percentages remain unknown. Pair/help credits need not
+conserve ordinary player totals. Independent participation identities do not certify
+player floor minutes, so malformed box minutes are never silently repaired.
+
+See [B19b measured admission](../evidence/b19b-assignment-acceptance.md) for the
+2025–26 population, source methodology provenance and sealing/reproduction checks.
+Assignment admission alone does not grant B20/WOWY or B23 serving availability;
+consumers must explicitly bind this independent dataset and policy identity.
+
 Aftermath operations freeze branch membership/scoring/horizon: first-chance attempt, offensive recovery and continued sequence, immediate next opponent possession, associated free-throw treatment and end-of-period censoring. Return observed branch counts, samples, missing branches and declared partial-accounting scope. Avoid renaming partial branch values net rating.
 
 ## Registered experimental alternatives
@@ -245,3 +268,14 @@ Paths are under `/api/workbench`, additive unless a compatible existing endpoint
 | Existing jobs/media/forecasts/evaluations | Reuse tracked mutations, safe media cache and registered immutable evidence. |
 
 Query errors are typed: invalid schema/metric/cursor `422`, missing entity `404`, genuinely retired evidence `410`, no ready data `503`. Analytical unavailability is a capability/result status with useful descriptive data, not a fabricated number or generic exception. Mutations follow the existing same-origin/token design and allowlists. Saved evidence, release inputs, model artifacts, finance/correction relationships and personal workspace state are included in backup/fresh restore.
+
+### B19c event identity and conservation gate
+
+Use the [B19c identity/conservation contract](b19-event-identity-conservation.md)
+for retained PBP/lineup row identities and replay diagnostics. Equal complete
+ordered source projections do not resolve repeated keys with different lineup
+sets. The row-hold/endpoint-hold calculations and direct FT-description scoring
+are diagnostic hypotheses, not admitted reconstruction or possession policies.
+Native/builder lineage, independent period starters/rotation, complete event
+membership and separate team scoring versus possession exposure remain required
+before append-only stint admission or B20/WOWY population.

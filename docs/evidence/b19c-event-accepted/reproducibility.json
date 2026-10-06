@@ -1,0 +1,61 @@
+{
+  "audit_sha256": "c6c3eb577288f6ca6cd2cb962edd4086565164fe8af2179075ec734e29b260be",
+  "byte_identical_audit": true,
+  "excluded_runs": [
+    "b19c-event-probe",
+    "b19c-event-probe2",
+    "b19c-event-final"
+  ],
+  "first_timing": {
+    "elapsed_seconds": 27.613
+  },
+  "measured_totals": {
+    "cross_lineup_possession_games": 1230,
+    "cross_lineup_possessions": 33644,
+    "direct_event_final_point_reconciliation_games": 1230,
+    "endpoint_player_mismatch_games": 692,
+    "endpoint_valid_minutes_within_tolerance_games": 494,
+    "invalid_pbp_off_def_rows": 3537,
+    "malformed_nonempty_box_minute_games": 73,
+    "opponent_scoring_points_inside_possessions": 362,
+    "pbp_lineup_disagreement_rows": 97594,
+    "regular_event_rows": 621881,
+    "regular_possession_rows": 245646,
+    "repeated_action_rows": 32619,
+    "unknown_box_minute_games": 12
+  },
+  "methods": {
+    "commit": "81eb7e7060de58ec79b6bdf8bbc1a797f9eb537f",
+    "files": [
+      {
+        "bytes": 7503,
+        "path": "data/raw/b19c-methods-20261005/nba_enhanced_pbp.py",
+        "sha256": "d1558b8e74a3bac1cdf211747653c3afe42167864a995c0e81dd6123b480bd6e",
+        "url": "https://raw.githubusercontent.com/sportsdataverse/sportsdataverse-py/81eb7e7060de58ec79b6bdf8bbc1a797f9eb537f/sportsdataverse/nba/nba_enhanced_pbp.py"
+      },
+      {
+        "bytes": 71399,
+        "path": "data/raw/b19c-methods-20261005/nba_lineups.py",
+        "sha256": "bcc56a90b4f1c80fa0da0ee7ae291f921b77342956edc97618c6ae4bda713a0c",
+        "url": "https://raw.githubusercontent.com/sportsdataverse/sportsdataverse-py/81eb7e7060de58ec79b6bdf8bbc1a797f9eb537f/sportsdataverse/nba/nba_lineups.py"
+      },
+      {
+        "bytes": 84670,
+        "path": "data/raw/b19c-methods-20261005/nba_possessions.py",
+        "sha256": "d4ab9de7bc96da9d882a92529518d26013b47ff5ea316e5a78ec772b9f9f0e80",
+        "url": "https://raw.githubusercontent.com/sportsdataverse/sportsdataverse-py/81eb7e7060de58ec79b6bdf8bbc1a797f9eb537f/sportsdataverse/nba/nba_possessions.py"
+      },
+      {
+        "bytes": 39845,
+        "path": "data/raw/b19c-methods-20261005/nba_possession_rules.py",
+        "sha256": "da764f4d1eb0f3a83b93e370b8d603b2b8bd73653e64b39979a1c52b5b127315",
+        "url": "https://raw.githubusercontent.com/sportsdataverse/sportsdataverse-py/81eb7e7060de58ec79b6bdf8bbc1a797f9eb537f/sportsdataverse/nba/nba_possession_rules.py"
+      }
+    ],
+    "purpose": "current upstream diagnostic reference, not proof of August asset builder"
+  },
+  "repeat_timing": {
+    "elapsed_seconds": 27.647
+  },
+  "script_sha256_verified": true
+}

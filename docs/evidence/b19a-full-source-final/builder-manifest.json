@@ -1,0 +1,10 @@
+{
+  "revision": "471b113d880a89f8b102f245ad8c4c0642aa617a",
+  "artifact": {
+    "url": "https://raw.githubusercontent.com/sportsdataverse/hoopR-nba-stats-data/471b113d880a89f8b102f245ad8c4c0642aa617a/python/nba_data_build/reshape/build.py",
+    "path": "data/raw/b19a-2026-20261004/pinned-builder.py",
+    "bytes": 25139,
+    "sha256": "66cb8239b521c536fece92e901b57d41eb34447c277e51c9603fc3d3c55a3f7b",
+    "reused": false
+  }
+}

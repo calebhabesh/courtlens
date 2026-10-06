@@ -1,0 +1,8 @@
+{
+  "passed": true,
+  "scope": "exact family diagnostics, source identities, baseline identities and expected membership",
+  "first_report_sha256": "398bc39f87a6b329c1a6b48769a1291659dae93b118f779d50cb7fe5c2b5a70f",
+  "repeat_report_sha256": "fa8d2f7c2858748ab0113daf7ce9dc70672f9d6637c1633a23218a4496a48d62",
+  "script_sha256": "1c332fe9914098e15833bee6f06a9a904642540b18e76b83051b5cf3707d2363",
+  "timing_and_observation_timestamp_excluded": true
+}

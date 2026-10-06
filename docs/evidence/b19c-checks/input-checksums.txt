@@ -1,0 +1,17 @@
+scripts/audit_b19_rich_sources.py: OK
+data/raw/b19a-2026-20261004/nba_lineups_2026.csv.gz: OK
+data/raw/b19a-2026-20261004/game_matchups_2026.csv: OK
+data/raw/b19a-2026-20261004/nba_play_by_play_2026.csv.gz: OK
+data/raw/b19a-2026-20261004/nba_possessions_2026.csv.gz: OK
+data/raw/b19a-2026-20261004/shots_2026.csv: OK
+data/raw/sportsdataverse_2026/player_boxscores_2026.csv: OK
+data/raw/sportsdataverse_2026/nba_schedule_2026.csv.gz: OK
+data/raw/sportsdataverse_2026/team_boxscores_2026.csv: OK
+data/raw/b19a-2026-20261004/lineups-release.json: OK
+data/raw/b19a-2026-20261004/pbp-release.json: OK
+data/raw/b19a-2026-20261004/shots-release.json: OK
+data/raw/b19a-2026-20261004/possessions-release.json: OK
+data/raw/b19a-2026-20261004/matchups-release.json: OK
+data/raw/b19a-2026-20261004/LICENSE: OK
+data/raw/b19a-2026-20261004/DESCRIPTION: OK
+data/raw/b19a-2026-20261004/pinned-builder.py: OK

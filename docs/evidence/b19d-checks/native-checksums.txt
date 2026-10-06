@@ -1,0 +1,10 @@
+docs/evidence/b19d-native-accepted/0022500007.json: OK
+docs/evidence/b19d-native-accepted/0022500013.json: OK
+docs/evidence/b19d-native-accepted/0022500025.json: OK
+docs/evidence/b19d-native-accepted/0022501045.json: OK
+docs/evidence/b19d-native-accepted/acquisition-script.txt: OK
+docs/evidence/b19d-native-accepted/pbpstats-seam.json: OK
+docs/evidence/b19d-native-accepted/raw-manifest.json: OK
+docs/evidence/b19d-native-accepted/report.json: OK
+docs/evidence/b19d-native-accepted/reproducibility.json: OK
+docs/evidence/b19d-native-accepted/source-probes.json: OK

@@ -1,0 +1,10 @@
+{
+  "previous_state_unchanged": true,
+  "counts": {
+    "assignment_datasets": 1,
+    "assignment_games": 1230,
+    "assignment_members": 240750,
+    "assignment_observations": 1
+  },
+  "database_version": "17.11"
+}
