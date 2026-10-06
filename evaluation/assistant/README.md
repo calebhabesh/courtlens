@@ -83,6 +83,11 @@ The report separates:
 - **Flakiness:** fraction of fully repeated questions whose correctness changes between runs.
   Partial repetitions never enter this denominator. Answer variation additionally measures changing
   result/prose signatures, even if correctness stays the same.
+- **Narrative (AR04):** among answered local turns, how many attempted the narrative call, how
+  many passed the numeric checker, and the **fallback rate** (template text kept / attempted), with
+  fallback reasons such as `unmatched_number` or `provider_quota_exceeded`. Skips without a call
+  (no narrator, deadline) are counted separately. Fixture mode has no narrator, so it reports
+  skips only. Narratives never change exact-answer scoring, which reads result cells.
 - **Latency and calls:** observed turn time (including pacing and follow-up setup), provider calls,
   setup calls, analytical calls, per-call token usage and acquired/planned coverage.
 
@@ -97,3 +102,5 @@ The original acquisition capture is retained when scoring changes; rescoring wri
 report with the source digest, scorer digest and every changed failure list.
 
 AR03 category measurements and limits: [routing report](../../docs/evidence/ar03-routing/README.md).
+
+AR04 narrative checker and fallback measurements: [narrative report](../../docs/evidence/ar04-narrative/README.md).

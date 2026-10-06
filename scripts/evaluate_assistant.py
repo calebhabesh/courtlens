@@ -7,6 +7,8 @@ import hashlib
 import json
 import subprocess
 import time
+from collections.abc import Callable
+from dataclasses import asdict
 from datetime import UTC, date, datetime
 from importlib.metadata import version
 from pathlib import Path
@@ -20,8 +22,10 @@ from courtload.database import SessionLocal
 from courtload.domain.conversation import ConversationContext
 from courtload.domain.hybrid_assistant import HybridTurnRequest, HybridTurnResponse
 from courtload.services.assistant.hybrid import run_hybrid_turn
+from courtload.services.assistant.narrative import NarrativeOutcome
 from courtload.services.assistant.planner import (
     GENERAL_PROMPT,
+    NARRATIVE_PROMPT,
     PLANNER_PROMPT,
     GeminiPlanProvider,
     PlanningOutput,
@@ -76,6 +80,14 @@ class RecordingProvider:
                 self.stopped = self.stopped or block.reason
 
     def plan(self, payload: str, *, timeout_seconds: float) -> PlanningOutput:
+        return self._call(self.provider.plan, payload, timeout_seconds)
+
+    def narrate(self, payload: str, *, timeout_seconds: float) -> PlanningOutput:
+        return self._call(self.provider.narrate, payload, timeout_seconds)
+
+    def _call(
+        self, method: Callable[..., PlanningOutput], payload: str, timeout_seconds: float
+    ) -> PlanningOutput:
         if self.stopped:
             raise ProviderFailure("disabled")
         if self.max_calls is not None and len(self.calls) >= self.max_calls:
@@ -96,7 +108,7 @@ class RecordingProvider:
         }
         self.calls.append(record)
         try:
-            output = self.provider.plan(payload, timeout_seconds=timeout_seconds - pause)
+            output = method(payload, timeout_seconds=timeout_seconds - pause)
             record.update(
                 data=output.data,
                 usage=output.usage,
@@ -186,6 +198,7 @@ def main() -> None:
         "runs": corpus["runs"],
         "categories": args.category,
         "general_prompt_sha256": hashlib.sha256(GENERAL_PROMPT.encode()).hexdigest(),
+        "narrative_prompt_sha256": hashlib.sha256(NARRATIVE_PROMPT.encode()).hexdigest(),
         "clock": corpus["as_of"],
         "planner_prompt_sha256": hashlib.sha256(PLANNER_PROMPT.encode()).hexdigest(),
         "model": settings.gemini_model if provider else None,
@@ -194,7 +207,9 @@ def main() -> None:
             str(path): hashlib.sha256(path.read_bytes()).hexdigest()
             for path in (
                 Path("src/courtload/domain/hybrid_assistant.py"),
+                Path("src/courtload/domain/narrative_check.py"),
                 Path("src/courtload/services/assistant/hybrid.py"),
+                Path("src/courtload/services/assistant/narrative.py"),
                 Path("src/courtload/services/assistant/knowledge.py"),
                 Path("src/courtload/services/assistant/knowledge/guide.md"),
                 Path("src/courtload/services/assistant/planner.py"),
@@ -292,6 +307,7 @@ def main() -> None:
                     if provider:
                         provider.observe_terminal(setup_response)
                 before_turn = len(provider.calls) if provider else 0
+                narratives: list[NarrativeOutcome] = []
                 answer = run_hybrid_turn(
                     session,
                     HybridTurnRequest(request_id=uuid4(), message=case["message"], context=pinned),
@@ -299,6 +315,7 @@ def main() -> None:
                     inherited_context=pinned,
                     provider=provider or FixtureProvider(case["expected_plan"]),
                     clock=clock,
+                    on_narrative=narratives.append,
                 )
                 if provider:
                     provider.observe_terminal(answer)
@@ -322,6 +339,7 @@ def main() -> None:
                     if setup_response
                     else 0,
                     analytical_calls=answer.accounting.analytical_calls,
+                    narratives=[asdict(outcome) for outcome in narratives],
                     elapsed_ms=round((time.monotonic() - started) * 1000, 3),
                     answer_signature=canonical_hash(
                         {

@@ -1,0 +1,470 @@
+.venv/bin/python scripts/evaluate_assistant.py --mode fixture --output data/artifacts/assistant-eval/ar04-fixture-dev-final.json
+ar02-001 run 1: answer=True plan=True []
+ar02-001 run 2: answer=True plan=True []
+ar02-001 run 3: answer=True plan=True []
+ar02-002 run 1: answer=True plan=True []
+ar02-002 run 2: answer=True plan=True []
+ar02-002 run 3: answer=True plan=True []
+ar02-003 run 1: answer=True plan=True []
+ar02-003 run 2: answer=True plan=True []
+ar02-003 run 3: answer=True plan=True []
+ar02-004 run 1: answer=True plan=True []
+ar02-004 run 2: answer=True plan=True []
+ar02-004 run 3: answer=True plan=True []
+ar02-005 run 1: answer=True plan=True []
+ar02-005 run 2: answer=True plan=True []
+ar02-005 run 3: answer=True plan=True []
+ar02-006 run 1: answer=True plan=True []
+ar02-006 run 2: answer=True plan=True []
+ar02-006 run 3: answer=True plan=True []
+ar02-007 run 1: answer=True plan=True []
+ar02-007 run 2: answer=True plan=True []
+ar02-007 run 3: answer=True plan=True []
+ar02-008 run 1: answer=True plan=True []
+ar02-008 run 2: answer=True plan=True []
+ar02-008 run 3: answer=True plan=True []
+ar02-009 run 1: answer=True plan=True []
+ar02-009 run 2: answer=True plan=True []
+ar02-009 run 3: answer=True plan=True []
+ar02-013 run 1: answer=True plan=True []
+ar02-013 run 2: answer=True plan=True []
+ar02-013 run 3: answer=True plan=True []
+ar02-014 run 1: answer=True plan=True []
+ar02-014 run 2: answer=True plan=True []
+ar02-014 run 3: answer=True plan=True []
+ar02-015 run 1: answer=True plan=True []
+ar02-015 run 2: answer=True plan=True []
+ar02-015 run 3: answer=True plan=True []
+ar02-016 run 1: answer=True plan=True []
+ar02-016 run 2: answer=True plan=True []
+ar02-016 run 3: answer=True plan=True []
+ar02-017 run 1: answer=True plan=True []
+ar02-017 run 2: answer=True plan=True []
+ar02-017 run 3: answer=True plan=True []
+ar02-018 run 1: answer=True plan=True []
+ar02-018 run 2: answer=True plan=True []
+ar02-018 run 3: answer=True plan=True []
+ar02-019 run 1: answer=True plan=True []
+ar02-019 run 2: answer=True plan=True []
+ar02-019 run 3: answer=True plan=True []
+ar02-020 run 1: answer=True plan=True []
+ar02-020 run 2: answer=True plan=True []
+ar02-020 run 3: answer=True plan=True []
+ar02-021 run 1: answer=True plan=True []
+ar02-021 run 2: answer=True plan=True []
+ar02-021 run 3: answer=True plan=True []
+ar02-025 run 1: answer=True plan=True []
+ar02-025 run 2: answer=True plan=True []
+ar02-025 run 3: answer=True plan=True []
+ar02-026 run 1: answer=True plan=True []
+ar02-026 run 2: answer=True plan=True []
+ar02-026 run 3: answer=True plan=True []
+ar02-027 run 1: answer=True plan=True []
+ar02-027 run 2: answer=True plan=True []
+ar02-027 run 3: answer=True plan=True []
+ar02-028 run 1: answer=True plan=True []
+ar02-028 run 2: answer=True plan=True []
+ar02-028 run 3: answer=True plan=True []
+ar02-029 run 1: answer=True plan=True []
+ar02-029 run 2: answer=True plan=True []
+ar02-029 run 3: answer=True plan=True []
+ar02-030 run 1: answer=True plan=True []
+ar02-030 run 2: answer=True plan=True []
+ar02-030 run 3: answer=True plan=True []
+ar02-031 run 1: answer=True plan=True []
+ar02-031 run 2: answer=True plan=True []
+ar02-031 run 3: answer=True plan=True []
+ar02-032 run 1: answer=True plan=True []
+ar02-032 run 2: answer=True plan=True []
+ar02-032 run 3: answer=True plan=True []
+ar02-033 run 1: answer=True plan=True []
+ar02-033 run 2: answer=True plan=True []
+ar02-033 run 3: answer=True plan=True []
+ar02-034 run 1: answer=True plan=True []
+ar02-034 run 2: answer=True plan=True []
+ar02-034 run 3: answer=True plan=True []
+ar02-035 run 1: answer=True plan=True []
+ar02-035 run 2: answer=True plan=True []
+ar02-035 run 3: answer=True plan=True []
+ar02-036 run 1: answer=True plan=True []
+ar02-036 run 2: answer=True plan=True []
+ar02-036 run 3: answer=True plan=True []
+ar02-037 run 1: answer=True plan=True []
+ar02-037 run 2: answer=True plan=True []
+ar02-037 run 3: answer=True plan=True []
+ar02-038 run 1: answer=True plan=True []
+ar02-038 run 2: answer=True plan=True []
+ar02-038 run 3: answer=True plan=True []
+ar02-039 run 1: answer=True plan=True []
+ar02-039 run 2: answer=True plan=True []
+ar02-039 run 3: answer=True plan=True []
+ar02-040 run 1: answer=True plan=True []
+ar02-040 run 2: answer=True plan=True []
+ar02-040 run 3: answer=True plan=True []
+ar02-041 run 1: answer=True plan=True []
+ar02-041 run 2: answer=True plan=True []
+ar02-041 run 3: answer=True plan=True []
+ar02-042 run 1: answer=True plan=True []
+ar02-042 run 2: answer=True plan=True []
+ar02-042 run 3: answer=True plan=True []
+ar02-043 run 1: answer=True plan=True []
+ar02-043 run 2: answer=True plan=True []
+ar02-043 run 3: answer=True plan=True []
+ar02-044 run 1: answer=True plan=True []
+ar02-044 run 2: answer=True plan=True []
+ar02-044 run 3: answer=True plan=True []
+ar02-045 run 1: answer=True plan=True []
+ar02-045 run 2: answer=True plan=True []
+ar02-045 run 3: answer=True plan=True []
+ar02-046 run 1: answer=True plan=True []
+ar02-046 run 2: answer=True plan=True []
+ar02-046 run 3: answer=True plan=True []
+ar02-047 run 1: answer=True plan=True []
+ar02-047 run 2: answer=True plan=True []
+ar02-047 run 3: answer=True plan=True []
+ar02-048 run 1: answer=True plan=True []
+ar02-048 run 2: answer=True plan=True []
+ar02-048 run 3: answer=True plan=True []
+ar02-049 run 1: answer=True plan=True []
+ar02-049 run 2: answer=True plan=True []
+ar02-049 run 3: answer=True plan=True []
+ar02-050 run 1: answer=True plan=True []
+ar02-050 run 2: answer=True plan=True []
+ar02-050 run 3: answer=True plan=True []
+ar02-056 run 1: answer=True plan=True []
+ar02-056 run 2: answer=True plan=True []
+ar02-056 run 3: answer=True plan=True []
+ar02-057 run 1: answer=True plan=True []
+ar02-057 run 2: answer=True plan=True []
+ar02-057 run 3: answer=True plan=True []
+ar02-058 run 1: answer=True plan=True []
+ar02-058 run 2: answer=True plan=True []
+ar02-058 run 3: answer=True plan=True []
+ar02-059 run 1: answer=True plan=True []
+ar02-059 run 2: answer=True plan=True []
+ar02-059 run 3: answer=True plan=True []
+ar02-060 run 1: answer=True plan=True []
+ar02-060 run 2: answer=True plan=True []
+ar02-060 run 3: answer=True plan=True []
+ar02-061 run 1: answer=True plan=True []
+ar02-061 run 2: answer=True plan=True []
+ar02-061 run 3: answer=True plan=True []
+ar02-062 run 1: answer=True plan=True []
+ar02-062 run 2: answer=True plan=True []
+ar02-062 run 3: answer=True plan=True []
+ar02-063 run 1: answer=True plan=True []
+ar02-063 run 2: answer=True plan=True []
+ar02-063 run 3: answer=True plan=True []
+ar02-064 run 1: answer=True plan=True []
+ar02-064 run 2: answer=True plan=True []
+ar02-064 run 3: answer=True plan=True []
+ar02-065 run 1: answer=True plan=True []
+ar02-065 run 2: answer=True plan=True []
+ar02-065 run 3: answer=True plan=True []
+ar02-066 run 1: answer=True plan=True []
+ar02-066 run 2: answer=True plan=True []
+ar02-066 run 3: answer=True plan=True []
+ar02-067 run 1: answer=True plan=True []
+ar02-067 run 2: answer=True plan=True []
+ar02-067 run 3: answer=True plan=True []
+ar02-068 run 1: answer=True plan=True []
+ar02-068 run 2: answer=True plan=True []
+ar02-068 run 3: answer=True plan=True []
+ar02-073 run 1: answer=True plan=True []
+ar02-073 run 2: answer=True plan=True []
+ar02-073 run 3: answer=True plan=True []
+ar02-074 run 1: answer=True plan=True []
+ar02-074 run 2: answer=True plan=True []
+ar02-074 run 3: answer=True plan=True []
+ar02-075 run 1: answer=True plan=True []
+ar02-075 run 2: answer=True plan=True []
+ar02-075 run 3: answer=True plan=True []
+ar02-076 run 1: answer=True plan=True []
+ar02-076 run 2: answer=True plan=True []
+ar02-076 run 3: answer=True plan=True []
+ar02-077 run 1: answer=True plan=True []
+ar02-077 run 2: answer=True plan=True []
+ar02-077 run 3: answer=True plan=True []
+ar02-078 run 1: answer=True plan=True []
+ar02-078 run 2: answer=True plan=True []
+ar02-078 run 3: answer=True plan=True []
+ar02-079 run 1: answer=True plan=True []
+ar02-079 run 2: answer=True plan=True []
+ar02-079 run 3: answer=True plan=True []
+ar02-080 run 1: answer=True plan=True []
+ar02-080 run 2: answer=True plan=True []
+ar02-080 run 3: answer=True plan=True []
+ar02-081 run 1: answer=True plan=True []
+ar02-081 run 2: answer=True plan=True []
+ar02-081 run 3: answer=True plan=True []
+ar02-082 run 1: answer=True plan=True []
+ar02-082 run 2: answer=True plan=True []
+ar02-082 run 3: answer=True plan=True []
+ar02-083 run 1: answer=True plan=True []
+ar02-083 run 2: answer=True plan=True []
+ar02-083 run 3: answer=True plan=True []
+ar02-084 run 1: answer=True plan=True []
+ar02-084 run 2: answer=True plan=True []
+ar02-084 run 3: answer=True plan=True []
+ar02-087 run 1: answer=True plan=True []
+ar02-087 run 2: answer=True plan=True []
+ar02-087 run 3: answer=True plan=True []
+ar02-088 run 1: answer=True plan=True []
+ar02-088 run 2: answer=True plan=True []
+ar02-088 run 3: answer=True plan=True []
+ar02-089 run 1: answer=True plan=True []
+ar02-089 run 2: answer=True plan=True []
+ar02-089 run 3: answer=True plan=True []
+ar02-090 run 1: answer=True plan=True []
+ar02-090 run 2: answer=True plan=True []
+ar02-090 run 3: answer=True plan=True []
+ar02-091 run 1: answer=True plan=True []
+ar02-091 run 2: answer=True plan=True []
+ar02-091 run 3: answer=True plan=True []
+ar02-092 run 1: answer=True plan=True []
+ar02-092 run 2: answer=True plan=True []
+ar02-092 run 3: answer=True plan=True []
+ar02-093 run 1: answer=True plan=True []
+ar02-093 run 2: answer=True plan=True []
+ar02-093 run 3: answer=True plan=True []
+ar02-094 run 1: answer=True plan=True []
+ar02-094 run 2: answer=True plan=True []
+ar02-094 run 3: answer=True plan=True []
+ar02-095 run 1: answer=True plan=True []
+ar02-095 run 2: answer=True plan=True []
+ar02-095 run 3: answer=True plan=True []
+ar02-096 run 1: answer=True plan=True []
+ar02-096 run 2: answer=True plan=True []
+ar02-096 run 3: answer=True plan=True []
+ar02-097 run 1: answer=True plan=True []
+ar02-097 run 2: answer=True plan=True []
+ar02-097 run 3: answer=True plan=True []
+ar02-098 run 1: answer=True plan=True []
+ar02-098 run 2: answer=True plan=True []
+ar02-098 run 3: answer=True plan=True []
+ar02-101 run 1: answer=True plan=None []
+ar02-101 run 2: answer=True plan=None []
+ar02-101 run 3: answer=True plan=None []
+ar02-102 run 1: answer=True plan=None []
+ar02-102 run 2: answer=True plan=None []
+ar02-102 run 3: answer=True plan=None []
+ar02-105 run 1: answer=True plan=None []
+ar02-105 run 2: answer=True plan=None []
+ar02-105 run 3: answer=True plan=None []
+ar02-106 run 1: answer=True plan=None []
+ar02-106 run 2: answer=True plan=None []
+ar02-106 run 3: answer=True plan=None []
+ar02-107 run 1: answer=True plan=None []
+ar02-107 run 2: answer=True plan=None []
+ar02-107 run 3: answer=True plan=None []
+ar02-108 run 1: answer=True plan=None []
+ar02-108 run 2: answer=True plan=None []
+ar02-108 run 3: answer=True plan=None []
+ar02-109 run 1: answer=True plan=None []
+ar02-109 run 2: answer=True plan=None []
+ar02-109 run 3: answer=True plan=None []
+ar02-110 run 1: answer=True plan=None []
+ar02-110 run 2: answer=True plan=None []
+ar02-110 run 3: answer=True plan=None []
+ar02-111 run 1: answer=True plan=None []
+ar02-111 run 2: answer=True plan=None []
+ar02-111 run 3: answer=True plan=None []
+ar02-112 run 1: answer=True plan=None []
+ar02-112 run 2: answer=True plan=None []
+ar02-112 run 3: answer=True plan=None []
+ar02-115 run 1: answer=True plan=None []
+ar02-115 run 2: answer=True plan=None []
+ar02-115 run 3: answer=True plan=None []
+ar02-116 run 1: answer=True plan=None []
+ar02-116 run 2: answer=True plan=None []
+ar02-116 run 3: answer=True plan=None []
+ar02-117 run 1: answer=True plan=None []
+ar02-117 run 2: answer=True plan=None []
+ar02-117 run 3: answer=True plan=None []
+ar02-118 run 1: answer=True plan=None []
+ar02-118 run 2: answer=True plan=None []
+ar02-118 run 3: answer=True plan=None []
+ar02-119 run 1: answer=True plan=None []
+ar02-119 run 2: answer=True plan=None []
+ar02-119 run 3: answer=True plan=None []
+ar02-120 run 1: answer=True plan=None []
+ar02-120 run 2: answer=True plan=None []
+ar02-120 run 3: answer=True plan=None []
+ar02-121 run 1: answer=True plan=True []
+ar02-121 run 2: answer=True plan=True []
+ar02-121 run 3: answer=True plan=True []
+ar02-122 run 1: answer=True plan=True []
+ar02-122 run 2: answer=True plan=True []
+ar02-122 run 3: answer=True plan=True []
+ar02-123 run 1: answer=True plan=True []
+ar02-123 run 2: answer=True plan=True []
+ar02-123 run 3: answer=True plan=True []
+ar02-124 run 1: answer=True plan=True []
+ar02-124 run 2: answer=True plan=True []
+ar02-124 run 3: answer=True plan=True []
+ar02-126 run 1: answer=True plan=True []
+ar02-126 run 2: answer=True plan=True []
+ar02-126 run 3: answer=True plan=True []
+ar02-127 run 1: answer=True plan=True []
+ar02-127 run 2: answer=True plan=True []
+ar02-127 run 3: answer=True plan=True []
+ar02-128 run 1: answer=True plan=True []
+ar02-128 run 2: answer=True plan=True []
+ar02-128 run 3: answer=True plan=True []
+ar02-130 run 1: answer=True plan=True []
+ar02-130 run 2: answer=True plan=True []
+ar02-130 run 3: answer=True plan=True []
+ar02-131 run 1: answer=False plan=None ['status']
+ar02-131 run 2: answer=False plan=None ['status']
+ar02-131 run 3: answer=False plan=None ['status']
+ar02-132 run 1: answer=False plan=None ['status']
+ar02-132 run 2: answer=False plan=None ['status']
+ar02-132 run 3: answer=False plan=None ['status']
+ar02-133 run 1: answer=False plan=None ['status']
+ar02-133 run 2: answer=False plan=None ['status']
+ar02-133 run 3: answer=False plan=None ['status']
+ar02-134 run 1: answer=False plan=None ['status']
+ar02-134 run 2: answer=False plan=None ['status']
+ar02-134 run 3: answer=False plan=None ['status']
+ar02-138 run 1: answer=True plan=None []
+ar02-138 run 2: answer=True plan=None []
+ar02-138 run 3: answer=True plan=None []
+ar02-139 run 1: answer=True plan=None []
+ar02-139 run 2: answer=True plan=None []
+ar02-139 run 3: answer=True plan=None []
+ar02-140 run 1: answer=True plan=None []
+ar02-140 run 2: answer=True plan=None []
+ar02-140 run 3: answer=True plan=None []
+ar02-142 run 1: answer=True plan=None []
+ar02-142 run 2: answer=True plan=None []
+ar02-142 run 3: answer=True plan=None []
+ar02-143 run 1: answer=False plan=None ['status', 'refusal_reason']
+ar02-143 run 2: answer=False plan=None ['status', 'refusal_reason']
+ar02-143 run 3: answer=False plan=None ['status', 'refusal_reason']
+ar02-144 run 1: answer=True plan=None []
+ar02-144 run 2: answer=True plan=None []
+ar02-144 run 3: answer=True plan=None []
+ar02-145 run 1: answer=True plan=None []
+ar02-145 run 2: answer=True plan=None []
+ar02-145 run 3: answer=True plan=None []
+ar02-146 run 1: answer=True plan=True []
+ar02-146 run 2: answer=True plan=True []
+ar02-146 run 3: answer=True plan=True []
+ar02-147 run 1: answer=True plan=True []
+ar02-147 run 2: answer=True plan=True []
+ar02-147 run 3: answer=True plan=True []
+ar02-148 run 1: answer=True plan=True []
+ar02-148 run 2: answer=True plan=True []
+ar02-148 run 3: answer=True plan=True []
+ar02-150 run 1: answer=True plan=True []
+ar02-150 run 2: answer=True plan=True []
+ar02-150 run 3: answer=True plan=True []
+Report: data/artifacts/assistant-eval/ar04-fixture-dev-final.json
+{
+  "coverage": {
+    "completed_runs": 360,
+    "planned_runs": 360,
+    "completed_questions": 120,
+    "planned_questions": 120
+  },
+  "exact_answer": {
+    "correct": 345,
+    "total": 360,
+    "rate": 0.9583333333333334
+  },
+  "plan_accuracy": {
+    "correct": 279,
+    "total": 279,
+    "rate": 1
+  },
+  "refusal_precision": {
+    "correct": 30,
+    "total": 30,
+    "rate": 1
+  },
+  "refusal_recall": {
+    "correct": 30,
+    "total": 33,
+    "rate": 0.9090909090909091
+  },
+  "flakiness": {
+    "flaky": 0,
+    "total": 120,
+    "rate": 0
+  },
+  "answer_variation": {
+    "varied": 0,
+    "total": 120,
+    "rate": 0
+  },
+  "latency_ms": {
+    "mean": 602.0774166666666,
+    "p95": 1416.808
+  },
+  "provider_calls": 294,
+  "setup_provider_calls": 48,
+  "recorded_provider_calls": 0,
+  "token_usage": {
+    "calls_with_usage": 0,
+    "calls_without_usage": 0,
+    "reported_tokens": {
+      "prompt_token_count": 0,
+      "candidates_token_count": 0,
+      "total_token_count": 0
+    }
+  },
+  "analytical_calls": 279,
+  "narrative": {
+    "eligible_turns": 267,
+    "attempted": 0,
+    "accepted": 0,
+    "fallback": 0,
+    "fallback_rate": null,
+    "fallback_reasons": {},
+    "skipped": {
+      "no_narrator": 267
+    }
+  },
+  "categories": {
+    "leaders": {
+      "correct": 72,
+      "total": 72,
+      "rate": 1
+    },
+    "single_player": {
+      "correct": 75,
+      "total": 75,
+      "rate": 1
+    },
+    "compare": {
+      "correct": 48,
+      "total": 48,
+      "rate": 1
+    },
+    "follow_up": {
+      "correct": 48,
+      "total": 48,
+      "rate": 1
+    },
+    "general": {
+      "correct": 48,
+      "total": 48,
+      "rate": 1
+    },
+    "mixed": {
+      "correct": 24,
+      "total": 24,
+      "rate": 1
+    },
+    "clarify_refuse": {
+      "correct": 18,
+      "total": 33,
+      "rate": 0.5454545454545454
+    },
+    "forecast": {
+      "correct": 12,
+      "total": 12,
+      "rate": 1
+    }
+  }
+}

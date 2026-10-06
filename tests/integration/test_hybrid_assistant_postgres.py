@@ -319,3 +319,62 @@ def test_ar03_label_survives_http_history_and_exact_replay(postgres_conversation
         history = client.get(f"/api/workbench/assistant/v2/threads/{answer['thread_id']}/turns")
         assert history.status_code == 200, history.text
         assert history.json()["turns"][0]["response"] == answer
+
+
+@pytest.mark.parametrize("honest", [True, False])
+def test_ar04_checked_narrative_survives_http_history_or_falls_back(postgres_conversation, honest):
+    from pydantic import SecretStr
+
+    session, context = postgres_conversation
+    narrated: list[dict] = []
+
+    class Provider:
+        def __init__(self, *_):
+            pass
+
+        def plan(self, payload, *, timeout_seconds):
+            return PlanningOutput(request(context).plan.model_dump(mode="json"))
+
+        def narrate(self, payload, *, timeout_seconds):
+            body = json.loads(payload)
+            narrated.append(body)
+            leader = next(c for c in body["cells"] if c["metric"] == "Points Per Game")
+            value = leader["value"] if honest else leader["value"] + 1.4
+            text = f"{leader['entity']} led {body['season']} with {value} points per game."
+            return PlanningOutput({"status": "answered", "text": text})
+
+    class Settings:
+        gemini_api_key = SecretStr("test-only")
+        gemini_model = "fixture"
+
+    app = create_app()
+    app.dependency_overrides[get_db] = lambda: session
+    headers = {"X-Operator-Token": get_settings().operator_token.get_secret_value()}
+    body = request(context, "Show scoring in 2024-25", plan=False)
+    with (
+        patch("courtload.services.assistant.hybrid.GeminiPlanProvider", Provider),
+        patch("courtload.services.assistant.hybrid.get_settings", return_value=Settings()),
+        TestClient(app) as client,
+    ):
+        response = client.post(
+            "/api/workbench/assistant/v2/turn", json=body.model_dump(mode="json"), headers=headers
+        )
+        assert response.status_code == 200, response.text
+        answer = response.json()
+        replay = client.post(
+            "/api/workbench/assistant/v2/turn", json=body.model_dump(mode="json"), headers=headers
+        )
+        history = client.get(f"/api/workbench/assistant/v2/threads/{answer['thread_id']}/turns")
+    assert len(narrated) == 1 and narrated[0]["season"] == "2024-25"
+    assert answer["status"] == "answered" and answer["saveable"]
+    assert answer["accounting"]["provider_calls"] == 2
+    kinds = [block["kind"] for block in answer["blocks"]]
+    if honest:
+        assert kinds == ["narrative", "result"]
+        assert f"{round(280 / 30, 1)} points per game" in answer["blocks"][0]["text"]
+    else:
+        assert kinds == ["local_claim", "local_claim", "result"]
+    # The retained record re-verifies the narrative numbers against its own result cells.
+    assert replay.json() == answer
+    assert history.status_code == 200, history.text
+    assert history.json()["turns"][0]["response"] == answer

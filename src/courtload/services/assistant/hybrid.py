@@ -32,6 +32,7 @@ from courtload.domain.hybrid_assistant import (
     InterpretedScope,
     LocalClaimBlock,
     LocalSummaryBlock,
+    NarrativeBlock,
     ResultBlock,
     TextBlock,
     TurnAccounting,
@@ -51,6 +52,7 @@ from courtload.services.assistant.defaults import (
 )
 from courtload.services.assistant.execution import execute_bounded, query_deadline
 from courtload.services.assistant.knowledge import retrieve, runtime_guidance
+from courtload.services.assistant.narrative import NarrativeOutcome, compose_narrative
 from courtload.services.assistant.operations import (
     EntityClarification,
     canonical_step,
@@ -206,7 +208,8 @@ def _rejection_summary(exc: Exception) -> str:
 
 def route_intent(message: str, has_plan: bool = False) -> Intent:
     """Server routing precedes planner work; current facts never become model knowledge."""
-    text = message.lower()
+    # A leading "Now ..." is a follow-up discourse marker, not a request for current facts.
+    text = re.sub(r"^\s*now\b[,:]?\s*", "", message.lower())
     if re.search(
         r"\b(sql|shell|execute code|api key|credentials|train model|refresh(?: the)? data|"
         r"delete history|search the (?:web|internet))\b",
@@ -280,6 +283,7 @@ def _run_single_turn(
     _started: float | None = None,
     _retrieval_budget: RetrievalBudget | None = None,
     _mixed_sentence: bool = False,
+    on_narrative: Callable[[NarrativeOutcome], None] | None = None,
 ) -> HybridTurnResponse:
     """PF07a execution seam. PF07b wraps this with server-owned durable state/idempotency."""
     started = _started if _started is not None else time.monotonic()
@@ -680,8 +684,34 @@ def _run_single_turn(
             unable("unsupported_operation")
     except Exception:
         unable("backend_failure", failed=True)
+    results = [b.result for b in blocks if isinstance(b, ResultBlock)]
+    if status == "answered" and intent == "local_analysis" and results and scope is not None:
+        outcome = compose_narrative(
+            provider,
+            request.message,
+            results,
+            scope.model_dump(mode="json"),
+            deadline,
+            _bounded_provider,
+        )
+        provider_calls += outcome.provider_called
+        if outcome.outcome == "accepted" and outcome.text:
+            # Checked prose replaces template claims; the result cells stay attached.
+            position = next(
+                i for i, b in enumerate(blocks) if isinstance(b, (LocalClaimBlock, ResultBlock))
+            )
+            blocks[:] = [b for b in blocks if not isinstance(b, LocalClaimBlock)]
+            blocks.insert(
+                position,
+                NarrativeBlock(
+                    text=outcome.text, operation_hashes=[r.operation_hash for r in results]
+                ),
+            )
+        if on_narrative:
+            on_narrative(outcome)
     if status == "answered" and not any(
-        isinstance(b, (TextBlock, LocalClaimBlock, ExternalClaimBlock)) for b in blocks
+        isinstance(b, (TextBlock, LocalClaimBlock, NarrativeBlock, ExternalClaimBlock))
+        for b in blocks
     ):
         first = next(b for b in blocks if isinstance(b, ResultBlock))
         blocks.insert(0, LocalSummaryBlock(operation_hash=first.result.operation_hash))
@@ -717,6 +747,7 @@ def run_hybrid_turn(
     inherited_context: ConversationContext | None = None,
     previous_plan: AnalysisPlan | None = None,
     provider: PlanProvider | None = None,
+    on_narrative: Callable[[NarrativeOutcome], None] | None = None,
 ) -> HybridTurnResponse:
     """Bounded mixed routing: at most one local plan and four independently typed clauses."""
     started = time.monotonic()
@@ -737,6 +768,7 @@ def run_hybrid_turn(
             inherited_context=inherited_context,
             previous_plan=previous_plan,
             provider=provider,
+            on_narrative=on_narrative,
         )
     as_of = clock()
     retrieval_budget = RetrievalBudget(started + DEADLINE_SECONDS)
@@ -776,6 +808,7 @@ def run_hybrid_turn(
                 _started=started,
                 _retrieval_budget=retrieval_budget,
                 _mixed_sentence=bool(local),
+                on_narrative=on_narrative,
             )
         )
     primary = next(

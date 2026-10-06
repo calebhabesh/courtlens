@@ -320,6 +320,22 @@ def score_answer(
     }
 
 
+def narrative_summary(records: list[dict[str, Any]]) -> dict[str, Any]:
+    """AR04: checked narrative acceptance; fallback means the template text was kept."""
+    outcomes = [n for r in records for n in r.get("narratives", [])]
+    attempted = [n for n in outcomes if n["provider_called"]]
+    fallback = [n for n in attempted if n["outcome"] == "fallback"]
+    return {
+        "eligible_turns": len(outcomes),
+        "attempted": len(attempted),
+        "accepted": sum(n["outcome"] == "accepted" for n in attempted),
+        "fallback": len(fallback),
+        "fallback_rate": len(fallback) / len(attempted) if attempted else None,
+        "fallback_reasons": dict(Counter(n["reason"] for n in fallback)),
+        "skipped": dict(Counter(n["reason"] for n in outcomes if n["outcome"] == "skipped")),
+    }
+
+
 def summarize(records: list[dict[str, Any]], planned_questions: int, runs: int) -> dict[str, Any]:
     def rate(values: list[bool]) -> dict[str, Any]:
         return {
@@ -381,6 +397,7 @@ def summarize(records: list[dict[str, Any]], planned_questions: int, runs: int) 
             },
         },
         "analytical_calls": sum(r["analytical_calls"] for r in records),
+        "narrative": narrative_summary(records),
         "categories": {
             category: rate([r["exact_answer"] for r in records if r["category"] == category])
             for category in categories
