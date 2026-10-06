@@ -1,0 +1,10 @@
+locator.waitFor: Timeout 30000ms exceeded.
+Call log:
+[2m  - waiting for getByRole('region', { name: 'Selected game details', exact: true }).getByText(/Provisional observed team score/).first() to be visible[22m
+
+    at /tmp/b32_verify_current.cjs:22:75 {
+  log: [
+    "  - waiting for getByRole('region', { name: 'Selected game details', exact: true }).getByText(/Provisional observed team score/).first() to be visible"
+  ],
+  name: 'TimeoutError'
+}

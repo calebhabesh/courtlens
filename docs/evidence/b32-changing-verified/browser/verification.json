@@ -1,0 +1,811 @@
+{
+  "scope": "Real Chromium/production Next/FastAPI/PostgreSQL; actual changing preseason games",
+  "slate": "2026-10-04",
+  "browser": "153.0.8010.52",
+  "tabs": 4,
+  "wall_seconds": 210.032,
+  "changed": [
+    {
+      "game": "401914127",
+      "observations": [
+        {
+          "id": "f1d16323-7922-460d-9727-653ba851ca66",
+          "acquired_at": "2026-10-04T23:41:50.780246Z",
+          "game": {
+            "source_id": "401914127",
+            "canonical_id": null,
+            "identity_status": "unmapped",
+            "namespace": "espn",
+            "slate_date": "2026-10-04",
+            "event_time": "2026-10-04T23:00:00Z",
+            "status": "in_progress",
+            "period": 2,
+            "clock": "11:38",
+            "teams": [
+              {
+                "source_id": "7",
+                "canonical_id": null,
+                "identity_status": "unmapped",
+                "name": "Denver Nuggets",
+                "side": "home",
+                "score": 26
+              },
+              {
+                "source_id": "26",
+                "canonical_id": null,
+                "identity_status": "unmapped",
+                "name": "Utah Jazz",
+                "side": "away",
+                "score": 36
+              }
+            ],
+            "provisional": true
+          },
+          "player_rows": 41
+        },
+        {
+          "id": "065f5c69-bafc-4f14-be45-7d5d3c9d8463",
+          "acquired_at": "2026-10-04T23:43:15.270552Z",
+          "game": {
+            "source_id": "401914127",
+            "canonical_id": null,
+            "identity_status": "unmapped",
+            "namespace": "espn",
+            "slate_date": "2026-10-04",
+            "event_time": "2026-10-04T23:00:00Z",
+            "status": "in_progress",
+            "period": 2,
+            "clock": "10:58",
+            "teams": [
+              {
+                "source_id": "7",
+                "canonical_id": null,
+                "identity_status": "unmapped",
+                "name": "Denver Nuggets",
+                "side": "home",
+                "score": 26
+              },
+              {
+                "source_id": "26",
+                "canonical_id": null,
+                "identity_status": "unmapped",
+                "name": "Utah Jazz",
+                "side": "away",
+                "score": 36
+              }
+            ],
+            "provisional": true
+          },
+          "player_rows": 41
+        },
+        {
+          "id": "b01bc0d0-cb44-481c-9489-e965e498bcb9",
+          "acquired_at": "2026-10-04T23:44:15.580312Z",
+          "game": {
+            "source_id": "401914127",
+            "canonical_id": null,
+            "identity_status": "unmapped",
+            "namespace": "espn",
+            "slate_date": "2026-10-04",
+            "event_time": "2026-10-04T23:00:00Z",
+            "status": "in_progress",
+            "period": 2,
+            "clock": "10:17",
+            "teams": [
+              {
+                "source_id": "7",
+                "canonical_id": null,
+                "identity_status": "unmapped",
+                "name": "Denver Nuggets",
+                "side": "home",
+                "score": 28
+              },
+              {
+                "source_id": "26",
+                "canonical_id": null,
+                "identity_status": "unmapped",
+                "name": "Utah Jazz",
+                "side": "away",
+                "score": 36
+              }
+            ],
+            "provisional": true
+          },
+          "player_rows": 41
+        },
+        {
+          "id": "9853b0fc-ad22-49c7-86bc-26950065e61f",
+          "acquired_at": "2026-10-04T23:45:15.774761Z",
+          "game": {
+            "source_id": "401914127",
+            "canonical_id": null,
+            "identity_status": "unmapped",
+            "namespace": "espn",
+            "slate_date": "2026-10-04",
+            "event_time": "2026-10-04T23:00:00Z",
+            "status": "in_progress",
+            "period": 2,
+            "clock": "9:55",
+            "teams": [
+              {
+                "source_id": "7",
+                "canonical_id": null,
+                "identity_status": "unmapped",
+                "name": "Denver Nuggets",
+                "side": "home",
+                "score": 29
+              },
+              {
+                "source_id": "26",
+                "canonical_id": null,
+                "identity_status": "unmapped",
+                "name": "Utah Jazz",
+                "side": "away",
+                "score": 36
+              }
+            ],
+            "provisional": true
+          },
+          "player_rows": 41
+        }
+      ]
+    },
+    {
+      "game": "401918010",
+      "observations": [
+        {
+          "id": "80436ed3-7dfa-4169-baec-b6f0c65bae8a",
+          "acquired_at": "2026-10-04T23:41:50.312868Z",
+          "game": {
+            "source_id": "401918010",
+            "canonical_id": null,
+            "identity_status": "unmapped",
+            "namespace": "espn",
+            "slate_date": "2026-10-04",
+            "event_time": "2026-10-04T23:00:00Z",
+            "status": "in_progress",
+            "period": 1,
+            "clock": "0.0",
+            "teams": [
+              {
+                "source_id": "12",
+                "canonical_id": null,
+                "identity_status": "unmapped",
+                "name": "LA Clippers",
+                "side": "home",
+                "score": 23
+              },
+              {
+                "source_id": "9",
+                "canonical_id": "GSW",
+                "identity_status": "verified",
+                "name": "Golden State Warriors",
+                "side": "away",
+                "score": 24
+              }
+            ],
+            "provisional": true
+          },
+          "player_rows": 42
+        },
+        {
+          "id": "59117553-cd0e-4086-ba7c-c660957d780e",
+          "acquired_at": "2026-10-04T23:43:15.357605Z",
+          "game": {
+            "source_id": "401918010",
+            "canonical_id": null,
+            "identity_status": "unmapped",
+            "namespace": "espn",
+            "slate_date": "2026-10-04",
+            "event_time": "2026-10-04T23:00:00Z",
+            "status": "in_progress",
+            "period": 1,
+            "clock": "0.0",
+            "teams": [
+              {
+                "source_id": "12",
+                "canonical_id": null,
+                "identity_status": "unmapped",
+                "name": "LA Clippers",
+                "side": "home",
+                "score": 23
+              },
+              {
+                "source_id": "9",
+                "canonical_id": "GSW",
+                "identity_status": "verified",
+                "name": "Golden State Warriors",
+                "side": "away",
+                "score": 24
+              }
+            ],
+            "provisional": true
+          },
+          "player_rows": 42
+        },
+        {
+          "id": "da6a3f89-25f4-4dd9-aecd-ad818e79d7a9",
+          "acquired_at": "2026-10-04T23:44:15.528126Z",
+          "game": {
+            "source_id": "401918010",
+            "canonical_id": null,
+            "identity_status": "unmapped",
+            "namespace": "espn",
+            "slate_date": "2026-10-04",
+            "event_time": "2026-10-04T23:00:00Z",
+            "status": "in_progress",
+            "period": 2,
+            "clock": "11:54",
+            "teams": [
+              {
+                "source_id": "12",
+                "canonical_id": null,
+                "identity_status": "unmapped",
+                "name": "LA Clippers",
+                "side": "home",
+                "score": 23
+              },
+              {
+                "source_id": "9",
+                "canonical_id": "GSW",
+                "identity_status": "verified",
+                "name": "Golden State Warriors",
+                "side": "away",
+                "score": 24
+              }
+            ],
+            "provisional": true
+          },
+          "player_rows": 42
+        },
+        {
+          "id": "680d2d5c-8d33-49e0-ab1b-8785fc2de434",
+          "acquired_at": "2026-10-04T23:45:15.827911Z",
+          "game": {
+            "source_id": "401918010",
+            "canonical_id": null,
+            "identity_status": "unmapped",
+            "namespace": "espn",
+            "slate_date": "2026-10-04",
+            "event_time": "2026-10-04T23:00:00Z",
+            "status": "in_progress",
+            "period": 2,
+            "clock": "10:55",
+            "teams": [
+              {
+                "source_id": "12",
+                "canonical_id": null,
+                "identity_status": "unmapped",
+                "name": "LA Clippers",
+                "side": "home",
+                "score": 26
+              },
+              {
+                "source_id": "9",
+                "canonical_id": "GSW",
+                "identity_status": "verified",
+                "name": "Golden State Warriors",
+                "side": "away",
+                "score": 24
+              }
+            ],
+            "provisional": true
+          },
+          "player_rows": 42
+        }
+      ]
+    }
+  ],
+  "rendered": [
+    {
+      "game": "401914127",
+      "observation_id": "9853b0fc-ad22-49c7-86bc-26950065e61f",
+      "selected_text": "Selected game 401914127\nobserved\nObservation age: 55 seconds at last read\nAcquired: 2026-10-04T23:45:15.774761Z · Last successful fetch: 2026-10-04T23:45:15.828750Z\nSource time: Unknown · Next allowed fetch: 2026-10-04T23:46:15.831601Z\nObservation provenance\nDenver Nuggets vs Utah Jazz · Q2 · 9:55\n\nActual slate: 2026-10-04 · Event UTC: 2026-10-04T23:00:00Z · Provisional · Game identity: unmapped\n\nDenver Nuggets: 29\n\nProvisional observed team score\n\nUtah Jazz: 36\n\nProvisional observed team score\n\nUtah Jazz · Source-labelled team box\nFG\t14-32\nFIELD GOAL %\t44\n3PT\t5-16\nTHREE POINT %\t31\nFT\t3-4\nFREE THROW %\t75\nREBOUNDS\t17\nOFFENSIVE REBOUNDS\t3\nDEFENSIVE REBOUNDS\t14\nASSISTS\t11\nSTEALS\t1\nBLOCKS\t0\nTURNOVERS\t0\nTEAM TURNOVERS\t0\nTOTAL TURNOVERS\t0\nTECHNICAL FOULS\t0\nTOTAL TECHNICAL FOULS\t0\nFLAGRANT FOULS\t0\nPOINTS CONCEDED OFF TURNOVERS\t0\nFAST BREAK POINTS\t5\nPOINTS IN PAINT\t6\nFOULS\t8\nLARGEST LEAD\t12\nLEAD CHANGES\t2\nPERCENT LED\t46\nDenver Nuggets · Source-labelled team box\nFG\t12-26\nFIELD GOAL %\t46\n3PT\t2-12\nTHREE POINT %\t17\nFT\t3-6\nFREE THROW %\t50\nREBOUNDS\t13\nOFFENSIVE REBOUNDS\t1\nDEFENSIVE REBOUNDS\t12\nASSISTS\t9\nSTEALS\t0\nBLOCKS\t4\nTURNOVERS\t2\nTEAM TURNOVERS\t0\nTOTAL TURNOVERS\t2\nTECHNICAL FOULS\t0\nTOTAL TECHNICAL FOULS\t0\nFLAGRANT FOULS\t0\nPOINTS CONCEDED OFF TURNOVERS\t7\nFAST BREAK POINTS\t2\nPOINTS IN PAINT\t18\nFOULS\t4\nLARGEST LEAD\t6\nLEAD CHANGES\t2\nPERCENT LED\t36\nUtah Jazz · Player boxes\nPLAYER\tAPPEARANCE / IDENTITY\tMINUTES\tPOINTS\tFIELDGOALSMADE-FIELDGOALSATTEMPTED\tTHREEPOINTFIELDGOALSMADE-THREEPOINTFIELDGOALSATTEMPTED\tFREETHROWSMADE-FREETHROWSATTEMPTED\tREBOUNDS\tASSISTS\tTURNOVERS\tSTEALS\tBLOCKS\tOFFENSIVEREBOUNDS\tDEFENSIVEREBOUNDS\tFOULS\tPLUSMINUS\nLAURI MARKKANEN\tReported participation · unmapped\t10\t8\t3-9\t2-5\t0-0\t2\t0\t0\t0\t0\t1\t1\t0\t+5\nJAREN JACKSON JR.\tReported participation · unmapped\t10\t6\t2-4\t1-2\t1-2\t1\t2\t0\t0\t0\t0\t1\t2\t+1\nJUSUF NURKIC\tReported participation · unmapped\t6\t2\t0-2\t0-1\t2-2\t3\t2\t0\t0\t0\t0\t3\t1\t+3\nKEYONTE GEORGE\tReported participation · unmapped\t8\t6\t3-4\t0-1\t0-0\t3\t1\t0\t0\t0\t0\t3\t1\t+6\nDARRYN PETERSON\tReported participation · unmapped\t7\t2\t1-3\t0-1\t0-0\t1\t1\t0\t0\t0\t0\t1\t2\t-3\nJAXSON HAYES\tReported participation · unmapped\t7\t0\t0-1\t0-0\t0-0\t2\t2\t0\t0\t0\t0\t2\t0\t+5\nSVI MYKHAILIUK\tReported participation · unmapped\t7\t6\t2-4\t2-4\t0-0\t0\t2\t0\t0\t0\t0\t0\t0\t+11\nJOSH OKOGIE\tReported participation · unmapped\t2\t0\t0-1\t0-1\t0-0\t1\t0\t0\t0\t0\t1\t0\t1\t-2\nISAIAH COLLIER\tReported participation · unmapped\t6\t0\t0-1\t0-1\t0-0\t1\t1\t0\t0\t0\t0\t1\t1\t+2\nACE BAILEY\tReported participation · unmapped\t7\t6\t3-3\t0-0\t0-0\t3\t0\t0\t1\t0\t1\t2\t0\t+11\nBLAKE HINSON\tReported nonappearance · unmapped\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\nHARRISON INGRAM\tReported nonappearance · unmapped\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\nKYLE FILIPOWSKI\tReported nonappearance · unmapped\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\nBRICE SENSABAUGH\tReported nonappearance · unmapped\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\nMO BAMBA\tReported nonappearance · unmapped\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\nJONAS AIDOO\tReported nonappearance · unmapped\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\nTERRELL BROWN JR.\tReported nonappearance · unmapped\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\nJOSH GREEN\tReported nonappearance · unmapped\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\nTREY ALEXANDER\tReported nonappearance · unmapped\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\nTAMAR BATES\tReported nonappearance · unmapped\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\nDenver Nuggets · Player boxes\nPLAYER\tAPPEARANCE / IDENTITY\tMINUTES\tPOINTS\tFIELDGOALSMADE-FIELDGOALSATTEMPTED\tTHREEPOINTFIELDGOALSMADE-THREEPOINTFIELDGOALSATTEMPTED\tFREETHROWSMADE-FREETHROWSATTEMPTED\tREBOUNDS\tASSISTS\tTURNOVERS\tSTEALS\tBLOCKS\tOFFENSIVEREBOUNDS\tDEFENSIVEREBOUNDS\tFOULS\tPLUSMINUS\nAARON GORDON\tReported participation · unmapped\t6\t5\t2-3\t0-1\t1-1\t2\t0\t0\t0\t0\t0\t2\t0\t-3\nCAMERON JOHNSON\tReported participation · unmapped\t6\t6\t2-5\t2-5\t0-0\t0\t0\t0\t0\t1\t0\t0\t1\t-3\nNIKOLA JOKIC\tReported participation · unmapped\t8\t0\t0-0\t0-0\t0-0\t3\t5\t0\t0\t1\t0\t3\t0\t-6\nTYUS JONES\tReported participation · unmapped\t11\t2\t1-3\t0-0\t0-0\t2\t3\t1\t0\t0\t0\t2\t1\t-1\nCHRISTIAN BRAUN\tReported participation · unmapped\t8\t4\t2-3\t0-1\t0-2\t2\t1\t0\t0\t0\t1\t1\t0\t-6\nMARVIN BAGLEY III\tReported participation · unmapped\t6\t2\t1-2\t0-1\t0-0\t3\t0\t0\t0\t0\t0\t3\t0\t-1\nZEKE NNAJI\tReported participation · unmapped\t2\t0\t0-1\t0-1\t0-0\t0\t0\t0\t0\t0\t0\t0\t0\t+2\nTREVON BRAZILE\tReported participation · unmapped\t6\t2\t1-1\t0-0\t0-0\t0\t0\t0\t0\t1\t0\t0\t1\t-7\nDEMAR DEROZAN\tReported participation · unmapped\t8\t5\t2-5\t0-1\t1-1\t1\t0\t0\t0\t1\t0\t1\t0\t-8\nJULIAN STRAWTHER\tReported participation · unmapped\t7\t3\t1-3\t0-2\t1-2\t0\t0\t1\t0\t0\t0\t0\t1\t-5\nALPHA DIALLO\tReported nonappearance · unmapped\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\nEMANUEL MILLER\tReported nonappearance · unmapped\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\nCOLEMAN HAWKINS\tReported nonappearance · unmapped\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\nDARON HOLMES II\tReported nonappearance · unmapped\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\nBRYCE HOPKINS\tReported nonappearance · unmapped\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\nSPENCER JONES\tReported nonappearance · unmapped\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\nCAM WHITMORE\tReported nonappearance · unmapped\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\nJAMAL MURRAY\tReported nonappearance · unmapped\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\nLONNIE WALKER IV\tReported nonappearance · unmapped\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\nDANE GOODWIN\tReported nonappearance · unmapped\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\nRYAN NEMBHARD\tReported nonappearance · unmapped\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—",
+      "widths": {
+        "body": 375,
+        "viewport": 375
+      }
+    },
+    {
+      "game": "401918010",
+      "observation_id": "680d2d5c-8d33-49e0-ab1b-8785fc2de434",
+      "selected_text": "Selected game 401918010\nobserved\nObservation age: 55 seconds at last read\nAcquired: 2026-10-04T23:45:15.827911Z · Last successful fetch: 2026-10-04T23:45:15.828750Z\nSource time: Unknown · Next allowed fetch: 2026-10-04T23:46:15.831601Z\nObservation provenance\nLA Clippers vs Golden State Warriors · Q2 · 10:55\n\nActual slate: 2026-10-04 · Event UTC: 2026-10-04T23:00:00Z · Provisional · Game identity: unmapped\n\nLA Clippers: 26\n\nProvisional observed team score\n\nGolden State Warriors: 24\n\nProvisional observed team score\n\nGolden State Warriors · Source-labelled team box\nFG\t8-23\nFIELD GOAL %\t35\n3PT\t4-12\nTHREE POINT %\t33\nFT\t4-6\nFREE THROW %\t67\nREBOUNDS\t15\nOFFENSIVE REBOUNDS\t2\nDEFENSIVE REBOUNDS\t13\nASSISTS\t5\nSTEALS\t3\nBLOCKS\t0\nTURNOVERS\t5\nTEAM TURNOVERS\t0\nTOTAL TURNOVERS\t5\nTECHNICAL FOULS\t0\nTOTAL TECHNICAL FOULS\t0\nFLAGRANT FOULS\t0\nPOINTS CONCEDED OFF TURNOVERS\t5\nFAST BREAK POINTS\t2\nPOINTS IN PAINT\t8\nFOULS\t8\nLARGEST LEAD\t5\nLEAD CHANGES\t4\nPERCENT LED\t42\nLA Clippers · Source-labelled team box\nFG\t8-24\nFIELD GOAL %\t33\n3PT\t3-13\nTHREE POINT %\t23\nFT\t4-9\nFREE THROW %\t44\nREBOUNDS\t14\nOFFENSIVE REBOUNDS\t3\nDEFENSIVE REBOUNDS\t11\nASSISTS\t7\nSTEALS\t2\nBLOCKS\t2\nTURNOVERS\t3\nTEAM TURNOVERS\t0\nTOTAL TURNOVERS\t3\nTECHNICAL FOULS\t0\nTOTAL TECHNICAL FOULS\t0\nFLAGRANT FOULS\t0\nPOINTS CONCEDED OFF TURNOVERS\t2\nFAST BREAK POINTS\t4\nPOINTS IN PAINT\t8\nFOULS\t5\nLARGEST LEAD\t6\nLEAD CHANGES\t4\nPERCENT LED\t44\nGolden State Warriors · Player boxes\nPLAYER\tAPPEARANCE / IDENTITY\tMINUTES\tPOINTS\tFIELDGOALSMADE-FIELDGOALSATTEMPTED\tTHREEPOINTFIELDGOALSMADE-THREEPOINTFIELDGOALSATTEMPTED\tFREETHROWSMADE-FREETHROWSATTEMPTED\tREBOUNDS\tASSISTS\tTURNOVERS\tSTEALS\tBLOCKS\tOFFENSIVEREBOUNDS\tDEFENSIVEREBOUNDS\tFOULS\tPLUSMINUS\nDRAYMOND GREEN\tReported participation · unmapped\t8\t2\t0-1\t0-1\t2-2\t1\t1\t0\t1\t0\t0\t1\t0\t+5\nYAXEL LENDEBORG\tReported participation · unmapped\t8\t3\t1-2\t1-1\t0-0\t4\t1\t0\t0\t0\t1\t3\t2\t+5\nAL HORFORD\tReported participation · unmapped\t8\t3\t1-4\t1-3\t0-0\t2\t1\t1\t0\t0\t0\t2\t1\t+5\nSTEPHEN CURRY\tReported participation · unmapped\t7\t5\t1-2\t1-2\t2-2\t1\t1\t1\t1\t0\t0\t1\t1\t-6\nBRANDIN PODZIEMSKI\tReported participation · unmapped\t8\t2\t1-6\t0-2\t0-2\t1\t1\t1\t0\t0\t0\t1\t1\t+8\nGEORGES NIANG\tReported participation · unmapped\t4\t0\t0-1\t0-1\t0-0\t1\t0\t0\t0\t0\t0\t1\t1\t-4\nGRAHAM IKE\tReported participation · unmapped\t—\t0\t0-0\t0-0\t0-0\t0\t0\t0\t0\t0\t0\t0\t0\t0\nGUI SANTOS\tReported participation · unmapped\t5\t5\t2-3\t1-1\t0-0\t2\t0\t0\t0\t0\t0\t2\t0\t-4\nCHARLES BASSEY\tReported participation · unmapped\t4\t2\t1-1\t0-0\t0-0\t2\t0\t2\t0\t0\t1\t1\t2\t-4\nDE'ANTHONY MELTON\tReported participation · unmapped\t5\t0\t0-1\t0-1\t0-0\t0\t0\t0\t0\t0\t0\t0\t0\t-2\nBRANDON WILLIAMS\tReported participation · unmapped\t4\t2\t1-1\t0-0\t0-0\t1\t0\t0\t1\t0\t0\t1\t0\t+2\nWILL RICHARD\tReported participation · unmapped\t1\t0\t0-1\t0-0\t0-0\t0\t0\t0\t0\t0\t0\t0\t0\t0\nJIMMY BUTLER III\tReported nonappearance · unmapped\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\nMALEVY LEONS\tReported nonappearance · unmapped\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\nALEX TOOHEY\tReported nonappearance · unmapped\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\nKRISTAPS PORZINGIS\tReported nonappearance · unmapped\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\nGARY PAYTON II\tReported nonappearance · unmapped\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\nMOSES MOODY\tReported nonappearance · unmapped\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\nLJ CRYER\tReported nonappearance · unmapped\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\nDALEN TERRY\tReported nonappearance · unmapped\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\nMILES KELLY\tReported nonappearance · unmapped\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\nLA Clippers · Player boxes\nPLAYER\tAPPEARANCE / IDENTITY\tMINUTES\tPOINTS\tFIELDGOALSMADE-FIELDGOALSATTEMPTED\tTHREEPOINTFIELDGOALSMADE-THREEPOINTFIELDGOALSATTEMPTED\tFREETHROWSMADE-FREETHROWSATTEMPTED\tREBOUNDS\tASSISTS\tTURNOVERS\tSTEALS\tBLOCKS\tOFFENSIVEREBOUNDS\tDEFENSIVEREBOUNDS\tFOULS\tPLUSMINUS\nDERRICK JONES JR.\tReported participation · unmapped\t8\t2\t1-3\t0-2\t0-1\t0\t0\t0\t0\t0\t0\t0\t1\t+1\nRUI HACHIMURA\tReported participation · unmapped\t8\t11\t4-5\t2-2\t1-2\t0\t0\t1\t0\t0\t0\t0\t2\t+1\nISAIAH JACKSON\tReported participation · unmapped\t8\t4\t2-3\t0-0\t0-0\t1\t1\t1\t1\t1\t0\t1\t0\t+1\nMAX STRUS\tReported participation · unmapped\t5\t0\t0-1\t0-1\t0-0\t1\t0\t0\t0\t0\t0\t1\t0\t-2\nDARIUS GARLAND\tReported participation · unmapped\t8\t4\t1-1\t1-1\t1-2\t3\t5\t0\t0\t0\t1\t2\t0\t+1\nBROOK LOPEZ\tReported participation · unmapped\t4\t1\t0-2\t0-0\t1-2\t3\t0\t1\t0\t0\t1\t2\t2\t-2\nKRIS DUNN\tReported participation · unmapped\t4\t0\t0-1\t0-1\t0-0\t1\t0\t0\t0\t1\t0\t1\t0\t-2\nCAM CHRISTIE\tReported participation · unmapped\t4\t0\t0-3\t0-1\t0-0\t1\t0\t0\t0\t0\t0\t1\t0\t-2\nGRADEY DICK\tReported participation · unmapped\t4\t0\t0-1\t0-1\t0-0\t1\t0\t0\t0\t0\t0\t1\t0\t-2\nKEATON WAGLER\tReported participation · unmapped\t8\t1\t0-4\t0-4\t1-2\t3\t1\t0\t1\t0\t1\t2\t0\t+1\nBRANDON INGRAM\tReported nonappearance · unmapped\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\nBABA MILLER\tReported nonappearance · unmapped\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\nNICK MARTINELLI\tReported nonappearance · unmapped\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\nYANIC KONAN NIEDERHAUSER\tReported nonappearance · unmapped\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\nBRADLEY BEAL\tReported nonappearance · unmapped\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\nJORDAN MILLER\tReported nonappearance · unmapped\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\nJALEN PICKETT\tReported nonappearance · unmapped\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\nBLAKE WESLEY\tReported nonappearance · unmapped\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\nKOBE SANDERS\tReported nonappearance · unmapped\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\nFLETCHER LOYER\tReported nonappearance · unmapped\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\nYUKI KAWAMURA\tReported nonappearance · unmapped\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—\t—",
+      "widths": {
+        "body": 375,
+        "viewport": 375
+      }
+    }
+  ],
+  "cached_reads": 100,
+  "proxy_http_p95_ms": 7.720140000019455,
+  "apiReads": [
+    10.430779000016628,
+    7.882600999990245,
+    7.358718999981647,
+    8.69064499999513,
+    7.720140000019455,
+    7.469362000003457,
+    7.981891000003088,
+    7.0706089999875985,
+    6.819239000004018,
+    7.112158999982057,
+    7.340714999998454,
+    6.672609000001103,
+    6.861539000004996,
+    7.066060999990441,
+    6.8518610000028275,
+    7.008520000003045,
+    6.743965000001481,
+    6.614667999994708,
+    7.211818999989191,
+    6.810112000006484,
+    7.174316999997245,
+    6.88080600000103,
+    6.252845999988494,
+    6.492625000013504,
+    6.5850419999915175,
+    6.580704000021797,
+    6.618163999984972,
+    6.270890999992844,
+    6.303814000013517,
+    6.2550110000011045,
+    5.943425000004936,
+    5.8564490000135265,
+    6.6214510000136215,
+    7.580913999991026,
+    6.584921000001486,
+    5.897778999991715,
+    5.668229000002611,
+    5.552800000004936,
+    5.355221999983769,
+    5.566324999992503,
+    5.462757000001147,
+    5.010123000014573,
+    5.1307530000049155,
+    4.993290000013076,
+    5.591122999991057,
+    5.3887460000114515,
+    6.122346999996807,
+    5.933097000000998,
+    5.608986000006553,
+    5.521849999990081,
+    5.980176000011852,
+    5.735258000000613,
+    5.968814000021666,
+    5.963944999995874,
+    5.853583999996772,
+    5.370580999995582,
+    5.399256999982754,
+    5.255861999990884,
+    5.096767999988515,
+    5.028808000002755,
+    4.898298999993131,
+    5.031574000022374,
+    4.84300299998722,
+    5.034849999996368,
+    8.222670000017388,
+    6.5980860000126995,
+    5.38230399999884,
+    5.356725000019651,
+    4.89588399999775,
+    5.165307999996003,
+    5.5433910000137985,
+    5.308664000011049,
+    5.321387000003597,
+    5.591472999978578,
+    6.159268000017619,
+    5.5980060000147205,
+    5.8305400000244845,
+    6.086439000006067,
+    7.475972999993246,
+    5.604427999991458,
+    5.244681000011042,
+    5.163965999992797,
+    5.737131000001682,
+    6.511601000005612,
+    5.807176000002073,
+    5.592705999995815,
+    5.1128589999862015,
+    5.945019000006141,
+    5.41888400001335,
+    5.352997999987565,
+    5.2187510000076145,
+    6.412561999983154,
+    7.443331000016769,
+    6.073154000012437,
+    6.012297999986913,
+    5.390929999994114,
+    5.251323000004049,
+    5.19068800000241,
+    4.909060000005411,
+    5.1759299999976065
+  ],
+  "errors": [],
+  "requests": [
+    {
+      "tab": 0,
+      "at": 1791157390792,
+      "url": "http://127.0.0.1:3142/api/live?slate_date=2026-10-04",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "tab": 0,
+      "at": 1791157390793,
+      "url": "http://127.0.0.1:3142/api/live/games/401914127?slate_date=2026-10-04",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "tab": 2,
+      "at": 1791157390801,
+      "url": "http://127.0.0.1:3142/api/live/games/401918010?slate_date=2026-10-04",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "tab": 2,
+      "at": 1791157390807,
+      "url": "http://127.0.0.1:3142/api/live?slate_date=2026-10-04",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "tab": 3,
+      "at": 1791157390814,
+      "url": "http://127.0.0.1:3142/api/live?slate_date=2026-10-04",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "tab": 2,
+      "at": 1791157390818,
+      "url": "http://127.0.0.1:3142/api/live/subscriptions",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "tab": 1,
+      "at": 1791157390819,
+      "url": "http://127.0.0.1:3142/api/live/games/401914127?slate_date=2026-10-04",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "tab": 1,
+      "at": 1791157390821,
+      "url": "http://127.0.0.1:3142/api/live?slate_date=2026-10-04",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "tab": 3,
+      "at": 1791157390827,
+      "url": "http://127.0.0.1:3142/api/live/subscriptions",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "tab": 0,
+      "at": 1791157390829,
+      "url": "http://127.0.0.1:3142/api/live/subscriptions",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "tab": 1,
+      "at": 1791157390835,
+      "url": "http://127.0.0.1:3142/api/live/subscriptions",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "tab": 2,
+      "at": 1791157450837,
+      "url": "http://127.0.0.1:3142/api/live?slate_date=2026-10-04",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "tab": 2,
+      "at": 1791157450838,
+      "url": "http://127.0.0.1:3142/api/live/games/401918010?slate_date=2026-10-04",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "tab": 0,
+      "at": 1791157450843,
+      "url": "http://127.0.0.1:3142/api/live?slate_date=2026-10-04",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "tab": 3,
+      "at": 1791157450845,
+      "url": "http://127.0.0.1:3142/api/live?slate_date=2026-10-04",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "tab": 2,
+      "at": 1791157450846,
+      "url": "http://127.0.0.1:3142/api/live/subscriptions/b9f324db-133d-42e2-83c7-d141a8cd21fc/heartbeat",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "tab": 0,
+      "at": 1791157450852,
+      "url": "http://127.0.0.1:3142/api/live/games/401914127?slate_date=2026-10-04",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "tab": 3,
+      "at": 1791157450853,
+      "url": "http://127.0.0.1:3142/api/live/subscriptions/8cdde6b4-df62-4809-be78-08dddba6da38/heartbeat",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "tab": 1,
+      "at": 1791157450858,
+      "url": "http://127.0.0.1:3142/api/live?slate_date=2026-10-04",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "tab": 1,
+      "at": 1791157450859,
+      "url": "http://127.0.0.1:3142/api/live/games/401914127?slate_date=2026-10-04",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "tab": 0,
+      "at": 1791157450859,
+      "url": "http://127.0.0.1:3142/api/live/subscriptions/d763ec9c-fe69-4cb4-a726-b4900c5ef0d5/heartbeat",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "tab": 1,
+      "at": 1791157450865,
+      "url": "http://127.0.0.1:3142/api/live/subscriptions/7b6fcec0-cbdd-4202-8da5-6e2725042496/heartbeat",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "tab": 2,
+      "at": 1791157510858,
+      "url": "http://127.0.0.1:3142/api/live?slate_date=2026-10-04",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "tab": 2,
+      "at": 1791157510861,
+      "url": "http://127.0.0.1:3142/api/live/games/401918010?slate_date=2026-10-04",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "tab": 3,
+      "at": 1791157510865,
+      "url": "http://127.0.0.1:3142/api/live?slate_date=2026-10-04",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "tab": 2,
+      "at": 1791157510876,
+      "url": "http://127.0.0.1:3142/api/live/subscriptions/b9f324db-133d-42e2-83c7-d141a8cd21fc/heartbeat",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "tab": 0,
+      "at": 1791157510877,
+      "url": "http://127.0.0.1:3142/api/live?slate_date=2026-10-04",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "tab": 0,
+      "at": 1791157510878,
+      "url": "http://127.0.0.1:3142/api/live/games/401914127?slate_date=2026-10-04",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "tab": 3,
+      "at": 1791157510882,
+      "url": "http://127.0.0.1:3142/api/live/subscriptions/8cdde6b4-df62-4809-be78-08dddba6da38/heartbeat",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "tab": 1,
+      "at": 1791157510883,
+      "url": "http://127.0.0.1:3142/api/live?slate_date=2026-10-04",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "tab": 0,
+      "at": 1791157510884,
+      "url": "http://127.0.0.1:3142/api/live/subscriptions/d763ec9c-fe69-4cb4-a726-b4900c5ef0d5/heartbeat",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "tab": 1,
+      "at": 1791157510889,
+      "url": "http://127.0.0.1:3142/api/live/games/401914127?slate_date=2026-10-04",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "tab": 1,
+      "at": 1791157510892,
+      "url": "http://127.0.0.1:3142/api/live/subscriptions/7b6fcec0-cbdd-4202-8da5-6e2725042496/heartbeat",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "tab": 2,
+      "at": 1791157570891,
+      "url": "http://127.0.0.1:3142/api/live?slate_date=2026-10-04",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "tab": 2,
+      "at": 1791157570893,
+      "url": "http://127.0.0.1:3142/api/live/games/401918010?slate_date=2026-10-04",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "tab": 3,
+      "at": 1791157570895,
+      "url": "http://127.0.0.1:3142/api/live?slate_date=2026-10-04",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "tab": 0,
+      "at": 1791157570898,
+      "url": "http://127.0.0.1:3142/api/live?slate_date=2026-10-04",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "tab": 0,
+      "at": 1791157570903,
+      "url": "http://127.0.0.1:3142/api/live/games/401914127?slate_date=2026-10-04",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "tab": 1,
+      "at": 1791157570904,
+      "url": "http://127.0.0.1:3142/api/live?slate_date=2026-10-04",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "tab": 2,
+      "at": 1791157570905,
+      "url": "http://127.0.0.1:3142/api/live/subscriptions/b9f324db-133d-42e2-83c7-d141a8cd21fc/heartbeat",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "tab": 1,
+      "at": 1791157570908,
+      "url": "http://127.0.0.1:3142/api/live/games/401914127?slate_date=2026-10-04",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "tab": 3,
+      "at": 1791157570910,
+      "url": "http://127.0.0.1:3142/api/live/subscriptions/8cdde6b4-df62-4809-be78-08dddba6da38/heartbeat",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "tab": 0,
+      "at": 1791157570914,
+      "url": "http://127.0.0.1:3142/api/live/subscriptions/d763ec9c-fe69-4cb4-a726-b4900c5ef0d5/heartbeat",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "tab": 1,
+      "at": 1791157570917,
+      "url": "http://127.0.0.1:3142/api/live/subscriptions/7b6fcec0-cbdd-4202-8da5-6e2725042496/heartbeat",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "tab": 0,
+      "at": 1791157598207,
+      "url": "http://127.0.0.1:3142/api/live?slate_date=2026-10-04",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "tab": 2,
+      "at": 1791157598210,
+      "url": "http://127.0.0.1:3142/api/live?slate_date=2026-10-04",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "tab": 0,
+      "at": 1791157598210,
+      "url": "http://127.0.0.1:3142/api/live/subscriptions/d763ec9c-fe69-4cb4-a726-b4900c5ef0d5",
+      "method": "DELETE",
+      "status": 204
+    },
+    {
+      "tab": 2,
+      "at": 1791157598212,
+      "url": "http://127.0.0.1:3142/api/live/games/401918010?slate_date=2026-10-04",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "tab": 0,
+      "at": 1791157598214,
+      "url": "http://127.0.0.1:3142/api/live/games/401914127?slate_date=2026-10-04",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "tab": 3,
+      "at": 1791157598218,
+      "url": "http://127.0.0.1:3142/api/live?slate_date=2026-10-04",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "tab": 2,
+      "at": 1791157598218,
+      "url": "http://127.0.0.1:3142/api/live/subscriptions/b9f324db-133d-42e2-83c7-d141a8cd21fc",
+      "method": "DELETE",
+      "status": 204
+    },
+    {
+      "tab": 3,
+      "at": 1791157598219,
+      "url": "http://127.0.0.1:3142/api/live/subscriptions/8cdde6b4-df62-4809-be78-08dddba6da38",
+      "method": "DELETE",
+      "status": 204
+    },
+    {
+      "tab": 1,
+      "at": 1791157600258,
+      "url": "http://127.0.0.1:3142/api/live?slate_date=2026-10-04",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "tab": 1,
+      "at": 1791157600259,
+      "url": "http://127.0.0.1:3142/api/live/games/401914127?slate_date=2026-10-04",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "tab": 1,
+      "at": 1791157600259,
+      "url": "http://127.0.0.1:3142/api/live/subscriptions/7b6fcec0-cbdd-4202-8da5-6e2725042496",
+      "method": "DELETE",
+      "status": 204
+    }
+  ]
+}

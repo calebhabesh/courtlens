@@ -77,3 +77,11 @@ leases and bounded opt-in real source polling, then retained historical finals. 
 scheduled source observations do not prove changing in-game freshness or a real final
 reconciliation. Existing source rights/reliability, populated active-box resource/storage,
 broad-browser and fresh restore gates remain open.
+
+The preceding measurements are dated B32 interface evidence. Later
+[B32a acceptance](../evidence/b32-active-acceptance.md) verifies actual changing preseason
+scores/clocks through four shared browser clients and two populated selected boxes.
+The Live notice now describes provisional source values and independent final admission
+without a dated "changing freshness not observed" assertion. Independent final
+reconciliation, real corrections, full three-box load and the other source gates remain
+open; this does not mark the parent B32 or full replica complete.

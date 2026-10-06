@@ -1,0 +1,124 @@
+FF                                                                       [100%]
+=================================== FAILURES ===================================
+________ test_source_reported_nonappearance_without_stat_values[stats0] ________
+
+stats = []
+
+    @pytest.mark.parametrize("stats", [[], None])
+    def test_source_reported_nonappearance_without_stat_values(stats):
+        """Real active ESPN boxes omit values for explicitly reported nonappearances."""
+        row = {"athlete": {"id": "4396963"}, "didNotPlay": True}
+        if stats is not None:
+            row["stats"] = stats
+        payload = {
+            "header": event("1", "in"),
+            "boxscore": {
+                "players": [{"team": {"id": "28"}, "statistics": [{
+                    "keys": ["minutes", "points"], "athletes": [row],
+                }]}],
+            },
+        }
+>       player = parse_summary(payload, SLATE, "1")["players"][0]
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/unit/test_live.py:200: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+payload = {'boxscore': {'players': [{'statistics': [{'athletes': [...], 'keys': [...]}], 'team': {'id': '28'}}]}, 'header': {'co...s': {'displayClock': '10:21', 'period': 1, 'type': {'completed': False, 'name': 'STATUS_IN_PROGRESS', 'state': 'in'}}}}
+slate = datetime.date(2026, 10, 3), game_id = '1'
+
+    def parse_summary(payload: dict[str, Any], slate: date, game_id: str) -> dict[str, Any]:
+        header = payload["header"]
+        if str(header["id"]) != game_id:
+            raise ValueError("summary identity mismatch")
+        game = parse_game(header, slate)
+        sections = payload.get("boxscore", {}).get("players")
+        # Preserve provider-labelled display values; absent rows/sections never become zeros.
+        if game.status not in {"in_progress", "final"}:
+            sections = None
+        players: list[dict[str, Any]] = []
+        if sections:
+            if not isinstance(sections, list) or len(sections) > 2:
+                raise ValueError("invalid player sections")
+            for section in sections:
+                team_id = str(section["team"]["id"])
+                if team_id not in {t.source_id for t in game.teams}:
+                    raise ValueError("player team identity mismatch")
+                groups = section.get("statistics", [])
+                if len(groups) > 20:
+                    raise ValueError("too many statistical groups")
+                for group in groups:
+                    keys = group.get("keys") or group.get("labels")
+                    athletes = group.get("athletes", [])
+                    if not isinstance(keys, list) or len(athletes) > 40 or len(keys) > 100:
+                        raise ValueError("invalid box statistic columns")
+                    for row in athletes:
+                        values = row.get("stats", [])
+                        if len(values) != len(keys) or len(set(keys)) != len(keys):
+>                           raise ValueError("box statistic columns mismatch")
+E                           ValueError: box statistic columns mismatch
+
+src/courtload/domain/live.py:151: ValueError
+_________ test_source_reported_nonappearance_without_stat_values[None] _________
+
+stats = None
+
+    @pytest.mark.parametrize("stats", [[], None])
+    def test_source_reported_nonappearance_without_stat_values(stats):
+        """Real active ESPN boxes omit values for explicitly reported nonappearances."""
+        row = {"athlete": {"id": "4396963"}, "didNotPlay": True}
+        if stats is not None:
+            row["stats"] = stats
+        payload = {
+            "header": event("1", "in"),
+            "boxscore": {
+                "players": [{"team": {"id": "28"}, "statistics": [{
+                    "keys": ["minutes", "points"], "athletes": [row],
+                }]}],
+            },
+        }
+>       player = parse_summary(payload, SLATE, "1")["players"][0]
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/unit/test_live.py:200: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+payload = {'boxscore': {'players': [{'statistics': [{'athletes': [...], 'keys': [...]}], 'team': {'id': '28'}}]}, 'header': {'co...s': {'displayClock': '10:21', 'period': 1, 'type': {'completed': False, 'name': 'STATUS_IN_PROGRESS', 'state': 'in'}}}}
+slate = datetime.date(2026, 10, 3), game_id = '1'
+
+    def parse_summary(payload: dict[str, Any], slate: date, game_id: str) -> dict[str, Any]:
+        header = payload["header"]
+        if str(header["id"]) != game_id:
+            raise ValueError("summary identity mismatch")
+        game = parse_game(header, slate)
+        sections = payload.get("boxscore", {}).get("players")
+        # Preserve provider-labelled display values; absent rows/sections never become zeros.
+        if game.status not in {"in_progress", "final"}:
+            sections = None
+        players: list[dict[str, Any]] = []
+        if sections:
+            if not isinstance(sections, list) or len(sections) > 2:
+                raise ValueError("invalid player sections")
+            for section in sections:
+                team_id = str(section["team"]["id"])
+                if team_id not in {t.source_id for t in game.teams}:
+                    raise ValueError("player team identity mismatch")
+                groups = section.get("statistics", [])
+                if len(groups) > 20:
+                    raise ValueError("too many statistical groups")
+                for group in groups:
+                    keys = group.get("keys") or group.get("labels")
+                    athletes = group.get("athletes", [])
+                    if not isinstance(keys, list) or len(athletes) > 40 or len(keys) > 100:
+                        raise ValueError("invalid box statistic columns")
+                    for row in athletes:
+                        values = row.get("stats", [])
+                        if len(values) != len(keys) or len(set(keys)) != len(keys):
+>                           raise ValueError("box statistic columns mismatch")
+E                           ValueError: box statistic columns mismatch
+
+src/courtload/domain/live.py:151: ValueError
+=========================== short test summary info ============================
+FAILED tests/unit/test_live.py::test_source_reported_nonappearance_without_stat_values[stats0]
+FAILED tests/unit/test_live.py::test_source_reported_nonappearance_without_stat_values[None]
+2 failed, 22 deselected in 0.03s

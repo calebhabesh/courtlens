@@ -1,0 +1,5 @@
+{
+  "status": "failed_probe_not_acceptance",
+  "reason": "Cache-only browser started before FastAPI readiness; 502 responses/timeout; corrected supervisor requires direct API and proxy readiness",
+  "superseded_by": "../b32-current-final/verification.json"
+}

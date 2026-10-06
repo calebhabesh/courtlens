@@ -7,6 +7,8 @@ from zoneinfo import ZoneInfo
 
 from pydantic import BaseModel, ConfigDict, Field
 
+LIVE_PARSER_VERSION = "espn-live-v2"
+
 
 class LiveSubscription(BaseModel):
     model_config = ConfigDict(extra="forbid")
@@ -147,9 +149,13 @@ def parse_summary(payload: dict[str, Any], slate: date, game_id: str) -> dict[st
                     raise ValueError("invalid box statistic columns")
                 for row in athletes:
                     values = row.get("stats", [])
+                    nonappearance = row.get("didNotPlay")
+                    # Active ESPN summaries report DNP rows without any stat values.
+                    # Only that explicit source form can supply null columns.
+                    if nonappearance is True and values == []:
+                        values = [None] * len(keys)
                     if len(values) != len(keys) or len(set(keys)) != len(keys):
                         raise ValueError("box statistic columns mismatch")
-                    nonappearance = row.get("didNotPlay")
                     players.append(
                         {
                             "source_id": str(row["athlete"]["id"]),
