@@ -1,0 +1,2049 @@
+{
+  "forecast_issuances": {
+    "rows": 489
+  },
+  "published_snapshots": [
+    {
+      "channel": "legacy_test_m6",
+      "published_at": "2026-10-04 14:09:32.987627+00:00",
+      "snapshot_id": "5b14b7ed-353b-499d-a37a-6887b5f6c715"
+    },
+    {
+      "channel": "public",
+      "published_at": "2026-10-01 17:47:29.173164+00:00",
+      "snapshot_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad"
+    },
+    {
+      "channel": "test_0043e70f08374d8e",
+      "published_at": "2026-10-01 17:15:58.802983+00:00",
+      "snapshot_id": "ee3afa7c-12dc-4a1a-88af-987a5b733da6"
+    },
+    {
+      "channel": "test_01d3a70edc944338",
+      "published_at": "2026-10-02 05:38:23.667033+00:00",
+      "snapshot_id": "4ea4a228-b8bc-4a4c-b4c1-93e809a8a32d"
+    },
+    {
+      "channel": "test_0220cbfcf9ef45d8",
+      "published_at": "2026-10-01 15:39:47.283812+00:00",
+      "snapshot_id": "5feac8d5-8ebd-48f7-aa50-19ebc6aea7f7"
+    },
+    {
+      "channel": "test_07a50921983a4295",
+      "published_at": "2026-10-01 14:26:21.823672+00:00",
+      "snapshot_id": "bae110eb-da2e-43fd-b44b-09a600610b59"
+    },
+    {
+      "channel": "test_09d767a5b3614f05",
+      "published_at": "2026-10-02 05:13:31.317864+00:00",
+      "snapshot_id": "46165f23-2b39-4ce0-921b-1ae8ccf292d1"
+    },
+    {
+      "channel": "test_0f9bcdc489c44f5e",
+      "published_at": "2026-10-01 18:38:12.444094+00:00",
+      "snapshot_id": "2cea1980-5ee5-42e5-80b2-39ca7d5f29e9"
+    },
+    {
+      "channel": "test_112cfed5d42a4217",
+      "published_at": "2026-10-03 08:10:28.719351+00:00",
+      "snapshot_id": "f9762c5a-a66e-4269-9ca1-e6a96a171936"
+    },
+    {
+      "channel": "test_131715bff2414c78",
+      "published_at": "2026-10-01 17:38:16.988896+00:00",
+      "snapshot_id": "237f486f-1aa1-4765-b60f-75aa60fdaf1b"
+    },
+    {
+      "channel": "test_1b41913237e64994",
+      "published_at": "2026-10-01 14:26:21.836289+00:00",
+      "snapshot_id": "901555a7-3c50-4c3e-a9ed-9b887974ae8b"
+    },
+    {
+      "channel": "test_1d88efb45e004ffc",
+      "published_at": "2026-10-01 15:44:31.136057+00:00",
+      "snapshot_id": "03dbbe7d-a0d4-4a92-8a45-27b580f277d3"
+    },
+    {
+      "channel": "test_1f6dbfc9b51844e2",
+      "published_at": "2026-10-03 09:02:55.919805+00:00",
+      "snapshot_id": "8ad6adb3-9c63-4e38-81a0-c44914a01c49"
+    },
+    {
+      "channel": "test_21849611f3e24bf7",
+      "published_at": "2026-10-02 16:01:59.005700+00:00",
+      "snapshot_id": "860a9f66-ed8f-49d8-a7b4-a90db77855f4"
+    },
+    {
+      "channel": "test_21aeebb009784b81",
+      "published_at": "2026-10-01 15:44:31.451825+00:00",
+      "snapshot_id": "48a839dc-b182-4970-bdb0-22df63a2ee28"
+    },
+    {
+      "channel": "test_22eb9004b1a1442c",
+      "published_at": "2026-10-01 23:16:59.299348+00:00",
+      "snapshot_id": "4aee9de4-abe8-4b7d-b90b-cfdf4f1f3939"
+    },
+    {
+      "channel": "test_243492683cdb4957",
+      "published_at": "2026-10-01 17:22:13.439886+00:00",
+      "snapshot_id": "a48bf14b-34c5-4d19-8957-65d1d8d10b01"
+    },
+    {
+      "channel": "test_2478415f826e4c8c",
+      "published_at": "2026-10-01 15:00:15.917445+00:00",
+      "snapshot_id": "d4ed1fb0-cf88-4956-8b3f-a56b438d8708"
+    },
+    {
+      "channel": "test_24910c299bc74fb0",
+      "published_at": "2026-10-01 17:38:28.309300+00:00",
+      "snapshot_id": "2df53031-e011-4a07-987e-9bac98c5d301"
+    },
+    {
+      "channel": "test_252f5c629e4e4f93",
+      "published_at": "2026-10-01 16:54:10.071027+00:00",
+      "snapshot_id": "33201673-2b96-4b62-9806-486266feec20"
+    },
+    {
+      "channel": "test_256d92370ece412c",
+      "published_at": "2026-10-01 17:55:50.997502+00:00",
+      "snapshot_id": "dfa73497-0a57-4f80-ac9b-c4a511b21907"
+    },
+    {
+      "channel": "test_299417989b684089",
+      "published_at": "2026-10-01 17:15:58.883271+00:00",
+      "snapshot_id": "4ea4a228-b8bc-4a4c-b4c1-93e809a8a32d"
+    },
+    {
+      "channel": "test_2a6da868553049c6",
+      "published_at": "2026-10-01 16:59:54.775249+00:00",
+      "snapshot_id": "833642b0-124b-4637-b26f-783b9cfdfc43"
+    },
+    {
+      "channel": "test_2a72ba4c7ab54e78",
+      "published_at": "2026-10-01 14:24:13.704160+00:00",
+      "snapshot_id": "fc05b8bd-d3d7-4370-9d8a-c53a8c27f2fd"
+    },
+    {
+      "channel": "test_2c28c1c57adc427d",
+      "published_at": "2026-10-01 16:23:59.966159+00:00",
+      "snapshot_id": "38c40d33-0fd0-4af6-962d-70fb047bb976"
+    },
+    {
+      "channel": "test_2dd7cdca000141ab",
+      "published_at": "2026-10-01 14:44:36.793979+00:00",
+      "snapshot_id": "1d7082ac-8f48-4385-9e34-d5d49ccfb50d"
+    },
+    {
+      "channel": "test_2df8d85b66954667",
+      "published_at": "2026-10-01 15:33:01.121866+00:00",
+      "snapshot_id": "584f18a2-37cf-487f-a142-5b7b64b1f1ce"
+    },
+    {
+      "channel": "test_30491f13b3094004",
+      "published_at": "2026-09-21 04:50:51.729524+00:00",
+      "snapshot_id": "6d4f6699-201e-4798-8b8c-9c5c2c00c0ee"
+    },
+    {
+      "channel": "test_31b70b9df8b04c48",
+      "published_at": "2026-10-01 14:40:29.450207+00:00",
+      "snapshot_id": "d27692ad-dbfc-45a5-be51-9fa42534afee"
+    },
+    {
+      "channel": "test_348197056e644d85",
+      "published_at": "2026-10-01 15:33:01.222015+00:00",
+      "snapshot_id": "4ea4a228-b8bc-4a4c-b4c1-93e809a8a32d"
+    },
+    {
+      "channel": "test_35c8cb045f014e26",
+      "published_at": "2026-10-01 17:55:01.880477+00:00",
+      "snapshot_id": "7eeeb53a-6967-478c-acfd-2280c4ef2e87"
+    },
+    {
+      "channel": "test_39de1b915a5e45a4",
+      "published_at": "2026-10-03 08:26:39.799042+00:00",
+      "snapshot_id": "2be7dbfd-859e-46e2-9f15-3b91152edfcf"
+    },
+    {
+      "channel": "test_3c2974beafb34849",
+      "published_at": "2026-10-01 14:44:36.809159+00:00",
+      "snapshot_id": "706b8610-de25-4374-9f2c-e39e21e3b4f6"
+    },
+    {
+      "channel": "test_3c76d8989ab64b05",
+      "published_at": "2026-10-01 14:24:53.060140+00:00",
+      "snapshot_id": "be1db225-8c91-4f3e-b2c7-ea5aecc344c9"
+    },
+    {
+      "channel": "test_3cb98cd0c645446b",
+      "published_at": "2026-10-02 07:15:02.014881+00:00",
+      "snapshot_id": "e72c48aa-19d4-4c94-b7d1-ca0880c86622"
+    },
+    {
+      "channel": "test_3d48b940760a4853",
+      "published_at": "2026-10-01 18:43:14.710653+00:00",
+      "snapshot_id": "3245ba9d-9a35-4c95-af59-b7b52cec927a"
+    },
+    {
+      "channel": "test_3d8055dea1db4ffd",
+      "published_at": "2026-10-01 16:22:47.007999+00:00",
+      "snapshot_id": "b44f4a11-0242-4ae8-8d65-dbb92072bffb"
+    },
+    {
+      "channel": "test_40941e5a0f26415d",
+      "published_at": "2026-10-02 16:00:03.646762+00:00",
+      "snapshot_id": "06b82c08-d9f9-476f-a8da-8d790ce8d72c"
+    },
+    {
+      "channel": "test_432590a829eb4e3c",
+      "published_at": "2026-10-02 05:38:23.573856+00:00",
+      "snapshot_id": "dcb4abea-24ad-47e5-b7c7-d05797f1f7ce"
+    },
+    {
+      "channel": "test_4393871f2d124148",
+      "published_at": "2026-10-01 15:39:53.247900+00:00",
+      "snapshot_id": "4ea4a228-b8bc-4a4c-b4c1-93e809a8a32d"
+    },
+    {
+      "channel": "test_43ab55d6f1f44807",
+      "published_at": "2026-10-01 16:25:11.656537+00:00",
+      "snapshot_id": "ffa3d45f-154a-4ec5-916d-14d77f14607d"
+    },
+    {
+      "channel": "test_4573e63c3750442e",
+      "published_at": "2026-10-01 17:38:28.411412+00:00",
+      "snapshot_id": "4ea4a228-b8bc-4a4c-b4c1-93e809a8a32d"
+    },
+    {
+      "channel": "test_461ab44bcfeb4878",
+      "published_at": "2026-10-01 15:25:30.728807+00:00",
+      "snapshot_id": "dc29494d-1995-4bdb-bc44-91f4dabca55e"
+    },
+    {
+      "channel": "test_4b39ec87ff524c2b",
+      "published_at": "2026-10-01 15:39:47.297054+00:00",
+      "snapshot_id": "9fc554a7-26ed-41d7-b1dc-8abaed179309"
+    },
+    {
+      "channel": "test_514e3167de3f4849",
+      "published_at": "2026-10-01 14:39:07.708604+00:00",
+      "snapshot_id": "2e78f9ba-fff4-45c0-ac7c-3a0c8f0209b3"
+    },
+    {
+      "channel": "test_51934e951722401d",
+      "published_at": "2026-10-03 08:01:02.638085+00:00",
+      "snapshot_id": "41b654c3-79ae-448c-bce1-942ea39d1716"
+    },
+    {
+      "channel": "test_51fcf6a2e73e477c",
+      "published_at": "2026-10-01 16:25:11.743385+00:00",
+      "snapshot_id": "4ea4a228-b8bc-4a4c-b4c1-93e809a8a32d"
+    },
+    {
+      "channel": "test_531f2a22e9184466",
+      "published_at": "2026-10-02 05:26:36.276392+00:00",
+      "snapshot_id": "4ea4a228-b8bc-4a4c-b4c1-93e809a8a32d"
+    },
+    {
+      "channel": "test_5480d0ffdb78445f",
+      "published_at": "2026-10-01 16:54:10.154433+00:00",
+      "snapshot_id": "4ea4a228-b8bc-4a4c-b4c1-93e809a8a32d"
+    },
+    {
+      "channel": "test_54e2e0f5a4aa4999",
+      "published_at": "2026-10-01 14:39:07.723127+00:00",
+      "snapshot_id": "3ab5131d-a8d5-4c7c-9b17-0cfaf88cde57"
+    },
+    {
+      "channel": "test_55aa0336f4c0487d",
+      "published_at": "2026-10-02 04:56:21.789250+00:00",
+      "snapshot_id": "844249bb-a9f8-4586-bcea-069d507a29cd"
+    },
+    {
+      "channel": "test_560c536ec0bf4c8f",
+      "published_at": "2026-10-03 07:59:00.361735+00:00",
+      "snapshot_id": "dfba7fc8-d6a3-4d9b-8e9e-3d11e3ffa03f"
+    },
+    {
+      "channel": "test_58aa83070d4b46e4",
+      "published_at": "2026-10-02 16:01:59.109664+00:00",
+      "snapshot_id": "4ea4a228-b8bc-4a4c-b4c1-93e809a8a32d"
+    },
+    {
+      "channel": "test_5907205da5134014",
+      "published_at": "2026-10-01 23:15:02.102646+00:00",
+      "snapshot_id": "f9fbed42-a5fc-4014-9822-bb3238c00942"
+    },
+    {
+      "channel": "test_5a7072f2d9034caf",
+      "published_at": "2026-10-02 05:36:31.276465+00:00",
+      "snapshot_id": "8566bc8b-3b29-4327-b6aa-e1c81cbb449d"
+    },
+    {
+      "channel": "test_5bd27a2ab2694593",
+      "published_at": "2026-10-03 07:59:00.348747+00:00",
+      "snapshot_id": "8d06897b-2cd7-4c98-9c62-3ce557c5b0c6"
+    },
+    {
+      "channel": "test_5c1172d1566b473d",
+      "published_at": "2026-10-01 18:10:34.428992+00:00",
+      "snapshot_id": "72165756-8bf6-4f33-902a-211a23047877"
+    },
+    {
+      "channel": "test_5ce0b3c5113242ce",
+      "published_at": "2026-10-03 08:01:02.761573+00:00",
+      "snapshot_id": "4ea4a228-b8bc-4a4c-b4c1-93e809a8a32d"
+    },
+    {
+      "channel": "test_643e3b44e85245ae",
+      "published_at": "2026-09-21 04:25:52.596334+00:00",
+      "snapshot_id": "dcee4ee0-fdc9-4128-9990-8bbc68760415"
+    },
+    {
+      "channel": "test_64ba0aea1f7d441f",
+      "published_at": "2026-10-02 07:17:02.060975+00:00",
+      "snapshot_id": "4ea4a228-b8bc-4a4c-b4c1-93e809a8a32d"
+    },
+    {
+      "channel": "test_658b89db935743b7",
+      "published_at": "2026-10-01 17:56:42.203054+00:00",
+      "snapshot_id": "a40029ba-354d-4494-a94c-f86c841f80b0"
+    },
+    {
+      "channel": "test_65fd031be4a1436d",
+      "published_at": "2026-10-01 14:21:22.215293+00:00",
+      "snapshot_id": "508da5f0-3ec9-4e68-8353-45a3fc18c84d"
+    },
+    {
+      "channel": "test_6747a82adfad4411",
+      "published_at": "2026-10-01 15:39:39.769588+00:00",
+      "snapshot_id": "28a39b16-434b-4b77-87a3-cce88d20fb22"
+    },
+    {
+      "channel": "test_67a0ecfa81584998",
+      "published_at": "2026-10-01 16:24:00.060514+00:00",
+      "snapshot_id": "4ea4a228-b8bc-4a4c-b4c1-93e809a8a32d"
+    },
+    {
+      "channel": "test_68340f3e5d884328",
+      "published_at": "2026-10-02 05:59:58.443024+00:00",
+      "snapshot_id": "e980a849-f171-43dd-a58a-fcee90fb37bc"
+    },
+    {
+      "channel": "test_6ac19485f5f441a6",
+      "published_at": "2026-10-01 14:24:03.651608+00:00",
+      "snapshot_id": "11e39b36-0c97-460f-ad6c-8645eb33f9e8"
+    },
+    {
+      "channel": "test_6d4087dbe9cf4105",
+      "published_at": "2026-10-01 18:38:18.335902+00:00",
+      "snapshot_id": "9aa34dcc-c03b-4354-ae69-e09b8ab66e59"
+    },
+    {
+      "channel": "test_6dfc58318a4643aa",
+      "published_at": "2026-09-21 04:27:11.757302+00:00",
+      "snapshot_id": "1a82addc-3962-4ecb-89d2-018a9d1fbd64"
+    },
+    {
+      "channel": "test_6f7af51918b64f04",
+      "published_at": "2026-09-21 04:22:11.643940+00:00",
+      "snapshot_id": "688b7864-957d-4b1d-a92a-daaf4e1163f2"
+    },
+    {
+      "channel": "test_7305de533e1649b1",
+      "published_at": "2026-09-23 05:17:27.285846+00:00",
+      "snapshot_id": "43a887bb-e08d-459e-8a74-4f0671a77e50"
+    },
+    {
+      "channel": "test_75b9f2b8e48945e5",
+      "published_at": "2026-10-02 15:51:42.063030+00:00",
+      "snapshot_id": "cab33983-1ff0-4b1a-83bf-f0f4f6a67ef7"
+    },
+    {
+      "channel": "test_7b9e33360eb54d2d",
+      "published_at": "2026-10-02 04:58:16.207746+00:00",
+      "snapshot_id": "4ea4a228-b8bc-4a4c-b4c1-93e809a8a32d"
+    },
+    {
+      "channel": "test_7d600aeaac3545d5",
+      "published_at": "2026-10-03 09:02:55.906666+00:00",
+      "snapshot_id": "161acb6b-9452-4c49-93e3-df5163066e65"
+    },
+    {
+      "channel": "test_844f68e07584465b",
+      "published_at": "2026-10-02 05:15:31.735156+00:00",
+      "snapshot_id": "af750324-d92d-4b2b-acfc-5ccedd577a02"
+    },
+    {
+      "channel": "test_84ad2185bcc543ac",
+      "published_at": "2026-10-02 04:56:21.773701+00:00",
+      "snapshot_id": "9d46a6ec-6ae6-4e43-b576-ea50482c9931"
+    },
+    {
+      "channel": "test_8a0f89755d814de6",
+      "published_at": "2026-10-02 15:53:34.891168+00:00",
+      "snapshot_id": "2f351ffc-37cb-43c5-9e70-537a504f6dfa"
+    },
+    {
+      "channel": "test_8d239c0c618c434f",
+      "published_at": "2026-10-02 05:59:58.462850+00:00",
+      "snapshot_id": "6cdccb37-cc9c-4fd1-812a-4794dd47a16c"
+    },
+    {
+      "channel": "test_8d59903b9cfc410b",
+      "published_at": "2026-10-02 07:17:01.987906+00:00",
+      "snapshot_id": "90156bb5-9f7b-4e4e-9b98-577d6ea043ed"
+    },
+    {
+      "channel": "test_8f328263f68d4f87",
+      "published_at": "2026-09-21 05:12:04.659281+00:00",
+      "snapshot_id": "872c0d28-369c-4f99-835c-964c9ed209b6"
+    },
+    {
+      "channel": "test_906a80e31a014105",
+      "published_at": "2026-10-01 16:53:59.130827+00:00",
+      "snapshot_id": "9c425c2d-6a47-4b26-809e-630a32d2bdc1"
+    },
+    {
+      "channel": "test_922ae31498a04d2c",
+      "published_at": "2026-10-01 23:15:02.116089+00:00",
+      "snapshot_id": "16c486ea-c8e8-4950-b5ab-11ab8c3c1702"
+    },
+    {
+      "channel": "test_93a08d798aee4464",
+      "published_at": "2026-10-02 05:13:31.331032+00:00",
+      "snapshot_id": "3333c677-991e-455b-aae8-00b2b300e6a9"
+    },
+    {
+      "channel": "test_95c978f8bde74fdb",
+      "published_at": "2026-10-01 23:16:59.382886+00:00",
+      "snapshot_id": "4ea4a228-b8bc-4a4c-b4c1-93e809a8a32d"
+    },
+    {
+      "channel": "test_9639fcb67666481f",
+      "published_at": "2026-10-01 15:42:27.017066+00:00",
+      "snapshot_id": "d94a4658-d7af-4752-816c-6d74d03eb472"
+    },
+    {
+      "channel": "test_96ed7c081cdd47f9",
+      "published_at": "2026-10-01 14:42:18.975009+00:00",
+      "snapshot_id": "c00a3f19-c9c2-4590-a1f8-bef118e332f9"
+    },
+    {
+      "channel": "test_9746ad3fe4ce4bad",
+      "published_at": "2026-10-01 18:56:16.057222+00:00",
+      "snapshot_id": "de65af73-ddd2-46f3-86db-84f1021eb96d"
+    },
+    {
+      "channel": "test_982d0cb868754920",
+      "published_at": "2026-10-01 15:00:15.904841+00:00",
+      "snapshot_id": "d7e67a1f-c930-49ec-ae09-bf0906f6a04b"
+    },
+    {
+      "channel": "test_9b27250a1a5b4f1e",
+      "published_at": "2026-10-02 15:53:34.975751+00:00",
+      "snapshot_id": "4ea4a228-b8bc-4a4c-b4c1-93e809a8a32d"
+    },
+    {
+      "channel": "test_9edcb79ee6d44e82",
+      "published_at": "2026-10-02 06:01:55.624605+00:00",
+      "snapshot_id": "0a77c977-c3f4-4d13-83f0-534ad2e4ecc9"
+    },
+    {
+      "channel": "test_a5c27b0865914073",
+      "published_at": "2026-10-01 15:39:39.853702+00:00",
+      "snapshot_id": "4ea4a228-b8bc-4a4c-b4c1-93e809a8a32d"
+    },
+    {
+      "channel": "test_a956c3ef64d648b4",
+      "published_at": "2026-10-01 15:44:49.963843+00:00",
+      "snapshot_id": "4b25ecbf-7bc7-45b3-bd04-c965f45eef20"
+    },
+    {
+      "channel": "test_aacac8b2a064407d",
+      "published_at": "2026-10-01 16:53:59.143443+00:00",
+      "snapshot_id": "fc11f205-59e6-47ea-8887-7e53a2a963db"
+    },
+    {
+      "channel": "test_ad61b8074c464fcb",
+      "published_at": "2026-10-01 16:22:51.640805+00:00",
+      "snapshot_id": "b795069b-2117-4f51-a9b7-5d67698178ab"
+    },
+    {
+      "channel": "test_add481a61add4bad",
+      "published_at": "2026-10-02 07:15:02.004207+00:00",
+      "snapshot_id": "764d23c0-82aa-4dab-a9a2-c56add1acc32"
+    },
+    {
+      "channel": "test_ae2800da1f2747c0",
+      "published_at": "2026-10-03 08:29:29.602797+00:00",
+      "snapshot_id": "4ea4a228-b8bc-4a4c-b4c1-93e809a8a32d"
+    },
+    {
+      "channel": "test_ae84f3ef3f464ebd",
+      "published_at": "2026-10-01 15:44:31.219500+00:00",
+      "snapshot_id": "4ea4a228-b8bc-4a4c-b4c1-93e809a8a32d"
+    },
+    {
+      "channel": "test_b030bc27a2624ec7",
+      "published_at": "2026-10-03 08:12:28.042532+00:00",
+      "snapshot_id": "3d2449ca-8ca6-400e-90ec-bc2ed8b313e5"
+    },
+    {
+      "channel": "test_b17fd272177442cf",
+      "published_at": "2026-10-01 14:40:29.470098+00:00",
+      "snapshot_id": "06a4cd6b-7599-4693-a5dc-9cfb3e40eb6d"
+    },
+    {
+      "channel": "test_b259ec22055844cd",
+      "published_at": "2026-10-01 17:56:46.093077+00:00",
+      "snapshot_id": "587b5998-0695-4846-a836-fffe5f03f7a2"
+    },
+    {
+      "channel": "test_b2c31acfad4443eb",
+      "published_at": "2026-10-03 09:05:16.649167+00:00",
+      "snapshot_id": "f389f6ce-f379-4266-8c29-4d106cfccfb1"
+    },
+    {
+      "channel": "test_b53ca9c806374c60",
+      "published_at": "2026-10-01 15:45:01.032782+00:00",
+      "snapshot_id": "4ea4a228-b8bc-4a4c-b4c1-93e809a8a32d"
+    },
+    {
+      "channel": "test_b5881bc312dd4552",
+      "published_at": "2026-10-01 16:25:01.008355+00:00",
+      "snapshot_id": "e871b618-50af-40df-b314-208ed4776b69"
+    },
+    {
+      "channel": "test_b6d637a061784f39",
+      "published_at": "2026-10-01 14:24:03.637521+00:00",
+      "snapshot_id": "e1a36370-9683-4c8c-bbbd-79416b80e38e"
+    },
+    {
+      "channel": "test_b6eab63c03be4193",
+      "published_at": "2026-10-01 14:31:51.958029+00:00",
+      "snapshot_id": "a6a265e2-55eb-42b0-99af-b927cadc4b1f"
+    },
+    {
+      "channel": "test_bb20691a450243a6",
+      "published_at": "2026-10-01 14:31:51.941479+00:00",
+      "snapshot_id": "628cb20a-7d15-4c5e-9cde-5f7766526068"
+    },
+    {
+      "channel": "test_be54c403e8b1417e",
+      "published_at": "2026-10-02 05:26:36.192688+00:00",
+      "snapshot_id": "3969adf6-bcb4-45ca-84c9-80641e14a941"
+    },
+    {
+      "channel": "test_bedd5faff9bb484e",
+      "published_at": "2026-09-23 05:29:09.699002+00:00",
+      "snapshot_id": "3b2e1430-1822-43cb-8c30-b51d8425847c"
+    },
+    {
+      "channel": "test_bfe150e577214f3b",
+      "published_at": "2026-10-03 08:10:28.705282+00:00",
+      "snapshot_id": "5f99757f-f5c9-42f1-a373-855f39ef4b64"
+    },
+    {
+      "channel": "test_bffa01121e6744ee",
+      "published_at": "2026-10-01 17:15:48.141869+00:00",
+      "snapshot_id": "d30b1be3-d66b-44a5-9957-726d8e79858b"
+    },
+    {
+      "channel": "test_c2191beea75d4838",
+      "published_at": "2026-10-01 16:23:48.827623+00:00",
+      "snapshot_id": "a39ca0f0-9518-429a-ad53-5344a2a2c6f0"
+    },
+    {
+      "channel": "test_c26ab4aa8c59488f",
+      "published_at": "2026-10-01 16:59:54.784937+00:00",
+      "snapshot_id": "44b77279-5137-47ad-b1d3-5b90fb28a6ba"
+    },
+    {
+      "channel": "test_c3a14c06fdc74cec",
+      "published_at": "2026-10-02 04:58:16.119520+00:00",
+      "snapshot_id": "a7ee6f1b-04ec-471a-83d6-0348e6102da6"
+    },
+    {
+      "channel": "test_c655c9b3ccfd4fef",
+      "published_at": "2026-10-01 18:38:18.421687+00:00",
+      "snapshot_id": "4ea4a228-b8bc-4a4c-b4c1-93e809a8a32d"
+    },
+    {
+      "channel": "test_c686fd52882d4456",
+      "published_at": "2026-10-02 15:51:42.076226+00:00",
+      "snapshot_id": "d69b4fd1-0399-4f42-abf6-f9854e6d7909"
+    },
+    {
+      "channel": "test_c8394caaa458412b",
+      "published_at": "2026-10-02 06:01:55.726516+00:00",
+      "snapshot_id": "4ea4a228-b8bc-4a4c-b4c1-93e809a8a32d"
+    },
+    {
+      "channel": "test_c84e2f2cf97e47ce",
+      "published_at": "2026-09-23 05:12:31.506211+00:00",
+      "snapshot_id": "7415301d-5e45-40e7-952a-cca711498491"
+    },
+    {
+      "channel": "test_c889aafb98b646d5",
+      "published_at": "2026-10-01 16:59:48.545522+00:00",
+      "snapshot_id": "e8eaf03a-208f-4604-a0a1-8c88ea5bd638"
+    },
+    {
+      "channel": "test_c92c0a4b5396407c",
+      "published_at": "2026-10-01 16:23:48.814406+00:00",
+      "snapshot_id": "4d4d499c-cdba-4c12-9b54-5bc22fedb078"
+    },
+    {
+      "channel": "test_c99b741450c4428c",
+      "published_at": "2026-10-01 14:24:29.032512+00:00",
+      "snapshot_id": "f291b4ce-0b96-4b21-bd69-7fbdcaa4eef6"
+    },
+    {
+      "channel": "test_ca47a6e67a3d4bee",
+      "published_at": "2026-10-01 17:48:56.423720+00:00",
+      "snapshot_id": "b4d7c77c-3ad2-482f-b323-707258bdf205"
+    },
+    {
+      "channel": "test_ca8b738bc58843c9",
+      "published_at": "2026-10-01 14:24:29.045258+00:00",
+      "snapshot_id": "495084e6-69b0-4ecb-b899-de443a81fb2c"
+    },
+    {
+      "channel": "test_d06724e636724ef4",
+      "published_at": "2026-10-01 15:44:49.944510+00:00",
+      "snapshot_id": "dd1de25a-f521-4dde-a18b-429d1aeb8e9b"
+    },
+    {
+      "channel": "test_d1499acb54ab479b",
+      "published_at": "2026-10-03 09:05:16.843497+00:00",
+      "snapshot_id": "4ea4a228-b8bc-4a4c-b4c1-93e809a8a32d"
+    },
+    {
+      "channel": "test_d21a551928e74d22",
+      "published_at": "2026-10-01 14:24:53.047283+00:00",
+      "snapshot_id": "f7362c5e-10b4-43e6-8761-37974b8bfd52"
+    },
+    {
+      "channel": "test_d29cd030f53a4f5f",
+      "published_at": "2026-10-01 15:45:00.940686+00:00",
+      "snapshot_id": "71f32cca-8d65-4f56-9db3-311504ed49cf"
+    },
+    {
+      "channel": "test_d59eac2212544d5e",
+      "published_at": "2026-10-01 14:37:47.878941+00:00",
+      "snapshot_id": "3a918e78-b4ae-422d-a417-589098c21573"
+    },
+    {
+      "channel": "test_daf3a80a7cbe4257",
+      "published_at": "2026-10-01 16:25:01.020877+00:00",
+      "snapshot_id": "9ccd49ca-4e6b-4f29-8b55-43485e18e03a"
+    },
+    {
+      "channel": "test_dbd0eec20db349ab",
+      "published_at": "2026-10-01 16:23:23.401402+00:00",
+      "snapshot_id": "ed676d0e-e69c-4afe-865d-bb557c75d966"
+    },
+    {
+      "channel": "test_dcd81cbdd0474d4b",
+      "published_at": "2026-10-03 08:26:39.780700+00:00",
+      "snapshot_id": "e1e56057-5a9a-4ff3-9d86-dd394468d779"
+    },
+    {
+      "channel": "test_dd6632ddc31b4121",
+      "published_at": "2026-10-02 05:36:31.265708+00:00",
+      "snapshot_id": "d4abfcb8-9bab-4705-83e1-ef04f1ecdbda"
+    },
+    {
+      "channel": "test_dfe72c21347b4284",
+      "published_at": "2026-10-01 18:10:34.417222+00:00",
+      "snapshot_id": "4ddf47f7-b74c-4ccf-ae97-c73dc99348d1"
+    },
+    {
+      "channel": "test_e13d1cc4436744e7",
+      "published_at": "2026-10-03 08:29:29.440749+00:00",
+      "snapshot_id": "b4ff8337-a228-455a-9300-615d30a411dd"
+    },
+    {
+      "channel": "test_e7d410d1615a4954",
+      "published_at": "2026-10-01 17:15:48.152826+00:00",
+      "snapshot_id": "743fa398-c0f3-4581-b8d6-e3694df0ddba"
+    },
+    {
+      "channel": "test_e7e6c2f0bba443f9",
+      "published_at": "2026-10-01 14:24:13.719043+00:00",
+      "snapshot_id": "c4939c25-b119-4cd9-9f0b-d36126e68d91"
+    },
+    {
+      "channel": "test_e88329bd3ac84aeb",
+      "published_at": "2026-10-02 05:15:31.843187+00:00",
+      "snapshot_id": "4ea4a228-b8bc-4a4c-b4c1-93e809a8a32d"
+    },
+    {
+      "channel": "test_e9101317e04242a7",
+      "published_at": "2026-09-21 16:02:29.792043+00:00",
+      "snapshot_id": "582f2aaa-14e7-4e0b-971a-c5ce614e8875"
+    },
+    {
+      "channel": "test_ea25e6dd28794cec",
+      "published_at": "2026-10-01 14:37:47.863840+00:00",
+      "snapshot_id": "34bef43b-ed59-450a-b269-7a3b83c25495"
+    },
+    {
+      "channel": "test_ef039d5329d44297",
+      "published_at": "2026-10-01 17:38:16.973459+00:00",
+      "snapshot_id": "4e69f4f7-4c96-4790-b9b5-46a904e32840"
+    },
+    {
+      "channel": "test_ef50a397d1bc47cf",
+      "published_at": "2026-10-01 16:22:47.111286+00:00",
+      "snapshot_id": "4ea4a228-b8bc-4a4c-b4c1-93e809a8a32d"
+    },
+    {
+      "channel": "test_ef990b896e5d46e5",
+      "published_at": "2026-10-02 16:00:03.633498+00:00",
+      "snapshot_id": "4fff41d8-5415-471f-a649-40a3d6e6f1f5"
+    },
+    {
+      "channel": "test_f04aaa4c092544e7",
+      "published_at": "2026-10-01 15:39:53.156657+00:00",
+      "snapshot_id": "47141978-3581-4afe-89fb-fdb89af61d45"
+    },
+    {
+      "channel": "test_f0a3a4de38a24c97",
+      "published_at": "2026-10-03 08:12:28.158435+00:00",
+      "snapshot_id": "4ea4a228-b8bc-4a4c-b4c1-93e809a8a32d"
+    },
+    {
+      "channel": "test_f109a94aea894330",
+      "published_at": "2026-10-01 23:13:02.089474+00:00",
+      "snapshot_id": "6402e236-54ca-4dc9-853b-39b5ba662cc2"
+    },
+    {
+      "channel": "test_f140420ee8f5454a",
+      "published_at": "2026-10-01 17:00:05.259967+00:00",
+      "snapshot_id": "4ea4a228-b8bc-4a4c-b4c1-93e809a8a32d"
+    },
+    {
+      "channel": "test_f6563569f73746e5",
+      "published_at": "2026-10-01 14:42:18.961606+00:00",
+      "snapshot_id": "a469d6aa-bc55-4629-8ea9-212516e1d255"
+    },
+    {
+      "channel": "test_f750231dd423453a",
+      "published_at": "2026-09-21 04:46:17.378498+00:00",
+      "snapshot_id": "4203cb0b-74ad-4c2d-a8f6-222aea21ac34"
+    },
+    {
+      "channel": "test_f8c6881fd21f4eef",
+      "published_at": "2026-10-04 14:09:32.500916+00:00",
+      "snapshot_id": "b1e81918-3fd7-4164-9c04-ca2502aac1f2"
+    },
+    {
+      "channel": "test_fb8aac435300468f",
+      "published_at": "2026-10-01 17:00:05.177620+00:00",
+      "snapshot_id": "242b2358-517a-4eae-ad63-603599e835ca"
+    },
+    {
+      "channel": "test_fe3bad70b53649f6",
+      "published_at": "2026-10-01 18:56:16.142957+00:00",
+      "snapshot_id": "4ea4a228-b8bc-4a4c-b4c1-93e809a8a32d"
+    }
+  ],
+  "research_datasets": [
+    {
+      "admission_transaction": "14240",
+      "content_sha256": "680f8291296f2f3c52758ece1678c5be0fae0f5431dfce2ad41780a4dcd06e19",
+      "coverage_report_sha256": "d488afaae29fa14529d8f6dab779de87fe03c4453fc996f95bd8d117a9dd8c96",
+      "created_at": "2026-10-03 14:11:40.877761+00:00",
+      "id": "3d64fe04-dc9a-4a45-bf96-182371a94f7b",
+      "manifest_json": {
+        "bundles": [
+          {
+            "box_root": "data/raw/sportsdataverse_2024",
+            "ledger": "data/raw/b26-official-observations/reviewed-2023-v3/ledger.json",
+            "manifest_sha256": "cdb22cdb1dcdf80a34f4b87f5bec2d92e84b23959b7aa81be2c0814fa55be09a",
+            "root": "data/artifacts/research-shots/b26-three-season-2023",
+            "shot_root": "data/raw/b26-shotchart/e829d4678be1e075f99e5d41a1c5f97089be446b/2023",
+            "starting_year": 2023
+          },
+          {
+            "box_root": "data/raw/sportsdataverse_2025",
+            "ledger": "data/raw/b26-official-observations/reviewed-653-v2/ledger.json",
+            "manifest_sha256": "27068bbbc0a419b91f4872a9ced026d8701a755c46c99908018806512dbd7baf",
+            "root": "data/artifacts/research-shots/b26-three-season-2024",
+            "shot_root": "data/raw/b26-shotchart/e829d4678be1e075f99e5d41a1c5f97089be446b/2024",
+            "starting_year": 2024
+          },
+          {
+            "box_root": "data/raw/sportsdataverse_2026",
+            "ledger": "data/raw/b26-official-observations/reviewed-403-v1/ledger.json",
+            "manifest_sha256": "aaaea8a18e65b2d50a9b9e73778aba85bfde30351bd365fbaeaa722038fdefff",
+            "root": "data/artifacts/research-shots/b26-three-season-2025",
+            "shot_root": "data/raw/b26-shotchart/e829d4678be1e075f99e5d41a1c5f97089be446b",
+            "starting_year": 2025
+          }
+        ],
+        "scope": "local_noncommercial_research",
+        "use_review_sha256": "dc9c25c5aa2c8e6c91264550ec4660c392bbd6bfaa8859639126b725d4bcaef9"
+      },
+      "source_membership_sha256": "9eaef4f62cb9214614b5182d1c987d95b067c9a45d3d8a63cef8a158565d2171",
+      "transform_sha256": "5cfa21e7aac3181f2a297bbcf44f585c450191a5038d8599de45e9933eeae567"
+    }
+  ],
+  "workbench_datasets": [
+    {
+      "content_sha256": "c9941b334e1e4bd9a18ca3b123978a3bc9941b334e1e4bd9a18ca3b123978a3b",
+      "coverage_json": {},
+      "created_at": "2026-10-01 16:24:00.063632+00:00",
+      "exclusions_json": {},
+      "id": "0a08e9ba-f932-4077-b124-7e0f27ef908d",
+      "manifest_json": {},
+      "membership_sha256": "253e685d82a941c6a39f0e294c2a1162253e685d82a941c6a39f0e294c2a1162",
+      "parser_version": "test-v1",
+      "phases_json": [
+        "regular_season"
+      ],
+      "quality_version": "test-v1",
+      "seasons_json": [
+        "2025-26"
+      ],
+      "semantic_signature": "1fd6d13d35d440f0b2f2035eaecebdfe1fd6d13d35d440f0b2f2035eaecebdfe",
+      "source_namespace": "sportsdataverse",
+      "status": "candidate"
+    },
+    {
+      "content_sha256": "pg_ds_c_282c1af7292d0000000000000000000000000000000000000000",
+      "coverage_json": {},
+      "created_at": "2026-10-01 15:45:01.271392+00:00",
+      "exclusions_json": {},
+      "id": "0c827c09-f3e1-4255-8a81-951c607e9cfb",
+      "manifest_json": {},
+      "membership_sha256": "pg_ds_m_282c1af7292d0000000000000000000000000000000000000000",
+      "parser_version": "v1",
+      "phases_json": [
+        "regular_season"
+      ],
+      "quality_version": "q1",
+      "seasons_json": [
+        "2025-26"
+      ],
+      "semantic_signature": "pg_ds_s_282c1af7292d0000000000000000000000000000000000000000",
+      "source_namespace": "test_ns",
+      "status": "ready"
+    },
+    {
+      "content_sha256": "474d0d4e6bb44fbea9773e3eeddedb5f474d0d4e6bb44fbea9773e3eeddedb5f",
+      "coverage_json": {},
+      "created_at": "2026-10-02 15:53:34.977514+00:00",
+      "exclusions_json": {},
+      "id": "0c84beea-a599-484b-bbc7-4d347a46eaff",
+      "manifest_json": {},
+      "membership_sha256": "48d88427630c46be9542dce200f33d8948d88427630c46be9542dce200f33d89",
+      "parser_version": "test-v1",
+      "phases_json": [
+        "regular_season"
+      ],
+      "quality_version": "test-v1",
+      "seasons_json": [
+        "2025-26"
+      ],
+      "semantic_signature": "aa9d115acd0d40b79ac1ebe98d541ea5aa9d115acd0d40b79ac1ebe98d541ea5",
+      "source_namespace": "sportsdataverse",
+      "status": "candidate"
+    },
+    {
+      "content_sha256": "5e3c9e2ced4d4bf18ad99405db8ec6245e3c9e2ced4d4bf18ad99405db8ec624",
+      "coverage_json": {},
+      "created_at": "2026-10-03 09:05:16.846268+00:00",
+      "exclusions_json": {},
+      "id": "133e1180-6d3f-412d-8317-6113ffc3cf7e",
+      "manifest_json": {},
+      "membership_sha256": "9fe9f7eab0164fb99b5b8e036e51a3859fe9f7eab0164fb99b5b8e036e51a385",
+      "parser_version": "test-v1",
+      "phases_json": [
+        "regular_season"
+      ],
+      "quality_version": "test-v1",
+      "seasons_json": [
+        "2025-26"
+      ],
+      "semantic_signature": "1c5cacc5d534471d830cea69455e9d251c5cacc5d534471d830cea69455e9d25",
+      "source_namespace": "sportsdataverse",
+      "status": "candidate"
+    },
+    {
+      "content_sha256": "68bc89a115a025f84ca93f34aa50072696ed316490fa9e4d226cf0578c4a5c6d",
+      "coverage_json": {
+        "seasons": [
+          "2023-24",
+          "2024-25",
+          "2025-26",
+          "2026-27"
+        ],
+        "total_games": 0,
+        "total_player_games": 104533,
+        "total_schedules": 5470,
+        "total_team_games": 7924
+      },
+      "created_at": "2026-10-01 15:38:22.782945+00:00",
+      "exclusions_json": {
+        "quarantined_player_rows": 210
+      },
+      "id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+      "manifest_json": {
+        "admitted_years": [
+          2024,
+          2025,
+          2026,
+          2027
+        ],
+        "file_count": 10
+      },
+      "membership_sha256": "d77520348b95269d63c3841091d34016e92a41f9b45692ad89b930cc26a9076d",
+      "parser_version": "workbench-v1",
+      "phases_json": [
+        "regular_season",
+        "preseason",
+        "playoffs",
+        "play_in",
+        "cup_final"
+      ],
+      "quality_version": "reconciliation-v1",
+      "seasons_json": [
+        "2023-24",
+        "2024-25",
+        "2025-26",
+        "2026-27"
+      ],
+      "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666",
+      "source_namespace": "sportsdataverse",
+      "status": "ready"
+    },
+    {
+      "content_sha256": "pg_ds_c_3cf7cc43720b0000000000000000000000000000000000000000",
+      "coverage_json": {},
+      "created_at": "2026-10-01 14:38:17.134816+00:00",
+      "exclusions_json": {},
+      "id": "182c8594-5f33-4d15-abab-dcc8c7d09142",
+      "manifest_json": {},
+      "membership_sha256": "pg_ds_m_3cf7cc43720b0000000000000000000000000000000000000000",
+      "parser_version": "v1",
+      "phases_json": [
+        "regular_season"
+      ],
+      "quality_version": "q1",
+      "seasons_json": [
+        "2025-26"
+      ],
+      "semantic_signature": "pg_ds_s_3cf7cc43720b0000000000000000000000000000000000000000",
+      "source_namespace": "test_ns",
+      "status": "ready"
+    },
+    {
+      "content_sha256": "834bfed81baf4200b3f185ad125f0433834bfed81baf4200b3f185ad125f0433",
+      "coverage_json": {},
+      "created_at": "2026-10-03 08:12:28.162452+00:00",
+      "exclusions_json": {},
+      "id": "1e14e8c5-2731-4e6e-8eea-eecf75d8d51d",
+      "manifest_json": {},
+      "membership_sha256": "1e2fe536cf5246caa263b98be23276551e2fe536cf5246caa263b98be2327655",
+      "parser_version": "test-v1",
+      "phases_json": [
+        "regular_season"
+      ],
+      "quality_version": "test-v1",
+      "seasons_json": [
+        "2025-26"
+      ],
+      "semantic_signature": "05a774b8c39e496d9559c983cf4688d105a774b8c39e496d9559c983cf4688d1",
+      "source_namespace": "sportsdataverse",
+      "status": "candidate"
+    },
+    {
+      "content_sha256": "pg_ds_c_0a4d83ece99c0000000000000000000000000000000000000000",
+      "coverage_json": {},
+      "created_at": "2026-10-01 17:22:09.057376+00:00",
+      "exclusions_json": {},
+      "id": "1f6696c9-96bc-4e53-951b-44da2319acea",
+      "manifest_json": {},
+      "membership_sha256": "pg_ds_m_0a4d83ece99c0000000000000000000000000000000000000000",
+      "parser_version": "v1",
+      "phases_json": [
+        "regular_season"
+      ],
+      "quality_version": "q1",
+      "seasons_json": [
+        "2025-26"
+      ],
+      "semantic_signature": "pg_ds_s_0a4d83ece99c0000000000000000000000000000000000000000",
+      "source_namespace": "test_ns",
+      "status": "ready"
+    },
+    {
+      "content_sha256": "d42fa6a09f96439bb21cbc31710f0f43d42fa6a09f96439bb21cbc31710f0f43",
+      "coverage_json": {},
+      "created_at": "2026-10-01 16:54:10.156426+00:00",
+      "exclusions_json": {},
+      "id": "219766e1-6662-482d-b9ee-e2daa626b961",
+      "manifest_json": {},
+      "membership_sha256": "136ae307bd354aac804d811b4e076624136ae307bd354aac804d811b4e076624",
+      "parser_version": "test-v1",
+      "phases_json": [
+        "regular_season"
+      ],
+      "quality_version": "test-v1",
+      "seasons_json": [
+        "2025-26"
+      ],
+      "semantic_signature": "742a925e276b4f94b85b237f975bf862742a925e276b4f94b85b237f975bf862",
+      "source_namespace": "sportsdataverse",
+      "status": "candidate"
+    },
+    {
+      "content_sha256": "pg_ds_c_9b0ee27bf5820000000000000000000000000000000000000000",
+      "coverage_json": {},
+      "created_at": "2026-10-01 15:39:53.454020+00:00",
+      "exclusions_json": {},
+      "id": "2eb98f1a-7d8b-4c4c-b11a-d7282ab6bc6e",
+      "manifest_json": {},
+      "membership_sha256": "pg_ds_m_9b0ee27bf5820000000000000000000000000000000000000000",
+      "parser_version": "v1",
+      "phases_json": [
+        "regular_season"
+      ],
+      "quality_version": "q1",
+      "seasons_json": [
+        "2025-26"
+      ],
+      "semantic_signature": "pg_ds_s_9b0ee27bf5820000000000000000000000000000000000000000",
+      "source_namespace": "test_ns",
+      "status": "ready"
+    },
+    {
+      "content_sha256": "5a310f1086484e5bb48e2c50ddd445de5a310f1086484e5bb48e2c50ddd445de",
+      "coverage_json": {},
+      "created_at": "2026-10-02 05:38:23.668840+00:00",
+      "exclusions_json": {},
+      "id": "35fe619b-13d3-4ee5-9c07-337f5dd364c9",
+      "manifest_json": {},
+      "membership_sha256": "4d8b1fd046d649ee9222970401c03c714d8b1fd046d649ee9222970401c03c71",
+      "parser_version": "test-v1",
+      "phases_json": [
+        "regular_season"
+      ],
+      "quality_version": "test-v1",
+      "seasons_json": [
+        "2025-26"
+      ],
+      "semantic_signature": "1fa883e659904dbbb95636a58da4857d1fa883e659904dbbb95636a58da4857d",
+      "source_namespace": "sportsdataverse",
+      "status": "candidate"
+    },
+    {
+      "content_sha256": "pg_ds_c_1df9ae0af0f70000000000000000000000000000000000000000",
+      "coverage_json": {},
+      "created_at": "2026-10-03 08:01:03.505766+00:00",
+      "exclusions_json": {},
+      "id": "37bbe672-a966-44b4-9bc6-25bc0fde0942",
+      "manifest_json": {},
+      "membership_sha256": "pg_ds_m_1df9ae0af0f70000000000000000000000000000000000000000",
+      "parser_version": "v1",
+      "phases_json": [
+        "regular_season"
+      ],
+      "quality_version": "q1",
+      "seasons_json": [
+        "2025-26"
+      ],
+      "semantic_signature": "pg_ds_s_1df9ae0af0f70000000000000000000000000000000000000000",
+      "source_namespace": "test_ns",
+      "status": "ready"
+    },
+    {
+      "content_sha256": "pg_ds_c_228747d87a060000000000000000000000000000000000000000",
+      "coverage_json": {},
+      "created_at": "2026-10-02 15:53:35.487610+00:00",
+      "exclusions_json": {},
+      "id": "41a62229-70ea-4151-adee-5b5fd45fcb66",
+      "manifest_json": {},
+      "membership_sha256": "pg_ds_m_228747d87a060000000000000000000000000000000000000000",
+      "parser_version": "v1",
+      "phases_json": [
+        "regular_season"
+      ],
+      "quality_version": "q1",
+      "seasons_json": [
+        "2025-26"
+      ],
+      "semantic_signature": "pg_ds_s_228747d87a060000000000000000000000000000000000000000",
+      "source_namespace": "test_ns",
+      "status": "ready"
+    },
+    {
+      "content_sha256": "4fcd546f51684cfa9074a02c8cdc60674fcd546f51684cfa9074a02c8cdc6067",
+      "coverage_json": {},
+      "created_at": "2026-10-01 17:38:28.415363+00:00",
+      "exclusions_json": {},
+      "id": "4531a398-6f59-4594-9866-86181b6c82f0",
+      "manifest_json": {},
+      "membership_sha256": "143eaa32c93f48a3b98414943447e281143eaa32c93f48a3b98414943447e281",
+      "parser_version": "test-v1",
+      "phases_json": [
+        "regular_season"
+      ],
+      "quality_version": "test-v1",
+      "seasons_json": [
+        "2025-26"
+      ],
+      "semantic_signature": "5e003185089a41869deaafc5a52876305e003185089a41869deaafc5a5287630",
+      "source_namespace": "sportsdataverse",
+      "status": "candidate"
+    },
+    {
+      "content_sha256": "pg_ds_c_8553ba96bb400000000000000000000000000000000000000000",
+      "coverage_json": {},
+      "created_at": "2026-10-02 16:01:59.733027+00:00",
+      "exclusions_json": {},
+      "id": "4cd0b29e-4def-4f39-bfdc-4dd34aa73e69",
+      "manifest_json": {},
+      "membership_sha256": "pg_ds_m_8553ba96bb400000000000000000000000000000000000000000",
+      "parser_version": "v1",
+      "phases_json": [
+        "regular_season"
+      ],
+      "quality_version": "q1",
+      "seasons_json": [
+        "2025-26"
+      ],
+      "semantic_signature": "pg_ds_s_8553ba96bb400000000000000000000000000000000000000000",
+      "source_namespace": "test_ns",
+      "status": "ready"
+    },
+    {
+      "content_sha256": "pg_ds_c_626c88d40a210000000000000000000000000000000000000000",
+      "coverage_json": {},
+      "created_at": "2026-10-02 05:38:23.887480+00:00",
+      "exclusions_json": {},
+      "id": "512ab794-2a1f-4cd4-8c19-01d402be65bc",
+      "manifest_json": {},
+      "membership_sha256": "pg_ds_m_626c88d40a210000000000000000000000000000000000000000",
+      "parser_version": "v1",
+      "phases_json": [
+        "regular_season"
+      ],
+      "quality_version": "q1",
+      "seasons_json": [
+        "2025-26"
+      ],
+      "semantic_signature": "pg_ds_s_626c88d40a210000000000000000000000000000000000000000",
+      "source_namespace": "test_ns",
+      "status": "ready"
+    },
+    {
+      "content_sha256": "pg_ds_c_33a47bfc2f9e0000000000000000000000000000000000000000",
+      "coverage_json": {},
+      "created_at": "2026-10-02 05:15:32.096163+00:00",
+      "exclusions_json": {},
+      "id": "530d5d9c-6e63-4d29-b6da-3e73fe14971a",
+      "manifest_json": {},
+      "membership_sha256": "pg_ds_m_33a47bfc2f9e0000000000000000000000000000000000000000",
+      "parser_version": "v1",
+      "phases_json": [
+        "regular_season"
+      ],
+      "quality_version": "q1",
+      "seasons_json": [
+        "2025-26"
+      ],
+      "semantic_signature": "pg_ds_s_33a47bfc2f9e0000000000000000000000000000000000000000",
+      "source_namespace": "test_ns",
+      "status": "ready"
+    },
+    {
+      "content_sha256": "56f19cd0817b4515bf8c52716abd59c256f19cd0817b4515bf8c52716abd59c2",
+      "coverage_json": {},
+      "created_at": "2026-10-01 23:16:59.385983+00:00",
+      "exclusions_json": {},
+      "id": "53d50402-3c74-4d32-b22f-6a68e7e7d5fa",
+      "manifest_json": {},
+      "membership_sha256": "04dec8fc306d4cc5910fc71fa833600004dec8fc306d4cc5910fc71fa8336000",
+      "parser_version": "test-v1",
+      "phases_json": [
+        "regular_season"
+      ],
+      "quality_version": "test-v1",
+      "seasons_json": [
+        "2025-26"
+      ],
+      "semantic_signature": "ec6ddf9fb2ff45789e88da738fb14a65ec6ddf9fb2ff45789e88da738fb14a65",
+      "source_namespace": "sportsdataverse",
+      "status": "candidate"
+    },
+    {
+      "content_sha256": "a29c2d71d22748999305c9ed3e98faa9a29c2d71d22748999305c9ed3e98faa9",
+      "coverage_json": {},
+      "created_at": "2026-10-01 18:56:16.146772+00:00",
+      "exclusions_json": {},
+      "id": "584e0a24-085c-430f-9640-6aaf41333593",
+      "manifest_json": {},
+      "membership_sha256": "e696105b66044cc68176152c025199b3e696105b66044cc68176152c025199b3",
+      "parser_version": "test-v1",
+      "phases_json": [
+        "regular_season"
+      ],
+      "quality_version": "test-v1",
+      "seasons_json": [
+        "2025-26"
+      ],
+      "semantic_signature": "daa28f6a3b7f4a0eb8c2159d512bc8aadaa28f6a3b7f4a0eb8c2159d512bc8aa",
+      "source_namespace": "sportsdataverse",
+      "status": "candidate"
+    },
+    {
+      "content_sha256": "pg_ds_c_04bcac9cb4770000000000000000000000000000000000000000",
+      "coverage_json": {},
+      "created_at": "2026-10-01 18:38:18.609403+00:00",
+      "exclusions_json": {},
+      "id": "6c12d02d-5a3e-47f0-b26f-75585cb52ff9",
+      "manifest_json": {},
+      "membership_sha256": "pg_ds_m_04bcac9cb4770000000000000000000000000000000000000000",
+      "parser_version": "v1",
+      "phases_json": [
+        "regular_season"
+      ],
+      "quality_version": "q1",
+      "seasons_json": [
+        "2025-26"
+      ],
+      "semantic_signature": "pg_ds_s_04bcac9cb4770000000000000000000000000000000000000000",
+      "source_namespace": "test_ns",
+      "status": "ready"
+    },
+    {
+      "content_sha256": "ecaef39090fc4fa3a4f44b9696834a60ecaef39090fc4fa3a4f44b9696834a60",
+      "coverage_json": {},
+      "created_at": "2026-10-02 04:58:16.210603+00:00",
+      "exclusions_json": {},
+      "id": "6d1d6e67-8023-4a6b-bf29-c708351fee13",
+      "manifest_json": {},
+      "membership_sha256": "61f2ddd3cd0942129f3c25a6c75ab22061f2ddd3cd0942129f3c25a6c75ab220",
+      "parser_version": "test-v1",
+      "phases_json": [
+        "regular_season"
+      ],
+      "quality_version": "test-v1",
+      "seasons_json": [
+        "2025-26"
+      ],
+      "semantic_signature": "91866715bb1548408b6c2fa87181495191866715bb1548408b6c2fa871814951",
+      "source_namespace": "sportsdataverse",
+      "status": "candidate"
+    },
+    {
+      "content_sha256": "pg_ds_c_a609e8b6952d0000000000000000000000000000000000000000",
+      "coverage_json": {},
+      "created_at": "2026-10-02 06:01:55.979454+00:00",
+      "exclusions_json": {},
+      "id": "74060d98-d9fd-42c7-a2eb-cb3309d9d581",
+      "manifest_json": {},
+      "membership_sha256": "pg_ds_m_a609e8b6952d0000000000000000000000000000000000000000",
+      "parser_version": "v1",
+      "phases_json": [
+        "regular_season"
+      ],
+      "quality_version": "q1",
+      "seasons_json": [
+        "2025-26"
+      ],
+      "semantic_signature": "pg_ds_s_a609e8b6952d0000000000000000000000000000000000000000",
+      "source_namespace": "test_ns",
+      "status": "ready"
+    },
+    {
+      "content_sha256": "03372bcde32e487ca7288736f5f3ac3303372bcde32e487ca7288736f5f3ac33",
+      "coverage_json": {},
+      "created_at": "2026-10-02 06:01:55.728773+00:00",
+      "exclusions_json": {},
+      "id": "777b319d-de81-411a-af86-58a8616e9a90",
+      "manifest_json": {},
+      "membership_sha256": "0ccf36c9679846b3bcd2015b5c019c650ccf36c9679846b3bcd2015b5c019c65",
+      "parser_version": "test-v1",
+      "phases_json": [
+        "regular_season"
+      ],
+      "quality_version": "test-v1",
+      "seasons_json": [
+        "2025-26"
+      ],
+      "semantic_signature": "e7c40fde51aa4b108a3f9e8e4a0cd0afe7c40fde51aa4b108a3f9e8e4a0cd0af",
+      "source_namespace": "sportsdataverse",
+      "status": "candidate"
+    },
+    {
+      "content_sha256": "pg_ds_c_b2c672db5a850000000000000000000000000000000000000000",
+      "coverage_json": {},
+      "created_at": "2026-10-03 09:05:17.457326+00:00",
+      "exclusions_json": {},
+      "id": "779b5743-68e0-4221-a2c8-09499730a9b4",
+      "manifest_json": {},
+      "membership_sha256": "pg_ds_m_b2c672db5a850000000000000000000000000000000000000000",
+      "parser_version": "v1",
+      "phases_json": [
+        "regular_season"
+      ],
+      "quality_version": "q1",
+      "seasons_json": [
+        "2025-26"
+      ],
+      "semantic_signature": "pg_ds_s_b2c672db5a850000000000000000000000000000000000000000",
+      "source_namespace": "test_ns",
+      "status": "ready"
+    },
+    {
+      "content_sha256": "pg_ds_c_131c9733ed7f0000000000000000000000000000000000000000",
+      "coverage_json": {},
+      "created_at": "2026-10-01 14:38:52.211308+00:00",
+      "exclusions_json": {},
+      "id": "7a702393-e1e0-4d20-84fd-fc29bc7ee24f",
+      "manifest_json": {},
+      "membership_sha256": "pg_ds_m_131c9733ed7f0000000000000000000000000000000000000000",
+      "parser_version": "v1",
+      "phases_json": [
+        "regular_season"
+      ],
+      "quality_version": "q1",
+      "seasons_json": [
+        "2025-26"
+      ],
+      "semantic_signature": "pg_ds_s_131c9733ed7f0000000000000000000000000000000000000000",
+      "source_namespace": "test_ns",
+      "status": "ready"
+    },
+    {
+      "content_sha256": "pg_ds_c_5637dc4fad0d0000000000000000000000000000000000000000",
+      "coverage_json": {},
+      "created_at": "2026-10-03 08:12:28.860032+00:00",
+      "exclusions_json": {},
+      "id": "81876e4a-99f5-48a3-8daf-7a6b1204bb55",
+      "manifest_json": {},
+      "membership_sha256": "pg_ds_m_5637dc4fad0d0000000000000000000000000000000000000000",
+      "parser_version": "v1",
+      "phases_json": [
+        "regular_season"
+      ],
+      "quality_version": "q1",
+      "seasons_json": [
+        "2025-26"
+      ],
+      "semantic_signature": "pg_ds_s_5637dc4fad0d0000000000000000000000000000000000000000",
+      "source_namespace": "test_ns",
+      "status": "ready"
+    },
+    {
+      "content_sha256": "pg_ds_c_ffb9620f23c40000000000000000000000000000000000000000",
+      "coverage_json": {},
+      "created_at": "2026-10-01 14:40:29.763751+00:00",
+      "exclusions_json": {},
+      "id": "85dc3284-9b93-4843-9f25-32c37b8b3c94",
+      "manifest_json": {},
+      "membership_sha256": "pg_ds_m_ffb9620f23c40000000000000000000000000000000000000000",
+      "parser_version": "v1",
+      "phases_json": [
+        "regular_season"
+      ],
+      "quality_version": "q1",
+      "seasons_json": [
+        "2025-26"
+      ],
+      "semantic_signature": "pg_ds_s_ffb9620f23c40000000000000000000000000000000000000000",
+      "source_namespace": "test_ns",
+      "status": "ready"
+    },
+    {
+      "content_sha256": "f0e84d2a656b499cbc5653cbbb213495f0e84d2a656b499cbc5653cbbb213495",
+      "coverage_json": {},
+      "created_at": "2026-10-01 15:39:53.251301+00:00",
+      "exclusions_json": {},
+      "id": "8fbe2f3b-21cb-491d-9e11-725805ee524e",
+      "manifest_json": {},
+      "membership_sha256": "a6282cf196b146bebb3d49a92ee9918fa6282cf196b146bebb3d49a92ee9918f",
+      "parser_version": "test-v1",
+      "phases_json": [
+        "regular_season"
+      ],
+      "quality_version": "test-v1",
+      "seasons_json": [
+        "2025-26"
+      ],
+      "semantic_signature": "c7d07748611c4c35b966f22a3f1242abc7d07748611c4c35b966f22a3f1242ab",
+      "source_namespace": "sportsdataverse",
+      "status": "candidate"
+    },
+    {
+      "content_sha256": "pg_ds_c_18284dd81a840000000000000000000000000000000000000000",
+      "coverage_json": {},
+      "created_at": "2026-10-01 18:56:16.352591+00:00",
+      "exclusions_json": {},
+      "id": "995f1116-027c-4134-9012-484737b7155a",
+      "manifest_json": {},
+      "membership_sha256": "pg_ds_m_18284dd81a840000000000000000000000000000000000000000",
+      "parser_version": "v1",
+      "phases_json": [
+        "regular_season"
+      ],
+      "quality_version": "q1",
+      "seasons_json": [
+        "2025-26"
+      ],
+      "semantic_signature": "pg_ds_s_18284dd81a840000000000000000000000000000000000000000",
+      "source_namespace": "test_ns",
+      "status": "ready"
+    },
+    {
+      "content_sha256": "pg_ds_c_0c5d7b69aa290000000000000000000000000000000000000000",
+      "coverage_json": {},
+      "created_at": "2026-10-01 16:25:12.024163+00:00",
+      "exclusions_json": {},
+      "id": "996ebb52-bc86-4175-9ba9-c33c7873a464",
+      "manifest_json": {},
+      "membership_sha256": "pg_ds_m_0c5d7b69aa290000000000000000000000000000000000000000",
+      "parser_version": "v1",
+      "phases_json": [
+        "regular_season"
+      ],
+      "quality_version": "q1",
+      "seasons_json": [
+        "2025-26"
+      ],
+      "semantic_signature": "pg_ds_s_0c5d7b69aa290000000000000000000000000000000000000000",
+      "source_namespace": "test_ns",
+      "status": "ready"
+    },
+    {
+      "content_sha256": "ba062e2d15d643c791c3d63bd5a7be8cba062e2d15d643c791c3d63bd5a7be8c",
+      "coverage_json": {},
+      "created_at": "2026-10-01 17:15:58.884980+00:00",
+      "exclusions_json": {},
+      "id": "9a8dfd81-2652-44c5-b343-1b27ba597659",
+      "manifest_json": {},
+      "membership_sha256": "d033f8a0c6fc4a0b92b6d3483c36ad57d033f8a0c6fc4a0b92b6d3483c36ad57",
+      "parser_version": "test-v1",
+      "phases_json": [
+        "regular_season"
+      ],
+      "quality_version": "test-v1",
+      "seasons_json": [
+        "2025-26"
+      ],
+      "semantic_signature": "e313ebb5537e4723b8c15cbb037a733ae313ebb5537e4723b8c15cbb037a733a",
+      "source_namespace": "sportsdataverse",
+      "status": "candidate"
+    },
+    {
+      "content_sha256": "pg_ds_c_1a112a6eedb30000000000000000000000000000000000000000",
+      "coverage_json": {},
+      "created_at": "2026-10-03 08:29:30.236492+00:00",
+      "exclusions_json": {},
+      "id": "9edff5c7-1421-4950-9393-84c37ccb7e5d",
+      "manifest_json": {},
+      "membership_sha256": "pg_ds_m_1a112a6eedb30000000000000000000000000000000000000000",
+      "parser_version": "v1",
+      "phases_json": [
+        "regular_season"
+      ],
+      "quality_version": "q1",
+      "seasons_json": [
+        "2025-26"
+      ],
+      "semantic_signature": "pg_ds_s_1a112a6eedb30000000000000000000000000000000000000000",
+      "source_namespace": "test_ns",
+      "status": "ready"
+    },
+    {
+      "content_sha256": "pg_ds_c_0049a4470d740000000000000000000000000000000000000000",
+      "coverage_json": {},
+      "created_at": "2026-10-01 17:00:05.494265+00:00",
+      "exclusions_json": {},
+      "id": "a23984d8-53e7-4a4c-8ee9-68a4150d6068",
+      "manifest_json": {},
+      "membership_sha256": "pg_ds_m_0049a4470d740000000000000000000000000000000000000000",
+      "parser_version": "v1",
+      "phases_json": [
+        "regular_season"
+      ],
+      "quality_version": "q1",
+      "seasons_json": [
+        "2025-26"
+      ],
+      "semantic_signature": "pg_ds_s_0049a4470d740000000000000000000000000000000000000000",
+      "source_namespace": "test_ns",
+      "status": "ready"
+    },
+    {
+      "content_sha256": "pg_ds_c_21bc5548d2df0000000000000000000000000000000000000000",
+      "coverage_json": {},
+      "created_at": "2026-10-01 15:00:26.901744+00:00",
+      "exclusions_json": {},
+      "id": "a3512898-9765-4bf5-802a-1baf169f2660",
+      "manifest_json": {},
+      "membership_sha256": "pg_ds_m_21bc5548d2df0000000000000000000000000000000000000000",
+      "parser_version": "v1",
+      "phases_json": [
+        "regular_season"
+      ],
+      "quality_version": "q1",
+      "seasons_json": [
+        "2025-26"
+      ],
+      "semantic_signature": "pg_ds_s_21bc5548d2df0000000000000000000000000000000000000000",
+      "source_namespace": "test_ns",
+      "status": "ready"
+    },
+    {
+      "content_sha256": "pg_ds_c_965a67eaed280000000000000000000000000000000000000000",
+      "coverage_json": {},
+      "created_at": "2026-10-01 17:38:29.142420+00:00",
+      "exclusions_json": {},
+      "id": "a5f1f088-10a7-4394-a1ea-970ffff6ef57",
+      "manifest_json": {},
+      "membership_sha256": "pg_ds_m_965a67eaed280000000000000000000000000000000000000000",
+      "parser_version": "v1",
+      "phases_json": [
+        "regular_season"
+      ],
+      "quality_version": "q1",
+      "seasons_json": [
+        "2025-26"
+      ],
+      "semantic_signature": "pg_ds_s_965a67eaed280000000000000000000000000000000000000000",
+      "source_namespace": "test_ns",
+      "status": "ready"
+    },
+    {
+      "content_sha256": "pg_ds_c_a867e841eabf0000000000000000000000000000000000000000",
+      "coverage_json": {},
+      "created_at": "2026-10-01 14:39:08.011118+00:00",
+      "exclusions_json": {},
+      "id": "a99e48a7-edfd-46ed-af55-04149bee59e5",
+      "manifest_json": {},
+      "membership_sha256": "pg_ds_m_a867e841eabf0000000000000000000000000000000000000000",
+      "parser_version": "v1",
+      "phases_json": [
+        "regular_season"
+      ],
+      "quality_version": "q1",
+      "seasons_json": [
+        "2025-26"
+      ],
+      "semantic_signature": "pg_ds_s_a867e841eabf0000000000000000000000000000000000000000",
+      "source_namespace": "test_ns",
+      "status": "ready"
+    },
+    {
+      "content_sha256": "pg_ds_c_4e82d35778350000000000000000000000000000000000000000",
+      "coverage_json": {},
+      "created_at": "2026-10-01 14:39:01.608108+00:00",
+      "exclusions_json": {},
+      "id": "ab946c69-9dad-4bc8-bf5e-3b2063a28877",
+      "manifest_json": {},
+      "membership_sha256": "pg_ds_m_4e82d35778350000000000000000000000000000000000000000",
+      "parser_version": "v1",
+      "phases_json": [
+        "regular_season"
+      ],
+      "quality_version": "q1",
+      "seasons_json": [
+        "2025-26"
+      ],
+      "semantic_signature": "pg_ds_s_4e82d35778350000000000000000000000000000000000000000",
+      "source_namespace": "test_ns",
+      "status": "ready"
+    },
+    {
+      "content_sha256": "d5a9b7c5036e4081b1cdf1c33fd7d405d5a9b7c5036e4081b1cdf1c33fd7d405",
+      "coverage_json": {},
+      "created_at": "2026-10-02 16:01:59.113085+00:00",
+      "exclusions_json": {},
+      "id": "b880416c-5d8d-44f6-8485-80bec243416b",
+      "manifest_json": {},
+      "membership_sha256": "9c05213402b44925b0c2ed4f27b5a6469c05213402b44925b0c2ed4f27b5a646",
+      "parser_version": "test-v1",
+      "phases_json": [
+        "regular_season"
+      ],
+      "quality_version": "test-v1",
+      "seasons_json": [
+        "2025-26"
+      ],
+      "semantic_signature": "90e0a92b3f8f4925aced82dabc4ebb8f90e0a92b3f8f4925aced82dabc4ebb8f",
+      "source_namespace": "sportsdataverse",
+      "status": "candidate"
+    },
+    {
+      "content_sha256": "ecf7547658374f8f8da2011c3627ced7ecf7547658374f8f8da2011c3627ced7",
+      "coverage_json": {},
+      "created_at": "2026-10-02 05:26:36.279553+00:00",
+      "exclusions_json": {},
+      "id": "ba2c09c0-b0ef-46f0-a0fe-97339968febb",
+      "manifest_json": {},
+      "membership_sha256": "f4af31a17ca14be78c15d66be1f3063cf4af31a17ca14be78c15d66be1f3063c",
+      "parser_version": "test-v1",
+      "phases_json": [
+        "regular_season"
+      ],
+      "quality_version": "test-v1",
+      "seasons_json": [
+        "2025-26"
+      ],
+      "semantic_signature": "b2813ef07058462ea35864c3c23f1e52b2813ef07058462ea35864c3c23f1e52",
+      "source_namespace": "sportsdataverse",
+      "status": "candidate"
+    },
+    {
+      "content_sha256": "e7b91fa0f3fc4bdc959f1e2f29f62bf5e7b91fa0f3fc4bdc959f1e2f29f62bf5",
+      "coverage_json": {},
+      "created_at": "2026-10-03 08:01:02.763717+00:00",
+      "exclusions_json": {},
+      "id": "c60e5dfc-05ee-46a0-b6dd-1805c4a99236",
+      "manifest_json": {},
+      "membership_sha256": "9419a71dae06413a8185b16eee544a789419a71dae06413a8185b16eee544a78",
+      "parser_version": "test-v1",
+      "phases_json": [
+        "regular_season"
+      ],
+      "quality_version": "test-v1",
+      "seasons_json": [
+        "2025-26"
+      ],
+      "semantic_signature": "d26b5f67e86c45b5a17ec8e22e440060d26b5f67e86c45b5a17ec8e22e440060",
+      "source_namespace": "sportsdataverse",
+      "status": "candidate"
+    },
+    {
+      "content_sha256": "7bf822c9442d4b44b8926b98eaf24f0b7bf822c9442d4b44b8926b98eaf24f0b",
+      "coverage_json": {},
+      "created_at": "2026-10-03 08:29:29.607169+00:00",
+      "exclusions_json": {},
+      "id": "cc69d8c3-30f0-4a27-b360-e90870a8b4e1",
+      "manifest_json": {},
+      "membership_sha256": "b8767bca5d91422195bc480800a0fe15b8767bca5d91422195bc480800a0fe15",
+      "parser_version": "test-v1",
+      "phases_json": [
+        "regular_season"
+      ],
+      "quality_version": "test-v1",
+      "seasons_json": [
+        "2025-26"
+      ],
+      "semantic_signature": "581d5939333c4342affd55c48bee95b0581d5939333c4342affd55c48bee95b0",
+      "source_namespace": "sportsdataverse",
+      "status": "candidate"
+    },
+    {
+      "content_sha256": "pg_ds_c_21facfdfb2610000000000000000000000000000000000000000",
+      "coverage_json": {},
+      "created_at": "2026-10-01 23:12:58.729354+00:00",
+      "exclusions_json": {},
+      "id": "d103332a-2630-4c09-8ac9-a522b3c4187e",
+      "manifest_json": {},
+      "membership_sha256": "pg_ds_m_21facfdfb2610000000000000000000000000000000000000000",
+      "parser_version": "v1",
+      "phases_json": [
+        "regular_season"
+      ],
+      "quality_version": "q1",
+      "seasons_json": [
+        "2025-26"
+      ],
+      "semantic_signature": "pg_ds_s_21facfdfb2610000000000000000000000000000000000000000",
+      "source_namespace": "test_ns",
+      "status": "ready"
+    },
+    {
+      "content_sha256": "pg_ds_c_a44a8c94e73c0000000000000000000000000000000000000000",
+      "coverage_json": {},
+      "created_at": "2026-10-02 05:26:36.111519+00:00",
+      "exclusions_json": {},
+      "id": "d2256f65-25a6-42e6-8e43-787e24315792",
+      "manifest_json": {},
+      "membership_sha256": "pg_ds_m_a44a8c94e73c0000000000000000000000000000000000000000",
+      "parser_version": "v1",
+      "phases_json": [
+        "regular_season"
+      ],
+      "quality_version": "q1",
+      "seasons_json": [
+        "2025-26"
+      ],
+      "semantic_signature": "pg_ds_s_a44a8c94e73c0000000000000000000000000000000000000000",
+      "source_namespace": "test_ns",
+      "status": "ready"
+    },
+    {
+      "content_sha256": "pg_ds_c_1e91c762ffec0000000000000000000000000000000000000000",
+      "coverage_json": {},
+      "created_at": "2026-10-01 16:24:00.313365+00:00",
+      "exclusions_json": {},
+      "id": "d2e22de2-43f6-47ad-9ba8-93b984c698c2",
+      "manifest_json": {},
+      "membership_sha256": "pg_ds_m_1e91c762ffec0000000000000000000000000000000000000000",
+      "parser_version": "v1",
+      "phases_json": [
+        "regular_season"
+      ],
+      "quality_version": "q1",
+      "seasons_json": [
+        "2025-26"
+      ],
+      "semantic_signature": "pg_ds_s_1e91c762ffec0000000000000000000000000000000000000000",
+      "source_namespace": "test_ns",
+      "status": "ready"
+    },
+    {
+      "content_sha256": "73f3df5879cf4e3f91bb27e710f463e273f3df5879cf4e3f91bb27e710f463e2",
+      "coverage_json": {},
+      "created_at": "2026-10-01 15:45:01.035873+00:00",
+      "exclusions_json": {},
+      "id": "d5a5a7c1-6ef4-4244-b285-3788db1ebc51",
+      "manifest_json": {},
+      "membership_sha256": "24c6c91ed45b4fecac688d34a32cb4e324c6c91ed45b4fecac688d34a32cb4e3",
+      "parser_version": "test-v1",
+      "phases_json": [
+        "regular_season"
+      ],
+      "quality_version": "test-v1",
+      "seasons_json": [
+        "2025-26"
+      ],
+      "semantic_signature": "6f06144c4df547d99d9b60ae596e982a6f06144c4df547d99d9b60ae596e982a",
+      "source_namespace": "sportsdataverse",
+      "status": "candidate"
+    },
+    {
+      "content_sha256": "pg_ds_c_ae13b0a682a40000000000000000000000000000000000000000",
+      "coverage_json": {},
+      "created_at": "2026-10-01 16:54:10.407568+00:00",
+      "exclusions_json": {},
+      "id": "d5fd6a7f-8971-49a1-8ae3-4983e6971710",
+      "manifest_json": {},
+      "membership_sha256": "pg_ds_m_ae13b0a682a40000000000000000000000000000000000000000",
+      "parser_version": "v1",
+      "phases_json": [
+        "regular_season"
+      ],
+      "quality_version": "q1",
+      "seasons_json": [
+        "2025-26"
+      ],
+      "semantic_signature": "pg_ds_s_ae13b0a682a40000000000000000000000000000000000000000",
+      "source_namespace": "test_ns",
+      "status": "ready"
+    },
+    {
+      "content_sha256": "pg_ds_c_b5060452b8100000000000000000000000000000000000000000",
+      "coverage_json": {},
+      "created_at": "2026-10-02 04:58:16.427230+00:00",
+      "exclusions_json": {},
+      "id": "d70503ea-97a9-4dac-a053-af9999fdc5b2",
+      "manifest_json": {},
+      "membership_sha256": "pg_ds_m_b5060452b8100000000000000000000000000000000000000000",
+      "parser_version": "v1",
+      "phases_json": [
+        "regular_season"
+      ],
+      "quality_version": "q1",
+      "seasons_json": [
+        "2025-26"
+      ],
+      "semantic_signature": "pg_ds_s_b5060452b8100000000000000000000000000000000000000000",
+      "source_namespace": "test_ns",
+      "status": "ready"
+    },
+    {
+      "content_sha256": "pg_ds_c_36667dd39c970000000000000000000000000000000000000000",
+      "coverage_json": {},
+      "created_at": "2026-10-01 14:42:19.283124+00:00",
+      "exclusions_json": {},
+      "id": "dad12ee4-1fc3-47c7-bfc1-c485ed0dceac",
+      "manifest_json": {},
+      "membership_sha256": "pg_ds_m_36667dd39c970000000000000000000000000000000000000000",
+      "parser_version": "v1",
+      "phases_json": [
+        "regular_season"
+      ],
+      "quality_version": "q1",
+      "seasons_json": [
+        "2025-26"
+      ],
+      "semantic_signature": "pg_ds_s_36667dd39c970000000000000000000000000000000000000000",
+      "source_namespace": "test_ns",
+      "status": "ready"
+    },
+    {
+      "content_sha256": "pg_ds_c_49f85ee605530000000000000000000000000000000000000000",
+      "coverage_json": {},
+      "created_at": "2026-10-02 07:17:02.403478+00:00",
+      "exclusions_json": {},
+      "id": "e11aa949-4d84-4e1c-b368-396d40d8f378",
+      "manifest_json": {},
+      "membership_sha256": "pg_ds_m_49f85ee605530000000000000000000000000000000000000000",
+      "parser_version": "v1",
+      "phases_json": [
+        "regular_season"
+      ],
+      "quality_version": "q1",
+      "seasons_json": [
+        "2025-26"
+      ],
+      "semantic_signature": "pg_ds_s_49f85ee605530000000000000000000000000000000000000000",
+      "source_namespace": "test_ns",
+      "status": "ready"
+    },
+    {
+      "content_sha256": "958dcb9eb6c4426990fe436606c4f4d6958dcb9eb6c4426990fe436606c4f4d6",
+      "coverage_json": {},
+      "created_at": "2026-10-01 17:00:05.261826+00:00",
+      "exclusions_json": {},
+      "id": "e39f6877-4a62-4c1a-ba45-d6d75c116522",
+      "manifest_json": {},
+      "membership_sha256": "a6843e93541f4033a51ebba199ccaeeea6843e93541f4033a51ebba199ccaeee",
+      "parser_version": "test-v1",
+      "phases_json": [
+        "regular_season"
+      ],
+      "quality_version": "test-v1",
+      "seasons_json": [
+        "2025-26"
+      ],
+      "semantic_signature": "f1a717dcce1c4925932be022d0d603c6f1a717dcce1c4925932be022d0d603c6",
+      "source_namespace": "sportsdataverse",
+      "status": "candidate"
+    },
+    {
+      "content_sha256": "pg_ds_c_923bab1c594f0000000000000000000000000000000000000000",
+      "coverage_json": {},
+      "created_at": "2026-10-01 23:16:59.582866+00:00",
+      "exclusions_json": {},
+      "id": "f57bcd6a-6f16-47f2-a541-c31fcde900fa",
+      "manifest_json": {},
+      "membership_sha256": "pg_ds_m_923bab1c594f0000000000000000000000000000000000000000",
+      "parser_version": "v1",
+      "phases_json": [
+        "regular_season"
+      ],
+      "quality_version": "q1",
+      "seasons_json": [
+        "2025-26"
+      ],
+      "semantic_signature": "pg_ds_s_923bab1c594f0000000000000000000000000000000000000000",
+      "source_namespace": "test_ns",
+      "status": "ready"
+    },
+    {
+      "content_sha256": "d573a7851831416f84dfc2dc7fbc4a2ed573a7851831416f84dfc2dc7fbc4a2e",
+      "coverage_json": {},
+      "created_at": "2026-10-01 16:22:47.114934+00:00",
+      "exclusions_json": {},
+      "id": "f6d73ce0-cbb0-4ac2-a0a8-e4873393558b",
+      "manifest_json": {},
+      "membership_sha256": "0001e5c11def40e989c42cf77210c6a40001e5c11def40e989c42cf77210c6a4",
+      "parser_version": "test-v1",
+      "phases_json": [
+        "regular_season"
+      ],
+      "quality_version": "test-v1",
+      "seasons_json": [
+        "2025-26"
+      ],
+      "semantic_signature": "fc2c9013f1d548c792b67f735dc3f96bfc2c9013f1d548c792b67f735dc3f96b",
+      "source_namespace": "sportsdataverse",
+      "status": "candidate"
+    },
+    {
+      "content_sha256": "de45cb7f5bfb40bd845f19aa38012274de45cb7f5bfb40bd845f19aa38012274",
+      "coverage_json": {},
+      "created_at": "2026-10-01 15:33:01.225483+00:00",
+      "exclusions_json": {},
+      "id": "f90603e7-ccb0-4359-a625-f8d1926fc476",
+      "manifest_json": {},
+      "membership_sha256": "a23e1a63f0534d8ba809110cf86ae34fa23e1a63f0534d8ba809110cf86ae34f",
+      "parser_version": "test-v1",
+      "phases_json": [
+        "regular_season"
+      ],
+      "quality_version": "test-v1",
+      "seasons_json": [
+        "2025-26"
+      ],
+      "semantic_signature": "d7c054ce480d47f0b8d6dc03a6557375d7c054ce480d47f0b8d6dc03a6557375",
+      "source_namespace": "sportsdataverse",
+      "status": "candidate"
+    },
+    {
+      "content_sha256": "pg_ds_c_c240cedd58780000000000000000000000000000000000000000",
+      "coverage_json": {},
+      "created_at": "2026-10-01 14:44:37.143527+00:00",
+      "exclusions_json": {},
+      "id": "f9a68791-563e-4498-9123-1b4f68633498",
+      "manifest_json": {},
+      "membership_sha256": "pg_ds_m_c240cedd58780000000000000000000000000000000000000000",
+      "parser_version": "v1",
+      "phases_json": [
+        "regular_season"
+      ],
+      "quality_version": "q1",
+      "seasons_json": [
+        "2025-26"
+      ],
+      "semantic_signature": "pg_ds_s_c240cedd58780000000000000000000000000000000000000000",
+      "source_namespace": "test_ns",
+      "status": "ready"
+    },
+    {
+      "content_sha256": "84096b60a07c4a7797d57123cd4e778d84096b60a07c4a7797d57123cd4e778d",
+      "coverage_json": {},
+      "created_at": "2026-10-02 05:15:31.846996+00:00",
+      "exclusions_json": {},
+      "id": "fa9b92b4-8e5f-4e71-a22b-7619727a8731",
+      "manifest_json": {},
+      "membership_sha256": "19824a93264f4369a402f0c6bb18cfa719824a93264f4369a402f0c6bb18cfa7",
+      "parser_version": "test-v1",
+      "phases_json": [
+        "regular_season"
+      ],
+      "quality_version": "test-v1",
+      "seasons_json": [
+        "2025-26"
+      ],
+      "semantic_signature": "54a6d4065319415a8e2b2a2986d89b1754a6d4065319415a8e2b2a2986d89b17",
+      "source_namespace": "sportsdataverse",
+      "status": "candidate"
+    },
+    {
+      "content_sha256": "57cbc6236b014cbba8fa2bf02fc0ad5c57cbc6236b014cbba8fa2bf02fc0ad5c",
+      "coverage_json": {},
+      "created_at": "2026-10-01 16:25:11.747201+00:00",
+      "exclusions_json": {},
+      "id": "fbaa1fd3-6868-4fbe-912e-92f960cf836c",
+      "manifest_json": {},
+      "membership_sha256": "dcb60a0c96ee4b0588c13a4da18e7f8ddcb60a0c96ee4b0588c13a4da18e7f8d",
+      "parser_version": "test-v1",
+      "phases_json": [
+        "regular_season"
+      ],
+      "quality_version": "test-v1",
+      "seasons_json": [
+        "2025-26"
+      ],
+      "semantic_signature": "706f967378104f94ac2ddd5f0ed80e9c706f967378104f94ac2ddd5f0ed80e9c",
+      "source_namespace": "sportsdataverse",
+      "status": "candidate"
+    },
+    {
+      "content_sha256": "7a863e98c6174a058fce54ec084efea37a863e98c6174a058fce54ec084efea3",
+      "coverage_json": {},
+      "created_at": "2026-10-01 15:44:31.222843+00:00",
+      "exclusions_json": {},
+      "id": "fbe766a1-a060-469a-9940-87b28c7ca728",
+      "manifest_json": {},
+      "membership_sha256": "84dc9d91707643cbb62812e21857105a84dc9d91707643cbb62812e21857105a",
+      "parser_version": "test-v1",
+      "phases_json": [
+        "regular_season"
+      ],
+      "quality_version": "test-v1",
+      "seasons_json": [
+        "2025-26"
+      ],
+      "semantic_signature": "ce4cee83185f402fb79968e874f4afa7ce4cee83185f402fb79968e874f4afa7",
+      "source_namespace": "sportsdataverse",
+      "status": "candidate"
+    },
+    {
+      "content_sha256": "a8bfc6200ef04190bf10c14dda5ae126a8bfc6200ef04190bf10c14dda5ae126",
+      "coverage_json": {},
+      "created_at": "2026-10-01 18:38:18.423769+00:00",
+      "exclusions_json": {},
+      "id": "fc9c5acc-0f6e-4c58-8bf4-e2443207ca0e",
+      "manifest_json": {},
+      "membership_sha256": "76afba1efa574156b658064724af1d9e76afba1efa574156b658064724af1d9e",
+      "parser_version": "test-v1",
+      "phases_json": [
+        "regular_season"
+      ],
+      "quality_version": "test-v1",
+      "seasons_json": [
+        "2025-26"
+      ],
+      "semantic_signature": "bac5d4354f8449f4a8fd80950b45db33bac5d4354f8449f4a8fd80950b45db33",
+      "source_namespace": "sportsdataverse",
+      "status": "candidate"
+    },
+    {
+      "content_sha256": "ff0554c618cb4171a62d7bb3a8d582e3ff0554c618cb4171a62d7bb3a8d582e3",
+      "coverage_json": {},
+      "created_at": "2026-10-01 15:39:39.857005+00:00",
+      "exclusions_json": {},
+      "id": "fd5aa803-42d4-4aac-942f-25d06cc24bb7",
+      "manifest_json": {},
+      "membership_sha256": "99693240dcf54c7ea96a14939efb793899693240dcf54c7ea96a14939efb7938",
+      "parser_version": "test-v1",
+      "phases_json": [
+        "regular_season"
+      ],
+      "quality_version": "test-v1",
+      "seasons_json": [
+        "2025-26"
+      ],
+      "semantic_signature": "0638a9f7ae304749b683afd67005ea900638a9f7ae304749b683afd67005ea90",
+      "source_namespace": "sportsdataverse",
+      "status": "candidate"
+    },
+    {
+      "content_sha256": "5b90745bef054c7580392e4202f74efd5b90745bef054c7580392e4202f74efd",
+      "coverage_json": {},
+      "created_at": "2026-10-02 07:17:02.062925+00:00",
+      "exclusions_json": {},
+      "id": "fdaea480-1ba9-4691-bae2-a72f5a0d82d2",
+      "manifest_json": {},
+      "membership_sha256": "fa3be58de1e84fce8facc417df068575fa3be58de1e84fce8facc417df068575",
+      "parser_version": "test-v1",
+      "phases_json": [
+        "regular_season"
+      ],
+      "quality_version": "test-v1",
+      "seasons_json": [
+        "2025-26"
+      ],
+      "semantic_signature": "2b453c8b414542e59f8e378c06f06a3e2b453c8b414542e59f8e378c06f06a3e",
+      "source_namespace": "sportsdataverse",
+      "status": "candidate"
+    },
+    {
+      "content_sha256": "pg_ds_c_c50ec0e08c930000000000000000000000000000000000000000",
+      "coverage_json": {},
+      "created_at": "2026-10-01 17:15:59.573858+00:00",
+      "exclusions_json": {},
+      "id": "feabffda-ef2f-4f6f-b945-fb82072e26f5",
+      "manifest_json": {},
+      "membership_sha256": "pg_ds_m_c50ec0e08c930000000000000000000000000000000000000000",
+      "parser_version": "v1",
+      "phases_json": [
+        "regular_season"
+      ],
+      "quality_version": "q1",
+      "seasons_json": [
+        "2025-26"
+      ],
+      "semantic_signature": "pg_ds_s_c50ec0e08c930000000000000000000000000000000000000000",
+      "source_namespace": "test_ns",
+      "status": "ready"
+    }
+  ],
+  "workbench_matchups": {
+    "rows": 1
+  },
+  "workbench_rich_admissions": {
+    "rows": 5
+  }
+}

@@ -1,0 +1,14 @@
+docs/evidence/b19b-assignment-accepted/admission/manifest.json: OK
+docs/evidence/b19b-assignment-accepted/admission/verification.json: OK
+docs/evidence/b19b-assignment-accepted/after.json: OK
+docs/evidence/b19b-assignment-accepted/before.json: OK
+docs/evidence/b19b-assignment-accepted/format.txt: OK
+docs/evidence/b19b-assignment-accepted/input-checks.txt: OK
+docs/evidence/b19b-assignment-accepted/mypy.txt: OK
+docs/evidence/b19b-assignment-accepted/postgres.txt: OK
+docs/evidence/b19b-assignment-accepted/pytest.txt: OK
+docs/evidence/b19b-assignment-accepted/reproduction/manifest.json: OK
+docs/evidence/b19b-assignment-accepted/reproduction/verification.json: OK
+docs/evidence/b19b-assignment-accepted/retained-checksums.txt: OK
+docs/evidence/b19b-assignment-accepted/retained-state.json: OK
+docs/evidence/b19b-assignment-accepted/ruff.txt: OK

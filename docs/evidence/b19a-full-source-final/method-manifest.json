@@ -1,0 +1,26 @@
+{
+  "revision": "471b113d880a89f8b102f245ad8c4c0642aa617a",
+  "artifacts": [
+    {
+      "url": "https://raw.githubusercontent.com/sportsdataverse/hoopR-nba-stats-data/471b113d880a89f8b102f245ad8c4c0642aa617a/python/nba_model_01_possessions.py",
+      "path": "data/raw/b19a-2026-20261004/nba_model_01_possessions.py",
+      "bytes": 1778,
+      "sha256": "5f94e53929a6efefdcc434b32c12fd2f58525057f8831775c809ed41b9468cba",
+      "reused": false
+    },
+    {
+      "url": "https://raw.githubusercontent.com/sportsdataverse/hoopR-nba-stats-data/471b113d880a89f8b102f245ad8c4c0642aa617a/python/nba_stats_04_lineups_creation.py",
+      "path": "data/raw/b19a-2026-20261004/nba_stats_04_lineups_creation.py",
+      "bytes": 1041,
+      "sha256": "8f646c7579a76b6c149b69cf1f68e2be5a2e256a02a290be5d5deec3cd0b6cc3",
+      "reused": false
+    },
+    {
+      "url": "https://raw.githubusercontent.com/sportsdataverse/hoopR-nba-stats-data/471b113d880a89f8b102f245ad8c4c0642aa617a/R/nba_stats_02_scrape_pbp_to_lineup.R",
+      "path": "data/raw/b19a-2026-20261004/nba_stats_02_scrape_pbp_to_lineup.R",
+      "bytes": 4616,
+      "sha256": "3baae09839f79d7ea1357102a33023c8fd4209d696da9916446bf1408773e432",
+      "reused": false
+    }
+  ]
+}

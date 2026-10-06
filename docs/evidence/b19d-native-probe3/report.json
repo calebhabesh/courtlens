@@ -1,0 +1,415 @@
+{
+  "complete_season_acceptance": false,
+  "database_admission": false,
+  "dependency_sha256": {
+    "scripts/reconstruct_b19_native.py": "7262937fa9764656946d4e77792a60f99c377c40cde6040a3a9e9a19339c0cb8",
+    "src/courtload/ingestion/native_reconstruction.py": "c27e71d608b1d276e7b64ec892dadd7bf58c4d928271557493d017706c8ab8a2",
+    "src/courtload/ingestion/sportsdataverse.py": "0206c75fc53c80626fb4e3542d7609f7b9d51e72c52de838a6d4d6d964b1b449"
+  },
+  "games": {
+    "0022500003": {
+      "missing": [
+        "gamerotation"
+      ],
+      "status": "missing_native_inputs"
+    },
+    "0022500007": {
+      "content_sha256": "63bb55a8f499932ae48856287e33e0a1489ab412b14a0cce8b3a16530677f526",
+      "errors": [
+        {
+          "opening": [],
+          "period": 2,
+          "reason": "starter_evidence_disagreement",
+          "rotation": [
+            "1629750",
+            "1630191",
+            "1630595",
+            "1641842",
+            "1642450"
+          ],
+          "team": "1610612765"
+        },
+        {
+          "opening": [],
+          "period": 2,
+          "reason": "starter_evidence_disagreement",
+          "rotation": [
+            "1626204",
+            "1628378",
+            "1630596",
+            "1642281",
+            "1642878"
+          ],
+          "team": "1610612739"
+        },
+        {
+          "opening": [],
+          "period": 3,
+          "reason": "starter_evidence_disagreement",
+          "rotation": [
+            "1629130",
+            "1630595",
+            "1631105",
+            "1641709",
+            "202699"
+          ],
+          "team": "1610612765"
+        },
+        {
+          "opening": [],
+          "period": 3,
+          "reason": "starter_evidence_disagreement",
+          "rotation": [
+            "1628378",
+            "1628386",
+            "1629631",
+            "1630241",
+            "1630596"
+          ],
+          "team": "1610612739"
+        },
+        {
+          "opening": [],
+          "period": 4,
+          "reason": "starter_evidence_disagreement",
+          "rotation": [
+            "1629750",
+            "1630191",
+            "1641842",
+            "1642404",
+            "1642450"
+          ],
+          "team": "1610612765"
+        },
+        {
+          "opening": [],
+          "period": 4,
+          "reason": "starter_evidence_disagreement",
+          "rotation": [
+            "1626204",
+            "1628378",
+            "1630596",
+            "1641854",
+            "1642281"
+          ],
+          "team": "1610612739"
+        },
+        {
+          "player": "1629130",
+          "raw": "25:60",
+          "reason": "independent_minutes_unknown"
+        }
+      ],
+      "events": 565,
+      "intervals": 366,
+      "status": "quarantined_candidate"
+    },
+    "0022500013": {
+      "content_sha256": "042842ac4852c008df206081c2f12142604f510039212d3f1e8a5c4152b049a1",
+      "errors": [
+        {
+          "opening": [],
+          "period": 2,
+          "reason": "starter_evidence_disagreement",
+          "rotation": [
+            "1628971",
+            "1630192",
+            "1631124",
+            "202685",
+            "203501"
+          ],
+          "team": "1610612743"
+        },
+        {
+          "opening": [],
+          "period": 2,
+          "reason": "starter_evidence_disagreement",
+          "rotation": [
+            "1628978",
+            "1629675",
+            "1630183",
+            "1630538",
+            "203497"
+          ],
+          "team": "1610612750"
+        },
+        {
+          "opening": [],
+          "period": 3,
+          "reason": "starter_evidence_disagreement",
+          "rotation": [
+            "1627750",
+            "1631212",
+            "1642461",
+            "203501",
+            "203999"
+          ],
+          "team": "1610612743"
+        },
+        {
+          "opening": [],
+          "period": 3,
+          "reason": "starter_evidence_disagreement",
+          "rotation": [
+            "1628978",
+            "1630162",
+            "1630183",
+            "203497",
+            "203944"
+          ],
+          "team": "1610612750"
+        },
+        {
+          "opening": [],
+          "period": 4,
+          "reason": "starter_evidence_disagreement",
+          "rotation": [
+            "1628971",
+            "1631124",
+            "1642461",
+            "202685",
+            "203501"
+          ],
+          "team": "1610612743"
+        },
+        {
+          "opening": [],
+          "period": 4,
+          "reason": "starter_evidence_disagreement",
+          "rotation": [
+            "1628978",
+            "1629675",
+            "1630183",
+            "1630538",
+            "203497"
+          ],
+          "team": "1610612750"
+        },
+        {
+          "opening": [],
+          "period": 5,
+          "reason": "starter_evidence_disagreement",
+          "rotation": [
+            "1627750",
+            "1631212",
+            "1642461",
+            "203501",
+            "203999"
+          ],
+          "team": "1610612743"
+        },
+        {
+          "opening": [],
+          "period": 5,
+          "reason": "starter_evidence_disagreement",
+          "rotation": [
+            "1628978",
+            "1630162",
+            "1630183",
+            "203497",
+            "203944"
+          ],
+          "team": "1610612750"
+        }
+      ],
+      "events": 583,
+      "intervals": 371,
+      "status": "quarantined_candidate"
+    },
+    "0022500016": {
+      "missing": [
+        "gamerotation"
+      ],
+      "status": "missing_native_inputs"
+    },
+    "0022500025": {
+      "content_sha256": "f417e8c2eafc648b8ddcdd09ebc63c9c5ed937436e5593e6c2413f6f2de36818",
+      "errors": [
+        {
+          "opening": [
+            "1626164",
+            "1626220",
+            "1628960",
+            "1631221",
+            "1642345"
+          ],
+          "period": 2,
+          "reason": "starter_evidence_disagreement",
+          "rotation": [
+            "1626220",
+            "1628960",
+            "1630208",
+            "1631221",
+            "1642345"
+          ],
+          "team": "1610612756"
+        },
+        {
+          "opening": [
+            "1628374",
+            "1641707",
+            "1642262",
+            "1642383",
+            "203994"
+          ],
+          "period": 2,
+          "reason": "starter_evidence_disagreement",
+          "rotation": [
+            "1628374",
+            "1642262",
+            "1642271",
+            "1642383",
+            "203994"
+          ],
+          "team": "1610612762"
+        },
+        {
+          "opening": [
+            "1626164",
+            "1626220",
+            "1628960",
+            "1631109",
+            "1631221"
+          ],
+          "period": 3,
+          "reason": "starter_evidence_disagreement",
+          "rotation": [
+            "1626164",
+            "1626220",
+            "1628960",
+            "1631109",
+            "1642346"
+          ],
+          "team": "1610612756"
+        },
+        {
+          "opening": [
+            "1626164",
+            "1626220",
+            "1628960",
+            "1630692",
+            "1631221"
+          ],
+          "period": 4,
+          "reason": "starter_evidence_disagreement",
+          "rotation": [
+            "1626220",
+            "1630208",
+            "1630692",
+            "1631221",
+            "1642345"
+          ],
+          "team": "1610612756"
+        },
+        {
+          "opening": [
+            "1628374",
+            "1631117",
+            "1641718",
+            "1641989",
+            "1642262"
+          ],
+          "period": 4,
+          "reason": "starter_evidence_disagreement",
+          "rotation": [
+            "1628374",
+            "1641718",
+            "1641989",
+            "1642262",
+            "203994"
+          ],
+          "team": "1610612762"
+        }
+      ],
+      "events": 525,
+      "intervals": 339,
+      "status": "quarantined_candidate"
+    },
+    "0022501045": {
+      "content_sha256": "491d89a320d48c303ebffd7844b3cc4a10b76c899be579a8904599ff6d4b453c",
+      "errors": [
+        {
+          "opening": [
+            "1630166",
+            "1630703",
+            "1631200",
+            "1641739",
+            "201950"
+          ],
+          "period": 2,
+          "reason": "starter_evidence_disagreement",
+          "rotation": [
+            "1629680",
+            "1631104",
+            "1641739",
+            "1642270",
+            "201950"
+          ],
+          "team": "1610612757"
+        },
+        {
+          "opening": [
+            "1630604",
+            "1630623",
+            "1641869",
+            "1642879",
+            "1643052"
+          ],
+          "period": 2,
+          "reason": "starter_evidence_disagreement",
+          "rotation": [
+            "1629651",
+            "1630533",
+            "1630592",
+            "1631169",
+            "1642849"
+          ],
+          "team": "1610612751"
+        },
+        {
+          "opening": [
+            "1629680",
+            "1630703",
+            "1631200",
+            "1631321",
+            "201950"
+          ],
+          "period": 3,
+          "reason": "starter_evidence_disagreement",
+          "rotation": [
+            "1630166",
+            "1631321",
+            "1641739",
+            "1642270",
+            "201950"
+          ],
+          "team": "1610612757"
+        },
+        {
+          "opening": [
+            "1630592",
+            "1630604",
+            "1630623",
+            "1641869",
+            "1643052"
+          ],
+          "period": 3,
+          "reason": "starter_evidence_disagreement",
+          "rotation": [
+            "1629651",
+            "1630533",
+            "1630592",
+            "1631169",
+            "1642849"
+          ],
+          "team": "1610612751"
+        }
+      ],
+      "events": 536,
+      "intervals": 315,
+      "status": "quarantined_candidate"
+    }
+  },
+  "manifest_sha256": "831d56389194cf2f84d5df80511b8a2d17d5b791972fc7ffce8246371cc92f62",
+  "version": "nba-native-reconstruction-v1"
+}
