@@ -7,7 +7,7 @@ import { comparePlayers } from "@/lib/workbench-api";
 import type { AnalyticsCompare, AnalyticsProfile, AnalyticsSummary, PlayerComparisonResponse } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
-export const metadata: Metadata = { title: "Compare Players · CourtLoad" };
+export const metadata: Metadata = { title: "Compare Players · CourtLens" };
 
 export default async function ComparePage({ searchParams }: {
   searchParams: Promise<{
@@ -197,9 +197,9 @@ function ComparisonView({ comparison }: { comparison: AnalyticsCompare }) {
   const a = comparison.player_a;
   const b = comparison.player_b;
   const rows: Array<[string, (profile: AnalyticsProfile) => string]> = [
-    ["Last 5 · CourtLoad points / game", (p) => summaryValue(p.summaries.last_5, "reference_points_per_game")],
-    ["Last 10 · CourtLoad points / game", (p) => summaryValue(p.summaries.last_10, "reference_points_per_game")],
-    ["Season · CourtLoad points / game", (p) => summaryValue(p.summaries.season, "reference_points_per_game")],
+    ["Last 5 · CourtLens points / game", (p) => summaryValue(p.summaries.last_5, "reference_points_per_game")],
+    ["Last 10 · CourtLens points / game", (p) => summaryValue(p.summaries.last_10, "reference_points_per_game")],
+    ["Season · CourtLens points / game", (p) => summaryValue(p.summaries.season, "reference_points_per_game")],
     ["Last 5 · minutes / game", (p) => summaryValue(p.summaries.last_5, "minutes_per_game")],
     ["Last 10 · minutes / game", (p) => summaryValue(p.summaries.last_10, "minutes_per_game")],
     ["Season · minutes / game", (p) => summaryValue(p.summaries.season, "minutes_per_game")],
@@ -240,7 +240,7 @@ function ComparisonView({ comparison }: { comparison: AnalyticsCompare }) {
         <strong>Estimate gap:</strong>{" "}
         {comparison.estimate_gap == null
           ? "Unavailable until both players have a supported estimate at this cutoff."
-          : `${Math.abs(comparison.estimate_gap).toFixed(1)} CourtLoad points.`}
+          : `${Math.abs(comparison.estimate_gap).toFixed(1)} CourtLens points.`}
         <p style={{ margin: "0.4rem 0 0" }}>
           Different next-game dates are possible. An estimate covers production conditional on appearance; it does not estimate availability.
         </p>

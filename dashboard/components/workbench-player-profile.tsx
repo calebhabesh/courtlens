@@ -746,7 +746,7 @@ export function WorkbenchPlayerProfile({
         )}
 
         <p className="text-xs text-muted" style={{ marginTop: "0.5rem" }}>
-          In accordance with CourtLoad principles, empirical prediction intervals are conditional on player appearance; an absent box score row is unknown, not an injury confirmation.
+          In accordance with CourtLens principles, empirical prediction intervals are conditional on player appearance; an absent box score row is unknown, not an injury confirmation.
         </p>
       </div>
 
@@ -764,7 +764,7 @@ export function WorkbenchPlayerProfile({
           <rect width="460" height="520" fill="none" stroke="#465160" strokeWidth="1.5" rx="8" />
           <path d="M 0 8 Q 0 0 8 0 L 452 0 Q 460 0 460 8 L 460 85 L 0 85 Z" fill="#20252e" />
           <line x1="0" y1="85" x2="460" y2="85" stroke="#ffd166" strokeWidth="2" />
-          <text x="24" y="26" fill="#ffd166" fontSize="12" fontWeight="bold" fontFamily="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">COURTLOAD</text>
+          <text x="24" y="26" fill="#ffd166" fontSize="12" fontWeight="bold" fontFamily="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">COURTLENS</text>
           <text x="105" y="26" fill="#b4bdca" fontSize="10" fontFamily="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">PLAYER PROFILE · {context.season}</text>
           <text x="24" y="55" fill="#f1f3f6" fontSize="20" fontWeight="bold" fontFamily="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">{player.name}</text>
           <text x="24" y="74" fill="#ffd166" fontSize="11" fontFamily="monospace" fontWeight="bold">{latest_team?.tricode ?? "NBA"} · ID: {player.id}</text>
@@ -802,7 +802,7 @@ export function WorkbenchPlayerProfile({
           {/* Temporal Guarantee */}
           <line x1="24" y1="460" x2="436" y2="460" stroke="#323b49" strokeWidth="1" />
           <text x="24" y="485" fill="#7b8798" fontSize="9" fontFamily="monospace">TEMPORAL DISCIPLINE: game_date &lt; {context.before_date}</text>
-          <text x="24" y="498" fill="#7b8798" fontSize="8" fontFamily="monospace">Strictly Historical Replay · Zero Inferred Claims · CourtLoad Replica</text>
+          <text x="24" y="498" fill="#7b8798" fontSize="8" fontFamily="monospace">Strictly Historical Replay · Zero Inferred Claims · CourtLens Replica</text>
         </svg>
       </div>
 

@@ -151,7 +151,7 @@ export function ReplicaNav() {
       title: "Core Research",
       items: [
         { label: "Saved Investigations", href: "/investigations" },
-        { label: "Ask CourtLoad AI", href: "/research/ask" },
+        { label: "Ask CourtLens AI", href: "/research/ask" },
         { label: "Points Forecasts", href: "/forecasts" },
         { label: "Evaluation Archive", href: "/evaluation" },
         { label: "Case Studies", href: "/research/case-studies" }

@@ -7,7 +7,7 @@ test.describe("Workbench Dark Research Interface", () => {
     // Wait for streamed route hydration before interacting with the shell.
     await page.waitForLoadState("networkidle");
     await expect(page).toHaveURL(/\/stats\?/);
-    await expect(page.getByRole("banner").getByRole("link", { name: "CourtLoad Research Workbench home" })).toContainText("COURTLOAD");
+    await expect(page.getByRole("banner").getByRole("link", { name: "CourtLens Research Workbench home" })).toContainText("COURTLENS");
     const navigation = page.getByRole("navigation", { name: "Workspace Navigation" });
     await expect(navigation.getByRole("link", { name: "Stats", exact: true })).toBeVisible();
     for (const name of ["Players", "Teams", "Compare", "Research", "Help"]) {
@@ -141,7 +141,7 @@ test.describe("Workbench Dark Research Interface", () => {
     await openWorkbench(page, "/stats?experience=manual");
     await page.getByRole("button", { name: "Ask", exact: true }).click();
     const dialog = page.getByRole("dialog", { name: "Research conversation" });
-    await expect(dialog.getByRole("heading", { name: "Ask CourtLoad" })).toBeVisible();
+    await expect(dialog.getByRole("heading", { name: "Ask CourtLens" })).toBeVisible();
     await expect(dialog.getByLabel("Research operation", { exact: true })).toBeVisible();
     const textarea = dialog.getByLabel("Research question (optional label)", { exact: true });
     await textarea.fill("Compare Scottie Barnes and RJ Barrett");

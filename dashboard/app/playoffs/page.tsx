@@ -5,7 +5,7 @@ import { getWorkbenchCatalog, getPlayoffBracket } from "@/lib/workbench-api";
 import type { PlayoffBracketResponse } from "@/lib/types";
 
 export const metadata: Metadata = {
-  title: "Playoff Bracket & Series Explorer · CourtLoad",
+  title: "Playoff Bracket & Series Explorer · CourtLens",
   description:
     "NBA postseason tournament bracket hierarchy, 7-game cards, Dean Oliver Four Factors, player series box scores, and explicit seed evidence."
 };

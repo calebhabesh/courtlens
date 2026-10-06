@@ -7,7 +7,7 @@ import { getTeamsResearch } from "@/lib/workbench-api";
 import type { TeamResearchResponse } from "@/lib/types";
 
 export const metadata: Metadata = {
-  title: "Team Explorer & Four Factors · CourtLoad",
+  title: "Team Explorer & Four Factors · CourtLens",
   description: "Standings, conference & division grouping, Dean Oliver Four Factors, ratings, and tempo distributions for all 30 NBA franchises.",
 };
 export const dynamic = "force-dynamic";

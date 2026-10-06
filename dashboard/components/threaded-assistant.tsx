@@ -246,7 +246,7 @@ export function ThreadedAssistant({ initialContext = {} }: { initialContext?: Co
   }
   const shownContext = scopeEdited ? context : [...turns].reverse().find(turn => turn.response?.scope)?.response?.scope?.selections ?? context;
   const blocked = busy || !!pending || !ready;
-  return <section className="conversation threaded-assistant panel" aria-label="CourtLoad assistant">
+  return <section className="conversation threaded-assistant panel" aria-label="CourtLens assistant">
     <p className="text-muted"><Link href="/research/ask?experience=manual">Open manual research</Link></p>
     <div className="conversation-row"><h2>Conversations</h2><div className="conversation-prompts"><Button disabled={blocked} onClick={() => void createThread()}>New chat</Button><Button disabled={blocked || !thread} onClick={() => setConfirmDelete("thread")}>Delete chat</Button><Button disabled={blocked} onClick={() => setConfirmDelete("all")}>Clear history</Button></div></div>
     <p className="text-muted">{assistantPrivacyNotice}</p>

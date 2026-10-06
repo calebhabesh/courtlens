@@ -6,7 +6,7 @@ import { WorkbenchPortraitSettings } from "@/components/workbench-portrait-setti
 import { getAssistantStatus, getWorkbenchStatus } from "@/lib/workbench-api";
 import type { AssistantStatusResponse, WorkbenchStatus } from "@/lib/types";
 
-export const metadata: Metadata = { title: "Workbench Settings · CourtLoad" };
+export const metadata: Metadata = { title: "Workbench Settings · CourtLens" };
 export const dynamic = "force-dynamic";
 
 export default async function SettingsPage() {

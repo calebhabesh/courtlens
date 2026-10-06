@@ -5,7 +5,7 @@ import { WorkbenchInvestigationsList } from "@/components/workbench-investigatio
 import { listSavedInvestigations } from "@/lib/workbench-api";
 import type { SavedInvestigation } from "@/lib/types";
 
-export const metadata: Metadata = { title: "Saved Investigations · CourtLoad" };
+export const metadata: Metadata = { title: "Saved Investigations · CourtLens" };
 export const dynamic = "force-dynamic";
 
 export default async function InvestigationsPage() {

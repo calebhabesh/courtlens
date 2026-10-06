@@ -1,10 +1,10 @@
 # Evidence before narrative
 
-CourtLoad engineering note · 2026-10-04 · Original project content
+CourtLens engineering note · 2026-10-04 · Original project content
 
 ## What a saved investigation retains
 
-A table can look convincing while losing the release, cutoff or sample that produced it. CourtLoad retains the canonical plan, resolved context, operation versions, input identities, result hashes and exact evidence cells together. The question is optional metadata. AI-generated prose is excluded.
+A table can look convincing while losing the release, cutoff or sample that produced it. CourtLens retains the canonical plan, resolved context, operation versions, input identities, result hashes and exact evidence cells together. The question is optional metadata. AI-generated prose is excluded.
 
 Saving reruns the selected server-held turn against pinned inputs before accepting it. Stats expands to the full eligible cohort within the 2,000-row bound. A distribution still means its requested historical window; similarity still means its declared dimensions and top-k. Neither becomes a complete career report.
 

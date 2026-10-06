@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { DistributionsInvestigationView } from "@/components/distributions-investigation-view";
 
 export const metadata: Metadata = {
-  title: "Metric Distributions & Contextual Splits · CourtLoad Research",
+  title: "Metric Distributions & Contextual Splits · CourtLens Research",
   description: "Empirical sample quantiles, interquartile ranges, venue splits, and team rest day breakdowns."
 };
 

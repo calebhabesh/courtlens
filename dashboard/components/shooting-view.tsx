@@ -89,7 +89,7 @@ export function ShootingView({ initialOperation = "shot-profile-peers" }: { init
     if (!court.current || !result) return;
     const svg = court.current.cloneNode(true) as SVGSVGElement;
     const context = JSON.stringify({ ...resolvedShooting(result), display_zone: zone || "all", display_team: team || "all", display_page: shotPage + 1, evidence_hash: result.evidence_hash, coverage: result.coverage_status });
-    const title = document.createElementNS("http://www.w3.org/2000/svg", "title"); title.textContent = `CourtLoad shooting · normalized feet · ${context}`; svg.prepend(title);
+    const title = document.createElementNS("http://www.w3.org/2000/svg", "title"); title.textContent = `CourtLens shooting · normalized feet · ${context}`; svg.prepend(title);
     // Resolve semantic theme colors so the standalone SVG renders outside the app.
     const theme = getComputedStyle(court.current);
     for (const element of [svg, ...svg.querySelectorAll("*")]) for (const attr of ["stroke", "fill"]) {
@@ -99,7 +99,7 @@ export function ShootingView({ initialOperation = "shot-profile-peers" }: { init
     }
     svg.removeAttribute("style");
     svg.setAttribute("viewBox", "-2 -2 54 115");
-    const banner = ["CourtLoad · shooting · normalized feet", `${result.context.season} · ${result.context.phase} · before ${result.context.before_date}`, `Player ${result.request.player_id} · zone ${zone || "all"} · team ${team || "all"} · page ${shotPage+1}`, `Source ${result.coverage_status} · ${result.observed_games}/${result.expected_games} games`, `Release ${result.context.release_id}`, `Evidence ${result.evidence_hash}`];
+    const banner = ["CourtLens · shooting · normalized feet", `${result.context.season} · ${result.context.phase} · before ${result.context.before_date}`, `Player ${result.request.player_id} · zone ${zone || "all"} · team ${team || "all"} · page ${shotPage+1}`, `Source ${result.coverage_status} · ${result.observed_games}/${result.expected_games} games`, `Release ${result.context.release_id}`, `Evidence ${result.evidence_hash}`];
     banner.forEach((line, index) => {
       const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
       text.setAttribute("x", "0"); text.setAttribute("y", String(97 + index * 2.5)); text.setAttribute("font-size", ".85"); text.setAttribute("fill", theme.color); text.textContent = line; svg.append(text);

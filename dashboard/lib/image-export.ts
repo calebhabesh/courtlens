@@ -1,5 +1,5 @@
 /**
- * Context-labelled image and canonical query URL export utility for CourtLoad.
+ * Context-labelled image and canonical query URL export utility for CourtLens.
  *
  * Implements F46 Image sharing:
  * "Download a bounded image of a selected analytical view with title, units,
@@ -60,7 +60,7 @@ export async function exportSvgAsPng(
   const rawWidth = Math.max(svgRect.width, svgElement.viewBox.baseVal.width || 800);
   const rawHeight = Math.max(svgRect.height, svgElement.viewBox.baseVal.height || 500);
 
-  // Set up canvas dimensions with padding for CourtLoad branded header and footer
+  // Set up canvas dimensions with padding for CourtLens branded header and footer
   const dpr = typeof window !== "undefined" ? Math.min(window.devicePixelRatio || 2, 2) : 2;
   const headerHeight = 90;
   const footerHeight = 44;
@@ -85,9 +85,9 @@ export async function exportSvgAsPng(
   ctx.fillRect(0, 0, totalWidth, totalHeight);
 
   // 2. Draw branded header
-  ctx.fillStyle = "#ffd166"; // CourtLoad Accent
+  ctx.fillStyle = "#ffd166"; // CourtLens Accent
   ctx.font = "bold 16px -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
-  ctx.fillText("CourtLoad", paddingX, 30);
+  ctx.fillText("CourtLens", paddingX, 30);
 
   ctx.fillStyle = "#b4bdca"; // Muted text
   ctx.font = "12px -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
@@ -174,7 +174,7 @@ export async function exportSvgAsPng(
 }
 
 /**
- * Export standalone SVG file with embedded CourtLoad metadata comments.
+ * Export standalone SVG file with embedded CourtLens metadata comments.
  */
 export function exportSvgFile(
   svgElement: SVGSVGElement,
@@ -185,7 +185,7 @@ export function exportSvgFile(
 
   if (options) {
     const metaComment = `<!--
-  CourtLoad NBA Analytics Export
+  CourtLens NBA Analytics Export
   Title: ${options.title}
   Context: ${formatContextBanner(options.context)}
   Evidence: ${options.evidenceId || "N/A"}

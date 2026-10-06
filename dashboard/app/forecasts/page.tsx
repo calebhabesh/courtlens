@@ -6,7 +6,7 @@ import {
   getWorkbenchStatus,
 } from "@/lib/workbench-api";
 
-export const metadata: Metadata = { title: "Points Forecasting · CourtLoad" };
+export const metadata: Metadata = { title: "Points Forecasting · CourtLens" };
 export const dynamic = "force-dynamic";
 
 const SLICE_DIMENSION_NAMES: Record<string, string> = {
@@ -125,7 +125,7 @@ export default async function ForecastsPage() {
 
       {/* Protocol Banner */}
       <div className="notice-box" style={{ borderLeftColor: "var(--accent)" }}>
-        <strong>Protocol rule:</strong> CourtLoad strictly isolates historical reconstruction from genuine prospective forecast issuance. Out-of-time chronological validation ensures feature computations never observe future game outcomes (<code>game_date &lt; replay_date</code>). Absent box scores are unknown, not zeros.
+        <strong>Protocol rule:</strong> CourtLens strictly isolates historical reconstruction from genuine prospective forecast issuance. Out-of-time chronological validation ensures feature computations never observe future game outcomes (<code>game_date &lt; replay_date</code>). Absent box scores are unknown, not zeros.
       </div>
 
       {/* Active Policy Status Card */}
@@ -182,7 +182,7 @@ export default async function ForecastsPage() {
           </div>
           <p className="text-xs text-muted" style={{ margin: 0, lineHeight: 1.5 }}>
             {promo.decision === "do_not_promote"
-              ? `The transparent carryover baseline '${baselineKey}' achieved superior validation error (4.613 vs 4.633 MAE) and challenger failed promotion gates 1 and 2. Following scientific protocol, CourtLoad automatically demotes the challenger and serves the baseline winner without forced promotion.`
+              ? `The transparent carryover baseline '${baselineKey}' achieved superior validation error (4.613 vs 4.633 MAE) and challenger failed promotion gates 1 and 2. Following scientific protocol, CourtLens automatically demotes the challenger and serves the baseline winner without forced promotion.`
               : `The challenger met all 4 pre-registered promotion gates with statistically significant holdout superiority.`}
           </p>
         </div>
@@ -465,7 +465,7 @@ courtload activate-points-policy --registered-run ${evaluation.run_id || "b0e4bb
           </span>
         </div>
         <p className="text-sm text-muted">
-          <strong>Prospective accuracy not yet observed:</strong> The 2026-27 NBA regular season begins October 2026. Prospective forecasts will be logged prior to game tipoffs using active policy <code>{policyStatus}</code> and scored after official box scores are finalized. CourtLoad never fabricates unobserved live forecast accuracy.
+          <strong>Prospective accuracy not yet observed:</strong> The 2026-27 NBA regular season begins October 2026. Prospective forecasts will be logged prior to game tipoffs using active policy <code>{policyStatus}</code> and scored after official box scores are finalized. CourtLens never fabricates unobserved live forecast accuracy.
         </p>
 
         <div style={{ marginTop: "0.75rem", display: "flex", flexWrap: "wrap", gap: "0.5rem" }}>

@@ -269,7 +269,7 @@ export function RankingBoardsView() {
       <div className="notice-box" style={{ borderLeftColor: "var(--accent)", margin: 0 }}>
         <strong className="text-accent text-xs">Subjective Provenance &amp; Zero Inferred Claims:</strong>
         <p className="text-xs text-muted" style={{ margin: "0.2rem 0 0" }}>
-          Ranking boards represent personal subjective evaluations. CourtLoad never fabricates a &quot;global community consensus&quot; or automated public authority from subjective inputs.
+          Ranking boards represent personal subjective evaluations. CourtLens never fabricates a &quot;global community consensus&quot; or automated public authority from subjective inputs.
         </p>
       </div>
 

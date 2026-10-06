@@ -7,7 +7,7 @@ import type { PlayerGameLogResponse, PlayerProfile, WorkbenchCatalog } from "@/l
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
-  title: "Recent Games Explorer · CourtLoad"
+  title: "Recent Games Explorer · CourtLens"
 };
 
 interface LastGamesPageProps {

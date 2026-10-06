@@ -133,11 +133,11 @@ export function ScatterPlotView({
     try {
       setExporting(true);
       await exportSvgAsPng(svgRef.current, {
-        title: `CourtLoad Two-Axis Scatter: ${xDef.label} vs ${yDef.label}`,
+        title: `CourtLens Two-Axis Scatter: ${xDef.label} vs ${yDef.label}`,
         subtitle: `${points.length} players analyzed · ${referenceType.toUpperCase()} reference lines`,
         context,
         evidenceId: context.release_id,
-        filename: `courtload-scatter-${xMetricKey}-vs-${yMetricKey}-${context.before_date || "cutoff"}`
+        filename: `courtlens-scatter-${xMetricKey}-vs-${yMetricKey}-${context.before_date || "cutoff"}`
       });
     } catch (err) {
       alert(err instanceof Error ? err.message : "Failed to export PNG image");
@@ -148,10 +148,10 @@ export function ScatterPlotView({
 
   const handleExportSvg = () => {
     if (!svgRef.current) return;
-    exportSvgFile(svgRef.current, `courtload-scatter-${xMetricKey}-vs-${yMetricKey}.svg`, {
-      title: `CourtLoad Scatter: ${xDef.label} vs ${yDef.label}`,
+    exportSvgFile(svgRef.current, `courtlens-scatter-${xMetricKey}-vs-${yMetricKey}.svg`, {
+      title: `CourtLens Scatter: ${xDef.label} vs ${yDef.label}`,
       context,
-      filename: `courtload-scatter-${xMetricKey}-vs-${yMetricKey}`
+      filename: `courtlens-scatter-${xMetricKey}-vs-${yMetricKey}`
     });
   };
 

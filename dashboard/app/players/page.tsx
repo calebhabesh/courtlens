@@ -4,7 +4,7 @@ import { PlayerSearch } from "@/components/player-search";
 import { getAnalyticsCatalog } from "@/lib/api";
 import type { AnalyticsCatalog } from "@/lib/types";
 
-export const metadata: Metadata = { title: "Player Explorer · CourtLoad" };
+export const metadata: Metadata = { title: "Player Explorer · CourtLens" };
 export const dynamic = "force-dynamic";
 
 interface PlayersPageProps {

@@ -100,7 +100,7 @@ export function PlayerShowcaseView({
     setExporting(true);
     try {
       await exportSvgAsPng(cardSvgRef.current, {
-        title: `${currentPlayer.player_name} — CourtLoad Showcase Card`,
+        title: `${currentPlayer.player_name} — CourtLens Showcase Card`,
         subtitle: `${activePreset.label} · ${currentPlayer.teams.join("/")} · ${season} ${phase}`,
         context: {
           season,
@@ -287,7 +287,7 @@ export function PlayerShowcaseView({
 
               {/* Brand & Kicker */}
               <text x="24" y="28" fill="#ffd166" fontSize="13" fontWeight="bold" fontFamily="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">
-                COURTLOAD
+                COURTLENS
               </text>
               <text x="110" y="28" fill="#b4bdca" fontSize="11" fontFamily="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">
                 SHOWCASE · {season} {phase.replace("_", " ")}
@@ -386,7 +386,7 @@ export function PlayerShowcaseView({
 
               {/* Watermark Bottom */}
               <text x="230" y="555" fill="#465160" fontSize="10" fontFamily="monospace" textAnchor="middle">
-                COURTLOAD NBA REPLICA · VERIFIED RECORD
+                COURTLENS NBA REPLICA · VERIFIED RECORD
               </text>
             </svg>
           </div>

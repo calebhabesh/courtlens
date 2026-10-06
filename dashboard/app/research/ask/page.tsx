@@ -18,9 +18,9 @@ export default async function AskPage({ searchParams }: AskPageProps) {
     <div className="workbench-content">
       <div className="page-header">
         <div>
-          <h1 className="page-title">Ask CourtLoad</h1>
+          <h1 className="page-title">Ask CourtLens</h1>
           <p className="page-subtitle">
-            {threaded ? "Ask basketball questions, explore CourtLoad and revisit local conversations." : "Ask follow-up questions or run manual research against a pinned release, with exact results and evidence."}
+            {threaded ? "Ask basketball questions, explore CourtLens and revisit local conversations." : "Ask follow-up questions or run manual research against a pinned release, with exact results and evidence."}
           </p>
         </div>
       </div>

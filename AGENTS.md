@@ -1,6 +1,6 @@
-# Agent and Developer Instructions for CourtLoad
+# Agent and Developer Instructions for CourtLens
 
-CourtLoad is an NBA analytics and player comparison system emphasizing backend/data engineering rigor, temporal discipline, reproducible offline machine learning evaluation, and clear presentation under uncertainty.
+CourtLens is an NBA analytics and player comparison system emphasizing backend/data engineering rigor, temporal discipline, reproducible offline machine learning evaluation, and clear presentation under uncertainty.
 
 For the local research-workbench realignment, read [the implementation handoff](docs/workbench-implementation-plan.md) before changing data sources, analytics, forecasting, dashboard, or operations. Follow its ordered milestones and linked contracts; it supersedes earlier product-scope plans while preserving the guardrails below. Workbench milestones are pending, not completion evidence.
 
@@ -26,7 +26,7 @@ For polish/freeze UI, query-correctness or hybrid-assistant work, read the [conf
 
 2. **Zero Inferred Claims:**
    - An absent box-score row is unknown, not a zero outcome or injury confirmation.
-   - CourtLoad never invents a "winner probability" or automated start/sit decision from overlapping prediction intervals.
+   - CourtLens never invents a "winner probability" or automated start/sit decision from overlapping prediction intervals.
    - Prediction intervals represent empirical calibrated dispersion, not subjective confidence scores.
 
 3. **Data Immutability & Safe Migrations:**

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { TierListView } from "@/components/tier-list-view";
 
 export const metadata: Metadata = {
-  title: "Tier List Builder · CourtLoad",
+  title: "Tier List Builder · CourtLens",
   description: "Create, customize, and organize personal NBA player tier lists with drag-and-drop and accessible keyboard allocation."
 };
 

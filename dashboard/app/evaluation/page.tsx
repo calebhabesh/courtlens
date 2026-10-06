@@ -42,7 +42,7 @@ function EvaluationView({ report }: { report: AnalyticsEvaluation }) {
   const promotion = report.promotion as unknown as Promotion;
   const counts = report.final_test.counts;
   return <main className="page shell evaluation-page">
-    <header className="page-heading"><div><p className="kicker">Frozen historical experiment</p><h1>Evaluation</h1><p>Did a context model improve estimates of next team-game CourtLoad points, conditional on appearance?</p></div></header>
+    <header className="page-heading"><div><p className="kicker">Frozen historical experiment</p><h1>Evaluation</h1><p>Did a context model improve estimates of next team-game CourtLens points, conditional on appearance?</p></div></header>
     <div className="replay-banner"><strong>No challenger promoted</strong><span>EWMA-20 remains the historical replay estimator. The player + context finalist was worse on the final season.</span></div>
     <section className="evaluation-section" aria-labelledby="result-heading"><h2 id="result-heading">Final test · 2023–24</h2><p>39,988 identical scored core forecasts across 142 target dates. Lower MAE and RMSE are better.</p>
       <div className="evaluation-table-wrap" tabIndex={0} aria-label="Final test metrics, scroll horizontally"><table className="evaluation-table"><thead><tr><th>Estimator</th><th>MAE</th><th>RMSE</th><th>80% interval coverage</th><th>Mean interval width</th><th>Rows</th></tr></thead><tbody>{estimators.map(([key, label]) => {

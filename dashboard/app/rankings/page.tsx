@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { RankingBoardsView } from "@/components/ranking-boards-view";
 
 export const metadata: Metadata = {
-  title: "Personal Ranking Boards · CourtLoad",
+  title: "Personal Ranking Boards · CourtLens",
   description: "Create, reorder, and mathematically aggregate personal player ranking boards with transparent missingness rules."
 };
 
