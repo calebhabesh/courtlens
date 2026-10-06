@@ -199,3 +199,75 @@ def test_v2_request_bytes_bounded_before_parsing(postgres_conversation):
     with TestClient(app) as client:
         response = client.post("/api/workbench/assistant/v2/turn", content=b"x" * (160 * 1024 + 1))
     assert response.status_code == 413
+
+
+def test_planner_scope_conflict_keeps_server_scope(postgres_conversation):
+    """AR01: a stale planner season proposal is recorded and ignored, not a failure."""
+    session, context = postgres_conversation
+
+    class Provider:
+        def plan(self, payload, *, timeout_seconds):
+            body = json.loads(payload)
+            assert body["today"] == "2026-10-05"
+            plan = request(context).plan.model_dump(mode="json")
+            plan["context_changes"] = {"season": "2023-24"}
+            return PlanningOutput(plan)
+
+    answer = run_hybrid_turn(
+        session, request(context, plan=False), provider=Provider(), clock=lambda: date(2026, 10, 5)
+    )
+    assert answer.status == "answered", answer.model_dump_json()
+    assert answer.scope.selections.season == "2024-25"
+    assert answer.plan.context_changes is None
+    assert any(
+        "ignored the planner's proposed season 2023-24" in a for a in answer.scope.assumptions
+    )
+    assert answer.accounting.provider_calls == 1
+
+
+def test_planner_repair_retry_receives_rejection(postgres_conversation):
+    session, context = postgres_conversation
+    payloads = []
+
+    class Provider:
+        def plan(self, payload, *, timeout_seconds):
+            payloads.append(json.loads(payload))
+            plan = request(context).plan.model_dump(mode="json")
+            if len(payloads) == 1:
+                plan["steps"][0]["operation"] = "not_registered"
+            return PlanningOutput(plan)
+
+    answer = run_hybrid_turn(session, request(context, plan=False), provider=Provider())
+    assert answer.status == "answered", answer.model_dump_json()
+    assert answer.accounting.provider_calls == 2
+    assert payloads[0]["rejected_previous_attempt"] is None
+    assert payloads[1]["rejected_previous_attempt"]
+
+
+def test_planner_gives_up_after_one_repair(postgres_conversation):
+    session, context = postgres_conversation
+
+    class Provider:
+        def plan(self, payload, *, timeout_seconds):
+            return PlanningOutput({"plan_version": "wrong"})
+
+    answer = run_hybrid_turn(session, request(context, plan=False), provider=Provider())
+    assert answer.blocks[0].reason == "malformed_output"
+    assert answer.accounting.provider_calls == 2
+    assert answer.accounting.analytical_calls == 0
+
+
+def test_execution_value_error_is_not_reported_as_planner_failure(postgres_conversation):
+    session, context = postgres_conversation
+
+    class Provider:
+        def plan(self, payload, *, timeout_seconds):
+            return PlanningOutput(request(context).plan.model_dump(mode="json"))
+
+    with patch(
+        "courtload.services.assistant.hybrid.execute_bounded",
+        side_effect=ValueError("row budget"),
+    ):
+        answer = run_hybrid_turn(session, request(context, plan=False), provider=Provider())
+    assert answer.blocks[0].reason == "unsupported_operation"
+    assert answer.accounting.provider_calls == 1

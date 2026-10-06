@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import logging
 import re
 import time
 from collections.abc import Callable
@@ -164,6 +165,42 @@ _FAILURES: dict[Failure, tuple[str, str]] = {
 }
 
 
+logger = logging.getLogger(__name__)
+
+# One planner call plus one repair attempt that receives the validation error.
+MAX_PLAN_ATTEMPTS = 2
+
+
+def _apply_server_scope(
+    plan: AnalysisPlan, selected: ConversationContext, scope: InterpretedScope
+) -> AnalysisPlan:
+    """Server-resolved scope wins; a conflicting planner proposal is recorded, never executed."""
+    if not plan.context_changes:
+        return plan
+    changes = plan.context_changes.model_dump(exclude_unset=True)
+    current = selected.model_dump()
+    conflicts = {
+        key: value
+        for key, value in changes.items()
+        if value is not None and current.get(key) != value
+    }
+    if conflicts:
+        proposal = ", ".join(f"{key} {value}" for key, value in sorted(conflicts.items()))
+        scope.assumptions.append(
+            f"Kept the server-resolved scope; ignored the planner's proposed {proposal}."[:500]
+        )
+    return plan.model_copy(update={"context_changes": None})
+
+
+def _rejection_summary(exc: Exception) -> str:
+    if isinstance(exc, ValidationError):
+        return "; ".join(
+            f"{'.'.join(str(part) for part in error['loc'])}: {error['msg']}"
+            for error in exc.errors()[:5]
+        )[:800]
+    return str(exc)[:800]
+
+
 def route_intent(message: str, has_plan: bool = False) -> Intent:
     text = message.lower()
     if re.search(
@@ -218,6 +255,7 @@ def _run_single_turn(
     status: Any = "answered"
     plan = None
     provider_calls = calls = rows = 0
+    planning = True
 
     def unable(reason: Failure, *, failed: bool = False) -> None:
         nonlocal status
@@ -374,50 +412,74 @@ def _run_single_turn(
                         unable("no_observations")
                     else:
                         plan = request.plan
-                        if plan is None:
-                            if provider is None:
-                                settings = get_settings()
-                                key = (
-                                    settings.gemini_api_key.get_secret_value().strip()
-                                    if settings.gemini_api_key
-                                    else ""
+                        rejection: str | None = None
+                        attempts = 0
+                        while True:
+                            if request.plan is None:
+                                if provider is None:
+                                    settings = get_settings()
+                                    key = (
+                                        settings.gemini_api_key.get_secret_value().strip()
+                                        if settings.gemini_api_key
+                                        else ""
+                                    )
+                                    if not key:
+                                        raise ProviderFailure("disabled")
+                                    provider = GeminiPlanProvider(key, settings.gemini_model)
+                                payload = json.dumps(
+                                    {
+                                        "message": request.message,
+                                        "today": clock().isoformat(),
+                                        "context": context.to_dict(),
+                                        "previous_plan": previous_plan.model_dump(mode="json")
+                                        if previous_plan
+                                        else None,
+                                        "rejected_previous_attempt": rejection,
+                                        "operations": declarations(),
+                                    },
+                                    separators=(",", ":"),
                                 )
-                                if not key:
-                                    raise ProviderFailure("disabled")
-                                provider = GeminiPlanProvider(key, settings.gemini_model)
-                            payload = json.dumps(
-                                {
-                                    "message": request.message,
-                                    "context": context.to_dict(),
-                                    "previous_plan": previous_plan.model_dump(mode="json")
-                                    if previous_plan
-                                    else None,
-                                    "operations": declarations(),
-                                },
-                                separators=(",", ":"),
-                            )
-                            # Reserve prompt/schema allowance within the legacy 64KiB budget.
-                            if len(payload.encode()) > MAX_PROVIDER_BYTES - 24000:
-                                raise ValueError("provider input budget")
-                            if time.monotonic() >= deadline:
-                                raise TimeoutError("turn deadline")
-                            provider_calls += 1
-                            output = _bounded_provider(
-                                provider, payload, deadline - time.monotonic()
-                            )
-                            if len(json.dumps(output.data).encode()) > 32 * 1024:
-                                raise ValueError("provider output budget")
-                            # Unlike legacy v1 normalization, the v2 adapter rejects wrong versions.
-                            if output.data.get("plan_version") != "courtload-analysis-plan-v1":
-                                raise ValueError("unrecognized plan version")
-                            plan = AnalysisPlan.model_validate(output.data)
-                        if plan.context_changes:
-                            changes = plan.context_changes.model_dump(exclude_unset=True)
-                            if any(
-                                value is not None and selected.model_dump().get(key) != value
-                                for key, value in changes.items()
-                            ):
-                                raise ValueError("planner changed server-resolved scope")
+                                # Reserve prompt/schema allowance within the legacy 64KiB budget.
+                                if len(payload.encode()) > MAX_PROVIDER_BYTES - 24000:
+                                    raise ValueError("provider input budget")
+                                if time.monotonic() >= deadline:
+                                    raise TimeoutError("turn deadline")
+                                provider_calls += 1
+                                attempts += 1
+                                output = _bounded_provider(
+                                    provider, payload, deadline - time.monotonic()
+                                )
+                            try:
+                                if request.plan is None:
+                                    if len(json.dumps(output.data).encode()) > 32 * 1024:
+                                        raise ValueError("provider output budget")
+                                    # The v2 adapter rejects wrong versions.
+                                    if output.data.get("plan_version") != (
+                                        "courtload-analysis-plan-v1"
+                                    ):
+                                        raise ValueError("unrecognized plan version")
+                                    plan = AnalysisPlan.model_validate(output.data)
+                                assert plan is not None
+                                plan = _apply_server_scope(plan, selected, scope)
+                                if plan.status == "execute":
+                                    steps = [
+                                        canonical_step(session, context, step)
+                                        for step in plan.steps
+                                    ]
+                                    plan = plan.model_copy(update={"steps": steps})
+                                break
+                            except (ValueError, ValidationError) as exc:
+                                # Only a provider plan earns one repair attempt.
+                                if request.plan is not None or attempts >= MAX_PLAN_ATTEMPTS:
+                                    raise
+                                rejection = _rejection_summary(exc)
+                                logger.warning(
+                                    "planner output rejected (attempt %d): %s; plan=%s",
+                                    attempts,
+                                    rejection,
+                                    json.dumps(output.data)[:4000],
+                                )
+                        planning = False
                         if plan.status == "clarification_required":
                             status = "clarification_required"
                             messages = {
@@ -442,8 +504,7 @@ def _run_single_turn(
                         elif plan.status == "unsupported":
                             unable("unsupported_operation")
                         else:
-                            steps = [canonical_step(session, context, step) for step in plan.steps]
-                            plan = plan.model_copy(update={"steps": steps})
+                            steps = plan.steps
                             for step in steps:
                                 calls += 1
                                 data = execute_bounded(session, context, step, deadline)
@@ -546,8 +607,12 @@ def _run_single_turn(
             else "unsupported_operation",
             failed=exc.status_code >= 500,
         )
-    except (ValueError, ValidationError):
-        unable("malformed_output" if provider_calls else "unsupported_operation")
+    except (ValueError, ValidationError) as exc:
+        if planning and provider_calls:
+            logger.warning("planner output rejected after repair: %s", _rejection_summary(exc))
+            unable("malformed_output")
+        else:
+            unable("unsupported_operation")
     except Exception:
         unable("backend_failure", failed=True)
     if status == "answered" and not any(
