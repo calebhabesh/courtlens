@@ -1,0 +1,16 @@
+
+> courtload-dashboard@0.1.0 test:browser
+> playwright test live.spec.ts --workers=2
+
+
+Running 7 tests using 2 workers
+
+  ✓  1 e2e/live.spec.ts:21:5 › selected source boxes keep zero, missingness, clock and errors explicit (315ms)
+  ✓  2 e2e/live.spec.ts:28:5 › pause, visibility and navigation release leases and prevent hidden renewals (496ms)
+  ✓  3 e2e/live.spec.ts:37:5 › offline retains last observation; capacity and disabled acquisition stay usable (290ms)
+  ✓  5 e2e/live.spec.ts:48:5 › mobile and landscape source box regions contain overflow and keyboard focus (281ms)
+  ✓  4 e2e/live.spec.ts:42:5 › historical final detail has no demand and pins resolved release in links (461ms)
+  ✓  6 e2e/live.spec.ts:53:5 › a delayed old selection cannot overwrite new date observations (297ms)
+  ✓  7 e2e/live.spec.ts:58:5 › disabled acquisition, observed empty slate and invalid dates stay distinct (437ms)
+
+  7 passed (1.8s)

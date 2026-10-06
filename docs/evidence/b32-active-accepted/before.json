@@ -1,0 +1,18 @@
+{
+  "at": "2026-10-04T23:38:43.553996+00:00",
+  "requests": 8,
+  "bytes": 79456,
+  "status": "observed",
+  "error": null,
+  "contents": 2,
+  "observations": 8,
+  "leases": 0,
+  "logical_bytes": 21028,
+  "physical_bytes": {
+    "live_contents": 49152,
+    "live_observations": 57344,
+    "live_leases": 90112,
+    "live_feeds": 24576,
+    "live_reconciliations": 16384
+  }
+}

@@ -1,0 +1,59 @@
+INFO:     Started server process [3806288]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8038 (Press CTRL+C to quit)
+INFO:     127.0.0.1:55812 - "GET /api/live?slate_date=2026-10-04 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55820 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55824 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55836 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55822 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55842 - "GET /api/live?slate_date=2026-10-04 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55820 - "GET /api/live?slate_date=2026-10-04 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55824 - "GET /api/live/games/401918010?slate_date=2026-10-04 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55822 - "GET /api/live?slate_date=2026-10-04 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55836 - "GET /api/live?slate_date=2026-10-04 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55858 - "POST /api/live/subscriptions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55824 - "GET /api/live?slate_date=2026-10-04 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55842 - "GET /api/live/games/401914127?slate_date=2026-10-04 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55822 - "GET /api/live/games/401914127?slate_date=2026-10-04 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55820 - "POST /api/live/subscriptions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55836 - "POST /api/live/subscriptions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55858 - "POST /api/live/subscriptions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55820 - "GET /api/live?slate_date=2026-10-04 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46208 - "GET /api/live?slate_date=2026-10-04 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46216 - "GET /api/live/games/401918010?slate_date=2026-10-04 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46236 - "GET /api/live?slate_date=2026-10-04 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46226 - "POST /api/live/subscriptions/c5be007b-ab19-49bb-948d-4cc86d8476b6/heartbeat HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46246 - "GET /api/live/games/401914127?slate_date=2026-10-04 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46208 - "GET /api/live?slate_date=2026-10-04 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46248 - "POST /api/live/subscriptions/c967c875-ff22-42c4-b2ad-2ea548c9f3df/heartbeat HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46226 - "GET /api/live?slate_date=2026-10-04 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46236 - "POST /api/live/subscriptions/247c73ca-cf9a-406e-924f-562035567a2e/heartbeat HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46216 - "GET /api/live/games/401914127?slate_date=2026-10-04 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46208 - "POST /api/live/subscriptions/a23859d1-32f0-4c47-be83-00d8ab17e6ef/heartbeat HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43786 - "GET /api/live?slate_date=2026-10-04 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43790 - "GET /api/live/games/401918010?slate_date=2026-10-04 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43800 - "POST /api/live/subscriptions/c5be007b-ab19-49bb-948d-4cc86d8476b6/heartbeat HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43814 - "GET /api/live?slate_date=2026-10-04 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43842 - "GET /api/live?slate_date=2026-10-04 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43786 - "GET /api/live/games/401914127?slate_date=2026-10-04 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43800 - "GET /api/live?slate_date=2026-10-04 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43830 - "POST /api/live/subscriptions/a23859d1-32f0-4c47-be83-00d8ab17e6ef/heartbeat HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43814 - "GET /api/live/games/401914127?slate_date=2026-10-04 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43842 - "POST /api/live/subscriptions/c967c875-ff22-42c4-b2ad-2ea548c9f3df/heartbeat HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43790 - "POST /api/live/subscriptions/247c73ca-cf9a-406e-924f-562035567a2e/heartbeat HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55274 - "GET /api/live?slate_date=2026-10-04 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55282 - "GET /api/live/games/401918010?slate_date=2026-10-04 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55286 - "POST /api/live/subscriptions/c5be007b-ab19-49bb-948d-4cc86d8476b6/heartbeat HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55274 - "GET /api/live?slate_date=2026-10-04 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55282 - "POST /api/live/subscriptions/a23859d1-32f0-4c47-be83-00d8ab17e6ef/heartbeat HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55286 - "GET /api/live?slate_date=2026-10-04 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55316 - "POST /api/live/subscriptions/c967c875-ff22-42c4-b2ad-2ea548c9f3df/heartbeat HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55302 - "GET /api/live/games/401914127?slate_date=2026-10-04 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55318 - "GET /api/live?slate_date=2026-10-04 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55274 - "GET /api/live/games/401914127?slate_date=2026-10-04 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55282 - "POST /api/live/subscriptions/247c73ca-cf9a-406e-924f-562035567a2e/heartbeat HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [3806288]

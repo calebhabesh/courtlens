@@ -12,7 +12,7 @@ from fastapi import HTTPException
 from sqlalchemy import Engine, String, cast, func, select, text
 from sqlalchemy.orm import Session
 
-from courtload.domain.live import LiveSubscription
+from courtload.domain.live import LIVE_PARSER_VERSION, LiveSubscription
 from courtload.live_models import LiveContent, LiveFeed, LiveLease, LiveObservation
 from courtload.services.live_provider import LiveFetch, LiveProviderError
 from courtload.workbench_models import WorkbenchIdentityCrosswalk
@@ -274,7 +274,7 @@ def poll_once(engine: Engine, provider: Provider, *, now: datetime | None = None
 
                     digest = hashlib.sha256(
                         result.raw
-                        + b"espn-live-v1"
+                        + LIVE_PARSER_VERSION.encode()
                         + json.dumps(normalized, sort_keys=True).encode()
                     ).hexdigest()
                     if not session.get(LiveContent, digest):
@@ -294,7 +294,10 @@ def poll_once(engine: Engine, provider: Provider, *, now: datetime | None = None
                             raise LiveProviderError("storage_limit", size=len(result.raw))
                         session.add(
                             LiveContent(
-                                sha256=digest, raw_bytes=result.raw, normalized_json=normalized
+                                sha256=digest,
+                                raw_bytes=result.raw,
+                                normalized_json=normalized,
+                                parser_version=LIVE_PARSER_VERSION,
                             )
                         )
                         session.flush()

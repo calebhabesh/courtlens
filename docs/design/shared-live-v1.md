@@ -1,7 +1,9 @@
 # B31 shared provisional Live service v1
 
-Bounded backend handoff to B32. The source's genuine in-game freshness and real final
-reconciliation remain `not_yet_observed`. Consumer access is an opt-in candidate, not
+Bounded backend handoff to B32. [B32a](../evidence/b32-active-acceptance.md) records actual
+changing preseason scores/clocks and populated two-box measurements. Independent final
+reconciliation and actual correction acceptance remain `not_yet_observed`.
+Consumer access is an opt-in candidate, not
 an official supported API or SLA. See [source assessment](../research/b31-live-admission.md).
 
 ## API and client demand
@@ -122,3 +124,13 @@ books were unchanged. Simulated/Pg tests cover active/final corrections, missing
 fair coalescing, backoff, abrupt expiry, worker interruption, blocking jobs, concurrency,
 and independently admitted final-score reconciliation. B32 owns browser lifecycle/UI;
 real changing-game and later final evidence remain open gates.
+
+The scheduled-only measurements above remain dated B31 evidence. B32a's later real
+changing-game observation closes that bounded opportunity: four tabs share four cycles
+and two selected boxes, with CPU/RSS/logical/physical growth recorded separately. It
+does not close maximum three-box load, independent final reconciliation, actual
+corrections, player-stat final admission, retention or source-rights/reliability gates.
+New acquisitions use `espn-live-v2`, which accepts empty/omitted statistics only for
+explicit `didNotPlay: true` rows and preserves all columns as null. Existing v1 content
+remains unchanged. Generic API capability still describes aggregate acceptance and
+stays `not_yet_observed` while final/correction gates remain open.

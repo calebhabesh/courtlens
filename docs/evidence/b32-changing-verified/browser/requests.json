@@ -1,0 +1,387 @@
+[
+  {
+    "tab": 0,
+    "at": 1791157390792,
+    "url": "http://127.0.0.1:3142/api/live?slate_date=2026-10-04",
+    "method": "GET",
+    "status": 200
+  },
+  {
+    "tab": 0,
+    "at": 1791157390793,
+    "url": "http://127.0.0.1:3142/api/live/games/401914127?slate_date=2026-10-04",
+    "method": "GET",
+    "status": 200
+  },
+  {
+    "tab": 2,
+    "at": 1791157390801,
+    "url": "http://127.0.0.1:3142/api/live/games/401918010?slate_date=2026-10-04",
+    "method": "GET",
+    "status": 200
+  },
+  {
+    "tab": 2,
+    "at": 1791157390807,
+    "url": "http://127.0.0.1:3142/api/live?slate_date=2026-10-04",
+    "method": "GET",
+    "status": 200
+  },
+  {
+    "tab": 3,
+    "at": 1791157390814,
+    "url": "http://127.0.0.1:3142/api/live?slate_date=2026-10-04",
+    "method": "GET",
+    "status": 200
+  },
+  {
+    "tab": 2,
+    "at": 1791157390818,
+    "url": "http://127.0.0.1:3142/api/live/subscriptions",
+    "method": "POST",
+    "status": 200
+  },
+  {
+    "tab": 1,
+    "at": 1791157390819,
+    "url": "http://127.0.0.1:3142/api/live/games/401914127?slate_date=2026-10-04",
+    "method": "GET",
+    "status": 200
+  },
+  {
+    "tab": 1,
+    "at": 1791157390821,
+    "url": "http://127.0.0.1:3142/api/live?slate_date=2026-10-04",
+    "method": "GET",
+    "status": 200
+  },
+  {
+    "tab": 3,
+    "at": 1791157390827,
+    "url": "http://127.0.0.1:3142/api/live/subscriptions",
+    "method": "POST",
+    "status": 200
+  },
+  {
+    "tab": 0,
+    "at": 1791157390829,
+    "url": "http://127.0.0.1:3142/api/live/subscriptions",
+    "method": "POST",
+    "status": 200
+  },
+  {
+    "tab": 1,
+    "at": 1791157390835,
+    "url": "http://127.0.0.1:3142/api/live/subscriptions",
+    "method": "POST",
+    "status": 200
+  },
+  {
+    "tab": 2,
+    "at": 1791157450837,
+    "url": "http://127.0.0.1:3142/api/live?slate_date=2026-10-04",
+    "method": "GET",
+    "status": 200
+  },
+  {
+    "tab": 2,
+    "at": 1791157450838,
+    "url": "http://127.0.0.1:3142/api/live/games/401918010?slate_date=2026-10-04",
+    "method": "GET",
+    "status": 200
+  },
+  {
+    "tab": 0,
+    "at": 1791157450843,
+    "url": "http://127.0.0.1:3142/api/live?slate_date=2026-10-04",
+    "method": "GET",
+    "status": 200
+  },
+  {
+    "tab": 3,
+    "at": 1791157450845,
+    "url": "http://127.0.0.1:3142/api/live?slate_date=2026-10-04",
+    "method": "GET",
+    "status": 200
+  },
+  {
+    "tab": 2,
+    "at": 1791157450846,
+    "url": "http://127.0.0.1:3142/api/live/subscriptions/b9f324db-133d-42e2-83c7-d141a8cd21fc/heartbeat",
+    "method": "POST",
+    "status": 200
+  },
+  {
+    "tab": 0,
+    "at": 1791157450852,
+    "url": "http://127.0.0.1:3142/api/live/games/401914127?slate_date=2026-10-04",
+    "method": "GET",
+    "status": 200
+  },
+  {
+    "tab": 3,
+    "at": 1791157450853,
+    "url": "http://127.0.0.1:3142/api/live/subscriptions/8cdde6b4-df62-4809-be78-08dddba6da38/heartbeat",
+    "method": "POST",
+    "status": 200
+  },
+  {
+    "tab": 1,
+    "at": 1791157450858,
+    "url": "http://127.0.0.1:3142/api/live?slate_date=2026-10-04",
+    "method": "GET",
+    "status": 200
+  },
+  {
+    "tab": 1,
+    "at": 1791157450859,
+    "url": "http://127.0.0.1:3142/api/live/games/401914127?slate_date=2026-10-04",
+    "method": "GET",
+    "status": 200
+  },
+  {
+    "tab": 0,
+    "at": 1791157450859,
+    "url": "http://127.0.0.1:3142/api/live/subscriptions/d763ec9c-fe69-4cb4-a726-b4900c5ef0d5/heartbeat",
+    "method": "POST",
+    "status": 200
+  },
+  {
+    "tab": 1,
+    "at": 1791157450865,
+    "url": "http://127.0.0.1:3142/api/live/subscriptions/7b6fcec0-cbdd-4202-8da5-6e2725042496/heartbeat",
+    "method": "POST",
+    "status": 200
+  },
+  {
+    "tab": 2,
+    "at": 1791157510858,
+    "url": "http://127.0.0.1:3142/api/live?slate_date=2026-10-04",
+    "method": "GET",
+    "status": 200
+  },
+  {
+    "tab": 2,
+    "at": 1791157510861,
+    "url": "http://127.0.0.1:3142/api/live/games/401918010?slate_date=2026-10-04",
+    "method": "GET",
+    "status": 200
+  },
+  {
+    "tab": 3,
+    "at": 1791157510865,
+    "url": "http://127.0.0.1:3142/api/live?slate_date=2026-10-04",
+    "method": "GET",
+    "status": 200
+  },
+  {
+    "tab": 2,
+    "at": 1791157510876,
+    "url": "http://127.0.0.1:3142/api/live/subscriptions/b9f324db-133d-42e2-83c7-d141a8cd21fc/heartbeat",
+    "method": "POST",
+    "status": 200
+  },
+  {
+    "tab": 0,
+    "at": 1791157510877,
+    "url": "http://127.0.0.1:3142/api/live?slate_date=2026-10-04",
+    "method": "GET",
+    "status": 200
+  },
+  {
+    "tab": 0,
+    "at": 1791157510878,
+    "url": "http://127.0.0.1:3142/api/live/games/401914127?slate_date=2026-10-04",
+    "method": "GET",
+    "status": 200
+  },
+  {
+    "tab": 3,
+    "at": 1791157510882,
+    "url": "http://127.0.0.1:3142/api/live/subscriptions/8cdde6b4-df62-4809-be78-08dddba6da38/heartbeat",
+    "method": "POST",
+    "status": 200
+  },
+  {
+    "tab": 1,
+    "at": 1791157510883,
+    "url": "http://127.0.0.1:3142/api/live?slate_date=2026-10-04",
+    "method": "GET",
+    "status": 200
+  },
+  {
+    "tab": 0,
+    "at": 1791157510884,
+    "url": "http://127.0.0.1:3142/api/live/subscriptions/d763ec9c-fe69-4cb4-a726-b4900c5ef0d5/heartbeat",
+    "method": "POST",
+    "status": 200
+  },
+  {
+    "tab": 1,
+    "at": 1791157510889,
+    "url": "http://127.0.0.1:3142/api/live/games/401914127?slate_date=2026-10-04",
+    "method": "GET",
+    "status": 200
+  },
+  {
+    "tab": 1,
+    "at": 1791157510892,
+    "url": "http://127.0.0.1:3142/api/live/subscriptions/7b6fcec0-cbdd-4202-8da5-6e2725042496/heartbeat",
+    "method": "POST",
+    "status": 200
+  },
+  {
+    "tab": 2,
+    "at": 1791157570891,
+    "url": "http://127.0.0.1:3142/api/live?slate_date=2026-10-04",
+    "method": "GET",
+    "status": 200
+  },
+  {
+    "tab": 2,
+    "at": 1791157570893,
+    "url": "http://127.0.0.1:3142/api/live/games/401918010?slate_date=2026-10-04",
+    "method": "GET",
+    "status": 200
+  },
+  {
+    "tab": 3,
+    "at": 1791157570895,
+    "url": "http://127.0.0.1:3142/api/live?slate_date=2026-10-04",
+    "method": "GET",
+    "status": 200
+  },
+  {
+    "tab": 0,
+    "at": 1791157570898,
+    "url": "http://127.0.0.1:3142/api/live?slate_date=2026-10-04",
+    "method": "GET",
+    "status": 200
+  },
+  {
+    "tab": 0,
+    "at": 1791157570903,
+    "url": "http://127.0.0.1:3142/api/live/games/401914127?slate_date=2026-10-04",
+    "method": "GET",
+    "status": 200
+  },
+  {
+    "tab": 1,
+    "at": 1791157570904,
+    "url": "http://127.0.0.1:3142/api/live?slate_date=2026-10-04",
+    "method": "GET",
+    "status": 200
+  },
+  {
+    "tab": 2,
+    "at": 1791157570905,
+    "url": "http://127.0.0.1:3142/api/live/subscriptions/b9f324db-133d-42e2-83c7-d141a8cd21fc/heartbeat",
+    "method": "POST",
+    "status": 200
+  },
+  {
+    "tab": 1,
+    "at": 1791157570908,
+    "url": "http://127.0.0.1:3142/api/live/games/401914127?slate_date=2026-10-04",
+    "method": "GET",
+    "status": 200
+  },
+  {
+    "tab": 3,
+    "at": 1791157570910,
+    "url": "http://127.0.0.1:3142/api/live/subscriptions/8cdde6b4-df62-4809-be78-08dddba6da38/heartbeat",
+    "method": "POST",
+    "status": 200
+  },
+  {
+    "tab": 0,
+    "at": 1791157570914,
+    "url": "http://127.0.0.1:3142/api/live/subscriptions/d763ec9c-fe69-4cb4-a726-b4900c5ef0d5/heartbeat",
+    "method": "POST",
+    "status": 200
+  },
+  {
+    "tab": 1,
+    "at": 1791157570917,
+    "url": "http://127.0.0.1:3142/api/live/subscriptions/7b6fcec0-cbdd-4202-8da5-6e2725042496/heartbeat",
+    "method": "POST",
+    "status": 200
+  },
+  {
+    "tab": 0,
+    "at": 1791157598207,
+    "url": "http://127.0.0.1:3142/api/live?slate_date=2026-10-04",
+    "method": "GET",
+    "status": 200
+  },
+  {
+    "tab": 2,
+    "at": 1791157598210,
+    "url": "http://127.0.0.1:3142/api/live?slate_date=2026-10-04",
+    "method": "GET",
+    "status": 200
+  },
+  {
+    "tab": 0,
+    "at": 1791157598210,
+    "url": "http://127.0.0.1:3142/api/live/subscriptions/d763ec9c-fe69-4cb4-a726-b4900c5ef0d5",
+    "method": "DELETE",
+    "status": 204
+  },
+  {
+    "tab": 2,
+    "at": 1791157598212,
+    "url": "http://127.0.0.1:3142/api/live/games/401918010?slate_date=2026-10-04",
+    "method": "GET",
+    "status": 200
+  },
+  {
+    "tab": 0,
+    "at": 1791157598214,
+    "url": "http://127.0.0.1:3142/api/live/games/401914127?slate_date=2026-10-04",
+    "method": "GET",
+    "status": 200
+  },
+  {
+    "tab": 3,
+    "at": 1791157598218,
+    "url": "http://127.0.0.1:3142/api/live?slate_date=2026-10-04",
+    "method": "GET",
+    "status": 200
+  },
+  {
+    "tab": 2,
+    "at": 1791157598218,
+    "url": "http://127.0.0.1:3142/api/live/subscriptions/b9f324db-133d-42e2-83c7-d141a8cd21fc",
+    "method": "DELETE",
+    "status": 204
+  },
+  {
+    "tab": 3,
+    "at": 1791157598219,
+    "url": "http://127.0.0.1:3142/api/live/subscriptions/8cdde6b4-df62-4809-be78-08dddba6da38",
+    "method": "DELETE",
+    "status": 204
+  },
+  {
+    "tab": 1,
+    "at": 1791157600258,
+    "url": "http://127.0.0.1:3142/api/live?slate_date=2026-10-04",
+    "method": "GET",
+    "status": 200
+  },
+  {
+    "tab": 1,
+    "at": 1791157600259,
+    "url": "http://127.0.0.1:3142/api/live/games/401914127?slate_date=2026-10-04",
+    "method": "GET",
+    "status": 200
+  },
+  {
+    "tab": 1,
+    "at": 1791157600259,
+    "url": "http://127.0.0.1:3142/api/live/subscriptions/7b6fcec0-cbdd-4202-8da5-6e2725042496",
+    "method": "DELETE",
+    "status": 204
+  }
+]

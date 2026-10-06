@@ -44,7 +44,7 @@ const path=require('node:path');
     const released=await (await context.request.get(`${base}/api/live?slate_date=${date}`)).json();
     // Cached game detail and retained finalized facts do not create acquisition demand while paused.
     const liveBody=await pages[0].locator('main').innerText();
-    if(!liveBody.includes('not yet observed') || !liveBody.includes('Scheduled'))throw new Error('Scheduled gate/missingness absent');
+    if(!liveBody.includes('provisional source observations') || !liveBody.includes('Scheduled'))throw new Error('Scheduled gate/missingness absent');
     const scheduledUnknown=after.data.games.every(g=>g.status!=='scheduled'||g.teams.every(t=>t.score===null));
     if(!scheduledUnknown)throw new Error('Scheduled source placeholder leaked');
     await pages[0].goto(`${base}/live/games/0022301188?date=2024-04-14&live_mode=history&releaseId=2e99f37c-231a-4748-9f48-5b9ffa99f228&season=2023-24`);

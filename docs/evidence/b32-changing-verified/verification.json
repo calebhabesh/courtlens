@@ -1,0 +1,97 @@
+{
+  "block": "B32a",
+  "measured_at": "2026-10-04T23:46:40.801790+00:00",
+  "scope": "real preseason changing source, two selected boxes; no mocked responses",
+  "hardware": {
+    "platform": "Linux-7.2.8-arch1-2-x86_64-with-glibc2.44",
+    "logical_cores": 16
+  },
+  "games": [
+    "401914127",
+    "401918010"
+  ],
+  "before": {
+    "at": "2026-10-04T23:43:09.163025+00:00",
+    "requests": 20,
+    "bytes": 1555124,
+    "status": "observed",
+    "error": null,
+    "contents": 14,
+    "observations": 20,
+    "leases": 0,
+    "logical_bytes": 2000835,
+    "physical_bytes": {
+      "live_contents": 483328,
+      "live_observations": 57344,
+      "live_leases": 90112,
+      "live_feeds": 57344,
+      "live_reconciliations": 16384
+    }
+  },
+  "after": {
+    "at": "2026-10-04T23:46:40.762830+00:00",
+    "requests": 32,
+    "bytes": 3096571,
+    "status": "observed",
+    "error": null,
+    "contents": 26,
+    "observations": 32,
+    "leases": 0,
+    "logical_bytes": 4047156,
+    "physical_bytes": {
+      "live_contents": 958464,
+      "live_observations": 57344,
+      "live_leases": 90112,
+      "live_feeds": 57344,
+      "live_reconciliations": 16384
+    }
+  },
+  "cycles": [
+    3,
+    3,
+    3,
+    3
+  ],
+  "requests": 12,
+  "transferred_bytes": 1541447,
+  "wall_seconds": 210.6271128799999,
+  "harness_cpu_seconds": 0.382505382,
+  "one_core_cpu_percent": 0.18160310739193578,
+  "baseline_rss_kib": 117764,
+  "incremental_peak_sampled_rss_kib": 17812,
+  "idle_acquisitions": 0,
+  "integrity_before": {
+    "public_snapshot": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+    "pointer_count": 149,
+    "pointers_sha256": "39eafb2e8165546913f92fe4aea432cea7641410d06b617ee44efcf08e77ee0b",
+    "books": [
+      [
+        "256f66b1-129d-4904-be30-7b946f6e92fc",
+        "a5052df00f96420d722bcfcf5fa91df0c90394e570ceb5bf85de2f61f2b9ebc2"
+      ],
+      [
+        "96b89635-82b4-47c7-b4f6-52ab85c0f0bc",
+        "b425f46cfa002bf79c79a63b5b6e05fc3db478f441f87a48dd233437e00816e4"
+      ]
+    ]
+  },
+  "integrity_after": {
+    "public_snapshot": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+    "pointer_count": 149,
+    "pointers_sha256": "39eafb2e8165546913f92fe4aea432cea7641410d06b617ee44efcf08e77ee0b",
+    "books": [
+      [
+        "256f66b1-129d-4904-be30-7b946f6e92fc",
+        "a5052df00f96420d722bcfcf5fa91df0c90394e570ceb5bf85de2f61f2b9ebc2"
+      ],
+      [
+        "96b89635-82b4-47c7-b4f6-52ab85c0f0bc",
+        "b425f46cfa002bf79c79a63b5b6e05fc3db478f441f87a48dd233437e00816e4"
+      ]
+    ]
+  },
+  "final_reconciliation": "not_yet_observed",
+  "real_corrections": "not_yet_observed",
+  "three_box_load": "not_measured",
+  "full_replica_complete": false
+}

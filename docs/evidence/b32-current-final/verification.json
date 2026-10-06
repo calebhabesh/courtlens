@@ -1,0 +1,87 @@
+{
+  "browser": "153.0.8010.52",
+  "captures": [
+    {
+      "game": "401914127",
+      "observation_id": "f9321fa7-e1cf-44f0-8fad-de1d6d8fdf96",
+      "game_values": {
+        "source_id": "401914127",
+        "canonical_id": null,
+        "identity_status": "unmapped",
+        "namespace": "espn",
+        "slate_date": "2026-10-04",
+        "event_time": "2026-10-04T23:00:00Z",
+        "status": "in_progress",
+        "period": 2,
+        "clock": "8:57",
+        "teams": [
+          {
+            "source_id": "7",
+            "canonical_id": null,
+            "identity_status": "unmapped",
+            "name": "Denver Nuggets",
+            "side": "home",
+            "score": 32
+          },
+          {
+            "source_id": "26",
+            "canonical_id": null,
+            "identity_status": "unmapped",
+            "name": "Utah Jazz",
+            "side": "away",
+            "score": 39
+          }
+        ],
+        "provisional": true
+      },
+      "player_rows": 41,
+      "copy": "provisional source observations",
+      "width_checks": [
+        1440,
+        375
+      ]
+    },
+    {
+      "game": "401918010",
+      "observation_id": "fda3daff-4521-45fa-90d8-25b43c34b226",
+      "game_values": {
+        "source_id": "401918010",
+        "canonical_id": null,
+        "identity_status": "unmapped",
+        "namespace": "espn",
+        "slate_date": "2026-10-04",
+        "event_time": "2026-10-04T23:00:00Z",
+        "status": "in_progress",
+        "period": 2,
+        "clock": "10:16",
+        "teams": [
+          {
+            "source_id": "12",
+            "canonical_id": null,
+            "identity_status": "unmapped",
+            "name": "LA Clippers",
+            "side": "home",
+            "score": 26
+          },
+          {
+            "source_id": "9",
+            "canonical_id": "GSW",
+            "identity_status": "verified",
+            "name": "Golden State Warriors",
+            "side": "away",
+            "score": 24
+          }
+        ],
+        "provisional": true
+      },
+      "player_rows": 42,
+      "copy": "provisional source observations",
+      "width_checks": [
+        1440,
+        375
+      ]
+    }
+  ],
+  "errors": [],
+  "real_source_acquisition": false
+}

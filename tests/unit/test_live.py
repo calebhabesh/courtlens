@@ -42,6 +42,38 @@ def test_multi_client_idle_expiry_and_dedup(test_engine, session):
     assert len(provider.calls) == 2
 
 
+def test_new_parser_keeps_retained_v1_content(test_engine, session):
+    import hashlib
+    import json
+
+    provider = FakeProvider()
+    result = provider.fetch(SLATE)
+    from courtload.services.live import bind_identities
+
+    normalized = bind_identities(session, result.normalized)
+    old_hash = hashlib.sha256(
+        result.raw + b"espn-live-v1" + json.dumps(normalized, sort_keys=True).encode()
+    ).hexdigest()
+    session.add(
+        LiveContent(
+            sha256=old_hash,
+            raw_bytes=result.raw,
+            normalized_json=normalized,
+            parser_version="espn-live-v1",
+        )
+    )
+    session.commit()
+    demand(session)
+    assert poll_once(test_engine, provider, now=NOW) == 1
+    observation = session.scalar(select(LiveObservation))
+    current = session.get(LiveContent, observation.content_sha256)
+    assert current.parser_version == "espn-live-v2"
+    assert current.sha256 != old_hash
+    assert session.scalar(select(func.count()).select_from(LiveContent)) == 2
+    retained = session.get(LiveContent, old_hash)
+    assert retained.parser_version == "espn-live-v1" and retained.raw_bytes == result.raw
+
+
 def test_transitions_final_correction_fair_boxes(test_engine, session):
     provider = FakeProvider([event(str(i)) for i in range(1, 6)])
     leases = [demand(session, str(i)) for i in range(1, 6)]
@@ -181,6 +213,43 @@ def test_invalid_dates_clocks_duplicate_ids_and_empty_boxes():
     assert parse_scoreboard({"events": []}, SLATE)["source_state"] == "empty_slate"
     with pytest.raises(ValueError):
         parse_summary({"header": event()}, SLATE, "2")
+
+
+@pytest.mark.parametrize("stats", [[], None])
+def test_source_reported_nonappearance_without_stat_values(stats):
+    """Real active ESPN boxes omit values for explicitly reported nonappearances."""
+    row = {"athlete": {"id": "4396963"}, "didNotPlay": True}
+    if stats is not None:
+        row["stats"] = stats
+    payload = {
+        "header": event("1", "in"),
+        "boxscore": {
+            "players": [
+                {
+                    "team": {"id": "28"},
+                    "statistics": [
+                        {
+                            "keys": ["minutes", "points"],
+                            "athletes": [row],
+                        }
+                    ],
+                }
+            ],
+        },
+    }
+    player = parse_summary(payload, SLATE, "1")["players"][0]
+    assert player["reported_nonappearance"] is True
+    assert player["statistics"] == {"minutes": None, "points": None}
+    assert player["provisional"] is True
+    # Source rows stay unchanged and absence is never inferred as nonappearance.
+    assert row.get("stats", []) == []
+    row.pop("didNotPlay")
+    with pytest.raises(ValueError, match="box statistic columns mismatch"):
+        parse_summary(payload, SLATE, "1")
+    row["didNotPlay"] = True
+    row["stats"] = ["0"]
+    with pytest.raises(ValueError, match="box statistic columns mismatch"):
+        parse_summary(payload, SLATE, "1")
 
 
 def test_protected_api_cache_does_not_fetch(session, monkeypatch):

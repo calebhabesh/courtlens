@@ -1,0 +1,690 @@
+[
+  {
+    "observation_id": "557055bb-36b8-45d3-87b7-e3455cc2ad70",
+    "acquired_at": "2026-10-04 23:38:49.711933+00:00",
+    "content_sha256": "758572d73efdf224fb8201dcd0158aec999ce11c458992f5e5d00556264d9dce",
+    "raw_sha256": "0b9c39cebd28157d7906c5bdcbc812449b8a89d14607ecb8cc63a2b1f29377e6",
+    "parser_version": "espn-live-v2",
+    "source_season": {
+      "year": 2027,
+      "current": true,
+      "type": 1
+    },
+    "resource": "game:401914127",
+    "game": {
+      "source_id": "401914127",
+      "canonical_id": null,
+      "identity_status": "unmapped",
+      "namespace": "espn",
+      "slate_date": "2026-10-04",
+      "event_time": "2026-10-04T23:00:00Z",
+      "status": "in_progress",
+      "period": 1,
+      "clock": "0.0",
+      "teams": [
+        {
+          "source_id": "7",
+          "canonical_id": null,
+          "identity_status": "unmapped",
+          "name": "Denver Nuggets",
+          "side": "home",
+          "score": 26
+        },
+        {
+          "source_id": "26",
+          "canonical_id": null,
+          "identity_status": "unmapped",
+          "name": "Utah Jazz",
+          "side": "away",
+          "score": 36
+        }
+      ],
+      "provisional": true
+    }
+  },
+  {
+    "observation_id": "2603d7b4-ce9b-46be-bf60-20a0b97bcdc5",
+    "acquired_at": "2026-10-04 23:38:49.760182+00:00",
+    "content_sha256": "6fd9c5caefb71c3730cfea53f8d677dac754ba157f416490b1c800ffaa36eee8",
+    "raw_sha256": "2767c8f34e8a3d17d1b44baad03b184562e48ba5f96a0a6b9d8c9aa300858987",
+    "parser_version": "espn-live-v2",
+    "source_season": {
+      "year": 2027,
+      "current": true,
+      "type": 1
+    },
+    "resource": "game:401918010",
+    "game": {
+      "source_id": "401918010",
+      "canonical_id": null,
+      "identity_status": "unmapped",
+      "namespace": "espn",
+      "slate_date": "2026-10-04",
+      "event_time": "2026-10-04T23:00:00Z",
+      "status": "in_progress",
+      "period": 1,
+      "clock": "1:16",
+      "teams": [
+        {
+          "source_id": "12",
+          "canonical_id": null,
+          "identity_status": "unmapped",
+          "name": "LA Clippers",
+          "side": "home",
+          "score": 23
+        },
+        {
+          "source_id": "9",
+          "canonical_id": "GSW",
+          "identity_status": "verified",
+          "name": "Golden State Warriors",
+          "side": "away",
+          "score": 24
+        }
+      ],
+      "provisional": true
+    }
+  },
+  {
+    "observation_id": "91385d96-ed68-4bce-bb8b-e91bffd0ff2e",
+    "acquired_at": "2026-10-04 23:39:49.908830+00:00",
+    "content_sha256": "91f3c0eac77aaa348a862585469acbe2a87b6a6a5a4ae9cc2cf62080556839c5",
+    "raw_sha256": "229e5ed4e08876a4136651a81c139cd1e6ef120a5feeef2e0151d2fb7a489e57",
+    "parser_version": "espn-live-v2",
+    "source_season": {
+      "year": 2027,
+      "current": true,
+      "type": 1
+    },
+    "resource": "game:401918010",
+    "game": {
+      "source_id": "401918010",
+      "canonical_id": null,
+      "identity_status": "unmapped",
+      "namespace": "espn",
+      "slate_date": "2026-10-04",
+      "event_time": "2026-10-04T23:00:00Z",
+      "status": "in_progress",
+      "period": 1,
+      "clock": "49.0",
+      "teams": [
+        {
+          "source_id": "12",
+          "canonical_id": null,
+          "identity_status": "unmapped",
+          "name": "LA Clippers",
+          "side": "home",
+          "score": 23
+        },
+        {
+          "source_id": "9",
+          "canonical_id": "GSW",
+          "identity_status": "verified",
+          "name": "Golden State Warriors",
+          "side": "away",
+          "score": 24
+        }
+      ],
+      "provisional": true
+    }
+  },
+  {
+    "observation_id": "7dbe2b72-a0e9-4363-8fda-37222e3651a5",
+    "acquired_at": "2026-10-04 23:39:49.956490+00:00",
+    "content_sha256": "f9fc62c5250eb595adbef12c6bc885534d0dae50179133cc65bb10425194674a",
+    "raw_sha256": "8836f52147b6691bda0437037d75ff18b66bff7ddc16cca1c13603fcd980f702",
+    "parser_version": "espn-live-v2",
+    "source_season": {
+      "year": 2027,
+      "current": true,
+      "type": 1
+    },
+    "resource": "game:401914127",
+    "game": {
+      "source_id": "401914127",
+      "canonical_id": null,
+      "identity_status": "unmapped",
+      "namespace": "espn",
+      "slate_date": "2026-10-04",
+      "event_time": "2026-10-04T23:00:00Z",
+      "status": "in_progress",
+      "period": 1,
+      "clock": "0.0",
+      "teams": [
+        {
+          "source_id": "7",
+          "canonical_id": null,
+          "identity_status": "unmapped",
+          "name": "Denver Nuggets",
+          "side": "home",
+          "score": 26
+        },
+        {
+          "source_id": "26",
+          "canonical_id": null,
+          "identity_status": "unmapped",
+          "name": "Utah Jazz",
+          "side": "away",
+          "score": 36
+        }
+      ],
+      "provisional": true
+    }
+  },
+  {
+    "observation_id": "7c7efd21-b527-4055-a739-2322c617bb90",
+    "acquired_at": "2026-10-04 23:40:50.108882+00:00",
+    "content_sha256": "543f1c9f5c25da4909f59c171b4d0af17c7511df6fe9dac1245532fd7e378995",
+    "raw_sha256": "750b3aacbb6edb7280f804c47d16d154ae1a61f3bf979fdc088fb5a1c69c50f7",
+    "parser_version": "espn-live-v2",
+    "source_season": {
+      "year": 2027,
+      "current": true,
+      "type": 1
+    },
+    "resource": "game:401914127",
+    "game": {
+      "source_id": "401914127",
+      "canonical_id": null,
+      "identity_status": "unmapped",
+      "namespace": "espn",
+      "slate_date": "2026-10-04",
+      "event_time": "2026-10-04T23:00:00Z",
+      "status": "in_progress",
+      "period": 2,
+      "clock": "11:58",
+      "teams": [
+        {
+          "source_id": "7",
+          "canonical_id": null,
+          "identity_status": "unmapped",
+          "name": "Denver Nuggets",
+          "side": "home",
+          "score": 26
+        },
+        {
+          "source_id": "26",
+          "canonical_id": null,
+          "identity_status": "unmapped",
+          "name": "Utah Jazz",
+          "side": "away",
+          "score": 36
+        }
+      ],
+      "provisional": true
+    }
+  },
+  {
+    "observation_id": "f13a2a90-9e75-490c-bd52-5b850b0ae91b",
+    "acquired_at": "2026-10-04 23:40:50.160047+00:00",
+    "content_sha256": "ed319d1eaf5579d405435849da6443d04d7447b5c62805630749a58d15c5301c",
+    "raw_sha256": "859425e16cdf4a48129a85af4c27bc6147d5be33fc13c6218c75035e90bf3ed2",
+    "parser_version": "espn-live-v2",
+    "source_season": {
+      "year": 2027,
+      "current": true,
+      "type": 1
+    },
+    "resource": "game:401918010",
+    "game": {
+      "source_id": "401918010",
+      "canonical_id": null,
+      "identity_status": "unmapped",
+      "namespace": "espn",
+      "slate_date": "2026-10-04",
+      "event_time": "2026-10-04T23:00:00Z",
+      "status": "in_progress",
+      "period": 1,
+      "clock": "11.1",
+      "teams": [
+        {
+          "source_id": "12",
+          "canonical_id": null,
+          "identity_status": "unmapped",
+          "name": "LA Clippers",
+          "side": "home",
+          "score": 23
+        },
+        {
+          "source_id": "9",
+          "canonical_id": "GSW",
+          "identity_status": "verified",
+          "name": "Golden State Warriors",
+          "side": "away",
+          "score": 24
+        }
+      ],
+      "provisional": true
+    }
+  },
+  {
+    "observation_id": "80436ed3-7dfa-4169-baec-b6f0c65bae8a",
+    "acquired_at": "2026-10-04 23:41:50.312868+00:00",
+    "content_sha256": "b5d682cb289b7aac0e1ba54b1a3e6726e4aab04b8cf45123a74c5d67ab5628b7",
+    "raw_sha256": "133deb7054fd16324b7f5041da39a0d6b3fbb2c607bd1dcdcc7c82e902715c5c",
+    "parser_version": "espn-live-v2",
+    "source_season": {
+      "year": 2027,
+      "current": true,
+      "type": 1
+    },
+    "resource": "game:401918010",
+    "game": {
+      "source_id": "401918010",
+      "canonical_id": null,
+      "identity_status": "unmapped",
+      "namespace": "espn",
+      "slate_date": "2026-10-04",
+      "event_time": "2026-10-04T23:00:00Z",
+      "status": "in_progress",
+      "period": 1,
+      "clock": "0.0",
+      "teams": [
+        {
+          "source_id": "12",
+          "canonical_id": null,
+          "identity_status": "unmapped",
+          "name": "LA Clippers",
+          "side": "home",
+          "score": 23
+        },
+        {
+          "source_id": "9",
+          "canonical_id": "GSW",
+          "identity_status": "verified",
+          "name": "Golden State Warriors",
+          "side": "away",
+          "score": 24
+        }
+      ],
+      "provisional": true
+    }
+  },
+  {
+    "observation_id": "f1d16323-7922-460d-9727-653ba851ca66",
+    "acquired_at": "2026-10-04 23:41:50.780246+00:00",
+    "content_sha256": "6805efbb77501b6f9436a706212dd2cc6f9309fadc5bbabf3a4a808e31b59949",
+    "raw_sha256": "a8ebf03c7b952fcfec4abfbcd4ac766073b73f1fc7c90cefe6b13f8c2a2d8d54",
+    "parser_version": "espn-live-v2",
+    "source_season": {
+      "year": 2027,
+      "current": true,
+      "type": 1
+    },
+    "resource": "game:401914127",
+    "game": {
+      "source_id": "401914127",
+      "canonical_id": null,
+      "identity_status": "unmapped",
+      "namespace": "espn",
+      "slate_date": "2026-10-04",
+      "event_time": "2026-10-04T23:00:00Z",
+      "status": "in_progress",
+      "period": 2,
+      "clock": "11:38",
+      "teams": [
+        {
+          "source_id": "7",
+          "canonical_id": null,
+          "identity_status": "unmapped",
+          "name": "Denver Nuggets",
+          "side": "home",
+          "score": 26
+        },
+        {
+          "source_id": "26",
+          "canonical_id": null,
+          "identity_status": "unmapped",
+          "name": "Utah Jazz",
+          "side": "away",
+          "score": 36
+        }
+      ],
+      "provisional": true
+    }
+  },
+  {
+    "observation_id": "065f5c69-bafc-4f14-be45-7d5d3c9d8463",
+    "acquired_at": "2026-10-04 23:43:15.270552+00:00",
+    "content_sha256": "ed797232d81e800c07c91f854d6c60ab082d79ece64ce7e20e17433e7e1f289e",
+    "raw_sha256": "d6173416c34e724e1be7cf6748cb041d90f3db543ba3c470faf8eecd63497523",
+    "parser_version": "espn-live-v2",
+    "source_season": {
+      "year": 2027,
+      "current": true,
+      "type": 1
+    },
+    "resource": "game:401914127",
+    "game": {
+      "source_id": "401914127",
+      "canonical_id": null,
+      "identity_status": "unmapped",
+      "namespace": "espn",
+      "slate_date": "2026-10-04",
+      "event_time": "2026-10-04T23:00:00Z",
+      "status": "in_progress",
+      "period": 2,
+      "clock": "10:58",
+      "teams": [
+        {
+          "source_id": "7",
+          "canonical_id": null,
+          "identity_status": "unmapped",
+          "name": "Denver Nuggets",
+          "side": "home",
+          "score": 26
+        },
+        {
+          "source_id": "26",
+          "canonical_id": null,
+          "identity_status": "unmapped",
+          "name": "Utah Jazz",
+          "side": "away",
+          "score": 36
+        }
+      ],
+      "provisional": true
+    }
+  },
+  {
+    "observation_id": "59117553-cd0e-4086-ba7c-c660957d780e",
+    "acquired_at": "2026-10-04 23:43:15.357605+00:00",
+    "content_sha256": "62a653555f96a466c0dff7f22d92fad3860b27cdadd587a0f0f5e6dfd70e4a38",
+    "raw_sha256": "bdc13ca95944677f47361711e6ececa5aa00cea2f9165f32d53ef00bb8c984bf",
+    "parser_version": "espn-live-v2",
+    "source_season": {
+      "year": 2027,
+      "current": true,
+      "type": 1
+    },
+    "resource": "game:401918010",
+    "game": {
+      "source_id": "401918010",
+      "canonical_id": null,
+      "identity_status": "unmapped",
+      "namespace": "espn",
+      "slate_date": "2026-10-04",
+      "event_time": "2026-10-04T23:00:00Z",
+      "status": "in_progress",
+      "period": 1,
+      "clock": "0.0",
+      "teams": [
+        {
+          "source_id": "12",
+          "canonical_id": null,
+          "identity_status": "unmapped",
+          "name": "LA Clippers",
+          "side": "home",
+          "score": 23
+        },
+        {
+          "source_id": "9",
+          "canonical_id": "GSW",
+          "identity_status": "verified",
+          "name": "Golden State Warriors",
+          "side": "away",
+          "score": 24
+        }
+      ],
+      "provisional": true
+    }
+  },
+  {
+    "observation_id": "da6a3f89-25f4-4dd9-aecd-ad818e79d7a9",
+    "acquired_at": "2026-10-04 23:44:15.528126+00:00",
+    "content_sha256": "7a13618a9887fae4dbd07147e4dd17c358fb6c66cf1be33097798501ddb2da05",
+    "raw_sha256": "120fb5f02bfbddf9b5f6bcd80cbaefdc796141c6d5d6bb632db92731c4c1225e",
+    "parser_version": "espn-live-v2",
+    "source_season": {
+      "year": 2027,
+      "current": true,
+      "type": 1
+    },
+    "resource": "game:401918010",
+    "game": {
+      "source_id": "401918010",
+      "canonical_id": null,
+      "identity_status": "unmapped",
+      "namespace": "espn",
+      "slate_date": "2026-10-04",
+      "event_time": "2026-10-04T23:00:00Z",
+      "status": "in_progress",
+      "period": 2,
+      "clock": "11:54",
+      "teams": [
+        {
+          "source_id": "12",
+          "canonical_id": null,
+          "identity_status": "unmapped",
+          "name": "LA Clippers",
+          "side": "home",
+          "score": 23
+        },
+        {
+          "source_id": "9",
+          "canonical_id": "GSW",
+          "identity_status": "verified",
+          "name": "Golden State Warriors",
+          "side": "away",
+          "score": 24
+        }
+      ],
+      "provisional": true
+    }
+  },
+  {
+    "observation_id": "b01bc0d0-cb44-481c-9489-e965e498bcb9",
+    "acquired_at": "2026-10-04 23:44:15.580312+00:00",
+    "content_sha256": "9e0ba8d7ac672f2e7d2e455a44c1c82f6a66901e4ba61426ffc354072f751ed9",
+    "raw_sha256": "c95ee060c857b4493c4c60d7f1cfd6a194d3ef15dfee8358c5f77db5e25d545e",
+    "parser_version": "espn-live-v2",
+    "source_season": {
+      "year": 2027,
+      "current": true,
+      "type": 1
+    },
+    "resource": "game:401914127",
+    "game": {
+      "source_id": "401914127",
+      "canonical_id": null,
+      "identity_status": "unmapped",
+      "namespace": "espn",
+      "slate_date": "2026-10-04",
+      "event_time": "2026-10-04T23:00:00Z",
+      "status": "in_progress",
+      "period": 2,
+      "clock": "10:17",
+      "teams": [
+        {
+          "source_id": "7",
+          "canonical_id": null,
+          "identity_status": "unmapped",
+          "name": "Denver Nuggets",
+          "side": "home",
+          "score": 28
+        },
+        {
+          "source_id": "26",
+          "canonical_id": null,
+          "identity_status": "unmapped",
+          "name": "Utah Jazz",
+          "side": "away",
+          "score": 36
+        }
+      ],
+      "provisional": true
+    }
+  },
+  {
+    "observation_id": "9853b0fc-ad22-49c7-86bc-26950065e61f",
+    "acquired_at": "2026-10-04 23:45:15.774761+00:00",
+    "content_sha256": "a28a0bff5af2d4d3ada96b622db1e4ca0085af4cf97218a63ae11c0ee325f0a3",
+    "raw_sha256": "be7f39fb944088b21bc24d6eb47d1ff6fef5b1a7e262fe997ec1b51414b65175",
+    "parser_version": "espn-live-v2",
+    "source_season": {
+      "year": 2027,
+      "current": true,
+      "type": 1
+    },
+    "resource": "game:401914127",
+    "game": {
+      "source_id": "401914127",
+      "canonical_id": null,
+      "identity_status": "unmapped",
+      "namespace": "espn",
+      "slate_date": "2026-10-04",
+      "event_time": "2026-10-04T23:00:00Z",
+      "status": "in_progress",
+      "period": 2,
+      "clock": "9:55",
+      "teams": [
+        {
+          "source_id": "7",
+          "canonical_id": null,
+          "identity_status": "unmapped",
+          "name": "Denver Nuggets",
+          "side": "home",
+          "score": 29
+        },
+        {
+          "source_id": "26",
+          "canonical_id": null,
+          "identity_status": "unmapped",
+          "name": "Utah Jazz",
+          "side": "away",
+          "score": 36
+        }
+      ],
+      "provisional": true
+    }
+  },
+  {
+    "observation_id": "680d2d5c-8d33-49e0-ab1b-8785fc2de434",
+    "acquired_at": "2026-10-04 23:45:15.827911+00:00",
+    "content_sha256": "0e6cd1b198e3c951d09596906933d189541c51a12c89628a0196d7d223106433",
+    "raw_sha256": "7d52772bab6162ff8087ee77415d83284c56d90a1e6f3a9ab23d55b6d391f47f",
+    "parser_version": "espn-live-v2",
+    "source_season": {
+      "year": 2027,
+      "current": true,
+      "type": 1
+    },
+    "resource": "game:401918010",
+    "game": {
+      "source_id": "401918010",
+      "canonical_id": null,
+      "identity_status": "unmapped",
+      "namespace": "espn",
+      "slate_date": "2026-10-04",
+      "event_time": "2026-10-04T23:00:00Z",
+      "status": "in_progress",
+      "period": 2,
+      "clock": "10:55",
+      "teams": [
+        {
+          "source_id": "12",
+          "canonical_id": null,
+          "identity_status": "unmapped",
+          "name": "LA Clippers",
+          "side": "home",
+          "score": 26
+        },
+        {
+          "source_id": "9",
+          "canonical_id": "GSW",
+          "identity_status": "verified",
+          "name": "Golden State Warriors",
+          "side": "away",
+          "score": 24
+        }
+      ],
+      "provisional": true
+    }
+  },
+  {
+    "observation_id": "fda3daff-4521-45fa-90d8-25b43c34b226",
+    "acquired_at": "2026-10-04 23:46:16.016169+00:00",
+    "content_sha256": "c688452a20d0afe727f0de488796cf34515007a82ff3b8b20d5853a9b3f0bc4e",
+    "raw_sha256": "191a94db174571ea472f43e15dc461bb1ab1a51ee0a92653bfa5437c24c2a847",
+    "parser_version": "espn-live-v2",
+    "source_season": {
+      "year": 2027,
+      "current": true,
+      "type": 1
+    },
+    "resource": "game:401918010",
+    "game": {
+      "source_id": "401918010",
+      "canonical_id": null,
+      "identity_status": "unmapped",
+      "namespace": "espn",
+      "slate_date": "2026-10-04",
+      "event_time": "2026-10-04T23:00:00Z",
+      "status": "in_progress",
+      "period": 2,
+      "clock": "10:16",
+      "teams": [
+        {
+          "source_id": "12",
+          "canonical_id": null,
+          "identity_status": "unmapped",
+          "name": "LA Clippers",
+          "side": "home",
+          "score": 26
+        },
+        {
+          "source_id": "9",
+          "canonical_id": "GSW",
+          "identity_status": "verified",
+          "name": "Golden State Warriors",
+          "side": "away",
+          "score": 24
+        }
+      ],
+      "provisional": true
+    }
+  },
+  {
+    "observation_id": "f9321fa7-e1cf-44f0-8fad-de1d6d8fdf96",
+    "acquired_at": "2026-10-04 23:46:16.107488+00:00",
+    "content_sha256": "a2f1e4e7dad4167fbf8a6351d3e877a67cf560e53c6a4525c1a9e6860f16db11",
+    "raw_sha256": "f210fda72465cc2859f99351de14c41718c618d898d88126f389f7a733a8f046",
+    "parser_version": "espn-live-v2",
+    "source_season": {
+      "year": 2027,
+      "current": true,
+      "type": 1
+    },
+    "resource": "game:401914127",
+    "game": {
+      "source_id": "401914127",
+      "canonical_id": null,
+      "identity_status": "unmapped",
+      "namespace": "espn",
+      "slate_date": "2026-10-04",
+      "event_time": "2026-10-04T23:00:00Z",
+      "status": "in_progress",
+      "period": 2,
+      "clock": "8:57",
+      "teams": [
+        {
+          "source_id": "7",
+          "canonical_id": null,
+          "identity_status": "unmapped",
+          "name": "Denver Nuggets",
+          "side": "home",
+          "score": 32
+        },
+        {
+          "source_id": "26",
+          "canonical_id": null,
+          "identity_status": "unmapped",
+          "name": "Utah Jazz",
+          "side": "away",
+          "score": 39
+        }
+      ],
+      "provisional": true
+    }
+  }
+]

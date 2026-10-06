@@ -1,0 +1,7 @@
+{
+  "staging": "/tmp/courtload-b32-current-gn02241z/dashboard",
+  "source_requests_before": 32,
+  "source_requests_after": 32,
+  "upstream_acquisitions": 0,
+  "scope": "Fresh final-code production build; retained-cache browser plus 7 fixture lifecycle tests"
+}
