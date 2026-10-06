@@ -18,7 +18,7 @@ import type {
   TeamPeersResponse,
 } from "@/lib/types";
 
-export const metadata: Metadata = { title: "Team Cohort, Four Factors & Schedule · CourtLoad" };
+export const metadata: Metadata = { title: "Team Cohort, Four Factors & Schedule · CourtLens" };
 export const dynamic = "force-dynamic";
 
 interface TeamDetailPageProps {

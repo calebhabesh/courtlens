@@ -94,7 +94,7 @@ export function NavRail() {
             <span className="status-dot-active" aria-hidden="true" />
             <span className="system-label">Release: public</span>
           </div>
-          <div className="version-info">CourtLoad v0.2.0 · Local</div>
+          <div className="version-info">CourtLens v0.2.0 · Local</div>
         </div>
       </aside>
 

@@ -2846,3 +2846,25 @@ Next gate: independently corroborate/correct native starter and minute inputs,
 then freeze possession membership and cross-lineup scoring/exposure, and execute
 append-only event/stint admission checks. B23 retained assignment serving and B32
 final/correction/crosswalk/three-box/retention work remain independent.
+
+### Rename R1 — visible CourtLens name and mark (2026-10-06)
+
+Owner renamed the project **CourtLoad → CourtLens** and selected the "ball lens"
+mark (orange ball under a white magnifier; handle joins the ring flush without
+entering the lens). Visible scope only:
+
+- Dashboard copy, page titles, header wordmark, PWA manifest, export titles and
+  download filename prefixes now read CourtLens. New `app/icon.svg`,
+  `apple-icon.svg`, `public/icons/courtlens-maskable.svg` and rendered
+  192/512/apple-180/maskable-512 PNGs replace the `courtload-*` icons.
+- Deliberately unchanged: Python package, `courtload` CLI, `COURTLOAD_*` env vars,
+  database/Docker names, npm package name, browser storage keys, versioned
+  format/experiment identifiers (`courtload-*-v1/v2`), component identifiers,
+  backend-generated notices/model cards (saved-conversation reproduction compares
+  exact envelopes) and the mocks/fixtures mirroring them, and all historical evidence.
+- Verification: dashboard lint/typecheck pass; **188/188** unit tests; production
+  build passes. Production-fixture Playwright: **130 passed, 1 skipped
+  (fixture-only real-workspace case), 2 failed**. Both failures are pre-existing
+  flakes: `entity-selection.spec.ts:13` passed 3/3 in isolation;
+  `route-polish.spec.ts:31` (transient duplicate `<details>` during render) failed
+  **3/10 on unchanged HEAD** versus **1/10** after the rename, same error.

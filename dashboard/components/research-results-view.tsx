@@ -5,10 +5,10 @@ import { useEffect, useState } from "react";
 import { downloadResearch, researchRead, type Experiment, type ResearchResult, type RunSummary } from "@/lib/advanced-research";
 
 const titles: Record<string, string> = {
-  "courtload-expected-shot-retrospective-v2": "CourtLoad expected-shot experiment",
-  "courtload-rapm-v1": "CourtLoad RAPM",
-  "courtload-six-factor-v1": "CourtLoad six-factor research",
-  "courtload-adjusted-shooting-v1": "CourtLoad playtype-adjusted shooting"
+  "courtload-expected-shot-retrospective-v2": "CourtLens expected-shot experiment",
+  "courtload-rapm-v1": "CourtLens RAPM",
+  "courtload-six-factor-v1": "CourtLens six-factor research",
+  "courtload-adjusted-shooting-v1": "CourtLens playtype-adjusted shooting"
 };
 export function ResearchResultsView({ experiment = "courtload-expected-shot-retrospective-v2" }: { experiment?: string }) {
   const [registry, setRegistry] = useState<Experiment[] | null>(null);
@@ -60,9 +60,9 @@ export function ResearchResultsView({ experiment = "courtload-expected-shot-retr
       {!selection && <p>No selection metrics recorded for this run.</p>}
       <details open><summary>Model card · definitions, sources and stopping rule</summary><pre className="research-document">{result.model_card}</pre></details>
       <details><summary>Artifact identities and resource accounting</summary><pre className="research-document">{JSON.stringify({ run: result.run, manifest_sha256: result.manifest_sha256, package_manifest_sha256: result.package_manifest_sha256, resource_accounting: result.resource_accounting }, null, 2)}</pre></details>
-      <button className="button" onClick={() => downloadResearch(`courtload-research-${result.run.run_id}.json`, result)}>Export verified report JSON</button>
+      <button className="button" onClick={() => downloadResearch(`courtlens-research-${result.run.run_id}.json`, result)}>Export verified report JSON</button>
     </section>}
-    <p className="notice">Vendor ShotQuality, optical tracking, nearest/second defender, spatial EPV and external impact outputs require independently admitted sources and models. CourtLoad expected-shot research does not inherit those identities.</p>
+    <p className="notice">Vendor ShotQuality, optical tracking, nearest/second defender, spatial EPV and external impact outputs require independently admitted sources and models. CourtLens expected-shot research does not inherit those identities.</p>
     <nav className="research-links" aria-label="Available research tools"><Link href="/roster-shapes">Roster allocations</Link><Link href="/wingspan">Measurements</Link><Link href="/calculator">Hypothetical calculator</Link><Link href="/stats">Conventional statistics</Link></nav>
   </div>;
 }

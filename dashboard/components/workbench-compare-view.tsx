@@ -15,7 +15,7 @@ export function WorkbenchCompareView({ comparison }: WorkbenchCompareViewProps) 
     <div className="workbench-compare-section">
       {/* Zero Forced Winner Notice */}
       <div className="notice-box" style={{ borderLeftColor: "var(--accent)" }}>
-        <strong>No forced winner rule:</strong> {no_forced_winner_notice || "CourtLoad displays descriptive differences and prediction intervals without declaring an automated start/sit decision or forced winner."}
+        <strong>No forced winner rule:</strong> {no_forced_winner_notice || "CourtLens displays descriptive differences and prediction intervals without declaring an automated start/sit decision or forced winner."}
       </div>
 
       {/* Side-by-Side Identity Cards */}

@@ -27,14 +27,14 @@ const jetBrainsMono = localFont({
 
 export const metadata: Metadata = {
   title: {
-    default: "CourtLoad · NBA Analytics",
-    template: "%s · CourtLoad"
+    default: "CourtLens · NBA Analytics",
+    template: "%s · CourtLens"
   },
   description:
     "Dense local NBA analytics and research workbench. Investigate player production, explore team cohorts, inspect prospective points estimates under uncertainty, and reproduce evidence-backed findings.",
   icons: {
     icon: "/icon.svg",
-    apple: "/icons/courtload-apple-180.png"
+    apple: "/icons/courtlens-apple-180.png"
   }
 };
 

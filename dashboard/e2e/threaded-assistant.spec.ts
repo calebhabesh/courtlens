@@ -63,7 +63,7 @@ test("standalone defaults, reload, new chat, history and deletion keep durable q
   await send(page,"Explain assists"); await page.getByText("History (2)",{exact:true}).click();
   await page.getByRole("navigation",{name:"Conversation history"}).getByRole("button",{name:/Explain pick and roll/}).click();
   await expect(page.getByLabel("Messages")).toContainText("Explain pick and roll");
-  await page.getByRole("button",{name:"Delete chat",exact:true}).click(); await expect(page.getByRole("region",{name:"CourtLoad assistant"}).getByRole("alert")).toContainText("Saved findings remain");
+  await page.getByRole("button",{name:"Delete chat",exact:true}).click(); await expect(page.getByRole("region",{name:"CourtLens assistant"}).getByRole("alert")).toContainText("Saved findings remain");
   await page.getByRole("button",{name:"Confirm deletion"}).click(); expect(state.records.size).toBe(1);
   await page.getByRole("button",{name:"Clear history",exact:true}).click(); await page.getByRole("button",{name:"Confirm deletion"}).click(); expect(state.records.size).toBe(0);
 });
@@ -82,9 +82,9 @@ test("scope changes retain old answers and unedited follow-ups inherit on server
 
 test("transport replay preserves request identity; intentional retry links a new turn",async({page})=>{
   const state = await mock(page,{lost:true,response:()=>({status:"unable",blocks:[{kind:"inability",reason:"provider_quota",text:"The provider quota is exhausted.",next_action:"Wait before retrying, or open Stats."}]})});
-  await page.goto(path); await send(page,"Show observations"); await expect(page.getByRole("region",{name:"CourtLoad assistant"}).getByRole("alert")).toContainText("Response lost");
+  await page.goto(path); await send(page,"Show observations"); await expect(page.getByRole("region",{name:"CourtLens assistant"}).getByRole("alert")).toContainText("Response lost");
   await expect(page.getByLabel("Your question",{exact:true})).toHaveValue("Show observations");
-  await page.getByRole("button",{name:"Check or replay request"}).click(); await expect(page.getByRole("region",{name:"CourtLoad assistant"}).getByRole("alert")).toHaveCount(0);
+  await page.getByRole("button",{name:"Check or replay request"}).click(); await expect(page.getByRole("region",{name:"CourtLens assistant"}).getByRole("alert")).toHaveCount(0);
   expect(state.requests[1]).toEqual(state.requests[0]); expect(state.records.get(state.requests[0].thread_id!)!).toHaveLength(1);
   await page.getByRole("button",{name:"Retry question"}).click(); await expect.poll(()=>state.requests.length).toBe(3);
   expect(state.requests[2].request_id).not.toBe(state.requests[0].request_id); expect(state.requests[2].retry_of).toBe(state.requests[0].request_id);

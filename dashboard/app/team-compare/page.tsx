@@ -19,7 +19,7 @@ import type {
 } from "@/lib/types";
 
 export const metadata: Metadata = {
-  title: "Team Comparison & Four Factors Analysis · CourtLoad",
+  title: "Team Comparison & Four Factors Analysis · CourtLens",
   description:
     "Head-to-head records, Dean Oliver Four Factors comparison, Feature F18 three-point variation modeling, and rotation participation cohorts.",
 };

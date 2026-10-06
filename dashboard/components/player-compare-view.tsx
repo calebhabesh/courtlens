@@ -220,11 +220,11 @@ export function PlayerCompareView({
     try {
       setExporting(true);
       await exportSvgAsPng(barChartSvgRef.current, {
-        title: `CourtLoad Comparison: ${player_a.name} vs ${player_b.name}`,
+        title: `CourtLens Comparison: ${player_a.name} vs ${player_b.name}`,
         subtitle: `${PRESET_METRICS[activeTab].label} Metrics · ${context.season} (${context.phase.replaceAll("_", " ")})`,
         context,
         evidenceId: context.release_id,
-        filename: `courtload-compare-${player_a.id}-vs-${player_b.id}-${context.before_date || "cutoff"}`
+        filename: `courtlens-compare-${player_a.id}-vs-${player_b.id}-${context.before_date || "cutoff"}`
       });
     } catch (err) {
       alert(err instanceof Error ? err.message : "Failed to export PNG");
@@ -235,10 +235,10 @@ export function PlayerCompareView({
 
   const handleExportSvg = () => {
     if (!barChartSvgRef.current) return;
-    exportSvgFile(barChartSvgRef.current, `courtload-compare-${player_a.id}-vs-${player_b.id}.svg`, {
-      title: `CourtLoad Comparison: ${player_a.name} vs ${player_b.name}`,
+    exportSvgFile(barChartSvgRef.current, `courtlens-compare-${player_a.id}-vs-${player_b.id}.svg`, {
+      title: `CourtLens Comparison: ${player_a.name} vs ${player_b.name}`,
       context,
-      filename: `courtload-compare-${player_a.id}-vs-${player_b.id}`
+      filename: `courtlens-compare-${player_a.id}-vs-${player_b.id}`
     });
   };
 
@@ -287,7 +287,7 @@ export function PlayerCompareView({
       <div className="notice-box" style={{ borderLeftColor: "var(--accent)", marginBottom: "1.25rem" }}>
         <strong>Temporal discipline & no forced winner:</strong>{" "}
         {no_forced_winner_notice ||
-          "CourtLoad displays aligned empirical distributions and descriptive differences. We never invent a winner probability or automated start/sit decision from overlapping ranges."}
+          "CourtLens displays aligned empirical distributions and descriptive differences. We never invent a winner probability or automated start/sit decision from overlapping ranges."}
       </div>
 
       {saveSuccess && (

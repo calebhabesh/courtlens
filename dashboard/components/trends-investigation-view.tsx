@@ -213,7 +213,7 @@ export function TrendsInvestigationView() {
     link.setAttribute("href", encodedUri);
     link.setAttribute(
       "download",
-      `courtload_trends_${data.player_name.toLowerCase().replace(/\s+/g, "_")}_${data.season}.csv`
+      `courtlens_trends_${data.player_name.toLowerCase().replace(/\s+/g, "_")}_${data.season}.csv`
     );
     document.body.appendChild(link);
     link.click();

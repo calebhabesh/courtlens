@@ -273,7 +273,7 @@ export function DistributionsInvestigationView() {
       link.setAttribute("href", encodedUri);
       link.setAttribute(
         "download",
-        `courtload_dist_${distData.player_name.toLowerCase().replace(/\s+/g, "_")}_${distData.metric}.csv`
+        `courtlens_dist_${distData.player_name.toLowerCase().replace(/\s+/g, "_")}_${distData.metric}.csv`
       );
       document.body.appendChild(link);
       link.click();
@@ -493,7 +493,7 @@ export function DistributionsInvestigationView() {
                 >
                   <strong>Sample Gating Guardrail:</strong> {distData.summary.reason}
                   <div className="text-xs text-muted" style={{ marginTop: "0.25rem" }}>
-                    CourtLoad requires $n \ge 5$ confirmed appearances before estimating percentiles or dispersion.
+                    CourtLens requires $n \ge 5$ confirmed appearances before estimating percentiles or dispersion.
                   </div>
                 </div>
               )}

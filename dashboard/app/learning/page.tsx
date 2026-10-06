@@ -6,7 +6,7 @@ export const metadata: Metadata = { title: "Learning" };
 export const dynamic = "force-dynamic";
 export default async function LearningPage() {
   const catalog=await getWorkbenchCatalog().catch(()=>null);
-  return <div className="workbench-content original-article"><h1>Learn with CourtLoad evidence</h1><p>Original CourtLoad lessons · 2026-10-04. Worked arithmetic below uses illustrative inputs; the investigation uses an explicitly pinned local release.</p>
+  return <div className="workbench-content original-article"><h1>Learn with CourtLens evidence</h1><p>Original CourtLens lessons · 2026-10-04. Worked arithmetic below uses illustrative inputs; the investigation uses an explicitly pinned local release.</p>
     <section className="panel"><h2>True shooting and paired denominators</h2><p>For an illustrative player with 24 points, 18 field-goal attempts and 6 free-throw attempts:</p><pre><code>TS% = PTS / (2 × (FGA + 0.44 × FTA))
     = 24 / (2 × (18 + 0.44 × 6))
     ≈ 0.5814 (58.14%)</code></pre><p>The 0.44 term estimates free-throw possession usage. Aggregate valid paired rows before forming the ratio; do not average individual game percentages or turn missing attempts into zero. Check the catalog for the active version, units and validity rules.</p><Link href="/methodology">Inspect canonical definitions</Link></section>
