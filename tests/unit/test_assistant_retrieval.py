@@ -316,7 +316,8 @@ def test_mixed_answers_use_shared_request_budget_and_no_model_or_local_operation
                 request_id=uuid4(),
                 message=(
                     "When did NBA 2023-24 regular season start?; "
-                    "When does NBA 2026-27 regular season start?; What is an assist?"
+                    "When does NBA 2026-27 regular season start?; "
+                    "What is an assist according to NBA?"
                 ),
             ),
         )
@@ -366,7 +367,8 @@ def test_redirect_work_in_mixed_clauses_cannot_reset_four_request_limit():
                 request_id=uuid4(),
                 message=(
                     "When did NBA 2023-24 regular season start?; "
-                    "When does NBA 2026-27 regular season start?; What is an assist?"
+                    "When does NBA 2026-27 regular season start?; "
+                    "What is an assist according to NBA?"
                 ),
             ),
         )

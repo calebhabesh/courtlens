@@ -1,0 +1,141 @@
+.venv/bin/python scripts/evaluate_assistant.py --mode fixture --category general --category mixed --output data/artifacts/assistant-eval/ar03-final-boundary-fixture.json
+ar02-101 run 1: answer=True plan=None []
+ar02-101 run 2: answer=True plan=None []
+ar02-101 run 3: answer=True plan=None []
+ar02-102 run 1: answer=True plan=None []
+ar02-102 run 2: answer=True plan=None []
+ar02-102 run 3: answer=True plan=None []
+ar02-105 run 1: answer=True plan=None []
+ar02-105 run 2: answer=True plan=None []
+ar02-105 run 3: answer=True plan=None []
+ar02-106 run 1: answer=True plan=None []
+ar02-106 run 2: answer=True plan=None []
+ar02-106 run 3: answer=True plan=None []
+ar02-107 run 1: answer=True plan=None []
+ar02-107 run 2: answer=True plan=None []
+ar02-107 run 3: answer=True plan=None []
+ar02-108 run 1: answer=True plan=None []
+ar02-108 run 2: answer=True plan=None []
+ar02-108 run 3: answer=True plan=None []
+ar02-109 run 1: answer=True plan=None []
+ar02-109 run 2: answer=True plan=None []
+ar02-109 run 3: answer=True plan=None []
+ar02-110 run 1: answer=True plan=None []
+ar02-110 run 2: answer=True plan=None []
+ar02-110 run 3: answer=True plan=None []
+ar02-111 run 1: answer=True plan=None []
+ar02-111 run 2: answer=True plan=None []
+ar02-111 run 3: answer=True plan=None []
+ar02-112 run 1: answer=True plan=None []
+ar02-112 run 2: answer=True plan=None []
+ar02-112 run 3: answer=True plan=None []
+ar02-115 run 1: answer=True plan=None []
+ar02-115 run 2: answer=True plan=None []
+ar02-115 run 3: answer=True plan=None []
+ar02-116 run 1: answer=True plan=None []
+ar02-116 run 2: answer=True plan=None []
+ar02-116 run 3: answer=True plan=None []
+ar02-117 run 1: answer=True plan=None []
+ar02-117 run 2: answer=True plan=None []
+ar02-117 run 3: answer=True plan=None []
+ar02-118 run 1: answer=True plan=None []
+ar02-118 run 2: answer=True plan=None []
+ar02-118 run 3: answer=True plan=None []
+ar02-119 run 1: answer=True plan=None []
+ar02-119 run 2: answer=True plan=None []
+ar02-119 run 3: answer=True plan=None []
+ar02-120 run 1: answer=True plan=None []
+ar02-120 run 2: answer=True plan=None []
+ar02-120 run 3: answer=True plan=None []
+ar02-121 run 1: answer=True plan=True []
+ar02-121 run 2: answer=True plan=True []
+ar02-121 run 3: answer=True plan=True []
+ar02-122 run 1: answer=True plan=True []
+ar02-122 run 2: answer=True plan=True []
+ar02-122 run 3: answer=True plan=True []
+ar02-123 run 1: answer=True plan=True []
+ar02-123 run 2: answer=True plan=True []
+ar02-123 run 3: answer=True plan=True []
+ar02-124 run 1: answer=True plan=True []
+ar02-124 run 2: answer=True plan=True []
+ar02-124 run 3: answer=True plan=True []
+ar02-126 run 1: answer=True plan=True []
+ar02-126 run 2: answer=True plan=True []
+ar02-126 run 3: answer=True plan=True []
+ar02-127 run 1: answer=True plan=True []
+ar02-127 run 2: answer=True plan=True []
+ar02-127 run 3: answer=True plan=True []
+ar02-128 run 1: answer=True plan=True []
+ar02-128 run 2: answer=True plan=True []
+ar02-128 run 3: answer=True plan=True []
+ar02-130 run 1: answer=True plan=True []
+ar02-130 run 2: answer=True plan=True []
+ar02-130 run 3: answer=True plan=True []
+Report: data/artifacts/assistant-eval/ar03-final-boundary-fixture.json
+{
+  "coverage": {
+    "completed_runs": 72,
+    "planned_runs": 72,
+    "completed_questions": 24,
+    "planned_questions": 24
+  },
+  "exact_answer": {
+    "correct": 72,
+    "total": 72,
+    "rate": 1
+  },
+  "plan_accuracy": {
+    "correct": 24,
+    "total": 24,
+    "rate": 1
+  },
+  "refusal_precision": {
+    "correct": 0,
+    "total": 0,
+    "rate": null
+  },
+  "refusal_recall": {
+    "correct": 0,
+    "total": 0,
+    "rate": null
+  },
+  "flakiness": {
+    "flaky": 0,
+    "total": 24,
+    "rate": 0
+  },
+  "answer_variation": {
+    "varied": 0,
+    "total": 24,
+    "rate": 0
+  },
+  "latency_ms": {
+    "mean": 245.8720277777778,
+    "p95": 743.714
+  },
+  "provider_calls": 24,
+  "setup_provider_calls": 0,
+  "recorded_provider_calls": 0,
+  "token_usage": {
+    "calls_with_usage": 0,
+    "calls_without_usage": 0,
+    "reported_tokens": {
+      "prompt_token_count": 0,
+      "candidates_token_count": 0,
+      "total_token_count": 0
+    }
+  },
+  "analytical_calls": 24,
+  "categories": {
+    "general": {
+      "correct": 48,
+      "total": 48,
+      "rate": 1
+    },
+    "mixed": {
+      "correct": 24,
+      "total": 24,
+      "rate": 1
+    }
+  }
+}

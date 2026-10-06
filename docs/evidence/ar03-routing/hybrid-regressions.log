@@ -1,0 +1,65 @@
+....................F............................................        [100%]
+=================================== FAILURES ===================================
+_________ test_hybrid_corpus_durable_http_manual_equivalence[pf07d-20] _________
+
+postgres_conversation = (<sqlalchemy.orm.session.Session object at 0x7fa17b5a9b50>, ResolvedContext(release_id='fcc42d33-d181-4677-9f99-498f48...torical reconstruction from completed records.', 'Prior-day boundary: game_date < before_date is strictly enforced.']))
+case = {'category': 'local', 'fixture_plan': {'plan_version': 'courtload-analysis-plan-v1', 'steps': [{'arguments': {'metric_...sort': [{...}]}, 'operation': 'query', 'step_id': 'rank'}]}, 'id': 'pf07d-20', 'message': 'Who leads in assists?', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda c: c["id"])
+    def test_hybrid_corpus_durable_http_manual_equivalence(postgres_conversation, case):
+        case = ar03_case(case)
+        session, context = postgres_conversation
+        req = analytical_request(context, case["message"], plan=False)
+        manual = None
+        clock = lambda: date(2026, 10, 6)  # noqa: E731
+    
+        class Planner:
+            def plan(self, payload, *, timeout_seconds):
+                assert case.get("fixture_plan"), "unexpected provider routing"
+                return PlanningOutput(case["fixture_plan"])
+    
+        def source(spec, budget):
+            # Supporting records are acquired PF07c evidence, used here as fixtures;
+            # this test does not claim a fresh network read.
+            from courtload.domain.hybrid_assistant import AnswerSource
+    
+            return AnswerSource.model_validate(
+                next(
+                    record["source"]
+                    for record in SOURCE_RECORDS
+                    if record["registry"]["key"] == spec.key
+                )
+            )
+    
+        with patch("courtload.services.assistant.hybrid.retrieve_source", side_effect=source):
+            if case.get("fixture_plan"):
+                manual = run_hybrid_turn(
+                    session,
+                    req.model_copy(update={"plan": AnalysisPlan.model_validate(case["fixture_plan"])}),
+                    clock=clock,
+                )
+            app = create_app()
+            app.dependency_overrides[get_db] = lambda: session
+    
+            def execute(db, request, **kwargs):
+                kwargs.pop("provider", None)
+                return run_hybrid_turn(db, request, provider=Planner(), clock=clock, **kwargs)
+    
+            with (
+                patch("courtload.services.assistant.history.run_hybrid_turn", side_effect=execute),
+                TestClient(app) as client,
+            ):
+                headers = {"X-Operator-Token": get_settings().operator_token.get_secret_value()}
+                body = req.model_dump(mode="json")
+                response = client.post("/api/workbench/assistant/v2/turn", json=body, headers=headers)
+                assert response.status_code == 200, response.text
+                answer = HybridTurnResponse.model_validate(response.json())
+                score = score_case(case, answer, manual)
+>               assert score["correct"], score
+E               AssertionError: {'category': 'local', 'correct': False, 'factual_answer_correct': None, 'failures': ['incorrect inability reason'], ...}
+E               assert False
+
+tests/integration/test_hybrid_evaluation_postgres.py:136: AssertionError
+=========================== short test summary info ============================
+FAILED tests/integration/test_hybrid_evaluation_postgres.py::test_hybrid_corpus_durable_http_manual_equivalence[pf07d-20]
+1 failed, 64 passed in 51.95s

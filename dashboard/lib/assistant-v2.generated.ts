@@ -200,7 +200,7 @@ export type SourceFact = {
 
 export type TextBlock = {
   "kind"?: "text";
-  "origin": "knowledge" | "discussion";
+  "origin": "knowledge" | "discussion" | "general_knowledge";
   "text": string;
   "source_ids"?: Array<string>;
   "criteria"?: Array<string>;
