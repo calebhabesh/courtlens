@@ -27,6 +27,7 @@ def _worker(
     step: OperationStep,
     deadline: float,
     full_result: bool = False,
+    legacy_nonappearance: bool = False,
 ) -> None:
     # Registration has no acquisition/build/publication side effects.
     import courtload.models  # noqa: F401
@@ -42,7 +43,14 @@ def _worker(
                 text("SELECT set_config('statement_timeout', :value, true)"),
                 {"value": str(max(1, int(min(20, deadline - time.monotonic()) * 1000)))},
             )
-            data = execute_operation(session, context, step, deadline, full_result=full_result)
+            data = execute_operation(
+                session,
+                context,
+                step,
+                deadline,
+                full_result=full_result,
+                legacy_nonappearance=legacy_nonappearance,
+            )
             raw = json.dumps({"data": data}, allow_nan=False).encode()
             if len(raw) > 2 * 1024 * 1024:
                 raise ValueError("result budget exceeded")
@@ -73,17 +81,34 @@ def execute_bounded(
     deadline: float,
     *,
     full_result: bool = False,
+    legacy_nonappearance: bool = False,
 ) -> dict[str, Any]:
     """Supervise CPU and DB time without sharing ORM sessions or letting late results win."""
     if session.bind is None or session.bind.dialect.name != "postgresql":
-        return execute_operation(session, context, step, deadline, full_result=full_result)
+        return execute_operation(
+            session,
+            context,
+            step,
+            deadline,
+            full_result=full_result,
+            legacy_nonappearance=legacy_nonappearance,
+        )
     search_path = session.execute(text("SHOW search_path")).scalar_one()
     url = session.get_bind().url.render_as_string(hide_password=False)  # type: ignore[union-attr]
     spawn = multiprocessing.get_context("spawn")
     parent, child = spawn.Pipe(duplex=False)
     process = spawn.Process(
         target=_worker,
-        args=(child, url, search_path, context, step, deadline, full_result),
+        args=(
+            child,
+            url,
+            search_path,
+            context,
+            step,
+            deadline,
+            full_result,
+            legacy_nonappearance,
+        ),
         daemon=True,
     )
     process.start()

@@ -367,6 +367,7 @@ def execute_operation(
     deadline: float,
     *,
     full_result: bool = False,
+    legacy_nonappearance: bool = False,
 ) -> dict[str, Any]:
     args = step.arguments
     if time.monotonic() >= deadline:
@@ -380,6 +381,7 @@ def execute_operation(
             QuerySpec.model_validate(args),
             is_export=full_result,
             max_export_rows=2000,
+            legacy_nonappearance=legacy_nonappearance,
         )
         if full_result and count > 2000:
             raise HTTPException(413, "Full Stats result exceeds 2,000 rows; narrow the query.")
@@ -440,7 +442,14 @@ def execute_operation(
                 "disclosures": ["No registered issuance available for these inputs and cutoff."],
             }
         selected = step.model_copy(update={"arguments": {**args, "issuance_id": issuance_id}})
-        return execute_operation(session, context, selected, deadline)
+        return execute_operation(
+            session,
+            context,
+            selected,
+            deadline,
+            full_result=full_result,
+            legacy_nonappearance=legacy_nonappearance,
+        )
     if step.operation == "definition":
         metric = METRIC_CATALOG[args["metric"]]
         return {"metric": args["metric"], "definition": metric.to_dict()}

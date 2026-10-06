@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 from datetime import date
 from pathlib import Path
-from typing import Literal
+from typing import Any, Literal
 
 from fastapi import APIRouter, Depends, Header, HTTPException, Query, Request, Response
 from fastapi.responses import FileResponse
@@ -110,7 +110,11 @@ from courtload.services.analytical_ops import (
     statistical_peers_service,
 )
 from courtload.services.assistant import get_assistant_status, run_assistant_query
-from courtload.services.entity_lookup import lookup_entities
+from courtload.services.entity_lookup import (
+    lookup_entities,
+    resolve_lookup_binding,
+    scoped_team_associations,
+)
 from courtload.services.identity_crosswalk import resolve_crosswalk
 from courtload.services.measurements import (
     get_player_measurements_detail_service,
@@ -141,7 +145,13 @@ from courtload.services.personal_state import (
     update_preferences_service,
     update_workspace_state,
 )
-from courtload.services.stats_engine import execute_stats_query
+from courtload.services.stats_catalog import stats_catalog_scope
+from courtload.services.stats_engine import (
+    decode_cursor,
+    execute_stats_query,
+    stats_cohort_summary,
+    stats_presentation_hash,
+)
 from courtload.services.team_analytics import (
     get_team_four_factors,
     get_team_peers,
@@ -230,12 +240,15 @@ def get_catalog(
 ) -> WorkbenchCatalogResponse:
     """Retrieve ready release, semantic signature, supported seasons, and capabilities."""
     context = resolve_workbench_context(session, release_id=release_id)
+    stats_scope = stats_catalog_scope(session, context)
     capabilities = {
         "core_stats": CapabilityEntry(
             name="core_stats",
-            status=CapabilityStatus.AVAILABLE,
-            seasons=(context.supported_dates and [context.season]) or ["2023-24"],
-            phases=[context.phase],
+            status=CapabilityStatus.AVAILABLE
+            if stats_scope["seasons"]
+            else CapabilityStatus.SOURCE_BLOCKED,
+            seasons=stats_scope["seasons"],
+            phases=stats_scope["phases"],
             coverage_start=context.coverage_start,
             coverage_end=context.coverage_end,
         ),
@@ -282,11 +295,7 @@ def get_catalog(
         semantic_signature=context.semantic_signature,
         mode=context.mode,
         source=context.source,
-        seasons=(context.supported_dates and [context.season]) or ["2023-24"],
-        phases=[context.phase],
-        default_season=context.season,
-        default_phase=context.phase,
-        default_before_date=context.default_before_date.isoformat(),
+        **stats_scope,
         supported_dates=context.supported_dates,
         coverage_start=context.coverage_start.isoformat(),
         coverage_end=context.coverage_end.isoformat(),
@@ -344,7 +353,14 @@ def execute_query_endpoint(
         requested_window=spec.window.kind.value,
     )
 
-    items_raw, total_count, next_cursor, has_more = execute_stats_query(session, context, spec)
+    items_raw, total_count, next_cursor, has_more = execute_stats_query(
+        session, context, spec, presentation=payload.presentation
+    )
+    cohort = (
+        stats_cohort_summary(session, context, spec, payload.presentation)
+        if payload.presentation is not None
+        else None
+    )
 
     items = [
         PlayerResearchItem(
@@ -356,6 +372,8 @@ def execute_query_endpoint(
             total_minutes=r["total_minutes"],
             metrics=r["metrics"],
             sample_sizes=r["sample_sizes"],
+            percentiles=r.get("percentiles"),
+            cohort_sample_sizes=r.get("cohort_sample_sizes"),
         )
         for r in items_raw
     ]
@@ -363,7 +381,16 @@ def execute_query_endpoint(
     return WorkbenchQueryResponse(
         context=context.to_dict(),
         query=spec,
-        total_eligible_players=total_count,
+        total_eligible_players=cohort["eligible_players"] if cohort is not None else total_count,
+        total_output_players=total_count if cohort is not None else None,
+        output_offset=(
+            decode_cursor(
+                spec.page.cursor, [stats_presentation_hash(context, spec, payload.presentation)]
+            )
+            if payload.presentation is not None and spec.page.cursor
+            else (0 if payload.presentation is not None else None)
+        ),
+        cohort=cohort,
         items=items,
         next_cursor=next_cursor,
         has_more=has_more,
@@ -377,6 +404,9 @@ def get_lookup(
     release_id: str | None = Query(None, alias="releaseId"),
     release_id_alt: str | None = Query(None, alias="release_id"),
     season: str | None = Query(None, description="Optional season context"),
+    phase: str | None = Query(None, description="Optional observed phase"),
+    before_date: date | None = Query(None, description="Exclusive observed cutoff"),
+    before_date_alt: date | None = Query(None, alias="beforeDate"),
     kinds: str | None = Query(
         None, description="Optional comma-separated kinds: player, team, page"
     ),
@@ -384,22 +414,7 @@ def get_lookup(
     session: Session = Depends(get_db),
 ) -> LookupResponse:
     """Incremental entity discovery API for players, teams, and navigation pages."""
-    effective_release = release_id or release_id_alt
-    dataset_id = None
-    if effective_release:
-        try:
-            resolved_ctx = resolve_workbench_context(session, release_id=effective_release)
-            dataset_id = resolved_ctx.dataset_id
-        except Exception:
-            pass
-    else:
-        try:
-            resolved_ctx = resolve_workbench_context(session)
-            dataset_id = resolved_ctx.dataset_id
-            if not effective_release:
-                effective_release = resolved_ctx.release_id
-        except Exception:
-            pass
+    effective_release, dataset_id = resolve_lookup_binding(session, release_id or release_id_alt)
 
     allowed_kinds = None
     if kinds:
@@ -411,6 +426,8 @@ def get_lookup(
         release_id=effective_release,
         dataset_id=dataset_id,
         season=season,
+        phase=phase,
+        before_date=before_date or before_date_alt,
         kinds=allowed_kinds,
         limit=limit,
     )
@@ -827,10 +844,25 @@ def compare_players_endpoint(
     result = compare_players(session, context, player_a_id=target_a, player_b_id=target_b)
     aligned = [MetricComparisonItem(**item) for item in result["aligned_metrics"]]
 
+    associations = scoped_team_associations(
+        session,
+        context.dataset_id,
+        context.season,
+        context.phase,
+        context.before_date,
+        [target_a, target_b],
+        window=context.window,
+    )
+
+    # API-only identity enrichment leaves analytical/saved serializers unchanged.
+    def with_teams(player: dict[str, Any]) -> dict[str, Any]:
+        association = associations.get(player["id"])
+        return {**player, "teams": association.teams if association else []}
+
     return PlayerComparisonResponse(
         context=result["context"],
-        player_a=result["player_a"],
-        player_b=result["player_b"],
+        player_a=with_teams(result["player_a"]),
+        player_b=with_teams(result["player_b"]),
         aligned_metrics=aligned,
         no_forced_winner_notice=result["no_forced_winner_notice"],
         warnings=result["warnings"],

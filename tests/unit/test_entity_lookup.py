@@ -273,7 +273,7 @@ def test_rookie_zero_game_and_empty_season_discovery(test_db_session: Session):
     assert rookie.display_name == "Rookie Phenom"
     assert rookie.availability.has_current_season is False
     assert rookie.availability.status == "no_current_games"
-    assert "No observed games" in (rookie.subtitle or "")
+    assert "No observed appearances" in (rookie.subtitle or "")
 
     # 2. Empty-season context (e.g. 2026-27 schedule-only season)
     res_empty_season = lookup_entities(test_db_session, query="Jokic", season="2026-27")
@@ -282,7 +282,7 @@ def test_rookie_zero_game_and_empty_season_discovery(test_db_session: Session):
     assert jokic_empty.display_name == "Nikola Jokić"
     assert jokic_empty.availability.has_current_season is False
     assert jokic_empty.availability.status == "no_current_games"
-    assert "No appearances in 2026-27" in (jokic_empty.subtitle or "")
+    assert "No observed appearances in selected scope" in (jokic_empty.subtitle or "")
 
 
 def test_empty_query_returns_navigation_suggestions(test_db_session: Session):
@@ -448,3 +448,11 @@ def test_lookup_performance_cardinality_and_payload_budget(test_db_session: Sess
         f"  Warm Latency: p50={p50:.3f} ms, p95={p95:.3f} ms (budget <= 50 ms)\n"
         f"  Max Payload Size: {payload_bytes} bytes ({payload_kib:.2f} KiB, budget <= 25 KiB)\n"
     )
+
+
+def test_retained_canonical_selections_resolve_without_name_input(test_db_session: Session):
+    player = lookup_entities(test_db_session, query="203999", kinds=["player"], limit=1)
+    assert player.items[0].canonical_id == "203999"
+    assert player.items[0].display_name == "Nikola Jokić"
+    team = lookup_entities(test_db_session, query="1610612761", kinds=["team"], limit=1)
+    assert team.items[0].display_name == "Toronto Raptors"
