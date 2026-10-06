@@ -1,0 +1,20 @@
+AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
++ actual - expected
+
+  [
+    {
++     denominator_type: null,
+      key: 'pts_per_game',
++     normalization: 'raw',
++     version: null
+    }
+  ]
+
+    at /home/ethioking/dev/nba-analytics/scripts/verify_pf08_browser.cjs:61:12 {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: [Array],
+  expected: [Array],
+  operator: 'deepStrictEqual',
+  diff: 'simple'
+}

@@ -4,6 +4,8 @@ Prepared 2026-10-01. **Owner-confirmed product direction; implementation pending
 
 Build a close functional and visual replica of the applicable NBA parts of Databallr, then integrate CourtLoad's engineering, forecasting, evidence, and conversational analysis. This is the next product handoff, not a claim that its capabilities already work. Planning changed documentation only; application checks were not rerun.
 
+For the owner-confirmed polish/freeze phase, follow the [freeze handoff](polish-freeze-implementation-plan.md) and its linked contracts. It supersedes only explicitly revised UI/assistant behavior; retain this plan's analytical contracts, coverage ledger and unresolved source gates.
+
 ## Start here
 
 1. Read root and dashboard `AGENTS.md`, then this plan. Begin with B00; do not restart the historical M0–M8 or workbench P0–P9 milestones.

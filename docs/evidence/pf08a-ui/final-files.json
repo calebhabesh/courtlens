@@ -1,0 +1,12 @@
+{
+  "dashboard/components/ask-courtload.tsx": "5d2b0d868cba3c42a71e55edc008cefaef65175e4f799d064d9c180b2fde00be",
+  "dashboard/components/ask-drawer.tsx": "4b70f44ce45f7d6b423bb9931860556dcf12cdb16205889b8b7e04eb2ea138b8",
+  "dashboard/components/threaded-assistant.tsx": "ab2438f99b173259fed9fe0a27f4b77ec86fef256bffe5116a1bf5df9e50d3e6",
+  "dashboard/components/hybrid-answer.tsx": "305ee74cb6aecbce13ea5cc0345e5fc06a8efab9461068068b09936f03445fe1",
+  "dashboard/app/research/ask/page.tsx": "1a33760af4bf2f3e2d3e5a2ab6bff3679a927f786a0eb66d64e706d05687d1cc",
+  "dashboard/lib/assistant-history.ts": "2a9a062ac140c37af8a06b09c26488bdb8d0d4679ce65f790efe42c51fd826eb",
+  "dashboard/app/globals.css": "e9027d11db5adb161d4ba96dbcd9fd03015865f1a6d61874aa664d18aebae254",
+  "dashboard/e2e/threaded-assistant.spec.ts": "4da6c2ab3df921c7d2fc022990eed5e487e48fe737892b2760c86d14e5036b1a",
+  "scripts/verify_pf08a_browser.cjs": "3659fd6b029896a51aed483eeb8ece3155f0089a0852dbcf4634d35cfb2ff3da",
+  "docs/polish-freeze-implementation-progress.md": "792d4e2e33f648e217fbe0863e4bf74361499a181a36576c5ca0d5f92f04e6d0"
+}

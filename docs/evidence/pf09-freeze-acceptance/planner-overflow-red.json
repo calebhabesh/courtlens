@@ -1,0 +1,126 @@
+{
+  "width": 375,
+  "document": 749,
+  "overflow": [
+    {
+      "tag": "TABLE",
+      "class": "plan-table",
+      "width": 748.796875,
+      "right": 748.796875
+    },
+    {
+      "tag": "THEAD",
+      "class": "",
+      "width": 744.796875,
+      "right": 746.796875
+    },
+    {
+      "tag": "TR",
+      "class": "",
+      "width": 744.796875,
+      "right": 746.796875
+    },
+    {
+      "tag": "TH",
+      "class": "light-column",
+      "width": 88.125,
+      "right": 456.78125
+    },
+    {
+      "tag": "SMALL",
+      "class": "",
+      "width": 36.25,
+      "right": 449.953125
+    },
+    {
+      "tag": "TH",
+      "class": "light-column",
+      "width": 61.1875,
+      "right": 519.96875
+    },
+    {
+      "tag": "SMALL",
+      "class": "",
+      "width": 32.34375,
+      "right": 508.984375
+    },
+    {
+      "tag": "TH",
+      "class": "light-column",
+      "width": 61.1875,
+      "right": 583.15625
+    },
+    {
+      "tag": "SMALL",
+      "class": "",
+      "width": 34.84375,
+      "right": 574.671875
+    },
+    {
+      "tag": "TH",
+      "class": "light-column",
+      "width": 87.25,
+      "right": 672.40625
+    },
+    {
+      "tag": "SMALL",
+      "class": "",
+      "width": 36.25,
+      "right": 666.5625
+    },
+    {
+      "tag": "TH",
+      "class": "",
+      "width": 72.390625,
+      "right": 746.796875
+    },
+    {
+      "tag": "TBODY",
+      "class": "",
+      "width": 744.796875,
+      "right": 746.796875
+    },
+    {
+      "tag": "TR",
+      "class": "",
+      "width": 744.796875,
+      "right": 746.796875
+    },
+    {
+      "tag": "TD",
+      "class": "",
+      "width": 88.125,
+      "right": 456.78125
+    },
+    {
+      "tag": "SPAN",
+      "class": "game-cell no_game",
+      "width": 15.640625,
+      "right": 385.296875
+    },
+    {
+      "tag": "SPAN",
+      "class": "dash",
+      "width": 15.640625,
+      "right": 385.296875
+    },
+    {
+      "tag": "TD",
+      "class": "",
+      "width": 61.1875,
+      "right": 519.96875
+    },
+    {
+      "tag": "SPAN",
+      "class": "game-cell startable",
+      "width": 56.96875,
+      "right": 516.75
+    },
+    {
+      "tag": "STRONG",
+      "class": "",
+      "width": 45.71875,
+      "right": 505.5
+    }
+  ]
+}

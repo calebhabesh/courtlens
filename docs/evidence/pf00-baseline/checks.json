@@ -1,0 +1,37 @@
+{
+  "ruff": {
+    "command": ".venv/bin/ruff check .",
+    "exit_code": 0,
+    "seconds": 0.01
+  },
+  "format": {
+    "command": ".venv/bin/ruff format --check .",
+    "exit_code": 0,
+    "seconds": 0.01
+  },
+  "mypy": {
+    "command": ".venv/bin/mypy src/courtload",
+    "exit_code": 0,
+    "seconds": 0.208
+  },
+  "dashboard-lint": {
+    "command": "npm --prefix dashboard run lint",
+    "exit_code": 0,
+    "seconds": 7.608
+  },
+  "dashboard-types": {
+    "command": "npm --prefix dashboard run typecheck",
+    "exit_code": 0,
+    "seconds": 1.126
+  },
+  "dashboard-unit": {
+    "command": "npm --prefix dashboard test",
+    "exit_code": 0,
+    "seconds": 0.695
+  },
+  "compose": {
+    "command": "docker compose config --quiet",
+    "exit_code": 0,
+    "seconds": 0.04
+  }
+}

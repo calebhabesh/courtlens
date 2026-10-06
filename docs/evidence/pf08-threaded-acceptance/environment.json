@@ -1,0 +1,13 @@
+{
+  "python": "3.14.7",
+  "node": "v24.15.0",
+  "database": "courtload_pf08_acceptance",
+  "backend": "127.0.0.1:8189",
+  "real_frontend": "127.0.0.1:3189",
+  "fixture_frontend": "127.0.0.1:3190",
+  "fixture_backend": "127.0.0.1:4100",
+  "provider_model": "gemini-3.5-flash-lite",
+  "implementation_owner": "Codex substituted for unavailable Flash, sequential without delegation",
+  "original_application_services_preserved": true,
+  "disposable_services_stopped": true
+}

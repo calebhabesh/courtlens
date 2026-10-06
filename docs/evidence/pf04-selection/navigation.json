@@ -1,0 +1,9 @@
+{
+  "checks": [
+    "real team comparison selection preserves window",
+    "team comparison Back reconciles committed selections",
+    "last-games action selection preserves canonical destination/context",
+    "showcase action selection preserves canonical destination/context"
+  ],
+  "errors": []
+}

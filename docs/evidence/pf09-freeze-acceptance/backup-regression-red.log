@@ -1,0 +1,34 @@
+F                                                                        [100%]
+=================================== FAILURES ===================================
+__________________ test_docker_dump_honors_selected_database ___________________
+
+tmp_path = PosixPath('/tmp/pytest-of-ethioking/pytest-74/test_docker_dump_honors_select0')
+
+    def test_docker_dump_honors_selected_database(tmp_path: Path) -> None:
+        commands: list[list[str]] = []
+    
+        class Process:
+            returncode = 0
+    
+            def __init__(self, command: list[str], **kwargs: object) -> None:
+                commands.append(command)
+                self.stdout = io.BytesIO(b"-- selected database dump")
+    
+            def communicate(self) -> tuple[bytes, bytes]:
+                return b"", b""
+    
+        with (
+            patch("shutil.which", side_effect=lambda name: "/usr/bin/docker" if name == "docker" else None),
+            patch("subprocess.Popen", Process),
+        ):
+            _dump_postgres_database(
+                tmp_path / "dump.sql.gz",
+                "postgresql+psycopg://courtload@127.0.0.1:5432/disposable_backup_source",
+            )
+>       assert "disposable_backup_source" in commands[0]
+E       AssertionError: assert 'disposable_backup_source' in ['docker', 'compose', 'exec', '-T', 'db', 'pg_dump', ...]
+
+tests/unit/test_backup_connection.py:31: AssertionError
+=========================== short test summary info ============================
+FAILED tests/unit/test_backup_connection.py::test_docker_dump_honors_selected_database
+1 failed in 0.04s

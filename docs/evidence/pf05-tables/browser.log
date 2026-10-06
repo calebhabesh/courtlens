@@ -1,0 +1,10 @@
+AssertionError [ERR_ASSERTION]: PTS missing: ✓,#,Player,Team,GP,MIN,MPG,,PPG,RPG,APG,,SPG,BPG,,FG%,3P%,FT%,TS%,eFG%,Detail
+    at values (/home/ethioking/dev/nba-analytics/scripts/verify_pf05_browser.cjs:21:5)
+    at async /home/ethioking/dev/nba-analytics/scripts/verify_pf05_browser.cjs:53:110 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}

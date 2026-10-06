@@ -1,0 +1,266 @@
+ExpectError: expect(locator).toHaveAttribute(expected) failed
+
+Locator: locator('.player-cell .team-logo-stack')
+Expected: "Teams represented in selected scope: DAL, LAL"
+Timeout: 5000ms
+Error: element(s) not found
+
+Call log:
+  - Expect "toHaveAttribute" locator('.player-cell .team-logo-stack') with timeout 5000ms
+  - waiting for locator('.player-cell .team-logo-stack')
+
+    at captureRawStack (/home/ethioking/dev/nba-analytics/dashboard/node_modules/playwright-core/lib/coreBundle.js:8588:17)
+    at callMatcherAsStep (/home/ethioking/dev/nba-analytics/dashboard/node_modules/playwright/lib/matchers/expect.js:13310:57)
+    at Object.toHaveAttribute (/home/ethioking/dev/nba-analytics/dashboard/node_modules/playwright/lib/matchers/expect.js:13302:23)
+    at /home/ethioking/dev/nba-analytics/scripts/verify_pf09_reuse_pf03_browser.cjs:31:63 {
+  matcherResult: {
+    name: 'toHaveAttribute',
+    expected: 'Teams represented in selected scope: DAL, LAL',
+    message: 'expect(locator).toHaveAttribute(expected) failed\n' +
+      '\n' +
+      "Locator: locator('.player-cell .team-logo-stack')\n" +
+      'Expected: "Teams represented in selected scope: DAL, LAL"\n' +
+      'Timeout: 5000ms\n' +
+      'Error: element(s) not found\n' +
+      '\n' +
+      'Call log:\n' +
+      `  - Expect "toHaveAttribute" locator('.player-cell .team-logo-stack') with timeout 5000ms\n` +
+      "  - waiting for locator('.player-cell .team-logo-stack')\n",
+    pass: false,
+    actual: undefined,
+    log: [
+      `  - Expect "toHaveAttribute" locator('.player-cell .team-logo-stack') with timeout 5000ms`,
+      "  - waiting for locator('.player-cell .team-logo-stack')"
+    ],
+    timeout: 5000,
+    ariaSnapshot: '- link "Skip to content":\n' +
+      '  - /url: "#content"\n' +
+      '- banner:\n' +
+      '  - link "CourtLoad Research Workbench home":\n' +
+      '    - /url: /\n' +
+      '    - text: COURTLOAD\n' +
+      '  - navigation "Primary Quick Switch":\n' +
+      '    - link "Stats":\n' +
+      '      - /url: /stats?season=2024-25&phase=regular_season&beforeDate=2025-06-30&window=season&releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad\n' +
+      '    - link "Games":\n' +
+      '      - /url: /live?season=2024-25&phase=regular_season&beforeDate=2025-06-30&window=season&releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad\n' +
+      '  - search:\n' +
+      '    - combobox "Search players, teams and pages"\n' +
+      '    - status\n' +
+      '  - button "Ask"\n' +
+      '  - link "Data status":\n' +
+      '    - /url: /data-status?season=2024-25&phase=regular_season&beforeDate=2025-06-30&window=season&releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad\n' +
+      '  - link "Settings":\n' +
+      '    - /url: /settings?season=2024-25&phase=regular_season&beforeDate=2025-06-30&window=season&releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad\n' +
+      '  - navigation "Workspace Navigation":\n' +
+      '    - link "Stats":\n' +
+      '      - /url: /stats?season=2024-25&phase=regular_season&beforeDate=2025-06-30&window=season&releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad\n' +
+      '    - button "Live"\n' +
+      '    - button "Players"\n' +
+      '    - button "Teams"\n' +
+      '    - button "Compare"\n' +
+      '    - button "Research"\n' +
+      '    - button "Availability"\n' +
+      '    - button "Help"\n' +
+      '- main:\n' +
+      '  - text: Season\n' +
+      '  - combobox "Filter by season":\n' +
+      '    - option "2023-24"\n' +
+      '    - option "2024-25" [selected]\n' +
+      '    - option "2025-26"\n' +
+      '  - text: Phase\n' +
+      '  - combobox "Filter by competition phase":\n' +
+      '    - option "NBA Cup final"\n' +
+      '    - option "Play-in"\n' +
+      '    - option "Playoffs"\n' +
+      '    - option "Regular Season" [selected]\n' +
+      '  - text: Before date\n' +
+      '  - textbox "Before date cutoff": 2025-06-30\n' +
+      '  - text: Window\n' +
+      '  - combobox "Analysis window":\n' +
+      '    - option "Season-to-date" [selected]\n' +
+      '    - option "Last 10 appearances"\n' +
+      '    - option "Last 5 appearances"\n' +
+      '  - text: Strictly prior to 2025-06-30 577 eligible players\n' +
+      '  - heading "Stats Explorer" [level=1]\n' +
+      '  - paragraph: Dense player statistics explorer with deterministic analytical windowing, verified percentages, and sample constraints.\n' +
+      '  - tablist "Stats Explorer Presets":\n' +
+      '    - tab "Overview" [selected]\n' +
+      '    - tab "Shooting"\n' +
+      '    - tab "Defense"\n' +
+      '    - tab "True Shooting"\n' +
+      '    - tab "Rates (Per 36)"\n' +
+      '    - tab "Playmaking"\n' +
+      '    - tab "Rebounding"\n' +
+      '    - tab "Impact Box-score proxies"\n' +
+      '    - tab "On-Off Check availability"\n' +
+      '    - tab "Six Factor Box-score proxies"\n' +
+      '  - button "⚙ Manage Views"\n' +
+      '  - group "Counting Mode":\n' +
+      '    - text: "Mode:"\n' +
+      '    - button "Per Game" [pressed]\n' +
+      '    - button "Totals"\n' +
+      '    - button "Per 36"\n' +
+      '    - button "Per 75 Requires admitted on-court possessions" [disabled]: Per 75\n' +
+      '    - button "Per 100 Requires admitted on-court possessions" [disabled]: Per 100\n' +
+      '  - group "Group guides":\n' +
+      '    - text: "Group guides:"\n' +
+      '    - button "Photos"\n' +
+      '    - button "Logos" [pressed]\n' +
+      '    - button "Initials"\n' +
+      '    - button "None"\n' +
+      '  - group "Table Layout and Density":\n' +
+      '    - button "Standard Density"\n' +
+      '    - button "Expand Table (T)"\n' +
+      '    - button "%iles On"\n' +
+      '  - group "Explorer View Mode":\n' +
+      '    - text: "View:"\n' +
+      '    - button "☷ Table"\n' +
+      '    - button "⤢ Scatter Plot"\n' +
+      '    - button "📈 Trend Lines"\n' +
+      '  - button "? Hotkeys"\n' +
+      '  - button "💾 Save legacy scope"\n' +
+      '  - text: Player search\n' +
+      '  - textbox "Filter players by name":\n' +
+      '    - /placeholder: Search table (e.g. Luka, Siakam)...\n' +
+      '    - text: Dončić\n' +
+      '  - button "Clear player search": ✕\n' +
+      '  - text: Team\n' +
+      '  - combobox "Filter by NBA team":\n' +
+      '    - option "All Teams (30)" [selected]\n' +
+      '    - option "ATL — Atlanta Hawks"\n' +
+      '    - option "BOS — Boston Celtics"\n' +
+      '    - option "BKN — Brooklyn Nets"\n' +
+      '    - option "CHA — Charlotte Hornets"\n' +
+      '    - option "CHI — Chicago Bulls"\n' +
+      '    - option "CLE — Cleveland Cavaliers"\n' +
+      '    - option "DAL — Dallas Mavericks"\n' +
+      '    - option "DEN — Denver Nuggets"\n' +
+      '    - option "DET — Detroit Pistons"\n' +
+      '    - option "GSW — Golden State Warriors"\n' +
+      '    - option "HOU — Houston Rockets"\n' +
+      '    - option "IND — Indiana Pacers"\n' +
+      '    - option "LAC — LA Clippers"\n' +
+      '    - option "LAL — Los Angeles Lakers"\n' +
+      '    - option "MEM — Memphis Grizzlies"\n' +
+      '    - option "MIA — Miami Heat"\n' +
+      '    - option "MIL — Milwaukee Bucks"\n' +
+      '    - option "MIN — Minnesota Timberwolves"\n' +
+      '    - option "NOP — New Orleans Pelicans"\n' +
+      '    - option "NYK — New York Knicks"\n' +
+      '    - option "OKC — Oklahoma City Thunder"\n' +
+      '    - option "ORL — Orlando Magic"\n' +
+      '    - option "PHI — Philadelphia 76ers"\n' +
+      '    - option "PHX — Phoenix Suns"\n' +
+      '    - option "POR — Portland Trail Blazers"\n' +
+      '    - option "SAC — Sacramento Kings"\n' +
+      '    - option "SAS — San Antonio Spurs"\n' +
+      '    - option "TOR — Toronto Raptors"\n' +
+      '    - option "UTA — Utah Jazz"\n' +
+      '    - option "WAS — Washington Wizards"\n' +
+      '  - text: Min GP\n' +
+      '  - spinbutton "Minimum games played"\n' +
+      '  - text: Min MPG\n' +
+      '  - spinbutton "Minimum minutes per game"\n' +
+      '  - text: Sort By\n' +
+      '  - combobox "Sort table by metric":\n' +
+      '    - option "GP (Participation)"\n' +
+      '    - option "MIN (Participation)"\n' +
+      '    - option "MPG (Participation)"\n' +
+      '    - option "PPG (Scoring)" [selected]\n' +
+      '    - option "RPG (Rebounding)"\n' +
+      '    - option "APG (Playmaking)"\n' +
+      '    - option "SPG (Defense)"\n' +
+      '    - option "BPG (Defense)"\n' +
+      '    - option "FG% (Efficiency)"\n' +
+      '    - option "3P% (Efficiency)"\n' +
+      '    - option "FT% (Efficiency)"\n' +
+      '    - option "TS% (Efficiency)"\n' +
+      '    - option "eFG% (Efficiency)"\n' +
+      '  - text: Rows\n' +
+      '  - combobox "Results per page":\n' +
+      '    - option "25 rows"\n' +
+      '    - option "50 rows" [selected]\n' +
+      '    - option "100 rows"\n' +
+      '  - button "☆ Favorites (1)"\n' +
+      '  - button "Reset Filters"\n' +
+      '  - text: Showing 1 of 1 matching players · 577 eligible players · Sorted by\n' +
+      '  - strong: PTS_PER_GAME\n' +
+      '  - text: (DESC) Sort by column · Names open profiles · Detail opens the sidebar\n' +
+      '  - region "Player statistics scroll area":\n' +
+      '    - table "Dense player statistics explorer":\n' +
+      '      - rowgroup:\n' +
+      '        - row "Player Identity Profile Counting Defense Efficiency Actions":\n' +
+      '          - columnheader "Player Identity"\n' +
+      '          - columnheader "Profile"\n' +
+      '          - columnheader "Counting"\n' +
+      '          - columnheader "Defense"\n' +
+      '          - columnheader "Efficiency"\n' +
+      '          - columnheader "Actions"\n' +
+      `        - 'row "✓ # Sort by Player Team Sort by GP Sort by MIN Sort by MPG Sort by PPG Sort by RPG Sort by APG Sort by SPG Sort by BPG Sort by FG% Sort by 3P% Sort by FT% Sort by TS% Sort by eFG% Detail"':\n` +
+      '          - columnheader "✓"\n' +
+      '          - columnheader "#"\n' +
+      '          - columnheader "Sort by Player":\n' +
+      '            - button "Sort by Player": Player\n' +
+      '          - columnheader "Team"\n' +
+      '          - columnheader "Sort by GP":\n' +
+      '            - button "Sort by GP": GP\n' +
+      '          - columnheader "Sort by MIN":\n' +
+      '            - button "Sort by MIN": MIN\n' +
+      '          - columnheader "Sort by MPG":\n' +
+      '            - button "Sort by MPG": MPG\n' +
+      '          - columnheader "Sort by PPG":\n' +
+      '            - button "Sort by PPG": PPG\n' +
+      '          - columnheader "Sort by RPG":\n' +
+      '            - button "Sort by RPG": RPG\n' +
+      '          - columnheader "Sort by APG":\n' +
+      '            - button "Sort by APG": APG\n' +
+      '          - columnheader "Sort by SPG":\n' +
+      '            - button "Sort by SPG": SPG\n' +
+      '          - columnheader "Sort by BPG":\n' +
+      '            - button "Sort by BPG": BPG\n' +
+      '          - columnheader "Sort by FG%":\n' +
+      '            - button "Sort by FG%": FG%\n' +
+      '          - columnheader "Sort by 3P%":\n' +
+      '            - button "Sort by 3P%": 3P%\n' +
+      '          - columnheader "Sort by FT%":\n' +
+      '            - button "Sort by FT%": FT%\n' +
+      '          - columnheader "Sort by TS%":\n' +
+      '            - button "Sort by TS%": TS%\n' +
+      '          - columnheader "Sort by eFG%":\n' +
+      '            - button "Sort by eFG%": eFG%\n' +
+      '          - columnheader "Detail"\n' +
+      '      - rowgroup:\n' +
+      '        - row:\n' +
+      '          - cell "Select Luka Dončić for comparison":\n' +
+      '            - checkbox "Select Luka Dončić for comparison"\n' +
+      '          - cell "1"\n' +
+      '          - cell "Luka Dončić portrait Add Luka Dončić to favorites Luka Dončić":\n' +
+      '            - img "Luka Dončić portrait"\n' +
+      '            - button "Add Luka Dončić to favorites"\n' +
+      '            - link "Luka Dončić":\n' +
+      '              - /url: /players/1629029?season=2024-25&phase=regular_season&beforeDate=2025-06-30&window=season&releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad\n' +
+      `          - 'cell "Teams represented in selected scope: DAL, LAL DAL, LAL"':\n` +
+      '            - img "DAL"\n' +
+      '            - img "LAL"\n' +
+      '            - text: DAL, LAL\n' +
+      '          - cell "50 Percentile 50; 577 valid players; 577 eligible players": 50 50\n' +
+      '          - cell "1,769 Percentile 77; 577 valid players; 577 eligible players": 1,769 77\n' +
+      '          - cell "35.4 Percentile 97; 569 valid players; 577 eligible players": 35.4 97\n' +
+      '          - cell "28.2 Percentile 99; 569 valid players; 577 eligible players; Higher values preferred": 28.2 99\n' +
+      '          - cell "8.2 Percentile 95; 569 valid players; 577 eligible players; Higher values preferred": 8.2 95\n' +
+      '          - cell "7.7 Percentile 99; 569 valid players; 577 eligible players; Higher values preferred": 7.7 99\n' +
+      '          - cell "1.8 Percentile 99; 569 valid players; 577 eligible players; Higher values preferred": 1.8 99\n' +
+      '          - cell "0.4 Percentile 62; 569 valid players; 577 eligible players; Higher values preferred": 0.4 62\n' +
+      '          - cell "45.0% Percentile 51; 566 valid players; 577 eligible players; Higher values preferred": 45.0% 51\n' +
+      '          - cell "36.8% Percentile 67; 541 valid players; 577 eligible players; Higher values preferred": 36.8% 67\n' +
+      '          - cell "78.2% Percentile 55; 547 valid players; 577 eligible players; Higher values preferred": 78.2% 55\n' +
+      '          - cell "58.7% Percentile 66; 566 valid players; 577 eligible players; Higher values preferred": 58.7% 66\n' +
+      '          - cell "53.6% Percentile 52; 566 valid players; 577 eligible players; Higher values preferred": 53.6% 52\n' +
+      '          - cell "Open details for Luka Dončić":\n' +
+      '            - button "Open details for Luka Dončić"\n' +
+      '  - button "← First Page" [disabled]\n' +
+      '  - text: "Focus table for shortcuts: A/D scroll · T expand height · W/E density · C compare row · Z compare · ? hotkeys"\n' +
+      '- alert'
+  }
+}

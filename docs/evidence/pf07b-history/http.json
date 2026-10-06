@@ -1,0 +1,622 @@
+{
+  "environment": "actual Uvicorn restart and production Next proxy; disposable PostgreSQL 17; zero provider calls",
+  "checks": [
+    {
+      "method": "POST",
+      "path": "/threads",
+      "status": 201,
+      "elapsed_ms": 12.078,
+      "response": {
+        "record_version": "courtload-thread-v2",
+        "thread_id": "cec8deab-da2a-4ebe-8110-645e535a97b7",
+        "title": "New chat",
+        "created_at": "2026-10-05T23:09:24.683543Z",
+        "updated_at": "2026-10-05T23:09:24.683543Z",
+        "version": 1
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/turn",
+      "status": 200,
+      "elapsed_ms": 16.122,
+      "response": {
+        "schema_version": "courtload-assistant-v2",
+        "request_id": "953d13d9-d495-4a1c-a365-c2a50093671a",
+        "thread_id": "cec8deab-da2a-4ebe-8110-645e535a97b7",
+        "turn_id": "a060207e-96fc-4ab9-8c9d-ec25da3e9162",
+        "status": "answered",
+        "intent": "explanation",
+        "scope": null,
+        "blocks": [
+          {
+            "kind": "text",
+            "origin": "knowledge",
+            "text": "A pick and roll is an action where a teammate screens the ball handler\u2019s defender, then moves toward the basket. The ball handler can drive, pass to the rolling teammate or find another open player. Defensive responses include switching, dropping and showing help; the best choice depends on personnel and spacing.",
+            "source_ids": [
+              "courtload-knowledge-v1:pick_roll:c331fa0ec35feff63f0221d55eb9e06738dabcec35d3795086d88a5d7b9711f3"
+            ],
+            "criteria": []
+          }
+        ],
+        "sources": [
+          {
+            "source_id": "courtload-knowledge-v1:pick_roll:c331fa0ec35feff63f0221d55eb9e06738dabcec35d3795086d88a5d7b9711f3",
+            "origin": "knowledge",
+            "title": "Pick and roll",
+            "publisher": "CourtLoad",
+            "url": null,
+            "updated_on": "2026-10-05",
+            "retrieved_at": null,
+            "period": null,
+            "content_sha256": "c331fa0ec35feff63f0221d55eb9e06738dabcec35d3795086d88a5d7b9711f3",
+            "locator": "guide.md#pick_roll",
+            "excerpt": "A pick and roll is an action where a teammate screens the ball handler\u2019s defender, then moves toward the basket. The ball handler can drive, pass to the rolling teammate or find another open player. Defensive responses include switching, dropping and showing help; the best choice depends on personnel and spacing.",
+            "verification": "curated",
+            "facts": []
+          }
+        ],
+        "actions": [
+          {
+            "kind": "navigation",
+            "label": "Pick and roll",
+            "url": "/learning",
+            "operation_hash": null
+          }
+        ],
+        "plan": null,
+        "accounting": {
+          "provider_calls": 0,
+          "analytical_calls": 0,
+          "source_requests": 0,
+          "rows": 0,
+          "elapsed_ms": 0.509
+        },
+        "saveable": false
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/turn",
+      "status": 200,
+      "elapsed_ms": 2.707,
+      "response": {
+        "schema_version": "courtload-assistant-v2",
+        "request_id": "953d13d9-d495-4a1c-a365-c2a50093671a",
+        "thread_id": "cec8deab-da2a-4ebe-8110-645e535a97b7",
+        "turn_id": "a060207e-96fc-4ab9-8c9d-ec25da3e9162",
+        "status": "answered",
+        "intent": "explanation",
+        "scope": null,
+        "blocks": [
+          {
+            "kind": "text",
+            "origin": "knowledge",
+            "text": "A pick and roll is an action where a teammate screens the ball handler\u2019s defender, then moves toward the basket. The ball handler can drive, pass to the rolling teammate or find another open player. Defensive responses include switching, dropping and showing help; the best choice depends on personnel and spacing.",
+            "source_ids": [
+              "courtload-knowledge-v1:pick_roll:c331fa0ec35feff63f0221d55eb9e06738dabcec35d3795086d88a5d7b9711f3"
+            ],
+            "criteria": []
+          }
+        ],
+        "sources": [
+          {
+            "source_id": "courtload-knowledge-v1:pick_roll:c331fa0ec35feff63f0221d55eb9e06738dabcec35d3795086d88a5d7b9711f3",
+            "origin": "knowledge",
+            "title": "Pick and roll",
+            "publisher": "CourtLoad",
+            "url": null,
+            "updated_on": "2026-10-05",
+            "retrieved_at": null,
+            "period": null,
+            "content_sha256": "c331fa0ec35feff63f0221d55eb9e06738dabcec35d3795086d88a5d7b9711f3",
+            "locator": "guide.md#pick_roll",
+            "excerpt": "A pick and roll is an action where a teammate screens the ball handler\u2019s defender, then moves toward the basket. The ball handler can drive, pass to the rolling teammate or find another open player. Defensive responses include switching, dropping and showing help; the best choice depends on personnel and spacing.",
+            "verification": "curated",
+            "facts": []
+          }
+        ],
+        "actions": [
+          {
+            "kind": "navigation",
+            "label": "Pick and roll",
+            "url": "/learning",
+            "operation_hash": null
+          }
+        ],
+        "plan": null,
+        "accounting": {
+          "provider_calls": 0,
+          "analytical_calls": 0,
+          "source_requests": 0,
+          "rows": 0,
+          "elapsed_ms": 0.509
+        },
+        "saveable": false
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/turn",
+      "status": 409,
+      "elapsed_ms": 2.277,
+      "response": {
+        "detail": "Request identity was reused with different content."
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/turn",
+      "status": 200,
+      "elapsed_ms": 10.27,
+      "response": {
+        "schema_version": "courtload-assistant-v2",
+        "request_id": "953d13d9-d495-4a1c-a365-c2a50093671a",
+        "thread_id": "cec8deab-da2a-4ebe-8110-645e535a97b7",
+        "turn_id": "a060207e-96fc-4ab9-8c9d-ec25da3e9162",
+        "status": "answered",
+        "intent": "explanation",
+        "scope": null,
+        "blocks": [
+          {
+            "kind": "text",
+            "origin": "knowledge",
+            "text": "A pick and roll is an action where a teammate screens the ball handler\u2019s defender, then moves toward the basket. The ball handler can drive, pass to the rolling teammate or find another open player. Defensive responses include switching, dropping and showing help; the best choice depends on personnel and spacing.",
+            "source_ids": [
+              "courtload-knowledge-v1:pick_roll:c331fa0ec35feff63f0221d55eb9e06738dabcec35d3795086d88a5d7b9711f3"
+            ],
+            "criteria": []
+          }
+        ],
+        "sources": [
+          {
+            "source_id": "courtload-knowledge-v1:pick_roll:c331fa0ec35feff63f0221d55eb9e06738dabcec35d3795086d88a5d7b9711f3",
+            "origin": "knowledge",
+            "title": "Pick and roll",
+            "publisher": "CourtLoad",
+            "url": null,
+            "updated_on": "2026-10-05",
+            "retrieved_at": null,
+            "period": null,
+            "content_sha256": "c331fa0ec35feff63f0221d55eb9e06738dabcec35d3795086d88a5d7b9711f3",
+            "locator": "guide.md#pick_roll",
+            "excerpt": "A pick and roll is an action where a teammate screens the ball handler\u2019s defender, then moves toward the basket. The ball handler can drive, pass to the rolling teammate or find another open player. Defensive responses include switching, dropping and showing help; the best choice depends on personnel and spacing.",
+            "verification": "curated",
+            "facts": []
+          }
+        ],
+        "actions": [
+          {
+            "kind": "navigation",
+            "label": "Pick and roll",
+            "url": "/learning",
+            "operation_hash": null
+          }
+        ],
+        "plan": null,
+        "accounting": {
+          "provider_calls": 0,
+          "analytical_calls": 0,
+          "source_requests": 0,
+          "rows": 0,
+          "elapsed_ms": 0.509
+        },
+        "saveable": false
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/threads/cec8deab-da2a-4ebe-8110-645e535a97b7/turns",
+      "status": 200,
+      "elapsed_ms": 4.217,
+      "response": {
+        "schema_version": "courtload-history-v2",
+        "thread": {
+          "record_version": "courtload-thread-v2",
+          "thread_id": "cec8deab-da2a-4ebe-8110-645e535a97b7",
+          "title": "Explain pick and roll",
+          "created_at": "2026-10-05T23:09:24.683543Z",
+          "updated_at": "2026-10-05T23:09:27.717116Z",
+          "version": 5
+        },
+        "turns": [
+          {
+            "record_version": "courtload-thread-turn-v2",
+            "thread_id": "cec8deab-da2a-4ebe-8110-645e535a97b7",
+            "turn_id": "a060207e-96fc-4ab9-8c9d-ec25da3e9162",
+            "request": {
+              "schema_version": "courtload-assistant-v2",
+              "request_id": "953d13d9-d495-4a1c-a365-c2a50093671a",
+              "thread_id": "cec8deab-da2a-4ebe-8110-645e535a97b7",
+              "retry_of": null,
+              "message": "Explain pick and roll",
+              "context": null,
+              "plan": null
+            },
+            "request_sha256": "189b3ee8f22952076666966a3e1914478809ab79c636b7ac6bd4737bce128b83",
+            "accepted_at": "2026-10-05T23:09:24.699086Z",
+            "state": "completed",
+            "response": {
+              "schema_version": "courtload-assistant-v2",
+              "request_id": "953d13d9-d495-4a1c-a365-c2a50093671a",
+              "thread_id": "cec8deab-da2a-4ebe-8110-645e535a97b7",
+              "turn_id": "a060207e-96fc-4ab9-8c9d-ec25da3e9162",
+              "status": "answered",
+              "intent": "explanation",
+              "scope": null,
+              "blocks": [
+                {
+                  "kind": "text",
+                  "origin": "knowledge",
+                  "text": "A pick and roll is an action where a teammate screens the ball handler\u2019s defender, then moves toward the basket. The ball handler can drive, pass to the rolling teammate or find another open player. Defensive responses include switching, dropping and showing help; the best choice depends on personnel and spacing.",
+                  "source_ids": [
+                    "courtload-knowledge-v1:pick_roll:c331fa0ec35feff63f0221d55eb9e06738dabcec35d3795086d88a5d7b9711f3"
+                  ],
+                  "criteria": []
+                }
+              ],
+              "sources": [
+                {
+                  "source_id": "courtload-knowledge-v1:pick_roll:c331fa0ec35feff63f0221d55eb9e06738dabcec35d3795086d88a5d7b9711f3",
+                  "origin": "knowledge",
+                  "title": "Pick and roll",
+                  "publisher": "CourtLoad",
+                  "url": null,
+                  "updated_on": "2026-10-05",
+                  "retrieved_at": null,
+                  "period": null,
+                  "content_sha256": "c331fa0ec35feff63f0221d55eb9e06738dabcec35d3795086d88a5d7b9711f3",
+                  "locator": "guide.md#pick_roll",
+                  "excerpt": "A pick and roll is an action where a teammate screens the ball handler\u2019s defender, then moves toward the basket. The ball handler can drive, pass to the rolling teammate or find another open player. Defensive responses include switching, dropping and showing help; the best choice depends on personnel and spacing.",
+                  "verification": "curated",
+                  "facts": []
+                }
+              ],
+              "actions": [
+                {
+                  "kind": "navigation",
+                  "label": "Pick and roll",
+                  "url": "/learning",
+                  "operation_hash": null
+                }
+              ],
+              "plan": null,
+              "accounting": {
+                "provider_calls": 0,
+                "analytical_calls": 0,
+                "source_requests": 0,
+                "rows": 0,
+                "elapsed_ms": 0.509
+              },
+              "saveable": false
+            },
+            "response_sha256": "ddbcc143863e901a11814cf27471b33ca1f6a8f0d9b998cf8afcc2d5fc360593"
+          },
+          {
+            "record_version": "courtload-thread-turn-v2",
+            "thread_id": "cec8deab-da2a-4ebe-8110-645e535a97b7",
+            "turn_id": "a74044c4-7b29-486c-9985-4e0b28be429d",
+            "request": {
+              "schema_version": "courtload-assistant-v2",
+              "request_id": "5a8cf8cc-ccdf-468e-b5ba-ddfe52780293",
+              "thread_id": "cec8deab-da2a-4ebe-8110-645e535a97b7",
+              "retry_of": null,
+              "message": "Explain pick and roll",
+              "context": null,
+              "plan": null
+            },
+            "request_sha256": "a4b8c7aeda9045d890289d586c5bd14bcb6b40de334a61df4dcfdf353e72687e",
+            "accepted_at": "2026-10-05T23:09:26.693331Z",
+            "state": "failed",
+            "response": {
+              "schema_version": "courtload-assistant-v2",
+              "request_id": "5a8cf8cc-ccdf-468e-b5ba-ddfe52780293",
+              "thread_id": "cec8deab-da2a-4ebe-8110-645e535a97b7",
+              "turn_id": "a74044c4-7b29-486c-9985-4e0b28be429d",
+              "status": "failed",
+              "intent": "inability",
+              "scope": null,
+              "blocks": [
+                {
+                  "kind": "inability",
+                  "reason": "backend_failure",
+                  "text": "This request was interrupted before an answer could be retained.",
+                  "next_action": "Retry with a new request linked to this turn."
+                }
+              ],
+              "sources": [],
+              "actions": [],
+              "plan": null,
+              "accounting": {
+                "provider_calls": 0,
+                "analytical_calls": 0,
+                "source_requests": 0,
+                "rows": 0,
+                "elapsed_ms": 0.0
+              },
+              "saveable": false
+            },
+            "response_sha256": "e9c1e3086618459dee81015628c30e63f86acc50242b0a2f83fcbef710184561"
+          }
+        ],
+        "next_cursor": null
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/turn",
+      "status": 200,
+      "elapsed_ms": 10.959,
+      "response": {
+        "schema_version": "courtload-assistant-v2",
+        "request_id": "a0a1a3ae-01c2-4f31-8f56-df851c4fa001",
+        "thread_id": "cec8deab-da2a-4ebe-8110-645e535a97b7",
+        "turn_id": "6d5c3ddc-5da7-4b6d-9ce7-b51a578b8500",
+        "status": "answered",
+        "intent": "explanation",
+        "scope": null,
+        "blocks": [
+          {
+            "kind": "text",
+            "origin": "knowledge",
+            "text": "A pick and roll is an action where a teammate screens the ball handler\u2019s defender, then moves toward the basket. The ball handler can drive, pass to the rolling teammate or find another open player. Defensive responses include switching, dropping and showing help; the best choice depends on personnel and spacing.",
+            "source_ids": [
+              "courtload-knowledge-v1:pick_roll:c331fa0ec35feff63f0221d55eb9e06738dabcec35d3795086d88a5d7b9711f3"
+            ],
+            "criteria": []
+          }
+        ],
+        "sources": [
+          {
+            "source_id": "courtload-knowledge-v1:pick_roll:c331fa0ec35feff63f0221d55eb9e06738dabcec35d3795086d88a5d7b9711f3",
+            "origin": "knowledge",
+            "title": "Pick and roll",
+            "publisher": "CourtLoad",
+            "url": null,
+            "updated_on": "2026-10-05",
+            "retrieved_at": null,
+            "period": null,
+            "content_sha256": "c331fa0ec35feff63f0221d55eb9e06738dabcec35d3795086d88a5d7b9711f3",
+            "locator": "guide.md#pick_roll",
+            "excerpt": "A pick and roll is an action where a teammate screens the ball handler\u2019s defender, then moves toward the basket. The ball handler can drive, pass to the rolling teammate or find another open player. Defensive responses include switching, dropping and showing help; the best choice depends on personnel and spacing.",
+            "verification": "curated",
+            "facts": []
+          }
+        ],
+        "actions": [
+          {
+            "kind": "navigation",
+            "label": "Pick and roll",
+            "url": "/learning",
+            "operation_hash": null
+          }
+        ],
+        "plan": null,
+        "accounting": {
+          "provider_calls": 0,
+          "analytical_calls": 0,
+          "source_requests": 0,
+          "rows": 0,
+          "elapsed_ms": 0.458
+        },
+        "saveable": false
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/threads/cec8deab-da2a-4ebe-8110-645e535a97b7/turns/ce4c0408-efb0-4272-b567-7ac9603ce376/cancel",
+      "status": 200,
+      "elapsed_ms": 3.646,
+      "response": {
+        "record_version": "courtload-thread-turn-v2",
+        "thread_id": "cec8deab-da2a-4ebe-8110-645e535a97b7",
+        "turn_id": "ce4c0408-efb0-4272-b567-7ac9603ce376",
+        "request": {
+          "schema_version": "courtload-assistant-v2",
+          "request_id": "82d74b41-941c-46ae-8600-3fa129f03e3c",
+          "thread_id": "cec8deab-da2a-4ebe-8110-645e535a97b7",
+          "retry_of": null,
+          "message": "Explain pick and roll",
+          "context": null,
+          "plan": null
+        },
+        "request_sha256": "a8053a12a1e60dbf66e25c20a67b8830caacc638058a0bc9c10abed525d4bf80",
+        "accepted_at": "2026-10-05T23:09:27.740399Z",
+        "state": "cancelled",
+        "response": {
+          "schema_version": "courtload-assistant-v2",
+          "request_id": "82d74b41-941c-46ae-8600-3fa129f03e3c",
+          "thread_id": "cec8deab-da2a-4ebe-8110-645e535a97b7",
+          "turn_id": "ce4c0408-efb0-4272-b567-7ac9603ce376",
+          "status": "cancelled",
+          "intent": "inability",
+          "scope": null,
+          "blocks": [
+            {
+              "kind": "inability",
+              "reason": "cancelled",
+              "text": "This request was stopped.",
+              "next_action": "Retry with a new request linked to this turn."
+            }
+          ],
+          "sources": [],
+          "actions": [],
+          "plan": null,
+          "accounting": {
+            "provider_calls": 0,
+            "analytical_calls": 0,
+            "source_requests": 0,
+            "rows": 0,
+            "elapsed_ms": 0.0
+          },
+          "saveable": false
+        },
+        "response_sha256": "9a9e0e7c018a9ece10ae473981bd5980f0951ee33a65a4fba2c57f11ab8b5434"
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/turn",
+      "status": 200,
+      "elapsed_ms": 2.123,
+      "response": {
+        "schema_version": "courtload-assistant-v2",
+        "request_id": "82d74b41-941c-46ae-8600-3fa129f03e3c",
+        "thread_id": "cec8deab-da2a-4ebe-8110-645e535a97b7",
+        "turn_id": "ce4c0408-efb0-4272-b567-7ac9603ce376",
+        "status": "cancelled",
+        "intent": "inability",
+        "scope": null,
+        "blocks": [
+          {
+            "kind": "inability",
+            "reason": "cancelled",
+            "text": "This request was stopped.",
+            "next_action": "Retry with a new request linked to this turn."
+          }
+        ],
+        "sources": [],
+        "actions": [],
+        "plan": null,
+        "accounting": {
+          "provider_calls": 0,
+          "analytical_calls": 0,
+          "source_requests": 0,
+          "rows": 0,
+          "elapsed_ms": 0.0
+        },
+        "saveable": false
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/threads/cec8deab-da2a-4ebe-8110-645e535a97b7",
+      "status": 200,
+      "elapsed_ms": 3.93,
+      "response": {
+        "cleared": true
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/threads/cec8deab-da2a-4ebe-8110-645e535a97b7/turns",
+      "status": 404,
+      "elapsed_ms": 2.018,
+      "response": {
+        "detail": "Thread not found."
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/threads/3712352e-e5fb-483b-b33b-96eecaec0922/turns",
+      "status": 200,
+      "elapsed_ms": 2.767,
+      "response": {
+        "schema_version": "courtload-history-v2",
+        "thread": {
+          "record_version": "courtload-thread-v2",
+          "thread_id": "3712352e-e5fb-483b-b33b-96eecaec0922",
+          "title": "Explain pick and roll",
+          "created_at": "2026-10-05T23:09:25.983489Z",
+          "updated_at": "2026-10-05T23:09:25.995959Z",
+          "version": 3
+        },
+        "turns": [
+          {
+            "record_version": "courtload-thread-turn-v2",
+            "thread_id": "3712352e-e5fb-483b-b33b-96eecaec0922",
+            "turn_id": "abd5f449-a628-4a2b-83aa-01ca1f41bb24",
+            "request": {
+              "schema_version": "courtload-assistant-v2",
+              "request_id": "56513e29-0a77-42a7-aa2e-15ae2764098f",
+              "thread_id": "3712352e-e5fb-483b-b33b-96eecaec0922",
+              "retry_of": null,
+              "message": "Explain pick and roll",
+              "context": null,
+              "plan": null
+            },
+            "request_sha256": "54e397b7983c4450ead6bfaac1034a88368884656a84180f88b3c53ae31cde57",
+            "accepted_at": "2026-10-05T23:09:25.990911Z",
+            "state": "completed",
+            "response": {
+              "schema_version": "courtload-assistant-v2",
+              "request_id": "56513e29-0a77-42a7-aa2e-15ae2764098f",
+              "thread_id": "3712352e-e5fb-483b-b33b-96eecaec0922",
+              "turn_id": "abd5f449-a628-4a2b-83aa-01ca1f41bb24",
+              "status": "answered",
+              "intent": "explanation",
+              "scope": null,
+              "blocks": [
+                {
+                  "kind": "text",
+                  "origin": "knowledge",
+                  "text": "A pick and roll is an action where a teammate screens the ball handler\u2019s defender, then moves toward the basket. The ball handler can drive, pass to the rolling teammate or find another open player. Defensive responses include switching, dropping and showing help; the best choice depends on personnel and spacing.",
+                  "source_ids": [
+                    "courtload-knowledge-v1:pick_roll:c331fa0ec35feff63f0221d55eb9e06738dabcec35d3795086d88a5d7b9711f3"
+                  ],
+                  "criteria": []
+                }
+              ],
+              "sources": [
+                {
+                  "source_id": "courtload-knowledge-v1:pick_roll:c331fa0ec35feff63f0221d55eb9e06738dabcec35d3795086d88a5d7b9711f3",
+                  "origin": "knowledge",
+                  "title": "Pick and roll",
+                  "publisher": "CourtLoad",
+                  "url": null,
+                  "updated_on": "2026-10-05",
+                  "retrieved_at": null,
+                  "period": null,
+                  "content_sha256": "c331fa0ec35feff63f0221d55eb9e06738dabcec35d3795086d88a5d7b9711f3",
+                  "locator": "guide.md#pick_roll",
+                  "excerpt": "A pick and roll is an action where a teammate screens the ball handler\u2019s defender, then moves toward the basket. The ball handler can drive, pass to the rolling teammate or find another open player. Defensive responses include switching, dropping and showing help; the best choice depends on personnel and spacing.",
+                  "verification": "curated",
+                  "facts": []
+                }
+              ],
+              "actions": [
+                {
+                  "kind": "navigation",
+                  "label": "Pick and roll",
+                  "url": "/learning",
+                  "operation_hash": null
+                }
+              ],
+              "plan": null,
+              "accounting": {
+                "provider_calls": 0,
+                "analytical_calls": 0,
+                "source_requests": 0,
+                "rows": 0,
+                "elapsed_ms": 0.084
+              },
+              "saveable": false
+            },
+            "response_sha256": "959a7f2a80b5cd6926b260d4f86340316d747e4ddd396cf676c6d310fe8b0d85"
+          }
+        ],
+        "next_cursor": null
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/threads",
+      "status": 200,
+      "elapsed_ms": 2.544,
+      "response": {
+        "cleared": true
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/threads",
+      "status": 200,
+      "elapsed_ms": 1.071,
+      "response": {
+        "schema_version": "courtload-history-v2",
+        "threads": [],
+        "next_cursor": null
+      }
+    }
+  ]
+}

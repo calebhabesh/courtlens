@@ -1,0 +1,20 @@
+import json,time
+from pathlib import Path
+from uuid import uuid4
+import httpx
+p=Path('docs/evidence/pf09-freeze-acceptance');token={'X-Operator-Token':'pf09-disposable-operator'}
+with httpx.Client(base_url='http://127.0.0.1:8191',timeout=60,headers=token) as c:
+ thread=c.post('/api/workbench/assistant/v2/threads').raise_for_status().json();turns=[]
+ for i in range(105):
+  t=time.monotonic();r=c.post('/api/workbench/assistant/v2/turn',json={'request_id':str(uuid4()),'thread_id':thread['thread_id'],'message':f'Explain pick and roll ({i+1})'}).raise_for_status().json();assert r['status']=='answered'; assert r['accounting']['provider_calls']==0
+  turns.append({'number':i+1,'elapsed_ms':round((time.monotonic()-t)*1000,2)});
+  if i%20==0: print(i+1,flush=True)
+ measurements=[]
+ cursor=''
+ for page_index in range(2):
+  t=time.monotonic();r=c.get(f"/api/workbench/assistant/v2/threads/{thread['thread_id']}/turns",params={'limit':100,**({'cursor':cursor} if cursor else {})}).raise_for_status();body=r.json()
+  measurements.append({'cursor':cursor,'count':len(body['turns']),'next_cursor':body['next_cursor'],'bytes':len(r.content),'elapsed_ms':round((time.monotonic()-t)*1000,2)})
+  cursor=body['next_cursor']
+ assert [page['count'] for page in measurements]==[100,5]
+ for i in range(22):c.post('/api/workbench/assistant/v2/threads').raise_for_status()
+(p/'large-history.json').write_text(json.dumps({'thread_id':thread['thread_id'],'turn_count':105,'provider_calls':0,'turns':turns,'pages':measurements},indent=2)+'\n')

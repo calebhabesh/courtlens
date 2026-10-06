@@ -1,0 +1,207 @@
+{
+  "environment": "production webpack + real FastAPI/PostgreSQL",
+  "checks": [
+    {
+      "name": "trade-combined-wide",
+      "teams": [
+        "DAL",
+        "LAL"
+      ]
+    },
+    {
+      "name": "trade-team-filter",
+      "teams": [
+        "DAL"
+      ]
+    },
+    {
+      "name": "trade-historical-cutoff",
+      "teams": [
+        "DAL"
+      ]
+    },
+    {
+      "name": "trade-last-five",
+      "teams": [
+        "LAL"
+      ]
+    },
+    {
+      "name": "trade-logo-mode",
+      "teams": [
+        "DAL",
+        "LAL"
+      ]
+    },
+    {
+      "name": "trade-desktop",
+      "teams": [
+        "DAL",
+        "LAL"
+      ]
+    },
+    {
+      "name": "trade-mobile",
+      "teams": [
+        "DAL",
+        "LAL"
+      ]
+    },
+    {
+      "name": "lookup-before-trade",
+      "teams": [
+        "DAL"
+      ]
+    },
+    {
+      "name": "team lookup-before-trade",
+      "team": "TOR"
+    },
+    {
+      "name": "lookup-combined",
+      "teams": [
+        "DAL",
+        "LAL"
+      ]
+    },
+    {
+      "name": "team lookup-combined",
+      "team": "TOR"
+    },
+    {
+      "name": "30 real team rows use local artwork"
+    },
+    {
+      "name": "team cards reuse branding"
+    },
+    {
+      "name": "team profile reuses branding"
+    },
+    {
+      "name": "comparison cards preserve represented teams"
+    },
+    {
+      "name": "unknown historical code remains NJN without invented BKN mapping",
+      "fixture": true
+    },
+    {
+      "name": "failed artwork preserves name, abbreviation and scope",
+      "fixture": true
+    }
+  ],
+  "errors": [],
+  "brandingRequests": [
+    "http://127.0.0.1:3154/team-logos/1610612742-1547494512746c18.svg",
+    "http://127.0.0.1:3154/team-logos/1610612747-5b68f7b92ba7d058.svg",
+    "http://127.0.0.1:3154/team-logos/1610612742-1547494512746c18.svg",
+    "http://127.0.0.1:3154/team-logos/1610612742-1547494512746c18.svg",
+    "http://127.0.0.1:3154/team-logos/1610612747-5b68f7b92ba7d058.svg",
+    "http://127.0.0.1:3154/team-logos/1610612742-1547494512746c18.svg",
+    "http://127.0.0.1:3154/team-logos/1610612747-5b68f7b92ba7d058.svg",
+    "http://127.0.0.1:3154/team-logos/1610612742-1547494512746c18.svg",
+    "http://127.0.0.1:3154/team-logos/1610612747-5b68f7b92ba7d058.svg",
+    "http://127.0.0.1:3154/team-logos/1610612742-1547494512746c18.svg",
+    "http://127.0.0.1:3154/team-logos/1610612747-5b68f7b92ba7d058.svg",
+    "http://127.0.0.1:3154/team-logos/1610612742-1547494512746c18.svg",
+    "http://127.0.0.1:3154/team-logos/1610612747-5b68f7b92ba7d058.svg",
+    "http://127.0.0.1:3154/team-logos/1610612760-fb684464e11e0798.svg",
+    "http://127.0.0.1:3154/team-logos/1610612749-1a315b6ea7d465c4.svg",
+    "http://127.0.0.1:3154/team-logos/1610612743-4e180a9d1906a726.svg",
+    "http://127.0.0.1:3154/team-logos/1610612766-cf2c99a2d619f635.svg",
+    "http://127.0.0.1:3154/team-logos/1610612755-1e3fbaf4f2d48a4e.svg",
+    "http://127.0.0.1:3154/team-logos/1610612756-b4ec319fc4551e87.svg",
+    "http://127.0.0.1:3154/team-logos/1610612738-531038092e848f73.svg",
+    "http://127.0.0.1:3154/team-logos/1610612750-e23cca4da95fe6a0.svg",
+    "http://127.0.0.1:3154/team-logos/1610612752-42e914c5226c3ff7.svg",
+    "http://127.0.0.1:3154/team-logos/1610612765-efc20345b37e5220.svg",
+    "http://127.0.0.1:3154/team-logos/1610612753-aa38562ae665b426.svg",
+    "http://127.0.0.1:3154/team-logos/1610612758-36bcebbe9c06361d.svg",
+    "http://127.0.0.1:3154/team-logos/1610612759-c4df842e0d660dbc.svg",
+    "http://127.0.0.1:3154/team-logos/1610612751-6a3b134fbf97503b.svg",
+    "http://127.0.0.1:3154/team-logos/1610612746-6fe94cd7b648afe8.svg",
+    "http://127.0.0.1:3154/team-logos/1610612741-a11d0d6480b75e4e.svg",
+    "http://127.0.0.1:3154/team-logos/1610612739-ef345729b4d9f698.svg",
+    "http://127.0.0.1:3154/team-logos/1610612748-bb56d6319628bed9.svg",
+    "http://127.0.0.1:3154/team-logos/1610612740-3d74bfcf573428a0.svg",
+    "http://127.0.0.1:3154/team-logos/1610612761-cb754caf37f8132f.svg",
+    "http://127.0.0.1:3154/team-logos/1610612760-fb684464e11e0798.svg",
+    "http://127.0.0.1:3154/team-logos/1610612749-1a315b6ea7d465c4.svg",
+    "http://127.0.0.1:3154/team-logos/1610612743-4e180a9d1906a726.svg",
+    "http://127.0.0.1:3154/team-logos/1610612742-1547494512746c18.svg",
+    "http://127.0.0.1:3154/team-logos/1610612747-5b68f7b92ba7d058.svg",
+    "http://127.0.0.1:3154/team-logos/1610612750-e23cca4da95fe6a0.svg",
+    "http://127.0.0.1:3154/team-logos/1610612738-531038092e848f73.svg",
+    "http://127.0.0.1:3154/team-logos/1610612756-b4ec319fc4551e87.svg",
+    "http://127.0.0.1:3154/team-logos/1610612755-1e3fbaf4f2d48a4e.svg",
+    "http://127.0.0.1:3154/team-logos/1610612765-efc20345b37e5220.svg",
+    "http://127.0.0.1:3154/team-logos/1610612752-42e914c5226c3ff7.svg",
+    "http://127.0.0.1:3154/team-logos/1610612753-aa38562ae665b426.svg",
+    "http://127.0.0.1:3154/team-logos/1610612766-cf2c99a2d619f635.svg",
+    "http://127.0.0.1:3154/team-logos/1610612740-3d74bfcf573428a0.svg",
+    "http://127.0.0.1:3154/team-logos/1610612759-c4df842e0d660dbc.svg",
+    "http://127.0.0.1:3154/team-logos/1610612739-ef345729b4d9f698.svg",
+    "http://127.0.0.1:3154/team-logos/1610612751-6a3b134fbf97503b.svg",
+    "http://127.0.0.1:3154/team-logos/1610612748-bb56d6319628bed9.svg",
+    "http://127.0.0.1:3154/team-logos/1610612758-36bcebbe9c06361d.svg",
+    "http://127.0.0.1:3154/team-logos/1610612741-a11d0d6480b75e4e.svg",
+    "http://127.0.0.1:3154/team-logos/1610612746-6fe94cd7b648afe8.svg",
+    "http://127.0.0.1:3154/team-logos/1610612761-cb754caf37f8132f.svg",
+    "http://127.0.0.1:3154/team-logos/1610612744-99af50c32a1b1c19.svg",
+    "http://127.0.0.1:3154/team-logos/1610612737-efe7639e6daac1a1.svg",
+    "http://127.0.0.1:3154/team-logos/1610612760-fb684464e11e0798.svg",
+    "http://127.0.0.1:3154/team-logos/1610612739-ef345729b4d9f698.svg",
+    "http://127.0.0.1:3154/team-logos/1610612738-531038092e848f73.svg",
+    "http://127.0.0.1:3154/team-logos/1610612752-42e914c5226c3ff7.svg",
+    "http://127.0.0.1:3154/team-logos/1610612746-6fe94cd7b648afe8.svg",
+    "http://127.0.0.1:3154/team-logos/1610612743-4e180a9d1906a726.svg",
+    "http://127.0.0.1:3154/team-logos/1610612747-5b68f7b92ba7d058.svg",
+    "http://127.0.0.1:3154/team-logos/1610612750-e23cca4da95fe6a0.svg",
+    "http://127.0.0.1:3154/team-logos/1610612744-99af50c32a1b1c19.svg",
+    "http://127.0.0.1:3154/team-logos/1610612749-1a315b6ea7d465c4.svg",
+    "http://127.0.0.1:3154/team-logos/1610612765-efc20345b37e5220.svg",
+    "http://127.0.0.1:3154/team-logos/1610612753-aa38562ae665b426.svg",
+    "http://127.0.0.1:3154/team-logos/1610612758-36bcebbe9c06361d.svg",
+    "http://127.0.0.1:3154/team-logos/1610612737-efe7639e6daac1a1.svg",
+    "http://127.0.0.1:3154/team-logos/1610612742-1547494512746c18.svg",
+    "http://127.0.0.1:3154/team-logos/1610612741-a11d0d6480b75e4e.svg",
+    "http://127.0.0.1:3154/team-logos/1610612748-bb56d6319628bed9.svg",
+    "http://127.0.0.1:3154/team-logos/1610612756-b4ec319fc4551e87.svg",
+    "http://127.0.0.1:3154/team-logos/1610612759-c4df842e0d660dbc.svg",
+    "http://127.0.0.1:3154/team-logos/1610612761-cb754caf37f8132f.svg",
+    "http://127.0.0.1:3154/team-logos/1610612751-6a3b134fbf97503b.svg",
+    "http://127.0.0.1:3154/team-logos/1610612755-1e3fbaf4f2d48a4e.svg",
+    "http://127.0.0.1:3154/team-logos/1610612740-3d74bfcf573428a0.svg",
+    "http://127.0.0.1:3154/team-logos/1610612766-cf2c99a2d619f635.svg",
+    "http://127.0.0.1:3154/team-logos/1610612745-9a0fd3d351f0726d.svg",
+    "http://127.0.0.1:3154/team-logos/1610612754-07b320f178a5bf9a.svg",
+    "http://127.0.0.1:3154/team-logos/1610612763-677c8053201e9047.svg",
+    "http://127.0.0.1:3154/team-logos/1610612757-65fbdafe950a7064.svg",
+    "http://127.0.0.1:3154/team-logos/1610612764-4e99c8f715c1af7e.svg",
+    "http://127.0.0.1:3154/team-logos/1610612762-f1df72b502f198c4.svg",
+    "http://127.0.0.1:3154/team-logos/1610612761-cb754caf37f8132f.svg",
+    "http://127.0.0.1:3154/team-logos/1610612742-1547494512746c18.svg",
+    "http://127.0.0.1:3154/team-logos/1610612747-5b68f7b92ba7d058.svg",
+    "http://127.0.0.1:3154/team-logos/1610612761-cb754caf37f8132f.svg",
+    "http://127.0.0.1:3154/team-logos/1610612755-1e3fbaf4f2d48a4e.svg",
+    "http://127.0.0.1:3154/team-logos/1610612742-1547494512746c18.svg",
+    "http://127.0.0.1:3154/team-logos/1610612749-1a315b6ea7d465c4.svg",
+    "http://127.0.0.1:3154/team-logos/1610612760-fb684464e11e0798.svg",
+    "http://127.0.0.1:3154/team-logos/1610612752-42e914c5226c3ff7.svg",
+    "http://127.0.0.1:3154/team-logos/1610612756-b4ec319fc4551e87.svg",
+    "http://127.0.0.1:3154/team-logos/1610612738-531038092e848f73.svg",
+    "http://127.0.0.1:3154/team-logos/1610612758-36bcebbe9c06361d.svg",
+    "http://127.0.0.1:3154/team-logos/1610612739-ef345729b4d9f698.svg",
+    "http://127.0.0.1:3154/team-logos/1610612744-99af50c32a1b1c19.svg",
+    "http://127.0.0.1:3154/team-logos/1610612743-4e180a9d1906a726.svg",
+    "http://127.0.0.1:3154/team-logos/1610612750-e23cca4da95fe6a0.svg",
+    "http://127.0.0.1:3154/team-logos/1610612737-efe7639e6daac1a1.svg",
+    "http://127.0.0.1:3154/team-logos/1610612747-5b68f7b92ba7d058.svg",
+    "http://127.0.0.1:3154/team-logos/1610612763-677c8053201e9047.svg",
+    "http://127.0.0.1:3154/team-logos/1610612741-a11d0d6480b75e4e.svg",
+    "http://127.0.0.1:3154/team-logos/1610612766-cf2c99a2d619f635.svg",
+    "http://127.0.0.1:3154/team-logos/1610612746-6fe94cd7b648afe8.svg",
+    "http://127.0.0.1:3154/team-logos/1610612762-f1df72b502f198c4.svg",
+    "http://127.0.0.1:3154/team-logos/1610612742-1547494512746c18.svg",
+    "http://127.0.0.1:3154/team-logos/1610612747-5b68f7b92ba7d058.svg"
+  ]
+}

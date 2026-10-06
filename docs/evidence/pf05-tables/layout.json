@@ -1,0 +1,140 @@
+{
+  "checks": [
+    {
+      "label": "wide",
+      "viewport": [
+        2560,
+        1440
+      ],
+      "documentWidth": 2560,
+      "region": {
+        "x": 24,
+        "y": 549.34375,
+        "width": 2512,
+        "height": 1008,
+        "top": 549.34375,
+        "right": 2536,
+        "bottom": 1557.34375,
+        "left": 24
+      },
+      "name": {
+        "x": 113,
+        "y": 481.875,
+        "width": 260,
+        "height": 53,
+        "top": 481.875,
+        "right": 373,
+        "bottom": 534.875,
+        "left": 113
+      },
+      "metrics": [
+        88,
+        88,
+        88,
+        88,
+        88,
+        88,
+        88,
+        88,
+        88,
+        88,
+        88,
+        88,
+        88
+      ],
+      "rowHeight": 53,
+      "name_filter_width": 1632
+    },
+    {
+      "label": "desktop",
+      "viewport": [
+        1440,
+        900
+      ],
+      "documentWidth": 1440,
+      "region": {
+        "x": 24,
+        "y": 599.734375,
+        "width": 1392,
+        "height": 630,
+        "top": 599.734375,
+        "right": 1416,
+        "bottom": 1229.734375,
+        "left": 24
+      },
+      "name": {
+        "x": 113,
+        "y": 532.265625,
+        "width": 260,
+        "height": 53,
+        "top": 532.265625,
+        "right": 373,
+        "bottom": 585.265625,
+        "left": 113
+      },
+      "metrics": [
+        88,
+        88,
+        88,
+        88,
+        88,
+        88,
+        88,
+        88,
+        88,
+        88,
+        88,
+        88,
+        88
+      ],
+      "rowHeight": 53,
+      "name_filter_width": 512
+    },
+    {
+      "label": "mobile",
+      "viewport": [
+        375,
+        812
+      ],
+      "documentWidth": 375,
+      "region": {
+        "x": 12,
+        "y": 1509.875,
+        "width": 351,
+        "height": 568.390625,
+        "top": 1509.875,
+        "right": 363,
+        "bottom": 2078.265625,
+        "left": 12
+      },
+      "name": {
+        "x": 13,
+        "y": 1442.40625,
+        "width": 190,
+        "height": 57,
+        "top": 1442.40625,
+        "right": 203,
+        "bottom": 1499.40625,
+        "left": 13
+      },
+      "metrics": [
+        88,
+        88,
+        88,
+        88,
+        88,
+        88,
+        88,
+        88,
+        88,
+        88,
+        88,
+        88,
+        88
+      ],
+      "rowHeight": 57,
+      "name_filter_width": 319
+    }
+  ],
+  "errors": []
+}

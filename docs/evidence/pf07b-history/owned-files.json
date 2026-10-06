@@ -1,0 +1,17 @@
+[
+  "src/courtload/assistant_history_models.py",
+  "src/courtload/services/assistant/history.py",
+  "src/courtload/api/routers/conversation.py",
+  "src/courtload/models.py",
+  "src/courtload/services/backup_restore.py",
+  "migrations/versions/07b810a4f005_assistant_history.py",
+  "tests/integration/test_assistant_history_postgres.py",
+  "tests/integration/test_hybrid_assistant_postgres.py",
+  "dashboard/app/api/assistant-v2/[[...path]]/route.ts",
+  "dashboard/lib/assistant-history.ts",
+  "dashboard/lib/assistant-history-proxy.test.ts",
+  "scripts/verify_pf07b_history.py",
+  "scripts/verify_pf07b_browser.cjs",
+  "docs/design/polish-assistant-contract.md",
+  "docs/polish-freeze-implementation-progress.md"
+]

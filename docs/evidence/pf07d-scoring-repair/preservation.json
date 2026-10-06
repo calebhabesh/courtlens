@@ -1,0 +1,14 @@
+{
+  "changed_starting_files": [
+    "docs/design/polish-assistant-contract.md",
+    "docs/polish-freeze-implementation-progress.md",
+    "scripts/evaluate_pf07d_hybrid.py",
+    "tests/integration/test_hybrid_evaluation_postgres.py",
+    "src/courtload/services/assistant/planner.py"
+  ],
+  "unexpected_changes": [],
+  "frozen_original_corpus_changed": false,
+  "analytical_implementation_changed": false,
+  "v2_wire_contract_changed": false,
+  "artifact_evidence": "artifact-preservation.json"
+}

@@ -1,0 +1,21 @@
+import json,time
+from pathlib import Path
+import psycopg
+from psycopg import sql
+from courtload.config import get_settings
+out=Path('docs/evidence/pf08-threaded-acceptance');src=get_settings().database_url.replace('postgresql+psycopg://','postgresql://')
+dst='postgresql://courtload:courtload@127.0.0.1:5432/courtload_pf08_acceptance';records=[]
+with psycopg.connect(src) as a, psycopg.connect(dst) as b:
+ a.execute('SET TRANSACTION READ ONLY')
+ # Only the disposable database disables FK triggers during bulk restore.
+ b.execute("SET session_replication_role = replica")
+ tables=a.execute("select tablename from pg_tables where schemaname='public' and tablename <> 'alembic_version' order by tablename").fetchall()
+ for (table,) in tables:
+  t=time.monotonic();size=0
+  with a.cursor().copy(sql.SQL('COPY {} TO STDOUT (FORMAT BINARY)').format(sql.Identifier(table))) as reader:
+   with b.cursor().copy(sql.SQL('COPY {} FROM STDIN (FORMAT BINARY)').format(sql.Identifier(table))) as writer:
+    for block in reader: writer.write(block);size+=len(block)
+  records.append({'table':table,'bytes':size,'elapsed_seconds':round(time.monotonic()-t,3)});print(table,size,flush=True)
+ b.execute('SET session_replication_role = origin');b.commit()
+ a.rollback()
+(out/'clone.json').write_text(json.dumps({'source_read_only':True,'destination':'courtload_pf08_acceptance','tables':records},indent=2)+'\n')

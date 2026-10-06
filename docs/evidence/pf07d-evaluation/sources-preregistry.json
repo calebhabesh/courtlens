@@ -1,0 +1,134 @@
+[
+  {
+    "registry": {
+      "key": "schedule-2023-24",
+      "url": "https://pr.nba.com/2023-24-nba-regular-season-schedule/",
+      "title": "NBA announces schedule for 2023-24 regular season",
+      "publisher": "NBA Communications",
+      "period": "2023-24 regular season",
+      "adapter": "schedule",
+      "ttl_seconds": 86400,
+      "reuse": "Personal local research; retain attribution and excerpts only, no redistribution.",
+      "terms_url": "https://www.nba.com/termsofuse"
+    },
+    "source": {
+      "source_id": "courtload-public-nba-v1:schedule-2023-24:7c0763960217b2232e30cd8f62555f0c9c4266f7363097621eddf988bf514310",
+      "origin": "external",
+      "title": "NBA announces schedule for 2023-24 regular season",
+      "publisher": "NBA Communications",
+      "url": "https://pr.nba.com/2023-24-nba-regular-season-schedule/",
+      "updated_on": "2023-08-17",
+      "retrieved_at": "2026-10-06T06:57:55.037030Z",
+      "period": "2023-24 regular season",
+      "content_sha256": "7c0763960217b2232e30cd8f62555f0c9c4266f7363097621eddf988bf514310",
+      "locator": "post__content/p[4]",
+      "excerpt": "The 78th NBA regular season will tip off on Tuesday, Oct. 24, 2023",
+      "verification": "verified",
+      "facts": [
+        {
+          "entity": "NBA regular season",
+          "metric": "announced start date",
+          "value": "2023-10-24",
+          "unit": "date",
+          "period": "2023-24 regular season",
+          "qualifier": "Published schedule announcement; not a live schedule or proof games occurred",
+          "locator": "post__content/p[4]",
+          "supporting_excerpt": "The 78th NBA regular season will tip off on Tuesday, Oct. 24, 2023",
+          "parser_version": "nba-article-bindings-v1"
+        }
+      ]
+    },
+    "requests": 1,
+    "response_bytes": 123683,
+    "extracted_text_bytes": 11344,
+    "elapsed_ms": 87.28
+  },
+  {
+    "registry": {
+      "key": "schedule-2026-27",
+      "url": "https://pr.nba.com/2026-27-nba-regular-season-schedule/",
+      "title": "NBA announces schedule for 2026-27 regular season",
+      "publisher": "NBA Communications",
+      "period": "2026-27 regular season",
+      "adapter": "schedule",
+      "ttl_seconds": 3600,
+      "reuse": "Personal local research; retain attribution and excerpts only, no redistribution.",
+      "terms_url": "https://www.nba.com/termsofuse"
+    },
+    "source": {
+      "source_id": "courtload-public-nba-v1:schedule-2026-27:8dc331e264b2134554a54a707198ee2910a98e53beba1bec636226c1b792dbc0",
+      "origin": "external",
+      "title": "NBA announces schedule for 2026-27 regular season",
+      "publisher": "NBA Communications",
+      "url": "https://pr.nba.com/2026-27-nba-regular-season-schedule/",
+      "updated_on": "2026-08-13",
+      "retrieved_at": "2026-10-06T06:57:55.205778Z",
+      "period": "2026-27 regular season",
+      "content_sha256": "8dc331e264b2134554a54a707198ee2910a98e53beba1bec636226c1b792dbc0",
+      "locator": "post__content/p[9]",
+      "excerpt": "American Express NBA Tip-Off 2026 will begin on Tuesday, Oct. 20",
+      "verification": "verified",
+      "facts": [
+        {
+          "entity": "NBA regular season",
+          "metric": "announced start date",
+          "value": "2026-10-20",
+          "unit": "date",
+          "period": "2026-27 regular season",
+          "qualifier": "Published schedule announcement; not a live schedule or proof games occurred",
+          "locator": "post__content/p[9]",
+          "supporting_excerpt": "American Express NBA Tip-Off 2026 will begin on Tuesday, Oct. 20",
+          "parser_version": "nba-article-bindings-v1"
+        }
+      ]
+    },
+    "requests": 1,
+    "response_bytes": 128365,
+    "extracted_text_bytes": 14795,
+    "elapsed_ms": 168.691
+  },
+  {
+    "registry": {
+      "key": "assist-definition",
+      "url": "https://videorulebook.nba.com/archive/assist-pass-leads-directly-to-made-field-goal-pass-and-jump-shot-2/",
+      "title": "Assist, pass leads directly to made field goal - pass and jump shot",
+      "publisher": "NBA Video Rulebook",
+      "period": "NBA assist definition; page update date unknown",
+      "adapter": "assist",
+      "ttl_seconds": 86400,
+      "reuse": "Personal local research; retain attribution and excerpts only, no redistribution.",
+      "terms_url": "https://www.nba.com/termsofuse"
+    },
+    "source": {
+      "source_id": "courtload-public-nba-v1:assist-definition:d99d74e802323947db3d5dec76be9ae38f16e905b295392539bf83a7c17d5c96",
+      "origin": "external",
+      "title": "Assist, pass leads directly to made field goal - pass and jump shot",
+      "publisher": "NBA Video Rulebook",
+      "url": "https://videorulebook.nba.com/archive/assist-pass-leads-directly-to-made-field-goal-pass-and-jump-shot-2/",
+      "updated_on": null,
+      "retrieved_at": "2026-10-06T06:57:55.316883Z",
+      "period": "NBA assist definition; page update date unknown",
+      "content_sha256": "d99d74e802323947db3d5dec76be9ae38f16e905b295392539bf83a7c17d5c96",
+      "locator": "entry-excerpt/p[1]",
+      "excerpt": "An assist is credited to the player tossing the last pass leading directly to a made field goal, but only if the player scoring the goal demonstrates an immediate reaction toward the basket after receiving the pass.",
+      "verification": "verified",
+      "facts": [
+        {
+          "entity": "NBA assist",
+          "metric": "definition",
+          "value": "a direct scoring pass with an immediate reaction toward the basket",
+          "unit": "concept",
+          "period": "NBA assist definition; page update date unknown",
+          "qualifier": "NBA Video Rulebook explanation; official rulebook takes precedence",
+          "locator": "entry-excerpt/p[1]",
+          "supporting_excerpt": "An assist is credited to the player tossing the last pass leading directly to a made field goal, but only if the player scoring the goal demonstrates an immediate reaction toward the basket after receiving the pass.",
+          "parser_version": "nba-article-bindings-v1"
+        }
+      ]
+    },
+    "requests": 1,
+    "response_bytes": 133532,
+    "extracted_text_bytes": 621,
+    "elapsed_ms": 111.124
+  }
+]

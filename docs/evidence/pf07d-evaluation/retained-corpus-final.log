@@ -1,0 +1,1 @@
+{"evaluated": 48, "correct": 48, "complete": 48, "safety_pass": 48, "factual_required": 4, "factual_correct": 4, "categories": {"knowledge": 9, "guidance": 6, "discussion": 3, "external_fact": 4, "critical_inability": 15, "local": 9, "mixed": 1, "clarification": 1}, "held_out_correct": 11, "held_out_total": 11, "language_gate": "not_evaluated"}

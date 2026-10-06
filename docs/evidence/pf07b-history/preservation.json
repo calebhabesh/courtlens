@@ -1,0 +1,15 @@
+{
+  "baseline": "PF07a starting inventory, accounting for its recorded owned changes",
+  "starting_files": 2137,
+  "changed_starting_files": [
+    "docs/design/polish-assistant-contract.md",
+    "docs/polish-freeze-implementation-progress.md",
+    "src/courtload/api/assistant_limits.py",
+    "src/courtload/api/routers/conversation.py",
+    "src/courtload/models.py",
+    "src/courtload/services/backup_restore.py"
+  ],
+  "unexpected_changes": [],
+  "artifact_files": 316,
+  "artifact_changes": []
+}

@@ -1,0 +1,12 @@
+from pathlib import Path
+import tempfile,shutil,os,subprocess
+root=Path.cwd();build=Path(tempfile.mkdtemp(prefix='courtload-pf07a-'))/'dashboard'
+shutil.copytree(root/'dashboard',build,ignore=shutil.ignore_patterns('node_modules','.next','test-results','playwright-report','*.tsbuildinfo'))
+(build/'node_modules').symlink_to(root/'dashboard/node_modules',target_is_directory=True)
+Path('docs/evidence/pf07a-assistant/'+os.environ.get('PF07A_BUILD_LABEL','build')+'-directory.txt').write_text(str(build)+'\n')
+env=dict(os.environ,COURTLOAD_API_INTERNAL_URL=os.environ.get('PF07A_API_URL','http://127.0.0.1:8000'),NEXT_PUBLIC_COURTLOAD_API_URL=os.environ.get('PF07A_BROWSER_API_URL','http://127.0.0.1:8154'))
+env.pop('NO_COLOR',None)
+with open('docs/evidence/pf07a-assistant/'+os.environ.get('PF07A_BUILD_LABEL','build')+'.log','w') as log:
+ code=subprocess.call(['npm','run','build','--','--webpack'],cwd=build,env=env,stdout=log,stderr=subprocess.STDOUT)
+if code: raise SystemExit(code)
+stand=build/'.next/standalone';shutil.copytree(build/'.next/static',stand/'.next/static',dirs_exist_ok=True);shutil.copytree(build/'public',stand/'public',dirs_exist_ok=True)

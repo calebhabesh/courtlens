@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/tmp/pf09-backup-target-repro.py", line 13, in <module>
+    assert 'courtload_pf09_acceptance' in commands[0],commands[0]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ['docker', 'compose', 'exec', '-T', 'db', 'pg_dump', '--username', 'courtload', '--dbname', 'courtload', '--clean', '--if-exists', '--no-owner']

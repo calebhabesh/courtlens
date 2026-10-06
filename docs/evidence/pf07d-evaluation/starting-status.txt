@@ -1,0 +1,234 @@
+ M AGENTS.md
+ M TODO.md
+ M dashboard/app/compare/page.tsx
+ M dashboard/app/globals.css
+ M dashboard/app/layout.tsx
+ M dashboard/app/players/page.tsx
+ M dashboard/app/playoffs/[seriesId]/page.tsx
+ M dashboard/app/playoffs/page.tsx
+ M dashboard/app/research/defensive-matchups/page.tsx
+ M dashboard/app/research/epv/page.tsx
+ M dashboard/app/settings/page.tsx
+ M dashboard/app/showcase/page.tsx
+ M dashboard/app/stats/page.tsx
+ M dashboard/app/team-compare/page.tsx
+ M dashboard/app/teams/[id]/page.tsx
+ M dashboard/app/teams/page.tsx
+ M dashboard/components/ask-courtload.tsx
+ M dashboard/components/capability-notice.tsx
+ M dashboard/components/case-studies-view.tsx
+ M dashboard/components/compare-selector.tsx
+ M dashboard/components/compare-tray.tsx
+ M dashboard/components/context-bar.tsx
+ M dashboard/components/distributions-investigation-view.tsx
+ M dashboard/components/global-lookup.tsx
+ M dashboard/components/hotkeys-modal.tsx
+ M dashboard/components/install-interface.tsx
+ M dashboard/components/learning-workshop.tsx
+ M dashboard/components/live-workspace.tsx
+ M dashboard/components/multi-player-lines-view.tsx
+ M dashboard/components/planner-client.tsx
+ M dashboard/components/player-compare-view.tsx
+ M dashboard/components/player-showcase-view.tsx
+ M dashboard/components/playoffs-bracket-view.tsx
+ M dashboard/components/playoffs-series-view.tsx
+ M dashboard/components/ranking-boards-view.tsx
+ M dashboard/components/recent-games-view.tsx
+ M dashboard/components/replica-nav.tsx
+ M dashboard/components/research-results-view.tsx
+ M dashboard/components/roster-allocation-view.tsx
+ M dashboard/components/scatter-plot-view.tsx
+ M dashboard/components/shared-floor-view.tsx
+ M dashboard/components/shooting-view.tsx
+ M dashboard/components/similarity-investigation-view.tsx
+ M dashboard/components/stats-detail-drawer.tsx
+ M dashboard/components/team-compare-view.tsx
+ M dashboard/components/team-explorer-view.tsx
+ M dashboard/components/tier-list-view.tsx
+ M dashboard/components/trends-investigation-view.tsx
+ M dashboard/components/workbench-player-explorer.tsx
+ M dashboard/components/workbench-player-profile.tsx
+ M dashboard/components/workbench-portrait-settings.tsx
+ M dashboard/e2e/advanced-research.spec.ts
+ M dashboard/e2e/comparison-evaluation.spec.ts
+ M dashboard/e2e/mock-api.mjs
+ M dashboard/e2e/saved-operations.spec.ts
+ M dashboard/e2e/shared-floor.spec.ts
+ M dashboard/e2e/shooting.spec.ts
+ M dashboard/e2e/workbench.spec.ts
+ M dashboard/lib/lookup-cache.test.ts
+ M dashboard/lib/lookup-cache.ts
+ M dashboard/lib/query-url.ts
+ M dashboard/lib/stats-presets.test.ts
+ M dashboard/lib/stats-presets.ts
+ M dashboard/lib/types.ts
+ M dashboard/lib/workbench-api.ts
+ M dashboard/package-lock.json
+ M dashboard/package.json
+ M docs/databallr-replica-implementation-plan.md
+ M docs/databallr-replica-implementation-progress.md
+ M docs/design/live-ui-v1.md
+ M docs/design/replica-analytics-contract.md
+ M docs/design/shared-live-v1.md
+ M scripts/verify_b32_live_browser.cjs
+ M src/courtload/api/assistant_limits.py
+ M src/courtload/api/routers/conversation.py
+ M src/courtload/api/routers/workbench.py
+ M src/courtload/api/workbench_schemas.py
+ M src/courtload/domain/entity_lookup.py
+ M src/courtload/domain/live.py
+ M src/courtload/models.py
+ M src/courtload/services/assistant/execution.py
+ M src/courtload/services/assistant/operations.py
+ M src/courtload/services/assistant/saved.py
+ M src/courtload/services/backup_restore.py
+ M src/courtload/services/entity_lookup.py
+ M src/courtload/services/live.py
+ M src/courtload/services/stats_engine.py
+ M src/courtload/services/workbench_analytics.py
+ M tests/unit/test_entity_lookup.py
+ M tests/unit/test_live.py
+ M tests/unit/test_stats_engine.py
+?? dashboard/app/api/assistant-v2/
+?? dashboard/components/catalog-scope-fields.tsx
+?? dashboard/components/entity-picker.tsx
+?? dashboard/components/lookup-input.tsx
+?? dashboard/components/stats-workspace.tsx
+?? dashboard/components/table-ui.tsx
+?? dashboard/components/team-logo.tsx
+?? dashboard/components/ui/
+?? dashboard/e2e/entity-selection.spec.ts
+?? dashboard/e2e/route-polish.spec.ts
+?? dashboard/e2e/table-interactions.spec.ts
+?? dashboard/lib/assistant-history-proxy.test.ts
+?? dashboard/lib/assistant-history.ts
+?? dashboard/lib/assistant-v2.generated.ts
+?? dashboard/lib/route-availability.test.ts
+?? dashboard/lib/route-availability.ts
+?? dashboard/lib/stats-query.test.ts
+?? dashboard/lib/stats-query.ts
+?? dashboard/lib/team-branding.json
+?? dashboard/lib/use-release-catalog.ts
+?? dashboard/public/team-logos/
+?? docs/design/assistant-v2-fixtures.json
+?? docs/design/assistant-v2.schema.json
+?? docs/design/b19-event-identity-conservation.md
+?? docs/design/b19-native-reconstruction.md
+?? docs/design/pf07c-free-sources.md
+?? docs/design/polish-assistant-contract.md
+?? docs/design/polish-ui-contract.md
+?? docs/evidence/b19a-full-source-audit/
+?? docs/evidence/b19a-full-source-final/
+?? docs/evidence/b19a-full-source-repeat/
+?? docs/evidence/b19a-full-source-verified/
+?? docs/evidence/b19a-rich-source-acceptance.md
+?? docs/evidence/b19b-assignment-acceptance.md
+?? docs/evidence/b19b-assignment-accepted/
+?? docs/evidence/b19c-checks/
+?? docs/evidence/b19c-event-accepted/
+?? docs/evidence/b19c-event-conservation-acceptance.md
+?? docs/evidence/b19c-event-final/
+?? docs/evidence/b19c-event-probe/
+?? docs/evidence/b19c-event-probe2/
+?? docs/evidence/b19c-event-repeat/
+?? docs/evidence/b19d-checks/
+?? docs/evidence/b19d-native-accepted/
+?? docs/evidence/b19d-native-baseline-probe/
+?? docs/evidence/b19d-native-probe/
+?? docs/evidence/b19d-native-probe2/
+?? docs/evidence/b19d-native-probe3/
+?? docs/evidence/b19d-native-reconstruction-acceptance.md
+?? docs/evidence/b19d-native-repeat/
+?? docs/evidence/b32-active-acceptance.md
+?? docs/evidence/b32-active-accepted/
+?? docs/evidence/b32-active-checks/
+?? docs/evidence/b32-active-probe/
+?? docs/evidence/b32-active-verification.json
+?? docs/evidence/b32-changing-verified/
+?? docs/evidence/b32-current-build/
+?? docs/evidence/b32-current-final/
+?? docs/evidence/b32-current-verified/
+?? docs/evidence/pf00-baseline/
+?? docs/evidence/pf01a-query-contract/
+?? docs/evidence/pf01b-dashboard/
+?? docs/evidence/pf02-foundation/
+?? docs/evidence/pf03-branding/
+?? docs/evidence/pf04-selection/
+?? docs/evidence/pf05-tables/
+?? docs/evidence/pf06-routes/
+?? docs/evidence/pf07a-assistant/
+?? docs/evidence/pf07b-history/
+?? docs/evidence/pf07c-retrieval/
+?? docs/evidence/pf07d-evaluation/
+?? docs/polish-freeze-implementation-plan.md
+?? docs/polish-freeze-implementation-progress.md
+?? migrations/versions/07b810a4f005_assistant_history.py
+?? migrations/versions/19b810a4f004_assignment_admission.py
+?? scripts/admit_b19_assignments.py
+?? scripts/audit_b19_event_conservation.py
+?? scripts/audit_b19_rich_sources.py
+?? scripts/generate_hybrid_contract.py
+?? scripts/reconstruct_b19_native.py
+?? scripts/team_branding_assets.py
+?? scripts/verify_b32_active.py
+?? scripts/verify_b32_active_browser.cjs
+?? scripts/verify_pf01a_retained.py
+?? scripts/verify_pf01a_stats.py
+?? scripts/verify_pf01b_browser.cjs
+?? scripts/verify_pf01b_catalog.py
+?? scripts/verify_pf01b_workspace_proxy.py
+?? scripts/verify_pf02_browser.cjs
+?? scripts/verify_pf02_proxy.py
+?? scripts/verify_pf03_browser.cjs
+?? scripts/verify_pf03_identity.py
+?? scripts/verify_pf03_lookup_budget.py
+?? scripts/verify_pf03_zoom.cjs
+?? scripts/verify_pf04_browser.cjs
+?? scripts/verify_pf04_input_budget.cjs
+?? scripts/verify_pf04_navigation.cjs
+?? scripts/verify_pf04_proxy.py
+?? scripts/verify_pf04_zoom.cjs
+?? scripts/verify_pf05_browser.cjs
+?? scripts/verify_pf05_layout.cjs
+?? scripts/verify_pf05_proxy.py
+?? scripts/verify_pf05_zoom.cjs
+?? scripts/verify_pf06_browser.cjs
+?? scripts/verify_pf06_context.cjs
+?? scripts/verify_pf06_layout.cjs
+?? scripts/verify_pf06_tasks.cjs
+?? scripts/verify_pf06_zoom.cjs
+?? scripts/verify_pf07a_assistant.py
+?? scripts/verify_pf07b_browser.cjs
+?? scripts/verify_pf07b_history.py
+?? scripts/verify_pf07c_retrieval.py
+?? src/courtload/assignment_models.py
+?? src/courtload/assistant_history_models.py
+?? src/courtload/domain/hybrid_assistant.py
+?? src/courtload/domain/stats_presentation.py
+?? src/courtload/ingestion/native_reconstruction.py
+?? src/courtload/services/assignment_admission.py
+?? src/courtload/services/assistant/defaults.py
+?? src/courtload/services/assistant/history.py
+?? src/courtload/services/assistant/hybrid.py
+?? src/courtload/services/assistant/knowledge.py
+?? src/courtload/services/assistant/knowledge/
+?? src/courtload/services/assistant/qualification.py
+?? src/courtload/services/assistant/retrieval.py
+?? src/courtload/services/stats_catalog.py
+?? tests/assignment_fakes.py
+?? tests/fixtures/assistant/pf07a-holdout-v1.json
+?? tests/fixtures/assistant/pf07a-holdout-v1.sha256
+?? tests/fixtures/assistant/pf07a-routing-v1.json
+?? tests/fixtures/assistant/pf07a-routing-v1.sha256
+?? tests/integration/test_assignment_admission_postgres.py
+?? tests/integration/test_assistant_history_postgres.py
+?? tests/integration/test_assistant_retrieval_postgres.py
+?? tests/integration/test_hybrid_assistant_postgres.py
+?? tests/integration/test_lookup_identity_postgres.py
+?? tests/integration/test_stats_presentation_postgres.py
+?? tests/unit/test_assignment_admission.py
+?? tests/unit/test_assistant_retrieval.py
+?? tests/unit/test_b19_event_conservation.py
+?? tests/unit/test_b19_source_audit.py
+?? tests/unit/test_hybrid_assistant.py
+?? tests/unit/test_native_reconstruction.py

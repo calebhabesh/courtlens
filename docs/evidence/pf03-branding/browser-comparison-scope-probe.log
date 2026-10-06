@@ -1,0 +1,250 @@
+ExpectError: expect(locator).toHaveAttribute(expected) failed
+
+Locator: locator('.team-logo-stack').filter({ has: locator('.team-logo[aria-label="DAL"]') })
+Expected: "Teams represented in selected scope: DAL, LAL"
+Timeout: 5000ms
+Error: element(s) not found
+
+Call log:
+  - Expect "toHaveAttribute" locator('.team-logo-stack').filter({ has: locator('.team-logo[aria-label="DAL"]') }) with timeout 5000ms
+  - waiting for locator('.team-logo-stack').filter({ has: locator('.team-logo[aria-label="DAL"]') })
+
+    at captureRawStack (/home/ethioking/dev/nba-analytics/dashboard/node_modules/playwright-core/lib/coreBundle.js:8588:17)
+    at callMatcherAsStep (/home/ethioking/dev/nba-analytics/dashboard/node_modules/playwright/lib/matchers/expect.js:13310:57)
+    at Object.toHaveAttribute (/home/ethioking/dev/nba-analytics/dashboard/node_modules/playwright/lib/matchers/expect.js:13302:23)
+    at /home/ethioking/dev/nba-analytics/scripts/verify_pf03_browser.cjs:77:109 {
+  matcherResult: {
+    name: 'toHaveAttribute',
+    expected: 'Teams represented in selected scope: DAL, LAL',
+    message: 'expect(locator).toHaveAttribute(expected) failed\n' +
+      '\n' +
+      `Locator: locator('.team-logo-stack').filter({ has: locator('.team-logo[aria-label="DAL"]') })\n` +
+      'Expected: "Teams represented in selected scope: DAL, LAL"\n' +
+      'Timeout: 5000ms\n' +
+      'Error: element(s) not found\n' +
+      '\n' +
+      'Call log:\n' +
+      `  - Expect "toHaveAttribute" locator('.team-logo-stack').filter({ has: locator('.team-logo[aria-label="DAL"]') }) with timeout 5000ms\n` +
+      `  - waiting for locator('.team-logo-stack').filter({ has: locator('.team-logo[aria-label="DAL"]') })\n`,
+    pass: false,
+    actual: undefined,
+    log: [
+      `  - Expect "toHaveAttribute" locator('.team-logo-stack').filter({ has: locator('.team-logo[aria-label="DAL"]') }) with timeout 5000ms`,
+      `  - waiting for locator('.team-logo-stack').filter({ has: locator('.team-logo[aria-label="DAL"]') })`
+    ],
+    timeout: 5000,
+    ariaSnapshot: '- link "Skip to content":\n' +
+      '  - /url: "#content"\n' +
+      '- banner:\n' +
+      '  - link "CourtLoad Research Workbench home":\n' +
+      '    - /url: /\n' +
+      '    - text: COURTLOAD\n' +
+      '  - navigation "Primary Quick Switch":\n' +
+      '    - link "Stats":\n' +
+      '      - /url: /stats?season=2024-25&phase=regular_season&beforeDate=2025-06-30\n' +
+      '    - link "Games":\n' +
+      '      - /url: /live?season=2024-25&phase=regular_season&beforeDate=2025-06-30\n' +
+      '  - search:\n' +
+      '    - combobox "Search players, teams and pages"\n' +
+      '  - status\n' +
+      '  - button "Ask"\n' +
+      '  - link "Data status":\n' +
+      '    - /url: /data-status?season=2024-25&phase=regular_season&beforeDate=2025-06-30\n' +
+      '  - link "Settings":\n' +
+      '    - /url: /settings?season=2024-25&phase=regular_season&beforeDate=2025-06-30\n' +
+      '  - navigation "Workspace Navigation":\n' +
+      '    - link "Stats":\n' +
+      '      - /url: /stats?season=2024-25&phase=regular_season&beforeDate=2025-06-30\n' +
+      '    - link "WOWY":\n' +
+      '      - /url: /wowy?season=2024-25&phase=regular_season&beforeDate=2025-06-30\n' +
+      '    - button "Live"\n' +
+      '    - button "Players"\n' +
+      '    - button "Teams"\n' +
+      '    - button "Compare"\n' +
+      '    - button "Research"\n' +
+      '    - button "Help"\n' +
+      '- main:\n' +
+      '  - text: Player Comparison · PvP\n' +
+      '  - heading "Compare Players" [level=1]\n' +
+      '  - paragraph: Side-by-side descriptive metrics, visual comparison bars, and game-log progression under an identical cutoff.\n' +
+      '  - text: Player A\n' +
+      '  - textbox "Player A":\n' +
+      '    - /placeholder: Search by name\n' +
+      '  - button "Search"\n' +
+      '  - paragraph:\n' +
+      '    - text: "Selected:"\n' +
+      '    - strong: Luka Dončić\n' +
+      '  - text: Player B\n' +
+      '  - textbox "Player B":\n' +
+      '    - /placeholder: Search by name\n' +
+      '  - button "Search"\n' +
+      '  - paragraph:\n' +
+      '    - text: "Selected:"\n' +
+      '    - strong: Scottie Barnes\n' +
+      '  - text: Replay date\n' +
+      '  - combobox "Replay date":\n' +
+      '    - option "2023-10-24" [selected]\n' +
+      '    - option "2026-06-13"\n' +
+      '  - button "Compare players"\n' +
+      '  - button "Swap players"\n' +
+      '  - status\n' +
+      '  - region "Player Comparison Explorer":\n' +
+      '    - strong: "Temporal discipline & no forced winner:"\n' +
+      '    - text: CourtLoad displays aligned empirical distributions and descriptive differences. We never invent a winner probability or automated start/sit decision from overlapping ranges.\n' +
+      '    - img "Luka Dončić portrait"\n' +
+      '    - text: Player A · —\n' +
+      '    - heading "Luka Dončić" [level=2]:\n' +
+      '      - link "Luka Dončić":\n' +
+      '        - /url: /players/1629029\n' +
+      '    - text: 50 GP · 1769 MIN\n' +
+      '    - button "+ Tray"\n' +
+      '    - img "Scottie Barnes portrait"\n' +
+      '    - text: Player B · —\n' +
+      '    - heading "Scottie Barnes" [level=2]:\n' +
+      '      - link "Scottie Barnes":\n' +
+      '        - /url: /players/1630567\n' +
+      '    - text: 65 GP · 2134 MIN\n' +
+      '    - button "+ Tray"\n' +
+      '    - tablist "Comparison Metric Presets":\n' +
+      '      - tab "Overall" [selected]\n' +
+      '      - tab "Offense"\n' +
+      '      - tab "Defense"\n' +
+      '      - tab "Six Factor"\n' +
+      '      - tab "Custom"\n' +
+      '    - group "Comparison View Mode":\n' +
+      '      - button "☷ Table"\n' +
+      '      - button "📊 Visual Bars"\n' +
+      '      - button "📈 Trend Lines"\n' +
+      '    - button "⇄ Swap (A ⇄ B)"\n' +
+      '    - button "📷 PNG"\n' +
+      '    - button "SVG"\n' +
+      '    - button "📋 Copy URL"\n' +
+      '    - button "💾 Save"\n' +
+      '    - heading "Overall Descriptive Metrics" [level=3]\n' +
+      '    - paragraph: Side-by-side descriptive metrics under an identical cutoff (2025-06-30) and catalog v2 calculation formula.\n' +
+      '    - text: 11 metrics\n' +
+      '    - table "Player comparison aligned metrics table":\n' +
+      '      - rowgroup:\n' +
+      '        - row "Metric Unit Luka Dončić Scottie Barnes Difference (A - B) N (A) N (B)":\n' +
+      '          - columnheader "Metric"\n' +
+      '          - columnheader "Unit"\n' +
+      '          - columnheader "Luka Dončić"\n' +
+      '          - columnheader "Scottie Barnes"\n' +
+      '          - columnheader "Difference (A - B)"\n' +
+      '          - columnheader "N (A)"\n' +
+      '          - columnheader "N (B)"\n' +
+      '      - rowgroup:\n' +
+      '        - row "Points Per Game(pts_per_game) points 28.2 19.3 +8.9 50 65":\n' +
+      '          - cell "Points Per Game(pts_per_game)":\n' +
+      '            - strong: Points Per Game\n' +
+      '            - text: (pts_per_game)\n' +
+      '          - cell "points"\n' +
+      '          - cell "28.2"\n' +
+      '          - cell "19.3"\n' +
+      '          - cell "+8.9"\n' +
+      '          - cell "50"\n' +
+      '          - cell "65"\n' +
+      '        - row "Rebounds Per Game(reb_per_game) rebounds 8.2 7.7 +0.5 50 65":\n' +
+      '          - cell "Rebounds Per Game(reb_per_game)":\n' +
+      '            - strong: Rebounds Per Game\n' +
+      '            - text: (reb_per_game)\n' +
+      '          - cell "rebounds"\n' +
+      '          - cell "8.2"\n' +
+      '          - cell "7.7"\n' +
+      '          - cell "+0.5"\n' +
+      '          - cell "50"\n' +
+      '          - cell "65"\n' +
+      '        - row "Assists Per Game(ast_per_game) assists 7.7 5.8 +1.9 50 65":\n' +
+      '          - cell "Assists Per Game(ast_per_game)":\n' +
+      '            - strong: Assists Per Game\n' +
+      '            - text: (ast_per_game)\n' +
+      '          - cell "assists"\n' +
+      '          - cell "7.7"\n' +
+      '          - cell "5.8"\n' +
+      '          - cell "+1.9"\n' +
+      '          - cell "50"\n' +
+      '          - cell "65"\n' +
+      '        - row "Steals Per Game(stl_per_game) steals 1.8 1.4 +0.4 50 65":\n' +
+      '          - cell "Steals Per Game(stl_per_game)":\n' +
+      '            - strong: Steals Per Game\n' +
+      '            - text: (stl_per_game)\n' +
+      '          - cell "steals"\n' +
+      '          - cell "1.8"\n' +
+      '          - cell "1.4"\n' +
+      '          - cell "+0.4"\n' +
+      '          - cell "50"\n' +
+      '          - cell "65"\n' +
+      '        - row "Blocks Per Game(blk_per_game) blocks 0.4 1.0 -0.6 50 65":\n' +
+      '          - cell "Blocks Per Game(blk_per_game)":\n' +
+      '            - strong: Blocks Per Game\n' +
+      '            - text: (blk_per_game)\n' +
+      '          - cell "blocks"\n' +
+      '          - cell "0.4"\n' +
+      '          - cell "1.0"\n' +
+      '          - cell "-0.6"\n' +
+      '          - cell "50"\n' +
+      '          - cell "65"\n' +
+      '        - row "Turnovers Per Game(tov_per_game) turnovers 3.6 2.8 +0.8 50 65":\n' +
+      '          - cell "Turnovers Per Game(tov_per_game)":\n' +
+      '            - strong: Turnovers Per Game\n' +
+      '            - text: (tov_per_game)\n' +
+      '          - cell "turnovers"\n' +
+      '          - cell "3.6"\n' +
+      '          - cell "2.8"\n' +
+      '          - cell "+0.8"\n' +
+      '          - cell "50"\n' +
+      '          - cell "65"\n' +
+      '        - row "Minutes Per Game(min_per_game) minutes 35.4 32.8 +2.6 50 65":\n' +
+      '          - cell "Minutes Per Game(min_per_game)":\n' +
+      '            - strong: Minutes Per Game\n' +
+      '            - text: (min_per_game)\n' +
+      '          - cell "minutes"\n' +
+      '          - cell "35.4"\n' +
+      '          - cell "32.8"\n' +
+      '          - cell "+2.6"\n' +
+      '          - cell "50"\n' +
+      '          - cell "65"\n' +
+      '        - row "Games Played(gp) games 50.0 65.0 -15.0 50 65":\n' +
+      '          - cell "Games Played(gp)":\n' +
+      '            - strong: Games Played\n' +
+      '            - text: (gp)\n' +
+      '          - cell "games"\n' +
+      '          - cell "50.0"\n' +
+      '          - cell "65.0"\n' +
+      '          - cell "-15.0"\n' +
+      '          - cell "50"\n' +
+      '          - cell "65"\n' +
+      '        - row "True Shooting Percentage(ts_pct) percentage 0.6 0.5 +0.1 50 65":\n' +
+      '          - cell "True Shooting Percentage(ts_pct)":\n' +
+      '            - strong: True Shooting Percentage\n' +
+      '            - text: (ts_pct)\n' +
+      '          - cell "percentage"\n' +
+      '          - cell "0.6"\n' +
+      '          - cell "0.5"\n' +
+      '          - cell "+0.1"\n' +
+      '          - cell "50"\n' +
+      '          - cell "65"\n' +
+      '        - row "Effective Field Goal Percentage(efg_pct) percentage 0.5 0.5 +0.1 50 65":\n' +
+      '          - cell "Effective Field Goal Percentage(efg_pct)":\n' +
+      '            - strong: Effective Field Goal Percentage\n' +
+      '            - text: (efg_pct)\n' +
+      '          - cell "percentage"\n' +
+      '          - cell "0.5"\n' +
+      '          - cell "0.5"\n' +
+      '          - cell "+0.1"\n' +
+      '          - cell "50"\n' +
+      '          - cell "65"\n' +
+      '        - row "Free Throw Rate(ftr) ratio 0.4 0.3 +0.1 50 65":\n' +
+      '          - cell "Free Throw Rate(ftr)":\n' +
+      '            - strong: Free Throw Rate\n' +
+      '            - text: (ftr)\n' +
+      '          - cell "ratio"\n' +
+      '          - cell "0.4"\n' +
+      '          - cell "0.3"\n' +
+      '          - cell "+0.1"\n' +
+      '          - cell "50"\n' +
+      '          - cell "65"\n' +
+      '  - paragraph: Snapshot 5bbb6035-6794-4bb0-b894-7208f52ef7ad · source sportsdataverse\n' +
+      '- alert'
+  }
+}

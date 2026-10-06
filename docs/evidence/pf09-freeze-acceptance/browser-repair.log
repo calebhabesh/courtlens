@@ -1,0 +1,152 @@
+
+> courtload-dashboard@0.1.0 test:browser
+> playwright test comparison-evaluation.spec.ts entity-selection.spec.ts route-polish.spec.ts workbench.spec.ts --workers=2
+
+
+Running 32 tests using 2 workers
+
+  ✓   2 e2e/comparison-evaluation.spec.ts:31:5 › evaluation presents the no-promotion decision and failed build state (237ms)
+  ✓   1 e2e/comparison-evaluation.spec.ts:11:5 › shared-cutoff comparison keeps different target dates and missing context visible (1.5s)
+  ✓   3 e2e/comparison-evaluation.spec.ts:39:5 › comparison controls work by keyboard and fit a 375px viewport (1.2s)
+  ✓   4 e2e/comparison-evaluation.spec.ts:61:5 › invalid date preserves selections and recovers to sparse history (380ms)
+  ✓   5 e2e/entity-selection.spec.ts:13:5 › two mounted pickers have distinct active descendants; ambiguous Enter never commits (784ms)
+  ✓   6 e2e/entity-selection.spec.ts:26:5 › editing and clear invalidate committed single ID; form never submits draft text (660ms)
+  ✓   7 e2e/entity-selection.spec.ts:34:5 › debounce and cache-hit paths reject delayed responses; empty input clears stale options (760ms)
+  ✓   8 e2e/entity-selection.spec.ts:44:5 › IME composition suppresses lookup and Enter; Tab closes and keeps natural focus (606ms)
+  ✓   9 e2e/entity-selection.spec.ts:50:5 › API failure preserves text; retry and no-match states are distinct (641ms)
+  ✓  10 e2e/entity-selection.spec.ts:56:5 › WOWY chips remove by name, prevent duplicates and enforce unit maximum without IDs (1.5s)
+  ✓  11 e2e/entity-selection.spec.ts:64:5 › touch selection and removal work at 375px (1.7s)
+  ✓  13 e2e/entity-selection.spec.ts:83:7 › trends selection preserves release, phase, cutoff and window context (424ms)
+  ✓  14 e2e/entity-selection.spec.ts:83:7 › distributions selection preserves release, phase, cutoff and window context (408ms)
+  ✓  15 e2e/entity-selection.spec.ts:83:7 › similarity selection preserves release, phase, cutoff and window context (404ms)
+  ✓  16 e2e/entity-selection.spec.ts:95:7 › rankings picker adds canonical named selection to its explicit personal target (457ms)
+  ✓  17 e2e/entity-selection.spec.ts:95:7 › tierlist picker adds canonical named selection to its explicit personal target (477ms)
+  ✘  18 e2e/entity-selection.spec.ts:114:5 › planner selections stay within roster/watchlist and never query the public catalog (36.6s)
+  ✘  12 e2e/entity-selection.spec.ts:70:5 › changing lookup scope discards an obsolete response for the same text (39.6s)
+  ✓  20 e2e/route-polish.spec.ts:19:5 › catalog scope options keep unavailable context explicit and synchronize navigation (338ms)
+  ✓  21 e2e/route-polish.spec.ts:31:5 › settings distinguishes configured key from provider health and hides operator details (236ms)
+  ✓  19 e2e/route-polish.spec.ts:4:5 › release availability agrees across desktop and mobile and preserves context (641ms)
+  ✓  23 e2e/route-polish.spec.ts:63:5 › distribution subtools retain release, postseason and exclusive cutoff (438ms)
+  ✓  24 e2e/route-polish.spec.ts:78:5 › research without a catalog explains the missing context (207ms)
+  ✓  22 e2e/route-polish.spec.ts:41:5 › partial source keeps tools primary; service failure remains a distinct availability state (1.0s)
+  ✓  25 e2e/workbench.spec.ts:5:7 › Workbench Dark Research Interface › home opens Stats with dark theme, horizontal navigation, context and data (1.1s)
+  ✓  27 e2e/workbench.spec.ts:50:7 › Workbench Dark Research Interface › player detail presents profile summaries, game logs, and lineage trigger (845ms)
+  ✓  26 e2e/workbench.spec.ts:27:7 › Workbench Dark Research Interface › player explorer allows filtering and links to detail view (1.9s)
+  ✓  28 e2e/workbench.spec.ts:68:7 › Workbench Dark Research Interface › team research lists cohorts and navigates to team detail (806ms)
+  ✓  29 e2e/workbench.spec.ts:85:7 › Workbench Dark Research Interface › comparison view displays head-to-head metrics without declaring forced winners (764ms)
+  ✘  30 e2e/workbench.spec.ts:98:7 › Workbench Dark Research Interface › forecasts view displays active policy, promotion decision, gates, and prespecified slices (257ms)
+  ✓  31 e2e/workbench.spec.ts:127:7 › Workbench Dark Research Interface › dense dark research layout fits a 375px mobile viewport without horizontal overflow (834ms)
+  ✘  32 e2e/workbench.spec.ts:140:7 › Workbench Dark Research Interface › Ask drawer offers manual research and links to optional configuration (5.4s)
+
+
+  1) e2e/entity-selection.spec.ts:70:5 › changing lookup scope discards an obsolete response for the same text 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.selectOption: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for getByLabel('Season', { exact: true })
+        - locator resolved to <select aria-label="Season">…</select>
+      - attempting select option action
+        2 × waiting for element to be visible and enabled
+          - did not find some options
+        - retrying select option action
+        - waiting 20ms
+        2 × waiting for element to be visible and enabled
+          - did not find some options
+        - retrying select option action
+          - waiting 100ms
+        14 × waiting for element to be visible and enabled
+           - did not find some options
+         - retrying select option action
+           - waiting 500ms
+
+
+      76 |     await route.fulfill({json:{items:[{id:"scope",canonical_id:"scope",kind:"player",display_name:`Scope ${season}`,subtitle:"Explicit scope race fixture"}]}}).catch(()=>{});
+      77 |   });
+    > 78 |   await page.getByLabel("Season",{exact:true}).selectOption("2024-25");const firstRequest=page.waitForRequest(request=>new URL(request.url()).searchParams.get("q") === "scope");const input=page.getByRole("combobox",{name:"Together players",exact:true});await input.fill("scope");await firstRequest;
+         |                                                ^
+      79 |     await page.getByLabel("Season",{exact:true}).selectOption("2025-26");await input.focus();await expect(page.getByRole("option").filter({hasText:"Scope 2025-26"})).toBeVisible();release();await page.waitForTimeout(150);await expect(page.getByRole("option").filter({hasText:"Scope 2024-25"})).toHaveCount(0);
+      80 | });
+      81 |
+        at /home/ethioking/dev/nba-analytics/dashboard/e2e/entity-selection.spec.ts:78:48
+
+    Error Context: test-results/entity-selection-changing--2a458--response-for-the-same-text/error-context.md
+
+  2) e2e/entity-selection.spec.ts:114:5 › planner selections stay within roster/watchlist and never query the public catalog 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.fill: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for getByLabel('Week of')
+
+
+      129 |   await page.waitForLoadState("networkidle");
+      130 |   await page.getByLabel("Email",{exact:true}).fill("fixture@courtload.local");await page.getByLabel("Password",{exact:true}).fill("fixture-only");await page.getByRole("button",{name:"Sign in",exact:true}).click();
+    > 131 |   await page.getByLabel("Week starts").fill("2026-10-05");
+          |                                    ^
+      132 |   const drop=page.getByRole("combobox",{name:"Drop",exact:true});await drop.waitFor();await drop.fill("Jokic");await page.getByRole("option").filter({hasText:"Private Jokić"}).click();
+      133 |   const add=page.getByRole("combobox",{name:"Add candidate",exact:true});await add.fill("Doncic");await page.getByRole("option").filter({hasText:"Private Dončić"}).click();await expect(page.getByRole("button",{name:"Remove Private Dončić from Add candidate",exact:true})).toBeVisible();expect(lookups).toBe(0);
+      134 | });
+        at /home/ethioking/dev/nba-analytics/dashboard/e2e/entity-selection.spec.ts:131:36
+
+    Error Context: test-results/entity-selection-planner-s-3f405-er-query-the-public-catalog/error-context.md
+
+  3) e2e/workbench.spec.ts:98:7 › Workbench Dark Research Interface › forecasts view displays active policy, promotion decision, gates, and prespecified slices 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: locator('.panel-header .badge:has-text(\'points-v1-prior_blend\')')
+    Expected: visible
+    Error: strict mode violation: locator('.panel-header .badge:has-text(\'points-v1-prior_blend\')') resolved to 2 elements:
+        1) <span class="badge font-mono badge-accent">points-v1-prior_blend</span> aka locator('#content span').filter({ hasText: 'points-v1-prior_blend' })
+        2) <span class="badge font-mono badge-accent">points-v1-prior_blend</span> aka getByText('points-v1-prior_blend').nth(3)
+
+    Call log:
+      - Expect "toBeVisible" locator('.panel-header .badge:has-text(\'points-v1-prior_blend\')') with timeout 5000ms
+      - waiting for locator('.panel-header .badge:has-text(\'points-v1-prior_blend\')')
+
+
+      101 |     await expect(page.locator("h1.page-title")).toHaveText("Points Forecasts & Protocol");
+      102 |     await expect(page.locator("main").getByRole("heading", { name: "Active Forecast Policy" })).toBeVisible();
+    > 103 |     await expect(page.locator(".panel-header .badge:has-text('points-v1-prior_blend')")).toBeVisible();
+          |                                                                                          ^
+      104 |
+      105 |     // Verify promotion decision banner and gates
+      106 |     await expect(page.getByText("Promotion Decision:")).toBeVisible();
+        at /home/ethioking/dev/nba-analytics/dashboard/e2e/workbench.spec.ts:103:90
+
+    Error Context: test-results/workbench-Workbench-Dark-R-462b6-tes-and-prespecified-slices/error-context.md
+
+  4) e2e/workbench.spec.ts:140:7 › Workbench Dark Research Interface › Ask drawer offers manual research and links to optional configuration 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('heading', { name: 'Optional AI Assistant (Gemini Adapter)' })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('heading', { name: 'Optional AI Assistant (Gemini Adapter)' }) with timeout 5000ms
+      - waiting for getByRole('heading', { name: 'Optional AI Assistant (Gemini Adapter)' })
+
+
+      150 |     await expect(dialog).not.toBeVisible();
+      151 |     await page.goto("/settings");
+    > 152 |     await expect(page.getByRole("heading", { name: "Optional AI Assistant (Gemini Adapter)" })).toBeVisible();
+          |                                                                                                 ^
+      153 |     await expect(page.getByText("Disabled; manual research available", { exact: true }).filter({ visible: true })).toBeVisible();
+      154 |   });
+      155 | });
+        at /home/ethioking/dev/nba-analytics/dashboard/e2e/workbench.spec.ts:152:97
+
+    Error Context: test-results/workbench-Workbench-Dark-R-c2efb-s-to-optional-configuration/error-context.md
+
+  4 failed
+    e2e/entity-selection.spec.ts:70:5 › changing lookup scope discards an obsolete response for the same text 
+    e2e/entity-selection.spec.ts:114:5 › planner selections stay within roster/watchlist and never query the public catalog 
+    e2e/workbench.spec.ts:98:7 › Workbench Dark Research Interface › forecasts view displays active policy, promotion decision, gates, and prespecified slices 
+    e2e/workbench.spec.ts:140:7 › Workbench Dark Research Interface › Ask drawer offers manual research and links to optional configuration 
+  28 passed (55.7s)

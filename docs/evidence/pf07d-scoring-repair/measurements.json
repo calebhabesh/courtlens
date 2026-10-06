@@ -1,0 +1,134 @@
+{
+  "real-provider-regression": {
+    "started_at": "2026-10-06T16:36:42.101690+00:00",
+    "summary": {
+      "evaluated": 48,
+      "correct": 47,
+      "complete": 48,
+      "safety_pass": 48,
+      "factual_required": 4,
+      "factual_correct": 4,
+      "categories": {
+        "knowledge": 9,
+        "guidance": 6,
+        "discussion": 3,
+        "external_fact": 4,
+        "critical_inability": 15,
+        "local": 9,
+        "mixed": 1,
+        "clarification": 1
+      },
+      "held_out_correct": 11,
+      "held_out_total": 11,
+      "terminal_statuses": {
+        "answered": 32,
+        "unable": 15,
+        "clarification_required": 1
+      },
+      "critical_correct": 16,
+      "critical_total": 16,
+      "model_evaluated_correct": 9,
+      "model_evaluated_total": 10,
+      "language_gate": "passed_bounded_corpus"
+    },
+    "calls": 10,
+    "observed_models": [
+      "gemini-3.5-flash-lite"
+    ],
+    "provider_failures": [],
+    "tokens": {
+      "prompt_token_count": 53936,
+      "candidates_token_count": 1830,
+      "total_token_count": 55766
+    },
+    "max_provider_ms": 2566.68,
+    "sum_provider_ms": 17704.263,
+    "prompt_sha256": "a69ca655b6f2c70f770ee61b53f1df3de44f3b3951d99ceec9bff398fc8bc431",
+    "corpus_sha256": "68649f67533a640fa58c303d96b0504d84aee9db54da9d77a694577e328b961e"
+  },
+  "real-provider-regression-final": {
+    "started_at": "2026-10-06T16:38:49.164329+00:00",
+    "summary": {
+      "evaluated": 48,
+      "correct": 48,
+      "complete": 48,
+      "safety_pass": 48,
+      "factual_required": 4,
+      "factual_correct": 4,
+      "categories": {
+        "knowledge": 9,
+        "guidance": 6,
+        "discussion": 3,
+        "external_fact": 4,
+        "critical_inability": 15,
+        "local": 9,
+        "mixed": 1,
+        "clarification": 1
+      },
+      "held_out_correct": 11,
+      "held_out_total": 11,
+      "terminal_statuses": {
+        "answered": 32,
+        "unable": 15,
+        "clarification_required": 1
+      },
+      "critical_correct": 16,
+      "critical_total": 16,
+      "model_evaluated_correct": 10,
+      "model_evaluated_total": 10,
+      "language_gate": "passed_bounded_corpus"
+    },
+    "calls": 10,
+    "observed_models": [
+      "gemini-3.5-flash-lite"
+    ],
+    "provider_failures": [],
+    "tokens": {
+      "prompt_token_count": 54316,
+      "candidates_token_count": 1834,
+      "total_token_count": 56150
+    },
+    "max_provider_ms": 2189.541,
+    "sum_provider_ms": 17110.308,
+    "prompt_sha256": "361de7eca06033d1e9ff84da6d7bcf7dfa40f0edbbbc4c8b760fc2676dda913e",
+    "corpus_sha256": "68649f67533a640fa58c303d96b0504d84aee9db54da9d77a694577e328b961e"
+  },
+  "real-provider-holdout": {
+    "started_at": "2026-10-06T16:40:54.634489+00:00",
+    "summary": {
+      "evaluated": 12,
+      "correct": 12,
+      "complete": 12,
+      "safety_pass": 12,
+      "factual_required": 0,
+      "factual_correct": 0,
+      "categories": {
+        "local": 12
+      },
+      "held_out_correct": 12,
+      "held_out_total": 12,
+      "terminal_statuses": {
+        "answered": 12
+      },
+      "critical_correct": 0,
+      "critical_total": 0,
+      "model_evaluated_correct": 12,
+      "model_evaluated_total": 12,
+      "language_gate": "passed_bounded_corpus"
+    },
+    "calls": 12,
+    "observed_models": [
+      "gemini-3.5-flash-lite"
+    ],
+    "provider_failures": [],
+    "tokens": {
+      "prompt_token_count": 65206,
+      "candidates_token_count": 2377,
+      "total_token_count": 67583
+    },
+    "max_provider_ms": 3527.857,
+    "sum_provider_ms": 21719.723,
+    "prompt_sha256": "361de7eca06033d1e9ff84da6d7bcf7dfa40f0edbbbc4c8b760fc2676dda913e",
+    "corpus_sha256": "b8f2020490bfc2d9deb6e28238a3eb39a35affb61ed17329a70344303136a947"
+  }
+}

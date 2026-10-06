@@ -1,0 +1,17 @@
+{
+  "kind": "read-only application database counts; not capability acceptance",
+  "tables": {
+    "workbench_identity_crosswalks": 19,
+    "workbench_datasets": 61,
+    "workbench_dataset_members": 1,
+    "workbench_snapshot_equivalences": 33,
+    "saved_investigations": 185,
+    "archive_datasets": 123,
+    "serving_snapshots": 172,
+    "published_snapshots": 149,
+    "assignment_datasets": 1,
+    "research_datasets": 1,
+    "saved_conversation_analyses": 33,
+    "saved_conversation_inputs": 33
+  }
+}

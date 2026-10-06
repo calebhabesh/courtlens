@@ -1,0 +1,27 @@
+[
+  {
+    "check": "corpus-initial.log",
+    "cause": "harness passed provider twice; durable wrapper sanitized TypeError into interruption failures; question assertion used a nonexistent field",
+    "resolution": "replace inherited provider argument and use DurableTurnRecord.request.message; final 50 checks pass"
+  },
+  {
+    "check": "retained-corpus-initial.json pf07d-07",
+    "cause": "knowledge keywords lacked assists; explain assists per game returned unsupported",
+    "resolution": "add assists to metrics entry; answer-required expectation retained"
+  },
+  {
+    "check": "retained-corpus-initial.json pf07d-49",
+    "cause": "synthetic empty-scope assumption does not hold on actual retained data with playoff observations",
+    "resolution": "exclude this input-specific case explicitly from retained runner; unchanged frozen case passes synthetic PostgreSQL test; not counted as a retained success"
+  },
+  {
+    "check": "corpus freeze",
+    "cause": "before any evaluation, assist expected value was aligned to PF07c exact adapter-owned tuple rather than a paraphrase",
+    "resolution": "checksum frozen before first evaluation; no case or checksum changed afterward"
+  },
+  {
+    "check": "retained-stdin-initial.log",
+    "cause": "saved-result worker spawning needs a file-backed __main__; stdin invocation failed with FileNotFoundError then EOFError",
+    "resolution": "new main-guarded verify_pf07d_integration.py reuses the verifier from an importable script; retained inputs remain read-only"
+  }
+]

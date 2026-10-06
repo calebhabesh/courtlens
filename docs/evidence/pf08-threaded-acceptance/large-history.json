@@ -1,0 +1,443 @@
+{
+  "thread_id": "aa99be7c-2e6a-4eac-9a45-d5090d607ce6",
+  "turn_count": 105,
+  "provider_calls": 0,
+  "turns": [
+    {
+      "number": 1,
+      "elapsed_ms": 13.54
+    },
+    {
+      "number": 2,
+      "elapsed_ms": 12.65
+    },
+    {
+      "number": 3,
+      "elapsed_ms": 12.35
+    },
+    {
+      "number": 4,
+      "elapsed_ms": 12.66
+    },
+    {
+      "number": 5,
+      "elapsed_ms": 12.93
+    },
+    {
+      "number": 6,
+      "elapsed_ms": 13.52
+    },
+    {
+      "number": 7,
+      "elapsed_ms": 13.25
+    },
+    {
+      "number": 8,
+      "elapsed_ms": 12.31
+    },
+    {
+      "number": 9,
+      "elapsed_ms": 12.99
+    },
+    {
+      "number": 10,
+      "elapsed_ms": 12.55
+    },
+    {
+      "number": 11,
+      "elapsed_ms": 12.36
+    },
+    {
+      "number": 12,
+      "elapsed_ms": 12.27
+    },
+    {
+      "number": 13,
+      "elapsed_ms": 12.68
+    },
+    {
+      "number": 14,
+      "elapsed_ms": 12.63
+    },
+    {
+      "number": 15,
+      "elapsed_ms": 13.36
+    },
+    {
+      "number": 16,
+      "elapsed_ms": 12.21
+    },
+    {
+      "number": 17,
+      "elapsed_ms": 11.88
+    },
+    {
+      "number": 18,
+      "elapsed_ms": 12.4
+    },
+    {
+      "number": 19,
+      "elapsed_ms": 11.99
+    },
+    {
+      "number": 20,
+      "elapsed_ms": 12.41
+    },
+    {
+      "number": 21,
+      "elapsed_ms": 12.13
+    },
+    {
+      "number": 22,
+      "elapsed_ms": 12.56
+    },
+    {
+      "number": 23,
+      "elapsed_ms": 12.01
+    },
+    {
+      "number": 24,
+      "elapsed_ms": 14.96
+    },
+    {
+      "number": 25,
+      "elapsed_ms": 12.59
+    },
+    {
+      "number": 26,
+      "elapsed_ms": 14.02
+    },
+    {
+      "number": 27,
+      "elapsed_ms": 13.54
+    },
+    {
+      "number": 28,
+      "elapsed_ms": 12.24
+    },
+    {
+      "number": 29,
+      "elapsed_ms": 12.23
+    },
+    {
+      "number": 30,
+      "elapsed_ms": 12.2
+    },
+    {
+      "number": 31,
+      "elapsed_ms": 11.69
+    },
+    {
+      "number": 32,
+      "elapsed_ms": 11.28
+    },
+    {
+      "number": 33,
+      "elapsed_ms": 11.92
+    },
+    {
+      "number": 34,
+      "elapsed_ms": 11.39
+    },
+    {
+      "number": 35,
+      "elapsed_ms": 11.59
+    },
+    {
+      "number": 36,
+      "elapsed_ms": 11.91
+    },
+    {
+      "number": 37,
+      "elapsed_ms": 11.6
+    },
+    {
+      "number": 38,
+      "elapsed_ms": 11.24
+    },
+    {
+      "number": 39,
+      "elapsed_ms": 11.29
+    },
+    {
+      "number": 40,
+      "elapsed_ms": 11.59
+    },
+    {
+      "number": 41,
+      "elapsed_ms": 11.04
+    },
+    {
+      "number": 42,
+      "elapsed_ms": 11.18
+    },
+    {
+      "number": 43,
+      "elapsed_ms": 11.39
+    },
+    {
+      "number": 44,
+      "elapsed_ms": 11.76
+    },
+    {
+      "number": 45,
+      "elapsed_ms": 11.42
+    },
+    {
+      "number": 46,
+      "elapsed_ms": 11.31
+    },
+    {
+      "number": 47,
+      "elapsed_ms": 11.29
+    },
+    {
+      "number": 48,
+      "elapsed_ms": 11.02
+    },
+    {
+      "number": 49,
+      "elapsed_ms": 11.39
+    },
+    {
+      "number": 50,
+      "elapsed_ms": 11.25
+    },
+    {
+      "number": 51,
+      "elapsed_ms": 11.87
+    },
+    {
+      "number": 52,
+      "elapsed_ms": 11.68
+    },
+    {
+      "number": 53,
+      "elapsed_ms": 11.62
+    },
+    {
+      "number": 54,
+      "elapsed_ms": 11.47
+    },
+    {
+      "number": 55,
+      "elapsed_ms": 12.49
+    },
+    {
+      "number": 56,
+      "elapsed_ms": 11.82
+    },
+    {
+      "number": 57,
+      "elapsed_ms": 10.94
+    },
+    {
+      "number": 58,
+      "elapsed_ms": 11.35
+    },
+    {
+      "number": 59,
+      "elapsed_ms": 11.08
+    },
+    {
+      "number": 60,
+      "elapsed_ms": 11.19
+    },
+    {
+      "number": 61,
+      "elapsed_ms": 11.67
+    },
+    {
+      "number": 62,
+      "elapsed_ms": 12.25
+    },
+    {
+      "number": 63,
+      "elapsed_ms": 11.43
+    },
+    {
+      "number": 64,
+      "elapsed_ms": 11.72
+    },
+    {
+      "number": 65,
+      "elapsed_ms": 12.02
+    },
+    {
+      "number": 66,
+      "elapsed_ms": 11.84
+    },
+    {
+      "number": 67,
+      "elapsed_ms": 12.51
+    },
+    {
+      "number": 68,
+      "elapsed_ms": 12.41
+    },
+    {
+      "number": 69,
+      "elapsed_ms": 13.17
+    },
+    {
+      "number": 70,
+      "elapsed_ms": 11.84
+    },
+    {
+      "number": 71,
+      "elapsed_ms": 11.59
+    },
+    {
+      "number": 72,
+      "elapsed_ms": 11.19
+    },
+    {
+      "number": 73,
+      "elapsed_ms": 11.77
+    },
+    {
+      "number": 74,
+      "elapsed_ms": 11.49
+    },
+    {
+      "number": 75,
+      "elapsed_ms": 11.57
+    },
+    {
+      "number": 76,
+      "elapsed_ms": 12.12
+    },
+    {
+      "number": 77,
+      "elapsed_ms": 11.8
+    },
+    {
+      "number": 78,
+      "elapsed_ms": 11.35
+    },
+    {
+      "number": 79,
+      "elapsed_ms": 11.6
+    },
+    {
+      "number": 80,
+      "elapsed_ms": 11.52
+    },
+    {
+      "number": 81,
+      "elapsed_ms": 11.03
+    },
+    {
+      "number": 82,
+      "elapsed_ms": 11.81
+    },
+    {
+      "number": 83,
+      "elapsed_ms": 12.82
+    },
+    {
+      "number": 84,
+      "elapsed_ms": 11.74
+    },
+    {
+      "number": 85,
+      "elapsed_ms": 11.9
+    },
+    {
+      "number": 86,
+      "elapsed_ms": 11.91
+    },
+    {
+      "number": 87,
+      "elapsed_ms": 12.91
+    },
+    {
+      "number": 88,
+      "elapsed_ms": 11.58
+    },
+    {
+      "number": 89,
+      "elapsed_ms": 12.84
+    },
+    {
+      "number": 90,
+      "elapsed_ms": 11.84
+    },
+    {
+      "number": 91,
+      "elapsed_ms": 12.8
+    },
+    {
+      "number": 92,
+      "elapsed_ms": 12.31
+    },
+    {
+      "number": 93,
+      "elapsed_ms": 12.24
+    },
+    {
+      "number": 94,
+      "elapsed_ms": 12.23
+    },
+    {
+      "number": 95,
+      "elapsed_ms": 13.32
+    },
+    {
+      "number": 96,
+      "elapsed_ms": 12.19
+    },
+    {
+      "number": 97,
+      "elapsed_ms": 13.09
+    },
+    {
+      "number": 98,
+      "elapsed_ms": 13.72
+    },
+    {
+      "number": 99,
+      "elapsed_ms": 13.45
+    },
+    {
+      "number": 100,
+      "elapsed_ms": 11.98
+    },
+    {
+      "number": 101,
+      "elapsed_ms": 12.48
+    },
+    {
+      "number": 102,
+      "elapsed_ms": 12.04
+    },
+    {
+      "number": 103,
+      "elapsed_ms": 12.28
+    },
+    {
+      "number": 104,
+      "elapsed_ms": 13.85
+    },
+    {
+      "number": 105,
+      "elapsed_ms": 12.8
+    }
+  ],
+  "pages": [
+    {
+      "cursor": null,
+      "count": 100,
+      "next_cursor": "200",
+      "bytes": 236294,
+      "elapsed_ms": 141.57
+    },
+    {
+      "cursor": "200",
+      "count": 5,
+      "next_cursor": null,
+      "bytes": 12111,
+      "elapsed_ms": 17.59
+    }
+  ]
+}

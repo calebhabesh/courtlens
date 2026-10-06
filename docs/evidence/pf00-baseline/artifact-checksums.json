@@ -1,0 +1,1266 @@
+{
+  "data/artifacts/.gitkeep": {
+    "bytes": 1,
+    "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
+  },
+  "data/artifacts/b28-source-spike/2dfc8c5ae7182ebb5028a51482b0f0eec4bd01336d58d1a115b4d797a068ecf6": {
+    "bytes": 521324,
+    "sha256": "2dfc8c5ae7182ebb5028a51482b0f0eec4bd01336d58d1a115b4d797a068ecf6"
+  },
+  "data/artifacts/b28-source-spike/b684e61d172a493c9137b7f49f19cfea9496346a0c1daaee81a5b207a64796ee": {
+    "bytes": 415,
+    "sha256": "b684e61d172a493c9137b7f49f19cfea9496346a0c1daaee81a5b207a64796ee"
+  },
+  "data/artifacts/b28-source-spike/ea2e4b8de2e9a125b62b0b41e7c4925952b417af2b393cb3ca6ef2299091398b": {
+    "bytes": 415,
+    "sha256": "ea2e4b8de2e9a125b62b0b41e7c4925952b417af2b393cb3ca6ef2299091398b"
+  },
+  "data/artifacts/b28-source-spike/6e19cba4c019bba6ad432a5cebdab0c24abd15e0c88aec49558c400fe44bb2e5": {
+    "bytes": 406,
+    "sha256": "6e19cba4c019bba6ad432a5cebdab0c24abd15e0c88aec49558c400fe44bb2e5"
+  },
+  "data/artifacts/b28-source-spike/manual-sha.json": {
+    "bytes": 244,
+    "sha256": "bf820a6cc327ef5931c12c43a584dcf22ac1e6264b57be596aef1e2ab478c2ae"
+  },
+  "data/artifacts/b28-source-spike/ef30b70ac898ff8f1ae65e3d6cb869f8ee92a421922dd1fbf891f3b3b0470d5f": {
+    "bytes": 418,
+    "sha256": "ef30b70ac898ff8f1ae65e3d6cb869f8ee92a421922dd1fbf891f3b3b0470d5f"
+  },
+  "data/artifacts/b28-source-spike/41af57cc5eea6d2e4e710b0d2eb8e4809179db0808da4a8aa548b2b49734ece0": {
+    "bytes": 919,
+    "sha256": "41af57cc5eea6d2e4e710b0d2eb8e4809179db0808da4a8aa548b2b49734ece0"
+  },
+  "data/artifacts/b28-source-spike/receipts.json": {
+    "bytes": 1987,
+    "sha256": "40395d7a9c92f46709b180931ac12ce7a60558eaa946425b7c46ad66e586ed66"
+  },
+  "data/artifacts/research-shots/b26-season-2025-runtime.json": {
+    "bytes": 834,
+    "sha256": "0aec8732133062eaed525c773b72d5fb43aad64ca14b92dbf8f907b6e63cc9bc"
+  },
+  "data/artifacts/research-bindings/78e9ea2a5365206485610dcbfdffd21826f71d6518072bc332dbd9785bc10ad7.json": {
+    "bytes": 939775,
+    "sha256": "ea4bb51a3dcd375a9dff6e6fef2040a5808db07327d3877d897f0c9586f38412"
+  },
+  "data/artifacts/research-registration/06ab95316d64cc4b792c15753bb4b32024c948a68d0b5e7fad20d586372a6ed9.json": {
+    "bytes": 5880,
+    "sha256": "47b75440072f9169c3fe8bfae6b46df164fe6672709eaf6c19c27bc9c531e6c2"
+  },
+  "data/artifacts/research-registration/e6b47c6c158e13b5daa274d158adfc0d7c8d1cc5642bec89585a0829fd956d0b.json": {
+    "bytes": 5675,
+    "sha256": "31a4e6d84714d48a37aab11a698699fdbdc61248ad00e5fb2984e5980b9e1148"
+  },
+  "data/artifacts/research-registration/ce40518f8eebe240db250b60890df1a9f104e442559ce494a77c57cc0e47e805.json": {
+    "bytes": 5692,
+    "sha256": "1c55f0d4cccaddbe0600999d0639a89a0a7b573c38261311b187d786fa536001"
+  },
+  "data/artifacts/research-registration/919815b24d1ec5856bf22c1ad0ad1006b177238be17094413f16431a082236d2.json": {
+    "bytes": 5675,
+    "sha256": "ee077c1ba00e504cdd94dbe8afcdfb04c8103e680eddac8563f61702727789c5"
+  },
+  "data/artifacts/research-registration/df1c8a26f00704101397af19947ab2213934c6e23b53eb53a3e053938a01237b.json": {
+    "bytes": 5671,
+    "sha256": "c80f4cb2c6153d44bd99a585125c19318bba72f2ca9c6cab068e6b5b1ee5d66e"
+  },
+  "data/artifacts/analyses/794e54b2114ada32b874c5b3f2b327663d3918c60b70e59d53efefe2836962f4.json": {
+    "bytes": 938131,
+    "sha256": "ffb591026a31099993e63f31eac6cd975d17c7689afe1a83408f11a26c7ab355"
+  },
+  "data/artifacts/analyses/4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945.json": {
+    "bytes": 2,
+    "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+  },
+  "data/artifacts/analyses/fb8a2209579db2b395fe20de9348ed1b7edcae4c00239a031cbf7c31e0969103.json": {
+    "bytes": 169163,
+    "sha256": "6560265deb5c6441f2c1c14a8808fdc8eb2a5977be117fc04e2f8a72d3ab5529"
+  },
+  "data/artifacts/analyses/a03323264faaa06bc19819f23357816e7a1205572dadd1aaedf4e7f3f434863e.json": {
+    "bytes": 938407,
+    "sha256": "46d1f6f586cfa7061074cb85007f5e9527e35f6cafefb0889f9f39929af23800"
+  },
+  "data/artifacts/analyses/adbc1c3b62126336c56ff03cea867a0affa440539ea6f7d806b5337503ea5144.json": {
+    "bytes": 123912,
+    "sha256": "66950ff801a516060dd5e17a822ea6445940d9bc067caf2bb3b2018374089cf2"
+  },
+  "data/artifacts/analyses/dbf28e9625071c3cefe54dbd0b197526e711016b10e919d4951ca90fdb48ffa4.json": {
+    "bytes": 129581,
+    "sha256": "93d8c19141193ce5a8e7894162f67c051ffa5b3e54fc39fd887c57d0cc44d15d"
+  },
+  "data/artifacts/analyses/e80fcbc3908f01f6592231745d8e4e3fa42628068a2567c10270991064b5fa12.json": {
+    "bytes": 129455,
+    "sha256": "4c1bc30939fbb262c4c4de21bfad2e4113140702e0cf54b13257122407910224"
+  },
+  "data/artifacts/analyses/6187b5f83aceba8384949248d0ad8f06f2061ad5aa55783a5e1b7b1fb488830f.json": {
+    "bytes": 123786,
+    "sha256": "e9ff40878e2f76472400df7879c030505d801e523f7ef28bb256ca66ef8e0b61"
+  },
+  "data/artifacts/assignments/c1ff3711ef8b8ec4310c60159d1225a400facc7ce1e29bc64f09ae4130496509/nba_schedule_2026.csv.gz": {
+    "bytes": 23071,
+    "sha256": "c1ff3711ef8b8ec4310c60159d1225a400facc7ce1e29bc64f09ae4130496509"
+  },
+  "data/artifacts/assignments/decaee33440ec8bd26d21152d61b4b69970bed45c3d07ede42f2700b7bd364e7/player_boxscores_2026.csv": {
+    "bytes": 6131057,
+    "sha256": "decaee33440ec8bd26d21152d61b4b69970bed45c3d07ede42f2700b7bd364e7"
+  },
+  "data/artifacts/assignments/6c468839500feb4310e754d39d61f654f4628bc14c9f5009d625854ce19c8a31/game_matchups_2026.csv": {
+    "bytes": 66240823,
+    "sha256": "6c468839500feb4310e754d39d61f654f4628bc14c9f5009d625854ce19c8a31"
+  },
+  "data/artifacts/assignments/5686f397f0d698825766d9d458ab628878f6a33379c107d079ba71c8a13b71f0/game_matchups-methodology-20261005.md": {
+    "bytes": 7378,
+    "sha256": "5686f397f0d698825766d9d458ab628878f6a33379c107d079ba71c8a13b71f0"
+  },
+  "data/artifacts/assignments/b5133e5602d1ab9c4a4b4240aced7af3b6587e124f7ab7335b5de961c897ade8/team_boxscores_2026.csv": {
+    "bytes": 358439,
+    "sha256": "b5133e5602d1ab9c4a4b4240aced7af3b6587e124f7ab7335b5de961c897ade8"
+  },
+  "data/artifacts/finance-import/bc891bdc77ef677d67d38aa3766dd101cdec543a39d18a8b04c9dc0b681ec9c7/observations.csv": {
+    "bytes": 1179,
+    "sha256": "33813b3c6436f150520975e217f5665c707a50f432c427e402af6d118474f03a"
+  },
+  "data/artifacts/finance-import/bc891bdc77ef677d67d38aa3766dd101cdec543a39d18a8b04c9dc0b681ec9c7/manifest.json": {
+    "bytes": 1836,
+    "sha256": "bc891bdc77ef677d67d38aa3766dd101cdec543a39d18a8b04c9dc0b681ec9c7"
+  },
+  "data/artifacts/finance-import/6e77a9ecd53e50feb3bb8afbeda25e2b7501de8efb241a10c3c454482844fd33/observations.csv": {
+    "bytes": 1910,
+    "sha256": "74d43817d8aa4f953eda674b6d87eccfcd9a18b4a309cb1c6384aa104f3078b2"
+  },
+  "data/artifacts/finance-import/6e77a9ecd53e50feb3bb8afbeda25e2b7501de8efb241a10c3c454482844fd33/manifest.json": {
+    "bytes": 1802,
+    "sha256": "6e77a9ecd53e50feb3bb8afbeda25e2b7501de8efb241a10c3c454482844fd33"
+  },
+  "data/artifacts/finance-import/6e77a9ecd53e50feb3bb8afbeda25e2b7501de8efb241a10c3c454482844fd33/sources/14a5ddb88b666c567d57937ec476e7a3bc85cba8d848e62b99528f5e4048f9eb": {
+    "bytes": 370,
+    "sha256": "14a5ddb88b666c567d57937ec476e7a3bc85cba8d848e62b99528f5e4048f9eb"
+  },
+  "data/artifacts/finance-import/6e77a9ecd53e50feb3bb8afbeda25e2b7501de8efb241a10c3c454482844fd33/sources/27f79d3e94d15f11457f84cc009284d6c3208cf95bb38b5dcd2f2b177f63994b": {
+    "bytes": 323,
+    "sha256": "27f79d3e94d15f11457f84cc009284d6c3208cf95bb38b5dcd2f2b177f63994b"
+  },
+  "data/artifacts/finance-import/6e77a9ecd53e50feb3bb8afbeda25e2b7501de8efb241a10c3c454482844fd33/sources/43c5ba5c1ad009fdebc55823cf9c9d7f4a1d3a4fe6dfb731a48272b5c791d1b3": {
+    "bytes": 415,
+    "sha256": "43c5ba5c1ad009fdebc55823cf9c9d7f4a1d3a4fe6dfb731a48272b5c791d1b3"
+  },
+  "data/artifacts/finance-import/bc891bdc77ef677d67d38aa3766dd101cdec543a39d18a8b04c9dc0b681ec9c7/sources/14a5ddb88b666c567d57937ec476e7a3bc85cba8d848e62b99528f5e4048f9eb": {
+    "bytes": 370,
+    "sha256": "14a5ddb88b666c567d57937ec476e7a3bc85cba8d848e62b99528f5e4048f9eb"
+  },
+  "data/artifacts/finance-import/bc891bdc77ef677d67d38aa3766dd101cdec543a39d18a8b04c9dc0b681ec9c7/sources/27f79d3e94d15f11457f84cc009284d6c3208cf95bb38b5dcd2f2b177f63994b": {
+    "bytes": 323,
+    "sha256": "27f79d3e94d15f11457f84cc009284d6c3208cf95bb38b5dcd2f2b177f63994b"
+  },
+  "data/artifacts/finance-import/bc891bdc77ef677d67d38aa3766dd101cdec543a39d18a8b04c9dc0b681ec9c7/sources/43c5ba5c1ad009fdebc55823cf9c9d7f4a1d3a4fe6dfb731a48272b5c791d1b3": {
+    "bytes": 415,
+    "sha256": "43c5ba5c1ad009fdebc55823cf9c9d7f4a1d3a4fe6dfb731a48272b5c791d1b3"
+  },
+  "data/artifacts/research-reproductions/de8dbe44-daef-4c8b-a36b-527c0a6fd603-f0d8a19e-9d49-4f79-b92a-ef4ed752a8f9/reproduction.json": {
+    "bytes": 558,
+    "sha256": "feae76a1a25743f3c4d80401c42bf3e634798cccb0cd1e33876f0ea9a2886c8b"
+  },
+  "data/artifacts/research-reproductions/de8dbe44-daef-4c8b-a36b-527c0a6fd603-f0d8a19e-9d49-4f79-b92a-ef4ed752a8f9/supervisor/limits.json": {
+    "bytes": 283,
+    "sha256": "d1f8cb44887cab191d6d30b6272e4242e6398974f4ad4acfb04c94849f1906d3"
+  },
+  "data/artifacts/research-reproductions/de8dbe44-daef-4c8b-a36b-527c0a6fd603-f0d8a19e-9d49-4f79-b92a-ef4ed752a8f9/supervisor/stdout.log": {
+    "bytes": 497,
+    "sha256": "fa2a689946c8fe7fb0e47b49bbc898f677e818e2bd98b439db8231fc6f95ad4d"
+  },
+  "data/artifacts/research-reproductions/de8dbe44-daef-4c8b-a36b-527c0a6fd603-f0d8a19e-9d49-4f79-b92a-ef4ed752a8f9/supervisor/supervisor.log": {
+    "bytes": 307,
+    "sha256": "9f638be7aa6ac6e905c6070a59c363bd862088796366b82bccff825afec8d31e"
+  },
+  "data/artifacts/research-run-packages/de8dbe44-daef-4c8b-a36b-527c0a6fd603/model-card.md": {
+    "bytes": 1737,
+    "sha256": "1dadf2bf76ab31e69f54072ea968a2b433f2632b104ae5cf9f3aaf0e54d79df4"
+  },
+  "data/artifacts/research-run-packages/de8dbe44-daef-4c8b-a36b-527c0a6fd603/baseline-predictions.jsonl": {
+    "bytes": 11869321,
+    "sha256": "c8afbdbde3022aaff9e8075e2d896ee004825c30b11e1aeee6c0767cf4670300"
+  },
+  "data/artifacts/research-run-packages/de8dbe44-daef-4c8b-a36b-527c0a6fd603/candidate-predictions.jsonl": {
+    "bytes": 11881594,
+    "sha256": "f6fde744343f78d965b0e08f578f9709a8c3430109429250fe8016d88732b4ba"
+  },
+  "data/artifacts/research-run-packages/de8dbe44-daef-4c8b-a36b-527c0a6fd603/exclusions.json": {
+    "bytes": 8639,
+    "sha256": "34c3857a1a32bee5850eba584c3c17b238d531d3fa62d3a96069ad308aa96883"
+  },
+  "data/artifacts/research-run-packages/de8dbe44-daef-4c8b-a36b-527c0a6fd603/manifest.json": {
+    "bytes": 1280,
+    "sha256": "3b8366ba18d9b9a13e8e076ef6d87e52b998cdba69307335a0e37cd96c9c834c"
+  },
+  "data/artifacts/research-run-packages/de8dbe44-daef-4c8b-a36b-527c0a6fd603/attempts.json": {
+    "bytes": 1872,
+    "sha256": "fae9563f504ada600778a9a97137335a31a5729e350b566be4d38c0c6c67740a"
+  },
+  "data/artifacts/research-runs/protocols/ce40518f8eebe240db250b60890df1a9f104e442559ce494a77c57cc0e47e805.lock": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "data/artifacts/research-runs/protocols/ce40518f8eebe240db250b60890df1a9f104e442559ce494a77c57cc0e47e805.json": {
+    "bytes": 173,
+    "sha256": "190e9fc9d7487be1d96c7704e2d6fda6514334c8db0cc85fd5d515fe7c97fb0c"
+  },
+  "data/artifacts/research-runs/bindings/78e9ea2a5365206485610dcbfdffd21826f71d6518072bc332dbd9785bc10ad7.json": {
+    "bytes": 136,
+    "sha256": "d0ed0de7a40af8c927c61d518218221190ff9630d00b5cdb2bd087d533fb9f98"
+  },
+  "data/artifacts/research-runs/bindings/78e9ea2a5365206485610dcbfdffd21826f71d6518072bc332dbd9785bc10ad7-de8dbe44-daef-4c8b-a36b-527c0a6fd603.json": {
+    "bytes": 136,
+    "sha256": "128fc5ed49b7c0af7f96e45523fd06042823a547b54028774cf8b024bc8ee940"
+  },
+  "data/artifacts/research-runs/bindings/78e9ea2a5365206485610dcbfdffd21826f71d6518072bc332dbd9785bc10ad7.lock": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "data/artifacts/research-runs/de8dbe44-daef-4c8b-a36b-527c0a6fd603/manifest.json": {
+    "bytes": 4206,
+    "sha256": "a18efaeeaf136c986d201d74d6004e41713a1fbd7131516c5eb1d3d88ffb4835"
+  },
+  "data/artifacts/research-runs/d1dbc7ee-0a4d-4a98-9433-c44fa89f1482/model-card.md": {
+    "bytes": 209,
+    "sha256": "bb9ab561f93d254b02af43ce05e850f53fc9a31b64f98f7b4e242174ae980215"
+  },
+  "data/artifacts/research-runs/d1dbc7ee-0a4d-4a98-9433-c44fa89f1482/manifest.json": {
+    "bytes": 2448,
+    "sha256": "b006aa095026b0714ff9393e7062c0ebc94a35f579027afb0fb2a3fe7af39c74"
+  },
+  "data/artifacts/research-runs/d1dbc7ee-0a4d-4a98-9433-c44fa89f1482/supervisor/limits.json": {
+    "bytes": 291,
+    "sha256": "555541d2387c628259ffc5eac542b7837db612fe80a5d659881849b4dacef703"
+  },
+  "data/artifacts/research-runs/d1dbc7ee-0a4d-4a98-9433-c44fa89f1482/supervisor/stdout.log": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "data/artifacts/research-runs/d1dbc7ee-0a4d-4a98-9433-c44fa89f1482/supervisor/supervisor.log": {
+    "bytes": 1016,
+    "sha256": "f28ccbc3fdbf7a72ce88bdf78b184f3e590f72b14787f390d68eb40db9b60174"
+  },
+  "data/artifacts/research-runs/de8dbe44-daef-4c8b-a36b-527c0a6fd603/implementation/research_limits.py": {
+    "bytes": 4382,
+    "sha256": "b50c605ab941fe3015d347ec57d54318a778488670752fa3472a2ca6d21e166c"
+  },
+  "data/artifacts/research-runs/de8dbe44-daef-4c8b-a36b-527c0a6fd603/implementation/research_runner.py": {
+    "bytes": 7324,
+    "sha256": "c758dab51a4f23feb97f2840388a7a9d24c476674f29820bf206cf552d4d6cda"
+  },
+  "data/artifacts/research-runs/de8dbe44-daef-4c8b-a36b-527c0a6fd603/implementation/research_inputs.py": {
+    "bytes": 11763,
+    "sha256": "6e73af7e1f2c22b98b0d01f614372d29b12e5bf8b5c2d88e4c89cf9f4a6ab342"
+  },
+  "data/artifacts/research-runs/de8dbe44-daef-4c8b-a36b-527c0a6fd603/implementation/research_binding.py": {
+    "bytes": 3887,
+    "sha256": "0903fcaed72d30ddb6378b30e46c51a89521b1577d29908b8c4c206a76dd339e"
+  },
+  "data/artifacts/research-runs/de8dbe44-daef-4c8b-a36b-527c0a6fd603/implementation/expected_shot.py": {
+    "bytes": 19624,
+    "sha256": "4288ec8c3fdcfd02524267431037e8554e5c0bd1bc4e7c1fd09d44fd2782cea6"
+  },
+  "data/artifacts/research-runs/de8dbe44-daef-4c8b-a36b-527c0a6fd603/run/model-card.md": {
+    "bytes": 823,
+    "sha256": "230953632398491be2a40c6a18719450e384520f160d3a8fb077503f1eaa3efa"
+  },
+  "data/artifacts/research-runs/de8dbe44-daef-4c8b-a36b-527c0a6fd603/run/predictions.jsonl": {
+    "bytes": 15070923,
+    "sha256": "10c53a7b7afb892a67be5e27384b4f2551ce396e6c07c425915e2b5375913952"
+  },
+  "data/artifacts/research-runs/de8dbe44-daef-4c8b-a36b-527c0a6fd603/run/binding.json": {
+    "bytes": 939775,
+    "sha256": "ea4bb51a3dcd375a9dff6e6fef2040a5808db07327d3877d897f0c9586f38412"
+  },
+  "data/artifacts/research-runs/de8dbe44-daef-4c8b-a36b-527c0a6fd603/run/model.json": {
+    "bytes": 1095,
+    "sha256": "4320c3b0376c7386d408e0bdeb343dd6e7e4b93cdcd48c3e430cb7e6f8b6cc32"
+  },
+  "data/artifacts/research-runs/de8dbe44-daef-4c8b-a36b-527c0a6fd603/run/protocol.json": {
+    "bytes": 5692,
+    "sha256": "97718f7f66e03497be7f43d2bfe59dffea2e08cd338946535751253e4095f459"
+  },
+  "data/artifacts/research-runs/de8dbe44-daef-4c8b-a36b-527c0a6fd603/run/fit-started.json": {
+    "bytes": 36,
+    "sha256": "117631aa060ec7e7f2e5d7e7126cbdada6e372b321008aa257f0d2f5cfdbf6b6"
+  },
+  "data/artifacts/research-runs/de8dbe44-daef-4c8b-a36b-527c0a6fd603/run/attempts.json": {
+    "bytes": 681,
+    "sha256": "2eac8d3eabcd92322826026e52fc632fe6677f537d514100be205045c019bee3"
+  },
+  "data/artifacts/research-runs/de8dbe44-daef-4c8b-a36b-527c0a6fd603/run/evaluation.json": {
+    "bytes": 4191,
+    "sha256": "bae891b38f05b793e294ead3c94e3d0fd4de974c111cca9393f8152cff6c2275"
+  },
+  "data/artifacts/research-runs/de8dbe44-daef-4c8b-a36b-527c0a6fd603/supervisor/limits.json": {
+    "bytes": 284,
+    "sha256": "51e2df90d9552db37c184e946b3f7305831e37242cbd8b20a4b263678aeb9725"
+  },
+  "data/artifacts/research-runs/de8dbe44-daef-4c8b-a36b-527c0a6fd603/supervisor/stdout.log": {
+    "bytes": 47,
+    "sha256": "2fa663ecba509e77c11c53c28ccd4e0c318dd1d52582138eff6d7d26262eccbf"
+  },
+  "data/artifacts/research-runs/de8dbe44-daef-4c8b-a36b-527c0a6fd603/supervisor/supervisor.log": {
+    "bytes": 494,
+    "sha256": "f81d8173df235c27ee0edaa67ec06159dbe91954bdb7b1e4ccc6ebd9ff2dd706"
+  },
+  "data/artifacts/research-shots/b26-v2-game-0022500006/games.json": {
+    "bytes": 8053,
+    "sha256": "759cbc1139466c53eafa158bbb5d930e7a587137737fc933329f5bf12465b44d"
+  },
+  "data/artifacts/research-shots/b26-v2-game-0022500006/source-games.json": {
+    "bytes": 25833,
+    "sha256": "44e542624ff5431a6c598b57d8448876716251ddf972ce07fec179e8bca0abfe"
+  },
+  "data/artifacts/research-shots/b26-v2-game-0022500006/manifest.json": {
+    "bytes": 6216,
+    "sha256": "a45a59bc22ceb0333822cd0088e4ff65414b235a0257510968eaf8572d3d2990"
+  },
+  "data/artifacts/research-shots/b26-v2-game-0022500006/rejected-rows.json": {
+    "bytes": 3,
+    "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+  },
+  "data/artifacts/research-shots/b26-v2-game-0022500006/attempts.jsonl": {
+    "bytes": 214584,
+    "sha256": "6a15d283a0c122507945bf053cf4bde8a7b2f72027f808926a845ac7a2cbe288"
+  },
+  "data/artifacts/research-shots/b26-v2-game-0022500006/policy-registration.json": {
+    "bytes": 834,
+    "sha256": "f9826fe25daa063f75b394d94494a89c51c04425638a54dc0ca367b011031170"
+  },
+  "data/artifacts/research-shots/b26-season-2025-final/games.json": {
+    "bytes": 9122795,
+    "sha256": "76933843c317f13e543ee2b4cfe597fc45f5de56fde797c900a172ab0c483ba2"
+  },
+  "data/artifacts/research-shots/b26-season-2025-final/source-games.json": {
+    "bytes": 25833,
+    "sha256": "44e542624ff5431a6c598b57d8448876716251ddf972ce07fec179e8bca0abfe"
+  },
+  "data/artifacts/research-shots/b26-season-2025-final/manifest.json": {
+    "bytes": 6224,
+    "sha256": "ee101b37cad3625452f96aa2873ff48272ab307f7debb0e363884eaf9094782a"
+  },
+  "data/artifacts/research-shots/b26-season-2025-final/rejected-rows.json": {
+    "bytes": 3,
+    "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+  },
+  "data/artifacts/research-shots/b26-season-2025-final/attempts.jsonl": {
+    "bytes": 242409552,
+    "sha256": "993d325c5f0522858b233ff6b515ac7dee5ca4b78877abaae522252a8804fe22"
+  },
+  "data/artifacts/research-shots/b26-three-season-game-0022401194/corrections.json": {
+    "bytes": 1403,
+    "sha256": "c62e40445db373f4ad5a9c4d7522f70797c08299fb48d116189ec569a060a054"
+  },
+  "data/artifacts/research-shots/b26-three-season-game-0022401194/games.json": {
+    "bytes": 14686,
+    "sha256": "f7556aafe6eba6e30482189540dc113e373e536b172c0f6743d08c5add8b7e6b"
+  },
+  "data/artifacts/research-shots/b26-three-season-game-0022401194/source-games.json": {
+    "bytes": 25833,
+    "sha256": "7c4b077ec1768a008c40bd4a1b5c0884949c3597e8cd8312123fcf91d3356570"
+  },
+  "data/artifacts/research-shots/b26-three-season-game-0022401194/manifest.json": {
+    "bytes": 6851,
+    "sha256": "2aedf6697282048c4c2c723faa5937621b96cdac54b134510c522bc4cc91be86"
+  },
+  "data/artifacts/research-shots/b26-three-season-game-0022401194/rejected-rows.json": {
+    "bytes": 3,
+    "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+  },
+  "data/artifacts/research-shots/b26-three-season-game-0022401194/attempts.jsonl": {
+    "bytes": 211416,
+    "sha256": "1f716dc28ee1a5b67975bad2f702eb68d73f227978b6e29c0c12252ba6d1194f"
+  },
+  "data/artifacts/research-shots/b26-three-season-game-0022401194/correction-ledger.json": {
+    "bytes": 1432,
+    "sha256": "79f754592ddbfd3a1d6d40c69b5ae1079db03fc143891396942413cc8c088503"
+  },
+  "data/artifacts/research-shots/b26-three-season-game-0022401194/policy-registration.json": {
+    "bytes": 940,
+    "sha256": "76c75f44dcae10fca376ecdfe51cf828ac21001ad4f515383bc1fd86445ed2e5"
+  },
+  "data/artifacts/research-shots/b26-game-0022500001-v2/games.json": {
+    "bytes": 7380,
+    "sha256": "10408a09ba8c839cc09d5aea92749f4b37c08214c570d71579bc9cec043da164"
+  },
+  "data/artifacts/research-shots/b26-game-0022500001-v2/source-games.json": {
+    "bytes": 25833,
+    "sha256": "44e542624ff5431a6c598b57d8448876716251ddf972ce07fec179e8bca0abfe"
+  },
+  "data/artifacts/research-shots/b26-game-0022500001-v2/manifest.json": {
+    "bytes": 6015,
+    "sha256": "fd6ab1163ec3ae8d476473457d490840a8d0aa1d08f06411b596a6de06746aa4"
+  },
+  "data/artifacts/research-shots/b26-game-0022500001-v2/rejected-rows.json": {
+    "bytes": 3,
+    "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+  },
+  "data/artifacts/research-shots/b26-game-0022500001-v2/attempts.jsonl": {
+    "bytes": 222663,
+    "sha256": "17a3fd181c081251aeb8a33df00f4a3777c3ee3130a18f1dc63d1698d0798237"
+  },
+  "data/artifacts/research-shots/b26-three-season-2025/corrections.json": {
+    "bytes": 1403,
+    "sha256": "0ec6379a713ec49f89400d387cd6a0132d30a2981b5fb2d731478e50a6bc0f94"
+  },
+  "data/artifacts/research-shots/b26-three-season-2025/games.json": {
+    "bytes": 9110314,
+    "sha256": "2d8cdfbffb5b30ef991fc6d019adcf1fcc1f0f4e25671c04b7e5514f8e3f6a4f"
+  },
+  "data/artifacts/research-shots/b26-three-season-2025/source-games.json": {
+    "bytes": 25833,
+    "sha256": "44e542624ff5431a6c598b57d8448876716251ddf972ce07fec179e8bca0abfe"
+  },
+  "data/artifacts/research-shots/b26-three-season-2025/manifest.json": {
+    "bytes": 6924,
+    "sha256": "aaaea8a18e65b2d50a9b9e73778aba85bfde30351bd365fbaeaa722038fdefff"
+  },
+  "data/artifacts/research-shots/b26-three-season-2025/rejected-rows.json": {
+    "bytes": 3,
+    "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+  },
+  "data/artifacts/research-shots/b26-three-season-2025/attempts.jsonl": {
+    "bytes": 242408431,
+    "sha256": "a55fffa457807fa076e9c1e88c6f69324602c929678d6aec63de23b2fb8f6fd4"
+  },
+  "data/artifacts/research-shots/b26-three-season-2025/correction-ledger.json": {
+    "bytes": 1475,
+    "sha256": "a134104412ad3bd9e8b3bf5fa483f9ab629688a0daf088202d554dc916964639"
+  },
+  "data/artifacts/research-shots/b26-three-season-2025/policy-registration.json": {
+    "bytes": 940,
+    "sha256": "b92f2d580c038ffb7676b3dfb3f7a81583b408df1a159a7e81100b03b060b503"
+  },
+  "data/artifacts/research-shots/b26-v2-game-0022500008/games.json": {
+    "bytes": 8089,
+    "sha256": "1dd277552ae16b17195728ec6c895c5a579e3173d7885134e584aae15bae75a9"
+  },
+  "data/artifacts/research-shots/b26-v2-game-0022500008/source-games.json": {
+    "bytes": 25833,
+    "sha256": "44e542624ff5431a6c598b57d8448876716251ddf972ce07fec179e8bca0abfe"
+  },
+  "data/artifacts/research-shots/b26-v2-game-0022500008/manifest.json": {
+    "bytes": 6216,
+    "sha256": "582961424ec8d50a2f269be669957cde2f1be09855567722ddb9ba71c9c93e3c"
+  },
+  "data/artifacts/research-shots/b26-v2-game-0022500008/rejected-rows.json": {
+    "bytes": 3,
+    "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+  },
+  "data/artifacts/research-shots/b26-v2-game-0022500008/attempts.jsonl": {
+    "bytes": 191762,
+    "sha256": "d3b3825c3e94e88a00784848ed64d7ba7689ab7b346016e8128bf347110b594e"
+  },
+  "data/artifacts/research-shots/b26-v2-game-0022500008/policy-registration.json": {
+    "bytes": 834,
+    "sha256": "c986a7f9b1a729a7bc47ce32d68e2b8025c75036bb83d4a1879fa8a11b172e9c"
+  },
+  "data/artifacts/research-shots/b26-game-0022500001-final/games.json": {
+    "bytes": 7414,
+    "sha256": "3a515bcc52d8d650dfb3e485f996e56e4f9f2a557447e40a0daa1654169a00e7"
+  },
+  "data/artifacts/research-shots/b26-game-0022500001-final/source-games.json": {
+    "bytes": 25833,
+    "sha256": "44e542624ff5431a6c598b57d8448876716251ddf972ce07fec179e8bca0abfe"
+  },
+  "data/artifacts/research-shots/b26-game-0022500001-final/manifest.json": {
+    "bytes": 6072,
+    "sha256": "31a06b733a7d8716a2407fb5787b72ac4e68a1170691d4b16b66842e5cf73e49"
+  },
+  "data/artifacts/research-shots/b26-game-0022500001-final/rejected-rows.json": {
+    "bytes": 3,
+    "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+  },
+  "data/artifacts/research-shots/b26-game-0022500001-final/attempts.jsonl": {
+    "bytes": 222663,
+    "sha256": "17a3fd181c081251aeb8a33df00f4a3777c3ee3130a18f1dc63d1698d0798237"
+  },
+  "data/artifacts/research-shots/b26-v2-game-0022500001-final/games.json": {
+    "bytes": 7414,
+    "sha256": "3a515bcc52d8d650dfb3e485f996e56e4f9f2a557447e40a0daa1654169a00e7"
+  },
+  "data/artifacts/research-shots/b26-v2-game-0022500001-final/source-games.json": {
+    "bytes": 25833,
+    "sha256": "44e542624ff5431a6c598b57d8448876716251ddf972ce07fec179e8bca0abfe"
+  },
+  "data/artifacts/research-shots/b26-v2-game-0022500001-final/manifest.json": {
+    "bytes": 6366,
+    "sha256": "cac90ff18d8b9bbd89a62caeb6c6f5d3ccbc943649027944cea8ed6421546798"
+  },
+  "data/artifacts/research-shots/b26-v2-game-0022500001-final/rejected-rows.json": {
+    "bytes": 3,
+    "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+  },
+  "data/artifacts/research-shots/b26-v2-game-0022500001-final/attempts.jsonl": {
+    "bytes": 222663,
+    "sha256": "17a3fd181c081251aeb8a33df00f4a3777c3ee3130a18f1dc63d1698d0798237"
+  },
+  "data/artifacts/research-shots/b26-v2-game-0022500001-final/policy-registration.json": {
+    "bytes": 834,
+    "sha256": "e0649c4e7eea4133ed752cbcd103556111a43d9d89861a2c6e2d5bd608d6c3a5"
+  },
+  "data/artifacts/research-shots/b26-three-season-game-0022500792/corrections.json": {
+    "bytes": 1403,
+    "sha256": "0ec6379a713ec49f89400d387cd6a0132d30a2981b5fb2d731478e50a6bc0f94"
+  },
+  "data/artifacts/research-shots/b26-three-season-game-0022500792/games.json": {
+    "bytes": 16810,
+    "sha256": "6ec4c874c325547bbe1ead3046deaff95d10fc9f5a233b6634a7d052455683b3"
+  },
+  "data/artifacts/research-shots/b26-three-season-game-0022500792/source-games.json": {
+    "bytes": 25833,
+    "sha256": "44e542624ff5431a6c598b57d8448876716251ddf972ce07fec179e8bca0abfe"
+  },
+  "data/artifacts/research-shots/b26-three-season-game-0022500792/manifest.json": {
+    "bytes": 6851,
+    "sha256": "06477ec6c604cd4884ac2335406598db520d14fa9defdcb4f7617a13b62f8f7e"
+  },
+  "data/artifacts/research-shots/b26-three-season-game-0022500792/rejected-rows.json": {
+    "bytes": 3,
+    "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+  },
+  "data/artifacts/research-shots/b26-three-season-game-0022500792/attempts.jsonl": {
+    "bytes": 186607,
+    "sha256": "e0a69e8d4ea9e8dc2c90e280e15695dc1226ea9e5f2f370cd1321c53cbd07b42"
+  },
+  "data/artifacts/research-shots/b26-three-season-game-0022500792/correction-ledger.json": {
+    "bytes": 1475,
+    "sha256": "a134104412ad3bd9e8b3bf5fa483f9ab629688a0daf088202d554dc916964639"
+  },
+  "data/artifacts/research-shots/b26-three-season-game-0022500792/policy-registration.json": {
+    "bytes": 940,
+    "sha256": "b84da643a4b15a102c58cacc6595302658475ec80658bf0d805c0aa5d59bb16b"
+  },
+  "data/artifacts/research-shots/b26-v2-game-0022500008-final/games.json": {
+    "bytes": 8089,
+    "sha256": "1dd277552ae16b17195728ec6c895c5a579e3173d7885134e584aae15bae75a9"
+  },
+  "data/artifacts/research-shots/b26-v2-game-0022500008-final/source-games.json": {
+    "bytes": 25833,
+    "sha256": "44e542624ff5431a6c598b57d8448876716251ddf972ce07fec179e8bca0abfe"
+  },
+  "data/artifacts/research-shots/b26-v2-game-0022500008-final/manifest.json": {
+    "bytes": 6366,
+    "sha256": "c18cf3de4533e9b6f80eaaf57f879c26e00726e07e638d22dae8fffc920688e7"
+  },
+  "data/artifacts/research-shots/b26-v2-game-0022500008-final/rejected-rows.json": {
+    "bytes": 3,
+    "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+  },
+  "data/artifacts/research-shots/b26-v2-game-0022500008-final/attempts.jsonl": {
+    "bytes": 191762,
+    "sha256": "d3b3825c3e94e88a00784848ed64d7ba7689ab7b346016e8128bf347110b594e"
+  },
+  "data/artifacts/research-shots/b26-v2-game-0022500008-final/policy-registration.json": {
+    "bytes": 834,
+    "sha256": "92e3a9b199ea9cf74708350bc7ff3f65766330f74957c28aeab60bfd5f5b94df"
+  },
+  "data/artifacts/research-shots/b26-ready-game-0022300001/games.json": {
+    "bytes": 7642,
+    "sha256": "688d0a42cb329bb7ccd3ec28935323f19cd8d2a870e22bb9777dc00c52cd33a5"
+  },
+  "data/artifacts/research-shots/b26-ready-game-0022300001/source-games.json": {
+    "bytes": 25833,
+    "sha256": "e831c091b220d1c2622cc1d51133e6d635d85d4e8700cae22a3a1b2b9910ac52"
+  },
+  "data/artifacts/research-shots/b26-ready-game-0022300001/manifest.json": {
+    "bytes": 6402,
+    "sha256": "252e668759f43ff0b1b01e15379cf1d2dcbe4b225917a84b4ae27cbc728eff24"
+  },
+  "data/artifacts/research-shots/b26-ready-game-0022300001/rejected-rows.json": {
+    "bytes": 3,
+    "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+  },
+  "data/artifacts/research-shots/b26-ready-game-0022300001/attempts.jsonl": {
+    "bytes": 187981,
+    "sha256": "e7125539b4ccb5950de514f4bfdc6d41b52c395daf847141ed1646f452095037"
+  },
+  "data/artifacts/research-shots/b26-ready-game-0022300001/policy-registration.json": {
+    "bytes": 834,
+    "sha256": "229d49b5bc2a79408f1455b444e6bd8f88eec759ea84c6e5eab4a2bd8671c47c"
+  },
+  "data/artifacts/research-shots/b26-game-0022500001-v3/games.json": {
+    "bytes": 7380,
+    "sha256": "10408a09ba8c839cc09d5aea92749f4b37c08214c570d71579bc9cec043da164"
+  },
+  "data/artifacts/research-shots/b26-game-0022500001-v3/source-games.json": {
+    "bytes": 25833,
+    "sha256": "44e542624ff5431a6c598b57d8448876716251ddf972ce07fec179e8bca0abfe"
+  },
+  "data/artifacts/research-shots/b26-game-0022500001-v3/manifest.json": {
+    "bytes": 6044,
+    "sha256": "da8c42d1d79c82ed637448993cfa5325fa2e916c033fc39de0885352ee27adbe"
+  },
+  "data/artifacts/research-shots/b26-game-0022500001-v3/rejected-rows.json": {
+    "bytes": 3,
+    "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+  },
+  "data/artifacts/research-shots/b26-game-0022500001-v3/attempts.jsonl": {
+    "bytes": 222663,
+    "sha256": "17a3fd181c081251aeb8a33df00f4a3777c3ee3130a18f1dc63d1698d0798237"
+  },
+  "data/artifacts/research-shots/b26-three-season-2024/corrections.json": {
+    "bytes": 1403,
+    "sha256": "c62e40445db373f4ad5a9c4d7522f70797c08299fb48d116189ec569a060a054"
+  },
+  "data/artifacts/research-shots/b26-three-season-2024/games.json": {
+    "bytes": 9210264,
+    "sha256": "0f6996726b2635e7aa91424063ca77adc10e354e30e0cb4b7d8037bf2326d8c0"
+  },
+  "data/artifacts/research-shots/b26-three-season-2024/source-games.json": {
+    "bytes": 25833,
+    "sha256": "7c4b077ec1768a008c40bd4a1b5c0884949c3597e8cd8312123fcf91d3356570"
+  },
+  "data/artifacts/research-shots/b26-three-season-2024/manifest.json": {
+    "bytes": 6924,
+    "sha256": "27068bbbc0a419b91f4872a9ced026d8701a755c46c99908018806512dbd7baf"
+  },
+  "data/artifacts/research-shots/b26-three-season-2024/rejected-rows.json": {
+    "bytes": 3,
+    "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+  },
+  "data/artifacts/research-shots/b26-three-season-2024/attempts.jsonl": {
+    "bytes": 242856786,
+    "sha256": "3f5b0c0c5c66210d712b1a9db248438beb61c3979c779ce5f98c862815059807"
+  },
+  "data/artifacts/research-shots/b26-three-season-2024/correction-ledger.json": {
+    "bytes": 1432,
+    "sha256": "79f754592ddbfd3a1d6d40c69b5ae1079db03fc143891396942413cc8c088503"
+  },
+  "data/artifacts/research-shots/b26-three-season-2024/policy-registration.json": {
+    "bytes": 940,
+    "sha256": "25a87bac91eec1f3343c27190eb2630535fd0acad6a5b2852588d7703598f20d"
+  },
+  "data/artifacts/research-shots/b26-v2-game-0022400001-expansion/games.json": {
+    "bytes": 6935,
+    "sha256": "c61194634584b273823db78434b6d0a9a3337d4c5cd21c0f240309668febd84d"
+  },
+  "data/artifacts/research-shots/b26-v2-game-0022400001-expansion/source-games.json": {
+    "bytes": 25833,
+    "sha256": "7c4b077ec1768a008c40bd4a1b5c0884949c3597e8cd8312123fcf91d3356570"
+  },
+  "data/artifacts/research-shots/b26-v2-game-0022400001-expansion/manifest.json": {
+    "bytes": 6402,
+    "sha256": "c8d8e4cd541677026863cd657706628e9b6e896a081668819a9ea8a198f2b6ee"
+  },
+  "data/artifacts/research-shots/b26-v2-game-0022400001-expansion/rejected-rows.json": {
+    "bytes": 3,
+    "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+  },
+  "data/artifacts/research-shots/b26-v2-game-0022400001-expansion/attempts.jsonl": {
+    "bytes": 191761,
+    "sha256": "d7d949f9f63913313b9b2dedcbca5a9109fc0493fb9461db2e92a501ea5b4b6e"
+  },
+  "data/artifacts/research-shots/b26-v2-game-0022400001-expansion/policy-registration.json": {
+    "bytes": 834,
+    "sha256": "6d0cb83abd42522a4ab11f605bd8e08d3550014046991c54ea4eb2f5ced57a0b"
+  },
+  "data/artifacts/research-shots/b26-ready-season-2024/corrections.json": {
+    "bytes": 1403,
+    "sha256": "c62e40445db373f4ad5a9c4d7522f70797c08299fb48d116189ec569a060a054"
+  },
+  "data/artifacts/research-shots/b26-ready-season-2024/games.json": {
+    "bytes": 9210264,
+    "sha256": "0f6996726b2635e7aa91424063ca77adc10e354e30e0cb4b7d8037bf2326d8c0"
+  },
+  "data/artifacts/research-shots/b26-ready-season-2024/source-games.json": {
+    "bytes": 25833,
+    "sha256": "7c4b077ec1768a008c40bd4a1b5c0884949c3597e8cd8312123fcf91d3356570"
+  },
+  "data/artifacts/research-shots/b26-ready-season-2024/manifest.json": {
+    "bytes": 6924,
+    "sha256": "ceb59c4273414e16ae52c5a51ca2537cfa4451e8de0bc51110d3a26630a33f52"
+  },
+  "data/artifacts/research-shots/b26-ready-season-2024/rejected-rows.json": {
+    "bytes": 3,
+    "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+  },
+  "data/artifacts/research-shots/b26-ready-season-2024/attempts.jsonl": {
+    "bytes": 242856786,
+    "sha256": "3f5b0c0c5c66210d712b1a9db248438beb61c3979c779ce5f98c862815059807"
+  },
+  "data/artifacts/research-shots/b26-ready-season-2024/correction-ledger.json": {
+    "bytes": 1432,
+    "sha256": "79f754592ddbfd3a1d6d40c69b5ae1079db03fc143891396942413cc8c088503"
+  },
+  "data/artifacts/research-shots/b26-ready-season-2024/policy-registration.json": {
+    "bytes": 940,
+    "sha256": "c2c401ae93dfe8eb4889cf76955ff767b6462005f00bfc5b3652f409cb92e44b"
+  },
+  "data/artifacts/research-shots/b26-v2-season-2025-final/games.json": {
+    "bytes": 9101438,
+    "sha256": "b94a9787d1fd8c2736335132a5e88d071b5fbcc3727e430a580b28e9eb7c8d16"
+  },
+  "data/artifacts/research-shots/b26-v2-season-2025-final/source-games.json": {
+    "bytes": 25833,
+    "sha256": "44e542624ff5431a6c598b57d8448876716251ddf972ce07fec179e8bca0abfe"
+  },
+  "data/artifacts/research-shots/b26-v2-season-2025-final/manifest.json": {
+    "bytes": 6493,
+    "sha256": "00849c5c6deb360872c24ab3c9bb2453eb5085799a5c8490adfdd65509480d17"
+  },
+  "data/artifacts/research-shots/b26-v2-season-2025-final/rejected-rows.json": {
+    "bytes": 3,
+    "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+  },
+  "data/artifacts/research-shots/b26-v2-season-2025-final/attempts.jsonl": {
+    "bytes": 242409552,
+    "sha256": "993d325c5f0522858b233ff6b515ac7dee5ca4b78877abaae522252a8804fe22"
+  },
+  "data/artifacts/research-shots/b26-v2-season-2025-final/policy-registration.json": {
+    "bytes": 834,
+    "sha256": "9cc493a1dbe34f0de9588327bd2e5c6ee205a4632021bebdcba90400311ab0ea"
+  },
+  "data/artifacts/research-shots/b26-v2-game-0022500006-final/games.json": {
+    "bytes": 8053,
+    "sha256": "759cbc1139466c53eafa158bbb5d930e7a587137737fc933329f5bf12465b44d"
+  },
+  "data/artifacts/research-shots/b26-v2-game-0022500006-final/source-games.json": {
+    "bytes": 25833,
+    "sha256": "44e542624ff5431a6c598b57d8448876716251ddf972ce07fec179e8bca0abfe"
+  },
+  "data/artifacts/research-shots/b26-v2-game-0022500006-final/manifest.json": {
+    "bytes": 6366,
+    "sha256": "a31afb5fcf0c2289966757e65b4b840c8fa2ce6282a63a91af216efac0c968b8"
+  },
+  "data/artifacts/research-shots/b26-v2-game-0022500006-final/rejected-rows.json": {
+    "bytes": 3,
+    "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+  },
+  "data/artifacts/research-shots/b26-v2-game-0022500006-final/attempts.jsonl": {
+    "bytes": 214584,
+    "sha256": "6a15d283a0c122507945bf053cf4bde8a7b2f72027f808926a845ac7a2cbe288"
+  },
+  "data/artifacts/research-shots/b26-v2-game-0022500006-final/policy-registration.json": {
+    "bytes": 834,
+    "sha256": "686302ed94d8b1ec500791b9cdc9715b186a359fed24afab97b29e7a18c16278"
+  },
+  "data/artifacts/research-shots/b26-three-season-2023/corrections.json": {
+    "bytes": 5469,
+    "sha256": "ab4ca1e629bae22aacf41b8ebd6f7c9f514de7517b5c224388a53c5c05961331"
+  },
+  "data/artifacts/research-shots/b26-three-season-2023/games.json": {
+    "bytes": 9217640,
+    "sha256": "e5bec5ffd6bfe5cfeec5d6d8f0bfa09fc6a9a62a9b5bd48f0187d0508badc222"
+  },
+  "data/artifacts/research-shots/b26-three-season-2023/source-games.json": {
+    "bytes": 25833,
+    "sha256": "e831c091b220d1c2622cc1d51133e6d635d85d4e8700cae22a3a1b2b9910ac52"
+  },
+  "data/artifacts/research-shots/b26-three-season-2023/manifest.json": {
+    "bytes": 6924,
+    "sha256": "cdb22cdb1dcdf80a34f4b87f5bec2d92e84b23959b7aa81be2c0814fa55be09a"
+  },
+  "data/artifacts/research-shots/b26-three-season-2023/rejected-rows.json": {
+    "bytes": 3,
+    "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+  },
+  "data/artifacts/research-shots/b26-three-season-2023/attempts.jsonl": {
+    "bytes": 241714929,
+    "sha256": "9552825e191228443aa1663d1a19e3010b672efb12947677240571df4a2ddf9e"
+  },
+  "data/artifacts/research-shots/b26-three-season-2023/correction-ledger.json": {
+    "bytes": 5699,
+    "sha256": "346f8a63cd7c3a7f19b7e9d2156f973d461799cc579a45b6139bd3a1f57e72c6"
+  },
+  "data/artifacts/research-shots/b26-three-season-2023/policy-registration.json": {
+    "bytes": 940,
+    "sha256": "42ef07b40663ad8e6114c4d3842a4c4ca1a1d141233b96cfc1ccba3281da3bfe"
+  },
+  "data/artifacts/research-shots/b26-ready-season-2023/games.json": {
+    "bytes": 9190881,
+    "sha256": "514493835961b1f067dab22505fdc68f20acc76cf86dc7957f7738fb5473268a"
+  },
+  "data/artifacts/research-shots/b26-ready-season-2023/source-games.json": {
+    "bytes": 25833,
+    "sha256": "e831c091b220d1c2622cc1d51133e6d635d85d4e8700cae22a3a1b2b9910ac52"
+  },
+  "data/artifacts/research-shots/b26-ready-season-2023/manifest.json": {
+    "bytes": 6529,
+    "sha256": "45e26a7959495d328b50b61992d880f3edee1e76b9f498119d3135f956db0dbf"
+  },
+  "data/artifacts/research-shots/b26-ready-season-2023/rejected-rows.json": {
+    "bytes": 3,
+    "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+  },
+  "data/artifacts/research-shots/b26-ready-season-2023/attempts.jsonl": {
+    "bytes": 241714008,
+    "sha256": "711b4f91d76af6c366e98f9f920feb954598d8bfe7cdab6fb42bc16d416704f0"
+  },
+  "data/artifacts/research-shots/b26-ready-season-2023/policy-registration.json": {
+    "bytes": 834,
+    "sha256": "4a81aced1aa17022cb6b6c531252bead9e3d9090266daa857ae4c3101d4a9cd6"
+  },
+  "data/artifacts/research-shots/b26-v2-game-0022500792-final/games.json": {
+    "bytes": 7934,
+    "sha256": "39e5d7d66cc43412865642ea106d5856f1e91690298a8071b179fbd6f5557102"
+  },
+  "data/artifacts/research-shots/b26-v2-game-0022500792-final/source-games.json": {
+    "bytes": 25833,
+    "sha256": "44e542624ff5431a6c598b57d8448876716251ddf972ce07fec179e8bca0abfe"
+  },
+  "data/artifacts/research-shots/b26-v2-game-0022500792-final/manifest.json": {
+    "bytes": 6416,
+    "sha256": "9596bb5174c473935feeea714937ddced5a3b0c145a5e1d2d936b490e0f1e2fc"
+  },
+  "data/artifacts/research-shots/b26-v2-game-0022500792-final/rejected-rows.json": {
+    "bytes": 3,
+    "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+  },
+  "data/artifacts/research-shots/b26-v2-game-0022500792-final/attempts.jsonl": {
+    "bytes": 187728,
+    "sha256": "8ee90cceeef7c8653b7cc313fb540270bfcb10e498e74d3b8f8cf9f829eca0d0"
+  },
+  "data/artifacts/research-shots/b26-v2-game-0022500792-final/policy-registration.json": {
+    "bytes": 834,
+    "sha256": "6c7dd88376ba7c2ec9d6fc8a5e4f13965a7e1f8b2daf84166bf642d984410c2c"
+  },
+  "data/artifacts/research-shots/b26-v2-game-0022500792/games.json": {
+    "bytes": 7934,
+    "sha256": "39e5d7d66cc43412865642ea106d5856f1e91690298a8071b179fbd6f5557102"
+  },
+  "data/artifacts/research-shots/b26-v2-game-0022500792/source-games.json": {
+    "bytes": 25833,
+    "sha256": "44e542624ff5431a6c598b57d8448876716251ddf972ce07fec179e8bca0abfe"
+  },
+  "data/artifacts/research-shots/b26-v2-game-0022500792/manifest.json": {
+    "bytes": 6266,
+    "sha256": "ef7bc87997140ff84a5f14757eb1e209543e2e733d1cb99ec9b0954738c540f3"
+  },
+  "data/artifacts/research-shots/b26-v2-game-0022500792/rejected-rows.json": {
+    "bytes": 3,
+    "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+  },
+  "data/artifacts/research-shots/b26-v2-game-0022500792/attempts.jsonl": {
+    "bytes": 187728,
+    "sha256": "8ee90cceeef7c8653b7cc313fb540270bfcb10e498e74d3b8f8cf9f829eca0d0"
+  },
+  "data/artifacts/research-shots/b26-v2-game-0022500792/policy-registration.json": {
+    "bytes": 834,
+    "sha256": "9b54e13d67d6720a0459c1433cca61cc5080a28ec5e238689976c3a85845c3fd"
+  },
+  "data/artifacts/research-shots/b26-v2-season-2024-expansion/games.json": {
+    "bytes": 9202522,
+    "sha256": "b23578ac018b8e028337f18b4da166148c80b9de3271dc097060a146ac598fa7"
+  },
+  "data/artifacts/research-shots/b26-v2-season-2024-expansion/source-games.json": {
+    "bytes": 25833,
+    "sha256": "7c4b077ec1768a008c40bd4a1b5c0884949c3597e8cd8312123fcf91d3356570"
+  },
+  "data/artifacts/research-shots/b26-v2-season-2024-expansion/manifest.json": {
+    "bytes": 6529,
+    "sha256": "525c8659ee3fcfd29a16ce6d83548240ab9d5faee89a857a0b8243cde7f6dac5"
+  },
+  "data/artifacts/research-shots/b26-v2-season-2024-expansion/rejected-rows.json": {
+    "bytes": 3,
+    "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+  },
+  "data/artifacts/research-shots/b26-v2-season-2024-expansion/attempts.jsonl": {
+    "bytes": 242856794,
+    "sha256": "08c742b378b8ea7ab2a0228903537420f866321e11fa17d43156bf9e786125c5"
+  },
+  "data/artifacts/research-shots/b26-v2-season-2024-expansion/policy-registration.json": {
+    "bytes": 834,
+    "sha256": "83eb00b12dcc5c0c87f36744ccd1ded79c672b7da0ac781c40c4a87aa06c6a58"
+  },
+  "data/artifacts/research-shots/b26-ready-game-0022500792/corrections.json": {
+    "bytes": 1403,
+    "sha256": "0ec6379a713ec49f89400d387cd6a0132d30a2981b5fb2d731478e50a6bc0f94"
+  },
+  "data/artifacts/research-shots/b26-ready-game-0022500792/games.json": {
+    "bytes": 16810,
+    "sha256": "6ec4c874c325547bbe1ead3046deaff95d10fc9f5a233b6634a7d052455683b3"
+  },
+  "data/artifacts/research-shots/b26-ready-game-0022500792/source-games.json": {
+    "bytes": 25833,
+    "sha256": "44e542624ff5431a6c598b57d8448876716251ddf972ce07fec179e8bca0abfe"
+  },
+  "data/artifacts/research-shots/b26-ready-game-0022500792/manifest.json": {
+    "bytes": 6851,
+    "sha256": "ef09dae311ebd2879977726c37e56677561bfa24786fd633fac1bbb88af55199"
+  },
+  "data/artifacts/research-shots/b26-ready-game-0022500792/rejected-rows.json": {
+    "bytes": 3,
+    "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+  },
+  "data/artifacts/research-shots/b26-ready-game-0022500792/attempts.jsonl": {
+    "bytes": 186607,
+    "sha256": "e0a69e8d4ea9e8dc2c90e280e15695dc1226ea9e5f2f370cd1321c53cbd07b42"
+  },
+  "data/artifacts/research-shots/b26-ready-game-0022500792/correction-ledger.json": {
+    "bytes": 1475,
+    "sha256": "a134104412ad3bd9e8b3bf5fa483f9ab629688a0daf088202d554dc916964639"
+  },
+  "data/artifacts/research-shots/b26-ready-game-0022500792/policy-registration.json": {
+    "bytes": 940,
+    "sha256": "670aa67104e629d5bef1d2d010f12efb4a6def20b699e8f2e6428c9899717ad4"
+  },
+  "data/artifacts/research-shots/b26-ready-game-0022401194/corrections.json": {
+    "bytes": 1403,
+    "sha256": "c62e40445db373f4ad5a9c4d7522f70797c08299fb48d116189ec569a060a054"
+  },
+  "data/artifacts/research-shots/b26-ready-game-0022401194/games.json": {
+    "bytes": 14686,
+    "sha256": "f7556aafe6eba6e30482189540dc113e373e536b172c0f6743d08c5add8b7e6b"
+  },
+  "data/artifacts/research-shots/b26-ready-game-0022401194/source-games.json": {
+    "bytes": 25833,
+    "sha256": "7c4b077ec1768a008c40bd4a1b5c0884949c3597e8cd8312123fcf91d3356570"
+  },
+  "data/artifacts/research-shots/b26-ready-game-0022401194/manifest.json": {
+    "bytes": 6851,
+    "sha256": "b5dcbff9e8aff1f0394c63c137cf7f536524cea0ef7f558373761cbcd8ebfe31"
+  },
+  "data/artifacts/research-shots/b26-ready-game-0022401194/rejected-rows.json": {
+    "bytes": 3,
+    "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+  },
+  "data/artifacts/research-shots/b26-ready-game-0022401194/attempts.jsonl": {
+    "bytes": 211416,
+    "sha256": "1f716dc28ee1a5b67975bad2f702eb68d73f227978b6e29c0c12252ba6d1194f"
+  },
+  "data/artifacts/research-shots/b26-ready-game-0022401194/correction-ledger.json": {
+    "bytes": 1432,
+    "sha256": "79f754592ddbfd3a1d6d40c69b5ae1079db03fc143891396942413cc8c088503"
+  },
+  "data/artifacts/research-shots/b26-ready-game-0022401194/policy-registration.json": {
+    "bytes": 940,
+    "sha256": "6ec76ef23598a34d4c6fa726b46dde0f631175ba1ad2e69b44fe5b86f602214b"
+  },
+  "data/artifacts/research-shots/b26-three-season-game-0022300078/corrections.json": {
+    "bytes": 5469,
+    "sha256": "ab4ca1e629bae22aacf41b8ebd6f7c9f514de7517b5c224388a53c5c05961331"
+  },
+  "data/artifacts/research-shots/b26-three-season-game-0022300078/games.json": {
+    "bytes": 17297,
+    "sha256": "8b5b8f856a8a30a0ae7dc1a85dfa2558843a69ebe9ec99c35d23448e52f75415"
+  },
+  "data/artifacts/research-shots/b26-three-season-game-0022300078/source-games.json": {
+    "bytes": 25833,
+    "sha256": "e831c091b220d1c2622cc1d51133e6d635d85d4e8700cae22a3a1b2b9910ac52"
+  },
+  "data/artifacts/research-shots/b26-three-season-game-0022300078/manifest.json": {
+    "bytes": 6851,
+    "sha256": "3de41280519661e13b479fa9e72c0fb6f6a4ad02853b9cd3ac9ccd1d4997832d"
+  },
+  "data/artifacts/research-shots/b26-three-season-game-0022300078/rejected-rows.json": {
+    "bytes": 3,
+    "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+  },
+  "data/artifacts/research-shots/b26-three-season-game-0022300078/attempts.jsonl": {
+    "bytes": 191515,
+    "sha256": "5f35b1896a76ab713b89915a4d9bffba5d5fc0db7af324c880d20c74c7f9fd1a"
+  },
+  "data/artifacts/research-shots/b26-three-season-game-0022300078/correction-ledger.json": {
+    "bytes": 5699,
+    "sha256": "346f8a63cd7c3a7f19b7e9d2156f973d461799cc579a45b6139bd3a1f57e72c6"
+  },
+  "data/artifacts/research-shots/b26-three-season-game-0022300078/policy-registration.json": {
+    "bytes": 940,
+    "sha256": "43bfafd3430b2c3e3afc1a9d488af88f75d35f541b4c7548276f41f75f8b6a38"
+  },
+  "data/artifacts/research-shots/b26-v2-corrected-season-2025/corrections.json": {
+    "bytes": 1403,
+    "sha256": "0ec6379a713ec49f89400d387cd6a0132d30a2981b5fb2d731478e50a6bc0f94"
+  },
+  "data/artifacts/research-shots/b26-v2-corrected-season-2025/games.json": {
+    "bytes": 9110314,
+    "sha256": "2d8cdfbffb5b30ef991fc6d019adcf1fcc1f0f4e25671c04b7e5514f8e3f6a4f"
+  },
+  "data/artifacts/research-shots/b26-v2-corrected-season-2025/source-games.json": {
+    "bytes": 25833,
+    "sha256": "44e542624ff5431a6c598b57d8448876716251ddf972ce07fec179e8bca0abfe"
+  },
+  "data/artifacts/research-shots/b26-v2-corrected-season-2025/manifest.json": {
+    "bytes": 6924,
+    "sha256": "d0c2fbe21ffbfaabb50b5bdc8ea94dafae95ec01ba46c2700ad7c665c24d349e"
+  },
+  "data/artifacts/research-shots/b26-v2-corrected-season-2025/rejected-rows.json": {
+    "bytes": 3,
+    "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+  },
+  "data/artifacts/research-shots/b26-v2-corrected-season-2025/attempts.jsonl": {
+    "bytes": 242408431,
+    "sha256": "a55fffa457807fa076e9c1e88c6f69324602c929678d6aec63de23b2fb8f6fd4"
+  },
+  "data/artifacts/research-shots/b26-v2-corrected-season-2025/correction-ledger.json": {
+    "bytes": 1475,
+    "sha256": "a134104412ad3bd9e8b3bf5fa483f9ab629688a0daf088202d554dc916964639"
+  },
+  "data/artifacts/research-shots/b26-v2-corrected-season-2025/policy-registration.json": {
+    "bytes": 940,
+    "sha256": "2b97946de4eff80b5e52a4d009158f798de2d8d2f466711e1c0c03af59c6db64"
+  },
+  "data/artifacts/research-shots/b26-v2-corrected-game-0022500792/corrections.json": {
+    "bytes": 1403,
+    "sha256": "0ec6379a713ec49f89400d387cd6a0132d30a2981b5fb2d731478e50a6bc0f94"
+  },
+  "data/artifacts/research-shots/b26-v2-corrected-game-0022500792/games.json": {
+    "bytes": 16810,
+    "sha256": "6ec4c874c325547bbe1ead3046deaff95d10fc9f5a233b6634a7d052455683b3"
+  },
+  "data/artifacts/research-shots/b26-v2-corrected-game-0022500792/source-games.json": {
+    "bytes": 25833,
+    "sha256": "44e542624ff5431a6c598b57d8448876716251ddf972ce07fec179e8bca0abfe"
+  },
+  "data/artifacts/research-shots/b26-v2-corrected-game-0022500792/manifest.json": {
+    "bytes": 6851,
+    "sha256": "6a364d98c51058a567e280a5058347c2c53c629f9cd7499a5818698a38ae24a9"
+  },
+  "data/artifacts/research-shots/b26-v2-corrected-game-0022500792/rejected-rows.json": {
+    "bytes": 3,
+    "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+  },
+  "data/artifacts/research-shots/b26-v2-corrected-game-0022500792/attempts.jsonl": {
+    "bytes": 186607,
+    "sha256": "e0a69e8d4ea9e8dc2c90e280e15695dc1226ea9e5f2f370cd1321c53cbd07b42"
+  },
+  "data/artifacts/research-shots/b26-v2-corrected-game-0022500792/correction-ledger.json": {
+    "bytes": 1475,
+    "sha256": "a134104412ad3bd9e8b3bf5fa483f9ab629688a0daf088202d554dc916964639"
+  },
+  "data/artifacts/research-shots/b26-v2-corrected-game-0022500792/policy-registration.json": {
+    "bytes": 940,
+    "sha256": "20cfe8f3985e785ab3ae5d8bbcf8dc944e26961ecc4d4fa1fabeb7e6fca5c1f7"
+  },
+  "data/artifacts/research-shots/b26-ready-season-2025/corrections.json": {
+    "bytes": 1403,
+    "sha256": "0ec6379a713ec49f89400d387cd6a0132d30a2981b5fb2d731478e50a6bc0f94"
+  },
+  "data/artifacts/research-shots/b26-ready-season-2025/games.json": {
+    "bytes": 9110314,
+    "sha256": "2d8cdfbffb5b30ef991fc6d019adcf1fcc1f0f4e25671c04b7e5514f8e3f6a4f"
+  },
+  "data/artifacts/research-shots/b26-ready-season-2025/source-games.json": {
+    "bytes": 25833,
+    "sha256": "44e542624ff5431a6c598b57d8448876716251ddf972ce07fec179e8bca0abfe"
+  },
+  "data/artifacts/research-shots/b26-ready-season-2025/manifest.json": {
+    "bytes": 6924,
+    "sha256": "8035b8565e1b355c27240814f8a215a244f57a8ddf1ef6ed5fd14e4127ada66f"
+  },
+  "data/artifacts/research-shots/b26-ready-season-2025/rejected-rows.json": {
+    "bytes": 3,
+    "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+  },
+  "data/artifacts/research-shots/b26-ready-season-2025/attempts.jsonl": {
+    "bytes": 242408431,
+    "sha256": "a55fffa457807fa076e9c1e88c6f69324602c929678d6aec63de23b2fb8f6fd4"
+  },
+  "data/artifacts/research-shots/b26-ready-season-2025/correction-ledger.json": {
+    "bytes": 1475,
+    "sha256": "a134104412ad3bd9e8b3bf5fa483f9ab629688a0daf088202d554dc916964639"
+  },
+  "data/artifacts/research-shots/b26-ready-season-2025/policy-registration.json": {
+    "bytes": 940,
+    "sha256": "afdb891fc557a4f428228c082671905619e2e3ca58b62f7493de706322c805bc"
+  },
+  "data/artifacts/research-shots/b26-season-2025-v1/games.json": {
+    "bytes": 8838667,
+    "sha256": "469fa4a88458547103eabf8405f2303a21161b6a2a54de01806b7d9cf178576c"
+  },
+  "data/artifacts/research-shots/b26-season-2025-v1/source-games.json": {
+    "bytes": 25833,
+    "sha256": "44e542624ff5431a6c598b57d8448876716251ddf972ce07fec179e8bca0abfe"
+  },
+  "data/artifacts/research-shots/b26-season-2025-v1/manifest.json": {
+    "bytes": 6100,
+    "sha256": "5e7f8311198b8b1ea8e0a4581f79a346d1dd67e0fa224228c5d884491cc98624"
+  },
+  "data/artifacts/research-shots/b26-season-2025-v1/rejected-rows.json": {
+    "bytes": 3,
+    "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+  },
+  "data/artifacts/research-shots/b26-season-2025-v1/attempts.jsonl": {
+    "bytes": 242409552,
+    "sha256": "993d325c5f0522858b233ff6b515ac7dee5ca4b78877abaae522252a8804fe22"
+  },
+  "data/artifacts/research-shots/b26-v2-game-0022500001/games.json": {
+    "bytes": 7414,
+    "sha256": "3a515bcc52d8d650dfb3e485f996e56e4f9f2a557447e40a0daa1654169a00e7"
+  },
+  "data/artifacts/research-shots/b26-v2-game-0022500001/source-games.json": {
+    "bytes": 25833,
+    "sha256": "44e542624ff5431a6c598b57d8448876716251ddf972ce07fec179e8bca0abfe"
+  },
+  "data/artifacts/research-shots/b26-v2-game-0022500001/manifest.json": {
+    "bytes": 6216,
+    "sha256": "7190f983bfc5f5b942f8cdfd74a1869a26c50341e58b4d3212954d3718cc9d4e"
+  },
+  "data/artifacts/research-shots/b26-v2-game-0022500001/rejected-rows.json": {
+    "bytes": 3,
+    "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+  },
+  "data/artifacts/research-shots/b26-v2-game-0022500001/attempts.jsonl": {
+    "bytes": 222663,
+    "sha256": "17a3fd181c081251aeb8a33df00f4a3777c3ee3130a18f1dc63d1698d0798237"
+  },
+  "data/artifacts/research-shots/b26-v2-game-0022500001/policy-registration.json": {
+    "bytes": 834,
+    "sha256": "ecd9cb9d183c598c8c7babb1d291fb2efe3e23c5c10151fe14ea3ae2e31e623c"
+  },
+  "data/artifacts/evaluation/3cf4ae8eb331ac02d3b3/predictions.jsonl": {
+    "bytes": 69076596,
+    "sha256": "6b0d73f3759151ead73ea693f7785d0da9897eb747563444aef3d272bd0e5dec"
+  },
+  "data/artifacts/evaluation/3cf4ae8eb331ac02d3b3/baseline-report.md": {
+    "bytes": 1652,
+    "sha256": "180aca5a1ef872066461de6d15cdb1b0414b632e11dc777a5a4aed599c6be357"
+  },
+  "data/artifacts/evaluation/3cf4ae8eb331ac02d3b3/exclusions.json": {
+    "bytes": 888,
+    "sha256": "16ffafa518964559e8ae6fce88ee94f4ffb08d5703b6034d77810c8c554f3883"
+  },
+  "data/artifacts/evaluation/3cf4ae8eb331ac02d3b3/labels.jsonl": {
+    "bytes": 21188269,
+    "sha256": "a367dac1eed11b29bcbd4cab12ab89d9db9e63e1196eece05e11f931ef75d02d"
+  },
+  "data/artifacts/evaluation/3cf4ae8eb331ac02d3b3/environment.json": {
+    "bytes": 402,
+    "sha256": "5bf526a719781036e85d258a8e6c484af52b235e9cca2d5597e17cd7955ad272"
+  },
+  "data/artifacts/evaluation/3cf4ae8eb331ac02d3b3/metrics.json": {
+    "bytes": 13817,
+    "sha256": "dbc2140478f6af543bd10d676ba51233a36f4cf3ddc4446f8fb8ad097f54c99f"
+  },
+  "data/artifacts/evaluation/3cf4ae8eb331ac02d3b3/config.json": {
+    "bytes": 2830,
+    "sha256": "7bf78d86ce24ef29ffb71b3a47d515edec9a18c134e6dab8fe48305c4f243c41"
+  },
+  "data/artifacts/evaluation/3cf4ae8eb331ac02d3b3/split-manifest.json": {
+    "bytes": 742,
+    "sha256": "8e2a86de2a1a4d93553c17d2f2a997ca9fa4bddc1a0f5438c33938e41e0c5636"
+  },
+  "data/artifacts/evaluation/3cf4ae8eb331ac02d3b3/features.jsonl": {
+    "bytes": 145809932,
+    "sha256": "98ca70e7fe6874443146d0ab73749ef45e905fd5e9843c2e075d52597d6fdb0f"
+  },
+  "data/artifacts/evaluation/3cf4ae8eb331ac02d3b3/selection.json": {
+    "bytes": 1574,
+    "sha256": "c1ca0952fe423d289952960d05bc0827154307b35ddb28d6e25ed1983c409649"
+  },
+  "data/artifacts/evaluation/3cf4ae8eb331ac02d3b3/calibration.json": {
+    "bytes": 354,
+    "sha256": "5711a1c58b108cf69d0a97b278c3e53895bbf2031162d0a7d9d27cbf3906ee4a"
+  },
+  "data/artifacts/evaluation/3cf4ae8eb331ac02d3b3/run-manifest.json": {
+    "bytes": 2402,
+    "sha256": "3c416fb315f10759c1b28172c07fe49763622ee0f5424680ea98e3d0740aca39"
+  },
+  "data/artifacts/evaluation/3cf4ae8eb331ac02d3b3/dataset-manifest.json": {
+    "bytes": 1114,
+    "sha256": "a47bc3d5ca392d3fccba1824d6706207d5e2ab53f829dbf3965b262046e3c6ea"
+  },
+  "data/artifacts/evaluation/b0e4bb3300011b5a3499/model-card.md": {
+    "bytes": 1971,
+    "sha256": "e7b15909d5efc526846e7e06aa3bfdf2c96caa31bbc984c987ec9c4191621781"
+  },
+  "data/artifacts/evaluation/b0e4bb3300011b5a3499/predictions.jsonl": {
+    "bytes": 114982713,
+    "sha256": "3d239d087a5d2000296d2a9eaf45509a2d2f7d6ce4465df2e14130579ce0c350"
+  },
+  "data/artifacts/evaluation/b0e4bb3300011b5a3499/evaluation-report.json": {
+    "bytes": 48417,
+    "sha256": "d269f6f75ca7721807ca58052eb239e46bc6f15225ba859af71fcc3018691b0a"
+  },
+  "data/artifacts/evaluation/b0e4bb3300011b5a3499/labels.jsonl": {
+    "bytes": 29671304,
+    "sha256": "40621a6c8cfcc8fd3022459bc79c5e9cd6c6f74628c16c9dff246781bc634d43"
+  },
+  "data/artifacts/evaluation/b0e4bb3300011b5a3499/environment.json": {
+    "bytes": 405,
+    "sha256": "249605305ed13cb41a850a12e471c16f03163a4ca1f647da4915551b31772f2a"
+  },
+  "data/artifacts/evaluation/b0e4bb3300011b5a3499/validation-predictions.jsonl": {
+    "bytes": 97442909,
+    "sha256": "d92f55ca28d779739b8ab1bbe3790e608310f301a633af133a0afadf16519a07"
+  },
+  "data/artifacts/evaluation/b0e4bb3300011b5a3499/metrics.json": {
+    "bytes": 16391,
+    "sha256": "d8fa8f625956853eb9bd55a79adc65e4f08e0ff245c50ea434a53b0e98189f27"
+  },
+  "data/artifacts/evaluation/b0e4bb3300011b5a3499/config.json": {
+    "bytes": 3509,
+    "sha256": "2f11e9ac4733c2fcd24fe659a0155d5c91fb3c2e996213c570c9098662d4422f"
+  },
+  "data/artifacts/evaluation/b0e4bb3300011b5a3499/replay-estimates.jsonl": {
+    "bytes": 25775089,
+    "sha256": "0d0f4035816b48828ae5cebae80f54bb13717a92d61f759f8baf752556298978"
+  },
+  "data/artifacts/evaluation/b0e4bb3300011b5a3499/split-manifest.json": {
+    "bytes": 720,
+    "sha256": "326300078629274735695cc698c3c338d2aea57fbc843727e635023387a690f5"
+  },
+  "data/artifacts/evaluation/b0e4bb3300011b5a3499/preopen-registration.json": {
+    "bytes": 2285,
+    "sha256": "f0334cb257bb9f7fcca706cd1389efbda5d0f645b8d9eb86d11702015bcf5498"
+  },
+  "data/artifacts/evaluation/b0e4bb3300011b5a3499/features.jsonl": {
+    "bytes": 261496829,
+    "sha256": "636699eb754c4057f5ffdd9212fd97486565c8dd68969ca8f6c7ebb63e35df91"
+  },
+  "data/artifacts/evaluation/b0e4bb3300011b5a3499/selection.json": {
+    "bytes": 16145,
+    "sha256": "28dc893d4e525029c803d6cef2a61cf3c98b29c882691370b6de56761a97294f"
+  },
+  "data/artifacts/evaluation/b0e4bb3300011b5a3499/final-predictions.jsonl": {
+    "bytes": 23733721,
+    "sha256": "f5bac1030ff41e10ab8895d0b5c3be8a0a7a25a247c8e721a0a5e2d77dfb595f"
+  },
+  "data/artifacts/evaluation/b0e4bb3300011b5a3499/calibration.json": {
+    "bytes": 1207,
+    "sha256": "f8a5c1106b1fd3be12eee884df6fe5ac3863c03f1fd376208340dde04090bd96"
+  },
+  "data/artifacts/evaluation/b0e4bb3300011b5a3499/run-manifest.json": {
+    "bytes": 3375,
+    "sha256": "ac1f091315d46d9dd23c1d4782b256e07b901a7744cb5763fd2a240bf3243ec7"
+  },
+  "data/artifacts/evaluation/b0e4bb3300011b5a3499/dataset-manifest.json": {
+    "bytes": 2354,
+    "sha256": "ab04ae668518c7f48ef25704735a8ab4c534004236347b10d2b55a5b7068c83c"
+  },
+  "data/artifacts/evaluation/6f7af9e63f27aada910d/model-card.md": {
+    "bytes": 3404,
+    "sha256": "d03a4ec3a8060e5b3d50f8e5f9bf4506af71cec7221b960cd10dcf7e2dc9e2ca"
+  },
+  "data/artifacts/evaluation/6f7af9e63f27aada910d/evaluation-report.json": {
+    "bytes": 42339,
+    "sha256": "84d5443326c03bfdffdfac2c01ca72b17943ff1f3b0a733f6023e5924aa5de4b"
+  },
+  "data/artifacts/evaluation/6f7af9e63f27aada910d/s3-features.jsonl": {
+    "bytes": 70548530,
+    "sha256": "82a1f61aff3665bae57854269b171cd9ec42bc444282c643138ded9b45bbb921"
+  },
+  "data/artifacts/evaluation/6f7af9e63f27aada910d/s3-baselines.jsonl": {
+    "bytes": 35123989,
+    "sha256": "b529267e548ef79535e3717fceb01ceb7c0952ca62a804d692c3d34013a383f9"
+  },
+  "data/artifacts/evaluation/6f7af9e63f27aada910d/validation-predictions.jsonl": {
+    "bytes": 50683298,
+    "sha256": "709a16f86d8cf48a739b4e89d3cb71cdf4b2e51c836e91a42641b96138fb97a5"
+  },
+  "data/artifacts/evaluation/6f7af9e63f27aada910d/replay-estimates.jsonl": {
+    "bytes": 28034751,
+    "sha256": "7c635f46abfd8df5e4045dfd2fa24ef993a8fa6e992475f45ef5603ce65bcb2f"
+  },
+  "data/artifacts/evaluation/6f7af9e63f27aada910d/preopen-registration.json": {
+    "bytes": 13359,
+    "sha256": "af076346ecfd1edb5f3f1fff33c08451d14ad1ca784730b97cbe84f0fdb02e23"
+  },
+  "data/artifacts/evaluation/6f7af9e63f27aada910d/s3-labels.jsonl": {
+    "bytes": 10597649,
+    "sha256": "69c839d0da116a5502d337ad5150e4393c69a3eff71344f18d1005670e498d85"
+  },
+  "data/artifacts/evaluation/6f7af9e63f27aada910d/final-predictions.jsonl": {
+    "bytes": 18534330,
+    "sha256": "29ba74269b596347233f34baa7f64c993fc059c826918909b50fb8fb470b43c7"
+  },
+  "data/artifacts/evaluation/6f7af9e63f27aada910d/calibration.json": {
+    "bytes": 717,
+    "sha256": "510e50fd351c7f3f3d3fe21e277294acb35bd19296acaeafe0df00d315f239b6"
+  },
+  "data/artifacts/evaluation/6f7af9e63f27aada910d/run-manifest.json": {
+    "bytes": 2033,
+    "sha256": "ce60e0cbce89f52e266dfc233cb85b5b466fa9a2d695deaf4ab017fb76fc09a9"
+  }
+}

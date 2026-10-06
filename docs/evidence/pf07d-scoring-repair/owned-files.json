@@ -1,0 +1,12 @@
+{
+  "paths": [
+    "src/courtload/services/assistant/planner.py",
+    "scripts/evaluate_pf07d_hybrid.py",
+    "tests/integration/test_hybrid_evaluation_postgres.py",
+    "tests/fixtures/assistant/pf07d-scoring-holdout-v1.json",
+    "tests/fixtures/assistant/pf07d-scoring-holdout-v1.sha256",
+    "docs/design/polish-assistant-contract.md",
+    "docs/polish-freeze-implementation-progress.md"
+  ],
+  "evidence_directory": "docs/evidence/pf07d-scoring-repair"
+}

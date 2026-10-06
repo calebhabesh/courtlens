@@ -1,0 +1,42 @@
+INFO:     Started server process [2041734]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8178 (Press CTRL+C to quit)
+INFO:     127.0.0.1:42582 - "GET /api/workbench/assistant/v2/threads HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42588 - "POST /api/workbench/assistant/v2/threads HTTP/1.1" 201 Created
+INFO:     127.0.0.1:42588 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42588 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42588 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:42604 - "GET /api/workbench/assistant/v2/threads HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42604 - "GET /api/workbench/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42612 - "GET /api/workbench/assistant/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42604 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42604 - "POST /api/workbench/assistant/v2/threads HTTP/1.1" 201 Created
+INFO:     127.0.0.1:42604 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42604 - "GET /api/workbench/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42612 - "GET /api/workbench/assistant/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42604 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42604 - "GET /api/workbench/assistant/v2/threads/3712352e-e5fb-483b-b33b-96eecaec0922/turns HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [2041734]
+INFO:     Started server process [2042030]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8178 (Press CTRL+C to quit)
+INFO:     127.0.0.1:42686 - "GET /api/workbench/assistant/v2/threads HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42696 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42696 - "GET /api/workbench/assistant/v2/threads/cec8deab-da2a-4ebe-8110-645e535a97b7/turns HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42696 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42696 - "POST /api/workbench/assistant/v2/threads/cec8deab-da2a-4ebe-8110-645e535a97b7/turns/ce4c0408-efb0-4272-b567-7ac9603ce376/cancel HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42696 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42696 - "DELETE /api/workbench/assistant/v2/threads/cec8deab-da2a-4ebe-8110-645e535a97b7 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42696 - "GET /api/workbench/assistant/v2/threads/cec8deab-da2a-4ebe-8110-645e535a97b7/turns HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:42696 - "GET /api/workbench/assistant/v2/threads/3712352e-e5fb-483b-b33b-96eecaec0922/turns HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42696 - "DELETE /api/workbench/assistant/v2/threads HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42696 - "GET /api/workbench/assistant/v2/threads HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [2042030]

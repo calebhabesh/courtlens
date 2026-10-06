@@ -1,0 +1,14 @@
+{
+  "samples": 205,
+  "process_maxima": {
+    "pytest": {
+      "max_rss_kib": 5565848,
+      "max_hwm_kib": 8600904
+    },
+    "uvicorn": {
+      "max_rss_kib": 336728,
+      "max_hwm_kib": 361400
+    }
+  },
+  "note": "RSS/HWM samples begun during final full suite; pytest includes large fresh archive recovery; API measurements are process-local and exclude PostgreSQL/child workers. HWM is kernel lifetime maximum, not a guessed system-wide peak."
+}

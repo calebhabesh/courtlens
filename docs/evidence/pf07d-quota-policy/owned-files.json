@@ -1,0 +1,9 @@
+[
+  "README.md",
+  ".env.example",
+  "scripts/evaluate_pf07d_hybrid.py",
+  "tests/unit/test_hybrid_evaluation_quota_policy.py",
+  "docs/design/polish-assistant-contract.md",
+  "docs/polish-freeze-implementation-plan.md",
+  "docs/polish-freeze-implementation-progress.md"
+]

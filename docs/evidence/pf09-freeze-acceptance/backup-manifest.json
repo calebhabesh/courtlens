@@ -1,0 +1,432 @@
+{
+  "created_at_utc": "2026-10-06T17:21:24.923393+00:00",
+  "code_version": "PF09-working-tree",
+  "channel": "public",
+  "mode": "workbench",
+  "snapshot_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+  "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+  "dataset_content_sha256": "68bc89a115a025f84ca93f34aa50072696ed316490fa9e4d226cf0578c4a5c6d",
+  "dataset_observation_sha256": "d77520348b95269d63c3841091d34016e92a41f9b45692ad89b930cc26a9076d",
+  "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666",
+  "registered_evaluation_run_id": "6f7af9e63f27aada910d",
+  "artifact_hashes": {
+    "replay-estimates.jsonl": "7c635f46abfd8df5e4045dfd2fa24ef993a8fa6e992475f45ef5603ce65bcb2f",
+    "calibration.json": "510e50fd351c7f3f3d3fe21e277294acb35bd19296acaeafe0df00d315f239b6",
+    "evaluation-report.json": "84d5443326c03bfdffdfac2c01ca72b17943ff1f3b0a733f6023e5924aa5de4b"
+  },
+  "points_v1_artifact_hashes": {
+    "3cf4ae8eb331ac02d3b3/calibration.json": "5711a1c58b108cf69d0a97b278c3e53895bbf2031162d0a7d9d27cbf3906ee4a",
+    "3cf4ae8eb331ac02d3b3/metrics.json": "dbc2140478f6af543bd10d676ba51233a36f4cf3ddc4446f8fb8ad097f54c99f",
+    "3cf4ae8eb331ac02d3b3/config.json": "7bf78d86ce24ef29ffb71b3a47d515edec9a18c134e6dab8fe48305c4f243c41",
+    "b0e4bb3300011b5a3499/evaluation-report.json": "d269f6f75ca7721807ca58052eb239e46bc6f15225ba859af71fcc3018691b0a",
+    "b0e4bb3300011b5a3499/calibration.json": "f8a5c1106b1fd3be12eee884df6fe5ac3863c03f1fd376208340dde04090bd96",
+    "b0e4bb3300011b5a3499/model-card.md": "e7b15909d5efc526846e7e06aa3bfdf2c96caa31bbc984c987ec9c4191621781",
+    "b0e4bb3300011b5a3499/metrics.json": "d8fa8f625956853eb9bd55a79adc65e4f08e0ff245c50ea434a53b0e98189f27",
+    "b0e4bb3300011b5a3499/config.json": "2f11e9ac4733c2fcd24fe659a0155d5c91fb3c2e996213c570c9098662d4422f"
+  },
+  "evaluation_configs_hashes": {
+    "manifests/accepted-points-v1.json": "ab04ae668518c7f48ef25704735a8ab4c534004236347b10d2b55a5b7068c83c",
+    "manifests/accepted-archive-v1.json": "4a99e5fd32155012c8f62a736830521e7aa55dd368215e38833bf7ade36512e3",
+    "config/points-v1.yaml": "b7a73c7287db2bd00349030cc7387bdf44ee584a36f73b6cb08050ddcfdb5884",
+    "config/baseline-v1.yaml": "d368fa25380e3c29a680e66166ddf6fcf83829c6863268eb852548c194c0ec4c"
+  },
+  "raw_archive": {
+    "path": "/home/ethioking/dev/nba-analytics/data/raw",
+    "manifest": null
+  },
+  "workbench_raw_inputs": {
+    "sportsdataverse_2022": {
+      "source": "sportsdataverse/sportsdataverse-data",
+      "ending_year": 2022,
+      "canonical_season": "2021-22",
+      "acquired_at_utc": "2026-10-01T14:31:20.554664+00:00",
+      "license_declared": "CC BY 4.0; underlying NBA data rights unverified",
+      "files": {
+        "player_boxscores": {
+          "url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_player_boxscores/player_boxscores_2022.csv",
+          "path": "data/raw/sportsdataverse_2022/player_boxscores_2022.csv",
+          "bytes": 5948782,
+          "sha256": "8d2960d33fd0a9c787f00da915ccb74419d5d46e2d7dddf05a9d93ed9f9f6b40",
+          "reused": false
+        },
+        "team_boxscores": {
+          "url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_team_boxscores/team_boxscores_2022.csv",
+          "path": "data/raw/sportsdataverse_2022/team_boxscores_2022.csv",
+          "bytes": 357011,
+          "sha256": "af46dd3d3e6c73c29b3747c4a1fdbf3d911296118036365153a8dfedd4891c17",
+          "reused": false
+        },
+        "schedule": {
+          "url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_schedules/nba_schedule_2022.csv.gz",
+          "path": "data/raw/sportsdataverse_2022/nba_schedule_2022.csv.gz",
+          "bytes": 22779,
+          "sha256": "fab3ed1ce98f0407651add307607280520da770cc98c2931009d6449fa12c2f0",
+          "reused": false
+        }
+      }
+    },
+    "sportsdataverse_2023": {
+      "source": "sportsdataverse/sportsdataverse-data",
+      "ending_year": 2023,
+      "canonical_season": "2022-23",
+      "acquired_at_utc": "2026-10-01T14:31:21.460064+00:00",
+      "license_declared": "CC BY 4.0; underlying NBA data rights unverified",
+      "files": {
+        "player_boxscores": {
+          "url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_player_boxscores/player_boxscores_2023.csv",
+          "path": "data/raw/sportsdataverse_2023/player_boxscores_2023.csv",
+          "bytes": 5984106,
+          "sha256": "33bd3f9813429d2f3a57e4453196e734b5ddcc99c7e1be09c4a616cfd1ea628d",
+          "reused": false
+        },
+        "team_boxscores": {
+          "url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_team_boxscores/team_boxscores_2023.csv",
+          "path": "data/raw/sportsdataverse_2023/team_boxscores_2023.csv",
+          "bytes": 356373,
+          "sha256": "526d1eb44860eb6612383588dc3018b5bebe5b5afc8246b28f0d0ec56d1c2348",
+          "reused": false
+        },
+        "schedule": {
+          "url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_schedules/nba_schedule_2023.csv.gz",
+          "path": "data/raw/sportsdataverse_2023/nba_schedule_2023.csv.gz",
+          "bytes": 22828,
+          "sha256": "ef6fb13bfd82ddaac2b2898b967fefa4e0448b5a3c7f5c1c16e3d1414a194b8a",
+          "reused": false
+        }
+      }
+    },
+    "sportsdataverse_2024": {
+      "source": "sportsdataverse/sportsdataverse-data",
+      "ending_year": 2024,
+      "canonical_season": "2023-24",
+      "acquired_at_utc": "2026-10-05T16:02:52.321275+00:00",
+      "license_declared": "CC BY 4.0; underlying NBA data rights unverified",
+      "files": {
+        "player_boxscores": {
+          "url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_player_boxscores/player_boxscores_2024.csv",
+          "path": "data/raw/sportsdataverse_2024/player_boxscores_2024.csv",
+          "bytes": 6146662,
+          "sha256": "7a2a57f37309a067d77fd3acd72b70aeb71366006b41e8c9a3544c4f7ea03e27",
+          "reused": true
+        },
+        "team_boxscores": {
+          "url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_team_boxscores/team_boxscores_2024.csv",
+          "path": "data/raw/sportsdataverse_2024/team_boxscores_2024.csv",
+          "bytes": 356488,
+          "sha256": "d48c29dabcfecb4d746c663ab2ccdb925c60242bac1a0381a4fbe49fc1020ff2",
+          "reused": true
+        },
+        "schedule": {
+          "url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_schedules/nba_schedule_2024.csv.gz",
+          "path": "data/raw/sportsdataverse_2024/nba_schedule_2024.csv.gz",
+          "bytes": 22876,
+          "sha256": "2b0a6eea3292c224771c702ba26813294cfd6dab7996f1d6f5d3d2b0b630c250",
+          "reused": true
+        }
+      }
+    },
+    "sportsdataverse_2025": {
+      "source": "sportsdataverse/sportsdataverse-data",
+      "ending_year": 2025,
+      "canonical_season": "2024-25",
+      "acquired_at_utc": "2026-10-05T16:02:52.324439+00:00",
+      "license_declared": "CC BY 4.0; underlying NBA data rights unverified",
+      "files": {
+        "player_boxscores": {
+          "url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_player_boxscores/player_boxscores_2025.csv",
+          "path": "data/raw/sportsdataverse_2025/player_boxscores_2025.csv",
+          "bytes": 6191431,
+          "sha256": "71645d3569e0c0a94e51d136c6454f20d59d70f4b518c62c6bbbdb9e905cb7c0",
+          "reused": true
+        },
+        "team_boxscores": {
+          "url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_team_boxscores/team_boxscores_2025.csv",
+          "path": "data/raw/sportsdataverse_2025/team_boxscores_2025.csv",
+          "bytes": 357762,
+          "sha256": "5c426deb97a203492070e03bd40040a6b1180c243986a6ed26abfc78bb942268",
+          "reused": true
+        },
+        "schedule": {
+          "url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_schedules/nba_schedule_2025.csv.gz",
+          "path": "data/raw/sportsdataverse_2025/nba_schedule_2025.csv.gz",
+          "bytes": 22929,
+          "sha256": "639e8145a750b80a4394d2e7044545019bcc0e39a979618c7ff9edbfcac02c9b",
+          "reused": true
+        }
+      }
+    },
+    "sportsdataverse_2026": {
+      "source": "sportsdataverse/sportsdataverse-data",
+      "ending_year": 2026,
+      "canonical_season": "2025-26",
+      "acquired_at_utc": "2026-10-05T16:02:52.327492+00:00",
+      "license_declared": "CC BY 4.0; underlying NBA data rights unverified",
+      "files": {
+        "player_boxscores": {
+          "url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_player_boxscores/player_boxscores_2026.csv",
+          "path": "data/raw/sportsdataverse_2026/player_boxscores_2026.csv",
+          "bytes": 6131057,
+          "sha256": "decaee33440ec8bd26d21152d61b4b69970bed45c3d07ede42f2700b7bd364e7",
+          "reused": true
+        },
+        "team_boxscores": {
+          "url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_team_boxscores/team_boxscores_2026.csv",
+          "path": "data/raw/sportsdataverse_2026/team_boxscores_2026.csv",
+          "bytes": 358439,
+          "sha256": "b5133e5602d1ab9c4a4b4240aced7af3b6587e124f7ab7335b5de961c897ade8",
+          "reused": true
+        },
+        "schedule": {
+          "url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_schedules/nba_schedule_2026.csv.gz",
+          "path": "data/raw/sportsdataverse_2026/nba_schedule_2026.csv.gz",
+          "bytes": 23071,
+          "sha256": "c1ff3711ef8b8ec4310c60159d1225a400facc7ce1e29bc64f09ae4130496509",
+          "reused": true
+        }
+      }
+    },
+    "sportsdataverse_2027": {
+      "source": "sportsdataverse/sportsdataverse-data",
+      "ending_year": 2027,
+      "canonical_season": "2026-27",
+      "acquired_at_utc": "2026-10-05T16:02:52.328919+00:00",
+      "license_declared": "CC BY 4.0; underlying NBA data rights unverified",
+      "files": {
+        "raw_schedule_json": {
+          "url": "https://raw.githubusercontent.com/sportsdataverse/hoopR-nba-stats-raw/main/nba_stats/json/scheduleleaguev2/2027.json",
+          "path": "data/raw/sportsdataverse_2027/schedule_2027.json",
+          "bytes": 2904298,
+          "sha256": "018786b1b1d33cb705ee14b7d7c354755ddfc17c9664ee3a1fe017d814327d96",
+          "reused": true
+        }
+      }
+    }
+  },
+  "workbench_records": {
+    "player_games_count": 104533,
+    "team_games_count": 7924,
+    "schedules_count": 5470,
+    "saved_investigations_count": 185,
+    "personal_workspaces_count": 7,
+    "model_policy_activations": [
+      {
+        "id": "bbf90110-097c-4421-8658-41b158c83b8b",
+        "policy_name": "points-v1-prior_blend",
+        "target_metric": "basketball_points",
+        "estimator_identity": "prior_blend",
+        "calibration_identity": "calibration-80pct-b0e4bb3300011b5a3499",
+        "experiment_run_id": "b0e4bb3300011b5a3499",
+        "is_active": true,
+        "activated_at": "2026-10-01T16:43:26.124161+00:00"
+      }
+    ],
+    "forecast_issuances_count": 489,
+    "forecast_scores_count": 489
+  },
+  "saved_conversation_analyses": [
+    {
+      "id": "05efbfee-8d3d-490b-81d3-fc0a08e0460d",
+      "manifest_sha256": "a36647d3de0ec72b4d9f7e84cdcf6b1d67469e64507ba1494da0e6904f0b46c2"
+    },
+    {
+      "id": "1a89561c-6402-4a84-b9ff-716f9ac33bff",
+      "manifest_sha256": "cdebb257811066185ca320a07f0a9a6e5b1c56ec2af6c3b710b10af2db8668fe"
+    },
+    {
+      "id": "1ec05206-2490-4922-becc-5e519483bf2e",
+      "manifest_sha256": "1307b333338d924dddb8766871cc752c04b934fcc2f93cecce819a01cdb183e6"
+    },
+    {
+      "id": "20bc7459-d2f4-482d-a846-3f1114ebf2d4",
+      "manifest_sha256": "cdebb257811066185ca320a07f0a9a6e5b1c56ec2af6c3b710b10af2db8668fe"
+    },
+    {
+      "id": "21555371-b276-4cf7-b067-2f8a527d240a",
+      "manifest_sha256": "ef8ecfca6b6ee083ca43502a446afba3b267e678ac8f338254b93dcfdde1c25c"
+    },
+    {
+      "id": "21610191-6c56-4360-9d38-758522444e55",
+      "manifest_sha256": "da6e75f2ea34e24fe79ba26d5d7c0f6f7461202a1bb5b715e77a3d60c3f171bc"
+    },
+    {
+      "id": "2be2c945-10fc-49f6-8c9d-299c1555d6b9",
+      "manifest_sha256": "895dfad0719cd7fcb76c84606a46524967e59e75997beaafb0277f4693b1104b"
+    },
+    {
+      "id": "3145deec-7e4a-4646-a23d-45dcba4f79a0",
+      "manifest_sha256": "48f8617ef4cd78243598eb07454be530675e503a910488a3f5054448bf290d78"
+    },
+    {
+      "id": "316ece01-cb14-4586-8efc-6f440565d1b7",
+      "manifest_sha256": "91c2a9f0ef6ac9b8fc26f828bf1c956ca39dbf9eb2c76ea0174365b089dcd0cd"
+    },
+    {
+      "id": "322511a8-3228-4689-83f6-f61baaa93233",
+      "manifest_sha256": "a69b64a20e03f6e1e0214ee16b908e0549e97a94126c8fa879d7d28545e67429"
+    },
+    {
+      "id": "3bcb37c9-b410-44b1-be7f-c3b368fbe28c",
+      "manifest_sha256": "d57b681befad0017f83b5ca57af3a55bf4dded71403bc7af3d48a4c30c8c85c3"
+    },
+    {
+      "id": "3d8b41f5-2eb9-49ac-abfc-ead0c48035ab",
+      "manifest_sha256": "48f8617ef4cd78243598eb07454be530675e503a910488a3f5054448bf290d78"
+    },
+    {
+      "id": "4491c3b2-3223-4262-8e37-7edf246ded2c",
+      "manifest_sha256": "da6e75f2ea34e24fe79ba26d5d7c0f6f7461202a1bb5b715e77a3d60c3f171bc"
+    },
+    {
+      "id": "59e40c0e-e557-4934-9e4d-b5f3dfa7ab04",
+      "manifest_sha256": "da6e75f2ea34e24fe79ba26d5d7c0f6f7461202a1bb5b715e77a3d60c3f171bc"
+    },
+    {
+      "id": "5ca449e6-6860-4760-affd-4a1c8eefcaeb",
+      "manifest_sha256": "91c2a9f0ef6ac9b8fc26f828bf1c956ca39dbf9eb2c76ea0174365b089dcd0cd"
+    },
+    {
+      "id": "64cd33c9-b3e5-41e5-a0b6-190522dd353c",
+      "manifest_sha256": "e85533a41c3a5c0a8dad522cb9cdfcf3903266a8c43fc4140c56cd674fe5c56f"
+    },
+    {
+      "id": "75c7167a-6e8e-4257-97bc-b35392779a84",
+      "manifest_sha256": "b8ade85acf97b6b326afedd5d98979789dfc4ad7a9bee26cc4a9d7afbfec9d2b"
+    },
+    {
+      "id": "7dad6ad2-8f34-4a64-a5f6-6bffb5e07389",
+      "manifest_sha256": "48f8617ef4cd78243598eb07454be530675e503a910488a3f5054448bf290d78"
+    },
+    {
+      "id": "7f34ae31-f36f-4e1f-8733-fd2f9e9a9ec6",
+      "manifest_sha256": "b8ade85acf97b6b326afedd5d98979789dfc4ad7a9bee26cc4a9d7afbfec9d2b"
+    },
+    {
+      "id": "8549f5c3-16a3-4518-9196-ca16897ddac0",
+      "manifest_sha256": "a69b64a20e03f6e1e0214ee16b908e0549e97a94126c8fa879d7d28545e67429"
+    },
+    {
+      "id": "89ea241c-7238-4358-952c-289f05b731f0",
+      "manifest_sha256": "91c2a9f0ef6ac9b8fc26f828bf1c956ca39dbf9eb2c76ea0174365b089dcd0cd"
+    },
+    {
+      "id": "8a593a43-2dad-4c23-9cd8-5d7451b097bc",
+      "manifest_sha256": "25539cd248c0fa43be506070f1eb9db46f0f3afcf0dc1a7801521edba3d61236"
+    },
+    {
+      "id": "8b5511d7-4413-4c3e-b1c0-8b6d650ac2b3",
+      "manifest_sha256": "895dfad0719cd7fcb76c84606a46524967e59e75997beaafb0277f4693b1104b"
+    },
+    {
+      "id": "a708911f-7f26-49a8-82aa-0288697fdef3",
+      "manifest_sha256": "cdebb257811066185ca320a07f0a9a6e5b1c56ec2af6c3b710b10af2db8668fe"
+    },
+    {
+      "id": "a9ffaef6-adf0-47d8-98f5-1ba23fea3fa9",
+      "manifest_sha256": "b8ade85acf97b6b326afedd5d98979789dfc4ad7a9bee26cc4a9d7afbfec9d2b"
+    },
+    {
+      "id": "b14556d6-19d0-463d-b6be-c9410e941352",
+      "manifest_sha256": "419f3b7b20768fe2b909c10ef06b7ba4b0673c9137e89f334c031785c645d600"
+    },
+    {
+      "id": "be611173-e250-44cc-bd72-7e64f24341ec",
+      "manifest_sha256": "e85533a41c3a5c0a8dad522cb9cdfcf3903266a8c43fc4140c56cd674fe5c56f"
+    },
+    {
+      "id": "c493bc73-20d9-4d46-8f3b-5ddee3991fd3",
+      "manifest_sha256": "a36647d3de0ec72b4d9f7e84cdcf6b1d67469e64507ba1494da0e6904f0b46c2"
+    },
+    {
+      "id": "d4fb9cdb-2bc1-4c85-aa48-4ac172c0b70d",
+      "manifest_sha256": "1307b333338d924dddb8766871cc752c04b934fcc2f93cecce819a01cdb183e6"
+    },
+    {
+      "id": "d9919314-aed4-46f5-a49c-8eeab37a26fa",
+      "manifest_sha256": "895dfad0719cd7fcb76c84606a46524967e59e75997beaafb0277f4693b1104b"
+    },
+    {
+      "id": "e01422b7-4884-4400-b40f-b07a9eccd3c3",
+      "manifest_sha256": "ef8ecfca6b6ee083ca43502a446afba3b267e678ac8f338254b93dcfdde1c25c"
+    },
+    {
+      "id": "ed0c4c82-9b31-4527-962e-012d180ec2ba",
+      "manifest_sha256": "a69b64a20e03f6e1e0214ee16b908e0549e97a94126c8fa879d7d28545e67429"
+    },
+    {
+      "id": "f9fe3910-16cf-404a-866d-2e2a1353b8ba",
+      "manifest_sha256": "ef8ecfca6b6ee083ca43502a446afba3b267e678ac8f338254b93dcfdde1c25c"
+    },
+    {
+      "id": "fff8adb1-f205-4fdf-a353-8618ac567440",
+      "manifest_sha256": "25539cd248c0fa43be506070f1eb9db46f0f3afcf0dc1a7801521edba3d61236"
+    }
+  ],
+  "assistant_history": {
+    "threads": [
+      {
+        "record_version": "courtload-thread-v2",
+        "thread_id": "236fc3ff-07ae-4caf-9c17-9842aef828fe",
+        "title": "New chat",
+        "created_at": "2026-10-06T17:17:32.859655Z",
+        "updated_at": "2026-10-06T17:17:32.859655Z",
+        "version": 1
+      },
+      {
+        "record_version": "courtload-thread-v2",
+        "thread_id": "fefb616a-5284-47f7-9a68-c808df77812c",
+        "title": "Explain pick and roll",
+        "created_at": "2026-10-06T17:17:11.921360Z",
+        "updated_at": "2026-10-06T17:17:32.337248Z",
+        "version": 11
+      }
+    ],
+    "turns": [
+      {
+        "turn_id": "014f325c-7ddc-4457-aa15-8b7299ff3dac",
+        "sha256": "74738120a74fa986bb51aa0588286c95a33d5f5e8cfa0ac24f2d7b4a46ee8432"
+      },
+      {
+        "turn_id": "414a3fa6-cd38-43e6-bb4c-12ef07acf81c",
+        "sha256": "f651a417006ae49f1a900d2386cbaee49d97d79146c2f99522a2ff4c4c332ad0"
+      },
+      {
+        "turn_id": "65fd8631-3367-4b03-8eaf-910e7dbdd84b",
+        "sha256": "3f300946c6d0357c3c1882da24f2394cce5fb0dd34438838385a51355e2a73a1"
+      },
+      {
+        "turn_id": "920da5c9-ed0c-4e42-9e6f-2c7aae1cea92",
+        "sha256": "4616b5f63dd11ddb097aef4f74ff0ae1705762cee86293386377d7bc780ea240"
+      },
+      {
+        "turn_id": "9903cd2c-7aac-409b-a904-91a70b80117e",
+        "sha256": "8704ddfbd41b6ada59cdf9c30dfb1d41a988c82a9a060bbad491b11a14841acc"
+      }
+    ],
+    "inputs": [
+      {
+        "turn_id": "65fd8631-3367-4b03-8eaf-910e7dbdd84b",
+        "step_id": "top_scorers_query",
+        "workbench_dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+        "archive_dataset_id": null,
+        "finance_release_id": null,
+        "issuance_id": null
+      },
+      {
+        "turn_id": "9903cd2c-7aac-409b-a904-91a70b80117e",
+        "step_id": "top_scorers_query",
+        "workbench_dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+        "archive_dataset_id": null,
+        "finance_release_id": null,
+        "issuance_id": null
+      }
+    ]
+  },
+  "media_policy": {
+    "policy": "rebuildable_cache_excluded",
+    "cache_path": "data/cache/portraits",
+    "exclusions": [
+      "Player headshots cached from official NBA CDN are treated as a rebuildable local cache and excluded from the essential backup bundle.",
+      "Headshots can be re-acquired on demand without altering data hashes using 'courtload acquire-portraits'."
+    ]
+  }
+}
