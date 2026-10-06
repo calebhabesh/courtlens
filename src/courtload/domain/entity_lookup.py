@@ -8,7 +8,7 @@ from dataclasses import dataclass, field
 from typing import Any, Literal
 from urllib.parse import quote
 
-LOOKUP_CATALOG_VERSION = "v1"
+LOOKUP_CATALOG_VERSION = "pf04-v1"
 LOOKUP_NORMALIZATION_VERSION = "v1"
 
 # Suffixes commonly present in player names
@@ -156,13 +156,19 @@ def build_destination_url(
     base_destination: str,
     release_id: str | None = None,
     season: str | None = None,
+    phase: str | None = None,
+    before_date: str | None = None,
 ) -> str:
-    """Build canonical destination URL preserving release and season context."""
+    """Build canonical destination URL preserving release and observed scope."""
     params: list[str] = []
     if season:
         params.append(f"season={quote(season)}")
     if release_id:
         params.append(f"release_id={quote(release_id)}")
+    if phase:
+        params.append(f"phase={quote(phase)}")
+    if before_date:
+        params.append(f"before_date={quote(before_date)}")
     if params:
         delimiter = "&" if "?" in base_destination else "?"
         return f"{base_destination}{delimiter}{'&'.join(params)}"
@@ -212,6 +218,10 @@ def score_entity_match(
     """
     if not norm_query:
         return None
+
+    # Resolve retained canonical URL selections without statistical queries.
+    if norm_query in {entity.id.lower(), entity.canonical_id.lower()}:
+        return ("exact", 1.0, None)
 
     q_len = len(norm_query)
 

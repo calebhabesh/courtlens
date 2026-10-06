@@ -1,0 +1,182 @@
+[
+  {
+    "message": "Which point guard had the most assists per game last season?",
+    "intent": "external"
+  },
+  {
+    "message": "Who leads in assists?",
+    "intent": "external"
+  },
+  {
+    "message": "Explain pick and roll",
+    "intent": "explanation"
+  },
+  {
+    "message": "How do I compare two players here?",
+    "intent": "site_guidance"
+  },
+  {
+    "message": "Who is the better defender?",
+    "intent": "discussion"
+  },
+  {
+    "message": "Scottie Barnes scoring variability",
+    "intent": "local_analysis"
+  },
+  {
+    "message": "Whose minutes increased without scoring increasing?",
+    "intent": "local_analysis"
+  },
+  {
+    "message": "Who is on the Raptors roster today?",
+    "intent": "external"
+  },
+  {
+    "message": "Find current NBA news on the web",
+    "intent": "external"
+  },
+  {
+    "message": "Execute SQL SELECT player_id",
+    "intent": "inability"
+  },
+  {
+    "message": "What is true shooting?",
+    "intent": "explanation"
+  },
+  {
+    "message": "Scottie Barnes similarity in 2025-26 playoffs",
+    "intent": "local_analysis"
+  },
+  {
+    "message": "How do I find a player here?",
+    "intent": "site_guidance"
+  },
+  {
+    "message": "How do I compare teams here?",
+    "intent": "site_guidance"
+  },
+  {
+    "message": "How do I save a finding?",
+    "intent": "site_guidance"
+  },
+  {
+    "message": "Where are settings?",
+    "intent": "site_guidance"
+  },
+  {
+    "message": "How to use WOWY here?",
+    "intent": "site_guidance"
+  },
+  {
+    "message": "Explain assists per game",
+    "intent": "explanation"
+  },
+  {
+    "message": "What is PPG?",
+    "intent": "explanation"
+  },
+  {
+    "message": "What does cutoff mean?",
+    "intent": "explanation"
+  },
+  {
+    "message": "Explain forecast intervals",
+    "intent": "explanation"
+  },
+  {
+    "message": "What is on-off?",
+    "intent": "explanation"
+  },
+  {
+    "message": "Define effective shooting percentage",
+    "intent": "explanation"
+  },
+  {
+    "message": "Explain regular season windows",
+    "intent": "explanation"
+  },
+  {
+    "message": "What do you think about defense?",
+    "intent": "discussion"
+  },
+  {
+    "message": "Give an opinion about a defender",
+    "intent": "discussion"
+  },
+  {
+    "message": "Who is the best defender?",
+    "intent": "discussion"
+  },
+  {
+    "message": "Current roster for Toronto",
+    "intent": "external"
+  },
+  {
+    "message": "NBA news today",
+    "intent": "external"
+  },
+  {
+    "message": "Which point guards lead in assists?",
+    "intent": "external"
+  },
+  {
+    "message": "Most assists per game in 2024-25",
+    "intent": "external"
+  },
+  {
+    "message": "Highest APG last season",
+    "intent": "external"
+  },
+  {
+    "message": "Shooting guard scoring leaders",
+    "intent": "external"
+  },
+  {
+    "message": "Search the internet for NBA news",
+    "intent": "external"
+  },
+  {
+    "message": "Who is injured?",
+    "intent": "external"
+  },
+  {
+    "message": "Run shell commands",
+    "intent": "inability"
+  },
+  {
+    "message": "Read credentials",
+    "intent": "inability"
+  },
+  {
+    "message": "Refresh data now",
+    "intent": "inability"
+  },
+  {
+    "message": "Delete history",
+    "intent": "inability"
+  },
+  {
+    "message": "Show scoring in 2024-25",
+    "intent": "local_analysis"
+  },
+  {
+    "message": "Scottie Barnes minutes last ten",
+    "intent": "local_analysis"
+  },
+  {
+    "message": "Compare Scottie Barnes and Luka Doncic",
+    "intent": "local_analysis"
+  },
+  {
+    "message": "Minutes increased without scoring increasing",
+    "intent": "local_analysis"
+  },
+  {
+    "message": "Scoring variability last season",
+    "intent": "local_analysis"
+  },
+  {
+    "message": "Team Toronto outcomes",
+    "intent": "local_analysis"
+  }
+]

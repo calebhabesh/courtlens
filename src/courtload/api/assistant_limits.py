@@ -13,6 +13,7 @@ class AssistantRequestLimit:
     async def __call__(self, scope: Scope, receive: Receive, send: Send) -> None:
         if scope["type"] != "http" or scope["path"] not in (
             "/api/workbench/assistant/turn",
+            "/api/workbench/assistant/v2/turn",
             "/api/workbench/assistant/query",
         ):
             await self.app(scope, receive, send)

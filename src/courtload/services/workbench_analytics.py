@@ -616,6 +616,8 @@ def execute_player_research_query(
     session: Session,
     context: ResolvedContext,
     query: ResearchQuery,
+    *,
+    legacy_nonappearance: bool = False,
 ) -> tuple[list[dict[str, Any]], int, str | None, bool]:
     """Execute typed ResearchQuery and return (items, total_count, next_cursor, has_more).
 
@@ -633,6 +635,7 @@ def execute_player_research_query(
         spec,
         is_export=is_export,
         max_export_rows=query.limit if is_export else MAX_EXPORT_ROWS,
+        legacy_nonappearance=legacy_nonappearance,
     )
 
 
@@ -1391,6 +1394,15 @@ def reproduce_investigation(session: Session, investigation_id: str) -> dict[str
     items, _, _, _ = execute_player_research_query(session, context, query)
     new_hash = canonical_hash(items)
     is_match = new_hash == inv.result_sha256
+    if not is_match and context.dataset_type == "workbench":
+        legacy_items, _, _, _ = execute_player_research_query(
+            session, context, query, legacy_nonappearance=True
+        )
+        legacy_hash = canonical_hash(legacy_items)
+        if legacy_hash == inv.result_sha256:
+            items = legacy_items
+            new_hash = legacy_hash
+            is_match = True
 
     return {
         "id": inv.id,

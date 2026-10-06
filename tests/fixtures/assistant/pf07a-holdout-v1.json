@@ -1,0 +1,50 @@
+[
+  {
+    "message": "Which point guard had the most assists per game last season?",
+    "intent": "external"
+  },
+  {
+    "message": "Who leads in assists?",
+    "intent": "external"
+  },
+  {
+    "message": "Explain pick and roll",
+    "intent": "explanation"
+  },
+  {
+    "message": "How do I compare two players here?",
+    "intent": "site_guidance"
+  },
+  {
+    "message": "Who is the better defender?",
+    "intent": "discussion"
+  },
+  {
+    "message": "Scottie Barnes scoring variability",
+    "intent": "local_analysis"
+  },
+  {
+    "message": "Whose minutes increased without scoring increasing?",
+    "intent": "local_analysis"
+  },
+  {
+    "message": "Who is on the Raptors roster today?",
+    "intent": "external"
+  },
+  {
+    "message": "Find current NBA news on the web",
+    "intent": "external"
+  },
+  {
+    "message": "Execute SQL SELECT player_id",
+    "intent": "inability"
+  },
+  {
+    "message": "What is true shooting?",
+    "intent": "explanation"
+  },
+  {
+    "message": "Scottie Barnes similarity in 2025-26 playoffs",
+    "intent": "local_analysis"
+  }
+]

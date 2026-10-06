@@ -16,9 +16,11 @@ from pathlib import Path
 from typing import Any
 
 from sqlalchemy import func, select
+from sqlalchemy.engine import make_url
 from sqlalchemy.orm import Session
 
 from courtload.archive_models import ArchiveDataset
+from courtload.services.assistant.history import history_backup_lock, history_inventory
 from courtload.services.assistant.saved import saved_inventory
 from courtload.services.evaluation_public import REGISTERED_REPORT_SHA256
 from courtload.services.player_analytics import (
@@ -79,7 +81,7 @@ def create_backup_manifest(
     and artifact hashes.
     """
     if with_lock:
-        with publication_lock(session):
+        with publication_lock(session), history_backup_lock(session):
             return _create_backup_manifest_internal(
                 session,
                 artifacts_dir=artifacts_dir,
@@ -274,6 +276,7 @@ def _create_backup_manifest_internal(
         "workbench_raw_inputs": workbench_raw_inputs,
         "workbench_records": workbench_records,
         "saved_conversation_analyses": saved_inventory(session),
+        "assistant_history": history_inventory(session),
         "media_policy": media_policy,
     }
 
@@ -291,8 +294,14 @@ def verify_restored_state(
     test_player_b: str = "201939",
     test_date: date | None = None,
     expected_saved_conversations: list[dict[str, str]] | None = None,
+    expected_assistant_history: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Verify that a restored database and artifact directory satisfy all CourtLoad invariants."""
+    if (
+        expected_assistant_history is not None
+        and history_inventory(session) != expected_assistant_history
+    ):
+        raise ValueError("Restored assistant history differs from backup")
     conversation_inventory = saved_inventory(session)
     if (
         expected_saved_conversations is not None
@@ -619,6 +628,32 @@ def verify_restored_state(
     }
 
 
+def _docker_postgres_connection(
+    database_url: str | None, database_name: str | None = None
+) -> tuple[list[str], dict[str, str]]:
+    """Pass the selected connection to Compose clients without password arguments."""
+    url = make_url(
+        database_url
+        or os.getenv("COURTLOAD_DATABASE_URL")
+        or "postgresql://courtload@localhost:5432/courtload"
+    )
+    if url.get_backend_name() != "postgresql":
+        raise ValueError("PostgreSQL recovery requires a PostgreSQL connection")
+    arguments = [
+        "--host",
+        url.host or "localhost",
+        "--port",
+        str(url.port or 5432),
+        "--username",
+        url.username or "courtload",
+        "--dbname",
+        database_name or url.database or "courtload",
+    ]
+    environment = os.environ.copy()
+    environment["PGPASSWORD"] = url.password or ""
+    return arguments, environment
+
+
 def _dump_postgres_database(target_path: Path, database_url: str | None = None) -> None:
     """Dump PostgreSQL database to a gzipped SQL file."""
     target_path.parent.mkdir(parents=True, exist_ok=True)
@@ -642,24 +677,27 @@ def _dump_postgres_database(target_path: Path, database_url: str | None = None) 
             with gzip.open(target_path, "wb") as gz:
                 gz.write(raw_sql)
     elif shutil.which("docker"):
+        arguments, environment = _docker_postgres_connection(database_url)
         proc = subprocess.Popen(
             [
                 "docker",
                 "compose",
+                "-f",
+                str(Path(__file__).resolve().parents[3] / "docker-compose.yml"),
                 "exec",
                 "-T",
+                "-e",
+                "PGPASSWORD",
                 "db",
                 "pg_dump",
-                "--username",
-                "courtload",
-                "--dbname",
-                "courtload",
+                *arguments,
                 "--clean",
                 "--if-exists",
                 "--no-owner",
             ],
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
+            env=environment,
         )
         with gzip.open(target_path, "wb") as gz_out:
             assert proc.stdout is not None
@@ -696,25 +734,27 @@ def _restore_postgres_database(
         if proc.returncode != 0:
             raise RuntimeError(f"psql restore failed: {err.decode('utf-8', errors='replace')}")
     elif shutil.which("docker"):
-        target_db = database_name or "courtload"
+        arguments, environment = _docker_postgres_connection(database_url, database_name)
         proc = subprocess.Popen(
             [
                 "docker",
                 "compose",
+                "-f",
+                str(Path(__file__).resolve().parents[3] / "docker-compose.yml"),
                 "exec",
                 "-T",
+                "-e",
+                "PGPASSWORD",
                 "db",
                 "psql",
-                "-U",
-                "courtload",
-                "-d",
-                target_db,
+                *arguments,
                 "-v",
                 "ON_ERROR_STOP=1",
             ],
             stdin=subprocess.PIPE,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
+            env=environment,
         )
         _, err = proc.communicate(input=sql_bytes)
         if proc.returncode != 0:
@@ -738,7 +778,7 @@ def create_backup_archive(
     database_url: str | None = None,
 ) -> tuple[Path, dict[str, Any]]:
     """Produce a complete, self-contained backup archive bundle coordinated with mutation lock."""
-    with publication_lock(session):
+    with publication_lock(session), history_backup_lock(session):
         timestamp = datetime.now(UTC).strftime("%Y%m%dT%H%M%SZ")
         bundle_dir = backup_dir / f"courtload-backup-{timestamp}"
         bundle_dir.mkdir(parents=True, exist_ok=True)
@@ -923,6 +963,7 @@ def restore_backup_archive(
                 artifacts_dir=artifacts_dir,
                 channel=channel,
                 expected_saved_conversations=manifest.get("saved_conversation_analyses"),
+                expected_assistant_history=manifest.get("assistant_history"),
             )
 
         return {
