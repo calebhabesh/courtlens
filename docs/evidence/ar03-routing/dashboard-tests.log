@@ -1,0 +1,13 @@
+
+> courtload-dashboard@0.1.0 test
+> vitest run
+
+
+ RUN  v4.1.11 /home/ethioking/dev/nba-analytics/dashboard
+
+
+ Test Files  29 passed (29)
+      Tests  188 passed (188)
+   Start at  18:31:44
+   Duration  415ms (transform 1.12s, setup 0ms, import 1.83s, tests 472ms, environment 2ms)
+

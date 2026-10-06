@@ -1,0 +1,66 @@
+
+> courtload-dashboard@0.1.0 test:browser
+> playwright test threaded-assistant.spec.ts
+
+
+Running 26 tests using 8 workers
+
+  ✓   2 e2e/threaded-assistant.spec.ts:83:5 › transport replay preserves request identity; intentional retry links a new turn (1.4s)
+  ✓   6 e2e/threaded-assistant.spec.ts:123:7 › threaded wide layout, keyboard dialog and screenshot (1.5s)
+  ✓   1 e2e/threaded-assistant.spec.ts:93:5 › Stop is durable, releases controls and fences a late response (2.1s)
+  ✘   8 e2e/threaded-assistant.spec.ts:101:5 › closing drawer retains pending history and full-page link preserves scope (2.0s)
+  ✓   4 e2e/threaded-assistant.spec.ts:109:5 › clarifications, external citations and hostile text render safely (2.2s)
+  ✓   7 e2e/threaded-assistant.spec.ts:58:5 › standalone defaults, reload, new chat, history and deletion keep durable questions (2.3s)
+  ✓  10 e2e/threaded-assistant.spec.ts:123:7 › threaded mobile layout, keyboard dialog and screenshot (926ms)
+  ✓   9 e2e/threaded-assistant.spec.ts:123:7 › threaded desktop layout, keyboard dialog and screenshot (1.1s)
+  ✓   3 e2e/threaded-assistant.spec.ts:116:5 › paginated turns are loaded without losing earlier questions (2.9s)
+  ✓  11 e2e/threaded-assistant.spec.ts:123:7 › threaded zoom-equivalent layout, keyboard dialog and screenshot (1.2s)
+  ✓  13 e2e/threaded-assistant.spec.ts:149:5 › default assistant and manual entry are available without preview selection (1.4s)
+  ✓   5 e2e/threaded-assistant.spec.ts:71:5 › scope changes retain old answers and unedited follow-ups inherit on server (3.8s)
+  ✓  14 e2e/threaded-assistant.spec.ts:133:5 › typing a next question during execution preserves the new draft (1.1s)
+  ✓  15 e2e/threaded-assistant.spec.ts:156:5 › page and drawer share updates, preserve independent drafts and clear together (1.5s)
+  ✓  16 e2e/threaded-assistant.spec.ts:174:7 › provider_disabled retains history and retry creates a linked attempt (1.4s)
+  ✓  12 e2e/threaded-assistant.spec.ts:141:5 › verified local results preserve zero, unknown, scope and equivalent actions (1.9s)
+  ✓  17 e2e/threaded-assistant.spec.ts:174:7 › provider_quota retains history and retry creates a linked attempt (1.7s)
+  ✓  18 e2e/threaded-assistant.spec.ts:174:7 › provider_busy retains history and retry creates a linked attempt (1.5s)
+  ✓  19 e2e/threaded-assistant.spec.ts:174:7 › provider_timeout retains history and retry creates a linked attempt (1.4s)
+  ✓  23 e2e/threaded-assistant.spec.ts:174:7 › backend_failure retains history and retry creates a linked attempt (1.5s)
+  ✓  22 e2e/threaded-assistant.spec.ts:174:7 › external_stale retains history and retry creates a linked attempt (1.6s)
+  ✓  20 e2e/threaded-assistant.spec.ts:174:7 › malformed_output retains history and retry creates a linked attempt (1.8s)
+  ✓  21 e2e/threaded-assistant.spec.ts:174:7 › external_unavailable retains history and retry creates a linked attempt (1.8s)
+  ✓  25 e2e/threaded-assistant.spec.ts:198:7 › general knowledge label stays visible after reload at 1440px (1.1s)
+  ✓  26 e2e/threaded-assistant.spec.ts:198:7 › general knowledge label stays visible after reload at 375px (1.2s)
+  ✓  24 e2e/threaded-assistant.spec.ts:185:5 › browser history scope changes update only the next request (2.4s)
+
+
+  1) e2e/threaded-assistant.spec.ts:101:5 › closing drawer retains pending history and full-page link preserves scope 
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: getByLabel('Messages')
+    Expected substring: "Retain me"
+    Error: strict mode violation: getByLabel('Messages') resolved to 2 elements:
+        1) <div aria-label="Messages" class="thread-messages"></div> aka getByRole('region', { name: 'CourtLens assistant' }).getByLabel('Messages')
+        2) <div aria-label="Messages" class="thread-messages"></div> aka getByLabel('Messages').nth(1)
+
+    Call log:
+      - Expect "toContainText" getByLabel('Messages') with timeout 5000ms
+      - waiting for getByLabel('Messages')
+        - locator resolved to <div aria-label="Messages" class="thread-messages"></div>
+        - unexpected value ""
+
+
+      104 |   await expect(dialog.getByRole("button",{name:"Stop",exact:true})).toBeEnabled(); await expect(dialog.getByRole("link",{name:"Open full research page"})).toHaveAttribute("href","/research/ask");
+      105 |   await page.keyboard.press("Escape"); await expect(dialog).not.toBeVisible(); state.release(); await page.reload();
+    > 106 |   await expect(page.getByLabel("Messages")).toContainText("Retain me"); await expect(page.getByLabel("Messages")).toContainText("pairs a screen");
+          |                                             ^
+      107 | });
+      108 |
+      109 | test("clarifications, external citations and hostile text render safely",async({page})=>{
+        at /home/ethioking/dev/nba-analytics/dashboard/e2e/threaded-assistant.spec.ts:106:45
+
+    Error Context: test-results/threaded-assistant-closing-1cbec-l-page-link-preserves-scope/error-context.md
+
+  1 failed
+    e2e/threaded-assistant.spec.ts:101:5 › closing drawer retains pending history and full-page link preserves scope 
+  25 passed (7.5s)

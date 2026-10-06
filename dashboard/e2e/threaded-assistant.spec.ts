@@ -193,3 +193,21 @@ test("browser history scope changes update only the next request",async({page})=
   expect(state.requests[1].context?.season).toBe('2025-26');
   expect(state.records.get(state.requests[0].thread_id!)![0].response?.scope?.selections.season).toBe('2024-25');
 });
+
+for (const width of [1440, 375]) {
+  test(`general knowledge label stays visible after reload at ${width}px`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 900 });
+    await mock(page, { response: () => ({
+      blocks: [{ kind: "text", origin: "general_knowledge", text: "General knowledge, not from CourtLens data\nSpacing creates space for drives, passes and shots." }],
+      scope: null, saveable: false,
+    }) });
+    await page.goto(path);
+    await send(page, "Explain spacing on offense.");
+    const prose = page.getByLabel("Messages").getByText(/General knowledge, not from CourtLens data/);
+    await expect(prose).toBeVisible();
+    await expect(prose).toContainText("Spacing creates space");
+    await expect(page.getByRole("link", { name: /Review and save/ })).toHaveCount(0);
+    await page.reload();
+    await expect(prose).toBeVisible();
+  });
+}
