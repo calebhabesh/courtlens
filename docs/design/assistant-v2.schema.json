@@ -724,6 +724,46 @@
       "title": "LocalSummaryBlock",
       "type": "object"
     },
+    "NarrativeBlock": {
+      "additionalProperties": false,
+      "description": "AR04 model-written prose; every number re-verifies against the bound result cells.",
+      "properties": {
+        "kind": {
+          "const": "narrative",
+          "default": "narrative",
+          "title": "Kind",
+          "type": "string"
+        },
+        "checker": {
+          "const": "narrative-check-v1",
+          "default": "narrative-check-v1",
+          "title": "Checker",
+          "type": "string"
+        },
+        "text": {
+          "maxLength": 700,
+          "minLength": 1,
+          "title": "Text",
+          "type": "string"
+        },
+        "operation_hashes": {
+          "items": {
+            "pattern": "^[a-f0-9]{64}$",
+            "type": "string"
+          },
+          "maxItems": 8,
+          "minItems": 1,
+          "title": "Operation Hashes",
+          "type": "array"
+        }
+      },
+      "required": [
+        "text",
+        "operation_hashes"
+      ],
+      "title": "NarrativeBlock",
+      "type": "object"
+    },
     "OperationResult": {
       "additionalProperties": false,
       "properties": {
@@ -1125,6 +1165,7 @@
                 "inability": "#/$defs/InabilityBlock",
                 "local_claim": "#/$defs/LocalClaimBlock",
                 "local_summary": "#/$defs/LocalSummaryBlock",
+                "narrative": "#/$defs/NarrativeBlock",
                 "result": "#/$defs/ResultBlock",
                 "text": "#/$defs/TextBlock"
               },
@@ -1139,6 +1180,9 @@
               },
               {
                 "$ref": "#/$defs/LocalClaimBlock"
+              },
+              {
+                "$ref": "#/$defs/NarrativeBlock"
               },
               {
                 "$ref": "#/$defs/ResultBlock"

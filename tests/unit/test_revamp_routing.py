@@ -39,6 +39,11 @@ from courtload.services.assistant.revamp_evaluation import load_corpus, score_an
         ("Show guards ranked by scoring", "external"),
         ("Refresh the data", "inability"),
         ("Search the internet for injuries", "inability"),
+        # Follow-up discourse "Now ..." is not a current-fact request (AR04 finding).
+        ("Now show the top 5 instead.", "local_analysis"),
+        ("Now, compare him with Trae Young.", "local_analysis"),
+        ("Now who is injured?", "external"),
+        ("Who is playing well now?", "external"),
     ],
 )
 def test_server_routes(message, intent):

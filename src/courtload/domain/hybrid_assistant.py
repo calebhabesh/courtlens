@@ -14,6 +14,7 @@ from courtload.domain.conversation import (
     OperationResult,
     StrictModel,
 )
+from courtload.domain.narrative_check import check_narrative
 
 Hash = Annotated[str, Field(pattern=r"^[a-f0-9]{64}$")]
 GENERAL_LABEL = "General knowledge, not from CourtLens data"
@@ -220,6 +221,15 @@ class LocalSummaryBlock(StrictModel):
     )
 
 
+class NarrativeBlock(StrictModel):
+    """AR04 model-written prose; every number re-verifies against the bound result cells."""
+
+    kind: Literal["narrative"] = "narrative"
+    checker: Literal["narrative-check-v1"] = "narrative-check-v1"
+    text: str = Field(min_length=1, max_length=700)
+    operation_hashes: list[Hash] = Field(min_length=1, max_length=8)
+
+
 class ResultBlock(StrictModel):
     kind: Literal["result"] = "result"
     result: OperationResult
@@ -265,6 +275,7 @@ AnswerBlock = Annotated[
     TextBlock
     | LocalSummaryBlock
     | LocalClaimBlock
+    | NarrativeBlock
     | ResultBlock
     | ExternalClaimBlock
     | ClarificationBlock
@@ -319,6 +330,16 @@ class HybridTurnResponse(StrictModel):
                 expected = claim_text(cell, result)
                 if block.text != expected:
                     raise ValueError("unbound local prose")
+            if isinstance(block, NarrativeBlock):
+                bound = [results.get(item) for item in block.operation_hashes]
+                if not self.scope or any(result is None for result in bound):
+                    raise ValueError("narrative does not bind to executed evidence")
+                # Raises a ValueError subclass when any number no longer verifies.
+                check_narrative(
+                    block.text,
+                    [result for result in bound if result is not None],
+                    self.scope.model_dump(mode="json"),
+                )
             if isinstance(block, ExternalClaimBlock):
                 source = sources.get(block.source_id)
                 fact = SourceFact.model_validate(

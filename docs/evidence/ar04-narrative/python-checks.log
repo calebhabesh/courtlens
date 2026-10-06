@@ -1,0 +1,8 @@
+$ ruff check .
+All checks passed!
+$ ruff format --check .
+457 files already formatted
+$ mypy src/courtload
+Success: no issues found in 161 source files
+$ generate_hybrid_contract.py --check
+v2 JSON Schema / TypeScript contracts match
