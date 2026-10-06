@@ -1,0 +1,113 @@
+{
+  "recorded_at_utc": "2026-10-05T01:59:44.612694+00:00",
+  "assets": [
+    {
+      "family": "pbp",
+      "source_url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_pbp/nba_play_by_play_2026.csv.gz",
+      "retained_path": "data/raw/b19a-2026-20261004/nba_play_by_play_2026.csv.gz",
+      "sha256": "544296a199041c5c62096ae549a3372a82d74297ef3248d48b8e1bfb15488dcb",
+      "bytes": 23889765,
+      "artifact_mtime_utc": "2026-10-05T01:55:43.990657+00:00",
+      "publisher_asset_id": 512438144,
+      "publisher_updated_at": "2026-08-13T03:32:58Z",
+      "publisher_digest": "sha256:544296a199041c5c62096ae549a3372a82d74297ef3248d48b8e1bfb15488dcb",
+      "publisher_digest_independently_verified": true,
+      "release_metadata": {
+        "url": "https://api.github.com/repos/sportsdataverse/sportsdataverse-data/releases/tags/nba_stats_pbp",
+        "path": "data/raw/b19a-2026-20261004/pbp-release.json",
+        "bytes": 153284,
+        "sha256": "6ffbcc37f09d1c79444086ad16aabae65c19d260a9adb079ce2fa1ab028e49fd",
+        "reused": false
+      }
+    },
+    {
+      "family": "possessions",
+      "source_url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_possessions/nba_possessions_2026.csv.gz",
+      "retained_path": "data/raw/b19a-2026-20261004/nba_possessions_2026.csv.gz",
+      "sha256": "93db760f208ffced0af8716aae3b4e3e0ca71ef60d2ac4f18906797ea4941bd2",
+      "bytes": 5658079,
+      "artifact_mtime_utc": "2026-10-05T01:55:44.512678+00:00",
+      "publisher_asset_id": 512438660,
+      "publisher_updated_at": "2026-08-13T03:33:17Z",
+      "publisher_digest": "sha256:93db760f208ffced0af8716aae3b4e3e0ca71ef60d2ac4f18906797ea4941bd2",
+      "publisher_digest_independently_verified": true,
+      "release_metadata": {
+        "url": "https://api.github.com/repos/sportsdataverse/sportsdataverse-data/releases/tags/nba_stats_possessions",
+        "path": "data/raw/b19a-2026-20261004/possessions-release.json",
+        "bytes": 153536,
+        "sha256": "4f1d1cc91352f91abbfc6e0703ecbbb11d08b3fe8f080811ae0a0bc904fb017d",
+        "reused": false
+      }
+    },
+    {
+      "family": "lineups",
+      "source_url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_game_lineups/nba_lineups_2026.csv.gz",
+      "retained_path": "data/raw/b19a-2026-20261004/nba_lineups_2026.csv.gz",
+      "sha256": "80a64550d0a499fd75432f7fcfbe679d10a7e8336cfbeaa47d9b69c5531ccb0e",
+      "bytes": 2137468,
+      "artifact_mtime_utc": "2026-10-05T01:55:44.813690+00:00",
+      "publisher_asset_id": 512438957,
+      "publisher_updated_at": "2026-08-13T03:33:30Z",
+      "publisher_digest": "sha256:80a64550d0a499fd75432f7fcfbe679d10a7e8336cfbeaa47d9b69c5531ccb0e",
+      "publisher_digest_independently_verified": true,
+      "release_metadata": {
+        "url": "https://api.github.com/repos/sportsdataverse/sportsdataverse-data/releases/tags/nba_stats_game_lineups",
+        "path": "data/raw/b19a-2026-20261004/lineups-release.json",
+        "bytes": 152640,
+        "sha256": "b866deca8ce980044e6c83a0c33f207f22fec582d1d7bd45d4e600a5aa15a648",
+        "reused": false
+      }
+    },
+    {
+      "family": "matchups",
+      "source_url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_game_matchups/game_matchups_2026.csv",
+      "retained_path": "data/raw/b19a-2026-20261004/game_matchups_2026.csv",
+      "sha256": "6c468839500feb4310e754d39d61f654f4628bc14c9f5009d625854ce19c8a31",
+      "bytes": 66240823,
+      "artifact_mtime_utc": "2026-10-05T01:55:45.979736+00:00",
+      "publisher_asset_id": 602209225,
+      "publisher_updated_at": "2026-10-01T01:50:47Z",
+      "publisher_digest": "sha256:6c468839500feb4310e754d39d61f654f4628bc14c9f5009d625854ce19c8a31",
+      "publisher_digest_independently_verified": true,
+      "release_metadata": {
+        "url": "https://api.github.com/repos/sportsdataverse/sportsdataverse-data/releases/tags/nba_stats_game_matchups",
+        "path": "data/raw/b19a-2026-20261004/matchups-release.json",
+        "bytes": 58009,
+        "sha256": "fe6ad4c406befeaec62e27348691bc5e3eb41d0721dd1f04174bd04a31dafe64",
+        "reused": false
+      }
+    },
+    {
+      "family": "shots",
+      "source_url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_shots/shots_2026.csv",
+      "retained_path": "data/raw/b19a-2026-20261004/shots_2026.csv",
+      "sha256": "ef813b6bdaf4e1f157588561515e85811d00e14e4fe5d7875cb6f51ae5ab5563",
+      "bytes": 36398720,
+      "artifact_mtime_utc": "2026-10-05T01:55:46.765767+00:00",
+      "publisher_asset_id": 602082574,
+      "publisher_updated_at": "2026-10-01T00:32:09Z",
+      "publisher_digest": "sha256:ef813b6bdaf4e1f157588561515e85811d00e14e4fe5d7875cb6f51ae5ab5563",
+      "publisher_digest_independently_verified": true,
+      "release_metadata": {
+        "url": "https://api.github.com/repos/sportsdataverse/sportsdataverse-data/releases/tags/nba_stats_shots",
+        "path": "data/raw/b19a-2026-20261004/shots-release.json",
+        "bytes": 155666,
+        "sha256": "0906080dfbadcdbd5c566b53e10edd9b82cb3ca8a082dad4bc028382572907c6",
+        "reused": false
+      }
+    }
+  ],
+  "timestamp_note": "artifact_mtime_utc records local written-byte timestamp, not game date or provider update time; manifests assembled after acquisition",
+  "intended_use": "local research audit only; no public raw redistribution or analytical admission",
+  "attribution": "NBA Stats via SportsDataverse; declared data CC BY 4.0, helper software MIT; retain upstream rights gate",
+  "license_artifacts": {
+    "DESCRIPTION": {
+      "path": "data/raw/b19a-2026-20261004/DESCRIPTION",
+      "sha256": "21a3010f3be2a1de7bce23903e9175722309e31c85a129bffe7e7f179ca4e81e"
+    },
+    "LICENSE": {
+      "path": "data/raw/b19a-2026-20261004/LICENSE",
+      "sha256": "9c3898cce6957255c63911737a6441daf7ed70c445381b8a7f32b75a28123ea6"
+    }
+  }
+}

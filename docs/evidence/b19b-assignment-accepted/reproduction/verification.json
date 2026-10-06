@@ -1,0 +1,10 @@
+{
+  "content_sha256": "ce7f3ef0931e36005f586c6189c6df9c88a17b81202d79ad68bd055b715aa212",
+  "dataset_id": "24a61903-0f8b-4ce4-93e1-61c0ed057053",
+  "games": 1230,
+  "matchup_seconds": "13960014.9",
+  "membership_sha256": "1675802c16cdcaa3c1f4bbe79e0a10db97f97c307d92e5f4bc3be6d2916cd506",
+  "partial_possessions": "1212909.3",
+  "rows": 240750,
+  "verified": true
+}
