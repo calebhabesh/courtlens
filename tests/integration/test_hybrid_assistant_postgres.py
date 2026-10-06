@@ -271,3 +271,51 @@ def test_execution_value_error_is_not_reported_as_planner_failure(postgres_conve
         answer = run_hybrid_turn(session, request(context, plan=False), provider=Provider())
     assert answer.blocks[0].reason == "unsupported_operation"
     assert answer.accounting.provider_calls == 1
+
+
+@pytest.mark.parametrize("join", ["; ", " and show "])
+def test_ar03_mixed_has_single_general_sentence_and_exact_query(postgres_conversation, join):
+    from courtload.domain.hybrid_assistant import GENERAL_LABEL, GENERAL_NUMBERS
+
+    session, context = postgres_conversation
+    message = (
+        "Explain pick and roll"
+        + join
+        + ("scoring in 2024-25" if join == " and show " else "show scoring in 2024-25")
+    )
+    answer = run_hybrid_turn(session, request(context, message))
+    assert answer.status == "answered", answer.model_dump_json()
+    prose = [b for b in answer.blocks if b.kind == "text"]
+    assert len(prose) == 1 and prose[0].origin == "general_knowledge"
+    assert prose[0].text.startswith(GENERAL_LABEL + "\n")
+    assert not GENERAL_NUMBERS.search(prose[0].text)
+    assert prose[0].text.count(".") == 1
+    assert answer.accounting.provider_calls == 0 and answer.accounting.analytical_calls == 1
+    assert answer.scope.selections.season == "2024-25" and answer.saveable
+    result = next(b.result for b in answer.blocks if b.kind == "result")
+    assert result.rows[0]["metrics"]["pts_per_game"] == round(280 / 30, 1)
+
+
+def test_ar03_label_survives_http_history_and_exact_replay(postgres_conversation):
+    from courtload.domain.hybrid_assistant import GENERAL_LABEL
+
+    session, _ = postgres_conversation
+    app = create_app()
+    app.dependency_overrides[get_db] = lambda: session
+    headers = {"X-Operator-Token": get_settings().operator_token.get_secret_value()}
+    body = HybridTurnRequest(request_id=uuid4(), message="Explain spacing on offense.")
+    with TestClient(app) as client:
+        response = client.post(
+            "/api/workbench/assistant/v2/turn", json=body.model_dump(mode="json"), headers=headers
+        )
+        assert response.status_code == 200, response.text
+        answer = response.json()
+        assert answer["blocks"][0]["origin"] == "general_knowledge"
+        assert GENERAL_LABEL in answer["blocks"][0]["text"] and answer["scope"] is None
+        replay = client.post(
+            "/api/workbench/assistant/v2/turn", json=body.model_dump(mode="json"), headers=headers
+        )
+        assert replay.json() == answer
+        history = client.get(f"/api/workbench/assistant/v2/threads/{answer['thread_id']}/turns")
+        assert history.status_code == 200, history.text
+        assert history.json()["turns"][0]["response"] == answer

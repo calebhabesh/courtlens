@@ -18,6 +18,7 @@ from sqlalchemy.orm import Session
 from courtload.config import get_settings
 from courtload.domain.conversation import AnalysisPlan, ConversationContext
 from courtload.domain.hybrid_assistant import (
+    GENERAL_LABEL,
     AnswerAction,
     AnswerBlock,
     AnswerSource,
@@ -55,7 +56,12 @@ from courtload.services.assistant.operations import (
     canonical_step,
     declarations,
 )
-from courtload.services.assistant.planner import GeminiPlanProvider, PlanProvider, ProviderFailure
+from courtload.services.assistant.planner import (
+    GeminiPlanProvider,
+    GeneralKnowledgeDraft,
+    PlanProvider,
+    ProviderFailure,
+)
 from courtload.services.assistant.rendering import MAX_RESULT_BYTES, render_result
 from courtload.services.assistant.retrieval import (
     RetrievalBudget,
@@ -117,10 +123,7 @@ _FAILURES: dict[Failure, tuple[str, str]] = {
         "Choose a supported metric or use the available research tools.",
     ),
     "provider_disabled": (
-        (
-            "The optional language planner is disabled; this question needs it"
-            " to select a local operation."
-        ),
+        ("The optional language provider is disabled; this question needs it to answer."),
         "Use the manual research tools or configure the assistant in Settings.",
     ),
     "provider_quota": (
@@ -202,29 +205,66 @@ def _rejection_summary(exc: Exception) -> str:
 
 
 def route_intent(message: str, has_plan: bool = False) -> Intent:
+    """Server routing precedes planner work; current facts never become model knowledge."""
     text = message.lower()
     if re.search(
-        r"\b(sql|shell|execute code|api key|credentials|train model|refresh data|delete history)\b",
+        r"\b(sql|shell|execute code|api key|credentials|train model|refresh(?: the)? data|"
+        r"delete history|search the (?:web|internet))\b",
         text,
     ):
         return "inability"
-    if re.search(r"\b(news|roster|injury|injured|today|current|web|internet)\b", text):
-        return "external"
+    guidance = bool(re.search(r"\b(how do i|how to|here|settings|save a|saved findings)\b", text))
+    conceptual = bool(
+        re.search(
+            r"^(explain|what is|what are|what does|what do|define|why|how|tell me about|"
+            r"who invented|who created|who founded)\b",
+            text.strip(),
+        )
+    )
+    # Roster/trade/injury facts are unavailable even with a supplied analytical plan.
     if re.search(
-        r"\b(point guards?|shooting guards?|forwards?|centers?|pg|sg|league leader|"
-        r"leads? in|most assists|highest apg)\b",
+        r"\b(news|rosters?|injur(?:y|ies|ed)|trades?|traded|internet|web|plays? for|"
+        r"signed with|available tonight)\b",
         text,
+    ):
+        return "external"
+    if (
+        re.search(r"\b(current|today|now)\b", text)
+        and not re.search(
+            r"\b(season|scope|window|cutoff|observations|stats|scoring|points|assists|rebounds)\b",
+            text,
+        )
+        and not guidance
     ):
         return "external"
     if re.search(r"\bregular season\b.*\b(start|begin|tip off)\b|\bstart date\b", text):
         return "external"
+    position = bool(
+        re.search(r"\b(point guards?|shooting guards?|guards?|forwards?|centers?|pg|sg)\b", text)
+    )
+    if position and not (conceptual and re.search(r"\b(role|mean|does|is a|are)\b", text)):
+        return "external"
+    if "according to" in text and select_source(message, None) is not None:
+        return "external"
     if has_plan:
         return "local_analysis"
-    if re.search(r"\b(better defender|best defender|opinion|what do you think)\b", text):
-        return "discussion"
-    if re.search(r"\b(how do i|how to|where|here|settings|save a|saved findings)\b", text):
+    if guidance:
         return "site_guidance"
-    if re.search(r"\b(explain|what is|what does|define)\b", text):
+    # Questions asking for an observation/forecast remain data questions even when
+    # prefixed with "explain" or "what is". Concept definitions require no release.
+    if re.search(
+        r"\b(show|rank|ranked|top|led|leads?|leader|highest|most assists|most consistent|"
+        r"best defender|better defender|how many|how variable|average|averaged|averaging)\b",
+        text,
+    ) or re.search(
+        r"\b(forecast|profile|scoring|points|assists|rebounds|minutes|shooting)\b.*"
+        r"\b(for|of|by)\b|[\u2019']s\s+(points|assists|rebounds|minutes|stats|scoring)\b",
+        text,
+    ):
+        return "local_analysis"
+    if re.search(r"\b(opinion|what do you think)\b", text):
+        return "discussion"
+    if conceptual:
         return "explanation"
     return "local_analysis"
 
@@ -239,6 +279,7 @@ def _run_single_turn(
     provider: PlanProvider | None = None,
     _started: float | None = None,
     _retrieval_budget: RetrievalBudget | None = None,
+    _mixed_sentence: bool = False,
 ) -> HybridTurnResponse:
     """PF07a execution seam. PF07b wraps this with server-owned durable state/idempotency."""
     started = _started if _started is not None else time.monotonic()
@@ -271,27 +312,59 @@ def _run_single_turn(
         if intent == "inability":
             unable("prohibited_action")
         elif intent in ("site_guidance", "explanation", "discussion"):
-            spec = select_source(request.message, None)
             entry = retrieve(request.message if intent != "discussion" else "defender defense")
-            if spec:
-                source = retrieve_source(spec, retrieval_budget)
-                sources.append(source)
-                for fact in source.facts:
+            if entry is None:
+                if provider is None:
+                    settings = get_settings()
+                    key = (
+                        settings.gemini_api_key.get_secret_value().strip()
+                        if settings.gemini_api_key
+                        else ""
+                    )
+                    if not key:
+                        raise ProviderFailure("disabled")
+                    provider = GeminiPlanProvider(key, settings.gemini_model)
+                payload = json.dumps(
+                    {
+                        "purpose": "general_knowledge",
+                        "message": request.message,
+                        "today": clock().isoformat(),
+                        "mixed_sentence": _mixed_sentence,
+                        "curated_entry": None,
+                    },
+                    separators=(",", ":"),
+                )
+                provider_calls += 1
+                output = _bounded_provider(provider, payload, deadline - time.monotonic())
+                draft = GeneralKnowledgeDraft.model_validate(output.data)
+                if draft.status == "unavailable":
+                    unable("unsupported_operation")
+                else:
+                    if _mixed_sentence and len(re.split(r"[.!?]\s+", draft.text.strip())) > 1:
+                        raise ValueError("mixed knowledge requires a single sentence")
                     blocks.append(
-                        ExternalClaimBlock(
-                            source_id=source.source_id,
-                            text=external_claim_text(fact),
-                            **fact.model_dump(),
+                        TextBlock(
+                            origin="general_knowledge",
+                            text=GENERAL_LABEL + "\n" + draft.text,
                         )
                     )
-                actions.append(AnswerAction(kind="source", label="Open NBA source", url=source.url))
-            elif entry is None:
-                unable("unsupported_operation")
             else:
                 source = entry.source()
                 sources.append(source)
+                prose = (
+                    entry.text.split(". ", 1)[0].rstrip(".") + "."
+                    if _mixed_sentence
+                    else entry.text
+                )
                 blocks.append(
-                    TextBlock(origin="knowledge", text=entry.text, source_ids=[source.source_id])
+                    TextBlock(
+                        origin="general_knowledge",
+                        text=GENERAL_LABEL + "\n" + prose,
+                        source_ids=[source.source_id],
+                        criteria=["role", "screen navigation", "help positioning", "rim protection"]
+                        if intent == "discussion"
+                        else [],
+                    )
                 )
                 if intent == "site_guidance":
                     with query_deadline(session, deadline):
@@ -300,6 +373,7 @@ def _run_single_turn(
                         )
                     if runtime:
                         sources.append(runtime)
+                        # Runtime scope/availability remains separately sourced site guidance.
                         blocks.append(
                             TextBlock(
                                 origin="knowledge",
@@ -307,27 +381,11 @@ def _run_single_turn(
                                 source_ids=[runtime.source_id],
                             )
                         )
-                if intent == "discussion":
-                    blocks.append(
-                        TextBlock(
-                            origin="discussion",
-                            text=(
-                                "I would compare those roles and supported examples before "
-                                "choosing a player; I cannot establish a player-specific edge from"
-                                " this question alone."
-                            ),
-                            criteria=[
-                                "role",
-                                "screen navigation",
-                                "help positioning",
-                                "rim protection",
-                            ],
-                        )
-                    )
                 actions.extend(
                     AnswerAction(kind="navigation", label=entry.title, url=route)
                     for route in entry.routes
                 )
+
         else:
             merged = inherited_context.model_dump() if inherited_context else {}
             if request.context:
@@ -357,7 +415,8 @@ def _run_single_turn(
                     unable(
                         "position_unavailable"
                         if re.search(
-                            r"\b(point guards?|shooting guards?|forwards?|centers?|pg|sg)\b",
+                            r"\b(point guards?|shooting guards?|guards?|forwards?|centers?|"
+                            r"pg|sg)\b",
                             request.message.lower(),
                         )
                         else "qualification_unverified"
@@ -611,6 +670,12 @@ def _run_single_turn(
         if planning and provider_calls:
             logger.warning("planner output rejected after repair: %s", _rejection_summary(exc))
             unable("malformed_output")
+            if intent in ("explanation", "site_guidance", "discussion"):
+                blocks[0] = InabilityBlock(
+                    reason="malformed_output",
+                    text="The provider returned a general answer that did not pass validation.",
+                    next_action="Ask about a basketball concept or open Definitions.",
+                )
         else:
             unable("unsupported_operation")
     except Exception:
@@ -656,9 +721,15 @@ def run_hybrid_turn(
     """Bounded mixed routing: at most one local plan and four independently typed clauses."""
     started = time.monotonic()
     clauses = [
-        part.strip() for part in re.split(r";|\?\s+|\band also\b", request.message) if part.strip()
+        part.strip()
+        for part in re.split(
+            r";|\?\s+|\band also\b|\band\s+(?=(?:show|explain|what|who|why|how|compare|rank)\b)",
+            request.message,
+            flags=re.I,
+        )
+        if part.strip()
     ]
-    if len(clauses) <= 1:
+    if len(clauses) <= 1 or route_intent(request.message) == "inability":
         return _run_single_turn(
             session,
             request,
@@ -670,7 +741,12 @@ def run_hybrid_turn(
     as_of = clock()
     retrieval_budget = RetrievalBudget(started + DEADLINE_SECONDS)
     local = [i for i, part in enumerate(clauses) if route_intent(part) == "local_analysis"]
-    if len(clauses) > 4 or len(local) > 1:
+    general = [
+        i
+        for i, part in enumerate(clauses)
+        if route_intent(part) in ("explanation", "site_guidance", "discussion")
+    ]
+    if len(clauses) > 4 or len(local) > 1 or (local and len(general) > 1):
         return HybridTurnResponse(
             request_id=request.request_id,
             thread_id=request.thread_id or uuid4(),
@@ -699,6 +775,7 @@ def run_hybrid_turn(
                 provider=provider,
                 _started=started,
                 _retrieval_budget=retrieval_budget,
+                _mixed_sentence=bool(local),
             )
         )
     primary = next(

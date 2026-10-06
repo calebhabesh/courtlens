@@ -21,6 +21,7 @@ from courtload.domain.conversation import ConversationContext
 from courtload.domain.hybrid_assistant import HybridTurnRequest, HybridTurnResponse
 from courtload.services.assistant.hybrid import run_hybrid_turn
 from courtload.services.assistant.planner import (
+    GENERAL_PROMPT,
     PLANNER_PROMPT,
     GeminiPlanProvider,
     PlanningOutput,
@@ -87,7 +88,7 @@ class RecordingProvider:
         time.sleep(pause)
         self.last_started = time.monotonic()
         body = json.loads(payload)
-        operations = body.pop("operations")
+        operations = body.pop("operations", [])
         record: dict[str, Any] = {
             "input_sha256": hashlib.sha256(payload.encode()).hexdigest(),
             "input": body,
@@ -125,6 +126,9 @@ def main() -> None:
     parser.add_argument("--interval-seconds", type=float, default=5.0)
     parser.add_argument("--max-calls", type=int)
     parser.add_argument("--release-id", help="Pin a retained published snapshot")
+    parser.add_argument(
+        "--category", action="append", help="Only these dev categories (repeatable)"
+    )
     args = parser.parse_args()
     if args.split == "holdout" and not args.open_holdout:
         parser.error("Holdout is sealed until AR08; use --open-holdout only for final acceptance")
@@ -139,6 +143,11 @@ def main() -> None:
         parser.error("Refusing to overwrite evidence; choose a new output")
     corpus, digest = load_corpus(args.corpus)
     cases = [c for c in corpus["cases"] if c["split"] == args.split]
+    if args.category:
+        unknown = set(args.category) - {c["category"] for c in cases}
+        if unknown:
+            parser.error(f"Unknown categories: {sorted(unknown)}")
+        cases = [c for c in cases if c["category"] in args.category]
     settings = get_settings()
     provider = None
     eligibility_digest = None
@@ -175,10 +184,22 @@ def main() -> None:
         "corpus_version": corpus["version"],
         "split": args.split,
         "runs": corpus["runs"],
+        "categories": args.category,
+        "general_prompt_sha256": hashlib.sha256(GENERAL_PROMPT.encode()).hexdigest(),
         "clock": corpus["as_of"],
         "planner_prompt_sha256": hashlib.sha256(PLANNER_PROMPT.encode()).hexdigest(),
         "model": settings.gemini_model if provider else None,
         "sdk_version": version("google-genai") if provider else None,
+        "implementation_sha256": {
+            str(path): hashlib.sha256(path.read_bytes()).hexdigest()
+            for path in (
+                Path("src/courtload/domain/hybrid_assistant.py"),
+                Path("src/courtload/services/assistant/hybrid.py"),
+                Path("src/courtload/services/assistant/knowledge.py"),
+                Path("src/courtload/services/assistant/knowledge/guide.md"),
+                Path("src/courtload/services/assistant/planner.py"),
+            )
+        },
         "evaluator_sha256": {
             str(path): hashlib.sha256(path.read_bytes()).hexdigest()
             for path in (

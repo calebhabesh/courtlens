@@ -1,0 +1,3856 @@
+{
+  "version": "courtlens-assistant-ar02-report-v1",
+  "started_at": "2026-10-06T22:31:14.795945+00:00",
+  "revision": "a1bc6568056b9781ba9f36e8e9f5e1c9c712b196",
+  "mode": "live",
+  "corpus_sha256": "c169159db1f5c159f76a382b0ea692f960e7b3ed2a5b224fc22c174b24f69fdf",
+  "corpus_file": "evaluation/assistant/ar02-v2.json",
+  "corpus_version": "courtlens-assistant-ar02-v2",
+  "split": "dev",
+  "runs": 3,
+  "categories": [
+    "general",
+    "mixed"
+  ],
+  "general_prompt_sha256": "4d616c600dfc7e62710d852b94bdc2401083b3e978852571e3a02e022fa0aa27",
+  "clock": "2026-10-06",
+  "planner_prompt_sha256": "260b0dd64a1f0de5999529bb8494e97869d6aac25bf7abfc8b747b512a5791ff",
+  "model": "gemini-3.5-flash-lite",
+  "sdk_version": "2.26.0",
+  "evaluator_sha256": {
+    "/home/ethioking/dev/nba-analytics/scripts/evaluate_assistant.py": "0fcb5fdeffe5de3dd6327be9bd5730f4ed0832fe06f1862c61304bb1d75de65c",
+    "src/courtload/services/assistant/revamp_evaluation.py": "98507e9c3327d69f489b951d93ca9bfc949ac9afe399fe09f8e71cf9c379a30e"
+  },
+  "free_project_evidence_sha256": "26dd33dca3ee9d388740c7fa60be47160d5d1c86b034b936c7b33bc19e937e16",
+  "records": [
+    {
+      "id": "ar02-101",
+      "category": "general",
+      "split": "dev",
+      "exact_answer": true,
+      "plan_correct": null,
+      "failures": [],
+      "refused": false,
+      "expected_refusal": false,
+      "readable": true,
+      "repetition": 1,
+      "message": "Explain pick and roll.",
+      "expected": {
+        "status": "answered",
+        "kind": "general",
+        "terms": [
+          "screen",
+          "ball"
+        ]
+      },
+      "expected_plan": null,
+      "provider_calls": 0,
+      "setup_provider_calls": 0,
+      "analytical_calls": 0,
+      "elapsed_ms": 1.382,
+      "answer_signature": "a92b0eafe8a15b99614502bb0c6f012532d713b07524cb3fd8418feacecf4496"
+    },
+    {
+      "id": "ar02-101",
+      "category": "general",
+      "split": "dev",
+      "exact_answer": true,
+      "plan_correct": null,
+      "failures": [],
+      "refused": false,
+      "expected_refusal": false,
+      "readable": true,
+      "repetition": 2,
+      "message": "Explain pick and roll.",
+      "expected": {
+        "status": "answered",
+        "kind": "general",
+        "terms": [
+          "screen",
+          "ball"
+        ]
+      },
+      "expected_plan": null,
+      "provider_calls": 0,
+      "setup_provider_calls": 0,
+      "analytical_calls": 0,
+      "elapsed_ms": 0.211,
+      "answer_signature": "a92b0eafe8a15b99614502bb0c6f012532d713b07524cb3fd8418feacecf4496"
+    },
+    {
+      "id": "ar02-101",
+      "category": "general",
+      "split": "dev",
+      "exact_answer": true,
+      "plan_correct": null,
+      "failures": [],
+      "refused": false,
+      "expected_refusal": false,
+      "readable": true,
+      "repetition": 3,
+      "message": "Explain pick and roll.",
+      "expected": {
+        "status": "answered",
+        "kind": "general",
+        "terms": [
+          "screen",
+          "ball"
+        ]
+      },
+      "expected_plan": null,
+      "provider_calls": 0,
+      "setup_provider_calls": 0,
+      "analytical_calls": 0,
+      "elapsed_ms": 0.173,
+      "answer_signature": "a92b0eafe8a15b99614502bb0c6f012532d713b07524cb3fd8418feacecf4496"
+    },
+    {
+      "id": "ar02-102",
+      "category": "general",
+      "split": "dev",
+      "exact_answer": true,
+      "plan_correct": null,
+      "failures": [],
+      "refused": false,
+      "expected_refusal": false,
+      "readable": true,
+      "repetition": 1,
+      "message": "What does pick and roll mean?",
+      "expected": {
+        "status": "answered",
+        "kind": "general",
+        "terms": [
+          "screen",
+          "ball"
+        ]
+      },
+      "expected_plan": null,
+      "provider_calls": 0,
+      "setup_provider_calls": 0,
+      "analytical_calls": 0,
+      "elapsed_ms": 0.299,
+      "answer_signature": "a92b0eafe8a15b99614502bb0c6f012532d713b07524cb3fd8418feacecf4496"
+    },
+    {
+      "id": "ar02-102",
+      "category": "general",
+      "split": "dev",
+      "exact_answer": true,
+      "plan_correct": null,
+      "failures": [],
+      "refused": false,
+      "expected_refusal": false,
+      "readable": true,
+      "repetition": 2,
+      "message": "What does pick and roll mean?",
+      "expected": {
+        "status": "answered",
+        "kind": "general",
+        "terms": [
+          "screen",
+          "ball"
+        ]
+      },
+      "expected_plan": null,
+      "provider_calls": 0,
+      "setup_provider_calls": 0,
+      "analytical_calls": 0,
+      "elapsed_ms": 0.21,
+      "answer_signature": "a92b0eafe8a15b99614502bb0c6f012532d713b07524cb3fd8418feacecf4496"
+    },
+    {
+      "id": "ar02-102",
+      "category": "general",
+      "split": "dev",
+      "exact_answer": true,
+      "plan_correct": null,
+      "failures": [],
+      "refused": false,
+      "expected_refusal": false,
+      "readable": true,
+      "repetition": 3,
+      "message": "What does pick and roll mean?",
+      "expected": {
+        "status": "answered",
+        "kind": "general",
+        "terms": [
+          "screen",
+          "ball"
+        ]
+      },
+      "expected_plan": null,
+      "provider_calls": 0,
+      "setup_provider_calls": 0,
+      "analytical_calls": 0,
+      "elapsed_ms": 0.184,
+      "answer_signature": "a92b0eafe8a15b99614502bb0c6f012532d713b07524cb3fd8418feacecf4496"
+    },
+    {
+      "id": "ar02-105",
+      "category": "general",
+      "split": "dev",
+      "exact_answer": true,
+      "plan_correct": null,
+      "failures": [],
+      "refused": false,
+      "expected_refusal": false,
+      "readable": true,
+      "repetition": 1,
+      "message": "Explain switching on defense.",
+      "expected": {
+        "status": "answered",
+        "kind": "general",
+        "terms": [
+          "defen"
+        ]
+      },
+      "expected_plan": null,
+      "provider_calls": 0,
+      "setup_provider_calls": 0,
+      "analytical_calls": 0,
+      "elapsed_ms": 0.271,
+      "answer_signature": "1850154004731bc6306cb6bd5fbb9597c112258d05bb94ad104c902b63c5cc98"
+    },
+    {
+      "id": "ar02-105",
+      "category": "general",
+      "split": "dev",
+      "exact_answer": true,
+      "plan_correct": null,
+      "failures": [],
+      "refused": false,
+      "expected_refusal": false,
+      "readable": true,
+      "repetition": 2,
+      "message": "Explain switching on defense.",
+      "expected": {
+        "status": "answered",
+        "kind": "general",
+        "terms": [
+          "defen"
+        ]
+      },
+      "expected_plan": null,
+      "provider_calls": 0,
+      "setup_provider_calls": 0,
+      "analytical_calls": 0,
+      "elapsed_ms": 0.149,
+      "answer_signature": "1850154004731bc6306cb6bd5fbb9597c112258d05bb94ad104c902b63c5cc98"
+    },
+    {
+      "id": "ar02-105",
+      "category": "general",
+      "split": "dev",
+      "exact_answer": true,
+      "plan_correct": null,
+      "failures": [],
+      "refused": false,
+      "expected_refusal": false,
+      "readable": true,
+      "repetition": 3,
+      "message": "Explain switching on defense.",
+      "expected": {
+        "status": "answered",
+        "kind": "general",
+        "terms": [
+          "defen"
+        ]
+      },
+      "expected_plan": null,
+      "provider_calls": 0,
+      "setup_provider_calls": 0,
+      "analytical_calls": 0,
+      "elapsed_ms": 0.13,
+      "answer_signature": "1850154004731bc6306cb6bd5fbb9597c112258d05bb94ad104c902b63c5cc98"
+    },
+    {
+      "id": "ar02-106",
+      "category": "general",
+      "split": "dev",
+      "exact_answer": true,
+      "plan_correct": null,
+      "failures": [],
+      "refused": false,
+      "expected_refusal": false,
+      "readable": true,
+      "repetition": 1,
+      "message": "What does switching on defense mean?",
+      "expected": {
+        "status": "answered",
+        "kind": "general",
+        "terms": [
+          "defen"
+        ]
+      },
+      "expected_plan": null,
+      "provider_calls": 0,
+      "setup_provider_calls": 0,
+      "analytical_calls": 0,
+      "elapsed_ms": 0.285,
+      "answer_signature": "1850154004731bc6306cb6bd5fbb9597c112258d05bb94ad104c902b63c5cc98"
+    },
+    {
+      "id": "ar02-106",
+      "category": "general",
+      "split": "dev",
+      "exact_answer": true,
+      "plan_correct": null,
+      "failures": [],
+      "refused": false,
+      "expected_refusal": false,
+      "readable": true,
+      "repetition": 2,
+      "message": "What does switching on defense mean?",
+      "expected": {
+        "status": "answered",
+        "kind": "general",
+        "terms": [
+          "defen"
+        ]
+      },
+      "expected_plan": null,
+      "provider_calls": 0,
+      "setup_provider_calls": 0,
+      "analytical_calls": 0,
+      "elapsed_ms": 0.168,
+      "answer_signature": "1850154004731bc6306cb6bd5fbb9597c112258d05bb94ad104c902b63c5cc98"
+    },
+    {
+      "id": "ar02-106",
+      "category": "general",
+      "split": "dev",
+      "exact_answer": true,
+      "plan_correct": null,
+      "failures": [],
+      "refused": false,
+      "expected_refusal": false,
+      "readable": true,
+      "repetition": 3,
+      "message": "What does switching on defense mean?",
+      "expected": {
+        "status": "answered",
+        "kind": "general",
+        "terms": [
+          "defen"
+        ]
+      },
+      "expected_plan": null,
+      "provider_calls": 0,
+      "setup_provider_calls": 0,
+      "analytical_calls": 0,
+      "elapsed_ms": 0.145,
+      "answer_signature": "1850154004731bc6306cb6bd5fbb9597c112258d05bb94ad104c902b63c5cc98"
+    },
+    {
+      "id": "ar02-107",
+      "category": "general",
+      "split": "dev",
+      "exact_answer": true,
+      "plan_correct": null,
+      "failures": [],
+      "refused": false,
+      "expected_refusal": false,
+      "readable": true,
+      "repetition": 1,
+      "message": "Explain spacing on offense.",
+      "expected": {
+        "status": "answered",
+        "kind": "general",
+        "terms": [
+          "space"
+        ]
+      },
+      "expected_plan": null,
+      "provider_calls": 0,
+      "setup_provider_calls": 0,
+      "analytical_calls": 0,
+      "elapsed_ms": 0.252,
+      "answer_signature": "eb2bab60a47479ac3d7c6a877a7451f356942ac810709245a9fa9bd6194dce18"
+    },
+    {
+      "id": "ar02-107",
+      "category": "general",
+      "split": "dev",
+      "exact_answer": true,
+      "plan_correct": null,
+      "failures": [],
+      "refused": false,
+      "expected_refusal": false,
+      "readable": true,
+      "repetition": 2,
+      "message": "Explain spacing on offense.",
+      "expected": {
+        "status": "answered",
+        "kind": "general",
+        "terms": [
+          "space"
+        ]
+      },
+      "expected_plan": null,
+      "provider_calls": 0,
+      "setup_provider_calls": 0,
+      "analytical_calls": 0,
+      "elapsed_ms": 0.142,
+      "answer_signature": "eb2bab60a47479ac3d7c6a877a7451f356942ac810709245a9fa9bd6194dce18"
+    },
+    {
+      "id": "ar02-107",
+      "category": "general",
+      "split": "dev",
+      "exact_answer": true,
+      "plan_correct": null,
+      "failures": [],
+      "refused": false,
+      "expected_refusal": false,
+      "readable": true,
+      "repetition": 3,
+      "message": "Explain spacing on offense.",
+      "expected": {
+        "status": "answered",
+        "kind": "general",
+        "terms": [
+          "space"
+        ]
+      },
+      "expected_plan": null,
+      "provider_calls": 0,
+      "setup_provider_calls": 0,
+      "analytical_calls": 0,
+      "elapsed_ms": 0.126,
+      "answer_signature": "eb2bab60a47479ac3d7c6a877a7451f356942ac810709245a9fa9bd6194dce18"
+    },
+    {
+      "id": "ar02-108",
+      "category": "general",
+      "split": "dev",
+      "exact_answer": true,
+      "plan_correct": null,
+      "failures": [],
+      "refused": false,
+      "expected_refusal": false,
+      "readable": true,
+      "repetition": 1,
+      "message": "What does spacing on offense mean?",
+      "expected": {
+        "status": "answered",
+        "kind": "general",
+        "terms": [
+          "space"
+        ]
+      },
+      "expected_plan": null,
+      "provider_calls": 0,
+      "setup_provider_calls": 0,
+      "analytical_calls": 0,
+      "elapsed_ms": 0.336,
+      "answer_signature": "eb2bab60a47479ac3d7c6a877a7451f356942ac810709245a9fa9bd6194dce18"
+    },
+    {
+      "id": "ar02-108",
+      "category": "general",
+      "split": "dev",
+      "exact_answer": true,
+      "plan_correct": null,
+      "failures": [],
+      "refused": false,
+      "expected_refusal": false,
+      "readable": true,
+      "repetition": 2,
+      "message": "What does spacing on offense mean?",
+      "expected": {
+        "status": "answered",
+        "kind": "general",
+        "terms": [
+          "space"
+        ]
+      },
+      "expected_plan": null,
+      "provider_calls": 0,
+      "setup_provider_calls": 0,
+      "analytical_calls": 0,
+      "elapsed_ms": 0.148,
+      "answer_signature": "eb2bab60a47479ac3d7c6a877a7451f356942ac810709245a9fa9bd6194dce18"
+    },
+    {
+      "id": "ar02-108",
+      "category": "general",
+      "split": "dev",
+      "exact_answer": true,
+      "plan_correct": null,
+      "failures": [],
+      "refused": false,
+      "expected_refusal": false,
+      "readable": true,
+      "repetition": 3,
+      "message": "What does spacing on offense mean?",
+      "expected": {
+        "status": "answered",
+        "kind": "general",
+        "terms": [
+          "space"
+        ]
+      },
+      "expected_plan": null,
+      "provider_calls": 0,
+      "setup_provider_calls": 0,
+      "analytical_calls": 0,
+      "elapsed_ms": 0.131,
+      "answer_signature": "eb2bab60a47479ac3d7c6a877a7451f356942ac810709245a9fa9bd6194dce18"
+    },
+    {
+      "id": "ar02-109",
+      "category": "general",
+      "split": "dev",
+      "exact_answer": true,
+      "plan_correct": null,
+      "failures": [],
+      "refused": false,
+      "expected_refusal": false,
+      "readable": true,
+      "repetition": 1,
+      "message": "Explain offensive rebounding.",
+      "expected": {
+        "status": "answered",
+        "kind": "general",
+        "terms": [
+          "miss"
+        ]
+      },
+      "expected_plan": null,
+      "provider_calls": 0,
+      "setup_provider_calls": 0,
+      "analytical_calls": 0,
+      "elapsed_ms": 0.275,
+      "answer_signature": "0c0d9df8a26c8e335abe7ce5f8722fa9a0845d4cbabf08b2da34f9fb17b295fa"
+    },
+    {
+      "id": "ar02-109",
+      "category": "general",
+      "split": "dev",
+      "exact_answer": true,
+      "plan_correct": null,
+      "failures": [],
+      "refused": false,
+      "expected_refusal": false,
+      "readable": true,
+      "repetition": 2,
+      "message": "Explain offensive rebounding.",
+      "expected": {
+        "status": "answered",
+        "kind": "general",
+        "terms": [
+          "miss"
+        ]
+      },
+      "expected_plan": null,
+      "provider_calls": 0,
+      "setup_provider_calls": 0,
+      "analytical_calls": 0,
+      "elapsed_ms": 0.161,
+      "answer_signature": "0c0d9df8a26c8e335abe7ce5f8722fa9a0845d4cbabf08b2da34f9fb17b295fa"
+    },
+    {
+      "id": "ar02-109",
+      "category": "general",
+      "split": "dev",
+      "exact_answer": true,
+      "plan_correct": null,
+      "failures": [],
+      "refused": false,
+      "expected_refusal": false,
+      "readable": true,
+      "repetition": 3,
+      "message": "Explain offensive rebounding.",
+      "expected": {
+        "status": "answered",
+        "kind": "general",
+        "terms": [
+          "miss"
+        ]
+      },
+      "expected_plan": null,
+      "provider_calls": 0,
+      "setup_provider_calls": 0,
+      "analytical_calls": 0,
+      "elapsed_ms": 0.138,
+      "answer_signature": "0c0d9df8a26c8e335abe7ce5f8722fa9a0845d4cbabf08b2da34f9fb17b295fa"
+    },
+    {
+      "id": "ar02-110",
+      "category": "general",
+      "split": "dev",
+      "exact_answer": true,
+      "plan_correct": null,
+      "failures": [],
+      "refused": false,
+      "expected_refusal": false,
+      "readable": true,
+      "repetition": 1,
+      "message": "What does offensive rebounding mean?",
+      "expected": {
+        "status": "answered",
+        "kind": "general",
+        "terms": [
+          "miss"
+        ]
+      },
+      "expected_plan": null,
+      "provider_calls": 0,
+      "setup_provider_calls": 0,
+      "analytical_calls": 0,
+      "elapsed_ms": 0.216,
+      "answer_signature": "0c0d9df8a26c8e335abe7ce5f8722fa9a0845d4cbabf08b2da34f9fb17b295fa"
+    },
+    {
+      "id": "ar02-110",
+      "category": "general",
+      "split": "dev",
+      "exact_answer": true,
+      "plan_correct": null,
+      "failures": [],
+      "refused": false,
+      "expected_refusal": false,
+      "readable": true,
+      "repetition": 2,
+      "message": "What does offensive rebounding mean?",
+      "expected": {
+        "status": "answered",
+        "kind": "general",
+        "terms": [
+          "miss"
+        ]
+      },
+      "expected_plan": null,
+      "provider_calls": 0,
+      "setup_provider_calls": 0,
+      "analytical_calls": 0,
+      "elapsed_ms": 0.154,
+      "answer_signature": "0c0d9df8a26c8e335abe7ce5f8722fa9a0845d4cbabf08b2da34f9fb17b295fa"
+    },
+    {
+      "id": "ar02-110",
+      "category": "general",
+      "split": "dev",
+      "exact_answer": true,
+      "plan_correct": null,
+      "failures": [],
+      "refused": false,
+      "expected_refusal": false,
+      "readable": true,
+      "repetition": 3,
+      "message": "What does offensive rebounding mean?",
+      "expected": {
+        "status": "answered",
+        "kind": "general",
+        "terms": [
+          "miss"
+        ]
+      },
+      "expected_plan": null,
+      "provider_calls": 0,
+      "setup_provider_calls": 0,
+      "analytical_calls": 0,
+      "elapsed_ms": 0.136,
+      "answer_signature": "0c0d9df8a26c8e335abe7ce5f8722fa9a0845d4cbabf08b2da34f9fb17b295fa"
+    },
+    {
+      "id": "ar02-111",
+      "category": "general",
+      "split": "dev",
+      "exact_answer": true,
+      "plan_correct": null,
+      "failures": [],
+      "refused": false,
+      "expected_refusal": false,
+      "readable": true,
+      "repetition": 1,
+      "message": "Explain true shooting percentage.",
+      "expected": {
+        "status": "answered",
+        "kind": "general",
+        "terms": [
+          "shoot"
+        ]
+      },
+      "expected_plan": null,
+      "provider_calls": 0,
+      "setup_provider_calls": 0,
+      "analytical_calls": 0,
+      "elapsed_ms": 0.437,
+      "answer_signature": "365767645946ccabd3dbbed4a65773b7a635d8e73e310c9e2be03fd67c411ef7"
+    },
+    {
+      "id": "ar02-111",
+      "category": "general",
+      "split": "dev",
+      "exact_answer": true,
+      "plan_correct": null,
+      "failures": [],
+      "refused": false,
+      "expected_refusal": false,
+      "readable": true,
+      "repetition": 2,
+      "message": "Explain true shooting percentage.",
+      "expected": {
+        "status": "answered",
+        "kind": "general",
+        "terms": [
+          "shoot"
+        ]
+      },
+      "expected_plan": null,
+      "provider_calls": 0,
+      "setup_provider_calls": 0,
+      "analytical_calls": 0,
+      "elapsed_ms": 0.213,
+      "answer_signature": "365767645946ccabd3dbbed4a65773b7a635d8e73e310c9e2be03fd67c411ef7"
+    },
+    {
+      "id": "ar02-111",
+      "category": "general",
+      "split": "dev",
+      "exact_answer": true,
+      "plan_correct": null,
+      "failures": [],
+      "refused": false,
+      "expected_refusal": false,
+      "readable": true,
+      "repetition": 3,
+      "message": "Explain true shooting percentage.",
+      "expected": {
+        "status": "answered",
+        "kind": "general",
+        "terms": [
+          "shoot"
+        ]
+      },
+      "expected_plan": null,
+      "provider_calls": 0,
+      "setup_provider_calls": 0,
+      "analytical_calls": 0,
+      "elapsed_ms": 0.188,
+      "answer_signature": "365767645946ccabd3dbbed4a65773b7a635d8e73e310c9e2be03fd67c411ef7"
+    },
+    {
+      "id": "ar02-112",
+      "category": "general",
+      "split": "dev",
+      "exact_answer": true,
+      "plan_correct": null,
+      "failures": [],
+      "refused": false,
+      "expected_refusal": false,
+      "readable": true,
+      "repetition": 1,
+      "message": "What does true shooting percentage mean?",
+      "expected": {
+        "status": "answered",
+        "kind": "general",
+        "terms": [
+          "shoot"
+        ]
+      },
+      "expected_plan": null,
+      "provider_calls": 0,
+      "setup_provider_calls": 0,
+      "analytical_calls": 0,
+      "elapsed_ms": 0.268,
+      "answer_signature": "365767645946ccabd3dbbed4a65773b7a635d8e73e310c9e2be03fd67c411ef7"
+    },
+    {
+      "id": "ar02-112",
+      "category": "general",
+      "split": "dev",
+      "exact_answer": true,
+      "plan_correct": null,
+      "failures": [],
+      "refused": false,
+      "expected_refusal": false,
+      "readable": true,
+      "repetition": 2,
+      "message": "What does true shooting percentage mean?",
+      "expected": {
+        "status": "answered",
+        "kind": "general",
+        "terms": [
+          "shoot"
+        ]
+      },
+      "expected_plan": null,
+      "provider_calls": 0,
+      "setup_provider_calls": 0,
+      "analytical_calls": 0,
+      "elapsed_ms": 0.265,
+      "answer_signature": "365767645946ccabd3dbbed4a65773b7a635d8e73e310c9e2be03fd67c411ef7"
+    },
+    {
+      "id": "ar02-112",
+      "category": "general",
+      "split": "dev",
+      "exact_answer": true,
+      "plan_correct": null,
+      "failures": [],
+      "refused": false,
+      "expected_refusal": false,
+      "readable": true,
+      "repetition": 3,
+      "message": "What does true shooting percentage mean?",
+      "expected": {
+        "status": "answered",
+        "kind": "general",
+        "terms": [
+          "shoot"
+        ]
+      },
+      "expected_plan": null,
+      "provider_calls": 0,
+      "setup_provider_calls": 0,
+      "analytical_calls": 0,
+      "elapsed_ms": 0.255,
+      "answer_signature": "365767645946ccabd3dbbed4a65773b7a635d8e73e310c9e2be03fd67c411ef7"
+    },
+    {
+      "id": "ar02-115",
+      "category": "general",
+      "split": "dev",
+      "exact_answer": true,
+      "plan_correct": null,
+      "failures": [],
+      "refused": false,
+      "expected_refusal": false,
+      "readable": true,
+      "repetition": 1,
+      "message": "Explain pace.",
+      "expected": {
+        "status": "answered",
+        "kind": "general",
+        "terms": [
+          "possession"
+        ]
+      },
+      "expected_plan": null,
+      "provider_calls": 0,
+      "setup_provider_calls": 0,
+      "analytical_calls": 0,
+      "elapsed_ms": 0.199,
+      "answer_signature": "7eba11848db4ff3dd87eabf9eff84c11d977279c0c13f6c924c95ea16a02ac09"
+    },
+    {
+      "id": "ar02-115",
+      "category": "general",
+      "split": "dev",
+      "exact_answer": true,
+      "plan_correct": null,
+      "failures": [],
+      "refused": false,
+      "expected_refusal": false,
+      "readable": true,
+      "repetition": 2,
+      "message": "Explain pace.",
+      "expected": {
+        "status": "answered",
+        "kind": "general",
+        "terms": [
+          "possession"
+        ]
+      },
+      "expected_plan": null,
+      "provider_calls": 0,
+      "setup_provider_calls": 0,
+      "analytical_calls": 0,
+      "elapsed_ms": 0.161,
+      "answer_signature": "7eba11848db4ff3dd87eabf9eff84c11d977279c0c13f6c924c95ea16a02ac09"
+    },
+    {
+      "id": "ar02-115",
+      "category": "general",
+      "split": "dev",
+      "exact_answer": true,
+      "plan_correct": null,
+      "failures": [],
+      "refused": false,
+      "expected_refusal": false,
+      "readable": true,
+      "repetition": 3,
+      "message": "Explain pace.",
+      "expected": {
+        "status": "answered",
+        "kind": "general",
+        "terms": [
+          "possession"
+        ]
+      },
+      "expected_plan": null,
+      "provider_calls": 0,
+      "setup_provider_calls": 0,
+      "analytical_calls": 0,
+      "elapsed_ms": 0.143,
+      "answer_signature": "7eba11848db4ff3dd87eabf9eff84c11d977279c0c13f6c924c95ea16a02ac09"
+    },
+    {
+      "id": "ar02-116",
+      "category": "general",
+      "split": "dev",
+      "exact_answer": true,
+      "plan_correct": null,
+      "failures": [],
+      "refused": false,
+      "expected_refusal": false,
+      "readable": true,
+      "repetition": 1,
+      "message": "What does pace mean?",
+      "expected": {
+        "status": "answered",
+        "kind": "general",
+        "terms": [
+          "possession"
+        ]
+      },
+      "expected_plan": null,
+      "provider_calls": 0,
+      "setup_provider_calls": 0,
+      "analytical_calls": 0,
+      "elapsed_ms": 0.209,
+      "answer_signature": "7eba11848db4ff3dd87eabf9eff84c11d977279c0c13f6c924c95ea16a02ac09"
+    },
+    {
+      "id": "ar02-116",
+      "category": "general",
+      "split": "dev",
+      "exact_answer": true,
+      "plan_correct": null,
+      "failures": [],
+      "refused": false,
+      "expected_refusal": false,
+      "readable": true,
+      "repetition": 2,
+      "message": "What does pace mean?",
+      "expected": {
+        "status": "answered",
+        "kind": "general",
+        "terms": [
+          "possession"
+        ]
+      },
+      "expected_plan": null,
+      "provider_calls": 0,
+      "setup_provider_calls": 0,
+      "analytical_calls": 0,
+      "elapsed_ms": 0.156,
+      "answer_signature": "7eba11848db4ff3dd87eabf9eff84c11d977279c0c13f6c924c95ea16a02ac09"
+    },
+    {
+      "id": "ar02-116",
+      "category": "general",
+      "split": "dev",
+      "exact_answer": true,
+      "plan_correct": null,
+      "failures": [],
+      "refused": false,
+      "expected_refusal": false,
+      "readable": true,
+      "repetition": 3,
+      "message": "What does pace mean?",
+      "expected": {
+        "status": "answered",
+        "kind": "general",
+        "terms": [
+          "possession"
+        ]
+      },
+      "expected_plan": null,
+      "provider_calls": 0,
+      "setup_provider_calls": 0,
+      "analytical_calls": 0,
+      "elapsed_ms": 0.133,
+      "answer_signature": "7eba11848db4ff3dd87eabf9eff84c11d977279c0c13f6c924c95ea16a02ac09"
+    },
+    {
+      "id": "ar02-117",
+      "category": "general",
+      "split": "dev",
+      "exact_answer": true,
+      "plan_correct": null,
+      "failures": [],
+      "refused": false,
+      "expected_refusal": false,
+      "readable": true,
+      "repetition": 1,
+      "message": "Explain usage rate.",
+      "expected": {
+        "status": "answered",
+        "kind": "general",
+        "terms": [
+          "possession"
+        ]
+      },
+      "expected_plan": null,
+      "provider_calls": 0,
+      "setup_provider_calls": 0,
+      "analytical_calls": 0,
+      "elapsed_ms": 0.257,
+      "answer_signature": "e7c186b60c2255a69326fda6e11f468428c9fe3596dd3efc7c29c1119226f4ed"
+    },
+    {
+      "id": "ar02-117",
+      "category": "general",
+      "split": "dev",
+      "exact_answer": true,
+      "plan_correct": null,
+      "failures": [],
+      "refused": false,
+      "expected_refusal": false,
+      "readable": true,
+      "repetition": 2,
+      "message": "Explain usage rate.",
+      "expected": {
+        "status": "answered",
+        "kind": "general",
+        "terms": [
+          "possession"
+        ]
+      },
+      "expected_plan": null,
+      "provider_calls": 0,
+      "setup_provider_calls": 0,
+      "analytical_calls": 0,
+      "elapsed_ms": 0.191,
+      "answer_signature": "e7c186b60c2255a69326fda6e11f468428c9fe3596dd3efc7c29c1119226f4ed"
+    },
+    {
+      "id": "ar02-117",
+      "category": "general",
+      "split": "dev",
+      "exact_answer": true,
+      "plan_correct": null,
+      "failures": [],
+      "refused": false,
+      "expected_refusal": false,
+      "readable": true,
+      "repetition": 3,
+      "message": "Explain usage rate.",
+      "expected": {
+        "status": "answered",
+        "kind": "general",
+        "terms": [
+          "possession"
+        ]
+      },
+      "expected_plan": null,
+      "provider_calls": 0,
+      "setup_provider_calls": 0,
+      "analytical_calls": 0,
+      "elapsed_ms": 0.167,
+      "answer_signature": "e7c186b60c2255a69326fda6e11f468428c9fe3596dd3efc7c29c1119226f4ed"
+    },
+    {
+      "id": "ar02-118",
+      "category": "general",
+      "split": "dev",
+      "exact_answer": true,
+      "plan_correct": null,
+      "failures": [],
+      "refused": false,
+      "expected_refusal": false,
+      "readable": true,
+      "repetition": 1,
+      "message": "What does usage rate mean?",
+      "expected": {
+        "status": "answered",
+        "kind": "general",
+        "terms": [
+          "possession"
+        ]
+      },
+      "expected_plan": null,
+      "provider_calls": 0,
+      "setup_provider_calls": 0,
+      "analytical_calls": 0,
+      "elapsed_ms": 0.235,
+      "answer_signature": "e7c186b60c2255a69326fda6e11f468428c9fe3596dd3efc7c29c1119226f4ed"
+    },
+    {
+      "id": "ar02-118",
+      "category": "general",
+      "split": "dev",
+      "exact_answer": true,
+      "plan_correct": null,
+      "failures": [],
+      "refused": false,
+      "expected_refusal": false,
+      "readable": true,
+      "repetition": 2,
+      "message": "What does usage rate mean?",
+      "expected": {
+        "status": "answered",
+        "kind": "general",
+        "terms": [
+          "possession"
+        ]
+      },
+      "expected_plan": null,
+      "provider_calls": 0,
+      "setup_provider_calls": 0,
+      "analytical_calls": 0,
+      "elapsed_ms": 0.202,
+      "answer_signature": "e7c186b60c2255a69326fda6e11f468428c9fe3596dd3efc7c29c1119226f4ed"
+    },
+    {
+      "id": "ar02-118",
+      "category": "general",
+      "split": "dev",
+      "exact_answer": true,
+      "plan_correct": null,
+      "failures": [],
+      "refused": false,
+      "expected_refusal": false,
+      "readable": true,
+      "repetition": 3,
+      "message": "What does usage rate mean?",
+      "expected": {
+        "status": "answered",
+        "kind": "general",
+        "terms": [
+          "possession"
+        ]
+      },
+      "expected_plan": null,
+      "provider_calls": 0,
+      "setup_provider_calls": 0,
+      "analytical_calls": 0,
+      "elapsed_ms": 0.181,
+      "answer_signature": "e7c186b60c2255a69326fda6e11f468428c9fe3596dd3efc7c29c1119226f4ed"
+    },
+    {
+      "id": "ar02-119",
+      "category": "general",
+      "split": "dev",
+      "exact_answer": true,
+      "plan_correct": null,
+      "failures": [],
+      "refused": false,
+      "expected_refusal": false,
+      "readable": true,
+      "repetition": 1,
+      "message": "Explain empirical prediction intervals.",
+      "expected": {
+        "status": "answered",
+        "kind": "general",
+        "terms": [
+          "dispersion"
+        ]
+      },
+      "expected_plan": null,
+      "provider_calls": 0,
+      "setup_provider_calls": 0,
+      "analytical_calls": 0,
+      "elapsed_ms": 0.25,
+      "answer_signature": "dddaf2bdedda9e91367646d1e672cc995fd960f78c865cdb62c53bc1b146fe82"
+    },
+    {
+      "id": "ar02-119",
+      "category": "general",
+      "split": "dev",
+      "exact_answer": true,
+      "plan_correct": null,
+      "failures": [],
+      "refused": false,
+      "expected_refusal": false,
+      "readable": true,
+      "repetition": 2,
+      "message": "Explain empirical prediction intervals.",
+      "expected": {
+        "status": "answered",
+        "kind": "general",
+        "terms": [
+          "dispersion"
+        ]
+      },
+      "expected_plan": null,
+      "provider_calls": 0,
+      "setup_provider_calls": 0,
+      "analytical_calls": 0,
+      "elapsed_ms": 0.194,
+      "answer_signature": "dddaf2bdedda9e91367646d1e672cc995fd960f78c865cdb62c53bc1b146fe82"
+    },
+    {
+      "id": "ar02-119",
+      "category": "general",
+      "split": "dev",
+      "exact_answer": true,
+      "plan_correct": null,
+      "failures": [],
+      "refused": false,
+      "expected_refusal": false,
+      "readable": true,
+      "repetition": 3,
+      "message": "Explain empirical prediction intervals.",
+      "expected": {
+        "status": "answered",
+        "kind": "general",
+        "terms": [
+          "dispersion"
+        ]
+      },
+      "expected_plan": null,
+      "provider_calls": 0,
+      "setup_provider_calls": 0,
+      "analytical_calls": 0,
+      "elapsed_ms": 0.166,
+      "answer_signature": "dddaf2bdedda9e91367646d1e672cc995fd960f78c865cdb62c53bc1b146fe82"
+    },
+    {
+      "id": "ar02-120",
+      "category": "general",
+      "split": "dev",
+      "exact_answer": true,
+      "plan_correct": null,
+      "failures": [],
+      "refused": false,
+      "expected_refusal": false,
+      "readable": true,
+      "repetition": 1,
+      "message": "What does empirical prediction intervals mean?",
+      "expected": {
+        "status": "answered",
+        "kind": "general",
+        "terms": [
+          "dispersion"
+        ]
+      },
+      "expected_plan": null,
+      "provider_calls": 0,
+      "setup_provider_calls": 0,
+      "analytical_calls": 0,
+      "elapsed_ms": 0.249,
+      "answer_signature": "dddaf2bdedda9e91367646d1e672cc995fd960f78c865cdb62c53bc1b146fe82"
+    },
+    {
+      "id": "ar02-120",
+      "category": "general",
+      "split": "dev",
+      "exact_answer": true,
+      "plan_correct": null,
+      "failures": [],
+      "refused": false,
+      "expected_refusal": false,
+      "readable": true,
+      "repetition": 2,
+      "message": "What does empirical prediction intervals mean?",
+      "expected": {
+        "status": "answered",
+        "kind": "general",
+        "terms": [
+          "dispersion"
+        ]
+      },
+      "expected_plan": null,
+      "provider_calls": 0,
+      "setup_provider_calls": 0,
+      "analytical_calls": 0,
+      "elapsed_ms": 0.19,
+      "answer_signature": "dddaf2bdedda9e91367646d1e672cc995fd960f78c865cdb62c53bc1b146fe82"
+    },
+    {
+      "id": "ar02-120",
+      "category": "general",
+      "split": "dev",
+      "exact_answer": true,
+      "plan_correct": null,
+      "failures": [],
+      "refused": false,
+      "expected_refusal": false,
+      "readable": true,
+      "repetition": 3,
+      "message": "What does empirical prediction intervals mean?",
+      "expected": {
+        "status": "answered",
+        "kind": "general",
+        "terms": [
+          "dispersion"
+        ]
+      },
+      "expected_plan": null,
+      "provider_calls": 0,
+      "setup_provider_calls": 0,
+      "analytical_calls": 0,
+      "elapsed_ms": 0.168,
+      "answer_signature": "dddaf2bdedda9e91367646d1e672cc995fd960f78c865cdb62c53bc1b146fe82"
+    },
+    {
+      "id": "ar02-121",
+      "category": "mixed",
+      "split": "dev",
+      "exact_answer": true,
+      "plan_correct": true,
+      "failures": [],
+      "refused": false,
+      "expected_refusal": false,
+      "readable": true,
+      "repetition": 1,
+      "message": "Explain pick and roll; show the top 10 players by points per game in 2025-26.",
+      "expected": {
+        "status": "answered",
+        "kind": "mixed",
+        "rows": [
+          {
+            "player_id": "1629029",
+            "value": 33.5,
+            "n": 64.0
+          },
+          {
+            "player_id": "1628983",
+            "value": 31.1,
+            "n": 68.0
+          },
+          {
+            "player_id": "1630162",
+            "value": 28.8,
+            "n": 61.0
+          },
+          {
+            "player_id": "1627759",
+            "value": 28.7,
+            "n": 70.0
+          },
+          {
+            "player_id": "1630178",
+            "value": 28.3,
+            "n": 70.0
+          },
+          {
+            "player_id": "1628378",
+            "value": 27.9,
+            "n": 70.0
+          },
+          {
+            "player_id": "202695",
+            "value": 27.9,
+            "n": 65.0
+          },
+          {
+            "player_id": "203999",
+            "value": 27.7,
+            "n": 65.0
+          },
+          {
+            "player_id": "203507",
+            "value": 27.6,
+            "n": 36.0
+          },
+          {
+            "player_id": "1628374",
+            "value": 26.7,
+            "n": 42.0
+          }
+        ],
+        "metric": "pts_per_game",
+        "scope": {
+          "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+          "season": "2025-26",
+          "phase": "regular_season",
+          "before_date": "2026-10-06",
+          "window": "season"
+        }
+      },
+      "expected_plan": [
+        {
+          "operation": "query",
+          "arguments": {
+            "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+            "season": "2025-26",
+            "phase": "regular_season",
+            "before_date": "2026-10-06",
+            "name": null,
+            "entity_kind": "player",
+            "window": {
+              "kind": "season",
+              "n": null,
+              "from_date": null,
+              "to_date": null
+            },
+            "season_scope": {
+              "seasons": [],
+              "aggregate_multi_season": false
+            },
+            "team_scope": {
+              "team_id": null,
+              "participation_only": true,
+              "current_roster_only": false
+            },
+            "metric_selectors": [
+              {
+                "key": "pts_per_game",
+                "version": null,
+                "normalization": "raw",
+                "denominator_type": null
+              }
+            ],
+            "predicates": null,
+            "sample_filters": {
+              "min_games": null,
+              "min_minutes": null,
+              "min_avg_minutes": null,
+              "min_possessions": null,
+              "min_attempts": null
+            },
+            "sort": [
+              {
+                "field": "pts_per_game",
+                "direction": "desc",
+                "nulls_last": true
+              }
+            ],
+            "view_state": null,
+            "page": {
+              "limit": 10,
+              "cursor": null
+            }
+          }
+        }
+      ],
+      "provider_calls": 1,
+      "setup_provider_calls": 0,
+      "analytical_calls": 1,
+      "elapsed_ms": 2593.548,
+      "answer_signature": "03e4ed31c436607fab5eb57e5af23405d2e2ccca3b8903f9acc9a215a1927ed9"
+    },
+    {
+      "id": "ar02-121",
+      "category": "mixed",
+      "split": "dev",
+      "exact_answer": true,
+      "plan_correct": true,
+      "failures": [],
+      "refused": false,
+      "expected_refusal": false,
+      "readable": true,
+      "repetition": 2,
+      "message": "Explain pick and roll; show the top 10 players by points per game in 2025-26.",
+      "expected": {
+        "status": "answered",
+        "kind": "mixed",
+        "rows": [
+          {
+            "player_id": "1629029",
+            "value": 33.5,
+            "n": 64.0
+          },
+          {
+            "player_id": "1628983",
+            "value": 31.1,
+            "n": 68.0
+          },
+          {
+            "player_id": "1630162",
+            "value": 28.8,
+            "n": 61.0
+          },
+          {
+            "player_id": "1627759",
+            "value": 28.7,
+            "n": 70.0
+          },
+          {
+            "player_id": "1630178",
+            "value": 28.3,
+            "n": 70.0
+          },
+          {
+            "player_id": "1628378",
+            "value": 27.9,
+            "n": 70.0
+          },
+          {
+            "player_id": "202695",
+            "value": 27.9,
+            "n": 65.0
+          },
+          {
+            "player_id": "203999",
+            "value": 27.7,
+            "n": 65.0
+          },
+          {
+            "player_id": "203507",
+            "value": 27.6,
+            "n": 36.0
+          },
+          {
+            "player_id": "1628374",
+            "value": 26.7,
+            "n": 42.0
+          }
+        ],
+        "metric": "pts_per_game",
+        "scope": {
+          "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+          "season": "2025-26",
+          "phase": "regular_season",
+          "before_date": "2026-10-06",
+          "window": "season"
+        }
+      },
+      "expected_plan": [
+        {
+          "operation": "query",
+          "arguments": {
+            "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+            "season": "2025-26",
+            "phase": "regular_season",
+            "before_date": "2026-10-06",
+            "name": null,
+            "entity_kind": "player",
+            "window": {
+              "kind": "season",
+              "n": null,
+              "from_date": null,
+              "to_date": null
+            },
+            "season_scope": {
+              "seasons": [],
+              "aggregate_multi_season": false
+            },
+            "team_scope": {
+              "team_id": null,
+              "participation_only": true,
+              "current_roster_only": false
+            },
+            "metric_selectors": [
+              {
+                "key": "pts_per_game",
+                "version": null,
+                "normalization": "raw",
+                "denominator_type": null
+              }
+            ],
+            "predicates": null,
+            "sample_filters": {
+              "min_games": null,
+              "min_minutes": null,
+              "min_avg_minutes": null,
+              "min_possessions": null,
+              "min_attempts": null
+            },
+            "sort": [
+              {
+                "field": "pts_per_game",
+                "direction": "desc",
+                "nulls_last": true
+              }
+            ],
+            "view_state": null,
+            "page": {
+              "limit": 10,
+              "cursor": null
+            }
+          }
+        }
+      ],
+      "provider_calls": 1,
+      "setup_provider_calls": 0,
+      "analytical_calls": 1,
+      "elapsed_ms": 4548.966,
+      "answer_signature": "03e4ed31c436607fab5eb57e5af23405d2e2ccca3b8903f9acc9a215a1927ed9"
+    },
+    {
+      "id": "ar02-121",
+      "category": "mixed",
+      "split": "dev",
+      "exact_answer": true,
+      "plan_correct": true,
+      "failures": [],
+      "refused": false,
+      "expected_refusal": false,
+      "readable": true,
+      "repetition": 3,
+      "message": "Explain pick and roll; show the top 10 players by points per game in 2025-26.",
+      "expected": {
+        "status": "answered",
+        "kind": "mixed",
+        "rows": [
+          {
+            "player_id": "1629029",
+            "value": 33.5,
+            "n": 64.0
+          },
+          {
+            "player_id": "1628983",
+            "value": 31.1,
+            "n": 68.0
+          },
+          {
+            "player_id": "1630162",
+            "value": 28.8,
+            "n": 61.0
+          },
+          {
+            "player_id": "1627759",
+            "value": 28.7,
+            "n": 70.0
+          },
+          {
+            "player_id": "1630178",
+            "value": 28.3,
+            "n": 70.0
+          },
+          {
+            "player_id": "1628378",
+            "value": 27.9,
+            "n": 70.0
+          },
+          {
+            "player_id": "202695",
+            "value": 27.9,
+            "n": 65.0
+          },
+          {
+            "player_id": "203999",
+            "value": 27.7,
+            "n": 65.0
+          },
+          {
+            "player_id": "203507",
+            "value": 27.6,
+            "n": 36.0
+          },
+          {
+            "player_id": "1628374",
+            "value": 26.7,
+            "n": 42.0
+          }
+        ],
+        "metric": "pts_per_game",
+        "scope": {
+          "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+          "season": "2025-26",
+          "phase": "regular_season",
+          "before_date": "2026-10-06",
+          "window": "season"
+        }
+      },
+      "expected_plan": [
+        {
+          "operation": "query",
+          "arguments": {
+            "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+            "season": "2025-26",
+            "phase": "regular_season",
+            "before_date": "2026-10-06",
+            "name": null,
+            "entity_kind": "player",
+            "window": {
+              "kind": "season",
+              "n": null,
+              "from_date": null,
+              "to_date": null
+            },
+            "season_scope": {
+              "seasons": [],
+              "aggregate_multi_season": false
+            },
+            "team_scope": {
+              "team_id": null,
+              "participation_only": true,
+              "current_roster_only": false
+            },
+            "metric_selectors": [
+              {
+                "key": "pts_per_game",
+                "version": null,
+                "normalization": "raw",
+                "denominator_type": null
+              }
+            ],
+            "predicates": null,
+            "sample_filters": {
+              "min_games": null,
+              "min_minutes": null,
+              "min_avg_minutes": null,
+              "min_possessions": null,
+              "min_attempts": null
+            },
+            "sort": [
+              {
+                "field": "pts_per_game",
+                "direction": "desc",
+                "nulls_last": true
+              }
+            ],
+            "view_state": null,
+            "page": {
+              "limit": 10,
+              "cursor": null
+            }
+          }
+        }
+      ],
+      "provider_calls": 1,
+      "setup_provider_calls": 0,
+      "analytical_calls": 1,
+      "elapsed_ms": 4982.36,
+      "answer_signature": "03e4ed31c436607fab5eb57e5af23405d2e2ccca3b8903f9acc9a215a1927ed9"
+    },
+    {
+      "id": "ar02-122",
+      "category": "mixed",
+      "split": "dev",
+      "exact_answer": true,
+      "plan_correct": true,
+      "failures": [],
+      "refused": false,
+      "expected_refusal": false,
+      "readable": true,
+      "repetition": 1,
+      "message": "Explain pick and roll; show the top 10 players by assists per game in 2025-26.",
+      "expected": {
+        "status": "answered",
+        "kind": "mixed",
+        "rows": [
+          {
+            "player_id": "203999",
+            "value": 10.7,
+            "n": 65.0
+          },
+          {
+            "player_id": "1630595",
+            "value": 9.9,
+            "n": 64.0
+          },
+          {
+            "player_id": "1630581",
+            "value": 9.1,
+            "n": 54.0
+          },
+          {
+            "player_id": "1629029",
+            "value": 8.3,
+            "n": 64.0
+          },
+          {
+            "player_id": "1629630",
+            "value": 8.1,
+            "n": 20.0
+          },
+          {
+            "player_id": "1629027",
+            "value": 8.0,
+            "n": 15.0
+          },
+          {
+            "player_id": "201935",
+            "value": 8.0,
+            "n": 70.0
+          },
+          {
+            "player_id": "1630552",
+            "value": 7.9,
+            "n": 72.0
+          },
+          {
+            "player_id": "1629614",
+            "value": 7.7,
+            "n": 56.0
+          },
+          {
+            "player_id": "1629645",
+            "value": 7.4,
+            "n": 38.0
+          }
+        ],
+        "metric": "ast_per_game",
+        "scope": {
+          "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+          "season": "2025-26",
+          "phase": "regular_season",
+          "before_date": "2026-10-06",
+          "window": "season"
+        }
+      },
+      "expected_plan": [
+        {
+          "operation": "query",
+          "arguments": {
+            "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+            "season": "2025-26",
+            "phase": "regular_season",
+            "before_date": "2026-10-06",
+            "name": null,
+            "entity_kind": "player",
+            "window": {
+              "kind": "season",
+              "n": null,
+              "from_date": null,
+              "to_date": null
+            },
+            "season_scope": {
+              "seasons": [],
+              "aggregate_multi_season": false
+            },
+            "team_scope": {
+              "team_id": null,
+              "participation_only": true,
+              "current_roster_only": false
+            },
+            "metric_selectors": [
+              {
+                "key": "ast_per_game",
+                "version": null,
+                "normalization": "raw",
+                "denominator_type": null
+              }
+            ],
+            "predicates": null,
+            "sample_filters": {
+              "min_games": null,
+              "min_minutes": null,
+              "min_avg_minutes": null,
+              "min_possessions": null,
+              "min_attempts": null
+            },
+            "sort": [
+              {
+                "field": "ast_per_game",
+                "direction": "desc",
+                "nulls_last": true
+              }
+            ],
+            "view_state": null,
+            "page": {
+              "limit": 10,
+              "cursor": null
+            }
+          }
+        }
+      ],
+      "provider_calls": 1,
+      "setup_provider_calls": 0,
+      "analytical_calls": 1,
+      "elapsed_ms": 5119.611,
+      "answer_signature": "a0f49dbb6c28bfd84b3ca8f1afe5ce0bc5355d08e831a609b612d589ec1eae6a"
+    },
+    {
+      "id": "ar02-122",
+      "category": "mixed",
+      "split": "dev",
+      "exact_answer": true,
+      "plan_correct": true,
+      "failures": [],
+      "refused": false,
+      "expected_refusal": false,
+      "readable": true,
+      "repetition": 2,
+      "message": "Explain pick and roll; show the top 10 players by assists per game in 2025-26.",
+      "expected": {
+        "status": "answered",
+        "kind": "mixed",
+        "rows": [
+          {
+            "player_id": "203999",
+            "value": 10.7,
+            "n": 65.0
+          },
+          {
+            "player_id": "1630595",
+            "value": 9.9,
+            "n": 64.0
+          },
+          {
+            "player_id": "1630581",
+            "value": 9.1,
+            "n": 54.0
+          },
+          {
+            "player_id": "1629029",
+            "value": 8.3,
+            "n": 64.0
+          },
+          {
+            "player_id": "1629630",
+            "value": 8.1,
+            "n": 20.0
+          },
+          {
+            "player_id": "1629027",
+            "value": 8.0,
+            "n": 15.0
+          },
+          {
+            "player_id": "201935",
+            "value": 8.0,
+            "n": 70.0
+          },
+          {
+            "player_id": "1630552",
+            "value": 7.9,
+            "n": 72.0
+          },
+          {
+            "player_id": "1629614",
+            "value": 7.7,
+            "n": 56.0
+          },
+          {
+            "player_id": "1629645",
+            "value": 7.4,
+            "n": 38.0
+          }
+        ],
+        "metric": "ast_per_game",
+        "scope": {
+          "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+          "season": "2025-26",
+          "phase": "regular_season",
+          "before_date": "2026-10-06",
+          "window": "season"
+        }
+      },
+      "expected_plan": [
+        {
+          "operation": "query",
+          "arguments": {
+            "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+            "season": "2025-26",
+            "phase": "regular_season",
+            "before_date": "2026-10-06",
+            "name": null,
+            "entity_kind": "player",
+            "window": {
+              "kind": "season",
+              "n": null,
+              "from_date": null,
+              "to_date": null
+            },
+            "season_scope": {
+              "seasons": [],
+              "aggregate_multi_season": false
+            },
+            "team_scope": {
+              "team_id": null,
+              "participation_only": true,
+              "current_roster_only": false
+            },
+            "metric_selectors": [
+              {
+                "key": "ast_per_game",
+                "version": null,
+                "normalization": "raw",
+                "denominator_type": null
+              }
+            ],
+            "predicates": null,
+            "sample_filters": {
+              "min_games": null,
+              "min_minutes": null,
+              "min_avg_minutes": null,
+              "min_possessions": null,
+              "min_attempts": null
+            },
+            "sort": [
+              {
+                "field": "ast_per_game",
+                "direction": "desc",
+                "nulls_last": true
+              }
+            ],
+            "view_state": null,
+            "page": {
+              "limit": 10,
+              "cursor": null
+            }
+          }
+        }
+      ],
+      "provider_calls": 1,
+      "setup_provider_calls": 0,
+      "analytical_calls": 1,
+      "elapsed_ms": 4753.276,
+      "answer_signature": "a0f49dbb6c28bfd84b3ca8f1afe5ce0bc5355d08e831a609b612d589ec1eae6a"
+    },
+    {
+      "id": "ar02-122",
+      "category": "mixed",
+      "split": "dev",
+      "exact_answer": true,
+      "plan_correct": true,
+      "failures": [],
+      "refused": false,
+      "expected_refusal": false,
+      "readable": true,
+      "repetition": 3,
+      "message": "Explain pick and roll; show the top 10 players by assists per game in 2025-26.",
+      "expected": {
+        "status": "answered",
+        "kind": "mixed",
+        "rows": [
+          {
+            "player_id": "203999",
+            "value": 10.7,
+            "n": 65.0
+          },
+          {
+            "player_id": "1630595",
+            "value": 9.9,
+            "n": 64.0
+          },
+          {
+            "player_id": "1630581",
+            "value": 9.1,
+            "n": 54.0
+          },
+          {
+            "player_id": "1629029",
+            "value": 8.3,
+            "n": 64.0
+          },
+          {
+            "player_id": "1629630",
+            "value": 8.1,
+            "n": 20.0
+          },
+          {
+            "player_id": "1629027",
+            "value": 8.0,
+            "n": 15.0
+          },
+          {
+            "player_id": "201935",
+            "value": 8.0,
+            "n": 70.0
+          },
+          {
+            "player_id": "1630552",
+            "value": 7.9,
+            "n": 72.0
+          },
+          {
+            "player_id": "1629614",
+            "value": 7.7,
+            "n": 56.0
+          },
+          {
+            "player_id": "1629645",
+            "value": 7.4,
+            "n": 38.0
+          }
+        ],
+        "metric": "ast_per_game",
+        "scope": {
+          "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+          "season": "2025-26",
+          "phase": "regular_season",
+          "before_date": "2026-10-06",
+          "window": "season"
+        }
+      },
+      "expected_plan": [
+        {
+          "operation": "query",
+          "arguments": {
+            "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+            "season": "2025-26",
+            "phase": "regular_season",
+            "before_date": "2026-10-06",
+            "name": null,
+            "entity_kind": "player",
+            "window": {
+              "kind": "season",
+              "n": null,
+              "from_date": null,
+              "to_date": null
+            },
+            "season_scope": {
+              "seasons": [],
+              "aggregate_multi_season": false
+            },
+            "team_scope": {
+              "team_id": null,
+              "participation_only": true,
+              "current_roster_only": false
+            },
+            "metric_selectors": [
+              {
+                "key": "ast_per_game",
+                "version": null,
+                "normalization": "raw",
+                "denominator_type": null
+              }
+            ],
+            "predicates": null,
+            "sample_filters": {
+              "min_games": null,
+              "min_minutes": null,
+              "min_avg_minutes": null,
+              "min_possessions": null,
+              "min_attempts": null
+            },
+            "sort": [
+              {
+                "field": "ast_per_game",
+                "direction": "desc",
+                "nulls_last": true
+              }
+            ],
+            "view_state": null,
+            "page": {
+              "limit": 10,
+              "cursor": null
+            }
+          }
+        }
+      ],
+      "provider_calls": 1,
+      "setup_provider_calls": 0,
+      "analytical_calls": 1,
+      "elapsed_ms": 5099.856,
+      "answer_signature": "a0f49dbb6c28bfd84b3ca8f1afe5ce0bc5355d08e831a609b612d589ec1eae6a"
+    },
+    {
+      "id": "ar02-123",
+      "category": "mixed",
+      "split": "dev",
+      "exact_answer": true,
+      "plan_correct": true,
+      "failures": [],
+      "refused": false,
+      "expected_refusal": false,
+      "readable": true,
+      "repetition": 1,
+      "message": "Explain pick and roll; show the top 10 players by rebounds per game in 2025-26.",
+      "expected": {
+        "status": "answered",
+        "kind": "mixed",
+        "rows": [
+          {
+            "player_id": "203999",
+            "value": 12.9,
+            "n": 65.0
+          },
+          {
+            "player_id": "1626157",
+            "value": 11.9,
+            "n": 74.0
+          },
+          {
+            "player_id": "1641705",
+            "value": 11.6,
+            "n": 63.0
+          },
+          {
+            "player_id": "1642270",
+            "value": 11.6,
+            "n": 76.0
+          },
+          {
+            "player_id": "1627734",
+            "value": 11.4,
+            "n": 19.0
+          },
+          {
+            "player_id": "203497",
+            "value": 11.4,
+            "n": 75.0
+          },
+          {
+            "player_id": "1641744",
+            "value": 11.1,
+            "n": 11.0
+          },
+          {
+            "player_id": "203076",
+            "value": 11.1,
+            "n": 20.0
+          },
+          {
+            "player_id": "1631117",
+            "value": 10.8,
+            "n": 5.0
+          },
+          {
+            "player_id": "1627826",
+            "value": 10.6,
+            "n": 48.0
+          }
+        ],
+        "metric": "reb_per_game",
+        "scope": {
+          "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+          "season": "2025-26",
+          "phase": "regular_season",
+          "before_date": "2026-10-06",
+          "window": "season"
+        }
+      },
+      "expected_plan": [
+        {
+          "operation": "query",
+          "arguments": {
+            "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+            "season": "2025-26",
+            "phase": "regular_season",
+            "before_date": "2026-10-06",
+            "name": null,
+            "entity_kind": "player",
+            "window": {
+              "kind": "season",
+              "n": null,
+              "from_date": null,
+              "to_date": null
+            },
+            "season_scope": {
+              "seasons": [],
+              "aggregate_multi_season": false
+            },
+            "team_scope": {
+              "team_id": null,
+              "participation_only": true,
+              "current_roster_only": false
+            },
+            "metric_selectors": [
+              {
+                "key": "reb_per_game",
+                "version": null,
+                "normalization": "raw",
+                "denominator_type": null
+              }
+            ],
+            "predicates": null,
+            "sample_filters": {
+              "min_games": null,
+              "min_minutes": null,
+              "min_avg_minutes": null,
+              "min_possessions": null,
+              "min_attempts": null
+            },
+            "sort": [
+              {
+                "field": "reb_per_game",
+                "direction": "desc",
+                "nulls_last": true
+              }
+            ],
+            "view_state": null,
+            "page": {
+              "limit": 10,
+              "cursor": null
+            }
+          }
+        }
+      ],
+      "provider_calls": 1,
+      "setup_provider_calls": 0,
+      "analytical_calls": 1,
+      "elapsed_ms": 5167.835,
+      "answer_signature": "5fdf02bf2881c1a5d414d494d087fc959fd3be81932d4f8582ed9aec12323942"
+    },
+    {
+      "id": "ar02-123",
+      "category": "mixed",
+      "split": "dev",
+      "exact_answer": true,
+      "plan_correct": true,
+      "failures": [],
+      "refused": false,
+      "expected_refusal": false,
+      "readable": true,
+      "repetition": 2,
+      "message": "Explain pick and roll; show the top 10 players by rebounds per game in 2025-26.",
+      "expected": {
+        "status": "answered",
+        "kind": "mixed",
+        "rows": [
+          {
+            "player_id": "203999",
+            "value": 12.9,
+            "n": 65.0
+          },
+          {
+            "player_id": "1626157",
+            "value": 11.9,
+            "n": 74.0
+          },
+          {
+            "player_id": "1641705",
+            "value": 11.6,
+            "n": 63.0
+          },
+          {
+            "player_id": "1642270",
+            "value": 11.6,
+            "n": 76.0
+          },
+          {
+            "player_id": "1627734",
+            "value": 11.4,
+            "n": 19.0
+          },
+          {
+            "player_id": "203497",
+            "value": 11.4,
+            "n": 75.0
+          },
+          {
+            "player_id": "1641744",
+            "value": 11.1,
+            "n": 11.0
+          },
+          {
+            "player_id": "203076",
+            "value": 11.1,
+            "n": 20.0
+          },
+          {
+            "player_id": "1631117",
+            "value": 10.8,
+            "n": 5.0
+          },
+          {
+            "player_id": "1627826",
+            "value": 10.6,
+            "n": 48.0
+          }
+        ],
+        "metric": "reb_per_game",
+        "scope": {
+          "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+          "season": "2025-26",
+          "phase": "regular_season",
+          "before_date": "2026-10-06",
+          "window": "season"
+        }
+      },
+      "expected_plan": [
+        {
+          "operation": "query",
+          "arguments": {
+            "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+            "season": "2025-26",
+            "phase": "regular_season",
+            "before_date": "2026-10-06",
+            "name": null,
+            "entity_kind": "player",
+            "window": {
+              "kind": "season",
+              "n": null,
+              "from_date": null,
+              "to_date": null
+            },
+            "season_scope": {
+              "seasons": [],
+              "aggregate_multi_season": false
+            },
+            "team_scope": {
+              "team_id": null,
+              "participation_only": true,
+              "current_roster_only": false
+            },
+            "metric_selectors": [
+              {
+                "key": "reb_per_game",
+                "version": null,
+                "normalization": "raw",
+                "denominator_type": null
+              }
+            ],
+            "predicates": null,
+            "sample_filters": {
+              "min_games": null,
+              "min_minutes": null,
+              "min_avg_minutes": null,
+              "min_possessions": null,
+              "min_attempts": null
+            },
+            "sort": [
+              {
+                "field": "reb_per_game",
+                "direction": "desc",
+                "nulls_last": true
+              }
+            ],
+            "view_state": null,
+            "page": {
+              "limit": 10,
+              "cursor": null
+            }
+          }
+        }
+      ],
+      "provider_calls": 1,
+      "setup_provider_calls": 0,
+      "analytical_calls": 1,
+      "elapsed_ms": 4828.437,
+      "answer_signature": "5fdf02bf2881c1a5d414d494d087fc959fd3be81932d4f8582ed9aec12323942"
+    },
+    {
+      "id": "ar02-123",
+      "category": "mixed",
+      "split": "dev",
+      "exact_answer": true,
+      "plan_correct": true,
+      "failures": [],
+      "refused": false,
+      "expected_refusal": false,
+      "readable": true,
+      "repetition": 3,
+      "message": "Explain pick and roll; show the top 10 players by rebounds per game in 2025-26.",
+      "expected": {
+        "status": "answered",
+        "kind": "mixed",
+        "rows": [
+          {
+            "player_id": "203999",
+            "value": 12.9,
+            "n": 65.0
+          },
+          {
+            "player_id": "1626157",
+            "value": 11.9,
+            "n": 74.0
+          },
+          {
+            "player_id": "1641705",
+            "value": 11.6,
+            "n": 63.0
+          },
+          {
+            "player_id": "1642270",
+            "value": 11.6,
+            "n": 76.0
+          },
+          {
+            "player_id": "1627734",
+            "value": 11.4,
+            "n": 19.0
+          },
+          {
+            "player_id": "203497",
+            "value": 11.4,
+            "n": 75.0
+          },
+          {
+            "player_id": "1641744",
+            "value": 11.1,
+            "n": 11.0
+          },
+          {
+            "player_id": "203076",
+            "value": 11.1,
+            "n": 20.0
+          },
+          {
+            "player_id": "1631117",
+            "value": 10.8,
+            "n": 5.0
+          },
+          {
+            "player_id": "1627826",
+            "value": 10.6,
+            "n": 48.0
+          }
+        ],
+        "metric": "reb_per_game",
+        "scope": {
+          "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+          "season": "2025-26",
+          "phase": "regular_season",
+          "before_date": "2026-10-06",
+          "window": "season"
+        }
+      },
+      "expected_plan": [
+        {
+          "operation": "query",
+          "arguments": {
+            "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+            "season": "2025-26",
+            "phase": "regular_season",
+            "before_date": "2026-10-06",
+            "name": null,
+            "entity_kind": "player",
+            "window": {
+              "kind": "season",
+              "n": null,
+              "from_date": null,
+              "to_date": null
+            },
+            "season_scope": {
+              "seasons": [],
+              "aggregate_multi_season": false
+            },
+            "team_scope": {
+              "team_id": null,
+              "participation_only": true,
+              "current_roster_only": false
+            },
+            "metric_selectors": [
+              {
+                "key": "reb_per_game",
+                "version": null,
+                "normalization": "raw",
+                "denominator_type": null
+              }
+            ],
+            "predicates": null,
+            "sample_filters": {
+              "min_games": null,
+              "min_minutes": null,
+              "min_avg_minutes": null,
+              "min_possessions": null,
+              "min_attempts": null
+            },
+            "sort": [
+              {
+                "field": "reb_per_game",
+                "direction": "desc",
+                "nulls_last": true
+              }
+            ],
+            "view_state": null,
+            "page": {
+              "limit": 10,
+              "cursor": null
+            }
+          }
+        }
+      ],
+      "provider_calls": 1,
+      "setup_provider_calls": 0,
+      "analytical_calls": 1,
+      "elapsed_ms": 5142.263,
+      "answer_signature": "5fdf02bf2881c1a5d414d494d087fc959fd3be81932d4f8582ed9aec12323942"
+    },
+    {
+      "id": "ar02-124",
+      "category": "mixed",
+      "split": "dev",
+      "exact_answer": true,
+      "plan_correct": true,
+      "failures": [],
+      "refused": false,
+      "expected_refusal": false,
+      "readable": true,
+      "repetition": 1,
+      "message": "Explain pick and roll; show the top 10 players by steals per game in 2025-26.",
+      "expected": {
+        "status": "answered",
+        "kind": "mixed",
+        "rows": [
+          {
+            "player_id": "1642955",
+            "value": 2.7,
+            "n": 3.0
+          },
+          {
+            "player_id": "1643016",
+            "value": 2.3,
+            "n": 15.0
+          },
+          {
+            "player_id": "1629645",
+            "value": 2.2,
+            "n": 38.0
+          },
+          {
+            "player_id": "1629680",
+            "value": 2.0,
+            "n": 30.0
+          },
+          {
+            "player_id": "1630700",
+            "value": 2.0,
+            "n": 76.0
+          },
+          {
+            "player_id": "1641709",
+            "value": 2.0,
+            "n": 72.0
+          },
+          {
+            "player_id": "1630178",
+            "value": 1.9,
+            "n": 70.0
+          },
+          {
+            "player_id": "1630590",
+            "value": 1.9,
+            "n": 10.0
+          },
+          {
+            "player_id": "1641717",
+            "value": 1.9,
+            "n": 77.0
+          },
+          {
+            "player_id": "202695",
+            "value": 1.9,
+            "n": 65.0
+          }
+        ],
+        "metric": "stl_per_game",
+        "scope": {
+          "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+          "season": "2025-26",
+          "phase": "regular_season",
+          "before_date": "2026-10-06",
+          "window": "season"
+        }
+      },
+      "expected_plan": [
+        {
+          "operation": "query",
+          "arguments": {
+            "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+            "season": "2025-26",
+            "phase": "regular_season",
+            "before_date": "2026-10-06",
+            "name": null,
+            "entity_kind": "player",
+            "window": {
+              "kind": "season",
+              "n": null,
+              "from_date": null,
+              "to_date": null
+            },
+            "season_scope": {
+              "seasons": [],
+              "aggregate_multi_season": false
+            },
+            "team_scope": {
+              "team_id": null,
+              "participation_only": true,
+              "current_roster_only": false
+            },
+            "metric_selectors": [
+              {
+                "key": "stl_per_game",
+                "version": null,
+                "normalization": "raw",
+                "denominator_type": null
+              }
+            ],
+            "predicates": null,
+            "sample_filters": {
+              "min_games": null,
+              "min_minutes": null,
+              "min_avg_minutes": null,
+              "min_possessions": null,
+              "min_attempts": null
+            },
+            "sort": [
+              {
+                "field": "stl_per_game",
+                "direction": "desc",
+                "nulls_last": true
+              }
+            ],
+            "view_state": null,
+            "page": {
+              "limit": 10,
+              "cursor": null
+            }
+          }
+        }
+      ],
+      "provider_calls": 1,
+      "setup_provider_calls": 0,
+      "analytical_calls": 1,
+      "elapsed_ms": 5047.609,
+      "answer_signature": "593f825427c2d5aa2a59f6a8908806608309e68eea4d0a98ef235974acffb82c"
+    },
+    {
+      "id": "ar02-124",
+      "category": "mixed",
+      "split": "dev",
+      "exact_answer": true,
+      "plan_correct": true,
+      "failures": [],
+      "refused": false,
+      "expected_refusal": false,
+      "readable": true,
+      "repetition": 2,
+      "message": "Explain pick and roll; show the top 10 players by steals per game in 2025-26.",
+      "expected": {
+        "status": "answered",
+        "kind": "mixed",
+        "rows": [
+          {
+            "player_id": "1642955",
+            "value": 2.7,
+            "n": 3.0
+          },
+          {
+            "player_id": "1643016",
+            "value": 2.3,
+            "n": 15.0
+          },
+          {
+            "player_id": "1629645",
+            "value": 2.2,
+            "n": 38.0
+          },
+          {
+            "player_id": "1629680",
+            "value": 2.0,
+            "n": 30.0
+          },
+          {
+            "player_id": "1630700",
+            "value": 2.0,
+            "n": 76.0
+          },
+          {
+            "player_id": "1641709",
+            "value": 2.0,
+            "n": 72.0
+          },
+          {
+            "player_id": "1630178",
+            "value": 1.9,
+            "n": 70.0
+          },
+          {
+            "player_id": "1630590",
+            "value": 1.9,
+            "n": 10.0
+          },
+          {
+            "player_id": "1641717",
+            "value": 1.9,
+            "n": 77.0
+          },
+          {
+            "player_id": "202695",
+            "value": 1.9,
+            "n": 65.0
+          }
+        ],
+        "metric": "stl_per_game",
+        "scope": {
+          "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+          "season": "2025-26",
+          "phase": "regular_season",
+          "before_date": "2026-10-06",
+          "window": "season"
+        }
+      },
+      "expected_plan": [
+        {
+          "operation": "query",
+          "arguments": {
+            "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+            "season": "2025-26",
+            "phase": "regular_season",
+            "before_date": "2026-10-06",
+            "name": null,
+            "entity_kind": "player",
+            "window": {
+              "kind": "season",
+              "n": null,
+              "from_date": null,
+              "to_date": null
+            },
+            "season_scope": {
+              "seasons": [],
+              "aggregate_multi_season": false
+            },
+            "team_scope": {
+              "team_id": null,
+              "participation_only": true,
+              "current_roster_only": false
+            },
+            "metric_selectors": [
+              {
+                "key": "stl_per_game",
+                "version": null,
+                "normalization": "raw",
+                "denominator_type": null
+              }
+            ],
+            "predicates": null,
+            "sample_filters": {
+              "min_games": null,
+              "min_minutes": null,
+              "min_avg_minutes": null,
+              "min_possessions": null,
+              "min_attempts": null
+            },
+            "sort": [
+              {
+                "field": "stl_per_game",
+                "direction": "desc",
+                "nulls_last": true
+              }
+            ],
+            "view_state": null,
+            "page": {
+              "limit": 10,
+              "cursor": null
+            }
+          }
+        }
+      ],
+      "provider_calls": 1,
+      "setup_provider_calls": 0,
+      "analytical_calls": 1,
+      "elapsed_ms": 4666.802,
+      "answer_signature": "593f825427c2d5aa2a59f6a8908806608309e68eea4d0a98ef235974acffb82c"
+    },
+    {
+      "id": "ar02-124",
+      "category": "mixed",
+      "split": "dev",
+      "exact_answer": true,
+      "plan_correct": true,
+      "failures": [],
+      "refused": false,
+      "expected_refusal": false,
+      "readable": true,
+      "repetition": 3,
+      "message": "Explain pick and roll; show the top 10 players by steals per game in 2025-26.",
+      "expected": {
+        "status": "answered",
+        "kind": "mixed",
+        "rows": [
+          {
+            "player_id": "1642955",
+            "value": 2.7,
+            "n": 3.0
+          },
+          {
+            "player_id": "1643016",
+            "value": 2.3,
+            "n": 15.0
+          },
+          {
+            "player_id": "1629645",
+            "value": 2.2,
+            "n": 38.0
+          },
+          {
+            "player_id": "1629680",
+            "value": 2.0,
+            "n": 30.0
+          },
+          {
+            "player_id": "1630700",
+            "value": 2.0,
+            "n": 76.0
+          },
+          {
+            "player_id": "1641709",
+            "value": 2.0,
+            "n": 72.0
+          },
+          {
+            "player_id": "1630178",
+            "value": 1.9,
+            "n": 70.0
+          },
+          {
+            "player_id": "1630590",
+            "value": 1.9,
+            "n": 10.0
+          },
+          {
+            "player_id": "1641717",
+            "value": 1.9,
+            "n": 77.0
+          },
+          {
+            "player_id": "202695",
+            "value": 1.9,
+            "n": 65.0
+          }
+        ],
+        "metric": "stl_per_game",
+        "scope": {
+          "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+          "season": "2025-26",
+          "phase": "regular_season",
+          "before_date": "2026-10-06",
+          "window": "season"
+        }
+      },
+      "expected_plan": [
+        {
+          "operation": "query",
+          "arguments": {
+            "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+            "season": "2025-26",
+            "phase": "regular_season",
+            "before_date": "2026-10-06",
+            "name": null,
+            "entity_kind": "player",
+            "window": {
+              "kind": "season",
+              "n": null,
+              "from_date": null,
+              "to_date": null
+            },
+            "season_scope": {
+              "seasons": [],
+              "aggregate_multi_season": false
+            },
+            "team_scope": {
+              "team_id": null,
+              "participation_only": true,
+              "current_roster_only": false
+            },
+            "metric_selectors": [
+              {
+                "key": "stl_per_game",
+                "version": null,
+                "normalization": "raw",
+                "denominator_type": null
+              }
+            ],
+            "predicates": null,
+            "sample_filters": {
+              "min_games": null,
+              "min_minutes": null,
+              "min_avg_minutes": null,
+              "min_possessions": null,
+              "min_attempts": null
+            },
+            "sort": [
+              {
+                "field": "stl_per_game",
+                "direction": "desc",
+                "nulls_last": true
+              }
+            ],
+            "view_state": null,
+            "page": {
+              "limit": 10,
+              "cursor": null
+            }
+          }
+        }
+      ],
+      "provider_calls": 1,
+      "setup_provider_calls": 0,
+      "analytical_calls": 1,
+      "elapsed_ms": 5009.736,
+      "answer_signature": "593f825427c2d5aa2a59f6a8908806608309e68eea4d0a98ef235974acffb82c"
+    },
+    {
+      "id": "ar02-126",
+      "category": "mixed",
+      "split": "dev",
+      "exact_answer": true,
+      "plan_correct": true,
+      "failures": [],
+      "refused": false,
+      "expected_refusal": false,
+      "readable": true,
+      "repetition": 1,
+      "message": "Explain pick and roll; show the top 10 players by minutes per game in 2025-26.",
+      "expected": {
+        "status": "answered",
+        "kind": "mixed",
+        "rows": [
+          {
+            "player_id": "1630178",
+            "value": 38.0,
+            "n": 70.0
+          },
+          {
+            "player_id": "1641708",
+            "value": 37.4,
+            "n": 79.0
+          },
+          {
+            "player_id": "201142",
+            "value": 36.4,
+            "n": 78.0
+          },
+          {
+            "player_id": "1643253",
+            "value": 36.2,
+            "n": 6.0
+          },
+          {
+            "player_id": "1629029",
+            "value": 35.8,
+            "n": 64.0
+          },
+          {
+            "player_id": "1630530",
+            "value": 35.6,
+            "n": 65.0
+          },
+          {
+            "player_id": "1627750",
+            "value": 35.4,
+            "n": 75.0
+          },
+          {
+            "player_id": "1630552",
+            "value": 35.2,
+            "n": 72.0
+          },
+          {
+            "player_id": "1631095",
+            "value": 35.1,
+            "n": 77.0
+          },
+          {
+            "player_id": "1628973",
+            "value": 35.0,
+            "n": 73.0
+          }
+        ],
+        "metric": "min_per_game",
+        "scope": {
+          "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+          "season": "2025-26",
+          "phase": "regular_season",
+          "before_date": "2026-10-06",
+          "window": "season"
+        }
+      },
+      "expected_plan": [
+        {
+          "operation": "query",
+          "arguments": {
+            "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+            "season": "2025-26",
+            "phase": "regular_season",
+            "before_date": "2026-10-06",
+            "name": null,
+            "entity_kind": "player",
+            "window": {
+              "kind": "season",
+              "n": null,
+              "from_date": null,
+              "to_date": null
+            },
+            "season_scope": {
+              "seasons": [],
+              "aggregate_multi_season": false
+            },
+            "team_scope": {
+              "team_id": null,
+              "participation_only": true,
+              "current_roster_only": false
+            },
+            "metric_selectors": [
+              {
+                "key": "min_per_game",
+                "version": null,
+                "normalization": "raw",
+                "denominator_type": null
+              }
+            ],
+            "predicates": null,
+            "sample_filters": {
+              "min_games": null,
+              "min_minutes": null,
+              "min_avg_minutes": null,
+              "min_possessions": null,
+              "min_attempts": null
+            },
+            "sort": [
+              {
+                "field": "min_per_game",
+                "direction": "desc",
+                "nulls_last": true
+              }
+            ],
+            "view_state": null,
+            "page": {
+              "limit": 10,
+              "cursor": null
+            }
+          }
+        }
+      ],
+      "provider_calls": 1,
+      "setup_provider_calls": 0,
+      "analytical_calls": 1,
+      "elapsed_ms": 5205.015,
+      "answer_signature": "a6cc0d9e64b0535efcfaeb4f8caf35e18d8d2798d2fbe935565cf9775e3b3503"
+    },
+    {
+      "id": "ar02-126",
+      "category": "mixed",
+      "split": "dev",
+      "exact_answer": true,
+      "plan_correct": true,
+      "failures": [],
+      "refused": false,
+      "expected_refusal": false,
+      "readable": true,
+      "repetition": 2,
+      "message": "Explain pick and roll; show the top 10 players by minutes per game in 2025-26.",
+      "expected": {
+        "status": "answered",
+        "kind": "mixed",
+        "rows": [
+          {
+            "player_id": "1630178",
+            "value": 38.0,
+            "n": 70.0
+          },
+          {
+            "player_id": "1641708",
+            "value": 37.4,
+            "n": 79.0
+          },
+          {
+            "player_id": "201142",
+            "value": 36.4,
+            "n": 78.0
+          },
+          {
+            "player_id": "1643253",
+            "value": 36.2,
+            "n": 6.0
+          },
+          {
+            "player_id": "1629029",
+            "value": 35.8,
+            "n": 64.0
+          },
+          {
+            "player_id": "1630530",
+            "value": 35.6,
+            "n": 65.0
+          },
+          {
+            "player_id": "1627750",
+            "value": 35.4,
+            "n": 75.0
+          },
+          {
+            "player_id": "1630552",
+            "value": 35.2,
+            "n": 72.0
+          },
+          {
+            "player_id": "1631095",
+            "value": 35.1,
+            "n": 77.0
+          },
+          {
+            "player_id": "1628973",
+            "value": 35.0,
+            "n": 73.0
+          }
+        ],
+        "metric": "min_per_game",
+        "scope": {
+          "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+          "season": "2025-26",
+          "phase": "regular_season",
+          "before_date": "2026-10-06",
+          "window": "season"
+        }
+      },
+      "expected_plan": [
+        {
+          "operation": "query",
+          "arguments": {
+            "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+            "season": "2025-26",
+            "phase": "regular_season",
+            "before_date": "2026-10-06",
+            "name": null,
+            "entity_kind": "player",
+            "window": {
+              "kind": "season",
+              "n": null,
+              "from_date": null,
+              "to_date": null
+            },
+            "season_scope": {
+              "seasons": [],
+              "aggregate_multi_season": false
+            },
+            "team_scope": {
+              "team_id": null,
+              "participation_only": true,
+              "current_roster_only": false
+            },
+            "metric_selectors": [
+              {
+                "key": "min_per_game",
+                "version": null,
+                "normalization": "raw",
+                "denominator_type": null
+              }
+            ],
+            "predicates": null,
+            "sample_filters": {
+              "min_games": null,
+              "min_minutes": null,
+              "min_avg_minutes": null,
+              "min_possessions": null,
+              "min_attempts": null
+            },
+            "sort": [
+              {
+                "field": "min_per_game",
+                "direction": "desc",
+                "nulls_last": true
+              }
+            ],
+            "view_state": null,
+            "page": {
+              "limit": 10,
+              "cursor": null
+            }
+          }
+        }
+      ],
+      "provider_calls": 1,
+      "setup_provider_calls": 0,
+      "analytical_calls": 1,
+      "elapsed_ms": 5347.233,
+      "answer_signature": "a6cc0d9e64b0535efcfaeb4f8caf35e18d8d2798d2fbe935565cf9775e3b3503"
+    },
+    {
+      "id": "ar02-126",
+      "category": "mixed",
+      "split": "dev",
+      "exact_answer": true,
+      "plan_correct": true,
+      "failures": [],
+      "refused": false,
+      "expected_refusal": false,
+      "readable": true,
+      "repetition": 3,
+      "message": "Explain pick and roll; show the top 10 players by minutes per game in 2025-26.",
+      "expected": {
+        "status": "answered",
+        "kind": "mixed",
+        "rows": [
+          {
+            "player_id": "1630178",
+            "value": 38.0,
+            "n": 70.0
+          },
+          {
+            "player_id": "1641708",
+            "value": 37.4,
+            "n": 79.0
+          },
+          {
+            "player_id": "201142",
+            "value": 36.4,
+            "n": 78.0
+          },
+          {
+            "player_id": "1643253",
+            "value": 36.2,
+            "n": 6.0
+          },
+          {
+            "player_id": "1629029",
+            "value": 35.8,
+            "n": 64.0
+          },
+          {
+            "player_id": "1630530",
+            "value": 35.6,
+            "n": 65.0
+          },
+          {
+            "player_id": "1627750",
+            "value": 35.4,
+            "n": 75.0
+          },
+          {
+            "player_id": "1630552",
+            "value": 35.2,
+            "n": 72.0
+          },
+          {
+            "player_id": "1631095",
+            "value": 35.1,
+            "n": 77.0
+          },
+          {
+            "player_id": "1628973",
+            "value": 35.0,
+            "n": 73.0
+          }
+        ],
+        "metric": "min_per_game",
+        "scope": {
+          "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+          "season": "2025-26",
+          "phase": "regular_season",
+          "before_date": "2026-10-06",
+          "window": "season"
+        }
+      },
+      "expected_plan": [
+        {
+          "operation": "query",
+          "arguments": {
+            "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+            "season": "2025-26",
+            "phase": "regular_season",
+            "before_date": "2026-10-06",
+            "name": null,
+            "entity_kind": "player",
+            "window": {
+              "kind": "season",
+              "n": null,
+              "from_date": null,
+              "to_date": null
+            },
+            "season_scope": {
+              "seasons": [],
+              "aggregate_multi_season": false
+            },
+            "team_scope": {
+              "team_id": null,
+              "participation_only": true,
+              "current_roster_only": false
+            },
+            "metric_selectors": [
+              {
+                "key": "min_per_game",
+                "version": null,
+                "normalization": "raw",
+                "denominator_type": null
+              }
+            ],
+            "predicates": null,
+            "sample_filters": {
+              "min_games": null,
+              "min_minutes": null,
+              "min_avg_minutes": null,
+              "min_possessions": null,
+              "min_attempts": null
+            },
+            "sort": [
+              {
+                "field": "min_per_game",
+                "direction": "desc",
+                "nulls_last": true
+              }
+            ],
+            "view_state": null,
+            "page": {
+              "limit": 10,
+              "cursor": null
+            }
+          }
+        }
+      ],
+      "provider_calls": 1,
+      "setup_provider_calls": 0,
+      "analytical_calls": 1,
+      "elapsed_ms": 4219.839,
+      "answer_signature": "a6cc0d9e64b0535efcfaeb4f8caf35e18d8d2798d2fbe935565cf9775e3b3503"
+    },
+    {
+      "id": "ar02-127",
+      "category": "mixed",
+      "split": "dev",
+      "exact_answer": true,
+      "plan_correct": true,
+      "failures": [],
+      "refused": false,
+      "expected_refusal": false,
+      "readable": true,
+      "repetition": 1,
+      "message": "Explain pick and roll; show the top 10 players by total points in 2025-26.",
+      "expected": {
+        "status": "answered",
+        "kind": "mixed",
+        "rows": [
+          {
+            "player_id": "1629029",
+            "value": 2143.0,
+            "n": 64.0
+          },
+          {
+            "player_id": "1628983",
+            "value": 2117.0,
+            "n": 68.0
+          },
+          {
+            "player_id": "201142",
+            "value": 2026.0,
+            "n": 78.0
+          },
+          {
+            "player_id": "1627759",
+            "value": 2009.0,
+            "n": 70.0
+          },
+          {
+            "player_id": "1630178",
+            "value": 1980.0,
+            "n": 70.0
+          },
+          {
+            "player_id": "1628378",
+            "value": 1952.0,
+            "n": 70.0
+          },
+          {
+            "player_id": "1628973",
+            "value": 1907.0,
+            "n": 73.0
+          },
+          {
+            "player_id": "1627750",
+            "value": 1905.0,
+            "n": 75.0
+          },
+          {
+            "player_id": "202695",
+            "value": 1813.0,
+            "n": 65.0
+          },
+          {
+            "player_id": "203999",
+            "value": 1799.0,
+            "n": 65.0
+          }
+        ],
+        "metric": "pts",
+        "scope": {
+          "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+          "season": "2025-26",
+          "phase": "regular_season",
+          "before_date": "2026-10-06",
+          "window": "season"
+        }
+      },
+      "expected_plan": [
+        {
+          "operation": "query",
+          "arguments": {
+            "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+            "season": "2025-26",
+            "phase": "regular_season",
+            "before_date": "2026-10-06",
+            "name": null,
+            "entity_kind": "player",
+            "window": {
+              "kind": "season",
+              "n": null,
+              "from_date": null,
+              "to_date": null
+            },
+            "season_scope": {
+              "seasons": [],
+              "aggregate_multi_season": false
+            },
+            "team_scope": {
+              "team_id": null,
+              "participation_only": true,
+              "current_roster_only": false
+            },
+            "metric_selectors": [
+              {
+                "key": "pts",
+                "version": null,
+                "normalization": "raw",
+                "denominator_type": null
+              }
+            ],
+            "predicates": null,
+            "sample_filters": {
+              "min_games": null,
+              "min_minutes": null,
+              "min_avg_minutes": null,
+              "min_possessions": null,
+              "min_attempts": null
+            },
+            "sort": [
+              {
+                "field": "pts",
+                "direction": "desc",
+                "nulls_last": true
+              }
+            ],
+            "view_state": null,
+            "page": {
+              "limit": 10,
+              "cursor": null
+            }
+          }
+        }
+      ],
+      "provider_calls": 1,
+      "setup_provider_calls": 0,
+      "analytical_calls": 1,
+      "elapsed_ms": 5121.873,
+      "answer_signature": "b5e4e50e14bf6df6d37a4e773fc213796c50a3e0a712b768308e02288ddd7fe1"
+    },
+    {
+      "id": "ar02-127",
+      "category": "mixed",
+      "split": "dev",
+      "exact_answer": true,
+      "plan_correct": true,
+      "failures": [],
+      "refused": false,
+      "expected_refusal": false,
+      "readable": true,
+      "repetition": 2,
+      "message": "Explain pick and roll; show the top 10 players by total points in 2025-26.",
+      "expected": {
+        "status": "answered",
+        "kind": "mixed",
+        "rows": [
+          {
+            "player_id": "1629029",
+            "value": 2143.0,
+            "n": 64.0
+          },
+          {
+            "player_id": "1628983",
+            "value": 2117.0,
+            "n": 68.0
+          },
+          {
+            "player_id": "201142",
+            "value": 2026.0,
+            "n": 78.0
+          },
+          {
+            "player_id": "1627759",
+            "value": 2009.0,
+            "n": 70.0
+          },
+          {
+            "player_id": "1630178",
+            "value": 1980.0,
+            "n": 70.0
+          },
+          {
+            "player_id": "1628378",
+            "value": 1952.0,
+            "n": 70.0
+          },
+          {
+            "player_id": "1628973",
+            "value": 1907.0,
+            "n": 73.0
+          },
+          {
+            "player_id": "1627750",
+            "value": 1905.0,
+            "n": 75.0
+          },
+          {
+            "player_id": "202695",
+            "value": 1813.0,
+            "n": 65.0
+          },
+          {
+            "player_id": "203999",
+            "value": 1799.0,
+            "n": 65.0
+          }
+        ],
+        "metric": "pts",
+        "scope": {
+          "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+          "season": "2025-26",
+          "phase": "regular_season",
+          "before_date": "2026-10-06",
+          "window": "season"
+        }
+      },
+      "expected_plan": [
+        {
+          "operation": "query",
+          "arguments": {
+            "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+            "season": "2025-26",
+            "phase": "regular_season",
+            "before_date": "2026-10-06",
+            "name": null,
+            "entity_kind": "player",
+            "window": {
+              "kind": "season",
+              "n": null,
+              "from_date": null,
+              "to_date": null
+            },
+            "season_scope": {
+              "seasons": [],
+              "aggregate_multi_season": false
+            },
+            "team_scope": {
+              "team_id": null,
+              "participation_only": true,
+              "current_roster_only": false
+            },
+            "metric_selectors": [
+              {
+                "key": "pts",
+                "version": null,
+                "normalization": "raw",
+                "denominator_type": null
+              }
+            ],
+            "predicates": null,
+            "sample_filters": {
+              "min_games": null,
+              "min_minutes": null,
+              "min_avg_minutes": null,
+              "min_possessions": null,
+              "min_attempts": null
+            },
+            "sort": [
+              {
+                "field": "pts",
+                "direction": "desc",
+                "nulls_last": true
+              }
+            ],
+            "view_state": null,
+            "page": {
+              "limit": 10,
+              "cursor": null
+            }
+          }
+        }
+      ],
+      "provider_calls": 1,
+      "setup_provider_calls": 0,
+      "analytical_calls": 1,
+      "elapsed_ms": 5649.798,
+      "answer_signature": "b5e4e50e14bf6df6d37a4e773fc213796c50a3e0a712b768308e02288ddd7fe1"
+    },
+    {
+      "id": "ar02-127",
+      "category": "mixed",
+      "split": "dev",
+      "exact_answer": false,
+      "plan_correct": false,
+      "failures": [
+        "status",
+        "sql_cells_or_order"
+      ],
+      "refused": false,
+      "expected_refusal": false,
+      "readable": true,
+      "repetition": 3,
+      "message": "Explain pick and roll; show the top 10 players by total points in 2025-26.",
+      "expected": {
+        "status": "answered",
+        "kind": "mixed",
+        "rows": [
+          {
+            "player_id": "1629029",
+            "value": 2143.0,
+            "n": 64.0
+          },
+          {
+            "player_id": "1628983",
+            "value": 2117.0,
+            "n": 68.0
+          },
+          {
+            "player_id": "201142",
+            "value": 2026.0,
+            "n": 78.0
+          },
+          {
+            "player_id": "1627759",
+            "value": 2009.0,
+            "n": 70.0
+          },
+          {
+            "player_id": "1630178",
+            "value": 1980.0,
+            "n": 70.0
+          },
+          {
+            "player_id": "1628378",
+            "value": 1952.0,
+            "n": 70.0
+          },
+          {
+            "player_id": "1628973",
+            "value": 1907.0,
+            "n": 73.0
+          },
+          {
+            "player_id": "1627750",
+            "value": 1905.0,
+            "n": 75.0
+          },
+          {
+            "player_id": "202695",
+            "value": 1813.0,
+            "n": 65.0
+          },
+          {
+            "player_id": "203999",
+            "value": 1799.0,
+            "n": 65.0
+          }
+        ],
+        "metric": "pts",
+        "scope": {
+          "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+          "season": "2025-26",
+          "phase": "regular_season",
+          "before_date": "2026-10-06",
+          "window": "season"
+        }
+      },
+      "expected_plan": [
+        {
+          "operation": "query",
+          "arguments": {
+            "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+            "season": "2025-26",
+            "phase": "regular_season",
+            "before_date": "2026-10-06",
+            "name": null,
+            "entity_kind": "player",
+            "window": {
+              "kind": "season",
+              "n": null,
+              "from_date": null,
+              "to_date": null
+            },
+            "season_scope": {
+              "seasons": [],
+              "aggregate_multi_season": false
+            },
+            "team_scope": {
+              "team_id": null,
+              "participation_only": true,
+              "current_roster_only": false
+            },
+            "metric_selectors": [
+              {
+                "key": "pts",
+                "version": null,
+                "normalization": "raw",
+                "denominator_type": null
+              }
+            ],
+            "predicates": null,
+            "sample_filters": {
+              "min_games": null,
+              "min_minutes": null,
+              "min_avg_minutes": null,
+              "min_possessions": null,
+              "min_attempts": null
+            },
+            "sort": [
+              {
+                "field": "pts",
+                "direction": "desc",
+                "nulls_last": true
+              }
+            ],
+            "view_state": null,
+            "page": {
+              "limit": 10,
+              "cursor": null
+            }
+          }
+        }
+      ],
+      "provider_calls": 1,
+      "setup_provider_calls": 0,
+      "analytical_calls": 0,
+      "elapsed_ms": 2438.465,
+      "answer_signature": "fb996512ccf6198748d477a50c76d125f0bdfef5b7d4702fecd959508028b463"
+    }
+  ],
+  "provider_calls": [],
+  "stopped": "quota_exceeded",
+  "summary": {
+    "coverage": {
+      "completed_runs": 66,
+      "planned_runs": 72,
+      "completed_questions": 22,
+      "planned_questions": 24
+    },
+    "exact_answer": {
+      "correct": 65,
+      "total": 66,
+      "rate": 0.9848484848484849
+    },
+    "plan_accuracy": {
+      "correct": 17,
+      "total": 18,
+      "rate": 0.9444444444444444
+    },
+    "refusal_precision": {
+      "correct": 0,
+      "total": 0,
+      "rate": null
+    },
+    "refusal_recall": {
+      "correct": 0,
+      "total": 0,
+      "rate": null
+    },
+    "flakiness": {
+      "flaky": 1,
+      "total": 22,
+      "rate": 0.045454545454545456
+    },
+    "answer_variation": {
+      "varied": 1,
+      "total": 22,
+      "rate": 0.045454545454545456
+    },
+    "latency_ms": {
+      "mean": 1287.1730454545454,
+      "p95": 5167.835
+    },
+    "provider_calls": 18,
+    "setup_provider_calls": 0,
+    "recorded_provider_calls": 18,
+    "token_usage": {
+      "calls_with_usage": 17,
+      "calls_without_usage": 1,
+      "reported_tokens": {
+        "prompt_token_count": 93515,
+        "candidates_token_count": 3484,
+        "total_token_count": 96999
+      }
+    },
+    "analytical_calls": 17,
+    "categories": {
+      "general": {
+        "correct": 48,
+        "total": 48,
+        "rate": 1
+      },
+      "mixed": {
+        "correct": 17,
+        "total": 18,
+        "rate": 0.9444444444444444
+      }
+    }
+  },
+  "context": {
+    "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+    "snapshot_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+    "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+    "dataset_type": "workbench",
+    "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666",
+    "mode": "workbench_recent",
+    "source": "sportsdataverse",
+    "season": "2025-26",
+    "phase": "regular_season",
+    "before_date": "2026-10-06",
+    "cutoff_utc": "2026-10-06T04:00:00+00:00",
+    "window": "season",
+    "coverage_start": "2023-10-24",
+    "coverage_end": "2026-06-13",
+    "metric_version": "v2",
+    "published_at": "2026-10-01T17:47:29.173164+00:00"
+  },
+  "finished_at": "2026-10-06T22:32:40.726691+00:00"
+}

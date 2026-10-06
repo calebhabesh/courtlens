@@ -906,7 +906,8 @@
         "origin": {
           "enum": [
             "knowledge",
-            "discussion"
+            "discussion",
+            "general_knowledge"
           ],
           "title": "Origin",
           "type": "string"

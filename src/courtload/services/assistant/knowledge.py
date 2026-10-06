@@ -11,7 +11,7 @@ from sqlalchemy.orm import Session
 from courtload.domain.conversation import ConversationContext
 from courtload.domain.hybrid_assistant import AnswerSource
 
-REGISTRY_VERSION = "courtload-knowledge-v2"
+REGISTRY_VERSION = "courtload-knowledge-v3"
 VERIFIED_ON = date(2026, 10, 6)
 
 
@@ -59,6 +59,20 @@ def retrieve(message: str) -> KnowledgeEntry | None:
     import re
 
     text = message.lower()
+    # Specific concepts outrank broad overlaps such as "defense" or "shooting".
+    for pattern, key in (
+        (r"\bpick(?:[- ]and[- ]| & )roll\b", "pick_roll"),
+        (r"\bswitch(?:ing)?\b", "switching"),
+        (r"\bspacing\b", "spacing"),
+        (r"\boffensive rebound(?:ing|s)?\b", "offensive_rebounding"),
+        (r"\bassist\b(?! per game)", "assist_definition"),
+        (r"\bpace\b", "pace"),
+        (r"\busage(?: rate)?\b", "usage"),
+        (r"\b(travel(?:ing|ling)|double dribble)\b", "ball_handling"),
+        (r"\b(zone defense|zone defence)\b", "zone"),
+    ):
+        if re.search(pattern, text):
+            return next(entry for entry in registry() if entry.key == key)
     words = frozenset(re.findall(r"[a-z]+(?:-[a-z]+)?", text))
     if words & {"team", "teams"} and not words & {"player", "players"}:
         return next(entry for entry in registry() if entry.key == "teams")

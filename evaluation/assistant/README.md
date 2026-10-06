@@ -21,6 +21,9 @@ From the repository root, with the existing local PostgreSQL configuration:
 # Live dev evaluation; configured Gemini model, retained Free-tier evidence, no arbitrary call cap.
 make eval-assistant
 
+# AR03's bounded categories; selection is recorded without changing the frozen corpus.
+make eval-assistant ASSISTANT_EVAL_ARGS='--category general --category mixed'
+
 # Authored plans exercise the whole dev corpus without inference.
 # This is execution/scoring coverage, not language accuracy.
 make eval-assistant ASSISTANT_EVAL_ARGS='--mode fixture'
@@ -92,3 +95,5 @@ turn. They are not evaluated with an injected golden previous plan in live mode.
 Baseline evidence: [AR02 evaluation report](../../docs/evidence/ar02-evaluation/README.md).
 The original acquisition capture is retained when scoring changes; rescoring writes a separate
 report with the source digest, scorer digest and every changed failure list.
+
+AR03 category measurements and limits: [routing report](../../docs/evidence/ar03-routing/README.md).

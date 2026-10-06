@@ -1,5 +1,6 @@
 """Explicit v2 wire and durable-record contracts; v1 evidence keeps its meaning."""
 
+import re
 from datetime import date, datetime
 from typing import Annotated, Any, Literal
 from uuid import UUID
@@ -15,6 +16,17 @@ from courtload.domain.conversation import (
 )
 
 Hash = Annotated[str, Field(pattern=r"^[a-f0-9]{64}$")]
+GENERAL_LABEL = "General knowledge, not from CourtLens data"
+GENERAL_NUMBERS = re.compile(
+    r"\d|[%¼½¾]|\b(zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|"
+    r"thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|thirty|"
+    r"forty|fifty|sixty|seventy|eighty|ninety|hundred|thousand|million|billion|percent|"
+    r"trillion|dozen|first|second|third|fourth|fifth|sixth|seventh|eighth|ninth|tenth|"
+    r"eleventh|twelfth|thirteenth|fourteenth|fifteenth|sixteenth|seventeenth|eighteenth|"
+    r"nineteenth|twentieth|thirtieth|fortieth|fiftieth|sixtieth|seventieth|eightieth|"
+    r"ninetieth|hundredth|thousandth|half|quarter)\b",
+    re.I,
+)
 Intent = Literal[
     "local_analysis",
     "site_guidance",
@@ -150,7 +162,7 @@ class AnswerAction(StrictModel):
 
 class TextBlock(StrictModel):
     kind: Literal["text"] = "text"
-    origin: Literal["knowledge", "discussion"]
+    origin: Literal["knowledge", "discussion", "general_knowledge"]
     text: str = Field(min_length=1, max_length=8192)
     source_ids: list[str] = Field(default_factory=list)
     criteria: list[str] = Field(default_factory=list)
@@ -161,6 +173,13 @@ class TextBlock(StrictModel):
             raise ValueError("knowledge requires source identity")
         if self.origin == "discussion" and not self.criteria:
             raise ValueError("discussion requires stated criteria")
+        if self.origin == "general_knowledge" and (
+            not self.text.startswith(GENERAL_LABEL + "\n")
+            or not self.text.removeprefix(GENERAL_LABEL + "\n").strip()
+            or GENERAL_NUMBERS.search(self.text)
+            or any(char.isnumeric() for char in self.text)
+        ):
+            raise ValueError("general knowledge requires the visible label and number-free prose")
         return self
 
 

@@ -1,0 +1,31 @@
+{
+  "files": {
+    "browser-tests.log": "ae066e7f570d9df1fd508cfe3e25006f3bbcec419eed37e66534e0299dff3ffd",
+    "dashboard-tests.log": "49a55c9f7732faa6103d8998c0c761e68e5fb60f46a5f399668f7d9c2f2f2077",
+    "fixture-capture.json.gz": "ca00440588702e6022492c2c0d728da0bf69573383463073af8390c120d0bb70",
+    "fixture-eval.log": "c8036e5fe6e14ecde98747748b492e6714abe0c3c754d7d6fb21bc60b2b65f6b",
+    "dashboard-types.log": "0e50cbc8030fefe57a0dffa062a6133b1a4ab7005fd7bd8f32ac140d315d9281",
+    "python-checks.log": "198b0d08ad882c8d3e0c1bc804244b7f1e73513bd8f6a1403f80a47cfbd99fa7",
+    "final-replay.log": "1c60b53228f29d9993f9b31053a8a41ba347243fd6943bc67e2f0bf6706e08f5",
+    "live-capture.json.gz": "31446075640eab43046ebcc59377c702a3e174f6d8b178453f7b2139bd674220",
+    "assistant-integration-tests.log": "9a3d61239a09fd361e9152ea9958253dc84313f1577e9f756ebf40439930aab5",
+    "assistant-integration-final.log": "2a5abc8490f932ed85b5fe17bf8d040cfd0de054ad044c0395477893cd689d67",
+    "fixture-summary.json": "c3501b2ebd8d2b86c8cfc3005023fad75672e58f63773658385fb109ec3c36ff",
+    "browser-rerun.log": "8d13f45373b90143e4bff278fe77d8afb1580aa61c4f2acd5dd4aa1796a43159",
+    "hybrid-regressions.log": "3913515acb33269ad26e5966cfb82ffeb13682a7a68a72ac5c778df0d2948b68",
+    "unit-tests.log": "ec2414167b7269940f5d4d05e63d3e2c542871a3d54740cb2d1abd95438d3af9",
+    "live-summary.json": "ea393eeabe61c10de63a7cd55fe9fd10e6347cd5fd9442127ca152477525b983",
+    "hybrid-regressions-final.log": "78581ebaea012da113633bf9d4d5dad0a76f17927752cb25266bef4f3e9e7269",
+    "dashboard-lint.log": "53857398bee2b94424eefbadefdad59b64e0bd9c315884f4680289eea5d3f42c",
+    "README.md": "f65413be6f4bf77740d338ad8582bfc7fa7a2a481b347a63c25aa175543242c1"
+  },
+  "final_implementation_sha256": {
+    "src/courtload/domain/hybrid_assistant.py": "d6566aec3992feed21d54249e00bce10e768308dfda2997c07f3c120a4da6af2",
+    "src/courtload/services/assistant/hybrid.py": "053ff0678ef991c538945e318909315628f01437495ccd764931402342fb8a67",
+    "src/courtload/services/assistant/knowledge.py": "df4617b12cd38d36692ac197eea069c96145011c59d0ff2613fb6a890e558d0d",
+    "src/courtload/services/assistant/knowledge/guide.md": "1ca70fd20311938eb0a1db0cb9b12a4a0f12852fc20720be5ea7d064ecdcd1b0",
+    "src/courtload/services/assistant/planner.py": "ff1cf7f20cdf19b0a66b23ec3c388800629b039dd5e929f1a1622996a274f240"
+  },
+  "corpus_sha256": "c169159db1f5c159f76a382b0ea692f960e7b3ed2a5b224fc22c174b24f69fdf",
+  "note": "The quota-stopped live acquisition preceded explicit-source, legacy variability routing and diagnostic wording refinements. Current implementation replays all 66 captured development turns in pytest; final fixture acquisition records current source hashes."
+}

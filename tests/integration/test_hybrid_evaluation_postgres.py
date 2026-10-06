@@ -38,8 +38,55 @@ def test_corpus_frozen_and_holdout_separate():
     assert len({c["id"] for c in CASES}) == len(CASES)
 
 
+def ar03_case(case):
+    """Explicit revamp expectations over sealed PF07d regression inputs, not a rescoring
+    or rewrite of the original evidence. AR02's final holdout is not involved.
+    """
+    revised = dict(case)
+    if case["id"] == "pf07d-03":
+        revised["contains"] = "beyond the arc"
+    if case["id"] in {"pf07d-15", "pf07d-42"}:
+        revised.update(category="knowledge", contains="role")
+    if case["id"] == "pf07d-14":
+        revised.update(
+            category="clarification",
+            status="clarification_required",
+            fixture_plan={
+                "plan_version": "courtload-analysis-plan-v1",
+                "status": "clarification_required",
+                "clarification": "defense_metric",
+            },
+        )
+    if case["id"] == "pf07d-18":
+        revised.update(category="knowledge", contains="General knowledge, not from CourtLens data")
+    if case["id"] in {"pf07d-20", "pf07d-43"}:
+        revised["fixture_plan"] = {
+            "plan_version": "courtload-analysis-plan-v1",
+            "steps": [
+                {
+                    "step_id": "rank",
+                    "operation": "query",
+                    "arguments": {
+                        "metric_selectors": [{"key": "ast_per_game"}],
+                        "sort": [{"field": "ast_per_game"}],
+                        "page": {"limit": 10},
+                    },
+                }
+            ],
+        }
+        if case["id"] == "pf07d-20":
+            revised.update(category="local", status="answered")
+            revised.pop("reason", None)
+        else:
+            revised["reason"] = "no_observations"
+    if case["id"] == "pf07d-23":
+        revised["reason"] = "prohibited_action"
+    return revised
+
+
 @pytest.mark.parametrize("case", CASES, ids=lambda c: c["id"])
 def test_hybrid_corpus_durable_http_manual_equivalence(postgres_conversation, case):
+    case = ar03_case(case)
     session, context = postgres_conversation
     req = analytical_request(context, case["message"], plan=False)
     manual = None
