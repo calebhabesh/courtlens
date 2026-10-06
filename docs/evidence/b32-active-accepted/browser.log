@@ -1,0 +1,9 @@
+AssertionError [ERR_ASSERTION]: Real scores and clocks must both change for 401914127
+    at /home/ethioking/dev/nba-analytics/scripts/verify_b32_active_browser.cjs:56:7 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
