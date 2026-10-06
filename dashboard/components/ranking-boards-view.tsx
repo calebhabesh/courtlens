@@ -1,10 +1,10 @@
 "use client";
+import { LookupInput } from "./lookup-input";
 
 import React, { useState, useMemo } from "react";
 import Link from "next/link";
 import { useWorkspace } from "@/lib/workspace-context";
 import { PlayerPortrait } from "./player-portrait";
-import { queryLookup } from "@/lib/workbench-api";
 import { aggregateRankingBoards } from "@/lib/workspace-client";
 import type {
   AggregationMethod,
@@ -37,8 +37,6 @@ export function RankingBoardsView() {
 
   // Player search for adding
   const [searchQuery, setSearchQuery] = useState("");
-  const [searchResults, setSearchResults] = useState<Array<{ id: string; name: string; team?: string; portraitUrl?: string }>>([]);
-  const [isSearching, setIsSearching] = useState(false);
 
   // Aggregation state
   const [selectedBoardsForAgg, setSelectedBoardsForAgg] = useState<string[]>([]);
@@ -59,32 +57,7 @@ export function RankingBoardsView() {
   }, [rankingBoards, activeBoardId]);
 
   // Handle Search Input
-  const handleSearchChange = async (q: string) => {
-    setSearchQuery(q);
-    if (!q.trim() || q.trim().length < 2) {
-      setSearchResults([]);
-      return;
-    }
 
-    setIsSearching(true);
-    try {
-      const res = await queryLookup({ query: q.trim(), kinds: ["player"], limit: 6 });
-      const mapped = res.items.map((item) => ({
-        id: item.canonical_id || item.id,
-        name: item.display_name,
-        team:
-          typeof item.metadata?.team_id === "string"
-            ? item.metadata.team_id
-            : item.availability?.latest_team_id || undefined,
-        portraitUrl: item.portrait_url || undefined
-      }));
-      setSearchResults(mapped);
-    } catch {
-      setSearchResults([]);
-    } finally {
-      setIsSearching(false);
-    }
-  };
 
   // Create new board
   const handleCreateBoardSubmit = async (e: React.FormEvent) => {
@@ -150,7 +123,6 @@ export function RankingBoardsView() {
         entries: nextEntries
       });
       setSearchQuery("");
-      setSearchResults([]);
     } catch (err) {
       alert(err instanceof Error ? err.message : "Failed to add player");
     }
@@ -659,78 +631,7 @@ export function RankingBoardsView() {
 
               {/* Add Player Search Box */}
               <div style={{ display: "flex", gap: "0.5rem", alignItems: "center", position: "relative" }}>
-                <div style={{ flex: 1, position: "relative" }}>
-                  <input
-                    type="text"
-                    placeholder="Search player to add to board (e.g. Giannis, Brunson)..."
-                    value={searchQuery}
-                    onChange={(e) => handleSearchChange(e.target.value)}
-                    style={{
-                      width: "100%",
-                      padding: "0.45rem 0.65rem",
-                      background: "var(--surface-raised)",
-                      border: "1px solid var(--border)",
-                      borderRadius: "var(--radius)",
-                      color: "var(--text)",
-                      fontSize: "0.85rem"
-                    }}
-                  />
-                  {isSearching && (
-                    <span style={{ position: "absolute", right: "10px", top: "50%", transform: "translateY(-50%)", fontSize: "0.75rem", color: "var(--text-muted)" }}>
-                      Searching…
-                    </span>
-                  )}
-
-                  {/* Autocomplete dropdown */}
-                  {searchResults.length > 0 && (
-                    <div
-                      style={{
-                        position: "absolute",
-                        top: "100%",
-                        left: 0,
-                        right: 0,
-                        zIndex: 50,
-                        marginTop: "4px",
-                        background: "var(--surface-raised)",
-                        border: "1px solid var(--border)",
-                        borderRadius: "var(--radius)",
-                        boxShadow: "0 8px 24px rgba(0,0,0,0.5)",
-                        maxHeight: "220px",
-                        overflowY: "auto"
-                      }}
-                    >
-                      {searchResults.map((p) => {
-                        const alreadyAdded = activeBoard.entries.some((e) => e.player_id === p.id);
-                        return (
-                          <div
-                            key={p.id}
-                            style={{
-                              display: "flex",
-                              alignItems: "center",
-                              justifyContent: "space-between",
-                              padding: "0.4rem 0.75rem",
-                              borderBottom: "1px solid var(--border)",
-                              cursor: alreadyAdded ? "default" : "pointer",
-                              opacity: alreadyAdded ? 0.5 : 1
-                            }}
-                            onClick={() => !alreadyAdded && handleAddPlayer(p)}
-                          >
-                            <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-                              <PlayerPortrait playerId={p.id} name={p.name} portraitUrl={p.portraitUrl} size="sm" />
-                              <span style={{ fontSize: "0.85rem", color: "var(--text)" }}>{p.name}</span>
-                              {p.team && (
-                                <span className="font-mono text-xs text-muted">({p.team})</span>
-                              )}
-                            </div>
-                            <span className="text-xs text-accent">
-                              {alreadyAdded ? "Added" : "+ Add"}
-                            </span>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  )}
-                </div>
+                <div style={{flex:1}}><LookupInput label="Add player to board" value={searchQuery} onChange={setSearchQuery} kinds={["player"]} excludedIds={activeBoard.entries.map(entry=>entry.player_id)} onSelect={item=>{setSearchQuery("");void handleAddPlayer({id:item.canonical_id,name:item.display_name});}} /></div>
 
                 {/* Quick-add from favorites */}
                 {favorites.length > 0 && (

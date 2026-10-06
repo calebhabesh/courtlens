@@ -1,4 +1,5 @@
 import { AskCourtLoad } from "@/components/ask-courtload";
+import Link from "next/link";
 
 interface AskPageProps {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
@@ -6,10 +7,11 @@ interface AskPageProps {
 
 export default async function AskPage({ searchParams }: AskPageProps) {
   const params = await searchParams;
-  const season = (params.season as string) || "2025-26";
-  const phase = (params.phase as string) || "regular_season";
-  const beforeDate = (params.beforeDate as string) || (params.before_date as string) || "2026-06-30";
-  const windowParam = (params.window as string) || "season";
+  const threaded = params.experience !== "manual";
+  const season = (params.season as string) || (threaded ? undefined : "2025-26");
+  const phase = (params.phase as string) || (threaded ? undefined : "regular_season");
+  const beforeDate = (params.beforeDate as string) || (params.before_date as string) || (threaded ? undefined : "2026-06-30");
+  const windowParam = (params.window as string) || (threaded ? undefined : "season");
   const releaseId = (params.releaseId as string) || (params.release_id as string) || undefined;
 
   return (
@@ -18,10 +20,12 @@ export default async function AskPage({ searchParams }: AskPageProps) {
         <div>
           <h1 className="page-title">Ask CourtLoad</h1>
           <p className="page-subtitle">
-            Ask follow-up questions or run manual research against a pinned release, with exact results and evidence.
+            {threaded ? "Ask basketball questions, explore CourtLoad and revisit local conversations." : "Ask follow-up questions or run manual research against a pinned release, with exact results and evidence."}
           </p>
         </div>
       </div>
+
+      {!threaded && <p><Link href="/research/ask">Open assistant</Link></p>}
 
       <AskCourtLoad
         initialReleaseId={releaseId}

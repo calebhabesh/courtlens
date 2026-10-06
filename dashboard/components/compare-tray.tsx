@@ -1,5 +1,9 @@
 "use client";
 
+import { useEffect, useState } from "react";
+import { queryLookup } from "@/lib/workbench-api";
+import { buildLookupCacheKey, defaultLookupCache } from "@/lib/lookup-cache";
+import { Icon } from "./ui/icon";
 import Link from "next/link";
 import { PlayerPortrait } from "./player-portrait";
 import type { PlayerResearchItem } from "@/lib/types";
@@ -58,30 +62,14 @@ export function CompareTray({
             {selectedPlayers.length}/8
           </span>
           <span className="compare-tray-label">
-            Selected for comparison
+            Selected players
           </span>
         </div>
 
         <div className="compare-tray-chips">
           {selectedPlayers.map((player) => (
-            <div key={player.player_id} className="compare-tray-chip">
-              <PlayerPortrait
-                playerId={player.player_id}
-                name={player.player_name}
-                portraitUrl={player.portrait_url}
-                size="sm"
-              />
-              <span className="compare-tray-chip-name">{player.player_name}</span>
-              <button
-                type="button"
-                className="compare-tray-chip-remove"
-                onClick={() => onRemovePlayer(player.player_id)}
-                aria-label={`Remove ${player.player_name} from compare tray`}
-                title="Remove player"
-              >
-                ✕
-              </button>
-            </div>
+            <TrayChip key={player.player_id} player={player} context={context} onRemove={onRemovePlayer} />
+
           ))}
         </div>
 
@@ -96,15 +84,47 @@ export function CompareTray({
           </button>
           <Link
             href={compareHref}
+            onClick={event => { if (!canCompare) event.preventDefault(); }}
             className={`button button-small button-primary ${!canCompare ? "button-disabled" : ""}`}
             aria-disabled={!canCompare}
             tabIndex={canCompare ? 0 : -1}
-            title={canCompare ? "Open comparison view (Z)" : "Select at least 2 players to compare"}
+            title={canCompare ? "Compare the first two selected players (Z)" : "Select at least 2 players to compare"}
           >
-            {canCompare ? `Compare (${selectedPlayers.length}) →` : "Select 2+ players"}
+            {canCompare ? selectedPlayers.length > 2 ? "Compare first 2 →" : "Compare (2) →" : "Select 2+ players"}
           </Link>
         </div>
       </div>
     </div>
   );
+}
+
+function TrayChip({ player, context, onRemove }: { player: PlayerResearchItem;
+  context: CompareTrayProps["context"]; onRemove: (id: string) => void }) {
+  const key = JSON.stringify([player.player_id, context]);
+  const [resolved, setResolved] = useState<{ key: string; name: string; portrait?: string | null; error?: boolean } | null>(null);
+  useEffect(() => {
+    if (player.player_name !== "Selected player") return;
+    const abort = new AbortController();
+    const options = { query: player.player_id, releaseId: context.release_id, season: context.season,
+      phase: context.phase, beforeDate: context.before_date, kinds: ["player" as const], limit: 1 };
+    const cacheKey = buildLookupCacheKey(options);
+    Promise.resolve(defaultLookupCache.get(cacheKey) ?? queryLookup({ ...options,
+      signal: AbortSignal.any([abort.signal, AbortSignal.timeout(5000)]) })).then(response => {
+      if (abort.signal.aborted) return;
+      defaultLookupCache.set(cacheKey, response);
+      const item = response.items.find(item => item.canonical_id === player.player_id);
+      setResolved({ key, name: item?.display_name ?? "Unavailable player", portrait: item?.portrait_url, error: !item });
+    }).catch(() => { if (!abort.signal.aborted) setResolved({ key, name: "Selection lookup unavailable", error: true }); });
+    return () => abort.abort();
+    // Serialized key includes the complete selection scope.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [key, player.player_name]);
+  const identity = resolved?.key === key ? resolved : null;
+  const name = player.player_name === "Selected player" ? identity?.name ?? "Resolving player…" : player.player_name;
+  return <div className="compare-tray-chip">
+    <PlayerPortrait playerId={player.player_id} name={name} portraitUrl={identity?.portrait ?? player.portrait_url} size="sm" />
+    <span className="compare-tray-chip-name" role={identity?.error ? "status" : undefined}>{name}</span>
+    <button type="button" className="compare-tray-chip-remove" onClick={() => onRemove(player.player_id)}
+      aria-label={`Remove ${name} from compare tray`} title="Remove player"><Icon name="close" /></button>
+  </div>;
 }

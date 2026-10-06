@@ -1,10 +1,10 @@
 "use client";
+import { LookupInput } from "./lookup-input";
 
 import React, { useState, useMemo } from "react";
 import Link from "next/link";
 import { useWorkspace } from "@/lib/workspace-context";
 import { PlayerPortrait } from "./player-portrait";
-import { queryLookup } from "@/lib/workbench-api";
 import type { TierGroup } from "@/lib/types";
 
 const DEFAULT_TIER_COLORS = [
@@ -30,9 +30,8 @@ export function TierListView() {
   const [newDescription, setNewDescription] = useState("");
 
   // Search state for adding players
+  const [targetTier, setTargetTier] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
-  const [searchResults, setSearchResults] = useState<Array<{ id: string; name: string; team?: string; portraitUrl?: string }>>([]);
-  const [isSearching, setIsSearching] = useState(false);
 
   // Drag and drop state
   const [draggedPlayerId, setDraggedPlayerId] = useState<string | null>(null);
@@ -117,32 +116,7 @@ export function TierListView() {
   };
 
   // Search input change
-  const handleSearchChange = async (q: string) => {
-    setSearchQuery(q);
-    if (!q.trim() || q.trim().length < 2) {
-      setSearchResults([]);
-      return;
-    }
 
-    setIsSearching(true);
-    try {
-      const res = await queryLookup({ query: q.trim(), kinds: ["player"], limit: 6 });
-      const mapped = res.items.map((item) => ({
-        id: item.canonical_id || item.id,
-        name: item.display_name,
-        team:
-          typeof item.metadata?.team_id === "string"
-            ? item.metadata.team_id
-            : item.availability?.latest_team_id || undefined,
-        portraitUrl: item.portrait_url || undefined
-      }));
-      setSearchResults(mapped);
-    } catch {
-      setSearchResults([]);
-    } finally {
-      setIsSearching(false);
-    }
-  };
 
   // Add player to a tier
   const handleAddPlayerToTier = async (playerId: string, targetTierId: string) => {
@@ -167,7 +141,6 @@ export function TierListView() {
         tiers: updatedTiers
       });
       setSearchQuery("");
-      setSearchResults([]);
     } catch (err) {
       alert(err instanceof Error ? err.message : "Failed to add player to tier");
     }
@@ -542,97 +515,7 @@ export function TierListView() {
                   flexWrap: "wrap"
                 }}
               >
-                <div style={{ flex: 1, minWidth: "220px", position: "relative" }}>
-                  <input
-                    type="text"
-                    placeholder="Search player to assign to tier (e.g. Tatum, Edwards)..."
-                    value={searchQuery}
-                    onChange={(e) => handleSearchChange(e.target.value)}
-                    style={{
-                      width: "100%",
-                      padding: "0.45rem 0.65rem",
-                      background: "var(--surface-raised)",
-                      border: "1px solid var(--border)",
-                      borderRadius: "var(--radius)",
-                      color: "var(--text)",
-                      fontSize: "0.85rem"
-                    }}
-                  />
-                  {isSearching && (
-                    <span style={{ position: "absolute", right: "10px", top: "50%", transform: "translateY(-50%)", fontSize: "0.75rem", color: "var(--text-muted)" }}>
-                      Searching…
-                    </span>
-                  )}
-
-                  {/* Autocomplete dropdown */}
-                  {searchResults.length > 0 && (
-                    <div
-                      style={{
-                        position: "absolute",
-                        top: "100%",
-                        left: 0,
-                        right: 0,
-                        zIndex: 50,
-                        marginTop: "4px",
-                        background: "var(--surface-raised)",
-                        border: "1px solid var(--border)",
-                        borderRadius: "var(--radius)",
-                        boxShadow: "0 8px 24px rgba(0,0,0,0.5)",
-                        maxHeight: "220px",
-                        overflowY: "auto"
-                      }}
-                    >
-                      {searchResults.map((p) => {
-                        const isAssigned = activeList.tiers.some((t) => t.player_ids.includes(p.id));
-                        return (
-                          <div
-                            key={p.id}
-                            style={{
-                              display: "flex",
-                              alignItems: "center",
-                              justifyContent: "space-between",
-                              padding: "0.45rem 0.75rem",
-                              borderBottom: "1px solid var(--border)",
-                              opacity: isAssigned ? 0.5 : 1
-                            }}
-                          >
-                            <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-                              <PlayerPortrait playerId={p.id} name={p.name} portraitUrl={p.portraitUrl} size="sm" />
-                              <span style={{ fontSize: "0.85rem", color: "var(--text)" }}>{p.name}</span>
-                              {p.team && (
-                                <span className="font-mono text-xs text-muted">({p.team})</span>
-                              )}
-                            </div>
-
-                            {isAssigned ? (
-                              <span className="text-xs text-muted font-mono">Assigned</span>
-                            ) : (
-                              <div style={{ display: "flex", gap: "0.25rem" }}>
-                                {activeList.tiers.map((t) => (
-                                  <button
-                                    key={t.tier_id}
-                                    type="button"
-                                    onClick={() => handleAddPlayerToTier(p.id, t.tier_id)}
-                                    className="button button-small"
-                                    style={{
-                                      fontSize: "0.72rem",
-                                      padding: "0.15rem 0.4rem",
-                                      backgroundColor: t.color ? `${t.color}22` : undefined,
-                                      borderColor: t.color || undefined
-                                    }}
-                                    title={`Add to ${t.label}`}
-                                  >
-                                    +{t.label}
-                                  </button>
-                                ))}
-                              </div>
-                            )}
-                          </div>
-                        );
-                      })}
-                    </div>
-                  )}
-                </div>
+                <div style={{flex:1}}><label>Assign to tier<select value={activeList.tiers.some(t=>t.tier_id === targetTier) ? targetTier : activeList.tiers[0]?.tier_id ?? ""} onChange={event=>setTargetTier(event.target.value)}>{activeList.tiers.map(t=><option key={t.tier_id} value={t.tier_id}>{t.label}</option>)}</select></label><LookupInput label="Add player to tier" value={searchQuery} onChange={setSearchQuery} kinds={["player"]} excludedIds={activeList.tiers.flatMap(t=>t.player_ids)} disabled={!activeList.tiers.length} onSelect={item=>{setSearchQuery("");void handleAddPlayerToTier(item.canonical_id,activeList.tiers.some(t=>t.tier_id === targetTier) ? targetTier : activeList.tiers[0].tier_id);}} /></div>
 
                 {/* Quick Add from Favorites */}
                 {favorites.length > 0 && (

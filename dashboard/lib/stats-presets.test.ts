@@ -3,6 +3,7 @@ import {
   STATS_PRESETS,
   getPresetById,
   computeHeaderGroups,
+  tableGroups,
   calculateCohortPercentiles,
   formatStatValue,
   formatIntValue,
@@ -216,5 +217,25 @@ describe("stats-presets", () => {
     // Falls back to overview if neither found
     const fallback = getPresetById("random_id", customViews);
     expect(fallback.id).toBe("overview");
+  });
+});
+
+describe("table guide boundaries", () => {
+  it("combines Overview counting metrics into one section", () => {
+    expect(tableGroups(getPresetById("overview"))).toEqual([
+      { label: "Profile", start: 0, colSpan: 3 },
+      { label: "Counting", start: 3, colSpan: 3 },
+      { label: "Defense", start: 6, colSpan: 2 },
+      { label: "Efficiency", start: 8, colSpan: 5 }
+    ]);
+  });
+  it("preserves noncontiguous custom groups and selected column order", () => {
+    const view = buildCustomViewPreset({ id: "custom", name: "Reordered", columns: ["pts", "fg_pct", "pts_per_36", "fga"], unavailable_columns: [] });
+    expect(tableGroups(view)).toEqual([
+      { label: "Scoring", start: 0, colSpan: 1 },
+      { label: "Shooting", start: 1, colSpan: 1 },
+      { label: "Scoring", start: 2, colSpan: 1 },
+      { label: "Shooting", start: 3, colSpan: 1 }
+    ]);
   });
 });

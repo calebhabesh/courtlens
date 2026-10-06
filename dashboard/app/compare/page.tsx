@@ -21,9 +21,12 @@ export default async function ComparePage({ searchParams }: {
     beforeDate?: string;
     window?: string;
     releaseId?: string;
+    release_id?: string;
+    before_date?: string;
   }>;
 }) {
-  const selected = await searchParams;
+  const rawSelected = await searchParams;
+  const selected = { ...rawSelected, releaseId: rawSelected.releaseId ?? rawSelected.release_id, beforeDate: rawSelected.beforeDate ?? rawSelected.before_date };
   const loaded = await loadComparison(selected);
   if (!loaded) {
     return (

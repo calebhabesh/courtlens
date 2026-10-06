@@ -71,6 +71,7 @@ export default async function ShowcasePage({ searchParams }: ShowcasePageProps) 
   return (
     <>
       <ContextBar
+        sampleNoun="eligible players"
         initialSeason={season}
         initialPhase={phase}
         initialBeforeDate={beforeDate}

@@ -3,9 +3,9 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
-import { queryLookup, runSharedFloor } from "@/lib/workbench-api";
-import { NBA_TEAMS } from "@/lib/stats-presets";
-import type { LookupItem } from "@/lib/types";
+import { runSharedFloor } from "@/lib/workbench-api";
+import { CatalogScopeFields } from "./catalog-scope-fields";
+import { EntityField } from "./entity-picker";
 import { comparableFloorResults, floorCsv, floorInterval, floorNumber, floorUrl, resolvedFloorRequest, validateFloorRequest } from "@/lib/shared-floor";
 import type { FloorCell, FloorOperation, FloorRequest, FloorResponse } from "@/lib/shared-floor";
 
@@ -34,39 +34,22 @@ export function SharedFloorView({ initialOperation = "wowy", statsPreset = false
   const [lower, setLower] = useState(params.get("lower_date") || "");
   const [possessions, setPossessions] = useState(params.get("min_possessions") || "100");
   const [games, setGames] = useState(params.get("min_games") || "5");
-  const [query, setQuery] = useState("");
-  const [matches, setMatches] = useState<LookupItem[]>([]);
-  const [lookupError, setLookupError] = useState("");
-  const [target, setTarget] = useState("together");
   const [names, setNames] = useState<Record<string, string>>({});
   const [results, setResults] = useState<FloorResponse[]>([]);
   const [pinned, setPinned] = useState<FloorResponse | null>(null);
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
+  const [previousUrl,setPreviousUrl] = useState(params.toString());
+  if(params.toString() !== previousUrl) {
+    setPreviousUrl(params.toString());
+    const ownUrl = results.length === 1 ? floorUrl(path,results[0].operation,resolvedFloorRequest(results[0])).split("?")[1] + (statsPreset ? "&preset=onoff" : "") : null;
+    setTeam(params.get("team_id") || params.get("teamId") || "TOR");
+    setTogether(params.get("together") || "");setApart(params.get("apart") || "");setUnit(params.get("exact_unit") || "");setFocal(params.get("player_id") || "");
+    setRelease(params.get("release_id") || params.get("releaseId") || "");setSeason(params.get("season") || "");setPhase(params.get("phase") || "");setBefore(params.get("before_date") || params.get("beforeDate") || "");setLower(params.get("lower_date") || "");
+    if(params.toString() !== ownUrl) {setResults([]);setError("");setBusy(false);setMode(params.has("exact_unit") ? "unit" : "team");}
+  }
   const active = useRef<AbortController | null>(null);
   useEffect(() => () => active.current?.abort(), []);
-  useEffect(() => {
-    const controller = new AbortController();
-    const timer = setTimeout(() => {
-      if (query.trim().length < 2) { setMatches([]); return; }
-      queryLookup({ query, kinds: ["player"], season: season || undefined, releaseId: release || undefined, limit: 8, signal: controller.signal })
-        .then(data => { if (!controller.signal.aborted) { setMatches(data.items); setLookupError(""); } })
-        .catch(() => { if (!controller.signal.aborted) { setMatches([]); setLookupError("Player search unavailable. You can enter canonical NBA IDs below."); } });
-    }, 250);
-    return () => { clearTimeout(timer); controller.abort(); };
-  }, [query, season, release]);
-
-  function addPlayer(player: LookupItem) {
-    const id = player.canonical_id;
-    setNames(previous => ({ ...previous, [id]: player.display_name }));
-    const append = (value: string) => [...new Set([...splitIds(value), id])].join(",");
-    if (operation === "on-off") setTogether(id);
-    else if (target === "focal") setFocal(id);
-    else if (mode === "unit") setUnit(append(unit));
-    else if (target === "apart" && mode !== "leaders") setApart(append(apart));
-    else setTogether(append(together));
-    setQuery(""); setMatches([]);
-  }
   async function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     active.current?.abort();
@@ -74,7 +57,7 @@ export function SharedFloorView({ initialOperation = "wowy", statsPreset = false
     const req: FloorRequest = {
       team_id: team, release_id: release || undefined, season: season || undefined,
       phase: phase || undefined, before_date: before || undefined, lower_date: lower || undefined,
-      together: mode === "unit" ? [] : splitIds(together), apart: mode === "unit" || mode === "leaders" ? [] : splitIds(apart),
+      together: mode === "unit" ? [] : splitIds(together), apart: operation === "on-off" || mode === "unit" || mode === "leaders" ? [] : splitIds(apart),
       exact_unit: mode === "unit" ? splitIds(unit) : [], player_id: operation === "stat-shift" ? focal : undefined,
       min_possessions: Number(possessions), min_games: Number(games)
     };
@@ -102,7 +85,9 @@ export function SharedFloorView({ initialOperation = "wowy", statsPreset = false
     } catch (err) { if (!controller.signal.aborted) setError(err instanceof Error ? err.message : "Shared-floor request failed"); }
     finally { if (!controller.signal.aborted) setBusy(false); }
   }
-  const name = (id: string) => names[id] ? `${names[id]} (${id})` : id;
+  const name = (id: string) => names[id] ?? "Selected player";
+  const pickerScope = {releaseId: release || null, season: season || null, phase: phase || null, beforeDate: before || null};
+  const remember = (items: import("@/lib/types").LookupItem[]) => setNames(previous => ({...previous,...Object.fromEntries(items.map(item=>[item.canonical_id,item.display_name]))}));
   return <div className="workbench-content shared-floor">
     <div className="page-header"><div><h1 className="page-title">{operation === "stat-shift" ? "Teammate stat-line shift" : statsPreset ? "Stats · On/off" : "WOWY · Shared floor"}</h1>
       <p className="page-subtitle">Observed lineup exposure, raw rates and descriptive differences.</p></div>
@@ -113,26 +98,20 @@ export function SharedFloorView({ initialOperation = "wowy", statsPreset = false
       <div className="floor-controls">
         {initialOperation === "wowy" && <label>Operation<select value={operation} onChange={e => { setOperation(e.target.value as FloorOperation); setMode("team"); }}><option value="wowy">WOWY</option><option value="on-off">On/off</option></select></label>}
         {operation === "wowy" && <label>View<select value={mode} onChange={e => setMode(e.target.value as typeof mode)}><option value="team">Team sets</option><option value="leaders">Selected-player leaders (max 5)</option><option value="unit">2–5-player unit</option></select></label>}
-        <label>Team<select value={team} onChange={e => setTeam(e.target.value)}>{!NBA_TEAMS.some(t => t.tricode === team) && <option value={team}>{team}</option>}{NBA_TEAMS.map(t => <option key={t.tricode} value={t.tricode}>{t.tricode} · {t.name}</option>)}</select></label>
-        <label>Season<input placeholder="Published default" value={season} onChange={e => setSeason(e.target.value)} /></label>
-        <label>Phase<select value={phase} onChange={e => setPhase(e.target.value)}><option value="">Published default</option><option value="regular_season">Regular season</option><option value="playoffs">Playoffs</option><option value="preseason">Preseason</option><option value="play_in">Play-in</option><option value="cup_final">Cup final</option><option value="summer_league">Summer league</option></select></label>
-        <label>Before date (exclusive)<input type="date" value={before} onChange={e => setBefore(e.target.value)} /></label>
+        <EntityField {...pickerScope} label="Team" kind="team" value={team} required onChange={setTeam} />
+        <CatalogScopeFields release={release || undefined} season={season} phase={phase} before={before} onSeason={setSeason} onPhase={setPhase} onBefore={setBefore} />
         <label>From date (inclusive)<input type="date" value={lower} onChange={e => setLower(e.target.value)} /></label>
         <label>Release ID<input placeholder="Published default" value={release} onChange={e => setRelease(e.target.value)} /></label>
         <label>Minimum possessions<input type="number" min="1" max="10000" step="any" value={possessions} onChange={e => setPossessions(e.target.value)} /></label>
         <label>Minimum games<input type="number" min="1" max="82" value={games} onChange={e => setGames(e.target.value)} /></label>
       </div>
       <div className="floor-controls">
-        {operation === "stat-shift" && <label>Focal player ID<input value={focal} onChange={e => setFocal(e.target.value)} /></label>}
-        {mode === "unit" ? <label>Unit player IDs<input value={unit} onChange={e => setUnit(e.target.value)} placeholder="2–5 comma-separated NBA IDs" /></label> : <>
-          <label>{mode === "leaders" ? "Candidate player IDs" : "Together player IDs"}<input value={together} onChange={e => setTogether(e.target.value)} placeholder="Comma-separated NBA IDs" /></label>
-          {operation !== "on-off" && mode !== "leaders" && <label>Apart player IDs<input value={apart} onChange={e => setApart(e.target.value)} /></label>}
+        {operation === "stat-shift" && <EntityField {...pickerScope} label="Focal player" value={focal} required onChange={(value,items)=>{setFocal(value);remember(items);}} />}
+        {mode === "unit" ? <EntityField {...pickerScope} label="Exact unit" value={unit} multiple max={5} required onChange={(value,items)=>{setUnit(value);remember(items);}} /> : <>
+          <EntityField {...pickerScope} label={mode === "leaders" ? "Candidate players" : "Together players"} value={together} multiple={operation !== "on-off"} max={mode === "leaders" ? 5 : 5-splitIds(apart).length} excludedIds={operation === "on-off" || mode === "leaders" ? [] : splitIds(apart)} required={operation === "on-off" || mode === "leaders"} onChange={(value,items)=>{setTogether(value);remember(items);}} />
+          {operation !== "on-off" && mode !== "leaders" && <EntityField {...pickerScope} label="Apart players" value={apart} multiple max={5-splitIds(together).length} excludedIds={splitIds(together)} onChange={(value,items)=>{setApart(value);remember(items);}} />}
         </>}
-        <label>Search players<input value={query} onChange={e => setQuery(e.target.value)} placeholder="Type a player name" /></label>
-        {operation !== "on-off" && mode !== "unit" && mode !== "leaders" && <label>Add search result to<select value={target} onChange={e => setTarget(e.target.value)}><option value="together">Together</option><option value="apart">Apart</option>{operation === "stat-shift" && <option value="focal">Focal player</option>}</select></label>}
       </div>
-      {lookupError && <p role="status">{lookupError}</p>}
-      <div className="floor-controls">{matches.map(player => <button type="button" className="control-pill" key={player.id} onClick={() => addPlayer(player)}>{player.display_name} · {player.subtitle}</button>)}</div>
       <p className="text-muted">All together players must be present; all apart players must be absent. The complement means the predicate fails. A 2–4-player unit allows other teammates; five players specify the full lineup. Conditions apply to this team. Focal players stay on court in both stat-shift splits.</p>
       <p className="text-muted">Shared-floor queries use season/date bounds. Box-score last-X windows do not apply. Default gates: 100 offensive and defensive possessions and 5 games per cell. Raw estimates remain visible below gates. No shrinkage or prior is applied; no leverage filter is applied. Each query is bounded to 20,000 stints.</p>
       <button className="control-pill active" disabled={busy}>{busy ? "Calculating…" : "Run shared-floor analysis"}</button>

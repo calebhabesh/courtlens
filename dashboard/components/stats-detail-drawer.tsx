@@ -2,6 +2,8 @@
 
 import { useEffect, useRef } from "react";
 import Link from "next/link";
+import { TeamLogoStack } from "./team-logo";
+import { Icon } from "./ui/icon";
 import { PlayerPortrait } from "./player-portrait";
 import { formatStatValue, formatIntValue, formatPctValue } from "@/lib/stats-presets";
 import type { PlayerResearchItem } from "@/lib/types";
@@ -38,16 +40,25 @@ export function StatsDetailDrawer({
   useEffect(() => {
     if (!isOpen) return;
 
+    const previousFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    const panel = drawerRef.current;
+    panel?.focus();
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        e.preventDefault();
-        onClose();
+      if (e.key === "Escape") { e.preventDefault(); onClose(); }
+      if (e.key === "Tab" && panel) {
+        const controls = [...panel.querySelectorAll<HTMLElement>("a[href], button:not(:disabled), input, select, textarea, [tabindex='0']")];
+        const first = controls[0], last = controls.at(-1);
+        if (e.shiftKey && (document.activeElement === first || document.activeElement === panel)) {
+          e.preventDefault(); last?.focus();
+        } else if (!e.shiftKey && (document.activeElement === last || document.activeElement === panel)) {
+          e.preventDefault(); first?.focus();
+        }
       }
     };
-
     window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isOpen, onClose]);
+    return () => { window.removeEventListener("keydown", handleKeyDown); previousFocus?.focus(); };
+
+  }, [isOpen, player?.player_id, onClose]);
 
   if (!isOpen || !player) return null;
 
@@ -93,6 +104,7 @@ export function StatsDetailDrawer({
                 {player.player_name}
               </h2>
               <div className="stats-drawer-teams">
+                <TeamLogoStack teams={player.teams ?? []} />
                 {player.teams?.length > 0 ? (
                   player.teams.map((t) => (
                     <span key={t} className="stats-drawer-team-pill">
@@ -100,7 +112,7 @@ export function StatsDetailDrawer({
                     </span>
                   ))
                 ) : (
-                  <span className="text-muted text-xs">No active team</span>
+                  <span className="text-muted text-xs">No represented team in this window</span>
                 )}
                 <span className="stats-drawer-meta-dot">·</span>
                 <span className="text-xs text-muted">
@@ -115,7 +127,7 @@ export function StatsDetailDrawer({
             onClick={onClose}
             aria-label="Close player details sidebar"
           >
-            ✕
+            <Icon name="close" />
           </button>
         </div>
 

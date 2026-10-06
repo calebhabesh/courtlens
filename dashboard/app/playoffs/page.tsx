@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { ContextBar } from "@/components/context-bar";
 import { PlayoffsBracketView } from "@/components/playoffs-bracket-view";
-import { getPlayoffBracket } from "@/lib/workbench-api";
+import { getWorkbenchCatalog, getPlayoffBracket } from "@/lib/workbench-api";
 import type { PlayoffBracketResponse } from "@/lib/types";
 
 export const metadata: Metadata = {
@@ -24,8 +24,9 @@ interface PlayoffsPageProps {
 
 export default async function PlayoffsPage({ searchParams }: PlayoffsPageProps) {
   const params = await searchParams;
-  const season = params.season || "2023-24";
-  const cutoffDate = params.cutoff_date || params.cutoffDate || params.beforeDate;
+  const catalog = await getWorkbenchCatalog(params.releaseId).catch(() => null);
+  const season = params.season || catalog?.default_season || "";
+  const cutoffDate = params.cutoff_date || params.cutoffDate || params.beforeDate || catalog?.stats_scopes?.find(scope => scope.season === season && scope.phase === "playoffs")?.default_before_date;
 
   let bracketData: PlayoffBracketResponse | null = null;
   let loadError: string | null = null;
@@ -43,6 +44,10 @@ export default async function PlayoffsPage({ searchParams }: PlayoffsPageProps) 
   return (
     <>
       <ContextBar
+        allowedPhases={["playoffs"]}
+        catalog={catalog ?? undefined}
+        initialReleaseId={params.releaseId || catalog?.release_id}
+        sampleNoun="series"
         initialSeason={season}
         initialPhase="playoffs"
         initialBeforeDate={cutoffDate || "2026-06-30"}

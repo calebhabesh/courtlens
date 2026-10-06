@@ -1,3 +1,5 @@
+import { resolveStatsQuery } from "@/lib/stats-query";
+import { getWorkbenchCatalog } from "@/lib/workbench-api";
 import type { Metadata } from "next";
 import { ContextBar } from "@/components/context-bar";
 import { TeamCompareView } from "@/components/team-compare-view";
@@ -31,15 +33,20 @@ interface TeamComparePageProps {
     phase?: string;
     beforeDate?: string;
     releaseId?: string;
+    release_id?: string;
+    before_date?: string;
   }>;
 }
 
 export default async function TeamComparePage({ searchParams }: TeamComparePageProps) {
   const sp = await searchParams;
-  const season = sp.season || "2023-24";
-  const phase = sp.phase || "regular_season";
-  const beforeDate = sp.beforeDate || "2026-06-30";
-  const releaseId = sp.releaseId;
+  const catalog = await getWorkbenchCatalog(sp.releaseId || sp.release_id).catch(() => null);
+  const query = catalog ? resolveStatsQuery(sp, catalog, "per_game") : null;
+  const season = query?.season || sp.season || "";
+  const phase = query?.phase || sp.phase || "";
+  const beforeDate = query?.before_date || sp.beforeDate || sp.before_date || "";
+  const resolvedReleaseId = query?.release_id || sp.releaseId || sp.release_id;
+  const releaseId = resolvedReleaseId;
 
   // Default to Boston Celtics (1610612738) and Dallas Mavericks (1610612742)
   const teamAId = sp.teamA || "1610612738";
@@ -98,6 +105,9 @@ export default async function TeamComparePage({ searchParams }: TeamComparePageP
   return (
     <>
       <ContextBar
+        catalog={catalog ?? undefined}
+        initialReleaseId={resolvedReleaseId}
+        sampleNoun="teams"
         initialSeason={season}
         initialPhase={phase}
         initialBeforeDate={beforeDate}
@@ -109,7 +119,7 @@ export default async function TeamComparePage({ searchParams }: TeamComparePageP
           <div>
             <h1 className="page-title">Team Comparison & Four Factors Analysis</h1>
             <p className="page-subtitle">
-              Head-to-head encounters, Dean Oliver Four Factors, Feature F18 3-point variation scenario, and rotation participation cohorts for {season} {phase.replace("_", " ")}.
+              Head-to-head encounters, Dean Oliver Four Factors, Feature F18 3-point variation scenario, and rotation participation cohorts for {season} {phase.replaceAll("_", " ")}.
             </p>
           </div>
         </div>

@@ -1,6 +1,9 @@
+import { resolveStatsQuery } from "@/lib/stats-query";
+import { getWorkbenchCatalog } from "@/lib/workbench-api";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ContextBar } from "@/components/context-bar";
+import { TeamLogo } from "@/components/team-logo";
 import { PlayerPortrait } from "@/components/player-portrait";
 import {
   getTeamDetail,
@@ -25,6 +28,8 @@ interface TeamDetailPageProps {
     phase?: string;
     beforeDate?: string;
     releaseId?: string;
+    release_id?: string;
+    before_date?: string;
   }>;
 }
 
@@ -33,9 +38,12 @@ export default async function TeamDetailPage({
   searchParams,
 }: TeamDetailPageProps) {
   const [{ id }, sp] = await Promise.all([params, searchParams]);
-  const season = sp.season || "2023-24";
-  const phase = sp.phase || "regular_season";
-  const beforeDate = sp.beforeDate || "2026-06-30";
+  const catalog = await getWorkbenchCatalog(sp.releaseId || sp.release_id).catch(() => null);
+  const query = catalog ? resolveStatsQuery(sp, catalog, "per_game") : null;
+  const season = query?.season || sp.season || "";
+  const phase = query?.phase || sp.phase || "";
+  const beforeDate = query?.before_date || sp.beforeDate || sp.before_date || "";
+  const resolvedReleaseId = query?.release_id || sp.releaseId || sp.release_id;
 
   let detail: TeamDetailResponse | null = null;
   let fourFactors: TeamFourFactorsResponse | null = null;
@@ -45,10 +53,10 @@ export default async function TeamDetailPage({
 
   try {
     const [detailRes, ffRes, schedRes, peersRes] = await Promise.allSettled([
-      getTeamDetail(id, { season, phase, beforeDate, releaseId: sp.releaseId }),
-      getTeamFourFactors(id, { season, phase, beforeDate, releaseId: sp.releaseId }),
-      getTeamSchedule(id, { season, phase, beforeDate, releaseId: sp.releaseId }),
-      getTeamPeers(id, { season, phase, beforeDate, releaseId: sp.releaseId, limit: 6 }),
+      getTeamDetail(id, { season, phase, beforeDate, releaseId: resolvedReleaseId }),
+      getTeamFourFactors(id, { season, phase, beforeDate, releaseId: resolvedReleaseId }),
+      getTeamSchedule(id, { season, phase, beforeDate, releaseId: resolvedReleaseId }),
+      getTeamPeers(id, { season, phase, beforeDate, releaseId: resolvedReleaseId, limit: 6 }),
     ]);
 
     if (detailRes.status === "fulfilled") {
@@ -94,10 +102,12 @@ export default async function TeamDetailPage({
   return (
     <>
       <ContextBar
+        catalog={catalog ?? undefined}
+        initialReleaseId={resolvedReleaseId}
         initialSeason={season}
         initialPhase={phase}
         initialBeforeDate={beforeDate}
-        sampleSize={recent_games?.length ?? player_cohort?.length ?? record?.games_played ?? 0}
+        sampleSize={record?.games_played}
       />
 
       <div className="workbench-content">
@@ -115,11 +125,11 @@ export default async function TeamDetailPage({
               placeItems: "center",
             }}
           >
-            <span className="font-mono text-accent font-bold text-xl">{team.tricode}</span>
+            <TeamLogo team={team.tricode} size={48} />
           </div>
           <div className="player-identity-info">
             <span className="text-xs text-muted font-mono uppercase">
-              NBA Franchise ID: {team.id} · {season} {phase.replace("_", " ")}
+              NBA Franchise ID: {team.id} · {season} {phase.replaceAll("_", " ")}
             </span>
             <h1 className="player-identity-name">{team.name}</h1>
             <div className="player-identity-badges">
@@ -141,7 +151,7 @@ export default async function TeamDetailPage({
           </div>
           <div style={{ marginLeft: "auto", display: "flex", gap: "0.5rem" }}>
             <Link
-              href={`/team-compare?teamA=${team.id}&season=${season}&phase=${phase}&beforeDate=${beforeDate}`}
+              href={`/team-compare?teamA=${team.id}&season=${season}&phase=${phase}&beforeDate=${beforeDate}&releaseId=${resolvedReleaseId || ""}` }
               className="button button-small button-accent"
             >
               Compare Franchise ⇄
@@ -222,7 +232,7 @@ export default async function TeamDetailPage({
               </div>
             </div>
 
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem", padding: "1rem" }}>
+            <div className="responsive-pair" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem", padding: "1rem" }}>
               {/* Offensive Four Factors */}
               <div style={{ background: "var(--surface)", padding: "1rem", borderRadius: "8px", border: "1px solid var(--border)" }}>
                 <h3 style={{ fontSize: "0.875rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em", color: "var(--accent)", margin: "0 0 0.75rem 0" }}>
@@ -360,13 +370,13 @@ export default async function TeamDetailPage({
               </div>
             </div>
 
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem", padding: "1rem" }}>
+            <div className="responsive-pair" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem", padding: "1rem" }}>
               {/* Venue Splits */}
               <div>
                 <h3 style={{ fontSize: "0.875rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em", color: "var(--accent)", margin: "0 0 0.5rem 0" }}>
                   Venue Splits
                 </h3>
-                <table className="data-table">
+                <div className="table-wrapper" role="region" aria-label="Team analytical values" tabIndex={0}><table className="data-table">
                   <thead>
                     <tr>
                       <th>Venue</th>
@@ -402,7 +412,7 @@ export default async function TeamDetailPage({
                       </td>
                     </tr>
                   </tbody>
-                </table>
+                </table></div>
               </div>
 
               {/* Rest Splits & Back-to-Backs */}
@@ -410,7 +420,7 @@ export default async function TeamDetailPage({
                 <h3 style={{ fontSize: "0.875rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em", color: "var(--accent)", margin: "0 0 0.5rem 0" }}>
                   Rest Day Splits
                 </h3>
-                <table className="data-table">
+                <div className="table-wrapper" role="region" aria-label="Team analytical values" tabIndex={0}><table className="data-table">
                   <thead>
                     <tr>
                       <th>Rest Bucket</th>
@@ -436,7 +446,7 @@ export default async function TeamDetailPage({
                       </tr>
                     ))}
                   </tbody>
-                </table>
+                </table></div>
               </div>
             </div>
           </div>
@@ -455,7 +465,7 @@ export default async function TeamDetailPage({
           </div>
 
           <div className="table-wrapper">
-            <table className="data-table">
+            <div className="table-wrapper" role="region" aria-label="Team analytical values" tabIndex={0}><table className="data-table">
               <thead>
                 <tr>
                   <th style={{ width: "40px" }}>#</th>
@@ -475,7 +485,7 @@ export default async function TeamDetailPage({
                       <div className="player-cell">
                         <PlayerPortrait playerId={p.player_id} name={p.player_name} size="sm" />
                         <Link
-                          href={`/players/${p.player_id}?season=${season}&phase=${phase}&beforeDate=${beforeDate}`}
+                          href={`/players/${p.player_id}?season=${season}&phase=${phase}&beforeDate=${beforeDate}&releaseId=${resolvedReleaseId || ""}` }
                           className="player-cell-name text-accent font-semibold"
                         >
                           {p.player_name}
@@ -492,7 +502,7 @@ export default async function TeamDetailPage({
                     </td>
                     <td style={{ textAlign: "right" }}>
                       <Link
-                        href={`/players/${p.player_id}?season=${season}&phase=${phase}&beforeDate=${beforeDate}`}
+                        href={`/players/${p.player_id}?season=${season}&phase=${phase}&beforeDate=${beforeDate}&releaseId=${resolvedReleaseId || ""}` }
                         className="button button-small button-primary"
                       >
                         Profile →
@@ -501,7 +511,7 @@ export default async function TeamDetailPage({
                   </tr>
                 ))}
               </tbody>
-            </table>
+            </table></div>
           </div>
         </div>
 
@@ -519,7 +529,7 @@ export default async function TeamDetailPage({
             </div>
 
             <div className="table-wrapper">
-              <table className="data-table">
+              <div className="table-wrapper" role="region" aria-label="Team analytical values" tabIndex={0}><table className="data-table">
                 <thead>
                   <tr>
                     <th style={{ width: "40px" }}>#</th>
@@ -547,7 +557,7 @@ export default async function TeamDetailPage({
                             {peer.tricode}
                           </span>
                           <Link
-                            href={`/teams/${peer.team_id}?season=${season}&phase=${phase}&beforeDate=${beforeDate}`}
+                            href={`/teams/${peer.team_id}?season=${season}&phase=${phase}&beforeDate=${beforeDate}&releaseId=${resolvedReleaseId || ""}` }
                             className="font-semibold text-accent"
                           >
                             {peer.name}
@@ -562,13 +572,13 @@ export default async function TeamDetailPage({
                       <td style={{ textAlign: "right", whiteSpace: "nowrap" }}>
                         <div style={{ display: "inline-flex", gap: "0.35rem" }}>
                           <Link
-                            href={`/team-compare?teamA=${team.id}&teamB=${peer.team_id}&season=${season}&phase=${phase}&beforeDate=${beforeDate}`}
+                            href={`/team-compare?teamA=${team.id}&teamB=${peer.team_id}&season=${season}&phase=${phase}&beforeDate=${beforeDate}&releaseId=${resolvedReleaseId || ""}` }
                             className="button button-small"
                           >
                             Compare ⇄
                           </Link>
                           <Link
-                            href={`/teams/${peer.team_id}?season=${season}&phase=${phase}&beforeDate=${beforeDate}`}
+                            href={`/teams/${peer.team_id}?season=${season}&phase=${phase}&beforeDate=${beforeDate}&releaseId=${resolvedReleaseId || ""}` }
                             className="button button-small button-primary"
                           >
                             Profile →
@@ -578,7 +588,7 @@ export default async function TeamDetailPage({
                     </tr>
                   ))}
                 </tbody>
-              </table>
+              </table></div>
             </div>
           </div>
         )}
@@ -598,7 +608,7 @@ export default async function TeamDetailPage({
           </div>
 
           <div className="table-wrapper">
-            <table className="data-table">
+            <div className="table-wrapper" role="region" aria-label="Team analytical values" tabIndex={0}><table className="data-table">
               <thead>
                 <tr>
                   <th>Date</th>
@@ -662,7 +672,7 @@ export default async function TeamDetailPage({
                   );
                 })}
               </tbody>
-            </table>
+            </table></div>
           </div>
         </div>
       </div>

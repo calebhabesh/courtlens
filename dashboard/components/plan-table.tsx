@@ -6,7 +6,7 @@ export function PlanTable({ plan, title }: { plan: Plan; title?: string }) {
   return (
     <div className="plan-block">
       {title ? <h3 className="plan-title">{title}</h3> : null}
-      <div className="plan-scroll">
+      <div className="plan-scroll" role="region" aria-label={title ? `${title} daily assignments` : "Daily player assignments"} tabIndex={0}>
         <table className="plan-table">
           <thead>
             <tr>
