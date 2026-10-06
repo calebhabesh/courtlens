@@ -8,6 +8,8 @@ For the subsequent Databallr replica, UI/capability expansion, search/chatbot, f
 
 For polish/freeze UI, query-correctness or hybrid-assistant work, read the [confirmed freeze handoff](docs/polish-freeze-implementation-plan.md) and its block contracts first. Execute one bounded block by dependency and record measured evidence in the [freeze progress log](docs/polish-freeze-implementation-progress.md). Its explicitly revised UI/assistant behavior supersedes older scope; preserve analytical contracts and unresolved replica source gates.
 
+For Ask/assistant work (chat UI, planner reliability, general-knowledge answers, narrative, streaming, assistant panel or assistant eval), read the [assistant revamp handoff](docs/assistant-revamp-plan.md) first. It supersedes the freeze handoff for the Ask experience only and keeps its analytical contracts. Record evidence in the [revamp progress log](docs/assistant-revamp-progress.md).
+
 ## Architecture and Stack
 
 - **Backend:** Python 3.12+ / FastAPI with typed Pydantic models and SQLAlchemy 2.0.
