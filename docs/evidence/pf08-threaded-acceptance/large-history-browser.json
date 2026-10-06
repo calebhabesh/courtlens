@@ -1,0 +1,18 @@
+{
+  "turns": 105,
+  "thread_page": [
+    20,
+    27
+  ],
+  "elapsed_ms": 426,
+  "requests": [
+    {
+      "url": "http://127.0.0.1:3189/api/assistant-v2/threads/aa99be7c-2e6a-4eac-9a45-d5090d607ce6/turns?limit=100",
+      "status": 200
+    },
+    {
+      "url": "http://127.0.0.1:3189/api/assistant-v2/threads/aa99be7c-2e6a-4eac-9a45-d5090d607ce6/turns?limit=100&cursor=200",
+      "status": 200
+    }
+  ]
+}

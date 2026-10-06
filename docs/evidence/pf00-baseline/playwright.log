@@ -1,0 +1,6 @@
+
+> courtload-dashboard@0.1.0 test:browser
+> playwright test
+
+Error: http://localhost:3100 is already used, make sure that nothing is running on the port/url or set reuseExistingServer:true in config.webServer.
+

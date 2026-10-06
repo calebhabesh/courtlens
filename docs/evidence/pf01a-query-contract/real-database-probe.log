@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "/home/ethioking/dev/nba-analytics/scripts/verify_pf01a_stats.py", line 227, in <module>
+    main()
+    ~~~~^^
+  File "/home/ethioking/dev/nba-analytics/scripts/verify_pf01a_stats.py", line 141, in main
+    assert all(
+           ~~~^
+        row["metrics"][key] == value
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        for key, value in arithmetic[row["player_id"]].items()
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ), (window, row["player_id"], arithmetic[row["player_id"]], row["metrics"])
+    ^
+AssertionError: ('last_5', '203991', {'pts': 30, 'pts_per_game': 6.0, 'pts_per_36': 18.8}, {'gp': 5, 'min': 57.6, 'min_per_game': 11.5, 'pts': 30, 'pts_per_game': 6, 'pts_per_36': 18.7, 'reb': 21, 'reb_per_game': 4.2, 'reb_per_36': 13.1, 'oreb': 10, 'oreb_per_game': 2, 'oreb_per_36': 6.2, 'dreb': 11, 'dreb_per_game': 2.2, 'dreb_per_36': 6.9, 'ast': 3, 'ast_per_game': 0.6, 'ast_per_36': 1.9, 'stl': 3, 'stl_per_game': 0.6, 'stl_per_36': 1.9, 'blk': 4, 'blk_per_game': 0.8, 'blk_per_36': 2.5, 'tov': 1, 'tov_per_game': 0.2, 'tov_per_36': 0.6, 'pf': 7, 'pf_per_game': 1.4, 'pf_per_36': 4.4, 'reb_total': 21, 'reb_total_per_game': 4.2, 'fgm': 12, 'fga': 20, 'fg_pct': 0.6, 'fga_per_36': 12.5, 'fg3m': 1, 'fg3a': 2, 'fg3_pct': 0.5, 'fg3a_per_36': 1.2, 'ftm': 5, 'fta': 11, 'ft_pct': 0.4545, 'fta_per_36': 6.9, 'efg_pct': 0.625, 'ts_pct': 0.6039, 'ftr': 0.55, 'legacy_fantasy_score_per_game': 15.9})

@@ -1,0 +1,10 @@
+
+> courtload-dashboard@0.1.0 test:browser
+> playwright test workspace-persistence.spec.ts --workers=1
+
+
+Running 1 test using 1 worker
+
+  ✓  1 e2e/workspace-persistence.spec.ts:3:5 › real workspace proxy persists, conflicts, exports and restores (649ms)
+
+  1 passed (1.4s)

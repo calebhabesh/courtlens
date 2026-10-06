@@ -1,0 +1,12 @@
+AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+
+  assert((await region.evaluate(el=>el.scrollLeft))>previous)
+
+    at /home/ethioking/dev/nba-analytics/scripts/verify_pf05_browser.cjs:96:113 {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}

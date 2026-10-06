@@ -1,0 +1,8 @@
+{
+  "python": "3.14.7",
+  "platform": "Linux-7.2.8-arch1-2-x86_64-with-glibc2.44",
+  "node": "v24.15.0",
+  "database": "PostgreSQL 17 local container; runtime courtload_pf07c_retrieval; tests disposable b33 schemas in courtload_pf00_baseline",
+  "provider": "disabled; zero model calls; no provider tools or keys used",
+  "date": "2026-10-06"
+}

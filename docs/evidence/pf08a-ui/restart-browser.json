@@ -1,0 +1,7 @@
+{
+  "checks": [
+    "actual backend restart preserves rendered thread and exact envelope"
+  ],
+  "thread_id": "94f6078c-2516-445b-ae6b-1b277f0b83dc",
+  "errors": []
+}

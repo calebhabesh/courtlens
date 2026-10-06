@@ -1,0 +1,7 @@
+{
+  "lucide_version": "1.52.0",
+  "production_static_js_files": 91,
+  "production_static_js_bytes": 1632185,
+  "production_static_css_bytes": 55852,
+  "scope": "Raw emitted files, not compressed transfer or measured browser memory; no API/lookup latency benchmark in PF02"
+}

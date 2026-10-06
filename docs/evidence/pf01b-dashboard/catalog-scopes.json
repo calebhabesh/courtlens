@@ -1,0 +1,158 @@
+[
+  {
+    "scope": {
+      "season": "2023-24",
+      "phase": "cup_final",
+      "coverage_start": "2023-12-09",
+      "coverage_end": "2023-12-09",
+      "default_before_date": "2023-12-10"
+    },
+    "eligible": 28,
+    "output": 28,
+    "rows": 25,
+    "seconds": 0.07748507600626908
+  },
+  {
+    "scope": {
+      "season": "2023-24",
+      "phase": "play_in",
+      "coverage_start": "2024-04-16",
+      "coverage_end": "2024-04-19",
+      "default_before_date": "2024-04-20"
+    },
+    "eligible": 106,
+    "output": 106,
+    "rows": 25,
+    "seconds": 0.08315957899321802
+  },
+  {
+    "scope": {
+      "season": "2023-24",
+      "phase": "playoffs",
+      "coverage_start": "2024-04-20",
+      "coverage_end": "2024-06-17",
+      "default_before_date": "2024-06-18"
+    },
+    "eligible": 229,
+    "output": 229,
+    "rows": 25,
+    "seconds": 0.11274901300203055
+  },
+  {
+    "scope": {
+      "season": "2023-24",
+      "phase": "regular_season",
+      "coverage_start": "2023-10-24",
+      "coverage_end": "2024-04-14",
+      "default_before_date": "2024-04-15"
+    },
+    "eligible": 586,
+    "output": 586,
+    "rows": 25,
+    "seconds": 0.2898722619866021
+  },
+  {
+    "scope": {
+      "season": "2024-25",
+      "phase": "cup_final",
+      "coverage_start": "2024-12-17",
+      "coverage_end": "2024-12-17",
+      "default_before_date": "2024-12-18"
+    },
+    "eligible": 27,
+    "output": 27,
+    "rows": 25,
+    "seconds": 0.07832632400095463
+  },
+  {
+    "scope": {
+      "season": "2024-25",
+      "phase": "play_in",
+      "coverage_start": "2025-04-15",
+      "coverage_end": "2025-04-18",
+      "default_before_date": "2025-04-19"
+    },
+    "eligible": 106,
+    "output": 106,
+    "rows": 25,
+    "seconds": 0.08609435497783124
+  },
+  {
+    "scope": {
+      "season": "2024-25",
+      "phase": "playoffs",
+      "coverage_start": "2025-04-19",
+      "coverage_end": "2025-06-22",
+      "default_before_date": "2025-06-23"
+    },
+    "eligible": 232,
+    "output": 232,
+    "rows": 25,
+    "seconds": 0.10783862098469399
+  },
+  {
+    "scope": {
+      "season": "2024-25",
+      "phase": "regular_season",
+      "coverage_start": "2024-10-22",
+      "coverage_end": "2025-04-13",
+      "default_before_date": "2025-04-14"
+    },
+    "eligible": 577,
+    "output": 577,
+    "rows": 25,
+    "seconds": 0.27616995200514793
+  },
+  {
+    "scope": {
+      "season": "2025-26",
+      "phase": "cup_final",
+      "coverage_start": "2025-12-16",
+      "coverage_end": "2025-12-16",
+      "default_before_date": "2025-12-17"
+    },
+    "eligible": 30,
+    "output": 30,
+    "rows": 25,
+    "seconds": 0.07144240001798607
+  },
+  {
+    "scope": {
+      "season": "2025-26",
+      "phase": "play_in",
+      "coverage_start": "2026-04-14",
+      "coverage_end": "2026-04-17",
+      "default_before_date": "2026-04-18"
+    },
+    "eligible": 114,
+    "output": 114,
+    "rows": 25,
+    "seconds": 0.0847449770080857
+  },
+  {
+    "scope": {
+      "season": "2025-26",
+      "phase": "playoffs",
+      "coverage_start": "2026-04-18",
+      "coverage_end": "2026-06-13",
+      "default_before_date": "2026-06-14"
+    },
+    "eligible": 230,
+    "output": 230,
+    "rows": 25,
+    "seconds": 0.12800028297351673
+  },
+  {
+    "scope": {
+      "season": "2025-26",
+      "phase": "regular_season",
+      "coverage_start": "2025-10-21",
+      "coverage_end": "2026-04-12",
+      "default_before_date": "2026-04-13"
+    },
+    "eligible": 591,
+    "output": 591,
+    "rows": 25,
+    "seconds": 0.2813571929873433
+  }
+]

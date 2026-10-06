@@ -1,0 +1,13 @@
+{
+  checks: [
+    'real scatter has accessible tabular values',
+    'real chart metric selector works',
+    'real chart SVG includes scope',
+    'real chart PNG renders',
+    'real team participation loads from named picker',
+    'real allocation export preserves units and scope',
+    'real showcase mobile contained',
+    'real sealed negative research report remains available'
+  ],
+  errors: []
+}

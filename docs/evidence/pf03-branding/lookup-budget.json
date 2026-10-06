@@ -1,0 +1,390 @@
+{
+  "environment": "loopback HTTP to existing FastAPI/PostgreSQL service",
+  "first_query": {
+    "http_ms": 9.656371985329315,
+    "service_ms": 2.831,
+    "bytes": 17402,
+    "rows": 20
+  },
+  "warm": [
+    {
+      "clients": 1,
+      "requests": [
+        {
+          "http_ms": 2.3621239815838635,
+          "service_ms": 0.012,
+          "bytes": 17402,
+          "rows": 20
+        },
+        {
+          "http_ms": 2.1898139966651797,
+          "service_ms": 0.009,
+          "bytes": 17402,
+          "rows": 20
+        },
+        {
+          "http_ms": 1.9851830147672445,
+          "service_ms": 0.008,
+          "bytes": 17402,
+          "rows": 20
+        },
+        {
+          "http_ms": 2.0498970116022974,
+          "service_ms": 0.009,
+          "bytes": 17402,
+          "rows": 20
+        },
+        {
+          "http_ms": 1.674970000749454,
+          "service_ms": 0.008,
+          "bytes": 17402,
+          "rows": 20
+        },
+        {
+          "http_ms": 2.031862997682765,
+          "service_ms": 0.01,
+          "bytes": 17401,
+          "rows": 20
+        },
+        {
+          "http_ms": 2.057292003883049,
+          "service_ms": 0.008,
+          "bytes": 17402,
+          "rows": 20
+        },
+        {
+          "http_ms": 1.703043992165476,
+          "service_ms": 0.007,
+          "bytes": 17402,
+          "rows": 20
+        },
+        {
+          "http_ms": 1.669931021751836,
+          "service_ms": 0.007,
+          "bytes": 17402,
+          "rows": 20
+        },
+        {
+          "http_ms": 1.4605709875468165,
+          "service_ms": 0.007,
+          "bytes": 17402,
+          "rows": 20
+        },
+        {
+          "http_ms": 1.5886859910096973,
+          "service_ms": 0.007,
+          "bytes": 17402,
+          "rows": 20
+        },
+        {
+          "http_ms": 1.522790000308305,
+          "service_ms": 0.007,
+          "bytes": 17402,
+          "rows": 20
+        },
+        {
+          "http_ms": 1.5889460046309978,
+          "service_ms": 0.007,
+          "bytes": 17402,
+          "rows": 20
+        },
+        {
+          "http_ms": 1.4641379821114242,
+          "service_ms": 0.006,
+          "bytes": 17402,
+          "rows": 20
+        },
+        {
+          "http_ms": 1.494384981924668,
+          "service_ms": 0.006,
+          "bytes": 17402,
+          "rows": 20
+        },
+        {
+          "http_ms": 1.5390910266432911,
+          "service_ms": 0.006,
+          "bytes": 17402,
+          "rows": 20
+        },
+        {
+          "http_ms": 1.4782150101382285,
+          "service_ms": 0.006,
+          "bytes": 17402,
+          "rows": 20
+        },
+        {
+          "http_ms": 1.5645789972040802,
+          "service_ms": 0.006,
+          "bytes": 17402,
+          "rows": 20
+        },
+        {
+          "http_ms": 1.5230599965434521,
+          "service_ms": 0.006,
+          "bytes": 17402,
+          "rows": 20
+        },
+        {
+          "http_ms": 1.654612016864121,
+          "service_ms": 0.007,
+          "bytes": 17402,
+          "rows": 20
+        }
+      ],
+      "http_p95_ms": 2.1898139966651797
+    },
+    {
+      "clients": 2,
+      "requests": [
+        {
+          "http_ms": 2.8558970079757273,
+          "service_ms": 0.009,
+          "bytes": 17402,
+          "rows": 20
+        },
+        {
+          "http_ms": 2.4861610145308077,
+          "service_ms": 0.007,
+          "bytes": 17402,
+          "rows": 20
+        },
+        {
+          "http_ms": 3.2845259993337095,
+          "service_ms": 0.008,
+          "bytes": 17402,
+          "rows": 20
+        },
+        {
+          "http_ms": 2.8128149861004204,
+          "service_ms": 0.008,
+          "bytes": 17402,
+          "rows": 20
+        },
+        {
+          "http_ms": 2.921442996012047,
+          "service_ms": 0.008,
+          "bytes": 17402,
+          "rows": 20
+        },
+        {
+          "http_ms": 2.444181009195745,
+          "service_ms": 0.008,
+          "bytes": 17402,
+          "rows": 20
+        },
+        {
+          "http_ms": 2.584437985206023,
+          "service_ms": 0.008,
+          "bytes": 17402,
+          "rows": 20
+        },
+        {
+          "http_ms": 2.5764930178411305,
+          "service_ms": 0.008,
+          "bytes": 17402,
+          "rows": 20
+        },
+        {
+          "http_ms": 3.1367139890789986,
+          "service_ms": 0.008,
+          "bytes": 17402,
+          "rows": 20
+        },
+        {
+          "http_ms": 2.3862099915277213,
+          "service_ms": 0.01,
+          "bytes": 17401,
+          "rows": 20
+        },
+        {
+          "http_ms": 3.1438780133612454,
+          "service_ms": 0.01,
+          "bytes": 17401,
+          "rows": 20
+        },
+        {
+          "http_ms": 2.8828690119553357,
+          "service_ms": 0.008,
+          "bytes": 17402,
+          "rows": 20
+        },
+        {
+          "http_ms": 3.901825984939933,
+          "service_ms": 0.009,
+          "bytes": 17402,
+          "rows": 20
+        },
+        {
+          "http_ms": 3.3551800006534904,
+          "service_ms": 0.009,
+          "bytes": 17402,
+          "rows": 20
+        },
+        {
+          "http_ms": 3.208651003660634,
+          "service_ms": 0.009,
+          "bytes": 17402,
+          "rows": 20
+        },
+        {
+          "http_ms": 3.5344340139999986,
+          "service_ms": 0.01,
+          "bytes": 17401,
+          "rows": 20
+        },
+        {
+          "http_ms": 3.0754570034332573,
+          "service_ms": 0.008,
+          "bytes": 17402,
+          "rows": 20
+        },
+        {
+          "http_ms": 3.4725359873846173,
+          "service_ms": 0.009,
+          "bytes": 17402,
+          "rows": 20
+        },
+        {
+          "http_ms": 2.6405550015624613,
+          "service_ms": 0.009,
+          "bytes": 17402,
+          "rows": 20
+        },
+        {
+          "http_ms": 2.6717850123532116,
+          "service_ms": 0.008,
+          "bytes": 17402,
+          "rows": 20
+        }
+      ],
+      "http_p95_ms": 3.5344340139999986
+    },
+    {
+      "clients": 4,
+      "requests": [
+        {
+          "http_ms": 6.375512981321663,
+          "service_ms": 0.009,
+          "bytes": 17402,
+          "rows": 20
+        },
+        {
+          "http_ms": 6.462649995228276,
+          "service_ms": 0.009,
+          "bytes": 17402,
+          "rows": 20
+        },
+        {
+          "http_ms": 6.5511990105733275,
+          "service_ms": 0.009,
+          "bytes": 17402,
+          "rows": 20
+        },
+        {
+          "http_ms": 4.990637011360377,
+          "service_ms": 0.009,
+          "bytes": 17402,
+          "rows": 20
+        },
+        {
+          "http_ms": 4.241154994815588,
+          "service_ms": 0.008,
+          "bytes": 17402,
+          "rows": 20
+        },
+        {
+          "http_ms": 6.346437992760912,
+          "service_ms": 0.011,
+          "bytes": 17402,
+          "rows": 20
+        },
+        {
+          "http_ms": 6.326298986095935,
+          "service_ms": 0.009,
+          "bytes": 17402,
+          "rows": 20
+        },
+        {
+          "http_ms": 5.117869994137436,
+          "service_ms": 0.008,
+          "bytes": 17402,
+          "rows": 20
+        },
+        {
+          "http_ms": 6.944069027667865,
+          "service_ms": 0.009,
+          "bytes": 17402,
+          "rows": 20
+        },
+        {
+          "http_ms": 7.032368012005463,
+          "service_ms": 0.009,
+          "bytes": 17402,
+          "rows": 20
+        },
+        {
+          "http_ms": 5.926754995016381,
+          "service_ms": 0.008,
+          "bytes": 17402,
+          "rows": 20
+        },
+        {
+          "http_ms": 6.626072019571438,
+          "service_ms": 0.009,
+          "bytes": 17402,
+          "rows": 20
+        },
+        {
+          "http_ms": 5.205377005040646,
+          "service_ms": 0.009,
+          "bytes": 17402,
+          "rows": 20
+        },
+        {
+          "http_ms": 6.859498011181131,
+          "service_ms": 0.008,
+          "bytes": 17402,
+          "rows": 20
+        },
+        {
+          "http_ms": 7.9922619916033,
+          "service_ms": 0.009,
+          "bytes": 17402,
+          "rows": 20
+        },
+        {
+          "http_ms": 5.519637983525172,
+          "service_ms": 0.009,
+          "bytes": 17402,
+          "rows": 20
+        },
+        {
+          "http_ms": 6.643374013947323,
+          "service_ms": 0.009,
+          "bytes": 17402,
+          "rows": 20
+        },
+        {
+          "http_ms": 5.9133690083399415,
+          "service_ms": 0.01,
+          "bytes": 17401,
+          "rows": 20
+        },
+        {
+          "http_ms": 4.961530998116359,
+          "service_ms": 0.008,
+          "bytes": 17402,
+          "rows": 20
+        },
+        {
+          "http_ms": 3.872028988553211,
+          "service_ms": 0.008,
+          "bytes": 17402,
+          "rows": 20
+        }
+      ],
+      "http_p95_ms": 7.032368012005463
+    }
+  ],
+  "note": "First query is this exact key, not a process-cold server; concurrent read-only clients."
+}

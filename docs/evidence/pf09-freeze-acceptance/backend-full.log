@@ -1,0 +1,165 @@
+============================= test session starts ==============================
+platform linux -- Python 3.14.7, pytest-8.4.2, pluggy-1.6.0
+rootdir: /home/ethioking/dev/nba-analytics
+configfile: pyproject.toml
+testpaths: tests
+plugins: anyio-4.14.2, cov-7.1.0
+collected 1067 items
+
+tests/integration/test_analytical_ops_api.py FFFFFF                      [  0%]
+tests/integration/test_analytics_api.py ......                           [  1%]
+tests/integration/test_api.py .........                                  [  1%]
+tests/integration/test_assignment_admission_postgres.py ..........       [  2%]
+tests/integration/test_assistant_history_postgres.py ..................  [  4%]
+tests/integration/test_assistant_retrieval_postgres.py ...               [  4%]
+tests/integration/test_b14_api.py .......                                [  5%]
+tests/integration/test_b15_api.py ........                               [  6%]
+tests/integration/test_b16_api.py ....                                   [  6%]
+tests/integration/test_b17_api.py .....                                  [  7%]
+tests/integration/test_b21_api.py ......                                 [  7%]
+tests/integration/test_b23_api.py ........                               [  8%]
+tests/integration/test_conversation_postgres.py ......                   [  8%]
+tests/integration/test_finance_postgres.py ........                      [  9%]
+tests/integration/test_finance_query_postgres.py ...                     [ 10%]
+tests/integration/test_hybrid_assistant_postgres.py ...............      [ 11%]
+tests/integration/test_hybrid_evaluation_postgres.py ................... [ 13%]
+..............................................                           [ 17%]
+tests/integration/test_ingestion.py ....                                 [ 17%]
+tests/integration/test_live_postgres.py .............                    [ 19%]
+tests/integration/test_lookup_identity_postgres.py ......                [ 19%]
+tests/integration/test_migration_b14.py .                                [ 19%]
+tests/integration/test_personal_workspace_api.py .....                   [ 20%]
+tests/integration/test_personal_workspace_migration.py ........          [ 20%]
+tests/integration/test_personal_workspace_postgres.py ..                 [ 21%]
+tests/integration/test_planner.py .....                                  [ 21%]
+tests/integration/test_possession_warehouse_postgres.py ....             [ 22%]
+tests/integration/test_publication_postgres.py ..                        [ 22%]
+tests/integration/test_research_input_sealing.py .......                 [ 22%]
+tests/integration/test_research_limits.py .....                          [ 23%]
+tests/integration/test_research_readiness_postgres.py ...                [ 23%]
+tests/integration/test_research_results_api.py ..                        [ 23%]
+tests/integration/test_restore_postgres.py ....
+
+=================================== FAILURES ===================================
+____________ TestAnalyticalOpsApi.test_compare_periods_post_and_get ____________
+
+self = <test_analytical_ops_api.TestAnalyticalOpsApi object at 0x7fbebcd9b110>
+client = <starlette.testclient.TestClient object at 0x7fbe629c1a90>
+
+    def test_compare_periods_post_and_get(self, client: TestClient) -> None:
+        """Disjoint period comparison returns correct appearance slices, deltas, and hash."""
+        # 1. POST variant: Last 10 vs preceding 10 appearances
+        payload = {
+            "player_id": BAM_ADEBAYO_ID,
+            "mode": "appearances",
+            "period_a_n": 10,
+            "period_b_n": 10,
+        }
+        res_post = client.post("/api/workbench/operations/compare-periods", json=payload)
+>       assert res_post.status_code == 200
+E       assert 404 == 200
+E        +  where 404 = <Response [404 Not Found]>.status_code
+
+tests/integration/test_analytical_ops_api.py:50: AssertionError
+_______ TestAnalyticalOpsApi.test_distribution_summary_and_sample_gating _______
+
+self = <test_analytical_ops_api.TestAnalyticalOpsApi object at 0x7fbebcd9b4d0>
+client = <starlette.testclient.TestClient object at 0x7fbe62a80690>
+
+    def test_distribution_summary_and_sample_gating(self, client: TestClient) -> None:
+        """Distribution quantiles compute linear interpolation type 7, with n < 5 gating."""
+        # 1. Standard player with ample history (n=20)
+        res_bam = client.post(
+            "/api/workbench/operations/distribution",
+            json={"player_id": BAM_ADEBAYO_ID, "metric": "pts", "window_n": 20},
+        )
+>       assert res_bam.status_code == 200
+E       assert 404 == 200
+E        +  where 404 = <Response [404 Not Found]>.status_code
+
+tests/integration/test_analytical_ops_api.py:82: AssertionError
+___________ TestAnalyticalOpsApi.test_splits_profile_venue_and_rest ____________
+
+self = <test_analytical_ops_api.TestAnalyticalOpsApi object at 0x7fbebcc09350>
+client = <starlette.testclient.TestClient object at 0x7fbe61417b10>
+
+    def test_splits_profile_venue_and_rest(self, client: TestClient) -> None:
+        """Contextual splits group games by venue and contract team rest day definitions."""
+        res = client.post(
+            "/api/workbench/operations/splits",
+            json={"player_id": BAM_ADEBAYO_ID, "split_type": "all"},
+        )
+>       assert res.status_code == 200
+E       assert 404 == 200
+E        +  where 404 = <Response [404 Not Found]>.status_code
+
+tests/integration/test_analytical_ops_api.py:121: AssertionError
+________ TestAnalyticalOpsApi.test_opponent_context_allowance_and_ranks ________
+
+self = <test_analytical_ops_api.TestAnalyticalOpsApi object at 0x7fbebcc096e0>
+client = <starlette.testclient.TestClient object at 0x7fbe6158e8b0>
+
+    def test_opponent_context_allowance_and_ranks(self, client: TestClient) -> None:
+        """Opponent allowance aggregates historical production conceded across completed games."""
+        # 1. League-wide opponent context
+        res = client.post("/api/workbench/operations/opponent-context", json={})
+>       assert res.status_code == 200
+E       assert 404 == 200
+E        +  where 404 = <Response [404 Not Found]>.status_code
+
+tests/integration/test_analytical_ops_api.py:142: AssertionError
+____________ TestAnalyticalOpsApi.test_statistical_peers_similarity ____________
+
+self = <test_analytical_ops_api.TestAnalyticalOpsApi object at 0x7fbebcc05b50>
+client = <starlette.testclient.TestClient object at 0x7fbe606c1810>
+
+    def test_statistical_peers_similarity(self, client: TestClient) -> None:
+        """Statistical peers finds geometrically closest cohort players on standardized
+        dimensions.
+        """
+        # 1. Bam Adebayo similarity in last 10 appearances
+        payload = {
+            "target_player_id": BAM_ADEBAYO_ID,
+            "window": "last_10",
+            "min_appearances": 10,
+            "min_minutes": 150.0,
+            "top_k": 5,
+        }
+        res = client.post("/api/workbench/operations/similarity", json=payload)
+>       assert res.status_code == 200
+E       assert 404 == 200
+E        +  where 404 = <Response [404 Not Found]>.status_code
+
+tests/integration/test_analytical_ops_api.py:175: AssertionError
+______ TestAnalyticalOpsApi.test_rank_operation_compare_and_distribution _______
+
+self = <test_analytical_ops_api.TestAnalyticalOpsApi object at 0x7fbebcc19260>
+client = <starlette.testclient.TestClient object at 0x7fbe62903410>
+
+    def test_rank_operation_compare_and_distribution(self, client: TestClient) -> None:
+        """Rank operations rank cohort candidates by period deltas and distribution dispersion."""
+        # 1. Rank by scoring surge (compare_periods delta)
+        payload_comp = {
+            "operation_type": "compare_periods",
+            "metric": "pts",
+            "sort_direction": "desc",
+            "limit": 10,
+            "min_games": 10,
+        }
+        res_comp = client.post("/api/workbench/operations/rank", json=payload_comp)
+>       assert res_comp.status_code == 200
+E       assert 404 == 200
+E        +  where 404 = <Response [404 Not Found]>.status_code
+
+tests/integration/test_analytical_ops_api.py:218: AssertionError
+=========================== short test summary info ============================
+FAILED tests/integration/test_analytical_ops_api.py::TestAnalyticalOpsApi::test_compare_periods_post_and_get
+FAILED tests/integration/test_analytical_ops_api.py::TestAnalyticalOpsApi::test_distribution_summary_and_sample_gating
+FAILED tests/integration/test_analytical_ops_api.py::TestAnalyticalOpsApi::test_splits_profile_venue_and_rest
+FAILED tests/integration/test_analytical_ops_api.py::TestAnalyticalOpsApi::test_opponent_context_allowance_and_ranks
+FAILED tests/integration/test_analytical_ops_api.py::TestAnalyticalOpsApi::test_statistical_peers_similarity
+FAILED tests/integration/test_analytical_ops_api.py::TestAnalyticalOpsApi::test_rank_operation_compare_and_distribution
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! KeyboardInterrupt !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+/usr/lib/python3.14/selectors.py:398: KeyboardInterrupt
+(to show a full traceback on KeyboardInterrupt use --full-trace)
+================== 6 failed, 252 passed in 372.31s (0:06:12) ===================

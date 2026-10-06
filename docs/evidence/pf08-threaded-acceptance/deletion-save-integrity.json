@@ -1,0 +1,17 @@
+{
+  "history_cleared": true,
+  "saved_id": "2ca6eae4-2677-4ea2-81c4-e964d0483cc9",
+  "saved_reproduction": true,
+  "manual_result_hash": "6846fa81a783c9f4e92d07658247faa71a125a7c6ca7471707e8dedb7b40524b",
+  "original_result_hash": "6846fa81a783c9f4e92d07658247faa71a125a7c6ca7471707e8dedb7b40524b",
+  "exports": [
+    {
+      "format": "json",
+      "bytes": 6044467
+    },
+    {
+      "format": "csv",
+      "bytes": 7525616
+    }
+  ]
+}

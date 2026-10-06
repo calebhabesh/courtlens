@@ -1,0 +1,11 @@
+============================= test session starts ==============================
+platform linux -- Python 3.14.7, pytest-8.4.2, pluggy-1.6.0
+rootdir: /home/ethioking/dev/nba-analytics
+configfile: pyproject.toml
+plugins: anyio-4.14.2, cov-7.1.0
+collected 22 items
+
+tests/integration/test_stats_presentation_postgres.py ................   [ 72%]
+tests/unit/test_stats_engine.py ......                                   [100%]
+
+============================== 22 passed in 0.57s ==============================

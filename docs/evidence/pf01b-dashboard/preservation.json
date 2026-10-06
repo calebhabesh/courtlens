@@ -1,0 +1,24 @@
+{
+  "retained": {
+    "checked": 1029,
+    "unexpected_changes": []
+  },
+  "artifacts": {
+    "checked": 316,
+    "unexpected_changes": []
+  },
+  "pre_existing_dirty": {
+    "checked": 213,
+    "excluded_prior_authorized_paths": [
+      "dashboard/lib/types.ts",
+      "dashboard/lib/workbench-api.ts",
+      "docs/polish-freeze-implementation-plan.md",
+      "docs/polish-freeze-implementation-progress.md",
+      "src/courtload/api/routers/workbench.py",
+      "src/courtload/api/workbench_schemas.py",
+      "src/courtload/services/stats_engine.py",
+      "tests/unit/test_stats_engine.py"
+    ],
+    "unexpected_changes": []
+  }
+}

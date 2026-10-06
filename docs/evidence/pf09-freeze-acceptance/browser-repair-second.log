@@ -1,0 +1,60 @@
+
+> courtload-dashboard@0.1.0 test:browser
+> playwright test entity-selection.spec.ts workbench.spec.ts --workers=1
+
+
+Running 22 tests using 1 worker
+
+  ✓   1 e2e/entity-selection.spec.ts:13:5 › two mounted pickers have distinct active descendants; ambiguous Enter never commits (624ms)
+  ✓   2 e2e/entity-selection.spec.ts:26:5 › editing and clear invalidate committed single ID; form never submits draft text (723ms)
+  ✓   3 e2e/entity-selection.spec.ts:34:5 › debounce and cache-hit paths reject delayed responses; empty input clears stale options (716ms)
+  ✓   4 e2e/entity-selection.spec.ts:44:5 › IME composition suppresses lookup and Enter; Tab closes and keeps natural focus (643ms)
+  ✓   5 e2e/entity-selection.spec.ts:50:5 › API failure preserves text; retry and no-match states are distinct (642ms)
+  ✓   6 e2e/entity-selection.spec.ts:56:5 › WOWY chips remove by name, prevent duplicates and enforce unit maximum without IDs (1.4s)
+  ✓   7 e2e/entity-selection.spec.ts:64:5 › touch selection and removal work at 375px (1.7s)
+  ✓   8 e2e/entity-selection.spec.ts:70:5 › changing lookup scope discards an obsolete response for the same text (724ms)
+  ✓   9 e2e/entity-selection.spec.ts:84:7 › trends selection preserves release, phase, cutoff and window context (465ms)
+  ✓  10 e2e/entity-selection.spec.ts:84:7 › distributions selection preserves release, phase, cutoff and window context (441ms)
+  ✓  11 e2e/entity-selection.spec.ts:84:7 › similarity selection preserves release, phase, cutoff and window context (409ms)
+  ✓  12 e2e/entity-selection.spec.ts:96:7 › rankings picker adds canonical named selection to its explicit personal target (482ms)
+  ✓  13 e2e/entity-selection.spec.ts:96:7 › tierlist picker adds canonical named selection to its explicit personal target (552ms)
+  ✓  14 e2e/entity-selection.spec.ts:115:5 › planner selections stay within roster/watchlist and never query the public catalog (1.3s)
+  ✓  15 e2e/workbench.spec.ts:5:7 › Workbench Dark Research Interface › home opens Stats with dark theme, horizontal navigation, context and data (1.1s)
+  ✓  16 e2e/workbench.spec.ts:27:7 › Workbench Dark Research Interface › player explorer allows filtering and links to detail view (1.8s)
+  ✓  17 e2e/workbench.spec.ts:50:7 › Workbench Dark Research Interface › player detail presents profile summaries, game logs, and lineage trigger (850ms)
+  ✓  18 e2e/workbench.spec.ts:68:7 › Workbench Dark Research Interface › team research lists cohorts and navigates to team detail (799ms)
+  ✓  19 e2e/workbench.spec.ts:85:7 › Workbench Dark Research Interface › comparison view displays head-to-head metrics without declaring forced winners (716ms)
+  ✘  20 e2e/workbench.spec.ts:98:7 › Workbench Dark Research Interface › forecasts view displays active policy, promotion decision, gates, and prespecified slices (213ms)
+  ✓  21 e2e/workbench.spec.ts:127:7 › Workbench Dark Research Interface › dense dark research layout fits a 375px mobile viewport without horizontal overflow (818ms)
+  ✓  22 e2e/workbench.spec.ts:140:7 › Workbench Dark Research Interface › Ask drawer offers manual research and links to optional configuration (410ms)
+
+
+  1) e2e/workbench.spec.ts:98:7 › Workbench Dark Research Interface › forecasts view displays active policy, promotion decision, gates, and prespecified slices 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByText('Promotion Decision:')
+    Expected: visible
+    Error: strict mode violation: getByText('Promotion Decision:') resolved to 2 elements:
+        1) <h3>…</h3> aka getByRole('heading', { name: 'Promotion Decision: Do Not' })
+        2) <h3>…</h3> aka getByText('Promotion Decision: Do Not').nth(1)
+
+    Call log:
+      - Expect "toBeVisible" getByText('Promotion Decision:') with timeout 5000ms
+      - waiting for getByText('Promotion Decision:')
+
+
+      104 |
+      105 |     // Verify promotion decision banner and gates
+    > 106 |     await expect(page.getByText("Promotion Decision:")).toBeVisible();
+          |                                                         ^
+      107 |     await expect(page.getByText("DO_NOT_PROMOTE")).toBeVisible();
+      108 |     await expect(page.getByText("Gate 1: Validation Improvement >= 5%")).toBeVisible();
+      109 |     await expect(page.getByText("Gate 2: Final Paired Superiority")).toBeVisible();
+        at /home/ethioking/dev/nba-analytics/dashboard/e2e/workbench.spec.ts:106:57
+
+    Error Context: test-results/workbench-Workbench-Dark-R-462b6-tes-and-prespecified-slices/error-context.md
+
+  1 failed
+    e2e/workbench.spec.ts:98:7 › Workbench Dark Research Interface › forecasts view displays active policy, promotion decision, gates, and prespecified slices 
+  21 passed (18.6s)

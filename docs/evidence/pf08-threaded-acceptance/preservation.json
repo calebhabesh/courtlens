@@ -1,0 +1,30 @@
+{
+  "cross_block_unowned_files": 2351,
+  "differences": [],
+  "current_prompt_sha256": "361de7eca06033d1e9ff84da6d7bcf7dfa40f0edbbbc4c8b760fc2676dda913e",
+  "pf07d_final_prompt_sha256": "361de7eca06033d1e9ff84da6d7bcf7dfa40f0edbbbc4c8b760fc2676dda913e",
+  "prior_block_owned_files_excluded_from_prior_start_baseline": [
+    "docs/design/polish-assistant-contract.md",
+    "docs/polish-freeze-implementation-progress.md",
+    "scripts/evaluate_pf07d_hybrid.py",
+    "src/courtload/services/assistant/planner.py",
+    "tests/fixtures/assistant/pf07d-scoring-holdout-v1.json",
+    "tests/fixtures/assistant/pf07d-scoring-holdout-v1.sha256",
+    "tests/integration/test_hybrid_evaluation_postgres.py"
+  ],
+  "owned_file_hashes": {
+    "dashboard/e2e/threaded-assistant.spec.ts": "d89a6871e1342cdb3063304b218617f59d9f93792421afcfb3efe1ad80730c57",
+    "dashboard/components/hybrid-answer.tsx": "63d55267623e3ecc0a59a0d6c2f1b0379bdab66d586d23693ddb5417a4131909",
+    "dashboard/components/ask-drawer.tsx": "bfcaf2f28edcf4b5a1a6f07d269107695f1d2121e988953d643e2e54c66b0290",
+    "dashboard/e2e/conversation.spec.ts": "9301bd1711f01fdce8c2c51363d0eaed0839d53c13625654a36d39d7e27ab50e",
+    "dashboard/components/threaded-assistant.tsx": "4916d3663b54e4f920a96d95d59110614c1fd03f2d166fb2ad40875b9dda9a08",
+    "dashboard/app/research/ask/page.tsx": "5690f4888e49f80abcae58a9efebf341940f2d15261be2d86b3d54be99c4fa67",
+    "scripts/verify_pf08_browser.cjs": "55132a416d644bfda9e954e755e6d4c68b2f9fdf85f8030565b0f83f780e4953",
+    "dashboard/components/ask-courtload.tsx": "6b6614cc8ff56550619628da3737cf1ae87d55583127c2301bb533551c2506bc",
+    "dashboard/lib/conversation.ts": "79f23b537b6908c342eb1fd4ea779e272a26bbc66606b998be4d1c31a21102ed",
+    "dashboard/e2e/saved-operations.spec.ts": "6a077a09832963eaf75fb6efe5f9334b4ef3a1fa03b4d42b45a5aac7ac1f509e",
+    "docs/design/polish-assistant-contract.md": "300232afb039053b55bc10c9efad996240b63e7d5a72c9a6c329ffa471483545",
+    "docs/polish-freeze-implementation-progress.md": "1c841dee1b71cede939084f1813ce6eea253daaab2deb2a91ce70abcc2e3a9d2",
+    "dashboard/components/research-operation-view.tsx": "731f13e1d3473671d7c648726667350fc4d6e465d57fe183a0a38c46fb2c7365"
+  }
+}

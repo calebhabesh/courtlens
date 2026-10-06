@@ -1,0 +1,10 @@
+{
+  "build": {
+    "source_directory": "/tmp/courtload-pf06-u1536l6u/dashboard",
+    "owned_source_differences": []
+  },
+  "fixture-build": {
+    "source_directory": "/tmp/courtload-pf06-mf7cp7b5/dashboard",
+    "owned_source_differences": []
+  }
+}

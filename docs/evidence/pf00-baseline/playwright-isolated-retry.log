@@ -1,0 +1,273 @@
+
+> courtload-dashboard@0.1.0 test:browser
+> playwright test
+
+
+Running 83 tests using 8 workers
+
+  ✓   7 e2e/comparison-evaluation.spec.ts:32:5 › evaluation presents the no-promotion decision and failed build state (4.8s)
+  ✓   8 e2e/advanced-research.spec.ts:47:5 › calculator rejects invalid scenarios and shows checked finite differences on mobile (5.0s)
+  ✓   2 e2e/advanced-research.spec.ts:40:5 › integrity rejection hides numerical outputs and retry recovers (5.2s)
+  ✓   5 e2e/advanced-research.spec.ts:58:5 › roster keeps observed and projected inputs separate and exports context (5.0s)
+  ✓   4 e2e/advanced-research.spec.ts:68:5 › measurements preserve unknown picks, null lengths and units in bounded sample (5.3s)
+  ✓   6 e2e/advanced-research.spec.ts:15:5 › completed negative report shows amended identity, honest horizons, metrics and export (5.1s)
+[WebServer] ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+[WebServer] ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+  ✓  14 e2e/conversation.spec.ts:37:5 › network retry reuses the request identity (2.4s)
+  ✓  13 e2e/conversation.spec.ts:34:5 › quota, unsupported and empty states preserve question and manual execution (2.5s)
+  ✓  12 e2e/conversation.spec.ts:28:5 › natural follow-ups and canonical identity choices retain conversation fingerprints (2.7s)
+  ✓  10 e2e/conversation.spec.ts:21:5 › AI disabled manual paired distributions preserve zero, unknown and exact evidence (2.7s)
+[WebServer] ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+[WebServer] ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+[WebServer] ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+[WebServer] ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+  ✓   1 e2e/comparison-evaluation.spec.ts:11:5 › shared-cutoff comparison keeps different target dates and missing context visible (9.0s)
+  ✓  11 e2e/comparison-evaluation.spec.ts:70:5 › invalid date preserves selections and recovers to sparse history (3.9s)
+  ✓   9 e2e/comparison-evaluation.spec.ts:40:5 › comparison controls work by keyboard and fit a 375px viewport (4.4s)
+  ✓   3 e2e/advanced-research.spec.ts:33:5 › each unavailable model names its independent requirement (10.2s)
+  ✓  18 e2e/conversation.spec.ts:55:7 › unsupported preserves manual alternatives and entered question (2.4s)
+  ✓  20 e2e/conversation.spec.ts:55:7 › timeout preserves manual alternatives and entered question (1.4s)
+  ✓  17 e2e/conversation.spec.ts:50:5 › unmounted pending answer is discarded and its local state is cleared (2.6s)
+  ✓  21 e2e/conversation.spec.ts:55:7 › provider_error preserves manual alternatives and entered question (1.2s)
+  ✓  19 e2e/conversation.spec.ts:55:7 › insufficient_sample preserves manual alternatives and entered question (1.6s)
+  ✓  16 e2e/conversation.spec.ts:46:5 › drawer traps keyboard focus, escapes, and supports narrow reduced-motion layout (2.9s)
+  ✓  15 e2e/conversation.spec.ts:42:5 › exact Research destination reruns executed arguments and clears ephemeral state (4.1s)
+  ✓  22 e2e/conversation.spec.ts:55:7 › busy preserves manual alternatives and entered question (2.1s)
+  ✓  23 e2e/conversation.spec.ts:59:5 › proposed context needs an explicit new conversation (1.9s)
+  ✓  26 e2e/finance.spec.ts:42:5 › option scenario stays separate from reported money and groups (2.0s)
+  ✓  28 e2e/finance.spec.ts:56:5 › mobile and landscape table/drawer preserve keyboard access without body overflow (1.8s)
+  ✓  25 e2e/finance.spec.ts:35:5 › filters, as-of emptiness and changed context hide stale totals (2.1s)
+[WebServer] ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+  ✓  24 e2e/finance.spec.ts:22:5 › retained historical terms stay unknown, drawer sources and financial context survive navigation (4.2s)
+  ✓  34 e2e/live.spec.ts:37:5 › offline retains last observation; capacity and disabled acquisition stay usable (2.0s)
+  ✓  31 e2e/finance.spec.ts:82:5 › a delayed old financial response cannot replace a newer financial context (2.4s)
+  ✓  32 e2e/live.spec.ts:21:5 › selected source boxes keep zero, missingness, clock and errors explicit (2.1s)
+  ✓  27 e2e/finance.spec.ts:49:5 › query rejection has retry, and book chooser never silently chooses newest (4.1s)
+  ✓  30 e2e/finance.spec.ts:70:5 › embedded Stats uses a separate basketball season and retains its resolved release (2.7s)
+  ✓  29 e2e/finance.spec.ts:63:5 › Refresh staged import returns a tracked job and exposes failed worker state (3.3s)
+  ✓  33 e2e/live.spec.ts:28:5 › pause, visibility and navigation release leases and prevent hidden renewals (4.5s)
+  ✓  36 e2e/live.spec.ts:48:5 › mobile and landscape source box regions contain overflow and keyboard focus (2.5s)
+  ✓  40 e2e/player-profile.spec.ts:19:5 › unsupported replay date keeps the input and offers recovery (2.3s)
+[WebServer] ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+[WebServer] ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+  ✓  37 e2e/live.spec.ts:53:5 › a delayed old selection cannot overwrite new date observations (4.0s)
+  ✓  35 e2e/live.spec.ts:42:5 › historical final detail has no demand and pins resolved release in links (4.9s)
+  ✓  44 e2e/saved-operations.spec.ts:43:39 › query retained result exposes evidence, pinned reopening, exports and reproduction (2.6s)
+  ✓  43 e2e/saved-operations.spec.ts:40:5 › combined library keeps legacy section and opens exact retained namespace (2.7s)
+  ✓  45 e2e/saved-operations.spec.ts:43:39 › definition retained result exposes evidence, pinned reopening, exports and reproduction (1.3s)
+  ✓  38 e2e/live.spec.ts:58:5 › disabled acquisition, observed empty slate and invalid dates stay distinct (5.9s)
+  ✓  46 e2e/saved-operations.spec.ts:43:39 › profile retained result exposes evidence, pinned reopening, exports and reproduction (1.2s)
+  ✓  47 e2e/saved-operations.spec.ts:43:39 › compare retained result exposes evidence, pinned reopening, exports and reproduction (1.0s)
+  ✓  48 e2e/saved-operations.spec.ts:43:39 › team retained result exposes evidence, pinned reopening, exports and reproduction (987ms)
+  ✓  49 e2e/saved-operations.spec.ts:43:39 › forecast retained result exposes evidence, pinned reopening, exports and reproduction (982ms)
+  ✓  42 e2e/saved-operations.spec.ts:37:5 › question opt-in is independent from execution and title (4.0s)
+  ✓  50 e2e/saved-operations.spec.ts:43:39 › distribution retained result exposes evidence, pinned reopening, exports and reproduction (1.2s)
+  ✓  51 e2e/saved-operations.spec.ts:43:39 › compare_periods retained result exposes evidence, pinned reopening, exports and reproduction (1.2s)
+  ✓  53 e2e/saved-operations.spec.ts:43:39 › similarity retained result exposes evidence, pinned reopening, exports and reproduction (1.1s)
+  ✓  52 e2e/saved-operations.spec.ts:43:39 › splits retained result exposes evidence, pinned reopening, exports and reproduction (1.2s)
+  ✓  54 e2e/saved-operations.spec.ts:43:39 › workload_shifts retained result exposes evidence, pinned reopening, exports and reproduction (1.1s)
+  ✓  55 e2e/saved-operations.spec.ts:43:39 › finance retained result exposes evidence, pinned reopening, exports and reproduction (1.0s)
+  ✓  56 e2e/saved-operations.spec.ts:49:5 › reproduction mismatch keeps exports and retained evidence usable on narrow screens (2.1s)
+  ✘  39 e2e/player-profile.spec.ts:3:5 › search opens a snapshot-pinned real route and changes replay date (9.3s)
+  ✓  58 e2e/saved-operations.spec.ts:60:5 › saved-operation pagination preserves boundaries and failed pages stay explicit (2.1s)
+  ✓  61 e2e/shared-floor.spec.ts:45:5 › two and five player units use the same operation with all partitions (3.2s)
+  ✓  63 e2e/shared-floor.spec.ts:83:5 › Stats on/off preset opens actual shared-floor operation (2.7s)
+  ✓  64 e2e/shared-floor.spec.ts:70:5 › bounded leaders pin a resolved release across candidates (2.5s)
+  ✓  62 e2e/shared-floor.spec.ts:59:5 › stat shifts reject focal contradictions and request per-possession production (3.1s)
+  ✓  65 e2e/shared-floor.spec.ts:90:5 › partial samples show raw rates and directional denominators while gating differences (1.7s)
+  ✓  59 e2e/saved-operations.spec.ts:69:5 › install prompt accepts a browser event and exposes installed state (5.2s)
+  ✓  66 e2e/shared-floor.spec.ts:121:5 › query overflow is actionable and exports are unavailable after failed queries (2.8s)
+  ✓  69 e2e/shooting.spec.ts:46:5 › assignment matrix shows fractional exposure and null pooled rates at 375px (2.8s)
+  ✓  70 e2e/shooting.spec.ts:59:5 › aftermath keeps branch samples, unknown membership and censoring distinct (2.7s)
+  ✓  67 e2e/shooting.spec.ts:14:5 › blocked source exports complete evidence and pins resolved links (3.2s)
+  ✓  71 e2e/shooting.spec.ts:73:5 › query overflow is actionable and cannot export a partial result (1.2s)
+  ✓  68 e2e/shooting.spec.ts:27:5 › court and table preserve zero versus unknown; exports and peer zones agree (3.9s)
+  ✓  57 e2e/saved-operations.spec.ts:52:5 › original content, live catalog version and installation metadata are local and truthful (10.0s)
+  ✓  73 e2e/shooting.spec.ts:82:5 › shooting tabs and name lookup resolve IDs without analytical requests (2.2s)
+  ✓  74 e2e/shooting.spec.ts:96:5 › shot pagination bounds the court/table while exports retain all facts (2.1s)
+  ✓  77 e2e/workbench.spec.ts:46:7 › Workbench Dark Research Interface › player detail presents profile summaries, game logs, and lineage trigger (775ms)
+  ✓  72 e2e/shooting.spec.ts:77:5 › cancelling an abandoned request prevents stale results (4.0s)
+  ✓  81 e2e/workbench.spec.ts:120:7 › Workbench Dark Research Interface › dense dark research layout fits a 375px mobile viewport without horizontal overflow (1.0s)
+  ✓  79 e2e/workbench.spec.ts:79:7 › Workbench Dark Research Interface › comparison view displays head-to-head metrics without declaring forced winners (2.8s)
+  -  83 e2e/workspace-persistence.spec.ts:3:5 › real workspace proxy persists, conflicts, exports and restores
+  ✓  80 e2e/workbench.spec.ts:91:7 › Workbench Dark Research Interface › forecasts view displays active policy, promotion decision, gates, and prespecified slices (2.5s)
+  ✓  75 e2e/workbench.spec.ts:5:7 › Workbench Dark Research Interface › home opens Stats with dark theme, horizontal navigation, context and data (4.7s)
+  ✓  82 e2e/workbench.spec.ts:132:7 › Workbench Dark Research Interface › Ask drawer offers manual research and links to optional configuration (2.3s)
+  ✘  78 e2e/workbench.spec.ts:63:7 › Workbench Dark Research Interface › team research lists cohorts and navigates to team detail (8.7s)
+  ✘  41 e2e/saved-operations.spec.ts:29:5 › explicit save excludes question by default, reuses identity after failure and survives clearing (30.0s)
+  ✘  60 e2e/shared-floor.spec.ts:24:5 › empty source preserves unknown values, exact downloads and resolved links (30.0s)
+  ✘  76 e2e/workbench.spec.ts:25:7 › Workbench Dark Research Interface › player explorer allows filtering and links to detail view (30.0s)
+
+
+  1) e2e/player-profile.spec.ts:3:5 › search opens a snapshot-pinned real route and changes replay date 
+
+    Error: expect(page).toHaveURL(expected) failed
+
+    Expected pattern: /date=2023-01-02/
+    Received string:  "http://localhost:3151/players/23?date=2023-01-10&snapshotId=snapshot-browser-fixture"
+    Timeout: 5000ms
+
+    Call log:
+      - Expect "toHaveURL" with timeout 5000ms
+        12 × locator resolved to <html lang="en" data-scroll-behavior="smooth" class="__variable_39053e __variable_21e7a0">…</html>
+           - unexpected value "http://localhost:3151/players/23?date=2023-01-10&snapshotId=snapshot-browser-fixture"
+
+
+      13 |   await page.getByLabel("Replay date").selectOption("2023-01-02");
+      14 |   await page.getByRole("button", { name: "Change date" }).click();
+    > 15 |   await expect(page).toHaveURL(/date=2023-01-02/);
+         |                      ^
+      16 |   await expect(page.getByRole("heading", { name: "No history before this cutoff" }).first()).toBeVisible();
+      17 | });
+      18 |
+        at /tmp/courtload-pf00-root/dashboard/e2e/player-profile.spec.ts:15:22
+
+    Error Context: test-results/player-profile-search-open-801fa-ute-and-changes-replay-date/error-context.md
+
+  2) e2e/saved-operations.spec.ts:29:5 › explicit save excludes question by default, reuses identity after failure and survives clearing 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.click: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for getByRole('button', { name: 'Save investigation', exact: true })
+        - locator resolved to <button class="button button-primary">Save investigation</button>
+      - attempting click action
+        2 × waiting for element to be visible, enabled and stable
+          - element is not stable
+        - retrying click action
+        - waiting 20ms
+        2 × waiting for element to be visible, enabled and stable
+          - element is not stable
+        - retrying click action
+          - waiting 100ms
+        - waiting for element to be visible, enabled and stable
+        - element is not stable
+      - retrying click action
+        - waiting 500ms
+        - waiting for element to be visible, enabled and stable
+        - element is visible, enabled and stable
+        - scrolling into view if needed
+        - done scrolling
+        - element is outside of the viewport
+      - retrying click action
+        - waiting 500ms
+        - waiting for element to be visible, enabled and stable
+        - element is visible, enabled and stable
+        - scrolling into view if needed
+      - element was detached from the DOM, retrying
+        2 × waiting for "http://localhost:3151/research/ask" navigation to finish...
+          - navigated to "http://localhost:3151/research/ask"
+
+
+      30 |   const calls=await mock(page,{failure:true});await page.goto("/research/ask");await expect(page.getByText("AI disabled · manual research available",{exact:true})).toBeVisible();await page.getByRole("button",{name:"Run manual operation"}).click();
+      31 |   const opt=page.getByLabel("Retain my selected question as durable metadata");await expect(opt).not.toBeChecked();
+    > 32 |   await page.getByLabel("Investigation title").fill("Pinned scoring");await page.getByRole("button",{name:"Save investigation",exact:true}).click();
+         |                                                                                                                                             ^
+      33 |   await expect(page.getByRole("alert").filter({hasText:"Transient save failure"})).toContainText("Transient save failure");await expect(page.getByRole("alert").filter({hasText:"Transient save failure"})).toBeFocused();await page.getByRole("button",{name:"Retry saving investigation"}).click();
+      34 |   await expect(page.getByRole("link",{name:"Pinned scoring"})).toBeVisible();expect(calls.saves).toHaveLength(2);expect(calls.saves[0]).toEqual(calls.saves[1]);expect(calls.saves[0].include_question).toBe(false);expect(Object.keys(calls.saves[0]).sort()).toEqual(["request_id","conversation_id","turn_id","context_fingerprint","title","include_question"].sort());
+      35 |   await page.getByRole("button",{name:"Clear conversation"}).click();await page.goto(`/investigations/saved/${savedId}`);await expect(page.getByText("The question was not retained.",{exact:false})).toBeVisible();await page.reload();await expect(page.getByRole("heading",{name:"Retained scoring"})).toBeVisible();
+        at /tmp/courtload-pf00-root/dashboard/e2e/saved-operations.spec.ts:32:141
+
+    Error Context: test-results/saved-operations-explicit--1bd44-ilure-and-survives-clearing/error-context.md
+
+  3) e2e/shared-floor.spec.ts:24:5 › empty source preserves unknown values, exact downloads and resolved links 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.click: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for getByRole('button', { name: 'Pin for comparison' })
+        - locator resolved to <button>Pin for comparison</button>
+      - attempting click action
+        - waiting for element to be visible, enabled and stable
+        - element is visible, enabled and stable
+        - scrolling into view if needed
+        2 × waiting for "http://localhost:3151/wowy?operation=wowy&team_id=TOR&release_id=fixture-release&season=2023-24&phase=regular_season&before_date=2024-04-15&together=1627751&min_possessions=100&min_games=5" navigation to finish...
+          - navigated to "http://localhost:3151/wowy?operation=wowy&team_id=TOR&release_id=fixture-release&season=2023-24&phase=regular_season&before_date=2024-04-15&together=1627751&min_possessions=100&min_games=5"
+
+
+      37 |   expect(bundle.results[0].coverage_status).toBe("source_blocked");
+      38 |   expect(bundle.results[0].cells[0].raw_metrics.net_rating).toBeNull();
+    > 39 |   await page.getByRole("button", { name: "Pin for comparison" }).click();
+         |                                                                  ^
+      40 |   await page.getByLabel("Together player IDs").fill("other");
+      41 |   await page.getByRole("button", { name: "Run shared-floor analysis" }).click();
+      42 |   await expect(page.getByText("Pinned eligible differences", { exact: false })).toBeVisible();
+        at /tmp/courtload-pf00-root/dashboard/e2e/shared-floor.spec.ts:39:66
+
+    Error Context: test-results/shared-floor-empty-source--ca014-ownloads-and-resolved-links/error-context.md
+
+  4) e2e/workbench.spec.ts:25:7 › Workbench Dark Research Interface › player explorer allows filtering and links to detail view 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.click: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for getByRole('link', { name: 'View Full Profile →' })
+        - locator resolved to <a class="button button-primary" href="/players/24?season=2025-26&phase=regular_season&beforeDate=2026-06-30&window=season&releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad">View Full Profile →</a>
+      - attempting click action
+        2 × waiting for element to be visible, enabled and stable
+          - element is not stable
+        - retrying click action
+        - waiting 20ms
+        - waiting for element to be visible, enabled and stable
+        - element is not stable
+      2 × retrying click action
+          - waiting 100ms
+          - waiting for element to be visible, enabled and stable
+          - element is visible, enabled and stable
+          - scrolling into view if needed
+          - done scrolling
+          - <div title="Fixture Guard" class="player-portrait-fallback " aria-label="Fixture Guard portrait placeholder">FG</div> from <div class="stats-drawer-header">…</div> subtree intercepts pointer events
+      - retrying click action
+        - waiting 500ms
+      - element was detached from the DOM, retrying
+
+
+      39 |     // Navigate to player detail
+      40 |     await page.getByRole("button", { name: "Open details for Fixture Guard" }).click();
+    > 41 |     await page.getByRole("link", { name: "View Full Profile →" }).click();
+         |                                                                   ^
+      42 |     await page.waitForURL("**/players/24**");
+      43 |     await expect(page.locator("h1.player-identity-name")).toContainText("Fixture Guard");
+      44 |   });
+        at /tmp/courtload-pf00-root/dashboard/e2e/workbench.spec.ts:41:67
+
+    Error Context: test-results/workbench-Workbench-Dark-R-2f4ca-ng-and-links-to-detail-view/error-context.md
+
+  5) e2e/workbench.spec.ts:63:7 › Workbench Dark Research Interface › team research lists cohorts and navigates to team detail 
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: locator('h1.player-identity-name')
+    Expected substring: "Toronto Raptors"
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toContainText" locator('h1.player-identity-name') with timeout 5000ms
+      - waiting for locator('h1.player-identity-name')
+        - waiting for "http://localhost:3151/teams" navigation to finish...
+        - navigated to "http://localhost:3151/teams"
+
+
+      74 |     await page.locator("a[href*='/teams/100']").first().click();
+      75 |     await page.waitForURL("**/teams/100**");
+    > 76 |     await expect(page.locator("h1.player-identity-name")).toContainText("Toronto Raptors");
+         |                                                           ^
+      77 |   });
+      78 |
+      79 |   test("comparison view displays head-to-head metrics without declaring forced winners", async ({ page }) => {
+        at /tmp/courtload-pf00-root/dashboard/e2e/workbench.spec.ts:76:59
+
+    Error Context: test-results/workbench-Workbench-Dark-R-fc5c9-nd-navigates-to-team-detail/error-context.md
+
+  5 failed
+    e2e/player-profile.spec.ts:3:5 › search opens a snapshot-pinned real route and changes replay date 
+    e2e/saved-operations.spec.ts:29:5 › explicit save excludes question by default, reuses identity after failure and survives clearing 
+    e2e/shared-floor.spec.ts:24:5 › empty source preserves unknown values, exact downloads and resolved links 
+    e2e/workbench.spec.ts:25:7 › Workbench Dark Research Interface › player explorer allows filtering and links to detail view 
+    e2e/workbench.spec.ts:63:7 › Workbench Dark Research Interface › team research lists cohorts and navigates to team detail 
+  1 skipped
+  77 passed (1.0m)

@@ -1,0 +1,14 @@
+{
+  "original": {
+    "width": 2560,
+    "dpr": 1
+  },
+  "viewport": [
+    1280,
+    676
+  ],
+  "dpr": 2,
+  "documentWidth": 1272,
+  "checks": 3,
+  "errors": []
+}

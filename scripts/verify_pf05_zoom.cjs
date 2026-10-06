@@ -1,0 +1,21 @@
+const {chromium,expect}=require('../dashboard/node_modules/@playwright/test');
+const {execFileSync}=require('node:child_process');
+const fs=require('node:fs'),assert=require('node:assert/strict');
+(async()=>{
+ const browser=await chromium.launch({executablePath:'/usr/bin/chromium',headless:false,args:['--window-size=2560,1440','--ozone-platform=x11']});
+ const page=await browser.newPage({viewport:null});const errors=[];page.on('pageerror',e=>errors.push(e.message));
+ await page.goto('http://127.0.0.1:3154/stats?limit=25&identityMode=logos');await page.waitForLoadState('networkidle');
+ const original=await page.evaluate(()=>({width:innerWidth,dpr:devicePixelRatio}));
+ const window=execFileSync('xdotool',['search','--onlyvisible','--name','CourtLoad']).toString().trim().split('\n').at(-1);
+ execFileSync('xdotool',['windowfocus','--sync',window]);execFileSync('xdotool',['key','--clearmodifiers','ctrl+0',...Array(5).fill('ctrl+plus')]);await page.waitForTimeout(500);
+ const dimensions=await page.evaluate(()=>({viewport:[innerWidth,innerHeight],dpr:devicePixelRatio,documentWidth:document.documentElement.scrollWidth}));
+ assert.equal(dimensions.dpr/original.dpr,2);assert(dimensions.documentWidth<=dimensions.viewport[0]);
+ const region=page.getByRole('region',{name:'Player statistics scroll area',exact:true});await region.focus();await page.keyboard.press('d');
+ await expect.poll(()=>region.evaluate(el=>el.scrollLeft)).toBeGreaterThan(0);
+ const row=page.locator('.dense-stats-table tbody tr').first();assert.equal(await row.locator('.stats-guide-cell [tabindex]').count(),0);
+ execFileSync('import',['-window',window,'docs/evidence/pf05-tables/stats-zoom.png']);
+ await region.evaluate(el=>{el.scrollLeft=0;});await page.getByRole('button',{name:'Sort by PPG',exact:true}).focus();await page.keyboard.press('Space');await page.waitForURL(/sortDirection=asc/);
+ await expect(page.getByRole('button',{name:'Sort by PPG',exact:true}).locator('..')).toHaveAttribute('aria-sort','ascending');
+ execFileSync('import',['-window',window,'docs/evidence/pf05-tables/stats-zoom-sorted.png']);
+ assert.deepEqual(errors,[]);fs.writeFileSync('docs/evidence/pf05-tables/zoom.json',JSON.stringify({original,...dimensions,checks:3,errors},null,2)+'\n');await browser.close();console.log(JSON.stringify({actualZoom:'200%',...dimensions,checks:3}));
+})().catch(error=>{console.error(error);process.exit(1);});

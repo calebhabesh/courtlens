@@ -1,0 +1,24 @@
+{
+  "recorded_at": "2026-10-06T15:32:33.453715+00:00",
+  "python": "3.14.7",
+  "real_provider_exit_code": 1,
+  "language_gate": "unmet",
+  "actual_provider_calls": 10,
+  "runtime_provider_failures": 0,
+  "backend_checks": 341,
+  "dashboard_tests": 188,
+  "zero_warning_checks": [
+    "pytest",
+    "ruff",
+    "format",
+    "strict mypy",
+    "contract drift"
+  ],
+  "eligibility_resolved": true,
+  "call_authorization_resolved": true,
+  "retained_outcomes_unchanged": 185,
+  "saved_v1_reproduced": 33,
+  "analytical_transactions": "read only",
+  "paid_fallback": false,
+  "billing_changed": false
+}

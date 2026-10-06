@@ -1,0 +1,40 @@
+{
+  "limit25": "\t1\t\n☆\nLuka Dončić\n\tLAL\t\n64\n18\n\t\n2,289\n38\n\t\n35.8\n90\n\t\n33.5\n98\n\t\n7.7\n78\n\t\n8.3\n90\n\t\n1.6\n90\n\t\n0.5\n54\n\t\n47.6%\n38\n\t\n36.6%\n42\n\t\n78.0%\n10\n\t\n61.6%\n62\n\t\n56.3%\n58\n\t⌕",
+  "limit50": "\t1\t\n☆\nLuka Dončić\n\tLAL\t\n64\n19\n\t\n2,289\n43\n\t\n35.8\n93\n\t\n33.5\n99\n\t\n7.7\n81\n\t\n8.3\n95\n\t\n1.6\n95\n\t\n0.5\n52\n\t\n47.6%\n53\n\t\n36.6%\n52\n\t\n78.0%\n23\n\t\n61.6%\n77\n\t\n56.3%\n73\n\t⌕",
+  "limit100": "\t1\t\n☆\nLuka Dončić\n\tLAL\t\n64\n25\n\t\n2,289\n66\n\t\n35.8\n97\n\t\n33.5\n99\n\t\n7.7\n84\n\t\n8.3\n97\n\t\n1.6\n97\n\t\n0.5\n56\n\t\n47.6%\n55\n\t\n36.6%\n51\n\t\n78.0%\n30\n\t\n61.6%\n79\n\t\n56.3%\n67\n\t⌕",
+  "logos": {
+    "text": "\t1\t\nLAL\n☆\nLuka Dončić\n\tLAL\t\n64\n25\n\t\n2,289\n66\n\t\n35.8\n97\n\t\n33.5\n99\n\t\n7.7\n84\n\t\n8.3\n97\n\t\n1.6\n97\n\t\n0.5\n56\n\t\n47.6%\n55\n\t\n36.6%\n51\n\t\n78.0%\n30\n\t\n61.6%\n79\n\t\n56.3%\n67\n\t⌕",
+    "images": []
+  },
+  "layout": {
+    "rect": {
+      "x": 0,
+      "y": 141,
+      "width": 1440,
+      "height": 5124.890625,
+      "top": 141,
+      "right": 1440,
+      "bottom": 5265.890625,
+      "left": 0
+    },
+    "maxWidth": "1600px",
+    "margin": "0px"
+  },
+  "playerButton": [
+    {
+      "text": "☆",
+      "background": "rgba(0, 0, 0, 0)",
+      "appearance": "auto"
+    },
+    {
+      "text": "Luka Dončić",
+      "background": "rgb(107, 107, 107)",
+      "appearance": "auto"
+    },
+    {
+      "text": "⌕",
+      "background": "rgb(50, 59, 73)",
+      "appearance": "auto"
+    }
+  ]
+}

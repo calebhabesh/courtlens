@@ -1,0 +1,90 @@
+{
+  "width": 375,
+  "document": 411,
+  "overflow": [
+    {
+      "tag": "TABLE",
+      "class": "plan-table",
+      "width": 760,
+      "right": 776,
+      "display": "table"
+    },
+    {
+      "tag": "THEAD",
+      "class": "",
+      "width": 760,
+      "right": 776,
+      "display": "table-header-group"
+    },
+    {
+      "tag": "TR",
+      "class": "",
+      "width": 760,
+      "right": 776,
+      "display": "table-row"
+    },
+    {
+      "tag": "TH",
+      "class": "light-column",
+      "width": 82.75,
+      "right": 387.28125,
+      "display": "table-cell"
+    },
+    {
+      "tag": "SMALL",
+      "class": "",
+      "width": 58.75,
+      "right": 375.28125,
+      "display": "block"
+    },
+    {
+      "tag": "TH",
+      "class": "light-column",
+      "width": 82.75,
+      "right": 470.03125,
+      "display": "table-cell"
+    },
+    {
+      "tag": "SMALL",
+      "class": "",
+      "width": 58.75,
+      "right": 458.03125,
+      "display": "block"
+    },
+    {
+      "tag": "TH",
+      "class": "light-column",
+      "width": 69.515625,
+      "right": 539.546875,
+      "display": "table-cell"
+    },
+    {
+      "tag": "SMALL",
+      "class": "",
+      "width": 45.515625,
+      "right": 527.546875,
+      "display": "block"
+    },
+    {
+      "tag": "TH",
+      "class": "light-column",
+      "width": 71.609375,
+      "right": 611.15625,
+      "display": "table-cell"
+    },
+    {
+      "tag": "SMALL",
+      "class": "",
+      "width": 47.609375,
+      "right": 599.15625,
+      "display": "block"
+    },
+    {
+      "tag": "TH",
+      "class": "light-column",
+      "width": 82.75,
+      "right": 693.90625,
+      "display": "table-cell"
+    }
+  ]
+}

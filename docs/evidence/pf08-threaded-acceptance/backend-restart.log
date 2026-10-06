@@ -1,0 +1,113 @@
+INFO:     Started server process [3634449]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8189 (Press CTRL+C to quit)
+INFO:     127.0.0.1:50806 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50828 - "GET /api/workbench/assistant/v2/threads?limit=20 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50806 - "GET /api/workbench/assistant/v2/threads/68f134b7-86f8-41c6-90d8-b0a51f663af4/turns?limit=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50818 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50806 - "GET /api/workbench/assistant/v2/threads/68f134b7-86f8-41c6-90d8-b0a51f663af4/turns?limit=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50838 - "GET /api/workbench/catalog?releaseId=retained-release HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:50848 - "GET /api/workbench/catalog?releaseId=retained-release HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:50848 - "GET /api/workbench/lookup?q=1630567&releaseId=retained-release&season=2024-25&phase=regular_season&before_date=2025-04-15&kinds=player&limit=1 HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:50856 - "GET /api/workbench/catalog?releaseId=retained-release HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:50806 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50806 - "GET /api/workbench/assistant/v2/threads?limit=20 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50806 - "GET /api/workbench/assistant/v2/threads/68f134b7-86f8-41c6-90d8-b0a51f663af4/turns?limit=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50892 - "GET /api/workbench/catalog?releaseId=retained-release HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:50866 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50806 - "GET /api/workbench/assistant/v2/threads/68f134b7-86f8-41c6-90d8-b0a51f663af4/turns?limit=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50908 - "GET /api/workbench/catalog?releaseId=retained-release HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:50882 - "GET /api/workbench/catalog?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50908 - "GET /api/workbench/catalog?releaseId=retained-release HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:50912 - "GET /api/workbench/catalog?releaseId=retained-release HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:50926 - "GET /api/workbench/catalog?releaseId=retained-release HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:50942 - "GET /api/workbench/catalog?releaseId=retained-release HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:50806 - "GET /api/workbench/assistant/v2/threads?limit=20 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50806 - "GET /api/workbench/assistant/v2/threads/68f134b7-86f8-41c6-90d8-b0a51f663af4/turns?limit=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50946 - "GET /api/workbench/catalog?releaseId=retained-release HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:50952 - "GET /api/workbench/catalog?releaseId=retained-release HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:50962 - "GET /api/workbench/catalog?releaseId=retained-release HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:50974 - "GET /api/workbench/catalog?releaseId=retained-release HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:50982 - "GET /api/workbench/catalog?releaseId=retained-release HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:51024 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51036 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51062 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51078 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51102 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51122 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51128 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51152 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51164 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51190 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51204 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51222 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51238 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51252 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51266 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51296 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51352 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51362 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51370 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51370 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51384 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51386 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51402 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51418 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51432 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51432 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51444 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51460 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51470 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51486 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51488 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51500 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51500 - "GET /api/workbench/catalog?releaseId=retained-release HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:51504 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51504 - "GET /api/workbench/assistant/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57122 - "GET /api/workbench/assistant/operations HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57124 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57132 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57132 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57146 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57146 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57152 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57152 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57166 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57178 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57166 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57178 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57194 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57194 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57196 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57196 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57198 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57210 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57214 - "GET /api/workbench/catalog?releaseId=retained-release HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:57198 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57222 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57222 - "GET /api/workbench/assistant/v2/threads?limit=20 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57222 - "GET /api/workbench/assistant/v2/threads/68f134b7-86f8-41c6-90d8-b0a51f663af4/turns?limit=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57232 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60092 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60092 - "GET /api/workbench/assistant/v2/threads?limit=20 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60092 - "GET /api/workbench/assistant/v2/threads/68f134b7-86f8-41c6-90d8-b0a51f663af4/turns?limit=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60112 - "OPTIONS /api/workbench/assistant/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60108 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60110 - "GET /api/workbench/catalog?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60124 - "POST /api/workbench/assistant/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60092 - "DELETE /api/workbench/assistant/v2/threads HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60092 - "GET /api/workbench/assistant/v2/threads?limit=20 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60092 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60092 - "GET /api/workbench/assistant/v2/threads?limit=20 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60092 - "GET /api/workbench/assistant/v2/threads/68f134b7-86f8-41c6-90d8-b0a51f663af4/turns?limit=100 HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60092 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60108 - "GET /api/workbench/assistant/investigations/2ca6eae4-2677-4ea2-81c4-e964d0483cc9 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60110 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60110 - "GET /api/workbench/assistant/investigations/2ca6eae4-2677-4ea2-81c4-e964d0483cc9/reproduce HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60126 - "GET /api/workbench/assistant/investigations/2ca6eae4-2677-4ea2-81c4-e964d0483cc9/export?format=json HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60126 - "GET /api/workbench/assistant/investigations/2ca6eae4-2677-4ea2-81c4-e964d0483cc9/export?format=csv HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [3634449]

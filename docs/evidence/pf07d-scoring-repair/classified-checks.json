@@ -1,0 +1,6 @@
+{
+  "repro-red.log": "Initial harness omitted main guard; spawned executor workers reexecuted main. Not product evidence.",
+  "repro-red-main-guarded.log": "Corrected captured-plan replay: all three cases readable/evidence-safe but fail canonical manual equivalence. Expected red.",
+  "real-provider-regression.json": "First prompt candidate repairs all three tables; observed scoring variability includes unrequested minutes distribution. 9/10 model cases; retained as initial measurement.",
+  "holdout-freeze.json": "Twelve new supported analytical paraphrases frozen and hashed before first prompt edit. Not model-evaluated until final prompt candidate. Original held_out flags retain historical meaning only."
+}

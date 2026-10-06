@@ -1,0 +1,22 @@
+[
+  {
+    "check": "Initial direct endpoint probes",
+    "classification": "NBA.com glossary/history exceed 256KiB; two guessed article paths return 404; not enabled, no bound raised"
+  },
+  {
+    "check": "Initial rulebook binding",
+    "classification": "HTML prose lives in entry-excerpt, video embed lives in entry-content; corrected parser to actual prose container before enabling"
+  },
+  {
+    "check": "Initial cache test",
+    "classification": "Pydantic facts are frozen; changed test to mutate returned facts list to prove deep cache isolation"
+  },
+  {
+    "check": "Initial cancellation test",
+    "classification": "Harness used cancel instead of existing cancel_turn; corrected function name; final actual concurrent assertion passes"
+  },
+  {
+    "check": "Initial HTTP readiness",
+    "classification": "Harness used /health, while readiness uses assistant namespace; corrected before final 13-check run; initial log retained"
+  }
+]

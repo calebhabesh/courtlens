@@ -1,0 +1,11 @@
+[
+  "src/courtload/services/assistant/retrieval.py",
+  "src/courtload/services/assistant/hybrid.py",
+  "tests/unit/test_assistant_retrieval.py",
+  "tests/integration/test_assistant_retrieval_postgres.py",
+  "scripts/verify_pf07c_retrieval.py",
+  "docs/design/pf07c-free-sources.md",
+  "docs/design/polish-assistant-contract.md",
+  "docs/polish-freeze-implementation-progress.md",
+  "docs/evidence/pf07c-retrieval/"
+]

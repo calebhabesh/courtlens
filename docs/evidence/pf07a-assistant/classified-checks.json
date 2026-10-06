@@ -1,0 +1,13 @@
+{
+  "initial_integration": {
+    "passed": 12,
+    "failed": 1,
+    "classification": "Assertion expected an unrounded quotient; preserved query operation displays one-decimal PPG. Corrected expected rounding, without changing arithmetic."
+  },
+  "mixed_scope_regression": {
+    "passed": 49,
+    "failed": 1,
+    "classification": "New assertion found that a mixed explanation/external answer selected the scope-free explanation as primary. Fixed primary-scope selection and verified the interpreted season."
+  },
+  "deferred": "PF00/freeze baseline failures and replica source gates remain separate; no complete application acceptance claim."
+}

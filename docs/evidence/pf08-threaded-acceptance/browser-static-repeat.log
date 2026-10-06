@@ -1,0 +1,30 @@
+
+> courtload-dashboard@0.1.0 test:browser
+> playwright test saved-operations.spec.ts --grep original content --workers=1
+
+
+Running 1 test using 1 worker
+
+  ✘  1 e2e/saved-operations.spec.ts:52:5 › original content, live catalog version and installation metadata are local and truthful (399ms)
+
+
+  1) e2e/saved-operations.spec.ts:52:5 › original content, live catalog version and installation metadata are local and truthful 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+      54 |   await page.goto("/methodology");await expect(page.getByText(/Canonical Metric Catalog/)).toContainText("(v1)");await expect(page.getByText("0 Metrics",{exact:true}).filter({visible:true})).toBeVisible();await page.goto("/settings");await expect(page.getByRole("heading",{name:"Install CourtLoad"})).toBeVisible();
+      55 |   const manifestResponse=await request.get("/manifest.webmanifest");expect(manifestResponse.ok()).toBe(true);const manifest=await manifestResponse.json();expect(manifest.start_url).toBe("/stats");expect(manifest.display).toBe("standalone");
+    > 56 |   for(const icon of manifest.icons){const response=await request.get(icon.src);expect(response.ok()).toBe(true);expect(response.headers()["content-type"]).toContain("image/png");const bytes=await response.body();const n=Number(icon.sizes.split("x")[0]);expect(bytes.readUInt32BE(16)).toBe(n);expect(bytes.readUInt32BE(20)).toBe(n);}
+         |                                                                                                      ^
+      57 |   expect(await page.evaluate(async()=>({workers:(await navigator.serviceWorker.getRegistrations()).length,caches:await caches.keys()}))).toEqual({workers:0,caches:[]});
+      58 |   await expect(page.locator('link[rel="manifest"]')).toHaveAttribute("href","/manifest.webmanifest");
+      59 | });
+        at /home/ethioking/dev/nba-analytics/dashboard/e2e/saved-operations.spec.ts:56:102
+
+    Error Context: test-results/saved-operations-original--07c93-data-are-local-and-truthful/error-context.md
+
+  1 failed
+    e2e/saved-operations.spec.ts:52:5 › original content, live catalog version and installation metadata are local and truthful 

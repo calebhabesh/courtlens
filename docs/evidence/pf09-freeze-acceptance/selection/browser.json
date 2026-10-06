@@ -1,0 +1,99 @@
+{
+  "checks": [
+    "real alias selections submit canonical comparison with full scope",
+    "real team and independent together/apart selections",
+    "duplicate committed player excluded",
+    "WOWY fits 1440px",
+    "WOWY fits 375px",
+    "two shooting fields accept diacritic and alias",
+    "/research/trends rendered picker commits canonical entity",
+    "/research/distributions rendered picker commits canonical entity",
+    "/research/similarity rendered picker commits canonical entity",
+    "/roster-shapes rendered picker commits canonical entity",
+    "/learning rendered picker commits canonical entity",
+    "discoverable identity without selected-season appearances",
+    "ambiguous Enter leaves canonical selection empty",
+    "suffix-stripped name discovery",
+    "fixture transport error preserves draft"
+  ],
+  "errors": [],
+  "timings": [
+    {
+      "label": "Player A",
+      "query": "jokic",
+      "settledMilliseconds": 202.223211
+    },
+    {
+      "label": "Player B",
+      "query": "doncic",
+      "settledMilliseconds": 182.18476199999986
+    },
+    {
+      "label": "Team",
+      "query": "raptors",
+      "settledMilliseconds": 195.05356200000006
+    },
+    {
+      "label": "Together players",
+      "query": "scottie",
+      "settledMilliseconds": 184.22105200000033
+    },
+    {
+      "label": "Apart players",
+      "query": "quickley",
+      "settledMilliseconds": 181.2074050000001
+    },
+    {
+      "label": "Offensive player",
+      "query": "Jokić",
+      "settledMilliseconds": 193.01310300000023
+    },
+    {
+      "label": "Defender (optional)",
+      "query": "Doncic",
+      "settledMilliseconds": 179.36679600000025
+    },
+    {
+      "label": "Target player",
+      "query": "barnes",
+      "settledMilliseconds": 197.46044100000017
+    },
+    {
+      "label": "Target player",
+      "query": "doncic",
+      "settledMilliseconds": 198.63874099999975
+    },
+    {
+      "label": "Target player",
+      "query": "jokic",
+      "settledMilliseconds": 203.01059499999974
+    },
+    {
+      "label": "Team",
+      "query": "toronto",
+      "settledMilliseconds": 192.9534789999998
+    },
+    {
+      "label": "Lesson player",
+      "query": "jokic",
+      "settledMilliseconds": 210.1913969999987
+    }
+  ],
+  "lookupRequests": 23,
+  "providerRequests": [],
+  "viewports": [
+    [
+      2560,
+      1440
+    ],
+    [
+      1440,
+      900
+    ],
+    [
+      375,
+      812
+    ]
+  ],
+  "dpr": 1
+}

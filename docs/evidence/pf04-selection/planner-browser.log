@@ -1,0 +1,30 @@
+
+> courtload-dashboard@0.1.0 test:browser
+> playwright test entity-selection.spec.ts --grep planner --workers=1
+
+
+Running 1 test using 1 worker
+
+  ✘  1 e2e/entity-selection.spec.ts:115:5 › planner selections stay within roster/watchlist and never query the public catalog (1.1s)
+
+
+  1) e2e/entity-selection.spec.ts:115:5 › planner selections stay within roster/watchlist and never query the public catalog 
+
+    Error: page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:3155/planner
+    Call log:
+      - navigating to "http://127.0.0.1:3155/planner", waiting until "load"
+
+
+      127 |     return request.fulfill({headers:cors,json:[league]});
+      128 |   });
+    > 129 |   await page.goto("/planner");
+          |              ^
+      130 |   await page.waitForLoadState("networkidle");
+      131 |   await page.getByLabel("Email",{exact:true}).fill("fixture@courtload.local");await page.getByLabel("Password",{exact:true}).fill("fixture-only");await page.getByRole("button",{name:"Sign in",exact:true}).click();
+      132 |   const drop=page.getByRole("combobox",{name:"Drop",exact:true});await drop.waitFor();await drop.fill("Jokic");await page.getByRole("option").filter({hasText:"Private Jokić"}).click();
+        at /home/ethioking/dev/nba-analytics/dashboard/e2e/entity-selection.spec.ts:129:14
+
+    Error Context: test-results/entity-selection-planner-s-3f405-er-query-the-public-catalog/error-context.md
+
+  1 failed
+    e2e/entity-selection.spec.ts:115:5 › planner selections stay within roster/watchlist and never query the public catalog 

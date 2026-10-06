@@ -1,0 +1,9 @@
+{
+  "verified_free": true,
+  "checked_at": "2026-10-06T15:26:47.935025+00:00",
+  "verification_method": "Owner-provided AI Studio screenshot shows NBA-Analytics Free tier; owner confirms this is the configured key",
+  "owner_authorization": "Run the finite PF07d evaluation under provider-enforced free project quotas; no separate call budget",
+  "screenshot_sha256": "6b3082e33e1e221ea4f99489e5cf4c61396cfc8fd7824e1ea44f72493eb3fc0c",
+  "configured_key_matches_screenshot": true,
+  "configured_model": "gemini-3.5-flash-lite"
+}

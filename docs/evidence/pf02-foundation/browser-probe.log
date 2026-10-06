@@ -1,0 +1,14 @@
+AssertionError [ERR_ASSERTION]: Browser zoom not 200%: {"original":{"width":2528,"dpr":1},"zoomed":{"width":2528,"dpr":1}}
+
+1 !== 2
+
+    at /home/ethioking/dev/nba-analytics/scripts/verify_pf02_browser.cjs:99:10
+    at runNextTicks (node:internal/process/task_queues:65:5)
+    at process.processImmediate (node:internal/timers:472:9) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: 1,
+  expected: 2,
+  operator: 'strictEqual',
+  diff: 'simple'
+}

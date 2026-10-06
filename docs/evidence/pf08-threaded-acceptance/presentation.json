@@ -1,0 +1,156 @@
+{
+  "contrasts": [
+    {
+      "text": "A pick and roll is an action where a teammate screens the ba",
+      "ratio": 16.149248260857824,
+      "fontSize": "14px"
+    },
+    {
+      "text": "Open manual research",
+      "ratio": 8.127943601460785,
+      "fontSize": "14px"
+    },
+    {
+      "text": "New chat",
+      "ratio": 14.180187205111407,
+      "fontSize": "13.6px"
+    }
+  ],
+  "focus": {
+    "outlineStyle": "solid",
+    "outlineWidth": "2px",
+    "outlineColor": "rgb(255, 209, 102)"
+  },
+  "controls": [
+    {
+      "text": "New chat",
+      "width": 90.484375,
+      "height": 40
+    },
+    {
+      "text": "Delete chat",
+      "width": 103.78125,
+      "height": 40
+    },
+    {
+      "text": "Clear history",
+      "width": 112.828125,
+      "height": 40
+    },
+    {
+      "text": "New chat 10/6/2026",
+      "width": 1060,
+      "height": 40
+    },
+    {
+      "text": "New chat 10/6/2026",
+      "width": 1060,
+      "height": 40
+    },
+    {
+      "text": "Explain pick and roll 10/6/2026",
+      "width": 1060,
+      "height": 40
+    },
+    {
+      "text": "New chat 10/6/2026",
+      "width": 1060,
+      "height": 40
+    },
+    {
+      "text": "New chat 10/6/2026",
+      "width": 1060,
+      "height": 40
+    },
+    {
+      "text": "New chat 10/6/2026",
+      "width": 1060,
+      "height": 40
+    },
+    {
+      "text": "New chat 10/6/2026",
+      "width": 1060,
+      "height": 40
+    },
+    {
+      "text": "New chat 10/6/2026",
+      "width": 1060,
+      "height": 40
+    },
+    {
+      "text": "New chat 10/6/2026",
+      "width": 1060,
+      "height": 40
+    },
+    {
+      "text": "New chat 10/6/2026",
+      "width": 1060,
+      "height": 40
+    },
+    {
+      "text": "Explain pick and roll 10/6/2026",
+      "width": 1060,
+      "height": 40
+    },
+    {
+      "text": "Explain pick and roll 10/6/2026",
+      "width": 1060,
+      "height": 40
+    },
+    {
+      "text": "New chat 10/6/2026",
+      "width": 1060,
+      "height": 40
+    },
+    {
+      "text": "New chat 10/6/2026",
+      "width": 1060,
+      "height": 40
+    },
+    {
+      "text": "New chat 10/6/2026",
+      "width": 1060,
+      "height": 40
+    },
+    {
+      "text": "Explain pick and roll 10/6/2026",
+      "width": 1060,
+      "height": 40
+    },
+    {
+      "text": "New chat 10/6/2026",
+      "width": 1060,
+      "height": 40
+    },
+    {
+      "text": "New chat 10/6/2026",
+      "width": 1060,
+      "height": 40
+    },
+    {
+      "text": "New chat 10/6/2026",
+      "width": 1060,
+      "height": 40
+    },
+    {
+      "text": "Load more conversations",
+      "width": 190.03125,
+      "height": 40
+    },
+    {
+      "text": "Retry question",
+      "width": 124.578125,
+      "height": 40
+    },
+    {
+      "text": "composer",
+      "width": 1060,
+      "height": 96
+    },
+    {
+      "text": "Send question",
+      "width": 122.59375,
+      "height": 40
+    }
+  ]
+}

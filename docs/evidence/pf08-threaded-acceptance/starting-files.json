@@ -1,0 +1,10 @@
+{
+  "dashboard/components/ask-courtload.tsx": "5d2b0d868cba3c42a71e55edc008cefaef65175e4f799d064d9c180b2fde00be",
+  "dashboard/components/ask-drawer.tsx": "4b70f44ce45f7d6b423bb9931860556dcf12cdb16205889b8b7e04eb2ea138b8",
+  "dashboard/components/threaded-assistant.tsx": "ab2438f99b173259fed9fe0a27f4b77ec86fef256bffe5116a1bf5df9e50d3e6",
+  "dashboard/app/research/ask/page.tsx": "1a33760af4bf2f3e2d3e5a2ab6bff3679a927f786a0eb66d64e706d05687d1cc",
+  "dashboard/e2e/threaded-assistant.spec.ts": "4da6c2ab3df921c7d2fc022990eed5e487e48fe737892b2760c86d14e5036b1a",
+  "dashboard/e2e/conversation.spec.ts": "8c3a46154e198d17118aabdc43c6f6ae9fd2b70d4a7cce1e27ddcad5a9e51a6b",
+  "docs/design/polish-assistant-contract.md": "2d9d17418d9a9ead5c2ca13fdece442edb2e39ef57858d3d974f12f7d5a11484",
+  "docs/polish-freeze-implementation-progress.md": "4e0870890f374dfc7cb4a10d0b60c32cf7016389f4f38b9ee2530f8093b3d52b"
+}

@@ -1,0 +1,40 @@
+ExpectError: expect(locator).toHaveAttribute(expected) failed
+
+Locator: locator('.team-logo-stack').filter({ has: locator('.team-logo[aria-label="DAL"]') })
+Expected: "Teams represented in selected scope: DAL, LAL"
+Error: strict mode violation: locator('.team-logo-stack').filter({ has: locator('.team-logo[aria-label="DAL"]') }) resolved to 2 elements:
+    1) <span tabindex="0" class="team-logo-stack" title="Teams observed in selected scope: DAL, LAL" aria-label="Teams observed in selected scope: DAL, LAL">…</span> aka getByLabel('Teams observed in selected scope: DAL, LAL')
+    2) <span tabindex="0" class="team-logo-stack" title="Teams represented in selected scope: DAL, LAL" aria-label="Teams represented in selected scope: DAL, LAL">…</span> aka getByLabel('Teams represented in selected scope: DAL, LAL')
+
+Call log:
+  - Expect "toHaveAttribute" locator('.team-logo-stack').filter({ has: locator('.team-logo[aria-label="DAL"]') }) with timeout 5000ms
+  - waiting for locator('.team-logo-stack').filter({ has: locator('.team-logo[aria-label="DAL"]') })
+
+    at captureRawStack (/home/ethioking/dev/nba-analytics/dashboard/node_modules/playwright-core/lib/coreBundle.js:8588:17)
+    at callMatcherAsStep (/home/ethioking/dev/nba-analytics/dashboard/node_modules/playwright/lib/matchers/expect.js:13310:57)
+    at Object.toHaveAttribute (/home/ethioking/dev/nba-analytics/dashboard/node_modules/playwright/lib/matchers/expect.js:13302:23)
+    at /home/ethioking/dev/nba-analytics/scripts/verify_pf09_reuse_pf03_browser.cjs:77:109 {
+  matcherResult: {
+    name: 'toHaveAttribute',
+    expected: 'Teams represented in selected scope: DAL, LAL',
+    message: 'expect(locator).toHaveAttribute(expected) failed\n' +
+      '\n' +
+      `Locator: locator('.team-logo-stack').filter({ has: locator('.team-logo[aria-label="DAL"]') })\n` +
+      'Expected: "Teams represented in selected scope: DAL, LAL"\n' +
+      `Error: strict mode violation: locator('.team-logo-stack').filter({ has: locator('.team-logo[aria-label="DAL"]') }) resolved to 2 elements:\n` +
+      `    1) <span tabindex="0" class="team-logo-stack" title="Teams observed in selected scope: DAL, LAL" aria-label="Teams observed in selected scope: DAL, LAL">…</span> aka getByLabel('Teams observed in selected scope: DAL, LAL')\n` +
+      `    2) <span tabindex="0" class="team-logo-stack" title="Teams represented in selected scope: DAL, LAL" aria-label="Teams represented in selected scope: DAL, LAL">…</span> aka getByLabel('Teams represented in selected scope: DAL, LAL')\n` +
+      '\n' +
+      'Call log:\n' +
+      `  - Expect "toHaveAttribute" locator('.team-logo-stack').filter({ has: locator('.team-logo[aria-label="DAL"]') }) with timeout 5000ms\n` +
+      `  - waiting for locator('.team-logo-stack').filter({ has: locator('.team-logo[aria-label="DAL"]') })\n`,
+    pass: false,
+    actual: undefined,
+    log: [
+      `  - Expect "toHaveAttribute" locator('.team-logo-stack').filter({ has: locator('.team-logo[aria-label="DAL"]') }) with timeout 5000ms`,
+      `  - waiting for locator('.team-logo-stack').filter({ has: locator('.team-logo[aria-label="DAL"]') })`
+    ],
+    timeout: undefined,
+    ariaSnapshot: undefined
+  }
+}

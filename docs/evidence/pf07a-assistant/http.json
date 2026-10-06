@@ -1,0 +1,3503 @@
+{
+  "environment": "local Uvicorn + retained PostgreSQL; no provider calls",
+  "catalog_context": {
+    "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+    "season": "2025-26",
+    "before_date": "2026-04-13",
+    "phase": "regular_season"
+  },
+  "cases": [
+    {
+      "message": "Which point guard had the most assists per game last season?",
+      "latency_ms": 6.942014006199315,
+      "answer": {
+        "schema_version": "courtload-assistant-v2",
+        "request_id": "7274043e-001d-4b9f-bbac-8a922e10e0ee",
+        "thread_id": "16bc4015-42e4-4b96-a3e3-c74cb8248cf0",
+        "turn_id": "382a5f05-7277-4729-bf82-dbce04e71647",
+        "status": "unable",
+        "intent": "external",
+        "scope": {
+          "as_of": "2026-10-05",
+          "timezone": "America/New_York",
+          "calendar_version": "nba-completed-seasons-2019-2026-v1",
+          "calendar_sha256": "bc98f7f7956a70b4a6f0f4f21216be4973b78e482c3a100d4f059ad37380a560",
+          "selections": {
+            "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+            "season": "2025-26",
+            "phase": "regular_season",
+            "before_date": "2026-10-05",
+            "window": "season"
+          },
+          "local_context": null,
+          "context_fingerprint": null,
+          "assumptions": [
+            "Inherited selected scope.",
+            "Last season means the latest completed NBA season as of 2026-10-05."
+          ],
+          "label": "2025-26 \u00b7 regular season \u00b7 season"
+        },
+        "blocks": [
+          {
+            "kind": "inability",
+            "reason": "position_unavailable",
+            "text": "I cannot verify the requested position-filtered leader: this release has no dated PG cohort, and verified external retrieval is not available yet.",
+            "next_action": "Use Stats for the available player cohort, or retry when sourced position rankings are available."
+          }
+        ],
+        "sources": [],
+        "actions": [
+          {
+            "kind": "navigation",
+            "label": "Open Stats",
+            "url": "/stats",
+            "operation_hash": null
+          }
+        ],
+        "plan": null,
+        "accounting": {
+          "provider_calls": 0,
+          "analytical_calls": 0,
+          "source_requests": 0,
+          "rows": 0,
+          "elapsed_ms": 0.47
+        },
+        "saveable": false
+      }
+    },
+    {
+      "message": "Explain pick and roll",
+      "latency_ms": 1.5415050147566944,
+      "answer": {
+        "schema_version": "courtload-assistant-v2",
+        "request_id": "2b3c6ef1-8814-47bc-985d-05a0f3bb6875",
+        "thread_id": "afb4a5d4-f097-43bf-8764-1fa55f61f2da",
+        "turn_id": "b592c252-98a8-4c4c-a663-a1ece6cb9038",
+        "status": "answered",
+        "intent": "explanation",
+        "scope": null,
+        "blocks": [
+          {
+            "kind": "text",
+            "origin": "knowledge",
+            "text": "A pick and roll is an action where a teammate screens the ball handler\u2019s defender, then moves toward the basket. The ball handler can drive, pass to the rolling teammate or find another open player. Defensive responses include switching, dropping and showing help; the best choice depends on personnel and spacing.",
+            "source_ids": [
+              "courtload-knowledge-v1:pick_roll:c331fa0ec35feff63f0221d55eb9e06738dabcec35d3795086d88a5d7b9711f3"
+            ],
+            "criteria": []
+          }
+        ],
+        "sources": [
+          {
+            "source_id": "courtload-knowledge-v1:pick_roll:c331fa0ec35feff63f0221d55eb9e06738dabcec35d3795086d88a5d7b9711f3",
+            "origin": "knowledge",
+            "title": "Pick and roll",
+            "publisher": "CourtLoad",
+            "url": null,
+            "updated_on": "2026-10-05",
+            "retrieved_at": null,
+            "period": null,
+            "content_sha256": "c331fa0ec35feff63f0221d55eb9e06738dabcec35d3795086d88a5d7b9711f3",
+            "locator": "guide.md#pick_roll",
+            "excerpt": "A pick and roll is an action where a teammate screens the ball handler\u2019s defender, then moves toward the basket. The ball handler can drive, pass to the rolling teammate or find another open player. Defensive responses include switching, dropping and showing help; the best choice depends on personnel and spacing.",
+            "verification": "curated",
+            "facts": []
+          }
+        ],
+        "actions": [
+          {
+            "kind": "navigation",
+            "label": "Pick and roll",
+            "url": "/learning",
+            "operation_hash": null
+          }
+        ],
+        "plan": null,
+        "accounting": {
+          "provider_calls": 0,
+          "analytical_calls": 0,
+          "source_requests": 0,
+          "rows": 0,
+          "elapsed_ms": 0.337
+        },
+        "saveable": false
+      }
+    },
+    {
+      "message": "How do I compare two players here?",
+      "latency_ms": 64.57688700174913,
+      "answer": {
+        "schema_version": "courtload-assistant-v2",
+        "request_id": "9999b0b2-3054-4da6-ba56-fe0d0df98353",
+        "thread_id": "c2fd76bd-1084-468b-aaf6-9fd9a6a3fe6b",
+        "turn_id": "bc54abc3-a7ba-4085-a97d-d6b5a967debe",
+        "status": "answered",
+        "intent": "site_guidance",
+        "scope": null,
+        "blocks": [
+          {
+            "kind": "text",
+            "origin": "knowledge",
+            "text": "Use player search to select a named player. In Stats, add players to the comparison tray and open Compare. Keep the selected season, phase, cutoff and window when comparing. Team badges describe observed participation in that scope, rather than a current roster.",
+            "source_ids": [
+              "courtload-knowledge-v1:players:80dad9d7d750c56c1e7ea0874fd909fecd05ddcbd36a604e97cf7d66a634db46"
+            ],
+            "criteria": []
+          },
+          {
+            "kind": "text",
+            "origin": "knowledge",
+            "text": "Availability for 2025-26, regular season: the selected release has observed box-score coverage.",
+            "source_ids": [
+              "runtime:cdf45fbacdb0cafe0825f299cf5ad2383199c4451e72e3cabb2265ac9d1c6942"
+            ],
+            "criteria": []
+          }
+        ],
+        "sources": [
+          {
+            "source_id": "courtload-knowledge-v1:players:80dad9d7d750c56c1e7ea0874fd909fecd05ddcbd36a604e97cf7d66a634db46",
+            "origin": "knowledge",
+            "title": "Find and compare players",
+            "publisher": "CourtLoad",
+            "url": null,
+            "updated_on": "2026-10-05",
+            "retrieved_at": null,
+            "period": null,
+            "content_sha256": "80dad9d7d750c56c1e7ea0874fd909fecd05ddcbd36a604e97cf7d66a634db46",
+            "locator": "guide.md#players",
+            "excerpt": "Use player search to select a named player. In Stats, add players to the comparison tray and open Compare. Keep the selected season, phase, cutoff and window when comparing. Team badges describe observed participation in that scope, rather than a current roster.",
+            "verification": "curated",
+            "facts": []
+          },
+          {
+            "source_id": "runtime:cdf45fbacdb0cafe0825f299cf5ad2383199c4451e72e3cabb2265ac9d1c6942",
+            "origin": "knowledge",
+            "title": "Runtime availability",
+            "publisher": "CourtLoad catalog",
+            "url": null,
+            "updated_on": null,
+            "retrieved_at": null,
+            "period": null,
+            "content_sha256": "cdf45fbacdb0cafe0825f299cf5ad2383199c4451e72e3cabb2265ac9d1c6942",
+            "locator": "catalog:core_stats",
+            "excerpt": "Availability for 2025-26, regular season: the selected release has observed box-score coverage.",
+            "verification": "curated",
+            "facts": []
+          }
+        ],
+        "actions": [
+          {
+            "kind": "navigation",
+            "label": "Find and compare players",
+            "url": "/stats",
+            "operation_hash": null
+          },
+          {
+            "kind": "navigation",
+            "label": "Find and compare players",
+            "url": "/compare",
+            "operation_hash": null
+          }
+        ],
+        "plan": null,
+        "accounting": {
+          "provider_calls": 0,
+          "analytical_calls": 0,
+          "source_requests": 0,
+          "rows": 0,
+          "elapsed_ms": 63.097
+        },
+        "saveable": false
+      }
+    },
+    {
+      "message": "Show scoring",
+      "latency_ms": 715.7784489972983,
+      "answer": {
+        "schema_version": "courtload-assistant-v2",
+        "request_id": "c2483e88-df7b-4316-b75a-e8b0cb307929",
+        "thread_id": "5befca7d-8ac3-4ca5-b2b2-1ef08e516ad6",
+        "turn_id": "b623f079-b5cd-4789-8353-ffd23ff809ff",
+        "status": "answered",
+        "intent": "local_analysis",
+        "scope": {
+          "as_of": "2026-10-05",
+          "timezone": "America/New_York",
+          "calendar_version": "nba-completed-seasons-2019-2026-v1",
+          "calendar_sha256": "bc98f7f7956a70b4a6f0f4f21216be4973b78e482c3a100d4f059ad37380a560",
+          "selections": {
+            "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+            "season": "2025-26",
+            "phase": "regular_season",
+            "before_date": "2026-04-13",
+            "window": "season"
+          },
+          "local_context": {
+            "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+            "snapshot_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+            "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+            "dataset_type": "workbench",
+            "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666",
+            "mode": "workbench_recent",
+            "source": "sportsdataverse",
+            "season": "2025-26",
+            "phase": "regular_season",
+            "before_date": "2026-04-13",
+            "cutoff_utc": "2026-04-13T04:00:00+00:00",
+            "window": "season",
+            "coverage_start": "2023-10-24",
+            "coverage_end": "2026-06-13",
+            "metric_version": "v2",
+            "published_at": null
+          },
+          "context_fingerprint": "60ebaba78187ff22c32d3dd5db8b93a4f8d97244fdc4e377857f2b4c91ed2b47",
+          "assumptions": [
+            "Inherited selected scope."
+          ],
+          "label": "2025-26 \u00b7 regular season \u00b7 season \u00b7 before 2026-04-13"
+        },
+        "blocks": [
+          {
+            "kind": "local_claim",
+            "template": "observed_cell_v2",
+            "text": "Luka Don\u010di\u0107: Points Per Game = 33.5 points.",
+            "cell": {
+              "evidence_id": "b7bd0742f143f714c21e5de6fdb57232813d9ec744a12b389374c0e3f27348e7",
+              "result_hash": "f08270d7560be80783e0f4bb65694673be235163156afeac3f5645388b8f5cab",
+              "operation_hash": "f08a8b75ccd48d30f2749921ca6938410d7ae16877c648a67940356b8c56d9ef",
+              "operation_version": "courtload-assistant-operations-v1",
+              "context_fingerprint": "60ebaba78187ff22c32d3dd5db8b93a4f8d97244fdc4e377857f2b4c91ed2b47",
+              "entity_id": "1629029",
+              "row_identity": "/items/0/metrics",
+              "path": "/items/0/metrics/pts_per_game",
+              "metric": "pts_per_game",
+              "metric_version": "v2",
+              "unit": "points",
+              "value": 33.5,
+              "sample": {
+                "games_played": 64,
+                "total_minutes": 2288.7,
+                "sample_sizes": {
+                  "pts_per_game": 64
+                }
+              },
+              "input_identity": {
+                "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                "snapshot_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+                "dataset_type": "workbench",
+                "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666",
+                "mode": "workbench_recent",
+                "source": "sportsdataverse",
+                "season": "2025-26",
+                "phase": "regular_season",
+                "before_date": "2026-04-13",
+                "cutoff_utc": "2026-04-13T04:00:00+00:00",
+                "window": "season",
+                "coverage_start": "2023-10-24",
+                "coverage_end": "2026-06-13",
+                "metric_version": "v2",
+                "published_at": null
+              },
+              "null_reason": null
+            }
+          },
+          {
+            "kind": "local_claim",
+            "template": "observed_cell_v2",
+            "text": "Shai Gilgeous-Alexander: Points Per Game = 31.1 points.",
+            "cell": {
+              "evidence_id": "976d7f5d20d3e10d1632063ceee8d62c1b7fba211e73f5e12124c6140127c41f",
+              "result_hash": "f08270d7560be80783e0f4bb65694673be235163156afeac3f5645388b8f5cab",
+              "operation_hash": "f08a8b75ccd48d30f2749921ca6938410d7ae16877c648a67940356b8c56d9ef",
+              "operation_version": "courtload-assistant-operations-v1",
+              "context_fingerprint": "60ebaba78187ff22c32d3dd5db8b93a4f8d97244fdc4e377857f2b4c91ed2b47",
+              "entity_id": "1628983",
+              "row_identity": "/items/1/metrics",
+              "path": "/items/1/metrics/pts_per_game",
+              "metric": "pts_per_game",
+              "metric_version": "v2",
+              "unit": "points",
+              "value": 31.1,
+              "sample": {
+                "games_played": 68,
+                "total_minutes": 2259.0,
+                "sample_sizes": {
+                  "pts_per_game": 68
+                }
+              },
+              "input_identity": {
+                "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                "snapshot_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+                "dataset_type": "workbench",
+                "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666",
+                "mode": "workbench_recent",
+                "source": "sportsdataverse",
+                "season": "2025-26",
+                "phase": "regular_season",
+                "before_date": "2026-04-13",
+                "cutoff_utc": "2026-04-13T04:00:00+00:00",
+                "window": "season",
+                "coverage_start": "2023-10-24",
+                "coverage_end": "2026-06-13",
+                "metric_version": "v2",
+                "published_at": null
+              },
+              "null_reason": null
+            }
+          },
+          {
+            "kind": "result",
+            "result": {
+              "step_id": "ranking",
+              "operation": "query",
+              "operation_version": "courtload-assistant-operations-v1",
+              "arguments": {
+                "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                "season": "2025-26",
+                "phase": "regular_season",
+                "before_date": "2026-04-13",
+                "name": null,
+                "entity_kind": "player",
+                "window": {
+                  "kind": "season",
+                  "n": null,
+                  "from_date": null,
+                  "to_date": null
+                },
+                "season_scope": {
+                  "seasons": [],
+                  "aggregate_multi_season": false
+                },
+                "team_scope": {
+                  "team_id": null,
+                  "participation_only": true,
+                  "current_roster_only": false
+                },
+                "metric_selectors": [
+                  {
+                    "key": "pts_per_game",
+                    "version": null,
+                    "normalization": "raw",
+                    "denominator_type": null
+                  }
+                ],
+                "predicates": null,
+                "sample_filters": {
+                  "min_games": null,
+                  "min_minutes": null,
+                  "min_avg_minutes": null,
+                  "min_possessions": null,
+                  "min_attempts": null
+                },
+                "sort": [
+                  {
+                    "field": "pts_per_game",
+                    "direction": "desc",
+                    "nulls_last": true
+                  }
+                ],
+                "view_state": null,
+                "page": {
+                  "limit": 5,
+                  "cursor": null
+                }
+              },
+              "operation_hash": "f08a8b75ccd48d30f2749921ca6938410d7ae16877c648a67940356b8c56d9ef",
+              "result_hash": "f08270d7560be80783e0f4bb65694673be235163156afeac3f5645388b8f5cab",
+              "data": {
+                "items": [
+                  {
+                    "player_id": "1629029",
+                    "player_name": "Luka Don\u010di\u0107",
+                    "teams": [
+                      "LAL"
+                    ],
+                    "stints_count": 1,
+                    "games_played": 64,
+                    "total_minutes": 2288.7,
+                    "metrics": {
+                      "pts_per_game": 33.5
+                    },
+                    "sample_sizes": {
+                      "pts_per_game": 64
+                    },
+                    "portrait_url": "/api/workbench/players/1629029/portrait"
+                  },
+                  {
+                    "player_id": "1628983",
+                    "player_name": "Shai Gilgeous-Alexander",
+                    "teams": [
+                      "OKC"
+                    ],
+                    "stints_count": 1,
+                    "games_played": 68,
+                    "total_minutes": 2259.0,
+                    "metrics": {
+                      "pts_per_game": 31.1
+                    },
+                    "sample_sizes": {
+                      "pts_per_game": 68
+                    },
+                    "portrait_url": "/api/workbench/players/1628983/portrait"
+                  },
+                  {
+                    "player_id": "1630162",
+                    "player_name": "Anthony Edwards",
+                    "teams": [
+                      "MIN"
+                    ],
+                    "stints_count": 1,
+                    "games_played": 61,
+                    "total_minutes": 2136.6,
+                    "metrics": {
+                      "pts_per_game": 28.8
+                    },
+                    "sample_sizes": {
+                      "pts_per_game": 61
+                    },
+                    "portrait_url": "/api/workbench/players/1630162/portrait"
+                  },
+                  {
+                    "player_id": "1627759",
+                    "player_name": "Jaylen Brown",
+                    "teams": [
+                      "BOS"
+                    ],
+                    "stints_count": 1,
+                    "games_played": 70,
+                    "total_minutes": 2410.9,
+                    "metrics": {
+                      "pts_per_game": 28.7
+                    },
+                    "sample_sizes": {
+                      "pts_per_game": 70
+                    },
+                    "portrait_url": "/api/workbench/players/1627759/portrait"
+                  },
+                  {
+                    "player_id": "1630178",
+                    "player_name": "Tyrese Maxey",
+                    "teams": [
+                      "PHI"
+                    ],
+                    "stints_count": 1,
+                    "games_played": 70,
+                    "total_minutes": 2661.2,
+                    "metrics": {
+                      "pts_per_game": 28.3
+                    },
+                    "sample_sizes": {
+                      "pts_per_game": 70
+                    },
+                    "portrait_url": "/api/workbench/players/1630178/portrait"
+                  }
+                ],
+                "total_eligible": 591,
+                "next_cursor": "WyJhMGQ0NzAzNTQzYTdkYmYyMTBhZWU0ODBkN2MzNTg1MiIsNV0",
+                "has_more": true
+              },
+              "rows": [
+                {
+                  "player_id": "1629029",
+                  "player_name": "Luka Don\u010di\u0107",
+                  "teams": [
+                    "LAL"
+                  ],
+                  "stints_count": 1,
+                  "games_played": 64,
+                  "total_minutes": 2288.7,
+                  "metrics": {
+                    "pts_per_game": 33.5
+                  },
+                  "sample_sizes": {
+                    "pts_per_game": 64
+                  },
+                  "portrait_url": "/api/workbench/players/1629029/portrait"
+                },
+                {
+                  "player_id": "1628983",
+                  "player_name": "Shai Gilgeous-Alexander",
+                  "teams": [
+                    "OKC"
+                  ],
+                  "stints_count": 1,
+                  "games_played": 68,
+                  "total_minutes": 2259.0,
+                  "metrics": {
+                    "pts_per_game": 31.1
+                  },
+                  "sample_sizes": {
+                    "pts_per_game": 68
+                  },
+                  "portrait_url": "/api/workbench/players/1628983/portrait"
+                },
+                {
+                  "player_id": "1630162",
+                  "player_name": "Anthony Edwards",
+                  "teams": [
+                    "MIN"
+                  ],
+                  "stints_count": 1,
+                  "games_played": 61,
+                  "total_minutes": 2136.6,
+                  "metrics": {
+                    "pts_per_game": 28.8
+                  },
+                  "sample_sizes": {
+                    "pts_per_game": 61
+                  },
+                  "portrait_url": "/api/workbench/players/1630162/portrait"
+                },
+                {
+                  "player_id": "1627759",
+                  "player_name": "Jaylen Brown",
+                  "teams": [
+                    "BOS"
+                  ],
+                  "stints_count": 1,
+                  "games_played": 70,
+                  "total_minutes": 2410.9,
+                  "metrics": {
+                    "pts_per_game": 28.7
+                  },
+                  "sample_sizes": {
+                    "pts_per_game": 70
+                  },
+                  "portrait_url": "/api/workbench/players/1627759/portrait"
+                },
+                {
+                  "player_id": "1630178",
+                  "player_name": "Tyrese Maxey",
+                  "teams": [
+                    "PHI"
+                  ],
+                  "stints_count": 1,
+                  "games_played": 70,
+                  "total_minutes": 2661.2,
+                  "metrics": {
+                    "pts_per_game": 28.3
+                  },
+                  "sample_sizes": {
+                    "pts_per_game": 70
+                  },
+                  "portrait_url": "/api/workbench/players/1630178/portrait"
+                }
+              ],
+              "evidence": [
+                {
+                  "evidence_id": "a0560d6c66e0c688e6955f0fa43bf4231e2a6d63c9c4e85de51bcaa74ca35119",
+                  "result_hash": "f08270d7560be80783e0f4bb65694673be235163156afeac3f5645388b8f5cab",
+                  "operation_hash": "f08a8b75ccd48d30f2749921ca6938410d7ae16877c648a67940356b8c56d9ef",
+                  "operation_version": "courtload-assistant-operations-v1",
+                  "context_fingerprint": "60ebaba78187ff22c32d3dd5db8b93a4f8d97244fdc4e377857f2b4c91ed2b47",
+                  "entity_id": "1629029",
+                  "row_identity": "/items/0",
+                  "path": "/items/0/stints_count",
+                  "metric": "stints_count",
+                  "metric_version": "v2",
+                  "unit": "dimensionless",
+                  "value": 1,
+                  "sample": {
+                    "games_played": 64,
+                    "total_minutes": 2288.7,
+                    "sample_sizes": {
+                      "pts_per_game": 64
+                    }
+                  },
+                  "input_identity": {
+                    "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "snapshot_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+                    "dataset_type": "workbench",
+                    "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666",
+                    "mode": "workbench_recent",
+                    "source": "sportsdataverse",
+                    "season": "2025-26",
+                    "phase": "regular_season",
+                    "before_date": "2026-04-13",
+                    "cutoff_utc": "2026-04-13T04:00:00+00:00",
+                    "window": "season",
+                    "coverage_start": "2023-10-24",
+                    "coverage_end": "2026-06-13",
+                    "metric_version": "v2",
+                    "published_at": null
+                  },
+                  "null_reason": null
+                },
+                {
+                  "evidence_id": "d16f68cf659b2da349c25310aae8a6dbd5869f045ea6c44a8947f419047fbbec",
+                  "result_hash": "f08270d7560be80783e0f4bb65694673be235163156afeac3f5645388b8f5cab",
+                  "operation_hash": "f08a8b75ccd48d30f2749921ca6938410d7ae16877c648a67940356b8c56d9ef",
+                  "operation_version": "courtload-assistant-operations-v1",
+                  "context_fingerprint": "60ebaba78187ff22c32d3dd5db8b93a4f8d97244fdc4e377857f2b4c91ed2b47",
+                  "entity_id": "1629029",
+                  "row_identity": "/items/0",
+                  "path": "/items/0/games_played",
+                  "metric": "games_played",
+                  "metric_version": "v2",
+                  "unit": "observations",
+                  "value": 64,
+                  "sample": {
+                    "games_played": 64,
+                    "total_minutes": 2288.7,
+                    "sample_sizes": {
+                      "pts_per_game": 64
+                    }
+                  },
+                  "input_identity": {
+                    "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "snapshot_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+                    "dataset_type": "workbench",
+                    "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666",
+                    "mode": "workbench_recent",
+                    "source": "sportsdataverse",
+                    "season": "2025-26",
+                    "phase": "regular_season",
+                    "before_date": "2026-04-13",
+                    "cutoff_utc": "2026-04-13T04:00:00+00:00",
+                    "window": "season",
+                    "coverage_start": "2023-10-24",
+                    "coverage_end": "2026-06-13",
+                    "metric_version": "v2",
+                    "published_at": null
+                  },
+                  "null_reason": null
+                },
+                {
+                  "evidence_id": "b9944c008db3576b9bcf95d35ea639f041bf87359c9666584d08dfb704a414c5",
+                  "result_hash": "f08270d7560be80783e0f4bb65694673be235163156afeac3f5645388b8f5cab",
+                  "operation_hash": "f08a8b75ccd48d30f2749921ca6938410d7ae16877c648a67940356b8c56d9ef",
+                  "operation_version": "courtload-assistant-operations-v1",
+                  "context_fingerprint": "60ebaba78187ff22c32d3dd5db8b93a4f8d97244fdc4e377857f2b4c91ed2b47",
+                  "entity_id": "1629029",
+                  "row_identity": "/items/0",
+                  "path": "/items/0/total_minutes",
+                  "metric": "total_minutes",
+                  "metric_version": "v2",
+                  "unit": "minutes",
+                  "value": 2288.7,
+                  "sample": {
+                    "games_played": 64,
+                    "total_minutes": 2288.7,
+                    "sample_sizes": {
+                      "pts_per_game": 64
+                    }
+                  },
+                  "input_identity": {
+                    "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "snapshot_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+                    "dataset_type": "workbench",
+                    "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666",
+                    "mode": "workbench_recent",
+                    "source": "sportsdataverse",
+                    "season": "2025-26",
+                    "phase": "regular_season",
+                    "before_date": "2026-04-13",
+                    "cutoff_utc": "2026-04-13T04:00:00+00:00",
+                    "window": "season",
+                    "coverage_start": "2023-10-24",
+                    "coverage_end": "2026-06-13",
+                    "metric_version": "v2",
+                    "published_at": null
+                  },
+                  "null_reason": null
+                },
+                {
+                  "evidence_id": "b7bd0742f143f714c21e5de6fdb57232813d9ec744a12b389374c0e3f27348e7",
+                  "result_hash": "f08270d7560be80783e0f4bb65694673be235163156afeac3f5645388b8f5cab",
+                  "operation_hash": "f08a8b75ccd48d30f2749921ca6938410d7ae16877c648a67940356b8c56d9ef",
+                  "operation_version": "courtload-assistant-operations-v1",
+                  "context_fingerprint": "60ebaba78187ff22c32d3dd5db8b93a4f8d97244fdc4e377857f2b4c91ed2b47",
+                  "entity_id": "1629029",
+                  "row_identity": "/items/0/metrics",
+                  "path": "/items/0/metrics/pts_per_game",
+                  "metric": "pts_per_game",
+                  "metric_version": "v2",
+                  "unit": "points",
+                  "value": 33.5,
+                  "sample": {
+                    "games_played": 64,
+                    "total_minutes": 2288.7,
+                    "sample_sizes": {
+                      "pts_per_game": 64
+                    }
+                  },
+                  "input_identity": {
+                    "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "snapshot_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+                    "dataset_type": "workbench",
+                    "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666",
+                    "mode": "workbench_recent",
+                    "source": "sportsdataverse",
+                    "season": "2025-26",
+                    "phase": "regular_season",
+                    "before_date": "2026-04-13",
+                    "cutoff_utc": "2026-04-13T04:00:00+00:00",
+                    "window": "season",
+                    "coverage_start": "2023-10-24",
+                    "coverage_end": "2026-06-13",
+                    "metric_version": "v2",
+                    "published_at": null
+                  },
+                  "null_reason": null
+                },
+                {
+                  "evidence_id": "bd31a9f300500d2e3130630a56df2336fa2bbd047ade2a41bf1c3b475620b586",
+                  "result_hash": "f08270d7560be80783e0f4bb65694673be235163156afeac3f5645388b8f5cab",
+                  "operation_hash": "f08a8b75ccd48d30f2749921ca6938410d7ae16877c648a67940356b8c56d9ef",
+                  "operation_version": "courtload-assistant-operations-v1",
+                  "context_fingerprint": "60ebaba78187ff22c32d3dd5db8b93a4f8d97244fdc4e377857f2b4c91ed2b47",
+                  "entity_id": "1629029",
+                  "row_identity": "/items/0/sample_sizes",
+                  "path": "/items/0/sample_sizes/pts_per_game",
+                  "metric": "pts_per_game_valid_observations",
+                  "metric_version": "v2",
+                  "unit": "observations",
+                  "value": 64,
+                  "sample": {
+                    "games_played": 64,
+                    "total_minutes": 2288.7,
+                    "sample_sizes": {
+                      "pts_per_game": 64
+                    }
+                  },
+                  "input_identity": {
+                    "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "snapshot_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+                    "dataset_type": "workbench",
+                    "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666",
+                    "mode": "workbench_recent",
+                    "source": "sportsdataverse",
+                    "season": "2025-26",
+                    "phase": "regular_season",
+                    "before_date": "2026-04-13",
+                    "cutoff_utc": "2026-04-13T04:00:00+00:00",
+                    "window": "season",
+                    "coverage_start": "2023-10-24",
+                    "coverage_end": "2026-06-13",
+                    "metric_version": "v2",
+                    "published_at": null
+                  },
+                  "null_reason": null
+                },
+                {
+                  "evidence_id": "2b7fc2dedf7851aac952ae7648cb87d9e5642228bd7f03a98cdebe2746a1d24a",
+                  "result_hash": "f08270d7560be80783e0f4bb65694673be235163156afeac3f5645388b8f5cab",
+                  "operation_hash": "f08a8b75ccd48d30f2749921ca6938410d7ae16877c648a67940356b8c56d9ef",
+                  "operation_version": "courtload-assistant-operations-v1",
+                  "context_fingerprint": "60ebaba78187ff22c32d3dd5db8b93a4f8d97244fdc4e377857f2b4c91ed2b47",
+                  "entity_id": "1628983",
+                  "row_identity": "/items/1",
+                  "path": "/items/1/stints_count",
+                  "metric": "stints_count",
+                  "metric_version": "v2",
+                  "unit": "dimensionless",
+                  "value": 1,
+                  "sample": {
+                    "games_played": 68,
+                    "total_minutes": 2259.0,
+                    "sample_sizes": {
+                      "pts_per_game": 68
+                    }
+                  },
+                  "input_identity": {
+                    "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "snapshot_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+                    "dataset_type": "workbench",
+                    "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666",
+                    "mode": "workbench_recent",
+                    "source": "sportsdataverse",
+                    "season": "2025-26",
+                    "phase": "regular_season",
+                    "before_date": "2026-04-13",
+                    "cutoff_utc": "2026-04-13T04:00:00+00:00",
+                    "window": "season",
+                    "coverage_start": "2023-10-24",
+                    "coverage_end": "2026-06-13",
+                    "metric_version": "v2",
+                    "published_at": null
+                  },
+                  "null_reason": null
+                },
+                {
+                  "evidence_id": "59725ce1274f20c1e1385ebd267c0069705928661889a29e4975b9efa3a99a28",
+                  "result_hash": "f08270d7560be80783e0f4bb65694673be235163156afeac3f5645388b8f5cab",
+                  "operation_hash": "f08a8b75ccd48d30f2749921ca6938410d7ae16877c648a67940356b8c56d9ef",
+                  "operation_version": "courtload-assistant-operations-v1",
+                  "context_fingerprint": "60ebaba78187ff22c32d3dd5db8b93a4f8d97244fdc4e377857f2b4c91ed2b47",
+                  "entity_id": "1628983",
+                  "row_identity": "/items/1",
+                  "path": "/items/1/games_played",
+                  "metric": "games_played",
+                  "metric_version": "v2",
+                  "unit": "observations",
+                  "value": 68,
+                  "sample": {
+                    "games_played": 68,
+                    "total_minutes": 2259.0,
+                    "sample_sizes": {
+                      "pts_per_game": 68
+                    }
+                  },
+                  "input_identity": {
+                    "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "snapshot_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+                    "dataset_type": "workbench",
+                    "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666",
+                    "mode": "workbench_recent",
+                    "source": "sportsdataverse",
+                    "season": "2025-26",
+                    "phase": "regular_season",
+                    "before_date": "2026-04-13",
+                    "cutoff_utc": "2026-04-13T04:00:00+00:00",
+                    "window": "season",
+                    "coverage_start": "2023-10-24",
+                    "coverage_end": "2026-06-13",
+                    "metric_version": "v2",
+                    "published_at": null
+                  },
+                  "null_reason": null
+                },
+                {
+                  "evidence_id": "9d700ea30c45fb74b0940c39411b077f6797515bcbb6e154ac3c86bb41927962",
+                  "result_hash": "f08270d7560be80783e0f4bb65694673be235163156afeac3f5645388b8f5cab",
+                  "operation_hash": "f08a8b75ccd48d30f2749921ca6938410d7ae16877c648a67940356b8c56d9ef",
+                  "operation_version": "courtload-assistant-operations-v1",
+                  "context_fingerprint": "60ebaba78187ff22c32d3dd5db8b93a4f8d97244fdc4e377857f2b4c91ed2b47",
+                  "entity_id": "1628983",
+                  "row_identity": "/items/1",
+                  "path": "/items/1/total_minutes",
+                  "metric": "total_minutes",
+                  "metric_version": "v2",
+                  "unit": "minutes",
+                  "value": 2259.0,
+                  "sample": {
+                    "games_played": 68,
+                    "total_minutes": 2259.0,
+                    "sample_sizes": {
+                      "pts_per_game": 68
+                    }
+                  },
+                  "input_identity": {
+                    "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "snapshot_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+                    "dataset_type": "workbench",
+                    "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666",
+                    "mode": "workbench_recent",
+                    "source": "sportsdataverse",
+                    "season": "2025-26",
+                    "phase": "regular_season",
+                    "before_date": "2026-04-13",
+                    "cutoff_utc": "2026-04-13T04:00:00+00:00",
+                    "window": "season",
+                    "coverage_start": "2023-10-24",
+                    "coverage_end": "2026-06-13",
+                    "metric_version": "v2",
+                    "published_at": null
+                  },
+                  "null_reason": null
+                },
+                {
+                  "evidence_id": "976d7f5d20d3e10d1632063ceee8d62c1b7fba211e73f5e12124c6140127c41f",
+                  "result_hash": "f08270d7560be80783e0f4bb65694673be235163156afeac3f5645388b8f5cab",
+                  "operation_hash": "f08a8b75ccd48d30f2749921ca6938410d7ae16877c648a67940356b8c56d9ef",
+                  "operation_version": "courtload-assistant-operations-v1",
+                  "context_fingerprint": "60ebaba78187ff22c32d3dd5db8b93a4f8d97244fdc4e377857f2b4c91ed2b47",
+                  "entity_id": "1628983",
+                  "row_identity": "/items/1/metrics",
+                  "path": "/items/1/metrics/pts_per_game",
+                  "metric": "pts_per_game",
+                  "metric_version": "v2",
+                  "unit": "points",
+                  "value": 31.1,
+                  "sample": {
+                    "games_played": 68,
+                    "total_minutes": 2259.0,
+                    "sample_sizes": {
+                      "pts_per_game": 68
+                    }
+                  },
+                  "input_identity": {
+                    "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "snapshot_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+                    "dataset_type": "workbench",
+                    "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666",
+                    "mode": "workbench_recent",
+                    "source": "sportsdataverse",
+                    "season": "2025-26",
+                    "phase": "regular_season",
+                    "before_date": "2026-04-13",
+                    "cutoff_utc": "2026-04-13T04:00:00+00:00",
+                    "window": "season",
+                    "coverage_start": "2023-10-24",
+                    "coverage_end": "2026-06-13",
+                    "metric_version": "v2",
+                    "published_at": null
+                  },
+                  "null_reason": null
+                },
+                {
+                  "evidence_id": "67fdc1441d801c2a098adf0fae78219886f40880c4954e9d2be395a697e6fb5a",
+                  "result_hash": "f08270d7560be80783e0f4bb65694673be235163156afeac3f5645388b8f5cab",
+                  "operation_hash": "f08a8b75ccd48d30f2749921ca6938410d7ae16877c648a67940356b8c56d9ef",
+                  "operation_version": "courtload-assistant-operations-v1",
+                  "context_fingerprint": "60ebaba78187ff22c32d3dd5db8b93a4f8d97244fdc4e377857f2b4c91ed2b47",
+                  "entity_id": "1628983",
+                  "row_identity": "/items/1/sample_sizes",
+                  "path": "/items/1/sample_sizes/pts_per_game",
+                  "metric": "pts_per_game_valid_observations",
+                  "metric_version": "v2",
+                  "unit": "observations",
+                  "value": 68,
+                  "sample": {
+                    "games_played": 68,
+                    "total_minutes": 2259.0,
+                    "sample_sizes": {
+                      "pts_per_game": 68
+                    }
+                  },
+                  "input_identity": {
+                    "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "snapshot_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+                    "dataset_type": "workbench",
+                    "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666",
+                    "mode": "workbench_recent",
+                    "source": "sportsdataverse",
+                    "season": "2025-26",
+                    "phase": "regular_season",
+                    "before_date": "2026-04-13",
+                    "cutoff_utc": "2026-04-13T04:00:00+00:00",
+                    "window": "season",
+                    "coverage_start": "2023-10-24",
+                    "coverage_end": "2026-06-13",
+                    "metric_version": "v2",
+                    "published_at": null
+                  },
+                  "null_reason": null
+                },
+                {
+                  "evidence_id": "378a1bdafa6551fffea31250ed326d600ac4ab8600d149f4c44acd7128f7df66",
+                  "result_hash": "f08270d7560be80783e0f4bb65694673be235163156afeac3f5645388b8f5cab",
+                  "operation_hash": "f08a8b75ccd48d30f2749921ca6938410d7ae16877c648a67940356b8c56d9ef",
+                  "operation_version": "courtload-assistant-operations-v1",
+                  "context_fingerprint": "60ebaba78187ff22c32d3dd5db8b93a4f8d97244fdc4e377857f2b4c91ed2b47",
+                  "entity_id": "1630162",
+                  "row_identity": "/items/2",
+                  "path": "/items/2/stints_count",
+                  "metric": "stints_count",
+                  "metric_version": "v2",
+                  "unit": "dimensionless",
+                  "value": 1,
+                  "sample": {
+                    "games_played": 61,
+                    "total_minutes": 2136.6,
+                    "sample_sizes": {
+                      "pts_per_game": 61
+                    }
+                  },
+                  "input_identity": {
+                    "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "snapshot_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+                    "dataset_type": "workbench",
+                    "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666",
+                    "mode": "workbench_recent",
+                    "source": "sportsdataverse",
+                    "season": "2025-26",
+                    "phase": "regular_season",
+                    "before_date": "2026-04-13",
+                    "cutoff_utc": "2026-04-13T04:00:00+00:00",
+                    "window": "season",
+                    "coverage_start": "2023-10-24",
+                    "coverage_end": "2026-06-13",
+                    "metric_version": "v2",
+                    "published_at": null
+                  },
+                  "null_reason": null
+                },
+                {
+                  "evidence_id": "620b91d590c8c7946a6f5050db230dd2a188071f474992a6e7e8e6d812f4e795",
+                  "result_hash": "f08270d7560be80783e0f4bb65694673be235163156afeac3f5645388b8f5cab",
+                  "operation_hash": "f08a8b75ccd48d30f2749921ca6938410d7ae16877c648a67940356b8c56d9ef",
+                  "operation_version": "courtload-assistant-operations-v1",
+                  "context_fingerprint": "60ebaba78187ff22c32d3dd5db8b93a4f8d97244fdc4e377857f2b4c91ed2b47",
+                  "entity_id": "1630162",
+                  "row_identity": "/items/2",
+                  "path": "/items/2/games_played",
+                  "metric": "games_played",
+                  "metric_version": "v2",
+                  "unit": "observations",
+                  "value": 61,
+                  "sample": {
+                    "games_played": 61,
+                    "total_minutes": 2136.6,
+                    "sample_sizes": {
+                      "pts_per_game": 61
+                    }
+                  },
+                  "input_identity": {
+                    "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "snapshot_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+                    "dataset_type": "workbench",
+                    "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666",
+                    "mode": "workbench_recent",
+                    "source": "sportsdataverse",
+                    "season": "2025-26",
+                    "phase": "regular_season",
+                    "before_date": "2026-04-13",
+                    "cutoff_utc": "2026-04-13T04:00:00+00:00",
+                    "window": "season",
+                    "coverage_start": "2023-10-24",
+                    "coverage_end": "2026-06-13",
+                    "metric_version": "v2",
+                    "published_at": null
+                  },
+                  "null_reason": null
+                },
+                {
+                  "evidence_id": "53f052bda564bb8336032d55358dcff510dd10d5cea200f5df0b97aaf95bd684",
+                  "result_hash": "f08270d7560be80783e0f4bb65694673be235163156afeac3f5645388b8f5cab",
+                  "operation_hash": "f08a8b75ccd48d30f2749921ca6938410d7ae16877c648a67940356b8c56d9ef",
+                  "operation_version": "courtload-assistant-operations-v1",
+                  "context_fingerprint": "60ebaba78187ff22c32d3dd5db8b93a4f8d97244fdc4e377857f2b4c91ed2b47",
+                  "entity_id": "1630162",
+                  "row_identity": "/items/2",
+                  "path": "/items/2/total_minutes",
+                  "metric": "total_minutes",
+                  "metric_version": "v2",
+                  "unit": "minutes",
+                  "value": 2136.6,
+                  "sample": {
+                    "games_played": 61,
+                    "total_minutes": 2136.6,
+                    "sample_sizes": {
+                      "pts_per_game": 61
+                    }
+                  },
+                  "input_identity": {
+                    "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "snapshot_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+                    "dataset_type": "workbench",
+                    "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666",
+                    "mode": "workbench_recent",
+                    "source": "sportsdataverse",
+                    "season": "2025-26",
+                    "phase": "regular_season",
+                    "before_date": "2026-04-13",
+                    "cutoff_utc": "2026-04-13T04:00:00+00:00",
+                    "window": "season",
+                    "coverage_start": "2023-10-24",
+                    "coverage_end": "2026-06-13",
+                    "metric_version": "v2",
+                    "published_at": null
+                  },
+                  "null_reason": null
+                },
+                {
+                  "evidence_id": "218909a330a3275e8c3fbab9e078172bb7fe8e3f2968834ec62b292acb42670f",
+                  "result_hash": "f08270d7560be80783e0f4bb65694673be235163156afeac3f5645388b8f5cab",
+                  "operation_hash": "f08a8b75ccd48d30f2749921ca6938410d7ae16877c648a67940356b8c56d9ef",
+                  "operation_version": "courtload-assistant-operations-v1",
+                  "context_fingerprint": "60ebaba78187ff22c32d3dd5db8b93a4f8d97244fdc4e377857f2b4c91ed2b47",
+                  "entity_id": "1630162",
+                  "row_identity": "/items/2/metrics",
+                  "path": "/items/2/metrics/pts_per_game",
+                  "metric": "pts_per_game",
+                  "metric_version": "v2",
+                  "unit": "points",
+                  "value": 28.8,
+                  "sample": {
+                    "games_played": 61,
+                    "total_minutes": 2136.6,
+                    "sample_sizes": {
+                      "pts_per_game": 61
+                    }
+                  },
+                  "input_identity": {
+                    "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "snapshot_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+                    "dataset_type": "workbench",
+                    "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666",
+                    "mode": "workbench_recent",
+                    "source": "sportsdataverse",
+                    "season": "2025-26",
+                    "phase": "regular_season",
+                    "before_date": "2026-04-13",
+                    "cutoff_utc": "2026-04-13T04:00:00+00:00",
+                    "window": "season",
+                    "coverage_start": "2023-10-24",
+                    "coverage_end": "2026-06-13",
+                    "metric_version": "v2",
+                    "published_at": null
+                  },
+                  "null_reason": null
+                },
+                {
+                  "evidence_id": "94d39952c90ef7795992e272c8c9ce49845fb7a73c63dc43be55eb2bae545f09",
+                  "result_hash": "f08270d7560be80783e0f4bb65694673be235163156afeac3f5645388b8f5cab",
+                  "operation_hash": "f08a8b75ccd48d30f2749921ca6938410d7ae16877c648a67940356b8c56d9ef",
+                  "operation_version": "courtload-assistant-operations-v1",
+                  "context_fingerprint": "60ebaba78187ff22c32d3dd5db8b93a4f8d97244fdc4e377857f2b4c91ed2b47",
+                  "entity_id": "1630162",
+                  "row_identity": "/items/2/sample_sizes",
+                  "path": "/items/2/sample_sizes/pts_per_game",
+                  "metric": "pts_per_game_valid_observations",
+                  "metric_version": "v2",
+                  "unit": "observations",
+                  "value": 61,
+                  "sample": {
+                    "games_played": 61,
+                    "total_minutes": 2136.6,
+                    "sample_sizes": {
+                      "pts_per_game": 61
+                    }
+                  },
+                  "input_identity": {
+                    "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "snapshot_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+                    "dataset_type": "workbench",
+                    "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666",
+                    "mode": "workbench_recent",
+                    "source": "sportsdataverse",
+                    "season": "2025-26",
+                    "phase": "regular_season",
+                    "before_date": "2026-04-13",
+                    "cutoff_utc": "2026-04-13T04:00:00+00:00",
+                    "window": "season",
+                    "coverage_start": "2023-10-24",
+                    "coverage_end": "2026-06-13",
+                    "metric_version": "v2",
+                    "published_at": null
+                  },
+                  "null_reason": null
+                },
+                {
+                  "evidence_id": "f44f649199a5253a7711d47639e76cc806ca5ac7bf19d87b87162dc9ed59a4f4",
+                  "result_hash": "f08270d7560be80783e0f4bb65694673be235163156afeac3f5645388b8f5cab",
+                  "operation_hash": "f08a8b75ccd48d30f2749921ca6938410d7ae16877c648a67940356b8c56d9ef",
+                  "operation_version": "courtload-assistant-operations-v1",
+                  "context_fingerprint": "60ebaba78187ff22c32d3dd5db8b93a4f8d97244fdc4e377857f2b4c91ed2b47",
+                  "entity_id": "1627759",
+                  "row_identity": "/items/3",
+                  "path": "/items/3/stints_count",
+                  "metric": "stints_count",
+                  "metric_version": "v2",
+                  "unit": "dimensionless",
+                  "value": 1,
+                  "sample": {
+                    "games_played": 70,
+                    "total_minutes": 2410.9,
+                    "sample_sizes": {
+                      "pts_per_game": 70
+                    }
+                  },
+                  "input_identity": {
+                    "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "snapshot_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+                    "dataset_type": "workbench",
+                    "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666",
+                    "mode": "workbench_recent",
+                    "source": "sportsdataverse",
+                    "season": "2025-26",
+                    "phase": "regular_season",
+                    "before_date": "2026-04-13",
+                    "cutoff_utc": "2026-04-13T04:00:00+00:00",
+                    "window": "season",
+                    "coverage_start": "2023-10-24",
+                    "coverage_end": "2026-06-13",
+                    "metric_version": "v2",
+                    "published_at": null
+                  },
+                  "null_reason": null
+                },
+                {
+                  "evidence_id": "9ba090538d07ed7417131af37dc3cf8e5f8296e87c1f6ae8d6d5d34f0fbfa198",
+                  "result_hash": "f08270d7560be80783e0f4bb65694673be235163156afeac3f5645388b8f5cab",
+                  "operation_hash": "f08a8b75ccd48d30f2749921ca6938410d7ae16877c648a67940356b8c56d9ef",
+                  "operation_version": "courtload-assistant-operations-v1",
+                  "context_fingerprint": "60ebaba78187ff22c32d3dd5db8b93a4f8d97244fdc4e377857f2b4c91ed2b47",
+                  "entity_id": "1627759",
+                  "row_identity": "/items/3",
+                  "path": "/items/3/games_played",
+                  "metric": "games_played",
+                  "metric_version": "v2",
+                  "unit": "observations",
+                  "value": 70,
+                  "sample": {
+                    "games_played": 70,
+                    "total_minutes": 2410.9,
+                    "sample_sizes": {
+                      "pts_per_game": 70
+                    }
+                  },
+                  "input_identity": {
+                    "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "snapshot_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+                    "dataset_type": "workbench",
+                    "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666",
+                    "mode": "workbench_recent",
+                    "source": "sportsdataverse",
+                    "season": "2025-26",
+                    "phase": "regular_season",
+                    "before_date": "2026-04-13",
+                    "cutoff_utc": "2026-04-13T04:00:00+00:00",
+                    "window": "season",
+                    "coverage_start": "2023-10-24",
+                    "coverage_end": "2026-06-13",
+                    "metric_version": "v2",
+                    "published_at": null
+                  },
+                  "null_reason": null
+                },
+                {
+                  "evidence_id": "8f3f91dc35b8a57e29b76c7bd135303cafc8f4f1a9a54f2aee0215ba8d65b4a6",
+                  "result_hash": "f08270d7560be80783e0f4bb65694673be235163156afeac3f5645388b8f5cab",
+                  "operation_hash": "f08a8b75ccd48d30f2749921ca6938410d7ae16877c648a67940356b8c56d9ef",
+                  "operation_version": "courtload-assistant-operations-v1",
+                  "context_fingerprint": "60ebaba78187ff22c32d3dd5db8b93a4f8d97244fdc4e377857f2b4c91ed2b47",
+                  "entity_id": "1627759",
+                  "row_identity": "/items/3",
+                  "path": "/items/3/total_minutes",
+                  "metric": "total_minutes",
+                  "metric_version": "v2",
+                  "unit": "minutes",
+                  "value": 2410.9,
+                  "sample": {
+                    "games_played": 70,
+                    "total_minutes": 2410.9,
+                    "sample_sizes": {
+                      "pts_per_game": 70
+                    }
+                  },
+                  "input_identity": {
+                    "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "snapshot_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+                    "dataset_type": "workbench",
+                    "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666",
+                    "mode": "workbench_recent",
+                    "source": "sportsdataverse",
+                    "season": "2025-26",
+                    "phase": "regular_season",
+                    "before_date": "2026-04-13",
+                    "cutoff_utc": "2026-04-13T04:00:00+00:00",
+                    "window": "season",
+                    "coverage_start": "2023-10-24",
+                    "coverage_end": "2026-06-13",
+                    "metric_version": "v2",
+                    "published_at": null
+                  },
+                  "null_reason": null
+                },
+                {
+                  "evidence_id": "aaf5bd9642be911803bbbf5996191271fb6c571c634635943cac622d403c7bf3",
+                  "result_hash": "f08270d7560be80783e0f4bb65694673be235163156afeac3f5645388b8f5cab",
+                  "operation_hash": "f08a8b75ccd48d30f2749921ca6938410d7ae16877c648a67940356b8c56d9ef",
+                  "operation_version": "courtload-assistant-operations-v1",
+                  "context_fingerprint": "60ebaba78187ff22c32d3dd5db8b93a4f8d97244fdc4e377857f2b4c91ed2b47",
+                  "entity_id": "1627759",
+                  "row_identity": "/items/3/metrics",
+                  "path": "/items/3/metrics/pts_per_game",
+                  "metric": "pts_per_game",
+                  "metric_version": "v2",
+                  "unit": "points",
+                  "value": 28.7,
+                  "sample": {
+                    "games_played": 70,
+                    "total_minutes": 2410.9,
+                    "sample_sizes": {
+                      "pts_per_game": 70
+                    }
+                  },
+                  "input_identity": {
+                    "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "snapshot_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+                    "dataset_type": "workbench",
+                    "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666",
+                    "mode": "workbench_recent",
+                    "source": "sportsdataverse",
+                    "season": "2025-26",
+                    "phase": "regular_season",
+                    "before_date": "2026-04-13",
+                    "cutoff_utc": "2026-04-13T04:00:00+00:00",
+                    "window": "season",
+                    "coverage_start": "2023-10-24",
+                    "coverage_end": "2026-06-13",
+                    "metric_version": "v2",
+                    "published_at": null
+                  },
+                  "null_reason": null
+                },
+                {
+                  "evidence_id": "38a75e760c1adf105fbb4a3cc4180c98adb35218de210bfc398366131abf6741",
+                  "result_hash": "f08270d7560be80783e0f4bb65694673be235163156afeac3f5645388b8f5cab",
+                  "operation_hash": "f08a8b75ccd48d30f2749921ca6938410d7ae16877c648a67940356b8c56d9ef",
+                  "operation_version": "courtload-assistant-operations-v1",
+                  "context_fingerprint": "60ebaba78187ff22c32d3dd5db8b93a4f8d97244fdc4e377857f2b4c91ed2b47",
+                  "entity_id": "1627759",
+                  "row_identity": "/items/3/sample_sizes",
+                  "path": "/items/3/sample_sizes/pts_per_game",
+                  "metric": "pts_per_game_valid_observations",
+                  "metric_version": "v2",
+                  "unit": "observations",
+                  "value": 70,
+                  "sample": {
+                    "games_played": 70,
+                    "total_minutes": 2410.9,
+                    "sample_sizes": {
+                      "pts_per_game": 70
+                    }
+                  },
+                  "input_identity": {
+                    "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "snapshot_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+                    "dataset_type": "workbench",
+                    "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666",
+                    "mode": "workbench_recent",
+                    "source": "sportsdataverse",
+                    "season": "2025-26",
+                    "phase": "regular_season",
+                    "before_date": "2026-04-13",
+                    "cutoff_utc": "2026-04-13T04:00:00+00:00",
+                    "window": "season",
+                    "coverage_start": "2023-10-24",
+                    "coverage_end": "2026-06-13",
+                    "metric_version": "v2",
+                    "published_at": null
+                  },
+                  "null_reason": null
+                },
+                {
+                  "evidence_id": "ab2ac4117284fef7f766b3ece6269608c9bcd3e68e6149ee5cd45d9052d04bf4",
+                  "result_hash": "f08270d7560be80783e0f4bb65694673be235163156afeac3f5645388b8f5cab",
+                  "operation_hash": "f08a8b75ccd48d30f2749921ca6938410d7ae16877c648a67940356b8c56d9ef",
+                  "operation_version": "courtload-assistant-operations-v1",
+                  "context_fingerprint": "60ebaba78187ff22c32d3dd5db8b93a4f8d97244fdc4e377857f2b4c91ed2b47",
+                  "entity_id": "1630178",
+                  "row_identity": "/items/4",
+                  "path": "/items/4/stints_count",
+                  "metric": "stints_count",
+                  "metric_version": "v2",
+                  "unit": "dimensionless",
+                  "value": 1,
+                  "sample": {
+                    "games_played": 70,
+                    "total_minutes": 2661.2,
+                    "sample_sizes": {
+                      "pts_per_game": 70
+                    }
+                  },
+                  "input_identity": {
+                    "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "snapshot_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+                    "dataset_type": "workbench",
+                    "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666",
+                    "mode": "workbench_recent",
+                    "source": "sportsdataverse",
+                    "season": "2025-26",
+                    "phase": "regular_season",
+                    "before_date": "2026-04-13",
+                    "cutoff_utc": "2026-04-13T04:00:00+00:00",
+                    "window": "season",
+                    "coverage_start": "2023-10-24",
+                    "coverage_end": "2026-06-13",
+                    "metric_version": "v2",
+                    "published_at": null
+                  },
+                  "null_reason": null
+                },
+                {
+                  "evidence_id": "3fc49569c733e83594f5cd5847fc44144ac14fac8ab521575450831802118a99",
+                  "result_hash": "f08270d7560be80783e0f4bb65694673be235163156afeac3f5645388b8f5cab",
+                  "operation_hash": "f08a8b75ccd48d30f2749921ca6938410d7ae16877c648a67940356b8c56d9ef",
+                  "operation_version": "courtload-assistant-operations-v1",
+                  "context_fingerprint": "60ebaba78187ff22c32d3dd5db8b93a4f8d97244fdc4e377857f2b4c91ed2b47",
+                  "entity_id": "1630178",
+                  "row_identity": "/items/4",
+                  "path": "/items/4/games_played",
+                  "metric": "games_played",
+                  "metric_version": "v2",
+                  "unit": "observations",
+                  "value": 70,
+                  "sample": {
+                    "games_played": 70,
+                    "total_minutes": 2661.2,
+                    "sample_sizes": {
+                      "pts_per_game": 70
+                    }
+                  },
+                  "input_identity": {
+                    "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "snapshot_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+                    "dataset_type": "workbench",
+                    "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666",
+                    "mode": "workbench_recent",
+                    "source": "sportsdataverse",
+                    "season": "2025-26",
+                    "phase": "regular_season",
+                    "before_date": "2026-04-13",
+                    "cutoff_utc": "2026-04-13T04:00:00+00:00",
+                    "window": "season",
+                    "coverage_start": "2023-10-24",
+                    "coverage_end": "2026-06-13",
+                    "metric_version": "v2",
+                    "published_at": null
+                  },
+                  "null_reason": null
+                },
+                {
+                  "evidence_id": "56cdc1b5c5f1845862ab324f2ad1e56712f274ebc8a2f7c6ae94a92ac26dd531",
+                  "result_hash": "f08270d7560be80783e0f4bb65694673be235163156afeac3f5645388b8f5cab",
+                  "operation_hash": "f08a8b75ccd48d30f2749921ca6938410d7ae16877c648a67940356b8c56d9ef",
+                  "operation_version": "courtload-assistant-operations-v1",
+                  "context_fingerprint": "60ebaba78187ff22c32d3dd5db8b93a4f8d97244fdc4e377857f2b4c91ed2b47",
+                  "entity_id": "1630178",
+                  "row_identity": "/items/4",
+                  "path": "/items/4/total_minutes",
+                  "metric": "total_minutes",
+                  "metric_version": "v2",
+                  "unit": "minutes",
+                  "value": 2661.2,
+                  "sample": {
+                    "games_played": 70,
+                    "total_minutes": 2661.2,
+                    "sample_sizes": {
+                      "pts_per_game": 70
+                    }
+                  },
+                  "input_identity": {
+                    "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "snapshot_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+                    "dataset_type": "workbench",
+                    "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666",
+                    "mode": "workbench_recent",
+                    "source": "sportsdataverse",
+                    "season": "2025-26",
+                    "phase": "regular_season",
+                    "before_date": "2026-04-13",
+                    "cutoff_utc": "2026-04-13T04:00:00+00:00",
+                    "window": "season",
+                    "coverage_start": "2023-10-24",
+                    "coverage_end": "2026-06-13",
+                    "metric_version": "v2",
+                    "published_at": null
+                  },
+                  "null_reason": null
+                },
+                {
+                  "evidence_id": "76bb4a332da999a62fe0f485ce419faaceb3f7667676cbef3def53fd72d929cc",
+                  "result_hash": "f08270d7560be80783e0f4bb65694673be235163156afeac3f5645388b8f5cab",
+                  "operation_hash": "f08a8b75ccd48d30f2749921ca6938410d7ae16877c648a67940356b8c56d9ef",
+                  "operation_version": "courtload-assistant-operations-v1",
+                  "context_fingerprint": "60ebaba78187ff22c32d3dd5db8b93a4f8d97244fdc4e377857f2b4c91ed2b47",
+                  "entity_id": "1630178",
+                  "row_identity": "/items/4/metrics",
+                  "path": "/items/4/metrics/pts_per_game",
+                  "metric": "pts_per_game",
+                  "metric_version": "v2",
+                  "unit": "points",
+                  "value": 28.3,
+                  "sample": {
+                    "games_played": 70,
+                    "total_minutes": 2661.2,
+                    "sample_sizes": {
+                      "pts_per_game": 70
+                    }
+                  },
+                  "input_identity": {
+                    "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "snapshot_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+                    "dataset_type": "workbench",
+                    "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666",
+                    "mode": "workbench_recent",
+                    "source": "sportsdataverse",
+                    "season": "2025-26",
+                    "phase": "regular_season",
+                    "before_date": "2026-04-13",
+                    "cutoff_utc": "2026-04-13T04:00:00+00:00",
+                    "window": "season",
+                    "coverage_start": "2023-10-24",
+                    "coverage_end": "2026-06-13",
+                    "metric_version": "v2",
+                    "published_at": null
+                  },
+                  "null_reason": null
+                },
+                {
+                  "evidence_id": "5b32d333cbd5ef3a98c12ea9d81fcccd5d4b75eb0c3bf325df77e65ee17b12fc",
+                  "result_hash": "f08270d7560be80783e0f4bb65694673be235163156afeac3f5645388b8f5cab",
+                  "operation_hash": "f08a8b75ccd48d30f2749921ca6938410d7ae16877c648a67940356b8c56d9ef",
+                  "operation_version": "courtload-assistant-operations-v1",
+                  "context_fingerprint": "60ebaba78187ff22c32d3dd5db8b93a4f8d97244fdc4e377857f2b4c91ed2b47",
+                  "entity_id": "1630178",
+                  "row_identity": "/items/4/sample_sizes",
+                  "path": "/items/4/sample_sizes/pts_per_game",
+                  "metric": "pts_per_game_valid_observations",
+                  "metric_version": "v2",
+                  "unit": "observations",
+                  "value": 70,
+                  "sample": {
+                    "games_played": 70,
+                    "total_minutes": 2661.2,
+                    "sample_sizes": {
+                      "pts_per_game": 70
+                    }
+                  },
+                  "input_identity": {
+                    "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "snapshot_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+                    "dataset_type": "workbench",
+                    "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666",
+                    "mode": "workbench_recent",
+                    "source": "sportsdataverse",
+                    "season": "2025-26",
+                    "phase": "regular_season",
+                    "before_date": "2026-04-13",
+                    "cutoff_utc": "2026-04-13T04:00:00+00:00",
+                    "window": "season",
+                    "coverage_start": "2023-10-24",
+                    "coverage_end": "2026-06-13",
+                    "metric_version": "v2",
+                    "published_at": null
+                  },
+                  "null_reason": null
+                },
+                {
+                  "evidence_id": "a549b3ef18e434617f279019064dea077eec1be47e57dd0c5cc3f39f69a4c8d9",
+                  "result_hash": "f08270d7560be80783e0f4bb65694673be235163156afeac3f5645388b8f5cab",
+                  "operation_hash": "f08a8b75ccd48d30f2749921ca6938410d7ae16877c648a67940356b8c56d9ef",
+                  "operation_version": "courtload-assistant-operations-v1",
+                  "context_fingerprint": "60ebaba78187ff22c32d3dd5db8b93a4f8d97244fdc4e377857f2b4c91ed2b47",
+                  "entity_id": "cohort",
+                  "row_identity": "",
+                  "path": "/total_eligible",
+                  "metric": "total_eligible",
+                  "metric_version": "v2",
+                  "unit": "observations",
+                  "value": 591,
+                  "sample": {},
+                  "input_identity": {
+                    "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "snapshot_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+                    "dataset_type": "workbench",
+                    "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666",
+                    "mode": "workbench_recent",
+                    "source": "sportsdataverse",
+                    "season": "2025-26",
+                    "phase": "regular_season",
+                    "before_date": "2026-04-13",
+                    "cutoff_utc": "2026-04-13T04:00:00+00:00",
+                    "window": "season",
+                    "coverage_start": "2023-10-24",
+                    "coverage_end": "2026-06-13",
+                    "metric_version": "v2",
+                    "published_at": null
+                  },
+                  "null_reason": null
+                }
+              ],
+              "open_url": "/stats?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&window=season&sortMetric=pts_per_game&sortDirection=desc&limit=5&metrics=%5B%7B%22key%22%3A+%22pts_per_game%22%2C+%22version%22%3A+null%2C+%22normalization%22%3A+%22raw%22%2C+%22denominator_type%22%3A+null%7D%5D",
+              "eligible_count": 591,
+              "limitations": []
+            }
+          }
+        ],
+        "sources": [],
+        "actions": [
+          {
+            "kind": "executed_operation",
+            "label": "Open equivalent analysis",
+            "url": "/stats?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&window=season&sortMetric=pts_per_game&sortDirection=desc&limit=5&metrics=%5B%7B%22key%22%3A+%22pts_per_game%22%2C+%22version%22%3A+null%2C+%22normalization%22%3A+%22raw%22%2C+%22denominator_type%22%3A+null%7D%5D",
+            "operation_hash": "f08a8b75ccd48d30f2749921ca6938410d7ae16877c648a67940356b8c56d9ef"
+          }
+        ],
+        "plan": {
+          "plan_version": "courtload-analysis-plan-v1",
+          "status": "execute",
+          "clarification": null,
+          "context_changes": null,
+          "steps": [
+            {
+              "step_id": "ranking",
+              "operation": "query",
+              "arguments": {
+                "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                "season": "2025-26",
+                "phase": "regular_season",
+                "before_date": "2026-04-13",
+                "name": null,
+                "entity_kind": "player",
+                "window": {
+                  "kind": "season",
+                  "n": null,
+                  "from_date": null,
+                  "to_date": null
+                },
+                "season_scope": {
+                  "seasons": [],
+                  "aggregate_multi_season": false
+                },
+                "team_scope": {
+                  "team_id": null,
+                  "participation_only": true,
+                  "current_roster_only": false
+                },
+                "metric_selectors": [
+                  {
+                    "key": "pts_per_game",
+                    "version": null,
+                    "normalization": "raw",
+                    "denominator_type": null
+                  }
+                ],
+                "predicates": null,
+                "sample_filters": {
+                  "min_games": null,
+                  "min_minutes": null,
+                  "min_avg_minutes": null,
+                  "min_possessions": null,
+                  "min_attempts": null
+                },
+                "sort": [
+                  {
+                    "field": "pts_per_game",
+                    "direction": "desc",
+                    "nulls_last": true
+                  }
+                ],
+                "view_state": null,
+                "page": {
+                  "limit": 5,
+                  "cursor": null
+                }
+              },
+              "depends_on": []
+            }
+          ],
+          "output_kind": "table"
+        },
+        "accounting": {
+          "provider_calls": 0,
+          "analytical_calls": 1,
+          "source_requests": 0,
+          "rows": 5,
+          "elapsed_ms": 713.166
+        },
+        "saveable": true
+      }
+    },
+    {
+      "message": "Show scoring; explain pick and roll",
+      "latency_ms": 745.093650999479,
+      "answer": {
+        "schema_version": "courtload-assistant-v2",
+        "request_id": "acf6b4bc-6adf-44fd-b316-ac81dc109304",
+        "thread_id": "8738cc36-433e-422c-91b4-f0beb85c28e5",
+        "turn_id": "67dc42e9-e30c-4488-b983-fe4693d1d845",
+        "status": "answered",
+        "intent": "local_analysis",
+        "scope": {
+          "as_of": "2026-10-05",
+          "timezone": "America/New_York",
+          "calendar_version": "nba-completed-seasons-2019-2026-v1",
+          "calendar_sha256": "bc98f7f7956a70b4a6f0f4f21216be4973b78e482c3a100d4f059ad37380a560",
+          "selections": {
+            "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+            "season": "2025-26",
+            "phase": "regular_season",
+            "before_date": "2026-04-13",
+            "window": "season"
+          },
+          "local_context": {
+            "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+            "snapshot_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+            "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+            "dataset_type": "workbench",
+            "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666",
+            "mode": "workbench_recent",
+            "source": "sportsdataverse",
+            "season": "2025-26",
+            "phase": "regular_season",
+            "before_date": "2026-04-13",
+            "cutoff_utc": "2026-04-13T04:00:00+00:00",
+            "window": "season",
+            "coverage_start": "2023-10-24",
+            "coverage_end": "2026-06-13",
+            "metric_version": "v2",
+            "published_at": null
+          },
+          "context_fingerprint": "60ebaba78187ff22c32d3dd5db8b93a4f8d97244fdc4e377857f2b4c91ed2b47",
+          "assumptions": [
+            "Inherited selected scope."
+          ],
+          "label": "2025-26 \u00b7 regular season \u00b7 season \u00b7 before 2026-04-13"
+        },
+        "blocks": [
+          {
+            "kind": "local_claim",
+            "template": "observed_cell_v2",
+            "text": "Luka Don\u010di\u0107: Points Per Game = 33.5 points.",
+            "cell": {
+              "evidence_id": "b7bd0742f143f714c21e5de6fdb57232813d9ec744a12b389374c0e3f27348e7",
+              "result_hash": "f08270d7560be80783e0f4bb65694673be235163156afeac3f5645388b8f5cab",
+              "operation_hash": "f08a8b75ccd48d30f2749921ca6938410d7ae16877c648a67940356b8c56d9ef",
+              "operation_version": "courtload-assistant-operations-v1",
+              "context_fingerprint": "60ebaba78187ff22c32d3dd5db8b93a4f8d97244fdc4e377857f2b4c91ed2b47",
+              "entity_id": "1629029",
+              "row_identity": "/items/0/metrics",
+              "path": "/items/0/metrics/pts_per_game",
+              "metric": "pts_per_game",
+              "metric_version": "v2",
+              "unit": "points",
+              "value": 33.5,
+              "sample": {
+                "games_played": 64,
+                "total_minutes": 2288.7,
+                "sample_sizes": {
+                  "pts_per_game": 64
+                }
+              },
+              "input_identity": {
+                "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                "snapshot_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+                "dataset_type": "workbench",
+                "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666",
+                "mode": "workbench_recent",
+                "source": "sportsdataverse",
+                "season": "2025-26",
+                "phase": "regular_season",
+                "before_date": "2026-04-13",
+                "cutoff_utc": "2026-04-13T04:00:00+00:00",
+                "window": "season",
+                "coverage_start": "2023-10-24",
+                "coverage_end": "2026-06-13",
+                "metric_version": "v2",
+                "published_at": null
+              },
+              "null_reason": null
+            }
+          },
+          {
+            "kind": "local_claim",
+            "template": "observed_cell_v2",
+            "text": "Shai Gilgeous-Alexander: Points Per Game = 31.1 points.",
+            "cell": {
+              "evidence_id": "976d7f5d20d3e10d1632063ceee8d62c1b7fba211e73f5e12124c6140127c41f",
+              "result_hash": "f08270d7560be80783e0f4bb65694673be235163156afeac3f5645388b8f5cab",
+              "operation_hash": "f08a8b75ccd48d30f2749921ca6938410d7ae16877c648a67940356b8c56d9ef",
+              "operation_version": "courtload-assistant-operations-v1",
+              "context_fingerprint": "60ebaba78187ff22c32d3dd5db8b93a4f8d97244fdc4e377857f2b4c91ed2b47",
+              "entity_id": "1628983",
+              "row_identity": "/items/1/metrics",
+              "path": "/items/1/metrics/pts_per_game",
+              "metric": "pts_per_game",
+              "metric_version": "v2",
+              "unit": "points",
+              "value": 31.1,
+              "sample": {
+                "games_played": 68,
+                "total_minutes": 2259.0,
+                "sample_sizes": {
+                  "pts_per_game": 68
+                }
+              },
+              "input_identity": {
+                "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                "snapshot_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+                "dataset_type": "workbench",
+                "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666",
+                "mode": "workbench_recent",
+                "source": "sportsdataverse",
+                "season": "2025-26",
+                "phase": "regular_season",
+                "before_date": "2026-04-13",
+                "cutoff_utc": "2026-04-13T04:00:00+00:00",
+                "window": "season",
+                "coverage_start": "2023-10-24",
+                "coverage_end": "2026-06-13",
+                "metric_version": "v2",
+                "published_at": null
+              },
+              "null_reason": null
+            }
+          },
+          {
+            "kind": "result",
+            "result": {
+              "step_id": "ranking",
+              "operation": "query",
+              "operation_version": "courtload-assistant-operations-v1",
+              "arguments": {
+                "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                "season": "2025-26",
+                "phase": "regular_season",
+                "before_date": "2026-04-13",
+                "name": null,
+                "entity_kind": "player",
+                "window": {
+                  "kind": "season",
+                  "n": null,
+                  "from_date": null,
+                  "to_date": null
+                },
+                "season_scope": {
+                  "seasons": [],
+                  "aggregate_multi_season": false
+                },
+                "team_scope": {
+                  "team_id": null,
+                  "participation_only": true,
+                  "current_roster_only": false
+                },
+                "metric_selectors": [
+                  {
+                    "key": "pts_per_game",
+                    "version": null,
+                    "normalization": "raw",
+                    "denominator_type": null
+                  }
+                ],
+                "predicates": null,
+                "sample_filters": {
+                  "min_games": null,
+                  "min_minutes": null,
+                  "min_avg_minutes": null,
+                  "min_possessions": null,
+                  "min_attempts": null
+                },
+                "sort": [
+                  {
+                    "field": "pts_per_game",
+                    "direction": "desc",
+                    "nulls_last": true
+                  }
+                ],
+                "view_state": null,
+                "page": {
+                  "limit": 5,
+                  "cursor": null
+                }
+              },
+              "operation_hash": "f08a8b75ccd48d30f2749921ca6938410d7ae16877c648a67940356b8c56d9ef",
+              "result_hash": "f08270d7560be80783e0f4bb65694673be235163156afeac3f5645388b8f5cab",
+              "data": {
+                "items": [
+                  {
+                    "player_id": "1629029",
+                    "player_name": "Luka Don\u010di\u0107",
+                    "teams": [
+                      "LAL"
+                    ],
+                    "stints_count": 1,
+                    "games_played": 64,
+                    "total_minutes": 2288.7,
+                    "metrics": {
+                      "pts_per_game": 33.5
+                    },
+                    "sample_sizes": {
+                      "pts_per_game": 64
+                    },
+                    "portrait_url": "/api/workbench/players/1629029/portrait"
+                  },
+                  {
+                    "player_id": "1628983",
+                    "player_name": "Shai Gilgeous-Alexander",
+                    "teams": [
+                      "OKC"
+                    ],
+                    "stints_count": 1,
+                    "games_played": 68,
+                    "total_minutes": 2259.0,
+                    "metrics": {
+                      "pts_per_game": 31.1
+                    },
+                    "sample_sizes": {
+                      "pts_per_game": 68
+                    },
+                    "portrait_url": "/api/workbench/players/1628983/portrait"
+                  },
+                  {
+                    "player_id": "1630162",
+                    "player_name": "Anthony Edwards",
+                    "teams": [
+                      "MIN"
+                    ],
+                    "stints_count": 1,
+                    "games_played": 61,
+                    "total_minutes": 2136.6,
+                    "metrics": {
+                      "pts_per_game": 28.8
+                    },
+                    "sample_sizes": {
+                      "pts_per_game": 61
+                    },
+                    "portrait_url": "/api/workbench/players/1630162/portrait"
+                  },
+                  {
+                    "player_id": "1627759",
+                    "player_name": "Jaylen Brown",
+                    "teams": [
+                      "BOS"
+                    ],
+                    "stints_count": 1,
+                    "games_played": 70,
+                    "total_minutes": 2410.9,
+                    "metrics": {
+                      "pts_per_game": 28.7
+                    },
+                    "sample_sizes": {
+                      "pts_per_game": 70
+                    },
+                    "portrait_url": "/api/workbench/players/1627759/portrait"
+                  },
+                  {
+                    "player_id": "1630178",
+                    "player_name": "Tyrese Maxey",
+                    "teams": [
+                      "PHI"
+                    ],
+                    "stints_count": 1,
+                    "games_played": 70,
+                    "total_minutes": 2661.2,
+                    "metrics": {
+                      "pts_per_game": 28.3
+                    },
+                    "sample_sizes": {
+                      "pts_per_game": 70
+                    },
+                    "portrait_url": "/api/workbench/players/1630178/portrait"
+                  }
+                ],
+                "total_eligible": 591,
+                "next_cursor": "WyJhMGQ0NzAzNTQzYTdkYmYyMTBhZWU0ODBkN2MzNTg1MiIsNV0",
+                "has_more": true
+              },
+              "rows": [
+                {
+                  "player_id": "1629029",
+                  "player_name": "Luka Don\u010di\u0107",
+                  "teams": [
+                    "LAL"
+                  ],
+                  "stints_count": 1,
+                  "games_played": 64,
+                  "total_minutes": 2288.7,
+                  "metrics": {
+                    "pts_per_game": 33.5
+                  },
+                  "sample_sizes": {
+                    "pts_per_game": 64
+                  },
+                  "portrait_url": "/api/workbench/players/1629029/portrait"
+                },
+                {
+                  "player_id": "1628983",
+                  "player_name": "Shai Gilgeous-Alexander",
+                  "teams": [
+                    "OKC"
+                  ],
+                  "stints_count": 1,
+                  "games_played": 68,
+                  "total_minutes": 2259.0,
+                  "metrics": {
+                    "pts_per_game": 31.1
+                  },
+                  "sample_sizes": {
+                    "pts_per_game": 68
+                  },
+                  "portrait_url": "/api/workbench/players/1628983/portrait"
+                },
+                {
+                  "player_id": "1630162",
+                  "player_name": "Anthony Edwards",
+                  "teams": [
+                    "MIN"
+                  ],
+                  "stints_count": 1,
+                  "games_played": 61,
+                  "total_minutes": 2136.6,
+                  "metrics": {
+                    "pts_per_game": 28.8
+                  },
+                  "sample_sizes": {
+                    "pts_per_game": 61
+                  },
+                  "portrait_url": "/api/workbench/players/1630162/portrait"
+                },
+                {
+                  "player_id": "1627759",
+                  "player_name": "Jaylen Brown",
+                  "teams": [
+                    "BOS"
+                  ],
+                  "stints_count": 1,
+                  "games_played": 70,
+                  "total_minutes": 2410.9,
+                  "metrics": {
+                    "pts_per_game": 28.7
+                  },
+                  "sample_sizes": {
+                    "pts_per_game": 70
+                  },
+                  "portrait_url": "/api/workbench/players/1627759/portrait"
+                },
+                {
+                  "player_id": "1630178",
+                  "player_name": "Tyrese Maxey",
+                  "teams": [
+                    "PHI"
+                  ],
+                  "stints_count": 1,
+                  "games_played": 70,
+                  "total_minutes": 2661.2,
+                  "metrics": {
+                    "pts_per_game": 28.3
+                  },
+                  "sample_sizes": {
+                    "pts_per_game": 70
+                  },
+                  "portrait_url": "/api/workbench/players/1630178/portrait"
+                }
+              ],
+              "evidence": [
+                {
+                  "evidence_id": "a0560d6c66e0c688e6955f0fa43bf4231e2a6d63c9c4e85de51bcaa74ca35119",
+                  "result_hash": "f08270d7560be80783e0f4bb65694673be235163156afeac3f5645388b8f5cab",
+                  "operation_hash": "f08a8b75ccd48d30f2749921ca6938410d7ae16877c648a67940356b8c56d9ef",
+                  "operation_version": "courtload-assistant-operations-v1",
+                  "context_fingerprint": "60ebaba78187ff22c32d3dd5db8b93a4f8d97244fdc4e377857f2b4c91ed2b47",
+                  "entity_id": "1629029",
+                  "row_identity": "/items/0",
+                  "path": "/items/0/stints_count",
+                  "metric": "stints_count",
+                  "metric_version": "v2",
+                  "unit": "dimensionless",
+                  "value": 1,
+                  "sample": {
+                    "games_played": 64,
+                    "total_minutes": 2288.7,
+                    "sample_sizes": {
+                      "pts_per_game": 64
+                    }
+                  },
+                  "input_identity": {
+                    "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "snapshot_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+                    "dataset_type": "workbench",
+                    "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666",
+                    "mode": "workbench_recent",
+                    "source": "sportsdataverse",
+                    "season": "2025-26",
+                    "phase": "regular_season",
+                    "before_date": "2026-04-13",
+                    "cutoff_utc": "2026-04-13T04:00:00+00:00",
+                    "window": "season",
+                    "coverage_start": "2023-10-24",
+                    "coverage_end": "2026-06-13",
+                    "metric_version": "v2",
+                    "published_at": null
+                  },
+                  "null_reason": null
+                },
+                {
+                  "evidence_id": "d16f68cf659b2da349c25310aae8a6dbd5869f045ea6c44a8947f419047fbbec",
+                  "result_hash": "f08270d7560be80783e0f4bb65694673be235163156afeac3f5645388b8f5cab",
+                  "operation_hash": "f08a8b75ccd48d30f2749921ca6938410d7ae16877c648a67940356b8c56d9ef",
+                  "operation_version": "courtload-assistant-operations-v1",
+                  "context_fingerprint": "60ebaba78187ff22c32d3dd5db8b93a4f8d97244fdc4e377857f2b4c91ed2b47",
+                  "entity_id": "1629029",
+                  "row_identity": "/items/0",
+                  "path": "/items/0/games_played",
+                  "metric": "games_played",
+                  "metric_version": "v2",
+                  "unit": "observations",
+                  "value": 64,
+                  "sample": {
+                    "games_played": 64,
+                    "total_minutes": 2288.7,
+                    "sample_sizes": {
+                      "pts_per_game": 64
+                    }
+                  },
+                  "input_identity": {
+                    "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "snapshot_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+                    "dataset_type": "workbench",
+                    "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666",
+                    "mode": "workbench_recent",
+                    "source": "sportsdataverse",
+                    "season": "2025-26",
+                    "phase": "regular_season",
+                    "before_date": "2026-04-13",
+                    "cutoff_utc": "2026-04-13T04:00:00+00:00",
+                    "window": "season",
+                    "coverage_start": "2023-10-24",
+                    "coverage_end": "2026-06-13",
+                    "metric_version": "v2",
+                    "published_at": null
+                  },
+                  "null_reason": null
+                },
+                {
+                  "evidence_id": "b9944c008db3576b9bcf95d35ea639f041bf87359c9666584d08dfb704a414c5",
+                  "result_hash": "f08270d7560be80783e0f4bb65694673be235163156afeac3f5645388b8f5cab",
+                  "operation_hash": "f08a8b75ccd48d30f2749921ca6938410d7ae16877c648a67940356b8c56d9ef",
+                  "operation_version": "courtload-assistant-operations-v1",
+                  "context_fingerprint": "60ebaba78187ff22c32d3dd5db8b93a4f8d97244fdc4e377857f2b4c91ed2b47",
+                  "entity_id": "1629029",
+                  "row_identity": "/items/0",
+                  "path": "/items/0/total_minutes",
+                  "metric": "total_minutes",
+                  "metric_version": "v2",
+                  "unit": "minutes",
+                  "value": 2288.7,
+                  "sample": {
+                    "games_played": 64,
+                    "total_minutes": 2288.7,
+                    "sample_sizes": {
+                      "pts_per_game": 64
+                    }
+                  },
+                  "input_identity": {
+                    "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "snapshot_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+                    "dataset_type": "workbench",
+                    "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666",
+                    "mode": "workbench_recent",
+                    "source": "sportsdataverse",
+                    "season": "2025-26",
+                    "phase": "regular_season",
+                    "before_date": "2026-04-13",
+                    "cutoff_utc": "2026-04-13T04:00:00+00:00",
+                    "window": "season",
+                    "coverage_start": "2023-10-24",
+                    "coverage_end": "2026-06-13",
+                    "metric_version": "v2",
+                    "published_at": null
+                  },
+                  "null_reason": null
+                },
+                {
+                  "evidence_id": "b7bd0742f143f714c21e5de6fdb57232813d9ec744a12b389374c0e3f27348e7",
+                  "result_hash": "f08270d7560be80783e0f4bb65694673be235163156afeac3f5645388b8f5cab",
+                  "operation_hash": "f08a8b75ccd48d30f2749921ca6938410d7ae16877c648a67940356b8c56d9ef",
+                  "operation_version": "courtload-assistant-operations-v1",
+                  "context_fingerprint": "60ebaba78187ff22c32d3dd5db8b93a4f8d97244fdc4e377857f2b4c91ed2b47",
+                  "entity_id": "1629029",
+                  "row_identity": "/items/0/metrics",
+                  "path": "/items/0/metrics/pts_per_game",
+                  "metric": "pts_per_game",
+                  "metric_version": "v2",
+                  "unit": "points",
+                  "value": 33.5,
+                  "sample": {
+                    "games_played": 64,
+                    "total_minutes": 2288.7,
+                    "sample_sizes": {
+                      "pts_per_game": 64
+                    }
+                  },
+                  "input_identity": {
+                    "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "snapshot_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+                    "dataset_type": "workbench",
+                    "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666",
+                    "mode": "workbench_recent",
+                    "source": "sportsdataverse",
+                    "season": "2025-26",
+                    "phase": "regular_season",
+                    "before_date": "2026-04-13",
+                    "cutoff_utc": "2026-04-13T04:00:00+00:00",
+                    "window": "season",
+                    "coverage_start": "2023-10-24",
+                    "coverage_end": "2026-06-13",
+                    "metric_version": "v2",
+                    "published_at": null
+                  },
+                  "null_reason": null
+                },
+                {
+                  "evidence_id": "bd31a9f300500d2e3130630a56df2336fa2bbd047ade2a41bf1c3b475620b586",
+                  "result_hash": "f08270d7560be80783e0f4bb65694673be235163156afeac3f5645388b8f5cab",
+                  "operation_hash": "f08a8b75ccd48d30f2749921ca6938410d7ae16877c648a67940356b8c56d9ef",
+                  "operation_version": "courtload-assistant-operations-v1",
+                  "context_fingerprint": "60ebaba78187ff22c32d3dd5db8b93a4f8d97244fdc4e377857f2b4c91ed2b47",
+                  "entity_id": "1629029",
+                  "row_identity": "/items/0/sample_sizes",
+                  "path": "/items/0/sample_sizes/pts_per_game",
+                  "metric": "pts_per_game_valid_observations",
+                  "metric_version": "v2",
+                  "unit": "observations",
+                  "value": 64,
+                  "sample": {
+                    "games_played": 64,
+                    "total_minutes": 2288.7,
+                    "sample_sizes": {
+                      "pts_per_game": 64
+                    }
+                  },
+                  "input_identity": {
+                    "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "snapshot_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+                    "dataset_type": "workbench",
+                    "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666",
+                    "mode": "workbench_recent",
+                    "source": "sportsdataverse",
+                    "season": "2025-26",
+                    "phase": "regular_season",
+                    "before_date": "2026-04-13",
+                    "cutoff_utc": "2026-04-13T04:00:00+00:00",
+                    "window": "season",
+                    "coverage_start": "2023-10-24",
+                    "coverage_end": "2026-06-13",
+                    "metric_version": "v2",
+                    "published_at": null
+                  },
+                  "null_reason": null
+                },
+                {
+                  "evidence_id": "2b7fc2dedf7851aac952ae7648cb87d9e5642228bd7f03a98cdebe2746a1d24a",
+                  "result_hash": "f08270d7560be80783e0f4bb65694673be235163156afeac3f5645388b8f5cab",
+                  "operation_hash": "f08a8b75ccd48d30f2749921ca6938410d7ae16877c648a67940356b8c56d9ef",
+                  "operation_version": "courtload-assistant-operations-v1",
+                  "context_fingerprint": "60ebaba78187ff22c32d3dd5db8b93a4f8d97244fdc4e377857f2b4c91ed2b47",
+                  "entity_id": "1628983",
+                  "row_identity": "/items/1",
+                  "path": "/items/1/stints_count",
+                  "metric": "stints_count",
+                  "metric_version": "v2",
+                  "unit": "dimensionless",
+                  "value": 1,
+                  "sample": {
+                    "games_played": 68,
+                    "total_minutes": 2259.0,
+                    "sample_sizes": {
+                      "pts_per_game": 68
+                    }
+                  },
+                  "input_identity": {
+                    "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "snapshot_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+                    "dataset_type": "workbench",
+                    "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666",
+                    "mode": "workbench_recent",
+                    "source": "sportsdataverse",
+                    "season": "2025-26",
+                    "phase": "regular_season",
+                    "before_date": "2026-04-13",
+                    "cutoff_utc": "2026-04-13T04:00:00+00:00",
+                    "window": "season",
+                    "coverage_start": "2023-10-24",
+                    "coverage_end": "2026-06-13",
+                    "metric_version": "v2",
+                    "published_at": null
+                  },
+                  "null_reason": null
+                },
+                {
+                  "evidence_id": "59725ce1274f20c1e1385ebd267c0069705928661889a29e4975b9efa3a99a28",
+                  "result_hash": "f08270d7560be80783e0f4bb65694673be235163156afeac3f5645388b8f5cab",
+                  "operation_hash": "f08a8b75ccd48d30f2749921ca6938410d7ae16877c648a67940356b8c56d9ef",
+                  "operation_version": "courtload-assistant-operations-v1",
+                  "context_fingerprint": "60ebaba78187ff22c32d3dd5db8b93a4f8d97244fdc4e377857f2b4c91ed2b47",
+                  "entity_id": "1628983",
+                  "row_identity": "/items/1",
+                  "path": "/items/1/games_played",
+                  "metric": "games_played",
+                  "metric_version": "v2",
+                  "unit": "observations",
+                  "value": 68,
+                  "sample": {
+                    "games_played": 68,
+                    "total_minutes": 2259.0,
+                    "sample_sizes": {
+                      "pts_per_game": 68
+                    }
+                  },
+                  "input_identity": {
+                    "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "snapshot_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+                    "dataset_type": "workbench",
+                    "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666",
+                    "mode": "workbench_recent",
+                    "source": "sportsdataverse",
+                    "season": "2025-26",
+                    "phase": "regular_season",
+                    "before_date": "2026-04-13",
+                    "cutoff_utc": "2026-04-13T04:00:00+00:00",
+                    "window": "season",
+                    "coverage_start": "2023-10-24",
+                    "coverage_end": "2026-06-13",
+                    "metric_version": "v2",
+                    "published_at": null
+                  },
+                  "null_reason": null
+                },
+                {
+                  "evidence_id": "9d700ea30c45fb74b0940c39411b077f6797515bcbb6e154ac3c86bb41927962",
+                  "result_hash": "f08270d7560be80783e0f4bb65694673be235163156afeac3f5645388b8f5cab",
+                  "operation_hash": "f08a8b75ccd48d30f2749921ca6938410d7ae16877c648a67940356b8c56d9ef",
+                  "operation_version": "courtload-assistant-operations-v1",
+                  "context_fingerprint": "60ebaba78187ff22c32d3dd5db8b93a4f8d97244fdc4e377857f2b4c91ed2b47",
+                  "entity_id": "1628983",
+                  "row_identity": "/items/1",
+                  "path": "/items/1/total_minutes",
+                  "metric": "total_minutes",
+                  "metric_version": "v2",
+                  "unit": "minutes",
+                  "value": 2259.0,
+                  "sample": {
+                    "games_played": 68,
+                    "total_minutes": 2259.0,
+                    "sample_sizes": {
+                      "pts_per_game": 68
+                    }
+                  },
+                  "input_identity": {
+                    "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "snapshot_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+                    "dataset_type": "workbench",
+                    "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666",
+                    "mode": "workbench_recent",
+                    "source": "sportsdataverse",
+                    "season": "2025-26",
+                    "phase": "regular_season",
+                    "before_date": "2026-04-13",
+                    "cutoff_utc": "2026-04-13T04:00:00+00:00",
+                    "window": "season",
+                    "coverage_start": "2023-10-24",
+                    "coverage_end": "2026-06-13",
+                    "metric_version": "v2",
+                    "published_at": null
+                  },
+                  "null_reason": null
+                },
+                {
+                  "evidence_id": "976d7f5d20d3e10d1632063ceee8d62c1b7fba211e73f5e12124c6140127c41f",
+                  "result_hash": "f08270d7560be80783e0f4bb65694673be235163156afeac3f5645388b8f5cab",
+                  "operation_hash": "f08a8b75ccd48d30f2749921ca6938410d7ae16877c648a67940356b8c56d9ef",
+                  "operation_version": "courtload-assistant-operations-v1",
+                  "context_fingerprint": "60ebaba78187ff22c32d3dd5db8b93a4f8d97244fdc4e377857f2b4c91ed2b47",
+                  "entity_id": "1628983",
+                  "row_identity": "/items/1/metrics",
+                  "path": "/items/1/metrics/pts_per_game",
+                  "metric": "pts_per_game",
+                  "metric_version": "v2",
+                  "unit": "points",
+                  "value": 31.1,
+                  "sample": {
+                    "games_played": 68,
+                    "total_minutes": 2259.0,
+                    "sample_sizes": {
+                      "pts_per_game": 68
+                    }
+                  },
+                  "input_identity": {
+                    "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "snapshot_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+                    "dataset_type": "workbench",
+                    "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666",
+                    "mode": "workbench_recent",
+                    "source": "sportsdataverse",
+                    "season": "2025-26",
+                    "phase": "regular_season",
+                    "before_date": "2026-04-13",
+                    "cutoff_utc": "2026-04-13T04:00:00+00:00",
+                    "window": "season",
+                    "coverage_start": "2023-10-24",
+                    "coverage_end": "2026-06-13",
+                    "metric_version": "v2",
+                    "published_at": null
+                  },
+                  "null_reason": null
+                },
+                {
+                  "evidence_id": "67fdc1441d801c2a098adf0fae78219886f40880c4954e9d2be395a697e6fb5a",
+                  "result_hash": "f08270d7560be80783e0f4bb65694673be235163156afeac3f5645388b8f5cab",
+                  "operation_hash": "f08a8b75ccd48d30f2749921ca6938410d7ae16877c648a67940356b8c56d9ef",
+                  "operation_version": "courtload-assistant-operations-v1",
+                  "context_fingerprint": "60ebaba78187ff22c32d3dd5db8b93a4f8d97244fdc4e377857f2b4c91ed2b47",
+                  "entity_id": "1628983",
+                  "row_identity": "/items/1/sample_sizes",
+                  "path": "/items/1/sample_sizes/pts_per_game",
+                  "metric": "pts_per_game_valid_observations",
+                  "metric_version": "v2",
+                  "unit": "observations",
+                  "value": 68,
+                  "sample": {
+                    "games_played": 68,
+                    "total_minutes": 2259.0,
+                    "sample_sizes": {
+                      "pts_per_game": 68
+                    }
+                  },
+                  "input_identity": {
+                    "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "snapshot_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+                    "dataset_type": "workbench",
+                    "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666",
+                    "mode": "workbench_recent",
+                    "source": "sportsdataverse",
+                    "season": "2025-26",
+                    "phase": "regular_season",
+                    "before_date": "2026-04-13",
+                    "cutoff_utc": "2026-04-13T04:00:00+00:00",
+                    "window": "season",
+                    "coverage_start": "2023-10-24",
+                    "coverage_end": "2026-06-13",
+                    "metric_version": "v2",
+                    "published_at": null
+                  },
+                  "null_reason": null
+                },
+                {
+                  "evidence_id": "378a1bdafa6551fffea31250ed326d600ac4ab8600d149f4c44acd7128f7df66",
+                  "result_hash": "f08270d7560be80783e0f4bb65694673be235163156afeac3f5645388b8f5cab",
+                  "operation_hash": "f08a8b75ccd48d30f2749921ca6938410d7ae16877c648a67940356b8c56d9ef",
+                  "operation_version": "courtload-assistant-operations-v1",
+                  "context_fingerprint": "60ebaba78187ff22c32d3dd5db8b93a4f8d97244fdc4e377857f2b4c91ed2b47",
+                  "entity_id": "1630162",
+                  "row_identity": "/items/2",
+                  "path": "/items/2/stints_count",
+                  "metric": "stints_count",
+                  "metric_version": "v2",
+                  "unit": "dimensionless",
+                  "value": 1,
+                  "sample": {
+                    "games_played": 61,
+                    "total_minutes": 2136.6,
+                    "sample_sizes": {
+                      "pts_per_game": 61
+                    }
+                  },
+                  "input_identity": {
+                    "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "snapshot_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+                    "dataset_type": "workbench",
+                    "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666",
+                    "mode": "workbench_recent",
+                    "source": "sportsdataverse",
+                    "season": "2025-26",
+                    "phase": "regular_season",
+                    "before_date": "2026-04-13",
+                    "cutoff_utc": "2026-04-13T04:00:00+00:00",
+                    "window": "season",
+                    "coverage_start": "2023-10-24",
+                    "coverage_end": "2026-06-13",
+                    "metric_version": "v2",
+                    "published_at": null
+                  },
+                  "null_reason": null
+                },
+                {
+                  "evidence_id": "620b91d590c8c7946a6f5050db230dd2a188071f474992a6e7e8e6d812f4e795",
+                  "result_hash": "f08270d7560be80783e0f4bb65694673be235163156afeac3f5645388b8f5cab",
+                  "operation_hash": "f08a8b75ccd48d30f2749921ca6938410d7ae16877c648a67940356b8c56d9ef",
+                  "operation_version": "courtload-assistant-operations-v1",
+                  "context_fingerprint": "60ebaba78187ff22c32d3dd5db8b93a4f8d97244fdc4e377857f2b4c91ed2b47",
+                  "entity_id": "1630162",
+                  "row_identity": "/items/2",
+                  "path": "/items/2/games_played",
+                  "metric": "games_played",
+                  "metric_version": "v2",
+                  "unit": "observations",
+                  "value": 61,
+                  "sample": {
+                    "games_played": 61,
+                    "total_minutes": 2136.6,
+                    "sample_sizes": {
+                      "pts_per_game": 61
+                    }
+                  },
+                  "input_identity": {
+                    "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "snapshot_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+                    "dataset_type": "workbench",
+                    "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666",
+                    "mode": "workbench_recent",
+                    "source": "sportsdataverse",
+                    "season": "2025-26",
+                    "phase": "regular_season",
+                    "before_date": "2026-04-13",
+                    "cutoff_utc": "2026-04-13T04:00:00+00:00",
+                    "window": "season",
+                    "coverage_start": "2023-10-24",
+                    "coverage_end": "2026-06-13",
+                    "metric_version": "v2",
+                    "published_at": null
+                  },
+                  "null_reason": null
+                },
+                {
+                  "evidence_id": "53f052bda564bb8336032d55358dcff510dd10d5cea200f5df0b97aaf95bd684",
+                  "result_hash": "f08270d7560be80783e0f4bb65694673be235163156afeac3f5645388b8f5cab",
+                  "operation_hash": "f08a8b75ccd48d30f2749921ca6938410d7ae16877c648a67940356b8c56d9ef",
+                  "operation_version": "courtload-assistant-operations-v1",
+                  "context_fingerprint": "60ebaba78187ff22c32d3dd5db8b93a4f8d97244fdc4e377857f2b4c91ed2b47",
+                  "entity_id": "1630162",
+                  "row_identity": "/items/2",
+                  "path": "/items/2/total_minutes",
+                  "metric": "total_minutes",
+                  "metric_version": "v2",
+                  "unit": "minutes",
+                  "value": 2136.6,
+                  "sample": {
+                    "games_played": 61,
+                    "total_minutes": 2136.6,
+                    "sample_sizes": {
+                      "pts_per_game": 61
+                    }
+                  },
+                  "input_identity": {
+                    "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "snapshot_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+                    "dataset_type": "workbench",
+                    "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666",
+                    "mode": "workbench_recent",
+                    "source": "sportsdataverse",
+                    "season": "2025-26",
+                    "phase": "regular_season",
+                    "before_date": "2026-04-13",
+                    "cutoff_utc": "2026-04-13T04:00:00+00:00",
+                    "window": "season",
+                    "coverage_start": "2023-10-24",
+                    "coverage_end": "2026-06-13",
+                    "metric_version": "v2",
+                    "published_at": null
+                  },
+                  "null_reason": null
+                },
+                {
+                  "evidence_id": "218909a330a3275e8c3fbab9e078172bb7fe8e3f2968834ec62b292acb42670f",
+                  "result_hash": "f08270d7560be80783e0f4bb65694673be235163156afeac3f5645388b8f5cab",
+                  "operation_hash": "f08a8b75ccd48d30f2749921ca6938410d7ae16877c648a67940356b8c56d9ef",
+                  "operation_version": "courtload-assistant-operations-v1",
+                  "context_fingerprint": "60ebaba78187ff22c32d3dd5db8b93a4f8d97244fdc4e377857f2b4c91ed2b47",
+                  "entity_id": "1630162",
+                  "row_identity": "/items/2/metrics",
+                  "path": "/items/2/metrics/pts_per_game",
+                  "metric": "pts_per_game",
+                  "metric_version": "v2",
+                  "unit": "points",
+                  "value": 28.8,
+                  "sample": {
+                    "games_played": 61,
+                    "total_minutes": 2136.6,
+                    "sample_sizes": {
+                      "pts_per_game": 61
+                    }
+                  },
+                  "input_identity": {
+                    "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "snapshot_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+                    "dataset_type": "workbench",
+                    "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666",
+                    "mode": "workbench_recent",
+                    "source": "sportsdataverse",
+                    "season": "2025-26",
+                    "phase": "regular_season",
+                    "before_date": "2026-04-13",
+                    "cutoff_utc": "2026-04-13T04:00:00+00:00",
+                    "window": "season",
+                    "coverage_start": "2023-10-24",
+                    "coverage_end": "2026-06-13",
+                    "metric_version": "v2",
+                    "published_at": null
+                  },
+                  "null_reason": null
+                },
+                {
+                  "evidence_id": "94d39952c90ef7795992e272c8c9ce49845fb7a73c63dc43be55eb2bae545f09",
+                  "result_hash": "f08270d7560be80783e0f4bb65694673be235163156afeac3f5645388b8f5cab",
+                  "operation_hash": "f08a8b75ccd48d30f2749921ca6938410d7ae16877c648a67940356b8c56d9ef",
+                  "operation_version": "courtload-assistant-operations-v1",
+                  "context_fingerprint": "60ebaba78187ff22c32d3dd5db8b93a4f8d97244fdc4e377857f2b4c91ed2b47",
+                  "entity_id": "1630162",
+                  "row_identity": "/items/2/sample_sizes",
+                  "path": "/items/2/sample_sizes/pts_per_game",
+                  "metric": "pts_per_game_valid_observations",
+                  "metric_version": "v2",
+                  "unit": "observations",
+                  "value": 61,
+                  "sample": {
+                    "games_played": 61,
+                    "total_minutes": 2136.6,
+                    "sample_sizes": {
+                      "pts_per_game": 61
+                    }
+                  },
+                  "input_identity": {
+                    "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "snapshot_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+                    "dataset_type": "workbench",
+                    "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666",
+                    "mode": "workbench_recent",
+                    "source": "sportsdataverse",
+                    "season": "2025-26",
+                    "phase": "regular_season",
+                    "before_date": "2026-04-13",
+                    "cutoff_utc": "2026-04-13T04:00:00+00:00",
+                    "window": "season",
+                    "coverage_start": "2023-10-24",
+                    "coverage_end": "2026-06-13",
+                    "metric_version": "v2",
+                    "published_at": null
+                  },
+                  "null_reason": null
+                },
+                {
+                  "evidence_id": "f44f649199a5253a7711d47639e76cc806ca5ac7bf19d87b87162dc9ed59a4f4",
+                  "result_hash": "f08270d7560be80783e0f4bb65694673be235163156afeac3f5645388b8f5cab",
+                  "operation_hash": "f08a8b75ccd48d30f2749921ca6938410d7ae16877c648a67940356b8c56d9ef",
+                  "operation_version": "courtload-assistant-operations-v1",
+                  "context_fingerprint": "60ebaba78187ff22c32d3dd5db8b93a4f8d97244fdc4e377857f2b4c91ed2b47",
+                  "entity_id": "1627759",
+                  "row_identity": "/items/3",
+                  "path": "/items/3/stints_count",
+                  "metric": "stints_count",
+                  "metric_version": "v2",
+                  "unit": "dimensionless",
+                  "value": 1,
+                  "sample": {
+                    "games_played": 70,
+                    "total_minutes": 2410.9,
+                    "sample_sizes": {
+                      "pts_per_game": 70
+                    }
+                  },
+                  "input_identity": {
+                    "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "snapshot_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+                    "dataset_type": "workbench",
+                    "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666",
+                    "mode": "workbench_recent",
+                    "source": "sportsdataverse",
+                    "season": "2025-26",
+                    "phase": "regular_season",
+                    "before_date": "2026-04-13",
+                    "cutoff_utc": "2026-04-13T04:00:00+00:00",
+                    "window": "season",
+                    "coverage_start": "2023-10-24",
+                    "coverage_end": "2026-06-13",
+                    "metric_version": "v2",
+                    "published_at": null
+                  },
+                  "null_reason": null
+                },
+                {
+                  "evidence_id": "9ba090538d07ed7417131af37dc3cf8e5f8296e87c1f6ae8d6d5d34f0fbfa198",
+                  "result_hash": "f08270d7560be80783e0f4bb65694673be235163156afeac3f5645388b8f5cab",
+                  "operation_hash": "f08a8b75ccd48d30f2749921ca6938410d7ae16877c648a67940356b8c56d9ef",
+                  "operation_version": "courtload-assistant-operations-v1",
+                  "context_fingerprint": "60ebaba78187ff22c32d3dd5db8b93a4f8d97244fdc4e377857f2b4c91ed2b47",
+                  "entity_id": "1627759",
+                  "row_identity": "/items/3",
+                  "path": "/items/3/games_played",
+                  "metric": "games_played",
+                  "metric_version": "v2",
+                  "unit": "observations",
+                  "value": 70,
+                  "sample": {
+                    "games_played": 70,
+                    "total_minutes": 2410.9,
+                    "sample_sizes": {
+                      "pts_per_game": 70
+                    }
+                  },
+                  "input_identity": {
+                    "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "snapshot_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+                    "dataset_type": "workbench",
+                    "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666",
+                    "mode": "workbench_recent",
+                    "source": "sportsdataverse",
+                    "season": "2025-26",
+                    "phase": "regular_season",
+                    "before_date": "2026-04-13",
+                    "cutoff_utc": "2026-04-13T04:00:00+00:00",
+                    "window": "season",
+                    "coverage_start": "2023-10-24",
+                    "coverage_end": "2026-06-13",
+                    "metric_version": "v2",
+                    "published_at": null
+                  },
+                  "null_reason": null
+                },
+                {
+                  "evidence_id": "8f3f91dc35b8a57e29b76c7bd135303cafc8f4f1a9a54f2aee0215ba8d65b4a6",
+                  "result_hash": "f08270d7560be80783e0f4bb65694673be235163156afeac3f5645388b8f5cab",
+                  "operation_hash": "f08a8b75ccd48d30f2749921ca6938410d7ae16877c648a67940356b8c56d9ef",
+                  "operation_version": "courtload-assistant-operations-v1",
+                  "context_fingerprint": "60ebaba78187ff22c32d3dd5db8b93a4f8d97244fdc4e377857f2b4c91ed2b47",
+                  "entity_id": "1627759",
+                  "row_identity": "/items/3",
+                  "path": "/items/3/total_minutes",
+                  "metric": "total_minutes",
+                  "metric_version": "v2",
+                  "unit": "minutes",
+                  "value": 2410.9,
+                  "sample": {
+                    "games_played": 70,
+                    "total_minutes": 2410.9,
+                    "sample_sizes": {
+                      "pts_per_game": 70
+                    }
+                  },
+                  "input_identity": {
+                    "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "snapshot_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+                    "dataset_type": "workbench",
+                    "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666",
+                    "mode": "workbench_recent",
+                    "source": "sportsdataverse",
+                    "season": "2025-26",
+                    "phase": "regular_season",
+                    "before_date": "2026-04-13",
+                    "cutoff_utc": "2026-04-13T04:00:00+00:00",
+                    "window": "season",
+                    "coverage_start": "2023-10-24",
+                    "coverage_end": "2026-06-13",
+                    "metric_version": "v2",
+                    "published_at": null
+                  },
+                  "null_reason": null
+                },
+                {
+                  "evidence_id": "aaf5bd9642be911803bbbf5996191271fb6c571c634635943cac622d403c7bf3",
+                  "result_hash": "f08270d7560be80783e0f4bb65694673be235163156afeac3f5645388b8f5cab",
+                  "operation_hash": "f08a8b75ccd48d30f2749921ca6938410d7ae16877c648a67940356b8c56d9ef",
+                  "operation_version": "courtload-assistant-operations-v1",
+                  "context_fingerprint": "60ebaba78187ff22c32d3dd5db8b93a4f8d97244fdc4e377857f2b4c91ed2b47",
+                  "entity_id": "1627759",
+                  "row_identity": "/items/3/metrics",
+                  "path": "/items/3/metrics/pts_per_game",
+                  "metric": "pts_per_game",
+                  "metric_version": "v2",
+                  "unit": "points",
+                  "value": 28.7,
+                  "sample": {
+                    "games_played": 70,
+                    "total_minutes": 2410.9,
+                    "sample_sizes": {
+                      "pts_per_game": 70
+                    }
+                  },
+                  "input_identity": {
+                    "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "snapshot_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+                    "dataset_type": "workbench",
+                    "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666",
+                    "mode": "workbench_recent",
+                    "source": "sportsdataverse",
+                    "season": "2025-26",
+                    "phase": "regular_season",
+                    "before_date": "2026-04-13",
+                    "cutoff_utc": "2026-04-13T04:00:00+00:00",
+                    "window": "season",
+                    "coverage_start": "2023-10-24",
+                    "coverage_end": "2026-06-13",
+                    "metric_version": "v2",
+                    "published_at": null
+                  },
+                  "null_reason": null
+                },
+                {
+                  "evidence_id": "38a75e760c1adf105fbb4a3cc4180c98adb35218de210bfc398366131abf6741",
+                  "result_hash": "f08270d7560be80783e0f4bb65694673be235163156afeac3f5645388b8f5cab",
+                  "operation_hash": "f08a8b75ccd48d30f2749921ca6938410d7ae16877c648a67940356b8c56d9ef",
+                  "operation_version": "courtload-assistant-operations-v1",
+                  "context_fingerprint": "60ebaba78187ff22c32d3dd5db8b93a4f8d97244fdc4e377857f2b4c91ed2b47",
+                  "entity_id": "1627759",
+                  "row_identity": "/items/3/sample_sizes",
+                  "path": "/items/3/sample_sizes/pts_per_game",
+                  "metric": "pts_per_game_valid_observations",
+                  "metric_version": "v2",
+                  "unit": "observations",
+                  "value": 70,
+                  "sample": {
+                    "games_played": 70,
+                    "total_minutes": 2410.9,
+                    "sample_sizes": {
+                      "pts_per_game": 70
+                    }
+                  },
+                  "input_identity": {
+                    "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "snapshot_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+                    "dataset_type": "workbench",
+                    "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666",
+                    "mode": "workbench_recent",
+                    "source": "sportsdataverse",
+                    "season": "2025-26",
+                    "phase": "regular_season",
+                    "before_date": "2026-04-13",
+                    "cutoff_utc": "2026-04-13T04:00:00+00:00",
+                    "window": "season",
+                    "coverage_start": "2023-10-24",
+                    "coverage_end": "2026-06-13",
+                    "metric_version": "v2",
+                    "published_at": null
+                  },
+                  "null_reason": null
+                },
+                {
+                  "evidence_id": "ab2ac4117284fef7f766b3ece6269608c9bcd3e68e6149ee5cd45d9052d04bf4",
+                  "result_hash": "f08270d7560be80783e0f4bb65694673be235163156afeac3f5645388b8f5cab",
+                  "operation_hash": "f08a8b75ccd48d30f2749921ca6938410d7ae16877c648a67940356b8c56d9ef",
+                  "operation_version": "courtload-assistant-operations-v1",
+                  "context_fingerprint": "60ebaba78187ff22c32d3dd5db8b93a4f8d97244fdc4e377857f2b4c91ed2b47",
+                  "entity_id": "1630178",
+                  "row_identity": "/items/4",
+                  "path": "/items/4/stints_count",
+                  "metric": "stints_count",
+                  "metric_version": "v2",
+                  "unit": "dimensionless",
+                  "value": 1,
+                  "sample": {
+                    "games_played": 70,
+                    "total_minutes": 2661.2,
+                    "sample_sizes": {
+                      "pts_per_game": 70
+                    }
+                  },
+                  "input_identity": {
+                    "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "snapshot_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+                    "dataset_type": "workbench",
+                    "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666",
+                    "mode": "workbench_recent",
+                    "source": "sportsdataverse",
+                    "season": "2025-26",
+                    "phase": "regular_season",
+                    "before_date": "2026-04-13",
+                    "cutoff_utc": "2026-04-13T04:00:00+00:00",
+                    "window": "season",
+                    "coverage_start": "2023-10-24",
+                    "coverage_end": "2026-06-13",
+                    "metric_version": "v2",
+                    "published_at": null
+                  },
+                  "null_reason": null
+                },
+                {
+                  "evidence_id": "3fc49569c733e83594f5cd5847fc44144ac14fac8ab521575450831802118a99",
+                  "result_hash": "f08270d7560be80783e0f4bb65694673be235163156afeac3f5645388b8f5cab",
+                  "operation_hash": "f08a8b75ccd48d30f2749921ca6938410d7ae16877c648a67940356b8c56d9ef",
+                  "operation_version": "courtload-assistant-operations-v1",
+                  "context_fingerprint": "60ebaba78187ff22c32d3dd5db8b93a4f8d97244fdc4e377857f2b4c91ed2b47",
+                  "entity_id": "1630178",
+                  "row_identity": "/items/4",
+                  "path": "/items/4/games_played",
+                  "metric": "games_played",
+                  "metric_version": "v2",
+                  "unit": "observations",
+                  "value": 70,
+                  "sample": {
+                    "games_played": 70,
+                    "total_minutes": 2661.2,
+                    "sample_sizes": {
+                      "pts_per_game": 70
+                    }
+                  },
+                  "input_identity": {
+                    "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "snapshot_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+                    "dataset_type": "workbench",
+                    "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666",
+                    "mode": "workbench_recent",
+                    "source": "sportsdataverse",
+                    "season": "2025-26",
+                    "phase": "regular_season",
+                    "before_date": "2026-04-13",
+                    "cutoff_utc": "2026-04-13T04:00:00+00:00",
+                    "window": "season",
+                    "coverage_start": "2023-10-24",
+                    "coverage_end": "2026-06-13",
+                    "metric_version": "v2",
+                    "published_at": null
+                  },
+                  "null_reason": null
+                },
+                {
+                  "evidence_id": "56cdc1b5c5f1845862ab324f2ad1e56712f274ebc8a2f7c6ae94a92ac26dd531",
+                  "result_hash": "f08270d7560be80783e0f4bb65694673be235163156afeac3f5645388b8f5cab",
+                  "operation_hash": "f08a8b75ccd48d30f2749921ca6938410d7ae16877c648a67940356b8c56d9ef",
+                  "operation_version": "courtload-assistant-operations-v1",
+                  "context_fingerprint": "60ebaba78187ff22c32d3dd5db8b93a4f8d97244fdc4e377857f2b4c91ed2b47",
+                  "entity_id": "1630178",
+                  "row_identity": "/items/4",
+                  "path": "/items/4/total_minutes",
+                  "metric": "total_minutes",
+                  "metric_version": "v2",
+                  "unit": "minutes",
+                  "value": 2661.2,
+                  "sample": {
+                    "games_played": 70,
+                    "total_minutes": 2661.2,
+                    "sample_sizes": {
+                      "pts_per_game": 70
+                    }
+                  },
+                  "input_identity": {
+                    "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "snapshot_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+                    "dataset_type": "workbench",
+                    "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666",
+                    "mode": "workbench_recent",
+                    "source": "sportsdataverse",
+                    "season": "2025-26",
+                    "phase": "regular_season",
+                    "before_date": "2026-04-13",
+                    "cutoff_utc": "2026-04-13T04:00:00+00:00",
+                    "window": "season",
+                    "coverage_start": "2023-10-24",
+                    "coverage_end": "2026-06-13",
+                    "metric_version": "v2",
+                    "published_at": null
+                  },
+                  "null_reason": null
+                },
+                {
+                  "evidence_id": "76bb4a332da999a62fe0f485ce419faaceb3f7667676cbef3def53fd72d929cc",
+                  "result_hash": "f08270d7560be80783e0f4bb65694673be235163156afeac3f5645388b8f5cab",
+                  "operation_hash": "f08a8b75ccd48d30f2749921ca6938410d7ae16877c648a67940356b8c56d9ef",
+                  "operation_version": "courtload-assistant-operations-v1",
+                  "context_fingerprint": "60ebaba78187ff22c32d3dd5db8b93a4f8d97244fdc4e377857f2b4c91ed2b47",
+                  "entity_id": "1630178",
+                  "row_identity": "/items/4/metrics",
+                  "path": "/items/4/metrics/pts_per_game",
+                  "metric": "pts_per_game",
+                  "metric_version": "v2",
+                  "unit": "points",
+                  "value": 28.3,
+                  "sample": {
+                    "games_played": 70,
+                    "total_minutes": 2661.2,
+                    "sample_sizes": {
+                      "pts_per_game": 70
+                    }
+                  },
+                  "input_identity": {
+                    "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "snapshot_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+                    "dataset_type": "workbench",
+                    "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666",
+                    "mode": "workbench_recent",
+                    "source": "sportsdataverse",
+                    "season": "2025-26",
+                    "phase": "regular_season",
+                    "before_date": "2026-04-13",
+                    "cutoff_utc": "2026-04-13T04:00:00+00:00",
+                    "window": "season",
+                    "coverage_start": "2023-10-24",
+                    "coverage_end": "2026-06-13",
+                    "metric_version": "v2",
+                    "published_at": null
+                  },
+                  "null_reason": null
+                },
+                {
+                  "evidence_id": "5b32d333cbd5ef3a98c12ea9d81fcccd5d4b75eb0c3bf325df77e65ee17b12fc",
+                  "result_hash": "f08270d7560be80783e0f4bb65694673be235163156afeac3f5645388b8f5cab",
+                  "operation_hash": "f08a8b75ccd48d30f2749921ca6938410d7ae16877c648a67940356b8c56d9ef",
+                  "operation_version": "courtload-assistant-operations-v1",
+                  "context_fingerprint": "60ebaba78187ff22c32d3dd5db8b93a4f8d97244fdc4e377857f2b4c91ed2b47",
+                  "entity_id": "1630178",
+                  "row_identity": "/items/4/sample_sizes",
+                  "path": "/items/4/sample_sizes/pts_per_game",
+                  "metric": "pts_per_game_valid_observations",
+                  "metric_version": "v2",
+                  "unit": "observations",
+                  "value": 70,
+                  "sample": {
+                    "games_played": 70,
+                    "total_minutes": 2661.2,
+                    "sample_sizes": {
+                      "pts_per_game": 70
+                    }
+                  },
+                  "input_identity": {
+                    "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "snapshot_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+                    "dataset_type": "workbench",
+                    "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666",
+                    "mode": "workbench_recent",
+                    "source": "sportsdataverse",
+                    "season": "2025-26",
+                    "phase": "regular_season",
+                    "before_date": "2026-04-13",
+                    "cutoff_utc": "2026-04-13T04:00:00+00:00",
+                    "window": "season",
+                    "coverage_start": "2023-10-24",
+                    "coverage_end": "2026-06-13",
+                    "metric_version": "v2",
+                    "published_at": null
+                  },
+                  "null_reason": null
+                },
+                {
+                  "evidence_id": "a549b3ef18e434617f279019064dea077eec1be47e57dd0c5cc3f39f69a4c8d9",
+                  "result_hash": "f08270d7560be80783e0f4bb65694673be235163156afeac3f5645388b8f5cab",
+                  "operation_hash": "f08a8b75ccd48d30f2749921ca6938410d7ae16877c648a67940356b8c56d9ef",
+                  "operation_version": "courtload-assistant-operations-v1",
+                  "context_fingerprint": "60ebaba78187ff22c32d3dd5db8b93a4f8d97244fdc4e377857f2b4c91ed2b47",
+                  "entity_id": "cohort",
+                  "row_identity": "",
+                  "path": "/total_eligible",
+                  "metric": "total_eligible",
+                  "metric_version": "v2",
+                  "unit": "observations",
+                  "value": 591,
+                  "sample": {},
+                  "input_identity": {
+                    "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "snapshot_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                    "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+                    "dataset_type": "workbench",
+                    "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666",
+                    "mode": "workbench_recent",
+                    "source": "sportsdataverse",
+                    "season": "2025-26",
+                    "phase": "regular_season",
+                    "before_date": "2026-04-13",
+                    "cutoff_utc": "2026-04-13T04:00:00+00:00",
+                    "window": "season",
+                    "coverage_start": "2023-10-24",
+                    "coverage_end": "2026-06-13",
+                    "metric_version": "v2",
+                    "published_at": null
+                  },
+                  "null_reason": null
+                }
+              ],
+              "open_url": "/stats?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&window=season&sortMetric=pts_per_game&sortDirection=desc&limit=5&metrics=%5B%7B%22key%22%3A+%22pts_per_game%22%2C+%22version%22%3A+null%2C+%22normalization%22%3A+%22raw%22%2C+%22denominator_type%22%3A+null%7D%5D",
+              "eligible_count": 591,
+              "limitations": []
+            }
+          },
+          {
+            "kind": "text",
+            "origin": "knowledge",
+            "text": "A pick and roll is an action where a teammate screens the ball handler\u2019s defender, then moves toward the basket. The ball handler can drive, pass to the rolling teammate or find another open player. Defensive responses include switching, dropping and showing help; the best choice depends on personnel and spacing.",
+            "source_ids": [
+              "courtload-knowledge-v1:pick_roll:c331fa0ec35feff63f0221d55eb9e06738dabcec35d3795086d88a5d7b9711f3"
+            ],
+            "criteria": []
+          }
+        ],
+        "sources": [
+          {
+            "source_id": "courtload-knowledge-v1:pick_roll:c331fa0ec35feff63f0221d55eb9e06738dabcec35d3795086d88a5d7b9711f3",
+            "origin": "knowledge",
+            "title": "Pick and roll",
+            "publisher": "CourtLoad",
+            "url": null,
+            "updated_on": "2026-10-05",
+            "retrieved_at": null,
+            "period": null,
+            "content_sha256": "c331fa0ec35feff63f0221d55eb9e06738dabcec35d3795086d88a5d7b9711f3",
+            "locator": "guide.md#pick_roll",
+            "excerpt": "A pick and roll is an action where a teammate screens the ball handler\u2019s defender, then moves toward the basket. The ball handler can drive, pass to the rolling teammate or find another open player. Defensive responses include switching, dropping and showing help; the best choice depends on personnel and spacing.",
+            "verification": "curated",
+            "facts": []
+          }
+        ],
+        "actions": [
+          {
+            "kind": "executed_operation",
+            "label": "Open equivalent analysis",
+            "url": "/stats?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&window=season&sortMetric=pts_per_game&sortDirection=desc&limit=5&metrics=%5B%7B%22key%22%3A+%22pts_per_game%22%2C+%22version%22%3A+null%2C+%22normalization%22%3A+%22raw%22%2C+%22denominator_type%22%3A+null%7D%5D",
+            "operation_hash": "f08a8b75ccd48d30f2749921ca6938410d7ae16877c648a67940356b8c56d9ef"
+          },
+          {
+            "kind": "navigation",
+            "label": "Pick and roll",
+            "url": "/learning",
+            "operation_hash": null
+          }
+        ],
+        "plan": {
+          "plan_version": "courtload-analysis-plan-v1",
+          "status": "execute",
+          "clarification": null,
+          "context_changes": null,
+          "steps": [
+            {
+              "step_id": "ranking",
+              "operation": "query",
+              "arguments": {
+                "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+                "season": "2025-26",
+                "phase": "regular_season",
+                "before_date": "2026-04-13",
+                "name": null,
+                "entity_kind": "player",
+                "window": {
+                  "kind": "season",
+                  "n": null,
+                  "from_date": null,
+                  "to_date": null
+                },
+                "season_scope": {
+                  "seasons": [],
+                  "aggregate_multi_season": false
+                },
+                "team_scope": {
+                  "team_id": null,
+                  "participation_only": true,
+                  "current_roster_only": false
+                },
+                "metric_selectors": [
+                  {
+                    "key": "pts_per_game",
+                    "version": null,
+                    "normalization": "raw",
+                    "denominator_type": null
+                  }
+                ],
+                "predicates": null,
+                "sample_filters": {
+                  "min_games": null,
+                  "min_minutes": null,
+                  "min_avg_minutes": null,
+                  "min_possessions": null,
+                  "min_attempts": null
+                },
+                "sort": [
+                  {
+                    "field": "pts_per_game",
+                    "direction": "desc",
+                    "nulls_last": true
+                  }
+                ],
+                "view_state": null,
+                "page": {
+                  "limit": 5,
+                  "cursor": null
+                }
+              },
+              "depends_on": []
+            }
+          ],
+          "output_kind": "table"
+        },
+        "accounting": {
+          "provider_calls": 0,
+          "analytical_calls": 1,
+          "source_requests": 0,
+          "rows": 5,
+          "elapsed_ms": 742.367
+        },
+        "saveable": true
+      }
+    },
+    {
+      "message": "Who is on the roster today?",
+      "latency_ms": 1.8142060143873096,
+      "answer": {
+        "schema_version": "courtload-assistant-v2",
+        "request_id": "6b5499ee-7957-41be-8200-33aa2e5abd16",
+        "thread_id": "8465f90c-c61a-4b54-8ca2-e9a1b9fe1c4c",
+        "turn_id": "75cea013-94fe-4883-b37b-ff95c96145a6",
+        "status": "unable",
+        "intent": "external",
+        "scope": {
+          "as_of": "2026-10-05",
+          "timezone": "America/New_York",
+          "calendar_version": "nba-completed-seasons-2019-2026-v1",
+          "calendar_sha256": "bc98f7f7956a70b4a6f0f4f21216be4973b78e482c3a100d4f059ad37380a560",
+          "selections": {
+            "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+            "season": "2025-26",
+            "phase": "regular_season",
+            "before_date": "2026-04-13",
+            "window": "season"
+          },
+          "local_context": null,
+          "context_fingerprint": null,
+          "assumptions": [
+            "Inherited selected scope."
+          ],
+          "label": "2025-26 \u00b7 regular season \u00b7 season"
+        },
+        "blocks": [
+          {
+            "kind": "inability",
+            "reason": "external_unavailable",
+            "text": "I cannot verify that external or current NBA fact because no verified retrieval adapter is enabled.",
+            "next_action": "Consult an official dated NBA source, or ask about admitted local observations."
+          }
+        ],
+        "sources": [],
+        "actions": [
+          {
+            "kind": "navigation",
+            "label": "Open Stats",
+            "url": "/stats",
+            "operation_hash": null
+          }
+        ],
+        "plan": null,
+        "accounting": {
+          "provider_calls": 0,
+          "analytical_calls": 0,
+          "source_requests": 0,
+          "rows": 0,
+          "elapsed_ms": 0.175
+        },
+        "saveable": false
+      }
+    },
+    {
+      "message": "What is true shooting?",
+      "latency_ms": 1.4752389979548752,
+      "answer": {
+        "schema_version": "courtload-assistant-v2",
+        "request_id": "fb1502bc-bd26-489f-8f8d-bd775d500382",
+        "thread_id": "dd54c21c-51e2-4c26-aff8-99cd9cc47ebe",
+        "turn_id": "e2eadf4e-5601-49f8-81bf-edbb9baa5c9f",
+        "status": "answered",
+        "intent": "explanation",
+        "scope": null,
+        "blocks": [
+          {
+            "kind": "text",
+            "origin": "knowledge",
+            "text": "PPG and APG are points and assists per valid appearance. Shooting percentages use summed makes and attempts, rather than averaging game percentages. Effective field-goal percentage accounts for the extra value of made three-pointers. True shooting uses points relative to shooting opportunities with the declared free-throw approximation. A research sample filter is separate from NBA leader qualification.",
+            "source_ids": [
+              "courtload-knowledge-v1:metrics:b8e15efad2959a281abe9136d4c34868ee352385790f5a7dfe97ab74827f31a9"
+            ],
+            "criteria": []
+          }
+        ],
+        "sources": [
+          {
+            "source_id": "courtload-knowledge-v1:metrics:b8e15efad2959a281abe9136d4c34868ee352385790f5a7dfe97ab74827f31a9",
+            "origin": "knowledge",
+            "title": "Common metrics",
+            "publisher": "CourtLoad",
+            "url": null,
+            "updated_on": "2026-10-05",
+            "retrieved_at": null,
+            "period": null,
+            "content_sha256": "b8e15efad2959a281abe9136d4c34868ee352385790f5a7dfe97ab74827f31a9",
+            "locator": "guide.md#metrics",
+            "excerpt": "PPG and APG are points and assists per valid appearance. Shooting percentages use summed makes and attempts, rather than averaging game percentages. Effective field-goal percentage accounts for the extra value of made three-pointers. True shooting uses points relative to shooting opportunities with the declared free-throw approximation. A research sample filter is separate from NBA leader qualification.",
+            "verification": "curated",
+            "facts": []
+          }
+        ],
+        "actions": [
+          {
+            "kind": "navigation",
+            "label": "Common metrics",
+            "url": "/definitions",
+            "operation_hash": null
+          }
+        ],
+        "plan": null,
+        "accounting": {
+          "provider_calls": 0,
+          "analytical_calls": 0,
+          "source_requests": 0,
+          "rows": 0,
+          "elapsed_ms": 0.067
+        },
+        "saveable": false
+      }
+    },
+    {
+      "message": "Who is the better defender?",
+      "latency_ms": 1.4891950122546405,
+      "answer": {
+        "schema_version": "courtload-assistant-v2",
+        "request_id": "07334b40-baca-42bc-91a7-04a8e5b1962a",
+        "thread_id": "eb129cc0-6d1c-4713-9af5-5d26ec301df3",
+        "turn_id": "61e8636f-4b6e-4546-972b-05284827b305",
+        "status": "answered",
+        "intent": "discussion",
+        "scope": null,
+        "blocks": [
+          {
+            "kind": "text",
+            "origin": "knowledge",
+            "text": "For a defender comparison, I would weigh point-of-attack resistance, help positioning, rim protection, screen navigation and role. Steals and blocks describe particular events and do not by themselves measure overall defensive quality. A player-specific judgment needs supported examples and an explicit choice of criteria.",
+            "source_ids": [
+              "courtload-knowledge-v1:defense:6c7a1113084f766cbf6777461bc4c235e42f1924b27e28d4d37de285c3a68d75"
+            ],
+            "criteria": []
+          },
+          {
+            "kind": "text",
+            "origin": "discussion",
+            "text": "I would compare those roles and supported examples before choosing a player; I cannot establish a player-specific edge from this question alone.",
+            "source_ids": [],
+            "criteria": [
+              "role",
+              "screen navigation",
+              "help positioning",
+              "rim protection"
+            ]
+          }
+        ],
+        "sources": [
+          {
+            "source_id": "courtload-knowledge-v1:defense:6c7a1113084f766cbf6777461bc4c235e42f1924b27e28d4d37de285c3a68d75",
+            "origin": "knowledge",
+            "title": "Discussing defense",
+            "publisher": "CourtLoad",
+            "url": null,
+            "updated_on": "2026-10-05",
+            "retrieved_at": null,
+            "period": null,
+            "content_sha256": "6c7a1113084f766cbf6777461bc4c235e42f1924b27e28d4d37de285c3a68d75",
+            "locator": "guide.md#defense",
+            "excerpt": "For a defender comparison, I would weigh point-of-attack resistance, help positioning, rim protection, screen navigation and role. Steals and blocks describe particular events and do not by themselves measure overall defensive quality. A player-specific judgment needs supported examples and an explicit choice of criteria.",
+            "verification": "curated",
+            "facts": []
+          }
+        ],
+        "actions": [
+          {
+            "kind": "navigation",
+            "label": "Discussing defense",
+            "url": "/definitions",
+            "operation_hash": null
+          }
+        ],
+        "plan": null,
+        "accounting": {
+          "provider_calls": 0,
+          "analytical_calls": 0,
+          "source_requests": 0,
+          "rows": 0,
+          "elapsed_ms": 0.363
+        },
+        "saveable": false
+      }
+    },
+    {
+      "message": "last year",
+      "latency_ms": 1.1172950034961104,
+      "answer": {
+        "schema_version": "courtload-assistant-v2",
+        "request_id": "77c8f1bc-50fa-4458-bbce-435e090feb1c",
+        "thread_id": "fcf13590-a7f0-4674-96b9-b1770d8601fa",
+        "turn_id": "5e1fc2c8-b85d-46fc-b0db-4ebc9c2aabba",
+        "status": "clarification_required",
+        "intent": "local_analysis",
+        "scope": null,
+        "blocks": [
+          {
+            "kind": "clarification",
+            "text": "Do you mean a calendar year or an NBA season?",
+            "choices": []
+          }
+        ],
+        "sources": [],
+        "actions": [],
+        "plan": null,
+        "accounting": {
+          "provider_calls": 0,
+          "analytical_calls": 0,
+          "source_requests": 0,
+          "rows": 0,
+          "elapsed_ms": 0.054
+        },
+        "saveable": false
+      }
+    },
+    {
+      "message": "Execute SQL SELECT * FROM players",
+      "latency_ms": 1.0548059944994748,
+      "answer": {
+        "schema_version": "courtload-assistant-v2",
+        "request_id": "bbfcb159-4bf7-44e1-84dc-372b81691943",
+        "thread_id": "7e95aa29-2e2d-4c3e-9f4a-81cda671bce1",
+        "turn_id": "7705a7dc-6f47-4c51-98c8-5dee1149acb7",
+        "status": "unable",
+        "intent": "inability",
+        "scope": null,
+        "blocks": [
+          {
+            "kind": "inability",
+            "reason": "prohibited_action",
+            "text": "I can explain or analyze basketball, but cannot execute code, access secrets or change data through chat.",
+            "next_action": "Use a read-only basketball question or the appropriate manual settings action."
+          }
+        ],
+        "sources": [],
+        "actions": [
+          {
+            "kind": "navigation",
+            "label": "Open Stats",
+            "url": "/stats",
+            "operation_hash": null
+          }
+        ],
+        "plan": null,
+        "accounting": {
+          "provider_calls": 0,
+          "analytical_calls": 0,
+          "source_requests": 0,
+          "rows": 0,
+          "elapsed_ms": 0.028
+        },
+        "saveable": false
+      }
+    }
+  ]
+}

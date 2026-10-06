@@ -1,0 +1,595 @@
+{
+  "environment": "Production webpack + real FastAPI/PostgreSQL, headed Chromium under Xvfb",
+  "previews": [
+    {
+      "route": "/stats",
+      "size": "wide",
+      "viewport": [
+        2560,
+        1440
+      ],
+      "dpr": 1,
+      "documentWidth": 2545,
+      "clientWidth": 2545,
+      "content": {
+        "left": 0,
+        "width": 2545
+      },
+      "shell": {
+        ".replica-top-row": 57,
+        ".replica-nav-row": 46,
+        ".context-bar": 64
+      },
+      "theme": {
+        "--bg": "rgb(12, 13, 16)",
+        "--surface": "rgb(21, 23, 28)",
+        "--surface-raised": "rgb(32, 35, 41)",
+        "--text": "rgb(242, 243, 245)",
+        "--text-muted": "rgb(169, 175, 185)",
+        "--accent": "rgb(255, 209, 102)",
+        "--border": "rgb(112, 119, 131)"
+      },
+      "fields": [
+        {
+          "label": "Filter by season",
+          "height": 40,
+          "inset": 36,
+          "chevron": true
+        },
+        {
+          "label": "Filter by competition phase",
+          "height": 40,
+          "inset": 36,
+          "chevron": true
+        },
+        {
+          "label": "Analysis window",
+          "height": 40,
+          "inset": 36,
+          "chevron": true
+        },
+        {
+          "label": "Filter by NBA team",
+          "height": 40,
+          "inset": 36,
+          "chevron": true
+        },
+        {
+          "label": "Sort table by metric",
+          "height": 40,
+          "inset": 36,
+          "chevron": true
+        },
+        {
+          "label": "Results per page",
+          "height": 40,
+          "inset": 36,
+          "chevron": true
+        }
+      ],
+      "contrast": {
+        "--text/--bg": 17.502061083180102,
+        "--text-muted/--bg": 8.808816552669251,
+        "--accent/--bg": 13.476691827381057,
+        "--text/--surface": 16.149248260857824,
+        "--text-muted/--surface": 8.127943601460785,
+        "--accent/--surface": 12.435017854246098,
+        "--text/--surface-raised": 14.180187205111407,
+        "--text-muted/--surface-raised": 7.136911885902183,
+        "--accent/--surface-raised": 10.918829051597353
+      }
+    },
+    {
+      "route": "/research/ask",
+      "size": "wide",
+      "viewport": [
+        2560,
+        1440
+      ],
+      "dpr": 1,
+      "documentWidth": 2560,
+      "clientWidth": 2560,
+      "content": {
+        "left": 0,
+        "width": 2560
+      },
+      "shell": {
+        ".replica-top-row": 57,
+        ".replica-nav-row": 46,
+        ".context-bar": null
+      },
+      "theme": {
+        "--bg": "rgb(12, 13, 16)",
+        "--surface": "rgb(21, 23, 28)",
+        "--surface-raised": "rgb(32, 35, 41)",
+        "--text": "rgb(242, 243, 245)",
+        "--text-muted": "rgb(169, 175, 185)",
+        "--accent": "rgb(255, 209, 102)",
+        "--border": "rgb(112, 119, 131)"
+      },
+      "fields": [
+        {
+          "label": "",
+          "height": 40.5,
+          "inset": 36,
+          "chevron": true
+        },
+        {
+          "label": "",
+          "height": 40.5,
+          "inset": 36,
+          "chevron": true
+        }
+      ],
+      "contrast": {
+        "--text/--bg": 17.502061083180102,
+        "--text-muted/--bg": 8.808816552669251,
+        "--accent/--bg": 13.476691827381057,
+        "--text/--surface": 16.149248260857824,
+        "--text-muted/--surface": 8.127943601460785,
+        "--accent/--surface": 12.435017854246098,
+        "--text/--surface-raised": 14.180187205111407,
+        "--text-muted/--surface-raised": 7.136911885902183,
+        "--accent/--surface-raised": 10.918829051597353
+      }
+    },
+    {
+      "route": "/settings",
+      "size": "wide",
+      "viewport": [
+        2560,
+        1440
+      ],
+      "dpr": 1,
+      "documentWidth": 2545,
+      "clientWidth": 2545,
+      "content": {
+        "left": 0,
+        "width": 2545
+      },
+      "shell": {
+        ".replica-top-row": 57,
+        ".replica-nav-row": 46,
+        ".context-bar": null
+      },
+      "theme": {
+        "--bg": "rgb(12, 13, 16)",
+        "--surface": "rgb(21, 23, 28)",
+        "--surface-raised": "rgb(32, 35, 41)",
+        "--text": "rgb(242, 243, 245)",
+        "--text-muted": "rgb(169, 175, 185)",
+        "--accent": "rgb(255, 209, 102)",
+        "--border": "rgb(112, 119, 131)"
+      },
+      "fields": [],
+      "contrast": {
+        "--text/--bg": 17.502061083180102,
+        "--text-muted/--bg": 8.808816552669251,
+        "--accent/--bg": 13.476691827381057,
+        "--text/--surface": 16.149248260857824,
+        "--text-muted/--surface": 8.127943601460785,
+        "--accent/--surface": 12.435017854246098,
+        "--text/--surface-raised": 14.180187205111407,
+        "--text-muted/--surface-raised": 7.136911885902183,
+        "--accent/--surface-raised": 10.918829051597353
+      }
+    },
+    {
+      "route": "/stats",
+      "size": "desktop",
+      "viewport": [
+        1440,
+        900
+      ],
+      "dpr": 1,
+      "documentWidth": 1425,
+      "clientWidth": 1425,
+      "content": {
+        "left": 0,
+        "width": 1425
+      },
+      "shell": {
+        ".replica-top-row": 57,
+        ".replica-nav-row": 46,
+        ".context-bar": 64
+      },
+      "theme": {
+        "--bg": "rgb(12, 13, 16)",
+        "--surface": "rgb(21, 23, 28)",
+        "--surface-raised": "rgb(32, 35, 41)",
+        "--text": "rgb(242, 243, 245)",
+        "--text-muted": "rgb(169, 175, 185)",
+        "--accent": "rgb(255, 209, 102)",
+        "--border": "rgb(112, 119, 131)"
+      },
+      "fields": [
+        {
+          "label": "Filter by season",
+          "height": 40,
+          "inset": 36,
+          "chevron": true
+        },
+        {
+          "label": "Filter by competition phase",
+          "height": 40,
+          "inset": 36,
+          "chevron": true
+        },
+        {
+          "label": "Analysis window",
+          "height": 40,
+          "inset": 36,
+          "chevron": true
+        },
+        {
+          "label": "Filter by NBA team",
+          "height": 40,
+          "inset": 36,
+          "chevron": true
+        },
+        {
+          "label": "Sort table by metric",
+          "height": 40,
+          "inset": 36,
+          "chevron": true
+        },
+        {
+          "label": "Results per page",
+          "height": 40,
+          "inset": 36,
+          "chevron": true
+        }
+      ],
+      "contrast": {
+        "--text/--bg": 17.502061083180102,
+        "--text-muted/--bg": 8.808816552669251,
+        "--accent/--bg": 13.476691827381057,
+        "--text/--surface": 16.149248260857824,
+        "--text-muted/--surface": 8.127943601460785,
+        "--accent/--surface": 12.435017854246098,
+        "--text/--surface-raised": 14.180187205111407,
+        "--text-muted/--surface-raised": 7.136911885902183,
+        "--accent/--surface-raised": 10.918829051597353
+      }
+    },
+    {
+      "route": "/research/ask",
+      "size": "desktop",
+      "viewport": [
+        1440,
+        900
+      ],
+      "dpr": 1,
+      "documentWidth": 1425,
+      "clientWidth": 1425,
+      "content": {
+        "left": 0,
+        "width": 1425
+      },
+      "shell": {
+        ".replica-top-row": 57,
+        ".replica-nav-row": 46,
+        ".context-bar": null
+      },
+      "theme": {
+        "--bg": "rgb(12, 13, 16)",
+        "--surface": "rgb(21, 23, 28)",
+        "--surface-raised": "rgb(32, 35, 41)",
+        "--text": "rgb(242, 243, 245)",
+        "--text-muted": "rgb(169, 175, 185)",
+        "--accent": "rgb(255, 209, 102)",
+        "--border": "rgb(112, 119, 131)"
+      },
+      "fields": [
+        {
+          "label": "",
+          "height": 40.5,
+          "inset": 36,
+          "chevron": true
+        },
+        {
+          "label": "",
+          "height": 40.5,
+          "inset": 36,
+          "chevron": true
+        }
+      ],
+      "contrast": {
+        "--text/--bg": 17.502061083180102,
+        "--text-muted/--bg": 8.808816552669251,
+        "--accent/--bg": 13.476691827381057,
+        "--text/--surface": 16.149248260857824,
+        "--text-muted/--surface": 8.127943601460785,
+        "--accent/--surface": 12.435017854246098,
+        "--text/--surface-raised": 14.180187205111407,
+        "--text-muted/--surface-raised": 7.136911885902183,
+        "--accent/--surface-raised": 10.918829051597353
+      }
+    },
+    {
+      "route": "/settings",
+      "size": "desktop",
+      "viewport": [
+        1440,
+        900
+      ],
+      "dpr": 1,
+      "documentWidth": 1425,
+      "clientWidth": 1425,
+      "content": {
+        "left": 0,
+        "width": 1425
+      },
+      "shell": {
+        ".replica-top-row": 57,
+        ".replica-nav-row": 46,
+        ".context-bar": null
+      },
+      "theme": {
+        "--bg": "rgb(12, 13, 16)",
+        "--surface": "rgb(21, 23, 28)",
+        "--surface-raised": "rgb(32, 35, 41)",
+        "--text": "rgb(242, 243, 245)",
+        "--text-muted": "rgb(169, 175, 185)",
+        "--accent": "rgb(255, 209, 102)",
+        "--border": "rgb(112, 119, 131)"
+      },
+      "fields": [],
+      "contrast": {
+        "--text/--bg": 17.502061083180102,
+        "--text-muted/--bg": 8.808816552669251,
+        "--accent/--bg": 13.476691827381057,
+        "--text/--surface": 16.149248260857824,
+        "--text-muted/--surface": 8.127943601460785,
+        "--accent/--surface": 12.435017854246098,
+        "--text/--surface-raised": 14.180187205111407,
+        "--text-muted/--surface-raised": 7.136911885902183,
+        "--accent/--surface-raised": 10.918829051597353
+      }
+    },
+    {
+      "route": "/stats",
+      "size": "mobile",
+      "viewport": [
+        375,
+        812
+      ],
+      "dpr": 1,
+      "documentWidth": 360,
+      "clientWidth": 360,
+      "content": {
+        "left": 0,
+        "width": 360
+      },
+      "shell": {
+        ".replica-top-row": 97,
+        ".replica-nav-row": 0,
+        ".context-bar": 298.1875
+      },
+      "theme": {
+        "--bg": "rgb(12, 13, 16)",
+        "--surface": "rgb(21, 23, 28)",
+        "--surface-raised": "rgb(32, 35, 41)",
+        "--text": "rgb(242, 243, 245)",
+        "--text-muted": "rgb(169, 175, 185)",
+        "--accent": "rgb(255, 209, 102)",
+        "--border": "rgb(112, 119, 131)"
+      },
+      "fields": [
+        {
+          "label": "Filter by season",
+          "height": 44,
+          "inset": 36,
+          "chevron": true
+        },
+        {
+          "label": "Filter by competition phase",
+          "height": 44,
+          "inset": 36,
+          "chevron": true
+        },
+        {
+          "label": "Analysis window",
+          "height": 44,
+          "inset": 36,
+          "chevron": true
+        },
+        {
+          "label": "Filter by NBA team",
+          "height": 44,
+          "inset": 36,
+          "chevron": true
+        },
+        {
+          "label": "Sort table by metric",
+          "height": 44,
+          "inset": 36,
+          "chevron": true
+        },
+        {
+          "label": "Results per page",
+          "height": 44,
+          "inset": 36,
+          "chevron": true
+        }
+      ],
+      "contrast": {
+        "--text/--bg": 17.502061083180102,
+        "--text-muted/--bg": 8.808816552669251,
+        "--accent/--bg": 13.476691827381057,
+        "--text/--surface": 16.149248260857824,
+        "--text-muted/--surface": 8.127943601460785,
+        "--accent/--surface": 12.435017854246098,
+        "--text/--surface-raised": 14.180187205111407,
+        "--text-muted/--surface-raised": 7.136911885902183,
+        "--accent/--surface-raised": 10.918829051597353
+      }
+    },
+    {
+      "route": "/research/ask",
+      "size": "mobile",
+      "viewport": [
+        375,
+        812
+      ],
+      "dpr": 1,
+      "documentWidth": 360,
+      "clientWidth": 360,
+      "content": {
+        "left": 0,
+        "width": 360
+      },
+      "shell": {
+        ".replica-top-row": 97,
+        ".replica-nav-row": 0,
+        ".context-bar": null
+      },
+      "theme": {
+        "--bg": "rgb(12, 13, 16)",
+        "--surface": "rgb(21, 23, 28)",
+        "--surface-raised": "rgb(32, 35, 41)",
+        "--text": "rgb(242, 243, 245)",
+        "--text-muted": "rgb(169, 175, 185)",
+        "--accent": "rgb(255, 209, 102)",
+        "--border": "rgb(112, 119, 131)"
+      },
+      "fields": [
+        {
+          "label": "",
+          "height": 44,
+          "inset": 36,
+          "chevron": true
+        },
+        {
+          "label": "",
+          "height": 44,
+          "inset": 36,
+          "chevron": true
+        }
+      ],
+      "contrast": {
+        "--text/--bg": 17.502061083180102,
+        "--text-muted/--bg": 8.808816552669251,
+        "--accent/--bg": 13.476691827381057,
+        "--text/--surface": 16.149248260857824,
+        "--text-muted/--surface": 8.127943601460785,
+        "--accent/--surface": 12.435017854246098,
+        "--text/--surface-raised": 14.180187205111407,
+        "--text-muted/--surface-raised": 7.136911885902183,
+        "--accent/--surface-raised": 10.918829051597353
+      }
+    },
+    {
+      "route": "/settings",
+      "size": "mobile",
+      "viewport": [
+        375,
+        812
+      ],
+      "dpr": 1,
+      "documentWidth": 360,
+      "clientWidth": 360,
+      "content": {
+        "left": 0,
+        "width": 360
+      },
+      "shell": {
+        ".replica-top-row": 97,
+        ".replica-nav-row": 0,
+        ".context-bar": null
+      },
+      "theme": {
+        "--bg": "rgb(12, 13, 16)",
+        "--surface": "rgb(21, 23, 28)",
+        "--surface-raised": "rgb(32, 35, 41)",
+        "--text": "rgb(242, 243, 245)",
+        "--text-muted": "rgb(169, 175, 185)",
+        "--accent": "rgb(255, 209, 102)",
+        "--border": "rgb(112, 119, 131)"
+      },
+      "fields": [],
+      "contrast": {
+        "--text/--bg": 17.502061083180102,
+        "--text-muted/--bg": 8.808816552669251,
+        "--accent/--bg": 13.476691827381057,
+        "--text/--surface": 16.149248260857824,
+        "--text-muted/--surface": 8.127943601460785,
+        "--accent/--surface": 12.435017854246098,
+        "--text/--surface-raised": 14.180187205111407,
+        "--text-muted/--surface-raised": 7.136911885902183,
+        "--accent/--surface-raised": 10.918829051597353
+      }
+    },
+    {
+      "route": "/stats",
+      "size": "actual 200% browser zoom",
+      "original": {
+        "width": 2559,
+        "dpr": 1
+      },
+      "viewport": [
+        1279,
+        676
+      ],
+      "dpr": 2,
+      "documentWidth": 1272
+    },
+    {
+      "route": "/research/ask",
+      "size": "actual 200% browser zoom",
+      "original": {
+        "width": 2559,
+        "dpr": 1
+      },
+      "viewport": [
+        1279,
+        676
+      ],
+      "dpr": 2,
+      "documentWidth": 1272
+    },
+    {
+      "route": "/settings",
+      "size": "actual 200% browser zoom",
+      "original": {
+        "width": 2559,
+        "dpr": 1
+      },
+      "viewport": [
+        1279,
+        676
+      ],
+      "dpr": 2,
+      "documentWidth": 1272
+    }
+  ],
+  "checks": [
+    {
+      "name": "plain player-name and Ask button backgrounds"
+    },
+    {
+      "name": "unsupported normalization has native disabled semantics and disabled styling"
+    },
+    {
+      "name": "menu keyboard, Escape focus return and visible focus",
+      "focus": {
+        "style": "solid",
+        "width": "2px",
+        "color": "rgb(255, 209, 102)"
+      }
+    },
+    {
+      "name": "Ask dialog open/close and focus return"
+    },
+    {
+      "name": "mobile menu touch-size trigger and Escape return",
+      "bounds": {
+        "x": 304,
+        "y": 0,
+        "width": 44,
+        "height": 44
+      }
+    }
+  ],
+  "page_errors": []
+}

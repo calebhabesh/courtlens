@@ -1,0 +1,96 @@
+ExpectError: expect(locator).toContainText(expected) failed
+
+Locator: getByLabel('Messages')
+Expected substring: "Explain pick and roll"
+Received string:    ""
+Timeout: 5000ms
+
+Call log:
+  - Expect "toContainText" getByLabel('Messages') with timeout 5000ms
+  - waiting for getByLabel('Messages')
+    14 × locator resolved to <div aria-label="Messages" class="thread-messages"></div>
+       - unexpected value ""
+
+    at captureRawStack (/home/ethioking/dev/nba-analytics/dashboard/node_modules/playwright-core/lib/coreBundle.js:8588:17)
+    at callMatcherAsStep (/home/ethioking/dev/nba-analytics/dashboard/node_modules/playwright/lib/matchers/expect.js:13310:57)
+    at Object.toContainText (/home/ethioking/dev/nba-analytics/dashboard/node_modules/playwright/lib/matchers/expect.js:13302:23)
+    at /home/ethioking/dev/nba-analytics/scripts/verify_pf08_browser.cjs:18:69 {
+  matcherResult: {
+    name: 'toContainText',
+    expected: 'Explain pick and roll',
+    message: 'expect(locator).toContainText(expected) failed\n' +
+      '\n' +
+      "Locator: getByLabel('Messages')\n" +
+      'Expected substring: "Explain pick and roll"\n' +
+      'Received string:    ""\n' +
+      'Timeout: 5000ms\n' +
+      '\n' +
+      'Call log:\n' +
+      `  - Expect "toContainText" getByLabel('Messages') with timeout 5000ms\n` +
+      "  - waiting for getByLabel('Messages')\n" +
+      '    14 × locator resolved to <div aria-label="Messages" class="thread-messages"></div>\n' +
+      '       - unexpected value ""\n',
+    pass: false,
+    actual: '',
+    log: [
+      `  - Expect "toContainText" getByLabel('Messages') with timeout 5000ms`,
+      "  - waiting for getByLabel('Messages')",
+      '    14 × locator resolved to <div aria-label="Messages" class="thread-messages"></div>',
+      '       - unexpected value ""'
+    ],
+    timeout: 5000,
+    ariaSnapshot: '- link "Skip to content":\n' +
+      '  - /url: "#content"\n' +
+      '- banner:\n' +
+      '  - link "CourtLoad Research Workbench home":\n' +
+      '    - /url: /\n' +
+      '    - text: COURTLOAD\n' +
+      '  - navigation "Primary Quick Switch":\n' +
+      '    - link "Stats":\n' +
+      '      - /url: /stats\n' +
+      '    - link "Games":\n' +
+      '      - /url: /live\n' +
+      '  - search:\n' +
+      '    - combobox "Search players, teams and pages"\n' +
+      '    - status\n' +
+      '  - button "Ask"\n' +
+      '  - link "Data status":\n' +
+      '    - /url: /data-status\n' +
+      '  - link "Settings":\n' +
+      '    - /url: /settings\n' +
+      '  - button "Toggle navigation drawer"\n' +
+      '  - navigation "Workspace Navigation":\n' +
+      '    - link "Stats":\n' +
+      '      - /url: /stats\n' +
+      '    - button "Live"\n' +
+      '    - button "Players"\n' +
+      '    - button "Teams"\n' +
+      '    - button "Compare"\n' +
+      '    - button "Research"\n' +
+      '    - button "Availability"\n' +
+      '    - button "Help"\n' +
+      '- main:\n' +
+      '  - heading "Ask CourtLoad" [level=1]\n' +
+      '  - paragraph: Ask basketball questions, explore CourtLoad and revisit local conversations.\n' +
+      '  - region "CourtLoad assistant":\n' +
+      '    - paragraph:\n' +
+      '      - link "Open manual research":\n' +
+      '        - /url: /research/ask?experience=manual\n' +
+      '    - heading "Conversations" [level=2]\n' +
+      '    - button "New chat" [disabled]\n' +
+      '    - button "Delete chat" [disabled]\n' +
+      '    - button "Clear history" [disabled]\n' +
+      '    - paragraph: History stays in this local installation until you delete it. Questions and context may be sent to the configured provider. Saved analytical findings are retained separately.\n' +
+      '    - group: History (0)\n' +
+      '    - group: Edit scope for the next question\n' +
+      '    - status: Reading local history…\n' +
+      '    - button "Explain pick and roll" [disabled]\n' +
+      '    - button "How do I compare two players here?" [disabled]\n' +
+      '    - button "Which point guard had the most assists per game last season?" [disabled]\n' +
+      '    - text: Your question\n' +
+      '    - textbox "Your question"\n' +
+      '    - text: 0 / 2000\n' +
+      '    - button "Send question" [disabled]\n' +
+      '    - status: Ready'
+  }
+}

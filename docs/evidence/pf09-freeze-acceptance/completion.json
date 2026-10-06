@@ -1,0 +1,28 @@
+{
+  "block": "PF09",
+  "status": "accepted_bounded_freeze",
+  "backend_unique_cases": 1071,
+  "last_full_suite": {
+    "passed": 1069,
+    "verification_failures": 2,
+    "log": "backend-verified.log"
+  },
+  "final_failed_file_rerun": {
+    "passed": 61,
+    "failed": 0,
+    "skipped": 0,
+    "warnings": 0,
+    "log": "backend-recovery-security-final.log"
+  },
+  "unresolved_required_failures": 0,
+  "dashboard_unit_passed": 188,
+  "browser_fixture_passed": 132,
+  "browser_fixture_skipped_separate_real_case": 1,
+  "browser_real_workspace_passed": 1,
+  "warehouse_passed": 235,
+  "routes": 52,
+  "retained_outcomes_unchanged": 185,
+  "retained_v1_reproduced": 33,
+  "artifact_hashes_unchanged": 316,
+  "separate_gates_preserved": true
+}

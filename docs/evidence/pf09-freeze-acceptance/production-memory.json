@@ -1,0 +1,19 @@
+{
+  "measurement": "Kernel lifetime high-water marks after rendered/API workflows; excludes separately spawned query workers and PostgreSQL.",
+  "processes": [
+    {
+      "pid": 3733775,
+      "label": "real API",
+      "Name": "uvicorn",
+      "VmHWM": "361400 kB",
+      "VmRSS": "336684 kB"
+    },
+    {
+      "pid": 3762812,
+      "label": "production Next",
+      "Name": "next-server (v1",
+      "VmHWM": "274152 kB",
+      "VmRSS": "174580 kB"
+    }
+  ]
+}

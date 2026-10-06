@@ -1,0 +1,64 @@
+
+> courtload-dashboard@0.1.0 test:browser
+> playwright test workbench.spec.ts --grep home opens|player explorer allows|comparison view displays|375px mobile --workers=1
+
+
+Running 4 tests using 1 worker
+
+  ✓  1 e2e/workbench.spec.ts:5:7 › Workbench Dark Research Interface › home opens Stats with dark theme, horizontal navigation, context and data (598ms)
+  ✘  2 e2e/workbench.spec.ts:25:7 › Workbench Dark Research Interface › player explorer allows filtering and links to detail view (289ms)
+  ✘  3 e2e/workbench.spec.ts:79:7 › Workbench Dark Research Interface › comparison view displays head-to-head metrics without declaring forced winners (241ms)
+  ✓  4 e2e/workbench.spec.ts:120:7 › Workbench Dark Research Interface › dense dark research layout fits a 375px mobile viewport without horizontal overflow (175ms)
+
+
+  1) e2e/workbench.spec.ts:25:7 › Workbench Dark Research Interface › player explorer allows filtering and links to detail view 
+
+    Error: locator.fill: Error: strict mode violation: getByLabel('Filter players by name') resolved to 2 elements:
+        1) <input value="" type="text" id="stats-player-search" aria-label="Filter players by name" placeholder="Search table (e.g. Luka, Siakam)..."/> aka getByRole('textbox', { name: 'Filter players by name' })
+        2) <input value="" type="text" id="stats-player-search" aria-label="Filter players by name" placeholder="Search table (e.g. Luka, Siakam)..."/> aka getByPlaceholder('Search table (e.g. Luka, Siakam)').nth(1)
+
+    Call log:
+      - waiting for getByLabel('Filter players by name')
+
+
+      31 |     // Filter by name
+      32 |     const searchInput = page.getByLabel("Filter players by name");
+    > 33 |     await searchInput.fill("Guard");
+         |                       ^
+      34 |     await searchInput.press("Enter");
+      35 |     await expect(page).toHaveURL(/name=Guard/);
+      36 |
+        at /home/ethioking/dev/nba-analytics/dashboard/e2e/workbench.spec.ts:33:23
+
+    Error Context: test-results/workbench-Workbench-Dark-R-2f4ca-ng-and-links-to-detail-view/error-context.md
+
+  2) e2e/workbench.spec.ts:79:7 › Workbench Dark Research Interface › comparison view displays head-to-head metrics without declaring forced winners 
+
+    Error: expect(locator).toHaveText(expected) failed
+
+    Locator: locator('h1.page-title')
+    Expected: "Compare Players"
+    Error: strict mode violation: locator('h1.page-title') resolved to 2 elements:
+        1) <h1 class="page-title">Compare Players</h1> aka getByRole('heading', { name: 'Compare Players' })
+        2) <h1 class="page-title">Compare Players</h1> aka getByText('Compare Players').nth(2)
+
+    Call log:
+      - Expect "toHaveText" locator('h1.page-title') with timeout 5000ms
+      - waiting for locator('h1.page-title')
+
+
+      80 |     await page.goto("/compare?playerA=23&playerB=24");
+      81 |
+    > 82 |     await expect(page.locator("h1.page-title")).toHaveText("Compare Players");
+         |                                                 ^
+      83 |     await expect(page.getByRole("link", { name: "Fixture Star" })).toBeVisible();
+      84 |     await expect(page.getByRole("link", { name: "Fixture Guard" })).toBeVisible();
+      85 |
+        at /home/ethioking/dev/nba-analytics/dashboard/e2e/workbench.spec.ts:82:49
+
+    Error Context: test-results/workbench-Workbench-Dark-R-77cf4-ut-declaring-forced-winners/error-context.md
+
+  2 failed
+    e2e/workbench.spec.ts:25:7 › Workbench Dark Research Interface › player explorer allows filtering and links to detail view 
+    e2e/workbench.spec.ts:79:7 › Workbench Dark Research Interface › comparison view displays head-to-head metrics without declaring forced winners 
+  2 passed (2.3s)

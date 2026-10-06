@@ -1,0 +1,23 @@
+[
+  "src/courtload/api/assistant_limits.py",
+  "src/courtload/api/routers/conversation.py",
+  "src/courtload/domain/hybrid_assistant.py",
+  "src/courtload/services/assistant/defaults.py",
+  "src/courtload/services/assistant/hybrid.py",
+  "src/courtload/services/assistant/knowledge.py",
+  "src/courtload/services/assistant/knowledge/guide.md",
+  "src/courtload/services/assistant/qualification.py",
+  "dashboard/lib/assistant-v2.generated.ts",
+  "docs/design/assistant-v2.schema.json",
+  "docs/design/assistant-v2-fixtures.json",
+  "docs/design/polish-assistant-contract.md",
+  "docs/polish-freeze-implementation-progress.md",
+  "scripts/generate_hybrid_contract.py",
+  "scripts/verify_pf07a_assistant.py",
+  "tests/unit/test_hybrid_assistant.py",
+  "tests/integration/test_hybrid_assistant_postgres.py",
+  "tests/fixtures/assistant/pf07a-holdout-v1.json",
+  "tests/fixtures/assistant/pf07a-holdout-v1.sha256",
+  "tests/fixtures/assistant/pf07a-routing-v1.json",
+  "tests/fixtures/assistant/pf07a-routing-v1.sha256"
+]

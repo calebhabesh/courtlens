@@ -1,0 +1,9 @@
+AssertionError [ERR_ASSERTION]: Route audit overflow
+    at /home/ethioking/dev/nba-analytics/scripts/verify_pf09_reuse_pf06_browser.cjs:48:2 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}

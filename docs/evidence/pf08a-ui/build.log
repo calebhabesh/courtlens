@@ -1,0 +1,88 @@
+
+> courtload-dashboard@0.1.0 build
+> next build
+
+▲ Next.js 16.3.5 (Turbopack)
+✓ Running next.config.ts took 12ms
+- Experiments (use with caution):
+  ✓ typedEnv
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 161ms
+  Running TypeScript ...
+  Finished TypeScript in 1177ms ...
+  Collecting page data using 15 workers ...
+  Generating static pages using 15 workers (0/31) ...
+  Generating static pages using 15 workers (7/31) 
+  Generating static pages using 15 workers (15/31) 
+  Generating static pages using 15 workers (23/31) 
+✓ Generating static pages using 15 workers (31/31) in 191ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ƒ /
+├ ○ /_not-found
+├ ƒ /api/assistant-v2/[[...path]]
+├ ƒ /api/finance-import
+├ ƒ /api/jobs
+├ ƒ /api/jobs/[id]
+├ ƒ /api/live/[[...path]]
+├ ƒ /api/workspace/[[...path]]
+├ ○ /blog
+├ ○ /calculator
+├ ƒ /compare
+├ ○ /contracts
+├ ƒ /contracts/[team]
+├ ƒ /data-status
+├ ƒ /evaluation
+├ ƒ /forecasts
+├ ○ /free-agency
+├ ○ /icon.svg
+├ ƒ /investigations
+├ ƒ /investigations/saved/[id]
+├ ƒ /last-games
+├ ƒ /learning
+├ ○ /live
+├ ƒ /live/[date]
+├ ƒ /live/games/[id]
+├ ○ /manifest.webmanifest
+├ ○ /matchups
+├ ƒ /methodology
+├ ○ /patch-notes
+├ ƒ /planner
+├ ƒ /players
+├ ƒ /players/[id]
+├ ƒ /playoffs
+├ ƒ /playoffs/[seriesId]
+├ ƒ /rankings
+├ ○ /research/adjusted-shooting
+├ ƒ /research/ask
+├ ○ /research/case-studies
+├ ƒ /research/defensive-matchups
+├ ○ /research/distributions
+├ ƒ /research/epv
+├ ○ /research/expected-shots
+├ ○ /research/operation
+├ ○ /research/rapm
+├ ○ /research/similarity
+├ ○ /research/trends
+├ ○ /roster-shapes
+├ ƒ /schedule
+├ ƒ /settings
+├ ○ /shot-aftermath
+├ ○ /shot-profile-twin
+├ ƒ /showcase
+├ ○ /six-factor-rapm
+├ ○ /stat-line-shift
+├ ƒ /stats
+├ ƒ /team-compare
+├ ƒ /teams
+├ ƒ /teams/[id]
+├ ƒ /tierlist
+├ ○ /wingspan
+└ ○ /wowy
+
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+

@@ -1,0 +1,11 @@
+2026-10-05 17:43:22,925 INFO httpx2 HTTP Request: POST http://testserver/api/workbench/query "HTTP/1.1 200 OK"
+2026-10-05 17:43:23,233 INFO httpx2 HTTP Request: POST http://testserver/api/workbench/query "HTTP/1.1 200 OK"
+2026-10-05 17:43:23,560 INFO httpx2 HTTP Request: POST http://testserver/api/workbench/query "HTTP/1.1 200 OK"
+2026-10-05 17:43:23,879 INFO httpx2 HTTP Request: POST http://testserver/api/workbench/query "HTTP/1.1 200 OK"
+2026-10-05 17:43:24,192 INFO httpx2 HTTP Request: POST http://testserver/api/workbench/query "HTTP/1.1 200 OK"
+2026-10-05 17:43:24,531 INFO httpx2 HTTP Request: POST http://testserver/api/workbench/query "HTTP/1.1 200 OK"
+2026-10-05 17:43:24,861 INFO httpx2 HTTP Request: POST http://testserver/api/workbench/query "HTTP/1.1 200 OK"
+2026-10-05 17:43:25,187 INFO httpx2 HTTP Request: POST http://testserver/api/workbench/query "HTTP/1.1 200 OK"
+2026-10-05 17:43:25,525 INFO httpx2 HTTP Request: POST http://testserver/api/workbench/query "HTTP/1.1 200 OK"
+2026-10-05 17:43:25,862 INFO httpx2 HTTP Request: POST http://testserver/api/workbench/query "HTTP/1.1 200 OK"
+{"pf00_engine_sha256": "edc36357e48c4b76d59a1b4d8feebf1c149b3e2cfb6df6433afe5163b2dd68bd", "unchanged_reproductions": 185, "baseline_matches": 137, "baseline_mismatches": 48, "http_environment": "In-process FastAPI HTTP; retained PostgreSQL; read-only", "http_seconds": [0.366605076007545, 0.3061727749882266, 0.32639446400571615, 0.31756241401308216, 0.3110303989960812, 0.3379801370028872, 0.3283629759971518, 0.3246789549884852, 0.3367400670249481, 0.3357244140061084], "http_p95_seconds": 0.366605076007545}

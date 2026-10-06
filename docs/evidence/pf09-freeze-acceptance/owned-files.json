@@ -1,0 +1,39 @@
+{
+  "changed_from_pf09_start": [
+    "src/courtload/services/backup_restore.py",
+    "dashboard/app/globals.css",
+    "dashboard/app/planner/page.tsx",
+    "dashboard/components/plan-table.tsx",
+    "tests/integration/test_workbench_api.py",
+    "tests/unit/test_assistant_retrieval.py"
+  ],
+  "added_from_pf09_start": [
+    "scripts/verify_pf09_recovery.py",
+    "scripts/verify_pf09_reuse_pf05_browser.cjs",
+    "scripts/verify_pf09_reuse_pf04_browser.cjs",
+    "scripts/verify_pf09_clear_save.cjs",
+    "scripts/verify_pf09_reuse_pf03_browser.cjs",
+    "scripts/verify_pf09_reuse_pf06_browser.cjs",
+    "scripts/verify_pf09_planner.cjs",
+    "scripts/verify_pf09_reuse_pf06_context.cjs",
+    "scripts/verify_pf09_reuse_pf08_browser.cjs",
+    "scripts/verify_pf09_reuse_pf06_tasks.cjs",
+    "scripts/verify_pf09_reuse_pf06_zoom.cjs",
+    "scripts/verify_pf09_resources.py",
+    "scripts/verify_pf09_retained.py",
+    "scripts/verify_pf09_reuse_pf04_input_budget.cjs",
+    "scripts/verify_pf09_large_history.cjs",
+    "tests/unit/test_backup_connection.py"
+  ],
+  "documentation": [
+    "docs/evidence/pf09-freeze-acceptance",
+    "docs/polish-freeze-implementation-progress.md",
+    "docs/design/polish-assistant-contract.md"
+  ],
+  "dashboard_e2e_modified": [
+    "dashboard/e2e/comparison-evaluation.spec.ts",
+    "dashboard/e2e/entity-selection.spec.ts",
+    "dashboard/e2e/route-polish.spec.ts",
+    "dashboard/e2e/workbench.spec.ts"
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "starting_files": 2002,
+  "changed_starting_files": [
+    "dashboard/app/globals.css",
+    "dashboard/components/compare-tray.tsx",
+    "dashboard/components/hotkeys-modal.tsx",
+    "dashboard/components/playoffs-series-view.tsx",
+    "dashboard/components/stats-detail-drawer.tsx",
+    "dashboard/components/team-explorer-view.tsx",
+    "dashboard/components/team-logo.tsx",
+    "dashboard/components/ui/icon.tsx",
+    "dashboard/components/workbench-player-explorer.tsx",
+    "dashboard/e2e/workbench.spec.ts",
+    "dashboard/lib/stats-presets.test.ts",
+    "dashboard/lib/stats-presets.ts",
+    "docs/polish-freeze-implementation-progress.md"
+  ],
+  "outside_scope_changes": [],
+  "prior_evidence_files": 1266,
+  "artifact_files": 316,
+  "artifact_comparison": "PF04 starting inventory",
+  "artifact_changes": []
+}

@@ -1,0 +1,1 @@
+{"evaluated": 12, "correct": 12, "complete": 12, "safety_pass": 12, "factual_required": 0, "factual_correct": 0, "categories": {"local": 12}, "held_out_correct": 12, "held_out_total": 12, "terminal_statuses": {"answered": 12}, "critical_correct": 0, "critical_total": 0, "model_evaluated_correct": 12, "model_evaluated_total": 12, "language_gate": "passed_bounded_corpus"}

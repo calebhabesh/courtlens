@@ -1,0 +1,17 @@
+{
+  "python": "3.14.7",
+  "platform": "Linux-7.2.8-arch1-2-x86_64-with-glibc2.44",
+  "packages": {
+    "sqlalchemy": "2.0.52",
+    "google-genai": "2.26.0",
+    "fastapi": "0.141.1",
+    "pytest": "8.4.2"
+  },
+  "provider_calls": 0,
+  "free_project_eligibility": "not verified for this evaluation",
+  "real_language_gate": "pending eligibility and explicit evaluation budget",
+  "runtime_http_database": "courtload_pf07c_retrieval (disposable; only newly created verifier threads mutated)",
+  "integration_database": "courtload_pf00_baseline (generated disposable schemas)",
+  "retained_data": "read-only transactions",
+  "ui_boundary": "PF08; no dashboard source changed"
+}

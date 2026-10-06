@@ -1,0 +1,26 @@
+F............                                                            [100%]
+=================================== FAILURES ===================================
+_________ test_real_query_exact_arithmetic_claims_actions_and_readonly _________
+
+postgres_conversation = (<sqlalchemy.orm.session.Session object at 0x7f95c54338c0>, ResolvedContext(release_id='0710d5c2-7062-4990-aa0c-71e043...torical reconstruction from completed records.', 'Prior-day boundary: game_date < before_date is strictly enforced.']))
+
+    def test_real_query_exact_arithmetic_claims_actions_and_readonly(postgres_conversation):
+        session, context = postgres_conversation
+        before = session.scalar(select(func.count()).select_from(WorkbenchPlayerGame))
+        answer = run_hybrid_turn(session, request(context), clock=lambda: date(2026, 10, 5))
+        assert answer.status == "answered", answer.model_dump_json()
+        assert answer.accounting.analytical_calls == 1
+        result = next(block.result for block in answer.blocks if block.kind == "result")
+        assert len(result.rows) == 3
+        # 20*10 + 10*8 points, independently divided by 30 appearances.
+>       assert result.rows[0]["metrics"]["pts_per_game"] == pytest.approx(280 / 30, abs=0.001)
+E       assert 9.3 == 9.333333333333334 ± 0.001
+E         
+E         comparison failed
+E         Obtained: 9.3
+E         Expected: 9.333333333333334 ± 0.001
+
+tests/integration/test_hybrid_assistant_postgres.py:55: AssertionError
+=========================== short test summary info ============================
+FAILED tests/integration/test_hybrid_assistant_postgres.py::test_real_query_exact_arithmetic_claims_actions_and_readonly
+1 failed, 12 passed in 5.13s

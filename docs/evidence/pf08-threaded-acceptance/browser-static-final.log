@@ -1,0 +1,10 @@
+
+> courtload-dashboard@0.1.0 test:browser
+> playwright test saved-operations.spec.ts --grep original content --workers=1
+
+
+Running 1 test using 1 worker
+
+  ✓  1 e2e/saved-operations.spec.ts:52:5 › original content, live catalog version and installation metadata are local and truthful (456ms)
+
+  1 passed (787ms)

@@ -1,0 +1,21 @@
+Traceback (most recent call last):
+  File "/home/ethioking/dev/nba-analytics/scripts/verify_pf09_recovery.py", line 162, in <module>
+    main()
+    ~~~~^^
+  File "/home/ethioking/dev/nba-analytics/scripts/verify_pf09_recovery.py", line 81, in main
+    archive, manifest = create_backup_archive(
+                        ~~~~~~~~~~~~~~~~~~~~~^
+        session,
+        ^^^^^^^^
+    ...<5 lines>...
+        code_version="PF09-working-tree",
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/ethioking/dev/nba-analytics/src/courtload/services/backup_restore.py", line 785, in create_backup_archive
+    _dump_postgres_database(db_dump_file, database_url=database_url)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ethioking/dev/nba-analytics/src/courtload/services/backup_restore.py", line 706, in _dump_postgres_database
+    raise RuntimeError(f"Database dump failed: {err.decode('utf-8', errors='replace')}")
+RuntimeError: Database dump failed: no configuration file provided: not found
+

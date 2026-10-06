@@ -1,0 +1,18 @@
+{
+  "dirty": {
+    "checked": 213,
+    "known_pf00_document_changes": [
+      "docs/polish-freeze-implementation-plan.md"
+    ],
+    "unexpected_application_changes": []
+  },
+  "retained": {
+    "checked": 1029,
+    "unexpected_changes": []
+  },
+  "artifacts": {
+    "checked": 316,
+    "unexpected_changes": []
+  },
+  "note": "PF00 starting-state preceded its documented owned plan/progress changes. The sole outside-owned difference is the freeze plan confirmation already recorded by PF00; no plan change was made in PF01a."
+}

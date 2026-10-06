@@ -1,0 +1,12 @@
+{
+  "python": "3.14.7",
+  "platform": "Linux-7.2.8-arch1-2-x86_64-with-glibc2.44",
+  "google_genai": "2.26.0",
+  "pytest": "8.4.2",
+  "node": "v24.15.0",
+  "relational_database": "courtload_pf00_baseline; generated isolated schemas",
+  "retained_input_transactions": "SET TRANSACTION READ ONLY",
+  "runtime_model": "gemini-3.5-flash-lite",
+  "provider_policy": "Free-tier project confirmed by owner on 2026-10-06; provider project quotas; no retries or fallback",
+  "execution_owner": "Codex sequentially, no delegation"
+}

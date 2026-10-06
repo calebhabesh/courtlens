@@ -1,0 +1,1402 @@
+[
+  {
+    "method": "POST",
+    "path": "/turn",
+    "http_status": 200,
+    "elapsed_ms": 343.227,
+    "response": {
+      "schema_version": "courtload-assistant-v2",
+      "request_id": "59da7ca9-d733-4a2b-ae8a-257acb1b305d",
+      "thread_id": "e3ea714f-7f2b-467a-abb8-0c8b56e282f7",
+      "turn_id": "82f70844-2982-4728-b40b-49a408a93ed7",
+      "status": "answered",
+      "intent": "external",
+      "scope": {
+        "as_of": "2026-10-06",
+        "timezone": "America/New_York",
+        "calendar_version": "nba-completed-seasons-2019-2026-v1",
+        "calendar_sha256": "bc98f7f7956a70b4a6f0f4f21216be4973b78e482c3a100d4f059ad37380a560",
+        "selections": {
+          "release_id": null,
+          "season": "2023-24",
+          "phase": "regular_season",
+          "before_date": null,
+          "window": "season"
+        },
+        "local_context": null,
+        "context_fingerprint": null,
+        "assumptions": [
+          "Regular season unless a phase is specified."
+        ],
+        "label": "2023-24 \u00b7 regular season \u00b7 season"
+      },
+      "blocks": [
+        {
+          "kind": "external_claim",
+          "text": "NBA regular season: announced start date = 2023-10-24 date (2023-24 regular season; Published schedule announcement; not a live schedule or proof games occurred).",
+          "source_id": "courtload-public-nba-v1:schedule-2023-24:86c42646eaa31b3b8ad73c58aab78dd9a1d50cd1b25bf21171ec6a7ce6ce3339",
+          "locator": "post__content/p[4]",
+          "entity": "NBA regular season",
+          "metric": "announced start date",
+          "value": "2023-10-24",
+          "unit": "date",
+          "period": "2023-24 regular season",
+          "qualifier": "Published schedule announcement; not a live schedule or proof games occurred",
+          "supporting_excerpt": "The 78th NBA regular season will tip off on Tuesday, Oct. 24, 2023",
+          "parser_version": "nba-article-bindings-v1"
+        }
+      ],
+      "sources": [
+        {
+          "source_id": "courtload-public-nba-v1:schedule-2023-24:86c42646eaa31b3b8ad73c58aab78dd9a1d50cd1b25bf21171ec6a7ce6ce3339",
+          "origin": "external",
+          "title": "NBA announces schedule for 2023-24 regular season",
+          "publisher": "NBA Communications",
+          "url": "https://pr.nba.com/2023-24-nba-regular-season-schedule/",
+          "updated_on": "2023-08-17",
+          "retrieved_at": "2026-10-06T07:03:06.230587Z",
+          "period": "2023-24 regular season",
+          "content_sha256": "86c42646eaa31b3b8ad73c58aab78dd9a1d50cd1b25bf21171ec6a7ce6ce3339",
+          "locator": "post__content/p[4]",
+          "excerpt": "The 78th NBA regular season will tip off on Tuesday, Oct. 24, 2023",
+          "verification": "verified",
+          "facts": [
+            {
+              "entity": "NBA regular season",
+              "metric": "announced start date",
+              "value": "2023-10-24",
+              "unit": "date",
+              "period": "2023-24 regular season",
+              "qualifier": "Published schedule announcement; not a live schedule or proof games occurred",
+              "locator": "post__content/p[4]",
+              "supporting_excerpt": "The 78th NBA regular season will tip off on Tuesday, Oct. 24, 2023",
+              "parser_version": "nba-article-bindings-v1"
+            }
+          ]
+        }
+      ],
+      "actions": [
+        {
+          "kind": "source",
+          "label": "Open NBA source",
+          "url": "https://pr.nba.com/2023-24-nba-regular-season-schedule/",
+          "operation_hash": null
+        }
+      ],
+      "plan": null,
+      "accounting": {
+        "provider_calls": 0,
+        "analytical_calls": 0,
+        "source_requests": 1,
+        "rows": 0,
+        "elapsed_ms": 318.777
+      },
+      "saveable": false
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/turn",
+    "http_status": 200,
+    "elapsed_ms": 73.506,
+    "response": {
+      "schema_version": "courtload-assistant-v2",
+      "request_id": "f052082e-f39f-45aa-8bb2-169d2aa3a0dd",
+      "thread_id": "6d7ede3f-2e5f-4adb-8f0b-91dd72f05be4",
+      "turn_id": "0e697867-be8a-4f51-8435-5a9e4091fb41",
+      "status": "answered",
+      "intent": "external",
+      "scope": {
+        "as_of": "2026-10-06",
+        "timezone": "America/New_York",
+        "calendar_version": "nba-completed-seasons-2019-2026-v1",
+        "calendar_sha256": "bc98f7f7956a70b4a6f0f4f21216be4973b78e482c3a100d4f059ad37380a560",
+        "selections": {
+          "release_id": null,
+          "season": "2026-27",
+          "phase": "regular_season",
+          "before_date": null,
+          "window": "season"
+        },
+        "local_context": null,
+        "context_fingerprint": null,
+        "assumptions": [
+          "Regular season unless a phase is specified."
+        ],
+        "label": "2026-27 \u00b7 regular season \u00b7 season"
+      },
+      "blocks": [
+        {
+          "kind": "external_claim",
+          "text": "NBA regular season: announced start date = 2026-10-20 date (2026-27 regular season; Published schedule announcement; not a live schedule or proof games occurred).",
+          "source_id": "courtload-public-nba-v1:schedule-2026-27:92bd447af07665eb7a97013bd008a8364f1f5ddfa8307e15e53eb30206f57ec6",
+          "locator": "post__content/p[9]",
+          "entity": "NBA regular season",
+          "metric": "announced start date",
+          "value": "2026-10-20",
+          "unit": "date",
+          "period": "2026-27 regular season",
+          "qualifier": "Published schedule announcement; not a live schedule or proof games occurred",
+          "supporting_excerpt": "American Express NBA Tip-Off 2026 will begin on Tuesday, Oct. 20",
+          "parser_version": "nba-article-bindings-v1"
+        }
+      ],
+      "sources": [
+        {
+          "source_id": "courtload-public-nba-v1:schedule-2026-27:92bd447af07665eb7a97013bd008a8364f1f5ddfa8307e15e53eb30206f57ec6",
+          "origin": "external",
+          "title": "NBA announces schedule for 2026-27 regular season",
+          "publisher": "NBA Communications",
+          "url": "https://pr.nba.com/2026-27-nba-regular-season-schedule/",
+          "updated_on": "2026-08-13",
+          "retrieved_at": "2026-10-06T07:03:06.309578Z",
+          "period": "2026-27 regular season",
+          "content_sha256": "92bd447af07665eb7a97013bd008a8364f1f5ddfa8307e15e53eb30206f57ec6",
+          "locator": "post__content/p[9]",
+          "excerpt": "American Express NBA Tip-Off 2026 will begin on Tuesday, Oct. 20",
+          "verification": "verified",
+          "facts": [
+            {
+              "entity": "NBA regular season",
+              "metric": "announced start date",
+              "value": "2026-10-20",
+              "unit": "date",
+              "period": "2026-27 regular season",
+              "qualifier": "Published schedule announcement; not a live schedule or proof games occurred",
+              "locator": "post__content/p[9]",
+              "supporting_excerpt": "American Express NBA Tip-Off 2026 will begin on Tuesday, Oct. 20",
+              "parser_version": "nba-article-bindings-v1"
+            }
+          ]
+        }
+      ],
+      "actions": [
+        {
+          "kind": "source",
+          "label": "Open NBA source",
+          "url": "https://pr.nba.com/2026-27-nba-regular-season-schedule/",
+          "operation_hash": null
+        }
+      ],
+      "plan": null,
+      "accounting": {
+        "provider_calls": 0,
+        "analytical_calls": 0,
+        "source_requests": 1,
+        "rows": 0,
+        "elapsed_ms": 61.388
+      },
+      "saveable": false
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/turn",
+    "http_status": 200,
+    "elapsed_ms": 218.456,
+    "response": {
+      "schema_version": "courtload-assistant-v2",
+      "request_id": "bd62838f-d5a6-4a51-add7-253d3c793131",
+      "thread_id": "fd62cd14-87f3-4746-9965-c35f2ba0761a",
+      "turn_id": "a2246b63-4ed9-49aa-bb89-0d0da1e47906",
+      "status": "answered",
+      "intent": "explanation",
+      "scope": null,
+      "blocks": [
+        {
+          "kind": "external_claim",
+          "text": "NBA assist: definition = a direct scoring pass with an immediate reaction toward the basket concept (NBA assist definition; page update date unknown; NBA Video Rulebook explanation; official rulebook takes precedence).",
+          "source_id": "courtload-public-nba-v1:assist-definition:d99d74e802323947db3d5dec76be9ae38f16e905b295392539bf83a7c17d5c96",
+          "locator": "entry-excerpt/p[1]",
+          "entity": "NBA assist",
+          "metric": "definition",
+          "value": "a direct scoring pass with an immediate reaction toward the basket",
+          "unit": "concept",
+          "period": "NBA assist definition; page update date unknown",
+          "qualifier": "NBA Video Rulebook explanation; official rulebook takes precedence",
+          "supporting_excerpt": "An assist is credited to the player tossing the last pass leading directly to a made field goal, but only if the player scoring the goal demonstrates an immediate reaction toward the basket after receiving the pass.",
+          "parser_version": "nba-article-bindings-v1"
+        }
+      ],
+      "sources": [
+        {
+          "source_id": "courtload-public-nba-v1:assist-definition:d99d74e802323947db3d5dec76be9ae38f16e905b295392539bf83a7c17d5c96",
+          "origin": "external",
+          "title": "Assist, pass leads directly to made field goal - pass and jump shot",
+          "publisher": "NBA Video Rulebook",
+          "url": "https://videorulebook.nba.com/archive/assist-pass-leads-directly-to-made-field-goal-pass-and-jump-shot-2/",
+          "updated_on": null,
+          "retrieved_at": "2026-10-06T07:03:06.525072Z",
+          "period": "NBA assist definition; page update date unknown",
+          "content_sha256": "d99d74e802323947db3d5dec76be9ae38f16e905b295392539bf83a7c17d5c96",
+          "locator": "entry-excerpt/p[1]",
+          "excerpt": "An assist is credited to the player tossing the last pass leading directly to a made field goal, but only if the player scoring the goal demonstrates an immediate reaction toward the basket after receiving the pass.",
+          "verification": "verified",
+          "facts": [
+            {
+              "entity": "NBA assist",
+              "metric": "definition",
+              "value": "a direct scoring pass with an immediate reaction toward the basket",
+              "unit": "concept",
+              "period": "NBA assist definition; page update date unknown",
+              "qualifier": "NBA Video Rulebook explanation; official rulebook takes precedence",
+              "locator": "entry-excerpt/p[1]",
+              "supporting_excerpt": "An assist is credited to the player tossing the last pass leading directly to a made field goal, but only if the player scoring the goal demonstrates an immediate reaction toward the basket after receiving the pass.",
+              "parser_version": "nba-article-bindings-v1"
+            }
+          ]
+        }
+      ],
+      "actions": [
+        {
+          "kind": "source",
+          "label": "Open NBA source",
+          "url": "https://videorulebook.nba.com/archive/assist-pass-leads-directly-to-made-field-goal-pass-and-jump-shot-2/",
+          "operation_hash": null
+        }
+      ],
+      "plan": null,
+      "accounting": {
+        "provider_calls": 0,
+        "analytical_calls": 0,
+        "source_requests": 1,
+        "rows": 0,
+        "elapsed_ms": 205.128
+      },
+      "saveable": false
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/turn",
+    "http_status": 200,
+    "elapsed_ms": 10.814,
+    "response": {
+      "schema_version": "courtload-assistant-v2",
+      "request_id": "7a2ed5b7-a580-48d7-8536-efcd7b1e9447",
+      "thread_id": "859a785d-15d6-4ce9-9776-02db0efbd94b",
+      "turn_id": "3e320f7a-7ee0-49d8-b046-0e137f7e60a6",
+      "status": "answered",
+      "intent": "explanation",
+      "scope": null,
+      "blocks": [
+        {
+          "kind": "text",
+          "origin": "knowledge",
+          "text": "A pick and roll is an action where a teammate screens the ball handler\u2019s defender, then moves toward the basket. The ball handler can drive, pass to the rolling teammate or find another open player. Defensive responses include switching, dropping and showing help; the best choice depends on personnel and spacing.",
+          "source_ids": [
+            "courtload-knowledge-v2:pick_roll:c331fa0ec35feff63f0221d55eb9e06738dabcec35d3795086d88a5d7b9711f3"
+          ],
+          "criteria": []
+        }
+      ],
+      "sources": [
+        {
+          "source_id": "courtload-knowledge-v2:pick_roll:c331fa0ec35feff63f0221d55eb9e06738dabcec35d3795086d88a5d7b9711f3",
+          "origin": "knowledge",
+          "title": "Pick and roll",
+          "publisher": "CourtLoad",
+          "url": null,
+          "updated_on": "2026-10-06",
+          "retrieved_at": null,
+          "period": null,
+          "content_sha256": "c331fa0ec35feff63f0221d55eb9e06738dabcec35d3795086d88a5d7b9711f3",
+          "locator": "guide.md#pick_roll",
+          "excerpt": "A pick and roll is an action where a teammate screens the ball handler\u2019s defender, then moves toward the basket. The ball handler can drive, pass to the rolling teammate or find another open player. Defensive responses include switching, dropping and showing help; the best choice depends on personnel and spacing.",
+          "verification": "curated",
+          "facts": []
+        }
+      ],
+      "actions": [
+        {
+          "kind": "navigation",
+          "label": "Pick and roll",
+          "url": "/learning",
+          "operation_hash": null
+        }
+      ],
+      "plan": null,
+      "accounting": {
+        "provider_calls": 0,
+        "analytical_calls": 0,
+        "source_requests": 0,
+        "rows": 0,
+        "elapsed_ms": 0.084
+      },
+      "saveable": false
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/turn",
+    "http_status": 200,
+    "elapsed_ms": 9.444,
+    "response": {
+      "schema_version": "courtload-assistant-v2",
+      "request_id": "bbccca09-788d-4fb4-8088-df058da34f00",
+      "thread_id": "96aa9b62-1757-4297-b069-3a6238c8393f",
+      "turn_id": "6cd8c3ed-752c-401d-9b96-7790fb6a3980",
+      "status": "unable",
+      "intent": "external",
+      "scope": {
+        "as_of": "2026-10-06",
+        "timezone": "America/New_York",
+        "calendar_version": "nba-completed-seasons-2019-2026-v1",
+        "calendar_sha256": "bc98f7f7956a70b4a6f0f4f21216be4973b78e482c3a100d4f059ad37380a560",
+        "selections": {
+          "release_id": null,
+          "season": null,
+          "phase": "regular_season",
+          "before_date": null,
+          "window": "season"
+        },
+        "local_context": null,
+        "context_fingerprint": null,
+        "assumptions": [
+          "Regular season unless a phase is specified."
+        ],
+        "label": "Catalog default season \u00b7 regular season \u00b7 season"
+      },
+      "blocks": [
+        {
+          "kind": "inability",
+          "reason": "external_unavailable",
+          "text": "I cannot verify that external or current NBA fact because no registered public source supports this request. Live roster, injury and arbitrary web discovery are unavailable.",
+          "next_action": "Consult an official dated NBA source, or ask about admitted local observations."
+        }
+      ],
+      "sources": [],
+      "actions": [
+        {
+          "kind": "navigation",
+          "label": "Open Stats",
+          "url": "/stats",
+          "operation_hash": null
+        }
+      ],
+      "plan": null,
+      "accounting": {
+        "provider_calls": 0,
+        "analytical_calls": 0,
+        "source_requests": 0,
+        "rows": 0,
+        "elapsed_ms": 0.244
+      },
+      "saveable": false
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/turn",
+    "http_status": 200,
+    "elapsed_ms": 9.752,
+    "response": {
+      "schema_version": "courtload-assistant-v2",
+      "request_id": "ba93e416-3a86-4d3f-9d61-a1f6f83b8533",
+      "thread_id": "0ab69108-bffd-44f8-b1af-44cffb676a72",
+      "turn_id": "71dd3130-2d1d-48c8-82ce-34fdd40b0682",
+      "status": "unable",
+      "intent": "external",
+      "scope": {
+        "as_of": "2026-10-06",
+        "timezone": "America/New_York",
+        "calendar_version": "nba-completed-seasons-2019-2026-v1",
+        "calendar_sha256": "bc98f7f7956a70b4a6f0f4f21216be4973b78e482c3a100d4f059ad37380a560",
+        "selections": {
+          "release_id": null,
+          "season": null,
+          "phase": "regular_season",
+          "before_date": null,
+          "window": "season"
+        },
+        "local_context": null,
+        "context_fingerprint": null,
+        "assumptions": [
+          "Regular season unless a phase is specified."
+        ],
+        "label": "Catalog default season \u00b7 regular season \u00b7 season"
+      },
+      "blocks": [
+        {
+          "kind": "inability",
+          "reason": "external_unavailable",
+          "text": "I cannot verify that external or current NBA fact because no registered public source supports this request. Live roster, injury and arbitrary web discovery are unavailable.",
+          "next_action": "Consult an official dated NBA source, or ask about admitted local observations."
+        }
+      ],
+      "sources": [],
+      "actions": [
+        {
+          "kind": "navigation",
+          "label": "Open Stats",
+          "url": "/stats",
+          "operation_hash": null
+        }
+      ],
+      "plan": null,
+      "accounting": {
+        "provider_calls": 0,
+        "analytical_calls": 0,
+        "source_requests": 0,
+        "rows": 0,
+        "elapsed_ms": 0.074
+      },
+      "saveable": false
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/turn",
+    "http_status": 200,
+    "elapsed_ms": 8.396,
+    "response": {
+      "schema_version": "courtload-assistant-v2",
+      "request_id": "e7001265-ba15-468e-9ef1-327e93adb1f6",
+      "thread_id": "f8c529a9-6647-46f9-b47e-8071f6ee6a37",
+      "turn_id": "ea563720-9fc1-4dd1-acfb-64c3576e15d2",
+      "status": "unable",
+      "intent": "external",
+      "scope": {
+        "as_of": "2026-10-06",
+        "timezone": "America/New_York",
+        "calendar_version": "nba-completed-seasons-2019-2026-v1",
+        "calendar_sha256": "bc98f7f7956a70b4a6f0f4f21216be4973b78e482c3a100d4f059ad37380a560",
+        "selections": {
+          "release_id": null,
+          "season": "2025-26",
+          "phase": "regular_season",
+          "before_date": "2026-10-06",
+          "window": "season"
+        },
+        "local_context": null,
+        "context_fingerprint": null,
+        "assumptions": [
+          "Regular season unless a phase is specified.",
+          "Last season means the latest completed NBA season as of 2026-10-06."
+        ],
+        "label": "2025-26 \u00b7 regular season \u00b7 season"
+      },
+      "blocks": [
+        {
+          "kind": "inability",
+          "reason": "position_unavailable",
+          "text": "I cannot verify the requested position-filtered leader: this release has no dated PG cohort, and the registered public sources do not establish that ranking.",
+          "next_action": "Use Stats for the available player cohort, or retry when sourced position rankings are available."
+        }
+      ],
+      "sources": [],
+      "actions": [
+        {
+          "kind": "navigation",
+          "label": "Open Stats",
+          "url": "/stats",
+          "operation_hash": null
+        }
+      ],
+      "plan": null,
+      "accounting": {
+        "provider_calls": 0,
+        "analytical_calls": 0,
+        "source_requests": 0,
+        "rows": 0,
+        "elapsed_ms": 0.074
+      },
+      "saveable": false
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/turn",
+    "http_status": 200,
+    "elapsed_ms": 8.597,
+    "response": {
+      "schema_version": "courtload-assistant-v2",
+      "request_id": "e47ca7d1-afc3-429d-be3b-3627919929ef",
+      "thread_id": "45baa0f4-16f1-4d30-8caf-e57682c2bbed",
+      "turn_id": "b256812d-1ecd-4c1d-9faa-3bf000ad704c",
+      "status": "answered",
+      "intent": "external",
+      "scope": {
+        "as_of": "2026-10-06",
+        "timezone": "America/New_York",
+        "calendar_version": "nba-completed-seasons-2019-2026-v1",
+        "calendar_sha256": "bc98f7f7956a70b4a6f0f4f21216be4973b78e482c3a100d4f059ad37380a560",
+        "selections": {
+          "release_id": null,
+          "season": "2023-24",
+          "phase": "regular_season",
+          "before_date": null,
+          "window": "season"
+        },
+        "local_context": null,
+        "context_fingerprint": null,
+        "assumptions": [
+          "Regular season unless a phase is specified."
+        ],
+        "label": "2023-24 \u00b7 regular season \u00b7 season"
+      },
+      "blocks": [
+        {
+          "kind": "external_claim",
+          "text": "NBA regular season: announced start date = 2023-10-24 date (2023-24 regular season; Published schedule announcement; not a live schedule or proof games occurred).",
+          "source_id": "courtload-public-nba-v1:schedule-2023-24:86c42646eaa31b3b8ad73c58aab78dd9a1d50cd1b25bf21171ec6a7ce6ce3339",
+          "locator": "post__content/p[4]",
+          "entity": "NBA regular season",
+          "metric": "announced start date",
+          "value": "2023-10-24",
+          "unit": "date",
+          "period": "2023-24 regular season",
+          "qualifier": "Published schedule announcement; not a live schedule or proof games occurred",
+          "supporting_excerpt": "The 78th NBA regular season will tip off on Tuesday, Oct. 24, 2023",
+          "parser_version": "nba-article-bindings-v1"
+        },
+        {
+          "kind": "external_claim",
+          "text": "NBA assist: definition = a direct scoring pass with an immediate reaction toward the basket concept (NBA assist definition; page update date unknown; NBA Video Rulebook explanation; official rulebook takes precedence).",
+          "source_id": "courtload-public-nba-v1:assist-definition:d99d74e802323947db3d5dec76be9ae38f16e905b295392539bf83a7c17d5c96",
+          "locator": "entry-excerpt/p[1]",
+          "entity": "NBA assist",
+          "metric": "definition",
+          "value": "a direct scoring pass with an immediate reaction toward the basket",
+          "unit": "concept",
+          "period": "NBA assist definition; page update date unknown",
+          "qualifier": "NBA Video Rulebook explanation; official rulebook takes precedence",
+          "supporting_excerpt": "An assist is credited to the player tossing the last pass leading directly to a made field goal, but only if the player scoring the goal demonstrates an immediate reaction toward the basket after receiving the pass.",
+          "parser_version": "nba-article-bindings-v1"
+        }
+      ],
+      "sources": [
+        {
+          "source_id": "courtload-public-nba-v1:schedule-2023-24:86c42646eaa31b3b8ad73c58aab78dd9a1d50cd1b25bf21171ec6a7ce6ce3339",
+          "origin": "external",
+          "title": "NBA announces schedule for 2023-24 regular season",
+          "publisher": "NBA Communications",
+          "url": "https://pr.nba.com/2023-24-nba-regular-season-schedule/",
+          "updated_on": "2023-08-17",
+          "retrieved_at": "2026-10-06T07:03:06.230587Z",
+          "period": "2023-24 regular season",
+          "content_sha256": "86c42646eaa31b3b8ad73c58aab78dd9a1d50cd1b25bf21171ec6a7ce6ce3339",
+          "locator": "post__content/p[4]",
+          "excerpt": "The 78th NBA regular season will tip off on Tuesday, Oct. 24, 2023",
+          "verification": "verified",
+          "facts": [
+            {
+              "entity": "NBA regular season",
+              "metric": "announced start date",
+              "value": "2023-10-24",
+              "unit": "date",
+              "period": "2023-24 regular season",
+              "qualifier": "Published schedule announcement; not a live schedule or proof games occurred",
+              "locator": "post__content/p[4]",
+              "supporting_excerpt": "The 78th NBA regular season will tip off on Tuesday, Oct. 24, 2023",
+              "parser_version": "nba-article-bindings-v1"
+            }
+          ]
+        },
+        {
+          "source_id": "courtload-public-nba-v1:assist-definition:d99d74e802323947db3d5dec76be9ae38f16e905b295392539bf83a7c17d5c96",
+          "origin": "external",
+          "title": "Assist, pass leads directly to made field goal - pass and jump shot",
+          "publisher": "NBA Video Rulebook",
+          "url": "https://videorulebook.nba.com/archive/assist-pass-leads-directly-to-made-field-goal-pass-and-jump-shot-2/",
+          "updated_on": null,
+          "retrieved_at": "2026-10-06T07:03:06.525072Z",
+          "period": "NBA assist definition; page update date unknown",
+          "content_sha256": "d99d74e802323947db3d5dec76be9ae38f16e905b295392539bf83a7c17d5c96",
+          "locator": "entry-excerpt/p[1]",
+          "excerpt": "An assist is credited to the player tossing the last pass leading directly to a made field goal, but only if the player scoring the goal demonstrates an immediate reaction toward the basket after receiving the pass.",
+          "verification": "verified",
+          "facts": [
+            {
+              "entity": "NBA assist",
+              "metric": "definition",
+              "value": "a direct scoring pass with an immediate reaction toward the basket",
+              "unit": "concept",
+              "period": "NBA assist definition; page update date unknown",
+              "qualifier": "NBA Video Rulebook explanation; official rulebook takes precedence",
+              "locator": "entry-excerpt/p[1]",
+              "supporting_excerpt": "An assist is credited to the player tossing the last pass leading directly to a made field goal, but only if the player scoring the goal demonstrates an immediate reaction toward the basket after receiving the pass.",
+              "parser_version": "nba-article-bindings-v1"
+            }
+          ]
+        }
+      ],
+      "actions": [
+        {
+          "kind": "source",
+          "label": "Open NBA source",
+          "url": "https://pr.nba.com/2023-24-nba-regular-season-schedule/",
+          "operation_hash": null
+        },
+        {
+          "kind": "source",
+          "label": "Open NBA source",
+          "url": "https://videorulebook.nba.com/archive/assist-pass-leads-directly-to-made-field-goal-pass-and-jump-shot-2/",
+          "operation_hash": null
+        }
+      ],
+      "plan": null,
+      "accounting": {
+        "provider_calls": 0,
+        "analytical_calls": 0,
+        "source_requests": 0,
+        "rows": 0,
+        "elapsed_ms": 0.311
+      },
+      "saveable": false
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/turn",
+    "http_status": 200,
+    "elapsed_ms": 13.12,
+    "response": {
+      "schema_version": "courtload-assistant-v2",
+      "request_id": "d18cdd88-92f3-45f5-99fd-c2b24024a4b7",
+      "thread_id": "e3ea714f-7f2b-467a-abb8-0c8b56e282f7",
+      "turn_id": "a33cc99e-4811-4845-a84a-15234ca9ebb6",
+      "status": "answered",
+      "intent": "external",
+      "scope": {
+        "as_of": "2026-10-06",
+        "timezone": "America/New_York",
+        "calendar_version": "nba-completed-seasons-2019-2026-v1",
+        "calendar_sha256": "bc98f7f7956a70b4a6f0f4f21216be4973b78e482c3a100d4f059ad37380a560",
+        "selections": {
+          "release_id": null,
+          "season": "2023-24",
+          "phase": "regular_season",
+          "before_date": null,
+          "window": "season"
+        },
+        "local_context": null,
+        "context_fingerprint": null,
+        "assumptions": [
+          "Inherited selected scope."
+        ],
+        "label": "2023-24 \u00b7 regular season \u00b7 season"
+      },
+      "blocks": [
+        {
+          "kind": "external_claim",
+          "text": "NBA regular season: announced start date = 2023-10-24 date (2023-24 regular season; Published schedule announcement; not a live schedule or proof games occurred).",
+          "source_id": "courtload-public-nba-v1:schedule-2023-24:86c42646eaa31b3b8ad73c58aab78dd9a1d50cd1b25bf21171ec6a7ce6ce3339",
+          "locator": "post__content/p[4]",
+          "entity": "NBA regular season",
+          "metric": "announced start date",
+          "value": "2023-10-24",
+          "unit": "date",
+          "period": "2023-24 regular season",
+          "qualifier": "Published schedule announcement; not a live schedule or proof games occurred",
+          "supporting_excerpt": "The 78th NBA regular season will tip off on Tuesday, Oct. 24, 2023",
+          "parser_version": "nba-article-bindings-v1"
+        }
+      ],
+      "sources": [
+        {
+          "source_id": "courtload-public-nba-v1:schedule-2023-24:86c42646eaa31b3b8ad73c58aab78dd9a1d50cd1b25bf21171ec6a7ce6ce3339",
+          "origin": "external",
+          "title": "NBA announces schedule for 2023-24 regular season",
+          "publisher": "NBA Communications",
+          "url": "https://pr.nba.com/2023-24-nba-regular-season-schedule/",
+          "updated_on": "2023-08-17",
+          "retrieved_at": "2026-10-06T07:03:06.230587Z",
+          "period": "2023-24 regular season",
+          "content_sha256": "86c42646eaa31b3b8ad73c58aab78dd9a1d50cd1b25bf21171ec6a7ce6ce3339",
+          "locator": "post__content/p[4]",
+          "excerpt": "The 78th NBA regular season will tip off on Tuesday, Oct. 24, 2023",
+          "verification": "verified",
+          "facts": [
+            {
+              "entity": "NBA regular season",
+              "metric": "announced start date",
+              "value": "2023-10-24",
+              "unit": "date",
+              "period": "2023-24 regular season",
+              "qualifier": "Published schedule announcement; not a live schedule or proof games occurred",
+              "locator": "post__content/p[4]",
+              "supporting_excerpt": "The 78th NBA regular season will tip off on Tuesday, Oct. 24, 2023",
+              "parser_version": "nba-article-bindings-v1"
+            }
+          ]
+        }
+      ],
+      "actions": [
+        {
+          "kind": "source",
+          "label": "Open NBA source",
+          "url": "https://pr.nba.com/2023-24-nba-regular-season-schedule/",
+          "operation_hash": null
+        }
+      ],
+      "plan": null,
+      "accounting": {
+        "provider_calls": 0,
+        "analytical_calls": 0,
+        "source_requests": 0,
+        "rows": 0,
+        "elapsed_ms": 0.194
+      },
+      "saveable": false
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/turn",
+    "http_status": 200,
+    "elapsed_ms": 3.35,
+    "response": {
+      "schema_version": "courtload-assistant-v2",
+      "request_id": "59da7ca9-d733-4a2b-ae8a-257acb1b305d",
+      "thread_id": "e3ea714f-7f2b-467a-abb8-0c8b56e282f7",
+      "turn_id": "82f70844-2982-4728-b40b-49a408a93ed7",
+      "status": "answered",
+      "intent": "external",
+      "scope": {
+        "as_of": "2026-10-06",
+        "timezone": "America/New_York",
+        "calendar_version": "nba-completed-seasons-2019-2026-v1",
+        "calendar_sha256": "bc98f7f7956a70b4a6f0f4f21216be4973b78e482c3a100d4f059ad37380a560",
+        "selections": {
+          "release_id": null,
+          "season": "2023-24",
+          "phase": "regular_season",
+          "before_date": null,
+          "window": "season"
+        },
+        "local_context": null,
+        "context_fingerprint": null,
+        "assumptions": [
+          "Regular season unless a phase is specified."
+        ],
+        "label": "2023-24 \u00b7 regular season \u00b7 season"
+      },
+      "blocks": [
+        {
+          "kind": "external_claim",
+          "text": "NBA regular season: announced start date = 2023-10-24 date (2023-24 regular season; Published schedule announcement; not a live schedule or proof games occurred).",
+          "source_id": "courtload-public-nba-v1:schedule-2023-24:86c42646eaa31b3b8ad73c58aab78dd9a1d50cd1b25bf21171ec6a7ce6ce3339",
+          "locator": "post__content/p[4]",
+          "entity": "NBA regular season",
+          "metric": "announced start date",
+          "value": "2023-10-24",
+          "unit": "date",
+          "period": "2023-24 regular season",
+          "qualifier": "Published schedule announcement; not a live schedule or proof games occurred",
+          "supporting_excerpt": "The 78th NBA regular season will tip off on Tuesday, Oct. 24, 2023",
+          "parser_version": "nba-article-bindings-v1"
+        }
+      ],
+      "sources": [
+        {
+          "source_id": "courtload-public-nba-v1:schedule-2023-24:86c42646eaa31b3b8ad73c58aab78dd9a1d50cd1b25bf21171ec6a7ce6ce3339",
+          "origin": "external",
+          "title": "NBA announces schedule for 2023-24 regular season",
+          "publisher": "NBA Communications",
+          "url": "https://pr.nba.com/2023-24-nba-regular-season-schedule/",
+          "updated_on": "2023-08-17",
+          "retrieved_at": "2026-10-06T07:03:06.230587Z",
+          "period": "2023-24 regular season",
+          "content_sha256": "86c42646eaa31b3b8ad73c58aab78dd9a1d50cd1b25bf21171ec6a7ce6ce3339",
+          "locator": "post__content/p[4]",
+          "excerpt": "The 78th NBA regular season will tip off on Tuesday, Oct. 24, 2023",
+          "verification": "verified",
+          "facts": [
+            {
+              "entity": "NBA regular season",
+              "metric": "announced start date",
+              "value": "2023-10-24",
+              "unit": "date",
+              "period": "2023-24 regular season",
+              "qualifier": "Published schedule announcement; not a live schedule or proof games occurred",
+              "locator": "post__content/p[4]",
+              "supporting_excerpt": "The 78th NBA regular season will tip off on Tuesday, Oct. 24, 2023",
+              "parser_version": "nba-article-bindings-v1"
+            }
+          ]
+        }
+      ],
+      "actions": [
+        {
+          "kind": "source",
+          "label": "Open NBA source",
+          "url": "https://pr.nba.com/2023-24-nba-regular-season-schedule/",
+          "operation_hash": null
+        }
+      ],
+      "plan": null,
+      "accounting": {
+        "provider_calls": 0,
+        "analytical_calls": 0,
+        "source_requests": 1,
+        "rows": 0,
+        "elapsed_ms": 318.777
+      },
+      "saveable": false
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/threads/e3ea714f-7f2b-467a-abb8-0c8b56e282f7/turns",
+    "http_status": 200,
+    "elapsed_ms": 4.814,
+    "response": {
+      "schema_version": "courtload-history-v2",
+      "thread": {
+        "record_version": "courtload-thread-v2",
+        "thread_id": "e3ea714f-7f2b-467a-abb8-0c8b56e282f7",
+        "title": "When did NBA 2023-24 regular season start?",
+        "created_at": "2026-10-06T07:03:05.903498Z",
+        "updated_at": "2026-10-06T07:03:06.591290Z",
+        "version": 5
+      },
+      "turns": [
+        {
+          "record_version": "courtload-thread-turn-v2",
+          "thread_id": "e3ea714f-7f2b-467a-abb8-0c8b56e282f7",
+          "turn_id": "82f70844-2982-4728-b40b-49a408a93ed7",
+          "request": {
+            "schema_version": "courtload-assistant-v2",
+            "request_id": "59da7ca9-d733-4a2b-ae8a-257acb1b305d",
+            "thread_id": null,
+            "retry_of": null,
+            "message": "When did NBA 2023-24 regular season start?",
+            "context": null,
+            "plan": null
+          },
+          "request_sha256": "bca26b7052dba6ceb35e86a8b8763fb816a43cb93990e3f0268702254bcc62ea",
+          "accepted_at": "2026-10-06T07:03:05.903498Z",
+          "state": "completed",
+          "response": {
+            "schema_version": "courtload-assistant-v2",
+            "request_id": "59da7ca9-d733-4a2b-ae8a-257acb1b305d",
+            "thread_id": "e3ea714f-7f2b-467a-abb8-0c8b56e282f7",
+            "turn_id": "82f70844-2982-4728-b40b-49a408a93ed7",
+            "status": "answered",
+            "intent": "external",
+            "scope": {
+              "as_of": "2026-10-06",
+              "timezone": "America/New_York",
+              "calendar_version": "nba-completed-seasons-2019-2026-v1",
+              "calendar_sha256": "bc98f7f7956a70b4a6f0f4f21216be4973b78e482c3a100d4f059ad37380a560",
+              "selections": {
+                "release_id": null,
+                "season": "2023-24",
+                "phase": "regular_season",
+                "before_date": null,
+                "window": "season"
+              },
+              "local_context": null,
+              "context_fingerprint": null,
+              "assumptions": [
+                "Regular season unless a phase is specified."
+              ],
+              "label": "2023-24 \u00b7 regular season \u00b7 season"
+            },
+            "blocks": [
+              {
+                "kind": "external_claim",
+                "text": "NBA regular season: announced start date = 2023-10-24 date (2023-24 regular season; Published schedule announcement; not a live schedule or proof games occurred).",
+                "source_id": "courtload-public-nba-v1:schedule-2023-24:86c42646eaa31b3b8ad73c58aab78dd9a1d50cd1b25bf21171ec6a7ce6ce3339",
+                "locator": "post__content/p[4]",
+                "entity": "NBA regular season",
+                "metric": "announced start date",
+                "value": "2023-10-24",
+                "unit": "date",
+                "period": "2023-24 regular season",
+                "qualifier": "Published schedule announcement; not a live schedule or proof games occurred",
+                "supporting_excerpt": "The 78th NBA regular season will tip off on Tuesday, Oct. 24, 2023",
+                "parser_version": "nba-article-bindings-v1"
+              }
+            ],
+            "sources": [
+              {
+                "source_id": "courtload-public-nba-v1:schedule-2023-24:86c42646eaa31b3b8ad73c58aab78dd9a1d50cd1b25bf21171ec6a7ce6ce3339",
+                "origin": "external",
+                "title": "NBA announces schedule for 2023-24 regular season",
+                "publisher": "NBA Communications",
+                "url": "https://pr.nba.com/2023-24-nba-regular-season-schedule/",
+                "updated_on": "2023-08-17",
+                "retrieved_at": "2026-10-06T07:03:06.230587Z",
+                "period": "2023-24 regular season",
+                "content_sha256": "86c42646eaa31b3b8ad73c58aab78dd9a1d50cd1b25bf21171ec6a7ce6ce3339",
+                "locator": "post__content/p[4]",
+                "excerpt": "The 78th NBA regular season will tip off on Tuesday, Oct. 24, 2023",
+                "verification": "verified",
+                "facts": [
+                  {
+                    "entity": "NBA regular season",
+                    "metric": "announced start date",
+                    "value": "2023-10-24",
+                    "unit": "date",
+                    "period": "2023-24 regular season",
+                    "qualifier": "Published schedule announcement; not a live schedule or proof games occurred",
+                    "locator": "post__content/p[4]",
+                    "supporting_excerpt": "The 78th NBA regular season will tip off on Tuesday, Oct. 24, 2023",
+                    "parser_version": "nba-article-bindings-v1"
+                  }
+                ]
+              }
+            ],
+            "actions": [
+              {
+                "kind": "source",
+                "label": "Open NBA source",
+                "url": "https://pr.nba.com/2023-24-nba-regular-season-schedule/",
+                "operation_hash": null
+              }
+            ],
+            "plan": null,
+            "accounting": {
+              "provider_calls": 0,
+              "analytical_calls": 0,
+              "source_requests": 1,
+              "rows": 0,
+              "elapsed_ms": 318.777
+            },
+            "saveable": false
+          },
+          "response_sha256": "92a649d3c5af2cc917053cd3bf2ce6da3b244d14024eb6285c6d0199d6178c8c"
+        },
+        {
+          "record_version": "courtload-thread-turn-v2",
+          "thread_id": "e3ea714f-7f2b-467a-abb8-0c8b56e282f7",
+          "turn_id": "a33cc99e-4811-4845-a84a-15234ca9ebb6",
+          "request": {
+            "schema_version": "courtload-assistant-v2",
+            "request_id": "d18cdd88-92f3-45f5-99fd-c2b24024a4b7",
+            "thread_id": "e3ea714f-7f2b-467a-abb8-0c8b56e282f7",
+            "retry_of": null,
+            "message": "When did NBA 2023-24 regular season start?",
+            "context": null,
+            "plan": null
+          },
+          "request_sha256": "cc4dee3f110024e392e3d875430038878dd863bf50e51ff1034de1be46376417",
+          "accepted_at": "2026-10-06T07:03:06.584531Z",
+          "state": "completed",
+          "response": {
+            "schema_version": "courtload-assistant-v2",
+            "request_id": "d18cdd88-92f3-45f5-99fd-c2b24024a4b7",
+            "thread_id": "e3ea714f-7f2b-467a-abb8-0c8b56e282f7",
+            "turn_id": "a33cc99e-4811-4845-a84a-15234ca9ebb6",
+            "status": "answered",
+            "intent": "external",
+            "scope": {
+              "as_of": "2026-10-06",
+              "timezone": "America/New_York",
+              "calendar_version": "nba-completed-seasons-2019-2026-v1",
+              "calendar_sha256": "bc98f7f7956a70b4a6f0f4f21216be4973b78e482c3a100d4f059ad37380a560",
+              "selections": {
+                "release_id": null,
+                "season": "2023-24",
+                "phase": "regular_season",
+                "before_date": null,
+                "window": "season"
+              },
+              "local_context": null,
+              "context_fingerprint": null,
+              "assumptions": [
+                "Inherited selected scope."
+              ],
+              "label": "2023-24 \u00b7 regular season \u00b7 season"
+            },
+            "blocks": [
+              {
+                "kind": "external_claim",
+                "text": "NBA regular season: announced start date = 2023-10-24 date (2023-24 regular season; Published schedule announcement; not a live schedule or proof games occurred).",
+                "source_id": "courtload-public-nba-v1:schedule-2023-24:86c42646eaa31b3b8ad73c58aab78dd9a1d50cd1b25bf21171ec6a7ce6ce3339",
+                "locator": "post__content/p[4]",
+                "entity": "NBA regular season",
+                "metric": "announced start date",
+                "value": "2023-10-24",
+                "unit": "date",
+                "period": "2023-24 regular season",
+                "qualifier": "Published schedule announcement; not a live schedule or proof games occurred",
+                "supporting_excerpt": "The 78th NBA regular season will tip off on Tuesday, Oct. 24, 2023",
+                "parser_version": "nba-article-bindings-v1"
+              }
+            ],
+            "sources": [
+              {
+                "source_id": "courtload-public-nba-v1:schedule-2023-24:86c42646eaa31b3b8ad73c58aab78dd9a1d50cd1b25bf21171ec6a7ce6ce3339",
+                "origin": "external",
+                "title": "NBA announces schedule for 2023-24 regular season",
+                "publisher": "NBA Communications",
+                "url": "https://pr.nba.com/2023-24-nba-regular-season-schedule/",
+                "updated_on": "2023-08-17",
+                "retrieved_at": "2026-10-06T07:03:06.230587Z",
+                "period": "2023-24 regular season",
+                "content_sha256": "86c42646eaa31b3b8ad73c58aab78dd9a1d50cd1b25bf21171ec6a7ce6ce3339",
+                "locator": "post__content/p[4]",
+                "excerpt": "The 78th NBA regular season will tip off on Tuesday, Oct. 24, 2023",
+                "verification": "verified",
+                "facts": [
+                  {
+                    "entity": "NBA regular season",
+                    "metric": "announced start date",
+                    "value": "2023-10-24",
+                    "unit": "date",
+                    "period": "2023-24 regular season",
+                    "qualifier": "Published schedule announcement; not a live schedule or proof games occurred",
+                    "locator": "post__content/p[4]",
+                    "supporting_excerpt": "The 78th NBA regular season will tip off on Tuesday, Oct. 24, 2023",
+                    "parser_version": "nba-article-bindings-v1"
+                  }
+                ]
+              }
+            ],
+            "actions": [
+              {
+                "kind": "source",
+                "label": "Open NBA source",
+                "url": "https://pr.nba.com/2023-24-nba-regular-season-schedule/",
+                "operation_hash": null
+              }
+            ],
+            "plan": null,
+            "accounting": {
+              "provider_calls": 0,
+              "analytical_calls": 0,
+              "source_requests": 0,
+              "rows": 0,
+              "elapsed_ms": 0.194
+            },
+            "saveable": false
+          },
+          "response_sha256": "8c696bed9690f54e5c90e99f1f23a061a8aa5c8f0b5ece80db0be221646142bc"
+        }
+      ],
+      "next_cursor": null
+    }
+  },
+  {
+    "method": "POST",
+    "path": "/turn",
+    "http_status": 200,
+    "elapsed_ms": 6.866,
+    "response": {
+      "schema_version": "courtload-assistant-v2",
+      "request_id": "59da7ca9-d733-4a2b-ae8a-257acb1b305d",
+      "thread_id": "e3ea714f-7f2b-467a-abb8-0c8b56e282f7",
+      "turn_id": "82f70844-2982-4728-b40b-49a408a93ed7",
+      "status": "answered",
+      "intent": "external",
+      "scope": {
+        "as_of": "2026-10-06",
+        "timezone": "America/New_York",
+        "calendar_version": "nba-completed-seasons-2019-2026-v1",
+        "calendar_sha256": "bc98f7f7956a70b4a6f0f4f21216be4973b78e482c3a100d4f059ad37380a560",
+        "selections": {
+          "release_id": null,
+          "season": "2023-24",
+          "phase": "regular_season",
+          "before_date": null,
+          "window": "season"
+        },
+        "local_context": null,
+        "context_fingerprint": null,
+        "assumptions": [
+          "Regular season unless a phase is specified."
+        ],
+        "label": "2023-24 \u00b7 regular season \u00b7 season"
+      },
+      "blocks": [
+        {
+          "kind": "external_claim",
+          "text": "NBA regular season: announced start date = 2023-10-24 date (2023-24 regular season; Published schedule announcement; not a live schedule or proof games occurred).",
+          "source_id": "courtload-public-nba-v1:schedule-2023-24:86c42646eaa31b3b8ad73c58aab78dd9a1d50cd1b25bf21171ec6a7ce6ce3339",
+          "locator": "post__content/p[4]",
+          "entity": "NBA regular season",
+          "metric": "announced start date",
+          "value": "2023-10-24",
+          "unit": "date",
+          "period": "2023-24 regular season",
+          "qualifier": "Published schedule announcement; not a live schedule or proof games occurred",
+          "supporting_excerpt": "The 78th NBA regular season will tip off on Tuesday, Oct. 24, 2023",
+          "parser_version": "nba-article-bindings-v1"
+        }
+      ],
+      "sources": [
+        {
+          "source_id": "courtload-public-nba-v1:schedule-2023-24:86c42646eaa31b3b8ad73c58aab78dd9a1d50cd1b25bf21171ec6a7ce6ce3339",
+          "origin": "external",
+          "title": "NBA announces schedule for 2023-24 regular season",
+          "publisher": "NBA Communications",
+          "url": "https://pr.nba.com/2023-24-nba-regular-season-schedule/",
+          "updated_on": "2023-08-17",
+          "retrieved_at": "2026-10-06T07:03:06.230587Z",
+          "period": "2023-24 regular season",
+          "content_sha256": "86c42646eaa31b3b8ad73c58aab78dd9a1d50cd1b25bf21171ec6a7ce6ce3339",
+          "locator": "post__content/p[4]",
+          "excerpt": "The 78th NBA regular season will tip off on Tuesday, Oct. 24, 2023",
+          "verification": "verified",
+          "facts": [
+            {
+              "entity": "NBA regular season",
+              "metric": "announced start date",
+              "value": "2023-10-24",
+              "unit": "date",
+              "period": "2023-24 regular season",
+              "qualifier": "Published schedule announcement; not a live schedule or proof games occurred",
+              "locator": "post__content/p[4]",
+              "supporting_excerpt": "The 78th NBA regular season will tip off on Tuesday, Oct. 24, 2023",
+              "parser_version": "nba-article-bindings-v1"
+            }
+          ]
+        }
+      ],
+      "actions": [
+        {
+          "kind": "source",
+          "label": "Open NBA source",
+          "url": "https://pr.nba.com/2023-24-nba-regular-season-schedule/",
+          "operation_hash": null
+        }
+      ],
+      "plan": null,
+      "accounting": {
+        "provider_calls": 0,
+        "analytical_calls": 0,
+        "source_requests": 1,
+        "rows": 0,
+        "elapsed_ms": 318.777
+      },
+      "saveable": false
+    }
+  },
+  {
+    "method": "GET",
+    "path": "/threads/e3ea714f-7f2b-467a-abb8-0c8b56e282f7/turns",
+    "http_status": 200,
+    "elapsed_ms": 5.854,
+    "response": {
+      "schema_version": "courtload-history-v2",
+      "thread": {
+        "record_version": "courtload-thread-v2",
+        "thread_id": "e3ea714f-7f2b-467a-abb8-0c8b56e282f7",
+        "title": "When did NBA 2023-24 regular season start?",
+        "created_at": "2026-10-06T07:03:05.903498Z",
+        "updated_at": "2026-10-06T07:03:06.591290Z",
+        "version": 5
+      },
+      "turns": [
+        {
+          "record_version": "courtload-thread-turn-v2",
+          "thread_id": "e3ea714f-7f2b-467a-abb8-0c8b56e282f7",
+          "turn_id": "82f70844-2982-4728-b40b-49a408a93ed7",
+          "request": {
+            "schema_version": "courtload-assistant-v2",
+            "request_id": "59da7ca9-d733-4a2b-ae8a-257acb1b305d",
+            "thread_id": null,
+            "retry_of": null,
+            "message": "When did NBA 2023-24 regular season start?",
+            "context": null,
+            "plan": null
+          },
+          "request_sha256": "bca26b7052dba6ceb35e86a8b8763fb816a43cb93990e3f0268702254bcc62ea",
+          "accepted_at": "2026-10-06T07:03:05.903498Z",
+          "state": "completed",
+          "response": {
+            "schema_version": "courtload-assistant-v2",
+            "request_id": "59da7ca9-d733-4a2b-ae8a-257acb1b305d",
+            "thread_id": "e3ea714f-7f2b-467a-abb8-0c8b56e282f7",
+            "turn_id": "82f70844-2982-4728-b40b-49a408a93ed7",
+            "status": "answered",
+            "intent": "external",
+            "scope": {
+              "as_of": "2026-10-06",
+              "timezone": "America/New_York",
+              "calendar_version": "nba-completed-seasons-2019-2026-v1",
+              "calendar_sha256": "bc98f7f7956a70b4a6f0f4f21216be4973b78e482c3a100d4f059ad37380a560",
+              "selections": {
+                "release_id": null,
+                "season": "2023-24",
+                "phase": "regular_season",
+                "before_date": null,
+                "window": "season"
+              },
+              "local_context": null,
+              "context_fingerprint": null,
+              "assumptions": [
+                "Regular season unless a phase is specified."
+              ],
+              "label": "2023-24 \u00b7 regular season \u00b7 season"
+            },
+            "blocks": [
+              {
+                "kind": "external_claim",
+                "text": "NBA regular season: announced start date = 2023-10-24 date (2023-24 regular season; Published schedule announcement; not a live schedule or proof games occurred).",
+                "source_id": "courtload-public-nba-v1:schedule-2023-24:86c42646eaa31b3b8ad73c58aab78dd9a1d50cd1b25bf21171ec6a7ce6ce3339",
+                "locator": "post__content/p[4]",
+                "entity": "NBA regular season",
+                "metric": "announced start date",
+                "value": "2023-10-24",
+                "unit": "date",
+                "period": "2023-24 regular season",
+                "qualifier": "Published schedule announcement; not a live schedule or proof games occurred",
+                "supporting_excerpt": "The 78th NBA regular season will tip off on Tuesday, Oct. 24, 2023",
+                "parser_version": "nba-article-bindings-v1"
+              }
+            ],
+            "sources": [
+              {
+                "source_id": "courtload-public-nba-v1:schedule-2023-24:86c42646eaa31b3b8ad73c58aab78dd9a1d50cd1b25bf21171ec6a7ce6ce3339",
+                "origin": "external",
+                "title": "NBA announces schedule for 2023-24 regular season",
+                "publisher": "NBA Communications",
+                "url": "https://pr.nba.com/2023-24-nba-regular-season-schedule/",
+                "updated_on": "2023-08-17",
+                "retrieved_at": "2026-10-06T07:03:06.230587Z",
+                "period": "2023-24 regular season",
+                "content_sha256": "86c42646eaa31b3b8ad73c58aab78dd9a1d50cd1b25bf21171ec6a7ce6ce3339",
+                "locator": "post__content/p[4]",
+                "excerpt": "The 78th NBA regular season will tip off on Tuesday, Oct. 24, 2023",
+                "verification": "verified",
+                "facts": [
+                  {
+                    "entity": "NBA regular season",
+                    "metric": "announced start date",
+                    "value": "2023-10-24",
+                    "unit": "date",
+                    "period": "2023-24 regular season",
+                    "qualifier": "Published schedule announcement; not a live schedule or proof games occurred",
+                    "locator": "post__content/p[4]",
+                    "supporting_excerpt": "The 78th NBA regular season will tip off on Tuesday, Oct. 24, 2023",
+                    "parser_version": "nba-article-bindings-v1"
+                  }
+                ]
+              }
+            ],
+            "actions": [
+              {
+                "kind": "source",
+                "label": "Open NBA source",
+                "url": "https://pr.nba.com/2023-24-nba-regular-season-schedule/",
+                "operation_hash": null
+              }
+            ],
+            "plan": null,
+            "accounting": {
+              "provider_calls": 0,
+              "analytical_calls": 0,
+              "source_requests": 1,
+              "rows": 0,
+              "elapsed_ms": 318.777
+            },
+            "saveable": false
+          },
+          "response_sha256": "92a649d3c5af2cc917053cd3bf2ce6da3b244d14024eb6285c6d0199d6178c8c"
+        },
+        {
+          "record_version": "courtload-thread-turn-v2",
+          "thread_id": "e3ea714f-7f2b-467a-abb8-0c8b56e282f7",
+          "turn_id": "a33cc99e-4811-4845-a84a-15234ca9ebb6",
+          "request": {
+            "schema_version": "courtload-assistant-v2",
+            "request_id": "d18cdd88-92f3-45f5-99fd-c2b24024a4b7",
+            "thread_id": "e3ea714f-7f2b-467a-abb8-0c8b56e282f7",
+            "retry_of": null,
+            "message": "When did NBA 2023-24 regular season start?",
+            "context": null,
+            "plan": null
+          },
+          "request_sha256": "cc4dee3f110024e392e3d875430038878dd863bf50e51ff1034de1be46376417",
+          "accepted_at": "2026-10-06T07:03:06.584531Z",
+          "state": "completed",
+          "response": {
+            "schema_version": "courtload-assistant-v2",
+            "request_id": "d18cdd88-92f3-45f5-99fd-c2b24024a4b7",
+            "thread_id": "e3ea714f-7f2b-467a-abb8-0c8b56e282f7",
+            "turn_id": "a33cc99e-4811-4845-a84a-15234ca9ebb6",
+            "status": "answered",
+            "intent": "external",
+            "scope": {
+              "as_of": "2026-10-06",
+              "timezone": "America/New_York",
+              "calendar_version": "nba-completed-seasons-2019-2026-v1",
+              "calendar_sha256": "bc98f7f7956a70b4a6f0f4f21216be4973b78e482c3a100d4f059ad37380a560",
+              "selections": {
+                "release_id": null,
+                "season": "2023-24",
+                "phase": "regular_season",
+                "before_date": null,
+                "window": "season"
+              },
+              "local_context": null,
+              "context_fingerprint": null,
+              "assumptions": [
+                "Inherited selected scope."
+              ],
+              "label": "2023-24 \u00b7 regular season \u00b7 season"
+            },
+            "blocks": [
+              {
+                "kind": "external_claim",
+                "text": "NBA regular season: announced start date = 2023-10-24 date (2023-24 regular season; Published schedule announcement; not a live schedule or proof games occurred).",
+                "source_id": "courtload-public-nba-v1:schedule-2023-24:86c42646eaa31b3b8ad73c58aab78dd9a1d50cd1b25bf21171ec6a7ce6ce3339",
+                "locator": "post__content/p[4]",
+                "entity": "NBA regular season",
+                "metric": "announced start date",
+                "value": "2023-10-24",
+                "unit": "date",
+                "period": "2023-24 regular season",
+                "qualifier": "Published schedule announcement; not a live schedule or proof games occurred",
+                "supporting_excerpt": "The 78th NBA regular season will tip off on Tuesday, Oct. 24, 2023",
+                "parser_version": "nba-article-bindings-v1"
+              }
+            ],
+            "sources": [
+              {
+                "source_id": "courtload-public-nba-v1:schedule-2023-24:86c42646eaa31b3b8ad73c58aab78dd9a1d50cd1b25bf21171ec6a7ce6ce3339",
+                "origin": "external",
+                "title": "NBA announces schedule for 2023-24 regular season",
+                "publisher": "NBA Communications",
+                "url": "https://pr.nba.com/2023-24-nba-regular-season-schedule/",
+                "updated_on": "2023-08-17",
+                "retrieved_at": "2026-10-06T07:03:06.230587Z",
+                "period": "2023-24 regular season",
+                "content_sha256": "86c42646eaa31b3b8ad73c58aab78dd9a1d50cd1b25bf21171ec6a7ce6ce3339",
+                "locator": "post__content/p[4]",
+                "excerpt": "The 78th NBA regular season will tip off on Tuesday, Oct. 24, 2023",
+                "verification": "verified",
+                "facts": [
+                  {
+                    "entity": "NBA regular season",
+                    "metric": "announced start date",
+                    "value": "2023-10-24",
+                    "unit": "date",
+                    "period": "2023-24 regular season",
+                    "qualifier": "Published schedule announcement; not a live schedule or proof games occurred",
+                    "locator": "post__content/p[4]",
+                    "supporting_excerpt": "The 78th NBA regular season will tip off on Tuesday, Oct. 24, 2023",
+                    "parser_version": "nba-article-bindings-v1"
+                  }
+                ]
+              }
+            ],
+            "actions": [
+              {
+                "kind": "source",
+                "label": "Open NBA source",
+                "url": "https://pr.nba.com/2023-24-nba-regular-season-schedule/",
+                "operation_hash": null
+              }
+            ],
+            "plan": null,
+            "accounting": {
+              "provider_calls": 0,
+              "analytical_calls": 0,
+              "source_requests": 0,
+              "rows": 0,
+              "elapsed_ms": 0.194
+            },
+            "saveable": false
+          },
+          "response_sha256": "8c696bed9690f54e5c90e99f1f23a061a8aa5c8f0b5ece80db0be221646142bc"
+        }
+      ],
+      "next_cursor": null
+    }
+  }
+]

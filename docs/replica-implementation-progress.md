@@ -22,6 +22,10 @@ These checks verify the handoff's structure. Application tests, numerical reconc
 
 Allowed states: `planned`, `in_progress`, `implemented_unverified`, `verified`, `source_blocked`, `verification_blocked`, `preference_deferred`. `verified` requires the recorded completion evidence in the handoff. A blocked source or a fixture-only result does not count as completed actual-source behavior.
 
+Reconciled 2026-10-04 against the dated entries below. Interface/machinery verification
+is distinct from admitted coverage and full release acceptance; earlier entries retain
+their historical results and limits.
+
 | Block | Owner | Status | Evidence / limit |
 | --- | --- | --- | --- |
 | B00 Baseline/integrity inventory | Sol | verified | Baseline inventory and runtime verification complete |
@@ -35,30 +39,33 @@ Allowed states: `planned`, `in_progress`, `implemented_unverified`, `verified`, 
 | B08 Personal state API | Sol | verified | Versioned protected CRUD, atomic PostgreSQL conflicts, validated portable bundles, real browser proxy and fresh DB restore; broader legacy browser failures recorded below |
 | B09 Views/favorites/boards | Flash | verified | Custom view manager, star toggles, tray sync, ranking board manager & Borda aggregation, tier lists |
 | B10 Charts/comparisons | Flash | verified | Two-axis scatter plot with outlier detection, multi-player lines with rolling stats, PvP compare view, image export |
+| B11 Player pages/showcase | Flash | verified | B11 player dashboards, recent games, showcase and partial-career/forecast/source presentation verified at the recorded boundary |
 | B12 Analytical operations | Sol | verified | Pure mathematical calculation engine for quantiles (type 7), period deltas, venue & rest splits, defensive allowance, standardized z-score statistical peers (weighted Euclidean distance), and cohort ranking API |
 | B13 Investigation interfaces | Flash | verified | Workload trends (/research/trends), quantile distributions & contextual splits (/research/distributions), statistical twin peers (/research/similarity), and flagship case studies (/research/case-studies) with manual reproduction |
-| B14 Current/history/identity sources | Sol | verified | B14a refresh, discovery & crosswalk, B14b resumable backfill toward 2000-01, B14c combine/listed measurements & draft metadata verified |
+| B14 Current/history/identity sources | Sol | in_progress | Refresh/discovery/identity and resumable backfill machinery verified; completed historical coverage through 2000–01 remains unverified |
 | B15 Team operations | Sol | verified | Team profile, schedule context, rest splits, B2B summaries, Four Factors (offense & defense) with league ranks/percentiles, similar peers, and F18 three-point variation scenario |
+| B16 Team explorer/comparison | Flash | verified | B16 team tables, profiles/cohorts, comparison and hypothetical three-point scenario verified; admitted history bounds remain explicit |
 | B17 Playoff/series data | Sol | verified | Admitted postseason games (82 for 2023-24), bracket/series identity (004{YY}00{round}{matchup}{game_num}), slug and alias resolution, explicit reconstructed seed evidence with tie notes, phase-safe Four Factors and player box-score series aggregations, and strict 7-game placeholder handling |
-| B19 Rich-source admission | Sol | verified | Bounded streaming adapters for PBP, possessions, lineups, shots, matchups; pinned policies (courtload-sdv-rich-v1, possession-policy-v1, shot-zones-v1, matchup-pair-v1); clock/lineup/score/shot/matchup invariants; retained source bytes & SHA-256; structured quarantine reporting |
-| B20 Possession/stint warehouse | Sol | verified | Continuous 5-on-5 stint reconstruction, possession-policy-v1, 5-player sides, minute/point conservation, fractional possession overlap, override registry, dbt facts/marts, cutoff-safe exposure |
+| B18 Playoff interface | Flash | verified | B18 bracket, series/game cards, player/team tables and explicitly gated matchup/rotation panels verified |
+| B19 Rich-source admission | Sol | source_blocked | B19a/B19b and B19c preserved; B19d native candidate reconstruction verified on four games (2,209 events), three numerically conserved. Independent starter observations conflict; one malformed native minute remains; pinned rotation mirror covers only 165/1,230 regular games. No partial or full-season WOWY admission; B23 assignment serving pending |
+| B20 Possession/stint warehouse | Sol | source_blocked | Reconstruction, conservation, attribution, override and cutoff machinery verified; populated reconciled retained stint/possession coverage remains open |
 | B21 WOWY/on-off API | Sol | verified | Typed shared-floor operations, disjoint 1-5 condition partitions, 2-5 player units, teammate event shifts, game-cluster intervals, possession gates; retained population remains source_blocked (zero stint rows) |
 | B22 WOWY interface | Flash | verified | Bounded API-backed sets/units/Stats on-off/shifts/comparisons/exports; source_blocked in retained release, broader browser gate remains red |
 | B23 Shots/matchups/aftermath API | Sol | verified | Bounded shot profiles/zone peers, explicit source assignments and partial possession aftermath; isolated fixture verification, retained-release inputs source_blocked |
-| B24 Shooting/matchup interface | Flash | planned | |
+| B24 Shooting/matchup interface | Flash | verified | Bounded B24 interfaces verified below; populated rich queries/performance and exact source video mappings remain gated |
 | B25 External outputs/preregistration | Sol | source_blocked | Bounded offline schemas/registration and four frozen designs verified; DARKO admission, reconciled input history and exact split bindings remain blocked |
-| B26 Registered experiments | Sol | source_blocked | Input-readiness slice verified; expected shots selected for first admission work; empty scoped rich inputs and exposed historical final require source work and separate chronology amendment |
-| B27 Advanced research UI | Flash | planned | Each component has its own input/model gate |
+| B26 Registered experiments | Sol | source_blocked | Expected-shot sub-block complete with registered negative result and three admitted shot seasons; RAPM, six-factor and playtype-adjusted shooting retain independent input/chronology gates |
+| B27 Advanced research UI | Flash | verified | Bounded advanced interfaces, expected-shot negative-result view and hypothetical calculator verified; each source/model component retains its own gate |
 | B28 Contract/transaction acquisition and schema | Sol | verified | Bounded manual source books, real tracked import/corrections and PostgreSQL sealing; comprehensive automation remains source-blocked |
 | B29 Finance operations | Sol | verified | Bounded book-bound read-only queries, cents/status reconciliation, temporal correction replay and separate option scenarios; richer source/value gates remain open |
 | B30 Finance interface | Flash | verified | Bounded book-bound UI and real browser evidence recorded in B30; current-market/value/automation gates remain open |
-| B31 Shared Live service | Sol | verified (bounded backend) | Shared leases/poller/cache and PostgreSQL reconciliation verified; real source observed scheduled only, in-game gate open |
-| B32 Live interface | Flash | in_progress | Bounded interface verified in B32; actual changing-game/finality/correction observations remain unmeasured |
+| B31 Shared Live service | Sol | verified | Bounded shared backend verified; B32a records changing preseason observations/two active boxes; independently admitted finals, real corrections and full three-box load remain open |
+| B32 Live interface | Flash | in_progress | Bounded interface verified; B32a changing-game/browser/resource acceptance recorded below; final reconciliation and actual corrections remain open |
 | B33 Conversational backend | Sol | verified | Bounded typed planning/execution/evidence verified in B33; real-provider language acceptance remains separate |
-| B34 Chat UI/query evaluation | Flash | verified (evaluation complete) | Interface/query equivalence, fixture corpus, structured planning diagnosis, and supplemental cases verified; real Gemini corpus evaluated (75.6% overall / 68% supported; language gate unmet) |
+| B34 Chat UI/query evaluation | Flash | verified | B34c closes owner-approved Lite language gate: 45/45 core, 12/12 paraphrases and 6/6 supplemental cases; versioned workbench nonappearance correction resolved in integrity follow-up |
 | B35 Methodology/export/integration | Sol → Flash | verified | B35a/backend, B35b/content and B35c real Linux Chromium installation, persistent standalone launch, fresh packaged deployment and integration acceptance verified; independent language/Live/source/model gates remain |
-| B36 Fontshare refinement | Flash | comparison_verified; selection_pending | B36a real-service comparison of four options, numeral/name samples and Stats responsive/zoom evidence verified; owner selection and production packaging/CLS pending |
-| B37 Release/recovery/evidence | Sol | verified (benchmarks, storage, case studies, recovery) | B37 benchmarks (31 endpoints, 0 errors), process accounting, 78-table storage, 6 case studies, demo guide, and fresh DB restore (5 passed, 157.5s) verified; language gate unmet and live in-game gate open; OS install verified in B35c |
+| B36 Fontshare refinement | Flash | verified | Owner-selected Public Sans/JetBrains Mono packaged offline; B36b production delivery, CLS, density and browser acceptance verified |
+| B37 Release/recovery/evidence | Sol | verification_blocked | Benchmarks/storage/case studies/fresh restore verified at their dated boundaries; B34c language and B35c install gates closed. Full replica acceptance awaits source/model/finance/Live gates and renewed capability verification |
 
 ## Feature coverage ledger
 
@@ -74,7 +81,7 @@ Use IDs F01–F46 in the [feature contract](design/replica-feature-contract.md),
 | F06 Table plots | verified | B10 | Two-axis scatter plot with selectable catalog v2 axes and outlier detection, multi-player lines with rolling statistics, and accessible data tables |
 | F07 Help/discovery | verified | B02, B04–B07, B35b | Lookup, shell, combobox, shortcuts and catalog-linked original definitions verified at their recorded boundaries |
 | F08 WOWY | verified (bounded operation) | B19–B22, B37; validated shared-court data | B21 API verified against PostgreSQL fixtures; retained stint population source_blocked disclosed; sample thresholds and B37 real-service benchmarks verified |
-| F09 Live | partial | B31–B32 | B31 shared backend & leases verified, B32 bounded UI; in-game active observation gate open |
+| F09 Live | partial | B31–B32 | Shared backend/UI and B32a actual changing preseason observations verified; independently admitted final reconciliation, actual corrections and full three-box load remain open |
 | F10 Playoffs | verified | B17–B18, B23/B25 where needed | Bracket and series explorer (/playoffs) with explicit seed evidence and tie notes, series detail (/playoffs/[seriesId]) with 7-game cards, Four Factors, player series box scores, and gated matchup/rotation sections verified |
 | F11 Recent games | verified | B03, B10–B11 | Recent games explorer (/last-games) with last 5/10/20/all appearance windowing, per-game vs per-36 exposure rates, trajectory plot, summary highs/lows, CSV & high-DPI image export, and lineage drawer |
 | F12 Showcase | verified | B08–B11; motion can pause | Player showcase (/showcase) with configurable focus presets (Overall, Scoring, Playmaking/Defense, Per 36), manual & auto-advancing slideshow with reduced-motion pausing, SVG card rasterization, and compare/favorite sync |
@@ -85,17 +92,17 @@ Use IDs F01–F46 in the [feature contract](design/replica-feature-contract.md),
 | F17 Teams | verified | B14–B16 | Team explorer (/teams), conference & division grouping, four factors toggles, pace/efficiency scatter, team research profile (/teams/[id]), and historical peers verified |
 | F18 Three-point variation | verified | B15–B16; versioned scenario, never rename as luck removed | Pure domain math, API scenario endpoint (/teams/{id}/three-point-variation), counterfactual FG3% shift holding volume constant, and non-inferential disclaimer verified |
 | F19 Roster shapes | planned | B14, B25–B27, B28 where finance needed | Pending runtime/source evidence |
-| F20 Teammate stat shift | in_progress | B20–B22 | B21 focal-player shared-floor production/shift API verified; retained stint population source_blocked; B22 interface pending |
+| F20 Teammate stat shift | source_blocked | B20–B22 | B21 focal-player shared-floor API and B22 interface verified; retained reconciled stint population remains gated |
 | F21 Contracts | verified (bounded books) | B28–B30, B37 | B28 manual books, B29 terms/payroll/timeline API, B30 UI and B37 replay benchmarks verified; current-market source gate open |
 | F22 Financial value | source_blocked | B25, B29–B30; external conversion or registered named scenario | B29 factual Small vs Big grouping implemented; monetary value/surplus/ROI lacks admitted conversion |
-| F23 Free agency | in_progress | B28–B30 | B29 exclusive source-book contract statuses/counts verified; current market source and B30 UI pending |
+| F23 Free agency | partial | B28–B30 | B29 bounded book statuses/counts and B30 UI verified; comprehensive current-market/status coverage remains gated |
 | F24 Player compare | verified | B10, B22/B26 where needed | Interactive PvP compare view with Overall/Offense/Defense/Six Factor/Custom presets, aligned descriptive metrics table, comparative visual bars, lines tab, and zero forced winner notice |
 | F25 Team compare | verified | B15–B16, B25–B27 | Interactive team comparison (/team-compare) with H2H series tracking, Four Factors comparative bars, F18 3P variation slider, roster participation cohorts, and zero inferred claims verified |
 | F26 Matchups | planned | B19, B23–B24; assignment source required | Pending runtime/source evidence |
 | F27 Tier lists | verified | B08–B09 | Interactive tier list builder with S/A/B/C/D tiers, HTML5 drag-and-drop plus accessible keyboard move buttons, player search, favorites quick-add, and subjective notes |
 | F28 Adjusted shooting | planned | B25–B27; no surrounding-future-year fill | Pending runtime/source evidence |
 | F29 Six-factor research | planned | B25–B27 | Pending runtime/source evidence |
-| F30 Expected-shot research | planned | B23, B25–B27 | Pending runtime/source evidence |
+| F30 Expected-shot research | verified (registered negative result) | B23, B25–B27 | Three admitted shot seasons; retrospective expected-shot candidate failed preregistered selection, with exact replay/read-only B27 result view; no promoted model or unopened final evaluation claim |
 | F31 Shot aftermath | planned | B20, B23–B24 | Pending runtime/source evidence |
 | F32 Defensive assignments | planned | B23–B27; rich-input gate | Pending runtime/source evidence |
 | F33 Spatial EPV | planned | B25–B27 if inputs ever admitted; ACB demo excluded | Pending runtime/source evidence |
@@ -106,7 +113,7 @@ Use IDs F01–F46 in the [feature contract](design/replica-feature-contract.md),
 | F38 Blog/patch notes | verified | B35b | Original dated Markdown content; safe local renderer and standalone packaging verified |
 | F39 Workload/change | verified | B12–B13 | Workload trends explorer (/research/trends) with appearance and date-range slicing, delta table, delta cards, cohort surge/decline rankings, and SHA-256 evidence |
 | F40 Distributions/splits | verified | B12–B13 | Distributions & contextual splits (/research/distributions) with Type 7 quantiles, n >= 5 sample gating, empirical dispersion strip diagram, venue splits, rest splits, and 30-team defensive allowance rankings |
-| F41 Chatbot | verified (evaluation complete) | B33–B34, B37 | Typed operations, exact-cell evidence, structured planning repair, 45-case Gemini corpus (75.6% overall / 68% supported, gate unmet) and 6-case supplemental suite (100%) against real Gemini verified |
+| F41 Chatbot | verified | B33–B34, B37 | B34c owner-approved Lite acceptance: 45/45 core, 12/12 frozen paraphrases, 6/6 supplemental cases; exact manual equivalence and 33/33 retained reproduction verified |
 | F42 Pipeline/evidence | verified | B01, B03, B35–B37 | B35a durable manifests/recovery, B35b library/export, and B37 real-service benchmarks (31 endpoints, 0 errors, 157.5s fresh DB restore) verified |
 | F43 Forecasts/evaluation | verified | B00, B11, B35–B37 | Prospective issuance ledger, empirical 80% calibration, DNP conditional segregation, and B37 API benchmarks verified |
 | F44 Source video links | planned | B23–B24; clip URL/availability is a separate unverified source gate | Pending runtime/source evidence |
@@ -2572,7 +2579,270 @@ dirty work, credentials, publication pointers and sealed artifacts are preserved
   No acquisition/publication/worker/training/finance import starts.
 
 B34's language acceptance is satisfied for the selected Lite configuration and measured
-contexts. **B32 actual changing-game/finality/correction observations, deeper source/model
-gates and versioned workbench nonappearance correction remain open.** No full replica
-completion follows. Next independent bounded release gate: B32 actual provider observations
+contexts. **B32 actual changing-game/finality/correction observations and deeper source/model
+gates remain open.** Next independent bounded release gate: B32 actual provider observations
 when a changing game is available; preserve truthful source/phase/finality distinctions.
+
+---
+
+### Integrity Follow-up: Versioned Workbench Nonappearance Metric Correction
+
+Verified 2026-10-04. Execution agent: Antigravity in the current session; no delegated agents.
+
+Resolved the outstanding metric discrepancy where workbench fact records with `appearance != 'appeared'` (e.g. `reported_nonappearance` rows with 0-filled `wpg.points` and `wpg.stats_json`) were included in SQL counting metrics and per-game averages, halving averages and inflating sample sizes relative to domain `compute_metrics_v2`. Implemented versioned nonappearance filtering in the database query engine with non-breaking legacy compatibility for historical saved analyses.
+
+Behavior and boundaries:
+
+- **Active Workbench Stats Queries:** `build_stats_query_sql`, `execute_stats_query`, `export_stats_query`, `explain_stats_query`, `execute_player_research_query`, `execute_operation`, and `execute_bounded` parameterize `legacy_nonappearance: bool = False`. When `legacy_nonappearance=False`, workbench extraction queries wrap points and JSON statistics in `CASE WHEN wpg.appearance = 'appeared' THEN ... ELSE NULL END`. Active queries via `/stats`, `POST /api/workbench/query`, `GET /api/workbench/players`, and the Assistant chat tool now exclude nonappearance zeros, reconciling bit-for-bit with `compute_metrics_v2` for both counting stats and shooting/rate metrics.
+- **Legacy Compatibility & Retained Analyses:** In `reproduce_saved` (`src/courtload/services/assistant/saved.py`) and `reproduce_investigation` (`src/courtload/services/workbench_analytics.py`), if an analytical result hash does not match under active filtering for a workbench dataset, execution retries with `legacy_nonappearance=True`. This preserves bit-for-bit hash reproduction for all 3 historical query records (`d566690b20acee5d5f7eeeade55800f7ced01cd0b7d027b21ca23d7c9eecf5f6`).
+- **No Schema or Hash Mutation:** `QuerySpec` and `ResolvedContext` domain model schemas are unaltered; no unknown fields are added to plans, preventing 409 canonical plan mismatch errors.
+
+Measured verification:
+
+1. `tests/unit/test_stats_engine.py`: Added `test_reconciliation_for_player_with_nonappearances` verifying that player `1626153` (Delon Wright, with both appeared and nonappeared records) reconciles bit-for-bit with `compute_metrics_v2` (4.5 PPG / 47 games, TS%, eFG%, sample sizes), and that `legacy_nonappearance=True` preserves the previous 3.5 PPG / 60 sample behavior. 14/14 tests in the module pass.
+2. `scripts/verify_b34c_retained.py`: PASS (**33/33 matched**, 0 provider calls). All 3 retained query records (`1a89561c`, `20bc7459`, `a708911f`) match `d566690b20acee5d5f7eeeade55800f7ced01cd0b7d027b21ca23d7c9eecf5f6` exactly.
+3. Database `SavedInvestigation` reproduction: 118 matching records verified (increased from 115).
+4. `pytest`: PASS (**622 passed / 125 opt-in skips**).
+5. `ruff check .` & `ruff format --check .`: PASS (**343 files formatted**, zero errors or warnings).
+6. `mypy src/courtload`: PASS (**144 source files**, zero issues).
+7. `npm --prefix dashboard test`: PASS (**26 test files, 164 passed** in 380ms).
+
+### B32a — actual changing preseason observations and active-box measurements (2026-10-04)
+
+**VERIFIED bounded slice; B32 parent remains in progress.** Current Codex session,
+no delegated agents/model overrides. Followed replica/workbench and Live contracts;
+used diagnosing-bugs for the real active-summary failure and general plain-language
+guidance for the dated notice after the focused UI/UX catalog returned no relevant match.
+Preserved pre-existing dirty work and sealed analytical evidence.
+[Acceptance report](evidence/b32-active-acceptance.md),
+[actual-source service record](evidence/b32-changing-verified/verification.json),
+[actual-source browser record](evidence/b32-changing-verified/browser/verification.json),
+[final-code packaged browser](evidence/b32-current-final/verification.json),
+[verification manifest](evidence/b32-active-verification.json).
+
+- Actual **2026–27 preseason** Utah–Denver and Golden State–LA games, source IDs
+  `401914127`/`401918010`, have changing scores and clocks in retained source acquisitions
+  and browser cache responses. Browser sees Denver **26 → 28 → 29**, LA **23 → 26**,
+  second-quarter clock changes and the Clippers game's quarter transition. Populated
+  boxes retain **41/42 player rows**. Source update time remains unknown; game/entity
+  crosswalks remain explicitly unmapped where no verified mapping exists.
+- Real summaries exposed explicit `didNotPlay: true` rows with empty arrays, previously
+  rejected as mismatched columns. Two minimized regressions fail before correction.
+  Accept only this explicit empty/omitted source form as null columns; keep incomplete
+  ordinary rows rejected. Use **espn-live-v2** in metadata/content hashes; retain v1
+  bytes/observations. Separate version-compatibility regression verifies preservation.
+- **Four tabs → four shared cycles / 12 upstream requests / 1,541,447 bytes / 210.627s**;
+  one scoreboard and two distinct selected boxes per cycle, no duplicated box fetches.
+  Scoreboard intervals ≥60s. **100 diagnostic cached proxy reads p95 7.720ms**, zero
+  browser page errors. Desktop/375px values agree with their exact cached observations.
+  All owned leases released and subsequent idle acquisitions **zero**.
+- Harness process CPU **0.1816% of one core**, sampled incremental RSS **17,812 KiB**;
+  logical payload growth **2,046,321 bytes**, physical content/index/TOAST growth
+  **475,136 bytes**. Samples are two-box lab observations, not continuous transient
+  memory peaks, maximum three-box load or long-run retention evidence. The first
+  quarter-break window failed unchanged score-change assertions; its acquisitions
+  remain retained and explicitly excluded from acceptance. Repeat uses the same gates.
+- Replace the obsolete dated Live notice with provisional/final-admission wording.
+  Fresh isolated Next.js 16.3.5 production build, **two real retained-cache game views /
+  four screenshots / zero source acquisitions**, and **seven fixture browser tests**
+  pass. Initial dependency-staging and API-readiness probes remain failed evidence;
+  accepted runs supersede them. The owner's active dev build is preserved.
+- **625 pytest passed / 125 opt-in skips**, focused PostgreSQL Live/history **41 passed /
+  zero skips**, strict Ruff/format (**344 files**), mypy (**144 source files**), **164
+  Vitest tests / 26 files**, strict TypeScript and zero-warning ESLint pass. All **26
+  historical checksums** and **33/33 retained conversations** reproduce, zero provider
+  calls. Publication pointers/finance identities unchanged; no analytical admission,
+  publication, training or persistent Live setting/worker change.
+- Reconcile the living status table with later B24/B27, B34c and B36b records; restore
+  missing B11/B16/B18 rows. All **38 blocks** appear once. Keep B14 historical coverage,
+  rich-source/model/finance inputs and B37 full acceptance explicitly pending.
+
+Remaining B32 gates: **independently admitted final scores and verified crosswalks,
+actual final reconciliation/corrections, player-stat final admission, maximum three-box
+resources/storage and retention**. Source rights/reliability and wider current-season
+coverage remain separate. Generic API aggregate acceptance stays `not_yet_observed`;
+this slice closes the actual changing-game observation opportunity, not the full parent
+or replica. Stop at this boundary; rich-data admission can be the next independent block.
+
+
+### B19a — complete recent rich-source acquisition and admission audit (2026-10-04)
+
+**VERIFIED audit slice; B19 parent remains source_blocked.** Current Codex session,
+no delegation/model override. Followed replica/workbench and rich-input contracts;
+preserved pre-existing dirty application work, B32a evidence and B26's separate
+shot memberships. [Acceptance report](evidence/b19a-rich-source-acceptance.md),
+[full diagnostics](evidence/b19a-full-source-final/audit.json),
+[source manifest](evidence/b19a-full-source-final/source-manifest.json),
+[exact repeat](evidence/b19a-full-source-final/reproducibility.json).
+
+- Retained five complete 2025–26 SportsDataverse assets: **134,324,855 bytes /
+  2,185,951 rows**. Every digest/size matches retained publisher release metadata.
+  Each source observes all **1,230 regular-season games**; independently retained
+  schedule, two-team outcomes and player/team FGA/FGM/3PA/3PM reconcile completely.
+- New bounded `scripts/audit_b19_rich_sources.py` scans complete files, separates
+  phases, records every affected game/reason with raw row locators, preserves
+  unknown outcomes and zero denominators, and refuses output-directory overwrite.
+  It performs no DB admission or publication. Final scan **28.451s**; a second
+  final-code scan yields identical diagnostics and pinned identities.
+- Games passing necessary checks: **PBP 62 / possessions 852 / lineups 0 /
+  shots 1,230 / assignments 1,230**. Every population is explicitly **not admitted**.
+  PBP off/def sides fail in 1,155 games; 91 have decreasing score observations;
+  one final differs. Possession points differ in **273** games. Lineups contain
+  repeated players in **84** games. Source reasons overlap; malformed independent
+  player minutes affect 73 games and are not silently corrected.
+- Actual event grain: `action_id`/`order_index`, with legitimate repeated
+  `action_number` in every game. Existing lineup storage requires unique action
+  numbers and cannot ingest these event rows safely. Imported `pbp_fallback`
+  possessions do not establish event membership or starter/FT/rebound policy.
+  Exact event joins, minutes, conservation and cross-lineup attribution remain.
+- Shot counts/identities/basic geometry and assignment pair/exposure checks pass
+  the complete season; provider shot-event IDs, distance corrections, assignment
+  numeric-seconds/denominator provenance and durable versioned membership remain
+  separate gates. Retained raw bytes, declared licenses/attribution and pinned
+  candidate source-method references are available; public redistribution is not
+  certified by local research acquisition.
+- **11 new focused tests; 636 backend tests passed / 125 opt-in skips**. Whole-tree
+  Ruff/format (**347 files**), strict mypy (**144 source files**), all **26 historical
+  checksums** and **17 input checksums** pass, zero warnings. PostgreSQL/browser
+  acceptance is not newly claimed: this slice adds a filesystem audit, tests and
+  documentation only. Superseded checker outputs are retained; regressions cover
+  the initial action-number assumption and malformed-minute shot-tally interruption.
+
+Next B19 sub-block: **append-only rich admission/membership, beginning with
+independent assignment admission** using precise numeric seconds and explicit
+source denominators. The old service still deletes/replaces rows and skips some
+missing-baseline/parse-failure gates; do not use it on retained memberships. Resolve
+PBP/lineup row identity and source/policy corrections before B20/WOWY population.
+No real analytical rich rows, new release or model acceptance is claimed here.
+B32 final reconciliation, actual corrections and full three-box load remain open.
+
+### B19b — append-only assignment admission (2026-10-05)
+
+**VERIFIED bounded admission; B19 parent remains source_blocked.** Current Codex
+session; no delegation/model overrides. Preserved pre-existing dirty application
+work, B19a source bytes/evidence, B26 research memberships and the public pointer.
+[Acceptance evidence](evidence/b19b-assignment-acceptance.md).
+
+- Applied additive migration `19b810a4f004`. Independent assignment datasets,
+  games, exact source-row members and local observations avoid the old rich
+  importer's DELETE/replacement/admin bypass. Content-addressed source, baseline
+  and methodology bytes plus parser/dependency hashes bind complete payloads.
+- Admitted **240,750 assignment rows across all 1,230 regular-season games**;
+  retained but excluded **17,104** other-phase rows. Dataset
+  `24a61903-0f8b-4ce4-93e1-61c0ed057053`, semantic SHA-256
+  `ce7f3ef0931e36005f586c6189c6df9c88a17b81202d79ad68bd055b715aa212`.
+- `assignment-exposure-v1` uses exact `Decimal`/PostgreSQL `NUMERIC` seconds from
+  `matchup_minutes_sort` and source fractional possessions. Provider floor/shared
+  time shares retain their denominator labels and explicit tracking limitations;
+  rounded display minutes never replace arithmetic seconds.
+- Database guards reject UPDATE/DELETE/TRUNCATE and later membership extension,
+  including administrative runtime settings. One transaction stages admission;
+  identical replay appends observations and reuses facts. Executed A→B→A and
+  mid-admission rollback checks preserve old inputs and remove failed candidates.
+- A separate retained-byte verification reran source/baseline checks and compared
+  every stored payload, exact exposure and game/dataset membership; reports agree.
+  Before/after pointer/dataset records and retained rich/forecast counts agree.
+- **648 backend tests passed / 135 opt-in skips**, plus **10 independently executed
+  PostgreSQL tests passed with zero skips**. Twelve new unit tests passed. Ruff,
+  formatting (355 files), strict mypy (146 source files), all 26 historical and
+  17 B19a input checksums, and `git diff --check` passed.
+
+PBP/possession/lineup identity, conservation and appearance/exposure gates remain
+open. No B20/WOWY population or new shot admission. B23 retained assignment serving
+integration is a separate dependency step; the independent dataset does not alter
+legacy workbench memberships or grant API/UI availability. Next B19 work: resolve
+provider event/lineup joins and source/policy failures before stint admission.
+B32's remaining final/correction and maximum-three-box acceptance gates stay open.
+
+
+### B19c — retained event identity and conservation diagnostic (2026-10-05)
+
+**VERIFIED diagnostic slice; B19 parent remains source_blocked.** Current Codex
+session, no delegation/model overrides. Preserved pre-existing application work,
+sealed B19a/B19b inputs/evidence and B32 gates.
+[Acceptance evidence](evidence/b19c-event-conservation-acceptance.md),
+[identity/conservation contract](design/b19-event-identity-conservation.md).
+
+- Complete **621,881** PBP/lineup pairs across **1,230 regular games** have equal
+  ordered projections; **32,619** repeated action-number rows require preserved
+  CSV row identities. Transcript binds both full payloads/locators. **125 games**
+  still have ambiguous repeated projection keys with different lineup sets;
+  positional equality does not establish native-provider event lineage.
+- Direct event FG/diagnostic FT credits reconcile both team final points in all
+  **1,230 games**. Preserve scoreboard correction/timing disagreements in **124**
+  games, decreases in **91**, and one differing last observed final. No source
+  correction is silently clamped or admitted.
+- Imported PBP sides disagree with joined home/away lineups in **97,594 rows**.
+  Home/away five-player validity fails in **84 games**, including **81** with
+  positive-duration invalid intervals. Row-hold time fails in every game;
+  endpoint-hold arithmetic meets the one-second diagnostic tolerance in **494**
+  games without invalid independent minutes, while **692** still have numerical
+  mismatches. These are hypotheses, not admitted starter/substitution policies.
+- Imported possession team points fail in **273 games**; **255** contain **362**
+  opposing-team scoring credits inside offensive intervals. **49** games have
+  own-team direct-point differences, **11** unresolved boundaries/clocks, **10**
+  scoring-membership failures. **33,644** possessions span multiple lineup sets.
+  Separate event scoring from possession exposure before freezing final policy.
+- Frozen-code scans **27.613s / 27.647s** produce byte-identical diagnostics and
+  transcripts. **20 new regressions; 668 backend tests passed / 135 opt-in skips**.
+  Ruff/format (**358 files**), mypy (**146 source files**), all **26 historical /
+  17 input / 14 B19b evidence** checksums and diff whitespace checks pass.
+  PostgreSQL/browser execution is not newly claimed; no runtime or DB mutations.
+
+Next: bounded native-PBP/rotation/per-period-starter reconstruction with pinned
+parser/overrides, then freeze event timing and possession attribution and execute
+append-only stint acceptance. B20/WOWY remains unpopulated. B23 retained assignment
+serving and B32's final/correction/crosswalk/three-box/retention gates stay open.
+
+### B19d — native reconstruction path and source decision (2026-10-05)
+
+**VERIFIED candidate reconstruction implementation; representative admission and
+season scaling remain source_blocked.** Current Codex session; no delegation or
+model overrides. Preserved existing dirty application work, B19a/B19b/B19c evidence
+and independent B32 gates. [Acceptance](evidence/b19d-native-reconstruction-acceptance.md),
+[contract](design/b19-native-reconstruction.md),
+[accepted outputs/replay](evidence/b19d-native-accepted/reproducibility.json).
+
+| Gate targeted | Executable acceptance | Result / external dependency |
+| --- | --- | --- |
+| Native reconstruction path | `pytest tests/unit/test_native_reconstruction.py -q`; fresh-directory native replay | Verified: 22 regressions; byte-identical real-input replay; native identities, starters, ordered substitutions, intervals and conservation |
+| Representative admissible reconciliation | Six fixed raw bundles, independent baseline, every required game `reconstruction_passed=true` | Failed: four reconstructed candidates conflict with starter/range observations; one malformed minute; two missing rotations |
+| Full-season scale decision | Complete pinned rotation Git tree versus independent 1,230-game regular schedule | Failed: 165 regular games have rotation files; 1,065 missing. File presence alone does not pass reconstruction |
+| Alternative input pursuit | Retained bounded direct native requests and alternative source/parser seams | Direct rotation/range requests timed out. Archive PBP candidates and pbpstats cached schema inspected; neither supplies verified replacement starters here |
+| B20 / partial WOWY / full season | Source reconciliation, frozen possession membership/attribution, executed PostgreSQL sealing/rollback/replay, retained-game WOWY | Open; zero new admitted possession/stint rows. Partial WOWY and complete-season acceptance reported separately |
+
+- Added `ingestion/native_reconstruction.py` and `scripts/reconstruct_b19_native.py`:
+  immutable raw acquisition, complete-payload event identities, exact decimal
+  clocks/tenths rotations, provenance-bound name aliases, per-period rotation
+  starters checked against independent boxes, source-ordered substitutions,
+  per-event lineups and positive intervals. No derived lineup CSV joins.
+- Retained 24 native requests and two method requests at pinned mirror commit
+  `000610d46d149ebb45db4f5ae6f80b16d5e2fb6b`. Four complete bundles reconstruct
+  **2,209 events / 1,391 intervals**. All four reconcile five-player sides,
+  rotation continuity, shooter presence, player FG/3P/FT/point totals, team scores
+  and present scoreboard observations. Three also reconcile player minutes at
+  the fixed one-second tolerance. The fourth retains player `1629130` minute
+  `25:60` as unknown, without converting it into an inferred correction.
+- Preserve **23 team/period starter disagreements** across the four candidates;
+  no conflicting range response is rewritten. Two selected failures have HTTP
+  404 rotation responses. All candidates remain quarantined and explicitly
+  declare no DB/possession-policy admission.
+- Source decision: **do not scale this source to season admission yet**. The
+  complete, nontruncated retained tree has 168 files, including **165** of the
+  **1,230** scheduled regular games. Every one of the **1,065 missing games** is
+  listed. Obtain corrected parameter-bearing opening observations, a valid
+  independent minute and missing rotations/alternative independent interval
+  evidence before scaling. The CLI supports an explicit games file afterward.
+- Retained direct native rotation/range timeouts and alternative archive manifest;
+  inspected pbpstats's pinned raw Stats NBA cached-file schema. No fabricated v3
+  cache conversion or maintained-parser runtime/possession claim. Production
+  dependencies, legacy reconstruction and publication paths were unchanged.
+- **690 backend tests passed / 135 opt-in skipped** (22.81s); **22 new regressions**.
+  Ruff/format (**363 files**), strict mypy (**147 source files**) and all historical,
+  B19a/B19b/B19c checksums pass. No newly executed PostgreSQL or browser checks are
+  claimed for this filesystem/pure reconstruction slice.
+
+Next gate: independently corroborate/correct native starter and minute inputs,
+then freeze possession membership and cross-lineup scoring/exposure, and execute
+append-only event/stint admission checks. B23 retained assignment serving and B32
+final/correction/crosswalk/three-box/retention work remain independent.

@@ -1,0 +1,68 @@
+{
+  "checks": [
+    "production browser same-origin New chat",
+    "durable browser turn",
+    "reload reopens exact turn",
+    "unregistered proxy target rejected"
+  ],
+  "page_errors": [],
+  "request": {
+    "request_id": "56513e29-0a77-42a7-aa2e-15ae2764098f",
+    "thread_id": "3712352e-e5fb-483b-b33b-96eecaec0922",
+    "message": "Explain pick and roll"
+  },
+  "answer": {
+    "schema_version": "courtload-assistant-v2",
+    "request_id": "56513e29-0a77-42a7-aa2e-15ae2764098f",
+    "thread_id": "3712352e-e5fb-483b-b33b-96eecaec0922",
+    "turn_id": "abd5f449-a628-4a2b-83aa-01ca1f41bb24",
+    "status": "answered",
+    "intent": "explanation",
+    "scope": null,
+    "blocks": [
+      {
+        "kind": "text",
+        "origin": "knowledge",
+        "text": "A pick and roll is an action where a teammate screens the ball handler’s defender, then moves toward the basket. The ball handler can drive, pass to the rolling teammate or find another open player. Defensive responses include switching, dropping and showing help; the best choice depends on personnel and spacing.",
+        "source_ids": [
+          "courtload-knowledge-v1:pick_roll:c331fa0ec35feff63f0221d55eb9e06738dabcec35d3795086d88a5d7b9711f3"
+        ],
+        "criteria": []
+      }
+    ],
+    "sources": [
+      {
+        "source_id": "courtload-knowledge-v1:pick_roll:c331fa0ec35feff63f0221d55eb9e06738dabcec35d3795086d88a5d7b9711f3",
+        "origin": "knowledge",
+        "title": "Pick and roll",
+        "publisher": "CourtLoad",
+        "url": null,
+        "updated_on": "2026-10-05",
+        "retrieved_at": null,
+        "period": null,
+        "content_sha256": "c331fa0ec35feff63f0221d55eb9e06738dabcec35d3795086d88a5d7b9711f3",
+        "locator": "guide.md#pick_roll",
+        "excerpt": "A pick and roll is an action where a teammate screens the ball handler’s defender, then moves toward the basket. The ball handler can drive, pass to the rolling teammate or find another open player. Defensive responses include switching, dropping and showing help; the best choice depends on personnel and spacing.",
+        "verification": "curated",
+        "facts": []
+      }
+    ],
+    "actions": [
+      {
+        "kind": "navigation",
+        "label": "Pick and roll",
+        "url": "/learning",
+        "operation_hash": null
+      }
+    ],
+    "plan": null,
+    "accounting": {
+      "provider_calls": 0,
+      "analytical_calls": 0,
+      "source_requests": 0,
+      "rows": 0,
+      "elapsed_ms": 0.084
+    },
+    "saveable": false
+  }
+}

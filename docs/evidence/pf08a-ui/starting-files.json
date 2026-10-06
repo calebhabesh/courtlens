@@ -1,0 +1,9 @@
+{
+  "dashboard/components/ask-courtload.tsx": "34c494b5b34d5e57ad33c0e8ffd908ad9aa0555dda5f0dd04400979d2b321979",
+  "dashboard/components/ask-drawer.tsx": "78b16ef1deb4b4c01925101b420a106b7bb7c653a95e4d3021df133273518310",
+  "dashboard/components/conversation-result.tsx": "b6bdf03be7662cf5b3d8d82b14def2f477a4d1e517e1c920c494c2754cfbaa5e",
+  "dashboard/app/research/ask/page.tsx": "2021210cf18a01b350af255effbe3e67243d762ad7ae7d899decefedfbd7ad65",
+  "dashboard/lib/assistant-history.ts": "e7641f5bb0b97df925155f5488263eccb5eeb4417674fac2de3daa7097a0b695",
+  "dashboard/app/globals.css": "dc8d00b526f4a2161cd976a0cdcb0c719028c637f2f41183712c0efae05ac0a2",
+  "docs/polish-freeze-implementation-progress.md": "889ee1a2f98ac4eee26bfcae319500b3c3334fd9a040db1255e0401c9c495a57"
+}

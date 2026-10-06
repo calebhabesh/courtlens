@@ -1,0 +1,60 @@
+// Actual production UI and disposable PostgreSQL backend; provider credentials disabled.
+const { chromium, expect } = require('../dashboard/node_modules/@playwright/test');
+const { execFileSync } = require('node:child_process');
+const fs = require('node:fs');
+const assert = require('node:assert/strict');
+const directory = 'docs/evidence/pf08a-ui';
+const url = 'http://127.0.0.1:3188/research/ask?experience=threads';
+(async () => {
+  const zoom = process.argv.includes('--zoom');
+  const restart = process.argv.includes('--restart');
+  const browser = await chromium.launch({ executablePath:'/usr/bin/chromium', headless:!zoom, ...(zoom?{args:['--window-size=2560,1440','--ozone-platform=x11']}: {}) });
+  const page = await browser.newPage({viewport:zoom?null:{width:2560,height:1440}});
+  const errors=[]; page.on('pageerror',error=>errors.push(error.message));
+  if (restart || zoom) {
+    const retained=JSON.parse(fs.readFileSync(directory+'/real-browser.json'));
+    await page.addInitScript(tid=>localStorage.setItem('courtload-assistant-active-thread-v2',tid),retained.thread_id);
+    await page.goto(url); await expect(page.getByLabel('Messages')).toContainText('Explain pick and roll');
+    const response=await page.evaluate(async tid=>(await (await fetch('/api/assistant-v2/threads/'+tid+'/turns?limit=100')).json()).turns[0].response,retained.thread_id);
+    assert.deepEqual(response,retained.response);
+    if (zoom) {
+      const original=await page.evaluate(()=>({width:innerWidth,dpr:devicePixelRatio}));
+      const window=execFileSync('xdotool',['search','--onlyvisible','--name','CourtLoad']).toString().trim().split('\n').at(-1);
+      execFileSync('xdotool',['windowfocus','--sync',window]);
+      execFileSync('xdotool',['key','--clearmodifiers','ctrl+0',...Array(5).fill('ctrl+plus')]);
+      await page.waitForTimeout(500);
+      const dimensions=await page.evaluate(()=>({viewport:[innerWidth,innerHeight],dpr:devicePixelRatio,documentWidth:document.documentElement.scrollWidth}));
+      assert.equal(dimensions.dpr/original.dpr,2); assert(dimensions.documentWidth<=dimensions.viewport[0]);
+      execFileSync('import',['-window',window,directory+'/ask-real-200-percent.png']);
+      await page.getByRole('button',{name:'Ask',exact:true}).click();
+      await expect(page.getByRole('dialog').getByLabel('Messages')).toContainText('Explain pick and roll');
+      execFileSync('import',['-window',window,directory+'/drawer-real-200-percent.png']);
+      fs.writeFileSync(directory+'/zoom.json',JSON.stringify({actualZoom:'200%',original,...dimensions,errors},null,2)+'\n');
+    } else fs.writeFileSync(directory+'/restart-browser.json',JSON.stringify({checks:['actual backend restart preserves rendered thread and exact envelope'],thread_id:retained.thread_id,errors},null,2)+'\n');
+  } else {
+    await page.goto(url);
+    await page.getByRole('button',{name:'New chat',exact:true}).click();
+    await expect(page.getByRole('button',{name:'New chat',exact:true})).toBeEnabled();
+    await page.getByLabel('Your question',{exact:true}).fill('Explain pick and roll');
+    await page.getByRole('button',{name:'Send question',exact:true}).click();
+    await expect(page.getByRole('button',{name:'New chat',exact:true})).toBeEnabled();
+    await expect(page.getByLabel('Messages')).toContainText('Explain pick and roll');
+    const tid=await page.evaluate(()=>localStorage.getItem('courtload-assistant-active-thread-v2'));
+    const history=await page.evaluate(async tid=>(await (await fetch('/api/assistant-v2/threads/'+tid+'/turns?limit=100')).json()),tid);
+    assert.equal(history.turns.length,1);const response=history.turns[0].response;
+    assert.equal(response.status,'answered'); assert.equal(response.accounting.provider_calls,0); assert.equal(response.accounting.source_requests,0);
+    const checks=['production New chat and durable question','real knowledge answer without inference'];
+    await page.reload();await expect(page.getByLabel('Messages')).toContainText('Explain pick and roll');checks.push('reload renders durable question and answer');
+    await page.getByText('Sources (1)',{exact:true}).click();
+    await expect(page.getByLabel('Messages')).toContainText('curated');checks.push('rendered curated provenance');
+    const viewports=[];
+    for(const [name,width,height] of [['wide',2560,1440],['desktop',1440,900],['mobile',375,812]]) {
+      await page.setViewportSize({width,height});const geometry=await page.evaluate(()=>({viewport:[innerWidth,innerHeight],dpr:devicePixelRatio,documentWidth:document.documentElement.scrollWidth}));assert(geometry.documentWidth<=geometry.viewport[0]);viewports.push({name,...geometry});
+      await page.screenshot({path:directory+'/ask-real-'+name+'.png',fullPage:true});
+    }
+    await page.getByRole('button',{name:'Ask',exact:true}).click();const dialog=page.getByRole('dialog');await expect(dialog.getByLabel('Messages')).toContainText('Explain pick and roll');
+    await page.screenshot({path:directory+'/drawer-real-mobile.png',fullPage:true});await page.keyboard.press('Escape');await expect(page.getByRole('button',{name:'Ask',exact:true})).toBeFocused();checks.push('real shared drawer, reload and focus return');
+    fs.writeFileSync(directory+'/real-browser.json',JSON.stringify({checks,thread_id:tid,response,viewports,errors},null,2)+'\n');
+  }
+  assert.deepEqual(errors,[]);await browser.close();
+})().catch(error=>{console.error(error);process.exit(1);});

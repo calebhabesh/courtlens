@@ -1,0 +1,22 @@
+
+> courtload-dashboard@0.1.0 test:browser
+> playwright test e2e/table-interactions.spec.ts e2e/workbench.spec.ts --workers=2 --grep-invert forecasts view
+
+
+Running 13 tests using 2 workers
+
+  ✓   1 e2e/table-interactions.spec.ts:27:5 › recurring guide modes preserve primary identity, header alignment and reload (1.9s)
+  ✓   2 e2e/table-interactions.spec.ts:48:5 › keyboard sorting, single compare shortcut and drawer focus stay scoped (2.6s)
+  ✓   3 e2e/table-interactions.spec.ts:64:5 › custom selected columns deduplicate normalization and preserve recurring group order (847ms)
+  ✓   5 e2e/table-interactions.spec.ts:85:5 › playoff player table shares native keyboard sorting (753ms)
+  ✓   4 e2e/table-interactions.spec.ts:73:5 › selection failure remains actionable and does not change the selected row (926ms)
+  ✓   6 e2e/table-interactions.spec.ts:94:5 › a larger tray names the two-player comparison action accurately (851ms)
+  ✓   7 e2e/workbench.spec.ts:5:7 › Workbench Dark Research Interface › home opens Stats with dark theme, horizontal navigation, context and data (1.0s)
+  ✓   9 e2e/workbench.spec.ts:50:7 › Workbench Dark Research Interface › player detail presents profile summaries, game logs, and lineage trigger (785ms)
+  ✓  10 e2e/workbench.spec.ts:68:7 › Workbench Dark Research Interface › team research lists cohorts and navigates to team detail (767ms)
+  ✓   8 e2e/workbench.spec.ts:27:7 › Workbench Dark Research Interface › player explorer allows filtering and links to detail view (1.8s)
+  ✓  11 e2e/workbench.spec.ts:85:7 › Workbench Dark Research Interface › comparison view displays head-to-head metrics without declaring forced winners (766ms)
+  ✓  12 e2e/workbench.spec.ts:127:7 › Workbench Dark Research Interface › dense dark research layout fits a 375px mobile viewport without horizontal overflow (798ms)
+  ✓  13 e2e/workbench.spec.ts:140:7 › Workbench Dark Research Interface › Ask drawer offers manual research and links to optional configuration (405ms)
+
+  13 passed (7.8s)

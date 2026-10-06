@@ -1,0 +1,103 @@
+
+> courtload-dashboard@0.1.0 test:browser
+> playwright test threaded-assistant.spec.ts conversation.spec.ts --workers=2
+
+
+Running 36 tests using 2 workers
+
+  ✓   1 e2e/conversation.spec.ts:21:5 › AI disabled manual paired distributions preserve zero, unknown and exact evidence (741ms)
+  ✓   3 e2e/conversation.spec.ts:34:5 › quota, unsupported and empty states preserve question and manual execution (1.9s)
+  ✓   2 e2e/conversation.spec.ts:28:5 › natural follow-ups and canonical identity choices retain conversation fingerprints (2.7s)
+  ✓   4 e2e/conversation.spec.ts:37:5 › network retry reuses the request identity (506ms)
+  ✓   5 e2e/conversation.spec.ts:42:5 › exact Research destination reruns executed arguments and clears ephemeral state (529ms)
+  ✓   6 e2e/conversation.spec.ts:46:5 › drawer traps keyboard focus, escapes, and supports narrow reduced-motion layout (532ms)
+  ✓   7 e2e/conversation.spec.ts:50:5 › unmounted pending answer is discarded and its local state is cleared (573ms)
+  ✓   8 e2e/conversation.spec.ts:55:7 › unsupported preserves manual alternatives and entered question (1.3s)
+  ✓   9 e2e/conversation.spec.ts:55:7 › insufficient_sample preserves manual alternatives and entered question (1.3s)
+  ✓  10 e2e/conversation.spec.ts:55:7 › timeout preserves manual alternatives and entered question (1.3s)
+  ✓  11 e2e/conversation.spec.ts:55:7 › provider_error preserves manual alternatives and entered question (1.3s)
+  ✓  12 e2e/conversation.spec.ts:55:7 › busy preserves manual alternatives and entered question (1.3s)
+  ✓  14 e2e/threaded-assistant.spec.ts:58:5 › standalone defaults, reload, new chat, history and deletion keep durable questions (845ms)
+  ✓  13 e2e/conversation.spec.ts:59:5 › proposed context needs an explicit new conversation (2.2s)
+  ✓  16 e2e/threaded-assistant.spec.ts:83:5 › transport replay preserves request identity; intentional retry links a new turn (410ms)
+  ✓  17 e2e/threaded-assistant.spec.ts:93:5 › Stop is durable, releases controls and fences a late response (760ms)
+  ✓  15 e2e/threaded-assistant.spec.ts:71:5 › scope changes retain old answers and unedited follow-ups inherit on server (1.4s)
+  ✓  18 e2e/threaded-assistant.spec.ts:101:5 › closing drawer retains pending history and full-page link preserves scope (796ms)
+  ✓  19 e2e/threaded-assistant.spec.ts:109:5 › clarifications, external citations and hostile text render safely (1.2s)
+  ✓  21 e2e/threaded-assistant.spec.ts:123:7 › threaded wide layout, keyboard dialog and screenshot (475ms)
+  ✓  22 e2e/threaded-assistant.spec.ts:123:7 › threaded desktop layout, keyboard dialog and screenshot (485ms)
+  ✓  20 e2e/threaded-assistant.spec.ts:116:5 › paginated turns are loaded without losing earlier questions (1.7s)
+  ✓  23 e2e/threaded-assistant.spec.ts:123:7 › threaded mobile layout, keyboard dialog and screenshot (495ms)
+  ✓  24 e2e/threaded-assistant.spec.ts:123:7 › threaded zoom-equivalent layout, keyboard dialog and screenshot (674ms)
+  ✓  25 e2e/threaded-assistant.spec.ts:133:5 › typing a next question during execution preserves the new draft (687ms)
+  ✓  26 e2e/threaded-assistant.spec.ts:141:5 › verified local results preserve zero, unknown, scope and equivalent actions (778ms)
+  ✓  27 e2e/threaded-assistant.spec.ts:149:5 › default assistant and manual entry are available without preview selection (831ms)
+  ✘  28 e2e/threaded-assistant.spec.ts:156:5 › page and drawer share updates, preserve independent drafts and clear together (509ms)
+  ✓  29 e2e/threaded-assistant.spec.ts:174:7 › provider_disabled retains history and retry creates a linked attempt (563ms)
+  ✓  31 e2e/threaded-assistant.spec.ts:174:7 › provider_busy retains history and retry creates a linked attempt (765ms)
+  ✓  30 e2e/threaded-assistant.spec.ts:174:7 › provider_quota retains history and retry creates a linked attempt (870ms)
+  ✓  32 e2e/threaded-assistant.spec.ts:174:7 › provider_timeout retains history and retry creates a linked attempt (787ms)
+  ✓  33 e2e/threaded-assistant.spec.ts:174:7 › provider_invalid retains history and retry creates a linked attempt (773ms)
+  ✓  34 e2e/threaded-assistant.spec.ts:174:7 › source_unavailable retains history and retry creates a linked attempt (649ms)
+  ✘  35 e2e/threaded-assistant.spec.ts:174:7 › source_stale retains history and retry creates a linked attempt (795ms)
+  ✓  36 e2e/threaded-assistant.spec.ts:174:7 › backend_failure retains history and retry creates a linked attempt (563ms)
+
+
+  1) e2e/threaded-assistant.spec.ts:156:5 › page and drawer share updates, preserve independent drafts and clear together 
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: getByLabel('Messages')
+    Expected substring: "Drawer question"
+    Error: strict mode violation: getByLabel('Messages') resolved to 2 elements:
+        1) <div aria-label="Messages" class="thread-messages">…</div> aka getByLabel('Research conversation').getByLabel('Messages')
+        2) <div aria-label="Messages" class="thread-messages">…</div> aka getByRole('region', { name: 'CourtLoad assistant' }).getByLabel('Messages')
+
+    Call log:
+      - Expect "toContainText" getByLabel('Messages') with timeout 5000ms
+      - waiting for getByLabel('Messages')
+
+
+      161 |   await dialog.getByRole('button',{name:'Send question',exact:true}).click();
+      162 |   await expect(dialog.getByLabel('Messages')).toContainText('Drawer question');
+    > 163 |   await page.keyboard.press('Escape'); await expect(page.getByLabel('Messages')).toContainText('Drawer question');
+          |                                                                                  ^
+      164 |   await expect(page.getByLabel('Your question',{exact:true})).toHaveValue('Page draft');
+      165 |   await page.getByRole('button',{name:'Ask',exact:true}).click();
+      166 |   await dialog.getByRole('button',{name:'Clear history',exact:true}).click();
+        at /home/ethioking/dev/nba-analytics/dashboard/e2e/threaded-assistant.spec.ts:163:82
+
+    Error Context: test-results/threaded-assistant-page-an-c010f-t-drafts-and-clear-together/error-context.md
+
+  2) e2e/threaded-assistant.spec.ts:174:7 › source_stale retains history and retry creates a linked attempt 
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: getByLabel('Messages')
+    Expected substring: "Preserve my question"
+    Error: strict mode violation: getByLabel('Messages') resolved to 2 elements:
+        1) <div aria-label="Messages" class="thread-messages">…</div> aka getByRole('region', { name: 'CourtLoad assistant' }).getByLabel('Messages')
+        2) <div aria-label="Messages" class="thread-messages"></div> aka getByLabel('Messages').nth(1)
+
+    Call log:
+      - Expect "toContainText" getByLabel('Messages') with timeout 5000ms
+      - waiting for getByLabel('Messages')
+        2 × locator resolved to <div aria-label="Messages" class="thread-messages"></div>
+          - unexpected value ""
+
+
+      176 |     await page.goto(path); await send(page,'Preserve my question');
+      177 |     await expect(page.getByLabel('Messages')).toContainText(text); await page.reload();
+    > 178 |     await expect(page.getByLabel('Messages')).toContainText('Preserve my question');
+          |                                               ^
+      179 |     await page.getByRole('button',{name:'Retry question'}).click();
+      180 |     await expect.poll(()=>state.requests.length).toBe(2);
+      181 |     expect(state.requests[1].retry_of).toBe(state.requests[0].request_id);
+        at /home/ethioking/dev/nba-analytics/dashboard/e2e/threaded-assistant.spec.ts:178:47
+
+    Error Context: test-results/threaded-assistant-source--6d929-ry-creates-a-linked-attempt/error-context.md
+
+  2 failed
+    e2e/threaded-assistant.spec.ts:156:5 › page and drawer share updates, preserve independent drafts and clear together 
+    e2e/threaded-assistant.spec.ts:174:7 › source_stale retains history and retry creates a linked attempt 
+  34 passed (18.1s)

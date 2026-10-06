@@ -1,0 +1,9 @@
+Traceback (most recent call last):
+  File "/tmp/pf08_copy.py", line 16, in <module>
+    with b.cursor().copy(sql.SQL('COPY {} FROM STDIN (FORMAT BINARY)').format(sql.Identifier(table))) as writer:
+         ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/contextlib.py", line 141, in __enter__
+    return next(self.gen)
+  File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/psycopg/cursor.py", line 330, in copy
+    raise ex.with_traceback(None)
+psycopg.errors.UndefinedTable: relation "archive_artifacts" does not exist

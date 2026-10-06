@@ -1,0 +1,12 @@
+{
+  "baseline": "PF07c starting tree; PF00 retained artifact inventory",
+  "starting_files": 2220,
+  "changed_starting_files": [
+    "docs/polish-freeze-implementation-progress.md",
+    "docs/design/polish-assistant-contract.md",
+    "src/courtload/services/assistant/hybrid.py"
+  ],
+  "unexpected_changes": [],
+  "artifact_files": 316,
+  "artifact_changes": []
+}

@@ -1,0 +1,68 @@
+{
+  "matches": 6,
+  "records": [
+    {
+      "database": "courtload_pf09_acceptance",
+      "rows": [
+        [
+          "b08-1791115728835",
+          "d11724b441f71c2147d46ea82fd135d9e0b4bd2b81568be3b7320241004f6a41"
+        ],
+        [
+          "b08-1791115728835-copy",
+          "9dd64e62d3cf036a63d3c5befd85261e8ee46d68c8625b2ff602845dc7affc37"
+        ],
+        [
+          "b08-1791131055066",
+          "912d859bf6ac154ded1b9183385a93ea171a9dcd632529d8265b9a984c9e29db"
+        ],
+        [
+          "b08-1791131055066-copy",
+          "edde20530d3f11e495014561c060535294d3811dbbfb0c89a706bcfd3725731e"
+        ],
+        [
+          "b08-1791306881580",
+          "e78cdc6a0403c1c1518dc65470a824e09499e8233e6e6103c467710955b2f882"
+        ],
+        [
+          "b08-1791306881580-copy",
+          "148491adda0419b4955c1d3e75f7008c29678253bf91bbfc6f4b27ee4427ac9f"
+        ]
+      ],
+      "bytes": 4550162099,
+      "workspace_count": 7
+    },
+    {
+      "database": "courtload_pf09_restored",
+      "rows": [
+        [
+          "b08-1791115728835",
+          "d11724b441f71c2147d46ea82fd135d9e0b4bd2b81568be3b7320241004f6a41"
+        ],
+        [
+          "b08-1791115728835-copy",
+          "9dd64e62d3cf036a63d3c5befd85261e8ee46d68c8625b2ff602845dc7affc37"
+        ],
+        [
+          "b08-1791131055066",
+          "912d859bf6ac154ded1b9183385a93ea171a9dcd632529d8265b9a984c9e29db"
+        ],
+        [
+          "b08-1791131055066-copy",
+          "edde20530d3f11e495014561c060535294d3811dbbfb0c89a706bcfd3725731e"
+        ],
+        [
+          "b08-1791306881580",
+          "e78cdc6a0403c1c1518dc65470a824e09499e8233e6e6103c467710955b2f882"
+        ],
+        [
+          "b08-1791306881580-copy",
+          "148491adda0419b4955c1d3e75f7008c29678253bf91bbfc6f4b27ee4427ac9f"
+        ]
+      ],
+      "bytes": 4550153907,
+      "workspace_count": 7
+    }
+  ],
+  "default_note": "Default workspace changed after archive capture by table acceptance; excluded from this independent comparison. Newly created browser workspaces are included."
+}

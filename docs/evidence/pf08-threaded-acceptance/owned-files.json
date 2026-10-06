@@ -1,0 +1,15 @@
+[
+  "dashboard/components/ask-courtload.tsx",
+  "dashboard/components/ask-drawer.tsx",
+  "dashboard/components/threaded-assistant.tsx",
+  "dashboard/app/research/ask/page.tsx",
+  "dashboard/e2e/threaded-assistant.spec.ts",
+  "dashboard/e2e/conversation.spec.ts",
+  "docs/design/polish-assistant-contract.md",
+  "docs/polish-freeze-implementation-progress.md",
+  "dashboard/components/hybrid-answer.tsx",
+  "dashboard/components/research-operation-view.tsx",
+  "dashboard/lib/conversation.ts",
+  "scripts/verify_pf08_browser.cjs",
+  "dashboard/e2e/saved-operations.spec.ts"
+]

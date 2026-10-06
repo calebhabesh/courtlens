@@ -1,0 +1,10 @@
+{
+  "python": "3.14.7",
+  "node": "v24.15.0",
+  "database": "disposable courtload_pf08a_ui on local PostgreSQL 5432",
+  "backend": "Uvicorn 127.0.0.1:8188; explicitly empty Gemini key variables",
+  "frontend": "production Next 127.0.0.1:3188",
+  "model_calls": 0,
+  "source_requests_in_real_UI_case": 0,
+  "test_services_stopped": true
+}

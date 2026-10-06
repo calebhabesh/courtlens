@@ -1,0 +1,10 @@
+
+> courtload-dashboard@0.1.0 test:browser
+> playwright test workbench.spec.ts --grep home opens --workers=1
+
+
+Running 1 test using 1 worker
+
+  ✓  1 e2e/workbench.spec.ts:5:7 › Workbench Dark Research Interface › home opens Stats with dark theme, horizontal navigation, context and data (1.0s)
+
+  1 passed (1.4s)

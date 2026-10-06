@@ -1,0 +1,70 @@
+{
+  "checks": [
+    {
+      "route": "/stats",
+      "label": "wide",
+      "viewport": [
+        2560,
+        1440
+      ],
+      "dpr": 1,
+      "documentWidth": 2560,
+      "padding": "24px 24px 48px"
+    },
+    {
+      "route": "/roster-shapes",
+      "label": "wide",
+      "viewport": [
+        2560,
+        1440
+      ],
+      "dpr": 1,
+      "documentWidth": 2560,
+      "padding": "24px"
+    },
+    {
+      "route": "/stats",
+      "label": "desktop",
+      "viewport": [
+        1440,
+        900
+      ],
+      "dpr": 1,
+      "documentWidth": 1440,
+      "padding": "24px 24px 48px"
+    },
+    {
+      "route": "/roster-shapes",
+      "label": "desktop",
+      "viewport": [
+        1440,
+        900
+      ],
+      "dpr": 1,
+      "documentWidth": 1440,
+      "padding": "24px"
+    },
+    {
+      "route": "/stats",
+      "label": "mobile",
+      "viewport": [
+        375,
+        812
+      ],
+      "dpr": 1,
+      "documentWidth": 375,
+      "padding": "16px 12px 32px"
+    },
+    {
+      "route": "/roster-shapes",
+      "label": "mobile",
+      "viewport": [
+        375,
+        812
+      ],
+      "dpr": 1,
+      "documentWidth": 375,
+      "padding": "16px"
+    }
+  ]
+}

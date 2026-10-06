@@ -1,0 +1,15 @@
+locator.click: Error: strict mode violation: getByRole('navigation', { name: 'Conversation history' }).getByRole('button', { name: /Explain pick and roll/ }) resolved to 5 elements:
+    1) <button type="button" class="button  ">…</button> aka getByRole('button', { name: 'Explain pick and roll 10/6/' }).first()
+    2) <button type="button" class="button  ">…</button> aka getByRole('button', { name: 'Explain pick and roll 10/6/' }).nth(1)
+    3) <button type="button" class="button  ">…</button> aka getByRole('button', { name: 'Explain pick and roll 10/6/' }).nth(2)
+    4) <button type="button" class="button  ">…</button> aka getByRole('button', { name: 'Explain pick and roll 10/6/' }).nth(3)
+    5) <button type="button" class="button  ">…</button> aka getByRole('button', { name: 'Explain pick and roll (1) 10/6/' })
+
+Call log:
+[2m  - waiting for getByRole('navigation', { name: 'Conversation history' }).getByRole('button', { name: /Explain pick and roll/ })[22m
+
+    at /home/ethioking/dev/nba-analytics/scripts/verify_pf08_browser.cjs:93:121 {
+  log: [
+    "  - waiting for getByRole('navigation', { name: 'Conversation history' }).getByRole('button', { name: /Explain pick and roll/ })"
+  ]
+}

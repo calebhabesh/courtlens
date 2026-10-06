@@ -1,0 +1,23 @@
+..F
+=================================== FAILURES ===================================
+________________________ test_workbench_lookup_endpoint ________________________
+
+client = <starlette.testclient.TestClient object at 0x7f16f6c33750>
+
+    def test_workbench_lookup_endpoint(client: TestClient) -> None:
+        """Incremental lookup endpoint discovers players, teams, and navigation pages."""
+        # 1. Empty query returns navigation suggestions
+        resp_empty = client.get("/api/workbench/lookup")
+        assert resp_empty.status_code == 200
+        data_empty = resp_empty.json()
+>       assert data_empty["catalog_version"] == "v1"
+E       AssertionError: assert 'pf04-v1' == 'v1'
+E         
+E         - v1
+E         + pf04-v1
+
+tests/integration/test_workbench_api.py:87: AssertionError
+=========================== short test summary info ============================
+FAILED tests/integration/test_workbench_api.py::test_workbench_lookup_endpoint
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 2 passed in 0.41s

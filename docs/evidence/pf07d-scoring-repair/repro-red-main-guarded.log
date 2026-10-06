@@ -1,0 +1,49 @@
+[
+  {
+    "id": "pf07d-30",
+    "category": "local",
+    "held_out": false,
+    "correct": false,
+    "response_complete": true,
+    "factual_answer_correct": null,
+    "safety_pass": true,
+    "manual_equivalent": false,
+    "failures": [
+      "canonical manual equivalence failed"
+    ]
+  },
+  {
+    "id": "pf07d-37",
+    "category": "mixed",
+    "held_out": false,
+    "correct": false,
+    "response_complete": true,
+    "factual_answer_correct": null,
+    "safety_pass": true,
+    "manual_equivalent": false,
+    "failures": [
+      "canonical manual equivalence failed"
+    ]
+  },
+  {
+    "id": "pf07d-38",
+    "category": "local",
+    "held_out": true,
+    "correct": false,
+    "response_complete": true,
+    "factual_answer_correct": null,
+    "safety_pass": true,
+    "manual_equivalent": false,
+    "failures": [
+      "canonical manual equivalence failed"
+    ]
+  }
+]
+Traceback (most recent call last):
+  File "/tmp/pf07d-scoring-repro.py", line 33, in <module>
+    main()
+    ~~~~^^
+  File "/tmp/pf07d-scoring-repro.py", line 30, in main
+    assert all(c['correct'] for c in results),'Captured real scoring plans fail canonical manual equivalence'
+           ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Captured real scoring plans fail canonical manual equivalence

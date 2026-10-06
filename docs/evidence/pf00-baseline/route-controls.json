@@ -1,0 +1,3420 @@
+[
+  {
+    "route": "/blog",
+    "page": "dashboard/app/blog/page.tsx",
+    "component_files": [
+      "dashboard/app/blog/page.tsx",
+      "dashboard/components/original-article.tsx"
+    ],
+    "controls": [],
+    "runtime_state": "untested in PF00; static inventory only"
+  },
+  {
+    "route": "/calculator",
+    "page": "dashboard/app/calculator/page.tsx",
+    "component_files": [
+      "dashboard/app/calculator/page.tsx",
+      "dashboard/components/possession-calculator-view.tsx"
+    ],
+    "controls": [
+      {
+        "file": "dashboard/components/possession-calculator-view.tsx",
+        "line": 14,
+        "source": "{(Object.keys(flowLabels) as Array<keyof FlowInputs>).map(key => <label className=\"research-input\" key={key}>{flowLabels[key]} <input type=\"number\" min=\"0\" max=\"1\" step=\"0.01\" value={inputs[key]} onChange={e => setInputs({...inputs, [key]: e.target.value})} /></label>)}"
+      },
+      {
+        "file": "dashboard/components/possession-calculator-view.tsx",
+        "line": 15,
+        "source": "<button className=\"button\" onClick={() => setInputs(Object.fromEntries(Object.entries(flowDefaults).map(([key,v]) => [key,String(v)])) as Record<keyof FlowInputs,string>)}>Reset hypothetical defaults</button>"
+      },
+      {
+        "file": "dashboard/components/possession-calculator-view.tsx",
+        "line": 22,
+        "source": "<button className=\"button\" onClick={() => downloadResearch(\"courtload-hypothetical-flow.json\", {model: flowVersion, classification: \"hypothetical_design_model\", source: \"user_assumptions\", inputs: values, result, sensitivities: flowSensitivities(values)})}>Export scenario JSON</button>"
+      }
+    ],
+    "runtime_state": "untested in PF00; static inventory only"
+  },
+  {
+    "route": "/compare",
+    "page": "dashboard/app/compare/page.tsx",
+    "component_files": [
+      "dashboard/app/compare/page.tsx",
+      "dashboard/components/compare-selector.tsx",
+      "dashboard/components/player-compare-view.tsx"
+    ],
+    "controls": [
+      {
+        "file": "dashboard/app/compare/page.tsx",
+        "line": 55,
+        "source": "<CompareSelector"
+      },
+      {
+        "file": "dashboard/components/player-compare-view.tsx",
+        "line": 320,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/player-compare-view.tsx",
+        "line": 348,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/player-compare-view.tsx",
+        "line": 377,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/player-compare-view.tsx",
+        "line": 393,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/player-compare-view.tsx",
+        "line": 401,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/player-compare-view.tsx",
+        "line": 409,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/player-compare-view.tsx",
+        "line": 421,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/player-compare-view.tsx",
+        "line": 430,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/player-compare-view.tsx",
+        "line": 440,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/player-compare-view.tsx",
+        "line": 449,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/player-compare-view.tsx",
+        "line": 458,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/player-compare-view.tsx",
+        "line": 483,
+        "source": "<select"
+      },
+      {
+        "file": "dashboard/components/player-compare-view.tsx",
+        "line": 758,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/player-compare-view.tsx",
+        "line": 779,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/player-compare-view.tsx",
+        "line": 799,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/compare-selector.tsx",
+        "line": 43,
+        "source": "<input name=\"snapshotId\" type=\"hidden\" value={catalog.snapshot_id} />"
+      },
+      {
+        "file": "dashboard/components/compare-selector.tsx",
+        "line": 44,
+        "source": "<input name=\"playerA\" type=\"hidden\" value={a?.id ?? \"\"} />"
+      },
+      {
+        "file": "dashboard/components/compare-selector.tsx",
+        "line": 45,
+        "source": "<input name=\"playerB\" type=\"hidden\" value={b?.id ?? \"\"} />"
+      },
+      {
+        "file": "dashboard/components/compare-selector.tsx",
+        "line": 49,
+        "source": "<input id={`compare-query-${side}`} onChange={(event) => setQuery((current) => current.map((value, index) => index === side ? event.target.value : value))} placeholder=\"Search by name\" value={query[side]} />"
+      },
+      {
+        "file": "dashboard/components/compare-selector.tsx",
+        "line": 50,
+        "source": "<button className=\"button button-small\" onClick={() => search(side)} type=\"button\">Search</button>"
+      },
+      {
+        "file": "dashboard/components/compare-selector.tsx",
+        "line": 53,
+        "source": "{matches[side].length > 0 && <ul className=\"compare-results\">{matches[side].map((player) => <li key={player.id}><button onClick={() => choose(side, player)} type=\"button\">{player.name}</button></li>)}</ul>}"
+      },
+      {
+        "file": "dashboard/components/compare-selector.tsx",
+        "line": 55,
+        "source": "<div className=\"compare-date\"><label htmlFor=\"compare-date\">Replay date</label><select defaultValue={date} id=\"compare-date\" name=\"date\">{!catalog.supported_replay_dates.includes(date) && <option value={date}>{date} \u00b7 unsupported</option>}{catalog.supported_replay_dates.map((value) => <option key={value} value={value}>{value}</option>)}</select></div>"
+      },
+      {
+        "file": "dashboard/components/compare-selector.tsx",
+        "line": 56,
+        "source": "<button className=\"button button-dark\" disabled={!a || !b || a.id === b.id} type=\"submit\">Compare players</button>"
+      },
+      {
+        "file": "dashboard/components/compare-selector.tsx",
+        "line": 57,
+        "source": "<button className=\"button button-small\" disabled={!a || !b} onClick={() => { setA(b); setB(a); }} type=\"button\">Swap players</button>"
+      }
+    ],
+    "runtime_state": "untested in PF00; static inventory only"
+  },
+  {
+    "route": "/contracts/[team]",
+    "page": "dashboard/app/contracts/[team]/page.tsx",
+    "component_files": [
+      "dashboard/app/contracts/[team]/page.tsx",
+      "dashboard/components/finance-workspace.tsx"
+    ],
+    "controls": [
+      {
+        "file": "dashboard/components/finance-workspace.tsx",
+        "line": 53,
+        "source": "<label>Immutable finance book<select value={books.some(b => b.book_id === query.book_id) ? query.book_id : \"\"} onChange={e => {setBook(null);update({book_id:e.target.value});}}><option value=\"\">Choose a retained book</option>{books.map(b => <option key={b.book_id} value={b.book_id}>{b.parent_book_id ? \"Correction\" : \"Original\"} \u00b7 {b.created_at.slice(0,19)} \u00b7 {b.book_id}</option>)}</select></label>"
+      },
+      {
+        "file": "dashboard/components/finance-workspace.tsx",
+        "line": 54,
+        "source": "<label>Explicit book UUID<input required value={query.book_id} onChange={e => {setBook(null);update({book_id:e.target.value});}} /></label>"
+      },
+      {
+        "file": "dashboard/components/finance-workspace.tsx",
+        "line": 55,
+        "source": "<label>Financial season<input required aria-label=\"Financial season\" pattern=\"20[0-9]{2}-[0-9]{2}\" list=\"finance-seasons\" value={query.financial_season} onChange={e => update({financial_season:e.target.value})} /><datalist id=\"finance-seasons\">{book?.financial_seasons.map(s => <option key={s}>{s}</option>)}</datalist></label>"
+      },
+      {
+        "file": "dashboard/components/finance-workspace.tsx",
+        "line": 56,
+        "source": "<label>Known at (UTC / explicit offset)<input required placeholder=\"2026-10-03T00:00:00Z\" value={query.known_at} onChange={e => update({known_at:e.target.value})} /></label>"
+      },
+      {
+        "file": "dashboard/components/finance-workspace.tsx",
+        "line": 57,
+        "source": "<label>Effective on (inclusive)<input required type=\"date\" value={query.effective_on} onChange={e => update({effective_on:e.target.value})} /></label>"
+      },
+      {
+        "file": "dashboard/components/finance-workspace.tsx",
+        "line": 58,
+        "source": "<label>Explicit contract team<select value={query.team_id ?? \"\"} onChange={e => update({team_id:e.target.value || null})}><option value=\"\">All / unresolved</option>{FINANCE_TEAMS.map(t => <option key={t.id} value={t.id}>{t.tricode} \u00b7 {t.name}</option>)}</select></label>"
+      },
+      {
+        "file": "dashboard/components/finance-workspace.tsx",
+        "line": 59,
+        "source": "<label>Seasonal amount kind<select value={query.amount_kind} onChange={e => update({amount_kind:e.target.value as FinanceQuery[\"amount_kind\"]})}>{AMOUNT_KINDS.map(k => <option key={k} value={k}>{k.replaceAll(\"_\",\" \")}</option>)}</select></label>"
+      },
+      {
+        "file": "dashboard/components/finance-workspace.tsx",
+        "line": 60,
+        "source": "<label>Unknown effective dates<select value={query.unknown_dates} onChange={e => update({unknown_dates:e.target.value as FinanceQuery[\"unknown_dates\"]})}><option value=\"include_labelled\">Include labelled reports; exclude from sums</option><option value=\"exclude\">Exclude from calculations</option></select></label>"
+      },
+      {
+        "file": "dashboard/components/finance-workspace.tsx",
+        "line": 61,
+        "source": "<label>Option scenario<select aria-label=\"Option scenario\" value={query.scenario} onChange={e => update({scenario:e.target.value as FinanceQuery[\"scenario\"]})}><option value=\"reported-v1\">Reported amounts only</option><option value=\"include-unexercised-options-v1\">Hypothetical: exercise conditional options</option></select></label>"
+      },
+      {
+        "file": "dashboard/components/finance-workspace.tsx",
+        "line": 62,
+        "source": "<label>Small vs Big threshold (USD)<input required inputMode=\"decimal\" value={threshold} onChange={e => {setThreshold(e.target.value);setSelected(null);setResult(null);request.current?.abort();setLoading(false);}} /></label>"
+      },
+      {
+        "file": "dashboard/components/finance-workspace.tsx",
+        "line": 63,
+        "source": "<label>Status scope<select value={query.statuses[0] ?? \"all\"} onChange={e => update({statuses:e.target.value === \"all\" ? [] : [e.target.value as FinanceQuery[\"statuses\"][number]]})}><option value=\"all\">All book statuses</option>{FINANCE_STATUSES.map(s => <option key={s} value={s}>{STATUS_LABELS[s]}</option>)}</select></label>"
+      },
+      {
+        "file": "dashboard/components/finance-workspace.tsx",
+        "line": 64,
+        "source": "<button className=\"button\" disabled={loading}>Run financial query</button><button className=\"button\" type=\"button\" disabled={loading || !result} onClick={() => void load(result!.context)}>Refresh selected book read</button>"
+      },
+      {
+        "file": "dashboard/components/finance-workspace.tsx",
+        "line": 66,
+        "source": "{catalogError && <p role=\"alert\">Book discovery unavailable: {catalogError} <button className=\"button\" onClick={loadBooks}>Reload books</button></p>}"
+      },
+      {
+        "file": "dashboard/components/finance-workspace.tsx",
+        "line": 68,
+        "source": "{loading && <p role=\"status\">Loading financial observations\u2026</p>}{error && <p role=\"alert\">Finance unavailable: {error} <button className=\"button\" onClick={() => {try {void load({...query,small_big_threshold_cents:dollarsToCents(threshold)});}catch(err){setError((err as Error).message);}}}>Retry query</button></p>}"
+      },
+      {
+        "file": "dashboard/components/finance-workspace.tsx",
+        "line": 76,
+        "source": "<div className=\"finance-controls\"><label>Search player, team, or source note<input value={search} onChange={e => {setSearch(e.target.value);viewUpdate(\"search\",e.target.value);}} /></label><label>Observed term family<select value={type} onChange={e => {setType(e.target.value);viewUpdate(\"type\",e.target.value);}}>{[\"all\",\"contract\",\"amount\",\"option\",\"guarantee\",\"status\",\"association\"].map(t => <option key={t}>{t}</option>)}</select></label><label>Small vs Big group<select value={size} onChange={e => {setSize(e.target.value);viewUpdate(\"size\",e.target.value);}}>{[\"all\",\"small\",\"big\",\"unknown\"].map(t => <option key={t}>{t}</option>)}</select></label><label>Sort contracts<select value={sort} onChange={e => {setSort(e.target.value);viewUpdate(\"sort\",e.target.value);}}><option value=\"name\">Player name</option><option value=\"amount\">Known amount descending</option><option value=\"status\">Status</option></select></label></div>"
+      },
+      {
+        "file": "dashboard/components/finance-workspace.tsx",
+        "line": 78,
+        "source": "<div className=\"table-wrapper\" role=\"region\" aria-label=\"Contracts and status table\" tabIndex={0}><table className=\"data-table\"><thead><tr><th>Player / contract</th><th>Team / status</th><th>Known selected amount</th><th>Small vs Big</th><th>Derived AAV</th><th>Terms / sources</th></tr></thead><tbody>{rows.map(c => <tr key={`${c.player_id}:${c.contract_id}`}><th><button className=\"finance-detail-button\" onClick={() => setSelected(c)}>{labels[c.player_id] ?? `NBA ${c.player_id}`}</button><br />{c.contract_id}<br /><Link href={buildPreservedContextUrl(`/players/${c.player_id}`,params)}>Player Stats</Link></th><td>{c.team_id ? <Link href={`/contracts/${teamLabel(c.team_id)}?${params}`}>{teamLabel(c.team_id)}</Link> : teamLabel(null)}<br />{c.team_status}<br />{STATUS_LABELS[c.status]}</td><td>{formatCents(c.known_amount_cents)}<br />{c.amount_status}{result.context.scenario !== \"reported-v1\" && <p>Scenario: {formatCents(c.scenario_amount_cents)}</p>}</td><td>{c.size_group}</td><td>{c.derived_aav_usd === null ? \"Unknown\" : `USD ${c.derived_aav_usd}`}<br />Reported total / years; not salary</td><td>{c.observations.map(o => <div key={o.observation_id}><a href={o.source.url} target=\"_blank\" rel=\"noreferrer\">{o.terms.original_label}</a><br />{o.terms.observed_at}</div>)}</td></tr>)}</tbody></table></div>"
+      }
+    ],
+    "runtime_state": "untested in PF00; static inventory only"
+  },
+  {
+    "route": "/contracts",
+    "page": "dashboard/app/contracts/page.tsx",
+    "component_files": [
+      "dashboard/app/contracts/page.tsx",
+      "dashboard/components/finance-workspace.tsx"
+    ],
+    "controls": [
+      {
+        "file": "dashboard/components/finance-workspace.tsx",
+        "line": 53,
+        "source": "<label>Immutable finance book<select value={books.some(b => b.book_id === query.book_id) ? query.book_id : \"\"} onChange={e => {setBook(null);update({book_id:e.target.value});}}><option value=\"\">Choose a retained book</option>{books.map(b => <option key={b.book_id} value={b.book_id}>{b.parent_book_id ? \"Correction\" : \"Original\"} \u00b7 {b.created_at.slice(0,19)} \u00b7 {b.book_id}</option>)}</select></label>"
+      },
+      {
+        "file": "dashboard/components/finance-workspace.tsx",
+        "line": 54,
+        "source": "<label>Explicit book UUID<input required value={query.book_id} onChange={e => {setBook(null);update({book_id:e.target.value});}} /></label>"
+      },
+      {
+        "file": "dashboard/components/finance-workspace.tsx",
+        "line": 55,
+        "source": "<label>Financial season<input required aria-label=\"Financial season\" pattern=\"20[0-9]{2}-[0-9]{2}\" list=\"finance-seasons\" value={query.financial_season} onChange={e => update({financial_season:e.target.value})} /><datalist id=\"finance-seasons\">{book?.financial_seasons.map(s => <option key={s}>{s}</option>)}</datalist></label>"
+      },
+      {
+        "file": "dashboard/components/finance-workspace.tsx",
+        "line": 56,
+        "source": "<label>Known at (UTC / explicit offset)<input required placeholder=\"2026-10-03T00:00:00Z\" value={query.known_at} onChange={e => update({known_at:e.target.value})} /></label>"
+      },
+      {
+        "file": "dashboard/components/finance-workspace.tsx",
+        "line": 57,
+        "source": "<label>Effective on (inclusive)<input required type=\"date\" value={query.effective_on} onChange={e => update({effective_on:e.target.value})} /></label>"
+      },
+      {
+        "file": "dashboard/components/finance-workspace.tsx",
+        "line": 58,
+        "source": "<label>Explicit contract team<select value={query.team_id ?? \"\"} onChange={e => update({team_id:e.target.value || null})}><option value=\"\">All / unresolved</option>{FINANCE_TEAMS.map(t => <option key={t.id} value={t.id}>{t.tricode} \u00b7 {t.name}</option>)}</select></label>"
+      },
+      {
+        "file": "dashboard/components/finance-workspace.tsx",
+        "line": 59,
+        "source": "<label>Seasonal amount kind<select value={query.amount_kind} onChange={e => update({amount_kind:e.target.value as FinanceQuery[\"amount_kind\"]})}>{AMOUNT_KINDS.map(k => <option key={k} value={k}>{k.replaceAll(\"_\",\" \")}</option>)}</select></label>"
+      },
+      {
+        "file": "dashboard/components/finance-workspace.tsx",
+        "line": 60,
+        "source": "<label>Unknown effective dates<select value={query.unknown_dates} onChange={e => update({unknown_dates:e.target.value as FinanceQuery[\"unknown_dates\"]})}><option value=\"include_labelled\">Include labelled reports; exclude from sums</option><option value=\"exclude\">Exclude from calculations</option></select></label>"
+      },
+      {
+        "file": "dashboard/components/finance-workspace.tsx",
+        "line": 61,
+        "source": "<label>Option scenario<select aria-label=\"Option scenario\" value={query.scenario} onChange={e => update({scenario:e.target.value as FinanceQuery[\"scenario\"]})}><option value=\"reported-v1\">Reported amounts only</option><option value=\"include-unexercised-options-v1\">Hypothetical: exercise conditional options</option></select></label>"
+      },
+      {
+        "file": "dashboard/components/finance-workspace.tsx",
+        "line": 62,
+        "source": "<label>Small vs Big threshold (USD)<input required inputMode=\"decimal\" value={threshold} onChange={e => {setThreshold(e.target.value);setSelected(null);setResult(null);request.current?.abort();setLoading(false);}} /></label>"
+      },
+      {
+        "file": "dashboard/components/finance-workspace.tsx",
+        "line": 63,
+        "source": "<label>Status scope<select value={query.statuses[0] ?? \"all\"} onChange={e => update({statuses:e.target.value === \"all\" ? [] : [e.target.value as FinanceQuery[\"statuses\"][number]]})}><option value=\"all\">All book statuses</option>{FINANCE_STATUSES.map(s => <option key={s} value={s}>{STATUS_LABELS[s]}</option>)}</select></label>"
+      },
+      {
+        "file": "dashboard/components/finance-workspace.tsx",
+        "line": 64,
+        "source": "<button className=\"button\" disabled={loading}>Run financial query</button><button className=\"button\" type=\"button\" disabled={loading || !result} onClick={() => void load(result!.context)}>Refresh selected book read</button>"
+      },
+      {
+        "file": "dashboard/components/finance-workspace.tsx",
+        "line": 66,
+        "source": "{catalogError && <p role=\"alert\">Book discovery unavailable: {catalogError} <button className=\"button\" onClick={loadBooks}>Reload books</button></p>}"
+      },
+      {
+        "file": "dashboard/components/finance-workspace.tsx",
+        "line": 68,
+        "source": "{loading && <p role=\"status\">Loading financial observations\u2026</p>}{error && <p role=\"alert\">Finance unavailable: {error} <button className=\"button\" onClick={() => {try {void load({...query,small_big_threshold_cents:dollarsToCents(threshold)});}catch(err){setError((err as Error).message);}}}>Retry query</button></p>}"
+      },
+      {
+        "file": "dashboard/components/finance-workspace.tsx",
+        "line": 76,
+        "source": "<div className=\"finance-controls\"><label>Search player, team, or source note<input value={search} onChange={e => {setSearch(e.target.value);viewUpdate(\"search\",e.target.value);}} /></label><label>Observed term family<select value={type} onChange={e => {setType(e.target.value);viewUpdate(\"type\",e.target.value);}}>{[\"all\",\"contract\",\"amount\",\"option\",\"guarantee\",\"status\",\"association\"].map(t => <option key={t}>{t}</option>)}</select></label><label>Small vs Big group<select value={size} onChange={e => {setSize(e.target.value);viewUpdate(\"size\",e.target.value);}}>{[\"all\",\"small\",\"big\",\"unknown\"].map(t => <option key={t}>{t}</option>)}</select></label><label>Sort contracts<select value={sort} onChange={e => {setSort(e.target.value);viewUpdate(\"sort\",e.target.value);}}><option value=\"name\">Player name</option><option value=\"amount\">Known amount descending</option><option value=\"status\">Status</option></select></label></div>"
+      },
+      {
+        "file": "dashboard/components/finance-workspace.tsx",
+        "line": 78,
+        "source": "<div className=\"table-wrapper\" role=\"region\" aria-label=\"Contracts and status table\" tabIndex={0}><table className=\"data-table\"><thead><tr><th>Player / contract</th><th>Team / status</th><th>Known selected amount</th><th>Small vs Big</th><th>Derived AAV</th><th>Terms / sources</th></tr></thead><tbody>{rows.map(c => <tr key={`${c.player_id}:${c.contract_id}`}><th><button className=\"finance-detail-button\" onClick={() => setSelected(c)}>{labels[c.player_id] ?? `NBA ${c.player_id}`}</button><br />{c.contract_id}<br /><Link href={buildPreservedContextUrl(`/players/${c.player_id}`,params)}>Player Stats</Link></th><td>{c.team_id ? <Link href={`/contracts/${teamLabel(c.team_id)}?${params}`}>{teamLabel(c.team_id)}</Link> : teamLabel(null)}<br />{c.team_status}<br />{STATUS_LABELS[c.status]}</td><td>{formatCents(c.known_amount_cents)}<br />{c.amount_status}{result.context.scenario !== \"reported-v1\" && <p>Scenario: {formatCents(c.scenario_amount_cents)}</p>}</td><td>{c.size_group}</td><td>{c.derived_aav_usd === null ? \"Unknown\" : `USD ${c.derived_aav_usd}`}<br />Reported total / years; not salary</td><td>{c.observations.map(o => <div key={o.observation_id}><a href={o.source.url} target=\"_blank\" rel=\"noreferrer\">{o.terms.original_label}</a><br />{o.terms.observed_at}</div>)}</td></tr>)}</tbody></table></div>"
+      }
+    ],
+    "runtime_state": "untested in PF00; static inventory only"
+  },
+  {
+    "route": "/data-status",
+    "page": "dashboard/app/data-status/page.tsx",
+    "component_files": [
+      "dashboard/app/data-status/page.tsx",
+      "dashboard/components/workbench-jobs-panel.tsx"
+    ],
+    "controls": [
+      {
+        "file": "dashboard/components/workbench-jobs-panel.tsx",
+        "line": 50,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/workbench-jobs-panel.tsx",
+        "line": 58,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/workbench-jobs-panel.tsx",
+        "line": 66,
+        "source": "<button"
+      }
+    ],
+    "runtime_state": "untested in PF00; static inventory only"
+  },
+  {
+    "route": "/evaluation",
+    "page": "dashboard/app/evaluation/page.tsx",
+    "component_files": [
+      "dashboard/app/evaluation/page.tsx"
+    ],
+    "controls": [],
+    "runtime_state": "untested in PF00; static inventory only"
+  },
+  {
+    "route": "/forecasts",
+    "page": "dashboard/app/forecasts/page.tsx",
+    "component_files": [
+      "dashboard/app/forecasts/page.tsx"
+    ],
+    "controls": [],
+    "runtime_state": "untested in PF00; static inventory only"
+  },
+  {
+    "route": "/free-agency",
+    "page": "dashboard/app/free-agency/page.tsx",
+    "component_files": [
+      "dashboard/app/free-agency/page.tsx",
+      "dashboard/components/finance-workspace.tsx"
+    ],
+    "controls": [
+      {
+        "file": "dashboard/components/finance-workspace.tsx",
+        "line": 53,
+        "source": "<label>Immutable finance book<select value={books.some(b => b.book_id === query.book_id) ? query.book_id : \"\"} onChange={e => {setBook(null);update({book_id:e.target.value});}}><option value=\"\">Choose a retained book</option>{books.map(b => <option key={b.book_id} value={b.book_id}>{b.parent_book_id ? \"Correction\" : \"Original\"} \u00b7 {b.created_at.slice(0,19)} \u00b7 {b.book_id}</option>)}</select></label>"
+      },
+      {
+        "file": "dashboard/components/finance-workspace.tsx",
+        "line": 54,
+        "source": "<label>Explicit book UUID<input required value={query.book_id} onChange={e => {setBook(null);update({book_id:e.target.value});}} /></label>"
+      },
+      {
+        "file": "dashboard/components/finance-workspace.tsx",
+        "line": 55,
+        "source": "<label>Financial season<input required aria-label=\"Financial season\" pattern=\"20[0-9]{2}-[0-9]{2}\" list=\"finance-seasons\" value={query.financial_season} onChange={e => update({financial_season:e.target.value})} /><datalist id=\"finance-seasons\">{book?.financial_seasons.map(s => <option key={s}>{s}</option>)}</datalist></label>"
+      },
+      {
+        "file": "dashboard/components/finance-workspace.tsx",
+        "line": 56,
+        "source": "<label>Known at (UTC / explicit offset)<input required placeholder=\"2026-10-03T00:00:00Z\" value={query.known_at} onChange={e => update({known_at:e.target.value})} /></label>"
+      },
+      {
+        "file": "dashboard/components/finance-workspace.tsx",
+        "line": 57,
+        "source": "<label>Effective on (inclusive)<input required type=\"date\" value={query.effective_on} onChange={e => update({effective_on:e.target.value})} /></label>"
+      },
+      {
+        "file": "dashboard/components/finance-workspace.tsx",
+        "line": 58,
+        "source": "<label>Explicit contract team<select value={query.team_id ?? \"\"} onChange={e => update({team_id:e.target.value || null})}><option value=\"\">All / unresolved</option>{FINANCE_TEAMS.map(t => <option key={t.id} value={t.id}>{t.tricode} \u00b7 {t.name}</option>)}</select></label>"
+      },
+      {
+        "file": "dashboard/components/finance-workspace.tsx",
+        "line": 59,
+        "source": "<label>Seasonal amount kind<select value={query.amount_kind} onChange={e => update({amount_kind:e.target.value as FinanceQuery[\"amount_kind\"]})}>{AMOUNT_KINDS.map(k => <option key={k} value={k}>{k.replaceAll(\"_\",\" \")}</option>)}</select></label>"
+      },
+      {
+        "file": "dashboard/components/finance-workspace.tsx",
+        "line": 60,
+        "source": "<label>Unknown effective dates<select value={query.unknown_dates} onChange={e => update({unknown_dates:e.target.value as FinanceQuery[\"unknown_dates\"]})}><option value=\"include_labelled\">Include labelled reports; exclude from sums</option><option value=\"exclude\">Exclude from calculations</option></select></label>"
+      },
+      {
+        "file": "dashboard/components/finance-workspace.tsx",
+        "line": 61,
+        "source": "<label>Option scenario<select aria-label=\"Option scenario\" value={query.scenario} onChange={e => update({scenario:e.target.value as FinanceQuery[\"scenario\"]})}><option value=\"reported-v1\">Reported amounts only</option><option value=\"include-unexercised-options-v1\">Hypothetical: exercise conditional options</option></select></label>"
+      },
+      {
+        "file": "dashboard/components/finance-workspace.tsx",
+        "line": 62,
+        "source": "<label>Small vs Big threshold (USD)<input required inputMode=\"decimal\" value={threshold} onChange={e => {setThreshold(e.target.value);setSelected(null);setResult(null);request.current?.abort();setLoading(false);}} /></label>"
+      },
+      {
+        "file": "dashboard/components/finance-workspace.tsx",
+        "line": 63,
+        "source": "<label>Status scope<select value={query.statuses[0] ?? \"all\"} onChange={e => update({statuses:e.target.value === \"all\" ? [] : [e.target.value as FinanceQuery[\"statuses\"][number]]})}><option value=\"all\">All book statuses</option>{FINANCE_STATUSES.map(s => <option key={s} value={s}>{STATUS_LABELS[s]}</option>)}</select></label>"
+      },
+      {
+        "file": "dashboard/components/finance-workspace.tsx",
+        "line": 64,
+        "source": "<button className=\"button\" disabled={loading}>Run financial query</button><button className=\"button\" type=\"button\" disabled={loading || !result} onClick={() => void load(result!.context)}>Refresh selected book read</button>"
+      },
+      {
+        "file": "dashboard/components/finance-workspace.tsx",
+        "line": 66,
+        "source": "{catalogError && <p role=\"alert\">Book discovery unavailable: {catalogError} <button className=\"button\" onClick={loadBooks}>Reload books</button></p>}"
+      },
+      {
+        "file": "dashboard/components/finance-workspace.tsx",
+        "line": 68,
+        "source": "{loading && <p role=\"status\">Loading financial observations\u2026</p>}{error && <p role=\"alert\">Finance unavailable: {error} <button className=\"button\" onClick={() => {try {void load({...query,small_big_threshold_cents:dollarsToCents(threshold)});}catch(err){setError((err as Error).message);}}}>Retry query</button></p>}"
+      },
+      {
+        "file": "dashboard/components/finance-workspace.tsx",
+        "line": 76,
+        "source": "<div className=\"finance-controls\"><label>Search player, team, or source note<input value={search} onChange={e => {setSearch(e.target.value);viewUpdate(\"search\",e.target.value);}} /></label><label>Observed term family<select value={type} onChange={e => {setType(e.target.value);viewUpdate(\"type\",e.target.value);}}>{[\"all\",\"contract\",\"amount\",\"option\",\"guarantee\",\"status\",\"association\"].map(t => <option key={t}>{t}</option>)}</select></label><label>Small vs Big group<select value={size} onChange={e => {setSize(e.target.value);viewUpdate(\"size\",e.target.value);}}>{[\"all\",\"small\",\"big\",\"unknown\"].map(t => <option key={t}>{t}</option>)}</select></label><label>Sort contracts<select value={sort} onChange={e => {setSort(e.target.value);viewUpdate(\"sort\",e.target.value);}}><option value=\"name\">Player name</option><option value=\"amount\">Known amount descending</option><option value=\"status\">Status</option></select></label></div>"
+      },
+      {
+        "file": "dashboard/components/finance-workspace.tsx",
+        "line": 78,
+        "source": "<div className=\"table-wrapper\" role=\"region\" aria-label=\"Contracts and status table\" tabIndex={0}><table className=\"data-table\"><thead><tr><th>Player / contract</th><th>Team / status</th><th>Known selected amount</th><th>Small vs Big</th><th>Derived AAV</th><th>Terms / sources</th></tr></thead><tbody>{rows.map(c => <tr key={`${c.player_id}:${c.contract_id}`}><th><button className=\"finance-detail-button\" onClick={() => setSelected(c)}>{labels[c.player_id] ?? `NBA ${c.player_id}`}</button><br />{c.contract_id}<br /><Link href={buildPreservedContextUrl(`/players/${c.player_id}`,params)}>Player Stats</Link></th><td>{c.team_id ? <Link href={`/contracts/${teamLabel(c.team_id)}?${params}`}>{teamLabel(c.team_id)}</Link> : teamLabel(null)}<br />{c.team_status}<br />{STATUS_LABELS[c.status]}</td><td>{formatCents(c.known_amount_cents)}<br />{c.amount_status}{result.context.scenario !== \"reported-v1\" && <p>Scenario: {formatCents(c.scenario_amount_cents)}</p>}</td><td>{c.size_group}</td><td>{c.derived_aav_usd === null ? \"Unknown\" : `USD ${c.derived_aav_usd}`}<br />Reported total / years; not salary</td><td>{c.observations.map(o => <div key={o.observation_id}><a href={o.source.url} target=\"_blank\" rel=\"noreferrer\">{o.terms.original_label}</a><br />{o.terms.observed_at}</div>)}</td></tr>)}</tbody></table></div>"
+      }
+    ],
+    "runtime_state": "untested in PF00; static inventory only"
+  },
+  {
+    "route": "/investigations",
+    "page": "dashboard/app/investigations/page.tsx",
+    "component_files": [
+      "dashboard/app/investigations/page.tsx",
+      "dashboard/components/saved-operation-library.tsx",
+      "dashboard/components/workbench-investigations-list.tsx"
+    ],
+    "controls": [
+      {
+        "file": "dashboard/components/workbench-investigations-list.tsx",
+        "line": 77,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/saved-operation-library.tsx",
+        "line": 23,
+        "source": "{error && <div role=\"alert\"><p>{error}</p><button className=\"button\" onClick={()=>{setLoading(true);setRetry(value=>value+1);}}>Retry library</button></div>}"
+      },
+      {
+        "file": "dashboard/components/saved-operation-library.tsx",
+        "line": 26,
+        "source": "<div className=\"page-actions\"><button className=\"button\" disabled={loading || offset===0} onClick={()=>page(Math.max(0,offset-50))}>Previous saved operations</button><span>Page {offset/50+1}</span><button className=\"button\" disabled={loading || !!error || items.length<50} onClick={()=>page(offset+50)}>Next saved operations</button></div>"
+      }
+    ],
+    "runtime_state": "untested in PF00; static inventory only"
+  },
+  {
+    "route": "/investigations/saved/[id]",
+    "page": "dashboard/app/investigations/saved/[id]/page.tsx",
+    "component_files": [
+      "dashboard/app/investigations/saved/[id]/page.tsx",
+      "dashboard/components/saved-operation-detail.tsx"
+    ],
+    "controls": [
+      {
+        "file": "dashboard/components/saved-operation-detail.tsx",
+        "line": 22,
+        "source": "if(error) return <div role=\"alert\"><p>{error}</p><button className=\"button\" onClick={()=>{setError(null);setRetry(value=>value+1);}}>Retry saved detail</button><Link href=\"/investigations\">Back to library</Link></div>;"
+      },
+      {
+        "file": "dashboard/components/saved-operation-detail.tsx",
+        "line": 31,
+        "source": "<div className=\"page-actions\"><button className=\"button\" disabled={verifying} onClick={()=>void verify()}>{verifying ? \"Reproducing\u2026\" : \"Verify reproduction without AI\"}</button><a className=\"button\" href={operationExportUrl(id,\"json\")}>Export JSON</a><a className=\"button\" href={operationExportUrl(id,\"csv\")}>Export CSV</a><Link className=\"button\" href=\"/data-status\">Data lineage and operations</Link></div>"
+      }
+    ],
+    "runtime_state": "untested in PF00; static inventory only"
+  },
+  {
+    "route": "/last-games",
+    "page": "dashboard/app/last-games/page.tsx",
+    "component_files": [
+      "dashboard/app/last-games/page.tsx",
+      "dashboard/components/context-bar.tsx",
+      "dashboard/components/recent-games-view.tsx"
+    ],
+    "controls": [
+      {
+        "file": "dashboard/app/last-games/page.tsx",
+        "line": 89,
+        "source": "<ContextBar"
+      },
+      {
+        "file": "dashboard/components/recent-games-view.tsx",
+        "line": 179,
+        "source": "<GlobalLookup"
+      },
+      {
+        "file": "dashboard/components/recent-games-view.tsx",
+        "line": 194,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/recent-games-view.tsx",
+        "line": 203,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/recent-games-view.tsx",
+        "line": 238,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/recent-games-view.tsx",
+        "line": 245,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/recent-games-view.tsx",
+        "line": 252,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/recent-games-view.tsx",
+        "line": 259,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/recent-games-view.tsx",
+        "line": 273,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/recent-games-view.tsx",
+        "line": 281,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/recent-games-view.tsx",
+        "line": 296,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/recent-games-view.tsx",
+        "line": 303,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/recent-games-view.tsx",
+        "line": 315,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/recent-games-view.tsx",
+        "line": 323,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/recent-games-view.tsx",
+        "line": 332,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/recent-games-view.tsx",
+        "line": 340,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/recent-games-view.tsx",
+        "line": 599,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/recent-games-view.tsx",
+        "line": 673,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/context-bar.tsx",
+        "line": 80,
+        "source": "<select"
+      },
+      {
+        "file": "dashboard/components/context-bar.tsx",
+        "line": 96,
+        "source": "<select"
+      },
+      {
+        "file": "dashboard/components/context-bar.tsx",
+        "line": 112,
+        "source": "<input"
+      },
+      {
+        "file": "dashboard/components/context-bar.tsx",
+        "line": 127,
+        "source": "<select"
+      }
+    ],
+    "runtime_state": "untested in PF00; static inventory only"
+  },
+  {
+    "route": "/learning",
+    "page": "dashboard/app/learning/page.tsx",
+    "component_files": [
+      "dashboard/app/learning/page.tsx",
+      "dashboard/components/learning-workshop.tsx"
+    ],
+    "controls": [
+      {
+        "file": "dashboard/components/learning-workshop.tsx",
+        "line": 10,
+        "source": "return <section className=\"panel\"><h2>Investigate historical scoring variation</h2><p>Compare the distribution\u2019s observed samples, valid count and summary. Repeat with minutes to distinguish changes in workload from changes in scoring. Missing samples remain unknown. This is descriptive and does not predict appearances or injuries.</p><p className=\"conversation-context\">Release {release} \u00b7 {season} \u00b7 regular season \u00b7 before {before} (exclusive)</p><div className=\"conversation-controls\"><label>Canonical player ID<input value={player} onChange={e=>setPlayer(e.target.value)} /></label><label>Appearance window<select value={window} onChange={e=>setWindow(Number(e.target.value))}>{[5,10,20].map(n=><option key={n} value={n}>{n}</option>)}</select></label></div>{player.trim() && <Link className=\"button\" href={href}>Run this pinned distribution without AI</Link>}<p>Open exact evidence, inspect inputs and samples, then use Ask CourtLoad to execute and explicitly save a selected operation.</p></section>;"
+      }
+    ],
+    "runtime_state": "untested in PF00; static inventory only"
+  },
+  {
+    "route": "/live/[date]",
+    "page": "dashboard/app/live/[date]/page.tsx",
+    "component_files": [
+      "dashboard/app/live/[date]/page.tsx",
+      "dashboard/components/live-workspace.tsx"
+    ],
+    "controls": [
+      {
+        "file": "dashboard/components/live-workspace.tsx",
+        "line": 102,
+        "source": "<div className=\"page-header\"><div><h1 className=\"page-title\">Live games</h1><p className=\"page-subtitle\">{historical ? \"Retained finalized research facts\" : \"Provisional ESPN observations\"} \u00b7 Eastern slate dates \u00b7 UTC event times</p></div><button type=\"button\" className=\"button button-secondary\" onClick={() => setPaused(!paused)} disabled={historical} aria-pressed={paused}>{paused ? \"Resume updates\" : \"Pause updates\"}</button></div>"
+      },
+      {
+        "file": "dashboard/components/live-workspace.tsx",
+        "line": 103,
+        "source": "<nav className=\"live-date-strip\" aria-label=\"Live dates\"><Link href={href(easternToday(), undefined, false)}>Today</Link>{valid && [-2,-1,0,1,2].map(offset => { const day = shiftSlate(slate, offset); return <Link key={day} href={href(day)} aria-current={day === slate ? \"date\" : undefined}>{day}</Link>; })}<label>Slate date<input type=\"date\" value={valid ? slate : \"\"} onChange={e => { if (validSlate(e.target.value)) router.push(href(e.target.value)); }} /></label></nav>"
+      },
+      {
+        "file": "dashboard/components/live-workspace.tsx",
+        "line": 109,
+        "source": "}}><label>Research release<input name=\"releaseId\" defaultValue={params.get(\"releaseId\") ?? history?.context.release_id ?? \"\"} placeholder=\"Public pointer on first read\" /></label><label>Research season<input name=\"season\" defaultValue={params.get(\"season\") ?? \"\"} placeholder=\"Season containing slate date\" /></label><label>Research phase<select name=\"phase\" defaultValue={params.get(\"phase\") ?? \"regular_season\"}><option value=\"regular_season\">Regular season</option><option value=\"playoffs\">Playoffs</option><option value=\"preseason\">Preseason</option></select></label><label>Research exclusive cutoff<input name=\"beforeDate\" type=\"date\" defaultValue={params.get(\"beforeDate\") ?? \"\"} /></label><button type=\"submit\" className=\"button button-secondary\">Load finalized research</button></form>}"
+      }
+    ],
+    "runtime_state": "untested in PF00; static inventory only"
+  },
+  {
+    "route": "/live/games/[id]",
+    "page": "dashboard/app/live/games/[id]/page.tsx",
+    "component_files": [
+      "dashboard/app/live/games/[id]/page.tsx",
+      "dashboard/components/live-workspace.tsx"
+    ],
+    "controls": [
+      {
+        "file": "dashboard/components/live-workspace.tsx",
+        "line": 102,
+        "source": "<div className=\"page-header\"><div><h1 className=\"page-title\">Live games</h1><p className=\"page-subtitle\">{historical ? \"Retained finalized research facts\" : \"Provisional ESPN observations\"} \u00b7 Eastern slate dates \u00b7 UTC event times</p></div><button type=\"button\" className=\"button button-secondary\" onClick={() => setPaused(!paused)} disabled={historical} aria-pressed={paused}>{paused ? \"Resume updates\" : \"Pause updates\"}</button></div>"
+      },
+      {
+        "file": "dashboard/components/live-workspace.tsx",
+        "line": 103,
+        "source": "<nav className=\"live-date-strip\" aria-label=\"Live dates\"><Link href={href(easternToday(), undefined, false)}>Today</Link>{valid && [-2,-1,0,1,2].map(offset => { const day = shiftSlate(slate, offset); return <Link key={day} href={href(day)} aria-current={day === slate ? \"date\" : undefined}>{day}</Link>; })}<label>Slate date<input type=\"date\" value={valid ? slate : \"\"} onChange={e => { if (validSlate(e.target.value)) router.push(href(e.target.value)); }} /></label></nav>"
+      },
+      {
+        "file": "dashboard/components/live-workspace.tsx",
+        "line": 109,
+        "source": "}}><label>Research release<input name=\"releaseId\" defaultValue={params.get(\"releaseId\") ?? history?.context.release_id ?? \"\"} placeholder=\"Public pointer on first read\" /></label><label>Research season<input name=\"season\" defaultValue={params.get(\"season\") ?? \"\"} placeholder=\"Season containing slate date\" /></label><label>Research phase<select name=\"phase\" defaultValue={params.get(\"phase\") ?? \"regular_season\"}><option value=\"regular_season\">Regular season</option><option value=\"playoffs\">Playoffs</option><option value=\"preseason\">Preseason</option></select></label><label>Research exclusive cutoff<input name=\"beforeDate\" type=\"date\" defaultValue={params.get(\"beforeDate\") ?? \"\"} /></label><button type=\"submit\" className=\"button button-secondary\">Load finalized research</button></form>}"
+      }
+    ],
+    "runtime_state": "untested in PF00; static inventory only"
+  },
+  {
+    "route": "/live",
+    "page": "dashboard/app/live/page.tsx",
+    "component_files": [
+      "dashboard/app/live/page.tsx",
+      "dashboard/components/live-workspace.tsx"
+    ],
+    "controls": [
+      {
+        "file": "dashboard/components/live-workspace.tsx",
+        "line": 102,
+        "source": "<div className=\"page-header\"><div><h1 className=\"page-title\">Live games</h1><p className=\"page-subtitle\">{historical ? \"Retained finalized research facts\" : \"Provisional ESPN observations\"} \u00b7 Eastern slate dates \u00b7 UTC event times</p></div><button type=\"button\" className=\"button button-secondary\" onClick={() => setPaused(!paused)} disabled={historical} aria-pressed={paused}>{paused ? \"Resume updates\" : \"Pause updates\"}</button></div>"
+      },
+      {
+        "file": "dashboard/components/live-workspace.tsx",
+        "line": 103,
+        "source": "<nav className=\"live-date-strip\" aria-label=\"Live dates\"><Link href={href(easternToday(), undefined, false)}>Today</Link>{valid && [-2,-1,0,1,2].map(offset => { const day = shiftSlate(slate, offset); return <Link key={day} href={href(day)} aria-current={day === slate ? \"date\" : undefined}>{day}</Link>; })}<label>Slate date<input type=\"date\" value={valid ? slate : \"\"} onChange={e => { if (validSlate(e.target.value)) router.push(href(e.target.value)); }} /></label></nav>"
+      },
+      {
+        "file": "dashboard/components/live-workspace.tsx",
+        "line": 109,
+        "source": "}}><label>Research release<input name=\"releaseId\" defaultValue={params.get(\"releaseId\") ?? history?.context.release_id ?? \"\"} placeholder=\"Public pointer on first read\" /></label><label>Research season<input name=\"season\" defaultValue={params.get(\"season\") ?? \"\"} placeholder=\"Season containing slate date\" /></label><label>Research phase<select name=\"phase\" defaultValue={params.get(\"phase\") ?? \"regular_season\"}><option value=\"regular_season\">Regular season</option><option value=\"playoffs\">Playoffs</option><option value=\"preseason\">Preseason</option></select></label><label>Research exclusive cutoff<input name=\"beforeDate\" type=\"date\" defaultValue={params.get(\"beforeDate\") ?? \"\"} /></label><button type=\"submit\" className=\"button button-secondary\">Load finalized research</button></form>}"
+      }
+    ],
+    "runtime_state": "untested in PF00; static inventory only"
+  },
+  {
+    "route": "/matchups",
+    "page": "dashboard/app/matchups/page.tsx",
+    "component_files": [
+      "dashboard/app/matchups/page.tsx",
+      "dashboard/components/shooting-view.tsx"
+    ],
+    "controls": [
+      {
+        "file": "dashboard/components/shooting-view.tsx",
+        "line": 129,
+        "source": "{initialOperation === \"shot-profile-peers\" && <div className=\"floor-actions\" role=\"group\" aria-label=\"Shooting tabs\">{([\"shot-profile\", \"shot-profile-peers\"] as const).map(op => <button type=\"button\" aria-pressed={operation === op} key={op} onClick={() => { active.current?.abort(); setBusy(false); setOperation(op); setResult(null); setError(\"\"); }}>{titles[op]}</button>)}</div>}"
+      },
+      {
+        "file": "dashboard/components/shooting-view.tsx",
+        "line": 131,
+        "source": "<label>Player name search<input value={query} onChange={e => setQuery(e.target.value)} autoComplete=\"off\" /></label>"
+      },
+      {
+        "file": "dashboard/components/shooting-view.tsx",
+        "line": 132,
+        "source": "{operation === \"matchups\" && <label>Use search result for<select value={target} onChange={e => setTarget(e.target.value)}><option value=\"player\">Offensive player</option><option value=\"defender\">Defender</option></select></label>}"
+      },
+      {
+        "file": "dashboard/components/shooting-view.tsx",
+        "line": 133,
+        "source": "<label>{operation === \"matchups\" ? \"Offensive player ID\" : \"Player ID\"}<input value={player} onChange={e => setPlayer(e.target.value)} required /></label>"
+      },
+      {
+        "file": "dashboard/components/shooting-view.tsx",
+        "line": 134,
+        "source": "{operation === \"matchups\" && <label>Defender ID (optional)<input value={defender} onChange={e => setDefender(e.target.value)} /></label>}"
+      },
+      {
+        "file": "dashboard/components/shooting-view.tsx",
+        "line": 135,
+        "source": "<label>Release ID<input value={release} onChange={e => setRelease(e.target.value)} placeholder=\"Resolve published release\" /></label>"
+      },
+      {
+        "file": "dashboard/components/shooting-view.tsx",
+        "line": 136,
+        "source": "<label>Season<input value={season} onChange={e => setSeason(e.target.value)} placeholder=\"Resolve default season\" /></label>"
+      },
+      {
+        "file": "dashboard/components/shooting-view.tsx",
+        "line": 137,
+        "source": "<label>Phase<select value={phase} onChange={e => setPhase(e.target.value)}><option value=\"\">Resolve default phase</option>{[\"preseason\", \"regular_season\", \"play_in\", \"playoffs\", \"cup_final\", \"summer_league\"].map(p => <option key={p} value={p}>{p}</option>)}</select></label>"
+      },
+      {
+        "file": "dashboard/components/shooting-view.tsx",
+        "line": 138,
+        "source": "<label>Lower date (inclusive)<input type=\"date\" value={lower} onChange={e => setLower(e.target.value)} /></label>"
+      },
+      {
+        "file": "dashboard/components/shooting-view.tsx",
+        "line": 139,
+        "source": "<label>Before date (exclusive)<input type=\"date\" value={before} onChange={e => setBefore(e.target.value)} /></label>"
+      },
+      {
+        "file": "dashboard/components/shooting-view.tsx",
+        "line": 140,
+        "source": "<label>Minimum attempts<input type=\"number\" min={1} max={10000} step={1} value={attempts} onChange={e => setAttempts(e.target.value)} /></label>"
+      },
+      {
+        "file": "dashboard/components/shooting-view.tsx",
+        "line": 141,
+        "source": "<label>Minimum games<input type=\"number\" min={1} max={100} step={1} value={games} onChange={e => setGames(e.target.value)} /></label>"
+      },
+      {
+        "file": "dashboard/components/shooting-view.tsx",
+        "line": 142,
+        "source": "{operation === \"shot-profile-peers\" && <label>Peer limit<input type=\"number\" min={1} max={25} value={limit} onChange={e => setLimit(e.target.value)} /></label>}"
+      },
+      {
+        "file": "dashboard/components/shooting-view.tsx",
+        "line": 144,
+        "source": "{matches.length > 0 && <ul aria-label=\"Player search results\">{matches.map(item => <li key={item.canonical_id}><button type=\"button\" onClick={() => { if (target === \"defender\" && operation === \"matchups\") setDefender(item.canonical_id); else setPlayer(item.canonical_id); setQuery(\"\"); setMatches([]); }}>{item.display_name} ({item.canonical_id})</button></li>)}</ul>}"
+      },
+      {
+        "file": "dashboard/components/shooting-view.tsx",
+        "line": 147,
+        "source": "<div className=\"floor-actions\"><button type=\"submit\" disabled={busy}>{busy ? \"Loading\u2026\" : \"Run shooting analysis\"}</button>{busy && <button type=\"button\" onClick={() => { active.current?.abort(); setBusy(false); }}>Cancel</button>}</div>"
+      },
+      {
+        "file": "dashboard/components/shooting-view.tsx",
+        "line": 156,
+        "source": "<div className=\"floor-actions\"><button onClick={() => download(JSON.stringify({ schema: \"courtload-shooting-evidence-v1\", result, display_filters: { zone, team, shot_page: shotPage + 1, anchor_page: anchorPage + 1 } }, null, 2), \"shooting-evidence.json\", \"application/json\")}>Save evidence JSON</button><button onClick={() => download(shootingCsv(result), \"shooting-evidence.csv\", \"text/csv\")}>Export evidence CSV</button><a href={shootingUrl(path, result.operation, resolvedShooting(result))}>Reopen this resolved query</a></div>"
+      },
+      {
+        "file": "dashboard/components/shooting-view.tsx",
+        "line": 160,
+        "source": "<h3>Shot court and fact table</h3><div className=\"floor-controls\"><label>Display zone<select value={zone} onChange={e => { setZone(e.target.value); setShotPage(0); setSelectedShot(null); }}><option value=\"\">All zones</option>{result.profile?.zones.map(z => <option key={z.zone}>{z.zone}</option>)}</select></label><label>Display team<select value={team} onChange={e => { setTeam(e.target.value); setShotPage(0); setSelectedShot(null); }}><option value=\"\">All observed teams</option>{Array.from(new Set(result.shots.map(s => s.team_id))).map(t => <option key={t}>{t}</option>)}</select></label></div>"
+      },
+      {
+        "file": "dashboard/components/shooting-view.tsx",
+        "line": 165,
+        "source": "</svg><button onClick={exportCourt}>Export court SVG</button>"
+      },
+      {
+        "file": "dashboard/components/shooting-view.tsx",
+        "line": 166,
+        "source": "<div className=\"floor-scroll\" tabIndex={0} role=\"region\" aria-label=\"Shot facts\"><table className=\"data-table\"><caption>Displayed shot facts \u00b7 {pageShots.length} of {shots.length} filtered attempts</caption><thead><tr>{[\"Game / date\", \"Team\", \"Period / clock seconds\", \"Zone\", \"x feet\", \"y feet\", \"Made\", \"Points\", \"Evidence\"].map(h => <th scope=\"col\" key={h}>{h}</th>)}</tr></thead><tbody>{pageShots.map(({ shot: s, index }) => <tr key={index}><th scope=\"row\">{s.game_id} / {s.game_date}</th><td>{s.team_id}</td><td>{s.period} / {n(s.seconds_remaining)}</td><td>{s.zone}</td><td>{n(s.x_feet)}</td><td>{n(s.y_feet)}</td><td>{s.made ? \"Yes\" : \"No\"}</td><td>{s.points}</td><td><button onClick={() => setSelectedShot(index)}>Inspect shot {index+1}</button></td></tr>)}</tbody></table></div>"
+      },
+      {
+        "file": "dashboard/components/shooting-view.tsx",
+        "line": 167,
+        "source": "<div className=\"floor-actions\"><button disabled={shotPage === 0} onClick={() => { setShotPage(shotPage-1); setSelectedShot(null); }}>Previous shots</button><span>Page {shotPage+1} / {Math.max(1, Math.ceil(shots.length/100))} \u00b7 100 facts per page</span><button disabled={(shotPage+1)*100 >= shots.length} onClick={() => { setShotPage(shotPage+1); setSelectedShot(null); }}>Next shots</button></div>"
+      },
+      {
+        "file": "dashboard/components/shooting-view.tsx",
+        "line": 170,
+        "source": "{result.operation === \"shot-profile-peers\" && <><h3>Located-zone peers</h3><p>Euclidean distance over seven known-zone attempt-share dimensions; Unknown excluded from the vector. Lower distance means similar location distribution. Efficiency is shown separately. No fitted model or player-quality ranking.</p>{!result.peers.length && <p>No eligible peers for the focal sample and gates.</p>}<div className=\"floor-scroll\" tabIndex={0} role=\"region\" aria-label=\"Shot peers\"><table className=\"data-table\"><caption>Eligible peers \u00b7 distance then canonical ID</caption><thead><tr>{[\"Player\", \"Distance\", \"Located\", \"Unknown\", \"Games\", \"Compare zones\"].map(h => <th scope=\"col\" key={h}>{h}</th>)}</tr></thead><tbody>{result.peers.map(p => <tr key={p.profile.player_id}><th scope=\"row\"><a href={shootingUrl(path, result.operation, { ...resolvedShooting(result), player_id: p.profile.player_id })}>{p.profile.player_id}</a></th><td>{p.distance}</td><td>{p.profile.located_attempts}</td><td>{p.profile.unknown_attempts}</td><td>{p.profile.games}</td><td><button onClick={() => setSelectedPeer(p.profile.player_id)}>Compare {p.profile.player_id}</button></td></tr>)}</tbody></table></div>{peer && <><h4>Peer zone comparison \u00b7 same resolved scope</h4><Zones profile={peer.profile} /></>}</>}"
+      },
+      {
+        "file": "dashboard/components/shooting-view.tsx",
+        "line": 173,
+        "source": "<details><summary>Sequence evidence \u00b7 {result.anchors.length} anchors / unknown candidates</summary><div className=\"floor-scroll\" tabIndex={0} role=\"region\" aria-label=\"Sequence evidence\"><table className=\"data-table\"><caption>Returned anchor evidence; unknown first-chance membership remains null</caption><thead><tr>{[\"Game / possession\", \"Branch\", \"Shot points\", \"First chance\", \"Continued\", \"Next opponent\", \"Next status\", \"Reason\"].map(h => <th key={h} scope=\"col\">{h}</th>)}</tr></thead><tbody>{pageAnchors.map((a,i) => <tr key={i}><th scope=\"row\">{a.game_id} / {n(a.possession_number)}</th><td>{a.branch}</td><td>{a.shot_points}</td><td>{n(a.first_chance_points)}</td><td>{n(a.continued_points)}</td><td>{n(a.next_opponent_points)}</td><td>{a.next_status}</td><td>{a.reason || \"\u2014\"}</td></tr>)}</tbody></table></div><div className=\"floor-actions\"><button disabled={anchorPage === 0} onClick={() => setAnchorPage(anchorPage-1)}>Previous anchors</button><span>Page {anchorPage+1} / {Math.max(1, Math.ceil(result.anchors.length/100))} \u00b7 100 anchors per page</span><button disabled={(anchorPage+1)*100 >= result.anchors.length} onClick={() => setAnchorPage(anchorPage+1)}>Next anchors</button></div><p>Video replay unavailable without admitted event/clip identity mapping.</p></details>"
+      }
+    ],
+    "runtime_state": "untested in PF00; static inventory only"
+  },
+  {
+    "route": "/methodology",
+    "page": "dashboard/app/methodology/page.tsx",
+    "component_files": [
+      "dashboard/app/methodology/page.tsx"
+    ],
+    "controls": [],
+    "runtime_state": "untested in PF00; static inventory only"
+  },
+  {
+    "route": "/",
+    "page": "dashboard/app/page.tsx",
+    "component_files": [
+      "dashboard/app/page.tsx"
+    ],
+    "controls": [],
+    "runtime_state": "untested in PF00; static inventory only"
+  },
+  {
+    "route": "/patch-notes",
+    "page": "dashboard/app/patch-notes/page.tsx",
+    "component_files": [
+      "dashboard/app/patch-notes/page.tsx",
+      "dashboard/components/original-article.tsx"
+    ],
+    "controls": [],
+    "runtime_state": "untested in PF00; static inventory only"
+  },
+  {
+    "route": "/planner",
+    "page": "dashboard/app/planner/page.tsx",
+    "component_files": [
+      "dashboard/app/planner/page.tsx",
+      "dashboard/components/planner-client.tsx"
+    ],
+    "controls": [
+      {
+        "file": "dashboard/components/planner-client.tsx",
+        "line": 158,
+        "source": "<label>Email<input autoComplete=\"email\" onChange={(event) => setEmail(event.target.value)} required type=\"email\" value={email} /></label>"
+      },
+      {
+        "file": "dashboard/components/planner-client.tsx",
+        "line": 159,
+        "source": "<label>Password<input autoComplete=\"current-password\" onChange={(event) => setPassword(event.target.value)} required type=\"password\" value={password} /></label>"
+      },
+      {
+        "file": "dashboard/components/planner-client.tsx",
+        "line": 160,
+        "source": "<button className=\"button\" disabled={busy} type=\"submit\">{busy ? \"Opening\u2026\" : \"Sign in\"}</button>"
+      },
+      {
+        "file": "dashboard/components/planner-client.tsx",
+        "line": 171,
+        "source": "<label>League<select onChange={(event) => void loadWorkspace(token, event.target.value)} value={leagueId}>{leagues.map((league) => <option key={league.id} value={league.id}>{league.name}</option>)}</select></label>"
+      },
+      {
+        "file": "dashboard/components/planner-client.tsx",
+        "line": 172,
+        "source": "<label>Week starts<input onChange={(event) => setWeekStart(event.target.value)} type=\"date\" value={weekStart} /></label>"
+      },
+      {
+        "file": "dashboard/components/planner-client.tsx",
+        "line": 173,
+        "source": "<button className=\"button button-dark\" disabled={busy} onClick={() => void loadPlan()} type=\"button\">{busy ? \"Calculating\u2026\" : \"Recalculate\"}</button>"
+      },
+      {
+        "file": "dashboard/components/planner-client.tsx",
+        "line": 201,
+        "source": "<label>Drop<select onChange={(event) => setDropId(event.target.value)} value={dropId}>{roster.map((player) => <option key={player.player_id} value={player.player_id}>{player.name} \u00b7 {player.team}</option>)}</select></label>"
+      },
+      {
+        "file": "dashboard/components/planner-client.tsx",
+        "line": 202,
+        "source": "<label>Add candidate<select onChange={(event) => setAddId(event.target.value)} value={addId}>{watchlist.map((player) => <option key={player.player_id} value={player.player_id}>{player.name} \u00b7 {player.team}</option>)}</select></label>"
+      },
+      {
+        "file": "dashboard/components/planner-client.tsx",
+        "line": 203,
+        "source": "<label>Candidate slots<input aria-label=\"Candidate eligible slots\" onChange={(event) => setAddEligibleSlots(event.target.value)} placeholder=\"G, UTIL\" required value={addEligibleSlots} /></label>"
+      },
+      {
+        "file": "dashboard/components/planner-client.tsx",
+        "line": 204,
+        "source": "<label>Effective date<input min={weekStart} max={plan.week_end} onChange={(event) => setEffectiveDate(event.target.value)} type=\"date\" value={effectiveDate} /></label>"
+      },
+      {
+        "file": "dashboard/components/planner-client.tsx",
+        "line": 205,
+        "source": "<button className=\"button\" disabled={busy || !watchlist.length} type=\"submit\">Compare scenario \u2192</button>"
+      }
+    ],
+    "runtime_state": "untested in PF00; static inventory only"
+  },
+  {
+    "route": "/players/[id]",
+    "page": "dashboard/app/players/[id]/page.tsx",
+    "component_files": [
+      "dashboard/app/players/[id]/page.tsx",
+      "dashboard/components/context-bar.tsx",
+      "dashboard/components/trend-chart.tsx",
+      "dashboard/components/workbench-player-profile.tsx"
+    ],
+    "controls": [
+      {
+        "file": "dashboard/app/players/[id]/page.tsx",
+        "line": 159,
+        "source": "<ContextBar"
+      },
+      {
+        "file": "dashboard/app/players/[id]/page.tsx",
+        "line": 225,
+        "source": "<input name=\"snapshotId\" type=\"hidden\" value={profile.snapshot_id} />"
+      },
+      {
+        "file": "dashboard/app/players/[id]/page.tsx",
+        "line": 227,
+        "source": "<select defaultValue={profile.replay_date} id=\"replay-date\" name=\"date\">"
+      },
+      {
+        "file": "dashboard/app/players/[id]/page.tsx",
+        "line": 231,
+        "source": "<button className=\"button button-dark\" type=\"submit\">Change date</button>"
+      },
+      {
+        "file": "dashboard/components/workbench-player-profile.tsx",
+        "line": 153,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/workbench-player-profile.tsx",
+        "line": 162,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/workbench-player-profile.tsx",
+        "line": 223,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/workbench-player-profile.tsx",
+        "line": 232,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/workbench-player-profile.tsx",
+        "line": 607,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/workbench-player-profile.tsx",
+        "line": 614,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/workbench-player-profile.tsx",
+        "line": 683,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/context-bar.tsx",
+        "line": 80,
+        "source": "<select"
+      },
+      {
+        "file": "dashboard/components/context-bar.tsx",
+        "line": 96,
+        "source": "<select"
+      },
+      {
+        "file": "dashboard/components/context-bar.tsx",
+        "line": 112,
+        "source": "<input"
+      },
+      {
+        "file": "dashboard/components/context-bar.tsx",
+        "line": 127,
+        "source": "<select"
+      }
+    ],
+    "runtime_state": "untested in PF00; static inventory only"
+  },
+  {
+    "route": "/players",
+    "page": "dashboard/app/players/page.tsx",
+    "component_files": [
+      "dashboard/app/players/page.tsx",
+      "dashboard/components/context-bar.tsx",
+      "dashboard/components/player-search.tsx",
+      "dashboard/components/shared-floor-view.tsx",
+      "dashboard/components/workbench-player-explorer.tsx"
+    ],
+    "controls": [
+      {
+        "file": "dashboard/app/players/page.tsx",
+        "line": 105,
+        "source": "<ContextBar"
+      },
+      {
+        "file": "dashboard/components/workbench-player-explorer.tsx",
+        "line": 367,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/workbench-player-explorer.tsx",
+        "line": 387,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/workbench-player-explorer.tsx",
+        "line": 405,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/workbench-player-explorer.tsx",
+        "line": 450,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/workbench-player-explorer.tsx",
+        "line": 467,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/workbench-player-explorer.tsx",
+        "line": 481,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/workbench-player-explorer.tsx",
+        "line": 490,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/workbench-player-explorer.tsx",
+        "line": 499,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/workbench-player-explorer.tsx",
+        "line": 512,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/workbench-player-explorer.tsx",
+        "line": 520,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/workbench-player-explorer.tsx",
+        "line": 528,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/workbench-player-explorer.tsx",
+        "line": 540,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/workbench-player-explorer.tsx",
+        "line": 548,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/workbench-player-explorer.tsx",
+        "line": 582,
+        "source": "<input"
+      },
+      {
+        "file": "dashboard/components/workbench-player-explorer.tsx",
+        "line": 591,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/workbench-player-explorer.tsx",
+        "line": 609,
+        "source": "<select"
+      },
+      {
+        "file": "dashboard/components/workbench-player-explorer.tsx",
+        "line": 627,
+        "source": "<input"
+      },
+      {
+        "file": "dashboard/components/workbench-player-explorer.tsx",
+        "line": 646,
+        "source": "<input"
+      },
+      {
+        "file": "dashboard/components/workbench-player-explorer.tsx",
+        "line": 665,
+        "source": "<select"
+      },
+      {
+        "file": "dashboard/components/workbench-player-explorer.tsx",
+        "line": 682,
+        "source": "<select"
+      },
+      {
+        "file": "dashboard/components/workbench-player-explorer.tsx",
+        "line": 695,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/workbench-player-explorer.tsx",
+        "line": 715,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/workbench-player-explorer.tsx",
+        "line": 873,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/workbench-player-explorer.tsx",
+        "line": 903,
+        "source": "<input"
+      },
+      {
+        "file": "dashboard/components/workbench-player-explorer.tsx",
+        "line": 941,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/workbench-player-explorer.tsx",
+        "line": 965,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/workbench-player-explorer.tsx",
+        "line": 1039,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/workbench-player-explorer.tsx",
+        "line": 1060,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/workbench-player-explorer.tsx",
+        "line": 1074,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 114,
+        "source": "{initialOperation === \"wowy\" && <label>Operation<select value={operation} onChange={e => { setOperation(e.target.value as FloorOperation); setMode(\"team\"); }}><option value=\"wowy\">WOWY</option><option value=\"on-off\">On/off</option></select></label>}"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 115,
+        "source": "{operation === \"wowy\" && <label>View<select value={mode} onChange={e => setMode(e.target.value as typeof mode)}><option value=\"team\">Team sets</option><option value=\"leaders\">Selected-player leaders (max 5)</option><option value=\"unit\">2\u20135-player unit</option></select></label>}"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 116,
+        "source": "<label>Team<select value={team} onChange={e => setTeam(e.target.value)}>{!NBA_TEAMS.some(t => t.tricode === team) && <option value={team}>{team}</option>}{NBA_TEAMS.map(t => <option key={t.tricode} value={t.tricode}>{t.tricode} \u00b7 {t.name}</option>)}</select></label>"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 117,
+        "source": "<label>Season<input placeholder=\"Published default\" value={season} onChange={e => setSeason(e.target.value)} /></label>"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 118,
+        "source": "<label>Phase<select value={phase} onChange={e => setPhase(e.target.value)}><option value=\"\">Published default</option><option value=\"regular_season\">Regular season</option><option value=\"playoffs\">Playoffs</option><option value=\"preseason\">Preseason</option><option value=\"play_in\">Play-in</option><option value=\"cup_final\">Cup final</option><option value=\"summer_league\">Summer league</option></select></label>"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 119,
+        "source": "<label>Before date (exclusive)<input type=\"date\" value={before} onChange={e => setBefore(e.target.value)} /></label>"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 120,
+        "source": "<label>From date (inclusive)<input type=\"date\" value={lower} onChange={e => setLower(e.target.value)} /></label>"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 121,
+        "source": "<label>Release ID<input placeholder=\"Published default\" value={release} onChange={e => setRelease(e.target.value)} /></label>"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 122,
+        "source": "<label>Minimum possessions<input type=\"number\" min=\"1\" max=\"10000\" step=\"any\" value={possessions} onChange={e => setPossessions(e.target.value)} /></label>"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 123,
+        "source": "<label>Minimum games<input type=\"number\" min=\"1\" max=\"82\" value={games} onChange={e => setGames(e.target.value)} /></label>"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 126,
+        "source": "{operation === \"stat-shift\" && <label>Focal player ID<input value={focal} onChange={e => setFocal(e.target.value)} /></label>}"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 127,
+        "source": "{mode === \"unit\" ? <label>Unit player IDs<input value={unit} onChange={e => setUnit(e.target.value)} placeholder=\"2\u20135 comma-separated NBA IDs\" /></label> : <>"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 128,
+        "source": "<label>{mode === \"leaders\" ? \"Candidate player IDs\" : \"Together player IDs\"}<input value={together} onChange={e => setTogether(e.target.value)} placeholder=\"Comma-separated NBA IDs\" /></label>"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 129,
+        "source": "{operation !== \"on-off\" && mode !== \"leaders\" && <label>Apart player IDs<input value={apart} onChange={e => setApart(e.target.value)} /></label>}"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 131,
+        "source": "<label>Search players<input value={query} onChange={e => setQuery(e.target.value)} placeholder=\"Type a player name\" /></label>"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 132,
+        "source": "{operation !== \"on-off\" && mode !== \"unit\" && mode !== \"leaders\" && <label>Add search result to<select value={target} onChange={e => setTarget(e.target.value)}><option value=\"together\">Together</option><option value=\"apart\">Apart</option>{operation === \"stat-shift\" && <option value=\"focal\">Focal player</option>}</select></label>}"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 135,
+        "source": "<div className=\"floor-controls\">{matches.map(player => <button type=\"button\" className=\"control-pill\" key={player.id} onClick={() => addPlayer(player)}>{player.display_name} \u00b7 {player.subtitle}</button>)}</div>"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 138,
+        "source": "<button className=\"control-pill active\" disabled={busy}>{busy ? \"Calculating\u2026\" : \"Run shared-floor analysis\"}</button>"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 143,
+        "source": "<button onClick={() => download(JSON.stringify({ schema: \"courtload-shared-floor-evidence-v1\", results, pinned_comparison: pinned }, null, 2), \"shared-floor-evidence.json\", \"application/json\")}>Save evidence JSON</button>"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 144,
+        "source": "<button onClick={() => download(floorCsv(results), \"shared-floor.csv\", \"text/csv\")}>Export cell metrics CSV</button>"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 145,
+        "source": "{results.length === 1 && <button onClick={() => setPinned(results[0])}>Pin for comparison</button>}"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 162,
+        "source": "{pinned && <div><h3>Pinned operation comparison</h3>{comparableFloorResults(pinned, result) ? <p>Pinned eligible differences: {pinned.shifts.map(s => `${s.metric}: ${floorNumber(s.difference)}`).join(\" \u00b7 \")}. Current eligible differences are displayed above. No statistical interval for a difference between separate queries is claimed.<br />Pinned conditions: {JSON.stringify({ together: pinned.request.together, apart: pinned.request.apart, unit: pinned.request.exact_unit })}<br />Pinned evidence: <span className=\"floor-hash\">{pinned.evidence_hash}</span></p> : <p>Comparison unavailable: operation, team, focal player, release, dates, phase and gates must match.</p>}<button onClick={() => setPinned(null)}>Clear pinned comparison</button></div>}"
+      },
+      {
+        "file": "dashboard/components/player-search.tsx",
+        "line": 40,
+        "source": "<input"
+      },
+      {
+        "file": "dashboard/components/player-search.tsx",
+        "line": 51,
+        "source": "<select"
+      },
+      {
+        "file": "dashboard/components/player-search.tsx",
+        "line": 61,
+        "source": "<button className=\"button button-dark\" disabled={pending} type=\"submit\">"
+      },
+      {
+        "file": "dashboard/components/context-bar.tsx",
+        "line": 80,
+        "source": "<select"
+      },
+      {
+        "file": "dashboard/components/context-bar.tsx",
+        "line": 96,
+        "source": "<select"
+      },
+      {
+        "file": "dashboard/components/context-bar.tsx",
+        "line": 112,
+        "source": "<input"
+      },
+      {
+        "file": "dashboard/components/context-bar.tsx",
+        "line": 127,
+        "source": "<select"
+      }
+    ],
+    "runtime_state": "untested in PF00; static inventory only"
+  },
+  {
+    "route": "/playoffs/[seriesId]",
+    "page": "dashboard/app/playoffs/[seriesId]/page.tsx",
+    "component_files": [
+      "dashboard/app/playoffs/[seriesId]/page.tsx",
+      "dashboard/components/context-bar.tsx",
+      "dashboard/components/player-portrait.tsx",
+      "dashboard/components/playoffs-series-view.tsx"
+    ],
+    "controls": [
+      {
+        "file": "dashboard/app/playoffs/[seriesId]/page.tsx",
+        "line": 60,
+        "source": "<ContextBar"
+      },
+      {
+        "file": "dashboard/components/playoffs-series-view.tsx",
+        "line": 493,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/playoffs-series-view.tsx",
+        "line": 500,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/playoffs-series-view.tsx",
+        "line": 507,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/context-bar.tsx",
+        "line": 80,
+        "source": "<select"
+      },
+      {
+        "file": "dashboard/components/context-bar.tsx",
+        "line": 96,
+        "source": "<select"
+      },
+      {
+        "file": "dashboard/components/context-bar.tsx",
+        "line": 112,
+        "source": "<input"
+      },
+      {
+        "file": "dashboard/components/context-bar.tsx",
+        "line": 127,
+        "source": "<select"
+      }
+    ],
+    "runtime_state": "untested in PF00; static inventory only"
+  },
+  {
+    "route": "/playoffs",
+    "page": "dashboard/app/playoffs/page.tsx",
+    "component_files": [
+      "dashboard/app/playoffs/page.tsx",
+      "dashboard/components/context-bar.tsx",
+      "dashboard/components/playoffs-bracket-view.tsx"
+    ],
+    "controls": [
+      {
+        "file": "dashboard/app/playoffs/page.tsx",
+        "line": 45,
+        "source": "<ContextBar"
+      },
+      {
+        "file": "dashboard/components/playoffs-bracket-view.tsx",
+        "line": 89,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/playoffs-bracket-view.tsx",
+        "line": 96,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/playoffs-bracket-view.tsx",
+        "line": 103,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/playoffs-bracket-view.tsx",
+        "line": 118,
+        "source": "<select"
+      },
+      {
+        "file": "dashboard/components/playoffs-bracket-view.tsx",
+        "line": 134,
+        "source": "<input"
+      },
+      {
+        "file": "dashboard/components/playoffs-bracket-view.tsx",
+        "line": 142,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/playoffs-bracket-view.tsx",
+        "line": 150,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/playoffs-bracket-view.tsx",
+        "line": 187,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/playoffs-bracket-view.tsx",
+        "line": 209,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/context-bar.tsx",
+        "line": 80,
+        "source": "<select"
+      },
+      {
+        "file": "dashboard/components/context-bar.tsx",
+        "line": 96,
+        "source": "<select"
+      },
+      {
+        "file": "dashboard/components/context-bar.tsx",
+        "line": 112,
+        "source": "<input"
+      },
+      {
+        "file": "dashboard/components/context-bar.tsx",
+        "line": 127,
+        "source": "<select"
+      }
+    ],
+    "runtime_state": "untested in PF00; static inventory only"
+  },
+  {
+    "route": "/rankings",
+    "page": "dashboard/app/rankings/page.tsx",
+    "component_files": [
+      "dashboard/app/rankings/page.tsx",
+      "dashboard/components/ranking-boards-view.tsx"
+    ],
+    "controls": [
+      {
+        "file": "dashboard/components/ranking-boards-view.tsx",
+        "line": 278,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/ranking-boards-view.tsx",
+        "line": 286,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/ranking-boards-view.tsx",
+        "line": 317,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/ranking-boards-view.tsx",
+        "line": 330,
+        "source": "<input"
+      },
+      {
+        "file": "dashboard/components/ranking-boards-view.tsx",
+        "line": 345,
+        "source": "<select"
+      },
+      {
+        "file": "dashboard/components/ranking-boards-view.tsx",
+        "line": 363,
+        "source": "<textarea"
+      },
+      {
+        "file": "dashboard/components/ranking-boards-view.tsx",
+        "line": 374,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/ranking-boards-view.tsx",
+        "line": 381,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/ranking-boards-view.tsx",
+        "line": 438,
+        "source": "<input"
+      },
+      {
+        "file": "dashboard/components/ranking-boards-view.tsx",
+        "line": 459,
+        "source": "<select"
+      },
+      {
+        "file": "dashboard/components/ranking-boards-view.tsx",
+        "line": 471,
+        "source": "<input"
+      },
+      {
+        "file": "dashboard/components/ranking-boards-view.tsx",
+        "line": 481,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/ranking-boards-view.tsx",
+        "line": 574,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/ranking-boards-view.tsx",
+        "line": 590,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/ranking-boards-view.tsx",
+        "line": 611,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/ranking-boards-view.tsx",
+        "line": 663,
+        "source": "<input"
+      },
+      {
+        "file": "dashboard/components/ranking-boards-view.tsx",
+        "line": 742,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/ranking-boards-view.tsx",
+        "line": 811,
+        "source": "<input"
+      },
+      {
+        "file": "dashboard/components/ranking-boards-view.tsx",
+        "line": 831,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/ranking-boards-view.tsx",
+        "line": 842,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/ranking-boards-view.tsx",
+        "line": 858,
+        "source": "<button"
+      }
+    ],
+    "runtime_state": "untested in PF00; static inventory only"
+  },
+  {
+    "route": "/research/adjusted-shooting",
+    "page": "dashboard/app/research/adjusted-shooting/page.tsx",
+    "component_files": [
+      "dashboard/app/research/adjusted-shooting/page.tsx",
+      "dashboard/components/research-results-view.tsx"
+    ],
+    "controls": [
+      {
+        "file": "dashboard/components/research-results-view.tsx",
+        "line": 45,
+        "source": "{error ? <div role=\"alert\" className=\"notice\">Report unavailable: {error} <button className=\"button\" onClick={() => { setError(null); setResult(null); setRegistry(null); setRetry(v => v+1); }}>Retry reads</button></div> : !registry && <p role=\"status\">Loading registered experiments\u2026</p>}"
+      },
+      {
+        "file": "dashboard/components/research-results-view.tsx",
+        "line": 48,
+        "source": "{!error && runs.length > 0 && <label>Registered run <select value={runId} onChange={e => { setResult(null); setError(null); setRunId(e.target.value); }}>{runs.map(r => <option key={r.run_id} value={r.run_id}>{r.status} \u00b7 {r.run_id}</option>)}</select></label>}"
+      },
+      {
+        "file": "dashboard/components/research-results-view.tsx",
+        "line": 62,
+        "source": "<button className=\"button\" onClick={() => downloadResearch(`courtload-research-${result.run.run_id}.json`, result)}>Export verified report JSON</button>"
+      }
+    ],
+    "runtime_state": "untested in PF00; static inventory only"
+  },
+  {
+    "route": "/research/ask",
+    "page": "dashboard/app/research/ask/page.tsx",
+    "component_files": [
+      "dashboard/app/research/ask/page.tsx",
+      "dashboard/components/ask-courtload.tsx"
+    ],
+    "controls": [
+      {
+        "file": "dashboard/components/ask-courtload.tsx",
+        "line": 82,
+        "source": "<div className=\"conversation-row\"><h2>Ask CourtLoad</h2><button type=\"button\" className=\"button button-small\" disabled={loading} onClick={() => void reset()}>Clear conversation</button></div>"
+      },
+      {
+        "file": "dashboard/components/ask-courtload.tsx",
+        "line": 87,
+        "source": "<label>Release<input value={context.release_id ?? \"\"} placeholder=\"Resolve current release once\" onChange={e=>setContext({...context,release_id:e.target.value || undefined})} /></label>"
+      },
+      {
+        "file": "dashboard/components/ask-courtload.tsx",
+        "line": 88,
+        "source": "<label>Season<input value={context.season ?? \"\"} onChange={e=>setContext({...context,season:e.target.value || undefined})} /></label>"
+      },
+      {
+        "file": "dashboard/components/ask-courtload.tsx",
+        "line": 89,
+        "source": "<label>Phase<select value={context.phase ?? \"regular_season\"} onChange={e=>setContext({...context,phase:e.target.value})}>{[\"regular_season\",\"playoffs\",\"preseason\",\"play_in\",\"cup_final\",\"summer_league\"].map(p=><option key={p}>{p}</option>)}</select></label>"
+      },
+      {
+        "file": "dashboard/components/ask-courtload.tsx",
+        "line": 90,
+        "source": "<label>Before date (exclusive)<input type=\"date\" value={context.before_date ?? \"\"} onChange={e=>setContext({...context,before_date:e.target.value || undefined})} /></label>"
+      },
+      {
+        "file": "dashboard/components/ask-courtload.tsx",
+        "line": 91,
+        "source": "<label>Window<select value={context.window ?? \"season\"} onChange={e=>setContext({...context,window:e.target.value})}>{[\"season\",\"last_10\",\"last_5\"].map(w=><option key={w}>{w}</option>)}</select></label>"
+      },
+      {
+        "file": "dashboard/components/ask-courtload.tsx",
+        "line": 93,
+        "source": "<div className=\"conversation-row\"><label><input type=\"checkbox\" checked={manual} disabled={loading} onChange={e=>{setManual(e.target.checked);setRetry(null);}} /> Run manually without AI</label><Link href=\"/investigations\">Saved investigations</Link></div>"
+      },
+      {
+        "file": "dashboard/components/ask-courtload.tsx",
+        "line": 94,
+        "source": "{manual ? <div className=\"conversation-manual\"><label htmlFor={`${id}-operation`}>Research operation</label><select id={`${id}-operation`} value={operation} disabled={loading} onChange={e=>{setOperation(e.target.value);setArgumentsText(JSON.stringify(examples[e.target.value] ?? {},null,2));}}>{Object.keys(examples).map(name=><option key={name} value={name}>{name.replaceAll(\"_\",\" \")}</option>)}</select><p>{operations.find(o=>o.name===operation)?.description}</p><label htmlFor={`${id}-arguments`}>Operation arguments (JSON)</label><textarea id={`${id}-arguments`} rows={6} maxLength={32768} disabled={loading} value={argumentsText} onChange={e=>setArgumentsText(e.target.value)} />{operation === \"distribution\" && <label><input type=\"checkbox\" checked={includeMinutes} disabled={loading} onChange={e=>setIncludeMinutes(e.target.checked)} /> Include a minutes distribution with the same window</label>}<details><summary>Accepted arguments and definitions</summary><pre>{JSON.stringify(operations.find(o=>o.name===operation)?.parameters ?? {},null,2)}</pre></details></div> : <div className=\"conversation-prompts\">{prompts.map(prompt=><button className=\"button button-small\" disabled={loading} key={prompt} onClick={()=>{setQuestion(prompt);submit(undefined,prompt);}}>{prompt}</button>)}</div>}"
+      },
+      {
+        "file": "dashboard/components/ask-courtload.tsx",
+        "line": 95,
+        "source": "<form onSubmit={e=>{e.preventDefault();submit();}}><label htmlFor={`${id}-question`}>{latest ? \"Follow-up question\" : \"Research question\"}{manual ? \" (optional label)\" : \"\"}</label><textarea ref={input} id={`${id}-question`} rows={2} maxLength={2000} value={question} onChange={e=>setQuestion(e.target.value)} disabled={loading} /><div className=\"conversation-row\"><span>{question.length} / 2000</span><button className=\"button button-primary\" disabled={loading || (!manual && !question.trim())}>{loading ? \"Investigating\u2026\" : manual ? \"Run manual operation\" : \"Ask CourtLoad\"}</button></div></form>"
+      },
+      {
+        "file": "dashboard/components/ask-courtload.tsx",
+        "line": 96,
+        "source": "{error && <div role=\"alert\"><p>{error}</p>{retry && <button className=\"button\" disabled={loading} onClick={()=>void execute(retry)}>Retry this request</button>}</div>}"
+      },
+      {
+        "file": "dashboard/components/ask-courtload.tsx",
+        "line": 98,
+        "source": "<div aria-label=\"Conversation history\">{history.map(({message,turn})=><article key={turn.turn_id} className=\"conversation-turn\"><p><strong>You:</strong> {message}</p><p><strong>{statusLabels[turn.status]}:</strong> {turn.interpretation}</p><p className=\"conversation-context\">Release {String(turn.context.release_id)} \u00b7 {String(turn.context.season)} \u00b7 {String(turn.context.phase)} \u00b7 before {String(turn.context.before_date)} \u00b7 {String(turn.context.window)}</p>{turn.results.map(result=><ConversationResult key={result.step_id} result={result} />)}{turn === latest && <SaveOperation turn={turn} disabled={loading} />}{turn.limitations.length>0 && <ul>{turn.limitations.map((text,i)=><li key={i}>{text}</li>)}</ul>}{turn === latest && turn.status===\"clarification_required\" && <div className=\"conversation-prompts\">{turn.choices.map(choice=><button className=\"button\" key={choice.value} disabled={loading} onClick={()=>submit(choice.value)}>{choice.label ?? choice.name ?? choice.value}</button>)}{confirmedContext && <><p>Proposed: season {confirmedContext.season ?? \"resolve from release\"}, phase {confirmedContext.phase}, before {confirmedContext.before_date ?? \"the release cutoff\"}, window {confirmedContext.window}, release {confirmedContext.release_id ?? \"resolve for the requested season\"}.</p><button className=\"button\" disabled={loading} onClick={()=>void reset(confirmedContext)}>Use proposed context in a new conversation</button></>}{turn.choices.length===0 && !turn.plan?.context_changes && <p>Specify your intended metric or meaning in the follow-up, or choose a manual operation.</p>}</div>}<details><summary>Verified analytical manifest</summary><pre>{JSON.stringify(turn.manifest,null,2)}</pre></details></article>)}</div>"
+      }
+    ],
+    "runtime_state": "captured at 4 sizes"
+  },
+  {
+    "route": "/research/case-studies",
+    "page": "dashboard/app/research/case-studies/page.tsx",
+    "component_files": [
+      "dashboard/app/research/case-studies/page.tsx",
+      "dashboard/components/case-studies-view.tsx"
+    ],
+    "controls": [
+      {
+        "file": "dashboard/components/case-studies-view.tsx",
+        "line": 264,
+        "source": "<button"
+      }
+    ],
+    "runtime_state": "untested in PF00; static inventory only"
+  },
+  {
+    "route": "/research/defensive-matchups",
+    "page": "dashboard/app/research/defensive-matchups/page.tsx",
+    "component_files": [
+      "dashboard/app/research/defensive-matchups/page.tsx",
+      "dashboard/components/capability-notice.tsx"
+    ],
+    "controls": [],
+    "runtime_state": "untested in PF00; static inventory only"
+  },
+  {
+    "route": "/research/distributions",
+    "page": "dashboard/app/research/distributions/page.tsx",
+    "component_files": [
+      "dashboard/app/research/distributions/page.tsx",
+      "dashboard/components/distributions-investigation-view.tsx"
+    ],
+    "controls": [
+      {
+        "file": "dashboard/components/distributions-investigation-view.tsx",
+        "line": 301,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/distributions-investigation-view.tsx",
+        "line": 310,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/distributions-investigation-view.tsx",
+        "line": 327,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/distributions-investigation-view.tsx",
+        "line": 337,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/distributions-investigation-view.tsx",
+        "line": 347,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/distributions-investigation-view.tsx",
+        "line": 357,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/distributions-investigation-view.tsx",
+        "line": 392,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/distributions-investigation-view.tsx",
+        "line": 410,
+        "source": "<input"
+      },
+      {
+        "file": "dashboard/components/distributions-investigation-view.tsx",
+        "line": 419,
+        "source": "<button type=\"submit\" className=\"button button-secondary text-xs\">"
+      },
+      {
+        "file": "dashboard/components/distributions-investigation-view.tsx",
+        "line": 428,
+        "source": "<select"
+      },
+      {
+        "file": "dashboard/components/distributions-investigation-view.tsx",
+        "line": 450,
+        "source": "<select"
+      },
+      {
+        "file": "dashboard/components/distributions-investigation-view.tsx",
+        "line": 471,
+        "source": "<select"
+      },
+      {
+        "file": "dashboard/components/distributions-investigation-view.tsx",
+        "line": 1114,
+        "source": "<select"
+      },
+      {
+        "file": "dashboard/components/distributions-investigation-view.tsx",
+        "line": 1129,
+        "source": "<select"
+      },
+      {
+        "file": "dashboard/components/distributions-investigation-view.tsx",
+        "line": 1142,
+        "source": "<select"
+      },
+      {
+        "file": "dashboard/components/distributions-investigation-view.tsx",
+        "line": 1209,
+        "source": "<button"
+      }
+    ],
+    "runtime_state": "untested in PF00; static inventory only"
+  },
+  {
+    "route": "/research/epv",
+    "page": "dashboard/app/research/epv/page.tsx",
+    "component_files": [
+      "dashboard/app/research/epv/page.tsx",
+      "dashboard/components/capability-notice.tsx"
+    ],
+    "controls": [],
+    "runtime_state": "untested in PF00; static inventory only"
+  },
+  {
+    "route": "/research/expected-shots",
+    "page": "dashboard/app/research/expected-shots/page.tsx",
+    "component_files": [
+      "dashboard/app/research/expected-shots/page.tsx",
+      "dashboard/components/research-results-view.tsx"
+    ],
+    "controls": [
+      {
+        "file": "dashboard/components/research-results-view.tsx",
+        "line": 45,
+        "source": "{error ? <div role=\"alert\" className=\"notice\">Report unavailable: {error} <button className=\"button\" onClick={() => { setError(null); setResult(null); setRegistry(null); setRetry(v => v+1); }}>Retry reads</button></div> : !registry && <p role=\"status\">Loading registered experiments\u2026</p>}"
+      },
+      {
+        "file": "dashboard/components/research-results-view.tsx",
+        "line": 48,
+        "source": "{!error && runs.length > 0 && <label>Registered run <select value={runId} onChange={e => { setResult(null); setError(null); setRunId(e.target.value); }}>{runs.map(r => <option key={r.run_id} value={r.run_id}>{r.status} \u00b7 {r.run_id}</option>)}</select></label>}"
+      },
+      {
+        "file": "dashboard/components/research-results-view.tsx",
+        "line": 62,
+        "source": "<button className=\"button\" onClick={() => downloadResearch(`courtload-research-${result.run.run_id}.json`, result)}>Export verified report JSON</button>"
+      }
+    ],
+    "runtime_state": "untested in PF00; static inventory only"
+  },
+  {
+    "route": "/research/operation",
+    "page": "dashboard/app/research/operation/page.tsx",
+    "component_files": [
+      "dashboard/app/research/operation/page.tsx",
+      "dashboard/components/research-operation-view.tsx"
+    ],
+    "controls": [],
+    "runtime_state": "untested in PF00; static inventory only"
+  },
+  {
+    "route": "/research/rapm",
+    "page": "dashboard/app/research/rapm/page.tsx",
+    "component_files": [
+      "dashboard/app/research/rapm/page.tsx",
+      "dashboard/components/research-results-view.tsx"
+    ],
+    "controls": [
+      {
+        "file": "dashboard/components/research-results-view.tsx",
+        "line": 45,
+        "source": "{error ? <div role=\"alert\" className=\"notice\">Report unavailable: {error} <button className=\"button\" onClick={() => { setError(null); setResult(null); setRegistry(null); setRetry(v => v+1); }}>Retry reads</button></div> : !registry && <p role=\"status\">Loading registered experiments\u2026</p>}"
+      },
+      {
+        "file": "dashboard/components/research-results-view.tsx",
+        "line": 48,
+        "source": "{!error && runs.length > 0 && <label>Registered run <select value={runId} onChange={e => { setResult(null); setError(null); setRunId(e.target.value); }}>{runs.map(r => <option key={r.run_id} value={r.run_id}>{r.status} \u00b7 {r.run_id}</option>)}</select></label>}"
+      },
+      {
+        "file": "dashboard/components/research-results-view.tsx",
+        "line": 62,
+        "source": "<button className=\"button\" onClick={() => downloadResearch(`courtload-research-${result.run.run_id}.json`, result)}>Export verified report JSON</button>"
+      }
+    ],
+    "runtime_state": "untested in PF00; static inventory only"
+  },
+  {
+    "route": "/research/similarity",
+    "page": "dashboard/app/research/similarity/page.tsx",
+    "component_files": [
+      "dashboard/app/research/similarity/page.tsx",
+      "dashboard/components/similarity-investigation-view.tsx"
+    ],
+    "controls": [
+      {
+        "file": "dashboard/components/similarity-investigation-view.tsx",
+        "line": 150,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/similarity-investigation-view.tsx",
+        "line": 184,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/similarity-investigation-view.tsx",
+        "line": 202,
+        "source": "<input"
+      },
+      {
+        "file": "dashboard/components/similarity-investigation-view.tsx",
+        "line": 211,
+        "source": "<button type=\"submit\" className=\"button button-secondary text-xs\">"
+      },
+      {
+        "file": "dashboard/components/similarity-investigation-view.tsx",
+        "line": 220,
+        "source": "<select"
+      },
+      {
+        "file": "dashboard/components/similarity-investigation-view.tsx",
+        "line": 238,
+        "source": "<select"
+      },
+      {
+        "file": "dashboard/components/similarity-investigation-view.tsx",
+        "line": 258,
+        "source": "<select"
+      },
+      {
+        "file": "dashboard/components/similarity-investigation-view.tsx",
+        "line": 274,
+        "source": "<select"
+      },
+      {
+        "file": "dashboard/components/similarity-investigation-view.tsx",
+        "line": 290,
+        "source": "<select"
+      },
+      {
+        "file": "dashboard/components/similarity-investigation-view.tsx",
+        "line": 487,
+        "source": "<button"
+      }
+    ],
+    "runtime_state": "untested in PF00; static inventory only"
+  },
+  {
+    "route": "/research/trends",
+    "page": "dashboard/app/research/trends/page.tsx",
+    "component_files": [
+      "dashboard/app/research/trends/page.tsx",
+      "dashboard/components/trends-investigation-view.tsx"
+    ],
+    "controls": [
+      {
+        "file": "dashboard/components/trends-investigation-view.tsx",
+        "line": 241,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/trends-investigation-view.tsx",
+        "line": 250,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/trends-investigation-view.tsx",
+        "line": 267,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/trends-investigation-view.tsx",
+        "line": 274,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/trends-investigation-view.tsx",
+        "line": 305,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/trends-investigation-view.tsx",
+        "line": 323,
+        "source": "<input"
+      },
+      {
+        "file": "dashboard/components/trends-investigation-view.tsx",
+        "line": 332,
+        "source": "<button type=\"submit\" className=\"button button-secondary text-xs\">"
+      },
+      {
+        "file": "dashboard/components/trends-investigation-view.tsx",
+        "line": 341,
+        "source": "<select"
+      },
+      {
+        "file": "dashboard/components/trends-investigation-view.tsx",
+        "line": 361,
+        "source": "<select"
+      },
+      {
+        "file": "dashboard/components/trends-investigation-view.tsx",
+        "line": 380,
+        "source": "<select"
+      },
+      {
+        "file": "dashboard/components/trends-investigation-view.tsx",
+        "line": 402,
+        "source": "<input"
+      },
+      {
+        "file": "dashboard/components/trends-investigation-view.tsx",
+        "line": 409,
+        "source": "<input"
+      },
+      {
+        "file": "dashboard/components/trends-investigation-view.tsx",
+        "line": 421,
+        "source": "<input"
+      },
+      {
+        "file": "dashboard/components/trends-investigation-view.tsx",
+        "line": 428,
+        "source": "<input"
+      },
+      {
+        "file": "dashboard/components/trends-investigation-view.tsx",
+        "line": 442,
+        "source": "<select"
+      },
+      {
+        "file": "dashboard/components/trends-investigation-view.tsx",
+        "line": 747,
+        "source": "<select"
+      },
+      {
+        "file": "dashboard/components/trends-investigation-view.tsx",
+        "line": 763,
+        "source": "<select"
+      },
+      {
+        "file": "dashboard/components/trends-investigation-view.tsx",
+        "line": 776,
+        "source": "<select"
+      },
+      {
+        "file": "dashboard/components/trends-investigation-view.tsx",
+        "line": 883,
+        "source": "<button"
+      }
+    ],
+    "runtime_state": "untested in PF00; static inventory only"
+  },
+  {
+    "route": "/roster-shapes",
+    "page": "dashboard/app/roster-shapes/page.tsx",
+    "component_files": [
+      "dashboard/app/roster-shapes/page.tsx",
+      "dashboard/components/roster-allocation-view.tsx"
+    ],
+    "controls": [
+      {
+        "file": "dashboard/components/roster-allocation-view.tsx",
+        "line": 21,
+        "source": "<label>Team ID<input required value={team} onChange={e => setTeam(e.target.value)} /></label><label>Season<input required value={season} onChange={e => setSeason(e.target.value)} /></label>"
+      },
+      {
+        "file": "dashboard/components/roster-allocation-view.tsx",
+        "line": 22,
+        "source": "<label>Phase<select value={phase} onChange={e => setPhase(e.target.value)}><option value=\"regular_season\">Regular season</option><option value=\"playoffs\">Postseason</option><option value=\"preseason\">Preseason</option></select></label>"
+      },
+      {
+        "file": "dashboard/components/roster-allocation-view.tsx",
+        "line": 23,
+        "source": "<label>Exclusive cutoff<input type=\"date\" required value={cutoff} onChange={e => setCutoff(e.target.value)} /></label><label>Release ID (optional)<input value={release} onChange={e => setRelease(e.target.value)} /></label><button className=\"button\" disabled={loading}>Load participation</button>"
+      },
+      {
+        "file": "dashboard/components/roster-allocation-view.tsx",
+        "line": 27,
+        "source": "<label>Allocation basis <select value={mode} onChange={e => setMode(e.target.value)}><option value=\"observed\">Observed total minutes</option><option value=\"projected\">User-projected minutes per game</option></select></label>"
+      },
+      {
+        "file": "dashboard/components/roster-allocation-view.tsx",
+        "line": 31,
+        "source": "<div className=\"table-wrapper\" role=\"region\" aria-label=\"Player allocation inputs\" tabIndex={0}><table className=\"data-table\"><thead><tr><th>Player</th><th>Observed games</th><th>Observed minutes</th><th>User position</th><th>Projected minutes/game</th></tr></thead><tbody>{allocations.map(row => <tr key={row.player_id}><th><Link href={`/players/${row.player_id}`}>{row.player_name}</Link></th><td>{row.games_played}</td><td>{row.total_minutes ?? \"\u2014\"}</td><td><select aria-label={`Position for ${row.player_name}`} value={row.allocation_position} onChange={e => setPositions({...positions,[row.player_id]:e.target.value})}>{[\"Unassigned\",\"PG\",\"SG\",\"SF\",\"PF\",\"C\"].map(p => <option key={p}>{p}</option>)}</select></td><td><input aria-label={`Projected minutes for ${row.player_name}`} type=\"number\" min=\"0\" step=\"0.1\" disabled={mode !== \"projected\"} value={minutes[row.player_id] ?? \"\"} onChange={e => setMinutes({...minutes,[row.player_id]:e.target.value})} /></td></tr>)}</tbody></table></div>"
+      },
+      {
+        "file": "dashboard/components/roster-allocation-view.tsx",
+        "line": 33,
+        "source": "<button className=\"button\" disabled={invalid || !rows.length} onClick={() => downloadResearch(\"courtload-roster-allocation.json\",{version:\"roster-minute-allocation-v1\",context:data.context,team:data.team,source:\"team-detail-player-game-boxes\",basis:mode,position_source:\"user_assigned\",units:mode === \"observed\" ? \"total_team_stint_minutes\" : \"projected_minutes_per_game\",allocations,warnings:data.warnings})}>Export allocation inputs JSON</button>"
+      }
+    ],
+    "runtime_state": "untested in PF00; static inventory only"
+  },
+  {
+    "route": "/schedule",
+    "page": "dashboard/app/schedule/page.tsx",
+    "component_files": [
+      "dashboard/app/schedule/page.tsx",
+      "dashboard/components/data-badge.tsx",
+      "dashboard/components/schedule-grid.tsx"
+    ],
+    "controls": [
+      {
+        "file": "dashboard/app/schedule/page.tsx",
+        "line": 34,
+        "source": "<input defaultValue={start} name=\"start\" type=\"date\" />"
+      },
+      {
+        "file": "dashboard/app/schedule/page.tsx",
+        "line": 36,
+        "source": "<button className=\"button button-dark\" type=\"submit\">Load week</button>"
+      }
+    ],
+    "runtime_state": "untested in PF00; static inventory only"
+  },
+  {
+    "route": "/settings",
+    "page": "dashboard/app/settings/page.tsx",
+    "component_files": [
+      "dashboard/app/settings/page.tsx",
+      "dashboard/components/install-interface.tsx",
+      "dashboard/components/workbench-portrait-settings.tsx"
+    ],
+    "controls": [
+      {
+        "file": "dashboard/components/workbench-portrait-settings.tsx",
+        "line": 46,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/install-interface.tsx",
+        "line": 18,
+        "source": "return <section className=\"panel\"><h2>Install CourtLoad</h2><p role=\"status\">{installed ? \"Running as a standalone app\" : \"Local browser interface\"}{message ? ` \u00b7 ${message}` : \"\"}</p>{prompt && !installed && <button className=\"button\" onClick={()=>void install()}>Install local app</button>}<p>On supported browsers, use Install app or Add to Home Screen in the browser menu. Installation requires a secure origin (HTTPS or localhost); availability depends on your browser.</p><p>The icon and app metadata are local assets. Analytical pages, saved evidence, Live and exports require the local API and database. No service worker or offline write synchronization is registered. Browser static-asset caching does not establish current source coverage; analytical fetches use no-store. Inspect Data status for freshness.</p></section>;"
+      }
+    ],
+    "runtime_state": "captured at 4 sizes"
+  },
+  {
+    "route": "/shot-aftermath",
+    "page": "dashboard/app/shot-aftermath/page.tsx",
+    "component_files": [
+      "dashboard/app/shot-aftermath/page.tsx",
+      "dashboard/components/shooting-view.tsx"
+    ],
+    "controls": [
+      {
+        "file": "dashboard/components/shooting-view.tsx",
+        "line": 129,
+        "source": "{initialOperation === \"shot-profile-peers\" && <div className=\"floor-actions\" role=\"group\" aria-label=\"Shooting tabs\">{([\"shot-profile\", \"shot-profile-peers\"] as const).map(op => <button type=\"button\" aria-pressed={operation === op} key={op} onClick={() => { active.current?.abort(); setBusy(false); setOperation(op); setResult(null); setError(\"\"); }}>{titles[op]}</button>)}</div>}"
+      },
+      {
+        "file": "dashboard/components/shooting-view.tsx",
+        "line": 131,
+        "source": "<label>Player name search<input value={query} onChange={e => setQuery(e.target.value)} autoComplete=\"off\" /></label>"
+      },
+      {
+        "file": "dashboard/components/shooting-view.tsx",
+        "line": 132,
+        "source": "{operation === \"matchups\" && <label>Use search result for<select value={target} onChange={e => setTarget(e.target.value)}><option value=\"player\">Offensive player</option><option value=\"defender\">Defender</option></select></label>}"
+      },
+      {
+        "file": "dashboard/components/shooting-view.tsx",
+        "line": 133,
+        "source": "<label>{operation === \"matchups\" ? \"Offensive player ID\" : \"Player ID\"}<input value={player} onChange={e => setPlayer(e.target.value)} required /></label>"
+      },
+      {
+        "file": "dashboard/components/shooting-view.tsx",
+        "line": 134,
+        "source": "{operation === \"matchups\" && <label>Defender ID (optional)<input value={defender} onChange={e => setDefender(e.target.value)} /></label>}"
+      },
+      {
+        "file": "dashboard/components/shooting-view.tsx",
+        "line": 135,
+        "source": "<label>Release ID<input value={release} onChange={e => setRelease(e.target.value)} placeholder=\"Resolve published release\" /></label>"
+      },
+      {
+        "file": "dashboard/components/shooting-view.tsx",
+        "line": 136,
+        "source": "<label>Season<input value={season} onChange={e => setSeason(e.target.value)} placeholder=\"Resolve default season\" /></label>"
+      },
+      {
+        "file": "dashboard/components/shooting-view.tsx",
+        "line": 137,
+        "source": "<label>Phase<select value={phase} onChange={e => setPhase(e.target.value)}><option value=\"\">Resolve default phase</option>{[\"preseason\", \"regular_season\", \"play_in\", \"playoffs\", \"cup_final\", \"summer_league\"].map(p => <option key={p} value={p}>{p}</option>)}</select></label>"
+      },
+      {
+        "file": "dashboard/components/shooting-view.tsx",
+        "line": 138,
+        "source": "<label>Lower date (inclusive)<input type=\"date\" value={lower} onChange={e => setLower(e.target.value)} /></label>"
+      },
+      {
+        "file": "dashboard/components/shooting-view.tsx",
+        "line": 139,
+        "source": "<label>Before date (exclusive)<input type=\"date\" value={before} onChange={e => setBefore(e.target.value)} /></label>"
+      },
+      {
+        "file": "dashboard/components/shooting-view.tsx",
+        "line": 140,
+        "source": "<label>Minimum attempts<input type=\"number\" min={1} max={10000} step={1} value={attempts} onChange={e => setAttempts(e.target.value)} /></label>"
+      },
+      {
+        "file": "dashboard/components/shooting-view.tsx",
+        "line": 141,
+        "source": "<label>Minimum games<input type=\"number\" min={1} max={100} step={1} value={games} onChange={e => setGames(e.target.value)} /></label>"
+      },
+      {
+        "file": "dashboard/components/shooting-view.tsx",
+        "line": 142,
+        "source": "{operation === \"shot-profile-peers\" && <label>Peer limit<input type=\"number\" min={1} max={25} value={limit} onChange={e => setLimit(e.target.value)} /></label>}"
+      },
+      {
+        "file": "dashboard/components/shooting-view.tsx",
+        "line": 144,
+        "source": "{matches.length > 0 && <ul aria-label=\"Player search results\">{matches.map(item => <li key={item.canonical_id}><button type=\"button\" onClick={() => { if (target === \"defender\" && operation === \"matchups\") setDefender(item.canonical_id); else setPlayer(item.canonical_id); setQuery(\"\"); setMatches([]); }}>{item.display_name} ({item.canonical_id})</button></li>)}</ul>}"
+      },
+      {
+        "file": "dashboard/components/shooting-view.tsx",
+        "line": 147,
+        "source": "<div className=\"floor-actions\"><button type=\"submit\" disabled={busy}>{busy ? \"Loading\u2026\" : \"Run shooting analysis\"}</button>{busy && <button type=\"button\" onClick={() => { active.current?.abort(); setBusy(false); }}>Cancel</button>}</div>"
+      },
+      {
+        "file": "dashboard/components/shooting-view.tsx",
+        "line": 156,
+        "source": "<div className=\"floor-actions\"><button onClick={() => download(JSON.stringify({ schema: \"courtload-shooting-evidence-v1\", result, display_filters: { zone, team, shot_page: shotPage + 1, anchor_page: anchorPage + 1 } }, null, 2), \"shooting-evidence.json\", \"application/json\")}>Save evidence JSON</button><button onClick={() => download(shootingCsv(result), \"shooting-evidence.csv\", \"text/csv\")}>Export evidence CSV</button><a href={shootingUrl(path, result.operation, resolvedShooting(result))}>Reopen this resolved query</a></div>"
+      },
+      {
+        "file": "dashboard/components/shooting-view.tsx",
+        "line": 160,
+        "source": "<h3>Shot court and fact table</h3><div className=\"floor-controls\"><label>Display zone<select value={zone} onChange={e => { setZone(e.target.value); setShotPage(0); setSelectedShot(null); }}><option value=\"\">All zones</option>{result.profile?.zones.map(z => <option key={z.zone}>{z.zone}</option>)}</select></label><label>Display team<select value={team} onChange={e => { setTeam(e.target.value); setShotPage(0); setSelectedShot(null); }}><option value=\"\">All observed teams</option>{Array.from(new Set(result.shots.map(s => s.team_id))).map(t => <option key={t}>{t}</option>)}</select></label></div>"
+      },
+      {
+        "file": "dashboard/components/shooting-view.tsx",
+        "line": 165,
+        "source": "</svg><button onClick={exportCourt}>Export court SVG</button>"
+      },
+      {
+        "file": "dashboard/components/shooting-view.tsx",
+        "line": 166,
+        "source": "<div className=\"floor-scroll\" tabIndex={0} role=\"region\" aria-label=\"Shot facts\"><table className=\"data-table\"><caption>Displayed shot facts \u00b7 {pageShots.length} of {shots.length} filtered attempts</caption><thead><tr>{[\"Game / date\", \"Team\", \"Period / clock seconds\", \"Zone\", \"x feet\", \"y feet\", \"Made\", \"Points\", \"Evidence\"].map(h => <th scope=\"col\" key={h}>{h}</th>)}</tr></thead><tbody>{pageShots.map(({ shot: s, index }) => <tr key={index}><th scope=\"row\">{s.game_id} / {s.game_date}</th><td>{s.team_id}</td><td>{s.period} / {n(s.seconds_remaining)}</td><td>{s.zone}</td><td>{n(s.x_feet)}</td><td>{n(s.y_feet)}</td><td>{s.made ? \"Yes\" : \"No\"}</td><td>{s.points}</td><td><button onClick={() => setSelectedShot(index)}>Inspect shot {index+1}</button></td></tr>)}</tbody></table></div>"
+      },
+      {
+        "file": "dashboard/components/shooting-view.tsx",
+        "line": 167,
+        "source": "<div className=\"floor-actions\"><button disabled={shotPage === 0} onClick={() => { setShotPage(shotPage-1); setSelectedShot(null); }}>Previous shots</button><span>Page {shotPage+1} / {Math.max(1, Math.ceil(shots.length/100))} \u00b7 100 facts per page</span><button disabled={(shotPage+1)*100 >= shots.length} onClick={() => { setShotPage(shotPage+1); setSelectedShot(null); }}>Next shots</button></div>"
+      },
+      {
+        "file": "dashboard/components/shooting-view.tsx",
+        "line": 170,
+        "source": "{result.operation === \"shot-profile-peers\" && <><h3>Located-zone peers</h3><p>Euclidean distance over seven known-zone attempt-share dimensions; Unknown excluded from the vector. Lower distance means similar location distribution. Efficiency is shown separately. No fitted model or player-quality ranking.</p>{!result.peers.length && <p>No eligible peers for the focal sample and gates.</p>}<div className=\"floor-scroll\" tabIndex={0} role=\"region\" aria-label=\"Shot peers\"><table className=\"data-table\"><caption>Eligible peers \u00b7 distance then canonical ID</caption><thead><tr>{[\"Player\", \"Distance\", \"Located\", \"Unknown\", \"Games\", \"Compare zones\"].map(h => <th scope=\"col\" key={h}>{h}</th>)}</tr></thead><tbody>{result.peers.map(p => <tr key={p.profile.player_id}><th scope=\"row\"><a href={shootingUrl(path, result.operation, { ...resolvedShooting(result), player_id: p.profile.player_id })}>{p.profile.player_id}</a></th><td>{p.distance}</td><td>{p.profile.located_attempts}</td><td>{p.profile.unknown_attempts}</td><td>{p.profile.games}</td><td><button onClick={() => setSelectedPeer(p.profile.player_id)}>Compare {p.profile.player_id}</button></td></tr>)}</tbody></table></div>{peer && <><h4>Peer zone comparison \u00b7 same resolved scope</h4><Zones profile={peer.profile} /></>}</>}"
+      },
+      {
+        "file": "dashboard/components/shooting-view.tsx",
+        "line": 173,
+        "source": "<details><summary>Sequence evidence \u00b7 {result.anchors.length} anchors / unknown candidates</summary><div className=\"floor-scroll\" tabIndex={0} role=\"region\" aria-label=\"Sequence evidence\"><table className=\"data-table\"><caption>Returned anchor evidence; unknown first-chance membership remains null</caption><thead><tr>{[\"Game / possession\", \"Branch\", \"Shot points\", \"First chance\", \"Continued\", \"Next opponent\", \"Next status\", \"Reason\"].map(h => <th key={h} scope=\"col\">{h}</th>)}</tr></thead><tbody>{pageAnchors.map((a,i) => <tr key={i}><th scope=\"row\">{a.game_id} / {n(a.possession_number)}</th><td>{a.branch}</td><td>{a.shot_points}</td><td>{n(a.first_chance_points)}</td><td>{n(a.continued_points)}</td><td>{n(a.next_opponent_points)}</td><td>{a.next_status}</td><td>{a.reason || \"\u2014\"}</td></tr>)}</tbody></table></div><div className=\"floor-actions\"><button disabled={anchorPage === 0} onClick={() => setAnchorPage(anchorPage-1)}>Previous anchors</button><span>Page {anchorPage+1} / {Math.max(1, Math.ceil(result.anchors.length/100))} \u00b7 100 anchors per page</span><button disabled={(anchorPage+1)*100 >= result.anchors.length} onClick={() => setAnchorPage(anchorPage+1)}>Next anchors</button></div><p>Video replay unavailable without admitted event/clip identity mapping.</p></details>"
+      }
+    ],
+    "runtime_state": "untested in PF00; static inventory only"
+  },
+  {
+    "route": "/shot-profile-twin",
+    "page": "dashboard/app/shot-profile-twin/page.tsx",
+    "component_files": [
+      "dashboard/app/shot-profile-twin/page.tsx",
+      "dashboard/components/shooting-view.tsx"
+    ],
+    "controls": [
+      {
+        "file": "dashboard/components/shooting-view.tsx",
+        "line": 129,
+        "source": "{initialOperation === \"shot-profile-peers\" && <div className=\"floor-actions\" role=\"group\" aria-label=\"Shooting tabs\">{([\"shot-profile\", \"shot-profile-peers\"] as const).map(op => <button type=\"button\" aria-pressed={operation === op} key={op} onClick={() => { active.current?.abort(); setBusy(false); setOperation(op); setResult(null); setError(\"\"); }}>{titles[op]}</button>)}</div>}"
+      },
+      {
+        "file": "dashboard/components/shooting-view.tsx",
+        "line": 131,
+        "source": "<label>Player name search<input value={query} onChange={e => setQuery(e.target.value)} autoComplete=\"off\" /></label>"
+      },
+      {
+        "file": "dashboard/components/shooting-view.tsx",
+        "line": 132,
+        "source": "{operation === \"matchups\" && <label>Use search result for<select value={target} onChange={e => setTarget(e.target.value)}><option value=\"player\">Offensive player</option><option value=\"defender\">Defender</option></select></label>}"
+      },
+      {
+        "file": "dashboard/components/shooting-view.tsx",
+        "line": 133,
+        "source": "<label>{operation === \"matchups\" ? \"Offensive player ID\" : \"Player ID\"}<input value={player} onChange={e => setPlayer(e.target.value)} required /></label>"
+      },
+      {
+        "file": "dashboard/components/shooting-view.tsx",
+        "line": 134,
+        "source": "{operation === \"matchups\" && <label>Defender ID (optional)<input value={defender} onChange={e => setDefender(e.target.value)} /></label>}"
+      },
+      {
+        "file": "dashboard/components/shooting-view.tsx",
+        "line": 135,
+        "source": "<label>Release ID<input value={release} onChange={e => setRelease(e.target.value)} placeholder=\"Resolve published release\" /></label>"
+      },
+      {
+        "file": "dashboard/components/shooting-view.tsx",
+        "line": 136,
+        "source": "<label>Season<input value={season} onChange={e => setSeason(e.target.value)} placeholder=\"Resolve default season\" /></label>"
+      },
+      {
+        "file": "dashboard/components/shooting-view.tsx",
+        "line": 137,
+        "source": "<label>Phase<select value={phase} onChange={e => setPhase(e.target.value)}><option value=\"\">Resolve default phase</option>{[\"preseason\", \"regular_season\", \"play_in\", \"playoffs\", \"cup_final\", \"summer_league\"].map(p => <option key={p} value={p}>{p}</option>)}</select></label>"
+      },
+      {
+        "file": "dashboard/components/shooting-view.tsx",
+        "line": 138,
+        "source": "<label>Lower date (inclusive)<input type=\"date\" value={lower} onChange={e => setLower(e.target.value)} /></label>"
+      },
+      {
+        "file": "dashboard/components/shooting-view.tsx",
+        "line": 139,
+        "source": "<label>Before date (exclusive)<input type=\"date\" value={before} onChange={e => setBefore(e.target.value)} /></label>"
+      },
+      {
+        "file": "dashboard/components/shooting-view.tsx",
+        "line": 140,
+        "source": "<label>Minimum attempts<input type=\"number\" min={1} max={10000} step={1} value={attempts} onChange={e => setAttempts(e.target.value)} /></label>"
+      },
+      {
+        "file": "dashboard/components/shooting-view.tsx",
+        "line": 141,
+        "source": "<label>Minimum games<input type=\"number\" min={1} max={100} step={1} value={games} onChange={e => setGames(e.target.value)} /></label>"
+      },
+      {
+        "file": "dashboard/components/shooting-view.tsx",
+        "line": 142,
+        "source": "{operation === \"shot-profile-peers\" && <label>Peer limit<input type=\"number\" min={1} max={25} value={limit} onChange={e => setLimit(e.target.value)} /></label>}"
+      },
+      {
+        "file": "dashboard/components/shooting-view.tsx",
+        "line": 144,
+        "source": "{matches.length > 0 && <ul aria-label=\"Player search results\">{matches.map(item => <li key={item.canonical_id}><button type=\"button\" onClick={() => { if (target === \"defender\" && operation === \"matchups\") setDefender(item.canonical_id); else setPlayer(item.canonical_id); setQuery(\"\"); setMatches([]); }}>{item.display_name} ({item.canonical_id})</button></li>)}</ul>}"
+      },
+      {
+        "file": "dashboard/components/shooting-view.tsx",
+        "line": 147,
+        "source": "<div className=\"floor-actions\"><button type=\"submit\" disabled={busy}>{busy ? \"Loading\u2026\" : \"Run shooting analysis\"}</button>{busy && <button type=\"button\" onClick={() => { active.current?.abort(); setBusy(false); }}>Cancel</button>}</div>"
+      },
+      {
+        "file": "dashboard/components/shooting-view.tsx",
+        "line": 156,
+        "source": "<div className=\"floor-actions\"><button onClick={() => download(JSON.stringify({ schema: \"courtload-shooting-evidence-v1\", result, display_filters: { zone, team, shot_page: shotPage + 1, anchor_page: anchorPage + 1 } }, null, 2), \"shooting-evidence.json\", \"application/json\")}>Save evidence JSON</button><button onClick={() => download(shootingCsv(result), \"shooting-evidence.csv\", \"text/csv\")}>Export evidence CSV</button><a href={shootingUrl(path, result.operation, resolvedShooting(result))}>Reopen this resolved query</a></div>"
+      },
+      {
+        "file": "dashboard/components/shooting-view.tsx",
+        "line": 160,
+        "source": "<h3>Shot court and fact table</h3><div className=\"floor-controls\"><label>Display zone<select value={zone} onChange={e => { setZone(e.target.value); setShotPage(0); setSelectedShot(null); }}><option value=\"\">All zones</option>{result.profile?.zones.map(z => <option key={z.zone}>{z.zone}</option>)}</select></label><label>Display team<select value={team} onChange={e => { setTeam(e.target.value); setShotPage(0); setSelectedShot(null); }}><option value=\"\">All observed teams</option>{Array.from(new Set(result.shots.map(s => s.team_id))).map(t => <option key={t}>{t}</option>)}</select></label></div>"
+      },
+      {
+        "file": "dashboard/components/shooting-view.tsx",
+        "line": 165,
+        "source": "</svg><button onClick={exportCourt}>Export court SVG</button>"
+      },
+      {
+        "file": "dashboard/components/shooting-view.tsx",
+        "line": 166,
+        "source": "<div className=\"floor-scroll\" tabIndex={0} role=\"region\" aria-label=\"Shot facts\"><table className=\"data-table\"><caption>Displayed shot facts \u00b7 {pageShots.length} of {shots.length} filtered attempts</caption><thead><tr>{[\"Game / date\", \"Team\", \"Period / clock seconds\", \"Zone\", \"x feet\", \"y feet\", \"Made\", \"Points\", \"Evidence\"].map(h => <th scope=\"col\" key={h}>{h}</th>)}</tr></thead><tbody>{pageShots.map(({ shot: s, index }) => <tr key={index}><th scope=\"row\">{s.game_id} / {s.game_date}</th><td>{s.team_id}</td><td>{s.period} / {n(s.seconds_remaining)}</td><td>{s.zone}</td><td>{n(s.x_feet)}</td><td>{n(s.y_feet)}</td><td>{s.made ? \"Yes\" : \"No\"}</td><td>{s.points}</td><td><button onClick={() => setSelectedShot(index)}>Inspect shot {index+1}</button></td></tr>)}</tbody></table></div>"
+      },
+      {
+        "file": "dashboard/components/shooting-view.tsx",
+        "line": 167,
+        "source": "<div className=\"floor-actions\"><button disabled={shotPage === 0} onClick={() => { setShotPage(shotPage-1); setSelectedShot(null); }}>Previous shots</button><span>Page {shotPage+1} / {Math.max(1, Math.ceil(shots.length/100))} \u00b7 100 facts per page</span><button disabled={(shotPage+1)*100 >= shots.length} onClick={() => { setShotPage(shotPage+1); setSelectedShot(null); }}>Next shots</button></div>"
+      },
+      {
+        "file": "dashboard/components/shooting-view.tsx",
+        "line": 170,
+        "source": "{result.operation === \"shot-profile-peers\" && <><h3>Located-zone peers</h3><p>Euclidean distance over seven known-zone attempt-share dimensions; Unknown excluded from the vector. Lower distance means similar location distribution. Efficiency is shown separately. No fitted model or player-quality ranking.</p>{!result.peers.length && <p>No eligible peers for the focal sample and gates.</p>}<div className=\"floor-scroll\" tabIndex={0} role=\"region\" aria-label=\"Shot peers\"><table className=\"data-table\"><caption>Eligible peers \u00b7 distance then canonical ID</caption><thead><tr>{[\"Player\", \"Distance\", \"Located\", \"Unknown\", \"Games\", \"Compare zones\"].map(h => <th scope=\"col\" key={h}>{h}</th>)}</tr></thead><tbody>{result.peers.map(p => <tr key={p.profile.player_id}><th scope=\"row\"><a href={shootingUrl(path, result.operation, { ...resolvedShooting(result), player_id: p.profile.player_id })}>{p.profile.player_id}</a></th><td>{p.distance}</td><td>{p.profile.located_attempts}</td><td>{p.profile.unknown_attempts}</td><td>{p.profile.games}</td><td><button onClick={() => setSelectedPeer(p.profile.player_id)}>Compare {p.profile.player_id}</button></td></tr>)}</tbody></table></div>{peer && <><h4>Peer zone comparison \u00b7 same resolved scope</h4><Zones profile={peer.profile} /></>}</>}"
+      },
+      {
+        "file": "dashboard/components/shooting-view.tsx",
+        "line": 173,
+        "source": "<details><summary>Sequence evidence \u00b7 {result.anchors.length} anchors / unknown candidates</summary><div className=\"floor-scroll\" tabIndex={0} role=\"region\" aria-label=\"Sequence evidence\"><table className=\"data-table\"><caption>Returned anchor evidence; unknown first-chance membership remains null</caption><thead><tr>{[\"Game / possession\", \"Branch\", \"Shot points\", \"First chance\", \"Continued\", \"Next opponent\", \"Next status\", \"Reason\"].map(h => <th key={h} scope=\"col\">{h}</th>)}</tr></thead><tbody>{pageAnchors.map((a,i) => <tr key={i}><th scope=\"row\">{a.game_id} / {n(a.possession_number)}</th><td>{a.branch}</td><td>{a.shot_points}</td><td>{n(a.first_chance_points)}</td><td>{n(a.continued_points)}</td><td>{n(a.next_opponent_points)}</td><td>{a.next_status}</td><td>{a.reason || \"\u2014\"}</td></tr>)}</tbody></table></div><div className=\"floor-actions\"><button disabled={anchorPage === 0} onClick={() => setAnchorPage(anchorPage-1)}>Previous anchors</button><span>Page {anchorPage+1} / {Math.max(1, Math.ceil(result.anchors.length/100))} \u00b7 100 anchors per page</span><button disabled={(anchorPage+1)*100 >= result.anchors.length} onClick={() => setAnchorPage(anchorPage+1)}>Next anchors</button></div><p>Video replay unavailable without admitted event/clip identity mapping.</p></details>"
+      }
+    ],
+    "runtime_state": "untested in PF00; static inventory only"
+  },
+  {
+    "route": "/showcase",
+    "page": "dashboard/app/showcase/page.tsx",
+    "component_files": [
+      "dashboard/app/showcase/page.tsx",
+      "dashboard/components/context-bar.tsx",
+      "dashboard/components/player-showcase-view.tsx"
+    ],
+    "controls": [
+      {
+        "file": "dashboard/app/showcase/page.tsx",
+        "line": 73,
+        "source": "<ContextBar"
+      },
+      {
+        "file": "dashboard/components/player-showcase-view.tsx",
+        "line": 156,
+        "source": "<GlobalLookup"
+      },
+      {
+        "file": "dashboard/components/player-showcase-view.tsx",
+        "line": 178,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/player-showcase-view.tsx",
+        "line": 192,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/player-showcase-view.tsx",
+        "line": 202,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/player-showcase-view.tsx",
+        "line": 212,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/player-showcase-view.tsx",
+        "line": 229,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/player-showcase-view.tsx",
+        "line": 239,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/player-showcase-view.tsx",
+        "line": 406,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/player-showcase-view.tsx",
+        "line": 415,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/player-showcase-view.tsx",
+        "line": 459,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/context-bar.tsx",
+        "line": 80,
+        "source": "<select"
+      },
+      {
+        "file": "dashboard/components/context-bar.tsx",
+        "line": 96,
+        "source": "<select"
+      },
+      {
+        "file": "dashboard/components/context-bar.tsx",
+        "line": 112,
+        "source": "<input"
+      },
+      {
+        "file": "dashboard/components/context-bar.tsx",
+        "line": 127,
+        "source": "<select"
+      }
+    ],
+    "runtime_state": "untested in PF00; static inventory only"
+  },
+  {
+    "route": "/six-factor-rapm",
+    "page": "dashboard/app/six-factor-rapm/page.tsx",
+    "component_files": [
+      "dashboard/app/six-factor-rapm/page.tsx",
+      "dashboard/components/research-results-view.tsx"
+    ],
+    "controls": [
+      {
+        "file": "dashboard/components/research-results-view.tsx",
+        "line": 45,
+        "source": "{error ? <div role=\"alert\" className=\"notice\">Report unavailable: {error} <button className=\"button\" onClick={() => { setError(null); setResult(null); setRegistry(null); setRetry(v => v+1); }}>Retry reads</button></div> : !registry && <p role=\"status\">Loading registered experiments\u2026</p>}"
+      },
+      {
+        "file": "dashboard/components/research-results-view.tsx",
+        "line": 48,
+        "source": "{!error && runs.length > 0 && <label>Registered run <select value={runId} onChange={e => { setResult(null); setError(null); setRunId(e.target.value); }}>{runs.map(r => <option key={r.run_id} value={r.run_id}>{r.status} \u00b7 {r.run_id}</option>)}</select></label>}"
+      },
+      {
+        "file": "dashboard/components/research-results-view.tsx",
+        "line": 62,
+        "source": "<button className=\"button\" onClick={() => downloadResearch(`courtload-research-${result.run.run_id}.json`, result)}>Export verified report JSON</button>"
+      }
+    ],
+    "runtime_state": "untested in PF00; static inventory only"
+  },
+  {
+    "route": "/stat-line-shift",
+    "page": "dashboard/app/stat-line-shift/page.tsx",
+    "component_files": [
+      "dashboard/app/stat-line-shift/page.tsx",
+      "dashboard/components/shared-floor-view.tsx"
+    ],
+    "controls": [
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 114,
+        "source": "{initialOperation === \"wowy\" && <label>Operation<select value={operation} onChange={e => { setOperation(e.target.value as FloorOperation); setMode(\"team\"); }}><option value=\"wowy\">WOWY</option><option value=\"on-off\">On/off</option></select></label>}"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 115,
+        "source": "{operation === \"wowy\" && <label>View<select value={mode} onChange={e => setMode(e.target.value as typeof mode)}><option value=\"team\">Team sets</option><option value=\"leaders\">Selected-player leaders (max 5)</option><option value=\"unit\">2\u20135-player unit</option></select></label>}"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 116,
+        "source": "<label>Team<select value={team} onChange={e => setTeam(e.target.value)}>{!NBA_TEAMS.some(t => t.tricode === team) && <option value={team}>{team}</option>}{NBA_TEAMS.map(t => <option key={t.tricode} value={t.tricode}>{t.tricode} \u00b7 {t.name}</option>)}</select></label>"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 117,
+        "source": "<label>Season<input placeholder=\"Published default\" value={season} onChange={e => setSeason(e.target.value)} /></label>"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 118,
+        "source": "<label>Phase<select value={phase} onChange={e => setPhase(e.target.value)}><option value=\"\">Published default</option><option value=\"regular_season\">Regular season</option><option value=\"playoffs\">Playoffs</option><option value=\"preseason\">Preseason</option><option value=\"play_in\">Play-in</option><option value=\"cup_final\">Cup final</option><option value=\"summer_league\">Summer league</option></select></label>"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 119,
+        "source": "<label>Before date (exclusive)<input type=\"date\" value={before} onChange={e => setBefore(e.target.value)} /></label>"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 120,
+        "source": "<label>From date (inclusive)<input type=\"date\" value={lower} onChange={e => setLower(e.target.value)} /></label>"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 121,
+        "source": "<label>Release ID<input placeholder=\"Published default\" value={release} onChange={e => setRelease(e.target.value)} /></label>"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 122,
+        "source": "<label>Minimum possessions<input type=\"number\" min=\"1\" max=\"10000\" step=\"any\" value={possessions} onChange={e => setPossessions(e.target.value)} /></label>"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 123,
+        "source": "<label>Minimum games<input type=\"number\" min=\"1\" max=\"82\" value={games} onChange={e => setGames(e.target.value)} /></label>"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 126,
+        "source": "{operation === \"stat-shift\" && <label>Focal player ID<input value={focal} onChange={e => setFocal(e.target.value)} /></label>}"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 127,
+        "source": "{mode === \"unit\" ? <label>Unit player IDs<input value={unit} onChange={e => setUnit(e.target.value)} placeholder=\"2\u20135 comma-separated NBA IDs\" /></label> : <>"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 128,
+        "source": "<label>{mode === \"leaders\" ? \"Candidate player IDs\" : \"Together player IDs\"}<input value={together} onChange={e => setTogether(e.target.value)} placeholder=\"Comma-separated NBA IDs\" /></label>"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 129,
+        "source": "{operation !== \"on-off\" && mode !== \"leaders\" && <label>Apart player IDs<input value={apart} onChange={e => setApart(e.target.value)} /></label>}"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 131,
+        "source": "<label>Search players<input value={query} onChange={e => setQuery(e.target.value)} placeholder=\"Type a player name\" /></label>"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 132,
+        "source": "{operation !== \"on-off\" && mode !== \"unit\" && mode !== \"leaders\" && <label>Add search result to<select value={target} onChange={e => setTarget(e.target.value)}><option value=\"together\">Together</option><option value=\"apart\">Apart</option>{operation === \"stat-shift\" && <option value=\"focal\">Focal player</option>}</select></label>}"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 135,
+        "source": "<div className=\"floor-controls\">{matches.map(player => <button type=\"button\" className=\"control-pill\" key={player.id} onClick={() => addPlayer(player)}>{player.display_name} \u00b7 {player.subtitle}</button>)}</div>"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 138,
+        "source": "<button className=\"control-pill active\" disabled={busy}>{busy ? \"Calculating\u2026\" : \"Run shared-floor analysis\"}</button>"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 143,
+        "source": "<button onClick={() => download(JSON.stringify({ schema: \"courtload-shared-floor-evidence-v1\", results, pinned_comparison: pinned }, null, 2), \"shared-floor-evidence.json\", \"application/json\")}>Save evidence JSON</button>"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 144,
+        "source": "<button onClick={() => download(floorCsv(results), \"shared-floor.csv\", \"text/csv\")}>Export cell metrics CSV</button>"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 145,
+        "source": "{results.length === 1 && <button onClick={() => setPinned(results[0])}>Pin for comparison</button>}"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 162,
+        "source": "{pinned && <div><h3>Pinned operation comparison</h3>{comparableFloorResults(pinned, result) ? <p>Pinned eligible differences: {pinned.shifts.map(s => `${s.metric}: ${floorNumber(s.difference)}`).join(\" \u00b7 \")}. Current eligible differences are displayed above. No statistical interval for a difference between separate queries is claimed.<br />Pinned conditions: {JSON.stringify({ together: pinned.request.together, apart: pinned.request.apart, unit: pinned.request.exact_unit })}<br />Pinned evidence: <span className=\"floor-hash\">{pinned.evidence_hash}</span></p> : <p>Comparison unavailable: operation, team, focal player, release, dates, phase and gates must match.</p>}<button onClick={() => setPinned(null)}>Clear pinned comparison</button></div>}"
+      }
+    ],
+    "runtime_state": "untested in PF00; static inventory only"
+  },
+  {
+    "route": "/stats",
+    "page": "dashboard/app/stats/page.tsx",
+    "component_files": [
+      "dashboard/app/stats/page.tsx",
+      "dashboard/components/context-bar.tsx",
+      "dashboard/components/shared-floor-view.tsx",
+      "dashboard/components/workbench-player-explorer.tsx"
+    ],
+    "controls": [
+      {
+        "file": "dashboard/app/stats/page.tsx",
+        "line": 38,
+        "source": "<ContextBar"
+      },
+      {
+        "file": "dashboard/components/workbench-player-explorer.tsx",
+        "line": 367,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/workbench-player-explorer.tsx",
+        "line": 387,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/workbench-player-explorer.tsx",
+        "line": 405,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/workbench-player-explorer.tsx",
+        "line": 450,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/workbench-player-explorer.tsx",
+        "line": 467,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/workbench-player-explorer.tsx",
+        "line": 481,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/workbench-player-explorer.tsx",
+        "line": 490,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/workbench-player-explorer.tsx",
+        "line": 499,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/workbench-player-explorer.tsx",
+        "line": 512,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/workbench-player-explorer.tsx",
+        "line": 520,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/workbench-player-explorer.tsx",
+        "line": 528,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/workbench-player-explorer.tsx",
+        "line": 540,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/workbench-player-explorer.tsx",
+        "line": 548,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/workbench-player-explorer.tsx",
+        "line": 582,
+        "source": "<input"
+      },
+      {
+        "file": "dashboard/components/workbench-player-explorer.tsx",
+        "line": 591,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/workbench-player-explorer.tsx",
+        "line": 609,
+        "source": "<select"
+      },
+      {
+        "file": "dashboard/components/workbench-player-explorer.tsx",
+        "line": 627,
+        "source": "<input"
+      },
+      {
+        "file": "dashboard/components/workbench-player-explorer.tsx",
+        "line": 646,
+        "source": "<input"
+      },
+      {
+        "file": "dashboard/components/workbench-player-explorer.tsx",
+        "line": 665,
+        "source": "<select"
+      },
+      {
+        "file": "dashboard/components/workbench-player-explorer.tsx",
+        "line": 682,
+        "source": "<select"
+      },
+      {
+        "file": "dashboard/components/workbench-player-explorer.tsx",
+        "line": 695,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/workbench-player-explorer.tsx",
+        "line": 715,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/workbench-player-explorer.tsx",
+        "line": 873,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/workbench-player-explorer.tsx",
+        "line": 903,
+        "source": "<input"
+      },
+      {
+        "file": "dashboard/components/workbench-player-explorer.tsx",
+        "line": 941,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/workbench-player-explorer.tsx",
+        "line": 965,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/workbench-player-explorer.tsx",
+        "line": 1039,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/workbench-player-explorer.tsx",
+        "line": 1060,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/workbench-player-explorer.tsx",
+        "line": 1074,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 114,
+        "source": "{initialOperation === \"wowy\" && <label>Operation<select value={operation} onChange={e => { setOperation(e.target.value as FloorOperation); setMode(\"team\"); }}><option value=\"wowy\">WOWY</option><option value=\"on-off\">On/off</option></select></label>}"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 115,
+        "source": "{operation === \"wowy\" && <label>View<select value={mode} onChange={e => setMode(e.target.value as typeof mode)}><option value=\"team\">Team sets</option><option value=\"leaders\">Selected-player leaders (max 5)</option><option value=\"unit\">2\u20135-player unit</option></select></label>}"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 116,
+        "source": "<label>Team<select value={team} onChange={e => setTeam(e.target.value)}>{!NBA_TEAMS.some(t => t.tricode === team) && <option value={team}>{team}</option>}{NBA_TEAMS.map(t => <option key={t.tricode} value={t.tricode}>{t.tricode} \u00b7 {t.name}</option>)}</select></label>"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 117,
+        "source": "<label>Season<input placeholder=\"Published default\" value={season} onChange={e => setSeason(e.target.value)} /></label>"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 118,
+        "source": "<label>Phase<select value={phase} onChange={e => setPhase(e.target.value)}><option value=\"\">Published default</option><option value=\"regular_season\">Regular season</option><option value=\"playoffs\">Playoffs</option><option value=\"preseason\">Preseason</option><option value=\"play_in\">Play-in</option><option value=\"cup_final\">Cup final</option><option value=\"summer_league\">Summer league</option></select></label>"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 119,
+        "source": "<label>Before date (exclusive)<input type=\"date\" value={before} onChange={e => setBefore(e.target.value)} /></label>"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 120,
+        "source": "<label>From date (inclusive)<input type=\"date\" value={lower} onChange={e => setLower(e.target.value)} /></label>"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 121,
+        "source": "<label>Release ID<input placeholder=\"Published default\" value={release} onChange={e => setRelease(e.target.value)} /></label>"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 122,
+        "source": "<label>Minimum possessions<input type=\"number\" min=\"1\" max=\"10000\" step=\"any\" value={possessions} onChange={e => setPossessions(e.target.value)} /></label>"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 123,
+        "source": "<label>Minimum games<input type=\"number\" min=\"1\" max=\"82\" value={games} onChange={e => setGames(e.target.value)} /></label>"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 126,
+        "source": "{operation === \"stat-shift\" && <label>Focal player ID<input value={focal} onChange={e => setFocal(e.target.value)} /></label>}"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 127,
+        "source": "{mode === \"unit\" ? <label>Unit player IDs<input value={unit} onChange={e => setUnit(e.target.value)} placeholder=\"2\u20135 comma-separated NBA IDs\" /></label> : <>"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 128,
+        "source": "<label>{mode === \"leaders\" ? \"Candidate player IDs\" : \"Together player IDs\"}<input value={together} onChange={e => setTogether(e.target.value)} placeholder=\"Comma-separated NBA IDs\" /></label>"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 129,
+        "source": "{operation !== \"on-off\" && mode !== \"leaders\" && <label>Apart player IDs<input value={apart} onChange={e => setApart(e.target.value)} /></label>}"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 131,
+        "source": "<label>Search players<input value={query} onChange={e => setQuery(e.target.value)} placeholder=\"Type a player name\" /></label>"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 132,
+        "source": "{operation !== \"on-off\" && mode !== \"unit\" && mode !== \"leaders\" && <label>Add search result to<select value={target} onChange={e => setTarget(e.target.value)}><option value=\"together\">Together</option><option value=\"apart\">Apart</option>{operation === \"stat-shift\" && <option value=\"focal\">Focal player</option>}</select></label>}"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 135,
+        "source": "<div className=\"floor-controls\">{matches.map(player => <button type=\"button\" className=\"control-pill\" key={player.id} onClick={() => addPlayer(player)}>{player.display_name} \u00b7 {player.subtitle}</button>)}</div>"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 138,
+        "source": "<button className=\"control-pill active\" disabled={busy}>{busy ? \"Calculating\u2026\" : \"Run shared-floor analysis\"}</button>"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 143,
+        "source": "<button onClick={() => download(JSON.stringify({ schema: \"courtload-shared-floor-evidence-v1\", results, pinned_comparison: pinned }, null, 2), \"shared-floor-evidence.json\", \"application/json\")}>Save evidence JSON</button>"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 144,
+        "source": "<button onClick={() => download(floorCsv(results), \"shared-floor.csv\", \"text/csv\")}>Export cell metrics CSV</button>"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 145,
+        "source": "{results.length === 1 && <button onClick={() => setPinned(results[0])}>Pin for comparison</button>}"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 162,
+        "source": "{pinned && <div><h3>Pinned operation comparison</h3>{comparableFloorResults(pinned, result) ? <p>Pinned eligible differences: {pinned.shifts.map(s => `${s.metric}: ${floorNumber(s.difference)}`).join(\" \u00b7 \")}. Current eligible differences are displayed above. No statistical interval for a difference between separate queries is claimed.<br />Pinned conditions: {JSON.stringify({ together: pinned.request.together, apart: pinned.request.apart, unit: pinned.request.exact_unit })}<br />Pinned evidence: <span className=\"floor-hash\">{pinned.evidence_hash}</span></p> : <p>Comparison unavailable: operation, team, focal player, release, dates, phase and gates must match.</p>}<button onClick={() => setPinned(null)}>Clear pinned comparison</button></div>}"
+      },
+      {
+        "file": "dashboard/components/context-bar.tsx",
+        "line": 80,
+        "source": "<select"
+      },
+      {
+        "file": "dashboard/components/context-bar.tsx",
+        "line": 96,
+        "source": "<select"
+      },
+      {
+        "file": "dashboard/components/context-bar.tsx",
+        "line": 112,
+        "source": "<input"
+      },
+      {
+        "file": "dashboard/components/context-bar.tsx",
+        "line": 127,
+        "source": "<select"
+      }
+    ],
+    "runtime_state": "captured at 4 sizes"
+  },
+  {
+    "route": "/team-compare",
+    "page": "dashboard/app/team-compare/page.tsx",
+    "component_files": [
+      "dashboard/app/team-compare/page.tsx",
+      "dashboard/components/context-bar.tsx",
+      "dashboard/components/team-compare-view.tsx"
+    ],
+    "controls": [
+      {
+        "file": "dashboard/app/team-compare/page.tsx",
+        "line": 100,
+        "source": "<ContextBar"
+      },
+      {
+        "file": "dashboard/components/team-compare-view.tsx",
+        "line": 161,
+        "source": "<select"
+      },
+      {
+        "file": "dashboard/components/team-compare-view.tsx",
+        "line": 176,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/team-compare-view.tsx",
+        "line": 191,
+        "source": "<select"
+      },
+      {
+        "file": "dashboard/components/team-compare-view.tsx",
+        "line": 208,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/team-compare-view.tsx",
+        "line": 215,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/team-compare-view.tsx",
+        "line": 222,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/team-compare-view.tsx",
+        "line": 229,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/team-compare-view.tsx",
+        "line": 236,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/team-compare-view.tsx",
+        "line": 841,
+        "source": "<input"
+      },
+      {
+        "file": "dashboard/components/team-compare-view.tsx",
+        "line": 899,
+        "source": "<input"
+      },
+      {
+        "file": "dashboard/components/team-compare-view.tsx",
+        "line": 1078,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/team-compare-view.tsx",
+        "line": 1121,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/context-bar.tsx",
+        "line": 80,
+        "source": "<select"
+      },
+      {
+        "file": "dashboard/components/context-bar.tsx",
+        "line": 96,
+        "source": "<select"
+      },
+      {
+        "file": "dashboard/components/context-bar.tsx",
+        "line": 112,
+        "source": "<input"
+      },
+      {
+        "file": "dashboard/components/context-bar.tsx",
+        "line": 127,
+        "source": "<select"
+      }
+    ],
+    "runtime_state": "untested in PF00; static inventory only"
+  },
+  {
+    "route": "/teams/[id]",
+    "page": "dashboard/app/teams/[id]/page.tsx",
+    "component_files": [
+      "dashboard/app/teams/[id]/page.tsx",
+      "dashboard/components/context-bar.tsx",
+      "dashboard/components/player-portrait.tsx"
+    ],
+    "controls": [
+      {
+        "file": "dashboard/app/teams/[id]/page.tsx",
+        "line": 96,
+        "source": "<ContextBar"
+      },
+      {
+        "file": "dashboard/components/context-bar.tsx",
+        "line": 80,
+        "source": "<select"
+      },
+      {
+        "file": "dashboard/components/context-bar.tsx",
+        "line": 96,
+        "source": "<select"
+      },
+      {
+        "file": "dashboard/components/context-bar.tsx",
+        "line": 112,
+        "source": "<input"
+      },
+      {
+        "file": "dashboard/components/context-bar.tsx",
+        "line": 127,
+        "source": "<select"
+      }
+    ],
+    "runtime_state": "untested in PF00; static inventory only"
+  },
+  {
+    "route": "/teams",
+    "page": "dashboard/app/teams/page.tsx",
+    "component_files": [
+      "dashboard/app/teams/page.tsx",
+      "dashboard/components/context-bar.tsx",
+      "dashboard/components/team-explorer-view.tsx"
+    ],
+    "controls": [
+      {
+        "file": "dashboard/app/teams/page.tsx",
+        "line": 44,
+        "source": "<ContextBar"
+      },
+      {
+        "file": "dashboard/components/team-explorer-view.tsx",
+        "line": 202,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/team-explorer-view.tsx",
+        "line": 209,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/team-explorer-view.tsx",
+        "line": 216,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/team-explorer-view.tsx",
+        "line": 227,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/team-explorer-view.tsx",
+        "line": 234,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/team-explorer-view.tsx",
+        "line": 241,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/team-explorer-view.tsx",
+        "line": 253,
+        "source": "<input"
+      },
+      {
+        "file": "dashboard/components/team-explorer-view.tsx",
+        "line": 274,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/team-explorer-view.tsx",
+        "line": 281,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/team-explorer-view.tsx",
+        "line": 288,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/team-explorer-view.tsx",
+        "line": 295,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/context-bar.tsx",
+        "line": 80,
+        "source": "<select"
+      },
+      {
+        "file": "dashboard/components/context-bar.tsx",
+        "line": 96,
+        "source": "<select"
+      },
+      {
+        "file": "dashboard/components/context-bar.tsx",
+        "line": 112,
+        "source": "<input"
+      },
+      {
+        "file": "dashboard/components/context-bar.tsx",
+        "line": 127,
+        "source": "<select"
+      }
+    ],
+    "runtime_state": "untested in PF00; static inventory only"
+  },
+  {
+    "route": "/tierlist",
+    "page": "dashboard/app/tierlist/page.tsx",
+    "component_files": [
+      "dashboard/app/tierlist/page.tsx",
+      "dashboard/components/tier-list-view.tsx"
+    ],
+    "controls": [
+      {
+        "file": "dashboard/components/tier-list-view.tsx",
+        "line": 347,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/tier-list-view.tsx",
+        "line": 356,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/tier-list-view.tsx",
+        "line": 387,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/tier-list-view.tsx",
+        "line": 400,
+        "source": "<input"
+      },
+      {
+        "file": "dashboard/components/tier-list-view.tsx",
+        "line": 415,
+        "source": "<textarea"
+      },
+      {
+        "file": "dashboard/components/tier-list-view.tsx",
+        "line": 426,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/tier-list-view.tsx",
+        "line": 433,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/tier-list-view.tsx",
+        "line": 461,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/tier-list-view.tsx",
+        "line": 478,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/tier-list-view.tsx",
+        "line": 499,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/tier-list-view.tsx",
+        "line": 546,
+        "source": "<input"
+      },
+      {
+        "file": "dashboard/components/tier-list-view.tsx",
+        "line": 612,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/tier-list-view.tsx",
+        "line": 644,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/tier-list-view.tsx",
+        "line": 709,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/tier-list-view.tsx",
+        "line": 719,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/tier-list-view.tsx",
+        "line": 729,
+        "source": "<button"
+      },
+      {
+        "file": "dashboard/components/tier-list-view.tsx",
+        "line": 788,
+        "source": "<select"
+      },
+      {
+        "file": "dashboard/components/tier-list-view.tsx",
+        "line": 809,
+        "source": "<button"
+      }
+    ],
+    "runtime_state": "untested in PF00; static inventory only"
+  },
+  {
+    "route": "/wingspan",
+    "page": "dashboard/app/wingspan/page.tsx",
+    "component_files": [
+      "dashboard/app/wingspan/page.tsx",
+      "dashboard/components/wingspan-explorer-view.tsx"
+    ],
+    "controls": [
+      {
+        "file": "dashboard/components/wingspan-explorer-view.tsx",
+        "line": 27,
+        "source": "<div className=\"panel research-links\"><label>Measurement source<select value={type} onChange={e => {setResponse(null);setError(\"\");setSelected([]);setType(e.target.value);}}><option value=\"all\">All measurements</option><option value=\"combine\">Combine only</option><option value=\"listed\">Listed roster only</option></select></label>"
+      },
+      {
+        "file": "dashboard/components/wingspan-explorer-view.tsx",
+        "line": 28,
+        "source": "<label>Draft year<input type=\"number\" min=\"1947\" max=\"2100\" value={draft} onChange={e => {setResponse(null);setError(\"\");setSelected([]);setDraft(e.target.value);}} /></label>"
+      },
+      {
+        "file": "dashboard/components/wingspan-explorer-view.tsx",
+        "line": 29,
+        "source": "<label>Minimum wingspan (inches)<input type=\"number\" min=\"0\" step=\"0.1\" value={minimum} onChange={e => {setResponse(null);setError(\"\");setSelected([]);setMinimum(e.target.value);}} /></label>"
+      },
+      {
+        "file": "dashboard/components/wingspan-explorer-view.tsx",
+        "line": 30,
+        "source": "<label>Maximum wingspan (inches)<input type=\"number\" min=\"0\" step=\"0.1\" value={maximum} onChange={e => {setResponse(null);setError(\"\");setSelected([]);setMaximum(e.target.value);}} /></label>"
+      },
+      {
+        "file": "dashboard/components/wingspan-explorer-view.tsx",
+        "line": 31,
+        "source": "<label>Search returned records<input value={search} onChange={e => setSearch(e.target.value)} /></label>"
+      },
+      {
+        "file": "dashboard/components/wingspan-explorer-view.tsx",
+        "line": 32,
+        "source": "<label>Length units<select value={units} onChange={e => setUnits(e.target.value)}><option value=\"in\">Inches</option><option value=\"cm\">Centimeters</option></select></label>"
+      },
+      {
+        "file": "dashboard/components/wingspan-explorer-view.tsx",
+        "line": 40,
+        "source": "<section className=\"panel\"><h2>Measurement records</h2><p>Select up to two observations for a source-aware comparison.</p><div className=\"table-wrapper\" tabIndex={0} role=\"region\" aria-label=\"Measurement records\"><table className=\"data-table\"><thead><tr><th>Compare</th><th>Player</th><th>Source / type</th><th>Draft / pick</th><th>Wingspan</th><th>Barefoot height</th><th>Shoed height</th><th>Reach</th><th>Weight</th><th>Reported ratio</th></tr></thead><tbody>{items.map(row => <tr key={key(row)}><td><input type=\"checkbox\" aria-label={`Compare ${row.display_name} ${row.measurement_type}`} checked={selected.includes(key(row))} disabled={!selected.includes(key(row)) && selected.length >= 2} onChange={e => setSelected(e.target.checked ? [...selected,key(row)] : selected.filter(k => k !== key(row)))} /></td><th><Link href={`/players/${row.player_id}`}>{row.display_name}</Link></th><td>{row.source_name} / {row.measurement_type}</td><td>{row.draft_year ?? \"\u2014\"} / {row.pick_overall == null ? \"Unknown pick\" : `#${row.pick_overall}`}</td><td>{length(row.wingspan_inches)}</td><td>{length(row.height_no_shoes_inches)}</td><td>{length(row.height_shoes_inches)}</td><td>{length(row.standing_reach_inches)}</td><td>{row.weight_lbs == null ? \"\u2014\" : `${row.weight_lbs} lb`}</td><td>{row.wingspan_to_height_ratio ?? \"\u2014\"}</td></tr>)}</tbody></table></div>{!items.length && <p>No measurement records in this scope.</p>}"
+      },
+      {
+        "file": "dashboard/components/wingspan-explorer-view.tsx",
+        "line": 41,
+        "source": "<button className=\"button\" disabled={!items.length} onClick={() => downloadResearch(\"courtload-measurement-sample.json\", {schema:\"measurement-sample-v1\",scope:{type,draft_year:draft || null,min_wingspan_inches:minimum || null,max_wingspan_inches:maximum || null,search,limit:100},canonical_length_units:\"inches\",display_length_units:units,weight_units:\"pounds\",items,disclaimer:response.disclaimer})}>Export source-labelled sample JSON</button>"
+      }
+    ],
+    "runtime_state": "untested in PF00; static inventory only"
+  },
+  {
+    "route": "/wowy",
+    "page": "dashboard/app/wowy/page.tsx",
+    "component_files": [
+      "dashboard/app/wowy/page.tsx",
+      "dashboard/components/shared-floor-view.tsx"
+    ],
+    "controls": [
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 114,
+        "source": "{initialOperation === \"wowy\" && <label>Operation<select value={operation} onChange={e => { setOperation(e.target.value as FloorOperation); setMode(\"team\"); }}><option value=\"wowy\">WOWY</option><option value=\"on-off\">On/off</option></select></label>}"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 115,
+        "source": "{operation === \"wowy\" && <label>View<select value={mode} onChange={e => setMode(e.target.value as typeof mode)}><option value=\"team\">Team sets</option><option value=\"leaders\">Selected-player leaders (max 5)</option><option value=\"unit\">2\u20135-player unit</option></select></label>}"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 116,
+        "source": "<label>Team<select value={team} onChange={e => setTeam(e.target.value)}>{!NBA_TEAMS.some(t => t.tricode === team) && <option value={team}>{team}</option>}{NBA_TEAMS.map(t => <option key={t.tricode} value={t.tricode}>{t.tricode} \u00b7 {t.name}</option>)}</select></label>"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 117,
+        "source": "<label>Season<input placeholder=\"Published default\" value={season} onChange={e => setSeason(e.target.value)} /></label>"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 118,
+        "source": "<label>Phase<select value={phase} onChange={e => setPhase(e.target.value)}><option value=\"\">Published default</option><option value=\"regular_season\">Regular season</option><option value=\"playoffs\">Playoffs</option><option value=\"preseason\">Preseason</option><option value=\"play_in\">Play-in</option><option value=\"cup_final\">Cup final</option><option value=\"summer_league\">Summer league</option></select></label>"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 119,
+        "source": "<label>Before date (exclusive)<input type=\"date\" value={before} onChange={e => setBefore(e.target.value)} /></label>"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 120,
+        "source": "<label>From date (inclusive)<input type=\"date\" value={lower} onChange={e => setLower(e.target.value)} /></label>"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 121,
+        "source": "<label>Release ID<input placeholder=\"Published default\" value={release} onChange={e => setRelease(e.target.value)} /></label>"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 122,
+        "source": "<label>Minimum possessions<input type=\"number\" min=\"1\" max=\"10000\" step=\"any\" value={possessions} onChange={e => setPossessions(e.target.value)} /></label>"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 123,
+        "source": "<label>Minimum games<input type=\"number\" min=\"1\" max=\"82\" value={games} onChange={e => setGames(e.target.value)} /></label>"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 126,
+        "source": "{operation === \"stat-shift\" && <label>Focal player ID<input value={focal} onChange={e => setFocal(e.target.value)} /></label>}"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 127,
+        "source": "{mode === \"unit\" ? <label>Unit player IDs<input value={unit} onChange={e => setUnit(e.target.value)} placeholder=\"2\u20135 comma-separated NBA IDs\" /></label> : <>"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 128,
+        "source": "<label>{mode === \"leaders\" ? \"Candidate player IDs\" : \"Together player IDs\"}<input value={together} onChange={e => setTogether(e.target.value)} placeholder=\"Comma-separated NBA IDs\" /></label>"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 129,
+        "source": "{operation !== \"on-off\" && mode !== \"leaders\" && <label>Apart player IDs<input value={apart} onChange={e => setApart(e.target.value)} /></label>}"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 131,
+        "source": "<label>Search players<input value={query} onChange={e => setQuery(e.target.value)} placeholder=\"Type a player name\" /></label>"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 132,
+        "source": "{operation !== \"on-off\" && mode !== \"unit\" && mode !== \"leaders\" && <label>Add search result to<select value={target} onChange={e => setTarget(e.target.value)}><option value=\"together\">Together</option><option value=\"apart\">Apart</option>{operation === \"stat-shift\" && <option value=\"focal\">Focal player</option>}</select></label>}"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 135,
+        "source": "<div className=\"floor-controls\">{matches.map(player => <button type=\"button\" className=\"control-pill\" key={player.id} onClick={() => addPlayer(player)}>{player.display_name} \u00b7 {player.subtitle}</button>)}</div>"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 138,
+        "source": "<button className=\"control-pill active\" disabled={busy}>{busy ? \"Calculating\u2026\" : \"Run shared-floor analysis\"}</button>"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 143,
+        "source": "<button onClick={() => download(JSON.stringify({ schema: \"courtload-shared-floor-evidence-v1\", results, pinned_comparison: pinned }, null, 2), \"shared-floor-evidence.json\", \"application/json\")}>Save evidence JSON</button>"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 144,
+        "source": "<button onClick={() => download(floorCsv(results), \"shared-floor.csv\", \"text/csv\")}>Export cell metrics CSV</button>"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 145,
+        "source": "{results.length === 1 && <button onClick={() => setPinned(results[0])}>Pin for comparison</button>}"
+      },
+      {
+        "file": "dashboard/components/shared-floor-view.tsx",
+        "line": 162,
+        "source": "{pinned && <div><h3>Pinned operation comparison</h3>{comparableFloorResults(pinned, result) ? <p>Pinned eligible differences: {pinned.shifts.map(s => `${s.metric}: ${floorNumber(s.difference)}`).join(\" \u00b7 \")}. Current eligible differences are displayed above. No statistical interval for a difference between separate queries is claimed.<br />Pinned conditions: {JSON.stringify({ together: pinned.request.together, apart: pinned.request.apart, unit: pinned.request.exact_unit })}<br />Pinned evidence: <span className=\"floor-hash\">{pinned.evidence_hash}</span></p> : <p>Comparison unavailable: operation, team, focal player, release, dates, phase and gates must match.</p>}<button onClick={() => setPinned(null)}>Clear pinned comparison</button></div>}"
+      }
+    ],
+    "runtime_state": "untested in PF00; static inventory only"
+  }
+]

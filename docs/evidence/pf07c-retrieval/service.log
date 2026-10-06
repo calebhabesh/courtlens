@@ -1,0 +1,39 @@
+INFO:     Started server process [2422870]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8179 (Press CTRL+C to quit)
+INFO:     127.0.0.1:55546 - "GET /api/workbench/assistant/v2/threads HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55550 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55550 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55550 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55550 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55550 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55550 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55550 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55550 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55550 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55550 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55550 - "GET /api/workbench/assistant/v2/threads/84446b5d-1e4a-496d-bc0d-6d084949869d/turns HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [2422870]
+INFO:     Started server process [2422944]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8179 (Press CTRL+C to quit)
+INFO:     127.0.0.1:55628 - "GET /api/workbench/assistant/v2/threads HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55640 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55640 - "GET /api/workbench/assistant/v2/threads/84446b5d-1e4a-496d-bc0d-6d084949869d/turns HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55640 - "DELETE /api/workbench/assistant/v2/threads/84446b5d-1e4a-496d-bc0d-6d084949869d HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55640 - "DELETE /api/workbench/assistant/v2/threads/91e1da31-1309-4a17-b9a7-ddc63aefef69 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55640 - "DELETE /api/workbench/assistant/v2/threads/35342557-fa9e-43dc-839f-08a9f9c6fe2c HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55640 - "DELETE /api/workbench/assistant/v2/threads/0a4ef0fd-44e4-4624-a06a-a353fb9a0422 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55640 - "DELETE /api/workbench/assistant/v2/threads/a5b11d9b-c319-4254-b299-a748038621c4 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55640 - "DELETE /api/workbench/assistant/v2/threads/af68e6ea-0a8c-482e-8223-09e38957a301 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55640 - "DELETE /api/workbench/assistant/v2/threads/0df9e87a-8ad2-4eb0-9066-91a946016bfd HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55640 - "DELETE /api/workbench/assistant/v2/threads/5feb5112-70f0-4e8f-b0af-165736a243e4 HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [2422944]

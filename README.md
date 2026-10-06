@@ -129,8 +129,17 @@ Open <http://localhost:3000> in your browser.
 
 Set `COURTLOAD_GEMINI_API_KEY` in the ignored root `.env` and set
 `COURTLOAD_GEMINI_MODEL` to a model your AI Studio project can access (the example
-uses the locally evaluated `gemini-3.5-flash-lite`). Keep the project on the Free tier; CourtLoad cannot
-enforce the project's billing tier. Local Python reads `.env`; Compose passes
+uses the locally evaluated `gemini-3.5-flash-lite`). The owner's installation uses a Free-tier
+project. Confirm Free in Google AI Studio's Billing Tier column; CourtLoad cannot enforce
+Google's billing tier. Normal usage follows Google's project/model quotas rather than a
+CourtLoad daily call allowance. Quota exhaustion shows a useful response without switching
+to a paid provider; a timeout remains a separate failure.
+[Google quota rules](https://ai.google.dev/gemini-api/docs/rate-limits),
+[billing-tier verification](https://ai.google.dev/gemini-api/docs/billing#verify-billing-status).
+
+Other users can supply their own paid Gemini key through the same configuration, at their
+own expense. Other vendors require a compatible adapter; arbitrary API keys are not currently
+interchangeable. The core/manual workflows require no paid provider. Local Python reads `.env`; Compose passes
 these settings only to the API. Restart the local API or recreate the Compose
 API after changing them. The dashboard never receives the key.
 
@@ -144,6 +153,11 @@ Run the existing opt-in evaluation with a new evidence path:
 It stops on provider errors, quota or timeout and records model/version,
 token usage, latency and per-case results. A configured key alone does not
 establish language accuracy. See [connection evidence and provider review criteria](docs/evidence/gemini-setup-2026-10-04.md).
+
+PF07d's hybrid evaluation uses `scripts/evaluate_pf07d_hybrid.py --real-provider` with a
+new output path and a dated nonsecret Free-tier confirmation via `--free-project-evidence`.
+It runs the finite frozen corpus and stops at the first provider failure. No separate
+call-count authorization is required; `--max-calls` is an optional smoke-test stop.
 
 The owner-approved Lite configuration passes the [B34c language acceptance](docs/evidence/b34c-language-acceptance.md):
 45 core cases, twelve additional paraphrases and six finance/empty-season cases. Failed

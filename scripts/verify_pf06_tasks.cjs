@@ -1,0 +1,22 @@
+const {chromium,expect}=require('../dashboard/node_modules/@playwright/test');
+const fs=require('node:fs'),assert=require('node:assert/strict');
+(async()=>{
+ const browser=await chromium.launch({executablePath:'/usr/bin/chromium'});const page=await browser.newPage();const report={checks:[],errors:[]};page.on('pageerror',e=>report.errors.push(e.message));
+ await page.goto('http://127.0.0.1:3154/stats?plotMode=scatter&limit=25');await page.waitForLoadState('networkidle');
+ await page.getByRole('button',{name:/Scatter Plot/}).click();
+ const chart=page.getByRole('region',{name:'Two-Axis Scatter Plot Explorer'});await expect(chart).toBeVisible();
+ await chart.getByRole('button',{name:'Show Data Table',exact:true}).click();
+ const table=chart.locator('table');await expect(table).toBeVisible();assert(await table.locator('tbody tr').count()>0);report.checks.push('real scatter has accessible tabular values');
+ await chart.getByLabel('Select X-axis metric').selectOption('pts_per_game');report.checks.push('real chart metric selector works');
+ let pending=page.waitForEvent('download');await chart.getByRole('button',{name:'SVG',exact:true}).click();let download=await pending;
+ const svg=fs.readFileSync(await download.path(),'utf8');assert(svg.includes('<svg'));assert(svg.includes('2025-26'));fs.writeFileSync('docs/evidence/pf06-routes/scatter-export.svg',svg);report.checks.push('real chart SVG includes scope');
+ pending=page.waitForEvent('download');await chart.getByRole('button',{name:'Export PNG',exact:true}).click();download=await pending;assert(fs.statSync(await download.path()).size>1000);report.checks.push('real chart PNG renders');
+ await page.goto('http://127.0.0.1:3154/roster-shapes?season=2025-26&phase=regular_season&beforeDate=2026-04-13');await page.waitForLoadState('networkidle');
+ const team=page.getByRole('combobox',{name:'Team',exact:true});await team.fill('Toronto');await page.getByRole('option',{name:/Toronto Raptors/}).click();await page.getByRole('button',{name:'Load participation',exact:true}).click();
+ const allocation=page.getByRole('region',{name:'Roster allocations',exact:true});await expect(allocation).toBeVisible();assert(await allocation.locator('tbody tr').count()>0);report.checks.push('real team participation loads from named picker');
+ pending=page.waitForEvent('download');await page.getByRole('button',{name:'Export allocation inputs JSON'}).click();download=await pending;const data=JSON.parse(fs.readFileSync(await download.path(),'utf8'));assert.equal(data.context.season,'2025-26');assert.equal(data.basis,'observed');assert(data.allocations.length>0);report.checks.push('real allocation export preserves units and scope');
+ await page.goto('http://127.0.0.1:3154/showcase?playerId=1630567&season=2025-26');await page.waitForLoadState('networkidle');
+ await page.setViewportSize({width:375,height:812});assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));report.checks.push('real showcase mobile contained');
+ await page.goto('http://127.0.0.1:3154/research/expected-shots');await page.waitForLoadState('networkidle');await expect(page.getByRole('region',{name:'Registered research result'})).toContainText('Completed negative result');report.checks.push('real sealed negative research report remains available');
+ assert.deepEqual(report.errors,[]);fs.writeFileSync('docs/evidence/pf06-routes/tasks.json',JSON.stringify(report,null,2)+'\n');console.log(report);await browser.close();
+})().catch(e=>{console.error(e);process.exit(1);});
