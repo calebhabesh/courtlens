@@ -57,7 +57,8 @@ test("calculator rejects invalid scenarios and shows checked finite differences 
 });
 test("roster keeps observed and projected inputs separate and exports context",async ({page}) => {
   await page.route("**/api/workbench/teams/fixture?*",route => { expect(new URL(route.request().url()).searchParams.get("phase")).toBe("regular_season"); return route.fulfill({json:{team:{id:"fixture",name:"Fixture Team",tricode:"FIX"},context:{release_id:"fixture-release",season:"2025-26",phase:"regular",before_date:"2026-07-01"},record:{games_played:1},player_cohort:[{player_id:"1",player_name:"Fixture Player",games_played:1,total_minutes:30,points:0,points_per_game:0}],warnings:["Fixture scope only"]}}); });
-  await page.goto("/roster-shapes");await page.getByLabel("Team ID",{exact:true}).fill("fixture"); await page.getByRole("button",{name:"Load participation"}).click();
+  await page.route("**/api/workbench/lookup?*", route => route.fulfill({json:{items:[{kind:"team",canonical_id:"fixture",display_name:"Fixture Team",destination:"/teams/fixture",matching_alias:"Fixture",season_available:true,season_scope:"2025-26",associations:[]}],total_matches:1,catalog_version:"fixture"}}));
+  await page.goto("/roster-shapes?season=2025-26&phase=regular_season");await page.getByRole("combobox",{name:"Team",exact:true}).fill("Fixture");await page.getByRole("option",{name:/Fixture Team/}).click(); await page.getByRole("button",{name:"Load participation"}).click();
   await expect(page.getByRole("region",{name:"Roster allocations",exact:true})).toContainText("total 30.0");
   await page.getByLabel("Position for Fixture Player").selectOption("PG");
   await page.getByLabel("Allocation basis").selectOption("projected");

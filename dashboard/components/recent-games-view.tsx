@@ -2,10 +2,11 @@
 
 import { useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { PlayerPortrait } from "./player-portrait";
 import { LineageDrawer } from "./lineage-drawer";
-import { GlobalLookup } from "./global-lookup";
+import { buildPreservedContextUrl } from "@/lib/query-url";
+import { LookupInput } from "./lookup-input";
 import { useWorkspace } from "@/lib/workspace-context";
 import { exportSvgAsPng, exportSvgFile, copyCanonicalQueryUrl } from "@/lib/image-export";
 import {
@@ -29,6 +30,8 @@ export function RecentGamesView({
   initialProfile,
   initialGames
 }: RecentGamesViewProps) {
+  const searchParams = useSearchParams();
+  const [lookupText, setLookupText] = useState("");
   const router = useRouter();
   const { player, context, latest_team, last_observed_date } = initialProfile;
 
@@ -176,14 +179,16 @@ export function RecentGamesView({
         {/* Global Lookup & Quick Actions */}
         <div style={{ marginLeft: "auto", display: "flex", flexDirection: "column", gap: "0.5rem", alignItems: "flex-end" }}>
           <div style={{ width: "240px" }}>
-            <GlobalLookup
+            <LookupInput label="Switch player" value={lookupText} onChange={setLookupText}
+              kinds={["player"]}
               releaseId={context.release_id}
               season={context.season}
               placeholder="Switch player..."
               onSelect={(item) => {
+                setLookupText("");
                 if (item.kind === "player") {
-                  router.push(
-                    `/last-games?playerId=${item.id}&season=${context.season}&phase=${context.phase}&beforeDate=${context.before_date}`
+                  router.push(buildPreservedContextUrl(
+                    `/last-games?playerId=${item.canonical_id}&season=${context.season}&phase=${context.phase}&beforeDate=${context.before_date}`, searchParams)
                   );
                 }
               }}

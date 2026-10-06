@@ -1,0 +1,22 @@
+import { describe, expect, it } from "vitest";
+import { humanLabel, routeAvailability } from "./route-availability";
+import type { WorkbenchCatalog } from "./types";
+const catalog = { default_season: "2025-26", default_phase: "regular_season", capabilities: {
+  core_stats: { status: "partial", seasons: ["2025-26"], phases: ["regular_season"], limitations: [] }
+} } as unknown as WorkbenchCatalog;
+describe("release-bound route availability", () => {
+  it("keeps partial data and independent research evidence accessible", () => {
+    expect(routeAvailability("/stats", catalog).secondary).toBe(false);
+    expect(routeAvailability("/research/rapm", null).secondary).toBe(false);
+    expect(routeAvailability("/rankings", null).secondary).toBe(false);
+  });
+  it("separates missing source, unsupported context and unavailable backend", () => {
+    expect(routeAvailability("/wowy", catalog).reason).toContain("not declared");
+    expect(routeAvailability("/stats", catalog, "2020-21").reason).toContain("season or phase");
+    expect(routeAvailability("/stats", null).reason).toContain("could not be verified");
+  });
+  it("maps enum labels without changing canonical values", () => {
+    expect(humanLabel("regular_season")).toBe("Regular season");
+    expect(humanLabel("selection_failed_negative_result")).toContain("negative result");
+  });
+});

@@ -27,7 +27,7 @@ const jetBrainsMono = localFont({
 
 export const metadata: Metadata = {
   title: {
-    default: "CourtLoad · NBA Analytics & Replica Workbench",
+    default: "CourtLoad · NBA Analytics",
     template: "%s · CourtLoad"
   },
   description:
@@ -53,7 +53,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         </a>
         <WorkspaceProvider>
           <div className="replica-shell">
-            <Suspense fallback={<div style={{ height: "84px", background: "var(--surface)" }} />}>
+            <Suspense fallback={<div style={{ height: "var(--shell-height)", background: "var(--surface)" }} />}>
               <ReplicaNav />
             </Suspense>
             <main id="content" className="replica-main">

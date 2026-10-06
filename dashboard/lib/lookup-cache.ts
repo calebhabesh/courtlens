@@ -7,6 +7,7 @@ import type { LookupResponse } from "./types";
  */
 export class LookupCache {
   private readonly capacity: number;
+  private readonly expires = new Map<string, number>();
   private readonly map: Map<string, LookupResponse>;
 
   constructor(capacity = 64) {
@@ -15,6 +16,10 @@ export class LookupCache {
   }
 
   get(key: string): LookupResponse | undefined {
+    if ((this.expires.get(key) ?? 0) <= Date.now()) {
+      this.map.delete(key);
+      this.expires.delete(key);
+    }
     if (!this.map.has(key)) {
       return undefined;
     }
@@ -33,17 +38,20 @@ export class LookupCache {
       const oldestKey = this.map.keys().next().value;
       if (oldestKey !== undefined) {
         this.map.delete(oldestKey);
+        this.expires.delete(oldestKey);
       }
     }
     this.map.set(key, value);
+    this.expires.set(key, Date.now() + 30_000);
   }
 
   has(key: string): boolean {
-    return this.map.has(key);
+    return this.get(key) !== undefined;
   }
 
   clear(): void {
     this.map.clear();
+    this.expires.clear();
   }
 
   get size(): number {
@@ -58,15 +66,12 @@ export function buildLookupCacheKey(options: {
   query: string;
   releaseId?: string | null;
   season?: string | null;
+  phase?: string | null;
+  beforeDate?: string | null;
   kinds?: Array<"player" | "team" | "page">;
   limit?: number;
 }): string {
-  const normQ = (options.query || "").trim().toLowerCase();
-  const rel = options.releaseId || "";
-  const sea = options.season || "";
-  const kindsStr = options.kinds ? [...options.kinds].sort().join(",") : "all";
-  const lim = options.limit ?? 10;
-  return `${normQ}__${rel}__${sea}__${kindsStr}__${lim}`;
+  return JSON.stringify(["pf04-v1", (options.query || "").trim().toLowerCase(), options.releaseId || "", options.season || "", options.phase || "", options.beforeDate || "", options.kinds ? [...options.kinds].sort() : "all", options.limit ?? 10]);
 }
 
 export const defaultLookupCache = new LookupCache(64);

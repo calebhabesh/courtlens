@@ -478,7 +478,7 @@ export function PlayoffsBracketView({
           </div>
 
           <div className="notice-box" style={{ marginTop: "1rem" }}>
-            <strong>Implementation Roadmap:</strong> Play-by-play lineup tracking, on/off stint matrices, and defensive matchup tracking are gated to upcoming Blocks B19–B25. The current Block B17–B18 release delivers verified bracket hierarchy, 7-game cards, Four Factors, and player series box-score tables.
+            Final box-score summaries remain available. Lineup, rotation and defensive tracking require separately admitted inputs.
           </div>
         </div>
       )}

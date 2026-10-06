@@ -151,7 +151,7 @@ export function decodeSearchParamsToQuery(
       n: windowN ?? 10
     };
   } else {
-    windowSpec = { kind: "season" };
+    windowSpec = { kind: windowRaw as WindowKind };
   }
 
   const name = get("name", "name") || null;
@@ -281,6 +281,7 @@ export const CONTEXT_PARAMS = [
   "beforeDate",
   "before_date",
   "window",
+  "windowN", "window_n", "fromDate", "from_date", "toDate", "to_date",
   "releaseId",
   "release_id",
   "finance_book_id", "finance_financial_season", "finance_known_at", "finance_effective_on",
@@ -296,11 +297,19 @@ export function buildPreservedContextUrl(
   const targetParams = new URLSearchParams(targetQuery || "");
 
   if (sourceParams) {
+    const aliases: Record<string, string> = {
+      release_id: "releaseId", before_date: "beforeDate", window_n: "windowN",
+      from_date: "fromDate", to_date: "toDate"
+    };
+    const normalized = new URLSearchParams();
     for (const param of CONTEXT_PARAMS) {
-      const val = sourceParams.get(param);
-      if (val && !targetParams.has(param)) {
-        targetParams.set(param, val);
-      }
+      const key = aliases[param] ?? param;
+      const val = sourceParams.get(key) ?? sourceParams.get(param);
+      if (val) normalized.set(key, val);
+    }
+    for (const [key, val] of normalized) {
+      const alias = Object.keys(aliases).find((name) => aliases[name] === key);
+      if (!targetParams.has(key) && !(alias && targetParams.has(alias))) targetParams.set(key, val);
     }
   }
 

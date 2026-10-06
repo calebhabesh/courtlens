@@ -58,9 +58,10 @@ export default async function PlayoffSeriesDetailPage({
   return (
     <>
       <ContextBar
+        allowedPhases={["playoffs"]}
         initialSeason={detail.season}
         initialPhase="playoffs"
-        initialBeforeDate={cutoffDate || "2026-06-30"}
+        initialBeforeDate={cutoffDate || detail.cutoff_date || undefined}
         sampleSize={detail.team1.games_played}
       />
 

@@ -240,7 +240,7 @@ export function CaseStudiesView() {
             >
               Reproducible Case Studies
             </span>
-            <span className="font-mono text-xs text-muted">Blocks B13, B35</span>
+
           </div>
           <h1 className="page-title">Flagship Research Case Studies</h1>
           <p className="page-subtitle">
@@ -259,7 +259,7 @@ export function CaseStudiesView() {
       </div>
 
       {/* Case Study Selector Tabs */}
-      <div className="filter-group" style={{ marginBottom: "1.5rem" }}>
+      <div className="toolbar" style={{ marginBottom: "1.5rem" }}>
         {CASE_STUDIES.map((c) => (
           <button
             key={c.id}
@@ -316,7 +316,7 @@ export function CaseStudiesView() {
             </span>
           </div>
 
-          <div className="table-responsive">
+          <div className="table-wrapper" role="region" aria-label="Case study observations" tabIndex={0}>
             <table className="data-table" style={{ width: "100%", textAlign: "left" }}>
               <thead>
                 <tr>

@@ -1,6 +1,8 @@
+import { buildPreservedContextUrl } from "@/lib/query-url";
 import Link from "next/link";
 
 export interface CapabilityNoticeProps {
+  contextParams?: Record<string, string>;
   featureId: string;
   featureTitle: string;
   canonicalRoute: string;
@@ -12,6 +14,7 @@ export interface CapabilityNoticeProps {
 }
 
 export function CapabilityNotice({
+  contextParams = {},
   featureId,
   featureTitle,
   canonicalRoute,
@@ -28,59 +31,12 @@ export function CapabilityNotice({
     { label: "Definitions & Methodology", href: "/methodology" },
   ]
 }: CapabilityNoticeProps) {
-  const statusLabel =
-    status === "gated"
-      ? "Gated Implementation"
-      : status === "in_progress"
-      ? "Under Construction"
-      : "Planned Block";
-
   return (
     <div className="workbench-content">
-      <div className="page-header">
-        <div>
-          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.25rem" }}>
-            <span className="font-mono text-xs text-muted">{featureId}</span>
-            <span className="replica-badge-gated">{statusLabel}</span>
-            <span className="font-mono text-xs text-muted">Target: {targetBlock}</span>
-          </div>
-          <h1 className="page-title">{featureTitle}</h1>
-          <p className="page-subtitle font-mono text-xs text-muted">{canonicalRoute}</p>
-        </div>
-      </div>
-
-      <div className="panel" style={{ padding: "1.5rem", marginBottom: "1.5rem" }}>
-        <h2 style={{ fontSize: "1.1rem", marginBottom: "0.5rem", color: "var(--accent)" }}>
-          Capability Specification &amp; Data Gates
-        </h2>
-        <p style={{ color: "var(--text)", lineHeight: 1.6, marginBottom: "1rem" }}>
-          {description}
-        </p>
-
-        <div className="notice-box" style={{ borderLeftColor: "var(--warning)", marginBottom: "1.25rem" }}>
-          <strong style={{ color: "var(--warning)" }}>Prerequisites &amp; Admitted Inputs:</strong>
-          <p style={{ marginTop: "0.25rem", color: "var(--text-muted)", fontSize: "0.85rem" }}>
-            {prerequisites}
-          </p>
-        </div>
-
-        <p className="text-xs text-muted" style={{ fontStyle: "italic" }}>
-          Per the CourtLoad Databallr replica implementation plan, destination routes do not render inert mockups or fabricate unverified outputs before their underlying warehouse and query blocks are admitted.
-        </p>
-      </div>
-
-      <div className="panel" style={{ padding: "1.25rem" }}>
-        <h3 style={{ fontSize: "0.95rem", marginBottom: "0.75rem", color: "var(--text)" }}>
-          Active Workbench Tools Available Now
-        </h3>
-        <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem" }}>
-          {alternativeRoutes.map((route) => (
-            <Link key={route.href} href={route.href} className="button button-small">
-              {route.label} →
-            </Link>
-          ))}
-        </div>
-      </div>
+      <div className="page-header"><div><h1 className="page-title">{featureTitle}</h1><p className="page-subtitle">{description}</p></div></div>
+      <section className="panel"><h2>Required source unavailable</h2><p>{prerequisites.replace(/\s*\(Blocks? [^)]+\)\.?/g, "")}</p><p>This tool requires verified inputs before it can return an analytical result.</p></section>
+      <section className="panel"><h2>Continue your research</h2><div className="toolbar">{alternativeRoutes.map(route => <Link key={route.href} href={buildPreservedContextUrl(route.href, new URLSearchParams(contextParams))} className="button button-small">{route.label}</Link>)}</div></section>
+      <details className="panel"><summary>Capability details</summary><p>{featureId} · {canonicalRoute} · {status} · {targetBlock}</p></details>
     </div>
   );
 }

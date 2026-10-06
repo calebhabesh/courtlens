@@ -10,12 +10,11 @@ async function tabTo(page: Page, selector: string) {
 
 test("shared-cutoff comparison keeps different target dates and missing context visible", async ({ page }) => {
   await page.goto("/compare");
-  await page.getByLabel("Player A").fill("Fixture");
-  await page.getByRole("button", { name: "Search", exact: true }).first().click();
-  await page.getByRole("button", { name: "Fixture Star" }).click();
-  await page.getByLabel("Player B").fill("Fixture");
-  await page.getByRole("button", { name: "Search", exact: true }).last().click();
-  await page.getByRole("button", { name: "Fixture Guard" }).click();
+  await page.waitForLoadState("networkidle");
+  await page.getByRole("combobox",{name:"Player A",exact:true}).fill("Fixture");
+  await page.getByRole("option").filter({hasText:"Fixture Star"}).click();
+  await page.getByRole("combobox",{name:"Player B",exact:true}).fill("Fixture");
+  await page.getByRole("option").filter({hasText:"Fixture Guard"}).click();
   await page.getByRole("button", { name: "Compare players" }).click();
 
   await expect(page).toHaveURL(/playerA=23&playerB=24/);
@@ -32,30 +31,22 @@ test("shared-cutoff comparison keeps different target dates and missing context 
 test("evaluation presents the no-promotion decision and failed build state", async ({ page }) => {
   await page.goto("/evaluation");
   await expect(page.getByRole("heading", { name: "Evaluation" })).toBeVisible();
-  await expect(page.getByText("No challenger promoted")).toBeVisible();
-  await expect(page.getByText("7.82", { exact: true })).toBeVisible();
-  await expect(page.getByText(/failed · 2026-09-21/)).toBeVisible();
+  await expect(page.getByText("No challenger promoted").filter({ visible: true })).toBeVisible();
+  await expect(page.getByText("7.82", { exact: true }).filter({ visible: true })).toBeVisible();
+  await expect(page.getByText(/failed · 2026-09-21/).filter({ visible: true })).toBeVisible();
 });
 
 test("comparison controls work by keyboard and fit a 375px viewport", async ({ page }) => {
   await page.setViewportSize({ width: 375, height: 812 });
   await page.goto("/compare");
+  await page.waitForLoadState("networkidle");
 
-  await tabTo(page, "#compare-query-0");
-  await page.keyboard.type("Fixture");
-  await page.keyboard.press("Tab");
-  await page.keyboard.press("Enter");
-  await page.getByRole("button", { name: "Fixture Star" }).waitFor();
-  await page.keyboard.press("Tab");
-  await page.keyboard.press("Enter");
-  await tabTo(page, "#compare-query-1");
-  await page.keyboard.type("Fixture");
-  await page.keyboard.press("Tab");
-  await page.keyboard.press("Enter");
-  await page.getByRole("button", { name: "Fixture Guard" }).waitFor();
-  await page.keyboard.press("Tab");
-  await page.keyboard.press("Tab");
-  await page.keyboard.press("Enter");
+  for(const label of ["Player A","Player B"]) {
+    await tabTo(page, `[role="combobox"][aria-label="${label}"]`);
+    await page.keyboard.type(label === "Player A" ? "Fixture Star" : "Fixture Guard");
+    await page.getByRole("option").first().waitFor();
+    await page.keyboard.press("ArrowDown");await page.keyboard.press("Enter");
+  }
   await tabTo(page, 'button[type="submit"]');
   await page.keyboard.press("Enter");
 
@@ -73,7 +64,7 @@ test("invalid date preserves selections and recovers to sparse history", async (
   );
 
   await expect(page.getByRole("heading", { name: "Unable to compare" })).toBeVisible();
-  await expect(page.getByText("Selected: Player 23")).toBeVisible();
+  await expect(page.getByRole("button",{name:"Remove Fixture Star from Player A",exact:true})).toBeVisible();
   await expect(page.getByLabel("Replay date")).toHaveValue("2023-01-09");
   await page.getByLabel("Replay date").selectOption("2023-01-02");
   await page.getByRole("button", { name: "Compare players" }).click();

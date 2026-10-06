@@ -318,7 +318,7 @@ export function WorkbenchPlayerProfile({
                 }}
               >
                 <h2 className="panel-title">Physical Anthropometry &amp; Draft Metadata</h2>
-                <span className="badge badge-accent">Block B14c</span>
+                <span className="badge badge-accent">Source-reported measurements</span>
                 {measurements.combine && <span className="badge">Draft Combine</span>}
                 {measurements.listed && <span className="badge badge-outline">Listed Roster</span>}
               </div>

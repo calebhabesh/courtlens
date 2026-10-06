@@ -4,6 +4,7 @@ import { useState } from "react";
 import { enqueueJob } from "@/lib/workbench-api";
 
 interface PortraitSettingsProps {
+  available?: boolean;
   totalCached: number;
   active: number;
   totalPlayers: number;
@@ -11,6 +12,7 @@ interface PortraitSettingsProps {
 }
 
 export function WorkbenchPortraitSettings({
+  available = true,
   totalCached,
   active,
   totalPlayers,
@@ -38,7 +40,7 @@ export function WorkbenchPortraitSettings({
     <div className="panel">
       <div className="panel-header">
         <div>
-          <h2 className="panel-title">Player Headshot Portrait Cache</h2>
+          <h2 className="panel-title">Player portraits</h2>
           <p className="text-muted text-xs" style={{ margin: "0.2rem 0 0" }}>
             Best-effort headshots cached locally by cryptographic SHA-256 hash. Missing photos never exclude players from analytics.
           </p>
@@ -49,7 +51,7 @@ export function WorkbenchPortraitSettings({
           onClick={handleAcquire}
           disabled={loading}
         >
-          {loading ? "Acquiring…" : "📸 Acquire More Portraits"}
+          {loading ? "Queuing…" : "Acquire more portraits"}
         </button>
       </div>
 
@@ -61,28 +63,28 @@ export function WorkbenchPortraitSettings({
 
       <div className="grid-4" style={{ marginBottom: "1rem" }}>
         <div className="stat-card">
-          <span className="stat-value font-mono">{active}</span>
+          <span className="stat-value font-mono">{available ? active : "Unknown"}</span>
           <span className="stat-label">Active Cached</span>
           <span className="stat-subtext">Verified image files</span>
         </div>
         <div className="stat-card">
-          <span className="stat-value font-mono">{totalPlayers}</span>
+          <span className="stat-value font-mono">{available ? totalPlayers : "Unknown"}</span>
           <span className="stat-label">Total Players</span>
           <span className="stat-subtext">In research dataset</span>
         </div>
         <div className="stat-card">
-          <span className="stat-value font-mono text-accent">{coveragePct}%</span>
+          <span className="stat-value font-mono text-accent">{available ? `${coveragePct}%` : "Unknown"}</span>
           <span className="stat-label">Measured Coverage</span>
           <span className="stat-subtext">Best-effort coverage</span>
         </div>
         <div className="stat-card">
-          <span className="stat-value font-mono">{totalCached}</span>
+          <span className="stat-value font-mono">{available ? totalCached : "Unknown"}</span>
           <span className="stat-label">Total Assets</span>
           <span className="stat-subtext">PNG format</span>
         </div>
       </div>
 
-      <div className="lineage-meta-box">
+      <details><summary>Portrait source and storage</summary><div className="lineage-meta-box">
         <div className="meta-row">
           <span className="meta-label">Local Cache Path</span>
           <span className="meta-value font-mono text-xs">{storagePath}</span>
@@ -95,7 +97,7 @@ export function WorkbenchPortraitSettings({
           <span className="meta-label">Serving Route</span>
           <span className="meta-value font-mono text-xs">/api/workbench/players/&#123;id&#125;/portrait</span>
         </div>
-      </div>
+      </div></details>
     </div>
   );
 }

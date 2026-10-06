@@ -4,7 +4,9 @@ import { openWorkbench } from "./workbench-navigation";
 test.describe("Workbench Dark Research Interface", () => {
   test("home opens Stats with dark theme, horizontal navigation, context and data", async ({ page }) => {
     await openWorkbench(page);
-    await expect(page).toHaveURL(/\/stats$/);
+    // Wait for streamed route hydration before interacting with the shell.
+    await page.waitForLoadState("networkidle");
+    await expect(page).toHaveURL(/\/stats\?/);
     await expect(page.getByRole("banner").getByRole("link", { name: "CourtLoad Research Workbench home" })).toContainText("COURTLOAD");
     const navigation = page.getByRole("navigation", { name: "Workspace Navigation" });
     await expect(navigation.getByRole("link", { name: "Stats", exact: true })).toBeVisible();
@@ -23,18 +25,20 @@ test.describe("Workbench Dark Research Interface", () => {
   });
 
   test("player explorer allows filtering and links to detail view", async ({ page }) => {
-    await page.goto("/players");
+    await openWorkbench(page, "/players");
+    await page.waitForLoadState("networkidle");
 
     await expect(page.locator("h1.page-title")).toHaveText("Player Explorer");
-    await expect(page.getByRole("button", { name: "Fixture Star", exact: true })).toBeVisible();
+    await expect(page.getByRole("link", { name: "Fixture Star", exact: true })).toBeVisible();
 
     // Filter by name
     const searchInput = page.getByLabel("Filter players by name");
     await searchInput.fill("Guard");
     await searchInput.press("Enter");
     await expect(page).toHaveURL(/name=Guard/);
+    await page.waitForLoadState("networkidle");
 
-    await expect(page.getByRole("button", { name: "Fixture Guard", exact: true })).toBeVisible();
+    await expect(page.getByRole("link", { name: "Fixture Guard", exact: true })).toBeVisible();
 
     // Navigate to player detail
     await page.getByRole("button", { name: "Open details for Fixture Guard" }).click();
@@ -44,7 +48,8 @@ test.describe("Workbench Dark Research Interface", () => {
   });
 
   test("player detail presents profile summaries, game logs, and lineage trigger", async ({ page }) => {
-    await page.goto("/players/23");
+    await openWorkbench(page, "/players/23");
+    await page.waitForLoadState("networkidle");
 
     await expect(page.locator("h1.player-identity-name")).toContainText("Fixture Star");
     await expect(page.getByText("Toronto Raptors").first()).toBeVisible();
@@ -62,6 +67,7 @@ test.describe("Workbench Dark Research Interface", () => {
 
   test("team research lists cohorts and navigates to team detail", async ({ page }) => {
     await page.goto("/teams");
+    await page.waitForLoadState("networkidle");
 
     await expect(page.locator("h1.page-title")).toHaveText("Team Explorer");
     await expect(page.getByText("Toronto Raptors")).toBeVisible();
@@ -77,7 +83,8 @@ test.describe("Workbench Dark Research Interface", () => {
   });
 
   test("comparison view displays head-to-head metrics without declaring forced winners", async ({ page }) => {
-    await page.goto("/compare?playerA=23&playerB=24");
+    await openWorkbench(page, "/compare?playerA=23&playerB=24");
+    await page.waitForLoadState("networkidle");
 
     await expect(page.locator("h1.page-title")).toHaveText("Compare Players");
     await expect(page.getByRole("link", { name: "Fixture Star" })).toBeVisible();
@@ -93,33 +100,34 @@ test.describe("Workbench Dark Research Interface", () => {
 
     await expect(page.locator("h1.page-title")).toHaveText("Points Forecasts & Protocol");
     await expect(page.locator("main").getByRole("heading", { name: "Active Forecast Policy" })).toBeVisible();
-    await expect(page.locator(".panel-header .badge:has-text('points-v1-prior_blend')")).toBeVisible();
+    await expect(page.locator(".panel-header .badge:has-text('points-v1-prior_blend')").filter({ visible: true })).toBeVisible();
 
     // Verify promotion decision banner and gates
-    await expect(page.getByText("Promotion Decision:")).toBeVisible();
-    await expect(page.getByText("DO_NOT_PROMOTE")).toBeVisible();
-    await expect(page.getByText("Gate 1: Validation Improvement >= 5%")).toBeVisible();
-    await expect(page.getByText("Gate 2: Final Paired Superiority")).toBeVisible();
+    await expect(page.getByText("Promotion Decision:").filter({ visible: true })).toBeVisible();
+    await expect(page.getByText("DO_NOT_PROMOTE").filter({ visible: true })).toBeVisible();
+    await expect(page.getByText("Gate 1: Validation Improvement >= 5%").filter({ visible: true })).toBeVisible();
+    await expect(page.getByText("Gate 2: Final Paired Superiority").filter({ visible: true })).toBeVisible();
 
     // Verify holdout performance table
-    await expect(page.getByText("Out-of-Time Performance on Holdout Block F")).toBeVisible();
+    await expect(page.getByText("Out-of-Time Performance on Holdout Block F").filter({ visible: true })).toBeVisible();
     await expect(page.locator("strong.font-mono:has-text('prior_blend')").first()).toBeVisible();
     await expect(page.locator("strong.font-mono:has-text('player_only')").first()).toBeVisible();
 
     // Verify slices table
-    await expect(page.getByText("Prespecified Out-of-Time Error Slices")).toBeVisible();
-    await expect(page.getByText("Schedule Rest").first()).toBeVisible();
+    await expect(page.getByText("Prespecified Out-of-Time Error Slices").filter({ visible: true })).toBeVisible();
+    await expect(page.getByText("Schedule Rest").first().filter({ visible: true })).toBeVisible();
 
     // Verify prospective issuance status and ledger table
-    await expect(page.getByText("Genuine Prospective Issuance Status")).toBeVisible();
-    await expect(page.getByText("Awaiting 2026-27 Tipoff")).toBeVisible();
-    await expect(page.getByText("Prospective Forecasts Ledger")).toBeVisible();
+    await expect(page.getByText("Genuine Prospective Issuance Status").filter({ visible: true })).toBeVisible();
+    await expect(page.getByText("Awaiting 2026-27 Tipoff").filter({ visible: true })).toBeVisible();
+    await expect(page.getByText("Prospective Forecasts Ledger").filter({ visible: true })).toBeVisible();
     await expect(page.getByRole("link", { name: "Fixture Star" })).toBeVisible();
   });
 
   test("dense dark research layout fits a 375px mobile viewport without horizontal overflow", async ({ page }) => {
     await page.setViewportSize({ width: 375, height: 667 });
-    await page.goto("/");
+    await openWorkbench(page);
+    await page.waitForLoadState("networkidle");
 
     const dimensions = await page.evaluate(() => ({
       scroll: document.documentElement.scrollWidth,
@@ -130,7 +138,7 @@ test.describe("Workbench Dark Research Interface", () => {
   });
 
   test("Ask drawer offers manual research and links to optional configuration", async ({ page }) => {
-    await openWorkbench(page);
+    await openWorkbench(page, "/stats?experience=manual");
     await page.getByRole("button", { name: "Ask", exact: true }).click();
     const dialog = page.getByRole("dialog", { name: "Research conversation" });
     await expect(dialog.getByRole("heading", { name: "Ask CourtLoad" })).toBeVisible();
@@ -141,7 +149,8 @@ test.describe("Workbench Dark Research Interface", () => {
     await page.keyboard.press("Escape");
     await expect(dialog).not.toBeVisible();
     await page.goto("/settings");
-    await expect(page.getByRole("heading", { name: "Optional AI Assistant (Gemini Adapter)" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Optional assistant" })).toBeVisible();
+    await page.getByText("Assistant configuration details",{exact:true}).click();
     await expect(page.getByText("Disabled; manual research available", { exact: true }).filter({ visible: true })).toBeVisible();
   });
 });

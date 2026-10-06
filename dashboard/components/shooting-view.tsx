@@ -3,8 +3,9 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
-import { queryLookup, runShooting } from "@/lib/workbench-api";
-import type { LookupItem } from "@/lib/types";
+import { runShooting } from "@/lib/workbench-api";
+import { CatalogScopeFields } from "./catalog-scope-fields";
+import { EntityField } from "./entity-picker";
 import type { ShotProfile, ShootingInput, ShootingOperation, ShootingResponse } from "@/lib/shooting-types";
 import { courtPosition, resolvedShooting, shootingCsv, shootingNumber as n, shootingPercent as pct, shootingUrl, validateShooting } from "@/lib/shooting";
 
@@ -32,10 +33,6 @@ export function ShootingView({ initialOperation = "shot-profile-peers" }: { init
   const [attempts, setAttempts] = useState(params.get("min_attempts") || "100");
   const [games, setGames] = useState(params.get("min_games") || "5");
   const [limit, setLimit] = useState(params.get("limit") || "10");
-  const [query, setQuery] = useState("");
-  const [matches, setMatches] = useState<LookupItem[]>([]);
-  const [target, setTarget] = useState("player");
-  const [lookupError, setLookupError] = useState("");
   const [result, setResult] = useState<ShootingResponse | null>(null);
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
@@ -65,16 +62,6 @@ export function ShootingView({ initialOperation = "shot-profile-peers" }: { init
   const active = useRef<AbortController | null>(null);
   const court = useRef<SVGSVGElement | null>(null);
   useEffect(() => () => active.current?.abort(), []);
-  useEffect(() => {
-    const controller = new AbortController();
-    const timer = setTimeout(() => {
-      if (query.trim().length < 2) { setMatches([]); return; }
-      queryLookup({ query, kinds: ["player"], season: season || undefined, releaseId: release || undefined, limit: 8, signal: controller.signal })
-        .then(data => { if (!controller.signal.aborted) { setMatches(data.items); setLookupError(""); } })
-        .catch(() => { if (!controller.signal.aborted) { setMatches([]); setLookupError("Player search unavailable. Enter a canonical ID below."); } });
-    }, 250);
-    return () => { clearTimeout(timer); controller.abort(); };
-  }, [query, release, season]);
   async function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault(); active.current?.abort();
     const controller = new AbortController(); active.current = controller;
@@ -128,21 +115,15 @@ export function ShootingView({ initialOperation = "shot-profile-peers" }: { init
     <form className="table-card floor-form" onSubmit={submit}>
       {initialOperation === "shot-profile-peers" && <div className="floor-actions" role="group" aria-label="Shooting tabs">{(["shot-profile", "shot-profile-peers"] as const).map(op => <button type="button" aria-pressed={operation === op} key={op} onClick={() => { active.current?.abort(); setBusy(false); setOperation(op); setResult(null); setError(""); }}>{titles[op]}</button>)}</div>}
       <div className="floor-controls">
-        <label>Player name search<input value={query} onChange={e => setQuery(e.target.value)} autoComplete="off" /></label>
-        {operation === "matchups" && <label>Use search result for<select value={target} onChange={e => setTarget(e.target.value)}><option value="player">Offensive player</option><option value="defender">Defender</option></select></label>}
-        <label>{operation === "matchups" ? "Offensive player ID" : "Player ID"}<input value={player} onChange={e => setPlayer(e.target.value)} required /></label>
-        {operation === "matchups" && <label>Defender ID (optional)<input value={defender} onChange={e => setDefender(e.target.value)} /></label>}
+        <EntityField label={operation === "matchups" ? "Offensive player" : "Player"} value={player} required releaseId={release || null} season={season || null} phase={phase || null} beforeDate={before || null} onChange={setPlayer} />
+        {operation === "matchups" && <EntityField label="Defender (optional)" value={defender} releaseId={release || null} season={season || null} phase={phase || null} beforeDate={before || null} onChange={setDefender} />}
         <label>Release ID<input value={release} onChange={e => setRelease(e.target.value)} placeholder="Resolve published release" /></label>
-        <label>Season<input value={season} onChange={e => setSeason(e.target.value)} placeholder="Resolve default season" /></label>
-        <label>Phase<select value={phase} onChange={e => setPhase(e.target.value)}><option value="">Resolve default phase</option>{["preseason", "regular_season", "play_in", "playoffs", "cup_final", "summer_league"].map(p => <option key={p} value={p}>{p}</option>)}</select></label>
+        <CatalogScopeFields release={release || undefined} season={season} phase={phase} before={before} onSeason={setSeason} onPhase={setPhase} onBefore={setBefore} />
         <label>Lower date (inclusive)<input type="date" value={lower} onChange={e => setLower(e.target.value)} /></label>
-        <label>Before date (exclusive)<input type="date" value={before} onChange={e => setBefore(e.target.value)} /></label>
         <label>Minimum attempts<input type="number" min={1} max={10000} step={1} value={attempts} onChange={e => setAttempts(e.target.value)} /></label>
         <label>Minimum games<input type="number" min={1} max={100} step={1} value={games} onChange={e => setGames(e.target.value)} /></label>
         {operation === "shot-profile-peers" && <label>Peer limit<input type="number" min={1} max={25} value={limit} onChange={e => setLimit(e.target.value)} /></label>}
       </div>
-      {matches.length > 0 && <ul aria-label="Player search results">{matches.map(item => <li key={item.canonical_id}><button type="button" onClick={() => { if (target === "defender" && operation === "matchups") setDefender(item.canonical_id); else setPlayer(item.canonical_id); setQuery(""); setMatches([]); }}>{item.display_name} ({item.canonical_id})</button></li>)}</ul>}
-      {lookupError && <p role="status">{lookupError}</p>}
       <p className="text-muted">Blank scope fields resolve through the retained release. Profile/peer gates use located attempts; aftermath gates use mapped anchors per branch. Assignment exposure is descriptive. Dense league scopes can exceed the 50,000-row input bound: narrow the dates.</p>
       <div className="floor-actions"><button type="submit" disabled={busy}>{busy ? "Loading…" : "Run shooting analysis"}</button>{busy && <button type="button" onClick={() => { active.current?.abort(); setBusy(false); }}>Cancel</button>}</div>
       {error && <p role="alert">{error}</p>}

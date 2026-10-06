@@ -1,10 +1,12 @@
 "use client";
+import { Icon } from "./ui/icon";
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { PlayerPortrait } from "./player-portrait";
-import { GlobalLookup } from "./global-lookup";
+import { buildPreservedContextUrl } from "@/lib/query-url";
+import { LookupInput } from "./lookup-input";
 import { useWorkspace } from "@/lib/workspace-context";
 import { exportSvgAsPng, exportSvgFile } from "@/lib/image-export";
 import {
@@ -28,6 +30,8 @@ export function PlayerShowcaseView({
   beforeDate,
   releaseId
 }: PlayerShowcaseViewProps) {
+  const searchParams = useSearchParams();
+  const [lookupText, setLookupText] = useState("");
   const router = useRouter();
   const [playersList] = useState<PlayerResearchItem[]>(initialPlayers);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -153,14 +157,16 @@ export function PlayerShowcaseView({
 
           {/* Quick Lookup to Add Player */}
           <div style={{ width: "240px" }}>
-            <GlobalLookup
+            <LookupInput label="Add or jump to player" value={lookupText} onChange={setLookupText}
+              kinds={["player"]}
               releaseId={releaseId}
               season={season}
               placeholder="Add or jump to player..."
               onSelect={(item) => {
+                setLookupText("");
                 if (item.kind === "player") {
-                  router.push(
-                    `/showcase?playerId=${item.id}&season=${season}&phase=${phase}&beforeDate=${beforeDate}`
+                  router.push(buildPreservedContextUrl(
+                    `/showcase?playerId=${item.canonical_id}&season=${season}&phase=${phase}&beforeDate=${beforeDate}`, searchParams)
                   );
                 }
               }}
@@ -173,7 +179,7 @@ export function PlayerShowcaseView({
           {/* Preset Focus Selector */}
           <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
             <span className="text-xs text-muted uppercase font-mono font-semibold">Focus:</span>
-            <div className="segmented-control" role="group" aria-label="Showcase metric focus">
+            <div className="segmented-control showcase-focus" role="group" aria-label="Showcase metric focus">
               {SHOWCASE_PRESETS.map((preset) => (
                 <button
                   key={preset.id}
@@ -188,7 +194,7 @@ export function PlayerShowcaseView({
           </div>
 
           {/* Carousel Controls */}
-          <div style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
+          <div style={{ display: "flex", alignItems: "center", flexWrap: "wrap", gap: "0.4rem" }}>
             <button
               type="button"
               className="button button-small"
@@ -196,7 +202,7 @@ export function PlayerShowcaseView({
               aria-label="Previous player card (ArrowLeft)"
               title="Previous card (ArrowLeft)"
             >
-              ◀ Prev
+              <Icon name="left" />Previous
             </button>
 
             <button
@@ -206,7 +212,7 @@ export function PlayerShowcaseView({
               aria-label={isPlaying ? "Pause slideshow" : "Play auto-advance slideshow"}
               title="Auto-advance slideshow (Spacebar to toggle)"
             >
-              {isPlaying ? "❚❚ Pause" : "▶ Play"}
+              <Icon name={isPlaying ? "pause" : "play"} />{isPlaying ? "Pause" : "Play"}
             </button>
 
             <button
@@ -216,7 +222,7 @@ export function PlayerShowcaseView({
               aria-label="Next player card (ArrowRight)"
               title="Next card (ArrowRight)"
             >
-              Next ▶
+              Next<Icon name="right" />
             </button>
 
             <span className="text-xs font-mono text-muted" style={{ margin: "0 0.4rem" }}>
@@ -225,7 +231,7 @@ export function PlayerShowcaseView({
           </div>
 
           {/* Export Actions */}
-          <div style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
+          <div style={{ display: "flex", alignItems: "center", flexWrap: "wrap", gap: "0.4rem" }}>
             <button
               type="button"
               className="button button-small"
@@ -249,7 +255,7 @@ export function PlayerShowcaseView({
       </div>
 
       {/* Main Showcase Stage */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 340px", gap: "1.5rem", alignItems: "start" }}>
+      <div className="responsive-pair" style={{ display: "grid", gridTemplateColumns: "minmax(0, 1fr) 340px", gap: "1.5rem", alignItems: "start" }}>
         {/* Visual SVG Card Stage */}
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
           <div

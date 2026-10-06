@@ -37,6 +37,7 @@ export interface PresetDefinition {
   label: string;
   description: string;
   columns: ColumnDefinition[];
+  groupLabels?: Record<string, string>;
   gated?: {
     block: string;
     reason: string;
@@ -89,13 +90,13 @@ export const COUNTING_MODES: Array<{
   {
     id: "per_75",
     label: "Per 75",
-    tooltip: "Per 75 on-court team possessions (gated by B19/B20 possession warehouse)",
+    tooltip: "Per 75 on-court team possessions; requires admitted inputs",
     gated: true
   },
   {
     id: "per_100",
     label: "Per 100",
-    tooltip: "Per 100 on-court team possessions (gated by B19/B20 possession warehouse)",
+    tooltip: "Per 100 on-court team possessions; requires admitted inputs",
     gated: true
   }
 ];
@@ -105,10 +106,10 @@ export const IDENTITY_MODES: Array<{
   label: string;
   tooltip: string;
 }> = [
-  { id: "photos", label: "Photos", tooltip: "Show player portraits with fallback initials" },
-  { id: "logos", label: "Logos", tooltip: "Show team tricode badge and player name" },
-  { id: "initials", label: "Initials", tooltip: "Show compact circular initials badge" },
-  { id: "none", label: "None", tooltip: "Text-only compact layout" }
+  { id: "photos", label: "Photos", tooltip: "Repeat player portraits between metric groups" },
+  { id: "logos", label: "Logos", tooltip: "Repeat represented-team logos between metric groups" },
+  { id: "initials", label: "Initials", tooltip: "Repeat player initials between metric groups" },
+  { id: "none", label: "None", tooltip: "Hide recurring guides; keep primary identity" }
 ];
 
 export function formatStatValue(val: number | null | undefined, digits = 1): string {
@@ -129,6 +130,7 @@ export function formatPctValue(val: number | null | undefined): string {
 export const STATS_PRESETS: PresetDefinition[] = [
   {
     id: "overview",
+    groupLabels: { Participation: "Profile", Scoring: "Counting", Rebounding: "Counting", Playmaking: "Counting" },
     label: "Overview",
     description: "Core box-score volume, conventional averages, and efficiency benchmarks.",
     columns: [
@@ -370,7 +372,7 @@ export const STATS_PRESETS: PresetDefinition[] = [
   {
     id: "impact",
     label: "Impact",
-    description: "Composite impact and fantasy production proxies. RAPM models require external model registration (B25–B26).",
+    description: "Composite impact and fantasy production proxies. RAPM models require external model registration.",
     gated: {
       block: "B25–B26",
       reason: "Multi-year RAPM and composite impact models require stint design matrix regression and out-of-time evaluation.",
@@ -404,7 +406,7 @@ export const STATS_PRESETS: PresetDefinition[] = [
   {
     id: "sixfactor",
     label: "Six Factor",
-    description: "Box-score factor proxies. Player Six-Factor RAPM requires stint ridge regressions (B20, B26).",
+    description: "Box-score factor proxies. Player Six-Factor RAPM requires stint ridge regressions.",
     gated: {
       block: "B20, B26",
       reason: "Player Six-Factor RAPM decomposes shooting, turnover, and offensive rebound rates via stint ridge regression.",
@@ -485,9 +487,9 @@ export const ALL_CATALOG_METRICS: Record<string, ColumnDefinition> = {
   pf_per_36: { key: "pf_per_36", label: "PF/36", group: "Fouls", num: true, sortMetric: "pf_per_36", format: (v) => formatStatValue(v, 1), tooltip: "Personal Fouls Per 36 Minutes" },
 
   // Gated / Unavailable Metrics
-  rapm: { key: "rapm", label: "RAPM", group: "Impact", num: true, sortMetric: "rapm", tooltip: "Regularized Adjusted Plus-Minus (gated by B25/B26)", format: () => "—" },
-  onoff_net_rating: { key: "onoff_net_rating", label: "ON/OFF NET", group: "Impact", num: true, sortMetric: "onoff_net_rating", tooltip: "On-Off Net Rating (gated by B20/B21)", format: () => "—" },
-  six_factor_impact: { key: "six_factor_impact", label: "SIX FACTOR", group: "Impact", num: true, sortMetric: "six_factor_impact", tooltip: "Six-Factor RAPM Impact (gated by B25/B26)", format: () => "—" }
+  rapm: { key: "rapm", label: "RAPM", group: "Impact", num: true, sortMetric: "rapm", tooltip: "Regularized Adjusted Plus-Minus; requires admitted inputs", format: () => "—" },
+  onoff_net_rating: { key: "onoff_net_rating", label: "ON/OFF NET", group: "Impact", num: true, sortMetric: "onoff_net_rating", tooltip: "On-Off Net Rating; requires admitted inputs", format: () => "—" },
+  six_factor_impact: { key: "six_factor_impact", label: "SIX FACTOR", group: "Impact", num: true, sortMetric: "six_factor_impact", tooltip: "Six-Factor RAPM Impact; requires admitted inputs", format: () => "—" }
 };
 
 export function buildCustomViewPreset(customView: CustomViewDefinition): PresetDefinition {
@@ -615,4 +617,16 @@ export function calculateCohortPercentiles(
   }
 
   return result;
+}
+
+/** Contiguous runs preserve custom column order, including repeated group names. */
+export function tableGroups(preset: PresetDefinition): Array<HeaderGroup & { start: number }> {
+  const groups: Array<HeaderGroup & { start: number }> = [];
+  preset.columns.forEach((column, index) => {
+    const label = preset.groupLabels?.[column.group] ?? column.group;
+    const last = groups.at(-1);
+    if (last?.label === label) last.colSpan++;
+    else groups.push({ label, colSpan: 1, start: index });
+  });
+  return groups;
 }

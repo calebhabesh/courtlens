@@ -2,6 +2,8 @@
 
 import { useState, useMemo, useCallback } from "react";
 import Link from "next/link";
+import { SortHeader } from "./table-ui";
+import { TeamLogo } from "./team-logo";
 import type { TeamResearchItem } from "@/lib/types";
 
 export type ExplorerViewMode = "table" | "cards" | "scatter";
@@ -363,31 +365,21 @@ export function TeamExplorerView({
                 <span className="badge font-mono text-xs">{group.teams.length} teams</span>
               </div>
 
-              <div className="table-wrapper">
+              <div className="table-wrapper research-table-scroll" role="region" aria-label="Team statistics scroll area" tabIndex={0}>
                 <table className="data-table" aria-label={`${group.groupName} table`}>
                   <thead>
                     <tr>
                       <th style={{ width: "36px" }}>#</th>
                       <th>Franchise</th>
-                      <th className="num" style={{ cursor: "pointer" }} onClick={() => handleSort("wins")}>
-                        W-L {sortField === "wins" ? (sortDirection === "desc" ? "▼" : "▲") : ""}
-                      </th>
-                      <th className="num" style={{ cursor: "pointer" }} onClick={() => handleSort("win_pct")}>
-                        Win% {sortField === "win_pct" ? (sortDirection === "desc" ? "▼" : "▲") : ""}
-                      </th>
+                      <SortHeader className="num" label="W-L" metric="wins" active={sortField === "wins"} direction={sortDirection} onSort={handleSort} />
+                      <SortHeader className="num" label="Win%" metric="win_pct" active={sortField === "win_pct"} direction={sortDirection} onSort={handleSort} />
 
                       {/* Overview Columns */}
                       {tablePreset === "overview" && (
                         <>
-                          <th className="num" style={{ cursor: "pointer" }} onClick={() => handleSort("ppg")}>
-                            PPG {sortField === "ppg" ? (sortDirection === "desc" ? "▼" : "▲") : ""}
-                          </th>
-                          <th className="num" style={{ cursor: "pointer" }} onClick={() => handleSort("opp_ppg")}>
-                            Opp PPG {sortField === "opp_ppg" ? (sortDirection === "desc" ? "▼" : "▲") : ""}
-                          </th>
-                          <th className="num" style={{ cursor: "pointer" }} onClick={() => handleSort("net_margin")}>
-                            Net Diff {sortField === "net_margin" ? (sortDirection === "desc" ? "▼" : "▲") : ""}
-                          </th>
+                          <SortHeader className="num" label="PPG" metric="ppg" active={sortField === "ppg"} direction={sortDirection} onSort={handleSort} />
+                          <SortHeader className="num" label="Opp PPG" metric="opp_ppg" active={sortField === "opp_ppg"} direction={sortDirection} onSort={handleSort} />
+                          <SortHeader className="num" label="Net Diff" metric="net_margin" active={sortField === "net_margin"} direction={sortDirection} onSort={handleSort} />
                           <th className="num">FG%</th>
                           <th className="num">Opp FG%</th>
                           <th className="num">3P%</th>
@@ -399,36 +391,20 @@ export function TeamExplorerView({
                       {/* Offensive Four Factors Columns */}
                       {tablePreset === "four_factors_off" && (
                         <>
-                          <th className="num" style={{ cursor: "pointer" }} onClick={() => handleSort("off_rating")}>
-                            ORTG {sortField === "off_rating" ? (sortDirection === "desc" ? "▼" : "▲") : ""}
-                          </th>
-                          <th className="num" style={{ cursor: "pointer" }} onClick={() => handleSort("pace")}>
-                            Pace {sortField === "pace" ? (sortDirection === "desc" ? "▼" : "▲") : ""}
-                          </th>
-                          <th className="num" style={{ cursor: "pointer" }} onClick={() => handleSort("efg_pct")}>
-                            eFG% (40%) {sortField === "efg_pct" ? (sortDirection === "desc" ? "▼" : "▲") : ""}
-                          </th>
-                          <th className="num" style={{ cursor: "pointer" }} onClick={() => handleSort("tov_pct")}>
-                            TOV% (25%) {sortField === "tov_pct" ? (sortDirection === "desc" ? "▼" : "▲") : ""}
-                          </th>
-                          <th className="num" style={{ cursor: "pointer" }} onClick={() => handleSort("oreb_pct")}>
-                            ORB% (20%) {sortField === "oreb_pct" ? (sortDirection === "desc" ? "▼" : "▲") : ""}
-                          </th>
-                          <th className="num" style={{ cursor: "pointer" }} onClick={() => handleSort("ftr")}>
-                            FTR (15%) {sortField === "ftr" ? (sortDirection === "desc" ? "▼" : "▲") : ""}
-                          </th>
+                          <SortHeader className="num" label="ORTG" metric="off_rating" active={sortField === "off_rating"} direction={sortDirection} onSort={handleSort} />
+                          <SortHeader className="num" label="Pace" metric="pace" active={sortField === "pace"} direction={sortDirection} onSort={handleSort} />
+                          <SortHeader className="num" label="eFG% (40%)" metric="efg_pct" active={sortField === "efg_pct"} direction={sortDirection} onSort={handleSort} />
+                          <SortHeader className="num" label="TOV% (25%)" metric="tov_pct" active={sortField === "tov_pct"} direction={sortDirection} onSort={handleSort} />
+                          <SortHeader className="num" label="ORB% (20%)" metric="oreb_pct" active={sortField === "oreb_pct"} direction={sortDirection} onSort={handleSort} />
+                          <SortHeader className="num" label="FTR (15%)" metric="ftr" active={sortField === "ftr"} direction={sortDirection} onSort={handleSort} />
                         </>
                       )}
 
                       {/* Defensive Four Factors Columns */}
                       {tablePreset === "four_factors_def" && (
                         <>
-                          <th className="num" style={{ cursor: "pointer" }} onClick={() => handleSort("def_rating")}>
-                            DRTG {sortField === "def_rating" ? (sortDirection === "desc" ? "▼" : "▲") : ""}
-                          </th>
-                          <th className="num" style={{ cursor: "pointer" }} onClick={() => handleSort("opp_efg_pct")}>
-                            Opp eFG% {sortField === "opp_efg_pct" ? (sortDirection === "desc" ? "▼" : "▲") : ""}
-                          </th>
+                          <SortHeader className="num" label="DRTG" metric="def_rating" active={sortField === "def_rating"} direction={sortDirection} onSort={handleSort} />
+                          <SortHeader className="num" label="Opp eFG%" metric="opp_efg_pct" active={sortField === "opp_efg_pct"} direction={sortDirection} onSort={handleSort} />
                           <th className="num">Opp TOV%</th>
                           <th className="num">Opp ORB%</th>
                           <th className="num">Opp FTR</th>
@@ -438,18 +414,10 @@ export function TeamExplorerView({
                       {/* All Ratings & Factors Columns */}
                       {tablePreset === "all_ratings" && (
                         <>
-                          <th className="num" style={{ cursor: "pointer" }} onClick={() => handleSort("off_rating")}>
-                            ORTG {sortField === "off_rating" ? (sortDirection === "desc" ? "▼" : "▲") : ""}
-                          </th>
-                          <th className="num" style={{ cursor: "pointer" }} onClick={() => handleSort("def_rating")}>
-                            DRTG {sortField === "def_rating" ? (sortDirection === "desc" ? "▼" : "▲") : ""}
-                          </th>
-                          <th className="num" style={{ cursor: "pointer" }} onClick={() => handleSort("net_rating")}>
-                            Net {sortField === "net_rating" ? (sortDirection === "desc" ? "▼" : "▲") : ""}
-                          </th>
-                          <th className="num" style={{ cursor: "pointer" }} onClick={() => handleSort("pace")}>
-                            Pace {sortField === "pace" ? (sortDirection === "desc" ? "▼" : "▲") : ""}
-                          </th>
+                          <SortHeader className="num" label="ORTG" metric="off_rating" active={sortField === "off_rating"} direction={sortDirection} onSort={handleSort} />
+                          <SortHeader className="num" label="DRTG" metric="def_rating" active={sortField === "def_rating"} direction={sortDirection} onSort={handleSort} />
+                          <SortHeader className="num" label="Net" metric="net_rating" active={sortField === "net_rating"} direction={sortDirection} onSort={handleSort} />
+                          <SortHeader className="num" label="Pace" metric="pace" active={sortField === "pace"} direction={sortDirection} onSort={handleSort} />
                           <th className="num">Off eFG%</th>
                           <th className="num">Def eFG%</th>
                           <th className="num">Off TOV%</th>
@@ -474,20 +442,7 @@ export function TeamExplorerView({
                           <td className="font-mono text-muted text-xs">{idx + 1}</td>
                           <td>
                             <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-                              <span
-                                className="font-mono font-bold text-accent"
-                                style={{
-                                  display: "inline-block",
-                                  width: "36px",
-                                  textAlign: "center",
-                                  background: "var(--surface-raised)",
-                                  padding: "0.15rem 0.3rem",
-                                  borderRadius: "4px",
-                                  fontSize: "0.8rem",
-                                }}
-                              >
-                                {t.tricode}
-                              </span>
+                              <TeamLogo team={t.tricode} size={32} />
                               <Link
                                 href={`/teams/${t.team_id}?season=${season}&phase=${phase}&beforeDate=${beforeDate}`}
                                 className="font-semibold text-accent"
@@ -711,19 +666,7 @@ export function TeamExplorerView({
                     >
                       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
                         <div>
-                          <span
-                            className="font-mono font-bold text-accent"
-                            style={{
-                              fontSize: "1.1rem",
-                              background: "var(--surface-raised)",
-                              padding: "0.2rem 0.5rem",
-                              borderRadius: "4px",
-                              display: "inline-block",
-                              marginBottom: "0.3rem",
-                            }}
-                          >
-                            {t.tricode}
-                          </span>
+                          <TeamLogo team={t.tricode} size={32} />
                           <h3 style={{ fontSize: "1rem", fontWeight: 700, margin: 0 }}>
                             <Link
                               href={`/teams/${t.team_id}?season=${season}&phase=${phase}&beforeDate=${beforeDate}`}
