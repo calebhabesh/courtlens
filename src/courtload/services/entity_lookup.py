@@ -5,17 +5,21 @@ from __future__ import annotations
 import threading
 import time
 from collections import OrderedDict
+from datetime import date
 from typing import Any
 
-from sqlalchemy import func, select
+from fastapi import HTTPException
+from sqlalchemy import func, or_, select
 from sqlalchemy.orm import Session
 
 from courtload.api.workbench_schemas import (
     LookupAvailability,
     LookupItem,
     LookupResponse,
+    LookupTeamAssociation,
     QueryNormalizationInfo,
 )
+from courtload.archive_models import ArchiveDataset
 from courtload.domain.entity_lookup import (
     LOOKUP_CATALOG_VERSION,
     LOOKUP_NORMALIZATION_VERSION,
@@ -30,14 +34,21 @@ from courtload.domain.entity_lookup import (
     score_entity_match,
     tokenize_lookup_text,
 )
-from courtload.domain.teams import NBA_TEAMS
-from courtload.workbench_models import WorkbenchIdentity, WorkbenchPlayerGame
+from courtload.domain.teams import NBA_TEAMS, get_team_info, resolve_team_tricode
+from courtload.warehouse_models import PublishedSnapshot, ServingSnapshot
+from courtload.workbench_models import (
+    WorkbenchDataset,
+    WorkbenchIdentity,
+    WorkbenchPlayerGame,
+    WorkbenchReleaseBinding,
+)
 
 # Bounded LRU cache capacity for warm query responses
 LOOKUP_CACHE_MAX_ENTRIES = 1024
 
 _index_lock = threading.RLock()
 _indices_by_dataset: dict[str, list[IndexedEntity]] = {}
+_association_cache: OrderedDict[tuple[Any, ...], LookupTeamAssociation] = OrderedDict()
 _response_cache: OrderedDict[tuple[Any, ...], LookupResponse] = OrderedDict()
 
 
@@ -46,6 +57,42 @@ def clear_lookup_caches() -> None:
     with _index_lock:
         _indices_by_dataset.clear()
         _response_cache.clear()
+        _association_cache.clear()
+
+
+def resolve_lookup_binding(
+    session: Session, release_id: str | None
+) -> tuple[str | None, str | None]:
+    """Resolve identity dataset through metadata only; typing never computes coverage.
+
+    Resolve the publication pointer each time so a pointer swap invalidates scope.
+    An unpublished installation can still discover identities/pages without an
+    analytical team association. Explicit invalid releases never fall back.
+    """
+    target = release_id
+    if target is None:
+        pointer = session.get(PublishedSnapshot, "public")
+        if pointer is None:
+            return None, None
+        target = pointer.snapshot_id
+    binding = session.scalar(
+        select(WorkbenchReleaseBinding).where(
+            or_(
+                WorkbenchReleaseBinding.snapshot_id == target,
+                WorkbenchReleaseBinding.id == target,
+            )
+        )
+    )
+    dataset = session.get(WorkbenchDataset, binding.dataset_id if binding else target)
+    if dataset is not None:
+        return target, dataset.id
+    snapshot = session.get(ServingSnapshot, target)
+    if snapshot is not None:
+        return target, snapshot.dataset_id
+    archive = session.get(ArchiveDataset, target)
+    if archive is not None:
+        return target, archive.id
+    raise HTTPException(status_code=404, detail="snapshot or dataset not found")
 
 
 def build_entity_index(session: Session, dataset_id: str | None = None) -> list[IndexedEntity]:
@@ -106,7 +153,7 @@ def build_entity_index(session: Session, dataset_id: str | None = None) -> list[
         latest_team_id = summary.get("latest_team_id")
         latest_tricode = None
         if latest_team_id:
-            team_info = NBA_TEAMS.get(latest_team_id)
+            team_info = get_team_info(latest_team_id)
             if team_info:
                 latest_tricode = team_info.tricode
 
@@ -216,12 +263,127 @@ def get_or_build_entity_index(
         return index
 
 
+def scoped_team_associations(
+    session: Session,
+    dataset_id: str | None,
+    season: str | None,
+    phase: str | None,
+    before_date: date | None,
+    player_ids: list[str],
+    window: str = "season",
+) -> dict[str, LookupTeamAssociation]:
+    """Cache observed associations per entity and immutable scope; query at most 20 players.
+
+    Scoped results include every represented team. Unscoped results include all teams
+    tied on the last observed appearance date, without claiming a current roster.
+    Unknown/historical abbreviations remain literal; no franchise migration is inferred.
+    """
+    if dataset_id is None:
+        return {}
+    scope = (dataset_id, season, phase, before_date, window)
+    with _index_lock:
+        result = {}
+        for player_id in player_ids:
+            key = (*scope, player_id)
+            if key in _association_cache:
+                _association_cache.move_to_end(key)
+                result[player_id] = _association_cache[key]
+        missing = [player_id for player_id in player_ids if player_id not in result]
+        if not missing:
+            return result
+        query = select(
+            WorkbenchPlayerGame.player_id,
+            WorkbenchPlayerGame.team_id,
+            func.max(WorkbenchPlayerGame.game_date),
+        ).where(
+            WorkbenchPlayerGame.appearance == "appeared",
+            WorkbenchPlayerGame.player_id.in_(missing),
+        )
+        if dataset_id is not None:
+            query = query.where(WorkbenchPlayerGame.dataset_id == dataset_id)
+        if season is not None:
+            query = query.where(WorkbenchPlayerGame.season == season)
+        if phase is not None:
+            query = query.where(WorkbenchPlayerGame.phase == phase)
+        if before_date is not None:
+            query = query.where(WorkbenchPlayerGame.game_date < before_date)
+        if window in ("last_5", "last_10"):
+            # Bounded comparison identity follows the same appearance ordering.
+            conditions = query.whereclause
+            assert conditions is not None
+            ranked = (
+                select(
+                    WorkbenchPlayerGame.player_id,
+                    WorkbenchPlayerGame.team_id,
+                    WorkbenchPlayerGame.game_date,
+                    func.row_number()
+                    .over(
+                        partition_by=WorkbenchPlayerGame.player_id,
+                        order_by=(
+                            WorkbenchPlayerGame.game_date.desc(),
+                            WorkbenchPlayerGame.game_id.desc(),
+                        ),
+                    )
+                    .label("appearance_rank"),
+                )
+                .where(conditions)
+                .subquery()
+            )
+            query = (
+                select(
+                    ranked.c.player_id,
+                    ranked.c.team_id,
+                    func.max(ranked.c.game_date),
+                )
+                .where(ranked.c.appearance_rank <= (5 if window == "last_5" else 10))
+                .group_by(
+                    ranked.c.player_id,
+                    ranked.c.team_id,
+                )
+            )
+        else:
+            query = query.group_by(WorkbenchPlayerGame.player_id, WorkbenchPlayerGame.team_id)
+        scoped = any(value is not None for value in (season, phase, before_date))
+        grouped: dict[str, list[tuple[str, date]]] = {}
+        for player_id, team_id, latest in session.execute(query).all():
+            grouped.setdefault(player_id, []).append((team_id, latest))
+        for player_id in missing:
+            rows = grouped.get(player_id, [])
+            if not rows:
+                result[player_id] = LookupTeamAssociation(
+                    basis="selected_scope" if scoped else "last_observed",
+                    season=season,
+                    phase=phase,
+                    before_date=before_date,
+                )
+                continue
+            latest = max(day for _, day in rows)
+            teams = sorted(
+                {resolve_team_tricode(team) for team, day in rows if scoped or day == latest}
+            )
+            result[player_id] = LookupTeamAssociation(
+                basis="selected_scope" if scoped else "last_observed",
+                teams=teams,
+                observed_through=latest,
+                season=season,
+                phase=phase,
+                before_date=before_date,
+            )
+        for player_id in missing:
+            if len(_association_cache) >= LOOKUP_CACHE_MAX_ENTRIES:
+                _association_cache.popitem(last=False)
+            _association_cache[(*scope, player_id)] = result[player_id]
+        return result
+
+
 def lookup_entities(
     session: Session,
     query: str = "",
     release_id: str | None = None,
     dataset_id: str | None = None,
     season: str | None = None,
+    phase: str | None = None,
+    before_date: date | None = None,
     kinds: list[str] | None = None,
     limit: int = 10,
 ) -> LookupResponse:
@@ -239,6 +401,8 @@ def lookup_entities(
         dataset_id,
         release_id,
         season,
+        phase,
+        before_date,
         tuple(sorted(allowed_kinds)),
         norm_q,
         clamped_limit,
@@ -293,7 +457,11 @@ def lookup_entities(
                         division=entity.division,
                     ),
                     destination_url=build_destination_url(
-                        entity.base_destination, release_id=release_id, season=season
+                        entity.base_destination,
+                        release_id=release_id,
+                        season=season,
+                        phase=phase,
+                        before_date=before_date.isoformat() if before_date else None,
                     ),
                     metadata=entity.metadata,
                 )
@@ -374,11 +542,48 @@ def lookup_entities(
                         division=entity.division,
                     ),
                     destination_url=build_destination_url(
-                        entity.base_destination, release_id=release_id, season=season
+                        entity.base_destination,
+                        release_id=release_id,
+                        season=season,
+                        phase=phase,
+                        before_date=before_date.isoformat() if before_date else None,
                     ),
                     metadata=entity.metadata,
                 )
             )
+
+    if any(item.kind == "player" for item in items):
+        associations = scoped_team_associations(
+            session,
+            dataset_id,
+            season,
+            phase,
+            before_date,
+            [item.id for item in items if item.kind == "player"],
+        )
+        scoped = any(value is not None for value in (season, phase, before_date))
+        for item in items:
+            if item.kind != "player":
+                continue
+            association = associations.get(item.id) or LookupTeamAssociation(
+                basis="selected_scope" if scoped else "last_observed",
+                season=season,
+                phase=phase,
+                before_date=before_date,
+            )
+            item.team_association = association
+            label = ", ".join(association.teams)
+            item.subtitle = (
+                f"{label} · Observed in selected scope"
+                if scoped and label
+                else f"{label} · Last observed {association.observed_through}"
+                if label
+                else "No observed appearances in selected scope"
+                if scoped
+                else "No observed appearances"
+            )
+            item.availability.has_current_season = bool(association.teams)
+            item.availability.status = "available" if association.teams else "no_current_games"
 
     elapsed_ms = round((time.perf_counter() - t0) * 1000, 3)
 

@@ -26,6 +26,8 @@ A consistency question without a selected dispersion/frequency definition simila
 requires clarification_required with consistency. A known cohort does not resolve meaning.
 An explicit question about how variable a named player's scoring and/or minutes have
 been is different: use historical distribution for the named metric(s), with defaults.
+Scoring-only variability requires one distribution step with metric pts; minutes-only
+variability requires one with metric min_per_game. Do not add an unrequested metric.
 Scoring and minutes together require two independent distribution steps, metrics pts
 and min_per_game. Return the full descriptive summaries; no extra definition choice.
 4. Unsupported capabilities or filters, including guard/forward/center position filters,
@@ -52,13 +54,21 @@ Missing rows are unknown, not zeros, injuries or confirmed absence. The registry
 defines valid samples. Do not imply that a limited result page covers every eligible row.
 For ALL query operations, set page to {"limit": 10} unless a different count is requested.
 This overrides the general QuerySpec schema's page default of 50.
-For a ranking by a named metric, metric_selectors contains ONLY that requested metric
-and sort uses that metric descending. Do not append default columns to a named ranking.
+For a table, list or ranking about a named metric, metric_selectors contains ONLY the
+requested metric(s), and sort uses the primary requested metric descending unless the
+user requests another order. "Scoring" means pts_per_game unless totals or another
+scoring definition are explicit. "Show scoring" and "show the scoring table" therefore
+select only pts_per_game and sort by pts_per_game descending; they do not request minutes.
+Select min_per_game alongside scoring only when the user explicitly requests both metrics.
+A games/minutes eligibility threshold is a sample filter, not a displayed metric.
+These rules also apply to the analytical clause of a mixed knowledge/analysis question.
 All query metric selectors use normalization 'raw', even keys ending in _per_game:
 the metric key already defines the unit and must not be normalized a second time.
 Only supply arguments explicitly requested; omit optional defaults rather than inventing
-columns, sort orders, filters or result limits. For query, omitted metric_selectors become
-pts_per_game and min_per_game, and omitted sort is pts descending. A minutes sample
+columns, sort orders, filters or result limits. Only a query with no requested metric uses
+the generic defaults: omitted metric_selectors become pts_per_game and min_per_game,
+and omitted sort is pts descending. Named-metric requests must set selectors and sort
+explicitly as above rather than relying on these generic defaults. A minutes sample
 threshold changes sample_filters.min_minutes, not the sort or displayed metrics.
 For other operations retain their registry defaults unless the question requests a change.
 In particular similarity defaults to top_k 5 and workload_shifts defaults to limit 20;

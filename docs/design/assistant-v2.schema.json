@@ -1,0 +1,1431 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "AnalysisPlan": {
+      "additionalProperties": false,
+      "properties": {
+        "plan_version": {
+          "const": "courtload-analysis-plan-v1",
+          "default": "courtload-analysis-plan-v1",
+          "title": "Plan Version",
+          "type": "string"
+        },
+        "status": {
+          "default": "execute",
+          "enum": [
+            "execute",
+            "clarification_required",
+            "unsupported"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "clarification": {
+          "anyOf": [
+            {
+              "enum": [
+                "identity",
+                "consistency",
+                "defense_metric",
+                "floor_or_game",
+                "context",
+                "capability"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Clarification"
+        },
+        "context_changes": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ConversationContext"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "steps": {
+          "items": {
+            "$ref": "#/$defs/OperationStep"
+          },
+          "maxItems": 8,
+          "title": "Steps",
+          "type": "array"
+        },
+        "output_kind": {
+          "default": "table",
+          "enum": [
+            "table",
+            "definition",
+            "comparison"
+          ],
+          "title": "Output Kind",
+          "type": "string"
+        }
+      },
+      "title": "AnalysisPlan",
+      "type": "object"
+    },
+    "ConversationContext": {
+      "additionalProperties": false,
+      "properties": {
+        "release_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Release Id"
+        },
+        "season": {
+          "anyOf": [
+            {
+              "pattern": "^\\d{4}-\\d{2}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Season"
+        },
+        "phase": {
+          "default": "regular_season",
+          "enum": [
+            "regular_season",
+            "playoffs",
+            "preseason",
+            "play_in",
+            "cup_final",
+            "summer_league"
+          ],
+          "title": "Phase",
+          "type": "string"
+        },
+        "before_date": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Before Date"
+        },
+        "window": {
+          "default": "season",
+          "enum": [
+            "season",
+            "last_10",
+            "last_5"
+          ],
+          "title": "Window",
+          "type": "string"
+        }
+      },
+      "title": "ConversationContext",
+      "type": "object"
+    },
+    "OperationStep": {
+      "additionalProperties": false,
+      "properties": {
+        "step_id": {
+          "pattern": "^[a-z][a-z0-9_]{0,31}$",
+          "title": "Step Id",
+          "type": "string"
+        },
+        "operation": {
+          "maxLength": 48,
+          "minLength": 1,
+          "title": "Operation",
+          "type": "string"
+        },
+        "arguments": {
+          "additionalProperties": true,
+          "title": "Arguments",
+          "type": "object"
+        },
+        "depends_on": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 0,
+          "title": "Depends On",
+          "type": "array"
+        }
+      },
+      "required": [
+        "step_id",
+        "operation"
+      ],
+      "title": "OperationStep",
+      "type": "object"
+    },
+    "AnswerAction": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "navigation",
+            "executed_operation",
+            "source",
+            "retry"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "label": {
+          "title": "Label",
+          "type": "string"
+        },
+        "url": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Url"
+        },
+        "operation_hash": {
+          "anyOf": [
+            {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Operation Hash"
+        }
+      },
+      "required": [
+        "kind",
+        "label"
+      ],
+      "title": "AnswerAction",
+      "type": "object"
+    },
+    "AnswerSource": {
+      "additionalProperties": false,
+      "properties": {
+        "source_id": {
+          "title": "Source Id",
+          "type": "string"
+        },
+        "origin": {
+          "enum": [
+            "knowledge",
+            "calendar",
+            "qualification",
+            "external"
+          ],
+          "title": "Origin",
+          "type": "string"
+        },
+        "title": {
+          "title": "Title",
+          "type": "string"
+        },
+        "publisher": {
+          "title": "Publisher",
+          "type": "string"
+        },
+        "url": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Url"
+        },
+        "updated_on": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Updated On"
+        },
+        "retrieved_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Retrieved At"
+        },
+        "period": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Period"
+        },
+        "content_sha256": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Content Sha256",
+          "type": "string"
+        },
+        "locator": {
+          "title": "Locator",
+          "type": "string"
+        },
+        "excerpt": {
+          "maxLength": 8192,
+          "title": "Excerpt",
+          "type": "string"
+        },
+        "verification": {
+          "enum": [
+            "curated",
+            "verified",
+            "stale",
+            "failed"
+          ],
+          "title": "Verification",
+          "type": "string"
+        },
+        "facts": {
+          "items": {
+            "$ref": "#/$defs/SourceFact"
+          },
+          "maxItems": 100,
+          "title": "Facts",
+          "type": "array"
+        }
+      },
+      "required": [
+        "source_id",
+        "origin",
+        "title",
+        "publisher",
+        "content_sha256",
+        "locator",
+        "excerpt",
+        "verification"
+      ],
+      "title": "AnswerSource",
+      "type": "object"
+    },
+    "ClarificationBlock": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "clarification",
+          "default": "clarification",
+          "title": "Kind",
+          "type": "string"
+        },
+        "text": {
+          "minLength": 1,
+          "title": "Text",
+          "type": "string"
+        },
+        "choices": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 10,
+          "title": "Choices",
+          "type": "array"
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "title": "ClarificationBlock",
+      "type": "object"
+    },
+    "EvidenceCell": {
+      "additionalProperties": false,
+      "properties": {
+        "evidence_id": {
+          "title": "Evidence Id",
+          "type": "string"
+        },
+        "result_hash": {
+          "title": "Result Hash",
+          "type": "string"
+        },
+        "operation_hash": {
+          "title": "Operation Hash",
+          "type": "string"
+        },
+        "operation_version": {
+          "title": "Operation Version",
+          "type": "string"
+        },
+        "context_fingerprint": {
+          "title": "Context Fingerprint",
+          "type": "string"
+        },
+        "entity_id": {
+          "title": "Entity Id",
+          "type": "string"
+        },
+        "row_identity": {
+          "title": "Row Identity",
+          "type": "string"
+        },
+        "path": {
+          "title": "Path",
+          "type": "string"
+        },
+        "metric": {
+          "title": "Metric",
+          "type": "string"
+        },
+        "metric_version": {
+          "title": "Metric Version",
+          "type": "string"
+        },
+        "unit": {
+          "title": "Unit",
+          "type": "string"
+        },
+        "value": {
+          "title": "Value"
+        },
+        "sample": {
+          "additionalProperties": true,
+          "title": "Sample",
+          "type": "object"
+        },
+        "input_identity": {
+          "additionalProperties": true,
+          "title": "Input Identity",
+          "type": "object"
+        },
+        "null_reason": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Null Reason"
+        }
+      },
+      "required": [
+        "evidence_id",
+        "result_hash",
+        "operation_hash",
+        "operation_version",
+        "context_fingerprint",
+        "entity_id",
+        "row_identity",
+        "path",
+        "metric",
+        "metric_version",
+        "unit",
+        "value",
+        "input_identity"
+      ],
+      "title": "EvidenceCell",
+      "type": "object"
+    },
+    "ExternalClaimBlock": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "external_claim",
+          "default": "external_claim",
+          "title": "Kind",
+          "type": "string"
+        },
+        "text": {
+          "title": "Text",
+          "type": "string"
+        },
+        "source_id": {
+          "title": "Source Id",
+          "type": "string"
+        },
+        "locator": {
+          "title": "Locator",
+          "type": "string"
+        },
+        "entity": {
+          "title": "Entity",
+          "type": "string"
+        },
+        "metric": {
+          "title": "Metric",
+          "type": "string"
+        },
+        "value": {
+          "title": "Value",
+          "type": "string"
+        },
+        "unit": {
+          "title": "Unit",
+          "type": "string"
+        },
+        "period": {
+          "title": "Period",
+          "type": "string"
+        },
+        "qualifier": {
+          "title": "Qualifier",
+          "type": "string"
+        },
+        "supporting_excerpt": {
+          "maxLength": 8192,
+          "minLength": 1,
+          "title": "Supporting Excerpt",
+          "type": "string"
+        },
+        "parser_version": {
+          "title": "Parser Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "text",
+        "source_id",
+        "locator",
+        "entity",
+        "metric",
+        "value",
+        "unit",
+        "period",
+        "qualifier",
+        "supporting_excerpt",
+        "parser_version"
+      ],
+      "title": "ExternalClaimBlock",
+      "type": "object"
+    },
+    "InabilityBlock": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "inability",
+          "default": "inability",
+          "title": "Kind",
+          "type": "string"
+        },
+        "reason": {
+          "enum": [
+            "no_observations",
+            "insufficient_sample",
+            "unsupported_operation",
+            "position_unavailable",
+            "qualification_unverified",
+            "external_unavailable",
+            "external_stale",
+            "external_conflict",
+            "provider_disabled",
+            "provider_quota",
+            "provider_busy",
+            "provider_timeout",
+            "provider_error",
+            "malformed_output",
+            "backend_failure",
+            "context_unavailable",
+            "calendar_unavailable",
+            "prohibited_action",
+            "cancelled"
+          ],
+          "title": "Reason",
+          "type": "string"
+        },
+        "text": {
+          "minLength": 1,
+          "title": "Text",
+          "type": "string"
+        },
+        "next_action": {
+          "minLength": 1,
+          "title": "Next Action",
+          "type": "string"
+        }
+      },
+      "required": [
+        "reason",
+        "text",
+        "next_action"
+      ],
+      "title": "InabilityBlock",
+      "type": "object"
+    },
+    "InterpretedScope": {
+      "additionalProperties": false,
+      "properties": {
+        "as_of": {
+          "format": "date",
+          "title": "As Of",
+          "type": "string"
+        },
+        "timezone": {
+          "const": "America/New_York",
+          "default": "America/New_York",
+          "title": "Timezone",
+          "type": "string"
+        },
+        "calendar_version": {
+          "title": "Calendar Version",
+          "type": "string"
+        },
+        "calendar_sha256": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Calendar Sha256",
+          "type": "string"
+        },
+        "selections": {
+          "$ref": "#/$defs/ConversationContext"
+        },
+        "local_context": {
+          "anyOf": [
+            {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Local Context"
+        },
+        "context_fingerprint": {
+          "anyOf": [
+            {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Context Fingerprint"
+        },
+        "assumptions": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 16,
+          "title": "Assumptions",
+          "type": "array"
+        },
+        "label": {
+          "title": "Label",
+          "type": "string"
+        }
+      },
+      "required": [
+        "as_of",
+        "calendar_version",
+        "calendar_sha256",
+        "selections",
+        "label"
+      ],
+      "title": "InterpretedScope",
+      "type": "object"
+    },
+    "LocalClaimBlock": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "local_claim",
+          "default": "local_claim",
+          "title": "Kind",
+          "type": "string"
+        },
+        "template": {
+          "const": "observed_cell_v2",
+          "default": "observed_cell_v2",
+          "title": "Template",
+          "type": "string"
+        },
+        "text": {
+          "title": "Text",
+          "type": "string"
+        },
+        "cell": {
+          "$ref": "#/$defs/EvidenceCell"
+        }
+      },
+      "required": [
+        "text",
+        "cell"
+      ],
+      "title": "LocalClaimBlock",
+      "type": "object"
+    },
+    "LocalSummaryBlock": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "local_summary",
+          "default": "local_summary",
+          "title": "Kind",
+          "type": "string"
+        },
+        "operation_hash": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Operation Hash",
+          "type": "string"
+        },
+        "text": {
+          "const": "The selected observations are shown below with their sample and scope.",
+          "default": "The selected observations are shown below with their sample and scope.",
+          "title": "Text",
+          "type": "string"
+        }
+      },
+      "required": [
+        "operation_hash"
+      ],
+      "title": "LocalSummaryBlock",
+      "type": "object"
+    },
+    "OperationResult": {
+      "additionalProperties": false,
+      "properties": {
+        "step_id": {
+          "title": "Step Id",
+          "type": "string"
+        },
+        "operation": {
+          "title": "Operation",
+          "type": "string"
+        },
+        "operation_version": {
+          "title": "Operation Version",
+          "type": "string"
+        },
+        "arguments": {
+          "additionalProperties": true,
+          "title": "Arguments",
+          "type": "object"
+        },
+        "operation_hash": {
+          "title": "Operation Hash",
+          "type": "string"
+        },
+        "result_hash": {
+          "title": "Result Hash",
+          "type": "string"
+        },
+        "data": {
+          "additionalProperties": true,
+          "title": "Data",
+          "type": "object"
+        },
+        "rows": {
+          "items": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "title": "Rows",
+          "type": "array"
+        },
+        "evidence": {
+          "items": {
+            "$ref": "#/$defs/EvidenceCell"
+          },
+          "title": "Evidence",
+          "type": "array"
+        },
+        "open_url": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Open Url"
+        },
+        "eligible_count": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Eligible Count"
+        },
+        "limitations": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Limitations",
+          "type": "array"
+        }
+      },
+      "required": [
+        "step_id",
+        "operation",
+        "operation_version",
+        "arguments",
+        "operation_hash",
+        "result_hash",
+        "data",
+        "rows",
+        "evidence"
+      ],
+      "title": "OperationResult",
+      "type": "object"
+    },
+    "ResultBlock": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "result",
+          "default": "result",
+          "title": "Kind",
+          "type": "string"
+        },
+        "result": {
+          "$ref": "#/$defs/OperationResult"
+        }
+      },
+      "required": [
+        "result"
+      ],
+      "title": "ResultBlock",
+      "type": "object"
+    },
+    "SourceFact": {
+      "additionalProperties": false,
+      "description": "Adapter-owned verified tuple; extraction candidates cannot populate this registry.",
+      "properties": {
+        "entity": {
+          "title": "Entity",
+          "type": "string"
+        },
+        "metric": {
+          "title": "Metric",
+          "type": "string"
+        },
+        "value": {
+          "title": "Value",
+          "type": "string"
+        },
+        "unit": {
+          "title": "Unit",
+          "type": "string"
+        },
+        "period": {
+          "title": "Period",
+          "type": "string"
+        },
+        "qualifier": {
+          "title": "Qualifier",
+          "type": "string"
+        },
+        "locator": {
+          "title": "Locator",
+          "type": "string"
+        },
+        "supporting_excerpt": {
+          "maxLength": 8192,
+          "minLength": 1,
+          "title": "Supporting Excerpt",
+          "type": "string"
+        },
+        "parser_version": {
+          "title": "Parser Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "entity",
+        "metric",
+        "value",
+        "unit",
+        "period",
+        "qualifier",
+        "locator",
+        "supporting_excerpt",
+        "parser_version"
+      ],
+      "title": "SourceFact",
+      "type": "object"
+    },
+    "TextBlock": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "text",
+          "default": "text",
+          "title": "Kind",
+          "type": "string"
+        },
+        "origin": {
+          "enum": [
+            "knowledge",
+            "discussion"
+          ],
+          "title": "Origin",
+          "type": "string"
+        },
+        "text": {
+          "maxLength": 8192,
+          "minLength": 1,
+          "title": "Text",
+          "type": "string"
+        },
+        "source_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Source Ids",
+          "type": "array"
+        },
+        "criteria": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Criteria",
+          "type": "array"
+        }
+      },
+      "required": [
+        "origin",
+        "text"
+      ],
+      "title": "TextBlock",
+      "type": "object"
+    },
+    "TurnAccounting": {
+      "additionalProperties": false,
+      "properties": {
+        "provider_calls": {
+          "default": 0,
+          "maximum": 4,
+          "minimum": 0,
+          "title": "Provider Calls",
+          "type": "integer"
+        },
+        "analytical_calls": {
+          "default": 0,
+          "maximum": 8,
+          "minimum": 0,
+          "title": "Analytical Calls",
+          "type": "integer"
+        },
+        "source_requests": {
+          "default": 0,
+          "maximum": 4,
+          "minimum": 0,
+          "title": "Source Requests",
+          "type": "integer"
+        },
+        "rows": {
+          "default": 0,
+          "maximum": 200,
+          "minimum": 0,
+          "title": "Rows",
+          "type": "integer"
+        },
+        "elapsed_ms": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Elapsed Ms",
+          "type": "number"
+        }
+      },
+      "title": "TurnAccounting",
+      "type": "object"
+    },
+    "HybridTurnRequest": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "courtload-assistant-v2",
+          "default": "courtload-assistant-v2",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "request_id": {
+          "format": "uuid",
+          "title": "Request Id",
+          "type": "string"
+        },
+        "thread_id": {
+          "anyOf": [
+            {
+              "format": "uuid",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Thread Id"
+        },
+        "retry_of": {
+          "anyOf": [
+            {
+              "format": "uuid",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Retry Of"
+        },
+        "message": {
+          "maxLength": 2000,
+          "minLength": 1,
+          "title": "Message",
+          "type": "string"
+        },
+        "context": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ConversationContext"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "plan": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/AnalysisPlan"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "request_id",
+        "message"
+      ],
+      "title": "HybridTurnRequest",
+      "type": "object"
+    },
+    "HybridTurnResponse": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "courtload-assistant-v2",
+          "default": "courtload-assistant-v2",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "request_id": {
+          "format": "uuid",
+          "title": "Request Id",
+          "type": "string"
+        },
+        "thread_id": {
+          "format": "uuid",
+          "title": "Thread Id",
+          "type": "string"
+        },
+        "turn_id": {
+          "format": "uuid",
+          "title": "Turn Id",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "answered",
+            "clarification_required",
+            "unable",
+            "failed",
+            "cancelled"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "intent": {
+          "enum": [
+            "local_analysis",
+            "site_guidance",
+            "explanation",
+            "external",
+            "discussion",
+            "clarification",
+            "inability"
+          ],
+          "title": "Intent",
+          "type": "string"
+        },
+        "scope": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/InterpretedScope"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "blocks": {
+          "items": {
+            "discriminator": {
+              "mapping": {
+                "clarification": "#/$defs/ClarificationBlock",
+                "external_claim": "#/$defs/ExternalClaimBlock",
+                "inability": "#/$defs/InabilityBlock",
+                "local_claim": "#/$defs/LocalClaimBlock",
+                "local_summary": "#/$defs/LocalSummaryBlock",
+                "result": "#/$defs/ResultBlock",
+                "text": "#/$defs/TextBlock"
+              },
+              "propertyName": "kind"
+            },
+            "oneOf": [
+              {
+                "$ref": "#/$defs/TextBlock"
+              },
+              {
+                "$ref": "#/$defs/LocalSummaryBlock"
+              },
+              {
+                "$ref": "#/$defs/LocalClaimBlock"
+              },
+              {
+                "$ref": "#/$defs/ResultBlock"
+              },
+              {
+                "$ref": "#/$defs/ExternalClaimBlock"
+              },
+              {
+                "$ref": "#/$defs/ClarificationBlock"
+              },
+              {
+                "$ref": "#/$defs/InabilityBlock"
+              }
+            ]
+          },
+          "maxItems": 24,
+          "minItems": 1,
+          "title": "Blocks",
+          "type": "array"
+        },
+        "sources": {
+          "items": {
+            "$ref": "#/$defs/AnswerSource"
+          },
+          "maxItems": 16,
+          "title": "Sources",
+          "type": "array"
+        },
+        "actions": {
+          "items": {
+            "$ref": "#/$defs/AnswerAction"
+          },
+          "maxItems": 16,
+          "title": "Actions",
+          "type": "array"
+        },
+        "plan": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/AnalysisPlan"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "accounting": {
+          "$ref": "#/$defs/TurnAccounting"
+        },
+        "saveable": {
+          "default": false,
+          "title": "Saveable",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "request_id",
+        "thread_id",
+        "turn_id",
+        "status",
+        "intent",
+        "blocks"
+      ],
+      "title": "HybridTurnResponse",
+      "type": "object"
+    },
+    "DurableThreadHeader": {
+      "additionalProperties": false,
+      "properties": {
+        "record_version": {
+          "const": "courtload-thread-v2",
+          "default": "courtload-thread-v2",
+          "title": "Record Version",
+          "type": "string"
+        },
+        "thread_id": {
+          "format": "uuid",
+          "title": "Thread Id",
+          "type": "string"
+        },
+        "title": {
+          "maxLength": 255,
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        },
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "updated_at": {
+          "format": "date-time",
+          "title": "Updated At",
+          "type": "string"
+        },
+        "version": {
+          "default": 1,
+          "minimum": 1,
+          "title": "Version",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "thread_id",
+        "title",
+        "created_at",
+        "updated_at"
+      ],
+      "title": "DurableThreadHeader",
+      "type": "object"
+    },
+    "DurableTurnRecord": {
+      "additionalProperties": false,
+      "description": "PF07b storage payload, excluding keys/provider transcripts; pending input is retained.",
+      "properties": {
+        "record_version": {
+          "const": "courtload-thread-turn-v2",
+          "default": "courtload-thread-turn-v2",
+          "title": "Record Version",
+          "type": "string"
+        },
+        "thread_id": {
+          "format": "uuid",
+          "title": "Thread Id",
+          "type": "string"
+        },
+        "turn_id": {
+          "format": "uuid",
+          "title": "Turn Id",
+          "type": "string"
+        },
+        "request": {
+          "$ref": "#/$defs/HybridTurnRequest"
+        },
+        "request_sha256": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Request Sha256",
+          "type": "string"
+        },
+        "accepted_at": {
+          "format": "date-time",
+          "title": "Accepted At",
+          "type": "string"
+        },
+        "state": {
+          "enum": [
+            "pending",
+            "running",
+            "completed",
+            "failed",
+            "cancelled"
+          ],
+          "title": "State",
+          "type": "string"
+        },
+        "response": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/HybridTurnResponse"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "response_sha256": {
+          "anyOf": [
+            {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Response Sha256"
+        }
+      },
+      "required": [
+        "thread_id",
+        "turn_id",
+        "request",
+        "request_sha256",
+        "accepted_at",
+        "state"
+      ],
+      "title": "DurableTurnRecord",
+      "type": "object"
+    },
+    "ThreadHistoryPage": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "courtload-history-v2",
+          "default": "courtload-history-v2",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "threads": {
+          "items": {
+            "$ref": "#/$defs/DurableThreadHeader"
+          },
+          "maxItems": 100,
+          "title": "Threads",
+          "type": "array"
+        },
+        "next_cursor": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Next Cursor"
+        }
+      },
+      "required": [
+        "threads"
+      ],
+      "title": "ThreadHistoryPage",
+      "type": "object"
+    },
+    "TurnHistoryPage": {
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "courtload-history-v2",
+          "default": "courtload-history-v2",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "thread": {
+          "$ref": "#/$defs/DurableThreadHeader"
+        },
+        "turns": {
+          "items": {
+            "$ref": "#/$defs/DurableTurnRecord"
+          },
+          "maxItems": 100,
+          "title": "Turns",
+          "type": "array"
+        },
+        "next_cursor": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Next Cursor"
+        }
+      },
+      "required": [
+        "thread",
+        "turns"
+      ],
+      "title": "TurnHistoryPage",
+      "type": "object"
+    }
+  },
+  "oneOf": [
+    {
+      "$ref": "#/$defs/HybridTurnRequest"
+    },
+    {
+      "$ref": "#/$defs/HybridTurnResponse"
+    },
+    {
+      "$ref": "#/$defs/DurableTurnRecord"
+    },
+    {
+      "$ref": "#/$defs/DurableThreadHeader"
+    },
+    {
+      "$ref": "#/$defs/ThreadHistoryPage"
+    },
+    {
+      "$ref": "#/$defs/TurnHistoryPage"
+    }
+  ]
+}

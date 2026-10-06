@@ -238,6 +238,60 @@ class TestStatsQueryEngineRuntime:
         assert sql_samples["ts_pct"] == py_samples["ts_pct"]
         assert sql_samples["efg_pct"] == py_samples["efg_pct"]
 
+    def test_reconciliation_for_player_with_nonappearances(self, db_session: Session) -> None:
+        """Workbench players with nonappearances reconcile bit-for-bit with compute_metrics_v2."""
+        ctx = resolve_workbench_context(db_session)
+        player_id = "1626153"  # Delon Wright (has both appeared and reported_nonappearance rows)
+
+        raw_games = _load_player_games(db_session, ctx, player_id=player_id)
+        assert len(raw_games) > 0
+        assert any(g.get("appearance") != "appeared" for g in raw_games)
+
+        py_metrics, py_samples = compute_metrics_v2(raw_games)
+
+        query = QuerySpec(
+            season=ctx.season,
+            predicates=PredicateGroup(
+                conjunction="and",
+                predicates=[PredicateLeaf(field="player_id", op=PredicateOp.EQ, value=player_id)],
+            ),
+            page=PagingSpec(limit=5),
+        )
+        # Active query: excludes nonappearances
+        items, total, _, _ = execute_stats_query(db_session, ctx, query, legacy_nonappearance=False)
+        assert total == 1
+        sql_item = items[0]
+        sql_metrics = sql_item["metrics"]
+        sql_samples = sql_item["sample_sizes"]
+
+        assert sql_metrics["pts"] == py_metrics["pts"]
+        assert sql_metrics["pts_per_game"] == py_metrics["pts_per_game"]
+        assert sql_metrics["pts_per_36"] == py_metrics["pts_per_36"]
+        assert sql_metrics["reb"] == py_metrics["reb"]
+        assert sql_metrics["reb_per_game"] == py_metrics["reb_per_game"]
+        assert sql_metrics["ast"] == py_metrics["ast"]
+        assert sql_metrics["ast_per_game"] == py_metrics["ast_per_game"]
+        assert sql_metrics["ts_pct"] == py_metrics["ts_pct"]
+        assert sql_metrics["efg_pct"] == py_metrics["efg_pct"]
+        assert sql_metrics["ftr"] == py_metrics["ftr"]
+        assert (
+            sql_metrics["legacy_fantasy_score_per_game"]
+            == py_metrics["legacy_fantasy_score_per_game"]
+        )
+        assert sql_samples["pts"] == py_samples["pts"]
+        assert sql_samples["ts_pct"] == py_samples["ts_pct"]
+        assert sql_samples["efg_pct"] == py_samples["efg_pct"]
+
+        # Legacy query: includes nonappearance zeros
+        legacy_items, _, _, _ = execute_stats_query(
+            db_session, ctx, query, legacy_nonappearance=True
+        )
+        assert len(legacy_items) == 1
+        legacy_item = legacy_items[0]
+        # In legacy mode, n_pts included nonappearances (60 vs 47) and PPG was lower (3.5 vs 4.5)
+        assert legacy_item["sample_sizes"]["pts"] > sql_samples["pts"]
+        assert legacy_item["metrics"]["pts_per_game"] < sql_metrics["pts_per_game"]
+
     def test_stable_page_traversal_every_row_traverses_once(self, db_session: Session) -> None:
         """Advancing through pages using cursors must traverse every eligible player once."""
         ctx = resolve_workbench_context(db_session)

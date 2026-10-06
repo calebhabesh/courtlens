@@ -6,11 +6,20 @@ from uuid import UUID
 from fastapi import APIRouter, Depends, Query, Response
 from sqlalchemy.orm import Session
 
+from courtload.api.routers.workbench import verify_workspace_operator_access
 from courtload.database import get_db
 from courtload.domain.conversation import (
     ConversationTurnRequest,
     ConversationTurnResponse,
     SaveConversationRequest,
+)
+from courtload.domain.hybrid_assistant import (
+    DurableThreadHeader,
+    DurableTurnRecord,
+    HybridTurnRequest,
+    HybridTurnResponse,
+    ThreadHistoryPage,
+    TurnHistoryPage,
 )
 from courtload.domain.saved_conversation import (
     SavedConversationDetail,
@@ -18,6 +27,14 @@ from courtload.domain.saved_conversation import (
     SavedConversationSummary,
 )
 from courtload.services.assistant.conversations import clear_conversation, run_conversation_turn
+from courtload.services.assistant.history import (
+    cancel_turn,
+    create_thread,
+    delete_history,
+    list_threads,
+    list_turns,
+    run_durable_turn,
+)
 from courtload.services.assistant.operations import declarations
 from courtload.services.assistant.saved import (
     export_saved,
@@ -40,6 +57,66 @@ def post_turn(
     request: ConversationTurnRequest, session: Session = Depends(get_db)
 ) -> ConversationTurnResponse:
     return run_conversation_turn(session, request)
+
+
+@router.post("/v2/turn", response_model=HybridTurnResponse)
+def post_hybrid_turn(
+    request: HybridTurnRequest,
+    session: Session = Depends(get_db),
+    _auth: None = Depends(verify_workspace_operator_access),
+) -> HybridTurnResponse:
+    """Accept durably before execution; retransmissions replay the exact retained response."""
+    return run_durable_turn(session, request)
+
+
+@router.post(
+    "/v2/threads",
+    response_model=DurableThreadHeader,
+    status_code=201,
+    dependencies=[Depends(verify_workspace_operator_access)],
+)
+def new_thread(session: Session = Depends(get_db)) -> DurableThreadHeader:
+    return create_thread(session)
+
+
+@router.get("/v2/threads", response_model=ThreadHistoryPage)
+def threads(
+    limit: int = Query(20, ge=1, le=100),
+    cursor: UUID | None = None,
+    session: Session = Depends(get_db),
+) -> ThreadHistoryPage:
+    return list_threads(session, limit, cursor)
+
+
+@router.get("/v2/threads/{thread_id}/turns", response_model=TurnHistoryPage)
+def turns(
+    thread_id: UUID,
+    limit: int = Query(20, ge=1, le=100),
+    cursor: int = Query(0, ge=0),
+    session: Session = Depends(get_db),
+) -> TurnHistoryPage:
+    return list_turns(session, thread_id, limit, cursor)
+
+
+@router.post(
+    "/v2/threads/{thread_id}/turns/{turn_id}/cancel",
+    response_model=DurableTurnRecord,
+    dependencies=[Depends(verify_workspace_operator_access)],
+)
+def stop_turn(
+    thread_id: UUID, turn_id: UUID, session: Session = Depends(get_db)
+) -> DurableTurnRecord:
+    return cancel_turn(session, thread_id, turn_id)
+
+
+@router.delete("/v2/threads/{thread_id}", dependencies=[Depends(verify_workspace_operator_access)])
+def remove_thread(thread_id: UUID, session: Session = Depends(get_db)) -> dict[str, bool]:
+    return delete_history(session, thread_id)
+
+
+@router.delete("/v2/threads", dependencies=[Depends(verify_workspace_operator_access)])
+def clear_history(session: Session = Depends(get_db)) -> dict[str, bool]:
+    return delete_history(session)
 
 
 @router.delete("/conversations/{conversation_id}")

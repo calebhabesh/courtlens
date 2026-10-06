@@ -249,8 +249,26 @@ def reproduce_saved(session: Session, analysis_id: str) -> dict[str, Any]:
                     session, context, step, deadline, full_result=step.operation == "query"
                 )
                 result = render_result(step, context, data, manifest["context_fingerprint"])
-                # Includes exact evidence binding, versions, rows, and canonical destinations.
                 matches = result.model_dump(mode="json") == raw
+                if (
+                    not matches
+                    and step.operation == "query"
+                    and context.dataset_type == "workbench"
+                ):
+                    legacy_data = execute_bounded(
+                        session,
+                        context,
+                        step,
+                        deadline,
+                        full_result=True,
+                        legacy_nonappearance=True,
+                    )
+                    legacy_result = render_result(
+                        step, context, legacy_data, manifest["context_fingerprint"]
+                    )
+                    if legacy_result.model_dump(mode="json") == raw:
+                        result = legacy_result
+                        matches = True
                 report["operations"].append(
                     {
                         "step_id": step.step_id,

@@ -1,0 +1,345 @@
+{
+  "version": "courtload-pf07d-scoring-holdout-v1",
+  "frozen_on": "2026-10-06T16:35:33.623621+00:00",
+  "as_of": "2026-10-06",
+  "context_season": "2024-25",
+  "evidence_role": "independent_holdout_frozen_before_scoring_prompt_repair",
+  "cases": [
+    {
+      "id": "pf07d-scoring-01",
+      "message": "Display scoring for the selected season",
+      "category": "local",
+      "status": "answered",
+      "held_out": true,
+      "fixture_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "steps": [
+          {
+            "step_id": "analysis",
+            "operation": "query",
+            "arguments": {
+              "metric_selectors": [
+                {
+                  "key": "pts_per_game"
+                }
+              ],
+              "sort": [
+                {
+                  "field": "pts_per_game"
+                }
+              ],
+              "page": {
+                "limit": 10
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "pf07d-scoring-02",
+      "message": "Give me a table of scoring averages",
+      "category": "local",
+      "status": "answered",
+      "held_out": true,
+      "fixture_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "steps": [
+          {
+            "step_id": "analysis",
+            "operation": "query",
+            "arguments": {
+              "metric_selectors": [
+                {
+                  "key": "pts_per_game"
+                }
+              ],
+              "sort": [
+                {
+                  "field": "pts_per_game"
+                }
+              ],
+              "page": {
+                "limit": 10
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "pf07d-scoring-03",
+      "message": "List the top 6 scorers by points per game",
+      "category": "local",
+      "status": "answered",
+      "held_out": true,
+      "fixture_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "steps": [
+          {
+            "step_id": "analysis",
+            "operation": "query",
+            "arguments": {
+              "metric_selectors": [
+                {
+                  "key": "pts_per_game"
+                }
+              ],
+              "sort": [
+                {
+                  "field": "pts_per_game"
+                }
+              ],
+              "page": {
+                "limit": 6
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "pf07d-scoring-04",
+      "message": "Show scoring averages for players with at least 15 games",
+      "category": "local",
+      "status": "answered",
+      "held_out": true,
+      "fixture_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "steps": [
+          {
+            "step_id": "analysis",
+            "operation": "query",
+            "arguments": {
+              "metric_selectors": [
+                {
+                  "key": "pts_per_game"
+                }
+              ],
+              "sort": [
+                {
+                  "field": "pts_per_game"
+                }
+              ],
+              "page": {
+                "limit": 10
+              },
+              "sample_filters": {
+                "min_games": 15
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "pf07d-scoring-05",
+      "message": "Show scoring averages for players with at least 200 total minutes",
+      "category": "local",
+      "status": "answered",
+      "held_out": true,
+      "fixture_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "steps": [
+          {
+            "step_id": "analysis",
+            "operation": "query",
+            "arguments": {
+              "metric_selectors": [
+                {
+                  "key": "pts_per_game"
+                }
+              ],
+              "sort": [
+                {
+                  "field": "pts_per_game"
+                }
+              ],
+              "page": {
+                "limit": 10
+              },
+              "sample_filters": {
+                "min_minutes": 200
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "pf07d-scoring-06",
+      "message": "Show points per game and minutes per game, ordered by points per game",
+      "category": "local",
+      "status": "answered",
+      "held_out": true,
+      "fixture_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "steps": [
+          {
+            "step_id": "analysis",
+            "operation": "query",
+            "arguments": {
+              "metric_selectors": [
+                {
+                  "key": "pts_per_game"
+                },
+                {
+                  "key": "min_per_game"
+                }
+              ],
+              "sort": [
+                {
+                  "field": "pts_per_game"
+                }
+              ],
+              "page": {
+                "limit": 10
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "pf07d-scoring-07",
+      "message": "Show the top 4 players by total points",
+      "category": "local",
+      "status": "answered",
+      "held_out": true,
+      "fixture_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "steps": [
+          {
+            "step_id": "analysis",
+            "operation": "query",
+            "arguments": {
+              "metric_selectors": [
+                {
+                  "key": "pts"
+                }
+              ],
+              "sort": [
+                {
+                  "field": "pts"
+                }
+              ],
+              "page": {
+                "limit": 4
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "pf07d-scoring-08",
+      "message": "Show a table of minutes per game ordered from highest to lowest",
+      "category": "local",
+      "status": "answered",
+      "held_out": true,
+      "fixture_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "steps": [
+          {
+            "step_id": "analysis",
+            "operation": "query",
+            "arguments": {
+              "metric_selectors": [
+                {
+                  "key": "min_per_game"
+                }
+              ],
+              "sort": [
+                {
+                  "field": "min_per_game"
+                }
+              ],
+              "page": {
+                "limit": 10
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "pf07d-scoring-09",
+      "message": "How variable has Scottie Barnes scoring been?",
+      "category": "local",
+      "status": "answered",
+      "held_out": true,
+      "fixture_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "steps": [
+          {
+            "step_id": "analysis",
+            "operation": "distribution",
+            "arguments": {
+              "player_id": "Scottie Barnes",
+              "metric": "pts"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "pf07d-scoring-10",
+      "message": "How variable have Scottie Barnes minutes been?",
+      "category": "local",
+      "status": "answered",
+      "held_out": true,
+      "fixture_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "steps": [
+          {
+            "step_id": "analysis",
+            "operation": "distribution",
+            "arguments": {
+              "player_id": "Scottie Barnes",
+              "metric": "min_per_game"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "pf07d-scoring-11",
+      "message": "Find statistical players similar to Scottie Barnes",
+      "category": "local",
+      "status": "answered",
+      "held_out": true,
+      "fixture_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "steps": [
+          {
+            "step_id": "analysis",
+            "operation": "similarity",
+            "arguments": {
+              "target_player_id": "Scottie Barnes"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "pf07d-scoring-12",
+      "message": "Compare Luka Doncic with Scottie Barnes",
+      "category": "local",
+      "status": "answered",
+      "held_out": true,
+      "fixture_plan": {
+        "plan_version": "courtload-analysis-plan-v1",
+        "steps": [
+          {
+            "step_id": "analysis",
+            "operation": "compare",
+            "arguments": {
+              "player_a": "Luka Doncic",
+              "player_b": "Scottie Barnes"
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

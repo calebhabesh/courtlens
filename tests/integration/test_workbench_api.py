@@ -84,7 +84,7 @@ def test_workbench_lookup_endpoint(client: TestClient) -> None:
     resp_empty = client.get("/api/workbench/lookup")
     assert resp_empty.status_code == 200
     data_empty = resp_empty.json()
-    assert data_empty["catalog_version"] == "v1"
+    assert data_empty["catalog_version"] == "pf04-v1"
     assert len(data_empty["items"]) == 10
     assert all(i["match_basis"] == "suggestion" for i in data_empty["items"])
     destinations = [i["destination_url"] for i in data_empty["items"]]
@@ -120,12 +120,22 @@ def test_workbench_lookup_endpoint(client: TestClient) -> None:
     assert all(i["kind"] == "page" for i in data_pages["items"])
     assert any(i["canonical_id"] == "stats" for i in data_pages["items"])
 
-    # 5. Context preservation
-    resp_ctx = client.get("/api/workbench/lookup?q=Jokic&season=2023-24&release_id=rel-test-123")
+    # 5. Preserve a verified release; an invented release cannot establish identity scope.
+    release_id = client.get("/api/workbench/catalog").json()["release_id"]
+    resp_ctx = client.get(
+        "/api/workbench/lookup",
+        params={"q": "Jokic", "season": "2023-24", "release_id": release_id},
+    )
     assert resp_ctx.status_code == 200
     dest = resp_ctx.json()["items"][0]["destination_url"]
     assert "season=2023-24" in dest
-    assert "release_id=rel-test-123" in dest
+    assert f"release_id={release_id}" in dest
+    assert (
+        client.get(
+            "/api/workbench/lookup?q=Jokic&season=2023-24&release_id=rel-test-123"
+        ).status_code
+        == 404
+    )
 
 
 def test_two_real_players_reconciled(client: TestClient) -> None:

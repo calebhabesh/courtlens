@@ -23,6 +23,7 @@ from courtload.domain.metrics import (
 from courtload.domain.query_spec import (
     ALLOWED_METADATA_FIELDS,
     MAX_PAGE_SIZE,
+    EntityKind,
     PredicateGroup,
     PredicateLeaf,
     PredicateOp,
@@ -30,6 +31,7 @@ from courtload.domain.query_spec import (
     SortSpec,
     WindowKind,
 )
+from courtload.domain.stats_presentation import StatsPresentation
 from courtload.domain.teams import get_team_info, resolve_team_tricode
 from courtload.services.workbench_analytics import (
     MAX_EXPORT_ROWS,
@@ -96,6 +98,36 @@ COLUMN_MAP: dict[str, str] = {
     "name": "player_name",
     "stints_count": "stints_count",
 }
+
+# Only implemented numeric catalog columns participate; metadata is never ranked.
+PERCENTILE_COLUMNS = {key: column for key, column in COLUMN_MAP.items() if key in METRIC_CATALOG}
+
+
+def stats_presentation_hash(
+    context: ResolvedContext,
+    query: QuerySpec,
+    presentation: StatsPresentation,
+    *,
+    cohort: bool = False,
+) -> str:
+    """Bind complete query semantics, independently of paging and visual preferences."""
+    spec = query.model_dump(mode="json", exclude={"page", "view_state"})
+    if cohort:
+        for key in ("name", "sort", "metric_selectors"):
+            spec.pop(key, None)
+    return canonical_hash(
+        {
+            "version": presentation.version,
+            "release_id": context.release_id,
+            "dataset_id": context.dataset_id,
+            "semantic_signature": context.semantic_signature,
+            "season": context.season,
+            "phase": context.phase,
+            "before_date": context.before_date.isoformat(),
+            "query": spec,
+            "player_ids": None if cohort else presentation.player_ids,
+        }
+    )
 
 
 def map_field_to_sql_column(field: str) -> str:
@@ -255,8 +287,16 @@ def compile_predicate_node(
     return "1=1"
 
 
-def _rate_per_36_sql(stat_col: str, alias: str) -> str:
+def _rate_per_36_sql(stat_col: str, alias: str, *, paired: bool = False) -> str:
     """SQL expression calculating per-36 rate and sample size."""
+    if paired:
+        valid = f"minutes_seconds > 0 AND {stat_col} IS NOT NULL"
+        return f"""case when sum(minutes_seconds) FILTER (WHERE {valid}) > 0
+        then round(
+            (sum({stat_col}) FILTER (WHERE {valid}))::numeric * 2160
+            / (sum(minutes_seconds) FILTER (WHERE {valid}))::numeric, 1
+        ) else null end as {alias},
+        count(*) FILTER (WHERE {valid}) AS n_{alias}"""
     return f"""case when sum(minutes_seconds) FILTER (
         WHERE minutes_seconds > 0 AND {stat_col} IS NOT NULL
     ) > 0
@@ -279,6 +319,8 @@ def build_stats_query_sql(
     limit: int | None = None,
     offset: int = 0,
     is_sqlite: bool = False,
+    legacy_nonappearance: bool = False,
+    presentation: StatsPresentation | None = None,
 ) -> tuple[str, dict[str, Any]]:
     """Build parameterized SQL query for aggregating and filtering eligible player stats.
 
@@ -301,7 +343,7 @@ def build_stats_query_sql(
             value = f"CAST(json_extract({col_name}, '$.{key}') AS INTEGER)"
         else:
             value = f"({col_name}->>'{key}')::int"
-        if is_workbench:
+        if is_workbench and legacy_nonappearance:
             return value
         return f"CASE WHEN wpg.appearance = 'appeared' THEN {value} ELSE NULL END"
 
@@ -367,7 +409,7 @@ def build_stats_query_sql(
             candidate_filters.append("wpg.game_date < :window_to_date")
 
     # Name search
-    if query.name:
+    if query.name and presentation is None:
         params["name_pattern"] = f"%{query.name.strip().lower()}%"
         candidate_filters.append(f"LOWER({player_name_expr}) LIKE :name_pattern")
 
@@ -382,7 +424,14 @@ def build_stats_query_sql(
         candidate_filters.append("wpg.appearance = 'appeared'")
 
     # Points column extraction
-    pts_expr = "wpg.points" if is_workbench else json_extract("wpg.stats_json", "points", "points")
+    if is_workbench:
+        pts_expr = (
+            "wpg.points"
+            if legacy_nonappearance
+            else "CASE WHEN wpg.appearance = 'appeared' THEN wpg.points ELSE NULL END"
+        )
+    else:
+        pts_expr = json_extract("wpg.stats_json", "points", "points")
 
     reb_expr = json_extract("wpg.stats_json", "rebounds_total", "reboundsTotal")
     oreb_expr = json_extract("wpg.stats_json", "rebounds_offensive", "reboundsOffensive")
@@ -450,6 +499,7 @@ def build_stats_query_sql(
     order_by_clause = "ORDER BY " + ", ".join(sort_clauses)
 
     # 6. Assemble Full Query
+    paired_rates = presentation is not None
     cte_sql = f"""WITH ranked_games AS (
         SELECT
             wpg.player_id,
@@ -585,18 +635,18 @@ def build_stats_query_sql(
             count(*) FILTER (WHERE fta IS NOT NULL AND fga IS NOT NULL) AS n_ftr,
             case when sum(fga) FILTER (WHERE fta IS NOT NULL AND fga IS NOT NULL) > 0
                  then round(sum(fta)::numeric / sum(fga)::numeric, 4) else null end as ftr,
-            {_rate_per_36_sql("points", "pts_per_36")},
-            {_rate_per_36_sql("rebounds_total", "reb_per_36")},
-            {_rate_per_36_sql("assists", "ast_per_36")},
-            {_rate_per_36_sql("steals", "stl_per_36")},
-            {_rate_per_36_sql("blocks", "blk_per_36")},
-            {_rate_per_36_sql("turnovers", "tov_per_36")},
-            {_rate_per_36_sql("fouls_personal", "pf_per_36")},
-            {_rate_per_36_sql("rebounds_offensive", "oreb_per_36")},
-            {_rate_per_36_sql("rebounds_defensive", "dreb_per_36")},
-            {_rate_per_36_sql("fga", "fga_per_36")},
-            {_rate_per_36_sql("fg3a", "fg3a_per_36")},
-            {_rate_per_36_sql("fta", "fta_per_36")},
+            {_rate_per_36_sql("points", "pts_per_36", paired=paired_rates)},
+            {_rate_per_36_sql("rebounds_total", "reb_per_36", paired=paired_rates)},
+            {_rate_per_36_sql("assists", "ast_per_36", paired=paired_rates)},
+            {_rate_per_36_sql("steals", "stl_per_36", paired=paired_rates)},
+            {_rate_per_36_sql("blocks", "blk_per_36", paired=paired_rates)},
+            {_rate_per_36_sql("turnovers", "tov_per_36", paired=paired_rates)},
+            {_rate_per_36_sql("fouls_personal", "pf_per_36", paired=paired_rates)},
+            {_rate_per_36_sql("rebounds_offensive", "oreb_per_36", paired=paired_rates)},
+            {_rate_per_36_sql("rebounds_defensive", "dreb_per_36", paired=paired_rates)},
+            {_rate_per_36_sql("fga", "fga_per_36", paired=paired_rates)},
+            {_rate_per_36_sql("fg3a", "fg3a_per_36", paired=paired_rates)},
+            {_rate_per_36_sql("fta", "fta_per_36", paired=paired_rates)},
             round(
                 avg(
                     points + 1.2 * rebounds_total + 1.5 * assists
@@ -623,16 +673,51 @@ def build_stats_query_sql(
         GROUP BY player_id
     )"""
 
+    result_table = "aggregated"
+    result_filter = where_agg_clause
+    if presentation is not None:
+        # Analytical predicates/sample/team/window filters define eligibility.
+        # Name search and explicit entity selection apply after the cohort windows.
+        cte_sql += f", eligible AS (SELECT * FROM aggregated {where_agg_clause})"
+        display_filters = []
+        if query.name:
+            params["name_pattern"] = f"%{query.name.strip().lower()}%"
+            display_filters.append("LOWER(player_name) LIKE :name_pattern")
+        if presentation.player_ids is not None:
+            id_keys = []
+            for idx, player_id in enumerate(presentation.player_ids):
+                key = f"display_player_{idx}"
+                params[key] = player_id
+                id_keys.append(f":{key}")
+            display_filters.append(f"player_id IN ({', '.join(id_keys)})" if id_keys else "1=0")
+        result_filter = "WHERE " + " AND ".join(display_filters) if display_filters else ""
+        result_table = "eligible"
+        if not is_count_only:
+            percentile_sql = []
+            for key, column in PERCENTILE_COLUMNS.items():
+                n = f"count({column}) OVER ()"
+                less = f"rank() OVER (ORDER BY {column} ASC NULLS LAST) - 1"
+                equal = f"count(*) OVER (PARTITION BY {column})"
+                percentile_sql.append(
+                    f"CASE WHEN {column} IS NULL OR {n} < 2 THEN NULL ELSE "
+                    f"least(99, greatest(1, round(100.0 * ({less} + 0.5 * {equal}) / {n}))) "
+                    f"END AS pct_{key}, {n} AS cohort_n_{key}"
+                )
+            cte_sql += (
+                ", cohort_ranked AS (SELECT *, " + ", ".join(percentile_sql) + " FROM eligible)"
+            )
+            result_table = "cohort_ranked"
+
     if is_count_only:
-        sql = f"{cte_sql}\n    SELECT count(*) FROM aggregated {where_agg_clause};"
+        sql = f"{cte_sql}\n    SELECT count(*) FROM {result_table} {result_filter};"
         return sql.strip(), params
 
     limit_clause = f"LIMIT {limit}" if limit is not None else ""
     offset_clause = f"OFFSET {offset}" if offset > 0 else ""
 
     sql = f"""{cte_sql}
-    SELECT * FROM aggregated
-    {where_agg_clause}
+    SELECT * FROM {result_table}
+    {result_filter}
     {order_by_clause}
     {limit_clause}
     {offset_clause};
@@ -755,7 +840,7 @@ def parse_player_row(row_dict: dict[str, Any]) -> dict[str, Any]:
         row_dict.get("n_legacy_fantasy_score_per_game") or 0
     )
 
-    return {
+    result = {
         "player_id": pid,
         "player_name": pname,
         "teams": teams_list,
@@ -766,6 +851,14 @@ def parse_player_row(row_dict: dict[str, Any]) -> dict[str, Any]:
         "sample_sizes": sample_sizes,
         "portrait_url": f"/api/workbench/players/{pid}/portrait",
     }
+    if "pct_gp" in row_dict:
+        result["percentiles"] = {
+            key: _cast_num(row_dict.get(f"pct_{key}")) for key in PERCENTILE_COLUMNS
+        }
+        result["cohort_sample_sizes"] = {
+            key: int(row_dict.get(f"cohort_n_{key}") or 0) for key in PERCENTILE_COLUMNS
+        }
+    return result
 
 
 def execute_stats_query(
@@ -775,12 +868,55 @@ def execute_stats_query(
     *,
     is_export: bool = False,
     max_export_rows: int = MAX_EXPORT_ROWS,
+    legacy_nonappearance: bool = False,
+    presentation: StatsPresentation | None = None,
 ) -> tuple[list[dict[str, Any]], int, str | None, bool]:
     """Execute typed QuerySpec against indexed facts using SQL aggregation and windowing.
 
     Returns:
         (items, total_eligible_count, next_cursor, has_more)
     """
+    if presentation is not None:
+        if query.entity_kind != EntityKind.PLAYER or query.season_scope.seasons:
+            raise HTTPException(
+                status_code=422, detail="Stats presentation supports single-season players"
+            )
+        if query.team_scope.current_roster_only or not query.team_scope.participation_only:
+            raise HTTPException(
+                status_code=422, detail="Stats presentation requires observed team participation"
+            )
+        if query.window.kind not in (WindowKind.SEASON, WindowKind.LAST_5, WindowKind.LAST_10):
+            raise HTTPException(
+                status_code=422, detail="Stats presentation supports season, last_5 and last_10"
+            )
+        if query.sample_filters.min_possessions is not None:
+            raise HTTPException(
+                status_code=422,
+                detail="Possession sample filtering is unavailable in Stats presentation",
+            )
+        for sort in query.sort:
+            if sort.field not in COLUMN_MAP:
+                raise HTTPException(
+                    status_code=422, detail=f"Stats presentation cannot sort {sort.field}"
+                )
+        if query.metric_selectors:
+            raise HTTPException(
+                status_code=422,
+                detail="Stats presentation does not support metric selectors",
+            )
+
+        def validate_predicate(node: PredicateGroup | PredicateLeaf) -> None:
+            if isinstance(node, PredicateLeaf):
+                if node.field not in COLUMN_MAP and node.field not in ("team_id", "team_tricode"):
+                    raise HTTPException(
+                        status_code=422, detail=f"Stats presentation cannot filter {node.field}"
+                    )
+            else:
+                for child in node.predicates:
+                    validate_predicate(child)
+
+        if query.predicates is not None:
+            validate_predicate(query.predicates)
     # 1. Validate metric keys
     for s in query.sort:
         if s.field not in METRIC_CATALOG and s.field not in ALLOWED_METADATA_FIELDS:
@@ -797,7 +933,11 @@ def execute_stats_query(
             raise HTTPException(status_code=422, detail=str(err)) from err
 
     # 2. Check cursor and bounds
-    context_hash = compute_stats_query_context_hash(context, query)
+    context_hash = (
+        stats_presentation_hash(context, query, presentation)
+        if presentation is not None
+        else compute_stats_query_context_hash(context, query)
+    )
     start_offset = 0
 
     if not is_export and query.page.cursor:
@@ -820,7 +960,10 @@ def execute_stats_query(
             cursor=query.page.cursor,
         )
         legacy_hash = compute_query_context_hash(context, legacy_query)
-        start_offset = decode_cursor(query.page.cursor, [context_hash, legacy_hash])
+        valid_hashes = [context_hash] if presentation is not None else [context_hash, legacy_hash]
+        start_offset = decode_cursor(query.page.cursor, valid_hashes)
+        if start_offset < 0:
+            raise HTTPException(status_code=422, detail="cursor offset must be nonnegative")
 
     # 3. Determine dialect
     is_sqlite = session.bind.dialect.name == "sqlite" if session.bind else False
@@ -831,6 +974,8 @@ def execute_stats_query(
         query,
         is_count_only=True,
         is_sqlite=is_sqlite,
+        legacy_nonappearance=legacy_nonappearance,
+        presentation=presentation,
     )
     total_count = session.execute(text(count_sql), count_params).scalar() or 0
 
@@ -850,6 +995,8 @@ def execute_stats_query(
         limit=limit,
         offset=offset,
         is_sqlite=is_sqlite,
+        legacy_nonappearance=legacy_nonappearance,
+        presentation=presentation,
     )
     result_rows = session.execute(text(main_sql), main_params).mappings().all()
 
@@ -865,12 +1012,34 @@ def execute_stats_query(
     return items, total_count, next_cursor, has_more
 
 
+def stats_cohort_summary(
+    session: Session, context: ResolvedContext, query: QuerySpec, presentation: StatsPresentation
+) -> dict[str, Any]:
+    """Count the complete eligible cohort even when presentation returns no rows."""
+    cohort_query = query.model_copy(update={"name": None})
+    sql, params = build_stats_query_sql(
+        context,
+        cohort_query,
+        is_count_only=True,
+        is_sqlite=session.bind.dialect.name == "sqlite" if session.bind else False,
+        presentation=StatsPresentation(),
+    )
+    return {
+        "version": presentation.version,
+        "scope_hash": stats_presentation_hash(context, query, presentation, cohort=True),
+        "eligible_players": int(session.execute(text(sql), params).scalar() or 0),
+        "formula": "100 * (count_less + 0.5 * count_equal) / n; rounded, clamped to 1-99",
+        "good_directions": {key: METRIC_CATALOG[key].good_direction for key in PERCENTILE_COLUMNS},
+    }
+
+
 def export_stats_query(
     session: Session,
     context: ResolvedContext,
     query: QuerySpec,
     *,
     max_rows: int = MAX_EXPORT_ROWS,
+    legacy_nonappearance: bool = False,
 ) -> list[dict[str, Any]]:
     """Execute complete bounded full-result export iterator without page clamping."""
     items, _, _, _ = execute_stats_query(
@@ -879,6 +1048,7 @@ def export_stats_query(
         query,
         is_export=True,
         max_export_rows=max_rows,
+        legacy_nonappearance=legacy_nonappearance,
     )
     return items
 
@@ -887,6 +1057,8 @@ def explain_stats_query(
     session: Session,
     context: ResolvedContext,
     query: QuerySpec,
+    *,
+    legacy_nonappearance: bool = False,
 ) -> dict[str, Any]:
     """Execute query plan analysis and performance harness.
 
@@ -902,6 +1074,7 @@ def explain_stats_query(
         limit=limit,
         offset=0,
         is_sqlite=is_sqlite,
+        legacy_nonappearance=legacy_nonappearance,
     )
 
     if is_sqlite:

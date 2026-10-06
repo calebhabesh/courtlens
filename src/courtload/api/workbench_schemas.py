@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from datetime import date
 from typing import Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field
@@ -74,6 +75,7 @@ from courtload.domain.query_spec import (
     WindowKind,
     WindowSpec,
 )
+from courtload.domain.stats_presentation import StatsCohort, StatsPresentation
 
 __all__ = [
     "AggregateRankingBoardsRequest",
@@ -241,6 +243,14 @@ class MetricCatalogResponse(BaseModel):
     metrics: list[MetricDefinitionSchema]
 
 
+class StatsScopeSchema(BaseModel):
+    season: str
+    phase: str
+    coverage_start: str
+    coverage_end: str
+    default_before_date: str
+
+
 class WorkbenchCatalogResponse(BaseModel):
     release_id: str
     snapshot_id: str
@@ -250,6 +260,10 @@ class WorkbenchCatalogResponse(BaseModel):
     source: str
     seasons: list[str]
     phases: list[str]
+    stats_scopes: list[StatsScopeSchema] = Field(default_factory=list)
+    stats_windows: list[str] = Field(default_factory=list)
+    stats_normalizations: list[str] = Field(default_factory=list)
+    stats_sort_fields: list[str] = Field(default_factory=list)
     default_season: str
     default_phase: str
     default_before_date: str
@@ -289,6 +303,8 @@ class PlayerResearchItem(BaseModel):
     metrics: dict[str, Any]
     sample_sizes: dict[str, int]
     portrait_url: str | None = None
+    percentiles: dict[str, float | None] | None = None
+    cohort_sample_sizes: dict[str, int] | None = None
 
 
 class PlayerResearchResponse(BaseModel):
@@ -305,6 +321,7 @@ class WorkbenchQueryRequest(BaseModel):
     """Read-only typed v2 query execution request."""
 
     query: QuerySpec
+    presentation: StatsPresentation | None = None
 
 
 class WorkbenchQueryResponse(BaseModel):
@@ -313,6 +330,9 @@ class WorkbenchQueryResponse(BaseModel):
     context: dict[str, Any]
     query: QuerySpec
     total_eligible_players: int
+    total_output_players: int | None = None
+    output_offset: int | None = None
+    cohort: StatsCohort | None = None
     items: list[PlayerResearchItem]
     next_cursor: str | None = None
     has_more: bool
@@ -852,6 +872,15 @@ class LookupAvailability(BaseModel):
     division: str | None = None
 
 
+class LookupTeamAssociation(BaseModel):
+    basis: Literal["selected_scope", "last_observed"]
+    teams: list[str] = Field(default_factory=list)
+    observed_through: date | None = None
+    season: str | None = None
+    phase: str | None = None
+    before_date: date | None = None
+
+
 class LookupItem(BaseModel):
     id: str
     kind: str
@@ -864,6 +893,7 @@ class LookupItem(BaseModel):
     portrait_url: str | None = None
     portrait_fallback: str | None = None
     availability: LookupAvailability = Field(default_factory=LookupAvailability)
+    team_association: LookupTeamAssociation | None = None
     destination_url: str
     metadata: dict[str, Any] = Field(default_factory=dict)
 
