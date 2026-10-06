@@ -1,0 +1,25 @@
+{
+  "archived_at": "2026-10-06T21:59:01.519198+00:00",
+  "sdk_version_at_archive": "2.26.0",
+  "captures": {
+    "fixture-capture.json.gz": {
+      "sha256": "b2f94fbf84043ede02ced6efe6a84a14fc965597c64393a3947c7ad768c23407",
+      "uncompressed_sha256": "58d8a325b18151f98e6126c6c9eac5cddcb8eec59005940f4859329dce73463a",
+      "uncompressed_bytes": 92422063
+    },
+    "live-capture.json.gz": {
+      "sha256": "00ddb990f172c878afec72447522a5318eddc8b0443c3cedf939e038158575f3",
+      "uncompressed_sha256": "aae3b23ab1a39a911e57b019385f4c1f84ad6a2245abff1a87fdf8b237c4d793",
+      "uncompressed_bytes": 94569537
+    }
+  },
+  "source_sha256": {
+    "scripts/evaluate_assistant.py": "862896647dfd3ec80074978273f3862565f277d3b2816ad22ad7e0e1132541c1",
+    "scripts/rescore_assistant.py": "bbdbe6acfad491943ba7cf587781e0b8ee94222380c776a6a842b6e896de645a",
+    "src/courtload/services/assistant/revamp_evaluation.py": "98507e9c3327d69f489b951d93ca9bfc949ac9afe399fe09f8e71cf9c379a30e",
+    "evaluation/assistant/ar02-v1.json": "8aa39b251f814cc009e7975138747025620052d8be8be1eeeda74b94b219b1dc",
+    "evaluation/assistant/ar02-v2.json": "c169159db1f5c159f76a382b0ea692f960e7b3ed2a5b224fc22c174b24f69fdf",
+    "src/courtload/services/assistant/hybrid.py": "ff01068a1cadb53d413a0d895addc6b96743ea50b699088d4cc365fe9aecf57a",
+    "src/courtload/services/assistant/planner.py": "465e91e0503b6e290485761d1959025ffad87f7ac859c5c9fe7db9ed81ed5b6a"
+  }
+}

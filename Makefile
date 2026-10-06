@@ -1,4 +1,4 @@
-.PHONY: install install-dashboard dev up down migrate seed evaluate evaluate-final test test-python lint typecheck dbt-build build refresh clean acquire import publish backup restore verify-restore benchmark
+.PHONY: install install-dashboard dev up down migrate seed evaluate evaluate-final eval-assistant test test-python lint typecheck dbt-build build refresh clean acquire import publish backup restore verify-restore benchmark
 
 install:
 	python3 -m venv .venv
@@ -55,6 +55,10 @@ evaluate:
 
 evaluate-final:
 	OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 courtload evaluate-final --baseline-run 3cf4ae8eb331ac02d3b3 --open-final-test
+
+ASSISTANT_EVAL_ARGS ?=
+eval-assistant:
+	.venv/bin/python scripts/evaluate_assistant.py $(ASSISTANT_EVAL_ARGS)
 
 test: test-python
 	npm --prefix dashboard run test
