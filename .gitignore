@@ -48,3 +48,6 @@ warehouse/.user.yml
 .vscode/
 .DS_Store
 Thumbs.db
+
+# Disposable verification scratch (restore copies, backups); never committed
+data/*-verify-temp/
