@@ -1,0 +1,9 @@
+Traceback (most recent call last):
+  File "/home/ethioking/dev/nba-analytics/scripts/verify_pf07c_retrieval.py", line 192, in <module>
+    verify_http()
+    ~~~~~~~~~~~^^
+  File "/home/ethioking/dev/nba-analytics/scripts/verify_pf07c_retrieval.py", line 105, in verify_http
+    process = start()
+  File "/home/ethioking/dev/nba-analytics/scripts/verify_pf07c_retrieval.py", line 102, in start
+    raise RuntimeError("Backend readiness failed")
+RuntimeError: Backend readiness failed

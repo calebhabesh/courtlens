@@ -1,0 +1,12 @@
+[
+  "dashboard/components/ask-courtload.tsx",
+  "dashboard/components/ask-drawer.tsx",
+  "dashboard/components/threaded-assistant.tsx",
+  "dashboard/components/hybrid-answer.tsx",
+  "dashboard/app/research/ask/page.tsx",
+  "dashboard/lib/assistant-history.ts",
+  "dashboard/app/globals.css",
+  "dashboard/e2e/threaded-assistant.spec.ts",
+  "scripts/verify_pf08a_browser.cjs",
+  "docs/polish-freeze-implementation-progress.md"
+]

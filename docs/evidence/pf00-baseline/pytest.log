@@ -1,0 +1,1608 @@
+============================= test session starts ==============================
+platform linux -- Python 3.14.7, pytest-8.4.2, pluggy-1.6.0
+rootdir: /home/ethioking/dev/nba-analytics
+configfile: pyproject.toml
+testpaths: tests
+plugins: anyio-4.14.2, cov-7.1.0
+collected 825 items
+
+tests/integration/test_analytical_ops_api.py ......                      [  0%]
+tests/integration/test_analytics_api.py ......                           [  1%]
+tests/integration/test_api.py .........                                  [  2%]
+tests/integration/test_assignment_admission_postgres.py ..........       [  3%]
+tests/integration/test_b14_api.py .......                                [  4%]
+tests/integration/test_b15_api.py ........                               [  5%]
+tests/integration/test_b16_api.py ....                                   [  6%]
+tests/integration/test_b17_api.py .....                                  [  6%]
+tests/integration/test_b21_api.py EEEEEE                                 [  7%]
+tests/integration/test_b23_api.py EEEEEEEE                               [  8%]
+tests/integration/test_conversation_postgres.py ......                   [  9%]
+tests/integration/test_finance_postgres.py ........                      [ 10%]
+tests/integration/test_finance_query_postgres.py ...                     [ 10%]
+tests/integration/test_ingestion.py ....                                 [ 10%]
+tests/integration/test_live_postgres.py .............                    [ 12%]
+tests/integration/test_migration_b14.py .                                [ 12%]
+tests/integration/test_personal_workspace_api.py .....                   [ 13%]
+tests/integration/test_personal_workspace_migration.py ........          [ 14%]
+tests/integration/test_personal_workspace_postgres.py ..                 [ 14%]
+tests/integration/test_planner.py .....                                  [ 15%]
+tests/integration/test_possession_warehouse_postgres.py E..E             [ 15%]
+tests/integration/test_publication_postgres.py ..                        [ 15%]
+tests/integration/test_research_input_sealing.py .......                 [ 16%]
+tests/integration/test_research_limits.py .....                          [ 17%]
+tests/integration/test_research_readiness_postgres.py EEE                [ 17%]
+tests/integration/test_research_results_api.py ..                        [ 17%]
+tests/integration/test_restore_postgres.py .FFFF                         [ 18%]
+tests/integration/test_rich_admission_postgres.py ..F..                  [ 19%]
+tests/integration/test_saved_conversation_postgres.py .................. [ 21%]
+...                                                                      [ 21%]
+tests/integration/test_workbench_api.py ..........................       [ 24%]
+tests/integration/test_workbench_jobs_postgres.py ....F.......           [ 26%]
+tests/integration/test_workbench_postgres.py F.                          [ 26%]
+tests/unit/test_analytical_ops.py ...............                        [ 28%]
+tests/unit/test_archive_spike.py .....                                   [ 28%]
+tests/unit/test_assignment_admission.py ............                     [ 30%]
+tests/unit/test_assistant.py .......                                     [ 31%]
+tests/unit/test_b19_event_conservation.py ....................           [ 33%]
+tests/unit/test_b19_source_audit.py ...........                          [ 34%]
+tests/unit/test_backfill_resumable.py ...                                [ 35%]
+tests/unit/test_challenger.py ....                                       [ 35%]
+tests/unit/test_cli.py ...                                               [ 36%]
+tests/unit/test_config.py ...                                            [ 36%]
+tests/unit/test_contract_fixture.py .                                    [ 36%]
+tests/unit/test_conversations.py ....................................... [ 41%]
+........................................................                 [ 48%]
+tests/unit/test_entity_lookup.py ..............                          [ 49%]
+tests/unit/test_evaluation.py ....                                       [ 50%]
+tests/unit/test_expected_shot.py ...                                     [ 50%]
+tests/unit/test_finance_catalog.py ..                                    [ 50%]
+tests/unit/test_finance_import.py .......................                [ 53%]
+tests/unit/test_finance_query.py ...........                             [ 55%]
+tests/unit/test_identity_crosswalk.py ...                                [ 55%]
+tests/unit/test_live.py .........................                        [ 58%]
+tests/unit/test_live_history.py ...                                      [ 58%]
+tests/unit/test_matching.py ....                                         [ 59%]
+tests/unit/test_measurements.py ...                                      [ 59%]
+tests/unit/test_metrics_v2.py ......................                     [ 62%]
+tests/unit/test_native_reconstruction.py ......................          [ 64%]
+tests/unit/test_on_off.py ...................                            [ 67%]
+tests/unit/test_personal_state.py ....                                   [ 67%]
+tests/unit/test_playoffs.py .........                                    [ 68%]
+tests/unit/test_points_forecast.py ....                                  [ 69%]
+tests/unit/test_portrait_jobs.py .                                       [ 69%]
+tests/unit/test_prospective_forecasts.py ........                        [ 70%]
+tests/unit/test_provider_client.py ........                              [ 71%]
+tests/unit/test_publication.py ....                                      [ 71%]
+tests/unit/test_query_contracts.py ..............                        [ 73%]
+tests/unit/test_raw_store.py .                                           [ 73%]
+tests/unit/test_research_readiness.py ....                               [ 74%]
+tests/unit/test_research_registration.py ..............................  [ 77%]
+tests/unit/test_research_reproduce.py .                                  [ 77%]
+tests/unit/test_retrospective_binding.py .....                           [ 78%]
+tests/unit/test_rich_sources.py ..........                               [ 79%]
+tests/unit/test_saved_conversations.py ...............                   [ 81%]
+tests/unit/test_scoring.py ...                                           [ 81%]
+tests/unit/test_season_discovery.py ......                               [ 82%]
+tests/unit/test_shooting.py ...................                          [ 84%]
+tests/unit/test_shot_corrections.py .........                            [ 86%]
+tests/unit/test_shotchart_admission.py ................................. [ 90%]
+..........................                                               [ 93%]
+tests/unit/test_sportsdataverse.py ........                              [ 94%]
+tests/unit/test_stats_engine.py ............FF                           [ 95%]
+tests/unit/test_stints.py ...........                                    [ 97%]
+tests/unit/test_team_analytics.py ...........                            [ 98%]
+tests/unit/test_workbench_contracts.py .......                           [ 99%]
+tests/unit/test_workbench_metrics.py .....                               [100%]
+
+==================================== ERRORS ====================================
+___ ERROR at setup of test_api_directional_exposure_coverage_and_partitions ____
+
+    @pytest.fixture
+    def fixture_api() -> Iterator[tuple[TestClient, Session, dict, list[WorkbenchLineupStint]]]:
+        url = os.getenv("COURTLOAD_TEST_POSTGRES_URL") or get_settings().database_url
+        if not url.startswith("postgresql"):
+            pytest.skip("PostgreSQL required")
+        engine = create_engine(url)
+        connection = engine.connect()
+        transaction = connection.begin()
+        session = Session(connection, expire_on_commit=False)
+        namespace = uuid4().hex
+        dataset = WorkbenchDataset(
+            id=new_uuid(),
+            content_sha256=namespace * 2,
+            membership_sha256=namespace * 2,
+            semantic_signature=namespace * 2,
+            source_namespace="test-b21",
+            parser_version="test",
+            quality_version="test",
+            seasons_json=["2023-24"],
+            phases_json=["regular_season", "playoffs"],
+            manifest_json={},
+            coverage_json={},
+            exclusions_json={},
+            status="active",
+        )
+        version = session.scalar(select(WorkbenchVersion))
+        obs = session.scalar(select(WorkbenchObservation))
+>       assert version is not None and obs is not None, "Requires admitted baseline source metadata"
+E       AssertionError: Requires admitted baseline source metadata
+E       assert (None is not None)
+
+tests/integration/test_b21_api.py:58: AssertionError
+___ ERROR at setup of test_same_day_future_mutations_do_not_change_evidence ____
+
+    @pytest.fixture
+    def fixture_api() -> Iterator[tuple[TestClient, Session, dict, list[WorkbenchLineupStint]]]:
+        url = os.getenv("COURTLOAD_TEST_POSTGRES_URL") or get_settings().database_url
+        if not url.startswith("postgresql"):
+            pytest.skip("PostgreSQL required")
+        engine = create_engine(url)
+        connection = engine.connect()
+        transaction = connection.begin()
+        session = Session(connection, expire_on_commit=False)
+        namespace = uuid4().hex
+        dataset = WorkbenchDataset(
+            id=new_uuid(),
+            content_sha256=namespace * 2,
+            membership_sha256=namespace * 2,
+            semantic_signature=namespace * 2,
+            source_namespace="test-b21",
+            parser_version="test",
+            quality_version="test",
+            seasons_json=["2023-24"],
+            phases_json=["regular_season", "playoffs"],
+            manifest_json={},
+            coverage_json={},
+            exclusions_json={},
+            status="active",
+        )
+        version = session.scalar(select(WorkbenchVersion))
+        obs = session.scalar(select(WorkbenchObservation))
+>       assert version is not None and obs is not None, "Requires admitted baseline source metadata"
+E       AssertionError: Requires admitted baseline source metadata
+E       assert (None is not None)
+
+tests/integration/test_b21_api.py:58: AssertionError
+______ ERROR at setup of test_teammate_shifts_exact_units_and_date_range _______
+
+    @pytest.fixture
+    def fixture_api() -> Iterator[tuple[TestClient, Session, dict, list[WorkbenchLineupStint]]]:
+        url = os.getenv("COURTLOAD_TEST_POSTGRES_URL") or get_settings().database_url
+        if not url.startswith("postgresql"):
+            pytest.skip("PostgreSQL required")
+        engine = create_engine(url)
+        connection = engine.connect()
+        transaction = connection.begin()
+        session = Session(connection, expire_on_commit=False)
+        namespace = uuid4().hex
+        dataset = WorkbenchDataset(
+            id=new_uuid(),
+            content_sha256=namespace * 2,
+            membership_sha256=namespace * 2,
+            semantic_signature=namespace * 2,
+            source_namespace="test-b21",
+            parser_version="test",
+            quality_version="test",
+            seasons_json=["2023-24"],
+            phases_json=["regular_season", "playoffs"],
+            manifest_json={},
+            coverage_json={},
+            exclusions_json={},
+            status="active",
+        )
+        version = session.scalar(select(WorkbenchVersion))
+        obs = session.scalar(select(WorkbenchObservation))
+>       assert version is not None and obs is not None, "Requires admitted baseline source metadata"
+E       AssertionError: Requires admitted baseline source metadata
+E       assert (None is not None)
+
+tests/integration/test_b21_api.py:58: AssertionError
+______ ERROR at setup of test_invalid_game_quarantine_and_source_blocked _______
+
+    @pytest.fixture
+    def fixture_api() -> Iterator[tuple[TestClient, Session, dict, list[WorkbenchLineupStint]]]:
+        url = os.getenv("COURTLOAD_TEST_POSTGRES_URL") or get_settings().database_url
+        if not url.startswith("postgresql"):
+            pytest.skip("PostgreSQL required")
+        engine = create_engine(url)
+        connection = engine.connect()
+        transaction = connection.begin()
+        session = Session(connection, expire_on_commit=False)
+        namespace = uuid4().hex
+        dataset = WorkbenchDataset(
+            id=new_uuid(),
+            content_sha256=namespace * 2,
+            membership_sha256=namespace * 2,
+            semantic_signature=namespace * 2,
+            source_namespace="test-b21",
+            parser_version="test",
+            quality_version="test",
+            seasons_json=["2023-24"],
+            phases_json=["regular_season", "playoffs"],
+            manifest_json={},
+            coverage_json={},
+            exclusions_json={},
+            status="active",
+        )
+        version = session.scalar(select(WorkbenchVersion))
+        obs = session.scalar(select(WorkbenchObservation))
+>       assert version is not None and obs is not None, "Requires admitted baseline source metadata"
+E       AssertionError: Requires admitted baseline source metadata
+E       assert (None is not None)
+
+tests/integration/test_b21_api.py:58: AssertionError
+_____________ ERROR at setup of test_schema_scope_and_query_bounds _____________
+
+    @pytest.fixture
+    def fixture_api() -> Iterator[tuple[TestClient, Session, dict, list[WorkbenchLineupStint]]]:
+        url = os.getenv("COURTLOAD_TEST_POSTGRES_URL") or get_settings().database_url
+        if not url.startswith("postgresql"):
+            pytest.skip("PostgreSQL required")
+        engine = create_engine(url)
+        connection = engine.connect()
+        transaction = connection.begin()
+        session = Session(connection, expire_on_commit=False)
+        namespace = uuid4().hex
+        dataset = WorkbenchDataset(
+            id=new_uuid(),
+            content_sha256=namespace * 2,
+            membership_sha256=namespace * 2,
+            semantic_signature=namespace * 2,
+            source_namespace="test-b21",
+            parser_version="test",
+            quality_version="test",
+            seasons_json=["2023-24"],
+            phases_json=["regular_season", "playoffs"],
+            manifest_json={},
+            coverage_json={},
+            exclusions_json={},
+            status="active",
+        )
+        version = session.scalar(select(WorkbenchVersion))
+        obs = session.scalar(select(WorkbenchObservation))
+>       assert version is not None and obs is not None, "Requires admitted baseline source metadata"
+E       AssertionError: Requires admitted baseline source metadata
+E       assert (None is not None)
+
+tests/integration/test_b21_api.py:58: AssertionError
+______ ERROR at setup of test_team_tricode_resolves_to_canonical_identity ______
+
+    @pytest.fixture
+    def fixture_api() -> Iterator[tuple[TestClient, Session, dict, list[WorkbenchLineupStint]]]:
+        url = os.getenv("COURTLOAD_TEST_POSTGRES_URL") or get_settings().database_url
+        if not url.startswith("postgresql"):
+            pytest.skip("PostgreSQL required")
+        engine = create_engine(url)
+        connection = engine.connect()
+        transaction = connection.begin()
+        session = Session(connection, expire_on_commit=False)
+        namespace = uuid4().hex
+        dataset = WorkbenchDataset(
+            id=new_uuid(),
+            content_sha256=namespace * 2,
+            membership_sha256=namespace * 2,
+            semantic_signature=namespace * 2,
+            source_namespace="test-b21",
+            parser_version="test",
+            quality_version="test",
+            seasons_json=["2023-24"],
+            phases_json=["regular_season", "playoffs"],
+            manifest_json={},
+            coverage_json={},
+            exclusions_json={},
+            status="active",
+        )
+        version = session.scalar(select(WorkbenchVersion))
+        obs = session.scalar(select(WorkbenchObservation))
+>       assert version is not None and obs is not None, "Requires admitted baseline source metadata"
+E       AssertionError: Requires admitted baseline source metadata
+E       assert (None is not None)
+
+tests/integration/test_b21_api.py:58: AssertionError
+_____ ERROR at setup of test_profiles_totals_missing_coordinates_and_peers _____
+
+    @pytest.fixture
+    def fixture_api() -> Iterator[tuple[TestClient, Session, dict, list[WorkbenchLineupStint]]]:
+        url = os.getenv("COURTLOAD_TEST_POSTGRES_URL") or get_settings().database_url
+        if not url.startswith("postgresql"):
+            pytest.skip("PostgreSQL required")
+        engine = create_engine(url)
+        connection = engine.connect()
+        transaction = connection.begin()
+        session = Session(connection, expire_on_commit=False)
+        namespace = uuid4().hex
+        dataset = WorkbenchDataset(
+            id=new_uuid(),
+            content_sha256=namespace * 2,
+            membership_sha256=namespace * 2,
+            semantic_signature=namespace * 2,
+            source_namespace="test-b21",
+            parser_version="test",
+            quality_version="test",
+            seasons_json=["2023-24"],
+            phases_json=["regular_season", "playoffs"],
+            manifest_json={},
+            coverage_json={},
+            exclusions_json={},
+            status="active",
+        )
+        version = session.scalar(select(WorkbenchVersion))
+        obs = session.scalar(select(WorkbenchObservation))
+>       assert version is not None and obs is not None, "Requires admitted baseline source metadata"
+E       AssertionError: Requires admitted baseline source metadata
+E       assert (None is not None)
+
+tests/integration/test_b21_api.py:58: AssertionError
+_____ ERROR at setup of test_assignment_fractional_exposure_and_pooled_pct _____
+
+    @pytest.fixture
+    def fixture_api() -> Iterator[tuple[TestClient, Session, dict, list[WorkbenchLineupStint]]]:
+        url = os.getenv("COURTLOAD_TEST_POSTGRES_URL") or get_settings().database_url
+        if not url.startswith("postgresql"):
+            pytest.skip("PostgreSQL required")
+        engine = create_engine(url)
+        connection = engine.connect()
+        transaction = connection.begin()
+        session = Session(connection, expire_on_commit=False)
+        namespace = uuid4().hex
+        dataset = WorkbenchDataset(
+            id=new_uuid(),
+            content_sha256=namespace * 2,
+            membership_sha256=namespace * 2,
+            semantic_signature=namespace * 2,
+            source_namespace="test-b21",
+            parser_version="test",
+            quality_version="test",
+            seasons_json=["2023-24"],
+            phases_json=["regular_season", "playoffs"],
+            manifest_json={},
+            coverage_json={},
+            exclusions_json={},
+            status="active",
+        )
+        version = session.scalar(select(WorkbenchVersion))
+        obs = session.scalar(select(WorkbenchObservation))
+>       assert version is not None and obs is not None, "Requires admitted baseline source metadata"
+E       AssertionError: Requires admitted baseline source metadata
+E       assert (None is not None)
+
+tests/integration/test_b21_api.py:58: AssertionError
+______ ERROR at setup of test_aftermath_raw_samples_and_unknown_branches _______
+
+    @pytest.fixture
+    def fixture_api() -> Iterator[tuple[TestClient, Session, dict, list[WorkbenchLineupStint]]]:
+        url = os.getenv("COURTLOAD_TEST_POSTGRES_URL") or get_settings().database_url
+        if not url.startswith("postgresql"):
+            pytest.skip("PostgreSQL required")
+        engine = create_engine(url)
+        connection = engine.connect()
+        transaction = connection.begin()
+        session = Session(connection, expire_on_commit=False)
+        namespace = uuid4().hex
+        dataset = WorkbenchDataset(
+            id=new_uuid(),
+            content_sha256=namespace * 2,
+            membership_sha256=namespace * 2,
+            semantic_signature=namespace * 2,
+            source_namespace="test-b21",
+            parser_version="test",
+            quality_version="test",
+            seasons_json=["2023-24"],
+            phases_json=["regular_season", "playoffs"],
+            manifest_json={},
+            coverage_json={},
+            exclusions_json={},
+            status="active",
+        )
+        version = session.scalar(select(WorkbenchVersion))
+        obs = session.scalar(select(WorkbenchObservation))
+>       assert version is not None and obs is not None, "Requires admitted baseline source metadata"
+E       AssertionError: Requires admitted baseline source metadata
+E       assert (None is not None)
+
+tests/integration/test_b21_api.py:58: AssertionError
+__ ERROR at setup of test_future_same_day_phase_finality_and_content_identity __
+
+    @pytest.fixture
+    def fixture_api() -> Iterator[tuple[TestClient, Session, dict, list[WorkbenchLineupStint]]]:
+        url = os.getenv("COURTLOAD_TEST_POSTGRES_URL") or get_settings().database_url
+        if not url.startswith("postgresql"):
+            pytest.skip("PostgreSQL required")
+        engine = create_engine(url)
+        connection = engine.connect()
+        transaction = connection.begin()
+        session = Session(connection, expire_on_commit=False)
+        namespace = uuid4().hex
+        dataset = WorkbenchDataset(
+            id=new_uuid(),
+            content_sha256=namespace * 2,
+            membership_sha256=namespace * 2,
+            semantic_signature=namespace * 2,
+            source_namespace="test-b21",
+            parser_version="test",
+            quality_version="test",
+            seasons_json=["2023-24"],
+            phases_json=["regular_season", "playoffs"],
+            manifest_json={},
+            coverage_json={},
+            exclusions_json={},
+            status="active",
+        )
+        version = session.scalar(select(WorkbenchVersion))
+        obs = session.scalar(select(WorkbenchObservation))
+>       assert version is not None and obs is not None, "Requires admitted baseline source metadata"
+E       AssertionError: Requires admitted baseline source metadata
+E       assert (None is not None)
+
+tests/integration/test_b21_api.py:58: AssertionError
+_______ ERROR at setup of test_date_scope_source_blocked_and_quarantine ________
+
+    @pytest.fixture
+    def fixture_api() -> Iterator[tuple[TestClient, Session, dict, list[WorkbenchLineupStint]]]:
+        url = os.getenv("COURTLOAD_TEST_POSTGRES_URL") or get_settings().database_url
+        if not url.startswith("postgresql"):
+            pytest.skip("PostgreSQL required")
+        engine = create_engine(url)
+        connection = engine.connect()
+        transaction = connection.begin()
+        session = Session(connection, expire_on_commit=False)
+        namespace = uuid4().hex
+        dataset = WorkbenchDataset(
+            id=new_uuid(),
+            content_sha256=namespace * 2,
+            membership_sha256=namespace * 2,
+            semantic_signature=namespace * 2,
+            source_namespace="test-b21",
+            parser_version="test",
+            quality_version="test",
+            seasons_json=["2023-24"],
+            phases_json=["regular_season", "playoffs"],
+            manifest_json={},
+            coverage_json={},
+            exclusions_json={},
+            status="active",
+        )
+        version = session.scalar(select(WorkbenchVersion))
+        obs = session.scalar(select(WorkbenchObservation))
+>       assert version is not None and obs is not None, "Requires admitted baseline source metadata"
+E       AssertionError: Requires admitted baseline source metadata
+E       assert (None is not None)
+
+tests/integration/test_b21_api.py:58: AssertionError
+___________ ERROR at setup of test_schema_scope_bounds_and_no_write ____________
+
+    @pytest.fixture
+    def fixture_api() -> Iterator[tuple[TestClient, Session, dict, list[WorkbenchLineupStint]]]:
+        url = os.getenv("COURTLOAD_TEST_POSTGRES_URL") or get_settings().database_url
+        if not url.startswith("postgresql"):
+            pytest.skip("PostgreSQL required")
+        engine = create_engine(url)
+        connection = engine.connect()
+        transaction = connection.begin()
+        session = Session(connection, expire_on_commit=False)
+        namespace = uuid4().hex
+        dataset = WorkbenchDataset(
+            id=new_uuid(),
+            content_sha256=namespace * 2,
+            membership_sha256=namespace * 2,
+            semantic_signature=namespace * 2,
+            source_namespace="test-b21",
+            parser_version="test",
+            quality_version="test",
+            seasons_json=["2023-24"],
+            phases_json=["regular_season", "playoffs"],
+            manifest_json={},
+            coverage_json={},
+            exclusions_json={},
+            status="active",
+        )
+        version = session.scalar(select(WorkbenchVersion))
+        obs = session.scalar(select(WorkbenchObservation))
+>       assert version is not None and obs is not None, "Requires admitted baseline source metadata"
+E       AssertionError: Requires admitted baseline source metadata
+E       assert (None is not None)
+
+tests/integration/test_b21_api.py:58: AssertionError
+_ ERROR at setup of test_peer_distance_explains_zone_shares_and_provenance_hash _
+
+    @pytest.fixture
+    def fixture_api() -> Iterator[tuple[TestClient, Session, dict, list[WorkbenchLineupStint]]]:
+        url = os.getenv("COURTLOAD_TEST_POSTGRES_URL") or get_settings().database_url
+        if not url.startswith("postgresql"):
+            pytest.skip("PostgreSQL required")
+        engine = create_engine(url)
+        connection = engine.connect()
+        transaction = connection.begin()
+        session = Session(connection, expire_on_commit=False)
+        namespace = uuid4().hex
+        dataset = WorkbenchDataset(
+            id=new_uuid(),
+            content_sha256=namespace * 2,
+            membership_sha256=namespace * 2,
+            semantic_signature=namespace * 2,
+            source_namespace="test-b21",
+            parser_version="test",
+            quality_version="test",
+            seasons_json=["2023-24"],
+            phases_json=["regular_season", "playoffs"],
+            manifest_json={},
+            coverage_json={},
+            exclusions_json={},
+            status="active",
+        )
+        version = session.scalar(select(WorkbenchVersion))
+        obs = session.scalar(select(WorkbenchObservation))
+>       assert version is not None and obs is not None, "Requires admitted baseline source metadata"
+E       AssertionError: Requires admitted baseline source metadata
+E       assert (None is not None)
+
+tests/integration/test_b21_api.py:58: AssertionError
+_ ERROR at setup of test_prior_assignment_possession_changes_and_invalid_input _
+
+    @pytest.fixture
+    def fixture_api() -> Iterator[tuple[TestClient, Session, dict, list[WorkbenchLineupStint]]]:
+        url = os.getenv("COURTLOAD_TEST_POSTGRES_URL") or get_settings().database_url
+        if not url.startswith("postgresql"):
+            pytest.skip("PostgreSQL required")
+        engine = create_engine(url)
+        connection = engine.connect()
+        transaction = connection.begin()
+        session = Session(connection, expire_on_commit=False)
+        namespace = uuid4().hex
+        dataset = WorkbenchDataset(
+            id=new_uuid(),
+            content_sha256=namespace * 2,
+            membership_sha256=namespace * 2,
+            semantic_signature=namespace * 2,
+            source_namespace="test-b21",
+            parser_version="test",
+            quality_version="test",
+            seasons_json=["2023-24"],
+            phases_json=["regular_season", "playoffs"],
+            manifest_json={},
+            coverage_json={},
+            exclusions_json={},
+            status="active",
+        )
+        version = session.scalar(select(WorkbenchVersion))
+        obs = session.scalar(select(WorkbenchObservation))
+>       assert version is not None and obs is not None, "Requires admitted baseline source metadata"
+E       AssertionError: Requires admitted baseline source metadata
+E       assert (None is not None)
+
+tests/integration/test_b21_api.py:58: AssertionError
+____ ERROR at setup of test_end_to_end_stint_reconstruction_and_persistence ____
+
+db_session = <sqlalchemy.orm.session.Session object at 0x7fbb5fc44b50>
+
+    @pytest.fixture
+    def valid_version_and_obs(db_session: Session) -> tuple[str, str]:
+        version = db_session.scalars(select(WorkbenchVersion)).first()
+        obs = db_session.scalars(select(WorkbenchObservation)).first()
+        if not version or not obs:
+            with allow_admin_mutation(db_session):
+                if not version:
+>                   version = WorkbenchVersion(
+                        id=new_uuid(),
+                        source_namespace="sportsdataverse",
+                        content_sha256="v" * 64,
+                        parser_version="test-v1",
+                    )
+
+tests/integration/test_possession_warehouse_postgres.py:103: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+<string>:4: in __init__
+    ???
+.venv/lib/python3.14/site-packages/sqlalchemy/orm/state.py:596: in _initialize_instance
+    with util.safe_reraise():
+         ^^^^^^^^^^^^^^^^^^^
+.venv/lib/python3.14/site-packages/sqlalchemy/util/langhelpers.py:122: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+.venv/lib/python3.14/site-packages/sqlalchemy/orm/state.py:594: in _initialize_instance
+    manager.original_init(*mixed[1:], **kwargs)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <courtload.workbench_models.WorkbenchVersion object at 0x7fbb652ab110>
+kwargs = {'content_sha256': 'vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv', 'id': 'df31527f-26a1-4c82-92b6-08471523afbe', 'parser_version': 'test-v1', 'source_namespace': 'sportsdataverse'}
+cls_ = <class 'courtload.workbench_models.WorkbenchVersion'>
+k = 'source_namespace'
+
+    def _declarative_constructor(self: Any, **kwargs: Any) -> None:
+        """A simple constructor that allows initialization from kwargs.
+    
+        Sets attributes on the constructed instance using the names and
+        values in ``kwargs``.
+    
+        Only keys that are present as
+        attributes of the instance's class are allowed. These could be,
+        for example, any mapped columns or relationships.
+        """
+        cls_ = type(self)
+        for k in kwargs:
+            if not hasattr(cls_, k):
+>               raise TypeError(
+                    "%r is an invalid keyword argument for %s" % (k, cls_.__name__)
+                )
+E               TypeError: 'source_namespace' is an invalid keyword argument for WorkbenchVersion
+
+.venv/lib/python3.14/site-packages/sqlalchemy/orm/decl_base.py:2193: TypeError
+_____________ ERROR at setup of test_cutoff_safe_exposure_queries ______________
+
+db_session = <sqlalchemy.orm.session.Session object at 0x7fbb6721ec50>
+
+    @pytest.fixture
+    def valid_version_and_obs(db_session: Session) -> tuple[str, str]:
+        version = db_session.scalars(select(WorkbenchVersion)).first()
+        obs = db_session.scalars(select(WorkbenchObservation)).first()
+        if not version or not obs:
+            with allow_admin_mutation(db_session):
+                if not version:
+>                   version = WorkbenchVersion(
+                        id=new_uuid(),
+                        source_namespace="sportsdataverse",
+                        content_sha256="v" * 64,
+                        parser_version="test-v1",
+                    )
+
+tests/integration/test_possession_warehouse_postgres.py:103: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+<string>:4: in __init__
+    ???
+.venv/lib/python3.14/site-packages/sqlalchemy/orm/state.py:596: in _initialize_instance
+    with util.safe_reraise():
+         ^^^^^^^^^^^^^^^^^^^
+.venv/lib/python3.14/site-packages/sqlalchemy/util/langhelpers.py:122: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+.venv/lib/python3.14/site-packages/sqlalchemy/orm/state.py:594: in _initialize_instance
+    manager.original_init(*mixed[1:], **kwargs)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <courtload.workbench_models.WorkbenchVersion object at 0x7fbb5ff3ce60>
+kwargs = {'content_sha256': 'vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv', 'id': 'f5756e86-1966-41da-96c2-56f29137d879', 'parser_version': 'test-v1', 'source_namespace': 'sportsdataverse'}
+cls_ = <class 'courtload.workbench_models.WorkbenchVersion'>
+k = 'source_namespace'
+
+    def _declarative_constructor(self: Any, **kwargs: Any) -> None:
+        """A simple constructor that allows initialization from kwargs.
+    
+        Sets attributes on the constructed instance using the names and
+        values in ``kwargs``.
+    
+        Only keys that are present as
+        attributes of the instance's class are allowed. These could be,
+        for example, any mapped columns or relationships.
+        """
+        cls_ = type(self)
+        for k in kwargs:
+            if not hasattr(cls_, k):
+>               raise TypeError(
+                    "%r is an invalid keyword argument for %s" % (k, cls_.__name__)
+                )
+E               TypeError: 'source_namespace' is an invalid keyword argument for WorkbenchVersion
+
+.venv/lib/python3.14/site-packages/sqlalchemy/orm/decl_base.py:2193: TypeError
+_____ ERROR at setup of test_scope_and_row_counts_cannot_authorize_fitting _____
+
+    @pytest.fixture
+    def fixture_api() -> Iterator[tuple[TestClient, Session, dict, list[WorkbenchLineupStint]]]:
+        url = os.getenv("COURTLOAD_TEST_POSTGRES_URL") or get_settings().database_url
+        if not url.startswith("postgresql"):
+            pytest.skip("PostgreSQL required")
+        engine = create_engine(url)
+        connection = engine.connect()
+        transaction = connection.begin()
+        session = Session(connection, expire_on_commit=False)
+        namespace = uuid4().hex
+        dataset = WorkbenchDataset(
+            id=new_uuid(),
+            content_sha256=namespace * 2,
+            membership_sha256=namespace * 2,
+            semantic_signature=namespace * 2,
+            source_namespace="test-b21",
+            parser_version="test",
+            quality_version="test",
+            seasons_json=["2023-24"],
+            phases_json=["regular_season", "playoffs"],
+            manifest_json={},
+            coverage_json={},
+            exclusions_json={},
+            status="active",
+        )
+        version = session.scalar(select(WorkbenchVersion))
+        obs = session.scalar(select(WorkbenchObservation))
+>       assert version is not None and obs is not None, "Requires admitted baseline source metadata"
+E       AssertionError: Requires admitted baseline source metadata
+E       assert (None is not None)
+
+tests/integration/test_b21_api.py:58: AssertionError
+______________ ERROR at setup of test_missing_dataset_is_rejected ______________
+
+    @pytest.fixture
+    def fixture_api() -> Iterator[tuple[TestClient, Session, dict, list[WorkbenchLineupStint]]]:
+        url = os.getenv("COURTLOAD_TEST_POSTGRES_URL") or get_settings().database_url
+        if not url.startswith("postgresql"):
+            pytest.skip("PostgreSQL required")
+        engine = create_engine(url)
+        connection = engine.connect()
+        transaction = connection.begin()
+        session = Session(connection, expire_on_commit=False)
+        namespace = uuid4().hex
+        dataset = WorkbenchDataset(
+            id=new_uuid(),
+            content_sha256=namespace * 2,
+            membership_sha256=namespace * 2,
+            semantic_signature=namespace * 2,
+            source_namespace="test-b21",
+            parser_version="test",
+            quality_version="test",
+            seasons_json=["2023-24"],
+            phases_json=["regular_season", "playoffs"],
+            manifest_json={},
+            coverage_json={},
+            exclusions_json={},
+            status="active",
+        )
+        version = session.scalar(select(WorkbenchVersion))
+        obs = session.scalar(select(WorkbenchObservation))
+>       assert version is not None and obs is not None, "Requires admitted baseline source metadata"
+E       AssertionError: Requires admitted baseline source metadata
+E       assert (None is not None)
+
+tests/integration/test_b21_api.py:58: AssertionError
+_ ERROR at setup of test_team_boxes_require_matching_dates_phases_and_reciprocal_scores _
+
+    @pytest.fixture
+    def fixture_api() -> Iterator[tuple[TestClient, Session, dict, list[WorkbenchLineupStint]]]:
+        url = os.getenv("COURTLOAD_TEST_POSTGRES_URL") or get_settings().database_url
+        if not url.startswith("postgresql"):
+            pytest.skip("PostgreSQL required")
+        engine = create_engine(url)
+        connection = engine.connect()
+        transaction = connection.begin()
+        session = Session(connection, expire_on_commit=False)
+        namespace = uuid4().hex
+        dataset = WorkbenchDataset(
+            id=new_uuid(),
+            content_sha256=namespace * 2,
+            membership_sha256=namespace * 2,
+            semantic_signature=namespace * 2,
+            source_namespace="test-b21",
+            parser_version="test",
+            quality_version="test",
+            seasons_json=["2023-24"],
+            phases_json=["regular_season", "playoffs"],
+            manifest_json={},
+            coverage_json={},
+            exclusions_json={},
+            status="active",
+        )
+        version = session.scalar(select(WorkbenchVersion))
+        obs = session.scalar(select(WorkbenchObservation))
+>       assert version is not None and obs is not None, "Requires admitted baseline source metadata"
+E       AssertionError: Requires admitted baseline source metadata
+E       assert (None is not None)
+
+tests/integration/test_b21_api.py:58: AssertionError
+=================================== FAILURES ===================================
+__________ test_real_archive_backup_manifest_and_restore_verification __________
+
+self = <sqlalchemy.engine.base.Connection object at 0x7fbb5ff6e7b0>
+dialect = <sqlalchemy.dialects.postgresql.psycopg.PGDialect_psycopg object at 0x7fbb6582fb10>
+context = <sqlalchemy.dialects.postgresql.psycopg.PGExecutionContext_psycopg object at 0x7fbb5fc44450>
+statement = <sqlalchemy.dialects.postgresql.psycopg.PGCompiler_psycopg object at 0x7fbb6582de50>
+parameters = [{'channel': 'legacy_test_m6', 'published_at': datetime.datetime(2026, 10, 5, 16, 0, 56, 964662, tzinfo=datetime.timezone.utc), 'snapshot_id': '5b14b7ed-353b-499d-a37a-6887b5f6c715'}]
+
+    def _exec_single_context(
+        self,
+        dialect: Dialect,
+        context: ExecutionContext,
+        statement: Union[str, Compiled],
+        parameters: Optional[_AnyMultiExecuteParams],
+    ) -> CursorResult[Any]:
+        """continue the _execute_context() method for a single DBAPI
+        cursor.execute() or cursor.executemany() call.
+    
+        """
+        if dialect.bind_typing is BindTyping.SETINPUTSIZES:
+            generic_setinputsizes = context._prepare_set_input_sizes()
+    
+            if generic_setinputsizes:
+                try:
+                    dialect.do_set_input_sizes(
+                        context.cursor, generic_setinputsizes, context
+                    )
+                except BaseException as e:
+                    self._handle_dbapi_exception(
+                        e, str(statement), parameters, None, context
+                    )
+    
+        cursor, str_statement, parameters = (
+            context.cursor,
+            context.statement,
+            context.parameters,
+        )
+    
+        effective_parameters: Optional[_AnyExecuteParams]
+    
+        if not context.executemany:
+            effective_parameters = parameters[0]
+        else:
+            effective_parameters = parameters
+    
+        if self._has_events or self.engine._has_events:
+            for fn in self.dispatch.before_cursor_execute:
+                str_statement, effective_parameters = fn(
+                    self,
+                    cursor,
+                    str_statement,
+                    effective_parameters,
+                    context,
+                    context.executemany,
+                )
+    
+        if self._echo:
+            self._log_info(str_statement)
+    
+            stats = context._get_cache_stats()
+    
+            if not self.engine.hide_parameters:
+                self._log_info(
+                    "[%s] %r",
+                    stats,
+                    sql_util._repr_params(
+                        effective_parameters,
+                        batches=10,
+                        ismulti=context.executemany,
+                    ),
+                )
+            else:
+                self._log_info(
+                    "[%s] [SQL parameters hidden due to hide_parameters=True]",
+                    stats,
+                )
+    
+        evt_handled: bool = False
+        try:
+            if context.execute_style is ExecuteStyle.EXECUTEMANY:
+                effective_parameters = cast(
+                    "_CoreMultiExecuteParams", effective_parameters
+                )
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_executemany:
+                        if fn(
+                            cursor,
+                            str_statement,
+                            effective_parameters,
+                            context,
+                        ):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+                    self.dialect.do_executemany(
+                        cursor,
+                        str_statement,
+                        effective_parameters,
+                        context,
+                    )
+            elif not effective_parameters and context.no_parameters:
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_execute_no_params:
+                        if fn(cursor, str_statement, context):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+                    self.dialect.do_execute_no_params(
+                        cursor, str_statement, context
+                    )
+            else:
+                effective_parameters = cast(
+                    "_CoreSingleExecuteParams", effective_parameters
+                )
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_execute:
+                        if fn(
+                            cursor,
+                            str_statement,
+                            effective_parameters,
+                            context,
+                        ):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+>                   self.dialect.do_execute(
+                        cursor, str_statement, effective_parameters, context
+                    )
+
+.venv/lib/python3.14/site-packages/sqlalchemy/engine/base.py:1969: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+.venv/lib/python3.14/site-packages/sqlalchemy/engine/default.py:952: in do_execute
+    cursor.execute(statement, parameters)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <psycopg.Cursor [closed] [IDLE] (host=127.0.0.1 user=courtload database=courtload_pf00_baseline) at 0x7fbb645fac90>
+query = 'INSERT INTO published_snapshots (channel, snapshot_id, published_at) VALUES (%(channel)s::VARCHAR, %(snapshot_id)s::VARCHAR, %(published_at)s::TIMESTAMP WITH TIME ZONE)'
+params = {'channel': 'legacy_test_m6', 'published_at': datetime.datetime(2026, 10, 5, 16, 0, 56, 964662, tzinfo=datetime.timezone.utc), 'snapshot_id': '5b14b7ed-353b-499d-a37a-6887b5f6c715'}
+
+    def execute(
+        self,
+        query: Query,
+        params: Params | None = None,
+        *,
+        prepare: bool | None = None,
+        binary: bool | None = None,
+    ) -> Self:
+        """
+        Execute a query or command to the database.
+        """
+        try:
+            with self._conn.lock:
+                self._conn.wait(
+                    self._execute_gen(query, params, prepare=prepare, binary=binary)
+                )
+        except e._NO_TRACEBACK as ex:
+>           raise ex.with_traceback(None)
+E           psycopg.errors.ForeignKeyViolation: insert or update on table "published_snapshots" violates foreign key constraint "published_snapshots_snapshot_id_fkey"
+E           DETAIL:  Key (snapshot_id)=(5b14b7ed-353b-499d-a37a-6887b5f6c715) is not present in table "serving_snapshots".
+
+.venv/lib/python3.14/site-packages/psycopg/cursor.py:117: ForeignKeyViolation
+
+The above exception was the direct cause of the following exception:
+
+postgres_session = <sqlalchemy.orm.session.Session object at 0x7fbb5fc45050>
+
+    def test_real_archive_backup_manifest_and_restore_verification(
+        postgres_session: Session,
+    ) -> None:
+        """Documented integration check against the full populated M6 archive and artifacts."""
+        artifacts_dir = Path("data/artifacts/evaluation")
+        raw_dir = Path("data/raw/nocturnebear-a5f108b5")
+        if not (artifacts_dir / REGISTERED_RUN_ID).exists():
+            pytest.skip("Local evaluation artifacts not present for real archive check")
+    
+        # Point test channel to authoritative legacy M6 snapshot
+        legacy_channel = "legacy_test_m6"
+        postgres_session.merge(
+            PublishedSnapshot(
+                channel=legacy_channel,
+                snapshot_id="5b14b7ed-353b-499d-a37a-6887b5f6c715",
+                published_at=datetime.now(UTC),
+            )
+        )
+>       postgres_session.commit()
+
+tests/integration/test_restore_postgres.py:167: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+.venv/lib/python3.14/site-packages/sqlalchemy/orm/session.py:2035: in commit
+    trans.commit(_to_root=True)
+<string>:2: in commit
+    ???
+.venv/lib/python3.14/site-packages/sqlalchemy/orm/state_changes.py:137: in _go
+    ret_value = fn(self, *arg, **kw)
+                ^^^^^^^^^^^^^^^^^^^^
+.venv/lib/python3.14/site-packages/sqlalchemy/orm/session.py:1316: in commit
+    self._prepare_impl()
+<string>:2: in _prepare_impl
+    ???
+.venv/lib/python3.14/site-packages/sqlalchemy/orm/state_changes.py:137: in _go
+    ret_value = fn(self, *arg, **kw)
+                ^^^^^^^^^^^^^^^^^^^^
+.venv/lib/python3.14/site-packages/sqlalchemy/orm/session.py:1290: in _prepare_impl
+    self.session.flush()
+.venv/lib/python3.14/site-packages/sqlalchemy/orm/session.py:4353: in flush
+    self._flush(objects)
+.venv/lib/python3.14/site-packages/sqlalchemy/orm/session.py:4488: in _flush
+    with util.safe_reraise():
+         ^^^^^^^^^^^^^^^^^^^
+.venv/lib/python3.14/site-packages/sqlalchemy/util/langhelpers.py:122: in __exit__
+    raise exc_value.with_traceback(exc_tb)
+.venv/lib/python3.14/site-packages/sqlalchemy/orm/session.py:4449: in _flush
+    flush_context.execute()
+.venv/lib/python3.14/site-packages/sqlalchemy/orm/unitofwork.py:465: in execute
+    rec.execute(self)
+.venv/lib/python3.14/site-packages/sqlalchemy/orm/unitofwork.py:641: in execute
+    util.preloaded.orm_persistence.save_obj(
+.venv/lib/python3.14/site-packages/sqlalchemy/orm/persistence.py:94: in save_obj
+    _emit_insert_statements(
+.venv/lib/python3.14/site-packages/sqlalchemy/orm/persistence.py:1049: in _emit_insert_statements
+    result = connection.execute(
+.venv/lib/python3.14/site-packages/sqlalchemy/engine/base.py:1421: in execute
+    return meth(
+.venv/lib/python3.14/site-packages/sqlalchemy/sql/elements.py:526: in _execute_on_connection
+    return connection._execute_clauseelement(
+.venv/lib/python3.14/site-packages/sqlalchemy/engine/base.py:1643: in _execute_clauseelement
+    ret = self._execute_context(
+.venv/lib/python3.14/site-packages/sqlalchemy/engine/base.py:1848: in _execute_context
+    return self._exec_single_context(
+.venv/lib/python3.14/site-packages/sqlalchemy/engine/base.py:1988: in _exec_single_context
+    self._handle_dbapi_exception(
+.venv/lib/python3.14/site-packages/sqlalchemy/engine/base.py:2365: in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+.venv/lib/python3.14/site-packages/sqlalchemy/engine/base.py:1969: in _exec_single_context
+    self.dialect.do_execute(
+.venv/lib/python3.14/site-packages/sqlalchemy/engine/default.py:952: in do_execute
+    cursor.execute(statement, parameters)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <psycopg.Cursor [closed] [IDLE] (host=127.0.0.1 user=courtload database=courtload_pf00_baseline) at 0x7fbb645fac90>
+query = 'INSERT INTO published_snapshots (channel, snapshot_id, published_at) VALUES (%(channel)s::VARCHAR, %(snapshot_id)s::VARCHAR, %(published_at)s::TIMESTAMP WITH TIME ZONE)'
+params = {'channel': 'legacy_test_m6', 'published_at': datetime.datetime(2026, 10, 5, 16, 0, 56, 964662, tzinfo=datetime.timezone.utc), 'snapshot_id': '5b14b7ed-353b-499d-a37a-6887b5f6c715'}
+
+    def execute(
+        self,
+        query: Query,
+        params: Params | None = None,
+        *,
+        prepare: bool | None = None,
+        binary: bool | None = None,
+    ) -> Self:
+        """
+        Execute a query or command to the database.
+        """
+        try:
+            with self._conn.lock:
+                self._conn.wait(
+                    self._execute_gen(query, params, prepare=prepare, binary=binary)
+                )
+        except e._NO_TRACEBACK as ex:
+>           raise ex.with_traceback(None)
+E           sqlalchemy.exc.IntegrityError: (psycopg.errors.ForeignKeyViolation) insert or update on table "published_snapshots" violates foreign key constraint "published_snapshots_snapshot_id_fkey"
+E           DETAIL:  Key (snapshot_id)=(5b14b7ed-353b-499d-a37a-6887b5f6c715) is not present in table "serving_snapshots".
+E           [SQL: INSERT INTO published_snapshots (channel, snapshot_id, published_at) VALUES (%(channel)s::VARCHAR, %(snapshot_id)s::VARCHAR, %(published_at)s::TIMESTAMP WITH TIME ZONE)]
+E           [parameters: {'channel': 'legacy_test_m6', 'snapshot_id': '5b14b7ed-353b-499d-a37a-6887b5f6c715', 'published_at': datetime.datetime(2026, 10, 5, 16, 0, 56, 964662, tzinfo=datetime.timezone.utc)}]
+E           (Background on this error at: https://sqlalche.me/e/20/gkpj)
+
+.venv/lib/python3.14/site-packages/psycopg/cursor.py:117: IntegrityError
+___________ test_workbench_backup_manifest_and_restore_verification ____________
+
+postgres_session = <sqlalchemy.orm.session.Session object at 0x7fbb6721ef50>
+
+    def test_workbench_backup_manifest_and_restore_verification(
+        postgres_session: Session,
+    ) -> None:
+        """Integration check verifying workbench manifest creation and restore verification."""
+        artifacts_dir = Path("data/artifacts/evaluation")
+        raw_dir = Path("data/raw")
+    
+>       manifest = create_backup_manifest(
+            postgres_session,
+            artifacts_dir=artifacts_dir,
+            raw_dir=raw_dir,
+            channel="public",
+            code_version="test-commit",
+        )
+
+tests/integration/test_restore_postgres.py:204: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/courtload/services/backup_restore.py:93: in create_backup_manifest
+    return _create_backup_manifest_internal(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+session = <sqlalchemy.orm.session.Session object at 0x7fbb6721ef50>
+
+    def _create_backup_manifest_internal(
+        session: Session,
+        *,
+        artifacts_dir: Path,
+        raw_dir: Path,
+        channel: str,
+        code_version: str,
+        run_id: str,
+        workbench_raw_root: Path | None,
+        evaluation_configs_dir: Path | None,
+    ) -> dict[str, Any]:
+        pointer = session.get(PublishedSnapshot, channel)
+        if pointer is None:
+>           raise ValueError(f"No published pointer exists for channel '{channel}'")
+E           ValueError: No published pointer exists for channel 'public'
+
+src/courtload/services/backup_restore.py:118: ValueError
+_______ test_restore_verification_fails_on_missing_or_tampered_artifact ________
+
+postgres_session = <sqlalchemy.orm.session.Session object at 0x7fbb6721cb50>
+tmp_path = PosixPath('/tmp/pytest-of-ethioking/pytest-50/test_restore_verification_fail0')
+
+    def test_restore_verification_fails_on_missing_or_tampered_artifact(
+        postgres_session: Session, tmp_path: Path
+    ) -> None:
+        # Empty artifacts dir should fail with FileNotFoundError
+        with pytest.raises(FileNotFoundError):
+>           verify_restored_state(
+                postgres_session,
+                artifacts_dir=tmp_path,
+                channel="public",
+            )
+
+tests/integration/test_restore_postgres.py:237: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+session = <sqlalchemy.orm.session.Session object at 0x7fbb6721cb50>
+
+    def verify_restored_state(
+        session: Session,
+        *,
+        artifacts_dir: Path,
+        expected_snapshot_id: str | None = None,
+        channel: str = DEFAULT_CHANNEL,
+        run_id: str = REGISTERED_RUN_ID,
+        expected_artifact_hashes: dict[str, str] | None = None,
+        verify_comparison: bool = True,
+        test_player_a: str = "2544",
+        test_player_b: str = "201939",
+        test_date: date | None = None,
+        expected_saved_conversations: list[dict[str, str]] | None = None,
+    ) -> dict[str, Any]:
+        """Verify that a restored database and artifact directory satisfy all CourtLoad invariants."""
+        conversation_inventory = saved_inventory(session)
+        if (
+            expected_saved_conversations is not None
+            and conversation_inventory != expected_saved_conversations
+        ):
+            raise ValueError("Restored conversational investigation inventory differs from backup")
+        if expected_snapshot_id:
+            snapshot = session.get(ServingSnapshot, expected_snapshot_id)
+            if snapshot is None:
+                raise ValueError(f"Expected snapshot '{expected_snapshot_id}' does not exist")
+        else:
+            pointer = session.get(PublishedSnapshot, channel)
+            if pointer is None:
+>               raise ValueError(f"No published pointer exists for channel '{channel}'")
+E               ValueError: No published pointer exists for channel 'public'
+
+src/courtload/services/backup_restore.py:309: ValueError
+____________________ test_disposable_fresh_database_restore ____________________
+
+postgres_session = <sqlalchemy.orm.session.Session object at 0x7fbb6721f450>
+tmp_path = PosixPath('/tmp/pytest-of-ethioking/pytest-50/test_disposable_fresh_database0')
+
+    def test_disposable_fresh_database_restore(postgres_session: Session, tmp_path: Path) -> None:
+        """Full-cycle test: create backup archive bundle, restore into a fresh
+        disposable PostgreSQL DB, and verify.
+        """
+        backup_dir = tmp_path / "backups"
+        backup_dir.mkdir(parents=True)
+    
+>       archive_file, manifest = create_backup_archive(
+            postgres_session,
+            backup_dir=backup_dir,
+            artifacts_dir=Path("data/artifacts/evaluation"),
+            raw_root=Path("data/raw"),
+            configs_root=Path("evaluation"),
+            channel="public",
+            code_version="disposable-test",
+        )
+
+tests/integration/test_restore_postgres.py:251: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+src/courtload/services/backup_restore.py:795: in create_backup_archive
+    manifest = create_backup_manifest(
+src/courtload/services/backup_restore.py:93: in create_backup_manifest
+    return _create_backup_manifest_internal(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+session = <sqlalchemy.orm.session.Session object at 0x7fbb6721f450>
+
+    def _create_backup_manifest_internal(
+        session: Session,
+        *,
+        artifacts_dir: Path,
+        raw_dir: Path,
+        channel: str,
+        code_version: str,
+        run_id: str,
+        workbench_raw_root: Path | None,
+        evaluation_configs_dir: Path | None,
+    ) -> dict[str, Any]:
+        pointer = session.get(PublishedSnapshot, channel)
+        if pointer is None:
+>           raise ValueError(f"No published pointer exists for channel '{channel}'")
+E           ValueError: No published pointer exists for channel 'public'
+
+src/courtload/services/backup_restore.py:118: ValueError
+______________ test_point_conservation_quarantine_with_real_game _______________
+
+db_session = <sqlalchemy.orm.session.Session object at 0x7fbb66408f50>
+test_dataset = <courtload.workbench_models.WorkbenchDataset object at 0x7fbb5faed7e0>
+tmp_path = PosixPath('/tmp/pytest-of-ethioking/pytest-50/test_point_conservation_quaran0')
+
+    def test_point_conservation_quarantine_with_real_game(
+        db_session: Session, test_dataset: WorkbenchDataset, tmp_path: Path
+    ) -> None:
+        """Verify that a possession stream with mismatched points vs real box scores is quarantined."""
+        real_game_id = "0022300099"  # Real game in DB: LAC scored 123, SAS scored 83
+        s_dir = tmp_path / "sportsdataverse_2024"
+        s_dir.mkdir(parents=True, exist_ok=True)
+    
+        poss_file = s_dir / "nba_possessions_2024.csv.gz"
+        with gzip.open(poss_file, "wt", encoding="utf-8") as f:
+            writer = csv.writer(f)
+            writer.writerow(
+                [
+                    "game_id",
+                    "possession_number",
+                    "period",
+                    "number_in_period",
+                    "offense_team_id",
+                    "defense_team_id",
+                    "start_order_index",
+                    "end_order_index",
+                    "start_seconds_remaining",
+                    "end_seconds_remaining",
+                    "points",
+                    "is_second_chance",
+                    "count_as_possession",
+                    "possession_start_type",
+                    "fg2a",
+                    "fg2m",
+                    "fg3a",
+                    "fg3m",
+                    "fta",
+                    "ftm",
+                    "oreb",
+                    "dreb",
+                    "tov",
+                    "off_player_1",
+                    "off_player_2",
+                    "off_player_3",
+                    "off_player_4",
+                    "off_player_5",
+                    "def_player_1",
+                    "def_player_2",
+                    "def_player_3",
+                    "def_player_4",
+                    "def_player_5",
+                    "lineup_source",
+                ]
+            )
+            # Only 2 points for LAC instead of 123
+            writer.writerow(
+                [
+                    real_game_id,
+                    "1",
+                    "1",
+                    "1",
+                    "LAC",
+                    "SAS",
+                    "1",
+                    "3",
+                    "720.0",
+                    "690.0",
+                    "2",
+                    "false",
+                    "true",
+                    "OffDeadball",
+                    "1",
+                    "1",
+                    "0",
+                    "0",
+                    "0",
+                    "0",
+                    "0",
+                    "0",
+                    "0",
+                    "p1",
+                    "p2",
+                    "p3",
+                    "p4",
+                    "p5",
+                    "d1",
+                    "d2",
+                    "d3",
+                    "d4",
+                    "d5",
+                    "quarter_box",
+                ]
+            )
+    
+        summaries = admit_rich_sources_for_season(
+            session=db_session,
+            dataset_id=test_dataset.id,
+            season_ending_year=2024,
+            raw_root=tmp_path,
+            target_game_ids={real_game_id},
+            families=["possessions"],
+        )
+    
+        poss_summary = summaries["possessions"]
+>       assert poss_summary.total_games_admitted == 0
+E       AssertionError: assert 1 == 0
+E        +  where 1 = RichAdmissionSummary(season='2023-24', source_family='possessions', total_games_expected=0, total_games_observed=1, to...37e67b01e6c17d8ad2', source_bytes=320, parser_signature='courtload-sdv-rich-v1', policy_version='possession-policy-v1').total_games_admitted
+
+tests/integration/test_rich_admission_postgres.py:875: AssertionError
+________________________ test_interrupted_job_recovery _________________________
+
+postgres_engine = Engine(postgresql+psycopg://courtload:***@127.0.0.1:5432/courtload_pf00_baseline)
+
+    def test_interrupted_job_recovery(postgres_engine) -> None:  # type: ignore[no-untyped-def]
+        """Expired running jobs are recovered to interrupted, or succeeded if already published."""
+        with Session(postgres_engine) as session:
+            # 1. Running job without publication -> recovered to interrupted
+            old_time = utc_now() - timedelta(minutes=5)
+            stale_job = WorkbenchJob(
+                id=str(uuid4()),
+                job_type="refresh",
+                status="running",
+                heartbeat_at=old_time,
+                started_at=old_time,
+                owner="dead-worker-1",
+            )
+            session.add(stale_job)
+    
+            # 2. Running job whose snapshot actually published before dying -> recovered to succeeded
+            current_pub = session.get(PublishedSnapshot, DEFAULT_CHANNEL)
+            snap_id = current_pub.snapshot_id if current_pub else str(uuid4())
+            published_job = WorkbenchJob(
+                id=str(uuid4()),
+                job_type="bootstrap",
+                status="running",
+                heartbeat_at=old_time,
+                started_at=old_time,
+                owner="dead-worker-2",
+                output_refs_json={"snapshot_id": snap_id},
+            )
+            session.add(published_job)
+            session.commit()
+    
+            # Run recovery
+            recovered = recover_interrupted_jobs(session, lease_timeout_seconds=60)
+            assert len(recovered) >= 2
+    
+            recovered_ids = {j.id for j in recovered}
+            assert stale_job.id in recovered_ids
+            assert published_job.id in recovered_ids
+    
+            refreshed_stale = session.get(WorkbenchJob, stale_job.id)
+            assert refreshed_stale is not None
+            assert refreshed_stale.status == "interrupted"
+            assert refreshed_stale.error_summary is not None
+    
+            refreshed_published = session.get(WorkbenchJob, published_job.id)
+            assert refreshed_published is not None
+>           assert refreshed_published.status == "succeeded"
+E           AssertionError: assert 'interrupted' == 'succeeded'
+E             
+E             - succeeded
+E             + interrupted
+
+tests/integration/test_workbench_jobs_postgres.py:221: AssertionError
+------------------------------ Captured log call -------------------------------
+WARNING  courtload.services.workbench_jobs:workbench_jobs.py:157 Recovered job eb4b620c-5534-4059-89b2-444e73f961d1 to interrupted: lease expired at 2026-10-05T15:57:51.718966+00:00
+WARNING  courtload.services.workbench_jobs:workbench_jobs.py:157 Recovered job 4b496214-c8a0-4753-a05e-ce5c6dae92b7 to interrupted: lease expired at 2026-10-05T15:57:51.718966+00:00
+____________ test_postgres_sealed_trigger_rejects_raw_sql_mutation _____________
+
+postgres_engine = Engine(postgresql+psycopg://courtload:***@127.0.0.1:5432/courtload_pf00_baseline)
+
+    def test_postgres_sealed_trigger_rejects_raw_sql_mutation(postgres_engine) -> None:  # type: ignore[no-untyped-def]
+        """PostgreSQL database triggers reject ordinary SQL UPDATE or DELETE on sealed tables."""
+        with Session(postgres_engine) as session:
+            uid = uuid4().hex[:12]
+            artifact = WorkbenchArtifact(
+                sha256="pg_art_" + uid + "0" * 40,
+                resource="test_resource",
+                bytes=100,
+                storage_path="test/path",
+                mime_type="application/json",
+                source_attribution="test",
+            )
+            session.add(artifact)
+            session.flush()
+    
+            acq = WorkbenchAcquisition(
+                source_name="test_src",
+                resource="test_resource",
+                source_url="https://test",
+                status="success",
+                artifact_id=artifact.id,
+            )
+            session.add(acq)
+            session.flush()
+    
+            identity = WorkbenchIdentity(
+                namespace="nba",
+                kind="player",
+                external_id=f"test_player_{uid}",
+                display_name="Test Player",
+            )
+            session.add(identity)
+            session.flush()
+    
+            version = WorkbenchVersion(
+                identity_id=identity.id,
+                content_sha256="pg_ver_" + uid + "0" * 40,
+                parser_version="v1",
+                payload_json={"test": True},
+            )
+            session.add(version)
+            session.flush()
+    
+            obs = WorkbenchObservation(
+                acquisition_id=acq.id,
+                artifact_id=artifact.id,
+                row_identifier=f"row_{uid}",
+                identity_id=identity.id,
+                version_id=version.id,
+                observation_order=1,
+            )
+            session.add(obs)
+            session.flush()
+    
+            dataset = WorkbenchDataset(
+                content_sha256="pg_ds_c_" + uid + "0" * 40,
+                membership_sha256="pg_ds_m_" + uid + "0" * 40,
+                semantic_signature="pg_ds_s_" + uid + "0" * 40,
+                source_namespace="test_ns",
+                parser_version="v1",
+                quality_version="q1",
+                seasons_json=["2025-26"],
+                phases_json=["regular_season"],
+                manifest_json={},
+                coverage_json={},
+                exclusions_json={},
+                status="ready",
+            )
+            session.add(dataset)
+            session.flush()
+    
+            member = WorkbenchDatasetMember(
+                dataset_id=dataset.id,
+                identity_id=identity.id,
+                version_id=version.id,
+                observation_id=obs.id,
+            )
+            session.add(member)
+            session.commit()
+    
+            member_id = member.id
+            version_id = version.id
+    
+            # 1. Raw SQL UPDATE must fail from trigger
+>           with pytest.raises(DBAPIError, match="sealed and immutable"):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           Failed: DID NOT RAISE <class 'sqlalchemy.exc.DBAPIError'>
+
+tests/integration/test_workbench_postgres.py:131: Failed
+____________ test_archive_stats_executes_with_versioned_names[True] ____________
+
+db_session = <sqlalchemy.orm.session.Session object at 0x7fbb5dc13250>
+appeared = True
+
+    @pytest.mark.parametrize("appeared", [True, False])
+    def test_archive_stats_executes_with_versioned_names(db_session: Session, appeared: bool) -> None:
+        """Historical saved links query retained archive schemas, names and cutoff rows."""
+        from datetime import timedelta
+    
+        from sqlalchemy import select
+    
+        from courtload.archive_models import ArchivePlayerGame, ArchiveVersion
+    
+        game, payload = db_session.execute(
+            select(ArchivePlayerGame, ArchiveVersion.payload_json)
+            .join(ArchiveVersion, ArchiveVersion.id == ArchivePlayerGame.source_version_id)
+            .where(
+                ArchivePlayerGame.appearance == "appeared"
+                if appeared
+                else ArchivePlayerGame.appearance != "appeared"
+            )
+            .order_by(
+                ArchivePlayerGame.game_date,
+                ArchivePlayerGame.dataset_id,
+                ArchivePlayerGame.player_id,
+                ArchivePlayerGame.game_id,
+            )
+            .limit(1)
+>       ).one()
+          ^^^^^
+
+tests/unit/test_stats_engine.py:436: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+.venv/lib/python3.14/site-packages/sqlalchemy/engine/result.py:1574: in one
+    return self._only_one_row(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <sqlalchemy.engine.result.ChunkedIteratorResult object at 0x7fbb5c699710>
+raise_for_second_row = True, raise_for_none = True, scalar = False
+
+    def _only_one_row(
+        self,
+        raise_for_second_row: bool,
+        raise_for_none: bool,
+        scalar: bool,
+    ) -> Optional[_R]:
+        onerow = self._fetchone_impl
+    
+        row: Optional[_InterimRowType[Any]] = onerow(hard_close=True)
+        if row is None:
+            if raise_for_none:
+>               raise exc.NoResultFound(
+                    "No row was found when one was required"
+                )
+E               sqlalchemy.exc.NoResultFound: No row was found when one was required
+
+.venv/lib/python3.14/site-packages/sqlalchemy/engine/result.py:799: NoResultFound
+___________ test_archive_stats_executes_with_versioned_names[False] ____________
+
+db_session = <sqlalchemy.orm.session.Session object at 0x7fbb5d759350>
+appeared = False
+
+    @pytest.mark.parametrize("appeared", [True, False])
+    def test_archive_stats_executes_with_versioned_names(db_session: Session, appeared: bool) -> None:
+        """Historical saved links query retained archive schemas, names and cutoff rows."""
+        from datetime import timedelta
+    
+        from sqlalchemy import select
+    
+        from courtload.archive_models import ArchivePlayerGame, ArchiveVersion
+    
+        game, payload = db_session.execute(
+            select(ArchivePlayerGame, ArchiveVersion.payload_json)
+            .join(ArchiveVersion, ArchiveVersion.id == ArchivePlayerGame.source_version_id)
+            .where(
+                ArchivePlayerGame.appearance == "appeared"
+                if appeared
+                else ArchivePlayerGame.appearance != "appeared"
+            )
+            .order_by(
+                ArchivePlayerGame.game_date,
+                ArchivePlayerGame.dataset_id,
+                ArchivePlayerGame.player_id,
+                ArchivePlayerGame.game_id,
+            )
+            .limit(1)
+>       ).one()
+          ^^^^^
+
+tests/unit/test_stats_engine.py:436: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+.venv/lib/python3.14/site-packages/sqlalchemy/engine/result.py:1574: in one
+    return self._only_one_row(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <sqlalchemy.engine.result.ChunkedIteratorResult object at 0x7fbb5c699d90>
+raise_for_second_row = True, raise_for_none = True, scalar = False
+
+    def _only_one_row(
+        self,
+        raise_for_second_row: bool,
+        raise_for_none: bool,
+        scalar: bool,
+    ) -> Optional[_R]:
+        onerow = self._fetchone_impl
+    
+        row: Optional[_InterimRowType[Any]] = onerow(hard_close=True)
+        if row is None:
+            if raise_for_none:
+>               raise exc.NoResultFound(
+                    "No row was found when one was required"
+                )
+E               sqlalchemy.exc.NoResultFound: No row was found when one was required
+
+.venv/lib/python3.14/site-packages/sqlalchemy/engine/result.py:799: NoResultFound
+=========================== short test summary info ============================
+ERROR tests/integration/test_b21_api.py::test_api_directional_exposure_coverage_and_partitions
+ERROR tests/integration/test_b21_api.py::test_same_day_future_mutations_do_not_change_evidence
+ERROR tests/integration/test_b21_api.py::test_teammate_shifts_exact_units_and_date_range
+ERROR tests/integration/test_b21_api.py::test_invalid_game_quarantine_and_source_blocked
+ERROR tests/integration/test_b21_api.py::test_schema_scope_and_query_bounds
+ERROR tests/integration/test_b21_api.py::test_team_tricode_resolves_to_canonical_identity
+ERROR tests/integration/test_b23_api.py::test_profiles_totals_missing_coordinates_and_peers
+ERROR tests/integration/test_b23_api.py::test_assignment_fractional_exposure_and_pooled_pct
+ERROR tests/integration/test_b23_api.py::test_aftermath_raw_samples_and_unknown_branches
+ERROR tests/integration/test_b23_api.py::test_future_same_day_phase_finality_and_content_identity
+ERROR tests/integration/test_b23_api.py::test_date_scope_source_blocked_and_quarantine
+ERROR tests/integration/test_b23_api.py::test_schema_scope_bounds_and_no_write
+ERROR tests/integration/test_b23_api.py::test_peer_distance_explains_zone_shares_and_provenance_hash
+ERROR tests/integration/test_b23_api.py::test_prior_assignment_possession_changes_and_invalid_input
+ERROR tests/integration/test_possession_warehouse_postgres.py::test_end_to_end_stint_reconstruction_and_persistence
+ERROR tests/integration/test_possession_warehouse_postgres.py::test_cutoff_safe_exposure_queries
+ERROR tests/integration/test_research_readiness_postgres.py::test_scope_and_row_counts_cannot_authorize_fitting
+ERROR tests/integration/test_research_readiness_postgres.py::test_missing_dataset_is_rejected
+ERROR tests/integration/test_research_readiness_postgres.py::test_team_boxes_require_matching_dates_phases_and_reciprocal_scores
+FAILED tests/integration/test_restore_postgres.py::test_real_archive_backup_manifest_and_restore_verification
+FAILED tests/integration/test_restore_postgres.py::test_workbench_backup_manifest_and_restore_verification
+FAILED tests/integration/test_restore_postgres.py::test_restore_verification_fails_on_missing_or_tampered_artifact
+FAILED tests/integration/test_restore_postgres.py::test_disposable_fresh_database_restore
+FAILED tests/integration/test_rich_admission_postgres.py::test_point_conservation_quarantine_with_real_game
+FAILED tests/integration/test_workbench_jobs_postgres.py::test_interrupted_job_recovery
+FAILED tests/integration/test_workbench_postgres.py::test_postgres_sealed_trigger_rejects_raw_sql_mutation
+FAILED tests/unit/test_stats_engine.py::test_archive_stats_executes_with_versioned_names[True]
+FAILED tests/unit/test_stats_engine.py::test_archive_stats_executes_with_versioned_names[False]
+============= 9 failed, 797 passed, 19 errors in 241.50s (0:04:01) =============

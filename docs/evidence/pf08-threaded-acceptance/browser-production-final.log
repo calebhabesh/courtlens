@@ -1,0 +1,69 @@
+
+> courtload-dashboard@0.1.0 test:browser
+> playwright test threaded-assistant.spec.ts conversation.spec.ts --workers=2
+
+
+Running 36 tests using 2 workers
+
+  ✓   2 e2e/conversation.spec.ts:21:5 › AI disabled manual paired distributions preserve zero, unknown and exact evidence (563ms)
+  ✓   1 e2e/conversation.spec.ts:28:5 › natural follow-ups and canonical identity choices retain conversation fingerprints (584ms)
+  ✓   4 e2e/conversation.spec.ts:37:5 › network retry reuses the request identity (359ms)
+  ✓   5 e2e/conversation.spec.ts:42:5 › exact Research destination reruns executed arguments and clears ephemeral state (267ms)
+  ✓   6 e2e/conversation.spec.ts:46:5 › drawer traps keyboard focus, escapes, and supports narrow reduced-motion layout (391ms)
+  ✓   7 e2e/conversation.spec.ts:50:5 › unmounted pending answer is discarded and its local state is cleared (429ms)
+  ✓   3 e2e/conversation.spec.ts:34:5 › quota, unsupported and empty states preserve question and manual execution (1.9s)
+  ✓   8 e2e/conversation.spec.ts:55:7 › unsupported preserves manual alternatives and entered question (1.2s)
+  ✓   9 e2e/conversation.spec.ts:55:7 › insufficient_sample preserves manual alternatives and entered question (1.1s)
+  ✓  10 e2e/conversation.spec.ts:55:7 › timeout preserves manual alternatives and entered question (1.2s)
+  ✓  11 e2e/conversation.spec.ts:55:7 › provider_error preserves manual alternatives and entered question (1.1s)
+  ✓  12 e2e/conversation.spec.ts:55:7 › busy preserves manual alternatives and entered question (1.1s)
+  ✓  14 e2e/threaded-assistant.spec.ts:58:5 › standalone defaults, reload, new chat, history and deletion keep durable questions (1.0s)
+  ✓  13 e2e/conversation.spec.ts:59:5 › proposed context needs an explicit new conversation (2.0s)
+  ✓  16 e2e/threaded-assistant.spec.ts:83:5 › transport replay preserves request identity; intentional retry links a new turn (282ms)
+  ✓  17 e2e/threaded-assistant.spec.ts:93:5 › Stop is durable, releases controls and fences a late response (613ms)
+  ✓  18 e2e/threaded-assistant.spec.ts:101:5 › closing drawer retains pending history and full-page link preserves scope (666ms)
+  ✓  19 e2e/threaded-assistant.spec.ts:109:5 › clarifications, external citations and hostile text render safely (1.0s)
+  ✓  20 e2e/threaded-assistant.spec.ts:116:5 › paginated turns are loaded without losing earlier questions (1.4s)
+  ✓  21 e2e/threaded-assistant.spec.ts:123:7 › threaded wide layout, keyboard dialog and screenshot (424ms)
+  ✓  22 e2e/threaded-assistant.spec.ts:123:7 › threaded desktop layout, keyboard dialog and screenshot (363ms)
+  ✓  23 e2e/threaded-assistant.spec.ts:123:7 › threaded mobile layout, keyboard dialog and screenshot (324ms)
+  ✓  24 e2e/threaded-assistant.spec.ts:123:7 › threaded zoom-equivalent layout, keyboard dialog and screenshot (330ms)
+  ✓  25 e2e/threaded-assistant.spec.ts:133:5 › typing a next question during execution preserves the new draft (510ms)
+  ✓  26 e2e/threaded-assistant.spec.ts:141:5 › verified local results preserve zero, unknown, scope and equivalent actions (1.2s)
+  ✓  27 e2e/threaded-assistant.spec.ts:149:5 › default assistant and manual entry are available without preview selection (645ms)
+  ✓  28 e2e/threaded-assistant.spec.ts:156:5 › page and drawer share updates, preserve independent drafts and clear together (450ms)
+  ✓  29 e2e/threaded-assistant.spec.ts:174:7 › provider_disabled retains history and retry creates a linked attempt (413ms)
+  ✓  30 e2e/threaded-assistant.spec.ts:174:7 › provider_quota retains history and retry creates a linked attempt (345ms)
+  ✓  31 e2e/threaded-assistant.spec.ts:174:7 › provider_busy retains history and retry creates a linked attempt (343ms)
+  ✓  32 e2e/threaded-assistant.spec.ts:174:7 › provider_timeout retains history and retry creates a linked attempt (330ms)
+  ✓  33 e2e/threaded-assistant.spec.ts:174:7 › provider_invalid retains history and retry creates a linked attempt (328ms)
+  ✓  34 e2e/threaded-assistant.spec.ts:174:7 › source_unavailable retains history and retry creates a linked attempt (345ms)
+  ✓  35 e2e/threaded-assistant.spec.ts:174:7 › source_stale retains history and retry creates a linked attempt (413ms)
+  ✓  36 e2e/threaded-assistant.spec.ts:174:7 › backend_failure retains history and retry creates a linked attempt (393ms)
+  ✘  15 e2e/threaded-assistant.spec.ts:71:5 › scope changes retain old answers and unedited follow-ups inherit on server (30.0s)
+
+
+  1) e2e/threaded-assistant.spec.ts:71:5 › scope changes retain old answers and unedited follow-ups inherit on server 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.fill: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for getByLabel('Your question', { exact: true })
+
+
+      52 | }
+      53 | async function send(page: Page, message: string) {
+    > 54 |   await page.getByLabel("Your question",{exact:true}).fill(message);
+         |                                                       ^
+      55 |   await page.getByRole("button",{name:"Send question",exact:true}).click();
+      56 | }
+      57 |
+        at send (/home/ethioking/dev/nba-analytics/dashboard/e2e/threaded-assistant.spec.ts:54:55)
+        at /home/ethioking/dev/nba-analytics/dashboard/e2e/threaded-assistant.spec.ts:74:79
+
+    Error Context: test-results/threaded-assistant-scope-c-daae2-ollow-ups-inherit-on-server/error-context.md
+
+  1 failed
+    e2e/threaded-assistant.spec.ts:71:5 › scope changes retain old answers and unedited follow-ups inherit on server 
+  35 passed (37.2s)

@@ -1,0 +1,603 @@
+{
+  "routes": [
+    {
+      "route": "/blog",
+      "heading": [
+        "Evidence before narrative"
+      ],
+      "states": [],
+      "desktopWidth": 1440,
+      "mobileWidth": 375,
+      "overflow": false
+    },
+    {
+      "route": "/calculator",
+      "heading": [
+        "Hypothetical offensive rating calculator"
+      ],
+      "states": [],
+      "desktopWidth": 1440,
+      "mobileWidth": 375,
+      "overflow": false
+    },
+    {
+      "route": "/compare",
+      "heading": [
+        "Compare Players"
+      ],
+      "states": [
+        "",
+        "",
+        "",
+        "Select two playersSearch by name and choose a shared replay date to compare their prior form and reconstructed matchups."
+      ],
+      "desktopWidth": 1440,
+      "mobileWidth": 375,
+      "overflow": false
+    },
+    {
+      "route": "/contracts",
+      "heading": [
+        "Contracts & known payroll"
+      ],
+      "states": [],
+      "desktopWidth": 1440,
+      "mobileWidth": 375,
+      "overflow": false
+    },
+    {
+      "route": "/data-status",
+      "heading": [
+        "Data & Pipelines"
+      ],
+      "states": [],
+      "desktopWidth": 1440,
+      "mobileWidth": 375,
+      "overflow": false
+    },
+    {
+      "route": "/evaluation",
+      "heading": [
+        "Evaluation unavailable"
+      ],
+      "states": [
+        "Evaluation unavailableThe published snapshot has no matching, verified evaluation artifact. Historical profiles remain available.Explore players"
+      ],
+      "desktopWidth": 1440,
+      "mobileWidth": 375,
+      "overflow": false
+    },
+    {
+      "route": "/forecasts",
+      "heading": [
+        "Points Forecasts & Protocol"
+      ],
+      "states": [],
+      "desktopWidth": 1440,
+      "mobileWidth": 375,
+      "overflow": false
+    },
+    {
+      "route": "/free-agency",
+      "heading": [
+        "Free agency · source-book tracker"
+      ],
+      "states": [],
+      "desktopWidth": 1440,
+      "mobileWidth": 375,
+      "overflow": false
+    },
+    {
+      "route": "/investigations",
+      "heading": [
+        "Saved Investigations"
+      ],
+      "states": [],
+      "desktopWidth": 1440,
+      "mobileWidth": 375,
+      "overflow": false
+    },
+    {
+      "route": "/last-games",
+      "heading": [
+        "Bam Adebayo"
+      ],
+      "states": [
+        ""
+      ],
+      "desktopWidth": 1440,
+      "mobileWidth": 375,
+      "overflow": false
+    },
+    {
+      "route": "/learning",
+      "heading": [
+        "Learn with CourtLoad evidence"
+      ],
+      "states": [
+        ""
+      ],
+      "desktopWidth": 1440,
+      "mobileWidth": 375,
+      "overflow": false
+    },
+    {
+      "route": "/matchups",
+      "heading": [
+        "Source assignment matchups"
+      ],
+      "states": [
+        "",
+        ""
+      ],
+      "desktopWidth": 1440,
+      "mobileWidth": 375,
+      "overflow": false
+    },
+    {
+      "route": "/methodology",
+      "heading": [
+        "Methodology & Metric Catalog"
+      ],
+      "states": [],
+      "desktopWidth": 1440,
+      "mobileWidth": 375,
+      "overflow": false
+    },
+    {
+      "route": "/",
+      "heading": [
+        "Stats Explorer"
+      ],
+      "states": [],
+      "desktopWidth": 1440,
+      "mobileWidth": 375,
+      "overflow": false
+    },
+    {
+      "route": "/patch-notes",
+      "heading": [
+        "Patch notes: retained analytical operations"
+      ],
+      "states": [],
+      "desktopWidth": 1440,
+      "mobileWidth": 375,
+      "overflow": false
+    },
+    {
+      "route": "/planner",
+      "heading": [
+        "Weekly roster planner"
+      ],
+      "states": [
+        "Plan reconciled to the visible daily assignments.",
+        "",
+        ""
+      ],
+      "desktopWidth": 1440,
+      "mobileWidth": 375,
+      "overflow": false
+    },
+    {
+      "route": "/players",
+      "heading": [
+        "Player Explorer"
+      ],
+      "states": [],
+      "desktopWidth": 1440,
+      "mobileWidth": 375,
+      "overflow": false
+    },
+    {
+      "route": "/playoffs",
+      "heading": [
+        "Playoff Bracket & Series Explorer"
+      ],
+      "states": [],
+      "desktopWidth": 1440,
+      "mobileWidth": 375,
+      "overflow": false
+    },
+    {
+      "route": "/rankings",
+      "heading": [
+        "Personal Ranking Boards"
+      ],
+      "states": [],
+      "desktopWidth": 1440,
+      "mobileWidth": 375,
+      "overflow": false
+    },
+    {
+      "route": "/research/adjusted-shooting",
+      "heading": [
+        "CourtLoad playtype-adjusted shooting"
+      ],
+      "states": [],
+      "desktopWidth": 1440,
+      "mobileWidth": 375,
+      "overflow": false
+    },
+    {
+      "route": "/research/ask",
+      "heading": [
+        "Ask CourtLoad"
+      ],
+      "states": [
+        "Ready"
+      ],
+      "desktopWidth": 1440,
+      "mobileWidth": 375,
+      "overflow": false
+    },
+    {
+      "route": "/research/case-studies",
+      "heading": [
+        "Flagship Research Case Studies"
+      ],
+      "states": [],
+      "desktopWidth": 1440,
+      "mobileWidth": 375,
+      "overflow": false
+    },
+    {
+      "route": "/research/defensive-matchups",
+      "heading": [
+        "Defensive Contests & Matchups"
+      ],
+      "states": [],
+      "desktopWidth": 1440,
+      "mobileWidth": 375,
+      "overflow": false
+    },
+    {
+      "route": "/research/distributions",
+      "heading": [
+        "Distributions, Dispersion & Splits"
+      ],
+      "states": [
+        ""
+      ],
+      "desktopWidth": 1440,
+      "mobileWidth": 375,
+      "overflow": false
+    },
+    {
+      "route": "/research/epv",
+      "heading": [
+        "Spatial Expected Possession Value (EPV)"
+      ],
+      "states": [],
+      "desktopWidth": 1440,
+      "mobileWidth": 375,
+      "overflow": false
+    },
+    {
+      "route": "/research/expected-shots",
+      "heading": [
+        "CourtLoad expected-shot experiment"
+      ],
+      "states": [],
+      "desktopWidth": 1440,
+      "mobileWidth": 375,
+      "overflow": false
+    },
+    {
+      "route": "/research/operation",
+      "heading": [
+        "Research operation"
+      ],
+      "states": [
+        "Invalid Research operation link."
+      ],
+      "desktopWidth": 1440,
+      "mobileWidth": 375,
+      "overflow": false
+    },
+    {
+      "route": "/research/rapm",
+      "heading": [
+        "CourtLoad RAPM"
+      ],
+      "states": [],
+      "desktopWidth": 1440,
+      "mobileWidth": 375,
+      "overflow": false
+    },
+    {
+      "route": "/research/similarity",
+      "heading": [
+        "Statistical Peers & Profile Twins"
+      ],
+      "states": [
+        ""
+      ],
+      "desktopWidth": 1440,
+      "mobileWidth": 375,
+      "overflow": false
+    },
+    {
+      "route": "/research/trends",
+      "heading": [
+        "Workload & Trajectory Trends"
+      ],
+      "states": [
+        ""
+      ],
+      "desktopWidth": 1440,
+      "mobileWidth": 375,
+      "overflow": false
+    },
+    {
+      "route": "/roster-shapes",
+      "heading": [
+        "Roster allocation diagrams"
+      ],
+      "states": [
+        ""
+      ],
+      "desktopWidth": 1440,
+      "mobileWidth": 375,
+      "overflow": false
+    },
+    {
+      "route": "/schedule",
+      "heading": [
+        "Team schedule"
+      ],
+      "states": [],
+      "desktopWidth": 1440,
+      "mobileWidth": 375,
+      "overflow": false
+    },
+    {
+      "route": "/settings",
+      "heading": [
+        "Settings"
+      ],
+      "states": [
+        "Local browser interface"
+      ],
+      "desktopWidth": 1440,
+      "mobileWidth": 375,
+      "overflow": false
+    },
+    {
+      "route": "/shot-aftermath",
+      "heading": [
+        "Shot aftermath"
+      ],
+      "states": [
+        ""
+      ],
+      "desktopWidth": 1440,
+      "mobileWidth": 375,
+      "overflow": false
+    },
+    {
+      "route": "/shot-profile-twin",
+      "heading": [
+        "Shot-profile twins"
+      ],
+      "states": [
+        ""
+      ],
+      "desktopWidth": 1440,
+      "mobileWidth": 375,
+      "overflow": false
+    },
+    {
+      "route": "/showcase",
+      "heading": [
+        "Player Showcase & Cards"
+      ],
+      "states": [
+        ""
+      ],
+      "desktopWidth": 1440,
+      "mobileWidth": 375,
+      "overflow": false
+    },
+    {
+      "route": "/six-factor-rapm",
+      "heading": [
+        "CourtLoad six-factor research"
+      ],
+      "states": [],
+      "desktopWidth": 1440,
+      "mobileWidth": 375,
+      "overflow": false
+    },
+    {
+      "route": "/stat-line-shift",
+      "heading": [
+        "Teammate stat-line shift"
+      ],
+      "states": [
+        "",
+        "",
+        "",
+        ""
+      ],
+      "desktopWidth": 1440,
+      "mobileWidth": 375,
+      "overflow": false
+    },
+    {
+      "route": "/stats",
+      "heading": [
+        "Stats Explorer"
+      ],
+      "states": [],
+      "desktopWidth": 1440,
+      "mobileWidth": 375,
+      "overflow": false
+    },
+    {
+      "route": "/team-compare",
+      "heading": [
+        "Team Comparison & Four Factors Analysis"
+      ],
+      "states": [
+        "",
+        ""
+      ],
+      "desktopWidth": 1440,
+      "mobileWidth": 375,
+      "overflow": false
+    },
+    {
+      "route": "/teams",
+      "heading": [
+        "Team Explorer"
+      ],
+      "states": [],
+      "desktopWidth": 1440,
+      "mobileWidth": 375,
+      "overflow": false
+    },
+    {
+      "route": "/tierlist",
+      "heading": [
+        "Tier List Builder"
+      ],
+      "states": [],
+      "desktopWidth": 1440,
+      "mobileWidth": 375,
+      "overflow": false
+    },
+    {
+      "route": "/wingspan",
+      "heading": [
+        "Measurements & wingspan explorer"
+      ],
+      "states": [],
+      "desktopWidth": 1440,
+      "mobileWidth": 375,
+      "overflow": false
+    },
+    {
+      "route": "/wowy",
+      "heading": [
+        "WOWY · Shared floor"
+      ],
+      "states": [
+        "",
+        "",
+        ""
+      ],
+      "desktopWidth": 1440,
+      "mobileWidth": 375,
+      "overflow": false
+    },
+    {
+      "route": "/live?live_mode=history",
+      "heading": [
+        "Live games"
+      ],
+      "states": [
+        "Finalized research · No Live demand"
+      ],
+      "desktopWidth": 1440,
+      "mobileWidth": 375,
+      "overflow": false
+    },
+    {
+      "route": "/players/1630567",
+      "heading": [
+        "Scottie Barnes"
+      ],
+      "states": [],
+      "desktopWidth": 1440,
+      "mobileWidth": 375,
+      "overflow": false
+    },
+    {
+      "route": "/teams/TOR",
+      "heading": [
+        "Toronto Raptors"
+      ],
+      "states": [],
+      "desktopWidth": 1440,
+      "mobileWidth": 375,
+      "overflow": false
+    },
+    {
+      "route": "/contracts/TOR",
+      "heading": [
+        "Contracts & known payroll"
+      ],
+      "states": [],
+      "desktopWidth": 1440,
+      "mobileWidth": 375,
+      "overflow": false
+    },
+    {
+      "route": "/live/2026-04-12?live_mode=history",
+      "heading": [
+        "Live games"
+      ],
+      "states": [
+        "Finalized research · No Live demand"
+      ],
+      "desktopWidth": 1440,
+      "mobileWidth": 375,
+      "overflow": false
+    },
+    {
+      "route": "/live/games/unknown?live_mode=history",
+      "heading": [
+        "Live games"
+      ],
+      "states": [
+        "Invalid date or game ID"
+      ],
+      "desktopWidth": 1440,
+      "mobileWidth": 375,
+      "overflow": false
+    },
+    {
+      "route": "/investigations/saved/b14556d6-19d0-463d-b6be-c9410e941352",
+      "heading": [
+        "PF08 scoring evidence"
+      ],
+      "states": [],
+      "desktopWidth": 1440,
+      "mobileWidth": 375,
+      "overflow": false
+    },
+    {
+      "route": "/playoffs/004250010",
+      "heading": [
+        "Detroit Pistons vs Orlando Magic"
+      ],
+      "states": [],
+      "desktopWidth": 1440,
+      "mobileWidth": 375,
+      "overflow": false
+    }
+  ],
+  "checks": [
+    "/settings wide contained layout",
+    "/settings desktop contained layout",
+    "/settings mobile contained layout",
+    "/research/epv wide contained layout",
+    "/research/epv desktop contained layout",
+    "/research/epv mobile contained layout",
+    "/roster-shapes wide contained layout",
+    "/roster-shapes desktop contained layout",
+    "/roster-shapes mobile contained layout",
+    "/research/expected-shots wide contained layout",
+    "/research/expected-shots desktop contained layout",
+    "/research/expected-shots mobile contained layout",
+    "/research/ask wide contained layout",
+    "/research/ask desktop contained layout",
+    "/research/ask mobile contained layout",
+    "/wowy wide contained layout",
+    "/wowy desktop contained layout",
+    "/wowy mobile contained layout",
+    "desktop/mobile secondary availability agrees",
+    "sealed research remains primary"
+  ],
+  "errors": []
+}

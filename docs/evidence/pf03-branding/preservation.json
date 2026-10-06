@@ -1,0 +1,26 @@
+{
+  "owned_existing_paths": [
+    "dashboard/app/globals.css",
+    "dashboard/app/teams/[id]/page.tsx",
+    "dashboard/components/team-explorer-view.tsx",
+    "dashboard/components/player-compare-view.tsx",
+    "dashboard/components/global-lookup.tsx",
+    "dashboard/components/workbench-player-explorer.tsx",
+    "dashboard/lib/lookup-cache.ts",
+    "dashboard/lib/lookup-cache.test.ts",
+    "dashboard/lib/types.ts",
+    "dashboard/lib/workbench-api.ts",
+    "dashboard/e2e/workbench.spec.ts",
+    "src/courtload/api/routers/workbench.py",
+    "src/courtload/api/workbench_schemas.py",
+    "src/courtload/domain/entity_lookup.py",
+    "src/courtload/services/entity_lookup.py",
+    "tests/unit/test_entity_lookup.py",
+    "docs/polish-freeze-implementation-progress.md"
+  ],
+  "preserved_starting_files": 1833,
+  "unexpected_changes": [],
+  "prior_evidence_files": 1160,
+  "artifact_files": 316,
+  "artifact_changes": []
+}

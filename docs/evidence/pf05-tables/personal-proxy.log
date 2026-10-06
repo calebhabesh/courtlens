@@ -1,0 +1,170 @@
+{"fixture_favorite": "1630567", "source_row": 61}
+127.0.0.1 - - [05/Oct/2026 17:15:21] "GET /api/workbench/catalog?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:15:21] "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:15:21] "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:15:21] "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:15:21] "GET /api/workbench/catalog?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:15:21] "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:15:22] "POST /api/workbench/query HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:15:23] "PATCH /api/workbench/workspace/preferences?workspaceId=default&expectedVersion=1 HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:15:23] "GET /api/workbench/catalog?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:15:23] "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:15:23] "POST /api/workbench/query HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:15:23] "PATCH /api/workbench/workspace/preferences?workspaceId=default&expectedVersion=2 HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:15:23] "GET /api/workbench/catalog?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:15:23] "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:15:24] "POST /api/workbench/query HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:15:24] "PATCH /api/workbench/workspace/preferences?workspaceId=default&expectedVersion=3 HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:15:24] "GET /api/workbench/catalog?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:15:24] "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:15:24] "POST /api/workbench/query HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:15:24] "PATCH /api/workbench/workspace/preferences?workspaceId=default&expectedVersion=4 HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:15:24] "GET /api/workbench/catalog?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:15:24] "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:15:25] "POST /api/workbench/query HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:15:25] "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:15:25] "GET /api/workbench/catalog?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:15:25] "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:15:25] "POST /api/workbench/query HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:15:26] "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:15:26] "GET /api/workbench/catalog?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:15:26] "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:15:26] "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:15:26] "GET /api/workbench/catalog?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:15:26] "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:15:26] "POST /api/workbench/query HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:15:27] "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:15:27] "GET /api/workbench/catalog?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:15:27] "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:15:27] "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:15:27] "GET /api/workbench/catalog?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:15:27] "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:15:28] "POST /api/workbench/query HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:15:28] "GET /api/workbench/catalog?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:15:28] "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:15:29] "POST /api/workbench/query HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:15:29] "GET /api/workbench/catalog?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:15:29] "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:15:29] "POST /api/workbench/query HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:15:30] "GET /api/workbench/catalog?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:15:30] "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:15:30] "POST /api/workbench/query HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:15:57] "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:15:57] "GET /api/workbench/catalog?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:15:57] "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:15:57] "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:15:57] "GET /api/workbench/catalog?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:15:57] "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:15:57] "POST /api/workbench/query HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:15:59] "PATCH /api/workbench/workspace/preferences?workspaceId=default&expectedVersion=5 HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:15:59] "GET /api/workbench/catalog?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:15:59] "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:15:59] "POST /api/workbench/query HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:15:59] "PATCH /api/workbench/workspace/preferences?workspaceId=default&expectedVersion=6 HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:15:59] "GET /api/workbench/catalog?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:15:59] "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:16:00] "POST /api/workbench/query HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:16:00] "PATCH /api/workbench/workspace/preferences?workspaceId=default&expectedVersion=7 HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:16:00] "GET /api/workbench/catalog?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:16:00] "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:16:00] "POST /api/workbench/query HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:16:00] "PATCH /api/workbench/workspace/preferences?workspaceId=default&expectedVersion=8 HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:16:00] "GET /api/workbench/catalog?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:16:00] "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:16:00] "POST /api/workbench/query HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:16:00] "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:16:01] "GET /api/workbench/catalog?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:16:01] "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:16:01] "POST /api/workbench/query HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:16:02] "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:16:02] "GET /api/workbench/catalog?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:16:02] "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:16:02] "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:16:02] "GET /api/workbench/catalog?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:16:02] "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:16:02] "POST /api/workbench/query HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:16:03] "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:16:03] "GET /api/workbench/catalog?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:16:03] "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:16:03] "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:16:03] "GET /api/workbench/catalog?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:16:03] "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:16:04] "POST /api/workbench/query HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:16:04] "GET /api/workbench/catalog?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:16:04] "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:16:05] "POST /api/workbench/query HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:16:05] "GET /api/workbench/catalog?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:16:05] "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:16:05] "POST /api/workbench/query HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:16:06] "GET /api/workbench/catalog?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:16:06] "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:16:06] "POST /api/workbench/query HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:16:07] "GET /api/workbench/catalog?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:16:07] "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:16:07] "POST /api/workbench/query HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:16:07] "GET /api/workbench/catalog?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:16:07] "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:16:08] "POST /api/workbench/query HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:16:09] "GET /api/workbench/catalog?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:16:09] "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:16:09] "POST /api/workbench/query HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:16:09] "GET /api/workbench/catalog?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:16:09] "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:16:10] "POST /api/workbench/query HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:16:10] "GET /api/workbench/catalog?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:16:10] "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:16:10] "POST /api/workbench/query HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:16:11] "GET /api/workbench/catalog?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:16:11] "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:16:12] "POST /api/workbench/query HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:16:12] "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:16:12] "GET /api/workbench/catalog?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:16:12] "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:16:12] "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:16:12] "GET /api/workbench/catalog?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:16:12] "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:16:12] "POST /api/workbench/query HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:16:13] "GET /api/workbench/workspace HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:16:13] "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:16:13] "GET /api/workbench/catalog?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:16:13] "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:16:14] "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:16:14] "GET /api/workbench/catalog?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:16:14] "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 -
+127.0.0.1 - - [05/Oct/2026 17:16:14] "POST /api/workbench/query HTTP/1.1" 200 -
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 34142)
+Traceback (most recent call last):
+  File "/usr/lib/python3.14/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/socketserver.py", line 766, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "/usr/lib/python3.14/http/server.py", line 500, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/usr/lib/python3.14/http/server.py", line 488, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "/home/ethioking/dev/nba-analytics/scripts/verify_pf05_proxy.py", line 41, in do_POST
+    self.forward()
+    ~~~~~~~~~~~~^^
+  File "/home/ethioking/dev/nba-analytics/scripts/verify_pf05_proxy.py", line 63, in forward
+    entity = payload["player_id"]
+             ~~~~~~~^^^^^^^^^^^^^
+KeyError: 'player_id'
+----------------------------------------
+127.0.0.1 - - [05/Oct/2026 17:16:15] "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 -
+Traceback (most recent call last):
+  File "/home/ethioking/dev/nba-analytics/scripts/verify_pf05_proxy.py", line 90, in <module>
+    ThreadingHTTPServer(("127.0.0.1", 8155), Proxy).serve_forever()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/usr/lib/python3.14/socketserver.py", line 235, in serve_forever
+    ready = selector.select(poll_interval)
+  File "/usr/lib/python3.14/selectors.py", line 398, in select
+    fd_event_list = self._selector.poll(timeout)
+KeyboardInterrupt

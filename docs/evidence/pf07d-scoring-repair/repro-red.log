@@ -1,0 +1,445 @@
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+    from multiprocessing.spawn import spawn_main; spawn_main(tracker_fd=7, pipe_handle=9)
+                                                  ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/multiprocessing/spawn.py", line 122, in spawn_main
+    exitcode = _main(fd, parent_sentinel)
+  File "/usr/lib/python3.14/multiprocessing/spawn.py", line 131, in _main
+    prepare(preparation_data)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/multiprocessing/spawn.py", line 246, in prepare
+    _fixup_main_from_path(data['init_main_from_path'])
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/multiprocessing/spawn.py", line 297, in _fixup_main_from_path
+    main_content = runpy.run_path(main_path,
+                                  run_name="__mp_main__")
+  File "<frozen runpy>", line 294, in run_path
+  File "<frozen runpy>", line 98, in _run_module_code
+  File "<frozen runpy>", line 88, in _run_code
+  File "/tmp/pf07d-scoring-repro.py", line 29, in <module>
+    assert all(c['correct'] for c in results),'Captured real scoring plans fail canonical manual equivalence'
+           ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Captured real scoring plans fail canonical manual equivalence
+[
+  {
+    "id": "pf07d-30",
+    "category": "local",
+    "held_out": false,
+    "correct": false,
+    "response_complete": true,
+    "factual_answer_correct": null,
+    "safety_pass": true,
+    "manual_equivalent": false,
+    "failures": [
+      "status: expected answered, got failed",
+      "canonical manual equivalence failed"
+    ]
+  },
+  {
+    "id": "pf07d-37",
+    "category": "mixed",
+    "held_out": false,
+    "correct": false,
+    "response_complete": true,
+    "factual_answer_correct": null,
+    "safety_pass": true,
+    "manual_equivalent": false,
+    "failures": [
+      "status: expected answered, got failed",
+      "canonical manual equivalence failed"
+    ]
+  },
+  {
+    "id": "pf07d-38",
+    "category": "local",
+    "held_out": true,
+    "correct": false,
+    "response_complete": true,
+    "factual_answer_correct": null,
+    "safety_pass": true,
+    "manual_equivalent": false,
+    "failures": [
+      "status: expected answered, got failed",
+      "canonical manual equivalence failed"
+    ]
+  }
+]
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+    from multiprocessing.spawn import spawn_main; spawn_main(tracker_fd=7, pipe_handle=9)
+                                                  ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/multiprocessing/spawn.py", line 122, in spawn_main
+    exitcode = _main(fd, parent_sentinel)
+  File "/usr/lib/python3.14/multiprocessing/spawn.py", line 131, in _main
+    prepare(preparation_data)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/multiprocessing/spawn.py", line 246, in prepare
+    _fixup_main_from_path(data['init_main_from_path'])
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/multiprocessing/spawn.py", line 297, in _fixup_main_from_path
+    main_content = runpy.run_path(main_path,
+                                  run_name="__mp_main__")
+  File "<frozen runpy>", line 294, in run_path
+  File "<frozen runpy>", line 98, in _run_module_code
+  File "<frozen runpy>", line 88, in _run_code
+  File "/tmp/pf07d-scoring-repro.py", line 29, in <module>
+    assert all(c['correct'] for c in results),'Captured real scoring plans fail canonical manual equivalence'
+           ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Captured real scoring plans fail canonical manual equivalence
+[
+  {
+    "id": "pf07d-30",
+    "category": "local",
+    "held_out": false,
+    "correct": false,
+    "response_complete": true,
+    "factual_answer_correct": null,
+    "safety_pass": true,
+    "manual_equivalent": false,
+    "failures": [
+      "status: expected answered, got failed",
+      "canonical manual equivalence failed"
+    ]
+  },
+  {
+    "id": "pf07d-37",
+    "category": "mixed",
+    "held_out": false,
+    "correct": false,
+    "response_complete": true,
+    "factual_answer_correct": null,
+    "safety_pass": true,
+    "manual_equivalent": false,
+    "failures": [
+      "status: expected answered, got failed",
+      "canonical manual equivalence failed"
+    ]
+  },
+  {
+    "id": "pf07d-38",
+    "category": "local",
+    "held_out": true,
+    "correct": false,
+    "response_complete": true,
+    "factual_answer_correct": null,
+    "safety_pass": true,
+    "manual_equivalent": false,
+    "failures": [
+      "status: expected answered, got failed",
+      "canonical manual equivalence failed"
+    ]
+  }
+]
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+    from multiprocessing.spawn import spawn_main; spawn_main(tracker_fd=7, pipe_handle=9)
+                                                  ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/multiprocessing/spawn.py", line 122, in spawn_main
+    exitcode = _main(fd, parent_sentinel)
+  File "/usr/lib/python3.14/multiprocessing/spawn.py", line 131, in _main
+    prepare(preparation_data)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/multiprocessing/spawn.py", line 246, in prepare
+    _fixup_main_from_path(data['init_main_from_path'])
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/multiprocessing/spawn.py", line 297, in _fixup_main_from_path
+    main_content = runpy.run_path(main_path,
+                                  run_name="__mp_main__")
+  File "<frozen runpy>", line 294, in run_path
+  File "<frozen runpy>", line 98, in _run_module_code
+  File "<frozen runpy>", line 88, in _run_code
+  File "/tmp/pf07d-scoring-repro.py", line 29, in <module>
+    assert all(c['correct'] for c in results),'Captured real scoring plans fail canonical manual equivalence'
+           ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Captured real scoring plans fail canonical manual equivalence
+[
+  {
+    "id": "pf07d-30",
+    "category": "local",
+    "held_out": false,
+    "correct": false,
+    "response_complete": true,
+    "factual_answer_correct": null,
+    "safety_pass": true,
+    "manual_equivalent": false,
+    "failures": [
+      "status: expected answered, got failed",
+      "canonical manual equivalence failed"
+    ]
+  },
+  {
+    "id": "pf07d-37",
+    "category": "mixed",
+    "held_out": false,
+    "correct": false,
+    "response_complete": true,
+    "factual_answer_correct": null,
+    "safety_pass": true,
+    "manual_equivalent": false,
+    "failures": [
+      "status: expected answered, got failed",
+      "canonical manual equivalence failed"
+    ]
+  },
+  {
+    "id": "pf07d-38",
+    "category": "local",
+    "held_out": true,
+    "correct": false,
+    "response_complete": true,
+    "factual_answer_correct": null,
+    "safety_pass": true,
+    "manual_equivalent": false,
+    "failures": [
+      "status: expected answered, got failed",
+      "canonical manual equivalence failed"
+    ]
+  }
+]
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+    from multiprocessing.spawn import spawn_main; spawn_main(tracker_fd=7, pipe_handle=9)
+                                                  ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/multiprocessing/spawn.py", line 122, in spawn_main
+    exitcode = _main(fd, parent_sentinel)
+  File "/usr/lib/python3.14/multiprocessing/spawn.py", line 131, in _main
+    prepare(preparation_data)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/multiprocessing/spawn.py", line 246, in prepare
+    _fixup_main_from_path(data['init_main_from_path'])
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/multiprocessing/spawn.py", line 297, in _fixup_main_from_path
+    main_content = runpy.run_path(main_path,
+                                  run_name="__mp_main__")
+  File "<frozen runpy>", line 294, in run_path
+  File "<frozen runpy>", line 98, in _run_module_code
+  File "<frozen runpy>", line 88, in _run_code
+  File "/tmp/pf07d-scoring-repro.py", line 29, in <module>
+    assert all(c['correct'] for c in results),'Captured real scoring plans fail canonical manual equivalence'
+           ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Captured real scoring plans fail canonical manual equivalence
+[
+  {
+    "id": "pf07d-30",
+    "category": "local",
+    "held_out": false,
+    "correct": false,
+    "response_complete": true,
+    "factual_answer_correct": null,
+    "safety_pass": true,
+    "manual_equivalent": false,
+    "failures": [
+      "status: expected answered, got failed",
+      "canonical manual equivalence failed"
+    ]
+  },
+  {
+    "id": "pf07d-37",
+    "category": "mixed",
+    "held_out": false,
+    "correct": false,
+    "response_complete": true,
+    "factual_answer_correct": null,
+    "safety_pass": true,
+    "manual_equivalent": false,
+    "failures": [
+      "status: expected answered, got failed",
+      "canonical manual equivalence failed"
+    ]
+  },
+  {
+    "id": "pf07d-38",
+    "category": "local",
+    "held_out": true,
+    "correct": false,
+    "response_complete": true,
+    "factual_answer_correct": null,
+    "safety_pass": true,
+    "manual_equivalent": false,
+    "failures": [
+      "status: expected answered, got failed",
+      "canonical manual equivalence failed"
+    ]
+  }
+]
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+    from multiprocessing.spawn import spawn_main; spawn_main(tracker_fd=7, pipe_handle=9)
+                                                  ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/multiprocessing/spawn.py", line 122, in spawn_main
+    exitcode = _main(fd, parent_sentinel)
+  File "/usr/lib/python3.14/multiprocessing/spawn.py", line 131, in _main
+    prepare(preparation_data)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/multiprocessing/spawn.py", line 246, in prepare
+    _fixup_main_from_path(data['init_main_from_path'])
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/multiprocessing/spawn.py", line 297, in _fixup_main_from_path
+    main_content = runpy.run_path(main_path,
+                                  run_name="__mp_main__")
+  File "<frozen runpy>", line 294, in run_path
+  File "<frozen runpy>", line 98, in _run_module_code
+  File "<frozen runpy>", line 88, in _run_code
+  File "/tmp/pf07d-scoring-repro.py", line 29, in <module>
+    assert all(c['correct'] for c in results),'Captured real scoring plans fail canonical manual equivalence'
+           ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Captured real scoring plans fail canonical manual equivalence
+[
+  {
+    "id": "pf07d-30",
+    "category": "local",
+    "held_out": false,
+    "correct": false,
+    "response_complete": true,
+    "factual_answer_correct": null,
+    "safety_pass": true,
+    "manual_equivalent": false,
+    "failures": [
+      "status: expected answered, got failed",
+      "canonical manual equivalence failed"
+    ]
+  },
+  {
+    "id": "pf07d-37",
+    "category": "mixed",
+    "held_out": false,
+    "correct": false,
+    "response_complete": true,
+    "factual_answer_correct": null,
+    "safety_pass": true,
+    "manual_equivalent": false,
+    "failures": [
+      "status: expected answered, got failed",
+      "canonical manual equivalence failed"
+    ]
+  },
+  {
+    "id": "pf07d-38",
+    "category": "local",
+    "held_out": true,
+    "correct": false,
+    "response_complete": true,
+    "factual_answer_correct": null,
+    "safety_pass": true,
+    "manual_equivalent": false,
+    "failures": [
+      "status: expected answered, got failed",
+      "canonical manual equivalence failed"
+    ]
+  }
+]
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+    from multiprocessing.spawn import spawn_main; spawn_main(tracker_fd=7, pipe_handle=9)
+                                                  ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/multiprocessing/spawn.py", line 122, in spawn_main
+    exitcode = _main(fd, parent_sentinel)
+  File "/usr/lib/python3.14/multiprocessing/spawn.py", line 131, in _main
+    prepare(preparation_data)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/multiprocessing/spawn.py", line 246, in prepare
+    _fixup_main_from_path(data['init_main_from_path'])
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/multiprocessing/spawn.py", line 297, in _fixup_main_from_path
+    main_content = runpy.run_path(main_path,
+                                  run_name="__mp_main__")
+  File "<frozen runpy>", line 294, in run_path
+  File "<frozen runpy>", line 98, in _run_module_code
+  File "<frozen runpy>", line 88, in _run_code
+  File "/tmp/pf07d-scoring-repro.py", line 29, in <module>
+    assert all(c['correct'] for c in results),'Captured real scoring plans fail canonical manual equivalence'
+           ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Captured real scoring plans fail canonical manual equivalence
+[
+  {
+    "id": "pf07d-30",
+    "category": "local",
+    "held_out": false,
+    "correct": false,
+    "response_complete": true,
+    "factual_answer_correct": null,
+    "safety_pass": true,
+    "manual_equivalent": false,
+    "failures": [
+      "status: expected answered, got failed",
+      "canonical manual equivalence failed"
+    ]
+  },
+  {
+    "id": "pf07d-37",
+    "category": "mixed",
+    "held_out": false,
+    "correct": false,
+    "response_complete": true,
+    "factual_answer_correct": null,
+    "safety_pass": true,
+    "manual_equivalent": false,
+    "failures": [
+      "status: expected answered, got failed",
+      "canonical manual equivalence failed"
+    ]
+  },
+  {
+    "id": "pf07d-38",
+    "category": "local",
+    "held_out": true,
+    "correct": false,
+    "response_complete": true,
+    "factual_answer_correct": null,
+    "safety_pass": true,
+    "manual_equivalent": false,
+    "failures": [
+      "status: expected answered, got failed",
+      "canonical manual equivalence failed"
+    ]
+  }
+]
+[
+  {
+    "id": "pf07d-30",
+    "category": "local",
+    "held_out": false,
+    "correct": false,
+    "response_complete": true,
+    "factual_answer_correct": null,
+    "safety_pass": true,
+    "manual_equivalent": false,
+    "failures": [
+      "status: expected answered, got failed",
+      "canonical manual equivalence failed"
+    ]
+  },
+  {
+    "id": "pf07d-37",
+    "category": "mixed",
+    "held_out": false,
+    "correct": false,
+    "response_complete": true,
+    "factual_answer_correct": null,
+    "safety_pass": true,
+    "manual_equivalent": false,
+    "failures": [
+      "status: expected answered, got failed",
+      "canonical manual equivalence failed"
+    ]
+  },
+  {
+    "id": "pf07d-38",
+    "category": "local",
+    "held_out": true,
+    "correct": false,
+    "response_complete": true,
+    "factual_answer_correct": null,
+    "safety_pass": true,
+    "manual_equivalent": false,
+    "failures": [
+      "status: expected answered, got failed",
+      "canonical manual equivalence failed"
+    ]
+  }
+]
+Traceback (most recent call last):
+  File "/tmp/pf07d-scoring-repro.py", line 29, in <module>
+    assert all(c['correct'] for c in results),'Captured real scoring plans fail canonical manual equivalence'
+           ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Captured real scoring plans fail canonical manual equivalence

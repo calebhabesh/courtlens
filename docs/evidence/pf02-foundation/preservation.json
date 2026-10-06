@@ -1,0 +1,18 @@
+{
+  "owned_existing_paths": [
+    "dashboard/app/globals.css",
+    "dashboard/app/layout.tsx",
+    "dashboard/app/settings/page.tsx",
+    "dashboard/components/global-lookup.tsx",
+    "dashboard/components/replica-nav.tsx",
+    "dashboard/e2e/workbench.spec.ts",
+    "dashboard/package-lock.json",
+    "dashboard/package.json",
+    "docs/polish-freeze-implementation-progress.md"
+  ],
+  "preserved_starting_files": 1801,
+  "unexpected_changes": [],
+  "retained_evidence_files": 1124,
+  "artifact_files": 316,
+  "artifact_changes": []
+}

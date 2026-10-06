@@ -1,0 +1,25 @@
+browserType.launch: Executable doesn't exist at /home/ethioking/.cache/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell
+╔════════════════════════════════════════════════════════════╗
+║ Looks like Playwright was just installed or updated.       ║
+║ Please run the following command to download new browsers: ║
+║                                                            ║
+║     npx playwright install                                 ║
+║                                                            ║
+║ <3 Playwright Team                                         ║
+╚════════════════════════════════════════════════════════════╝
+    at /home/ethioking/dev/nba-analytics/scripts/verify_pf07b_browser.cjs:4:34
+    at Object.<anonymous> (/home/ethioking/dev/nba-analytics/scripts/verify_pf07b_browser.cjs:38:3) {
+  log: [],
+  name: 'Error'
+}
+Traceback (most recent call last):
+  File "/home/ethioking/dev/nba-analytics/scripts/verify_pf07b_history.py", line 208, in <module>
+    main()
+    ~~~~^^
+  File "/home/ethioking/dev/nba-analytics/scripts/verify_pf07b_history.py", line 136, in main
+    subprocess.run(["node", "scripts/verify_pf07b_browser.cjs"], check=True)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/subprocess.py", line 578, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['node', 'scripts/verify_pf07b_browser.cjs']' returned non-zero exit status 1.

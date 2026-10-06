@@ -1,0 +1,23 @@
+{
+  "revision": "daedc03c66e7142c5a23ef918193e86e1b86af1a",
+  "block": "PF01a",
+  "status": "complete",
+  "parent_block": "PF01",
+  "parent_status": "in_progress",
+  "next": "PF01b catalog/context/dashboard",
+  "owned_files": {
+    "src/courtload/domain/stats_presentation.py": "db775792e031d468f30e7ac12e495d569965b0ca6e870b4c2d050b68d249d519",
+    "src/courtload/services/stats_engine.py": "5726857fe496e55e54f55d679ee6dab5ff00e621e5f891f7eae0488f607a4231",
+    "src/courtload/api/workbench_schemas.py": "7baed860a407ef8fa21031cb679be5757ebd9dfaf19fd98a8f8cddd0f90ee9a7",
+    "src/courtload/api/routers/workbench.py": "b0fe62dc3081cd269a42660fee8574e063f5c5e2c3bd7f889bab0ee71012d18d",
+    "dashboard/lib/types.ts": "a06b189d0d4aa5e5a7e7a1190768e8a66c4ac6fee637ecdde1344f60f808e965",
+    "dashboard/lib/workbench-api.ts": "48a1c71bce7e2fc06b29b871e9e0aefaf08daba6be145fed191470733f8b1378",
+    "tests/integration/test_stats_presentation_postgres.py": "173054b99fc24bd8675d771e210b715bc122a87aad4620ab3c6914d4c99572ff",
+    "scripts/verify_pf01a_stats.py": "433453bfdbd744c14c1e0009266acc191c6f6a3411632a015a32888cdcfb92df",
+    "scripts/verify_pf01a_retained.py": "29f5a7d941c92b801fa596652a51f7e7159eb275e7652d6c66ba09c59a8429c8",
+    "docs/polish-freeze-implementation-progress.md": "ee0e9c003484667aef6f365e03389840bd1a597b2c1093ad1df36f88dee00022"
+  },
+  "documentation_links": "pass",
+  "screenshots": "not applicable: backend contract only",
+  "full_suite": "PF00 non-green baseline not rerun; targeted results do not certify full suite"
+}

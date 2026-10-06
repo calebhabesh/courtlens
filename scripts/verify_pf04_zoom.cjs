@@ -1,0 +1,28 @@
+const {chromium,expect}=require('../dashboard/node_modules/@playwright/test');
+const {execFileSync}=require('node:child_process');
+const fs=require('node:fs');
+const assert=require('node:assert/strict');
+(async()=>{
+ const browser=await chromium.launch({executablePath:'/usr/bin/chromium',headless:false,args:['--window-size=2560,1440','--ozone-platform=x11']});
+ const page=await browser.newPage({viewport:null});
+ const errors=[];page.on('pageerror',error=>errors.push(error.message));
+ await page.goto('http://127.0.0.1:3154/wowy?season=2024-25&phase=regular_season&beforeDate=2025-06-30');
+ await page.waitForLoadState('networkidle');
+ const original=await page.evaluate(()=>({width:innerWidth,dpr:devicePixelRatio}));
+ const window=execFileSync('xdotool',['search','--onlyvisible','--name','CourtLoad']).toString().trim().split('\n').at(-1);
+ execFileSync('xdotool',['windowfocus','--sync',window]);
+ execFileSync('xdotool',['key','--clearmodifiers','ctrl+0',...Array(5).fill('ctrl+plus')]);
+ await page.waitForTimeout(500);
+ const dimensions=await page.evaluate(()=>({viewport:[innerWidth,innerHeight],dpr:devicePixelRatio,documentWidth:document.documentElement.scrollWidth}));
+ assert.equal(dimensions.dpr/original.dpr,2);
+ assert(dimensions.documentWidth<=dimensions.viewport[0]);
+ await page.getByRole('combobox',{name:'Together players',exact:true}).fill('jokic');
+ const option=page.getByRole('option').filter({hasText:'Nikola Jokić'});await expect(option).toHaveCount(1);
+ execFileSync('import',['-window',window,'docs/evidence/pf04-selection/picker-zoom.png']);
+ await option.click();await expect(page.getByRole('button',{name:'Remove Nikola Jokić from Together players',exact:true})).toBeVisible();
+ execFileSync('import',['-window',window,'docs/evidence/pf04-selection/chip-zoom.png']);
+ assert.deepEqual(errors,[]);
+ fs.writeFileSync('docs/evidence/pf04-selection/zoom.json',JSON.stringify({original,...dimensions,errors,checks:2},null,2)+'\n');
+ await browser.close();
+ console.log(JSON.stringify({actualZoom:'200%',...dimensions,checks:2}));
+})().catch(error=>{console.error(error);process.exit(1);});

@@ -1,0 +1,469 @@
+INFO:     Started server process [3604990]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8189 (Press CTRL+C to quit)
+INFO:     127.0.0.1:54186 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54168 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54188 - "GET /api/workbench/catalog?releaseId=retained-release HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:54172 - "GET /api/workbench/catalog?releaseId=retained-release HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:54200 - "GET /api/workbench/lookup?q=1630567&releaseId=retained-release&season=2024-25&phase=regular_season&before_date=2025-04-15&kinds=player&limit=1 HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:54168 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54212 - "GET /api/workbench/catalog?releaseId=retained-release HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:54168 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54168 - "GET /api/workbench/assistant/v2/threads?limit=20 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54168 - "POST /api/workbench/assistant/v2/threads HTTP/1.1" 201 Created
+INFO:     127.0.0.1:54168 - "GET /api/workbench/assistant/v2/threads?limit=20 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54168 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54168 - "GET /api/workbench/assistant/v2/threads/a244f85f-83ec-4cd6-ba1e-ea5ea4ea5646/turns?limit=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54168 - "GET /api/workbench/assistant/v2/threads?limit=20 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54168 - "GET /api/workbench/assistant/v2/threads/a244f85f-83ec-4cd6-ba1e-ea5ea4ea5646/turns?limit=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54168 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54168 - "GET /api/workbench/assistant/v2/threads?limit=20 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54168 - "GET /api/workbench/assistant/v2/threads/a244f85f-83ec-4cd6-ba1e-ea5ea4ea5646/turns?limit=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54236 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54186 - "GET /api/workbench/assistant/v2/threads/a244f85f-83ec-4cd6-ba1e-ea5ea4ea5646/turns?limit=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54186 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54244 - "GET /api/workbench/catalog?releaseId=retained-release HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:54186 - "GET /api/workbench/assistant/v2/threads/a244f85f-83ec-4cd6-ba1e-ea5ea4ea5646/turns?limit=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54186 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54248 - "GET /api/workbench/catalog?releaseId=retained-release HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:54186 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54248 - "GET /api/workbench/catalog?releaseId=retained-release HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:54186 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54256 - "GET /api/workbench/catalog?releaseId=retained-release HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:54186 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54248 - "GET /api/workbench/catalog?releaseId=retained-release HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:54186 - "GET /api/workbench/assistant/v2/threads/a244f85f-83ec-4cd6-ba1e-ea5ea4ea5646/turns?limit=100 HTTP/1.1" 200 OK
+2026-10-06 12:56:30,463 INFO httpx HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent "HTTP/1.1 200 OK"
+INFO:     127.0.0.1:54186 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54266 - "GET /api/workbench/catalog?releaseId=retained-release HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:54186 - "GET /api/workbench/assistant/v2/threads/a244f85f-83ec-4cd6-ba1e-ea5ea4ea5646/turns?limit=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54186 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54282 - "GET /api/workbench/catalog?releaseId=retained-release HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:54168 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54168 - "GET /api/workbench/assistant/v2/threads/a244f85f-83ec-4cd6-ba1e-ea5ea4ea5646/turns?limit=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54168 - "GET /api/workbench/assistant/v2/threads?limit=20 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54236 - "GET /api/workbench/catalog?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54168 - "GET /api/workbench/assistant/v2/threads/a244f85f-83ec-4cd6-ba1e-ea5ea4ea5646/turns?limit=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54168 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54296 - "GET /api/workbench/catalog?releaseId=retained-release HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:54168 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34284 - "GET /api/workbench/catalog?releaseId=retained-release HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:54168 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34300 - "GET /api/workbench/catalog?releaseId=retained-release HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:54168 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54168 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34314 - "GET /api/workbench/catalog?releaseId=retained-release HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:34330 - "GET /api/workbench/catalog?releaseId=retained-release HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:54168 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54168 - "GET /api/workbench/assistant/v2/threads?limit=20 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34346 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54168 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54168 - "GET /api/workbench/assistant/v2/threads?limit=20 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34362 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34364 - "GET /api/workbench/analyses?limit=50 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34364 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34374 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34364 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59670 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34364 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34364 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59690 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59696 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34364 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34364 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59726 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59742 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34364 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34364 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59776 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59786 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34364 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34364 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59822 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59824 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34364 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59840 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59856 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59858 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34364 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59840 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59892 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59888 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34364 - "GET /api/workbench/analyses?limit=50 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34364 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34364 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59840 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59840 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34364 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59936 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59942 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34364 - "GET /api/workbench/metrics HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34364 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59946 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34364 - "GET /api/workbench/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59840 - "GET /api/workbench/assistant/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34364 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59956 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34364 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59962 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34364 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59962 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34364 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34364 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59972 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34364 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59984 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34364 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34364 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59986 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34364 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34364 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34364 - "GET /api/workbench/assistant/v2/threads?limit=20 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34364 - "POST /api/workbench/assistant/v2/threads HTTP/1.1" 201 Created
+INFO:     127.0.0.1:34364 - "GET /api/workbench/assistant/v2/threads?limit=20 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34364 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60000 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34364 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34364 - "GET /api/workbench/assistant/v2/threads/053b75e4-7420-4879-9064-d7de724934be/turns?limit=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34364 - "GET /api/workbench/assistant/v2/threads?limit=20 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60004 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34364 - "GET /api/workbench/assistant/v2/threads/053b75e4-7420-4879-9064-d7de724934be/turns?limit=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34364 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34364 - "GET /api/workbench/assistant/v2/threads?limit=20 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34364 - "GET /api/workbench/assistant/v2/threads/053b75e4-7420-4879-9064-d7de724934be/turns?limit=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60000 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34364 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60014 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34364 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60022 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60034 - "GET /api/workbench/assistant/v2/threads/053b75e4-7420-4879-9064-d7de724934be/turns?limit=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60034 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60036 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60034 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60014 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60034 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39528 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60034 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39544 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60034 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39556 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60034 - "GET /api/workbench/assistant/v2/threads/053b75e4-7420-4879-9064-d7de724934be/turns?limit=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60034 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39562 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39562 - "GET /api/workbench/catalog?releaseId=retained-release HTTP/1.1" 404 Not Found
+2026-10-06 12:56:53,735 INFO httpx HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent "HTTP/1.1 200 OK"
+INFO:     127.0.0.1:60034 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60034 - "GET /api/workbench/assistant/v2/threads/053b75e4-7420-4879-9064-d7de724934be/turns?limit=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39574 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39588 - "GET /api/workbench/assistant/operations HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39574 - "GET /api/workbench/assistant/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60034 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39594 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39594 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60034 - "GET /api/workbench/assistant/v2/threads/053b75e4-7420-4879-9064-d7de724934be/turns?limit=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39594 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34364 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34364 - "GET /api/workbench/assistant/v2/threads/053b75e4-7420-4879-9064-d7de724934be/turns?limit=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34364 - "GET /api/workbench/assistant/v2/threads?limit=20 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60000 - "GET /api/workbench/catalog?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34364 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60034 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39598 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39602 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34364 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39598 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34364 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34364 - "GET /api/workbench/assistant/v2/threads/053b75e4-7420-4879-9064-d7de724934be/turns?limit=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39602 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34364 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60034 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39614 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60034 - "GET /api/workbench/assistant/v2/threads/053b75e4-7420-4879-9064-d7de724934be/turns?limit=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39626 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60034 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39614 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60034 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39626 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60034 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60034 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39636 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39652 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60034 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39636 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60034 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39652 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60034 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39662 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60034 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60034 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39662 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60034 - "GET /api/workbench/assistant/v2/threads/053b75e4-7420-4879-9064-d7de724934be/turns?limit=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39668 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60034 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60034 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39668 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39674 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39674 - "GET /api/workbench/catalog?releaseId=retained-release HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60034 - "GET /api/workbench/assistant/v2/threads/053b75e4-7420-4879-9064-d7de724934be/turns?limit=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60034 - "GET /api/workbench/assistant/v2/threads/053b75e4-7420-4879-9064-d7de724934be/turns?limit=100 HTTP/1.1" 200 OK
+2026-10-06 12:56:57,860 INFO httpx HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent "HTTP/1.1 200 OK"
+INFO:     127.0.0.1:60034 - "GET /api/workbench/assistant/v2/threads/053b75e4-7420-4879-9064-d7de724934be/turns?limit=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60034 - "GET /api/workbench/assistant/v2/threads/053b75e4-7420-4879-9064-d7de724934be/turns?limit=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34364 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34364 - "GET /api/workbench/assistant/v2/threads/053b75e4-7420-4879-9064-d7de724934be/turns?limit=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34364 - "GET /api/workbench/assistant/v2/threads?limit=20 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34364 - "GET /api/workbench/assistant/v2/threads/053b75e4-7420-4879-9064-d7de724934be/turns?limit=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34364 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34364 - "GET /api/workbench/assistant/v2/threads/053b75e4-7420-4879-9064-d7de724934be/turns?limit=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34364 - "GET /api/workbench/assistant/v2/threads?limit=20 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34364 - "GET /api/workbench/assistant/v2/threads/053b75e4-7420-4879-9064-d7de724934be/turns?limit=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/threads HTTP/1.1" 201 Created
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "GET /api/workbench/assistant/v2/threads/aa99be7c-2e6a-4eac-9a45-d5090d607ce6/turns?limit=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "GET /api/workbench/assistant/v2/threads/aa99be7c-2e6a-4eac-9a45-d5090d607ce6/turns?limit=100&cursor=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/threads HTTP/1.1" 201 Created
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/threads HTTP/1.1" 201 Created
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/threads HTTP/1.1" 201 Created
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/threads HTTP/1.1" 201 Created
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/threads HTTP/1.1" 201 Created
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/threads HTTP/1.1" 201 Created
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/threads HTTP/1.1" 201 Created
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/threads HTTP/1.1" 201 Created
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/threads HTTP/1.1" 201 Created
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/threads HTTP/1.1" 201 Created
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/threads HTTP/1.1" 201 Created
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/threads HTTP/1.1" 201 Created
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/threads HTTP/1.1" 201 Created
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/threads HTTP/1.1" 201 Created
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/threads HTTP/1.1" 201 Created
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/threads HTTP/1.1" 201 Created
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/threads HTTP/1.1" 201 Created
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/threads HTTP/1.1" 201 Created
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/threads HTTP/1.1" 201 Created
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/threads HTTP/1.1" 201 Created
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/threads HTTP/1.1" 201 Created
+INFO:     127.0.0.1:56596 - "POST /api/workbench/assistant/v2/threads HTTP/1.1" 201 Created
+INFO:     127.0.0.1:50578 - "GET /api/workbench/catalog?releaseId=retained-release HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:50594 - "GET /api/workbench/catalog?releaseId=retained-release HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:50594 - "GET /api/workbench/lookup?q=1630567&releaseId=retained-release&season=2024-25&phase=regular_season&before_date=2025-04-15&kinds=player&limit=1 HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:50610 - "GET /api/workbench/catalog?releaseId=retained-release HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:50620 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50646 - "GET /api/workbench/assistant/v2/threads?limit=20 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50620 - "POST /api/workbench/assistant/v2/threads HTTP/1.1" 201 Created
+INFO:     127.0.0.1:50620 - "GET /api/workbench/assistant/v2/threads?limit=20 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50634 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50620 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50620 - "GET /api/workbench/assistant/v2/threads/c0c65869-737c-4d9e-824e-703ad4d9971a/turns?limit=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50620 - "GET /api/workbench/assistant/v2/threads?limit=20 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50620 - "GET /api/workbench/assistant/v2/threads/c0c65869-737c-4d9e-824e-703ad4d9971a/turns?limit=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50620 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50620 - "GET /api/workbench/assistant/v2/threads?limit=20 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50620 - "GET /api/workbench/assistant/v2/threads/c0c65869-737c-4d9e-824e-703ad4d9971a/turns?limit=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50634 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50646 - "GET /api/workbench/assistant/v2/threads/c0c65869-737c-4d9e-824e-703ad4d9971a/turns?limit=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50654 - "GET /api/workbench/catalog?releaseId=retained-release HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:50646 - "GET /api/workbench/assistant/v2/threads/c0c65869-737c-4d9e-824e-703ad4d9971a/turns?limit=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50670 - "GET /api/workbench/catalog?releaseId=retained-release HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:50670 - "GET /api/workbench/catalog?releaseId=retained-release HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:50680 - "GET /api/workbench/catalog?releaseId=retained-release HTTP/1.1" 404 Not Found
+2026-10-06 12:58:37,890 INFO httpx HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent "HTTP/1.1 200 OK"
+INFO:     127.0.0.1:50646 - "GET /api/workbench/assistant/v2/threads/c0c65869-737c-4d9e-824e-703ad4d9971a/turns?limit=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50698 - "GET /api/workbench/catalog?releaseId=retained-release HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:50682 - "GET /api/workbench/catalog?releaseId=retained-release HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:50646 - "GET /api/workbench/assistant/v2/threads/c0c65869-737c-4d9e-824e-703ad4d9971a/turns?limit=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50714 - "GET /api/workbench/catalog?releaseId=retained-release HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:50620 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50620 - "GET /api/workbench/assistant/v2/threads/c0c65869-737c-4d9e-824e-703ad4d9971a/turns?limit=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50620 - "GET /api/workbench/assistant/v2/threads?limit=20 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50634 - "GET /api/workbench/catalog?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50620 - "GET /api/workbench/assistant/v2/threads/c0c65869-737c-4d9e-824e-703ad4d9971a/turns?limit=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50728 - "GET /api/workbench/catalog?releaseId=retained-release HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:50646 - "GET /api/workbench/assistant/v2/threads/c0c65869-737c-4d9e-824e-703ad4d9971a/turns?limit=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50740 - "GET /api/workbench/catalog?releaseId=retained-release HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:50646 - "GET /api/workbench/assistant/v2/threads/c0c65869-737c-4d9e-824e-703ad4d9971a/turns?limit=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50750 - "GET /api/workbench/catalog?releaseId=retained-release HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:50764 - "GET /api/workbench/catalog?releaseId=retained-release HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:50646 - "GET /api/workbench/assistant/v2/threads/c0c65869-737c-4d9e-824e-703ad4d9971a/turns?limit=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50646 - "GET /api/workbench/assistant/v2/threads/c0c65869-737c-4d9e-824e-703ad4d9971a/turns?limit=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50770 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+2026-10-06 12:58:41,831 INFO httpx HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent "HTTP/1.1 200 OK"
+INFO:     127.0.0.1:50646 - "GET /api/workbench/assistant/v2/threads/c0c65869-737c-4d9e-824e-703ad4d9971a/turns?limit=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50776 - "GET /api/workbench/assistant/v2/threads/c0c65869-737c-4d9e-824e-703ad4d9971a/turns?limit=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50620 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50620 - "GET /api/workbench/assistant/v2/threads/c0c65869-737c-4d9e-824e-703ad4d9971a/turns?limit=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50620 - "GET /api/workbench/assistant/v2/threads?limit=20 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50786 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50620 - "GET /api/workbench/assistant/v2/threads/c0c65869-737c-4d9e-824e-703ad4d9971a/turns?limit=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50620 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50620 - "GET /api/workbench/assistant/v2/threads/c0c65869-737c-4d9e-824e-703ad4d9971a/turns?limit=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50620 - "GET /api/workbench/assistant/v2/threads?limit=20 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50620 - "GET /api/workbench/assistant/v2/threads/c0c65869-737c-4d9e-824e-703ad4d9971a/turns?limit=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50620 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44150 - "OPTIONS /api/workbench/assistant/turn HTTP/1.1" 400 Bad Request
+INFO:     127.0.0.1:50634 - "GET /api/workbench/catalog?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44172 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44180 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44198 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44218 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44234 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44246 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44272 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44282 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44316 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44324 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44330 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44356 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44380 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44400 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44458 - "GET /api/workbench/lookup?q=1630567&releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&before_date=2026-06-30&kinds=player&limit=1 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44470 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44488 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44488 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44492 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44498 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44512 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44524 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44528 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44544 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44550 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44562 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44544 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44572 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44576 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44590 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44602 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44602 - "GET /api/workbench/catalog?releaseId=retained-release HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:44608 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44620 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44620 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44624 - "GET /api/workbench/assistant/v2/threads/aa99be7c-2e6a-4eac-9a45-d5090d607ce6/turns?limit=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44624 - "GET /api/workbench/assistant/v2/threads/aa99be7c-2e6a-4eac-9a45-d5090d607ce6/turns?limit=100&cursor=200 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44640 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44646 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44640 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44646 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40396 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40396 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40404 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40404 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40418 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40418 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40432 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40440 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40432 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40440 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40450 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40466 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40466 - "GET /api/workbench/catalog?releaseId=retained-release HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:40450 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40466 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58796 - "GET /api/workbench/lookup?q=1630567&releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&before_date=2026-06-30&kinds=player&limit=1 HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [3604990]

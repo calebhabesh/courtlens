@@ -1,0 +1,8 @@
+{
+  "measurement": "First identity lookup after starting a separate API process; PostgreSQL buffers and OS caches warm. Health polling does not populate the identity index.",
+  "http_ms": 146.6506790020503,
+  "service_ms": 51.368,
+  "bytes": 17403,
+  "rows": 20,
+  "provider_requests": 0
+}

@@ -1,0 +1,140 @@
+INFO:     Started server process [3383244]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8188 (Press CTRL+C to quit)
+INFO:     127.0.0.1:55380 - "GET /api/workbench/assistant/v2/threads?limit=20 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55352 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55366 - "GET /api/workbench/catalog HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:55352 - "POST /api/workbench/assistant/v2/threads HTTP/1.1" 201 Created
+INFO:     127.0.0.1:55352 - "GET /api/workbench/assistant/v2/threads?limit=20 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50870 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50872 - "GET /api/workbench/catalog HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:50870 - "GET /api/workbench/assistant/v2/threads?limit=20 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50870 - "POST /api/workbench/assistant/v2/threads HTTP/1.1" 201 Created
+INFO:     127.0.0.1:50870 - "GET /api/workbench/assistant/v2/threads?limit=20 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50870 - "POST /api/workbench/assistant/v2/turn HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50870 - "GET /api/workbench/assistant/v2/threads/94f6078c-2516-445b-ae6b-1b277f0b83dc/turns?limit=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50870 - "GET /api/workbench/assistant/v2/threads?limit=20 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50870 - "GET /api/workbench/assistant/v2/threads/94f6078c-2516-445b-ae6b-1b277f0b83dc/turns?limit=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50870 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50872 - "GET /api/workbench/catalog HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:50870 - "GET /api/workbench/assistant/v2/threads?limit=20 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50870 - "GET /api/workbench/assistant/v2/threads/94f6078c-2516-445b-ae6b-1b277f0b83dc/turns?limit=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50872 - "GET /api/workbench/catalog HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:50870 - "GET /api/workbench/assistant/v2/threads?limit=20 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50870 - "GET /api/workbench/assistant/v2/threads/94f6078c-2516-445b-ae6b-1b277f0b83dc/turns?limit=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56648 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56656 - "GET /api/workbench/catalog?releaseId=retained-release HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56648 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56672 - "GET /api/workbench/catalog?releaseId=retained-release HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56672 - "GET /api/workbench/lookup?q=1630567&releaseId=retained-release&season=2024-25&phase=regular_season&before_date=2025-04-15&kinds=player&limit=1 HTTP/1.1" 404 Not Found
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [3383244]
+INFO:     Started server process [3392912]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8188 (Press CTRL+C to quit)
+INFO:     127.0.0.1:43350 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43350 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43368 - "GET /api/workbench/catalog HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:43350 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43378 - "GET /api/workbench/catalog HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:43350 - "GET /api/workbench/assistant/v2/threads?limit=20 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43394 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43350 - "GET /api/workbench/assistant/v2/threads/94f6078c-2516-445b-ae6b-1b277f0b83dc/turns?limit=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43410 - "GET /api/workbench/catalog HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:43350 - "GET /api/workbench/assistant/v2/threads/94f6078c-2516-445b-ae6b-1b277f0b83dc/turns?limit=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43410 - "GET /api/workbench/catalog HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:43350 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43422 - "GET /api/workbench/catalog HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:43422 - "GET /api/workbench/catalog HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:43350 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43434 - "GET /api/workbench/catalog HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:43434 - "GET /api/workbench/catalog HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:43350 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43448 - "GET /api/workbench/catalog HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:43448 - "GET /api/workbench/catalog HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:43350 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43460 - "GET /api/workbench/catalog HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:43350 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43464 - "GET /api/workbench/catalog HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:43350 - "GET /api/workbench/assistant/v2/threads?limit=20 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43350 - "GET /api/workbench/assistant/v2/threads/94f6078c-2516-445b-ae6b-1b277f0b83dc/turns?limit=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43350 - "GET /api/workbench/assistant/v2/threads/94f6078c-2516-445b-ae6b-1b277f0b83dc/turns?limit=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43464 - "GET /api/workbench/catalog HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:43350 - "GET /api/workbench/assistant/v2/threads?limit=20 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43350 - "GET /api/workbench/assistant/v2/threads/94f6078c-2516-445b-ae6b-1b277f0b83dc/turns?limit=100 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45122 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45138 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45146 - "GET /api/workbench/catalog?releaseId=retained-release HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:45162 - "GET /api/workbench/catalog?releaseId=retained-release HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:45162 - "GET /api/workbench/lookup?q=1630567&releaseId=retained-release&season=2024-25&phase=regular_season&before_date=2025-04-15&kinds=player&limit=1 HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:45122 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45168 - "GET /api/workbench/catalog?releaseId=retained-release HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:45122 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45178 - "GET /api/workbench/catalog?releaseId=retained-release HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:45122 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45182 - "GET /api/workbench/catalog?releaseId=retained-release HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:45122 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45182 - "GET /api/workbench/catalog?releaseId=retained-release HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:45122 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45192 - "GET /api/workbench/catalog?releaseId=retained-release HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:45122 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45204 - "GET /api/workbench/catalog?releaseId=retained-release HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:45122 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45218 - "GET /api/workbench/catalog?releaseId=retained-release HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:45122 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45226 - "GET /api/workbench/catalog?releaseId=retained-release HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:45122 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45234 - "GET /api/workbench/catalog?releaseId=retained-release HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:45122 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45244 - "GET /api/workbench/catalog?releaseId=retained-release HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:45122 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37208 - "GET /api/workbench/catalog?releaseId=retained-release HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:45122 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37212 - "GET /api/workbench/catalog?releaseId=retained-release HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:45122 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37218 - "GET /api/workbench/catalog HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:45122 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37218 - "GET /api/workbench/catalog HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:45122 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45122 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37234 - "GET /api/workbench/catalog HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:45122 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37246 - "GET /api/workbench/catalog HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:45122 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37246 - "GET /api/workbench/catalog HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:45122 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37252 - "GET /api/workbench/catalog HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:37252 - "GET /api/workbench/catalog HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:45122 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37262 - "GET /api/workbench/catalog HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:45122 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37252 - "GET /api/workbench/catalog HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:45122 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37270 - "GET /api/workbench/catalog HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:45122 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37278 - "GET /api/workbench/catalog HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:37278 - "GET /api/workbench/catalog HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:45122 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37292 - "GET /api/workbench/catalog HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:37292 - "GET /api/workbench/catalog HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:37270 - "GET /api/workbench/catalog HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:45122 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45122 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37302 - "GET /api/workbench/catalog HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:45122 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37306 - "GET /api/workbench/catalog HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:37302 - "GET /api/workbench/catalog HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:37306 - "GET /api/workbench/catalog HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:45122 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37312 - "GET /api/workbench/catalog HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:45122 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37324 - "GET /api/workbench/catalog HTTP/1.1" 503 Service Unavailable
+INFO:     127.0.0.1:37324 - "GET /api/workbench/catalog?releaseId=retained-release HTTP/1.1" 404 Not Found
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [3392912]

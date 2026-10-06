@@ -1,0 +1,33 @@
+import json
+from pathlib import Path
+from datetime import date
+from uuid import uuid4
+from sqlalchemy import text
+from courtload.database import SessionLocal
+from courtload.domain.conversation import AnalysisPlan,ConversationContext
+from courtload.domain.hybrid_assistant import HybridTurnRequest
+from courtload.services.assistant.hybrid import run_hybrid_turn
+from courtload.services.assistant.evaluation import score_case
+from courtload.services.workbench_analytics import resolve_workbench_context
+def main():
+ corpus=json.loads(Path('tests/fixtures/assistant/pf07d-hybrid-v1.json').read_text())
+ prior=json.loads(Path('docs/evidence/pf07d-quota-policy/real-provider.json').read_text())
+ results=[]
+ with SessionLocal() as session:
+  session.execute(text('SET TRANSACTION READ ONLY'))
+  ctx=resolve_workbench_context(session,requested_season='2024-25').to_dict()
+  context=ConversationContext(**{k:ctx[k] for k in ('release_id','season','phase','before_date','window')})
+  for case in corpus['cases']:
+   if case['id'] not in ('pf07d-30','pf07d-37','pf07d-38'):continue
+   observed=next(c for c in prior['cases'] if c['id']==case['id'])
+   request=HybridTurnRequest(request_id=uuid4(),message=case['message'],context=context)
+   def execute(plan):
+    return run_hybrid_turn(session,request.model_copy(update={'plan':AnalysisPlan.model_validate(plan)}),clock=lambda:date(2026,10,6))
+   score=score_case(case,execute(observed['response']['plan']),execute(case['fixture_plan']))
+   results.append(score)
+  session.rollback()
+ print(json.dumps(results,indent=2))
+ assert all(c['correct'] for c in results),'Captured real scoring plans fail canonical manual equivalence'
+
+if __name__ == "__main__":
+ main()

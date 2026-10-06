@@ -1,0 +1,83 @@
+ M AGENTS.md
+ M TODO.md
+ M dashboard/components/live-workspace.tsx
+ M dashboard/lib/types.ts
+ M dashboard/lib/workbench-api.ts
+ M docs/databallr-replica-implementation-plan.md
+ M docs/databallr-replica-implementation-progress.md
+ M docs/design/live-ui-v1.md
+ M docs/design/replica-analytics-contract.md
+ M docs/design/shared-live-v1.md
+ M scripts/verify_b32_live_browser.cjs
+ M src/courtload/api/routers/workbench.py
+ M src/courtload/api/workbench_schemas.py
+ M src/courtload/domain/live.py
+ M src/courtload/models.py
+ M src/courtload/services/assistant/execution.py
+ M src/courtload/services/assistant/operations.py
+ M src/courtload/services/assistant/saved.py
+ M src/courtload/services/live.py
+ M src/courtload/services/stats_engine.py
+ M src/courtload/services/workbench_analytics.py
+ M tests/unit/test_live.py
+ M tests/unit/test_stats_engine.py
+?? docs/design/b19-event-identity-conservation.md
+?? docs/design/b19-native-reconstruction.md
+?? docs/design/polish-assistant-contract.md
+?? docs/design/polish-ui-contract.md
+?? docs/evidence/b19a-full-source-audit/
+?? docs/evidence/b19a-full-source-final/
+?? docs/evidence/b19a-full-source-repeat/
+?? docs/evidence/b19a-full-source-verified/
+?? docs/evidence/b19a-rich-source-acceptance.md
+?? docs/evidence/b19b-assignment-acceptance.md
+?? docs/evidence/b19b-assignment-accepted/
+?? docs/evidence/b19c-checks/
+?? docs/evidence/b19c-event-accepted/
+?? docs/evidence/b19c-event-conservation-acceptance.md
+?? docs/evidence/b19c-event-final/
+?? docs/evidence/b19c-event-probe/
+?? docs/evidence/b19c-event-probe2/
+?? docs/evidence/b19c-event-repeat/
+?? docs/evidence/b19d-checks/
+?? docs/evidence/b19d-native-accepted/
+?? docs/evidence/b19d-native-baseline-probe/
+?? docs/evidence/b19d-native-probe/
+?? docs/evidence/b19d-native-probe2/
+?? docs/evidence/b19d-native-probe3/
+?? docs/evidence/b19d-native-reconstruction-acceptance.md
+?? docs/evidence/b19d-native-repeat/
+?? docs/evidence/b32-active-acceptance.md
+?? docs/evidence/b32-active-accepted/
+?? docs/evidence/b32-active-checks/
+?? docs/evidence/b32-active-probe/
+?? docs/evidence/b32-active-verification.json
+?? docs/evidence/b32-changing-verified/
+?? docs/evidence/b32-current-build/
+?? docs/evidence/b32-current-final/
+?? docs/evidence/b32-current-verified/
+?? docs/evidence/pf00-baseline/
+?? docs/evidence/pf01a-query-contract/
+?? docs/evidence/pf01b-dashboard/
+?? docs/polish-freeze-implementation-plan.md
+?? docs/polish-freeze-implementation-progress.md
+?? migrations/versions/19b810a4f004_assignment_admission.py
+?? scripts/admit_b19_assignments.py
+?? scripts/audit_b19_event_conservation.py
+?? scripts/audit_b19_rich_sources.py
+?? scripts/reconstruct_b19_native.py
+?? scripts/verify_b32_active.py
+?? scripts/verify_b32_active_browser.cjs
+?? scripts/verify_pf01a_retained.py
+?? scripts/verify_pf01a_stats.py
+?? src/courtload/assignment_models.py
+?? src/courtload/domain/stats_presentation.py
+?? src/courtload/ingestion/native_reconstruction.py
+?? src/courtload/services/assignment_admission.py
+?? tests/assignment_fakes.py
+?? tests/integration/test_assignment_admission_postgres.py
+?? tests/integration/test_stats_presentation_postgres.py
+?? tests/unit/test_assignment_admission.py
+?? tests/unit/test_b19_event_conservation.py
+?? tests/unit/test_b19_source_audit.py
+?? tests/unit/test_native_reconstruction.py

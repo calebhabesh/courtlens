@@ -1,0 +1,131 @@
+{
+  "environment": "Production Next webpack; real FastAPI/PostgreSQL",
+  "viewport": [
+    1440,
+    900
+  ],
+  "checks": [
+    {
+      "defaults_bound_to_url": true
+    },
+    {
+      "field": "pts_per_game",
+      "rows": 25,
+      "offset": 0,
+      "eligible": 591,
+      "output": 591
+    },
+    {
+      "players_shared_contract": true
+    },
+    {
+      "field": "pts_per_game",
+      "rows": 25,
+      "offset": 0,
+      "eligible": 591,
+      "output": 591
+    },
+    {
+      "field": "pts_per_game",
+      "rows": 25,
+      "offset": 25,
+      "eligible": 591,
+      "output": 591
+    },
+    {
+      "field": "pts",
+      "rows": 25,
+      "offset": 0,
+      "eligible": 591,
+      "output": 591
+    },
+    {
+      "field": "pts_per_36",
+      "rows": 25,
+      "offset": 0,
+      "eligible": 591,
+      "output": 591
+    },
+    {
+      "field": "pts_per_game",
+      "rows": 25,
+      "offset": 0,
+      "eligible": 591,
+      "output": 591
+    },
+    {
+      "field": "pts_per_game",
+      "rows": 100,
+      "offset": 0,
+      "eligible": 591,
+      "output": 591
+    },
+    {
+      "field": "pts_per_game",
+      "rows": 1,
+      "offset": 0,
+      "eligible": 591,
+      "output": 1
+    },
+    {
+      "field": "pts_per_game",
+      "rows": 1,
+      "offset": 0,
+      "eligible": 591,
+      "output": 1
+    },
+    {
+      "favorites": [
+        "1630567"
+      ],
+      "matching": 1,
+      "eligible": 591
+    },
+    {
+      "field": "pts_per_game",
+      "rows": 25,
+      "offset": 0,
+      "eligible": 591,
+      "output": 591
+    },
+    {
+      "field": "pts_per_game",
+      "rows": 1,
+      "offset": 0,
+      "eligible": 591,
+      "output": 1
+    },
+    {
+      "favorites_toggle_and_empty_output": true
+    },
+    {
+      "context_back_forward": true,
+      "season_default_cutoff": "2024-04-15"
+    },
+    {
+      "phase_default_cutoff": "2024-06-18",
+      "navigation_context": true
+    },
+    {
+      "unsupported_selection_preserved": true
+    },
+    {
+      "comparison_form_context": true
+    }
+  ],
+  "screenshot_viewports": [
+    [
+      1440,
+      900
+    ],
+    [
+      2560,
+      1440
+    ],
+    [
+      375,
+      812
+    ]
+  ],
+  "page_errors": []
+}

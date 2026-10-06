@@ -1,0 +1,64 @@
+
+> courtload-dashboard@0.1.0 test:browser
+> playwright test threaded-assistant.spec.ts conversation.spec.ts --workers=2
+
+
+Running 24 tests using 2 workers
+
+  ✓   2 e2e/conversation.spec.ts:21:5 › AI disabled manual paired distributions preserve zero, unknown and exact evidence (616ms)
+  ✓   1 e2e/conversation.spec.ts:28:5 › natural follow-ups and canonical identity choices retain conversation fingerprints (2.6s)
+  ✓   3 e2e/conversation.spec.ts:34:5 › quota, unsupported and empty states preserve question and manual execution (2.1s)
+  ✓   4 e2e/conversation.spec.ts:37:5 › network retry reuses the request identity (534ms)
+  ✓   5 e2e/conversation.spec.ts:42:5 › exact Research destination reruns executed arguments and clears ephemeral state (625ms)
+  ✓   6 e2e/conversation.spec.ts:46:5 › drawer traps keyboard focus, escapes, and supports narrow reduced-motion layout (585ms)
+  ✓   7 e2e/conversation.spec.ts:50:5 › unmounted pending answer is discarded and its local state is cleared (554ms)
+  ✓   8 e2e/conversation.spec.ts:55:7 › unsupported preserves manual alternatives and entered question (1.3s)
+  ✓   9 e2e/conversation.spec.ts:55:7 › insufficient_sample preserves manual alternatives and entered question (1.4s)
+  ✓  10 e2e/conversation.spec.ts:55:7 › timeout preserves manual alternatives and entered question (1.3s)
+  ✓  11 e2e/conversation.spec.ts:55:7 › provider_error preserves manual alternatives and entered question (1.3s)
+  ✓  12 e2e/conversation.spec.ts:55:7 › busy preserves manual alternatives and entered question (1.2s)
+  ✘  14 e2e/threaded-assistant.spec.ts:58:5 › standalone defaults, reload, new chat, history and deletion keep durable questions (542ms)
+  ✓  13 e2e/conversation.spec.ts:59:5 › proposed context needs an explicit new conversation (2.3s)
+  ✓  16 e2e/threaded-assistant.spec.ts:83:5 › transport replay preserves request identity; intentional retry links a new turn (482ms)
+  ✓  17 e2e/threaded-assistant.spec.ts:93:5 › Stop is durable, releases controls and fences a late response (865ms)
+  ✓  18 e2e/threaded-assistant.spec.ts:101:5 › closing drawer retains pending history and full-page link preserves preview (851ms)
+  ✓  15 e2e/threaded-assistant.spec.ts:71:5 › scope changes retain old answers and unedited follow-ups inherit on server (2.7s)
+  ✓  19 e2e/threaded-assistant.spec.ts:109:5 › clarifications, external citations and hostile text render safely (1.2s)
+  ✓  21 e2e/threaded-assistant.spec.ts:123:7 › threaded wide layout, keyboard dialog and screenshot (522ms)
+  ✓  20 e2e/threaded-assistant.spec.ts:116:5 › paginated turns are loaded without losing earlier questions (1.8s)
+  ✓  22 e2e/threaded-assistant.spec.ts:123:7 › threaded desktop layout, keyboard dialog and screenshot (634ms)
+  ✓  23 e2e/threaded-assistant.spec.ts:123:7 › threaded mobile layout, keyboard dialog and screenshot (644ms)
+  ✓  24 e2e/threaded-assistant.spec.ts:123:7 › threaded zoom layout, keyboard dialog and screenshot (511ms)
+
+
+  1) e2e/threaded-assistant.spec.ts:58:5 › standalone defaults, reload, new chat, history and deletion keep durable questions 
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: getByLabel('Messages')
+    Expected substring: "Explain pick and roll"
+    Error: strict mode violation: getByLabel('Messages') resolved to 2 elements:
+        1) <div aria-label="Messages" class="thread-messages"></div> aka getByRole('region', { name: 'Threaded assistant preview' }).getByLabel('Messages')
+        2) <div aria-label="Messages" class="thread-messages"></div> aka getByLabel('Messages').nth(1)
+
+    Call log:
+      - Expect "toContainText" getByLabel('Messages') with timeout 5000ms
+      - waiting for getByLabel('Messages')
+        - locator resolved to <div aria-label="Messages" class="thread-messages"></div>
+        - unexpected value ""
+
+
+      59 |   const state = await mock(page); await page.goto(path); await send(page,"Explain pick and roll");
+      60 |   await expect(page.getByLabel("Messages")).toContainText("pairs a screen"); expect(state.requests[0].context).toBeUndefined();
+    > 61 |   await page.reload(); await expect(page.getByLabel("Messages")).toContainText("Explain pick and roll");
+         |                                                                  ^
+      62 |   await page.getByRole("button",{name:"New chat",exact:true}).click(); await expect(page.getByLabel("Messages")).toBeEmpty();
+      63 |   await send(page,"Explain assists"); await page.getByText("History (2)",{exact:true}).click();
+      64 |   await page.getByRole("navigation",{name:"Conversation history"}).getByRole("button",{name:/Explain pick and roll/}).click();
+        at /home/ethioking/dev/nba-analytics/dashboard/e2e/threaded-assistant.spec.ts:61:66
+
+    Error Context: test-results/threaded-assistant-standal-28485-tion-keep-durable-questions/error-context.md
+
+  1 failed
+    e2e/threaded-assistant.spec.ts:58:5 › standalone defaults, reload, new chat, history and deletion keep durable questions 
+  23 passed (14.4s)

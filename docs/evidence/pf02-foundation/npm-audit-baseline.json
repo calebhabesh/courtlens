@@ -1,0 +1,30 @@
+{
+  "@next/eslint-plugin-next": {
+    "prior": "16.3.5",
+    "current": "16.3.5"
+  },
+  "brace-expansion": {
+    "prior": "5.0.9",
+    "current": "5.0.9"
+  },
+  "braces": {
+    "prior": "3.0.3",
+    "current": "3.0.3"
+  },
+  "eslint-config-next": {
+    "prior": "16.3.5",
+    "current": "16.3.5"
+  },
+  "fast-glob": {
+    "prior": "3.3.1",
+    "current": "3.3.1"
+  },
+  "micromatch": {
+    "prior": "4.0.8",
+    "current": "4.0.8"
+  },
+  "next": {
+    "prior": "16.3.5",
+    "current": "16.3.5"
+  }
+}

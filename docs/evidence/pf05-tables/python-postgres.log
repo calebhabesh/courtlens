@@ -1,0 +1,132 @@
+============================= test session starts ==============================
+platform linux -- Python 3.14.7, pytest-8.4.2, pluggy-1.6.0
+rootdir: /home/ethioking/dev/nba-analytics
+configfile: pyproject.toml
+plugins: anyio-4.14.2, cov-7.1.0
+collected 36 items
+
+tests/integration/test_lookup_identity_postgres.py ......                [ 16%]
+tests/integration/test_stats_presentation_postgres.py ................   [ 61%]
+tests/unit/test_stats_engine.py ............FF                           [100%]
+
+=================================== FAILURES ===================================
+____________ test_archive_stats_executes_with_versioned_names[True] ____________
+
+db_session = <sqlalchemy.orm.session.Session object at 0x7f2f84342550>
+appeared = True
+
+    @pytest.mark.parametrize("appeared", [True, False])
+    def test_archive_stats_executes_with_versioned_names(db_session: Session, appeared: bool) -> None:
+        """Historical saved links query retained archive schemas, names and cutoff rows."""
+        from datetime import timedelta
+    
+        from sqlalchemy import select
+    
+        from courtload.archive_models import ArchivePlayerGame, ArchiveVersion
+    
+        game, payload = db_session.execute(
+            select(ArchivePlayerGame, ArchiveVersion.payload_json)
+            .join(ArchiveVersion, ArchiveVersion.id == ArchivePlayerGame.source_version_id)
+            .where(
+                ArchivePlayerGame.appearance == "appeared"
+                if appeared
+                else ArchivePlayerGame.appearance != "appeared"
+            )
+            .order_by(
+                ArchivePlayerGame.game_date,
+                ArchivePlayerGame.dataset_id,
+                ArchivePlayerGame.player_id,
+                ArchivePlayerGame.game_id,
+            )
+            .limit(1)
+>       ).one()
+          ^^^^^
+
+tests/unit/test_stats_engine.py:436: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+.venv/lib/python3.14/site-packages/sqlalchemy/engine/result.py:1574: in one
+    return self._only_one_row(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <sqlalchemy.engine.result.ChunkedIteratorResult object at 0x7f2f844362b0>
+raise_for_second_row = True, raise_for_none = True, scalar = False
+
+    def _only_one_row(
+        self,
+        raise_for_second_row: bool,
+        raise_for_none: bool,
+        scalar: bool,
+    ) -> Optional[_R]:
+        onerow = self._fetchone_impl
+    
+        row: Optional[_InterimRowType[Any]] = onerow(hard_close=True)
+        if row is None:
+            if raise_for_none:
+>               raise exc.NoResultFound(
+                    "No row was found when one was required"
+                )
+E               sqlalchemy.exc.NoResultFound: No row was found when one was required
+
+.venv/lib/python3.14/site-packages/sqlalchemy/engine/result.py:799: NoResultFound
+___________ test_archive_stats_executes_with_versioned_names[False] ____________
+
+db_session = <sqlalchemy.orm.session.Session object at 0x7f2f84343950>
+appeared = False
+
+    @pytest.mark.parametrize("appeared", [True, False])
+    def test_archive_stats_executes_with_versioned_names(db_session: Session, appeared: bool) -> None:
+        """Historical saved links query retained archive schemas, names and cutoff rows."""
+        from datetime import timedelta
+    
+        from sqlalchemy import select
+    
+        from courtload.archive_models import ArchivePlayerGame, ArchiveVersion
+    
+        game, payload = db_session.execute(
+            select(ArchivePlayerGame, ArchiveVersion.payload_json)
+            .join(ArchiveVersion, ArchiveVersion.id == ArchivePlayerGame.source_version_id)
+            .where(
+                ArchivePlayerGame.appearance == "appeared"
+                if appeared
+                else ArchivePlayerGame.appearance != "appeared"
+            )
+            .order_by(
+                ArchivePlayerGame.game_date,
+                ArchivePlayerGame.dataset_id,
+                ArchivePlayerGame.player_id,
+                ArchivePlayerGame.game_id,
+            )
+            .limit(1)
+>       ).one()
+          ^^^^^
+
+tests/unit/test_stats_engine.py:436: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+.venv/lib/python3.14/site-packages/sqlalchemy/engine/result.py:1574: in one
+    return self._only_one_row(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <sqlalchemy.engine.result.ChunkedIteratorResult object at 0x7f2f84d48f70>
+raise_for_second_row = True, raise_for_none = True, scalar = False
+
+    def _only_one_row(
+        self,
+        raise_for_second_row: bool,
+        raise_for_none: bool,
+        scalar: bool,
+    ) -> Optional[_R]:
+        onerow = self._fetchone_impl
+    
+        row: Optional[_InterimRowType[Any]] = onerow(hard_close=True)
+        if row is None:
+            if raise_for_none:
+>               raise exc.NoResultFound(
+                    "No row was found when one was required"
+                )
+E               sqlalchemy.exc.NoResultFound: No row was found when one was required
+
+.venv/lib/python3.14/site-packages/sqlalchemy/engine/result.py:799: NoResultFound
+=========================== short test summary info ============================
+FAILED tests/unit/test_stats_engine.py::test_archive_stats_executes_with_versioned_names[True]
+FAILED tests/unit/test_stats_engine.py::test_archive_stats_executes_with_versioned_names[False]
+========================= 2 failed, 34 passed in 6.55s =========================

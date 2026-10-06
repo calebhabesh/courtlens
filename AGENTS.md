@@ -6,6 +6,8 @@ For the local research-workbench realignment, read [the implementation handoff](
 
 For the subsequent Databallr replica, UI/capability expansion, search/chatbot, finance, or Live work, read [the replica handoff](docs/databallr-replica-implementation-plan.md) and its block-specific contracts before implementing. It supersedes the workbench handoff's narrower product/layout scope; retain the workbench contracts for preserved behavior and sealed evidence. Execute the replica blocks by dependency and record measured completion in [the replica progress log](docs/databallr-replica-implementation-progress.md). Plans and prior completion prose are not runtime verification.
 
+For polish/freeze UI, query-correctness or hybrid-assistant work, read the [confirmed freeze handoff](docs/polish-freeze-implementation-plan.md) and its block contracts first. Execute one bounded block by dependency and record measured evidence in the [freeze progress log](docs/polish-freeze-implementation-progress.md). Its explicitly revised UI/assistant behavior supersedes older scope; preserve analytical contracts and unresolved replica source gates.
+
 ## Architecture and Stack
 
 - **Backend:** Python 3.12+ / FastAPI with typed Pydantic models and SQLAlchemy 2.0.

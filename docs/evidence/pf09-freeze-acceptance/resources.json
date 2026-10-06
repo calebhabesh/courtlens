@@ -1,0 +1,1824 @@
+{
+  "environment": "loopback HTTP, standalone FastAPI/PostgreSQL; raw client timings include HTTP client setup; co-resident checks/backup noted separately",
+  "first": {
+    "lookup": {
+      "ms": 26.989931997377425,
+      "status": 200,
+      "bytes": 17403,
+      "rows": 20,
+      "service_ms": 12.923
+    },
+    "catalog": {
+      "ms": 104.11433500121348,
+      "status": 200,
+      "bytes": 4922,
+      "rows": 0,
+      "service_ms": null
+    },
+    "query": {
+      "ms": 566.421382012777,
+      "status": 200,
+      "bytes": 158707,
+      "rows": 50,
+      "service_ms": null
+    },
+    "history": {
+      "ms": 7.438914006343111,
+      "status": 200,
+      "bytes": 504,
+      "rows": 0,
+      "service_ms": null
+    }
+  },
+  "warm": [
+    {
+      "endpoint": "lookup",
+      "clients": 1,
+      "samples": [
+        {
+          "ms": 13.202697999076918,
+          "status": 200,
+          "bytes": 17402,
+          "rows": 20,
+          "service_ms": 0.019
+        },
+        {
+          "ms": 10.249154001940042,
+          "status": 200,
+          "bytes": 17402,
+          "rows": 20,
+          "service_ms": 0.018
+        },
+        {
+          "ms": 12.14432599954307,
+          "status": 200,
+          "bytes": 17401,
+          "rows": 20,
+          "service_ms": 0.02
+        },
+        {
+          "ms": 11.817881983006373,
+          "status": 200,
+          "bytes": 17402,
+          "rows": 20,
+          "service_ms": 0.018
+        },
+        {
+          "ms": 13.37750200764276,
+          "status": 200,
+          "bytes": 17402,
+          "rows": 20,
+          "service_ms": 0.018
+        },
+        {
+          "ms": 10.899346991209313,
+          "status": 200,
+          "bytes": 17402,
+          "rows": 20,
+          "service_ms": 0.017
+        },
+        {
+          "ms": 8.83232700289227,
+          "status": 200,
+          "bytes": 17402,
+          "rows": 20,
+          "service_ms": 0.016
+        },
+        {
+          "ms": 8.555549022275954,
+          "status": 200,
+          "bytes": 17402,
+          "rows": 20,
+          "service_ms": 0.015
+        },
+        {
+          "ms": 8.386856003198773,
+          "status": 200,
+          "bytes": 17402,
+          "rows": 20,
+          "service_ms": 0.015
+        },
+        {
+          "ms": 12.524642021162435,
+          "status": 200,
+          "bytes": 17401,
+          "rows": 20,
+          "service_ms": 0.02
+        },
+        {
+          "ms": 9.699032991193235,
+          "status": 200,
+          "bytes": 17402,
+          "rows": 20,
+          "service_ms": 0.019
+        },
+        {
+          "ms": 8.717337012058124,
+          "status": 200,
+          "bytes": 17402,
+          "rows": 20,
+          "service_ms": 0.017
+        },
+        {
+          "ms": 8.787892002146691,
+          "status": 200,
+          "bytes": 17402,
+          "rows": 20,
+          "service_ms": 0.017
+        },
+        {
+          "ms": 5.558481992920861,
+          "status": 200,
+          "bytes": 17402,
+          "rows": 20,
+          "service_ms": 0.016
+        },
+        {
+          "ms": 7.852744980482385,
+          "status": 200,
+          "bytes": 17402,
+          "rows": 20,
+          "service_ms": 0.015
+        },
+        {
+          "ms": 7.724961003987119,
+          "status": 200,
+          "bytes": 17402,
+          "rows": 20,
+          "service_ms": 0.014
+        },
+        {
+          "ms": 6.98346400167793,
+          "status": 200,
+          "bytes": 17402,
+          "rows": 20,
+          "service_ms": 0.015
+        },
+        {
+          "ms": 8.042889006901532,
+          "status": 200,
+          "bytes": 17402,
+          "rows": 20,
+          "service_ms": 0.013
+        },
+        {
+          "ms": 7.8156050003599375,
+          "status": 200,
+          "bytes": 17402,
+          "rows": 20,
+          "service_ms": 0.014
+        },
+        {
+          "ms": 7.916297006886452,
+          "status": 200,
+          "bytes": 17402,
+          "rows": 20,
+          "service_ms": 0.015
+        }
+      ],
+      "p95_ms": 13.202697999076918,
+      "errors": 0,
+      "service_p95_ms": 0.02,
+      "bounds_pass": true,
+      "service_budget_pass": true
+    },
+    {
+      "endpoint": "lookup",
+      "clients": 2,
+      "samples": [
+        {
+          "ms": 14.199222001479939,
+          "status": 200,
+          "bytes": 17402,
+          "rows": 20,
+          "service_ms": 0.014
+        },
+        {
+          "ms": 10.554267995757982,
+          "status": 200,
+          "bytes": 17402,
+          "rows": 20,
+          "service_ms": 0.015
+        },
+        {
+          "ms": 10.689855989767238,
+          "status": 200,
+          "bytes": 17402,
+          "rows": 20,
+          "service_ms": 0.014
+        },
+        {
+          "ms": 9.021399018820375,
+          "status": 200,
+          "bytes": 17402,
+          "rows": 20,
+          "service_ms": 0.013
+        },
+        {
+          "ms": 14.902516995789483,
+          "status": 200,
+          "bytes": 17402,
+          "rows": 20,
+          "service_ms": 0.018
+        },
+        {
+          "ms": 15.184304007561877,
+          "status": 200,
+          "bytes": 17401,
+          "rows": 20,
+          "service_ms": 0.01
+        },
+        {
+          "ms": 23.72427299269475,
+          "status": 200,
+          "bytes": 17402,
+          "rows": 20,
+          "service_ms": 0.014
+        },
+        {
+          "ms": 33.00185999250971,
+          "status": 200,
+          "bytes": 17402,
+          "rows": 20,
+          "service_ms": 0.013
+        },
+        {
+          "ms": 11.200202017789707,
+          "status": 200,
+          "bytes": 17402,
+          "rows": 20,
+          "service_ms": 0.018
+        },
+        {
+          "ms": 6.793982000090182,
+          "status": 200,
+          "bytes": 17402,
+          "rows": 20,
+          "service_ms": 0.014
+        },
+        {
+          "ms": 9.089709026739001,
+          "status": 200,
+          "bytes": 17402,
+          "rows": 20,
+          "service_ms": 0.015
+        },
+        {
+          "ms": 9.241198014933616,
+          "status": 200,
+          "bytes": 17402,
+          "rows": 20,
+          "service_ms": 0.015
+        },
+        {
+          "ms": 12.250367988599464,
+          "status": 200,
+          "bytes": 17402,
+          "rows": 20,
+          "service_ms": 0.014
+        },
+        {
+          "ms": 11.476880987174809,
+          "status": 200,
+          "bytes": 17402,
+          "rows": 20,
+          "service_ms": 0.014
+        },
+        {
+          "ms": 17.417191993445158,
+          "status": 200,
+          "bytes": 17402,
+          "rows": 20,
+          "service_ms": 0.008
+        },
+        {
+          "ms": 10.303979011951014,
+          "status": 200,
+          "bytes": 17402,
+          "rows": 20,
+          "service_ms": 0.014
+        },
+        {
+          "ms": 11.135868000565097,
+          "status": 200,
+          "bytes": 17402,
+          "rows": 20,
+          "service_ms": 0.015
+        },
+        {
+          "ms": 10.780469980090857,
+          "status": 200,
+          "bytes": 17402,
+          "rows": 20,
+          "service_ms": 0.014
+        },
+        {
+          "ms": 13.27574800234288,
+          "status": 200,
+          "bytes": 17402,
+          "rows": 20,
+          "service_ms": 0.023
+        },
+        {
+          "ms": 12.29599499492906,
+          "status": 200,
+          "bytes": 17402,
+          "rows": 20,
+          "service_ms": 0.015
+        }
+      ],
+      "p95_ms": 23.72427299269475,
+      "errors": 0,
+      "service_p95_ms": 0.018,
+      "bounds_pass": true,
+      "service_budget_pass": true
+    },
+    {
+      "endpoint": "lookup",
+      "clients": 4,
+      "samples": [
+        {
+          "ms": 15.179124980932102,
+          "status": 200,
+          "bytes": 17402,
+          "rows": 20,
+          "service_ms": 0.016
+        },
+        {
+          "ms": 16.635937994578853,
+          "status": 200,
+          "bytes": 17402,
+          "rows": 20,
+          "service_ms": 0.014
+        },
+        {
+          "ms": 15.044617000967264,
+          "status": 200,
+          "bytes": 17402,
+          "rows": 20,
+          "service_ms": 0.039
+        },
+        {
+          "ms": 16.035570995882154,
+          "status": 200,
+          "bytes": 17402,
+          "rows": 20,
+          "service_ms": 0.012
+        },
+        {
+          "ms": 13.816471007885411,
+          "status": 200,
+          "bytes": 17402,
+          "rows": 20,
+          "service_ms": 0.014
+        },
+        {
+          "ms": 15.131162013858557,
+          "status": 200,
+          "bytes": 17402,
+          "rows": 20,
+          "service_ms": 0.012
+        },
+        {
+          "ms": 15.704808989539742,
+          "status": 200,
+          "bytes": 17402,
+          "rows": 20,
+          "service_ms": 0.007
+        },
+        {
+          "ms": 15.521419001743197,
+          "status": 200,
+          "bytes": 17402,
+          "rows": 20,
+          "service_ms": 0.012
+        },
+        {
+          "ms": 17.738836002536118,
+          "status": 200,
+          "bytes": 17402,
+          "rows": 20,
+          "service_ms": 0.013
+        },
+        {
+          "ms": 10.498129995539784,
+          "status": 200,
+          "bytes": 17402,
+          "rows": 20,
+          "service_ms": 0.013
+        },
+        {
+          "ms": 17.84414699068293,
+          "status": 200,
+          "bytes": 17402,
+          "rows": 20,
+          "service_ms": 0.013
+        },
+        {
+          "ms": 15.686394006479532,
+          "status": 200,
+          "bytes": 17402,
+          "rows": 20,
+          "service_ms": 0.008
+        },
+        {
+          "ms": 11.068980995332822,
+          "status": 200,
+          "bytes": 17402,
+          "rows": 20,
+          "service_ms": 0.014
+        },
+        {
+          "ms": 13.227485993411392,
+          "status": 200,
+          "bytes": 17402,
+          "rows": 20,
+          "service_ms": 0.012
+        },
+        {
+          "ms": 12.362212990410626,
+          "status": 200,
+          "bytes": 17402,
+          "rows": 20,
+          "service_ms": 0.012
+        },
+        {
+          "ms": 14.714807999553159,
+          "status": 200,
+          "bytes": 17402,
+          "rows": 20,
+          "service_ms": 0.013
+        },
+        {
+          "ms": 13.98167700972408,
+          "status": 200,
+          "bytes": 17402,
+          "rows": 20,
+          "service_ms": 0.013
+        },
+        {
+          "ms": 12.340250017587095,
+          "status": 200,
+          "bytes": 17402,
+          "rows": 20,
+          "service_ms": 0.011
+        },
+        {
+          "ms": 13.066527986666188,
+          "status": 200,
+          "bytes": 17402,
+          "rows": 20,
+          "service_ms": 0.013
+        },
+        {
+          "ms": 9.461207984713838,
+          "status": 200,
+          "bytes": 17402,
+          "rows": 20,
+          "service_ms": 0.012
+        }
+      ],
+      "p95_ms": 17.738836002536118,
+      "errors": 0,
+      "service_p95_ms": 0.016,
+      "bounds_pass": true,
+      "service_budget_pass": true
+    },
+    {
+      "endpoint": "catalog",
+      "clients": 1,
+      "samples": [
+        {
+          "ms": 99.50485601439141,
+          "status": 200,
+          "bytes": 4922,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 120.13173999730498,
+          "status": 200,
+          "bytes": 4922,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 99.25949800526723,
+          "status": 200,
+          "bytes": 4922,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 105.7455720147118,
+          "status": 200,
+          "bytes": 4922,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 119.95013401610777,
+          "status": 200,
+          "bytes": 4922,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 94.21562898205593,
+          "status": 200,
+          "bytes": 4922,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 101.07905400218442,
+          "status": 200,
+          "bytes": 4922,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 100.11472200858407,
+          "status": 200,
+          "bytes": 4922,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 101.3032830087468,
+          "status": 200,
+          "bytes": 4922,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 102.15259599499404,
+          "status": 200,
+          "bytes": 4922,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 99.15917602484114,
+          "status": 200,
+          "bytes": 4922,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 104.98449599253945,
+          "status": 200,
+          "bytes": 4922,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 104.17524099466391,
+          "status": 200,
+          "bytes": 4922,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 107.65714501030743,
+          "status": 200,
+          "bytes": 4922,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 104.02425201027654,
+          "status": 200,
+          "bytes": 4922,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 109.41818900755607,
+          "status": 200,
+          "bytes": 4922,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 113.63259199424647,
+          "status": 200,
+          "bytes": 4922,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 111.74130800645798,
+          "status": 200,
+          "bytes": 4922,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 101.00571499788202,
+          "status": 200,
+          "bytes": 4922,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 105.86507999687456,
+          "status": 200,
+          "bytes": 4922,
+          "rows": 0,
+          "service_ms": null
+        }
+      ],
+      "p95_ms": 119.95013401610777,
+      "errors": 0
+    },
+    {
+      "endpoint": "catalog",
+      "clients": 2,
+      "samples": [
+        {
+          "ms": 116.55915397568606,
+          "status": 200,
+          "bytes": 4922,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 110.68909699679352,
+          "status": 200,
+          "bytes": 4922,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 96.77318698959425,
+          "status": 200,
+          "bytes": 4922,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 100.05569900386035,
+          "status": 200,
+          "bytes": 4922,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 121.99226600932889,
+          "status": 200,
+          "bytes": 4922,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 118.08159298379906,
+          "status": 200,
+          "bytes": 4922,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 114.24797799554653,
+          "status": 200,
+          "bytes": 4922,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 115.88537599891424,
+          "status": 200,
+          "bytes": 4922,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 118.17940001492389,
+          "status": 200,
+          "bytes": 4922,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 112.51000699121505,
+          "status": 200,
+          "bytes": 4922,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 110.63821997959167,
+          "status": 200,
+          "bytes": 4922,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 114.18867399333976,
+          "status": 200,
+          "bytes": 4922,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 117.86891700467095,
+          "status": 200,
+          "bytes": 4922,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 111.00038199219853,
+          "status": 200,
+          "bytes": 4922,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 108.19923001690768,
+          "status": 200,
+          "bytes": 4922,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 125.3704710106831,
+          "status": 200,
+          "bytes": 4922,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 112.52132899244316,
+          "status": 200,
+          "bytes": 4922,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 104.64619999402203,
+          "status": 200,
+          "bytes": 4922,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 107.53371799364686,
+          "status": 200,
+          "bytes": 4922,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 105.55832300451584,
+          "status": 200,
+          "bytes": 4922,
+          "rows": 0,
+          "service_ms": null
+        }
+      ],
+      "p95_ms": 121.99226600932889,
+      "errors": 0
+    },
+    {
+      "endpoint": "catalog",
+      "clients": 4,
+      "samples": [
+        {
+          "ms": 154.81993500725366,
+          "status": 200,
+          "bytes": 4922,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 155.99165300955065,
+          "status": 200,
+          "bytes": 4922,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 152.87265300867148,
+          "status": 200,
+          "bytes": 4922,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 167.49937200802378,
+          "status": 200,
+          "bytes": 4922,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 135.0364410027396,
+          "status": 200,
+          "bytes": 4922,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 157.3188990005292,
+          "status": 200,
+          "bytes": 4922,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 125.52510600653477,
+          "status": 200,
+          "bytes": 4922,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 153.0131409817841,
+          "status": 200,
+          "bytes": 4922,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 126.36182500864379,
+          "status": 200,
+          "bytes": 4922,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 118.0970520072151,
+          "status": 200,
+          "bytes": 4922,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 110.7681879948359,
+          "status": 200,
+          "bytes": 4922,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 101.0032490012236,
+          "status": 200,
+          "bytes": 4922,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 124.59780400968157,
+          "status": 200,
+          "bytes": 4922,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 116.02832001517527,
+          "status": 200,
+          "bytes": 4922,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 136.28537699696608,
+          "status": 200,
+          "bytes": 4922,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 115.91998301446438,
+          "status": 200,
+          "bytes": 4922,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 155.76198400231078,
+          "status": 200,
+          "bytes": 4922,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 158.892304985784,
+          "status": 200,
+          "bytes": 4922,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 142.23785197827965,
+          "status": 200,
+          "bytes": 4922,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 131.14174801739864,
+          "status": 200,
+          "bytes": 4922,
+          "rows": 0,
+          "service_ms": null
+        }
+      ],
+      "p95_ms": 158.892304985784,
+      "errors": 0
+    },
+    {
+      "endpoint": "query",
+      "clients": 1,
+      "samples": [
+        {
+          "ms": 568.845664995024,
+          "status": 200,
+          "bytes": 158707,
+          "rows": 50,
+          "service_ms": null
+        },
+        {
+          "ms": 540.4539429873694,
+          "status": 200,
+          "bytes": 158707,
+          "rows": 50,
+          "service_ms": null
+        },
+        {
+          "ms": 548.4661220107228,
+          "status": 200,
+          "bytes": 158707,
+          "rows": 50,
+          "service_ms": null
+        },
+        {
+          "ms": 591.0751810006332,
+          "status": 200,
+          "bytes": 158707,
+          "rows": 50,
+          "service_ms": null
+        },
+        {
+          "ms": 597.7662860241253,
+          "status": 200,
+          "bytes": 158707,
+          "rows": 50,
+          "service_ms": null
+        },
+        {
+          "ms": 591.809123987332,
+          "status": 200,
+          "bytes": 158707,
+          "rows": 50,
+          "service_ms": null
+        },
+        {
+          "ms": 545.0131840188988,
+          "status": 200,
+          "bytes": 158707,
+          "rows": 50,
+          "service_ms": null
+        },
+        {
+          "ms": 537.9816189815756,
+          "status": 200,
+          "bytes": 158707,
+          "rows": 50,
+          "service_ms": null
+        },
+        {
+          "ms": 549.155069020344,
+          "status": 200,
+          "bytes": 158707,
+          "rows": 50,
+          "service_ms": null
+        },
+        {
+          "ms": 511.814277007943,
+          "status": 200,
+          "bytes": 158707,
+          "rows": 50,
+          "service_ms": null
+        },
+        {
+          "ms": 548.3337889891118,
+          "status": 200,
+          "bytes": 158707,
+          "rows": 50,
+          "service_ms": null
+        },
+        {
+          "ms": 545.6589380046353,
+          "status": 200,
+          "bytes": 158707,
+          "rows": 50,
+          "service_ms": null
+        },
+        {
+          "ms": 537.0236269955058,
+          "status": 200,
+          "bytes": 158707,
+          "rows": 50,
+          "service_ms": null
+        },
+        {
+          "ms": 564.6430339838844,
+          "status": 200,
+          "bytes": 158707,
+          "rows": 50,
+          "service_ms": null
+        },
+        {
+          "ms": 560.8969749882817,
+          "status": 200,
+          "bytes": 158707,
+          "rows": 50,
+          "service_ms": null
+        },
+        {
+          "ms": 551.2004969932605,
+          "status": 200,
+          "bytes": 158707,
+          "rows": 50,
+          "service_ms": null
+        },
+        {
+          "ms": 547.6001169881783,
+          "status": 200,
+          "bytes": 158707,
+          "rows": 50,
+          "service_ms": null
+        },
+        {
+          "ms": 545.3590950055514,
+          "status": 200,
+          "bytes": 158707,
+          "rows": 50,
+          "service_ms": null
+        },
+        {
+          "ms": 461.0927570029162,
+          "status": 200,
+          "bytes": 158707,
+          "rows": 50,
+          "service_ms": null
+        },
+        {
+          "ms": 461.5038630145136,
+          "status": 200,
+          "bytes": 158707,
+          "rows": 50,
+          "service_ms": null
+        }
+      ],
+      "p95_ms": 591.809123987332,
+      "errors": 0
+    },
+    {
+      "endpoint": "query",
+      "clients": 2,
+      "samples": [
+        {
+          "ms": 525.0553180230781,
+          "status": 200,
+          "bytes": 158707,
+          "rows": 50,
+          "service_ms": null
+        },
+        {
+          "ms": 520.7197340205312,
+          "status": 200,
+          "bytes": 158707,
+          "rows": 50,
+          "service_ms": null
+        },
+        {
+          "ms": 440.90573300491087,
+          "status": 200,
+          "bytes": 158707,
+          "rows": 50,
+          "service_ms": null
+        },
+        {
+          "ms": 428.44322000746615,
+          "status": 200,
+          "bytes": 158707,
+          "rows": 50,
+          "service_ms": null
+        },
+        {
+          "ms": 528.2156570174266,
+          "status": 200,
+          "bytes": 158707,
+          "rows": 50,
+          "service_ms": null
+        },
+        {
+          "ms": 521.8311869830359,
+          "status": 200,
+          "bytes": 158707,
+          "rows": 50,
+          "service_ms": null
+        },
+        {
+          "ms": 542.5092490040697,
+          "status": 200,
+          "bytes": 158707,
+          "rows": 50,
+          "service_ms": null
+        },
+        {
+          "ms": 532.1612359839492,
+          "status": 200,
+          "bytes": 158707,
+          "rows": 50,
+          "service_ms": null
+        },
+        {
+          "ms": 587.7408189990092,
+          "status": 200,
+          "bytes": 158707,
+          "rows": 50,
+          "service_ms": null
+        },
+        {
+          "ms": 586.1343699798454,
+          "status": 200,
+          "bytes": 158707,
+          "rows": 50,
+          "service_ms": null
+        },
+        {
+          "ms": 564.9141310132109,
+          "status": 200,
+          "bytes": 158707,
+          "rows": 50,
+          "service_ms": null
+        },
+        {
+          "ms": 563.2277590048034,
+          "status": 200,
+          "bytes": 158707,
+          "rows": 50,
+          "service_ms": null
+        },
+        {
+          "ms": 583.6154260032345,
+          "status": 200,
+          "bytes": 158707,
+          "rows": 50,
+          "service_ms": null
+        },
+        {
+          "ms": 586.0145309998188,
+          "status": 200,
+          "bytes": 158707,
+          "rows": 50,
+          "service_ms": null
+        },
+        {
+          "ms": 586.841500014998,
+          "status": 200,
+          "bytes": 158707,
+          "rows": 50,
+          "service_ms": null
+        },
+        {
+          "ms": 591.7346599744633,
+          "status": 200,
+          "bytes": 158707,
+          "rows": 50,
+          "service_ms": null
+        },
+        {
+          "ms": 565.5985790072009,
+          "status": 200,
+          "bytes": 158707,
+          "rows": 50,
+          "service_ms": null
+        },
+        {
+          "ms": 560.1670200121589,
+          "status": 200,
+          "bytes": 158707,
+          "rows": 50,
+          "service_ms": null
+        },
+        {
+          "ms": 575.6539730064105,
+          "status": 200,
+          "bytes": 158707,
+          "rows": 50,
+          "service_ms": null
+        },
+        {
+          "ms": 547.1155109989922,
+          "status": 200,
+          "bytes": 158707,
+          "rows": 50,
+          "service_ms": null
+        }
+      ],
+      "p95_ms": 587.7408189990092,
+      "errors": 0
+    },
+    {
+      "endpoint": "query",
+      "clients": 4,
+      "samples": [
+        {
+          "ms": 761.0104769992176,
+          "status": 200,
+          "bytes": 158707,
+          "rows": 50,
+          "service_ms": null
+        },
+        {
+          "ms": 640.6331170001067,
+          "status": 200,
+          "bytes": 158707,
+          "rows": 50,
+          "service_ms": null
+        },
+        {
+          "ms": 655.1540439832024,
+          "status": 200,
+          "bytes": 158707,
+          "rows": 50,
+          "service_ms": null
+        },
+        {
+          "ms": 636.9915080140345,
+          "status": 200,
+          "bytes": 158707,
+          "rows": 50,
+          "service_ms": null
+        },
+        {
+          "ms": 619.265015993733,
+          "status": 200,
+          "bytes": 158707,
+          "rows": 50,
+          "service_ms": null
+        },
+        {
+          "ms": 613.592826994136,
+          "status": 200,
+          "bytes": 158707,
+          "rows": 50,
+          "service_ms": null
+        },
+        {
+          "ms": 603.6714499932714,
+          "status": 200,
+          "bytes": 158707,
+          "rows": 50,
+          "service_ms": null
+        },
+        {
+          "ms": 775.9164790040813,
+          "status": 200,
+          "bytes": 158707,
+          "rows": 50,
+          "service_ms": null
+        },
+        {
+          "ms": 685.9182990156114,
+          "status": 200,
+          "bytes": 158707,
+          "rows": 50,
+          "service_ms": null
+        },
+        {
+          "ms": 613.7744650186505,
+          "status": 200,
+          "bytes": 158707,
+          "rows": 50,
+          "service_ms": null
+        },
+        {
+          "ms": 591.9475879927631,
+          "status": 200,
+          "bytes": 158707,
+          "rows": 50,
+          "service_ms": null
+        },
+        {
+          "ms": 686.3973639847245,
+          "status": 200,
+          "bytes": 158707,
+          "rows": 50,
+          "service_ms": null
+        },
+        {
+          "ms": 662.5886590045411,
+          "status": 200,
+          "bytes": 158707,
+          "rows": 50,
+          "service_ms": null
+        },
+        {
+          "ms": 709.6925170044415,
+          "status": 200,
+          "bytes": 158707,
+          "rows": 50,
+          "service_ms": null
+        },
+        {
+          "ms": 710.070719011128,
+          "status": 200,
+          "bytes": 158707,
+          "rows": 50,
+          "service_ms": null
+        },
+        {
+          "ms": 642.3541049880441,
+          "status": 200,
+          "bytes": 158707,
+          "rows": 50,
+          "service_ms": null
+        },
+        {
+          "ms": 699.5360399887431,
+          "status": 200,
+          "bytes": 158707,
+          "rows": 50,
+          "service_ms": null
+        },
+        {
+          "ms": 635.3024209965952,
+          "status": 200,
+          "bytes": 158707,
+          "rows": 50,
+          "service_ms": null
+        },
+        {
+          "ms": 685.572857997613,
+          "status": 200,
+          "bytes": 158707,
+          "rows": 50,
+          "service_ms": null
+        },
+        {
+          "ms": 699.3802229990251,
+          "status": 200,
+          "bytes": 158707,
+          "rows": 50,
+          "service_ms": null
+        }
+      ],
+      "p95_ms": 761.0104769992176,
+      "errors": 0
+    },
+    {
+      "endpoint": "history",
+      "clients": 1,
+      "samples": [
+        {
+          "ms": 6.892059987876564,
+          "status": 200,
+          "bytes": 504,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 7.113482977729291,
+          "status": 200,
+          "bytes": 504,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 7.901709002908319,
+          "status": 200,
+          "bytes": 504,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 7.971101993462071,
+          "status": 200,
+          "bytes": 504,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 6.974718009587377,
+          "status": 200,
+          "bytes": 504,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 5.931504012551159,
+          "status": 200,
+          "bytes": 504,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 8.863987983204424,
+          "status": 200,
+          "bytes": 504,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 7.3347849829588085,
+          "status": 200,
+          "bytes": 504,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 7.91999400826171,
+          "status": 200,
+          "bytes": 504,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 8.675046992721036,
+          "status": 200,
+          "bytes": 504,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 7.859728008043021,
+          "status": 200,
+          "bytes": 504,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 7.2998479881789535,
+          "status": 200,
+          "bytes": 504,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 7.543002982856706,
+          "status": 200,
+          "bytes": 504,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 6.736342009389773,
+          "status": 200,
+          "bytes": 504,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 6.203814002219588,
+          "status": 200,
+          "bytes": 504,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 8.709451998583972,
+          "status": 200,
+          "bytes": 504,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 7.467107992852107,
+          "status": 200,
+          "bytes": 504,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 6.571347010321915,
+          "status": 200,
+          "bytes": 504,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 4.896325990557671,
+          "status": 200,
+          "bytes": 504,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 5.636740999761969,
+          "status": 200,
+          "bytes": 504,
+          "rows": 0,
+          "service_ms": null
+        }
+      ],
+      "p95_ms": 8.709451998583972,
+      "errors": 0
+    },
+    {
+      "endpoint": "history",
+      "clients": 2,
+      "samples": [
+        {
+          "ms": 8.950593008194119,
+          "status": 200,
+          "bytes": 504,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 9.940705000190064,
+          "status": 200,
+          "bytes": 504,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 8.947716996772215,
+          "status": 200,
+          "bytes": 504,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 25.798897026106715,
+          "status": 200,
+          "bytes": 504,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 23.887084011221305,
+          "status": 200,
+          "bytes": 504,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 6.144871993456036,
+          "status": 200,
+          "bytes": 504,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 8.062925975536928,
+          "status": 200,
+          "bytes": 504,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 11.275506025413051,
+          "status": 200,
+          "bytes": 504,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 6.604950001928955,
+          "status": 200,
+          "bytes": 504,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 6.592958001419902,
+          "status": 200,
+          "bytes": 504,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 6.514687993330881,
+          "status": 200,
+          "bytes": 504,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 6.662230007350445,
+          "status": 200,
+          "bytes": 504,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 7.604610989801586,
+          "status": 200,
+          "bytes": 504,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 8.838118985295296,
+          "status": 200,
+          "bytes": 504,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 8.68423402425833,
+          "status": 200,
+          "bytes": 504,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 7.174399012001231,
+          "status": 200,
+          "bytes": 504,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 7.7701669943053275,
+          "status": 200,
+          "bytes": 504,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 8.906668983399868,
+          "status": 200,
+          "bytes": 504,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 8.644989022286609,
+          "status": 200,
+          "bytes": 504,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 8.349373994860798,
+          "status": 200,
+          "bytes": 504,
+          "rows": 0,
+          "service_ms": null
+        }
+      ],
+      "p95_ms": 23.887084011221305,
+      "errors": 0
+    },
+    {
+      "endpoint": "history",
+      "clients": 4,
+      "samples": [
+        {
+          "ms": 15.895914984866977,
+          "status": 200,
+          "bytes": 504,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 10.013354010879993,
+          "status": 200,
+          "bytes": 504,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 9.84735699603334,
+          "status": 200,
+          "bytes": 504,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 11.637295974651352,
+          "status": 200,
+          "bytes": 504,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 7.749988988507539,
+          "status": 200,
+          "bytes": 504,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 7.0366860018111765,
+          "status": 200,
+          "bytes": 504,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 6.122760009020567,
+          "status": 200,
+          "bytes": 504,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 7.39971999428235,
+          "status": 200,
+          "bytes": 504,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 7.965199009049684,
+          "status": 200,
+          "bytes": 504,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 9.151786973234266,
+          "status": 200,
+          "bytes": 504,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 8.501475007506087,
+          "status": 200,
+          "bytes": 504,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 11.643369012745097,
+          "status": 200,
+          "bytes": 504,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 10.864039009902626,
+          "status": 200,
+          "bytes": 504,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 10.907623014645651,
+          "status": 200,
+          "bytes": 504,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 16.16834499873221,
+          "status": 200,
+          "bytes": 504,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 12.859552982263267,
+          "status": 200,
+          "bytes": 504,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 11.512267985381186,
+          "status": 200,
+          "bytes": 504,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 10.316854022676125,
+          "status": 200,
+          "bytes": 504,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 17.90504399104975,
+          "status": 200,
+          "bytes": 504,
+          "rows": 0,
+          "service_ms": null
+        },
+        {
+          "ms": 15.771987003972754,
+          "status": 200,
+          "bytes": 504,
+          "rows": 0,
+          "service_ms": null
+        }
+      ],
+      "p95_ms": 16.16834499873221,
+      "errors": 0
+    }
+  ],
+  "process_sample": [
+    "  92288 Xwayland         0.0 81912 /usr/bin/Xwayland :1 -auth /run/user/1000/xauth_EYHOkX -listenfd 8 -listenfd 9 -displayfd 154 -wm 159 -rootless",
+    "3676564 uvicorn          2.2 355820 /home/ethioking/dev/nba-analytics/.venv/bin/python3 .venv/bin/uvicorn courtload.api.app:create_app --factory --host 127.0.0.1 --port 8191"
+  ]
+}

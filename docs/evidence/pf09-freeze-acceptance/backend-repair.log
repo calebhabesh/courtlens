@@ -1,0 +1,58 @@
+..F...........................                                           [100%]
+=================================== FAILURES ===================================
+________________________ test_workbench_lookup_endpoint ________________________
+
+client = <starlette.testclient.TestClient object at 0x7f8de55eda90>
+
+    def test_workbench_lookup_endpoint(client: TestClient) -> None:
+        """Incremental lookup endpoint discovers players, teams, and navigation pages."""
+        # 1. Empty query returns navigation suggestions
+        resp_empty = client.get("/api/workbench/lookup")
+        assert resp_empty.status_code == 200
+        data_empty = resp_empty.json()
+        assert data_empty["catalog_version"] == "pf04-v1"
+        assert len(data_empty["items"]) == 10
+        assert all(i["match_basis"] == "suggestion" for i in data_empty["items"])
+        destinations = [i["destination_url"] for i in data_empty["items"]]
+        assert any("/stats" in d for d in destinations)
+    
+        # 2. Query player with diacritics folding ('Jokic' finds Nikola Jokić)
+        resp_jokic = client.get("/api/workbench/lookup?q=Jokic")
+        assert resp_jokic.status_code == 200
+        data_jokic = resp_jokic.json()
+        assert len(data_jokic["items"]) >= 1
+        top_jokic = data_jokic["items"][0]
+        assert top_jokic["display_name"] == "Nikola Jokić"
+        assert top_jokic["kind"] == "player"
+        assert top_jokic["match_basis"] == "exact"
+        assert top_jokic["portrait_fallback"] == "NJ"
+        assert "/api/workbench/players/203999/portrait" in (top_jokic["portrait_url"] or "")
+        assert "/players/203999" in top_jokic["destination_url"]
+    
+        # 3. Query team via tricode and nickname ('TOR' and 'Raptors')
+        resp_tor = client.get("/api/workbench/lookup?q=TOR")
+        assert resp_tor.status_code == 200
+        data_tor = resp_tor.json()
+        assert any(i["display_name"] == "Toronto Raptors" for i in data_tor["items"])
+    
+        resp_raptors = client.get("/api/workbench/lookup?q=Raptors")
+        assert resp_raptors.status_code == 200
+        assert resp_raptors.json()["items"][0]["display_name"] == "Toronto Raptors"
+    
+        # 4. Kinds filter: only pages
+        resp_pages = client.get("/api/workbench/lookup?q=stats&kinds=page")
+        assert resp_pages.status_code == 200
+        data_pages = resp_pages.json()
+        assert all(i["kind"] == "page" for i in data_pages["items"])
+        assert any(i["canonical_id"] == "stats" for i in data_pages["items"])
+    
+        # 5. Context preservation
+        resp_ctx = client.get("/api/workbench/lookup?q=Jokic&season=2023-24&release_id=rel-test-123")
+>       assert resp_ctx.status_code == 200
+E       assert 404 == 200
+E        +  where 404 = <Response [404 Not Found]>.status_code
+
+tests/integration/test_workbench_api.py:125: AssertionError
+=========================== short test summary info ============================
+FAILED tests/integration/test_workbench_api.py::test_workbench_lookup_endpoint
+1 failed, 29 passed in 6.13s

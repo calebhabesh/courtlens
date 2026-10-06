@@ -1,0 +1,56 @@
+
+> courtload-dashboard@0.1.0 test:browser
+> playwright test entity-selection.spec.ts --grep rankings|tierlist|planner --workers=1
+
+
+Running 3 tests using 1 worker
+
+  ✓  1 e2e/entity-selection.spec.ts:96:7 › rankings picker adds canonical named selection to its explicit personal target (487ms)
+  ✘  2 e2e/entity-selection.spec.ts:96:7 › tierlist picker adds canonical named selection to its explicit personal target (30.0s)
+  ✘  3 e2e/entity-selection.spec.ts:115:5 › planner selections stay within roster/watchlist and never query the public catalog (30.0s)
+
+
+  1) e2e/entity-selection.spec.ts:96:7 › tierlist picker adds canonical named selection to its explicit personal target 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.selectOption: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for getByLabel('Assign to tier', { exact: true })
+
+
+      102 |     });
+      103 |     await openWorkbench(page,`/${route}`);
+    > 104 |     if(route === "tierlist") {await page.getByRole("tab",{name:/Fixture tiers/}).click();await page.getByLabel("Assign to tier",{exact:true}).selectOption("b");}
+          |                                                                                                                                               ^
+      105 |     const input=page.getByRole("combobox",{name:label,exact:true});await input.fill("Fixture Star");await page.getByRole("option").filter({hasText:"Fixture Star"}).click();
+      106 |     await expect.poll(()=>saves.length).toBe(1);
+      107 |     if(route === "rankings") expect(saves[0]).toMatchObject({entries:[{player_id:"23",player_name:"Fixture Star"}]});
+        at /home/ethioking/dev/nba-analytics/dashboard/e2e/entity-selection.spec.ts:104:143
+
+    Error Context: test-results/entity-selection-tierlist--acb3c-ts-explicit-personal-target/error-context.md
+
+  2) e2e/entity-selection.spec.ts:115:5 › planner selections stay within roster/watchlist and never query the public catalog 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.waitFor: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for getByRole('combobox', { name: 'Drop', exact: true }) to be visible
+
+
+      125 |   });
+      126 |   await openWorkbench(page,"/planner");
+    > 127 |   await page.getByLabel("Email",{exact:true}).fill("fixture@courtload.local");await page.getByLabel("Password",{exact:true}).fill("fixture-only");await page.getByRole("button",{name:"Sign in",exact:true}).click();
+          |                                                                             ^
+      128 |   const drop=page.getByRole("combobox",{name:"Drop",exact:true});await drop.waitFor();await drop.fill("Jokic");await page.getByRole("option").filter({hasText:"Private Jokić"}).click();
+      129 |   const add=page.getByRole("combobox",{name:"Add candidate",exact:true});await add.fill("Doncic");await page.getByRole("option").filter({hasText:"Private Dončić"}).click();await expect(page.getByRole("button",{name:"Remove Private Dončić from Add candidate",exact:true})).toBeVisible();expect(lookups).toBe(0);
+      130 | });
+        at /home/ethioking/dev/nba-analytics/dashboard/e2e/entity-selection.spec.ts:127:77
+
+    Error Context: test-results/entity-selection-planner-s-3f405-er-query-the-public-catalog/error-context.md
+
+  2 failed
+    e2e/entity-selection.spec.ts:96:7 › tierlist picker adds canonical named selection to its explicit personal target 
+    e2e/entity-selection.spec.ts:115:5 › planner selections stay within roster/watchlist and never query the public catalog 
+  1 passed (1.0m)

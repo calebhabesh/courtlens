@@ -1,0 +1,94 @@
+Traceback (most recent call last):
+  File "/tmp/pf08_retained.py", line 6, in <module>
+    v.DIRECTORY=Path('docs/evidence/pf08-threaded-acceptance');print(v.verify_retained())
+                                                                     ~~~~~~~~~~~~~~~~~^^
+  File "/home/ethioking/dev/nba-analytics/scripts/verify_pf07a_assistant.py", line 27, in verify_retained
+    result = reproduce_investigation(session, prior["id"])
+  File "/home/ethioking/dev/nba-analytics/src/courtload/services/workbench_analytics.py", line 1363, in reproduce_investigation
+    context = resolve_workbench_context(
+        session,
+    ...<6 lines>...
+        requested_window=c_dict.get("window"),
+    )
+  File "/home/ethioking/dev/nba-analytics/src/courtload/services/workbench_analytics.py", line 260, in resolve_workbench_context
+    observed_seasons = session.scalars(
+                       ~~~~~~~~~~~~~~~^
+        select(WorkbenchPlayerGame.season)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        .order_by(WorkbenchPlayerGame.season)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ).all()
+    ^
+  File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/sqlalchemy/orm/session.py", line 2481, in scalars
+    return self._execute_internal(
+           ~~~~~~~~~~~~~~~~~~~~~~^
+        statement,
+        ^^^^^^^^^^
+    ...<4 lines>...
+        **kw,
+        ^^^^^
+    ).scalars()
+    ^
+  File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/sqlalchemy/orm/session.py", line 2271, in _execute_internal
+    result: Result[Any] = compile_state_cls.orm_execute_statement(
+                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self,
+        ^^^^^
+    ...<4 lines>...
+        conn,
+        ^^^^^
+    )
+    ^
+  File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/sqlalchemy/orm/context.py", line 306, in orm_execute_statement
+    result = conn.execute(
+        statement, params or {}, execution_options=execution_options
+    )
+  File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/sqlalchemy/engine/base.py", line 1421, in execute
+    return meth(
+        self,
+        distilled_parameters,
+        execution_options or NO_OPTIONS,
+    )
+  File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/sqlalchemy/sql/elements.py", line 526, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self, distilled_params, execution_options
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/sqlalchemy/engine/base.py", line 1643, in _execute_clauseelement
+    ret = self._execute_context(
+        dialect,
+    ...<8 lines>...
+        cache_hit=cache_hit,
+    )
+  File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/sqlalchemy/engine/base.py", line 1848, in _execute_context
+    return self._exec_single_context(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~^
+        dialect, context, statement, parameters
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/sqlalchemy/engine/base.py", line 1988, in _exec_single_context
+    self._handle_dbapi_exception(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        e, str_statement, effective_parameters, cursor, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/sqlalchemy/engine/base.py", line 2368, in _handle_dbapi_exception
+    raise exc_info[1].with_traceback(exc_info[2])
+  File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/sqlalchemy/engine/base.py", line 1969, in _exec_single_context
+    self.dialect.do_execute(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        cursor, str_statement, effective_parameters, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/sqlalchemy/engine/default.py", line 952, in do_execute
+    cursor.execute(statement, parameters)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/psycopg/cursor.py", line 117, in execute
+    raise ex.with_traceback(None)
+KeyboardInterrupt

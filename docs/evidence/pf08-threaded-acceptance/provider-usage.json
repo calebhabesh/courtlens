@@ -1,0 +1,68 @@
+{
+  "actual_requests": 15,
+  "requests": [
+    {
+      "log": "backend-service.log",
+      "status": "200"
+    },
+    {
+      "log": "backend-service.log",
+      "status": "200"
+    },
+    {
+      "log": "backend-service.log",
+      "status": "200"
+    },
+    {
+      "log": "backend-service.log",
+      "status": "200"
+    },
+    {
+      "log": "backend-service.log",
+      "status": "200"
+    },
+    {
+      "log": "backend-service-final.log",
+      "status": "200"
+    },
+    {
+      "log": "backend-service-final.log",
+      "status": "200"
+    },
+    {
+      "log": "backend-service-final.log",
+      "status": "200"
+    },
+    {
+      "log": "backend-service-final.log",
+      "status": "200"
+    },
+    {
+      "log": "backend-service-final.log",
+      "status": "200"
+    },
+    {
+      "log": "backend-service-final.log",
+      "status": "200"
+    },
+    {
+      "log": "backend-service-final.log",
+      "status": "200"
+    },
+    {
+      "log": "backend-service-final.log",
+      "status": "200"
+    },
+    {
+      "log": "backend-service-final.log",
+      "status": "200"
+    },
+    {
+      "log": "backend-service-final.log",
+      "status": "200"
+    }
+  ],
+  "model": "gemini-3.5-flash-lite",
+  "evaluation_role": "Repeated UI workflow regression probes, not independent language holdout",
+  "free_project_evidence": "../pf07d-quota-policy/free-project.json"
+}

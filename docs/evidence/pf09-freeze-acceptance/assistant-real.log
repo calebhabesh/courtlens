@@ -1,0 +1,16 @@
+locator.click: Timeout 30000ms exceeded.
+Call log:
+[2m  - waiting for getByRole('button', { name: 'New chat', exact: true })[22m
+[2m    - locator resolved to <button disabled type="button" class="button  ">New chat</button>[22m
+[2m  - attempting click action[22m
+[2m    - waiting for element to be visible, enabled and stable[22m
+
+    at /home/ethioking/dev/nba-analytics/scripts/verify_pf09_reuse_pf08_browser.cjs:37:65 {
+  log: [
+    "  - waiting for getByRole('button', { name: 'New chat', exact: true })",
+    '    - locator resolved to <button disabled type="button" class="button  ">New chat</button>',
+    '  - attempting click action',
+    '    - waiting for element to be visible, enabled and stable'
+  ],
+  name: 'TimeoutError'
+}

@@ -1,0 +1,581 @@
+[0m17:17:56  Running with dbt=1.12.3
+[0m17:17:56  Registered adapter: postgres=1.11.0
+[0m17:17:57  Unable to do partial parsing because config vars, config profile, or config target have changed
+[0m17:17:57  Unable to do partial parsing because profile has changed
+[0m17:17:58  Found 30 models, 205 data tests, 21 sources, 477 macros
+[0m17:17:58  
+[0m17:17:58  Concurrency: 4 threads (target='dev')
+[0m17:17:58  
+[0m17:17:58  1 of 235 START test source_accepted_values_operational_fct_games_status_state__scheduled__in_progress__final__postponed__canceled__delayed__suspended__abandoned__unknown  [RUN]
+[0m17:17:58  3 of 235 START test source_accepted_values_operational_ingestion_runs_status__running__succeeded__failed  [RUN]
+[0m17:17:58  4 of 235 START test source_not_null_operational_archive_datasets_id ............ [RUN]
+[0m17:17:58  2 of 235 START test source_accepted_values_operational_fct_player_games_appearance_status__reported__reported_zero_minutes  [RUN]
+[0m17:17:58  2 of 235 PASS source_accepted_values_operational_fct_player_games_appearance_status__reported__reported_zero_minutes  [[32mPASS[0m in 0.04s]
+[0m17:17:58  3 of 235 PASS source_accepted_values_operational_ingestion_runs_status__running__succeeded__failed  [[32mPASS[0m in 0.05s]
+[0m17:17:58  5 of 235 START test source_not_null_operational_archive_player_games_id ........ [RUN]
+[0m17:17:58  4 of 235 PASS source_not_null_operational_archive_datasets_id .................. [[32mPASS[0m in 0.04s]
+[0m17:17:58  1 of 235 PASS source_accepted_values_operational_fct_games_status_state__scheduled__in_progress__final__postponed__canceled__delayed__suspended__abandoned__unknown  [[32mPASS[0m in 0.04s]
+[0m17:17:58  6 of 235 START test source_not_null_operational_archive_team_games_id .......... [RUN]
+[0m17:17:58  7 of 235 START test source_not_null_operational_archive_versions_id ............ [RUN]
+[0m17:17:58  8 of 235 START test source_not_null_operational_bridge_player_observed_team_stints_stint_id  [RUN]
+[0m17:17:58  5 of 235 PASS source_not_null_operational_archive_player_games_id .............. [[32mPASS[0m in 0.11s]
+[0m17:17:58  6 of 235 PASS source_not_null_operational_archive_team_games_id ................ [[32mPASS[0m in 0.03s]
+[0m17:17:58  8 of 235 PASS source_not_null_operational_bridge_player_observed_team_stints_stint_id  [[32mPASS[0m in 0.02s]
+[0m17:17:58  9 of 235 START test source_not_null_operational_dim_players_full_name .......... [RUN]
+[0m17:17:58  11 of 235 START test source_not_null_operational_dim_players_source_player_id .. [RUN]
+[0m17:17:58  7 of 235 PASS source_not_null_operational_archive_versions_id .................. [[32mPASS[0m in 0.04s]
+[0m17:17:58  10 of 235 START test source_not_null_operational_dim_players_player_key ........ [RUN]
+[0m17:17:58  12 of 235 START test source_not_null_operational_dim_teams_source_team_id ...... [RUN]
+[0m17:17:58  11 of 235 PASS source_not_null_operational_dim_players_source_player_id ........ [[32mPASS[0m in 0.03s]
+[0m17:17:58  13 of 235 START test source_not_null_operational_dim_teams_team_key ............ [RUN]
+[0m17:17:58  10 of 235 PASS source_not_null_operational_dim_players_player_key .............. [[32mPASS[0m in 0.04s]
+[0m17:17:58  12 of 235 PASS source_not_null_operational_dim_teams_source_team_id ............ [[32mPASS[0m in 0.03s]
+[0m17:17:58  9 of 235 PASS source_not_null_operational_dim_players_full_name ................ [[32mPASS[0m in 0.04s]
+[0m17:17:58  14 of 235 START test source_not_null_operational_fct_games_game_key ............ [RUN]
+[0m17:17:58  15 of 235 START test source_not_null_operational_fct_games_source_game_id ...... [RUN]
+[0m17:17:58  16 of 235 START test source_not_null_operational_fct_player_games_source_stat_id  [RUN]
+[0m17:17:58  13 of 235 PASS source_not_null_operational_dim_teams_team_key .................. [[32mPASS[0m in 0.04s]
+[0m17:17:58  17 of 235 START test source_not_null_operational_ingestion_runs_run_id ......... [RUN]
+[0m17:17:58  14 of 235 PASS source_not_null_operational_fct_games_game_key .................. [[32mPASS[0m in 0.04s]
+[0m17:17:58  15 of 235 PASS source_not_null_operational_fct_games_source_game_id ............ [[32mPASS[0m in 0.03s]
+[0m17:17:58  18 of 235 START test source_not_null_operational_raw_objects_content_sha256 .... [RUN]
+[0m17:17:58  19 of 235 START test source_not_null_operational_raw_objects_object_id ......... [RUN]
+[0m17:17:58  16 of 235 PASS source_not_null_operational_fct_player_games_source_stat_id ..... [[32mPASS[0m in 0.03s]
+[0m17:17:58  20 of 235 START test source_not_null_operational_workbench_datasets_content_sha256  [RUN]
+[0m17:17:58  [[31mERROR[0m]: Unhandled error while executing 
+[Errno 13] Permission denied: 'warehouse/target/compiled/courtload_warehouse/models/staging/sources.yml/source_not_null_operational_workbench_datasets_content_sha256.sql'
+[0m17:17:58  17 of 235 PASS source_not_null_operational_ingestion_runs_run_id ............... [[32mPASS[0m in 0.03s]
+[0m17:17:58  21 of 235 START test source_not_null_operational_workbench_datasets_id ......... [RUN]
+[0m17:17:58  [[31mERROR[0m]: Unhandled error while executing 
+[Errno 13] Permission denied: 'warehouse/target/compiled/courtload_warehouse/models/staging/sources.yml/source_not_null_operational_workbench_datasets_id.sql'
+[0m17:17:58  21 of 235 ERROR source_not_null_operational_workbench_datasets_id .............. [[31mERROR[0m in 0.01s]
+[0m17:17:58  22 of 235 START test source_not_null_operational_workbench_datasets_membership_sha256  [RUN]
+[0m17:17:58  20 of 235 ERROR source_not_null_operational_workbench_datasets_content_sha256 .. [[31mERROR[0m in 0.02s]
+[0m17:17:58  [[31mERROR[0m]: Unhandled error while executing 
+[Errno 13] Permission denied: 'warehouse/target/compiled/courtload_warehouse/models/staging/sources.yml/source_not_null_operational_wo_2e5b162748db111c18a73a86ee3ae7ff.sql'
+[0m17:17:58  18 of 235 PASS source_not_null_operational_raw_objects_content_sha256 .......... [[32mPASS[0m in 0.04s]
+[0m17:17:58  23 of 235 START test source_not_null_operational_workbench_datasets_semantic_signature  [RUN]
+[0m17:17:58  19 of 235 PASS source_not_null_operational_raw_objects_object_id ............... [[32mPASS[0m in 0.04s]
+[0m17:17:58  22 of 235 ERROR source_not_null_operational_workbench_datasets_membership_sha256  [[31mERROR[0m in 0.02s]
+[0m17:17:58  24 of 235 START test source_not_null_operational_workbench_identities_external_id  [RUN]
+[0m17:17:58  25 of 235 START test source_not_null_operational_workbench_identities_id ....... [RUN]
+[0m17:17:58  [[31mERROR[0m]: Unhandled error while executing 
+[Errno 13] Permission denied: 'warehouse/target/compiled/courtload_warehouse/models/staging/sources.yml/source_not_null_operational_wo_8a4409774dcf4dc02f3971b7f4128607.sql'
+[0m17:17:58  [[31mERROR[0m]: Unhandled error while executing 
+[Errno 13] Permission denied: 'warehouse/target/compiled/courtload_warehouse/models/staging/sources.yml/source_not_null_operational_workbench_identities_id.sql'
+[0m17:17:58  26 of 235 START test source_not_null_operational_workbench_identities_kind ..... [RUN]
+[0m17:17:58  23 of 235 ERROR source_not_null_operational_workbench_datasets_semantic_signature  [[31mERROR[0m in 0.02s]
+[0m17:17:58  25 of 235 ERROR source_not_null_operational_workbench_identities_id ............ [[31mERROR[0m in 0.01s]
+[0m17:17:58  [[31mERROR[0m]: Unhandled error while executing 
+[Errno 13] Permission denied: 'warehouse/target/compiled/courtload_warehouse/models/staging/sources.yml/source_not_null_operational_workbench_identities_external_id.sql'
+[0m17:17:58  27 of 235 START test source_not_null_operational_workbench_lineup_stints_game_id  [RUN]
+[0m17:17:58  [[31mERROR[0m]: Unhandled error while executing 
+[Errno 13] Permission denied: 'warehouse/target/compiled/courtload_warehouse/models/staging/sources.yml/source_not_null_operational_workbench_identities_kind.sql'
+[0m17:17:58  28 of 235 START test source_not_null_operational_workbench_lineup_stints_id .... [RUN]
+[0m17:17:58  24 of 235 ERROR source_not_null_operational_workbench_identities_external_id ... [[31mERROR[0m in 0.02s]
+[0m17:17:58  26 of 235 ERROR source_not_null_operational_workbench_identities_kind .......... [[31mERROR[0m in 0.02s]
+[0m17:17:58  29 of 235 START test source_not_null_operational_workbench_lineup_stints_stint_index  [RUN]
+[0m17:17:58  30 of 235 START test source_not_null_operational_workbench_player_games_game_id  [RUN]
+[0m17:17:59  [[31mERROR[0m]: Unhandled error while executing 
+[Errno 13] Permission denied: 'warehouse/target/compiled/courtload_warehouse/models/staging/sources.yml/source_not_null_operational_workbench_player_games_game_id.sql'
+[0m17:17:59  30 of 235 ERROR source_not_null_operational_workbench_player_games_game_id ..... [[31mERROR[0m in 0.01s]
+[0m17:17:59  31 of 235 START test source_not_null_operational_workbench_player_games_id ..... [RUN]
+[0m17:17:59  27 of 235 PASS source_not_null_operational_workbench_lineup_stints_game_id ..... [[32mPASS[0m in 0.04s]
+[0m17:17:59  28 of 235 PASS source_not_null_operational_workbench_lineup_stints_id .......... [[32mPASS[0m in 0.03s]
+[0m17:17:59  32 of 235 START test source_not_null_operational_workbench_player_games_player_id  [RUN]
+[0m17:17:59  33 of 235 START test source_not_null_operational_workbench_possessions_game_id . [RUN]
+[0m17:17:59  29 of 235 PASS source_not_null_operational_workbench_lineup_stints_stint_index . [[32mPASS[0m in 0.04s]
+[0m17:17:59  [[31mERROR[0m]: Unhandled error while executing 
+[Errno 13] Permission denied: 'warehouse/target/compiled/courtload_warehouse/models/staging/sources.yml/source_not_null_operational_workbench_player_games_id.sql'
+[0m17:17:59  [[31mERROR[0m]: Unhandled error while executing 
+[Errno 13] Permission denied: 'warehouse/target/compiled/courtload_warehouse/models/staging/sources.yml/source_not_null_operational_workbench_player_games_player_id.sql'
+[0m17:17:59  34 of 235 START test source_not_null_operational_workbench_possessions_id ...... [RUN]
+[0m17:17:59  32 of 235 ERROR source_not_null_operational_workbench_player_games_player_id ... [[31mERROR[0m in 0.02s]
+[0m17:17:59  31 of 235 ERROR source_not_null_operational_workbench_player_games_id .......... [[31mERROR[0m in 0.03s]
+[0m17:17:59  35 of 235 START test source_not_null_operational_workbench_possessions_possession_number  [RUN]
+[0m17:17:59  36 of 235 START test source_not_null_operational_workbench_reconstruction_overrides_game_id  [RUN]
+[0m17:17:59  33 of 235 PASS source_not_null_operational_workbench_possessions_game_id ....... [[32mPASS[0m in 0.04s]
+[0m17:17:59  34 of 235 PASS source_not_null_operational_workbench_possessions_id ............ [[32mPASS[0m in 0.03s]
+[0m17:17:59  35 of 235 PASS source_not_null_operational_workbench_possessions_possession_number  [[32mPASS[0m in 0.02s]
+[0m17:17:59  38 of 235 START test source_not_null_operational_workbench_schedules_game_id ... [RUN]
+[0m17:17:59  37 of 235 START test source_not_null_operational_workbench_reconstruction_overrides_id  [RUN]
+[0m17:17:59  39 of 235 START test source_not_null_operational_workbench_schedules_id ........ [RUN]
+[0m17:17:59  [[31mERROR[0m]: Unhandled error while executing 
+[Errno 13] Permission denied: 'warehouse/target/compiled/courtload_warehouse/models/staging/sources.yml/source_not_null_operational_workbench_schedules_game_id.sql'
+[0m17:17:59  [[31mERROR[0m]: Unhandled error while executing 
+[Errno 13] Permission denied: 'warehouse/target/compiled/courtload_warehouse/models/staging/sources.yml/source_not_null_operational_workbench_schedules_id.sql'
+[0m17:17:59  36 of 235 PASS source_not_null_operational_workbench_reconstruction_overrides_game_id  [[32mPASS[0m in 0.03s]
+[0m17:17:59  39 of 235 ERROR source_not_null_operational_workbench_schedules_id ............. [[31mERROR[0m in 0.01s]
+[0m17:17:59  40 of 235 START test source_not_null_operational_workbench_stint_players_id .... [RUN]
+[0m17:17:59  38 of 235 ERROR source_not_null_operational_workbench_schedules_game_id ........ [[31mERROR[0m in 0.02s]
+[0m17:17:59  41 of 235 START test source_not_null_operational_workbench_stint_players_player_id  [RUN]
+[0m17:17:59  42 of 235 START test source_not_null_operational_workbench_team_games_game_id .. [RUN]
+[0m17:17:59  [[31mERROR[0m]: Unhandled error while executing 
+[Errno 13] Permission denied: 'warehouse/target/compiled/courtload_warehouse/models/staging/sources.yml/source_not_null_operational_workbench_team_games_game_id.sql'
+[0m17:17:59  42 of 235 ERROR source_not_null_operational_workbench_team_games_game_id ....... [[31mERROR[0m in 0.01s]
+[0m17:17:59  37 of 235 PASS source_not_null_operational_workbench_reconstruction_overrides_id  [[32mPASS[0m in 0.04s]
+[0m17:17:59  43 of 235 START test source_not_null_operational_workbench_team_games_id ....... [RUN]
+[0m17:17:59  44 of 235 START test source_not_null_operational_workbench_team_games_team_id .. [RUN]
+[0m17:17:59  [[31mERROR[0m]: Unhandled error while executing 
+[Errno 13] Permission denied: 'warehouse/target/compiled/courtload_warehouse/models/staging/sources.yml/source_not_null_operational_workbench_team_games_id.sql'
+[0m17:17:59  [[31mERROR[0m]: Unhandled error while executing 
+[Errno 13] Permission denied: 'warehouse/target/compiled/courtload_warehouse/models/staging/sources.yml/source_not_null_operational_workbench_team_games_team_id.sql'
+[0m17:17:59  41 of 235 PASS source_not_null_operational_workbench_stint_players_player_id ... [[32mPASS[0m in 0.02s]
+[0m17:17:59  43 of 235 ERROR source_not_null_operational_workbench_team_games_id ............ [[31mERROR[0m in 0.01s]
+[0m17:17:59  45 of 235 START test source_not_null_operational_workbench_versions_content_sha256  [RUN]
+[0m17:17:59  40 of 235 PASS source_not_null_operational_workbench_stint_players_id .......... [[32mPASS[0m in 0.04s]
+[0m17:17:59  46 of 235 START test source_not_null_operational_workbench_versions_id ......... [RUN]
+[0m17:17:59  44 of 235 ERROR source_not_null_operational_workbench_team_games_team_id ....... [[31mERROR[0m in 0.01s]
+[0m17:17:59  47 of 235 START test source_relationships_operational_archive_player_games_dataset_id__id__source_operational_archive_datasets_  [RUN]
+[0m17:17:59  48 of 235 START test source_relationships_operational_archive_team_games_dataset_id__id__source_operational_archive_datasets_  [RUN]
+[0m17:17:59  [[31mERROR[0m]: Unhandled error while executing 
+[Errno 13] Permission denied: 'warehouse/target/compiled/courtload_warehouse/models/staging/sources.yml/source_not_null_operational_workbench_versions_content_sha256.sql'
+[0m17:17:59  [[31mERROR[0m]: Unhandled error while executing 
+[Errno 13] Permission denied: 'warehouse/target/compiled/courtload_warehouse/models/staging/sources.yml/source_not_null_operational_workbench_versions_id.sql'
+[0m17:17:59  45 of 235 ERROR source_not_null_operational_workbench_versions_content_sha256 .. [[31mERROR[0m in 0.02s]
+[0m17:17:59  49 of 235 START test source_relationships_operational_bridge_player_observed_team_stints_player_key__player_key__source_operational_dim_players_  [RUN]
+[0m17:17:59  46 of 235 ERROR source_not_null_operational_workbench_versions_id .............. [[31mERROR[0m in 0.03s]
+[0m17:17:59  50 of 235 START test source_relationships_operational_bridge_player_observed_team_stints_team_key__team_key__source_operational_dim_teams_  [RUN]
+[0m17:17:59  48 of 235 PASS source_relationships_operational_archive_team_games_dataset_id__id__source_operational_archive_datasets_  [[32mPASS[0m in 0.03s]
+[0m17:17:59  51 of 235 START test source_relationships_operational_fct_games_away_team_key__team_key__source_operational_dim_teams_  [RUN]
+[0m17:17:59  49 of 235 PASS source_relationships_operational_bridge_player_observed_team_stints_player_key__player_key__source_operational_dim_players_  [[32mPASS[0m in 0.03s]
+[0m17:17:59  52 of 235 START test source_relationships_operational_fct_games_home_team_key__team_key__source_operational_dim_teams_  [RUN]
+[0m17:17:59  50 of 235 PASS source_relationships_operational_bridge_player_observed_team_stints_team_key__team_key__source_operational_dim_teams_  [[32mPASS[0m in 0.03s]
+[0m17:17:59  47 of 235 PASS source_relationships_operational_archive_player_games_dataset_id__id__source_operational_archive_datasets_  [[32mPASS[0m in 0.05s]
+[0m17:17:59  53 of 235 START test source_relationships_operational_fct_player_games_game_key__game_key__source_operational_fct_games_  [RUN]
+[0m17:17:59  54 of 235 START test source_relationships_operational_fct_player_games_player_key__player_key__source_operational_dim_players_  [RUN]
+[0m17:17:59  51 of 235 PASS source_relationships_operational_fct_games_away_team_key__team_key__source_operational_dim_teams_  [[32mPASS[0m in 0.04s]
+[0m17:17:59  55 of 235 START test source_relationships_operational_raw_objects_ingestion_run_id__run_id__source_operational_ingestion_runs_  [RUN]
+[0m17:17:59  52 of 235 PASS source_relationships_operational_fct_games_home_team_key__team_key__source_operational_dim_teams_  [[32mPASS[0m in 0.04s]
+[0m17:17:59  56 of 235 START test source_relationships_operational_workbench_lineup_stints_dataset_id__id__source_operational_workbench_datasets_  [RUN]
+[0m17:17:59  53 of 235 PASS source_relationships_operational_fct_player_games_game_key__game_key__source_operational_fct_games_  [[32mPASS[0m in 0.03s]
+[0m17:17:59  54 of 235 PASS source_relationships_operational_fct_player_games_player_key__player_key__source_operational_dim_players_  [[32mPASS[0m in 0.04s]
+[0m17:17:59  57 of 235 START test source_relationships_operational_workbench_player_games_dataset_id__id__source_operational_workbench_datasets_  [RUN]
+[0m17:17:59  58 of 235 START test source_relationships_operational_workbench_possessions_dataset_id__id__source_operational_workbench_datasets_  [RUN]
+[0m17:17:59  [[31mERROR[0m]: Unhandled error while executing 
+[Errno 13] Permission denied: 'warehouse/target/compiled/courtload_warehouse/models/staging/sources.yml/source_relationships_operation_62a85fb9114abd4f4b8b417bd8f1c684.sql'
+[0m17:17:59  57 of 235 ERROR source_relationships_operational_workbench_player_games_dataset_id__id__source_operational_workbench_datasets_  [[31mERROR[0m in 0.02s]
+[0m17:17:59  55 of 235 PASS source_relationships_operational_raw_objects_ingestion_run_id__run_id__source_operational_ingestion_runs_  [[32mPASS[0m in 0.04s]
+[0m17:17:59  59 of 235 START test source_relationships_operational_workbench_reconstruction_overrides_dataset_id__id__source_operational_workbench_datasets_  [RUN]
+[0m17:17:59  60 of 235 START test source_relationships_operational_workbench_schedules_dataset_id__id__source_operational_workbench_datasets_  [RUN]
+[0m17:17:59  56 of 235 PASS source_relationships_operational_workbench_lineup_stints_dataset_id__id__source_operational_workbench_datasets_  [[32mPASS[0m in 0.04s]
+[0m17:17:59  58 of 235 PASS source_relationships_operational_workbench_possessions_dataset_id__id__source_operational_workbench_datasets_  [[32mPASS[0m in 0.03s]
+[0m17:17:59  61 of 235 START test source_relationships_operational_workbench_stint_players_dataset_id__id__source_operational_workbench_datasets_  [RUN]
+[0m17:17:59  62 of 235 START test source_relationships_operational_workbench_stint_players_stint_id__id__source_operational_workbench_lineup_stints_  [RUN]
+[0m17:17:59  [[31mERROR[0m]: Unhandled error while executing 
+[Errno 13] Permission denied: 'warehouse/target/compiled/courtload_warehouse/models/staging/sources.yml/source_relationships_operation_f3b4f7bb0e4f0e0c65c2890ef5762635.sql'
+[0m17:17:59  60 of 235 ERROR source_relationships_operational_workbench_schedules_dataset_id__id__source_operational_workbench_datasets_  [[31mERROR[0m in 0.02s]
+[0m17:17:59  59 of 235 PASS source_relationships_operational_workbench_reconstruction_overrides_dataset_id__id__source_operational_workbench_datasets_  [[32mPASS[0m in 0.03s]
+[0m17:17:59  63 of 235 START test source_relationships_operational_workbench_team_games_dataset_id__id__source_operational_workbench_datasets_  [RUN]
+[0m17:17:59  64 of 235 START test source_unique_operational_archive_datasets_id ............. [RUN]
+[0m17:17:59  [[31mERROR[0m]: Unhandled error while executing 
+[Errno 13] Permission denied: 'warehouse/target/compiled/courtload_warehouse/models/staging/sources.yml/source_relationships_operation_290678e2abb2d5d21f74ee7748a52937.sql'
+[0m17:17:59  62 of 235 PASS source_relationships_operational_workbench_stint_players_stint_id__id__source_operational_workbench_lineup_stints_  [[32mPASS[0m in 0.03s]
+[0m17:17:59  65 of 235 START test source_unique_operational_archive_player_games_id ......... [RUN]
+[0m17:17:59  63 of 235 ERROR source_relationships_operational_workbench_team_games_dataset_id__id__source_operational_workbench_datasets_  [[31mERROR[0m in 0.02s]
+[0m17:17:59  66 of 235 START test source_unique_operational_archive_team_games_id ........... [RUN]
+[0m17:17:59  61 of 235 PASS source_relationships_operational_workbench_stint_players_dataset_id__id__source_operational_workbench_datasets_  [[32mPASS[0m in 0.05s]
+[0m17:17:59  67 of 235 START test source_unique_operational_archive_versions_id ............. [RUN]
+[0m17:17:59  64 of 235 PASS source_unique_operational_archive_datasets_id ................... [[32mPASS[0m in 0.03s]
+[0m17:17:59  68 of 235 START test source_unique_operational_bridge_player_observed_team_stints_stint_id  [RUN]
+[0m17:17:59  66 of 235 PASS source_unique_operational_archive_team_games_id ................. [[32mPASS[0m in 0.02s]
+[0m17:17:59  69 of 235 START test source_unique_operational_dim_players_player_key .......... [RUN]
+[0m17:17:59  65 of 235 PASS source_unique_operational_archive_player_games_id ............... [[32mPASS[0m in 0.04s]
+[0m17:17:59  70 of 235 START test source_unique_operational_dim_players_source_player_id .... [RUN]
+[0m17:17:59  67 of 235 PASS source_unique_operational_archive_versions_id ................... [[32mPASS[0m in 0.04s]
+[0m17:17:59  69 of 235 PASS source_unique_operational_dim_players_player_key ................ [[32mPASS[0m in 0.03s]
+[0m17:17:59  71 of 235 START test source_unique_operational_dim_teams_source_team_id ........ [RUN]
+[0m17:17:59  72 of 235 START test source_unique_operational_dim_teams_team_key .............. [RUN]
+[0m17:17:59  68 of 235 PASS source_unique_operational_bridge_player_observed_team_stints_stint_id  [[32mPASS[0m in 0.04s]
+[0m17:17:59  73 of 235 START test source_unique_operational_fct_games_game_key .............. [RUN]
+[0m17:17:59  70 of 235 PASS source_unique_operational_dim_players_source_player_id .......... [[32mPASS[0m in 0.03s]
+[0m17:17:59  74 of 235 START test source_unique_operational_fct_games_source_game_id ........ [RUN]
+[0m17:17:59  72 of 235 PASS source_unique_operational_dim_teams_team_key .................... [[32mPASS[0m in 0.03s]
+[0m17:17:59  75 of 235 START test source_unique_operational_fct_player_games_source_stat_id . [RUN]
+[0m17:17:59  71 of 235 PASS source_unique_operational_dim_teams_source_team_id .............. [[32mPASS[0m in 0.04s]
+[0m17:17:59  73 of 235 PASS source_unique_operational_fct_games_game_key .................... [[32mPASS[0m in 0.03s]
+[0m17:17:59  76 of 235 START test source_unique_operational_ingestion_runs_run_id ........... [RUN]
+[0m17:17:59  77 of 235 START test source_unique_operational_raw_objects_object_id ........... [RUN]
+[0m17:17:59  74 of 235 PASS source_unique_operational_fct_games_source_game_id .............. [[32mPASS[0m in 0.03s]
+[0m17:17:59  78 of 235 START test source_unique_operational_workbench_datasets_id ........... [RUN]
+[0m17:17:59  [[31mERROR[0m]: Unhandled error while executing 
+[Errno 13] Permission denied: 'warehouse/target/compiled/courtload_warehouse/models/staging/sources.yml/source_unique_operational_workbench_datasets_id.sql'
+[0m17:17:59  78 of 235 ERROR source_unique_operational_workbench_datasets_id ................ [[31mERROR[0m in 0.01s]
+[0m17:17:59  75 of 235 PASS source_unique_operational_fct_player_games_source_stat_id ....... [[32mPASS[0m in 0.03s]
+[0m17:17:59  79 of 235 START test source_unique_operational_workbench_identities_id ......... [RUN]
+[0m17:17:59  80 of 235 START test source_unique_operational_workbench_lineup_stints_id ...... [RUN]
+[0m17:17:59  [[31mERROR[0m]: Unhandled error while executing 
+[Errno 13] Permission denied: 'warehouse/target/compiled/courtload_warehouse/models/staging/sources.yml/source_unique_operational_workbench_identities_id.sql'
+[0m17:17:59  79 of 235 ERROR source_unique_operational_workbench_identities_id .............. [[31mERROR[0m in 0.01s]
+[0m17:17:59  77 of 235 PASS source_unique_operational_raw_objects_object_id ................. [[32mPASS[0m in 0.03s]
+[0m17:17:59  81 of 235 START test source_unique_operational_workbench_player_games_id ....... [RUN]
+[0m17:17:59  82 of 235 START test source_unique_operational_workbench_possessions_id ........ [RUN]
+[0m17:17:59  76 of 235 PASS source_unique_operational_ingestion_runs_run_id ................. [[32mPASS[0m in 0.03s]
+[0m17:17:59  [[31mERROR[0m]: Unhandled error while executing 
+[Errno 13] Permission denied: 'warehouse/target/compiled/courtload_warehouse/models/staging/sources.yml/source_unique_operational_workbench_player_games_id.sql'
+[0m17:17:59  83 of 235 START test source_unique_operational_workbench_reconstruction_overrides_id  [RUN]
+[0m17:17:59  81 of 235 ERROR source_unique_operational_workbench_player_games_id ............ [[31mERROR[0m in 0.01s]
+[0m17:17:59  84 of 235 START test source_unique_operational_workbench_schedules_id .......... [RUN]
+[0m17:17:59  80 of 235 PASS source_unique_operational_workbench_lineup_stints_id ............ [[32mPASS[0m in 0.03s]
+[0m17:17:59  [[31mERROR[0m]: Unhandled error while executing 
+[Errno 13] Permission denied: 'warehouse/target/compiled/courtload_warehouse/models/staging/sources.yml/source_unique_operational_workbench_schedules_id.sql'
+[0m17:17:59  85 of 235 START test source_unique_operational_workbench_stint_players_id ...... [RUN]
+[0m17:17:59  82 of 235 PASS source_unique_operational_workbench_possessions_id .............. [[32mPASS[0m in 0.03s]
+[0m17:17:59  84 of 235 ERROR source_unique_operational_workbench_schedules_id ............... [[31mERROR[0m in 0.01s]
+[0m17:17:59  87 of 235 START test source_unique_operational_workbench_versions_id ........... [RUN]
+[0m17:17:59  83 of 235 PASS source_unique_operational_workbench_reconstruction_overrides_id . [[32mPASS[0m in 0.03s]
+[0m17:17:59  86 of 235 START test source_unique_operational_workbench_team_games_id ......... [RUN]
+[0m17:17:59  88 of 235 START sql view model pf09_warehouse_staging.stg_archive_player_games . [RUN]
+[0m17:17:59  [[31mERROR[0m]: Unhandled error while executing 
+[Errno 13] Permission denied: 'warehouse/target/compiled/courtload_warehouse/models/staging/sources.yml/source_unique_operational_workbench_team_games_id.sql'
+[0m17:17:59  [[31mERROR[0m]: Unhandled error while executing 
+[Errno 13] Permission denied: 'warehouse/target/compiled/courtload_warehouse/models/staging/sources.yml/source_unique_operational_workbench_versions_id.sql'
+[0m17:17:59  86 of 235 ERROR source_unique_operational_workbench_team_games_id .............. [[31mERROR[0m in 0.01s]
+[0m17:17:59  89 of 235 START sql view model pf09_warehouse_staging.stg_archive_team_games ... [RUN]
+[0m17:17:59  85 of 235 PASS source_unique_operational_workbench_stint_players_id ............ [[32mPASS[0m in 0.03s]
+[0m17:17:59  87 of 235 ERROR source_unique_operational_workbench_versions_id ................ [[31mERROR[0m in 0.02s]
+[0m17:17:59  90 of 235 START sql view model pf09_warehouse_staging.stg_players .............. [RUN]
+[0m17:17:59  91 of 235 START sql view model pf09_warehouse_staging.stg_teams ................ [RUN]
+[0m17:17:59  [[31mERROR[0m]: Unhandled error while executing 
+[Errno 13] Permission denied: 'warehouse/target/compiled/courtload_warehouse/models/staging/stg_players.sql'
+[0m17:17:59  88 of 235 ERROR creating sql view model pf09_warehouse_staging.stg_archive_player_games  [[31mERROR[0m in 0.02s]
+[0m17:17:59  92 of 235 START sql view model pf09_warehouse_staging.stg_games ................ [RUN]
+[0m17:17:59  [[31mERROR[0m]: Unhandled error while executing 
+[Errno 13] Permission denied: 'warehouse/target/compiled/courtload_warehouse/models/staging/stg_teams.sql'
+[0m17:17:59  89 of 235 ERROR creating sql view model pf09_warehouse_staging.stg_archive_team_games  [[31mERROR[0m in 0.01s]
+[0m17:17:59  90 of 235 ERROR creating sql view model pf09_warehouse_staging.stg_players ..... [[31mERROR[0m in 0.01s]
+[0m17:17:59  [[31mERROR[0m]: Unhandled error while executing 
+[Errno 13] Permission denied: 'warehouse/target/compiled/courtload_warehouse/models/staging/stg_games.sql'
+[0m17:17:59  93 of 235 START sql view model pf09_warehouse_staging.stg_player_games ......... [RUN]
+[0m17:17:59  91 of 235 ERROR creating sql view model pf09_warehouse_staging.stg_teams ....... [[31mERROR[0m in 0.01s]
+[0m17:17:59  94 of 235 SKIP relation pf09_warehouse_staging.stg_workbench_player_games ...... [[33mSKIP[0m]
+[0m17:17:59  92 of 235 ERROR creating sql view model pf09_warehouse_staging.stg_games ....... [[31mERROR[0m in 0.01s]
+[0m17:17:59  95 of 235 START sql view model pf09_warehouse_staging.stg_workbench_lineup_stints  [RUN]
+[0m17:17:59  [[31mERROR[0m]: Unhandled error while executing 
+[Errno 13] Permission denied: 'warehouse/target/compiled/courtload_warehouse/models/staging/stg_player_games.sql'
+[0m17:17:59  97 of 235 SKIP relation pf09_warehouse_staging.stg_workbench_schedules ......... [[33mSKIP[0m]
+[0m17:17:59  96 of 235 START sql view model pf09_warehouse_staging.stg_workbench_possessions  [RUN]
+[0m17:17:59  98 of 235 SKIP relation pf09_warehouse_staging.stg_workbench_team_games ........ [[33mSKIP[0m]
+[0m17:17:59  93 of 235 ERROR creating sql view model pf09_warehouse_staging.stg_player_games  [[31mERROR[0m in 0.01s]
+[0m17:17:59  99 of 235 SKIP relation pf09_warehouse_staging.stg_workbench_stint_players ..... [[33mSKIP[0m]
+[0m17:17:59  100 of 235 SKIP test not_null_stg_archive_player_games_dataset_id .............. [[33mSKIP[0m]
+[0m17:17:59  101 of 235 SKIP test not_null_stg_archive_player_games_game_id ................. [[33mSKIP[0m]
+[0m17:17:59  102 of 235 SKIP test not_null_stg_archive_player_games_player_id ............... [[33mSKIP[0m]
+[0m17:17:59  103 of 235 SKIP test not_null_stg_archive_player_games_player_name ............. [[33mSKIP[0m]
+[0m17:17:59  104 of 235 SKIP test not_null_stg_archive_team_games_dataset_id ................ [[33mSKIP[0m]
+[0m17:17:59  105 of 235 SKIP test not_null_stg_archive_team_games_game_id ................... [[33mSKIP[0m]
+[0m17:17:59  106 of 235 SKIP test not_null_stg_archive_team_games_team_id ................... [[33mSKIP[0m]
+[0m17:17:59  107 of 235 SKIP test not_null_stg_players_player_key ........................... [[33mSKIP[0m]
+[0m17:17:59  109 of 235 SKIP test not_null_stg_workbench_player_games_dataset_id ............ [[33mSKIP[0m]
+[0m17:17:59  108 of 235 SKIP test unique_stg_players_player_key ............................. [[33mSKIP[0m]
+[0m17:17:59  110 of 235 SKIP test not_null_stg_workbench_player_games_game_id ............... [[33mSKIP[0m]
+[0m17:17:59  111 of 235 SKIP test not_null_stg_workbench_player_games_id .................... [[33mSKIP[0m]
+[0m17:17:59  112 of 235 SKIP test not_null_stg_workbench_player_games_player_id ............. [[33mSKIP[0m]
+[0m17:17:59  113 of 235 SKIP test unique_stg_workbench_player_games_id ...................... [[33mSKIP[0m]
+[0m17:17:59  115 of 235 SKIP test not_null_stg_games_game_key ............................... [[33mSKIP[0m]
+[0m17:17:59  114 of 235 SKIP test home_and_away_teams_differ ................................ [[33mSKIP[0m]
+[0m17:17:59  117 of 235 SKIP test not_null_stg_teams_team_key ............................... [[33mSKIP[0m]
+[0m17:17:59  116 of 235 SKIP test not_null_stg_games_scheduled_start_utc .................... [[33mSKIP[0m]
+[0m17:17:59  118 of 235 SKIP test unique_stg_games_game_key ................................. [[33mSKIP[0m]
+[0m17:17:59  120 of 235 SKIP test not_null_stg_workbench_schedules_dataset_id ............... [[33mSKIP[0m]
+[0m17:17:59  119 of 235 SKIP test unique_stg_teams_team_key ................................. [[33mSKIP[0m]
+[0m17:17:59  121 of 235 SKIP test not_null_stg_workbench_schedules_game_id .................. [[33mSKIP[0m]
+[0m17:17:59  122 of 235 SKIP test not_null_stg_workbench_schedules_id ....................... [[33mSKIP[0m]
+[0m17:17:59  95 of 235 OK created sql view model pf09_warehouse_staging.stg_workbench_lineup_stints  [[32mCREATE VIEW[0m in 0.08s]
+[0m17:17:59  123 of 235 SKIP test unique_stg_workbench_schedules_id ......................... [[33mSKIP[0m]
+[0m17:17:59  124 of 235 SKIP test not_null_stg_workbench_team_games_dataset_id .............. [[33mSKIP[0m]
+[0m17:17:59  125 of 235 SKIP test not_null_stg_workbench_team_games_game_id ................. [[33mSKIP[0m]
+[0m17:17:59  96 of 235 OK created sql view model pf09_warehouse_staging.stg_workbench_possessions  [[32mCREATE VIEW[0m in 0.08s]
+[0m17:17:59  128 of 235 SKIP test unique_stg_workbench_team_games_id ........................ [[33mSKIP[0m]
+[0m17:17:59  126 of 235 SKIP test not_null_stg_workbench_team_games_id ...................... [[33mSKIP[0m]
+[0m17:17:59  129 of 235 SKIP test not_null_stg_workbench_stint_players_dataset_id ........... [[33mSKIP[0m]
+[0m17:17:59  127 of 235 SKIP test not_null_stg_workbench_team_games_team_id ................. [[33mSKIP[0m]
+[0m17:17:59  130 of 235 SKIP test not_null_stg_workbench_stint_players_id ................... [[33mSKIP[0m]
+[0m17:17:59  131 of 235 SKIP test not_null_stg_workbench_stint_players_player_id ............ [[33mSKIP[0m]
+[0m17:17:59  132 of 235 SKIP test not_null_stg_workbench_stint_players_stint_id ............. [[33mSKIP[0m]
+[0m17:17:59  133 of 235 SKIP test unique_stg_workbench_stint_players_id ..................... [[33mSKIP[0m]
+[0m17:17:59  136 of 235 SKIP test player_games_match_one_observed_team_stint ................ [[33mSKIP[0m]
+[0m17:17:59  134 of 235 SKIP test made_shots_do_not_exceed_attempts ......................... [[33mSKIP[0m]
+[0m17:17:59  135 of 235 SKIP test not_null_stg_player_games_source_stat_id .................. [[33mSKIP[0m]
+[0m17:17:59  137 of 235 SKIP test unique_stg_player_games_source_stat_id .................... [[33mSKIP[0m]
+[0m17:17:59  140 of 235 SKIP relation pf09_warehouse_intermediate.fct_workbench_player_game . [[33mSKIP[0m]
+[0m17:17:59  138 of 235 SKIP relation pf09_warehouse_intermediate.fct_archive_player_game ... [[33mSKIP[0m]
+[0m17:17:59  141 of 235 SKIP relation pf09_warehouse_intermediate.int_team_games ............ [[33mSKIP[0m]
+[0m17:17:59  139 of 235 SKIP relation pf09_warehouse_intermediate.fct_archive_team_game ..... [[33mSKIP[0m]
+[0m17:17:59  142 of 235 START test not_null_stg_workbench_possessions_dataset_id ............ [RUN]
+[0m17:17:59  143 of 235 START test not_null_stg_workbench_possessions_game_id ............... [RUN]
+[0m17:17:59  144 of 235 START test not_null_stg_workbench_possessions_id .................... [RUN]
+[0m17:17:59  145 of 235 START test not_null_stg_workbench_possessions_possession_number ..... [RUN]
+[0m17:17:59  142 of 235 PASS not_null_stg_workbench_possessions_dataset_id .................. [[32mPASS[0m in 0.03s]
+[0m17:17:59  146 of 235 START test unique_stg_workbench_possessions_id ...................... [RUN]
+[0m17:17:59  145 of 235 PASS not_null_stg_workbench_possessions_possession_number ........... [[32mPASS[0m in 0.03s]
+[0m17:17:59  147 of 235 START test not_null_stg_workbench_lineup_stints_dataset_id .......... [RUN]
+[0m17:17:59  143 of 235 PASS not_null_stg_workbench_possessions_game_id ..................... [[32mPASS[0m in 0.03s]
+[0m17:17:59  144 of 235 PASS not_null_stg_workbench_possessions_id .......................... [[32mPASS[0m in 0.03s]
+[0m17:17:59  149 of 235 START test not_null_stg_workbench_lineup_stints_game_id ............. [RUN]
+[0m17:17:59  148 of 235 START test not_null_stg_workbench_lineup_stints_duration_seconds .... [RUN]
+[0m17:17:59  146 of 235 PASS unique_stg_workbench_possessions_id ............................ [[32mPASS[0m in 0.04s]
+[0m17:17:59  149 of 235 PASS not_null_stg_workbench_lineup_stints_game_id ................... [[32mPASS[0m in 0.02s]
+[0m17:17:59  150 of 235 START test not_null_stg_workbench_lineup_stints_id .................. [RUN]
+[0m17:17:59  151 of 235 START test not_null_stg_workbench_lineup_stints_stint_index ......... [RUN]
+[0m17:17:59  147 of 235 PASS not_null_stg_workbench_lineup_stints_dataset_id ................ [[32mPASS[0m in 0.04s]
+[0m17:17:59  152 of 235 START test unique_stg_workbench_lineup_stints_id .................... [RUN]
+[0m17:17:59  148 of 235 PASS not_null_stg_workbench_lineup_stints_duration_seconds .......... [[32mPASS[0m in 0.03s]
+[0m17:17:59  153 of 235 START test workbench_stint_durations_are_positive ................... [RUN]
+[0m17:17:59  150 of 235 PASS not_null_stg_workbench_lineup_stints_id ........................ [[32mPASS[0m in 0.03s]
+[0m17:17:59  154 of 235 START test workbench_stints_have_five_player_sides .................. [RUN]
+[0m17:17:59  151 of 235 PASS not_null_stg_workbench_lineup_stints_stint_index ............... [[32mPASS[0m in 0.04s]
+[0m17:17:59  152 of 235 PASS unique_stg_workbench_lineup_stints_id .......................... [[32mPASS[0m in 0.03s]
+[0m17:17:59  155 of 235 SKIP relation pf09_warehouse_intermediate.fct_workbench_team_game ... [[33mSKIP[0m]
+[0m17:17:59  153 of 235 PASS workbench_stint_durations_are_positive ......................... [[32mPASS[0m in 0.02s]
+[0m17:17:59  156 of 235 SKIP relation pf09_warehouse_intermediate.int_player_games_scored ... [[33mSKIP[0m]
+[0m17:17:59  157 of 235 SKIP relation pf09_warehouse_marts.mart_data_status ................. [[33mSKIP[0m]
+[0m17:17:59  158 of 235 SKIP relation pf09_warehouse_marts.mart_workbench_player_possession_exposure  [[33mSKIP[0m]
+[0m17:17:59  159 of 235 SKIP test not_null_fct_workbench_player_game_dataset_id ............. [[33mSKIP[0m]
+[0m17:17:59  160 of 235 SKIP test not_null_fct_workbench_player_game_id ..................... [[33mSKIP[0m]
+[0m17:17:59  161 of 235 SKIP test unique_fct_workbench_player_game_id ....................... [[33mSKIP[0m]
+[0m17:17:59  162 of 235 SKIP test workbench_made_shots_do_not_exceed_attempts ............... [[33mSKIP[0m]
+[0m17:17:59  164 of 235 SKIP test completed_games_have_two_team_rows ........................ [[33mSKIP[0m]
+[0m17:17:59  165 of 235 SKIP test not_null_int_team_games_game_key .......................... [[33mSKIP[0m]
+[0m17:17:59  163 of 235 SKIP test workbench_player_game_grain_is_unique ..................... [[33mSKIP[0m]
+[0m17:17:59  166 of 235 SKIP test not_null_int_team_games_team_key .......................... [[33mSKIP[0m]
+[0m17:17:59  167 of 235 SKIP test archive_player_game_grain_is_unique ....................... [[33mSKIP[0m]
+[0m17:17:59  168 of 235 SKIP test not_null_fct_archive_player_game_dataset_id ............... [[33mSKIP[0m]
+[0m17:17:59  169 of 235 SKIP test archive_team_game_grain_is_unique ......................... [[33mSKIP[0m]
+[0m17:17:59  171 of 235 SKIP test not_null_fct_archive_team_game_dataset_id ................. [[33mSKIP[0m]
+[0m17:17:59  154 of 235 PASS workbench_stints_have_five_player_sides ........................ [[32mPASS[0m in 0.02s]
+[0m17:17:59  170 of 235 SKIP test archive_team_games_have_two_sides ......................... [[33mSKIP[0m]
+[0m17:17:59  172 of 235 SKIP relation pf09_warehouse_intermediate.fct_workbench_possession .. [[33mSKIP[0m]
+[0m17:17:59  173 of 235 SKIP test not_null_fct_workbench_team_game_dataset_id ............... [[33mSKIP[0m]
+[0m17:17:59  174 of 235 SKIP test not_null_fct_workbench_team_game_id ....................... [[33mSKIP[0m]
+[0m17:17:59  175 of 235 SKIP test unique_fct_workbench_team_game_id ......................... [[33mSKIP[0m]
+[0m17:17:59  176 of 235 SKIP test workbench_team_game_grain_is_unique ....................... [[33mSKIP[0m]
+[0m17:17:59  180 of 235 SKIP test not_null_mart_workbench_player_possession_exposure_season . [[33mSKIP[0m]
+[0m17:17:59  177 of 235 SKIP test not_null_mart_workbench_player_possession_exposure_dataset_id  [[33mSKIP[0m]
+[0m17:17:59  178 of 235 SKIP test not_null_mart_workbench_player_possession_exposure_phase .. [[33mSKIP[0m]
+[0m17:17:59  179 of 235 SKIP test not_null_mart_workbench_player_possession_exposure_player_id  [[33mSKIP[0m]
+[0m17:17:59  182 of 235 SKIP test not_null_mart_data_status_data_snapshot_id ................ [[33mSKIP[0m]
+[0m17:17:59  181 of 235 SKIP test not_null_mart_workbench_player_possession_exposure_team_id  [[33mSKIP[0m]
+[0m17:17:59  183 of 235 SKIP test unique_mart_data_status_data_snapshot_id .................. [[33mSKIP[0m]
+[0m17:17:59  185 of 235 SKIP test not_null_int_player_games_scored_source_stat_id ........... [[33mSKIP[0m]
+[0m17:17:59  186 of 235 SKIP test unique_int_player_games_scored_source_stat_id ............. [[33mSKIP[0m]
+[0m17:17:59  187 of 235 SKIP relation pf09_warehouse_marts.mart_workbench_player_season_stats  [[33mSKIP[0m]
+[0m17:17:59  184 of 235 SKIP test not_null_int_player_games_scored_fantasy_points_default ... [[33mSKIP[0m]
+[0m17:17:59  188 of 235 SKIP relation pf09_warehouse_marts.mart_team_week_schedule .......... [[33mSKIP[0m]
+[0m17:17:59  189 of 235 SKIP relation pf09_warehouse_intermediate.fct_workbench_lineup_stint  [[33mSKIP[0m]
+[0m17:17:59  190 of 235 SKIP test not_null_fct_workbench_possession_dataset_id .............. [[33mSKIP[0m]
+[0m17:17:59  192 of 235 SKIP test not_null_fct_workbench_possession_offense_team_id ......... [[33mSKIP[0m]
+[0m17:17:59  191 of 235 SKIP test not_null_fct_workbench_possession_game_id ................. [[33mSKIP[0m]
+[0m17:17:59  193 of 235 SKIP test not_null_fct_workbench_possession_possession_id ........... [[33mSKIP[0m]
+[0m17:17:59  194 of 235 SKIP relation pf09_warehouse_marts.mart_archive_opponent_context .... [[33mSKIP[0m]
+[0m17:17:59  195 of 235 SKIP relation pf09_warehouse_marts.mart_archive_player_profile ...... [[33mSKIP[0m]
+[0m17:17:59  196 of 235 SKIP relation pf09_warehouse_marts.mart_workbench_team_season_stats . [[33mSKIP[0m]
+[0m17:17:59  197 of 235 SKIP relation pf09_warehouse_marts.mart_player_point_in_time_features  [[33mSKIP[0m]
+[0m17:17:59  198 of 235 SKIP relation pf09_warehouse_marts.mart_player_recent_form .......... [[33mSKIP[0m]
+[0m17:17:59  201 of 235 SKIP test not_null_fct_workbench_lineup_stint_side .................. [[33mSKIP[0m]
+[0m17:17:59  199 of 235 SKIP test not_null_fct_workbench_lineup_stint_dataset_id ............ [[33mSKIP[0m]
+[0m17:17:59  200 of 235 SKIP test not_null_fct_workbench_lineup_stint_game_id ............... [[33mSKIP[0m]
+[0m17:17:59  203 of 235 SKIP test not_null_fct_workbench_lineup_stint_team_id ............... [[33mSKIP[0m]
+[0m17:17:59  202 of 235 SKIP test not_null_fct_workbench_lineup_stint_stint_id .............. [[33mSKIP[0m]
+[0m17:17:59  205 of 235 SKIP test not_null_mart_team_week_schedule_week_start ............... [[33mSKIP[0m]
+[0m17:17:59  204 of 235 SKIP test not_null_mart_team_week_schedule_team_key ................. [[33mSKIP[0m]
+[0m17:17:59  206 of 235 SKIP test not_null_mart_workbench_player_season_stats_dataset_id .... [[33mSKIP[0m]
+[0m17:17:59  207 of 235 SKIP test not_null_mart_workbench_player_season_stats_phase ......... [[33mSKIP[0m]
+[0m17:17:59  211 of 235 SKIP test team_week_schedule_grain_is_unique ........................ [[33mSKIP[0m]
+[0m17:17:59  208 of 235 SKIP test not_null_mart_workbench_player_season_stats_player_id ..... [[33mSKIP[0m]
+[0m17:17:59  209 of 235 SKIP test not_null_mart_workbench_player_season_stats_season ........ [[33mSKIP[0m]
+[0m17:17:59  210 of 235 SKIP test not_null_mart_workbench_player_season_stats_team_id ....... [[33mSKIP[0m]
+[0m17:17:59  213 of 235 SKIP test archive_incomplete_context_is_null ........................ [[33mSKIP[0m]
+[0m17:17:59  215 of 235 SKIP test archive_opponent_context_grain_is_unique .................. [[33mSKIP[0m]
+[0m17:17:59  212 of 235 SKIP test team_week_schedule_reconciles ............................. [[33mSKIP[0m]
+[0m17:17:59  214 of 235 SKIP test archive_opponent_context_excludes_same_day ................ [[33mSKIP[0m]
+[0m17:17:59  217 of 235 SKIP test archive_profiles_exclude_same_day ......................... [[33mSKIP[0m]
+[0m17:17:59  216 of 235 SKIP test archive_profile_grain_is_unique ........................... [[33mSKIP[0m]
+[0m17:17:59  218 of 235 SKIP test not_null_mart_archive_player_profile_max_history_date ..... [[33mSKIP[0m]
+[0m17:17:59  219 of 235 SKIP test not_null_mart_archive_player_profile_replay_date .......... [[33mSKIP[0m]
+[0m17:17:59  220 of 235 SKIP test not_null_mart_workbench_team_season_stats_dataset_id ...... [[33mSKIP[0m]
+[0m17:17:59  221 of 235 SKIP test not_null_mart_workbench_team_season_stats_phase ........... [[33mSKIP[0m]
+[0m17:17:59  222 of 235 SKIP test not_null_mart_workbench_team_season_stats_season .......... [[33mSKIP[0m]
+[0m17:17:59  223 of 235 SKIP test not_null_mart_workbench_team_season_stats_team_id ......... [[33mSKIP[0m]
+[0m17:17:59  224 of 235 SKIP test not_null_mart_player_recent_form_player_key ............... [[33mSKIP[0m]
+[0m17:17:59  226 of 235 SKIP test not_null_mart_player_point_in_time_features_calculated_as_of  [[33mSKIP[0m]
+[0m17:17:59  225 of 235 SKIP test unique_mart_player_recent_form_player_key ................. [[33mSKIP[0m]
+[0m17:17:59  228 of 235 SKIP test point_in_time_first_game_is_empty ......................... [[33mSKIP[0m]
+[0m17:17:59  227 of 235 SKIP test not_null_mart_player_point_in_time_features_source_stat_id  [[33mSKIP[0m]
+[0m17:17:59  230 of 235 SKIP relation pf09_warehouse_marts.mart_workbench_lineup_exposure ... [[33mSKIP[0m]
+[0m17:17:59  229 of 235 SKIP test unique_mart_player_point_in_time_features_source_stat_id .. [[33mSKIP[0m]
+[0m17:17:59  231 of 235 SKIP test not_null_mart_workbench_lineup_exposure_dataset_id ........ [[33mSKIP[0m]
+[0m17:17:59  235 of 235 SKIP test not_null_mart_workbench_lineup_exposure_team_id ........... [[33mSKIP[0m]
+[0m17:17:59  233 of 235 SKIP test not_null_mart_workbench_lineup_exposure_phase ............. [[33mSKIP[0m]
+[0m17:17:59  234 of 235 SKIP test not_null_mart_workbench_lineup_exposure_season ............ [[33mSKIP[0m]
+[0m17:17:59  232 of 235 SKIP test not_null_mart_workbench_lineup_exposure_lineup_key ........ [[33mSKIP[0m]
+[0m17:17:59  
+[0m17:17:59  Finished running 10 table models, 205 data tests, 20 view models in 0 hours 0 minutes and 1.27 seconds (1.27s).
+[0m17:17:59  
+[0m17:17:59  [31mCompleted with 32 errors, 0 partial successes, and 0 warnings:[0m
+[0m17:17:59  
+[0m17:17:59  [[31mERROR[0m]: in test source_not_null_operational_workbench_datasets_id (models/staging/sources.yml)
+[0m17:17:59    [Errno 13] Permission denied: 'warehouse/target/compiled/courtload_warehouse/models/staging/sources.yml/source_not_null_operational_workbench_datasets_id.sql'
+[0m17:17:59  
+[0m17:17:59    compiled code at target/compiled/courtload_warehouse/models/staging/sources.yml/source_not_null_operational_workbench_datasets_id.sql
+[0m17:17:59  
+[0m17:17:59  [[31mERROR[0m]: in test source_not_null_operational_workbench_datasets_content_sha256 (models/staging/sources.yml)
+[0m17:17:59    [Errno 13] Permission denied: 'warehouse/target/compiled/courtload_warehouse/models/staging/sources.yml/source_not_null_operational_workbench_datasets_content_sha256.sql'
+[0m17:17:59  
+[0m17:17:59    compiled code at target/compiled/courtload_warehouse/models/staging/sources.yml/source_not_null_operational_workbench_datasets_content_sha256.sql
+[0m17:17:59  
+[0m17:17:59  [[31mERROR[0m]: in test source_not_null_operational_workbench_datasets_membership_sha256 (models/staging/sources.yml)
+[0m17:17:59    [Errno 13] Permission denied: 'warehouse/target/compiled/courtload_warehouse/models/staging/sources.yml/source_not_null_operational_wo_2e5b162748db111c18a73a86ee3ae7ff.sql'
+[0m17:17:59  
+[0m17:17:59    compiled code at target/compiled/courtload_warehouse/models/staging/sources.yml/source_not_null_operational_wo_2e5b162748db111c18a73a86ee3ae7ff.sql
+[0m17:17:59  
+[0m17:17:59  [[31mERROR[0m]: in test source_not_null_operational_workbench_datasets_semantic_signature (models/staging/sources.yml)
+[0m17:17:59    [Errno 13] Permission denied: 'warehouse/target/compiled/courtload_warehouse/models/staging/sources.yml/source_not_null_operational_wo_8a4409774dcf4dc02f3971b7f4128607.sql'
+[0m17:17:59  
+[0m17:17:59    compiled code at target/compiled/courtload_warehouse/models/staging/sources.yml/source_not_null_operational_wo_8a4409774dcf4dc02f3971b7f4128607.sql
+[0m17:17:59  
+[0m17:17:59  [[31mERROR[0m]: in test source_not_null_operational_workbench_identities_id (models/staging/sources.yml)
+[0m17:17:59    [Errno 13] Permission denied: 'warehouse/target/compiled/courtload_warehouse/models/staging/sources.yml/source_not_null_operational_workbench_identities_id.sql'
+[0m17:17:59  
+[0m17:17:59    compiled code at target/compiled/courtload_warehouse/models/staging/sources.yml/source_not_null_operational_workbench_identities_id.sql
+[0m17:17:59  
+[0m17:17:59  [[31mERROR[0m]: in test source_not_null_operational_workbench_identities_kind (models/staging/sources.yml)
+[0m17:17:59    [Errno 13] Permission denied: 'warehouse/target/compiled/courtload_warehouse/models/staging/sources.yml/source_not_null_operational_workbench_identities_kind.sql'
+[0m17:17:59  
+[0m17:17:59    compiled code at target/compiled/courtload_warehouse/models/staging/sources.yml/source_not_null_operational_workbench_identities_kind.sql
+[0m17:17:59  
+[0m17:17:59  [[31mERROR[0m]: in test source_not_null_operational_workbench_identities_external_id (models/staging/sources.yml)
+[0m17:17:59    [Errno 13] Permission denied: 'warehouse/target/compiled/courtload_warehouse/models/staging/sources.yml/source_not_null_operational_workbench_identities_external_id.sql'
+[0m17:17:59  
+[0m17:17:59    compiled code at target/compiled/courtload_warehouse/models/staging/sources.yml/source_not_null_operational_workbench_identities_external_id.sql
+[0m17:17:59  
+[0m17:17:59  [[31mERROR[0m]: in test source_not_null_operational_workbench_player_games_game_id (models/staging/sources.yml)
+[0m17:17:59    [Errno 13] Permission denied: 'warehouse/target/compiled/courtload_warehouse/models/staging/sources.yml/source_not_null_operational_workbench_player_games_game_id.sql'
+[0m17:17:59  
+[0m17:17:59    compiled code at target/compiled/courtload_warehouse/models/staging/sources.yml/source_not_null_operational_workbench_player_games_game_id.sql
+[0m17:17:59  
+[0m17:17:59  [[31mERROR[0m]: in test source_not_null_operational_workbench_player_games_player_id (models/staging/sources.yml)
+[0m17:17:59    [Errno 13] Permission denied: 'warehouse/target/compiled/courtload_warehouse/models/staging/sources.yml/source_not_null_operational_workbench_player_games_player_id.sql'
+[0m17:17:59  
+[0m17:17:59    compiled code at target/compiled/courtload_warehouse/models/staging/sources.yml/source_not_null_operational_workbench_player_games_player_id.sql
+[0m17:17:59  
+[0m17:17:59  [[31mERROR[0m]: in test source_not_null_operational_workbench_player_games_id (models/staging/sources.yml)
+[0m17:17:59    [Errno 13] Permission denied: 'warehouse/target/compiled/courtload_warehouse/models/staging/sources.yml/source_not_null_operational_workbench_player_games_id.sql'
+[0m17:17:59  
+[0m17:17:59    compiled code at target/compiled/courtload_warehouse/models/staging/sources.yml/source_not_null_operational_workbench_player_games_id.sql
+[0m17:17:59  
+[0m17:17:59  [[31mERROR[0m]: in test source_not_null_operational_workbench_schedules_id (models/staging/sources.yml)
+[0m17:17:59    [Errno 13] Permission denied: 'warehouse/target/compiled/courtload_warehouse/models/staging/sources.yml/source_not_null_operational_workbench_schedules_id.sql'
+[0m17:17:59  
+[0m17:17:59    compiled code at target/compiled/courtload_warehouse/models/staging/sources.yml/source_not_null_operational_workbench_schedules_id.sql
+[0m17:17:59  
+[0m17:17:59  [[31mERROR[0m]: in test source_not_null_operational_workbench_schedules_game_id (models/staging/sources.yml)
+[0m17:17:59    [Errno 13] Permission denied: 'warehouse/target/compiled/courtload_warehouse/models/staging/sources.yml/source_not_null_operational_workbench_schedules_game_id.sql'
+[0m17:17:59  
+[0m17:17:59    compiled code at target/compiled/courtload_warehouse/models/staging/sources.yml/source_not_null_operational_workbench_schedules_game_id.sql
+[0m17:17:59  
+[0m17:17:59  [[31mERROR[0m]: in test source_not_null_operational_workbench_team_games_game_id (models/staging/sources.yml)
+[0m17:17:59    [Errno 13] Permission denied: 'warehouse/target/compiled/courtload_warehouse/models/staging/sources.yml/source_not_null_operational_workbench_team_games_game_id.sql'
+[0m17:17:59  
+[0m17:17:59    compiled code at target/compiled/courtload_warehouse/models/staging/sources.yml/source_not_null_operational_workbench_team_games_game_id.sql
+[0m17:17:59  
+[0m17:17:59  [[31mERROR[0m]: in test source_not_null_operational_workbench_team_games_id (models/staging/sources.yml)
+[0m17:17:59    [Errno 13] Permission denied: 'warehouse/target/compiled/courtload_warehouse/models/staging/sources.yml/source_not_null_operational_workbench_team_games_id.sql'
+[0m17:17:59  
+[0m17:17:59    compiled code at target/compiled/courtload_warehouse/models/staging/sources.yml/source_not_null_operational_workbench_team_games_id.sql
+[0m17:17:59  
+[0m17:17:59  [[31mERROR[0m]: in test source_not_null_operational_workbench_team_games_team_id (models/staging/sources.yml)
+[0m17:17:59    [Errno 13] Permission denied: 'warehouse/target/compiled/courtload_warehouse/models/staging/sources.yml/source_not_null_operational_workbench_team_games_team_id.sql'
+[0m17:17:59  
+[0m17:17:59    compiled code at target/compiled/courtload_warehouse/models/staging/sources.yml/source_not_null_operational_workbench_team_games_team_id.sql
+[0m17:17:59  
+[0m17:17:59  [[31mERROR[0m]: in test source_not_null_operational_workbench_versions_content_sha256 (models/staging/sources.yml)
+[0m17:17:59    [Errno 13] Permission denied: 'warehouse/target/compiled/courtload_warehouse/models/staging/sources.yml/source_not_null_operational_workbench_versions_content_sha256.sql'
+[0m17:17:59  
+[0m17:17:59    compiled code at target/compiled/courtload_warehouse/models/staging/sources.yml/source_not_null_operational_workbench_versions_content_sha256.sql
+[0m17:17:59  
+[0m17:17:59  [[31mERROR[0m]: in test source_not_null_operational_workbench_versions_id (models/staging/sources.yml)
+[0m17:17:59    [Errno 13] Permission denied: 'warehouse/target/compiled/courtload_warehouse/models/staging/sources.yml/source_not_null_operational_workbench_versions_id.sql'
+[0m17:17:59  
+[0m17:17:59    compiled code at target/compiled/courtload_warehouse/models/staging/sources.yml/source_not_null_operational_workbench_versions_id.sql
+[0m17:17:59  
+[0m17:17:59  [[31mERROR[0m]: in test source_relationships_operational_workbench_player_games_dataset_id__id__source_operational_workbench_datasets_ (models/staging/sources.yml)
+[0m17:17:59    [Errno 13] Permission denied: 'warehouse/target/compiled/courtload_warehouse/models/staging/sources.yml/source_relationships_operation_62a85fb9114abd4f4b8b417bd8f1c684.sql'
+[0m17:17:59  
+[0m17:17:59    compiled code at target/compiled/courtload_warehouse/models/staging/sources.yml/source_relationships_operation_62a85fb9114abd4f4b8b417bd8f1c684.sql
+[0m17:17:59  
+[0m17:17:59  [[31mERROR[0m]: in test source_relationships_operational_workbench_schedules_dataset_id__id__source_operational_workbench_datasets_ (models/staging/sources.yml)
+[0m17:17:59    [Errno 13] Permission denied: 'warehouse/target/compiled/courtload_warehouse/models/staging/sources.yml/source_relationships_operation_f3b4f7bb0e4f0e0c65c2890ef5762635.sql'
+[0m17:17:59  
+[0m17:17:59    compiled code at target/compiled/courtload_warehouse/models/staging/sources.yml/source_relationships_operation_f3b4f7bb0e4f0e0c65c2890ef5762635.sql
+[0m17:17:59  
+[0m17:17:59  [[31mERROR[0m]: in test source_relationships_operational_workbench_team_games_dataset_id__id__source_operational_workbench_datasets_ (models/staging/sources.yml)
+[0m17:17:59    [Errno 13] Permission denied: 'warehouse/target/compiled/courtload_warehouse/models/staging/sources.yml/source_relationships_operation_290678e2abb2d5d21f74ee7748a52937.sql'
+[0m17:17:59  
+[0m17:17:59    compiled code at target/compiled/courtload_warehouse/models/staging/sources.yml/source_relationships_operation_290678e2abb2d5d21f74ee7748a52937.sql
+[0m17:17:59  
+[0m17:17:59  [[31mERROR[0m]: in test source_unique_operational_workbench_datasets_id (models/staging/sources.yml)
+[0m17:17:59    [Errno 13] Permission denied: 'warehouse/target/compiled/courtload_warehouse/models/staging/sources.yml/source_unique_operational_workbench_datasets_id.sql'
+[0m17:17:59  
+[0m17:17:59    compiled code at target/compiled/courtload_warehouse/models/staging/sources.yml/source_unique_operational_workbench_datasets_id.sql
+[0m17:17:59  
+[0m17:17:59  [[31mERROR[0m]: in test source_unique_operational_workbench_identities_id (models/staging/sources.yml)
+[0m17:17:59    [Errno 13] Permission denied: 'warehouse/target/compiled/courtload_warehouse/models/staging/sources.yml/source_unique_operational_workbench_identities_id.sql'
+[0m17:17:59  
+[0m17:17:59    compiled code at target/compiled/courtload_warehouse/models/staging/sources.yml/source_unique_operational_workbench_identities_id.sql
+[0m17:17:59  
+[0m17:17:59  [[31mERROR[0m]: in test source_unique_operational_workbench_player_games_id (models/staging/sources.yml)
+[0m17:17:59    [Errno 13] Permission denied: 'warehouse/target/compiled/courtload_warehouse/models/staging/sources.yml/source_unique_operational_workbench_player_games_id.sql'
+[0m17:17:59  
+[0m17:17:59    compiled code at target/compiled/courtload_warehouse/models/staging/sources.yml/source_unique_operational_workbench_player_games_id.sql
+[0m17:17:59  
+[0m17:17:59  [[31mERROR[0m]: in test source_unique_operational_workbench_schedules_id (models/staging/sources.yml)
+[0m17:17:59    [Errno 13] Permission denied: 'warehouse/target/compiled/courtload_warehouse/models/staging/sources.yml/source_unique_operational_workbench_schedules_id.sql'
+[0m17:17:59  
+[0m17:17:59    compiled code at target/compiled/courtload_warehouse/models/staging/sources.yml/source_unique_operational_workbench_schedules_id.sql
+[0m17:17:59  
+[0m17:17:59  [[31mERROR[0m]: in test source_unique_operational_workbench_team_games_id (models/staging/sources.yml)
+[0m17:17:59    [Errno 13] Permission denied: 'warehouse/target/compiled/courtload_warehouse/models/staging/sources.yml/source_unique_operational_workbench_team_games_id.sql'
+[0m17:17:59  
+[0m17:17:59    compiled code at target/compiled/courtload_warehouse/models/staging/sources.yml/source_unique_operational_workbench_team_games_id.sql
+[0m17:17:59  
+[0m17:17:59  [[31mERROR[0m]: in test source_unique_operational_workbench_versions_id (models/staging/sources.yml)
+[0m17:17:59    [Errno 13] Permission denied: 'warehouse/target/compiled/courtload_warehouse/models/staging/sources.yml/source_unique_operational_workbench_versions_id.sql'
+[0m17:17:59  
+[0m17:17:59    compiled code at target/compiled/courtload_warehouse/models/staging/sources.yml/source_unique_operational_workbench_versions_id.sql
+[0m17:17:59  
+[0m17:17:59  [[31mERROR[0m]: in model stg_archive_player_games (models/staging/stg_archive_player_games.sql)
+[0m17:17:59    Compilation Error in model stg_archive_player_games (models/staging/stg_archive_player_games.sql)
+  Required var 'archive_dataset_id' not found in config:
+  Vars supplied to stg_archive_player_games = {
+      "reporting_timezone": "America/Toronto"
+  }
+[0m17:17:59  
+[0m17:17:59  [[31mERROR[0m]: in model stg_archive_team_games (models/staging/stg_archive_team_games.sql)
+[0m17:17:59    Compilation Error in model stg_archive_team_games (models/staging/stg_archive_team_games.sql)
+  Required var 'archive_dataset_id' not found in config:
+  Vars supplied to stg_archive_team_games = {
+      "reporting_timezone": "America/Toronto"
+  }
+[0m17:17:59  
+[0m17:17:59  [[31mERROR[0m]: in model stg_players (models/staging/stg_players.sql)
+[0m17:17:59    [Errno 13] Permission denied: 'warehouse/target/compiled/courtload_warehouse/models/staging/stg_players.sql'
+[0m17:17:59  
+[0m17:17:59    compiled code at target/compiled/courtload_warehouse/models/staging/stg_players.sql
+[0m17:17:59  
+[0m17:17:59  [[31mERROR[0m]: in model stg_games (models/staging/stg_games.sql)
+[0m17:17:59    [Errno 13] Permission denied: 'warehouse/target/compiled/courtload_warehouse/models/staging/stg_games.sql'
+[0m17:17:59  
+[0m17:17:59    compiled code at target/compiled/courtload_warehouse/models/staging/stg_games.sql
+[0m17:17:59  
+[0m17:17:59  [[31mERROR[0m]: in model stg_teams (models/staging/stg_teams.sql)
+[0m17:17:59    [Errno 13] Permission denied: 'warehouse/target/compiled/courtload_warehouse/models/staging/stg_teams.sql'
+[0m17:17:59  
+[0m17:17:59    compiled code at target/compiled/courtload_warehouse/models/staging/stg_teams.sql
+[0m17:17:59  
+[0m17:17:59  [[31mERROR[0m]: in model stg_player_games (models/staging/stg_player_games.sql)
+[0m17:17:59    [Errno 13] Permission denied: 'warehouse/target/compiled/courtload_warehouse/models/staging/stg_player_games.sql'
+[0m17:17:59  
+[0m17:17:59    compiled code at target/compiled/courtload_warehouse/models/staging/stg_player_games.sql
+[0m17:17:59  
+[0m17:17:59  Done. PASS=76 WARN=0 ERROR=32 SKIP=127 NO-OP=0 REUSED=0 TOTAL=235

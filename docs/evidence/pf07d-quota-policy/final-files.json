@@ -1,0 +1,9 @@
+{
+  "README.md": "60491e9074d156bb3b676e2a8645e9c5261643278b0ae3c043f4254d5adecefc",
+  ".env.example": "e8b7614fab791d71ba116a70b5c544f74b1028abf6b890bda2497b5acc1aa50f",
+  "scripts/evaluate_pf07d_hybrid.py": "cf0fe6fbfd632f2db2a7f030db8de541b75ff57895d96fe7904ec4a8b4f87d13",
+  "tests/unit/test_hybrid_evaluation_quota_policy.py": "810ce173906549d142e4a8c040e9831ffe3fde391b3e7d3900ca2ab02c6dab4d",
+  "docs/design/polish-assistant-contract.md": "0c9d08d9e741b00df2fb1248165bcbcdcf60e0bb5d420a483c33f0fee2672cb3",
+  "docs/polish-freeze-implementation-plan.md": "9ed2c0335189cadb65d9144129509abeada52a1d5fc002edf1433764f1767e77",
+  "docs/polish-freeze-implementation-progress.md": "7217dbb869178cb95a93cb12a238bc7e15fdd8e74157bb44262b4d131978d6d5"
+}

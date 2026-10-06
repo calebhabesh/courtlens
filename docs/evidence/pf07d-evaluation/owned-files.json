@@ -1,0 +1,14 @@
+[
+  "docs/design/polish-assistant-contract.md",
+  "docs/polish-freeze-implementation-progress.md",
+  "src/courtload/services/assistant/knowledge/guide.md",
+  "src/courtload/services/assistant/evaluation.py",
+  "scripts/evaluate_pf07d_hybrid.py",
+  "tests/integration/test_hybrid_evaluation_postgres.py",
+  "tests/unit/test_hybrid_evaluation.py",
+  "tests/fixtures/assistant/pf07d-hybrid-v1.json",
+  "tests/fixtures/assistant/pf07d-hybrid-v1.sha256",
+  "docs/evidence/pf07d-evaluation/",
+  "scripts/verify_pf07d_integration.py",
+  "src/courtload/services/assistant/knowledge.py"
+]

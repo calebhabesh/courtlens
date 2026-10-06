@@ -1,0 +1,18 @@
+[
+  {
+    "check": "Initial PF07a v2 API compatibility assertion",
+    "classification": "The added workspace credential guard correctly returned 401 before schema validation. Updated authenticated schema assertions; unauthenticated mutations are independently tested."
+  },
+  {
+    "check": "Initial retained verifier from Python stdin",
+    "classification": "Multiprocessing spawn cannot reload <stdin>. Reran the same read-only verifier from the named, main-guarded script; no analytical assertion changed."
+  },
+  {
+    "check": "Initial production browser launch",
+    "classification": "Bundled Playwright browser was absent. Reused installed /usr/bin/chromium, as earlier freeze blocks do."
+  },
+  {
+    "check": "Initial retry runtime fixture",
+    "classification": "Explain assists has no matching packaged knowledge section on an empty database and honestly returns inability. Replaced the isolated restart fixture with the frozen supported Explain pick and roll question; did not change routing or answer assertions. Broader language coverage remains PF07d."
+  }
+]
