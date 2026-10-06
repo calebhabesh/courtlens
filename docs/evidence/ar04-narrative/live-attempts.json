@@ -1,0 +1,73 @@
+{
+  "note": "Both live acquisitions stopped on the first Gemini call with quota_exceeded; no narrative was acquired.",
+  "attempts": [
+    {
+      "file": "data/artifacts/assistant-eval/ar04-live-dev.json",
+      "started_at": "2026-10-06T23:19:11.651621+00:00",
+      "stopped": "quota_exceeded",
+      "categories": [
+        "compare",
+        "forecast",
+        "mixed"
+      ],
+      "provider_calls": [
+        {
+          "input_sha256": "e10910a20ba77a0bf541e6abf0f812d9746f3df671bba1046c371803e5377f4b",
+          "failure": "quota_exceeded",
+          "retry_after": 60,
+          "elapsed_ms": 379.59,
+          "purpose": "plan"
+        }
+      ],
+      "coverage": {
+        "completed_runs": 1,
+        "planned_runs": 84,
+        "completed_questions": 0,
+        "planned_questions": 28
+      },
+      "narrative": {
+        "eligible_turns": 0,
+        "attempted": 0,
+        "accepted": 0,
+        "fallback": 0,
+        "fallback_rate": null,
+        "fallback_reasons": {},
+        "skipped": {}
+      }
+    },
+    {
+      "file": "data/artifacts/assistant-eval/ar04-live-dev-2.json",
+      "started_at": "2026-10-06T23:20:38.322226+00:00",
+      "stopped": "quota_exceeded",
+      "categories": [
+        "compare",
+        "forecast",
+        "mixed"
+      ],
+      "provider_calls": [
+        {
+          "input_sha256": "e10910a20ba77a0bf541e6abf0f812d9746f3df671bba1046c371803e5377f4b",
+          "failure": "quota_exceeded",
+          "retry_after": 60,
+          "elapsed_ms": 339.827,
+          "purpose": "plan"
+        }
+      ],
+      "coverage": {
+        "completed_runs": 1,
+        "planned_runs": 84,
+        "completed_questions": 0,
+        "planned_questions": 28
+      },
+      "narrative": {
+        "eligible_turns": 0,
+        "attempted": 0,
+        "accepted": 0,
+        "fallback": 0,
+        "fallback_rate": null,
+        "fallback_reasons": {},
+        "skipped": {}
+      }
+    }
+  ]
+}

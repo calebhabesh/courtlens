@@ -119,7 +119,7 @@ export type HybridTurnResponse = {
   "status": "answered" | "clarification_required" | "unable" | "failed" | "cancelled";
   "intent": "local_analysis" | "site_guidance" | "explanation" | "external" | "discussion" | "clarification" | "inability";
   "scope"?: InterpretedScope | null;
-  "blocks": Array<TextBlock | LocalSummaryBlock | LocalClaimBlock | ResultBlock | ExternalClaimBlock | ClarificationBlock | InabilityBlock>;
+  "blocks": Array<TextBlock | LocalSummaryBlock | LocalClaimBlock | NarrativeBlock | ResultBlock | ExternalClaimBlock | ClarificationBlock | InabilityBlock>;
   "sources"?: Array<AnswerSource>;
   "actions"?: Array<AnswerAction>;
   "plan"?: AnalysisPlan | null;
@@ -157,6 +157,13 @@ export type LocalSummaryBlock = {
   "kind"?: "local_summary";
   "operation_hash": string;
   "text"?: "The selected observations are shown below with their sample and scope.";
+};
+
+export type NarrativeBlock = {
+  "kind"?: "narrative";
+  "checker"?: "narrative-check-v1";
+  "text": string;
+  "operation_hashes": Array<string>;
 };
 
 export type OperationResult = {

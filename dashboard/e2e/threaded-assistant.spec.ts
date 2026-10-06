@@ -211,3 +211,20 @@ for (const width of [1440, 375]) {
     await expect(prose).toBeVisible();
   });
 }
+
+test("checked narrative renders above its supporting result and survives reload", async ({ page }) => {
+  await mock(page, { response: () => ({
+    intent: "local_analysis", scope: scope("2025-26"), saveable: true,
+    blocks: [
+      { kind: "narrative", checker: "narrative-check-v1", text: "Nikola Jokić led the 2025-26 regular season with 10.7 assists per game.", operation_hashes: [hash] },
+      { kind: "result", result: { step_id: "s1", operation: "query", operation_version: "fixture", arguments: {}, operation_hash: hash, result_hash: hash, data: {}, rows: [{ player_name: "Nikola Jokić", ast_per_game: 10.7 }], evidence: [], open_url: null, eligible_count: 1, limitations: [] } },
+    ],
+  }) });
+  await page.goto(path);
+  await send(page, "Who led the league in assists per game last season?");
+  const prose = page.getByLabel("Messages").locator(".hybrid-narrative");
+  await expect(prose).toHaveText("Nikola Jokić led the 2025-26 regular season with 10.7 assists per game.");
+  await expect(page.getByText("View supporting results", { exact: true })).toBeVisible();
+  await page.reload();
+  await expect(prose).toBeVisible();
+});

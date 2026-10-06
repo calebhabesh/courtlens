@@ -23,6 +23,7 @@ export function HybridAnswer({ answer, onChoice, onRetry, busy }: {
         case "clarification": return <div key={index}><p>{block.text}</p><div className="conversation-prompts">{block.choices?.map(choice => <Button key={choice} disabled={busy} onClick={() => onChoice(choice)}>{choice}</Button>)}</div></div>;
         case "inability": return <div key={index}><p>{block.text}</p><p className="text-muted">{block.next_action}</p></div>;
         case "external_claim": return <div key={index}><span className="hybrid-origin">External source</span><p>{block.text}</p><p className="text-muted">{block.period} · {block.qualifier}</p></div>;
+        case "narrative": return <p key={index} className="hybrid-narrative">{block.text}</p>;
         case "text": return <div key={index}>{block.origin === "discussion" && <span className="hybrid-origin">Basketball discussion · judgment</span>}<p>{block.text}</p>{block.criteria && block.criteria.length > 0 && <p className="text-muted">Criteria: {block.criteria.join(" · ")}</p>}</div>;
         default: return "text" in block ? <p key={index}>{block.text}</p> : null;
       }

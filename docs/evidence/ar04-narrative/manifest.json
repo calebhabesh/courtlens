@@ -1,0 +1,32 @@
+{
+  "measured": "2026-10-06",
+  "files": {
+    "assistant-integration-tests.log": "5c3db188a4a8f9adabd2dc16378a774affe3c424952191ae5b3d8635f8d1889a",
+    "browser-rerun.log": "5a95924b4ce97ae5a52402cfde98dd59efc0f9f2b8b68b048202b773968df4aa",
+    "browser-tests-run1-tail.log": "9d1dcbd59ab6b26c28af78b2a2751dd2ed2d49e41d0aa82332fd8b90fac2bd2a",
+    "browser-tests-run2.log": "30ee11b61149b203fea75228caec310d9aec944f4ac73849f27336a6b990fc35",
+    "browser-tests-serial.log": "a6274f9aa827c50d4f50ba0e666ae58ad17bae90798ad4bad16d5dce5bf34ce9",
+    "dashboard-lint.log": "53857398bee2b94424eefbadefdad59b64e0bd9c315884f4680289eea5d3f42c",
+    "dashboard-tests.log": "66b6dd428ad26011f0b6eea6d38be28f3cfe9fbcc2b6d8389318e12fb6b1376c",
+    "dashboard-types.log": "99623df0c982d0c0e41da36bc35dbb56521e0392113987dedf54fe510fccd3fd",
+    "fixture-capture.json.gz": "3b729d83cb9607e426c9d4eb8a6391451864658b99bffbbae3c9650f1cfb6e13",
+    "fixture-eval-before-followup-fix.log": "9978e6ea7e12f9a19223381a5aeda872f1b7213005627b7208ce74cbb614a3e6",
+    "fixture-eval.log": "6c071ecb1fd5025f879bb2a73945a0dd73277c3ce0d2f5bb186d13dead49b62d",
+    "fixture-summary.json": "dcf9818e81f0d8e2dff5246cce691a5168d30a7011187a6e185155522c361de2",
+    "live-attempts.json": "e2d55539aef8aad33d37578e32a9793d373677cbc28053fe4467b027822ee038",
+    "python-checks.log": "24d00121af62c7b84d93e8d75f33cb2d5474b05d610959ffbc82bc1315cbc07d",
+    "unit-tests.log": "8f5774feb90f770a064ed985a7d7a7ccafde93e9bdbbc9e0dea6ec40d18404eb"
+  },
+  "sources": {
+    "src/courtload/domain/narrative_check.py": "5cc9ce89d0df1d803edecb2ac04af4e8d878fdca5e119b695bb67a091396573a",
+    "src/courtload/domain/hybrid_assistant.py": "23e308eda07a8b57d63c57ac14817a87d2f2fe57c760fabce5e1a8961b7dadb0",
+    "src/courtload/services/assistant/narrative.py": "4436ff514523c498a9ce7ae64636b22f7287bf66efa4da49d311423489d7ef65",
+    "src/courtload/services/assistant/hybrid.py": "21987ced3231d6e44ed7ddf9cfe1c0bc6cb86eb9b11083c04c9a1bc831bae496",
+    "src/courtload/services/assistant/planner.py": "6eefa04a9372794026ffdcaa908957741d192285d875e53592b107d296971a5b",
+    "src/courtload/services/assistant/revamp_evaluation.py": "d9eafef275082afa410e813d9c2b4010517b65f9a2a968ddd4e02234d94143ab",
+    "scripts/evaluate_assistant.py": "d320fdcd42683f3d486864aa800f426cd89facdb2ab1bf270f6568c9dc28e313",
+    "dashboard/components/hybrid-answer.tsx": "da07a65c198d8f484f1276fc066c4dca8a8d61999ac72f834d76cb3fc7f3bccb",
+    "tests/unit/test_narrative_check.py": "f3a78c105a2225acc7b2d5813bfe895f5ca639bcf3d746eae91c240b19687537",
+    "tests/unit/test_narrative_turn.py": "f7e114d6388098c3efe75e9b8be0c06d292a327f34f21ef513ff0ea0bdd0b15d"
+  }
+}
