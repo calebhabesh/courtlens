@@ -1,5 +1,8 @@
 "use client";
 
+import { useReleaseCatalog } from "@/lib/use-release-catalog";
+import { EntityField } from "./entity-picker";
+
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -32,20 +35,25 @@ const DIMENSION_LABELS: Record<string, string> = {
 export function SimilarityInvestigationView() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const selectedReleaseId = searchParams.get("releaseId") ?? searchParams.get("release_id");
+  const catalog = useReleaseCatalog(selectedReleaseId);
+  const releaseId = selectedReleaseId ?? catalog?.release_id ?? null;
+  const phase = searchParams.get("phase") ?? catalog?.default_phase ?? "regular_season";
 
   // URL state initialization
   const initialPlayerId = searchParams.get("playerId") || searchParams.get("player_id") || "1628389";
-  const initialSeason = searchParams.get("season") || "2025-26";
+  const initialSeason = searchParams.get("season") || catalog?.default_season || "";
   const initialWindow = (searchParams.get("window") as "last_10" | "season") || "last_10";
   const initialTopK = parseInt(searchParams.get("topK") || "5", 10);
 
   const [playerId, setPlayerId] = useState(initialPlayerId);
   const [season, setSeason] = useState(initialSeason);
+  if (!season && initialSeason) setSeason(initialSeason);
+  const beforeDate = searchParams.get("beforeDate") ?? searchParams.get("before_date") ?? catalog?.stats_scopes?.find(scope => scope.season === season && scope.phase === phase)?.default_before_date ?? catalog?.default_before_date ?? null;
   const [windowMode, setWindowMode] = useState<"last_10" | "season">(initialWindow);
   const [topK, setTopK] = useState(initialTopK);
   const [minAppearances, setMinAppearances] = useState(10);
   const [minMinutes, setMinMinutes] = useState(150.0);
-  const [customPlayerInput, setCustomPlayerInput] = useState(initialPlayerId);
 
   // Data states
   const [loading, setLoading] = useState(false);
@@ -53,9 +61,12 @@ export function SimilarityInvestigationView() {
   const [data, setData] = useState<StatisticalPeersResponse | null>(null);
   const [copiedUrl, setCopiedUrl] = useState(false);
 
+  const [previousUrl,setPreviousUrl] = useState(searchParams.toString());
+  if(previousUrl !== searchParams.toString()) {setPreviousUrl(searchParams.toString());setPlayerId(initialPlayerId);setSeason(initialSeason);setWindowMode(searchParams.get("window") === "season" ? "season" : "last_10");}
+
   // Sync URL search params
   const updateUrl = (pId: string, win: string, k: number) => {
-    const sp = new URLSearchParams();
+    const sp = new URLSearchParams(searchParams.toString());
     sp.set("playerId", pId);
     sp.set("season", season);
     sp.set("window", win);
@@ -65,19 +76,12 @@ export function SimilarityInvestigationView() {
 
   const handleSelectPlayer = (id: string) => {
     setPlayerId(id);
-    setCustomPlayerInput(id);
     updateUrl(id, windowMode, topK);
   };
 
-  const handleCustomPlayerSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (customPlayerInput.trim()) {
-      handleSelectPlayer(customPlayerInput.trim());
-    }
-  };
 
   useEffect(() => {
-    if (!playerId) return;
+    if (!playerId || !season) return;
 
     let isMounted = true;
     queueMicrotask(() => {
@@ -90,7 +94,7 @@ export function SimilarityInvestigationView() {
     getStatisticalPeers({
       target_player_id: playerId,
       season,
-      phase: "regular_season",
+      phase, release_id: releaseId, before_date: beforeDate,
       window: windowMode,
       min_appearances: minAppearances,
       min_minutes: minMinutes,
@@ -112,7 +116,7 @@ export function SimilarityInvestigationView() {
     return () => {
       isMounted = false;
     };
-  }, [playerId, season, windowMode, minAppearances, minMinutes, topK]);
+  }, [playerId, season, windowMode, minAppearances, minMinutes, topK, phase, releaseId, beforeDate]);
 
   const handleCopyUrl = async () => {
     if (typeof window === "undefined") return;
@@ -127,6 +131,7 @@ export function SimilarityInvestigationView() {
 
   return (
     <div className="workbench-content">
+      {catalog === null && <p role="status">Context catalog unavailable. Explicit URL scope is retained; reload to retry.</p>}
       {/* Page Header */}
       <div className="page-header">
         <div>
@@ -138,7 +143,7 @@ export function SimilarityInvestigationView() {
             >
               Statistical Twin Modeling
             </span>
-            <span className="font-mono text-xs text-muted">Blocks B12–B13</span>
+
           </div>
           <h1 className="page-title">Statistical Peers & Profile Twins</h1>
           <p className="page-subtitle">
@@ -194,25 +199,7 @@ export function SimilarityInvestigationView() {
         </div>
 
         {/* Custom Player ID Form */}
-        <form onSubmit={handleCustomPlayerSubmit} style={{ display: "flex", flexDirection: "column", gap: "0.25rem" }}>
-          <label className="text-xs font-mono text-muted uppercase" htmlFor="sim-player-id">
-            Target Player ID
-          </label>
-          <div style={{ display: "flex", gap: "0.25rem" }}>
-            <input
-              id="sim-player-id"
-              type="text"
-              value={customPlayerInput}
-              onChange={(e) => setCustomPlayerInput(e.target.value)}
-              placeholder="e.g. 1628389"
-              className="input text-xs"
-              style={{ width: "110px", padding: "0.25rem 0.5rem" }}
-            />
-            <button type="submit" className="button button-secondary text-xs">
-              Load
-            </button>
-          </div>
-        </form>
+        <EntityField label="Target player" value={playerId} releaseId={releaseId} season={season} phase={phase} beforeDate={beforeDate} onChange={id => { if(id) handleSelectPlayer(id); else setPlayerId(""); }} />
 
         {/* Window Selector */}
         <div style={{ display: "flex", flexDirection: "column", gap: "0.25rem" }}>
@@ -293,9 +280,7 @@ export function SimilarityInvestigationView() {
             className="input text-xs"
             style={{ padding: "0.25rem 0.5rem" }}
           >
-            <option value="2025-26">2025-26</option>
-            <option value="2024-25">2024-25</option>
-            <option value="2023-24">2023-24</option>
+            {season && !catalog?.seasons.includes(season) && <option value={season}>{season} · availability unverified</option>}{catalog?.seasons.map(value => <option key={value} value={value}>{value}</option>)}
           </select>
         </div>
       </div>

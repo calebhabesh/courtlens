@@ -1,8 +1,10 @@
 "use client";
+import { Icon } from "./ui/icon";
 
 import { useState, useMemo, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { TeamLogoStack } from "./team-logo";
 import { PlayerPortrait } from "./player-portrait";
 import { MultiPlayerLinesView } from "./multi-player-lines-view";
 import { useWorkspace } from "@/lib/workspace-context";
@@ -303,6 +305,7 @@ export function PlayerCompareView({
         <div className="panel" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "1rem 1.25rem" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
             <PlayerPortrait playerId={player_a.id} name={player_a.name} size="md" />
+            <TeamLogoStack teams={player_a.teams ?? []} />
             <div>
               <span className="text-xs text-muted font-mono uppercase">
                 Player A · {player_a.teams?.join(", ") || "—"}
@@ -331,6 +334,7 @@ export function PlayerCompareView({
         <div className="panel" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "1rem 1.25rem" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
             <PlayerPortrait playerId={player_b.id} name={player_b.name} size="md" />
+            <TeamLogoStack teams={player_b.teams ?? []} />
             <div>
               <span className="text-xs text-muted font-mono uppercase">
                 Player B · {player_b.teams?.join(", ") || "—"}
@@ -434,7 +438,7 @@ export function PlayerCompareView({
             className="button button-small"
             title="Export context-stamped PNG image with evidence watermark"
           >
-            {exporting ? "Rendering…" : "📷 PNG"}
+            {exporting ? "Rendering…" : <><Icon name="download" />PNG</>}
           </button>
 
           <button
@@ -452,7 +456,7 @@ export function PlayerCompareView({
             className="button button-small"
             title="Copy local query link to clipboard"
           >
-            {copySuccess ? "✓ Copied" : "📋 Copy URL"}
+            {copySuccess ? "✓ Copied" : <><Icon name="copy" />Copy local URL</>}
           </button>
 
           <button

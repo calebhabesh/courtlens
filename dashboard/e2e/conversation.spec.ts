@@ -17,13 +17,13 @@ async function mock(page:Page,configured=false,handler?:(req:TurnRequest)=>Parti
   });
   return {requests,cleared};
 }
-const ask="/research/ask?releaseId=retained-release&season=2024-25&beforeDate=2025-04-15&window=last_10";
+const ask="/research/ask?experience=manual&releaseId=retained-release&season=2024-25&beforeDate=2025-04-15&window=last_10";
 test("AI disabled manual paired distributions preserve zero, unknown and exact evidence",async({page})=>{
   const calls=await mock(page);await page.goto(ask);await expect(page.getByText("AI disabled · manual research available")).toBeVisible();
   await page.getByLabel("Research operation",{exact:true}).selectOption("distribution");await page.getByLabel("Include a minutes distribution with the same window").check();await page.getByRole("button",{name:"Run manual operation"}).click();
   await expect(page.getByRole("region",{name:"distribution data table"})).toContainText("Unknown");expect(calls.requests[0].plan?.steps).toHaveLength(2);expect(calls.requests[0].context).toEqual(context);
   await page.getByText("Definitions, inputs and exact evidence (1 cells)").click();await expect(page.getByRole("region",{name:"distribution evidence table"})).toContainText("1630567");await expect(page.getByRole("region",{name:"distribution evidence table"})).toContainText("points");
-  await page.getByRole("button",{name:"Clear conversation"}).click();expect(calls.cleared).toHaveLength(1);await expect(page.getByLabel("Release",{exact:true})).toBeEnabled();
+  await page.getByRole("button",{name:"Clear conversation"}).click();await expect.poll(()=>calls.cleared.length).toBe(1);await expect(page.getByLabel("Release",{exact:true})).toBeEnabled();
 });
 test("natural follow-ups and canonical identity choices retain conversation fingerprints",async({page})=>{
   const calls=await mock(page,true,req=> req.message==="Which Williams?" && !req.clarification_choice ? {status:"clarification_required",results:[],choices:[{value:"canonical-1",label:"Williams · NBA identity 1"},{value:"canonical-2",label:"Williams · NBA identity 2"}]}:{});
@@ -39,9 +39,9 @@ test("network retry reuses the request identity",async({page})=>{
   await page.route("**/assistant/turn",async route=>{const req=route.request().postDataJSON() as TurnRequest;if(first){first=false;failed=req;return route.fulfill({status:503,json:{detail:"Temporarily unavailable"}});}calls.requests.push(req);return route.fulfill({json:answer(req)});});
   await page.goto(ask);await expect(page.getByText("AI disabled · manual research available")).toBeVisible();await page.getByRole("button",{name:"Run manual operation"}).click();await expect(page.getByRole("alert").filter({hasText:"Temporarily unavailable"})).toContainText("Temporarily unavailable");await page.getByRole("button",{name:"Retry this request"}).click();await expect(page.getByRole("region",{name:"distribution data table"})).toBeVisible();expect(calls.requests[0]).toEqual(failed);
 });
-test("exact Research destination reruns executed arguments and clears ephemeral state",async({page})=>{
+test("exact Research destination retains a saveable turn and clears on client navigation",async({page})=>{
   const calls=await mock(page);const args={player_id:"1630567",metric:"min_per_game",window_n:17,from_date:"2025-01-01",release_id:context.release_id,phase:"regular_season",before_date:context.before_date,season:context.season};
-  await page.goto(researchDestination({step_id:"a",operation:"distribution",arguments:args},context));await expect(page.getByRole("region",{name:"distribution data table"})).toBeVisible();expect(calls.requests[0].plan?.steps[0].arguments).toEqual(args);expect(calls.requests[0].context).toEqual(context);expect(calls.cleared).toHaveLength(1);await page.reload();await expect(page.getByRole("region",{name:"distribution data table"})).toBeVisible();expect(calls.cleared.length).toBeGreaterThanOrEqual(2);
+  await page.goto(researchDestination({step_id:"a",operation:"distribution",arguments:args},context));await expect(page.getByRole("region",{name:"distribution data table"})).toBeVisible();expect(calls.requests[0].plan?.steps[0].arguments).toEqual(args);expect(calls.requests[0].context).toEqual(context);expect(calls.cleared).toHaveLength(0);await page.reload();await expect(page.getByRole("region",{name:"distribution data table"})).toBeVisible();await page.getByRole("link",{name:"Stats",exact:true}).first().click();await expect.poll(()=>calls.cleared.length).toBeGreaterThanOrEqual(1);
 });
 test("drawer traps keyboard focus, escapes, and supports narrow reduced-motion layout",async({page})=>{
   await mock(page);await page.setViewportSize({width:375,height:812});await page.emulateMedia({reducedMotion:"reduce"});await page.goto(ask);await page.getByRole("button",{name:"Ask",exact:true}).click();const dialog=page.getByRole("dialog",{name:"Research conversation"});await expect(dialog).toBeVisible();await expect(dialog.getByRole("button",{name:"Close research conversation"})).toBeFocused();await page.keyboard.press("Shift+Tab");expect(await page.evaluate(()=>!!document.activeElement?.closest("dialog"))).toBe(true);await page.keyboard.press("Escape");await expect(dialog).not.toBeVisible();await expect(page.getByRole("button",{name:"Ask",exact:true})).toBeFocused();

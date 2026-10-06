@@ -519,8 +519,16 @@ const mockPlayoffSeriesDetail = {
   disclaimers: ["Descriptive completed-game facts only."]
 };
 
-createServer((request, response) => {
+createServer(async (request, response) => {
   const url = new URL(request.url ?? "/", "http://127.0.0.1:4100");
+  if (url.pathname === "/api/workbench/lookup") {
+    const q = (url.searchParams.get("q") || "").toLowerCase();
+    const kinds = (url.searchParams.get("kinds") || "player,team,page").split(",");
+    const players = [["23","Fixture Star"],["24","Fixture Guard"],["1627751","Fixture Shooter"],["1630567","Scottie Barnes"],["1628389","Bam Adebayo"], ...[1,2,3,4,5].map(n=>[String(n),`Fixture Player ${n}`])];
+    const teams = [["TOR","Toronto Raptors"],["100","Toronto Raptors"],["200","Boston Celtics"]];
+    const items = [...players.map(([id,name])=>({id,canonical_id:id,display_name:name,kind:"player",portrait_fallback:"FP",subtitle:"Synthetic browser fixture",availability:{status:"available",has_current_season:true,seasons:["2023-24","2025-26"]},team_association:{basis:"selected_scope",teams:["TOR"]},destination_url:`/players/${id}`})), ...teams.map(([id,name])=>({id:`team-${id}`,canonical_id:id,display_name:name,kind:"team",portrait_fallback:id === "200" ? "BOS" : "TOR",subtitle:"Synthetic browser fixture",destination_url:`/teams/${id}`}))].filter(item=>kinds.includes(item.kind) && (!q || item.canonical_id.toLowerCase() === q || item.display_name.toLowerCase().includes(q))).slice(0,Number(url.searchParams.get("limit") || 10));
+    return json(response,200,{query:{raw:q,normalized:q,tokens:[],version:"fixture-pf04"},catalog_version:"fixture-pf04",total_matches:items.length,items});
+  }
   if (url.pathname === "/api/workbench/assistant/status") return json(response, 200, {
     configured: false,
     model: "fixture-disabled",
@@ -533,6 +541,30 @@ createServer((request, response) => {
   if (url.pathname === "/api/workbench/assistant/operations") return json(response, 200, [
     { name: "workload_shifts", description: "Historical workload changes", parameters: { type: "object" } }
   ]);
+  if (url.pathname === "/api/workbench/catalog") return json(response, 200, {
+    ...workbenchContext, snapshot_id: snapshotId, seasons: ["2025-26"], phases: ["regular_season"],
+    default_season: "2025-26", default_phase: "regular_season", default_before_date: "2026-06-30",
+    stats_scopes: [{ season: "2025-26", phase: "regular_season", coverage_start: "2025-10-21", coverage_end: "2026-04-12", default_before_date: "2026-06-30" }],
+    stats_windows: ["season", "last_10", "last_5"], stats_normalizations: ["raw", "per_game", "per_36"],
+    stats_sort_fields: Object.keys(workbenchPlayers.items[0].metrics), warnings: []
+  });
+  if (url.pathname === "/api/workbench/query" && request.method === "POST") {
+    let raw = "";
+    for await (const chunk of request) raw += chunk;
+    const body = JSON.parse(raw);
+    const query = body.query;
+    const rows = workbenchPlayers.items.map((row, index) => ({ ...row,
+      percentiles: Object.fromEntries(Object.keys(row.metrics).map((key) => [key, index === 0 ? 75 : 25]))
+    }));
+    const selected = rows.filter((row) => (!query.name || row.player_name.toLowerCase().includes(query.name.toLowerCase())) &&
+      (body.presentation?.player_ids == null || body.presentation.player_ids.includes(row.player_id)));
+    const sort = query.sort?.[0];
+    if (sort) selected.sort((a, b) => ((a.metrics[sort.field] ?? 0) - (b.metrics[sort.field] ?? 0)) * (sort.direction === "asc" ? 1 : -1));
+    return json(response, 200, { context: workbenchContext, query, total_eligible_players: rows.length,
+      total_output_players: selected.length, output_offset: 0,
+      cohort: { version: "pf01a-v1", scope_hash: "fixture-cohort", eligible_players: rows.length, formula: "midrank", good_directions: {} },
+      items: selected, next_cursor: null, has_more: false, warnings: [] });
+  }
   if (url.pathname === "/api/workbench/status") return json(response, 200, workbenchStatus);
   if (url.pathname === "/api/workbench/players") {
     const q = (url.searchParams.get("name") ?? "").toLowerCase();

@@ -1,8 +1,9 @@
 "use client";
+import { EntityField } from "./entity-picker";
 
 import { FormEvent, useCallback, useEffect, useState } from "react";
 import { browserApi } from "@/lib/api";
-import type { Plan, PrivatePlayer, Scenario } from "@/lib/types";
+import type { LookupItem, Plan, PrivatePlayer, Scenario } from "@/lib/types";
 import { Metric } from "./metric";
 import { PlanTable } from "./plan-table";
 
@@ -26,6 +27,10 @@ async function api<T>(path: string, init: RequestInit = {}, token?: string): Pro
     throw new Error(detail);
   }
   return body as T;
+}
+
+function plannerCandidates(players: PrivatePlayer[]): LookupItem[] {
+  return players.map(player=>({id:String(player.player_id),canonical_id:String(player.player_id),kind:"player",display_name:player.name,subtitle:`${player.team ?? "Unknown team"} · Selected league roster/watchlist`,match_basis:"suggestion",match_score:1,availability:{has_current_season:false,status:"available",seasons:[]},destination_url:"",metadata:{identity_namespace:"planner"}}));
 }
 
 export function PlannerClient({ fixtureMode }: { fixtureMode: boolean }) {
@@ -198,8 +203,8 @@ export function PlannerClient({ fixtureMode }: { fixtureMode: boolean }) {
               <p>Watchlist means “compare this player,” not “available in my league.”</p>
             </div>
             <form onSubmit={runScenario}>
-              <label>Drop<select onChange={(event) => setDropId(event.target.value)} value={dropId}>{roster.map((player) => <option key={player.player_id} value={player.player_id}>{player.name} · {player.team}</option>)}</select></label>
-              <label>Add candidate<select onChange={(event) => setAddId(event.target.value)} value={addId}>{watchlist.map((player) => <option key={player.player_id} value={player.player_id}>{player.name} · {player.team}</option>)}</select></label>
+              <EntityField label="Drop" value={dropId} onChange={setDropId} candidates={plannerCandidates(roster)} required />
+              <EntityField label="Add candidate" value={addId} onChange={setAddId} candidates={plannerCandidates(watchlist)} required />
               <label>Candidate slots<input aria-label="Candidate eligible slots" onChange={(event) => setAddEligibleSlots(event.target.value)} placeholder="G, UTIL" required value={addEligibleSlots} /></label>
               <label>Effective date<input min={weekStart} max={plan.week_end} onChange={(event) => setEffectiveDate(event.target.value)} type="date" value={effectiveDate} /></label>
               <button className="button" disabled={busy || !watchlist.length} type="submit">Compare scenario →</button>

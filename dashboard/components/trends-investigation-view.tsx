@@ -1,5 +1,8 @@
 "use client";
 
+import { useReleaseCatalog } from "@/lib/use-release-catalog";
+import { EntityField } from "./entity-picker";
+
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -23,10 +26,14 @@ const FEATURED_PLAYERS = [
 export function TrendsInvestigationView() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const selectedReleaseId = searchParams.get("releaseId") ?? searchParams.get("release_id");
+  const catalog = useReleaseCatalog(selectedReleaseId);
+  const releaseId = selectedReleaseId ?? catalog?.release_id ?? null;
+  const phase = searchParams.get("phase") ?? catalog?.default_phase ?? "regular_season";
 
   // URL state initialization
   const initialPlayerId = searchParams.get("playerId") || searchParams.get("player_id") || "1628389";
-  const initialSeason = searchParams.get("season") || "2025-26";
+  const initialSeason = searchParams.get("season") || catalog?.default_season || "";
   const initialMode = (searchParams.get("mode") as PeriodMode) || "appearances";
   const initialPeriodAN = parseInt(searchParams.get("periodAN") || searchParams.get("period_a_n") || "10", 10);
   const initialPeriodBN = parseInt(searchParams.get("periodBN") || searchParams.get("period_b_n") || "10", 10);
@@ -34,10 +41,11 @@ export function TrendsInvestigationView() {
   const [activeTab, setActiveTab] = useState<"player" | "rank">("player");
   const [playerId, setPlayerId] = useState(initialPlayerId);
   const [season, setSeason] = useState(initialSeason);
+  if (!season && initialSeason) setSeason(initialSeason);
+  const beforeDate = searchParams.get("beforeDate") ?? searchParams.get("before_date") ?? catalog?.stats_scopes?.find(scope => scope.season === season && scope.phase === phase)?.default_before_date ?? catalog?.default_before_date ?? null;
   const [mode, setMode] = useState<PeriodMode>(initialMode);
   const [periodAN, setPeriodAN] = useState(initialPeriodAN);
   const [periodBN, setPeriodBN] = useState(initialPeriodBN);
-  const [customPlayerInput, setCustomPlayerInput] = useState(initialPlayerId);
 
   // Date range state
   const [periodAFrom, setPeriodAFrom] = useState(searchParams.get("periodAFrom") || "");
@@ -61,7 +69,7 @@ export function TrendsInvestigationView() {
 
   // Fetch comparison data
   useEffect(() => {
-    if (!playerId) return;
+    if (!playerId || !season) return;
 
     let isMounted = true;
     queueMicrotask(() => {
@@ -74,7 +82,7 @@ export function TrendsInvestigationView() {
     const req = {
       player_id: playerId,
       season,
-      phase: "regular_season",
+      phase, release_id: releaseId, before_date: beforeDate,
       mode,
       period_a_n: mode === "appearances" ? periodAN : undefined,
       period_b_n: mode === "appearances" ? periodBN : undefined,
@@ -101,11 +109,11 @@ export function TrendsInvestigationView() {
     return () => {
       isMounted = false;
     };
-  }, [playerId, season, mode, periodAN, periodBN, periodAFrom, periodATo, periodBFrom, periodBTo]);
+  }, [playerId, season, mode, periodAN, periodBN, periodAFrom, periodATo, periodBFrom, periodBTo, phase, releaseId, beforeDate]);
 
   // Fetch rank data when Rank tab is active
   useEffect(() => {
-    if (activeTab !== "rank") return;
+    if (activeTab !== "rank" || !season) return;
 
     let isMounted = true;
     queueMicrotask(() => {
@@ -119,7 +127,7 @@ export function TrendsInvestigationView() {
       operation_type: "compare_periods",
       metric: rankMetric,
       season,
-      phase: "regular_season",
+      phase, release_id: releaseId, before_date: beforeDate,
       sort_direction: rankDirection,
       limit: 25,
       min_games: 10
@@ -140,11 +148,14 @@ export function TrendsInvestigationView() {
     return () => {
       isMounted = false;
     };
-  }, [activeTab, rankMetric, rankDirection, season]);
+  }, [activeTab, rankMetric, rankDirection, season, phase, releaseId, beforeDate]);
+
+  const [previousUrl,setPreviousUrl] = useState(searchParams.toString());
+  if(previousUrl !== searchParams.toString()) {setPreviousUrl(searchParams.toString());setPlayerId(initialPlayerId);setSeason(initialSeason);}
 
   // Sync URL search params
   const updateUrl = (newPlayerId: string, newMode: PeriodMode, aN: number, bN: number) => {
-    const sp = new URLSearchParams();
+    const sp = new URLSearchParams(searchParams.toString());
     sp.set("playerId", newPlayerId);
     sp.set("season", season);
     sp.set("mode", newMode);
@@ -157,16 +168,9 @@ export function TrendsInvestigationView() {
 
   const handleSelectPlayer = (id: string) => {
     setPlayerId(id);
-    setCustomPlayerInput(id);
     updateUrl(id, mode, periodAN, periodBN);
   };
 
-  const handleCustomPlayerSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (customPlayerInput.trim()) {
-      handleSelectPlayer(customPlayerInput.trim());
-    }
-  };
 
   const handleCopyUrl = async () => {
     if (typeof window === "undefined") return;
@@ -218,6 +222,7 @@ export function TrendsInvestigationView() {
 
   return (
     <div className="workbench-content">
+      {catalog === null && <p role="status">Context catalog unavailable. Explicit URL scope is retained; reload to retry.</p>}
       {/* Header */}
       <div className="page-header">
         <div>
@@ -229,7 +234,7 @@ export function TrendsInvestigationView() {
             >
               Workload & Performance Trends
             </span>
-            <span className="font-mono text-xs text-muted">Blocks B12–B13</span>
+
           </div>
           <h1 className="page-title">Workload & Trajectory Trends</h1>
           <p className="page-subtitle">
@@ -315,25 +320,7 @@ export function TrendsInvestigationView() {
             </div>
 
             {/* Custom Player ID Form */}
-            <form onSubmit={handleCustomPlayerSubmit} style={{ display: "flex", flexDirection: "column", gap: "0.25rem" }}>
-              <label className="text-xs font-mono text-muted uppercase" htmlFor="player-id-input">
-                Player ID / Search
-              </label>
-              <div style={{ display: "flex", gap: "0.25rem" }}>
-                <input
-                  id="player-id-input"
-                  type="text"
-                  value={customPlayerInput}
-                  onChange={(e) => setCustomPlayerInput(e.target.value)}
-                  placeholder="e.g. 1628389"
-                  className="input text-xs"
-                  style={{ width: "110px", padding: "0.25rem 0.5rem" }}
-                />
-                <button type="submit" className="button button-secondary text-xs">
-                  Load
-                </button>
-              </div>
-            </form>
+            <EntityField label="Target player" value={playerId} releaseId={releaseId} season={season} phase={phase} beforeDate={beforeDate} onChange={id => { if(id) handleSelectPlayer(id); else setPlayerId(""); }} />
 
             {/* Mode Selector */}
             <div style={{ display: "flex", flexDirection: "column", gap: "0.25rem" }}>
@@ -445,9 +432,7 @@ export function TrendsInvestigationView() {
                 className="input text-xs"
                 style={{ padding: "0.25rem 0.5rem" }}
               >
-                <option value="2025-26">2025-26</option>
-                <option value="2024-25">2024-25</option>
-                <option value="2023-24">2023-24</option>
+                {season && !catalog?.seasons.includes(season) && <option value={season}>{season} · availability unverified</option>}{catalog?.seasons.map(value => <option key={value} value={value}>{value}</option>)}
               </select>
             </div>
           </div>
@@ -779,9 +764,7 @@ export function TrendsInvestigationView() {
                 className="input text-xs"
                 style={{ padding: "0.25rem 0.5rem" }}
               >
-                <option value="2025-26">2025-26</option>
-                <option value="2024-25">2024-25</option>
-                <option value="2023-24">2023-24</option>
+                {season && !catalog?.seasons.includes(season) && <option value={season}>{season} · availability unverified</option>}{catalog?.seasons.map(value => <option key={value} value={value}>{value}</option>)}
               </select>
             </div>
           </div>

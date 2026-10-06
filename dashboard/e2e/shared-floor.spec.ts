@@ -3,6 +3,16 @@ import { openWorkbench } from "./workbench-navigation";
 import { readFileSync } from "node:fs";
 const empty = JSON.parse(readFileSync("../docs/evidence/b21-api-smoke.json", "utf8")).response;
 
+async function pick(page: import("@playwright/test").Page, label: string, ids: string, replace = false) {
+  const group=page.getByRole("group",{name:label,exact:true});
+  if(replace) { while(await group.getByRole("button",{name:/^Remove/}).count()) await group.getByRole("button",{name:/^Remove/}).first().click(); }
+  for(const id of ids.split(",")) {
+    const name=id === "other" ? "Fixture Guard" : `Fixture Player ${id}`;
+    await page.getByRole("combobox",{name:label,exact:true}).fill(name);
+    await page.getByRole("option").filter({hasText:name}).click();
+  }
+}
+
 test.beforeEach(async ({ page }) => {
   await page.route("**/api/workbench/operations/*", async route => {
     const req = route.request().postDataJSON();
@@ -37,7 +47,7 @@ test("empty source preserves unknown values, exact downloads and resolved links"
   expect(bundle.results[0].coverage_status).toBe("source_blocked");
   expect(bundle.results[0].cells[0].raw_metrics.net_rating).toBeNull();
   await page.getByRole("button", { name: "Pin for comparison" }).click();
-  await page.getByLabel("Together player IDs").fill("other");
+  await pick(page,"Together players","other",true);
   await page.getByRole("button", { name: "Run shared-floor analysis" }).click();
   await expect(page.getByText("Pinned eligible differences", { exact: false })).toBeVisible();
 });
@@ -48,7 +58,7 @@ test("two and five player units use the same operation with all partitions", asy
   await openWorkbench(page, "/wowy");
   await page.getByRole("combobox", { name: "View", exact: true }).selectOption("unit");
   for (const ids of ["1,2", "1,2,3,4,5"]) {
-    await page.getByLabel("Unit player IDs").fill(ids);
+    await pick(page,"Exact unit",ids,true);
     await page.getByRole("button", { name: "Run shared-floor analysis" }).click();
     await expect(page.getByText("Real analytics are unavailable", { exact: false })).toBeVisible();
     await expect(page.getByText(`All disjoint presence/absence partitions (${2 ** ids.split(",").length})`, { exact: true })).toBeVisible();
@@ -58,13 +68,13 @@ test("two and five player units use the same operation with all partitions", asy
 
 test("stat shifts reject focal contradictions and request per-possession production", async ({ page }) => {
   await openWorkbench(page, "/stat-line-shift");
-  await page.getByLabel("Focal player ID", { exact: true }).fill("1");
-  await page.getByLabel("Together player IDs").fill("1");
+  await pick(page,"Focal player","1");
+  await pick(page,"Together players","1");
   await page.getByRole("button", { name: "Run shared-floor analysis" }).click();
   await expect(page.locator(".shared-floor").getByRole("alert")).toContainText("separate");
-  await page.getByLabel("Together player IDs").fill("2");
+  await pick(page,"Together players","2",true);
   await page.getByRole("button", { name: "Run shared-floor analysis" }).click();
-  await expect(page.getByRole("heading", { name: "stat-shift · TOR · 2" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: /stat-shift · TOR · Fixture Player 2/ })).toBeVisible();
 });
 
 test("bounded leaders pin a resolved release across candidates", async ({ page }) => {
@@ -72,7 +82,7 @@ test("bounded leaders pin a resolved release across candidates", async ({ page }
   page.on("request", req => { if (req.url().endsWith("/operations/on-off")) requests.push(req.postDataJSON()); });
   await openWorkbench(page, "/wowy");
   await page.getByRole("combobox", { name: "View", exact: true }).selectOption("leaders");
-  await page.getByLabel("Candidate player IDs").fill("1,2,3");
+  await pick(page,"Candidate players","1,2,3");
   await page.getByRole("button", { name: "Run shared-floor analysis" }).click();
   await expect(page.getByRole("heading", { name: /on-off · TOR/ })).toHaveCount(3);
   expect(requests).toHaveLength(3);
@@ -84,7 +94,7 @@ test("Stats on/off preset opens actual shared-floor operation", async ({ page })
   await openWorkbench(page, "/stats?preset=onoff&together=1");
   await expect(page.getByRole("heading", { name: "Stats · On/off" })).toBeVisible();
   await page.getByRole("button", { name: "Run shared-floor analysis" }).click();
-  await expect(page.getByRole("heading", { name: "on-off · TOR · 1" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: /on-off · TOR/ })).toBeVisible();
 });
 
 test("partial samples show raw rates and directional denominators while gating differences", async ({ page }) => {

@@ -1,0 +1,2 @@
+# Content-hashed artwork: preserve exact bytes so recorded SHA-256 values verify
+dashboard/public/team-logos/*.svg -text

@@ -8,7 +8,7 @@ export const dynamic = "force-dynamic";
 export default async function PlannerPage() {
   const status = await getDataStatus();
   return (
-    <section className="page shell wide-shell">
+    <section className="advanced-research legacy-planner">
       <div className="page-heading">
         <div>
           <p className="kicker">Private decision workspace</p>

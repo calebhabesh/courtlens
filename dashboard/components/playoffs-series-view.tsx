@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from "react";
 import Link from "next/link";
+import { SortHeader } from "./table-ui";
 import { PlayerPortrait } from "@/components/player-portrait";
 import type { PlayoffSeriesDetailResponse, PlayerSeriesStats } from "@/lib/types";
 import {
@@ -150,7 +151,7 @@ export function PlayoffsSeriesView({ detail, cutoffDate }: PlayoffsSeriesViewPro
         </div>
 
         {/* Matchup Teams Banner */}
-        <div
+        <div className="responsive-pair"
           style={{
             display: "grid",
             gridTemplateColumns: "1fr auto 1fr",
@@ -405,7 +406,7 @@ export function PlayoffsSeriesView({ detail, cutoffDate }: PlayoffsSeriesViewPro
           <span className="badge font-mono">{team1.tricode} vs {team2.tricode}</span>
         </div>
 
-        <div className="table-wrapper">
+        <div className="table-wrapper research-table-scroll" role="region" aria-label="Series statistics scroll area" tabIndex={0}>
           <table className="data-table">
             <thead>
               <tr>
@@ -514,110 +515,26 @@ export function PlayoffsSeriesView({ detail, cutoffDate }: PlayoffsSeriesViewPro
           </div>
         </div>
 
-        <div className="table-wrapper">
+        <div className="table-wrapper research-table-scroll" role="region" aria-label="Series statistics scroll area" tabIndex={0}>
           <table className="data-table">
             <thead>
               <tr>
                 <th style={{ width: "40px" }}>#</th>
-                <th
-                  onClick={() => handleSort("player_name")}
-                  style={{ cursor: "pointer" }}
-                  title="Click to sort by player name"
-                >
-                  Player {sortField === "player_name" ? (sortDir === "asc" ? "▲" : "▼") : ""}
-                </th>
+                <SortHeader className="" label="Player" metric="player_name" active={sortField === "player_name"} direction={sortDir} onSort={() => handleSort("player_name")} />
                 <th>Team</th>
-                <th
-                  className="num"
-                  onClick={() => handleSort("games_played")}
-                  style={{ cursor: "pointer" }}
-                >
-                  GP {sortField === "games_played" ? (sortDir === "asc" ? "▲" : "▼") : ""}
-                </th>
-                <th
-                  className="num"
-                  onClick={() => handleSort("minutes_per_game")}
-                  style={{ cursor: "pointer" }}
-                >
-                  MPG {sortField === "minutes_per_game" ? (sortDir === "asc" ? "▲" : "▼") : ""}
-                </th>
-                <th
-                  className="num"
-                  onClick={() => handleSort("points_per_game")}
-                  style={{ cursor: "pointer" }}
-                >
-                  PPG {sortField === "points_per_game" ? (sortDir === "asc" ? "▲" : "▼") : ""}
-                </th>
-                <th
-                  className="num"
-                  onClick={() => handleSort("rebounds_per_game")}
-                  style={{ cursor: "pointer" }}
-                >
-                  RPG {sortField === "rebounds_per_game" ? (sortDir === "asc" ? "▲" : "▼") : ""}
-                </th>
-                <th
-                  className="num"
-                  onClick={() => handleSort("assists_per_game")}
-                  style={{ cursor: "pointer" }}
-                >
-                  APG {sortField === "assists_per_game" ? (sortDir === "asc" ? "▲" : "▼") : ""}
-                </th>
-                <th
-                  className="num"
-                  onClick={() => handleSort("steals_per_game")}
-                  style={{ cursor: "pointer" }}
-                >
-                  SPG {sortField === "steals_per_game" ? (sortDir === "asc" ? "▲" : "▼") : ""}
-                </th>
-                <th
-                  className="num"
-                  onClick={() => handleSort("blocks_per_game")}
-                  style={{ cursor: "pointer" }}
-                >
-                  BPG {sortField === "blocks_per_game" ? (sortDir === "asc" ? "▲" : "▼") : ""}
-                </th>
-                <th
-                  className="num"
-                  onClick={() => handleSort("turnovers_per_game")}
-                  style={{ cursor: "pointer" }}
-                >
-                  TOPG {sortField === "turnovers_per_game" ? (sortDir === "asc" ? "▲" : "▼") : ""}
-                </th>
-                <th
-                  className="num"
-                  onClick={() => handleSort("fg_pct")}
-                  style={{ cursor: "pointer" }}
-                >
-                  FG% {sortField === "fg_pct" ? (sortDir === "asc" ? "▲" : "▼") : ""}
-                </th>
-                <th
-                  className="num"
-                  onClick={() => handleSort("fg3_pct")}
-                  style={{ cursor: "pointer" }}
-                >
-                  3P% {sortField === "fg3_pct" ? (sortDir === "asc" ? "▲" : "▼") : ""}
-                </th>
-                <th
-                  className="num"
-                  onClick={() => handleSort("ft_pct")}
-                  style={{ cursor: "pointer" }}
-                >
-                  FT% {sortField === "ft_pct" ? (sortDir === "asc" ? "▲" : "▼") : ""}
-                </th>
-                <th
-                  className="num"
-                  onClick={() => handleSort("efg_pct")}
-                  style={{ cursor: "pointer" }}
-                >
-                  eFG% {sortField === "efg_pct" ? (sortDir === "asc" ? "▲" : "▼") : ""}
-                </th>
-                <th
-                  className="num"
-                  onClick={() => handleSort("ts_pct")}
-                  style={{ cursor: "pointer" }}
-                >
-                  TS% {sortField === "ts_pct" ? (sortDir === "asc" ? "▲" : "▼") : ""}
-                </th>
+                <SortHeader className="num" label="GP" metric="games_played" active={sortField === "games_played"} direction={sortDir} onSort={() => handleSort("games_played")} />
+                <SortHeader className="num" label="MPG" metric="minutes_per_game" active={sortField === "minutes_per_game"} direction={sortDir} onSort={() => handleSort("minutes_per_game")} />
+                <SortHeader className="num" label="PPG" metric="points_per_game" active={sortField === "points_per_game"} direction={sortDir} onSort={() => handleSort("points_per_game")} />
+                <SortHeader className="num" label="RPG" metric="rebounds_per_game" active={sortField === "rebounds_per_game"} direction={sortDir} onSort={() => handleSort("rebounds_per_game")} />
+                <SortHeader className="num" label="APG" metric="assists_per_game" active={sortField === "assists_per_game"} direction={sortDir} onSort={() => handleSort("assists_per_game")} />
+                <SortHeader className="num" label="SPG" metric="steals_per_game" active={sortField === "steals_per_game"} direction={sortDir} onSort={() => handleSort("steals_per_game")} />
+                <SortHeader className="num" label="BPG" metric="blocks_per_game" active={sortField === "blocks_per_game"} direction={sortDir} onSort={() => handleSort("blocks_per_game")} />
+                <SortHeader className="num" label="TOPG" metric="turnovers_per_game" active={sortField === "turnovers_per_game"} direction={sortDir} onSort={() => handleSort("turnovers_per_game")} />
+                <SortHeader className="num" label="FG%" metric="fg_pct" active={sortField === "fg_pct"} direction={sortDir} onSort={() => handleSort("fg_pct")} />
+                <SortHeader className="num" label="3P%" metric="fg3_pct" active={sortField === "fg3_pct"} direction={sortDir} onSort={() => handleSort("fg3_pct")} />
+                <SortHeader className="num" label="FT%" metric="ft_pct" active={sortField === "ft_pct"} direction={sortDir} onSort={() => handleSort("ft_pct")} />
+                <SortHeader className="num" label="eFG%" metric="efg_pct" active={sortField === "efg_pct"} direction={sortDir} onSort={() => handleSort("efg_pct")} />
+                <SortHeader className="num" label="TS%" metric="ts_pct" active={sortField === "ts_pct"} direction={sortDir} onSort={() => handleSort("ts_pct")} />
                 <th style={{ textAlign: "right" }}>Action</th>
               </tr>
             </thead>
@@ -671,14 +588,14 @@ export function PlayoffsSeriesView({ detail, cutoffDate }: PlayoffsSeriesViewPro
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(400px, 1fr))",
+          gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 400px), 1fr))",
           gap: "1.25rem"
         }}
       >
         {/* Matchup Matrix Panel (Gated) */}
         <div className="panel" style={{ padding: "1.25rem" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.5rem" }}>
-            <span className="badge badge-warning text-xs font-mono">Gated to Blocks B23–B24</span>
+          <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "0.5rem", marginBottom: "0.5rem" }}>
+            <span className="badge badge-warning text-xs font-mono">Requires admitted matchup inputs</span>
             <h3 className="panel-title" style={{ fontSize: "1rem" }}>
               Head-to-Head Defensive Matchup Matrix
             </h3>
@@ -690,8 +607,8 @@ export function PlayoffsSeriesView({ detail, cutoffDate }: PlayoffsSeriesViewPro
 
         {/* Rotation Stints & Lineups Panel (Gated) */}
         <div className="panel" style={{ padding: "1.25rem" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.5rem" }}>
-            <span className="badge badge-warning text-xs font-mono">Gated to Blocks B19–B22</span>
+          <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "0.5rem", marginBottom: "0.5rem" }}>
+            <span className="badge badge-warning text-xs font-mono">Requires admitted lineup inputs</span>
             <h3 className="panel-title" style={{ fontSize: "1rem" }}>
               Rotation Stints &amp; WOWY Lineups
             </h3>

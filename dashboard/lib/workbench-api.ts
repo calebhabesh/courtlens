@@ -31,6 +31,7 @@ import type {
   RankOperationResponse,
   SavedInvestigation,
   QuerySpec,
+  StatsPresentation,
   SplitProfileRequest,
   SplitProfileResponse,
   StatisticalPeersRequest,
@@ -140,12 +141,13 @@ export async function queryPlayerResearch(
 }
 
 export async function executeWorkbenchQuery(
-  query: QuerySpec
+  query: QuerySpec,
+  presentation?: StatsPresentation
 ): Promise<WorkbenchQueryResponse> {
   return wbFetch<WorkbenchQueryResponse>("/api/workbench/query", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ query })
+    body: JSON.stringify({ query, ...(presentation ? { presentation } : {}) })
   });
 }
 
@@ -457,6 +459,8 @@ export interface LookupQueryOptions {
   query: string;
   releaseId?: string | null;
   season?: string | null;
+  phase?: string | null;
+  beforeDate?: string | null;
   kinds?: Array<"player" | "team" | "page">;
   limit?: number;
   signal?: AbortSignal;
@@ -468,6 +472,8 @@ export async function queryLookup(options: LookupQueryOptions): Promise<LookupRe
   sp.set("q", options.query);
   if (options.releaseId) sp.set("releaseId", options.releaseId);
   if (options.season) sp.set("season", options.season);
+  if (options.phase) sp.set("phase", options.phase);
+  if (options.beforeDate) sp.set("before_date", options.beforeDate);
   if (options.kinds && options.kinds.length > 0) sp.set("kinds", options.kinds.join(","));
   if (options.limit !== undefined) sp.set("limit", String(options.limit));
 

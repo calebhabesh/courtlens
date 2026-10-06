@@ -1,4 +1,7 @@
 "use client";
+import { EntityField } from "./entity-picker";
+import { useSearchParams } from "next/navigation";
+import { buildPreservedContextUrl } from "@/lib/query-url";
 
 import { useState, useMemo } from "react";
 import Link from "next/link";
@@ -30,7 +33,6 @@ interface TeamCompareViewProps {
 }
 
 export function TeamCompareView({
-  teamsList,
   teamAId,
   teamBId,
   teamADetail,
@@ -48,8 +50,13 @@ export function TeamCompareView({
   const router = useRouter();
 
   // Selected teams
+  const searchParams = useSearchParams();
+  const releaseId = searchParams.get("releaseId") ?? searchParams.get("release_id") ?? String(teamADetail?.context.release_id ?? "");
   const [selectedA, setSelectedA] = useState(teamAId);
   const [selectedB, setSelectedB] = useState(teamBId);
+  const initialKey = JSON.stringify([teamAId,teamBId]);
+  const [previousInitial,setPreviousInitial] = useState(initialKey);
+  if(initialKey !== previousInitial) {setPreviousInitial(initialKey);setSelectedA(teamAId);setSelectedB(teamBId);}
 
   // F18 Three-point variation scenario sliders (0% = observed, 100% = full regression to league avg)
   const [regressionPctA, setRegressionPctA] = useState<number>(100);
@@ -62,7 +69,7 @@ export function TeamCompareView({
   const handleTeamChange = (newA: string, newB: string) => {
     setSelectedA(newA);
     setSelectedB(newB);
-    router.push(`/team-compare?teamA=${newA}&teamB=${newB}&season=${season}&phase=${phase}&beforeDate=${beforeDate}`);
+    if(newA && newB && newA !== newB) router.push(buildPreservedContextUrl(`/team-compare?teamA=${newA}&teamB=${newB}&season=${season}&phase=${phase}&beforeDate=${beforeDate}&releaseId=${releaseId}`,searchParams));
   };
 
   const handleSwap = () => {
@@ -152,24 +159,13 @@ export function TeamCompareView({
           borderTop: "3px solid var(--accent)",
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", gap: "1rem", flex: "1 1 300px" }}>
+        <div className="team-comparison-selectors" style={{ display: "flex", alignItems: "center", gap: "1rem", flex: "1 1 300px" }}>
           {/* Team A Select */}
           <div style={{ flex: 1 }}>
             <label className="text-xs text-muted font-mono" style={{ display: "block", marginBottom: "0.25rem" }}>
               TEAM A
             </label>
-            <select
-              value={selectedA}
-              onChange={(e) => handleTeamChange(e.target.value, selectedB)}
-              className="input-field"
-              style={{ width: "100%", fontWeight: 600, fontSize: "0.95rem" }}
-            >
-              {teamsList.map((t) => (
-                <option key={t.team_id} value={t.team_id} disabled={t.team_id === selectedB}>
-                  {t.tricode} — {t.name} ({t.wins}-{t.losses})
-                </option>
-              ))}
-            </select>
+<EntityField label="Team A" kind="team" value={selectedA} releaseId={releaseId} season={season} phase={phase} beforeDate={beforeDate} excludedIds={[selectedB]} onChange={id=>handleTeamChange(id,selectedB)} />
           </div>
 
           {/* Swap Button */}
@@ -188,18 +184,7 @@ export function TeamCompareView({
             <label className="text-xs text-muted font-mono" style={{ display: "block", marginBottom: "0.25rem" }}>
               TEAM B
             </label>
-            <select
-              value={selectedB}
-              onChange={(e) => handleTeamChange(selectedA, e.target.value)}
-              className="input-field"
-              style={{ width: "100%", fontWeight: 600, fontSize: "0.95rem" }}
-            >
-              {teamsList.map((t) => (
-                <option key={t.team_id} value={t.team_id} disabled={t.team_id === selectedA}>
-                  {t.tricode} — {t.name} ({t.wins}-{t.losses})
-                </option>
-              ))}
-            </select>
+<EntityField label="Team B" kind="team" value={selectedB} releaseId={releaseId} season={season} phase={phase} beforeDate={beforeDate} excludedIds={[selectedA]} onChange={id=>handleTeamChange(selectedA,id)} />
           </div>
         </div>
 
@@ -224,7 +209,7 @@ export function TeamCompareView({
             className={`button button-small ${activeTab === "three_point" ? "button-primary" : ""}`}
             onClick={() => setActiveTab("three_point")}
           >
-            3P Variation (F18)
+            3P variation
           </button>
           <button
             type="button"
@@ -244,7 +229,7 @@ export function TeamCompareView({
       </div>
 
       {/* Zero Inferred Claims & Standings Guardrails */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem" }}>
+      <div className="responsive-pair" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem" }}>
         <div className="notice-box" style={{ margin: 0 }}>
           <strong>Official Standings Notice:</strong> Ties in record ordering do not establish official conference placement. Standings reflect verified box scores strictly prior to {beforeDate}.
         </div>
@@ -339,7 +324,7 @@ export function TeamCompareView({
       {activeTab === "overview" && (
         <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
           {/* Side by Side Franchise Headers */}
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+          <div className="responsive-pair" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
             {/* Team A Card */}
             <div className="panel" style={{ padding: "1.25rem", borderTop: "3px solid var(--accent)" }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
@@ -374,7 +359,7 @@ export function TeamCompareView({
                 </div>
               </div>
 
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.5rem", marginTop: "1rem" }}>
+              <div className="responsive-pair" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.5rem", marginTop: "1rem" }}>
                 <div className="stat-card" style={{ padding: "0.75rem" }}>
                   <span className="stat-value font-mono" style={{ fontSize: "1.25rem" }}>
                     {teamADetail?.production.pts_per_game?.toFixed(1) ?? "—"}
@@ -443,7 +428,7 @@ export function TeamCompareView({
                 </div>
               </div>
 
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.5rem", marginTop: "1rem" }}>
+              <div className="responsive-pair" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.5rem", marginTop: "1rem" }}>
                 <div className="stat-card" style={{ padding: "0.75rem" }}>
                   <span className="stat-value font-mono" style={{ fontSize: "1.25rem" }}>
                     {teamBDetail?.production.pts_per_game?.toFixed(1) ?? "—"}
@@ -689,7 +674,7 @@ export function TeamCompareView({
               Dean Oliver Four Factors weights: Shooting (eFG% 40%), Turnovers (TOV% 25%), Rebounding (ORB% 20%), Free Throws (FTR 15%).
             </p>
 
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+            <div className="responsive-pair" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
               {/* Factors for Team A */}
               <div style={{ background: "var(--surface)", padding: "1rem", borderRadius: "8px", border: "1px solid var(--border)" }}>
                 <h4 style={{ margin: "0 0 0.75rem 0", color: "var(--accent)", fontSize: "0.9rem" }}>
@@ -750,7 +735,7 @@ export function TeamCompareView({
               Defensive Four Factors (Allowed) Comparison
             </h3>
 
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+            <div className="responsive-pair" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
               {/* Factors for Team A Defense */}
               <div style={{ background: "var(--surface)", padding: "1rem", borderRadius: "8px", border: "1px solid var(--border)" }}>
                 <h4 style={{ margin: "0 0 0.75rem 0", color: "var(--accent)", fontSize: "0.9rem" }}>
@@ -822,7 +807,7 @@ export function TeamCompareView({
             </p>
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.5rem" }}>
+          <div className="responsive-pair" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.5rem" }}>
             {/* Team A Scenario Box */}
             <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: "8px", padding: "1rem" }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.75rem" }}>
@@ -954,7 +939,7 @@ export function TeamCompareView({
             <strong>Participation / Current-Roster Distinction:</strong> Player rows represent all individuals with verified on-court minutes for the franchise during this season window (for example, Toronto&rsquo;s 31-player cohort across in-season trades). This is an empirical accounting of court exposure, not a contractual or end-of-season roster claim.
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+          <div className="responsive-pair" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
             {/* Team A Cohort */}
             <div className="panel">
               <div className="panel-header" style={{ padding: "0.75rem 1rem", borderBottom: "1px solid var(--border)" }}>
@@ -981,7 +966,7 @@ export function TeamCompareView({
                           <div className="player-cell">
                             <PlayerPortrait playerId={p.player_id} name={p.player_name} size="sm" />
                             <Link
-                              href={`/players/${p.player_id}?season=${season}&phase=${phase}&beforeDate=${beforeDate}`}
+                              href={`/players/${p.player_id}?season=${season}&phase=${phase}&beforeDate=${beforeDate}&releaseId=${releaseId}`}
                               className="player-cell-name text-accent font-semibold"
                             >
                               {p.player_name}
@@ -1024,7 +1009,7 @@ export function TeamCompareView({
                           <div className="player-cell">
                             <PlayerPortrait playerId={p.player_id} name={p.player_name} size="sm" />
                             <Link
-                              href={`/players/${p.player_id}?season=${season}&phase=${phase}&beforeDate=${beforeDate}`}
+                              href={`/players/${p.player_id}?season=${season}&phase=${phase}&beforeDate=${beforeDate}&releaseId=${releaseId}`}
                               className="player-cell-name text-accent font-semibold"
                             >
                               {p.player_name}
@@ -1046,7 +1031,7 @@ export function TeamCompareView({
 
       {/* TAB 5: SIMILAR PEERS COMPARISON */}
       {activeTab === "peers" && (
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+        <div className="responsive-pair" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
           {/* Team A Peers */}
           <div className="panel">
             <div className="panel-header" style={{ padding: "0.75rem 1rem", borderBottom: "1px solid var(--border)" }}>

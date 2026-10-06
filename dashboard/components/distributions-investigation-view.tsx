@@ -1,5 +1,8 @@
 "use client";
 
+import { useReleaseCatalog } from "@/lib/use-release-catalog";
+import { EntityField } from "./entity-picker";
+
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -31,20 +34,26 @@ const FEATURED_PLAYERS = [
 export function DistributionsInvestigationView() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const selectedReleaseId = searchParams.get("releaseId") ?? searchParams.get("release_id");
+  const catalog = useReleaseCatalog(selectedReleaseId);
+  const releaseId = selectedReleaseId ?? catalog?.release_id ?? null;
+  const phase = searchParams.get("phase") ?? catalog?.default_phase ?? "regular_season";
 
   // URL state initialization
   const initialPlayerId = searchParams.get("playerId") || searchParams.get("player_id") || "1628389";
-  const initialSeason = searchParams.get("season") || "2025-26";
+  const initialSeason = searchParams.get("season") || catalog?.default_season || "";
   const initialTab = (searchParams.get("tab") as "distribution" | "splits" | "opponent" | "rank") || "distribution";
   const initialMetric = searchParams.get("metric") || "pts";
-  const initialWindow = parseInt(searchParams.get("window") || "20", 10);
+  const legacyWindow = Number(searchParams.get("window"));
+  const initialWindow = Number(searchParams.get("windowN") || ([5,10,20,30,50].includes(legacyWindow) ? legacyWindow : 20));
 
   const [activeTab, setActiveTab] = useState<"distribution" | "splits" | "opponent" | "rank">(initialTab);
   const [playerId, setPlayerId] = useState(initialPlayerId);
   const [season, setSeason] = useState(initialSeason);
+  if (!season && initialSeason) setSeason(initialSeason);
+  const beforeDate = searchParams.get("beforeDate") ?? searchParams.get("before_date") ?? catalog?.stats_scopes?.find(scope => scope.season === season && scope.phase === phase)?.default_before_date ?? catalog?.default_before_date ?? null;
   const [metric, setMetric] = useState(initialMetric);
   const [windowN, setWindowN] = useState(initialWindow);
-  const [customPlayerInput, setCustomPlayerInput] = useState(initialPlayerId);
 
   // Data states
   const [distLoading, setDistLoading] = useState(false);
@@ -67,33 +76,29 @@ export function DistributionsInvestigationView() {
 
   const [copiedUrl, setCopiedUrl] = useState(false);
 
+  const [previousUrl,setPreviousUrl] = useState(searchParams.toString());
+  if(previousUrl !== searchParams.toString()) {setPreviousUrl(searchParams.toString());setPlayerId(initialPlayerId);setSeason(initialSeason);setActiveTab(initialTab);setMetric(initialMetric);setWindowN(initialWindow);}
+
   // Sync URL search params
   const updateUrl = (pId: string, tab: string, met: string, win: number) => {
-    const sp = new URLSearchParams();
+    const sp = new URLSearchParams(searchParams.toString());
     sp.set("playerId", pId);
     sp.set("season", season);
     sp.set("tab", tab);
     sp.set("metric", met);
-    sp.set("window", String(win));
+    sp.set("windowN", String(win));
     router.replace(`/research/distributions?${sp.toString()}`);
   };
 
   const handleSelectPlayer = (id: string) => {
     setPlayerId(id);
-    setCustomPlayerInput(id);
     updateUrl(id, activeTab, metric, windowN);
   };
 
-  const handleCustomPlayerSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (customPlayerInput.trim()) {
-      handleSelectPlayer(customPlayerInput.trim());
-    }
-  };
 
   // Fetch Distribution
   useEffect(() => {
-    if (!playerId) return;
+    if (!playerId || !season) return;
 
     let isMounted = true;
     queueMicrotask(() => {
@@ -107,7 +112,7 @@ export function DistributionsInvestigationView() {
       player_id: playerId,
       metric,
       season,
-      phase: "regular_season",
+      phase, release_id: releaseId, before_date: beforeDate,
       window_n: windowN
     })
       .then((res) => {
@@ -126,11 +131,11 @@ export function DistributionsInvestigationView() {
     return () => {
       isMounted = false;
     };
-  }, [playerId, season, metric, windowN]);
+  }, [playerId, season, metric, windowN, phase, releaseId, beforeDate]);
 
   // Fetch Splits
   useEffect(() => {
-    if (activeTab !== "splits" || !playerId) return;
+    if (activeTab !== "splits" || !playerId || !season) return;
 
     let isMounted = true;
     queueMicrotask(() => {
@@ -143,7 +148,7 @@ export function DistributionsInvestigationView() {
     getSplitProfile({
       player_id: playerId,
       season,
-      phase: "regular_season"
+      phase, release_id: releaseId, before_date: beforeDate
     })
       .then((res) => {
         if (isMounted) {
@@ -161,11 +166,11 @@ export function DistributionsInvestigationView() {
     return () => {
       isMounted = false;
     };
-  }, [activeTab, playerId, season]);
+  }, [activeTab, playerId, season, phase, releaseId, beforeDate]);
 
   // Fetch Opponent Context
   useEffect(() => {
-    if (activeTab !== "opponent") return;
+    if (activeTab !== "opponent" || !season) return;
 
     let isMounted = true;
     queueMicrotask(() => {
@@ -177,7 +182,7 @@ export function DistributionsInvestigationView() {
 
     getOpponentContext({
       season,
-      phase: "regular_season"
+      phase, release_id: releaseId, before_date: beforeDate
     })
       .then((res) => {
         if (isMounted) {
@@ -195,11 +200,11 @@ export function DistributionsInvestigationView() {
     return () => {
       isMounted = false;
     };
-  }, [activeTab, season]);
+  }, [activeTab, season, phase, releaseId, beforeDate]);
 
   // Fetch Cohort Dispersion Rank
   useEffect(() => {
-    if (activeTab !== "rank") return;
+    if (activeTab !== "rank" || !season) return;
 
     let isMounted = true;
     queueMicrotask(() => {
@@ -215,7 +220,7 @@ export function DistributionsInvestigationView() {
       measure: rankMeasure,
       sort_direction: rankDirection,
       season,
-      phase: "regular_season",
+      phase, release_id: releaseId, before_date: beforeDate,
       limit: 25,
       min_games: 10
     })
@@ -235,7 +240,7 @@ export function DistributionsInvestigationView() {
     return () => {
       isMounted = false;
     };
-  }, [activeTab, metric, rankMeasure, rankDirection, season]);
+  }, [activeTab, metric, rankMeasure, rankDirection, season, phase, releaseId, beforeDate]);
 
   const handleCopyUrl = async () => {
     if (typeof window === "undefined") return;
@@ -278,6 +283,7 @@ export function DistributionsInvestigationView() {
 
   return (
     <div className="workbench-content">
+      {catalog === null && <p role="status">Context catalog unavailable. Explicit URL scope is retained; reload to retry.</p>}
       {/* Page Header */}
       <div className="page-header">
         <div>
@@ -289,7 +295,7 @@ export function DistributionsInvestigationView() {
             >
               Metric Distributions & Contextual Splits
             </span>
-            <span className="font-mono text-xs text-muted">Blocks B12–B13</span>
+
           </div>
           <h1 className="page-title">Distributions, Dispersion & Splits</h1>
           <p className="page-subtitle">
@@ -402,25 +408,7 @@ export function DistributionsInvestigationView() {
             </div>
 
             {/* Custom Player ID Form */}
-            <form onSubmit={handleCustomPlayerSubmit} style={{ display: "flex", flexDirection: "column", gap: "0.25rem" }}>
-              <label className="text-xs font-mono text-muted uppercase" htmlFor="dist-player-id">
-                Player ID / Search
-              </label>
-              <div style={{ display: "flex", gap: "0.25rem" }}>
-                <input
-                  id="dist-player-id"
-                  type="text"
-                  value={customPlayerInput}
-                  onChange={(e) => setCustomPlayerInput(e.target.value)}
-                  placeholder="e.g. 1628389"
-                  className="input text-xs"
-                  style={{ width: "110px", padding: "0.25rem 0.5rem" }}
-                />
-                <button type="submit" className="button button-secondary text-xs">
-                  Load
-                </button>
-              </div>
-            </form>
+            <EntityField label="Target player" value={playerId} releaseId={releaseId} season={season} phase={phase} beforeDate={beforeDate} onChange={id => { if(id) handleSelectPlayer(id); else setPlayerId(""); }} />
 
             {/* Metric Selector */}
             <div style={{ display: "flex", flexDirection: "column", gap: "0.25rem" }}>
@@ -474,9 +462,7 @@ export function DistributionsInvestigationView() {
                 className="input text-xs"
                 style={{ padding: "0.25rem 0.5rem" }}
               >
-                <option value="2025-26">2025-26</option>
-                <option value="2024-25">2024-25</option>
-                <option value="2023-24">2023-24</option>
+                {season && !catalog?.seasons.includes(season) && <option value={season}>{season} · availability unverified</option>}{catalog?.seasons.map(value => <option key={value} value={value}>{value}</option>)}
               </select>
             </div>
           </div>

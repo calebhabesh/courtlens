@@ -1,4 +1,5 @@
 "use client";
+import { humanLabel } from "@/lib/route-availability";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { downloadResearch, researchRead, type Experiment, type ResearchResult, type RunSummary } from "@/lib/advanced-research";
@@ -44,11 +45,11 @@ export function ResearchResultsView({ experiment = "courtload-expected-shot-retr
     </nav>
     {error ? <div role="alert" className="notice">Report unavailable: {error} <button className="button" onClick={() => { setError(null); setResult(null); setRegistry(null); setRetry(v => v+1); }}>Retry reads</button></div> : !registry && <p role="status">Loading registered experiments…</p>}
     {!error && registry && !entry && <p className="notice">This experiment has no registered entry. No model output is available.</p>}
-    {!error && entry && <section className="panel"><h2>Experiment availability</h2><p><strong>{entry.status}</strong></p><p>{entry.gate ?? "Read the registered run below for its selection outcome and limits."}</p><p>Protocol SHA-256: <code>{entry.protocol_sha256}</code></p><p>Unfitted coefficients, uncertainty intervals and player impact rankings are unavailable. A completed negative result is available as research evidence only.</p></section>}
-    {!error && runs.length > 0 && <label>Registered run <select value={runId} onChange={e => { setResult(null); setError(null); setRunId(e.target.value); }}>{runs.map(r => <option key={r.run_id} value={r.run_id}>{r.status} · {r.run_id}</option>)}</select></label>}
+    {!error && entry && <section className="panel"><h2>Experiment availability</h2><p><strong>{humanLabel(entry.status)}</strong></p><p>{entry.gate ?? "Read the registered run below for its selection outcome and limits."}</p><p>Protocol SHA-256: <code>{entry.protocol_sha256}</code></p><p>Unfitted coefficients, uncertainty intervals and player impact rankings are unavailable. A completed negative result is available as research evidence only.</p></section>}
+    {!error && runs.length > 0 && <label>Registered run <select value={runId} onChange={e => { setResult(null); setError(null); setRunId(e.target.value); }}>{runs.map(r => <option key={r.run_id} value={r.run_id}>{humanLabel(r.status)} · {r.run_id}</option>)}</select></label>}
     {!error && runId && !result && <p role="status">Verifying and loading sealed run…</p>}
     {!error && result && <section aria-label="Registered research result" className="panel">
-      <h2>{result.run.status === "selection_failed_negative_result" ? "Completed negative result · selection failed" : result.run.status}</h2>
+      <h2>{result.run.status === "selection_failed_negative_result" ? "Completed negative result · selection failed" : humanLabel(result.run.status)}</h2>
       <p>Classification: {result.run.classification}. Previously exposed final history: {result.run.final_previously_exposed ? "yes" : "no"}. Final error report opened: {result.run.final_report_opened == null ? "unknown" : result.run.final_report_opened ? "yes" : "no"}. Prospective promotion authorized: {result.run.prospective_promotion_authorized ? "yes" : "no"}.</p>
       <dl className="research-facts"><dt>Model fit through</dt><dd>{result.model_fit_through_date ?? "No fit"}</dd><dt>Calibration fit through</dt><dd>{result.calibration_fit_through_date ?? "No calibration fit"}</dd><dt>Report through</dt><dd>{result.report_through_date}</dd></dl>
       {selection && <><h3>Selection metrics · lower is better</h3><p>These are selection errors, not final-test performance. Brier/log loss measure make-probability error; MAE measures expected-point error per shot; ECE uses ten fixed probability bins.</p>

@@ -1,4 +1,5 @@
 "use client";
+import { Icon } from "./ui/icon";
 
 import { useState, useMemo, useRef, useCallback } from "react";
 import type { PlayerResearchItem } from "@/lib/types";
@@ -196,7 +197,7 @@ export function ScatterPlotView({
             className="button button-small"
             title="Download context-stamped PNG image with evidence watermark"
           >
-            {exporting ? "Rendering…" : "📷 Export PNG"}
+            {exporting ? "Rendering…" : <><Icon name="download" />Export PNG</>}
           </button>
           <button
             type="button"
@@ -212,7 +213,7 @@ export function ScatterPlotView({
             className="button button-small"
             title="Copy local query link to clipboard"
           >
-            {copySuccess ? "✓ Copied" : "📋 Copy URL"}
+            {copySuccess ? "✓ Copied" : <><Icon name="copy" />Copy local URL</>}
           </button>
         </div>
       </div>
@@ -281,7 +282,7 @@ export function ScatterPlotView({
           type="button"
           onClick={() => setShowOutlierLabels((prev) => !prev)}
           className={`control-pill ${showOutlierLabels ? "active" : ""}`}
-          style={{ alignSelf: "flex-end", height: "32px" }}
+          style={{ alignSelf: "flex-end", minHeight: "40px" }}
           title="Toggle visible text labels on statistical outliers"
         >
           Labels: {showOutlierLabels ? "On" : "Off"}
@@ -292,7 +293,7 @@ export function ScatterPlotView({
           type="button"
           onClick={() => setShowDataTable((prev) => !prev)}
           className={`control-pill ${showDataTable ? "active" : ""}`}
-          style={{ alignSelf: "flex-end", height: "32px" }}
+          style={{ alignSelf: "flex-end", minHeight: "40px" }}
           title="Toggle accessible chart data table below"
         >
           {showDataTable ? "Hide Table" : "Show Data Table"}

@@ -1,4 +1,8 @@
 "use client";
+import { EntityField } from "./entity-picker";
+import { useSearchParams } from "next/navigation";
+import { ThreadedAssistant } from "./threaded-assistant";
+import type { ConversationContext } from "@/lib/assistant-v2.generated";
 
 import Link from "next/link";
 import { useEffect, useId, useRef, useState } from "react";
@@ -14,6 +18,12 @@ const examples: Record<string, Record<string, unknown>> = {
   workload_shifts: {period_n:10,min_minutes:0,limit:20}, similarity:{target_player_id:"1630567",window:"last_10",top_k:5}, distribution:{player_id:"1630567",metric:"pts",window_n:20}, compare_periods:{player_id:"1630567",mode:"appearances",period_a_n:10,period_b_n:10}, splits:{player_id:"1630567"}, definition:{metric:"ts_pct"}, query:{metric_selectors:[{key:"pts_per_game"}],page:{limit:10}}, profile:{player_id:"1630567"}, compare:{player_a:"1630567",player_b:"1629628"}, team:{team_id:"1610612761"}, forecast:{player_id:"1630567"}, finance:{}
 };
 export function AskCourtLoad(props: AskCourtLoadProps) {
+  const params = useSearchParams();
+  if (params.get("experience") !== "manual") return <ThreadedAssistant initialContext={{release_id:params.get("releaseId") ?? params.get("release_id") ?? undefined,season:params.get("season") ?? undefined,phase:(params.get("phase") ?? undefined) as ConversationContext["phase"],before_date:params.get("beforeDate") ?? params.get("before_date") ?? undefined,window:(params.get("window") ?? undefined) as ConversationContext["window"]}} />;
+  return <LegacyAskCourtLoad {...props} />;
+}
+
+function LegacyAskCourtLoad(props: AskCourtLoadProps) {
   const id = useId();
   const [context, setContext] = useState<Context>({release_id:props.initialReleaseId,season:props.initialSeason,phase:props.initialPhase,before_date:props.initialBeforeDate,window:props.initialWindow});
   const [question, setQuestion] = useState("");
@@ -78,6 +88,12 @@ export function AskCourtLoad(props: AskCourtLoadProps) {
       input.current?.focus();
     } catch(cause) {setError(cause instanceof Error ? cause.message : "Could not clear local conversation");}
   }
+  let entityArguments: Record<string, unknown> = {};
+  try { const value: unknown = JSON.parse(argumentsText); if(value && typeof value === "object" && !Array.isArray(value)) entityArguments = value as Record<string,unknown>; } catch { /* JSON editor retains its own validation. */ }
+  const entityKeys = Object.keys(examples[operation] ?? {}).filter(key=>["player_id","target_player_id","player_a","player_b","team_id"].includes(key));
+  function selectEntity(key: string, value: string) {
+    setArgumentsText(JSON.stringify({...entityArguments,[key]:value},null,2));
+  }
   return <div className="conversation panel">
     <div className="conversation-row"><h2>Ask CourtLoad</h2><button type="button" className="button button-small" disabled={loading} onClick={() => void reset()}>Clear conversation</button></div>
     <p role="status">{status ? status.configured ? `AI configured · ${status.model}` : "AI disabled · manual research available" : "Checking AI configuration…"}</p>
@@ -91,7 +107,7 @@ export function AskCourtLoad(props: AskCourtLoadProps) {
       <label>Window<select value={context.window ?? "season"} onChange={e=>setContext({...context,window:e.target.value})}>{["season","last_10","last_5"].map(w=><option key={w}>{w}</option>)}</select></label>
     </fieldset>
     <div className="conversation-row"><label><input type="checkbox" checked={manual} disabled={loading} onChange={e=>{setManual(e.target.checked);setRetry(null);}} /> Run manually without AI</label><Link href="/investigations">Saved investigations</Link></div>
-    {manual ? <div className="conversation-manual"><label htmlFor={`${id}-operation`}>Research operation</label><select id={`${id}-operation`} value={operation} disabled={loading} onChange={e=>{setOperation(e.target.value);setArgumentsText(JSON.stringify(examples[e.target.value] ?? {},null,2));}}>{Object.keys(examples).map(name=><option key={name} value={name}>{name.replaceAll("_"," ")}</option>)}</select><p>{operations.find(o=>o.name===operation)?.description}</p><label htmlFor={`${id}-arguments`}>Operation arguments (JSON)</label><textarea id={`${id}-arguments`} rows={6} maxLength={32768} disabled={loading} value={argumentsText} onChange={e=>setArgumentsText(e.target.value)} />{operation === "distribution" && <label><input type="checkbox" checked={includeMinutes} disabled={loading} onChange={e=>setIncludeMinutes(e.target.checked)} /> Include a minutes distribution with the same window</label>}<details><summary>Accepted arguments and definitions</summary><pre>{JSON.stringify(operations.find(o=>o.name===operation)?.parameters ?? {},null,2)}</pre></details></div> : <div className="conversation-prompts">{prompts.map(prompt=><button className="button button-small" disabled={loading} key={prompt} onClick={()=>{setQuestion(prompt);submit(undefined,prompt);}}>{prompt}</button>)}</div>}
+    {manual ? <div className="conversation-manual"><label htmlFor={`${id}-operation`}>Research operation</label><select id={`${id}-operation`} value={operation} disabled={loading} onChange={e=>{setOperation(e.target.value);setArgumentsText(JSON.stringify(examples[e.target.value] ?? {},null,2));}}>{Object.keys(examples).map(name=><option key={name} value={name}>{name.replaceAll("_"," ")}</option>)}</select><p>{operations.find(o=>o.name===operation)?.description}</p>{entityKeys.map(key=><EntityField key={`${operation}:${key}`} label={key === "team_id" ? "Research team" : key === "player_a" ? "Research player A" : key === "player_b" ? "Research player B" : "Research player"} kind={key === "team_id" ? "team" : "player"} value={typeof entityArguments[key] === "string" ? entityArguments[key] as string : ""} releaseId={context.release_id ?? null} season={context.season ?? null} phase={context.phase ?? null} beforeDate={context.before_date ?? null} disabled={loading} onChange={value=>selectEntity(key,value)} />)}<label htmlFor={`${id}-arguments`}>Operation arguments (JSON)</label><textarea id={`${id}-arguments`} rows={6} maxLength={32768} disabled={loading} value={argumentsText} onChange={e=>setArgumentsText(e.target.value)} />{operation === "distribution" && <label><input type="checkbox" checked={includeMinutes} disabled={loading} onChange={e=>setIncludeMinutes(e.target.checked)} /> Include a minutes distribution with the same window</label>}<details><summary>Accepted arguments and definitions</summary><pre>{JSON.stringify(operations.find(o=>o.name===operation)?.parameters ?? {},null,2)}</pre></details></div> : <div className="conversation-prompts">{prompts.map(prompt=><button className="button button-small" disabled={loading} key={prompt} onClick={()=>{setQuestion(prompt);submit(undefined,prompt);}}>{prompt}</button>)}</div>}
     <form onSubmit={e=>{e.preventDefault();submit();}}><label htmlFor={`${id}-question`}>{latest ? "Follow-up question" : "Research question"}{manual ? " (optional label)" : ""}</label><textarea ref={input} id={`${id}-question`} rows={2} maxLength={2000} value={question} onChange={e=>setQuestion(e.target.value)} disabled={loading} /><div className="conversation-row"><span>{question.length} / 2000</span><button className="button button-primary" disabled={loading || (!manual && !question.trim())}>{loading ? "Investigating…" : manual ? "Run manual operation" : "Ask CourtLoad"}</button></div></form>
     {error && <div role="alert"><p>{error}</p>{retry && <button className="button" disabled={loading} onClick={()=>void execute(retry)}>Retry this request</button>}</div>}
     <p role="status" aria-live="polite">{loading ? "Reading the pinned analytical inputs…" : latest ? statusLabels[latest.status] : "Ready for research"}</p>

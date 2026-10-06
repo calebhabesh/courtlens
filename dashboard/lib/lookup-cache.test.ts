@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { LookupCache, buildLookupCacheKey } from "./lookup-cache";
 import type { LookupResponse } from "./types";
 
@@ -101,9 +101,18 @@ describe("buildLookupCacheKey", () => {
     expect(k1).not.toBe(k3);
   });
 
+  it("isolates phase and exclusive cutoff associations", () => {
+    const regular = buildLookupCacheKey({ query: "doncic", phase: "regular_season", beforeDate: "2025-02-02" });
+    expect(regular).not.toBe(buildLookupCacheKey({ query: "doncic", phase: "playoffs", beforeDate: "2025-02-02" }));
+    expect(regular).not.toBe(buildLookupCacheKey({ query: "doncic", phase: "regular_season", beforeDate: "2025-02-03" }));
+  });
+
   it("sorts kinds for stable cache keys", () => {
     const k1 = buildLookupCacheKey({ query: "tor", kinds: ["team", "player"] });
     const k2 = buildLookupCacheKey({ query: "tor", kinds: ["player", "team"] });
     expect(k1).toBe(k2);
   });
 });
+
+it("expires responses so an unresolved public pointer cannot remain stale indefinitely",()=>{vi.useFakeTimers();const cache=new LookupCache(2);cache.set("public",createMockResponse("x",1));vi.advanceTimersByTime(30_001);expect(cache.get("public")).toBeUndefined();vi.useRealTimers();});
+it("does not collide when query/context contains old delimiter strings",()=>{expect(buildLookupCacheKey({query:"a__b",releaseId:"c"})).not.toBe(buildLookupCacheKey({query:"a",releaseId:"b__c"}));});

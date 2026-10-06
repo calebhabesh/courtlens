@@ -342,6 +342,10 @@ export type WorkbenchCatalog = {
   source: string;
   seasons: string[];
   phases: string[];
+  stats_scopes?: { season: string; phase: string; coverage_start: string; coverage_end: string; default_before_date: string }[];
+  stats_windows?: string[];
+  stats_normalizations?: string[];
+  stats_sort_fields?: string[];
   default_season: string;
   default_phase: string;
   default_before_date: string;
@@ -519,12 +523,28 @@ export type QuerySpec = {
 
 export type WorkbenchQueryRequest = {
   query: QuerySpec;
+  presentation?: StatsPresentation | null;
+};
+
+export type StatsPresentation = {
+  version?: "pf01a-v1";
+  // null/omitted selects all; [] selects none. Does not redefine the cohort.
+  player_ids?: string[] | null;
 };
 
 export type WorkbenchQueryResponse = {
   context: Record<string, unknown>;
   query: QuerySpec;
   total_eligible_players: number;
+  total_output_players?: number | null;
+  output_offset?: number | null;
+  cohort?: {
+    version: string;
+    scope_hash: string;
+    eligible_players: number;
+    formula: string;
+    good_directions: Record<string, "high" | "low" | null>;
+  } | null;
   items: PlayerResearchItem[];
   next_cursor: string | null;
   has_more: boolean;
@@ -541,6 +561,8 @@ export type PlayerResearchItem = {
   metrics: Record<string, number | null>;
   sample_sizes: Record<string, number>;
   portrait_url?: string | null;
+  percentiles?: Record<string, number | null> | null;
+  cohort_sample_sizes?: Record<string, number> | null;
 };
 
 export type LookupAvailability = {
@@ -551,6 +573,15 @@ export type LookupAvailability = {
   latest_tricode?: string | null;
   conference?: string | null;
   division?: string | null;
+};
+
+export type LookupTeamAssociation = {
+  basis: "selected_scope" | "last_observed";
+  teams: string[];
+  observed_through: string | null;
+  season: string | null;
+  phase: string | null;
+  before_date: string | null;
 };
 
 export type LookupItem = {
@@ -565,6 +596,7 @@ export type LookupItem = {
   portrait_url?: string | null;
   portrait_fallback?: string | null;
   availability: LookupAvailability;
+  team_association?: LookupTeamAssociation | null;
   destination_url: string;
   metadata?: Record<string, unknown>;
 };
@@ -604,6 +636,9 @@ export type PlayerResearchQuery = {
 };
 
 export type PlayerResearchResponse = {
+  total_output_players?: number | null;
+  output_offset?: number | null;
+  cohort?: WorkbenchQueryResponse["cohort"];
   context: {
     release_id: string;
     season: string;
@@ -611,7 +646,7 @@ export type PlayerResearchResponse = {
     before_date: string;
     window: string;
     last_included_date: string | null;
-    sample_size: number;
+    sample_size?: number;
     warnings: string[];
   };
   query: PlayerResearchQuery;
@@ -2016,5 +2051,4 @@ export interface PlayoffSeriesDetailResponse {
   capabilities: Record<string, string>;
   disclaimers: string[];
 }
-
 

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Section } from "@/components/ui/controls";
 import { InstallInterface } from "@/components/install-interface";
 import { WorkbenchPortraitSettings } from "@/components/workbench-portrait-settings";
 import { getAssistantStatus, getWorkbenchStatus } from "@/lib/workbench-api";
@@ -33,9 +34,9 @@ export default async function SettingsPage() {
       <div className="page-header">
         <div>
           <span className="text-xs text-muted font-mono uppercase">System Configuration</span>
-          <h1 className="page-title">Settings & Operational Health</h1>
+          <h1 className="page-title">Settings</h1>
           <p className="page-subtitle">
-            Local daemon worker status, credentials, portrait asset coverage, and data source configurations.
+            Configure portraits and the optional assistant; inspect local service status.
           </p>
         </div>
       </div>
@@ -47,10 +48,11 @@ export default async function SettingsPage() {
       )}
 
       <div className="page-actions"><Link href="/data-status">Source lineage, freshness and jobs</Link><Link href="/methodology">Definitions</Link><Link href="/investigations">Saved evidence</Link><Link href="/patch-notes">Dated changes</Link></div>
-      <div className="panel"><h2>Reported local worker state</h2><p>Scheduled refresh: {status?.worker.scheduled_refresh_utc ?? "Unavailable"}</p><p>Active job: {status?.worker.active_job ? `${status.worker.active_job.job_type} · ${status.worker.active_job.stage ?? "stage unavailable"}` : status ? "No active job reported" : "Unavailable"}</p><p>Latest job: {status?.worker.latest_job ? `${status.worker.latest_job.job_type} · ${status.worker.latest_job.status}` : "Unavailable"}</p><p>An idle job queue does not establish worker liveness. Inspect job heartbeats and source coverage in Data status.</p></div>
-      <InstallInterface />
+
+
       {/* Player Portrait Cache Coverage */}
       <WorkbenchPortraitSettings
+        available={Boolean(portraits)}
         totalCached={portraits?.total_cached ?? 0}
         active={portraits?.active ?? 0}
         totalPlayers={portraits?.total_players ?? 0}
@@ -61,7 +63,7 @@ export default async function SettingsPage() {
       <div className="panel">
         <div className="panel-header">
           <div>
-            <h2 className="panel-title">Optional AI Assistant (Gemini Adapter)</h2>
+            <h2 className="panel-title">Optional assistant</h2>
             <p className="text-muted text-xs" style={{ margin: "0.2rem 0 0" }}>
               Optional language planning over validated read-only analytical operations. Configuration alone does not establish real-provider language accuracy.
             </p>
@@ -72,10 +74,10 @@ export default async function SettingsPage() {
         </div>
 
         <div className="notice-box" style={{ borderLeftColor: "var(--series-secondary)" }}>
-          <strong>Zero-cost core guarantee:</strong> CourtLoad requires no paid subscription, cloud service, or API key for complete operation. The assistant is entirely optional and remains disabled until an explicit user key is provided.
+          <strong>Zero-cost core guarantee:</strong> Manual research needs no API key. The optional assistant requires your configured key. Source and model availability remain separate.
         </div>
 
-        <div className="lineage-meta-box">
+        <details><summary>Assistant configuration details</summary><div className="lineage-meta-box">
           <div className="meta-row">
             <span className="meta-label">Assistant Status</span>
             <span className="meta-value font-semibold">
@@ -104,9 +106,11 @@ export default async function SettingsPage() {
                 : "Unavailable"}
             </span>
           </div>
-        </div>
+        </div></details>
       </div>
 
+      <InstallInterface />
+      <Section title="Reported local worker state"><p>Scheduled refresh: {status?.worker.scheduled_refresh_utc ?? "Unavailable"}</p><p>Active job: {status?.worker.active_job ? `${status.worker.active_job.job_type} · ${status.worker.active_job.stage ?? "stage unavailable"}` : status ? "No active job reported" : "Unavailable"}</p><p>Latest job: {status?.worker.latest_job ? `${status.worker.latest_job.job_type} · ${status.worker.latest_job.status}` : "Unavailable"}</p><p>An idle job queue does not establish worker liveness. Inspect job heartbeats and source coverage in Data status.</p></Section>
       {/* Admitted Source Licenses & Attribution */}
       <div className="panel">
         <div className="panel-header">

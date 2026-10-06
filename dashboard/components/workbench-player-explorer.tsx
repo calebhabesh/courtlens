@@ -1,9 +1,13 @@
 "use client";
 
+import { routeAvailability } from "@/lib/route-availability";
 import Link from "next/link";
 import { SharedFloorView } from "@/components/shared-floor-view";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
-import { useState, useEffect, useMemo, useCallback } from "react";
+import { useState, useMemo, useCallback, Fragment, type KeyboardEvent } from "react";
+import { SortHeader, GroupGuide } from "./table-ui";
+import { Icon } from "./ui/icon";
+import { TeamLogoStack } from "./team-logo";
 import { PlayerPortrait } from "./player-portrait";
 import { StatsDetailDrawer } from "./stats-detail-drawer";
 import { CompareTray } from "./compare-tray";
@@ -16,8 +20,7 @@ import { saveInvestigation } from "@/lib/workbench-api";
 import {
   STATS_PRESETS,
   getPresetById,
-  computeHeaderGroups,
-  calculateCohortPercentiles,
+  tableGroups,
   NBA_TEAMS,
   COUNTING_MODES,
   IDENTITY_MODES,
@@ -26,10 +29,14 @@ import {
   type IdentityDensity,
   type TableDensity
 } from "@/lib/stats-presets";
-import type { PlayerResearchResponse, PlayerResearchItem } from "@/lib/types";
+import { normalizedColumn, normalizedSortMetric } from "@/lib/stats-query";
+import type { QuerySpec, WorkbenchCatalog, PlayerResearchResponse, PlayerResearchItem } from "@/lib/types";
 
 interface WorkbenchPlayerExplorerProps {
   data: PlayerResearchResponse;
+  querySpec?: QuerySpec;
+  countingMode?: CountingMode;
+  catalog?: WorkbenchCatalog;
   currentSortMetric?: string;
   currentSortDirection?: string;
 }
@@ -38,6 +45,9 @@ const LOCAL_STORAGE_DENSITY_KEY = "courtload_table_density";
 
 export function WorkbenchPlayerExplorer({
   data,
+  querySpec,
+  countingMode: resolvedCountingMode,
+  catalog,
   currentSortMetric = "pts",
   currentSortDirection = "desc"
 }: WorkbenchPlayerExplorerProps) {
@@ -64,7 +74,7 @@ export function WorkbenchPlayerExplorer({
   const activePresetId: PresetId = (urlViewId as PresetId) || (defaultViewId as PresetId) || "overview";
 
   // Counting Mode derived from URL or workspace preferences
-  const countingMode: CountingMode =
+  const countingMode: CountingMode = resolvedCountingMode ||
     ((searchParams?.get("countingMode") || searchParams?.get("counting_mode")) as CountingMode) ||
     preferences.counting_mode ||
     "per_game";
@@ -76,7 +86,7 @@ export function WorkbenchPlayerExplorer({
     "photos";
 
   // Table Density state (compact vs standard) with lazy localStorage & preferences fallback
-  const [tableDensity, setTableDensity] = useState<TableDensity>(() => {
+  const [densityPreference, setTableDensity] = useState<TableDensity>(() => {
     if (typeof window !== "undefined") {
       try {
         const stored = localStorage.getItem(LOCAL_STORAGE_DENSITY_KEY);
@@ -88,7 +98,10 @@ export function WorkbenchPlayerExplorer({
     return preferences.density === "compact" ? "compact" : "standard";
   });
 
-  // Expanded table width state
+  const urlDensity = searchParams.get("density");
+  const tableDensity: TableDensity = urlDensity === "compact" || urlDensity === "standard" ? urlDensity : densityPreference;
+
+  // Expanded table height state
   const [isExpanded, setIsExpanded] = useState(false);
 
   // Show percentiles toggle
@@ -98,8 +111,6 @@ export function WorkbenchPlayerExplorer({
   const [selectedPlayerForDrawer, setSelectedPlayerForDrawer] =
     useState<PlayerResearchItem | null>(null);
 
-  // Hovered player ID for keyboard shortcut C
-  const [hoveredPlayer, setHoveredPlayer] = useState<PlayerResearchItem | null>(null);
 
   // Hotkeys Modal state
   const [isHotkeysOpen, setIsHotkeysOpen] = useState(false);
@@ -108,7 +119,7 @@ export function WorkbenchPlayerExplorer({
   const [isManageViewsOpen, setIsManageViewsOpen] = useState(false);
 
   // Favorites-only filter state (F05)
-  const [favoritesOnly, setFavoritesOnly] = useState(false);
+  const favoritesOnly = searchParams?.get("favorites") === "1";
 
   // Table Plots View Mode (F06: table, scatter, lines)
   const [viewMode, setViewMode] = useState<"table" | "scatter" | "lines">(() => {
@@ -122,18 +133,22 @@ export function WorkbenchPlayerExplorer({
   // Saving state
   const [saving, setSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState<string | null>(null);
+  const [actionError, setActionError] = useState<string | null>(null);
 
   // Local filter states
-  const [localName, setLocalName] = useState(searchParams?.get("name") || "");
+  const urlName = searchParams?.get("name") || "";
+  const [nameDraft, setNameDraft] = useState({ scope: urlName, value: urlName });
+  const localName = nameDraft.scope === urlName ? nameDraft.value : urlName;
+  const setLocalName = (value: string) => setNameDraft({ scope: urlName, value });
 
   const query = data.query;
-  const rawItems = data.items;
-  const items = useMemo(() => {
-    if (!favoritesOnly) return rawItems;
-    return rawItems.filter((p) => favorites.includes(p.player_id));
-  }, [rawItems, favoritesOnly, favorites]);
+  const items = data.items;
 
-  const preset = useMemo(() => getPresetById(activePresetId, views), [activePresetId, views]);
+  const preset = useMemo(() => {
+    const base = getPresetById(activePresetId, views);
+    const columns = base.columns.map((column) => normalizedColumn(column, countingMode));
+    return { ...base, columns: columns.filter((column, index) => columns.findIndex(candidate => candidate.key === column.key) === index) };
+  }, [activePresetId, views, countingMode]);
 
   // Retained Comparison Tray derived from workspace compare_tray (F05)
   const comparedPlayers = useMemo<PlayerResearchItem[]>(() => {
@@ -142,7 +157,7 @@ export function WorkbenchPlayerExplorer({
       if (found) return found;
       return {
         player_id: id,
-        player_name: id,
+        player_name: "Selected player",
         teams: [],
         games_played: 0,
         total_minutes: 0,
@@ -156,6 +171,9 @@ export function WorkbenchPlayerExplorer({
   const handleDensityChange = useCallback(
     (newDensity: TableDensity) => {
       setTableDensity(newDensity);
+      const params = new URLSearchParams(searchParams.toString());
+      params.set("density", newDensity);
+      router.push(`${pathname}?${params}`);
       try {
         localStorage.setItem(LOCAL_STORAGE_DENSITY_KEY, newDensity);
       } catch {
@@ -163,39 +181,48 @@ export function WorkbenchPlayerExplorer({
       }
       updatePreferences({ density: newDensity }).catch(() => {});
     },
-    [updatePreferences]
+    [updatePreferences, router, pathname, searchParams]
   );
 
-  // Compute cohort percentiles across active items for all columns in current preset
-  const cohortPercentiles = useMemo(() => {
-    const metricKeys = preset.columns.map((c) => {
-      if (c.countingModeKeys && c.countingModeKeys[countingMode]) {
-        return c.countingModeKeys[countingMode]!;
-      }
-      return c.key;
-    });
-    return calculateCohortPercentiles(items, metricKeys);
-  }, [items, preset, countingMode]);
+  const cohortPercentiles = useMemo(() => Object.fromEntries(
+    items.map((item) => [item.player_id, item.percentiles ?? {}])
+  ), [items]);
 
   // URL updater preserving context parameters
   const updateParam = useCallback(
     (updates: Record<string, string | null>) => {
       const params = new URLSearchParams(searchParams?.toString() ?? "");
+      const aliases: Record<string, string> = { sortMetric: "sort_metric", sortDirection: "sort_direction", teamId: "team_id", minGames: "min_games", minMinutes: "min_minutes", minAvgMinutes: "min_avg_minutes", countingMode: "counting_mode", identityMode: "identity_mode", viewId: "view_id" };
       for (const [key, value] of Object.entries(updates)) {
+        if (aliases[key]) params.delete(aliases[key]);
         if (value !== null && value !== "") {
           params.set(key, value);
         } else {
           params.delete(key);
         }
       }
-      // Reset cursor when non-cursor filters change
-      if (!updates.cursor) {
-        params.delete("cursor");
-      }
+      if ("sortMetric" in updates || "sortDirection" in updates) params.delete("sort");
+      // Analytical/paging changes reset the cursor; presentation-only controls retain it.
+      const presentationKeys = new Set(["identityMode", "identity_mode", "viewId", "view_id", "density", "viewMode"]);
+      if (!("cursor" in updates) && Object.keys(updates).some(key => !presentationKeys.has(key))) params.delete("cursor");
       router.push(`${pathname}?${params.toString()}`);
     },
     [router, pathname, searchParams]
   );
+
+  const handleFavorite = async (playerId: string) => {
+    setActionError(null);
+    try {
+      await toggleFavorite(playerId);
+      if (favoritesOnly) {
+        if (searchParams.get("cursor")) updateParam({ cursor: null });
+        else router.refresh();
+        setSelectedPlayerForDrawer(null);
+      }
+    } catch (error) {
+      setActionError(error instanceof Error ? error.message : "Could not update favorites. Try again.");
+    }
+  };
 
   const handlePresetSelect = (id: PresetId) => {
     if (id === "onoff") {
@@ -208,11 +235,13 @@ export function WorkbenchPlayerExplorer({
   };
 
   const handleCountingModeSelect = (mode: CountingMode) => {
-    updateParam({ countingMode: mode === "per_game" ? null : mode });
+    updateParam({ countingMode: mode, counting_mode: null,
+      sortMetric: normalizedSortMetric(currentSortMetric, mode), sort_metric: null, sort: null });
   };
 
   const handleIdentityModeSelect = (mode: IdentityDensity) => {
-    updateParam({ identityMode: mode === "photos" ? null : mode });
+    updateParam({ identityMode: mode, identity_mode: null });
+    updatePreferences({ identity_mode: mode }).catch(() => {});
   };
 
   const handleSort = (metricKey: string) => {
@@ -225,85 +254,60 @@ export function WorkbenchPlayerExplorer({
 
   const handleToggleCompare = useCallback(
     async (player: PlayerResearchItem) => {
+      setActionError(null);
       try {
         await toggleCompare(player.player_id);
       } catch (err) {
-        alert(err instanceof Error ? err.message : "Failed to update compare tray");
+        setActionError(err instanceof Error ? err.message : "Could not update comparison selection. Try again.");
       }
     },
     [toggleCompare]
   );
 
   const handleRemoveCompare = async (playerId: string) => {
+    setActionError(null);
     try {
       await removeCompare(playerId);
     } catch (err) {
-      alert(err instanceof Error ? err.message : "Failed to remove player from compare tray");
+      setActionError(err instanceof Error ? err.message : "Could not remove comparison selection. Try again.");
     }
   };
 
   const handleClearCompare = async () => {
+    setActionError(null);
     try {
       await clearCompare();
     } catch (err) {
-      alert(err instanceof Error ? err.message : "Failed to clear compare tray");
+      setActionError(err instanceof Error ? err.message : "Could not clear comparison selection. Try again.");
     }
   };
 
-  // Keyboard shortcut listeners (T, W, E, C, Z, ?, Esc)
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      // Don't intercept typing in inputs, textareas, or selects
-      const target = e.target as HTMLElement;
-      if (
-        target.tagName === "INPUT" ||
-        target.tagName === "SELECT" ||
-        target.tagName === "TEXTAREA" ||
-        target.isContentEditable
-      ) {
-        return;
-      }
+  // One handler in the focused table region; editable/modified/IME events keep native behavior.
+  const handleTableKey = (e: KeyboardEvent<HTMLDivElement>) => {
+    const target = e.target as HTMLElement;
+    if (e.defaultPrevented || e.ctrlKey || e.metaKey || e.altKey || e.nativeEvent.isComposing ||
+        target.closest("input, select, textarea, [contenteditable='true']")) return;
+    const key = e.key.toLowerCase();
+    const rowId = target.closest<HTMLElement>("[data-player-id]")?.dataset.playerId;
+    const player = items.find(item => item.player_id === rowId);
+    if (key === "c" && player) { e.preventDefault(); handleToggleCompare(player); }
+    else if (key === "t") { e.preventDefault(); setIsExpanded(value => !value); }
+    else if (key === "w" || key === "e") { e.preventDefault(); handleDensityChange(key === "w" ? "compact" : "standard"); }
+    else if (key === "a" || key === "d") { e.preventDefault(); e.currentTarget.scrollBy({ left: key === "a" ? -240 : 240 }); }
+    else if (key === "z" && comparedPlayers.length >= 2) {
+      e.preventDefault();
+      const params = new URLSearchParams({ season: query.season, phase: query.phase,
+        beforeDate: query.before_date, window: query.window,
+        playerA: comparedPlayers[0].player_id, playerB: comparedPlayers[1].player_id });
+      if (query.release_id) params.set("releaseId", query.release_id);
+      router.push(`/compare?${params}`);
+    }
+  };
 
-      if (e.key === "t" || e.key === "T") {
-        e.preventDefault();
-        setIsExpanded((prev) => !prev);
-      } else if (e.key === "w" || e.key === "W") {
-        e.preventDefault();
-        handleDensityChange("compact");
-      } else if (e.key === "e" || e.key === "E") {
-        e.preventDefault();
-        handleDensityChange("standard");
-      } else if (e.key === "c" || e.key === "C") {
-        if (hoveredPlayer) {
-          e.preventDefault();
-          handleToggleCompare(hoveredPlayer);
-        }
-      } else if (e.key === "z" || e.key === "Z") {
-        if (comparedPlayers.length >= 2) {
-          e.preventDefault();
-          const pA = comparedPlayers[0].player_id;
-          const pB = comparedPlayers[1].player_id;
-          const params = new URLSearchParams({
-            season: query.season,
-            phase: query.phase,
-            beforeDate: query.before_date,
-            window: query.window,
-            playerA: pA,
-            playerB: pB
-          });
-          if (query.release_id) params.set("releaseId", query.release_id);
-          router.push(`/compare?${params.toString()}`);
-        }
-      } else if (e.key === "?") {
-        e.preventDefault();
-        setIsHotkeysOpen(true);
-      }
-    };
+  const closeDetailDrawer = useCallback(() => setSelectedPlayerForDrawer(null), []);
 
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [hoveredPlayer, comparedPlayers, query, router, handleDensityChange, handleToggleCompare]);
-
+  const legacySaveAvailable = !querySpec?.predicates && (querySpec?.sort?.length ?? 1) <= 1 &&
+    !querySpec?.sample_filters?.min_possessions && !querySpec?.sample_filters?.min_attempts;
   const handleSaveInvestigation = async () => {
     const title = window.prompt(
       "Name this investigation finding:",
@@ -315,7 +319,7 @@ export function WorkbenchPlayerExplorer({
     setSaveSuccess(null);
     try {
       const saved = await saveInvestigation(title.trim(), query as unknown as Record<string, unknown>);
-      setSaveSuccess(`Investigation saved with manifest SHA-256: ${saved.manifest_sha256.slice(0, 8)}...`);
+      setSaveSuccess(`Legacy analytical scope saved (retained arithmetic; Favorites and percentiles excluded), manifest SHA-256: ${saved.manifest_sha256.slice(0, 8)}...`);
     } catch (err) {
       alert(err instanceof Error ? err.message : "Failed to save investigation");
     } finally {
@@ -325,10 +329,10 @@ export function WorkbenchPlayerExplorer({
 
   const hasActiveFilters = Boolean(
     searchParams?.get("name") ||
-      searchParams?.get("teamId") ||
-      searchParams?.get("minGames") ||
-      searchParams?.get("minAvgMinutes") ||
-      searchParams?.get("minMinutes")
+      searchParams?.get("teamId") || searchParams?.get("team_id") ||
+      searchParams?.get("minGames") || searchParams?.get("min_games") ||
+      searchParams?.get("minAvgMinutes") || searchParams?.get("min_avg_minutes") ||
+      searchParams?.get("minMinutes") || searchParams?.get("min_minutes")
   );
 
   const handleResetFilters = () => {
@@ -343,7 +347,10 @@ export function WorkbenchPlayerExplorer({
   };
 
   // Compute column header groups
-  const headerGroups = useMemo(() => computeHeaderGroups(preset.columns), [preset]);
+  const headerGroups = useMemo(() => tableGroups(preset), [preset]);
+
+  const guideStarts = new Set(headerGroups.slice(1).map(group => group.start));
+  const guideCount = identityMode === "none" ? 0 : guideStarts.size;
 
   // Context bundle for subcomponents
   const contextBundle = {
@@ -363,6 +370,7 @@ export function WorkbenchPlayerExplorer({
         <div className="stats-preset-tabs" role="tablist" aria-label="Stats Explorer Presets">
           {STATS_PRESETS.map((p) => {
             const isActive = p.id === activePresetId;
+            const availability = p.id === "onoff" ? routeAvailability("/wowy", catalog ?? null, query.season, query.phase) : null;
             return (
               <button
                 key={p.id}
@@ -370,10 +378,10 @@ export function WorkbenchPlayerExplorer({
                 aria-selected={isActive}
                 onClick={() => handlePresetSelect(p.id)}
                 className={`stats-preset-tab ${isActive ? "active" : ""}`}
-                title={p.description}
+                title={availability?.reason || p.description}
               >
                 <span>{p.label}</span>
-                {p.gated && <span className="stats-preset-gated-tag">🔒 {p.gated.block}</span>}
+                {p.gated && <span className="stats-preset-gated-tag">{p.id === "onoff" ? availability?.secondary ? "Check availability" : "Available" : "Box-score proxies"}</span>}
               </button>
             );
           })}
@@ -394,7 +402,7 @@ export function WorkbenchPlayerExplorer({
               >
                 <span>{v.name}</span>
                 {isDefault && <span style={{ marginLeft: "0.2rem", color: "var(--accent)" }}>★</span>}
-                {hasUnavailable && <span className="stats-preset-gated-tag">🔒 {v.unavailable_columns?.length}</span>}
+                {hasUnavailable && <span className="stats-preset-gated-tag">Unavailable: {v.unavailable_columns?.length}</span>}
               </button>
             );
           })}
@@ -418,8 +426,8 @@ export function WorkbenchPlayerExplorer({
       {preset.gated && (
         <div className="stats-gated-banner" role="status">
           <div className="stats-gated-header">
-            <span className="replica-badge-gated">Gated Capability · {preset.gated.block}</span>
-            <strong className="stats-gated-title">{preset.label} Model &amp; Lineage Gate</strong>
+            <span className="replica-badge-gated">Partial capability</span>
+            <strong className="stats-gated-title">{preset.label} limitations</strong>
           </div>
           <p className="stats-gated-desc">
             {preset.gated.reason} Displaying admitted box-score and efficiency metrics in the interim.
@@ -431,11 +439,11 @@ export function WorkbenchPlayerExplorer({
       {(countingMode === "per_75" || countingMode === "per_100") && (
         <div className="stats-gated-banner" role="status">
           <div className="stats-gated-header">
-            <span className="replica-badge-gated">Gated Normalization · B19/B20</span>
-            <strong className="stats-gated-title">Possession Exposure Warehouse Pending</strong>
+            <span className="replica-badge-gated">Possession normalization unavailable</span>
+            <strong className="stats-gated-title">Use an available counting mode</strong>
           </div>
           <p className="stats-gated-desc">
-            Normalizations per 75/100 possessions require admitted on-court possession logs (Blocks B19–B20).
+            Per 75/100 possessions requires admitted on-court possession logs. Per game, totals and per 36 remain available.
             Displaying per-game averages until possession facts are admitted.
           </p>
         </div>
@@ -451,18 +459,20 @@ export function WorkbenchPlayerExplorer({
               key={cm.id}
               type="button"
               onClick={() => handleCountingModeSelect(cm.id)}
+              disabled={catalog?.stats_normalizations ? !catalog.stats_normalizations.includes(cm.id) : cm.gated}
               className={`control-pill ${countingMode === cm.id ? "active" : ""}`}
               title={cm.tooltip}
+              aria-pressed={countingMode === cm.id}
             >
               {cm.label}
-              {cm.gated && <span className="control-pill-gated-dot" title="Gated by B19/B20" />}
+              {cm.gated && <span className="control-pill-gated-dot" title="Requires admitted on-court possessions" />}
             </button>
           ))}
         </div>
 
         {/* Identity Density Mode Buttons (F03) */}
-        <div className="control-button-group" role="group" aria-label="Identity Presentation">
-          <span className="control-group-label">Show:</span>
+        <div className="control-button-group" role="group" aria-label="Group guides">
+          <span className="control-group-label">Group guides:</span>
           {IDENTITY_MODES.map((im) => (
             <button
               key={im.id}
@@ -470,6 +480,7 @@ export function WorkbenchPlayerExplorer({
               onClick={() => handleIdentityModeSelect(im.id)}
               className={`control-pill ${identityMode === im.id ? "active" : ""}`}
               title={im.tooltip}
+              aria-pressed={identityMode === im.id}
             >
               {im.label}
             </button>
@@ -491,9 +502,9 @@ export function WorkbenchPlayerExplorer({
             type="button"
             onClick={() => setIsExpanded((prev) => !prev)}
             className={`control-pill ${isExpanded ? "active" : ""}`}
-            title="Toggle expanded / full table width (T)"
+            title="Toggle expanded table height (T)"
           >
-            {isExpanded ? "Standard Width" : "Expand Table (T)"}
+            {isExpanded ? "Standard Height" : "Expand Table (T)"}
           </button>
 
           <button
@@ -548,14 +559,18 @@ export function WorkbenchPlayerExplorer({
           <button
             type="button"
             onClick={handleSaveInvestigation}
-            disabled={saving}
+            disabled={saving || !legacySaveAvailable}
             className="button button-small"
-            title="Save this analysis and cryptographic finding"
+            title="Save this scope using retained legacy arithmetic. Favorites and cohort percentiles are excluded; advanced query filters cannot be saved here."
           >
-            {saving ? "Saving…" : "💾 Save"}
+            {saving ? "Saving…" : "💾 Save legacy scope"}
           </button>
         </div>
       </div>
+
+      {actionError && <div role="alert" className="notice-box stats-action-error">
+        {actionError} <button type="button" className="button button-small" onClick={() => setActionError(null)}>Dismiss</button>
+      </div>}
 
       {/* Save Success Notice */}
       {saveSuccess && (
@@ -608,7 +623,7 @@ export function WorkbenchPlayerExplorer({
           <label htmlFor="stats-team-filter">Team</label>
           <select
             id="stats-team-filter"
-            value={searchParams?.get("teamId") || ""}
+            value={searchParams?.get("teamId") || searchParams?.get("team_id") || ""}
             onChange={(e) => updateParam({ teamId: e.target.value || null })}
             aria-label="Filter by NBA team"
           >
@@ -631,7 +646,8 @@ export function WorkbenchPlayerExplorer({
             max="82"
             placeholder="0"
             style={{ width: "70px" }}
-            defaultValue={searchParams?.get("minGames") || ""}
+            key={searchParams?.get("minGames") || searchParams?.get("min_games") || ""}
+            defaultValue={searchParams?.get("minGames") || searchParams?.get("min_games") || ""}
             onBlur={(e) => updateParam({ minGames: e.target.value || null })}
             onKeyDown={(e) => {
               if (e.key === "Enter") updateParam({ minGames: e.currentTarget.value || null });
@@ -650,7 +666,8 @@ export function WorkbenchPlayerExplorer({
             max="48"
             placeholder="0"
             style={{ width: "70px" }}
-            defaultValue={searchParams?.get("minAvgMinutes") || ""}
+            key={searchParams?.get("minAvgMinutes") || searchParams?.get("min_avg_minutes") || ""}
+            defaultValue={searchParams?.get("minAvgMinutes") || searchParams?.get("min_avg_minutes") || ""}
             onBlur={(e) => updateParam({ minAvgMinutes: e.target.value || null })}
             onKeyDown={(e) => {
               if (e.key === "Enter") updateParam({ minAvgMinutes: e.currentTarget.value || null });
@@ -668,7 +685,8 @@ export function WorkbenchPlayerExplorer({
             onChange={(e) => handleSort(e.target.value)}
             aria-label="Sort table by metric"
           >
-            {preset.columns.map((c) => (
+            {!preset.columns.some((c) => c.sortMetric === currentSortMetric) && <option value={currentSortMetric}>{currentSortMetric}</option>}
+            {preset.columns.filter((c) => !catalog?.stats_sort_fields || catalog.stats_sort_fields.includes(c.sortMetric)).map((c) => (
               <option key={c.sortMetric} value={c.sortMetric}>
                 {c.label} ({c.group})
               </option>
@@ -694,7 +712,7 @@ export function WorkbenchPlayerExplorer({
         {/* Favorites quick toggle (F05) */}
         <button
           type="button"
-          onClick={() => setFavoritesOnly((prev) => !prev)}
+          onClick={() => updateParam({ favorites: favoritesOnly ? null : "1" })}
           className={`control-pill ${favoritesOnly ? "active" : ""}`}
           style={{
             alignSelf: "flex-end",
@@ -749,16 +767,25 @@ export function WorkbenchPlayerExplorer({
         <>
           <div className="stats-results-meta">
             <span className="text-xs text-muted font-mono">
-              Showing {items.length} of {data.total_eligible_players} eligible players · Sorted by{" "}
+              Showing {items.length} of {data.total_output_players ?? data.total_eligible_players} matching players · {data.total_eligible_players} eligible players · Sorted by{" "}
               <strong>{currentSortMetric.toUpperCase()}</strong> ({currentSortDirection.toUpperCase()})
             </span>
             <span className="text-xs text-muted">
-              Click column headers to sort · Click player row to view profile
+              Sort by column · Names open profiles · Detail opens the sidebar
             </span>
           </div>
 
-          <div className={`table-wrapper ${tableDensity === "compact" ? "density-compact" : "density-standard"}`}>
+          <div role="region" aria-label="Player statistics scroll area" tabIndex={0} onKeyDown={handleTableKey} className={`table-wrapper stats-scroll-region ${tableDensity === "compact" ? "density-compact" : "density-standard"}`}>
             <table className="data-table dense-stats-table" aria-label="Dense player statistics explorer">
+              <colgroup>
+                <col style={{ width: 44 }} /><col style={{ width: 44 }} />
+                <col className="stats-name-column" /><col style={{ width: 96 }} />
+                {preset.columns.map((col, index) => <Fragment key={col.key}>
+                  {identityMode !== "none" && guideStarts.has(index) && <col style={{ width: 48 }} />}
+                  <col style={{ width: 88 }} />
+                </Fragment>)}
+                <col style={{ width: 64 }} />
+              </colgroup>
               <thead>
                 {/* Tier 1 Header: Group Categories */}
                 <tr className="stats-header-tier-1">
@@ -772,8 +799,8 @@ export function WorkbenchPlayerExplorer({
               {headerGroups.map((group, gIdx) => (
                 <th
                   key={`${group.label}-${gIdx}`}
-                  colSpan={group.colSpan}
-                  className="stats-group-th"
+                  colSpan={group.colSpan + (identityMode !== "none" && gIdx > 0 ? 1 : 0)}
+                  className="stats-group-th" scope="colgroup"
                 >
                   {group.label}
                 </th>
@@ -786,7 +813,7 @@ export function WorkbenchPlayerExplorer({
               {/* Pinned Col 1: Select Checkbox */}
               <th
                 className="pinned-col pinned-col-select"
-                style={{ width: "36px", textAlign: "center" }}
+                style={{ width: "44px", textAlign: "center" }}
                 title="Select players for comparison (max 8)"
               >
                 ✓
@@ -795,28 +822,14 @@ export function WorkbenchPlayerExplorer({
               {/* Pinned Col 2: Rank # */}
               <th
                 className="pinned-col pinned-col-rank"
-                style={{ width: "36px", textAlign: "center" }}
+                style={{ width: "44px", textAlign: "center" }}
               >
                 #
               </th>
 
-              {/* Pinned Col 3: Player Name & Avatar */}
-              <th
-                className="pinned-col pinned-col-name sortable"
-                style={{ minWidth: "190px", textAlign: "left" }}
-                onClick={() => handleSort("name")}
-                aria-sort={
-                  currentSortMetric === "name" || currentSortMetric === "player_name"
-                    ? currentSortDirection === "asc"
-                      ? "ascending"
-                      : "descending"
-                    : "none"
-                }
-              >
-                Player{" "}
-                {(currentSortMetric === "name" || currentSortMetric === "player_name") &&
-                  (currentSortDirection === "asc" ? "▲" : "▼")}
-              </th>
+              <SortHeader label="Player" metric="player_name" onSort={handleSort}
+                active={currentSortMetric === "name" || currentSortMetric === "player_name"}
+                direction={currentSortDirection} className="pinned-col pinned-col-name" />
 
               {/* Pinned Col 4: Teams (boundary pinned column) */}
               <th
@@ -827,33 +840,13 @@ export function WorkbenchPlayerExplorer({
               </th>
 
               {/* Scrollable Metric Column Headers */}
-              {preset.columns.map((col) => {
-                const isSorted = currentSortMetric === col.sortMetric;
-                return (
-                  <th
-                    key={col.key}
-                    className={`sortable ${col.num ? "num" : ""}`}
-                    onClick={() => handleSort(col.sortMetric)}
-                    aria-sort={
-                      isSorted
-                        ? currentSortDirection === "asc"
-                          ? "ascending"
-                          : "descending"
-                        : "none"
-                    }
-                    title={col.tooltip ?? col.label}
-                  >
-                    <div className="th-sort-inner">
-                      <span>{col.label}</span>
-                      {isSorted && (
-                        <span className="th-sort-arrow">
-                          {currentSortDirection === "asc" ? "▲" : "▼"}
-                        </span>
-                      )}
-                    </div>
-                  </th>
-                );
-              })}
+              {preset.columns.map((col, index) => <Fragment key={col.key}>
+                {identityMode !== "none" && guideStarts.has(index) && <th className="stats-guide-cell" aria-hidden="true" />}
+                <SortHeader label={col.label} metric={col.sortMetric} onSort={handleSort}
+                  active={currentSortMetric === col.sortMetric} direction={currentSortDirection}
+                  sortable={!catalog?.stats_sort_fields || catalog.stats_sort_fields.includes(col.sortMetric)}
+                  description={col.tooltip} className={col.num ? "num" : ""} />
+              </Fragment>)}
 
               <th style={{ width: "60px", textAlign: "center" }}>Detail</th>
             </tr>
@@ -863,7 +856,7 @@ export function WorkbenchPlayerExplorer({
             {items.length === 0 ? (
               <tr>
                 <td
-                  colSpan={preset.columns.length + 5}
+                  colSpan={preset.columns.length + guideCount + 5}
                   style={{ textAlign: "center", padding: "3.5rem" }}
                   className="text-muted"
                 >
@@ -888,13 +881,12 @@ export function WorkbenchPlayerExplorer({
                   <tr
                     key={player.player_id}
                     className={`stats-table-row ${isCompared ? "row-selected" : ""}`}
-                    onMouseEnter={() => setHoveredPlayer(player)}
+                    data-player-id={player.player_id}
                     tabIndex={0}
                     onKeyDown={(e) => {
-                      if (e.key === "Enter") {
+                      if (e.key === "Enter" && e.target === e.currentTarget) {
+                        e.preventDefault();
                         setSelectedPlayerForDrawer(player);
-                      } else if (e.key === "c" || e.key === "C") {
-                        handleToggleCompare(player);
                       }
                     }}
                   >
@@ -911,39 +903,22 @@ export function WorkbenchPlayerExplorer({
 
                     {/* Pinned Col 2: Rank # */}
                     <td className="pinned-col pinned-col-rank font-mono text-muted text-xs" style={{ textAlign: "center" }}>
-                      {idx + 1}
+                      {(data.output_offset ?? 0) + idx + 1}
                     </td>
 
                     {/* Pinned Col 3: Player Identity */}
                     <td className="pinned-col pinned-col-name">
                       <div className="player-cell">
-                        {identityMode === "photos" && (
-                          <PlayerPortrait
-                            playerId={player.player_id}
-                            name={player.player_name}
-                            portraitUrl={player.portrait_url}
-                            size="sm"
-                          />
-                        )}
-                        {identityMode === "logos" && (
-                          <span className="player-cell-logo-badge font-mono">
-                            {player.teams?.[0] ?? "NBA"}
-                          </span>
-                        )}
-                        {identityMode === "initials" && (
-                          <div
-                            className="player-portrait-fallback"
-                            style={{ width: 28, height: 28, minWidth: 28, minHeight: 28, borderRadius: "50%", display: "grid", placeItems: "center", fontSize: "0.7rem", backgroundColor: "var(--surface-raised)", border: "1px solid var(--border)", color: "var(--text-muted)", fontFamily: "var(--font-mono)" }}
-                          >
-                            {player.player_name.split(" ").map((w) => w[0]).slice(0, 2).join("")}
-                          </div>
-                        )}
+                        <PlayerPortrait playerId={player.player_id} name={player.player_name}
+                          portraitUrl={player.portrait_url} size="sm" className="stats-primary-portrait" />
                         <button
                           type="button"
                           onClick={(e) => {
                             e.stopPropagation();
-                            toggleFavorite(player.player_id);
+                            handleFavorite(player.player_id);
                           }}
+                          className="stats-favorite-button"
+                          aria-pressed={isFavorite(player.player_id)}
                           style={{
                             background: "transparent",
                             border: 0,
@@ -960,33 +935,30 @@ export function WorkbenchPlayerExplorer({
                               : `Add ${player.player_name} to favorites`
                           }
                         >
-                          {isFavorite(player.player_id) ? "★" : "☆"}
+                          <Icon name="star" />
                         </button>
-                        <button
-                          type="button"
-                          onClick={() => setSelectedPlayerForDrawer(player)}
-                          className="player-cell-name text-accent font-semibold"
-                          title="Open player profile sidebar"
-                        >
+                        <Link href={`/players/${player.player_id}?${new URLSearchParams({
+                          season: query.season, phase: query.phase, beforeDate: query.before_date,
+                          window: query.window, ...(query.release_id ? { releaseId: query.release_id } : {})
+                        })}`} className="player-cell-name text-accent font-semibold">
                           {player.player_name}
-                        </button>
+                        </Link>
                       </div>
                     </td>
 
                     {/* Pinned Col 4: Teams (boundary separator) */}
                     <td className="pinned-col pinned-col-teams">
+                      <TeamLogoStack teams={player.teams ?? []} />
                       <span className="player-cell-teams font-mono text-xs">
                         {player.teams?.length > 0 ? player.teams.join(", ") : "—"}
                       </span>
                     </td>
 
                     {/* Scrollable Metric Cells */}
-                    {preset.columns.map((col) => {
+                    {preset.columns.map((col, index) => {
                       // Determine effective metric key based on active counting mode override
-                      let metricKey = col.key;
-                      if (col.countingModeKeys && col.countingModeKeys[countingMode]) {
-                        metricKey = col.countingModeKeys[countingMode]!;
-                      }
+                      const metricKey = col.key;
+
 
                       // Special-case root item fields vs metrics dictionary
                       let rawValue: number | null | undefined;
@@ -1005,10 +977,15 @@ export function WorkbenchPlayerExplorer({
                         : "—";
 
                       const pct = playerPercentiles[metricKey];
+                      const direction = data.cohort?.good_directions[metricKey];
+                      const favorable = pct == null || !direction ? null : direction === "low" ? 100 - pct : pct;
 
                       return (
+                        <Fragment key={col.key}>
+                          {identityMode !== "none" && guideStarts.has(index) && <td className="stats-guide-cell" aria-hidden="true">
+                            <GroupGuide mode={identityMode} player={player} />
+                          </td>}
                         <td
-                          key={col.key}
                           className={`font-mono ${col.num ? "num" : ""}`}
                         >
                           <div className="stat-cell-content">
@@ -1016,21 +993,24 @@ export function WorkbenchPlayerExplorer({
                             {showPercentiles && pct !== null && pct !== undefined && (
                               <span
                                 className={`stat-pct-sublabel ${
-                                  pct >= 85
+                                  favorable !== null && favorable >= 85
                                     ? "pct-elite"
-                                    : pct >= 65
+                                    : favorable !== null && favorable >= 65
                                     ? "pct-good"
-                                    : pct <= 20
+                                    : favorable !== null && favorable <= 20
                                     ? "pct-low"
                                     : ""
                                 }`}
-                                title={`Cohort midrank percentile: ${pct}%`}
+                                tabIndex={0}
+                                aria-label={`Percentile ${pct}; ${player.cohort_sample_sizes?.[metricKey] ?? "unknown"} valid players; ${data.total_eligible_players} eligible players${direction ? `; ${direction === "low" ? "Lower" : "Higher"} values preferred` : ""}`}
+                                title={`Cohort midrank percentile: ${pct}% · ${player.cohort_sample_sizes?.[metricKey] ?? "unknown"} valid players · ${data.total_eligible_players} eligible players${direction ? ` · ${direction === "low" ? "Lower" : "Higher"} values preferred` : ""}`}
                               >
                                 {pct}
                               </span>
                             )}
                           </div>
                         </td>
+                        </Fragment>
                       );
                     })}
 
@@ -1043,7 +1023,7 @@ export function WorkbenchPlayerExplorer({
                         aria-label={`Open details for ${player.player_name}`}
                         title="View detailed player stats sidebar"
                       >
-                        ⌕
+                        <Icon name="search" />
                       </button>
                     </td>
                   </tr>
@@ -1082,7 +1062,7 @@ export function WorkbenchPlayerExplorer({
         </div>
 
         <div className="stats-keyboard-hint text-xs text-muted">
-          Keyboard: <kbd>T</kbd> expand width · <kbd>W</kbd>/<kbd>E</kbd> density · <kbd>C</kbd> compare row · <kbd>Z</kbd> compare · <kbd>?</kbd> hotkeys
+          Focus table for shortcuts: <kbd>A</kbd>/<kbd>D</kbd> scroll · <kbd>T</kbd> expand height · <kbd>W</kbd>/<kbd>E</kbd> density · <kbd>C</kbd> compare row · <kbd>Z</kbd> compare · <kbd>?</kbd> hotkeys
         </div>
       </div>
       </>
@@ -1092,7 +1072,7 @@ export function WorkbenchPlayerExplorer({
       <StatsDetailDrawer
         player={selectedPlayerForDrawer}
         isOpen={Boolean(selectedPlayerForDrawer)}
-        onClose={() => setSelectedPlayerForDrawer(null)}
+        onClose={closeDetailDrawer}
         context={contextBundle}
         onToggleCompare={handleToggleCompare}
         isCompared={Boolean(
@@ -1101,7 +1081,7 @@ export function WorkbenchPlayerExplorer({
         )}
         onToggleFavorite={
           selectedPlayerForDrawer
-            ? () => toggleFavorite(selectedPlayerForDrawer.player_id)
+            ? () => handleFavorite(selectedPlayerForDrawer.player_id)
             : undefined
         }
         isFavorite={

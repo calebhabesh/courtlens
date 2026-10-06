@@ -3,10 +3,14 @@
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { Icon } from "./ui/icon";
+import { Button } from "./ui/controls";
 import { Brand } from "./brand";
 import { GlobalLookup } from "./global-lookup";
 import { AskDrawer } from "./ask-drawer";
 import { HotkeysModal } from "./hotkeys-modal";
+import { getSharedCatalog, routeAvailability } from "@/lib/route-availability";
+import type { WorkbenchCatalog } from "@/lib/types";
 import { buildPreservedContextUrl } from "@/lib/query-url";
 
 interface NavDropdownItem {
@@ -29,6 +33,16 @@ export function ReplicaNav() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [askOpen, setAskOpen] = useState(false);
   const [hotkeysOpen, setHotkeysOpen] = useState(false);
+
+  const releaseId = searchParams.get("releaseId") ?? searchParams.get("release_id") ?? undefined;
+  const [catalogState, setCatalogState] = useState<{ releaseId?: string; catalog: WorkbenchCatalog } | null>(null);
+  useEffect(() => {
+    let active = true;
+    getSharedCatalog(releaseId).then(catalog => { if (active) setCatalogState({ releaseId, catalog }); }).catch(() => { if (active) setCatalogState(null); });
+    return () => { active = false; };
+  }, [releaseId]);
+  const catalog = catalogState?.releaseId === releaseId ? catalogState?.catalog ?? null : null;
+  const availability = (href: string) => routeAvailability(href, catalog, searchParams.get("season") ?? undefined, searchParams.get("phase") ?? undefined);
 
   const searchInputRef = useRef<HTMLInputElement>(null);
   const navRef = useRef<HTMLElement>(null);
@@ -63,9 +77,11 @@ export function ReplicaNav() {
 
       if (e.key === "Escape") {
         if (openDropdown) {
+          navRef.current?.querySelector<HTMLButtonElement>('.replica-nav-dropdown-btn[aria-expanded="true"]')?.focus();
           setOpenDropdown(null);
         }
         if (mobileMenuOpen) {
+          navRef.current?.querySelector<HTMLButtonElement>(".replica-mobile-toggle")?.focus();
           setMobileMenuOpen(false);
         }
       }
@@ -102,7 +118,7 @@ export function ReplicaNav() {
   // Dropdown menus definition
   const liveItems: NavDropdownItem[] = [
     { label: "Live Scoreboard", href: "/live" },
-    { label: "Historical Finals", href: "/live?view=finals" },
+    { label: "Historical Finals", href: "/live?live_mode=history" },
     { label: "Playoff Series", href: "/playoffs" }
   ];
 
@@ -166,6 +182,18 @@ export function ReplicaNav() {
     { label: "Blog & Updates", href: "/blog" }
   ];
 
+  const allSections = [
+    { title: "Live", items: liveItems }, { title: "Players", items: playersItems },
+    { title: "Teams", items: teamsItems }, { title: "Compare", items: compareItems },
+    ...researchSections, { title: "Help", items: helpItems },
+    { title: "Primary", items: [{ label: "Stats", href: "/stats" }, { label: "WOWY", href: "/wowy" }] }
+  ];
+  const unavailableItems = allSections.flatMap(section => section.items).filter(item => availability(item.href).secondary);
+  const availableSections = allSections.map(section => ({ ...section, items: section.items.filter(item => !availability(item.href).secondary) }));
+  for (const items of [liveItems, playersItems, teamsItems, compareItems, helpItems, ...researchSections.map(section => section.items)]) {
+    for (let index = items.length - 1; index >= 0; index--) if (availability(items[index].href).secondary) items.splice(index, 1);
+  }
+
   const isStatsActive = pathname === "/stats" || pathname === "/" || pathname === "/players";
   const isWowyActive = pathname === "/wowy";
   const isLiveActive = pathname?.startsWith("/live") || pathname?.startsWith("/playoffs");
@@ -202,11 +230,31 @@ export function ReplicaNav() {
     pathname === "/blog";
 
   return (
-    <header className="replica-header" ref={navRef}>
+    <header className="replica-header" ref={navRef} onKeyDown={(event) => {
+      const target = event.target as HTMLElement;
+      const trigger = target.closest<HTMLButtonElement>(".replica-nav-dropdown-btn");
+      if (trigger && ["ArrowDown", "ArrowUp"].includes(event.key)) {
+        event.preventDefault();
+        if (trigger.getAttribute("aria-expanded") !== "true") trigger.click();
+        requestAnimationFrame(() => {
+          const items = trigger.parentElement?.querySelectorAll<HTMLAnchorElement>("[role=menuitem]");
+          (event.key === "ArrowUp" ? items?.[items.length - 1] : items?.[0])?.focus();
+        });
+      }
+      const menu = target.closest("[role=menu]");
+      if (menu && ["ArrowDown", "ArrowUp", "Home", "End"].includes(event.key)) {
+        event.preventDefault();
+        const items = Array.from(menu.querySelectorAll<HTMLAnchorElement>("[role=menuitem]"));
+        const index = items.indexOf(target as HTMLAnchorElement);
+        const next = event.key === "Home" ? 0 : event.key === "End" ? items.length - 1 :
+          (index + (event.key === "ArrowDown" ? 1 : -1) + items.length) % items.length;
+        items[next]?.focus();
+      }
+    }}>
       {/* Row 1: Top Application Row */}
       <div className="replica-top-row">
         <div className="replica-brand-group">
-          <Brand subtitle="Replica Workbench" />
+          <Brand />
           <nav className="replica-quick-links" aria-label="Primary Quick Switch">
             <Link
               href={preserveContextUrl("/stats")}
@@ -234,21 +282,21 @@ export function ReplicaNav() {
 
         {/* Right: Operational Actions & Mobile Toggle */}
         <div className="replica-actions-group">
-          <button type="button" className="replica-action-link" aria-haspopup="dialog" onClick={() => setAskOpen(true)}>Ask</button>
+          <Button variant="quiet" className="replica-action-link" aria-haspopup="dialog" onClick={() => setAskOpen(true)}><Icon name="message" />Ask</Button>
           {askOpen && <AskDrawer onClose={() => setAskOpen(false)} />}
           <Link
             href={preserveContextUrl("/data-status")}
             className={`replica-action-link ${pathname === "/data-status" ? "active" : ""}`}
             title="Dataset health, publication pointer, and background jobs"
           >
-            Data status
+            <Icon name="settings" />Data status
           </Link>
           <Link
             href={preserveContextUrl("/settings")}
             className={`replica-action-link ${pathname === "/settings" ? "active" : ""}`}
             title="Workbench configuration and display settings"
           >
-            Settings
+            <Icon name="settings" />Settings
           </Link>
           <button
             type="button"
@@ -257,7 +305,7 @@ export function ReplicaNav() {
             aria-label="Toggle navigation drawer"
             aria-expanded={mobileMenuOpen}
           >
-            {mobileMenuOpen ? "✕" : "☰"}
+            <Icon name={mobileMenuOpen ? "close" : "menu"} />
           </button>
         </div>
       </div>
@@ -274,12 +322,12 @@ export function ReplicaNav() {
           </Link>
 
           {/* WOWY direct link */}
-          <Link
+          {!availability("/wowy").secondary && <Link
             href={preserveContextUrl("/wowy")}
             className={`replica-nav-link ${isWowyActive ? "active" : ""}`}
           >
             WOWY
-          </Link>
+          </Link>}
 
           {/* Live dropdown */}
           <div className="replica-nav-item">
@@ -291,9 +339,7 @@ export function ReplicaNav() {
               aria-expanded={openDropdown === "live"}
             >
               <span>Live</span>
-              <span className="replica-dropdown-arrow" aria-hidden="true">
-                ▼
-              </span>
+              <Icon name="chevron-down" className="replica-dropdown-arrow" />
             </button>
             {openDropdown === "live" && (
               <div className="replica-dropdown-menu" role="menu">
@@ -321,9 +367,7 @@ export function ReplicaNav() {
               aria-expanded={openDropdown === "players"}
             >
               <span>Players</span>
-              <span className="replica-dropdown-arrow" aria-hidden="true">
-                ▼
-              </span>
+              <Icon name="chevron-down" className="replica-dropdown-arrow" />
             </button>
             {openDropdown === "players" && (
               <div className="replica-dropdown-menu" role="menu">
@@ -351,9 +395,7 @@ export function ReplicaNav() {
               aria-expanded={openDropdown === "teams"}
             >
               <span>Teams</span>
-              <span className="replica-dropdown-arrow" aria-hidden="true">
-                ▼
-              </span>
+              <Icon name="chevron-down" className="replica-dropdown-arrow" />
             </button>
             {openDropdown === "teams" && (
               <div className="replica-dropdown-menu" role="menu">
@@ -381,9 +423,7 @@ export function ReplicaNav() {
               aria-expanded={openDropdown === "compare"}
             >
               <span>Compare</span>
-              <span className="replica-dropdown-arrow" aria-hidden="true">
-                ▼
-              </span>
+              <Icon name="chevron-down" className="replica-dropdown-arrow" />
             </button>
             {openDropdown === "compare" && (
               <div className="replica-dropdown-menu" role="menu">
@@ -411,9 +451,7 @@ export function ReplicaNav() {
               aria-expanded={openDropdown === "research"}
             >
               <span>Research</span>
-              <span className="replica-dropdown-arrow" aria-hidden="true">
-                ▼
-              </span>
+              <Icon name="chevron-down" className="replica-dropdown-arrow" />
             </button>
             {openDropdown === "research" && (
               <div className="replica-dropdown-menu replica-dropdown-multicol" role="menu">
@@ -439,6 +477,11 @@ export function ReplicaNav() {
           </div>
         </div>
 
+        {unavailableItems.length > 0 && <div className="replica-nav-item">
+          <button type="button" className="replica-nav-dropdown-btn" aria-haspopup="menu" aria-expanded={openDropdown === "availability"} onClick={() => toggleDropdown("availability")}>Availability <Icon name="chevron-down" /></button>
+          {openDropdown === "availability" && <div className="replica-dropdown-menu availability-menu" role="menu">{unavailableItems.map(item => <Link key={item.href} href={preserveContextUrl(item.href)} className="replica-dropdown-item" role="menuitem"><span>{item.label}<small className="availability-reason">{availability(item.href).reason}</small></span></Link>)}</div>}
+        </div>}
+
         {/* Right: Help dropdown */}
         <div className="replica-nav-right">
           <div className="replica-nav-item">
@@ -450,9 +493,7 @@ export function ReplicaNav() {
               aria-expanded={openDropdown === "help"}
             >
               <span>Help</span>
-              <span className="replica-dropdown-arrow" aria-hidden="true">
-                ▼
-              </span>
+              <Icon name="chevron-down" className="replica-dropdown-arrow" />
             </button>
             {openDropdown === "help" && (
               <div className="replica-dropdown-menu replica-dropdown-menu-right" role="menu">
@@ -488,85 +529,9 @@ export function ReplicaNav() {
       {/* Mobile drawer when open on <= 900px screens */}
       {mobileMenuOpen && (
         <div className="replica-mobile-drawer" role="dialog" aria-label="Mobile Navigation">
-          <div className="replica-mobile-section">
-            <span className="replica-dropdown-section-title">Primary</span>
-            <div style={{ display: "flex", flexDirection: "column", gap: "0.25rem" }}>
-              <Link href={preserveContextUrl("/stats")} className="replica-dropdown-item">
-                Stats Explorer
-              </Link>
-              <Link href={preserveContextUrl("/wowy")} className="replica-dropdown-item">
-                WOWY Combinations
-              </Link>
-              <Link href={preserveContextUrl("/live")} className="replica-dropdown-item">
-                Live Scoreboard
-              </Link>
-              <Link href={preserveContextUrl("/compare")} className="replica-dropdown-item">
-                Player Comparison
-              </Link>
-            </div>
-          </div>
-
-          <div className="replica-mobile-section">
-            <span className="replica-dropdown-section-title">Players &amp; Teams</span>
-            <div style={{ display: "flex", flexDirection: "column", gap: "0.25rem" }}>
-              <Link href={preserveContextUrl("/players")} className="replica-dropdown-item">
-                Player Directory
-              </Link>
-              <Link href={preserveContextUrl("/teams")} className="replica-dropdown-item">
-                Team Cohorts
-              </Link>
-              <Link href={preserveContextUrl("/contracts")} className="replica-dropdown-item">
-                Contracts &amp; Payroll
-              </Link>
-              <Link href={preserveContextUrl("/free-agency")} className="replica-dropdown-item">
-                Free Agency Tracker
-              </Link>
-            </div>
-          </div>
-
-          <div className="replica-mobile-section">
-            <span className="replica-dropdown-section-title">Research &amp; Forecasts</span>
-            <div style={{ display: "flex", flexDirection: "column", gap: "0.25rem" }}>
-              <Link href={preserveContextUrl("/forecasts")} className="replica-dropdown-item">
-                Points Forecasts
-              </Link>
-              <Link href={preserveContextUrl("/investigations")} className="replica-dropdown-item">
-                Saved Investigations
-              </Link>
-              <Link href={preserveContextUrl("/research/ask")} className="replica-dropdown-item">
-                Ask CourtLoad AI
-              </Link>
-              <Link href={preserveContextUrl("/evaluation")} className="replica-dropdown-item">
-                Evaluation Archive
-              </Link>
-            </div>
-          </div>
-
-          <div className="replica-mobile-section">
-            <span className="replica-dropdown-section-title">Help &amp; Operations</span>
-            <div style={{ display: "flex", flexDirection: "column", gap: "0.25rem" }}>
-              <Link href={preserveContextUrl("/methodology")} className="replica-dropdown-item">
-                Definitions &amp; Glossary
-              </Link>
-              <Link href={preserveContextUrl("/data-status")} className="replica-dropdown-item">
-                Data Status &amp; Jobs
-              </Link>
-              <Link href={preserveContextUrl("/settings")} className="replica-dropdown-item">
-                Workbench Settings
-              </Link>
-              <button
-                type="button"
-                className="replica-dropdown-item"
-                style={{ width: "100%", textAlign: "left", cursor: "pointer", background: "none", border: "none" }}
-                onClick={() => {
-                  setMobileMenuOpen(false);
-                  setHotkeysOpen(true);
-                }}
-              >
-                Keyboard Shortcuts (?)
-              </button>
-            </div>
-          </div>
+          {availableSections.filter(section => section.items.length).map(section => <div className="replica-mobile-section" key={section.title}><span className="replica-dropdown-section-title">{section.title}</span>{section.items.map(item => <Link key={item.href} href={preserveContextUrl(item.href)} className="replica-dropdown-item">{item.label}</Link>)}</div>)}
+          <div className="replica-mobile-section"><span className="replica-dropdown-section-title">Availability</span>{unavailableItems.map(item => <Link key={item.href} href={preserveContextUrl(item.href)} className="replica-dropdown-item"><span>{item.label}<small className="availability-reason">{availability(item.href).reason}</small></span></Link>)}</div>
+          <div className="replica-mobile-section"><Link href={preserveContextUrl("/data-status")} className="replica-dropdown-item">Data status</Link><Link href={preserveContextUrl("/settings")} className="replica-dropdown-item">Settings</Link><button type="button" className="replica-dropdown-item" onClick={() => { setMobileMenuOpen(false); setHotkeysOpen(true); }}>Keyboard shortcuts</button></div>
         </div>
       )}
 

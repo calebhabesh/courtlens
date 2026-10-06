@@ -41,7 +41,7 @@ test("court and table preserve zero versus unknown; exports and peer zones agree
   await page.getByLabel("Display zone").selectOption("Unknown"); await expect(page.getByText("1 displayed attempts; 1 unplotted", { exact: false })).toBeVisible();
   await page.getByRole("button", { name: "Inspect shot 2" }).click(); await expect(page.getByRole("heading", { name: "Selected shot evidence" })).toBeVisible();
   await expect(page.getByText("Source video unavailable: no admitted exact", { exact: false })).toBeVisible();
-  await page.getByRole("link", { name: "2", exact: true }).click(); await expect(page.getByLabel("Player ID", { exact: true })).toHaveValue("2"); await expect(page.getByLabel("Release ID")).toHaveValue("fixture-release"); await page.goBack(); await expect(page.getByLabel("Player ID", { exact: true })).toHaveValue("1");
+  await page.getByRole("link", { name: "2", exact: true }).click(); await expect(page.getByRole("button",{name:"Remove Fixture Player 2 from Player",exact:true})).toBeVisible(); await expect(page.getByLabel("Release ID")).toHaveValue("fixture-release"); await page.goBack(); await expect(page.getByRole("button",{name:"Remove Fixture Player 1 from Player",exact:true})).toBeVisible();
 });
 test("assignment matrix shows fractional exposure and null pooled rates at 375px", async ({ page }) => {
   await page.setViewportSize({ width: 375, height: 850 });
@@ -84,9 +84,9 @@ test("shooting tabs and name lookup resolve IDs without analytical requests", as
   page.on("request", r => { if (r.url().includes("/operations/")) calls++; });
   await page.route("**/api/workbench/lookup?*", route => route.fulfill({ json: { items: [{ kind: "player", canonical_id: "1627751", display_name: "Fixture Shooter" }] } }));
   await openWorkbench(page, "/shot-profile-twin");
-  await page.getByLabel("Player name search").fill("Shooter");
-  await page.getByRole("button", { name: "Fixture Shooter (1627751)" }).click();
-  expect(calls).toBe(0); await expect(page.getByLabel("Player ID", { exact: true })).toHaveValue("1627751");
+  await page.getByRole("combobox",{name:"Player",exact:true}).fill("Shooter");
+  await page.getByRole("option").filter({hasText:"Fixture Shooter"}).click();
+  expect(calls).toBe(0); await expect(page.getByRole("button",{name:"Remove Fixture Shooter from Player",exact:true})).toBeVisible();
   await page.getByRole("button", { name: "Shooting profile", exact: true }).click();
   await page.getByRole("button", { name: "Run shooting analysis" }).click();
   await expect(page.getByRole("heading", { name: "Shooting profile", exact: true })).toBeVisible();

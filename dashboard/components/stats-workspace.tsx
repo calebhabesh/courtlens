@@ -1,0 +1,118 @@
+import { redirect } from "next/navigation";
+import { Suspense } from "react";
+import { SharedFloorView } from "@/components/shared-floor-view";
+import { ContextBar } from "@/components/context-bar";
+import { WorkbenchPlayerExplorer } from "@/components/workbench-player-explorer";
+import { executeWorkbenchQuery, getWorkbenchCatalog } from "@/lib/workbench-api";
+import { querySpecToLegacyQuery } from "@/lib/query-url";
+import { resolveStatsQuery } from "@/lib/stats-query";
+import type { CountingMode } from "@/lib/stats-presets";
+import { getWorkspace } from "@/lib/workspace-client";
+import type { PlayerResearchResponse, WorkbenchCatalog } from "@/lib/types";
+
+export async function StatsWorkspace({ params: rawParams, basePath = "/stats", title = "Stats Explorer" }: {
+  params: Record<string, string | string[] | undefined>;
+  basePath?: string;
+  title?: string;
+}) {
+  const params = Object.fromEntries(Object.entries(rawParams).map(([key, value]) => [key, Array.isArray(value) ? value[0] : value]));
+  if (params.preset === "onoff" || params.viewId === "onoff" || params.view_id === "onoff") return <Suspense fallback={<p>Loading on/off…</p>}><SharedFloorView initialOperation="on-off" statsPreset /></Suspense>;
+  let catalog: WorkbenchCatalog;
+  try {
+    catalog = await getWorkbenchCatalog(String(params.releaseId || params.release_id || "") || undefined);
+  } catch {
+    return <div className="empty-state" role="alert">Stats catalog unavailable. Try again.</div>;
+  }
+  let workspace;
+  try { workspace = await getWorkspace(); } catch {
+    // A favorites request must never silently become an unfiltered query.
+    if (params.favorites === "1") return <div role="alert">Favorites unavailable. Try again.</div>;
+  }
+  const countingMode = (params.countingMode || params.counting_mode || workspace?.preferences.counting_mode || "per_game") as CountingMode;
+  const querySpec = resolveStatsQuery(params, catalog, countingMode);
+  const researchQuery = querySpecToLegacyQuery(querySpec);
+  // Bind inferred defaults into the URL so navigation, reload and cursors share one scope.
+  const required: [string, string, string | null | undefined][] = [
+    ["releaseId", "release_id", querySpec.release_id], ["season", "season", querySpec.season],
+    ["phase", "phase", querySpec.phase], ["beforeDate", "before_date", querySpec.before_date],
+    ["window", "window", querySpec.window?.kind], ["countingMode", "counting_mode", countingMode]
+  ];
+  if (required.some(([camel, snake]) => !params[camel] && !params[snake])) {
+    const canonical = new URLSearchParams();
+    for (const [key, value] of Object.entries(params)) {
+      for (const entry of Array.isArray(value) ? value : value ? [value] : []) canonical.append(key, entry);
+    }
+    for (const [camel, snake, value] of required) {
+      if (!canonical.get(camel) && !canonical.get(snake) && value) canonical.set(camel, value);
+    }
+    redirect(`${basePath}?${canonical}`);
+  }
+
+
+  let researchData: PlayerResearchResponse | null = null;
+  let loadError: string | null = null;
+
+  try {
+    if (!catalog.stats_normalizations?.includes(countingMode)) throw new Error(`Counting mode ${countingMode} is unavailable for these Stats queries.`);
+    if (!catalog.stats_scopes?.some((scope) => scope.season === querySpec.season && scope.phase === querySpec.phase)) throw new Error(`No observed Stats coverage for ${querySpec.season} / ${querySpec.phase}.`);
+    const result = await executeWorkbenchQuery(querySpec, {
+      player_ids: params.favorites === "1" ? workspace?.favorites ?? [] : null
+    });
+    researchData = {
+      ...result,
+      query: researchQuery,
+      context: {
+        release_id: String(result.context.release_id), season: querySpec.season, phase: querySpec.phase,
+        before_date: researchQuery.before_date, window: researchQuery.window,
+        last_included_date: null, warnings: result.warnings
+      }
+    };
+  } catch (err) {
+    loadError = err instanceof Error ? err.message : "Failed to load player stats from workbench";
+  }
+
+  return (
+    <>
+      <ContextBar
+        catalog={catalog}
+        sampleNoun="eligible players"
+        initialReleaseId={querySpec.release_id ?? undefined}
+        initialSeason={researchQuery.season}
+        initialPhase={researchQuery.phase}
+        initialBeforeDate={researchQuery.before_date}
+        initialWindow={researchQuery.window}
+        sampleSize={researchData?.total_eligible_players}
+        lastIncludedDate={researchData?.context?.last_included_date}
+      />
+
+      <div className="workbench-content">
+        <div className="page-header">
+          <div>
+            <h1 className="page-title">{title}</h1>
+            <p className="page-subtitle">
+              Dense player statistics explorer with deterministic analytical windowing, verified percentages, and sample constraints.
+            </p>
+          </div>
+        </div>
+
+        {loadError && (
+          <div className="notice-box" style={{ borderLeftColor: "var(--negative)", marginBottom: "1rem" }}>
+            <strong>Error:</strong> {loadError}
+          </div>
+        )}
+
+        {researchData && (
+          <WorkbenchPlayerExplorer
+            key={JSON.stringify({ querySpec, favorites: params.favorites })}
+            querySpec={querySpec}
+            countingMode={countingMode}
+            catalog={catalog}
+            data={researchData}
+            currentSortMetric={researchQuery.sort_metric}
+            currentSortDirection={researchQuery.sort_direction}
+          />
+        )}
+      </div>
+    </>
+  );
+}

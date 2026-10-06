@@ -28,7 +28,7 @@ export function researchDestination(step: Step, context: Context): string {
 export function readResearchDestination(params: URLSearchParams): { step: Step; context: Context } {
   const operation = params.get("operation");
   const raw = params.get("arguments") ?? "{}";
-  if (!operation || !["compare_periods", "distribution", "splits", "similarity", "workload_shifts"].includes(operation) || raw.length > 32768) throw new Error("Invalid Research operation link.");
+  if (!operation || !["query", "profile", "compare", "team", "forecast", "finance", "definition", "compare_periods", "distribution", "splits", "similarity", "workload_shifts"].includes(operation) || raw.length > 32768) throw new Error("Invalid Research operation link.");
   const args: unknown = JSON.parse(raw);
   if (!args || typeof args !== "object" || Array.isArray(args)) throw new Error("Operation arguments must be an object.");
   const context = Object.fromEntries(["release_id", "season", "phase", "before_date", "window"].filter(k => params.has(k)).map(k => [k, params.get(k)]));
