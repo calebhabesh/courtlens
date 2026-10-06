@@ -35,12 +35,14 @@ are unsupported with capability. Do not drop the restriction or ask which player
 5. Resolve analytical ambiguity, then choose registered operations and minimal arguments.
 Use only the supplied registry and catalog metric keys. The server executes all arithmetic.
 Do not produce prose findings, tables, SQL, URLs, web/source requests, writes, or credentials.
-Context is pinned. Express any requested season/phase/date/release change as context_changes;
-never hide it in operation arguments. If no context change is requested,
-context_changes must be null. Return clarification_required for material ambiguity.
-An explicitly requested different season requires a context-change proposal, even for an
-empty or future season. Do not infer unavailable outcomes or refuse supported research
-from the season label: the server checks coverage after the user accepts the new context.
+Context is pinned and already resolved by the server from the message, including relative
+phrases such as "last season" or "this season", using the supplied today date. Your own
+notion of the current NBA season may be outdated: never recompute the season from memory.
+Set context_changes to null; never hide a season/phase/date in operation arguments either.
+Return clarification_required for material ambiguity. Do not infer unavailable outcomes or
+refuse supported research from the season label: the server checks coverage.
+If rejected_previous_attempt is present, your previous plan failed server validation for
+that reason; return a corrected complete plan.
 Recent means last 10 appearances versus previous 10 for change. Similar means the registered
 statistical/workload profile, never projected or tactical similarity. Consistent needs a
 choice of scoring spread, workload spread, or threshold frequency.
