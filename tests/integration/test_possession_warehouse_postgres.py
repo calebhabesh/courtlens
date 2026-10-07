@@ -17,6 +17,7 @@ from datetime import date
 from uuid import uuid4
 
 import pytest
+from fixture_data import add_provenance
 from sqlalchemy import create_engine, delete, select
 from sqlalchemy.orm import Session
 
@@ -37,14 +38,12 @@ from courtlens.workbench_models import (
     WorkbenchDataset,
     WorkbenchLineup,
     WorkbenchLineupStint,
-    WorkbenchObservation,
     WorkbenchPbpEvent,
     WorkbenchPossession,
     WorkbenchReconstructionOverride,
     WorkbenchSchedule,
     WorkbenchStintPlayer,
     WorkbenchTeamGame,
-    WorkbenchVersion,
     allow_admin_mutation,
 )
 
@@ -68,56 +67,33 @@ def db_session() -> Session:
 
 @pytest.fixture
 def test_dataset(db_session: Session) -> WorkbenchDataset:
-    # Use existing dataset or create test dataset
-    dataset = db_session.scalars(select(WorkbenchDataset)).first()
-    if not dataset:
-        with allow_admin_mutation(db_session):
-            ds_id = f"test_b20_ds_{uuid4().hex[:8]}"
-            dataset = WorkbenchDataset(
-                id=ds_id,
-                content_sha256=uuid4().hex * 2,
-                membership_sha256=uuid4().hex * 2,
-                semantic_signature=uuid4().hex * 2,
-                source_namespace="sportsdataverse",
-                parser_version="test-v1",
-                quality_version="test-v1",
-                seasons_json=["2023-24"],
-                phases_json=["regular_season"],
-                manifest_json={},
-                coverage_json={},
-                exclusions_json={},
-                status="active",
-            )
-            db_session.add(dataset)
-            db_session.commit()
+    with allow_admin_mutation(db_session):
+        ds_id = f"test_b20_ds_{uuid4().hex[:8]}"
+        dataset = WorkbenchDataset(
+            id=ds_id,
+            content_sha256=uuid4().hex * 2,
+            membership_sha256=uuid4().hex * 2,
+            semantic_signature=uuid4().hex * 2,
+            source_namespace="sportsdataverse",
+            parser_version="test-v1",
+            quality_version="test-v1",
+            seasons_json=["2023-24"],
+            phases_json=["regular_season"],
+            manifest_json={},
+            coverage_json={},
+            exclusions_json={},
+            status="active",
+        )
+        db_session.add(dataset)
+        db_session.commit()
     return dataset
 
 
 @pytest.fixture
 def valid_version_and_obs(db_session: Session) -> tuple[str, str]:
-    version = db_session.scalars(select(WorkbenchVersion)).first()
-    obs = db_session.scalars(select(WorkbenchObservation)).first()
-    if not version or not obs:
-        with allow_admin_mutation(db_session):
-            if not version:
-                version = WorkbenchVersion(
-                    id=new_uuid(),
-                    source_namespace="sportsdataverse",
-                    content_sha256="v" * 64,
-                    parser_version="test-v1",
-                )
-                db_session.add(version)
-            if not obs:
-                obs = WorkbenchObservation(
-                    id=new_uuid(),
-                    identity_id="test_ident",
-                    version_id=version.id,
-                    observation_order=1,
-                    observation_sha256="o" * 64,
-                )
-                db_session.add(obs)
-            db_session.commit()
-    return version.id, obs.id
+    version, observation = add_provenance(db_session)
+    db_session.commit()
+    return version.id, observation.id
 
 
 def test_end_to_end_stint_reconstruction_and_persistence(

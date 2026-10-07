@@ -11,17 +11,14 @@ Verifies:
 
 from __future__ import annotations
 
-import os
 from unittest.mock import patch
 
 import pytest
 from pydantic import ValidationError
-from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
 from courtlens.api.workbench_schemas import AssistantQueryRequest
 from courtlens.config import Settings
-from courtlens.database import Base
 from courtlens.services.assistant.curated_questions import CURATED_QUESTIONS
 from courtlens.services.assistant.provider import OfflinePlanFixtureProvider
 from courtlens.services.assistant.service import (
@@ -40,17 +37,8 @@ from courtlens.services.assistant.tools import (
 
 
 @pytest.fixture
-def postgres_session():
-    url = os.getenv("COURTLENS_TEST_POSTGRES_URL")
-    if not url:
-        if os.getenv("CI") or os.getenv("COURTLENS_REQUIRE_POSTGRES_TESTS"):
-            pytest.fail("COURTLENS_TEST_POSTGRES_URL must be configured")
-        pytest.skip("COURTLENS_TEST_POSTGRES_URL is not configured")
-    engine = create_engine(url)
-    Base.metadata.create_all(engine)
-    with Session(engine) as session:
-        yield session
-    engine.dispose()
+def postgres_session(workbench_db):
+    return workbench_db
 
 
 def test_tool_declarations_allowlisted():

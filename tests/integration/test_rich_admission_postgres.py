@@ -13,10 +13,12 @@ from __future__ import annotations
 import csv
 import gzip
 import os
+from datetime import date
 from pathlib import Path
 from uuid import uuid4
 
 import pytest
+from fixture_data import add_provenance
 from sqlalchemy import create_engine, delete, select
 from sqlalchemy.orm import Session
 
@@ -37,7 +39,9 @@ from courtlens.workbench_models import (
     WorkbenchPbpEvent,
     WorkbenchPossession,
     WorkbenchRichAdmission,
+    WorkbenchSchedule,
     WorkbenchShot,
+    WorkbenchTeamGame,
     allow_admin_mutation,
 )
 
@@ -61,34 +65,25 @@ def db_session() -> Session:
 
 @pytest.fixture
 def test_dataset(db_session: Session) -> WorkbenchDataset:
-    # Use existing ready dataset if available
-    dataset = db_session.scalars(
-        select(WorkbenchDataset).where(
-            WorkbenchDataset.id == "17251a08-a4eb-4f46-b356-999fcf37c65d"
+    with allow_admin_mutation(db_session):
+        ds_id = f"test_rich_ds_{uuid4().hex[:8]}"
+        dataset = WorkbenchDataset(
+            id=ds_id,
+            content_sha256=uuid4().hex * 2,
+            membership_sha256=uuid4().hex * 2,
+            semantic_signature=uuid4().hex * 2,
+            source_namespace="sportsdataverse",
+            parser_version="test-v1",
+            quality_version="test-v1",
+            seasons_json=["2023-24"],
+            phases_json=["regular_season"],
+            manifest_json={},
+            coverage_json={},
+            exclusions_json={},
+            status="active",
         )
-    ).first()
-    if not dataset:
-        dataset = db_session.scalars(select(WorkbenchDataset)).first()
-    if not dataset:
-        with allow_admin_mutation(db_session):
-            ds_id = f"test_rich_ds_{uuid4().hex[:8]}"
-            dataset = WorkbenchDataset(
-                id=ds_id,
-                content_sha256=uuid4().hex * 2,
-                membership_sha256=uuid4().hex * 2,
-                semantic_signature=uuid4().hex * 2,
-                source_namespace="sportsdataverse",
-                parser_version="test-v1",
-                quality_version="test-v1",
-                seasons_json=["2023-24"],
-                phases_json=["regular_season"],
-                manifest_json={},
-                coverage_json={},
-                exclusions_json={},
-                status="active",
-            )
-            db_session.add(dataset)
-            db_session.commit()
+        db_session.add(dataset)
+        db_session.commit()
 
     return dataset
 
@@ -778,6 +773,44 @@ def test_point_conservation_quarantine_with_real_game(
 ) -> None:
     """Verify that a possession stream with mismatched points vs real box scores is quarantined."""
     real_game_id = "0022300099"  # Real game in DB: LAC scored 123, SAS scored 83
+    version, observation = add_provenance(db_session)
+    db_session.add(
+        WorkbenchSchedule(
+            dataset_id=test_dataset.id,
+            game_id=real_game_id,
+            game_date=date(2024, 1, 1),
+            season="2023-24",
+            phase="regular_season",
+            home_team_id="LAC",
+            away_team_id="SAS",
+            game_status=3,
+            source_version_id=version.id,
+            source_observation_id=observation.id,
+        )
+    )
+    for side, team, opponent, points, allowed in (
+        ("home", "LAC", "SAS", 123, 83),
+        ("away", "SAS", "LAC", 83, 123),
+    ):
+        db_session.add(
+            WorkbenchTeamGame(
+                dataset_id=test_dataset.id,
+                game_id=real_game_id,
+                team_id=team,
+                opponent_id=opponent,
+                game_date=date(2024, 1, 1),
+                season="2023-24",
+                phase="regular_season",
+                side=side,
+                points=points,
+                opponent_points=allowed,
+                is_final=True,
+                stats_json={},
+                source_version_id=version.id,
+                source_observation_id=observation.id,
+            )
+        )
+    db_session.commit()
     s_dir = tmp_path / "sportsdataverse_2024"
     s_dir.mkdir(parents=True, exist_ok=True)
 
@@ -922,8 +955,19 @@ def test_sealed_table_mutation_enforcement(
         db_session.commit()
 
 
-def test_get_rich_admissions_report(db_session: Session, test_dataset: WorkbenchDataset) -> None:
+def test_get_rich_admissions_report(
+    db_session: Session, test_dataset: WorkbenchDataset, tmp_path: Path
+) -> None:
     """Verify querying rich admission reports."""
+    create_mock_season_dir(tmp_path)
+    admit_rich_sources_for_season(
+        session=db_session,
+        dataset_id=test_dataset.id,
+        season_ending_year=2024,
+        raw_root=tmp_path,
+        target_game_ids={"0099999999"},
+        families=["possessions"],
+    )
     report = get_rich_admissions_report(
         session=db_session, dataset_id=test_dataset.id, season="2023-24"
     )

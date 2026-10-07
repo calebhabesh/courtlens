@@ -128,3 +128,40 @@ def api_client(session: Session) -> Generator[TestClient, None, None]:
     application.dependency_overrides[get_db] = override_database
     with TestClient(application) as client:
         yield client
+
+
+@pytest.fixture
+def workbench_db(request: pytest.FixtureRequest) -> Generator[Session, None, None]:
+    """Serve HTTP and SQL from the same isolated seeded schema (or an explicit backup)."""
+    import os
+    from uuid import uuid4
+
+    from fixture_data import add_workbench_dataset
+    from sqlalchemy import text
+
+    url = os.environ.get("COURTLENS_TEST_POSTGRES_URL")
+    if not url:
+        if os.environ.get("CI") or os.environ.get("COURTLENS_REQUIRE_POSTGRES_TESTS"):
+            pytest.fail("Use make test-python to supply disposable PostgreSQL fixtures")
+        pytest.skip("disposable PostgreSQL fixtures required; use make test-python")
+    root_engine = create_engine(url)
+    published = request.node.get_closest_marker("requires_published_data") is not None
+    schema = None if published else "qa_" + uuid4().hex
+    if schema:
+        with root_engine.begin() as connection:
+            connection.execute(text(f"CREATE SCHEMA {schema}"))
+        fixture_engine = create_engine(url, connect_args={"options": f"-csearch_path={schema}"})
+        Base.metadata.create_all(fixture_engine)
+    else:
+        fixture_engine = root_engine
+    try:
+        with Session(fixture_engine, expire_on_commit=False) as database_session:
+            if schema:
+                add_workbench_dataset(database_session)
+            yield database_session
+    finally:
+        fixture_engine.dispose()
+        if schema:
+            with root_engine.begin() as connection:
+                connection.execute(text(f"DROP SCHEMA {schema} CASCADE"))
+        root_engine.dispose()

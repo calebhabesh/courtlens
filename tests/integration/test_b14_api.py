@@ -2,66 +2,30 @@
 
 from __future__ import annotations
 
-import os
 from datetime import UTC, datetime
 from unittest.mock import patch
 
 import pytest
 from fastapi.testclient import TestClient
-from sqlalchemy import create_engine, select
-from sqlalchemy.orm import Session
 
 from courtlens.api.app import create_app
-from courtlens.database import Base
+from courtlens.database import get_db
 from courtlens.services.identity_crosswalk import seed_flagship_crosswalks
 from courtlens.services.measurements import seed_flagship_measurements
-from courtlens.workbench_models import (
-    WorkbenchIdentity,
-)
 
 
 @pytest.fixture
-def client() -> TestClient:
+def client(workbench_db):
     app = create_app()
-    return TestClient(app)
+    app.dependency_overrides[get_db] = lambda: workbench_db
+    with TestClient(app) as client:
+        yield client
 
 
 @pytest.fixture
-def setup_b14_postgres() -> None:
-    url = os.getenv("COURTLENS_TEST_POSTGRES_URL")
-    if not url:
-        if os.getenv("CI") or os.getenv("COURTLENS_REQUIRE_POSTGRES_TESTS"):
-            pytest.fail("COURTLENS_TEST_POSTGRES_URL must be configured")
-        pytest.skip("COURTLENS_TEST_POSTGRES_URL is not configured")
-    engine = create_engine(url)
-    Base.metadata.create_all(engine)
-    with Session(engine) as session:
-        # Seed test player identities if missing
-        for pid, name in [
-            ("1628389", "Bam Adebayo"),
-            ("1630567", "Scottie Barnes"),
-            ("1627783", "Pascal Siakam"),
-            ("1628424", "Kobi Simmons"),
-        ]:
-            existing = session.scalar(
-                select(WorkbenchIdentity).where(
-                    WorkbenchIdentity.external_id == pid,
-                    WorkbenchIdentity.kind == "player",
-                )
-            )
-            if not existing:
-                session.add(
-                    WorkbenchIdentity(
-                        namespace="nba",
-                        external_id=pid,
-                        kind="player",
-                        display_name=name,
-                    )
-                )
-        session.commit()
-        seed_flagship_crosswalks(session)
-        seed_flagship_measurements(session)
-    engine.dispose()
+def setup_b14_postgres(workbench_db) -> None:
+    seed_flagship_crosswalks(workbench_db)
+    seed_flagship_measurements(workbench_db)
 
 
 @pytest.mark.postgres

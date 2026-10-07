@@ -16,12 +16,15 @@ import pytest
 from fastapi.testclient import TestClient
 
 from courtlens.api.app import create_app
+from courtlens.database import get_db
 
 
 @pytest.fixture
-def client() -> TestClient:
+def client(workbench_db):
     app = create_app()
-    return TestClient(app)
+    app.dependency_overrides[get_db] = lambda: workbench_db
+    with TestClient(app) as client:
+        yield client
 
 
 def _require_test_db() -> None:
@@ -31,6 +34,7 @@ def _require_test_db() -> None:
         pytest.skip("Database is not configured")
 
 
+@pytest.mark.requires_published_data
 def test_b17_playoff_bracket_hierarchy(client: TestClient) -> None:
     """Verify GET /api/workbench/playoffs returns 4 rounds and seed evidence."""
     _require_test_db()
@@ -134,6 +138,7 @@ def test_b17_playoff_bracket_hierarchy(client: TestClient) -> None:
     assert len(data["disclaimers"]) >= 3
 
 
+@pytest.mark.requires_published_data
 def test_b17_playoff_series_detail_slug_and_code(client: TestClient) -> None:
     """Verify series detail endpoint resolves by both slug and 9-digit series code."""
     _require_test_db()
@@ -234,6 +239,7 @@ def test_b17_playoff_series_detail_slug_and_code(client: TestClient) -> None:
     assert doncic["points_per_game"] == 29.2
 
 
+@pytest.mark.requires_published_data
 def test_b17_temporal_cutoff_discipline(client: TestClient) -> None:
     """Verify temporal replay cutoff date excludes subsequent games from outcomes and ratings."""
     _require_test_db()
@@ -273,6 +279,7 @@ def test_b17_temporal_cutoff_discipline(client: TestClient) -> None:
     assert tatum["games_played"] == 2
 
 
+@pytest.mark.requires_published_data
 def test_b17_public_route_compatibility(client: TestClient) -> None:
     """Verify public endpoints /api/playoffs and /api/playoffs/series/finals work identically."""
     _require_test_db()

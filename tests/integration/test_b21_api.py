@@ -9,7 +9,8 @@ from uuid import uuid4
 
 import pytest
 from fastapi.testclient import TestClient
-from sqlalchemy import create_engine, select
+from fixture_data import add_provenance
+from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
 from courtlens.api.app import create_app
@@ -19,9 +20,7 @@ from courtlens.models import new_uuid
 from courtlens.workbench_models import (
     WorkbenchDataset,
     WorkbenchLineupStint,
-    WorkbenchObservation,
     WorkbenchSchedule,
-    WorkbenchVersion,
     allow_admin_mutation,
 )
 
@@ -53,9 +52,7 @@ def fixture_api() -> Iterator[tuple[TestClient, Session, dict, list[WorkbenchLin
         exclusions_json={},
         status="active",
     )
-    version = session.scalar(select(WorkbenchVersion))
-    obs = session.scalar(select(WorkbenchObservation))
-    assert version is not None and obs is not None, "Requires admitted baseline source metadata"
+    version, obs = add_provenance(session)
     stints = []
     with allow_admin_mutation(session):
         session.add(dataset)
