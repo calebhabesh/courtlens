@@ -102,6 +102,8 @@ Allowed states: `planned`, `in_progress`, `implemented_unverified`, `verified`,
   `courtload_courtload-postgres` were removed after checking the new stack: `courtlens-db-1` at
   revision `09b810a4f007` with 161 published snapshots, API healthy, dashboard `/stats` 200, and
   backup `courtlens-backup-20261007T214108Z.tar.gz` SHA-256 matching the value recorded above.
-  Still present: the `courtload_courtload-raw` volume and the stopped
-  `courtload-{api,dashboard,migrate}-1` containers. They hold no database state; remove them at
-  the owner's discretion.
+  The remaining legacy Docker objects were then removed: the `courtload_courtload-raw` volume
+  (checked first: every old file's SHA-256 exists in `courtlens_courtlens-raw`, and all 50
+  `raw_objects.storage_uri` paths resolve there), the stopped `courtload-{api,dashboard,migrate}-1`
+  containers, the `courtload_default` network and the `courtload-{api,dashboard,migrate,dbt}`
+  images. Dashboard `/stats` still returns 200.
