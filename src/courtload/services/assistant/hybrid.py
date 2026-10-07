@@ -36,6 +36,7 @@ from courtload.domain.hybrid_assistant import (
     ResultBlock,
     TextBlock,
     TurnAccounting,
+    TurnPhase,
     claim_text,
     external_claim_text,
 )
@@ -284,6 +285,7 @@ def _run_single_turn(
     _retrieval_budget: RetrievalBudget | None = None,
     _mixed_sentence: bool = False,
     on_narrative: Callable[[NarrativeOutcome], None] | None = None,
+    on_phase: Callable[[TurnPhase], None] | None = None,
 ) -> HybridTurnResponse:
     """PF07a execution seam. PF07b wraps this with server-owned durable state/idempotency."""
     started = _started if _started is not None else time.monotonic()
@@ -402,6 +404,8 @@ def _run_single_turn(
             if intent == "external":
                 spec = select_source(request.message, scope.selections.season)
                 if spec:
+                    if on_phase:
+                        on_phase("querying")
                     source = retrieve_source(spec, retrieval_budget)
                     sources.append(source)
                     for fact in source.facts:
@@ -567,6 +571,8 @@ def _run_single_turn(
                         elif plan.status == "unsupported":
                             unable("unsupported_operation")
                         else:
+                            if on_phase:
+                                on_phase("querying")
                             steps = plan.steps
                             for step in steps:
                                 calls += 1
@@ -686,6 +692,8 @@ def _run_single_turn(
         unable("backend_failure", failed=True)
     results = [b.result for b in blocks if isinstance(b, ResultBlock)]
     if status == "answered" and intent == "local_analysis" and results and scope is not None:
+        if on_phase:
+            on_phase("writing")
         outcome = compose_narrative(
             provider,
             request.message,
@@ -748,9 +756,12 @@ def run_hybrid_turn(
     previous_plan: AnalysisPlan | None = None,
     provider: PlanProvider | None = None,
     on_narrative: Callable[[NarrativeOutcome], None] | None = None,
+    on_phase: Callable[[TurnPhase], None] | None = None,
 ) -> HybridTurnResponse:
     """Bounded mixed routing: at most one local plan and four independently typed clauses."""
     started = time.monotonic()
+    if on_phase:
+        on_phase("understanding")
     clauses = [
         part.strip()
         for part in re.split(
@@ -769,6 +780,7 @@ def run_hybrid_turn(
             previous_plan=previous_plan,
             provider=provider,
             on_narrative=on_narrative,
+            on_phase=on_phase,
         )
     as_of = clock()
     retrieval_budget = RetrievalBudget(started + DEADLINE_SECONDS)
@@ -809,6 +821,7 @@ def run_hybrid_turn(
                 _retrieval_budget=retrieval_budget,
                 _mixed_sentence=bool(local),
                 on_narrative=on_narrative,
+                on_phase=on_phase,
             )
         )
     primary = next(

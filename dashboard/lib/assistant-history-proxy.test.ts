@@ -42,3 +42,27 @@ describe("durable assistant proxy trust boundary", () => {
     expect(options.headers["X-Operator-Token"]).toBeUndefined();
   });
 });
+
+describe("AR05 streamed turn proxy", () => {
+  const stream = (text: string) => new ReadableStream<Uint8Array>({ start(controller) { controller.enqueue(new TextEncoder().encode(text)); controller.close(); } });
+  it("passes a same-origin event stream through with server credentials", async () => {
+    vi.stubEnv("COURTLOAD_OPERATOR_TOKEN", "fixture-private-token");
+    const frames = 'event: phase\ndata: {"event":"phase","phase":"understanding"}\n\n';
+    const fetch = vi.fn().mockResolvedValue(new Response(stream(frames), { headers: { "Content-Type": "text/event-stream" } })); vi.stubGlobal("fetch", fetch);
+    const response = await POST(incoming("turn/stream", "POST", "http://localhost:3000", "{}"), context(["turn", "stream"]));
+    expect(String(fetch.mock.calls[0][0])).toMatch(/\/api\/workbench\/assistant\/v2\/turn\/stream$/);
+    expect(fetch.mock.calls[0][1].headers["X-Operator-Token"]).toBe("fixture-private-token");
+    expect(response.headers.get("content-type")).toBe("text/event-stream");
+    expect(response.headers.get("cache-control")).toBe("no-store");
+    expect(await response.text()).toBe(frames);
+  });
+  it("keeps acceptance errors as JSON and applies the same write boundary", async () => {
+    const fetch = vi.fn().mockResolvedValue(Response.json({ detail: "A turn is already running in this thread." }, { status: 409 })); vi.stubGlobal("fetch", fetch);
+    expect((await POST(incoming("turn/stream", "POST"), context(["turn", "stream"]))).status).toBe(403);
+    expect((await POST(incoming("turn/stream", "POST", "http://localhost:3000", "x".repeat(160 * 1024 + 1)), context(["turn", "stream"]))).status).toBe(413);
+    expect(fetch).not.toHaveBeenCalled();
+    const response = await POST(incoming("turn/stream", "POST", "http://localhost:3000", "{}"), context(["turn", "stream"]));
+    expect(response.status).toBe(409);
+    expect((await response.json()).detail).toContain("already running");
+  });
+});

@@ -378,3 +378,74 @@ def test_ar04_checked_narrative_survives_http_history_or_falls_back(postgres_con
     assert replay.json() == answer
     assert history.status_code == 200, history.text
     assert history.json()["turns"][0]["response"] == answer
+
+
+def sse_events(text: str) -> list[dict]:
+    frames = [frame for frame in text.split("\n\n") if frame and not frame.startswith(":")]
+    return [json.loads(frame.split("\ndata: ", 1)[1]) for frame in frames]
+
+
+def test_ar05_stream_phases_final_and_request_response_fallback(postgres_conversation):
+    from pydantic import SecretStr
+
+    session, context = postgres_conversation
+
+    class Provider:
+        def __init__(self, *_):
+            pass
+
+        def plan(self, payload, *, timeout_seconds):
+            return PlanningOutput(request(context).plan.model_dump(mode="json"))
+
+        def narrate(self, payload, *, timeout_seconds):
+            body = json.loads(payload)
+            leader = next(c for c in body["cells"] if c["metric"] == "Points Per Game")
+            value = leader["value"]
+            text = f"{leader['entity']} led {body['season']} with {value} points per game."
+            return PlanningOutput({"status": "answered", "text": text})
+
+    class Settings:
+        gemini_api_key = SecretStr("test-only")
+        gemini_model = "fixture"
+
+    app = create_app()
+    app.dependency_overrides[get_db] = lambda: session
+    headers = {"X-Operator-Token": get_settings().operator_token.get_secret_value()}
+    body = request(context, "Show scoring in 2024-25", plan=False).model_dump(mode="json")
+    stream_url = "/api/workbench/assistant/v2/turn/stream"
+    with (
+        patch("courtload.services.assistant.hybrid.GeminiPlanProvider", Provider),
+        patch("courtload.services.assistant.hybrid.get_settings", return_value=Settings()),
+        TestClient(app) as client,
+    ):
+        streamed = client.post(stream_url, json=body, headers=headers)
+        # The request/response fallback replays the same retained turn by request_id.
+        fallback = client.post("/api/workbench/assistant/v2/turn", json=body, headers=headers)
+        replayed = client.post(stream_url, json=body, headers=headers)
+        unauthorized = client.post(stream_url, json={**body, "request_id": str(uuid4())})
+        reused = client.post(stream_url, json={**body, "message": "Changed"}, headers=headers)
+        oversized = client.post(stream_url, content=b"x" * (160 * 1024 + 1), headers=headers)
+        events = sse_events(streamed.text)
+        final = events[-1]["response"]
+        history = client.get(f"/api/workbench/assistant/v2/threads/{final['thread_id']}/turns")
+    assert streamed.status_code == 200, streamed.text
+    assert streamed.headers["content-type"].startswith("text/event-stream")
+    assert streamed.headers["cache-control"] == "no-store"
+    assert [e["event"] for e in events[:4]] == ["accepted", "phase", "phase", "phase"]
+    assert [e["phase"] for e in events[1:4]] == ["understanding", "querying", "writing"]
+    assert events[0]["turn_id"] == final["turn_id"]
+    assert events[0]["request_id"] == body["request_id"]
+    narrative = "".join(e["text"] for e in events if e["event"] == "narrative")
+    assert [b["kind"] for b in final["blocks"]] == ["narrative", "result"]
+    assert narrative == final["blocks"][0]["text"]
+    assert f"{round(280 / 30, 1)} points per game" in narrative
+    assert final["accounting"]["provider_calls"] == 2
+    assert fallback.status_code == 200 and fallback.json() == final
+    replay_events = sse_events(replayed.text)
+    assert "phase" not in [e["event"] for e in replay_events]
+    assert replay_events[-1]["response"] == final
+    assert history.json()["turns"][0]["response"] == final
+    # Acceptance failures are ordinary HTTP statuses, never a half-open stream.
+    assert unauthorized.status_code in (401, 403)
+    assert reused.status_code == 409
+    assert oversized.status_code == 413

@@ -5,7 +5,7 @@ from datetime import date, datetime
 from typing import Annotated, Any, Literal
 from uuid import UUID
 
-from pydantic import AwareDatetime, Field, field_validator, model_validator
+from pydantic import AwareDatetime, Field, RootModel, field_validator, model_validator
 
 from courtload.domain.conversation import (
     AnalysisPlan,
@@ -436,3 +436,45 @@ class TurnHistoryPage(StrictModel):
     thread: DurableThreadHeader
     turns: list[DurableTurnRecord] = Field(max_length=100)
     next_cursor: str | None = None
+
+
+TurnPhase = Literal["understanding", "querying", "writing"]
+
+
+class StreamAcceptedEvent(StrictModel):
+    """AR05 SSE: the durable turn exists; the client may poll or replay by request_id."""
+
+    event: Literal["accepted"] = "accepted"
+    request_id: UUID
+    thread_id: UUID
+    turn_id: UUID
+
+
+class StreamPhaseEvent(StrictModel):
+    event: Literal["phase"] = "phase"
+    phase: TurnPhase
+
+
+class StreamNarrativeEvent(StrictModel):
+    """A slice of narrative that already passed the numeric check and was retained."""
+
+    event: Literal["narrative"] = "narrative"
+    text: str = Field(min_length=1, max_length=700)
+
+
+class StreamFinalEvent(StrictModel):
+    """The retained typed response; it is authoritative over any streamed text."""
+
+    event: Literal["final"] = "final"
+    response: HybridTurnResponse
+
+
+class TurnStreamEvent(
+    RootModel[
+        Annotated[
+            StreamAcceptedEvent | StreamPhaseEvent | StreamNarrativeEvent | StreamFinalEvent,
+            Field(discriminator="event"),
+        ]
+    ]
+):
+    pass

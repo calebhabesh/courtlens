@@ -6,8 +6,9 @@ work when a second worker starts. Expiry is recovered on polling/acceptance, nev
 implicitly. This service owns its Session transaction boundaries.
 """
 
-from collections.abc import Iterator
+from collections.abc import Callable, Iterator
 from contextlib import contextmanager
+from dataclasses import dataclass
 from datetime import UTC, datetime, timedelta
 from typing import Any
 from uuid import UUID, uuid4
@@ -26,6 +27,7 @@ from courtload.domain.hybrid_assistant import (
     InabilityBlock,
     ThreadHistoryPage,
     TurnHistoryPage,
+    TurnPhase,
 )
 from courtload.services.assistant.conversations import MAX_TURN_BYTES
 from courtload.services.assistant.hybrid import run_hybrid_turn
@@ -283,9 +285,19 @@ def accept(session: Session, request: HybridTurnRequest) -> DurableTurnRecord:
         return record(row)
 
 
-def run_durable_turn(
-    session: Session, request: HybridTurnRequest, *, provider: PlanProvider | None = None
-) -> HybridTurnResponse:
+@dataclass(frozen=True)
+class ClaimedTurn:
+    """This process won pending -> running; it alone executes and publishes the turn."""
+
+    turn_id: UUID
+    thread_id: UUID
+    inherited: ConversationContext | None
+    previous_plan: AnalysisPlan | None
+    interrupted: HybridTurnResponse
+
+
+def claim_turn(session: Session, request: HybridTurnRequest) -> HybridTurnResponse | ClaimedTurn:
+    """Accept durably; return a retained response, or the claim to execute it."""
     accepted = accept(session, request)
     if accepted.response:
         return accepted.response
@@ -299,29 +311,44 @@ def run_durable_turn(
         if row.state != "pending":
             raise HTTPException(409, "Request is running; poll its retained turn.")
         row.state = "running"
-        inherited = (
-            ConversationContext.model_validate(row.context_json) if row.context_json else None
+        return ClaimedTurn(
+            turn_id=accepted.turn_id,
+            thread_id=accepted.thread_id,
+            inherited=ConversationContext.model_validate(row.context_json)
+            if row.context_json
+            else None,
+            previous_plan=AnalysisPlan.model_validate(row.plan_json) if row.plan_json else None,
+            interrupted=terminal(row, cancelled=False),
         )
-        previous_plan = AnalysisPlan.model_validate(row.plan_json) if row.plan_json else None
-        interrupted = terminal(row, cancelled=False)
+
+
+def complete_turn(
+    session: Session,
+    request: HybridTurnRequest,
+    claimed: ClaimedTurn,
+    *,
+    provider: PlanProvider | None = None,
+    on_phase: Callable[[TurnPhase], None] | None = None,
+) -> HybridTurnResponse:
     try:
-        execution = request.model_copy(update={"thread_id": accepted.thread_id})
+        execution = request.model_copy(update={"thread_id": claimed.thread_id})
         answer = run_hybrid_turn(
             session,
             execution,
-            inherited_context=inherited,
-            previous_plan=previous_plan,
+            inherited_context=claimed.inherited,
+            previous_plan=claimed.previous_plan,
             provider=provider,
+            on_phase=on_phase,
         )
-        answer = answer.model_copy(update={"turn_id": accepted.turn_id})
+        answer = answer.model_copy(update={"turn_id": claimed.turn_id})
         if len(answer.model_dump_json().encode()) > MAX_TURN_BYTES:
-            answer = interrupted
+            answer = claimed.interrupted
     except Exception:
         # No raw database/provider exceptions are retained or returned.
-        answer = interrupted
+        answer = claimed.interrupted
     with lifecycle(session):
         recover_locked(session)
-        current = session.get(AssistantTurn, str(accepted.turn_id))
+        current = session.get(AssistantTurn, str(claimed.turn_id))
         if current is None:
             raise HTTPException(404, "Thread was deleted.")
         if current.response_json:
@@ -329,6 +356,15 @@ def run_durable_turn(
         publish(session, current, answer)
         session.flush()
         return record(current).response  # type: ignore[return-value]
+
+
+def run_durable_turn(
+    session: Session, request: HybridTurnRequest, *, provider: PlanProvider | None = None
+) -> HybridTurnResponse:
+    claimed = claim_turn(session, request)
+    if isinstance(claimed, HybridTurnResponse):
+        return claimed
+    return complete_turn(session, request, claimed, provider=provider)
 
 
 def cancel_turn(session: Session, thread_id: UUID, turn_id: UUID) -> DurableTurnRecord:

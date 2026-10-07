@@ -12,6 +12,7 @@ from courtload.domain.hybrid_assistant import (
     HybridTurnResponse,
     ThreadHistoryPage,
     TurnHistoryPage,
+    TurnStreamEvent,
 )
 
 SCHEMA_PATH = Path("docs/design/assistant-v2.schema.json")
@@ -23,6 +24,7 @@ MODELS = (
     DurableThreadHeader,
     ThreadHistoryPage,
     TurnHistoryPage,
+    TurnStreamEvent,
 )
 
 

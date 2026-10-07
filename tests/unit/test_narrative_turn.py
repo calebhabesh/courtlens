@@ -47,7 +47,7 @@ class Narrator(Planner):
         return PlanningOutput(self.reply)
 
 
-def run(session, provider) -> tuple[HybridTurnResponse, list[NarrativeOutcome]]:
+def run(session, provider, on_phase=None) -> tuple[HybridTurnResponse, list[NarrativeOutcome]]:
     local = RECORD["response"]["scope"]["local_context"]
     context = ResolvedContext(
         **{
@@ -91,6 +91,7 @@ def run(session, provider) -> tuple[HybridTurnResponse, list[NarrativeOutcome]]:
             provider=provider,
             clock=lambda: date.fromisoformat(CAPTURE["clock"]),
             on_narrative=outcomes.append,
+            on_phase=on_phase,
         )
     return answer, outcomes
 
