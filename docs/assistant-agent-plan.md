@@ -1,7 +1,7 @@
 # CourtLens assistant agent rework
 
 Prepared 2026-10-07. **The owner confirmed every decision below through a grilling interview on
-2026-10-07. Blocks AG01–AG08 and AD01–AD04 are pending until the
+2026-10-07. Blocks AG01–AG08 are pending until the
 [progress log](assistant-agent-progress.md) records measured evidence for them.** A plan is not
 runtime evidence.
 
@@ -51,10 +51,11 @@ Ask is an **NBA answer engine** with a source order:
 
 1. **CourtLens warehouse** (typed operations over the published snapshot). Authoritative for
    everything it covers.
-2. **Databallr metrics** (after AD02, if permitted). Labelled external metrics with an "as of" date.
-3. **Web search** for everything else: RAPM until AD02 lands, injuries, trades, news, history, award
+   Includes CourtLens RAPM, on/off, six-factor and defense metrics once the
+   [impact metrics handoff](impact-metrics-plan.md) lands them (IM06).
+2. **Web search** for everything else: RAPM until IM06 lands, injuries, trades, news, history, award
    detail. Every number from the web has an inline citation.
-4. **Model knowledge** for concepts, rules and history *without* numbers.
+3. **Model knowledge** for concepts, rules and history *without* numbers.
 
 Every question gets an answer. If the question is ambiguous, Ask answers the most common reading,
 states the assumption in one line, and offers 2–3 follow-up chips for the other readings. Refusal is
@@ -67,7 +68,7 @@ reserved for prohibited actions (below) and exhausted limits.
 | D1 Purpose | Answer engine with warehouse first, web second ("both", owner 2026-10-07). |
 | D2 Architecture | One tool-calling agent loop. The model calls tools until it can answer, then writes the answer. No JSON plan schema, router, validator/repair, narrative checker, template fallback or clarify path. |
 | D3 Clarification | Never block. Answer the common reading, show one assumption line, offer 2–3 follow-up chips. |
-| D4 Outside numbers | Allowed only from a cited web (or Databallr) source. Never from model memory. Warehouse numbers come from tool results. |
+| D4 Outside numbers | Allowed only from a cited web source. Never from model memory. Warehouse numbers come from tool results. |
 | D5 Providers | Gemini, Anthropic and OpenAI through each official SDK and its native web search. No LangChain, no LiteLLM, no vector DB. Default to a non-lite model. |
 | D6 Keys | Server environment variables only. Settings shows the active provider and model, never the key. |
 | D7 Old code | Delete the plan/route/validate/narrate/clarify pipeline. Keep typed operations, scope resolution, entity resolution, awards registry, threads, saved findings and SSE. The rule planner survives only as a labelled no-key "limited mode". |
@@ -75,8 +76,8 @@ reserved for prohibited actions (below) and exhausted limits.
 | D9 Answer layout | Prose first, inline source chips, a clean table only when warehouse rows came back, one assumption line, 2–3 follow-up chips, collapsed "How I got this" listing tool calls plus token usage and estimated cost. |
 | D10 Limits | At most 6 loop steps, at most 3 web searches, and a token ceiling per turn, all configurable by env. |
 | D11 Eval | Keep the 150-question corpus as a new revision. Warehouse cases: exact answer from SQL oracles. Web cases: answered, cited, no refusal. Former clarify cases: answered with an assumption. CI replays recorded transcripts. |
-| D12 Databallr | Ingest Databallr's Impact, Six Factor and Defense views first, then On-Off, Advanced and True Shooting, as dated, hashed, labelled external metrics under B25. Never used as model features. **Gated on permission, see AD01.** |
-| D13 Order | Agent loop and UI first (web covers RAPM meanwhile). Then Databallr. Then point eval advanced-metric cases at the warehouse. |
+| D12 Impact metrics | **Revised 2026-10-07:** CourtLens computes Databallr-class metrics (RAPM, on/off, six-factor, defense) from public play-by-play itself. See the [impact metrics handoff](impact-metrics-plan.md). Nothing is imported from Databallr, and no code may fetch from it. |
+| D13 Order | Agent loop and UI first (web covers RAPM meanwhile). Then the impact metrics track (IM). Then point eval advanced-metric cases at the warehouse. |
 | D14 No RAG/LangChain | Stats are structured. Typed SQL tools beat embeddings. The glossary and site help fit in the system prompt. Native SDK tool loops are about 100 lines per provider. |
 
 ## Contract amendments
@@ -207,7 +208,6 @@ result kept server-side for rendering and provenance.
 | `awards` | `awards.py` registry | MVP, DPOY, champions and the rest, with NBA.com source identity. |
 | `finance` | `finance_query` | Book-bound contracts, as today. Unknown money stays unknown. |
 | `site_help` | `knowledge.py` | CourtLens pages, metric methodology, how to do X in the app. Small, so it can also be inlined in the prompt. |
-| `databallr_metrics` | AD03 | Only registered once AD02 data is published. |
 | `web_search` | provider-native | Not a CourtLens function except in the sub-call fallback. |
 
 Tool errors (unknown entity, no observations, insufficient sample, unsupported season) are returned
@@ -232,7 +232,7 @@ Tool arguments are untrusted. Pydantic-validate them, enforce the existing bound
    Overview screenshot in the Why section as the bar for density.
 4. Numbers rule (D4): every number in prose comes from a tool result in this turn or a cited
    source. Otherwise leave it out.
-5. Ambiguity rule (D3) with worked examples: "best defender" → DRAPM if available (web/Databallr),
+5. Ambiguity rule (D3) with worked examples: "best defender" → DRAPM if available (warehouse after IM06, else web),
    else a defensive composite from the warehouse (blocks, steals, defensive rebounds per game), with
    chips for the other readings. A misspelled name → resolve it, then state "Assuming Victor
    Wembanyama".
@@ -274,7 +274,7 @@ AgentTurnResponse
   answer: ProseBlock            # markdown subset; citation markers [^s1] reference sources
   assumption: str | None        # one line, shown under the answer
   results: list[ResultBlock]    # existing typed warehouse results (tables/facts), bound by operation_hash
-  sources: list[AnswerSource]   # origin adds "web" | "databallr" | "warehouse"
+  sources: list[AnswerSource]   # origin adds "web" | "warehouse"
   follow_ups: list[str]         # 0–3 short prompts
   actions: list[AnswerAction]   # existing: open equivalent analysis, source links
   trace: list[TraceStep]        # tool name, compact args, status, elapsed_ms, rows/hits
@@ -293,9 +293,8 @@ citation marker binds a source, `refused`/`failed` carry a readable message, and
 The check runs once on the final prose and never blocks the answer:
 
 1. Extract numeric tokens (reuse the existing parser and display-rounding tolerance).
-2. A number is **bound** when it matches a cell in this turn's tool results (warehouse or
-   Databallr). Same-metric sums, differences and ratios are allowed as before. Season labels,
-   ranks, dates and years are always allowed.
+2. A number is **bound** when it matches a cell in this turn's tool results (warehouse). Same-metric sums, differences and ratios
+   are allowed as before. Season labels, ranks, dates and years are always allowed.
 3. Otherwise it is **cited** when it sits in a sentence carrying a citation marker, and the
    provider's citation for that span (or the source's returned snippet) contains the number.
 4. Otherwise it is **unsupported**. The loop gets **one** repair step: "These numbers have no source:
@@ -341,8 +340,7 @@ Change the answer rendering in `components/hybrid-answer.tsx` and `components/th
 
 1. Answer prose (safe markdown via `lib/markdown.ts`) with inline source chips at citation markers.
    A web chip shows the favicon-free domain ("nbarapm.com"). A warehouse chip shows "CourtLens" and
-   links to the result. A Databallr chip shows "databallr · as of DATE". Hover or tap shows the
-   title and retrieved date.
+   links to the result. Hover or tap shows the title and retrieved date.
 2. `Assumption:` line, muted, directly under the prose.
 3. Result tables only when `results` is non-empty. Fix the current table rendering: team arrays
    such as `["SAS"]` render as `SAS`, every column has a header and unit, and the rank column is
@@ -422,87 +420,13 @@ fixture DB data. A tool payload mismatch on replay means drift and fails the tes
 `make eval-assistant` gains `PROVIDER=` and `MODEL=` and runs the live eval. Report honestly. No
 threshold is required to finish. A quota stop is recorded as incomplete, with no silent retries.
 
-## Databallr
+## Databallr (superseded)
 
-### Facts as of 2026-10-07 (checked during planning)
-
-- `https://databallr.com/robots.txt` allows `/` for all agents (including ClaudeBot, GPTBot and
-  Google-Extended) and disallows `/api/private/`, `/auth/`, `/admin/`, `/subscription`, `/ops/` and
-  similar paths.
-- The site is a client-rendered SPA. Its data comes from `api.databallr.com` and Supabase-backed
-  `/api/supabase/...` routes found in the bundle. There is no documented public API.
-- **Terms of Service** (`/terms-of-service`, read from the shipped bundle
-  `assets/TermsOfService-*.js`) grant "a limited, non-exclusive, non-transferable license to access
-  and use our website for **personal, non-commercial purposes**. You may not: **Modify or copy our
-  materials**; Use the materials for commercial purposes; **Attempt to reverse engineer any software**
-  contained on our website; Remove any copyright or proprietary notations." Contact:
-  `contact@databallr.com`.
-- So an automated import is **not permitted by default**. Copying values into a warehouse and
-  calling undocumented API routes both conflict with those terms, even for local personal use.
-  robots.txt does not grant reuse rights.
-
-### AD01 Permission gate (owner action, blocks AD02–AD04)
-
-The owner emails `contact@databallr.com` asking for written permission (scope: personal/portfolio
-local use, attribution, no redistribution, and whether a CSV/export or API is preferred). Record
-the request date, the response and its scope in the progress log, with the reply text's SHA-256
-under `docs/evidence/ad01-databallr-permission/` (redact personal data).
-
-- **Granted:** AD02 follows the method and scope in the reply exactly.
-- **Denied or no reply:** AD02–AD04 stay `source_blocked`. The web path stays: the agent may cite
-  publicly visible Databallr or nbarapm pages that web search returns, as any search engine would.
-  It must **not** call Databallr's internal API routes. Alternatives each need their own terms check
-  before admission: nbarapm.com, DARKO (B25), own RAPM (B26).
-
-Until AD01 resolves, no code may fetch from `databallr.com` or `api.databallr.com`, including
-tests and spikes.
-
-### AD02 Import (after permission)
-
-- Acquisition by the permitted method only. Raw payloads stored append-only with SHA-256 in
-  `raw_store`, plus `observed_at`, `source_url` and the permission evidence hash
-  (`reuse_evidence_sha256`).
-- Contract: extend `domain/research_registration.py` `ExternalOutput` with
-  `classification: "external_metric"` (it currently allows only `external_forecast`), or add a
-  sibling `ExternalMetricSnapshot` contract with the same identity, missingness and observation
-  rules. Write `docs/design/databallr-metrics-v1.md` before implementing.
-- Identity: map Databallr player IDs to `nba_player_id`. Use the provider NBA ID if exposed,
-  otherwise the verified crosswalk (`services/identity_crosswalk.py`). Unmatched players are
-  reported, not dropped silently.
-- Metrics, wave 1: Impact (DPM, ODPM, DDPM, 2Y/3Y ORAPM, DRAPM and RAPM, age), Six Factor (RAPM,
-  ORAPM, DRAPM, oTS, oTOV, oREB, dTS, dTOV, dREB, residual, PVAL) and Defense (height, wingspan,
-  DDPM, DRAPM, dTS/dTOV/dREB, STOP%, STL, OFFD, BLK, BLK REC%, FTOVs, DEFL, DRB%, DFGA/100, RimPts
-  Svd/100, D-SQI, FOUL%). Wave 2: On-Off, Advanced, True Shooting. Import native units only: no
-  per-game/per-75 conversion of impact metrics. Store the percentile values Databallr shows only if
-  the permission covers them, otherwise compute cohort percentiles locally.
-- Seasons: every season the permitted method exposes, regular season and playoffs separately.
-  Completed seasons are final. Current-season snapshots are dated and append-only.
-- dbt: `stg_databallr__*` → `fct_external_player_metric` → `mart_external_player_metric`
-  (latest snapshot per season, with `as_of`). It is published with the release like other marts.
-- **Temporal guard:** these tables are excluded from every forecast/feature builder. Add a test that
-  fails if any feature or evaluation module references them.
-- Benchmarks: our own Overview/Shooting values cross-checked against Databallr's for the same
-  players (minutes, FG%, 3PA). Record the agreement rate as evidence. It is a check, not admission.
-
-### AD03 Serving
-
-- API: extend the Stats query engine so Databallr metrics are selectable, labelled
-  `source: databallr` and carrying `as_of`.
-- Stats presets (`dashboard/lib/stats-presets.ts`): ungate Impact, On-Off and Six Factor (and add
-  Defense columns) where data exists, with a header badge "via databallr · as of DATE" and a link.
-  Columns without data stay gated with the existing disclosure.
-- `/research/rapm` page: show Databallr RAPM labelled as external, separate from the B26
-  experiment (which stays blocked).
-- Agent tool `databallr_metrics(players?, metric, season, phase, limit)`, plus a prompt update:
-  Databallr is source #2, ahead of the web, for these metrics.
-- Coverage ledger: features affected by AD03 move to "verified (external source)", not "verified
-  (own computation)". B25 records the admission. B26 is unchanged.
-
-### AD04 Eval
-
-Move web-category cases answerable from Databallr into a `databallr` category scored exactly
-against the mart, as a corpus revision (`ag-v3.1`). Leave the frozen holdout alone. Report how many
-web cases moved.
+The original AD01–AD04 plan (import Databallr's values with permission) was withdrawn on
+2026-10-07. The owner wants the same *kind* of data, computed by CourtLens from public inputs. See
+the [impact metrics handoff](impact-metrics-plan.md) (IM01–IM08). Databallr's terms forbid copying
+its materials and reverse engineering its software, so **no code may fetch from `databallr.com` or
+`api.databallr.com`**.
 
 ## Blocks
 
@@ -520,10 +444,6 @@ model, "Flash" the faster one.
 | AG06 Eval v3 | Sol | AG03 | `ag-v3.json` with holdout frozen and hashed **before tuning**, scoring rules, transcript recorder, replay subset in pytest, `make eval-assistant PROVIDER= MODEL=`. Dev baseline per available provider (3 runs). | Dev report committed under `docs/evidence/ag06-eval/` with every metric listed above. Replay suite runs in pytest. If quota stops a run, it is recorded as incomplete. |
 | AG07 Cleanup | Sol | AG06 dev baseline ≥ the AR02 fixture baseline on warehouse categories (or the owner accepts the gap) | Delete the listed pipeline code and tests. Move shared helpers. Grep proof that no callers remain. Update `AGENTS.md` commands if scripts are removed. | Full Python suite, mypy, ruff, dashboard tests and browser suite green. Sealed evidence diff empty. Line counts before/after recorded. |
 | AG08 Acceptance | Sol | AG04–AG07 | Live holdout run per available provider, screenshots of the three owner examples, README case-study update with measured numbers, progress log closure. | Holdout report exists. Lint/types/tests/browser green. The README numbers match the report. |
-| AD01 Databallr permission | **Owner** | – (parallel) | Email, record reply. | Reply recorded, or the block marked `source_blocked` with the request date. |
-| AD02 Databallr import | Sol | AD01 granted, AG02 | Contract doc, acquisition, raw store, identity, dbt, temporal guard test, cross-check. | Real import of at least the latest completed season, wave 1, with hashes. Integration tests. The temporal guard test fails when a feature module references the mart. |
-| AD03 Databallr serving | Sol (API, tool) + Flash (UI) | AD02 | Stats engine, presets, `/research/rapm`, `databallr_metrics` tool, prompt update, coverage ledger. | Browser screenshots of the ungated presets with labels. "Wembanyama RAPM last season" is answered from Databallr with an "as of" chip (live or replay). |
-| AD04 Databallr eval | Sol | AD03, AG06 | Corpus revision, rescoring. | Report shows moved cases and exact accuracy against the mart. |
 
 ## Verification commands
 
