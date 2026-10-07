@@ -205,6 +205,8 @@ def score_entity_match(
     entity: IndexedEntity,
     norm_query: str,
     query_tokens: list[str],
+    *,
+    max_typo_distance: int | None = None,
 ) -> tuple[MatchBasis, float, str | None] | None:
     """Evaluate deterministic match basis and score for an entity against a normalized query.
 
@@ -263,7 +265,7 @@ def score_entity_match(
 
     # 6. Typo similarity (only allowed for query length >= 4)
     if q_len >= 4:
-        max_dist = 1 if q_len <= 5 else 2
+        max_dist = max_typo_distance if max_typo_distance is not None else (1 if q_len <= 5 else 2)
         best_dist = max_dist + 1
         best_term: str | None = None
 

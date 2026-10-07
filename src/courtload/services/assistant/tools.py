@@ -158,11 +158,15 @@ class GetEvaluationSummaryArgs(BaseModel):
 # -----------------------------------------------------------------------------
 
 
-def resolve_player_identifier(session: Session, identifier: str) -> tuple[str, str]:
+def resolve_player_identifier(
+    session: Session, identifier: str, *, max_typo_distance: int | None = None
+) -> tuple[str, str]:
     """Resolve an identifier (numeric ID or player name) to (player_id, player_name)."""
     from courtload.services.assistant.operations import resolve_entity
 
-    player_id = resolve_entity(session, None, identifier.strip(), "player_id")
+    player_id = resolve_entity(
+        session, None, identifier.strip(), "player_id", max_typo_distance=max_typo_distance
+    )
     identity = session.scalar(
         select(WorkbenchIdentity).where(
             WorkbenchIdentity.namespace == "nba",

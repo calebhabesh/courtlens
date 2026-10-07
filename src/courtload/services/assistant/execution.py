@@ -24,7 +24,7 @@ def _worker(
     connection: Any,
     url: str,
     search_path: str,
-    context: ResolvedContext,
+    context: ResolvedContext | None,
     step: OperationStep,
     deadline: float,
     full_result: bool = False,
@@ -79,7 +79,7 @@ def _worker(
 
 def execute_bounded(
     session: Session,
-    context: ResolvedContext,
+    context: ResolvedContext | None,
     step: OperationStep,
     deadline: float,
     *,
