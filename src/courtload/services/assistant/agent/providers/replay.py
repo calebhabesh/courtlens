@@ -113,17 +113,34 @@ class RecordingProvider:
 
 
 class ReplayProvider:
-    def __init__(self, model: str, records: Sequence[RecordedStep]) -> None:
+    def __init__(
+        self,
+        model: str,
+        records: Sequence[RecordedStep],
+        expected_tools: Sequence[dict[str, Any]] | None = None,
+    ) -> None:
         self.model = model
         self._records = list(records)
         self._index = 0
+        self.expected_tools = list(expected_tools) if expected_tools is not None else None
 
     @classmethod
     def load(cls, path: Path) -> ReplayProvider:
         raw = json.loads(path.read_text())
-        if raw.get("format") != "courtlens-provider-transcript-v1":
+        if raw.get("format") not in {
+            "courtlens-provider-transcript-v1",
+            "courtlens-agent-transcript-v1",
+        }:
             raise ValueError("unsupported provider transcript")
-        return cls(raw["model"], [RecordedStep.model_validate(step) for step in raw["steps"]])
+        return cls(
+            raw["model"],
+            [RecordedStep.model_validate(step) for step in raw["steps"]],
+            expected_tools=raw.get("tools"),
+        )
+
+    def verify_tools(self, actual: Sequence[dict[str, Any]]) -> None:
+        if self.expected_tools is not None and list(actual) != self.expected_tools:
+            raise ValueError("agent transcript retained tool/audit payload drift")
 
     @property
     def exhausted(self) -> bool:

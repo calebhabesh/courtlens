@@ -465,7 +465,7 @@ def test_status_never_returns_keys(monkeypatch: pytest.MonkeyPatch) -> None:
     assert status.limits["max_steps"] == 4
     assert status.limits["max_tokens"] == 60000
     assert "secret-openai" not in status.model_dump_json()
-    assert status.prompt_version is None  # AG03 owns the real prompt.
+    assert status.prompt_version == "courtlens-agent-prompt-v1"
 
 
 def test_retry_after_http_date_and_safe_errors() -> None:

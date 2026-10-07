@@ -61,3 +61,14 @@ class AssistantTurnInput(Base):
     archive_dataset_id: Mapped[str | None] = mapped_column(ForeignKey("archive_datasets.id"))
     finance_release_id: Mapped[str | None] = mapped_column(ForeignKey("finance_releases.id"))
     issuance_id: Mapped[str | None] = mapped_column(ForeignKey("forecast_issuances.id"))
+
+
+class AssistantAgentTranscript(Base):
+    """Server-only provider/tool transcript, atomically published with its v3 response."""
+
+    __tablename__ = "assistant_agent_transcripts"
+    turn_id: Mapped[str] = mapped_column(
+        ForeignKey("assistant_turns.id", ondelete="CASCADE"), primary_key=True
+    )
+    sha256: Mapped[str] = mapped_column(String(64))
+    payload_json: Mapped[dict[str, Any]] = mapped_column(JSON)

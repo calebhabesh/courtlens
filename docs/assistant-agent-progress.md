@@ -22,7 +22,7 @@ table.
 | --- | --- | --- |
 | AG01 | verification_blocked | [Provider foundation and verification](evidence/ag01-providers/README.md): official SDK adapters, current doc/model/tool checks, config/status/env/Compose, price estimates and exact replay. 43 provider/config tests and 1019 unit tests pass; Ruff/mypy clean; 205 Vitest tests and dashboard lint/types pass. Live Gemini smoke stops on `provider_quota` before tools/search; other providers unmeasured without keys. Broader DB/browser gaps recorded separately. Ask routing remains v2 until AG03. |
 | AG02 | verified | [Read-only agent tools](evidence/ag02-tools/README.md): six Pydantic-declared tools, canonical warehouse evidence, observed-scope checks, fuzzy candidates, exact book-bound finance and recoverable errors. 53 new tool tests pass (32 PostgreSQL); 109 tool/legacy PostgreSQL regression tests pass at the recorded checkpoint; 1040 unit tests and 205 Vitest tests pass. Ruff/format/mypy clean. Owner authorized continuation despite AG01 quota. Ask routing remains v2; broader AG01 DB/browser gaps are unresolved. |
-| AG03 | planned | |
+| AG03 | verified | [Agent loop and v3 durable contract](evidence/ag03-agent-loop/README.md): 60 new tests (43 unit, 17 PostgreSQL), 110 relevant PostgreSQL regressions, 1083 unit tests and 205 Vitest tests pass. Exact owner-example/follow-up replay, limits, numeric repair, limited mode, idempotent v2/v3 history and atomic transcript storage verified. Ruff/format/mypy and dashboard lint/types pass. Backend boundary only; AG04/AG05 streaming/rendering and the AG01 live/DB/browser gaps remain. |
 | AG04 | planned | |
 | AG05 | planned | |
 | AG06 | planned | |
@@ -75,3 +75,36 @@ table.
   the AG01 gaps remain unresolved. AG03 is next: agent loop, prompt/history/provenance, v3
   contract and durable routing. Ask still uses v2. AD01 remains owner action, and no Databallr
   access occurred.
+
+## AG03 checkpoint: 2026-10-07
+
+- Starting revision: `21d63d5`, clean tree. An unrelated owner edit to `TODO.md` appeared during
+  the block and is excluded. AG01 remains `verification_blocked`; no successful live-provider
+  tool/search smoke or quality baseline is claimed.
+- Ordinary Ask turns now use one typed tool loop and the separate `courtlens-assistant-v3`
+  response, or labelled rule-planner limited mode without a key. Explicit manual plans and
+  injected legacy providers preserve v2 compatibility. Prompt, compacted v2/v3 memory, scope
+  pinning, server page referents, limits, accounting and nonblocking numeric repair are in place.
+- The additive transcript table, hashed references and per-result scope preserve durable
+  claim/publish, idempotency, restart/follow-up memory, cancellation/deletion fencing and dataset
+  input references. Inventory validates transcript digests. Warehouse-backed turns are saveable;
+  web-only answers and provenance audits are not saved findings. Existing review/rerun-to-save
+  behavior is preserved; AG05 supplies its v3 UI.
+- Measured: 60 new tests pass (43 unit, 17 disposable PostgreSQL), including exact replays of
+  owner-example/follow-up shapes, step/search/token stops, repair and provider failure, real SQL
+  and audit payload drift, v2/v3 history, races, migration parity and page pronouns. Relevant
+  PostgreSQL regressions: 110 passed. Full unit directory: 1083 passed, two existing DB skips,
+  one existing SDK deprecation warning. Vitest: 205 passed. Ruff/format, strict mypy and dashboard
+  lint/types pass. Logs, synthetic transcripts and hashes are linked above.
+- Initial compatibility tests still assumed default v2 API routing; four failures were fixed by
+  explicitly injecting their legacy fixture provider, keeping their v2 assertions. Exploratory
+  tests reached the configured SDK failure path before those fixtures were adapted; no live
+  success is inferred. Final verification uses synthetic/replay or injected legacy providers.
+- V2 schema, generated TS, fixtures and the frozen AR02 corpus hashes match AG02. Sealed AR/PF
+  evidence and holdouts are untouched. The application database and owner's environment were
+  not changed. Provenance's numeric-value/linguistic-coverage limits and native search/token
+  overshoot are explicitly recorded; they are not broad accuracy or hard preflight guarantees.
+- AG03 is verified at the backend boundary. Basic retained v3 final SSE envelopes are supported;
+  live step/delta/reset and client parsing remain AG04, which is next. V3 answer UI remains AG05;
+  existing v2-only consumers are not yet adapted. Full database/browser acceptance was not rerun,
+  and the AG01 gaps remain unresolved. AD01 is still owner action; no Databallr access occurred.

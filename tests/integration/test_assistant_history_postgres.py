@@ -26,6 +26,17 @@ from courtload.services.assistant.planner import ProviderFailure
 postgres_conversation = _postgres_fixture
 
 
+class LegacyOnlyProvider:
+    """These tests exercise retained v2 lifecycle behavior without contacting a live key."""
+
+    def plan(self, payload, *, timeout_seconds):
+        raise AssertionError("legacy lifecycle fixture must not call a provider")
+
+
+def legacy_turn(session, request, *, provider=None):
+    return history.run_durable_turn(session, request, provider=provider or LegacyOnlyProvider())
+
+
 def question(thread_id=None, message="Explain pick and roll", **kwargs):
     return HybridTurnRequest(request_id=uuid4(), thread_id=thread_id, message=message, **kwargs)
 
@@ -34,8 +45,8 @@ def test_accept_committed_before_execution_and_process_state_is_irrelevant(postg
     session, _ = postgres_conversation
     req = question()
     with patch.object(history, "run_hybrid_turn", wraps=run_hybrid_turn) as execute:
-        answer = history.run_durable_turn(session, req)
-        replay = history.run_durable_turn(session, req)
+        answer = legacy_turn(session, req)
+        replay = legacy_turn(session, req)
     assert execute.call_count == 1
     assert replay.model_dump() == answer.model_dump()
     with Session(session.get_bind()) as fresh:
@@ -50,16 +61,16 @@ def test_accept_committed_before_execution_and_process_state_is_irrelevant(postg
 def test_request_identity_collision_including_thread_and_edit(postgres_conversation):
     session, _ = postgres_conversation
     req = question()
-    answer = history.run_durable_turn(session, req)
+    answer = legacy_turn(session, req)
     for changed in [
         req.model_copy(update={"message": "Edited question"}),
         req.model_copy(update={"thread_id": answer.thread_id}),
     ]:
         with pytest.raises(HTTPException) as exc:
-            history.run_durable_turn(session, changed)
+            legacy_turn(session, changed)
         assert exc.value.status_code == 409
     edit = question(answer.thread_id, message="Explain assists")
-    assert history.run_durable_turn(session, edit).turn_id != answer.turn_id
+    assert legacy_turn(session, edit).turn_id != answer.turn_id
 
 
 def test_duplicate_race_accepts_once_and_one_executor(postgres_conversation):
@@ -75,7 +86,7 @@ def test_duplicate_race_accepts_once_and_one_executor(postgres_conversation):
 
     def execute():
         with Session(engine) as independent:
-            return history.run_durable_turn(independent, req)
+            return legacy_turn(independent, req)
 
     with (
         patch.object(history, "run_hybrid_turn", side_effect=delayed) as executor,
@@ -91,14 +102,14 @@ def test_duplicate_race_accepts_once_and_one_executor(postgres_conversation):
             assert pending.request_json["message"] == req.message
             independent.rollback()
             with pytest.raises(HTTPException) as exc:
-                history.run_durable_turn(independent, req)
+                legacy_turn(independent, req)
             assert exc.value.status_code == 409
             with pytest.raises(HTTPException):
                 history.accept(independent, question(UUID(pending.thread_id)))
         release.set()
         answer = first.result(timeout=10)
         assert executor.call_count == 1
-    assert history.run_durable_turn(session, req) == answer
+    assert legacy_turn(session, req) == answer
 
 
 @pytest.mark.parametrize("mutation", ["cancel", "delete", "clear"])
@@ -116,7 +127,7 @@ def test_stop_and_delete_fence_late_publication(postgres_conversation, mutation)
     def execute():
         with Session(engine) as independent:
             try:
-                return history.run_durable_turn(independent, req)
+                return legacy_turn(independent, req)
             except HTTPException as exc:
                 return exc.status_code
 
@@ -160,11 +171,11 @@ def test_restart_recovery_lease_replay_and_explicit_retry(postgres_conversation,
     session.commit()
     with Session(session.get_bind()) as restarted:
         assert history.recover_interrupted(restarted) == 1
-        replay = history.run_durable_turn(restarted, req)
+        replay = legacy_turn(restarted, req)
         assert replay.status == "failed"
         assert "interrupted" in replay.blocks[0].text
         retry = question(accepted.thread_id, retry_of=accepted.turn_id)
-        answer = history.run_durable_turn(restarted, retry)
+        answer = legacy_turn(restarted, retry)
         assert answer.status == "answered"
         assert answer.turn_id != accepted.turn_id
         assert (
@@ -186,30 +197,30 @@ def test_retry_failure_executes_again_but_transport_replays(postgres_conversatio
             raise ProviderFailure("quota_exceeded")
 
     provider = Provider()
-    failed = history.run_durable_turn(session, req, provider=provider)
+    failed = legacy_turn(session, req, provider=provider)
     assert failed.blocks[0].reason == "provider_quota"
-    assert history.run_durable_turn(session, req, provider=provider) == failed
+    assert legacy_turn(session, req, provider=provider) == failed
     retry = req.model_copy(
         update={"request_id": uuid4(), "thread_id": failed.thread_id, "retry_of": failed.turn_id}
     )
-    next_answer = history.run_durable_turn(session, retry, provider=provider)
+    next_answer = legacy_turn(session, retry, provider=provider)
     assert next_answer.turn_id != failed.turn_id
     assert provider.calls == 2
     with pytest.raises(HTTPException):
-        history.run_durable_turn(session, question(failed.thread_id, retry_of=uuid4()))
+        legacy_turn(session, question(failed.thread_id, retry_of=uuid4()))
 
 
 def test_scope_segments_and_inputs_survive_guidance_and_restart(postgres_conversation):
     session, context = postgres_conversation
     req = analytical_request(context)
-    first = history.run_durable_turn(session, req)
+    first = legacy_turn(session, req)
     assert first.status == "answered", first.model_dump_json()
     before = first.model_dump_json()
-    guidance = history.run_durable_turn(session, question(first.thread_id))
+    guidance = legacy_turn(session, question(first.thread_id))
     assert guidance.scope is None
     with Session(session.get_bind()) as fresh:
         changed = question(first.thread_id, "2025-26 playoffs", plan=req.plan)
-        second = history.run_durable_turn(fresh, changed)
+        second = legacy_turn(fresh, changed)
         assert second.scope.selections.release_id == first.scope.selections.release_id
         assert second.scope.selections.season == "2025-26"
         assert second.scope.selections.phase == "playoffs"
@@ -223,9 +234,9 @@ def test_scope_segments_and_inputs_survive_guidance_and_restart(postgres_convers
 
 def test_pagination_deletion_and_saved_findings_independence(postgres_conversation):
     session, _ = postgres_conversation
-    first = history.run_durable_turn(session, question())
-    second = history.run_durable_turn(session, question(first.thread_id))
-    third = history.run_durable_turn(session, question(first.thread_id))
+    first = legacy_turn(session, question())
+    second = legacy_turn(session, question(first.thread_id))
+    third = legacy_turn(session, question(first.thread_id))
     page = history.list_turns(session, first.thread_id, 1)
     assert page.turns[0].turn_id == first.turn_id
     next_page = history.list_turns(session, first.thread_id, 1, int(page.next_cursor))
@@ -254,8 +265,10 @@ def test_pagination_deletion_and_saved_findings_independence(postgres_conversati
     )
 
 
-def test_api_history_auth_lifecycle_and_page_bounds(postgres_conversation):
+def test_api_history_auth_lifecycle_and_page_bounds(postgres_conversation, monkeypatch):
     session, _ = postgres_conversation
+    # Exercise the historical v2 API response through the retained compatibility seam.
+    monkeypatch.setattr("courtload.api.routers.conversation.run_durable_turn", legacy_turn)
     app = create_app()
     app.dependency_overrides[get_db] = lambda: session
     token = {"X-Operator-Token": get_settings().operator_token.get_secret_value()}
@@ -305,8 +318,11 @@ def test_additive_migration_upgrade_downgrade_and_schema_parity(postgres_convers
     spec = importlib.util.spec_from_file_location("history_migration", path)
     migration = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(migration)
+    from courtload.assistant_history_models import AssistantAgentTranscript
+
     tables = [AssistantTurnInput.__table__, AssistantTurn.__table__, AssistantThread.__table__]
     with engine.begin() as connection:
+        AssistantAgentTranscript.__table__.drop(connection)
         for table in tables:
             table.drop(connection)
         with Operations.context(MigrationContext.configure(connection)):
@@ -319,7 +335,8 @@ def test_additive_migration_upgrade_downgrade_and_schema_parity(postgres_convers
         with Operations.context(MigrationContext.configure(connection)):
             migration.downgrade()
             migration.upgrade()
-    answer = history.run_durable_turn(session, question())
+        AssistantAgentTranscript.__table__.create(connection)
+    answer = legacy_turn(session, question())
     assert answer.status == "answered"
 
 
@@ -330,9 +347,9 @@ def test_dump_restore_history_and_provenance(postgres_conversation, tmp_path):
     import subprocess
 
     session, context = postgres_conversation
-    answer = history.run_durable_turn(session, analytical_request(context))
+    answer = legacy_turn(session, analytical_request(context))
     assert answer.status == "answered"
-    history.run_durable_turn(session, question(answer.thread_id))
+    legacy_turn(session, question(answer.thread_id))
     before = history.history_inventory(session)
     schema = session.execute(text("SELECT current_schema()")).scalar_one()
     assert schema.startswith("b33_") and len(schema) == 36
@@ -411,7 +428,7 @@ def test_history_clear_preserves_a_real_separately_saved_finding(postgres_conver
     inventory = saved_inventory(session)
     reproduction = reproduce_saved(session, saved["id"])
     assert reproduction["match"]
-    history.run_durable_turn(session, analytical_request(context))
+    legacy_turn(session, analytical_request(context))
     history.delete_history(session)
     assert saved_inventory(session) == inventory
     assert reproduce_saved(session, saved["id"]) == reproduction
@@ -420,11 +437,9 @@ def test_history_clear_preserves_a_real_separately_saved_finding(postgres_conver
 def test_drawer_guidance_retains_page_scope_for_first_analytical_followup(postgres_conversation):
     session, context = postgres_conversation
     local = analytical_request(context)
-    first = history.run_durable_turn(session, question(context=local.context))
+    first = legacy_turn(session, question(context=local.context))
     assert first.scope is None
-    second = history.run_durable_turn(
-        session, question(first.thread_id, "Show scoring", plan=local.plan)
-    )
+    second = legacy_turn(session, question(first.thread_id, "Show scoring", plan=local.plan))
     assert second.status == "answered"
     assert second.scope.selections.release_id == context.release_id
     assert second.scope.selections.season == "2024-25"
@@ -436,7 +451,7 @@ def test_new_request_recovers_expired_prior_turn_without_polling(postgres_conver
     row = session.get(AssistantTurn, str(accepted.turn_id))
     row.lease_until = datetime.now(UTC) - timedelta(seconds=1)
     session.commit()
-    answer = history.run_durable_turn(session, question(accepted.thread_id))
+    answer = legacy_turn(session, question(accepted.thread_id))
     assert answer.status == "answered"
     turns = history.list_turns(session, accepted.thread_id).turns
     assert [turn.state for turn in turns] == ["failed", "completed"]
