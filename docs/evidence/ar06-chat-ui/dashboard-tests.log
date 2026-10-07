@@ -1,0 +1,8 @@
+
+ RUN  v4.1.11 ~/dev/nba-analytics/dashboard
+
+
+ Test Files  31 passed (31)
+      Tests  204 passed (204)
+   Start at  21:51:39
+   Duration  449ms (transform 1.38s, setup 0ms, import 2.09s, tests 595ms, environment 2ms)

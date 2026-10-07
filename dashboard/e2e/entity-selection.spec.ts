@@ -76,7 +76,10 @@ test("changing lookup scope discards an obsolete response for the same text",asy
     const season=url.searchParams.get("season");if(season === "2023-24") await pending;
     await route.fulfill({json:{items:[{id:"scope",canonical_id:"scope",kind:"player",display_name:`Scope ${season}`,subtitle:"Explicit scope race fixture"}]}}).catch(()=>{});
   });
-  await page.getByLabel("Season",{exact:true}).selectOption("2023-24");const firstRequest=page.waitForRequest(request=>new URL(request.url()).searchParams.get("q") === "scope");const input=page.getByRole("combobox",{name:"Together players",exact:true});await input.fill("scope");await firstRequest;
+  const season = page.getByLabel("Season",{exact:true});
+  // React can still have a hidden streamed copy pending reveal after shell hydration.
+  await expect(season).toHaveCount(1);
+  await season.selectOption("2023-24");const firstRequest=page.waitForRequest(request=>new URL(request.url()).searchParams.get("q") === "scope");const input=page.getByRole("combobox",{name:"Together players",exact:true});await input.fill("scope");await firstRequest;
     await page.getByLabel("Season",{exact:true}).selectOption("2025-26");await input.focus();await expect(page.getByRole("option").filter({hasText:"Scope 2025-26"})).toBeVisible();release();await page.waitForTimeout(150);await expect(page.getByRole("option").filter({hasText:"Scope 2023-24"})).toHaveCount(0);
 });
 
