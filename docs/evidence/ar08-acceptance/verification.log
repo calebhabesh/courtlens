@@ -1,0 +1,3 @@
+Source manifest unchanged after acceptance checks, including pre-existing next-env diff.
+All README/progress local file links resolve.
+Verified test totals against retained logs.

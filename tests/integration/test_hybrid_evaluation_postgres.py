@@ -81,6 +81,33 @@ def ar03_case(case):
             revised["reason"] = "no_observations"
     if case["id"] == "pf07d-23":
         revised["reason"] = "prohibited_action"
+    # AR09 answer-first: position rankings are local. "Last season" has no fixture coverage;
+    # the undated shooting-guard ranking answers, labelled, without the fixture's positions.
+    if case["id"] == "pf07d-19":
+        revised["reason"] = "no_observations"
+    if case["id"] == "pf07d-44":
+        revised.update(
+            category="local",
+            status="answered",
+            fixture_plan={
+                "plan_version": "courtload-analysis-plan-v1",
+                "steps": [
+                    {
+                        "step_id": "rank",
+                        "operation": "position_query",
+                        "arguments": {
+                            "position": "guard",
+                            "query": {
+                                "metric_selectors": [{"key": "pts_per_game"}],
+                                "sort": [{"field": "pts_per_game"}],
+                                "page": {"limit": 10},
+                            },
+                        },
+                    }
+                ],
+            },
+        )
+        revised.pop("reason", None)
     return revised
 
 

@@ -1,0 +1,13 @@
+{
+  "artwork": "CourtLens wordmark outlines",
+  "font": "Alpino Bold",
+  "version": "1.0",
+  "source": "https://www.fontshare.com/fonts/alpino",
+  "download": "https://api.fontshare.com/v2/fonts/download/alpino",
+  "font_file": "Alpino_Complete/Fonts/OTF/Alpino-Bold.otf",
+  "font_sha256": "0358e70aa3feecd0c3a9055a4458d0cd9423d6a02e1fa9c431d42e4d761abb8d",
+  "license": "ITF Free Font License 2.0",
+  "license_file": "Alpino-FFL.txt",
+  "license_sha256": "145e7fe2429a3336ba215c070ef722000e01348a3e1baaa127e871bb5012f554",
+  "method": "CourtLens text shaped by HarfBuzz with original glyphs, advance widths and default kerning; font software is not shipped or modified."
+}

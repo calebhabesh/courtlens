@@ -1,0 +1,12 @@
+{
+  "artwork": "CourtLens wordmark outlines",
+  "font": "Tabular Bold",
+  "version": "1.15",
+  "source": "https://www.fontshare.com/fonts/tabular",
+  "download": "https://api.fontshare.com/v2/fonts/download/tabular",
+  "font_sha256": "4061061e2bcd75e977f668f8c7ea63cadd7124d7dbfe37aa056e43ceb1073326",
+  "license": "ITF Free Font License 2.0",
+  "license_file": "Tabular-FFL.txt",
+  "license_sha256": "145e7fe2429a3336ba215c070ef722000e01348a3e1baaa127e871bb5012f554",
+  "method": "Glyph outlines placed for CourtLens text with the original advance widths; font software is not shipped or modified."
+}

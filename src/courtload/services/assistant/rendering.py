@@ -17,7 +17,7 @@ def result_rows(operation: str, data: dict[str, Any]) -> list[dict[str, Any]]:
         return list(data["contracts"])
     if operation == "compare":
         return list(data["aligned_metrics"])
-    if operation in ("query", "workload_shifts"):
+    if operation in ("query", "position_query", "workload_shifts"):
         return list(data["items"])
     if operation == "distribution":
         return [{"summary": data["summary"]}, *list(data["samples"])]

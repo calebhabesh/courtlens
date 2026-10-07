@@ -1,8 +1,7 @@
 # Project Checklist
 ## Immediate Tasks
-- [ ] AI search is a mess honestly, must be optimized.
-- [ ] Try groq
-- [ ] Change app name, don't like courtload
+- [ ] Design language not good choose something cleaner without all the lines
+- [ ] Reskin "ask" section
 - [x] Create agents.md
 
 ## Questions

@@ -2,7 +2,8 @@
 
 import { useEffect, useId, useRef, useState, useSyncExternalStore } from "react";
 import Link from "next/link";
-import type { ConversationContext, DurableThreadHeader, DurableTurnRecord, HybridTurnRequest } from "@/lib/assistant-v2.generated";
+import { pageContextLabel } from "@/lib/assistant-page-context";
+import type { AssistantPageContext, ConversationContext, DurableThreadHeader, DurableTurnRecord, HybridTurnRequest } from "@/lib/assistant-v2.generated";
 import { activeThreadKey, announceHistoryChange, assistantThreads, assistantTurns, deleteAssistantThread, historyChangeEvent, historyChangeKey, newAssistantThread, stopAssistantTurn } from "@/lib/assistant-history";
 import { phaseLabels, streamAssistantTurn, type TurnPhase } from "@/lib/assistant-stream";
 import { composerKeyAction, examplePrompts, groupThreads, scopeChipLabel } from "@/lib/assistant-chat";
@@ -24,8 +25,11 @@ type LiveTurn = { requestId: string; phase?: TurnPhase; narrative: string };
 function remember(thread: string | null) { try { if (thread) localStorage.setItem(activeThreadKey, thread); else localStorage.removeItem(activeThreadKey); } catch { /* History itself remains on the server. */ } }
 
 // AR06: full-height chat on /ask; "panel" is the header drawer, where conversations always overlay.
-export function ThreadedAssistant({ initialContext = {}, variant = "page" }: { initialContext?: ConversationContext; variant?: "page" | "panel" }) {
+export function ThreadedAssistant({ initialContext = {}, variant = "page", pageContext, pageLabel }: { initialContext?: ConversationContext; variant?: "page" | "panel"; pageContext?: AssistantPageContext; pageLabel?: string }) {
   const id = useId();
+  const [removedPage, setRemovedPage] = useState<string | null>(null);
+  const pageKey = JSON.stringify(pageContext);
+  const attachedPage = pageContext && removedPage !== pageKey ? pageContext : undefined;
   const [threads, setThreads] = useState<DurableThreadHeader[]>([]);
   const [threadCursor, setThreadCursor] = useState<string | null>(null);
   const [thread, setThread] = useState<string | null>(null);
@@ -231,8 +235,8 @@ export function ThreadedAssistant({ initialContext = {}, variant = "page" }: { i
       } catch (cause) { setError(messageOf(cause)); return; }
       finally { lock.current = false; setBusy(false); }
     }
-    const selections = scopeEdited || turns.length === 0 ? context : undefined;
-    const request: HybridTurnRequest = { request_id: crypto.randomUUID(), thread_id: tid, message: message.trim(), ...(selections && Object.values(selections).some(value => value != null) ? { context: selections } : {}), ...(retryOf ? { retry_of: retryOf } : {}) };
+    const selections = scopeEdited || turns.length === 0 || attachedPage ? context : undefined;
+    const request: HybridTurnRequest = { request_id: crypto.randomUUID(), thread_id: tid, message: message.trim(), ...(attachedPage ? { page_context: attachedPage } : {}), ...(selections && Object.values(selections).some(value => value != null) ? { context: selections } : {}), ...(retryOf ? { retry_of: retryOf } : {}) };
     // Accept first; polling identifies the durable turn even while POST is still running.
     void execute(request);
     const owned = epoch.current;
@@ -271,7 +275,7 @@ export function ThreadedAssistant({ initialContext = {}, variant = "page" }: { i
     scopeChanged.current = true;
     setContext(previous => ({ ...(base ?? previous), ...value })); setScopeEdited(true);
   }
-  const shownContext = scopeEdited ? context : [...turns].reverse().find(turn => turn.response?.scope)?.response?.scope?.selections ?? context;
+  const shownContext = scopeEdited || attachedPage ? context : [...turns].reverse().find(turn => turn.response?.scope)?.response?.scope?.selections ?? context;
   const blocked = busy || !!pending || !ready;
   const lastTurn = turns.at(-1);
   // Follow new turns and streamed prose to the bottom of the transcript.
@@ -318,6 +322,7 @@ export function ThreadedAssistant({ initialContext = {}, variant = "page" }: { i
         {confirmDelete && <div role="alert" className="ask-notice"><p>Delete this local conversation? Saved findings remain available.</p><Button disabled={blocked} onClick={() => void remove()}>Confirm deletion</Button> <Button onClick={() => setConfirmDelete(false)}>Keep history</Button></div>}
         {error && <div role="alert" className="ask-notice"><p>{error}</p>{transportRetry && <Button disabled={blocked} onClick={() => void execute(transportRetry)}>Check or replay request</Button>}<Button disabled={blocked} onClick={() => { if (thread) void openThread(thread); else void refreshThreads().then(() => setError(null)).catch(cause => setError(messageOf(cause))); }}>Reload history</Button></div>}
         <form className="ask-composer" onSubmit={event => { event.preventDefault(); void submit(); }}>
+          {attachedPage && <div className="ask-page-context" aria-label="Attached page context"><span>{pageContextLabel(attachedPage, pageLabel)}</span><button type="button" className="button button-quiet" aria-label="Remove page context" disabled={blocked} onClick={() => setRemovedPage(pageKey)}>×</button></div>}
           <label htmlFor={`${id}-question`} className="sr-only">Your question</label>
           <textarea ref={input} id={`${id}-question`} rows={1} maxLength={2000} placeholder="Ask a basketball question" value={question} onChange={event => setQuestion(event.target.value)} onKeyDown={event => { if (composerKeyAction({ key: event.key, shiftKey: event.shiftKey, isComposing: event.nativeEvent.isComposing }) === "send") { event.preventDefault(); void submit(); } }} />
           <div className="ask-composer-row">

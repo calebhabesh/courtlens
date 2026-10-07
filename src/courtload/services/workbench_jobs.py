@@ -5,13 +5,14 @@ from __future__ import annotations
 import hashlib
 import logging
 import re
+import struct
 import time
 from datetime import date, timedelta
 from pathlib import Path
 from typing import Any
 
 import httpx
-from sqlalchemy import distinct, func, select
+from sqlalchemy import distinct, func, select, true
 from sqlalchemy.engine import Engine
 from sqlalchemy.orm import Session
 
@@ -47,6 +48,7 @@ from courtload.workbench_models import (
 )
 
 logger = logging.getLogger(__name__)
+PORTRAIT_SOURCE = "nba_cdn_1040x760"
 
 ALLOWLISTED_JOB_TYPES = {
     "bootstrap",
@@ -170,13 +172,22 @@ def _fetch_player_portrait(
     cache_dir: Path,
 ) -> tuple[str, Path, int] | None:
     """Fetch headshot for an NBA player from official CDN and cache it locally."""
-    url = f"https://cdn.nba.com/headshots/nba/latest/260x190/{player_id}.png"
+    if not re.fullmatch(r"[0-9]{1,12}", player_id):
+        return None
+    url = f"https://cdn.nba.com/headshots/nba/latest/1040x760/{player_id}.png"
     try:
         resp = client.get(url, timeout=10.0)
         if resp.status_code != 200:
             return None
         content = resp.content
-        if len(content) == 0 or len(content) > 1_000_000:
+        if (
+            len(content) < 33
+            or len(content) > 1_000_000
+            or resp.headers.get("content-type", "").split(";")[0] != "image/png"
+            or content[:8] != b"\x89PNG\r\n\x1a\n"
+            or content[12:16] != b"IHDR"
+            or struct.unpack(">II", content[16:24]) != (1040, 760)
+        ):
             return None
         sha256 = hashlib.sha256(content).hexdigest()
         cache_dir.mkdir(parents=True, exist_ok=True)
@@ -417,6 +428,16 @@ def execute_job(
                     acquired_count = 0
                     failed_count = 0
                     limit_count = int(job_args.get("limit", 200))
+                    requested_players = job_args.get("player_ids")
+                    if requested_players is not None and (
+                        not isinstance(requested_players, list)
+                        or len(requested_players) > 2000
+                        or any(
+                            not isinstance(pid, str) or not re.fullmatch(r"[0-9]{1,12}", pid)
+                            for pid in requested_players
+                        )
+                    ):
+                        raise ValueError("Portrait targets require at most 2000 numeric NBA IDs")
 
                     with Session(engine, expire_on_commit=False) as s:
                         players = list(
@@ -424,11 +445,14 @@ def execute_job(
                                 select(WorkbenchIdentity.external_id)
                                 .where(
                                     WorkbenchIdentity.kind == "player",
+                                    WorkbenchIdentity.external_id.in_(requested_players)
+                                    if requested_players is not None
+                                    else true(),
                                     ~WorkbenchIdentity.external_id.like("test_%"),
                                     ~select(PlayerPortrait.id)
                                     .where(
                                         PlayerPortrait.player_id == WorkbenchIdentity.external_id,
-                                        PlayerPortrait.source_name == "nba_cdn",
+                                        PlayerPortrait.source_name == PORTRAIT_SOURCE,
                                     )
                                     .exists(),
                                 )
@@ -444,7 +468,7 @@ def execute_job(
                                 existing_p = s.scalar(
                                     select(PlayerPortrait).where(
                                         PlayerPortrait.player_id == pid,
-                                        PlayerPortrait.source_name == "nba_cdn",
+                                        PlayerPortrait.source_name == PORTRAIT_SOURCE,
                                     )
                                 )
                                 if existing_p is not None:
@@ -460,12 +484,14 @@ def execute_job(
                                     s.add(
                                         PlayerPortrait(
                                             player_id=pid,
-                                            source_name="nba_cdn",
+                                            source_name=PORTRAIT_SOURCE,
                                             content_sha256=sha256,
                                             storage_path=str(path),
                                             mime_type="image/png",
+                                            width=1040,
+                                            height=760,
                                             bytes=size,
-                                            attribution="NBA CDN 260x190 headshot",
+                                            attribution="NBA CDN latest 1040x760 headshot",
                                             status="active",
                                             acquired_at=utc_now(),
                                         )

@@ -1,3 +1,5 @@
+import { WORDMARK_HEIGHT, WORDMARK_PATH, WORDMARK_WIDTH } from "./courtlens-wordmark";
+
 /**
  * Context-labelled image and canonical query URL export utility for CourtLens.
  *
@@ -86,12 +88,15 @@ export async function exportSvgAsPng(
 
   // 2. Draw branded header
   ctx.fillStyle = "#ffd166"; // CourtLens Accent
-  ctx.font = "bold 16px -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
-  ctx.fillText("CourtLens", paddingX, 30);
+  ctx.save();
+  ctx.translate(paddingX, 16);
+  ctx.scale(14 / WORDMARK_HEIGHT, 14 / WORDMARK_HEIGHT);
+  ctx.fill(new Path2D(WORDMARK_PATH));
+  ctx.restore();
 
   ctx.fillStyle = "#b4bdca"; // Muted text
   ctx.font = "12px -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
-  ctx.fillText("NBA Analytics · Reconstructed Prior Facts", paddingX + 90, 30);
+  ctx.fillText("NBA Analytics · Reconstructed Prior Facts", paddingX + 14 * WORDMARK_WIDTH / WORDMARK_HEIGHT + 14, 30);
 
   // Main title
   ctx.fillStyle = "#f1f3f6"; // Primary text

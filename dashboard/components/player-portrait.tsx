@@ -35,9 +35,11 @@ export function PlayerPortrait({
 
   // Use explicit portraitUrl, or player endpoint if playerId provided
   const portraitPath = portraitUrl || (playerId ? `/api/workbench/players/${playerId}/portrait` : null);
-  const source = portraitPath?.startsWith("/")
-    ? `${browserApi.replace(/\/$/, "")}${portraitPath}`
-    : portraitPath;
+  const versionedPath = portraitPath?.match(/^\/api\/workbench\/players\/[^/]+\/portrait$/)
+    ? `${portraitPath}?quality=1040x760` : portraitPath;
+  const source = versionedPath?.startsWith("/")
+    ? `${browserApi.replace(/\/$/, "")}${versionedPath}`
+    : versionedPath;
 
   if (error || !source) {
     return (

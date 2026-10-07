@@ -1,0 +1,76 @@
+.venv/bin/python scripts/evaluate_assistant.py --split holdout --open-holdout --output docs/evidence/ar08-acceptance/live-holdout.json
+ar02-010 run 1: answer=False plan=False ['status', 'sql_cells_or_order']
+ar02-010 run 2: answer=False plan=False ['status', 'sql_cells_or_order']
+Report: docs/evidence/ar08-acceptance/live-holdout.json
+{
+  "coverage": {
+    "completed_runs": 2,
+    "planned_runs": 90,
+    "completed_questions": 0,
+    "planned_questions": 30
+  },
+  "exact_answer": {
+    "correct": 0,
+    "total": 2,
+    "rate": 0
+  },
+  "plan_accuracy": {
+    "correct": 0,
+    "total": 2,
+    "rate": 0
+  },
+  "refusal_precision": {
+    "correct": 0,
+    "total": 0,
+    "rate": null
+  },
+  "refusal_recall": {
+    "correct": 0,
+    "total": 0,
+    "rate": null
+  },
+  "flakiness": {
+    "flaky": 0,
+    "total": 0,
+    "rate": null
+  },
+  "answer_variation": {
+    "varied": 0,
+    "total": 0,
+    "rate": null
+  },
+  "latency_ms": {
+    "mean": 2613.8075,
+    "p95": 3620.061
+  },
+  "provider_calls": 2,
+  "setup_provider_calls": 0,
+  "recorded_provider_calls": 2,
+  "token_usage": {
+    "calls_with_usage": 1,
+    "calls_without_usage": 1,
+    "reported_tokens": {
+      "prompt_token_count": 5535,
+      "candidates_token_count": 68,
+      "total_token_count": 5603
+    }
+  },
+  "analytical_calls": 0,
+  "narrative": {
+    "eligible_turns": 0,
+    "attempted": 0,
+    "accepted": 0,
+    "fallback": 0,
+    "fallback_rate": null,
+    "fallback_reasons": {},
+    "skipped": {}
+  },
+  "categories": {
+    "leaders": {
+      "correct": 0,
+      "total": 2,
+      "rate": 0
+    }
+  }
+}
+make: *** [Makefile:61: eval-assistant] Error 2

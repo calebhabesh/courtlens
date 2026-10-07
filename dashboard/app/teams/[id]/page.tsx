@@ -1,3 +1,4 @@
+import { AssistantPageSelection } from "@/lib/assistant-page-context";
 import { resolveStatsQuery } from "@/lib/stats-query";
 import { getWorkbenchCatalog } from "@/lib/workbench-api";
 import type { Metadata } from "next";
@@ -101,6 +102,7 @@ export default async function TeamDetailPage({
 
   return (
     <>
+      <AssistantPageSelection route={`/teams/${team.id}`} teamIds={[team.id]} scope={detail.context} label={team.name} />
       <ContextBar
         catalog={catalog ?? undefined}
         initialReleaseId={resolvedReleaseId}

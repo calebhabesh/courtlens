@@ -1,0 +1,13 @@
+{
+  "artwork": "CourtLens wordmark outlines",
+  "font": "Sora Bold",
+  "version": "2.0",
+  "source": "https://www.fontshare.com/fonts/sora",
+  "download": "https://api.fontshare.com/v2/fonts/download/sora",
+  "font_file": "Sora_Complete/Fonts/OTF/Sora-Bold.otf",
+  "font_sha256": "e0531178a5d9197f2a2e9f02685711f1c9b8c089f5a535570f0067a0aba39845",
+  "license": "SIL Open Font License 1.1",
+  "license_file": "Sora-OFL.txt",
+  "license_sha256": "6dae6eafdfc08eeb4be656f8e7ea7995212edc1e6191081ae626dbd662439838",
+  "method": "CourtLens text shaped by HarfBuzz with original glyphs, advance widths and default kerning; font software is not shipped or modified."
+}

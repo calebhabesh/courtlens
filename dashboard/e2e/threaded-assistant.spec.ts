@@ -15,6 +15,7 @@ async function reloadPage(page: Page) {
 const hash = "a".repeat(64);
 const threadId = (n: number) => `11111111-1111-4111-8111-${String(n).padStart(12, "0")}`;
 const path = "/research/ask";
+const playerPage = "/players/23?season=2025-26";
 const scope = (season = "2024-25") => ({ as_of: "2026-10-06", calendar_version: "fixture", calendar_sha256: hash, selections: { season, phase: "regular_season" as const, window: "season" as const, release_id: "retained-release", before_date: "2025-04-15" }, label: `${season} · Regular season · Season to date` });
 function answer(request: HybridTurnRequest, overrides: Partial<HybridTurnResponse> = {}): HybridTurnResponse {
   return { request_id: request.request_id, thread_id: request.thread_id!, turn_id: request.request_id, status: "answered", intent: "explanation", blocks: [{kind:"text",origin:"knowledge",text:"A pick and roll pairs a screen with a cut toward the basket."}], sources: [], actions: [], ...overrides };
@@ -137,10 +138,10 @@ test("Stop is durable, releases controls and fences a late response",async({page
 });
 
 test("closing drawer retains pending history and full-page link preserves scope",async({page})=>{
-  const state = await mock(page,{deferred:true}); await openPage(page, path); await page.getByRole("button",{name:"Ask",exact:true}).click(); const dialog = page.getByRole("dialog");
+  const state = await mock(page,{deferred:true}); await openPage(page, playerPage); await page.getByRole("button",{name:"Ask",exact:true}).click(); const dialog = page.getByRole("dialog");
   await composer(dialog).fill("Retain me"); await dialog.getByRole("button",{name:"Send question",exact:true}).click();
-  await expect(dialog.getByRole("button",{name:"Stop",exact:true})).toBeEnabled(); await expect(dialog.getByRole("link",{name:"Open full research page"})).toHaveAttribute("href","/research/ask");
-  await page.keyboard.press("Escape"); await expect(dialog).not.toBeVisible(); state.release(); await reloadPage(page);
+  await expect(dialog.getByRole("button",{name:"Stop",exact:true})).toBeEnabled(); await expect(dialog.getByRole("link",{name:"Open full research page"})).toHaveAttribute("href",/\/research\/ask\?.*season=2025-26/);
+  await page.keyboard.press("Escape"); await expect(dialog).not.toBeVisible(); state.release(); await openPage(page, path);
   await expect(messages(page)).toContainText("Retain me"); await expect(messages(page)).toContainText("pairs a screen");
 });
 
@@ -177,6 +178,7 @@ for (const [name,width,height,zoom] of [["wide",2560,1440,1],["desktop",1440,900
     await expect(composer(page)).toBeInViewport();
     const column = await live(page).locator(".ask-column").boundingBox(); expect(column!.width).toBeLessThanOrEqual(760);
     await page.screenshot({path:test.info().outputPath(`ask-${name}-answer.png`)});
+    await openPage(page, playerPage);
     await page.getByRole("button",{name:"Ask",exact:true}).click(); await expect(messages(page.getByRole("dialog"))).toContainText("pairs a screen");
     await page.screenshot({path:test.info().outputPath(`ask-${name}-panel.png`)});
     await page.keyboard.press("Escape"); await expect(page.getByRole("button",{name:"Ask",exact:true})).toBeFocused();
@@ -196,6 +198,8 @@ test("verified local results preserve zero, unknown, scope and equivalent action
   await openPage(page, path); await send(page,"Show local observations");
   // The compact table is visible in the answer; the full result is behind "How I got this".
   const table=page.getByRole("region",{name:"query results",exact:true}); await expect(table).toContainText("Unknown"); await expect(table).toContainText("0");
+  // Limitations/approximations sit beside the answer, before any disclosure is opened.
+  await expect(page.locator(".ask-limitation").first()).toHaveText("Available cohort only"); await expect(page.locator(".ask-limitation").first()).toBeVisible();
   await page.getByText("How I got this",{exact:true}).click(); await expect(page.getByRole("region",{name:"query data table",exact:true})).toContainText("Unknown");
   await expect(page.getByRole("link",{name:"Open in Stats"}).first()).toHaveAttribute("href","/stats?season=2024-25");
   await expect(messages(page)).toContainText("Chat history is retained separately"); await expect(messages(page)).toContainText("2024-25");
@@ -208,21 +212,23 @@ test("default assistant and manual entry are available without preview selection
   await expect(page.getByLabel('Run manually without AI')).toBeVisible();
 });
 
-test("page and drawer share updates, preserve independent drafts and delete together",async({page})=>{
+test("page and panel share retained updates and deletion across navigation",async({page})=>{
   await mock(page); await openPage(page, path); await send(page,'First question');
-  await composer(page).fill('Page draft');
-  await page.getByRole('button',{name:'Ask',exact:true}).click(); const dialog=page.getByRole('dialog'); const main=live(page).locator('.ask-page');
+  await expect(messages(page)).toContainText('First question');
+  await openPage(page, playerPage);
+  await page.getByRole('button',{name:'Ask',exact:true}).click(); const dialog=page.getByRole('dialog');
+  await expect(messages(dialog)).toContainText('First question');
   await composer(dialog).fill('Drawer question');
   await dialog.getByRole('button',{name:'Send question',exact:true}).click();
   await expect(messages(dialog)).toContainText('Drawer question');
-  await page.keyboard.press('Escape'); await expect(messages(main)).toContainText('Drawer question');
-  await expect(composer(main)).toHaveValue('Page draft');
-  await page.getByRole('button',{name:'Ask',exact:true}).click();
+  await page.keyboard.press('Escape'); await openPage(page, path);
+  await expect(messages(page)).toContainText('Drawer question');
+  await openPage(page, playerPage); await page.getByRole('button',{name:'Ask',exact:true}).click();
   await dialog.getByRole('button',{name:'Delete chat',exact:true}).click();
   await dialog.getByRole('button',{name:'Confirm deletion'}).click();
   await expect(messages(dialog)).toBeEmpty();
-  await page.keyboard.press('Escape'); await expect(messages(main)).toBeEmpty();
-  await expect(composer(main)).toHaveValue('Page draft');
+  await page.keyboard.press('Escape'); await openPage(page, path);
+  await expect(messages(page)).toBeEmpty();
 });
 
 for (const [reason,text] of [['provider_disabled','The language planner is disabled.'],['provider_quota','The provider quota is exhausted.'],['provider_busy','The provider is busy.'],['provider_timeout','The provider timed out.'],['malformed_output','The provider returned an invalid plan.'],['external_unavailable','The source could not be reached.'],['external_stale','A current claim could not be verified.'],['backend_failure','The analytical backend could not complete this query.']] as const) {
@@ -386,4 +392,48 @@ test("clearing history in Settings empties an open chat in another tab", async (
 test("/ask opens the assistant", async ({ page }) => {
   await mock(page); await openPage(page, "/ask?season=2025-26");
   await expect(page).toHaveURL(/\/research\/ask\?season=2025-26$/); await expect(page.getByRole("heading", { name: "What do you want to know?" })).toBeVisible();
+});
+
+for (const width of [1440, 375]) {
+  for (const [route, message, entityKey, entity] of [
+    [playerPage, "Show his profile", "player_ids", "23"],
+    ["/teams/1610612761?season=2025-26", "Show this team", "team_ids", "1610612761"],
+  ] as const) {
+    test(`AR07 ${width}px ${entityKey} panel attaches and removes resolved page context`, async ({page}) => {
+      await page.setViewportSize({width, height: 900});
+      const state = await mock(page); await openPage(page, route);
+      await page.getByRole("button", {name:"Ask", exact:true}).click();
+      const dialog = page.getByRole("dialog");
+      await expect(dialog.getByLabel("Attached page context")).toContainText(entityKey === "player_ids" ? "Fixture Star" : "Toronto Raptors");
+      await composer(dialog).fill(message); await dialog.getByRole("button",{name:"Send question",exact:true}).click();
+      await expect.poll(() => state.requests.length).toBe(1);
+      expect(state.requests[0].page_context?.[entityKey]).toEqual([entity]);
+      expect(state.requests[0].page_context?.selections.season).toBe("2025-26");
+      expect(state.requests[0].context?.season).toBe("2025-26");
+      await expect(messages(dialog)).toContainText("pairs a screen");
+      await page.screenshot({path:test.info().outputPath(`ar07-${entityKey}-${width}.png`)});
+      await dialog.getByRole("button",{name:"Remove page context"}).click();
+      await expect(dialog.getByLabel("Attached page context")).toHaveCount(0);
+      await composer(dialog).fill("Explain pick and roll"); await dialog.getByRole("button",{name:"Send question",exact:true}).click();
+      await expect.poll(() => state.requests.length).toBe(2);
+      expect(state.requests[1].page_context).toBeUndefined();
+      await page.keyboard.press("Escape");
+      await expect(page.getByRole("button",{name:"Ask",exact:true})).toBeFocused();
+    });
+  }
+}
+
+test("AR07 compare attaches both players, and the full Ask page uses the standalone entry", async ({page}) => {
+  const state = await mock(page);
+  await openPage(page, "/compare?playerA=23&playerB=24&season=2025-26");
+  await page.getByRole("button",{name:"Ask",exact:true}).click();
+  const dialog = page.getByRole("dialog");
+  await expect(dialog.getByLabel("Attached page context")).toContainText("Fixture Star / Fixture Guard");
+  await composer(dialog).fill("Compare these players"); await dialog.getByRole("button",{name:"Send question",exact:true}).click();
+  await expect.poll(() => state.requests.length).toBe(1);
+  expect(state.requests[0].page_context?.player_ids).toEqual(["23", "24"]);
+  await page.keyboard.press("Escape"); await openPage(page, path);
+  await page.getByRole("button",{name:"Ask",exact:true}).click();
+  await expect(page.getByRole("dialog")).toHaveCount(0);
+  await expect(composer(page)).toBeVisible();
 });

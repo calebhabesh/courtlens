@@ -1,6 +1,7 @@
 "use client";
 
 import { Fragment, useEffect, useId, useMemo, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { useSearchParams } from "next/navigation";
 import type { LookupItem } from "@/lib/types";
 import { buildLookupCacheKey, defaultLookupCache } from "@/lib/lookup-cache";
@@ -25,8 +26,16 @@ export function useLookupScope(scope: LookupScope) {
   };
 }
 
-export function LookupIdentity({ item, committed = false }: { item: LookupItem; committed?: boolean }) {
-  return <><span className="lookup-item-leading">{item.kind === "player" ? <><PlayerPortrait playerId={item.metadata?.identity_namespace === "planner" ? undefined : item.canonical_id} name={item.display_name} portraitUrl={item.portrait_url} size="sm" /><TeamLogoStack teams={item.team_association?.teams ?? []} label={item.team_association?.basis === "last_observed" ? "Last observed team" : "Teams observed in selected scope"} /></> : item.kind === "team" ? <TeamLogo team={item.portrait_fallback ?? item.canonical_id} size={32} /> : <Icon name="search" />}</span><span className="lookup-item-content"><span className="lookup-item-name">{item.display_name}</span>{!committed && item.matched_alias && <span className="lookup-alias-badge">aka {item.matched_alias}</span>}<span className="lookup-item-subtitle">{item.subtitle}{item.kind === "player" && item.availability?.status === "no_current_games" ? item.team_association?.season ? " · No appearances in selected season" : " · No observed appearances" : ""}</span></span></>;
+function compactCaption(item: LookupItem) {
+  if (item.kind !== "player") return item.subtitle;
+  if (item.availability?.status === "no_current_games") return "No stats in selected scope";
+  const association = item.team_association;
+  if (!association?.teams.length) return undefined;
+  return `${association.teams.join(" / ")}${association.basis === "last_observed" ? " · Last observed team" : association.season ? ` · ${association.season}` : " · Selected scope"}`;
+}
+
+export function LookupIdentity({ item, committed = false, compact = false }: { item: LookupItem; committed?: boolean; compact?: boolean }) {
+  return <><span className="lookup-item-leading">{item.kind === "player" ? <><PlayerPortrait playerId={item.metadata?.identity_namespace === "planner" ? undefined : item.canonical_id} name={item.display_name} portraitUrl={item.portrait_url} size="sm" /><TeamLogoStack teams={item.team_association?.teams ?? []} label={item.team_association?.basis === "last_observed" ? "Last observed team" : "Teams observed in selected scope"} /></> : item.kind === "team" ? <TeamLogo team={item.portrait_fallback ?? item.canonical_id} size={32} /> : <Icon name="search" />}</span><span className="lookup-item-content"><span className="lookup-item-name">{item.display_name}</span>{!committed && !compact && item.matched_alias && <span className="lookup-alias-badge">aka {item.matched_alias}</span>}<span className="lookup-item-subtitle">{compact ? compactCaption(item) : <>{item.subtitle}{item.kind === "player" && item.availability?.status === "no_current_games" ? item.team_association?.season ? " · No appearances in selected season" : " · No observed appearances" : ""}</>}</span></span></>;
 }
 
 export interface LookupInputProps extends LookupScope {
@@ -45,15 +54,22 @@ export interface LookupInputProps extends LookupScope {
   autoFocus?: boolean;
   required?: boolean;
   disabled?: boolean;
+  compactResults?: boolean;
+  portalDropdown?: boolean;
+  clearLabel?: string;
+  onClear?: () => void;
 }
 
 /** Form-safe lookup. Enter only commits an explicitly highlighted candidate. */
-export function LookupInput({ label, value, onChange, onSelect, onSubmitText, kinds, candidates, excludedIds = [], limit = 10, debounceMs = 120, placeholder = "Search by name", inputRef, autoFocus, required, disabled, ...scope }: LookupInputProps) {
+export function LookupInput({ label, value, onChange, onSelect, onSubmitText, kinds, candidates, excludedIds = [], limit = 10, debounceMs = 120, placeholder = "Search by name", inputRef, autoFocus, required, disabled, compactResults = false, portalDropdown = false, clearLabel, onClear, ...scope }: LookupInputProps) {
   const resolved = useLookupScope(scope);
   const key = buildLookupCacheKey({ query: value, ...resolved, kinds, limit }) + JSON.stringify(candidates ?? null);
   const id = useId();
   const localRef = useRef<HTMLInputElement>(null);
   const ref = inputRef ?? localRef;
+  const rootRef = useRef<HTMLDivElement>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const [position, setPosition] = useState<{left: number; top: number; width: number; maxHeight: number} | null>(null);
   const controller = useRef<AbortController | null>(null);
   const sequence = useRef(0);
   const composing = useRef(false);
@@ -98,7 +114,43 @@ export function LookupInput({ label, value, onChange, onSelect, onSubmitText, ki
   }, [key, open, ime, disabled, retry, debounceMs]);
   useEffect(() => { if (open && active >= 0) document.getElementById(`${id}-option-${active}`)?.scrollIntoView({block:"nearest"}); }, [active, id, open]);
   const currentActive = open && !loading && !error && active >= 0 && active < items.length ? active : -1;
-  return <div className="lookup-combobox" onBlur={event => { if (!event.currentTarget.contains(event.relatedTarget)) close(); }}>
+  useEffect(() => {
+    if (!portalDropdown || !open) return;
+    let frame = 0;
+    const update = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        const box = ref.current?.getBoundingClientRect();
+        if (!box) return;
+        const width = Math.min(Math.max(box.width, 320), window.innerWidth - 16);
+        const below = window.innerHeight - box.bottom - 12;
+        const above = box.top - 12;
+        const useAbove = below < 180 && above > below;
+        const maxHeight = Math.min(420, Math.max(80, useAbove ? above : below));
+        const height = Math.min(dropdownRef.current?.scrollHeight ?? maxHeight, maxHeight);
+        setPosition({ left: Math.max(8, Math.min(box.left, window.innerWidth - width - 8)), width,
+          top: useAbove ? Math.max(8, box.top - height - 4) : box.bottom + 4, maxHeight });
+      });
+    };
+    update();
+    window.addEventListener("resize", update);
+    window.addEventListener("scroll", update, true);
+    return () => { cancelAnimationFrame(frame); window.removeEventListener("resize", update); window.removeEventListener("scroll", update, true); };
+  }, [portalDropdown, open, ref, key, loading, items.length, error]);
+  const blur: React.FocusEventHandler<HTMLDivElement> = event => {
+    if (!rootRef.current?.contains(event.relatedTarget) && !dropdownRef.current?.contains(event.relatedTarget)) close();
+  };
+  const dropdown = open && !disabled && <div ref={dropdownRef} onBlur={blur}
+    className={`lookup-dropdown ${compactResults ? "lookup-compact-results" : ""} ${portalDropdown ? "lookup-floating-dropdown" : ""}`}
+    style={portalDropdown && position ? { ...position, position: "fixed" } : undefined}>
+      {loading && <p className="lookup-status-message">Searching…</p>}
+      {error && <div className="lookup-status-message error">{error}<button type="button" className="button button-small" onClick={() => {invalidate(); setState(null); setRetry(n=>n+1); ref.current?.focus();}}>Retry search</button></div>}
+      {!loading && !ime && !error && !items.length && <p className="lookup-status-message">{value ? `No matches for “${value}”. Try a shorter name or another spelling.` : "Type a player or team name to see suggestions."}</p>}
+      <ul id={`${id}-list`} role="listbox" aria-label={`${label} suggestions`} className="lookup-listbox">
+        {items.map((item,index) => <Fragment key={`${item.kind}:${item.canonical_id}`}>{(index === 0 || items[index-1].kind !== item.kind) && <li role="presentation" className="lookup-group-header">{item.kind === "player" ? "Players" : item.kind === "team" ? "Teams" : "Pages and tools"}</li>}<li id={`${id}-option-${index}`} role="option" tabIndex={-1} aria-selected={index === currentActive} className={`lookup-option ${index === currentActive ? "selected" : ""}`} onPointerDown={event=>{if(event.pointerType === "mouse") event.preventDefault();}} onClick={()=>choose(item)} onMouseEnter={()=>setActive(index)}><LookupIdentity item={item} compact={compactResults} /></li></Fragment>)}
+      </ul>
+    </div>;
+  return <div ref={rootRef} className="lookup-combobox" onBlur={blur}>
     <div className="lookup-input-wrapper">
       <Icon name="search" className="lookup-search-icon" />
       <input ref={ref} role="combobox" aria-label={label} aria-autocomplete="list" aria-expanded={open && !disabled} aria-controls={open ? `${id}-list` : undefined} aria-activedescendant={currentActive >= 0 ? `${id}-option-${currentActive}` : undefined} aria-describedby={`${id}-status`} autoComplete="off" spellCheck={false} className="lookup-input" value={value} placeholder={placeholder} required={required} disabled={disabled} autoFocus={autoFocus}
@@ -111,16 +163,9 @@ export function LookupInput({ label, value, onChange, onSelect, onSubmitText, ki
           else if (event.key === "Escape") { if(open) event.preventDefault(); close(); }
           else if (event.key === "Tab") close();
         }} />
-      {value && !disabled && <button type="button" className="lookup-clear-btn" aria-label={`Clear ${label}`} onClick={() => {change(""); ref.current?.focus();}}><Icon name="close" /></button>}
+      {value && !disabled && <button type="button" className="lookup-clear-btn" aria-label={clearLabel ?? `Clear ${label}`} onClick={() => {change(""); onClear?.(); ref.current?.focus();}}><Icon name="close" /></button>}
     </div>
     <span id={`${id}-status`} role="status" aria-live="polite" className="sr-only">{open && !loading && !ime ? error ?? `${items.length} suggestions. Use arrow keys to choose, then Enter.` : ""}</span>
-    {open && !disabled && <div className="lookup-dropdown">
-      {loading && <p className="lookup-status-message">Searching…</p>}
-      {error && <div className="lookup-status-message error">{error}<button type="button" className="button button-small" onClick={() => {invalidate(); setState(null); setRetry(n=>n+1); ref.current?.focus();}}>Retry search</button></div>}
-      {!loading && !ime && !error && !items.length && <p className="lookup-status-message">{value ? `No matches for “${value}”. Try a shorter name or another spelling.` : "Type a player or team name to see suggestions."}</p>}
-      <ul id={`${id}-list`} role="listbox" aria-label={`${label} suggestions`} className="lookup-listbox">
-        {items.map((item,index) => <Fragment key={`${item.kind}:${item.canonical_id}`}>{(index === 0 || items[index-1].kind !== item.kind) && <li role="presentation" className="lookup-group-header">{item.kind === "player" ? "Players" : item.kind === "team" ? "Teams" : "Pages and tools"}</li>}<li id={`${id}-option-${index}`} role="option" tabIndex={-1} aria-selected={index === currentActive} className={`lookup-option ${index === currentActive ? "selected" : ""}`} onPointerDown={event=>{if(event.pointerType === "mouse") event.preventDefault();}} onClick={()=>choose(item)} onMouseEnter={()=>setActive(index)}><LookupIdentity item={item} /></li></Fragment>)}
-      </ul>
-    </div>}
+    {portalDropdown ? position && dropdown && createPortal(dropdown, document.body) : dropdown}
   </div>;
 }

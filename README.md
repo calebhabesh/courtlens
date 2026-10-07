@@ -6,6 +6,9 @@ actual OS installation, changing Live-game observations and deeper source/model 
 remain open. See the [current capability ledger and measured evidence](docs/databallr-replica-implementation-progress.md).
 The historical figures and milestone table below describe earlier workbench evidence,
 not current source coverage or full replica acceptance.
+The [assistant revamp progress](docs/assistant-revamp-progress.md) records AR01–AR07's measured
+boundaries. AR08's live holdout was opened and stopped on Gemini quota after 2/90 planned runs;
+final live acceptance remains incomplete. See the [acceptance evidence](docs/evidence/ar08-acceptance/README.md).
 
 CourtLens is an engineer's local NBA research and forecasting workbench engineered with strict temporal discipline, source-traceable box-score lineage, out-of-time machine learning evaluation, and an optional tool-backed analytical assistant.
 
@@ -37,8 +40,30 @@ Operating on six complete NBA regular seasons (2019–20 through 2024–25) and 
 
 - **Data Engineering:** Built a local NBA research workbench using Python 3.14, PostgreSQL 17, and dbt, versioning 104,533 player-game records across 6 NBA seasons and exposing reproducible player/team investigations with upstream transform lineage.
 - **Offline ML & Forecasting:** Evaluated next-game points baselines and challengers across 10 chronological holdout folds, reporting an active prior-blend MAE of 4.88 (vs. baseline 5.09) with 81.2% empirical interval coverage; implemented immutable prospective forecast logging separating DNP injuries from 0 PTS appearances.
-- **AI Systems & Guardrails:** Optional read-only conversational planning with registered analytical operations, server-rendered exact-cell evidence, bounded execution and deterministic fixture evaluation. Fixture results do not establish real Gemini language accuracy; that acceptance gate remains open.
+- **AI Systems & Guardrails:** Built and evaluated a read-only NBA query assistant with independent SQL oracles across 150 frozen questions; measured an initial Gemini development baseline of 253/360 exact answers (70.28%) and correctness changes on 3/120 repeated questions (2.5%). Final holdout acquisition remains incomplete on provider quota. [Measured case study](docs/evidence/ar08-acceptance/README.md).
 - **Performance & Reliability:** Benchmarked 15 FastAPI endpoints under concurrency with median latencies under 55 ms for core research views and 0.0% error rate across 450 requests.
+
+### Assistant case study: server-owned answers, measured language planning
+
+An ordinary question about last season's assists leader failed when the planner proposed an old
+season despite the server having resolved the current calendar. The revamp makes server scope
+authoritative, permits one validation repair, and keeps analytical values tied to executed result
+cells. General basketball explanations carry a visible source label; generated narratives pass a
+numeric checker before streaming and otherwise retain the template answer. The chat page and
+contextual player/team panel preserve durable threads, saved findings and manual analysis.
+
+The frozen evaluation contains 120 development and 30 holdout questions, each repeated three
+times, with expectations computed independently against a pinned PostgreSQL snapshot. The
+[initial live development baseline](docs/evidence/ar02-evaluation/README.md) measured 70.28%
+exact-answer accuracy and 91.04% strict canonical plan agreement. Those figures predate routing
+and narrative changes and are not the current implementation's final accuracy. Recorded provider
+responses replay offline in pytest; fixture/browser checks establish execution and presentation.
+
+The [AR08 live holdout capture](docs/evidence/ar08-acceptance/live-holdout.json) contains an
+incorrect clarification followed by a quota failure: 0/2 acquired turns passed, with 88 planned
+turns unacquired. No holdout tuning or retry was performed. Holdout accuracy across all questions,
+flakiness and the live narrative fallback rate remain unmeasured. Desktop/mobile screenshots,
+verification logs and reproduction steps are in the [acceptance report](docs/evidence/ar08-acceptance/README.md).
 
 ---
 

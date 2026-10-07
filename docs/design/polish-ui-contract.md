@@ -2,6 +2,59 @@
 
 2026-10-05. Parent: [freeze handoff](../polish-freeze-implementation-plan.md). **Review draft; implementation pending.** Applies to PF01–PF06 and the visual primitives consumed by PF08. The owner selected near-black, larger controls/rows, full-width left alignment and Lucide. Retain the original analytical/temporal contracts.
 
+## Owner-confirmed Stats reference revision — 2026-10-07
+
+The owner confirmed all recommendations in the Stats reference interview. For StatsWorkspace
+(`/stats` and the compatible player explorer), this revision supersedes the earlier near-black
+palette, taller row targets and click-only detail presentation. Other routes retain their
+approved foundation. This is a bounded B07/PF05 follow-up, not a reopening of analytical scope
+or a new full-freeze acceptance claim.
+
+- Match the complete Stats surface to the supplied Databallr screenshots, using CourtLens
+  branding, the approved local fonts and only existing verified metrics. Use slate surfaces
+  around #20252e/#232a34/#303845, amber selection accents, restrained horizontal separators,
+  compact segmented controls and shaded metric groups. Keep visible keyboard focus.
+- Default rows target 52px with 14px values, 11px percentiles and 40px portraits, single-line names and percentile sublabels.
+  Preserve the compact density preference. Combine team logos, portraits, names and represented
+  team/season subtitles; keep comparison, favorite and profile actions distinct. Full names and
+  every represented team remain accessible. Do not invent positions or reference-only metrics.
+- Give identity columns stable widths, numeric columns consistent widths with a preferred
+  84px minimum, and 40px group gutters with centered 34px portraits. Fill the available table width on wide screens;
+  scroll internally when the selected columns require more room. Align headers/body and sticky
+  offsets at every supported width and guide mode.
+- Put name search in the identity header; combine counting/view/actions above the table;
+  collapse secondary team/sample/sort/page-size filters; put record counts, density, expansion
+  and pagination in a compact footer. Preserve supported controls and analytical context.
+- Reserve a 250px preview rail on desktop at 1200px and above. Hover or row/descendant focus
+  previews already-loaded values without fetching or moving focus. Retain the last preview
+  when the pointer leaves. Explicit pin/unpin freezes/resumes previews; allow rail collapse.
+  Initially show guidance and scoped shortcuts. Keep explicit full-detail modal access on all
+  widths, including touch, and keep the rail available in expanded-height mode.
+- Rail values, normalization, nulls and percentiles must match the displayed row. Label
+  percentiles as the eligible cohort, not position-relative. Scope changes invalidate previews;
+  neither hover nor pinning mutates analytical or personal state.
+
+Owner follow-up on 2026-10-07: enlarge readable records while retaining compact density
+(42px rows), center numbers and recurring guides, and give table name search bounded
+player-only suggestions from the shared lookup. A suggestion filters Stats in place;
+unhighlighted Enter still submits partial text. Preserve scope, cancellation, IME and
+keyboard/touch semantics, and position suggestions outside the scrolling table without clipping.
+
+The shell uses a frameless basketball mark, a vertically centered mixed-case amber CourtLens
+wordmark, and Availability beside Help. Use the Fontshare Red Hat Display Bold wordmark artwork (owner revision after the Sora pass) in
+header, Stats and SVG/PNG share cards; data/prose fonts retain Public Sans and JetBrains Mono.
+Global/table lookup captions are concise and preserve selected-scope versus last-observed team
+semantics; aliases still match without full-width explanatory badges. Clear search aligns right.
+
+Portrait acquisition uses bounded official NBA 1040×760 PNGs with a distinct retained source
+identity; keep prior 260×190 records/files. Reads remain local and never acquire assets. Successful
+images record dimensions, attribution and SHA-256; failures preserve existing images/placeholders.
+
+Acceptance requires inspected real-data initial/hover/pinned screenshots at matched CSS
+viewports, wide/smaller desktop and mobile geometry, keyboard/focus/touch behavior, all guide
+modes/presets, consistent table/rail values, and measured evidence in the freeze/replica logs.
+Earlier green click-drawer tests do not establish hover-rail fidelity.
+
 ## Shared visual foundation
 
 Use one semantic token layer and a small set of shared primitives with vanilla CSS. Extend existing seams; a full component-library or styling-framework rewrite is outside this phase. Keep the approved local Public Sans/JetBrains Mono typography unless actual rendering evidence requires a bounded correction.

@@ -181,8 +181,8 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
   align-items: center;
   gap: 0.6rem;
   font-weight: 700;
-  letter-spacing: 0.08em;
-  font-size: 0.88rem;
+  letter-spacing: -0.02em;
+  font-size: 1rem;
 }
 .brand-mark-svg {
   display: flex;
@@ -193,8 +193,8 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
   flex-direction: column;
 }
 .brand-title {
-  color: var(--text);
-  line-height: 1.1;
+  color: var(--accent);
+  line-height: 24px;
 }
 .brand-subtitle {
   font-size: 0.65rem;
@@ -306,7 +306,7 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
 .lookup-input {
   width: 100%;
   height: 32px;
-  padding: 0 3.25rem 0 2rem;
+  padding: 0 2rem 0 2rem;
   background: var(--surface-raised);
   border: 1px solid var(--border);
   border-radius: var(--radius);
@@ -327,7 +327,7 @@ input:focus, select:focus, textarea:focus, button:focus-visible, a:focus-visible
 
 .lookup-clear-btn {
   position: absolute;
-  right: 2rem;
+  right: 4px;
   background: transparent;
   border: none;
   color: var(--text-muted);
@@ -3112,6 +3112,7 @@ textarea, input, select { max-width: 100%; }
 .ask-chip, .ask-chips .ask-chip.button { display: inline-flex; align-items: center; min-height: 32px; padding: 4px 12px; border: 1px solid var(--separator); border-radius: 999px; background: transparent; color: var(--text); font-size: 13px; text-decoration: none; white-space: normal; text-align: left; }
 .ask-chip:hover { border-color: var(--accent); color: var(--accent); }
 .ask-scope-tag { display: inline-flex; align-items: center; min-height: 32px; padding: 4px 12px; border-radius: 999px; background: var(--surface-raised); color: var(--muted); font-size: 13px; }
+.ask-limitation { margin: 6px 0 0; font-size: 13px; line-height: 1.45; }
 .ask-table { max-width: 100%; overflow-x: auto; border: 1px solid var(--separator); border-radius: var(--radius); }
 .ask-table table { width: 100%; font-size: 13px; }
 .ask-table caption { padding: 6px 10px; caption-side: bottom; color: var(--muted); font-size: 12px; text-align: left; }
@@ -3208,3 +3209,18 @@ textarea, input, select { max-width: 100%; }
 .legacy-planner .scenario-builder form { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); align-items: end; gap: 16px; }
 .legacy-planner .scenario-builder input:not(.entity-validity) { width: 100%; min-width: 0; }
 .legacy-planner .scenario-result .plan-block { margin-top: 20px; }
+
+/* AR07: removable page selections sit above the composer in the header panel. */
+.ask-page-context { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px; padding: 4px 8px; border: 1px solid var(--separator); border-radius: 8px; color: var(--text-muted); font-size: .75rem; }
+.ask-page-context span { overflow-wrap: anywhere; }
+.ask-page-context button { flex: 0 0 auto; min-width: 44px; min-height: 44px; }
+
+/* Concise navigation/table suggestions; entity forms keep their detailed identities. */
+.lookup-compact-results .lookup-item-subtitle { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.lookup-compact-results .lookup-option { padding-block: 10px; align-items: center; }
+.lookup-floating-dropdown { min-width: 0; max-width: none; z-index: 1100; }
+
+.lookup-compact-results .player-portrait, .lookup-compact-results .player-portrait-fallback { width: 38px !important; height: 38px !important; min-width: 38px !important; min-height: 38px !important; }
+
+.brand-title { display: flex; align-items: center; min-height: 24px; }
+.courtlens-wordmark { display: block; flex-shrink: 0; }

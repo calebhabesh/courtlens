@@ -7,7 +7,7 @@ test.describe("Workbench Dark Research Interface", () => {
     // Wait for streamed route hydration before interacting with the shell.
     await page.waitForLoadState("networkidle");
     await expect(page).toHaveURL(/\/stats\?/);
-    await expect(page.getByRole("banner").getByRole("link", { name: "CourtLens Research Workbench home" })).toContainText("COURTLENS");
+    await expect(page.getByRole("banner").getByRole("link", { name: "CourtLens Research Workbench home" })).toContainText("CourtLens");
     const navigation = page.getByRole("navigation", { name: "Workspace Navigation" });
     await expect(navigation.getByRole("link", { name: "Stats", exact: true })).toBeVisible();
     for (const name of ["Players", "Teams", "Compare", "Research", "Help"]) {
@@ -32,7 +32,7 @@ test.describe("Workbench Dark Research Interface", () => {
     await expect(page.getByRole("link", { name: "Fixture Star", exact: true })).toBeVisible();
 
     // Filter by name
-    const searchInput = page.getByLabel("Filter players by name");
+    const searchInput = page.getByRole("combobox", { name: "Filter players by name", exact: true });
     await searchInput.fill("Guard");
     await searchInput.press("Enter");
     await expect(page).toHaveURL(/name=Guard/);
@@ -138,7 +138,7 @@ test.describe("Workbench Dark Research Interface", () => {
   });
 
   test("Ask drawer offers manual research and links to optional configuration", async ({ page }) => {
-    await openWorkbench(page, "/stats?experience=manual");
+    await openWorkbench(page, "/players/23?experience=manual");
     await page.getByRole("button", { name: "Ask", exact: true }).click();
     const dialog = page.getByRole("dialog", { name: "Research conversation" });
     await expect(dialog.getByRole("heading", { name: "Ask CourtLens" })).toBeVisible();
