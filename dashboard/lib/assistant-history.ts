@@ -18,3 +18,13 @@ export const sendAssistantTurn = (turn: HybridTurnRequest, signal?: AbortSignal)
 export const stopAssistantTurn = (threadId: string, turnId: string) => request<DurableTurnRecord>(`threads/${encodeURIComponent(threadId)}/turns/${encodeURIComponent(turnId)}/cancel`, { method: "POST" });
 export const deleteAssistantThread = (threadId: string) => request<{ cleared: boolean }>(`threads/${encodeURIComponent(threadId)}`, { method: "DELETE" });
 export const clearAssistantHistory = () => request<{ cleared: boolean }>("threads", { method: "DELETE" });
+
+// Open chats (page, drawer, other tabs) re-read history when any of them announces a change.
+export const historyChangeKey = "courtload-assistant-history-change-v2";
+export const historyChangeEvent = "courtload-assistant-history-change";
+export const activeThreadKey = "courtload-assistant-active-thread-v2";
+export function announceHistoryChange(source: string, thread: string | null) {
+  const change = { source, thread, nonce: crypto.randomUUID() };
+  window.dispatchEvent(new CustomEvent(historyChangeEvent, { detail: change }));
+  try { localStorage.setItem(historyChangeKey, JSON.stringify(change)); } catch { /* Same-page synchronization still works. */ }
+}

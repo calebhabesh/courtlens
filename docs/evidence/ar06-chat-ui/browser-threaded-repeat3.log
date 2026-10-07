@@ -1,0 +1,112 @@
+
+Running 108 tests using 2 workers
+
+[1/108] e2e/threaded-assistant.spec.ts:98:5 › scope changes retain old answers and unedited follow-ups inherit on server
+[2/108] e2e/threaded-assistant.spec.ts:80:5 › standalone defaults, reload, new chat, history and deletion keep durable questions
+[3/108] e2e/threaded-assistant.spec.ts:110:5 › transport replay preserves request identity; intentional retry links a new turn
+[4/108] e2e/threaded-assistant.spec.ts:120:5 › Stop is durable, releases controls and fences a late response
+[5/108] e2e/threaded-assistant.spec.ts:128:5 › closing drawer retains pending history and full-page link preserves scope
+[6/108] e2e/threaded-assistant.spec.ts:136:5 › clarifications, external citations and hostile text render safely
+[7/108] e2e/threaded-assistant.spec.ts:143:5 › paginated turns are loaded without losing earlier questions
+[8/108] e2e/threaded-assistant.spec.ts:156:7 › threaded wide layout, keyboard dialog and screenshot
+[9/108] e2e/threaded-assistant.spec.ts:156:7 › threaded desktop layout, keyboard dialog and screenshot
+[10/108] e2e/threaded-assistant.spec.ts:156:7 › threaded mobile layout, keyboard dialog and screenshot
+[11/108] e2e/threaded-assistant.spec.ts:156:7 › threaded zoom-equivalent layout, keyboard dialog and screenshot
+[12/108] e2e/threaded-assistant.spec.ts:175:5 › typing a next question during execution preserves the new draft
+[13/108] e2e/threaded-assistant.spec.ts:183:5 › verified local results preserve zero, unknown, scope and equivalent actions
+[14/108] e2e/threaded-assistant.spec.ts:193:5 › default assistant and manual entry are available without preview selection
+[15/108] e2e/threaded-assistant.spec.ts:200:5 › page and drawer share updates, preserve independent drafts and delete together
+[16/108] e2e/threaded-assistant.spec.ts:218:7 › provider_disabled retains history and retry creates a linked attempt
+[17/108] e2e/threaded-assistant.spec.ts:218:7 › provider_quota retains history and retry creates a linked attempt
+[18/108] e2e/threaded-assistant.spec.ts:218:7 › provider_busy retains history and retry creates a linked attempt
+[19/108] e2e/threaded-assistant.spec.ts:218:7 › provider_timeout retains history and retry creates a linked attempt
+[20/108] e2e/threaded-assistant.spec.ts:218:7 › malformed_output retains history and retry creates a linked attempt
+[21/108] e2e/threaded-assistant.spec.ts:218:7 › external_unavailable retains history and retry creates a linked attempt
+[22/108] e2e/threaded-assistant.spec.ts:218:7 › external_stale retains history and retry creates a linked attempt
+[23/108] e2e/threaded-assistant.spec.ts:218:7 › backend_failure retains history and retry creates a linked attempt
+[24/108] e2e/threaded-assistant.spec.ts:229:5 › browser history scope changes update only the next request
+[25/108] e2e/threaded-assistant.spec.ts:242:7 › general knowledge label stays visible after reload at 1440px
+[26/108] e2e/threaded-assistant.spec.ts:242:7 › general knowledge label stays visible after reload at 375px
+[27/108] e2e/threaded-assistant.spec.ts:260:5 › checked narrative renders above its supporting result and survives reload
+[28/108] e2e/threaded-assistant.spec.ts:278:5 › streamed turn shows each phase, the checked narrative, then the retained answer
+[29/108] e2e/threaded-assistant.spec.ts:291:5 › unavailable stream falls back to request/response with the same request identity
+[30/108] e2e/threaded-assistant.spec.ts:297:5 › Enter sends, Shift+Enter adds a line and an example prompt sends directly
+[31/108] e2e/threaded-assistant.spec.ts:310:5 › user message is a right-aligned bubble and assistant prose has no bubble
+[32/108] e2e/threaded-assistant.spec.ts:325:5 › an old thread without narrative renders its template answer in the new layout
+[33/108] e2e/threaded-assistant.spec.ts:343:5 › mobile conversations open as a drawer and close after choosing a thread
+[34/108] e2e/threaded-assistant.spec.ts:355:5 › desktop sidebar collapses and stays collapsed after reload
+[35/108] e2e/threaded-assistant.spec.ts:363:5 › clearing history in Settings empties an open chat in another tab
+[36/108] e2e/threaded-assistant.spec.ts:375:5 › /ask opens the assistant
+[37/108] e2e/threaded-assistant.spec.ts:80:5 › standalone defaults, reload, new chat, history and deletion keep durable questions
+[38/108] e2e/threaded-assistant.spec.ts:110:5 › transport replay preserves request identity; intentional retry links a new turn
+[39/108] e2e/threaded-assistant.spec.ts:98:5 › scope changes retain old answers and unedited follow-ups inherit on server
+[40/108] e2e/threaded-assistant.spec.ts:120:5 › Stop is durable, releases controls and fences a late response
+[41/108] e2e/threaded-assistant.spec.ts:128:5 › closing drawer retains pending history and full-page link preserves scope
+[42/108] e2e/threaded-assistant.spec.ts:136:5 › clarifications, external citations and hostile text render safely
+[43/108] e2e/threaded-assistant.spec.ts:143:5 › paginated turns are loaded without losing earlier questions
+[44/108] e2e/threaded-assistant.spec.ts:156:7 › threaded wide layout, keyboard dialog and screenshot
+[45/108] e2e/threaded-assistant.spec.ts:156:7 › threaded desktop layout, keyboard dialog and screenshot
+[46/108] e2e/threaded-assistant.spec.ts:156:7 › threaded mobile layout, keyboard dialog and screenshot
+[47/108] e2e/threaded-assistant.spec.ts:156:7 › threaded zoom-equivalent layout, keyboard dialog and screenshot
+[48/108] e2e/threaded-assistant.spec.ts:175:5 › typing a next question during execution preserves the new draft
+[49/108] e2e/threaded-assistant.spec.ts:183:5 › verified local results preserve zero, unknown, scope and equivalent actions
+[50/108] e2e/threaded-assistant.spec.ts:193:5 › default assistant and manual entry are available without preview selection
+[51/108] e2e/threaded-assistant.spec.ts:200:5 › page and drawer share updates, preserve independent drafts and delete together
+[52/108] e2e/threaded-assistant.spec.ts:218:7 › provider_disabled retains history and retry creates a linked attempt
+[53/108] e2e/threaded-assistant.spec.ts:218:7 › provider_quota retains history and retry creates a linked attempt
+[54/108] e2e/threaded-assistant.spec.ts:218:7 › provider_busy retains history and retry creates a linked attempt
+[55/108] e2e/threaded-assistant.spec.ts:218:7 › provider_timeout retains history and retry creates a linked attempt
+[56/108] e2e/threaded-assistant.spec.ts:218:7 › malformed_output retains history and retry creates a linked attempt
+[57/108] e2e/threaded-assistant.spec.ts:218:7 › external_unavailable retains history and retry creates a linked attempt
+[58/108] e2e/threaded-assistant.spec.ts:218:7 › external_stale retains history and retry creates a linked attempt
+[59/108] e2e/threaded-assistant.spec.ts:218:7 › backend_failure retains history and retry creates a linked attempt
+[60/108] e2e/threaded-assistant.spec.ts:229:5 › browser history scope changes update only the next request
+[61/108] e2e/threaded-assistant.spec.ts:242:7 › general knowledge label stays visible after reload at 1440px
+[62/108] e2e/threaded-assistant.spec.ts:242:7 › general knowledge label stays visible after reload at 375px
+[63/108] e2e/threaded-assistant.spec.ts:260:5 › checked narrative renders above its supporting result and survives reload
+[64/108] e2e/threaded-assistant.spec.ts:278:5 › streamed turn shows each phase, the checked narrative, then the retained answer
+[65/108] e2e/threaded-assistant.spec.ts:291:5 › unavailable stream falls back to request/response with the same request identity
+[66/108] e2e/threaded-assistant.spec.ts:297:5 › Enter sends, Shift+Enter adds a line and an example prompt sends directly
+[67/108] e2e/threaded-assistant.spec.ts:310:5 › user message is a right-aligned bubble and assistant prose has no bubble
+[68/108] e2e/threaded-assistant.spec.ts:325:5 › an old thread without narrative renders its template answer in the new layout
+[69/108] e2e/threaded-assistant.spec.ts:343:5 › mobile conversations open as a drawer and close after choosing a thread
+[70/108] e2e/threaded-assistant.spec.ts:355:5 › desktop sidebar collapses and stays collapsed after reload
+[71/108] e2e/threaded-assistant.spec.ts:363:5 › clearing history in Settings empties an open chat in another tab
+[72/108] e2e/threaded-assistant.spec.ts:375:5 › /ask opens the assistant
+[73/108] e2e/threaded-assistant.spec.ts:80:5 › standalone defaults, reload, new chat, history and deletion keep durable questions
+[74/108] e2e/threaded-assistant.spec.ts:98:5 › scope changes retain old answers and unedited follow-ups inherit on server
+[75/108] e2e/threaded-assistant.spec.ts:110:5 › transport replay preserves request identity; intentional retry links a new turn
+[76/108] e2e/threaded-assistant.spec.ts:120:5 › Stop is durable, releases controls and fences a late response
+[77/108] e2e/threaded-assistant.spec.ts:128:5 › closing drawer retains pending history and full-page link preserves scope
+[78/108] e2e/threaded-assistant.spec.ts:136:5 › clarifications, external citations and hostile text render safely
+[79/108] e2e/threaded-assistant.spec.ts:143:5 › paginated turns are loaded without losing earlier questions
+[80/108] e2e/threaded-assistant.spec.ts:156:7 › threaded wide layout, keyboard dialog and screenshot
+[81/108] e2e/threaded-assistant.spec.ts:156:7 › threaded desktop layout, keyboard dialog and screenshot
+[82/108] e2e/threaded-assistant.spec.ts:156:7 › threaded mobile layout, keyboard dialog and screenshot
+[83/108] e2e/threaded-assistant.spec.ts:156:7 › threaded zoom-equivalent layout, keyboard dialog and screenshot
+[84/108] e2e/threaded-assistant.spec.ts:175:5 › typing a next question during execution preserves the new draft
+[85/108] e2e/threaded-assistant.spec.ts:183:5 › verified local results preserve zero, unknown, scope and equivalent actions
+[86/108] e2e/threaded-assistant.spec.ts:193:5 › default assistant and manual entry are available without preview selection
+[87/108] e2e/threaded-assistant.spec.ts:200:5 › page and drawer share updates, preserve independent drafts and delete together
+[88/108] e2e/threaded-assistant.spec.ts:218:7 › provider_disabled retains history and retry creates a linked attempt
+[89/108] e2e/threaded-assistant.spec.ts:218:7 › provider_quota retains history and retry creates a linked attempt
+[90/108] e2e/threaded-assistant.spec.ts:218:7 › provider_busy retains history and retry creates a linked attempt
+[91/108] e2e/threaded-assistant.spec.ts:218:7 › provider_timeout retains history and retry creates a linked attempt
+[92/108] e2e/threaded-assistant.spec.ts:218:7 › malformed_output retains history and retry creates a linked attempt
+[93/108] e2e/threaded-assistant.spec.ts:218:7 › external_unavailable retains history and retry creates a linked attempt
+[94/108] e2e/threaded-assistant.spec.ts:218:7 › external_stale retains history and retry creates a linked attempt
+[95/108] e2e/threaded-assistant.spec.ts:218:7 › backend_failure retains history and retry creates a linked attempt
+[96/108] e2e/threaded-assistant.spec.ts:229:5 › browser history scope changes update only the next request
+[97/108] e2e/threaded-assistant.spec.ts:242:7 › general knowledge label stays visible after reload at 1440px
+[98/108] e2e/threaded-assistant.spec.ts:242:7 › general knowledge label stays visible after reload at 375px
+[99/108] e2e/threaded-assistant.spec.ts:260:5 › checked narrative renders above its supporting result and survives reload
+[100/108] e2e/threaded-assistant.spec.ts:278:5 › streamed turn shows each phase, the checked narrative, then the retained answer
+[101/108] e2e/threaded-assistant.spec.ts:291:5 › unavailable stream falls back to request/response with the same request identity
+[102/108] e2e/threaded-assistant.spec.ts:297:5 › Enter sends, Shift+Enter adds a line and an example prompt sends directly
+[103/108] e2e/threaded-assistant.spec.ts:310:5 › user message is a right-aligned bubble and assistant prose has no bubble
+[104/108] e2e/threaded-assistant.spec.ts:325:5 › an old thread without narrative renders its template answer in the new layout
+[105/108] e2e/threaded-assistant.spec.ts:343:5 › mobile conversations open as a drawer and close after choosing a thread
+[106/108] e2e/threaded-assistant.spec.ts:355:5 › desktop sidebar collapses and stays collapsed after reload
+[107/108] e2e/threaded-assistant.spec.ts:363:5 › clearing history in Settings empties an open chat in another tab
+[108/108] e2e/threaded-assistant.spec.ts:375:5 › /ask opens the assistant
+  108 passed (42.4s)

@@ -12,14 +12,14 @@ import { clearConversation, conversationRequest, pinnedContext, sendTurn, status
 import { ConversationResult } from "./conversation-result";
 import { SaveOperation } from "./save-operation";
 
-interface AskCourtLoadProps { initialReleaseId?: string; initialSeason?: string; initialPhase?: string; initialBeforeDate?: string; initialWindow?: string }
+interface AskCourtLoadProps { variant?: "page" | "panel"; initialReleaseId?: string; initialSeason?: string; initialPhase?: string; initialBeforeDate?: string; initialWindow?: string }
 const prompts = ["Whose minutes increased recently without scoring increasing?", "Which players have produced similarly to Scottie Barnes over their last ten appearances?", "How variable has Scottie Barnes’s scoring been, and did his minutes vary too?"];
 const examples: Record<string, Record<string, unknown>> = {
   workload_shifts: {period_n:10,min_minutes:0,limit:20}, similarity:{target_player_id:"1630567",window:"last_10",top_k:5}, distribution:{player_id:"1630567",metric:"pts",window_n:20}, compare_periods:{player_id:"1630567",mode:"appearances",period_a_n:10,period_b_n:10}, splits:{player_id:"1630567"}, definition:{metric:"ts_pct"}, query:{metric_selectors:[{key:"pts_per_game"}],page:{limit:10}}, profile:{player_id:"1630567"}, compare:{player_a:"1630567",player_b:"1629628"}, team:{team_id:"1610612761"}, forecast:{player_id:"1630567"}, finance:{}
 };
 export function AskCourtLoad(props: AskCourtLoadProps) {
   const params = useSearchParams();
-  if (params.get("experience") !== "manual") return <ThreadedAssistant initialContext={{release_id:params.get("releaseId") ?? params.get("release_id") ?? undefined,season:params.get("season") ?? undefined,phase:(params.get("phase") ?? undefined) as ConversationContext["phase"],before_date:params.get("beforeDate") ?? params.get("before_date") ?? undefined,window:(params.get("window") ?? undefined) as ConversationContext["window"]}} />;
+  if (params.get("experience") !== "manual") return <ThreadedAssistant initialContext={{release_id:params.get("releaseId") ?? params.get("release_id") ?? undefined,season:params.get("season") ?? undefined,phase:(params.get("phase") ?? undefined) as ConversationContext["phase"],before_date:params.get("beforeDate") ?? params.get("before_date") ?? undefined,window:(params.get("window") ?? undefined) as ConversationContext["window"]}} variant={props.variant} />;
   return <LegacyAskCourtLoad {...props} />;
 }
 
