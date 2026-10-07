@@ -1,0 +1,26 @@
+{
+  "channel": "public",
+  "snapshot_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+  "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+  "dataset_content_sha256": "68bc89a115a025f84ca93f34aa50072696ed316490fa9e4d226cf0578c4a5c6d",
+  "mode": "workbench",
+  "archive": "data/backups/courtlens-backup-20261007T214108Z.tar.gz",
+  "archive_sha256": "fb0824ebaddcfc748a22e886785ec1dd8021cac2cee27dd0519d386e27d82e6f",
+  "archive_bytes": 518600011,
+  "source_alembic_revision": "07b810a4f005",
+  "source_volume": "courtload_courtload-postgres",
+  "assistant_history_counts": {
+    "threads": 4,
+    "turns": 9,
+    "inputs": 2
+  },
+  "workbench_records": {
+    "player_games_count": 104533,
+    "team_games_count": 7924,
+    "schedules_count": 5470,
+    "saved_investigations_count": 235,
+    "personal_workspaces_count": 5,
+    "forecast_issuances_count": 489,
+    "forecast_scores_count": 489
+  }
+}

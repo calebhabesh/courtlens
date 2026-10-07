@@ -1,0 +1,25 @@
+dashboard-1  | ▲ Next.js 16.3.5
+dashboard-1  | - Local:         http://localhost:3000
+dashboard-1  | - Network:       http://0.0.0.0:3000
+dashboard-1  | ✓ Ready in 0ms
+dashboard-1  | ✓ Running next.config took 0.6ms
+api-1        | INFO:     172.21.0.4:41732 - "POST /api/workbench/query HTTP/1.1" 200 OK
+api-1        | INFO:     172.21.0.1:60616 - "GET /api/workbench/players/1630162/portrait?quality=1040x760 HTTP/1.1" 200 OK
+api-1        | INFO:     172.21.0.1:60620 - "GET /api/workbench/players/1627759/portrait?quality=1040x760 HTTP/1.1" 200 OK
+api-1        | INFO:     172.21.0.1:60630 - "GET /api/workbench/players/1630178/portrait?quality=1040x760 HTTP/1.1" 200 OK
+api-1        | INFO:     172.21.0.1:60608 - "GET /api/workbench/players/1628983/portrait?quality=1040x760 HTTP/1.1" 200 OK
+api-1        | INFO:     172.21.0.1:60598 - "GET /api/workbench/players/1629029/portrait?quality=1040x760 HTTP/1.1" 200 OK
+api-1        | INFO:     172.21.0.1:60634 - "GET /api/workbench/players/1628378/portrait?quality=1040x760 HTTP/1.1" 200 OK
+api-1        | INFO:     172.21.0.1:60630 - "GET /api/workbench/players/203954/portrait?quality=1040x760 HTTP/1.1" 200 OK
+api-1        | INFO:     172.21.0.1:60598 - "GET /api/workbench/players/203507/portrait?quality=1040x760 HTTP/1.1" 200 OK
+api-1        | INFO:     172.21.0.1:60620 - "GET /api/workbench/players/1628374/portrait?quality=1040x760 HTTP/1.1" 200 OK
+api-1        | INFO:     172.21.0.1:60616 - "GET /api/workbench/players/202695/portrait?quality=1040x760 HTTP/1.1" 200 OK
+api-1        | INFO:     172.21.0.1:60608 - "GET /api/workbench/players/203999/portrait?quality=1040x760 HTTP/1.1" 200 OK
+api-1        | INFO:     172.21.0.4:41744 - "GET /api/workbench/workspace?workspaceId=default HTTP/1.1" 200 OK
+api-1        | INFO:     172.21.0.4:41732 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+api-1        | INFO:     172.21.0.1:60584 - "GET /api/workbench/catalog HTTP/1.1" 200 OK
+api-1        | INFO:     172.21.0.4:41750 - "GET /api/workbench/players/1629029/games?season=2025-26&phase=regular_season&beforeDate=2026-04-13&limit=50 HTTP/1.1" 200 OK
+api-1        | INFO:     172.21.0.4:41744 - "GET /api/workbench/players/1629029?season=2025-26&phase=regular_season&beforeDate=2026-04-13&window=season HTTP/1.1" 200 OK
+api-1        | INFO:     172.21.0.4:41732 - "GET /api/workbench/players/1629029?season=2023-24&phase=regular_season&beforeDate=2026-04-13 HTTP/1.1" 200 OK
+api-1        | INFO:     172.21.0.4:41750 - "GET /api/workbench/players/1629029?season=2024-25&phase=regular_season&beforeDate=2026-04-13 HTTP/1.1" 200 OK
+api-1        | INFO:     172.21.0.1:60644 - "GET /api/workbench/players/1629029/measurements HTTP/1.1" 200 OK

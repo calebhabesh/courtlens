@@ -355,14 +355,29 @@ def test_dump_restore_history_and_provenance(postgres_conversation, tmp_path):
     assert schema.startswith("b33_") and len(schema) == 36
     session.rollback()
     url = session.get_bind().url
-    env = dict(os.environ, PGPASSWORD=url.password)
-    arguments = ["-h", url.host, "-U", url.username, "-d", url.database]
+    env = dict(os.environ, PGPASSWORD=url.password or "")
+    arguments = [
+        "-h",
+        url.host,
+        "-p",
+        str(url.port or 5432),
+        "-U",
+        url.username,
+        "-d",
+        url.database,
+    ]
     if shutil.which("pg_dump") and shutil.which("psql"):
         dump_command = ["pg_dump", *arguments, "--schema", schema]
         restore_command = ["psql", *arguments, "-v", "ON_ERROR_STOP=1"]
     else:
-        # This installation runs the PostgreSQL tools in its local database container.
-        prefix = ["docker", "exec", "-i", "courtlens-db-1"]
+        # Never assume the application container owns the disposable fixture schema.
+        container = os.getenv("COURTLENS_TEST_POSTGRES_CONTAINER")
+        if not container:
+            pytest.fail(
+                "Install pg_dump/psql or set COURTLENS_TEST_POSTGRES_CONTAINER "
+                "to the disposable container backing COURTLENS_TEST_POSTGRES_URL"
+            )
+        prefix = ["docker", "exec", "-i", "-e", "PGPASSWORD", container]
         local_arguments = ["-U", url.username, "-d", url.database]
         dump_command = [*prefix, "pg_dump", *local_arguments, "--schema", schema]
         restore_command = [*prefix, "psql", *local_arguments, "-v", "ON_ERROR_STOP=1"]

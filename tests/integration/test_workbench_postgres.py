@@ -144,7 +144,7 @@ def test_postgres_sealed_trigger_rejects_raw_sql_mutation(postgres_engine) -> No
         session.rollback()
 
         # 3. With admin mutation enabled, DELETE succeeds
-        session.execute(text("SET LOCAL courtload.allow_admin_mutation = 'true'"))
+        session.execute(text("SET LOCAL courtlens.allow_admin_mutation = 'true'"))
         session.execute(
             text("DELETE FROM workbench_dataset_members WHERE id = :mid"),
             {"mid": member_id},

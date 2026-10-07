@@ -15,7 +15,7 @@ from typing import Any
 from uuid import UUID, uuid4
 
 from fastapi import HTTPException
-from sqlalchemy import Engine, delete, select, text, true
+from sqlalchemy import Engine, delete, inspect, select, text, true
 from sqlalchemy.orm import Session
 
 from courtlens.assistant_history_models import (
@@ -544,7 +544,24 @@ def history_inventory(session: Session) -> dict[str, Any]:
     inputs = session.scalars(
         select(AssistantTurnInput).order_by(AssistantTurnInput.turn_id, AssistantTurnInput.step_id)
     ).all()
-    transcripts = {t.turn_id: t for t in session.scalars(select(AssistantAgentTranscript)).all()}
+    transcripts: dict[str, AssistantAgentTranscript] = {}
+    connection = session.connection()
+    if inspect(connection).has_table("assistant_agent_transcripts"):
+        transcripts = {
+            t.turn_id: t for t in session.scalars(select(AssistantAgentTranscript)).all()
+        }
+    else:
+        # RN02 must back up the owner's AG02 database before upgrading its schema.
+        # Only that recognized pre-transcript revision may omit the table; newer
+        # databases still fail closed, as do any retained v3 transcript references below.
+        schema = inspect(connection)
+        revisions = (
+            session.scalars(text("SELECT version_num FROM alembic_version")).all()
+            if schema.has_table("alembic_version")
+            else []
+        )
+        if revisions != ["07b810a4f005"]:
+            raise ValueError("assistant transcript table missing from an unrecognized schema")
     for turn in turns:
         retained = record(turn).response
         if isinstance(retained, AgentTurnResponse) and retained.transcript:
