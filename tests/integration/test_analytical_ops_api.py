@@ -18,15 +18,18 @@ import pytest
 from fastapi.testclient import TestClient
 
 from courtlens.api.app import create_app
+from courtlens.database import get_db
 
 BAM_ADEBAYO_ID = "1628389"
 LIMITED_SAMPLE_PLAYER_ID = "1628424"  # Kobi Simmons (4 appearances in 2023-24)
 
 
 @pytest.fixture
-def client() -> TestClient:
+def client(workbench_db):
     app = create_app()
-    return TestClient(app)
+    app.dependency_overrides[get_db] = lambda: workbench_db
+    with TestClient(app) as client:
+        yield client
 
 
 @pytest.mark.skipif(

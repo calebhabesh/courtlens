@@ -39,16 +39,19 @@ def test_discover_historical_season_capability() -> None:
     assert cfg2026.expected_empty is False
 
 
-def test_discover_current_season_expected_empty_distinction() -> None:
+def test_discover_current_season_expected_empty_distinction(tmp_path: Path) -> None:
     # 2027 season (schedule-only, future/in-progress)
-    cfg2027 = get_season_config(2027)
+    season_dir = tmp_path / "sportsdataverse_2027"
+    season_dir.mkdir()
+    (season_dir / "schedule_2027.json").write_text('{"leagueSchedule":{"gameDates":[]}}')
+    cfg2027 = get_season_config(2027, raw_root=tmp_path)
     assert cfg2027.ending_year == 2027
     assert cfg2027.canonical_season == "2026-27"
     assert cfg2027.has_player_boxscores is False
     assert cfg2027.has_team_boxscores is False
     assert cfg2027.boxscore_status == "not_yet_observed"
     assert cfg2027.expected_empty is True
-    # Schedule JSON is present in data/raw
+    # The explicit local schedule fixture is present
     assert cfg2027.has_raw_schedule_json is True
     assert cfg2027.schedule_status == "available"
 

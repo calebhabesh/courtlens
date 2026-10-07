@@ -266,7 +266,7 @@ class OfflineFixtureAssistantProvider:
         if "forecast" in query or "estimate" in query:
             player_id = "1630567"  # Default Scottie Barnes if not specified
             if "barrett" in query:
-                player_id = "1628369"
+                player_id = "1629628"
             return ProviderCallResult(
                 tool_calls=[
                     ("get_forecast", {"player_id": player_id}),
@@ -288,7 +288,7 @@ class OfflineFixtureAssistantProvider:
         # 4. Player comparison
         if "compare" in query:
             p_a = "1630567"  # Scottie Barnes
-            p_b = "1628369"  # RJ Barrett
+            p_b = "1629628"  # RJ Barrett
             return ProviderCallResult(
                 tool_calls=[("compare_players", {"player_a": p_a, "player_b": p_b})]
             )
@@ -687,7 +687,7 @@ class OfflinePlanFixtureProvider:
                     {
                         "step_id": "compare",
                         "operation": "compare",
-                        "arguments": {"player_a": "1630567", "player_b": "1628369"},
+                        "arguments": {"player_a": "1630567", "player_b": "1629628"},
                     }
                 ]
             },

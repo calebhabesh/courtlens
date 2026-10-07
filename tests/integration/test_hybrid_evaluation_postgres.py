@@ -17,6 +17,7 @@ from courtlens.database import get_db
 from courtlens.domain.conversation import AnalysisPlan
 from courtlens.domain.hybrid_assistant import HybridTurnResponse
 from courtlens.services.assistant.evaluation import score_case
+from courtlens.services.assistant.history import run_durable_turn
 from courtlens.services.assistant.hybrid import run_hybrid_turn
 from courtlens.services.assistant.planner import PlanningOutput
 
@@ -152,6 +153,12 @@ def test_hybrid_corpus_durable_http_manual_equivalence(postgres_conversation, ca
             return run_hybrid_turn(db, request, provider=Planner(), clock=clock, **kwargs)
 
         with (
+            patch(
+                "courtlens.api.routers.conversation.run_durable_turn",
+                side_effect=lambda db, request, **kwargs: run_durable_turn(
+                    db, request, provider=Planner()
+                ),
+            ),
             patch("courtlens.services.assistant.history.run_hybrid_turn", side_effect=execute),
             TestClient(app) as client,
         ):

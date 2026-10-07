@@ -8,12 +8,15 @@ import pytest
 from fastapi.testclient import TestClient
 
 from courtlens.api.app import create_app
+from courtlens.database import get_db
 
 
 @pytest.fixture
-def client() -> TestClient:
+def client(workbench_db):
     app = create_app()
-    return TestClient(app)
+    app.dependency_overrides[get_db] = lambda: workbench_db
+    with TestClient(app) as client:
+        yield client
 
 
 def _require_test_db() -> None:
@@ -21,6 +24,7 @@ def _require_test_db() -> None:
         pytest.skip("COURTLENS_TEST_POSTGRES_URL is not configured")
 
 
+@pytest.mark.requires_published_data
 def test_b16_teams_research_enriched_factors(client: TestClient) -> None:
     """Verify GET /api/workbench/teams returns conference, division, ratings, and four factors."""
     _require_test_db()
@@ -47,6 +51,7 @@ def test_b16_teams_research_enriched_factors(client: TestClient) -> None:
     assert bos["four_factors"] is not None
 
 
+@pytest.mark.requires_published_data
 def test_b16_toronto_reconciled_investigation(client: TestClient) -> None:
     """Verify Toronto 2023-24 participation cohort and participation/current-roster distinction."""
     _require_test_db()
@@ -87,6 +92,7 @@ def test_b16_team_peers_comparison(client: TestClient) -> None:
     assert len(data_tor["peers"]) == 5
 
 
+@pytest.mark.requires_published_data
 def test_b16_head_to_head_schedule(client: TestClient) -> None:
     """Verify head-to-head match details in schedule for two-team comparison."""
     _require_test_db()

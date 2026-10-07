@@ -2,18 +2,17 @@
 
 from __future__ import annotations
 
-import os
 from datetime import UTC, datetime, timedelta
 from uuid import uuid4
 
 import pytest
 from fastapi.testclient import TestClient
-from sqlalchemy import create_engine, select
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from courtlens.api.app import create_app
 from courtlens.archive_models import ArchiveDataset
-from courtlens.database import Base
+from courtlens.database import get_db
 from courtlens.models import utc_now
 from courtlens.services.publication import (
     DEFAULT_CHANNEL,
@@ -40,24 +39,16 @@ pytestmark = pytest.mark.postgres
 
 
 @pytest.fixture
-def postgres_engine():  # type: ignore[no-untyped-def]
-    url = os.getenv("COURTLENS_TEST_POSTGRES_URL")
-    if not url:
-        if os.getenv("CI") or os.getenv("COURTLENS_REQUIRE_POSTGRES_TESTS"):
-            pytest.fail("COURTLENS_TEST_POSTGRES_URL must be configured")
-        pytest.skip("COURTLENS_TEST_POSTGRES_URL is not configured")
-    engine = create_engine(url)
-    Base.metadata.create_all(engine)
-    try:
-        yield engine
-    finally:
-        engine.dispose()
+def postgres_engine(workbench_db):  # type: ignore[no-untyped-def]
+    yield workbench_db.get_bind()
 
 
 @pytest.fixture
-def api_client():  # type: ignore[no-untyped-def]
+def api_client(workbench_db):  # type: ignore[no-untyped-def]
     app = create_app()
-    return TestClient(app)
+    app.dependency_overrides[get_db] = lambda: workbench_db
+    with TestClient(app) as client:
+        yield client
 
 
 def test_publication_lock_exclusivity(postgres_engine) -> None:  # type: ignore[no-untyped-def]
@@ -190,7 +181,8 @@ def test_interrupted_job_recovery(postgres_engine) -> None:  # type: ignore[no-u
 
         # 2. Running job whose snapshot actually published before dying -> recovered to succeeded
         current_pub = session.get(PublishedSnapshot, DEFAULT_CHANNEL)
-        snap_id = current_pub.snapshot_id if current_pub else str(uuid4())
+        assert current_pub is not None
+        snap_id = current_pub.snapshot_id
         published_job = WorkbenchJob(
             id=str(uuid4()),
             job_type="bootstrap",
@@ -356,11 +348,30 @@ def test_workbench_status_endpoint(api_client: TestClient) -> None:
     assert data["worker"]["scheduled_refresh_utc"] == "09:00"
 
 
-def test_bootstrap_execution_and_idempotence(postgres_engine) -> None:  # type: ignore[no-untyped-def]
+def test_bootstrap_execution_and_idempotence(postgres_engine, monkeypatch) -> None:  # type: ignore[no-untyped-def]
     """Bootstrap job populates workbench release and repeated execution is idempotent."""
     from courtlens.services.workbench_jobs import execute_job
     from courtlens.workbench_models import WorkbenchReleaseBinding
 
+    with Session(postgres_engine) as session:
+        seeded_dataset = session.scalar(select(WorkbenchDataset))
+        assert seeded_dataset is not None
+        dataset_id = seeded_dataset.id
+        pointer = session.get(PublishedSnapshot, DEFAULT_CHANNEL)
+        assert pointer is not None
+        session.delete(pointer)
+        session.commit()
+
+    # Isolate acquisition at its external boundary. The worker's locks, stages,
+    # validation/publication, pointer and idempotence still execute against PostgreSQL.
+    monkeypatch.setattr(
+        "courtlens.services.workbench_jobs.acquire_workbench_data",
+        lambda **kwargs: ["fixture-manifest"],
+    )
+    monkeypatch.setattr(
+        "courtlens.services.workbench_jobs.import_workbench_data",
+        lambda session, **kwargs: session.get(WorkbenchDataset, dataset_id),
+    )
     with Session(postgres_engine) as session:
         initial_pub = session.get(PublishedSnapshot, DEFAULT_CHANNEL)
         initial_pub_snapshot_id = initial_pub.snapshot_id if initial_pub else None
@@ -375,6 +386,8 @@ def test_bootstrap_execution_and_idempotence(postgres_engine) -> None:  # type: 
         assert finished_job.status == "succeeded"
         assert finished_job.stage == "completed"
         assert "snapshot_id" in finished_job.output_refs_json
+        assert finished_job.input_refs_json["manifests_count"] == 1
+        assert set(finished_job.timings_json) >= {"acquiring", "importing", "publishing"}
 
         snapshot_id = finished_job.output_refs_json["snapshot_id"]
 

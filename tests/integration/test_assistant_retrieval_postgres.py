@@ -6,6 +6,7 @@ from uuid import uuid4
 
 from sqlalchemy import select
 from sqlalchemy.orm import Session
+from test_assistant_history_postgres import LegacyOnlyProvider
 from test_conversation_postgres import postgres_conversation as _postgres_fixture
 
 from courtlens.assistant_history_models import AssistantTurnInput
@@ -32,7 +33,7 @@ def test_external_support_survives_cache_expiry_and_independent_session(postgres
         return RAW
 
     with patch.object(retrieval, "fetch", side_effect=fetched) as fetch:
-        answer = history.run_durable_turn(session, req)
+        answer = history.run_durable_turn(session, req, provider=LegacyOnlyProvider())
     assert fetch.call_count == 1 and answer.status == "answered"
     assert answer.accounting.source_requests == 1
     assert answer.sources[0].facts[0].value == "2023-10-24"
@@ -42,7 +43,7 @@ def test_external_support_survives_cache_expiry_and_independent_session(postgres
         Session(session.get_bind()) as fresh,
         patch.object(retrieval, "fetch", side_effect=RuntimeError("offline")) as offline,
     ):
-        assert history.run_durable_turn(fresh, req) == answer
+        assert history.run_durable_turn(fresh, req, provider=LegacyOnlyProvider()) == answer
         retained = history.list_turns(fresh, answer.thread_id).turns[0]
         assert retained.response == answer
         assert retained.response.sources[0].excerpt == answer.sources[0].excerpt
@@ -75,7 +76,7 @@ def test_cancel_during_external_read_fences_late_verified_source(postgres_conver
 
     def execute():
         with Session(session.get_bind()) as fresh:
-            return history.run_durable_turn(fresh, req)
+            return history.run_durable_turn(fresh, req, provider=LegacyOnlyProvider())
 
     with patch.object(retrieval, "fetch", side_effect=fetched), ThreadPoolExecutor() as pool:
         future = pool.submit(execute)
@@ -104,7 +105,7 @@ def test_external_excerpt_and_binding_survive_actual_dump_restore(postgres_conve
         request_id=uuid4(), message="When did NBA 2023-24 regular season start?"
     )
     with patch.object(retrieval, "fetch", return_value=RAW):
-        answer = history.run_durable_turn(session, req)
+        answer = history.run_durable_turn(session, req, provider=LegacyOnlyProvider())
     assert answer.status == "answered"
     before = history.history_inventory(session)
     schema = session.execute(text("SELECT current_schema()")).scalar_one()
@@ -112,12 +113,26 @@ def test_external_excerpt_and_binding_survive_actual_dump_restore(postgres_conve
     session.rollback()
     url = session.get_bind().url
     env = dict(os.environ, PGPASSWORD=url.password)
-    arguments = ["-h", url.host, "-U", url.username, "-d", url.database]
+    arguments = [
+        "-h",
+        url.host,
+        "-p",
+        str(url.port or 5432),
+        "-U",
+        url.username,
+        "-d",
+        url.database,
+    ]
     if shutil.which("pg_dump") and shutil.which("psql"):
         dump_command = ["pg_dump", *arguments, "--schema", schema]
         restore_command = ["psql", *arguments, "-v", "ON_ERROR_STOP=1"]
     else:
-        prefix = ["docker", "exec", "-i", "courtlens-db-1"]
+        container = os.environ.get("COURTLENS_TEST_POSTGRES_CONTAINER")
+        if not container:
+            raise RuntimeError(
+                "Set COURTLENS_TEST_POSTGRES_CONTAINER to the disposable fixture container"
+            )
+        prefix = ["docker", "exec", "-i", "-e", "PGPASSWORD", container]
         local_arguments = ["-U", url.username, "-d", url.database]
         dump_command = [*prefix, "pg_dump", *local_arguments, "--schema", schema]
         restore_command = [*prefix, "psql", *local_arguments, "-v", "ON_ERROR_STOP=1"]
@@ -129,5 +144,5 @@ def test_external_excerpt_and_binding_survive_actual_dump_restore(postgres_conve
     session.expire_all()
     retrieval.clear_cache()
     assert history.history_inventory(session) == before
-    assert history.run_durable_turn(session, req) == answer
+    assert history.run_durable_turn(session, req, provider=LegacyOnlyProvider()) == answer
     assert history.list_turns(session, answer.thread_id).turns[0].response == answer

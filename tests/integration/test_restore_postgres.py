@@ -146,6 +146,7 @@ def test_db_behavior_backup_manifest_and_restore_verification(
     assert report["snapshot_id"] == manifest["snapshot_id"]
 
 
+@pytest.mark.requires_published_data
 def test_real_archive_backup_manifest_and_restore_verification(
     postgres_session: Session,
 ) -> None:
@@ -194,6 +195,7 @@ def test_real_archive_backup_manifest_and_restore_verification(
     assert report["verified_comparison"]["estimate_gap"] == 2.56
 
 
+@pytest.mark.requires_published_data
 def test_workbench_backup_manifest_and_restore_verification(
     postgres_session: Session,
 ) -> None:
@@ -230,17 +232,33 @@ def test_workbench_backup_manifest_and_restore_verification(
 
 
 def test_restore_verification_fails_on_missing_or_tampered_artifact(
-    postgres_session: Session, tmp_path: Path
+    workbench_db: Session, tmp_path: Path
 ) -> None:
     # Empty artifacts dir should fail with FileNotFoundError
     with pytest.raises(FileNotFoundError):
         verify_restored_state(
-            postgres_session,
+            workbench_db,
             artifacts_dir=tmp_path,
             channel="public",
         )
 
+    run_dir = tmp_path / "synthetic-run"
+    run_dir.mkdir()
+    hashes = {}
+    for name in ("replay-estimates.jsonl", "calibration.json", "evaluation-report.json"):
+        (run_dir / name).write_bytes(b"{}")
+        hashes[name] = hashlib.sha256(b"{}").hexdigest()
+    (run_dir / "calibration.json").write_bytes(b"tampered")
+    with pytest.raises(ValueError, match=r"Artifact calibration\.json SHA mismatch"):
+        verify_restored_state(
+            workbench_db,
+            artifacts_dir=tmp_path,
+            run_id="synthetic-run",
+            expected_artifact_hashes=hashes,
+        )
 
+
+@pytest.mark.requires_published_data
 def test_disposable_fresh_database_restore(postgres_session: Session, tmp_path: Path) -> None:
     """Full-cycle test: create backup archive bundle, restore into a fresh
     disposable PostgreSQL DB, and verify.

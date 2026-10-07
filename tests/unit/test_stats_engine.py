@@ -7,11 +7,9 @@ and query plan performance harness.
 
 from __future__ import annotations
 
-import os
 from datetime import date
 
 import pytest
-from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
 from courtlens.domain.metrics import compute_metrics_v2
@@ -46,16 +44,9 @@ from courtlens.services.workbench_analytics import (
 
 
 @pytest.fixture
-def db_session() -> Session:
-    """Fixture providing database session connected to Postgres test DB if available."""
-    default_url = "postgresql+psycopg://courtlens:courtlens@localhost:5432/courtlens"
-    url = os.getenv("COURTLENS_TEST_POSTGRES_URL", default_url)
-    engine = create_engine(url)
-    try:
-        with Session(engine) as session:
-            yield session
-    finally:
-        engine.dispose()
+def db_session(workbench_db: Session) -> Session:
+    """Execute arithmetic and pagination checks against an isolated synthetic cohort."""
+    return workbench_db
 
 
 @pytest.fixture
@@ -189,8 +180,9 @@ class TestSQLGenerationAndCompilation:
         assert expected_order in sql
 
 
+@pytest.mark.postgres
 class TestStatsQueryEngineRuntime:
-    """Runtime tests executing against real operational PostgreSQL database."""
+    """Runtime tests executing against an isolated synthetic PostgreSQL cohort."""
 
     def test_arithmetic_reconciliation_with_compute_metrics_v2(self, db_session: Session) -> None:
         """SQL aggregated metrics must reconcile bit-for-bit with compute_metrics_v2."""
@@ -409,6 +401,7 @@ class TestStatsQueryEngineRuntime:
             assert 18.0 <= m["pts_per_game"] <= 28.0
 
 
+@pytest.mark.postgres
 @pytest.mark.parametrize("appeared", [True, False])
 def test_archive_stats_executes_with_versioned_names(db_session: Session, appeared: bool) -> None:
     """Historical saved links query retained archive schemas, names and cutoff rows."""

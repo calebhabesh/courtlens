@@ -3,14 +3,11 @@
 from __future__ import annotations
 
 import concurrent.futures
-import os
 import time
 
 import pytest
-from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
-from courtlens.database import Base
 from courtlens.domain.entity_lookup import (
     LOOKUP_CATALOG_VERSION,
     damerau_levenshtein_distance,
@@ -37,25 +34,9 @@ def _reset_caches():
 
 
 @pytest.fixture
-def test_db_session():
-    """Provide real PostgreSQL session when configured/reachable, else SQLite."""
-    default_url = "postgresql+psycopg://courtlens:courtlens@localhost:5432/courtlens"
-    pg_url = os.getenv("COURTLENS_TEST_POSTGRES_URL", default_url)
-    try:
-        engine = create_engine(pg_url)
-        with Session(engine) as session:
-            # Check connection
-            session.execute(WorkbenchIdentity.__table__.select().limit(1))
-            yield session
-        engine.dispose()
-        return
-    except Exception:
-        pass
-
-    engine = create_engine("sqlite:///:memory:")
-    Base.metadata.create_all(engine)
-    with Session(engine) as session:
-        # Seed minimum identities for standalone SQLite
+def test_db_session(test_engine):
+    """Always use the same explicit identities, independent of local database contents."""
+    with Session(test_engine) as session:
         session.add_all(
             [
                 WorkbenchIdentity(
@@ -111,7 +92,6 @@ def test_db_session():
         )
         session.commit()
         yield session
-    engine.dispose()
 
 
 def test_normalization_and_diacritics_folding():

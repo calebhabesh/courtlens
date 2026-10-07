@@ -10,12 +10,15 @@ import pytest
 from fastapi.testclient import TestClient
 
 from courtlens.api.app import create_app
+from courtlens.database import get_db
 
 
 @pytest.fixture
-def client() -> TestClient:
+def client(workbench_db):
     app = create_app()
-    return TestClient(app)
+    app.dependency_overrides[get_db] = lambda: workbench_db
+    with TestClient(app) as client:
+        yield client
 
 
 @pytest.fixture(autouse=True)
@@ -29,6 +32,7 @@ def setup_postgres_env() -> Generator[None, None, None]:
         yield
 
 
+@pytest.mark.requires_published_data
 def test_teams_overview_enriched_percentages(client: TestClient) -> None:
     """GET /api/workbench/teams returns all 30 teams with enriched shooting percentages."""
     resp = client.get("/api/workbench/teams?season=2023-24")
@@ -58,6 +62,7 @@ def test_teams_overview_enriched_percentages(client: TestClient) -> None:
     assert allow["efg_pct_allowed"] is not None
 
 
+@pytest.mark.requires_published_data
 def test_team_detail_enhanced_splits(client: TestClient) -> None:
     """GET /api/workbench/teams/{id} returns full record, home/away splits, streak, and cohort."""
     resp = client.get("/api/workbench/teams/1610612761?season=2023-24")
@@ -92,6 +97,7 @@ def test_team_detail_enhanced_splits(client: TestClient) -> None:
     assert any("Scottie Barnes" in name for name in cohort_names)
 
 
+@pytest.mark.requires_published_data
 def test_team_schedule_endpoint(client: TestClient) -> None:
     """GET /api/workbench/teams/{id}/schedule returns schedule, rest days, and B2B summary."""
     resp = client.get("/api/workbench/teams/1610612761/schedule?season=2023-24")
@@ -141,6 +147,7 @@ def test_team_schedule_endpoint(client: TestClient) -> None:
     assert data["longest_road_trip"] > 0
 
 
+@pytest.mark.requires_published_data
 def test_team_schedule_temporal_cutoff(client: TestClient) -> None:
     """Schedule context strictly excludes games on or after beforeDate."""
     resp = client.get(
@@ -158,6 +165,7 @@ def test_team_schedule_temporal_cutoff(client: TestClient) -> None:
     assert data["overall_record"]["games_played"] == len(cutoff_games)
 
 
+@pytest.mark.requires_published_data
 def test_team_four_factors_endpoint(client: TestClient) -> None:
     """GET /api/workbench/teams/{id}/four-factors computes factors and league ranks."""
     resp = client.get("/api/workbench/teams/1610612761/four-factors?season=2023-24")
