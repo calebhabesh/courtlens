@@ -95,3 +95,13 @@ Allowed states: `planned`, `in_progress`, `implemented_unverified`, `verified`,
   `docker rm courtload-db-1` followed by `docker volume rm courtload_courtload-postgres`.
   Neither command was run. RN01's separate broad Python acceptance remains blocked as recorded;
   RN02's scoped verification does not change that status. No push was run.
+
+## RN02 follow-up — 2026-10-07
+
+- At the owner's request, the old DB container `courtload-db-1` and volume
+  `courtload_courtload-postgres` were removed after checking the new stack: `courtlens-db-1` at
+  revision `09b810a4f007` with 161 published snapshots, API healthy, dashboard `/stats` 200, and
+  backup `courtlens-backup-20261007T214108Z.tar.gz` SHA-256 matching the value recorded above.
+  Still present: the `courtload_courtload-raw` volume and the stopped
+  `courtload-{api,dashboard,migrate}-1` containers. They hold no database state; remove them at
+  the owner's discretion.
