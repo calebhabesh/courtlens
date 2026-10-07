@@ -57,8 +57,10 @@ evaluate-final:
 	OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 courtlens evaluate-final --baseline-run 3cf4ae8eb331ac02d3b3 --open-final-test
 
 ASSISTANT_EVAL_ARGS ?=
+PROVIDER ?=
+MODEL ?=
 eval-assistant:
-	.venv/bin/python scripts/evaluate_assistant.py $(ASSISTANT_EVAL_ARGS)
+	.venv/bin/python scripts/evaluate_agent.py $(if $(PROVIDER),--provider $(PROVIDER)) $(if $(MODEL),--model $(MODEL)) $(ASSISTANT_EVAL_ARGS)
 
 test: test-python
 	npm --prefix dashboard run test

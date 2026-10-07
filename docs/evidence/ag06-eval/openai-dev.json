@@ -1,0 +1,84 @@
+{
+  "version": "courtlens-ag06-report-v1",
+  "started_at": "2026-10-07T22:38:58.595618+00:00",
+  "revision": "d9c700acac2ab5e3331a2f15ce3b8d6b7e3d89dc",
+  "provider": "openai",
+  "model": "gpt-6.1-sol",
+  "mode": "live",
+  "split": "dev",
+  "corpus_sha256": "308d3973d0d31add2ecf5d3964213a60ae8331014beb80ee5e6d7f2e636be7c4",
+  "runs": 3,
+  "complete": false,
+  "records": [],
+  "stopped": {
+    "reason": "provider_disabled",
+    "retry_after": null
+  },
+  "implementation_sha256": {
+    "/home/ethioking/dev/nba-analytics/scripts/evaluate_agent.py": "ac81ded3f7e9369b146f6c6a16d62bd13736d1c74838a82c1e945b2047bce3f9",
+    "src/courtlens/services/assistant/agent/prompt.py": "a80144ce84a911aec04271e1c793c760a23ef552f28a8a1f0a8ed8cd26e5198c",
+    "src/courtlens/services/assistant/agent/evaluation.py": "18191bdb05ac4fabe1d0ee1baec239a678bc193571706e8b0468fcf4a094432d",
+    "src/courtlens/services/assistant/agent/loop.py": "bafacd132608f6bcdb6fea5a5c195d78a43abe2e8535470fc9b7ccb420bcb346"
+  },
+  "summary": {
+    "coverage": {
+      "completed_runs": 0,
+      "planned_runs": 540,
+      "completed_questions": 0,
+      "planned_questions": 180
+    },
+    "exact_answer_warehouse": {
+      "correct": 0,
+      "total": 0,
+      "rate": null
+    },
+    "answered_rate": {
+      "correct": 0,
+      "total": 0,
+      "rate": null
+    },
+    "refusal_precision": {
+      "correct": 0,
+      "total": 0,
+      "rate": null
+    },
+    "refusal_recall": {
+      "correct": 0,
+      "total": 0,
+      "rate": null
+    },
+    "web_citation_presence": {
+      "correct": 0,
+      "total": 0,
+      "rate": null
+    },
+    "unsupported_number_rate": {
+      "correct": 0,
+      "total": 0,
+      "rate": null
+    },
+    "warehouse_override_missed": 0,
+    "flakiness": {
+      "correct": 0,
+      "total": 0,
+      "rate": null
+    },
+    "latency_ms": {
+      "p50": null,
+      "p95": null
+    },
+    "per_turn": {
+      "steps": null,
+      "web_searches": null,
+      "input_tokens": null,
+      "output_tokens": null
+    },
+    "estimated_cost_usd": {
+      "total": null,
+      "known_turns": 0,
+      "unknown_turns": 0
+    },
+    "categories": {}
+  },
+  "finished_at": "2026-10-07T22:38:58.596634+00:00"
+}
