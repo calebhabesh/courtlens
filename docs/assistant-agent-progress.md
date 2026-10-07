@@ -28,10 +28,7 @@ table.
 | AG06 | planned | |
 | AG07 | planned | |
 | AG08 | planned | |
-| AD01 | planned (owner action) | |
-| AD02 | source_blocked | AD01 permission not recorded. No Databallr calls or import attempted. |
-| AD03 | source_blocked | Requires permitted AD02 data. |
-| AD04 | source_blocked | Requires AD03 and AG06. |
+| AD01–AD04 | superseded 2026-10-07 | Replaced by the [impact metrics track](impact-metrics-progress.md) (IM01–IM08). The owner wants CourtLens-computed metrics, not imported Databallr data. No Databallr access occurred. |
 
 ## AG01 checkpoint: 2026-10-07
 
