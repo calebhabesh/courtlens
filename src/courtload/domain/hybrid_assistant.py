@@ -5,7 +5,15 @@ from datetime import date, datetime
 from typing import Annotated, Any, Literal
 from uuid import UUID
 
-from pydantic import AwareDatetime, Field, RootModel, field_validator, model_validator
+from pydantic import (
+    AwareDatetime,
+    Field,
+    RootModel,
+    SerializerFunctionWrapHandler,
+    field_validator,
+    model_serializer,
+    model_validator,
+)
 
 from courtload.domain.conversation import (
     AnalysisPlan,
@@ -60,6 +68,33 @@ Failure = Literal[
 ]
 
 
+class AssistantPageContext(StrictModel):
+    """Untrusted UI selections, never a transcript or evidence source."""
+
+    route: str = Field(pattern=r"^(?:/players/[0-9]+|/teams/[0-9]{10}|/compare)$")
+    player_ids: list[str] = Field(default_factory=list, max_length=6)
+    team_ids: list[str] = Field(default_factory=list, max_length=1)
+    selections: ConversationContext
+
+    @model_validator(mode="after")
+    def page_entities(self) -> "AssistantPageContext":
+        if any(not re.fullmatch(r"[0-9]{1,10}", value) for value in self.player_ids):
+            raise ValueError("page players require canonical numeric identities")
+        if any(not re.fullmatch(r"[0-9]{10}", value) for value in self.team_ids):
+            raise ValueError("page teams require canonical numeric identities")
+        if len(set(self.player_ids)) != len(self.player_ids):
+            raise ValueError("duplicate page players")
+        if self.route.startswith("/players/"):
+            if self.player_ids != [self.route.rsplit("/", 1)[1]] or self.team_ids:
+                raise ValueError("player page selection does not match route")
+        elif self.route.startswith("/teams/"):
+            if self.team_ids != [self.route.rsplit("/", 1)[1]] or self.player_ids:
+                raise ValueError("team page selection does not match route")
+        elif self.team_ids or len(self.player_ids) < 2:
+            raise ValueError("comparison page requires multiple players")
+        return self
+
+
 class HybridTurnRequest(StrictModel):
     schema_version: Literal["courtload-assistant-v2"] = "courtload-assistant-v2"
     request_id: UUID
@@ -67,8 +102,17 @@ class HybridTurnRequest(StrictModel):
     retry_of: UUID | None = None
     message: str = Field(min_length=1, max_length=2000)
     context: ConversationContext | None = None
+    page_context: AssistantPageContext | None = None
     # PF07b supplies these from retained server state, never a client-authored transcript.
     plan: AnalysisPlan | None = None
+
+    @model_serializer(mode="wrap")
+    def retained_wire(self, handler: SerializerFunctionWrapHandler) -> dict[str, Any]:
+        payload: dict[str, Any] = handler(self)
+        # Preserve pre-AR07 durable request hashes when the optional field is absent.
+        if self.page_context is None:
+            payload.pop("page_context", None)
+        return payload
 
     @model_validator(mode="before")
     @classmethod
@@ -236,6 +280,8 @@ class ResultBlock(StrictModel):
 
 
 def external_claim_text(fact: SourceFact) -> str:
+    if fact.metric == "award_winner":
+        return f"{fact.value} won the {fact.entity}."
     return (
         f"{fact.entity}: {fact.metric} = {fact.value} {fact.unit} "
         f"({fact.period}; {fact.qualifier})."

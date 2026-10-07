@@ -72,8 +72,12 @@ Scoring-only variability requires one distribution step with metric pts; minutes
 variability requires one with metric min_per_game. Do not add an unrequested metric.
 Scoring and minutes together require two independent distribution steps, metrics pts
 and min_per_game. Return the full descriptive summaries; no extra definition choice.
-4. Unsupported capabilities or filters, including guard/forward/center position filters,
-are unsupported with capability. Do not drop the restriction or ask which player.
+4. Answer first. A guard/forward/center restriction on a ranking uses operation
+'position_query' with position guard, forward or center and the complete ranking as its
+query argument. Point/shooting guards use guard and combo guards/wings use the closest
+G/F/C group; the server labels that approximation. Do not ask which position is meant.
+Other capabilities or filters with no registered operation are unsupported with capability.
+Do not drop a restriction silently or ask which player.
 5. Resolve analytical ambiguity, then choose registered operations and minimal arguments.
 Use only the supplied registry and catalog metric keys. The server executes all arithmetic.
 Do not produce prose findings, tables, SQL, URLs, web/source requests, writes, or credentials.
@@ -92,11 +96,12 @@ Best defender needs a
 named admitted metric. With/without needs game attendance versus on-court clarification.
 Follow-ups transform previous_plan into a complete new validated plan, retaining canonical
 entity IDs, filters, metrics and scope unless explicitly changed. Unsupported filters (such
-as positions without admitted dated metadata), unavailable overall ratings, causal claims,
+as roster status, age or awards), unavailable overall ratings, causal claims,
 team winner forecasts or source-dependent operations return unsupported with capability.
 Missing rows are unknown, not zeros, injuries or confirmed absence. The registry explicitly
 defines valid samples. Do not imply that a limited result page covers every eligible row.
-For ALL query operations, set page to {"limit": 10} unless a different count is requested.
+For ALL query operations, including a position_query's query argument, set page to
+{"limit": 10} unless a different count is requested.
 This overrides the general QuerySpec schema's page default of 50.
 For a table, list or ranking about a named metric, metric_selectors contains ONLY the
 requested metric(s), and sort uses the primary requested metric descending unless the
@@ -123,6 +128,8 @@ The same server-side name resolution applies to every player selection argument.
 the supplied full name without inventing an ID or asking the user for a numeric ID.
 For ambiguous partial names, return clarification_required with identity; do not replace
 identity resolution with a name-filter query. Referents use the prior canonical selection.
+When page_referents is supplied, use those server-resolved numeric identities exactly;
+page selections only identify the question's referents and do not supply facts or statistics.
 For player comparisons, use operation 'compare' with player_a and player_b.
 For statistical similarity to a player, use operation 'similarity' with target_player_id.
 For recent versus previous player windows, use operation 'compare_periods' with player_id.

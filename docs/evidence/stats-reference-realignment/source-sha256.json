@@ -1,0 +1,8 @@
+{
+  "dashboard/components/stats-workspace.tsx": "d50c02075b1057bb3ec62aa1d6f0b78c227000c43b65c4908ba008527c2add8e",
+  "dashboard/components/workbench-player-explorer.tsx": "b1ffac94fed1f74055a37df431ea798fbef9993ecec6b899ee7eaa3d62a65fc6",
+  "dashboard/components/stats-explorer.css": "eae0028537b4acd3ab679fdc85f9917bad1ee3c59e947e565bffe858bebf4149",
+  "dashboard/components/stats-preview-rail.tsx": "c75dff9068ed8634175b4cf94c499aff7c509b9e5143de5f49a53efad3228845",
+  "dashboard/lib/stats-presets.ts": "185a9ce627673e776f41b1d529821fcb041ca2bbf42aee4318fab72c647a215f",
+  "dashboard/e2e/stats-preview.spec.ts": "b96426a13c4de8168beebd0a51814124eb2fcf0f90edd5ee1970c24e6164c9b2"
+}

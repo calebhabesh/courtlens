@@ -1,10 +1,11 @@
 import Link from "next/link";
+import { CourtLensWordmark } from "./courtlens-wordmark";
 
 /** The ball-lens mark; also the assistant avatar on /ask. */
-export function BrandMark({ size = 24 }: { size?: number }) {
+export function BrandMark({ size = 24, framed = true }: { size?: number; framed?: boolean }) {
   return (
     <svg viewBox="0 0 32 32" width={size} height={size} aria-hidden="true" focusable="false">
-      <rect width="32" height="32" rx="7" fill="#0c0d10" />
+      {framed && <rect width="32" height="32" rx="7" fill="#0c0d10" />}
       {/* Handle sits under the ring stroke: joined flush without entering the lens. */}
       <line x1="20.5" y1="20.5" x2="27.4" y2="27.4" stroke="#f2f3f5" strokeWidth="3.4" strokeLinecap="butt" />
       <circle cx="27.4" cy="27.4" r="1.7" fill="#f2f3f5" />
@@ -19,10 +20,10 @@ export function Brand({ subtitle }: { subtitle?: string }) {
   return (
     <Link className="brand" href="/" aria-label="CourtLens Research Workbench home">
       <span className="brand-mark-svg" aria-hidden="true">
-        <BrandMark />
+        <BrandMark framed={false} />
       </span>
       <div className="brand-text">
-        <span className="brand-title">COURTLENS</span>
+        <span className="brand-title"><CourtLensWordmark /></span>
         {subtitle && <span className="brand-subtitle">{subtitle}</span>}
       </div>
     </Link>

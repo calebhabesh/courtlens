@@ -16,6 +16,7 @@ from sqlalchemy.orm import Session
 
 from courtload.domain.conversation import OperationStep
 from courtload.services.assistant.operations import execute_operation
+from courtload.services.starting_positions import PositionEvidenceUnavailable
 from courtload.services.workbench_analytics import ResolvedContext
 
 
@@ -59,6 +60,8 @@ def _worker(
         connection.send_bytes(json.dumps({"http_status": exc.status_code}).encode())
     except TimeoutError:
         connection.send_bytes(b'{"timeout":true}')
+    except PositionEvidenceUnavailable:
+        connection.send_bytes(b'{"position_unavailable":true}')
     except ValueError:
         connection.send_bytes(b'{"invalid":true}')
     except DBAPIError as exc:
@@ -120,6 +123,8 @@ def execute_bounded(
         response = json.loads(raw)
         if response.get("timeout"):
             raise TimeoutError("analytical deadline")
+        if response.get("position_unavailable"):
+            raise PositionEvidenceUnavailable("position evidence unavailable")
         if response.get("invalid"):
             raise ValueError("invalid analytical operation")
         if "http_status" in response:

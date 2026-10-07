@@ -1,0 +1,15 @@
+
+> courtload-dashboard@0.1.0 test:browser
+> playwright test e2e/assistant-panel-real.spec.ts --workers=1
+
+
+Running 2 tests using 1 worker
+
+  ✓  1 e2e/assistant-panel-real.spec.ts:9:7 › AR07 real server resolves his and this team at 1440px (4.2s)
+  ✓  2 e2e/assistant-panel-real.spec.ts:9:7 › AR07 real server resolves his and this team at 375px (3.7s)
+
+  2 passed (8.5s)
+
+
+.
+1 passed in 9.52s

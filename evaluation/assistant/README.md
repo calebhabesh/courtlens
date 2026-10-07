@@ -104,3 +104,21 @@ report with the source digest, scorer digest and every changed failure list.
 AR03 category measurements and limits: [routing report](../../docs/evidence/ar03-routing/README.md).
 
 AR04 narrative checker and fallback measurements: [narrative report](../../docs/evidence/ar04-narrative/README.md).
+
+AR08 opened the v2 holdout on 2026-10-06 local time. The live acquisition stopped on quota
+after 2/90 runs; it is incomplete and was not retried or used for tuning. The holdout is now
+partially exposed, rather than sealed. Preserve that capture when arranging any later acquisition;
+do not report this partial sample as final accuracy. See the
+[acceptance evidence](../../docs/evidence/ar08-acceptance/README.md).
+
+AR09 (2026-10-07) changed the answer policy for position questions. Corpus `ar02-v2.json` stays
+frozen. Its dev case `ar02-144` ("Show guards ranked by scoring.") still expects a
+`position_unavailable` refusal, and AR09 now answers it with a labelled guard ranking. A future
+scorer or corpus revision must state that expectation change explicitly and must not count it as
+a model regression. AR09 did not run a live evaluation.
+
+`scripts/evaluate_assistant.py --mode rules` scores the AR09 rule planner with the model
+unavailable (one run per question, because it is deterministic). On 2026-10-07 the dev split
+scored 119/120 and the holdout, run once before a safety fix and not used for tuning, scored
+25/30. See the [AR09 evidence](../../docs/evidence/ar09-answer-first/README.md).
+

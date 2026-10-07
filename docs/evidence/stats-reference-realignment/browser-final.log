@@ -1,0 +1,19 @@
+
+> courtload-dashboard@0.1.0 test:browser
+> playwright test e2e/stats-preview.spec.ts e2e/table-interactions.spec.ts --workers=2
+
+
+Running 10 tests using 2 workers
+
+  ✓   2 e2e/stats-preview.spec.ts:7:5 › hover and keyboard preview reuse table values without fetching or stealing focus (1.1s)
+  ✓   1 e2e/stats-preview.spec.ts:34:5 › pinning, collapsing and expanding preserve the preview and table geometry (1.5s)
+  ✓   3 e2e/stats-preview.spec.ts:57:5 › wide and smaller desktop columns align with stable pinned identity while scrolling (619ms)
+  ✓   4 e2e/stats-preview.spec.ts:87:5 › mobile details, collapsed filters and submitted search remain accessible (877ms)
+  ✓   6 e2e/table-interactions.spec.ts:48:5 › keyboard sorting, single compare shortcut and drawer focus stay scoped (910ms)
+  ✓   5 e2e/table-interactions.spec.ts:27:5 › recurring guide modes preserve primary identity, header alignment and reload (1.6s)
+  ✓   7 e2e/table-interactions.spec.ts:64:5 › custom selected columns deduplicate normalization and preserve recurring group order (831ms)
+  ✓   8 e2e/table-interactions.spec.ts:73:5 › selection failure remains actionable and does not change the selected row (876ms)
+  ✓   9 e2e/table-interactions.spec.ts:85:5 › playoff player table shares native keyboard sorting (752ms)
+  ✓  10 e2e/table-interactions.spec.ts:94:5 › a larger tray names the two-player comparison action accurately (787ms)
+
+  10 passed (5.5s)

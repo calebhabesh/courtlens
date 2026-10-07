@@ -10,7 +10,7 @@ Every submitted question ends in a readable response: a direct answer, a necessa
 
 Lead with the answer, usually one short paragraph. Add a small table/chart when it helps, a compact interpreted-scope line, sources when applicable and optional Open in Stats/Research or evidence details. Complex questions may need more explanation; the default is concise. Avoid repeated release UUIDs, planning/tool traces, technical manifests and blanket disclaimers in the thread.
 
-The owner clarified the point-guard example as “answer or explain inability.” Local position admission is not a prerequisite to completing this freeze. Try verified local operations when their required metadata exists; otherwise use the approved sourced external path. If neither establishes the PG cohort/leader, say exactly what could not be verified. Never infer PG from a name, assists or a generic G label.
+**Revised 2026-10-07 by [AR09 answer-first](#ar09-answer-first-policy-2026-10-07); the position rules below are superseded there.** The owner clarified the point-guard example as “answer or explain inability.” Local position admission is not a prerequisite to completing this freeze. Try verified local operations when their required metadata exists; otherwise use the approved sourced external path. If neither establishes the PG cohort/leader, say exactly what could not be verified. Never infer PG from a name, assists or a generic G label.
 
 ## Answer routing and knowledge
 
@@ -41,7 +41,7 @@ Resolve these rules on the server and expose the resulting short scope line:
 - Clear season/window changes execute inside the same thread and display their new scope. Materially ambiguous changes need a short choice. Each turn retains its own immutable local release/context; refreshing the public pointer cannot rewrite earlier turns. A needed release change must be explicit rather than silently substituting inputs.
 - “Most assists per game” as a league-leader request uses a named versioned NBA qualification policy. NBA's current assists rule is 70% of team games (58 of 82), with the documented season-end missed-games exception; verify current official rules, season lengths and metric-specific differences before implementation. [NBA statistical minimums](https://www.nba.com/stats/help/statminimums)
 - User-selected research minimums are separate from official qualification. APG from valid admitted observations does not automatically establish official league leadership. Complete coverage or a directly sourced published ranking is required for that claim; otherwise label the available cohort and limitation.
-- Exact position subsets need season-specific source labels and a declared combination-position policy. Where a source explicitly lists PG/SG, a PG filter can include that label. Unknown or broad G classifications remain unresolved. Current mutable position fields cannot define historical cohorts.
+- *(Superseded by AR09 for G/F/C rankings.)* Exact position subsets need season-specific source labels and a declared combination-position policy. Where a source explicitly lists PG/SG, a PG filter can include that label. Unknown or broad G classifications remain unresolved. Current mutable position fields cannot define historical cohorts.
 
 Use sensible defaults without turning every query into a form. Clarify genuinely ambiguous identities, materially different metrics or on-court versus game-appearance meaning. For a broad opinion such as “better defender,” state criteria and discuss supported facts; a requested statistical ranking selects a named measure/model. Preserve absence-as-unknown and other original data/forecast guardrails.
 
@@ -355,3 +355,82 @@ specific, retry-linked and question-preserving. No v2 schema/provider/source-reg
 cases, real service/provider workflows, restart, actual 200% zoom, large history, save/clear
 integrity and retained hashes. Earlier pending UI language in this document is historical.
 Full PF09 freeze/restore/resource acceptance and unresolved original source gates remain pending.
+
+## AR07 additive page-context request
+
+AR07 adds optional `HybridTurnRequest.page_context` without changing the v2 version or old
+response/evidence semantics. It contains the rendered player/team/compare route, bounded canonical
+player/team IDs and the page's resolved analytical selections. The UI's human-readable entity label
+stays local and is not submitted as analytical evidence. Routes and entity selections must agree.
+No prior transcript, claims, arbitrary routes or provider instructions are accepted in this field.
+
+The page selections override inherited thread scope for this turn; explicit next-question `context`
+then overrides those selections. Server calendar resolution and existing pinned-operation rules
+still win. Singular player/team references and an unambiguous two-player comparison are resolved
+server-side before planning, with canonical identities included in the planner payload and the
+resolution recorded in scope assumptions. Ambiguous references require clarification. Plans cannot
+change a resolved entity, and player/team query plans must retain the matching entity restriction.
+The normal single repair budget applies to a rejected provider plan.
+
+The header panel is available on loaded player, team and player-comparison pages. Other header Ask
+entries open the full Ask page. Removing the page chip omits `page_context` from subsequent requests;
+existing thread history and analytical scope remain available. Opening the full Ask page carries
+resolved scope in its URL. Context applies only to new turns and never rewrites retained evidence.
+Requests without page context serialize exactly as before AR07, including their durable hash input.
+The existing request byte limits, history protections and provider-call budget remain in force.
+
+## AR09 answer-first policy, 2026-10-07
+
+The owner asked that every question get an answer. On 2026-10-07, “Who were the top 10 centers in
+ppg last season” was refused. The router sent every position word to the external route, and that
+route had no registered position source. The refusal text also wrongly said “no dated PG cohort.”
+The language provider was never called, so this was not a provider failure. The owner approved
+changing the policy from “refuse unless fully verified” to **answer first, and say what was
+assumed**:
+
+1. **Answer the answerable part.** When a requested restriction can be approximated from
+   release-bound evidence, run the approximation and show the approximation next to the answer.
+   When it cannot, run the rest of the request where that is still meaningful, and say which
+   restriction was not applied. Never drop a restriction silently.
+2. **Labelled general fallback.** If the planner finds no registered operation for a question, the
+   turn tries the labelled, number-free general-knowledge answer before refusing. It says that
+   CourtLens data cannot compute the exact request. Prohibited actions and current
+   roster/injury/news facts are still declined.
+3. **Inability is the last resort.** It names the specific gap and offers the closest useful
+   alternative.
+
+Unchanged: every number comes from an executed result cell or a verified source fact; there is
+no stat answered from model memory, no inferred injury or absence, no winner probability or
+start/sit verdict, and general-knowledge text remains labelled and number-free.
+
+**Positions (`position_query`, policy `starting-position-majority-v1`).** Admitted NBA box scores
+record a G/F/C position for each game's starters. A player's position for the selected season and
+phase is the one recorded in more than half of their starts in games before the cutoff, among the
+release's `appeared` player-games. Players without that majority, including bench-only players,
+are unlabelled and excluded from a position ranking. These are game-dated observations, so later
+games cannot change earlier labels. Before use, the raw files' aggregate hash must equal the
+release dataset's `content_sha256` (the importer's own hash). Otherwise the turn runs the
+unfiltered ranking and says the position filter was not applied. Point/shooting guards, wings and
+small/power forwards are answered as the matching G/F group, with that stated next to the answer.
+Labels never come from names, roles, assists or current roster fields. They are not official
+roster positions. A position answer is a ranking of the labelled cohort; it does not establish
+official league leadership.
+
+Results show their limitations directly below the compact answer table. They also stay in
+“How I got this” and the scope assumptions.
+
+**Rule planner when the model is unavailable.** If the language provider fails (quota,
+disabled, busy, timeout or error), a deterministic rule planner may plan the question. It only
+covers unambiguous shapes: leaderboards (with position, team, order and count), single-player
+stats, profiles, comparisons, team summaries, forecasts and simple count/position follow-ups.
+Its plans pass the same canonical validation, and it never repairs. It asks the same
+clarifications the planner contract requires, refuses prohibited requests and leaves everything
+else as the real provider failure. Each answer says it was planned by rules, and no narrative
+call follows. Rate and lowest-value rankings add labelled minimum-volume filters.
+
+**Official awards and champions.** Award and championship winners come only from the pinned
+`nba-awards-v1` registry. Each record was read from a cited NBA.com page and is presented as a
+verified external claim with its source link. Counts, all-time questions, predictions and
+seasons outside the registry are never filled from memory. Evidence:
+[AR09](../evidence/ar09-answer-first/README.md).
+

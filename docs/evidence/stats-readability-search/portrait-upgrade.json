@@ -1,0 +1,17 @@
+{
+  "job_id": "c5ce20a1-58c8-4fc8-bc68-775474d65504",
+  "targets": 591,
+  "status": "succeeded",
+  "output": {
+    "portraits_acquired": 459,
+    "portraits_failed": 0
+  },
+  "previous_assets_retained": 723,
+  "high_resolution_cached": 591,
+  "dimensions": [
+    [
+      1040,
+      760
+    ]
+  ]
+}

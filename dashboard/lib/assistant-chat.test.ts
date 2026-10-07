@@ -57,3 +57,15 @@ describe("AR06 chat helpers", () => {
     expect(compactResult("query", [])).toBeNull();
   });
 });
+
+
+it("keeps player and team panel facts ahead of internal context metadata", () => {
+  const profile = compactResult("profile", [{ context: { semantic_signature: "e".repeat(64), mode: "research", release_id: "retained" }, player: { id: "1", name: "A player" }, summaries: { season: { gp: 10, pts_per_game: 0, ast_per_game: null } } }]);
+  expect(profile?.kind).toBe("facts");
+  if (profile?.kind !== "facts") return;
+  expect(profile.entries.slice(0, 4)).toEqual([["player · name", "A player"], ["summaries · season · gp", 10], ["summaries · season · pts per game", 0], ["summaries · season · ast per game", null]]);
+  expect(profile.entries.some(([key]) => key.startsWith("context ·"))).toBe(false);
+  const team = compactResult("team", [{ context: { semantic_signature: "e".repeat(64) }, team: { id: "1610612761", name: "Toronto Raptors" }, record: { wins: 2, losses: 0 } }]);
+  if (team?.kind !== "facts") throw new Error("Expected team facts");
+  expect(team.entries.slice(0, 3)).toEqual([["team · name", "Toronto Raptors"], ["record · wins", 2], ["record · losses", 0]]);
+});

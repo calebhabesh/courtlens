@@ -9,15 +9,7 @@ export const metadata: Metadata = {
 
 export default function SimilarityPage() {
   return (
-    <Suspense
-      fallback={
-        <div className="workbench-content">
-          <div className="table-card" style={{ padding: "2rem", textAlign: "center" }}>
-            <div className="text-muted">Loading statistical peers similarity view...</div>
-          </div>
-        </div>
-      }
-    >
+    <Suspense fallback={null}>
       <SimilarityInvestigationView />
     </Suspense>
   );

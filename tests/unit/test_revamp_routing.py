@@ -36,7 +36,8 @@ from courtload.services.assistant.revamp_evaluation import load_corpus, score_an
         ("Who was traded today?", "external"),
         ("What are the current injuries?", "external"),
         ("Explain current rosters", "external"),
-        ("Show guards ranked by scoring", "external"),
+        ("Show guards ranked by scoring", "local_analysis"),
+        ("Who were the top 10 centers in ppg last season", "local_analysis"),
         ("Refresh the data", "inability"),
         ("Search the internet for injuries", "inability"),
         # Follow-up discourse "Now ..." is not a current-fact request (AR04 finding).

@@ -170,7 +170,6 @@ def test_knowledge_registry_small_versioned_and_complete():
         "Explain pick and roll",
         "What is true shooting?",
         "How do I compare two players here?",
-        "Which point guard had the most assists per game last season?",
         "Who leads in assists?",
         "Who is injured today?",
         "Who is the better defender?",
@@ -186,9 +185,6 @@ def test_every_nonlocal_route_terminal_without_provider(message):
     assert answer.blocks and answer.blocks[0].text
     assert answer.accounting.provider_calls == answer.accounting.analytical_calls == 0
     assert not answer.saveable
-    if "last season" in message:
-        assert answer.scope.selections.season == "2025-26"
-        assert answer.blocks[0].reason == "position_unavailable"
     if answer.intent in ("explanation", "discussion", "site_guidance"):
         assert answer.scope is None
         assert answer.sources
@@ -354,7 +350,9 @@ def test_external_candidate_requires_exact_verified_tuple():
         HybridTurnResponse.model_validate(payload)
 
 
-def test_mixed_explanation_and_external_gap_keep_both_origins():
+def test_mixed_explanation_and_position_question_keep_both_halves():
+    # AR09: the position clause is a local ranking, not an external refusal. The Mock
+    # session cannot resolve a release, so only the knowledge half completes here.
     answer = run_hybrid_turn(
         Mock(),
         HybridTurnRequest(
@@ -363,10 +361,10 @@ def test_mixed_explanation_and_external_gap_keep_both_origins():
         ),
         clock=lambda: date(2026, 10, 5),
     )
-    assert answer.status == "unable"
-    assert {block.kind for block in answer.blocks} == {"text", "inability"}
-    assert answer.scope.selections.season == "2025-26"
-    assert answer.accounting.provider_calls == answer.accounting.analytical_calls == 0
+    assert answer.intent == "local_analysis"
+    assert answer.blocks[0].kind == "text"
+    assert all(getattr(b, "reason", None) != "position_unavailable" for b in answer.blocks)
+    assert answer.accounting.provider_calls == 0
 
 
 def test_explicit_season_after_in_and_cutoff():
@@ -401,5 +399,9 @@ def ar03_intent(case):
         "Who is the best defender?": "local_analysis",
         "Who is the better defender?": "local_analysis",
         "Search the internet for NBA news": "inability",
+        # AR09 answer-first: position rankings use release-bound starting positions.
+        "Which point guard had the most assists per game last season?": "local_analysis",
+        "Which point guards lead in assists?": "local_analysis",
+        "Shooting guard scoring leaders": "local_analysis",
     }
     return revised.get(case["message"], case["intent"])

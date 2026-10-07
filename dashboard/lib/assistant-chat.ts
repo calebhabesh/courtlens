@@ -51,9 +51,11 @@ export type CompactView =
   | { kind: "facts"; entries: [string, unknown][]; hidden: number }
   | { kind: "table"; columns: string[]; rows: Record<string, unknown>[]; total: number };
 
-const hiddenKey = /(^| )id$|hash|sha256|json|dataset|evidence|disclosures/;
+const hiddenKey = /(^| )id$|hash|sha256|json|dataset|evidence|disclosures|url|^context ·/;
 const leadKeys = ["player name", "team name", "team tricode", "split", "metric", "game date", "value"];
 const factPriorities: Record<string, string[]> = {
+  profile: ["player · name", "summaries · season · gp", "summaries · season · pts per game", "summaries · season · reb total per game", "summaries · season · ast per game", "summaries · season · min per game"],
+  team: ["team · name", "record · games played", "record · wins", "record · losses", "record · win pct", "production · pts per game", "production · reb per game", "production · ast per game"],
   forecast: ["player name", "point estimate", "interval lower", "interval upper", "target game date", "target opponent tricode", "issued at utc", "policy id", "issuance status"],
 };
 const tableRows = 10;

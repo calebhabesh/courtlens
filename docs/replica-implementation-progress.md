@@ -2868,3 +2868,47 @@ entering the lens). Visible scope only:
   flakes: `entity-selection.spec.ts:13` passed 3/3 in isolation;
   `route-polish.spec.ts:31` (transient duplicate `<details>` during render) failed
   **3/10 on unchanged HEAD** versus **1/10** after the rename, same error.
+
+## B07 / PF05 follow-up — Stats reference fidelity, 2026-10-07
+
+Owner-confirmed Stats presentation revision after the supplied screenshot comparison and grilling
+interview. Slate/amber full Stats surface, compact rows/combined identity, bounded aligned numeric
+columns, consolidated controls/footer, persistent 250px hover/focus/pinnable/collapsible rail,
+and mobile explicit details are implemented with existing verified data. Reference-only metrics
+and position-relative percentiles retain their source gates. Full fixture suite **153 passed /
+3 opt-in skipped**; final affected table suite **10 passed**; Vitest **205 passed**; lint/types/build
+and Ruff/format/mypy pass. Read-only real Stats verification covers **17 checks**, nine presets,
+counting modes/guides, desktop/mobile and actual 200% zoom, with zero page errors/body overflow.
+
+[Measured evidence and limitations](evidence/stats-reference-realignment/README.md);
+[updated Stats UI contract](design/polish-ui-contract.md#owner-confirmed-stats-reference-revision--2026-10-07).
+This bounded correction does not certify other pending replica blocks or reopen the full freeze.
+
+## B07 / PF01–PF05 follow-up — readable records, portraits, wordmark and lookup, 2026-10-07
+
+Owner's second-pass requests and subsequent portrait/Fontshare Tabular steering implemented:
+52px standard rows, larger/sharper locally cached portraits, centered recurring guides, aligned
+shell identity/Availability, reusable Tabular Bold wordmarks including exports, table autocomplete
+that filters in place, concise global captions and right-aligned clear action. Existing analytical
+scope/percentiles, preview/pinning and detailed entity-form selection behavior remain.
+
+159 production fixture browser passes / 3 opt-in skips, 205 dashboard unit passes, 967 Python
+unit passes / 2 existing PostgreSQL opt-in skips, clean lint/types/Ruff/format/strict mypy/builds.
+Real Stats/search/mobile/200% zoom checks pass; 591 selected-cohort HD portrait assets cached
+with old records retained and zero acquisition failures. Source/model/position gates remain open.
+[Measured evidence and limits](evidence/stats-readability-search/README.md),
+[revised presentation contract](design/polish-ui-contract.md).
+
+## B07 / PF02 — Alpino wordmark revision, 2026-10-07
+
+Owner selected Fontshare Alpino instead of Tabular. Shared Alpino Bold artwork now covers
+shell, table and SVG/PNG card exports. Five real browser checks across desktop/mobile and
+exports pass, with zero page errors; lint/types/build pass. Existing layout/color and independent
+analytical gates remain. [Measured evidence](evidence/alpino-wordmark/README.md).
+
+## B07 / PF02 — Sora wordmark revision, 2026-10-07
+
+Owner requested Sora instead of Alpino. Shared Sora Bold 2.0 artwork covers shell, Stats and
+profile/showcase SVG/PNG exports. Five real browser checks across desktop/mobile/exports
+pass, zero page errors; lint/types/build pass. [Evidence](evidence/sora-wordmark/README.md).
+Color, placement and independent analytical/source gates retained.

@@ -1,0 +1,11 @@
+{
+  "url": "http://localhost:3100/stats",
+  "row": {
+    "height": 52,
+    "portrait": 1040,
+    "display": 40
+  },
+  "tableSuggestions": true,
+  "wordmarkShared": true,
+  "errors": []
+}

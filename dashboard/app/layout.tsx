@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import { Suspense } from "react";
 import { ReplicaNav } from "@/components/replica-nav";
 import { WorkspaceProvider } from "@/lib/workspace-context";
+import { AssistantPageProvider } from "@/lib/assistant-page-context";
 import "./globals.css";
 
 const publicSans = localFont({
@@ -51,16 +52,18 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <a className="skip-link" href="#content">
           Skip to content
         </a>
-        <WorkspaceProvider>
+        <WorkspaceProvider><AssistantPageProvider>
           <div className="replica-shell">
             <Suspense fallback={<div style={{ height: "var(--shell-height)", background: "var(--surface)" }} />}>
               <ReplicaNav />
             </Suspense>
             <main id="content" className="replica-main">
-              {children}
+              <Suspense fallback={null}>
+                {children}
+              </Suspense>
             </main>
           </div>
-        </WorkspaceProvider>
+        </AssistantPageProvider></WorkspaceProvider>
       </body>
     </html>
   );

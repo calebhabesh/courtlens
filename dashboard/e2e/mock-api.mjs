@@ -600,6 +600,7 @@ createServer(async (request, response) => {
   if (url.pathname === "/api/workbench/players/23/games") return json(response, 200, workbenchPlayerGames("23"));
   if (url.pathname === "/api/workbench/players/24/games") return json(response, 200, workbenchPlayerGames("24"));
   if (url.pathname === "/api/workbench/teams") return json(response, 200, workbenchTeams);
+  if (url.pathname === "/api/workbench/teams/1610612761") return json(response, 200, { ...workbenchTeamDetail, team: { ...workbenchTeamDetail.team, id: "1610612761" } });
   if (url.pathname === "/api/workbench/teams/100") return json(response, 200, workbenchTeamDetail);
   if (url.pathname === "/api/workbench/playoffs") {
     return json(response, 200, mockPlayoffBracket);

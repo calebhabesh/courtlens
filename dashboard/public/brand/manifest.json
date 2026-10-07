@@ -1,0 +1,13 @@
+{
+  "artwork": "CourtLens wordmark outlines",
+  "font": "Red Hat Display Bold",
+  "version": "1.021",
+  "source": "https://www.fontshare.com/fonts/red-hat-display",
+  "download": "https://api.fontshare.com/v2/fonts/download/red-hat-display",
+  "font_file": "RedHatDisplay_Complete/Fonts/OTF/RedHatDisplay-Bold.otf",
+  "font_sha256": "244b242465298b4db2a9cbf7fc323c0ce9054e6c72d9d426abb80aeade82d9c4",
+  "license": "SIL Open Font License 1.1",
+  "license_file": "RedHatDisplay-OFL.txt",
+  "license_sha256": "c38f2abd3ae83624d38e83dd7554943b1800f5b1ec0d4c25f4f9ae3cd3362134",
+  "method": "CourtLens text shaped by HarfBuzz with original glyphs, advance widths and default kerning; font software is not shipped or modified."
+}

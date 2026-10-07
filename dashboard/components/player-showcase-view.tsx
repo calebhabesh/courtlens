@@ -1,4 +1,6 @@
 "use client";
+
+import { CourtLensWordmark } from "./courtlens-wordmark";
 import { Icon } from "./ui/icon";
 
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -286,10 +288,8 @@ export function PlayerShowcaseView({
               <line x1="0" y1="90" x2="460" y2="90" stroke="#ffd166" strokeWidth="2" />
 
               {/* Brand & Kicker */}
-              <text x="24" y="28" fill="#ffd166" fontSize="13" fontWeight="bold" fontFamily="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">
-                COURTLENS
-              </text>
-              <text x="110" y="28" fill="#b4bdca" fontSize="11" fontFamily="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">
+              <CourtLensWordmark x={24} y={15} height={13} color="#ffd166" />
+              <text x="140" y="28" fill="#b4bdca" fontSize="11" fontFamily="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">
                 SHOWCASE · {season} {phase.replace("_", " ")}
               </text>
 
@@ -385,9 +385,8 @@ export function PlayerShowcaseView({
               </text>
 
               {/* Watermark Bottom */}
-              <text x="230" y="555" fill="#465160" fontSize="10" fontFamily="monospace" textAnchor="middle">
-                COURTLENS NBA REPLICA · VERIFIED RECORD
-              </text>
+              <CourtLensWordmark x={95} y={545} height={10} color="#465160" />
+              <text x="177" y="555" fill="#465160" fontSize="10" fontFamily="monospace">NBA REPLICA · VERIFIED RECORD</text>
             </svg>
           </div>
         </div>

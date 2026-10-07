@@ -53,7 +53,7 @@ test("keyboard sorting, single compare shortcut and drawer focus stay scoped", a
   const row = page.locator(".dense-stats-table tbody tr[data-player-id='23']");
   await row.focus(); await page.keyboard.press("c"); await expect(row.getByRole("checkbox")).toBeChecked();
   expect(fixture.adds()).toBe(1);
-  await page.getByLabel("Filter players by name").fill("c"); await page.getByLabel("Filter players by name").press("c");
+  await page.getByRole("combobox", { name: "Filter players by name", exact: true }).fill("c"); await page.getByRole("combobox", { name: "Filter players by name", exact: true }).press("c");
   await page.locator("h1").click(); await page.keyboard.press("c"); expect(fixture.adds()).toBe(1);
   const detail = row.getByRole("button", { name: "Open details for Fixture Star" }); await detail.click();
   const dialog = page.getByRole("dialog", { name: "Fixture Star", exact: true }); await expect(dialog).toBeVisible();

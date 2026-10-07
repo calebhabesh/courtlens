@@ -175,7 +175,8 @@ def test_restart_recovery_lease_replay_and_explicit_retry(postgres_conversation,
 
 def test_retry_failure_executes_again_but_transport_replays(postgres_conversation):
     session, context = postgres_conversation
-    req = analytical_request(context, plan=False)
+    # AR09: a question the rule planner cannot plan, so the provider failure is retained.
+    req = analytical_request(context, "Show me something interesting", plan=False)
 
     class Provider:
         calls = 0

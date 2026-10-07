@@ -1,4 +1,5 @@
 "use client";
+import { AssistantPageSelection } from "@/lib/assistant-page-context";
 import { Icon } from "./ui/icon";
 
 import { useState, useMemo, useRef } from "react";
@@ -283,6 +284,7 @@ export function PlayerCompareView({
 
   return (
     <div className="player-compare-container" role="region" aria-label="Player Comparison Explorer">
+      <AssistantPageSelection route="/compare" playerIds={[player_a.id, player_b.id, ...additionalPlayerIds]} scope={context} label={`${player_a.name} / ${player_b.name}${additionalPlayerIds.length ? ` + ${additionalPlayerIds.length} more` : ""}`} />
       {/* Zero Forced Winner Rule Notice (Key Principle & Guardrail) */}
       <div className="notice-box" style={{ borderLeftColor: "var(--accent)", marginBottom: "1.25rem" }}>
         <strong>Temporal discipline & no forced winner:</strong>{" "}

@@ -7,7 +7,7 @@ import time
 from collections import defaultdict
 from dataclasses import dataclass
 from datetime import datetime, timedelta
-from typing import Any
+from typing import Any, Literal
 from urllib.parse import urlencode
 
 from fastapi import HTTPException
@@ -80,6 +80,11 @@ class ShiftsArgs(StrictModel):
     # Position evidence is not admitted by this operation; never infer it from a name/role.
 
 
+class PositionQueryArgs(StrictModel):
+    position: Literal["guard", "forward", "center"]
+    query: QuerySpec
+
+
 @dataclass(frozen=True)
 class Operation:
     schema: type[BaseModel]
@@ -117,6 +122,14 @@ REGISTRY = {
     ),
     "query": Operation(
         QuerySpec, "SQL Stats ranking; named metrics and valid samples, nulls preserved."
+    ),
+    "position_query": Operation(
+        PositionQueryArgs,
+        (
+            "Stats ranking restricted to guards, forwards or centers by release-bound starting "
+            "position: the G/F/C box-score position in most of a player's starts this season "
+            "before the cutoff. Bench-only players are unlabelled. No PG/SG distinction."
+        ),
     ),
     "definition": Operation(
         DefinitionArgs, "Catalog metric definition/formula/unit; no statistical query."
@@ -252,6 +265,21 @@ def canonical_step(
     if operation is None:
         raise ValueError("operation is unavailable in this registry")
     args = dict(step.arguments)
+    if step.operation == "position_query":
+        if set(args) - {"position", "query"}:
+            raise ValueError("unknown operation argument")
+        # The nested ranking passes exactly the same validation as a plain query step.
+        inner = canonical_step(
+            session,
+            context,
+            OperationStep(
+                step_id=step.step_id, operation="query", arguments=dict(args.get("query") or {})
+            ),
+        )
+        parsed_position = PositionQueryArgs.model_validate(
+            {"position": args.get("position"), "query": inner.arguments}
+        )
+        return step.model_copy(update={"arguments": parsed_position.model_dump(mode="json")})
     schema = operation.schema.model_json_schema()
     reject_unknown_fields(schema, args, schema)
     if len(json.dumps(args).encode()) > 16 * 1024:
@@ -390,6 +418,38 @@ def execute_operation(
             row["metrics"] = {k: row["metrics"].get(k) for k in keys}
             row["sample_sizes"] = {k: row["sample_sizes"].get(k) for k in keys}
         return {"items": rows, "total_eligible": count, "next_cursor": cursor, "has_more": more}
+    if step.operation == "position_query":
+        from courtload.services.starting_positions import POSITION_CODES, starting_positions
+
+        cohort = starting_positions(session, context)
+        query = QuerySpec.model_validate(args["query"])
+        rows, count, _, _ = execute_stats_query(
+            session,
+            context,
+            query,
+            is_export=True,
+            max_export_rows=2000,
+            legacy_nonappearance=legacy_nonappearance,
+        )
+        if count > 2000:
+            raise ValueError("position cohort exceeds the ranking budget")
+        code = POSITION_CODES[args["position"]]
+        matched = [row for row in rows if cohort.labels.get(str(row["player_id"])) == code]
+        keys = [m["key"] for m in args["query"]["metric_selectors"]]
+        for row in matched:
+            row["metrics"] = {k: row["metrics"].get(k) for k in keys}
+            row["sample_sizes"] = {k: row["sample_sizes"].get(k) for k in keys}
+            row["starting_position"] = code
+            row["starts"] = cohort.starts[str(row["player_id"])]
+        limit = query.page.limit
+        return {
+            "items": matched if full_result else matched[:limit],
+            "total_eligible": len(matched),
+            "next_cursor": None,
+            "has_more": not full_result and len(matched) > limit,
+            "position": {"policy": cohort.policy, "position": args["position"], "code": code},
+            "limitations": [cohort.limitation(args["position"])],
+        }
     if step.operation == "profile":
         data = get_player_profile(session, context, args["player_id"])
         data.pop("forecast_status", None)

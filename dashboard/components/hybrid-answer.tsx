@@ -34,7 +34,11 @@ export function HybridAnswer({ answer, onChoice, onRetry, busy }: {
   return <div className="hybrid-answer">
     {answer.blocks.map((block, index) => {
       switch (block.kind) {
-        case "result": return <CompactResult key={index} result={asResult(block as ResultBlock)} />;
+        case "result": {
+          const result = asResult(block as ResultBlock);
+          // Approximations and filters are part of the answer, so they sit beside it.
+          return <div key={index}><CompactResult result={result} />{result.limitations.map(text => <p key={text} className="text-muted ask-limitation">{text}</p>)}</div>;
+        }
         case "clarification": return <div key={index}><p>{block.text}</p><div className="ask-chips">{block.choices?.map(choice => <Button key={choice} className="ask-chip" disabled={busy} onClick={() => onChoice(choice)}>{choice}</Button>)}</div></div>;
         case "inability": return <div key={index}><p>{block.text}</p><p className="text-muted">{block.next_action}</p></div>;
         case "external_claim": return <div key={index}><span className="hybrid-origin">External source</span><p>{block.text}</p><p className="text-muted">{block.period} · {block.qualifier}</p></div>;

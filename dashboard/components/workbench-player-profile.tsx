@@ -1,6 +1,9 @@
 "use client";
 
+import { CourtLensWordmark } from "./courtlens-wordmark";
+
 import Link from "next/link";
+import { AssistantPageSelection } from "@/lib/assistant-page-context";
 import { useEffect, useRef, useState } from "react";
 import { PlayerPortrait } from "./player-portrait";
 import { ResearchTrendCharts } from "./research-trend-charts";
@@ -118,6 +121,7 @@ export function WorkbenchPlayerProfile({
 
   return (
     <div className="player-detail-container">
+      <AssistantPageSelection route={`/players/${player.id}`} playerIds={[player.id]} scope={context} label={player.name} />
       {/* Identity Card */}
       <div className="player-identity-card">
         <PlayerPortrait
@@ -764,8 +768,8 @@ export function WorkbenchPlayerProfile({
           <rect width="460" height="520" fill="none" stroke="#465160" strokeWidth="1.5" rx="8" />
           <path d="M 0 8 Q 0 0 8 0 L 452 0 Q 460 0 460 8 L 460 85 L 0 85 Z" fill="#20252e" />
           <line x1="0" y1="85" x2="460" y2="85" stroke="#ffd166" strokeWidth="2" />
-          <text x="24" y="26" fill="#ffd166" fontSize="12" fontWeight="bold" fontFamily="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">COURTLENS</text>
-          <text x="105" y="26" fill="#b4bdca" fontSize="10" fontFamily="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">PLAYER PROFILE · {context.season}</text>
+          <CourtLensWordmark x={24} y={14} height={12} color="#ffd166" />
+          <text x="130" y="26" fill="#b4bdca" fontSize="10" fontFamily="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">PLAYER PROFILE · {context.season}</text>
           <text x="24" y="55" fill="#f1f3f6" fontSize="20" fontWeight="bold" fontFamily="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">{player.name}</text>
           <text x="24" y="74" fill="#ffd166" fontSize="11" fontFamily="monospace" fontWeight="bold">{latest_team?.tricode ?? "NBA"} · ID: {player.id}</text>
           <text x="436" y="55" fill="#b4bdca" fontSize="11" fontFamily="monospace" textAnchor="end">{seasonSummary?.gp ?? 0} GP</text>

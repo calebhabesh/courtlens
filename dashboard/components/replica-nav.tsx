@@ -7,6 +7,7 @@ import { Icon } from "./ui/icon";
 import { Button } from "./ui/controls";
 import { Brand } from "./brand";
 import { GlobalLookup } from "./global-lookup";
+import { useAssistantPage } from "@/lib/assistant-page-context";
 import { AskDrawer } from "./ask-drawer";
 import { HotkeysModal } from "./hotkeys-modal";
 import { getSharedCatalog, routeAvailability } from "@/lib/route-availability";
@@ -27,6 +28,8 @@ interface NavSection {
 
 export function ReplicaNav() {
   const pathname = usePathname();
+  const assistantPage = useAssistantPage();
+  const pageSupportsPanel = /^\/(?:players\/\d+|teams\/\d{10}|compare)$/.test(pathname);
   const searchParams = useSearchParams();
 
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
@@ -109,6 +112,7 @@ export function ReplicaNav() {
     setPrevPathname(pathname);
     setOpenDropdown(null);
     setMobileMenuOpen(false);
+    setAskOpen(false);
   }
 
   const toggleDropdown = (id: string) => {
@@ -282,8 +286,8 @@ export function ReplicaNav() {
 
         {/* Right: Operational Actions & Mobile Toggle */}
         <div className="replica-actions-group">
-          <Button variant="quiet" className="replica-action-link" aria-haspopup="dialog" onClick={() => setAskOpen(true)}><Icon name="message" />Ask</Button>
-          {askOpen && <AskDrawer onClose={() => setAskOpen(false)} />}
+          <Button variant="quiet" className="replica-action-link" disabled={pageSupportsPanel && !assistantPage} aria-haspopup={assistantPage ? "dialog" : undefined} onClick={() => { if (assistantPage) setAskOpen(true); else window.location.assign(preserveContextUrl("/research/ask")); }}><Icon name="message" />Ask</Button>
+          {askOpen && assistantPage && <AskDrawer pageContext={assistantPage.context} pageLabel={assistantPage.label} onClose={() => setAskOpen(false)} />}
           <Link
             href={preserveContextUrl("/data-status")}
             className={`replica-action-link ${pathname === "/data-status" ? "active" : ""}`}
@@ -477,13 +481,14 @@ export function ReplicaNav() {
           </div>
         </div>
 
-        {unavailableItems.length > 0 && <div className="replica-nav-item">
-          <button type="button" className="replica-nav-dropdown-btn" aria-haspopup="menu" aria-expanded={openDropdown === "availability"} onClick={() => toggleDropdown("availability")}>Availability <Icon name="chevron-down" /></button>
-          {openDropdown === "availability" && <div className="replica-dropdown-menu availability-menu" role="menu">{unavailableItems.map(item => <Link key={item.href} href={preserveContextUrl(item.href)} className="replica-dropdown-item" role="menuitem"><span>{item.label}<small className="availability-reason">{availability(item.href).reason}</small></span></Link>)}</div>}
-        </div>}
+
 
         {/* Right: Help dropdown */}
         <div className="replica-nav-right">
+        {unavailableItems.length > 0 && <div className="replica-nav-item">
+          <button type="button" className="replica-nav-dropdown-btn" aria-haspopup="menu" aria-expanded={openDropdown === "availability"} onClick={() => toggleDropdown("availability")}>Availability <Icon name="chevron-down" /></button>
+          {openDropdown === "availability" && <div className="replica-dropdown-menu replica-dropdown-menu-right availability-menu" role="menu">{unavailableItems.map(item => <Link key={item.href} href={preserveContextUrl(item.href)} className="replica-dropdown-item" role="menuitem"><span>{item.label}<small className="availability-reason">{availability(item.href).reason}</small></span></Link>)}</div>}
+        </div>}
           <div className="replica-nav-item">
             <button
               type="button"
