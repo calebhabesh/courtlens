@@ -1,0 +1,330 @@
+{
+  "evidence_kind": "synthetic PostgreSQL fixture tools, not live-provider answers",
+  "as_of": "2026-10-07",
+  "tool_results": [
+    {
+      "call_id": "pg_call",
+      "name": "query_stats",
+      "payload": {
+        "operation": "query",
+        "arguments": {
+          "release_id": "8a9f30a5-18de-40c6-9d8c-50260aa748cb",
+          "season": "2025-26",
+          "phase": "regular_season",
+          "before_date": "2026-03-31",
+          "name": null,
+          "entity_kind": "player",
+          "window": {
+            "kind": "season",
+            "n": null,
+            "from_date": null,
+            "to_date": null
+          },
+          "season_scope": {
+            "seasons": [],
+            "aggregate_multi_season": false
+          },
+          "team_scope": {
+            "team_id": null,
+            "participation_only": true,
+            "current_roster_only": false
+          },
+          "metric_selectors": [
+            {
+              "key": "blk_per_game",
+              "version": null,
+              "normalization": "raw",
+              "denominator_type": null
+            }
+          ],
+          "predicates": null,
+          "sample_filters": {
+            "min_games": null,
+            "min_minutes": null,
+            "min_avg_minutes": null,
+            "min_possessions": null,
+            "min_attempts": null
+          },
+          "sort": [
+            {
+              "field": "pts",
+              "direction": "desc",
+              "nulls_last": true
+            }
+          ],
+          "view_state": null,
+          "page": {
+            "limit": 50,
+            "cursor": null
+          }
+        },
+        "operation_hash": "667d802da284c8d0e0e3f777d2a1bca0610dd83439940c76fb5fb824c03f54b5",
+        "result_hash": "f7fd06f21312dd988b42dc9ca6f1b122e666869f077445e4d2761e8b1faf1fdb",
+        "context_fingerprint": "aeeeead7e7b613d0d99ba63199da94869608b13ad23178f592a60a020a944d2a",
+        "scope": {
+          "release_id": "8a9f30a5-18de-40c6-9d8c-50260aa748cb",
+          "snapshot_id": "8a9f30a5-18de-40c6-9d8c-50260aa748cb",
+          "dataset_id": "8a9f30a5-18de-40c6-9d8c-50260aa748cb",
+          "dataset_type": "workbench",
+          "semantic_signature": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+          "mode": "workbench_recent",
+          "source": "synthetic",
+          "season": "2025-26",
+          "phase": "regular_season",
+          "before_date": "2026-03-31",
+          "cutoff_utc": "2026-03-31T04:00:00+00:00",
+          "window": "season",
+          "coverage_start": "2025-03-01",
+          "coverage_end": "2026-03-30",
+          "metric_version": "v2",
+          "published_at": null
+        },
+        "units": {
+          "stints_count": "dimensionless",
+          "games_played": "observations",
+          "total_minutes": "minutes",
+          "blk_per_game": "blocks",
+          "blk_per_game_valid_observations": "observations",
+          "total_eligible": "observations",
+          "next_cursor": "dimensionless"
+        },
+        "data": {
+          "items": [
+            {
+              "player_id": "1641705",
+              "player_name": "Victor Wembanyama",
+              "teams": [
+                "SAS"
+              ],
+              "stints_count": 1,
+              "games_played": 30,
+              "total_minutes": 900.0,
+              "metrics": {
+                "blk_per_game": 4
+              },
+              "sample_sizes": {
+                "blk_per_game": 30
+              },
+              "portrait_url": "/api/workbench/players/1641705/portrait"
+            }
+          ],
+          "total_eligible": 1,
+          "next_cursor": null,
+          "has_more": false
+        },
+        "open_url": "/stats?releaseId=8a9f30a5-18de-40c6-9d8c-50260aa748cb&season=2025-26&phase=regular_season&beforeDate=2026-03-31&window=season&sortMetric=pts&sortDirection=desc&metrics=%5B%7B%22key%22%3A+%22blk_per_game%22%2C+%22version%22%3A+null%2C+%22normalization%22%3A+%22raw%22%2C+%22denominator_type%22%3A+null%7D%5D",
+        "limitations": []
+      },
+      "is_error": false
+    },
+    {
+      "call_id": "pg_call",
+      "name": "lookup_entity",
+      "payload": {
+        "query": "wenbeyama",
+        "candidates": [
+          {
+            "player_id": "1641705",
+            "name": "Victor Wembanyama"
+          }
+        ]
+      },
+      "is_error": false
+    },
+    {
+      "call_id": "pg_call",
+      "name": "list_metrics",
+      "payload": {
+        "catalog_version": "v2",
+        "release_id": "8a9f30a5-18de-40c6-9d8c-50260aa748cb",
+        "metrics": [
+          {
+            "key": "blk_per_game",
+            "version": "v2",
+            "display_name": "Blocks Per Game",
+            "short_name": "BPG",
+            "category": "defense",
+            "unit": "blocks",
+            "formula": "sum(blocks) / valid_blk_games",
+            "denominator": "gp",
+            "phase_scope": [
+              "regular_season",
+              "preseason",
+              "playoffs",
+              "play_in",
+              "cup_final",
+              "summer_league"
+            ],
+            "default_sort_direction": "desc",
+            "limitations": [
+              "Averages over games with recorded blocks."
+            ],
+            "required_fields": [
+              "blocks"
+            ],
+            "compatible_normalizations": [
+              "raw",
+              "per_game"
+            ],
+            "aggregation_recipe": "mean",
+            "validity_definition": "valid_blk_games > 0",
+            "aliases": [],
+            "capability_requirement": "core_stats",
+            "classification": "observed",
+            "good_direction": "high",
+            "queryable": true,
+            "observed_scopes": [
+              {
+                "season": "2024-25",
+                "phase": "regular_season",
+                "coverage_start": "2025-03-01",
+                "coverage_end": "2025-03-30",
+                "default_before_date": "2025-03-31"
+              },
+              {
+                "season": "2025-26",
+                "phase": "regular_season",
+                "coverage_start": "2026-03-01",
+                "coverage_end": "2026-03-30",
+                "default_before_date": "2026-03-31"
+              }
+            ]
+          }
+        ],
+        "total_metrics": 1,
+        "next_offset": null,
+        "coverage_note": "Observed scopes, not complete-season or per-cell validity certification."
+      },
+      "is_error": false
+    },
+    {
+      "call_id": "pg_call",
+      "name": "awards",
+      "payload": {
+        "record": {
+          "season": "2024-25",
+          "award": "mvp",
+          "label": "Kia MVP",
+          "winner": "Shai Gilgeous-Alexander",
+          "team": "Oklahoma City Thunder",
+          "detail": null,
+          "source": "awards-2025",
+          "url": "https://www.nba.com/awards/2025",
+          "title": "2024-25 NBA Awards",
+          "page_updated": null
+        },
+        "source": {
+          "source_id": "courtlens-nba-awards-v1:0f4e2a206937:awards-2025:mvp:2024-25",
+          "origin": "external",
+          "title": "2024-25 NBA Awards",
+          "publisher": "NBA.com",
+          "url": "https://www.nba.com/awards/2025",
+          "updated_on": null,
+          "retrieved_at": "2026-10-07T00:00:00Z",
+          "period": "2024-25 season",
+          "content_sha256": "9ff16e6b79796ce9b9eefc959aa0262265e64b973bf1b9795aa362cdb5f1d05a",
+          "locator": "https://www.nba.com/awards/2025",
+          "excerpt": "2024-25 Kia MVP: Shai Gilgeous-Alexander (Oklahoma City Thunder)",
+          "verification": "verified",
+          "facts": [
+            {
+              "entity": "2024-25 Kia MVP",
+              "metric": "award_winner",
+              "value": "Shai Gilgeous-Alexander (Oklahoma City Thunder)",
+              "unit": "",
+              "period": "2024-25 season",
+              "qualifier": "Official NBA result. Season 2024-25 as named.",
+              "locator": "https://www.nba.com/awards/2025",
+              "supporting_excerpt": "2024-25 Kia MVP: Shai Gilgeous-Alexander (Oklahoma City Thunder)",
+              "parser_version": "courtlens-nba-awards-v1"
+            }
+          ]
+        },
+        "fact": {
+          "entity": "2024-25 Kia MVP",
+          "metric": "award_winner",
+          "value": "Shai Gilgeous-Alexander (Oklahoma City Thunder)",
+          "unit": "",
+          "period": "2024-25 season",
+          "qualifier": "Official NBA result. Season 2024-25 as named.",
+          "locator": "https://www.nba.com/awards/2025",
+          "supporting_excerpt": "2024-25 Kia MVP: Shai Gilgeous-Alexander (Oklahoma City Thunder)",
+          "parser_version": "courtlens-nba-awards-v1"
+        }
+      },
+      "is_error": false
+    },
+    {
+      "call_id": "pg_call",
+      "name": "site_help",
+      "payload": {
+        "key": "players",
+        "text": "Use player search to select a named player. In Stats, add players to the comparison tray and open Compare. Keep the selected season, phase, cutoff and window when comparing. Team badges describe observed participation in that scope, rather than a current roster.",
+        "routes": [
+          "/stats",
+          "/compare"
+        ],
+        "source": {
+          "source_id": "courtload-knowledge-v3:players:80dad9d7d750c56c1e7ea0874fd909fecd05ddcbd36a604e97cf7d66a634db46",
+          "origin": "knowledge",
+          "title": "Find and compare players",
+          "publisher": "CourtLoad",
+          "url": null,
+          "updated_on": "2026-10-06",
+          "retrieved_at": null,
+          "period": null,
+          "content_sha256": "80dad9d7d750c56c1e7ea0874fd909fecd05ddcbd36a604e97cf7d66a634db46",
+          "locator": "guide.md#players",
+          "excerpt": "Use player search to select a named player. In Stats, add players to the comparison tray and open Compare. Keep the selected season, phase, cutoff and window when comparing. Team badges describe observed participation in that scope, rather than a current roster.",
+          "verification": "curated",
+          "facts": []
+        }
+      },
+      "is_error": false
+    },
+    {
+      "call_id": "pg_call",
+      "name": "query_stats",
+      "payload": {
+        "error": {
+          "code": "unsupported_scope",
+          "message": "The requested season/phase has no observed warehouse coverage.",
+          "recoverable": true,
+          "requested": {
+            "season": "1999-00",
+            "phase": "regular_season"
+          },
+          "available_scopes": [
+            {
+              "season": "2024-25",
+              "phase": "regular_season",
+              "coverage_start": "2025-03-01",
+              "coverage_end": "2025-03-30",
+              "default_before_date": "2025-03-31"
+            },
+            {
+              "season": "2025-26",
+              "phase": "regular_season",
+              "coverage_start": "2026-03-01",
+              "coverage_end": "2026-03-30",
+              "default_before_date": "2026-03-31"
+            }
+          ]
+        }
+      },
+      "is_error": true
+    },
+    {
+      "call_id": "pg_call",
+      "name": "query_stats",
+      "payload": {
+        "error": {
+          "code": "invalid_arguments",
+          "message": "Arguments must match the declared tool schema and pinned scope.",
+          "recoverable": true
+        }
+      },
+      "is_error": true
+    }
+  ]
+}
