@@ -89,6 +89,96 @@ def assert_replay(original, request, settings, **kwargs):
     return replayed
 
 
+class LiveScripted(Scripted):
+    def step(self, prompt, messages, tools, **kwargs):
+        value = super().step(prompt, messages, tools, **kwargs)
+        if kwargs.get("on_delta"):
+            kwargs["on_delta"](value.text[:5])
+            kwargs["on_delta"](value.text[5:])
+        return value
+
+
+def test_live_repair_resets_before_rewritten_deltas_and_records_them(setup_loop):
+    events = []
+    provider = LiveScripted(
+        AgentStep(text="He averaged 99.9 points."),
+        AgentStep(text="The available evidence does not establish that average."),
+    )
+    result = run(
+        provider,
+        setup_loop,
+        on_step=lambda kind, label: events.append((kind, label)),
+        on_delta=lambda text: events.append(("delta", text)),
+        on_reset=lambda: events.append(("reset", "")),
+    )
+    reset = events.index(("reset", ""))
+    assert events[1][0] == "writing"
+    assert (
+        "".join(text for kind, text in events[:reset] if kind == "delta")
+        == "He averaged 99.9 points."
+    )
+    assert (
+        "".join(text for kind, text in events[reset:] if kind == "delta")
+        == result.response.answer.text
+    )
+    assert result.response.provenance.repaired
+    assert result.transcript["steps"][0]["deltas"] == ["He av", "eraged 99.9 points."]
+
+
+def test_tool_commentary_is_replaced_before_answer_and_search_is_reported(setup_loop, monkeypatch):
+    monkeypatch.setattr(
+        loop,
+        "dispatch",
+        lambda *args, **kwargs: DispatchedTool(
+            ToolResult(call_id="help", name="site_help", payload={}), {}
+        ),
+    )
+    events = []
+    result = run(
+        LiveScripted(
+            AgentStep(
+                text="I will look up the glossary.",
+                tool_calls=[ToolCall(id="help", name="site_help", arguments={})],
+            ),
+            AgentStep(text="Spacing opens driving lanes.", usage=Usage(web_searches=1)),
+        ),
+        setup_loop,
+        on_step=lambda kind, label: events.append((kind, label)),
+        on_delta=lambda text: events.append(("delta", text)),
+        on_reset=lambda: events.append(("reset", "")),
+    )
+    assert ("tool", "Querying CourtLens: site_help") in events
+    assert ("search", "Web search completed") in events
+    reset = events.index(("reset", ""))
+    assert (
+        "".join(text for kind, text in events[reset:] if kind == "delta")
+        == result.response.answer.text
+    )
+
+
+def test_busy_retry_replaces_failed_live_draft_once(setup_loop):
+    class Busy(LiveScripted):
+        def step(self, *args, **kwargs):
+            if len(self.steps) == 1:
+                self.steps.append(self.steps[0])
+                kwargs["on_delta"]("Failed draft")
+                raise ProviderFailure("provider_busy")
+            return super().step(*args, **kwargs)
+
+    events = []
+    result = run(
+        Busy(AgentStep(text="Spacing opens driving lanes.")),
+        setup_loop,
+        on_delta=lambda text: events.append(("delta", text)),
+        on_reset=lambda: events.append(("reset", "")),
+    )
+    assert events[:2] == [("delta", "Failed draft"), ("reset", "")]
+    assert result.response.accounting.provider_calls == 2
+    assert (
+        "".join(text for kind, text in events[2:] if kind == "delta") == result.response.answer.text
+    )
+
+
 def test_owner_rapm_native_span_answer_and_exact_replay(setup_loop):
     text = "Victor Wembanyama had +8.8 RAPM in 2025-26."
     provider = Scripted(

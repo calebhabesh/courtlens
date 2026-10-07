@@ -26,7 +26,7 @@ from courtload.assistant_history_models import (
 )
 from courtload.config import Settings, get_settings
 from courtload.database import get_db
-from courtload.domain.assistant_agent import AgentTurnResponse
+from courtload.domain.assistant_agent import AgentStreamEvent, AgentTurnResponse
 from courtload.domain.conversation import ConversationContext
 from courtload.domain.hybrid_assistant import HybridTurnRequest, HybridTurnResponse
 from courtload.services.assistant import history
@@ -360,6 +360,99 @@ def test_no_key_api_and_final_sse_replay_are_v3_without_execution(tool_data):
         )
         assert client.delete(base + "/threads", headers=token).status_code == 200
         assert not session.scalars(select(AssistantAgentTranscript)).all()
+
+
+@pytest.mark.parametrize("outcome", ["answer", "repair", "quota"])
+def test_live_agent_sse_matches_durable_fallback_history_and_transcript(
+    tool_data, monkeypatch, outcome
+):
+    import json
+
+    session, context = tool_data
+    settings = Settings(_env_file=None, assistant_provider="gemini", gemini_api_key="synthetic")
+    monkeypatch.setattr(loop, "get_settings", lambda: settings)
+
+    class LiveProvider(Scripted):
+        def step(self, prompt, messages, tools, **kwargs):
+            if isinstance(self.steps[0], ProviderFailure):
+                kwargs["on_delta"]("Interrupted draft")
+            result = super().step(prompt, messages, tools, **kwargs)
+            if kwargs.get("on_delta") and result.text:
+                kwargs["on_delta"](result.text[:5])
+                kwargs["on_delta"](result.text[5:])
+            return result
+
+    steps = [
+        AgentStep(
+            text="Looking up the award.",
+            tool_calls=[
+                ToolCall(
+                    id="mvp", name="awards", arguments={"award": "mvp", "season": "last_season"}
+                )
+            ],
+        )
+    ]
+    if outcome == "repair":
+        steps.extend(
+            [
+                AgentStep(text="The winner averaged 99.9 points."),
+                lambda messages: awards_answer([m for m in messages if m.tool_results][-1:]),
+            ]
+        )
+    elif outcome == "quota":
+        steps.append(ProviderFailure("provider_quota", 60))
+    else:
+        steps.append(awards_answer)
+    provider = LiveProvider(*steps)
+    monkeypatch.setattr(loop, "create_provider", lambda settings: provider)
+    app = create_app()
+    app.dependency_overrides[get_db] = lambda: session
+    token = {"X-Operator-Token": get_settings().operator_token.get_secret_value()}
+    request = req(context, "Who won MVP last season?")
+    with TestClient(app) as client:
+        base = "/api/workbench/assistant/v2"
+        response = client.post(
+            base + "/turn/stream", headers=token, json=request.model_dump(mode="json")
+        )
+        assert response.status_code == 200
+        events = [
+            json.loads(line[6:]) for line in response.text.splitlines() if line.startswith("data: ")
+        ]
+        for event in events:
+            AgentStreamEvent.model_validate(event)
+        assert events[0]["event"] == "accepted"
+        assert events[-1]["event"] == "final"
+        assert {"step", "delta", "reset"} <= {e["event"] for e in events}
+        assert not any(e["event"] in {"phase", "narrative"} for e in events)
+        final = events[-1]["response"]
+        assert final["schema_version"] == "courtlens-assistant-v3"
+        assert final["provenance"]["repaired"] == (outcome == "repair")
+        if outcome == "repair":
+            assert "99.9" not in final["answer"]["text"]
+            assert not final["provenance"]["unsupported_numbers"]
+            assert "won the MVP award" in final["answer"]["text"]
+            assert final["accounting"]["steps"] == 3
+        if outcome == "quota":
+            assert final["mode"] == "limited" and final["failure"] == "provider_quota"
+        fallback = client.post(base + "/turn", headers=token, json=request.model_dump(mode="json"))
+        assert fallback.json() == final
+        retained = client.get(base + "/threads/" + final["thread_id"] + "/turns").json()["turns"][0]
+        assert retained["response"] == final
+        transcript = session.scalar(select(AssistantAgentTranscript))
+        assert transcript is not None
+        assert (
+            transcript.sha256
+            == final["transcript"]["sha256"]
+            == canonical_hash(transcript.payload_json)
+        )
+        assert transcript.payload_json["steps"][0]["deltas"] == ["Looki", "ng up the award."]
+        calls = provider.calls
+        replay = client.post(
+            base + "/turn/stream", headers=token, json=request.model_dump(mode="json")
+        )
+        names = [line for line in replay.text.splitlines() if line.startswith("event:")]
+        assert names == ["event: accepted", "event: final"]
+        assert provider.calls == calls
 
 
 def test_transcript_migration_schema_parity_and_reversible_fixture(tool_data):

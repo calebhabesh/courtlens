@@ -1,4 +1,6 @@
-import type { DurableThreadHeader, DurableTurnRecord, HybridTurnRequest, HybridTurnResponse, ThreadHistoryPage, TurnHistoryPage } from "./assistant-v2.generated";
+import type { DurableThreadHeader, HybridTurnRequest, ThreadHistoryPage } from "./assistant-v2.generated";
+import type { AgentHistoryPage, StoredTurnRecord } from "./assistant-v3.generated";
+export type AssistantTurnResponse = NonNullable<StoredTurnRecord["response"]>;
 import { WorkbenchApiError } from "./workbench-api";
 
 // PF08 uses this same-origin client. Transport retries retain request_id; intentional
@@ -13,9 +15,9 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
 }
 export const newAssistantThread = () => request<DurableThreadHeader>("threads", { method: "POST" });
 export const assistantThreads = (cursor?: string, limit = 20) => request<ThreadHistoryPage>(`threads?${new URLSearchParams({ limit: String(limit), ...(cursor ? { cursor } : {}) })}`);
-export const assistantTurns = (threadId: string, cursor?: string, limit = 20) => request<TurnHistoryPage>(`threads/${encodeURIComponent(threadId)}/turns?${new URLSearchParams({ limit: String(limit), ...(cursor ? { cursor } : {}) })}`);
-export const sendAssistantTurn = (turn: HybridTurnRequest, signal?: AbortSignal) => request<HybridTurnResponse>("turn", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(turn), signal: signal ? AbortSignal.any([signal, AbortSignal.timeout(60000)]) : AbortSignal.timeout(60000) });
-export const stopAssistantTurn = (threadId: string, turnId: string) => request<DurableTurnRecord>(`threads/${encodeURIComponent(threadId)}/turns/${encodeURIComponent(turnId)}/cancel`, { method: "POST" });
+export const assistantTurns = (threadId: string, cursor?: string, limit = 20) => request<AgentHistoryPage>(`threads/${encodeURIComponent(threadId)}/turns?${new URLSearchParams({ limit: String(limit), ...(cursor ? { cursor } : {}) })}`);
+export const sendAssistantTurn = (turn: HybridTurnRequest, signal?: AbortSignal) => request<AssistantTurnResponse>("turn", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(turn), signal: signal ? AbortSignal.any([signal, AbortSignal.timeout(60000)]) : AbortSignal.timeout(60000) });
+export const stopAssistantTurn = (threadId: string, turnId: string) => request<StoredTurnRecord>(`threads/${encodeURIComponent(threadId)}/turns/${encodeURIComponent(turnId)}/cancel`, { method: "POST" });
 export const deleteAssistantThread = (threadId: string) => request<{ cleared: boolean }>(`threads/${encodeURIComponent(threadId)}`, { method: "DELETE" });
 export const clearAssistantHistory = () => request<{ cleared: boolean }>("threads", { method: "DELETE" });
 

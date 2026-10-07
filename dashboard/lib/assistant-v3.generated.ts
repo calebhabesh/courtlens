@@ -44,6 +44,8 @@ export type AgentSource = {
   "content_sha256"?: string | null;
 };
 
+export type AgentStreamEvent = StreamAcceptedEvent | StreamPhaseEvent | StreamNarrativeEvent | StreamStepEvent | StreamDeltaEvent | StreamResetEvent | StreamFinalEvent;
+
 export type AgentTurnResponse = {
   "schema_version"?: "courtlens-assistant-v3";
   "request_id": string;
@@ -292,6 +294,43 @@ export type StoredTurnRecord = {
   "state": "pending" | "running" | "completed" | "failed" | "cancelled";
   "response"?: HybridTurnResponse | AgentTurnResponse | null;
   "response_sha256"?: string | null;
+};
+
+export type StreamAcceptedEvent = {
+  "event"?: "accepted";
+  "request_id": string;
+  "thread_id": string;
+  "turn_id": string;
+};
+
+export type StreamDeltaEvent = {
+  "event"?: "delta";
+  "text": string;
+};
+
+export type StreamFinalEvent = {
+  "event"?: "final";
+  "response": HybridTurnResponse | AgentTurnResponse;
+};
+
+export type StreamNarrativeEvent = {
+  "event"?: "narrative";
+  "text": string;
+};
+
+export type StreamPhaseEvent = {
+  "event"?: "phase";
+  "phase": "understanding" | "querying" | "writing";
+};
+
+export type StreamResetEvent = {
+  "event"?: "reset";
+};
+
+export type StreamStepEvent = {
+  "event"?: "step";
+  "kind": "thinking" | "tool" | "search" | "writing";
+  "label": string;
 };
 
 export type TextBlock = {

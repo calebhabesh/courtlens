@@ -1,5 +1,6 @@
 import { expect, test, type Locator, type Page } from "@playwright/test";
-import type { DurableThreadHeader, DurableTurnRecord, HybridTurnRequest, HybridTurnResponse } from "../lib/assistant-v2.generated";
+import type { DurableThreadHeader, HybridTurnRequest, HybridTurnResponse } from "../lib/assistant-v2.generated";
+import type { AgentTurnResponse, StoredTurnRecord as DurableTurnRecord } from "../lib/assistant-v3.generated";
 
 import { waitForStreamedPage } from "./workbench-navigation";
 
@@ -22,6 +23,13 @@ function answer(request: HybridTurnRequest, overrides: Partial<HybridTurnRespons
 }
 // Must match e2e/mock-api.mjs, which serves the paced AR05 event stream through the real proxy.
 const streamedNarrative = "Fixture Guard led the 2025-26 regular season with 9.1 assists per game.";
+function agentAnswer(request: HybridTurnRequest): AgentTurnResponse {
+  return { schema_version: "courtlens-assistant-v3", request_id: request.request_id, thread_id: request.thread_id!, turn_id: request.request_id,
+    status: "answered", mode: "agent", answer: { text: "The retained fixture answer from the source.[^s1]" },
+    accounting: { provider: "replay", model: "synthetic-ag04", prompt_version: "fixture" },
+    sources: [{ source_id: "s1", origin: "web", url: "https://example.org/ag04", title: "Synthetic source", publisher: "example.org" }], results: [], saveable: false,
+    ...(request.message.includes("labels") ? { mode: "limited", provenance: { unsupported_numbers: ["99.9"] } } : {}) };
+}
 async function mock(page: Page, options: { response?: (request: HybridTurnRequest) => Partial<HybridTurnResponse>; deferred?: boolean; lost?: boolean; paginated?: boolean; stream?: boolean } = {}) {
   const requests: HybridTurnRequest[] = [];
   const streams: HybridTurnRequest[] = [];
@@ -58,14 +66,14 @@ async function mock(page: Page, options: { response?: (request: HybridTurnReques
       records.get(body.thread_id!)!.push(row); headers.find(header => header.thread_id === body.thread_id)!.title = body.message;
       // The backend publishes before sending final. Chromium reports an intercepted stream the
       // page stopped reading after final as aborted, so either outcome marks the row retained.
-      const retain = (ended: typeof request) => { if (ended === request) { row.state = "completed"; row.response = answer(body,{intent:"local_analysis",blocks:[{kind:"narrative",checker:"narrative-check-v1",text:streamedNarrative,operation_hashes:[hash]}]}); } };
+      const retain = (ended: typeof request) => { if (ended === request) { row.state = "completed"; row.response = body.message.startsWith("AG04") ? agentAnswer(body) : answer(body,{intent:"local_analysis",blocks:[{kind:"narrative",checker:"narrative-check-v1",text:streamedNarrative,operation_hashes:[hash]}]}); } };
       page.on("requestfinished", retain); page.on("requestfailed", retain);
       return route.continue();
     }
     const body = request.postDataJSON() as HybridTurnRequest; requests.push(body);
     let row = records.get(body.thread_id!)!.find(row => row.request.request_id === body.request_id);
     if (!row) {
-      row = {thread_id:body.thread_id!,turn_id:body.request_id,request:body,request_sha256:hash,accepted_at:"2026-10-06T12:00:00Z",state:options.deferred?"running":"completed",response:options.deferred?null:answer(body,options.response?.(body))}; records.get(body.thread_id!)!.push(row);
+      row = {thread_id:body.thread_id!,turn_id:body.request_id,request:body,request_sha256:hash,accepted_at:"2026-10-06T12:00:00Z",state:options.deferred?"running":"completed",response:options.deferred?null:body.message.startsWith("AG04")?agentAnswer(body):answer(body,options.response?.(body))}; records.get(body.thread_id!)!.push(row);
       headers.find(header => header.thread_id === body.thread_id)!.title = body.message;
     }
     if (firstLost) { firstLost = false; return route.fulfill({status:502,json:{detail:"Response lost; check or replay the retained request."}}); }
@@ -116,7 +124,7 @@ test("scope changes retain old answers and unedited follow-ups inherit on server
   await send(page,"Use this period"); await expect(messages(page)).toContainText("2025-26");
   expect(state.requests[1].context?.season).toBe("2025-26"); expect(state.requests[1].thread_id).toBe(state.requests[0].thread_id);
   await send(page,"Explain that"); await expect.poll(()=>state.requests.length).toBe(3); expect(state.requests[2].context).toBeUndefined();
-  expect(state.records.get(state.requests[0].thread_id!)![0].response?.scope?.selections.season).toBe("2024-25");
+  expect(state.records.get(state.requests[0].thread_id!)![0].response).toHaveProperty("scope.selections.season", "2024-25");
 });
 
 test("transport replay preserves request identity; intentional retry links a new turn",async({page})=>{
@@ -252,7 +260,7 @@ test("browser history scope changes update only the next request",async({page})=
   await expect(page.getByLabel('Season',{exact:true})).toHaveValue('2025-26');
   await send(page,'Updated selection');await expect.poll(()=>state.requests.length).toBe(2);
   expect(state.requests[1].context?.season).toBe('2025-26');
-  expect(state.records.get(state.requests[0].thread_id!)![0].response?.scope?.selections.season).toBe('2024-25');
+  expect(state.records.get(state.requests[0].thread_id!)![0].response).toHaveProperty("scope.selections.season", "2024-25");
 });
 
 for (const width of [1440, 375]) {
@@ -273,6 +281,23 @@ for (const width of [1440, 375]) {
     await expect(prose).toBeVisible();
   });
 }
+
+test("AG04 unavailable stream replays a v3 final with the same request identity", async ({ page }) => {
+  const state = await mock(page); await openPage(page, path); await send(page, "AG04 fallback fixture: Explain MVP");
+  await expect(messages(page).locator(".hybrid-narrative")).toHaveText("The retained fixture answer from the source.[^s1]");
+  expect(state.streams).toHaveLength(1); expect(state.requests).toEqual(state.streams);
+  await reloadPage(page);
+  await expect(messages(page).locator(".hybrid-narrative")).toHaveText("The retained fixture answer from the source.[^s1]");
+});
+
+test("AG04 minimal final preserves limited and unverified labels after fallback and reload", async ({ page }) => {
+  await mock(page); await openPage(page, path); await send(page, "AG04 labels fixture: Explain MVP");
+  await expect(messages(page)).toContainText("Limited mode");
+  await expect(messages(page)).toContainText("This answer contains unverified numbers.");
+  await reloadPage(page);
+  await expect(messages(page)).toContainText("Limited mode");
+  await expect(messages(page)).toContainText("This answer contains unverified numbers.");
+});
 
 test("checked narrative renders above its supporting result and survives reload", async ({ page }) => {
   await mock(page, { response: () => ({
@@ -296,7 +321,7 @@ test("streamed turn shows each phase, the checked narrative, then the retained a
   const state = await mock(page, { stream: true }); await openPage(page, path);
   await send(page, "Who led the league in assists per game last season?");
   const transcript = messages(page); const live = transcript.locator(".thread-live");
-  for (const label of ["Understanding the question…", "Querying CourtLens data…", "Writing the answer…"]) await expect(live.getByRole("status")).toHaveText(label);
+  for (const label of ["Understanding the question…", "Querying CourtLens data…", "Writing the answer…"]) await expect(live.locator(".ask-phase")).toHaveText(label);
   await expect(live.locator(".hybrid-narrative")).toContainText("Fixture Guard led");
   await expect(live).toHaveCount(0);
   await expect(transcript.locator(".hybrid-narrative")).toHaveText(streamedNarrative);
@@ -310,6 +335,27 @@ test("unavailable stream falls back to request/response with the same request id
   await expect(messages(page)).toContainText("pairs a screen");
   expect(state.streams).toHaveLength(1); expect(state.requests).toEqual(state.streams);
 });
+
+for (const width of [1440, 375]) {
+  test(`AG04 live agent steps, deltas, reset and retained final through real proxy at ${width}px`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 900 });
+    const state = await mock(page, { stream: true }); await openPage(page, path);
+    await send(page, "AG04 repair fixture: Explain MVP");
+    const transcript = messages(page); const pending = transcript.locator(".thread-live");
+    for (const label of ["Considering sources", "Querying CourtLens: awards", "Web search completed", "Writing the answer"]) {
+      await expect(pending.locator(".ask-phase")).toHaveText(label);
+    }
+    await expect(pending.locator(".hybrid-narrative")).toHaveText("Initial draft 🏀");
+    await expect(pending.locator(".hybrid-narrative")).toHaveCount(0);
+    await expect(pending.locator(".hybrid-narrative")).toHaveText("Repaired live draft");
+    await expect(pending).toHaveCount(0);
+    await expect(transcript.locator(".hybrid-narrative")).toHaveText("The retained fixture answer from the source.[^s1]");
+    expect(state.streams).toHaveLength(1); expect(state.requests).toHaveLength(0);
+    await reloadPage(page);
+    await expect(transcript.locator(".hybrid-narrative")).toHaveText("The retained fixture answer from the source.[^s1]");
+    await expect(transcript).not.toContainText("Initial draft");
+  });
+}
 
 test("Enter sends, Shift+Enter adds a line and an example prompt sends directly", async ({ page }) => {
   const state = await mock(page); await openPage(page, path);

@@ -2043,6 +2043,188 @@
       "title": "StoredTurnRecord",
       "type": "object"
     },
+    "StreamAcceptedEvent": {
+      "additionalProperties": false,
+      "description": "AR05 SSE: the durable turn exists; the client may poll or replay by request_id.",
+      "properties": {
+        "event": {
+          "const": "accepted",
+          "default": "accepted",
+          "title": "Event",
+          "type": "string"
+        },
+        "request_id": {
+          "format": "uuid",
+          "title": "Request Id",
+          "type": "string"
+        },
+        "thread_id": {
+          "format": "uuid",
+          "title": "Thread Id",
+          "type": "string"
+        },
+        "turn_id": {
+          "format": "uuid",
+          "title": "Turn Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "request_id",
+        "thread_id",
+        "turn_id"
+      ],
+      "title": "StreamAcceptedEvent",
+      "type": "object"
+    },
+    "StreamDeltaEvent": {
+      "additionalProperties": false,
+      "properties": {
+        "event": {
+          "const": "delta",
+          "default": "delta",
+          "title": "Event",
+          "type": "string"
+        },
+        "text": {
+          "title": "Text",
+          "type": "string"
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "title": "StreamDeltaEvent",
+      "type": "object"
+    },
+    "StreamFinalEvent": {
+      "additionalProperties": false,
+      "properties": {
+        "event": {
+          "const": "final",
+          "default": "final",
+          "title": "Event",
+          "type": "string"
+        },
+        "response": {
+          "discriminator": {
+            "mapping": {
+              "courtlens-assistant-v3": "#/$defs/AgentTurnResponse",
+              "courtload-assistant-v2": "#/$defs/HybridTurnResponse"
+            },
+            "propertyName": "schema_version"
+          },
+          "oneOf": [
+            {
+              "$ref": "#/$defs/HybridTurnResponse"
+            },
+            {
+              "$ref": "#/$defs/AgentTurnResponse"
+            }
+          ],
+          "title": "Response"
+        }
+      },
+      "required": [
+        "response"
+      ],
+      "title": "StreamFinalEvent",
+      "type": "object"
+    },
+    "StreamNarrativeEvent": {
+      "additionalProperties": false,
+      "description": "A slice of narrative that already passed the numeric check and was retained.",
+      "properties": {
+        "event": {
+          "const": "narrative",
+          "default": "narrative",
+          "title": "Event",
+          "type": "string"
+        },
+        "text": {
+          "maxLength": 700,
+          "minLength": 1,
+          "title": "Text",
+          "type": "string"
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "title": "StreamNarrativeEvent",
+      "type": "object"
+    },
+    "StreamPhaseEvent": {
+      "additionalProperties": false,
+      "properties": {
+        "event": {
+          "const": "phase",
+          "default": "phase",
+          "title": "Event",
+          "type": "string"
+        },
+        "phase": {
+          "enum": [
+            "understanding",
+            "querying",
+            "writing"
+          ],
+          "title": "Phase",
+          "type": "string"
+        }
+      },
+      "required": [
+        "phase"
+      ],
+      "title": "StreamPhaseEvent",
+      "type": "object"
+    },
+    "StreamResetEvent": {
+      "additionalProperties": false,
+      "properties": {
+        "event": {
+          "const": "reset",
+          "default": "reset",
+          "title": "Event",
+          "type": "string"
+        }
+      },
+      "title": "StreamResetEvent",
+      "type": "object"
+    },
+    "StreamStepEvent": {
+      "additionalProperties": false,
+      "properties": {
+        "event": {
+          "const": "step",
+          "default": "step",
+          "title": "Event",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "thinking",
+            "tool",
+            "search",
+            "writing"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "label": {
+          "maxLength": 500,
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "label"
+      ],
+      "title": "StreamStepEvent",
+      "type": "object"
+    },
     "AgentHistoryPage": {
       "additionalProperties": false,
       "properties": {
@@ -2082,6 +2264,45 @@
       ],
       "title": "AgentHistoryPage",
       "type": "object"
+    },
+    "AgentStreamEvent": {
+      "description": "Additive v3 transport, including sealed v2 phase/narrative compatibility.",
+      "discriminator": {
+        "mapping": {
+          "accepted": "#/$defs/StreamAcceptedEvent",
+          "delta": "#/$defs/StreamDeltaEvent",
+          "final": "#/$defs/StreamFinalEvent",
+          "narrative": "#/$defs/StreamNarrativeEvent",
+          "phase": "#/$defs/StreamPhaseEvent",
+          "reset": "#/$defs/StreamResetEvent",
+          "step": "#/$defs/StreamStepEvent"
+        },
+        "propertyName": "event"
+      },
+      "oneOf": [
+        {
+          "$ref": "#/$defs/StreamAcceptedEvent"
+        },
+        {
+          "$ref": "#/$defs/StreamPhaseEvent"
+        },
+        {
+          "$ref": "#/$defs/StreamNarrativeEvent"
+        },
+        {
+          "$ref": "#/$defs/StreamStepEvent"
+        },
+        {
+          "$ref": "#/$defs/StreamDeltaEvent"
+        },
+        {
+          "$ref": "#/$defs/StreamResetEvent"
+        },
+        {
+          "$ref": "#/$defs/StreamFinalEvent"
+        }
+      ],
+      "title": "AgentStreamEvent"
     }
   },
   "oneOf": [
@@ -2093,6 +2314,9 @@
     },
     {
       "$ref": "#/$defs/AgentHistoryPage"
+    },
+    {
+      "$ref": "#/$defs/AgentStreamEvent"
     }
   ]
 }

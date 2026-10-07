@@ -9,11 +9,11 @@ from uuid import uuid4
 from test_narrative_turn import Narrator, leader_text
 from test_narrative_turn import run as run_recorded
 
+from courtload.domain.assistant_agent import AgentStreamEvent, AgentTurnResponse
 from courtload.domain.hybrid_assistant import (
     HybridTurnRequest,
     HybridTurnResponse,
     InabilityBlock,
-    TurnStreamEvent,
 )
 from courtload.services.assistant import streaming
 from courtload.services.assistant.history import ClaimedTurn
@@ -28,7 +28,7 @@ def parse(chunks: list[bytes]) -> list[dict]:
         name = lines[0].removeprefix("event: ")
         data = json.loads(lines[1].removeprefix("data: "))
         # Every frame satisfies the generated wire contract and names its own event.
-        assert TurnStreamEvent.model_validate(data).root.event == name == data["event"]
+        assert AgentStreamEvent.model_validate(data).root.event == name == data["event"]
         events.append(data)
     return events
 
@@ -88,7 +88,7 @@ def test_stream_orders_accepted_forward_phases_checked_slices_then_final(session
     request, claimed = claim_for(answer)
     seen_threads: list[str] = []
 
-    def complete(session, request, claimed, *, provider, on_phase):
+    def complete(session, request, claimed, *, provider, on_phase, **kwargs):
         seen_threads.append(threading.current_thread().name)
         # Mixed clauses revisit phases; only forward movement is streamed.
         for phase in ("understanding", "querying", "understanding", "querying", "writing"):
@@ -155,3 +155,94 @@ def test_disconnect_waits_for_the_worker_to_publish(session):
         asyncio.run(disconnect_after_first_phase())
     # The request session is only released after publication finished.
     assert published == [True]
+
+
+def agent_answer(answer):
+    return AgentTurnResponse(
+        request_id=answer.request_id,
+        thread_id=answer.thread_id,
+        turn_id=answer.turn_id,
+        status="answered",
+        answer={"text": "Retained answer."},
+        accounting={"provider": "replay", "model": "synthetic", "prompt_version": "fixture"},
+    )
+
+
+def test_agent_events_arrive_before_publication_then_authoritative_final(session):
+    old = narrated(session)
+    request, claimed = claim_for(old)
+    answer = agent_answer(old)
+    release = threading.Event()
+    published = threading.Event()
+
+    def complete(*args, on_step, on_delta, on_reset, **kwargs):
+        on_step("thinking", "Considering sources")
+        on_step("tool", "Querying CourtLens")
+        on_delta("Draft 🏀\n")
+        on_reset()
+        on_step("search", "Web search completed")
+        on_step("writing", "Writing the answer")
+        on_delta("Repaired draft")
+        assert release.wait(5)
+        published.set()
+        return answer
+
+    async def drain():
+        stream = streaming.stream_turn(session, request, claimed)
+        chunks = [await anext(stream) for _ in range(8)]
+        try:
+            assert not published.is_set()
+            events = parse(chunks)
+            assert [e["event"] for e in events] == [
+                "accepted",
+                "step",
+                "step",
+                "delta",
+                "reset",
+                "step",
+                "step",
+                "delta",
+            ]
+            assert events[3]["text"] == "Draft 🏀\n"
+        finally:
+            release.set()
+        chunks.extend([chunk async for chunk in stream])
+        return chunks
+
+    with patch.object(streaming, "complete_turn", complete):
+        events = parse(asyncio.run(drain()))
+    assert published.is_set()
+    assert events[-1]["response"] == answer.model_dump(mode="json")
+    assert not any(e["event"] in {"phase", "narrative"} for e in events)
+
+
+def test_retained_agent_only_replays_accepted_and_final(session):
+    answer = agent_answer(narrated(session))
+    with patch.object(streaming, "complete_turn", side_effect=AssertionError("executed")):
+        events = parse(collect(session, HybridTurnRequest(request_id=uuid4(), message="x"), answer))
+    assert [e["event"] for e in events] == ["accepted", "final"]
+    assert events[-1]["response"] == answer.model_dump(mode="json")
+
+
+def test_agent_disconnect_waits_for_publication_after_live_delta(session):
+    old = narrated(session)
+    request, claimed = claim_for(old)
+    release = threading.Event()
+    published = threading.Event()
+
+    def complete(*args, on_delta, **kwargs):
+        on_delta("Live draft")
+        assert release.wait(5)
+        published.set()
+        return agent_answer(old)
+
+    async def disconnect():
+        stream = streaming.stream_turn(session, request, claimed)
+        assert b"accepted" in await anext(stream)
+        assert b"Live draft" in await anext(stream)
+        asyncio.get_running_loop().call_later(0.01, release.set)
+        await stream.aclose()
+
+    with patch.object(streaming, "complete_turn", complete):
+        asyncio.run(disconnect())
+    assert published.is_set()

@@ -42,7 +42,7 @@ from courtload.domain.hybrid_assistant import (
     ThreadHistoryPage,
     TurnPhase,
 )
-from courtload.services.assistant.agent.loop import run_turn
+from courtload.services.assistant.agent.loop import StepCallback, run_turn
 from courtload.services.assistant.agent.providers.base import AgentProvider
 from courtload.services.assistant.conversations import MAX_TURN_BYTES
 from courtload.services.assistant.hybrid import run_hybrid_turn
@@ -383,6 +383,9 @@ def complete_turn(
     provider: PlanProvider | None = None,
     on_phase: Callable[[TurnPhase], None] | None = None,
     agent_provider: AgentProvider | None = None,
+    on_step: StepCallback | None = None,
+    on_delta: Callable[[str], None] | None = None,
+    on_reset: Callable[[], None] | None = None,
 ) -> TurnResponse:
     transcript: dict[str, Any] | None = None
     try:
@@ -408,6 +411,9 @@ def complete_turn(
                 history=[record(r) for r in reversed(prior)],
                 provider=agent_provider,
                 turn_id=claimed.turn_id,
+                on_step=on_step,
+                on_delta=on_delta,
+                on_reset=on_reset,
             )
             transcript = run.transcript
             answer: TurnResponse = run.response.model_copy(
