@@ -23,6 +23,18 @@ from courtload.workbench_models import WorkbenchPlayerGame
 postgres_conversation = _postgres_fixture
 
 
+def legacy_api(monkeypatch, provider):
+    """Explicitly exercise sealed v2 transport; ordinary API turns now use v3."""
+    from courtload.api.routers import conversation as routes
+
+    run = routes.run_durable_turn
+    stream = routes.stream_turn
+    monkeypatch.setattr(
+        routes, "run_durable_turn", lambda *a, **kw: run(*a, provider=provider, **kw)
+    )
+    monkeypatch.setattr(routes, "stream_turn", lambda *a, **kw: stream(*a, provider=provider, **kw))
+
+
 def request(context, message="Show scoring", plan=True):
     return HybridTurnRequest(
         request_id=uuid4(),
@@ -298,9 +310,14 @@ def test_ar03_mixed_has_single_general_sentence_and_exact_query(postgres_convers
     assert result.rows[0]["metrics"]["pts_per_game"] == round(280 / 30, 1)
 
 
-def test_ar03_label_survives_http_history_and_exact_replay(postgres_conversation):
+def test_ar03_label_survives_http_history_and_exact_replay(postgres_conversation, monkeypatch):
     from courtload.domain.hybrid_assistant import GENERAL_LABEL
 
+    class KnowledgeOnly:
+        def plan(self, *a, **kw):
+            raise AssertionError("the curated spacing guide must not call a provider")
+
+    legacy_api(monkeypatch, KnowledgeOnly())
     session, _ = postgres_conversation
     app = create_app()
     app.dependency_overrides[get_db] = lambda: session
@@ -324,7 +341,9 @@ def test_ar03_label_survives_http_history_and_exact_replay(postgres_conversation
 
 
 @pytest.mark.parametrize("honest", [True, False])
-def test_ar04_checked_narrative_survives_http_history_or_falls_back(postgres_conversation, honest):
+def test_ar04_checked_narrative_survives_http_history_or_falls_back(
+    postgres_conversation, honest, monkeypatch
+):
     from pydantic import SecretStr
 
     session, context = postgres_conversation
@@ -349,6 +368,7 @@ def test_ar04_checked_narrative_survives_http_history_or_falls_back(postgres_con
         gemini_api_key = SecretStr("test-only")
         gemini_model = "fixture"
 
+    legacy_api(monkeypatch, Provider())
     app = create_app()
     app.dependency_overrides[get_db] = lambda: session
     headers = {"X-Operator-Token": get_settings().operator_token.get_secret_value()}
@@ -387,7 +407,7 @@ def sse_events(text: str) -> list[dict]:
     return [json.loads(frame.split("\ndata: ", 1)[1]) for frame in frames]
 
 
-def test_ar05_stream_phases_final_and_request_response_fallback(postgres_conversation):
+def test_ar05_stream_phases_final_and_request_response_fallback(postgres_conversation, monkeypatch):
     from pydantic import SecretStr
 
     session, context = postgres_conversation
@@ -410,6 +430,7 @@ def test_ar05_stream_phases_final_and_request_response_fallback(postgres_convers
         gemini_api_key = SecretStr("test-only")
         gemini_model = "fixture"
 
+    legacy_api(monkeypatch, Provider())
     app = create_app()
     app.dependency_overrides[get_db] = lambda: session
     headers = {"X-Operator-Token": get_settings().operator_token.get_secret_value()}

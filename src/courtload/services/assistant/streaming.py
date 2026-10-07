@@ -12,16 +12,18 @@ import logging
 import re
 import threading
 from collections.abc import AsyncIterator, Iterator
+from typing import Literal
 
 import anyio
 from sqlalchemy.orm import Session
 
+from courtload.domain.assistant_agent import AgentTurnResponse, TurnResponse
+from courtload.domain.conversation import StrictModel
 from courtload.domain.hybrid_assistant import (
     HybridTurnRequest,
     HybridTurnResponse,
     NarrativeBlock,
     StreamAcceptedEvent,
-    StreamFinalEvent,
     StreamNarrativeEvent,
     StreamPhaseEvent,
     TurnPhase,
@@ -30,6 +32,12 @@ from courtload.services.assistant.history import ClaimedTurn, complete_turn
 from courtload.services.assistant.planner import PlanProvider
 
 logger = logging.getLogger(__name__)
+
+
+class StreamFinalEvent(StrictModel):
+    event: Literal["final"] = "final"
+    response: TurnResponse
+
 
 PHASES: tuple[TurnPhase, ...] = ("understanding", "querying", "writing")
 HEARTBEAT_SECONDS = 10.0
@@ -41,8 +49,8 @@ def frame(event: StreamEvent) -> bytes:
     return f"event: {event.event}\ndata: {event.model_dump_json()}\n\n".encode()
 
 
-def retained_events(answer: HybridTurnResponse) -> Iterator[StreamEvent]:
-    for block in answer.blocks:
+def retained_events(answer: TurnResponse) -> Iterator[StreamEvent]:
+    for block in answer.blocks if isinstance(answer, HybridTurnResponse) else []:
         if isinstance(block, NarrativeBlock):
             for piece in re.findall(r"\S+\s*", block.text):
                 yield StreamNarrativeEvent(text=piece)
@@ -52,12 +60,12 @@ def retained_events(answer: HybridTurnResponse) -> Iterator[StreamEvent]:
 async def stream_turn(
     session: Session,
     request: HybridTurnRequest,
-    claimed: HybridTurnResponse | ClaimedTurn,
+    claimed: TurnResponse | ClaimedTurn,
     *,
     provider: PlanProvider | None = None,
     heartbeat_seconds: float = HEARTBEAT_SECONDS,
 ) -> AsyncIterator[bytes]:
-    if isinstance(claimed, HybridTurnResponse):
+    if isinstance(claimed, (HybridTurnResponse, AgentTurnResponse)):
         # Transport retry of a retained turn: replay without executing again.
         yield frame(
             StreamAcceptedEvent(
@@ -68,7 +76,7 @@ async def stream_turn(
             yield frame(event)
         return
     loop = asyncio.get_running_loop()
-    queue: asyncio.Queue[StreamPhaseEvent | HybridTurnResponse | BaseException] = asyncio.Queue()
+    queue: asyncio.Queue[StreamPhaseEvent | TurnResponse | BaseException] = asyncio.Queue()
     reached = -1
 
     def on_phase(phase: TurnPhase) -> None:
@@ -80,7 +88,7 @@ async def stream_turn(
             loop.call_soon_threadsafe(queue.put_nowait, StreamPhaseEvent(phase=phase))
 
     def work() -> None:
-        result: HybridTurnResponse | BaseException
+        result: TurnResponse | BaseException
         try:
             result = complete_turn(session, request, claimed, provider=provider, on_phase=on_phase)
         except BaseException as exc:
@@ -103,7 +111,7 @@ async def stream_turn(
                 continue
             if isinstance(item, StreamPhaseEvent):
                 yield frame(item)
-            elif isinstance(item, HybridTurnResponse):
+            elif isinstance(item, (HybridTurnResponse, AgentTurnResponse)):
                 for event in retained_events(item):
                     yield frame(event)
                 return

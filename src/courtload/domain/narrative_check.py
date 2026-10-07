@@ -9,14 +9,23 @@ It verifies values, not attribution: a correct number next to the wrong name pas
 
 from __future__ import annotations
 
-import math
 import re
-from collections.abc import Iterable, Sequence
-from dataclasses import dataclass
-from decimal import ROUND_HALF_EVEN, ROUND_HALF_UP, Decimal, InvalidOperation
-from itertools import combinations
+from collections.abc import Sequence
 from typing import Any
 
+from courtload.domain.answer_numbers import (
+    ISO_DATE,
+    NUMBER,
+    ORDINAL_WORDS,
+    RANK,
+    SEASON,
+    WORD,
+    WORDS,
+    YEAR,
+    _season_key,
+    allowed_numbers,
+    matches_display,
+)
 from courtload.domain.conversation import OperationResult
 
 CHECKER_VERSION = "narrative-check-v1"
@@ -25,55 +34,6 @@ MAX_CHARS = 700
 # Derived arithmetic is bounded to pairs; larger cell sets only allow direct matches.
 MAX_DERIVED_CELLS = 120
 
-SEASON = re.compile(r"\b((?:19|20)\d{2})[-\u2013]((?:\d{2})|(?:(?:19|20)\d{2}))\b")
-ISO_DATE = re.compile(r"\b((?:19|20)\d{2})-(\d{2})-(\d{2})\b")
-RANK = re.compile(
-    r"(?:\b(?:no\.|number|ranked|ranks|rank|top)\s*|#)(\d{1,3})\b|\b(\d{1,3})(?:st|nd|rd|th)\b",
-    re.I,
-)
-YEAR = re.compile(r"\b((?:19|20)\d{2})\b")
-NUMBER = re.compile(
-    r"(?<![\w.])[-\u2212]?\$?(\d{1,3}(?:,\d{3})+|\d+)(\.\d+)?(\s?%|\s?percent\b)?", re.I
-)
-WORDS = {
-    "zero": 0,
-    "two": 2,
-    "three": 3,
-    "four": 4,
-    "five": 5,
-    "six": 6,
-    "seven": 7,
-    "eight": 8,
-    "nine": 9,
-    "ten": 10,
-    "eleven": 11,
-    "twelve": 12,
-    "thirteen": 13,
-    "fourteen": 14,
-    "fifteen": 15,
-    "sixteen": 16,
-    "seventeen": 17,
-    "eighteen": 18,
-    "nineteen": 19,
-    "twenty": 20,
-    "thirty": 30,
-    "forty": 40,
-    "fifty": 50,
-    "hundred": 100,
-}
-ORDINAL_WORDS = {
-    "first": 1,
-    "second": 2,
-    "third": 3,
-    "fourth": 4,
-    "fifth": 5,
-    "sixth": 6,
-    "seventh": 7,
-    "eighth": 8,
-    "ninth": 9,
-    "tenth": 10,
-}
-WORD = re.compile(r"\b(" + "|".join([*WORDS, *ORDINAL_WORDS, "one"]) + r")\b", re.I)
 # Unverifiable quantities and verdicts the zero-inferred-claims rule excludes.
 FORBIDDEN = re.compile(
     r"\b(twice|double[sd]?|triple[sd]?|half|quarter|dozen|thousand|million|billion|"
@@ -84,10 +44,6 @@ FORBIDDEN = re.compile(
 )
 
 
-ROUNDING = (ROUND_HALF_UP, ROUND_HALF_EVEN)
-PERCENT_UNITS = frozenset({"percentage", "rate", "ratio", "percent change"})
-
-
 class NarrativeRejected(ValueError):
     """The narrative contains an unverifiable number or claim; the template is used."""
 
@@ -95,131 +51,6 @@ class NarrativeRejected(ValueError):
         super().__init__(f"{reason}: {token}" if token else reason)
         self.reason = reason
         self.token = token
-
-
-@dataclass(frozen=True)
-class Allowed:
-    values: tuple[float, ...]
-    derived: tuple[float, ...]
-    # Candidates a "%" may display: percentage-like cells/differences and ratios, times 100.
-    percents: tuple[float, ...]
-    seasons: frozenset[str]
-    dates: frozenset[str]
-    years: frozenset[int]
-    max_rank: int
-    # Result names that contain digits, such as "Philadelphia 76ers".
-    labels: tuple[str, ...] = ()
-
-
-def _numeric(value: Any) -> float | None:
-    if isinstance(value, bool) or value is None:
-        return None
-    if isinstance(value, (int, float)):
-        return float(value) if math.isfinite(value) else None
-    if isinstance(value, str):
-        try:
-            number = Decimal(value)
-        except InvalidOperation:
-            return None
-        return float(number) if number.is_finite() else None
-    return None
-
-
-def _strings(value: Any) -> Iterable[str]:
-    if isinstance(value, str):
-        yield value
-    elif isinstance(value, dict):
-        for item in value.values():
-            yield from _strings(item)
-    elif isinstance(value, list):
-        for item in value:
-            yield from _strings(item)
-
-
-def _season_key(start: str, end: str) -> str:
-    return f"{start}-{end[-2:]}"
-
-
-def allowed_numbers(results: Sequence[OperationResult], scope: dict[str, Any]) -> Allowed:
-    cells = [
-        ((cell.metric, cell.unit), number)
-        for result in results
-        for cell in result.evidence
-        if (number := _numeric(cell.value)) is not None
-    ]
-    derived: list[float] = []
-    percents = [number * 100 for (_, unit), number in cells if unit in PERCENT_UNITS]
-    bounded = cells[:MAX_DERIVED_CELLS]
-    # Only comparable cells: the same metric in the same unit, e.g. two players' PPG.
-    for (kind_a, a), (kind_b, b) in combinations(bounded, 2):
-        if kind_a != kind_b:
-            continue
-        derived.extend((a + b, abs(a - b)))
-        if kind_a[1] in PERCENT_UNITS:
-            percents.extend((100 * (a + b), 100 * abs(a - b)))
-        for ratio in (a / b if b else None, b / a if a else None):
-            if ratio is not None:
-                derived.append(ratio)
-                percents.append(100 * ratio)
-    # Scope years come from resolved selections and dates, never from version strings.
-    selections = scope.get("selections") or {}
-    local = scope.get("local_context") or {}
-    scoped = [
-        str(value)
-        for value in (
-            selections.get("season"),
-            selections.get("before_date"),
-            scope.get("as_of"),
-            *(
-                local.get(key)
-                for key in ("season", "before_date", "coverage_start", "coverage_end")
-            ),
-        )
-        if value
-    ]
-    data = [text for r in results for text in _strings(r.data)]
-    texts = [*scoped, *data]
-    seasons = {_season_key(m[1], m[2]) for text in texts for m in SEASON.finditer(text)}
-    dates = {m[0] for text in texts for m in ISO_DATE.finditer(text)}
-    years = {int(m[1]) for text in texts for m in ISO_DATE.finditer(text)}
-    for season in seasons:
-        start = int(season[:4])
-        years.update((start, start + 1))
-    return Allowed(
-        values=tuple(number for _, number in cells),
-        derived=tuple(derived),
-        percents=tuple(percents),
-        seasons=frozenset(seasons),
-        dates=frozenset(dates),
-        years=frozenset(years),
-        max_rank=max((len(r.rows) for r in results), default=0),
-        labels=tuple(
-            sorted(
-                {
-                    text
-                    for text in data
-                    if len(text) <= 60
-                    and re.search(r"\d", text)
-                    and re.search(r"[A-Za-z]{2}", text)
-                    and not SEASON.search(text)
-                    and not ISO_DATE.search(text)
-                },
-                key=len,
-                reverse=True,
-            )
-        ),
-    )
-
-
-def _matches(shown: str, candidates: Iterable[float]) -> bool:
-    """Display rounding: a candidate rounded to the shown precision equals the shown value."""
-    target = Decimal(shown)
-    quantum = Decimal(1).scaleb(target.as_tuple().exponent)  # type: ignore[arg-type]
-    for candidate in candidates:
-        value = Decimal(repr(abs(candidate)))
-        if any(value.quantize(quantum, rounding=mode) == target for mode in ROUNDING):
-            return True
-    return False
 
 
 def check_narrative(
@@ -265,7 +96,7 @@ def check_narrative(
         candidates: list[float] = [*allowed.values, *allowed.derived]
         if match[3]:
             candidates = [*candidates, *allowed.percents]
-        if not _matches(shown, candidates):
+        if not matches_display(shown, candidates):
             raise NarrativeRejected("unmatched_number", match[0].strip())
         checked.append(float(shown))
     for match in WORD.finditer(remaining):
@@ -277,7 +108,7 @@ def check_narrative(
                 raise NarrativeRejected("rank_outside_rows", match[0])
             continue
         value = 1 if word == "one" else WORDS[word]
-        if not _matches(str(value), [*allowed.values, *allowed.derived]):
+        if not matches_display(str(value), [*allowed.values, *allowed.derived]):
             raise NarrativeRejected("unmatched_number", match[0])
         checked.append(float(value))
     return checked

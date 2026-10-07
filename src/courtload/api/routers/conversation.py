@@ -9,6 +9,7 @@ from sqlalchemy.orm import Session
 
 from courtload.api.routers.workbench import verify_workspace_operator_access
 from courtload.database import get_db
+from courtload.domain.assistant_agent import AgentHistoryPage, StoredTurnRecord, TurnResponse
 from courtload.domain.conversation import (
     ConversationTurnRequest,
     ConversationTurnResponse,
@@ -16,11 +17,8 @@ from courtload.domain.conversation import (
 )
 from courtload.domain.hybrid_assistant import (
     DurableThreadHeader,
-    DurableTurnRecord,
     HybridTurnRequest,
-    HybridTurnResponse,
     ThreadHistoryPage,
-    TurnHistoryPage,
 )
 from courtload.domain.saved_conversation import (
     SavedConversationDetail,
@@ -62,12 +60,12 @@ def post_turn(
     return run_conversation_turn(session, request)
 
 
-@router.post("/v2/turn", response_model=HybridTurnResponse)
+@router.post("/v2/turn", response_model=TurnResponse)
 def post_hybrid_turn(
     request: HybridTurnRequest,
     session: Session = Depends(get_db),
     _auth: None = Depends(verify_workspace_operator_access),
-) -> HybridTurnResponse:
+) -> TurnResponse:
     """Accept durably before execution; retransmissions replay the exact retained response."""
     return run_durable_turn(session, request)
 
@@ -110,24 +108,24 @@ def threads(
     return list_threads(session, limit, cursor)
 
 
-@router.get("/v2/threads/{thread_id}/turns", response_model=TurnHistoryPage)
+@router.get("/v2/threads/{thread_id}/turns", response_model=AgentHistoryPage)
 def turns(
     thread_id: UUID,
     limit: int = Query(20, ge=1, le=100),
     cursor: int = Query(0, ge=0),
     session: Session = Depends(get_db),
-) -> TurnHistoryPage:
+) -> AgentHistoryPage:
     return list_turns(session, thread_id, limit, cursor)
 
 
 @router.post(
     "/v2/threads/{thread_id}/turns/{turn_id}/cancel",
-    response_model=DurableTurnRecord,
+    response_model=StoredTurnRecord,
     dependencies=[Depends(verify_workspace_operator_access)],
 )
 def stop_turn(
     thread_id: UUID, turn_id: UUID, session: Session = Depends(get_db)
-) -> DurableTurnRecord:
+) -> StoredTurnRecord:
     return cancel_turn(session, thread_id, turn_id)
 
 

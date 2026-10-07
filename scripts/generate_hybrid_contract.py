@@ -65,10 +65,10 @@ def ts_type(schema: dict[str, Any]) -> str:
     }.get(kind, "unknown")
 
 
-def generate() -> tuple[str, str]:
+def generate(models: tuple[type[Any], ...] = MODELS) -> tuple[str, str]:
     definitions: dict[str, Any] = {}
     roots = {}
-    for model in MODELS:
+    for model in models:
         schema = model.model_json_schema(mode="validation")
         for key, value in schema.pop("$defs", {}).items():
             if key in definitions and definitions[key] != value:
@@ -102,14 +102,26 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--check", action="store_true")
     args = parser.parse_args()
+    from courtload.domain.assistant_agent import (
+        AgentHistoryPage,
+        AgentTurnResponse,
+        StoredTurnRecord,
+    )
+
     schema, ts = generate()
-    for path, content in ((SCHEMA_PATH, schema), (TS_PATH, ts)):
+    agent_schema, agent_ts = generate((AgentTurnResponse, StoredTurnRecord, AgentHistoryPage))
+    for path, content in (
+        (SCHEMA_PATH, schema),
+        (TS_PATH, ts),
+        (Path("docs/design/assistant-v3.schema.json"), agent_schema),
+        (Path("dashboard/lib/assistant-v3.generated.ts"), agent_ts),
+    ):
         if args.check:
             if path.read_text() != content:
                 raise SystemExit(f"stale generated contract: {path}")
         else:
             path.write_text(content)
-    print("v2 JSON Schema / TypeScript contracts match")
+    print("v2 / v3 JSON Schema / TypeScript contracts match")
 
 
 if __name__ == "__main__":
