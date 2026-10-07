@@ -1,8 +1,8 @@
-"""AR05 server-sent events over the durable turn.
+"""V2/v3 server-sent events over the durable turn.
 
 The stream is a view of the same accept/claim/publish lifecycle as the request/response
-endpoint. Phase events report progress; narrative slices are cut from the checked and already
-retained narrative, so streamed prose never outruns what history replays. The final event carries
+endpoint. V3 deltas are live drafts and resets replace them; v2 narratives remain checked,
+retained slices. The final event carries
 the retained typed response. A client that loses the stream replays the same request_id over
 `POST /v2/turn` or polls history.
 """
@@ -12,13 +12,20 @@ import logging
 import re
 import threading
 from collections.abc import AsyncIterator, Iterator
-from typing import Literal
 
 import anyio
 from sqlalchemy.orm import Session
 
-from courtload.domain.assistant_agent import AgentTurnResponse, TurnResponse
-from courtload.domain.conversation import StrictModel
+from courtload.domain.assistant_agent import (
+    AgentTurnResponse,
+    StepKind,
+    StreamDeltaEvent,
+    StreamEvent,
+    StreamFinalEvent,
+    StreamResetEvent,
+    StreamStepEvent,
+    TurnResponse,
+)
 from courtload.domain.hybrid_assistant import (
     HybridTurnRequest,
     HybridTurnResponse,
@@ -28,20 +35,15 @@ from courtload.domain.hybrid_assistant import (
     StreamPhaseEvent,
     TurnPhase,
 )
+from courtload.services.assistant.agent.providers.base import AgentProvider
 from courtload.services.assistant.history import ClaimedTurn, complete_turn
 from courtload.services.assistant.planner import PlanProvider
 
 logger = logging.getLogger(__name__)
 
 
-class StreamFinalEvent(StrictModel):
-    event: Literal["final"] = "final"
-    response: TurnResponse
-
-
 PHASES: tuple[TurnPhase, ...] = ("understanding", "querying", "writing")
 HEARTBEAT_SECONDS = 10.0
-StreamEvent = StreamAcceptedEvent | StreamPhaseEvent | StreamNarrativeEvent | StreamFinalEvent
 
 
 def frame(event: StreamEvent) -> bytes:
@@ -63,6 +65,7 @@ async def stream_turn(
     claimed: TurnResponse | ClaimedTurn,
     *,
     provider: PlanProvider | None = None,
+    agent_provider: AgentProvider | None = None,
     heartbeat_seconds: float = HEARTBEAT_SECONDS,
 ) -> AsyncIterator[bytes]:
     if isinstance(claimed, (HybridTurnResponse, AgentTurnResponse)):
@@ -76,7 +79,7 @@ async def stream_turn(
             yield frame(event)
         return
     loop = asyncio.get_running_loop()
-    queue: asyncio.Queue[StreamPhaseEvent | TurnResponse | BaseException] = asyncio.Queue()
+    queue: asyncio.Queue[StreamEvent | TurnResponse | BaseException] = asyncio.Queue()
     reached = -1
 
     def on_phase(phase: TurnPhase) -> None:
@@ -90,10 +93,29 @@ async def stream_turn(
     def work() -> None:
         result: TurnResponse | BaseException
         try:
-            result = complete_turn(session, request, claimed, provider=provider, on_phase=on_phase)
+            result = complete_turn(
+                session,
+                request,
+                claimed,
+                provider=provider,
+                agent_provider=agent_provider,
+                on_phase=on_phase,
+                on_step=on_step,
+                on_delta=on_delta,
+                on_reset=on_reset,
+            )
         except BaseException as exc:
             result = exc
         loop.call_soon_threadsafe(queue.put_nowait, result)
+
+    def on_step(kind: StepKind, label: str) -> None:
+        loop.call_soon_threadsafe(queue.put_nowait, StreamStepEvent(kind=kind, label=label[:500]))
+
+    def on_delta(text: str) -> None:
+        loop.call_soon_threadsafe(queue.put_nowait, StreamDeltaEvent(text=text))
+
+    def on_reset() -> None:
+        loop.call_soon_threadsafe(queue.put_nowait, StreamResetEvent())
 
     worker = threading.Thread(target=work, name="assistant-turn-stream", daemon=True)
     worker.start()
@@ -109,7 +131,9 @@ async def stream_turn(
             except TimeoutError:
                 yield b": keep-alive\n\n"
                 continue
-            if isinstance(item, StreamPhaseEvent):
+            if isinstance(
+                item, (StreamPhaseEvent, StreamStepEvent, StreamDeltaEvent, StreamResetEvent)
+            ):
                 yield frame(item)
             elif isinstance(item, (HybridTurnResponse, AgentTurnResponse)):
                 for event in retained_events(item):

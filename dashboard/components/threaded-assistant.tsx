@@ -3,9 +3,10 @@
 import { useEffect, useId, useRef, useState, useSyncExternalStore } from "react";
 import Link from "next/link";
 import { pageContextLabel } from "@/lib/assistant-page-context";
-import type { AssistantPageContext, ConversationContext, DurableThreadHeader, DurableTurnRecord, HybridTurnRequest } from "@/lib/assistant-v2.generated";
+import type { AssistantPageContext, ConversationContext, DurableThreadHeader, HybridTurnRequest } from "@/lib/assistant-v2.generated";
+import type { StoredTurnRecord as DurableTurnRecord } from "@/lib/assistant-v3.generated";
 import { activeThreadKey, announceHistoryChange, assistantThreads, assistantTurns, deleteAssistantThread, historyChangeEvent, historyChangeKey, newAssistantThread, stopAssistantTurn } from "@/lib/assistant-history";
-import { phaseLabels, streamAssistantTurn, type TurnPhase } from "@/lib/assistant-stream";
+import { phaseLabels, streamAssistantTurn, streamProgress, type StreamProgress } from "@/lib/assistant-stream";
 import { composerKeyAction, examplePrompts, groupThreads, scopeChipLabel } from "@/lib/assistant-chat";
 import { BrandMark } from "./brand";
 import { CatalogScopeFields } from "./catalog-scope-fields";
@@ -21,7 +22,12 @@ const sidebarKey = "courtload-ask-sidebar-collapsed-v1";
 const narrowQuery = "(max-width: 900px)";
 function subscribeNarrow(change: () => void) { const media = window.matchMedia(narrowQuery); media.addEventListener("change", change); return () => media.removeEventListener("change", change); }
 const messageOf = (cause: unknown) => cause instanceof Error ? cause.message : "The assistant service could not be reached. Your question is preserved.";
-type LiveTurn = { requestId: string; phase?: TurnPhase; narrative: string };
+type LiveTurn = StreamProgress & { requestId: string };
+function turnSelections(turn: DurableTurnRecord) {
+  const response = turn.response;
+  if (!response) return undefined;
+  return "answer" in response ? response.selections : response.scope?.selections;
+}
 function remember(thread: string | null) { try { if (thread) localStorage.setItem(activeThreadKey, thread); else localStorage.removeItem(activeThreadKey); } catch { /* History itself remains on the server. */ } }
 
 // AR06: full-height chat on /ask; "panel" is the header drawer, where conversations always overlay.
@@ -197,14 +203,13 @@ export function ThreadedAssistant({ initialContext = {}, variant = "page", pageC
     if (lock.current) return;
     const owned = epoch.current;
     lock.current = true; setBusy(true); setError(null); setTransportRetry(null); outstanding.current = request;
-    setLive({ requestId: request.request_id, narrative: "" });
+    setLive({ requestId: request.request_id, text: "" });
     const progress = (update: (current: LiveTurn) => LiveTurn) => setLive(previous => previous?.requestId === request.request_id ? update(previous) : previous);
     try {
       const answer = await streamAssistantTurn(request, event => {
         if (epoch.current !== owned) return;
-        if (event.event === "phase") progress(current => ({ ...current, phase: event.phase }));
-        else if (event.event === "narrative") progress(current => ({ ...current, narrative: current.narrative + event.text }));
-        else if (event.event === "accepted" && request.thread_id) void readTurns(request.thread_id, owned).catch(() => undefined);
+        progress(current => ({ ...current, ...streamProgress(current, event) }));
+        if (event.event === "accepted" && request.thread_id) void readTurns(request.thread_id, owned).catch(() => undefined);
       });
       if (epoch.current !== owned) return;
       await readTurns(answer.thread_id, owned);
@@ -270,16 +275,16 @@ export function ThreadedAssistant({ initialContext = {}, variant = "page", pageC
     finally { lock.current = false; setBusy(false); }
   }
   function editScope(value: Partial<ConversationContext>) {
-    const latest = [...turns].reverse().find(turn => turn.response?.scope)?.response?.scope?.selections;
+    const latest = [...turns].reverse().map(turnSelections).find(Boolean);
     const base = scopeChanged.current ? undefined : latest;
     scopeChanged.current = true;
     setContext(previous => ({ ...(base ?? previous), ...value })); setScopeEdited(true);
   }
-  const shownContext = scopeEdited || attachedPage ? context : [...turns].reverse().find(turn => turn.response?.scope)?.response?.scope?.selections ?? context;
+  const shownContext = scopeEdited || attachedPage ? context : [...turns].reverse().map(turnSelections).find(Boolean) ?? context;
   const blocked = busy || !!pending || !ready;
   const lastTurn = turns.at(-1);
   // Follow new turns and streamed prose to the bottom of the transcript.
-  useEffect(() => { const node = scroller.current; if (node) node.scrollTop = node.scrollHeight; }, [turns.length, lastTurn?.state, live?.narrative, live?.phase]);
+  useEffect(() => { const node = scroller.current; if (node) node.scrollTop = node.scrollHeight; }, [turns.length, lastTurn?.state, live?.text, live?.phase, live?.step]);
   const title = threads.find(header => header.thread_id === thread)?.title ?? "New chat";
   const sidebarId = `${id}-conversations`;
   return <section className="ask-chat" data-variant={variant} data-collapsed={collapsed} data-drawer={drawer ? "open" : "closed"} aria-label="CourtLens assistant">
@@ -312,8 +317,11 @@ export function ThreadedAssistant({ initialContext = {}, variant = "page", pageC
           <div aria-label="Messages" className="ask-messages">{turns.map(turn => <article key={turn.turn_id} className="ask-turn">
             <div className="ask-user"><p className="ask-bubble"><span className="sr-only">You: </span>{turn.request.message}</p></div>
             <div className="ask-assistant"><span className="ask-avatar"><BrandMark size={28} /></span><div className="ask-reply">{turn.response
-              ? <HybridAnswer answer={turn.response} busy={blocked || !!turnCursor} onChoice={choice => void submit(choice)} onRetry={() => { setQuestion(turn.request.message); void submit(turn.request.message, turn.turn_id); }} />
-              : <div className="thread-live" aria-busy="true"><p role="status" className="ask-phase">{live?.requestId === turn.request.request_id && live.phase ? phaseLabels[live.phase] : turn.state === "pending" ? "Question saved. Waiting to start…" : "Working on your question…"}</p>{live?.requestId === turn.request.request_id && live.narrative && <p className="hybrid-narrative">{live.narrative}</p>}</div>}</div></div>
+              ? "answer" in turn.response
+                // AG04's minimal final prose. AG05 adds sources, results, provenance and actions.
+                ? <>{turn.response.mode === "limited" && <p className="text-muted">Limited mode</p>}<p className="hybrid-narrative">{turn.response.answer.text}</p>{!!turn.response.provenance?.unsupported_numbers?.length && <p className="text-muted">This answer contains unverified numbers.</p>}</>
+                : <HybridAnswer answer={turn.response} busy={blocked || !!turnCursor} onChoice={choice => void submit(choice)} onRetry={() => { setQuestion(turn.request.message); void submit(turn.request.message, turn.turn_id); }} />
+              : <div className="thread-live" aria-busy="true"><p className="ask-phase">{live?.requestId === turn.request.request_id ? live.step?.label ?? (live.phase ? phaseLabels[live.phase] : "Working on your question…") : turn.state === "pending" ? "Question saved. Waiting to start…" : "Working on your question…"}</p>{live?.requestId === turn.request.request_id && live.text && <p className="hybrid-narrative">{live.text}</p>}</div>}</div></div>
           </article>)}</div>
           {turnCursor && <div className="ask-notice"><p>Load newer turns before adding a question.</p><Button disabled={blocked} onClick={() => void readTurns(thread!, epoch.current, turnCursor).catch(cause => setError(messageOf(cause)))}>Load newer turns</Button></div>}
         </div>
@@ -331,7 +339,7 @@ export function ThreadedAssistant({ initialContext = {}, variant = "page", pageC
             {busy || pending ? <Button className="ask-send" disabled={!pending} onClick={() => void stop()} aria-label="Stop" title="Stop"><Icon name="stop" /></Button> : <Button type="submit" variant="primary" className="ask-send" aria-label="Send question" title="Send question" disabled={!ready || !!turnCursor || !question.trim()}><Icon name="up" /></Button>}
           </div>
         </form>
-        <p role="status" aria-live="polite" className="sr-only">{busy || pending ? live?.phase ? phaseLabels[live.phase] : "Question retained; verifying the answer…" : "Ready"}</p>
+        <p role="status" aria-live="polite" aria-atomic="true" className="sr-only">{busy || pending ? live?.step?.label ?? (live?.phase ? phaseLabels[live.phase] : "Question retained; verifying the answer…") : "Ready"}</p>
       </div>
     </div>
   </section>;

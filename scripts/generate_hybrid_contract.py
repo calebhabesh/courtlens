@@ -104,12 +104,15 @@ def main() -> None:
     args = parser.parse_args()
     from courtload.domain.assistant_agent import (
         AgentHistoryPage,
+        AgentStreamEvent,
         AgentTurnResponse,
         StoredTurnRecord,
     )
 
     schema, ts = generate()
-    agent_schema, agent_ts = generate((AgentTurnResponse, StoredTurnRecord, AgentHistoryPage))
+    agent_schema, agent_ts = generate(
+        (AgentTurnResponse, StoredTurnRecord, AgentHistoryPage, AgentStreamEvent)
+    )
     for path, content in (
         (SCHEMA_PATH, schema),
         (TS_PATH, ts),

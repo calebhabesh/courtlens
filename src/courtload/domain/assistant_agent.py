@@ -7,7 +7,7 @@ from typing import Annotated, Any, Literal
 from urllib.parse import urlsplit
 from uuid import UUID
 
-from pydantic import AwareDatetime, Field, TypeAdapter, field_validator, model_validator
+from pydantic import AwareDatetime, Field, RootModel, TypeAdapter, field_validator, model_validator
 
 from courtload.domain.conversation import ConversationContext, StrictModel
 from courtload.domain.hybrid_assistant import (
@@ -17,6 +17,9 @@ from courtload.domain.hybrid_assistant import (
     HybridTurnRequest,
     HybridTurnResponse,
     ResultBlock,
+    StreamAcceptedEvent,
+    StreamNarrativeEvent,
+    StreamPhaseEvent,
 )
 
 MARKER = re.compile(r"\[\^(s[0-9]+)\]")
@@ -202,6 +205,43 @@ TurnResponse = Annotated[
     HybridTurnResponse | AgentTurnResponse, Field(discriminator="schema_version")
 ]
 RESPONSE_ADAPTER: TypeAdapter[HybridTurnResponse | AgentTurnResponse] = TypeAdapter(TurnResponse)
+
+StepKind = Literal["thinking", "tool", "search", "writing"]
+
+
+class StreamStepEvent(StrictModel):
+    event: Literal["step"] = "step"
+    kind: StepKind
+    label: str = Field(min_length=1, max_length=500)
+
+
+class StreamDeltaEvent(StrictModel):
+    event: Literal["delta"] = "delta"
+    text: str
+
+
+class StreamResetEvent(StrictModel):
+    event: Literal["reset"] = "reset"
+
+
+class StreamFinalEvent(StrictModel):
+    event: Literal["final"] = "final"
+    response: TurnResponse
+
+
+StreamEvent = (
+    StreamAcceptedEvent
+    | StreamPhaseEvent
+    | StreamNarrativeEvent
+    | StreamStepEvent
+    | StreamDeltaEvent
+    | StreamResetEvent
+    | StreamFinalEvent
+)
+
+
+class AgentStreamEvent(RootModel[Annotated[StreamEvent, Field(discriminator="event")]]):
+    """Additive v3 transport, including sealed v2 phase/narrative compatibility."""
 
 
 class StoredTurnRecord(StrictModel):
