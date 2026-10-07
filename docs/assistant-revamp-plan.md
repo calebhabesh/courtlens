@@ -1,6 +1,8 @@
 # CourtLens assistant revamp
 
-Prepared 2026-10-06. **The owner confirmed the direction through a grilling interview on 2026-10-06. Blocks AR01–AR08 are pending until the [progress log](assistant-revamp-progress.md) records measured evidence for them.**
+> **Superseded for answering behavior (2026-10-07):** the [assistant agent handoff](assistant-agent-plan.md) replaces this plan's planning, routing, general-knowledge, narrative, clarification, provider and eval-scoring decisions. Layout, side panel, threads, saved findings and streaming transport remain. AR evidence stays sealed.
+
+Prepared 2026-10-06. **The owner confirmed the direction through a grilling interview on 2026-10-06. Blocks AR01–AR09 are pending until the [progress log](assistant-revamp-progress.md) records measured evidence for them.**
 
 This handoff supersedes the [freeze handoff](polish-freeze-implementation-plan.md) for the Ask
 experience only: `/ask` layout, answer composition, routing of general basketball questions,
@@ -40,6 +42,7 @@ The portfolio blueprint does not require an LLM layer. The assistant earns its p
 | --- | --- |
 | Scope authority | Server-resolved season/phase/date/window wins. Conflicting planner `context_changes` are dropped and recorded as a scope assumption, never treated as a failure. The planner payload includes today's date. |
 | Repair | One repair retry sends the validation error back to the planner. Failures during planning and failures during execution have distinct reasons. Rejected raw plans are logged server-side. |
+| Answer-first (AR09, 2026-10-07) | Answer the answerable part and state any approximation or unapplied restriction next to the answer; try a labelled general answer before refusing; inability is the last resort. Position rankings use release-bound G/F/C starting positions. See the [AR09 contract](design/polish-assistant-contract.md#ar09-answer-first-policy-2026-10-07). |
 | General knowledge | Visible "General knowledge, not from CourtLens data" label. No stat numbers. No current rosters, injuries or trades (it says it doesn't know). Concepts, rules, history and CourtLens metric/page help are allowed. Mixed questions get one general sentence plus a data answer. |
 | Narrative | A second LLM call writes 1–3 sentences from the result cells only. Every number must match a cell (allowing for display rounding) or be a server-recomputed sum, difference or ratio of cells. Season labels, ranks and scope years are allowed. If the check fails, the template text is used. |
 | Streaming | SSE from FastAPI through the Next.js proxy. Phase events (understanding → querying → writing), then narrative tokens, then a final typed response. The narrative is buffered and checked before it streams. Falls back to request/response. |
@@ -64,3 +67,4 @@ Execute in order. Each block stops at its verified boundary and records evidence
 | AR06 Chat UI | Full `/ask` reskin per the layout decision, rendering old threads, moving settings items. | Vitest + Playwright chat flow at 1440p and 375px. Screenshots. |
 | AR07 Side panel | Header panel, `page_context`, context chip, server referent resolution. | "his/this team" resolves on player and team pages, verified in a browser test. |
 | AR08 Acceptance | Live holdout eval, screenshots, README case study, resume line from measured numbers. | Holdout report exists, and lint/types/tests/browser are green. |
+| AR09 Answer-first | Owner-approved policy revision: `position_query` over verified starting positions, unfiltered-and-labelled fallback, general-knowledge fallback for unsupported plans, visible result limitations, a rule planner for when the model is unavailable, and the sourced awards/champions registry. | Real-DB answers, rule-planner eval without a model on dev and holdout, Postgres tests for the position/rule/award paths, unit/browser suites green. A corpus revision and live re-measurement are separate. |
