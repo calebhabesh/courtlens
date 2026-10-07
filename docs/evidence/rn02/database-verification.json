@@ -1,0 +1,21 @@
+{
+  "source_tables": 109,
+  "restored_tables": 110,
+  "all_existing_table_counts_match": true,
+  "new_empty_table": "public.assistant_agent_transcripts",
+  "alembic_revision": "09b810a4f007",
+  "renamed_functions": [
+    [
+      "public",
+      "courtlens_live_append_only"
+    ],
+    [
+      "public",
+      "courtlens_saved_conversation_append_only"
+    ]
+  ],
+  "public_snapshot_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+  "database_name": "courtlens",
+  "database_user": "courtlens",
+  "legacy_role_present": false
+}

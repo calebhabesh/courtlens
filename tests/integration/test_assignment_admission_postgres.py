@@ -108,7 +108,7 @@ def test_sql_guards_cannot_be_bypassed_by_admin_setting(assignment_database, tmp
     with Session(assignment_database) as session:
         admit_assignments(session, prepare(inputs))
         session.commit()
-        session.execute(text("SET LOCAL courtload.allow_admin_mutation = 'true'"))
+        session.execute(text("SET LOCAL courtlens.allow_admin_mutation = 'true'"))
         with pytest.raises(DBAPIError, match=r"append-only|already sealed"):
             session.execute(text(statement))
         session.rollback()

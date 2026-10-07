@@ -1,0 +1,9 @@
+{
+  "assistant_history_matches_backup": true,
+  "saved_conversations_match_backup": true,
+  "history_counts": {
+    "threads": 4,
+    "turns": 9,
+    "inputs": 2
+  }
+}

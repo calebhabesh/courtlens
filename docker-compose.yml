@@ -122,7 +122,7 @@ volumes:
   courtlens-artifacts:
   courtlens-cache:
 
-# Retained legacy database volume; RN02 records its actual name.
+# Retained pre-RN02 database volume: courtload_courtload-postgres (verified locally).
 # This external volume is deliberately not mounted or managed by this project.
 # volumes:
 #   courtload-postgres:

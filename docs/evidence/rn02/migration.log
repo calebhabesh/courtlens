@@ -1,0 +1,14 @@
+ Container courtlens-db-1 Running
+ Container courtlens-migrate-1 Creating
+ Container courtlens-migrate-1 Created
+Attaching to migrate-1
+ Container courtlens-db-1 Waiting
+ Container courtlens-db-1 Healthy
+ Container courtlens-migrate-1 Starting
+ Container courtlens-migrate-1 Started
+migrate-1  | INFO  [alembic.runtime.migration] Context impl PostgresqlImpl.
+migrate-1  | INFO  [alembic.runtime.migration] Will assume transactional DDL.
+migrate-1  | INFO  [alembic.runtime.migration] Running upgrade 07b810a4f005 -> 08b810a4f006, AG03 server-owned provider transcripts; existing turn/history payloads stay valid.
+migrate-1  | INFO  [alembic.runtime.migration] Running upgrade 08b810a4f006 -> 09b810a4f007, RN02 rename PostgreSQL functions and the administrative mutation namespace.
+
+migrate-1 exited with code 0

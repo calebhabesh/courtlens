@@ -1,0 +1,9 @@
+{
+  "legacy_keys_remaining": [],
+  "migrated_key_count": 15,
+  "backup": ".env.bak-20261007T213727.430389Z",
+  "database_user": "courtlens",
+  "database_name": "courtlens",
+  "dashboard_port": "3100",
+  "idempotent_rerun": "No legacy keys found; file unchanged."
+}

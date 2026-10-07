@@ -160,12 +160,10 @@ def test_no_unexplained_legacy_brand_references() -> None:
             content = re.sub(r"(?:NEXT_PUBLIC_)?COURTLOAD_[A-Z_]*", "", content)
         if relative in {"dashboard/lib/storage-keys.ts", "dashboard/lib/storage-keys.test.ts"}:
             content = content.replace("courtload_table_density", "")
-        if relative in {
-            "src/courtlens/workbench_models.py",
-            "tests/integration/test_assignment_admission_postgres.py",
-            "tests/integration/test_workbench_postgres.py",
-        }:
+        if relative == "tests/integration/test_rename_database_postgres.py":
+            # RN02 exercises the old namespace exclusively as a negative control.
             content = content.replace("courtload.allow_admin_mutation", "")
+            content = content.replace('"courtload_"', "").replace('"courtload"', "")
         if relative == "docker-compose.yml":
             content = "\n".join(line for line in content.splitlines() if not line.startswith("#"))
         if re.search("courtload", content, re.IGNORECASE):
