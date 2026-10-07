@@ -1,0 +1,73 @@
+{
+  "id": "resp_fixture",
+  "object": "response",
+  "created_at": 1791390000,
+  "model": "gpt-6.1-sol",
+  "status": "completed",
+  "error": null,
+  "incomplete_details": null,
+  "instructions": null,
+  "metadata": {},
+  "parallel_tool_calls": true,
+  "tools": [],
+  "tool_choice": "auto",
+  "temperature": 1,
+  "top_p": 1,
+  "output": [
+    {
+      "type": "reasoning",
+      "id": "rs_fixture",
+      "summary": [],
+      "encrypted_content": "encrypted-reasoning"
+    },
+    {
+      "type": "web_search_call",
+      "id": "ws_fixture",
+      "status": "completed",
+      "action": {
+        "type": "search",
+        "query": "Wembanyama RAPM"
+      }
+    },
+    {
+      "type": "message",
+      "id": "msg_fixture",
+      "status": "completed",
+      "role": "assistant",
+      "content": [
+        {
+          "type": "output_text",
+          "text": "Wembanyama had +8.8 RAPM.",
+          "annotations": [
+            {
+              "type": "url_citation",
+              "url": "https://nbarapm.com/players/wembanyama",
+              "title": "NBA RAPM",
+              "start_index": 0,
+              "end_index": 25
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "function_call",
+      "id": "fc_fixture",
+      "call_id": "tool_1",
+      "name": "warehouse_query",
+      "arguments": "{\"metric\": \"blk_per_game\"}",
+      "status": "completed"
+    }
+  ],
+  "usage": {
+    "input_tokens": 100,
+    "output_tokens": 20,
+    "total_tokens": 120,
+    "input_tokens_details": {
+      "cached_tokens": 10
+    },
+    "output_tokens_details": {
+      "reasoning_tokens": 5
+    }
+  }
+}

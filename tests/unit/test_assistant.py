@@ -20,6 +20,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
 from courtload.api.workbench_schemas import AssistantQueryRequest
+from courtload.config import Settings
 from courtload.database import Base
 from courtload.services.assistant.curated_questions import CURATED_QUESTIONS
 from courtload.services.assistant.provider import OfflinePlanFixtureProvider
@@ -142,8 +143,7 @@ def test_assistant_question_length_and_empty_validation():
 def test_assistant_status_when_disabled():
     """Verify get_assistant_status correctly reports disabled when API key is missing."""
     with patch("courtload.services.assistant.service.get_settings") as mock_settings:
-        mock_settings.return_value.gemini_api_key = None
-        mock_settings.return_value.gemini_model = "gemini-2.5-flash"
+        mock_settings.return_value = Settings(_env_file=None, assistant_provider="none")
         status = get_assistant_status()
         assert status.configured is False
         assert "query" in status.allowed_tools and "similarity" in status.allowed_tools
