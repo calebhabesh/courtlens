@@ -1,9 +1,10 @@
-"""Durable acceptance and publication; no process-local history or provider transcripts.
+"""Durable acceptance/publication for v2/v3 turns and server-owned transcripts.
 
 Short database transactions serialize lifecycle mutations across API processes. Analytical
-work runs outside the lock. A 50-second lease fences abandoned work without cancelling live
-work when a second worker starts. Expiry is recovered on polling/acceptance, never retried
-implicitly. This service owns its Session transaction boundaries.
+work runs outside the lock. A lease covering the configured turn deadline plus a publication
+margin (at least 50 seconds) fences abandoned work without cancelling another worker. Expiry
+is recovered on polling/acceptance, never retried implicitly. This service owns its Session
+transaction boundaries.
 """
 
 from collections.abc import Callable, Iterator
@@ -17,18 +18,32 @@ from fastapi import HTTPException
 from sqlalchemy import Engine, delete, select, text, true
 from sqlalchemy.orm import Session
 
-from courtload.assistant_history_models import AssistantThread, AssistantTurn, AssistantTurnInput
-from courtload.domain.conversation import AnalysisPlan, ConversationContext
+from courtload.assistant_history_models import (
+    AssistantAgentTranscript,
+    AssistantThread,
+    AssistantTurn,
+    AssistantTurnInput,
+)
+from courtload.config import get_settings
+from courtload.domain.assistant_agent import (
+    RESPONSE_ADAPTER,
+    AgentHistoryPage,
+    AgentTurnResponse,
+    StoredTurnRecord,
+    TranscriptReference,
+    TurnResponse,
+)
+from courtload.domain.conversation import AnalysisPlan, ConversationContext, OperationStep
 from courtload.domain.hybrid_assistant import (
     DurableThreadHeader,
-    DurableTurnRecord,
     HybridTurnRequest,
     HybridTurnResponse,
     InabilityBlock,
     ThreadHistoryPage,
-    TurnHistoryPage,
     TurnPhase,
 )
+from courtload.services.assistant.agent.loop import run_turn
+from courtload.services.assistant.agent.providers.base import AgentProvider
 from courtload.services.assistant.conversations import MAX_TURN_BYTES
 from courtload.services.assistant.hybrid import run_hybrid_turn
 from courtload.services.assistant.planner import PlanProvider
@@ -84,17 +99,15 @@ def header(row: AssistantThread) -> DurableThreadHeader:
     )
 
 
-def record(row: AssistantTurn) -> DurableTurnRecord:
-    return DurableTurnRecord(
+def record(row: AssistantTurn) -> StoredTurnRecord:
+    return StoredTurnRecord(
         thread_id=UUID(row.thread_id),
         turn_id=UUID(row.id),
         request=HybridTurnRequest.model_validate(row.request_json),
         request_sha256=row.request_sha256,
         accepted_at=aware(row.accepted_at),
         state=row.state,
-        response=HybridTurnResponse.model_validate(row.response_json)
-        if row.response_json
-        else None,
+        response=RESPONSE_ADAPTER.validate_python(row.response_json) if row.response_json else None,
         response_sha256=row.response_sha256,
     )
 
@@ -118,8 +131,8 @@ def terminal(row: AssistantTurn, *, cancelled: bool) -> HybridTurnResponse:
     )
 
 
-def publish(session: Session, row: AssistantTurn, answer: HybridTurnResponse) -> None:
-    answer = HybridTurnResponse.model_validate(answer.model_dump(mode="json"))
+def publish(session: Session, row: AssistantTurn, answer: TurnResponse) -> None:
+    answer = RESPONSE_ADAPTER.validate_python(answer.model_dump(mode="json"))
     row.state = (
         "cancelled"
         if answer.status == "cancelled"
@@ -129,6 +142,43 @@ def publish(session: Session, row: AssistantTurn, answer: HybridTurnResponse) ->
     )
     row.response_json = answer.model_dump(mode="json")
     row.response_sha256 = canonical_hash(row.response_json)
+    if isinstance(answer, AgentTurnResponse):
+        if answer.selections:
+            row.context_json = answer.selections.model_dump(mode="json")
+        if answer.mode == "limited" and answer.results:
+            row.plan_json = AnalysisPlan(
+                steps=[
+                    OperationStep(
+                        step_id=b.result.step_id,
+                        operation=b.result.operation,
+                        arguments=b.result.arguments,
+                    )
+                    for b in answer.results[-8:]
+                ]
+            ).model_dump(mode="json")
+        parent = session.get(AssistantThread, row.thread_id)
+        if parent:
+            parent.updated_at = datetime.now(UTC)
+            parent.version += 1
+        for agent_block in answer.results:
+            result = agent_block.result
+            context = agent_block.context or result.data.get("context", {})
+            finance = result.operation == "finance"
+            session.add(
+                AssistantTurnInput(
+                    turn_id=row.id,
+                    step_id=result.step_id,
+                    workbench_dataset_id=context.get("dataset_id")
+                    if context.get("dataset_type") == "workbench"
+                    else None,
+                    archive_dataset_id=context.get("dataset_id")
+                    if context.get("dataset_type") == "archive"
+                    else None,
+                    finance_release_id=result.arguments.get("book_id") if finance else None,
+                    issuance_id=result.data.get("id") if result.operation == "forecast" else None,
+                )
+            )
+        return
     if answer.scope:
         row.context_json = answer.scope.selections.model_dump(mode="json")
     elif answer.status == "answered":
@@ -211,7 +261,7 @@ def create_thread(session: Session) -> DurableThreadHeader:
         return header(row)
 
 
-def accept(session: Session, request: HybridTurnRequest) -> DurableTurnRecord:
+def accept(session: Session, request: HybridTurnRequest) -> StoredTurnRecord:
     with lifecycle(session):
         recover_locked(session)
         digest = canonical_hash(request.model_dump(mode="json"))
@@ -275,7 +325,10 @@ def accept(session: Session, request: HybridTurnRequest) -> DurableTurnRecord:
             request_sha256=digest,
             request_json=request.model_dump(mode="json"),
             accepted_at=now,
-            lease_until=now + timedelta(seconds=LEASE_SECONDS),
+            lease_until=now
+            + timedelta(
+                seconds=max(LEASE_SECONDS, get_settings().assistant_turn_timeout_seconds + 10)
+            ),
             state="pending",
             context_json=inherited,
             plan_json=old_plan,
@@ -296,7 +349,7 @@ class ClaimedTurn:
     interrupted: HybridTurnResponse
 
 
-def claim_turn(session: Session, request: HybridTurnRequest) -> HybridTurnResponse | ClaimedTurn:
+def claim_turn(session: Session, request: HybridTurnRequest) -> TurnResponse | ClaimedTurn:
     """Accept durably; return a retained response, or the claim to execute it."""
     accepted = accept(session, request)
     if accepted.response:
@@ -329,18 +382,50 @@ def complete_turn(
     *,
     provider: PlanProvider | None = None,
     on_phase: Callable[[TurnPhase], None] | None = None,
-) -> HybridTurnResponse:
+    agent_provider: AgentProvider | None = None,
+) -> TurnResponse:
+    transcript: dict[str, Any] | None = None
     try:
         execution = request.model_copy(update={"thread_id": claimed.thread_id})
-        answer = run_hybrid_turn(
-            session,
-            execution,
-            inherited_context=claimed.inherited,
-            previous_plan=claimed.previous_plan,
-            provider=provider,
-            on_phase=on_phase,
-        )
-        answer = answer.model_copy(update={"turn_id": claimed.turn_id})
+        use_agent = agent_provider is not None or (provider is None and request.plan is None)
+        if use_agent:
+            prior = session.scalars(
+                select(AssistantTurn)
+                .where(
+                    AssistantTurn.thread_id == str(claimed.thread_id),
+                    AssistantTurn.id != str(claimed.turn_id),
+                    AssistantTurn.response_json.is_not(None),
+                )
+                .order_by(AssistantTurn.sequence.desc())
+                .limit(8)
+            ).all()
+            session.rollback()
+            run = run_turn(
+                session,
+                execution,
+                inherited=claimed.inherited,
+                previous_plan=claimed.previous_plan,
+                history=[record(r) for r in reversed(prior)],
+                provider=agent_provider,
+                turn_id=claimed.turn_id,
+            )
+            transcript = run.transcript
+            answer: TurnResponse = run.response.model_copy(
+                update={
+                    "transcript": TranscriptReference(
+                        turn_id=claimed.turn_id, sha256=canonical_hash(transcript)
+                    )
+                }
+            )
+        else:
+            answer = run_hybrid_turn(
+                session,
+                execution,
+                inherited_context=claimed.inherited,
+                previous_plan=claimed.previous_plan,
+                provider=provider,
+                on_phase=on_phase,
+            ).model_copy(update={"turn_id": claimed.turn_id})
         if len(answer.model_dump_json().encode()) > MAX_TURN_BYTES:
             answer = claimed.interrupted
     except Exception:
@@ -353,21 +438,33 @@ def complete_turn(
             raise HTTPException(404, "Thread was deleted.")
         if current.response_json:
             return record(current).response  # type: ignore[return-value]
+        if isinstance(answer, AgentTurnResponse) and transcript is not None:
+            session.add(
+                AssistantAgentTranscript(
+                    turn_id=current.id, sha256=canonical_hash(transcript), payload_json=transcript
+                )
+            )
         publish(session, current, answer)
         session.flush()
         return record(current).response  # type: ignore[return-value]
 
 
 def run_durable_turn(
-    session: Session, request: HybridTurnRequest, *, provider: PlanProvider | None = None
-) -> HybridTurnResponse:
+    session: Session,
+    request: HybridTurnRequest,
+    *,
+    provider: PlanProvider | None = None,
+    agent_provider: AgentProvider | None = None,
+) -> TurnResponse:
     claimed = claim_turn(session, request)
-    if isinstance(claimed, HybridTurnResponse):
+    if isinstance(claimed, (HybridTurnResponse, AgentTurnResponse)):
         return claimed
-    return complete_turn(session, request, claimed, provider=provider)
+    return complete_turn(
+        session, request, claimed, provider=provider, agent_provider=agent_provider
+    )
 
 
-def cancel_turn(session: Session, thread_id: UUID, turn_id: UUID) -> DurableTurnRecord:
+def cancel_turn(session: Session, thread_id: UUID, turn_id: UUID) -> StoredTurnRecord:
     with lifecycle(session):
         require_thread(session, thread_id)
         row = session.get(AssistantTurn, str(turn_id))
@@ -385,6 +482,9 @@ def delete_history(session: Session, thread_id: UUID | None = None) -> dict[str,
         ids = select(AssistantTurn.id)
         if thread_id:
             ids = ids.where(AssistantTurn.thread_id == str(thread_id))
+        session.execute(
+            delete(AssistantAgentTranscript).where(AssistantAgentTranscript.turn_id.in_(ids))
+        )
         session.execute(delete(AssistantTurnInput).where(AssistantTurnInput.turn_id.in_(ids)))
         # Self-FK retry links are removed together; delete all turns in one statement.
         statement = delete(AssistantTurn)
@@ -415,7 +515,7 @@ def list_threads(
 
 def list_turns(
     session: Session, thread_id: UUID, limit: int = 20, cursor: int = 0
-) -> TurnHistoryPage:
+) -> AgentHistoryPage:
     recover_interrupted(session)
     thread = require_thread(session, thread_id)
     rows = session.scalars(
@@ -424,7 +524,7 @@ def list_turns(
         .order_by(AssistantTurn.sequence)
         .limit(limit + 1)
     ).all()
-    return TurnHistoryPage(
+    return AgentHistoryPage(
         thread=header(thread),
         turns=[record(row) for row in rows[:limit]],
         next_cursor=str(rows[limit - 1].sequence) if len(rows) > limit else None,
@@ -438,6 +538,16 @@ def history_inventory(session: Session) -> dict[str, Any]:
     inputs = session.scalars(
         select(AssistantTurnInput).order_by(AssistantTurnInput.turn_id, AssistantTurnInput.step_id)
     ).all()
+    transcripts = {t.turn_id: t for t in session.scalars(select(AssistantAgentTranscript)).all()}
+    for turn in turns:
+        retained = record(turn).response
+        if isinstance(retained, AgentTurnResponse) and retained.transcript:
+            transcript = transcripts.get(turn.id)
+            if transcript is None or retained.transcript.sha256 != transcript.sha256:
+                raise ValueError("assistant transcript reference mismatch")
+    for transcript in transcripts.values():
+        if canonical_hash(transcript.payload_json) != transcript.sha256:
+            raise ValueError("assistant transcript digest mismatch")
     return {
         "threads": [header(t).model_dump(mode="json") for t in threads],
         "turns": [
@@ -450,6 +560,11 @@ def history_inventory(session: Session) -> dict[str, Any]:
                         "plan": t.plan_json,
                         "retry_of": t.retry_of,
                         "sequence": t.sequence,
+                        **(
+                            {"agent_transcript": transcripts[t.id].payload_json}
+                            if t.id in transcripts
+                            else {}
+                        ),
                         "lease_until": aware(t.lease_until).isoformat(),
                     }
                 ),

@@ -20,6 +20,7 @@ from courtload.api.workbench_schemas import (
 )
 from courtload.config import get_settings
 from courtload.domain.conversation import ConversationContext, ConversationTurnRequest
+from courtload.services.assistant.agent.prompt import PROMPT_VERSION
 from courtload.services.assistant.conversations import run_conversation_turn
 from courtload.services.assistant.operations import REGISTRY
 from courtload.services.assistant.planner import GeminiPlanProvider, PlanningOutput, PlanProvider
@@ -41,6 +42,7 @@ def get_assistant_status() -> AssistantStatusResponse:
         model=settings.resolved_assistant_model,
         provider=settings.resolved_assistant_provider,
         limited_mode=not configured,
+        prompt_version=PROMPT_VERSION,
         limits={
             "max_steps": settings.assistant_max_steps,
             "max_web_searches": settings.assistant_max_web_searches,

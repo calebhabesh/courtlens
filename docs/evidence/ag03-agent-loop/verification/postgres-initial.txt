@@ -1,0 +1,204 @@
+.......................................FFFF............................. [ 65%]
+......................................                                   [100%]
+=================================== FAILURES ===================================
+____________ test_ar03_label_survives_http_history_and_exact_replay ____________
+
+postgres_conversation = (<sqlalchemy.orm.session.Session object at 0x7f0bc2cf1e50>, ResolvedContext(release_id='9e256899-3945-445a-acec-07f0a8...torical reconstruction from completed records.', 'Prior-day boundary: game_date < before_date is strictly enforced.']))
+
+    def test_ar03_label_survives_http_history_and_exact_replay(postgres_conversation):
+        from courtload.domain.hybrid_assistant import GENERAL_LABEL
+
+        session, _ = postgres_conversation
+        app = create_app()
+        app.dependency_overrides[get_db] = lambda: session
+        headers = {"X-Operator-Token": get_settings().operator_token.get_secret_value()}
+        body = HybridTurnRequest(request_id=uuid4(), message="Explain spacing on offense.")
+        with TestClient(app) as client:
+            response = client.post(
+                "/api/workbench/assistant/v2/turn", json=body.model_dump(mode="json"), headers=headers
+            )
+            assert response.status_code == 200, response.text
+            answer = response.json()
+>           assert answer["blocks"][0]["origin"] == "general_knowledge"
+                   ^^^^^^^^^^^^^^^^
+E           KeyError: 'blocks'
+
+tests/integration/test_hybrid_assistant_postgres.py:315: KeyError
+____ test_ar04_checked_narrative_survives_http_history_or_falls_back[True] _____
+
+postgres_conversation = (<sqlalchemy.orm.session.Session object at 0x7f0bc0ee7950>, ResolvedContext(release_id='d940c922-85aa-41bb-87eb-e0c5ac...torical reconstruction from completed records.', 'Prior-day boundary: game_date < before_date is strictly enforced.']))
+honest = True
+
+    @pytest.mark.parametrize("honest", [True, False])
+    def test_ar04_checked_narrative_survives_http_history_or_falls_back(postgres_conversation, honest):
+        from pydantic import SecretStr
+
+        session, context = postgres_conversation
+        narrated: list[dict] = []
+
+        class Provider:
+            def __init__(self, *_):
+                pass
+
+            def plan(self, payload, *, timeout_seconds):
+                return PlanningOutput(request(context).plan.model_dump(mode="json"))
+
+            def narrate(self, payload, *, timeout_seconds):
+                body = json.loads(payload)
+                narrated.append(body)
+                leader = next(c for c in body["cells"] if c["metric"] == "Points Per Game")
+                value = leader["value"] if honest else leader["value"] + 1.4
+                text = f"{leader['entity']} led {body['season']} with {value} points per game."
+                return PlanningOutput({"status": "answered", "text": text})
+
+        class Settings:
+            gemini_api_key = SecretStr("test-only")
+            gemini_model = "fixture"
+
+        app = create_app()
+        app.dependency_overrides[get_db] = lambda: session
+        headers = {"X-Operator-Token": get_settings().operator_token.get_secret_value()}
+        body = request(context, "Show scoring in 2024-25", plan=False)
+        with (
+            patch("courtload.services.assistant.hybrid.GeminiPlanProvider", Provider),
+            patch("courtload.services.assistant.hybrid.get_settings", return_value=Settings()),
+            TestClient(app) as client,
+        ):
+            response = client.post(
+                "/api/workbench/assistant/v2/turn", json=body.model_dump(mode="json"), headers=headers
+            )
+            assert response.status_code == 200, response.text
+            answer = response.json()
+            replay = client.post(
+                "/api/workbench/assistant/v2/turn", json=body.model_dump(mode="json"), headers=headers
+            )
+            history = client.get(f"/api/workbench/assistant/v2/threads/{answer['thread_id']}/turns")
+>       assert len(narrated) == 1 and narrated[0]["season"] == "2024-25"
+E       assert (0 == 1)
+E        +  where 0 = len([])
+
+tests/integration/test_hybrid_assistant_postgres.py:370: AssertionError
+____ test_ar04_checked_narrative_survives_http_history_or_falls_back[False] ____
+
+postgres_conversation = (<sqlalchemy.orm.session.Session object at 0x7f0bc0d7b450>, ResolvedContext(release_id='a2c00a4f-6a26-4702-89f8-bf47b1...torical reconstruction from completed records.', 'Prior-day boundary: game_date < before_date is strictly enforced.']))
+honest = False
+
+    @pytest.mark.parametrize("honest", [True, False])
+    def test_ar04_checked_narrative_survives_http_history_or_falls_back(postgres_conversation, honest):
+        from pydantic import SecretStr
+
+        session, context = postgres_conversation
+        narrated: list[dict] = []
+
+        class Provider:
+            def __init__(self, *_):
+                pass
+
+            def plan(self, payload, *, timeout_seconds):
+                return PlanningOutput(request(context).plan.model_dump(mode="json"))
+
+            def narrate(self, payload, *, timeout_seconds):
+                body = json.loads(payload)
+                narrated.append(body)
+                leader = next(c for c in body["cells"] if c["metric"] == "Points Per Game")
+                value = leader["value"] if honest else leader["value"] + 1.4
+                text = f"{leader['entity']} led {body['season']} with {value} points per game."
+                return PlanningOutput({"status": "answered", "text": text})
+
+        class Settings:
+            gemini_api_key = SecretStr("test-only")
+            gemini_model = "fixture"
+
+        app = create_app()
+        app.dependency_overrides[get_db] = lambda: session
+        headers = {"X-Operator-Token": get_settings().operator_token.get_secret_value()}
+        body = request(context, "Show scoring in 2024-25", plan=False)
+        with (
+            patch("courtload.services.assistant.hybrid.GeminiPlanProvider", Provider),
+            patch("courtload.services.assistant.hybrid.get_settings", return_value=Settings()),
+            TestClient(app) as client,
+        ):
+            response = client.post(
+                "/api/workbench/assistant/v2/turn", json=body.model_dump(mode="json"), headers=headers
+            )
+            assert response.status_code == 200, response.text
+            answer = response.json()
+            replay = client.post(
+                "/api/workbench/assistant/v2/turn", json=body.model_dump(mode="json"), headers=headers
+            )
+            history = client.get(f"/api/workbench/assistant/v2/threads/{answer['thread_id']}/turns")
+>       assert len(narrated) == 1 and narrated[0]["season"] == "2024-25"
+E       assert (0 == 1)
+E        +  where 0 = len([])
+
+tests/integration/test_hybrid_assistant_postgres.py:370: AssertionError
+_________ test_ar05_stream_phases_final_and_request_response_fallback __________
+
+postgres_conversation = (<sqlalchemy.orm.session.Session object at 0x7f0bc0976950>, ResolvedContext(release_id='49e2f062-80a8-4a8c-a0d6-4b846a...torical reconstruction from completed records.', 'Prior-day boundary: game_date < before_date is strictly enforced.']))
+
+    def test_ar05_stream_phases_final_and_request_response_fallback(postgres_conversation):
+        from pydantic import SecretStr
+
+        session, context = postgres_conversation
+
+        class Provider:
+            def __init__(self, *_):
+                pass
+
+            def plan(self, payload, *, timeout_seconds):
+                return PlanningOutput(request(context).plan.model_dump(mode="json"))
+
+            def narrate(self, payload, *, timeout_seconds):
+                body = json.loads(payload)
+                leader = next(c for c in body["cells"] if c["metric"] == "Points Per Game")
+                value = leader["value"]
+                text = f"{leader['entity']} led {body['season']} with {value} points per game."
+                return PlanningOutput({"status": "answered", "text": text})
+
+        class Settings:
+            gemini_api_key = SecretStr("test-only")
+            gemini_model = "fixture"
+
+        app = create_app()
+        app.dependency_overrides[get_db] = lambda: session
+        headers = {"X-Operator-Token": get_settings().operator_token.get_secret_value()}
+        body = request(context, "Show scoring in 2024-25", plan=False).model_dump(mode="json")
+        stream_url = "/api/workbench/assistant/v2/turn/stream"
+        with (
+            patch("courtload.services.assistant.hybrid.GeminiPlanProvider", Provider),
+            patch("courtload.services.assistant.hybrid.get_settings", return_value=Settings()),
+            TestClient(app) as client,
+        ):
+            streamed = client.post(stream_url, json=body, headers=headers)
+            # The request/response fallback replays the same retained turn by request_id.
+            fallback = client.post("/api/workbench/assistant/v2/turn", json=body, headers=headers)
+            replayed = client.post(stream_url, json=body, headers=headers)
+            unauthorized = client.post(stream_url, json={**body, "request_id": str(uuid4())})
+            reused = client.post(stream_url, json={**body, "message": "Changed"}, headers=headers)
+            oversized = client.post(stream_url, content=b"x" * (160 * 1024 + 1), headers=headers)
+            events = sse_events(streamed.text)
+            final = events[-1]["response"]
+            history = client.get(f"/api/workbench/assistant/v2/threads/{final['thread_id']}/turns")
+        assert streamed.status_code == 200, streamed.text
+        assert streamed.headers["content-type"].startswith("text/event-stream")
+        assert streamed.headers["cache-control"] == "no-store"
+>       assert [e["event"] for e in events[:4]] == ["accepted", "phase", "phase", "phase"]
+E       AssertionError: assert ['accepted', 'final'] == ['accepted', ...ase', 'phase']
+E
+E         At index 1 diff: 'final' != 'phase'
+E         Right contains 2 more items, first extra item: 'phase'
+E         Use -v to get more diff
+
+tests/integration/test_hybrid_assistant_postgres.py:436: AssertionError
+=============================== warnings summary ===============================
+tests/integration/test_hybrid_assistant_postgres.py::test_ar03_label_survives_http_history_and_exact_replay
+  /home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/google/genai/types.py:42: DeprecationWarning: '_UnionGenericAlias' is deprecated and slated for removal in Python 3.17
+    VersionedUnionType = Union[builtin_types.UnionType, _UnionGenericAlias]
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/integration/test_hybrid_assistant_postgres.py::test_ar03_label_survives_http_history_and_exact_replay
+FAILED tests/integration/test_hybrid_assistant_postgres.py::test_ar04_checked_narrative_survives_http_history_or_falls_back[True]
+FAILED tests/integration/test_hybrid_assistant_postgres.py::test_ar04_checked_narrative_survives_http_history_or_falls_back[False]
+FAILED tests/integration/test_hybrid_assistant_postgres.py::test_ar05_stream_phases_final_and_request_response_fallback
+4 failed, 106 passed, 1 warning in 102.99s (0:01:42)
