@@ -1,0 +1,16 @@
+
+> courtload-dashboard@0.1.0 test:browser
+> playwright test e2e/threaded-assistant.spec.ts e2e/advanced-research.spec.ts --grep AG05|calculator rejects --workers=1
+
+
+Running 7 tests using 1 worker
+
+  ✓  1 e2e/advanced-research.spec.ts:48:5 › calculator rejects invalid scenarios and shows checked finite differences on mobile (905ms)
+  ✓  2 e2e/threaded-assistant.spec.ts:505:7 › AG05 answer-first chips, tables, trace, follow-up and retained scope at 1440px (1.3s)
+  ✓  3 e2e/threaded-assistant.spec.ts:544:7 › AG05 web-only limited failure and retry in the shared panel at 1440px (818ms)
+  ✓  4 e2e/threaded-assistant.spec.ts:505:7 › AG05 answer-first chips, tables, trace, follow-up and retained scope at 375px (1.0s)
+  ✓  5 e2e/threaded-assistant.spec.ts:544:7 › AG05 web-only limited failure and retry in the shared panel at 375px (655ms)
+  ✓  6 e2e/threaded-assistant.spec.ts:557:5 › AG05 Settings reports active provider, model, limits and limited mode (298ms)
+  ✓  7 e2e/threaded-assistant.spec.ts:565:5 › AG05 source details preserve keyboard focus in landscape with reduced motion (426ms)
+
+  7 passed (6.5s)

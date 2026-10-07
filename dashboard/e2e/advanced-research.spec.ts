@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test";
 import result from "./fixtures/research-negative-result.json";
+import { openWorkbench } from "./workbench-navigation";
 const run = result.run;
 const registry = [
   {experiment:run.experiment, status:run.status, run_id:run.run_id, protocol_sha256:run.protocol_sha256, gate:null},
@@ -45,7 +46,7 @@ test("integrity rejection hides numerical outputs and retry recovers",async ({pa
   await page.getByRole("button",{name:"Retry reads"}).click();await expect(page.getByRole("region",{name:"Registered research result"})).toContainText("Completed negative result");
 });
 test("calculator rejects invalid scenarios and shows checked finite differences on mobile",async ({page}) => {
-  await page.setViewportSize({width:390,height:844}); await page.goto("/calculator");
+  await page.setViewportSize({width:390,height:844}); await openWorkbench(page, "/calculator");
   await expect(page.getByRole("region",{name:"Scenario output"})).toContainText("ORTG");
   await page.getByLabel("2P category probability",{exact:true}).fill("0.9");
   await expect(page.getByRole("alert").filter({hasText:"sum to 1"})).toBeVisible();

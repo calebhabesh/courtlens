@@ -149,8 +149,11 @@ test.describe("Workbench Dark Research Interface", () => {
     await page.keyboard.press("Escape");
     await expect(dialog).not.toBeVisible();
     await page.goto("/settings");
-    await expect(page.getByRole("heading", { name: "Optional assistant" })).toBeVisible();
-    await page.getByText("Assistant configuration details",{exact:true}).click();
-    await expect(page.getByText("Disabled; manual research available", { exact: true }).filter({ visible: true })).toBeVisible();
+    const card = page.getByRole("region", { name: "Assistant configuration", exact: true });
+    await expect(card.getByRole("heading", { name: "Assistant", exact: true })).toBeVisible();
+    await expect(card).toContainText("Limited mode");
+    await expect(card).toContainText("Manual research needs no provider key");
+    await card.getByText("Configuration details", { exact: true }).click();
+    await expect(card).toContainText("server-side Gemini key");
   });
 });

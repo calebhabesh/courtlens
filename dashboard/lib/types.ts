@@ -1280,10 +1280,18 @@ export type AssistantStatusResponse = {
   configured: boolean;
   model: string;
   provider: string;
+  limited_mode?: boolean;
+  prompt_version?: string;
   limits: {
-    max_question_length: number;
+    max_steps?: number;
+    max_web_searches?: number;
+    max_tokens?: number;
+    turn_timeout_seconds?: number;
+    max_question_chars?: number;
+    max_question_length?: number;
     max_rounds: number;
-    max_total_tool_calls: number;
+    max_calls?: number;
+    max_total_tool_calls?: number;
     max_rows_per_call: number;
     max_total_rows: number;
     timeout_seconds: number;

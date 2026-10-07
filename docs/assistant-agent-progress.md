@@ -24,7 +24,7 @@ table.
 | AG02 | verified | [Read-only agent tools](evidence/ag02-tools/README.md): six Pydantic-declared tools, canonical warehouse evidence, observed-scope checks, fuzzy candidates, exact book-bound finance and recoverable errors. 53 new tool tests pass (32 PostgreSQL); 109 tool/legacy PostgreSQL regression tests pass at the recorded checkpoint; 1040 unit tests and 205 Vitest tests pass. Ruff/format/mypy clean. Owner authorized continuation despite AG01 quota. Ask routing remains v2; broader AG01 DB/browser gaps are unresolved. |
 | AG03 | verified | [Agent loop and v3 durable contract](evidence/ag03-agent-loop/README.md): 60 new tests (43 unit, 17 PostgreSQL), 110 relevant PostgreSQL regressions, 1083 unit tests and 205 Vitest tests pass. Exact owner-example/follow-up replay, limits, numeric repair, limited mode, idempotent v2/v3 history and atomic transcript storage verified. Ruff/format/mypy and dashboard lint/types pass. Backend boundary only; AG04/AG05 streaming/rendering and the AG01 live/DB/browser gaps remain. |
 | AG04 | verified | [Live streaming transport](evidence/ag04-streaming/README.md): typed `step`/`delta`/`reset`/v2-v3 `final`, durable callbacks, draft replacement and same-ID fallback. 1089 unit tests, 20 agent PostgreSQL tests, 110 PostgreSQL regressions, 213 Vitest tests and 45 threaded browser tests pass; Ruff/format/mypy and dashboard lint/types clean. Paced synthetic SSE travels through the real Next proxy at 1440/375 px. Live-provider success and the full v3 answer UI remain pending. |
-| AG05 | planned | |
+| AG05 | verified | [Answer UI](evidence/ag05-answer-ui/README.md): safe prose/source chips, assumptions, result tables and pinned review actions, follow-ups, trace/accounting, provenance/failure labels, Settings and examples. 223 Vitest tests, 1089 Python units and 169 full-suite browser cases pass; three external-integration browser cases skip. Ruff/format/mypy, dashboard lint/types and contracts pass. Screenshots at 1440/375 px plus keyboard/reduced-motion landscape evidence. Mocked UI boundary only; live-provider and broader acceptance gaps remain. |
 | AG06 | planned | |
 | AG07 | planned | |
 | AG08 | planned | |
@@ -140,3 +140,39 @@ table.
   pending. Sealed v2 contracts, AR/PF evidence and corpora/holdouts are unchanged.
 - **AG04 is verified at its streaming boundary. AG05 is next.** AD01 remains unresolved;
   AD02–AD04 remain source-blocked.
+
+## AG05 checkpoint: 2026-10-07
+
+- Starting revision: `a719959`; only the owner's unrelated `TODO.md` edit was uncommitted.
+  It is preserved and excluded. AG01 remains `verification_blocked`; no live-provider call or
+  Databallr access was made. Backend behavior, provider configuration and pricing are unchanged.
+- V3 turns now render through a shared answer-first component in the existing page and drawer:
+  safe Markdown/source chips, a direct assumption line, returned results, follow-ups, collapsed
+  sources and trace/accounting, sentence-level unverified styling, limited/failure banners and
+  linked retries. Code-point position mapping preserves Python provenance offsets across emoji,
+  Markdown and CRLF. Source metadata is available on hover or tap/keyboard; Escape restores focus.
+- Tables begin with ten rows, expand to all returned rows, join team codes, label rank/units and
+  preserve zero versus unknown. Equivalent links keep their retained identity; review/save links
+  use each executed result's own scope. Web-only answers do not expose save actions. Settings
+  shows provider/model/agent limits/limited mode from the status API, never a key. Empty examples
+  include RAPM, defense, MVP, forecast and comparison questions. V2 uses its unchanged renderer.
+- Measured: **223 Vitest tests** (ten new component cases), **1089 Python unit tests** and
+  **169 full-suite browser cases** pass. All **51 threaded cases** pass, including six new AG05
+  browser cases at 1440/375 px and 812×375 keyboard/reduced-motion coverage. The three full-suite
+  skips require real external integration fixtures: two AR07 real-server panel cases and one
+  workspace persistence case. Python's two existing DB skips and SDK deprecation warning remain.
+  Ruff/format, strict mypy, dashboard lint/types and generated contracts pass with no lint/type
+  warnings. Verification logs and six screenshots are linked above.
+- The isolated browser workspace initially lacked shared evidence fixture paths; a read-only
+  parent link fixed collection. Two legacy Settings expectations were updated for the new card.
+  A subsequent run hit the documented streamed-HTML staging family in the mobile calculator;
+  that test now uses the existing workbench navigation helper. The final full run is green.
+  The prior threaded “retains history and retry” strict-locator family also passes serially;
+  these measurements do not establish that all timing flakes are eliminated.
+- The scratch dashboard uses 3200 and fixture API 4100, preserving the owner's server on 3100.
+  No application database, owner environment or production data was changed. V2 contract/corpus
+  hashes match AG04, and sealed AR/PF evidence and holdouts have no diff. The screenshots' RAPM,
+  blocks and unsupported-number examples are synthetic, not measured basketball claims.
+- **AG05 is verified at its mocked UI boundary. AG06 is next.** Live-provider success, provider
+  quality, holdout and broader database/external-integration acceptance remain pending. AD01
+  permission is unresolved; AD02–AD04 remain source-blocked.
