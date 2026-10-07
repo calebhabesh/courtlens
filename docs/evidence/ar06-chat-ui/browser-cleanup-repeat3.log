@@ -1,0 +1,27 @@
+
+> courtload-dashboard@0.1.0 test:browser
+> playwright test e2e/threaded-assistant.spec.ts e2e/entity-selection.spec.ts e2e/shared-floor.spec.ts e2e/route-polish.spec.ts --grep standalone defaults|general knowledge label stays|settings distinguishes|changing lookup scope|two and five --repeat-each=3 --workers=2
+
+
+Running 18 tests using 2 workers
+
+  ✓   2 e2e/route-polish.spec.ts:31:5 › settings distinguishes configured key from provider health and hides operator details (504ms)
+  ✓   1 e2e/entity-selection.spec.ts:70:5 › changing lookup scope discards an obsolete response for the same text (1.1s)
+  ✓   4 e2e/threaded-assistant.spec.ts:79:5 › standalone defaults, reload, new chat, history and deletion keep durable questions (984ms)
+  ✓   5 e2e/threaded-assistant.spec.ts:242:7 › general knowledge label stays visible after reload at 1440px (643ms)
+  ✓   3 e2e/shared-floor.spec.ts:57:5 › two and five player units use the same operation with all partitions (2.4s)
+  ✓   6 e2e/threaded-assistant.spec.ts:242:7 › general knowledge label stays visible after reload at 375px (663ms)
+  ✓   8 e2e/route-polish.spec.ts:31:5 › settings distinguishes configured key from provider health and hides operator details (339ms)
+  ✓   7 e2e/entity-selection.spec.ts:70:5 › changing lookup scope discards an obsolete response for the same text (849ms)
+  ✓  10 e2e/threaded-assistant.spec.ts:79:5 › standalone defaults, reload, new chat, history and deletion keep durable questions (994ms)
+  ✓  11 e2e/threaded-assistant.spec.ts:242:7 › general knowledge label stays visible after reload at 1440px (749ms)
+  ✓   9 e2e/shared-floor.spec.ts:57:5 › two and five player units use the same operation with all partitions (2.3s)
+  ✓  12 e2e/threaded-assistant.spec.ts:242:7 › general knowledge label stays visible after reload at 375px (599ms)
+  ✓  14 e2e/route-polish.spec.ts:31:5 › settings distinguishes configured key from provider health and hides operator details (356ms)
+  ✓  13 e2e/entity-selection.spec.ts:70:5 › changing lookup scope discards an obsolete response for the same text (878ms)
+  ✓  16 e2e/threaded-assistant.spec.ts:79:5 › standalone defaults, reload, new chat, history and deletion keep durable questions (1.0s)
+  ✓  17 e2e/threaded-assistant.spec.ts:242:7 › general knowledge label stays visible after reload at 1440px (548ms)
+  ✓  15 e2e/shared-floor.spec.ts:57:5 › two and five player units use the same operation with all partitions (2.3s)
+  ✓  18 e2e/threaded-assistant.spec.ts:242:7 › general knowledge label stays visible after reload at 375px (525ms)
+
+  18 passed (10.2s)

@@ -1,0 +1,19 @@
+
+> courtload-dashboard@0.1.0 test:browser
+> playwright test e2e/route-polish.spec.ts --grep settings distinguishes --repeat-each=10 --workers=2
+
+
+Running 10 tests using 2 workers
+
+  ✓   2 e2e/route-polish.spec.ts:31:5 › settings distinguishes configured key from provider health and hides operator details (537ms)
+  ✓   1 e2e/route-polish.spec.ts:31:5 › settings distinguishes configured key from provider health and hides operator details (536ms)
+  ✓   3 e2e/route-polish.spec.ts:31:5 › settings distinguishes configured key from provider health and hides operator details (556ms)
+  ✓   4 e2e/route-polish.spec.ts:31:5 › settings distinguishes configured key from provider health and hides operator details (547ms)
+  ✓   6 e2e/route-polish.spec.ts:31:5 › settings distinguishes configured key from provider health and hides operator details (450ms)
+  ✓   5 e2e/route-polish.spec.ts:31:5 › settings distinguishes configured key from provider health and hides operator details (560ms)
+  ✓   7 e2e/route-polish.spec.ts:31:5 › settings distinguishes configured key from provider health and hides operator details (533ms)
+  ✓   8 e2e/route-polish.spec.ts:31:5 › settings distinguishes configured key from provider health and hides operator details (500ms)
+  ✓   9 e2e/route-polish.spec.ts:31:5 › settings distinguishes configured key from provider health and hides operator details (532ms)
+  ✓  10 e2e/route-polish.spec.ts:31:5 › settings distinguishes configured key from provider health and hides operator details (520ms)
+
+  10 passed (4.4s)

@@ -33,6 +33,8 @@ test("settings distinguishes configured key from provider health and hides opera
   await expect(page.getByRole("heading", { name: "Settings", exact: true })).toBeVisible();
   await expect(page.getByText("An idle job queue does not establish worker liveness.", { exact: false }).filter({ visible: true })).toBeVisible();
   const details = page.locator("details").filter({ has: page.getByText("Assistant configuration details", { exact: true }) });
+  // Wait for React's hidden streamed copy to be revealed or discarded before strict lookup.
+  await expect(details).toHaveCount(1);
   await expect(details).not.toHaveAttribute("open", "");
   await details.locator("summary").click();
   await expect(details).toContainText("Execution Guardrails");

@@ -5,6 +5,8 @@ const empty = JSON.parse(readFileSync("../docs/evidence/b21-api-smoke.json", "ut
 
 async function pick(page: import("@playwright/test").Page, label: string, ids: string, replace = false) {
   const group=page.getByRole("group",{name:label,exact:true});
+  // A resolved query changes lookup scope; wait for its selected identities before replacing.
+  await expect(group.locator("..").getByRole("status").filter({hasText:/^Resolving/})).toHaveCount(0);
   if(replace) { while(await group.getByRole("button",{name:/^Remove/}).count()) await group.getByRole("button",{name:/^Remove/}).first().click(); }
   for(const id of ids.split(",")) {
     const name=id === "other" ? "Fixture Guard" : `Fixture Player ${id}`;

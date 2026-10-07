@@ -14,18 +14,25 @@ export default async function AskPage({ searchParams }: AskPageProps) {
   const windowParam = (params.window as string) || (threaded ? undefined : "season");
   const releaseId = (params.releaseId as string) || (params.release_id as string) || undefined;
 
+  if (threaded) return (
+    <div className="ask-page">
+      <h1 className="sr-only">Ask CourtLens</h1>
+      <AskCourtLoad initialReleaseId={releaseId} initialSeason={season} initialPhase={phase} initialBeforeDate={beforeDate} initialWindow={windowParam} />
+    </div>
+  );
+
   return (
     <div className="workbench-content">
       <div className="page-header">
         <div>
           <h1 className="page-title">Ask CourtLens</h1>
           <p className="page-subtitle">
-            {threaded ? "Ask basketball questions, explore CourtLens and revisit local conversations." : "Ask follow-up questions or run manual research against a pinned release, with exact results and evidence."}
+            Ask follow-up questions or run manual research against a pinned release, with exact results and evidence.
           </p>
         </div>
       </div>
 
-      {!threaded && <p><Link href="/research/ask">Open assistant</Link></p>}
+      <p><Link href="/research/ask">Open assistant</Link></p>
 
       <AskCourtLoad
         initialReleaseId={releaseId}

@@ -56,6 +56,11 @@ const nextConfig: NextConfig = {
         permanent: false
       },
       {
+        source: "/ask",
+        destination: "/research/ask",
+        permanent: false
+      },
+      {
         source: "/dashboard",
         destination: "/players",
         permanent: false

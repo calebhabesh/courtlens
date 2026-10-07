@@ -1,0 +1,197 @@
+
+Running 145 tests using 2 workers
+
+[1/145] e2e/advanced-research.spec.ts:15:5 › completed negative report shows amended identity, honest horizons, metrics and export
+[2/145] e2e/advanced-research.spec.ts:33:5 › each unavailable model names its independent requirement
+[3/145] e2e/advanced-research.spec.ts:40:5 › integrity rejection hides numerical outputs and retry recovers
+[4/145] e2e/advanced-research.spec.ts:47:5 › calculator rejects invalid scenarios and shows checked finite differences on mobile
+[5/145] e2e/advanced-research.spec.ts:58:5 › roster keeps observed and projected inputs separate and exports context
+[6/145] e2e/advanced-research.spec.ts:69:5 › measurements preserve unknown picks, null lengths and units in bounded sample
+[7/145] e2e/comparison-evaluation.spec.ts:11:5 › shared-cutoff comparison keeps different target dates and missing context visible
+[8/145] e2e/comparison-evaluation.spec.ts:31:5 › evaluation presents the no-promotion decision and failed build state
+[9/145] e2e/comparison-evaluation.spec.ts:39:5 › comparison controls work by keyboard and fit a 375px viewport
+[10/145] e2e/comparison-evaluation.spec.ts:61:5 › invalid date preserves selections and recovers to sparse history
+[11/145] e2e/conversation.spec.ts:21:5 › AI disabled manual paired distributions preserve zero, unknown and exact evidence
+[12/145] e2e/conversation.spec.ts:28:5 › natural follow-ups and canonical identity choices retain conversation fingerprints
+[13/145] e2e/conversation.spec.ts:34:5 › quota, unsupported and empty states preserve question and manual execution
+[14/145] e2e/conversation.spec.ts:37:5 › network retry reuses the request identity
+[15/145] e2e/conversation.spec.ts:42:5 › exact Research destination retains a saveable turn and clears on client navigation
+[16/145] e2e/conversation.spec.ts:46:5 › drawer traps keyboard focus, escapes, and supports narrow reduced-motion layout
+[17/145] e2e/conversation.spec.ts:50:5 › unmounted pending answer is discarded and its local state is cleared
+[18/145] e2e/conversation.spec.ts:55:7 › unsupported preserves manual alternatives and entered question
+[19/145] e2e/conversation.spec.ts:55:7 › insufficient_sample preserves manual alternatives and entered question
+[20/145] e2e/conversation.spec.ts:55:7 › timeout preserves manual alternatives and entered question
+[21/145] e2e/conversation.spec.ts:55:7 › provider_error preserves manual alternatives and entered question
+[22/145] e2e/conversation.spec.ts:55:7 › busy preserves manual alternatives and entered question
+[23/145] e2e/conversation.spec.ts:59:5 › proposed context needs an explicit new conversation
+[24/145] e2e/entity-selection.spec.ts:13:5 › two mounted pickers have distinct active descendants; ambiguous Enter never commits
+[25/145] e2e/entity-selection.spec.ts:26:5 › editing and clear invalidate committed single ID; form never submits draft text
+[26/145] e2e/entity-selection.spec.ts:34:5 › debounce and cache-hit paths reject delayed responses; empty input clears stale options
+[27/145] e2e/entity-selection.spec.ts:44:5 › IME composition suppresses lookup and Enter; Tab closes and keeps natural focus
+[28/145] e2e/entity-selection.spec.ts:50:5 › API failure preserves text; retry and no-match states are distinct
+[29/145] e2e/entity-selection.spec.ts:56:5 › WOWY chips remove by name, prevent duplicates and enforce unit maximum without IDs
+[30/145] e2e/entity-selection.spec.ts:64:5 › touch selection and removal work at 375px
+[31/145] e2e/entity-selection.spec.ts:70:5 › changing lookup scope discards an obsolete response for the same text
+  1) e2e/entity-selection.spec.ts:70:5 › changing lookup scope discards an obsolete response for the same text
+
+    Error: locator.selectOption: Error: strict mode violation: getByLabel('Season', { exact: true }) resolved to 2 elements:
+        1) <select aria-label="Season">…</select> aka locator('#content').getByLabel('Season')
+        2) <select aria-label="Season">…</select> aka getByLabel('Season').nth(1)
+
+    Call log:
+      - waiting for getByLabel('Season', { exact: true })
+
+
+      77 |     await route.fulfill({json:{items:[{id:"scope",canonical_id:"scope",kind:"player",display_name:`Scope ${season}`,subtitle:"Explicit scope race fixture"}]}}).catch(()=>{});
+      78 |   });
+    > 79 |   await page.getByLabel("Season",{exact:true}).selectOption("2023-24");const firstRequest=page.waitForRequest(request=>new URL(request.url()).searchParams.get("q") === "scope");const input=page.getByRole("combobox",{name:"Together players",exact:true});await input.fill("scope");await firstRequest;
+         |                                                ^
+      80 |     await page.getByLabel("Season",{exact:true}).selectOption("2025-26");await input.focus();await expect(page.getByRole("option").filter({hasText:"Scope 2025-26"})).toBeVisible();release();await page.waitForTimeout(150);await expect(page.getByRole("option").filter({hasText:"Scope 2023-24"})).toHaveCount(0);
+      81 | });
+      82 |
+        at ~/.cache/courtlens-ar06/dashboard/e2e/entity-selection.spec.ts:79:48
+
+    Error Context: test-results/entity-selection-changing--2a458--response-for-the-same-text/error-context.md
+
+
+[32/145] e2e/entity-selection.spec.ts:84:7 › trends selection preserves release, phase, cutoff and window context
+[33/145] e2e/entity-selection.spec.ts:84:7 › distributions selection preserves release, phase, cutoff and window context
+[34/145] e2e/entity-selection.spec.ts:84:7 › similarity selection preserves release, phase, cutoff and window context
+[35/145] e2e/entity-selection.spec.ts:96:7 › rankings picker adds canonical named selection to its explicit personal target
+[36/145] e2e/entity-selection.spec.ts:96:7 › tierlist picker adds canonical named selection to its explicit personal target
+[37/145] e2e/entity-selection.spec.ts:115:5 › planner selections stay within roster/watchlist and never query the public catalog
+[38/145] e2e/finance.spec.ts:22:5 › retained historical terms stay unknown, drawer sources and financial context survive navigation
+[39/145] e2e/finance.spec.ts:35:5 › filters, as-of emptiness and changed context hide stale totals
+[40/145] e2e/finance.spec.ts:42:5 › option scenario stays separate from reported money and groups
+[41/145] e2e/finance.spec.ts:49:5 › query rejection has retry, and book chooser never silently chooses newest
+[42/145] e2e/finance.spec.ts:56:5 › mobile and landscape table/drawer preserve keyboard access without body overflow
+[43/145] e2e/finance.spec.ts:63:5 › Refresh staged import returns a tracked job and exposes failed worker state
+[44/145] e2e/finance.spec.ts:70:5 › embedded Stats uses a separate basketball season and retains its resolved release
+[45/145] e2e/finance.spec.ts:82:5 › a delayed old financial response cannot replace a newer financial context
+[46/145] e2e/live.spec.ts:21:5 › selected source boxes keep zero, missingness, clock and errors explicit
+[47/145] e2e/live.spec.ts:28:5 › pause, visibility and navigation release leases and prevent hidden renewals
+[48/145] e2e/live.spec.ts:37:5 › offline retains last observation; capacity and disabled acquisition stay usable
+[49/145] e2e/live.spec.ts:42:5 › historical final detail has no demand and pins resolved release in links
+[50/145] e2e/live.spec.ts:48:5 › mobile and landscape source box regions contain overflow and keyboard focus
+[51/145] e2e/live.spec.ts:53:5 › a delayed old selection cannot overwrite new date observations
+[52/145] e2e/live.spec.ts:58:5 › disabled acquisition, observed empty slate and invalid dates stay distinct
+[53/145] e2e/player-profile.spec.ts:3:5 › search opens a snapshot-pinned real route and changes replay date
+[54/145] e2e/player-profile.spec.ts:19:5 › unsupported replay date keeps the input and offers recovery
+[55/145] e2e/route-polish.spec.ts:4:5 › release availability agrees across desktop and mobile and preserves context
+[56/145] e2e/route-polish.spec.ts:19:5 › catalog scope options keep unavailable context explicit and synchronize navigation
+[57/145] e2e/route-polish.spec.ts:31:5 › settings distinguishes configured key from provider health and hides operator details
+[58/145] e2e/route-polish.spec.ts:41:5 › partial source keeps tools primary; service failure remains a distinct availability state
+[59/145] e2e/route-polish.spec.ts:63:5 › distribution subtools retain release, postseason and exclusive cutoff
+[60/145] e2e/route-polish.spec.ts:78:5 › research without a catalog explains the missing context
+[61/145] e2e/saved-operations.spec.ts:29:5 › explicit save excludes question by default, reuses identity after failure and survives clearing
+[62/145] e2e/saved-operations.spec.ts:37:5 › question opt-in is independent from execution and title
+[63/145] e2e/saved-operations.spec.ts:40:5 › combined library keeps legacy section and opens exact retained namespace
+[64/145] e2e/saved-operations.spec.ts:43:39 › query retained result exposes evidence, pinned reopening, exports and reproduction
+[65/145] e2e/saved-operations.spec.ts:43:39 › definition retained result exposes evidence, pinned reopening, exports and reproduction
+[66/145] e2e/saved-operations.spec.ts:43:39 › profile retained result exposes evidence, pinned reopening, exports and reproduction
+[67/145] e2e/saved-operations.spec.ts:43:39 › compare retained result exposes evidence, pinned reopening, exports and reproduction
+[68/145] e2e/saved-operations.spec.ts:43:39 › team retained result exposes evidence, pinned reopening, exports and reproduction
+[69/145] e2e/saved-operations.spec.ts:43:39 › forecast retained result exposes evidence, pinned reopening, exports and reproduction
+[70/145] e2e/saved-operations.spec.ts:43:39 › distribution retained result exposes evidence, pinned reopening, exports and reproduction
+[71/145] e2e/saved-operations.spec.ts:43:39 › compare_periods retained result exposes evidence, pinned reopening, exports and reproduction
+[72/145] e2e/saved-operations.spec.ts:43:39 › similarity retained result exposes evidence, pinned reopening, exports and reproduction
+[73/145] e2e/saved-operations.spec.ts:43:39 › splits retained result exposes evidence, pinned reopening, exports and reproduction
+[74/145] e2e/saved-operations.spec.ts:43:39 › workload_shifts retained result exposes evidence, pinned reopening, exports and reproduction
+[75/145] e2e/saved-operations.spec.ts:43:39 › finance retained result exposes evidence, pinned reopening, exports and reproduction
+[76/145] e2e/saved-operations.spec.ts:49:5 › reproduction mismatch keeps exports and retained evidence usable on narrow screens
+[77/145] e2e/saved-operations.spec.ts:52:5 › original content, live catalog version and installation metadata are local and truthful
+[78/145] e2e/saved-operations.spec.ts:60:5 › saved-operation pagination preserves boundaries and failed pages stay explicit
+[79/145] e2e/saved-operations.spec.ts:69:5 › install prompt accepts a browser event and exposes installed state
+[80/145] e2e/shared-floor.spec.ts:34:5 › empty source preserves unknown values, exact downloads and resolved links
+[81/145] e2e/shared-floor.spec.ts:55:5 › two and five player units use the same operation with all partitions
+[82/145] e2e/shared-floor.spec.ts:69:5 › stat shifts reject focal contradictions and request per-possession production
+[83/145] e2e/shared-floor.spec.ts:80:5 › bounded leaders pin a resolved release across candidates
+[84/145] e2e/shared-floor.spec.ts:93:5 › Stats on/off preset opens actual shared-floor operation
+[85/145] e2e/shared-floor.spec.ts:100:5 › partial samples show raw rates and directional denominators while gating differences
+[86/145] e2e/shared-floor.spec.ts:131:5 › query overflow is actionable and exports are unavailable after failed queries
+[87/145] e2e/shooting.spec.ts:14:5 › blocked source exports complete evidence and pins resolved links
+[88/145] e2e/shooting.spec.ts:27:5 › court and table preserve zero versus unknown; exports and peer zones agree
+[89/145] e2e/shooting.spec.ts:46:5 › assignment matrix shows fractional exposure and null pooled rates at 375px
+[90/145] e2e/shooting.spec.ts:59:5 › aftermath keeps branch samples, unknown membership and censoring distinct
+[91/145] e2e/shooting.spec.ts:73:5 › query overflow is actionable and cannot export a partial result
+[92/145] e2e/shooting.spec.ts:77:5 › cancelling an abandoned request prevents stale results
+[93/145] e2e/shooting.spec.ts:82:5 › shooting tabs and name lookup resolve IDs without analytical requests
+[94/145] e2e/shooting.spec.ts:96:5 › shot pagination bounds the court/table while exports retain all facts
+[95/145] e2e/table-interactions.spec.ts:27:5 › recurring guide modes preserve primary identity, header alignment and reload
+[96/145] e2e/table-interactions.spec.ts:48:5 › keyboard sorting, single compare shortcut and drawer focus stay scoped
+[97/145] e2e/table-interactions.spec.ts:64:5 › custom selected columns deduplicate normalization and preserve recurring group order
+[98/145] e2e/table-interactions.spec.ts:73:5 › selection failure remains actionable and does not change the selected row
+[99/145] e2e/table-interactions.spec.ts:85:5 › playoff player table shares native keyboard sorting
+[100/145] e2e/table-interactions.spec.ts:94:5 › a larger tray names the two-player comparison action accurately
+[101/145] e2e/threaded-assistant.spec.ts:80:5 › standalone defaults, reload, new chat, history and deletion keep durable questions
+[102/145] e2e/threaded-assistant.spec.ts:98:5 › scope changes retain old answers and unedited follow-ups inherit on server
+[103/145] e2e/threaded-assistant.spec.ts:110:5 › transport replay preserves request identity; intentional retry links a new turn
+[104/145] e2e/threaded-assistant.spec.ts:120:5 › Stop is durable, releases controls and fences a late response
+[105/145] e2e/threaded-assistant.spec.ts:128:5 › closing drawer retains pending history and full-page link preserves scope
+[106/145] e2e/threaded-assistant.spec.ts:136:5 › clarifications, external citations and hostile text render safely
+[107/145] e2e/threaded-assistant.spec.ts:143:5 › paginated turns are loaded without losing earlier questions
+[108/145] e2e/threaded-assistant.spec.ts:156:7 › threaded wide layout, keyboard dialog and screenshot
+[109/145] e2e/threaded-assistant.spec.ts:156:7 › threaded desktop layout, keyboard dialog and screenshot
+[110/145] e2e/threaded-assistant.spec.ts:156:7 › threaded mobile layout, keyboard dialog and screenshot
+[111/145] e2e/threaded-assistant.spec.ts:156:7 › threaded zoom-equivalent layout, keyboard dialog and screenshot
+[112/145] e2e/threaded-assistant.spec.ts:175:5 › typing a next question during execution preserves the new draft
+[113/145] e2e/threaded-assistant.spec.ts:183:5 › verified local results preserve zero, unknown, scope and equivalent actions
+[114/145] e2e/threaded-assistant.spec.ts:193:5 › default assistant and manual entry are available without preview selection
+[115/145] e2e/threaded-assistant.spec.ts:200:5 › page and drawer share updates, preserve independent drafts and delete together
+[116/145] e2e/threaded-assistant.spec.ts:218:7 › provider_disabled retains history and retry creates a linked attempt
+[117/145] e2e/threaded-assistant.spec.ts:218:7 › provider_quota retains history and retry creates a linked attempt
+[118/145] e2e/threaded-assistant.spec.ts:218:7 › provider_busy retains history and retry creates a linked attempt
+  2) e2e/shared-floor.spec.ts:55:5 › two and five player units use the same operation with all partitions
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.click: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for getByRole('option').filter({ hasText: 'Fixture Player 1' })
+
+
+      10 |     const name=id === "other" ? "Fixture Guard" : `Fixture Player ${id}`;
+      11 |     await page.getByRole("combobox",{name:label,exact:true}).fill(name);
+    > 12 |     await page.getByRole("option").filter({hasText:name}).click();
+         |                                                           ^
+      13 |   }
+      14 | }
+      15 |
+        at pick (~/.cache/courtlens-ar06/dashboard/e2e/shared-floor.spec.ts:12:59)
+        at ~/.cache/courtlens-ar06/dashboard/e2e/shared-floor.spec.ts:61:5
+
+    Error Context: test-results/shared-floor-two-and-five--31d51-eration-with-all-partitions/error-context.md
+
+
+[119/145] e2e/threaded-assistant.spec.ts:218:7 › provider_timeout retains history and retry creates a linked attempt
+[120/145] e2e/threaded-assistant.spec.ts:218:7 › malformed_output retains history and retry creates a linked attempt
+[121/145] e2e/threaded-assistant.spec.ts:218:7 › external_unavailable retains history and retry creates a linked attempt
+[122/145] e2e/threaded-assistant.spec.ts:218:7 › external_stale retains history and retry creates a linked attempt
+[123/145] e2e/threaded-assistant.spec.ts:218:7 › backend_failure retains history and retry creates a linked attempt
+[124/145] e2e/threaded-assistant.spec.ts:229:5 › browser history scope changes update only the next request
+[125/145] e2e/threaded-assistant.spec.ts:242:7 › general knowledge label stays visible after reload at 1440px
+[126/145] e2e/threaded-assistant.spec.ts:242:7 › general knowledge label stays visible after reload at 375px
+[127/145] e2e/threaded-assistant.spec.ts:260:5 › checked narrative renders above its supporting result and survives reload
+[128/145] e2e/threaded-assistant.spec.ts:278:5 › streamed turn shows each phase, the checked narrative, then the retained answer
+[129/145] e2e/threaded-assistant.spec.ts:291:5 › unavailable stream falls back to request/response with the same request identity
+[130/145] e2e/threaded-assistant.spec.ts:297:5 › Enter sends, Shift+Enter adds a line and an example prompt sends directly
+[131/145] e2e/threaded-assistant.spec.ts:310:5 › user message is a right-aligned bubble and assistant prose has no bubble
+[132/145] e2e/threaded-assistant.spec.ts:325:5 › an old thread without narrative renders its template answer in the new layout
+[133/145] e2e/threaded-assistant.spec.ts:343:5 › mobile conversations open as a drawer and close after choosing a thread
+[134/145] e2e/threaded-assistant.spec.ts:355:5 › desktop sidebar collapses and stays collapsed after reload
+[135/145] e2e/threaded-assistant.spec.ts:363:5 › clearing history in Settings empties an open chat in another tab
+[136/145] e2e/threaded-assistant.spec.ts:375:5 › /ask opens the assistant
+[137/145] e2e/workbench.spec.ts:5:7 › Workbench Dark Research Interface › home opens Stats with dark theme, horizontal navigation, context and data
+[138/145] e2e/workbench.spec.ts:27:7 › Workbench Dark Research Interface › player explorer allows filtering and links to detail view
+[139/145] e2e/workbench.spec.ts:50:7 › Workbench Dark Research Interface › player detail presents profile summaries, game logs, and lineage trigger
+[140/145] e2e/workbench.spec.ts:68:7 › Workbench Dark Research Interface › team research lists cohorts and navigates to team detail
+[141/145] e2e/workbench.spec.ts:85:7 › Workbench Dark Research Interface › comparison view displays head-to-head metrics without declaring forced winners
+[142/145] e2e/workbench.spec.ts:98:7 › Workbench Dark Research Interface › forecasts view displays active policy, promotion decision, gates, and prespecified slices
+[143/145] e2e/workbench.spec.ts:127:7 › Workbench Dark Research Interface › dense dark research layout fits a 375px mobile viewport without horizontal overflow
+[144/145] e2e/workbench.spec.ts:140:7 › Workbench Dark Research Interface › Ask drawer offers manual research and links to optional configuration
+[145/145] e2e/workspace-persistence.spec.ts:3:5 › real workspace proxy persists, conflicts, exports and restores
+  2 failed
+    e2e/entity-selection.spec.ts:70:5 › changing lookup scope discards an obsolete response for the same text
+    e2e/shared-floor.spec.ts:55:5 › two and five player units use the same operation with all partitions
+  1 skipped
+  142 passed (1.3m)

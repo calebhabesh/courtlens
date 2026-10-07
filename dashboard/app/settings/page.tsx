@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Section } from "@/components/ui/controls";
 import { InstallInterface } from "@/components/install-interface";
 import { WorkbenchPortraitSettings } from "@/components/workbench-portrait-settings";
+import { AssistantHistorySettings } from "@/components/assistant-history-settings";
 import { getAssistantStatus, getWorkbenchStatus } from "@/lib/workbench-api";
 import type { AssistantStatusResponse, WorkbenchStatus } from "@/lib/types";
 
@@ -108,6 +109,8 @@ export default async function SettingsPage() {
           </div>
         </div></details>
       </div>
+
+      <AssistantHistorySettings />
 
       <InstallInterface />
       <Section title="Reported local worker state"><p>Scheduled refresh: {status?.worker.scheduled_refresh_utc ?? "Unavailable"}</p><p>Active job: {status?.worker.active_job ? `${status.worker.active_job.job_type} · ${status.worker.active_job.stage ?? "stage unavailable"}` : status ? "No active job reported" : "Unavailable"}</p><p>Latest job: {status?.worker.latest_job ? `${status.worker.latest_job.job_type} · ${status.worker.latest_job.status}` : "Unavailable"}</p><p>An idle job queue does not establish worker liveness. Inspect job heartbeats and source coverage in Data status.</p></Section>
