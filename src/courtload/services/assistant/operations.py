@@ -202,7 +202,12 @@ def reject_unknown_fields(
 
 
 def resolve_entity(
-    session: Session, context: ResolvedContext | None, value: str, field: str
+    session: Session,
+    context: ResolvedContext | None,
+    value: str,
+    field: str,
+    *,
+    max_typo_distance: int | None = None,
 ) -> str:
     if len(value) > 100 or not value.strip():
         raise ValueError("invalid player selection")
@@ -240,7 +245,9 @@ def resolve_entity(
             portrait_fallback=None,
             base_destination="",
         )
-        match = score_entity_match(entity, normalized, tokenize_lookup_text(value))
+        match = score_entity_match(
+            entity, normalized, tokenize_lookup_text(value), max_typo_distance=max_typo_distance
+        )
         if match:
             candidates.append((match[0], match[1], entity))
     exact = [entity for basis, _, entity in candidates if basis == "exact"]
@@ -390,7 +397,7 @@ def declarations() -> list[dict[str, Any]]:
 
 def execute_operation(
     session: Session,
-    context: ResolvedContext,
+    context: ResolvedContext | None,
     step: OperationStep,
     deadline: float,
     *,
@@ -402,6 +409,8 @@ def execute_operation(
         raise TimeoutError("analytical deadline")
     if step.operation == "finance":
         return finance_query(session, FinanceQuery.model_validate(args)).model_dump(mode="json")
+    if context is None:
+        raise ValueError("basketball operations require a resolved context")
     if step.operation == "query":
         rows, count, cursor, more = execute_stats_query(
             session,
@@ -652,13 +661,15 @@ def open_url(step: OperationStep, context: ResolvedContext | None = None) -> str
     return "/research/operation?" + urlencode(params)
 
 
-def operation_hash(step: OperationStep, context: ResolvedContext) -> str:
+def operation_hash(step: OperationStep, context: ResolvedContext | None) -> str:
+    if context is None and step.operation != "finance":
+        raise ValueError("basketball operations require a resolved context")
     return canonical_hash(
         {
             "operation": step.operation,
             "arguments": step.arguments,
             "version": REGISTRY[step.operation].version,
-            "inputs": context.to_dict(),
+            "inputs": context.to_dict() if context else None,
             "metric_version": METRIC_CATALOG_VERSION,
         }
     )

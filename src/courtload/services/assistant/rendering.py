@@ -35,12 +35,12 @@ def result_rows(operation: str, data: dict[str, Any]) -> list[dict[str, Any]]:
 
 
 def render_result(
-    step: OperationStep, context: ResolvedContext, data: dict[str, Any], fingerprint: str
+    step: OperationStep, context: ResolvedContext | None, data: dict[str, Any], fingerprint: str
 ) -> OperationResult:
     result_hash = canonical_hash(data)
     op_hash = operation_hash(step, context)
     cells: list[EvidenceCell] = []
-    inputs = context.to_dict()
+    inputs = context.to_dict() if context else {}
     if step.operation == "forecast":
         inputs = {
             **inputs,
