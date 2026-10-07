@@ -1,0 +1,29 @@
+[
+  {
+    "provider": "gemini",
+    "model": "gemini-3.8-flash",
+    "key_configured": true,
+    "measured_at": "2026-10-07T17:49:34.807812+00:00",
+    "status": "incomplete",
+    "failure": "provider_quota",
+    "retry_after": 60,
+    "tool_call_observed": false,
+    "web_search_observed": false,
+    "citation_observed": false,
+    "elapsed_seconds": 0.209
+  },
+  {
+    "provider": "anthropic",
+    "model": "claude-sonnet-5-5",
+    "key_configured": false,
+    "measured_at": "2026-10-07T17:49:35.223615+00:00",
+    "status": "unmeasured_no_key"
+  },
+  {
+    "provider": "openai",
+    "model": "gpt-6.1-sol",
+    "key_configured": false,
+    "measured_at": "2026-10-07T17:49:35.223625+00:00",
+    "status": "unmeasured_no_key"
+  }
+]

@@ -1,0 +1,33 @@
+# Standard short-context USD estimates; excludes free search allowances and account discounts.
+# Refresh before expiry. Unknown models/contexts show tokens and cost unknown.
+checked_at: 2026-10-07
+currency: USD
+sources:
+  - https://ai.google.dev/gemini-api/docs/pricing
+  - https://platform.claude.com/docs/en/about-claude/pricing
+  - https://developers.openai.com/api/docs/pricing
+models:
+  gemini-3.8-flash:
+    input_per_million: 0.75
+    output_per_million: 3.75
+    cached_input_per_million: 0.075
+    cache_write_per_million: 0.75
+    search_per_call: 0.014
+    max_input_tokens: 200000
+    valid_through: 2026-12-31
+  claude-sonnet-5-5:
+    input_per_million: 2
+    output_per_million: 10
+    cached_input_per_million: 0.2
+    cache_write_per_million: 2.5
+    search_per_call: 0.01
+    max_input_tokens: 200000
+    valid_through: 2026-12-31
+  gpt-6.1-sol:
+    input_per_million: 2
+    output_per_million: 10
+    cached_input_per_million: 0.1
+    cache_write_per_million: 2.5
+    search_per_call: 0.01
+    max_input_tokens: 200000
+    valid_through: 2026-12-31

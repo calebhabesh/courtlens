@@ -775,6 +775,8 @@ class AssistantStatusResponse(BaseModel):
     configured: bool
     model: str
     provider: str = "gemini"
+    limited_mode: bool = True
+    prompt_version: str | None = None
     limits: dict[str, Any]
     allowed_tools: list[str]
     privacy_notice: str

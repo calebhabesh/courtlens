@@ -14,6 +14,7 @@ COPY migrations ./migrations
 COPY alembic.ini ./
 COPY fixtures ./fixtures
 COPY evaluation ./evaluation
+COPY config ./config
 COPY warehouse ./warehouse
 
 RUN pip install --upgrade pip && pip install ".[warehouse]"
