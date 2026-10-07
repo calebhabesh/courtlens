@@ -874,7 +874,7 @@ def allow_admin_mutation(session: Session) -> Generator[None, None, None]:
         conn = session.connection()
         conn.info["allow_admin_mutation"] = True
         if conn.dialect.name == "postgresql":
-            session.execute(text("SET LOCAL courtload.allow_admin_mutation = 'true'"))
+            session.execute(text("SET LOCAL courtlens.allow_admin_mutation = 'true'"))
     except Exception:
         pass
     try:
@@ -885,7 +885,7 @@ def allow_admin_mutation(session: Session) -> Generator[None, None, None]:
             conn = session.connection()
             conn.info["allow_admin_mutation"] = False
             if conn.dialect.name == "postgresql":
-                session.execute(text("SET LOCAL courtload.allow_admin_mutation = 'false'"))
+                session.execute(text("SET LOCAL courtlens.allow_admin_mutation = 'false'"))
         except Exception:
             pass
 

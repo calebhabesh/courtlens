@@ -3,6 +3,9 @@
 Status: **Milestone P9 operations and reproduction guide**, 2026-10-01.  
 Describes verified local and container operations for CourtLens on both the local NBA research workbench (2019–20 through 2024–25 + 2025–26 prospective schedules) and legacy pinned historical archives.
 
+The 2026-10-07 environment/database cutover, retained-volume cleanup instructions, and disposable
+PostgreSQL test commands are recorded in the [RN02 migration evidence](../evidence/rn02/README.md).
+
 ---
 
 ## 1. Quick Start & Verification

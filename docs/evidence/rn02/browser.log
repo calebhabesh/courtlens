@@ -1,0 +1,15 @@
+{
+  checks: [
+    'Real API returns five admitted players from the retained release',
+    'Desktop Stats renders actual admitted rows and the CourtLens name',
+    'Mobile Stats retains the actual table',
+    'Real player detail loads through the container-to-container API URL'
+  ],
+  errors: [],
+  dashboard: 'http://127.0.0.1:3100',
+  release_id: '5bbb6035-6794-4bb0-b894-7208f52ef7ad',
+  dataset_id: '17251a08-a4eb-4f46-b356-999fcf37c65d',
+  eligible_players: 591,
+  leading_player: { name: 'Luka Dončić', games: 64 },
+  visible_rows: 25
+}
