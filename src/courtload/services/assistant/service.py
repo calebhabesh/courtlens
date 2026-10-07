@@ -35,14 +35,17 @@ REQUEST_DEADLINE_SECONDS = 45.0
 
 def get_assistant_status() -> AssistantStatusResponse:
     settings = get_settings()
-    configured = bool(
-        settings.gemini_api_key and settings.gemini_api_key.get_secret_value().strip()
-    )
+    configured = settings.assistant_configured
     return AssistantStatusResponse(
         configured=configured,
-        model=settings.gemini_model,
-        provider="gemini",
+        model=settings.resolved_assistant_model,
+        provider=settings.resolved_assistant_provider,
+        limited_mode=not configured,
         limits={
+            "max_steps": settings.assistant_max_steps,
+            "max_web_searches": settings.assistant_max_web_searches,
+            "max_tokens": settings.assistant_max_tokens,
+            "turn_timeout_seconds": settings.assistant_turn_timeout_seconds,
             "max_question_chars": 2000,
             "max_rounds": 1,
             "max_calls": 8,
@@ -55,16 +58,15 @@ def get_assistant_status() -> AssistantStatusResponse:
         },
         allowed_tools=list(REGISTRY),
         privacy_notice=(
-            "Questions, pinned context, metric definitions and validated prior "
-            "plans are sent to the configured provider."
-            "Active conversation state stays in this local API process and "
-            "expires after 30 minutes of inactivity."
-            "Local expiry does not delete provider records; provider data-use "
-            "terms depend on your project configuration."
+            "Questions, selected page context and bounded analytical results are sent "
+            "to the configured provider. Native search sends queries through that provider. "
+            "Threads stay in this local installation until deleted. Provider retention "
+            "and data-use terms depend on your account configuration."
         ),
         setup_instructions=(
-            "Set COURTLOAD_GEMINI_API_KEY on the server using an eligible "
-            "free-tier project. No automatic model or paid fallback."
+            "Set COURTLOAD_GEMINI_API_KEY, COURTLOAD_ANTHROPIC_API_KEY or "
+            "COURTLOAD_OPENAI_API_KEY in the server .env. Select a provider with "
+            "COURTLOAD_ASSISTANT_PROVIDER. Provider quotas and pricing apply."
         ),
     )
 

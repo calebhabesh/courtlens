@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from functools import lru_cache
 from pathlib import Path
+from typing import Literal
 
 from pydantic import AliasChoices, Field, SecretStr, field_validator, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -15,6 +16,8 @@ class Settings(BaseSettings):
         env_file=".env",
         env_file_encoding="utf-8",
         extra="ignore",
+        populate_by_name=True,
+        env_ignore_empty=True,
     )
 
     environment: str = "development"
@@ -53,6 +56,59 @@ class Settings(BaseSettings):
         default="gemini-3.5-flash-lite",
         validation_alias=AliasChoices("COURTLOAD_GEMINI_MODEL", "GEMINI_MODEL"),
     )
+    anthropic_api_key: SecretStr | None = Field(
+        default=None,
+        validation_alias=AliasChoices("COURTLOAD_ANTHROPIC_API_KEY", "ANTHROPIC_API_KEY"),
+    )
+    openai_api_key: SecretStr | None = Field(
+        default=None,
+        validation_alias=AliasChoices("COURTLOAD_OPENAI_API_KEY", "OPENAI_API_KEY"),
+    )
+    assistant_provider: Literal["gemini", "anthropic", "openai", "none"] | None = None
+    assistant_model: str | None = Field(default=None, min_length=1, max_length=128)
+    assistant_max_steps: int = Field(default=6, ge=1, le=20)
+    assistant_max_web_searches: int = Field(default=3, ge=0, le=20)
+    assistant_max_tokens: int = Field(default=60000, ge=1024, le=1_000_000)
+    assistant_turn_timeout_seconds: int = Field(default=60, ge=1, le=300)
+    assistant_prices_file: Path = Path("config/assistant-prices.yaml")
+
+    @field_validator("assistant_provider", "assistant_model", mode="before")
+    @classmethod
+    def normalize_assistant_selection(cls, value: str | None) -> str | None:
+        return value.strip() if value and value.strip() else None
+
+    @field_validator("gemini_api_key", "anthropic_api_key", "openai_api_key", mode="before")
+    @classmethod
+    def normalize_assistant_key(cls, value: str | SecretStr | None) -> str | SecretStr | None:
+        raw = value.get_secret_value() if isinstance(value, SecretStr) else value
+        return raw.strip() if raw and raw.strip() else None
+
+    @property
+    def resolved_assistant_provider(self) -> Literal["gemini", "anthropic", "openai", "none"]:
+        if self.assistant_provider is not None:
+            return self.assistant_provider
+        for provider in ("gemini", "anthropic", "openai"):
+            if getattr(self, f"{provider}_api_key") is not None:
+                return provider
+        return "none"
+
+    @property
+    def resolved_assistant_model(self) -> str:
+        from courtload.services.assistant.agent.providers.base import DEFAULT_MODELS
+
+        provider = self.resolved_assistant_provider
+        if provider == "none":
+            return "none"
+        if self.assistant_model is not None:
+            return self.assistant_model
+        if provider == "gemini" and "gemini_model" in self.model_fields_set:
+            return self.gemini_model
+        return DEFAULT_MODELS[provider]
+
+    @property
+    def assistant_configured(self) -> bool:
+        provider = self.resolved_assistant_provider
+        return provider != "none" and getattr(self, f"{provider}_api_key") is not None
 
     @field_validator("environment")
     @classmethod

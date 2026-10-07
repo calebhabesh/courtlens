@@ -1,0 +1,61 @@
+{
+  "modelVersion": "gemini-3.8-flash",
+  "candidates": [
+    {
+      "content": {
+        "role": "model",
+        "parts": [
+          {
+            "text": "Wembanyama had +8.8 RAPM."
+          },
+          {
+            "functionCall": {
+              "id": "tool_1",
+              "name": "warehouse_query",
+              "args": {
+                "metric": "blk_per_game"
+              }
+            },
+            "thoughtSignature": "c2lnbmF0dXJl"
+          }
+        ]
+      },
+      "finishReason": "STOP",
+      "groundingMetadata": {
+        "webSearchQueries": [
+          "Wembanyama RAPM",
+          "Wembanyama RAPM",
+          ""
+        ],
+        "groundingChunks": [
+          {
+            "web": {
+              "uri": "https://nbarapm.com/players/wembanyama",
+              "title": "NBA RAPM"
+            }
+          }
+        ],
+        "groundingSupports": [
+          {
+            "segment": {
+              "partIndex": 0,
+              "startIndex": 0,
+              "endIndex": 25,
+              "text": "Wembanyama had +8.8 RAPM."
+            },
+            "groundingChunkIndices": [
+              0
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 100,
+    "candidatesTokenCount": 20,
+    "thoughtsTokenCount": 5,
+    "cachedContentTokenCount": 10,
+    "totalTokenCount": 125
+  }
+}
