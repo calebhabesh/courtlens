@@ -1,7 +1,7 @@
 # CourtLens refresh: full rename and design language
 
 Prepared 2026-10-07. **The owner confirmed every decision below through a grilling interview on
-2026-10-07. Blocks RN01–RN02 and DL01–DL08 are pending until the
+2026-10-07. Blocks RN01–RN02, QA01 and DL01–DL08 are pending until the
 [progress log](courtlens-refresh-progress.md) records measured evidence.** A plan is not runtime
 evidence.
 
@@ -142,6 +142,31 @@ inventing a pattern).
 **The 16 key pages:** `/`, `/stats`, `/players`, `/players/[id]` (one fixture player), `/teams`,
 `/teams/[id]`, `/compare`, `/live`, `/live/games/[id]`, `/playoffs`, `/research/ask` (empty and
 with an answer), `/research/rapm`, `/wowy`, `/contracts`, `/settings`, `/data-status`.
+
+## Track QA: full-suite baseline
+
+Added 2026-10-07 after RN01. The full Python suite had **128 failed, 19 errors** on both the renamed
+tree and the unchanged pre-rename `d584057` (RN01 evidence, `verification/failure-comparison.log`).
+Earlier blocks recorded targeted runs only. Every later block needs a trustworthy full-suite gate.
+
+### QA01 Full Python suite green (Sol; Python only, may run alongside DL01–DL03)
+
+Failure groups from the RN01 corrected run (counts by file):
+
+| Group | Files (failures/errors) | Treatment |
+| --- | --- | --- |
+| Legacy v2 assistant | `test_hybrid_evaluation_postgres.py` (61), `test_assistant_retrieval_postgres.py` (3), `test_assistant_history_postgres.py` (1) | AG03 made v3 the default route. Pin these tests to the still-supported legacy path (explicit manual plan or injected legacy provider) so they keep testing code that still exists. Where that's impossible, mark them `xfail(strict=True, reason="v2 pipeline removed in AG07")`. AG07 later deletes the tests along with the code. Never skip silently. |
+| Populated-data assumptions | `test_workbench_api.py` (21), `test_b14/b15/b16/b17_api.py` (23), `test_b21_api.py` (6E), `test_b23_api.py` (8E), `test_analytical_ops_api.py` (6), `test_workbench_postgres.py` (1) | Give them a deterministic seeded fixture database (extend the existing fixture builders; no network, no owner data) or, only where a fixture is unreasonable, a `requires_published_data` marker excluded by default and runnable through `make test-published` against a restored backup. Document which and why. |
+| Possible real defects | `test_restore_postgres.py` (3), `test_workbench_jobs_postgres.py` (4), `test_possession_warehouse_postgres.py` (2E), `test_research_readiness_postgres.py` (3E), `test_rich_admission_postgres.py` (1), `test_stats_engine.py` (2), `test_shotchart_admission.py` (2) | Diagnose each: fix code if it's a bug, fix the test if the test is wrong. Record the root cause per test ID. `possession_warehouse` must be fixed before IM02/IM03. |
+
+Rules: do not loosen assertions to pass. Do not change frozen identifiers or sealed evidence. Do
+not touch `dashboard/`. A `make test-python` target (or documented command) runs the whole suite
+with the disposable PostgreSQL fixture setup used in RN01, so any agent can reproduce the gate.
+
+Done when: the full Python suite shows **0 failed, 0 errors** (skips/xfails listed with reasons),
+twice in a row from a clean checkout. Ruff/format/mypy are clean. The progress log records
+before/after counts and the per-test-ID root-cause table. From then on, every block's "done when"
+includes this full-suite gate.
 
 ## Risks and notes
 

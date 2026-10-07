@@ -19,6 +19,7 @@ Allowed states: `planned`, `in_progress`, `implemented_unverified`, `verified`,
 | --- | --- | --- |
 | RN01 | verification_blocked | [Code rename and measured checks](evidence/rn01/README.md): frozen hashes and migrations pinned; environment/storage migrations implemented; Ruff/mypy, dashboard lint/types/228 Vitest tests and 169 browser cases pass (3 external skips). Full Python acceptance remains blocked by baseline failures; details and comparisons recorded. |
 | RN02 | verified | [Environment/database migration](evidence/rn02/README.md): backed up and restored into the new CourtLens volume; restore verified, revision `09b810a4f007` applied; 109 existing table counts and retained history match; 104 targeted tests, Ruff/format/mypy pass; real-data desktop/mobile screenshots. Old volume retained. |
+| QA01 | planned | Added 2026-10-07: full Python suite baseline (128 failed / 19 errors pre-existing). Gates IM02 and AG07. |
 | DL01 | planned | |
 | DL02 | planned | |
 | DL03 | planned | |
