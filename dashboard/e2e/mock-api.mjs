@@ -577,7 +577,9 @@ createServer(async (request, response) => {
     configured: false,
     model: "fixture-disabled",
     provider: "gemini",
-    limits: { max_question_length: 2000, max_rounds: 4, max_total_tool_calls: 8, timeout_seconds: 45 },
+    limited_mode: true,
+    prompt_version: "synthetic-ag05",
+    limits: { max_steps: 6, max_web_searches: 3, max_tokens: 60000, turn_timeout_seconds: 60, max_question_length: 2000, max_rounds: 4, max_total_tool_calls: 8, timeout_seconds: 45 },
     allowed_tools: [],
     setup_instructions: "Set a server-side Gemini key to opt in.",
     privacy_notice: "Provider retention is separate from local saved evidence."

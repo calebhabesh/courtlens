@@ -30,7 +30,7 @@ function agentAnswer(request: HybridTurnRequest): AgentTurnResponse {
     sources: [{ source_id: "s1", origin: "web", url: "https://example.org/ag04", title: "Synthetic source", publisher: "example.org" }], results: [], saveable: false,
     ...(request.message.includes("labels") ? { mode: "limited", provenance: { unsupported_numbers: ["99.9"] } } : {}) };
 }
-async function mock(page: Page, options: { response?: (request: HybridTurnRequest) => Partial<HybridTurnResponse>; deferred?: boolean; lost?: boolean; paginated?: boolean; stream?: boolean } = {}) {
+async function mock(page: Page, options: { response?: (request: HybridTurnRequest) => Partial<HybridTurnResponse>; agentResponse?: (request: HybridTurnRequest) => AgentTurnResponse; deferred?: boolean; lost?: boolean; paginated?: boolean; stream?: boolean } = {}) {
   const requests: HybridTurnRequest[] = [];
   const streams: HybridTurnRequest[] = [];
   const headers: DurableThreadHeader[] = [];
@@ -73,7 +73,7 @@ async function mock(page: Page, options: { response?: (request: HybridTurnReques
     const body = request.postDataJSON() as HybridTurnRequest; requests.push(body);
     let row = records.get(body.thread_id!)!.find(row => row.request.request_id === body.request_id);
     if (!row) {
-      row = {thread_id:body.thread_id!,turn_id:body.request_id,request:body,request_sha256:hash,accepted_at:"2026-10-06T12:00:00Z",state:options.deferred?"running":"completed",response:options.deferred?null:body.message.startsWith("AG04")?agentAnswer(body):answer(body,options.response?.(body))}; records.get(body.thread_id!)!.push(row);
+      row = {thread_id:body.thread_id!,turn_id:body.request_id,request:body,request_sha256:hash,accepted_at:"2026-10-06T12:00:00Z",state:options.deferred?"running":"completed",response:options.deferred?null:options.agentResponse?.(body) ?? (body.message.startsWith("AG04")?agentAnswer(body):answer(body,options.response?.(body)))}; records.get(body.thread_id!)!.push(row);
       headers.find(header => header.thread_id === body.thread_id)!.title = body.message;
     }
     if (firstLost) { firstLost = false; return route.fulfill({status:502,json:{detail:"Response lost; check or replay the retained request."}}); }
@@ -284,10 +284,10 @@ for (const width of [1440, 375]) {
 
 test("AG04 unavailable stream replays a v3 final with the same request identity", async ({ page }) => {
   const state = await mock(page); await openPage(page, path); await send(page, "AG04 fallback fixture: Explain MVP");
-  await expect(messages(page).locator(".hybrid-narrative")).toHaveText("The retained fixture answer from the source.[^s1]");
+  await expect(messages(page).locator(".hybrid-narrative")).toContainText("The retained fixture answer from the source.");
   expect(state.streams).toHaveLength(1); expect(state.requests).toEqual(state.streams);
   await reloadPage(page);
-  await expect(messages(page).locator(".hybrid-narrative")).toHaveText("The retained fixture answer from the source.[^s1]");
+  await expect(messages(page).locator(".hybrid-narrative")).toContainText("The retained fixture answer from the source.");
 });
 
 test("AG04 minimal final preserves limited and unverified labels after fallback and reload", async ({ page }) => {
@@ -349,10 +349,10 @@ for (const width of [1440, 375]) {
     await expect(pending.locator(".hybrid-narrative")).toHaveCount(0);
     await expect(pending.locator(".hybrid-narrative")).toHaveText("Repaired live draft");
     await expect(pending).toHaveCount(0);
-    await expect(transcript.locator(".hybrid-narrative")).toHaveText("The retained fixture answer from the source.[^s1]");
+    await expect(transcript.locator(".hybrid-narrative")).toContainText("The retained fixture answer from the source.");
     expect(state.streams).toHaveLength(1); expect(state.requests).toHaveLength(0);
     await reloadPage(page);
-    await expect(transcript.locator(".hybrid-narrative")).toHaveText("The retained fixture answer from the source.[^s1]");
+    await expect(transcript.locator(".hybrid-narrative")).toContainText("The retained fixture answer from the source.");
     await expect(transcript).not.toContainText("Initial draft");
   });
 }
@@ -482,4 +482,96 @@ test("AR07 compare attaches both players, and the full Ask page uses the standal
   await page.getByRole("button",{name:"Ask",exact:true}).click();
   await expect(page.getByRole("dialog")).toHaveCount(0);
   await expect(composer(page)).toBeVisible();
+});
+
+function ag05Answer(request: HybridTurnRequest): AgentTurnResponse {
+  const text = "**Wembanyama leads this blocks-based reading of defense.**[^s1]\n\n- For an impact-based reading, RAPM is reported as +8.8 by the cited source.[^s2]\n- 🏀 An unsupported claim is 99.9 points.";
+  const start = Array.from(text.slice(0, text.indexOf("🏀"))).length;
+  const rows = Array.from({ length: 12 }, (_, index) => ({ rank: index + 1, player_name: index === 0 ? "Victor Wembanyama" : `Fixture Defender ${index}`, team_tricodes: ["SAS"], blk_per_game: index === 1 ? null : index === 2 ? 0 : 3.5 - index / 10 }));
+  const result = { step_id: "s1", operation: "query", operation_version: "fixture-ag05", arguments: { sort: "blk_per_game", limit: 12 }, operation_hash: hash, result_hash: hash, data: {}, rows,
+    evidence: [{ evidence_id: hash, result_hash: hash, operation_hash: hash, operation_version: "fixture-ag05", context_fingerprint: hash, entity_id: "1", row_identity: "1", path: "/0/blk_per_game", metric: "blk_per_game", metric_version: "fixture", unit: "blocks/game", value: 3.5, input_identity: {} }],
+    open_url: "/stats?season=2025-26", eligible_count: 12, limitations: ["Blocks alone do not establish overall defensive impact."] };
+  return { ...agentAnswer(request), answer: { text }, assumption: "Reading best defender as blocks per game in the retained season.",
+    selections: scope("2025-26").selections,
+    results: [{ result, context: { release_id: "retained-ag05", season: "2025-26", phase: "regular_season", before_date: "2026-07-01" } }],
+    sources: [{ source_id: "s1", origin: "warehouse", title: "CourtLens block leaders", publisher: "CourtLens", operation_hash: hash, url: result.open_url, retrieved_at: "2026-10-07" }, { source_id: "s2", origin: "web", title: "Synthetic RAPM report", publisher: "NBA RAPM", url: "https://nbarapm.com/fixture", retrieved_at: "2026-10-07T12:00:00Z", excerpt: "Synthetic fixture: +8.8 RAPM." }],
+    follow_ups: ["Rank defenders by steals", "Compare defensive rebounds"], actions: [], saveable: true,
+    trace: [{ tool: "query_stats", arguments: { metric: "blk_per_game", season: "2025-26" }, status: "ok", elapsed_ms: 12, rows: 12 }, { tool: "web_search", arguments: { query: "Wembanyama RAPM" }, status: "ok", elapsed_ms: 40, hits: 1 }],
+    accounting: { provider: "replay", model: "synthetic-ag05", prompt_version: "ag05-fixture", input_tokens: 1000, output_tokens: 150, est_cost_usd: 0.0045, elapsed_ms: 52, steps: 2, web_searches: 1, stopped_by_limit: "searches" },
+    provenance: { unsupported_numbers: ["99.9"], unverified_sentences: [{ text: Array.from(text).slice(start).join(""), start, end: Array.from(text).length, numbers: ["99.9"] }] } };
+}
+
+for (const width of [1440, 375]) {
+  test(`AG05 answer-first chips, tables, trace, follow-up and retained scope at ${width}px`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 900 });
+    const state = await mock(page, { agentResponse: ag05Answer }); await openPage(page, path);
+    await expect(page.getByRole("button", { name: /What was Victor Wembanyama's RAPM last season/ })).toBeVisible();
+    await expect(page.getByRole("button", { name: /Who won MVP last season/ })).toBeVisible();
+    await send(page, "Who is the best defender in the NBA?");
+    const answer = messages(page).locator(".agent-answer");
+    await expect(answer.locator(".agent-prose strong").first()).toHaveText("Wembanyama leads this blocks-based reading of defense.");
+    await expect(answer.locator(".agent-assumption")).toContainText("Assumption: Reading best defender");
+    await expect(answer.locator(".agent-unverified").first()).toContainText("99.9");
+    await expect(answer.locator(".agent-unverified").first()).toHaveAttribute("title", /no supporting result/);
+    await expect(answer.locator(".agent-prose")).not.toContainText("[^s1]");
+    const web = answer.locator(".agent-prose").getByRole("button", { name: "nbarapm.com", exact: true });
+    await web.click(); await expect(web).toHaveAttribute("aria-expanded", "true");
+    await expect(answer.locator(".agent-prose").getByRole("link", { name: "Open source", exact: true })).toHaveAttribute("href", "https://nbarapm.com/fixture");
+    await expect(answer.locator(".agent-prose .agent-source-wrap[data-open=true]")).toContainText("retrieved 2026-10-07");
+    await web.press("Escape"); await expect(web).toHaveAttribute("aria-expanded", "false");
+    const warehouse = answer.locator(".agent-prose").getByRole("button", { name: "CourtLens", exact: true });
+    await warehouse.click(); await expect(answer.getByRole("link", { name: "View CourtLens result" })).toHaveAttribute("href", `#answer-${state.requests[0].request_id}-result-${hash}`); await warehouse.click();
+    const table = answer.getByRole("region", { name: "query results table", exact: true });
+    await expect(table.locator("tbody tr")).toHaveCount(10); await expect(table).toContainText("Blocks (blocks/game)");
+    await expect(table).toContainText("SAS"); await expect(table).not.toContainText('["SAS"]'); await expect(table).toContainText("Unknown"); await expect(table.locator("tbody tr").nth(2)).toContainText("0");
+    await expect(answer.locator(".ask-how")).not.toHaveAttribute("open", "");
+    await answer.locator(".agent-prose").scrollIntoViewIfNeeded();
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+    await page.screenshot({ path: test.info().outputPath(`ag05-answer-${width}.png`) });
+    await answer.getByRole("button", { name: "Show all 12 rows" }).click(); await expect(table.locator("tbody tr")).toHaveCount(12);
+    await answer.getByRole("button", { name: "Show fewer" }).click(); await expect(table.locator("tbody tr")).toHaveCount(10);
+    await expect(answer.getByRole("link", { name: "Open equivalent analysis", exact: true })).toHaveAttribute("href", "/stats?season=2025-26");
+    const review = answer.getByRole("link", { name: "Review and save query" });
+    const params = new URL((await review.getAttribute("href"))!, "https://fixture.local").searchParams;
+    expect(params.get("release_id")).toBe("retained-ag05"); expect(params.get("before_date")).toBe("2026-07-01");
+    await answer.getByText("How I got this", { exact: true }).click(); await expect(answer.locator(".agent-trace")).toContainText("query_stats"); await expect(answer.locator(".ask-how")).toContainText("1000 / 150"); await expect(answer.locator(".ask-how")).toContainText("$0.004500 (estimate)"); await expect(answer.locator(".ask-how")).toContainText("Stopped at the searches limit");
+    await answer.getByText("Sources (2)", { exact: true }).click(); await expect(answer.locator(".agent-sources")).toContainText("Synthetic RAPM report");
+    await reloadPage(page); await expect(messages(page).locator(".agent-assumption")).toContainText("Reading best defender");
+    await messages(page).getByRole("button", { name: "Rank defenders by steals", exact: true }).click();
+    await expect.poll(() => state.requests.length).toBe(2); expect(state.requests[1].message).toBe("Rank defenders by steals"); expect(state.requests[1].thread_id).toBe(state.requests[0].thread_id); expect(state.requests[1].context).toBeUndefined();
+  });
+
+  test(`AG05 web-only limited failure and retry in the shared panel at ${width}px`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 900 });
+    const state = await mock(page, { agentResponse: request => ({ ...agentAnswer(request), mode: "limited", status: "failed", answer: { text: "The provider quota is exhausted. Simple stat questions remain available." }, results: [], failure: "provider_quota", retry_after: 60, follow_ups: ["Show scoring leaders"], accounting: { provider: "replay", model: "synthetic-ag05", prompt_version: "fixture", est_cost_usd: null } }) });
+    await openPage(page, playerPage); await page.getByRole("button", { name: "Ask", exact: true }).click();
+    const dialog = page.getByRole("dialog"); await composer(dialog).fill("Explain RAPM"); await dialog.getByRole("button", { name: "Send question", exact: true }).click();
+    const answer = messages(dialog).locator(".agent-answer"); await expect(answer.locator(".agent-limited")).toContainText("add a provider key"); await expect(answer).toContainText("Retry after 60 seconds");
+    await expect(answer.locator("table")).toHaveCount(0); await expect(answer.getByRole("link", { name: /Review and save/ })).toHaveCount(0);
+    await answer.getByText("How I got this", { exact: true }).click(); await expect(answer.locator(".ask-how")).toContainText("Cost unknown");
+    await page.screenshot({ path: test.info().outputPath(`ag05-panel-limited-${width}.png`) });
+    await answer.getByRole("button", { name: "Retry question" }).click(); await expect.poll(() => state.requests.length).toBe(2); expect(state.requests[1].retry_of).toBe(state.requests[0].request_id);
+  });
+}
+
+test("AG05 Settings reports active provider, model, limits and limited mode", async ({ page }) => {
+  await openPage(page, "/settings");
+  const card = page.getByRole("region", { name: "Assistant configuration", exact: true });
+  await expect(card).toContainText("gemini"); await expect(card).toContainText("fixture-disabled"); await expect(card).toContainText("60,000 tokens"); await expect(card).toContainText("3 searches");
+  await expect(card.locator("div").filter({ has: page.locator("dt", { hasText: "Limited mode" }) }).last()).toContainText("Yes");
+  await page.screenshot({ path: test.info().outputPath("ag05-settings.png") });
+});
+
+test("AG05 source details preserve keyboard focus in landscape with reduced motion", async ({ page }) => {
+  await page.setViewportSize({ width: 812, height: 375 }); await page.emulateMedia({ reducedMotion: "reduce" });
+  await mock(page, { agentResponse: ag05Answer }); await openPage(page, path); await send(page, "Compare defensive impact");
+  const prose = messages(page).locator(".agent-prose"); const chip = prose.getByRole("button", { name: "nbarapm.com", exact: true });
+  await chip.focus(); await chip.press("Enter"); await expect(chip).toHaveAttribute("aria-expanded", "true");
+  await page.keyboard.press("Tab"); const sourceLink = prose.getByRole("link", { name: "Open source", exact: true });
+  await expect(sourceLink).toBeFocused();
+  const bounds = await sourceLink.boundingBox(); const dock = await live(page).locator(".ask-dock").boundingBox();
+  expect(bounds!.y + bounds!.height).toBeLessThanOrEqual(dock!.y);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  await page.screenshot({ path: test.info().outputPath("ag05-landscape-source-details.png") });
+  await sourceLink.press("Escape"); await expect(chip).toHaveAttribute("aria-expanded", "false"); await expect(chip).toBeFocused();
 });

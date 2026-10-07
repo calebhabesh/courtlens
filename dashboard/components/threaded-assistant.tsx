@@ -11,6 +11,7 @@ import { composerKeyAction, examplePrompts, groupThreads, scopeChipLabel } from 
 import { BrandMark } from "./brand";
 import { CatalogScopeFields } from "./catalog-scope-fields";
 import { HybridAnswer } from "./hybrid-answer";
+import { AgentAnswer } from "./agent-answer";
 import { Button, IconButton } from "./ui/controls";
 import { Icon } from "./ui/icon";
 
@@ -311,15 +312,14 @@ export function ThreadedAssistant({ initialContext = {}, variant = "page", pageC
           {ready && turns.length === 0 && !turnCursor && <div className="ask-empty">
             <BrandMark size={44} />
             <h2>What do you want to know?</h2>
-            <p className="text-muted">Answers come from CourtLens data with their scope and evidence, or are labelled general knowledge.</p>
+            <p className="text-muted">Ask about NBA stats, history and news. Answers use CourtLens data first, then cited web sources.</p>
             <div className="ask-examples">{examplePrompts.map(example => <button type="button" key={example.prompt} className="ask-example" disabled={blocked} onClick={() => void submit(example.prompt)}><span>{example.label}</span>{example.prompt}</button>)}</div>
           </div>}
           <div aria-label="Messages" className="ask-messages">{turns.map(turn => <article key={turn.turn_id} className="ask-turn">
             <div className="ask-user"><p className="ask-bubble"><span className="sr-only">You: </span>{turn.request.message}</p></div>
             <div className="ask-assistant"><span className="ask-avatar"><BrandMark size={28} /></span><div className="ask-reply">{turn.response
               ? "answer" in turn.response
-                // AG04's minimal final prose. AG05 adds sources, results, provenance and actions.
-                ? <>{turn.response.mode === "limited" && <p className="text-muted">Limited mode</p>}<p className="hybrid-narrative">{turn.response.answer.text}</p>{!!turn.response.provenance?.unsupported_numbers?.length && <p className="text-muted">This answer contains unverified numbers.</p>}</>
+                ? <AgentAnswer answer={turn.response} busy={blocked || !!turnCursor} onChoice={choice => void submit(choice)} onRetry={() => { setQuestion(turn.request.message); void submit(turn.request.message, turn.turn_id); }} />
                 : <HybridAnswer answer={turn.response} busy={blocked || !!turnCursor} onChoice={choice => void submit(choice)} onRetry={() => { setQuestion(turn.request.message); void submit(turn.request.message, turn.turn_id); }} />
               : <div className="thread-live" aria-busy="true"><p className="ask-phase">{live?.requestId === turn.request.request_id ? live.step?.label ?? (live.phase ? phaseLabels[live.phase] : "Working on your question…") : turn.state === "pending" ? "Question saved. Waiting to start…" : "Working on your question…"}</p>{live?.requestId === turn.request.request_id && live.text && <p className="hybrid-narrative">{live.text}</p>}</div>}</div></div>
           </article>)}</div>
