@@ -1,13 +1,17 @@
-import type { ConversationContext, DurableThreadHeader } from "./assistant-v2.generated";
-import { tableRow } from "./conversation";
+import type { DurableThreadHeader } from "./assistant-v2.generated";
+import { tableRow, type Context } from "./conversation";
 import { humanLabel } from "./route-availability";
 
 // AR06 presentation helpers for the /ask chat layout. Values are never altered here: compact
 // views only choose which returned cells to show first; the full result stays in "How I got this".
 
 export const examplePrompts = [
+  { label: "Impact", prompt: "What was Victor Wembanyama's RAPM last season?" },
+  { label: "Defense", prompt: "Who is the best defender in the NBA?" },
+  { label: "Awards", prompt: "Who won MVP last season?" },
   { label: "League leaders", prompt: "Who led the league in assists per game last season?" },
   { label: "Forecast", prompt: "Show the registered points forecast for Nikola Jokić." },
+  { label: "Compare", prompt: "Compare Nikola Jokić and Victor Wembanyama last season." },
   { label: "Concepts", prompt: "Explain pick and roll" },
   { label: "Using CourtLens", prompt: "How do I compare two players here?" },
 ] as const;
@@ -18,7 +22,7 @@ export function composerKeyAction(event: { key: string; shiftKey: boolean; isCom
 }
 
 const windowLabels: Record<string, string> = { season: "Season to date", last_10: "Last 10", last_5: "Last 5" };
-export function scopeChipLabel(context: ConversationContext): string {
+export function scopeChipLabel(context: Context): string {
   const parts = [
     context.season,
     context.phase ? humanLabel(context.phase) : null,

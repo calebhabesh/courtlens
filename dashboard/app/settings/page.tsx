@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Section } from "@/components/ui/controls";
 import { InstallInterface } from "@/components/install-interface";
 import { WorkbenchPortraitSettings } from "@/components/workbench-portrait-settings";
+import { AssistantStatusCard } from "@/components/assistant-status-card";
 import { AssistantHistorySettings } from "@/components/assistant-history-settings";
 import { getAssistantStatus, getWorkbenchStatus } from "@/lib/workbench-api";
 import type { AssistantStatusResponse, WorkbenchStatus } from "@/lib/types";
@@ -28,7 +29,6 @@ export default async function SettingsPage() {
   }
 
   const portraits = status?.capabilities?.portraits;
-  const isKeyConfigured = assistantStatus?.configured ?? false;
 
   return (
     <div className="workbench-content">
@@ -60,55 +60,7 @@ export default async function SettingsPage() {
         storagePath={portraits?.storage_path ?? "data/cache/portraits"}
       />
 
-      {/* Optional Assistant Configuration */}
-      <div className="panel">
-        <div className="panel-header">
-          <div>
-            <h2 className="panel-title">Optional assistant</h2>
-            <p className="text-muted text-xs" style={{ margin: "0.2rem 0 0" }}>
-              Optional language planning over validated read-only analytical operations. Configuration alone does not establish real-provider language accuracy.
-            </p>
-          </div>
-          <span className={`badge ${isKeyConfigured ? "badge-positive" : ""}`}>
-            {assistantStatus ? isKeyConfigured ? "API Key Configured" : "Disabled (No Key Required)" : "Configuration unavailable"}
-          </span>
-        </div>
-
-        <div className="notice-box" style={{ borderLeftColor: "var(--series-secondary)" }}>
-          <strong>Zero-cost core guarantee:</strong> Manual research needs no API key. The optional assistant requires your configured key. Source and model availability remain separate.
-        </div>
-
-        <details><summary>Assistant configuration details</summary><div className="lineage-meta-box">
-          <div className="meta-row">
-            <span className="meta-label">Assistant Status</span>
-            <span className="meta-value font-semibold">
-              {assistantStatus ? isKeyConfigured ? "Configured; provider evaluation remains separate" : "Disabled; manual research available" : "Configuration status unavailable"}
-            </span>
-          </div>
-          <div className="meta-row">
-            <span className="meta-label">Configured Model</span>
-            <span className="meta-value font-mono text-xs">{assistantStatus?.model ?? "Unavailable"}</span>
-          </div>
-          <div className="meta-row">
-            <span className="meta-label">Setup Environment Variable</span>
-            <span className="meta-value font-mono text-xs">COURTLOAD_GEMINI_API_KEY</span>
-          </div>
-          <div className="meta-row">
-            <span className="meta-label">Allowlisted Tools ({assistantStatus?.allowed_tools.length ?? 0})</span>
-            <span className="meta-value text-xs font-mono">
-              {assistantStatus?.allowed_tools.join(", ") ?? "Unavailable"}
-            </span>
-          </div>
-          <div className="meta-row">
-            <span className="meta-label">Execution Guardrails</span>
-            <span className="meta-value text-xs">
-              {assistantStatus?.limits
-                ? `Max ${assistantStatus.limits.max_question_length} chars, ≤${assistantStatus.limits.max_rounds} rounds, ≤${assistantStatus.limits.max_total_tool_calls} calls, ${assistantStatus.limits.timeout_seconds}s deadline`
-                : "Unavailable"}
-            </span>
-          </div>
-        </div></details>
-      </div>
+      <AssistantStatusCard status={assistantStatus} />
 
       <AssistantHistorySettings />
 

@@ -1,0 +1,2 @@
+Sealed v2 rendering/contracts, AR/PF evidence and evaluation corpus diff: empty.
+AG04 retained-contract SHA-256 inventory: exact match.

@@ -1,0 +1,6 @@
+{
+  "docs/design/assistant-v2.schema.json": "0b53430f0d04cc521862740b2d44e6266ce72f889c0f5a69bdb9b4313814feec",
+  "docs/design/assistant-v2-fixtures.json": "9a94a516e495e99a3f39156224a161dec4f8d9fe3d0b156bc7df485f8b5ddf4e",
+  "dashboard/lib/assistant-v2.generated.ts": "f213572248805aefdb075c7fd1c0fe98c91472caf73e8e4527581c6cb58db500",
+  "evaluation/assistant/ar02-v2.json": "c169159db1f5c159f76a382b0ea692f960e7b3ed2a5b224fc22c174b24f69fdf"
+}

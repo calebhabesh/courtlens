@@ -32,12 +32,15 @@ test("settings distinguishes configured key from provider health and hides opera
   await openWorkbench(page, "/settings");
   await expect(page.getByRole("heading", { name: "Settings", exact: true })).toBeVisible();
   await expect(page.getByText("An idle job queue does not establish worker liveness.", { exact: false }).filter({ visible: true })).toBeVisible();
-  const details = page.locator("details").filter({ has: page.getByText("Assistant configuration details", { exact: true }) });
+  const card = page.getByRole("region", { name: "Assistant configuration", exact: true });
+  await expect(card).toContainText("Configuration alone does not establish provider availability or answer accuracy");
+  await expect(card).toContainText("Limits per turn");
+  const details = card.locator("details").filter({ has: page.getByText("Configuration details", { exact: true }) });
   // Wait for React's hidden streamed copy to be revealed or discarded before strict lookup.
   await expect(details).toHaveCount(1);
   await expect(details).not.toHaveAttribute("open", "");
   await details.locator("summary").click();
-  await expect(details).toContainText("Execution Guardrails");
+  await expect(details).toContainText("synthetic-ag05");
 });
 
 test("partial source keeps tools primary; service failure remains a distinct availability state", async ({ page }) => {
