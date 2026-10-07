@@ -20,11 +20,11 @@ from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 from verify_b31_live import integrity
 
-from courtload.config import get_settings
-from courtload.database import engine
-from courtload.live_models import LiveLease, LiveObservation
-from courtload.services.live import poll_once, release
-from courtload.services.live_provider import ESPNLiveProvider
+from courtlens.config import get_settings
+from courtlens.database import engine
+from courtlens.live_models import LiveLease, LiveObservation
+from courtlens.services.live import poll_once, release
+from courtlens.services.live_provider import ESPNLiveProvider
 
 
 def main():
@@ -38,10 +38,10 @@ def main():
         observations_before = session.scalar(select(func.count()).select_from(LiveObservation))
     env = {
         **os.environ,
-        "COURTLOAD_LIVE_ENABLED": "true",
-        "COURTLOAD_API_INTERNAL_URL": "http://127.0.0.1:8012",
-        "NEXT_PUBLIC_COURTLOAD_API_URL": "http://127.0.0.1:8012",
-        "COURTLOAD_OPERATOR_TOKEN": get_settings().operator_token.get_secret_value(),
+        "COURTLENS_LIVE_ENABLED": "true",
+        "COURTLENS_API_INTERNAL_URL": "http://127.0.0.1:8012",
+        "NEXT_PUBLIC_COURTLENS_API_URL": "http://127.0.0.1:8012",
+        "COURTLENS_OPERATOR_TOKEN": get_settings().operator_token.get_secret_value(),
         "PLAYWRIGHT_BASE_URL": "http://127.0.0.1:3140",
     }
     stop = Event()
@@ -65,7 +65,7 @@ def main():
         api = subprocess.Popen(
             [
                 ".venv/bin/uvicorn",
-                "courtload.api.app:create_app",
+                "courtlens.api.app:create_app",
                 "--factory",
                 "--host",
                 "127.0.0.1",

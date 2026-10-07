@@ -8,9 +8,9 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 from test_conversation_postgres import postgres_conversation as _postgres_fixture
 
-from courtload.assistant_history_models import AssistantTurnInput
-from courtload.domain.hybrid_assistant import HybridTurnRequest
-from courtload.services.assistant import history, retrieval
+from courtlens.assistant_history_models import AssistantTurnInput
+from courtlens.domain.hybrid_assistant import HybridTurnRequest
+from courtlens.services.assistant import history, retrieval
 
 postgres_conversation = _postgres_fixture
 
@@ -117,7 +117,7 @@ def test_external_excerpt_and_binding_survive_actual_dump_restore(postgres_conve
         dump_command = ["pg_dump", *arguments, "--schema", schema]
         restore_command = ["psql", *arguments, "-v", "ON_ERROR_STOP=1"]
     else:
-        prefix = ["docker", "exec", "-i", "courtload-db-1"]
+        prefix = ["docker", "exec", "-i", "courtlens-db-1"]
         local_arguments = ["-U", url.username, "-d", url.database]
         dump_command = [*prefix, "pg_dump", *local_arguments, "--schema", schema]
         restore_command = [*prefix, "psql", *local_arguments, "-v", "ON_ERROR_STOP=1"]

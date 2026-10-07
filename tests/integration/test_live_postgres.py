@@ -17,15 +17,15 @@ from sqlalchemy import create_engine, func, select, text
 from sqlalchemy.exc import DBAPIError
 from sqlalchemy.orm import Session
 
-from courtload.database import Base
-from courtload.domain.live import LiveSubscription
-from courtload.live_models import LiveFeed, LiveLease, LiveObservation
-from courtload.services.live import poll_once, subscribe
+from courtlens.database import Base
+from courtlens.domain.live import LiveSubscription
+from courtlens.live_models import LiveFeed, LiveLease, LiveObservation
+from courtlens.services.live import poll_once, subscribe
 
 
 @pytest.fixture
 def live_engine():
-    url = os.environ.get("COURTLOAD_TEST_POSTGRES_URL")
+    url = os.environ.get("COURTLENS_TEST_POSTGRES_URL")
     if not url:
         pytest.skip("disposable PostgreSQL URL required")
     root = create_engine(url)
@@ -149,7 +149,7 @@ def test_foreign_key_rejects_orphan_observation(live_engine):
 
 
 def seed_final_batch(session, *, points=100, game_date=SLATE):
-    from courtload.workbench_models import (
+    from courtlens.workbench_models import (
         WorkbenchAcquisition,
         WorkbenchArtifact,
         WorkbenchDataset,
@@ -279,8 +279,8 @@ def test_final_reconciles_to_independently_admitted_facts(
 ):
     from live_fakes import event
 
-    from courtload.services.live_reconciliation import reconcile_final
-    from courtload.workbench_models import WorkbenchIdentityCrosswalk, WorkbenchTeamGame
+    from courtlens.services.live_reconciliation import reconcile_final
+    from courtlens.workbench_models import WorkbenchIdentityCrosswalk, WorkbenchTeamGame
 
     with Session(live_engine) as session:
         seed_final_batch(session, points=points, game_date=SLATE + timedelta(days=offset))
@@ -316,10 +316,10 @@ def test_final_reconciles_to_independently_admitted_facts(
 
 
 def test_blocking_pipeline_cannot_stop_live_observations(live_engine, monkeypatch):
-    import courtload.services.live as service
-    import courtload.services.live_provider as provider_module
-    import courtload.worker as worker_module
-    from courtload.worker import CourtLoadWorker
+    import courtlens.services.live as service
+    import courtlens.services.live_provider as provider_module
+    import courtlens.worker as worker_module
+    from courtlens.worker import CourtLensWorker
 
     job_started = Event()
     release_job = Event()
@@ -339,7 +339,7 @@ def test_blocking_pipeline_cannot_stop_live_observations(live_engine, monkeypatc
     real_poll = service.poll_once
     monkeypatch.setattr(service, "poll_once", lambda e, p: real_poll(e, p, now=NOW))
     monkeypatch.setattr(worker_module.signal, "signal", lambda *a: None)
-    worker = CourtLoadWorker("b31-blocking-pipeline")
+    worker = CourtLensWorker("b31-blocking-pipeline")
     worker.settings = worker.settings.model_copy(update={"live_enabled": True})
     monkeypatch.setattr(worker, "startup", lambda: None)
     monkeypatch.setattr(worker, "_is_refresh_due", lambda: False)

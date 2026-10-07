@@ -8,20 +8,20 @@ import pytest
 from pydantic import ValidationError
 from test_narrative_check import result as numeric_result
 
-from courtload.config import Settings
-from courtload.domain.assistant_agent import AgentSource, AgentTurnResponse, StoredTurnRecord
-from courtload.domain.conversation import ConversationContext
-from courtload.domain.hybrid_assistant import (
+from courtlens.config import Settings
+from courtlens.domain.assistant_agent import AgentSource, AgentTurnResponse, StoredTurnRecord
+from courtlens.domain.conversation import ConversationContext
+from courtlens.domain.hybrid_assistant import (
     AnswerAction,
     HybridTurnRequest,
     HybridTurnResponse,
     TextBlock,
 )
-from courtload.services.assistant.agent import loop
-from courtload.services.assistant.agent.history import MAX_HISTORY_CHARS, compact_history
-from courtload.services.assistant.agent.prompt import build_prompt
-from courtload.services.assistant.agent.provenance import check_provenance
-from courtload.services.assistant.agent.providers.base import (
+from courtlens.services.assistant.agent import loop
+from courtlens.services.assistant.agent.history import MAX_HISTORY_CHARS, compact_history
+from courtlens.services.assistant.agent.prompt import build_prompt
+from courtlens.services.assistant.agent.provenance import check_provenance
+from courtlens.services.assistant.agent.providers.base import (
     AgentStep,
     Citation,
     ProviderFailure,
@@ -29,9 +29,9 @@ from courtload.services.assistant.agent.providers.base import (
     ToolResult,
     Usage,
 )
-from courtload.services.assistant.agent.providers.replay import RecordedStep, ReplayProvider
-from courtload.services.assistant.agent.tools import DispatchedTool
-from courtload.services.workbench_analytics import canonical_hash
+from courtlens.services.assistant.agent.providers.replay import RecordedStep, ReplayProvider
+from courtlens.services.assistant.agent.tools import DispatchedTool
+from courtlens.services.workbench_analytics import canonical_hash
 
 TODAY = date(2026, 10, 7)
 SCOPE = ConversationContext(release_id="fixture-release", season="2025-26")
@@ -337,7 +337,7 @@ def test_provider_busy_retries_once_and_counts_failed_attempt(setup_loop):
 
 
 def test_provider_quota_returns_readable_limited_failure(setup_loop, monkeypatch):
-    monkeypatch.setattr("courtload.services.assistant.agent.limited.rule_plan", lambda *args: None)
+    monkeypatch.setattr("courtlens.services.assistant.agent.limited.rule_plan", lambda *args: None)
     answer = run(Scripted(ProviderFailure("provider_quota", 60)), setup_loop).response
     assert answer.mode == "limited" and answer.status == "failed"
     assert answer.failure == "provider_quota" and answer.retry_after == 60
@@ -600,7 +600,7 @@ def test_adapter_that_ignores_timeout_is_supervised_and_late_work_cannot_stream(
             finally:
                 finished.set()
 
-    monkeypatch.setattr("courtload.services.assistant.agent.limited.rule_plan", lambda *args: None)
+    monkeypatch.setattr("courtlens.services.assistant.agent.limited.rule_plan", lambda *args: None)
     start = monotonic()
     try:
         outcome = run(

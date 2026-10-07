@@ -69,7 +69,7 @@ describe("player-comparison (F24 PvP and Multi-Player Comparison)", () => {
     },
     aligned_metrics: mockAlignedMetrics,
     no_forced_winner_notice:
-      "CourtLoad displays aligned empirical distributions and descriptive differences. We never invent a winner probability or automated start/sit decision from overlapping ranges.",
+      "CourtLens displays aligned empirical distributions and descriptive differences. We never invent a winner probability or automated start/sit decision from overlapping ranges.",
     warnings: []
   };
 

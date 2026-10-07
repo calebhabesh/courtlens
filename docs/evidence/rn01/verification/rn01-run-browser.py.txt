@@ -1,0 +1,29 @@
+import os
+import shutil
+import sys
+import subprocess
+import tempfile
+from pathlib import Path
+root = Path('/home/ethioking/dev/nba-analytics')
+with tempfile.TemporaryDirectory(prefix='courtlens-rn01-browser-') as tmp:
+    target = Path(tmp) / 'dashboard'
+    (Path(tmp) / 'docs').symlink_to(root / 'docs', target_is_directory=True)
+    names = subprocess.check_output(['git', 'ls-files', '--cached', '--others', '--exclude-standard', 'dashboard'], cwd=root, text=True).splitlines()
+    for name in set(names):
+        source = root / name
+        if not source.is_file():
+            continue
+        dest = Path(tmp) / name
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(source, dest)
+    (target / 'node_modules').symlink_to(root / 'dashboard/node_modules', target_is_directory=True)
+    p = target / 'playwright.config.ts'
+    p.write_text(p.read_text().replace('3100', '3111').replace('4100', '4111'))
+    p = target / 'next.config.ts'
+    p.write_text(p.read_text().replace('root: process.cwd()', 'root: "/"'))
+    p = target / 'e2e/mock-api.mjs'
+    p.write_text(p.read_text().replace('4100', '4111'))
+    result = subprocess.run(['npm', 'run', 'test:browser', '--', *sys.argv[1:]], cwd=target, env=dict(os.environ))
+    if result.returncode:
+        shutil.copytree(target / 'test-results', root / 'dashboard/test-results/rn01', dirs_exist_ok=True)
+    raise SystemExit(result.returncode)

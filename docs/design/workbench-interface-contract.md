@@ -1,4 +1,4 @@
-# CourtLoad workbench interface contract
+# CourtLens workbench interface contract
 
 Status: prescribed next-release behavior, 2026-10-01. Parent: [implementation handoff](../workbench-implementation-plan.md). These are requirements, not screenshots of completed work.
 
@@ -10,9 +10,9 @@ Desktop starting dimensions: 208–224 px rail, 56 px top bar, 16–20 px page p
 
 ```text
 ┌──────────────┬──────────────────────────────────────────────────────────┐
-│ CourtLoad    │ Season · Phase · Before date · Window   Source / Refresh│
+│ CourtLens    │ Season · Phase · Before date · Window   Source / Refresh│
 │              ├──────────────────────────────────────────────────────────┤
-│ Research     │ Player / team search                Ask CourtLoad      │
+│ Research     │ Player / team search                Ask CourtLens      │
 │ Players      │ Coverage · Finalized games · Data age · Model policy   │
 │ Teams        ├─────────────────────────┬────────────────────────────────┤
 │ Compare      │ Player trends           │ Team research                  │
@@ -53,7 +53,7 @@ Propagate `releaseId`, `season`, `phase`, `beforeDate`, `window` and filters thr
 
 Before date means game dates strictly earlier than the displayed date in `America/New_York`. Show last included date and sample size. Avoid a generic As of label that hides whether the chosen day is included. Separate acquisition time from outcome coverage.
 
-Support keyboard player-name search, full table browsing and explicit filter controls. Desktop row actions remain visible on focus as well as hover. The optional Ask CourtLoad panel sits beside ordinary search and produces result cards, not a compulsory conversation funnel. The query/result card opens the equivalent explorer view.
+Support keyboard player-name search, full table browsing and explicit filter controls. Desktop row actions remain visible on focus as well as hover. The optional Ask CourtLens panel sits beside ordinary search and produces result cards, not a compulsory conversation funnel. The query/result card opens the equivalent explorer view.
 
 At season rollover, show the upcoming season as a valid empty outcome dataset and an explicitly labeled Last completed season context action. Do not silently substitute last-season numbers under the current-season heading. Players can still be discovered through the identity dimension when current-season game rows are absent.
 
@@ -71,7 +71,7 @@ Set dark native-control color scheme at the root and render it consistently on t
 | `--border` | `#2a3340` | Panel separation |
 | `--text` | `#edf1f7` | Primary text |
 | `--text-muted` | `#a3afbf` | Secondary text and labels |
-| `--accent` | `#ff7a2f` | CourtLoad mark, active controls and primary action |
+| `--accent` | `#ff7a2f` | CourtLens mark, active controls and primary action |
 | `--on-accent` | `#0b0d10` | Text on orange |
 | `--positive` | `#60d394` | Success with text/icon |
 | `--warning` | `#ffd166` | Partial/stale with text/icon |

@@ -9,13 +9,13 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 from sqlalchemy.pool import StaticPool
 
-from courtload.database import Base
-from courtload.services.workbench_backfill import (
+from courtlens.database import Base
+from courtlens.services.workbench_backfill import (
     execute_backfill_batch,
     get_backfill_status,
     verify_player_career_completeness,
 )
-from courtload.workbench_models import (
+from courtlens.workbench_models import (
     WorkbenchDataset,
     WorkbenchPlayerDraft,
     WorkbenchPlayerGame,
@@ -106,9 +106,9 @@ def test_execute_backfill_batch_resumption(memory_session: Session, tmp_path: Pa
         return mock_ds
 
     with (
-        patch("courtload.services.workbench_backfill.acquire_season_assets") as mock_acquire,
+        patch("courtlens.services.workbench_backfill.acquire_season_assets") as mock_acquire,
         patch(
-            "courtload.services.workbench_backfill.import_workbench_data", side_effect=mock_import
+            "courtlens.services.workbench_backfill.import_workbench_data", side_effect=mock_import
         ),
     ):
         mock_acquire.return_value = {"status": "acquired_mock"}

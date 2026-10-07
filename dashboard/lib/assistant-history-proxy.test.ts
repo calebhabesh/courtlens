@@ -25,7 +25,7 @@ describe("durable assistant proxy trust boundary", () => {
     expect(fetch).not.toHaveBeenCalled();
   });
   it("forwards same-origin writes with server credentials and no redirects", async () => {
-    vi.stubEnv("COURTLOAD_OPERATOR_TOKEN", "fixture-private-token");
+    vi.stubEnv("COURTLENS_OPERATOR_TOKEN", "fixture-private-token");
     const fetch = vi.fn().mockResolvedValue(Response.json({ cleared: true })); vi.stubGlobal("fetch", fetch);
     const response = await DELETE(incoming(`threads/${id}`, "DELETE", "http://localhost:3000"), context(["threads", id]));
     expect(response.status).toBe(200);
@@ -46,7 +46,7 @@ describe("durable assistant proxy trust boundary", () => {
 describe("AR05 streamed turn proxy", () => {
   const stream = (text: string) => new ReadableStream<Uint8Array>({ start(controller) { controller.enqueue(new TextEncoder().encode(text)); controller.close(); } });
   it("passes a same-origin event stream through with server credentials", async () => {
-    vi.stubEnv("COURTLOAD_OPERATOR_TOKEN", "fixture-private-token");
+    vi.stubEnv("COURTLENS_OPERATOR_TOKEN", "fixture-private-token");
     const frames = 'event: phase\ndata: {"event":"phase","phase":"understanding"}\n\n';
     const fetch = vi.fn().mockResolvedValue(new Response(stream(frames), { headers: { "Content-Type": "text/event-stream" } })); vi.stubGlobal("fetch", fetch);
     const response = await POST(incoming("turn/stream", "POST", "http://localhost:3000", "{}"), context(["turn", "stream"]));

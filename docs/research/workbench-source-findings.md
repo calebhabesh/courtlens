@@ -1,3 +1,5 @@
+CourtLoad was renamed to CourtLens on 2026-10-07; identifiers below are historical.
+
 # Fresh-data, preseason, portraits and AI source findings
 
 Checked 2026-10-01 for the [workbench plan](../workbench-implementation-plan.md). This is a bounded source investigation and code audit, not an end-to-end ingestion benchmark. Sampled downloads were checked for fields/coverage; full CourtLoad normalization, reconciliation and in-season reliability remain implementation gates.

@@ -12,11 +12,11 @@ from fastapi.testclient import TestClient
 from sqlalchemy import create_engine, select
 from sqlalchemy.orm import Session
 
-from courtload.api.app import create_app
-from courtload.config import get_settings
-from courtload.database import get_db
-from courtload.models import new_uuid
-from courtload.workbench_models import (
+from courtlens.api.app import create_app
+from courtlens.config import get_settings
+from courtlens.database import get_db
+from courtlens.models import new_uuid
+from courtlens.workbench_models import (
     WorkbenchDataset,
     WorkbenchLineupStint,
     WorkbenchObservation,
@@ -30,7 +30,7 @@ pytestmark = pytest.mark.postgres
 
 @pytest.fixture
 def fixture_api() -> Iterator[tuple[TestClient, Session, dict, list[WorkbenchLineupStint]]]:
-    url = os.getenv("COURTLOAD_TEST_POSTGRES_URL") or get_settings().database_url
+    url = os.getenv("COURTLENS_TEST_POSTGRES_URL") or get_settings().database_url
     if not url.startswith("postgresql"):
         pytest.skip("PostgreSQL required")
     engine = create_engine(url)
@@ -243,7 +243,7 @@ def test_schema_scope_and_query_bounds(fixture_api: tuple, monkeypatch: pytest.M
         client.post("/api/workbench/operations/on-off", json=dict(payload, apart=["b"])).status_code
         == 422
     )
-    monkeypatch.setattr("courtload.services.on_off.MAX_STINTS", 1)
+    monkeypatch.setattr("courtlens.services.on_off.MAX_STINTS", 1)
     result = client.post("/api/workbench/operations/wowy", json=payload)
     assert result.status_code == 422
     assert result.json()["detail"]["reason"] == "query_bound_exceeded"

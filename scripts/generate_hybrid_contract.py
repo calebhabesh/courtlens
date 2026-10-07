@@ -5,7 +5,7 @@ import json
 from pathlib import Path
 from typing import Any
 
-from courtload.domain.hybrid_assistant import (
+from courtlens.domain.hybrid_assistant import (
     DurableThreadHeader,
     DurableTurnRecord,
     HybridTurnRequest,
@@ -102,7 +102,7 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--check", action="store_true")
     args = parser.parse_args()
-    from courtload.domain.assistant_agent import (
+    from courtlens.domain.assistant_agent import (
         AgentHistoryPage,
         AgentStreamEvent,
         AgentTurnResponse,

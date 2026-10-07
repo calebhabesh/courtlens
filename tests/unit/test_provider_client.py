@@ -3,8 +3,8 @@ from __future__ import annotations
 import httpx
 import pytest
 
-from courtload.ingestion.client import BalldontlieClient
-from courtload.ingestion.errors import (
+from courtlens.ingestion.client import BalldontlieClient
+from courtlens.ingestion.errors import (
     ProviderAuthenticationError,
     ProviderEntitlementError,
     ProviderRateLimitError,

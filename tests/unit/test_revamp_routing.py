@@ -9,16 +9,16 @@ from uuid import uuid4
 import pytest
 from pydantic import ValidationError
 
-from courtload.domain.conversation import AnalysisPlan, OperationStep
-from courtload.domain.hybrid_assistant import GENERAL_LABEL, HybridTurnRequest, TextBlock
-from courtload.services.assistant.hybrid import route_intent, run_hybrid_turn
-from courtload.services.assistant.knowledge import registry
-from courtload.services.assistant.planner import (
+from courtlens.domain.conversation import AnalysisPlan, OperationStep
+from courtlens.domain.hybrid_assistant import GENERAL_LABEL, HybridTurnRequest, TextBlock
+from courtlens.services.assistant.hybrid import route_intent, run_hybrid_turn
+from courtlens.services.assistant.knowledge import registry
+from courtlens.services.assistant.planner import (
     GENERAL_PROMPT,
     GeminiPlanProvider,
     PlanningOutput,
 )
-from courtload.services.assistant.revamp_evaluation import load_corpus, score_answer
+from courtlens.services.assistant.revamp_evaluation import load_corpus, score_answer
 
 
 @pytest.mark.parametrize(

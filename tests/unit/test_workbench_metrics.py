@@ -1,10 +1,10 @@
-"""Unit tests for the versioned CourtLoad metric catalog and canonical formulas."""
+"""Unit tests for the versioned CourtLens metric catalog and canonical formulas."""
 
 from __future__ import annotations
 
 import pytest
 
-from courtload.domain.metrics import (
+from courtlens.domain.metrics import (
     METRIC_CATALOG,
     METRIC_CATALOG_VERSION,
     compute_legacy_fantasy_score,

@@ -1,3 +1,5 @@
+CourtLoad was renamed to CourtLens on 2026-10-07; identifiers below are historical.
+
 # CourtLoad: zero-cost data-source research
 
 Checked **2026-09-20**. This is planning evidence, not a completed provider-validation report. The owner requires no new spending and accepts a historical replay baseline. Public hosting is optional.

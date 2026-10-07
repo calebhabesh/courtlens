@@ -10,8 +10,8 @@ from uuid import uuid4
 import pytest
 from pydantic import ValidationError
 
-from courtload.domain.conversation import ConversationContext, OperationStep
-from courtload.domain.hybrid_assistant import (
+from courtlens.domain.conversation import ConversationContext, OperationStep
+from courtlens.domain.hybrid_assistant import (
     AnswerAction,
     DurableTurnRecord,
     HybridTurnRequest,
@@ -20,17 +20,17 @@ from courtload.domain.hybrid_assistant import (
     ResultBlock,
     claim_text,
 )
-from courtload.services.assistant.defaults import (
+from courtlens.services.assistant.defaults import (
     CalendarUnavailable,
     ScopeClarification,
     last_completed_season,
     resolve_scope,
 )
-from courtload.services.assistant.hybrid import route_intent, run_hybrid_turn
-from courtload.services.assistant.knowledge import registry
-from courtload.services.assistant.qualification import pg_label_supported, qualify_apg
-from courtload.services.assistant.rendering import render_result
-from courtload.services.workbench_analytics import ResolvedContext, canonical_hash
+from courtlens.services.assistant.hybrid import route_intent, run_hybrid_turn
+from courtlens.services.assistant.knowledge import registry
+from courtlens.services.assistant.qualification import pg_label_supported, qualify_apg
+from courtlens.services.assistant.rendering import render_result
+from courtlens.services.workbench_analytics import ResolvedContext, canonical_hash
 
 
 @pytest.fixture
@@ -272,7 +272,7 @@ def test_frozen_holdout_router():
 
 def test_database_failure_does_not_become_provider_failure():
     with patch(
-        "courtload.services.assistant.hybrid.resolve_workbench_context",
+        "courtlens.services.assistant.hybrid.resolve_workbench_context",
         side_effect=RuntimeError("secret"),
     ):
         answer = run_hybrid_turn(
@@ -290,7 +290,7 @@ def test_blank_and_extra_numerical_provider_payload_rejected():
 
 
 def test_external_candidate_requires_exact_verified_tuple():
-    from courtload.domain.hybrid_assistant import (
+    from courtlens.domain.hybrid_assistant import (
         AnswerSource,
         ExternalClaimBlock,
         SourceFact,

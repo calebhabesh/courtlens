@@ -7,11 +7,11 @@ import pytest
 import test_b23_api
 from sqlalchemy import select
 
-from courtload.domain.research_registration import ResearchProtocol
-from courtload.evaluation.research_readiness import input_inventory
-from courtload.evaluation.research_registration import load_document
-from courtload.models import new_uuid
-from courtload.workbench_models import WorkbenchSchedule, WorkbenchTeamGame, allow_admin_mutation
+from courtlens.domain.research_registration import ResearchProtocol
+from courtlens.evaluation.research_readiness import input_inventory
+from courtlens.evaluation.research_registration import load_document
+from courtlens.models import new_uuid
+from courtlens.workbench_models import WorkbenchSchedule, WorkbenchTeamGame, allow_admin_mutation
 
 fixture_api = test_b23_api.fixture_api
 shooting_api = test_b23_api.shooting_api

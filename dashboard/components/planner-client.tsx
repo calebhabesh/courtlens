@@ -34,8 +34,8 @@ function plannerCandidates(players: PrivatePlayer[]): LookupItem[] {
 }
 
 export function PlannerClient({ fixtureMode }: { fixtureMode: boolean }) {
-  const [email, setEmail] = useState(fixtureMode ? "demo@courtload.dev" : "");
-  const [password, setPassword] = useState(fixtureMode ? "CourtLoad-demo-2026" : "");
+  const [email, setEmail] = useState(fixtureMode ? "demo@courtlens.dev" : "");
+  const [password, setPassword] = useState(fixtureMode ? "CourtLens-demo-2026" : "");
   const [token, setToken] = useState("");
   const [leagues, setLeagues] = useState<League[]>([]);
   const [leagueId, setLeagueId] = useState("");

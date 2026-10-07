@@ -1,4 +1,4 @@
-# B25 external bindings and CourtLoad preregistration v1
+# B25 external bindings and CourtLens preregistration v1
 
 Registered 2026-10-03. Parent: [replica analytical contract](replica-analytics-contract.md), B25. Preserve [points-v1](points-forecast-protocol.md), retained experiments and publication independently.
 
@@ -50,20 +50,20 @@ A metadata-valid declaration is **not** admitted data: B26/later import must ver
 From the repository root:
 
 ```bash
-.venv/bin/python -m courtload.evaluation.research_registration \
+.venv/bin/python -m courtlens.evaluation.research_registration \
   evaluation/research/protocols/courtload-rapm-v1.json
 
 # Explicit offline retention; an existing changed artifact is never overwritten.
-.venv/bin/python -m courtload.evaluation.research_registration \
+.venv/bin/python -m courtlens.evaluation.research_registration \
   evaluation/research/protocols/courtload-rapm-v1.json \
   --retain-under data/artifacts/research-registration
 
 # After independent source admission and exposure audit, validate binding declarations.
-.venv/bin/python -m courtload.evaluation.research_registration \
+.venv/bin/python -m courtlens.evaluation.research_registration \
   evaluation/research/protocols/courtload-rapm-v1.json --binding /path/to/binding.json
 
 # External metadata requires two explicit exclusive boundaries; blocked declarations exit 2.
-.venv/bin/python -m courtload.evaluation.research_registration \
+.venv/bin/python -m courtlens.evaluation.research_registration \
   /path/to/external-output.json --external \
   --before-date 2026-10-04 --known-before 2026-10-04T04:00:00+00:00
 

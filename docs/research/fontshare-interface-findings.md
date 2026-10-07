@@ -1,3 +1,5 @@
+CourtLoad was renamed to CourtLens on 2026-10-07; identifiers below are historical.
+
 # Fontshare candidates for the dense CourtLoad interface
 
 Checked 2026-10-01. Font choice remains optional and deferred until the layout and analytical workflows are settled. This is evidence for a later selection, not a chosen design system. Only this research document was added; no application assets, font installation, mockups, or interface code were created.

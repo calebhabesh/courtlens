@@ -15,7 +15,7 @@ install-dashboard:
 	npm --prefix dashboard install
 
 dev:
-	uvicorn courtload.api.app:create_app --factory --reload
+	uvicorn courtlens.api.app:create_app --factory --reload
 
 up:
 	docker compose up --build -d db migrate api dashboard
@@ -27,16 +27,16 @@ migrate:
 	alembic upgrade head
 
 seed:
-	courtload seed-demo --reset
+	courtlens seed-demo --reset
 
 acquire:
-	courtload acquire-archive
+	courtlens acquire-archive
 
 import:
-	courtload import-archive
+	courtlens import-archive
 
 publish:
-	courtload publish-archive
+	courtlens publish-archive
 
 backup:
 	./scripts/backup.sh
@@ -45,16 +45,16 @@ restore:
 	./scripts/restore.sh
 
 verify-restore:
-	courtload verify-restore
+	courtlens verify-restore
 
 benchmark:
 	python scripts/benchmark_api.py
 
 evaluate:
-	courtload evaluate --config evaluation/config/baseline-v1.yaml --dataset evaluation/manifests/accepted-archive-v1.json
+	courtlens evaluate --config evaluation/config/baseline-v1.yaml --dataset evaluation/manifests/accepted-archive-v1.json
 
 evaluate-final:
-	OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 courtload evaluate-final --baseline-run 3cf4ae8eb331ac02d3b3 --open-final-test
+	OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 courtlens evaluate-final --baseline-run 3cf4ae8eb331ac02d3b3 --open-final-test
 
 ASSISTANT_EVAL_ARGS ?=
 eval-assistant:
@@ -65,7 +65,7 @@ test: test-python
 	PW_CHROMIUM_PATH=$$(command -v chromium) npm --prefix dashboard run test:browser
 
 test-python:
-	pytest --cov=courtload --cov-report=term-missing
+	pytest --cov=courtlens --cov-report=term-missing
 
 lint:
 	ruff check .
@@ -73,7 +73,7 @@ lint:
 	npm --prefix dashboard run lint
 
 typecheck:
-	mypy src/courtload
+	mypy src/courtlens
 	npm --prefix dashboard run typecheck
 
 dbt-build:

@@ -5,16 +5,16 @@ SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 REPO_ROOT=$(CDPATH= cd -- "$SCRIPT_DIR/.." && pwd)
 
 if [ -f "$REPO_ROOT/.env" ]; then
-  COURTLOAD_DASHBOARD_PORT="${COURTLOAD_DASHBOARD_PORT:-$(grep -E '^COURTLOAD_DASHBOARD_PORT=' "$REPO_ROOT/.env" | cut -d= -f2- | tr -d ' "\r')}"
-  COURTLOAD_DASHBOARD_HOST="${COURTLOAD_DASHBOARD_HOST:-$(grep -E '^COURTLOAD_DASHBOARD_HOST=' "$REPO_ROOT/.env" | cut -d= -f2- | tr -d ' "\r')}"
-  COURTLOAD_API_PORT="${COURTLOAD_API_PORT:-$(grep -E '^COURTLOAD_API_PORT=' "$REPO_ROOT/.env" | cut -d= -f2- | tr -d ' "\r')}"
+  COURTLENS_DASHBOARD_PORT="${COURTLENS_DASHBOARD_PORT:-$(grep -E '^COURTLENS_DASHBOARD_PORT=' "$REPO_ROOT/.env" | cut -d= -f2- | tr -d ' "\r')}"
+  COURTLENS_DASHBOARD_HOST="${COURTLENS_DASHBOARD_HOST:-$(grep -E '^COURTLENS_DASHBOARD_HOST=' "$REPO_ROOT/.env" | cut -d= -f2- | tr -d ' "\r')}"
+  COURTLENS_API_PORT="${COURTLENS_API_PORT:-$(grep -E '^COURTLENS_API_PORT=' "$REPO_ROOT/.env" | cut -d= -f2- | tr -d ' "\r')}"
 fi
 
-DASHBOARD_HOST="${COURTLOAD_DASHBOARD_HOST:-127.0.0.1}"
-DASHBOARD_PORT="${COURTLOAD_DASHBOARD_PORT:-3000}"
-API_PORT="${COURTLOAD_API_PORT:-8000}"
-PUBLIC_API_URL="${NEXT_PUBLIC_COURTLOAD_API_URL:-http://localhost:$API_PORT}"
-INTERNAL_API_URL="${COURTLOAD_API_INTERNAL_URL:-http://127.0.0.1:$API_PORT}"
+DASHBOARD_HOST="${COURTLENS_DASHBOARD_HOST:-127.0.0.1}"
+DASHBOARD_PORT="${COURTLENS_DASHBOARD_PORT:-3000}"
+API_PORT="${COURTLENS_API_PORT:-8000}"
+PUBLIC_API_URL="${NEXT_PUBLIC_COURTLENS_API_URL:-http://localhost:$API_PORT}"
+INTERNAL_API_URL="${COURTLENS_API_INTERNAL_URL:-http://127.0.0.1:$API_PORT}"
 
 if ! command -v node >/dev/null 2>&1 || ! command -v npm >/dev/null 2>&1; then
   echo "Error: Node.js and npm are required for the dashboard." >&2
@@ -50,16 +50,16 @@ fi
 
 if ! port_is_available; then
   echo "Error: Dashboard port $DASHBOARD_PORT is already in use." >&2
-  echo "Stop the existing process or choose an explicit COURTLOAD_DASHBOARD_PORT." >&2
+  echo "Stop the existing process or choose an explicit COURTLENS_DASHBOARD_PORT." >&2
   echo "Use the same value when starting the backend so CORS remains aligned." >&2
   exit 1
 fi
 
-echo "Starting CourtLoad dashboard reload mode at http://localhost:$DASHBOARD_PORT..."
+echo "Starting CourtLens dashboard reload mode at http://localhost:$DASHBOARD_PORT..."
 echo "Browser API: $PUBLIC_API_URL"
 
-export COURTLOAD_API_INTERNAL_URL="$INTERNAL_API_URL"
-export NEXT_PUBLIC_COURTLOAD_API_URL="$PUBLIC_API_URL"
+export COURTLENS_API_INTERNAL_URL="$INTERNAL_API_URL"
+export NEXT_PUBLIC_COURTLENS_API_URL="$PUBLIC_API_URL"
 export NEXT_PUBLIC_DEMO_MODE="${NEXT_PUBLIC_DEMO_MODE:-true}"
 
 exec npm --prefix "$REPO_ROOT/dashboard" run dev -- \

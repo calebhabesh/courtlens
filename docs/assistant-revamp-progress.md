@@ -1,3 +1,5 @@
+CourtLoad was renamed to CourtLens on 2026-10-07; identifiers below are historical.
+
 # CourtLens assistant revamp progress
 
 Parent: [assistant revamp handoff](assistant-revamp-plan.md). Plans are not runtime evidence.

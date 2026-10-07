@@ -1,6 +1,6 @@
 import pytest
 
-from courtload.domain.matching import MatchPlayer, expand_slots, maximum_weight_matching
+from courtlens.domain.matching import MatchPlayer, expand_slots, maximum_weight_matching
 
 
 def test_matching_maximizes_cardinality_before_weight() -> None:

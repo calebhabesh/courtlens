@@ -4,8 +4,8 @@ import json
 from pathlib import Path
 from uuid import uuid4
 
-from courtload.api.routers.research import research_artifact_root
-from courtload.ingestion.sportsdataverse import hash_file
+from courtlens.api.routers.research import research_artifact_root
+from courtlens.ingestion.sportsdataverse import hash_file
 
 
 def fixture_run(root: Path) -> str:

@@ -7,12 +7,12 @@ import pytest
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
-from courtload.demo import fixture_documents
-from courtload.ingestion.client import FetchedPage
-from courtload.ingestion.errors import ProviderSchemaError
-from courtload.ingestion.loader import IngestionService
-from courtload.ingestion.raw_store import RawStore
-from courtload.models import Game, IngestionRun, PlayerGame, RawObject
+from courtlens.demo import fixture_documents
+from courtlens.ingestion.client import FetchedPage
+from courtlens.ingestion.errors import ProviderSchemaError
+from courtlens.ingestion.loader import IngestionService
+from courtlens.ingestion.raw_store import RawStore
+from courtlens.models import Game, IngestionRun, PlayerGame, RawObject
 
 
 def test_fixture_load_is_idempotent_and_keeps_raw_lineage(session: Session, tmp_path) -> None:  # type: ignore[no-untyped-def]

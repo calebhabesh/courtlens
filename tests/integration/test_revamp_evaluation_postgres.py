@@ -6,8 +6,8 @@ from unittest.mock import patch
 from sqlalchemy import select
 from test_conversation_postgres import postgres_conversation as _postgres_fixture
 
-from courtload.services.assistant.revamp_evaluation import expected_answer, sql_rows
-from courtload.workbench_models import ForecastIssuance, ModelPolicyActivation, WorkbenchPlayerGame
+from courtlens.services.assistant.revamp_evaluation import expected_answer, sql_rows
+from courtlens.workbench_models import ForecastIssuance, ModelPolicyActivation, WorkbenchPlayerGame
 
 postgres_conversation = _postgres_fixture
 
@@ -41,7 +41,7 @@ def test_oracle_denominators_nulls_absence_and_strict_cutoff(postgres_conversati
         )
     session.commit()
     with patch(
-        "courtload.services.assistant.operations.execute_operation",
+        "courtlens.services.assistant.operations.execute_operation",
         side_effect=AssertionError("Oracle must not execute an assistant operation"),
     ):
         row = next(r for r in sql_rows(session, context) if r["player_id"] == "1630567")

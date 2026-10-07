@@ -6,7 +6,7 @@ import pytest
 from sqlalchemy.dialects import postgresql, sqlite
 from typer.testing import CliRunner
 
-from courtload.cli import _drop_dbt_schemas, app
+from courtlens.cli import _drop_dbt_schemas, app
 
 
 def test_drop_dbt_schemas_removes_postgres_layers_in_dependency_order() -> None:
@@ -47,7 +47,7 @@ def test_acquire_archive_command(tmp_path: Path, monkeypatch: pytest.MonkeyPatch
     )
 
     monkeypatch.setattr(
-        "courtload.cli.acquire_archive",
+        "courtlens.cli.acquire_archive",
         lambda dest, local_source=None: fake_manifest,
     )
 

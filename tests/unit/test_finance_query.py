@@ -6,9 +6,9 @@ from uuid import uuid4
 import pytest
 from test_finance_import import NOW, bundle, identity, row
 
-from courtload.domain.finance_query import FinanceQuery
-from courtload.services.finance_import import admit_bundle, release_rows
-from courtload.services.finance_query import finance_query
+from courtlens.domain.finance_query import FinanceQuery
+from courtlens.services.finance_import import admit_bundle, release_rows
+from courtlens.services.finance_query import finance_query
 
 
 def query(book, **changes):

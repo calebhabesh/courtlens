@@ -7,7 +7,7 @@ from pathlib import Path
 
 import pytest
 
-from courtload.ingestion.workbench_normalization import (
+from courtlens.ingestion.workbench_normalization import (
     canonical_hash,
     canonical_phase_from_game_id,
     normalize_game_id,
@@ -19,7 +19,7 @@ from courtload.ingestion.workbench_normalization import (
     reconcile_season,
     validate_stats,
 )
-from courtload.ingestion.workbench_source_config import (
+from courtlens.ingestion.workbench_source_config import (
     ADMITTED_SEASONS,
     canonical_season_name,
     player_boxscores_url,

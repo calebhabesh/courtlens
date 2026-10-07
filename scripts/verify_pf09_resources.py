@@ -91,7 +91,7 @@ def main() -> None:
     report["process_sample"] = [
         row
         for row in report["process_sample"]
-        if "8191" in row or "/tmp/courtload-pf09-real/server.js" in row
+        if "8191" in row or "/tmp/courtlens-pf09-real/server.js" in row
     ]
     (OUT / "resources.json").write_text(json.dumps(report, indent=2) + "\n")
     assert all(item["errors"] == 0 for item in report["warm"])

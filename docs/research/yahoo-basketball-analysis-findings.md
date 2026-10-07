@@ -1,3 +1,5 @@
+CourtLoad was renamed to CourtLens on 2026-10-07; identifiers below are historical.
+
 # Yahoo basketball analytical features and CourtLoad transfer opportunities
 
 Checked 2026-10-01 for the proposed CourtLoad interface and capability revamp. This is a primary-source feature investigation, not verification of a paid Yahoo account or an implementation plan. Existing [workbench milestones](../workbench-implementation-plan.md) remain pending. Proposed CourtLoad extensions below require owner decisions and their stated data gates.

@@ -20,20 +20,20 @@ import pytest
 from sqlalchemy import create_engine, delete, select
 from sqlalchemy.orm import Session
 
-from courtload.database import Base
-from courtload.domain.rich_sources import (
+from courtlens.database import Base
+from courtlens.domain.rich_sources import (
     POSSESSION_POLICY_VERSION,
 )
-from courtload.domain.stints import format_lineup_key
-from courtload.models import new_uuid
-from courtload.services.possession_warehouse import (
+from courtlens.domain.stints import format_lineup_key
+from courtlens.models import new_uuid
+from courtlens.services.possession_warehouse import (
     get_cutoff_safe_lineup_exposure,
     get_cutoff_safe_player_exposure,
     get_reconstruction_overrides,
     reconstruct_game_stints_for_game,
     record_reconstruction_override,
 )
-from courtload.workbench_models import (
+from courtlens.workbench_models import (
     WorkbenchDataset,
     WorkbenchLineup,
     WorkbenchLineupStint,
@@ -53,10 +53,10 @@ pytestmark = pytest.mark.postgres
 
 @pytest.fixture
 def db_session() -> Session:
-    url = os.getenv("COURTLOAD_TEST_POSTGRES_URL") or os.getenv("COURTLOAD_DATABASE_URL")
+    url = os.getenv("COURTLENS_TEST_POSTGRES_URL") or os.getenv("COURTLENS_DATABASE_URL")
     if not url:
-        if os.getenv("CI") or os.getenv("COURTLOAD_REQUIRE_POSTGRES_TESTS"):
-            pytest.fail("COURTLOAD_TEST_POSTGRES_URL must be configured")
+        if os.getenv("CI") or os.getenv("COURTLENS_REQUIRE_POSTGRES_TESTS"):
+            pytest.fail("COURTLENS_TEST_POSTGRES_URL must be configured")
         pytest.skip("PostgreSQL URL is not configured")
     engine = create_engine(url)
     Base.metadata.create_all(engine)
@@ -410,7 +410,7 @@ def test_reconstruction_override_registry_postgres(
         original_value=["h1", "h2", "h3", "h4", "h5"],
         override_value=["h1", "h2", "h3", "h4", "h99"],
         reason="Injury substitution correction prior to tipoff",
-        author="operator@courtload.local",
+        author="operator@courtlens.local",
     )
 
     try:
@@ -423,7 +423,7 @@ def test_reconstruction_override_registry_postgres(
         )
         assert len(active_ovs) == 1
         assert active_ovs[0].override_type == "starter_override"
-        assert active_ovs[0].author == "operator@courtload.local"
+        assert active_ovs[0].author == "operator@courtlens.local"
         assert active_ovs[0].override_value_json == ["h1", "h2", "h3", "h4", "h99"]
 
         # Sealed table protection on override table

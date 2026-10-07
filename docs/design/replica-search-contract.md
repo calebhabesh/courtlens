@@ -6,9 +6,9 @@
 
 **Lookup** discovers players, teams and application pages while typing. It uses local identity/alias metadata, returns bounded matches and is independent of game-stat aggregation or model access.
 
-**Ask CourtLoad** is a multi-turn chatbot for questions, definitions and investigations against admitted site data. Gemini interprets/refines language and proposes registered operations. CourtLoad resolves the context/entities, computes results, verifies evidence and renders answers. Optional semantic retrieval of metric definitions/methodology/aliases may help interpretation; embedding numeric rows cannot replace computation.
+**Ask CourtLens** is a multi-turn chatbot for questions, definitions and investigations against admitted site data. Gemini interprets/refines language and proposes registered operations. CourtLens resolves the context/entities, computes results, verifies evidence and renders answers. Optional semantic retrieval of metric definitions/methodology/aliases may help interpretation; embedding numeric rows cannot replace computation.
 
-The first release uses CourtLoad data/tools exclusively. Do not enable Google Search grounding or web fetching tools implicitly. Provider background knowledge is not evidence for NBA outcomes. A future explicit web mode needs its own source, cost and provenance contract. [Verified Gemini facts](../research/gemini-chatbot-findings.md)
+The first release uses CourtLens data/tools exclusively. Do not enable Google Search grounding or web fetching tools implicitly. Provider background knowledge is not evidence for NBA outcomes. A future explicit web mode needs its own source, cost and provenance contract. [Verified Gemini facts](../research/gemini-chatbot-findings.md)
 
 ## Incremental lookup API
 

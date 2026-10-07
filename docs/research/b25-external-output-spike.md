@@ -1,3 +1,5 @@
+CourtLoad was renamed to CourtLens on 2026-10-07; identifiers below are historical.
+
 # B25 external-output access spike
 
 Checked **2026-10-03 10:39:55–10:43:00 UTC**. This is a bounded source inspection, not output admission. No CSV was downloaded, ratings retained, source dataset acquired, account created or person contacted. Public HTML and three public JavaScript assets were inspected in memory; only schema/access metadata and hashes are recorded here. No model fitting occurred.

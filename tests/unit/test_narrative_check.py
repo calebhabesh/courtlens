@@ -4,8 +4,8 @@ from typing import Any
 
 import pytest
 
-from courtload.domain.conversation import EvidenceCell, OperationResult
-from courtload.domain.narrative_check import NarrativeRejected, check_narrative
+from courtlens.domain.conversation import EvidenceCell, OperationResult
+from courtlens.domain.narrative_check import NarrativeRejected, check_narrative
 
 HASH = "b" * 64
 SCOPE: dict[str, Any] = {

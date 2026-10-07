@@ -3,11 +3,11 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST(request: NextRequest) {
   try {
     const apiUrl =
-      process.env.COURTLOAD_API_INTERNAL_URL ||
-      process.env.NEXT_PUBLIC_COURTLOAD_API_URL ||
+      process.env.COURTLENS_API_INTERNAL_URL ||
+      process.env.NEXT_PUBLIC_COURTLENS_API_URL ||
       "http://localhost:8000";
     const operatorToken =
-      process.env.COURTLOAD_OPERATOR_TOKEN || "local-operator-secret-change-before-deploy";
+      process.env.COURTLENS_OPERATOR_TOKEN || "local-operator-secret-change-before-deploy";
 
     const body = await request.json();
 
@@ -31,8 +31,8 @@ export async function POST(request: NextRequest) {
 export async function GET(request: NextRequest) {
   try {
     const apiUrl =
-      process.env.COURTLOAD_API_INTERNAL_URL ||
-      process.env.NEXT_PUBLIC_COURTLOAD_API_URL ||
+      process.env.COURTLENS_API_INTERNAL_URL ||
+      process.env.NEXT_PUBLIC_COURTLENS_API_URL ||
       "http://localhost:8000";
 
     const { searchParams } = new URL(request.url);

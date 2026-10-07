@@ -1,3 +1,5 @@
+CourtLoad was renamed to CourtLens on 2026-10-07; identifiers below are historical.
+
 # CourtLoad polish freeze progress
 
 Parent: [implementation handoff](polish-freeze-implementation-plan.md). **Owner authorized PF00 on 2026-10-05; baseline recorded; PF01 query correctness, PF02 visual foundation, PF03 scoped branding, PF04 shared selection, PF05 tables, PF06 route polish, PF07a–d assistant contracts/history/retrieval/integration and PF08 threaded UI complete at their measured boundaries; PF09 accepted the bounded freeze on 2026-10-06.** Planning decisions and inspection do not establish runtime completion.

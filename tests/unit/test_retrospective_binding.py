@@ -6,10 +6,10 @@ from pathlib import Path
 
 import pytest
 
-from courtload.domain.research_registration import ResearchProtocol, RetrospectiveShotBinding
-from courtload.domain.rich_sources import compute_payload_hash
-from courtload.evaluation.research_registration import load_document
-from courtload.evaluation.research_runner import launch
+from courtlens.domain.research_registration import ResearchProtocol, RetrospectiveShotBinding
+from courtlens.domain.rich_sources import compute_payload_hash
+from courtlens.evaluation.research_registration import load_document
+from courtlens.evaluation.research_runner import launch
 
 
 def binding_payload() -> dict:

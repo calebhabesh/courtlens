@@ -15,7 +15,7 @@ from datetime import date
 
 import pytest
 
-from courtload.domain.team_analytics import (
+from courtlens.domain.team_analytics import (
     compute_defensive_rating,
     compute_dreb_pct,
     compute_efg_pct,

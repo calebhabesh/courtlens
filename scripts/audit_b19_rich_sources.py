@@ -21,13 +21,13 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
-from courtload.ingestion.sportsdataverse import hash_file
-from courtload.ingestion.workbench_normalization import (
+from courtlens.ingestion.sportsdataverse import hash_file
+from courtlens.ingestion.workbench_normalization import (
     normalize_game_id,
     parse_minutes,
     parse_schedule_file,
 )
-from courtload.ingestion.workbench_source_config import canonical_season_name
+from courtlens.ingestion.workbench_source_config import canonical_season_name
 
 AUDIT_VERSION = "b19-full-source-audit-v1"
 COUNTS = (

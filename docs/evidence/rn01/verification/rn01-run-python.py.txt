@@ -1,0 +1,22 @@
+import os
+import subprocess
+import sys
+import tempfile
+from pathlib import Path
+root = Path('/home/ethioking/dev/nba-analytics')
+with tempfile.TemporaryDirectory(prefix='courtlens-rn01-') as temp:
+    cwd = Path(temp)
+    for path in root.iterdir():
+        if (path.name.startswith('.env') and path.name != '.env.example') or path.name == 'data':
+            continue
+        (cwd / path.name).symlink_to(path, target_is_directory=path.is_dir())
+    (cwd / 'data').mkdir()
+    env = dict(os.environ)
+    env['COURTLENS_ENVIRONMENT'] = 'test'
+    env['COURTLENS_PROJECT_ROOT'] = str(root)
+    env['COURTLENS_RAW_STORE_PATH'] = str(root / 'data/raw')
+    env['COURTLENS_DATABASE_URL'] = 'sqlite+pysqlite:///:memory:'
+    env['COURTLENS_TEST_POSTGRES_URL'] = 'postgresql+psycopg://courtlens:courtlens@localhost:55432/' + os.environ.get('RN01_TEST_DATABASE', 'courtlens_test')
+    env['COURTLENS_REQUIRE_POSTGRES_TESTS'] = 'true'
+    result = subprocess.run([str(root / '.venv/bin/pytest'), *sys.argv[1:]], cwd=cwd, env=env)
+    sys.exit(result.returncode)

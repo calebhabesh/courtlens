@@ -109,7 +109,7 @@ describe("GlobalLookup data flow and invariants", () => {
 
       const item = createMockItem("1630567", "player", "Scottie Barnes", "/players/1630567");
       const targetUrl = buildPreservedContextUrl(item.destination_url, currentParams);
-      const parsed = new URL(targetUrl, "https://courtload.local");
+      const parsed = new URL(targetUrl, "https://courtlens.local");
 
       expect(parsed.pathname).toBe("/players/1630567");
       expect(parsed.searchParams.get("season")).toBe("2024-25");
@@ -127,7 +127,7 @@ describe("GlobalLookup data flow and invariants", () => {
 
       const item = createMockItem("stats", "page", "Stats", "/stats?season=2020-21");
       const targetUrl = buildPreservedContextUrl(item.destination_url, currentParams);
-      const parsed = new URL(targetUrl, "https://courtload.local");
+      const parsed = new URL(targetUrl, "https://courtlens.local");
 
       expect(parsed.pathname).toBe("/stats");
       // Explicit target param season=2020-21 must not be overridden

@@ -3,7 +3,7 @@ import type { HybridTurnResponse } from "../lib/assistant-v2.generated";
 import { waitForStreamedPage } from "./workbench-navigation";
 
 // Launched by the isolated PostgreSQL/FastAPI pytest harness, with a deterministic fixture planner.
-const release = process.env.COURTLOAD_AR07_RELEASE_ID;
+const release = process.env.COURTLENS_AR07_RELEASE_ID;
 test.skip(!release, "AR07 disposable PostgreSQL/FastAPI fixture required");
 for (const width of [1440, 375]) {
   test(`AR07 real server resolves his and this team at ${width}px`, async ({page}) => {

@@ -17,13 +17,13 @@ from uuid import uuid4
 
 from sqlalchemy import text
 
-from courtload.config import get_settings
-from courtload.database import SessionLocal
-from courtload.domain.conversation import ConversationContext
-from courtload.domain.hybrid_assistant import HybridTurnRequest, HybridTurnResponse
-from courtload.services.assistant.hybrid import run_hybrid_turn
-from courtload.services.assistant.narrative import NarrativeOutcome
-from courtload.services.assistant.planner import (
+from courtlens.config import get_settings
+from courtlens.database import SessionLocal
+from courtlens.domain.conversation import ConversationContext
+from courtlens.domain.hybrid_assistant import HybridTurnRequest, HybridTurnResponse
+from courtlens.services.assistant.hybrid import run_hybrid_turn
+from courtlens.services.assistant.narrative import NarrativeOutcome
+from courtlens.services.assistant.planner import (
     GENERAL_PROMPT,
     NARRATIVE_PROMPT,
     PLANNER_PROMPT,
@@ -31,7 +31,7 @@ from courtload.services.assistant.planner import (
     PlanningOutput,
     ProviderFailure,
 )
-from courtload.services.assistant.revamp_evaluation import (
+from courtlens.services.assistant.revamp_evaluation import (
     CORPUS,
     canonical_plan,
     expected_answer,
@@ -40,7 +40,7 @@ from courtload.services.assistant.revamp_evaluation import (
     sql_rows,
     summarize,
 )
-from courtload.services.workbench_analytics import canonical_hash, resolve_workbench_context
+from courtlens.services.workbench_analytics import canonical_hash, resolve_workbench_context
 
 FREE_EVIDENCE = Path("docs/evidence/pf07d-quota-policy/free-project.json")
 
@@ -219,20 +219,20 @@ def main() -> None:
         "implementation_sha256": {
             str(path): hashlib.sha256(path.read_bytes()).hexdigest()
             for path in (
-                Path("src/courtload/domain/hybrid_assistant.py"),
-                Path("src/courtload/domain/narrative_check.py"),
-                Path("src/courtload/services/assistant/hybrid.py"),
-                Path("src/courtload/services/assistant/narrative.py"),
-                Path("src/courtload/services/assistant/knowledge.py"),
-                Path("src/courtload/services/assistant/knowledge/guide.md"),
-                Path("src/courtload/services/assistant/planner.py"),
+                Path("src/courtlens/domain/hybrid_assistant.py"),
+                Path("src/courtlens/domain/narrative_check.py"),
+                Path("src/courtlens/services/assistant/hybrid.py"),
+                Path("src/courtlens/services/assistant/narrative.py"),
+                Path("src/courtlens/services/assistant/knowledge.py"),
+                Path("src/courtlens/services/assistant/knowledge/guide.md"),
+                Path("src/courtlens/services/assistant/planner.py"),
             )
         },
         "evaluator_sha256": {
             str(path): hashlib.sha256(path.read_bytes()).hexdigest()
             for path in (
                 Path(__file__),
-                Path("src/courtload/services/assistant/revamp_evaluation.py"),
+                Path("src/courtlens/services/assistant/revamp_evaluation.py"),
             )
         },
         "free_project_evidence_sha256": eligibility_digest,

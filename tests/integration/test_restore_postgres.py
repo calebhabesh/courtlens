@@ -8,36 +8,36 @@ import pytest
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import Session
 
-from courtload.archive_models import ArchiveDataset
-from courtload.services.assistant.saved import reproduce_saved, saved_inventory
-from courtload.services.backup_restore import (
+from courtlens.archive_models import ArchiveDataset
+from courtlens.services.assistant.saved import reproduce_saved, saved_inventory
+from courtlens.services.backup_restore import (
     create_backup_archive,
     create_backup_manifest,
     restore_backup_archive,
     verify_restored_state,
 )
-from courtload.services.replay_estimates import (
+from courtlens.services.replay_estimates import (
     EXPECTED_CALIBRATION_SHA256,
     EXPECTED_REPLAY_SHA256,
 )
-from courtload.services.replay_estimates import (
+from courtlens.services.replay_estimates import (
     RUN_ID as REGISTERED_RUN_ID,
 )
-from courtload.warehouse_models import PublishedSnapshot, ServingSnapshot, WarehouseBuild
+from courtlens.warehouse_models import PublishedSnapshot, ServingSnapshot, WarehouseBuild
 
 pytestmark = pytest.mark.postgres
 
 
 @pytest.fixture
 def postgres_session():  # type: ignore[no-untyped-def]
-    url = os.getenv("COURTLOAD_TEST_POSTGRES_URL")
+    url = os.getenv("COURTLENS_TEST_POSTGRES_URL")
     if not url:
-        if os.getenv("CI") or os.getenv("COURTLOAD_REQUIRE_POSTGRES_TESTS"):
+        if os.getenv("CI") or os.getenv("COURTLENS_REQUIRE_POSTGRES_TESTS"):
             pytest.fail(
-                "COURTLOAD_TEST_POSTGRES_URL must be configured when CI or "
-                "COURTLOAD_REQUIRE_POSTGRES_TESTS is set"
+                "COURTLENS_TEST_POSTGRES_URL must be configured when CI or "
+                "COURTLENS_REQUIRE_POSTGRES_TESTS is set"
             )
-        pytest.skip("COURTLOAD_TEST_POSTGRES_URL is not configured")
+        pytest.skip("COURTLENS_TEST_POSTGRES_URL is not configured")
     engine = create_engine(url)
     try:
         with Session(engine) as session:
@@ -262,8 +262,8 @@ def test_disposable_fresh_database_restore(postgres_session: Session, tmp_path: 
 
     disposable_db_name = f"test_disposable_{uuid4().hex[:12]}"
     url = os.getenv(
-        "COURTLOAD_TEST_POSTGRES_URL",
-        "postgresql://courtload:courtload@localhost:5432/courtload",
+        "COURTLENS_TEST_POSTGRES_URL",
+        "postgresql://courtlens:courtlens@localhost:5432/courtlens",
     )
     # Base connection engine to create/drop disposable database
     base_engine = create_engine(url, isolation_level="AUTOCOMMIT")

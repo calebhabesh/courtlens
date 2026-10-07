@@ -15,7 +15,7 @@ fs.mkdirSync(output, { recursive: true });
 const site = process.env.B35_SITE_URL || 'http://127.0.0.1:3135';
 const manifestId = new URL('/', site).href;
 const executablePath = process.env.PW_CHROMIUM_PATH || '/usr/bin/chromium';
-const sandbox = fs.mkdtempSync(path.join(os.tmpdir(), 'courtload-b35-install-'));
+const sandbox = fs.mkdtempSync(path.join(os.tmpdir(), 'courtlens-b35-install-'));
 const profile = path.join(sandbox, 'profile');
 const env = { ...process.env, XDG_DATA_HOME: path.join(sandbox, 'data'), XDG_CONFIG_HOME: path.join(sandbox, 'config'), XDG_CACHE_HOME: path.join(sandbox, 'cache') };
 for (const dir of [env.XDG_DATA_HOME, env.XDG_CONFIG_HOME, env.XDG_CACHE_HOME]) fs.mkdirSync(dir);

@@ -22,13 +22,13 @@ from uuid import UUID, uuid4
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from courtload.config import get_settings
-from courtload.database import engine
-from courtload.domain.conversation import AnalysisPlan, ConversationTurnRequest, OperationStep
-from courtload.finance_models import FinanceRelease
-from courtload.services.assistant.conversations import clear_conversation, run_conversation_turn
-from courtload.services.assistant.planner import GeminiPlanProvider
-from courtload.services.workbench_analytics import resolve_workbench_context
+from courtlens.config import get_settings
+from courtlens.database import engine
+from courtlens.domain.conversation import AnalysisPlan, ConversationTurnRequest, OperationStep
+from courtlens.finance_models import FinanceRelease
+from courtlens.services.assistant.conversations import clear_conversation, run_conversation_turn
+from courtlens.services.assistant.planner import GeminiPlanProvider
+from courtlens.services.workbench_analytics import resolve_workbench_context
 
 
 def main() -> None:

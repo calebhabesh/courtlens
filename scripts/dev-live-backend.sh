@@ -3,23 +3,23 @@ set -eu
 
 SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 REPO_ROOT=$(CDPATH= cd -- "$SCRIPT_DIR/.." && pwd)
-VENV_DIR="${COURTLOAD_VENV_DIR:-$REPO_ROOT/.venv}"
+VENV_DIR="${COURTLENS_VENV_DIR:-$REPO_ROOT/.venv}"
 PYTHON="$VENV_DIR/bin/python"
 ALEMBIC="$VENV_DIR/bin/alembic"
-COURTLOAD="$VENV_DIR/bin/courtload"
+COURTLENS="$VENV_DIR/bin/courtlens"
 UVICORN="$VENV_DIR/bin/uvicorn"
 
 if [ -f "$REPO_ROOT/.env" ]; then
-  COURTLOAD_DASHBOARD_PORT="${COURTLOAD_DASHBOARD_PORT:-$(grep -E '^COURTLOAD_DASHBOARD_PORT=' "$REPO_ROOT/.env" | cut -d= -f2- | tr -d ' "\r')}"
-  COURTLOAD_API_PORT="${COURTLOAD_API_PORT:-$(grep -E '^COURTLOAD_API_PORT=' "$REPO_ROOT/.env" | cut -d= -f2- | tr -d ' "\r')}"
-  COURTLOAD_API_HOST="${COURTLOAD_API_HOST:-$(grep -E '^COURTLOAD_API_HOST=' "$REPO_ROOT/.env" | cut -d= -f2- | tr -d ' "\r')}"
-  COURTLOAD_CORS_ORIGINS="${COURTLOAD_CORS_ORIGINS:-$(grep -E '^COURTLOAD_CORS_ORIGINS=' "$REPO_ROOT/.env" | cut -d= -f2- | tr -d '\r')}"
+  COURTLENS_DASHBOARD_PORT="${COURTLENS_DASHBOARD_PORT:-$(grep -E '^COURTLENS_DASHBOARD_PORT=' "$REPO_ROOT/.env" | cut -d= -f2- | tr -d ' "\r')}"
+  COURTLENS_API_PORT="${COURTLENS_API_PORT:-$(grep -E '^COURTLENS_API_PORT=' "$REPO_ROOT/.env" | cut -d= -f2- | tr -d ' "\r')}"
+  COURTLENS_API_HOST="${COURTLENS_API_HOST:-$(grep -E '^COURTLENS_API_HOST=' "$REPO_ROOT/.env" | cut -d= -f2- | tr -d ' "\r')}"
+  COURTLENS_CORS_ORIGINS="${COURTLENS_CORS_ORIGINS:-$(grep -E '^COURTLENS_CORS_ORIGINS=' "$REPO_ROOT/.env" | cut -d= -f2- | tr -d '\r')}"
 fi
 
-API_HOST="${COURTLOAD_API_HOST:-127.0.0.1}"
-API_PORT="${COURTLOAD_API_PORT:-8000}"
-DASHBOARD_PORT="${COURTLOAD_DASHBOARD_PORT:-3000}"
-SEED_MODE="${COURTLOAD_DEV_SEED_MODE:-if-missing}"
+API_HOST="${COURTLENS_API_HOST:-127.0.0.1}"
+API_PORT="${COURTLENS_API_PORT:-8000}"
+DASHBOARD_PORT="${COURTLENS_DASHBOARD_PORT:-3000}"
+SEED_MODE="${COURTLENS_DEV_SEED_MODE:-if-missing}"
 
 require_executable() {
   if [ ! -x "$1" ]; then
@@ -46,9 +46,9 @@ demo_account_exists() {
   "$PYTHON" <<'PY'
 from sqlalchemy import select
 
-from courtload.database import SessionLocal
-from courtload.demo import DEMO_EMAIL
-from courtload.models import User
+from courtlens.database import SessionLocal
+from courtlens.demo import DEMO_EMAIL
+from courtlens.models import User
 
 with SessionLocal() as session:
     account_id = session.scalar(select(User.id).where(User.email == DEMO_EMAIL))
@@ -56,7 +56,7 @@ raise SystemExit(0 if account_id is not None else 1)
 PY
 }
 
-for executable in "$PYTHON" "$ALEMBIC" "$COURTLOAD" "$UVICORN"; do
+for executable in "$PYTHON" "$ALEMBIC" "$COURTLENS" "$UVICORN"; do
   require_executable "$executable"
 done
 
@@ -74,13 +74,13 @@ fi
 
 if ! port_is_available; then
   echo "Error: Backend port $API_PORT is already in use." >&2
-  echo "Stop the existing process or set COURTLOAD_API_PORT for both dev helpers." >&2
+  echo "Stop the existing process or set COURTLENS_API_PORT for both dev helpers." >&2
   exit 1
 fi
 
-export COURTLOAD_ENVIRONMENT=development
-export COURTLOAD_DATABASE_URL="${COURTLOAD_DATABASE_URL:-postgresql+psycopg://courtload:courtload@localhost:5432/courtload}"
-export COURTLOAD_CORS_ORIGINS="${COURTLOAD_CORS_ORIGINS:-[\"http://localhost:$DASHBOARD_PORT\",\"http://127.0.0.1:$DASHBOARD_PORT\"]}"
+export COURTLENS_ENVIRONMENT=development
+export COURTLENS_DATABASE_URL="${COURTLENS_DATABASE_URL:-postgresql+psycopg://courtlens:courtlens@localhost:5432/courtlens}"
+export COURTLENS_CORS_ORIGINS="${COURTLENS_CORS_ORIGINS:-[\"http://localhost:$DASHBOARD_PORT\",\"http://127.0.0.1:$DASHBOARD_PORT\"]}"
 
 echo "Starting the local PostgreSQL dependency..."
 docker compose up -d --wait db
@@ -94,24 +94,24 @@ case "$SEED_MODE" in
       echo "Demo fixtures already exist; leaving the current development data intact."
     else
       echo "Loading demo fixtures into the empty development database..."
-      "$COURTLOAD" seed-demo
+      "$COURTLENS" seed-demo
     fi
     ;;
   always)
     echo "Refreshing demo fixtures without resetting the database..."
-    "$COURTLOAD" seed-demo
+    "$COURTLENS" seed-demo
     ;;
   never)
-    echo "Skipping demo fixtures because COURTLOAD_DEV_SEED_MODE=never."
+    echo "Skipping demo fixtures because COURTLENS_DEV_SEED_MODE=never."
     ;;
   *)
-    echo "Error: COURTLOAD_DEV_SEED_MODE must be if-missing, always, or never." >&2
+    echo "Error: COURTLENS_DEV_SEED_MODE must be if-missing, always, or never." >&2
     exit 1
     ;;
 esac
 
-echo "Starting CourtLoad API reload mode at http://localhost:$API_PORT..."
-exec "$UVICORN" courtload.api.app:create_app \
+echo "Starting CourtLens API reload mode at http://localhost:$API_PORT..."
+exec "$UVICORN" courtlens.api.app:create_app \
   --factory \
   --reload \
   --reload-dir "$REPO_ROOT/src" \

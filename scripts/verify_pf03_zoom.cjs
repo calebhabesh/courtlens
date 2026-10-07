@@ -9,7 +9,7 @@ const assert=require('node:assert/strict');
  await page.goto('http://127.0.0.1:3154/stats?season=2024-25&phase=regular_season&beforeDate=2025-06-30&name=Luka');
  await page.locator('.dense-stats-table tbody tr').first().waitFor();
  const original=await page.evaluate(()=>({width:innerWidth,dpr:devicePixelRatio}));
- const window=execFileSync('xdotool',['search','--onlyvisible','--name','CourtLoad']).toString().trim().split('\n').at(-1);
+ const window=execFileSync('xdotool',['search','--onlyvisible','--name','CourtLens']).toString().trim().split('\n').at(-1);
  execFileSync('xdotool',['windowfocus','--sync',window]);
  execFileSync('xdotool',['key','--clearmodifiers','ctrl+0',...Array(5).fill('ctrl+plus')]);
  await page.waitForTimeout(500);

@@ -443,10 +443,10 @@ export default async function ForecastsPage() {
               lineHeight: 1.6,
             }}
           >
-            {`courtload evaluate-points --config evaluation/config/points-v1.yaml --dataset evaluation/manifests/accepted-points-v1.json --stage validate
-courtload evaluate-points --config evaluation/config/points-v1.yaml --dataset evaluation/manifests/accepted-points-v1.json --stage calibrate
-courtload evaluate-points --registered-run ${evaluation.run_id || "b0e4bb3300011b5a3499"} --stage final --open-final-test
-courtload activate-points-policy --registered-run ${evaluation.run_id || "b0e4bb3300011b5a3499"}`}
+            {`courtlens evaluate-points --config evaluation/config/points-v1.yaml --dataset evaluation/manifests/accepted-points-v1.json --stage validate
+courtlens evaluate-points --config evaluation/config/points-v1.yaml --dataset evaluation/manifests/accepted-points-v1.json --stage calibrate
+courtlens evaluate-points --registered-run ${evaluation.run_id || "b0e4bb3300011b5a3499"} --stage final --open-final-test
+courtlens activate-points-policy --registered-run ${evaluation.run_id || "b0e4bb3300011b5a3499"}`}
           </pre>
         </div>
       )}

@@ -20,7 +20,7 @@ Operating on six complete NBA regular seasons (2019–20 through 2024–25) and 
 
 ---
 
-> **Naming:** the project was renamed from CourtLoad to CourtLens on 2026-10-06. The Python package, `courtload` CLI, `COURTLOAD_*` environment variables, database and Docker service names keep the old identifier until a separate internals rename; historical evidence keeps its original names so recorded hashes verify.
+> **Naming:** the Python package and CLI are `courtlens`, and environment variables use `COURTLENS_*`. Existing installations use `scripts/migrate_env_names.py` for the one-time environment rewrite. RN02 migrates the database and Docker volumes while retaining the old volume; historical evidence and frozen hash identifiers keep their original names.
 
 ## 1. What Is Built
 
@@ -32,7 +32,7 @@ Operating on six complete NBA regular seasons (2019–20 through 2024–25) and 
 - **Tool-Backed Analytical Assistant:** Read-only analytical assistant backed by 8 allowlisted domain functions, strict input validation, loop bounds ($\le 4$ rounds, $\le 8$ tool calls, $\le 100$ rows), numerical tolerance claim verification ($\pm 0.05$), and a zero-cost deterministic offline fixture provider.
 - **Reproducible Saved Investigations:** Persists parameterized research queries with cryptographic SHA-256 result digests, enabling one-click reproduction and JSON audit export.
 - **Dense Dark Dashboard (Next.js 15):** High-density desktop and 375px mobile layouts featuring Player Explorer, Multi-Stint Player Profiles (e.g. Pascal Siakam's TOR/IND trade split), Head-to-Head Comparisons without forced winners, Team Research, Forecasting Ledger, and Ask CourtLens AI.
-- **Complete Disaster Recovery:** Atomic backup and restore commands (`courtload backup-archive` / `courtload restore-archive`) coordinated under a PostgreSQL mutation lock, verified by automated restore testing against fresh disposable databases.
+- **Complete Disaster Recovery:** Atomic backup and restore commands (`courtlens backup-archive` / `courtlens restore-archive`) coordinated under a PostgreSQL mutation lock, verified by automated restore testing against fresh disposable databases.
 
 ---
 
@@ -101,7 +101,7 @@ flowchart TD
     end
 
     subgraph Prospective Forecasting
-        WAREHOUSE -.->|10 Chronological Folds| EVAL[courtload evaluate-points<br/>Prior Blend vs. Rolling Baselines]
+        WAREHOUSE -.->|10 Chronological Folds| EVAL[courtlens evaluate-points<br/>Prior Blend vs. Rolling Baselines]
         EVAL --> POLICY[Active Policy Registration<br/>points-v1-prior_blend]
         POLICY --> ISSUANCE[forecast_issuances<br/>Immutable Prospective Ledgers]
         ISSUANCE --> SCORING[forecast_scores<br/>DNP Injury Conditionality]
@@ -124,8 +124,8 @@ Prerequisites: Python 3.12+ (Python 3.14 tested), Node.js 20+ (Node.js 24 tested
 
 ```bash
 # 1. Clone repository and install dependencies
-git clone https://github.com/ethioking/courtload.git
-cd courtload
+git clone https://github.com/calebhabesh/courtlens.git
+cd courtlens
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -e ".[dev]"
@@ -133,20 +133,20 @@ npm --prefix dashboard install
 
 # 2. Start PostgreSQL container & run migrations
 docker compose up -d db
-courtload migrate
+courtlens migrate
 
 # 3. Bootstrap 6-season workbench dataset & build dbt marts
-courtload acquire-workbench
-courtload bootstrap-workbench
+courtlens acquire-workbench
+courtlens bootstrap-workbench
 dbt build --project-dir warehouse --profiles-dir warehouse --select tag:workbench
 
 # 4. Evaluate points forecasting & issue prospective forecasts
-courtload evaluate-points
-courtload issue-forecasts
-courtload score-forecasts
+courtlens evaluate-points
+courtlens issue-forecasts
+courtlens score-forecasts
 
 # 5. Start backend API and frontend dashboard
-courtload serve --port 8000 &
+courtlens serve --port 8000 &
 npm --prefix dashboard run dev -- -p 3000
 ```
 
@@ -154,8 +154,8 @@ Open <http://localhost:3000> in your browser.
 
 ### Optional Gemini connection
 
-Set `COURTLOAD_GEMINI_API_KEY` in the ignored root `.env` and set
-`COURTLOAD_GEMINI_MODEL` to a model your AI Studio project can access (the example
+Set `COURTLENS_GEMINI_API_KEY` in the ignored root `.env` and set
+`COURTLENS_GEMINI_MODEL` to a model your AI Studio project can access (the example
 uses the locally evaluated `gemini-3.5-flash-lite`). The owner's installation uses a Free-tier
 project. Confirm Free in Google AI Studio's Billing Tier column; CourtLens cannot enforce
 Google's billing tier. Normal usage follows Google's project/model quotas rather than a
@@ -198,17 +198,17 @@ probes, quota/capacity observations and remaining capability gates are retained 
 ```bash
 ./scripts/backup.sh
 # Bundles PostgreSQL dump, raw parquet inputs, evaluation configs, points-v1 artifacts,
-# and saved investigations into data/backups/courtload-backup-<TIMESTAMP>.tar.gz
+# and saved investigations into data/backups/courtlens-backup-<TIMESTAMP>.tar.gz
 ```
 
 ### Restore to a Target Database
 ```bash
-./scripts/restore.sh data/backups/courtload-backup-<TIMESTAMP>.tar.gz
+./scripts/restore.sh data/backups/courtlens-backup-<TIMESTAMP>.tar.gz
 ```
 
 ### Automated Restore Verification
 ```bash
-courtload verify-restore
+courtlens verify-restore
 # Verifies database relations, artifact checksums, live player profile queries, and forecast ledgers
 ```
 
@@ -233,7 +233,7 @@ courtload verify-restore
 ## 8. Repository Structure
 
 ```text
-├── src/courtload/         # Application core (API, CLI, ingestion, services, models)
+├── src/courtlens/         # Application core (API, CLI, ingestion, services, models)
 │   ├── api/               # FastAPI routers (/api/workbench/*), OpenAPI schemas
 │   ├── evaluation/        # Points forecasting runner, baselines, prior blend, calibration
 │   ├── ingestion/         # SportsDataverse parquet ingestion, streaming normalization

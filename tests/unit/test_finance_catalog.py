@@ -4,9 +4,9 @@ import pytest
 from fastapi.testclient import TestClient
 from test_finance_import import bundle, identity, row
 
-from courtload.api.app import create_app
-from courtload.database import get_db
-from courtload.services.finance_import import admit_bundle, verify_release
+from courtlens.api.app import create_app
+from courtlens.database import get_db
+from courtlens.services.finance_import import admit_bundle, verify_release
 
 
 def test_book_discovery_retains_parent_scope_and_is_read_only(session, tmp_path):
@@ -36,8 +36,8 @@ def test_book_discovery_retains_parent_scope_and_is_read_only(session, tmp_path)
 
 
 def test_book_discovery_empty_and_bound(session):
-    from courtload.finance_models import FinanceRelease
-    from courtload.services.finance_catalog import list_books
+    from courtlens.finance_models import FinanceRelease
+    from courtlens.services.finance_catalog import list_books
 
     assert list_books(session) == ()
     for index in range(101):

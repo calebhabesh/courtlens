@@ -7,8 +7,8 @@ import pytest
 from sqlalchemy import Engine
 from sqlalchemy.orm import Session
 
-from courtload.services import workbench_jobs
-from courtload.workbench_models import PlayerPortrait, WorkbenchIdentity
+from courtlens.services import workbench_jobs
+from courtlens.workbench_models import PlayerPortrait, WorkbenchIdentity
 
 
 def test_portrait_batch_reaches_players_after_cached_prefix(

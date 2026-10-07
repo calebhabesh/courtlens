@@ -1,4 +1,4 @@
-# CourtLoad reproducible evaluation protocol
+# CourtLens reproducible evaluation protocol
 
 Status: prescribed baseline experiment, 2026-09-20. Parent: [implementation handover](../implementation-plan.md). Implement after the source and warehouse gates. Numerical thresholds below are project design choices, not measured findings or universal statistical standards. Freeze them before final testing; record justified changes made before that freeze.
 
@@ -11,8 +11,8 @@ Target: reference fantasy points v1, using the exact formula/hash in the [data c
 Create a configuration such as `evaluation/config/baseline-v1.yaml` and a CLI such as:
 
 ```text
-courtload evaluate --config evaluation/config/baseline-v1.yaml --dataset <manifest>
-courtload build-replay-estimates --dataset <manifest> --policy <policy-manifest>
+courtlens evaluate --config evaluation/config/baseline-v1.yaml --dataset <manifest>
+courtlens build-replay-estimates --dataset <manifest> --policy <policy-manifest>
 ```
 
 These are interfaces to implement, not existing commands. Evaluation is offline and reads immutable artifacts. Separate development/validation and final-test stages in the CLI so an ordinary iteration does not repeatedly open the final holdout. A rerun of identical frozen code/config is reproducibility, not a new opportunity to select parameters.

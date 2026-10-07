@@ -6,8 +6,8 @@ import pytest
 import test_b21_api
 from sqlalchemy import select
 
-from courtload.models import new_uuid
-from courtload.workbench_models import (
+from courtlens.models import new_uuid
+from courtlens.workbench_models import (
     WorkbenchMatchup,
     WorkbenchPbpEvent,
     WorkbenchPossession,
@@ -225,7 +225,7 @@ def test_schema_scope_bounds_and_no_write(
         )
     post(client, "shot-profile", request)
     assert not session.new and not session.dirty
-    monkeypatch.setattr("courtload.services.shooting.MAX_ROWS", 1)
+    monkeypatch.setattr("courtlens.services.shooting.MAX_ROWS", 1)
     response = client.post("/api/workbench/operations/shot-profile", json=request)
     assert (
         response.status_code == 422

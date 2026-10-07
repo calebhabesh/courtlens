@@ -394,7 +394,7 @@ const mockPlayoffBracket = {
     matchups_gated: "B23_B24_pending",
     rotations_gated: "B19_B22_pending"
   },
-  disclaimers: ["CourtLoad strictly reports completed-game descriptive playoff facts."]
+  disclaimers: ["CourtLens strictly reports completed-game descriptive playoff facts."]
 };
 
 const mockPlayoffSeriesDetail = {
@@ -651,7 +651,7 @@ createServer(async (request, response) => {
       player_a: pA,
       player_b: pB,
       context: workbenchContext,
-      no_forced_winner_notice: "CourtLoad displays descriptive differences and prediction intervals without declaring an automated start/sit decision or forced winner.",
+      no_forced_winner_notice: "CourtLens displays descriptive differences and prediction intervals without declaring an automated start/sit decision or forced winner.",
       aligned_metrics: [
         {
           metric: "pts_per_game",
@@ -863,7 +863,7 @@ createServer(async (request, response) => {
           }
         }
       },
-      model_card_markdown: "# CourtLoad model card: basketball-points-v1 evaluation\n\nRun `b0e4bb3300011b5a3499`. Promotion Decision: **do_not_promote**.\nServing policy: `prior_blend`."
+      model_card_markdown: "# CourtLens model card: basketball-points-v1 evaluation\n\nRun `b0e4bb3300011b5a3499`. Promotion Decision: **do_not_promote**.\nServing policy: `prior_blend`."
     });
   }
   if (url.pathname === "/api/workbench/forecasts") {

@@ -9,8 +9,8 @@ from pathlib import Path
 from fastapi.testclient import TestClient
 from sqlalchemy import text
 
-from courtload.api.app import create_app
-from courtload.database import SessionLocal, get_db
+from courtlens.api.app import create_app
+from courtlens.database import SessionLocal, get_db
 
 
 def main() -> None:

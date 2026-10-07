@@ -11,14 +11,14 @@ from fastapi.testclient import TestClient
 from test_conversation_postgres import postgres_conversation as _postgres_fixture
 from test_hybrid_assistant_postgres import request as analytical_request
 
-from courtload.api.app import create_app
-from courtload.config import get_settings
-from courtload.database import get_db
-from courtload.domain.conversation import AnalysisPlan
-from courtload.domain.hybrid_assistant import HybridTurnResponse
-from courtload.services.assistant.evaluation import score_case
-from courtload.services.assistant.hybrid import run_hybrid_turn
-from courtload.services.assistant.planner import PlanningOutput
+from courtlens.api.app import create_app
+from courtlens.config import get_settings
+from courtlens.database import get_db
+from courtlens.domain.conversation import AnalysisPlan
+from courtlens.domain.hybrid_assistant import HybridTurnResponse
+from courtlens.services.assistant.evaluation import score_case
+from courtlens.services.assistant.hybrid import run_hybrid_turn
+from courtlens.services.assistant.planner import PlanningOutput
 
 postgres_conversation = _postgres_fixture
 CORPUS = Path("tests/fixtures/assistant/pf07d-hybrid-v1.json")
@@ -127,7 +127,7 @@ def test_hybrid_corpus_durable_http_manual_equivalence(postgres_conversation, ca
     def source(spec, budget):
         # Supporting records are acquired PF07c evidence, used here as fixtures;
         # this test does not claim a fresh network read.
-        from courtload.domain.hybrid_assistant import AnswerSource
+        from courtlens.domain.hybrid_assistant import AnswerSource
 
         return AnswerSource.model_validate(
             next(
@@ -137,7 +137,7 @@ def test_hybrid_corpus_durable_http_manual_equivalence(postgres_conversation, ca
             )
         )
 
-    with patch("courtload.services.assistant.hybrid.retrieve_source", side_effect=source):
+    with patch("courtlens.services.assistant.hybrid.retrieve_source", side_effect=source):
         if case.get("fixture_plan"):
             manual = run_hybrid_turn(
                 session,
@@ -152,7 +152,7 @@ def test_hybrid_corpus_durable_http_manual_equivalence(postgres_conversation, ca
             return run_hybrid_turn(db, request, provider=Planner(), clock=clock, **kwargs)
 
         with (
-            patch("courtload.services.assistant.history.run_hybrid_turn", side_effect=execute),
+            patch("courtlens.services.assistant.history.run_hybrid_turn", side_effect=execute),
             TestClient(app) as client,
         ):
             headers = {"X-Operator-Token": get_settings().operator_token.get_secret_value()}

@@ -2,7 +2,7 @@
 
 import pytest
 
-from courtload.evaluation.expected_shot import (
+from courtlens.evaluation.expected_shot import (
     baseline_predictions,
     bootstrap_games,
     probability_metrics,

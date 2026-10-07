@@ -20,7 +20,7 @@ from __future__ import annotations
 
 import io
 
-from courtload.domain.rich_sources import (
+from courtlens.domain.rich_sources import (
     POSSESSION_POLICY_VERSION,
     RICH_PARSER_SIGNATURE,
     SHOT_ZONES_VERSION,

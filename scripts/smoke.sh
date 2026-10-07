@@ -1,10 +1,10 @@
 #!/usr/bin/env sh
 set -eu
 
-api_url="${COURTLOAD_SMOKE_API_URL:-http://localhost:8000}"
-dashboard_url="${COURTLOAD_SMOKE_DASHBOARD_URL:-http://localhost:${COURTLOAD_DASHBOARD_PORT:-3000}}"
+api_url="${COURTLENS_SMOKE_API_URL:-http://localhost:8000}"
+dashboard_url="${COURTLENS_SMOKE_DASHBOARD_URL:-http://localhost:${COURTLENS_DASHBOARD_PORT:-3000}}"
 
-printf 'Running CourtLoad smoke verification against %s and %s\n' "$api_url" "$dashboard_url"
+printf 'Running CourtLens smoke verification against %s and %s\n' "$api_url" "$dashboard_url"
 
 # 1. Basic HTTP health and legacy data status
 curl --fail --silent --show-error "$api_url/api/health" >/dev/null
@@ -57,4 +57,4 @@ assert 'team_id' in team and 'games_finalized' in team, 'Team record malformed'
 curl --fail --silent --show-error "$dashboard_url" >/dev/null
 curl --fail --silent --show-error "$dashboard_url/data-status" >/dev/null
 
-printf 'CourtLoad smoke checks passed: verified populated analytics and workbench health\n'
+printf 'CourtLens smoke checks passed: verified populated analytics and workbench health\n'

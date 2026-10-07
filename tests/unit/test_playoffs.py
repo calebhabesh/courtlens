@@ -9,7 +9,7 @@ Tests:
 
 from __future__ import annotations
 
-from courtload.domain.workbench_playoffs import (
+from courtlens.domain.workbench_playoffs import (
     PLAYOFF_CAPABILITIES,
     PLAYOFF_DISCLAIMERS,
     aggregate_player_series_stats,

@@ -20,8 +20,8 @@ from itertools import groupby
 from pathlib import Path
 from typing import Any
 
-from courtload.ingestion.sportsdataverse import hash_file
-from courtload.ingestion.workbench_normalization import normalize_game_id, parse_schedule_file
+from courtlens.ingestion.sportsdataverse import hash_file
+from courtlens.ingestion.workbench_normalization import normalize_game_id, parse_schedule_file
 
 VERSION = "b19-event-conservation-audit-v1"
 MINUTE_TOLERANCE_SECONDS = Decimal("1")
@@ -441,8 +441,8 @@ def run(raw: Path, baseline: Path, output: Path, year: int) -> None:
         for k, p in paths.items()
     }
     dependency_paths = [
-        Path(__file__).parents[1] / "src/courtload/ingestion/sportsdataverse.py",
-        Path(__file__).parents[1] / "src/courtload/ingestion/workbench_normalization.py",
+        Path(__file__).parents[1] / "src/courtlens/ingestion/sportsdataverse.py",
+        Path(__file__).parents[1] / "src/courtlens/ingestion/workbench_normalization.py",
     ]
     dependencies = {
         str(p.relative_to(Path(__file__).parents[1])): hash_file(p)[0] for p in dependency_paths

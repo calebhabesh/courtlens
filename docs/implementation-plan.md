@@ -1,3 +1,5 @@
+CourtLoad was renamed to CourtLens on 2026-10-07; identifiers below are historical.
+
 # CourtLoad baseline implementation handover
 
 > **Next-release scope superseded 2026-10-01:** Implement the [local workbench handoff](workbench-implementation-plan.md) for current work. This document records the historical baseline's original plan; retain its contracts and evidence for sealed M5/M6 reproduction. Historical-only experience, public-style presentation, and no-LLM assumptions no longer define the next release.

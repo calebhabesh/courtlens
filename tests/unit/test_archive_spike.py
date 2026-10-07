@@ -7,7 +7,7 @@ from pathlib import Path
 
 import pytest
 
-from courtload.ingestion import archive
+from courtlens.ingestion import archive
 
 SCRIPT = Path(__file__).parents[2] / "scripts" / "historical_source_spike.py"
 SPEC = importlib.util.spec_from_file_location("historical_source_spike", SCRIPT)
@@ -144,14 +144,14 @@ def test_import_reversion_keeps_observations_and_reuses_dataset(
     from sqlalchemy import func, select
     from sqlalchemy.orm import Session
 
-    from courtload.archive_models import (
+    from courtlens.archive_models import (
         ArchiveDataset,
         ArchiveObservation,
         ArchivePlayerGame,
         ArchiveQuarantine,
         ArchiveVersion,
     )
-    from courtload.ingestion.archive_import import import_archive
+    from courtlens.ingestion.archive_import import import_archive
 
     assert isinstance(session, Session)
 
@@ -223,8 +223,8 @@ def test_import_retains_quarantine_locator_on_accepted_dataset(
     from sqlalchemy import select
     from sqlalchemy.orm import Session
 
-    from courtload.archive_models import ArchiveQuarantine
-    from courtload.ingestion.archive_import import import_archive
+    from courtlens.archive_models import ArchiveQuarantine
+    from courtlens.ingestion.archive_import import import_archive
 
     assert isinstance(session, Session)
     home = player_row()

@@ -7,8 +7,8 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 from sqlalchemy.pool import StaticPool
 
-from courtload.database import Base
-from courtload.services.identity_crosswalk import (
+from courtlens.database import Base
+from courtlens.services.identity_crosswalk import (
     get_dated_metadata,
     list_crosswalks_service,
     record_dated_metadata,

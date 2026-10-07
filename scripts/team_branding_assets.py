@@ -10,7 +10,7 @@ from pathlib import Path
 from urllib.request import urlopen
 from xml.etree import ElementTree
 
-from courtload.domain.teams import NBA_TEAMS
+from courtlens.domain.teams import NBA_TEAMS
 
 CATALOG = Path("dashboard/lib/team-branding.json")
 PUBLIC = Path("dashboard/public")

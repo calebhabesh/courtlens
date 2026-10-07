@@ -11,11 +11,11 @@ from fastapi.testclient import TestClient
 from sqlalchemy import create_engine, select
 from sqlalchemy.orm import Session
 
-from courtload.api.app import create_app
-from courtload.database import Base
-from courtload.services.identity_crosswalk import seed_flagship_crosswalks
-from courtload.services.measurements import seed_flagship_measurements
-from courtload.workbench_models import (
+from courtlens.api.app import create_app
+from courtlens.database import Base
+from courtlens.services.identity_crosswalk import seed_flagship_crosswalks
+from courtlens.services.measurements import seed_flagship_measurements
+from courtlens.workbench_models import (
     WorkbenchIdentity,
 )
 
@@ -28,11 +28,11 @@ def client() -> TestClient:
 
 @pytest.fixture
 def setup_b14_postgres() -> None:
-    url = os.getenv("COURTLOAD_TEST_POSTGRES_URL")
+    url = os.getenv("COURTLENS_TEST_POSTGRES_URL")
     if not url:
-        if os.getenv("CI") or os.getenv("COURTLOAD_REQUIRE_POSTGRES_TESTS"):
-            pytest.fail("COURTLOAD_TEST_POSTGRES_URL must be configured")
-        pytest.skip("COURTLOAD_TEST_POSTGRES_URL is not configured")
+        if os.getenv("CI") or os.getenv("COURTLENS_REQUIRE_POSTGRES_TESTS"):
+            pytest.fail("COURTLENS_TEST_POSTGRES_URL must be configured")
+        pytest.skip("COURTLENS_TEST_POSTGRES_URL is not configured")
     engine = create_engine(url)
     Base.metadata.create_all(engine)
     with Session(engine) as session:
@@ -174,12 +174,12 @@ def test_backfill_status_endpoint(client: TestClient, setup_b14_postgres: None) 
 
 def test_worker_refresh_due_logic() -> None:
     """Verify worker _is_refresh_due respects scheduled time and past executions."""
-    from courtload.worker import CourtLoadWorker
+    from courtlens.worker import CourtLensWorker
 
-    worker = CourtLoadWorker(worker_id="test-worker")
+    worker = CourtLensWorker(worker_id="test-worker")
 
     # If before scheduled 09:00 UTC (e.g. 08:30 UTC), refresh is not due
-    with patch("courtload.worker.datetime") as mock_dt:
+    with patch("courtlens.worker.datetime") as mock_dt:
         mock_dt.now.return_value = datetime(2026, 10, 2, 8, 30, tzinfo=UTC)
         mock_dt.combine = datetime.combine
         mock_dt.strptime = datetime.strptime
@@ -187,8 +187,8 @@ def test_worker_refresh_due_logic() -> None:
 
     # If after 09:00 UTC (e.g. 10:00 UTC) and never ran today, refresh is due
     with (
-        patch("courtload.worker.datetime") as mock_dt,
-        patch("courtload.worker.SessionLocal") as mock_session_cls,
+        patch("courtlens.worker.datetime") as mock_dt,
+        patch("courtlens.worker.SessionLocal") as mock_session_cls,
     ):
         mock_dt.now.return_value = datetime(2026, 10, 2, 10, 0, tzinfo=UTC)
         mock_dt.combine = datetime.combine

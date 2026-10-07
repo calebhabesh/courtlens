@@ -5,14 +5,14 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 from sqlalchemy.pool import StaticPool
 
-from courtload.database import Base
-from courtload.services.measurements import (
+from courtlens.database import Base
+from courtlens.services.measurements import (
     MEASUREMENT_DISCLOSURE,
     get_player_measurements_detail_service,
     query_measurements_service,
     seed_flagship_measurements,
 )
-from courtload.workbench_models import WorkbenchIdentity
+from courtlens.workbench_models import WorkbenchIdentity
 
 
 @pytest.fixture

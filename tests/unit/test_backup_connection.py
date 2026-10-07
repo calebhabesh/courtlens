@@ -4,7 +4,7 @@ import io
 from pathlib import Path
 from unittest.mock import patch
 
-from courtload.services.backup_restore import _dump_postgres_database
+from courtlens.services.backup_restore import _dump_postgres_database
 
 
 def test_docker_dump_honors_selected_database(tmp_path: Path) -> None:
@@ -28,14 +28,14 @@ def test_docker_dump_honors_selected_database(tmp_path: Path) -> None:
     ):
         _dump_postgres_database(
             tmp_path / "dump.sql.gz",
-            "postgresql+psycopg://courtload@127.0.0.1:5432/disposable_backup_source",
+            "postgresql+psycopg://courtlens@127.0.0.1:5432/disposable_backup_source",
         )
     assert "disposable_backup_source" in commands[0]
-    assert "courtload" not in commands[0][commands[0].index("--dbname") + 1 :]
+    assert "courtlens" not in commands[0][commands[0].index("--dbname") + 1 :]
 
 
 def test_docker_connection_preserves_endpoint_and_hides_password() -> None:
-    from courtload.services.backup_restore import _docker_postgres_connection
+    from courtlens.services.backup_restore import _docker_postgres_connection
 
     arguments, environment = _docker_postgres_connection(
         "postgresql+psycopg://recovery_user:secret-sentinel@db:5432/source", "target"
@@ -55,9 +55,9 @@ def test_docker_connection_preserves_endpoint_and_hides_password() -> None:
 
 
 def test_docker_connection_uses_configured_database(monkeypatch) -> None:
-    from courtload.services.backup_restore import _docker_postgres_connection
+    from courtlens.services.backup_restore import _docker_postgres_connection
 
-    monkeypatch.setenv("COURTLOAD_DATABASE_URL", "postgresql+psycopg://courtload@db/configured")
+    monkeypatch.setenv("COURTLENS_DATABASE_URL", "postgresql+psycopg://courtlens@db/configured")
     arguments, _ = _docker_postgres_connection(None)
     assert arguments[-1] == "configured"
 
@@ -65,7 +65,7 @@ def test_docker_connection_uses_configured_database(monkeypatch) -> None:
 def test_docker_restore_honors_url_database_without_name_override(tmp_path: Path) -> None:
     import gzip
 
-    from courtload.services.backup_restore import _restore_postgres_database
+    from courtlens.services.backup_restore import _restore_postgres_database
 
     commands: list[list[str]] = []
 
@@ -89,7 +89,7 @@ def test_docker_restore_honors_url_database_without_name_override(tmp_path: Path
         patch("subprocess.Popen", Process),
     ):
         _restore_postgres_database(
-            path, database_url="postgresql+psycopg://courtload@db/disposable_restore_target"
+            path, database_url="postgresql+psycopg://courtlens@db/disposable_restore_target"
         )
     assert commands[0][commands[0].index("--dbname") + 1] == "disposable_restore_target"
     assert Path(commands[0][commands[0].index("-f") + 1]).is_absolute()

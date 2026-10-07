@@ -6,7 +6,7 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 
 WORKDIR /app
 
-RUN groupadd --system courtload && useradd --system --gid courtload --home /app courtload
+RUN groupadd --system courtlens && useradd --system --gid courtlens --home /app courtlens
 
 COPY pyproject.toml README.md ./
 COPY src ./src
@@ -19,8 +19,8 @@ COPY warehouse ./warehouse
 
 RUN pip install --upgrade pip && pip install ".[warehouse]"
 
-RUN mkdir -p /app/data/raw /app/data/artifacts /app/data/cache && chown -R courtload:courtload /app
-USER courtload
+RUN mkdir -p /app/data/raw /app/data/artifacts /app/data/cache && chown -R courtlens:courtlens /app
+USER courtlens
 
 EXPOSE 8000
-CMD ["uvicorn", "courtload.api.app:create_app", "--factory", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "courtlens.api.app:create_app", "--factory", "--host", "0.0.0.0", "--port", "8000"]

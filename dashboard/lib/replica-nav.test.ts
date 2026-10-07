@@ -12,7 +12,7 @@ describe("ReplicaNav context-preserving navigation links", () => {
     });
 
     const url = buildPreservedContextUrl("/teams", current);
-    const parsed = new URL(url, "https://courtload.local");
+    const parsed = new URL(url, "https://courtlens.local");
 
     expect(parsed.pathname).toBe("/teams");
     expect(parsed.searchParams.get("season")).toBe("2024-25");
@@ -31,7 +31,7 @@ describe("ReplicaNav context-preserving navigation links", () => {
     });
 
     const url = buildPreservedContextUrl("/compare", current);
-    const parsed = new URL(url, "https://courtload.local");
+    const parsed = new URL(url, "https://courtlens.local");
 
     expect(parsed.pathname).toBe("/compare");
     expect(parsed.searchParams.get("season")).toBe("2025-26");
@@ -47,7 +47,7 @@ describe("ReplicaNav context-preserving navigation links", () => {
     });
 
     const url = buildPreservedContextUrl("/live?view=finals", current);
-    const parsed = new URL(url, "https://courtload.local");
+    const parsed = new URL(url, "https://courtlens.local");
 
     expect(parsed.pathname).toBe("/live");
     expect(parsed.searchParams.get("view")).toBe("finals");
@@ -63,7 +63,7 @@ describe("ReplicaNav context-preserving navigation links", () => {
 
     // Target link explicitly sets season=2020-21
     const url = buildPreservedContextUrl("/evaluation?season=2020-21", current);
-    const parsed = new URL(url, "https://courtload.local");
+    const parsed = new URL(url, "https://courtlens.local");
 
     expect(parsed.pathname).toBe("/evaluation");
     expect(parsed.searchParams.get("season")).toBe("2020-21");

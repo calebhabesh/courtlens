@@ -12,21 +12,21 @@ import httpx
 from sqlalchemy import create_engine, select
 from sqlalchemy.orm import Session
 
-from courtload.assistant_history_models import AssistantTurn
-from courtload.domain.hybrid_assistant import HybridTurnRequest
-from courtload.services.assistant.history import accept
+from courtlens.assistant_history_models import AssistantTurn
+from courtlens.domain.hybrid_assistant import HybridTurnRequest
+from courtlens.services.assistant.history import accept
 
 DIRECTORY = Path("docs/evidence/pf07b-history")
-DATABASE = "postgresql+psycopg://courtload:courtload@127.0.0.1:5432/courtload_pf07b_history"
+DATABASE = "postgresql+psycopg://courtlens:courtlens@127.0.0.1:5432/courtlens_pf07b_history"
 TOKEN = "pf07b-disposable-operator"
 
 
 def main() -> None:
     environment = dict(
         os.environ,
-        COURTLOAD_DATABASE_URL=DATABASE,
-        COURTLOAD_OPERATOR_TOKEN=TOKEN,
-        COURTLOAD_GEMINI_API_KEY="",
+        COURTLENS_DATABASE_URL=DATABASE,
+        COURTLENS_OPERATOR_TOKEN=TOKEN,
+        COURTLENS_GEMINI_API_KEY="",
         GEMINI_API_KEY="",
     )
     log = (DIRECTORY / "service.log").open("w")
@@ -36,7 +36,7 @@ def main() -> None:
         process = subprocess.Popen(
             [
                 ".venv/bin/uvicorn",
-                "courtload.api.app:create_app",
+                "courtlens.api.app:create_app",
                 "--factory",
                 "--host",
                 "127.0.0.1",
@@ -101,8 +101,8 @@ def main() -> None:
                 os.environ,
                 PORT="3178",
                 HOSTNAME="127.0.0.1",
-                COURTLOAD_API_INTERNAL_URL="http://127.0.0.1:8178",
-                COURTLOAD_OPERATOR_TOKEN=TOKEN,
+                COURTLENS_API_INTERNAL_URL="http://127.0.0.1:8178",
+                COURTLENS_OPERATOR_TOKEN=TOKEN,
             )
             next_log = (DIRECTORY / "dashboard-service.log").open("w")
             frontend = subprocess.Popen(

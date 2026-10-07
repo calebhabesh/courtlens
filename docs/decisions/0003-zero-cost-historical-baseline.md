@@ -1,3 +1,5 @@
+CourtLoad was renamed to CourtLens on 2026-10-07; identifiers below are historical.
+
 # ADR 0003: Zero-cost historical player-comparison baseline
 
 Date: 2026-09-20. Status: **accepted by owner; implementation pending**.

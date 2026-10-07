@@ -10,22 +10,22 @@ from fastapi.testclient import TestClient
 from sqlalchemy import func, select
 from test_conversation_postgres import postgres_conversation as _postgres_fixture
 
-from courtload.api.app import create_app
-from courtload.config import get_settings
-from courtload.database import get_db
-from courtload.domain.conversation import AnalysisPlan, ConversationContext, OperationStep
-from courtload.domain.hybrid_assistant import HybridTurnRequest
-from courtload.services.assistant.hybrid import run_hybrid_turn
-from courtload.services.assistant.planner import PlanningOutput, ProviderFailure
-from courtload.services.workbench_analytics import canonical_hash
-from courtload.workbench_models import WorkbenchPlayerGame
+from courtlens.api.app import create_app
+from courtlens.config import get_settings
+from courtlens.database import get_db
+from courtlens.domain.conversation import AnalysisPlan, ConversationContext, OperationStep
+from courtlens.domain.hybrid_assistant import HybridTurnRequest
+from courtlens.services.assistant.hybrid import run_hybrid_turn
+from courtlens.services.assistant.planner import PlanningOutput, ProviderFailure
+from courtlens.services.workbench_analytics import canonical_hash
+from courtlens.workbench_models import WorkbenchPlayerGame
 
 postgres_conversation = _postgres_fixture
 
 
 def legacy_api(monkeypatch, provider):
     """Explicitly exercise sealed v2 transport; ordinary API turns now use v3."""
-    from courtload.api.routers import conversation as routes
+    from courtlens.api.routers import conversation as routes
 
     run = routes.run_durable_turn
     stream = routes.stream_turn
@@ -189,7 +189,7 @@ def test_runtime_knowledge_scope_changes_are_measured(postgres_conversation):
 def test_source_failure_sanitized_not_optional_ai(postgres_conversation):
     session, context = postgres_conversation
     with patch(
-        "courtload.services.assistant.hybrid.execute_bounded",
+        "courtlens.services.assistant.hybrid.execute_bounded",
         side_effect=RuntimeError("database secret"),
     ):
         answer = run_hybrid_turn(session, request(context))
@@ -279,7 +279,7 @@ def test_execution_value_error_is_not_reported_as_planner_failure(postgres_conve
             return PlanningOutput(request(context).plan.model_dump(mode="json"))
 
     with patch(
-        "courtload.services.assistant.hybrid.execute_bounded",
+        "courtlens.services.assistant.hybrid.execute_bounded",
         side_effect=ValueError("row budget"),
     ):
         answer = run_hybrid_turn(session, request(context, plan=False), provider=Provider())
@@ -289,7 +289,7 @@ def test_execution_value_error_is_not_reported_as_planner_failure(postgres_conve
 
 @pytest.mark.parametrize("join", ["; ", " and show "])
 def test_ar03_mixed_has_single_general_sentence_and_exact_query(postgres_conversation, join):
-    from courtload.domain.hybrid_assistant import GENERAL_LABEL, GENERAL_NUMBERS
+    from courtlens.domain.hybrid_assistant import GENERAL_LABEL, GENERAL_NUMBERS
 
     session, context = postgres_conversation
     message = (
@@ -311,7 +311,7 @@ def test_ar03_mixed_has_single_general_sentence_and_exact_query(postgres_convers
 
 
 def test_ar03_label_survives_http_history_and_exact_replay(postgres_conversation, monkeypatch):
-    from courtload.domain.hybrid_assistant import GENERAL_LABEL
+    from courtlens.domain.hybrid_assistant import GENERAL_LABEL
 
     class KnowledgeOnly:
         def plan(self, *a, **kw):
@@ -374,8 +374,8 @@ def test_ar04_checked_narrative_survives_http_history_or_falls_back(
     headers = {"X-Operator-Token": get_settings().operator_token.get_secret_value()}
     body = request(context, "Show scoring in 2024-25", plan=False)
     with (
-        patch("courtload.services.assistant.hybrid.GeminiPlanProvider", Provider),
-        patch("courtload.services.assistant.hybrid.get_settings", return_value=Settings()),
+        patch("courtlens.services.assistant.hybrid.GeminiPlanProvider", Provider),
+        patch("courtlens.services.assistant.hybrid.get_settings", return_value=Settings()),
         TestClient(app) as client,
     ):
         response = client.post(
@@ -437,8 +437,8 @@ def test_ar05_stream_phases_final_and_request_response_fallback(postgres_convers
     body = request(context, "Show scoring in 2024-25", plan=False).model_dump(mode="json")
     stream_url = "/api/workbench/assistant/v2/turn/stream"
     with (
-        patch("courtload.services.assistant.hybrid.GeminiPlanProvider", Provider),
-        patch("courtload.services.assistant.hybrid.get_settings", return_value=Settings()),
+        patch("courtlens.services.assistant.hybrid.GeminiPlanProvider", Provider),
+        patch("courtlens.services.assistant.hybrid.get_settings", return_value=Settings()),
         TestClient(app) as client,
     ):
         streamed = client.post(stream_url, json=body, headers=headers)
@@ -500,7 +500,7 @@ def test_ar05_stream_phases_final_and_request_response_fallback(postgres_convers
 def test_ar07_page_referents_execute_real_results(
     postgres_conversation, route, players, teams, message, operation, field, entity
 ):
-    from courtload.domain.hybrid_assistant import AssistantPageContext
+    from courtlens.domain.hybrid_assistant import AssistantPageContext
 
     session, context = postgres_conversation
     payloads = []
@@ -539,7 +539,7 @@ def test_ar07_page_referents_execute_real_results(
 
 
 def test_ar07_ambiguous_compare_reference_clarifies_without_provider(postgres_conversation):
-    from courtload.domain.hybrid_assistant import AssistantPageContext
+    from courtlens.domain.hybrid_assistant import AssistantPageContext
 
     session, context = postgres_conversation
     turn = HybridTurnRequest(
@@ -558,7 +558,7 @@ def test_ar07_ambiguous_compare_reference_clarifies_without_provider(postgres_co
 
 
 def test_ar07_wrong_page_referent_gets_one_repair(postgres_conversation):
-    from courtload.domain.hybrid_assistant import AssistantPageContext
+    from courtlens.domain.hybrid_assistant import AssistantPageContext
 
     session, context = postgres_conversation
     payloads = []
@@ -594,7 +594,7 @@ def test_ar07_wrong_page_referent_gets_one_repair(postgres_conversation):
 
 
 def test_ar07_compare_pair_uses_both_canonical_page_selections(postgres_conversation):
-    from courtload.domain.hybrid_assistant import AssistantPageContext
+    from courtlens.domain.hybrid_assistant import AssistantPageContext
 
     session, context = postgres_conversation
 

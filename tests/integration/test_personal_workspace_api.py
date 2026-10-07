@@ -4,9 +4,9 @@ from fastapi.testclient import TestClient
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
-from courtload.config import get_settings
-from courtload.domain.personal_state import calculate_bundle_checksum
-from courtload.workbench_models import (
+from courtlens.config import get_settings
+from courtlens.domain.personal_state import calculate_bundle_checksum
+from courtlens.workbench_models import (
     SavedInvestigation,
     WorkbenchIdentity,
     WorkbenchPersonalWorkspace,

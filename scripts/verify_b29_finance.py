@@ -14,10 +14,10 @@ from fastapi.testclient import TestClient
 from sqlalchemy import select, text
 from sqlalchemy.orm import Session
 
-from courtload.api.app import create_app
-from courtload.database import build_engine, get_db
-from courtload.services.finance_import import release_rows, verify_release
-from courtload.warehouse_models import PublishedSnapshot
+from courtlens.api.app import create_app
+from courtlens.database import build_engine, get_db
+from courtlens.services.finance_import import release_rows, verify_release
+from courtlens.warehouse_models import PublishedSnapshot
 
 
 def main() -> None:

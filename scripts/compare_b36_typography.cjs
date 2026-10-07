@@ -14,7 +14,7 @@ assert.ok(output && !fs.existsSync(output), 'New evidence directory required');
 fs.mkdirSync(output, { recursive: true });
 const site = process.env.B36_SITE_URL || 'http://127.0.0.1:3135';
 const api = process.env.B36_API_URL || 'http://127.0.0.1:8000';
-const temporary = fs.mkdtempSync(path.join(os.tmpdir(), 'courtload-b36-fonts-'));
+const temporary = fs.mkdtempSync(path.join(os.tmpdir(), 'courtlens-b36-fonts-'));
 const hash = bytes => crypto.createHash('sha256').update(bytes).digest('hex');
 async function bytes(url, bound = 1024 * 1024) {
   const response = await fetch(url, { signal: AbortSignal.timeout(20000) });
@@ -215,7 +215,7 @@ const candidates = [
         'Responsive and keyboard measurements bounded to Stats', 'Screenshots require owner readability review', 'Final local-font packaging and cold-load CLS remain pending'] };
     fs.writeFileSync(path.join(output, 'verification.json'), JSON.stringify(manifest, null, 2) + '\n');
     const panels = [...routes, { id: 'glyphs' }, { id: 'mobile' }, { id: 'zoom' }].map(route => `<h2>${route.id}</h2><div class="grid">${candidates.map(candidate => `<figure><figcaption>${candidate.label}</figcaption><a href="${candidate.id}-${route.id}.png"><img src="${candidate.id}-${route.id}.png" alt="${candidate.label}, ${route.id}" loading="lazy"></a></figure>`).join('')}</div>`).join('');
-    fs.writeFileSync(path.join(output, 'index.html'), `<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>CourtLoad B36 font comparison</title><style>body{margin:24px;background:#20252e;color:#f1f3f6;font:16px system-ui}a{color:#ffd166}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}figure{margin:0}figcaption{padding:12px 0}img{width:100%;border:1px solid #465160}@media(max-width:800px){.grid{grid-template-columns:1fr}}</style><h1>B36 typography comparison</h1><p>Real retained data, same density and colors. Click images for full resolution. Application fonts remain unchanged. Screenshots contain rendered text only; no font binaries are distributed.</p><p><a href="verification.json">Measurements and source hashes</a></p>${panels}</html>\n`);
+    fs.writeFileSync(path.join(output, 'index.html'), `<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>CourtLens B36 font comparison</title><style>body{margin:24px;background:#20252e;color:#f1f3f6;font:16px system-ui}a{color:#ffd166}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}figure{margin:0}figcaption{padding:12px 0}img{width:100%;border:1px solid #465160}@media(max-width:800px){.grid{grid-template-columns:1fr}}</style><h1>B36 typography comparison</h1><p>Real retained data, same density and colors. Click images for full resolution. Application fonts remain unchanged. Screenshots contain rendered text only; no font binaries are distributed.</p><p><a href="verification.json">Measurements and source hashes</a></p>${panels}</html>\n`);
   } finally {
     if (browser) await browser.close();
     fs.rmSync(temporary, { recursive: true, force: true });

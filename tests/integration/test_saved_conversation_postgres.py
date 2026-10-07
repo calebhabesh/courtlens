@@ -20,14 +20,14 @@ from test_conversation_postgres import (
 )
 from test_conversation_postgres import request
 
-from courtload.api.app import create_app
-from courtload.conversation_models import SavedConversationAnalysis, SavedConversationInput
-from courtload.database import get_db
-from courtload.domain.conversation import OperationStep, SaveConversationRequest
-from courtload.services.assistant import saved
-from courtload.services.assistant.conversations import clear_conversation, run_conversation_turn
-from courtload.services.workbench_analytics import canonical_hash
-from courtload.workbench_models import WorkbenchIdentity, WorkbenchPlayerGame
+from courtlens.api.app import create_app
+from courtlens.conversation_models import SavedConversationAnalysis, SavedConversationInput
+from courtlens.database import get_db
+from courtlens.domain.conversation import OperationStep, SaveConversationRequest
+from courtlens.services.assistant import saved
+from courtlens.services.assistant.conversations import clear_conversation, run_conversation_turn
+from courtlens.services.workbench_analytics import canonical_hash
+from courtlens.workbench_models import WorkbenchIdentity, WorkbenchPlayerGame
 
 
 def save_request(answer, **updates):
@@ -62,7 +62,7 @@ def test_save_clear_reproduce_export_all_supported_types(
 ):
     session, context = postgres_conversation
     with patch(
-        "courtload.services.assistant.conversations.GeminiPlanProvider",
+        "courtlens.services.assistant.conversations.GeminiPlanProvider",
         side_effect=AssertionError("AI forbidden"),
     ):
         answer = run_conversation_turn(
@@ -261,7 +261,7 @@ def test_paired_results_and_opt_in_question_have_separate_identity(postgres_conv
 def test_recovery_inventory_mismatch_and_tampered_artifact_rejected(
     postgres_conversation, tmp_path
 ):
-    from courtload.services.backup_restore import verify_restored_state
+    from courtlens.services.backup_restore import verify_restored_state
 
     session, context = postgres_conversation
     answer = run_conversation_turn(
@@ -324,7 +324,7 @@ def test_migration_seals_sql_mutations_and_has_valid_foreign_keys(postgres_conve
 def test_retained_forecast_pins_issuance_after_later_policy_and_score(postgres_conversation):
     from datetime import UTC, date, datetime
 
-    from courtload.workbench_models import ForecastIssuance, ForecastScore, ModelPolicyActivation
+    from courtlens.workbench_models import ForecastIssuance, ForecastScore, ModelPolicyActivation
 
     session, context = postgres_conversation
 
@@ -384,7 +384,7 @@ def test_retained_forecast_pins_issuance_after_later_policy_and_score(postgres_c
     assert retained["manifest"]["results"][0]["data"]["point_estimate"] == 10
     assert "scores" not in retained["manifest"]["results"][0]["data"]
     # Clear the read cache to observe the newly added synthetic issuance independently.
-    from courtload.services.assistant.conversations import reset_local_state
+    from courtlens.services.assistant.conversations import reset_local_state
 
     reset_local_state()
     fresh = run_conversation_turn(
@@ -408,7 +408,7 @@ def test_pointer_resolved_timestamp_is_retained_without_requiring_current_pointe
     # The active turn resolved the public pointer. Subsequent save/reproduce must
     # resolve the immutable release and keep its observed publication provenance.
     with patch(
-        "courtload.services.assistant.conversations.resolve_workbench_context",
+        "courtlens.services.assistant.conversations.resolve_workbench_context",
         return_value=published,
     ):
         answer = run_conversation_turn(

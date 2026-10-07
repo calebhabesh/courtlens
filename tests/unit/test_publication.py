@@ -3,8 +3,8 @@ from datetime import UTC, date, datetime
 import pytest
 from sqlalchemy.orm import Session
 
-from courtload.archive_models import ArchiveDataset
-from courtload.services.publication import (
+from courtlens.archive_models import ArchiveDataset
+from courtlens.services.publication import (
     FEATURE_VERSION,
     METRIC_VERSION,
     SCORING_VERSION,
@@ -13,7 +13,7 @@ from courtload.services.publication import (
     build_and_publish,
     published_snapshot_query,
 )
-from courtload.warehouse_models import PublishedSnapshot, ServingSnapshot, WarehouseBuild
+from courtlens.warehouse_models import PublishedSnapshot, ServingSnapshot, WarehouseBuild
 
 
 def _dataset(session: Session) -> ArchiveDataset:

@@ -9,10 +9,10 @@ from pathlib import Path
 from fastapi.testclient import TestClient
 from sqlalchemy import event, text
 
-from courtload.api.app import create_app
-from courtload.database import SessionLocal, get_db
-from courtload.services.entity_lookup import clear_lookup_caches
-from courtload.services.workbench_analytics import resolve_workbench_context
+from courtlens.api.app import create_app
+from courtlens.database import SessionLocal, get_db
+from courtlens.services.entity_lookup import clear_lookup_caches
+from courtlens.services.workbench_analytics import resolve_workbench_context
 
 
 def main() -> None:

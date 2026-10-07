@@ -5,8 +5,8 @@ from copy import deepcopy
 import pytest
 from pydantic import ValidationError
 
-from courtload.domain.shooting import ShootingRequest, ShotFact, profile, shot_zone
-from courtload.services.shooting import aftermath
+from courtlens.domain.shooting import ShootingRequest, ShotFact, profile, shot_zone
+from courtlens.services.shooting import aftermath
 
 
 def shot(**changes: object) -> ShotFact:

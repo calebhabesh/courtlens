@@ -1,4 +1,4 @@
-"""Unit tests for CourtLoad basketball-points-v1 forecasting protocol and models."""
+"""Unit tests for CourtLens basketball-points-v1 forecasting protocol and models."""
 
 from __future__ import annotations
 
@@ -7,21 +7,21 @@ from pathlib import Path
 
 import pytest
 
-from courtload.evaluation.points_baselines import (
+from courtlens.evaluation.points_baselines import (
     clip_point_prediction,
     current_ewma,
     current_rolling_mean,
     season_prior_blend,
 )
-from courtload.evaluation.points_config import (
+from courtlens.evaluation.points_config import (
     load_points_config,
     points_config_hash,
 )
-from courtload.evaluation.points_features import (
+from courtlens.evaluation.points_features import (
     PointsPlayerGame,
     compute_player_features,
 )
-from courtload.evaluation.points_runner import evaluate_promotion_gates
+from courtlens.evaluation.points_runner import evaluate_promotion_gates
 
 
 def test_points_config_splits_order() -> None:

@@ -14,7 +14,7 @@ from sqlalchemy.exc import DBAPIError
 
 @pytest.fixture
 def finance_connection():
-    url = os.environ.get("COURTLOAD_TEST_POSTGRES_URL")
+    url = os.environ.get("COURTLENS_TEST_POSTGRES_URL")
     if not url:
         pytest.skip("disposable PostgreSQL URL required")
     engine = create_engine(url)

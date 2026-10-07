@@ -1,4 +1,4 @@
-# CourtLoad polish UI contract
+# CourtLens polish UI contract
 
 2026-10-05. Parent: [freeze handoff](../polish-freeze-implementation-plan.md). **Review draft; implementation pending.** Applies to PF01–PF06 and the visual primitives consumed by PF08. The owner selected near-black, larger controls/rows, full-width left alignment and Lucide. Retain the original analytical/temporal contracts.
 
@@ -81,9 +81,9 @@ Use shared Button/IconButton, Field/Select treatment, Section, Toolbar, Status a
 
 ## Shell and controls
 
-- Header identity contains the basketball mark and CourtLoad text; remove the Replica Workbench subtitle. Preserve app icons/manifest identity.
+- Header identity contains the basketball mark and CourtLens text; remove the Replica Workbench subtitle. Preserve app icons/manifest identity.
 - Ask uses the same reset/height/hover/focus treatment as other header actions, with a Lucide icon and readable label. Remove browser-native gray button appearance.
-- Use Lucide for interface/search/table/menu/status actions. Team logos and the CourtLoad mark are separate brand assets. Decorative icons are hidden from assistive technology; icon-only actions have names and visible tooltips. Keep one stroke/size convention.
+- Use Lucide for interface/search/table/menu/status actions. Team logos and the CourtLens mark are separate brand assets. Decorative icons are hidden from assistive technology; icon-only actions have names and visible tooltips. Keep one stroke/size convention.
 - A select reserves space for its chevron and keeps consistent left/right inset. Use native semantics where sufficient; a positioned decorative chevron has pointer-events disabled. A searchable entity selector uses the picker below. Reserve custom dropdown behavior for demonstrated needs.
 - Shared menus work by pointer, keyboard and touch; Escape dismisses; focus returns to their trigger. Large menus wrap into readable groups, and narrow navigation derives from the same destination/capability model as desktop.
 - Show compact season/phase/cutoff/window controls and genuine scope counts. A player count says players, a game count says games. Raw UUIDs, timezone implementation names and milestone IDs belong in details; keep the exclusive-cutoff meaning discoverable.

@@ -21,11 +21,11 @@ async function proxy(request: NextRequest, context: Context) {
       body = JSON.stringify(value);
     } catch { return NextResponse.json({ detail: "Invalid Live selection" }, { status: 422 }); }
   }
-  const target = new URL(`/api/live${suffix ? `/${suffix}` : ""}`, process.env.COURTLOAD_API_INTERNAL_URL || process.env.NEXT_PUBLIC_COURTLOAD_API_URL || "http://localhost:8000");
+  const target = new URL(`/api/live${suffix ? `/${suffix}` : ""}`, process.env.COURTLENS_API_INTERNAL_URL || process.env.NEXT_PUBLIC_COURTLENS_API_URL || "http://localhost:8000");
   const keys = suffix === "historical" ? ["slate_date", "game_id", "releaseId", "season", "phase", "beforeDate"] : ["slate_date"];
   for (const key of keys) { const value = request.nextUrl.searchParams.get(key); if (value !== null) target.searchParams.set(key, value); }
   try {
-    const response = await fetch(target, { method, body, redirect: "error", cache: "no-store", signal: AbortSignal.timeout(10000), headers: { "Content-Type": "application/json", ...(method !== "GET" ? { "X-Operator-Token": process.env.COURTLOAD_OPERATOR_TOKEN || "local-operator-secret-change-before-deploy" } : {}) } });
+    const response = await fetch(target, { method, body, redirect: "error", cache: "no-store", signal: AbortSignal.timeout(10000), headers: { "Content-Type": "application/json", ...(method !== "GET" ? { "X-Operator-Token": process.env.COURTLENS_OPERATOR_TOKEN || "local-operator-secret-change-before-deploy" } : {}) } });
     const headers = { "Cache-Control": "no-store" };
     if (response.status === 204) return new NextResponse(null, { status: 204, headers });
     // Backend errors never echo credentials or upstream bodies into the browser.

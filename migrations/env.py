@@ -4,9 +4,9 @@ from logging.config import fileConfig
 
 from alembic import context
 
-from courtload import models  # noqa: F401
-from courtload.config import get_settings
-from courtload.database import Base
+from courtlens import models  # noqa: F401
+from courtlens.config import get_settings
+from courtlens.database import Base
 
 config = context.config
 config.set_main_option("sqlalchemy.url", get_settings().database_url)

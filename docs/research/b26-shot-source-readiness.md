@@ -1,3 +1,5 @@
+CourtLoad was renamed to CourtLens on 2026-10-07; identifiers below are historical.
+
 # B26 expected-shot source readiness
 
 Observed **2026-10-03, 11:56–11:58 UTC**. This is bounded feasibility research for the [frozen expected-shot design](../../evaluation/research/protocols/courtload-expected-shot-v1.json), not source admission or a fitted experiment. Only ordinary unauthenticated metadata/documentation requests and 32-KiB HTTP range samples were read. No complete season was downloaded; samples remained in memory. No database, registration, retained dataset, publication pointer or model changed. Hashes below document observations; unretained sample bytes are not sealed admission evidence.

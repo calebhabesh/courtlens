@@ -13,9 +13,9 @@ from pathlib import Path
 
 from sqlalchemy import text
 
-from courtload.database import SessionLocal
-from courtload.domain.hybrid_assistant import HybridTurnResponse
-from courtload.services.assistant.revamp_evaluation import (
+from courtlens.database import SessionLocal
+from courtlens.domain.hybrid_assistant import HybridTurnResponse
+from courtlens.services.assistant.revamp_evaluation import (
     CORPUS,
     canonical_plan,
     expected_answer,
@@ -24,7 +24,7 @@ from courtload.services.assistant.revamp_evaluation import (
     sql_rows,
     summarize,
 )
-from courtload.services.workbench_analytics import resolve_workbench_context
+from courtlens.services.workbench_analytics import resolve_workbench_context
 
 
 def main():
@@ -111,7 +111,7 @@ def main():
         "capture_sha256": hashlib.sha256(raw).hexdigest(),
         "changes": changes,
         "scorer_sha256": hashlib.sha256(
-            Path("src/courtload/services/assistant/revamp_evaluation.py").read_bytes()
+            Path("src/courtlens/services/assistant/revamp_evaluation.py").read_bytes()
         ).hexdigest(),
         "corpus_file": str(corpus_path),
     }

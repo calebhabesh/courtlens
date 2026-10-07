@@ -7,7 +7,7 @@ import os
 import pytest
 from fastapi.testclient import TestClient
 
-from courtload.api.app import create_app
+from courtlens.api.app import create_app
 
 
 @pytest.fixture
@@ -17,8 +17,8 @@ def client() -> TestClient:
 
 
 def _require_test_db() -> None:
-    if not os.environ.get("COURTLOAD_TEST_POSTGRES_URL"):
-        pytest.skip("COURTLOAD_TEST_POSTGRES_URL is not configured")
+    if not os.environ.get("COURTLENS_TEST_POSTGRES_URL"):
+        pytest.skip("COURTLENS_TEST_POSTGRES_URL is not configured")
 
 
 def test_b16_teams_research_enriched_factors(client: TestClient) -> None:

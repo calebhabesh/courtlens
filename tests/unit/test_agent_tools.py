@@ -6,9 +6,9 @@ from datetime import date
 
 import pytest
 
-from courtload.services.assistant import operations
-from courtload.services.assistant.agent.providers.base import ToolCall
-from courtload.services.assistant.agent.tools import declarations, dispatch
+from courtlens.services.assistant import operations
+from courtlens.services.assistant.agent.providers.base import ToolCall
+from courtlens.services.assistant.agent.tools import declarations, dispatch
 
 
 def call(name, **arguments):
@@ -107,7 +107,7 @@ def test_site_help_without_a_release_and_unknown_topic(session):
 def test_database_resolution_failure_is_recoverable(session, monkeypatch):
     from sqlalchemy import text
 
-    from courtload.services.assistant.agent import tools
+    from courtlens.services.assistant.agent import tools
 
     def broken_resolution(*args, **kwargs):
         session.execute(text("SELECT * FROM nonexistent_ag02_table"))
@@ -120,7 +120,7 @@ def test_database_resolution_failure_is_recoverable(session, monkeypatch):
 
 
 def test_worker_disconnect_is_a_recoverable_error(session, monkeypatch):
-    from courtload.services.assistant.agent import tools
+    from courtlens.services.assistant.agent import tools
 
     def disconnected(*args, **kwargs):
         raise EOFError

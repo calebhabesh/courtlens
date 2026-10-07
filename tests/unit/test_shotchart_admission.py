@@ -15,15 +15,15 @@ from unittest.mock import patch
 
 import pytest
 
-from courtload.domain.shotchart import box_counts, game_identity, parse_shot, reconcile_game
-from courtload.evaluation.shotchart_admission import (
+from courtlens.domain.shotchart import box_counts, game_identity, parse_shot, reconcile_game
+from courtlens.evaluation.shotchart_admission import (
     audit_source,
     season_schedule,
     verify_game_proof,
 )
-from courtload.ingestion.shotchart import DOCUMENTS, archive_url, shot_rows, verify_source
-from courtload.ingestion.sportsdataverse import hash_file
-from courtload.ingestion.workbench_source_config import (
+from courtlens.ingestion.shotchart import DOCUMENTS, archive_url, shot_rows, verify_source
+from courtlens.ingestion.sportsdataverse import hash_file
+from courtlens.ingestion.workbench_source_config import (
     player_boxscores_url,
     schedule_csv_url,
     team_boxscores_url,
@@ -379,12 +379,12 @@ def test_stream_limits_and_archive_corruption_fail_closed(tmp_path: Path) -> Non
     archive = tmp_path / "test.tar.xz"
     write_tar(archive, rows=[shot(), shot(GAME_EVENT_ID="2")])
     with (
-        patch("courtload.ingestion.shotchart.MAX_ROWS", 1),
+        patch("courtlens.ingestion.shotchart.MAX_ROWS", 1),
         pytest.raises(ValueError, match="row budget"),
     ):
         list(shot_rows(archive, starting_year=2025))
     with (
-        patch("courtload.ingestion.shotchart.MAX_EXPANDED_BYTES", 1024),
+        patch("courtlens.ingestion.shotchart.MAX_EXPANDED_BYTES", 1024),
         pytest.raises(ValueError, match="byte limit"),
     ):
         list(shot_rows(archive, starting_year=2025))

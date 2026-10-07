@@ -10,14 +10,14 @@ from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
-from courtload.services.workbench_registry import (
+from courtlens.services.workbench_registry import (
     SnapshotEquivalenceError,
     check_snapshot_equivalence,
     compute_semantic_signature,
     register_retained_m6_experiment,
     verify_and_bind_snapshot_equivalence,
 )
-from courtload.workbench_models import (
+from courtlens.workbench_models import (
     WorkbenchAcquisition,
     WorkbenchArtifact,
     WorkbenchDataset,

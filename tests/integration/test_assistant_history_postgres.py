@@ -14,14 +14,14 @@ from sqlalchemy.orm import Session
 from test_conversation_postgres import postgres_conversation as _postgres_fixture
 from test_hybrid_assistant_postgres import request as analytical_request
 
-from courtload.api.app import create_app
-from courtload.assistant_history_models import AssistantTurn, AssistantTurnInput
-from courtload.config import get_settings
-from courtload.database import get_db
-from courtload.domain.hybrid_assistant import HybridTurnRequest
-from courtload.services.assistant import history
-from courtload.services.assistant.hybrid import run_hybrid_turn
-from courtload.services.assistant.planner import ProviderFailure
+from courtlens.api.app import create_app
+from courtlens.assistant_history_models import AssistantTurn, AssistantTurnInput
+from courtlens.config import get_settings
+from courtlens.database import get_db
+from courtlens.domain.hybrid_assistant import HybridTurnRequest
+from courtlens.services.assistant import history
+from courtlens.services.assistant.hybrid import run_hybrid_turn
+from courtlens.services.assistant.planner import ProviderFailure
 
 postgres_conversation = _postgres_fixture
 
@@ -268,7 +268,7 @@ def test_pagination_deletion_and_saved_findings_independence(postgres_conversati
 def test_api_history_auth_lifecycle_and_page_bounds(postgres_conversation, monkeypatch):
     session, _ = postgres_conversation
     # Exercise the historical v2 API response through the retained compatibility seam.
-    monkeypatch.setattr("courtload.api.routers.conversation.run_durable_turn", legacy_turn)
+    monkeypatch.setattr("courtlens.api.routers.conversation.run_durable_turn", legacy_turn)
     app = create_app()
     app.dependency_overrides[get_db] = lambda: session
     token = {"X-Operator-Token": get_settings().operator_token.get_secret_value()}
@@ -309,7 +309,7 @@ def test_additive_migration_upgrade_downgrade_and_schema_parity(postgres_convers
     from alembic.operations import Operations
     from sqlalchemy import inspect
 
-    from courtload.assistant_history_models import AssistantThread
+    from courtlens.assistant_history_models import AssistantThread
 
     session, _ = postgres_conversation
     session.rollback()
@@ -318,7 +318,7 @@ def test_additive_migration_upgrade_downgrade_and_schema_parity(postgres_convers
     spec = importlib.util.spec_from_file_location("history_migration", path)
     migration = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(migration)
-    from courtload.assistant_history_models import AssistantAgentTranscript
+    from courtlens.assistant_history_models import AssistantAgentTranscript
 
     tables = [AssistantTurnInput.__table__, AssistantTurn.__table__, AssistantThread.__table__]
     with engine.begin() as connection:
@@ -362,7 +362,7 @@ def test_dump_restore_history_and_provenance(postgres_conversation, tmp_path):
         restore_command = ["psql", *arguments, "-v", "ON_ERROR_STOP=1"]
     else:
         # This installation runs the PostgreSQL tools in its local database container.
-        prefix = ["docker", "exec", "-i", "courtload-db-1"]
+        prefix = ["docker", "exec", "-i", "courtlens-db-1"]
         local_arguments = ["-U", url.username, "-d", url.database]
         dump_command = [*prefix, "pg_dump", *local_arguments, "--schema", schema]
         restore_command = [*prefix, "psql", *local_arguments, "-v", "ON_ERROR_STOP=1"]
@@ -379,7 +379,7 @@ def test_dump_restore_history_and_provenance(postgres_conversation, tmp_path):
 def test_backup_lock_fences_history_writes_and_restore_rejects_drift(
     postgres_conversation, tmp_path
 ):
-    from courtload.services.backup_restore import verify_restored_state
+    from courtlens.services.backup_restore import verify_restored_state
 
     session, _ = postgres_conversation
     engine = session.get_bind()
@@ -408,9 +408,9 @@ def test_history_clear_preserves_a_real_separately_saved_finding(postgres_conver
     from test_conversation_postgres import request as v1_request
     from test_saved_conversation_postgres import save_request
 
-    from courtload.domain.conversation import OperationStep
-    from courtload.services.assistant.conversations import run_conversation_turn
-    from courtload.services.assistant.saved import (
+    from courtlens.domain.conversation import OperationStep
+    from courtlens.services.assistant.conversations import run_conversation_turn
+    from courtlens.services.assistant.saved import (
         reproduce_saved,
         save_conversation,
         saved_inventory,

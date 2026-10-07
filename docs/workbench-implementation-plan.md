@@ -1,3 +1,5 @@
+CourtLoad was renamed to CourtLens on 2026-10-07; identifiers below are historical.
+
 # CourtLoad local research workbench: implementation handoff
 
 Prepared 2026-10-01 for Gemini 3.8 Flash. Status: **owner-approved direction; implementation pending**. This document specifies the next release. Inspection and source sampling informed it; application checks were not rerun during planning.

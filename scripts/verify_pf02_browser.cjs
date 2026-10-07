@@ -100,7 +100,7 @@ function contrast(a, b) {
   const zoomPage = await zoomContext.newPage();
   await zoomPage.goto(base+'/stats');
   const original = await zoomPage.evaluate(() => ({width:innerWidth,dpr:devicePixelRatio}));
-  const windows = execFileSync('xdotool', ['search', '--onlyvisible', '--name', 'CourtLoad']).toString().trim().split('\n');
+  const windows = execFileSync('xdotool', ['search', '--onlyvisible', '--name', 'CourtLens']).toString().trim().split('\n');
   execFileSync('xdotool', ['windowfocus', '--sync', windows[windows.length - 1]]);
   execFileSync('xdotool', ['key', '--clearmodifiers', 'ctrl+0', ...Array(5).fill('ctrl+plus')]);
   await zoomPage.waitForTimeout(500);

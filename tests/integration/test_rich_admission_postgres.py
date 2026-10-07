@@ -20,17 +20,17 @@ import pytest
 from sqlalchemy import create_engine, delete, select
 from sqlalchemy.orm import Session
 
-from courtload.database import Base
-from courtload.domain.rich_sources import (
+from courtlens.database import Base
+from courtlens.domain.rich_sources import (
     POSSESSION_POLICY_VERSION,
     RICH_PARSER_SIGNATURE,
 )
-from courtload.models import new_uuid
-from courtload.services.rich_source_admission import (
+from courtlens.models import new_uuid
+from courtlens.services.rich_source_admission import (
     admit_rich_sources_for_season,
     get_rich_admissions_report,
 )
-from courtload.workbench_models import (
+from courtlens.workbench_models import (
     WorkbenchDataset,
     WorkbenchLineup,
     WorkbenchMatchup,
@@ -46,10 +46,10 @@ pytestmark = pytest.mark.postgres
 
 @pytest.fixture
 def db_session() -> Session:
-    url = os.getenv("COURTLOAD_TEST_POSTGRES_URL") or os.getenv("COURTLOAD_DATABASE_URL")
+    url = os.getenv("COURTLENS_TEST_POSTGRES_URL") or os.getenv("COURTLENS_DATABASE_URL")
     if not url:
-        if os.getenv("CI") or os.getenv("COURTLOAD_REQUIRE_POSTGRES_TESTS"):
-            pytest.fail("COURTLOAD_TEST_POSTGRES_URL must be configured")
+        if os.getenv("CI") or os.getenv("COURTLENS_REQUIRE_POSTGRES_TESTS"):
+            pytest.fail("COURTLENS_TEST_POSTGRES_URL must be configured")
         pytest.skip("PostgreSQL URL is not configured")
     engine = create_engine(url)
     Base.metadata.create_all(engine)

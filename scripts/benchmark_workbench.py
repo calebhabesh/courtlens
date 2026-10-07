@@ -23,9 +23,9 @@ from typing import Any
 import httpx
 from sqlalchemy import func, select, text
 
-from courtload.api.app import create_app
-from courtload.database import SessionLocal
-from courtload.workbench_models import (
+from courtlens.api.app import create_app
+from courtlens.database import SessionLocal
+from courtlens.workbench_models import (
     ForecastIssuance,
     ForecastScore,
     ModelPolicyActivation,

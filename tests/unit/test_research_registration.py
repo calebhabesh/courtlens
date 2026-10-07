@@ -7,8 +7,8 @@ from pathlib import Path
 import pytest
 from pydantic import ValidationError
 
-from courtload.domain.research_registration import ExternalOutput, ResearchBinding, ResearchProtocol
-from courtload.evaluation.research_registration import load_document, retain_document
+from courtlens.domain.research_registration import ExternalOutput, ResearchBinding, ResearchProtocol
+from courtlens.evaluation.research_registration import load_document, retain_document
 
 ROOT = Path(__file__).resolve().parents[2]
 DIGEST = "a" * 64
@@ -281,7 +281,7 @@ def test_document_size_is_bounded(tmp_path: Path) -> None:
 def test_cli_source_blocked_never_retains(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
 ) -> None:
-    from courtload.evaluation.research_registration import main
+    from courtlens.evaluation.research_registration import main
 
     document = tmp_path / "output.json"
     document.write_text(external(reuse_evidence_sha256=None).model_dump_json())
@@ -310,7 +310,7 @@ def test_cli_source_blocked_never_retains(
 def test_cli_design_cannot_claim_fit_readiness(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
 ) -> None:
-    from courtload.evaluation.research_registration import main
+    from courtlens.evaluation.research_registration import main
 
     path = tmp_path / "protocol.json"
     path.write_text(protocol().model_dump_json())

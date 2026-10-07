@@ -5,9 +5,9 @@ from datetime import UTC, datetime
 from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
 
-from courtload.demo import DEMO_EMAIL, DEMO_PASSWORD, DEMO_WEEK_START
-from courtload.models import FantasyLeague, Game, IngestionRun, User
-from courtload.security import hash_password
+from courtlens.demo import DEMO_EMAIL, DEMO_PASSWORD, DEMO_WEEK_START
+from courtlens.models import FantasyLeague, Game, IngestionRun, User
+from courtlens.security import hash_password
 
 
 def token_for(client: TestClient, email: str, password: str) -> str:
@@ -147,7 +147,7 @@ def test_cross_owner_league_is_not_disclosed(
 def test_acquisition_exhaustion_returns_explained_invalid_state(
     demo_league: FantasyLeague, api_client: TestClient, session: Session
 ) -> None:
-    from courtload.models import FantasyWeekState
+    from courtlens.models import FantasyWeekState
 
     state = (
         session.query(FantasyWeekState)

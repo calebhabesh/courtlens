@@ -14,13 +14,13 @@ from uuid import uuid4
 
 import pytest
 
-from courtload.domain.conversation import ConversationContext
-from courtload.domain.hybrid_assistant import HybridTurnRequest
-from courtload.services.assistant.hybrid import run_hybrid_turn
-from courtload.services.assistant.planner import PlanningOutput, ProviderFailure
-from courtload.services.assistant.revamp_evaluation import load_corpus, score_answer
-from courtload.services.assistant.rule_planner import RULE_NOTE
-from courtload.services.workbench_analytics import ResolvedContext
+from courtlens.domain.conversation import ConversationContext
+from courtlens.domain.hybrid_assistant import HybridTurnRequest
+from courtlens.services.assistant.hybrid import run_hybrid_turn
+from courtlens.services.assistant.planner import PlanningOutput, ProviderFailure
+from courtlens.services.assistant.revamp_evaluation import load_corpus, score_answer
+from courtlens.services.assistant.rule_planner import RULE_NOTE
+from courtlens.services.workbench_analytics import ResolvedContext
 
 RECORDING = Path("tests/fixtures/assistant/ar02/recorded-provider-v1.json")
 CAPTURE = json.loads(RECORDING.read_text())
@@ -69,7 +69,7 @@ def test_recorded_provider_replay(session, record):
             operations = [
                 op for op in body.pop("operations") if op["name"] not in ADDED_AFTER_CAPTURE
             ]
-            from courtload.services.workbench_analytics import canonical_hash
+            from courtlens.services.workbench_analytics import canonical_hash
 
             assert canonical_hash(operations) == capture["operations_sha256"]
             assert body == capture["input"]
@@ -94,16 +94,16 @@ def test_recorded_provider_replay(session, record):
     }
     with (
         patch(
-            "courtload.services.assistant.hybrid.resolve_workbench_context", return_value=context
+            "courtlens.services.assistant.hybrid.resolve_workbench_context", return_value=context
         ),
-        patch("courtload.services.assistant.hybrid.stats_catalog_scope", return_value=catalog),
-        patch("courtload.services.assistant.hybrid.execute_bounded", side_effect=execute),
+        patch("courtlens.services.assistant.hybrid.stats_catalog_scope", return_value=catalog),
+        patch("courtlens.services.assistant.hybrid.execute_bounded", side_effect=execute),
         patch(
-            "courtload.services.assistant.planner.GeminiPlanProvider.plan",
+            "courtlens.services.assistant.planner.GeminiPlanProvider.plan",
             side_effect=AssertionError("CI must not call Gemini"),
         ),
         patch(
-            "courtload.services.assistant.hybrid.retrieve_source",
+            "courtlens.services.assistant.hybrid.retrieve_source",
             side_effect=AssertionError("CI must not retrieve external sources"),
         ),
     ):

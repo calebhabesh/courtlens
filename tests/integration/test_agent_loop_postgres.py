@@ -18,28 +18,28 @@ from test_agent_tools_postgres import tool_data as _tool_data
 from test_conversation_postgres import postgres_conversation as _postgres_fixture
 from test_hybrid_assistant_postgres import request as old_request
 
-from courtload.api.app import create_app
-from courtload.assistant_history_models import (
+from courtlens.api.app import create_app
+from courtlens.assistant_history_models import (
     AssistantAgentTranscript,
     AssistantTurn,
     AssistantTurnInput,
 )
-from courtload.config import Settings, get_settings
-from courtload.database import get_db
-from courtload.domain.assistant_agent import AgentStreamEvent, AgentTurnResponse
-from courtload.domain.conversation import ConversationContext
-from courtload.domain.hybrid_assistant import HybridTurnRequest, HybridTurnResponse
-from courtload.services.assistant import history
-from courtload.services.assistant.agent import loop
-from courtload.services.assistant.agent.providers.base import (
+from courtlens.config import Settings, get_settings
+from courtlens.database import get_db
+from courtlens.domain.assistant_agent import AgentStreamEvent, AgentTurnResponse
+from courtlens.domain.conversation import ConversationContext
+from courtlens.domain.hybrid_assistant import HybridTurnRequest, HybridTurnResponse
+from courtlens.services.assistant import history
+from courtlens.services.assistant.agent import loop
+from courtlens.services.assistant.agent.providers.base import (
     AgentStep,
     Citation,
     ProviderFailure,
     ToolCall,
     Usage,
 )
-from courtload.services.assistant.agent.providers.replay import RecordedStep, ReplayProvider
-from courtload.services.workbench_analytics import canonical_hash
+from courtlens.services.assistant.agent.providers.replay import RecordedStep, ReplayProvider
+from courtlens.services.workbench_analytics import canonical_hash
 
 postgres_conversation = _postgres_fixture
 tool_data = _tool_data
@@ -504,7 +504,7 @@ def test_web_stat_claim_checks_real_warehouse_coverage_when_model_skips_sql(tool
 
 
 def test_page_pronoun_lookup_defaults_to_server_identity(tool_data):
-    from courtload.domain.hybrid_assistant import AssistantPageContext
+    from courtlens.domain.hybrid_assistant import AssistantPageContext
 
     session, context = tool_data
     selections = ConversationContext(release_id=context.release_id, season="2025-26")
@@ -532,7 +532,7 @@ def test_page_pronoun_lookup_defaults_to_server_identity(tool_data):
 def test_real_tool_payload_mutation_breaks_replay(tool_data):
     from sqlalchemy import select
 
-    from courtload.workbench_models import WorkbenchPlayerGame
+    from courtlens.workbench_models import WorkbenchPlayerGame
 
     session, context = tool_data
     request = req(context, "Show Wembanyama points", uuid4())
@@ -618,7 +618,7 @@ def capture_measured_owner_fixtures(request, monkeypatch):
     import json
     import os
 
-    root = os.environ.get("COURTLOAD_AG03_EVIDENCE_DIR")
+    root = os.environ.get("COURTLENS_AG03_EVIDENCE_DIR")
     selected = {
         "test_owner_mvp_awards_tool_and_exact_replay": "owner-mvp",
         "test_owner_best_defender_warehouse_ranking_assumption_and_replay": "owner-best-defender",

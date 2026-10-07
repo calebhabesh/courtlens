@@ -1,18 +1,18 @@
-name: courtload
+name: courtlens
 
 services:
   db:
     image: postgres:17-alpine
     environment:
-      POSTGRES_DB: courtload
-      POSTGRES_USER: courtload
-      POSTGRES_PASSWORD: courtload
+      POSTGRES_DB: courtlens
+      POSTGRES_USER: courtlens
+      POSTGRES_PASSWORD: ${COURTLENS_POSTGRES_PASSWORD:-courtlens}
     ports:
       - "127.0.0.1:5432:5432"
     volumes:
-      - courtload-postgres:/var/lib/postgresql/data
+      - courtlens-postgres:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U courtload -d courtload"]
+      test: ["CMD-SHELL", "pg_isready -U courtlens -d courtlens"]
       interval: 5s
       timeout: 3s
       retries: 15
@@ -20,15 +20,15 @@ services:
   migrate:
     build: .
     environment: &api-environment
-      COURTLOAD_ENVIRONMENT: development
-      COURTLOAD_DATABASE_URL: postgresql+psycopg://courtload:courtload@db:5432/courtload
-      COURTLOAD_JWT_SECRET: ${COURTLOAD_JWT_SECRET:-local-development-secret-change-before-deploy}
-      COURTLOAD_OPERATOR_TOKEN: ${COURTLOAD_OPERATOR_TOKEN:-local-operator-secret-change-before-deploy}
-      COURTLOAD_CORS_ORIGINS: '["http://localhost:3000","http://127.0.0.1:3000","http://localhost:${COURTLOAD_DASHBOARD_PORT:-3000}"]'
-      COURTLOAD_RAW_STORE_PATH: /app/data/raw
-      COURTLOAD_PROJECT_ROOT: /app
-      COURTLOAD_BDL_BASE_URL: https://api.balldontlie.io/v1
-      COURTLOAD_BDL_REQUESTS_PER_MINUTE: ${COURTLOAD_BDL_REQUESTS_PER_MINUTE:-5}
+      COURTLENS_ENVIRONMENT: development
+      COURTLENS_DATABASE_URL: postgresql+psycopg://courtlens:${COURTLENS_POSTGRES_PASSWORD:-courtlens}@db:5432/courtlens
+      COURTLENS_JWT_SECRET: ${COURTLENS_JWT_SECRET:-local-development-secret-change-before-deploy}
+      COURTLENS_OPERATOR_TOKEN: ${COURTLENS_OPERATOR_TOKEN:-local-operator-secret-change-before-deploy}
+      COURTLENS_CORS_ORIGINS: '["http://localhost:3000","http://127.0.0.1:3000","http://localhost:${COURTLENS_DASHBOARD_PORT:-3000}"]'
+      COURTLENS_RAW_STORE_PATH: /app/data/raw
+      COURTLENS_PROJECT_ROOT: /app
+      COURTLENS_BDL_BASE_URL: https://api.balldontlie.io/v1
+      COURTLENS_BDL_REQUESTS_PER_MINUTE: ${COURTLENS_BDL_REQUESTS_PER_MINUTE:-5}
       BALLDONTLIE_API_KEY: ${BALLDONTLIE_API_KEY:-}
     command: ["alembic", "upgrade", "head"]
     depends_on:
@@ -39,23 +39,23 @@ services:
     build: .
     environment:
       <<: *api-environment
-      COURTLOAD_GEMINI_API_KEY: ${COURTLOAD_GEMINI_API_KEY:-${GEMINI_API_KEY:-}}
-      COURTLOAD_GEMINI_MODEL: ${COURTLOAD_GEMINI_MODEL:-${GEMINI_MODEL:-}}
-      COURTLOAD_ANTHROPIC_API_KEY: ${COURTLOAD_ANTHROPIC_API_KEY:-${ANTHROPIC_API_KEY:-}}
-      COURTLOAD_OPENAI_API_KEY: ${COURTLOAD_OPENAI_API_KEY:-${OPENAI_API_KEY:-}}
-      COURTLOAD_ASSISTANT_PROVIDER: ${COURTLOAD_ASSISTANT_PROVIDER:-}
-      COURTLOAD_ASSISTANT_MODEL: ${COURTLOAD_ASSISTANT_MODEL:-}
-      COURTLOAD_ASSISTANT_MAX_STEPS: ${COURTLOAD_ASSISTANT_MAX_STEPS:-6}
-      COURTLOAD_ASSISTANT_MAX_WEB_SEARCHES: ${COURTLOAD_ASSISTANT_MAX_WEB_SEARCHES:-3}
-      COURTLOAD_ASSISTANT_MAX_TOKENS: ${COURTLOAD_ASSISTANT_MAX_TOKENS:-60000}
-      COURTLOAD_ASSISTANT_TURN_TIMEOUT_SECONDS: ${COURTLOAD_ASSISTANT_TURN_TIMEOUT_SECONDS:-60}
-      COURTLOAD_ASSISTANT_PRICES_FILE: ${COURTLOAD_ASSISTANT_PRICES_FILE:-config/assistant-prices.yaml}
+      COURTLENS_GEMINI_API_KEY: ${COURTLENS_GEMINI_API_KEY:-${GEMINI_API_KEY:-}}
+      COURTLENS_GEMINI_MODEL: ${COURTLENS_GEMINI_MODEL:-${GEMINI_MODEL:-}}
+      COURTLENS_ANTHROPIC_API_KEY: ${COURTLENS_ANTHROPIC_API_KEY:-${ANTHROPIC_API_KEY:-}}
+      COURTLENS_OPENAI_API_KEY: ${COURTLENS_OPENAI_API_KEY:-${OPENAI_API_KEY:-}}
+      COURTLENS_ASSISTANT_PROVIDER: ${COURTLENS_ASSISTANT_PROVIDER:-}
+      COURTLENS_ASSISTANT_MODEL: ${COURTLENS_ASSISTANT_MODEL:-}
+      COURTLENS_ASSISTANT_MAX_STEPS: ${COURTLENS_ASSISTANT_MAX_STEPS:-6}
+      COURTLENS_ASSISTANT_MAX_WEB_SEARCHES: ${COURTLENS_ASSISTANT_MAX_WEB_SEARCHES:-3}
+      COURTLENS_ASSISTANT_MAX_TOKENS: ${COURTLENS_ASSISTANT_MAX_TOKENS:-60000}
+      COURTLENS_ASSISTANT_TURN_TIMEOUT_SECONDS: ${COURTLENS_ASSISTANT_TURN_TIMEOUT_SECONDS:-60}
+      COURTLENS_ASSISTANT_PRICES_FILE: ${COURTLENS_ASSISTANT_PRICES_FILE:-config/assistant-prices.yaml}
     ports:
       - "127.0.0.1:8000:8000"
     volumes:
-      - courtload-raw:/app/data/raw
-      - courtload-artifacts:/app/data/artifacts
-      - courtload-cache:/app/data/cache
+      - courtlens-raw:/app/data/raw
+      - courtlens-artifacts:/app/data/artifacts
+      - courtlens-cache:/app/data/cache
       - ./data/artifacts/evaluation:/app/data/artifacts/evaluation:ro
     depends_on:
       migrate:
@@ -70,11 +70,11 @@ services:
     build: .
     environment: *api-environment
     volumes:
-      - courtload-raw:/app/data/raw
-      - courtload-artifacts:/app/data/artifacts
-      - courtload-cache:/app/data/cache
+      - courtlens-raw:/app/data/raw
+      - courtlens-artifacts:/app/data/artifacts
+      - courtlens-cache:/app/data/cache
       - ./data/artifacts/evaluation:/app/data/artifacts/evaluation:ro
-    command: ["courtload", "worker"]
+    command: ["courtlens", "worker"]
     depends_on:
       migrate:
         condition: service_completed_successfully
@@ -83,14 +83,14 @@ services:
     build:
       context: dashboard
       args:
-        NEXT_PUBLIC_COURTLOAD_API_URL: http://localhost:8000
+        NEXT_PUBLIC_COURTLENS_API_URL: http://localhost:8000
     environment:
-      COURTLOAD_API_INTERNAL_URL: http://api:8000
-      NEXT_PUBLIC_COURTLOAD_API_URL: http://localhost:8000
+      COURTLENS_API_INTERNAL_URL: http://api:8000
+      NEXT_PUBLIC_COURTLENS_API_URL: http://localhost:8000
       NEXT_PUBLIC_DEMO_MODE: "true"
-      COURTLOAD_OPERATOR_TOKEN: ${COURTLOAD_OPERATOR_TOKEN:-local-operator-secret-change-before-deploy}
+      COURTLENS_OPERATOR_TOKEN: ${COURTLENS_OPERATOR_TOKEN:-local-operator-secret-change-before-deploy}
     ports:
-      - "127.0.0.1:${COURTLOAD_DASHBOARD_PORT:-3000}:3000"
+      - "127.0.0.1:${COURTLENS_DASHBOARD_PORT:-3000}:3000"
     depends_on:
       api:
         condition: service_healthy
@@ -105,9 +105,9 @@ services:
     environment:
       DBT_HOST: db
       DBT_PORT: 5432
-      DBT_USER: courtload
-      DBT_PASSWORD: courtload
-      DBT_DATABASE: courtload
+      DBT_USER: courtlens
+      DBT_PASSWORD: ${COURTLENS_POSTGRES_PASSWORD:-courtlens}
+      DBT_DATABASE: courtlens
       DBT_SCHEMA: analytics
     depends_on:
       migrate:
@@ -117,7 +117,14 @@ services:
     command: ["build", "--profiles-dir", "."]
 
 volumes:
-  courtload-postgres:
-  courtload-raw:
-  courtload-artifacts:
-  courtload-cache:
+  courtlens-postgres:
+  courtlens-raw:
+  courtlens-artifacts:
+  courtlens-cache:
+
+# Retained legacy database volume; RN02 records its actual name.
+# This external volume is deliberately not mounted or managed by this project.
+# volumes:
+#   courtload-postgres:
+#     external: true
+#     name: courtload_courtload-postgres

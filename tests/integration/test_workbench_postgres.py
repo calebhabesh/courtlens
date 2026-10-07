@@ -10,13 +10,13 @@ from sqlalchemy import create_engine, select, text
 from sqlalchemy.exc import DBAPIError
 from sqlalchemy.orm import Session
 
-from courtload.database import Base
-from courtload.services.workbench_registry import (
+from courtlens.database import Base
+from courtlens.services.workbench_registry import (
     check_snapshot_equivalence,
     compute_semantic_signature,
     verify_and_bind_snapshot_equivalence,
 )
-from courtload.workbench_models import (
+from courtlens.workbench_models import (
     WorkbenchAcquisition,
     WorkbenchArtifact,
     WorkbenchDataset,
@@ -31,11 +31,11 @@ pytestmark = pytest.mark.postgres
 
 @pytest.fixture
 def postgres_engine():  # type: ignore[no-untyped-def]
-    url = os.getenv("COURTLOAD_TEST_POSTGRES_URL")
+    url = os.getenv("COURTLENS_TEST_POSTGRES_URL")
     if not url:
-        if os.getenv("CI") or os.getenv("COURTLOAD_REQUIRE_POSTGRES_TESTS"):
-            pytest.fail("COURTLOAD_TEST_POSTGRES_URL must be configured")
-        pytest.skip("COURTLOAD_TEST_POSTGRES_URL is not configured")
+        if os.getenv("CI") or os.getenv("COURTLENS_REQUIRE_POSTGRES_TESTS"):
+            pytest.fail("COURTLENS_TEST_POSTGRES_URL must be configured")
+        pytest.skip("COURTLENS_TEST_POSTGRES_URL is not configured")
     engine = create_engine(url)
     Base.metadata.create_all(engine)
     try:

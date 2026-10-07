@@ -4,14 +4,14 @@ import json
 from pathlib import Path
 from uuid import uuid4
 
-from courtload.domain.hybrid_assistant import (
+from courtlens.domain.hybrid_assistant import (
     AnswerSource,
     ExternalClaimBlock,
     HybridTurnResponse,
     InabilityBlock,
     external_claim_text,
 )
-from courtload.services.assistant.evaluation import score_case
+from courtlens.services.assistant.evaluation import score_case
 
 
 def external_answer():

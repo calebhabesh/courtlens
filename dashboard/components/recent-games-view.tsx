@@ -93,7 +93,7 @@ export function RecentGamesView({
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `courtload-${player.name.toLowerCase().replace(/\s+/g, "_")}-recent-games.csv`;
+    a.download = `courtlens-${player.name.toLowerCase().replace(/\s+/g, "_")}-recent-games.csv`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);

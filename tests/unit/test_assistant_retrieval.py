@@ -11,9 +11,9 @@ from uuid import UUID, uuid4
 
 import pytest
 
-from courtload.domain.hybrid_assistant import HybridTurnRequest, HybridTurnResponse
-from courtload.services.assistant import retrieval as r
-from courtload.services.assistant.hybrid import run_hybrid_turn
+from courtlens.domain.hybrid_assistant import HybridTurnRequest, HybridTurnResponse
+from courtlens.services.assistant import retrieval as r
+from courtlens.services.assistant.hybrid import run_hybrid_turn
 
 OPENING = "The 78th NBA regular season will tip off on Tuesday, Oct. 24, 2023"
 CURRENT = "American Express NBA Tip-Off 2026 will begin on Tuesday, Oct. 20"

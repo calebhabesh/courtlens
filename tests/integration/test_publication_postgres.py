@@ -8,25 +8,25 @@ import pytest
 from sqlalchemy import create_engine, func, select
 from sqlalchemy.orm import Session
 
-from courtload.archive_models import ArchiveDataset
-from courtload.database import Base
-from courtload.services import publication
-from courtload.services.publication import BuildInProgressError
-from courtload.warehouse_models import PublishedSnapshot, ServingSnapshot, WarehouseBuild
+from courtlens.archive_models import ArchiveDataset
+from courtlens.database import Base
+from courtlens.services import publication
+from courtlens.services.publication import BuildInProgressError
+from courtlens.warehouse_models import PublishedSnapshot, ServingSnapshot, WarehouseBuild
 
 pytestmark = pytest.mark.postgres
 
 
 @pytest.fixture
 def postgres_engine():  # type: ignore[no-untyped-def]
-    url = os.getenv("COURTLOAD_TEST_POSTGRES_URL")
+    url = os.getenv("COURTLENS_TEST_POSTGRES_URL")
     if not url:
-        if os.getenv("CI") or os.getenv("COURTLOAD_REQUIRE_POSTGRES_TESTS"):
+        if os.getenv("CI") or os.getenv("COURTLENS_REQUIRE_POSTGRES_TESTS"):
             pytest.fail(
-                "COURTLOAD_TEST_POSTGRES_URL must be configured when CI or "
-                "COURTLOAD_REQUIRE_POSTGRES_TESTS is set"
+                "COURTLENS_TEST_POSTGRES_URL must be configured when CI or "
+                "COURTLENS_REQUIRE_POSTGRES_TESTS is set"
             )
-        pytest.skip("COURTLOAD_TEST_POSTGRES_URL is not configured")
+        pytest.skip("COURTLENS_TEST_POSTGRES_URL is not configured")
     engine = create_engine(url)
     Base.metadata.create_all(engine)
     try:

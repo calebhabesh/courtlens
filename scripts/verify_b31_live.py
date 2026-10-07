@@ -20,12 +20,12 @@ import httpx
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
-from courtload.config import get_settings
-from courtload.database import engine
-from courtload.live_models import LiveContent, LiveObservation
-from courtload.services.live import poll_once
-from courtload.services.live_provider import ESPNLiveProvider
-from courtload.warehouse_models import PublishedSnapshot
+from courtlens.config import get_settings
+from courtlens.database import engine
+from courtlens.live_models import LiveContent, LiveObservation
+from courtlens.services.live import poll_once
+from courtlens.services.live_provider import ESPNLiveProvider
+from courtlens.warehouse_models import PublishedSnapshot
 
 
 def integrity():
@@ -60,12 +60,12 @@ def main():
     settings = get_settings()
     port = 8011
     base = f"http://127.0.0.1:{port}"
-    env = {**os.environ, "COURTLOAD_LIVE_ENABLED": "true"}
+    env = {**os.environ, "COURTLENS_LIVE_ENABLED": "true"}
     with Path("/tmp/b31-smoke-server.log").open("w") as logs:
         server = subprocess.Popen(
             [
                 str(Path(".venv/bin/uvicorn")),
-                "courtload.api.app:create_app",
+                "courtlens.api.app:create_app",
                 "--factory",
                 "--host",
                 "127.0.0.1",

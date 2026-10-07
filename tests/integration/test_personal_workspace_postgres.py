@@ -9,23 +9,23 @@ import pytest
 from sqlalchemy import create_engine, delete
 from sqlalchemy.orm import Session
 
-from courtload.database import Base
-from courtload.services.personal_state import (
+from courtlens.database import Base
+from courtlens.services.personal_state import (
     VersionConflictError,
     get_or_create_workspace,
     update_workspace_state,
 )
-from courtload.workbench_models import WorkbenchPersonalWorkspace
+from courtlens.workbench_models import WorkbenchPersonalWorkspace
 
 pytestmark = pytest.mark.postgres
 
 
 @pytest.mark.parametrize("persisted", [False, True])
 def test_atomic_workspace_conflict(persisted: bool) -> None:
-    url = os.getenv("COURTLOAD_TEST_POSTGRES_URL")
+    url = os.getenv("COURTLENS_TEST_POSTGRES_URL")
     if not url:
-        if os.getenv("CI") or os.getenv("COURTLOAD_REQUIRE_POSTGRES_TESTS"):
-            pytest.fail("COURTLOAD_TEST_POSTGRES_URL must be configured")
+        if os.getenv("CI") or os.getenv("COURTLENS_REQUIRE_POSTGRES_TESTS"):
+            pytest.fail("COURTLENS_TEST_POSTGRES_URL must be configured")
         pytest.skip("PostgreSQL URL is not configured")
     engine = create_engine(url)
     Base.metadata.create_all(engine)

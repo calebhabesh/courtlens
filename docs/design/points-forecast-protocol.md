@@ -111,12 +111,12 @@ Run identity binds semantic data/config/feature/code membership rather than loca
 Proposed commands to implement:
 
 ```text
-courtload evaluate-points --config evaluation/config/points-v1.yaml --dataset <manifest> --stage validate
-courtload evaluate-points --config evaluation/config/points-v1.yaml --dataset <manifest> --stage calibrate
-courtload evaluate-points --registered-run <run-id> --stage final --open-final-test
-courtload activate-points-policy --registered-run <run-id>
-courtload issue-forecasts --release <release-id>
-courtload score-forecasts --dataset <observed-outcomes-manifest>
+courtlens evaluate-points --config evaluation/config/points-v1.yaml --dataset <manifest> --stage validate
+courtlens evaluate-points --config evaluation/config/points-v1.yaml --dataset <manifest> --stage calibrate
+courtlens evaluate-points --registered-run <run-id> --stage final --open-final-test
+courtlens activate-points-policy --registered-run <run-id>
+courtlens issue-forecasts --release <release-id>
+courtlens score-forecasts --dataset <observed-outcomes-manifest>
 ```
 
 These commands do not exist yet. Keep old evaluation commands usable. The UI reads registered runs and shows copyable reproducibility commands; it does not expose arbitrary code/config paths or launch training through assistant tools.

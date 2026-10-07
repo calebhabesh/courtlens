@@ -16,13 +16,13 @@ Tests:
 
 from __future__ import annotations
 
-from courtload.domain.rich_sources import (
+from courtlens.domain.rich_sources import (
     POSSESSION_POLICY_VERSION,
     NormalizedLineupStint,
     NormalizedPbpEvent,
     NormalizedPossession,
 )
-from courtload.domain.stints import (
+from courtlens.domain.stints import (
     ReconstructionOverrideRecord,
     extract_event_stats,
     format_lineup_key,
@@ -662,7 +662,7 @@ def test_reconstruction_override_application() -> None:
         original_value_json=h_orig,
         override_value_json=h_override,
         reason="Official scorer corrected late starting scratch",
-        author="operator@courtload.local",
+        author="operator@courtlens.local",
         status="active",
     )
 

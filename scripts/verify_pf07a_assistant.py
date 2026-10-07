@@ -8,10 +8,10 @@ from uuid import uuid4
 import httpx
 from sqlalchemy import text
 
-from courtload.database import SessionLocal
-from courtload.domain.hybrid_assistant import HybridTurnResponse
-from courtload.services.assistant.saved import reproduce_saved, saved_inventory
-from courtload.services.workbench_analytics import reproduce_investigation
+from courtlens.database import SessionLocal
+from courtlens.domain.hybrid_assistant import HybridTurnResponse
+from courtlens.services.assistant.saved import reproduce_saved, saved_inventory
+from courtlens.services.workbench_analytics import reproduce_investigation
 
 DIRECTORY = Path("docs/evidence/pf07a-assistant")
 

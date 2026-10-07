@@ -1,6 +1,6 @@
 """AR07 rendered panels through the Next proxy to disposable PostgreSQL/FastAPI.
 
-Opt in with COURTLOAD_AR07_BROWSER_BASE_URL and COURTLOAD_AR07_DASHBOARD_DIR.
+Opt in with COURTLENS_AR07_BROWSER_BASE_URL and COURTLENS_AR07_DASHBOARD_DIR.
 The supplied Next server must target this fixture's port (4208 by default).
 """
 
@@ -15,17 +15,17 @@ import uvicorn
 from sqlalchemy.orm import Session
 from test_conversation_postgres import postgres_conversation as _postgres_fixture
 
-from courtload.api.app import create_app
-from courtload.database import get_db
-from courtload.domain.conversation import AnalysisPlan, OperationStep
-from courtload.services.assistant.hybrid import run_hybrid_turn
-from courtload.services.assistant.planner import PlanningOutput
+from courtlens.api.app import create_app
+from courtlens.database import get_db
+from courtlens.domain.conversation import AnalysisPlan, OperationStep
+from courtlens.services.assistant.hybrid import run_hybrid_turn
+from courtlens.services.assistant.planner import PlanningOutput
 
 postgres_conversation = _postgres_fixture
 
 
 @pytest.mark.skipif(
-    not os.environ.get("COURTLOAD_AR07_BROWSER_BASE_URL"),
+    not os.environ.get("COURTLENS_AR07_BROWSER_BASE_URL"),
     reason="isolated Next browser server required",
 )
 def test_rendered_panels_resolve_page_referents(postgres_conversation):
@@ -64,12 +64,12 @@ def test_rendered_panels_resolve_page_referents(postgres_conversation):
         uvicorn.Config(
             app,
             host="127.0.0.1",
-            port=int(os.environ.get("COURTLOAD_AR07_API_PORT", "4208")),
+            port=int(os.environ.get("COURTLENS_AR07_API_PORT", "4208")),
             log_level="warning",
         )
     )
     worker = threading.Thread(target=server.run, daemon=True)
-    with patch("courtload.services.assistant.history.run_hybrid_turn", side_effect=fixture_turn):
+    with patch("courtlens.services.assistant.history.run_hybrid_turn", side_effect=fixture_turn):
         worker.start()
         try:
             # Browser navigation retries its API calls; a bounded event wait only covers startup.
@@ -81,8 +81,8 @@ def test_rendered_panels_resolve_page_referents(postgres_conversation):
             env = {
                 **os.environ,
                 "PLAYWRIGHT_EXTERNAL_SERVER": "true",
-                "PLAYWRIGHT_BASE_URL": os.environ["COURTLOAD_AR07_BROWSER_BASE_URL"],
-                "COURTLOAD_AR07_RELEASE_ID": context.release_id,
+                "PLAYWRIGHT_BASE_URL": os.environ["COURTLENS_AR07_BROWSER_BASE_URL"],
+                "COURTLENS_AR07_RELEASE_ID": context.release_id,
             }
             result = subprocess.run(
                 [
@@ -93,7 +93,7 @@ def test_rendered_panels_resolve_page_referents(postgres_conversation):
                     "e2e/assistant-panel-real.spec.ts",
                     "--workers=1",
                 ],
-                cwd=os.environ["COURTLOAD_AR07_DASHBOARD_DIR"],
+                cwd=os.environ["COURTLENS_AR07_DASHBOARD_DIR"],
                 env=env,
                 capture_output=True,
                 text=True,

@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pytest
 
-from courtload.evaluation.research_readiness import retained_exposure_inventory
+from courtlens.evaluation.research_readiness import retained_exposure_inventory
 
 
 def test_exposure_boundary_and_exact_registration_hash(tmp_path: Path) -> None:

@@ -10,20 +10,20 @@ import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
-from courtload.database import Base
-from courtload.domain.entity_lookup import (
+from courtlens.database import Base
+from courtlens.domain.entity_lookup import (
     LOOKUP_CATALOG_VERSION,
     damerau_levenshtein_distance,
     generate_player_aliases,
     normalize_lookup_text,
     tokenize_lookup_text,
 )
-from courtload.services.entity_lookup import (
+from courtlens.services.entity_lookup import (
     clear_lookup_caches,
     get_or_build_entity_index,
     lookup_entities,
 )
-from courtload.workbench_models import (
+from courtlens.workbench_models import (
     WorkbenchIdentity,
 )
 
@@ -39,8 +39,8 @@ def _reset_caches():
 @pytest.fixture
 def test_db_session():
     """Provide real PostgreSQL session when configured/reachable, else SQLite."""
-    default_url = "postgresql+psycopg://courtload:courtload@localhost:5432/courtload"
-    pg_url = os.getenv("COURTLOAD_TEST_POSTGRES_URL", default_url)
+    default_url = "postgresql+psycopg://courtlens:courtlens@localhost:5432/courtlens"
+    pg_url = os.getenv("COURTLENS_TEST_POSTGRES_URL", default_url)
     try:
         engine = create_engine(pg_url)
         with Session(engine) as session:

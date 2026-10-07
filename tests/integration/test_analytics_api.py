@@ -5,9 +5,9 @@ from datetime import UTC, date, datetime
 from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
 
-from courtload.archive_models import ArchiveDataset, ArchiveTeamGame
-from courtload.services.publication import FEATURE_VERSION, METRIC_VERSION, SCORING_VERSION
-from courtload.warehouse_models import (
+from courtlens.archive_models import ArchiveDataset, ArchiveTeamGame
+from courtlens.services.publication import FEATURE_VERSION, METRIC_VERSION, SCORING_VERSION
+from courtlens.warehouse_models import (
     PublishedSnapshot,
     ServingOpponentContext,
     ServingPlayerGame,

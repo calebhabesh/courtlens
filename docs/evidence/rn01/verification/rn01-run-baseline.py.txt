@@ -1,0 +1,15 @@
+import os
+import subprocess
+import sys
+from pathlib import Path
+root = Path('/tmp/courtlens-rn01-baseline')
+env = dict(os.environ)
+env['PYTHONPATH'] = str(root / 'src')
+env['COURTLOAD_ENVIRONMENT'] = 'test'
+env['COURTLOAD_PROJECT_ROOT'] = '/home/ethioking/dev/nba-analytics'
+env['COURTLOAD_RAW_STORE_PATH'] = '/home/ethioking/dev/nba-analytics/data/raw'
+env['COURTLOAD_DATABASE_URL'] = 'sqlite+pysqlite:///:memory:'
+env['COURTLOAD_TEST_POSTGRES_URL'] = 'postgresql+psycopg://courtlens:courtlens@localhost:55432/courtlens_baseline'
+env['COURTLOAD_REQUIRE_POSTGRES_TESTS'] = 'true'
+result = subprocess.run(['/home/ethioking/dev/nba-analytics/.venv/bin/pytest', *sys.argv[1:]], cwd=root, env=env)
+raise SystemExit(result.returncode)

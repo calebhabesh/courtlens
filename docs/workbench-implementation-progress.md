@@ -1,3 +1,5 @@
+CourtLoad was renamed to CourtLens on 2026-10-07; identifiers below are historical.
+
 # Workbench implementation progress
 
 Planning date: 2026-10-01. Baseline revision inspected: `30281ca7490a33d2b463201fc6c8154d53379b8a`.

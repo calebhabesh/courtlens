@@ -1,3 +1,5 @@
+CourtLoad was renamed to CourtLens on 2026-10-07; identifiers below are historical.
+
 # Locked Portfolio Scope
 
 > **Current direction, 2026-10-01:** The owner selected a local NBA research and forecast workbench with fresh in-season batch data, dark dense UI, a new points experiment, and optional tool-backed AI. Use the [workbench handoff](workbench-implementation-plan.md) for next-release scope. Earlier decisions below remain historical context and sealed-experiment requirements where applicable.
