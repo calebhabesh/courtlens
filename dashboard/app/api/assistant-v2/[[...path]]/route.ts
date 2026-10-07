@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { isSameBrowserOrigin } from "../../../../lib/same-origin";
 
 const uuid = "[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}";
-const allowedPaths = new RegExp(`^(?:turn|threads(?:/${uuid}(?:/turns(?:/${uuid}/cancel)?)?)?)$`);
+const allowedPaths = new RegExp(`^(?:turn(?:/stream)?|threads(?:/${uuid}(?:/turns(?:/${uuid}/cancel)?)?)?)$`);
 type Context = { params: Promise<{ path?: string[] }> };
 
 async function proxy(request: NextRequest, context: Context) {
@@ -40,6 +40,10 @@ async function proxy(request: NextRequest, context: Context) {
       body: bytes ? Buffer.concat(chunks) : undefined,
       redirect: "error", cache: "no-store", signal: AbortSignal.timeout(55000),
     });
+    // AR05: pass a successful event stream through unbuffered; errors stay JSON statuses.
+    if (suffix === "turn/stream" && response.ok && response.body && response.headers.get("content-type")?.startsWith("text/event-stream")) {
+      return new Response(response.body, { status: 200, headers: { "Content-Type": "text/event-stream", "Cache-Control": "no-store", "X-Accel-Buffering": "no" } });
+    }
     return NextResponse.json(await response.json(), { status: response.status, headers: { "Cache-Control": "no-store" } });
   } catch {
     return NextResponse.json({ detail: "Assistant service unavailable. Reuse the request ID to check or replay the retained turn." }, { status: 502 });

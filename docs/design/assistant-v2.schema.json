@@ -1376,6 +1376,108 @@
       "title": "DurableTurnRecord",
       "type": "object"
     },
+    "StreamAcceptedEvent": {
+      "additionalProperties": false,
+      "description": "AR05 SSE: the durable turn exists; the client may poll or replay by request_id.",
+      "properties": {
+        "event": {
+          "const": "accepted",
+          "default": "accepted",
+          "title": "Event",
+          "type": "string"
+        },
+        "request_id": {
+          "format": "uuid",
+          "title": "Request Id",
+          "type": "string"
+        },
+        "thread_id": {
+          "format": "uuid",
+          "title": "Thread Id",
+          "type": "string"
+        },
+        "turn_id": {
+          "format": "uuid",
+          "title": "Turn Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "request_id",
+        "thread_id",
+        "turn_id"
+      ],
+      "title": "StreamAcceptedEvent",
+      "type": "object"
+    },
+    "StreamFinalEvent": {
+      "additionalProperties": false,
+      "description": "The retained typed response; it is authoritative over any streamed text.",
+      "properties": {
+        "event": {
+          "const": "final",
+          "default": "final",
+          "title": "Event",
+          "type": "string"
+        },
+        "response": {
+          "$ref": "#/$defs/HybridTurnResponse"
+        }
+      },
+      "required": [
+        "response"
+      ],
+      "title": "StreamFinalEvent",
+      "type": "object"
+    },
+    "StreamNarrativeEvent": {
+      "additionalProperties": false,
+      "description": "A slice of narrative that already passed the numeric check and was retained.",
+      "properties": {
+        "event": {
+          "const": "narrative",
+          "default": "narrative",
+          "title": "Event",
+          "type": "string"
+        },
+        "text": {
+          "maxLength": 700,
+          "minLength": 1,
+          "title": "Text",
+          "type": "string"
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "title": "StreamNarrativeEvent",
+      "type": "object"
+    },
+    "StreamPhaseEvent": {
+      "additionalProperties": false,
+      "properties": {
+        "event": {
+          "const": "phase",
+          "default": "phase",
+          "title": "Event",
+          "type": "string"
+        },
+        "phase": {
+          "enum": [
+            "understanding",
+            "querying",
+            "writing"
+          ],
+          "title": "Phase",
+          "type": "string"
+        }
+      },
+      "required": [
+        "phase"
+      ],
+      "title": "StreamPhaseEvent",
+      "type": "object"
+    },
     "ThreadHistoryPage": {
       "additionalProperties": false,
       "properties": {
@@ -1451,6 +1553,32 @@
       ],
       "title": "TurnHistoryPage",
       "type": "object"
+    },
+    "TurnStreamEvent": {
+      "discriminator": {
+        "mapping": {
+          "accepted": "#/$defs/StreamAcceptedEvent",
+          "final": "#/$defs/StreamFinalEvent",
+          "narrative": "#/$defs/StreamNarrativeEvent",
+          "phase": "#/$defs/StreamPhaseEvent"
+        },
+        "propertyName": "event"
+      },
+      "oneOf": [
+        {
+          "$ref": "#/$defs/StreamAcceptedEvent"
+        },
+        {
+          "$ref": "#/$defs/StreamPhaseEvent"
+        },
+        {
+          "$ref": "#/$defs/StreamNarrativeEvent"
+        },
+        {
+          "$ref": "#/$defs/StreamFinalEvent"
+        }
+      ],
+      "title": "TurnStreamEvent"
     }
   },
   "oneOf": [
@@ -1471,6 +1599,9 @@
     },
     {
       "$ref": "#/$defs/TurnHistoryPage"
+    },
+    {
+      "$ref": "#/$defs/TurnStreamEvent"
     }
   ]
 }

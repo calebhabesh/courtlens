@@ -3,7 +3,8 @@
 import { useEffect, useId, useRef, useState } from "react";
 import Link from "next/link";
 import type { ConversationContext, DurableThreadHeader, DurableTurnRecord, HybridTurnRequest } from "@/lib/assistant-v2.generated";
-import { assistantPrivacyNotice, assistantThreads, assistantTurns, clearAssistantHistory, deleteAssistantThread, newAssistantThread, sendAssistantTurn, stopAssistantTurn } from "@/lib/assistant-history";
+import { assistantPrivacyNotice, assistantThreads, assistantTurns, clearAssistantHistory, deleteAssistantThread, newAssistantThread, stopAssistantTurn } from "@/lib/assistant-history";
+import { phaseLabels, streamAssistantTurn, type TurnPhase } from "@/lib/assistant-stream";
 import { CatalogScopeFields } from "./catalog-scope-fields";
 import { HybridAnswer } from "./hybrid-answer";
 import { Button } from "./ui/controls";
@@ -17,6 +18,7 @@ const changeEvent = "courtload-assistant-history-change";
 const activeKey = "courtload-assistant-active-thread-v2";
 const examples = ["Explain pick and roll", "How do I compare two players here?", "Which point guard had the most assists per game last season?"];
 const messageOf = (cause: unknown) => cause instanceof Error ? cause.message : "The assistant service could not be reached. Your question is preserved.";
+type LiveTurn = { requestId: string; phase?: TurnPhase; narrative: string };
 function remember(thread: string | null) { try { if (thread) localStorage.setItem(activeKey, thread); else localStorage.removeItem(activeKey); } catch { /* History itself remains on the server. */ } }
 
 export function ThreadedAssistant({ initialContext = {} }: { initialContext?: ConversationContext }) {
@@ -34,6 +36,8 @@ export function ThreadedAssistant({ initialContext = {} }: { initialContext?: Co
   const [error, setError] = useState<string | null>(null);
   const [transportRetry, setTransportRetry] = useState<HybridTurnRequest | null>(null);
   const [confirmDelete, setConfirmDelete] = useState<"thread" | "all" | null>(null);
+  // AR05 progress for the outstanding request; retained history stays authoritative.
+  const [live, setLive] = useState<LiveTurn | null>(null);
   const input = useRef<HTMLTextAreaElement>(null);
   const epoch = useRef(0);
   const lock = useRef(false);
@@ -176,8 +180,15 @@ export function ThreadedAssistant({ initialContext = {} }: { initialContext?: Co
     if (lock.current) return;
     const owned = epoch.current;
     lock.current = true; setBusy(true); setError(null); setTransportRetry(null); outstanding.current = request;
+    setLive({ requestId: request.request_id, narrative: "" });
+    const progress = (update: (current: LiveTurn) => LiveTurn) => setLive(previous => previous?.requestId === request.request_id ? update(previous) : previous);
     try {
-      const answer = await sendAssistantTurn(request);
+      const answer = await streamAssistantTurn(request, event => {
+        if (epoch.current !== owned) return;
+        if (event.event === "phase") progress(current => ({ ...current, phase: event.phase }));
+        else if (event.event === "narrative") progress(current => ({ ...current, narrative: current.narrative + event.text }));
+        else if (event.event === "accepted" && request.thread_id) void readTurns(request.thread_id, owned).catch(() => undefined);
+      });
       if (epoch.current !== owned) return;
       await readTurns(answer.thread_id, owned);
       if (epoch.current !== owned) return;
@@ -188,7 +199,10 @@ export function ThreadedAssistant({ initialContext = {} }: { initialContext?: Co
         setError(messageOf(cause)); setTransportRetry(request);
         if (request.thread_id) { try { await readTurns(request.thread_id, owned); } catch { /* Keep the transport error and retry identity. */ } }
       }
-    } finally { if (epoch.current === owned) { outstanding.current = null; lock.current = false; setBusy(false); } }
+    } finally {
+      setLive(previous => previous?.requestId === request.request_id ? null : previous);
+      if (epoch.current === owned) { outstanding.current = null; lock.current = false; setBusy(false); }
+    }
   }
   async function submit(message = question, retryOf?: string) {
     if (lock.current || pending || turnCursor || !message.trim()) return;
@@ -255,10 +269,10 @@ export function ThreadedAssistant({ initialContext = {} }: { initialContext?: Co
     <details><summary>Edit scope for the next question{scopeEdited ? " · changed" : ""}</summary><p>Earlier answers keep their scope. Relative dates in your question are resolved by the assistant.</p><fieldset disabled={blocked} className="conversation-controls"><legend>Next question scope</legend><CatalogScopeFields release={shownContext.release_id ?? undefined} season={shownContext.season ?? ""} phase={shownContext.phase ?? ""} before={shownContext.before_date ?? ""} onSeason={season => editScope({ season: season || null })} onPhase={phase => editScope({ phase: (phase || undefined) as ConversationContext["phase"] })} onBefore={before_date => editScope({ before_date: before_date || null })} /><label>Window<select value={shownContext.window ?? ""} onChange={event => editScope({ window: (event.target.value || undefined) as ConversationContext["window"] })}><option value="">Inherit or use default</option><option value="season">Season to date</option><option value="last_10">Last 10 appearances</option><option value="last_5">Last 5 appearances</option></select></label></fieldset></details>
     {!ready && <p role="status">Reading local history…</p>}
     {error && <div role="alert"><p>{error}</p>{transportRetry && <Button disabled={blocked} onClick={() => void execute(transportRetry)}>Check or replay request</Button>}<Button disabled={blocked} onClick={() => { if (thread) void openThread(thread); else void refreshThreads().then(() => setError(null)).catch(cause => setError(messageOf(cause))); }}>Reload history</Button></div>}
-    <div aria-label="Messages" className="thread-messages">{turns.map(turn => <article key={turn.turn_id} className="conversation-turn"><p className="thread-question"><strong>You</strong><br />{turn.request.message}</p>{turn.response ? <HybridAnswer answer={turn.response} busy={blocked || !!turnCursor} onChoice={choice => void submit(choice)} onRetry={() => { setQuestion(turn.request.message); void submit(turn.request.message, turn.turn_id); }} /> : <p role="status">{turn.state === "pending" ? "Question saved. Waiting to start…" : "Working on your question…"}</p>}</article>)}</div>
+    <div aria-label="Messages" className="thread-messages">{turns.map(turn => <article key={turn.turn_id} className="conversation-turn"><p className="thread-question"><strong>You</strong><br />{turn.request.message}</p>{turn.response ? <HybridAnswer answer={turn.response} busy={blocked || !!turnCursor} onChoice={choice => void submit(choice)} onRetry={() => { setQuestion(turn.request.message); void submit(turn.request.message, turn.turn_id); }} /> : <div className="thread-live" aria-busy="true"><p role="status">{live?.requestId === turn.request.request_id && live.phase ? phaseLabels[live.phase] : turn.state === "pending" ? "Question saved. Waiting to start…" : "Working on your question…"}</p>{live?.requestId === turn.request.request_id && live.narrative && <p className="hybrid-narrative">{live.narrative}</p>}</div>}</article>)}</div>
     {turnCursor && <><p>Load newer turns before adding a question.</p><Button disabled={blocked} onClick={() => void readTurns(thread!, epoch.current, turnCursor).catch(cause => setError(messageOf(cause)))}>Load newer turns</Button></>}
     {turns.length === 0 && <div className="conversation-prompts">{examples.map(example => <Button key={example} disabled={blocked} onClick={() => { setQuestion(example); input.current?.focus(); }}>{example}</Button>)}</div>}
     <form className="thread-composer" onSubmit={event => { event.preventDefault(); void submit(); }}><label htmlFor={`${id}-question`}>Your question</label><textarea ref={input} id={`${id}-question`} rows={3} maxLength={2000} value={question} onChange={event => setQuestion(event.target.value)} /><div className="conversation-row"><span className="text-muted">{question.length} / 2000</span>{busy || pending ? <Button disabled={!pending} onClick={() => void stop()}>Stop</Button> : <Button type="submit" variant="primary" disabled={!ready || !!turnCursor || !question.trim()}>Send question</Button>}</div></form>
-    <p role="status" aria-live="polite">{busy || pending ? "Question retained; verifying the answer…" : "Ready"}</p>
+    <p role="status" aria-live="polite">{busy || pending ? live?.phase ? phaseLabels[live.phase] : "Question retained; verifying the answer…" : "Ready"}</p>
   </section>;
 }

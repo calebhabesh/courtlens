@@ -14,6 +14,7 @@ class AssistantRequestLimit:
         if scope["type"] != "http" or scope["path"] not in (
             "/api/workbench/assistant/turn",
             "/api/workbench/assistant/v2/turn",
+            "/api/workbench/assistant/v2/turn/stream",
             "/api/workbench/assistant/query",
         ):
             await self.app(scope, receive, send)

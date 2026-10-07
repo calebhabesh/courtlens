@@ -1,0 +1,28 @@
+{
+  "measured": "2026-10-06",
+  "base": "ffc7174",
+  "files": {
+    "assistant-integration-tests.log": "69bf64db1ce9a92edc38366ad04454dc7d9977f9a19e0efa6223e25863c6e21f",
+    "browser-stream-final.log": "efcfa075086aa9f27da99705949eb6d30b59a696d5791587be1b876d3ef155d1",
+    "browser-threaded-serial.log": "9b26e24b1ae89b14798e4f6fa80ecab25f7daf080e469bed6ee61ec5ae411566",
+    "dashboard-lint.log": "53857398bee2b94424eefbadefdad59b64e0bd9c315884f4680289eea5d3f42c",
+    "dashboard-tests.log": "b90c389a6685cf68604b8418e1a04ac4ed2bdb6b4bac0de308ad174dbbdd67d6",
+    "dashboard-types.log": "cbf7de6a7ab22aa8f3b63eed31368677222a5389d4a0bcaa112a952910051cec",
+    "live-uvicorn-stream.log": "68ff3cd5eacc217e6d80b801400751413a38a2c6dc5d2432053053476079e1c4",
+    "python-checks.log": "7992d92b6abc3927f3afe92be99a3b6b4f6e1ecb521166b254415ccb1d6c05fb",
+    "unit-tests.log": "eedce3316ba646224ae1b5bdb6780f676dedfc2ab3c2280ad126cd4d3a4ccbf5"
+  },
+  "sources": {
+    "src/courtload/services/assistant/streaming.py": "83bae1ed4a5adce2511ed1a456e7f16f1286e99f99e4a9f23742a864d70b9674",
+    "src/courtload/services/assistant/history.py": "30f90bacae817083c1fc0f33b027b640bb8275cb96094e28596edc2406beb32f",
+    "src/courtload/services/assistant/hybrid.py": "affa1612f88c3788251fe6e8387011473d0dc987748d6efb3ec077a8d17c55a6",
+    "src/courtload/domain/hybrid_assistant.py": "bbaec651b66135ecab14869736821411cccce6441305a5f365bca48e0659956e",
+    "src/courtload/api/routers/conversation.py": "cb64b8b8e235fdddc364f35e352bb13cf26c3e689b6ab4a9b12a5b5b3898f103",
+    "src/courtload/api/assistant_limits.py": "3bf6ea10c6d5be688699669c8d4c9db00a60436839a8e326c66c18502ac2b651",
+    "dashboard/lib/assistant-stream.ts": "a978948f3813c0bbd6978a53755bb0257d27e072bdf45c03cf5050b23e1dd0da",
+    "dashboard/app/api/assistant-v2/[[...path]]/route.ts": "8fdc60aed21bd588309178ce49d1145aa2393b08bbbf9ab028fe32b815f3f065",
+    "dashboard/components/threaded-assistant.tsx": "4c386e97bb141d5bf04cf080421c0990b94777298d4eefedadd0677f9a781450",
+    "dashboard/lib/assistant-v2.generated.ts": "0a3f7bdfddc16306ed20b7c4382b46ffbdac9a48d11f8225de0720f87b7696fb",
+    "docs/design/assistant-v2.schema.json": "6a8f48fff0195181412371a5952f0c4caeda17457a534919905c7a1509749e0e"
+  }
+}

@@ -124,7 +124,8 @@ def test_bounded_provider_general_fallback(data):
         assert answer.status == "answered" and GENERAL_LABEL in answer.blocks[0].text
     else:
         assert answer.status == "unable" and answer.blocks[0].kind == "inability"
-        assert "1891" not in answer.model_dump_json()
+        # Only rendered content; ids and elapsed_ms can contain these digits by chance.
+        assert "1891" not in json.dumps([b.model_dump(mode="json") for b in answer.blocks])
 
 
 @pytest.mark.parametrize(

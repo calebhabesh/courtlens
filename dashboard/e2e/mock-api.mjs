@@ -42,6 +42,12 @@ const games = [
   }
 ];
 
+const streamedNarrative = "Fixture Guard led the 2025-26 regular season with 9.1 assists per game.";
+function streamedAnswer(turn) {
+  return { request_id: turn.request_id, thread_id: turn.thread_id, turn_id: turn.request_id, status: "answered", intent: "local_analysis",
+    blocks: [{ kind: "narrative", checker: "narrative-check-v1", text: streamedNarrative, operation_hashes: ["a".repeat(64)] }], sources: [], actions: [] };
+}
+
 function json(response, status, body) {
   response.writeHead(status, {
     "Content-Type": "application/json",
@@ -528,6 +534,22 @@ createServer(async (request, response) => {
     const teams = [["TOR","Toronto Raptors"],["100","Toronto Raptors"],["200","Boston Celtics"]];
     const items = [...players.map(([id,name])=>({id,canonical_id:id,display_name:name,kind:"player",portrait_fallback:"FP",subtitle:"Synthetic browser fixture",availability:{status:"available",has_current_season:true,seasons:["2023-24","2025-26"]},team_association:{basis:"selected_scope",teams:["TOR"]},destination_url:`/players/${id}`})), ...teams.map(([id,name])=>({id:`team-${id}`,canonical_id:id,display_name:name,kind:"team",portrait_fallback:id === "200" ? "BOS" : "TOR",subtitle:"Synthetic browser fixture",destination_url:`/teams/${id}`}))].filter(item=>kinds.includes(item.kind) && (!q || item.canonical_id.toLowerCase() === q || item.display_name.toLowerCase().includes(q))).slice(0,Number(url.searchParams.get("limit") || 10));
     return json(response,200,{query:{raw:q,normalized:q,tokens:[],version:"fixture-pf04"},catalog_version:"fixture-pf04",total_matches:items.length,items});
+  }
+  if (url.pathname === "/api/workbench/assistant/v2/turn/stream" && request.method === "POST") {
+    // AR05: a real, paced event stream so browser tests observe each phase through the proxy.
+    let raw = "";
+    for await (const chunk of request) raw += chunk;
+    const turn = JSON.parse(raw);
+    response.writeHead(200, { "Content-Type": "text/event-stream", "Cache-Control": "no-store" });
+    const pause = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+    const send = (event) => response.write(`event: ${event.event}\ndata: ${JSON.stringify(event)}\n\n`);
+    send({ event: "accepted", request_id: turn.request_id, thread_id: turn.thread_id, turn_id: turn.request_id });
+    for (const phase of ["understanding", "querying", "writing"]) { send({ event: "phase", phase }); await pause(700); }
+    response.write(": keep-alive\n\n");
+    for (const text of streamedNarrative.match(/\S+\s*/g)) { send({ event: "narrative", text }); await pause(120); }
+    await pause(500);
+    send({ event: "final", response: streamedAnswer(turn) });
+    return response.end();
   }
   if (url.pathname === "/api/workbench/assistant/status") return json(response, 200, {
     configured: false,

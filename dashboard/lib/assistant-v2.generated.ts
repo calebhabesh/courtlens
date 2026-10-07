@@ -205,6 +205,28 @@ export type SourceFact = {
   "parser_version": string;
 };
 
+export type StreamAcceptedEvent = {
+  "event"?: "accepted";
+  "request_id": string;
+  "thread_id": string;
+  "turn_id": string;
+};
+
+export type StreamFinalEvent = {
+  "event"?: "final";
+  "response": HybridTurnResponse;
+};
+
+export type StreamNarrativeEvent = {
+  "event"?: "narrative";
+  "text": string;
+};
+
+export type StreamPhaseEvent = {
+  "event"?: "phase";
+  "phase": "understanding" | "querying" | "writing";
+};
+
 export type TextBlock = {
   "kind"?: "text";
   "origin": "knowledge" | "discussion" | "general_knowledge";
@@ -233,3 +255,5 @@ export type TurnHistoryPage = {
   "turns": Array<DurableTurnRecord>;
   "next_cursor"?: string | null;
 };
+
+export type TurnStreamEvent = StreamAcceptedEvent | StreamPhaseEvent | StreamNarrativeEvent | StreamFinalEvent;

@@ -8,8 +8,11 @@ const scope = (season = "2024-25") => ({ as_of: "2026-10-06", calendar_version: 
 function answer(request: HybridTurnRequest, overrides: Partial<HybridTurnResponse> = {}): HybridTurnResponse {
   return { request_id: request.request_id, thread_id: request.thread_id!, turn_id: request.request_id, status: "answered", intent: "explanation", blocks: [{kind:"text",origin:"knowledge",text:"A pick and roll pairs a screen with a cut toward the basket."}], sources: [], actions: [], ...overrides };
 }
-async function mock(page: Page, options: { response?: (request: HybridTurnRequest) => Partial<HybridTurnResponse>; deferred?: boolean; lost?: boolean; paginated?: boolean } = {}) {
+// Must match e2e/mock-api.mjs, which serves the paced AR05 event stream through the real proxy.
+const streamedNarrative = "Fixture Guard led the 2025-26 regular season with 9.1 assists per game.";
+async function mock(page: Page, options: { response?: (request: HybridTurnRequest) => Partial<HybridTurnResponse>; deferred?: boolean; lost?: boolean; paginated?: boolean; stream?: boolean } = {}) {
   const requests: HybridTurnRequest[] = [];
+  const streams: HybridTurnRequest[] = [];
   const headers: DurableThreadHeader[] = [];
   const records = new Map<string, DurableTurnRecord[]>();
   let release = () => {};
@@ -35,6 +38,18 @@ async function mock(page: Page, options: { response?: (request: HybridTurnReques
       const size = options.paginated ? 1 : 100;
       return route.fulfill({json:{thread:headers.find(row => row.thread_id === tid),turns:rows.slice(start,start+size),next_cursor:start+size<rows.length?String(start+size):null}});
     }
+    if (parts[0] === "turn" && parts[1] === "stream") {
+      const body = request.postDataJSON() as HybridTurnRequest; streams.push(body);
+      // Without the stream option the route is unavailable and the client must fall back.
+      if (!options.stream) return route.fulfill({status:404,json:{detail:"Unknown assistant route"}});
+      const row: DurableTurnRecord = {thread_id:body.thread_id!,turn_id:body.request_id,request:body,request_sha256:hash,accepted_at:"2026-10-06T12:00:00Z",state:"running",response:null};
+      records.get(body.thread_id!)!.push(row); headers.find(header => header.thread_id === body.thread_id)!.title = body.message;
+      // The backend publishes before sending final. Chromium reports an intercepted stream the
+      // page stopped reading after final as aborted, so either outcome marks the row retained.
+      const retain = (ended: typeof request) => { if (ended === request) { row.state = "completed"; row.response = answer(body,{intent:"local_analysis",blocks:[{kind:"narrative",checker:"narrative-check-v1",text:streamedNarrative,operation_hashes:[hash]}]}); } };
+      page.on("requestfinished", retain); page.on("requestfailed", retain);
+      return route.continue();
+    }
     const body = request.postDataJSON() as HybridTurnRequest; requests.push(body);
     let row = records.get(body.thread_id!)!.find(row => row.request.request_id === body.request_id);
     if (!row) {
@@ -48,7 +63,7 @@ async function mock(page: Page, options: { response?: (request: HybridTurnReques
     }
     return route.fulfill({json:row.response});
   });
-  return {requests,headers,records,release:()=>release()};
+  return {requests,streams,headers,records,release:()=>release()};
 }
 async function send(page: Page, message: string) {
   await page.getByLabel("Your question",{exact:true}).fill(message);
@@ -85,7 +100,7 @@ test("transport replay preserves request identity; intentional retry links a new
   await page.goto(path); await send(page,"Show observations"); await expect(page.getByRole("region",{name:"CourtLens assistant"}).getByRole("alert")).toContainText("Response lost");
   await expect(page.getByLabel("Your question",{exact:true})).toHaveValue("Show observations");
   await page.getByRole("button",{name:"Check or replay request"}).click(); await expect(page.getByRole("region",{name:"CourtLens assistant"}).getByRole("alert")).toHaveCount(0);
-  expect(state.requests[1]).toEqual(state.requests[0]); expect(state.records.get(state.requests[0].thread_id!)!).toHaveLength(1);
+  await expect.poll(()=>state.requests.length).toBe(2); expect(state.requests[1]).toEqual(state.requests[0]); expect(state.records.get(state.requests[0].thread_id!)!).toHaveLength(1);
   await page.getByRole("button",{name:"Retry question"}).click(); await expect.poll(()=>state.requests.length).toBe(3);
   expect(state.requests[2].request_id).not.toBe(state.requests[0].request_id); expect(state.requests[2].retry_of).toBe(state.requests[0].request_id);
 });
@@ -227,4 +242,23 @@ test("checked narrative renders above its supporting result and survives reload"
   await expect(page.getByText("View supporting results", { exact: true })).toBeVisible();
   await page.reload();
   await expect(prose).toBeVisible();
+});
+
+test("streamed turn shows each phase, the checked narrative, then the retained answer", async ({ page }) => {
+  const state = await mock(page, { stream: true }); await page.goto(path);
+  await send(page, "Who led the league in assists per game last season?");
+  const messages = page.getByLabel("Messages"); const live = messages.locator(".thread-live");
+  for (const label of ["Understanding the question…", "Querying CourtLens data…", "Writing the answer…"]) await expect(live.getByRole("status")).toHaveText(label);
+  await expect(live.locator(".hybrid-narrative")).toContainText("Fixture Guard led");
+  await expect(live).toHaveCount(0);
+  await expect(messages.locator(".hybrid-narrative")).toHaveText(streamedNarrative);
+  // Streamed end to end through the Next proxy: no request/response fallback was needed.
+  expect(state.streams).toHaveLength(1); expect(state.requests).toHaveLength(0);
+  await page.reload(); await expect(messages.locator(".hybrid-narrative")).toHaveText(streamedNarrative);
+});
+
+test("unavailable stream falls back to request/response with the same request identity", async ({ page }) => {
+  const state = await mock(page); await page.goto(path); await send(page, "Explain pick and roll");
+  await expect(page.getByLabel("Messages")).toContainText("pairs a screen");
+  expect(state.streams).toHaveLength(1); expect(state.requests).toEqual(state.streams);
 });

@@ -4,6 +4,7 @@ from typing import Literal
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, Query, Response
+from fastapi.responses import StreamingResponse
 from sqlalchemy.orm import Session
 
 from courtload.api.routers.workbench import verify_workspace_operator_access
@@ -29,6 +30,7 @@ from courtload.domain.saved_conversation import (
 from courtload.services.assistant.conversations import clear_conversation, run_conversation_turn
 from courtload.services.assistant.history import (
     cancel_turn,
+    claim_turn,
     create_thread,
     delete_history,
     list_threads,
@@ -43,6 +45,7 @@ from courtload.services.assistant.saved import (
     reproduce_saved,
     save_conversation,
 )
+from courtload.services.assistant.streaming import stream_turn
 
 router = APIRouter(prefix="/workbench/assistant", tags=["conversational analytics"])
 
@@ -67,6 +70,25 @@ def post_hybrid_turn(
 ) -> HybridTurnResponse:
     """Accept durably before execution; retransmissions replay the exact retained response."""
     return run_durable_turn(session, request)
+
+
+@router.post(
+    "/v2/turn/stream",
+    response_class=StreamingResponse,
+    responses={200: {"content": {"text/event-stream": {}}}},
+)
+def post_hybrid_turn_stream(
+    request: HybridTurnRequest,
+    session: Session = Depends(get_db),
+    _auth: None = Depends(verify_workspace_operator_access),
+) -> StreamingResponse:
+    """AR05 SSE view of the same durable turn. Acceptance errors stay plain HTTP statuses."""
+    claimed = claim_turn(session, request)
+    return StreamingResponse(
+        stream_turn(session, request, claimed),
+        media_type="text/event-stream",
+        headers={"Cache-Control": "no-store", "X-Accel-Buffering": "no"},
+    )
 
 
 @router.post(
