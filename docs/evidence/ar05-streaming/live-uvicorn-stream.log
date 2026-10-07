@@ -1,0 +1,20 @@
+# Real uvicorn (this branch, port 8105) against the local published DB, 2026-10-06.
+# Planner-routed question; Gemini quota still exhausted:
+57.32 event: accepted
+57.33 data: {"event":"accepted","request_id":"c9fb4df8-449f-4244-9776-deae01cd7dbd","thread_id":"b610f11b-f834-4b2c-a54f-115b464a71c5","turn_id":"e16952aa-5d27-46b7-9
+57.33 event: phase
+57.33 data: {"event":"phase","phase":"understanding"}
+57.73 event: final
+57.73 data: {"event":"final","response":{"schema_version":"courtload-assistant-v2","request_id":"c9fb4df8-449f-4244-9776-deae01cd7dbd","thread_id":"b610f11b-f834-4b2c
+
+# Explicit-plan turn (no planner call):
+15.39 event: accepted
+15.39 data: {"event":"accepted","request_id":"888e7a34-2746-486d-aa9f-3df28a2ccf39","thread_id":"b3490e24-8cdf-4901-
+15.40 event: phase
+15.40 data: {"event":"phase","phase":"understanding"}
+15.45 event: phase
+15.46 data: {"event":"phase","phase":"querying"}
+16.11 event: phase
+16.11 data: {"event":"phase","phase":"writing"}
+16.12 event: final
+16.12 data: {"event":"final","response":{"schema_version":"courtload-assistant-v2","request_id":"888e7a34-2746-486d-
