@@ -1,3 +1,7 @@
+import { assertCurrentEnvironment } from "./server-env";
+
+assertCurrentEnvironment();
+
 import type {
   AggregationMethod,
   BoardAggregationResult,
@@ -49,7 +53,7 @@ function getBaseUrl(): string {
   if (typeof window !== "undefined") {
     return "/api/workspace";
   }
-  const internal = process.env.COURTLOAD_API_INTERNAL_URL || "http://localhost:8000";
+  const internal = process.env.COURTLENS_API_INTERNAL_URL || "http://localhost:8000";
   return `${internal}/api/workbench/workspace`;
 }
 

@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 
-from courtload.ingestion.schemas import ProviderGame
+from courtlens.ingestion.schemas import ProviderGame
 
 
 def test_recorded_game_contract_fixture_parses() -> None:

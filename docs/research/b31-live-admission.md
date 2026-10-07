@@ -1,3 +1,5 @@
+CourtLoad was renamed to CourtLens on 2026-10-07; identifiers below are historical.
+
 # B31 Live candidate admission, 2026-10-03
 
 Decision: **conditional opt-in ESPN candidate for a bounded local service**. Genuine

@@ -19,11 +19,11 @@ from google.genai import types
 from openai import OpenAI
 from pydantic import ValidationError
 
-from courtload.config import Settings
-from courtload.services.assistant.agent.pricing import estimate_cost
-from courtload.services.assistant.agent.providers import create_provider
-from courtload.services.assistant.agent.providers.anthropic import AnthropicProvider
-from courtload.services.assistant.agent.providers.base import (
+from courtlens.config import Settings
+from courtlens.services.assistant.agent.pricing import estimate_cost
+from courtlens.services.assistant.agent.providers import create_provider
+from courtlens.services.assistant.agent.providers.anthropic import AnthropicProvider
+from courtlens.services.assistant.agent.providers.base import (
     DEFAULT_MODELS,
     AgentMessage,
     ProviderFailure,
@@ -32,10 +32,10 @@ from courtload.services.assistant.agent.providers.base import (
     Usage,
     map_failure,
 )
-from courtload.services.assistant.agent.providers.gemini import GeminiProvider
-from courtload.services.assistant.agent.providers.openai import OpenAIProvider
-from courtload.services.assistant.agent.providers.replay import RecordingProvider, ReplayProvider
-from courtload.services.assistant.service import get_assistant_status
+from courtlens.services.assistant.agent.providers.gemini import GeminiProvider
+from courtlens.services.assistant.agent.providers.openai import OpenAIProvider
+from courtlens.services.assistant.agent.providers.replay import RecordingProvider, ReplayProvider
+from courtlens.services.assistant.service import get_assistant_status
 
 FIXTURES = Path(__file__).parents[1] / "fixtures/agent-providers"
 TOOL = ToolDeclaration(
@@ -55,15 +55,15 @@ OPTIONS = {"timeout_seconds": 5, "max_output_tokens": 1000, "remaining_web_searc
 @pytest.fixture(autouse=True)
 def isolated_keys(monkeypatch: pytest.MonkeyPatch) -> None:
     for key in (
-        "COURTLOAD_ASSISTANT_PROVIDER",
-        "COURTLOAD_ASSISTANT_MODEL",
-        "COURTLOAD_GEMINI_MODEL",
+        "COURTLENS_ASSISTANT_PROVIDER",
+        "COURTLENS_ASSISTANT_MODEL",
+        "COURTLENS_GEMINI_MODEL",
         "GEMINI_MODEL",
-        "COURTLOAD_GEMINI_API_KEY",
+        "COURTLENS_GEMINI_API_KEY",
         "GEMINI_API_KEY",
-        "COURTLOAD_ANTHROPIC_API_KEY",
+        "COURTLENS_ANTHROPIC_API_KEY",
         "ANTHROPIC_API_KEY",
-        "COURTLOAD_OPENAI_API_KEY",
+        "COURTLENS_OPENAI_API_KEY",
         "OPENAI_API_KEY",
     ):
         monkeypatch.delenv(key, raising=False)
@@ -379,7 +379,7 @@ def test_gemini_old_model_native_search_subcall() -> None:
 
 
 def test_gemini_byte_spans_respect_parts_and_unicode() -> None:
-    from courtload.services.assistant.agent.providers.gemini import normalize
+    from courtlens.services.assistant.agent.providers.gemini import normalize
 
     raw = raw_response("gemini")
     raw["candidates"][0]["content"]["parts"] = [{"text": "Intro. "}, {"text": "Jokić: +9.9."}]
@@ -395,7 +395,7 @@ def test_gemini_byte_spans_respect_parts_and_unicode() -> None:
 
 
 def test_anthropic_search_error_remains_readable_not_success() -> None:
-    from courtload.services.assistant.agent.providers.anthropic import normalize
+    from courtlens.services.assistant.agent.providers.anthropic import normalize
 
     raw = raw_response("anthropic")
     raw["content"][1]["content"] = {
@@ -433,15 +433,15 @@ def test_config_precedence_aliases_secrets_and_disabled_mode(
     settings = Settings(_env_file=None)
     assert settings.resolved_assistant_provider == "anthropic"
     assert settings.resolved_assistant_model == DEFAULT_MODELS["anthropic"]
-    monkeypatch.setenv("COURTLOAD_GEMINI_API_KEY", "gemini-secret")
+    monkeypatch.setenv("COURTLENS_GEMINI_API_KEY", "gemini-secret")
     settings = Settings(_env_file=None)
     assert settings.resolved_assistant_model == DEFAULT_MODELS["gemini"]
     assert "gemini-secret" not in repr(settings)
-    monkeypatch.setenv("COURTLOAD_GEMINI_MODEL", "explicit-legacy-model")
+    monkeypatch.setenv("COURTLENS_GEMINI_MODEL", "explicit-legacy-model")
     assert Settings(_env_file=None).resolved_assistant_model == "explicit-legacy-model"
-    monkeypatch.setenv("COURTLOAD_ASSISTANT_MODEL", "explicit-agent-model")
+    monkeypatch.setenv("COURTLENS_ASSISTANT_MODEL", "explicit-agent-model")
     assert Settings(_env_file=None).resolved_assistant_model == "explicit-agent-model"
-    monkeypatch.setenv("COURTLOAD_ASSISTANT_PROVIDER", "none")
+    monkeypatch.setenv("COURTLENS_ASSISTANT_PROVIDER", "none")
     assert not Settings(_env_file=None).assistant_configured
 
 
@@ -458,7 +458,7 @@ def test_blank_env_template_and_generic_key_alias(
 
 def test_status_never_returns_keys(monkeypatch: pytest.MonkeyPatch) -> None:
     settings = Settings(_env_file=None, openai_api_key="secret-openai", assistant_max_steps=4)
-    monkeypatch.setattr("courtload.services.assistant.service.get_settings", lambda: settings)
+    monkeypatch.setattr("courtlens.services.assistant.service.get_settings", lambda: settings)
     status = get_assistant_status()
     assert status.configured and not status.limited_mode
     assert status.provider == "openai" and status.model == DEFAULT_MODELS["openai"]
@@ -480,7 +480,7 @@ def test_status_api_reports_explicit_missing_key_without_falling_back(
     api_client: TestClient,
 ) -> None:
     settings = Settings(_env_file=None, assistant_provider="openai", gemini_api_key="secret")
-    monkeypatch.setattr("courtload.services.assistant.service.get_settings", lambda: settings)
+    monkeypatch.setattr("courtlens.services.assistant.service.get_settings", lambda: settings)
     response = api_client.get("/api/workbench/assistant/status")
     assert response.status_code == 200
     body = response.json()

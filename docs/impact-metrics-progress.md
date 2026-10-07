@@ -1,3 +1,5 @@
+CourtLoad was renamed to CourtLens on 2026-10-07; identifiers below are historical.
+
 # CourtLens impact metrics progress
 
 Parent: [impact metrics handoff](impact-metrics-plan.md). Plans are not runtime evidence.

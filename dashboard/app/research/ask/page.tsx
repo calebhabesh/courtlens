@@ -1,4 +1,4 @@
-import { AskCourtLoad } from "@/components/ask-courtload";
+import { AskCourtLens } from "@/components/ask-courtlens";
 import Link from "next/link";
 
 interface AskPageProps {
@@ -17,7 +17,7 @@ export default async function AskPage({ searchParams }: AskPageProps) {
   if (threaded) return (
     <div className="ask-page">
       <h1 className="sr-only">Ask CourtLens</h1>
-      <AskCourtLoad initialReleaseId={releaseId} initialSeason={season} initialPhase={phase} initialBeforeDate={beforeDate} initialWindow={windowParam} />
+      <AskCourtLens initialReleaseId={releaseId} initialSeason={season} initialPhase={phase} initialBeforeDate={beforeDate} initialWindow={windowParam} />
     </div>
   );
 
@@ -34,7 +34,7 @@ export default async function AskPage({ searchParams }: AskPageProps) {
 
       <p><Link href="/research/ask">Open assistant</Link></p>
 
-      <AskCourtLoad
+      <AskCourtLens
         initialReleaseId={releaseId}
         initialSeason={season}
         initialPhase={phase}

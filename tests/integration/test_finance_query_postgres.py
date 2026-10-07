@@ -15,16 +15,16 @@ from fastapi.testclient import TestClient
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import Session
 
-from courtload.api.app import create_app
-from courtload.database import get_db
-from courtload.domain.finance import FinanceRow, export_csv
-from courtload.services.finance_import import admit_bundle, verify_release
-from courtload.workbench_models import WorkbenchIdentity
+from courtlens.api.app import create_app
+from courtlens.database import get_db
+from courtlens.domain.finance import FinanceRow, export_csv
+from courtlens.services.finance_import import admit_bundle, verify_release
+from courtlens.workbench_models import WorkbenchIdentity
 
 
 @pytest.fixture
 def query_postgres():
-    url = os.environ.get("COURTLOAD_TEST_POSTGRES_URL")
+    url = os.environ.get("COURTLENS_TEST_POSTGRES_URL")
     if not url:
         pytest.skip("disposable PostgreSQL URL required")
     engine = create_engine(url)

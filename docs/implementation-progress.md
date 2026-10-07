@@ -1,3 +1,5 @@
+CourtLoad was renamed to CourtLens on 2026-10-07; identifiers below are historical.
+
 # CourtLoad implementation progress
 
 Starting commit: `dd7cfb1207e26b1a6cd6e0df1d163d895c874242` (2026-09-20).

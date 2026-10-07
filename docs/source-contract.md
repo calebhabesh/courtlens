@@ -4,10 +4,10 @@
 
 Last checked: **2026-08-23**
 
-CourtLoad uses only the provider's documented NBA API and records this contract in every operational
+CourtLens uses only the provider's documented NBA API and records this contract in every operational
 ingestion run.
 
-| Need | Endpoint | Tier observed | CourtLoad use |
+| Need | Endpoint | Tier observed | CourtLens use |
 | --- | --- | --- | --- |
 | Team identities | `GET /v1/teams` | Free | Team dimension and schedule labels |
 | Player identities | `GET /v1/players` | Free | Roster/watchlist search and current team |
@@ -30,7 +30,7 @@ Authoritative references:
 The current terms explicitly list analytics and fantasy sports among permitted uses and allow
 lawfully retrieved data to be cached, stored, analyzed, displayed, and used in derivative products.
 The full terms also prohibit credential sharing, access-control/rate-limit bypass, false official
-status, competing services, and resale of unmodified raw data. CourtLoad therefore exposes derived
+status, competing services, and resale of unmodified raw data. CourtLens therefore exposes derived
 player analytics and planning workflows—not a raw-data proxy—and identifies itself as unofficial.
 
 There is a wording tension between the page's plain-language summary and the detailed competing/raw
@@ -49,8 +49,8 @@ credential-dependent and remains an owner action because no provider key is pres
 workspace. Run:
 
 ```bash
-courtload ingest --start YYYY-MM-DD --end YYYY-MM-DD --include-stats --include-players
-courtload ingest --start YYYY-MM-DD --end YYYY-MM-DD --include-stats --include-players
+courtlens ingest --start YYYY-MM-DD --end YYYY-MM-DD --include-stats --include-players
+courtlens ingest --start YYYY-MM-DD --end YYYY-MM-DD --include-stats --include-players
 ```
 
 The second run should report zero inserts/updates and only unchanged records unless the provider

@@ -1,4 +1,4 @@
-from courtload.domain.scoring import fantasy_points, scoring_breakdown, scoring_rules_hash
+from courtlens.domain.scoring import fantasy_points, scoring_breakdown, scoring_rules_hash
 
 
 def test_scoring_golden_example_is_deterministic() -> None:

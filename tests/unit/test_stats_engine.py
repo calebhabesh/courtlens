@@ -14,8 +14,8 @@ import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
-from courtload.domain.metrics import compute_metrics_v2
-from courtload.domain.query_spec import (
+from courtlens.domain.metrics import compute_metrics_v2
+from courtlens.domain.query_spec import (
     PagingSpec,
     PredicateGroup,
     PredicateLeaf,
@@ -26,7 +26,7 @@ from courtload.domain.query_spec import (
     WindowKind,
     WindowSpec,
 )
-from courtload.services.stats_engine import (
+from courtlens.services.stats_engine import (
     build_stats_query_sql,
     compile_predicate_node,
     execute_stats_query,
@@ -34,7 +34,7 @@ from courtload.services.stats_engine import (
     export_stats_query,
     map_field_to_sql_column,
 )
-from courtload.services.workbench_analytics import (
+from courtlens.services.workbench_analytics import (
     ResolvedContext,
     _load_player_games,
     canonical_hash,
@@ -48,8 +48,8 @@ from courtload.services.workbench_analytics import (
 @pytest.fixture
 def db_session() -> Session:
     """Fixture providing database session connected to Postgres test DB if available."""
-    default_url = "postgresql+psycopg://courtload:courtload@localhost:5432/courtload"
-    url = os.getenv("COURTLOAD_TEST_POSTGRES_URL", default_url)
+    default_url = "postgresql+psycopg://courtlens:courtlens@localhost:5432/courtlens"
+    url = os.getenv("COURTLENS_TEST_POSTGRES_URL", default_url)
     engine = create_engine(url)
     try:
         with Session(engine) as session:
@@ -340,7 +340,7 @@ class TestStatsQueryEngineRuntime:
         assert len(all_items) > 100
 
         # 2. Save investigation
-        from courtload.domain.query_url import query_spec_to_research_query
+        from courtlens.domain.query_url import query_spec_to_research_query
 
         research_query = query_spec_to_research_query(query)
         inv = save_investigation(db_session, ctx, title=title, query=research_query)
@@ -416,7 +416,7 @@ def test_archive_stats_executes_with_versioned_names(db_session: Session, appear
 
     from sqlalchemy import select
 
-    from courtload.archive_models import ArchivePlayerGame, ArchiveVersion
+    from courtlens.archive_models import ArchivePlayerGame, ArchiveVersion
 
     game, payload = db_session.execute(
         select(ArchivePlayerGame, ArchiveVersion.payload_json)

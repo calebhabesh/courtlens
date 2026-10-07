@@ -1,3 +1,5 @@
+CourtLoad was renamed to CourtLens on 2026-10-07; identifiers below are historical.
+
 # CourtLoad: Databallr replica and analytical expansion handoff
 
 Prepared 2026-10-01. **Owner-confirmed product direction; implementation pending.**

@@ -5,9 +5,9 @@ from uuid import uuid4
 import pytest
 from pydantic import ValidationError
 
-from courtload.domain.conversation import ConversationContext, OperationStep
-from courtload.domain.hybrid_assistant import AssistantPageContext, HybridTurnRequest
-from courtload.services.assistant.page_context import bind_page_step
+from courtlens.domain.conversation import ConversationContext, OperationStep
+from courtlens.domain.hybrid_assistant import AssistantPageContext, HybridTurnRequest
+from courtlens.services.assistant.page_context import bind_page_step
 
 
 def test_old_request_serialization_preserves_hash_input():

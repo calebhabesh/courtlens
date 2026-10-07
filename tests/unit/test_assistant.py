@@ -1,4 +1,4 @@
-"""Unit tests for CourtLoad analytical assistant service, tools, and evidence ledger.
+"""Unit tests for CourtLens analytical assistant service, tools, and evidence ledger.
 
 Verifies:
 1. Tool argument schemas and input validation (injection prevention, identifier patterns).
@@ -19,17 +19,17 @@ from pydantic import ValidationError
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
-from courtload.api.workbench_schemas import AssistantQueryRequest
-from courtload.config import Settings
-from courtload.database import Base
-from courtload.services.assistant.curated_questions import CURATED_QUESTIONS
-from courtload.services.assistant.provider import OfflinePlanFixtureProvider
-from courtload.services.assistant.service import (
+from courtlens.api.workbench_schemas import AssistantQueryRequest
+from courtlens.config import Settings
+from courtlens.database import Base
+from courtlens.services.assistant.curated_questions import CURATED_QUESTIONS
+from courtlens.services.assistant.provider import OfflinePlanFixtureProvider
+from courtlens.services.assistant.service import (
     MAX_QUESTION_LENGTH,
     get_assistant_status,
     run_assistant_query,
 )
-from courtload.services.assistant.tools import (
+from courtlens.services.assistant.tools import (
     ALLOWLISTED_TOOLS,
     ASSISTANT_TOOL_DECLARATIONS,
     ComparePlayersArgs,
@@ -41,11 +41,11 @@ from courtload.services.assistant.tools import (
 
 @pytest.fixture
 def postgres_session():
-    url = os.getenv("COURTLOAD_TEST_POSTGRES_URL")
+    url = os.getenv("COURTLENS_TEST_POSTGRES_URL")
     if not url:
-        if os.getenv("CI") or os.getenv("COURTLOAD_REQUIRE_POSTGRES_TESTS"):
-            pytest.fail("COURTLOAD_TEST_POSTGRES_URL must be configured")
-        pytest.skip("COURTLOAD_TEST_POSTGRES_URL is not configured")
+        if os.getenv("CI") or os.getenv("COURTLENS_REQUIRE_POSTGRES_TESTS"):
+            pytest.fail("COURTLENS_TEST_POSTGRES_URL must be configured")
+        pytest.skip("COURTLENS_TEST_POSTGRES_URL is not configured")
     engine = create_engine(url)
     Base.metadata.create_all(engine)
     with Session(engine) as session:
@@ -142,7 +142,7 @@ def test_assistant_question_length_and_empty_validation():
 
 def test_assistant_status_when_disabled():
     """Verify get_assistant_status correctly reports disabled when API key is missing."""
-    with patch("courtload.services.assistant.service.get_settings") as mock_settings:
+    with patch("courtlens.services.assistant.service.get_settings") as mock_settings:
         mock_settings.return_value = Settings(_env_file=None, assistant_provider="none")
         status = get_assistant_status()
         assert status.configured is False
@@ -152,8 +152,8 @@ def test_assistant_status_when_disabled():
 def test_assistant_query_when_disabled(postgres_session: Session):
     """Verify run_assistant_query returns typed disabled answer when key is unset."""
     with (
-        patch("courtload.services.assistant.service.get_settings") as mock_settings,
-        patch("courtload.services.assistant.conversations.get_settings") as conversation_settings,
+        patch("courtlens.services.assistant.service.get_settings") as mock_settings,
+        patch("courtlens.services.assistant.conversations.get_settings") as conversation_settings,
     ):
         mock_settings.return_value.gemini_api_key = None
         mock_settings.return_value.gemini_model = "gemini-2.5-flash"

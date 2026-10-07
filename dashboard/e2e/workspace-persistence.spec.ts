@@ -1,8 +1,8 @@
 import { expect, test } from "@playwright/test";
 
 test("real workspace proxy persists, conflicts, exports and restores", async ({ page, request }) => {
-  test.skip(!process.env.COURTLOAD_REAL_WORKSPACE_TEST, "Requires migrated real FastAPI/PostgreSQL service");
-  const playerId = process.env.COURTLOAD_REAL_WORKSPACE_PLAYER_ID || "1630567";
+  test.skip(!process.env.COURTLENS_REAL_WORKSPACE_TEST, "Requires migrated real FastAPI/PostgreSQL service");
+  const playerId = process.env.COURTLENS_REAL_WORKSPACE_PLAYER_ID || "1630567";
   const workspaceId = `b08-${Date.now()}`;
   const root = `/api/workspace?workspaceId=${workspaceId}`;
   await page.goto(root);

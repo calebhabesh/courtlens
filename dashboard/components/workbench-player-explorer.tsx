@@ -1,5 +1,7 @@
 "use client";
 
+import { readStoredValue, storageKeys } from "@/lib/storage-keys";
+
 import { routeAvailability } from "@/lib/route-availability";
 import Link from "next/link";
 import { ChartNoAxesCombined, ChartScatter, CircleHelp, Maximize2, Minimize2, Pin, Save, SlidersHorizontal, Table2 } from "lucide-react";
@@ -46,7 +48,7 @@ interface WorkbenchPlayerExplorerProps {
   currentSortDirection?: string;
 }
 
-const LOCAL_STORAGE_DENSITY_KEY = "courtload_table_density";
+const LOCAL_STORAGE_DENSITY_KEY = storageKeys.density;
 
 export function WorkbenchPlayerExplorer({
   data,
@@ -94,7 +96,7 @@ export function WorkbenchPlayerExplorer({
   const [densityPreference, setTableDensity] = useState<TableDensity>(() => {
     if (typeof window !== "undefined") {
       try {
-        const stored = localStorage.getItem(LOCAL_STORAGE_DENSITY_KEY);
+        const stored = readStoredValue(LOCAL_STORAGE_DENSITY_KEY);
         if (stored === "compact" || stored === "standard") return stored;
       } catch {
         // Ignore localStorage errors

@@ -7,12 +7,12 @@ import datetime
 import pytest
 from pydantic import ValidationError
 
-from courtload.domain.context import (
+from courtlens.domain.context import (
     CapabilityEntry,
     CapabilityStatus,
     FinalizedResearchContext,
 )
-from courtload.domain.query_spec import (
+from courtlens.domain.query_spec import (
     EntityKind,
     PagingSpec,
     PredicateGroup,
@@ -25,7 +25,7 @@ from courtload.domain.query_spec import (
     WindowKind,
     WindowSpec,
 )
-from courtload.domain.query_url import (
+from courtlens.domain.query_url import (
     deserialize_params_to_query,
     query_spec_to_research_query,
     research_query_to_query_spec,

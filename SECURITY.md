@@ -2,7 +2,7 @@
 
 ## Supported version
 
-The `main` branch is the only supported version while CourtLoad is pre-1.0.
+The `main` branch is the only supported version while CourtLens is pre-1.0.
 
 ## Reporting
 
@@ -21,5 +21,5 @@ keys, access tokens, private rosters, raw provider responses, or exploit details
 - Production must use a unique 32+ character JWT secret, TLS, restricted CORS, rate limiting at
   the edge, managed database credentials, and non-demo accounts.
 
-Fixture credentials in `courtload seed-demo` are intentionally public and are only permitted when
-`COURTLOAD_ENVIRONMENT` is not `production`.
+Fixture credentials in `courtlens seed-demo` are intentionally public and are only permitted when
+`COURTLENS_ENVIRONMENT` is not `production`.

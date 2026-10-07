@@ -21,22 +21,22 @@ from sqlalchemy import create_engine, select
 from sqlalchemy.orm import Session
 from sqlalchemy.pool import StaticPool
 
-from courtload.database import Base
-from courtload.evaluation.points_features import (
+from courtlens.database import Base
+from courtlens.evaluation.points_features import (
     PointsPlayerGame,
     compute_player_features,
     compute_points_feature_hash,
 )
-from courtload.models import new_uuid, utc_now
-from courtload.services.workbench_forecasts import (
+from courtlens.models import new_uuid, utc_now
+from courtlens.services.workbench_forecasts import (
     determine_candidate_eligibility,
     get_eastern_date,
     issue_prospective_forecasts,
     query_forecast_issuances,
     score_forecast_issuances,
 )
-from courtload.warehouse_models import PublishedSnapshot
-from courtload.workbench_models import (
+from courtlens.warehouse_models import PublishedSnapshot
+from courtlens.workbench_models import (
     ForecastIssuance,
     ForecastScore,
     ModelPolicyActivation,

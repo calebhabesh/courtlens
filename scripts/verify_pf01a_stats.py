@@ -13,18 +13,18 @@ from typing import Any
 
 from sqlalchemy import select, text
 
-from courtload.database import SessionLocal
-from courtload.domain.query_spec import PagingSpec, QuerySpec, SortSpec, WindowSpec
-from courtload.domain.stats_presentation import StatsPresentation
-from courtload.services.stats_engine import execute_stats_query, stats_cohort_summary
-from courtload.services.workbench_analytics import (
+from courtlens.database import SessionLocal
+from courtlens.domain.query_spec import PagingSpec, QuerySpec, SortSpec, WindowSpec
+from courtlens.domain.stats_presentation import StatsPresentation
+from courtlens.services.stats_engine import execute_stats_query, stats_cohort_summary
+from courtlens.services.workbench_analytics import (
     ResearchQuery,
     canonical_hash,
     execute_player_research_query,
     reproduce_investigation,
     resolve_workbench_context,
 )
-from courtload.workbench_models import SavedInvestigation
+from courtlens.workbench_models import SavedInvestigation
 
 
 def rounded(value: Decimal) -> float:

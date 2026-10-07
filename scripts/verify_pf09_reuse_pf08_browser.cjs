@@ -20,7 +20,7 @@ const url = 'http://127.0.0.1:3192/research/ask';
     assert.deepEqual(response,retained.response);
     if (zoom) {
       const original=await page.evaluate(()=>({width:innerWidth,dpr:devicePixelRatio}));
-      const window=execFileSync('xdotool',['search','--onlyvisible','--name','CourtLoad']).toString().trim().split('\n').at(-1);
+      const window=execFileSync('xdotool',['search','--onlyvisible','--name','CourtLens']).toString().trim().split('\n').at(-1);
       execFileSync('xdotool',['windowfocus','--sync',window]);
       execFileSync('xdotool',['key','--clearmodifiers','ctrl+0',...Array(5).fill('ctrl+plus')]);
       await page.waitForTimeout(500);

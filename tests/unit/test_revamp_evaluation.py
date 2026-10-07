@@ -8,8 +8,8 @@ from uuid import uuid4
 
 import pytest
 
-from courtload.domain.hybrid_assistant import HybridTurnResponse, InabilityBlock, TextBlock
-from courtload.services.assistant.revamp_evaluation import (
+from courtlens.domain.hybrid_assistant import HybridTurnResponse, InabilityBlock, TextBlock
+from courtlens.services.assistant.revamp_evaluation import (
     CORPUS,
     GENERAL_LABEL,
     load_corpus,

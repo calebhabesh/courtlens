@@ -4,8 +4,8 @@ import copy
 import json
 from datetime import UTC, datetime
 
-from courtload.domain.live import parse_scoreboard, parse_summary
-from courtload.services.live_provider import LiveFetch
+from courtlens.domain.live import parse_scoreboard, parse_summary
+from courtlens.services.live_provider import LiveFetch
 
 NOW = datetime(2026, 10, 3, 18, tzinfo=UTC)
 SLATE = NOW.date()

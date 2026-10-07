@@ -13,23 +13,23 @@ from fastapi.testclient import TestClient
 from sqlalchemy import create_engine, func, select, text
 from sqlalchemy.orm import Session
 
-from courtload.api.app import create_app
-from courtload.database import Base, get_db
-from courtload.domain.conversation import (
+from courtlens.api.app import create_app
+from courtlens.database import Base, get_db
+from courtlens.domain.conversation import (
     AnalysisPlan,
     ConversationContext,
     ConversationTurnRequest,
     OperationStep,
 )
-from courtload.services.assistant.conversations import reset_local_state, run_conversation_turn
-from courtload.services.assistant.execution import _worker, execute_bounded
-from courtload.services.assistant.operations import (
+from courtlens.services.assistant.conversations import reset_local_state, run_conversation_turn
+from courtlens.services.assistant.execution import _worker, execute_bounded
+from courtlens.services.assistant.operations import (
     EntityClarification,
     canonical_step,
     resolve_entity,
 )
-from courtload.services.workbench_analytics import resolve_workbench_context
-from courtload.workbench_models import (
+from courtlens.services.workbench_analytics import resolve_workbench_context
+from courtlens.workbench_models import (
     WorkbenchAcquisition,
     WorkbenchArtifact,
     WorkbenchDataset,
@@ -42,7 +42,7 @@ from courtload.workbench_models import (
 
 @pytest.fixture
 def postgres_conversation():
-    url = os.environ.get("COURTLOAD_TEST_POSTGRES_URL")
+    url = os.environ.get("COURTLENS_TEST_POSTGRES_URL")
     if not url:
         pytest.skip("disposable PostgreSQL URL required")
     root = create_engine(url)
@@ -312,7 +312,7 @@ def test_postgres_worker_rejects_writes_and_sanitizes_error(postgres_conversatio
         db.execute(text("DELETE FROM workbench_player_games"))
         return {}
 
-    with patch("courtload.services.assistant.execution.execute_operation", side_effect=malicious):
+    with patch("courtlens.services.assistant.execution.execute_operation", side_effect=malicious):
         _worker(
             transport,
             session.get_bind().url.render_as_string(hide_password=False),

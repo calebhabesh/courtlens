@@ -2,7 +2,7 @@
 
 This is a local operator CSV/document import policy, separate from basketball releases and B29 numerical operations. Automation, comprehensive salaries, present free-agent coverage and model-to-money conversions are not established by admission of a bounded book.
 
-`courtload finance-template PATH` writes an exclusive header. A bundle contains `observations.csv`, `manifest.json`, and `sources/<sha256>` retained evidence bytes. `finance-preview BUNDLE` validates without writes; `finance-import BUNDLE --execute-now` stages content-addressed bytes, creates an allowlisted tracked worker job and executes under the existing coordinated lock. Omit `--execute-now` to queue for the worker. The existing jobs API keeps its operator-token boundary; jobs receive only a staged hash, never an arbitrary input pathname. `finance-verify RELEASE_ID` checks retained bytes, identities and membership reconciliation. Source access is never initiated by a financial result read.
+`courtlens finance-template PATH` writes an exclusive header. A bundle contains `observations.csv`, `manifest.json`, and `sources/<sha256>` retained evidence bytes. `finance-preview BUNDLE` validates without writes; `finance-import BUNDLE --execute-now` stages content-addressed bytes, creates an allowlisted tracked worker job and executes under the existing coordinated lock. Omit `--execute-now` to queue for the worker. The existing jobs API keeps its operator-token boundary; jobs receive only a staged hash, never an arbitrary input pathname. `finance-verify RELEASE_ID` checks retained bytes, identities and membership reconciliation. Source access is never initiated by a financial result read.
 
 ## Admission
 

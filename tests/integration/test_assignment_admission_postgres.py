@@ -13,18 +13,18 @@ from sqlalchemy import create_engine, func, select, text
 from sqlalchemy.exc import DBAPIError
 from sqlalchemy.orm import Session
 
-from courtload.assignment_models import AssignmentDataset, AssignmentMember, AssignmentObservation
-from courtload.services.assignment_admission import admit_assignments, verify_assignments
+from courtlens.assignment_models import AssignmentDataset, AssignmentMember, AssignmentObservation
+from courtlens.services.assignment_admission import admit_assignments, verify_assignments
 
 pytestmark = pytest.mark.postgres
 
 
 @pytest.fixture
 def assignment_database():
-    url = os.getenv("COURTLOAD_TEST_POSTGRES_URL")
+    url = os.getenv("COURTLENS_TEST_POSTGRES_URL")
     if not url:
-        if os.getenv("CI") or os.getenv("COURTLOAD_REQUIRE_POSTGRES_TESTS"):
-            pytest.fail("COURTLOAD_TEST_POSTGRES_URL required")
+        if os.getenv("CI") or os.getenv("COURTLENS_REQUIRE_POSTGRES_TESTS"):
+            pytest.fail("COURTLENS_TEST_POSTGRES_URL required")
         pytest.skip("disposable PostgreSQL URL required")
     engine = create_engine(url)
     schema = "b19b_" + uuid4().hex

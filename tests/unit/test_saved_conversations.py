@@ -5,8 +5,8 @@ from uuid import uuid4
 import pytest
 from pydantic import ValidationError
 
-from courtload.domain.conversation import SaveConversationRequest
-from courtload.services.assistant.saved import _csv_cell
+from courtlens.domain.conversation import SaveConversationRequest
+from courtlens.services.assistant.saved import _csv_cell
 
 
 def payload(**updates):

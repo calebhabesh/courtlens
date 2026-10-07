@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 
-from courtload.evaluation.research_reproduce import replay_probabilities
+from courtlens.evaluation.research_reproduce import replay_probabilities
 
 
 def test_replay_uses_saved_scaling_and_calibration_only_in_registered_roles():

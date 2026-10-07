@@ -12,11 +12,11 @@ import contextlib
 import json
 from pathlib import Path
 
-from courtload.ingestion.archive import FILES, SHA256, acquire_archive, hash_file
-from courtload.ingestion.archive_normalization import (
+from courtlens.ingestion.archive import FILES, SHA256, acquire_archive, hash_file
+from courtlens.ingestion.archive_normalization import (
     COUNT_FIELDS as COUNT_FIELDS,
 )
-from courtload.ingestion.archive_normalization import (
+from courtlens.ingestion.archive_normalization import (
     PLAYER_FILES,
     SEASONS,
     TEAM_FILE,

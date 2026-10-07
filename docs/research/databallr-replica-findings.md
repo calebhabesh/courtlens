@@ -1,3 +1,5 @@
+CourtLoad was renamed to CourtLens on 2026-10-07; identifiers below are historical.
+
 # Databallr NBA replica reference findings
 
 Inspected **2026-10-01** for CourtLoad's proposed Databallr-inspired NBA foundation. Status: **reference investigation complete; product scope and implementation contracts still require the owner's architecture decisions**. The owner has clarified that the desired foundation is essentially the NBA Stats-through-Research experience, with CourtLoad additions. This note records the reference; it does not establish feature completion, authorize paid dependencies, change existing contracts, or prove that CourtLoad can supply every referenced metric.

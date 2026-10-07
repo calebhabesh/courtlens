@@ -1,4 +1,4 @@
-# Pinned dependencies for CourtLoad Python environment (Python 3.12+)
+# Pinned dependencies for CourtLens Python environment (Python 3.12+)
 # Generated for reproducibility (M8)
 agate==1.9.1
 alembic==1.19.1

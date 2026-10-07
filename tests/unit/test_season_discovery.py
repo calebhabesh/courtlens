@@ -5,7 +5,7 @@ from unittest.mock import MagicMock
 
 import httpx
 
-from courtload.ingestion.workbench_source_config import (
+from courtlens.ingestion.workbench_source_config import (
     ADMITTED_SEASONS,
     canonical_season_name,
     discover_season_capability,

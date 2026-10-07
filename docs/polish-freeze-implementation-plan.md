@@ -1,3 +1,5 @@
+CourtLoad was renamed to CourtLens on 2026-10-07; identifiers below are historical.
+
 # CourtLoad usability and correctness freeze
 
 Prepared 2026-10-05. **Owner confirmed starting PF00 on 2026-10-05; feature implementation pending.** This phase makes existing workflows coherent, readable and dependable before further product expansion. Inspection is not runtime acceptance.

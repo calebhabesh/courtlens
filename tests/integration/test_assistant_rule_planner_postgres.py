@@ -6,11 +6,11 @@ from uuid import uuid4
 import pytest
 from test_conversation_postgres import postgres_conversation as _postgres_fixture
 
-from courtload.domain.conversation import ConversationContext
-from courtload.domain.hybrid_assistant import HybridTurnRequest
-from courtload.services.assistant.hybrid import run_hybrid_turn
-from courtload.services.assistant.planner import ProviderFailure
-from courtload.services.assistant.rule_planner import RULE_NOTE
+from courtlens.domain.conversation import ConversationContext
+from courtlens.domain.hybrid_assistant import HybridTurnRequest
+from courtlens.services.assistant.hybrid import run_hybrid_turn
+from courtlens.services.assistant.planner import ProviderFailure
+from courtlens.services.assistant.rule_planner import RULE_NOTE
 
 postgres_conversation = _postgres_fixture
 

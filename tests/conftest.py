@@ -10,20 +10,20 @@ from sqlalchemy import Engine, create_engine
 from sqlalchemy.orm import Session
 from sqlalchemy.pool import StaticPool
 
-from courtload.api.app import create_app
-from courtload.database import Base, engine, get_db
-from courtload.demo import DEMO_EMAIL, DEMO_PASSWORD, DEMO_WEEK_START, fixture_documents
-from courtload.domain.scoring import DEFAULT_POINTS_RULES, scoring_rules_hash
-from courtload.ingestion.loader import IngestionService
-from courtload.ingestion.raw_store import RawStore
-from courtload.models import (
+from courtlens.api.app import create_app
+from courtlens.database import Base, engine, get_db
+from courtlens.demo import DEMO_EMAIL, DEMO_PASSWORD, DEMO_WEEK_START, fixture_documents
+from courtlens.domain.scoring import DEFAULT_POINTS_RULES, scoring_rules_hash
+from courtlens.ingestion.loader import IngestionService
+from courtlens.ingestion.raw_store import RawStore
+from courtlens.models import (
     FantasyLeague,
     FantasyRosterEntry,
     FantasyWatchlistEntry,
     FantasyWeekState,
     User,
 )
-from courtload.security import hash_password
+from courtlens.security import hash_password
 
 
 @pytest.fixture(scope="session", autouse=True)

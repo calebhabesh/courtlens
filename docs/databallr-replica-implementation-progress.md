@@ -1,3 +1,5 @@
+CourtLoad was renamed to CourtLens on 2026-10-07; identifiers below are historical.
+
 # CourtLoad replica implementation progress
 
 Started 2026-10-01. Parent: [implementation handoff](databallr-replica-implementation-plan.md).

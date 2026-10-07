@@ -10,12 +10,12 @@ from typing import Any
 
 import httpx
 
-from courtload.ingestion.sportsdataverse import acquire_season_assets
-from courtload.ingestion.workbench_normalization import (
+from courtlens.ingestion.sportsdataverse import acquire_season_assets
+from courtlens.ingestion.workbench_normalization import (
     parse_schedule_file,
     reconcile_season,
 )
-from courtload.ingestion.workbench_source_config import ADMITTED_SEASONS
+from courtlens.ingestion.workbench_source_config import ADMITTED_SEASONS
 
 RAW_ROOT = Path("data/raw")
 REPORT_PATH = Path("docs/evidence/workbench-source-spike.md")

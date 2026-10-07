@@ -8,9 +8,9 @@ from uuid import uuid4
 
 import pytest
 
-from courtload.domain.hybrid_assistant import HybridTurnRequest
-from courtload.services.assistant import awards
-from courtload.services.assistant.hybrid import route_intent, run_hybrid_turn
+from courtlens.domain.hybrid_assistant import HybridTurnRequest
+from courtlens.services.assistant import awards
+from courtlens.services.assistant.hybrid import route_intent, run_hybrid_turn
 
 TODAY = date(2026, 10, 7)
 

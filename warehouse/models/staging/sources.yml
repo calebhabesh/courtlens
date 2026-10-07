@@ -3,7 +3,7 @@ version: 2
 sources:
   - name: operational
     description: >-
-      Source-traceable operational tables loaded by the CourtLoad ingestion service.
+      Source-traceable operational tables loaded by the CourtLens ingestion service.
       Records can be real BALLDONTLIE observations or explicitly labeled fixtures.
     schema: public
     tables:

@@ -18,7 +18,7 @@ from datetime import date
 
 import pytest
 
-from courtload.domain.analytical_ops import (
+from courtlens.domain.analytical_ops import (
     calculate_calendar_gap,
     categorize_rest_bucket,
     compute_distribution_summary,

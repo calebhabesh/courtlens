@@ -1,3 +1,5 @@
+CourtLoad was renamed to CourtLens on 2026-10-07; identifiers below are historical.
+
 # B28 finance acquisition and schema evidence
 
 Measured 2026-10-03. Implements the owner-approved manual path under [finance-import-v1](../design/finance-import-v1.md). No delegated agents, subscription, finance UI or B29 computation.

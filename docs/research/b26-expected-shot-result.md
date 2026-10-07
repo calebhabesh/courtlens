@@ -1,3 +1,5 @@
+CourtLoad was renamed to CourtLens on 2026-10-07; identifiers below are historical.
+
 # B26 expected-shot experiment: completed negative result
 
 Measured 2026-10-03. The expected-shot sub-block and its admission, binding,

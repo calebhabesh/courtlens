@@ -1,4 +1,4 @@
-# CourtLoad hybrid assistant contract
+# CourtLens hybrid assistant contract
 
 2026-10-05. Parent: [freeze handoff](../polish-freeze-implementation-plan.md). **PF07a contracts frozen and PF07b durable backend history verified on 2026-10-05; PF07c bounded retrieval and PF07d bounded integration/language gate verified on 2026-10-06; PF08 threaded UI acceptance verified on 2026-10-06; PF09 bounded freeze acceptance verified on 2026-10-06; [measured evidence](../evidence/pf09-freeze-acceptance/README.md).** Applies to PF07–PF08. The owner agreed to hybrid NBA/site conversation, verified free external retrieval, sensible assumptions, durable local threads, qualified statistical leaders and reasoned basketball opinions.
 
@@ -18,9 +18,9 @@ Use a server-validated typed intent/router, extending the current planning/execu
 
 | Answer kind | Authority | Required behavior |
 | --- | --- | --- |
-| Verified local analysis | Registered CourtLoad operations and exact evidence cells | Compute numbers/ranks/differences on the server; bind entity, metric, unit, scope, sample and input identity. Provide equivalent manual navigation. |
+| Verified local analysis | Registered CourtLens operations and exact evidence cells | Compute numbers/ranks/differences on the server; bind entity, metric, unit, scope, sample and input identity. Provide equivalent manual navigation. |
 | Site guidance / sourced explanation | Versioned site knowledge, catalog and approved explanatory sources | Explain actual routes, controls, definitions and limitations. Capabilities come from runtime state rather than stale prose. |
-| External answer | Verified free public sources retrieved through bounded server adapters | Cite the pages supporting claims; retain source/retrieval/period identity. Distinguish these from admitted CourtLoad data. |
+| External answer | Verified free public sources retrieved through bounded server adapters | Cite the pages supporting claims; retain source/retrieval/period identity. Distinguish these from admitted CourtLens data. |
 | Basketball discussion | Stated criteria and supported factual inputs | Allow clearly labelled judgment and general explanation. A viewpoint is not a measured player-quality score, causal estimate or winner probability. |
 | Clarification / inability | Resolved ambiguity or actual failure/gap | Ask one material question or explain the specific gap. Preserve the original request and applicable useful alternatives. |
 
@@ -55,7 +55,7 @@ For local analytical text, the server binds structured claim slots to exact comp
 
 For external factual claims, bind source fields/spans and locators to the actual entity/metric/value/unit/period and qualifier, using tested structured parsing or source-supported extraction/validation. Model-generated extraction is a candidate claim, not verification. Apply binding to nonnumeric claims such as position, roster association and source-reported availability too; preserve the original no-inferred-injury rule. A citation URL alone is not proof of a number or position. A partial table cannot establish a full-cohort ranking. If reliable extraction fails, explain the inability rather than producing a plausible answer from memory.
 
-Open in Stats/Research uses an executed local operation and the shared serializer. An external result links to its source; it does not create a fake equivalent CourtLoad query. Save analytical finding applies to supported verified local results, preserving current immutable manifests. External/explanation/opinion turns remain in chat history with their actual sources; they are not labelled reproducible CourtLoad analytical findings.
+Open in Stats/Research uses an executed local operation and the shared serializer. An external result links to its source; it does not create a fake equivalent CourtLens query. Save analytical finding applies to supported verified local results, preserving current immutable manifests. External/explanation/opinion turns remain in chat history with their actual sources; they are not labelled reproducible CourtLens analytical findings.
 
 Progress can describe bounded useful work. Stream verified answer blocks or show progress until verification completes; do not expose speculative numerical tokens as verified results. Cancelled, late or duplicate requests cannot overwrite newer turns or scope. Empty/error turns show a sentence and next action, not empty manifest disclosures.
 
@@ -103,9 +103,9 @@ When the local operation is unavailable, try the approved external/knowledge rou
 
 Keep the existing configured chatbot model unless a verified eligible free alternative is explicitly recorded. Sol/Flash implementation choices do not change runtime model selection. No provider calls are required in CI.
 
-**Owner clarification, 2026-10-06:** CourtLoad must remain free for the owner to use with an
+**Owner clarification, 2026-10-06:** CourtLens must remain free for the owner to use with an
 eligible Gemini Free-tier project. Normal usage follows the provider's established project/model
-quotas; there is no additional CourtLoad daily or lifetime inference allowance and no separate
+quotas; there is no additional CourtLens daily or lifetime inference allowance and no separate
 call-count approval for the finite PF07d evaluation. This supersedes the earlier evaluation-budget
 approval requirement. Retain bounded per-turn work, payload sizes, concurrency and deadlines;
 these protect correctness/responsiveness and are not usage subscriptions or billing quotas.
@@ -263,7 +263,7 @@ the earlier PF07a/PF07b statements that no external adapter/cache exists. V2 wir
 history storage are unchanged.
 
 External support uses the reserved `external_claim`, `AnswerSource.facts` and `source_requests`
-fields. Source links do not become equivalent CourtLoad queries or saveable analytical findings.
+fields. Source links do not become equivalent CourtLens queries or saveable analytical findings.
 Bounded cached supporting records are independent of transcripts; Clear history does not evict
 these reusable public records. The cache never serves expired support as a verified current fact.
 Cache hits retain their original retrieval timestamps. Stop/deletion fence late publication just

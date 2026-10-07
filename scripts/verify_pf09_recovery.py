@@ -12,9 +12,9 @@ from pathlib import Path
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import Session
 
-from courtload.services.assistant.history import history_inventory
-from courtload.services.assistant.saved import reproduce_saved, saved_inventory
-from courtload.services.backup_restore import (
+from courtlens.services.assistant.history import history_inventory
+from courtlens.services.assistant.saved import reproduce_saved, saved_inventory
+from courtlens.services.backup_restore import (
     create_backup_archive,
     restore_backup_archive,
     verify_restored_state,
@@ -22,8 +22,8 @@ from courtload.services.backup_restore import (
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "docs/evidence/pf09-freeze-acceptance"
-SOURCE = "postgresql+psycopg://courtload:courtload@127.0.0.1:5432/courtload_pf09_acceptance"
-TARGET = SOURCE.rsplit("/", 1)[0] + "/courtload_pf09_restored"
+SOURCE = "postgresql+psycopg://courtlens:courtlens@127.0.0.1:5432/courtlens_pf09_acceptance"
+TARGET = SOURCE.rsplit("/", 1)[0] + "/courtlens_pf09_restored"
 
 
 def records(session: Session) -> dict:
@@ -56,7 +56,7 @@ def records(session: Session) -> dict:
 
 def main() -> None:
     source_engine = create_engine(SOURCE)
-    work = Path("/tmp/courtload-pf09-recovery")
+    work = Path("/tmp/courtlens-pf09-recovery")
     stage = work / "source"
     stage.mkdir(parents=True, exist_ok=True)
     shutil.copytree(
@@ -66,7 +66,7 @@ def main() -> None:
     with Session(source_engine) as session:
         assert (
             session.execute(text("select current_database()")).scalar()
-            == "courtload_pf09_acceptance"
+            == "courtlens_pf09_acceptance"
         )
         session.execute(
             text("CREATE TABLE IF NOT EXISTS pf09_clone_only_marker (value text PRIMARY KEY)")
@@ -95,7 +95,7 @@ def main() -> None:
         backup_seconds = time.monotonic() - started
         (OUT / "backup-manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
         with create_engine(SOURCE, isolation_level="AUTOCOMMIT").connect() as connection:
-            connection.execute(text("CREATE DATABASE courtload_pf09_restored"))
+            connection.execute(text("CREATE DATABASE courtlens_pf09_restored"))
         restored = work / "restored"
         restored.mkdir(parents=True, exist_ok=True)
         os.chdir(restored)
@@ -104,7 +104,7 @@ def main() -> None:
             session,
             archive,
             target_database_url=TARGET,
-            target_database_name="courtload_pf09_restored",
+            target_database_name="courtlens_pf09_restored",
             artifacts_dir=restored / "data/artifacts/evaluation",
             raw_root=restored / "data/raw",
             configs_root=restored / "evaluation",

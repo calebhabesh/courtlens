@@ -1,3 +1,5 @@
+CourtLoad was renamed to CourtLens on 2026-10-07; identifiers below are historical.
+
 # B26 strict shot adapter and complete-season reconciliation
 
 Measured 2026-10-03. **The strict adapter and one real-game reconciliation are verified. The subsequent 2025–26 season fails admission; full B26 remains `source_blocked`.** No fit, database admission, publication, final-error inspection, split binding or chronology amendment occurred.

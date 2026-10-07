@@ -7,9 +7,9 @@ from pathlib import Path
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from courtload.conversation_models import SavedConversationAnalysis
-from courtload.database import engine
-from courtload.services.assistant.saved import reproduce_saved
+from courtlens.conversation_models import SavedConversationAnalysis
+from courtlens.database import engine
+from courtlens.services.assistant.saved import reproduce_saved
 
 
 def main():

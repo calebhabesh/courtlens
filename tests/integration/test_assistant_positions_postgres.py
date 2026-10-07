@@ -8,14 +8,14 @@ from uuid import uuid4
 import pytest
 from test_conversation_postgres import postgres_conversation as _postgres_fixture
 
-from courtload.config import get_settings
-from courtload.domain.conversation import AnalysisPlan, ConversationContext, OperationStep
-from courtload.domain.hybrid_assistant import HybridTurnRequest
-from courtload.services.assistant.hybrid import run_hybrid_turn
-from courtload.services.assistant.operations import canonical_step
-from courtload.services.assistant.planner import PlanningOutput
-from courtload.services.workbench_ingestion import workbench_content_sha256
-from courtload.workbench_models import WorkbenchDataset
+from courtlens.config import get_settings
+from courtlens.domain.conversation import AnalysisPlan, ConversationContext, OperationStep
+from courtlens.domain.hybrid_assistant import HybridTurnRequest
+from courtlens.services.assistant.hybrid import run_hybrid_turn
+from courtlens.services.assistant.operations import canonical_step
+from courtlens.services.assistant.planner import PlanningOutput
+from courtlens.services.workbench_ingestion import workbench_content_sha256
+from courtlens.workbench_models import WorkbenchDataset
 
 postgres_conversation = _postgres_fixture
 
@@ -66,7 +66,7 @@ def admitted_positions(postgres_conversation, tmp_path, monkeypatch):
     dataset.manifest_json = {"admitted_years": [2025], "file_count": 2}
     session.commit()
     # Spawned analytical workers read settings from the environment.
-    monkeypatch.setenv("COURTLOAD_RAW_STORE_PATH", str(tmp_path))
+    monkeypatch.setenv("COURTLENS_RAW_STORE_PATH", str(tmp_path))
     get_settings.cache_clear()
     yield session, context, season_dir
     get_settings.cache_clear()

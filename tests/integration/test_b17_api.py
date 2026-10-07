@@ -15,7 +15,7 @@ import os
 import pytest
 from fastapi.testclient import TestClient
 
-from courtload.api.app import create_app
+from courtlens.api.app import create_app
 
 
 @pytest.fixture
@@ -25,8 +25,8 @@ def client() -> TestClient:
 
 
 def _require_test_db() -> None:
-    if not os.environ.get("COURTLOAD_TEST_POSTGRES_URL") and not os.environ.get(
-        "COURTLOAD_DATABASE_URL"
+    if not os.environ.get("COURTLENS_TEST_POSTGRES_URL") and not os.environ.get(
+        "COURTLENS_DATABASE_URL"
     ):
         pytest.skip("Database is not configured")
 

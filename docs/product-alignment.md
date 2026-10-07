@@ -1,3 +1,5 @@
+CourtLoad was renamed to CourtLens on 2026-10-07; identifiers below are historical.
+
 # CourtLoad product and portfolio alignment
 
 > **Current direction, 2026-10-01:** The [local workbench handoff](workbench-implementation-plan.md) governs next-release implementation. The earlier fantasy/public-product discussion below is retained as historical context.

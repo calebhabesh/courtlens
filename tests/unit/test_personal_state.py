@@ -3,7 +3,7 @@
 import pytest
 from pydantic import ValidationError
 
-from courtload.domain.personal_state import (
+from courtlens.domain.personal_state import (
     CustomViewDefinition,
     PersonalWorkspaceState,
     RankingBoardDefinition,

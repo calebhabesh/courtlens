@@ -28,7 +28,7 @@ export default defineConfig({
         },
         {
           command:
-            "COURTLOAD_API_INTERNAL_URL=http://localhost:4100 NEXT_PUBLIC_COURTLOAD_API_URL=http://localhost:4100 npm run dev -- -p 3100",
+            "COURTLENS_API_INTERNAL_URL=http://localhost:4100 NEXT_PUBLIC_COURTLENS_API_URL=http://localhost:4100 npm run dev -- -p 3100",
           port: 3100,
           reuseExistingServer: false
         }

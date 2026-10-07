@@ -5,7 +5,7 @@ from __future__ import annotations
 import pytest
 from pydantic import ValidationError
 
-from courtload.domain.metrics import (
+from courtlens.domain.metrics import (
     METRIC_CATALOG,
     METRIC_CATALOG_V1,
     METRIC_CATALOG_V1_VERSION,
@@ -20,17 +20,17 @@ from courtload.domain.metrics import (
     resolve_metric_alias,
     validate_metric_keys,
 )
-from courtload.domain.normalization import (
+from courtlens.domain.normalization import (
     normalize_metric_value,
     validate_metric_normalization,
 )
-from courtload.domain.percentiles import (
+from courtlens.domain.percentiles import (
     CohortPercentileSummary,
     compute_cohort_percentiles,
     compute_midrank_percentile,
     describe_cohort_percentile,
 )
-from courtload.domain.query_spec import (
+from courtlens.domain.query_spec import (
     MetricSelector,
     NormalizationMode,
 )

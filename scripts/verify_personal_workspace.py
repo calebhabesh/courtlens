@@ -1,6 +1,6 @@
 """Verify B08 through fresh migrations, real browser requests, and disposable DB restore.
 
-Requires a dashboard build, local Compose PostgreSQL, and COURTLOAD_TEST_POSTGRES_URL.
+Requires a dashboard build, local Compose PostgreSQL, and COURTLENS_TEST_POSTGRES_URL.
 Only the two randomly named databases created here are removed in cleanup.
 """
 
@@ -19,7 +19,7 @@ from sqlalchemy.engine import make_url
 root = Path(__file__).resolve().parents[1]
 name = "b08_verify_" + uuid4().hex[:12]
 restored_name = name + "_restored"
-source_url = make_url(os.environ["COURTLOAD_TEST_POSTGRES_URL"])
+source_url = make_url(os.environ["COURTLENS_TEST_POSTGRES_URL"])
 admin_url = source_url.set(drivername="postgresql", database="postgres").render_as_string(
     hide_password=False
 )
@@ -29,8 +29,8 @@ restored_url = source_url.set(drivername="postgresql", database=restored_name).r
 )
 env = dict(
     os.environ,
-    COURTLOAD_DATABASE_URL=url.replace("postgresql://", "postgresql+psycopg://"),
-    COURTLOAD_OPERATOR_TOKEN="b08-local-verification-token",
+    COURTLENS_DATABASE_URL=url.replace("postgresql://", "postgresql+psycopg://"),
+    COURTLENS_OPERATOR_TOKEN="b08-local-verification-token",
 )
 servers = []
 created_databases = []
@@ -79,7 +79,7 @@ try:
         api = subprocess.Popen(
             [
                 str(root / ".venv/bin/uvicorn"),
-                "courtload.api.app:create_app",
+                "courtlens.api.app:create_app",
                 "--factory",
                 "--port",
                 "18008",
@@ -93,8 +93,8 @@ try:
         wait_ready("http://localhost:18008/api/workbench/workspace", api)
         front_env = dict(
             env,
-            COURTLOAD_API_INTERNAL_URL="http://localhost:18008",
-            NEXT_PUBLIC_COURTLOAD_API_URL="http://localhost:18008",
+            COURTLENS_API_INTERNAL_URL="http://localhost:18008",
+            NEXT_PUBLIC_COURTLENS_API_URL="http://localhost:18008",
         )
         front_log = (tmp / "frontend.log").open("w")
         front = subprocess.Popen(
@@ -110,7 +110,7 @@ try:
             front_env,
             PLAYWRIGHT_EXTERNAL_SERVER="true",
             PLAYWRIGHT_BASE_URL="http://localhost:3108",
-            COURTLOAD_REAL_WORKSPACE_TEST="1",
+            COURTLENS_REAL_WORKSPACE_TEST="1",
         )
         result = subprocess.run(
             [
@@ -152,7 +152,7 @@ try:
                 "pg_dump",
                 "--format=custom",
                 "--username",
-                source_url.username or "courtload",
+                source_url.username or "courtlens",
                 "--dbname",
                 name,
             ],
@@ -172,7 +172,7 @@ try:
                 "--no-owner",
                 "--no-acl",
                 "--username",
-                source_url.username or "courtload",
+                source_url.username or "courtlens",
                 "--dbname",
                 restored_name,
             ],

@@ -25,7 +25,7 @@ from typing import Any
 import httpx
 from sqlalchemy import text
 
-from courtload.database import SessionLocal
+from courtlens.database import SessionLocal
 
 # Flagship replica endpoints spanning all core and expanded surfaces
 RELEASE_ENDPOINTS: list[tuple[str, str, str, dict[str, Any] | None]] = [
@@ -268,7 +268,7 @@ def get_process_resource_stats() -> dict[str, Any]:
     # Uvicorn FastAPI process
     try:
         pids = (
-            subprocess.check_output(["pgrep", "-f", "uvicorn.*courtload"], text=True)
+            subprocess.check_output(["pgrep", "-f", "uvicorn.*courtlens"], text=True)
             .strip()
             .splitlines()
         )
@@ -296,7 +296,7 @@ def get_process_resource_stats() -> dict[str, Any]:
     # PostgreSQL container stats
     try:
         raw = subprocess.check_output(
-            ["docker", "stats", "courtload-db-1", "--no-stream", "--format", "{{json .}}"],
+            ["docker", "stats", "courtlens-db-1", "--no-stream", "--format", "{{json .}}"],
             text=True,
         ).strip()
         stats["postgres_container"] = json.loads(raw)
@@ -395,7 +395,7 @@ def get_disk_storage_stats() -> dict[str, Any]:
 
 async def run_benchmarks(base_url: str = "http://127.0.0.1:8000") -> dict[str, Any]:
     print("=" * 80)
-    print("CourtLoad B37 Release Performance, Storage, & Latency Benchmark Harness")
+    print("CourtLens B37 Release Performance, Storage, & Latency Benchmark Harness")
     print("=" * 80)
 
     print("\n1. Collecting system and hardware metadata...")

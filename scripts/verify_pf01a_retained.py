@@ -11,9 +11,9 @@ from unittest.mock import patch
 from fastapi.testclient import TestClient
 from sqlalchemy import text
 
-from courtload.api.app import create_app
-from courtload.database import SessionLocal, get_db
-from courtload.services.workbench_analytics import reproduce_investigation
+from courtlens.api.app import create_app
+from courtlens.database import SessionLocal, get_db
+from courtlens.services.workbench_analytics import reproduce_investigation
 
 
 def main() -> None:
@@ -21,7 +21,7 @@ def main() -> None:
     source = (directory / "pf00-stats-engine.py.txt").read_text()
     expected = json.loads(Path("docs/evidence/pf00-baseline/starting-state.json").read_text())[
         "dirty_files"
-    ]["src/courtload/services/stats_engine.py"]["sha256"]
+    ]["src/courtlens/services/stats_engine.py"]["sha256"]
     assert hashlib.sha256(source.encode()).hexdigest() == expected
     namespace: dict = {}
     exec(compile(source, "checksum-verified-pf00-stats-engine", "exec"), namespace)
@@ -30,7 +30,7 @@ def main() -> None:
     with SessionLocal() as session:
         session.execute(text("SET TRANSACTION READ ONLY"))
         with patch(
-            "courtload.services.stats_engine.execute_stats_query", namespace["execute_stats_query"]
+            "courtlens.services.stats_engine.execute_stats_query", namespace["execute_stats_query"]
         ):
             for result in current["saved_reproduction"]:
                 old = reproduce_investigation(session, result["id"])

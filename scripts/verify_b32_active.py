@@ -25,12 +25,12 @@ from sqlalchemy import func, select, text
 from sqlalchemy.orm import Session
 from verify_b31_live import integrity
 
-from courtload.config import get_settings
-from courtload.database import engine
-from courtload.domain.live import LIVE_PARSER_VERSION
-from courtload.live_models import LiveContent, LiveFeed, LiveLease, LiveObservation
-from courtload.services.live import poll_once, release
-from courtload.services.live_provider import ESPNLiveProvider
+from courtlens.config import get_settings
+from courtlens.database import engine
+from courtlens.domain.live import LIVE_PARSER_VERSION
+from courtlens.live_models import LiveContent, LiveFeed, LiveLease, LiveObservation
+from courtlens.services.live import poll_once, release
+from courtlens.services.live_provider import ESPNLiveProvider
 
 
 def write(path, value):
@@ -101,9 +101,9 @@ def main():
     write(args.output / "before.json", before)
     env = {
         **os.environ,
-        "COURTLOAD_LIVE_ENABLED": "true",
-        "COURTLOAD_API_INTERNAL_URL": "http://127.0.0.1:8038",
-        "COURTLOAD_OPERATOR_TOKEN": get_settings().operator_token.get_secret_value(),
+        "COURTLENS_LIVE_ENABLED": "true",
+        "COURTLENS_API_INTERNAL_URL": "http://127.0.0.1:8038",
+        "COURTLENS_OPERATOR_TOKEN": get_settings().operator_token.get_secret_value(),
         "PLAYWRIGHT_BASE_URL": "http://127.0.0.1:3142",
         "HOSTNAME": "127.0.0.1",
         "PORT": "3142",
@@ -161,7 +161,7 @@ def main():
                         sys.executable,
                         "-m",
                         "uvicorn",
-                        "courtload.api.app:create_app",
+                        "courtlens.api.app:create_app",
                         "--factory",
                         "--host",
                         "127.0.0.1",

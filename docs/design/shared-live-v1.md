@@ -41,7 +41,7 @@ it must not be relabelled with a client's requested date or the Stats release.
 
 ## Ownership, budgets and failure behavior
 
-`COURTLOAD_LIVE_ENABLED=false` by default. With explicit opt-in, `courtload worker`
+`COURTLENS_LIVE_ENABLED=false` by default. With explicit opt-in, `courtlens worker`
 runs a cooperative Live thread with its own sessions alongside pipeline processing.
 `worker --once` retains its existing job-draining semantics. The Live thread checks
 demand every five seconds using Event.wait; it does no upstream work while idle.
@@ -102,7 +102,7 @@ payload sizes one cycle transfers up to 6.5 MiB. High-entropy active boxes can e
 the conservative capacity quickly, rather than silently growing without limit. Broader
 active-source growth, physical disk and retention policy remain release work.
 
-`courtload reconcile-live-final OBSERVATION_UUID DATASET_UUID` explicitly compares a
+`courtlens reconcile-live-final OBSERVATION_UUID DATASET_UUID` explicitly compares a
 retained final game summary with independently admitted finalized schedule/team facts.
 It requires the retained verified game/team mapping, the same game date and home/away
 identities, two valid final rows, and matching points/opponent points. It appends a

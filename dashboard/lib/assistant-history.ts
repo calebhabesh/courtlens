@@ -1,3 +1,4 @@
+import { storageKeys } from "./storage-keys";
 import type { DurableThreadHeader, HybridTurnRequest, ThreadHistoryPage } from "./assistant-v2.generated";
 import type { AgentHistoryPage, StoredTurnRecord } from "./assistant-v3.generated";
 export type AssistantTurnResponse = NonNullable<StoredTurnRecord["response"]>;
@@ -22,9 +23,9 @@ export const deleteAssistantThread = (threadId: string) => request<{ cleared: bo
 export const clearAssistantHistory = () => request<{ cleared: boolean }>("threads", { method: "DELETE" });
 
 // Open chats (page, drawer, other tabs) re-read history when any of them announces a change.
-export const historyChangeKey = "courtload-assistant-history-change-v2";
-export const historyChangeEvent = "courtload-assistant-history-change";
-export const activeThreadKey = "courtload-assistant-active-thread-v2";
+export const historyChangeKey = storageKeys.historyChange;
+export const historyChangeEvent = "courtlens-assistant-history-change";
+export const activeThreadKey = storageKeys.activeThread;
 export function announceHistoryChange(source: string, thread: string | null) {
   const change = { source, thread, nonce: crypto.randomUUID() };
   window.dispatchEvent(new CustomEvent(historyChangeEvent, { detail: change }));

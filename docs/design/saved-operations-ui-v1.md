@@ -73,7 +73,7 @@ provider accuracy. No credentials are exposed in installation metadata or caches
 ## Installation and freshness
 
 The local manifest uses `/stats`, scope `/`, stable app identity, standalone display and
-the existing CourtLoad mark. Local PNGs include 192/512 icons, a 512 maskable icon with
+the existing CourtLens mark. Local PNGs include 192/512 icons, a 512 maskable icon with
 safe padding, and a 180 Apple icon. Theme color and manifest discovery are in app metadata.
 
 Settings responds to the browser's install prompt and installed events, and provides

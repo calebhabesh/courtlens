@@ -7,15 +7,15 @@ from datetime import UTC, datetime
 import pytest
 from sqlalchemy import func, select
 
-from courtload.domain.finance import FinanceManifest, FinanceRow, export_csv, parse_csv
-from courtload.finance_models import FinanceObservation, FinanceRelease
-from courtload.services.finance_import import (
+from courtlens.domain.finance import FinanceManifest, FinanceRow, export_csv, parse_csv
+from courtlens.finance_models import FinanceObservation, FinanceRelease
+from courtlens.services.finance_import import (
     admit_bundle,
     preview_bundle,
     release_rows,
     stage_bundle,
 )
-from courtload.workbench_models import WorkbenchIdentity
+from courtlens.workbench_models import WorkbenchIdentity
 
 NOW = datetime(2026, 10, 3, tzinfo=UTC)
 SOURCE = b"synthetic source document for finance checks"
@@ -201,7 +201,7 @@ def test_stage_is_bounded_and_refuses_changed_bytes(tmp_path):
 
 
 def test_integrity_replay_and_orm_guard(session, tmp_path):
-    from courtload.services.finance_import import verify_release
+    from courtlens.services.finance_import import verify_release
 
     identity(session)
     release = admit_bundle(session, bundle(tmp_path / "book", [row()]))
@@ -214,7 +214,7 @@ def test_integrity_replay_and_orm_guard(session, tmp_path):
 
 
 def test_finance_jobs_coalesce_only_matching_staged_bytes(session):
-    from courtload.services.workbench_jobs import enqueue_job
+    from courtlens.services.workbench_jobs import enqueue_job
 
     a = enqueue_job(session, "finance_import", {"bundle_hash": "a" * 64})
     b = enqueue_job(session, "finance_import", {"bundle_hash": "b" * 64})

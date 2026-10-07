@@ -1,3 +1,5 @@
+CourtLoad was renamed to CourtLens on 2026-10-07; identifiers below are historical.
+
 # CourtLoad course correction: player comparison in matchup context
 
 > **Implementation sequence updated 2026-09-20:** Follow the [approved handover](implementation-plan.md), which incorporates the owner's zero-cost historical-replay decision and concrete data, API, evaluation and UI contracts. This earlier roadmap remains context; paid live ingestion is no longer the first release gate.

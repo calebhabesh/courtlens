@@ -1,4 +1,4 @@
-# CourtLoad public comparison experience
+# CourtLens public comparison experience
 
 > **Next release, 2026-10-01:** Follow the [workbench interface contract](workbench-interface-contract.md). This earlier public-style comparison specification remains historical context; preserve existing behavior while realigning the application incrementally.
 
@@ -55,7 +55,7 @@ Summaries can use deterministic templates populated by data: “Last-5 minutes a
 
 Start with a plain-language answer to whether the challenger improved over rolling estimates, and which estimator the historical app actually serves. Present a compact table of baseline/player-only/context MAE, RMSE, interval coverage and width, with counts. Keep validation and final test separate. Link to slice/error analysis and a downloadable derived report if appropriate.
 
-Show why a model was or was not promoted. A negative result is a complete result. Explain historical reconstruction, conditional appearance, inferred team association, unknown rows and reconstructed schedules. Label the reference scoring formula as CourtLoad's fixed metric, not every fantasy platform's rule.
+Show why a model was or was not promoted. A negative result is a complete result. Explain historical reconstruction, conditional appearance, inferred team association, unknown rows and reconstructed schedules. Label the reference scoring formula as CourtLens's fixed metric, not every fantasy platform's rule.
 
 Separate three concepts in health: data coverage period, last successful published build, and latest attempted refresh. A fixed historical archive is an intentional mode. A failed attempt is a warning even when older published data remains usable. Show actual record counts and accepted source attribution; never imply the archive has passed validation merely because it downloaded.
 

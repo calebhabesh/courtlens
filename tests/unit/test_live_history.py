@@ -8,13 +8,13 @@ from fastapi import HTTPException
 from fastapi.testclient import TestClient
 from sqlalchemy import func, select
 
-from courtload.api.app import create_app
-from courtload.database import get_db
-from courtload.domain.live_history import HistoricalSlate
-from courtload.live_models import LiveLease, LiveObservation
-from courtload.services.live_history import historical_slate
-from courtload.services.workbench_analytics import ResolvedContext
-from courtload.workbench_models import WorkbenchDataset, WorkbenchPlayerGame, WorkbenchTeamGame
+from courtlens.api.app import create_app
+from courtlens.database import get_db
+from courtlens.domain.live_history import HistoricalSlate
+from courtlens.live_models import LiveLease, LiveObservation
+from courtlens.services.live_history import historical_slate
+from courtlens.services.workbench_analytics import ResolvedContext
+from courtlens.workbench_models import WorkbenchDataset, WorkbenchPlayerGame, WorkbenchTeamGame
 
 DAY = date(2025, 4, 15)
 

@@ -5,7 +5,7 @@ from decimal import Decimal
 import pytest
 from assignment_fakes import make_assignment_inputs, prepare, write_csv
 
-from courtload.services.assignment_admission import AssignmentAdmissionError
+from courtlens.services.assignment_admission import AssignmentAdmissionError
 
 
 @pytest.fixture

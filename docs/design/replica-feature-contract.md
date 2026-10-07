@@ -2,13 +2,13 @@
 
 2026-10-01. Parent: [implementation handoff](../databallr-replica-implementation-plan.md). **Prescribed behavior; not completion evidence.**
 
-The [reference inspection](../research/databallr-replica-findings.md) distinguishes rendered/advertised behavior and source/model dependencies. Recreate the applicable workflows using CourtLoad identity, data and original explanatory content. A reference route is an inventory key, not an instruction to copy its code, article text, unverified constants or numerical outputs.
+The [reference inspection](../research/databallr-replica-findings.md) distinguishes rendered/advertised behavior and source/model dependencies. Recreate the applicable workflows using CourtLens identity, data and original explanatory content. A reference route is an inventory key, not an instruction to copy its code, article text, unverified constants or numerical outputs.
 
 ## Complete feature map
 
 Every row stays in the implementation coverage ledger. `Gated` means the feature requires its named inputs, not that it may silently disappear from scope. A working partial page declares which components are available. Record exact-parity, named-alternative and unavailable components separately.
 
-| ID / menu | Reference → CourtLoad route | Required functionality | Blocks / principal gate |
+| ID / menu | Reference → CourtLens route | Required functionality | Blocks / principal gate |
 | --- | --- | --- | --- |
 | F01 Stats | `/stats` → `/stats` | Dense player table; grouped headers, season/phase/team/position/draft/measurement/sample/stat filters, sort, browse and paging. | B01–B07, B14; metadata filters only when admitted |
 | F02 Stats presets | Stats toolbar | Overview, Shooting, Impact, On-Off, Six Factor, Advanced, Defense, True Shooting plus Workload/Consistency/Custom. Catalog-driven columns. | B02–B07; richer presets use B20–B26 |
@@ -23,7 +23,7 @@ Every row stays in the implementation coverage ledger. `Gated` means the feature
 | F11 Recent games | `/last-games` → `/last-games` | Last-X-appearance and date/range/player filters, per-game/per-36/custom columns, table/cards, game logs and recent-game comparison. | B03, B10–B11 |
 | F12 Showcase | `/showcase` → `/showcase` | Configurable player cards and manually controlled slideshow; metric/year choices and comparison/export actions. | B08–B11; motion can pause |
 | F13 Player dashboard | `/dashboard` → `/players/[id]`; `/dashboard` opens player selector | Profile, summary/percentiles, season/multi-season/partial-career, game logs, trends, forecast availability and source evidence. | B03, B10–B14; imported impact gated |
-| F14 Statistical peers | CourtLoad addition → `/research/similarity` | Recent statistical/workload dimensions, explicit cohort/window/distance, explain matches and open comparison. | B12–B13 |
+| F14 Statistical peers | CourtLens addition → `/research/similarity` | Recent statistical/workload dimensions, explicit cohort/window/distance, explain matches and open comparison. | B12–B13 |
 | F15 Shot twins | `/shot-profile-twin` → same | Shot-location/volume/efficiency player-season peers, feature overlap and league context. | B23–B24 |
 | F16 Ranking boards | `/rankings` → `/rankings` | Personal overall/offense/defense/position boards, explicit subjective notes/scopes, favorite IDs, export/import; local aggregate of selected boards with population/missing-rank rules. | B08–B09; no invented global community consensus |
 | F17 Teams | `/teams` → `/teams`, `/teams/[id]` | Table/cards, production/allowance, team factors, season/recent windows, participation cohort and historical peers. | B14–B16 |
@@ -39,18 +39,18 @@ Every row stays in the implementation coverage ledger. `Gated` means the feature
 | F27 Tier lists | `/tierlist` → same | Local tiers and player cards; drag plus keyboard move; explicit subjective board titles, export/import. | B08–B09 |
 | F28 Adjusted shooting | `/zts` → `/research/adjusted-shooting`; `/zts` redirect | Conventional TS first; named playtype-adjusted variant only after admitted inputs, prior-only baselines and evaluation. | B25–B27; no surrounding-future-year fill |
 | F29 Six-factor research | `/six-factor-rapm` → same | Registered offensive/defensive factor coefficients, samples/model card, controls and reproducible result views. | B25–B27 |
-| F30 Expected-shot research | `/shotquality` → `/research/expected-shots`; `/shotquality` redirect explains identity | Named CourtLoad expected-shot experiment with location/type inputs and calibration; externally sourced vendor parity only if admitted. | B23, B25–B27 |
+| F30 Expected-shot research | `/shotquality` → `/research/expected-shots`; `/shotquality` redirect explains identity | Named CourtLens expected-shot experiment with location/type inputs and calibration; externally sourced vendor parity only if admitted. | B23, B25–B27 |
 | F31 Shot aftermath | `/shot-aftermath` → same | First-chance shot → recovery/next-possession branches, declared horizon/scoring rules, zone/team/player filters and samples. | B20, B23–B24 |
 | F32 Defensive assignments | `/d-shotquality` → `/research/defensive-matchups`; compatibility explanation | Admitted assignment/contest summaries; external expected values or own model clearly identified. Nearest/second defender only with those actual inputs. | B23–B27; rich-input gate |
 | F33 Spatial EPV | `/epv` → `/research/epv` | Capability/methodology page; NBA spatial replay only after NBA tracking and model gates. | B25–B27 if inputs ever admitted; ACB demo excluded |
 | F34 Measurements | `/wingspan` → same | Listed versus combine measurements, draft/position/active-evidence filters, units, compare/scatter and source export. | B14, B27 |
 | F35 Hypothetical calculator | `/calculator` → same | Editable shooting/turnover/rebound assumptions, defined offensive-rating scenario, contribution/flow charts, explicit unsupported inputs. | B15, B20, B27; scenario definition |
-| F36 Learning | `/learning` → `/learning` | CourtLoad's own metric/model tutorials, worked queries and dataset-bound examples; links to definitions and explorations. | B35 |
+| F36 Learning | `/learning` → `/learning` | CourtLens's own metric/model tutorials, worked queries and dataset-bound examples; links to definitions and explorations. | B35 |
 | F37 Case studies | `/kawhifiles` → `/research/case-studies`; compatibility redirect | Original reproducible player/team investigations, including previously agreed case studies; saved manifests and cited limits. | B13, B35 |
 | F38 Blog/patch notes | `/blog`, `/patch-notes` → same | Original Markdown-based articles and release notes, source/date and links to implemented capabilities; no CMS/account dependency. | B35 |
-| F39 Workload/change | CourtLoad addition → Stats view and `/research/trends` | Disjoint window deltas for minutes/attempts/production, filter/rank and examine game rows. | B12–B13 |
-| F40 Distributions/splits | CourtLoad addition → Stats view and `/research/distributions` | Median/IQR/quantiles, rest/home-away/opponent comparisons, samples and overlapping-period disclosure. | B12–B13 |
-| F41 Chatbot | Ask CourtLoad drawer and `/research/ask` | Natural-language conversation, clarification/refinement, verified cards/plots, evidence, Open in Stats/save. | B33–B34 |
+| F39 Workload/change | CourtLens addition → Stats view and `/research/trends` | Disjoint window deltas for minutes/attempts/production, filter/rank and examine game rows. | B12–B13 |
+| F40 Distributions/splits | CourtLens addition → Stats view and `/research/distributions` | Median/IQR/quantiles, rest/home-away/opponent comparisons, samples and overlapping-period disclosure. | B12–B13 |
+| F41 Chatbot | Ask CourtLens drawer and `/research/ask` | Natural-language conversation, clarification/refinement, verified cards/plots, evidence, Open in Stats/save. | B33–B34 |
 | F42 Pipeline/evidence | `/data-status`, `/investigations`, `/methodology`, `/settings` retained | Source/phase health, refresh/jobs, release pointer, saved results/reproduce/export, definitions and configuration status. | B01, B03, B35–B37 |
 | F43 Forecasts/evaluation | `/forecasts`, `/evaluation` retained | Existing points policies/issuance/scoring and sealed historical experiment views, distinct targets/intervals/model cards. | Existing work verified in B00, integrated B11/B35–B37 |
 | F44 Source video links | Advertised toolbar video matchup workflow → game/event detail | Link or embed an actually supplied, mapped source clip when permitted; preserve game/event/player identity and unavailable state. | B23–B24; clip URL/availability is a separate unverified source gate |
@@ -66,7 +66,7 @@ Compatibility routes are convenient mappings, not a requirement to recreate capi
 Desktop uses the full viewport width and two compact horizontal rows:
 
 ```text
-CourtLoad   Stats · Games         [Search players, teams and pages]  Ask  Data status  Settings
+CourtLens   Stats · Games         [Search players, teams and pages]  Ask  Data status  Settings
 Stats  WOWY  Live ▾  Players ▾  Teams ▾  Compare ▾  Research ▾                    Help ▾
 ───────────────────────────────────────────────────────────────────────────────────────
 Season(s) · Phase · Before date · Window · Team · Sample       Release / New data available
@@ -78,13 +78,13 @@ Pinned player identity | grouped metric headers / sortable values      | detail 
 Records · active sample/cohort · pagination · density/fullscreen · keyboard hints
 ```
 
-Stats is immediately visible. Games opens Live; it does not open the excluded Home game. Players includes Recent games, Showcase, Dashboard selector, Statistical peers, Shot-profile twins and Rankings. Teams includes Team stats, Roster shapes, Teammate shift, Contracts and Free agency. Compare includes Player, Team, Matchups and Tier lists. Research groups CourtLoad investigations/Ask/Forecasts/Evaluation with the advanced/reference research destinations. Help contains Definitions, Learning, Hotkeys and original release notes. Operations/settings remain accessible without consuming the main analytical menu.
+Stats is immediately visible. Games opens Live; it does not open the excluded Home game. Players includes Recent games, Showcase, Dashboard selector, Statistical peers, Shot-profile twins and Rankings. Teams includes Team stats, Roster shapes, Teammate shift, Contracts and Free agency. Compare includes Player, Team, Matchups and Tier lists. Research groups CourtLens investigations/Ask/Forecasts/Evaluation with the advanced/reference research destinations. Help contains Definitions, Learning, Hotkeys and original release notes. Operations/settings remain accessible without consuming the main analytical menu.
 
 Use real dropdown button/menu semantics, pointer and keyboard interaction, visible selected states and an escape path. Large research dropdowns may use columns on desktop; collapse into readable groups on narrow screens. Avoid rendering inert links as if their analytical features work: an unimplemented/gated destination opens an explanatory capability page with its actual missing input and relevant available tools.
 
 ## Visual language and dimensions
 
-Preserve CourtLoad name and basketball mark. Use Databallr's charcoal surfaces, muted boundaries, restrained warm active accent, dense control groups and table-first hierarchy. Existing orange identity can remain in the mark; selected controls use one consistent semantic accent. Initial values below are design starting points to verify for contrast, not measured colors extracted from the reference.
+Preserve CourtLens name and basketball mark. Use Databallr's charcoal surfaces, muted boundaries, restrained warm active accent, dense control groups and table-first hierarchy. Existing orange identity can remain in the mark; selected controls use one consistent semantic accent. Initial values below are design starting points to verify for contrast, not measured colors extracted from the reference.
 
 | Token | Initial value / rule |
 | --- | --- |

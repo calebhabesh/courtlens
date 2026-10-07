@@ -10,14 +10,14 @@ from fastapi.testclient import TestClient
 from live_fakes import NOW, SLATE, FakeProvider, event
 from sqlalchemy import func, select
 
-from courtload.api.app import create_app
-from courtload.config import get_settings
-from courtload.database import get_db
-from courtload.domain.live import LiveSubscription, parse_scoreboard, parse_summary
-from courtload.live_models import LiveContent, LiveFeed, LiveLease, LiveObservation
-from courtload.services.live import cached, poll_once, release, subscribe
-from courtload.services.live_provider import ESPNLiveProvider, LiveFetch, LiveProviderError
-from courtload.workbench_models import WorkbenchIdentityCrosswalk
+from courtlens.api.app import create_app
+from courtlens.config import get_settings
+from courtlens.database import get_db
+from courtlens.domain.live import LiveSubscription, parse_scoreboard, parse_summary
+from courtlens.live_models import LiveContent, LiveFeed, LiveLease, LiveObservation
+from courtlens.services.live import cached, poll_once, release, subscribe
+from courtlens.services.live_provider import ESPNLiveProvider, LiveFetch, LiveProviderError
+from courtlens.workbench_models import WorkbenchIdentityCrosswalk
 
 
 def demand(session, game_id=None, now=NOW, slate=SLATE):
@@ -48,7 +48,7 @@ def test_new_parser_keeps_retained_v1_content(test_engine, session):
 
     provider = FakeProvider()
     result = provider.fetch(SLATE)
-    from courtload.services.live import bind_identities
+    from courtlens.services.live import bind_identities
 
     normalized = bind_identities(session, result.normalized)
     old_hash = hashlib.sha256(
@@ -307,7 +307,7 @@ def test_transport_limits(status, headers, body, reason):
 
 
 def test_storage_cap_stops_without_deleting_evidence(test_engine, session, monkeypatch):
-    import courtload.services.live as live
+    import courtlens.services.live as live
 
     demand(session)
     provider = FakeProvider()

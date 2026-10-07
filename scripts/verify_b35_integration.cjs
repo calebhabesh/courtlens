@@ -27,7 +27,7 @@ const api = process.env.B35_API_URL || 'http://127.0.0.1:8000';
       await page.locator('main h1').waitFor();
       // Wait for actual local state, including client-rendered evidence inventory.
       if (route === '/investigations') await page.getByRole('region', { name: 'Legacy saved investigations' }).waitFor();
-      if (route === '/settings') await page.getByRole('heading', { name: 'Install CourtLoad' }).waitFor();
+      if (route === '/settings') await page.getByRole('heading', { name: 'Install CourtLens' }).waitFor();
       const destinations = await page.locator('a[href]').evaluateAll(nodes => nodes.map(node => node.href));
       for (const url of destinations) if (new URL(url).origin === site) links.add(url);
       pages.push({ route, heading: await page.locator('main h1').innerText(), local_links: destinations.filter(url => new URL(url).origin === site).length });
