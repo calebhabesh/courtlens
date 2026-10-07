@@ -27,6 +27,7 @@ from courtload.domain.assistant_agent import (
     AgentTurnResponse,
     ProseBlock,
     ProvenanceReport,
+    StepKind,
     StoredTurnRecord,
     TraceStep,
 )
@@ -94,7 +95,7 @@ class AgentRun:
     transcript: dict[str, Any]
 
 
-StepCallback = Callable[[str, str], None]
+StepCallback = Callable[[StepKind, str], None]
 
 
 def _bounded_step(
@@ -394,6 +395,13 @@ def run_turn(
     assumption: str | None = None
     chips: list[str] = []
     selections = inherited or ConversationContext()
+    draft_visible = False
+
+    def reset_draft(*, force: bool = False) -> None:
+        nonlocal draft_visible
+        if (draft_visible or force) and on_reset:
+            on_reset()
+        draft_visible = False
 
     def finish(answer: AgentTurnResponse) -> AgentRun:
         if answer.mode == "limited" and answer.results and not tools_run:
@@ -511,6 +519,21 @@ def run_turn(
                 "Writing the answer" if final else "Considering sources",
             )
         for attempt in range(2):
+            # A new model attempt replaces any preliminary tool commentary or failed draft.
+            reset_draft()
+            writing = False
+
+            def delta(text: str) -> None:
+                nonlocal writing, draft_visible
+                if not text:
+                    return
+                if not writing and not final and on_step:
+                    on_step("writing", "Writing the answer")
+                writing = True
+                draft_visible = True
+                if on_delta:
+                    on_delta(text)
+
             steps += 1
             calls += 1
             try:
@@ -524,7 +547,7 @@ def run_turn(
                     searches=0
                     if final
                     else max(0, settings.assistant_max_web_searches - usage.web_searches),
-                    on_delta=on_delta,
+                    on_delta=delta if on_delta else None,
                 )
                 calls += response.provider_calls - 1
                 usage = Usage(
@@ -562,6 +585,9 @@ def run_turn(
             for completed in response.completed_tool_results:
                 tools_run.append({"native_result": completed.model_dump(mode="json")})
             if response.usage.web_searches:
+                if on_step:
+                    # Native SDKs report search usage on completion, not before dispatch.
+                    on_step("search", "Web search completed")
                 trace.append(
                     TraceStep(
                         tool="web_search",
@@ -698,8 +724,7 @@ def run_turn(
             final_text = "The available sources did not supply an answer within this turn's limits."
         report = _provenance(final_text, assumption, results, sources, contexts=result_contexts)
         if report.unsupported_numbers and time.monotonic() < deadline:
-            if on_reset:
-                on_reset()
+            reset_draft(force=True)
             messages.append(
                 AgentMessage(
                     role="user",
@@ -752,6 +777,7 @@ def run_turn(
                     contexts=result_contexts,
                 )
     except ProviderFailure as failure:
+        reset_draft()
         if results:
             # Already executed evidence survives a provider outage without a second SQL run.
             answer = base(

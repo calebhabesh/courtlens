@@ -23,7 +23,7 @@ table.
 | AG01 | verification_blocked | [Provider foundation and verification](evidence/ag01-providers/README.md): official SDK adapters, current doc/model/tool checks, config/status/env/Compose, price estimates and exact replay. 43 provider/config tests and 1019 unit tests pass; Ruff/mypy clean; 205 Vitest tests and dashboard lint/types pass. Live Gemini smoke stops on `provider_quota` before tools/search; other providers unmeasured without keys. Broader DB/browser gaps recorded separately. Ask routing remains v2 until AG03. |
 | AG02 | verified | [Read-only agent tools](evidence/ag02-tools/README.md): six Pydantic-declared tools, canonical warehouse evidence, observed-scope checks, fuzzy candidates, exact book-bound finance and recoverable errors. 53 new tool tests pass (32 PostgreSQL); 109 tool/legacy PostgreSQL regression tests pass at the recorded checkpoint; 1040 unit tests and 205 Vitest tests pass. Ruff/format/mypy clean. Owner authorized continuation despite AG01 quota. Ask routing remains v2; broader AG01 DB/browser gaps are unresolved. |
 | AG03 | verified | [Agent loop and v3 durable contract](evidence/ag03-agent-loop/README.md): 60 new tests (43 unit, 17 PostgreSQL), 110 relevant PostgreSQL regressions, 1083 unit tests and 205 Vitest tests pass. Exact owner-example/follow-up replay, limits, numeric repair, limited mode, idempotent v2/v3 history and atomic transcript storage verified. Ruff/format/mypy and dashboard lint/types pass. Backend boundary only; AG04/AG05 streaming/rendering and the AG01 live/DB/browser gaps remain. |
-| AG04 | planned | |
+| AG04 | verified | [Live streaming transport](evidence/ag04-streaming/README.md): typed `step`/`delta`/`reset`/v2-v3 `final`, durable callbacks, draft replacement and same-ID fallback. 1089 unit tests, 20 agent PostgreSQL tests, 110 PostgreSQL regressions, 213 Vitest tests and 45 threaded browser tests pass; Ruff/format/mypy and dashboard lint/types clean. Paced synthetic SSE travels through the real Next proxy at 1440/375 px. Live-provider success and the full v3 answer UI remain pending. |
 | AG05 | planned | |
 | AG06 | planned | |
 | AG07 | planned | |
@@ -108,3 +108,35 @@ table.
   live step/delta/reset and client parsing remain AG04, which is next. V3 answer UI remains AG05;
   existing v2-only consumers are not yet adapted. Full database/browser acceptance was not rerun,
   and the AG01 gaps remain unresolved. AD01 is still owner action; no Databallr access occurred.
+
+## AG04 checkpoint: 2026-10-07
+
+- Starting revision: `f02470a`; only the owner's unrelated `TODO.md` edit was uncommitted.
+  That edit is preserved and excluded. AG01 remains `verification_blocked`; no live-provider
+  call or Databallr access was made.
+- The additive v3 stream contract includes `step`, live `delta`, `reset` and an authoritative
+  v2/v3 `final`, retaining v2 `phase`/checked `narrative`. Durable completion now connects the
+  loop callbacks to SSE. Publication, replay, cancellation and disconnect fencing remain.
+  Retained v3 replay emits only `accepted` and `final`.
+- Each new provider attempt replaces its earlier draft, including preliminary tool commentary,
+  busy retry, limit finalization and provenance repair. Provider failure clears provisional prose
+  before the limited-mode final. Native search reports completion after SDK usage arrives;
+  per-search start notifications are not claimed.
+- The client parses both event generations, preserves acceptance before a malformed frame,
+  handles split UTF-8/CRLF frames, clears on reset and replaces drafts with the final response,
+  including same-request fallback. Shared page/drawer progress uses one accessible status region.
+  V3 history renders minimal plain prose with limited/unverified labels and retained scope.
+  AG05 still owns source chips, results, detailed provenance styling, banners, follow-ups,
+  trace, settings and saved actions.
+- Measured: **1089 unit tests**, **20 agent PostgreSQL tests**, **110 relevant PostgreSQL
+  regressions**, **213 Vitest tests** and **45 threaded browser tests** pass. New coverage:
+  six Python unit cases, three PostgreSQL stream cases, eight parser/transport cases and four
+  browser cases. Ruff/format, strict mypy, generated contracts and dashboard lint/types pass.
+  Existing unit skips and SDK deprecation warning remain; lint/type checks have no warnings.
+- Browser tests observe paced synthetic steps, deltas, reset, final and reload through the real
+  Next proxy at 1440 and 375 px, plus v2/v3 fallback. A scratch server on 3200 preserves the
+  developer's server on 3100. The initial scratch dependency-symlink failure and recovery are
+  recorded. Full-browser/broad-DB acceptance, live-provider quality and AG05 UI acceptance remain
+  pending. Sealed v2 contracts, AR/PF evidence and corpora/holdouts are unchanged.
+- **AG04 is verified at its streaming boundary. AG05 is next.** AD01 remains unresolved;
+  AD02–AD04 remain source-blocked.

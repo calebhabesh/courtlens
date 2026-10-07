@@ -44,8 +44,15 @@ const games = [
 
 const streamedNarrative = "Fixture Guard led the 2025-26 regular season with 9.1 assists per game.";
 function streamedAnswer(turn) {
-  return { request_id: turn.request_id, thread_id: turn.thread_id, turn_id: turn.request_id, status: "answered", intent: "local_analysis",
+  return { schema_version: "courtload-assistant-v2", request_id: turn.request_id, thread_id: turn.thread_id, turn_id: turn.request_id, status: "answered", intent: "local_analysis",
     blocks: [{ kind: "narrative", checker: "narrative-check-v1", text: streamedNarrative, operation_hashes: ["a".repeat(64)] }], sources: [], actions: [] };
+}
+
+function streamedAgentAnswer(turn) {
+  return { schema_version: "courtlens-assistant-v3", request_id: turn.request_id, thread_id: turn.thread_id, turn_id: turn.request_id,
+    status: "answered", mode: "agent", answer: { text: "The retained fixture answer from the source.[^s1]" },
+    accounting: { provider: "replay", model: "synthetic-ag04", prompt_version: "fixture" },
+    sources: [{ source_id: "s1", origin: "web", url: "https://example.org/ag04", title: "Synthetic source", publisher: "example.org" }], results: [], saveable: false };
 }
 
 function json(response, status, body) {
@@ -544,6 +551,21 @@ createServer(async (request, response) => {
     const pause = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
     const send = (event) => response.write(`event: ${event.event}\ndata: ${JSON.stringify(event)}\n\n`);
     send({ event: "accepted", request_id: turn.request_id, thread_id: turn.thread_id, turn_id: turn.request_id });
+    if (turn.message.startsWith("AG04")) {
+      for (const [kind, label] of [["thinking", "Considering sources"], ["tool", "Querying CourtLens: awards"], ["search", "Web search completed"], ["writing", "Writing the answer"]]) {
+        send({ event: "step", kind, label }); await pause(700);
+      }
+      response.write(": keep-alive\n\n");
+      send({ event: "delta", text: "Initial draft 🏀" }); await pause(700);
+      if (turn.message.includes("repair")) {
+        send({ event: "reset" }); await pause(700);
+        send({ event: "step", kind: "writing", label: "Writing the repaired answer" });
+        send({ event: "delta", text: "Repaired live " }); await pause(350);
+        send({ event: "delta", text: "draft" }); await pause(700);
+      }
+      send({ event: "final", response: streamedAgentAnswer(turn) });
+      return response.end();
+    }
     for (const phase of ["understanding", "querying", "writing"]) { send({ event: "phase", phase }); await pause(700); }
     response.write(": keep-alive\n\n");
     for (const text of streamedNarrative.match(/\S+\s*/g)) { send({ event: "narrative", text }); await pause(120); }
