@@ -10,6 +10,8 @@ For polish/freeze UI, query-correctness or hybrid-assistant work, read the [conf
 
 For Ask/assistant work (chat UI, planner reliability, general-knowledge answers, narrative, streaming, assistant panel or assistant eval), read the [assistant revamp handoff](docs/assistant-revamp-plan.md) first. It supersedes the freeze handoff for the Ask experience only and keeps its analytical contracts. Record evidence in the [revamp progress log](docs/assistant-revamp-progress.md).
 
+For the Ask agent rework (tool-calling agent loop, multi-provider keys, web search, answer-first prose, Databallr metrics, v3 eval), read the [assistant agent handoff](docs/assistant-agent-plan.md) first. It supersedes the revamp handoff for how Ask plans, routes and answers, and keeps the revamp's layout, side panel, threads, saved findings and streaming transport. Record evidence in the [agent progress log](docs/assistant-agent-progress.md). Databallr data is gated on written permission (AD01); do not fetch from Databallr before it is recorded.
+
 ## Architecture and Stack
 
 - **Backend:** Python 3.12+ / FastAPI with typed Pydantic models and SQLAlchemy 2.0.
