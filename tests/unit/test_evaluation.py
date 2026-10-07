@@ -3,11 +3,11 @@ from __future__ import annotations
 import math
 from datetime import date
 
-from courtload.evaluation.artifacts import write_once
-from courtload.evaluation.baselines import available_history_mean, ewma, last_n_mean
-from courtload.evaluation.config import load_config
-from courtload.evaluation.features import PlayerGame, feature_hash, player_features
-from courtload.evaluation.splits import cutoff_utc, is_purged, split_for_target
+from courtlens.evaluation.artifacts import write_once
+from courtlens.evaluation.baselines import available_history_mean, ewma, last_n_mean
+from courtlens.evaluation.config import load_config
+from courtlens.evaluation.features import PlayerGame, feature_hash, player_features
+from courtlens.evaluation.splits import cutoff_utc, is_purged, split_for_target
 
 CONFIG = load_config(__import__("pathlib").Path("evaluation/config/baseline-v1.yaml"))
 

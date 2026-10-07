@@ -1,3 +1,7 @@
+import { assertCurrentEnvironment } from "./server-env";
+
+assertCurrentEnvironment();
+
 import type {
   AnalyticsCatalog,
   AnalyticsCompare,
@@ -10,12 +14,12 @@ import type {
 } from "./types";
 
 const internalApi =
-  process.env.COURTLOAD_API_INTERNAL_URL ??
-  process.env.NEXT_PUBLIC_COURTLOAD_API_URL ??
+  process.env.COURTLENS_API_INTERNAL_URL ??
+  process.env.NEXT_PUBLIC_COURTLENS_API_URL ??
   "http://localhost:8000";
 
 export const browserApi =
-  process.env.NEXT_PUBLIC_COURTLOAD_API_URL ?? "http://localhost:8000";
+  process.env.NEXT_PUBLIC_COURTLENS_API_URL ?? "http://localhost:8000";
 
 async function safeFetch<T>(path: string, fallback: T): Promise<T> {
   try {

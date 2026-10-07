@@ -1,4 +1,4 @@
-# CourtLoad data and serving contracts
+# CourtLens data and serving contracts
 
 Status: implementation specification, 2026-09-20. Parent: [implementation handover](../implementation-plan.md). Names below describe required responsibilities and grains; equivalent internal names are acceptable if all invariants remain testable.
 

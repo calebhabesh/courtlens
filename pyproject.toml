@@ -3,7 +3,7 @@ requires = ["hatchling>=1.27"]
 build-backend = "hatchling.build"
 
 [project]
-name = "courtload"
+name = "courtlens"
 version = "0.1.0"
 description = "Source-traceable NBA player intelligence and fantasy decision support"
 readme = "README.md"
@@ -42,10 +42,10 @@ dev = [
 warehouse = ["dbt-postgres>=1.9,<2"]
 
 [project.scripts]
-courtload = "courtload.cli:app"
+courtlens = "courtlens.cli:app"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/courtload"]
+packages = ["src/courtlens"]
 
 [tool.pytest.ini_options]
 addopts = "-ra --strict-markers --strict-config"
@@ -67,4 +67,4 @@ ignore = ["B008"]
 python_version = "3.12"
 strict = true
 plugins = ["pydantic.mypy"]
-files = ["src/courtload"]
+files = ["src/courtlens"]

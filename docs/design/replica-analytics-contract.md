@@ -138,7 +138,7 @@ Operate on shared-court exposure, not whole-game attendance. Support typed sets 
 
 Return observed offensive/defensive possessions, minutes, points, rating denominators, relevant player event production, coverage and min-sample status. Min possessions are adjustable with documented defaults after source reconciliation. Leverage filters require a named event-time score/clock model; no generic garbage-time threshold is implied by a UI toggle.
 
-Show raw estimates first. Optional shrinkage has a declared prior strength/population and metric version, fitted/selected on pre-test evidence. Databallr's published constants are reference facts, not approved CourtLoad tuning values. On/off differences reflect lineup/opponent/role context and are descriptive. Player RAPM requires a separate registered model.
+Show raw estimates first. Optional shrinkage has a declared prior strength/population and metric version, fitted/selected on pre-test evidence. Databallr's published constants are reference facts, not approved CourtLens tuning values. On/off differences reflect lineup/opponent/role context and are descriptive. Player RAPM requires a separate registered model.
 
 ### Shots, assignments and aftermath
 
@@ -158,7 +158,7 @@ Arithmetic exposure uses exact decimal `matchup_minutes_sort` seconds and source
 fractional `partial_possessions`, stored as PostgreSQL `NUMERIC`. Retain display
 MM:SS and all source fields independently. Provider time shares refer to defender
 floor time, offensive-player floor time and shared floor time respectively; their
-tracking denominators are source-reported, not reconstructed CourtLoad exposure.
+tracking denominators are source-reported, not reconstructed CourtLens exposure.
 Aggregate shooting rates use summed makes/attempts, with unknown results at zero
 attempts. Missing source percentages remain unknown. Pair/help credits need not
 conserve ordinary player totals. Independent participation identities do not certify

@@ -131,7 +131,7 @@ test("planner selections stay within roster/watchlist and never query the public
   });
   await page.goto("/planner");
   await page.waitForLoadState("networkidle");
-  await page.getByLabel("Email",{exact:true}).fill("fixture@courtload.local");await page.getByLabel("Password",{exact:true}).fill("fixture-only");await page.getByRole("button",{name:"Sign in",exact:true}).click();
+  await page.getByLabel("Email",{exact:true}).fill("fixture@courtlens.local");await page.getByLabel("Password",{exact:true}).fill("fixture-only");await page.getByRole("button",{name:"Sign in",exact:true}).click();
   await page.getByLabel("Week starts").fill("2026-10-05");
   const drop=page.getByRole("combobox",{name:"Drop",exact:true});await drop.waitFor();await drop.fill("Jokic");await page.getByRole("option").filter({hasText:"Private Jokić"}).click();
   const add=page.getByRole("combobox",{name:"Add candidate",exact:true});await add.fill("Doncic");await page.getByRole("option").filter({hasText:"Private Dončić"}).click();await expect(page.getByRole("button",{name:"Remove Private Dončić from Add candidate",exact:true})).toBeVisible();expect(lookups).toBe(0);

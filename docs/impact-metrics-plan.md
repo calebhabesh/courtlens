@@ -1,3 +1,7 @@
+CourtLoad was renamed to CourtLens on 2026-10-07; identifiers below are historical.
+
+After RN01, translate `src/courtload/` paths below to `src/courtlens/`.
+
 # CourtLens impact metrics: build Databallr-class data from public inputs
 
 Prepared 2026-10-07. **The owner confirmed the decisions below on 2026-10-07. Blocks IM01–IM08 are

@@ -1,3 +1,5 @@
+CourtLoad was renamed to CourtLens on 2026-10-07; identifiers below are historical.
+
 # Gemini conversational analytics and web-context findings
 
 Checked 2026-10-01 for the proposed CourtLoad capability revamp. This note answers how an optional Gemini chatbot could investigate CourtLoad data and whether Google web search is inherent or separately configured. It separates verified provider facts from proposed application architecture. No API key, project account, or live Gemini request was accessed.

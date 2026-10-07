@@ -1,3 +1,5 @@
+CourtLoad was renamed to CourtLens on 2026-10-07; identifiers below are historical.
+
 # Databallr replica: free-source feasibility
 
 Checked **2026-10-01** for the UI/capability planning interview. This is source research, not data admission or a completed ingestion milestone. Existing app files and dirty work were preserved. Only this note was written.

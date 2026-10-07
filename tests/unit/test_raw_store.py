@@ -1,6 +1,6 @@
 from datetime import UTC, datetime, timedelta
 
-from courtload.ingestion.raw_store import RawStore
+from courtlens.ingestion.raw_store import RawStore
 
 
 def test_raw_store_is_content_addressed_and_canonical(tmp_path) -> None:  # type: ignore[no-untyped-def]

@@ -1,5 +1,7 @@
 "use client";
 
+import { readStoredValue, storageKeys } from "@/lib/storage-keys";
+
 import { useEffect, useId, useRef, useState, useSyncExternalStore } from "react";
 import Link from "next/link";
 import { pageContextLabel } from "@/lib/assistant-page-context";
@@ -19,7 +21,7 @@ function mergeTurns(previous: DurableTurnRecord[], fresh: DurableTurnRecord[]) {
   const replacements = new Map(fresh.map(turn => [turn.turn_id, turn]));
   return [...previous.map(turn => replacements.get(turn.turn_id) ?? turn), ...fresh.filter(turn => !previous.some(old => old.turn_id === turn.turn_id))];
 }
-const sidebarKey = "courtload-ask-sidebar-collapsed-v1";
+const sidebarKey = storageKeys.sidebar;
 const narrowQuery = "(max-width: 900px)";
 function subscribeNarrow(change: () => void) { const media = window.matchMedia(narrowQuery); media.addEventListener("change", change); return () => media.removeEventListener("change", change); }
 const messageOf = (cause: unknown) => cause instanceof Error ? cause.message : "The assistant service could not be reached. Your question is preserved.";
@@ -70,7 +72,7 @@ export function ThreadedAssistant({ initialContext = {}, variant = "page", pageC
   const narrow = useSyncExternalStore(subscribeNarrow, () => window.matchMedia(narrowQuery).matches, () => false);
   useEffect(() => {
     let stored = false;
-    try { stored = localStorage.getItem(sidebarKey) === "true"; } catch { /* Optional browser convenience. */ }
+    try { stored = readStoredValue(sidebarKey) === "true"; } catch { /* Optional browser convenience. */ }
     if (stored) queueMicrotask(() => setCollapsed(true));
   }, []);
   const overlay = variant === "panel" || narrow;
@@ -156,7 +158,7 @@ export function ThreadedAssistant({ initialContext = {}, variant = "page", pageC
         if (!active) return;
         setThreads(list.threads); setThreadCursor(list.next_cursor ?? null);
         let retained: string | null = null;
-        try { retained = localStorage.getItem(activeThreadKey); } catch { /* Optional browser convenience. */ }
+        try { retained = readStoredValue(activeThreadKey); } catch { /* Optional browser convenience. */ }
         if (retained) {
           try {
             const page = await assistantTurns(retained, undefined, 100);

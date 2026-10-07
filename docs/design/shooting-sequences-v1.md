@@ -50,7 +50,7 @@ investigation registration, video mapping and cross-possession recovery are defe
 
 ## B24 implementation handoff
 
-Python schemas: `src/courtload/domain/shooting.py`; OpenAPI exposes all four typed
+Python schemas: `src/courtlens/domain/shooting.py`; OpenAPI exposes all four typed
 POST operations. `player_id` is the focal shooter/offensive assignment identity;
 `defender_id` filters assignments only. No inferred team membership is required.
 Context and source-admission provenance are returned separately from content hashes.

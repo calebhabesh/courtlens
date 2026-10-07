@@ -9,14 +9,14 @@ from uuid import uuid4
 from test_narrative_turn import Narrator, leader_text
 from test_narrative_turn import run as run_recorded
 
-from courtload.domain.assistant_agent import AgentStreamEvent, AgentTurnResponse
-from courtload.domain.hybrid_assistant import (
+from courtlens.domain.assistant_agent import AgentStreamEvent, AgentTurnResponse
+from courtlens.domain.hybrid_assistant import (
     HybridTurnRequest,
     HybridTurnResponse,
     InabilityBlock,
 )
-from courtload.services.assistant import streaming
-from courtload.services.assistant.history import ClaimedTurn
+from courtlens.services.assistant import streaming
+from courtlens.services.assistant.history import ClaimedTurn
 
 
 def parse(chunks: list[bytes]) -> list[dict]:
@@ -71,7 +71,7 @@ def test_real_turn_reports_phases_in_order_before_narrative(session):
 
 
 def test_guidance_turn_never_claims_to_query_or_write(session):
-    from courtload.services.assistant.hybrid import run_hybrid_turn
+    from courtlens.services.assistant.hybrid import run_hybrid_turn
 
     phases: list[str] = []
     answer = run_hybrid_turn(

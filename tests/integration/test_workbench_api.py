@@ -1,4 +1,4 @@
-"""Integration tests for CourtLoad research workbench API contracts and Done criteria."""
+"""Integration tests for CourtLens research workbench API contracts and Done criteria."""
 
 from __future__ import annotations
 
@@ -9,8 +9,8 @@ from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
-from courtload.api.app import create_app
-from courtload.database import Base
+from courtlens.api.app import create_app
+from courtlens.database import Base
 
 
 @pytest.fixture
@@ -21,11 +21,11 @@ def client():
 
 @pytest.fixture
 def postgres_session():
-    url = os.getenv("COURTLOAD_TEST_POSTGRES_URL")
+    url = os.getenv("COURTLENS_TEST_POSTGRES_URL")
     if not url:
-        if os.getenv("CI") or os.getenv("COURTLOAD_REQUIRE_POSTGRES_TESTS"):
-            pytest.fail("COURTLOAD_TEST_POSTGRES_URL must be configured")
-        pytest.skip("COURTLOAD_TEST_POSTGRES_URL is not configured")
+        if os.getenv("CI") or os.getenv("COURTLENS_REQUIRE_POSTGRES_TESTS"):
+            pytest.fail("COURTLENS_TEST_POSTGRES_URL must be configured")
+        pytest.skip("COURTLENS_TEST_POSTGRES_URL is not configured")
     engine = create_engine(url)
     Base.metadata.create_all(engine)
     with Session(engine) as session:
@@ -403,7 +403,7 @@ def test_saved_investigation_reproduction_and_export(client: TestClient) -> None
     assert resp_export_csv.status_code == 200
     assert "text/csv" in resp_export_csv.headers["content-type"]
     csv_text = resp_export_csv.text
-    assert "# CourtLoad Workbench Analysis Export" in csv_text
+    assert "# CourtLens Workbench Analysis Export" in csv_text
     assert manifest_hash in csv_text
     assert "player_id,player_name,teams" in csv_text
 
@@ -509,8 +509,8 @@ def test_workbench_assistant_query_disabled(client: TestClient) -> None:
     from unittest.mock import patch
 
     with (
-        patch("courtload.services.assistant.service.get_settings") as mock_settings,
-        patch("courtload.services.assistant.conversations.get_settings") as conversation_settings,
+        patch("courtlens.services.assistant.service.get_settings") as mock_settings,
+        patch("courtlens.services.assistant.conversations.get_settings") as conversation_settings,
     ):
         mock_settings.return_value.gemini_api_key = None
         mock_settings.return_value.gemini_model = "gemini-2.5-flash"
@@ -541,11 +541,11 @@ def test_workbench_assistant_query_offline_provider(client: TestClient) -> None:
     """Assistant query endpoint executes end-to-end with offline fixture provider."""
     from unittest.mock import patch
 
-    from courtload.services.assistant.provider import OfflineFixtureAssistantProvider
+    from courtlens.services.assistant.provider import OfflineFixtureAssistantProvider
 
     provider = OfflineFixtureAssistantProvider()
     with patch(
-        "courtload.api.routers.workbench.run_assistant_query",
+        "courtlens.api.routers.workbench.run_assistant_query",
         side_effect=lambda **kwargs: run_assistant_query(
             session=kwargs["session"],
             question=kwargs["question"],
@@ -553,7 +553,7 @@ def test_workbench_assistant_query_offline_provider(client: TestClient) -> None:
             provider=provider,
         ),
     ):
-        from courtload.services.assistant.service import run_assistant_query
+        from courtlens.services.assistant.service import run_assistant_query
 
         response = client.post(
             "/api/workbench/assistant/query",

@@ -17,7 +17,7 @@ import os
 import pytest
 from fastapi.testclient import TestClient
 
-from courtload.api.app import create_app
+from courtlens.api.app import create_app
 
 BAM_ADEBAYO_ID = "1628389"
 LIMITED_SAMPLE_PLAYER_ID = "1628424"  # Kobi Simmons (4 appearances in 2023-24)
@@ -30,7 +30,7 @@ def client() -> TestClient:
 
 
 @pytest.mark.skipif(
-    not os.getenv("COURTLOAD_TEST_POSTGRES_URL")
+    not os.getenv("COURTLENS_TEST_POSTGRES_URL")
     and not os.path.exists("/var/run/postgresql/.s.PGSQL.5432"),
     reason="PostgreSQL database required for integration tests",
 )

@@ -7,8 +7,8 @@ from pathlib import Path
 
 import pytest
 
-from courtload.domain.research_registration import ComputeBudget
-from courtload.evaluation.research_limits import run_limited
+from courtlens.domain.research_registration import ComputeBudget
+from courtlens.evaluation.research_limits import run_limited
 
 
 @pytest.mark.parametrize(

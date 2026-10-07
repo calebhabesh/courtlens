@@ -6,7 +6,7 @@ const fs=require('node:fs'),assert=require('node:assert/strict');
  const page=await browser.newPage({viewport:null});const errors=[];page.on('pageerror',e=>errors.push(e.message));
  await page.goto('http://127.0.0.1:3154/settings');await page.waitForLoadState('networkidle');
  const original=await page.evaluate(()=>({width:innerWidth,dpr:devicePixelRatio}));
- const window=execFileSync('xdotool',['search','--onlyvisible','--name','CourtLoad']).toString().trim().split('\n').at(-1);
+ const window=execFileSync('xdotool',['search','--onlyvisible','--name','CourtLens']).toString().trim().split('\n').at(-1);
  execFileSync('xdotool',['windowfocus','--sync',window]);execFileSync('xdotool',['key','--clearmodifiers','ctrl+0',...Array(5).fill('ctrl+plus')]);await page.waitForTimeout(500);
  const dimensions=await page.evaluate(()=>({viewport:[innerWidth,innerHeight],dpr:devicePixelRatio,documentWidth:document.documentElement.scrollWidth}));
  assert.equal(dimensions.dpr/original.dpr,2);assert(dimensions.documentWidth<=dimensions.viewport[0]);

@@ -1,3 +1,7 @@
+CourtLoad was renamed to CourtLens on 2026-10-07; identifiers below are historical.
+
+After RN01, translate `src/courtload/` paths below to `src/courtlens/`.
+
 # CourtLens assistant agent rework
 
 Prepared 2026-10-07. **The owner confirmed every decision below through a grilling interview on

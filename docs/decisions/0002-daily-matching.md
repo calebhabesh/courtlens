@@ -1,3 +1,5 @@
+CourtLoad was renamed to CourtLens on 2026-10-07; identifiers below are historical.
+
 # ADR 0002: Auditable mask-DP for daily lineup matching
 
 Status: accepted

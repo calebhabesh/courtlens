@@ -16,12 +16,12 @@ from uuid import uuid4
 
 from sqlalchemy.orm import Session
 
-from courtload.config import get_settings
-from courtload.database import engine
-from courtload.domain.conversation import AnalysisPlan, ConversationTurnRequest
-from courtload.services.assistant.conversations import clear_conversation, run_conversation_turn
-from courtload.services.assistant.planner import GeminiPlanProvider, PlanningOutput
-from courtload.services.workbench_analytics import resolve_workbench_context
+from courtlens.config import get_settings
+from courtlens.database import engine
+from courtlens.domain.conversation import AnalysisPlan, ConversationTurnRequest
+from courtlens.services.assistant.conversations import clear_conversation, run_conversation_turn
+from courtlens.services.assistant.planner import GeminiPlanProvider, PlanningOutput
+from courtlens.services.workbench_analytics import resolve_workbench_context
 
 CORPUS = Path("tests/fixtures/assistant/b33-corpus-v1.json")
 

@@ -1,6 +1,6 @@
 # Patch notes: retained analytical operations
 
-2026-10-04 · CourtLoad local workbench · Original project change record
+2026-10-04 · CourtLens local workbench · Original project change record
 
 ## B35a verified backend boundary
 

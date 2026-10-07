@@ -14,7 +14,7 @@ from alembic.migration import MigrationContext
 from alembic.operations import Operations
 from sqlalchemy import Connection
 
-from courtload.workbench_models import (
+from courtlens.workbench_models import (
     WorkbenchDatedMetadata,
     WorkbenchIdentityCrosswalk,
     WorkbenchPlayerDraft,
@@ -39,10 +39,10 @@ def migration() -> ModuleType:
 
 @pytest.fixture
 def connection() -> Generator[Connection, None, None]:
-    url = os.getenv("COURTLOAD_TEST_POSTGRES_URL")
+    url = os.getenv("COURTLENS_TEST_POSTGRES_URL")
     if not url:
-        if os.getenv("CI") or os.getenv("COURTLOAD_REQUIRE_POSTGRES_TESTS"):
-            pytest.fail("COURTLOAD_TEST_POSTGRES_URL must be configured")
+        if os.getenv("CI") or os.getenv("COURTLENS_REQUIRE_POSTGRES_TESTS"):
+            pytest.fail("COURTLENS_TEST_POSTGRES_URL must be configured")
         pytest.skip("PostgreSQL URL is not configured")
     engine = sa.create_engine(url)
     with engine.connect() as conn, conn.begin() as transaction:

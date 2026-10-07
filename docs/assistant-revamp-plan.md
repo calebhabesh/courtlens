@@ -1,3 +1,5 @@
+CourtLoad was renamed to CourtLens on 2026-10-07; identifiers below are historical.
+
 # CourtLens assistant revamp
 
 > **Superseded for answering behavior (2026-10-07):** the [assistant agent handoff](assistant-agent-plan.md) replaces this plan's planning, routing, general-knowledge, narrative, clarification, provider and eval-scoring decisions. Layout, side panel, threads, saved findings and streaming transport remain. AR evidence stays sealed.

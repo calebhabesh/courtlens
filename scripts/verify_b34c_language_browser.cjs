@@ -32,7 +32,7 @@ const { randomUUID } = require('node:crypto');
       await ui.getByLabel('Run manually without AI', { exact: true }).uncheck();
       await ui.getByLabel('Research question', { exact: true }).fill(questions[i]);
       const pending = page.waitForResponse(r => r.url().endsWith('/assistant/turn') && r.request().method() === 'POST', { timeout: 55000 });
-      await ui.getByRole('button', { name: 'Ask CourtLoad', exact: true }).click();
+      await ui.getByRole('button', { name: 'Ask CourtLens', exact: true }).click();
       const answer = await (await pending).json();
       assert.equal(answer.status, 'answered');
       assert.equal(answer.accounting.provider_calls, 1);

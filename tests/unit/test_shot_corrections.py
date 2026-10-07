@@ -8,10 +8,10 @@ from pathlib import Path
 
 import pytest
 
-from courtload.domain.rich_sources import compute_payload_hash
-from courtload.domain.shotchart import parse_shot
-from courtload.evaluation.shot_corrections import apply_reviewed_corrections, load_ledger
-from courtload.ingestion.sportsdataverse import hash_file
+from courtlens.domain.rich_sources import compute_payload_hash
+from courtlens.domain.shotchart import parse_shot
+from courtlens.evaluation.shot_corrections import apply_reviewed_corrections, load_ledger
+from courtlens.ingestion.sportsdataverse import hash_file
 
 
 def original(event: int, *, made: str = "1") -> dict[str, str]:

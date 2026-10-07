@@ -4,14 +4,14 @@ from copy import deepcopy
 
 import pytest
 
-from courtload.evaluation.challenger import (
+from courtlens.evaluation.challenger import (
     _matrix,
     _model,
     _promotion,
     _validation_selection,
     feature_names,
 )
-from courtload.evaluation.config import load_config
+from courtlens.evaluation.config import load_config
 
 CONFIG = load_config(__import__("pathlib").Path("evaluation/config/baseline-v1.yaml"))
 
@@ -47,7 +47,7 @@ def test_validation_fold_training_is_chronological_and_budget_is_equal(monkeypat
         )
         return object(), [float(leaves) for _ in predict_rows]
 
-    monkeypatch.setattr("courtload.evaluation.challenger._fit_predict", fake_fit)
+    monkeypatch.setattr("courtlens.evaluation.challenger._fit_predict", fake_fit)
     rows = [
         {
             "candidate_id": split,
@@ -115,7 +115,7 @@ def test_promotion_requires_every_frozen_gate() -> None:
 
 
 def test_final_command_requires_explicit_open() -> None:
-    from courtload.evaluation.challenger import run_final_evaluation
+    from courtlens.evaluation.challenger import run_final_evaluation
 
     with pytest.raises(ValueError, match="--open-final-test"):
         run_final_evaluation(

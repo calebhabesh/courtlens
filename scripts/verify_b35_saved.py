@@ -19,9 +19,9 @@ import httpx
 from sqlalchemy.orm import Session
 from verify_b31_live import integrity
 
-from courtload.database import engine
-from courtload.services.assistant.saved import saved_inventory
-from courtload.services.workbench_analytics import canonical_hash, resolve_workbench_context
+from courtlens.database import engine
+from courtlens.services.assistant.saved import saved_inventory
+from courtlens.services.workbench_analytics import canonical_hash, resolve_workbench_context
 
 
 def main():
@@ -45,14 +45,14 @@ def main():
             process = subprocess.Popen(
                 [
                     ".venv/bin/uvicorn",
-                    "courtload.api.app:create_app",
+                    "courtlens.api.app:create_app",
                     "--factory",
                     "--host",
                     "127.0.0.1",
                     "--port",
                     "8035",
                 ],
-                env={**os.environ, "COURTLOAD_GEMINI_API_KEY": ""},
+                env={**os.environ, "COURTLENS_GEMINI_API_KEY": ""},
                 stdout=log,
                 stderr=log,
             )

@@ -8,12 +8,12 @@ import pytest
 from sqlalchemy import func, select
 from test_conversation_postgres import postgres_conversation as _postgres_fixture
 
-from courtload.domain.conversation import ConversationContext
-from courtload.domain.finance import FinanceRow, export_csv
-from courtload.services.assistant.agent.providers.base import ToolCall
-from courtload.services.assistant.agent.tools import dispatch
-from courtload.services.finance_import import admit_bundle, verify_release
-from courtload.workbench_models import WorkbenchIdentity, WorkbenchPlayerGame, WorkbenchTeamGame
+from courtlens.domain.conversation import ConversationContext
+from courtlens.domain.finance import FinanceRow, export_csv
+from courtlens.services.assistant.agent.providers.base import ToolCall
+from courtlens.services.assistant.agent.tools import dispatch
+from courtlens.services.finance_import import admit_bundle, verify_release
+from courtlens.workbench_models import WorkbenchIdentity, WorkbenchPlayerGame, WorkbenchTeamGame
 
 postgres_conversation = _postgres_fixture
 pytestmark = pytest.mark.postgres
@@ -337,7 +337,7 @@ def test_payload_cap_keeps_full_server_result(tool_data):
 
 
 def test_legacy_lookup_defaults_stay_stricter(tool_data):
-    from courtload.services.assistant.operations import resolve_entity
+    from courtlens.services.assistant.operations import resolve_entity
 
     session, _ = tool_data
     with pytest.raises(ValueError):
@@ -348,7 +348,7 @@ def test_legacy_lookup_defaults_stay_stricter(tool_data):
 def test_parent_sql_failure_does_not_poison_next_tool(tool_data, monkeypatch):
     from sqlalchemy import text
 
-    from courtload.services.assistant.agent import tools
+    from courtlens.services.assistant.agent import tools
 
     session, _ = tool_data
 

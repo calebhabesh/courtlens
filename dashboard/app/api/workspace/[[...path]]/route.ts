@@ -16,9 +16,9 @@ async function proxy(request: NextRequest, context: Context) {
   if (mutates && !isSameBrowserOrigin(request)) {
     return NextResponse.json({ detail: "Same-origin workspace mutation required" }, { status: 403 });
   }
-  const apiUrl = process.env.COURTLOAD_API_INTERNAL_URL ||
-    process.env.NEXT_PUBLIC_COURTLOAD_API_URL || "http://localhost:8000";
-  const token = process.env.COURTLOAD_OPERATOR_TOKEN || "local-operator-secret-change-before-deploy";
+  const apiUrl = process.env.COURTLENS_API_INTERNAL_URL ||
+    process.env.NEXT_PUBLIC_COURTLENS_API_URL || "http://localhost:8000";
+  const token = process.env.COURTLENS_OPERATOR_TOKEN || "local-operator-secret-change-before-deploy";
   const target = new URL(`/api/workbench/workspace${suffix ? `/${suffix}` : ""}`, apiUrl);
   for (const key of ["workspaceId", "expectedVersion"]) {
     const value = request.nextUrl.searchParams.get(key);

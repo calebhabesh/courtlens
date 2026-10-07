@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pytest
 
-from courtload.services.assistant.planner import PlanningOutput, ProviderFailure
+from courtlens.services.assistant.planner import PlanningOutput, ProviderFailure
 
 spec = importlib.util.spec_from_file_location(
     "hybrid_evaluation_runner",

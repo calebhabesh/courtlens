@@ -18,9 +18,9 @@ from typing import Any
 
 import httpx
 
-from courtload.ingestion.native_reconstruction import VERSION, reconstruct_native_game
-from courtload.ingestion.sportsdataverse import hash_file
-from courtload.ingestion.workbench_normalization import normalize_game_id, parse_schedule_file
+from courtlens.ingestion.native_reconstruction import VERSION, reconstruct_native_game
+from courtlens.ingestion.sportsdataverse import hash_file
+from courtlens.ingestion.workbench_normalization import normalize_game_id, parse_schedule_file
 
 COMMIT = "000610d46d149ebb45db4f5ae6f80b16d5e2fb6b"
 BASE = f"https://raw.githubusercontent.com/sportsdataverse/hoopR-nba-stats-raw/{COMMIT}"
@@ -104,7 +104,7 @@ def probe_sources(root: Path) -> None:
     with httpx.Client(
         timeout=15,
         follow_redirects=True,
-        headers={"User-Agent": "CourtLoad-native-spike/1.0", "Referer": "https://www.nba.com/"},
+        headers={"User-Agent": "CourtLens-native-spike/1.0", "Referer": "https://www.nba.com/"},
     ) as client:
         listing = capture(client, root, f"{api}/contents/nba_stats/json/gamerotation?ref={COMMIT}")
         observations.append(listing)
@@ -202,9 +202,9 @@ def replay(root: Path, output: Path, baseline: Path | None = None) -> None:
         p: hash_file(Path(p))[0]
         for p in (
             "scripts/reconstruct_b19_native.py",
-            "src/courtload/ingestion/native_reconstruction.py",
-            "src/courtload/ingestion/sportsdataverse.py",
-            "src/courtload/ingestion/workbench_normalization.py",
+            "src/courtlens/ingestion/native_reconstruction.py",
+            "src/courtlens/ingestion/sportsdataverse.py",
+            "src/courtlens/ingestion/workbench_normalization.py",
         )
     }
     write_json(

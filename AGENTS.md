@@ -44,7 +44,7 @@ For the CourtLoad → CourtLens rename (package, CLI, env vars, database) or any
 
 4. **Testing and Verification:**
    - Routine test suite runs locally with pytest (`make test-python` or `.venv/bin/pytest`).
-   - Strict mypy (`.venv/bin/mypy src/courtload`) and Ruff (`.venv/bin/ruff check . && .venv/bin/ruff format --check .`) must pass with zero warnings.
+   - Strict mypy (`.venv/bin/mypy src/courtlens`) and Ruff (`.venv/bin/ruff check . && .venv/bin/ruff format --check .`) must pass with zero warnings.
    - Dashboard tests include Vitest component/unit tests (`npm --prefix dashboard test`) and Playwright browser tests (`npm --prefix dashboard run test:browser`).
 
 ## Common Commands
@@ -56,9 +56,9 @@ make install-dashboard
 cp .env.example .env
 
 # Data acquisition & publication
-courtload acquire-archive
-courtload import-archive
-courtload publish-archive
+courtlens acquire-archive
+courtlens import-archive
+courtlens publish-archive
 
 # Offline evaluation
 make evaluate
@@ -69,7 +69,7 @@ make evaluate-final
 ./scripts/restore.sh <path-to-backup.tar.gz>
 
 # Verification
-courtload verify-restore
+courtlens verify-restore
 make lint
 make typecheck
 make test

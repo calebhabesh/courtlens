@@ -1,7 +1,7 @@
 # Operations Runbook
 
 Status: **Milestone P9 operations and reproduction guide**, 2026-10-01.  
-Describes verified local and container operations for CourtLoad on both the local NBA research workbench (2019–20 through 2024–25 + 2025–26 prospective schedules) and legacy pinned historical archives.
+Describes verified local and container operations for CourtLens on both the local NBA research workbench (2019–20 through 2024–25 + 2025–26 prospective schedules) and legacy pinned historical archives.
 
 ---
 
@@ -20,7 +20,7 @@ cp .env.example .env
 docker compose up -d db
 
 # Run database migrations
-courtload migrate
+courtlens migrate
 
 # Verify health
 curl --fail http://localhost:8000/api/health
@@ -28,7 +28,7 @@ curl --fail http://localhost:8000/api/workbench/status
 ```
 
 By default:
-- Dashboard: <http://localhost:3000> (or set `COURTLOAD_DASHBOARD_PORT=3100` if port 3000 is occupied)
+- Dashboard: <http://localhost:3000> (or set `COURTLENS_DASHBOARD_PORT=3100` if port 3000 is occupied)
 - API: <http://localhost:8000>
 - API Documentation: <http://localhost:8000/api/docs>
 
@@ -36,18 +36,18 @@ By default:
 
 ## 2. Workbench Data Lifecycle
 
-The CourtLoad workbench operates on 6 complete NBA regular seasons (2019–20 through 2024–25) plus prospective 2025–26 schedules, totaling 104,533 player-game facts, 7,924 team-game facts, and 5,470 schedules.
+The CourtLens workbench operates on 6 complete NBA regular seasons (2019–20 through 2024–25) plus prospective 2025–26 schedules, totaling 104,533 player-game facts, 7,924 team-game facts, and 5,470 schedules.
 
 ### Step 1: Acquire Workbench Data
 Acquires raw SportsDataverse parquet files and validates exact SHA-256 content hashes:
 ```bash
-courtload acquire-workbench
+courtlens acquire-workbench
 ```
 
 ### Step 2: Bootstrap & Normalize to PostgreSQL
 Normalizes raw observation files into typed PostgreSQL staging and relational facts tables (`workbench_player_games`, `workbench_team_games`, `workbench_schedules`, `workbench_identities`):
 ```bash
-courtload bootstrap-workbench
+courtlens bootstrap-workbench
 ```
 
 ### Step 3: Warehouse dbt Build
@@ -59,21 +59,21 @@ dbt build --project-dir warehouse --profiles-dir warehouse --select tag:workbenc
 ### Step 4: Evaluate Prospective Forecasting Policy
 Evaluates candidate forecasting policies across 10 chronological splits:
 ```bash
-courtload evaluate-points
+courtlens evaluate-points
 ```
 Registers the active policy `points-v1-prior_blend` (MAE 4.88 vs. baseline MAE 5.09).
 
 ### Step 5: Issue and Score Prospective Forecasts
 Issues genuine prospective points forecasts and scores them against observed outcomes with explicit DNP conditionality:
 ```bash
-courtload issue-forecasts
-courtload score-forecasts
+courtlens issue-forecasts
+courtlens score-forecasts
 ```
 
 ### Rollback (if needed)
 Atomically points the publication channel back to a retained ready snapshot without deleting rows:
 ```bash
-courtload rollback-publication <SNAPSHOT_ID>
+courtlens rollback-publication <SNAPSHOT_ID>
 ```
 
 ---
@@ -84,7 +84,7 @@ The workbench includes background worker jobs for incremental data ingestion and
 
 ```bash
 # Execute catch-up ingestion for newly available upstream game dates
-courtload refresh-workbench
+courtlens refresh-workbench
 
 # Verify current data status and active release pointer
 curl -s http://localhost:8000/api/workbench/status | jq .
@@ -95,7 +95,7 @@ curl -s http://localhost:8000/api/workbench/status | jq .
 ## 4. Backup, Restore, and Disaster Recovery
 
 ### Create a Complete Backup Bundle under Mutation Lock
-`scripts/backup.sh` (or `courtload backup-archive`) bundles:
+`scripts/backup.sh` (or `courtlens backup-archive`) bundles:
 1. Complete PostgreSQL database dump (`database.sql.gz`)
 2. Raw historical parquet and CSV files (`data/raw/`)
 3. Evaluation configurations and manifests (`evaluation/config/`, `evaluation/manifests/`)
@@ -105,25 +105,25 @@ curl -s http://localhost:8000/api/workbench/status | jq .
 
 ```bash
 ./scripts/backup.sh
-# Acquires publication advisory lock and creates ./data/backups/courtload-backup-<TIMESTAMP>.tar.gz
+# Acquires publication advisory lock and creates ./data/backups/courtlens-backup-<TIMESTAMP>.tar.gz
 ```
 
 ### Restore to a Target Database
-`scripts/restore.sh` (or `courtload restore-archive`) extracts the bundle, restores relations into PostgreSQL (via Docker or local `psql`), restores all asset directories, and runs automated end-to-end reconciliation:
+`scripts/restore.sh` (or `courtlens restore-archive`) extracts the bundle, restores relations into PostgreSQL (via Docker or local `psql`), restores all asset directories, and runs automated end-to-end reconciliation:
 
 ```bash
-./scripts/restore.sh ./data/backups/courtload-backup-<TIMESTAMP>.tar.gz
+./scripts/restore.sh ./data/backups/courtlens-backup-<TIMESTAMP>.tar.gz
 ```
 
 ### Automated Verification
-`courtload verify-restore` validates:
+`courtlens verify-restore` validates:
 - Published pointer points to an accepted dataset and ready snapshot
 - Evaluation report, calibration, and replay artifacts match registered SHA-256 hashes
 - Executes live queries for Scottie Barnes (`1630567`) and Pascal Siakam (`1627783`), verifying multi-team stint counts and season averages
 - Reconciles forecast issuance and score counts
 
 ```bash
-courtload verify-restore
+courtlens verify-restore
 ```
 
 ---
@@ -142,12 +142,12 @@ Outputs min, p50, p95, p99, max, mean, sample counts, and error counts. See [`do
 
 | Symptom | Root Cause | Remediation |
 | :--- | :--- | :--- |
-| HTTP 503 `no_published_data` | No active snapshot on `public` channel | Run `courtload bootstrap-workbench` or restore from backup |
+| HTTP 503 `no_published_data` | No active snapshot on `public` channel | Run `courtlens bootstrap-workbench` or restore from backup |
 | HTTP 410 `snapshot_retired` | Requested snapshot ID is no longer in `ready` state | Navigate without `snapshotId` parameter to resolve current pointer |
 | HTTP 422 on replay date | Replay date outside supported range | Select a date within 2019-10-22 to 2025-04-13 |
-| Port 3000 occupied | Another local service using port 3000 | Set `COURTLOAD_DASHBOARD_PORT=3100` in `.env` |
+| Port 3000 occupied | Another local service using port 3000 | Set `COURTLENS_DASHBOARD_PORT=3100` in `.env` |
 | Evaluation artifact missing | Volume mount missing in container | Mount `./data/artifacts/evaluation:/app/data/artifacts/evaluation:ro` |
 | Advisory lock conflict | Concurrent publication or backup in progress | Wait for active job to finish; advisory lock automatically releases on disconnect |
-| Assistant returns `status="disabled"` | `COURTLOAD_GEMINI_API_KEY` is not set | Normal zero-cost behavior; core workbench analytics operate 100% offline. Set `COURTLOAD_GEMINI_API_KEY` for live LLM queries |
+| Assistant returns `status="disabled"` | `COURTLENS_GEMINI_API_KEY` is not set | Normal zero-cost behavior; core workbench analytics operate 100% offline. Set `COURTLENS_GEMINI_API_KEY` for live LLM queries |
 | Assistant returns `model_not_available` | Query requested out-of-scope prediction (e.g. conference winner) | Normal domain guardrail behavior; conference placement forecasting is deferred |
 | DNP player shows no forecast score | Player did not play in target game (rest / injury) | Expected behavior; absent box scores are never scored as 0 points |

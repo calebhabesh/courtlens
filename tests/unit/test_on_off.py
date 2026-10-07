@@ -6,14 +6,14 @@ from datetime import date
 import pytest
 from pydantic import ValidationError
 
-from courtload.domain.on_off import (
+from courtlens.domain.on_off import (
     SharedFloorRequest,
     difference_interval,
     lineup_matches,
     ratio_interval,
 )
-from courtload.services.on_off import aggregate_shared_floor
-from courtload.services.workbench_analytics import ResolvedContext
+from courtlens.services.on_off import aggregate_shared_floor
+from courtlens.services.workbench_analytics import ResolvedContext
 
 
 def context() -> ResolvedContext:
@@ -197,7 +197,7 @@ def test_hash_ignores_release_identity_but_binds_prior_facts() -> None:
 
 
 def test_joint_net_rating_interval_accounts_for_covariance() -> None:
-    from courtload.domain.on_off import linear_ratio_interval
+    from courtlens.domain.on_off import linear_ratio_interval
 
     data = {str(i): (float(i), 100.0) for i in range(10)}
     canceled = linear_ratio_interval([(data, 1), (data, -1)])

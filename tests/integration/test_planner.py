@@ -4,10 +4,10 @@ from datetime import UTC, datetime, timedelta
 
 from sqlalchemy.orm import Session
 
-from courtload.demo import DEMO_WEEK_START
-from courtload.models import FantasyPlayerStatusOverride, Player, PlayerGame
-from courtload.services.planner import ScenarioChange, build_scenario_result, build_week_plan
-from courtload.services.recent_form import recent_form
+from courtlens.demo import DEMO_WEEK_START
+from courtlens.models import FantasyPlayerStatusOverride, Player, PlayerGame
+from courtlens.services.planner import ScenarioChange, build_scenario_result, build_week_plan
+from courtlens.services.recent_form import recent_form
 
 
 def test_week_plan_reconciles_visible_heavy_day(demo_league, session: Session) -> None:  # type: ignore[no-untyped-def]

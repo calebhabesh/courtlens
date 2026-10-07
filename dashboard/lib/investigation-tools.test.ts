@@ -388,7 +388,7 @@ describe("Investigation Tools & Analytical Operations (Block B13 UI Contracts)",
           { name: "Jakob Poeltl", bpg: 1.52, total: 76 }
         ],
         guardrailDisclosure:
-          "CourtLoad does not provide an inferred composite 'best defender' rating. Defensive production is presented as factual box-score event totals."
+          "CourtLens does not provide an inferred composite 'best defender' rating. Defensive production is presented as factual box-score event totals."
       };
 
       expect(raptorsDefense.stealsLeaders[0].spg).toBe(1.29);
@@ -422,7 +422,7 @@ describe("Investigation Tools & Analytical Operations (Block B13 UI Contracts)",
         inquiry: "Who will win the Eastern Conference?",
         status: "model_not_available",
         reason:
-          "CourtLoad strictly prohibits fabricating playoff seedings, conference winner probabilities, or betting odds from regular-season records."
+          "CourtLens strictly prohibits fabricating playoff seedings, conference winner probabilities, or betting odds from regular-season records."
       };
 
       expect(conferenceWinnerGuardrail.status).toBe("model_not_available");

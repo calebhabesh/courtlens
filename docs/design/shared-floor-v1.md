@@ -2,7 +2,7 @@
 
 Implemented 2026-10-03. Parent: [replica analytics contract](replica-analytics-contract.md).
 
-Three read-only POST operations under `/api/workbench/operations`: `on-off`, `wowy`, and `stat-shift`. Pydantic/OpenAPI contracts live in `src/courtload/domain/on_off.py`; the operation identity is `courtload-shared-floor-v1`. No query writes, acquisition, training, leverage filtering, or shrinkage occurs.
+Three read-only POST operations under `/api/workbench/operations`: `on-off`, `wowy`, and `stat-shift`. Pydantic/OpenAPI contracts live in `src/courtlens/domain/on_off.py`; the operation identity is `courtload-shared-floor-v1`. No query writes, acquisition, training, leverage filtering, or shrinkage occurs.
 
 Example body:
 

@@ -12,19 +12,19 @@ from uuid import uuid4
 
 from sqlalchemy import text
 
-from courtload.config import get_settings
-from courtload.database import SessionLocal
-from courtload.domain.conversation import AnalysisPlan, ConversationContext
-from courtload.domain.hybrid_assistant import HybridTurnRequest
-from courtload.services.assistant.evaluation import score_case
-from courtload.services.assistant.hybrid import run_hybrid_turn
-from courtload.services.assistant.planner import (
+from courtlens.config import get_settings
+from courtlens.database import SessionLocal
+from courtlens.domain.conversation import AnalysisPlan, ConversationContext
+from courtlens.domain.hybrid_assistant import HybridTurnRequest
+from courtlens.services.assistant.evaluation import score_case
+from courtlens.services.assistant.hybrid import run_hybrid_turn
+from courtlens.services.assistant.planner import (
     PLANNER_PROMPT,
     GeminiPlanProvider,
     PlanningOutput,
     ProviderFailure,
 )
-from courtload.services.workbench_analytics import resolve_workbench_context
+from courtlens.services.workbench_analytics import resolve_workbench_context
 
 CORPUS = Path("tests/fixtures/assistant/pf07d-hybrid-v1.json")
 

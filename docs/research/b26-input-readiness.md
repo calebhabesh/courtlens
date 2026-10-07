@@ -1,3 +1,5 @@
+CourtLoad was renamed to CourtLens on 2026-10-07; identifiers below are historical.
+
 # B26 input readiness and first experiment
 
 Subsequent measured work: [strict shot adapter and real-game/season reconciliation](b26-shotchart-admission.md). The real game passes; the complete recent season is blocked by event-clock-order checks and one player/team attempt discrepancy. This original inventory remains historical evidence.

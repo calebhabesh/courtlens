@@ -11,8 +11,8 @@ from uuid import uuid4
 import httpx
 from sqlalchemy import create_engine, text
 
-from courtload.domain.hybrid_assistant import HybridTurnResponse
-from courtload.services.assistant.retrieval import (
+from courtlens.domain.hybrid_assistant import HybridTurnResponse
+from courtlens.services.assistant.retrieval import (
     SOURCES,
     RetrievalBudget,
     clear_cache,
@@ -20,7 +20,7 @@ from courtload.services.assistant.retrieval import (
 )
 
 DIRECTORY = Path("docs/evidence/pf07c-retrieval")
-DATABASE = "postgresql+psycopg://courtload:courtload@127.0.0.1:5432/courtload_pf07c_retrieval"
+DATABASE = "postgresql+psycopg://courtlens:courtlens@127.0.0.1:5432/courtlens_pf07c_retrieval"
 TOKEN = "pf07c-disposable-operator"
 
 
@@ -49,15 +49,15 @@ def verify_http() -> None:
     admin = create_engine(DATABASE.rsplit("/", 1)[0] + "/postgres", isolation_level="AUTOCOMMIT")
     with admin.connect() as connection:
         if not connection.scalar(
-            text("SELECT 1 FROM pg_database WHERE datname='courtload_pf07c_retrieval'")
+            text("SELECT 1 FROM pg_database WHERE datname='courtlens_pf07c_retrieval'")
         ):
-            connection.execute(text("CREATE DATABASE courtload_pf07c_retrieval"))
+            connection.execute(text("CREATE DATABASE courtlens_pf07c_retrieval"))
     admin.dispose()
     environment = dict(
         os.environ,
-        COURTLOAD_DATABASE_URL=DATABASE,
-        COURTLOAD_OPERATOR_TOKEN=TOKEN,
-        COURTLOAD_GEMINI_API_KEY="",
+        COURTLENS_DATABASE_URL=DATABASE,
+        COURTLENS_OPERATOR_TOKEN=TOKEN,
+        COURTLENS_GEMINI_API_KEY="",
         GEMINI_API_KEY="",
     )
     with (DIRECTORY / "fresh-migrations.log").open("w") as log:
@@ -77,7 +77,7 @@ def verify_http() -> None:
             child = subprocess.Popen(
                 [
                     ".venv/bin/uvicorn",
-                    "courtload.api.app:create_app",
+                    "courtlens.api.app:create_app",
                     "--factory",
                     "--host",
                     "127.0.0.1",

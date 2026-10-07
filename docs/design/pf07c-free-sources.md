@@ -27,7 +27,7 @@ is PF07d, and rendered threads/citation controls are PF08.
 
 Each adapter uses an unauthenticated HTTPS GET to one exact registered page and reads only its
 known article container. No browser, JavaScript, subresources, video, PDF, follow-on links or
-cookies are needed. The fetcher sends an identifying CourtLoad user agent and bypasses ambient
+cookies are needed. The fetcher sends an identifying CourtLens user agent and bypasses ambient
 proxy configuration. A failure/429 is terminal; there is no retry loop or access-control bypass.
 The initial NBA.com glossary/history probes exceeded 256 KiB and are **not enabled**. Guessed
 article endpoints that returned 404 are also excluded; no larger-body fallback is authorized.

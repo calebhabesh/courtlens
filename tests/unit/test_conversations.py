@@ -15,24 +15,24 @@ from pydantic import ValidationError
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
-from courtload.domain.conversation import (
+from courtlens.domain.conversation import (
     AnalysisPlan,
     ConversationContext,
     ConversationTurnRequest,
     OperationStep,
 )
-from courtload.domain.query_url import deserialize_params_to_query
-from courtload.services.assistant import conversations
-from courtload.services.assistant.conversations import clear_conversation, run_conversation_turn
-from courtload.services.assistant.operations import (
+from courtlens.domain.query_url import deserialize_params_to_query
+from courtlens.services.assistant import conversations
+from courtlens.services.assistant.conversations import clear_conversation, run_conversation_turn
+from courtlens.services.assistant.operations import (
     EntityClarification,
     canonical_step,
     execute_operation,
     open_url,
 )
-from courtload.services.assistant.planner import PlanningOutput, ProviderFailure
-from courtload.services.assistant.rendering import bind_evidence, render_result
-from courtload.services.workbench_analytics import ResolvedContext
+from courtlens.services.assistant.planner import PlanningOutput, ProviderFailure
+from courtlens.services.assistant.rendering import bind_evidence, render_result
+from courtlens.services.workbench_analytics import ResolvedContext
 
 
 @pytest.fixture
@@ -235,7 +235,7 @@ def test_entity_clarification_is_context_bound_and_replayed(session):
         {"value": "other", "label": "Other Barnes"},
     ]
     with patch(
-        "courtload.services.assistant.operations.resolve_entity",
+        "courtlens.services.assistant.operations.resolve_entity",
         side_effect=EntityClarification("player_id", choices),
     ):
         first = run_conversation_turn(session, turn(plan=plan))
@@ -246,7 +246,7 @@ def test_entity_clarification_is_context_bound_and_replayed(session):
         clarification_choice="1630567",
     )
     with (
-        patch("courtload.services.assistant.operations.resolve_entity", return_value="1630567"),
+        patch("courtlens.services.assistant.operations.resolve_entity", return_value="1630567"),
         patch.object(
             conversations,
             "execute_bounded",
@@ -460,7 +460,7 @@ def test_workload_shifts_golden_pairs_missingness_future_and_ties(session, conte
         operation="workload_shifts",
         arguments={"period_n": 5, "min_minutes": 100, "limit": 20},
     )
-    with patch("courtload.services.assistant.operations._load_player_games", return_value=games):
+    with patch("courtlens.services.assistant.operations._load_player_games", return_value=games):
         data = execute_operation(session, context, step, time.monotonic() + 1)
     assert data["total_eligible"] == 2 and data["total_matches"] == 2
     assert [r["player_id"] for r in data["items"]] == ["a", "b"]
@@ -515,7 +515,7 @@ def test_frozen_offline_plan_corpus(session, case):
 
     with (
         patch(
-            "courtload.services.assistant.operations.resolve_entity",
+            "courtlens.services.assistant.operations.resolve_entity",
             side_effect=lambda _, __, value, ___: value,
         ),
         patch.object(conversations, "execute_bounded", side_effect=fixture_data),
@@ -648,7 +648,7 @@ def test_initial_retry_is_coalesced_without_second_provider_call(session):
 def test_http_body_limit_before_json_decode():
     from fastapi.testclient import TestClient
 
-    from courtload.api.app import create_app
+    from courtlens.api.app import create_app
 
     client = TestClient(create_app())
     response = client.post(
@@ -746,8 +746,8 @@ def test_exact_research_ui_destination(context, operation, arguments):
 def test_browser_conversation_reset_preflight_respects_cors_origins():
     from fastapi.testclient import TestClient
 
-    from courtload.api.app import create_app
-    from courtload.config import get_settings
+    from courtlens.api.app import create_app
+    from courtlens.config import get_settings
 
     with TestClient(create_app()) as client:
         path = "/api/workbench/assistant/conversations/" + str(uuid4())
@@ -767,8 +767,8 @@ def test_browser_conversation_reset_preflight_respects_cors_origins():
 def test_planner_argument_guidance_matches_registered_schemas():
     import re
 
-    from courtload.services.assistant.operations import REGISTRY
-    from courtload.services.assistant.planner import PLANNER_PROMPT
+    from courtlens.services.assistant.operations import REGISTRY
+    from courtlens.services.assistant.planner import PLANNER_PROMPT
 
     guidance = re.findall(r"operation '(\w+)' with (\w+)", PLANNER_PROMPT)
     assert guidance
@@ -795,7 +795,7 @@ def test_provider_receives_canonical_team_catalog(session):
     "DeprecationWarning:google.genai.types"
 )
 def test_gemini_planning_disables_automatic_function_calls():
-    from courtload.services.assistant.planner import GeminiPlanProvider
+    from courtlens.services.assistant.planner import GeminiPlanProvider
 
     with patch("google.genai.Client") as client:
         transport = client.return_value.__enter__.return_value

@@ -1,4 +1,4 @@
-"""Integration tests for CourtLoad background worker, allowlisted jobs, locking, and recovery."""
+"""Integration tests for CourtLens background worker, allowlisted jobs, locking, and recovery."""
 
 from __future__ import annotations
 
@@ -11,26 +11,26 @@ from fastapi.testclient import TestClient
 from sqlalchemy import create_engine, select
 from sqlalchemy.orm import Session
 
-from courtload.api.app import create_app
-from courtload.archive_models import ArchiveDataset
-from courtload.database import Base
-from courtload.models import utc_now
-from courtload.services.publication import (
+from courtlens.api.app import create_app
+from courtlens.archive_models import ArchiveDataset
+from courtlens.database import Base
+from courtlens.models import utc_now
+from courtlens.services.publication import (
     DEFAULT_CHANNEL,
     BuildInProgressError,
     publication_lock,
 )
-from courtload.services.workbench_ingestion import (
+from courtlens.services.workbench_ingestion import (
     CandidateValidationError,
     publish_workbench_release,
 )
-from courtload.services.workbench_jobs import (
+from courtlens.services.workbench_jobs import (
     enqueue_job,
     recover_interrupted_jobs,
     sanitize_error,
 )
-from courtload.warehouse_models import PublishedSnapshot, ServingSnapshot, WarehouseBuild
-from courtload.workbench_models import (
+from courtlens.warehouse_models import PublishedSnapshot, ServingSnapshot, WarehouseBuild
+from courtlens.workbench_models import (
     WorkbenchDataset,
     WorkbenchJob,
     allow_admin_mutation,
@@ -41,11 +41,11 @@ pytestmark = pytest.mark.postgres
 
 @pytest.fixture
 def postgres_engine():  # type: ignore[no-untyped-def]
-    url = os.getenv("COURTLOAD_TEST_POSTGRES_URL")
+    url = os.getenv("COURTLENS_TEST_POSTGRES_URL")
     if not url:
-        if os.getenv("CI") or os.getenv("COURTLOAD_REQUIRE_POSTGRES_TESTS"):
-            pytest.fail("COURTLOAD_TEST_POSTGRES_URL must be configured")
-        pytest.skip("COURTLOAD_TEST_POSTGRES_URL is not configured")
+        if os.getenv("CI") or os.getenv("COURTLENS_REQUIRE_POSTGRES_TESTS"):
+            pytest.fail("COURTLENS_TEST_POSTGRES_URL must be configured")
+        pytest.skip("COURTLENS_TEST_POSTGRES_URL is not configured")
     engine = create_engine(url)
     Base.metadata.create_all(engine)
     try:
@@ -97,7 +97,7 @@ def test_build_and_publish_unlocked_succeeds_when_caller_holds_lock(postgres_eng
             feature_version="historical-prior-day-v1",
             scoring_version="b569d6c70beaf6bc53fd6a634e405a2d6990d0b7d79b29cbca8ce7c65ef49a40",
         )
-        from courtload.services.publication import SCORING_VERSION
+        from courtlens.services.publication import SCORING_VERSION
 
         old_build.scoring_version = SCORING_VERSION
         session.add(old_build)
@@ -125,7 +125,7 @@ def test_build_and_publish_unlocked_succeeds_when_caller_holds_lock(postgres_eng
         # When caller already holds publication_lock, acquire_lock=False succeeds
         channel = f"test_{uniqueness[:16]}"
         with publication_lock(session):
-            from courtload.services.publication import build_and_publish
+            from courtlens.services.publication import build_and_publish
 
             published = build_and_publish(
                 session,
@@ -358,8 +358,8 @@ def test_workbench_status_endpoint(api_client: TestClient) -> None:
 
 def test_bootstrap_execution_and_idempotence(postgres_engine) -> None:  # type: ignore[no-untyped-def]
     """Bootstrap job populates workbench release and repeated execution is idempotent."""
-    from courtload.services.workbench_jobs import execute_job
-    from courtload.workbench_models import WorkbenchReleaseBinding
+    from courtlens.services.workbench_jobs import execute_job
+    from courtlens.workbench_models import WorkbenchReleaseBinding
 
     with Session(postgres_engine) as session:
         initial_pub = session.get(PublishedSnapshot, DEFAULT_CHANNEL)

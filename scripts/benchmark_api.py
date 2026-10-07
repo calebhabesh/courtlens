@@ -1,4 +1,4 @@
-"""Repeatable API latency benchmarking harness for CourtLoad (M8)."""
+"""Repeatable API latency benchmarking harness for CourtLens (M8)."""
 
 from __future__ import annotations
 
@@ -10,7 +10,7 @@ from typing import Any
 
 import httpx
 
-from courtload.api.app import create_app
+from courtlens.api.app import create_app
 
 ENDPOINTS = [
     ("Health Check", "GET", "/api/health"),
@@ -106,7 +106,7 @@ async def main() -> None:
     transport = httpx.ASGITransport(app=app)
     results = []
 
-    print("Running CourtLoad API Latency Benchmark (M8)...")
+    print("Running CourtLens API Latency Benchmark (M8)...")
     async with httpx.AsyncClient(transport=transport, base_url="http://test") as client:
         for name, method, path in ENDPOINTS:
             res = await benchmark_endpoint(client, name, method, path, samples=100, concurrency=5)

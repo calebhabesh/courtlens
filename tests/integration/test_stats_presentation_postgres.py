@@ -13,9 +13,9 @@ from fastapi.testclient import TestClient
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import Session
 
-from courtload.api.app import create_app
-from courtload.database import get_db
-from courtload.domain.query_spec import (
+from courtlens.api.app import create_app
+from courtlens.database import get_db
+from courtlens.domain.query_spec import (
     PagingSpec,
     PredicateGroup,
     PredicateLeaf,
@@ -25,21 +25,21 @@ from courtload.domain.query_spec import (
     TeamScope,
     WindowSpec,
 )
-from courtload.domain.stats_presentation import StatsPresentation
-from courtload.services.stats_engine import (
+from courtlens.domain.stats_presentation import StatsPresentation
+from courtlens.services.stats_engine import (
     execute_stats_query,
     stats_cohort_summary,
     stats_presentation_hash,
 )
-from courtload.services.workbench_analytics import ResolvedContext
+from courtlens.services.workbench_analytics import ResolvedContext
 
 
 @pytest.fixture
 def facts() -> Iterator[tuple[Session, ResolvedContext]]:
-    url = os.getenv("COURTLOAD_TEST_POSTGRES_URL")
+    url = os.getenv("COURTLENS_TEST_POSTGRES_URL")
     if not url:
-        if os.getenv("COURTLOAD_REQUIRE_POSTGRES_TESTS") == "1":
-            pytest.fail("COURTLOAD_TEST_POSTGRES_URL is required")
+        if os.getenv("COURTLENS_REQUIRE_POSTGRES_TESTS") == "1":
+            pytest.fail("COURTLENS_TEST_POSTGRES_URL is required")
         pytest.skip("explicit disposable PostgreSQL test URL required")
     engine = create_engine(url)
     with Session(engine) as session:
@@ -240,7 +240,7 @@ def test_http_opt_in_and_legacy_payload(facts: tuple[Session, ResolvedContext]) 
     app = create_app()
     app.dependency_overrides[get_db] = lambda: session
     with (
-        patch("courtload.api.routers.workbench.resolve_workbench_context", return_value=context),
+        patch("courtlens.api.routers.workbench.resolve_workbench_context", return_value=context),
         TestClient(app) as client,
     ):
         query = {"season": "2023-24", "name": "Player B"}
@@ -349,7 +349,7 @@ def test_unsupported_scope_is_explicit(
 def test_catalog_observed_pairs_and_exclusive_defaults(
     facts: tuple[Session, ResolvedContext],
 ) -> None:
-    from courtload.services.stats_catalog import stats_catalog_scope
+    from courtlens.services.stats_catalog import stats_catalog_scope
 
     session, context = facts
     session.execute(

@@ -13,9 +13,9 @@ from fastapi.testclient import TestClient
 from sqlalchemy import create_engine, event, text
 from sqlalchemy.orm import Session
 
-from courtload.api.app import create_app
-from courtload.database import get_db
-from courtload.services.entity_lookup import (
+from courtlens.api.app import create_app
+from courtlens.database import get_db
+from courtlens.services.entity_lookup import (
     clear_lookup_caches,
     lookup_entities,
     scoped_team_associations,
@@ -24,7 +24,7 @@ from courtload.services.entity_lookup import (
 
 @pytest.fixture
 def facts() -> Iterator[Session]:
-    url = os.getenv("COURTLOAD_TEST_POSTGRES_URL")
+    url = os.getenv("COURTLENS_TEST_POSTGRES_URL")
     if not url:
         pytest.fail("Explicit disposable PostgreSQL URL required for PF03 identity acceptance")
     engine = create_engine(url)
@@ -130,7 +130,7 @@ def test_scope_cache_avoids_sql_per_keystroke(facts: Session):
 def test_http_passes_scope_and_cutoff_alias(facts: Session):
     app = create_app()
     app.dependency_overrides[get_db] = lambda: facts
-    with patch("courtload.api.routers.workbench.resolve_lookup_binding") as resolve:
+    with patch("courtlens.api.routers.workbench.resolve_lookup_binding") as resolve:
         resolve.return_value = ("release", "dataset")
         with TestClient(app) as client:
             for cutoff in ("before_date", "beforeDate"):
@@ -201,8 +201,8 @@ def test_comparison_api_enrichment_preserves_legacy_payload_and_window(facts: Se
     app = create_app()
     app.dependency_overrides[get_db] = lambda: facts
     with (
-        patch("courtload.api.routers.workbench.resolve_workbench_context", return_value=context),
-        patch("courtload.api.routers.workbench.compare_players", return_value=legacy),
+        patch("courtlens.api.routers.workbench.resolve_workbench_context", return_value=context),
+        patch("courtlens.api.routers.workbench.compare_players", return_value=legacy),
         TestClient(app) as client,
     ):
         response = client.get(

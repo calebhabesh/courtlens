@@ -9,7 +9,7 @@ from unittest.mock import patch
 import pytest
 from fastapi.testclient import TestClient
 
-from courtload.api.app import create_app
+from courtlens.api.app import create_app
 
 
 @pytest.fixture
@@ -20,12 +20,12 @@ def client() -> TestClient:
 
 @pytest.fixture(autouse=True)
 def setup_postgres_env() -> Generator[None, None, None]:
-    url = os.getenv("COURTLOAD_TEST_POSTGRES_URL")
+    url = os.getenv("COURTLENS_TEST_POSTGRES_URL")
     if not url:
-        if os.getenv("CI") or os.getenv("COURTLOAD_REQUIRE_POSTGRES_TESTS"):
-            pytest.fail("COURTLOAD_TEST_POSTGRES_URL must be configured")
-        pytest.skip("COURTLOAD_TEST_POSTGRES_URL is not configured")
-    with patch.dict(os.environ, {"COURTLOAD_DATABASE_URL": url}):
+        if os.getenv("CI") or os.getenv("COURTLENS_REQUIRE_POSTGRES_TESTS"):
+            pytest.fail("COURTLENS_TEST_POSTGRES_URL must be configured")
+        pytest.skip("COURTLENS_TEST_POSTGRES_URL is not configured")
+    with patch.dict(os.environ, {"COURTLENS_DATABASE_URL": url}):
         yield
 
 

@@ -11,7 +11,7 @@ async function proxy(request: NextRequest, context: Context) {
   if (!allowedPaths.test(suffix)) return NextResponse.json({ detail: "Unknown assistant route" }, { status: 404 });
   const mutates = request.method !== "GET";
   if (mutates && !isSameBrowserOrigin(request)) return NextResponse.json({ detail: "Same-origin history mutation required" }, { status: 403 });
-  const apiUrl = process.env.COURTLOAD_API_INTERNAL_URL || process.env.NEXT_PUBLIC_COURTLOAD_API_URL || "http://localhost:8000";
+  const apiUrl = process.env.COURTLENS_API_INTERNAL_URL || process.env.NEXT_PUBLIC_COURTLENS_API_URL || "http://localhost:8000";
   const target = new URL(`/api/workbench/assistant/v2/${suffix}`, apiUrl);
   for (const key of ["limit", "cursor"]) {
     const value = request.nextUrl.searchParams.get(key);
@@ -36,7 +36,7 @@ async function proxy(request: NextRequest, context: Context) {
   try {
     const response = await fetch(target, {
       method: request.method,
-      headers: { "Content-Type": "application/json", ...(mutates ? { "X-Operator-Token": process.env.COURTLOAD_OPERATOR_TOKEN || "local-operator-secret-change-before-deploy" } : {}) },
+      headers: { "Content-Type": "application/json", ...(mutates ? { "X-Operator-Token": process.env.COURTLENS_OPERATOR_TOKEN || "local-operator-secret-change-before-deploy" } : {}) },
       body: bytes ? Buffer.concat(chunks) : undefined,
       redirect: "error", cache: "no-store", signal: AbortSignal.timeout(55000),
     });

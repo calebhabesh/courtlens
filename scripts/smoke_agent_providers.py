@@ -8,16 +8,16 @@ from datetime import UTC, datetime
 from pathlib import Path
 from time import monotonic
 
-from courtload.config import Settings, get_settings
-from courtload.services.assistant.agent.providers import create_provider
-from courtload.services.assistant.agent.providers.base import (
+from courtlens.config import Settings, get_settings
+from courtlens.services.assistant.agent.providers import create_provider
+from courtlens.services.assistant.agent.providers.base import (
     DEFAULT_MODELS,
     AgentMessage,
     ProviderFailure,
     ToolDeclaration,
     ToolResult,
 )
-from courtload.services.assistant.agent.providers.replay import RecordingProvider
+from courtlens.services.assistant.agent.providers.replay import RecordingProvider
 
 SYSTEM = (
     "This is a CourtLens adapter smoke. Call smoke_lookup first with probe=NBA. "

@@ -1,0 +1,267 @@
+{
+  "baseline_commit": "d584057627c254463ea7996af9166a113b727fa5",
+  "file_sha256": {
+    "docs/design/assistant-v2-fixtures.json": "9a94a516e495e99a3f39156224a161dec4f8d9fe3d0b156bc7df485f8b5ddf4e",
+    "docs/design/assistant-v2.schema.json": "0b53430f0d04cc521862740b2d44e6266ce72f889c0f5a69bdb9b4313814feec",
+    "docs/design/assistant-v3.schema.json": "086b4217cf4412513bd82231dc38425fbc33e0dc35b8b88d1463432a4b98f6d9",
+    "docs/design/conversational-analytics-v1.schema.json": "a5f91c3902e1777d89bc1729ce95fbf346782b72c5705be896328341e89ad972",
+    "docs/design/research-source-admission-v1.md": "dc9c25c5aa2c8e6c91264550ec4660c392bbd6bfaa8859639126b725d4bcaef9",
+    "docs/design/saved-operations-v1.schema.json": "6f8439b1c3e55a44e802f5d947ffa5e400b5ce61698cb6ebf1f8b82cec4fb298",
+    "docs/design/shot-correction-ledger-v1.md": "66f96970dc1dfa1a85f7745524c8a0cae18b8a9f9105b13d12e22c991861e3fb",
+    "docs/design/shot-correction-ledger-v2.md": "cc2b646ac5add1df0dabd32b0d48cfbbad2c1838f8a0498a43fff6a08faec4a7",
+    "docs/design/shot-correction-ledger-v3.md": "2e8f48d2cc3639845bfa6fdee38fb12900b24daa02aa649b7365b60ce04200d5",
+    "docs/design/shotchart-admission-v1.md": "bef34e9d509b97843061c817779f5be9b31ee9accd298e53ba96f3e9a64fdff7",
+    "docs/design/shotchart-admission-v2.md": "01f71657a713a98d938be4b3564b166b8c364a7033d5236aa61e23e428752780",
+    "evaluation/assistant/ar02-v1.json": "8aa39b251f814cc009e7975138747025620052d8be8be1eeeda74b94b219b1dc",
+    "evaluation/assistant/ar02-v2.json": "c169159db1f5c159f76a382b0ea692f960e7b3ed2a5b224fc22c174b24f69fdf",
+    "evaluation/manifests/accepted-archive-v1.json": "4a99e5fd32155012c8f62a736830521e7aa55dd368215e38833bf7ade36512e3",
+    "evaluation/manifests/accepted-points-v1.json": "ab04ae668518c7f48ef25704735a8ab4c534004236347b10d2b55a5b7068c83c",
+    "evaluation/research/protocols/courtload-adjusted-shooting-v1.json": "c80f4cb2c6153d44bd99a585125c19318bba72f2ca9c6cab068e6b5b1ee5d66e",
+    "evaluation/research/protocols/courtload-expected-shot-retrospective-v2.json": "97718f7f66e03497be7f43d2bfe59dffea2e08cd338946535751253e4095f459",
+    "evaluation/research/protocols/courtload-expected-shot-v1.json": "31a4e6d84714d48a37aab11a698699fdbdc61248ad00e5fb2984e5980b9e1148",
+    "evaluation/research/protocols/courtload-rapm-v1.json": "47b75440072f9169c3fe8bfae6b46df164fe6672709eaf6c19c27bc9c531e6c2",
+    "evaluation/research/protocols/courtload-six-factor-v1.json": "ee077c1ba00e504cdd94dbe8afcdfb04c8103e680eddac8563f61702727789c5"
+  },
+  "fixture_hashes": {
+    "context": "3a28717d4761c029831f6be433c93f199139cab5d29a499fe4623ad7f666bb83",
+    "operations": {
+      "ast": {
+        "operation": "383d8d9ca384c428e22ab604733abd63c78ecbd43156440f642a9b8000026c95",
+        "rendered": "4792e88f3d6c76428423760dbe83249591937c772048113c1c24336b609bd1fd",
+        "result": "18faa2930e5275323050292ba46e2b2b4f20510df951f3edca39112bd5323945"
+      },
+      "efg_pct": {
+        "operation": "422df1c78928fe91175aac0b06baa8dc2da363c589357b558bbcb4a4c1432244",
+        "rendered": "2f90c1b632a9b9bc23d914a4fa9d197c0bafb09cfb5c3cbc18e5099cc1aad1f6",
+        "result": "43e903518f171e6277c4b3d80806a77b6f859192f2b9c8691cc14880279943bc"
+      },
+      "pts": {
+        "operation": "d6b8dcefb4ced492e77cab5f3e8f33860971e190d6af6e3bcf31e5c3243e74bd",
+        "rendered": "95efe6d7f763417b2c8d7aac1d2c64bb65c31e7b145de34b82f8656bbe24eef5",
+        "result": "0b8202f361e9bfc0d3c19c6da370a7b4cb73de8c28abaf8df81d02deecc1c84a"
+      }
+    }
+  },
+  "frozen_identifiers": [
+    "courtload-adjusted-shooting-v1",
+    "courtload-analysis-plan-v1",
+    "courtload-ask-sidebar-collapsed-v1",
+    "courtload-assistant-active-thread-v2",
+    "courtload-assistant-history-change-v2",
+    "courtload-assistant-operations-v1",
+    "courtload-assistant-v2",
+    "courtload-conversation-result-v1",
+    "courtload-conversation-v1",
+    "courtload-expected-shot-retrospective-v2",
+    "courtload-expected-shot-v1",
+    "courtload-external-output-v1",
+    "courtload-history-v2",
+    "courtload-knowledge-v1",
+    "courtload-knowledge-v3",
+    "courtload-offline-plan-corpus-v1",
+    "courtload-pf07d-hybrid-v1",
+    "courtload-pf07d-scoring-holdout-v1",
+    "courtload-public-nba-v1",
+    "courtload-rapm-v1",
+    "courtload-research-binding-v1",
+    "courtload-research-package-v1",
+    "courtload-research-preregistration-v1",
+    "courtload-research-run-v1",
+    "courtload-retrospective-shot-binding-v2",
+    "courtload-rule-planner-v1",
+    "courtload-saved-operation-v1",
+    "courtload-sdv-rich-v1",
+    "courtload-shared-floor-evidence-v1",
+    "courtload-shared-floor-v1",
+    "courtload-shooting-evidence-v1",
+    "courtload-shooting-sequences-v1",
+    "courtload-shot-correction-ledger-v1",
+    "courtload-shot-correction-ledger-v2",
+    "courtload-shot-correction-ledger-v3",
+    "courtload-shot-input-policy-registration-v1",
+    "courtload-shotchart-audit-v1",
+    "courtload-shotchart-v1",
+    "courtload-shotchart-v2",
+    "courtload-six-factor-v1",
+    "courtload-thread-turn-v2",
+    "courtload-thread-v2"
+  ],
+  "historical_docs": [
+    "docs/assistant-agent-plan.md",
+    "docs/assistant-agent-progress.md",
+    "docs/assistant-revamp-plan.md",
+    "docs/assistant-revamp-progress.md",
+    "docs/course-correction.md",
+    "docs/databallr-replica-implementation-plan.md",
+    "docs/databallr-replica-implementation-progress.md",
+    "docs/decisions/0001-planner-before-ml.md",
+    "docs/decisions/0002-daily-matching.md",
+    "docs/decisions/0003-zero-cost-historical-baseline.md",
+    "docs/impact-metrics-plan.md",
+    "docs/impact-metrics-progress.md",
+    "docs/implementation-plan.md",
+    "docs/implementation-progress.md",
+    "docs/polish-freeze-implementation-plan.md",
+    "docs/polish-freeze-implementation-progress.md",
+    "docs/portfolio-scope.md",
+    "docs/product-alignment.md",
+    "docs/research/b25-external-output-spike.md",
+    "docs/research/b26-expected-shot-result.md",
+    "docs/research/b26-input-readiness.md",
+    "docs/research/b26-shot-source-readiness.md",
+    "docs/research/b26-shotchart-admission.md",
+    "docs/research/b28-finance-admission.md",
+    "docs/research/b31-live-admission.md",
+    "docs/research/databallr-replica-findings.md",
+    "docs/research/fontshare-interface-findings.md",
+    "docs/research/gemini-chatbot-findings.md",
+    "docs/research/replica-free-source-feasibility.md",
+    "docs/research/workbench-source-findings.md",
+    "docs/research/yahoo-basketball-analysis-findings.md",
+    "docs/research/zero-cost-data-sources.md",
+    "docs/workbench-implementation-plan.md",
+    "docs/workbench-implementation-progress.md"
+  ],
+  "identifier_occurrences": {
+    "src/courtlens/api/routers/research.py": {
+      "courtload-adjusted-shooting-v1": 1,
+      "courtload-expected-shot-v1": 1,
+      "courtload-rapm-v1": 1,
+      "courtload-research-package-v1": 1,
+      "courtload-research-run-v1": 1,
+      "courtload-six-factor-v1": 1
+    },
+    "src/courtlens/domain/assistant_agent.py": {
+      "courtload-history-v2": 2,
+      "courtload-thread-turn-v2": 2
+    },
+    "src/courtlens/domain/conversation.py": {
+      "courtload-analysis-plan-v1": 4,
+      "courtload-conversation-v1": 4
+    },
+    "src/courtlens/domain/hybrid_assistant.py": {
+      "courtload-analysis-plan-v1": 2,
+      "courtload-assistant-v2": 4,
+      "courtload-history-v2": 4,
+      "courtload-thread-turn-v2": 2,
+      "courtload-thread-v2": 2
+    },
+    "src/courtlens/domain/on_off.py": {
+      "courtload-shared-floor-v1": 1
+    },
+    "src/courtlens/domain/research_registration.py": {
+      "courtload-adjusted-shooting-v1": 1,
+      "courtload-expected-shot-retrospective-v2": 4,
+      "courtload-expected-shot-v1": 2,
+      "courtload-external-output-v1": 1,
+      "courtload-rapm-v1": 1,
+      "courtload-research-binding-v1": 2,
+      "courtload-research-preregistration-v1": 1,
+      "courtload-retrospective-shot-binding-v2": 1,
+      "courtload-six-factor-v1": 1
+    },
+    "src/courtlens/domain/rich_sources.py": {
+      "courtload-sdv-rich-v1": 1
+    },
+    "src/courtlens/domain/saved_conversation.py": {
+      "courtload-saved-operation-v1": 1
+    },
+    "src/courtlens/domain/shooting.py": {
+      "courtload-shooting-sequences-v1": 1
+    },
+    "src/courtlens/domain/shotchart.py": {
+      "courtload-shotchart-v1": 1
+    },
+    "src/courtlens/evaluation/research_binding.py": {
+      "courtload-expected-shot-retrospective-v2": 1,
+      "courtload-retrospective-shot-binding-v2": 1
+    },
+    "src/courtlens/evaluation/research_inputs.py": {
+      "courtload-shotchart-v2": 1
+    },
+    "src/courtlens/evaluation/research_package.py": {
+      "courtload-research-package-v1": 1
+    },
+    "src/courtlens/evaluation/research_readiness.py": {
+      "courtload-adjusted-shooting-v1": 1,
+      "courtload-expected-shot-v1": 1,
+      "courtload-rapm-v1": 1,
+      "courtload-six-factor-v1": 1
+    },
+    "src/courtlens/evaluation/research_runner.py": {
+      "courtload-expected-shot-retrospective-v2": 1,
+      "courtload-research-run-v1": 1
+    },
+    "src/courtlens/evaluation/shot_corrections.py": {
+      "courtload-shot-correction-ledger-v1": 2,
+      "courtload-shot-correction-ledger-v2": 1,
+      "courtload-shot-correction-ledger-v3": 3
+    },
+    "src/courtlens/evaluation/shotchart_admission.py": {
+      "courtload-shot-input-policy-registration-v1": 1,
+      "courtload-shotchart-audit-v1": 1,
+      "courtload-shotchart-v2": 2
+    },
+    "src/courtlens/services/assistant/conversations.py": {
+      "courtload-conversation-result-v1": 1
+    },
+    "src/courtlens/services/assistant/hybrid.py": {
+      "courtload-analysis-plan-v1": 1
+    },
+    "src/courtlens/services/assistant/knowledge.py": {
+      "courtload-knowledge-v3": 1
+    },
+    "src/courtlens/services/assistant/operations.py": {
+      "courtload-assistant-operations-v1": 1
+    },
+    "src/courtlens/services/assistant/planner.py": {
+      "courtload-analysis-plan-v1": 3
+    },
+    "src/courtlens/services/assistant/retrieval.py": {
+      "courtload-public-nba-v1": 1
+    },
+    "src/courtlens/services/assistant/rule_planner.py": {
+      "courtload-rule-planner-v1": 1
+    },
+    "src/courtlens/services/assistant/saved.py": {
+      "courtload-saved-operation-v1": 1
+    }
+  },
+  "knowledge_sections": {
+    "assist_definition": "9022e323e66457e48fbefd2561db92595ecc8e54a9e583824d9d301d83f9f848",
+    "ball_handling": "fc6d43dcdae8e81c80e3782f24d98c8599dbbbe4118292dc114eca4327089c13",
+    "defense": "6c7a1113084f766cbf6777461bc4c235e42f1924b27e28d4d37de285c3a68d75",
+    "forecasts": "4db183d07dc41b77c4b7c03f14f1cc3f904a30caf945da7d6cefc376b5359db7",
+    "metrics": "b80f4131d3ea567c898ce7c1801c5169fa7fde82fcb75b607dd19c11308003a1",
+    "offensive_rebounding": "3dded0c3eae161b46633bc86f0391689292956881cd89b4351ed29b60277c282",
+    "pace": "2987ea50aeddbd123073d8b05edd2bcb56ee4ba30fd0dce2e8624a1b57327f4a",
+    "pick_roll": "c331fa0ec35feff63f0221d55eb9e06738dabcec35d3795086d88a5d7b9711f3",
+    "players": "80dad9d7d750c56c1e7ea0874fd909fecd05ddcbd36a604e97cf7d66a634db46",
+    "saved": "25e26ff1ede91bb7bf2adecc5d2d29fd7063c675f6a4e2e37e801fba4069446b",
+    "scope": "57b0f5b177675d85e211be16f6b76eb14becbc1e1341c8b60ade449a4c2db854",
+    "settings": "05852f4ac2ebda9c0d33ab830fd3eb2d940a68b0308aa9dcef00c6cfa8509ecf",
+    "spacing": "8dd132433dcd7d8159eb9e1dc3e09556612f63e2ad1bb6d61791b8138078e623",
+    "switching": "dac2db397cbfbeb6df27ba4ec137f070c07a78af0fe80afd651222b0896bf299",
+    "teams": "bb4f4b492d230a5c34d6378be054ed22e97b6387bdbb930b78c3f279d80995d9",
+    "usage": "402e5f3f2f755e9238e8c618607e8719423e4dc2ae6b3e398d783e26b53650d7",
+    "wowy": "bc9017022bcfbc3c6dbee08a6fadeb7b9a7b7882adc6cddbdbd5b0ea3dde2504",
+    "zone": "6bcd88348a77b4116d639f46d714082319a0b585a67d66e2fe5d83dc14190b51"
+  },
+  "migration_sha256": {
+    "migrations/versions/0001_initial.py": "bff78855c31d9a23ec2846725ced33396a6abbf5ae7b1d73f71c891bc92c6d7f",
+    "migrations/versions/07b810a4f005_assistant_history.py": "60bccf26fce226953651af7262efc943d992ddc227ead79b1ced2cd49d53aa61",
+    "migrations/versions/08b810a4f006_assistant_agent_transcripts.py": "3d8d9c082efa849f35ea2cf4820c822d0deca351027818a050055f9937a65063",
+    "migrations/versions/0af4286cb194_append_only_research_inputs.py": "3faa5f4690c8c010c11b8b735c16b213b031fc68c9ac56f1a9790d24602421f8",
+    "migrations/versions/19b810a4f004_assignment_admission.py": "fffb331fc31e3346157b98b904e8945fa0dc8d5950e41ded34240fe3efe95183",
+    "migrations/versions/1b66214e7c08_personal_workspace_state.py": "95c107a1d2f24a9961da8fbc13fcde3bcca30d4c1d76a795e7539e56538d6ab6",
+    "migrations/versions/27b810a4f001_finance_books.py": "8c09212d124d4c3b7f972ea8fd78f73dff372d4e4d041f3b0642ca5f47bba268",
+    "migrations/versions/31b810a4f002_shared_live.py": "4a2c8ff37ac4129c12916b44a22b7fce7a29e083e5e8214e49a7ff425c8e524a",
+    "migrations/versions/35b810a4f003_saved_conversations.py": "45d511fd6b52a151d0915b478f099db109deff9bb54bdc0a251b61a2b472f92c",
+    "migrations/versions/4b19f0a2c7de_warehouse_publication.py": "7559d69e210920a0ecb48ef6c6211281af35f676f245d2cf6ceb4ae3f8dd1c91",
+    "migrations/versions/882c8b450cb3_workbench_contracts_and_tables.py": "f6edda77edd1757be2405c7b6af50323350449fca88a6935a0818915d21d1755",
+    "migrations/versions/8ffd4c5912e2_archive_lineage_and_facts.py": "fddc877b1de341fc8730dd789e883d8288bd105a197c5f17d0e999884a2e1985",
+    "migrations/versions/c7e21a084f91_identity_crosswalk_and_measurements.py": "5b3ed8bffdd6c86dd551eab2bfb98e9453d238a8e96013baf528fb8326c1d921",
+    "migrations/versions/e8b19a084f92_rich_source_admission_tables.py": "0bcb0701eabe8ea391ec96f869c0c8f71e8910c6ee718aeb3f1c549815b8b6ac",
+    "migrations/versions/f9c31a084f93_possession_and_stint_warehouse_tables.py": "975eab3dd11ae25d673a1546d437785688cb0ecda7817eb730c239dfe3a3263f"
+  }
+}

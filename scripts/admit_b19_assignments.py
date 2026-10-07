@@ -8,9 +8,9 @@ from pathlib import Path
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
-from courtload.assignment_models import AssignmentDataset
-from courtload.config import get_settings
-from courtload.services.assignment_admission import (
+from courtlens.assignment_models import AssignmentDataset
+from courtlens.config import get_settings
+from courtlens.services.assignment_admission import (
     AssignmentAdmissionError,
     admit_assignments,
     prepare_assignments,
