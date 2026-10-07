@@ -140,7 +140,9 @@ def test_provider_failure_branches_are_distinct(postgres_conversation, kind, rea
                 return PlanningOutput({"plan_version": "wrong", "claims": "invented"})
             raise ProviderFailure(kind)
 
-    answer = run_hybrid_turn(session, request(context, plan=False), provider=Provider())
+    # AR09: rules plan "Show scoring" without a provider; this question has no rule plan.
+    message = "Show me something interesting"
+    answer = run_hybrid_turn(session, request(context, message, plan=False), provider=Provider())
     assert answer.blocks[0].reason == reason
     assert answer.accounting.analytical_calls == 0
     assert "private detail" not in answer.model_dump_json()
@@ -449,3 +451,159 @@ def test_ar05_stream_phases_final_and_request_response_fallback(postgres_convers
     assert unauthorized.status_code in (401, 403)
     assert reused.status_code == 409
     assert oversized.status_code == 413
+
+
+@pytest.mark.parametrize(
+    ("route", "players", "teams", "message", "operation", "field", "entity"),
+    [
+        (
+            "/players/1630567",
+            ["1630567"],
+            [],
+            "Show his profile",
+            "profile",
+            "player_id",
+            "1630567",
+        ),
+        (
+            "/teams/1610612761",
+            [],
+            ["1610612761"],
+            "Show this team",
+            "team",
+            "team_id",
+            "1610612761",
+        ),
+    ],
+)
+def test_ar07_page_referents_execute_real_results(
+    postgres_conversation, route, players, teams, message, operation, field, entity
+):
+    from courtload.domain.hybrid_assistant import AssistantPageContext
+
+    session, context = postgres_conversation
+    payloads = []
+
+    class Provider:
+        def plan(self, payload, *, timeout_seconds):
+            payloads.append(json.loads(payload))
+            return PlanningOutput(
+                AnalysisPlan(
+                    steps=[
+                        OperationStep(
+                            step_id="page", operation=operation, arguments={field: entity}
+                        )
+                    ]
+                ).model_dump(mode="json")
+            )
+
+    turn = HybridTurnRequest(
+        request_id=uuid4(),
+        message=message,
+        page_context=AssistantPageContext(
+            route=route,
+            player_ids=players,
+            team_ids=teams,
+            selections=ConversationContext(release_id=context.release_id, season="2024-25"),
+        ),
+    )
+    answer = run_hybrid_turn(session, turn, provider=Provider())
+    assert answer.status == "answered", answer.model_dump_json()
+    assert answer.plan.steps[0].arguments[field] == entity
+    assert payloads[0]["page_referents"][field] == entity
+    assert entity in payloads[0]["message"]
+    assert answer.scope.selections.release_id == context.release_id
+    assert any("Resolved page reference" in value for value in answer.scope.assumptions)
+    assert any(block.kind == "result" for block in answer.blocks)
+
+
+def test_ar07_ambiguous_compare_reference_clarifies_without_provider(postgres_conversation):
+    from courtload.domain.hybrid_assistant import AssistantPageContext
+
+    session, context = postgres_conversation
+    turn = HybridTurnRequest(
+        request_id=uuid4(),
+        message="Show his profile",
+        page_context=AssistantPageContext(
+            route="/compare",
+            player_ids=["1630567", "2"],
+            selections=ConversationContext(release_id=context.release_id, season="2024-25"),
+        ),
+    )
+    answer = run_hybrid_turn(session, turn)
+    assert answer.status == "clarification_required"
+    assert "Which player" in answer.blocks[0].text
+    assert answer.accounting.provider_calls == 0
+
+
+def test_ar07_wrong_page_referent_gets_one_repair(postgres_conversation):
+    from courtload.domain.hybrid_assistant import AssistantPageContext
+
+    session, context = postgres_conversation
+    payloads = []
+
+    class Provider:
+        def plan(self, payload, *, timeout_seconds):
+            payloads.append(json.loads(payload))
+            return PlanningOutput(
+                AnalysisPlan(
+                    steps=[
+                        OperationStep(
+                            step_id="page",
+                            operation="profile",
+                            arguments={"player_id": "2" if len(payloads) == 1 else "1630567"},
+                        )
+                    ]
+                ).model_dump(mode="json")
+            )
+
+    turn = HybridTurnRequest(
+        request_id=uuid4(),
+        message="Show his profile",
+        page_context=AssistantPageContext(
+            route="/players/1630567",
+            player_ids=["1630567"],
+            selections=ConversationContext(release_id=context.release_id, season="2024-25"),
+        ),
+    )
+    answer = run_hybrid_turn(session, turn, provider=Provider())
+    assert answer.status == "answered", answer.model_dump_json()
+    assert answer.plan.steps[0].arguments["player_id"] == "1630567"
+    assert "page referent" in payloads[1]["rejected_previous_attempt"]
+
+
+def test_ar07_compare_pair_uses_both_canonical_page_selections(postgres_conversation):
+    from courtload.domain.hybrid_assistant import AssistantPageContext
+
+    session, context = postgres_conversation
+
+    class Provider:
+        def plan(self, payload, *, timeout_seconds):
+            body = json.loads(payload)
+            assert body["page_referents"] == {"player_a": "1630567", "player_b": "2"}
+            return PlanningOutput(
+                AnalysisPlan(
+                    steps=[
+                        OperationStep(
+                            step_id="pair", operation="compare", arguments=body["page_referents"]
+                        )
+                    ]
+                ).model_dump(mode="json")
+            )
+
+    answer = run_hybrid_turn(
+        session,
+        HybridTurnRequest(
+            request_id=uuid4(),
+            message="Compare these players",
+            page_context=AssistantPageContext(
+                route="/compare",
+                player_ids=["1630567", "2"],
+                selections=ConversationContext(release_id=context.release_id, season="2024-25"),
+            ),
+        ),
+        provider=Provider(),
+    )
+    assert answer.status == "answered", answer.model_dump_json()
+    assert answer.plan.steps[0].arguments["player_a"] == "1630567"
+    assert answer.plan.steps[0].arguments["player_b"] == "2"

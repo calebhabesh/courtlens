@@ -1,0 +1,2 @@
+{"job_id": "ed26454f-a69e-42b9-a077-52c402e1b0d5", "targets": 591}
+{"job_id": "ed26454f-a69e-42b9-a077-52c402e1b0d5", "targets": 591, "status": "succeeded", "output": {"portraits_acquired": 200, "portraits_failed": 0}, "previous_assets_retained": 591, "high_resolution_cached": 132, "dimensions": [[1040, 760]]}

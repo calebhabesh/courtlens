@@ -27,6 +27,16 @@ export interface ColumnDefinition {
   countingModeKeys?: Partial<Record<CountingMode, string>>;
 }
 
+/** Table and preview must display the same server-owned value and normalization. */
+export function formatColumnValue(column: ColumnDefinition, player: PlayerResearchItem): string {
+  const value = column.key === "gp" || column.key === "games_played"
+    ? player.games_played ?? player.metrics.gp
+    : column.key === "min" || column.key === "total_minutes"
+    ? player.total_minutes ?? player.metrics.min
+    : player.metrics[column.key];
+  return column.format ? column.format(value, player) : value == null ? "—" : String(value);
+}
+
 export interface HeaderGroup {
   label: string;
   colSpan: number;

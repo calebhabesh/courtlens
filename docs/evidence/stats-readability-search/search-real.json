@@ -1,0 +1,30 @@
+{
+  "checks": [
+    {
+      "globalCaptions": [
+        "No stats in selected scope",
+        "BOS · 2025-26",
+        "CLE / SAC · 2025-26",
+        "No stats in selected scope",
+        "POR · 2025-26",
+        "TOR · 2025-26",
+        "MEM · 2025-26",
+        "BKN · 2025-26",
+        "Navigation · In-progress scoreboard and game logs",
+        "Navigation · Dense stats, presets, and rankings"
+      ]
+    },
+    {
+      "clearRightGap": 4
+    },
+    {
+      "selection": "Scottie Barnes",
+      "scopePreserved": true,
+      "previewMatches": true
+    },
+    {
+      "mobileTouchSelection": true
+    }
+  ],
+  "errors": []
+}

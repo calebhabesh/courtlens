@@ -18,5 +18,5 @@ export interface GlobalLookupProps extends LookupScope {
 export function GlobalLookup({className = "", placeholder = "Search players, teams and pages (Press / to focus)", ...props}: GlobalLookupProps) {
   const router = useRouter(), params = useSearchParams();
   const [text,setText] = useState("");
-  return <div className={className} role="search"><LookupInput {...props} label="Search players, teams and pages" placeholder={placeholder} value={text} onChange={setText} onSelect={item=>{setText(""); router.push(buildPreservedContextUrl(item.destination_url,params));}} onSubmitText={value=>{if(value.trim()) router.push(buildPreservedContextUrl(`/stats?name=${encodeURIComponent(value.trim())}`,params));}} /></div>;
+  return <div className={className} role="search"><LookupInput {...props} compactResults label="Search players, teams and pages" placeholder={placeholder} value={text} onChange={setText} onSelect={item=>{setText(""); router.push(buildPreservedContextUrl(item.destination_url,params));}} onSubmitText={value=>{if(value.trim()) router.push(buildPreservedContextUrl(`/stats?name=${encodeURIComponent(value.trim())}`,params));}} /></div>;
 }

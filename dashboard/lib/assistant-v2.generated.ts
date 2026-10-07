@@ -33,6 +33,13 @@ export type AnswerSource = {
   "facts"?: Array<SourceFact>;
 };
 
+export type AssistantPageContext = {
+  "route": string;
+  "player_ids"?: Array<string>;
+  "team_ids"?: Array<string>;
+  "selections": ConversationContext;
+};
+
 export type ClarificationBlock = {
   "kind"?: "clarification";
   "text": string;
@@ -108,6 +115,7 @@ export type HybridTurnRequest = {
   "retry_of"?: string | null;
   "message": string;
   "context"?: ConversationContext | null;
+  "page_context"?: AssistantPageContext | null;
   "plan"?: AnalysisPlan | null;
 };
 

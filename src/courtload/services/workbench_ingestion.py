@@ -134,16 +134,8 @@ def _compute_file_sha256(path: Path) -> str:
     return hasher.hexdigest()
 
 
-def import_workbench_data(
-    session: Session,
-    ending_years: list[int] | None = None,
-    raw_root: Path | None = None,
-) -> WorkbenchDataset:
-    """Parse, reconcile, and import SportsDataverse seasons into immutable workbench tables."""
-    years = ending_years or DEFAULT_WORKBENCH_SEASONS
-    root = raw_root or get_settings().raw_store_path
-
-    # 1. Compute aggregate content hash across raw files
+def workbench_content_sha256(years: list[int], root: Path) -> tuple[str, list[str], list[Path]]:
+    """Aggregate raw-file hash that identifies a workbench dataset's content."""
     content_hasher = hashlib.sha256()
     files_to_hash: list[Path] = []
     seasons_meta: list[str] = []
@@ -174,8 +166,20 @@ def import_workbench_data(
     for f_path in sorted(files_to_hash):
         content_hasher.update(f_path.name.encode())
         content_hasher.update(_compute_file_sha256(f_path).encode())
+    return content_hasher.hexdigest(), seasons_meta, files_to_hash
 
-    overall_content_sha256 = content_hasher.hexdigest()
+
+def import_workbench_data(
+    session: Session,
+    ending_years: list[int] | None = None,
+    raw_root: Path | None = None,
+) -> WorkbenchDataset:
+    """Parse, reconcile, and import SportsDataverse seasons into immutable workbench tables."""
+    years = ending_years or DEFAULT_WORKBENCH_SEASONS
+    root = raw_root or get_settings().raw_store_path
+
+    # 1. Compute aggregate content hash across raw files
+    overall_content_sha256, seasons_meta, files_to_hash = workbench_content_sha256(years, root)
     membership_sha256 = hashlib.sha256(
         f"{overall_content_sha256}:{','.join(sorted(seasons_meta))}".encode()
     ).hexdigest()

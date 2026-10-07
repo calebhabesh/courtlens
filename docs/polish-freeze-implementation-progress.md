@@ -558,3 +558,104 @@ or migration changed.
 **Stop at the freeze boundary.** Preserve original B00–B37 source/model/finance/Live and OS
 installation gates; current roster/injury/dated-position/official-leader coverage is not invented.
 Subsequent work belongs to those independent contracts, not an inferred PF10.
+
+## PF05 / B07 follow-up — owner-confirmed Stats reference realignment, 2026-10-07
+
+The owner explicitly confirmed all recommendations after the grilling interview: full Stats
+surface fidelity to the supplied Databallr screenshots, persistent hover/focus rail with pinning,
+existing verified metrics, 38–40px default rows, consolidated controls and responsive details.
+This revises the Stats-only near-black/taller-row decisions in the
+[UI contract](design/polish-ui-contract.md#owner-confirmed-stats-reference-revision--2026-10-07).
+It does not reopen PF09 or certify other replica capabilities.
+
+Codex implemented sequentially; grilling's read-only fact-finding agent established the actual
+border/width/click-only modal causes. No Flash implementation agent was available. Owned seams:
+StatsWorkspace, WorkbenchPlayerExplorer, new scoped stats-explorer.css and StatsPreviewRail,
+shared column-value formatting, rendered Stats browser regressions and these evidence records.
+Pre-existing dirty application/assistant work was retained; globals.css was not edited here.
+
+Measured result: slate/amber segmented controls, restrained separators and shaded groups;
+40px standard rows; combined scoped identity with 28px portraits/24px guides; stable pinned
+geometry and 76–140px numeric-column bounds. Name search moves into identity header, secondary
+filters collapse, footer contains counts/density/expansion/paging. The 250px rail previews loaded
+row values without fetch/focus theft, retains the last preview, pins/unpins and collapses; narrow
+screens retain explicit focus-contained details. All percentiles remain the actual eligible
+cohort, and reference-only impact/position data is not invented.
+
+- ESLint/types, **205 Vitest tests**, production build, Ruff/format/strict mypy pass.
+- Full production fixture browser suite: **153 passed / 3 opt-in skipped**. Final bounded
+  table/preview rerun after adding sparse-preset width limits: **10 passed**, zero skips/failures.
+- Real FastAPI/PostgreSQL browser: **17 checks**, nine metric presets, counting modes, four guides,
+  exact row/rail values and pin/mobile behavior; four viewports, zero page errors/body overflow.
+  Independent API reconciliation: Luka Dončić **33.5 PPG / percentile 99**, **50 / 591 players**.
+- Inspected production screenshots at **2048×1100**, **2560×1440**, **1440×900** and **375×812**.
+  Actual Chromium **200% zoom**, DPR **1→2**, **1279×676 CSS / 1272 document width**; preview and
+  internal keyboard scrolling work. Verification used isolated frontend builds and read-only
+  real Stats queries; no primary services were replaced or personal state mutated.
+
+[Evidence, production screenshots, raw checks, executable probes and limits](evidence/stats-reference-realignment/README.md).
+Backend pytest/full release acceptance and the three opt-in browser cases were not repeated.
+Earlier freeze acceptance and independent replica source/model/finance/Live gates remain intact.
+
+## PF01/PF02/PF04/PF05 — owner-directed readability/search/branding follow-up, 2026-10-07
+
+Completed the bounded second pass after the owner's first-pass review and later portrait/font
+steering. Standard records are 52px with 14px metrics; centered metric cells and 40px guide
+columns align repeated portraits. Primary portraits are 40px, guides 34px, preview 44px.
+Availability sits beside Help; the shell mark is frameless and centered. Fontshare Tabular Bold
+wordmark artwork is reused in shell, Stats, profile/showcase SVGs and PNG exports.
+
+Table name lookup offers bounded player-only suggestions, filters in place, preserves scope,
+and stays outside the clipped scroll region. Global captions omit verbose/duplicate alias and
+availability prose; canonical/alias matching and historical team semantics remain. X inset is 4px.
+A bounded official NBA cache upgrade retains existing images and adds 1040×760 source records:
+591/591 selected-cohort portraits cached, zero acquisition failures. No analytical-source refresh,
+publication, migration or model run.
+
+Measured acceptance: 159 production fixture browser passes / 3 opt-in skips; 205 dashboard
+unit passes; 967 Python unit passes / 2 existing PostgreSQL opt-in skips; zero-warning lint/types,
+Ruff/format/strict mypy and both production builds pass. Eighteen real Stats checks across four
+widths, four real search checks, actual 200% zoom and SVG/PNG export checks pass.
+[Evidence, screenshots, acquisition jobs, harness limits and baseline](evidence/stats-readability-search/README.md).
+This does not certify independent replica source/model gates or full database release acceptance.
+
+## PF02 — owner-selected Alpino wordmark revision, 2026-10-07
+
+Replaced the prior Tabular wordmark artwork with Fontshare Alpino Bold 1.0 across header,
+Stats toolbar and profile/showcase SVG/PNG exports. Preserved amber color, rendered heights,
+mark alignment and accessible name; retained native kerning and source/license provenance.
+Five real-service browser checks pass across three widths and exports, zero page errors;
+lint/types and isolated production build pass. [Evidence](evidence/alpino-wordmark/README.md).
+This is a bounded wordmark revision, with no change to analytics, portraits or source gates.
+
+## PF02 — owner-selected Sora wordmark revision, 2026-10-07
+
+Replaced Alpino with Fontshare Sora Bold 2.0 in shared shell/table/card/export artwork.
+Preserved yellow styling, height/alignment and accessible name; recorded original source hash,
+SIL OFL license and native kerning. Five real browser checks pass across three widths and
+SVG/PNG exports, zero page errors; lint/types/isolated production build pass.
+[Evidence](evidence/sora-wordmark/README.md). Bounded artwork change; analytical gates retained.
+
+## PF06 — seamless route transitions, 2026-10-07
+
+Owner-requested follow-up: removed the route-keyed global `loading.tsx` screen and text
+fallbacks from 15 route-level Suspense boundaries. A persistent, silent Suspense boundary
+inside the main layout preserves prerendering support for search-parameter consumers while
+keeping the current view visible during pending navigation.
+
+Measured checks on the current working tree: zero-warning dashboard lint and TypeScript,
+205 unit tests, isolated production webpack build, and 50 production fixture browser tests
+across workbench, route polish, shooting, shared floor, finance, Live and advanced research
+all pass. Additional Chromium checks at 1440px and 375px delayed the Stats route response
+by 800ms: the prior Calculator view remained visible and a main-content mutation observer
+recorded zero navigation loading-text flashes before Stats appeared. Production fixture
+services ran on isolated ports; the existing local development session was preserved.
+
+## PF02 — owner-selected Red Hat Display wordmark revision, 2026-10-07
+
+Replaced Sora with Fontshare Red Hat Display Bold 1.021 across shared header, Stats,
+profile/showcase and SVG/PNG share-card artwork. Retained yellow color, rendered height,
+accessible name and centered mark alignment; recorded source/license hashes and native
+kerning. Five real-service Chromium checks at three widths and exports pass with zero page
+errors. Lint, TypeScript and isolated production webpack build pass.
+[Evidence and inspected screenshots](evidence/red-hat-display-wordmark/README.md).

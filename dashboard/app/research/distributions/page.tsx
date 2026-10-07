@@ -9,15 +9,7 @@ export const metadata: Metadata = {
 
 export default function DistributionsPage() {
   return (
-    <Suspense
-      fallback={
-        <div className="workbench-content">
-          <div className="table-card" style={{ padding: "2rem", textAlign: "center" }}>
-            <div className="text-muted">Loading distributions investigation view...</div>
-          </div>
-        </div>
-      }
-    >
+    <Suspense fallback={null}>
       <DistributionsInvestigationView />
     </Suspense>
   );

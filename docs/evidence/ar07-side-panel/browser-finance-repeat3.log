@@ -1,0 +1,33 @@
+
+> courtload-dashboard@0.1.0 test:browser
+> playwright test e2e/finance.spec.ts --workers=2 --repeat-each=3
+
+
+Running 24 tests using 2 workers
+
+  ✓   1 e2e/finance.spec.ts:36:5 › filters, as-of emptiness and changed context hide stale totals (877ms)
+  ✓   2 e2e/finance.spec.ts:23:5 › retained historical terms stay unknown, drawer sources and financial context survive navigation (963ms)
+  ✓   3 e2e/finance.spec.ts:43:5 › option scenario stays separate from reported money and groups (546ms)
+  ✓   4 e2e/finance.spec.ts:50:5 › query rejection has retry, and book chooser never silently chooses newest (643ms)
+  ✓   5 e2e/finance.spec.ts:57:5 › mobile and landscape table/drawer preserve keyboard access without body overflow (670ms)
+  ✓   6 e2e/finance.spec.ts:64:5 › Refresh staged import returns a tracked job and exposes failed worker state (854ms)
+  ✓   7 e2e/finance.spec.ts:71:5 › embedded Stats uses a separate basketball season and retains its resolved release (527ms)
+  ✓   8 e2e/finance.spec.ts:83:5 › a delayed old financial response cannot replace a newer financial context (463ms)
+  ✓   9 e2e/finance.spec.ts:23:5 › retained historical terms stay unknown, drawer sources and financial context survive navigation (941ms)
+  ✓  10 e2e/finance.spec.ts:36:5 › filters, as-of emptiness and changed context hide stale totals (1.0s)
+  ✓  11 e2e/finance.spec.ts:43:5 › option scenario stays separate from reported money and groups (501ms)
+  ✓  13 e2e/finance.spec.ts:57:5 › mobile and landscape table/drawer preserve keyboard access without body overflow (577ms)
+  ✓  12 e2e/finance.spec.ts:50:5 › query rejection has retry, and book chooser never silently chooses newest (868ms)
+  ✓  14 e2e/finance.spec.ts:64:5 › Refresh staged import returns a tracked job and exposes failed worker state (807ms)
+  ✓  15 e2e/finance.spec.ts:71:5 › embedded Stats uses a separate basketball season and retains its resolved release (655ms)
+  ✓  16 e2e/finance.spec.ts:83:5 › a delayed old financial response cannot replace a newer financial context (440ms)
+  ✓  17 e2e/finance.spec.ts:23:5 › retained historical terms stay unknown, drawer sources and financial context survive navigation (942ms)
+  ✓  18 e2e/finance.spec.ts:36:5 › filters, as-of emptiness and changed context hide stale totals (988ms)
+  ✓  19 e2e/finance.spec.ts:43:5 › option scenario stays separate from reported money and groups (494ms)
+  ✓  20 e2e/finance.spec.ts:50:5 › query rejection has retry, and book chooser never silently chooses newest (617ms)
+  ✓  21 e2e/finance.spec.ts:57:5 › mobile and landscape table/drawer preserve keyboard access without body overflow (604ms)
+  ✓  23 e2e/finance.spec.ts:71:5 › embedded Stats uses a separate basketball season and retains its resolved release (575ms)
+  ✓  22 e2e/finance.spec.ts:64:5 › Refresh staged import returns a tracked job and exposes failed worker state (1.0s)
+  ✓  24 e2e/finance.spec.ts:83:5 › a delayed old financial response cannot replace a newer financial context (470ms)
+
+  24 passed (9.9s)

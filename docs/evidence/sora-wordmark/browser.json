@@ -1,0 +1,43 @@
+{
+  "runtime": "Existing development server with real FastAPI/PostgreSQL; read-only",
+  "checks": [
+    {
+      "viewport": [
+        2048,
+        1100
+      ],
+      "centerOffset": 0,
+      "wordmarkWidth": 97.625,
+      "wordmarkHeight": 14,
+      "documentWidth": 2048
+    },
+    {
+      "viewport": [
+        1440,
+        900
+      ],
+      "centerOffset": 0,
+      "wordmarkWidth": 97.625,
+      "wordmarkHeight": 14,
+      "documentWidth": 1440
+    },
+    {
+      "viewport": [
+        375,
+        812
+      ],
+      "centerOffset": 0,
+      "wordmarkWidth": 97.625,
+      "wordmarkHeight": 14,
+      "documentWidth": 375
+    },
+    {
+      "profileSvg": "Sora outline matches header and table",
+      "profilePng": "export succeeds"
+    },
+    {
+      "showcase": "header and watermark match Sora"
+    }
+  ],
+  "errors": []
+}

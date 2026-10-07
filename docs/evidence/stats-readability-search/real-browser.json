@@ -1,0 +1,319 @@
+{
+  "runtime": "Isolated production standalone Next + existing real FastAPI/PostgreSQL; read-only",
+  "query": {
+    "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+    "season": "2025-26",
+    "phase": "regular_season",
+    "before_date": "2026-04-13",
+    "entity_kind": "player",
+    "window": {
+      "kind": "season"
+    },
+    "team_scope": {
+      "team_id": null,
+      "participation_only": true
+    },
+    "sort": [
+      {
+        "field": "pts_per_game",
+        "direction": "desc",
+        "nulls_last": true
+      }
+    ],
+    "page": {
+      "limit": 50
+    }
+  },
+  "measurements": [
+    {
+      "label": "wide",
+      "viewport": {
+        "width": 2560,
+        "height": 1440,
+        "dpr": 1
+      },
+      "documentWidth": 2560,
+      "rowHeight": 52,
+      "region": 2277,
+      "table": 2277,
+      "railWidth": 250,
+      "identityWidths": [
+        28,
+        26,
+        280.03125
+      ],
+      "metricWidths": [
+        135.609375,
+        135.609375,
+        135.609375,
+        135.609375,
+        135.609375,
+        135.609375,
+        135.609375,
+        135.609375,
+        135.609375,
+        135.609375,
+        135.609375,
+        135.609375,
+        135.65625
+      ],
+      "footer": 1407
+    },
+    {
+      "label": "desktop",
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "dpr": 1
+      },
+      "documentWidth": 1440,
+      "rowHeight": 52,
+      "region": 1157,
+      "table": 1606,
+      "railWidth": 250,
+      "identityWidths": [
+        28,
+        26,
+        280.03125
+      ],
+      "metricWidths": [
+        83.984375,
+        83.984375,
+        83.984375,
+        83.984375,
+        83.984375,
+        83.984375,
+        83.984375,
+        83.984375,
+        83.984375,
+        83.984375,
+        83.984375,
+        83.984375,
+        84.15625
+      ],
+      "footer": 867
+    },
+    {
+      "label": "mobile",
+      "viewport": {
+        "width": 375,
+        "height": 812,
+        "dpr": 1
+      },
+      "documentWidth": 375,
+      "rowHeight": 52,
+      "region": 355,
+      "table": 1546,
+      "railWidth": 0,
+      "identityWidths": [
+        28,
+        26,
+        220.03125
+      ],
+      "metricWidths": [
+        83.984375,
+        83.984375,
+        83.984375,
+        83.984375,
+        83.984375,
+        83.984375,
+        83.984375,
+        83.984375,
+        83.984375,
+        83.984375,
+        83.984375,
+        83.984375,
+        84.15625
+      ],
+      "footer": 1324.796875
+    },
+    {
+      "label": "narrow-css",
+      "viewport": {
+        "width": 1280,
+        "height": 900,
+        "dpr": 1
+      },
+      "documentWidth": 1280,
+      "rowHeight": 52,
+      "region": 997,
+      "table": 1606,
+      "railWidth": 250,
+      "identityWidths": [
+        28,
+        26,
+        280.03125
+      ],
+      "metricWidths": [
+        83.984375,
+        83.984375,
+        83.984375,
+        83.984375,
+        83.984375,
+        83.984375,
+        83.984375,
+        83.984375,
+        83.984375,
+        83.984375,
+        83.984375,
+        83.984375,
+        84.15625
+      ],
+      "footer": 909
+    }
+  ],
+  "checks": [
+    {
+      "portrait": {
+        "naturalWidth": 1040,
+        "naturalHeight": 760,
+        "width": 40,
+        "source": "http://127.0.0.1:8000/api/workbench/players/1629029/portrait?quality=1040x760"
+      }
+    },
+    {
+      "check": "Real API first-row player/PPG/percentile reconciliation",
+      "player": "Luka Dončić",
+      "points": "33.5",
+      "percentile": 99,
+      "eligible": 591
+    },
+    {
+      "check": "Real hover values match every visible metric; pin holds while hovering another row",
+      "passed": true
+    },
+    {
+      "preset": "overview",
+      "alignment": {
+        "headers": [
+          20,
+          20
+        ],
+        "body": 20
+      },
+      "maxMetricWidth": 84.15625,
+      "previewMatchesRow": true
+    },
+    {
+      "preset": "shooting",
+      "alignment": {
+        "headers": [
+          21,
+          21
+        ],
+        "body": 21
+      },
+      "maxMetricWidth": 84.15625,
+      "previewMatchesRow": true
+    },
+    {
+      "preset": "defense",
+      "alignment": {
+        "headers": [
+          14,
+          14
+        ],
+        "body": 14
+      },
+      "maxMetricWidth": 100.546875,
+      "previewMatchesRow": true
+    },
+    {
+      "preset": "trueshooting",
+      "alignment": {
+        "headers": [
+          17,
+          17
+        ],
+        "body": 17
+      },
+      "maxMetricWidth": 84.125,
+      "previewMatchesRow": true
+    },
+    {
+      "preset": "advanced",
+      "alignment": {
+        "headers": [
+          22,
+          22
+        ],
+        "body": 22
+      },
+      "maxMetricWidth": 84.1875,
+      "previewMatchesRow": true
+    },
+    {
+      "preset": "playmaking",
+      "alignment": {
+        "headers": [
+          13,
+          13
+        ],
+        "body": 13
+      },
+      "maxMetricWidth": 107.1875,
+      "previewMatchesRow": true
+    },
+    {
+      "preset": "rebounding",
+      "alignment": {
+        "headers": [
+          12,
+          12
+        ],
+        "body": 12
+      },
+      "maxMetricWidth": 128.59375,
+      "previewMatchesRow": true
+    },
+    {
+      "preset": "impact",
+      "alignment": {
+        "headers": [
+          18,
+          18
+        ],
+        "body": 18
+      },
+      "maxMetricWidth": 84.125,
+      "previewMatchesRow": true
+    },
+    {
+      "preset": "sixfactor",
+      "alignment": {
+        "headers": [
+          15,
+          15
+        ],
+        "body": 15
+      },
+      "maxMetricWidth": 86.21875,
+      "previewMatchesRow": true
+    },
+    {
+      "countingMode": "raw",
+      "previewMatchesRow": true
+    },
+    {
+      "countingMode": "per_36",
+      "previewMatchesRow": true
+    },
+    {
+      "guides": "photos",
+      "passed": true
+    },
+    {
+      "guides": "logos",
+      "passed": true
+    },
+    {
+      "guides": "initials",
+      "passed": true
+    },
+    {
+      "guides": "none",
+      "passed": true
+    }
+  ],
+  "errors": []
+}

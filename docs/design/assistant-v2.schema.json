@@ -73,6 +73,42 @@
       "title": "AnalysisPlan",
       "type": "object"
     },
+    "AssistantPageContext": {
+      "additionalProperties": false,
+      "description": "Untrusted UI selections, never a transcript or evidence source.",
+      "properties": {
+        "route": {
+          "pattern": "^(?:/players/[0-9]+|/teams/[0-9]{10}|/compare)$",
+          "title": "Route",
+          "type": "string"
+        },
+        "player_ids": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 6,
+          "title": "Player Ids",
+          "type": "array"
+        },
+        "team_ids": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 1,
+          "title": "Team Ids",
+          "type": "array"
+        },
+        "selections": {
+          "$ref": "#/$defs/ConversationContext"
+        }
+      },
+      "required": [
+        "route",
+        "selections"
+      ],
+      "title": "AssistantPageContext",
+      "type": "object"
+    },
     "ConversationContext": {
       "additionalProperties": false,
       "properties": {
@@ -1071,6 +1107,17 @@
           "anyOf": [
             {
               "$ref": "#/$defs/ConversationContext"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "page_context": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/AssistantPageContext"
             },
             {
               "type": "null"

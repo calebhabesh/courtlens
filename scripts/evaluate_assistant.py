@@ -57,6 +57,13 @@ class FixtureProvider:
         return PlanningOutput(self.data)
 
 
+class NoModelProvider:
+    """AR09: the language model is unavailable, so only the rule planner can plan."""
+
+    def plan(self, payload: str, *, timeout_seconds: float) -> PlanningOutput:
+        raise ProviderFailure("quota_exceeded", 60)
+
+
 class RecordingProvider:
     def __init__(
         self, provider: GeminiPlanProvider, interval: float, max_calls: int | None
@@ -129,7 +136,7 @@ class RecordingProvider:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--mode", choices=("live", "fixture"), default="live")
+    parser.add_argument("--mode", choices=("live", "fixture", "rules"), default="live")
     parser.add_argument("--corpus", type=Path, default=CORPUS)
     parser.add_argument("--output", type=Path)
     parser.add_argument("--split", choices=("dev", "holdout"), default="dev")
@@ -154,6 +161,8 @@ def main() -> None:
     if output.exists():
         parser.error("Refusing to overwrite evidence; choose a new output")
     corpus, digest = load_corpus(args.corpus)
+    # The rule planner is deterministic, so repetitions add no information.
+    runs = 1 if args.mode == "rules" else corpus["runs"]
     cases = [c for c in corpus["cases"] if c["split"] == args.split]
     if args.category:
         unknown = set(args.category) - {c["category"] for c in cases}
@@ -190,12 +199,16 @@ def main() -> None:
         "version": "courtlens-assistant-ar02-report-v1",
         "started_at": datetime.now(UTC).isoformat(),
         "revision": subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip(),
-        "mode": "live" if provider else "authored_fixture_not_language_accuracy",
+        "mode": "live"
+        if provider
+        else "rule_planner_without_model"
+        if args.mode == "rules"
+        else "authored_fixture_not_language_accuracy",
         "corpus_sha256": digest,
         "corpus_file": str(args.corpus),
         "corpus_version": corpus["version"],
         "split": args.split,
-        "runs": corpus["runs"],
+        "runs": runs,
         "categories": args.category,
         "general_prompt_sha256": hashlib.sha256(GENERAL_PROMPT.encode()).hexdigest(),
         "narrative_prompt_sha256": hashlib.sha256(NARRATIVE_PROMPT.encode()).hexdigest(),
@@ -233,7 +246,7 @@ def main() -> None:
         pass
 
     def checkpoint() -> None:
-        report["summary"] = summarize(report["records"], len(cases), corpus["runs"])
+        report["summary"] = summarize(report["records"], len(cases), runs)
         if provider:
             report["provider_calls"] = provider.calls
         temporary = output.with_suffix(".tmp")
@@ -281,7 +294,7 @@ def main() -> None:
                     },
                 )
             )
-            for repetition in range(1, corpus["runs"] + 1):
+            for repetition in range(1, runs + 1):
                 if provider and (
                     provider.stopped
                     or (args.max_calls is not None and len(provider.calls) >= args.max_calls)
@@ -300,7 +313,12 @@ def main() -> None:
                         HybridTurnRequest(
                             request_id=uuid4(), message=setup["message"], context=pinned
                         ),
-                        provider=provider or FixtureProvider(setup["expected_plan"]),
+                        provider=provider
+                        or (
+                            NoModelProvider()
+                            if args.mode == "rules"
+                            else FixtureProvider(setup["expected_plan"])
+                        ),
                         clock=clock,
                     )
                     previous_plan = setup_response.plan
@@ -313,7 +331,12 @@ def main() -> None:
                     HybridTurnRequest(request_id=uuid4(), message=case["message"], context=pinned),
                     previous_plan=previous_plan,
                     inherited_context=pinned,
-                    provider=provider or FixtureProvider(case["expected_plan"]),
+                    provider=provider
+                    or (
+                        NoModelProvider()
+                        if args.mode == "rules"
+                        else FixtureProvider(case["expected_plan"])
+                    ),
                     clock=clock,
                     on_narrative=narratives.append,
                 )

@@ -1,3 +1,5 @@
+import "./stats-explorer.css";
+import { ChartNoAxesColumn } from "lucide-react";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import { SharedFloorView } from "@/components/shared-floor-view";
@@ -72,28 +74,28 @@ export async function StatsWorkspace({ params: rawParams, basePath = "/stats", t
   }
 
   return (
-    <>
-      <ContextBar
-        catalog={catalog}
-        sampleNoun="eligible players"
-        initialReleaseId={querySpec.release_id ?? undefined}
-        initialSeason={researchQuery.season}
-        initialPhase={researchQuery.phase}
-        initialBeforeDate={researchQuery.before_date}
-        initialWindow={researchQuery.window}
-        sampleSize={researchData?.total_eligible_players}
-        lastIncludedDate={researchData?.context?.last_included_date}
-      />
-
+    <section className="stats-workspace">
       <div className="workbench-content">
         <div className="page-header">
           <div>
-            <h1 className="page-title">{title}</h1>
+            <h1 className="page-title"><ChartNoAxesColumn size={28} aria-hidden="true" />{title}</h1>
             <p className="page-subtitle">
-              Dense player statistics explorer with deterministic analytical windowing, verified percentages, and sample constraints.
+              NBA player statistics. Explore production, shooting and efficiency within your selected scope.
             </p>
           </div>
         </div>
+
+        <ContextBar
+          catalog={catalog}
+          sampleNoun="eligible players"
+          initialReleaseId={querySpec.release_id ?? undefined}
+          initialSeason={researchQuery.season}
+          initialPhase={researchQuery.phase}
+          initialBeforeDate={researchQuery.before_date}
+          initialWindow={researchQuery.window}
+          sampleSize={researchData?.total_eligible_players}
+          lastIncludedDate={researchData?.context?.last_included_date}
+        />
 
         {loadError && (
           <div className="notice-box" style={{ borderLeftColor: "var(--negative)", marginBottom: "1rem" }}>
@@ -113,6 +115,6 @@ export async function StatsWorkspace({ params: rawParams, basePath = "/stats", t
           />
         )}
       </div>
-    </>
+    </section>
   );
 }

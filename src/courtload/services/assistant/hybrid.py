@@ -40,6 +40,8 @@ from courtload.domain.hybrid_assistant import (
     claim_text,
     external_claim_text,
 )
+from courtload.services.assistant.awards import AwardsUnavailable, award_source, match_award
+from courtload.services.assistant.awards import lookup as lookup_award
 from courtload.services.assistant.conversations import (
     DEADLINE_SECONDS,
     MAX_PROVIDER_BYTES,
@@ -59,6 +61,7 @@ from courtload.services.assistant.operations import (
     canonical_step,
     declarations,
 )
+from courtload.services.assistant.page_context import bind_page_step, resolve_page_message
 from courtload.services.assistant.planner import (
     GeminiPlanProvider,
     GeneralKnowledgeDraft,
@@ -72,19 +75,18 @@ from courtload.services.assistant.retrieval import (
     retrieve_source,
     select_source,
 )
+from courtload.services.assistant.rule_planner import RulePlan, rule_plan
+from courtload.services.starting_positions import PositionEvidenceUnavailable
 from courtload.services.stats_catalog import stats_catalog_scope
 from courtload.services.workbench_analytics import canonical_hash, resolve_workbench_context
 
 _FAILURES: dict[Failure, tuple[str, str]] = {
     "position_unavailable": (
         (
-            "I cannot verify the requested position-filtered leader: this release has no dated"
-            " PG cohort, and the registered public sources do not establish that ranking."
+            "I cannot filter this scope by position: its box scores have no verifiable "
+            "starting positions to group players by."
         ),
-        (
-            "Use Stats for the available player cohort, or retry when sourced "
-            "position rankings are available."
-        ),
+        "Ask for the same ranking without the position filter, or open Stats.",
     ),
     "qualification_unverified": (
         (
@@ -207,6 +209,13 @@ def _rejection_summary(exc: Exception) -> str:
     return str(exc)[:800]
 
 
+def plan_position(plan: AnalysisPlan | None) -> str:
+    for step in plan.steps if plan else []:
+        if step.operation == "position_query":
+            return f"{step.arguments['position']}s"
+    return "position"
+
+
 def route_intent(message: str, has_plan: bool = False) -> Intent:
     """Server routing precedes planner work; current facts never become model knowledge."""
     # A leading "Now ..." is a follow-up discourse marker, not a request for current facts.
@@ -225,6 +234,9 @@ def route_intent(message: str, has_plan: bool = False) -> Intent:
             text.strip(),
         )
     )
+    # Official award/championship results are sourced facts, not local analysis.
+    if not has_plan and match_award(text) and not (conceptual and not re.search(r"\bwho\b", text)):
+        return "external"
     # Roster/trade/injury facts are unavailable even with a supplied analytical plan.
     if re.search(
         r"\b(news|rosters?|injur(?:y|ies|ed)|trades?|traded|internet|web|plays? for|"
@@ -243,11 +255,6 @@ def route_intent(message: str, has_plan: bool = False) -> Intent:
         return "external"
     if re.search(r"\bregular season\b.*\b(start|begin|tip off)\b|\bstart date\b", text):
         return "external"
-    position = bool(
-        re.search(r"\b(point guards?|shooting guards?|guards?|forwards?|centers?|pg|sg)\b", text)
-    )
-    if position and not (conceptual and re.search(r"\b(role|mean|does|is a|are)\b", text)):
-        return "external"
     if "according to" in text and select_source(message, None) is not None:
         return "external"
     if has_plan:
@@ -257,6 +264,7 @@ def route_intent(message: str, has_plan: bool = False) -> Intent:
     # Questions asking for an observation/forecast remain data questions even when
     # prefixed with "explain" or "what is". Concept definitions require no release.
     if re.search(
+        r"\bhow (?:did|has|have|was|were) (?!a |an |the rule)|"
         r"\b(show|rank|ranked|top|led|leads?|leader|highest|most assists|most consistent|"
         r"best defender|better defender|how many|how variable|average|averaged|averaging)\b",
         text,
@@ -314,46 +322,49 @@ def _run_single_turn(
         status = "failed" if failed else "unable"
         actions.append(AnswerAction(kind="navigation", label="Open Stats", url="/stats"))
 
+    def general_block() -> TextBlock | None:
+        """Labelled, number-free general knowledge; None when the provider declines."""
+        nonlocal provider, provider_calls
+        if provider is None:
+            settings = get_settings()
+            key = (
+                settings.gemini_api_key.get_secret_value().strip()
+                if settings.gemini_api_key
+                else ""
+            )
+            if not key:
+                raise ProviderFailure("disabled")
+            provider = GeminiPlanProvider(key, settings.gemini_model)
+        payload = json.dumps(
+            {
+                "purpose": "general_knowledge",
+                "message": request.message,
+                "today": clock().isoformat(),
+                "mixed_sentence": _mixed_sentence,
+                "curated_entry": None,
+            },
+            separators=(",", ":"),
+        )
+        provider_calls += 1
+        output = _bounded_provider(provider, payload, deadline - time.monotonic())
+        draft = GeneralKnowledgeDraft.model_validate(output.data)
+        if draft.status == "unavailable":
+            return None
+        if _mixed_sentence and len(re.split(r"[.!?]\s+", draft.text.strip())) > 1:
+            raise ValueError("mixed knowledge requires a single sentence")
+        return TextBlock(origin="general_knowledge", text=GENERAL_LABEL + "\n" + draft.text)
+
     try:
         if intent == "inability":
             unable("prohibited_action")
         elif intent in ("site_guidance", "explanation", "discussion"):
             entry = retrieve(request.message if intent != "discussion" else "defender defense")
             if entry is None:
-                if provider is None:
-                    settings = get_settings()
-                    key = (
-                        settings.gemini_api_key.get_secret_value().strip()
-                        if settings.gemini_api_key
-                        else ""
-                    )
-                    if not key:
-                        raise ProviderFailure("disabled")
-                    provider = GeminiPlanProvider(key, settings.gemini_model)
-                payload = json.dumps(
-                    {
-                        "purpose": "general_knowledge",
-                        "message": request.message,
-                        "today": clock().isoformat(),
-                        "mixed_sentence": _mixed_sentence,
-                        "curated_entry": None,
-                    },
-                    separators=(",", ":"),
-                )
-                provider_calls += 1
-                output = _bounded_provider(provider, payload, deadline - time.monotonic())
-                draft = GeneralKnowledgeDraft.model_validate(output.data)
-                if draft.status == "unavailable":
+                general = general_block()
+                if general is None:
                     unable("unsupported_operation")
                 else:
-                    if _mixed_sentence and len(re.split(r"[.!?]\s+", draft.text.strip())) > 1:
-                        raise ValueError("mixed knowledge requires a single sentence")
-                    blocks.append(
-                        TextBlock(
-                            origin="general_knowledge",
-                            text=GENERAL_LABEL + "\n" + draft.text,
-                        )
-                    )
+                    blocks.append(general)
             else:
                 source = entry.source()
                 sources.append(source)
@@ -392,8 +403,41 @@ def _run_single_turn(
                     for route in entry.routes
                 )
 
+        elif intent == "external" and (award := lookup_award(request.message, clock())):
+            # Official results come from the pinned, sourced registry; never model memory.
+            if award.record is not None:
+                source, fact = award_source(award)
+                sources.append(source)
+                blocks.append(
+                    ExternalClaimBlock(
+                        source_id=source.source_id,
+                        text=external_claim_text(fact),
+                        **fact.model_dump(),
+                    )
+                )
+                if source.url:
+                    actions.append(
+                        AnswerAction(kind="source", label="Open NBA source", url=source.url)
+                    )
+            else:
+                status = "unable"
+                blocks.append(
+                    InabilityBlock(
+                        reason="external_unavailable",
+                        text=(
+                            f"I don't have an official {award.label} result for "
+                            f"{award.season}. {award.interpretation} Either it has not been "
+                            "awarded yet, or that season is outside the verified awards "
+                            "registry (most awards from 2023-24, MVPs from 2018-19, champions "
+                            "from 2019-20)."
+                        ),
+                        next_action="Name another season, or check NBA.com for older results.",
+                    )
+                )
         else:
             merged = inherited_context.model_dump() if inherited_context else {}
+            if request.page_context:
+                merged.update(request.page_context.selections.model_dump(exclude_unset=True))
             if request.context:
                 merged.update(request.context.model_dump(exclude_unset=True))
             scope = resolve_scope(
@@ -421,13 +465,7 @@ def _run_single_turn(
                     )
                 else:
                     unable(
-                        "position_unavailable"
-                        if re.search(
-                            r"\b(point guards?|shooting guards?|guards?|forwards?|centers?|"
-                            r"pg|sg)\b",
-                            request.message.lower(),
-                        )
-                        else "qualification_unverified"
+                        "qualification_unverified"
                         if re.search(
                             r"\b(leader|leads?|most assists|highest apg)\b", request.message.lower()
                         )
@@ -478,46 +516,77 @@ def _run_single_turn(
                     ):
                         unable("no_observations")
                     else:
+                        planner_message, page_bindings = resolve_page_message(
+                            session, context, request.message, request.page_context
+                        )
+                        if page_bindings:
+                            scope.assumptions.append(
+                                "Resolved page reference: "
+                                + ", ".join(
+                                    f"{key}={value}" for key, value in page_bindings.items()
+                                )
+                            )
                         plan = request.plan
                         rejection: str | None = None
                         attempts = 0
+                        ruled: RulePlan | None = None
+                        provider_failure: Exception | None = None
                         while True:
-                            if request.plan is None:
-                                if provider is None:
-                                    settings = get_settings()
-                                    key = (
-                                        settings.gemini_api_key.get_secret_value().strip()
-                                        if settings.gemini_api_key
-                                        else ""
+                            if request.plan is None and ruled is None:
+                                try:
+                                    if provider is None:
+                                        settings = get_settings()
+                                        key = (
+                                            settings.gemini_api_key.get_secret_value().strip()
+                                            if settings.gemini_api_key
+                                            else ""
+                                        )
+                                        if not key:
+                                            raise ProviderFailure("disabled")
+                                        provider = GeminiPlanProvider(key, settings.gemini_model)
+                                    payload = json.dumps(
+                                        {
+                                            "message": planner_message,
+                                            **(
+                                                {"page_referents": page_bindings}
+                                                if page_bindings
+                                                else {}
+                                            ),
+                                            "today": clock().isoformat(),
+                                            "context": context.to_dict(),
+                                            "previous_plan": previous_plan.model_dump(mode="json")
+                                            if previous_plan
+                                            else None,
+                                            "rejected_previous_attempt": rejection,
+                                            "operations": declarations(),
+                                        },
+                                        separators=(",", ":"),
                                     )
-                                    if not key:
-                                        raise ProviderFailure("disabled")
-                                    provider = GeminiPlanProvider(key, settings.gemini_model)
-                                payload = json.dumps(
-                                    {
-                                        "message": request.message,
-                                        "today": clock().isoformat(),
-                                        "context": context.to_dict(),
-                                        "previous_plan": previous_plan.model_dump(mode="json")
-                                        if previous_plan
-                                        else None,
-                                        "rejected_previous_attempt": rejection,
-                                        "operations": declarations(),
-                                    },
-                                    separators=(",", ":"),
-                                )
-                                # Reserve prompt/schema allowance within the legacy 64KiB budget.
-                                if len(payload.encode()) > MAX_PROVIDER_BYTES - 24000:
-                                    raise ValueError("provider input budget")
-                                if time.monotonic() >= deadline:
-                                    raise TimeoutError("turn deadline")
-                                provider_calls += 1
-                                attempts += 1
-                                output = _bounded_provider(
-                                    provider, payload, deadline - time.monotonic()
-                                )
+                                    # Reserve prompt/schema room in the legacy 64KiB budget.
+                                    if len(payload.encode()) > MAX_PROVIDER_BYTES - 24000:
+                                        raise ValueError("provider input budget")
+                                    if time.monotonic() >= deadline:
+                                        raise TimeoutError("turn deadline")
+                                    provider_calls += 1
+                                    attempts += 1
+                                    output = _bounded_provider(
+                                        provider, payload, deadline - time.monotonic()
+                                    )
+                                except (ProviderFailure, TimeoutError) as exc:
+                                    # Answer-first: common shapes still plan without the model.
+                                    ruled = rule_plan(
+                                        session,
+                                        planner_message,
+                                        previous_plan,
+                                        page_bindings,
+                                        context.dataset_id,
+                                    )
+                                    if ruled is None:
+                                        raise
+                                    provider_failure = exc
+                                    plan = ruled.plan
                             try:
-                                if request.plan is None:
+                                if request.plan is None and ruled is None:
                                     if len(json.dumps(output.data).encode()) > 32 * 1024:
                                         raise ValueError("provider output budget")
                                     # The v2 adapter rejects wrong versions.
@@ -530,12 +599,17 @@ def _run_single_turn(
                                 plan = _apply_server_scope(plan, selected, scope)
                                 if plan.status == "execute":
                                     steps = [
-                                        canonical_step(session, context, step)
+                                        canonical_step(
+                                            session, context, bind_page_step(step, page_bindings)
+                                        )
                                         for step in plan.steps
                                     ]
                                     plan = plan.model_copy(update={"steps": steps})
                                 break
                             except (ValueError, ValidationError) as exc:
+                                if provider_failure is not None:
+                                    # A rule plan never repairs; report the real failure.
+                                    raise provider_failure from None
                                 # Only a provider plan earns one repair attempt.
                                 if request.plan is not None or attempts >= MAX_PLAN_ATTEMPTS:
                                     raise
@@ -547,6 +621,10 @@ def _run_single_turn(
                                     json.dumps(output.data)[:4000],
                                 )
                         planning = False
+                        if ruled is not None:
+                            scope.assumptions.extend(ruled.notes)
+                            # The provider just failed; template text replaces its narrative.
+                            provider = None
                         if plan.status == "clarification_required":
                             status = "clarification_required"
                             messages = {
@@ -569,14 +647,87 @@ def _run_single_turn(
                                 )
                             )
                         elif plan.status == "unsupported":
-                            unable("unsupported_operation")
+                            # Answer-first: a labelled general answer beats a bare refusal.
+                            general = None
+                            if request.plan is None and not _mixed_sentence and ruled is None:
+                                try:
+                                    general = general_block()
+                                except (
+                                    ProviderFailure,
+                                    TimeoutError,
+                                    ValueError,
+                                    ValidationError,
+                                ):
+                                    general = None
+                            if general is None:
+                                unable("unsupported_operation")
+                            else:
+                                blocks.append(general)
+                                blocks.append(
+                                    InabilityBlock(
+                                        reason="unsupported_operation",
+                                        text=(
+                                            "CourtLens data cannot compute this exact request, "
+                                            "so the answer above is general knowledge."
+                                        ),
+                                        next_action=(
+                                            "Rephrase with a metric and scope to get a "
+                                            "data answer, or open Stats."
+                                        ),
+                                    )
+                                )
                         else:
                             if on_phase:
                                 on_phase("querying")
                             steps = plan.steps
                             for step in steps:
                                 calls += 1
-                                data = execute_bounded(session, context, step, deadline)
+                                try:
+                                    data = execute_bounded(session, context, step, deadline)
+                                except PositionEvidenceUnavailable:
+                                    if step.operation != "position_query":
+                                        raise
+                                    # Answer-first: run the unfiltered ranking and say so.
+                                    step = step.model_copy(
+                                        update={
+                                            "operation": "query",
+                                            "arguments": step.arguments["query"],
+                                        }
+                                    )
+                                    calls += 1
+                                    data = execute_bounded(session, context, step, deadline)
+                                    data["limitations"] = [
+                                        f"Position filter ({plan_position(plan)}) not applied: "
+                                        "this scope's box scores have no verifiable starting "
+                                        "positions, so all players are ranked."
+                                    ]
+                                    scope.assumptions.append(data["limitations"][0])
+                                    # The retained plan names what actually executed.
+                                    plan = plan.model_copy(
+                                        update={
+                                            "steps": [
+                                                step if s.step_id == step.step_id else s
+                                                for s in plan.steps
+                                            ]
+                                        }
+                                    )
+                                if ruled is not None:
+                                    data["limitations"] = [
+                                        *ruled.notes,
+                                        *data.get("limitations", data.get("disclosures", [])),
+                                    ]
+                                if step.operation == "position_query" and re.search(
+                                    r"\b(point|shooting|combo) guards?\b|\b(pg|sg)s?\b|"
+                                    r"\bwings?\b|\b(small|power) forwards?\b|\b(sf|pf)s?\b",
+                                    request.message.lower(),
+                                ):
+                                    note = (
+                                        "Box scores record only G, F or C, so this answers "
+                                        f"for all {step.arguments['position']}s, not the "
+                                        "narrower position you named."
+                                    )
+                                    data["limitations"] = [note, *data.get("limitations", [])]
+                                    scope.assumptions.append(note)
                                 result = render_result(
                                     step, context, data, scope.context_fingerprint or ""
                                 )
@@ -652,6 +803,10 @@ def _run_single_turn(
     except ScopeClarification as exc:
         status = "clarification_required"
         blocks = [ClarificationBlock(text=str(exc))]
+    except PositionEvidenceUnavailable:
+        unable("position_unavailable")
+    except AwardsUnavailable:
+        unable("external_unavailable")
     except CalendarUnavailable:
         unable("calendar_unavailable")
     except EntityClarification as exc:

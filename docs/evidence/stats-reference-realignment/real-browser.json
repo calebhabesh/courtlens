@@ -1,0 +1,311 @@
+{
+  "runtime": "Isolated production standalone Next + existing real FastAPI/PostgreSQL; read-only",
+  "query": {
+    "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+    "season": "2025-26",
+    "phase": "regular_season",
+    "before_date": "2026-04-13",
+    "entity_kind": "player",
+    "window": {
+      "kind": "season"
+    },
+    "team_scope": {
+      "team_id": null,
+      "participation_only": true
+    },
+    "sort": [
+      {
+        "field": "pts_per_game",
+        "direction": "desc",
+        "nulls_last": true
+      }
+    ],
+    "page": {
+      "limit": 50
+    }
+  },
+  "measurements": [
+    {
+      "label": "wide",
+      "viewport": {
+        "width": 2560,
+        "height": 1440,
+        "dpr": 1
+      },
+      "documentWidth": 2560,
+      "rowHeight": 40,
+      "region": 2277,
+      "table": 2277,
+      "railWidth": 250,
+      "identityWidths": [
+        28,
+        26,
+        248.03125
+      ],
+      "metricWidths": [
+        139.453125,
+        139.453125,
+        139.453125,
+        139.453125,
+        139.453125,
+        139.453125,
+        139.453125,
+        139.453125,
+        139.453125,
+        139.453125,
+        139.453125,
+        139.453125,
+        139.53125
+      ],
+      "footer": 1407
+    },
+    {
+      "label": "desktop",
+      "viewport": {
+        "width": 1440,
+        "height": 900,
+        "dpr": 1
+      },
+      "documentWidth": 1440,
+      "rowHeight": 40,
+      "region": 1157,
+      "table": 1452,
+      "railWidth": 250,
+      "identityWidths": [
+        28,
+        26,
+        248.03125
+      ],
+      "metricWidths": [
+        75.984375,
+        75.984375,
+        75.984375,
+        75.984375,
+        75.984375,
+        75.984375,
+        75.984375,
+        75.984375,
+        75.984375,
+        75.984375,
+        75.984375,
+        75.984375,
+        76.15625
+      ],
+      "footer": 867
+    },
+    {
+      "label": "mobile",
+      "viewport": {
+        "width": 375,
+        "height": 812,
+        "dpr": 1
+      },
+      "documentWidth": 375,
+      "rowHeight": 40,
+      "region": 355,
+      "table": 1424,
+      "railWidth": 0,
+      "identityWidths": [
+        28,
+        26,
+        220.03125
+      ],
+      "metricWidths": [
+        75.984375,
+        75.984375,
+        75.984375,
+        75.984375,
+        75.984375,
+        75.984375,
+        75.984375,
+        75.984375,
+        75.984375,
+        75.984375,
+        75.984375,
+        75.984375,
+        76.15625
+      ],
+      "footer": 1334.296875
+    },
+    {
+      "label": "narrow-css",
+      "viewport": {
+        "width": 1280,
+        "height": 900,
+        "dpr": 1
+      },
+      "documentWidth": 1280,
+      "rowHeight": 40,
+      "region": 997,
+      "table": 1452,
+      "railWidth": 250,
+      "identityWidths": [
+        28,
+        26,
+        248.03125
+      ],
+      "metricWidths": [
+        75.984375,
+        75.984375,
+        75.984375,
+        75.984375,
+        75.984375,
+        75.984375,
+        75.984375,
+        75.984375,
+        75.984375,
+        75.984375,
+        75.984375,
+        75.984375,
+        76.15625
+      ],
+      "footer": 909
+    }
+  ],
+  "checks": [
+    {
+      "check": "Real API first-row player/PPG/percentile reconciliation",
+      "player": "Luka Dončić",
+      "points": "33.5",
+      "percentile": 99,
+      "eligible": 591
+    },
+    {
+      "check": "Real hover values match every visible metric; pin holds while hovering another row",
+      "passed": true
+    },
+    {
+      "preset": "overview",
+      "alignment": {
+        "headers": [
+          20,
+          20
+        ],
+        "body": 20
+      },
+      "maxMetricWidth": 76.15625,
+      "previewMatchesRow": true
+    },
+    {
+      "preset": "shooting",
+      "alignment": {
+        "headers": [
+          21,
+          21
+        ],
+        "body": 21
+      },
+      "maxMetricWidth": 76.15625,
+      "previewMatchesRow": true
+    },
+    {
+      "preset": "defense",
+      "alignment": {
+        "headers": [
+          14,
+          14
+        ],
+        "body": 14
+      },
+      "maxMetricWidth": 109.828125,
+      "previewMatchesRow": true
+    },
+    {
+      "preset": "trueshooting",
+      "alignment": {
+        "headers": [
+          17,
+          17
+        ],
+        "body": 17
+      },
+      "maxMetricWidth": 76.125,
+      "previewMatchesRow": true
+    },
+    {
+      "preset": "advanced",
+      "alignment": {
+        "headers": [
+          22,
+          22
+        ],
+        "body": 22
+      },
+      "maxMetricWidth": 76.1875,
+      "previewMatchesRow": true
+    },
+    {
+      "preset": "playmaking",
+      "alignment": {
+        "headers": [
+          13,
+          13
+        ],
+        "body": 13
+      },
+      "maxMetricWidth": 115.546875,
+      "previewMatchesRow": true
+    },
+    {
+      "preset": "rebounding",
+      "alignment": {
+        "headers": [
+          12,
+          12
+        ],
+        "body": 12
+      },
+      "maxMetricWidth": 138.59375,
+      "previewMatchesRow": true
+    },
+    {
+      "preset": "impact",
+      "alignment": {
+        "headers": [
+          18,
+          18
+        ],
+        "body": 18
+      },
+      "maxMetricWidth": 76.125,
+      "previewMatchesRow": true
+    },
+    {
+      "preset": "sixfactor",
+      "alignment": {
+        "headers": [
+          15,
+          15
+        ],
+        "body": 15
+      },
+      "maxMetricWidth": 94.21875,
+      "previewMatchesRow": true
+    },
+    {
+      "countingMode": "raw",
+      "previewMatchesRow": true
+    },
+    {
+      "countingMode": "per_36",
+      "previewMatchesRow": true
+    },
+    {
+      "guides": "photos",
+      "passed": true
+    },
+    {
+      "guides": "logos",
+      "passed": true
+    },
+    {
+      "guides": "initials",
+      "passed": true
+    },
+    {
+      "guides": "none",
+      "passed": true
+    }
+  ],
+  "errors": []
+}
