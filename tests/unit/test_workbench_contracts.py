@@ -483,6 +483,7 @@ def test_snapshot_equivalence_verification_and_check(session: Session) -> None:
     )
 
 
+@pytest.mark.requires_published_data
 def test_retained_m6_experiment_registration(session: Session) -> None:
     """Retained legacy M6 experiment registers and verifies artifacts byte-for-byte."""
     reg = register_retained_m6_experiment(session)

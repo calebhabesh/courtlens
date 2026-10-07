@@ -1,4 +1,4 @@
-.PHONY: install install-dashboard dev up down migrate seed evaluate evaluate-final eval-assistant test test-python lint typecheck dbt-build build refresh clean acquire import publish backup restore verify-restore benchmark
+.PHONY: install install-dashboard dev up down migrate seed evaluate evaluate-final eval-assistant test test-python test-published lint typecheck dbt-build build refresh clean acquire import publish backup restore verify-restore benchmark
 
 install:
 	python3 -m venv .venv
@@ -64,8 +64,13 @@ test: test-python
 	npm --prefix dashboard run test
 	PW_CHROMIUM_PATH=$$(command -v chromium) npm --prefix dashboard run test:browser
 
+PYTHON ?= .venv/bin/python
+PYTEST_ARGS ?=
 test-python:
-	pytest --cov=courtlens --cov-report=term-missing
+	$(PYTHON) scripts/test_python.py --cov=courtlens --cov-report=term-missing $(PYTEST_ARGS)
+
+test-published:
+	$(PYTHON) scripts/test_python.py --published $(PYTEST_ARGS)
 
 lint:
 	ruff check .

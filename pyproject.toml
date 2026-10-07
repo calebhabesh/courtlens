@@ -48,9 +48,12 @@ courtlens = "courtlens.cli:app"
 packages = ["src/courtlens"]
 
 [tool.pytest.ini_options]
-addopts = "-ra --strict-markers --strict-config"
+addopts = "-ra --strict-markers --strict-config -m 'not requires_published_data'"
 testpaths = ["tests"]
-markers = ["postgres: requires a disposable PostgreSQL database"]
+markers = [
+  "postgres: requires a disposable PostgreSQL database",
+  "requires_published_data: verifies exact historical results against a restored disposable backup",
+]
 
 [tool.ruff]
 line-length = 100

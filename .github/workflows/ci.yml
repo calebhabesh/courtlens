@@ -46,7 +46,7 @@ jobs:
       - run: ruff format --check .
       - run: ruff check .
       - run: mypy src/courtlens
-      - run: pytest --cov=courtlens --cov-report=term-missing
+      - run: python scripts/test_python.py --cov=courtlens --cov-report=term-missing
       - run: alembic upgrade head
       - run: courtlens seed-demo --reset
       - run: dbt build --project-dir warehouse --profiles-dir warehouse

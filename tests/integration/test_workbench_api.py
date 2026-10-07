@@ -10,13 +10,15 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
 from courtlens.api.app import create_app
-from courtlens.database import Base
+from courtlens.database import Base, get_db
 
 
 @pytest.fixture
-def client():
+def client(workbench_db):
     app = create_app()
-    return TestClient(app)
+    app.dependency_overrides[get_db] = lambda: workbench_db
+    with TestClient(app) as client:
+        yield client
 
 
 @pytest.fixture
@@ -201,6 +203,7 @@ def test_two_real_players_reconciled(client: TestClient) -> None:
     assert "/api/workbench/lineage" in log_data["games"][0]["lineage_ref"]
 
 
+@pytest.mark.requires_published_data
 def test_traded_player_team_filters_and_stints(client: TestClient) -> None:
     """A traded player returns team-scoped stats and multi-team stints."""
     siakam_id = "1627783"
@@ -236,6 +239,7 @@ def test_traded_player_team_filters_and_stints(client: TestClient) -> None:
     assert stint_tricodes["IND"] == 41
 
 
+@pytest.mark.requires_published_data
 def test_toronto_team_research_and_detail(client: TestClient) -> None:
     """Toronto team research results reconcile record, production, and player cohort."""
     toronto_id = "1610612761"
@@ -424,6 +428,7 @@ def test_workbench_lineage(client: TestClient) -> None:
         assert "/tmp/" not in str(fact)
 
 
+@pytest.mark.requires_published_data
 def test_workbench_forecasts_evaluation(client: TestClient) -> None:
     """Forecasts evaluation endpoint returns report, model card, policy, and slices."""
     resp = client.get("/api/workbench/forecasts/evaluation")
