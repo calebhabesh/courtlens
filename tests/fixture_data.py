@@ -1,5 +1,6 @@
 """Small, complete provenance fixtures; never borrow rows from a published database."""
 
+from datetime import datetime
 from hashlib import sha256
 from uuid import uuid4
 
@@ -57,7 +58,13 @@ def add_provenance(session: Session) -> tuple[WorkbenchVersion, WorkbenchObserva
     return version, observation
 
 
-def add_workbench_dataset(session: Session) -> str:
+def add_workbench_dataset(
+    session: Session,
+    *,
+    dataset_id: str | None = None,
+    snapshot_id: str | None = None,
+    published_at: datetime | None = None,
+) -> str:
     """Synthetic multi-season cohort for query arithmetic, pagination, and HTTP tests."""
     from datetime import date
 
@@ -86,6 +93,8 @@ def add_workbench_dataset(session: Session) -> str:
         exclusions_json={},
         status="ready",
     )
+    if dataset_id:
+        dataset.id = dataset_id
     session.add(dataset)
     session.flush()
     players = {
@@ -267,6 +276,10 @@ def add_workbench_dataset(session: Session) -> str:
         scoring_version="points-v1",
         quality_report_json={},
     )
+    if snapshot_id:
+        snapshot.id = snapshot_id
+    if published_at:
+        snapshot.created_at = published_at
     session.add(snapshot)
     session.flush()
     session.add(

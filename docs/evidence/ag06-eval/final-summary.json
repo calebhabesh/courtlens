@@ -1,0 +1,264 @@
+{
+  "ar02_fixture_baseline": {
+    "sha256": "d15163e7bc00e48361bc9d37c2566b9741c66ab65084bed7e4712899eae79d90",
+    "warehouse_exact": {
+      "correct": 255,
+      "total": 279,
+      "rate": 0.9139784946236559
+    },
+    "categories": {
+      "compare": {
+        "correct": 48,
+        "total": 48
+      },
+      "follow_up": {
+        "correct": 48,
+        "total": 48
+      },
+      "forecast": {
+        "correct": 12,
+        "total": 12
+      },
+      "leaders": {
+        "correct": 72,
+        "total": 72
+      },
+      "mixed": {
+        "correct": 0,
+        "total": 24
+      },
+      "single_player": {
+        "correct": 75,
+        "total": 75
+      }
+    }
+  },
+  "providers": {
+    "gemini": {
+      "original_report": "docs/evidence/ag06-eval/gemini-dev.json",
+      "original_sha256": "dc4b676b94b0df8bff331877e923c0061876ceb1f87733a1da6c4eceed9ec410",
+      "complete": false,
+      "stopped": {
+        "reason": "provider_quota",
+        "retry_after": 60,
+        "case_id": "ar02-001",
+        "stage": "answer",
+        "run": 1
+      },
+      "model": "gemini-3.5-flash-lite",
+      "summary": {
+        "coverage": {
+          "completed_runs": 1,
+          "planned_runs": 540,
+          "completed_questions": 0,
+          "planned_questions": 180
+        },
+        "exact_answer_warehouse": {
+          "correct": 0,
+          "total": 1,
+          "rate": 0
+        },
+        "answered_rate": {
+          "correct": 1,
+          "total": 1,
+          "rate": 1
+        },
+        "refusal_precision": {
+          "correct": 0,
+          "total": 0,
+          "rate": null
+        },
+        "refusal_recall": {
+          "correct": 0,
+          "total": 0,
+          "rate": null
+        },
+        "web_citation_presence": {
+          "correct": 0,
+          "total": 0,
+          "rate": null
+        },
+        "unsupported_number_rate": {
+          "correct": 0,
+          "total": 1,
+          "rate": 0
+        },
+        "warehouse_override_missed": 0,
+        "flakiness": {
+          "correct": 0,
+          "total": 0,
+          "rate": null
+        },
+        "latency_ms": {
+          "p50": 1309.863234986551,
+          "p95": 1309.863234986551
+        },
+        "per_turn": {
+          "steps": 1,
+          "web_searches": 0,
+          "input_tokens": 0,
+          "output_tokens": 0
+        },
+        "estimated_cost_usd": {
+          "total": null,
+          "mean_known_per_turn": null,
+          "known_turns": 0,
+          "unknown_turns": 1
+        },
+        "categories": {
+          "leaders": {
+            "correct": 0,
+            "total": 1,
+            "rate": 0
+          }
+        }
+      }
+    },
+    "anthropic": {
+      "original_report": "docs/evidence/ag06-eval/anthropic-dev.json",
+      "original_sha256": "fac95d9ffbb3bfebb5fc5a0abaacf67b542bb58dcb8b17b73ab9ed5f7e0fc020",
+      "complete": false,
+      "stopped": {
+        "reason": "provider_disabled",
+        "retry_after": null
+      },
+      "model": "claude-sonnet-5-5",
+      "summary": {
+        "coverage": {
+          "completed_runs": 0,
+          "planned_runs": 540,
+          "completed_questions": 0,
+          "planned_questions": 180
+        },
+        "exact_answer_warehouse": {
+          "correct": 0,
+          "total": 0,
+          "rate": null
+        },
+        "answered_rate": {
+          "correct": 0,
+          "total": 0,
+          "rate": null
+        },
+        "refusal_precision": {
+          "correct": 0,
+          "total": 0,
+          "rate": null
+        },
+        "refusal_recall": {
+          "correct": 0,
+          "total": 0,
+          "rate": null
+        },
+        "web_citation_presence": {
+          "correct": 0,
+          "total": 0,
+          "rate": null
+        },
+        "unsupported_number_rate": {
+          "correct": 0,
+          "total": 0,
+          "rate": null
+        },
+        "warehouse_override_missed": 0,
+        "flakiness": {
+          "correct": 0,
+          "total": 0,
+          "rate": null
+        },
+        "latency_ms": {
+          "p50": null,
+          "p95": null
+        },
+        "per_turn": {
+          "steps": null,
+          "web_searches": null,
+          "input_tokens": null,
+          "output_tokens": null
+        },
+        "estimated_cost_usd": {
+          "total": null,
+          "mean_known_per_turn": null,
+          "known_turns": 0,
+          "unknown_turns": 0
+        },
+        "categories": {}
+      }
+    },
+    "openai": {
+      "original_report": "docs/evidence/ag06-eval/openai-dev.json",
+      "original_sha256": "e913a60c4104cd78db2692c2251ed52952b5b5bd1a8be084d7936e3abd208aee",
+      "complete": false,
+      "stopped": {
+        "reason": "provider_disabled",
+        "retry_after": null
+      },
+      "model": "gpt-6.1-sol",
+      "summary": {
+        "coverage": {
+          "completed_runs": 0,
+          "planned_runs": 540,
+          "completed_questions": 0,
+          "planned_questions": 180
+        },
+        "exact_answer_warehouse": {
+          "correct": 0,
+          "total": 0,
+          "rate": null
+        },
+        "answered_rate": {
+          "correct": 0,
+          "total": 0,
+          "rate": null
+        },
+        "refusal_precision": {
+          "correct": 0,
+          "total": 0,
+          "rate": null
+        },
+        "refusal_recall": {
+          "correct": 0,
+          "total": 0,
+          "rate": null
+        },
+        "web_citation_presence": {
+          "correct": 0,
+          "total": 0,
+          "rate": null
+        },
+        "unsupported_number_rate": {
+          "correct": 0,
+          "total": 0,
+          "rate": null
+        },
+        "warehouse_override_missed": 0,
+        "flakiness": {
+          "correct": 0,
+          "total": 0,
+          "rate": null
+        },
+        "latency_ms": {
+          "p50": null,
+          "p95": null
+        },
+        "per_turn": {
+          "steps": null,
+          "web_searches": null,
+          "input_tokens": null,
+          "output_tokens": null
+        },
+        "estimated_cost_usd": {
+          "total": null,
+          "mean_known_per_turn": null,
+          "known_turns": 0,
+          "unknown_turns": 0
+        },
+        "categories": {}
+      }
+    }
+  },
+  "ag07_gate": {
+    "eligible": false,
+    "reason": "No complete measured v3 live warehouse baseline: Gemini quota; other providers have no key. No owner gap acceptance recorded."
+  }
+}
