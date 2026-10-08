@@ -1,0 +1,6 @@
+{"season": "2023-24", "phase": "regular_season", "sha256": "04ff7b47b7a76941a0e3fd88c5eace6e05ef240a9e4366471111880c0e32adcf", "games": 1216, "players": 572}
+{"season": "2025-26", "phase": "regular_season", "sha256": "ba712f04bc494bc591d7e872ded977f56bc2b346d3c9d7ab8c4d089fd037d102", "games": 1227, "players": 582}
+{"season": "2025-26", "phase": "playoffs", "sha256": "525897e272481d7c8f081d366e0a225f42be244bc43273ddc378c71dc4b0681b", "games": 82, "players": 230}
+{"season": "2023-24", "phase": "playoffs", "sha256": "242c18e69c69476f5e040493412698cd0e852767b9a9f80eb0e7947c384a8c7c", "games": 81, "players": 214}
+{"season": "2024-25", "phase": "playoffs", "sha256": "a6b589b2db9f7d45c60e80a28e7fd6533c0dec2d528b075029092610523d9b4c", "games": 83, "players": 219}
+{"season": "2024-25", "phase": "regular_season", "sha256": "699f146bbab6e42c732f459f877be9c3f4aed94b9b018adc44653a39097b3901", "games": 1212, "players": 569}
