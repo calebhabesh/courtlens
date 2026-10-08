@@ -92,11 +92,11 @@ test("bounded leaders pin a resolved release across candidates", async ({ page }
   expect(requests[2].before_date).toBe("2024-04-15");
 });
 
-test("Stats on/off preset opens actual shared-floor operation", async ({ page }) => {
+test("Stats on/off preset opens served per-team rating columns", async ({ page }) => {
   await openWorkbench(page, "/stats?preset=onoff&together=1");
-  await expect(page.getByRole("heading", { name: "Stats · On/off" })).toBeVisible();
-  await page.getByRole("button", { name: "Run shared-floor analysis" }).click();
-  await expect(page.getByRole("heading", { name: /on-off · TOR/ })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Stats Explorer" })).toBeVisible();
+  await expect(page.getByRole("tab", { name: "On-Off", exact: true })).toHaveAttribute("aria-selected", "true");
+  await expect(page.getByRole("columnheader").filter({ hasText: "Net on/off" })).toBeVisible();
 });
 
 test("partial samples show raw rates and directional denominators while gating differences", async ({ page }) => {

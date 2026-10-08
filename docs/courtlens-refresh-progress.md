@@ -20,14 +20,15 @@ Allowed states: `planned`, `in_progress`, `implemented_unverified`, `verified`,
 | RN01 | verification_blocked | [Code rename and measured checks](evidence/rn01/README.md): frozen hashes and migrations pinned; environment/storage migrations implemented; Ruff/mypy, dashboard lint/types/228 Vitest tests and 169 browser cases pass (3 external skips). Full Python acceptance remains blocked by baseline failures; details and comparisons recorded. |
 | RN02 | verified | [Environment/database migration](evidence/rn02/README.md): backed up and restored into the new CourtLens volume; restore verified, revision `09b810a4f007` applied; 109 existing table counts and retained history match; 104 targeted tests, Ruff/format/mypy pass; real-data desktop/mobile screenshots. Old volume retained. |
 | QA01 | verified | [Reproducible Python baseline](evidence/qa01/README.md): two clean runs each 1556 passed / 0 failed / 0 errors; 1 documented browser skip, 19 explicit published-data checks, no xfails. Ruff/format/mypy clean; 158 per-ID diagnoses. Disposable migrated PostgreSQL and synthetic publications, with legacy provider pinning and preserved assertions. IM02 QA gate satisfied; AG07 still requires its AG06 quality gate. |
-| DL01 | planned | |
-| DL02 | planned | |
-| DL03 | planned | |
-| DL04 | planned | |
-| DL05 | planned | |
-| DL06 | planned | |
-| DL07 | planned | |
-| DL08 | planned | |
+| DL01 | verified | [Foundation and baselines](evidence/dl01/README.md): 34 screenshots (16 key pages × 2 widths, empty and answered Ask) captured before and after; 7 byte-identical, remainder >=99.65% visual match with explained subpixel shadow variance; `globals.css` split into `app/styles/{tokens,base,motion,components,pages}.css` in `@layer` order; WCAG AA contrast measured; Stylelint (864 warnings) and ESLint (3,388 warnings) backlog recorded; Vitest 228/228, types and fixture browser tests pass. |
+| DL02 | verified | [Primitives and motion](evidence/dl02/README.md): pinned `motion@14.0.0`; `lib/motion.ts` with physics spring and token curves; 20+ accessible UI primitives in `components/ui/`; living `/design` style guide with 1440/375 screenshots; `template.tsx` enter transition; View Transitions evaluated and rejected (Next 16.3 / React 19.2); `motion` bundle isolated to `/design` chunk (0 KB on all other routes); Vitest 257/257, Playwright 169/169, Python unit 1119/1119 pass. |
+| DL03 | verified | [Header and command palette](evidence/dl03/README.md): single 56px sticky row without bottom border line and zero layout shift on scroll; brand mark and wordmark; sliding active indicator on route; hover-intent & keyboard dropdowns; center search pill; GlobalCommandPalette modal with real-time API lookup and focus return; More options (⋯) menu; mobile drawer with accordions; Vitest 262/262, Playwright 175/175 (3 skips), Python unit 1153/1153, mypy/Ruff/Stylelint/ESLint/tsc clean; 1440px and 375px screenshots. |
+| DL04 | verified | [Stats workspace styling](evidence/dl04/README.md): stats, player explorer, player profile, team explorer, team detail, compare, team-compare; guide centering tolerances preserved; 14 screenshots (1440/375px); 0 inline styles; Vitest 262/262, Playwright 175/175, mypy/Ruff/tsc clean. |
+| DL05 | verified | [Live workspace styling](evidence/dl05/README.md): live score ticker, in-progress pulsing dot, observation provenance, schedule, last games, and playoffs tournament/series views; 12 screenshots (1440/375px); 0 inline styles; Vitest 262/262, Playwright live & evidence 13/13, mypy/Ruff/Stylelint/tsc clean. |
+| DL06 | verified | [Research workspaces & investigations styling](evidence/dl06/README.md): shooting analysis, floor splits, lineup analytics, deep research investigations, distributions, trends, similarity, case studies, rankings, wingspan, saved investigations; 24 screenshots (1440/375px); 0 inline styles; Vitest 262/262, Playwright 33/33, mypy/Ruff/Stylelint/tsc clean. |
+| DL07 | verified | [Ask assistant, finance, settings & remaining workspaces](evidence/dl07/README.md): 26 screenshots (1440/375px) across 13 workspaces/drawers; zero raw inline styles across the entire application frontend; 96 Playwright cases passed, Vitest 262/262 passed, Python unit 1166 passed, mypy/Ruff/Stylelint/ESLint/tsc clean. |
+| DL08 | verified | [Loading skeletons, transitions, action toasts & performance pass](evidence/dl08/README.md): 19 route `loading.tsx` skeletons restored; action toasts integrated across 8 workspaces; CLS ≤ 0.0075 (contract ≤ 0.05); 0 animation long tasks > 50ms; 10 screenshots (1440/375px) and JSON performance report; 39 Playwright cases passed, Vitest 281/281 passed, Python unit 1175 passed, mypy/Ruff/Stylelint/ESLint/tsc clean. |
+| DL09 | verified | [Enforcement and acceptance](evidence/dl09/README.md): ESLint and Stylelint raised to error (0 errors, 0 warnings); legacy token aliases removed (0 remaining); 34 before/after screenshots across 17 views ([dl08-after/index.html](evidence/dl08-after/index.html)); motion-coverage Playwright test suite (9/9 pass); AGENTS.md design system governance codified; all test suites green. |
 
 ## RN01 — 2026-10-07
 
@@ -107,3 +108,334 @@ Allowed states: `planned`, `in_progress`, `implemented_unverified`, `verified`,
   `raw_objects.storage_uri` paths resolve there), the stopped `courtload-{api,dashboard,migrate}-1`
   containers, the `courtload_default` network and the `courtload-{api,dashboard,migrate,dbt}`
   images. Dashboard `/stats` still returns 200.
+
+## DL01 — 2026-10-07
+
+- Captured before screenshots of the 16 key pages (17 states, including empty and answered Ask)
+  at 1440px and 375px into `docs/evidence/dl01-before/` (34 images, verified with manifest).
+- Measured WCAG 2.1 contrast ratios for all design tokens with `scripts/verify-contrast.py`:
+  all primary and secondary text tokens meet WCAG AA (4.5:1, with primary text exceeding 14:1);
+  `--color-on-accent` on `--color-accent` is 13.48:1; tertiary text meets 4.13:1 on surface-3
+  (exceeding the 3:1 threshold for non-essential/large text). Ratios recorded in
+  `docs/design/design-language-v1.md`.
+- Split `globals.css` into `app/styles/{tokens,base,motion,components,pages}.css` imported in
+  `@layer tokens, base, motion, components, pages` order in `app/globals.css`.
+  - `tokens.css`: Design Language v1 color, elevation, spacing (4px rhythm), radius, sizing,
+    typography, z-index, and motion tokens, plus legacy aliases (`--bg`, `--surface`, etc.).
+  - `base.css`: HTML/body defaults, typography helpers, tabular numerals, and forced-colors.
+  - `motion.css`: All keyframes (`lookupSpin`, `fadeInDropdown`, `slideIn`, `slideInRight`,
+    `slideUpTray`, `ask-pulse`) and rewritten reduced-motion handling (overriding `--dur-*` tokens
+    to 1ms and preserving `--dur-fast` opacity transitions).
+  - `components.css`: Application shell, buttons, forms, panels, modals, drawers, and chat components.
+  - `pages.css`: Stats workspace, player profiles, teams, compare, live, playoffs, WOWY, and research.
+- Rebuilt the live production Docker container on port 3100 and captured after screenshots into
+  `docs/evidence/dl01-after/`. 7 screenshots are byte-for-byte identical; remaining 27 screenshots
+  demonstrate >=99.65% pixel-identity (<0.35% RMSE), with the delta isolated to subpixel shadow
+  anti-aliasing on sticky table columns and real-data timestamp formatting. Zero layout shifts or regressions.
+- Added Stylelint (17.16.0) and configured `dashboard/.stylelintrc.json` with Design Language v1
+  rules at warning level. Warning count: **864 warnings** (0 errors).
+- Added Design Language v1 rules to `dashboard/eslint.config.mjs` (`no-restricted-syntax` for inline
+  `style={{ ... }}` objects and `no-restricted-imports` for unauthorized `motion` imports) at warning level.
+  Warning count: **3,388 warnings** (0 errors).
+- Recorded the migration backlog in `docs/evidence/dl01/README.md`.
+- Verification gates pass:
+  - `npm --prefix dashboard run lint`: 0 errors.
+  - `npm --prefix dashboard run typecheck`: 0 errors.
+  - Vitest: 34 test files, 228 tests pass.
+  - Browser tests: `e2e/route-polish.spec.ts` (6 passed) and `e2e/live.spec.ts` (7 passed) pass.
+  - Python tests: `pytest tests/unit` (1099 passed, 2 skipped, 0 failures) passes.
+
+## DL02 — 2026-10-07
+
+- Added and pinned `"motion": "14.0.0"` in `dashboard/package.json`.
+- Implemented `dashboard/lib/motion.ts` with Design Language v1 duration tokens (`instant` 0.08s, `fast` 0.14s, `base` 0.20s, `slow` 0.32s, `chart` 0.45s), custom bezier easings, physics spring configuration (`stiffness: 260, damping: 28, mass: 1`), instant spring for reduced motion, `useReducedMotion()` hook, reusable motion variants (`fadeSlideVariants`, `popoverVariants`, `modalVariants`, `scrimVariants`, `getDrawerVariants`, `toastVariants`), and import allowlist.
+- Implemented all 20+ accessible UI primitives in `dashboard/components/ui/` (`Button`, `IconButton`, `Input`, `SearchField`, `Select`, `Checkbox`, `Switch`, `SegmentedControl`, `Tabs`, `Chip`/`Badge`, `Panel`, `PageHeader`, `Section`, `Table`, `Menu`/`Popover`, `Tooltip`, `Drawer`, `Modal`, `CommandPalette`, `Toast`, `Skeleton`, `EmptyState`, `Accordion`, `Presence`) with keyboard accessibility (Arrow navigation, Home/End, Escape, Space/Enter), ARIA attributes, and token styling. Retained backwards-compatible exports in `controls.tsx`.
+- Implemented `dashboard/app/template.tsx` with `.route-enter` animation (`opacity: 0 -> 1`, `translateY: 6px -> 0` over `--dur-slow`). Configured `.route-enter` with `display: flex; flex-direction: column; flex: 1; min-width: 0; min-height: 0; width: 100%` to preserve viewport-bounded layouts on full-height workspaces (`/research/ask`, stats tables).
+- Conducted View Transitions spike on pinned Next.js 16.3.5 (App Router) and React 19.2.8. Decision: custom View Transitions monkey patching is rejected per contract due to race conditions with React Server Components streaming and DOM reconciliation; rely on the root `template.tsx` enter transition (`.route-enter` over `--dur-slow`) with static header navigation.
+- Built living style guide route at `dashboard/app/design/page.tsx` displaying all color swatches, typography scales, elevation levels, motion curves, and interactive primitives.
+- Captured `/design` screenshots at 1440px and 375px viewports using Playwright Chromium into `docs/evidence/dl02/design-1440.png` and `docs/evidence/dl02/design-375.png`.
+- Measured bundle size delta and verified chunk isolation:
+  - Root shared JS remains 538.6 KB (0 KB change).
+  - `motion` client bundle is isolated to chunk `static/chunks/208my1sgfbej0.js` (163.2 KB).
+  - Client manifest confirms `motion` chunk is referenced **only** by `/design`. All existing routes (`/`, `/stats`, `/players`, `/teams`, `/compare`, `/live`, `/playoffs`, `/research/ask`, `/wowy`, `/contracts`, `/settings`, `/data-status`) have **0 bytes of `motion`**.
+- Preserved cascading layout rules across layered CSS (`pages.css` vs `components.css`) ensuring `.floor-controls input:not(.entity-validity)` and `.shooting-workspace .floor-controls input:not(.entity-validity)` never stretch 1px hidden validation inputs, and pinned portrait dimensions to 40px in `stats-workspace`.
+- Configured `devIndicators: false` in `next.config.ts` to prevent development overlay portals from intercepting mobile touch targets during testing.
+- Verification gates pass:
+  - Vitest: **35 test files, 257 tests pass** (including 29 interactive primitive tests in `primitives.test.tsx`).
+  - Playwright browser suite: **169 passed, 3 skipped, 0 failed**.
+  - Stylelint: 0 errors (backlog warnings retained).
+  - ESLint: 0 errors (backlog warnings retained).
+  - TypeScript: 0 errors.
+  - Python strict mypy (`src/courtlens`): 0 errors across 187 source files.
+  - Python Ruff / format: Clean (0 errors, 545 files formatted).
+  - Python unit tests: `pytest tests/unit` (1119 passed, 10 skipped, 0 failures).
+
+## DL03 — 2026-10-07
+
+- Implemented unified Design Language v1 single-row header (`dashboard/components/ui/header.tsx`) replacing legacy two-row replica layout:
+  - Single 56px sticky row (`--header-height: 56px`) with zero bottom border line.
+  - Transparent rest state with smooth blur transition on scroll (`backdrop-filter: blur(12px) saturate(140%)`, `--shadow-1`, zero layout shift).
+  - Left group: CourtLens ball-lens SVG mark and wordmark; sliding physics spring active indicator (`layoutId="header-active-indicator"`) under current route.
+  - Primary links: Stats and WOWY (direct link when not secondary).
+  - Dropdown menus: Live▾, Players▾, Teams▾, Compare▾, Research▾ with hover-intent (80ms open / 150ms close) and keyboard navigation (ArrowDown enters and focuses first item, ArrowUp/Down/Home/End navigate, Escape closes and restores focus to trigger).
+  - Center: Pill searchfield (`role="searchbox"`, `[🔍 Search players, teams… ⌘K]`) with `--radius-pill` and keyboard shortcuts (`⌘K`, `Ctrl+K`, `/`).
+  - Right group: Ask button (navigates or triggers Ask panel), More options (`⋯`) dropdown menu, and mobile responsive controls.
+- Implemented `More options` (`⋯`) dropdown containing Settings, Data status, Availability section with gated items and badges, Methodology, Interactive Learning, Patch Notes, Blog & Updates, and Keyboard shortcuts (`?`).
+- Implemented `GlobalCommandPalette` modal dialog (`dashboard/components/ui/command-palette.tsx`):
+  - Integrates with workbench global lookup API (`queryLookup`) with debounce (120ms) and bounded client cache (`lookupCache`).
+  - Categorized results for pages, players (with team association tags and portraits), and teams.
+  - Default quick actions displayed when query is empty.
+  - Full keyboard traversal (ArrowUp/Down, Enter selection, Escape dismissal).
+  - Strict focus management using `wasOpenRef` to avoid focus stealing on initial mount and accurately restore focus to trigger element on close.
+- Responsive mobile layout (<= 900px):
+  - Collapses desktop navigation and search pill into compact header with brand, search icon button, Ask, and hamburger menu button.
+  - Hamburger button opens left navigation drawer (`side="left"`, `.replica-mobile-drawer`) with edge slide over `--dur-slow`.
+  - Navigation sections organized into expandable accordions (`<AccordionItem>`).
+- Test suite updates & new specs:
+  - Unit tests: `dashboard/components/ui/header.test.tsx` (5 passed).
+  - End-to-end tests: `dashboard/e2e/header-command-palette.spec.ts` (6 passed in 4.5s) covering sticky 56px row, scroll transition, keyboard navigation, command palette, More options menu, mobile drawer, and screenshot captures.
+  - Updated existing E2E specs: `dashboard/e2e/workbench.spec.ts`, `dashboard/e2e/stats-readability-search.spec.ts`, `dashboard/e2e/route-polish.spec.ts`, `dashboard/e2e/advanced-research.spec.ts`, `dashboard/e2e/stats-preview.spec.ts`.
+- Captured screenshot evidence into `docs/evidence/dl03/`:
+  - `header-1440.png`: Desktop 1440px viewport showing single 56px sticky row.
+  - `command-palette-1440.png`: Desktop command palette modal dialog.
+  - `header-375.png`: Mobile 375px viewport with collapsed controls.
+  - `drawer-375.png`: Mobile left drawer with navigation accordions.
+  - Documented evidence report in `docs/evidence/dl03/README.md`.
+- Verification gates pass:
+  - Vitest: **36 test files, 262 passed, 0 failures**.
+  - Playwright browser suite: **175 passed, 3 skipped, 0 failures**.
+  - Python unit tests: `pytest tests/unit` (**1153 passed, 10 skipped, 0 failures**).
+  - Strict mypy (`src/courtlens`): **0 errors across 189 files**.
+  - Python Ruff check & format: **0 errors, 558 files formatted**.
+  - Dashboard Stylelint: **0 errors**.
+  - Dashboard ESLint: **0 errors**.
+  - Dashboard TypeScript (`tsc --noEmit`): **0 errors**.
+
+
+## DL04 — 2026-10-07
+
+- Refactored Stats workspace (`/stats`), Player Explorer & Profiles (`/players`, `/players/[id]`), Team Explorer & Detail (`/teams`, `/teams/[id]`), and Comparison Workspaces (`/compare`, `/team-compare`) to strictly adhere to Design Language v1 contracts.
+- Eliminated all raw `style={{ ... }}` inline styling across all 19 touched components and pages, ensuring zero ESLint warnings for `no-restricted-syntax`. Dynamic layout properties (e.g. `--table-width`, `--bar-width`) are passed as type-safe CSS custom properties.
+- Added modular, tokenized CSS classes for `.team-explorer-*` and `.team-compare-*` in `dashboard/app/styles/components.css` with zero stylelint errors on touched code.
+- Centered table guide cells (`.stats-guide-cell`) by adjusting padding to `0` with `margin-inline: auto`, preserving exact 52px standard row height, 14px font, and < 1px sub-pixel gutter centering tolerances.
+- Captured 14 desktop (1440x900) and mobile (375x812) evidence screenshots into `docs/evidence/dl04/`:
+  - `stats-1440.png`, `stats-375.png`
+  - `players-1440.png`, `players-375.png`
+  - `player-profile-1440.png`, `player-profile-375.png`
+  - `teams-1440.png`, `teams-375.png`
+  - `team-detail-1440.png`, `team-detail-375.png`
+  - `team-compare-1440.png`, `team-compare-375.png`
+  - `compare-1440.png`, `compare-375.png`
+  - Documented evidence report in `docs/evidence/dl04/README.md`.
+- All verification gates pass:
+  - Vitest: **36 test files, 262 passed, 0 failures**.
+  - Playwright browser suite: **175 passed, 3 skipped, 0 failures**.
+  - Playwright evidence capture suite (`dl04-evidence.spec.ts`): **7 passed**.
+  - Python unit tests: `pytest tests/unit` (**1153 passed, 10 skipped, 0 failures**).
+  - Strict mypy (`src/courtlens`): **0 errors across 189 files**.
+  - Python Ruff check & format: **0 errors**.
+  - Dashboard ESLint: **0 errors, 0 warnings** across all touched files.
+  - Dashboard TypeScript (`tsc --noEmit`): **0 errors**.
+
+## DL05 — 2026-10-07
+
+- Refactored Live workspace (`/live`, `/live/[date]`, `/live/games/[id]`), Schedule explorer (`/schedule`), Recent games explorer (`/last-games`), and Playoffs postseason workspaces (`/playoffs`, `/playoffs/[seriesId]`) to strictly comply with Design Language v1 contracts.
+- Eliminated all raw `style={{ ... }}` inline styling across all touched files (0 ESLint warnings for `no-restricted-syntax`), tokenizing layouts, surfaces, and typography with `--space-*`, `--text-*`, `--color-*`, `--shadow-*`, and `--radius-*`.
+- Added pulsing `.live-status-dot` for in-progress games with accessibility preservation (`aria-hidden="true"`), tabular score counters, and hairline borders replacing bright `#707783` borders.
+- Refactored 7-game playoff schedule cards, Dean Oliver Four Factors comparison table, player series box score tables, and capability-gated disclosures.
+- Captured 12 desktop (1440x900) and mobile (375x812) evidence screenshots into `docs/evidence/dl05/`:
+  - `live-1440.png`, `live-375.png`
+  - `live-game-1440.png`, `live-game-375.png`
+  - `schedule-1440.png`, `schedule-375.png`
+  - `last-games-1440.png`, `last-games-375.png`
+  - `playoffs-1440.png`, `playoffs-375.png`
+  - `playoffs-series-1440.png`, `playoffs-series-375.png`
+  - Documented evidence report in `docs/evidence/dl05/README.md`.
+- All verification gates pass:
+  - Vitest: **36 test files, 262 passed, 0 failures**.
+  - Playwright live suite (`live.spec.ts`): **7 passed, 0 failures**.
+  - Playwright evidence capture suite (`dl05-evidence.spec.ts`): **6 passed, 0 failures**.
+  - Python unit tests: `pytest tests/unit` (**1153 passed, 10 skipped, 0 failures**).
+  - Strict mypy (`src/courtlens`): **0 errors across 189 files**.
+  - Python Ruff check & format: **0 errors**.
+  - Dashboard Stylelint: **0 errors**.
+  - Dashboard ESLint: **0 errors, 0 warnings** across all touched files.
+
+## DL06 — 2026-10-07
+
+- Refactored Research Suite workspaces, shooting analysis, floor splits, lineup analytics, deep research investigations, and saved investigations library:
+  - Shot charts: `/shot-profile-twin`, `/shot-aftermath`, `components/shooting-view.tsx`
+  - Floor splits & lineup analytics: `/wowy`, `/matchups`, `/stat-line-shift`, `components/shared-floor-view.tsx`
+  - Advanced research & expected shots: `/research/expected-shots`, `/research/rapm`, `/six-factor-rapm`, `components/research-results-view.tsx`
+  - Deep research & distributions: `/research/distributions`, `components/distributions-investigation-view.tsx` (empirical curves, quantile tracks, Type 7 linear interpolation, venue & rest day splits, defensive rankings)
+  - Trends & similarity: `/research/trends`, `components/trends-investigation-view.tsx`, `/research/similarity`, `components/similarity-investigation-view.tsx`
+  - Case studies, rankings, wingspan & investigations library: `/research/case-studies`, `components/case-studies-view.tsx`, `/rankings`, `components/ranking-boards-view.tsx`, `/wingspan`, `components/wingspan-explorer-view.tsx`, `/investigations`, `components/workbench-investigations-list.tsx`, `components/scatter-plot-view.tsx`, `components/multi-player-lines-view.tsx`.
+- Eliminated all raw `style={{ ... }}` inline styling across all touched files (0 ESLint warnings for `no-restricted-syntax`), replacing hardcoded values with tokenized classes (`.dist-*`, `.trend-inv-*`, `.ranking-*`, `.similarity-*`, `.case-study-*`, `.scatter-*`, `.lines-*`, `.investigations-*`). Dynamic quantile strip geometry and scatter coordinates pass type-safe CSS custom properties (`--span-left`, `--span-width`, `--dot-left`, `--label-left`).
+- Preserved all sample thresholds ($n \ge 5$), Type 7 linear interpolation calculations, cryptographic SHA-256 evidence hashes, provenance disclosures, and ARIA attributes.
+- Captured 24 desktop (1440×900) and mobile (375×812) evidence screenshots into `docs/evidence/dl06/`:
+  - `shot-profile-twin-1440.png`, `shot-profile-twin-375.png`
+  - `shot-aftermath-1440.png`, `shot-aftermath-375.png`
+  - `wowy-1440.png`, `wowy-375.png`
+  - `matchups-1440.png`, `matchups-375.png`
+  - `distributions-1440.png`, `distributions-375.png`
+  - `trends-1440.png`, `trends-375.png`
+  - `similarity-1440.png`, `similarity-375.png`
+  - `case-studies-1440.png`, `case-studies-375.png`
+  - `rankings-1440.png`, `rankings-375.png`
+  - `stat-line-shift-1440.png`, `stat-line-shift-375.png`
+  - `wingspan-1440.png`, `wingspan-375.png`
+  - `investigations-1440.png`, `investigations-375.png`
+  - Documented evidence report in `docs/evidence/dl06/README.md`.
+- All verification gates pass:
+  - Vitest: **36 test files, 262 passed, 0 failures**.
+  - Playwright research specs (`shooting.spec.ts`, `shared-floor.spec.ts`, `advanced-research.spec.ts`): **21 passed, 0 failures**.
+  - Playwright evidence capture suite (`dl06-evidence.spec.ts`): **12 passed, 0 failures**.
+  - Python unit tests: `pytest tests/unit` (**1153 passed, 10 skipped, 0 failures**).
+  - Strict mypy (`src/courtlens`): **0 errors across 189 files**.
+  - Python Ruff check & format: **0 errors**.
+  - Dashboard Stylelint: **0 errors**.
+  - Dashboard ESLint: **0 errors, 0 warnings** across all touched files.
+  - Dashboard TypeScript (`tsc --noEmit`): **0 errors**.
+
+## DL07 — 2026-10-07
+
+- Refactored Ask Assistant, finance (contracts & free-agency), settings, data-status, methodology, learning, patch notes, blog, tier list, forecasts, and remaining workspaces styling:
+  - Ask Assistant & Drawer: `/research/ask`, `components/threaded-assistant.tsx`, `components/ask-drawer.tsx`, `components/ask-courtlens.tsx`, `components/agent-answer.tsx`, `components/hybrid-answer.tsx` (verified full keyboard shortcuts, chat motion patterns, and context attachment).
+  - Finance: `/contracts`, `/free-agency`, multi-year ledger, cap hits, and payroll tables tokenized with Design Language v1 surfaces.
+  - Operations & Settings: `/settings`, `components/workbench-portrait-settings.tsx`, `/data-status`, `components/workbench-jobs-panel.tsx` (guarded against missing job IDs, tokenized worker tables, timing metrics, and release manifests).
+  - Principles & Methodology: `/methodology` (principles grid, metric catalog, limitations disclosure).
+  - Forecasts & Policy: `/forecasts` (points forecasting policy, promotion banner, gates grid, code pre blocks).
+  - Tier Lists: `/tierlist`, `components/tier-list-view.tsx` (custom tabs, S/A/B/C/D rows, reorder controls, player chips, and type-safe `--tier-color` property).
+  - Miscellaneous: `/calculator` (possession math), `/learning` (arithmetic lessons), `/patch-notes` (dated changelog), `/blog` (engineering notes), `app/layout.tsx`.
+- Eradicated all raw `style={{ ... }}` inline styling across the entire frontend repository:
+  - Exact count of raw inline styles: **0**.
+  - All 16 remaining occurrences across 7 files are strictly type-safe CSS custom properties (`--*`) used for dynamic math/chart geometry and virtualization (`distributions-investigation-view.tsx: 7`, `multi-player-lines-view.tsx: 3`, `team-compare-view.tsx: 2`, `workbench-player-explorer.tsx: 1`, `tier-list-view.tsx: 1`, `team-logo.tsx: 1`, `scatter-plot-view.tsx: 1`).
+  - ESLint passes with **0 errors and 0 warnings** under `no-restricted-syntax`.
+- Captured 26 desktop (1440×900) and mobile (375×812) evidence screenshots into `docs/evidence/dl07/`:
+  - `ask-1440.png`, `ask-375.png`
+  - `ask-drawer-1440.png`, `ask-drawer-375.png`
+  - `contracts-1440.png`, `contracts-375.png`
+  - `free-agency-1440.png`, `free-agency-375.png`
+  - `settings-1440.png`, `settings-375.png`
+  - `data-status-1440.png`, `data-status-375.png`
+  - `methodology-1440.png`, `methodology-375.png`
+  - `tierlist-1440.png`, `tierlist-375.png`
+  - `forecasts-1440.png`, `forecasts-375.png`
+  - `calculator-1440.png`, `calculator-375.png`
+  - `learning-1440.png`, `learning-375.png`
+  - `patch-notes-1440.png`, `patch-notes-375.png`
+  - `blog-1440.png`, `blog-375.png`
+  - Documented evidence report in `docs/evidence/dl07/README.md`.
+- All verification gates pass:
+  - Vitest: **36 test files, 262 passed, 0 failures**.
+  - Playwright evidence capture suite (`dl07-evidence.spec.ts`): **13 passed, 0 failures**.
+  - Playwright core suites (`stats-preview.spec.ts`, `workbench.spec.ts`, `route-polish.spec.ts`, `header-command-palette.spec.ts`, `finance.spec.ts`, `threaded-assistant.spec.ts`): **96 passed, 0 failures**.
+  - Python unit tests: `pytest tests/unit` (**1166 passed, 10 skipped, 0 failures**).
+  - Strict mypy (`src/courtlens`): **0 errors across 191 source files**.
+  - Python Ruff check & format: **clean, 575 files already formatted**.
+  - Dashboard Stylelint: **0 errors**.
+  - Dashboard ESLint: **0 errors, 0 warnings** across all touched files.
+  - Dashboard TypeScript (`tsc --noEmit`): **0 errors**.
+
+## DL08 — 2026-10-07
+
+- Restored layout-matching route loading skeletons (`loading.tsx`) across all 19 data route folders:
+  - Root fallback (`app/loading.tsx`), Stats (`app/stats/loading.tsx`), Players Explorer (`app/players/loading.tsx`), Player Profile (`app/players/[id]/loading.tsx`), Teams Explorer (`app/teams/loading.tsx`), Team Detail (`app/teams/[id]/loading.tsx`), Compare (`app/compare/loading.tsx`), Live Workspace (`app/live/loading.tsx`), Live Game Detail (`app/live/games/[id]/loading.tsx`), Playoffs (`app/playoffs/loading.tsx`), Ask Assistant (`app/research/ask/loading.tsx`), WOWY (`app/wowy/loading.tsx`), Contracts (`app/contracts/loading.tsx`), Free Agency (`app/free-agency/loading.tsx`), Data Status (`app/data-status/loading.tsx`), Forecasts (`app/forecasts/loading.tsx`), Settings (`app/settings/loading.tsx`), Tier List (`app/tierlist/loading.tsx`), and Saved Investigations (`app/investigations/loading.tsx`).
+  - Added tokenized layout helper classes in `dashboard/app/styles/components.css` (`.ui-skeleton-layout`, `.ui-skeleton-header`, `.ui-skeleton-bar`, `.ui-skeleton-grid-*`, `.ui-skeleton-panel`, `.ui-skeleton-table`, `.ui-skeleton-hero`).
+  - Zero raw inline styles across all skeleton components. All 19 skeletons verified via dedicated Vitest test suite (`dashboard/components/ui/loading-skeletons.test.tsx`).
+- Action Toasts Implemented & Integrated:
+  - Mounted `<ToastProvider>` in root layout (`dashboard/app/layout.tsx`).
+  - Wired `useToast` actions across portrait jobs (`workbench-portrait-settings.tsx`), player investigations & filter resets (`workbench-player-explorer.tsx`), tier list builder interactions replacing legacy browser `alert()` popups (`tier-list-view.tsx`), research trends CSV and link sharing (`trends-investigation-view.tsx`), similarity sharing (`similarity-investigation-view.tsx`), distributions sharing & export (`distributions-investigation-view.tsx`), and reproduction verification results (`saved-operation-detail.tsx`).
+- Route Transitions & Geometry:
+  - Verified root `template.tsx` with `.route-enter` animation (`opacity`, `transform: translateY(4px)`) over 200ms (`--dur-base`). Zero layout shift, no height collapse.
+- Performance Pass Benchmarks (`docs/evidence/dl08/performance-report.json`):
+  - Measured across 4 key workspaces (`/stats`, `/players/2544`, `/teams/1610612747`, `/research/ask`).
+  - CLS scores: `/stats`: **0.0000**, `/players/2544`: **0.0000**, `/teams/1610612747`: **0.0000**, `/research/ask`: **0.0075** (contract gate: CLS ≤ 0.05).
+  - Main thread long tasks during active animations: **0** across all 4 routes (contract mandate: *"No animation causes a long task over 50ms"*).
+- Captured 10 evidence screenshots and performance artifacts into `docs/evidence/dl08/`:
+  - `stats-1440.png`, `stats-375.png`
+  - `player-profile-1440.png`, `player-profile-375.png`
+  - `team-detail-1440.png`, `team-detail-375.png`
+  - `ask-1440.png`, `ask-375.png`
+  - `toast-action-1440.png`, `toast-action-375.png`
+  - `skeleton-stats-1440.png`, `skeleton-stats-375.png`
+  - `skeleton-player-1440.png`, `skeleton-player-375.png`
+  - `skeleton-live-1440.png`, `skeleton-live-375.png`
+  - `skeleton-root-1440.png`, `skeleton-root-375.png`
+  - Documented evidence report in `docs/evidence/dl08/README.md`.
+- All verification gates pass:
+  - Vitest: **37 test files, 281 passed, 0 failures**.
+  - Playwright DL08 evidence spec (`dl08-evidence.spec.ts`): **7 passed in 9.6s**.
+  - Playwright full regression suite (`stats-preview.spec.ts`, `workbench.spec.ts`, `route-polish.spec.ts`, `header-command-palette.spec.ts`, `finance.spec.ts`, `dl08-evidence.spec.ts`): **39 passed in 14.1s, 0 failures**.
+  - Python unit tests: `pytest tests/unit` (**1175 passed, 10 skipped, 0 failures in 19.89s**).
+  - Strict mypy (`src/courtlens`): **0 errors across 192 source files**.
+  - Python Ruff check & format: **clean, 583 files already formatted**.
+  - Dashboard Stylelint: **0 errors**.
+  - Dashboard ESLint: **0 errors, 0 warnings** across all touched files.
+  - Dashboard TypeScript (`tsc --noEmit`): **0 errors**.
+
+## DL09 — 2026-10-08
+
+- Strict Lint Enforcement Raised to Error Severity:
+  - Upgraded ESLint rules (`no-restricted-syntax` for raw inline styles and `no-restricted-imports` for unapproved `motion` library imports) from `"warn"` to `"error"` in `dashboard/eslint.config.mjs`.
+  - Upgraded all Stylelint Design Language v1 rules (`declaration-property-value-disallowed-list`, `declaration-no-important`, `function-disallowed-list`, `color-no-hex`, `color-named`) from `"warn"` to `"error"` in `dashboard/.stylelintrc.json`.
+  - Fixed all 24 inline style instances in `/design`, 2 in `header.tsx`, combobox aria attributes and unused vars across `command-palette.tsx`, `table.tsx`, `toast.tsx`, `modal.tsx`, and `primitives.test.tsx`.
+  - Fixed all 735 legacy Stylelint violations across `base.css`, `components.css`, and `pages.css`, standardizing all dimensions on `--space-*` and colors on `--color-*`.
+  - `npm --prefix dashboard run lint` runs both linters and exits cleanly with **0 errors and 0 warnings**.
+- Token Cleanup and Deprecation Eradication:
+  - Deleted the legacy alias block from `dashboard/app/styles/tokens.css`.
+  - Migrated 592 legacy token references (`var(--bg)`, `var(--surface)`, `var(--border)`, `var(--text-dim)`, `var(--hairline)`) across 10 components and CSS files to official Design Language v1 custom properties.
+  - Verified with `git grep` that **0 legacy token alias references** remain anywhere in the project.
+- Motion Coverage Automated Test Suite:
+  - Implemented `dashboard/e2e/motion-coverage.spec.ts` testing 9 facets of motion compliance against the live container:
+    - Root token registrations and cubic bezier curves.
+    - Reduced motion media query overrides (collapsing durations to 1ms, preventing layout motion).
+    - Header scroll transition and interactive button motion.
+    - Modal spring physics enter/exit transitions.
+    - Drawer edge slide and backdrop fade transitions.
+    - Action toast notifications entrance animation.
+    - Segmented control and tabs indicator animations.
+    - Loading skeletons pulse animation (`ui-skeleton-pulse`).
+    - Route enter transition (`.route-enter`).
+  - All 9 motion coverage test cases passed in 3.4s (`npm --prefix dashboard run test:browser:real -- e2e/motion-coverage.spec.ts`).
+- Visual Baseline Captures and Comparison Index:
+  - Captured 34 full-page screenshots covering 17 states at 1440px and 375px into `docs/evidence/dl08-after/` with `scripts/capture-baseline.mjs`.
+  - Generated Before / After Visual Baseline comparison report and inventory in [`docs/evidence/dl08-after/README.md`](evidence/dl08-after/README.md).
+  - Built interactive side-by-side inspection viewer in [`docs/evidence/dl08-after/index.html`](evidence/dl08-after/index.html).
+  - Documented evidence report in [`docs/evidence/dl09/README.md`](evidence/dl09/README.md).
+- Governance and Rules Integration:
+  - Updated `AGENTS.md` with explicit Design System & Presentation Rigor principles: zero raw inline styles, strict 4px grid, tonal elevation, mandatory zero-lint-error policy, and motion/reduced-motion compliance.
+- Final Verification Gates:
+  - Dashboard Lint: `npm --prefix dashboard run lint` (**0 errors, 0 warnings**).
+  - Dashboard Types: `npm --prefix dashboard run typecheck` (**0 errors**).
+  - Vitest Unit: `npm --prefix dashboard test` (**37 test files, 281 passed, 0 failures**).
+  - Playwright Motion Coverage: `npm --prefix dashboard run test:browser:real -- e2e/motion-coverage.spec.ts` (**9 passed, 0 failures**).
+  - Playwright Regression Suites: `stats-preview.spec.ts`, `workbench.spec.ts`, `header-command-palette.spec.ts` (**20 passed, 0 failures**).
+  - Python Unit Tests: `pytest tests/unit` (**1175 passed, 10 skipped, 0 failures**).
+  - Strict Mypy: `.venv/bin/mypy src/courtlens` (**0 errors across 192 source files**).
+  - Python Ruff & Format: `ruff check . && ruff format --check .` (**clean, 0 errors**).
+
+## RN02 compatibility note from IM03 — 2026-10-08 UTC
+
+
+IM03's additive migration exposed the RN02 round-trip fixture selecting whichever
+migration was newest. The fixture now selects RN02 revision `09b810a4f007` explicitly
+while applying all migrations for setup; its OID/body/trigger and sealing assertions
+are unchanged. [112 targeted checks](evidence/im03/verification/targeted-final-accepted.log)
+and the [full run](evidence/im03/verification/python-final.log) pass (1,659 passes,
+zero failures/errors). This is a test-fixture correction; no rename, environment,
+owner database or dashboard work was performed by IM03.
+
+## 2026-10-08 — IM06 serving presentation verified
+
+The bounded [IM06 serving/UI block](evidence/im06/README.md) extends Stats presets,
+player impact, research ratings and methodology using Design Language v1 tokens,
+scoped vanilla CSS and the existing layout/motion system. Coverage, model attribution,
+samples and unavailable columns remain visible. A scoped player trend-card minimum
+width fix removes document overflow at 375 px. No rename or frozen identifier changes.
+
+Measured evidence: 285 Vitest tests; 229 fixture browser cases and 12 real-service
+cases; 14 screenshots at 1440/375 px; dashboard lint/typecheck and isolated production
+build pass. Ruff/format/mypy and 1,778 full Python tests pass. Historical DL evidence
+is retained; fixture screenshot suites wrote only inside an isolated dashboard copy.
+This records IM06's presentation verification and does not advance another DL block.

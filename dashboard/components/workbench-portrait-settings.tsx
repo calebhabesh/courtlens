@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { enqueueJob } from "@/lib/workbench-api";
+import { useToast } from "./ui/toast";
 
 interface PortraitSettingsProps {
   available?: boolean;
@@ -20,15 +21,29 @@ export function WorkbenchPortraitSettings({
 }: PortraitSettingsProps) {
   const [loading, setLoading] = useState(false);
   const [msg, setMsg] = useState<string | null>(null);
+  const { toast } = useToast();
 
   const handleAcquire = async () => {
     setLoading(true);
     setMsg(null);
     try {
       const res = await enqueueJob("portraits", { limit: 200 });
-      setMsg(`Portrait acquisition job enqueued: ${res.job_id.slice(0, 8)}... (${res.status})`);
+      const shortId = res.job_id ? res.job_id.slice(0, 8) : "job";
+      const statusText = `Portrait acquisition job enqueued: ${shortId}... (${res.status})`;
+      setMsg(statusText);
+      toast({
+        title: "Portrait Job Enqueued",
+        description: statusText,
+        variant: "positive",
+      });
     } catch (err) {
-      setMsg(`Error: ${err instanceof Error ? err.message : "Failed to enqueue job"}`);
+      const errText = `Error: ${err instanceof Error ? err.message : "Failed to enqueue job"}`;
+      setMsg(errText);
+      toast({
+        title: "Acquisition Error",
+        description: err instanceof Error ? err.message : "Failed to enqueue job",
+        variant: "negative",
+      });
     } finally {
       setLoading(false);
     }
@@ -41,7 +56,7 @@ export function WorkbenchPortraitSettings({
       <div className="panel-header">
         <div>
           <h2 className="panel-title">Player portraits</h2>
-          <p className="text-muted text-xs" style={{ margin: "0.2rem 0 0" }}>
+          <p className="text-muted text-xs portrait-settings-desc">
             Best-effort headshots cached locally by cryptographic SHA-256 hash. Missing photos never exclude players from analytics.
           </p>
         </div>
@@ -56,12 +71,12 @@ export function WorkbenchPortraitSettings({
       </div>
 
       {msg && (
-        <div className="notice-box" style={{ marginBottom: "1rem" }}>
+        <div className="notice-box portrait-settings-notice">
           {msg}
         </div>
       )}
 
-      <div className="grid-4" style={{ marginBottom: "1rem" }}>
+      <div className="grid-4 portrait-settings-grid">
         <div className="stat-card">
           <span className="stat-value font-mono">{available ? active : "Unknown"}</span>
           <span className="stat-label">Active Cached</span>

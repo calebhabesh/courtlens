@@ -71,7 +71,7 @@ export default async function LastGamesPage({ searchParams }: LastGamesPageProps
           <span className="empty-code">RECENT GAMES</span>
           <h1>Player not found in this snapshot</h1>
           <p>{loadError ?? `Could not find confirmed appearances for player ID ${playerId}.`}</p>
-          <div style={{ display: "flex", gap: "0.5rem", marginTop: "1rem" }}>
+          <div className="empty-state-actions">
             <Link className="button button-dark" href="/players">
               Browse Players Directory
             </Link>

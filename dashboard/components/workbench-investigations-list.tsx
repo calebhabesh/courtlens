@@ -23,9 +23,9 @@ export function WorkbenchInvestigationsList({ items }: { items: SavedInvestigati
 
   if (items.length === 0) {
     return (
-      <div className="panel" style={{ textAlign: "center", padding: "3rem" }}>
+      <div className="panel investigations-empty-panel">
         <h3 className="section-title">No Saved Investigations Yet</h3>
-        <p className="text-muted text-sm" style={{ margin: "0.5rem 0 1.25rem" }}>
+        <p className="text-muted text-sm investigations-empty-desc">
           You can save reproducible analytical queries with cryptographic manifests from the Player Explorer.
         </p>
         <Link href="/players" className="button button-primary">
@@ -36,7 +36,7 @@ export function WorkbenchInvestigationsList({ items }: { items: SavedInvestigati
   }
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+    <div className="investigations-list">
       {items.map((item) => {
         const q = item.query as Record<string, string>;
         const rep = reproduceState[item.id];
@@ -49,15 +49,15 @@ export function WorkbenchInvestigationsList({ items }: { items: SavedInvestigati
 
         return (
           <div key={item.id} className="panel">
-            <div className="panel-header" style={{ alignItems: "flex-start" }}>
+            <div className="panel-header investigations-panel-header">
               <div>
                 <span className="text-xs text-muted font-mono uppercase">
                   Investigation · Saved {new Date(item.created_at).toLocaleDateString()}
                 </span>
-                <h2 className="panel-title" style={{ fontSize: "1.15rem", marginTop: "0.15rem" }}>
+                <h2 className="panel-title investigations-panel-title">
                   {item.title}
                 </h2>
-                <div style={{ display: "flex", gap: "0.5rem", marginTop: "0.4rem", flexWrap: "wrap" }}>
+                <div className="investigations-badge-row">
                   <span className="badge">
                     {q?.season || "2025-26"} {q?.phase?.replace("_", " ") || "regular season"}
                   </span>
@@ -73,7 +73,7 @@ export function WorkbenchInvestigationsList({ items }: { items: SavedInvestigati
                 </div>
               </div>
 
-              <div style={{ display: "flex", gap: "0.4rem", flexWrap: "wrap" }}>
+              <div className="investigations-action-row">
                 <button
                   type="button"
                   className="button button-small"
@@ -107,7 +107,7 @@ export function WorkbenchInvestigationsList({ items }: { items: SavedInvestigati
             </div>
 
             {/* Cryptographic Hashes */}
-            <div className="lineage-meta-box" style={{ marginTop: "0.75rem" }}>
+            <div className="lineage-meta-box investigations-meta-box">
               <div className="meta-row">
                 <span className="meta-label">Manifest SHA-256</span>
                 <span className="meta-value font-mono text-xs">{item.manifest_sha256}</span>
@@ -120,19 +120,15 @@ export function WorkbenchInvestigationsList({ items }: { items: SavedInvestigati
 
             {/* Reproduction Outcome */}
             {rep && (
-              <div style={{ marginTop: "0.75rem" }}>
+              <div className="investigations-reproduce-wrap">
                 {rep.error && (
-                  <div className="notice-box" style={{ borderLeftColor: "var(--negative)", margin: 0 }}>
+                  <div className="notice-box notice-box-error m-0">
                     <strong>Reproduction verification error:</strong> {rep.error}
                   </div>
                 )}
                 {rep.result && (
                   <div
-                    className="notice-box"
-                    style={{
-                      borderLeftColor: rep.result.match ? "var(--positive)" : "var(--warning)",
-                      margin: 0
-                    }}
+                    className={`notice-box ${rep.result.match ? "notice-box-positive" : "notice-box-warning"} m-0`}
                   >
                     <strong>Reproduction check:</strong>{" "}
                     {rep.result.match ? (

@@ -26,7 +26,7 @@ test("header branding and secondary navigation align", async ({ page }) => {
   await openWorkbench(page, "/stats");
   expect(await page.locator(".brand-title").textContent()).toBe("CourtLens");
   expect(await page.locator(".brand-mark-svg rect").count()).toBe(0);
-  expect(await page.locator(".replica-nav-right").getByRole("button", { name: "Availability", exact: true }).count()).toBe(1);
+  expect(await page.locator(".replica-nav-right").getByRole("button", { name: "More options", exact: true }).count()).toBe(1);
   const offset = await page.locator(".brand").evaluate(element => {
     const center = (e: Element) => { const r = e.getBoundingClientRect(); return r.y + r.height / 2; };
     return center(element.querySelector("svg")!) - center(element.querySelector(".brand-title")!);
@@ -65,6 +65,7 @@ test("global search clear button uses the right edge and concise player captions
     ];
     await route.fulfill({ response, json: data });
   });
+  await page.locator(".courtlens-search-pill").click();
   const input = page.getByRole("combobox", { name: "Search players, teams and pages", exact: true });
   await input.fill("Star");
   const gap = await page.locator(".replica-search-container").evaluate(element =>
@@ -79,7 +80,7 @@ test("global search clear button uses the right edge and concise player captions
 test("table suggestions remain visible outside the scroll region and filter in place", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 1100 });
   await openWorkbench(page, "/stats?season=2025-26&phase=regular_season&beforeDate=2026-04-13&window=season");
-  expect(await page.getByRole("combobox", { name: "Filter players by name" }).count()).toBe(1);
+  await expect(page.getByRole("combobox", { name: "Filter players by name" })).toBeVisible();
   const input = page.getByRole("combobox", { name: "Filter players by name" });
   const lookup = page.waitForRequest(request => request.url().includes("/lookup") && new URL(request.url()).searchParams.get("q") === "Star");
   await input.fill("Star");
@@ -103,7 +104,7 @@ test("touch can pick a table suggestion and Escape preserves the draft", async (
   await page.setViewportSize({ width: 375, height: 812 });
   await openWorkbench(page, "/stats");
   const input = page.getByRole("combobox", { name: "Filter players by name" });
-  expect(await input.count()).toBe(1);
+  await expect(input).toBeVisible();
   await input.fill("Guard");
   const option = page.getByRole("option", { name: /Fixture Guard/ });
   await expect(option).toBeVisible();

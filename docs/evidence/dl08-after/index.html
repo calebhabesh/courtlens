@@ -1,0 +1,1151 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CourtLens Design Language v1 — Before / After Comparison Index</title>
+  <style>
+    :root {
+      --bg: #0b0e14;
+      --surface-1: #121721;
+      --surface-2: #19202e;
+      --border: #232c3d;
+      --accent: #ff6b35;
+      --text: #e6edf3;
+      --text-muted: #8b949e;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      padding: 24px;
+    }
+    header {
+      max-width: 1400px;
+      margin: 0 auto 24px auto;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+    }
+    h1 { font-size: 24px; font-weight: 700; margin-bottom: 8px; }
+    p.lead { color: var(--text-muted); font-size: 14px; margin-bottom: 16px; }
+    .controls { display: flex; gap: 12px; align-items: center; }
+    .tab-btn {
+      padding: 8px 16px;
+      background: var(--surface-1);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-size: 13px;
+      font-weight: 600;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .tab-btn.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+    .comparison-grid {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+    .page-card {
+      background: var(--surface-1);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .page-card-header {
+      padding: 14px 20px;
+      background: var(--surface-2);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .page-card-header h2 { font-size: 16px; font-weight: 600; }
+    .meta-badges { display: flex; gap: 10px; font-size: 12px; color: var(--text-muted); }
+    .badge {
+      background: var(--bg);
+      padding: 3px 8px;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+    }
+    .card-body {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      padding: 20px;
+    }
+    @media (max-width: 900px) {
+      .card-body { grid-template-columns: 1fr; }
+    }
+    .column { display: flex; flex-direction: column; gap: 8px; }
+    .column-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .img-wrapper {
+      background: #000;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      overflow: auto;
+      max-height: 700px;
+    }
+    .img-wrapper img { display: block; width: 100%; height: auto; }
+    .note { font-size: 13px; color: var(--text-muted); padding: 0 20px 16px 20px; }
+</style>
+</head>
+<body>
+  <header>
+    <h1>CourtLens Design Language v1 — Visual Baseline Comparison</h1>
+    <p class="lead">34 full-page captures across 17 application states comparing pre-refresh baselines against finalized Design Language v1 implementation.</p>
+    <div class="controls">
+      <button class="tab-btn active" id="btn-1440" onclick="showViewport('1440')">Desktop (1440px Viewport · 17 Views)</button>
+      <button class="tab-btn" id="btn-375" onclick="showViewport('375')">Mobile (375px Viewport · 17 Views)</button>
+    </div>
+  </header>
+  <main class="comparison-grid" id="container-1440">
+    <section class="page-card">
+      <div class="page-card-header">
+        <h2>Home (/)</h2>
+        <div class="meta-badges">
+          <span class="badge">Route: /</span>
+          <span class="badge">Dim: 1440x902 &rarr; 1440x900</span>
+          <span class="badge">Size: 215.9KB &rarr; 219.1KB</span>
+          <span class="badge">RMSE: 45.95</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="column">
+          <span class="column-title">Before (Legacy 2-Row / #707783 Borders)</span>
+          <div class="img-wrapper">
+            <a href="../dl01-before/01-home-1440.png" target="_blank">
+              <img src="../dl01-before/01-home-1440.png" alt="Before: Home (/)" loading="lazy" />
+            </a>
+          </div>
+        </div>
+        <div class="column">
+          <span class="column-title">After (Design Language v1 / Tonal Elevation)</span>
+          <div class="img-wrapper">
+            <a href="./01-home-1440.png" target="_blank">
+              <img src="./01-home-1440.png" alt="After: Home (/)" loading="lazy" />
+            </a>
+          </div>
+        </div>
+      </div>
+      <p class="note"><strong>Design Updates:</strong> Single-row 56px header, command palette pill, tonal panels replacing bright borders.</p>
+    </section>
+    <section class="page-card">
+      <div class="page-card-header">
+        <h2>Stats Explorer (/stats)</h2>
+        <div class="meta-badges">
+          <span class="badge">Route: /stats</span>
+          <span class="badge">Dim: 1440x902 &rarr; 1440x900</span>
+          <span class="badge">Size: 215.9KB &rarr; 219.1KB</span>
+          <span class="badge">RMSE: 45.95</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="column">
+          <span class="column-title">Before (Legacy 2-Row / #707783 Borders)</span>
+          <div class="img-wrapper">
+            <a href="../dl01-before/02-stats-1440.png" target="_blank">
+              <img src="../dl01-before/02-stats-1440.png" alt="Before: Stats Explorer (/stats)" loading="lazy" />
+            </a>
+          </div>
+        </div>
+        <div class="column">
+          <span class="column-title">After (Design Language v1 / Tonal Elevation)</span>
+          <div class="img-wrapper">
+            <a href="./02-stats-1440.png" target="_blank">
+              <img src="./02-stats-1440.png" alt="After: Stats Explorer (/stats)" loading="lazy" />
+            </a>
+          </div>
+        </div>
+      </div>
+      <p class="note"><strong>Design Updates:</strong> Compact header, centered table guide cells, tonal filter controls, tabular numbers.</p>
+    </section>
+    <section class="page-card">
+      <div class="page-card-header">
+        <h2>Players Explorer (/players)</h2>
+        <div class="meta-badges">
+          <span class="badge">Route: /players</span>
+          <span class="badge">Dim: 1440x902 &rarr; 1440x900</span>
+          <span class="badge">Size: 215.4KB &rarr; 219.0KB</span>
+          <span class="badge">RMSE: 46.01</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="column">
+          <span class="column-title">Before (Legacy 2-Row / #707783 Borders)</span>
+          <div class="img-wrapper">
+            <a href="../dl01-before/03-players-1440.png" target="_blank">
+              <img src="../dl01-before/03-players-1440.png" alt="Before: Players Explorer (/players)" loading="lazy" />
+            </a>
+          </div>
+        </div>
+        <div class="column">
+          <span class="column-title">After (Design Language v1 / Tonal Elevation)</span>
+          <div class="img-wrapper">
+            <a href="./03-players-1440.png" target="_blank">
+              <img src="./03-players-1440.png" alt="After: Players Explorer (/players)" loading="lazy" />
+            </a>
+          </div>
+        </div>
+      </div>
+      <p class="note"><strong>Design Updates:</strong> Player card grid with tonal surfaces, subtle hairline borders, unified search pill.</p>
+    </section>
+    <section class="page-card">
+      <div class="page-card-header">
+        <h2>Player Profile (/players/1629029)</h2>
+        <div class="meta-badges">
+          <span class="badge">Route: /players/1629029?season=2025-26</span>
+          <span class="badge">Dim: 1440x4722 &rarr; 1440x4596</span>
+          <span class="badge">Size: 673.0KB &rarr; 666.4KB</span>
+          <span class="badge">RMSE: 34.48</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="column">
+          <span class="column-title">Before (Legacy 2-Row / #707783 Borders)</span>
+          <div class="img-wrapper">
+            <a href="../dl01-before/04-player-detail-1440.png" target="_blank">
+              <img src="../dl01-before/04-player-detail-1440.png" alt="Before: Player Profile (/players/1629029)" loading="lazy" />
+            </a>
+          </div>
+        </div>
+        <div class="column">
+          <span class="column-title">After (Design Language v1 / Tonal Elevation)</span>
+          <div class="img-wrapper">
+            <a href="./04-player-detail-1440.png" target="_blank">
+              <img src="./04-player-detail-1440.png" alt="After: Player Profile (/players/1629029)" loading="lazy" />
+            </a>
+          </div>
+        </div>
+      </div>
+      <p class="note"><strong>Design Updates:</strong> Clean hero section, tabular game log rows, borderless cards, 126px height reduction.</p>
+    </section>
+    <section class="page-card">
+      <div class="page-card-header">
+        <h2>Teams Explorer (/teams)</h2>
+        <div class="meta-badges">
+          <span class="badge">Route: /teams</span>
+          <span class="badge">Dim: 1440x2664 &rarr; 1440x2729</span>
+          <span class="badge">Size: 476.6KB &rarr; 452.9KB</span>
+          <span class="badge">RMSE: 46.41</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="column">
+          <span class="column-title">Before (Legacy 2-Row / #707783 Borders)</span>
+          <div class="img-wrapper">
+            <a href="../dl01-before/05-teams-1440.png" target="_blank">
+              <img src="../dl01-before/05-teams-1440.png" alt="Before: Teams Explorer (/teams)" loading="lazy" />
+            </a>
+          </div>
+        </div>
+        <div class="column">
+          <span class="column-title">After (Design Language v1 / Tonal Elevation)</span>
+          <div class="img-wrapper">
+            <a href="./05-teams-1440.png" target="_blank">
+              <img src="./05-teams-1440.png" alt="After: Teams Explorer (/teams)" loading="lazy" />
+            </a>
+          </div>
+        </div>
+      </div>
+      <p class="note"><strong>Design Updates:</strong> Tonal team cards, subtle elevation shadows, consolidated navigation bar.</p>
+    </section>
+    <section class="page-card">
+      <div class="page-card-header">
+        <h2>Team Profile (/teams/1610612738)</h2>
+        <div class="meta-badges">
+          <span class="badge">Route: /teams/1610612738?season=2025-26</span>
+          <span class="badge">Dim: 1440x7657 &rarr; 1440x7646</span>
+          <span class="badge">Size: 948.3KB &rarr; 971.5KB</span>
+          <span class="badge">RMSE: 33.4</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="column">
+          <span class="column-title">Before (Legacy 2-Row / #707783 Borders)</span>
+          <div class="img-wrapper">
+            <a href="../dl01-before/06-team-detail-1440.png" target="_blank">
+              <img src="../dl01-before/06-team-detail-1440.png" alt="Before: Team Profile (/teams/1610612738)" loading="lazy" />
+            </a>
+          </div>
+        </div>
+        <div class="column">
+          <span class="column-title">After (Design Language v1 / Tonal Elevation)</span>
+          <div class="img-wrapper">
+            <a href="./06-team-detail-1440.png" target="_blank">
+              <img src="./06-team-detail-1440.png" alt="After: Team Profile (/teams/1610612738)" loading="lazy" />
+            </a>
+          </div>
+        </div>
+      </div>
+      <p class="note"><strong>Design Updates:</strong> Tonal roster tables, shot charts with dark mode contrast, hairline dividers.</p>
+    </section>
+    <section class="page-card">
+      <div class="page-card-header">
+        <h2>Player Compare (/compare)</h2>
+        <div class="meta-badges">
+          <span class="badge">Route: /compare</span>
+          <span class="badge">Dim: 1440x900 &rarr; 1440x900</span>
+          <span class="badge">Size: 66.5KB &rarr; 60.5KB</span>
+          <span class="badge">RMSE: 27.51</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="column">
+          <span class="column-title">Before (Legacy 2-Row / #707783 Borders)</span>
+          <div class="img-wrapper">
+            <a href="../dl01-before/07-compare-1440.png" target="_blank">
+              <img src="../dl01-before/07-compare-1440.png" alt="Before: Player Compare (/compare)" loading="lazy" />
+            </a>
+          </div>
+        </div>
+        <div class="column">
+          <span class="column-title">After (Design Language v1 / Tonal Elevation)</span>
+          <div class="img-wrapper">
+            <a href="./07-compare-1440.png" target="_blank">
+              <img src="./07-compare-1440.png" alt="After: Player Compare (/compare)" loading="lazy" />
+            </a>
+          </div>
+        </div>
+      </div>
+      <p class="note"><strong>Design Updates:</strong> Side-by-side player compare cards, tonal metric diff bars, clean selector dropdowns.</p>
+    </section>
+    <section class="page-card">
+      <div class="page-card-header">
+        <h2>Live Scoreboard (/live)</h2>
+        <div class="meta-badges">
+          <span class="badge">Route: /live</span>
+          <span class="badge">Dim: 1440x900 &rarr; 1440x900</span>
+          <span class="badge">Size: 90.4KB &rarr; 82.7KB</span>
+          <span class="badge">RMSE: 28.63</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="column">
+          <span class="column-title">Before (Legacy 2-Row / #707783 Borders)</span>
+          <div class="img-wrapper">
+            <a href="../dl01-before/08-live-1440.png" target="_blank">
+              <img src="../dl01-before/08-live-1440.png" alt="Before: Live Scoreboard (/live)" loading="lazy" />
+            </a>
+          </div>
+        </div>
+        <div class="column">
+          <span class="column-title">After (Design Language v1 / Tonal Elevation)</span>
+          <div class="img-wrapper">
+            <a href="./08-live-1440.png" target="_blank">
+              <img src="./08-live-1440.png" alt="After: Live Scoreboard (/live)" loading="lazy" />
+            </a>
+          </div>
+        </div>
+      </div>
+      <p class="note"><strong>Design Updates:</strong> Live scoreboard cards with pulsing live dot, tabular score counters, borderless grid.</p>
+    </section>
+    <section class="page-card">
+      <div class="page-card-header">
+        <h2>Live Game Detail (/live/games/123)</h2>
+        <div class="meta-badges">
+          <span class="badge">Route: /live/games/123</span>
+          <span class="badge">Dim: 1440x1542 &rarr; 1440x1706</span>
+          <span class="badge">Size: 165.3KB &rarr; 158.1KB</span>
+          <span class="badge">RMSE: 32.64</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="column">
+          <span class="column-title">Before (Legacy 2-Row / #707783 Borders)</span>
+          <div class="img-wrapper">
+            <a href="../dl01-before/09-live-game-1440.png" target="_blank">
+              <img src="../dl01-before/09-live-game-1440.png" alt="Before: Live Game Detail (/live/games/123)" loading="lazy" />
+            </a>
+          </div>
+        </div>
+        <div class="column">
+          <span class="column-title">After (Design Language v1 / Tonal Elevation)</span>
+          <div class="img-wrapper">
+            <a href="./09-live-game-1440.png" target="_blank">
+              <img src="./09-live-game-1440.png" alt="After: Live Game Detail (/live/games/123)" loading="lazy" />
+            </a>
+          </div>
+        </div>
+      </div>
+      <p class="note"><strong>Design Updates:</strong> Live game hero banner, play-by-play feed with tonal cards, tabular shot distribution.</p>
+    </section>
+    <section class="page-card">
+      <div class="page-card-header">
+        <h2>Playoffs Bracket (/playoffs)</h2>
+        <div class="meta-badges">
+          <span class="badge">Route: /playoffs</span>
+          <span class="badge">Dim: 1440x2846 &rarr; 1440x2618</span>
+          <span class="badge">Size: 322.0KB &rarr; 307.0KB</span>
+          <span class="badge">RMSE: 49.34</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="column">
+          <span class="column-title">Before (Legacy 2-Row / #707783 Borders)</span>
+          <div class="img-wrapper">
+            <a href="../dl01-before/10-playoffs-1440.png" target="_blank">
+              <img src="../dl01-before/10-playoffs-1440.png" alt="Before: Playoffs Bracket (/playoffs)" loading="lazy" />
+            </a>
+          </div>
+        </div>
+        <div class="column">
+          <span class="column-title">After (Design Language v1 / Tonal Elevation)</span>
+          <div class="img-wrapper">
+            <a href="./10-playoffs-1440.png" target="_blank">
+              <img src="./10-playoffs-1440.png" alt="After: Playoffs Bracket (/playoffs)" loading="lazy" />
+            </a>
+          </div>
+        </div>
+      </div>
+      <p class="note"><strong>Design Updates:</strong> Playoff tournament bracket tree, tonal matchup cards, 228px compact vertical rhythm.</p>
+    </section>
+    <section class="page-card">
+      <div class="page-card-header">
+        <h2>Ask Assistant - Empty (/research/ask)</h2>
+        <div class="meta-badges">
+          <span class="badge">Route: /research/ask</span>
+          <span class="badge">Dim: 1440x900 &rarr; 1440x900</span>
+          <span class="badge">Size: 108.6KB &rarr; 103.8KB</span>
+          <span class="badge">RMSE: 31.06</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="column">
+          <span class="column-title">Before (Legacy 2-Row / #707783 Borders)</span>
+          <div class="img-wrapper">
+            <a href="../dl01-before/11-ask-empty-1440.png" target="_blank">
+              <img src="../dl01-before/11-ask-empty-1440.png" alt="Before: Ask Assistant - Empty (/research/ask)" loading="lazy" />
+            </a>
+          </div>
+        </div>
+        <div class="column">
+          <span class="column-title">After (Design Language v1 / Tonal Elevation)</span>
+          <div class="img-wrapper">
+            <a href="./11-ask-empty-1440.png" target="_blank">
+              <img src="./11-ask-empty-1440.png" alt="After: Ask Assistant - Empty (/research/ask)" loading="lazy" />
+            </a>
+          </div>
+        </div>
+      </div>
+      <p class="note"><strong>Design Updates:</strong> Ask Assistant empty prompt hero, prompt chip suggestions, borderless input pill.</p>
+    </section>
+    <section class="page-card">
+      <div class="page-card-header">
+        <h2>Ask Assistant - Answered (/research/ask)</h2>
+        <div class="meta-badges">
+          <span class="badge">Route: /research/ask?thread=b41147e7-3840-47e9-a9af-68bd862473b1</span>
+          <span class="badge">Dim: 1440x1569 &rarr; 1440x1563</span>
+          <span class="badge">Size: 123.6KB &rarr; 116.5KB</span>
+          <span class="badge">RMSE: 21.03</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="column">
+          <span class="column-title">Before (Legacy 2-Row / #707783 Borders)</span>
+          <div class="img-wrapper">
+            <a href="../dl01-before/12-ask-answered-1440.png" target="_blank">
+              <img src="../dl01-before/12-ask-answered-1440.png" alt="Before: Ask Assistant - Answered (/research/ask)" loading="lazy" />
+            </a>
+          </div>
+        </div>
+        <div class="column">
+          <span class="column-title">After (Design Language v1 / Tonal Elevation)</span>
+          <div class="img-wrapper">
+            <a href="./12-ask-answered-1440.png" target="_blank">
+              <img src="./12-ask-answered-1440.png" alt="After: Ask Assistant - Answered (/research/ask)" loading="lazy" />
+            </a>
+          </div>
+        </div>
+      </div>
+      <p class="note"><strong>Design Updates:</strong> Threaded assistant conversation, streaming prose layout, tonal citation cards.</p>
+    </section>
+    <section class="page-card">
+      <div class="page-card-header">
+        <h2>RAPM Advanced Research (/research/rapm)</h2>
+        <div class="meta-badges">
+          <span class="badge">Route: /research/rapm</span>
+          <span class="badge">Dim: 1440x900 &rarr; 1440x900</span>
+          <span class="badge">Size: 62.3KB &rarr; 55.9KB</span>
+          <span class="badge">RMSE: 27.3</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="column">
+          <span class="column-title">Before (Legacy 2-Row / #707783 Borders)</span>
+          <div class="img-wrapper">
+            <a href="../dl01-before/13-rapm-1440.png" target="_blank">
+              <img src="../dl01-before/13-rapm-1440.png" alt="Before: RAPM Advanced Research (/research/rapm)" loading="lazy" />
+            </a>
+          </div>
+        </div>
+        <div class="column">
+          <span class="column-title">After (Design Language v1 / Tonal Elevation)</span>
+          <div class="img-wrapper">
+            <a href="./13-rapm-1440.png" target="_blank">
+              <img src="./13-rapm-1440.png" alt="After: RAPM Advanced Research (/research/rapm)" loading="lazy" />
+            </a>
+          </div>
+        </div>
+      </div>
+      <p class="note"><strong>Design Updates:</strong> RAPM regression tables, tabular coefficients, subtle hairline cell dividers.</p>
+    </section>
+    <section class="page-card">
+      <div class="page-card-header">
+        <h2>With-Or-Without-You WOWY (/wowy)</h2>
+        <div class="meta-badges">
+          <span class="badge">Route: /wowy</span>
+          <span class="badge">Dim: 1440x900 &rarr; 1440x900</span>
+          <span class="badge">Size: 107.6KB &rarr; 99.1KB</span>
+          <span class="badge">RMSE: 38.13</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="column">
+          <span class="column-title">Before (Legacy 2-Row / #707783 Borders)</span>
+          <div class="img-wrapper">
+            <a href="../dl01-before/14-wowy-1440.png" target="_blank">
+              <img src="../dl01-before/14-wowy-1440.png" alt="Before: With-Or-Without-You WOWY (/wowy)" loading="lazy" />
+            </a>
+          </div>
+        </div>
+        <div class="column">
+          <span class="column-title">After (Design Language v1 / Tonal Elevation)</span>
+          <div class="img-wrapper">
+            <a href="./14-wowy-1440.png" target="_blank">
+              <img src="./14-wowy-1440.png" alt="After: With-Or-Without-You WOWY (/wowy)" loading="lazy" />
+            </a>
+          </div>
+        </div>
+      </div>
+      <p class="note"><strong>Design Updates:</strong> WOWY lineup net rating cards, tonal differential bars, tabular minutes.</p>
+    </section>
+    <section class="page-card">
+      <div class="page-card-header">
+        <h2>Finance & Contracts (/contracts)</h2>
+        <div class="meta-badges">
+          <span class="badge">Route: /contracts</span>
+          <span class="badge">Dim: 1440x900 &rarr; 1440x900</span>
+          <span class="badge">Size: 92.5KB &rarr; 86.9KB</span>
+          <span class="badge">RMSE: 35.49</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="column">
+          <span class="column-title">Before (Legacy 2-Row / #707783 Borders)</span>
+          <div class="img-wrapper">
+            <a href="../dl01-before/15-contracts-1440.png" target="_blank">
+              <img src="../dl01-before/15-contracts-1440.png" alt="Before: Finance & Contracts (/contracts)" loading="lazy" />
+            </a>
+          </div>
+        </div>
+        <div class="column">
+          <span class="column-title">After (Design Language v1 / Tonal Elevation)</span>
+          <div class="img-wrapper">
+            <a href="./15-contracts-1440.png" target="_blank">
+              <img src="./15-contracts-1440.png" alt="After: Finance & Contracts (/contracts)" loading="lazy" />
+            </a>
+          </div>
+        </div>
+      </div>
+      <p class="note"><strong>Design Updates:</strong> Multi-year cap hits table, salary breakdown bars, tabular currency formatting.</p>
+    </section>
+    <section class="page-card">
+      <div class="page-card-header">
+        <h2>Settings & Operations (/settings)</h2>
+        <div class="meta-badges">
+          <span class="badge">Route: /settings</span>
+          <span class="badge">Dim: 1440x1792 &rarr; 1440x1910</span>
+          <span class="badge">Size: 191.6KB &rarr; 182.6KB</span>
+          <span class="badge">RMSE: 33.38</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="column">
+          <span class="column-title">Before (Legacy 2-Row / #707783 Borders)</span>
+          <div class="img-wrapper">
+            <a href="../dl01-before/16-settings-1440.png" target="_blank">
+              <img src="../dl01-before/16-settings-1440.png" alt="Before: Settings & Operations (/settings)" loading="lazy" />
+            </a>
+          </div>
+        </div>
+        <div class="column">
+          <span class="column-title">After (Design Language v1 / Tonal Elevation)</span>
+          <div class="img-wrapper">
+            <a href="./16-settings-1440.png" target="_blank">
+              <img src="./16-settings-1440.png" alt="After: Settings & Operations (/settings)" loading="lazy" />
+            </a>
+          </div>
+        </div>
+      </div>
+      <p class="note"><strong>Design Updates:</strong> Settings cards, portrait pipeline triggers, tokenized toggle switches.</p>
+    </section>
+    <section class="page-card">
+      <div class="page-card-header">
+        <h2>Data Status & Verification (/data-status)</h2>
+        <div class="meta-badges">
+          <span class="badge">Route: /data-status</span>
+          <span class="badge">Dim: 1440x2020 &rarr; 1440x1971</span>
+          <span class="badge">Size: 353.2KB &rarr; 345.5KB</span>
+          <span class="badge">RMSE: 36.37</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="column">
+          <span class="column-title">Before (Legacy 2-Row / #707783 Borders)</span>
+          <div class="img-wrapper">
+            <a href="../dl01-before/17-data-status-1440.png" target="_blank">
+              <img src="../dl01-before/17-data-status-1440.png" alt="Before: Data Status & Verification (/data-status)" loading="lazy" />
+            </a>
+          </div>
+        </div>
+        <div class="column">
+          <span class="column-title">After (Design Language v1 / Tonal Elevation)</span>
+          <div class="img-wrapper">
+            <a href="./17-data-status-1440.png" target="_blank">
+              <img src="./17-data-status-1440.png" alt="After: Data Status & Verification (/data-status)" loading="lazy" />
+            </a>
+          </div>
+        </div>
+      </div>
+      <p class="note"><strong>Design Updates:</strong> Data status & snapshot health indicators, ingestion pipeline logs, badge pills.</p>
+    </section>
+  </main>
+  <main class="comparison-grid" id="container-375" style="display: none;">
+    <section class="page-card">
+      <div class="page-card-header">
+        <h2>Home (/) (Mobile)</h2>
+        <div class="meta-badges">
+          <span class="badge">Route: /</span>
+          <span class="badge">Dim: 375x1349 &rarr; 375x1327</span>
+          <span class="badge">Size: 124.4KB &rarr; 125.3KB</span>
+          <span class="badge">RMSE: 52.44</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="column">
+          <span class="column-title">Before (Mobile Legacy)</span>
+          <div class="img-wrapper">
+            <a href="../dl01-before/01-home-375.png" target="_blank">
+              <img src="../dl01-before/01-home-375.png" alt="Before: Home (/)" loading="lazy" />
+            </a>
+          </div>
+        </div>
+        <div class="column">
+          <span class="column-title">After (Mobile Drawer & Tonal V1)</span>
+          <div class="img-wrapper">
+            <a href="./01-home-375.png" target="_blank">
+              <img src="./01-home-375.png" alt="After: Home (/)" loading="lazy" />
+            </a>
+          </div>
+        </div>
+      </div>
+      <p class="note"><strong>Design Updates:</strong> Single-row 56px header, command palette pill, tonal panels replacing bright borders.</p>
+    </section>
+    <section class="page-card">
+      <div class="page-card-header">
+        <h2>Stats Explorer (/stats) (Mobile)</h2>
+        <div class="meta-badges">
+          <span class="badge">Route: /stats</span>
+          <span class="badge">Dim: 375x1349 &rarr; 375x1327</span>
+          <span class="badge">Size: 124.4KB &rarr; 125.3KB</span>
+          <span class="badge">RMSE: 52.44</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="column">
+          <span class="column-title">Before (Mobile Legacy)</span>
+          <div class="img-wrapper">
+            <a href="../dl01-before/02-stats-375.png" target="_blank">
+              <img src="../dl01-before/02-stats-375.png" alt="Before: Stats Explorer (/stats)" loading="lazy" />
+            </a>
+          </div>
+        </div>
+        <div class="column">
+          <span class="column-title">After (Mobile Drawer & Tonal V1)</span>
+          <div class="img-wrapper">
+            <a href="./02-stats-375.png" target="_blank">
+              <img src="./02-stats-375.png" alt="After: Stats Explorer (/stats)" loading="lazy" />
+            </a>
+          </div>
+        </div>
+      </div>
+      <p class="note"><strong>Design Updates:</strong> Compact header, centered table guide cells, tonal filter controls, tabular numbers.</p>
+    </section>
+    <section class="page-card">
+      <div class="page-card-header">
+        <h2>Players Explorer (/players) (Mobile)</h2>
+        <div class="meta-badges">
+          <span class="badge">Route: /players</span>
+          <span class="badge">Dim: 375x1349 &rarr; 375x1327</span>
+          <span class="badge">Size: 124.2KB &rarr; 125.2KB</span>
+          <span class="badge">RMSE: 52.56</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="column">
+          <span class="column-title">Before (Mobile Legacy)</span>
+          <div class="img-wrapper">
+            <a href="../dl01-before/03-players-375.png" target="_blank">
+              <img src="../dl01-before/03-players-375.png" alt="Before: Players Explorer (/players)" loading="lazy" />
+            </a>
+          </div>
+        </div>
+        <div class="column">
+          <span class="column-title">After (Mobile Drawer & Tonal V1)</span>
+          <div class="img-wrapper">
+            <a href="./03-players-375.png" target="_blank">
+              <img src="./03-players-375.png" alt="After: Players Explorer (/players)" loading="lazy" />
+            </a>
+          </div>
+        </div>
+      </div>
+      <p class="note"><strong>Design Updates:</strong> Player card grid with tonal surfaces, subtle hairline borders, unified search pill.</p>
+    </section>
+    <section class="page-card">
+      <div class="page-card-header">
+        <h2>Player Profile (/players/1629029) (Mobile)</h2>
+        <div class="meta-badges">
+          <span class="badge">Route: /players/1629029?season=2025-26</span>
+          <span class="badge">Dim: 375x6418 &rarr; 419x5996</span>
+          <span class="badge">Size: 410.6KB &rarr; 378.5KB</span>
+          <span class="badge">RMSE: 43.09</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="column">
+          <span class="column-title">Before (Mobile Legacy)</span>
+          <div class="img-wrapper">
+            <a href="../dl01-before/04-player-detail-375.png" target="_blank">
+              <img src="../dl01-before/04-player-detail-375.png" alt="Before: Player Profile (/players/1629029)" loading="lazy" />
+            </a>
+          </div>
+        </div>
+        <div class="column">
+          <span class="column-title">After (Mobile Drawer & Tonal V1)</span>
+          <div class="img-wrapper">
+            <a href="./04-player-detail-375.png" target="_blank">
+              <img src="./04-player-detail-375.png" alt="After: Player Profile (/players/1629029)" loading="lazy" />
+            </a>
+          </div>
+        </div>
+      </div>
+      <p class="note"><strong>Design Updates:</strong> Clean hero section, tabular game log rows, borderless cards, 126px height reduction.</p>
+    </section>
+    <section class="page-card">
+      <div class="page-card-header">
+        <h2>Teams Explorer (/teams) (Mobile)</h2>
+        <div class="meta-badges">
+          <span class="badge">Route: /teams</span>
+          <span class="badge">Dim: 375x3382 &rarr; 375x3292</span>
+          <span class="badge">Size: 191.7KB &rarr; 186.6KB</span>
+          <span class="badge">RMSE: 46.97</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="column">
+          <span class="column-title">Before (Mobile Legacy)</span>
+          <div class="img-wrapper">
+            <a href="../dl01-before/05-teams-375.png" target="_blank">
+              <img src="../dl01-before/05-teams-375.png" alt="Before: Teams Explorer (/teams)" loading="lazy" />
+            </a>
+          </div>
+        </div>
+        <div class="column">
+          <span class="column-title">After (Mobile Drawer & Tonal V1)</span>
+          <div class="img-wrapper">
+            <a href="./05-teams-375.png" target="_blank">
+              <img src="./05-teams-375.png" alt="After: Teams Explorer (/teams)" loading="lazy" />
+            </a>
+          </div>
+        </div>
+      </div>
+      <p class="note"><strong>Design Updates:</strong> Tonal team cards, subtle elevation shadows, consolidated navigation bar.</p>
+    </section>
+    <section class="page-card">
+      <div class="page-card-header">
+        <h2>Team Profile (/teams/1610612738) (Mobile)</h2>
+        <div class="meta-badges">
+          <span class="badge">Route: /teams/1610612738?season=2025-26</span>
+          <span class="badge">Dim: 375x9370 &rarr; 375x9769</span>
+          <span class="badge">Size: 624.4KB &rarr; 614.9KB</span>
+          <span class="badge">RMSE: 44.96</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="column">
+          <span class="column-title">Before (Mobile Legacy)</span>
+          <div class="img-wrapper">
+            <a href="../dl01-before/06-team-detail-375.png" target="_blank">
+              <img src="../dl01-before/06-team-detail-375.png" alt="Before: Team Profile (/teams/1610612738)" loading="lazy" />
+            </a>
+          </div>
+        </div>
+        <div class="column">
+          <span class="column-title">After (Mobile Drawer & Tonal V1)</span>
+          <div class="img-wrapper">
+            <a href="./06-team-detail-375.png" target="_blank">
+              <img src="./06-team-detail-375.png" alt="After: Team Profile (/teams/1610612738)" loading="lazy" />
+            </a>
+          </div>
+        </div>
+      </div>
+      <p class="note"><strong>Design Updates:</strong> Tonal roster tables, shot charts with dark mode contrast, hairline dividers.</p>
+    </section>
+    <section class="page-card">
+      <div class="page-card-header">
+        <h2>Player Compare (/compare) (Mobile)</h2>
+        <div class="meta-badges">
+          <span class="badge">Route: /compare</span>
+          <span class="badge">Dim: 375x1044 &rarr; 375x965</span>
+          <span class="badge">Size: 56.8KB &rarr; 52.5KB</span>
+          <span class="badge">RMSE: 46.33</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="column">
+          <span class="column-title">Before (Mobile Legacy)</span>
+          <div class="img-wrapper">
+            <a href="../dl01-before/07-compare-375.png" target="_blank">
+              <img src="../dl01-before/07-compare-375.png" alt="Before: Player Compare (/compare)" loading="lazy" />
+            </a>
+          </div>
+        </div>
+        <div class="column">
+          <span class="column-title">After (Mobile Drawer & Tonal V1)</span>
+          <div class="img-wrapper">
+            <a href="./07-compare-375.png" target="_blank">
+              <img src="./07-compare-375.png" alt="After: Player Compare (/compare)" loading="lazy" />
+            </a>
+          </div>
+        </div>
+      </div>
+      <p class="note"><strong>Design Updates:</strong> Side-by-side player compare cards, tonal metric diff bars, clean selector dropdowns.</p>
+    </section>
+    <section class="page-card">
+      <div class="page-card-header">
+        <h2>Live Scoreboard (/live) (Mobile)</h2>
+        <div class="meta-badges">
+          <span class="badge">Route: /live</span>
+          <span class="badge">Dim: 375x1101 &rarr; 375x1164</span>
+          <span class="badge">Size: 74.0KB &rarr; 71.9KB</span>
+          <span class="badge">RMSE: 47.36</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="column">
+          <span class="column-title">Before (Mobile Legacy)</span>
+          <div class="img-wrapper">
+            <a href="../dl01-before/08-live-375.png" target="_blank">
+              <img src="../dl01-before/08-live-375.png" alt="Before: Live Scoreboard (/live)" loading="lazy" />
+            </a>
+          </div>
+        </div>
+        <div class="column">
+          <span class="column-title">After (Mobile Drawer & Tonal V1)</span>
+          <div class="img-wrapper">
+            <a href="./08-live-375.png" target="_blank">
+              <img src="./08-live-375.png" alt="After: Live Scoreboard (/live)" loading="lazy" />
+            </a>
+          </div>
+        </div>
+      </div>
+      <p class="note"><strong>Design Updates:</strong> Live scoreboard cards with pulsing live dot, tabular score counters, borderless grid.</p>
+    </section>
+    <section class="page-card">
+      <div class="page-card-header">
+        <h2>Live Game Detail (/live/games/123) (Mobile)</h2>
+        <div class="meta-badges">
+          <span class="badge">Route: /live/games/123</span>
+          <span class="badge">Dim: 375x1967 &rarr; 375x2159</span>
+          <span class="badge">Size: 142.9KB &rarr; 141.4KB</span>
+          <span class="badge">RMSE: 52.01</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="column">
+          <span class="column-title">Before (Mobile Legacy)</span>
+          <div class="img-wrapper">
+            <a href="../dl01-before/09-live-game-375.png" target="_blank">
+              <img src="../dl01-before/09-live-game-375.png" alt="Before: Live Game Detail (/live/games/123)" loading="lazy" />
+            </a>
+          </div>
+        </div>
+        <div class="column">
+          <span class="column-title">After (Mobile Drawer & Tonal V1)</span>
+          <div class="img-wrapper">
+            <a href="./09-live-game-375.png" target="_blank">
+              <img src="./09-live-game-375.png" alt="After: Live Game Detail (/live/games/123)" loading="lazy" />
+            </a>
+          </div>
+        </div>
+      </div>
+      <p class="note"><strong>Design Updates:</strong> Live game hero banner, play-by-play feed with tonal cards, tabular shot distribution.</p>
+    </section>
+    <section class="page-card">
+      <div class="page-card-header">
+        <h2>Playoffs Bracket (/playoffs) (Mobile)</h2>
+        <div class="meta-badges">
+          <span class="badge">Route: /playoffs</span>
+          <span class="badge">Dim: 375x5552 &rarr; 379x5128</span>
+          <span class="badge">Size: 334.0KB &rarr; 320.4KB</span>
+          <span class="badge">RMSE: 63.94</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="column">
+          <span class="column-title">Before (Mobile Legacy)</span>
+          <div class="img-wrapper">
+            <a href="../dl01-before/10-playoffs-375.png" target="_blank">
+              <img src="../dl01-before/10-playoffs-375.png" alt="Before: Playoffs Bracket (/playoffs)" loading="lazy" />
+            </a>
+          </div>
+        </div>
+        <div class="column">
+          <span class="column-title">After (Mobile Drawer & Tonal V1)</span>
+          <div class="img-wrapper">
+            <a href="./10-playoffs-375.png" target="_blank">
+              <img src="./10-playoffs-375.png" alt="After: Playoffs Bracket (/playoffs)" loading="lazy" />
+            </a>
+          </div>
+        </div>
+      </div>
+      <p class="note"><strong>Design Updates:</strong> Playoff tournament bracket tree, tonal matchup cards, 228px compact vertical rhythm.</p>
+    </section>
+    <section class="page-card">
+      <div class="page-card-header">
+        <h2>Ask Assistant - Empty (/research/ask) (Mobile)</h2>
+        <div class="meta-badges">
+          <span class="badge">Route: /research/ask</span>
+          <span class="badge">Dim: 375x812 &rarr; 375x812</span>
+          <span class="badge">Size: 53.2KB &rarr; 50.5KB</span>
+          <span class="badge">RMSE: 47.94</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="column">
+          <span class="column-title">Before (Mobile Legacy)</span>
+          <div class="img-wrapper">
+            <a href="../dl01-before/11-ask-empty-375.png" target="_blank">
+              <img src="../dl01-before/11-ask-empty-375.png" alt="Before: Ask Assistant - Empty (/research/ask)" loading="lazy" />
+            </a>
+          </div>
+        </div>
+        <div class="column">
+          <span class="column-title">After (Mobile Drawer & Tonal V1)</span>
+          <div class="img-wrapper">
+            <a href="./11-ask-empty-375.png" target="_blank">
+              <img src="./11-ask-empty-375.png" alt="After: Ask Assistant - Empty (/research/ask)" loading="lazy" />
+            </a>
+          </div>
+        </div>
+      </div>
+      <p class="note"><strong>Design Updates:</strong> Ask Assistant empty prompt hero, prompt chip suggestions, borderless input pill.</p>
+    </section>
+    <section class="page-card">
+      <div class="page-card-header">
+        <h2>Ask Assistant - Answered (/research/ask) (Mobile)</h2>
+        <div class="meta-badges">
+          <span class="badge">Route: /research/ask?thread=b41147e7-3840-47e9-a9af-68bd862473b1</span>
+          <span class="badge">Dim: 375x1922 &rarr; 375x1900</span>
+          <span class="badge">Size: 59.8KB &rarr; 56.7KB</span>
+          <span class="badge">RMSE: 20.69</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="column">
+          <span class="column-title">Before (Mobile Legacy)</span>
+          <div class="img-wrapper">
+            <a href="../dl01-before/12-ask-answered-375.png" target="_blank">
+              <img src="../dl01-before/12-ask-answered-375.png" alt="Before: Ask Assistant - Answered (/research/ask)" loading="lazy" />
+            </a>
+          </div>
+        </div>
+        <div class="column">
+          <span class="column-title">After (Mobile Drawer & Tonal V1)</span>
+          <div class="img-wrapper">
+            <a href="./12-ask-answered-375.png" target="_blank">
+              <img src="./12-ask-answered-375.png" alt="After: Ask Assistant - Answered (/research/ask)" loading="lazy" />
+            </a>
+          </div>
+        </div>
+      </div>
+      <p class="note"><strong>Design Updates:</strong> Threaded assistant conversation, streaming prose layout, tonal citation cards.</p>
+    </section>
+    <section class="page-card">
+      <div class="page-card-header">
+        <h2>RAPM Advanced Research (/research/rapm) (Mobile)</h2>
+        <div class="meta-badges">
+          <span class="badge">Route: /research/rapm</span>
+          <span class="badge">Dim: 375x812 &rarr; 375x812</span>
+          <span class="badge">Size: 50.9KB &rarr; 47.3KB</span>
+          <span class="badge">RMSE: 53.75</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="column">
+          <span class="column-title">Before (Mobile Legacy)</span>
+          <div class="img-wrapper">
+            <a href="../dl01-before/13-rapm-375.png" target="_blank">
+              <img src="../dl01-before/13-rapm-375.png" alt="Before: RAPM Advanced Research (/research/rapm)" loading="lazy" />
+            </a>
+          </div>
+        </div>
+        <div class="column">
+          <span class="column-title">After (Mobile Drawer & Tonal V1)</span>
+          <div class="img-wrapper">
+            <a href="./13-rapm-375.png" target="_blank">
+              <img src="./13-rapm-375.png" alt="After: RAPM Advanced Research (/research/rapm)" loading="lazy" />
+            </a>
+          </div>
+        </div>
+      </div>
+      <p class="note"><strong>Design Updates:</strong> RAPM regression tables, tabular coefficients, subtle hairline cell dividers.</p>
+    </section>
+    <section class="page-card">
+      <div class="page-card-header">
+        <h2>With-Or-Without-You WOWY (/wowy) (Mobile)</h2>
+        <div class="meta-badges">
+          <span class="badge">Route: /wowy</span>
+          <span class="badge">Dim: 375x1764 &rarr; 375x1718</span>
+          <span class="badge">Size: 107.8KB &rarr; 100.9KB</span>
+          <span class="badge">RMSE: 51.53</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="column">
+          <span class="column-title">Before (Mobile Legacy)</span>
+          <div class="img-wrapper">
+            <a href="../dl01-before/14-wowy-375.png" target="_blank">
+              <img src="../dl01-before/14-wowy-375.png" alt="Before: With-Or-Without-You WOWY (/wowy)" loading="lazy" />
+            </a>
+          </div>
+        </div>
+        <div class="column">
+          <span class="column-title">After (Mobile Drawer & Tonal V1)</span>
+          <div class="img-wrapper">
+            <a href="./14-wowy-375.png" target="_blank">
+              <img src="./14-wowy-375.png" alt="After: With-Or-Without-You WOWY (/wowy)" loading="lazy" />
+            </a>
+          </div>
+        </div>
+      </div>
+      <p class="note"><strong>Design Updates:</strong> WOWY lineup net rating cards, tonal differential bars, tabular minutes.</p>
+    </section>
+    <section class="page-card">
+      <div class="page-card-header">
+        <h2>Finance & Contracts (/contracts) (Mobile)</h2>
+        <div class="meta-badges">
+          <span class="badge">Route: /contracts</span>
+          <span class="badge">Dim: 375x1792 &rarr; 375x1757</span>
+          <span class="badge">Size: 90.5KB &rarr; 86.4KB</span>
+          <span class="badge">RMSE: 47.72</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="column">
+          <span class="column-title">Before (Mobile Legacy)</span>
+          <div class="img-wrapper">
+            <a href="../dl01-before/15-contracts-375.png" target="_blank">
+              <img src="../dl01-before/15-contracts-375.png" alt="Before: Finance & Contracts (/contracts)" loading="lazy" />
+            </a>
+          </div>
+        </div>
+        <div class="column">
+          <span class="column-title">After (Mobile Drawer & Tonal V1)</span>
+          <div class="img-wrapper">
+            <a href="./15-contracts-375.png" target="_blank">
+              <img src="./15-contracts-375.png" alt="After: Finance & Contracts (/contracts)" loading="lazy" />
+            </a>
+          </div>
+        </div>
+      </div>
+      <p class="note"><strong>Design Updates:</strong> Multi-year cap hits table, salary breakdown bars, tabular currency formatting.</p>
+    </section>
+    <section class="page-card">
+      <div class="page-card-header">
+        <h2>Settings & Operations (/settings) (Mobile)</h2>
+        <div class="meta-badges">
+          <span class="badge">Route: /settings</span>
+          <span class="badge">Dim: 375x2676 &rarr; 375x2894</span>
+          <span class="badge">Size: 177.2KB &rarr; 174.7KB</span>
+          <span class="badge">RMSE: 51.6</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="column">
+          <span class="column-title">Before (Mobile Legacy)</span>
+          <div class="img-wrapper">
+            <a href="../dl01-before/16-settings-375.png" target="_blank">
+              <img src="../dl01-before/16-settings-375.png" alt="Before: Settings & Operations (/settings)" loading="lazy" />
+            </a>
+          </div>
+        </div>
+        <div class="column">
+          <span class="column-title">After (Mobile Drawer & Tonal V1)</span>
+          <div class="img-wrapper">
+            <a href="./16-settings-375.png" target="_blank">
+              <img src="./16-settings-375.png" alt="After: Settings & Operations (/settings)" loading="lazy" />
+            </a>
+          </div>
+        </div>
+      </div>
+      <p class="note"><strong>Design Updates:</strong> Settings cards, portrait pipeline triggers, tokenized toggle switches.</p>
+    </section>
+    <section class="page-card">
+      <div class="page-card-header">
+        <h2>Data Status & Verification (/data-status) (Mobile)</h2>
+        <div class="meta-badges">
+          <span class="badge">Route: /data-status</span>
+          <span class="badge">Dim: 375x2757 &rarr; 375x2812</span>
+          <span class="badge">Size: 217.2KB &rarr; 209.5KB</span>
+          <span class="badge">RMSE: 51.62</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="column">
+          <span class="column-title">Before (Mobile Legacy)</span>
+          <div class="img-wrapper">
+            <a href="../dl01-before/17-data-status-375.png" target="_blank">
+              <img src="../dl01-before/17-data-status-375.png" alt="Before: Data Status & Verification (/data-status)" loading="lazy" />
+            </a>
+          </div>
+        </div>
+        <div class="column">
+          <span class="column-title">After (Mobile Drawer & Tonal V1)</span>
+          <div class="img-wrapper">
+            <a href="./17-data-status-375.png" target="_blank">
+              <img src="./17-data-status-375.png" alt="After: Data Status & Verification (/data-status)" loading="lazy" />
+            </a>
+          </div>
+        </div>
+      </div>
+      <p class="note"><strong>Design Updates:</strong> Data status & snapshot health indicators, ingestion pipeline logs, badge pills.</p>
+    </section>
+  </main>
+  <script>
+    function showViewport(vp) {
+      document.getElementById('container-1440').style.display = vp === '1440' ? 'flex' : 'none';
+      document.getElementById('container-375').style.display = vp === '375' ? 'flex' : 'none';
+      document.getElementById('btn-1440').classList.toggle('active', vp === '1440');
+      document.getElementById('btn-375').classList.toggle('active', vp === '375');
+    }
+  </script>
+</body>
+</html>

@@ -2,6 +2,7 @@
 
 import { useReleaseCatalog } from "@/lib/use-release-catalog";
 import { EntityField } from "./entity-picker";
+import { useToast } from "./ui/toast";
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
@@ -66,6 +67,7 @@ export function TrendsInvestigationView() {
   const [rankError, setRankError] = useState<string | null>(null);
 
   const [copiedUrl, setCopiedUrl] = useState(false);
+  const { toast } = useToast();
 
   // Fetch comparison data
   useEffect(() => {
@@ -177,6 +179,11 @@ export function TrendsInvestigationView() {
     try {
       await navigator.clipboard.writeText(window.location.href);
       setCopiedUrl(true);
+      toast({
+        title: "Link Copied",
+        description: "Investigation link copied to clipboard.",
+        variant: "info",
+      });
       setTimeout(() => setCopiedUrl(false), 2000);
     } catch {
       // ignore
@@ -218,6 +225,11 @@ export function TrendsInvestigationView() {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+    toast({
+      title: "Export Downloaded",
+      description: "Trends CSV export ready.",
+      variant: "positive",
+    });
   };
 
   return (
@@ -226,12 +238,9 @@ export function TrendsInvestigationView() {
       {/* Header */}
       <div className="page-header">
         <div>
-          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.25rem" }}>
+          <div className="dist-header-meta">
             <span className="font-mono text-xs text-muted">F39</span>
-            <span
-              className="replica-badge-gated"
-              style={{ background: "rgba(96, 211, 148, 0.15)", color: "var(--positive)" }}
-            >
+            <span className="replica-badge-gated dist-badge-positive">
               Workload & Performance Trends
             </span>
 
@@ -242,7 +251,7 @@ export function TrendsInvestigationView() {
           </p>
         </div>
 
-        <div className="page-actions" style={{ display: "flex", gap: "0.5rem" }}>
+        <div className="page-actions dist-actions">
           <button
             type="button"
             className="button button-secondary text-xs"
@@ -268,7 +277,7 @@ export function TrendsInvestigationView() {
       </div>
 
       {/* Main Tabs: Single Player vs Cohort Surges */}
-      <div className="filter-group" style={{ marginBottom: "1.25rem" }}>
+      <div className="dist-tab-group">
         <button
           type="button"
           className={`tab-button ${activeTab === "player" ? "active" : ""}`}
@@ -288,24 +297,11 @@ export function TrendsInvestigationView() {
       {activeTab === "player" ? (
         <>
           {/* Controls Bar */}
-          <div
-            className="filter-bar"
-            style={{
-              display: "flex",
-              flexWrap: "wrap",
-              gap: "1rem",
-              alignItems: "center",
-              background: "var(--surface)",
-              padding: "1rem",
-              borderRadius: "6px",
-              border: "1px solid var(--border)",
-              marginBottom: "1.5rem"
-            }}
-          >
+          <div className="filter-bar dist-filter-bar">
             {/* Quick Player Selectors */}
-            <div style={{ display: "flex", flexDirection: "column", gap: "0.25rem" }}>
+            <div className="dist-field-group">
               <label className="text-xs font-mono text-muted uppercase">Featured Players</label>
-              <div style={{ display: "flex", gap: "0.35rem", flexWrap: "wrap" }}>
+              <div className="dist-quick-pills">
                 {FEATURED_PLAYERS.map((p) => (
                   <button
                     key={p.id}
@@ -323,7 +319,7 @@ export function TrendsInvestigationView() {
             <EntityField label="Target player" value={playerId} releaseId={releaseId} season={season} phase={phase} beforeDate={beforeDate} onChange={id => { if(id) handleSelectPlayer(id); else setPlayerId(""); }} />
 
             {/* Mode Selector */}
-            <div style={{ display: "flex", flexDirection: "column", gap: "0.25rem" }}>
+            <div className="dist-field-group">
               <label className="text-xs font-mono text-muted uppercase">Slicing Mode</label>
               <select
                 value={mode}
@@ -332,8 +328,7 @@ export function TrendsInvestigationView() {
                   setMode(m);
                   updateUrl(playerId, m, periodAN, periodBN);
                 }}
-                className="input text-xs"
-                style={{ padding: "0.25rem 0.5rem" }}
+                className="input text-xs dist-select-compact"
               >
                 <option value="appearances">Consecutive Appearances</option>
                 <option value="date_range">Calendar Date Range</option>
@@ -343,7 +338,7 @@ export function TrendsInvestigationView() {
             {/* Window Sizes for Appearances */}
             {mode === "appearances" ? (
               <>
-                <div style={{ display: "flex", flexDirection: "column", gap: "0.25rem" }}>
+                <div className="dist-field-group">
                   <label className="text-xs font-mono text-muted uppercase">Period A (Recent)</label>
                   <select
                     value={periodAN}
@@ -352,8 +347,7 @@ export function TrendsInvestigationView() {
                       setPeriodAN(val);
                       updateUrl(playerId, mode, val, periodBN);
                     }}
-                    className="input text-xs"
-                    style={{ padding: "0.25rem 0.5rem" }}
+                    className="input text-xs dist-select-compact"
                   >
                     <option value={5}>Last 5 games</option>
                     <option value={10}>Last 10 games</option>
@@ -362,7 +356,7 @@ export function TrendsInvestigationView() {
                   </select>
                 </div>
 
-                <div style={{ display: "flex", flexDirection: "column", gap: "0.25rem" }}>
+                <div className="dist-field-group">
                   <label className="text-xs font-mono text-muted uppercase">Period B (Preceding)</label>
                   <select
                     value={periodBN}
@@ -371,8 +365,7 @@ export function TrendsInvestigationView() {
                       setPeriodBN(val);
                       updateUrl(playerId, mode, periodAN, val);
                     }}
-                    className="input text-xs"
-                    style={{ padding: "0.25rem 0.5rem" }}
+                    className="input text-xs dist-select-compact"
                   >
                     <option value={5}>Prior 5 games</option>
                     <option value={10}>Prior 10 games</option>
@@ -382,10 +375,10 @@ export function TrendsInvestigationView() {
                 </div>
               </>
             ) : (
-              <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
-                <div style={{ display: "flex", flexDirection: "column", gap: "0.25rem" }}>
+              <div className="ranking-header-actions">
+                <div className="dist-field-group">
                   <label className="text-xs font-mono text-muted uppercase">Period A Range</label>
-                  <div style={{ display: "flex", gap: "0.25rem" }}>
+                  <div className="dist-quick-pills">
                     <input
                       type="date"
                       value={periodAFrom}
@@ -402,9 +395,9 @@ export function TrendsInvestigationView() {
                   </div>
                 </div>
 
-                <div style={{ display: "flex", flexDirection: "column", gap: "0.25rem" }}>
+                <div className="dist-field-group">
                   <label className="text-xs font-mono text-muted uppercase">Period B Range</label>
-                  <div style={{ display: "flex", gap: "0.25rem" }}>
+                  <div className="dist-quick-pills">
                     <input
                       type="date"
                       value={periodBFrom}
@@ -424,13 +417,12 @@ export function TrendsInvestigationView() {
             )}
 
             {/* Season Selector */}
-            <div style={{ display: "flex", flexDirection: "column", gap: "0.25rem" }}>
+            <div className="dist-field-group">
               <label className="text-xs font-mono text-muted uppercase">Season</label>
               <select
                 value={season}
                 onChange={(e) => setSeason(e.target.value)}
-                className="input text-xs"
-                style={{ padding: "0.25rem 0.5rem" }}
+                className="input text-xs dist-select-compact"
               >
                 {season && !catalog?.seasons.includes(season) && <option value={season}>{season} · availability unverified</option>}{catalog?.seasons.map(value => <option key={value} value={value}>{value}</option>)}
               </select>
@@ -439,13 +431,13 @@ export function TrendsInvestigationView() {
 
           {/* Loading and Error states */}
           {loading && (
-            <div className="table-card" style={{ padding: "2rem", textAlign: "center" }}>
+            <div className="table-card dist-loading-card">
               <div className="text-muted">Computing disjoint period deltas...</div>
             </div>
           )}
 
           {error && (
-            <div className="notice-box" style={{ borderLeftColor: "var(--negative)", marginBottom: "1.5rem" }}>
+            <div className="notice-box dist-notice-error">
               <strong>Investigation Error:</strong> {error}
             </div>
           )}
@@ -454,38 +446,24 @@ export function TrendsInvestigationView() {
             <>
               {/* Overlap Notice */}
               {data.has_calendar_overlap && (
-                <div
-                  className="notice-box"
-                  style={{
-                    borderLeftColor: "var(--warning)",
-                    marginBottom: "1.5rem",
-                    background: "rgba(255, 179, 0, 0.08)"
-                  }}
-                >
+                <div className="notice-box dist-notice-gating">
                   <strong>Calendar Overlap Detected:</strong> Period A and Period B contain overlapping calendar dates.
                   Games in the intersection are reflected in both periods.
                 </div>
               )}
 
               {/* Period Summary Cards */}
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-                  gap: "1rem",
-                  marginBottom: "1.5rem"
-                }}
-              >
+              <div className="trend-inv-grid-2col">
                 {/* Period A Card */}
-                <div className="table-card" style={{ padding: "1.25rem", borderTop: "3px solid var(--accent)" }}>
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: "0.5rem" }}>
+                <div className="table-card trend-inv-card-period-a">
+                  <div className="trend-inv-stat-head">
                     <span className="font-mono text-xs text-muted uppercase">Period A (Target Slice)</span>
-                    <span className="text-xs font-mono" style={{ color: "var(--accent)" }}>
+                    <span className="text-xs font-mono text-accent">
                       {data.period_a.appearances_count} Games
                     </span>
                   </div>
-                  <h3 style={{ margin: "0 0 0.5rem 0", fontSize: "1.1rem" }}>{data.period_a.label}</h3>
-                  <div className="text-xs text-muted" style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+                  <h3 className="trend-inv-title">{data.period_a.label}</h3>
+                  <div className="trend-inv-meta-list">
                     <div>
                       <strong>Dates:</strong> {data.period_a.start_date || "—"} to {data.period_a.end_date || "—"}
                     </div>
@@ -499,15 +477,15 @@ export function TrendsInvestigationView() {
                 </div>
 
                 {/* Period B Card */}
-                <div className="table-card" style={{ padding: "1.25rem", borderTop: "3px solid var(--border)" }}>
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: "0.5rem" }}>
+                <div className="table-card trend-inv-card-period-b">
+                  <div className="trend-inv-stat-head">
                     <span className="font-mono text-xs text-muted uppercase">Period B (Baseline Slice)</span>
                     <span className="text-xs font-mono text-muted">
                       {data.period_b.appearances_count} Games
                     </span>
                   </div>
-                  <h3 style={{ margin: "0 0 0.5rem 0", fontSize: "1.1rem" }}>{data.period_b.label}</h3>
-                  <div className="text-xs text-muted" style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+                  <h3 className="trend-inv-title">{data.period_b.label}</h3>
+                  <div className="trend-inv-meta-list">
                     <div>
                       <strong>Dates:</strong> {data.period_b.start_date || "—"} to {data.period_b.end_date || "—"}
                     </div>
@@ -522,14 +500,7 @@ export function TrendsInvestigationView() {
               </div>
 
               {/* Key Delta Highlights */}
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
-                  gap: "0.75rem",
-                  marginBottom: "1.5rem"
-                }}
-              >
+              <div className="trend-inv-delta-grid">
                 {data.deltas
                   .filter((d) => ["pts", "pts_per_game", "min_per_game", "ts_pct", "fg3_pct", "ast_per_game"].includes(d.metric_key))
                   .slice(0, 6)
@@ -538,34 +509,17 @@ export function TrendsInvestigationView() {
                     const absVal = d.absolute_delta;
                     const pctVal = d.percentage_delta;
                     const sign = absVal && absVal > 0 ? "+" : "";
-                    const badgeBg =
-                      absVal && absVal > 0
-                        ? "rgba(96, 211, 148, 0.15)"
-                        : absVal && absVal < 0
-                        ? "rgba(255, 107, 107, 0.15)"
-                        : "var(--surface)";
-                    const badgeColor =
-                      absVal && absVal > 0
-                        ? "var(--positive)"
-                        : absVal && absVal < 0
-                        ? "var(--negative)"
-                        : "var(--text-muted)";
+                    const isPos = absVal && absVal > 0;
+                    const isNeg = absVal && absVal < 0;
 
                     return (
                       <div
                         key={d.metric_key}
-                        className="table-card"
-                        style={{
-                          padding: "1rem",
-                          background: "var(--surface)",
-                          display: "flex",
-                          flexDirection: "column",
-                          gap: "0.35rem"
-                        }}
+                        className="table-card trend-inv-delta-card"
                       >
                         <span className="text-xs text-muted font-mono">{d.display_name}</span>
-                        <div style={{ display: "flex", alignItems: "baseline", gap: "0.5rem" }}>
-                          <span style={{ fontSize: "1.25rem", fontWeight: 700 }}>
+                        <div className="flex items-baseline gap-2">
+                          <span className="trend-inv-val-large">
                             {d.period_a_value !== null ? d.period_a_value : "—"}
                             {isPct ? "%" : ""}
                           </span>
@@ -575,15 +529,7 @@ export function TrendsInvestigationView() {
                           </span>
                         </div>
                         <div
-                          style={{
-                            alignSelf: "flex-start",
-                            padding: "2px 6px",
-                            borderRadius: "4px",
-                            fontSize: "0.75rem",
-                            fontWeight: 600,
-                            background: badgeBg,
-                            color: badgeColor
-                          }}
+                          className={`badge self-start ${isPos ? "badge-positive" : isNeg ? "badge-negative" : ""}`}
                         >
                           {absVal !== null ? `${sign}${absVal}${isPct ? "%" : ""}` : "—"}
                           {pctVal !== null && ` (${sign}${pctVal}%)`}
@@ -594,9 +540,9 @@ export function TrendsInvestigationView() {
               </div>
 
               {/* Detailed Deltas Table */}
-              <div className="table-card" style={{ marginBottom: "1.5rem" }}>
-                <div style={{ padding: "1rem 1.25rem", borderBottom: "1px solid var(--border)" }}>
-                  <h3 style={{ margin: 0, fontSize: "1rem" }}>
+              <div className="table-card dist-table-card">
+                <div className="dist-table-header">
+                  <h3 className="dist-table-title">
                     Full Metric Variance Table — {data.player_name}
                   </h3>
                   <span className="text-xs text-muted">
@@ -605,43 +551,42 @@ export function TrendsInvestigationView() {
                 </div>
 
                 <div className="table-responsive">
-                  <table className="data-table" style={{ width: "100%", textAlign: "left" }}>
+                  <table className="data-table w-full text-left">
                     <thead>
                       <tr>
-                        <th style={{ padding: "0.75rem 1rem" }}>Metric</th>
-                        <th style={{ padding: "0.75rem 1rem", textAlign: "right" }}>Period A Value</th>
-                        <th style={{ padding: "0.75rem 1rem", textAlign: "right" }}>Period B Value</th>
-                        <th style={{ padding: "0.75rem 1rem", textAlign: "right" }}>Absolute Delta</th>
-                        <th style={{ padding: "0.75rem 1rem", textAlign: "right" }}>Percentage Delta</th>
-                        <th style={{ padding: "0.75rem 1rem", textAlign: "center" }}>Sample (A / B)</th>
+                        <th className="th-col-pad">Metric</th>
+                        <th className="th-col-pad-right">Period A Value</th>
+                        <th className="th-col-pad-right">Period B Value</th>
+                        <th className="th-col-pad-right">Absolute Delta</th>
+                        <th className="th-col-pad-right">Percentage Delta</th>
+                        <th className="th-col-pad-center">Sample (A / B)</th>
                       </tr>
                     </thead>
                     <tbody>
                       {data.deltas.map((row: MetricDelta) => {
                         const isPct = row.metric_key.endsWith("_pct");
                         return (
-                          <tr key={row.metric_key} style={{ borderBottom: "1px solid var(--border)" }}>
-                            <td style={{ padding: "0.75rem 1rem", fontWeight: 500 }}>
+                          <tr key={row.metric_key} className="dist-table-row">
+                            <td className="td-col-pad font-medium">
                               <div>{row.display_name}</div>
                               <span className="text-xs font-mono text-muted">{row.metric_key}</span>
                             </td>
-                            <td style={{ padding: "0.75rem 1rem", textAlign: "right", fontFamily: "var(--font-mono)" }}>
+                            <td className="td-col-pad-right font-mono">
                               {row.period_a_value !== null ? `${row.period_a_value}${isPct ? "%" : ""}` : "—"}
                             </td>
-                            <td style={{ padding: "0.75rem 1rem", textAlign: "right", fontFamily: "var(--font-mono)" }}>
+                            <td className="td-col-pad-right font-mono">
                               {row.period_b_value !== null ? `${row.period_b_value}${isPct ? "%" : ""}` : "—"}
                             </td>
-                            <td style={{ padding: "0.75rem 1rem", textAlign: "right", fontFamily: "var(--font-mono)" }}>
+                            <td className="td-col-pad-right font-mono">
                               {row.absolute_delta !== null ? (
                                 <span
                                   className={
                                     row.absolute_delta > 0
-                                      ? "text-positive"
+                                      ? "text-positive font-semibold"
                                       : row.absolute_delta < 0
-                                      ? "text-negative"
-                                      : "text-muted"
+                                      ? "text-negative font-semibold"
+                                      : "text-muted font-semibold"
                                   }
-                                  style={{ fontWeight: 600 }}
                                 >
                                   {row.absolute_delta > 0 ? "+" : ""}
                                   {row.absolute_delta}
@@ -651,7 +596,7 @@ export function TrendsInvestigationView() {
                                 "—"
                               )}
                             </td>
-                            <td style={{ padding: "0.75rem 1rem", textAlign: "right", fontFamily: "var(--font-mono)" }}>
+                            <td className="td-col-pad-right font-mono">
                               {row.percentage_delta !== null ? (
                                 <span
                                   className={
@@ -671,7 +616,7 @@ export function TrendsInvestigationView() {
                                 </span>
                               )}
                             </td>
-                            <td style={{ padding: "0.75rem 1rem", textAlign: "center", fontSize: "0.8rem", color: "var(--text-muted)" }}>
+                            <td className="td-col-pad-center text-xs text-muted">
                               {row.period_a_n} / {row.period_b_n}
                             </td>
                           </tr>
@@ -683,24 +628,14 @@ export function TrendsInvestigationView() {
               </div>
 
               {/* Cryptographic Disclosures & Evidence Footer */}
-              <div
-                className="table-card"
-                style={{
-                  padding: "1rem 1.25rem",
-                  background: "var(--surface)",
-                  fontSize: "0.8rem",
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "0.5rem"
-                }}
-              >
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap" }}>
+              <div className="dist-provenance-box">
+                <div className="dist-provenance-header">
                   <span className="font-mono text-muted uppercase text-xs">Cryptographic Lineage</span>
                   <span className="font-mono text-xs text-muted">
                     SHA-256: <code>{data.evidence_hash}</code>
                   </span>
                 </div>
-                <ul style={{ margin: 0, paddingLeft: "1.2rem", color: "var(--text-muted)" }}>
+                <ul className="dist-provenance-list">
                   {data.disclosures.map((disc: string, idx: number) => (
                     <li key={idx}>{disc}</li>
                   ))}
@@ -713,27 +648,13 @@ export function TrendsInvestigationView() {
         /* Cohort Surges & Declines Tab */
         <div>
           {/* Cohort Rank Controls */}
-          <div
-            className="filter-bar"
-            style={{
-              display: "flex",
-              flexWrap: "wrap",
-              gap: "1rem",
-              alignItems: "center",
-              background: "var(--surface)",
-              padding: "1rem",
-              borderRadius: "6px",
-              border: "1px solid var(--border)",
-              marginBottom: "1.5rem"
-            }}
-          >
-            <div style={{ display: "flex", flexDirection: "column", gap: "0.25rem" }}>
+          <div className="filter-bar dist-filter-bar">
+            <div className="dist-field-group">
               <label className="text-xs font-mono text-muted uppercase">Metric</label>
               <select
                 value={rankMetric}
                 onChange={(e) => setRankMetric(e.target.value)}
-                className="input text-xs"
-                style={{ padding: "0.25rem 0.5rem" }}
+                className="input text-xs dist-select-compact"
               >
                 <option value="pts">Total Points (pts)</option>
                 <option value="pts_per_game">Points Per Game (pts_per_game)</option>
@@ -743,26 +664,24 @@ export function TrendsInvestigationView() {
               </select>
             </div>
 
-            <div style={{ display: "flex", flexDirection: "column", gap: "0.25rem" }}>
+            <div className="dist-field-group">
               <label className="text-xs font-mono text-muted uppercase">Direction</label>
               <select
                 value={rankDirection}
                 onChange={(e) => setRankDirection(e.target.value as "desc" | "asc")}
-                className="input text-xs"
-                style={{ padding: "0.25rem 0.5rem" }}
+                className="input text-xs dist-select-compact"
               >
                 <option value="desc">Largest Surges (Descending)</option>
                 <option value="asc">Largest Drops (Ascending)</option>
               </select>
             </div>
 
-            <div style={{ display: "flex", flexDirection: "column", gap: "0.25rem" }}>
+            <div className="dist-field-group">
               <label className="text-xs font-mono text-muted uppercase">Season</label>
               <select
                 value={season}
                 onChange={(e) => setSeason(e.target.value)}
-                className="input text-xs"
-                style={{ padding: "0.25rem 0.5rem" }}
+                className="input text-xs dist-select-compact"
               >
                 {season && !catalog?.seasons.includes(season) && <option value={season}>{season} · availability unverified</option>}{catalog?.seasons.map(value => <option key={value} value={value}>{value}</option>)}
               </select>
@@ -770,21 +689,21 @@ export function TrendsInvestigationView() {
           </div>
 
           {rankLoading && (
-            <div className="table-card" style={{ padding: "2rem", textAlign: "center" }}>
+            <div className="table-card dist-loading-card">
               <div className="text-muted">Ranking active league cohort by period delta...</div>
             </div>
           )}
 
           {rankError && (
-            <div className="notice-box" style={{ borderLeftColor: "var(--negative)", marginBottom: "1.5rem" }}>
+            <div className="notice-box dist-notice-error">
               <strong>Ranking Error:</strong> {rankError}
             </div>
           )}
 
           {rankData && !rankLoading && (
-            <div className="table-card" style={{ marginBottom: "1.5rem" }}>
-              <div style={{ padding: "1rem 1.25rem", borderBottom: "1px solid var(--border)" }}>
-                <h3 style={{ margin: 0, fontSize: "1rem" }}>
+            <div className="table-card dist-table-card">
+              <div className="dist-table-header">
+                <h3 className="dist-table-title">
                   League Cohort Ranking: {rankMetric.toUpperCase()} ({rankDirection === "desc" ? "Surges" : "Drops"})
                 </h3>
                 <span className="text-xs text-muted">
@@ -793,49 +712,48 @@ export function TrendsInvestigationView() {
               </div>
 
               <div className="table-responsive">
-                <table className="data-table" style={{ width: "100%", textAlign: "left" }}>
+                <table className="data-table w-full text-left">
                   <thead>
                     <tr>
-                      <th style={{ padding: "0.75rem 1rem", width: "60px" }}>Rank</th>
-                      <th style={{ padding: "0.75rem 1rem" }}>Player</th>
-                      <th style={{ padding: "0.75rem 1rem", textAlign: "right" }}>Baseline (Prior 10)</th>
-                      <th style={{ padding: "0.75rem 1rem", textAlign: "right" }}>Recent (Last 10)</th>
-                      <th style={{ padding: "0.75rem 1rem", textAlign: "right" }}>Absolute Delta</th>
-                      <th style={{ padding: "0.75rem 1rem", textAlign: "right" }}>Percentage Delta</th>
-                      <th style={{ padding: "0.75rem 1rem", textAlign: "center" }}>Action</th>
+                      <th className="th-col-pad th-w80">Rank</th>
+                      <th className="th-col-pad">Player</th>
+                      <th className="th-col-pad-right">Baseline (Prior 10)</th>
+                      <th className="th-col-pad-right">Recent (Last 10)</th>
+                      <th className="th-col-pad-right">Absolute Delta</th>
+                      <th className="th-col-pad-right">Percentage Delta</th>
+                      <th className="th-col-pad-center">Action</th>
                     </tr>
                   </thead>
                   <tbody>
                     {rankData.items.map((item: RankOperationItem) => {
                       const pctDelta = (item.details?.percentage_delta as number | undefined) ?? null;
                       return (
-                        <tr key={item.player_id} style={{ borderBottom: "1px solid var(--border)" }}>
-                          <td style={{ padding: "0.75rem 1rem", fontWeight: 700, color: "var(--accent)" }}>
+                        <tr key={item.player_id} className="dist-table-row">
+                          <td className="td-col-pad font-bold text-accent">
                             #{item.rank}
                           </td>
-                          <td style={{ padding: "0.75rem 1rem" }}>
-                            <div style={{ fontWeight: 600 }}>{item.player_name}</div>
+                          <td className="td-col-pad">
+                            <div className="font-semibold">{item.player_name}</div>
                             <span className="text-xs font-mono text-muted">
                               {item.team_tricode || "—"} · {item.games_played} GP · {item.total_minutes} MIN
                             </span>
                           </td>
-                          <td style={{ padding: "0.75rem 1rem", textAlign: "right", fontFamily: "var(--font-mono)" }}>
+                          <td className="td-col-pad-right font-mono">
                             {item.baseline_value ?? "—"}
                           </td>
-                          <td style={{ padding: "0.75rem 1rem", textAlign: "right", fontFamily: "var(--font-mono)" }}>
+                          <td className="td-col-pad-right font-mono">
                             {item.comparison_value ?? "—"}
                           </td>
-                          <td style={{ padding: "0.75rem 1rem", textAlign: "right", fontFamily: "var(--font-mono)" }}>
+                          <td className="td-col-pad-right font-mono">
                             {item.delta_value !== null ? (
                               <span
                                 className={
                                   item.delta_value > 0
-                                    ? "text-positive"
+                                    ? "text-positive font-semibold"
                                     : item.delta_value < 0
-                                    ? "text-negative"
-                                    : "text-muted"
+                                    ? "text-negative font-semibold"
+                                    : "text-muted font-semibold"
                                 }
-                                style={{ fontWeight: 600 }}
                               >
                                 {item.delta_value > 0 ? "+" : ""}
                                 {item.delta_value}
@@ -844,7 +762,7 @@ export function TrendsInvestigationView() {
                               "—"
                             )}
                           </td>
-                          <td style={{ padding: "0.75rem 1rem", textAlign: "right", fontFamily: "var(--font-mono)" }}>
+                          <td className="td-col-pad-right font-mono">
                             {pctDelta !== null ? (
                               <span
                                 className={
@@ -862,7 +780,7 @@ export function TrendsInvestigationView() {
                               "—"
                             )}
                           </td>
-                          <td style={{ padding: "0.75rem 1rem", textAlign: "center" }}>
+                          <td className="td-col-pad-center">
                             <button
                               type="button"
                               className="button button-secondary text-xs"
@@ -882,24 +800,14 @@ export function TrendsInvestigationView() {
               </div>
 
               {/* Cryptographic Disclosures & Evidence Footer */}
-              <div
-                className="table-card"
-                style={{
-                  padding: "1rem 1.25rem",
-                  background: "var(--surface)",
-                  fontSize: "0.8rem",
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "0.5rem"
-                }}
-              >
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap" }}>
+              <div className="dist-provenance-box">
+                <div className="dist-provenance-header">
                   <span className="font-mono text-muted uppercase text-xs">Cryptographic Lineage</span>
                   <span className="font-mono text-xs text-muted">
                     SHA-256: <code>{rankData.evidence_hash}</code>
                   </span>
                 </div>
-                <ul style={{ margin: 0, paddingLeft: "1.2rem", color: "var(--text-muted)" }}>
+                <ul className="dist-provenance-list">
                   {rankData.disclosures.map((disc: string, idx: number) => (
                     <li key={idx}>{disc}</li>
                   ))}

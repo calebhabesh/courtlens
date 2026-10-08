@@ -36,7 +36,7 @@ export default async function InvestigationsPage() {
       </div>
 
       {error && (
-        <div className="notice-box" style={{ borderLeftColor: "var(--warning)" }}>
+        <div className="notice-box notice-box-warning">
           <strong>Notice:</strong> {error}
         </div>
       )}

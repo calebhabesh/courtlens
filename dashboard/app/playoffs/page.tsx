@@ -55,7 +55,7 @@ export default async function PlayoffsPage({ searchParams }: PlayoffsPageProps) 
       />
 
       <div className="workbench-content">
-        <div className="page-header" style={{ marginBottom: "1rem" }}>
+        <div className="page-header">
           <div>
             <h1 className="page-title">Playoff Bracket &amp; Series Explorer</h1>
             <p className="page-subtitle">
@@ -65,7 +65,7 @@ export default async function PlayoffsPage({ searchParams }: PlayoffsPageProps) 
         </div>
 
         {loadError && (
-          <div className="notice-box" style={{ borderLeftColor: "var(--negative)", marginBottom: "1rem" }}>
+          <div className="notice-box error-notice" role="alert">
             <strong>Error:</strong> {loadError}
           </div>
         )}

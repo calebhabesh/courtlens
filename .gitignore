@@ -23,6 +23,7 @@ dashboard/.next/
 dashboard/out/
 dashboard/.vercel/
 dashboard/test-results/
+test-results/
 *.tsbuildinfo
 
 # Runtime data; committed fixtures are intentionally separate
@@ -35,6 +36,7 @@ data/backups/*
 data/cache/*
 !data/cache/.gitkeep
 data/*.db
+data/derived/
 logs/
 
 # dbt

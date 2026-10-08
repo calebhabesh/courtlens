@@ -1,0 +1,97 @@
+@layer tokens {
+  :root {
+    color-scheme: dark;
+
+    /* Design Language v1 Color Tokens */
+    --color-bg: #0c0d10;
+    --color-surface-1: #121419;
+    --color-surface-2: #181b21;
+    --color-surface-3: #1f232a;
+    --color-surface-hover: rgb(255 255 255 / 4%);
+    --color-surface-press: rgb(255 255 255 / 7%);
+    --color-hairline: rgb(255 255 255 / 6%);
+    --color-hairline-strong: rgb(255 255 255 / 10%);
+    --color-text: #f2f3f5;
+    --color-text-secondary: #a9afb9;
+    --color-text-tertiary: #7d838d;
+    --color-accent: #ffd166;
+    --color-accent-soft: rgb(255 209 102 / 12%);
+    --color-on-accent: #0c0d10;
+    --color-brand: #ff7a2f;
+    --color-positive: #60d394;
+    --color-negative: #ff6b6b;
+    --color-info: #67aaf9;
+    --color-scrim: rgb(0 0 0 / 55%);
+    --color-white: #ffffff;
+    --focus-ring: 0 0 0 2px var(--color-bg), 0 0 0 4px var(--color-accent);
+
+    /* Elevation Tokens */
+    --shadow-1: 0 1px 2px rgb(0 0 0 / 40%);
+    --shadow-2: 0 4px 16px rgb(0 0 0 / 35%), inset 0 1px 0 rgb(255 255 255 / 3%);
+    --shadow-3: 0 16px 48px rgb(0 0 0 / 55%), inset 0 1px 0 rgb(255 255 255 / 4%);
+
+    /* Spacing Tokens */
+    --space-0: 0;
+    --space-0-5: 2px;
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 16px;
+    --space-5: 20px;
+    --space-6: 24px;
+    --space-8: 32px;
+    --space-10: 40px;
+    --space-12: 48px;
+    --space-16: 64px;
+
+    /* Radius Tokens */
+    --radius-xs: 4px;
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 14px;
+    --radius-pill: 999px;
+
+    /* Sizing Tokens */
+    --control-sm: 28px;
+    --control-md: 32px;
+    --control-lg: 40px;
+    --header-height: 56px;
+
+    /* Typography Tokens */
+    --text-xs: 12px;
+    --text-xs-lh: 16px;
+    --text-sm: 13px;
+    --text-sm-lh: 18px;
+    --text-md: 14px;
+    --text-md-lh: 20px;
+    --text-lg: 16px;
+    --text-lg-lh: 24px;
+    --text-xl: 20px;
+    --text-xl-lh: 28px;
+    --text-2xl: 24px;
+    --text-2xl-lh: 32px;
+    --text-3xl: 32px;
+    --text-3xl-lh: 40px;
+
+    /* Z-Index Tokens */
+    --z-base: 0;
+    --z-sticky: 10;
+    --z-sticky-corner: 20;
+    --z-header: 30;
+    --z-dropdown: 40;
+    --z-drawer: 50;
+    --z-modal: 60;
+    --z-toast: 70;
+    --z-tooltip: 80;
+
+    /* Motion Tokens */
+    --dur-instant: 80ms;
+    --dur-fast: 140ms;
+    --dur-base: 200ms;
+    --dur-slow: 320ms;
+    --dur-chart: 450ms;
+    --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+    --ease-in: cubic-bezier(0.4, 0, 1, 1);
+    --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+}

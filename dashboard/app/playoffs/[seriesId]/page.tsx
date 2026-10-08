@@ -45,7 +45,7 @@ export default async function PlayoffSeriesDetailPage({
   if (loadError || !detail) {
     return (
       <div className="workbench-content">
-        <div className="notice-box" style={{ borderLeftColor: "var(--negative)", marginBottom: "1rem" }}>
+        <div className="notice-box error-notice" role="alert">
           <strong>Error loading playoff series:</strong> {loadError || "Series not found."}
         </div>
         <Link href="/playoffs" className="button button-small">

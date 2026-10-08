@@ -72,20 +72,12 @@ export function PlayoffsBracketView({
   const westSeeds = bracket.seeds?.West ?? [];
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
+    <div className="playoffs-view-container">
       {/* Controls & Filter Toolbar */}
-      <div className="panel" style={{ padding: "0.875rem 1rem" }}>
-        <div
-          style={{
-            display: "flex",
-            flexWrap: "wrap",
-            gap: "1rem",
-            alignItems: "center",
-            justifyContent: "space-between"
-          }}
-        >
+      <div className="panel playoffs-controls-panel">
+        <div className="playoffs-controls-row">
           {/* Left: View Tabs */}
-          <div style={{ display: "flex", gap: "0.5rem" }}>
+          <div className="playoffs-tabs">
             <button
               type="button"
               className={`button button-small ${activeTab === "bracket" ? "button-primary" : ""}`}
@@ -110,8 +102,8 @@ export function PlayoffsBracketView({
           </div>
 
           {/* Right: Season & Temporal Replay Controls */}
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "0.75rem", alignItems: "center" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: "0.35rem" }}>
+          <div className="playoffs-replay-controls">
+            <div className="playoffs-control-item">
               <label htmlFor="playoff-season-select" className="text-xs text-muted font-mono">
                 Season:
               </label>
@@ -119,7 +111,7 @@ export function PlayoffsBracketView({
                 id="playoff-season-select"
                 value={season}
                 onChange={(e) => handleSeasonChange(e.target.value)}
-                style={{ fontSize: "0.82rem", padding: "0.25rem 0.5rem" }}
+                className="playoffs-select-sm"
               >
                 <option value="2023-24">2023-24 Postseason</option>
                 <option value="2024-25">2024-25 Postseason</option>
@@ -127,7 +119,7 @@ export function PlayoffsBracketView({
               </select>
             </div>
 
-            <div style={{ display: "flex", alignItems: "center", gap: "0.35rem" }}>
+            <div className="playoffs-control-item">
               <label htmlFor="playoff-cutoff-input" className="text-xs text-muted font-mono">
                 Replay Cutoff:
               </label>
@@ -137,7 +129,7 @@ export function PlayoffsBracketView({
                 value={cutoffInput}
                 onChange={(e) => setCutoffInput(e.target.value)}
                 placeholder="YYYY-MM-DD"
-                style={{ fontSize: "0.82rem", padding: "0.2rem 0.5rem", width: "135px" }}
+                className="playoffs-input-date"
               />
               <button
                 type="button"
@@ -162,21 +154,10 @@ export function PlayoffsBracketView({
 
         {/* Sub-toolbar for Bracket Filters */}
         {activeTab === "bracket" && (
-          <div
-            style={{
-              display: "flex",
-              flexWrap: "wrap",
-              gap: "1rem",
-              marginTop: "0.75rem",
-              paddingTop: "0.75rem",
-              borderTop: "1px solid var(--border)",
-              alignItems: "center",
-              fontSize: "0.82rem"
-            }}
-          >
-            <div style={{ display: "flex", alignItems: "center", gap: "0.35rem" }}>
+          <div className="playoffs-subtoolbar">
+            <div className="playoffs-control-item">
               <span className="text-muted text-xs font-mono">Round:</span>
-              <div style={{ display: "inline-flex", gap: "0.25rem" }}>
+              <div className="playoffs-pill-group">
                 {[
                   { id: "all", label: "All Rounds" },
                   { id: 1, label: "Round 1" },
@@ -187,8 +168,7 @@ export function PlayoffsBracketView({
                   <button
                     key={item.id}
                     type="button"
-                    className={`button button-small ${roundFilter === item.id ? "button-primary" : ""}`}
-                    style={{ padding: "0.2rem 0.5rem", fontSize: "0.75rem" }}
+                    className={`button button-small playoffs-pill-button ${roundFilter === item.id ? "button-primary" : ""}`}
                     onClick={() => setRoundFilter(item.id as number | "all")}
                   >
                     {item.label}
@@ -197,9 +177,9 @@ export function PlayoffsBracketView({
               </div>
             </div>
 
-            <div style={{ display: "flex", alignItems: "center", gap: "0.35rem" }}>
+            <div className="playoffs-control-item">
               <span className="text-muted text-xs font-mono">Conference:</span>
-              <div style={{ display: "inline-flex", gap: "0.25rem" }}>
+              <div className="playoffs-pill-group">
                 {[
                   { id: "all", label: "All" },
                   { id: "East", label: "Eastern" },
@@ -209,8 +189,7 @@ export function PlayoffsBracketView({
                   <button
                     key={item.id}
                     type="button"
-                    className={`button button-small ${conferenceFilter === item.id ? "button-primary" : ""}`}
-                    style={{ padding: "0.2rem 0.5rem", fontSize: "0.75rem" }}
+                    className={`button button-small playoffs-pill-button ${conferenceFilter === item.id ? "button-primary" : ""}`}
                     onClick={() => setConferenceFilter(item.id as "all" | "East" | "West" | "Finals")}
                   >
                     {item.label}
@@ -220,7 +199,7 @@ export function PlayoffsBracketView({
             </div>
 
             {bracket.cutoff_date && (
-              <div style={{ marginLeft: "auto" }}>
+              <div className="playoffs-ml-auto">
                 <span className="badge badge-warning font-mono text-xs">
                   Replay Filtered to {bracket.cutoff_date}
                 </span>
@@ -237,9 +216,9 @@ export function PlayoffsBracketView({
 
       {/* TAB 1: TOURNAMENT BRACKET */}
       {activeTab === "bracket" && (
-        <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+        <div className="playoffs-bracket-content">
           {displayedRounds.length === 0 ? (
-            <div className="panel" style={{ padding: "2rem", textAlign: "center" }}>
+            <div className="panel playoffs-empty-panel">
               <p className="text-muted">No playoff series match the current round/conference filter.</p>
             </div>
           ) : (
@@ -248,21 +227,14 @@ export function PlayoffsBracketView({
                 <div className="panel-header">
                   <div>
                     <h2 className="panel-title">{rnd.round_name}</h2>
-                    <p className="text-muted text-xs" style={{ margin: "0.2rem 0 0" }}>
+                    <p className="text-muted text-xs playoffs-round-subtitle">
                       Round {rnd.round_number} · Best-of-7 Series (2-2-1-1-1 host sequence)
                     </p>
                   </div>
                   <span className="badge font-mono">{rnd.series.length} Series</span>
                 </div>
 
-                <div
-                  style={{
-                    display: "grid",
-                    gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))",
-                    gap: "1rem",
-                    padding: "1rem"
-                  }}
-                >
+                <div className="playoffs-series-grid">
                   {rnd.series.map((s) => (
                     <SeriesBracketCard
                       key={s.series_id}
@@ -283,40 +255,24 @@ export function PlayoffsBracketView({
           <div className="panel-header">
             <div>
               <h2 className="panel-title">Postseason Seed Evidence & Pre-Playoff Standings</h2>
-              <p className="text-muted text-xs" style={{ margin: "0.2rem 0 0" }}>
+              <p className="text-muted text-xs playoffs-round-subtitle">
                 Standings reconstructed strictly prior to playoff tipoff (<code className="font-mono">game_date &lt; playoff_start_date</code>). Regular-season record ties do not establish official conference placement without tiebreaker evidence.
               </p>
             </div>
             <span className="badge font-mono">Explicit Standings Proof</span>
           </div>
 
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(420px, 1fr))",
-              gap: "1.25rem",
-              padding: "1rem"
-            }}
-          >
+          <div className="playoffs-seeds-container">
             {/* Eastern Conference Seeds */}
             <div>
-              <h3
-                style={{
-                  fontSize: "0.88rem",
-                  fontWeight: 700,
-                  textTransform: "uppercase",
-                  letterSpacing: "0.05em",
-                  color: "var(--accent)",
-                  margin: "0 0 0.5rem 0"
-                }}
-              >
+              <h3 className="playoffs-conference-title">
                 Eastern Conference Standings
               </h3>
               <div className="table-wrapper">
                 <table className="data-table">
                   <thead>
                     <tr>
-                      <th style={{ width: "45px" }}>Seed</th>
+                      <th className="playoffs-seed-cell-center">Seed</th>
                       <th>Franchise</th>
                       <th className="num">W-L</th>
                       <th className="num">Win%</th>
@@ -328,16 +284,8 @@ export function PlayoffsBracketView({
                       <tr key={st.team_id}>
                         <td className="font-mono font-bold">#{st.seed}</td>
                         <td>
-                          <div style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
-                            <span
-                              className="font-mono font-bold text-accent"
-                              style={{
-                                background: "var(--surface-raised)",
-                                padding: "0.1rem 0.3rem",
-                                borderRadius: "4px",
-                                fontSize: "0.78rem"
-                              }}
-                            >
+                          <div className="playoffs-seed-team-cell">
+                            <span className="font-mono font-bold text-accent playoffs-seed-tricode">
                               {st.tricode}
                             </span>
                             <Link
@@ -354,11 +302,11 @@ export function PlayoffsBracketView({
                         <td className="num font-mono">{st.win_pct.toFixed(3)}</td>
                         <td>
                           {st.is_tied ? (
-                            <div style={{ display: "flex", flexDirection: "column", gap: "0.2rem" }}>
-                              <span className="badge badge-warning text-xs font-mono" style={{ alignSelf: "flex-start" }}>
+                            <div className="playoffs-seed-meta-box">
+                              <span className="badge badge-warning text-xs font-mono playoffs-seed-meta-badge">
                                 RECORD TIED
                               </span>
-                              <span className="text-xs text-muted" style={{ fontSize: "0.75rem", lineHeight: 1.3 }}>
+                              <span className="playoffs-seed-tiebreaker">
                                 {st.tie_note}
                               </span>
                             </div>
@@ -375,23 +323,14 @@ export function PlayoffsBracketView({
 
             {/* Western Conference Seeds */}
             <div>
-              <h3
-                style={{
-                  fontSize: "0.88rem",
-                  fontWeight: 700,
-                  textTransform: "uppercase",
-                  letterSpacing: "0.05em",
-                  color: "var(--accent)",
-                  margin: "0 0 0.5rem 0"
-                }}
-              >
+              <h3 className="playoffs-conference-title">
                 Western Conference Standings
               </h3>
               <div className="table-wrapper">
                 <table className="data-table">
                   <thead>
                     <tr>
-                      <th style={{ width: "45px" }}>Seed</th>
+                      <th className="playoffs-seed-cell-center">Seed</th>
                       <th>Franchise</th>
                       <th className="num">W-L</th>
                       <th className="num">Win%</th>
@@ -403,16 +342,8 @@ export function PlayoffsBracketView({
                       <tr key={st.team_id}>
                         <td className="font-mono font-bold">#{st.seed}</td>
                         <td>
-                          <div style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
-                            <span
-                              className="font-mono font-bold text-accent"
-                              style={{
-                                background: "var(--surface-raised)",
-                                padding: "0.1rem 0.3rem",
-                                borderRadius: "4px",
-                                fontSize: "0.78rem"
-                              }}
-                            >
+                          <div className="playoffs-seed-team-cell">
+                            <span className="font-mono font-bold text-accent playoffs-seed-tricode">
                               {st.tricode}
                             </span>
                             <Link
@@ -429,11 +360,11 @@ export function PlayoffsBracketView({
                         <td className="num font-mono">{st.win_pct.toFixed(3)}</td>
                         <td>
                           {st.is_tied ? (
-                            <div style={{ display: "flex", flexDirection: "column", gap: "0.2rem" }}>
-                              <span className="badge badge-warning text-xs font-mono" style={{ alignSelf: "flex-start" }}>
+                            <div className="playoffs-seed-meta-box">
+                              <span className="badge badge-warning text-xs font-mono playoffs-seed-meta-badge">
                                 RECORD TIED
                               </span>
-                              <span className="text-xs text-muted" style={{ fontSize: "0.75rem", lineHeight: 1.3 }}>
+                              <span className="playoffs-seed-tiebreaker">
                                 {st.tie_note}
                               </span>
                             </div>
@@ -453,31 +384,20 @@ export function PlayoffsBracketView({
 
       {/* TAB 3: CAPABILITIES & GATES */}
       {activeTab === "capabilities" && (
-        <div className="panel" style={{ padding: "1.25rem" }}>
-          <h2 className="panel-title" style={{ marginBottom: "0.75rem" }}>
+        <div className="panel playoffs-capabilities-panel">
+          <h2 className="panel-title playoffs-capabilities-title">
             Postseason Analytics Capability Disclosures
           </h2>
-          <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+          <div className="playoffs-capabilities-list">
             {Object.entries(bracket.capabilities || {}).map(([key, val]) => (
-              <div
-                key={key}
-                style={{
-                  background: "var(--surface)",
-                  padding: "0.75rem 1rem",
-                  borderRadius: "6px",
-                  border: "1px solid var(--border)",
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center"
-                }}
-              >
+              <div key={key} className="playoffs-capability-row">
                 <span className="font-mono text-xs font-semibold">{key}</span>
                 <span className="badge text-xs font-mono">{val}</span>
               </div>
             ))}
           </div>
 
-          <div className="notice-box" style={{ marginTop: "1rem" }}>
+          <div className="notice-box playoffs-notice-box">
             Final box-score summaries remain available. Lineup, rotation and defensive tracking require separately admitted inputs.
           </div>
         </div>
@@ -502,28 +422,9 @@ function SeriesBracketCard({
   const isTeam2Winner = series.winner_team_id === series.team2.team_id;
 
   return (
-    <div
-      style={{
-        background: "var(--surface)",
-        border: "1px solid var(--border)",
-        borderRadius: "8px",
-        overflow: "hidden",
-        display: "flex",
-        flexDirection: "column",
-        transition: "border-color 150ms ease, transform 150ms ease"
-      }}
-    >
+    <div className="playoff-bracket-card">
       {/* Header bar */}
-      <div
-        style={{
-          background: "var(--surface-raised)",
-          padding: "0.45rem 0.75rem",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          borderBottom: "1px solid var(--border)"
-        }}
-      >
+      <div className="playoff-bracket-card-header">
         <span className="text-xs text-muted font-mono">
           {series.conference ? `${series.conference} · ` : ""}Matchup {series.matchup_index + 1}
         </span>
@@ -533,85 +434,43 @@ function SeriesBracketCard({
       </div>
 
       {/* Teams rows */}
-      <div style={{ padding: "0.75rem", display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+      <div className="playoff-bracket-card-body">
         {/* Team 1 */}
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            padding: "0.4rem 0.6rem",
-            borderRadius: "6px",
-            background: isTeam1Winner ? "color-mix(in srgb, var(--accent) 10%, transparent)" : "transparent",
-            border: isTeam1Winner ? "1px solid var(--accent)" : "1px solid transparent"
-          }}
-        >
-          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-            <span className="text-xs text-muted font-mono">#{series.team1.seed ?? "—"}</span>
-            <span className="font-mono font-bold" style={{ fontSize: "0.95rem" }}>
+        <div className={`playoff-bracket-team-row ${isTeam1Winner ? "winner" : ""}`}>
+          <div className="playoff-bracket-team-info">
+            <span className="playoff-bracket-team-seed">#{series.team1.seed ?? "—"}</span>
+            <span className="font-mono font-bold text-sm">
               {series.team1.tricode}
             </span>
-            <span style={{ fontSize: "0.85rem", fontWeight: isTeam1Winner ? 700 : 500 }}>
+            <span className={`playoff-bracket-team-name ${isTeam1Winner ? "winner" : ""}`}>
               {series.team1.name}
             </span>
           </div>
-          <span
-            className="font-mono font-bold"
-            style={{
-              fontSize: "1.1rem",
-              color: isTeam1Winner ? "var(--accent)" : "var(--text)"
-            }}
-          >
+          <span className={`playoff-bracket-team-wins ${isTeam1Winner ? "winner" : ""}`}>
             {series.team1.wins}
           </span>
         </div>
 
         {/* Team 2 */}
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            padding: "0.4rem 0.6rem",
-            borderRadius: "6px",
-            background: isTeam2Winner ? "color-mix(in srgb, var(--accent) 10%, transparent)" : "transparent",
-            border: isTeam2Winner ? "1px solid var(--accent)" : "1px solid transparent"
-          }}
-        >
-          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-            <span className="text-xs text-muted font-mono">#{series.team2.seed ?? "—"}</span>
-            <span className="font-mono font-bold" style={{ fontSize: "0.95rem" }}>
+        <div className={`playoff-bracket-team-row ${isTeam2Winner ? "winner" : ""}`}>
+          <div className="playoff-bracket-team-info">
+            <span className="playoff-bracket-team-seed">#{series.team2.seed ?? "—"}</span>
+            <span className="font-mono font-bold text-sm">
               {series.team2.tricode}
             </span>
-            <span style={{ fontSize: "0.85rem", fontWeight: isTeam2Winner ? 700 : 500 }}>
+            <span className={`playoff-bracket-team-name ${isTeam2Winner ? "winner" : ""}`}>
               {series.team2.name}
             </span>
           </div>
-          <span
-            className="font-mono font-bold"
-            style={{
-              fontSize: "1.1rem",
-              color: isTeam2Winner ? "var(--accent)" : "var(--text)"
-            }}
-          >
+          <span className={`playoff-bracket-team-wins ${isTeam2Winner ? "winner" : ""}`}>
             {series.team2.wins}
           </span>
         </div>
       </div>
 
       {/* Footer bar */}
-      <div
-        style={{
-          marginTop: "auto",
-          padding: "0.5rem 0.75rem",
-          background: "var(--surface-raised)",
-          borderTop: "1px solid var(--border)",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center"
-        }}
-      >
-        <span className="text-xs text-muted font-mono" style={{ fontSize: "0.75rem" }}>
+      <div className="playoff-bracket-card-footer">
+        <span className="text-xs text-muted font-mono">
           {series.summary_text}
         </span>
         <Link href={detailHref} className="button button-small button-primary font-mono text-xs">

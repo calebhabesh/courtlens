@@ -4,6 +4,7 @@ import { Suspense } from "react";
 import { ReplicaNav } from "@/components/replica-nav";
 import { WorkspaceProvider } from "@/lib/workspace-context";
 import { AssistantPageProvider } from "@/lib/assistant-page-context";
+import { ToastProvider } from "@/components/ui/toast";
 import "./globals.css";
 
 const publicSans = localFont({
@@ -52,9 +53,9 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <a className="skip-link" href="#content">
           Skip to content
         </a>
-        <WorkspaceProvider><AssistantPageProvider>
+        <WorkspaceProvider><AssistantPageProvider><ToastProvider>
           <div className="replica-shell">
-            <Suspense fallback={<div style={{ height: "var(--shell-height)", background: "var(--surface)" }} />}>
+            <Suspense fallback={<div className="header-suspense-fallback" />}>
               <ReplicaNav />
             </Suspense>
             <main id="content" className="replica-main">
@@ -63,7 +64,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
               </Suspense>
             </main>
           </div>
-        </AssistantPageProvider></WorkspaceProvider>
+        </ToastProvider></AssistantPageProvider></WorkspaceProvider>
       </body>
     </html>
   );

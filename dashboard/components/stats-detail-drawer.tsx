@@ -135,8 +135,7 @@ export function StatsDetailDrawer({
         <div className="stats-drawer-actions">
           <Link
             href={`/players/${player.player_id}?${queryString}`}
-            className="button button-primary"
-            style={{ flex: 1 }}
+            className="button button-primary stats-drawer-action-primary"
           >
             View Full Profile →
           </Link>
@@ -160,8 +159,7 @@ export function StatsDetailDrawer({
             <button
               type="button"
               onClick={onToggleFavorite}
-              className={`button ${isFavorite ? "button-active" : ""}`}
-              style={{ color: isFavorite ? "var(--accent)" : undefined }}
+              className={`button ${isFavorite ? "button-active text-accent" : ""}`}
               title={isFavorite ? "Remove from Favorites" : "Add to Favorites"}
               aria-label={isFavorite ? "Remove from Favorites" : "Add to Favorites"}
             >
@@ -171,7 +169,7 @@ export function StatsDetailDrawer({
         </div>
 
         {/* Investigation Shortcuts */}
-        <div style={{ display: "flex", gap: "0.4rem", margin: "0.5rem 0", flexWrap: "wrap" }}>
+        <div className="stats-drawer-shortcuts">
           <Link
             href={`/research/trends?playerId=${player.player_id}&${queryString}`}
             className="button button-small"
@@ -198,7 +196,7 @@ export function StatsDetailDrawer({
         {/* Temporal Discipline & Quality Disclaimer */}
         <div className="stats-drawer-disclaimer">
           <strong className="text-accent text-xs">Temporal Discipline Notice:</strong>
-          <p className="text-xs text-muted" style={{ margin: "0.2rem 0 0" }}>
+          <p className="text-xs text-muted">
             Exclusively derived from games strictly prior to <code>{context.before_date}</code> ({context.season}, {context.phase.replace("_", " ")}).
             Absent box scores are unknown, never zero outcomes.
           </p>
@@ -206,6 +204,20 @@ export function StatsDetailDrawer({
 
         {/* Drawer Body Sections */}
         <div className="stats-drawer-body">
+          {player.impact_support && <section className="stats-drawer-section">
+            <h3 className="stats-drawer-section-title">CourtLens impact samples</h3>
+            <p>Model support differs from the box-score appearance sample. Missing metrics stay unknown.</p>
+            <details><summary>Metric-specific support</summary>
+              {Object.entries(player.impact_support).map(([key, sample]) => <p key={key}>
+                <strong>{key}</strong>: {sample.covered_games ?? sample.games ?? 0} covered games
+                {sample.total_games != null && ` / ${sample.total_games} player games`}
+                {sample.denominator != null && ` · denominator ${sample.denominator.toFixed(2)}`}
+                {sample.off_opportunities != null && ` · offense ${sample.off_opportunities}, defense ${sample.def_opportunities}`}
+                {sample.on && sample.off && ` · on/off minutes ${(sample.on.seconds / 60).toFixed(1)} / ${(sample.off.seconds / 60).toFixed(1)}`}
+                {` · ${sample.qualified ? "Qualified" : sample.reason || "Below ranking sample"}`}
+              </p>)}
+            </details>
+          </section>}
           {/* Section: Scoring & Volume */}
           <div className="stats-drawer-section">
             <h3 className="stats-drawer-section-title">Scoring &amp; Volume</h3>
