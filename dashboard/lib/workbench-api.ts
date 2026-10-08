@@ -16,6 +16,7 @@ import type {
   ForecastsListResponse,
   InvestigationDetail,
   InvestigationReproduce,
+  ImpactResponse,
   LineageResponse,
   LookupResponse,
   MeasurementsQueryResponse,
@@ -105,7 +106,14 @@ export async function getWorkbenchCatalog(releaseId?: string): Promise<Workbench
 }
 
 export async function getMetricCatalog(): Promise<MetricCatalog> {
-  return wbFetch<MetricCatalog>("/api/workbench/metrics");
+  return wbFetch<MetricCatalog>("/api/workbench/metrics?version=courtlens-stats-v3");
+}
+
+export async function getImpact(params: {
+  season: string; phase: string; beforeDate: string; playerId?: string; teamId?: string; window?: string;
+}): Promise<ImpactResponse> {
+  const query = new URLSearchParams(params);
+  return wbFetch<ImpactResponse>(`/api/workbench/impact?${query}`);
 }
 
 export async function getWorkbenchStatus(): Promise<WorkbenchStatus> {

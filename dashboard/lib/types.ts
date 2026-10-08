@@ -334,6 +334,7 @@ export type MetricCatalog = {
 };
 
 export type WorkbenchCatalog = {
+  impact?: { status: string; scopes: ImpactArtifact[]; manifest_sha256: string | null } | null;
   release_id: string;
   snapshot_id: string;
   dataset_id: string;
@@ -504,6 +505,7 @@ export type PagingSpec = {
 };
 
 export type QuerySpec = {
+  impact_manifest_sha256?: string | null;
   release_id?: string | null;
   season: string;
   phase: string;
@@ -533,6 +535,7 @@ export type StatsPresentation = {
 };
 
 export type WorkbenchQueryResponse = {
+  impact?: ImpactDisclosureData | null;
   context: Record<string, unknown>;
   query: QuerySpec;
   total_eligible_players: number;
@@ -552,6 +555,7 @@ export type WorkbenchQueryResponse = {
 };
 
 export type PlayerResearchItem = {
+  impact_support?: Record<string, ImpactSupport> | null;
   player_id: string;
   player_name: string;
   teams: string[];
@@ -619,6 +623,7 @@ export type LookupResponse = {
 };
 
 export type PlayerResearchQuery = {
+  impact_manifest_sha256?: string;
   release_id?: string;
   season: string;
   phase: string;
@@ -636,6 +641,7 @@ export type PlayerResearchQuery = {
 };
 
 export type PlayerResearchResponse = {
+  impact?: ImpactDisclosureData | null;
   total_output_players?: number | null;
   output_offset?: number | null;
   cohort?: WorkbenchQueryResponse["cohort"];
@@ -655,6 +661,56 @@ export type PlayerResearchResponse = {
   next_cursor: string | null;
   has_more: boolean;
   warnings: string[];
+};
+
+export type ImpactArtifact = {
+  sha256?: string;
+  season: string;
+  seasons: string[];
+  phase: string;
+  years: number;
+  cutoff: string;
+  last_included_date: string;
+};
+export type ImpactSupport = {
+  qualified: boolean;
+  covered_games?: number;
+  total_games?: number;
+  games?: number;
+  seconds?: number;
+  off_opportunities?: number;
+  def_opportunities?: number;
+  numerator?: number | null;
+  denominator?: number | null;
+  reference?: number | null;
+  cutoff?: string;
+  years?: number;
+  reason?: string;
+  artifact_sha256?: string;
+  team_id?: string;
+  on?: { seconds: number; off_controls: number; def_controls: number };
+  off?: { seconds: number; off_controls: number; def_controls: number };
+};
+export type ImpactDisclosureData = {
+  status: string;
+  source: string;
+  version: string;
+  methodology_url: string;
+  manifest_sha256: string | null;
+  artifacts: ImpactArtifact[];
+  coverage: {
+    season: string; phase: string; scheduled_games: number; admitted_games: number;
+    clean_games: number; patched_games: number; excluded_games: number; patch_rate: number;
+    estimate_within_two_percent: number;
+  }[];
+  limitations: string[];
+  unavailable_columns: Record<string, string>;
+  reason?: string | null;
+};
+export type ImpactResponse = ImpactDisclosureData & {
+  total_players: number;
+  players: { player_id: string; player_name: string; metrics: Record<string, number | null>;
+    support: Record<string, ImpactSupport>; on_off: Record<string, unknown> }[];
 };
 
 export type PlayerProfileStint = {
@@ -1406,7 +1462,7 @@ export type AggregationMethod = "borda" | "average_rank";
 export interface CustomViewDefinition {
   id: string;
   name: string;
-  metric_version?: "v2";
+  metric_version?: "v2" | "courtlens-stats-v3";
   unavailable_columns?: string[];
   columns: string[];
   sort_field?: string | null;
@@ -2059,4 +2115,3 @@ export interface PlayoffSeriesDetailResponse {
   capabilities: Record<string, string>;
   disclaimers: string[];
 }
-

@@ -1,0 +1,6 @@
+{
+  "url_roundtrip": true,
+  "legacy_roundtrip": true,
+  "default_pin_omitted": true,
+  "frozen_planner_schema_preserved": true
+}

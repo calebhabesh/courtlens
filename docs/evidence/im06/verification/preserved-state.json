@@ -1,0 +1,17 @@
+{
+  "version": "courtlens-im06-preserved-publication-v1",
+  "before": {
+    "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+    "snapshot_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+    "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+    "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666"
+  },
+  "after": {
+    "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+    "snapshot_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+    "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+    "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666"
+  },
+  "unchanged": true,
+  "verification_mode": "PostgreSQL default_transaction_read_only=on; writes tested in disposable databases"
+}

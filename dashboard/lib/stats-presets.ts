@@ -1,4 +1,5 @@
 import type { PlayerResearchItem, CustomViewDefinition } from "./types";
+import impactDefinitions from "./impact-metrics.json";
 
 export type PresetId =
   | "overview"
@@ -135,6 +136,19 @@ export function formatIntValue(val: number | null | undefined): string {
 export function formatPctValue(val: number | null | undefined): string {
   if (val === null || val === undefined || isNaN(val)) return "—";
   return `${(val * 100).toFixed(1)}%`;
+}
+
+export const IMPACT_COLUMNS: Record<string, ColumnDefinition> = Object.fromEntries(
+  impactDefinitions.metrics.map(metric => [metric.key, {
+    key: metric.key, label: metric.short_name, group: metric.category === "impact" ? "CourtLens impact" : "CourtLens extras",
+    num: true, sortMetric: metric.key, tooltip: `${metric.display_name}: ${metric.formula}. ${metric.unit}. ${metric.validity_definition}`,
+    format: (value: number | null | undefined) => metric.unit === "ratio" || metric.unit === "ratio difference"
+      ? formatPctValue(value) : formatStatValue(value, 2)
+  }])
+);
+
+function impactColumns(keys: string[], group: string): ColumnDefinition[] {
+  return keys.map(key => ({ ...IMPACT_COLUMNS[key], group }));
 }
 
 export const STATS_PRESETS: PresetDefinition[] = [
@@ -379,63 +393,22 @@ export const STATS_PRESETS: PresetDefinition[] = [
       { key: "dreb_per_36", label: "DREB/36", group: "Defensive", num: true, sortMetric: "dreb_per_36", format: (v) => formatStatValue(v, 1), tooltip: "Defensive Rebounds Per 36 Minutes" }
     ]
   },
-  {
-    id: "impact",
-    label: "Impact",
-    description: "Composite impact and fantasy production proxies. RAPM models require external model registration.",
-    gated: {
-      block: "B25–B26",
-      reason: "Multi-year RAPM and composite impact models require stint design matrix regression and out-of-time evaluation.",
-      status: "partial"
-    },
-    columns: [
-      { key: "gp", label: "GP", group: "Participation", num: true, sortMetric: "gp", format: formatIntValue, tooltip: "Games Played" },
-      { key: "min", label: "MIN", group: "Participation", num: true, sortMetric: "min", format: formatIntValue, tooltip: "Total Minutes" },
-      { key: "min_per_game", label: "MPG", group: "Participation", num: true, sortMetric: "min_per_game", format: (v) => formatStatValue(v, 1), tooltip: "Minutes Per Game" },
-      { key: "pts_per_game", label: "PPG", group: "Box Production", num: true, sortMetric: "pts_per_game", format: (v) => formatStatValue(v, 1), tooltip: "Points Per Game" },
-      { key: "reb_per_game", label: "RPG", group: "Box Production", num: true, sortMetric: "reb_per_game", format: (v) => formatStatValue(v, 1), tooltip: "Rebounds Per Game" },
-      { key: "ast_per_game", label: "APG", group: "Box Production", num: true, sortMetric: "ast_per_game", format: (v) => formatStatValue(v, 1), tooltip: "Assists Per Game" },
-      { key: "stl_per_game", label: "SPG", group: "Box Production", num: true, sortMetric: "stl_per_game", format: (v) => formatStatValue(v, 1), tooltip: "Steals Per Game" },
-      { key: "blk_per_game", label: "BPG", group: "Box Production", num: true, sortMetric: "blk_per_game", format: (v) => formatStatValue(v, 1), tooltip: "Blocks Per Game" },
-      { key: "ts_pct", label: "TS%", group: "Efficiency", num: true, sortMetric: "ts_pct", format: formatPctValue, tooltip: "True Shooting %" },
-      { key: "efg_pct", label: "eFG%", group: "Efficiency", num: true, sortMetric: "efg_pct", format: formatPctValue, tooltip: "Effective Field Goal %" },
-      { key: "legacy_fantasy_score_per_game", label: "Fantasy/G", group: "Legacy Model", num: true, sortMetric: "legacy_fantasy_score_per_game", format: (v) => formatStatValue(v, 1), tooltip: "Legacy Fantasy Scoring Formula per game" }
-    ]
-  },
-  {
-    id: "onoff",
-    label: "On-Off",
-    description: "Observed shared-floor on/off splits, exposure and descriptive uncertainty in the dedicated Stats workspace.",
-    gated: {
-      block: "B20–B21",
-      reason: "Opens the typed shared-floor workspace. Real source availability is checked per query; retained stint coverage is required.",
-      status: "partial"
-    },
-    columns: []
-  },
-  {
-    id: "sixfactor",
-    label: "Six Factor",
-    description: "Box-score factor proxies. Player Six-Factor RAPM requires stint ridge regressions.",
-    gated: {
-      block: "B20, B26",
-      reason: "Player Six-Factor RAPM decomposes shooting, turnover, and offensive rebound rates via stint ridge regression.",
-      status: "partial"
-    },
-    columns: [
-      { key: "gp", label: "GP", group: "Participation", num: true, sortMetric: "gp", format: formatIntValue, tooltip: "Games Played" },
-      { key: "ts_pct", label: "TS%", group: "Shooting Factor", num: true, sortMetric: "ts_pct", format: formatPctValue, tooltip: "True Shooting %" },
-      { key: "efg_pct", label: "eFG%", group: "Shooting Factor", num: true, sortMetric: "efg_pct", format: formatPctValue, tooltip: "Effective Field Goal %" },
-      { key: "ftr", label: "FTR", group: "Free Throw Factor", num: true, sortMetric: "ftr", format: (v) => formatStatValue(v, 3), tooltip: "Free Throw Rate: FTA / FGA" },
-      { key: "tov_per_game", label: "TOV/G", group: "Turnover Factor", num: true, sortMetric: "tov_per_game", format: (v) => formatStatValue(v, 1), tooltip: "Turnovers Per Game" },
-      { key: "tov_per_36", label: "TOV/36", group: "Turnover Factor", num: true, sortMetric: "tov_per_36", format: (v) => formatStatValue(v, 1), tooltip: "Turnovers Per 36 Minutes" },
-      { key: "oreb_per_game", label: "OREB/G", group: "Rebound Factor", num: true, sortMetric: "oreb_per_game", format: (v) => formatStatValue(v, 1), tooltip: "Offensive Rebounds Per Game" },
-      { key: "oreb_per_36", label: "OREB/36", group: "Rebound Factor", num: true, sortMetric: "oreb_per_36", format: (v) => formatStatValue(v, 1), tooltip: "Offensive Rebounds Per 36 Minutes" },
-      { key: "dreb_per_game", label: "DREB/G", group: "Rebound Factor", num: true, sortMetric: "dreb_per_game", format: (v) => formatStatValue(v, 1), tooltip: "Defensive Rebounds Per Game" },
-      { key: "dreb_per_36", label: "DREB/36", group: "Rebound Factor", num: true, sortMetric: "dreb_per_36", format: (v) => formatStatValue(v, 1), tooltip: "Defensive Rebounds Per 36 Minutes" }
-    ]
-  }
+  { id: "impact", label: "Impact", description: "CourtLens descriptive RAPM and Box-Prior RAPM, with declared fit windows.",
+    columns: impactColumns(["rapm", "orapm", "drapm", "bpr", "obpr", "dbpr", "rapm_2y", "orapm_2y", "drapm_2y", "rapm_3y", "orapm_3y", "drapm_3y"], "CourtLens impact") },
+  { id: "onoff", label: "On-Off", description: "Observed per-team on/off ratings from accepted public play-by-play.",
+    columns: impactColumns(["on_net_rating", "onoff_net_rating", "on_offensive_rating", "onoff_offensive_rating", "on_defensive_rating", "onoff_defensive_rating"], "On/off · per 100 controls") },
+  { id: "sixfactor", label: "Six Factor", description: "Six separate favorable-sign factor estimates; factors are not additive.",
+    columns: [...impactColumns(["rapm", "orapm", "drapm"], "1Y RAPM"), ...impactColumns(["o_ts", "o_tov", "o_reb", "d_ts", "d_tov", "d_reb"], "Six factors · percentage points")] }
+
 ];
+
+for (const [id, keys] of Object.entries({
+  defense: ["drapm", "dbpr", "d_ts", "d_tov", "d_reb", "pbp_stl_per100", "pbp_blk_per100", "pbp_drb_pct", "pbp_foul_frequency", "pbp_block_recovered_pct", "matchup_fga_per100", "pbp_charges_drawn", "pbp_credited_ftov_per100"],
+  advanced: ["impact_ts_pct", "impact_rts", "impact_tsadd_per100", "impact_three_point_rate", "impact_ftr", "impact_ast_per100", "pbp_bad_pass_tov", "pbp_rim_assists", "pbp_self_miss_orb_pct", "pbp_team_miss_orb_pct"],
+  trueshooting: impactDefinitions.metrics.filter(metric => /^pbp_(create|space|trans|finish|unknown)_/.test(metric.key)).map(metric => metric.key)
+})) {
+  STATS_PRESETS.find(preset => preset.id === id)?.columns.push(...impactColumns(keys, "CourtLens public-source sample"));
+}
 
 // Comprehensive catalog of registered and formatted metrics for column selection
 export const ALL_CATALOG_METRICS: Record<string, ColumnDefinition> = {
@@ -496,9 +469,9 @@ export const ALL_CATALOG_METRICS: Record<string, ColumnDefinition> = {
   pf_per_game: { key: "pf_per_game", label: "PFG", group: "Fouls", num: true, sortMetric: "pf_per_game", format: (v) => formatStatValue(v, 1), tooltip: "Personal Fouls Per Game" },
   pf_per_36: { key: "pf_per_36", label: "PF/36", group: "Fouls", num: true, sortMetric: "pf_per_36", format: (v) => formatStatValue(v, 1), tooltip: "Personal Fouls Per 36 Minutes" },
 
+  ...IMPACT_COLUMNS,
+
   // Gated / Unavailable Metrics
-  rapm: { key: "rapm", label: "RAPM", group: "Impact", num: true, sortMetric: "rapm", tooltip: "Regularized Adjusted Plus-Minus; requires admitted inputs", format: () => "—" },
-  onoff_net_rating: { key: "onoff_net_rating", label: "ON/OFF NET", group: "Impact", num: true, sortMetric: "onoff_net_rating", tooltip: "On-Off Net Rating; requires admitted inputs", format: () => "—" },
   six_factor_impact: { key: "six_factor_impact", label: "SIX FACTOR", group: "Impact", num: true, sortMetric: "six_factor_impact", tooltip: "Six-Factor RAPM Impact; requires admitted inputs", format: () => "—" }
 };
 

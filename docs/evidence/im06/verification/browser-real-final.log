@@ -1,0 +1,21 @@
+
+> courtlens-dashboard@0.1.0 test:browser
+> playwright test e2e/im06-real.spec.ts --workers=1
+
+
+Running 12 tests using 1 worker
+
+  ✓   1 e2e/im06-real.spec.ts:16:9 › impact served values at 1440px (3.5s)
+  ✓   2 e2e/im06-real.spec.ts:16:9 › onoff served values at 1440px (2.9s)
+  ✓   3 e2e/im06-real.spec.ts:16:9 › sixfactor served values at 1440px (3.4s)
+  ✓   4 e2e/im06-real.spec.ts:16:9 › defense served values at 1440px (2.9s)
+  ✓   5 e2e/im06-real.spec.ts:37:7 › profile and research at 1440px (1.3s)
+  ✓   6 e2e/im06-real.spec.ts:49:7 › earlier cutoff remains unavailable at 1440px (1.3s)
+  ✓   7 e2e/im06-real.spec.ts:16:9 › impact served values at 375px (3.0s)
+  ✓   8 e2e/im06-real.spec.ts:16:9 › onoff served values at 375px (2.9s)
+  ✓   9 e2e/im06-real.spec.ts:16:9 › sixfactor served values at 375px (2.9s)
+  ✓  10 e2e/im06-real.spec.ts:16:9 › defense served values at 375px (2.9s)
+  ✓  11 e2e/im06-real.spec.ts:37:7 › profile and research at 375px (1.2s)
+  ✓  12 e2e/im06-real.spec.ts:49:7 › earlier cutoff remains unavailable at 375px (1.3s)
+
+  12 passed (29.8s)

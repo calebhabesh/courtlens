@@ -10,7 +10,8 @@ from uuid import uuid4
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
-from courtlens.domain.query_spec import get_allowed_query_fields
+from courtlens.domain.metrics import METRIC_CATALOG_V2
+from courtlens.domain.query_spec import ALLOWED_METADATA_FIELDS, get_allowed_query_fields
 
 MAX_CUSTOM_VIEWS = 10
 MAX_COLUMNS_PER_VIEW = 25
@@ -36,7 +37,7 @@ class CustomViewDefinition(BaseModel):
 
     id: str = Field(default_factory=lambda: str(uuid4()), min_length=1, max_length=100)
     name: str = Field(min_length=1, max_length=100)
-    metric_version: Literal["v2"] = "v2"
+    metric_version: Literal["v2", "courtlens-stats-v3"] = "v2"
     unavailable_columns: list[str] = Field(default_factory=list)
     columns: list[str] = Field(default_factory=list)
     sort_field: str | None = None
@@ -47,7 +48,11 @@ class CustomViewDefinition(BaseModel):
 
     @model_validator(mode="after")
     def validate_definition(self) -> CustomViewDefinition:
-        allowed = get_allowed_query_fields()
+        allowed = (
+            set(METRIC_CATALOG_V2) | ALLOWED_METADATA_FIELDS
+            if self.metric_version == "v2"
+            else get_allowed_query_fields()
+        )
         if len(self.columns) > MAX_COLUMNS_PER_VIEW or len(set(self.columns)) != len(self.columns):
             raise ValueError("view columns must be unique and contain at most 25 keys")
         unavailable = set(self.unavailable_columns)

@@ -15,10 +15,10 @@ from fastapi import HTTPException
 from sqlalchemy import text
 from sqlalchemy.orm import Session
 
+from courtlens.domain.impact_catalog import IMPACT_CATALOG
+from courtlens.domain.impact_catalog import SERVING_CATALOG as METRIC_CATALOG
 from courtlens.domain.metrics import (
-    METRIC_CATALOG,
     resolve_metric_alias,
-    validate_metric_keys,
 )
 from courtlens.domain.query_spec import (
     ALLOWED_METADATA_FIELDS,
@@ -33,6 +33,12 @@ from courtlens.domain.query_spec import (
 )
 from courtlens.domain.stats_presentation import StatsPresentation
 from courtlens.domain.teams import get_team_info, resolve_team_tricode
+from courtlens.services.impact_serving import (
+    impact_for_query,
+    impact_query_fields,
+    impact_sql_rows,
+    query_uses_impact,
+)
 from courtlens.services.workbench_analytics import (
     MAX_EXPORT_ROWS,
     ResearchQuery,
@@ -98,9 +104,21 @@ COLUMN_MAP: dict[str, str] = {
     "name": "player_name",
     "stints_count": "stints_count",
 }
+COLUMN_MAP.update({key: key for key in IMPACT_CATALOG})
 
 # Only implemented numeric catalog columns participate; metadata is never ranked.
-PERCENTILE_COLUMNS = {key: column for key, column in COLUMN_MAP.items() if key in METRIC_CATALOG}
+PERCENTILE_COLUMNS = {
+    key: column
+    for key, column in COLUMN_MAP.items()
+    if key in METRIC_CATALOG and key not in IMPACT_CATALOG
+}
+
+
+def impact_query_binding(context: ResolvedContext, query: QuerySpec) -> dict[str, Any]:
+    if not query_uses_impact(query):
+        return {}
+    impact = impact_for_query(query, context.before_date.isoformat())
+    return {"impact_artifacts": impact["artifacts"], "impact_status": impact["status"]}
 
 
 def stats_presentation_hash(
@@ -111,7 +129,7 @@ def stats_presentation_hash(
     cohort: bool = False,
 ) -> str:
     """Bind complete query semantics, independently of paging and visual preferences."""
-    spec = query.model_dump(mode="json", exclude={"page", "view_state"})
+    spec = query.model_dump(mode="json", exclude={"page", "view_state", "impact_manifest_sha256"})
     if cohort:
         for key in ("name", "sort", "metric_selectors"):
             spec.pop(key, None)
@@ -126,6 +144,7 @@ def stats_presentation_hash(
             "before_date": context.before_date.isoformat(),
             "query": spec,
             "player_ids": None if cohort else presentation.player_ids,
+            **impact_query_binding(context, query),
         }
     )
 
@@ -157,7 +176,8 @@ def compute_stats_query_context_hash(context: ResolvedContext, query: QuerySpec)
         primary_sort.field,
         primary_sort.direction,
     ]
-    return canonical_hash(payload)[:32]
+    binding = impact_query_binding(context, query)
+    return canonical_hash([payload, binding] if binding else payload)[:32]
 
 
 def encode_cursor(context_hash: str, offset: int) -> str:
@@ -490,6 +510,13 @@ def build_stats_query_sql(
     sort_clauses = []
     for sort_item in query.sort:
         col = map_field_to_sql_column(sort_item.field)
+        if sort_item.field in IMPACT_CATALOG:
+            qualified = (
+                f"json_extract(impact_support, '$.{sort_item.field}.qualified') = 1"
+                if is_sqlite
+                else f"(impact_support->'{sort_item.field}'->>'qualified')::boolean IS TRUE"
+            )
+            col = f"CASE WHEN {qualified} THEN {col} ELSE NULL END"
         direction = "ASC" if sort_item.direction == "asc" else "DESC"
         nulls = "NULLS LAST" if sort_item.nulls_last else "NULLS FIRST"
         sort_clauses.append(f"{col} {direction} {nulls}")
@@ -673,6 +700,36 @@ def build_stats_query_sql(
         GROUP BY player_id
     )"""
 
+    if query_uses_impact(query):
+        impact = impact_for_query(query, context.before_date.isoformat())
+        params["impact_rows"] = impact_sql_rows(impact)
+        if is_sqlite:
+            source = "json_each(:impact_rows) AS s"
+            identity = "json_extract(s.value, '$.player_id')"
+            support = "json_extract(s.value, '$.support')"
+            values = [
+                f"CAST(json_extract(s.value, '$.{key}') AS REAL) AS {key}" for key in IMPACT_CATALOG
+            ]
+        else:
+            definitions = ", ".join(f"{key} double precision" for key in IMPACT_CATALOG)
+            source = (
+                "jsonb_to_recordset(CAST(:impact_rows AS jsonb)) "
+                f"AS s(player_id text, support jsonb, {definitions})"
+            )
+            identity = "s.player_id"
+            support = "s.support"
+            values = [f"s.{key} AS {key}" for key in IMPACT_CATALOG]
+        cte_sql = cte_sql.replace("aggregated AS (", "aggregated_boxes AS (")
+        cte_sql += (
+            ", aggregated AS (SELECT b.*, "
+            + ", ".join(values)
+            + f", {support} AS impact_support FROM aggregated_boxes b LEFT JOIN {source}"
+            + f" ON {identity} = b.player_id)"
+        )
+
+    percentile_columns = dict(PERCENTILE_COLUMNS)
+    if query_uses_impact(query):
+        percentile_columns.update({key: key for key in sorted(impact_query_fields(query))})
     result_table = "aggregated"
     result_filter = where_agg_clause
     if presentation is not None:
@@ -694,12 +751,19 @@ def build_stats_query_sql(
         result_table = "eligible"
         if not is_count_only:
             percentile_sql = []
-            for key, column in PERCENTILE_COLUMNS.items():
+            for key, column in percentile_columns.items():
+                if key in IMPACT_CATALOG:
+                    qualified = (
+                        f"json_extract(impact_support, '$.{key}.qualified') = 1"
+                        if is_sqlite
+                        else f"(impact_support->'{key}'->>'qualified')::boolean IS TRUE"
+                    )
+                    column = f"CASE WHEN {qualified} THEN {column} ELSE NULL END"
                 n = f"count({column}) OVER ()"
                 less = f"rank() OVER (ORDER BY {column} ASC NULLS LAST) - 1"
                 equal = f"count(*) OVER (PARTITION BY {column})"
                 percentile_sql.append(
-                    f"CASE WHEN {column} IS NULL OR {n} < 2 THEN NULL ELSE "
+                    f"CASE WHEN ({column}) IS NULL OR {n} < 2 THEN NULL ELSE "
                     f"least(99, greatest(1, round(100.0 * ({less} + 0.5 * {equal}) / {n}))) "
                     f"END AS pct_{key}, {n} AS cohort_n_{key}"
                 )
@@ -836,6 +900,14 @@ def parse_player_row(row_dict: dict[str, Any]) -> dict[str, Any]:
     metrics["legacy_fantasy_score_per_game"] = _cast_num(
         row_dict.get("legacy_fantasy_score_per_game")
     )
+
+    impact_support = row_dict.get("impact_support")
+    if isinstance(impact_support, str):
+        impact_support = json.loads(impact_support)
+    if any(key in row_dict for key in IMPACT_CATALOG):
+        for key in IMPACT_CATALOG:
+            metrics[key] = _cast_num(row_dict.get(key))
+            sample_sizes[key] = int((impact_support or {}).get(key, {}).get("covered_games", 0))
     sample_sizes["legacy_fantasy_score_per_game"] = int(
         row_dict.get("n_legacy_fantasy_score_per_game") or 0
     )
@@ -851,12 +923,15 @@ def parse_player_row(row_dict: dict[str, Any]) -> dict[str, Any]:
         "sample_sizes": sample_sizes,
         "portrait_url": f"/api/workbench/players/{pid}/portrait",
     }
+    if impact_support is not None:
+        result["impact_support"] = impact_support
     if "pct_gp" in row_dict:
+        percentile_keys = [key.removeprefix("pct_") for key in row_dict if key.startswith("pct_")]
         result["percentiles"] = {
-            key: _cast_num(row_dict.get(f"pct_{key}")) for key in PERCENTILE_COLUMNS
+            key: _cast_num(row_dict.get(f"pct_{key}")) for key in percentile_keys
         }
         result["cohort_sample_sizes"] = {
-            key: int(row_dict.get(f"cohort_n_{key}") or 0) for key in PERCENTILE_COLUMNS
+            key: int(row_dict.get(f"cohort_n_{key}") or 0) for key in percentile_keys
         }
     return result
 
@@ -899,7 +974,9 @@ def execute_stats_query(
                 raise HTTPException(
                     status_code=422, detail=f"Stats presentation cannot sort {sort.field}"
                 )
-        if query.metric_selectors:
+        if query.metric_selectors and any(
+            s.key not in IMPACT_CATALOG for s in query.metric_selectors
+        ):
             raise HTTPException(
                 status_code=422,
                 detail="Stats presentation does not support metric selectors",
@@ -927,10 +1004,8 @@ def execute_stats_query(
             )
     if query.metric_selectors:
         keys_to_check = [s.key for s in query.metric_selectors]
-        try:
-            validate_metric_keys(keys_to_check)
-        except ValueError as err:
-            raise HTTPException(status_code=422, detail=str(err)) from err
+        if any(key not in METRIC_CATALOG for key in keys_to_check):
+            raise HTTPException(status_code=422, detail="unsupported metric selector")
 
     # 2. Check cursor and bounds
     context_hash = (
@@ -960,7 +1035,11 @@ def execute_stats_query(
             cursor=query.page.cursor,
         )
         legacy_hash = compute_query_context_hash(context, legacy_query)
-        valid_hashes = [context_hash] if presentation is not None else [context_hash, legacy_hash]
+        valid_hashes = (
+            [context_hash]
+            if presentation is not None or query_uses_impact(query)
+            else [context_hash, legacy_hash]
+        )
         start_offset = decode_cursor(query.page.cursor, valid_hashes)
         if start_offset < 0:
             raise HTTPException(status_code=422, detail="cursor offset must be nonnegative")
@@ -1029,7 +1108,10 @@ def stats_cohort_summary(
         "scope_hash": stats_presentation_hash(context, query, presentation, cohort=True),
         "eligible_players": int(session.execute(text(sql), params).scalar() or 0),
         "formula": "100 * (count_less + 0.5 * count_equal) / n; rounded, clamped to 1-99",
-        "good_directions": {key: METRIC_CATALOG[key].good_direction for key in PERCENTILE_COLUMNS},
+        "good_directions": {
+            key: METRIC_CATALOG[key].good_direction
+            for key in [*PERCENTILE_COLUMNS, *sorted(impact_query_fields(query))]
+        },
     }
 
 

@@ -43,6 +43,7 @@ export function encodeQueryToSearchParams(
 
   // Core context
   set("releaseId", "release_id", query.release_id);
+  set("impactManifest", "impact_manifest_sha256", query.impact_manifest_sha256);
   set("season", "season", query.season);
   set("phase", "phase", query.phase);
   set("beforeDate", "before_date", query.before_date);
@@ -240,6 +241,7 @@ export function decodeSearchParamsToQuery(
 
   return {
     release_id: releaseId,
+    ...(get("impactManifest", "impact_manifest_sha256") ? { impact_manifest_sha256: get("impactManifest", "impact_manifest_sha256") } : {}),
     season,
     phase,
     before_date: beforeDate,
@@ -259,6 +261,7 @@ export function querySpecToLegacyQuery(spec: QuerySpec): PlayerResearchQuery {
   const primarySort = spec.sort?.[0] || { field: "pts", direction: "desc" };
   return {
     release_id: spec.release_id ?? undefined,
+    ...(spec.impact_manifest_sha256 ? { impact_manifest_sha256: spec.impact_manifest_sha256 } : {}),
     season: spec.season,
     phase: spec.phase,
     before_date: spec.before_date ?? "2026-06-30",
@@ -284,6 +287,7 @@ export const CONTEXT_PARAMS = [
   "windowN", "window_n", "fromDate", "from_date", "toDate", "to_date",
   "releaseId",
   "release_id",
+  "impactManifest", "impact_manifest_sha256",
   "finance_book_id", "finance_financial_season", "finance_known_at", "finance_effective_on",
   "finance_unknown_dates", "finance_team_id", "finance_player_ids", "finance_statuses",
   "finance_amount_kind", "finance_small_big_threshold_cents", "finance_scenario"
@@ -299,7 +303,7 @@ export function buildPreservedContextUrl(
   if (sourceParams) {
     const aliases: Record<string, string> = {
       release_id: "releaseId", before_date: "beforeDate", window_n: "windowN",
-      from_date: "fromDate", to_date: "toDate"
+      from_date: "fromDate", to_date: "toDate", impact_manifest_sha256: "impactManifest"
     };
     const normalized = new URLSearchParams();
     for (const param of CONTEXT_PARAMS) {

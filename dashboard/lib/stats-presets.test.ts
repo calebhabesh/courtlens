@@ -40,16 +40,15 @@ describe("stats-presets", () => {
     expect(fallback.id).toBe("overview");
   });
 
-  it("gated presets include explicit block IDs and rationale", () => {
-    const impact = getPresetById("impact");
-    expect(impact.gated?.block).toBe("B25–B26");
-    expect(impact.gated?.status).toBe("partial");
-
-    const onoff = getPresetById("onoff");
-    expect(onoff.gated?.block).toBe("B20–B21");
-
-    const sixfactor = getPresetById("sixfactor");
-    expect(sixfactor.gated?.block).toBe("B20, B26");
+  it("impact presets use served keys with runtime scope disclosures", () => {
+    for (const id of ["impact", "onoff", "sixfactor"]) {
+      const preset = getPresetById(id);
+      expect(preset.gated).toBeUndefined();
+      expect(preset.columns.length).toBeGreaterThan(0);
+    }
+    expect(getPresetById("impact").columns.map(column => column.key)).toContain("rapm_3y");
+    expect(getPresetById("sixfactor").columns.map(column => column.key)).toContain("d_tov");
+    expect(getPresetById("onoff").columns.map(column => column.key)).toContain("onoff_net_rating");
   });
 
   it("computeHeaderGroups calculates contiguous group colSpans accurately", () => {
