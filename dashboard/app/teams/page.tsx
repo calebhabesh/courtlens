@@ -60,7 +60,7 @@ export default async function TeamsPage({ searchParams }: TeamsPageProps) {
       />
 
       <div className="workbench-content">
-        <div className="page-header" style={{ marginBottom: "1rem" }}>
+        <div className="page-header mb-4">
           <div>
             <h1 className="page-title">Team Explorer</h1>
             <p className="page-subtitle">
@@ -70,7 +70,7 @@ export default async function TeamsPage({ searchParams }: TeamsPageProps) {
         </div>
 
         {loadError && (
-          <div className="notice-box" style={{ borderLeftColor: "var(--negative)", marginBottom: "1rem" }}>
+          <div className="notice-box notice-box-error mb-4">
             <strong>Error:</strong> {loadError}
           </div>
         )}

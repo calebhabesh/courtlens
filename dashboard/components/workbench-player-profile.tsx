@@ -1,6 +1,7 @@
 "use client";
 
 import { CourtLensWordmark } from "./courtlens-wordmark";
+import { ImpactPlayerCard } from "./impact-player-card";
 
 import Link from "next/link";
 import { AssistantPageSelection } from "@/lib/assistant-page-context";
@@ -23,12 +24,14 @@ import type {
   PlayerMeasurementsDetailResponse,
   PlayerProfile
 } from "@/lib/types";
+import type { ImpactResponse } from "@/lib/types";
 
 interface WorkbenchPlayerProfileProps {
   profile: PlayerProfile;
   games: PlayerGameLogItem[];
   careerRows?: SeasonCareerRow[];
   careerRollup?: CareerRollup;
+  impact?: ImpactResponse | null;
 }
 
 function formatInches(val: number | null | undefined): string {
@@ -44,7 +47,8 @@ export function WorkbenchPlayerProfile({
   profile,
   games,
   careerRows = [],
-  careerRollup
+  careerRollup,
+  impact = null
 }: WorkbenchPlayerProfileProps) {
   const [selectedFact, setSelectedFact] = useState<string | null>(null);
   const [exposureMode, setExposureMode] = useState<CountingExposureMode>("per_game");
@@ -152,8 +156,8 @@ export function WorkbenchPlayerProfile({
           </div>
         </div>
 
-        <div style={{ marginLeft: "auto", display: "flex", flexDirection: "column", gap: "0.5rem", alignItems: "flex-end" }}>
-          <div style={{ display: "flex", gap: "0.4rem", flexWrap: "wrap", justifyContent: "flex-end" }}>
+        <div className="profile-actions-column">
+          <div className="profile-actions-row">
             <button
               type="button"
               className={`button button-small ${isFavorite ? "button-accent" : ""}`}
@@ -223,7 +227,7 @@ export function WorkbenchPlayerProfile({
             </Link>
           </div>
 
-          <div style={{ display: "flex", gap: "0.4rem" }}>
+          <div className="profile-export-row">
             <button
               type="button"
               className="button button-small"
@@ -246,12 +250,14 @@ export function WorkbenchPlayerProfile({
       </div>
 
       {/* Multi-Team Stints (for Traded Players) */}
+      <ImpactPlayerCard data={impact} />
+
       {stints && stints.length > 0 && (
         <div className="panel">
           <div className="panel-header">
             <div>
               <h2 className="panel-title">Participation Stints</h2>
-              <p className="text-muted text-xs" style={{ margin: "0.2rem 0 0" }}>
+              <p className="text-muted text-xs panel-subtitle-margin">
                 Observed participation per team stint for {context.season}. Traded players have explicit team affiliations.
               </p>
             </div>
@@ -301,32 +307,16 @@ export function WorkbenchPlayerProfile({
 
       {/* Physical Anthropometry & Draft Metadata (Block B14c) */}
       {measurements && measurements.has_measurements && (
-        <div className="panel" style={{ marginBottom: "1.25rem" }}>
-          <div
-            className="panel-header"
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "flex-start",
-              flexWrap: "wrap",
-              gap: "0.5rem"
-            }}
-          >
+        <div className="panel mb-5">
+          <div className="panel-header profile-section-header-wrap">
             <div>
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "0.5rem",
-                  flexWrap: "wrap"
-                }}
-              >
+              <div className="profile-section-title-wrap">
                 <h2 className="panel-title">Physical Anthropometry &amp; Draft Metadata</h2>
                 <span className="badge badge-accent">Source-reported measurements</span>
                 {measurements.combine && <span className="badge">Draft Combine</span>}
                 {measurements.listed && <span className="badge badge-outline">Listed Roster</span>}
               </div>
-              <p className="text-muted text-xs" style={{ margin: "0.2rem 0 0" }}>
+              <p className="text-muted text-xs panel-subtitle-margin">
                 Official NBA Draft Combine measurements vs. team-reported roster cards. Missing values are null, never scored as zero.
               </p>
             </div>
@@ -340,21 +330,11 @@ export function WorkbenchPlayerProfile({
             </Link>
           </div>
 
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-              gap: "0.75rem",
-              margin: "0.75rem 0"
-            }}
-          >
+          <div className="profile-measurements-grid">
             {measurements.combine?.wingspan_inches != null && (
-              <div className="stat-card" style={{ padding: "0.75rem" }}>
+              <div className="stat-card stat-card-compact">
                 <span className="stat-label">Wingspan (Combine)</span>
-                <span
-                  className="stat-value font-mono"
-                  style={{ fontSize: "1.2rem", color: "var(--accent)" }}
-                >
+                <span className="stat-value font-mono stat-value-lg text-accent">
                   {formatInches(measurements.combine.wingspan_inches)}
                 </span>
                 <span className="stat-subtext">
@@ -367,9 +347,9 @@ export function WorkbenchPlayerProfile({
             )}
 
             {measurements.combine?.height_no_shoes_inches != null && (
-              <div className="stat-card" style={{ padding: "0.75rem" }}>
+              <div className="stat-card stat-card-compact">
                 <span className="stat-label">Height Without Shoes</span>
-                <span className="stat-value font-mono" style={{ fontSize: "1.2rem" }}>
+                <span className="stat-value font-mono stat-value-lg">
                   {formatInches(measurements.combine.height_no_shoes_inches)}
                 </span>
                 <span className="stat-subtext">
@@ -379,9 +359,9 @@ export function WorkbenchPlayerProfile({
             )}
 
             {measurements.combine?.standing_reach_inches != null && (
-              <div className="stat-card" style={{ padding: "0.75rem" }}>
+              <div className="stat-card stat-card-compact">
                 <span className="stat-label">Standing Reach</span>
-                <span className="stat-value font-mono" style={{ fontSize: "1.2rem" }}>
+                <span className="stat-value font-mono stat-value-lg">
                   {formatInches(measurements.combine.standing_reach_inches)}
                 </span>
                 <span className="stat-subtext">
@@ -391,9 +371,9 @@ export function WorkbenchPlayerProfile({
             )}
 
             {measurements.combine?.max_vertical_inches != null && (
-              <div className="stat-card" style={{ padding: "0.75rem" }}>
+              <div className="stat-card stat-card-compact">
                 <span className="stat-label">Max Vertical Leap</span>
-                <span className="stat-value font-mono" style={{ fontSize: "1.2rem" }}>
+                <span className="stat-value font-mono stat-value-lg">
                   {measurements.combine.max_vertical_inches}&quot;
                 </span>
                 <span className="stat-subtext">
@@ -403,9 +383,9 @@ export function WorkbenchPlayerProfile({
             )}
 
             {measurements.listed && (
-              <div className="stat-card" style={{ padding: "0.75rem" }}>
+              <div className="stat-card stat-card-compact">
                 <span className="stat-label">Listed Roster Card</span>
-                <span className="stat-value font-mono" style={{ fontSize: "1.2rem" }}>
+                <span className="stat-value font-mono stat-value-lg">
                   {formatInches(measurements.listed.height_shoes_inches)}
                 </span>
                 <span className="stat-subtext">
@@ -416,9 +396,9 @@ export function WorkbenchPlayerProfile({
             )}
 
             {measurements.draft && (
-              <div className="stat-card" style={{ padding: "0.75rem" }}>
+              <div className="stat-card stat-card-compact">
                 <span className="stat-label">Draft Pedigree</span>
-                <span className="stat-value font-mono" style={{ fontSize: "1.1rem" }}>
+                <span className="stat-value font-mono stat-value-md">
                   {measurements.draft.draft_type === "undrafted"
                     ? `Undrafted (${measurements.draft.draft_year})`
                     : `${measurements.draft.draft_year} · Pick #${measurements.draft.pick_overall}`}
@@ -432,23 +412,14 @@ export function WorkbenchPlayerProfile({
             )}
           </div>
 
-          <div
-            style={{
-              marginTop: "0.5rem",
-              padding: "0.5rem 0.75rem",
-              background: "rgba(0,0,0,0.15)",
-              borderRadius: "4px",
-              fontSize: "0.75rem",
-              color: "var(--text-muted)"
-            }}
-          >
+          <div className="profile-measurements-notice">
             <strong>Notice:</strong> {measurements.disclaimer}
           </div>
         </div>
       )}
 
       {/* Production & Role Summary Grid */}
-      <div className="grid-3" style={{ marginBottom: "1.25rem" }}>
+      <div className="grid-3 mb-5">
         <div className="stat-card">
           <span className="stat-label">Season Production</span>
           <span className="stat-value font-mono">
@@ -457,7 +428,7 @@ export function WorkbenchPlayerProfile({
           <span className="stat-subtext">
             {seasonSummary?.gp ?? 0} GP · {seasonSummary?.min_per_game?.toFixed(1) ?? "—"} MPG · {seasonSummary?.reb_total_per_game?.toFixed(1) ?? "—"} RPG · {seasonSummary?.ast_per_game?.toFixed(1) ?? "—"} APG
           </span>
-          <div style={{ marginTop: "0.4rem", fontSize: "0.75rem", color: "var(--text-muted)", fontFamily: "var(--font-mono), monospace" }}>
+          <div className="stat-card-meta">
             TS%: {formatPercent(seasonSummary?.ts_pct)} · eFG%: {formatPercent(seasonSummary?.efg_pct)}
           </div>
         </div>
@@ -470,7 +441,7 @@ export function WorkbenchPlayerProfile({
           <span className="stat-subtext">
             {last10Summary?.gp ?? 0} GP · {last10Summary?.min_per_game?.toFixed(1) ?? "—"} MPG · {last10Summary?.reb_total_per_game?.toFixed(1) ?? "—"} RPG · {last10Summary?.ast_per_game?.toFixed(1) ?? "—"} APG
           </span>
-          <div style={{ marginTop: "0.4rem", fontSize: "0.75rem", color: "var(--text-muted)", fontFamily: "var(--font-mono), monospace" }}>
+          <div className="stat-card-meta">
             TS%: {formatPercent(last10Summary?.ts_pct)} · eFG%: {formatPercent(last10Summary?.efg_pct)}
           </div>
         </div>
@@ -483,7 +454,7 @@ export function WorkbenchPlayerProfile({
           <span className="stat-subtext">
             {last5Summary?.gp ?? 0} GP · {last5Summary?.min_per_game?.toFixed(1) ?? "—"} MPG · {last5Summary?.reb_total_per_game?.toFixed(1) ?? "—"} RPG · {last5Summary?.ast_per_game?.toFixed(1) ?? "—"} APG
           </span>
-          <div style={{ marginTop: "0.4rem", fontSize: "0.75rem", color: "var(--text-muted)", fontFamily: "var(--font-mono), monospace" }}>
+          <div className="stat-card-meta">
             TS%: {formatPercent(last5Summary?.ts_pct)} · eFG%: {formatPercent(last5Summary?.efg_pct)}
           </div>
         </div>
@@ -491,11 +462,11 @@ export function WorkbenchPlayerProfile({
 
       {/* Multi-Season Career View (F13) */}
       {careerRows.length > 0 && (
-        <div className="panel" style={{ marginBottom: "1.25rem" }}>
+        <div className="panel mb-5">
           <div className="panel-header">
             <div>
               <h2 className="panel-title">Multi-Season Career History</h2>
-              <p className="text-muted text-xs" style={{ margin: "0.2rem 0 0" }}>
+              <p className="text-muted text-xs panel-subtitle-margin">
                 Observed participation across admitted snapshot seasons. Click any season row to switch active context.
               </p>
             </div>
@@ -528,16 +499,12 @@ export function WorkbenchPlayerProfile({
                   return (
                     <tr
                       key={r.season}
-                      style={{ background: isCurrent ? "var(--surface-raised)" : undefined }}
+                      className={isCurrent ? "is-current-season" : undefined}
                     >
                       <td>
                         <Link
                           href={`/players/${player.id}?season=${r.season}&phase=${context.phase}&beforeDate=${context.before_date}`}
-                          className="font-mono"
-                          style={{
-                            fontWeight: isCurrent ? "bold" : "normal",
-                            color: isCurrent ? "var(--accent)" : undefined
-                          }}
+                          className={`font-mono ${isCurrent ? "font-bold text-accent" : ""}`}
                           title={`Switch view to ${r.season}`}
                         >
                           {r.season} {isCurrent && "◀"}
@@ -562,9 +529,9 @@ export function WorkbenchPlayerProfile({
 
                 {/* Career Admitted Totals / Rollup Row */}
                 {careerRollup && (
-                  <tr style={{ borderTop: "2px solid var(--border)", fontWeight: "bold", background: "var(--surface)" }}>
+                  <tr className="career-rollup-row">
                     <td colSpan={2}>
-                      <span className="font-mono text-xs uppercase" style={{ color: "var(--accent)" }}>
+                      <span className="font-mono text-xs uppercase text-accent">
                         Admitted Career
                       </span>
                     </td>
@@ -587,7 +554,7 @@ export function WorkbenchPlayerProfile({
           </div>
 
           {/* Strict Incomplete Career Guardrail Notice */}
-          <div className="notice-box" style={{ margin: "0.75rem 1rem 1rem" }}>
+          <div className="notice-box profile-notice-box">
             <strong>Incomplete Career Disclosure:</strong> {careerRollup?.disclaimer ?? "Career data is strictly scoped to admitted dataset seasons. Historical seasons outside admitted coverage are not silently completed or inferred."}
           </div>
         </div>
@@ -597,16 +564,16 @@ export function WorkbenchPlayerProfile({
       <ResearchTrendCharts games={games} playerName={player.name} />
 
       {/* Reverse-Chronological Game Log with Per-Game / Per-36 Toggle */}
-      <div className="panel" style={{ marginBottom: "1.25rem" }}>
+      <div className="panel mb-5">
         <div className="panel-header">
           <div>
             <h2 className="panel-title">Prior Appearance Game Log</h2>
-            <p className="text-muted text-xs" style={{ margin: "0.2rem 0 0" }}>
+            <p className="text-muted text-xs panel-subtitle-margin">
               Strictly prior to {context.before_date}. Click Lineage to inspect contributing raw observations and SHA-256 provenance.
             </p>
           </div>
 
-          <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+          <div className="profile-toolbar-row">
             <div className="segmented-control" role="group" aria-label="Game log exposure mode">
               <button
                 type="button"
@@ -645,7 +612,7 @@ export function WorkbenchPlayerProfile({
                 <th className="num">3PM/A</th>
                 <th className="num">FTM/A</th>
                 <th className="num">Fantasy</th>
-                <th style={{ textAlign: "right" }}>Provenance</th>
+                <th className="text-right">Provenance</th>
               </tr>
             </thead>
             <tbody>
@@ -683,7 +650,7 @@ export function WorkbenchPlayerProfile({
                       {g.stats?.free_throws_made ?? 0}/{g.stats?.free_throws_attempted ?? 0}
                     </td>
                     <td className="num font-mono">{g.legacy_fantasy_score?.toFixed(1) ?? "—"}</td>
-                    <td style={{ textAlign: "right" }}>
+                    <td className="text-right">
                       <button
                         type="button"
                         className="button button-small"
@@ -702,11 +669,11 @@ export function WorkbenchPlayerProfile({
       </div>
 
       {/* Forecast Status Card */}
-      <div className="panel" style={{ borderLeft: "3px solid var(--series-secondary)" }}>
+      <div className="panel forecast-status-panel">
         <div className="panel-header">
           <div>
             <h2 className="panel-title">Prospective Forecast Status</h2>
-            <p className="text-muted text-xs" style={{ margin: "0.2rem 0 0" }}>
+            <p className="text-muted text-xs panel-subtitle-margin">
               Next scheduled game points estimation under active policy conditional on appearance.
             </p>
           </div>
@@ -717,7 +684,7 @@ export function WorkbenchPlayerProfile({
 
         {forecast_status.status === "forecast_issued" && forecast_status.point_estimate !== undefined ? (
           <div>
-            <div style={{ display: "flex", alignItems: "baseline", gap: "1rem", margin: "0.75rem 0" }}>
+            <div className="forecast-estimates-row">
               <div>
                 <span className="text-xs text-muted uppercase font-mono">Point Estimate</span>
                 <div className="font-mono text-2xl font-bold text-accent">
@@ -749,13 +716,13 @@ export function WorkbenchPlayerProfile({
           </p>
         )}
 
-        <p className="text-xs text-muted" style={{ marginTop: "0.5rem" }}>
+        <p className="text-xs text-muted mt-2">
           In accordance with CourtLens principles, empirical prediction intervals are conditional on player appearance; an absent box score row is unknown, not an injury confirmation.
         </p>
       </div>
 
       {/* Hidden Renderable SVG Card for Export */}
-      <div style={{ display: "none" }}>
+      <div className="hidden">
         <svg
           ref={cardSvgRef}
           viewBox="0 0 460 520"

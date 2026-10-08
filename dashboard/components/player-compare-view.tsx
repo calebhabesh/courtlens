@@ -286,14 +286,14 @@ export function PlayerCompareView({
     <div className="player-compare-container" role="region" aria-label="Player Comparison Explorer">
       <AssistantPageSelection route="/compare" playerIds={[player_a.id, player_b.id, ...additionalPlayerIds]} scope={context} label={`${player_a.name} / ${player_b.name}${additionalPlayerIds.length ? ` + ${additionalPlayerIds.length} more` : ""}`} />
       {/* Zero Forced Winner Rule Notice (Key Principle & Guardrail) */}
-      <div className="notice-box" style={{ borderLeftColor: "var(--accent)", marginBottom: "1.25rem" }}>
+      <div className="notice-box notice-box-accent mb-5">
         <strong>Temporal discipline & no forced winner:</strong>{" "}
         {no_forced_winner_notice ||
           "CourtLens displays aligned empirical distributions and descriptive differences. We never invent a winner probability or automated start/sit decision from overlapping ranges."}
       </div>
 
       {saveSuccess && (
-        <div className="notice-box" style={{ borderLeftColor: "var(--positive)", marginBottom: "1rem" }}>
+        <div className="notice-box notice-box-positive mb-4">
           <strong>Saved investigation:</strong> {saveSuccess}. Inspect in{" "}
           <Link href="/investigations" className="text-accent underline">
             Saved Investigations
@@ -302,17 +302,17 @@ export function PlayerCompareView({
       )}
 
       {/* Side-by-Side Identity Cards */}
-      <div className="grid-2" style={{ marginBottom: "1.25rem" }}>
+      <div className="grid-2 mb-5">
         {/* Player A Card */}
-        <div className="panel" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "1rem 1.25rem" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+        <div className="panel compare-card-panel">
+          <div className="compare-card-leading">
             <PlayerPortrait playerId={player_a.id} name={player_a.name} size="md" />
             <TeamLogoStack teams={player_a.teams ?? []} />
             <div>
               <span className="text-xs text-muted font-mono uppercase">
                 Player A · {player_a.teams?.join(", ") || "—"}
               </span>
-              <h2 className="panel-title" style={{ fontSize: "1.25rem", margin: "0.1rem 0 0.2rem" }}>
+              <h2 className="panel-title compare-card-title">
                 <Link href={`/players/${player_a.id}`} className="text-accent hover-underline">
                   {player_a.name}
                 </Link>
@@ -333,15 +333,15 @@ export function PlayerCompareView({
         </div>
 
         {/* Player B Card */}
-        <div className="panel" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "1rem 1.25rem" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+        <div className="panel compare-card-panel">
+          <div className="compare-card-leading">
             <PlayerPortrait playerId={player_b.id} name={player_b.name} size="md" />
             <TeamLogoStack teams={player_b.teams ?? []} />
             <div>
               <span className="text-xs text-muted font-mono uppercase">
                 Player B · {player_b.teams?.join(", ") || "—"}
               </span>
-              <h2 className="panel-title" style={{ fontSize: "1.25rem", margin: "0.1rem 0 0.2rem" }}>
+              <h2 className="panel-title compare-card-title">
                 <Link href={`/players/${player_b.id}`} className="text-accent hover-underline">
                   {player_b.name}
                 </Link>
@@ -363,20 +363,7 @@ export function PlayerCompareView({
       </div>
 
       {/* Control Bar: Swapping, Presets, View Mode & Share */}
-      <div
-        className="filter-toolbar"
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          flexWrap: "wrap",
-          gap: "0.75rem",
-          marginBottom: "1rem",
-          background: "var(--surface)",
-          padding: "0.6rem 0.8rem",
-          borderRadius: "6px"
-        }}
-      >
+      <div className="filter-toolbar compare-filter-toolbar">
         {/* Presets Segmented Buttons (F24) */}
         <div className="control-button-group" role="tablist" aria-label="Comparison Metric Presets">
           {(["overall", "offense", "defense", "sixfactor", "custom"] as const).map((id) => (
@@ -423,7 +410,7 @@ export function PlayerCompareView({
         </div>
 
         {/* Quick Actions: Swap Players, Export Image, Copy URL, Save */}
-        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+        <div className="compare-toolbar-actions">
           <button
             type="button"
             onClick={handleSwap}
@@ -475,21 +462,12 @@ export function PlayerCompareView({
 
       {/* Custom View Options Bar (only shown when Custom tab active) */}
       {activeTab === "custom" && (
-        <div
-          className="notice-box text-xs"
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "1rem",
-            marginBottom: "1rem",
-            padding: "0.5rem 0.8rem"
-          }}
-        >
+        <div className="notice-box text-xs compare-custom-options">
           <span>Use Personal Custom View:</span>
           <select
             value={selectedCustomViewId}
             onChange={(e) => setSelectedCustomViewId(e.target.value)}
-            style={{ width: "auto" }}
+            className="w-auto"
           >
             <option value="">Default Custom Selection ({customSelectedKeys.length} metrics)</option>
             {views.map((v) => (
@@ -498,7 +476,7 @@ export function PlayerCompareView({
               </option>
             ))}
           </select>
-          <Link href="/stats" className="text-accent underline" style={{ marginLeft: "auto" }}>
+          <Link href="/stats" className="text-accent underline ml-auto">
             ⚙ Manage Views in Stats
           </Link>
         </div>
@@ -510,7 +488,7 @@ export function PlayerCompareView({
           <div className="panel-header">
             <div>
               <h3 className="panel-title">{PRESET_METRICS[activeTab].label} Descriptive Metrics</h3>
-              <p className="text-muted text-xs" style={{ margin: "0.2rem 0 0" }}>
+              <p className="text-muted text-xs panel-subtitle-margin">
                 Side-by-side descriptive metrics under an identical cutoff ({context.before_date || "season start"}) and catalog v2 calculation formula.
               </p>
             </div>
@@ -525,10 +503,10 @@ export function PlayerCompareView({
                 <tr>
                   <th>Metric</th>
                   <th>Unit</th>
-                  <th className="num" style={{ color: "#ffd166" }}>
+                  <th className="num text-player-a">
                     {player_a.name}
                   </th>
-                  <th className="num" style={{ color: "#4ecdc4" }}>
+                  <th className="num text-player-b">
                     {player_b.name}
                   </th>
                   <th className="num">Difference (A - B)</th>
@@ -543,7 +521,7 @@ export function PlayerCompareView({
                     <tr key={m.metric}>
                       <td>
                         <strong>{m.display_name}</strong>
-                        <span className="text-xs text-muted font-mono" style={{ marginLeft: "0.4rem" }}>
+                        <span className="text-xs text-muted font-mono compare-metric-key">
                           ({m.metric})
                         </span>
                       </td>
@@ -582,25 +560,17 @@ export function PlayerCompareView({
           <div className="panel-header">
             <div>
               <h3 className="panel-title">Comparative Metric Bars</h3>
-              <p className="text-muted text-xs" style={{ margin: "0.2rem 0 0" }}>
+              <p className="text-muted text-xs panel-subtitle-margin">
                 Side-by-side descriptive comparison. Gold: {player_a.name}, Cyan: {player_b.name}.
               </p>
             </div>
           </div>
 
-          <div style={{ padding: "1rem", overflowX: "auto" }}>
+          <div className="compare-svg-scroll">
             <svg
               ref={barChartSvgRef}
               viewBox={`0 0 800 ${Math.max(activeMetricsList.length * 48 + 70, 240)}`}
-              style={{
-                display: "block",
-                width: "100%",
-                maxWidth: "800px",
-                margin: "0 auto",
-                background: "#20252e",
-                borderRadius: "6px",
-                border: "1px solid var(--border)"
-              }}
+              className="compare-bar-svg"
               role="img"
               aria-label={`Comparative metric bars for ${player_a.name} versus ${player_b.name}`}
             >
@@ -707,7 +677,7 @@ export function PlayerCompareView({
                     <text
                       x={770}
                       y={14}
-                      fill={m.diff && m.diff > 0 ? "var(--positive)" : m.diff && m.diff < 0 ? "var(--negative)" : "#7b8798"}
+                      fill={m.diff && m.diff > 0 ? "var(--color-positive)" : m.diff && m.diff < 0 ? "var(--color-negative)" : "#7b8798"}
                       fontSize="11"
                       fontFamily="monospace"
                       fontWeight="bold"
@@ -733,28 +703,20 @@ export function PlayerCompareView({
 
       {/* Retained Comparison Tray Quick Links */}
       {compareTray.length > 2 && (
-        <div className="panel" style={{ marginTop: "1rem", padding: "1rem" }}>
-          <div className="panel-header" style={{ marginBottom: "0.5rem" }}>
-            <h4 className="panel-title" style={{ fontSize: "0.9rem" }}>
+        <div className="panel compare-tray-panel">
+          <div className="panel-header mb-2">
+            <h4 className="panel-title compare-tray-title">
               Compare Tray ({compareTray.length} Players Selected)
             </h4>
             <span className="text-xs text-muted">
               Click any player to swap into Player A or B
             </span>
           </div>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem" }}>
+          <div className="compare-tray-chips">
             {compareTray.map((id) => (
               <div
                 key={id}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "0.4rem",
-                  background: "var(--surface)",
-                  padding: "0.3rem 0.6rem",
-                  borderRadius: "4px",
-                  border: id === player_a.id ? "1px solid #ffd166" : id === player_b.id ? "1px solid #4ecdc4" : "1px solid var(--border)"
-                }}
+                className={`compare-tray-chip ${id === player_a.id ? "is-player-a" : id === player_b.id ? "is-player-b" : ""}`}
               >
                 <span className="text-xs font-semibold">
                   {id === player_a.id ? "Player A: " : id === player_b.id ? "Player B: " : ""}
@@ -775,8 +737,7 @@ export function PlayerCompareView({
                       if (context.release_id) sp.set("releaseId", context.release_id);
                       router.push(`/compare?${sp.toString()}`);
                     }}
-                    className="button button-small"
-                    style={{ padding: "0.1rem 0.3rem", fontSize: "0.7rem" }}
+                    className="button button-small compare-tray-btn"
                   >
                     Set A
                   </button>
@@ -796,8 +757,7 @@ export function PlayerCompareView({
                       if (context.release_id) sp.set("releaseId", context.release_id);
                       router.push(`/compare?${sp.toString()}`);
                     }}
-                    className="button button-small"
-                    style={{ padding: "0.1rem 0.3rem", fontSize: "0.7rem" }}
+                    className="button button-small compare-tray-btn"
                   >
                     Set B
                   </button>
@@ -805,7 +765,7 @@ export function PlayerCompareView({
                 <button
                   type="button"
                   onClick={() => removeCompare(id)}
-                  style={{ background: "none", border: "none", color: "var(--text-muted)", cursor: "pointer" }}
+                  className="compare-tray-remove"
                   title="Remove from compare tray"
                 >
                   ✕

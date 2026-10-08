@@ -31,7 +31,7 @@ export function PlayerPortrait({
     .join("");
 
   const dimension = size === "lg" ? 80 : size === "md" ? 48 : 30;
-  const fontSize = size === "lg" ? "1.5rem" : size === "md" ? "1rem" : "0.75rem";
+  const sizeClass = size === "lg" ? "player-portrait-lg" : size === "md" ? "player-portrait-md" : "player-portrait-sm";
 
   // Use explicit portraitUrl, or player endpoint if playerId provided
   const portraitPath = portraitUrl || (playerId ? `/api/workbench/players/${playerId}/portrait` : null);
@@ -44,23 +44,7 @@ export function PlayerPortrait({
   if (error || !source) {
     return (
       <div
-        className={`player-portrait-fallback ${className}`}
-        style={{
-          width: dimension,
-          height: dimension,
-          minWidth: dimension,
-          minHeight: dimension,
-          borderRadius: "50%",
-          display: "grid",
-          placeItems: "center",
-          backgroundColor: "var(--surface-raised)",
-          border: "1px solid var(--border)",
-          color: "var(--text-muted)",
-          fontSize,
-          fontWeight: 600,
-          fontFamily: "var(--font-mono), monospace",
-          userSelect: "none"
-        }}
+        className={`player-portrait-fallback ${sizeClass} ${className}`}
         title={name}
         aria-label={alt ?? `${name} portrait placeholder`}
       >
@@ -78,18 +62,7 @@ export function PlayerPortrait({
       height={dimension}
       loading={size === "lg" ? "eager" : "lazy"}
       onError={() => setError(true)}
-      className={`player-portrait ${className}`}
-      style={{
-        width: dimension,
-        height: dimension,
-        minWidth: dimension,
-        minHeight: dimension,
-        borderRadius: "50%",
-        objectFit: "cover",
-        objectPosition: "top center",
-        backgroundColor: "var(--surface-raised)",
-        border: "1px solid var(--border)"
-      }}
+      className={`player-portrait ${sizeClass} ${className}`}
     />
   );
 }

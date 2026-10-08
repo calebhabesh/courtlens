@@ -14,13 +14,13 @@ export function WorkbenchCompareView({ comparison }: WorkbenchCompareViewProps) 
   return (
     <div className="workbench-compare-section">
       {/* Zero Forced Winner Notice */}
-      <div className="notice-box" style={{ borderLeftColor: "var(--accent)" }}>
+      <div className="notice-box notice-box-accent">
         <strong>No forced winner rule:</strong> {no_forced_winner_notice || "CourtLens displays descriptive differences and prediction intervals without declaring an automated start/sit decision or forced winner."}
       </div>
 
       {/* Side-by-Side Identity Cards */}
-      <div className="grid-2" style={{ marginBottom: "1.25rem" }}>
-        <div className="panel" style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+      <div className="grid-2 mb-5">
+        <div className="panel compare-identity-panel">
           <PlayerPortrait playerId={player_a.id} name={player_a.name} size="md" />
           <div>
             <span className="text-xs text-muted font-mono uppercase">Player A · {player_a.teams?.join(", ") || "—"}</span>
@@ -33,7 +33,7 @@ export function WorkbenchCompareView({ comparison }: WorkbenchCompareViewProps) 
           </div>
         </div>
 
-        <div className="panel" style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+        <div className="panel compare-identity-panel">
           <PlayerPortrait playerId={player_b.id} name={player_b.name} size="md" />
           <div>
             <span className="text-xs text-muted font-mono uppercase">Player B · {player_b.teams?.join(", ") || "—"}</span>
@@ -52,7 +52,7 @@ export function WorkbenchCompareView({ comparison }: WorkbenchCompareViewProps) 
         <div className="panel-header">
           <div>
             <h3 className="panel-title">Aligned Descriptive Metrics</h3>
-            <p className="text-muted text-xs" style={{ margin: "0.2rem 0 0" }}>
+            <p className="text-muted text-xs panel-subtitle-margin">
               Identical calculation formulas from metric catalog v1. Values formatted according to metric specification.
             </p>
           </div>
@@ -78,7 +78,7 @@ export function WorkbenchCompareView({ comparison }: WorkbenchCompareViewProps) 
                   <tr key={m.metric}>
                     <td>
                       <strong>{m.display_name}</strong>
-                      <span className="text-xs text-muted font-mono" style={{ marginLeft: "0.4rem" }}>
+                      <span className="text-xs text-muted font-mono compare-metric-key">
                         ({m.metric})
                       </span>
                     </td>

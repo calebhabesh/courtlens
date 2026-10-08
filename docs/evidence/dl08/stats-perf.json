@@ -1,0 +1,14 @@
+{
+  "route": "/stats",
+  "elapsedMs": 2273,
+  "cls": 0,
+  "fcp": 56,
+  "domInteractive": 772,
+  "loadComplete": 776,
+  "totalLongTasks": 0,
+  "initialLoadLongTasksOver50ms": 0,
+  "maxInitialLoadTaskDurationMs": 0,
+  "allLongTasks": [],
+  "animationLongTasksOver50ms": 0,
+  "maxAnimationTaskDurationMs": 0
+}

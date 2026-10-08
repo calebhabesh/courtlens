@@ -1,0 +1,120 @@
+@layer motion {
+  @keyframes lookupSpin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes fadeInDropdown {
+    from {
+      opacity: 0;
+      transform: translateY(-4px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slideIn {
+    from {
+      transform: translateX(100%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes slideInRight {
+    from {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes slideUpTray {
+    from {
+      transform: translateY(100%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes ask-pulse {
+    50% {
+      opacity: 0.3;
+    }
+  }
+
+  @keyframes shimmer {
+    0% {
+      background-position: -200% 0;
+    }
+    100% {
+      background-position: 200% 0;
+    }
+  }
+
+  @keyframes routeEnter {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .route-enter {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 0;
+    min-height: 0;
+    width: 100%;
+    animation: routeEnter var(--dur-slow) var(--ease-out) forwards;
+  }
+
+  /* Rewritten reduced-motion handling per Design Language v1 */
+  @media (prefers-reduced-motion: reduce) {
+    :root {
+      --dur-instant: 1ms;
+      --dur-base: 1ms;
+      --dur-slow: 1ms;
+      --dur-chart: 1ms;
+      /* Note: opacity fades retain --dur-fast (140ms) per contract */
+    }
+
+    *, *::before, *::after {
+      scroll-behavior: auto !important;
+    }
+
+    .ask-phase::before {
+      animation: none;
+    }
+
+    .ui-skeleton,
+    [data-skeleton] {
+      animation: none !important;
+      background-image: none !important;
+    }
+
+    .route-enter {
+      animation: fadeInDropdown var(--dur-slow) var(--ease-out) forwards;
+      transform: none !important;
+    }
+
+    /* Transform-based enters become opacity-only in reduced motion */
+    .lineage-drawer,
+    .hotkeys-modal,
+    .replica-tray {
+      transform: none !important;
+    }
+  }
+}

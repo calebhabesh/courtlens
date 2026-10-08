@@ -232,11 +232,10 @@ export function CaseStudiesView() {
       {/* Header */}
       <div className="page-header">
         <div>
-          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.25rem" }}>
+          <div className="dist-header-meta">
             <span className="font-mono text-xs text-muted">F37</span>
             <span
-              className="replica-badge-gated"
-              style={{ background: "rgba(96, 211, 148, 0.15)", color: "var(--positive)" }}
+              className="replica-badge-gated dist-badge-positive"
             >
               Reproducible Case Studies
             </span>
@@ -248,7 +247,7 @@ export function CaseStudiesView() {
           </p>
         </div>
 
-        <div className="page-actions" style={{ display: "flex", gap: "0.5rem" }}>
+        <div className="page-actions dist-actions">
           <Link href="/investigations" className="button button-secondary text-xs">
             Saved Investigations
           </Link>
@@ -259,7 +258,7 @@ export function CaseStudiesView() {
       </div>
 
       {/* Case Study Selector Tabs */}
-      <div className="toolbar" style={{ marginBottom: "1.5rem" }}>
+      <div className="toolbar case-study-toolbar">
         {CASE_STUDIES.map((c) => (
           <button
             key={c.id}
@@ -273,19 +272,19 @@ export function CaseStudiesView() {
       </div>
 
       {/* Selected Case Study Container */}
-      <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+      <div className="case-study-container">
         {/* Title and Metadata Banner */}
-        <div className="table-card" style={{ padding: "1.5rem", borderTop: "3px solid var(--accent)" }}>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "1rem" }}>
+        <div className="table-card case-study-hero">
+          <div className="dist-provenance-header">
             <div>
               <span className="font-mono text-xs text-muted uppercase">Case Study {selectedCase.number}</span>
-              <h2 style={{ margin: "0.25rem 0", fontSize: "1.4rem" }}>{selectedCase.title}</h2>
-              <p className="text-muted" style={{ margin: 0, fontSize: "0.95rem" }}>
+              <h2 className="section-title">{selectedCase.title}</h2>
+              <p className="text-muted text-sm">
                 {selectedCase.subtitle}
               </p>
             </div>
 
-            <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
+            <div className="dist-actions">
               {selectedCase.actionLinks.map((link) => (
                 <Link
                   key={link.label}
@@ -300,67 +299,67 @@ export function CaseStudiesView() {
         </div>
 
         {/* Problem Statement */}
-        <div className="table-card" style={{ padding: "1.25rem" }}>
-          <h3 style={{ margin: "0 0 0.5rem 0", fontSize: "1rem" }}>1. Context & Problem Statement</h3>
-          <p style={{ margin: 0, color: "var(--text-muted)", lineHeight: 1.5 }}>
+        <div className="table-card case-study-card">
+          <h3 className="case-study-card-title">1. Context & Problem Statement</h3>
+          <p className="case-study-problem-text">
             {selectedCase.problemSummary}
           </p>
         </div>
 
         {/* Real Data Evidence Table */}
         <div className="table-card">
-          <div style={{ padding: "1rem 1.25rem", borderBottom: "1px solid var(--border)" }}>
-            <h3 style={{ margin: 0, fontSize: "1rem" }}>2. Observed Real-Data Evidence</h3>
+          <div className="case-study-table-header">
+            <h3 className="case-study-card-title">2. Observed Real-Data Evidence</h3>
             <span className="text-xs text-muted">
               Reconciled fact rows from PostgreSQL 17 materialized marts.
             </span>
           </div>
 
           <div className="table-wrapper" role="region" aria-label="Case study observations" tabIndex={0}>
-            <table className="data-table" style={{ width: "100%", textAlign: "left" }}>
+            <table className="data-table">
               <thead>
                 <tr>
-                  <th style={{ padding: "0.75rem 1rem" }}>Observation Scope</th>
-                  <th style={{ padding: "0.75rem 1rem" }}>Team</th>
-                  <th style={{ padding: "0.75rem 1rem", textAlign: "center" }}>Games</th>
-                  <th style={{ padding: "0.75rem 1rem", textAlign: "right" }}>Minutes/G</th>
-                  <th style={{ padding: "0.75rem 1rem", textAlign: "right" }}>PTS/G</th>
-                  <th style={{ padding: "0.75rem 1rem", textAlign: "right" }}>REB/G</th>
-                  <th style={{ padding: "0.75rem 1rem", textAlign: "right" }}>AST/G</th>
-                  <th style={{ padding: "0.75rem 1rem", textAlign: "right" }}>FG%</th>
-                  <th style={{ padding: "0.75rem 1rem", textAlign: "right" }}>3P%</th>
-                  <th style={{ padding: "0.75rem 1rem", textAlign: "right" }}>FT%</th>
+                  <th>Observation Scope</th>
+                  <th>Team</th>
+                  <th className="text-center">Games</th>
+                  <th className="num">Minutes/G</th>
+                  <th className="num">PTS/G</th>
+                  <th className="num">REB/G</th>
+                  <th className="num">AST/G</th>
+                  <th className="num">FG%</th>
+                  <th className="num">3P%</th>
+                  <th className="num">FT%</th>
                 </tr>
               </thead>
               <tbody>
                 {selectedCase.dataEvidence.map((row, idx) => (
-                  <tr key={idx} style={{ borderBottom: "1px solid var(--border)" }}>
-                    <td style={{ padding: "0.75rem 1rem", fontWeight: 600 }}>{row.label}</td>
-                    <td style={{ padding: "0.75rem 1rem" }}>
-                      <span className="filter-pill" style={{ pointerEvents: "none" }}>
+                  <tr key={idx} className="dist-table-row">
+                    <td><strong>{row.label}</strong></td>
+                    <td>
+                      <span className="filter-pill pointer-events-none">
                         {row.team}
                       </span>
                     </td>
-                    <td style={{ padding: "0.75rem 1rem", textAlign: "center" }}>{row.games}</td>
-                    <td style={{ padding: "0.75rem 1rem", textAlign: "right", fontFamily: "var(--font-mono)" }}>
+                    <td className="text-center">{row.games}</td>
+                    <td className="num font-mono">
                       {row.minG > 0 ? row.minG : "—"}
                     </td>
-                    <td style={{ padding: "0.75rem 1rem", textAlign: "right", fontFamily: "var(--font-mono)", fontWeight: 700, color: "var(--accent)" }}>
+                    <td className="num font-mono text-accent">
                       {row.ptsG > 0 ? row.ptsG : "—"}
                     </td>
-                    <td style={{ padding: "0.75rem 1rem", textAlign: "right", fontFamily: "var(--font-mono)" }}>
+                    <td className="num font-mono">
                       {row.rebG > 0 ? row.rebG : "—"}
                     </td>
-                    <td style={{ padding: "0.75rem 1rem", textAlign: "right", fontFamily: "var(--font-mono)" }}>
+                    <td className="num font-mono">
                       {row.astG > 0 ? row.astG : "—"}
                     </td>
-                    <td style={{ padding: "0.75rem 1rem", textAlign: "right", fontFamily: "var(--font-mono)" }}>
+                    <td className="num font-mono">
                       {row.fgPct}
                     </td>
-                    <td style={{ padding: "0.75rem 1rem", textAlign: "right", fontFamily: "var(--font-mono)" }}>
+                    <td className="num font-mono">
                       {row.threePct}
                     </td>
-                    <td style={{ padding: "0.75rem 1rem", textAlign: "right", fontFamily: "var(--font-mono)" }}>
+                    <td className="num font-mono">
                       {row.ftPct}
                     </td>
                   </tr>
@@ -371,20 +370,13 @@ export function CaseStudiesView() {
         </div>
 
         {/* Architectural Guarantees & Invariants */}
-        <div className="table-card" style={{ padding: "1.25rem" }}>
-          <h3 style={{ margin: "0 0 0.75rem 0", fontSize: "1rem" }}>3. Architectural Guarantees & Invariants</h3>
-          <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+        <div className="table-card case-study-card">
+          <h3 className="case-study-card-title">3. Architectural Guarantees & Invariants</h3>
+          <div className="case-study-guarantees-list">
             {selectedCase.guarantees.map((g, idx) => (
               <div
                 key={idx}
-                style={{
-                  padding: "0.75rem 1rem",
-                  background: "var(--bg-main)",
-                  borderRadius: "6px",
-                  borderLeft: "3px solid var(--positive)",
-                  fontSize: "0.85rem",
-                  lineHeight: 1.4
-                }}
+                className="case-study-guarantee-item"
               >
                 {g}
               </div>
@@ -393,16 +385,16 @@ export function CaseStudiesView() {
         </div>
 
         {/* How to Reproduce / Answer Manually */}
-        <div className="table-card" style={{ padding: "1.25rem" }}>
-          <h3 style={{ margin: "0 0 0.75rem 0", fontSize: "1rem" }}>
+        <div className="table-card case-study-card">
+          <h3 className="case-study-card-title">
             4. Manual Verification & Reproducibility Guide
           </h3>
-          <p className="text-xs text-muted" style={{ margin: "0 0 0.75rem 0" }}>
+          <p className="text-xs text-muted mb-2">
             Every finding can be reproduced and verified manually without calling third-party LLMs or AI providers:
           </p>
-          <ol style={{ margin: 0, paddingLeft: "1.25rem", color: "var(--text-muted)", fontSize: "0.85rem", lineHeight: 1.5 }}>
+          <ol className="case-study-steps-list">
             {selectedCase.manualAnswerSteps.map((step, idx) => (
-              <li key={idx} style={{ marginBottom: "0.35rem" }}>
+              <li key={idx}>
                 {step}
               </li>
             ))}
@@ -410,18 +402,8 @@ export function CaseStudiesView() {
         </div>
 
         {/* Cryptographic Lineage Footer */}
-        <div
-          className="table-card"
-          style={{
-            padding: "1rem 1.25rem",
-            background: "var(--surface)",
-            fontSize: "0.8rem",
-            display: "flex",
-            flexDirection: "column",
-            gap: "0.5rem"
-          }}
-        >
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap" }}>
+        <div className="table-card case-study-provenance-box">
+          <div className="dist-provenance-header">
             <span className="font-mono text-muted uppercase text-xs">Immutable Provenance</span>
             <span className="font-mono text-xs text-muted">
               Artifact Hash: <code>{selectedCase.evidenceHash}</code>

@@ -1,0 +1,14 @@
+{
+  "route": "/players/2544",
+  "elapsedMs": 1541,
+  "cls": 0,
+  "fcp": 308,
+  "domInteractive": 730,
+  "loadComplete": 738,
+  "totalLongTasks": 0,
+  "initialLoadLongTasksOver50ms": 0,
+  "maxInitialLoadTaskDurationMs": 0,
+  "allLongTasks": [],
+  "animationLongTasksOver50ms": 0,
+  "maxAnimationTaskDurationMs": 0
+}

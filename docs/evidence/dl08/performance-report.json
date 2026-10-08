@@ -1,0 +1,70 @@
+{
+  "ask": {
+    "route": "/research/ask",
+    "elapsedMs": 1199,
+    "cls": 0,
+    "fcp": 304,
+    "domInteractive": 138,
+    "loadComplete": 278,
+    "totalLongTasks": 1,
+    "initialLoadLongTasksOver50ms": 1,
+    "maxInitialLoadTaskDurationMs": 51,
+    "allLongTasks": [
+      {
+        "name": "self",
+        "duration": 51,
+        "startTime": 194.79999995231628
+      }
+    ],
+    "animationLongTasksOver50ms": 0,
+    "maxAnimationTaskDurationMs": 0
+  },
+  "player-profile": {
+    "route": "/players/2544",
+    "elapsedMs": 1541,
+    "cls": 0,
+    "fcp": 308,
+    "domInteractive": 730,
+    "loadComplete": 738,
+    "totalLongTasks": 0,
+    "initialLoadLongTasksOver50ms": 0,
+    "maxInitialLoadTaskDurationMs": 0,
+    "allLongTasks": [],
+    "animationLongTasksOver50ms": 0,
+    "maxAnimationTaskDurationMs": 0
+  },
+  "stats": {
+    "route": "/stats",
+    "elapsedMs": 2273,
+    "cls": 0,
+    "fcp": 56,
+    "domInteractive": 772,
+    "loadComplete": 776,
+    "totalLongTasks": 0,
+    "initialLoadLongTasksOver50ms": 0,
+    "maxInitialLoadTaskDurationMs": 0,
+    "allLongTasks": [],
+    "animationLongTasksOver50ms": 0,
+    "maxAnimationTaskDurationMs": 0
+  },
+  "team-detail": {
+    "route": "/teams/1610612747",
+    "elapsedMs": 1533,
+    "cls": 0,
+    "fcp": 256,
+    "domInteractive": 710,
+    "loadComplete": 723,
+    "totalLongTasks": 1,
+    "initialLoadLongTasksOver50ms": 1,
+    "maxInitialLoadTaskDurationMs": 75,
+    "allLongTasks": [
+      {
+        "name": "self",
+        "duration": 75,
+        "startTime": 161.4000000357628
+      }
+    ],
+    "animationLongTasksOver50ms": 0,
+    "maxAnimationTaskDurationMs": 0
+  }
+}

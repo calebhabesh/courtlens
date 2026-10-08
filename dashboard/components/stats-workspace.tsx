@@ -1,14 +1,12 @@
 import "./stats-explorer.css";
 import { ChartNoAxesColumn } from "lucide-react";
 import { redirect } from "next/navigation";
-import { Suspense } from "react";
-import { SharedFloorView } from "@/components/shared-floor-view";
 import { ContextBar } from "@/components/context-bar";
 import { WorkbenchPlayerExplorer } from "@/components/workbench-player-explorer";
 import { executeWorkbenchQuery, getWorkbenchCatalog } from "@/lib/workbench-api";
 import { querySpecToLegacyQuery } from "@/lib/query-url";
-import { resolveStatsQuery } from "@/lib/stats-query";
-import type { CountingMode } from "@/lib/stats-presets";
+import { resolveStatsQuery, normalizedColumn } from "@/lib/stats-query";
+import { getPresetById, IMPACT_COLUMNS, type CountingMode } from "@/lib/stats-presets";
 import { getWorkspace } from "@/lib/workspace-client";
 import type { PlayerResearchResponse, WorkbenchCatalog } from "@/lib/types";
 
@@ -18,7 +16,6 @@ export async function StatsWorkspace({ params: rawParams, basePath = "/stats", t
   title?: string;
 }) {
   const params = Object.fromEntries(Object.entries(rawParams).map(([key, value]) => [key, Array.isArray(value) ? value[0] : value]));
-  if (params.preset === "onoff" || params.viewId === "onoff" || params.view_id === "onoff") return <Suspense fallback={<p>Loading on/off…</p>}><SharedFloorView initialOperation="on-off" statsPreset /></Suspense>;
   let catalog: WorkbenchCatalog;
   try {
     catalog = await getWorkbenchCatalog(String(params.releaseId || params.release_id || "") || undefined);
@@ -32,6 +29,13 @@ export async function StatsWorkspace({ params: rawParams, basePath = "/stats", t
   }
   const countingMode = (params.countingMode || params.counting_mode || workspace?.preferences.counting_mode || "per_game") as CountingMode;
   const querySpec = resolveStatsQuery(params, catalog, countingMode);
+  const presetId = params.viewId || params.view_id || params.preset || workspace?.preferences.default_view_id || "overview";
+  const preset = getPresetById(presetId, workspace?.views);
+  querySpec.view_state = { ...querySpec.view_state, view_id: presetId,
+    columns: preset.columns.map(column => normalizedColumn(column, countingMode).key) };
+  if (preset.columns.some(column => column.key in IMPACT_COLUMNS) && catalog.impact?.manifest_sha256) {
+    querySpec.impact_manifest_sha256 = querySpec.impact_manifest_sha256 || catalog.impact.manifest_sha256;
+  }
   const researchQuery = querySpecToLegacyQuery(querySpec);
   // Bind inferred defaults into the URL so navigation, reload and cursors share one scope.
   const required: [string, string, string | null | undefined][] = [
@@ -98,7 +102,7 @@ export async function StatsWorkspace({ params: rawParams, basePath = "/stats", t
         />
 
         {loadError && (
-          <div className="notice-box" style={{ borderLeftColor: "var(--negative)", marginBottom: "1rem" }}>
+          <div className="notice-box notice-box-error">
             <strong>Error:</strong> {loadError}
           </div>
         )}

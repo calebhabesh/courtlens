@@ -5,6 +5,7 @@ import React, { useState, useMemo } from "react";
 import Link from "next/link";
 import { useWorkspace } from "@/lib/workspace-context";
 import { PlayerPortrait } from "./player-portrait";
+import { useToast } from "./ui/toast";
 import type { TierGroup } from "@/lib/types";
 
 const DEFAULT_TIER_COLORS = [
@@ -23,6 +24,7 @@ export function TierListView() {
     deleteTierList,
     favorites
   } = useWorkspace();
+  const { toast } = useToast();
 
   const [activeTierListId, setActiveTierListId] = useState<string | null>(null);
   const [isCreatingList, setIsCreatingList] = useState(false);
@@ -67,8 +69,17 @@ export function TierListView() {
       if (res.tier_lists.length > 0) {
         setActiveTierListId(res.tier_lists[res.tier_lists.length - 1].id);
       }
+      toast({
+        title: "Default Tiers Created",
+        description: "Created default 2024-25 player tiers.",
+        variant: "positive",
+      });
     } catch (err) {
-      alert(err instanceof Error ? err.message : "Failed to create default tier list");
+      toast({
+        title: "Creation Error",
+        description: err instanceof Error ? err.message : "Failed to create default tier list",
+        variant: "negative",
+      });
     }
   };
 
@@ -98,8 +109,17 @@ export function TierListView() {
       if (res.tier_lists.length > 0) {
         setActiveTierListId(res.tier_lists[res.tier_lists.length - 1].id);
       }
+      toast({
+        title: "Tier List Created",
+        description: `Created "${newTitle.trim()}".`,
+        variant: "positive",
+      });
     } catch (err) {
-      alert(err instanceof Error ? err.message : "Failed to create tier list");
+      toast({
+        title: "Creation Error",
+        description: err instanceof Error ? err.message : "Failed to create tier list",
+        variant: "negative",
+      });
     }
   };
 
@@ -110,8 +130,17 @@ export function TierListView() {
     try {
       await deleteTierList(activeList.id);
       setActiveTierListId(null);
+      toast({
+        title: "Tier List Deleted",
+        description: `Removed "${activeList.title}".`,
+        variant: "info",
+      });
     } catch (err) {
-      alert(err instanceof Error ? err.message : "Failed to delete tier list");
+      toast({
+        title: "Deletion Error",
+        description: err instanceof Error ? err.message : "Failed to delete tier list",
+        variant: "negative",
+      });
     }
   };
 
@@ -125,7 +154,11 @@ export function TierListView() {
     // Check if player is already in any tier
     const allAssigned = activeList.tiers.flatMap((t) => t.player_ids);
     if (allAssigned.includes(playerId)) {
-      alert("This player is already assigned to a tier in this list.");
+      toast({
+        title: "Player Already Assigned",
+        description: "This player is already assigned to a tier in this list.",
+        variant: "negative",
+      });
       return;
     }
 
@@ -141,8 +174,17 @@ export function TierListView() {
         tiers: updatedTiers
       });
       setSearchQuery("");
+      toast({
+        title: "Player Added",
+        description: "Added player to tier.",
+        variant: "positive",
+      });
     } catch (err) {
-      alert(err instanceof Error ? err.message : "Failed to add player to tier");
+      toast({
+        title: "Error",
+        description: err instanceof Error ? err.message : "Failed to add player to tier",
+        variant: "negative",
+      });
     }
   };
 
@@ -306,16 +348,16 @@ export function TierListView() {
   };
 
   return (
-    <div className="workbench-content" style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
+    <div className="workbench-content tier-workspace-wrapper">
       {/* Header */}
-      <div className="page-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "1rem" }}>
+      <div className="page-header tier-header">
         <div>
           <h1 className="page-title">Tier List Builder</h1>
           <p className="page-subtitle">
             F27 Tier Lists · Interactive personal tier lists with drag-and-drop, full keyboard accessibility, and local persistence.
           </p>
         </div>
-        <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
+        <div className="tier-header-actions">
           {activeList && (
             <button
               type="button"
@@ -337,9 +379,9 @@ export function TierListView() {
       </div>
 
       {/* Notice */}
-      <div className="notice-box" style={{ borderLeftColor: "var(--accent)", margin: 0 }}>
+      <div className="notice-box tier-notice">
         <strong className="text-accent text-xs">Subjective Categorization Notice:</strong>
-        <p className="text-xs text-muted" style={{ margin: "0.2rem 0 0" }}>
+        <p className="text-xs text-muted tier-notice-text">
           Tier allocations reflect personal subjective categorizations. Cards support HTML5 drag-and-drop as well as accessible keyboard controls (▲/▼ or tier dropdown).
         </p>
       </div>
@@ -354,7 +396,7 @@ export function TierListView() {
           role="dialog"
           aria-modal="true"
         >
-          <div className="modal-card" style={{ maxWidth: "480px" }}>
+          <div className="modal-card tier-modal-card">
             <div className="modal-header">
               <h2 className="modal-title">Create New Tier List</h2>
               <button
@@ -365,9 +407,9 @@ export function TierListView() {
                 ✕
               </button>
             </div>
-            <form onSubmit={handleCreateListSubmit} className="modal-body" style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+            <form onSubmit={handleCreateListSubmit} className="modal-body tier-modal-body">
               <div>
-                <label htmlFor="new-tier-title" className="text-xs font-semibold text-muted" style={{ display: "block", marginBottom: "0.3rem" }}>
+                <label htmlFor="new-tier-title" className="tier-modal-label">
                   Tier List Title *
                 </label>
                 <input
@@ -377,12 +419,12 @@ export function TierListView() {
                   onChange={(e) => setNewTitle(e.target.value)}
                   placeholder="e.g. 2024-25 Playoff Scorers, Shot Creators"
                   required
-                  style={{ width: "100%", padding: "0.45rem 0.65rem", background: "var(--surface)", border: "1px solid var(--border)", borderRadius: "var(--radius)", color: "var(--text)" }}
+                  className="tier-modal-input"
                 />
               </div>
 
               <div>
-                <label htmlFor="new-tier-desc" className="text-xs font-semibold text-muted" style={{ display: "block", marginBottom: "0.3rem" }}>
+                <label htmlFor="new-tier-desc" className="tier-modal-label">
                   Description / Criteria (optional)
                 </label>
                 <textarea
@@ -391,11 +433,11 @@ export function TierListView() {
                   onChange={(e) => setNewDescription(e.target.value)}
                   placeholder="Subjective criteria or scoring rationale..."
                   rows={3}
-                  style={{ width: "100%", padding: "0.45rem 0.65rem", background: "var(--surface)", border: "1px solid var(--border)", borderRadius: "var(--radius)", color: "var(--text)", resize: "vertical" }}
+                  className="tier-modal-textarea"
                 />
               </div>
 
-              <div className="modal-footer" style={{ display: "flex", justifyContent: "flex-end", gap: "0.5rem" }}>
+              <div className="modal-footer tier-modal-footer">
                 <button
                   type="button"
                   onClick={() => setIsCreatingList(false)}
@@ -418,17 +460,9 @@ export function TierListView() {
 
       {/* TIER LIST TABS & CONTENT */}
       {tierLists.length === 0 ? (
-        <div
-          style={{
-            padding: "3.5rem 1.5rem",
-            textAlign: "center",
-            background: "var(--surface)",
-            borderRadius: "var(--radius)",
-            border: "1px dashed var(--border)"
-          }}
-        >
-          <h3 style={{ margin: "0 0 0.5rem", color: "var(--text)" }}>No Tier Lists Created Yet</h3>
-          <p className="text-muted text-xs" style={{ margin: "0 0 1rem", maxWidth: "460px", marginInline: "auto" }}>
+        <div className="tier-empty-box">
+          <h3 className="tier-empty-title">No Tier Lists Created Yet</h3>
+          <p className="tier-empty-desc">
             Create an S/A/B/C/D tier list to categorize NBA players with local persistence, drag-and-drop, and accessible keyboard assignment.
           </p>
           <button
@@ -440,9 +474,9 @@ export function TierListView() {
           </button>
         </div>
       ) : (
-        <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+        <div className="tier-list-container">
           {/* Tabs Row */}
-          <div className="stats-preset-tabs-wrapper" style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <div className="stats-preset-tabs-wrapper tier-tabs-bar">
             <div className="stats-preset-tabs" role="tablist" aria-label="Personal Tier Lists">
               {tierLists.map((tl) => {
                 const isActive = tl.id === activeList?.id;
@@ -458,7 +492,7 @@ export function TierListView() {
                     title={tl.description || tl.title}
                   >
                     <span>{tl.title}</span>
-                    <span className="font-mono text-xs text-muted" style={{ marginLeft: "0.3rem" }}>
+                    <span className="tier-tab-count">
                       ({totalPlayers})
                     </span>
                   </button>
@@ -468,12 +502,11 @@ export function TierListView() {
 
             {/* Actions for active tier list */}
             {activeList && (
-              <div style={{ display: "flex", gap: "0.35rem", alignItems: "center", marginLeft: "0.5rem" }}>
+              <div className="tier-header-actions">
                 <button
                   type="button"
                   onClick={handleDeleteActiveList}
-                  className="button button-small"
-                  style={{ color: "var(--negative)", fontSize: "0.75rem" }}
+                  className="button button-small tier-delete-btn"
                   title="Delete this tier list"
                 >
                   Delete List
@@ -484,15 +517,15 @@ export function TierListView() {
 
           {/* ACTIVE TIER LIST CONTENT */}
           {activeList && (
-            <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
+            <div className="tier-content-col">
               {/* Title & Description */}
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "0.5rem" }}>
+              <div className="tier-active-header">
                 <div>
-                  <h2 style={{ margin: 0, fontSize: "1.15rem", color: "var(--text)" }}>
+                  <h2 className="tier-active-title">
                     {activeList.title}
                   </h2>
                   {activeList.description && (
-                    <p className="text-xs text-muted" style={{ margin: "0.25rem 0 0" }}>
+                    <p className="tier-active-desc">
                       {activeList.description}
                     </p>
                   )}
@@ -503,23 +536,12 @@ export function TierListView() {
               </div>
 
               {/* SEARCH & ADD PLAYER BAR */}
-              <div
-                style={{
-                  display: "flex",
-                  gap: "0.75rem",
-                  alignItems: "center",
-                  padding: "0.75rem 1rem",
-                  background: "var(--surface)",
-                  borderRadius: "var(--radius)",
-                  border: "1px solid var(--border)",
-                  flexWrap: "wrap"
-                }}
-              >
-                <div style={{flex:1}}><label>Assign to tier<select value={activeList.tiers.some(t=>t.tier_id === targetTier) ? targetTier : activeList.tiers[0]?.tier_id ?? ""} onChange={event=>setTargetTier(event.target.value)}>{activeList.tiers.map(t=><option key={t.tier_id} value={t.tier_id}>{t.label}</option>)}</select></label><LookupInput label="Add player to tier" value={searchQuery} onChange={setSearchQuery} kinds={["player"]} excludedIds={activeList.tiers.flatMap(t=>t.player_ids)} disabled={!activeList.tiers.length} onSelect={item=>{setSearchQuery("");void handleAddPlayerToTier(item.canonical_id,activeList.tiers.some(t=>t.tier_id === targetTier) ? targetTier : activeList.tiers[0].tier_id);}} /></div>
+              <div className="tier-add-bar">
+                <div className="tier-add-input-wrap"><label>Assign to tier<select value={activeList.tiers.some(t=>t.tier_id === targetTier) ? targetTier : activeList.tiers[0]?.tier_id ?? ""} onChange={event=>setTargetTier(event.target.value)}>{activeList.tiers.map(t=><option key={t.tier_id} value={t.tier_id}>{t.label}</option>)}</select></label><LookupInput label="Add player to tier" value={searchQuery} onChange={setSearchQuery} kinds={["player"]} excludedIds={activeList.tiers.flatMap(t=>t.player_ids)} disabled={!activeList.tiers.length} onSelect={item=>{setSearchQuery("");void handleAddPlayerToTier(item.canonical_id,activeList.tiers.some(t=>t.tier_id === targetTier) ? targetTier : activeList.tiers[0].tier_id);}} /></div>
 
                 {/* Quick Add from Favorites */}
                 {favorites.length > 0 && (
-                  <div style={{ display: "flex", alignItems: "center", gap: "0.3rem" }}>
+                  <div className="tier-quick-favorites">
                     <span className="text-xs text-muted">Favorites:</span>
                     {favorites.slice(0, 4).map((favId) => {
                       const isAssigned = activeList.tiers.some((t) => t.player_ids.includes(favId));
@@ -532,8 +554,7 @@ export function TierListView() {
                             const firstTier = activeList.tiers[0]?.tier_id;
                             if (firstTier) handleAddPlayerToTier(favId, firstTier);
                           }}
-                          className="button button-small"
-                          style={{ fontSize: "0.72rem", padding: "0.15rem 0.45rem" }}
+                          className="button button-small tier-quick-fav-btn"
                           title={isAssigned ? "Already in a tier" : `Add to ${activeList.tiers[0]?.label || "first tier"}`}
                         >
                           {isAssigned ? "✓" : "+"} #{favId}
@@ -545,7 +566,7 @@ export function TierListView() {
               </div>
 
               {/* TIER ROWS CONTAINER */}
-              <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+              <div className="tier-rows-list">
                 {activeList.tiers.map((tier, tierIdx) => {
                   const isDragTarget = draggedPlayerId && draggedFromTierId !== tier.tier_id;
 
@@ -554,46 +575,25 @@ export function TierListView() {
                       key={tier.tier_id}
                       onDragOver={handleDragOver}
                       onDrop={() => handleDrop(tier.tier_id)}
-                      style={{
-                        display: "flex",
-                        minHeight: "84px",
-                        background: isDragTarget ? "var(--surface-raised)" : "var(--surface)",
-                        border: `1px solid ${isDragTarget ? "var(--accent)" : "var(--border)"}`,
-                        borderRadius: "var(--radius)",
-                        overflow: "hidden",
-                        transition: "border-color 150ms ease"
-                      }}
+                      className={`tier-row-card ${isDragTarget ? "drag-target" : ""}`}
                     >
                       {/* Tier Label Box */}
                       <div
-                        style={{
-                          width: "90px",
-                          minWidth: "90px",
-                          background: tier.color || "#323b49",
-                          color: "#111",
-                          display: "flex",
-                          flexDirection: "column",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          padding: "0.5rem 0.25rem",
-                          fontWeight: 800,
-                          fontSize: "1.3rem",
-                          letterSpacing: "0.02em",
-                          position: "relative"
-                        }}
+                        className="tier-label-box"
+                        style={{ "--tier-color": tier.color || "#323b49" } as React.CSSProperties}
                       >
                         <span>{tier.label}</span>
-                        <span style={{ fontSize: "0.68rem", fontWeight: 600, opacity: 0.85, marginTop: "0.2rem" }}>
+                        <span className="tier-label-count">
                           ({tier.player_ids.length})
                         </span>
 
                         {/* Tier Row Controls (Reorder / Delete) */}
-                        <div style={{ display: "flex", gap: "0.2rem", marginTop: "0.3rem" }}>
+                        <div className="tier-row-controls">
                           <button
                             type="button"
                             onClick={() => handleMoveTierUp(tierIdx)}
                             disabled={tierIdx === 0}
-                            style={{ background: "rgba(0,0,0,0.2)", border: 0, borderRadius: "2px", color: "#111", cursor: "pointer", fontSize: "0.65rem", padding: "0.1rem 0.25rem" }}
+                            className="tier-reorder-btn"
                             title="Move tier row up"
                             aria-label={`Move tier ${tier.label} up`}
                           >
@@ -603,7 +603,7 @@ export function TierListView() {
                             type="button"
                             onClick={() => handleMoveTierDown(tierIdx)}
                             disabled={tierIdx === activeList.tiers.length - 1}
-                            style={{ background: "rgba(0,0,0,0.2)", border: 0, borderRadius: "2px", color: "#111", cursor: "pointer", fontSize: "0.65rem", padding: "0.1rem 0.25rem" }}
+                            className="tier-reorder-btn"
                             title="Move tier row down"
                             aria-label={`Move tier ${tier.label} down`}
                           >
@@ -612,7 +612,7 @@ export function TierListView() {
                           <button
                             type="button"
                             onClick={() => handleDeleteTierRow(tier.tier_id)}
-                            style={{ background: "rgba(0,0,0,0.2)", border: 0, borderRadius: "2px", color: "#111", cursor: "pointer", fontSize: "0.65rem", padding: "0.1rem 0.25rem" }}
+                            className="tier-reorder-btn"
                             title="Delete this tier row"
                             aria-label={`Delete tier ${tier.label}`}
                           >
@@ -622,19 +622,9 @@ export function TierListView() {
                       </div>
 
                       {/* Tier Cards Area */}
-                      <div
-                        style={{
-                          flex: 1,
-                          display: "flex",
-                          flexWrap: "wrap",
-                          gap: "0.5rem",
-                          padding: "0.6rem 0.85rem",
-                          alignItems: "center",
-                          alignContent: "flex-start"
-                        }}
-                      >
+                      <div className="tier-cards-area">
                         {tier.player_ids.length === 0 ? (
-                          <div style={{ color: "var(--text-muted)", fontSize: "0.78rem", fontStyle: "italic" }}>
+                          <div className="tier-empty-slot">
                             Drag players here or use keyboard controls from search.
                           </div>
                         ) : (
@@ -643,24 +633,13 @@ export function TierListView() {
                               key={pid}
                               draggable
                               onDragStart={() => handleDragStart(pid, tier.tier_id)}
-                              style={{
-                                display: "flex",
-                                alignItems: "center",
-                                gap: "0.45rem",
-                                padding: "0.3rem 0.5rem",
-                                background: "var(--surface-raised)",
-                                border: "1px solid var(--border)",
-                                borderRadius: "var(--radius)",
-                                cursor: "grab",
-                                userSelect: "none"
-                              }}
+                              className="tier-player-chip"
                             >
                               <PlayerPortrait playerId={pid} name={`#${pid}`} size="sm" />
                               <div>
                                 <Link
                                   href={`/players/${pid}`}
-                                  className="text-accent font-semibold"
-                                  style={{ fontSize: "0.82rem" }}
+                                  className="tier-player-link"
                                   onClick={(e) => e.stopPropagation()}
                                 >
                                   Player #{pid}
@@ -672,14 +651,7 @@ export function TierListView() {
                                 aria-label={`Move Player #${pid} to tier`}
                                 value={tier.tier_id}
                                 onChange={(e) => handleMovePlayer(pid, tier.tier_id, e.target.value)}
-                                style={{
-                                  fontSize: "0.7rem",
-                                  padding: "0.1rem 0.2rem",
-                                  background: "var(--surface)",
-                                  border: "1px solid var(--border)",
-                                  borderRadius: "2px",
-                                  color: "var(--text)"
-                                }}
+                                className="tier-move-select"
                               >
                                 {activeList.tiers.map((t) => (
                                   <option key={t.tier_id} value={t.tier_id}>
@@ -692,14 +664,7 @@ export function TierListView() {
                               <button
                                 type="button"
                                 onClick={() => handleRemovePlayer(pid, tier.tier_id)}
-                                style={{
-                                  background: "transparent",
-                                  border: 0,
-                                  color: "var(--text-muted)",
-                                  cursor: "pointer",
-                                  fontSize: "0.75rem",
-                                  padding: "0 0.15rem"
-                                }}
+                                className="tier-remove-btn"
                                 title="Remove player from tier list"
                                 aria-label={`Remove Player #${pid} from tier list`}
                               >

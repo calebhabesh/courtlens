@@ -71,7 +71,7 @@ export default async function ComparePage({ searchParams }: {
       />
 
       {error && (
-        <div className="empty-state" role="alert" style={{ marginTop: "1rem" }}>
+        <div className="empty-state mt-4" role="alert">
           <h2>Unable to compare</h2>
           <p>{error}</p>
           <p>Your date and snapshot remain in the URL.</p>
@@ -80,7 +80,7 @@ export default async function ComparePage({ searchParams }: {
 
       {/* Interactive Player Comparison View with Presets, Comparative Bars, and Lines */}
       {wbComparison && (
-        <div style={{ marginTop: "1.25rem" }}>
+        <div className="mt-5">
           <PlayerCompareView
             comparison={wbComparison}
             catalog={catalog}
@@ -102,13 +102,13 @@ export default async function ComparePage({ searchParams }: {
       )}
 
       {!comparison && !wbComparison && !error && (
-        <div className="empty-state" role="status" style={{ marginTop: "1.5rem" }}>
+        <div className="empty-state mt-5" role="status">
           <h2>Select two players</h2>
           <p>Search by name and choose a shared replay date to compare their prior form and reconstructed matchups.</p>
         </div>
       )}
 
-      <p className="snapshot-footnote" style={{ marginTop: "2rem" }}>
+      <p className="snapshot-footnote mt-5">
         Snapshot {catalog.snapshot_id} · source {catalog.source}
       </p>
     </div>
@@ -212,7 +212,7 @@ function ComparisonView({ comparison }: { comparison: AnalyticsCompare }) {
   ];
 
   return (
-    <section className="comparison-results" aria-labelledby="comparison-title" style={{ marginTop: "1.5rem" }}>
+    <section className="comparison-results mt-5" aria-labelledby="comparison-title">
       <div className="panel-header">
         <h2 id="comparison-title" className="panel-title">Side by side</h2>
       </div>
@@ -236,12 +236,12 @@ function ComparisonView({ comparison }: { comparison: AnalyticsCompare }) {
           </tbody>
         </table>
       </div>
-      <div className="notice-box" style={{ marginTop: "1rem" }}>
+      <div className="notice-box mt-4">
         <strong>Estimate gap:</strong>{" "}
         {comparison.estimate_gap == null
           ? "Unavailable until both players have a supported estimate at this cutoff."
           : `${Math.abs(comparison.estimate_gap).toFixed(1)} CourtLens points.`}
-        <p style={{ margin: "0.4rem 0 0" }}>
+        <p className="panel-subtitle-margin">
           Different next-game dates are possible. An estimate covers production conditional on appearance; it does not estimate availability.
         </p>
       </div>

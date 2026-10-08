@@ -2,7 +2,7 @@
 
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useWorkspace } from "@/lib/workspace-context";
-import { ALL_CATALOG_METRICS } from "@/lib/stats-presets";
+import { ALL_CATALOG_METRICS, IMPACT_COLUMNS } from "@/lib/stats-presets";
 import { computeClientBundleChecksum, getWorkspacePresets } from "@/lib/workspace-client";
 import type {
   CustomViewDefinition,
@@ -144,11 +144,14 @@ export function ManageViewsModal({
     setErrorMessage(null);
 
     try {
+      const metricVersion = formColumns.some(key => key in IMPACT_COLUMNS) ? "courtlens-stats-v3" : "v2";
+      const unavailable = formUnavailable.filter(key => !(key in IMPACT_COLUMNS));
       if (editingViewId) {
         await updateCustomView(editingViewId, {
           name: formName.trim(),
           columns: formColumns,
-          unavailable_columns: formUnavailable,
+          metric_version: metricVersion,
+          unavailable_columns: unavailable,
           sort_field: formSortField,
           sort_direction: formSortDirection,
           is_default: formIsDefault
@@ -163,7 +166,8 @@ export function ManageViewsModal({
         const updated = await addCustomView({
           name: formName.trim(),
           columns: formColumns,
-          unavailable_columns: formUnavailable,
+          metric_version: metricVersion,
+          unavailable_columns: unavailable,
           sort_field: formSortField,
           sort_direction: formSortDirection,
           is_default: formIsDefault
@@ -343,9 +347,8 @@ export function ManageViewsModal({
       aria-labelledby="manage-views-title"
     >
       <div
-        className="modal-card"
+        className="modal-card views-modal-card"
         ref={modalRef}
-        style={{ maxWidth: "780px", width: "95vw", maxHeight: "90vh", display: "flex", flexDirection: "column" }}
       >
         {/* Modal Header */}
         <div className="modal-header">
@@ -369,22 +372,12 @@ export function ManageViewsModal({
 
         {/* Conflict Notice if any */}
         {conflictNotice && (
-          <div
-            className="notice-box"
-            style={{
-              borderLeftColor: "var(--negative)",
-              margin: "0.5rem 1.25rem 0",
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center"
-            }}
-          >
-            <span style={{ fontSize: "0.8rem" }}>{conflictNotice}</span>
+          <div className="notice-box views-modal-notice">
+            <span className="views-modal-notice-text">{conflictNotice}</span>
             <button
               type="button"
-              className="button button-small"
+              className="button button-small views-modal-notice-dismiss"
               onClick={clearConflictNotice}
-              style={{ fontSize: "0.7rem", padding: "0.2rem 0.5rem" }}
             >
               Dismiss
             </button>
@@ -392,7 +385,7 @@ export function ManageViewsModal({
         )}
 
         {/* Modal Navigation Tabs */}
-        <div style={{ display: "flex", gap: "0.5rem", padding: "0.75rem 1.25rem 0", borderBottom: "1px solid var(--border)" }}>
+        <div className="views-modal-tabs">
           <button
             type="button"
             className={`control-pill ${activeTab === "list" ? "active" : ""}`}
@@ -427,11 +420,11 @@ export function ManageViewsModal({
         </div>
 
         {/* Modal Body */}
-        <div className="modal-body" style={{ flex: 1, overflowY: "auto", padding: "1.25rem" }}>
+        <div className="modal-body views-modal-body">
           {/* TAB 1: LIST VIEWS */}
           {activeTab === "list" && (
-            <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <div className="views-modal-list">
+              <div className="views-modal-list-header">
                 <span className="text-xs text-muted">
                   Personal views saved: <strong>{views.length}</strong> / {MAX_CUSTOM_VIEWS}. Use keyboard buttons to reorder.
                 </span>
@@ -446,16 +439,8 @@ export function ManageViewsModal({
               </div>
 
               {views.length === 0 ? (
-                <div
-                  style={{
-                    padding: "2.5rem 1rem",
-                    textAlign: "center",
-                    background: "var(--surface)",
-                    borderRadius: "var(--radius)",
-                    border: "1px dashed var(--border)"
-                  }}
-                >
-                  <p className="text-muted" style={{ margin: "0 0 0.5rem" }}>
+                <div className="views-modal-empty">
+                  <p className="text-muted views-modal-empty-p">
                     No custom views created yet. Built-in presets are currently active.
                   </p>
                   <button
@@ -467,7 +452,7 @@ export function ManageViewsModal({
                   </button>
                 </div>
               ) : (
-                <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+                <div className="views-modal-items">
                   {views.map((view, idx) => {
                     const isDefault = view.id === defaultViewId || view.is_default;
                     const isActive = view.id === activeViewId;
@@ -476,22 +461,13 @@ export function ManageViewsModal({
                     return (
                       <div
                         key={view.id}
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "space-between",
-                          padding: "0.6rem 0.85rem",
-                          background: "var(--surface-raised)",
-                          border: `1px solid ${isActive ? "var(--accent)" : "var(--border)"}`,
-                          borderRadius: "var(--radius)",
-                          gap: "0.75rem"
-                        }}
+                        className={`views-modal-row ${isActive ? "is-active" : ""}`}
                       >
-                        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", flex: 1, minWidth: 0 }}>
-                          <span className="font-mono text-muted text-xs" style={{ width: "20px" }}>
+                        <div className="views-modal-row-left">
+                          <span className="font-mono text-muted text-xs views-modal-row-idx">
                             {idx + 1}.
                           </span>
-                          <strong style={{ fontSize: "0.9rem", color: "var(--text)" }}>
+                          <strong className="views-modal-row-name">
                             {view.name}
                           </strong>
                           {isDefault && (
@@ -509,14 +485,13 @@ export function ManageViewsModal({
                           </span>
                         </div>
 
-                        <div style={{ display: "flex", alignItems: "center", gap: "0.35rem" }}>
+                        <div className="views-modal-row-actions">
                           {/* Reorder Buttons */}
                           <button
                             type="button"
                             onClick={() => handleMoveUp(idx)}
                             disabled={idx === 0}
-                            className="button button-small"
-                            style={{ padding: "0.15rem 0.4rem", fontSize: "0.7rem" }}
+                            className="button button-small views-modal-btn-icon"
                             title="Move view up"
                             aria-label={`Move ${view.name} up`}
                           >
@@ -526,8 +501,7 @@ export function ManageViewsModal({
                             type="button"
                             onClick={() => handleMoveDown(idx)}
                             disabled={idx === views.length - 1}
-                            className="button button-small"
-                            style={{ padding: "0.15rem 0.4rem", fontSize: "0.7rem" }}
+                            className="button button-small views-modal-btn-icon"
                             title="Move view down"
                             aria-label={`Move ${view.name} down`}
                           >
@@ -539,8 +513,7 @@ export function ManageViewsModal({
                             <button
                               type="button"
                               onClick={() => handleSetDefault(view.id)}
-                              className="button button-small"
-                              style={{ padding: "0.15rem 0.5rem", fontSize: "0.75rem" }}
+                              className="button button-small views-modal-btn-action"
                               title="Set as default view"
                             >
                               Make Default
@@ -555,8 +528,7 @@ export function ManageViewsModal({
                                 onSelectView(view.id);
                                 onClose();
                               }}
-                              className="button button-small button-primary"
-                              style={{ padding: "0.15rem 0.5rem", fontSize: "0.75rem" }}
+                              className="button button-small button-primary views-modal-btn-action"
                             >
                               Open
                             </button>
@@ -566,8 +538,7 @@ export function ManageViewsModal({
                           <button
                             type="button"
                             onClick={() => handleOpenEditView(view)}
-                            className="button button-small"
-                            style={{ padding: "0.15rem 0.5rem", fontSize: "0.75rem" }}
+                            className="button button-small views-modal-btn-action"
                           >
                             Edit
                           </button>
@@ -576,8 +547,7 @@ export function ManageViewsModal({
                           <button
                             type="button"
                             onClick={() => handleDelete(view.id)}
-                            className="button button-small"
-                            style={{ padding: "0.15rem 0.45rem", fontSize: "0.75rem", color: "var(--negative)" }}
+                            className="button button-small views-modal-btn-danger"
                             title="Delete custom view"
                             aria-label={`Delete ${view.name}`}
                           >
@@ -591,21 +561,13 @@ export function ManageViewsModal({
               )}
 
               {/* Built-in Presets Info */}
-              <div
-                style={{
-                  marginTop: "1rem",
-                  padding: "0.75rem 1rem",
-                  background: "var(--surface)",
-                  borderRadius: "var(--radius)",
-                  border: "1px solid var(--border)"
-                }}
-              >
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <div className="views-modal-preset-card">
+                <div className="views-modal-list-header">
                   <div>
-                    <strong style={{ fontSize: "0.82rem", color: "var(--text)" }}>
+                    <strong className="text-sm font-semibold">
                       Built-in Presets
                     </strong>
-                    <p className="text-xs text-muted" style={{ margin: "0.2rem 0 0" }}>
+                    <p className="text-xs text-muted mt-1">
                       Canonical presets (Overview, Shooting, Defense, True Shooting, Rates Per 36, Playmaking, Rebounding, Impact, On-Off, Six Factor) are recoverable at any time.
                     </p>
                   </div>
@@ -619,8 +581,7 @@ export function ManageViewsModal({
                         alert(err instanceof Error ? err.message : "Failed to load presets");
                       }
                     }}
-                    className="button button-small"
-                    style={{ whiteSpace: "nowrap" }}
+                    className="button button-small whitespace-nowrap"
                   >
                     Inspect Presets
                   </button>
@@ -631,17 +592,17 @@ export function ManageViewsModal({
 
           {/* TAB 2: VIEW EDITOR (ADD / EDIT) */}
           {activeTab === "editor" && (
-            <form onSubmit={handleSaveView} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+            <form onSubmit={handleSaveView} className="views-modal-form">
               {errorMessage && (
-                <div className="notice-box" style={{ borderLeftColor: "var(--negative)", margin: 0 }}>
-                  <strong style={{ color: "var(--negative)" }}>Validation Error:</strong> {errorMessage}
+                <div className="notice-box notice-box-error m-0">
+                  <strong className="text-negative">Validation Error:</strong> {errorMessage}
                 </div>
               )}
 
               {/* Name & Default row */}
-              <div style={{ display: "flex", gap: "1rem", alignItems: "center", flexWrap: "wrap" }}>
-                <div style={{ flex: 1, minWidth: "220px" }}>
-                  <label htmlFor="custom-view-name" className="text-xs font-semibold text-muted" style={{ display: "block", marginBottom: "0.3rem" }}>
+              <div className="views-modal-form-row">
+                <div className="views-modal-form-col">
+                  <label htmlFor="custom-view-name" className="text-xs font-semibold text-muted views-modal-label">
                     View Name * (max 100 chars)
                   </label>
                   <input
@@ -652,12 +613,12 @@ export function ManageViewsModal({
                     maxLength={100}
                     placeholder="e.g. Playmakers &amp; Efficiency"
                     required
-                    style={{ width: "100%", padding: "0.45rem 0.65rem", background: "var(--surface)", border: "1px solid var(--border)", borderRadius: "var(--radius)", color: "var(--text)" }}
+                    className="views-modal-input"
                   />
                 </div>
 
-                <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginTop: "1.2rem" }}>
-                  <label style={{ display: "flex", alignItems: "center", gap: "0.4rem", cursor: "pointer", fontSize: "0.85rem" }}>
+                <div className="views-modal-row-actions mt-4">
+                  <label className="views-modal-checkbox-label">
                     <input
                       type="checkbox"
                       checked={formIsDefault}
@@ -669,16 +630,16 @@ export function ManageViewsModal({
               </div>
 
               {/* Sorting row */}
-              <div style={{ display: "flex", gap: "1rem", alignItems: "center", flexWrap: "wrap" }}>
-                <div style={{ minWidth: "200px" }}>
-                  <label htmlFor="custom-view-sort" className="text-xs font-semibold text-muted" style={{ display: "block", marginBottom: "0.3rem" }}>
+              <div className="views-modal-form-row">
+                <div className="views-modal-col-select">
+                  <label htmlFor="custom-view-sort" className="text-xs font-semibold text-muted views-modal-label">
                     Default Sort Field
                   </label>
                   <select
                     id="custom-view-sort"
                     value={formSortField}
                     onChange={(e) => setFormSortField(e.target.value)}
-                    style={{ width: "100%", padding: "0.4rem 0.6rem", background: "var(--surface)", border: "1px solid var(--border)", borderRadius: "var(--radius)", color: "var(--text)" }}
+                    className="views-modal-select"
                   >
                     {formColumns.map((colKey) => (
                       <option key={colKey} value={colKey}>
@@ -692,14 +653,14 @@ export function ManageViewsModal({
                 </div>
 
                 <div>
-                  <label htmlFor="custom-view-dir" className="text-xs font-semibold text-muted" style={{ display: "block", marginBottom: "0.3rem" }}>
+                  <label htmlFor="custom-view-dir" className="text-xs font-semibold text-muted views-modal-label">
                     Sort Direction
                   </label>
                   <select
                     id="custom-view-dir"
                     value={formSortDirection}
                     onChange={(e) => setFormSortDirection(e.target.value as "asc" | "desc")}
-                    style={{ padding: "0.4rem 0.6rem", background: "var(--surface)", border: "1px solid var(--border)", borderRadius: "var(--radius)", color: "var(--text)" }}
+                    className="views-modal-select"
                   >
                     <option value="desc">Descending (High to Low)</option>
                     <option value="asc">Ascending (Low to High)</option>
@@ -709,28 +670,23 @@ export function ManageViewsModal({
 
               {/* Preserved Unavailable Columns Notice */}
               {formUnavailable.length > 0 && (
-                <div className="notice-box" style={{ borderLeftColor: "var(--accent)", margin: 0, padding: "0.5rem 0.75rem" }}>
-                  <strong style={{ fontSize: "0.78rem" }}>Explicit Unavailable Columns:</strong>
-                  <span className="text-xs text-muted" style={{ marginLeft: "0.5rem" }}>
+                <div className="notice-box notice-box-warning m-0 p-2">
+                  <strong className="text-xs">Explicit Unavailable Columns:</strong>
+                  <span className="text-xs text-muted ml-2">
                     {formUnavailable.join(", ")} (preserved under contract rules).
                   </span>
                 </div>
               )}
 
               {/* Column Selection Header & Filter */}
-              <div style={{ borderTop: "1px solid var(--border)", paddingTop: "0.75rem" }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.5rem" }}>
+              <div className="views-modal-metric-filter">
+                <div className="views-modal-metric-filter-header">
                   <div>
-                    <strong style={{ fontSize: "0.85rem", color: "var(--text)" }}>
+                    <strong className="text-sm font-semibold">
                       Select Metric Columns
                     </strong>
                     <span
-                      style={{
-                        marginLeft: "0.5rem",
-                        fontSize: "0.75rem",
-                        fontFamily: "var(--font-mono)",
-                        color: formColumns.length >= MAX_COLUMNS_PER_VIEW ? "var(--negative)" : "var(--accent)"
-                      }}
+                      className={`font-mono text-xs ml-2 ${formColumns.length >= MAX_COLUMNS_PER_VIEW ? "text-negative" : "text-accent"}`}
                     >
                       ({formColumns.length} / {MAX_COLUMNS_PER_VIEW} selected)
                     </span>
@@ -741,45 +697,27 @@ export function ManageViewsModal({
                     placeholder="Filter metrics..."
                     value={columnSearch}
                     onChange={(e) => setColumnSearch(e.target.value)}
-                    style={{
-                      padding: "0.25rem 0.5rem",
-                      fontSize: "0.75rem",
-                      background: "var(--surface)",
-                      border: "1px solid var(--border)",
-                      borderRadius: "var(--radius)",
-                      color: "var(--text)",
-                      width: "180px"
-                    }}
+                    className="views-modal-input w-44"
                   />
                 </div>
 
                 {/* Selected Columns Chips */}
                 {formColumns.length > 0 && (
-                  <div style={{ display: "flex", flexWrap: "wrap", gap: "0.3rem", marginBottom: "0.75rem", padding: "0.4rem", background: "var(--surface)", borderRadius: "var(--radius)" }}>
+                  <div className="views-modal-metric-chips">
                     {formColumns.map((colKey) => {
                       const isUnavail = formUnavailable.includes(colKey);
                       const label = ALL_CATALOG_METRICS[colKey]?.label ?? colKey;
                       return (
                         <span
                           key={colKey}
-                          style={{
-                            display: "inline-flex",
-                            alignItems: "center",
-                            gap: "0.3rem",
-                            background: "var(--surface-raised)",
-                            border: `1px solid ${isUnavail ? "var(--accent)" : "var(--border)"}`,
-                            borderRadius: "12px",
-                            padding: "0.15rem 0.5rem",
-                            fontSize: "0.72rem",
-                            fontFamily: "var(--font-mono)"
-                          }}
+                          className={`views-modal-metric-chip ${isUnavail ? "is-unavail" : ""}`}
                         >
                           {isUnavail && "🔒 "}
                           {label}
                           <button
                             type="button"
                             onClick={() => handleToggleColumn(colKey, isUnavail)}
-                            style={{ background: "transparent", border: 0, color: "var(--text-muted)", cursor: "pointer", fontSize: "0.7rem", padding: 0 }}
+                            className="views-modal-metric-chip-remove"
                             title={`Remove ${label}`}
                           >
                             ✕
@@ -791,13 +729,13 @@ export function ManageViewsModal({
                 )}
 
                 {/* Available Metrics Grouped Checkboxes */}
-                <div style={{ maxHeight: "240px", overflowY: "auto", display: "flex", flexDirection: "column", gap: "0.75rem", paddingRight: "0.3rem" }}>
+                <div className="views-modal-metrics-grid-container">
                   {Object.entries(groupedMetrics).map(([groupName, cols]) => (
                     <div key={groupName}>
-                      <span className="text-xs text-muted font-semibold" style={{ textTransform: "uppercase", letterSpacing: "0.05em" }}>
+                      <span className="text-xs text-muted font-semibold tracking-wider uppercase">
                         {groupName}
                       </span>
-                      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(135px, 1fr))", gap: "0.3rem", marginTop: "0.25rem" }}>
+                      <div className="views-modal-metrics-grid">
                         {cols.map((col) => {
                           const isSelected = formColumns.includes(col.key);
                           const isDisabled = !isSelected && formColumns.length >= MAX_COLUMNS_PER_VIEW;
@@ -805,18 +743,7 @@ export function ManageViewsModal({
                           return (
                             <label
                               key={col.key}
-                              style={{
-                                display: "flex",
-                                alignItems: "center",
-                                gap: "0.4rem",
-                                padding: "0.25rem 0.4rem",
-                                background: isSelected ? "var(--surface-raised)" : "transparent",
-                                border: `1px solid ${isSelected ? "var(--accent)" : "var(--border)"}`,
-                                borderRadius: "var(--radius)",
-                                cursor: isDisabled ? "not-allowed" : "pointer",
-                                opacity: isDisabled ? 0.4 : 1,
-                                fontSize: "0.75rem"
-                              }}
+                              className={`views-modal-metric-label ${isSelected ? "is-selected" : ""} ${isDisabled ? "is-disabled" : ""}`}
                               title={col.tooltip}
                             >
                               <input
@@ -825,7 +752,7 @@ export function ManageViewsModal({
                                 disabled={isDisabled}
                                 onChange={() => handleToggleColumn(col.key, col.unavailable)}
                               />
-                              <span style={{ fontWeight: isSelected ? 600 : 400, color: "var(--text)" }}>
+                              <span className={isSelected ? "font-semibold" : "font-normal"}>
                                 {col.unavailable ? "🔒 " : ""}
                                 {col.label}
                               </span>
@@ -839,7 +766,7 @@ export function ManageViewsModal({
               </div>
 
               {/* Form Actions */}
-              <div style={{ display: "flex", justifyContent: "flex-end", gap: "0.5rem", borderTop: "1px solid var(--border)", paddingTop: "0.75rem" }}>
+              <div className="views-modal-form-row justify-end pt-3 border-t">
                 <button
                   type="button"
                   onClick={() => setActiveTab("list")}
@@ -861,20 +788,13 @@ export function ManageViewsModal({
 
           {/* TAB 3: EXPORT / IMPORT & RESET */}
           {activeTab === "import_export" && (
-            <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
+            <div className="views-modal-list">
               {/* Export Section */}
-              <div
-                style={{
-                  padding: "1rem",
-                  background: "var(--surface)",
-                  borderRadius: "var(--radius)",
-                  border: "1px solid var(--border)"
-                }}
-              >
-                <strong style={{ fontSize: "0.85rem", color: "var(--text)" }}>
+              <div className="views-modal-card-section">
+                <strong className="text-sm font-semibold">
                   Export Workspace Bundle
                 </strong>
-                <p className="text-xs text-muted" style={{ margin: "0.3rem 0 0.75rem" }}>
+                <p className="text-xs text-muted">
                   Download a portable JSON bundle containing custom views, favorite players, compare tray, ranking boards, tier lists, and layout preferences with a canonical SHA-256 checksum.
                 </p>
                 <button
@@ -887,34 +807,27 @@ export function ManageViewsModal({
               </div>
 
               {/* Import Section */}
-              <div
-                style={{
-                  padding: "1rem",
-                  background: "var(--surface)",
-                  borderRadius: "var(--radius)",
-                  border: "1px solid var(--border)"
-                }}
-              >
-                <strong style={{ fontSize: "0.85rem", color: "var(--text)" }}>
+              <div className="views-modal-card-section">
+                <strong className="text-sm font-semibold">
                   Import Workspace Bundle
                 </strong>
-                <p className="text-xs text-muted" style={{ margin: "0.3rem 0 0.5rem" }}>
+                <p className="text-xs text-muted">
                   Upload a previously exported workspace JSON file or paste its contents below. Verifies bundle version 1.0 and SHA-256 checksum prior to persistence.
                 </p>
 
-                <div style={{ display: "flex", gap: "1rem", alignItems: "center", marginBottom: "0.5rem" }}>
+                <div className="views-modal-form-row mb-2">
                   <input
                     type="file"
                     accept=".json,application/json"
                     onChange={handleFileUpload}
-                    style={{ fontSize: "0.75rem" }}
+                    className="text-xs"
                   />
-                  <div style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
+                  <div className="views-modal-row-actions">
                     <span className="text-xs text-muted">Conflict mode:</span>
                     <select
                       value={importMode}
                       onChange={(e) => setImportMode(e.target.value as ImportConflictMode)}
-                      style={{ padding: "0.2rem 0.4rem", fontSize: "0.75rem", background: "var(--surface-raised)", border: "1px solid var(--border)", borderRadius: "var(--radius)", color: "var(--text)" }}
+                      className="views-modal-select"
                     >
                       <option value="merge">Merge (combine favorites &amp; views)</option>
                       <option value="replace">Replace (overwrite entire workspace)</option>
@@ -927,32 +840,18 @@ export function ManageViewsModal({
                   onChange={(e) => setImportJsonText(e.target.value)}
                   placeholder="Paste JSON workspace bundle here..."
                   rows={4}
-                  style={{
-                    width: "100%",
-                    fontFamily: "var(--font-mono)",
-                    fontSize: "0.72rem",
-                    padding: "0.5rem",
-                    background: "var(--surface-raised)",
-                    border: "1px solid var(--border)",
-                    borderRadius: "var(--radius)",
-                    color: "var(--text)",
-                    resize: "vertical"
-                  }}
+                  className="views-modal-textarea"
                 />
 
                 {importStatus && (
                   <div
-                    className="notice-box"
-                    style={{
-                      borderLeftColor: importStatus.startsWith("Success") ? "var(--positive)" : "var(--negative)",
-                      margin: "0.5rem 0 0"
-                    }}
+                    className={`notice-box ${importStatus.startsWith("Success") ? "notice-box-success" : "notice-box-error"} mt-2`}
                   >
-                    <span style={{ fontSize: "0.78rem" }}>{importStatus}</span>
+                    <span className="text-xs">{importStatus}</span>
                   </div>
                 )}
 
-                <div style={{ marginTop: "0.75rem" }}>
+                <div className="mt-3">
                   <button
                     type="button"
                     onClick={handleImportSubmit}
@@ -965,25 +864,17 @@ export function ManageViewsModal({
               </div>
 
               {/* Reset Section */}
-              <div
-                style={{
-                  padding: "1rem",
-                  background: "var(--surface)",
-                  borderRadius: "var(--radius)",
-                  border: "1px solid var(--border)"
-                }}
-              >
-                <strong style={{ fontSize: "0.85rem", color: "var(--negative)" }}>
+              <div className="views-modal-card-section">
+                <strong className="text-sm font-semibold text-negative">
                   Danger Zone: Reset Workspace
                 </strong>
-                <p className="text-xs text-muted" style={{ margin: "0.3rem 0 0.75rem" }}>
+                <p className="text-xs text-muted">
                   Reset all custom views, ranking boards, tier lists, and preferences to original defaults. This action cannot be undone.
                 </p>
                 <button
                   type="button"
                   onClick={handleReset}
-                  className="button button-small"
-                  style={{ borderColor: "var(--negative)", color: "var(--negative)" }}
+                  className="button button-small text-negative border-negative"
                 >
                   ⚠ Reset to Defaults
                 </button>
@@ -993,7 +884,7 @@ export function ManageViewsModal({
         </div>
 
         {/* Modal Footer */}
-        <div className="modal-footer" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <div className="modal-footer views-modal-footer">
           <span className="text-xs text-muted font-mono">
             Workspace ID: default
           </span>

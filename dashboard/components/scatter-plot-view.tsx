@@ -175,21 +175,21 @@ export function ScatterPlotView({
   return (
     <div className="panel scatter-plot-panel" role="region" aria-label="Two-Axis Scatter Plot Explorer">
       {/* Top Header & Metric Selectors */}
-      <div className="panel-header" style={{ flexWrap: "wrap", gap: "1rem" }}>
+      <div className="panel-header panel-header-wrap">
         <div>
-          <h2 className="panel-title" style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+          <h2 className="panel-title scatter-panel-title">
             <span>Two-Axis Scatter Plot</span>
-            <span className="badge font-mono" style={{ fontSize: "0.75rem" }}>
+            <span className="badge font-mono text-xs">
               {points.length} charted
             </span>
           </h2>
-          <p className="text-muted text-xs" style={{ margin: "0.2rem 0 0" }}>
+          <p className="text-muted text-xs mt-1">
             Visual correlation and outlier identification under strict temporal cutoff ({context.before_date || "season start"}).
           </p>
         </div>
 
         {/* Action Buttons: Export & Share */}
-        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+        <div className="scatter-header-actions">
           <button
             type="button"
             onClick={handleExportPng}
@@ -219,7 +219,7 @@ export function ScatterPlotView({
       </div>
 
       {/* Axis Selection Toolbar */}
-      <div className="filter-toolbar" style={{ margin: "0.75rem 0", background: "var(--surface)", padding: "0.6rem 0.8rem", borderRadius: "6px" }}>
+      <div className="filter-toolbar scatter-filter-toolbar">
         {/* X-Axis Selector */}
         <div className="filter-group">
           <label htmlFor="scatter-x-select">X-Axis Metric</label>
@@ -281,8 +281,7 @@ export function ScatterPlotView({
         <button
           type="button"
           onClick={() => setShowOutlierLabels((prev) => !prev)}
-          className={`control-pill ${showOutlierLabels ? "active" : ""}`}
-          style={{ alignSelf: "flex-end", minHeight: "40px" }}
+          className={`control-pill filter-action-pill ${showOutlierLabels ? "active" : ""}`}
           title="Toggle visible text labels on statistical outliers"
         >
           Labels: {showOutlierLabels ? "On" : "Off"}
@@ -292,8 +291,7 @@ export function ScatterPlotView({
         <button
           type="button"
           onClick={() => setShowDataTable((prev) => !prev)}
-          className={`control-pill ${showDataTable ? "active" : ""}`}
-          style={{ alignSelf: "flex-end", minHeight: "40px" }}
+          className={`control-pill filter-action-pill ${showDataTable ? "active" : ""}`}
           title="Toggle accessible chart data table below"
         >
           {showDataTable ? "Hide Table" : "Show Data Table"}
@@ -302,25 +300,17 @@ export function ScatterPlotView({
 
       {/* Null/Missing Values Disclosure Banner */}
       {omittedCount > 0 && (
-        <div className="notice-box text-xs" style={{ marginBottom: "0.75rem", padding: "0.4rem 0.75rem" }}>
+        <div className="notice-box text-xs mb-2">
           <strong>Paired observation rule:</strong> {omittedCount} of {totalCount} players omitted due to missing or unrecorded metric data for <em>{xDef.label}</em> or <em>{yDef.label}</em>.
         </div>
       )}
 
       {/* SVG Chart Container */}
-      <div className="scatter-svg-container" style={{ position: "relative", width: "100%", overflowX: "auto" }}>
+      <div className="scatter-svg-container">
         <svg
           ref={svgRef}
           viewBox={`0 0 ${width} ${height}`}
-          style={{
-            display: "block",
-            width: "100%",
-            maxWidth: "100%",
-            height: "auto",
-            background: "#20252e",
-            borderRadius: "6px",
-            border: "1px solid var(--border)"
-          }}
+          className="scatter-svg"
           role="img"
           aria-label={`Scatter plot of ${xDef.label} versus ${yDef.label}`}
         >
@@ -388,7 +378,7 @@ export function ScatterPlotView({
                 y1={padTop}
                 x2={refXCoord}
                 y2={height - padBottom}
-                stroke="var(--accent)"
+                stroke="var(--color-accent)"
                 strokeWidth="1.5"
                 strokeDasharray="4 4"
                 opacity="0.8"
@@ -396,7 +386,7 @@ export function ScatterPlotView({
               <text
                 x={refXCoord + 4}
                 y={padTop + 14}
-                fill="var(--accent)"
+                fill="var(--color-accent)"
                 fontSize="10"
                 fontFamily="sans-serif"
                 fontWeight="bold"
@@ -410,7 +400,7 @@ export function ScatterPlotView({
                 y1={refYCoord}
                 x2={width - padRight}
                 y2={refYCoord}
-                stroke="var(--accent)"
+                stroke="var(--color-accent)"
                 strokeWidth="1.5"
                 strokeDasharray="4 4"
                 opacity="0.8"
@@ -418,7 +408,7 @@ export function ScatterPlotView({
               <text
                 x={width - padRight - 6}
                 y={refYCoord - 6}
-                fill="var(--accent)"
+                fill="var(--color-accent)"
                 fontSize="10"
                 fontFamily="sans-serif"
                 fontWeight="bold"
@@ -482,7 +472,7 @@ export function ScatterPlotView({
                     toggleCompare(pt.playerId);
                   }
                 }}
-                style={{ cursor: "pointer", outline: "none" }}
+                className="scatter-point-group"
               >
                 <circle
                   cx={cx}
@@ -504,7 +494,7 @@ export function ScatterPlotView({
                     fontWeight={isHovered || isCompared ? "bold" : "normal"}
                     fontFamily="sans-serif"
                     textAnchor={cx > width - 120 ? "end" : "start"}
-                    style={{ pointerEvents: "none" }}
+                    className="scatter-point-label"
                   >
                     {pt.playerName}
                   </text>
@@ -545,37 +535,28 @@ export function ScatterPlotView({
           <div
             className="scatter-tooltip"
             style={{
-              position: "absolute",
-              left: `${Math.min(projectX(activePoint.x, xDomain, width, padLeft, padRight) + 12, width - 220)}px`,
-              top: `${Math.max(projectY(activePoint.y, yDomain, height, padTop, padBottom) - 60, 10)}px`,
-              background: "rgba(32, 37, 46, 0.95)",
-              border: "1px solid var(--accent)",
-              borderRadius: "6px",
-              padding: "0.6rem 0.8rem",
-              boxShadow: "0 6px 16px rgba(0,0,0,0.5)",
-              pointerEvents: "none",
-              zIndex: 10,
-              minWidth: "180px"
-            }}
+              "--tooltip-left": `${Math.min(projectX(activePoint.x, xDomain, width, padLeft, padRight) + 12, width - 220)}px`,
+              "--tooltip-top": `${Math.max(projectY(activePoint.y, yDomain, height, padTop, padBottom) - 60, 10)}px`
+            } as React.CSSProperties}
           >
-            <div style={{ fontWeight: "bold", color: "var(--accent)", fontSize: "0.85rem" }}>
+            <div className="scatter-tooltip-title">
               {activePoint.playerName}
             </div>
-            <div className="text-xs text-muted" style={{ margin: "0.1rem 0 0.3rem" }}>
+            <div className="text-xs text-muted scatter-tooltip-sub">
               {activePoint.teams.join(", ") || "NBA"} · {activePoint.gamesPlayed} GP · {activePoint.totalMinutes.toFixed(0)} MIN
             </div>
-            <div style={{ fontSize: "0.8rem", display: "grid", gridTemplateColumns: "1fr auto", gap: "0.2rem 0.6rem" }}>
+            <div className="scatter-tooltip-grid">
               <span className="text-muted">{xDef.label}:</span>
               <strong className="font-mono">{formatVal(activePoint.x, xDef)}</strong>
               <span className="text-muted">{yDef.label}:</span>
               <strong className="font-mono">{formatVal(activePoint.y, yDef)}</strong>
             </div>
             {activePoint.outlierReason && (
-              <div className="text-xs" style={{ color: "#4ecdc4", marginTop: "0.3rem", fontWeight: "bold" }}>
+              <div className="scatter-tooltip-outlier">
                 ★ {activePoint.outlierReason}
               </div>
             )}
-            <div className="text-xs text-muted" style={{ marginTop: "0.3rem", borderTop: "1px solid #323b49", paddingTop: "0.2rem" }}>
+            <div className="scatter-tooltip-footer">
               Click to {compareTray.includes(activePoint.playerId) ? "remove from" : "add to"} compare
             </div>
           </div>
@@ -583,51 +564,38 @@ export function ScatterPlotView({
       </div>
 
       {/* Chart Legend */}
-      <div
-        className="scatter-legend"
-        style={{
-          display: "flex",
-          flexWrap: "wrap",
-          alignItems: "center",
-          gap: "1rem",
-          marginTop: "0.75rem",
-          padding: "0.5rem 0.75rem",
-          background: "var(--surface)",
-          borderRadius: "4px",
-          fontSize: "0.75rem"
-        }}
-      >
-        <span style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
-          <span style={{ width: "9px", height: "9px", borderRadius: "50%", background: "#637287", display: "inline-block" }} />
+      <div className="scatter-legend">
+        <span className="scatter-legend-item">
+          <span className="scatter-dot-neutral" />
           Standard ({points.filter((p) => !p.isOutlier).length})
         </span>
-        <span style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
-          <span style={{ width: "11px", height: "11px", borderRadius: "50%", background: "#4ecdc4", display: "inline-block" }} />
+        <span className="scatter-legend-item">
+          <span className="scatter-dot-cluster" />
           Statistical Outlier ({points.filter((p) => p.isOutlier).length})
         </span>
-        <span style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
-          <span style={{ width: "11px", height: "11px", borderRadius: "50%", background: "#ffd166", display: "inline-block" }} />
+        <span className="scatter-legend-item">
+          <span className="scatter-dot-active" />
           Favorite ★
         </span>
-        <span style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
-          <span style={{ width: "13px", height: "13px", borderRadius: "50%", background: "#ff6b6b", border: "1.5px solid #ffd166", display: "inline-block" }} />
+        <span className="scatter-legend-item">
+          <span className="scatter-dot-highlight" />
           Compare Tray ({compareTray.length})
         </span>
       </div>
 
       {/* Accessible Chart Data Table (F06) */}
       {showDataTable && (
-        <div style={{ marginTop: "1rem" }}>
+        <div className="scatter-table-container">
           <div className="panel-header">
-            <h3 className="panel-title" style={{ fontSize: "0.95rem" }}>
+            <h3 className="panel-title text-sm">
               Chart Data Table ({points.length} observations)
             </h3>
           </div>
-          <div className="table-wrapper" style={{ maxHeight: "360px", overflowY: "auto" }}>
+          <div className="table-wrapper scatter-table-wrapper">
             <table className="data-table" aria-label="Tabular data for scatter plot">
               <thead>
                 <tr>
-                  <th style={{ width: "40px" }}>#</th>
+                  <th className="th-rank">#</th>
                   <th>Player</th>
                   <th>Team</th>
                   <th className="num">GP</th>
@@ -651,7 +619,7 @@ export function ScatterPlotView({
                     <td className="num font-mono font-bold">{formatVal(pt.y, yDef)}</td>
                     <td className="text-xs">
                       {pt.isOutlier ? (
-                        <span className="badge" style={{ background: "#4ecdc4", color: "#20252e" }}>
+                        <span className="badge badge-info">
                           {pt.outlierReason || "Outlier"}
                         </span>
                       ) : (

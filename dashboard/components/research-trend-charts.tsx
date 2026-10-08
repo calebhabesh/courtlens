@@ -80,7 +80,7 @@ export function ResearchTrendCharts({ games, playerName }: ResearchTrendChartsPr
             y1={height - padding}
             x2={width - padding}
             y2={height - padding}
-            stroke="var(--border)"
+            stroke="var(--color-hairline-strong)"
             strokeWidth="1"
           />
 
@@ -91,7 +91,7 @@ export function ResearchTrendCharts({ games, playerName }: ResearchTrendChartsPr
               y1={height - padding - (parseFloat(avg) / maxVal) * chartH}
               x2={width - padding}
               y2={height - padding - (parseFloat(avg) / maxVal) * chartH}
-              stroke="var(--text-muted)"
+              stroke="var(--color-text-secondary)"
               strokeDasharray="3 3"
               strokeWidth="1"
             />
@@ -114,7 +114,7 @@ export function ResearchTrendCharts({ games, playerName }: ResearchTrendChartsPr
               cy={p.y}
               r="3.5"
               fill={color}
-              stroke="var(--surface)"
+              stroke="var(--color-surface-1)"
               strokeWidth="1.5"
             >
               <title>{`${validGames[idx].game_date}: ${p.val} ${unit}`}</title>
@@ -152,9 +152,9 @@ export function ResearchTrendCharts({ games, playerName }: ResearchTrendChartsPr
       </div>
 
       <div className="trend-cards-grid">
-        {renderSmallMultiple("Minutes", minutesSeries, "var(--series-secondary)", avgMinutes, "min")}
-        {renderSmallMultiple("FG Attempts", attemptsSeries, "var(--warning)", avgAttempts, "fga")}
-        {renderSmallMultiple("Points", pointsSeries, "var(--accent)", avgPoints, "pts")}
+        {renderSmallMultiple("Minutes", minutesSeries, "var(--color-info)", avgMinutes, "min")}
+        {renderSmallMultiple("FG Attempts", attemptsSeries, "var(--color-accent)", avgAttempts, "fga")}
+        {renderSmallMultiple("Points", pointsSeries, "var(--color-accent)", avgPoints, "pts")}
       </div>
 
       <p className="trend-narrative">
