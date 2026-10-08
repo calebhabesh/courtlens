@@ -1,0 +1,49 @@
+@layer components {
+  .impact-disclosure {
+    padding: var(--space-4);
+    background: var(--color-surface-1);
+    border-radius: var(--radius-md);
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+  }
+
+  .impact-heading {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  .impact-disclosure p {
+    margin: var(--space-3) 0;
+  }
+
+  .impact-disclosure details {
+    margin-top: var(--space-3);
+  }
+
+  .impact-values {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: var(--space-4);
+    margin: var(--space-4) 0;
+  }
+
+  .impact-values dd {
+    margin: var(--space-2) 0 0;
+    font-size: var(--text-xl);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .impact-player-card p {
+    overflow-wrap: anywhere;
+  }
+
+  .player-detail-container .trend-card {
+    min-width: 0;
+  }
+
+  .player-detail-container .trend-cards-grid {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+  }
+}

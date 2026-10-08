@@ -15,12 +15,6 @@ import type { PlayerResearchItem } from "./types";
 describe("stats-explorer integration & contracts", () => {
   it("all 10 presets have valid columns with proper group assignments and sort metrics", () => {
     for (const preset of STATS_PRESETS) {
-      if (preset.id === "onoff") {
-        // Shared-floor columns come from the typed operation, never box-score proxies.
-        expect(preset.columns).toEqual([]);
-        expect(preset.description).toContain("shared-floor");
-        continue;
-      }
       expect(preset.columns.length).toBeGreaterThan(0);
       const groups = computeHeaderGroups(preset.columns);
       const groupColSpanSum = groups.reduce((acc, g) => acc + g.colSpan, 0);
@@ -56,13 +50,9 @@ describe("stats-explorer integration & contracts", () => {
     expect(astCol?.countingModeKeys?.per_36).toBe("ast_per_36");
   });
 
-  it("gated capabilities are explicitly flagged with prerequisite blocks", () => {
+  it("served presets are ungated while unsupported counting modes remain unavailable", () => {
     const gatedPresets = STATS_PRESETS.filter((p) => p.gated);
-    expect(gatedPresets.length).toBe(3);
-    const gatedIds = gatedPresets.map((p) => p.id);
-    expect(gatedIds).toContain("impact");
-    expect(gatedIds).toContain("onoff");
-    expect(gatedIds).toContain("sixfactor");
+    expect(gatedPresets.length).toBe(0);
 
     const gatedCountingModes = COUNTING_MODES.filter((c) => c.gated);
     expect(gatedCountingModes.length).toBe(2);

@@ -1,0 +1,111 @@
+{
+  "version": "courtlens-im06-real-serving-verification-v1",
+  "cohorts": [
+    {
+      "season": "2023-24",
+      "phase": "playoffs",
+      "players": 229,
+      "page_seconds": [
+        0.8832012769998983,
+        0.45354959496762604,
+        0.37827374204061925
+      ],
+      "artifact_hashes": [
+        "1d3b1e37bd5e26909a89a722d02427a8901bde17cb4bfdf2dc2d43d1e0a2e93b",
+        "242c18e69c69476f5e040493412698cd0e852767b9a9f80eb0e7947c384a8c7c"
+      ]
+    },
+    {
+      "season": "2023-24",
+      "phase": "regular_season",
+      "players": 586,
+      "page_seconds": [
+        0.8005910079809837,
+        0.752670145011507,
+        0.724533230997622,
+        0.7408794210059568,
+        0.8224703230080195,
+        0.7263677270384505
+      ],
+      "artifact_hashes": [
+        "f7f8928a38335e63be065fe63af6f16fa65bf0cf99585eab42ff23f44d1a26a5",
+        "04ff7b47b7a76941a0e3fd88c5eace6e05ef240a9e4366471111880c0e32adcf"
+      ]
+    },
+    {
+      "season": "2024-25",
+      "phase": "playoffs",
+      "players": 232,
+      "page_seconds": [
+        0.3989035190315917,
+        0.4018243509926833,
+        0.3751426879898645
+      ],
+      "artifact_hashes": [
+        "3f601ae92a782be356c740188aff9b19997eb8b2dd97944d941f0d1b73fd680b",
+        "94cba7d57c46a6a549b383798d0a7b81400cbb17ddcedb208697f7375008d9cb",
+        "a6b589b2db9f7d45c60e80a28e7fd6533c0dec2d528b075029092610523d9b4c"
+      ]
+    },
+    {
+      "season": "2024-25",
+      "phase": "regular_season",
+      "players": 577,
+      "page_seconds": [
+        0.8184016660088673,
+        0.8146789720049128,
+        0.7935270380112343,
+        0.8131953660049476,
+        0.8097343320259824,
+        0.7885864360141568
+      ],
+      "artifact_hashes": [
+        "12dba0daaf6fee22aced8a51e649c117c99872c487bab7676b025928c4410590",
+        "64df32d0ce3ed9211e7186820ee791fa40316baab023fb55bc12a219a768d4cc",
+        "699f146bbab6e42c732f459f877be9c3f4aed94b9b018adc44653a39097b3901"
+      ]
+    },
+    {
+      "season": "2025-26",
+      "phase": "playoffs",
+      "players": 230,
+      "page_seconds": [
+        0.44476203102385625,
+        0.444903030002024,
+        0.4088449379778467
+      ],
+      "artifact_hashes": [
+        "614cc3a9b8a893694e9ba7d2a9786a7543c5a7b6b09957ea534face1197c4630",
+        "c1cf17c08adf8fa81ffa6bc9bd4e90d965d0c37bdba0d5dc77f2ae06c77d333b",
+        "e41cd7e36769a13a36bc078f8810bf687a3d5b3bccb52e9f291b17072bba06c6",
+        "525897e272481d7c8f081d366e0a225f42be244bc43273ddc378c71dc4b0681b"
+      ]
+    },
+    {
+      "season": "2025-26",
+      "phase": "regular_season",
+      "players": 591,
+      "page_seconds": [
+        0.8988057599635795,
+        0.9164423460024409,
+        0.8932350429822691,
+        0.9206553880358115,
+        0.9272386190132238,
+        0.9004742989782244
+      ],
+      "artifact_hashes": [
+        "477fb7edd2d8f910fcecca45ef2b63a0f16d818a6ff3890ceba8d974c008811e",
+        "d97363bee6e48f1ba9454d28b3e7d82748cc3017e52fe887d4da994ac00666a5",
+        "fd50b09bb20939e2b550476d8f6a2739191237bbed1f96b952c6dd839506ac88",
+        "ba712f04bc494bc591d7e872ded977f56bc2b346d3c9d7ab8c4d089fd037d102"
+      ]
+    }
+  ],
+  "matched_values": 166260,
+  "victor_rapm": 9.123015906749517,
+  "name_preserves_cohort": true,
+  "exclusive_cutoff_gate": true,
+  "short_window_gate": true,
+  "presentation_seconds": 2.163048127957154,
+  "named_presentation_seconds": 1.8637340880231932
+}

@@ -1,0 +1,272 @@
+INFO  [alembic.runtime.migration] Context impl PostgresqlImpl.
+INFO  [alembic.runtime.migration] Will assume transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade  -> 0001, Create the initial CourtLoad operational schema.
+INFO  [alembic.runtime.migration] Running upgrade 0001 -> 8ffd4c5912e2, archive lineage and facts
+INFO  [alembic.runtime.migration] Running upgrade 8ffd4c5912e2 -> 4b19f0a2c7de, warehouse publication state and immutable serving rows
+INFO  [alembic.runtime.migration] Running upgrade 4b19f0a2c7de -> 882c8b450cb3, workbench_contracts_and_tables
+INFO  [alembic.runtime.migration] Running upgrade 882c8b450cb3 -> 1b66214e7c08, personal_workspace_state
+INFO  [alembic.runtime.migration] Running upgrade 1b66214e7c08 -> c7e21a084f91, identity_crosswalk_and_measurements
+INFO  [alembic.runtime.migration] Running upgrade c7e21a084f91 -> e8b19a084f92, rich_source_admission_tables
+INFO  [alembic.runtime.migration] Running upgrade e8b19a084f92 -> f9c31a084f93, possession_and_stint_warehouse_tables
+INFO  [alembic.runtime.migration] Running upgrade f9c31a084f93 -> 0af4286cb194, Append-only independent research inputs; no release publication or retained-row changes.
+INFO  [alembic.runtime.migration] Running upgrade 0af4286cb194 -> 27b810a4f001, B28 immutable financial source books and correction lineage.
+INFO  [alembic.runtime.migration] Running upgrade 27b810a4f001 -> 31b810a4f002, B31 bounded Live demand, provisional observations and reconciliation evidence.
+INFO  [alembic.runtime.migration] Running upgrade 31b810a4f002 -> 35b810a4f003, B35a explicit retained conversational analytical manifests.
+INFO  [alembic.runtime.migration] Running upgrade 35b810a4f003 -> 19b810a4f004, B19b independent assignment datasets and transaction-sealed memberships.
+INFO  [alembic.runtime.migration] Running upgrade 19b810a4f004 -> 07b810a4f005, PF07b durable local assistant history, isolated from saved findings.
+INFO  [alembic.runtime.migration] Running upgrade 07b810a4f005 -> 08b810a4f006, AG03 server-owned provider transcripts; existing turn/history payloads stay valid.
+INFO  [alembic.runtime.migration] Running upgrade 08b810a4f006 -> 09b810a4f007, RN02 rename PostgreSQL functions and the administrative mutation namespace.
+INFO  [alembic.runtime.migration] Running upgrade 09b810a4f007 -> 10b810a4f008, Seal IM03 memberships at the admitting transaction, including ordinary inserts.
+..FFFFFFFFFFFFFFFFFFFFFFFF...........                                    [100%]
+=================================== FAILURES ===================================
+__________________ test_recorded_provider_replay[ar02-001-1] ___________________
+
+session = <sqlalchemy.orm.session.Session object at 0x7f6aaf3ea490>
+record = {'analytical_calls': 1, 'answer_signature': '6d2fa422f29739076a3740fe29b3493391f9c6e0fcaf1a77701b74e03b202742', 'calls... 'input_sha256': 'b3314c705045afad43c0546e34106abe6a1aeb4a8c782351ec1c5ac1d956c7d5', ...}], 'category': 'leaders', ...}
+
+>   ???
+E   assert False == True
+
+/tmp/courtlens-rn01-1ibmxth5/tests/unit/test_revamp_provider_replay.py:125: AssertionError
+__________________ test_recorded_provider_replay[ar02-001-2] ___________________
+
+session = <sqlalchemy.orm.session.Session object at 0x7f6aad580690>
+record = {'analytical_calls': 1, 'answer_signature': '6d2fa422f29739076a3740fe29b3493391f9c6e0fcaf1a77701b74e03b202742', 'calls... 'input_sha256': 'b3314c705045afad43c0546e34106abe6a1aeb4a8c782351ec1c5ac1d956c7d5', ...}], 'category': 'leaders', ...}
+
+>   ???
+E   assert False == True
+
+/tmp/courtlens-rn01-1ibmxth5/tests/unit/test_revamp_provider_replay.py:125: AssertionError
+__________________ test_recorded_provider_replay[ar02-001-3] ___________________
+
+session = <sqlalchemy.orm.session.Session object at 0x7f6aadf20e90>
+record = {'analytical_calls': 1, 'answer_signature': '6d2fa422f29739076a3740fe29b3493391f9c6e0fcaf1a77701b74e03b202742', 'calls... 'input_sha256': 'b3314c705045afad43c0546e34106abe6a1aeb4a8c782351ec1c5ac1d956c7d5', ...}], 'category': 'leaders', ...}
+
+>   ???
+E   assert False == True
+
+/tmp/courtlens-rn01-1ibmxth5/tests/unit/test_revamp_provider_replay.py:125: AssertionError
+__________________ test_recorded_provider_replay[ar02-002-1] ___________________
+
+session = <sqlalchemy.orm.session.Session object at 0x7f6aadf22190>
+record = {'analytical_calls': 1, 'answer_signature': '6d2fa422f29739076a3740fe29b3493391f9c6e0fcaf1a77701b74e03b202742', 'calls... 'input_sha256': 'bb7b22a76cdfd8a9a1ed984f1c86c68b56a1d7f9b354e58418691256be1ec298', ...}], 'category': 'leaders', ...}
+
+>   ???
+E   assert False == True
+
+/tmp/courtlens-rn01-1ibmxth5/tests/unit/test_revamp_provider_replay.py:125: AssertionError
+__________________ test_recorded_provider_replay[ar02-002-2] ___________________
+
+session = <sqlalchemy.orm.session.Session object at 0x7f6aad7b96d0>
+record = {'analytical_calls': 1, 'answer_signature': '6d2fa422f29739076a3740fe29b3493391f9c6e0fcaf1a77701b74e03b202742', 'calls... 'input_sha256': 'bb7b22a76cdfd8a9a1ed984f1c86c68b56a1d7f9b354e58418691256be1ec298', ...}], 'category': 'leaders', ...}
+
+>   ???
+E   assert False == True
+
+/tmp/courtlens-rn01-1ibmxth5/tests/unit/test_revamp_provider_replay.py:125: AssertionError
+__________________ test_recorded_provider_replay[ar02-002-3] ___________________
+
+session = <sqlalchemy.orm.session.Session object at 0x7f6aadf7c9e0>
+record = {'analytical_calls': 1, 'answer_signature': '6d2fa422f29739076a3740fe29b3493391f9c6e0fcaf1a77701b74e03b202742', 'calls... 'input_sha256': 'bb7b22a76cdfd8a9a1ed984f1c86c68b56a1d7f9b354e58418691256be1ec298', ...}], 'category': 'leaders', ...}
+
+>   ???
+E   assert False == True
+
+/tmp/courtlens-rn01-1ibmxth5/tests/unit/test_revamp_provider_replay.py:125: AssertionError
+__________________ test_recorded_provider_replay[ar02-003-1] ___________________
+
+session = <sqlalchemy.orm.session.Session object at 0x7f6aadf7f9b0>
+record = {'analytical_calls': 1, 'answer_signature': '6d2fa422f29739076a3740fe29b3493391f9c6e0fcaf1a77701b74e03b202742', 'calls... 'input_sha256': '09fd33e1280d7cc3a7ac7ae0df809236772eb7899f6a5b39dadabb7c74a641aa', ...}], 'category': 'leaders', ...}
+
+>   ???
+E   assert False == True
+
+/tmp/courtlens-rn01-1ibmxth5/tests/unit/test_revamp_provider_replay.py:125: AssertionError
+__________________ test_recorded_provider_replay[ar02-003-2] ___________________
+
+session = <sqlalchemy.orm.session.Session object at 0x7f6aadf31550>
+record = {'analytical_calls': 1, 'answer_signature': '6d2fa422f29739076a3740fe29b3493391f9c6e0fcaf1a77701b74e03b202742', 'calls... 'input_sha256': '09fd33e1280d7cc3a7ac7ae0df809236772eb7899f6a5b39dadabb7c74a641aa', ...}], 'category': 'leaders', ...}
+
+>   ???
+E   assert False == True
+
+/tmp/courtlens-rn01-1ibmxth5/tests/unit/test_revamp_provider_replay.py:125: AssertionError
+__________________ test_recorded_provider_replay[ar02-003-3] ___________________
+
+session = <sqlalchemy.orm.session.Session object at 0x7f6aadf31850>
+record = {'analytical_calls': 1, 'answer_signature': '6d2fa422f29739076a3740fe29b3493391f9c6e0fcaf1a77701b74e03b202742', 'calls... 'input_sha256': '09fd33e1280d7cc3a7ac7ae0df809236772eb7899f6a5b39dadabb7c74a641aa', ...}], 'category': 'leaders', ...}
+
+>   ???
+E   assert False == True
+
+/tmp/courtlens-rn01-1ibmxth5/tests/unit/test_revamp_provider_replay.py:125: AssertionError
+__________________ test_recorded_provider_replay[ar02-004-1] ___________________
+
+session = <sqlalchemy.orm.session.Session object at 0x7f6aadf30350>
+record = {'analytical_calls': 1, 'answer_signature': '4a4849f62ebfbaa1fa75a8e0bf71598696eddc29971bb66f3e9c1afb545d0ca0', 'calls... 'input_sha256': '6f8a1def732b206ba777fdb4d47245b78e4a0ac00229624734f0c09bea1591fa', ...}], 'category': 'leaders', ...}
+
+>   ???
+E   assert False == True
+
+/tmp/courtlens-rn01-1ibmxth5/tests/unit/test_revamp_provider_replay.py:125: AssertionError
+__________________ test_recorded_provider_replay[ar02-004-2] ___________________
+
+session = <sqlalchemy.orm.session.Session object at 0x7f6aadf31150>
+record = {'analytical_calls': 1, 'answer_signature': '4a4849f62ebfbaa1fa75a8e0bf71598696eddc29971bb66f3e9c1afb545d0ca0', 'calls... 'input_sha256': '6f8a1def732b206ba777fdb4d47245b78e4a0ac00229624734f0c09bea1591fa', ...}], 'category': 'leaders', ...}
+
+>   ???
+E   assert False == True
+
+/tmp/courtlens-rn01-1ibmxth5/tests/unit/test_revamp_provider_replay.py:125: AssertionError
+__________________ test_recorded_provider_replay[ar02-004-3] ___________________
+
+session = <sqlalchemy.orm.session.Session object at 0x7f6aaef63b50>
+record = {'analytical_calls': 1, 'answer_signature': '4a4849f62ebfbaa1fa75a8e0bf71598696eddc29971bb66f3e9c1afb545d0ca0', 'calls... 'input_sha256': '6f8a1def732b206ba777fdb4d47245b78e4a0ac00229624734f0c09bea1591fa', ...}], 'category': 'leaders', ...}
+
+>   ???
+E   assert False == True
+
+/tmp/courtlens-rn01-1ibmxth5/tests/unit/test_revamp_provider_replay.py:125: AssertionError
+__________________ test_recorded_provider_replay[ar02-005-1] ___________________
+
+session = <sqlalchemy.orm.session.Session object at 0x7f6aadf30650>
+record = {'analytical_calls': 1, 'answer_signature': '4a4849f62ebfbaa1fa75a8e0bf71598696eddc29971bb66f3e9c1afb545d0ca0', 'calls... 'input_sha256': '1219920a45bd1881279cd69361522fda39ee797f04487d067d40d88ba407dda9', ...}], 'category': 'leaders', ...}
+
+>   ???
+E   assert False == True
+
+/tmp/courtlens-rn01-1ibmxth5/tests/unit/test_revamp_provider_replay.py:125: AssertionError
+__________________ test_recorded_provider_replay[ar02-005-2] ___________________
+
+session = <sqlalchemy.orm.session.Session object at 0x7f6aadf31750>
+record = {'analytical_calls': 1, 'answer_signature': '4a4849f62ebfbaa1fa75a8e0bf71598696eddc29971bb66f3e9c1afb545d0ca0', 'calls... 'input_sha256': '1219920a45bd1881279cd69361522fda39ee797f04487d067d40d88ba407dda9', ...}], 'category': 'leaders', ...}
+
+>   ???
+E   assert False == True
+
+/tmp/courtlens-rn01-1ibmxth5/tests/unit/test_revamp_provider_replay.py:125: AssertionError
+__________________ test_recorded_provider_replay[ar02-005-3] ___________________
+
+session = <sqlalchemy.orm.session.Session object at 0x7f6aadf30450>
+record = {'analytical_calls': 1, 'answer_signature': '4a4849f62ebfbaa1fa75a8e0bf71598696eddc29971bb66f3e9c1afb545d0ca0', 'calls... 'input_sha256': '1219920a45bd1881279cd69361522fda39ee797f04487d067d40d88ba407dda9', ...}], 'category': 'leaders', ...}
+
+>   ???
+E   assert False == True
+
+/tmp/courtlens-rn01-1ibmxth5/tests/unit/test_revamp_provider_replay.py:125: AssertionError
+__________________ test_recorded_provider_replay[ar02-014-1] ___________________
+
+session = <sqlalchemy.orm.session.Session object at 0x7f6aadf30350>
+record = {'analytical_calls': 1, 'answer_signature': '788e425739f7ae1d5bf6450366709132b98ab7fe73ac4b4bb0def091e80acd52', 'calls... 'input_sha256': 'f34a417b31a18a712aafb628779b51af4c90a40131c488f3f84539980e242d88', ...}], 'category': 'leaders', ...}
+
+>   ???
+E   assert {'data': {'clarification': None, 'context_changes': None, 'output_kind': 'table', 'plan_version': 'courtload-analysis-...rror, unsupported sort", ...}, 'input_sha256': 'f34a417b31a18a712aafb628779b51af4c90a40131c488f3f84539980e242d88', ...} is None
+E    +  where {'data': {'clarification': None, 'context_changes': None, 'output_kind': 'table', 'plan_version': 'courtload-analysis-...rror, unsupported sort", ...}, 'input_sha256': 'f34a417b31a18a712aafb628779b51af4c90a40131c488f3f84539980e242d88', ...} = next(<list_iterator object at 0x7f6ade58a440>, None)
+
+/tmp/courtlens-rn01-1ibmxth5/tests/unit/test_revamp_provider_replay.py:116: AssertionError
+__________________ test_recorded_provider_replay[ar02-014-2] ___________________
+
+session = <sqlalchemy.orm.session.Session object at 0x7f6aadf32250>
+record = {'analytical_calls': 1, 'answer_signature': '788e425739f7ae1d5bf6450366709132b98ab7fe73ac4b4bb0def091e80acd52', 'calls... 'input_sha256': 'f34a417b31a18a712aafb628779b51af4c90a40131c488f3f84539980e242d88', ...}], 'category': 'leaders', ...}
+
+>   ???
+E   assert {'data': {'clarification': None, 'context_changes': None, 'output_kind': 'table', 'plan_version': 'courtload-analysis-...rror, unsupported sort", ...}, 'input_sha256': 'f34a417b31a18a712aafb628779b51af4c90a40131c488f3f84539980e242d88', ...} is None
+E    +  where {'data': {'clarification': None, 'context_changes': None, 'output_kind': 'table', 'plan_version': 'courtload-analysis-...rror, unsupported sort", ...}, 'input_sha256': 'f34a417b31a18a712aafb628779b51af4c90a40131c488f3f84539980e242d88', ...} = next(<list_iterator object at 0x7f6b1055c850>, None)
+
+/tmp/courtlens-rn01-1ibmxth5/tests/unit/test_revamp_provider_replay.py:116: AssertionError
+__________________ test_recorded_provider_replay[ar02-014-3] ___________________
+
+session = <sqlalchemy.orm.session.Session object at 0x7f6aadf30950>
+record = {'analytical_calls': 1, 'answer_signature': '788e425739f7ae1d5bf6450366709132b98ab7fe73ac4b4bb0def091e80acd52', 'calls... 'input_sha256': 'f34a417b31a18a712aafb628779b51af4c90a40131c488f3f84539980e242d88', ...}], 'category': 'leaders', ...}
+
+>   ???
+E   assert {'data': {'clarification': None, 'context_changes': None, 'output_kind': 'table', 'plan_version': 'courtload-analysis-...rror, unsupported sort", ...}, 'input_sha256': 'f34a417b31a18a712aafb628779b51af4c90a40131c488f3f84539980e242d88', ...} is None
+E    +  where {'data': {'clarification': None, 'context_changes': None, 'output_kind': 'table', 'plan_version': 'courtload-analysis-...rror, unsupported sort", ...}, 'input_sha256': 'f34a417b31a18a712aafb628779b51af4c90a40131c488f3f84539980e242d88', ...} = next(<list_iterator object at 0x7f6ab0b62200>, None)
+
+/tmp/courtlens-rn01-1ibmxth5/tests/unit/test_revamp_provider_replay.py:116: AssertionError
+__________________ test_recorded_provider_replay[ar02-028-1] ___________________
+
+session = <sqlalchemy.orm.session.Session object at 0x7f6aadf30b50>
+record = {'analytical_calls': 0, 'answer_signature': '39f29d9f39c88bcf529aab66b8f060bf6cde79d52642a071fe9039868f9e0092', 'calls... 'input_sha256': '8ebc285c68f26f28913ac630e7542957fcb3c9a4e25508983507af75681fa888', ...}], 'category': 'leaders', ...}
+
+>   ???
+E   assert {'data': {'clarification': None, 'context_changes': None, 'output_kind': 'table', 'plan_version': 'courtload-analysis-..., tov_per_game, ts_pct", ...}, 'input_sha256': '8ebc285c68f26f28913ac630e7542957fcb3c9a4e25508983507af75681fa888', ...} is None
+E    +  where {'data': {'clarification': None, 'context_changes': None, 'output_kind': 'table', 'plan_version': 'courtload-analysis-..., tov_per_game, ts_pct", ...}, 'input_sha256': '8ebc285c68f26f28913ac630e7542957fcb3c9a4e25508983507af75681fa888', ...} = next(<list_iterator object at 0x7f6b09701480>, None)
+
+/tmp/courtlens-rn01-1ibmxth5/tests/unit/test_revamp_provider_replay.py:116: AssertionError
+__________________ test_recorded_provider_replay[ar02-028-2] ___________________
+
+session = <sqlalchemy.orm.session.Session object at 0x7f6aadf31f50>
+record = {'analytical_calls': 1, 'answer_signature': '405c1fe23be6121a941a54a37ee40b5409d5d3db745a2aa96dbb5a31104c7b40', 'calls... 'input_sha256': '8ebc285c68f26f28913ac630e7542957fcb3c9a4e25508983507af75681fa888', ...}], 'category': 'leaders', ...}
+
+>   ???
+E   assert {'data': {'clarification': None, 'context_changes': None, 'output_kind': 'table', 'plan_version': 'courtload-analysis-..., tov_per_game, ts_pct", ...}, 'input_sha256': '8ebc285c68f26f28913ac630e7542957fcb3c9a4e25508983507af75681fa888', ...} is None
+E    +  where {'data': {'clarification': None, 'context_changes': None, 'output_kind': 'table', 'plan_version': 'courtload-analysis-..., tov_per_game, ts_pct", ...}, 'input_sha256': '8ebc285c68f26f28913ac630e7542957fcb3c9a4e25508983507af75681fa888', ...} = next(<list_iterator object at 0x7f6aad327ac0>, None)
+
+/tmp/courtlens-rn01-1ibmxth5/tests/unit/test_revamp_provider_replay.py:116: AssertionError
+__________________ test_recorded_provider_replay[ar02-028-3] ___________________
+
+session = <sqlalchemy.orm.session.Session object at 0x7f6aadf30f50>
+record = {'analytical_calls': 0, 'answer_signature': '39f29d9f39c88bcf529aab66b8f060bf6cde79d52642a071fe9039868f9e0092', 'calls... 'input_sha256': '8ebc285c68f26f28913ac630e7542957fcb3c9a4e25508983507af75681fa888', ...}], 'category': 'leaders', ...}
+
+>   ???
+E   assert {'data': {'clarification': None, 'context_changes': None, 'output_kind': 'table', 'plan_version': 'courtload-analysis-..., tov_per_game, ts_pct", ...}, 'input_sha256': '8ebc285c68f26f28913ac630e7542957fcb3c9a4e25508983507af75681fa888', ...} is None
+E    +  where {'data': {'clarification': None, 'context_changes': None, 'output_kind': 'table', 'plan_version': 'courtload-analysis-..., tov_per_game, ts_pct", ...}, 'input_sha256': '8ebc285c68f26f28913ac630e7542957fcb3c9a4e25508983507af75681fa888', ...} = next(<list_iterator object at 0x7f6b096e7880>, None)
+
+/tmp/courtlens-rn01-1ibmxth5/tests/unit/test_revamp_provider_replay.py:116: AssertionError
+__________________ test_recorded_provider_replay[ar02-029-1] ___________________
+
+session = <sqlalchemy.orm.session.Session object at 0x7f6aadf30b50>
+record = {'analytical_calls': 1, 'answer_signature': '405c1fe23be6121a941a54a37ee40b5409d5d3db745a2aa96dbb5a31104c7b40', 'calls... 'input_sha256': 'c33a2ad9557b74fdad6302fcdd8566dd4267a3178f8584897d777eb179420749', ...}], 'category': 'leaders', ...}
+
+>   ???
+E   assert {'data': {'clarification': None, 'context_changes': None, 'output_kind': 'table', 'plan_version': 'courtload-analysis-..., tov_per_game, ts_pct", ...}, 'input_sha256': 'c33a2ad9557b74fdad6302fcdd8566dd4267a3178f8584897d777eb179420749', ...} is None
+E    +  where {'data': {'clarification': None, 'context_changes': None, 'output_kind': 'table', 'plan_version': 'courtload-analysis-..., tov_per_game, ts_pct", ...}, 'input_sha256': 'c33a2ad9557b74fdad6302fcdd8566dd4267a3178f8584897d777eb179420749', ...} = next(<list_iterator object at 0x7f6ab182c9d0>, None)
+
+/tmp/courtlens-rn01-1ibmxth5/tests/unit/test_revamp_provider_replay.py:116: AssertionError
+__________________ test_recorded_provider_replay[ar02-029-2] ___________________
+
+session = <sqlalchemy.orm.session.Session object at 0x7f6aadf30350>
+record = {'analytical_calls': 1, 'answer_signature': '405c1fe23be6121a941a54a37ee40b5409d5d3db745a2aa96dbb5a31104c7b40', 'calls... 'input_sha256': 'c33a2ad9557b74fdad6302fcdd8566dd4267a3178f8584897d777eb179420749', ...}], 'category': 'leaders', ...}
+
+>   ???
+E   assert {'data': {'clarification': None, 'context_changes': None, 'output_kind': 'table', 'plan_version': 'courtload-analysis-..., tov_per_game, ts_pct", ...}, 'input_sha256': 'c33a2ad9557b74fdad6302fcdd8566dd4267a3178f8584897d777eb179420749', ...} is None
+E    +  where {'data': {'clarification': None, 'context_changes': None, 'output_kind': 'table', 'plan_version': 'courtload-analysis-..., tov_per_game, ts_pct", ...}, 'input_sha256': 'c33a2ad9557b74fdad6302fcdd8566dd4267a3178f8584897d777eb179420749', ...} = next(<list_iterator object at 0x7f6b0a8a10c0>, None)
+
+/tmp/courtlens-rn01-1ibmxth5/tests/unit/test_revamp_provider_replay.py:116: AssertionError
+__________________ test_recorded_provider_replay[ar02-029-3] ___________________
+
+session = <sqlalchemy.orm.session.Session object at 0x7f6aadf30450>
+record = {'analytical_calls': 1, 'answer_signature': 'a7786621dfe262d5df0d81e9376e644b5b478f5735b3b6c6f55f2ade4ff0332c', 'calls... 'input_sha256': 'c33a2ad9557b74fdad6302fcdd8566dd4267a3178f8584897d777eb179420749', ...}], 'category': 'leaders', ...}
+
+>   ???
+E   assert {'data': {'clarification': None, 'context_changes': None, 'output_kind': 'table', 'plan_version': 'courtload-analysis-..., tov_per_game, ts_pct", ...}, 'input_sha256': 'c33a2ad9557b74fdad6302fcdd8566dd4267a3178f8584897d777eb179420749', ...} is None
+E    +  where {'data': {'clarification': None, 'context_changes': None, 'output_kind': 'table', 'plan_version': 'courtload-analysis-..., tov_per_game, ts_pct", ...}, 'input_sha256': 'c33a2ad9557b74fdad6302fcdd8566dd4267a3178f8584897d777eb179420749', ...} = next(<list_iterator object at 0x7f6b0a86ae30>, None)
+
+/tmp/courtlens-rn01-1ibmxth5/tests/unit/test_revamp_provider_replay.py:116: AssertionError
+=========================== short test summary info ============================
+FAILED tests/unit/test_revamp_provider_replay.py::test_recorded_provider_replay[ar02-001-1]
+FAILED tests/unit/test_revamp_provider_replay.py::test_recorded_provider_replay[ar02-001-2]
+FAILED tests/unit/test_revamp_provider_replay.py::test_recorded_provider_replay[ar02-001-3]
+FAILED tests/unit/test_revamp_provider_replay.py::test_recorded_provider_replay[ar02-002-1]
+FAILED tests/unit/test_revamp_provider_replay.py::test_recorded_provider_replay[ar02-002-2]
+FAILED tests/unit/test_revamp_provider_replay.py::test_recorded_provider_replay[ar02-002-3]
+FAILED tests/unit/test_revamp_provider_replay.py::test_recorded_provider_replay[ar02-003-1]
+FAILED tests/unit/test_revamp_provider_replay.py::test_recorded_provider_replay[ar02-003-2]
+FAILED tests/unit/test_revamp_provider_replay.py::test_recorded_provider_replay[ar02-003-3]
+FAILED tests/unit/test_revamp_provider_replay.py::test_recorded_provider_replay[ar02-004-1]
+FAILED tests/unit/test_revamp_provider_replay.py::test_recorded_provider_replay[ar02-004-2]
+FAILED tests/unit/test_revamp_provider_replay.py::test_recorded_provider_replay[ar02-004-3]
+FAILED tests/unit/test_revamp_provider_replay.py::test_recorded_provider_replay[ar02-005-1]
+FAILED tests/unit/test_revamp_provider_replay.py::test_recorded_provider_replay[ar02-005-2]
+FAILED tests/unit/test_revamp_provider_replay.py::test_recorded_provider_replay[ar02-005-3]
+FAILED tests/unit/test_revamp_provider_replay.py::test_recorded_provider_replay[ar02-014-1]
+FAILED tests/unit/test_revamp_provider_replay.py::test_recorded_provider_replay[ar02-014-2]
+FAILED tests/unit/test_revamp_provider_replay.py::test_recorded_provider_replay[ar02-014-3]
+FAILED tests/unit/test_revamp_provider_replay.py::test_recorded_provider_replay[ar02-028-1]
+FAILED tests/unit/test_revamp_provider_replay.py::test_recorded_provider_replay[ar02-028-2]
+FAILED tests/unit/test_revamp_provider_replay.py::test_recorded_provider_replay[ar02-028-3]
+FAILED tests/unit/test_revamp_provider_replay.py::test_recorded_provider_replay[ar02-029-1]
+FAILED tests/unit/test_revamp_provider_replay.py::test_recorded_provider_replay[ar02-029-2]
+FAILED tests/unit/test_revamp_provider_replay.py::test_recorded_provider_replay[ar02-029-3]
+24 failed, 13 passed in 2.31s

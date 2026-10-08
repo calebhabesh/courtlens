@@ -274,6 +274,7 @@ class WorkbenchCatalogResponse(BaseModel):
     published_at: str | None = None
     capabilities: dict[str, Any] = Field(default_factory=dict)
     warnings: list[str]
+    impact: dict[str, Any] | None = None
 
 
 class ResearchQuerySchema(BaseModel):
@@ -305,6 +306,7 @@ class PlayerResearchItem(BaseModel):
     portrait_url: str | None = None
     percentiles: dict[str, float | None] | None = None
     cohort_sample_sizes: dict[str, int] | None = None
+    impact_support: dict[str, Any] | None = None
 
 
 class PlayerResearchResponse(BaseModel):
@@ -337,6 +339,30 @@ class WorkbenchQueryResponse(BaseModel):
     next_cursor: str | None = None
     has_more: bool
     warnings: list[str] = Field(default_factory=list)
+    impact: dict[str, Any] | None = None
+
+
+class ImpactPlayerResponse(BaseModel):
+    player_id: str
+    player_name: str
+    metrics: dict[str, float | None]
+    support: dict[str, Any]
+    on_off: dict[str, Any]
+
+
+class ImpactResponse(BaseModel):
+    status: Literal["available", "unavailable"]
+    source: str
+    version: str
+    methodology_url: str
+    manifest_sha256: str | None
+    artifacts: list[dict[str, Any]]
+    coverage: list[dict[str, Any]]
+    limitations: list[str]
+    unavailable_columns: dict[str, str]
+    reason: str | None = None
+    players: list[ImpactPlayerResponse]
+    total_players: int
 
 
 class PlayerProfileStint(BaseModel):
@@ -917,6 +943,7 @@ class LookupResponse(BaseModel):
 
 class CreateCustomViewRequest(BaseModel):
     model_config = ConfigDict(extra="forbid")
+    metric_version: Literal["v2", "courtlens-stats-v3"] = "v2"
 
     unavailable_columns: list[str] = Field(default_factory=list)
 
@@ -929,6 +956,7 @@ class CreateCustomViewRequest(BaseModel):
 
 class UpdateCustomViewRequest(BaseModel):
     model_config = ConfigDict(extra="forbid")
+    metric_version: Literal["v2", "courtlens-stats-v3"] | None = None
 
     unavailable_columns: list[str] | None = None
 

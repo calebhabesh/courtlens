@@ -7,8 +7,10 @@ from enum import StrEnum
 from typing import Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
+from pydantic.json_schema import SkipJsonSchema
 
-from courtlens.domain.metrics import METRIC_CATALOG, SUPPORTED_PHASES
+from courtlens.domain.impact_catalog import SERVING_CATALOG as METRIC_CATALOG
+from courtlens.domain.metrics import METRIC_CATALOG_V2, SUPPORTED_PHASES
 
 MAX_LEAF_PREDICATES = 12
 MAX_SORT_FIELDS = 3
@@ -123,10 +125,8 @@ class MetricSelector(BaseModel):
 
     @model_validator(mode="after")
     def validate_selector(self) -> MetricSelector:
-        from courtlens.domain.metrics import METRIC_CATALOG
-
         if self.key not in METRIC_CATALOG:
-            valid_keys = ", ".join(sorted(METRIC_CATALOG.keys()))
+            valid_keys = ", ".join(sorted(METRIC_CATALOG_V2.keys()))
             raise ValueError(
                 f"unsupported metric key '{self.key}'; valid metrics are: {valid_keys}"
             )
@@ -167,7 +167,7 @@ class PredicateLeaf(BaseModel):
         allowed = get_allowed_query_fields()
         normalized_field = self.field.strip().lower()
         if normalized_field not in allowed:
-            valid_fields = ", ".join(sorted(allowed))
+            valid_fields = ", ".join(sorted(set(METRIC_CATALOG_V2) | ALLOWED_METADATA_FIELDS))
             raise ValueError(
                 f"unsupported predicate field '{self.field}'; valid fields are: {valid_fields}"
             )
@@ -241,7 +241,7 @@ class SortSpec(BaseModel):
         allowed = get_allowed_query_fields()
         normalized_field = self.field.strip().lower()
         if normalized_field not in allowed:
-            valid_fields = ", ".join(sorted(allowed))
+            valid_fields = ", ".join(sorted(set(METRIC_CATALOG_V2) | ALLOWED_METADATA_FIELDS))
             raise ValueError(
                 f"unsupported sort field '{self.field}'; valid sort fields are: {valid_fields}"
             )
@@ -274,6 +274,9 @@ class QuerySpec(BaseModel):
     model_config = ConfigDict(frozen=True)
 
     release_id: str | None = None
+    impact_manifest_sha256: SkipJsonSchema[str | None] = Field(
+        default=None, pattern=r"^[a-f0-9]{64}$", exclude_if=lambda value: value is None
+    )
     season: str = "2025-26"
     phase: str = "regular_season"
     before_date: date | None = None
@@ -299,7 +302,7 @@ class QuerySpec(BaseModel):
         # 2. Metric selectors validation
         for selector in self.metric_selectors:
             if selector.key not in METRIC_CATALOG:
-                valid_metrics = ", ".join(sorted(METRIC_CATALOG.keys()))
+                valid_metrics = ", ".join(sorted(METRIC_CATALOG_V2.keys()))
                 raise ValueError(
                     f"unsupported metric '{selector.key}'; valid metrics are: {valid_metrics}"
                 )

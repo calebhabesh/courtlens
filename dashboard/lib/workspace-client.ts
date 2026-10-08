@@ -174,6 +174,7 @@ export async function getWorkspacePresets(): Promise<CustomViewDefinition[]> {
 // ---------------------------------------------------------------------------
 
 export interface CreateCustomViewPayload {
+  metric_version?: "v2" | "courtlens-stats-v3";
   name: string;
   columns: string[];
   unavailable_columns?: string[];
