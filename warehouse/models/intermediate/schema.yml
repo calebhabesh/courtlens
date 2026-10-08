@@ -55,7 +55,7 @@ models:
       - name: side
         data_tests: [not_null]
   - name: fct_workbench_possession
-    description: Possession facts with schedule attributes under possession-policy-v1.
+    description: Possession facts with schedule attributes under explicit versioned possession policies.
     columns:
       - name: possession_id
         data_tests: [not_null]

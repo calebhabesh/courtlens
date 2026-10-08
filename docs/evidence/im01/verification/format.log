@@ -1,0 +1,14 @@
+unformatted: File would be reformatted
+   --> tests/fixture_data.py:249:17
+    |
+248 |     )
+    -     session.add(PublishedSnapshot(channel="public", snapshot_id=snapshot.id, published_at=snapshot.created_at))
+249 +     session.add(
+250 +         PublishedSnapshot(
+251 +             channel="public", snapshot_id=snapshot.id, published_at=snapshot.created_at
+252 +         )
+253 +     )
+254 |     session.commit()
+    |
+
+1 file would be reformatted, 526 files already formatted

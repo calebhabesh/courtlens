@@ -30,6 +30,7 @@ select
     p.end_seconds_remaining,
     p.duration_seconds,
     p.points,
+    p.stats_json,
     p.is_second_chance,
     p.possession_start_type,
     p.count_as_possession,

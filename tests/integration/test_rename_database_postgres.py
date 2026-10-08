@@ -83,7 +83,8 @@ def renamed_database():
             for revision in revisions:
                 revision.module.upgrade()
         _seed_rows(engine)
-        yield engine, revisions[-1].module
+        # Exercise RN02's rename even after later additive migrations become head.
+        yield engine, scripts.get_revision("09b810a4f007").module
     finally:
         engine.dispose()
         with root.begin() as connection:

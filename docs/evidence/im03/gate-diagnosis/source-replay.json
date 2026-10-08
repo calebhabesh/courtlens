@@ -1,0 +1,383 @@
+{
+  "box_receipts": {
+    "player_box": "71645d3569e0c0a94e51d136c6454f20d59d70f4b518c62c6bbbdb9e905cb7c0",
+    "receipt": {
+      "acquired_at_utc": "2026-10-07T22:10:39.563502+00:00",
+      "canonical_season": "2024-25",
+      "ending_year": 2025,
+      "files": {
+        "player_boxscores": {
+          "bytes": 6191431,
+          "path": "/home/ethioking/dev/nba-analytics/data/raw/sportsdataverse_2025/player_boxscores_2025.csv",
+          "reused": true,
+          "sha256": "71645d3569e0c0a94e51d136c6454f20d59d70f4b518c62c6bbbdb9e905cb7c0",
+          "url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_player_boxscores/player_boxscores_2025.csv"
+        },
+        "schedule": {
+          "bytes": 22929,
+          "path": "/home/ethioking/dev/nba-analytics/data/raw/sportsdataverse_2025/nba_schedule_2025.csv.gz",
+          "reused": true,
+          "sha256": "639e8145a750b80a4394d2e7044545019bcc0e39a979618c7ff9edbfcac02c9b",
+          "url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_schedules/nba_schedule_2025.csv.gz"
+        },
+        "team_boxscores": {
+          "bytes": 357762,
+          "path": "/home/ethioking/dev/nba-analytics/data/raw/sportsdataverse_2025/team_boxscores_2025.csv",
+          "reused": true,
+          "sha256": "5c426deb97a203492070e03bd40040a6b1180c243986a6ed26abfc78bb942268",
+          "url": "https://github.com/sportsdataverse/sportsdataverse-data/releases/download/nba_stats_team_boxscores/team_boxscores_2025.csv"
+        }
+      },
+      "license_declared": "CC BY 4.0; underlying NBA data rights unverified",
+      "source": "sportsdataverse/sportsdataverse-data"
+    },
+    "receipt_sha256": "fc0cbbf7f11c8e31ae59e074f99bd9cc814f5122f901764fddcd4c719b1daf94",
+    "team_box": "5c426deb97a203492070e03bd40040a6b1180c243986a6ed26abfc78bb942268"
+  },
+  "candidate_sha256": "874033f18a0f8a017e8cbc1e6cc112ebbdf8d4f932495e5475877e6330907fd9",
+  "conservation": {
+    "1610612737": {
+      "box_estimate": 101.72,
+      "delta": -2.72,
+      "factor_totals": {
+        "fga": 99,
+        "fgm": 50,
+        "fta": 13,
+        "ftm": 7,
+        "orb": 19,
+        "orb_opportunities": 47,
+        "points": 117,
+        "turnovers": 16
+      },
+      "orb_box_delta": 0,
+      "points": 117,
+      "possessions": 99,
+      "turnovers_box_delta": 0
+    },
+    "1610612738": {
+      "box_estimate": 100.88,
+      "delta": -1.88,
+      "factor_totals": {
+        "fga": 75,
+        "fgm": 38,
+        "fta": 27,
+        "ftm": 22,
+        "orb": 6,
+        "orb_opportunities": 31,
+        "points": 116,
+        "turnovers": 20
+      },
+      "orb_box_delta": 0,
+      "points": 116,
+      "possessions": 99,
+      "turnovers_box_delta": 0
+    }
+  },
+  "content_sha256": "8e2b708cdb247f2058678de814a256fbcfcd3a28069b31150dfef8c04aac0eee",
+  "continuing_possessions": [
+    {
+      "end_order_index": 193,
+      "events": [
+        {
+          "description": "MISS Mathews 25' 3PT Pullup Jump Shot",
+          "kind": "shot",
+          "locator": {
+            "action_id": "187",
+            "action_number": 265,
+            "row_index": 186,
+            "sha256": "38fb8bfb43be8db3d47576600f32f25d89cc3cc05ebac77a51f4db42faf0b841",
+            "source": "v3"
+          },
+          "player_id": "1629726",
+          "team_id": "1610612737"
+        },
+        {
+          "description": "Hauser BLOCK (1 BLK)",
+          "kind": "block",
+          "locator": {
+            "action_id": "188",
+            "action_number": 265,
+            "row_index": 187,
+            "sha256": "38fb8bfb43be8db3d47576600f32f25d89cc3cc05ebac77a51f4db42faf0b841",
+            "source": "v3"
+          },
+          "player_id": "1630573",
+          "team_id": "1610612738"
+        },
+        {
+          "description": "Hawks Rebound",
+          "kind": "rebound",
+          "locator": {
+            "action_id": "189",
+            "action_number": 267,
+            "row_index": 188,
+            "sha256": "38fb8bfb43be8db3d47576600f32f25d89cc3cc05ebac77a51f4db42faf0b841",
+            "source": "v3"
+          },
+          "player_id": "0",
+          "team_id": "1610612737"
+        },
+        {
+          "description": "SUB: Horford FOR Walsh",
+          "kind": "substitution",
+          "locator": {
+            "action_id": "190",
+            "action_number": 269,
+            "row_index": 189,
+            "sha256": "38fb8bfb43be8db3d47576600f32f25d89cc3cc05ebac77a51f4db42faf0b841",
+            "source": "v3"
+          },
+          "player_id": "1641775",
+          "team_id": "1610612738"
+        },
+        {
+          "description": "SUB: Wallace FOR Risacher",
+          "kind": "substitution",
+          "locator": {
+            "action_id": "191",
+            "action_number": 270,
+            "row_index": 190,
+            "sha256": "38fb8bfb43be8db3d47576600f32f25d89cc3cc05ebac77a51f4db42faf0b841",
+            "source": "v3"
+          },
+          "player_id": "1642258",
+          "team_id": "1610612737"
+        },
+        {
+          "description": "SUB: Capela FOR Okongwu",
+          "kind": "substitution",
+          "locator": {
+            "action_id": "192",
+            "action_number": 271,
+            "row_index": 191,
+            "sha256": "38fb8bfb43be8db3d47576600f32f25d89cc3cc05ebac77a51f4db42faf0b841",
+            "source": "v3"
+          },
+          "player_id": "1630168",
+          "team_id": "1610612737"
+        },
+        {
+          "description": "MISS Daniels 26' 3PT Pullup Jump Shot",
+          "kind": "shot",
+          "locator": {
+            "action_id": "193",
+            "action_number": 275,
+            "row_index": 192,
+            "sha256": "38fb8bfb43be8db3d47576600f32f25d89cc3cc05ebac77a51f4db42faf0b841",
+            "source": "v3"
+          },
+          "player_id": "1630700",
+          "team_id": "1610612737"
+        },
+        {
+          "description": "Horford REBOUND (Off:0 Def:2)",
+          "kind": "rebound",
+          "locator": {
+            "action_id": "194",
+            "action_number": 276,
+            "row_index": 193,
+            "sha256": "38fb8bfb43be8db3d47576600f32f25d89cc3cc05ebac77a51f4db42faf0b841",
+            "source": "v3"
+          },
+          "player_id": "201143",
+          "team_id": "1610612738"
+        }
+      ],
+      "fga": 2,
+      "period": 2,
+      "player_orb": 0,
+      "start_order_index": 186
+    },
+    {
+      "end_order_index": 201,
+      "events": [
+        {
+          "description": "MISS Wallace 28' 3PT Jump Shot",
+          "kind": "shot",
+          "locator": {
+            "action_id": "196",
+            "action_number": 279,
+            "row_index": 195,
+            "sha256": "38fb8bfb43be8db3d47576600f32f25d89cc3cc05ebac77a51f4db42faf0b841",
+            "source": "v3"
+          },
+          "player_id": "1630811",
+          "team_id": "1610612737"
+        },
+        {
+          "description": "Capela REBOUND (Off:4 Def:2)",
+          "kind": "rebound",
+          "locator": {
+            "action_id": "197",
+            "action_number": 280,
+            "row_index": 196,
+            "sha256": "38fb8bfb43be8db3d47576600f32f25d89cc3cc05ebac77a51f4db42faf0b841",
+            "source": "v3"
+          },
+          "player_id": "203991",
+          "team_id": "1610612737"
+        },
+        {
+          "description": "MISS Capela 6' Putback Layup",
+          "kind": "shot",
+          "locator": {
+            "action_id": "198",
+            "action_number": 281,
+            "row_index": 197,
+            "sha256": "38fb8bfb43be8db3d47576600f32f25d89cc3cc05ebac77a51f4db42faf0b841",
+            "source": "v3"
+          },
+          "player_id": "203991",
+          "team_id": "1610612737"
+        },
+        {
+          "description": "Queta BLOCK (1 BLK)",
+          "kind": "block",
+          "locator": {
+            "action_id": "199",
+            "action_number": 281,
+            "row_index": 198,
+            "sha256": "38fb8bfb43be8db3d47576600f32f25d89cc3cc05ebac77a51f4db42faf0b841",
+            "source": "v3"
+          },
+          "player_id": "1629674",
+          "team_id": "1610612738"
+        },
+        {
+          "description": "Hawks Rebound",
+          "kind": "rebound",
+          "locator": {
+            "action_id": "200",
+            "action_number": 283,
+            "row_index": 199,
+            "sha256": "38fb8bfb43be8db3d47576600f32f25d89cc3cc05ebac77a51f4db42faf0b841",
+            "source": "v3"
+          },
+          "player_id": "0",
+          "team_id": "1610612737"
+        },
+        {
+          "description": "SUB: Brown FOR Hauser",
+          "kind": "substitution",
+          "locator": {
+            "action_id": "201",
+            "action_number": 285,
+            "row_index": 200,
+            "sha256": "38fb8bfb43be8db3d47576600f32f25d89cc3cc05ebac77a51f4db42faf0b841",
+            "source": "v3"
+          },
+          "player_id": "1630573",
+          "team_id": "1610612738"
+        },
+        {
+          "description": "Nance Jr. 26' 3PT Jump Shot (8 PTS)",
+          "kind": "shot",
+          "locator": {
+            "action_id": "202",
+            "action_number": 287,
+            "row_index": 201,
+            "sha256": "38fb8bfb43be8db3d47576600f32f25d89cc3cc05ebac77a51f4db42faf0b841",
+            "source": "v3"
+          },
+          "player_id": "1626204",
+          "team_id": "1610612737"
+        }
+      ],
+      "fga": 3,
+      "period": 2,
+      "player_orb": 1,
+      "start_order_index": 195
+    },
+    {
+      "end_order_index": 377,
+      "events": [
+        {
+          "description": "MISS Johnson 10' Driving Floating Bank Jump Shot",
+          "kind": "shot",
+          "locator": {
+            "action_id": "373",
+            "action_number": 520,
+            "row_index": 372,
+            "sha256": "38fb8bfb43be8db3d47576600f32f25d89cc3cc05ebac77a51f4db42faf0b841",
+            "source": "v3"
+          },
+          "player_id": "1630552",
+          "team_id": "1610612737"
+        },
+        {
+          "description": "Hawks Rebound",
+          "kind": "rebound",
+          "locator": {
+            "action_id": "374",
+            "action_number": 521,
+            "row_index": 373,
+            "sha256": "38fb8bfb43be8db3d47576600f32f25d89cc3cc05ebac77a51f4db42faf0b841",
+            "source": "v3"
+          },
+          "player_id": "0",
+          "team_id": "1610612737"
+        },
+        {
+          "description": "Tatum L.B.FOUL (P3.T1) (C.Kirkland)",
+          "kind": "foul",
+          "locator": {
+            "action_id": "375",
+            "action_number": 522,
+            "row_index": 374,
+            "sha256": "38fb8bfb43be8db3d47576600f32f25d89cc3cc05ebac77a51f4db42faf0b841",
+            "source": "v3"
+          },
+          "player_id": "1628369",
+          "team_id": "1610612738"
+        },
+        {
+          "description": "SUB: Wallace FOR Mathews",
+          "kind": "substitution",
+          "locator": {
+            "action_id": "376",
+            "action_number": 524,
+            "row_index": 375,
+            "sha256": "38fb8bfb43be8db3d47576600f32f25d89cc3cc05ebac77a51f4db42faf0b841",
+            "source": "v3"
+          },
+          "player_id": "1629726",
+          "team_id": "1610612737"
+        },
+        {
+          "description": "MISS Johnson 26' 3PT Jump Shot",
+          "kind": "shot",
+          "locator": {
+            "action_id": "377",
+            "action_number": 526,
+            "row_index": 376,
+            "sha256": "38fb8bfb43be8db3d47576600f32f25d89cc3cc05ebac77a51f4db42faf0b841",
+            "source": "v3"
+          },
+          "player_id": "1630552",
+          "team_id": "1610612737"
+        },
+        {
+          "description": "Hauser REBOUND (Off:0 Def:2)",
+          "kind": "rebound",
+          "locator": {
+            "action_id": "378",
+            "action_number": 527,
+            "row_index": 377,
+            "sha256": "38fb8bfb43be8db3d47576600f32f25d89cc3cc05ebac77a51f4db42faf0b841",
+            "source": "v3"
+          },
+          "player_id": "1630573",
+          "team_id": "1610612738"
+        }
+      ],
+      "fga": 2,
+      "period": 4,
+      "player_orb": 0,
+      "start_order_index": 372
+    }
+  ],
+  "game_id": "0022400001",
+  "game_sha256": "359105985f5615ce1a083edd1cba98b6b23d725d360b4882c10bc36058b49547",
+  "script_sha256": "497f3a7061b059e7ce257c13945832bfd1e46d56accae9f23e0698d322c9ed3f",
+  "source_sha256": "38fb8bfb43be8db3d47576600f32f25d89cc3cc05ebac77a51f4db42faf0b841"
+}

@@ -1,0 +1,4 @@
+Both reports reproduce content signature: c657a3c63929476fa60004be2e428d1310f771ebce6840e537aa6d61d38512cb
+Elapsed seconds: [200.646, 204.171]
+Independently verified candidates: 3941 repair envelopes: 472716
+Native repeat is byte-identical: 6c39a7b666b756efd783444cc435ce1b7d109d5014c58666f18538dc757231a0 with all 23 R1 overrides

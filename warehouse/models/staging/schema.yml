@@ -88,7 +88,7 @@ models:
       - name: duration_seconds
         data_tests: [not_null]
   - name: stg_workbench_possessions
-    description: Cleaned workbench possession records under possession-policy-v1.
+    description: Cleaned workbench possession records under explicit versioned possession policies.
     columns:
       - name: id
         data_tests: [unique, not_null]

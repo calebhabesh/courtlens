@@ -1,0 +1,241 @@
+INFO  [alembic.runtime.migration] Context impl PostgresqlImpl.
+INFO  [alembic.runtime.migration] Will assume transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade  -> 0001, Create the initial CourtLoad operational schema.
+INFO  [alembic.runtime.migration] Running upgrade 0001 -> 8ffd4c5912e2, archive lineage and facts
+INFO  [alembic.runtime.migration] Running upgrade 8ffd4c5912e2 -> 4b19f0a2c7de, warehouse publication state and immutable serving rows
+INFO  [alembic.runtime.migration] Running upgrade 4b19f0a2c7de -> 882c8b450cb3, workbench_contracts_and_tables
+INFO  [alembic.runtime.migration] Running upgrade 882c8b450cb3 -> 1b66214e7c08, personal_workspace_state
+INFO  [alembic.runtime.migration] Running upgrade 1b66214e7c08 -> c7e21a084f91, identity_crosswalk_and_measurements
+INFO  [alembic.runtime.migration] Running upgrade c7e21a084f91 -> e8b19a084f92, rich_source_admission_tables
+INFO  [alembic.runtime.migration] Running upgrade e8b19a084f92 -> f9c31a084f93, possession_and_stint_warehouse_tables
+INFO  [alembic.runtime.migration] Running upgrade f9c31a084f93 -> 0af4286cb194, Append-only independent research inputs; no release publication or retained-row changes.
+INFO  [alembic.runtime.migration] Running upgrade 0af4286cb194 -> 27b810a4f001, B28 immutable financial source books and correction lineage.
+INFO  [alembic.runtime.migration] Running upgrade 27b810a4f001 -> 31b810a4f002, B31 bounded Live demand, provisional observations and reconciliation evidence.
+INFO  [alembic.runtime.migration] Running upgrade 31b810a4f002 -> 35b810a4f003, B35a explicit retained conversational analytical manifests.
+INFO  [alembic.runtime.migration] Running upgrade 35b810a4f003 -> 19b810a4f004, B19b independent assignment datasets and transaction-sealed memberships.
+INFO  [alembic.runtime.migration] Running upgrade 19b810a4f004 -> 07b810a4f005, PF07b durable local assistant history, isolated from saved findings.
+INFO  [alembic.runtime.migration] Running upgrade 07b810a4f005 -> 08b810a4f006, AG03 server-owned provider transcripts; existing turn/history payloads stay valid.
+INFO  [alembic.runtime.migration] Running upgrade 08b810a4f006 -> 09b810a4f007, RN02 rename PostgreSQL functions and the administrative mutation namespace.
+........................................................................ [  4%]
+.............................s.......................................... [  9%]
+........................................................................ [ 13%]
+........................................................................ [ 18%]
+........................................................................ [ 22%]
+......................F................................................. [ 27%]
+........................................................................ [ 31%]
+........................................................................ [ 36%]
+.........................FF............................................. [ 41%]
+........................................................................ [ 45%]
+........................................................................ [ 50%]
+...............................................F.FF..F.F..F............. [ 54%]
+........................................................................ [ 59%]
+........................................................................ [ 63%]
+........................................................................ [ 68%]
+........................................................................ [ 72%]
+........................................................................ [ 77%]
+........................................................................ [ 82%]
+........................................................................ [ 86%]
+........................................................................ [ 91%]
+........................................................................ [ 95%]
+....................................................................     [100%]
+=================================== FAILURES ===================================
+_______________________ test_get_rich_admissions_report ________________________
+
+db_session = <sqlalchemy.orm.session.Session object at 0x7f65b965b950>
+test_dataset = <courtlens.workbench_models.WorkbenchDataset object at 0x7f65b95de680>
+
+    def test_get_rich_admissions_report(
+        db_session: Session, test_dataset: WorkbenchDataset, tmp_path: Path
+    ) -> None:
+        """Verify querying rich admission reports."""
+        create_mock_season_dir(tmp_path)
+        admit_rich_sources_for_season(
+>           session=db_session,
+            dataset_id=test_dataset.id,
+            season_ending_year=2024,
+            raw_root=tmp_path,
+            target_game_ids={"0099999999"},
+            families=["possessions"],
+        )
+E       assert 0 >= 1
+E        +  where 0 = len([])
+
+tests/integration/test_rich_admission_postgres.py:964: AssertionError
+______________________ test_assistant_query_when_disabled ______________________
+
+postgres_session = <sqlalchemy.orm.session.Session object at 0x7f65bafaf050>
+
+>   ???
+
+/tmp/courtlens-rn01-1ibmxth5/tests/unit/test_assistant.py:161: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/home/ethioking/dev/nba-analytics/src/courtlens/services/assistant/service.py:158: in run_assistant_query
+    result = run_conversation_turn(session, request, planner)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/ethioking/dev/nba-analytics/src/courtlens/services/assistant/conversations.py:272: in run_conversation_turn
+    return _resolved_turn(session, request, provider, start)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/ethioking/dev/nba-analytics/src/courtlens/services/assistant/conversations.py:278: in _resolved_turn
+    cid, state = _resolve(session, request)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/ethioking/dev/nba-analytics/src/courtlens/services/assistant/conversations.py:176: in _resolve
+    context = resolve_workbench_context(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+session = <sqlalchemy.orm.session.Session object at 0x7f65bafaf050>
+release_id = None, requested_season = None, requested_phase = None
+requested_before_date = None, requested_window = None
+
+    def resolve_workbench_context(
+        session: Session,
+        release_id: str | None = None,
+        requested_season: str | None = None,
+        requested_phase: str | None = None,
+        requested_before_date: date | None = None,
+        requested_window: str | None = None,
+        *,
+        channel: str = DEFAULT_CHANNEL,
+    ) -> ResolvedContext:
+        """Resolve release context, temporal boundaries, and dataset binding."""
+        published_at: str | None = None
+        target_id = release_id
+    
+        if target_id is None:
+            pointer = session.get(PublishedSnapshot, channel)
+            if pointer is None:
+>               raise HTTPException(
+                    status_code=503,
+                    detail={
+                        "reason": "no_published_data",
+                        "message": "No analytics snapshot is published.",
+                    },
+                )
+E               fastapi.exceptions.HTTPException: 503: {'reason': 'no_published_data', 'message': 'No analytics snapshot is published.'}
+
+/home/ethioking/dev/nba-analytics/src/courtlens/services/workbench_analytics.py:199: HTTPException
+_________________ test_curated_questions_offline_verification __________________
+
+postgres_session = <sqlalchemy.orm.session.Session object at 0x7f65bae1be50>
+
+>   ???
+
+/tmp/courtlens-rn01-1ibmxth5/tests/unit/test_assistant.py:176: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/home/ethioking/dev/nba-analytics/src/courtlens/services/assistant/service.py:158: in run_assistant_query
+    result = run_conversation_turn(session, request, planner)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/ethioking/dev/nba-analytics/src/courtlens/services/assistant/conversations.py:272: in run_conversation_turn
+    return _resolved_turn(session, request, provider, start)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/ethioking/dev/nba-analytics/src/courtlens/services/assistant/conversations.py:278: in _resolved_turn
+    cid, state = _resolve(session, request)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/ethioking/dev/nba-analytics/src/courtlens/services/assistant/conversations.py:176: in _resolve
+    context = resolve_workbench_context(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+session = <sqlalchemy.orm.session.Session object at 0x7f65bae1be50>
+release_id = None, requested_season = None, requested_phase = None
+requested_before_date = None, requested_window = None
+
+    def resolve_workbench_context(
+        session: Session,
+        release_id: str | None = None,
+        requested_season: str | None = None,
+        requested_phase: str | None = None,
+        requested_before_date: date | None = None,
+        requested_window: str | None = None,
+        *,
+        channel: str = DEFAULT_CHANNEL,
+    ) -> ResolvedContext:
+        """Resolve release context, temporal boundaries, and dataset binding."""
+        published_at: str | None = None
+        target_id = release_id
+    
+        if target_id is None:
+            pointer = session.get(PublishedSnapshot, channel)
+            if pointer is None:
+>               raise HTTPException(
+                    status_code=503,
+                    detail={
+                        "reason": "no_published_data",
+                        "message": "No analytics snapshot is published.",
+                    },
+                )
+E               fastapi.exceptions.HTTPException: 503: {'reason': 'no_published_data', 'message': 'No analytics snapshot is published.'}
+
+/home/ethioking/dev/nba-analytics/src/courtlens/services/workbench_analytics.py:199: HTTPException
+___________________ test_exact_alias_and_diacritic_discovery ___________________
+
+test_db_session = <sqlalchemy.orm.session.Session object at 0x7f65abe40c50>
+
+>   ???
+E   AssertionError: assert 0 >= 1
+E    +  where 0 = len([])
+E    +    where [] = LookupResponse(query=QueryNormalizationInfo(raw='jokic', normalized='jokic', tokens=['jokic'], version='v1'), catalog_version='pf04-v1', release_id=None, season=None, total_matches=0, items=[], latency_ms=4.218).items
+
+/tmp/courtlens-rn01-1ibmxth5/tests/unit/test_entity_lookup.py:178: AssertionError
+_____________ test_ambiguous_identities_returned_deterministically _____________
+
+test_db_session = <sqlalchemy.orm.session.Session object at 0x7f65abd9ab50>
+
+>   ???
+E   AssertionError: assert 'Jalen Williams' in []
+
+/tmp/courtlens-rn01-1ibmxth5/tests/unit/test_entity_lookup.py:233: AssertionError
+_______________ test_rookie_zero_game_and_empty_season_discovery _______________
+
+test_db_session = <sqlalchemy.orm.session.Session object at 0x7f65ab6e3450>
+
+>   ???
+E   AssertionError: assert 0 >= 1
+E    +  where 0 = len([])
+E    +    where [] = LookupResponse(query=QueryNormalizationInfo(raw='Jokic', normalized='jokic', tokens=['jokic'], version='v1'), catalog_version='pf04-v1', release_id=None, season='2026-27', total_matches=0, items=[], latency_ms=0.333).items
+
+/tmp/courtlens-rn01-1ibmxth5/tests/unit/test_entity_lookup.py:280: AssertionError
+__________________________ test_typo_matching_bounded __________________________
+
+test_db_session = <sqlalchemy.orm.session.Session object at 0x7f65ab372450>
+
+>   ???
+E   AssertionError: assert 0 >= 1
+E    +  where 0 = len([])
+E    +    where [] = LookupResponse(query=QueryNormalizationInfo(raw='jokik', normalized='jokik', tokens=['jokik'], version='v1'), catalog_version='pf04-v1', release_id=None, season=None, total_matches=0, items=[], latency_ms=2.987).items
+
+/tmp/courtlens-rn01-1ibmxth5/tests/unit/test_entity_lookup.py:320: AssertionError
+________________ test_context_preservation_in_destination_urls _________________
+
+test_db_session = <sqlalchemy.orm.session.Session object at 0x7f65ab371950>
+
+>   ???
+E   AssertionError: assert 0 >= 1
+E    +  where 0 = len([])
+E    +    where [] = LookupResponse(query=QueryNormalizationInfo(raw='Jokic', normalized='jokic', tokens=['jokic'], version='v1'), catalog_version='pf04-v1', release_id='rel-2026-v1', season='2023-24', total_matches=0, items=[], latency_ms=3.974).items
+
+/tmp/courtlens-rn01-1ibmxth5/tests/unit/test_entity_lookup.py:354: AssertionError
+________ test_retained_canonical_selections_resolve_without_name_input _________
+
+test_db_session = <sqlalchemy.orm.session.Session object at 0x7f65ab371250>
+
+>   ???
+E   IndexError: list index out of range
+
+/tmp/courtlens-rn01-1ibmxth5/tests/unit/test_entity_lookup.py:455: IndexError
+=============================== warnings summary ===============================
+../../home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/google/genai/types.py:42
+  /home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/google/genai/types.py:42: DeprecationWarning: '_UnionGenericAlias' is deprecated and slated for removal in Python 3.17
+    VersionedUnionType = Union[builtin_types.UnionType, _UnionGenericAlias]
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+SKIPPED [1] ../courtlens-rn01-1ibmxth5/tests/integration/test_assistant_panel_browser.py:27: isolated Next browser server required
+FAILED tests/integration/test_rich_admission_postgres.py::test_get_rich_admissions_report
+FAILED tests/unit/test_assistant.py::test_assistant_query_when_disabled - fas...
+FAILED tests/unit/test_assistant.py::test_curated_questions_offline_verification
+FAILED tests/unit/test_entity_lookup.py::test_exact_alias_and_diacritic_discovery
+FAILED tests/unit/test_entity_lookup.py::test_ambiguous_identities_returned_deterministically
+FAILED tests/unit/test_entity_lookup.py::test_rookie_zero_game_and_empty_season_discovery
+FAILED tests/unit/test_entity_lookup.py::test_typo_matching_bounded - Asserti...
+FAILED tests/unit/test_entity_lookup.py::test_context_preservation_in_destination_urls
+FAILED tests/unit/test_entity_lookup.py::test_retained_canonical_selections_resolve_without_name_input
+9 failed, 1570 passed, 1 skipped, 19 deselected, 1 warning in 303.47s (0:05:03)

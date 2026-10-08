@@ -1,0 +1,42 @@
+persisted 2025-26 regular_season 200
+Traceback (most recent call last):
+  File "<frozen runpy>", line 203, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/home/ethioking/dev/nba-analytics/src/courtlens/ingestion/impact_population.py", line 579, in <module>
+    main()
+    ~~~~^^
+  File "/home/ethioking/dev/nba-analytics/src/courtlens/ingestion/impact_population.py", line 566, in main
+    build_possession_warehouse_for_season(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        session,
+        ^^^^^^^^
+    ...<2 lines>...
+        impact_bundle=path,
+        ^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/ethioking/dev/nba-analytics/src/courtlens/services/possession_warehouse.py", line 502, in build_possession_warehouse_for_season
+    return populate_impact_season(
+        session, dataset_id=dataset_id, season=season, bundle_path=impact_bundle
+    )
+  File "/home/ethioking/dev/nba-analytics/src/courtlens/ingestion/impact_population.py", line 481, in populate_impact_season
+    result=read_json(Path(member["candidate_path"])),
+           ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ethioking/dev/nba-analytics/src/courtlens/ingestion/impact_population.py", line 43, in read_json
+    value: dict[str, Any] = json.load(stream)
+                            ~~~~~~~~~^^^^^^^^
+  File "/usr/lib/python3.14/json/__init__.py", line 298, in load
+    return loads(fp.read(),
+        cls=cls, object_hook=object_hook,
+        parse_float=parse_float, parse_int=parse_int,
+        parse_constant=parse_constant, object_pairs_hook=object_pairs_hook, **kw)
+  File "/usr/lib/python3.14/json/__init__.py", line 352, in loads
+    return _default_decoder.decode(s)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "/usr/lib/python3.14/json/decoder.py", line 345, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/json/decoder.py", line 361, in raw_decode
+    obj, end = self.scan_once(s, idx)
+               ~~~~~~~~~~~~~~^^^^^^^^
+KeyboardInterrupt

@@ -1,0 +1,1266 @@
+INFO  [alembic.runtime.migration] Context impl PostgresqlImpl.
+INFO  [alembic.runtime.migration] Will assume transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade  -> 0001, Create the initial CourtLoad operational schema.
+INFO  [alembic.runtime.migration] Running upgrade 0001 -> 8ffd4c5912e2, archive lineage and facts
+INFO  [alembic.runtime.migration] Running upgrade 8ffd4c5912e2 -> 4b19f0a2c7de, warehouse publication state and immutable serving rows
+INFO  [alembic.runtime.migration] Running upgrade 4b19f0a2c7de -> 882c8b450cb3, workbench_contracts_and_tables
+INFO  [alembic.runtime.migration] Running upgrade 882c8b450cb3 -> 1b66214e7c08, personal_workspace_state
+INFO  [alembic.runtime.migration] Running upgrade 1b66214e7c08 -> c7e21a084f91, identity_crosswalk_and_measurements
+INFO  [alembic.runtime.migration] Running upgrade c7e21a084f91 -> e8b19a084f92, rich_source_admission_tables
+INFO  [alembic.runtime.migration] Running upgrade e8b19a084f92 -> f9c31a084f93, possession_and_stint_warehouse_tables
+INFO  [alembic.runtime.migration] Running upgrade f9c31a084f93 -> 0af4286cb194, Append-only independent research inputs; no release publication or retained-row changes.
+INFO  [alembic.runtime.migration] Running upgrade 0af4286cb194 -> 27b810a4f001, B28 immutable financial source books and correction lineage.
+INFO  [alembic.runtime.migration] Running upgrade 27b810a4f001 -> 31b810a4f002, B31 bounded Live demand, provisional observations and reconciliation evidence.
+INFO  [alembic.runtime.migration] Running upgrade 31b810a4f002 -> 35b810a4f003, B35a explicit retained conversational analytical manifests.
+INFO  [alembic.runtime.migration] Running upgrade 35b810a4f003 -> 19b810a4f004, B19b independent assignment datasets and transaction-sealed memberships.
+INFO  [alembic.runtime.migration] Running upgrade 19b810a4f004 -> 07b810a4f005, PF07b durable local assistant history, isolated from saved findings.
+INFO  [alembic.runtime.migration] Running upgrade 07b810a4f005 -> 08b810a4f006, AG03 server-owned provider transcripts; existing turn/history payloads stay valid.
+INFO  [alembic.runtime.migration] Running upgrade 08b810a4f006 -> 09b810a4f007, RN02 rename PostgreSQL functions and the administrative mutation namespace.
+........................................................F............... [  4%]
+.............................s.......................................... [  9%]
+........................................................................ [ 13%]
+........................................................................ [ 18%]
+........................................................................ [ 22%]
+.........sFFF.....F..................................................... [ 27%]
+.............F.FF..F.................................................... [ 31%]
+........................................................................ [ 36%]
+........................................................................ [ 41%]
+........................................................................ [ 45%]
+........................................................................ [ 50%]
+........................................................................ [ 54%]
+........................................................................ [ 59%]
+........................................................................ [ 63%]
+........................................................................ [ 68%]
+........................................................................ [ 73%]
+........................................................................ [ 77%]
+........................................................................ [ 82%]
+........................................................................ [ 86%]
+.............................................................F.......... [ 91%]
+........................................................................ [ 95%]
+............................FF............................F.....         [100%]
+=================================== FAILURES ===================================
+____________ TestAnalyticalOpsApi.test_statistical_peers_similarity ____________
+
+self = <test_analytical_ops_api.TestAnalyticalOpsApi object at 0x7fdb50808ef0>
+client = <starlette.testclient.TestClient object at 0x7fdadef18c00>
+
+>   ???
+E   assert 5 >= 6
+
+/tmp/courtlens-python-db8vvql_/tests/integration/test_analytical_ops_api.py:183: AssertionError
+___________ test_workbench_backup_manifest_and_restore_verification ____________
+
+postgres_session = <sqlalchemy.orm.session.Session object at 0x7fdaeec62c50>
+
+>   ???
+
+/tmp/courtlens-rn01-1ibmxth5/tests/integration/test_restore_postgres.py:204: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/home/ethioking/dev/nba-analytics/src/courtlens/services/backup_restore.py:95: in create_backup_manifest
+    return _create_backup_manifest_internal(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+session = <sqlalchemy.orm.session.Session object at 0x7fdaeec62c50>
+
+    def _create_backup_manifest_internal(
+        session: Session,
+        *,
+        artifacts_dir: Path,
+        raw_dir: Path,
+        channel: str,
+        code_version: str,
+        run_id: str,
+        workbench_raw_root: Path | None,
+        evaluation_configs_dir: Path | None,
+    ) -> dict[str, Any]:
+        pointer = session.get(PublishedSnapshot, channel)
+        if pointer is None:
+>           raise ValueError(f"No published pointer exists for channel '{channel}'")
+E           ValueError: No published pointer exists for channel 'public'
+
+/home/ethioking/dev/nba-analytics/src/courtlens/services/backup_restore.py:120: ValueError
+_______ test_restore_verification_fails_on_missing_or_tampered_artifact ________
+
+postgres_session = <sqlalchemy.orm.session.Session object at 0x7fdaeec63150>
+tmp_path = PosixPath('/tmp/pytest-of-ethioking/pytest-202/test_restore_verification_fail0')
+
+>   ???
+
+/tmp/courtlens-rn01-1ibmxth5/tests/integration/test_restore_postgres.py:237: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+session = <sqlalchemy.orm.session.Session object at 0x7fdaeec63150>
+
+    def verify_restored_state(
+        session: Session,
+        *,
+        artifacts_dir: Path,
+        expected_snapshot_id: str | None = None,
+        channel: str = DEFAULT_CHANNEL,
+        run_id: str = REGISTERED_RUN_ID,
+        expected_artifact_hashes: dict[str, str] | None = None,
+        verify_comparison: bool = True,
+        test_player_a: str = "2544",
+        test_player_b: str = "201939",
+        test_date: date | None = None,
+        expected_saved_conversations: list[dict[str, str]] | None = None,
+        expected_assistant_history: dict[str, Any] | None = None,
+    ) -> dict[str, Any]:
+        """Verify that a restored database and artifact directory satisfy all CourtLens invariants."""
+        if (
+            expected_assistant_history is not None
+            and history_inventory(session) != expected_assistant_history
+        ):
+            raise ValueError("Restored assistant history differs from backup")
+        conversation_inventory = saved_inventory(session)
+        if (
+            expected_saved_conversations is not None
+            and conversation_inventory != expected_saved_conversations
+        ):
+            raise ValueError("Restored conversational investigation inventory differs from backup")
+        if expected_snapshot_id:
+            snapshot = session.get(ServingSnapshot, expected_snapshot_id)
+            if snapshot is None:
+                raise ValueError(f"Expected snapshot '{expected_snapshot_id}' does not exist")
+        else:
+            pointer = session.get(PublishedSnapshot, channel)
+            if pointer is None:
+>               raise ValueError(f"No published pointer exists for channel '{channel}'")
+E               ValueError: No published pointer exists for channel 'public'
+
+/home/ethioking/dev/nba-analytics/src/courtlens/services/backup_restore.py:318: ValueError
+____________________ test_disposable_fresh_database_restore ____________________
+
+postgres_session = <sqlalchemy.orm.session.Session object at 0x7fdaec30b450>
+tmp_path = PosixPath('/tmp/pytest-of-ethioking/pytest-202/test_disposable_fresh_database0')
+
+>   ???
+
+/tmp/courtlens-rn01-1ibmxth5/tests/integration/test_restore_postgres.py:251: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/home/ethioking/dev/nba-analytics/src/courtlens/services/backup_restore.py:789: in create_backup_archive
+    _dump_postgres_database(db_dump_file, database_url=database_url)
+/home/ethioking/dev/nba-analytics/src/courtlens/services/backup_restore.py:680: in _dump_postgres_database
+    arguments, environment = _docker_postgres_connection(database_url)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+database_url = None, database_name = None
+
+    def _docker_postgres_connection(
+        database_url: str | None, database_name: str | None = None
+    ) -> tuple[list[str], dict[str, str]]:
+        """Pass the selected connection to Compose clients without password arguments."""
+        url = make_url(
+            database_url
+            or os.getenv("COURTLENS_DATABASE_URL")
+            or "postgresql://courtlens@localhost:5432/courtlens"
+        )
+        if url.get_backend_name() != "postgresql":
+>           raise ValueError("PostgreSQL recovery requires a PostgreSQL connection")
+E           ValueError: PostgreSQL recovery requires a PostgreSQL connection
+
+/home/ethioking/dev/nba-analytics/src/courtlens/services/backup_restore.py:641: ValueError
+______________ test_point_conservation_quarantine_with_real_game _______________
+
+db_session = <sqlalchemy.orm.session.Session object at 0x7fdad541b250>
+test_dataset = <courtlens.workbench_models.WorkbenchDataset object at 0x7fdade257520>
+tmp_path = PosixPath('/tmp/pytest-of-ethioking/pytest-202/test_point_conservation_quaran0')
+
+>   ???
+E   AssertionError: assert 1 == 0
+E    +  where 1 = RichAdmissionSummary(season='2023-24', source_family='possessions', total_games_expected=0, total_games_observed=1, to...7f6dd0d8a1ce75ad3b', source_bytes=320, parser_signature='courtload-sdv-rich-v1', policy_version='possession-policy-v1').total_games_admitted
+
+/tmp/courtlens-rn01-1ibmxth5/tests/integration/test_rich_admission_postgres.py:875: AssertionError
+________________________ test_interrupted_job_recovery _________________________
+
+postgres_engine = Engine(postgresql+psycopg://courtlens:***@127.0.0.1:32768/courtlens_test)
+
+>   ???
+E   AssertionError: assert 'interrupted' == 'succeeded'
+E     
+E     - succeeded
+E     + interrupted
+
+/tmp/courtlens-rn01-1ibmxth5/tests/integration/test_workbench_jobs_postgres.py:221: AssertionError
+------------------------------ Captured log call -------------------------------
+WARNING  courtlens.services.workbench_jobs:workbench_jobs.py:159 Recovered job 1de6c7b4-3a02-43b1-bdc7-bccc303378c5 to interrupted: lease expired at 2026-10-07T22:12:53.458575+00:00
+WARNING  courtlens.services.workbench_jobs:workbench_jobs.py:159 Recovered job 9726ebc1-75bc-400c-9d57-ac5ca701bcd3 to interrupted: lease expired at 2026-10-07T22:12:53.458575+00:00
+______________________ test_operator_token_authorization _______________________
+
+self = <sqlalchemy.engine.base.Connection object at 0x7fdace79d9a0>
+dialect = <sqlalchemy.dialects.sqlite.pysqlite.SQLiteDialect_pysqlite object at 0x7fdb525a7cb0>
+context = <sqlalchemy.dialects.sqlite.base.SQLiteExecutionContext object at 0x7fdad4b265d0>
+statement = <sqlalchemy.dialects.sqlite.base.SQLiteCompiler object at 0x7fdad6945150>
+parameters = [('portraits', 'queued', 'running', 1, 0)]
+
+    def _exec_single_context(
+        self,
+        dialect: Dialect,
+        context: ExecutionContext,
+        statement: Union[str, Compiled],
+        parameters: Optional[_AnyMultiExecuteParams],
+    ) -> CursorResult[Any]:
+        """continue the _execute_context() method for a single DBAPI
+        cursor.execute() or cursor.executemany() call.
+    
+        """
+        if dialect.bind_typing is BindTyping.SETINPUTSIZES:
+            generic_setinputsizes = context._prepare_set_input_sizes()
+    
+            if generic_setinputsizes:
+                try:
+                    dialect.do_set_input_sizes(
+                        context.cursor, generic_setinputsizes, context
+                    )
+                except BaseException as e:
+                    self._handle_dbapi_exception(
+                        e, str(statement), parameters, None, context
+                    )
+    
+        cursor, str_statement, parameters = (
+            context.cursor,
+            context.statement,
+            context.parameters,
+        )
+    
+        effective_parameters: Optional[_AnyExecuteParams]
+    
+        if not context.executemany:
+            effective_parameters = parameters[0]
+        else:
+            effective_parameters = parameters
+    
+        if self._has_events or self.engine._has_events:
+            for fn in self.dispatch.before_cursor_execute:
+                str_statement, effective_parameters = fn(
+                    self,
+                    cursor,
+                    str_statement,
+                    effective_parameters,
+                    context,
+                    context.executemany,
+                )
+    
+        if self._echo:
+            self._log_info(str_statement)
+    
+            stats = context._get_cache_stats()
+    
+            if not self.engine.hide_parameters:
+                self._log_info(
+                    "[%s] %r",
+                    stats,
+                    sql_util._repr_params(
+                        effective_parameters,
+                        batches=10,
+                        ismulti=context.executemany,
+                    ),
+                )
+            else:
+                self._log_info(
+                    "[%s] [SQL parameters hidden due to hide_parameters=True]",
+                    stats,
+                )
+    
+        evt_handled: bool = False
+        try:
+            if context.execute_style is ExecuteStyle.EXECUTEMANY:
+                effective_parameters = cast(
+                    "_CoreMultiExecuteParams", effective_parameters
+                )
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_executemany:
+                        if fn(
+                            cursor,
+                            str_statement,
+                            effective_parameters,
+                            context,
+                        ):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+                    self.dialect.do_executemany(
+                        cursor,
+                        str_statement,
+                        effective_parameters,
+                        context,
+                    )
+            elif not effective_parameters and context.no_parameters:
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_execute_no_params:
+                        if fn(cursor, str_statement, context):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+                    self.dialect.do_execute_no_params(
+                        cursor, str_statement, context
+                    )
+            else:
+                effective_parameters = cast(
+                    "_CoreSingleExecuteParams", effective_parameters
+                )
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_execute:
+                        if fn(
+                            cursor,
+                            str_statement,
+                            effective_parameters,
+                            context,
+                        ):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+>                   self.dialect.do_execute(
+                        cursor, str_statement, effective_parameters, context
+                    )
+
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/sqlalchemy/engine/base.py:1969: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <sqlalchemy.dialects.sqlite.pysqlite.SQLiteDialect_pysqlite object at 0x7fdb525a7cb0>
+cursor = <sqlite3.Cursor object at 0x7fdacd3108c0>
+statement = 'SELECT workbench_jobs.id, workbench_jobs.job_type, workbench_jobs.status, workbench_jobs.arguments_json, workbench_jo...kbench_jobs.job_type = ? AND workbench_jobs.status IN (?, ?) ORDER BY workbench_jobs.created_at ASC\n LIMIT ? OFFSET ?'
+parameters = ('portraits', 'queued', 'running', 1, 0)
+context = <sqlalchemy.dialects.sqlite.base.SQLiteExecutionContext object at 0x7fdad4b265d0>
+
+    def do_execute(self, cursor, statement, parameters, context=None):
+>       cursor.execute(statement, parameters)
+E       sqlite3.OperationalError: no such table: workbench_jobs
+
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/sqlalchemy/engine/default.py:952: OperationalError
+
+The above exception was the direct cause of the following exception:
+
+api_client = <starlette.testclient.TestClient object at 0x7fdace8ad040>
+
+>   ???
+
+/tmp/courtlens-rn01-1ibmxth5/tests/integration/test_workbench_jobs_postgres.py:291: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/starlette/testclient.py:556: in post
+    return super().post(
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/httpx2/_client.py:1204: in post
+    return self.request(
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/starlette/testclient.py:455: in request
+    return super().request(
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/httpx2/_client.py:797: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/httpx2/_client.py:980: in send
+    response = self._send_handling_auth(
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/httpx2/_client.py:1008: in _send_handling_auth
+    response = self._send_handling_redirects(
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/httpx2/_client.py:1043: in _send_handling_redirects
+    response = self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/httpx2/_client.py:1076: in _send_single_request
+    response = transport.handle_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/starlette/testclient.py:354: in handle_request
+    raise exc
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/starlette/testclient.py:351: in handle_request
+    portal.call(self.app, scope, receive, send)
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/anyio/from_thread.py:338: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/lib/python3.14/concurrent/futures/_base.py:454: in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+/usr/lib/python3.14/concurrent/futures/_base.py:396: in __get_result
+    raise self._exception
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/anyio/from_thread.py:263: in _call_func
+    retval = await retval_or_awaitable
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/fastapi/applications.py:1163: in __call__
+    await super().__call__(scope, receive, send)
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/starlette/applications.py:96: in __call__
+    await self.middleware_stack(scope, receive, send)
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/starlette/middleware/errors.py:186: in __call__
+    raise exc
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/starlette/middleware/errors.py:164: in __call__
+    await self.app(scope, receive, _send)
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/starlette/middleware/base.py:193: in __call__
+    response = await self.dispatch_func(request, call_next)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/ethioking/dev/nba-analytics/src/courtlens/api/app.py:56: in request_context
+    response = await observe_request(request, call_next)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/ethioking/dev/nba-analytics/src/courtlens/api/metrics.py:25: in observe_request
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/starlette/middleware/base.py:168: in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/starlette/middleware/base.py:144: in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/starlette/middleware/cors.py:88: in __call__
+    await self.app(scope, receive, send)
+/home/ethioking/dev/nba-analytics/src/courtlens/api/assistant_limits.py:20: in __call__
+    await self.app(scope, receive, send)
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/starlette/middleware/exceptions.py:63: in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/starlette/_exception_handler.py:53: in wrapped_app
+    raise exc
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/starlette/_exception_handler.py:42: in wrapped_app
+    await app(scope, receive, sender)
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/fastapi/middleware/asyncexitstack.py:18: in __call__
+    await self.app(scope, receive, send)
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/starlette/routing.py:670: in __call__
+    await self.middleware_stack(scope, receive, send)
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/fastapi/routing.py:2734: in app
+    await route.handle(scope, receive, send)
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/fastapi/routing.py:1780: in handle
+    await self.original_router.handle(scope, receive, send)
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/fastapi/routing.py:2789: in handle
+    await included_router._handle_selected(scope, receive, send)
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/fastapi/routing.py:1800: in _handle_selected
+    await original_route.handle(scope, receive, send)
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/fastapi/routing.py:1279: in handle
+    await app(scope, receive, send)
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/fastapi/routing.py:158: in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/starlette/_exception_handler.py:53: in wrapped_app
+    raise exc
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/starlette/_exception_handler.py:42: in wrapped_app
+    await app(scope, receive, sender)
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/fastapi/routing.py:144: in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/fastapi/routing.py:706: in app
+    raw_response = await run_endpoint_function(
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/fastapi/routing.py:354: in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/starlette/concurrency.py:34: in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/anyio/to_thread.py:65: in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/anyio/_backends/_asyncio.py:2641: in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/anyio/_backends/_asyncio.py:1033: in run
+    result = context.run(func, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+/home/ethioking/dev/nba-analytics/src/courtlens/api/routers/workbench.py:1045: in create_job
+    job = enqueue_job(session, payload.job_type, payload.arguments)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/ethioking/dev/nba-analytics/src/courtlens/services/workbench_jobs.py:96: in enqueue_job
+    existing = session.scalar(statement.order_by(WorkbenchJob.created_at.asc()).limit(1))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/sqlalchemy/orm/session.py:2421: in scalar
+    return self._execute_internal(
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/sqlalchemy/orm/session.py:2271: in _execute_internal
+    result: Result[Any] = compile_state_cls.orm_execute_statement(
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/sqlalchemy/orm/context.py:306: in orm_execute_statement
+    result = conn.execute(
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/sqlalchemy/engine/base.py:1421: in execute
+    return meth(
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/sqlalchemy/sql/elements.py:526: in _execute_on_connection
+    return connection._execute_clauseelement(
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/sqlalchemy/engine/base.py:1643: in _execute_clauseelement
+    ret = self._execute_context(
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/sqlalchemy/engine/base.py:1848: in _execute_context
+    return self._exec_single_context(
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/sqlalchemy/engine/base.py:1988: in _exec_single_context
+    self._handle_dbapi_exception(
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/sqlalchemy/engine/base.py:2365: in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/sqlalchemy/engine/base.py:1969: in _exec_single_context
+    self.dialect.do_execute(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <sqlalchemy.dialects.sqlite.pysqlite.SQLiteDialect_pysqlite object at 0x7fdb525a7cb0>
+cursor = <sqlite3.Cursor object at 0x7fdacd3108c0>
+statement = 'SELECT workbench_jobs.id, workbench_jobs.job_type, workbench_jobs.status, workbench_jobs.arguments_json, workbench_jo...kbench_jobs.job_type = ? AND workbench_jobs.status IN (?, ?) ORDER BY workbench_jobs.created_at ASC\n LIMIT ? OFFSET ?'
+parameters = ('portraits', 'queued', 'running', 1, 0)
+context = <sqlalchemy.dialects.sqlite.base.SQLiteExecutionContext object at 0x7fdad4b265d0>
+
+    def do_execute(self, cursor, statement, parameters, context=None):
+>       cursor.execute(statement, parameters)
+E       sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: workbench_jobs
+E       [SQL: SELECT workbench_jobs.id, workbench_jobs.job_type, workbench_jobs.status, workbench_jobs.arguments_json, workbench_jobs.owner, workbench_jobs.heartbeat_at, workbench_jobs.started_at, workbench_jobs.finished_at, workbench_jobs.stage, workbench_jobs.timings_json, workbench_jobs.input_refs_json, workbench_jobs.output_refs_json, workbench_jobs.error_summary, workbench_jobs.created_at 
+E       FROM workbench_jobs 
+E       WHERE workbench_jobs.job_type = ? AND workbench_jobs.status IN (?, ?) ORDER BY workbench_jobs.created_at ASC
+E        LIMIT ? OFFSET ?]
+E       [parameters: ('portraits', 'queued', 'running', 1, 0)]
+E       (Background on this error at: https://sqlalche.me/e/20/e3q8)
+
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/sqlalchemy/engine/default.py:952: OperationalError
+_________________________ test_prompt_job_id_response __________________________
+
+self = <sqlalchemy.engine.base.Connection object at 0x7fdacd6ea6c0>
+dialect = <sqlalchemy.dialects.sqlite.pysqlite.SQLiteDialect_pysqlite object at 0x7fdb525a7cb0>
+context = <sqlalchemy.dialects.sqlite.base.SQLiteExecutionContext object at 0x7fdad712fad0>
+statement = <sqlalchemy.dialects.sqlite.base.SQLiteCompiler object at 0x7fdad6945150>
+parameters = [('refresh', 'queued', 'running', 1, 0)]
+
+    def _exec_single_context(
+        self,
+        dialect: Dialect,
+        context: ExecutionContext,
+        statement: Union[str, Compiled],
+        parameters: Optional[_AnyMultiExecuteParams],
+    ) -> CursorResult[Any]:
+        """continue the _execute_context() method for a single DBAPI
+        cursor.execute() or cursor.executemany() call.
+    
+        """
+        if dialect.bind_typing is BindTyping.SETINPUTSIZES:
+            generic_setinputsizes = context._prepare_set_input_sizes()
+    
+            if generic_setinputsizes:
+                try:
+                    dialect.do_set_input_sizes(
+                        context.cursor, generic_setinputsizes, context
+                    )
+                except BaseException as e:
+                    self._handle_dbapi_exception(
+                        e, str(statement), parameters, None, context
+                    )
+    
+        cursor, str_statement, parameters = (
+            context.cursor,
+            context.statement,
+            context.parameters,
+        )
+    
+        effective_parameters: Optional[_AnyExecuteParams]
+    
+        if not context.executemany:
+            effective_parameters = parameters[0]
+        else:
+            effective_parameters = parameters
+    
+        if self._has_events or self.engine._has_events:
+            for fn in self.dispatch.before_cursor_execute:
+                str_statement, effective_parameters = fn(
+                    self,
+                    cursor,
+                    str_statement,
+                    effective_parameters,
+                    context,
+                    context.executemany,
+                )
+    
+        if self._echo:
+            self._log_info(str_statement)
+    
+            stats = context._get_cache_stats()
+    
+            if not self.engine.hide_parameters:
+                self._log_info(
+                    "[%s] %r",
+                    stats,
+                    sql_util._repr_params(
+                        effective_parameters,
+                        batches=10,
+                        ismulti=context.executemany,
+                    ),
+                )
+            else:
+                self._log_info(
+                    "[%s] [SQL parameters hidden due to hide_parameters=True]",
+                    stats,
+                )
+    
+        evt_handled: bool = False
+        try:
+            if context.execute_style is ExecuteStyle.EXECUTEMANY:
+                effective_parameters = cast(
+                    "_CoreMultiExecuteParams", effective_parameters
+                )
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_executemany:
+                        if fn(
+                            cursor,
+                            str_statement,
+                            effective_parameters,
+                            context,
+                        ):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+                    self.dialect.do_executemany(
+                        cursor,
+                        str_statement,
+                        effective_parameters,
+                        context,
+                    )
+            elif not effective_parameters and context.no_parameters:
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_execute_no_params:
+                        if fn(cursor, str_statement, context):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+                    self.dialect.do_execute_no_params(
+                        cursor, str_statement, context
+                    )
+            else:
+                effective_parameters = cast(
+                    "_CoreSingleExecuteParams", effective_parameters
+                )
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_execute:
+                        if fn(
+                            cursor,
+                            str_statement,
+                            effective_parameters,
+                            context,
+                        ):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+>                   self.dialect.do_execute(
+                        cursor, str_statement, effective_parameters, context
+                    )
+
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/sqlalchemy/engine/base.py:1969: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <sqlalchemy.dialects.sqlite.pysqlite.SQLiteDialect_pysqlite object at 0x7fdb525a7cb0>
+cursor = <sqlite3.Cursor object at 0x7fdacd3098c0>
+statement = 'SELECT workbench_jobs.id, workbench_jobs.job_type, workbench_jobs.status, workbench_jobs.arguments_json, workbench_jo...kbench_jobs.job_type = ? AND workbench_jobs.status IN (?, ?) ORDER BY workbench_jobs.created_at ASC\n LIMIT ? OFFSET ?'
+parameters = ('refresh', 'queued', 'running', 1, 0)
+context = <sqlalchemy.dialects.sqlite.base.SQLiteExecutionContext object at 0x7fdad712fad0>
+
+    def do_execute(self, cursor, statement, parameters, context=None):
+>       cursor.execute(statement, parameters)
+E       sqlite3.OperationalError: no such table: workbench_jobs
+
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/sqlalchemy/engine/default.py:952: OperationalError
+
+The above exception was the direct cause of the following exception:
+
+api_client = <starlette.testclient.TestClient object at 0x7fdad7a849e0>
+
+>   ???
+
+/tmp/courtlens-rn01-1ibmxth5/tests/integration/test_workbench_jobs_postgres.py:305: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/starlette/testclient.py:556: in post
+    return super().post(
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/httpx2/_client.py:1204: in post
+    return self.request(
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/starlette/testclient.py:455: in request
+    return super().request(
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/httpx2/_client.py:797: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/httpx2/_client.py:980: in send
+    response = self._send_handling_auth(
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/httpx2/_client.py:1008: in _send_handling_auth
+    response = self._send_handling_redirects(
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/httpx2/_client.py:1043: in _send_handling_redirects
+    response = self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/httpx2/_client.py:1076: in _send_single_request
+    response = transport.handle_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/starlette/testclient.py:354: in handle_request
+    raise exc
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/starlette/testclient.py:351: in handle_request
+    portal.call(self.app, scope, receive, send)
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/anyio/from_thread.py:338: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/lib/python3.14/concurrent/futures/_base.py:454: in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+/usr/lib/python3.14/concurrent/futures/_base.py:396: in __get_result
+    raise self._exception
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/anyio/from_thread.py:263: in _call_func
+    retval = await retval_or_awaitable
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/fastapi/applications.py:1163: in __call__
+    await super().__call__(scope, receive, send)
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/starlette/applications.py:96: in __call__
+    await self.middleware_stack(scope, receive, send)
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/starlette/middleware/errors.py:186: in __call__
+    raise exc
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/starlette/middleware/errors.py:164: in __call__
+    await self.app(scope, receive, _send)
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/starlette/middleware/base.py:193: in __call__
+    response = await self.dispatch_func(request, call_next)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/ethioking/dev/nba-analytics/src/courtlens/api/app.py:56: in request_context
+    response = await observe_request(request, call_next)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/ethioking/dev/nba-analytics/src/courtlens/api/metrics.py:25: in observe_request
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/starlette/middleware/base.py:168: in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/starlette/middleware/base.py:144: in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/starlette/middleware/cors.py:88: in __call__
+    await self.app(scope, receive, send)
+/home/ethioking/dev/nba-analytics/src/courtlens/api/assistant_limits.py:20: in __call__
+    await self.app(scope, receive, send)
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/starlette/middleware/exceptions.py:63: in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/starlette/_exception_handler.py:53: in wrapped_app
+    raise exc
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/starlette/_exception_handler.py:42: in wrapped_app
+    await app(scope, receive, sender)
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/fastapi/middleware/asyncexitstack.py:18: in __call__
+    await self.app(scope, receive, send)
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/starlette/routing.py:670: in __call__
+    await self.middleware_stack(scope, receive, send)
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/fastapi/routing.py:2734: in app
+    await route.handle(scope, receive, send)
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/fastapi/routing.py:1780: in handle
+    await self.original_router.handle(scope, receive, send)
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/fastapi/routing.py:2789: in handle
+    await included_router._handle_selected(scope, receive, send)
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/fastapi/routing.py:1800: in _handle_selected
+    await original_route.handle(scope, receive, send)
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/fastapi/routing.py:1279: in handle
+    await app(scope, receive, send)
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/fastapi/routing.py:158: in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/starlette/_exception_handler.py:53: in wrapped_app
+    raise exc
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/starlette/_exception_handler.py:42: in wrapped_app
+    await app(scope, receive, sender)
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/fastapi/routing.py:144: in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/fastapi/routing.py:706: in app
+    raw_response = await run_endpoint_function(
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/fastapi/routing.py:354: in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/starlette/concurrency.py:34: in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/anyio/to_thread.py:65: in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/anyio/_backends/_asyncio.py:2641: in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/anyio/_backends/_asyncio.py:1033: in run
+    result = context.run(func, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+/home/ethioking/dev/nba-analytics/src/courtlens/api/routers/workbench.py:1045: in create_job
+    job = enqueue_job(session, payload.job_type, payload.arguments)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/ethioking/dev/nba-analytics/src/courtlens/services/workbench_jobs.py:96: in enqueue_job
+    existing = session.scalar(statement.order_by(WorkbenchJob.created_at.asc()).limit(1))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/sqlalchemy/orm/session.py:2421: in scalar
+    return self._execute_internal(
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/sqlalchemy/orm/session.py:2271: in _execute_internal
+    result: Result[Any] = compile_state_cls.orm_execute_statement(
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/sqlalchemy/orm/context.py:306: in orm_execute_statement
+    result = conn.execute(
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/sqlalchemy/engine/base.py:1421: in execute
+    return meth(
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/sqlalchemy/sql/elements.py:526: in _execute_on_connection
+    return connection._execute_clauseelement(
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/sqlalchemy/engine/base.py:1643: in _execute_clauseelement
+    ret = self._execute_context(
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/sqlalchemy/engine/base.py:1848: in _execute_context
+    return self._exec_single_context(
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/sqlalchemy/engine/base.py:1988: in _exec_single_context
+    self._handle_dbapi_exception(
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/sqlalchemy/engine/base.py:2365: in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/sqlalchemy/engine/base.py:1969: in _exec_single_context
+    self.dialect.do_execute(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <sqlalchemy.dialects.sqlite.pysqlite.SQLiteDialect_pysqlite object at 0x7fdb525a7cb0>
+cursor = <sqlite3.Cursor object at 0x7fdacd3098c0>
+statement = 'SELECT workbench_jobs.id, workbench_jobs.job_type, workbench_jobs.status, workbench_jobs.arguments_json, workbench_jo...kbench_jobs.job_type = ? AND workbench_jobs.status IN (?, ?) ORDER BY workbench_jobs.created_at ASC\n LIMIT ? OFFSET ?'
+parameters = ('refresh', 'queued', 'running', 1, 0)
+context = <sqlalchemy.dialects.sqlite.base.SQLiteExecutionContext object at 0x7fdad712fad0>
+
+    def do_execute(self, cursor, statement, parameters, context=None):
+>       cursor.execute(statement, parameters)
+E       sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: workbench_jobs
+E       [SQL: SELECT workbench_jobs.id, workbench_jobs.job_type, workbench_jobs.status, workbench_jobs.arguments_json, workbench_jobs.owner, workbench_jobs.heartbeat_at, workbench_jobs.started_at, workbench_jobs.finished_at, workbench_jobs.stage, workbench_jobs.timings_json, workbench_jobs.input_refs_json, workbench_jobs.output_refs_json, workbench_jobs.error_summary, workbench_jobs.created_at 
+E       FROM workbench_jobs 
+E       WHERE workbench_jobs.job_type = ? AND workbench_jobs.status IN (?, ?) ORDER BY workbench_jobs.created_at ASC
+E        LIMIT ? OFFSET ?]
+E       [parameters: ('refresh', 'queued', 'running', 1, 0)]
+E       (Background on this error at: https://sqlalche.me/e/20/e3q8)
+
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/sqlalchemy/engine/default.py:952: OperationalError
+________________________ test_workbench_status_endpoint ________________________
+
+self = <sqlalchemy.engine.base.Connection object at 0x7fdacd6e88c0>
+dialect = <sqlalchemy.dialects.sqlite.pysqlite.SQLiteDialect_pysqlite object at 0x7fdb525a7cb0>
+context = <sqlalchemy.dialects.sqlite.base.SQLiteExecutionContext object at 0x7fdace30e390>
+statement = <sqlalchemy.dialects.sqlite.base.SQLiteCompiler object at 0x7fdaccc1d350>
+parameters = [('public',)]
+
+    def _exec_single_context(
+        self,
+        dialect: Dialect,
+        context: ExecutionContext,
+        statement: Union[str, Compiled],
+        parameters: Optional[_AnyMultiExecuteParams],
+    ) -> CursorResult[Any]:
+        """continue the _execute_context() method for a single DBAPI
+        cursor.execute() or cursor.executemany() call.
+    
+        """
+        if dialect.bind_typing is BindTyping.SETINPUTSIZES:
+            generic_setinputsizes = context._prepare_set_input_sizes()
+    
+            if generic_setinputsizes:
+                try:
+                    dialect.do_set_input_sizes(
+                        context.cursor, generic_setinputsizes, context
+                    )
+                except BaseException as e:
+                    self._handle_dbapi_exception(
+                        e, str(statement), parameters, None, context
+                    )
+    
+        cursor, str_statement, parameters = (
+            context.cursor,
+            context.statement,
+            context.parameters,
+        )
+    
+        effective_parameters: Optional[_AnyExecuteParams]
+    
+        if not context.executemany:
+            effective_parameters = parameters[0]
+        else:
+            effective_parameters = parameters
+    
+        if self._has_events or self.engine._has_events:
+            for fn in self.dispatch.before_cursor_execute:
+                str_statement, effective_parameters = fn(
+                    self,
+                    cursor,
+                    str_statement,
+                    effective_parameters,
+                    context,
+                    context.executemany,
+                )
+    
+        if self._echo:
+            self._log_info(str_statement)
+    
+            stats = context._get_cache_stats()
+    
+            if not self.engine.hide_parameters:
+                self._log_info(
+                    "[%s] %r",
+                    stats,
+                    sql_util._repr_params(
+                        effective_parameters,
+                        batches=10,
+                        ismulti=context.executemany,
+                    ),
+                )
+            else:
+                self._log_info(
+                    "[%s] [SQL parameters hidden due to hide_parameters=True]",
+                    stats,
+                )
+    
+        evt_handled: bool = False
+        try:
+            if context.execute_style is ExecuteStyle.EXECUTEMANY:
+                effective_parameters = cast(
+                    "_CoreMultiExecuteParams", effective_parameters
+                )
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_executemany:
+                        if fn(
+                            cursor,
+                            str_statement,
+                            effective_parameters,
+                            context,
+                        ):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+                    self.dialect.do_executemany(
+                        cursor,
+                        str_statement,
+                        effective_parameters,
+                        context,
+                    )
+            elif not effective_parameters and context.no_parameters:
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_execute_no_params:
+                        if fn(cursor, str_statement, context):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+                    self.dialect.do_execute_no_params(
+                        cursor, str_statement, context
+                    )
+            else:
+                effective_parameters = cast(
+                    "_CoreSingleExecuteParams", effective_parameters
+                )
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_execute:
+                        if fn(
+                            cursor,
+                            str_statement,
+                            effective_parameters,
+                            context,
+                        ):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+>                   self.dialect.do_execute(
+                        cursor, str_statement, effective_parameters, context
+                    )
+
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/sqlalchemy/engine/base.py:1969: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <sqlalchemy.dialects.sqlite.pysqlite.SQLiteDialect_pysqlite object at 0x7fdb525a7cb0>
+cursor = <sqlite3.Cursor object at 0x7fdabf024040>
+statement = 'SELECT published_snapshots.channel AS published_snapshots_channel, published_snapshots.snapshot_id AS published_snaps...ts.published_at AS published_snapshots_published_at \nFROM published_snapshots \nWHERE published_snapshots.channel = ?'
+parameters = ('public',)
+context = <sqlalchemy.dialects.sqlite.base.SQLiteExecutionContext object at 0x7fdace30e390>
+
+    def do_execute(self, cursor, statement, parameters, context=None):
+>       cursor.execute(statement, parameters)
+E       sqlite3.OperationalError: no such table: published_snapshots
+
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/sqlalchemy/engine/default.py:952: OperationalError
+
+The above exception was the direct cause of the following exception:
+
+api_client = <starlette.testclient.TestClient object at 0x7fdacf82cd10>
+
+>   ???
+
+/tmp/courtlens-rn01-1ibmxth5/tests/integration/test_workbench_jobs_postgres.py:344: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/starlette/testclient.py:483: in get
+    return super().get(
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/httpx2/_client.py:1113: in get
+    return self.request(
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/starlette/testclient.py:455: in request
+    return super().request(
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/httpx2/_client.py:797: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/httpx2/_client.py:980: in send
+    response = self._send_handling_auth(
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/httpx2/_client.py:1008: in _send_handling_auth
+    response = self._send_handling_redirects(
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/httpx2/_client.py:1043: in _send_handling_redirects
+    response = self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/httpx2/_client.py:1076: in _send_single_request
+    response = transport.handle_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/starlette/testclient.py:354: in handle_request
+    raise exc
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/starlette/testclient.py:351: in handle_request
+    portal.call(self.app, scope, receive, send)
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/anyio/from_thread.py:338: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/lib/python3.14/concurrent/futures/_base.py:454: in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+/usr/lib/python3.14/concurrent/futures/_base.py:396: in __get_result
+    raise self._exception
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/anyio/from_thread.py:263: in _call_func
+    retval = await retval_or_awaitable
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/fastapi/applications.py:1163: in __call__
+    await super().__call__(scope, receive, send)
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/starlette/applications.py:96: in __call__
+    await self.middleware_stack(scope, receive, send)
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/starlette/middleware/errors.py:186: in __call__
+    raise exc
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/starlette/middleware/errors.py:164: in __call__
+    await self.app(scope, receive, _send)
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/starlette/middleware/base.py:193: in __call__
+    response = await self.dispatch_func(request, call_next)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/ethioking/dev/nba-analytics/src/courtlens/api/app.py:56: in request_context
+    response = await observe_request(request, call_next)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/ethioking/dev/nba-analytics/src/courtlens/api/metrics.py:25: in observe_request
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/starlette/middleware/base.py:168: in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/starlette/middleware/base.py:144: in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/starlette/middleware/cors.py:88: in __call__
+    await self.app(scope, receive, send)
+/home/ethioking/dev/nba-analytics/src/courtlens/api/assistant_limits.py:20: in __call__
+    await self.app(scope, receive, send)
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/starlette/middleware/exceptions.py:63: in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/starlette/_exception_handler.py:53: in wrapped_app
+    raise exc
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/starlette/_exception_handler.py:42: in wrapped_app
+    await app(scope, receive, sender)
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/fastapi/middleware/asyncexitstack.py:18: in __call__
+    await self.app(scope, receive, send)
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/starlette/routing.py:670: in __call__
+    await self.middleware_stack(scope, receive, send)
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/fastapi/routing.py:2734: in app
+    await route.handle(scope, receive, send)
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/fastapi/routing.py:1780: in handle
+    await self.original_router.handle(scope, receive, send)
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/fastapi/routing.py:2789: in handle
+    await included_router._handle_selected(scope, receive, send)
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/fastapi/routing.py:1800: in _handle_selected
+    await original_route.handle(scope, receive, send)
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/fastapi/routing.py:1279: in handle
+    await app(scope, receive, send)
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/fastapi/routing.py:158: in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/starlette/_exception_handler.py:53: in wrapped_app
+    raise exc
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/starlette/_exception_handler.py:42: in wrapped_app
+    await app(scope, receive, sender)
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/fastapi/routing.py:144: in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/fastapi/routing.py:706: in app
+    raw_response = await run_endpoint_function(
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/fastapi/routing.py:354: in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/starlette/concurrency.py:34: in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/anyio/to_thread.py:65: in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/anyio/_backends/_asyncio.py:2641: in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/anyio/_backends/_asyncio.py:1033: in run
+    result = context.run(func, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+/home/ethioking/dev/nba-analytics/src/courtlens/api/routers/workbench.py:981: in get_status
+    data = get_workbench_status(session)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/ethioking/dev/nba-analytics/src/courtlens/services/workbench_jobs.py:767: in get_workbench_status
+    pointer = session.get(PublishedSnapshot, DEFAULT_CHANNEL)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/sqlalchemy/orm/session.py:3702: in get
+    return self._get_impl(
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/sqlalchemy/orm/session.py:3881: in _get_impl
+    return db_load_fn(
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/sqlalchemy/orm/loading.py:695: in load_on_pk_identity
+    session.execute(
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/sqlalchemy/orm/session.py:2373: in execute
+    return self._execute_internal(
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/sqlalchemy/orm/session.py:2271: in _execute_internal
+    result: Result[Any] = compile_state_cls.orm_execute_statement(
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/sqlalchemy/orm/context.py:306: in orm_execute_statement
+    result = conn.execute(
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/sqlalchemy/engine/base.py:1421: in execute
+    return meth(
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/sqlalchemy/sql/elements.py:526: in _execute_on_connection
+    return connection._execute_clauseelement(
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/sqlalchemy/engine/base.py:1643: in _execute_clauseelement
+    ret = self._execute_context(
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/sqlalchemy/engine/base.py:1848: in _execute_context
+    return self._exec_single_context(
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/sqlalchemy/engine/base.py:1988: in _exec_single_context
+    self._handle_dbapi_exception(
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/sqlalchemy/engine/base.py:2365: in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/sqlalchemy/engine/base.py:1969: in _exec_single_context
+    self.dialect.do_execute(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <sqlalchemy.dialects.sqlite.pysqlite.SQLiteDialect_pysqlite object at 0x7fdb525a7cb0>
+cursor = <sqlite3.Cursor object at 0x7fdabf024040>
+statement = 'SELECT published_snapshots.channel AS published_snapshots_channel, published_snapshots.snapshot_id AS published_snaps...ts.published_at AS published_snapshots_published_at \nFROM published_snapshots \nWHERE published_snapshots.channel = ?'
+parameters = ('public',)
+context = <sqlalchemy.dialects.sqlite.base.SQLiteExecutionContext object at 0x7fdace30e390>
+
+    def do_execute(self, cursor, statement, parameters, context=None):
+>       cursor.execute(statement, parameters)
+E       sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: published_snapshots
+E       [SQL: SELECT published_snapshots.channel AS published_snapshots_channel, published_snapshots.snapshot_id AS published_snapshots_snapshot_id, published_snapshots.published_at AS published_snapshots_published_at 
+E       FROM published_snapshots 
+E       WHERE published_snapshots.channel = ?]
+E       [parameters: ('public',)]
+E       (Background on this error at: https://sqlalche.me/e/20/e3q8)
+
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/sqlalchemy/engine/default.py:952: OperationalError
+___________ test_discover_current_season_expected_empty_distinction ____________
+
+>   ???
+E   AssertionError: assert False is True
+E    +  where False = SeasonConfig(ending_year=2027, canonical_season='2026-27', has_player_boxscores=False, has_team_boxscores=False, has_s...bserved', matchups_status='not_yet_observed', expected_empty=True, source_freshness='2026-10-07T22:17:56.259512+00:00').has_raw_schedule_json
+
+/tmp/courtlens-rn01-1ibmxth5/tests/unit/test_season_discovery.py:52: AssertionError
+____________ test_archive_stats_executes_with_versioned_names[True] ____________
+
+db_session = <sqlalchemy.orm.session.Session object at 0x7fdad5a81150>
+appeared = True
+
+    @pytest.mark.parametrize("appeared", [True, False])
+    def test_archive_stats_executes_with_versioned_names(db_session: Session, appeared: bool) -> None:
+        """Historical saved links query retained archive schemas, names and cutoff rows."""
+        from datetime import timedelta
+    
+        from sqlalchemy import select
+    
+        from courtlens.archive_models import ArchivePlayerGame, ArchiveVersion
+    
+        game, payload = db_session.execute(
+            select(ArchivePlayerGame, ArchiveVersion.payload_json)
+            .join(ArchiveVersion, ArchiveVersion.id == ArchivePlayerGame.source_version_id)
+            .where(
+                ArchivePlayerGame.appearance == "appeared"
+                if appeared
+                else ArchivePlayerGame.appearance != "appeared"
+            )
+            .order_by(
+                ArchivePlayerGame.game_date,
+                ArchivePlayerGame.dataset_id,
+                ArchivePlayerGame.player_id,
+                ArchivePlayerGame.game_id,
+            )
+            .limit(1)
+>       ).one()
+          ^^^^^
+
+tests/unit/test_stats_engine.py:427: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/sqlalchemy/engine/result.py:1574: in one
+    return self._only_one_row(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <sqlalchemy.engine.result.ChunkedIteratorResult object at 0x7fdad7c9be10>
+raise_for_second_row = True, raise_for_none = True, scalar = False
+
+    def _only_one_row(
+        self,
+        raise_for_second_row: bool,
+        raise_for_none: bool,
+        scalar: bool,
+    ) -> Optional[_R]:
+        onerow = self._fetchone_impl
+    
+        row: Optional[_InterimRowType[Any]] = onerow(hard_close=True)
+        if row is None:
+            if raise_for_none:
+>               raise exc.NoResultFound(
+                    "No row was found when one was required"
+                )
+E               sqlalchemy.exc.NoResultFound: No row was found when one was required
+
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/sqlalchemy/engine/result.py:799: NoResultFound
+___________ test_archive_stats_executes_with_versioned_names[False] ____________
+
+db_session = <sqlalchemy.orm.session.Session object at 0x7fdacc1e9a50>
+appeared = False
+
+    @pytest.mark.parametrize("appeared", [True, False])
+    def test_archive_stats_executes_with_versioned_names(db_session: Session, appeared: bool) -> None:
+        """Historical saved links query retained archive schemas, names and cutoff rows."""
+        from datetime import timedelta
+    
+        from sqlalchemy import select
+    
+        from courtlens.archive_models import ArchivePlayerGame, ArchiveVersion
+    
+        game, payload = db_session.execute(
+            select(ArchivePlayerGame, ArchiveVersion.payload_json)
+            .join(ArchiveVersion, ArchiveVersion.id == ArchivePlayerGame.source_version_id)
+            .where(
+                ArchivePlayerGame.appearance == "appeared"
+                if appeared
+                else ArchivePlayerGame.appearance != "appeared"
+            )
+            .order_by(
+                ArchivePlayerGame.game_date,
+                ArchivePlayerGame.dataset_id,
+                ArchivePlayerGame.player_id,
+                ArchivePlayerGame.game_id,
+            )
+            .limit(1)
+>       ).one()
+          ^^^^^
+
+tests/unit/test_stats_engine.py:427: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/sqlalchemy/engine/result.py:1574: in one
+    return self._only_one_row(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <sqlalchemy.engine.result.ChunkedIteratorResult object at 0x7fdade97f6c0>
+raise_for_second_row = True, raise_for_none = True, scalar = False
+
+    def _only_one_row(
+        self,
+        raise_for_second_row: bool,
+        raise_for_none: bool,
+        scalar: bool,
+    ) -> Optional[_R]:
+        onerow = self._fetchone_impl
+    
+        row: Optional[_InterimRowType[Any]] = onerow(hard_close=True)
+        if row is None:
+            if raise_for_none:
+>               raise exc.NoResultFound(
+                    "No row was found when one was required"
+                )
+E               sqlalchemy.exc.NoResultFound: No row was found when one was required
+
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/sqlalchemy/engine/result.py:799: NoResultFound
+___________________ test_retained_m6_experiment_registration ___________________
+
+session = <sqlalchemy.orm.session.Session object at 0x7fdad6944150>
+
+>   ???
+
+/tmp/courtlens-rn01-1ibmxth5/tests/unit/test_workbench_contracts.py:488: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+session = <sqlalchemy.orm.session.Session object at 0x7fdad6944150>
+
+    def register_retained_m6_experiment(
+        session: Session,
+        *,
+        artifact_root: Path = DEFAULT_ARTIFACT_ROOT,
+        config_path: Path = DEFAULT_M6_CONFIG,
+    ) -> dict[str, Any]:
+        """Verify and register legacy M6 as retained experiment without modifying files."""
+        run_dir = artifact_root / M6_RUN_ID
+        if not run_dir.exists():
+>           raise FileNotFoundError(f"Retained M6 artifact directory not found: {run_dir}")
+E           FileNotFoundError: Retained M6 artifact directory not found: /tmp/courtlens-python-pgm0ete0/data/artifacts/evaluation/6f7af9e63f27aada910d
+
+/home/ethioking/dev/nba-analytics/src/courtlens/services/workbench_registry.py:64: FileNotFoundError
+=============================== warnings summary ===============================
+../../home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/google/genai/types.py:42
+  /home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/google/genai/types.py:42: DeprecationWarning: '_UnionGenericAlias' is deprecated and slated for removal in Python 3.17
+    VersionedUnionType = Union[builtin_types.UnionType, _UnionGenericAlias]
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+SKIPPED [1] ../courtlens-rn01-1ibmxth5/tests/integration/test_assistant_panel_browser.py:27: isolated Next browser server required
+SKIPPED [1] ../courtlens-rn01-1ibmxth5/tests/integration/test_restore_postgres.py:156: Local evaluation artifacts not present for real archive check
+FAILED tests/integration/test_analytical_ops_api.py::TestAnalyticalOpsApi::test_statistical_peers_similarity
+FAILED tests/integration/test_restore_postgres.py::test_workbench_backup_manifest_and_restore_verification
+FAILED tests/integration/test_restore_postgres.py::test_restore_verification_fails_on_missing_or_tampered_artifact
+FAILED tests/integration/test_restore_postgres.py::test_disposable_fresh_database_restore
+FAILED tests/integration/test_rich_admission_postgres.py::test_point_conservation_quarantine_with_real_game
+FAILED tests/integration/test_workbench_jobs_postgres.py::test_interrupted_job_recovery
+FAILED tests/integration/test_workbench_jobs_postgres.py::test_operator_token_authorization
+FAILED tests/integration/test_workbench_jobs_postgres.py::test_prompt_job_id_response
+FAILED tests/integration/test_workbench_jobs_postgres.py::test_workbench_status_endpoint
+FAILED tests/unit/test_season_discovery.py::test_discover_current_season_expected_empty_distinction
+FAILED tests/unit/test_stats_engine.py::test_archive_stats_executes_with_versioned_names[True]
+FAILED tests/unit/test_stats_engine.py::test_archive_stats_executes_with_versioned_names[False]
+FAILED tests/unit/test_workbench_contracts.py::test_retained_m6_experiment_registration
+13 failed, 1561 passed, 2 skipped, 20 deselected, 1 warning in 289.18s (0:04:49)

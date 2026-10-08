@@ -1,0 +1,114 @@
+.....FFFF.F.....                                                         [100%]
+=================================== FAILURES ===================================
+______________ test_minutes_thresholds_on_real_game[1-patched-0] _______________
+
+real_games = {'0022500007': {'boxes': [{'comment': '', 'family_name': 'Thompson', 'field_goals_attempted': '6', 'field_goals_made':...'PT11M15.00S', ...}, {'actionId': '6', 'actionNumber': '9', 'actionType': '', 'clock': 'PT11M15.00S', ...}, ...], ...}}
+delta = 1, quality = 'patched', counter = 0
+
+    @pytest.mark.parametrize(
+        ("delta", "quality", "counter"),
+        [(1, "patched", 0), (2, "patched", 1), (30, "patched", 1), (31, "excluded", 0)],
+    )
+    def test_minutes_thresholds_on_real_game(real_games, delta, quality, counter):
+        altered = copy.deepcopy(real_games["0022500007"])
+        box = next(b for b in altered["boxes"] if b["person_id"] == "1629130")
+        box["minutes"] = f"26:{delta:02}"
+        result = replay("0022500007", altered)
+        assert result["quality"] == quality
+>       assert result["rule_counts"]["IM02-R4"] == counter
+E       assert 1 == 0
+
+tests/unit/test_possession_repair.py:115: AssertionError
+______________ test_minutes_thresholds_on_real_game[2-patched-1] _______________
+
+real_games = {'0022500007': {'boxes': [{'comment': '', 'family_name': 'Thompson', 'field_goals_attempted': '6', 'field_goals_made':...'PT11M15.00S', ...}, {'actionId': '6', 'actionNumber': '9', 'actionType': '', 'clock': 'PT11M15.00S', ...}, ...], ...}}
+delta = 2, quality = 'patched', counter = 1
+
+    @pytest.mark.parametrize(
+        ("delta", "quality", "counter"),
+        [(1, "patched", 0), (2, "patched", 1), (30, "patched", 1), (31, "excluded", 0)],
+    )
+    def test_minutes_thresholds_on_real_game(real_games, delta, quality, counter):
+        altered = copy.deepcopy(real_games["0022500007"])
+        box = next(b for b in altered["boxes"] if b["person_id"] == "1629130")
+        box["minutes"] = f"26:{delta:02}"
+        result = replay("0022500007", altered)
+        assert result["quality"] == quality
+        assert result["rule_counts"]["IM02-R4"] == counter
+        assert result["rule_counts"]["IM02-R7"] == int(quality == "excluded")
+>       assert result["player_comparisons"]["1629130"]["minutes_delta_seconds"] == str(-delta)
+E       AssertionError: assert '-2.50' == '-2'
+E         
+E         - -2
+E         + -2.50
+
+tests/unit/test_possession_repair.py:117: AssertionError
+______________ test_minutes_thresholds_on_real_game[30-patched-1] ______________
+
+real_games = {'0022500007': {'boxes': [{'comment': '', 'family_name': 'Thompson', 'field_goals_attempted': '6', 'field_goals_made':...'PT11M15.00S', ...}, {'actionId': '6', 'actionNumber': '9', 'actionType': '', 'clock': 'PT11M15.00S', ...}, ...], ...}}
+delta = 30, quality = 'patched', counter = 1
+
+    @pytest.mark.parametrize(
+        ("delta", "quality", "counter"),
+        [(1, "patched", 0), (2, "patched", 1), (30, "patched", 1), (31, "excluded", 0)],
+    )
+    def test_minutes_thresholds_on_real_game(real_games, delta, quality, counter):
+        altered = copy.deepcopy(real_games["0022500007"])
+        box = next(b for b in altered["boxes"] if b["person_id"] == "1629130")
+        box["minutes"] = f"26:{delta:02}"
+        result = replay("0022500007", altered)
+>       assert result["quality"] == quality
+E       AssertionError: assert 'excluded' == 'patched'
+E         
+E         - patched
+E         + excluded
+
+tests/unit/test_possession_repair.py:114: AssertionError
+_____________ test_minutes_thresholds_on_real_game[31-excluded-0] ______________
+
+real_games = {'0022500007': {'boxes': [{'comment': '', 'family_name': 'Thompson', 'field_goals_attempted': '6', 'field_goals_made':...'PT11M15.00S', ...}, {'actionId': '6', 'actionNumber': '9', 'actionType': '', 'clock': 'PT11M15.00S', ...}, ...], ...}}
+delta = 31, quality = 'excluded', counter = 0
+
+    @pytest.mark.parametrize(
+        ("delta", "quality", "counter"),
+        [(1, "patched", 0), (2, "patched", 1), (30, "patched", 1), (31, "excluded", 0)],
+    )
+    def test_minutes_thresholds_on_real_game(real_games, delta, quality, counter):
+        altered = copy.deepcopy(real_games["0022500007"])
+        box = next(b for b in altered["boxes"] if b["person_id"] == "1629130")
+        box["minutes"] = f"26:{delta:02}"
+        result = replay("0022500007", altered)
+        assert result["quality"] == quality
+        assert result["rule_counts"]["IM02-R4"] == counter
+        assert result["rule_counts"]["IM02-R7"] == int(quality == "excluded")
+>       assert result["player_comparisons"]["1629130"]["minutes_delta_seconds"] == str(-delta)
+E       AssertionError: assert '-31.50' == '-31'
+E         
+E         - -31
+E         + -31.50
+
+tests/unit/test_possession_repair.py:117: AssertionError
+_______________ test_duplicate_action_numbers_keep_row_identity ________________
+
+real_games = {'0022500007': {'boxes': [{'comment': '', 'family_name': 'Thompson', 'field_goals_attempted': '6', 'field_goals_made':...'PT11M15.00S', ...}, {'actionId': '6', 'actionNumber': '9', 'actionType': '', 'clock': 'PT11M15.00S', ...}, ...], ...}}
+
+    def test_duplicate_action_numbers_keep_row_identity(real_games):
+        game = real_games["0022500007"]
+        events = normalize_events(
+            game["rows"], source="v3", source_sha256="a" * 64, boxes=game["boxes"]
+        )
+        numbered = [replace(e, action_number=7) for e in events[:3]]
+        _, _, check, errors = arbitrate_sources(
+            game_id="0022500007", v3=numbered, cdn=numbered, boxes=[], team_points={}
+        )
+>       assert not errors
+E       AssertionError: assert not ['neither source conserves independent box totals']
+
+tests/unit/test_possession_repair.py:174: AssertionError
+=========================== short test summary info ============================
+FAILED tests/unit/test_possession_repair.py::test_minutes_thresholds_on_real_game[1-patched-0]
+FAILED tests/unit/test_possession_repair.py::test_minutes_thresholds_on_real_game[2-patched-1]
+FAILED tests/unit/test_possession_repair.py::test_minutes_thresholds_on_real_game[30-patched-1]
+FAILED tests/unit/test_possession_repair.py::test_minutes_thresholds_on_real_game[31-excluded-0]
+FAILED tests/unit/test_possession_repair.py::test_duplicate_action_numbers_keep_row_identity
+5 failed, 11 passed in 0.47s

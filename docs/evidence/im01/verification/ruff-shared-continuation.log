@@ -1,0 +1,139 @@
+UP015 [*] Unnecessary mode argument
+  --> scripts/split_css.py:11:24
+   |
+ 9 | STYLES_DIR.mkdir(parents=True, exist_ok=True)
+10 |
+11 | with open(GLOBALS_CSS, "r", encoding="utf-8") as f:
+   |                        ^^^
+12 |     lines = f.readlines()
+   |
+help: Remove mode argument
+   |
+10 |
+   - with open(GLOBALS_CSS, "r", encoding="utf-8") as f:
+11 + with open(GLOBALS_CSS, encoding="utf-8") as f:
+12 |     lines = f.readlines()
+   |
+
+E501 Line too long (123 > 100)
+   --> scripts/split_css.py:156:101
+    |
+154 | base_chunks = []
+155 | base_chunks.append("".join(lines[43:136]))
+156 | base_chunks.append("\n/* B36: tabular interface figures and literal data/code operators. */\n" + "".join(lines[2806:2819]))
+    |                                                                                                     ^^^^^^^^^^^^^^^^^^^^^^^
+157 | base_chunks.append("\n" + "".join(lines[2905:2910]))
+    |
+
+E501 Line too long (139 > 100)
+   --> scripts/split_css.py:250:101
+    |
+248 | …
+249 | …
+250 | …, 0-indexed 365-368) and @keyframes fadeInDropdown (lines 773-777, 0-indexed 772-777)
+    |                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+251 | …ideIn lines 1548-1550)
+252 | … Mobile Constraints
+    |
+
+E501 Line too long (115 > 100)
+   --> scripts/split_css.py:256:101
+    |
+254 | # Lines 2820-2902: Shared controls (lines 2820 to 2902, 0-indexed 2819 to 2902)
+255 | # Lines 2911-2946: PF03 team-logo, PF04 entity-select
+256 | # Lines 3051-3178: AR06 chat layout, Ask composer, drawer chat overlay (strip @keyframes ask-pulse lines 3100-3101)
+    |                                                                                                     ^^^^^^^^^^^^^^^
+257 | # Lines 3213-3258: AR07 page selections, AG05 answer-first rendering, suggestions
+    |
+
+E501 Line too long (122 > 100)
+   --> scripts/split_css.py:262:101
+    |
+260 | # Lines 1382-1525: Player Profile & Trends, Trend Charts
+261 | # Lines 1781-1888: Compare Controls & Results
+262 | # Lines 1889-2318: Stats explorer (dense table, preset tabs, filter toolbar, sticky headers, density variants, pagination)
+    |                                                                                                     ^^^^^^^^^^^^^^^^^^^^^^
+263 | # Lines 2319-2514: Live workspace & games (strip @keyframes slideInRight lines 2347-2350)
+264 | # Lines 2515-2620: Playoffs workspace (strip @keyframes slideUpTray lines 2535-2537)
+    |
+
+E501 Line too long (108 > 100)
+   --> scripts/split_css.py:293:101
+    |
+291 | components_text = []
+292 | # Lines 137 to 1381
+293 | components_text.append(clean_lines(lines[136:1381], ["@keyframes lookupSpin", "@keyframes fadeInDropdown"]))
+    |                                                                                                     ^^^^^^^^
+294 | # Lines 1526 to 1780
+295 | components_text.append(clean_lines(lines[1525:1780], ["@keyframes slideIn"]))
+    |
+
+E501 Line too long (122 > 100)
+   --> scripts/split_css.py:303:101
+    |
+301 | components_text.append("".join(lines[2910:2946]))
+302 | # Lines 3051 to 3178 (AR06 chat layout, Ask composer, drawer chat overlay)
+303 | components_text.append(clean_lines(lines[3050:3178], ["@keyframes ask-pulse", "@media (prefers-reduced-motion: reduce)"]))
+    |                                                                                                     ^^^^^^^^^^^^^^^^^^^^^^
+304 | # Lines 3213 to 3259 (AR07 page selections, AG05 answer-first rendering, suggestions)
+305 | components_text.append("".join(lines[3212:3259]))
+    |
+
+F541 [*] f-string without any placeholders
+  --> scripts/verify-contrast.py:40:11
+   |
+38 |     print("# Measured Contrast Ratios (WCAG 2.1)")
+39 |     print()
+40 |     print(f"| Text Token | Surface | Contrast Ratio | WCAG AA Normal (4.5:1) | WCAG AA Large (3:1) |")
+   |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+41 |     print(f"| --- | --- | --- | --- | --- |")
+   |
+help: Remove extraneous `f` prefix
+   |
+39 |     print()
+   -     print(f"| Text Token | Surface | Contrast Ratio | WCAG AA Normal (4.5:1) | WCAG AA Large (3:1) |")
+40 +     print("| Text Token | Surface | Contrast Ratio | WCAG AA Normal (4.5:1) | WCAG AA Large (3:1) |")
+41 |     print(f"| --- | --- | --- | --- | --- |")
+   |
+
+E501 Line too long (102 > 100)
+  --> scripts/verify-contrast.py:40:101
+   |
+38 |     print("# Measured Contrast Ratios (WCAG 2.1)")
+39 |     print()
+40 |     print(f"| Text Token | Surface | Contrast Ratio | WCAG AA Normal (4.5:1) | WCAG AA Large (3:1) |")
+   |                                                                                                     ^^
+41 |     print(f"| --- | --- | --- | --- | --- |")
+   |
+
+F541 [*] f-string without any placeholders
+  --> scripts/verify-contrast.py:41:11
+   |
+39 |     print()
+40 |     print(f"| Text Token | Surface | Contrast Ratio | WCAG AA Normal (4.5:1) | WCAG AA Large (3:1) |")
+41 |     print(f"| --- | --- | --- | --- | --- |")
+   |           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+42 |
+43 |     # On-accent on accent
+   |
+help: Remove extraneous `f` prefix
+   |
+40 |     print(f"| Text Token | Surface | Contrast Ratio | WCAG AA Normal (4.5:1) | WCAG AA Large (3:1) |")
+   -     print(f"| --- | --- | --- | --- | --- |")
+41 +     print("| --- | --- | --- | --- | --- |")
+42 |
+   |
+
+E501 Line too long (113 > 100)
+  --> scripts/verify-contrast.py:45:101
+   |
+43 |     # On-accent on accent
+44 |     on_accent_cr = contrast('#0c0d10', '#ffd166')
+45 |     print(f"| `--color-on-accent (#0c0d10)` | `--color-accent (#ffd166)` | {on_accent_cr:.2f}:1 | Pass | Pass |")
+   |                                                                                                     ^^^^^^^^^^^^^
+46 |
+47 |     for tname, thex in texts.items():
+   |
+
+Found 11 errors.
+[*] 3 fixable with the `--fix` option.

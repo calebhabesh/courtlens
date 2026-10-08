@@ -11,7 +11,9 @@ Provides:
 from __future__ import annotations
 
 import logging
+from contextlib import nullcontext
 from datetime import date, datetime
+from pathlib import Path
 from typing import Any
 
 from sqlalchemy import delete, select
@@ -30,6 +32,7 @@ from courtlens.domain.stints import (
 )
 from courtlens.models import new_uuid
 from courtlens.workbench_models import (
+    WorkbenchDataset,
     WorkbenchLineup,
     WorkbenchLineupStint,
     WorkbenchPbpEvent,
@@ -60,9 +63,14 @@ def record_reconstruction_override(
     team_id: str | None = None,
     player_id: str | None = None,
     original_value: Any | None = None,
+    commit: bool = True,
+    flush: bool = True,
 ) -> WorkbenchReconstructionOverride:
     """Record an immutable, provenance-bearing override into workbench_reconstruction_overrides."""
-    with allow_admin_mutation(session):
+    context = (
+        nullcontext() if session.info.get("allow_admin_mutation") else allow_admin_mutation(session)
+    )
+    with context:
         override = WorkbenchReconstructionOverride(
             id=new_uuid(),
             dataset_id=dataset_id,
@@ -80,8 +88,79 @@ def record_reconstruction_override(
             status="active",
         )
         session.add(override)
-        session.commit()
+        if commit:
+            session.commit()
+        elif flush:
+            session.flush()
     return override
+
+
+def record_repair_result_overrides(
+    session: Session,
+    *,
+    dataset_id: str,
+    result: dict[str, Any],
+    author: str,
+) -> list[WorkbenchReconstructionOverride]:
+    """Retain v2 rule envelopes in the existing registry, in the caller's transaction.
+
+    This records candidate evidence, including exclusions, without admitting or replacing
+    stints. Historical v1 overrides keep their original JSON shape and interpretation.
+    """
+    from courtlens.domain.possession_repair import POLICY_VERSION, RULE_IDS
+    from courtlens.ingestion.native_reconstruction import content_hash
+
+    payload = {k: v for k, v in result.items() if k != "content_sha256"}
+    if result.get("policy_version") != POLICY_VERSION or content_hash(payload) != result.get(
+        "content_sha256"
+    ):
+        raise ValueError("invalid v2 repair result hash or policy")
+    envelopes = result["repairs"]
+    for envelope in envelopes:
+        body = {k: v for k, v in envelope.items() if k != "repair_sha256"}
+        if (
+            envelope.get("rule_id") not in RULE_IDS
+            or envelope.get("policy_version") != POLICY_VERSION
+            or envelope.get("game_id") != result["game_id"]
+            or envelope.get("input_sha256") != result["input_sha256"]
+            or content_hash(body) != envelope.get("repair_sha256")
+        ):
+            raise ValueError("invalid v2 repair envelope")
+    existing = session.scalars(
+        select(WorkbenchReconstructionOverride).where(
+            WorkbenchReconstructionOverride.dataset_id == dataset_id,
+            WorkbenchReconstructionOverride.game_id == result["game_id"],
+            WorkbenchReconstructionOverride.override_type == "policy_v2_repair",
+        )
+    ).all()
+    by_hash = {
+        row.override_value_json["repair_sha256"]: row
+        for row in existing
+        if isinstance(row.override_value_json, dict) and "repair_sha256" in row.override_value_json
+    }
+    rows = []
+    with allow_admin_mutation(session):
+        for envelope in envelopes:
+            digest = envelope["repair_sha256"]
+            if digest not in by_hash:
+                by_hash[digest] = record_reconstruction_override(
+                    session,
+                    dataset_id=dataset_id,
+                    game_id=result["game_id"],
+                    override_type="policy_v2_repair",
+                    reason=envelope["reason"],
+                    author=author,
+                    period=envelope["period"],
+                    team_id=envelope["team_id"],
+                    player_id=envelope["player_id"],
+                    original_value=envelope["original"],
+                    override_value=envelope,
+                    commit=False,
+                    flush=False,
+                )
+            rows.append(by_hash[digest])
+        session.flush()
+    return rows
 
 
 def get_reconstruction_overrides(
@@ -127,6 +206,9 @@ def reconstruct_game_stints_for_game(
     persist: bool = True,
 ) -> StintReconstructionResult:
     """Reconstruct continuous lineup stints and player exposure for a single game."""
+    dataset = session.get(WorkbenchDataset, dataset_id)
+    if dataset is not None and dataset.source_namespace == "courtlens-impact":
+        raise ValueError("sealed IM03 datasets cannot use legacy delete/rebuild")
     # 1. Fetch PBP events
     pbp_rows = session.scalars(
         select(WorkbenchPbpEvent)
@@ -409,8 +491,20 @@ def build_possession_warehouse_for_season(
     dataset_id: str,
     season: str,
     limit_games: int | None = None,
+    impact_bundle: Path | None = None,
 ) -> dict[str, Any]:
     """Reconstruct and persist stints for all admitted games in a season."""
+    if impact_bundle is not None:
+        if limit_games is not None:
+            raise ValueError("IM03 admission requires complete season/phase membership")
+        from courtlens.ingestion.impact_population import populate_impact_season
+
+        return populate_impact_season(
+            session, dataset_id=dataset_id, season=season, bundle_path=impact_bundle
+        )
+    dataset = session.get(WorkbenchDataset, dataset_id)
+    if dataset is not None and dataset.source_namespace == "courtlens-impact":
+        raise ValueError("sealed IM03 datasets cannot use legacy delete/rebuild")
     # Find all games with admitted rich sources
     game_ids = session.scalars(
         select(WorkbenchPossession.game_id)
@@ -497,7 +591,11 @@ def get_cutoff_safe_player_exposure(
 
     if cutoff_date is not None:
         c_date = cutoff_date.date() if isinstance(cutoff_date, datetime) else cutoff_date
-        query = query.where(WorkbenchSchedule.game_date <= c_date)
+        dataset = session.get(WorkbenchDataset, dataset_id)
+        if dataset is not None and dataset.source_namespace == "courtlens-impact":
+            query = query.where(WorkbenchSchedule.game_date < c_date)
+        else:
+            query = query.where(WorkbenchSchedule.game_date <= c_date)
 
     if season is not None:
         query = query.where(WorkbenchSchedule.season == season)
@@ -605,7 +703,11 @@ def get_cutoff_safe_lineup_exposure(
 
     if cutoff_date is not None:
         c_date = cutoff_date.date() if isinstance(cutoff_date, datetime) else cutoff_date
-        query = query.where(WorkbenchSchedule.game_date <= c_date)
+        dataset = session.get(WorkbenchDataset, dataset_id)
+        if dataset is not None and dataset.source_namespace == "courtlens-impact":
+            query = query.where(WorkbenchSchedule.game_date < c_date)
+        else:
+            query = query.where(WorkbenchSchedule.game_date <= c_date)
 
     records = session.execute(query).all()
 

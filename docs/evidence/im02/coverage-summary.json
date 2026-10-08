@@ -1,0 +1,573 @@
+{
+  "2023-24:playoffs": {
+    "cdn_unavailable_games": 0,
+    "excluded_games": {
+      "0042300225": [
+        "missing-substitution cycle",
+        "team 1610612742 lineup reconstruction incomplete"
+      ]
+    },
+    "minutes_all_candidates": {
+      "comparisons": 1673,
+      "exact": 1052,
+      "exact_percent": 62.8811,
+      "max_absolute_error": 6.2,
+      "median_absolute_error": 0.0,
+      "p95_absolute_error": 0.4,
+      "within_one": 1671,
+      "within_thirty": 1673
+    },
+    "minutes_nonexcluded": {
+      "comparisons": 1663,
+      "exact": 1052,
+      "exact_percent": 63.2592,
+      "max_absolute_error": 6.2,
+      "median_absolute_error": 0.0,
+      "p95_absolute_error": 0.4,
+      "within_one": 1661,
+      "within_thirty": 1663
+    },
+    "plus_minus_all_candidates": {
+      "comparisons": 2257,
+      "exact": 1269,
+      "exact_percent": 56.2251,
+      "max_absolute_error": 5,
+      "median_absolute_error": 0,
+      "p95_absolute_error": 2,
+      "within_one": 1921,
+      "within_thirty": 2257
+    },
+    "plus_minus_nonexcluded": {
+      "comparisons": 2242,
+      "exact": 1261,
+      "exact_percent": 56.2444,
+      "max_absolute_error": 5,
+      "median_absolute_error": 0,
+      "p95_absolute_error": 2,
+      "within_one": 1907,
+      "within_thirty": 2242
+    },
+    "quality_counts": {
+      "clean": 0,
+      "excluded": 1,
+      "patched": 81
+    },
+    "quality_percent": {
+      "clean": 0.0,
+      "excluded": 1.2195,
+      "patched": 98.7805
+    },
+    "rule_counts": {
+      "IM02-R1": 0,
+      "IM02-R2": 4,
+      "IM02-R3": 0,
+      "IM02-R4": 1,
+      "IM02-R5": 7,
+      "IM02-R6": 11478,
+      "IM02-R7": 1
+    },
+    "scheduled_games": 82,
+    "unknown_player_minutes": 585
+  },
+  "2023-24:regular_season": {
+    "cdn_unavailable_games": 0,
+    "excluded_games": {
+      "0022300066": [
+        "neither source conserves independent box totals",
+        "team 1610612745 lineup reconstruction incomplete",
+        "team 1610612753 lineup reconstruction incomplete"
+      ],
+      "0022300130": [
+        "neither source conserves independent box totals",
+        "team 1610612753 lineup reconstruction incomplete",
+        "team 1610612762 lineup reconstruction incomplete"
+      ],
+      "0022300155": [
+        "neither source conserves independent box totals",
+        "team 1610612737 lineup reconstruction incomplete",
+        "team 1610612760 lineup reconstruction incomplete"
+      ],
+      "0022300163": [
+        "neither source conserves independent box totals",
+        "team 1610612745 lineup reconstruction incomplete",
+        "team 1610612747 lineup reconstruction incomplete"
+      ],
+      "0022300282": [
+        "neither source conserves independent box totals",
+        "team 1610612751 lineup reconstruction incomplete",
+        "team 1610612753 lineup reconstruction incomplete"
+      ],
+      "0022300300": [
+        "missing-substitution cycle",
+        "team 1610612741 lineup reconstruction incomplete"
+      ],
+      "0022300324": [
+        "incoming player already on floor",
+        "team 1610612760 lineup reconstruction incomplete"
+      ],
+      "0022300379": [
+        "neither source conserves independent box totals",
+        "team 1610612746 lineup reconstruction incomplete",
+        "team 1610612760 lineup reconstruction incomplete"
+      ],
+      "0022300535": [
+        "duplicate substitution identities",
+        "team 1610612753 lineup reconstruction incomplete"
+      ],
+      "0022300709": [
+        "missing-substitution cycle",
+        "team 1610612750 lineup reconstruction incomplete"
+      ],
+      "0022300833": [
+        "neither source conserves independent box totals",
+        "team 1610612751 lineup reconstruction incomplete",
+        "team 1610612753 lineup reconstruction incomplete"
+      ],
+      "0022300839": [
+        "incoming player already on floor",
+        "team 1610612741 lineup reconstruction incomplete"
+      ],
+      "0022301004": [
+        "neither source conserves independent box totals",
+        "team 1610612740 lineup reconstruction incomplete",
+        "team 1610612753 lineup reconstruction incomplete"
+      ],
+      "0022301084": [
+        "neither source conserves independent box totals",
+        "team 1610612741 lineup reconstruction incomplete",
+        "team 1610612750 lineup reconstruction incomplete"
+      ]
+    },
+    "minutes_all_candidates": {
+      "comparisons": 26139,
+      "exact": 19304,
+      "exact_percent": 73.8513,
+      "max_absolute_error": 23.2,
+      "median_absolute_error": 0.0,
+      "p95_absolute_error": 0.4,
+      "within_one": 26133,
+      "within_thirty": 26139
+    },
+    "minutes_nonexcluded": {
+      "comparisons": 26087,
+      "exact": 19269,
+      "exact_percent": 73.8644,
+      "max_absolute_error": 23.2,
+      "median_absolute_error": 0.0,
+      "p95_absolute_error": 0.4,
+      "within_one": 26081,
+      "within_thirty": 26087
+    },
+    "plus_minus_all_candidates": {
+      "comparisons": 32075,
+      "exact": 16731,
+      "exact_percent": 52.1621,
+      "max_absolute_error": 7,
+      "median_absolute_error": 0,
+      "p95_absolute_error": 2,
+      "within_one": 27032,
+      "within_thirty": 32075
+    },
+    "plus_minus_nonexcluded": {
+      "comparisons": 32007,
+      "exact": 16688,
+      "exact_percent": 52.1386,
+      "max_absolute_error": 7,
+      "median_absolute_error": 0,
+      "p95_absolute_error": 2,
+      "within_one": 26976,
+      "within_thirty": 32007
+    },
+    "quality_counts": {
+      "clean": 0,
+      "excluded": 14,
+      "patched": 1216
+    },
+    "quality_percent": {
+      "clean": 0.0,
+      "excluded": 1.1382,
+      "patched": 98.8618
+    },
+    "rule_counts": {
+      "IM02-R1": 0,
+      "IM02-R2": 14,
+      "IM02-R3": 0,
+      "IM02-R4": 3,
+      "IM02-R5": 65,
+      "IM02-R6": 184694,
+      "IM02-R7": 14
+    },
+    "scheduled_games": 1230,
+    "unknown_player_minutes": 5984
+  },
+  "2024-25:playoffs": {
+    "cdn_unavailable_games": 0,
+    "excluded_games": {
+      "0042400227": [
+        "neither source conserves independent box totals",
+        "team 1610612743 lineup reconstruction incomplete",
+        "team 1610612760 lineup reconstruction incomplete"
+      ]
+    },
+    "minutes_all_candidates": {
+      "comparisons": 1779,
+      "exact": 1050,
+      "exact_percent": 59.0219,
+      "max_absolute_error": 0.5,
+      "median_absolute_error": 0.0,
+      "p95_absolute_error": 0.4,
+      "within_one": 1779,
+      "within_thirty": 1779
+    },
+    "minutes_nonexcluded": {
+      "comparisons": 1779,
+      "exact": 1050,
+      "exact_percent": 59.0219,
+      "max_absolute_error": 0.5,
+      "median_absolute_error": 0.0,
+      "p95_absolute_error": 0.4,
+      "within_one": 1779,
+      "within_thirty": 1779
+    },
+    "plus_minus_all_candidates": {
+      "comparisons": 2385,
+      "exact": 1294,
+      "exact_percent": 54.2558,
+      "max_absolute_error": 7,
+      "median_absolute_error": 0,
+      "p95_absolute_error": 3,
+      "within_one": 1971,
+      "within_thirty": 2385
+    },
+    "plus_minus_nonexcluded": {
+      "comparisons": 2385,
+      "exact": 1294,
+      "exact_percent": 54.2558,
+      "max_absolute_error": 7,
+      "median_absolute_error": 0,
+      "p95_absolute_error": 3,
+      "within_one": 1971,
+      "within_thirty": 2385
+    },
+    "quality_counts": {
+      "clean": 0,
+      "excluded": 1,
+      "patched": 83
+    },
+    "quality_percent": {
+      "clean": 0.0,
+      "excluded": 1.1905,
+      "patched": 98.8095
+    },
+    "rule_counts": {
+      "IM02-R1": 0,
+      "IM02-R2": 0,
+      "IM02-R3": 0,
+      "IM02-R4": 0,
+      "IM02-R5": 7,
+      "IM02-R6": 19500,
+      "IM02-R7": 1
+    },
+    "scheduled_games": 84,
+    "unknown_player_minutes": 609
+  },
+  "2024-25:regular_season": {
+    "cdn_unavailable_games": 0,
+    "excluded_games": {
+      "0022400024": [
+        "neither source conserves independent box totals",
+        "team 1610612740 lineup reconstruction incomplete",
+        "team 1610612742 lineup reconstruction incomplete"
+      ],
+      "0022400059": [
+        "player minutes exceed 30-second tolerance: 77.80"
+      ],
+      "0022400065": [
+        "neither source conserves independent box totals",
+        "team 1610612748 lineup reconstruction incomplete",
+        "team 1610612753 lineup reconstruction incomplete"
+      ],
+      "0022400177": [
+        "player minutes exceed 30-second tolerance: 74.00"
+      ],
+      "0022400217": [
+        "neither source conserves independent box totals",
+        "team 1610612753 lineup reconstruction incomplete",
+        "team 1610612754 lineup reconstruction incomplete"
+      ],
+      "0022400252": [
+        "neither source conserves independent box totals",
+        "team 1610612739 lineup reconstruction incomplete",
+        "team 1610612740 lineup reconstruction incomplete"
+      ],
+      "0022400377": [
+        "neither source conserves independent box totals",
+        "team 1610612748 lineup reconstruction incomplete",
+        "team 1610612753 lineup reconstruction incomplete"
+      ],
+      "0022400458": [
+        "neither source conserves independent box totals",
+        "team 1610612752 lineup reconstruction incomplete",
+        "team 1610612762 lineup reconstruction incomplete"
+      ],
+      "0022400551": [
+        "neither source conserves independent box totals",
+        "team 1610612745 lineup reconstruction incomplete",
+        "team 1610612763 lineup reconstruction incomplete"
+      ],
+      "0022400720": [
+        "player minutes exceed 30-second tolerance: 105.40"
+      ],
+      "0022400831": [
+        "player minutes exceed 30-second tolerance: 213.70"
+      ],
+      "0022400920": [
+        "player minutes exceed 30-second tolerance: 73.10"
+      ],
+      "0022400928": [
+        "player minutes exceed 30-second tolerance: 77.40"
+      ],
+      "0022400933": [
+        "player minutes exceed 30-second tolerance: 99.00"
+      ],
+      "0022400979": [
+        "incoming player already on floor",
+        "team 1610612753 lineup reconstruction incomplete"
+      ],
+      "0022401112": [
+        "missing-substitution cycle",
+        "team 1610612764 lineup reconstruction incomplete"
+      ],
+      "0022401194": [
+        "neither source conserves independent box totals",
+        "team 1610612742 lineup reconstruction incomplete",
+        "team 1610612763 lineup reconstruction incomplete"
+      ],
+      "0022401230": [
+        "neither source conserves independent box totals",
+        "team 1610612745 lineup reconstruction incomplete",
+        "team 1610612760 lineup reconstruction incomplete"
+      ]
+    },
+    "minutes_all_candidates": {
+      "comparisons": 26099,
+      "exact": 19511,
+      "exact_percent": 74.7577,
+      "max_absolute_error": 213.7,
+      "median_absolute_error": 0.0,
+      "p95_absolute_error": 0.4,
+      "within_one": 26083,
+      "within_thirty": 26084
+    },
+    "minutes_nonexcluded": {
+      "comparisons": 25924,
+      "exact": 19398,
+      "exact_percent": 74.8264,
+      "max_absolute_error": 0.5,
+      "median_absolute_error": 0.0,
+      "p95_absolute_error": 0.4,
+      "within_one": 25924,
+      "within_thirty": 25924
+    },
+    "plus_minus_all_candidates": {
+      "comparisons": 32249,
+      "exact": 17146,
+      "exact_percent": 53.1675,
+      "max_absolute_error": 9,
+      "median_absolute_error": 0,
+      "p95_absolute_error": 2,
+      "within_one": 27192,
+      "within_thirty": 32249
+    },
+    "plus_minus_nonexcluded": {
+      "comparisons": 32036,
+      "exact": 17037,
+      "exact_percent": 53.1808,
+      "max_absolute_error": 9,
+      "median_absolute_error": 0,
+      "p95_absolute_error": 2,
+      "within_one": 27024,
+      "within_thirty": 32036
+    },
+    "quality_counts": {
+      "clean": 0,
+      "excluded": 18,
+      "patched": 1212
+    },
+    "quality_percent": {
+      "clean": 0.0,
+      "excluded": 1.4634,
+      "patched": 98.5366
+    },
+    "rule_counts": {
+      "IM02-R1": 0,
+      "IM02-R2": 14,
+      "IM02-R3": 0,
+      "IM02-R4": 0,
+      "IM02-R5": 50,
+      "IM02-R6": 156475,
+      "IM02-R7": 18
+    },
+    "scheduled_games": 1230,
+    "unknown_player_minutes": 6209
+  },
+  "2025-26:playoffs": {
+    "cdn_unavailable_games": 25,
+    "excluded_games": {
+      "0042500311": [
+        "incomplete game periods",
+        "neither source conserves independent box totals"
+      ],
+      "0042500312": [
+        "incomplete game periods",
+        "neither source conserves independent box totals"
+      ],
+      "0042500316": [
+        "incomplete game periods",
+        "neither source conserves independent box totals"
+      ]
+    },
+    "minutes_all_candidates": {
+      "comparisons": 1850,
+      "exact": 1142,
+      "exact_percent": 61.7297,
+      "max_absolute_error": 0.5,
+      "median_absolute_error": 0.0,
+      "p95_absolute_error": 0.4,
+      "within_one": 1850,
+      "within_thirty": 1850
+    },
+    "minutes_nonexcluded": {
+      "comparisons": 1850,
+      "exact": 1142,
+      "exact_percent": 61.7297,
+      "max_absolute_error": 0.5,
+      "median_absolute_error": 0.0,
+      "p95_absolute_error": 0.4,
+      "within_one": 1850,
+      "within_thirty": 1850
+    },
+    "plus_minus_all_candidates": {
+      "comparisons": 2324,
+      "exact": 1179,
+      "exact_percent": 50.7315,
+      "max_absolute_error": 6,
+      "median_absolute_error": 0,
+      "p95_absolute_error": 3,
+      "within_one": 1918,
+      "within_thirty": 2324
+    },
+    "plus_minus_nonexcluded": {
+      "comparisons": 2324,
+      "exact": 1179,
+      "exact_percent": 50.7315,
+      "max_absolute_error": 6,
+      "median_absolute_error": 0,
+      "p95_absolute_error": 3,
+      "within_one": 1918,
+      "within_thirty": 2324
+    },
+    "quality_counts": {
+      "clean": 21,
+      "excluded": 3,
+      "patched": 61
+    },
+    "quality_percent": {
+      "clean": 24.7059,
+      "excluded": 3.5294,
+      "patched": 71.7647
+    },
+    "rule_counts": {
+      "IM02-R1": 0,
+      "IM02-R2": 0,
+      "IM02-R3": 0,
+      "IM02-R4": 0,
+      "IM02-R5": 3,
+      "IM02-R6": 4542,
+      "IM02-R7": 3
+    },
+    "scheduled_games": 85,
+    "unknown_player_minutes": 487
+  },
+  "2025-26:regular_season": {
+    "cdn_unavailable_games": 0,
+    "excluded_games": {
+      "0022500149": [
+        "neither source conserves independent box totals",
+        "team 1610612751 lineup reconstruction incomplete",
+        "team 1610612755 lineup reconstruction incomplete"
+      ],
+      "0022500193": [
+        "neither source conserves independent box totals",
+        "team 1610612738 lineup reconstruction incomplete",
+        "team 1610612753 lineup reconstruction incomplete"
+      ],
+      "0022500788": [
+        "neither source conserves independent box totals",
+        "team 1610612744 lineup reconstruction incomplete",
+        "team 1610612759 lineup reconstruction incomplete"
+      ]
+    },
+    "minutes_all_candidates": {
+      "comparisons": 26588,
+      "exact": 19271,
+      "exact_percent": 72.4801,
+      "max_absolute_error": 0.5,
+      "median_absolute_error": 0.0,
+      "p95_absolute_error": 0.4,
+      "within_one": 26588,
+      "within_thirty": 26588
+    },
+    "minutes_nonexcluded": {
+      "comparisons": 26588,
+      "exact": 19271,
+      "exact_percent": 72.4801,
+      "max_absolute_error": 0.5,
+      "median_absolute_error": 0.0,
+      "p95_absolute_error": 0.4,
+      "within_one": 26588,
+      "within_thirty": 26588
+    },
+    "plus_minus_all_candidates": {
+      "comparisons": 32103,
+      "exact": 15638,
+      "exact_percent": 48.712,
+      "max_absolute_error": 7,
+      "median_absolute_error": 1,
+      "p95_absolute_error": 3,
+      "within_one": 26216,
+      "within_thirty": 32103
+    },
+    "plus_minus_nonexcluded": {
+      "comparisons": 32103,
+      "exact": 15638,
+      "exact_percent": 48.712,
+      "max_absolute_error": 7,
+      "median_absolute_error": 1,
+      "p95_absolute_error": 3,
+      "within_one": 26216,
+      "within_thirty": 32103
+    },
+    "quality_counts": {
+      "clean": 0,
+      "excluded": 3,
+      "patched": 1227
+    },
+    "quality_percent": {
+      "clean": 0.0,
+      "excluded": 0.2439,
+      "patched": 99.7561
+    },
+    "rule_counts": {
+      "IM02-R1": 0,
+      "IM02-R2": 2,
+      "IM02-R3": 0,
+      "IM02-R4": 0,
+      "IM02-R5": 77,
+      "IM02-R6": 95740,
+      "IM02-R7": 3
+    },
+    "scheduled_games": 1230,
+    "unknown_player_minutes": 5528
+  }
+}
