@@ -1,0 +1,25 @@
+2025-26 regular_season 200
+2025-26 regular_season 400
+2025-26 regular_season 600
+2025-26 regular_season 800
+2025-26 regular_season 1000
+2025-26 regular_season 1200
+2025-26 regular_season {'stints': 68925, 'possessions': 245712} {'comparisons': 2454, 'within_two': 1106, 'mean_delta': -2.378614506927465, 'p95_absolute_delta': 5.92, 'max_absolute_delta': 10.4} seconds 70.279
+2025-26 playoffs {'stints': 4913, 'possessions': 15793} {'comparisons': 164, 'within_two': 64, 'mean_delta': -2.627560975609756, 'p95_absolute_delta': 6.68, 'max_absolute_delta': 8.52} seconds 4.459
+2023-24 regular_season 200
+2023-24 regular_season 400
+2023-24 regular_season 600
+2023-24 regular_season 800
+2023-24 regular_season 1000
+2023-24 regular_season 1200
+2023-24 regular_season {'stints': 58652, 'possessions': 241648} {'comparisons': 2432, 'within_two': 1172, 'mean_delta': -2.1753782894736844, 'p95_absolute_delta': 5.56, 'max_absolute_delta': 11.28} seconds 78.539
+2023-24 playoffs {'stints': 3905, 'possessions': 15133} {'comparisons': 162, 'within_two': 87, 'mean_delta': -1.840493827160494, 'p95_absolute_delta': 5.0, 'max_absolute_delta': 7.56} seconds 8.815
+2024-25 regular_season 200
+2024-25 regular_season 400
+2024-25 regular_season 600
+2024-25 regular_season 800
+2024-25 regular_season 1000
+2024-25 regular_season 1200
+2024-25 regular_season {'stints': 61514, 'possessions': 241610} {'comparisons': 2424, 'within_two': 1243, 'mean_delta': -2.066023102310231, 'p95_absolute_delta': 5.52, 'max_absolute_delta': 9.6} seconds 82.337
+2024-25 playoffs {'stints': 4154, 'possessions': 16020} {'comparisons': 166, 'within_two': 64, 'mean_delta': -2.2496385542168675, 'p95_absolute_delta': 5.4, 'max_absolute_delta': 9.28} seconds 5.166
+{"bundles": ["data/derived/impact-population/bundles/6cab0024640cd55f41dafaf6ffd780e6791aced916044f358ec74ee10b16183d.json.gz", "data/derived/impact-population/bundles/d4526c7235a1e87d1baa14deec0521307d699fbfd1e9e28c500da38d77a1b9df.json.gz", "data/derived/impact-population/bundles/76f6a50bc402d8e51de53eae8801767f4fa82f783e96ee4ef6fe96d657203fb9.json.gz", "data/derived/impact-population/bundles/7f913de46724f73f7b68a8c01f3222741e2d87eab2d2c465521c1496d31e9a03.json.gz", "data/derived/impact-population/bundles/d7d4999970a0c5f16b93c524cd4c5e8cd64d868f810d80d634baeb83bd41eb8e.json.gz", "data/derived/impact-population/bundles/ca5e679345f5a10929954d7099b164afdd5cb69c02ecd23794f06fb2d788a067.json.gz"]}

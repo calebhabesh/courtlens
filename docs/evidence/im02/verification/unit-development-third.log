@@ -1,0 +1,528 @@
+FFFFFFFFFFF...F..F..                                                     [100%]
+=================================== FAILURES ===================================
+______ test_all_23_real_starter_disagreements_are_repaired[0022500007-6] _______
+
+real_games = {'0022500007': {'boxes': [{'comment': '', 'family_name': 'Thompson', 'field_goals_attempted': '6', 'field_goals_made':...'PT11M15.00S', ...}, {'actionId': '6', 'actionNumber': '9', 'actionType': '', 'clock': 'PT11M15.00S', ...}, ...], ...}}
+gid = '0022500007', count = 6
+
+    @pytest.mark.parametrize(
+        ("gid", "count"), [("0022500007", 6), ("0022500013", 8), ("0022500025", 5), ("0022501045", 4)]
+    )
+    def test_all_23_real_starter_disagreements_are_repaired(real_games, gid, count):
+        game = real_games[gid]
+        result = replay(gid, game)
+>       assert result["quality"] == "patched"
+E       AssertionError: assert 'excluded' == 'patched'
+E         
+E         - patched
+E         + excluded
+
+tests/unit/test_possession_repair.py:64: AssertionError
+______ test_all_23_real_starter_disagreements_are_repaired[0022500013-8] _______
+
+real_games = {'0022500007': {'boxes': [{'comment': '', 'family_name': 'Thompson', 'field_goals_attempted': '6', 'field_goals_made':...'PT11M15.00S', ...}, {'actionId': '6', 'actionNumber': '9', 'actionType': '', 'clock': 'PT11M15.00S', ...}, ...], ...}}
+gid = '0022500013', count = 8
+
+    @pytest.mark.parametrize(
+        ("gid", "count"), [("0022500007", 6), ("0022500013", 8), ("0022500025", 5), ("0022501045", 4)]
+    )
+    def test_all_23_real_starter_disagreements_are_repaired(real_games, gid, count):
+        game = real_games[gid]
+        result = replay(gid, game)
+>       assert result["quality"] == "patched"
+E       AssertionError: assert 'excluded' == 'patched'
+E         
+E         - patched
+E         + excluded
+
+tests/unit/test_possession_repair.py:64: AssertionError
+______ test_all_23_real_starter_disagreements_are_repaired[0022500025-5] _______
+
+real_games = {'0022500007': {'boxes': [{'comment': '', 'family_name': 'Thompson', 'field_goals_attempted': '6', 'field_goals_made':...'PT11M15.00S', ...}, {'actionId': '6', 'actionNumber': '9', 'actionType': '', 'clock': 'PT11M15.00S', ...}, ...], ...}}
+gid = '0022500025', count = 5
+
+    @pytest.mark.parametrize(
+        ("gid", "count"), [("0022500007", 6), ("0022500013", 8), ("0022500025", 5), ("0022501045", 4)]
+    )
+    def test_all_23_real_starter_disagreements_are_repaired(real_games, gid, count):
+        game = real_games[gid]
+        result = replay(gid, game)
+>       assert result["quality"] == "patched"
+E       AssertionError: assert 'excluded' == 'patched'
+E         
+E         - patched
+E         + excluded
+
+tests/unit/test_possession_repair.py:64: AssertionError
+______ test_all_23_real_starter_disagreements_are_repaired[0022501045-4] _______
+
+real_games = {'0022500007': {'boxes': [{'comment': '', 'family_name': 'Thompson', 'field_goals_attempted': '6', 'field_goals_made':...'PT11M15.00S', ...}, {'actionId': '6', 'actionNumber': '9', 'actionType': '', 'clock': 'PT11M15.00S', ...}, ...], ...}}
+gid = '0022501045', count = 4
+
+    @pytest.mark.parametrize(
+        ("gid", "count"), [("0022500007", 6), ("0022500013", 8), ("0022500025", 5), ("0022501045", 4)]
+    )
+    def test_all_23_real_starter_disagreements_are_repaired(real_games, gid, count):
+        game = real_games[gid]
+        result = replay(gid, game)
+>       assert result["quality"] == "patched"
+E       AssertionError: assert 'excluded' == 'patched'
+E         
+E         - patched
+E         + excluded
+
+tests/unit/test_possession_repair.py:64: AssertionError
+_________ test_real_25_60_is_carried_and_ambiguous_values_stay_unknown _________
+
+real_games = {'0022500007': {'boxes': [{'comment': '', 'family_name': 'Thompson', 'field_goals_attempted': '6', 'field_goals_made':...'PT11M15.00S', ...}, {'actionId': '6', 'actionNumber': '9', 'actionType': '', 'clock': 'PT11M15.00S', ...}, ...], ...}}
+
+    def test_real_25_60_is_carried_and_ambiguous_values_stay_unknown(real_games):
+        result = replay("0022500007", real_games["0022500007"])
+        carry = [r for r in result["repairs"] if r["rule_id"] == "IM02-R5"]
+        assert len(carry) == 1
+        assert carry[0]["original"] == "25:60"
+        assert carry[0]["replacement"] == "1560"
+        for raw in ("25:61", "NaN", "", "DNP", "-1:00", "1:inf"):
+            assert parse_box_seconds(raw) == (None, False)
+        assert parse_box_seconds("25:60") == (Decimal(1560), True)
+        assert parse_box_seconds("00:00") == (Decimal(0), False)
+        altered = copy.deepcopy(real_games["0022500007"])
+        next(b for b in altered["boxes"] if b["person_id"] == "1629130")["minutes"] = "25:61"
+        unknown = replay("0022500007", altered)
+>       assert unknown["quality"] == "patched"
+E       AssertionError: assert 'excluded' == 'patched'
+E         
+E         - patched
+E         + excluded
+
+tests/unit/test_possession_repair.py:100: AssertionError
+______________ test_minutes_thresholds_on_real_game[1-patched-0] _______________
+
+real_games = {'0022500007': {'boxes': [{'comment': '', 'family_name': 'Thompson', 'field_goals_attempted': '6', 'field_goals_made':...'PT11M15.00S', ...}, {'actionId': '6', 'actionNumber': '9', 'actionType': '', 'clock': 'PT11M15.00S', ...}, ...], ...}}
+delta = 1, quality = 'patched', counter = 0
+
+    @pytest.mark.parametrize(
+        ("delta", "quality", "counter"),
+        [(1, "patched", 0), (2, "patched", 1), (30, "patched", 1), (31, "excluded", 0)],
+    )
+    def test_minutes_thresholds_on_real_game(real_games, delta, quality, counter):
+        altered = copy.deepcopy(real_games["0022500007"])
+        box = next(b for b in altered["boxes"] if b["person_id"] == "1629130")
+        seconds = Decimal("1559.5") + delta
+        box["minutes"] = f"{int(seconds // 60)}:{seconds % 60:04.1f}"
+        result = replay("0022500007", altered)
+>       assert result["quality"] == quality
+E       AssertionError: assert 'excluded' == 'patched'
+E         
+E         - patched
+E         + excluded
+
+tests/unit/test_possession_repair.py:115: AssertionError
+______________ test_minutes_thresholds_on_real_game[2-patched-1] _______________
+
+real_games = {'0022500007': {'boxes': [{'comment': '', 'family_name': 'Thompson', 'field_goals_attempted': '6', 'field_goals_made':...'PT11M15.00S', ...}, {'actionId': '6', 'actionNumber': '9', 'actionType': '', 'clock': 'PT11M15.00S', ...}, ...], ...}}
+delta = 2, quality = 'patched', counter = 1
+
+    @pytest.mark.parametrize(
+        ("delta", "quality", "counter"),
+        [(1, "patched", 0), (2, "patched", 1), (30, "patched", 1), (31, "excluded", 0)],
+    )
+    def test_minutes_thresholds_on_real_game(real_games, delta, quality, counter):
+        altered = copy.deepcopy(real_games["0022500007"])
+        box = next(b for b in altered["boxes"] if b["person_id"] == "1629130")
+        seconds = Decimal("1559.5") + delta
+        box["minutes"] = f"{int(seconds // 60)}:{seconds % 60:04.1f}"
+        result = replay("0022500007", altered)
+>       assert result["quality"] == quality
+E       AssertionError: assert 'excluded' == 'patched'
+E         
+E         - patched
+E         + excluded
+
+tests/unit/test_possession_repair.py:115: AssertionError
+______________ test_minutes_thresholds_on_real_game[30-patched-1] ______________
+
+real_games = {'0022500007': {'boxes': [{'comment': '', 'family_name': 'Thompson', 'field_goals_attempted': '6', 'field_goals_made':...'PT11M15.00S', ...}, {'actionId': '6', 'actionNumber': '9', 'actionType': '', 'clock': 'PT11M15.00S', ...}, ...], ...}}
+delta = 30, quality = 'patched', counter = 1
+
+    @pytest.mark.parametrize(
+        ("delta", "quality", "counter"),
+        [(1, "patched", 0), (2, "patched", 1), (30, "patched", 1), (31, "excluded", 0)],
+    )
+    def test_minutes_thresholds_on_real_game(real_games, delta, quality, counter):
+        altered = copy.deepcopy(real_games["0022500007"])
+        box = next(b for b in altered["boxes"] if b["person_id"] == "1629130")
+        seconds = Decimal("1559.5") + delta
+        box["minutes"] = f"{int(seconds // 60)}:{seconds % 60:04.1f}"
+        result = replay("0022500007", altered)
+>       assert result["quality"] == quality
+E       AssertionError: assert 'excluded' == 'patched'
+E         
+E         - patched
+E         + excluded
+
+tests/unit/test_possession_repair.py:115: AssertionError
+_____________ test_minutes_thresholds_on_real_game[31-excluded-0] ______________
+
+real_games = {'0022500007': {'boxes': [{'comment': '', 'family_name': 'Thompson', 'field_goals_attempted': '6', 'field_goals_made':...'PT11M15.00S', ...}, {'actionId': '6', 'actionNumber': '9', 'actionType': '', 'clock': 'PT11M15.00S', ...}, ...], ...}}
+delta = 31, quality = 'excluded', counter = 0
+
+    @pytest.mark.parametrize(
+        ("delta", "quality", "counter"),
+        [(1, "patched", 0), (2, "patched", 1), (30, "patched", 1), (31, "excluded", 0)],
+    )
+    def test_minutes_thresholds_on_real_game(real_games, delta, quality, counter):
+        altered = copy.deepcopy(real_games["0022500007"])
+        box = next(b for b in altered["boxes"] if b["person_id"] == "1629130")
+        seconds = Decimal("1559.5") + delta
+        box["minutes"] = f"{int(seconds // 60)}:{seconds % 60:04.1f}"
+        result = replay("0022500007", altered)
+        assert result["quality"] == quality
+        assert result["rule_counts"]["IM02-R4"] == counter
+        assert result["rule_counts"]["IM02-R7"] == int(quality == "excluded")
+>       assert result["player_comparisons"]["1629130"]["minutes_delta_seconds"] == str(
+            Decimal(-delta).quantize(Decimal("0.01"))
+        )
+E       AssertionError: assert None == '-31.00'
+E        +  where '-31.00' = str(Decimal('-31.00'))
+E        +    where Decimal('-31.00') = <built-in method quantize of decimal.Decimal object at 0x7fda62a2aa40>(Decimal('0.01'))
+E        +      where <built-in method quantize of decimal.Decimal object at 0x7fda62a2aa40> = Decimal('-31').quantize
+E        +        where Decimal('-31') = Decimal(-31)
+E        +      and   Decimal('0.01') = Decimal('0.01')
+
+tests/unit/test_possession_repair.py:118: AssertionError
+_______ test_cross_source_box_conservation_and_unavailable_are_distinct ________
+
+real_games = {'0022500007': {'boxes': [{'comment': '', 'family_name': 'Thompson', 'field_goals_attempted': '6', 'field_goals_made':...'PT11M15.00S', ...}, {'actionId': '6', 'actionNumber': '9', 'actionType': '', 'clock': 'PT11M15.00S', ...}, ...], ...}}
+
+    def test_cross_source_box_conservation_and_unavailable_are_distinct(real_games):
+        game = real_games["0022500007"]
+>       events = normalize_events(
+            game["rows"], source="v3", source_sha256=game["input_hashes"]["v3"], boxes=game["boxes"]
+        )
+
+tests/unit/test_possession_repair.py:125: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+rows = [{'actionId': '1', 'actionNumber': '2', 'actionType': 'period', 'clock': 'PT12M00.00S', ...}, {'actionId': '2', 'actio...11M27.00S', ...}, {'actionId': '6', 'actionNumber': '11', 'actionType': 'Made Shot', 'clock': 'PT11M25.00S', ...}, ...]
+
+    def normalize_events(
+        rows: list[dict[str, str]],
+        *,
+        source: str,
+        source_sha256: str,
+        boxes: list[dict[str, str]],
+    ) -> list[RepairEvent]:
+        """Resolve only explicit same-team identities; retain CSV row identity on every event."""
+        roster = {b["person_id"]: b["team_id"] for b in boxes}
+        names: dict[str, dict[str, set[str]]] = defaultdict(lambda: defaultdict(set))
+        for b in boxes:
+            for key in ("first_name", "family_name", "name_i"):
+                if b.get(key):
+                    names[b["team_id"]][name_key(b[key])].add(b["person_id"])
+        for row in rows:
+            pid, team = row.get("personId", ""), row.get("teamId", "")
+            if roster.get(pid) == team:
+                for key in ("playerName", "playerNameI"):
+                    if row.get(key):
+                        names[team][name_key(row[key])].add(pid)
+    
+        def resolve(team: str, text: str) -> str:
+            ids = names[team].get(name_key(text), set())
+            if len(ids) != 1:
+                raise ValueError(f"ambiguous substitution identity: {team}/{text}")
+            return next(iter(ids))
+    
+        events = []
+        cdn_blocks: dict[tuple[int, Decimal, str], dict[str, list[str]]] = defaultdict(
+            lambda: {"out": [], "in": []}
+        )
+        for index, row in enumerate(rows):
+            kind = _kind(row)
+            team, pid = row.get("teamId", "") or "0", row.get("personId", "") or "0"
+            period, seconds = int(row["period"]), clock_seconds(row["clock"])
+            desc, subtype = row.get("description", ""), row.get("subType", "").lower()
+            technical = "technical" in (desc + " " + subtype).lower()
+            stats: dict[str, int] = {}
+            if kind == "shot":
+                # The 2023 v3 schema has no shotValue column. Its explicit 3PT marker
+                # supplies the value; pointsTotal is cumulative player points, not this shot.
+                fallback = 3 if row["actionType"] == "3pt" or "3PT" in desc else 2
+                value = int(row.get("shotValue") or fallback)
+                outcome = row.get("shotResult", "")
+                if value not in (2, 3) or outcome not in ("Made", "Missed"):
+                    raise ValueError(f"unknown shot outcome at row {index}")
+                made = int(outcome == "Made")
+                stats = {
+                    "fga": 1,
+                    "fgm": made,
+                    "fg3a": int(value == 3),
+                    "fg3m": int(value == 3) * made,
+                    "points": value * made,
+                }
+            elif kind == "free_throw":
+                if desc.startswith("MISS ") or row.get("shotResult") == "Missed":
+                    made = 0
+                elif re.search(r"\(\d+ PTS\)", desc) or row.get("shotResult") == "Made":
+                    made = 1
+                else:
+                    raise ValueError(f"unknown free throw outcome at row {index}")
+                stats = {"fta": 1, "ftm": made, "points": made}
+            outgoing: tuple[str, ...] = ()
+            incoming: tuple[str, ...] = ()
+            if kind == "substitution":
+                if source == "v3":
+                    match = re.fullmatch(r"SUB: (.+) FOR (.+)", desc)
+                    if match is None or roster.get(pid) != team or resolve(team, match[2]) != pid:
+                        raise ValueError(f"unresolved outgoing substitution at row {index}")
+                    outgoing, incoming = (pid,), (resolve(team, match[1]),)
+                elif subtype in ("out", "in") and roster.get(pid) == team:
+                    cdn_blocks[(period, seconds, team)][subtype].append(pid)
+                else:
+                    raise ValueError(f"unresolved CDN substitution at row {index}")
+            participants: set[str] = set()
+            on_court = kind in ("shot", "free_throw", "rebound", "turnover", "jump_ball", "foul")
+            if on_court and not technical and pid != "0" and pid not in roster:
+>               raise ValueError(f"on-court player absent from independent box roster at row {index}")
+E               ValueError: on-court player absent from independent box roster at row 11
+
+src/courtlens/domain/possession_repair.py:185: ValueError
+_______________ test_duplicate_action_numbers_keep_row_identity ________________
+
+real_games = {'0022500007': {'boxes': [{'comment': '', 'family_name': 'Thompson', 'field_goals_attempted': '6', 'field_goals_made':...'PT11M15.00S', ...}, {'actionId': '6', 'actionNumber': '9', 'actionType': '', 'clock': 'PT11M15.00S', ...}, ...], ...}}
+
+    def test_duplicate_action_numbers_keep_row_identity(real_games):
+        game = real_games["0022500007"]
+>       events = normalize_events(
+            game["rows"], source="v3", source_sha256="a" * 64, boxes=game["boxes"]
+        )
+
+tests/unit/test_possession_repair.py:170: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+rows = [{'actionId': '1', 'actionNumber': '2', 'actionType': 'period', 'clock': 'PT12M00.00S', ...}, {'actionId': '2', 'actio...11M27.00S', ...}, {'actionId': '6', 'actionNumber': '11', 'actionType': 'Made Shot', 'clock': 'PT11M25.00S', ...}, ...]
+
+    def normalize_events(
+        rows: list[dict[str, str]],
+        *,
+        source: str,
+        source_sha256: str,
+        boxes: list[dict[str, str]],
+    ) -> list[RepairEvent]:
+        """Resolve only explicit same-team identities; retain CSV row identity on every event."""
+        roster = {b["person_id"]: b["team_id"] for b in boxes}
+        names: dict[str, dict[str, set[str]]] = defaultdict(lambda: defaultdict(set))
+        for b in boxes:
+            for key in ("first_name", "family_name", "name_i"):
+                if b.get(key):
+                    names[b["team_id"]][name_key(b[key])].add(b["person_id"])
+        for row in rows:
+            pid, team = row.get("personId", ""), row.get("teamId", "")
+            if roster.get(pid) == team:
+                for key in ("playerName", "playerNameI"):
+                    if row.get(key):
+                        names[team][name_key(row[key])].add(pid)
+    
+        def resolve(team: str, text: str) -> str:
+            ids = names[team].get(name_key(text), set())
+            if len(ids) != 1:
+                raise ValueError(f"ambiguous substitution identity: {team}/{text}")
+            return next(iter(ids))
+    
+        events = []
+        cdn_blocks: dict[tuple[int, Decimal, str], dict[str, list[str]]] = defaultdict(
+            lambda: {"out": [], "in": []}
+        )
+        for index, row in enumerate(rows):
+            kind = _kind(row)
+            team, pid = row.get("teamId", "") or "0", row.get("personId", "") or "0"
+            period, seconds = int(row["period"]), clock_seconds(row["clock"])
+            desc, subtype = row.get("description", ""), row.get("subType", "").lower()
+            technical = "technical" in (desc + " " + subtype).lower()
+            stats: dict[str, int] = {}
+            if kind == "shot":
+                # The 2023 v3 schema has no shotValue column. Its explicit 3PT marker
+                # supplies the value; pointsTotal is cumulative player points, not this shot.
+                fallback = 3 if row["actionType"] == "3pt" or "3PT" in desc else 2
+                value = int(row.get("shotValue") or fallback)
+                outcome = row.get("shotResult", "")
+                if value not in (2, 3) or outcome not in ("Made", "Missed"):
+                    raise ValueError(f"unknown shot outcome at row {index}")
+                made = int(outcome == "Made")
+                stats = {
+                    "fga": 1,
+                    "fgm": made,
+                    "fg3a": int(value == 3),
+                    "fg3m": int(value == 3) * made,
+                    "points": value * made,
+                }
+            elif kind == "free_throw":
+                if desc.startswith("MISS ") or row.get("shotResult") == "Missed":
+                    made = 0
+                elif re.search(r"\(\d+ PTS\)", desc) or row.get("shotResult") == "Made":
+                    made = 1
+                else:
+                    raise ValueError(f"unknown free throw outcome at row {index}")
+                stats = {"fta": 1, "ftm": made, "points": made}
+            outgoing: tuple[str, ...] = ()
+            incoming: tuple[str, ...] = ()
+            if kind == "substitution":
+                if source == "v3":
+                    match = re.fullmatch(r"SUB: (.+) FOR (.+)", desc)
+                    if match is None or roster.get(pid) != team or resolve(team, match[2]) != pid:
+                        raise ValueError(f"unresolved outgoing substitution at row {index}")
+                    outgoing, incoming = (pid,), (resolve(team, match[1]),)
+                elif subtype in ("out", "in") and roster.get(pid) == team:
+                    cdn_blocks[(period, seconds, team)][subtype].append(pid)
+                else:
+                    raise ValueError(f"unresolved CDN substitution at row {index}")
+            participants: set[str] = set()
+            on_court = kind in ("shot", "free_throw", "rebound", "turnover", "jump_ball", "foul")
+            if on_court and not technical and pid != "0" and pid not in roster:
+>               raise ValueError(f"on-court player absent from independent box roster at row {index}")
+E               ValueError: on-court player absent from independent box roster at row 11
+
+src/courtlens/domain/possession_repair.py:185: ValueError
+____ test_candidate_reuse_rejects_corruption_and_summaries_count_exclusions ____
+
+real_games = {'0022500007': {'boxes': [{'comment': '', 'family_name': 'Thompson', 'field_goals_attempted': '6', 'field_goals_made':...'PT11M15.00S', ...}, {'actionId': '6', 'actionNumber': '9', 'actionType': '', 'clock': 'PT11M15.00S', ...}, ...], ...}}
+tmp_path = PosixPath('/tmp/pytest-of-ethioking/pytest-222/test_candidate_reuse_rejects_c0')
+
+    def test_candidate_reuse_rejects_corruption_and_summaries_count_exclusions(real_games, tmp_path):
+        result = replay("0022500007", real_games["0022500007"])
+        path = tmp_path / "candidate.json.gz"
+        retain_candidate(path, result)
+        original = path.read_bytes()
+        retain_candidate(path, result)
+        assert path.read_bytes() == original
+        path.write_bytes(gzip.compress(b"{}"))
+        with pytest.raises(ValueError, match="changed"):
+            retain_candidate(path, result)
+        excluded = copy.deepcopy(result)
+        excluded["quality"] = "excluded"
+        excluded["errors"] = ["bad"]
+        summary = summarize({"one": result, "two": excluded})
+        assert summary["scheduled_games"] == 2
+>       assert summary["quality_percent"] == {"clean": 0, "patched": 50, "excluded": 50}
+E       AssertionError: assert {'clean': 0.0...patched': 0.0} == {'clean': 0, ...'patched': 50}
+E         
+E         Omitting 1 identical items, use -vv to show
+E         Differing items:
+E         {'patched': 0.0} != {'patched': 50}
+E         {'excluded': 100.0} != {'excluded': 50}
+E         Use -v to get more diff
+
+tests/unit/test_possession_repair.py:282: AssertionError
+_ test_real_same_clock_free_throws_substitutions_and_rebounds_preserve_source_order _
+
+real_games = {'0022500007': {'boxes': [{'comment': '', 'family_name': 'Thompson', 'field_goals_attempted': '6', 'field_goals_made':...'PT11M15.00S', ...}, {'actionId': '6', 'actionNumber': '9', 'actionType': '', 'clock': 'PT11M15.00S', ...}, ...], ...}}
+
+    def test_real_same_clock_free_throws_substitutions_and_rebounds_preserve_source_order(real_games):
+        import itertools
+    
+        game = real_games["0022500007"]
+>       events = normalize_events(
+            game["rows"], source="v3", source_sha256=game["input_hashes"]["v3"], boxes=game["boxes"]
+        )
+
+tests/unit/test_possession_repair.py:337: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+rows = [{'actionId': '1', 'actionNumber': '2', 'actionType': 'period', 'clock': 'PT12M00.00S', ...}, {'actionId': '2', 'actio...11M27.00S', ...}, {'actionId': '6', 'actionNumber': '11', 'actionType': 'Made Shot', 'clock': 'PT11M25.00S', ...}, ...]
+
+    def normalize_events(
+        rows: list[dict[str, str]],
+        *,
+        source: str,
+        source_sha256: str,
+        boxes: list[dict[str, str]],
+    ) -> list[RepairEvent]:
+        """Resolve only explicit same-team identities; retain CSV row identity on every event."""
+        roster = {b["person_id"]: b["team_id"] for b in boxes}
+        names: dict[str, dict[str, set[str]]] = defaultdict(lambda: defaultdict(set))
+        for b in boxes:
+            for key in ("first_name", "family_name", "name_i"):
+                if b.get(key):
+                    names[b["team_id"]][name_key(b[key])].add(b["person_id"])
+        for row in rows:
+            pid, team = row.get("personId", ""), row.get("teamId", "")
+            if roster.get(pid) == team:
+                for key in ("playerName", "playerNameI"):
+                    if row.get(key):
+                        names[team][name_key(row[key])].add(pid)
+    
+        def resolve(team: str, text: str) -> str:
+            ids = names[team].get(name_key(text), set())
+            if len(ids) != 1:
+                raise ValueError(f"ambiguous substitution identity: {team}/{text}")
+            return next(iter(ids))
+    
+        events = []
+        cdn_blocks: dict[tuple[int, Decimal, str], dict[str, list[str]]] = defaultdict(
+            lambda: {"out": [], "in": []}
+        )
+        for index, row in enumerate(rows):
+            kind = _kind(row)
+            team, pid = row.get("teamId", "") or "0", row.get("personId", "") or "0"
+            period, seconds = int(row["period"]), clock_seconds(row["clock"])
+            desc, subtype = row.get("description", ""), row.get("subType", "").lower()
+            technical = "technical" in (desc + " " + subtype).lower()
+            stats: dict[str, int] = {}
+            if kind == "shot":
+                # The 2023 v3 schema has no shotValue column. Its explicit 3PT marker
+                # supplies the value; pointsTotal is cumulative player points, not this shot.
+                fallback = 3 if row["actionType"] == "3pt" or "3PT" in desc else 2
+                value = int(row.get("shotValue") or fallback)
+                outcome = row.get("shotResult", "")
+                if value not in (2, 3) or outcome not in ("Made", "Missed"):
+                    raise ValueError(f"unknown shot outcome at row {index}")
+                made = int(outcome == "Made")
+                stats = {
+                    "fga": 1,
+                    "fgm": made,
+                    "fg3a": int(value == 3),
+                    "fg3m": int(value == 3) * made,
+                    "points": value * made,
+                }
+            elif kind == "free_throw":
+                if desc.startswith("MISS ") or row.get("shotResult") == "Missed":
+                    made = 0
+                elif re.search(r"\(\d+ PTS\)", desc) or row.get("shotResult") == "Made":
+                    made = 1
+                else:
+                    raise ValueError(f"unknown free throw outcome at row {index}")
+                stats = {"fta": 1, "ftm": made, "points": made}
+            outgoing: tuple[str, ...] = ()
+            incoming: tuple[str, ...] = ()
+            if kind == "substitution":
+                if source == "v3":
+                    match = re.fullmatch(r"SUB: (.+) FOR (.+)", desc)
+                    if match is None or roster.get(pid) != team or resolve(team, match[2]) != pid:
+                        raise ValueError(f"unresolved outgoing substitution at row {index}")
+                    outgoing, incoming = (pid,), (resolve(team, match[1]),)
+                elif subtype in ("out", "in") and roster.get(pid) == team:
+                    cdn_blocks[(period, seconds, team)][subtype].append(pid)
+                else:
+                    raise ValueError(f"unresolved CDN substitution at row {index}")
+            participants: set[str] = set()
+            on_court = kind in ("shot", "free_throw", "rebound", "turnover", "jump_ball", "foul")
+            if on_court and not technical and pid != "0" and pid not in roster:
+>               raise ValueError(f"on-court player absent from independent box roster at row {index}")
+E               ValueError: on-court player absent from independent box roster at row 11
+
+src/courtlens/domain/possession_repair.py:185: ValueError
+=========================== short test summary info ============================
+FAILED tests/unit/test_possession_repair.py::test_all_23_real_starter_disagreements_are_repaired[0022500007-6]
+FAILED tests/unit/test_possession_repair.py::test_all_23_real_starter_disagreements_are_repaired[0022500013-8]
+FAILED tests/unit/test_possession_repair.py::test_all_23_real_starter_disagreements_are_repaired[0022500025-5]
+FAILED tests/unit/test_possession_repair.py::test_all_23_real_starter_disagreements_are_repaired[0022501045-4]
+FAILED tests/unit/test_possession_repair.py::test_real_25_60_is_carried_and_ambiguous_values_stay_unknown
+FAILED tests/unit/test_possession_repair.py::test_minutes_thresholds_on_real_game[1-patched-0]
+FAILED tests/unit/test_possession_repair.py::test_minutes_thresholds_on_real_game[2-patched-1]
+FAILED tests/unit/test_possession_repair.py::test_minutes_thresholds_on_real_game[30-patched-1]
+FAILED tests/unit/test_possession_repair.py::test_minutes_thresholds_on_real_game[31-excluded-0]
+FAILED tests/unit/test_possession_repair.py::test_cross_source_box_conservation_and_unavailable_are_distinct
+FAILED tests/unit/test_possession_repair.py::test_duplicate_action_numbers_keep_row_identity
+FAILED tests/unit/test_possession_repair.py::test_candidate_reuse_rejects_corruption_and_summaries_count_exclusions
+FAILED tests/unit/test_possession_repair.py::test_real_same_clock_free_throws_substitutions_and_rebounds_preserve_source_order
+13 failed, 7 passed in 0.33s

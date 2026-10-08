@@ -1,0 +1,60 @@
+{
+  "content_sha256": "25795830d36e11d65f77a83b89183b638b290ed92fb6a50fa9543141d4bf68b8",
+  "game_id": "0022500007",
+  "game_sha256": "0e05267e08a6a6101799ffd7b48c66210db99c688abf342a23e219bae7896cd4",
+  "gate_passed": false,
+  "teams": {
+    "1610612739": {
+      "conservation": {
+        "box_estimate": 107.4,
+        "delta": -3.4,
+        "factor_totals": {
+          "fga": 85,
+          "fgm": 39,
+          "fta": 35,
+          "ftm": 27,
+          "orb": 12,
+          "orb_opportunities": 44,
+          "points": 116,
+          "turnovers": 20
+        },
+        "orb_box_delta": 0,
+        "points": 116,
+        "possessions": 104,
+        "turnovers_box_delta": 1
+      },
+      "decomposition": {
+        "counted_with_ft": "-0.40",
+        "counted_without_ft": "-4.00",
+        "orb_box_correction": "0",
+        "turnover_box_correction": "1"
+      }
+    },
+    "1610612765": {
+      "conservation": {
+        "box_estimate": 107.88,
+        "delta": -3.88,
+        "factor_totals": {
+          "fga": 87,
+          "fgm": 33,
+          "fta": 27,
+          "ftm": 18,
+          "orb": 16,
+          "orb_opportunities": 52,
+          "points": 95,
+          "turnovers": 26
+        },
+        "orb_box_delta": 0,
+        "points": 95,
+        "possessions": 104,
+        "turnovers_box_delta": 1
+      },
+      "decomposition": {
+        "counted_with_ft": "-0.88",
+        "counted_without_ft": "-4.00",
+        "orb_box_correction": "0",
+        "turnover_box_correction": "1"
+      }
+    }
+  }
+}

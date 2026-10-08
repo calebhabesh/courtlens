@@ -125,6 +125,7 @@ class WorkbenchDataset(Base):
     membership_sha256: Mapped[str] = mapped_column(String(64), nullable=False)
     semantic_signature: Mapped[str] = mapped_column(String(64), nullable=False)
     source_namespace: Mapped[str] = mapped_column(String(100), nullable=False)
+    admission_transaction: Mapped[str | None] = mapped_column(String(32))
     parser_version: Mapped[str] = mapped_column(String(40), nullable=False)
     quality_version: Mapped[str] = mapped_column(String(40), nullable=False)
     seasons_json: Mapped[list[str]] = mapped_column(JSON, nullable=False)

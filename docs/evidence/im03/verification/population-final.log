@@ -1,0 +1,25 @@
+persisted 2025-26 regular_season 200
+persisted 2025-26 regular_season 400
+persisted 2025-26 regular_season 600
+persisted 2025-26 regular_season 800
+persisted 2025-26 regular_season 1000
+persisted 2025-26 regular_season 1200
+{"dataset_id": "04ea6414-910c-4294-901c-d20a8f13d716", "content_sha256": "cdd9bdd7d3bd1dc5f79d3f5c28a51eacf6a703eb7c853f70ae3aa0143b0d4ae7", "reused": false, "verification_gate": {"accepted_player_seconds_preserved": true, "all_possession_estimates_within_two": false, "points_and_shooting_conserved": true}, "possessions": 245712, "stints": 68925, "season": "2025-26", "phase": "regular_season", "bundle_path": "data/derived/impact-population/bundles/cdd9bdd7d3bd1dc5f79d3f5c28a51eacf6a703eb7c853f70ae3aa0143b0d4ae7.json.gz", "elapsed_seconds": 125.98}
+{"dataset_id": "1fd09170-1a9f-401d-bb6f-a38c016f3a1b", "content_sha256": "5cdb84ff9f900050a4c66a811b4b1eff4fa257de4bb44e48468943aa08852e9f", "reused": false, "verification_gate": {"accepted_player_seconds_preserved": true, "all_possession_estimates_within_two": false, "points_and_shooting_conserved": true}, "possessions": 15793, "stints": 4913, "season": "2025-26", "phase": "playoffs", "bundle_path": "data/derived/impact-population/bundles/5cdb84ff9f900050a4c66a811b4b1eff4fa257de4bb44e48468943aa08852e9f.json.gz", "elapsed_seconds": 8.491}
+persisted 2023-24 regular_season 200
+persisted 2023-24 regular_season 400
+persisted 2023-24 regular_season 600
+persisted 2023-24 regular_season 800
+persisted 2023-24 regular_season 1000
+persisted 2023-24 regular_season 1200
+{"dataset_id": "49ebf547-8798-4bbe-8664-22d5dcdd451c", "content_sha256": "a62b0848066345802a57f7856821f654d21444b41a75633da6a45539c62a6f76", "reused": false, "verification_gate": {"accepted_player_seconds_preserved": true, "all_possession_estimates_within_two": false, "points_and_shooting_conserved": true}, "possessions": 241648, "stints": 58652, "season": "2023-24", "phase": "regular_season", "bundle_path": "data/derived/impact-population/bundles/a62b0848066345802a57f7856821f654d21444b41a75633da6a45539c62a6f76.json.gz", "elapsed_seconds": 125.056}
+{"dataset_id": "b0611719-15e5-4650-8a8d-c4d897327646", "content_sha256": "fc6c6b4375ae8701493599d73e628af261812fc9c6f77c7d3e6d25979c92ad61", "reused": false, "verification_gate": {"accepted_player_seconds_preserved": true, "all_possession_estimates_within_two": false, "points_and_shooting_conserved": true}, "possessions": 15133, "stints": 3905, "season": "2023-24", "phase": "playoffs", "bundle_path": "data/derived/impact-population/bundles/fc6c6b4375ae8701493599d73e628af261812fc9c6f77c7d3e6d25979c92ad61.json.gz", "elapsed_seconds": 8.548}
+persisted 2024-25 regular_season 200
+persisted 2024-25 regular_season 400
+persisted 2024-25 regular_season 600
+persisted 2024-25 regular_season 800
+persisted 2024-25 regular_season 1000
+persisted 2024-25 regular_season 1200
+{"dataset_id": "eb80c144-a547-4c83-b9ae-b2c2c263c435", "content_sha256": "07708a3138e5222ac11c75306ddc320d3b7387d291f216c2ef0f32888e717f4e", "reused": false, "verification_gate": {"accepted_player_seconds_preserved": true, "all_possession_estimates_within_two": false, "points_and_shooting_conserved": true}, "possessions": 241610, "stints": 61514, "season": "2024-25", "phase": "regular_season", "bundle_path": "data/derived/impact-population/bundles/07708a3138e5222ac11c75306ddc320d3b7387d291f216c2ef0f32888e717f4e.json.gz", "elapsed_seconds": 129.248}
+{"dataset_id": "6a3f43f1-c1a5-45a9-a38f-4fb9c6a922e5", "content_sha256": "c9af59bc37e9464d24b678873fe537c4b3206ed29c93d9c5502becd9de14e3f9", "reused": false, "verification_gate": {"accepted_player_seconds_preserved": true, "all_possession_estimates_within_two": false, "points_and_shooting_conserved": true}, "possessions": 16020, "stints": 4154, "season": "2024-25", "phase": "playoffs", "bundle_path": "data/derived/impact-population/bundles/c9af59bc37e9464d24b678873fe537c4b3206ed29c93d9c5502becd9de14e3f9.json.gz", "elapsed_seconds": 9.373}
+retained population proof 257a3fe758e696267ecb2080370187ace058ef77dffc01f748b586915236906e
