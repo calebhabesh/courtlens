@@ -124,6 +124,13 @@ class ReplayProvider:
         self._index = 0
         self.expected_tools = list(expected_tools) if expected_tools is not None else None
 
+    @property
+    def prompt_version(self) -> str:
+        """Replay the declared historical policy while retaining exact request checks."""
+        if not self._records:
+            return "courtlens-agent-prompt-v2"
+        return str(self._records[0].request["system_prompt"]).split("\n", 1)[0]
+
     @classmethod
     def load(cls, path: Path) -> ReplayProvider:
         raw = json.loads(path.read_text())

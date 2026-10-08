@@ -5,7 +5,9 @@ from __future__ import annotations
 from typing import Any
 
 from courtlens.domain.conversation import EvidenceCell, OperationResult, OperationStep
-from courtlens.domain.metrics import METRIC_CATALOG, METRIC_CATALOG_VERSION
+from courtlens.domain.impact_catalog import IMPACT_CATALOG
+from courtlens.domain.impact_catalog import SERVING_CATALOG as METRIC_CATALOG
+from courtlens.domain.metrics import METRIC_CATALOG_VERSION
 from courtlens.services.assistant.operations import REGISTRY, open_url, operation_hash
 from courtlens.services.workbench_analytics import ResolvedContext, canonical_hash
 
@@ -64,6 +66,8 @@ def render_result(
             "book_sha256": data["book_sha256"],
             "analytical_content_sha256": data["analytical_content_sha256"],
         }
+    if "impact" in data:
+        inputs = {**inputs, "impact": data["impact"]}
     default_entity = str(
         data.get("player_id")
         or step.arguments.get("target_player_id")
@@ -88,6 +92,7 @@ def render_result(
                     "total_minutes",
                     "sample_counts",
                     "sample_sizes",
+                    "impact_support",
                     "period_a_n",
                     "period_b_n",
                     "n_a",
@@ -166,6 +171,19 @@ def render_result(
             ):
                 unit = "USD cents" if key.endswith("_cents") else "USD"
             cell_metric = metric or key
+            if "/impact_support/" in path:
+                cell_metric = key
+                unit = (
+                    "seconds"
+                    if key == "seconds"
+                    else "games"
+                    if key in {"games", "covered_games", "total_games"}
+                    else "controls"
+                    if key in {"off_controls", "def_controls"}
+                    else "opportunities"
+                    if key in {"off_opportunities", "def_opportunities"}
+                    else "sample metadata"
+                )
             if key in (
                 "n",
                 "games_played",
@@ -213,7 +231,9 @@ def render_result(
                     row_identity=row,
                     path=path,
                     metric=cell_metric,
-                    metric_version=METRIC_CATALOG_VERSION,
+                    metric_version=definition.version
+                    if cell_metric in IMPACT_CATALOG and definition
+                    else METRIC_CATALOG_VERSION,
                     unit=unit,
                     value=value,
                     sample=sample,

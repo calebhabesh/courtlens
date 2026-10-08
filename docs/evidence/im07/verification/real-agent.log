@@ -1,0 +1,10 @@
+ag06-web-01: exact original-artifact/SQL match, replayed 3 times
+ag06-web-02: exact original-artifact/SQL match, replayed 3 times
+Traceback (most recent call last):
+  File "/home/ethioking/dev/nba-analytics/scripts/verify_im07_agent.py", line 259, in <module>
+    verify(args.output, live=args.live)
+    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ethioking/dev/nba-analytics/scripts/verify_im07_agent.py", line 179, in verify
+    assert score["exact_answer"], score
+           ~~~~~^^^^^^^^^^^^^^^^
+AssertionError: {'id': 'ag06-web-03', 'category': 'leaders', 'exact_answer': False, 'failures': ['status', 'provider_unavailable_or_limited', 'missing_assumption', 'sql_cells_or_order', 'warehouse_tool_missing', 'warehouse_citation_missing', 'impact_metric_evidence_missing', 'impact_artifact_missing'], 'answered': False, 'refused': False, 'expected_refusal': False, 'web_cited': False, 'unsupported_numbers': [], 'warehouse_override_missed': 0, 'accounting': {'provider': 'ReplayProvider', 'model': 'synthetic-im07-not-language-accuracy', 'prompt_version': 'courtlens-agent-prompt-v2', 'steps': 3, 'provider_calls': 3, 'web_searches': 0, 'input_tokens': 0, 'output_tokens': 0, 'est_cost_usd': None, 'elapsed_ms': 2115.2716070064344, 'stopped_by_limit': None, 'web_search_overshoot': 0, 'token_overshoot': 0}}

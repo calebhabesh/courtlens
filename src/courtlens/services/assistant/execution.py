@@ -152,7 +152,8 @@ def execute_bounded(
 @contextmanager
 def query_deadline(session: Session, deadline: float) -> Iterator[None]:
     """Apply the remaining deadline to every parent resolution/identity SQL statement."""
-    if session.bind is None or session.bind.dialect.name != "postgresql":
+    bind = getattr(session, "bind", None)
+    if bind is None or getattr(bind, "dialect", None) is None or bind.dialect.name != "postgresql":
         yield
         return
     connection = session.connection()

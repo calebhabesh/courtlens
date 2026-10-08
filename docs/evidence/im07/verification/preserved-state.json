@@ -1,0 +1,20 @@
+{
+  "retained_file_count": 2878,
+  "changed_retained_files": [],
+  "legacy_prompt_sha256": "a80144ce84a911aec04271e1c793c760a23ef552f28a8a1f0a8ed8cd26e5198c",
+  "legacy_prompt_byte_identical": true,
+  "publication_before": {
+    "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+    "snapshot_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+    "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+    "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666"
+  },
+  "publication_after": {
+    "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+    "snapshot_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+    "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+    "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666"
+  },
+  "publication_unchanged": true,
+  "database_verification": "PostgreSQL default_transaction_read_only=on"
+}

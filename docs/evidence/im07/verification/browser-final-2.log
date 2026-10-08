@@ -1,0 +1,245 @@
+
+> courtlens-dashboard@0.1.0 test:browser
+> playwright test
+
+
+Running 244 tests using 8 workers
+
+  -    1 e2e/assistant-panel-real.spec.ts:9:7 › AR07 real server resolves his and this team at 1440px
+  -    2 e2e/assistant-panel-real.spec.ts:9:7 › AR07 real server resolves his and this team at 375px
+  ✓    4 e2e/comparison-evaluation.spec.ts:31:5 › evaluation presents the no-promotion decision and failed build state (5.4s)
+  ✓    9 e2e/advanced-research.spec.ts:70:5 › measurements preserve unknown picks, null lengths and units in bounded sample (5.5s)
+  ✓    3 e2e/advanced-research.spec.ts:41:5 › integrity rejection hides numerical outputs and retry recovers (5.6s)
+  ✓    5 e2e/advanced-research.spec.ts:16:5 › completed negative report shows amended identity, honest horizons, metrics and export (5.7s)
+  ✓   10 e2e/advanced-research.spec.ts:59:5 › roster keeps observed and projected inputs separate and exports context (5.8s)
+[WebServer] ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+  ✓    6 e2e/advanced-research.spec.ts:48:5 › calculator rejects invalid scenarios and shows checked finite differences on mobile (7.1s)
+  ✓   16 e2e/conversation.spec.ts:40:5 › network retry reuses the request identity (1.2s)
+  ✓   13 e2e/conversation.spec.ts:24:5 › AI disabled manual paired distributions preserve zero, unknown and exact evidence (2.9s)
+  ✓   15 e2e/conversation.spec.ts:37:5 › quota, unsupported and empty states preserve question and manual execution (3.2s)
+  ✓   14 e2e/conversation.spec.ts:31:5 › natural follow-ups and canonical identity choices retain conversation fingerprints (3.3s)
+  ✘    7 e2e/advanced-research.spec.ts:34:5 › each unavailable model names its independent requirement (11.6s)
+  ✓   19 e2e/conversation.spec.ts:53:5 › unmounted pending answer is discarded and its local state is cleared (3.1s)
+  ✓   20 e2e/conversation.spec.ts:58:7 › unsupported preserves manual alternatives and entered question (3.2s)
+  ✓   18 e2e/conversation.spec.ts:49:5 › drawer traps keyboard focus, escapes, and supports narrow reduced-motion layout (4.8s)
+  ✓   23 e2e/conversation.spec.ts:58:7 › provider_error preserves manual alternatives and entered question (1.4s)
+  ✓   22 e2e/conversation.spec.ts:58:7 › timeout preserves manual alternatives and entered question (1.5s)
+  ✓   21 e2e/conversation.spec.ts:58:7 › insufficient_sample preserves manual alternatives and entered question (1.5s)
+  ✓   17 e2e/conversation.spec.ts:45:5 › exact Research destination retains a saveable turn and clears on client navigation (7.4s)
+  ✓   24 e2e/conversation.spec.ts:58:7 › busy preserves manual alternatives and entered question (2.6s)
+  ✓   25 e2e/conversation.spec.ts:62:5 › proposed context needs an explicit new conversation (2.6s)
+  ✘   12 e2e/comparison-evaluation.spec.ts:61:5 › invalid date preserves selections and recovers to sparse history (11.0s)
+[WebServer] ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+[WebServer] ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+  ✓   27 e2e/dl04-evidence.spec.ts:24:9 › DL04 Evidence Screenshot Capture › captures players at 1440px and 375px (7.2s)
+  ✓   26 e2e/dl04-evidence.spec.ts:24:9 › DL04 Evidence Screenshot Capture › captures stats at 1440px and 375px (7.4s)
+  ✓   28 e2e/dl04-evidence.spec.ts:24:9 › DL04 Evidence Screenshot Capture › captures player-profile at 1440px and 375px (5.8s)
+  ✓   29 e2e/dl04-evidence.spec.ts:24:9 › DL04 Evidence Screenshot Capture › captures teams at 1440px and 375px (7.5s)
+  ✓   30 e2e/dl04-evidence.spec.ts:24:9 › DL04 Evidence Screenshot Capture › captures team-detail at 1440px and 375px (7.3s)
+  ✓   31 e2e/dl04-evidence.spec.ts:24:9 › DL04 Evidence Screenshot Capture › captures team-compare at 1440px and 375px (6.4s)
+  ✓   33 e2e/dl05-evidence.spec.ts:80:7 › DL05 Evidence Screenshot Capture › captures live workspace at 1440px and 375px (5.8s)
+  ✓   34 e2e/dl05-evidence.spec.ts:102:7 › DL05 Evidence Screenshot Capture › captures live game details at 1440px and 375px (5.1s)
+  ✓   32 e2e/dl04-evidence.spec.ts:24:9 › DL04 Evidence Screenshot Capture › captures compare at 1440px and 375px (6.1s)
+[WebServer] ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+[WebServer] ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+[WebServer] ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+  ✓   36 e2e/dl05-evidence.spec.ts:144:7 › DL05 Evidence Screenshot Capture › captures last games explorer at 1440px and 375px (6.3s)
+  ✓   35 e2e/dl05-evidence.spec.ts:124:7 › DL05 Evidence Screenshot Capture › captures schedule at 1440px and 375px (6.3s)
+  ✓   37 e2e/dl05-evidence.spec.ts:164:7 › DL05 Evidence Screenshot Capture › captures playoffs tournament bracket at 1440px and 375px (6.3s)
+  ✘    8 e2e/comparison-evaluation.spec.ts:11:5 › shared-cutoff comparison keeps different target dates and missing context visible (30.1s)
+  ✓   40 e2e/dl06-evidence.spec.ts:29:9 › DL06 Evidence Screenshot Capture › captures wowy at 1440px and 375px (6.3s)
+  ✓   39 e2e/dl06-evidence.spec.ts:29:9 › DL06 Evidence Screenshot Capture › captures shot-profile-twin at 1440px and 375px (6.4s)
+  ✓   38 e2e/dl05-evidence.spec.ts:184:7 › DL05 Evidence Screenshot Capture › captures playoffs series detail at 1440px and 375px (7.2s)
+  ✘   11 e2e/comparison-evaluation.spec.ts:39:5 › comparison controls work by keyboard and fit a 375px viewport (30.0s)
+[WebServer] ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+[WebServer] ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+[WebServer] ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+[WebServer] ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+  ✓   42 e2e/dl06-evidence.spec.ts:29:9 › DL06 Evidence Screenshot Capture › captures distributions at 1440px and 375px (9.9s)
+  ✓   41 e2e/dl06-evidence.spec.ts:29:9 › DL06 Evidence Screenshot Capture › captures rankings at 1440px and 375px (9.9s)
+  ✓   43 e2e/dl06-evidence.spec.ts:29:9 › DL06 Evidence Screenshot Capture › captures similarity at 1440px and 375px (9.9s)
+  ✓   44 e2e/dl06-evidence.spec.ts:29:9 › DL06 Evidence Screenshot Capture › captures wingspan at 1440px and 375px (9.1s)
+  ✓   47 e2e/dl07-evidence.spec.ts:29:9 › DL07 Evidence Screenshot Capture › captures ask at 1440px and 375px (9.2s)
+  ✓   46 e2e/dl06-evidence.spec.ts:29:9 › DL06 Evidence Screenshot Capture › captures shot-aftermath at 1440px and 375px (10.0s)
+  ✓   45 e2e/dl06-evidence.spec.ts:29:9 › DL06 Evidence Screenshot Capture › captures matchups at 1440px and 375px (10.0s)
+  ✓   48 e2e/dl07-evidence.spec.ts:29:9 › DL07 Evidence Screenshot Capture › captures free-agency at 1440px and 375px (15.0s)
+[WebServer] [browser] A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client Component used:
+[WebServer] 
+[WebServer] - A server/client branch `if (typeof window !== 'undefined')`.
+[WebServer] - Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+[WebServer] - Date formatting in a user's locale which doesn't match the server.
+[WebServer] - External changing data without sending a snapshot of it along with the HTML.
+[WebServer] - Invalid HTML tag nesting.
+[WebServer] 
+[WebServer] It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+[WebServer] 
+[WebServer] https://react.dev/link/hydration-mismatch
+[WebServer] 
+[WebServer]   ...
+[WebServer]     <Suspense name="free-agency/" fallback={<Fragment>}>
+[WebServer]       <HTTPAccessFallbackBoundary notFound={undefined} forbidden={undefined} unauthorized={undefined}>
+[WebServer]         <RedirectBoundary>
+[WebServer]           <RedirectErrorBoundary router={{...}}>
+[WebServer]             <InnerLayoutRouter url="/free-agency" tree={[...]} params={{}} cacheNode={{rsc:{...}, ...}} ...>
+[WebServer]               <SegmentViewNode type="page" pagePath="free-agenc...">
+[WebServer]                 <SegmentTrieNode>
+[WebServer]                 <Page>
+[WebServer]                   <Suspense fallback={null}>
+[WebServer]                     <FinanceWorkspace mode="free-agency">
+[WebServer]                       <div className="finance-wo...">
+[WebServer]                         <div>
+[WebServer]                         <p>
+[WebServer]                         <form className="panel fina..." onSubmit={function onSubmit}>
+[WebServer]                           <label>
+[WebServer]                           <label>
+[WebServer]                             <input
+[WebServer]                               required={true}
+[WebServer]                               value=""
+[WebServer]                               onChange={function onChange}
+[WebServer] -                             style={{caret-color:"transparent"}}
+[WebServer]                             >
+[WebServer]                           <label>
+[WebServer]                             <input
+[WebServer]                               required={true}
+[WebServer]                               aria-label="Financial season"
+[WebServer]                               pattern="20[0-9]{2}-[0-9]{2}"
+[WebServer]                               list="finance-seasons"
+[WebServer]                               value="2025-26"
+[WebServer]                               onChange={function onChange}
+[WebServer] -                             style={{caret-color:"transparent"}}
+[WebServer]                             >
+[WebServer]                             ...
+[WebServer]                           <label>
+[WebServer]                             <input
+[WebServer]                               required={true}
+[WebServer]                               placeholder="2026-10-03T00:00:00Z"
+[WebServer]                               value=""
+[WebServer]                               onChange={function onChange}
+[WebServer] -                             style={{caret-color:"transparent"}}
+[WebServer]                             >
+[WebServer]                           <label>
+[WebServer]                             <input
+[WebServer]                               required={true}
+[WebServer]                               type="date"
+[WebServer]                               value=""
+[WebServer]                               onChange={function onChange}
+[WebServer] -                             style={{caret-color:"transparent"}}
+[WebServer]                             >
+[WebServer]                           <label>
+[WebServer]                           <label>
+[WebServer]                           <label>
+[WebServer]                           <label>
+[WebServer]                           <label>
+[WebServer]                             <input
+[WebServer]                               required={true}
+[WebServer]                               inputMode="decimal"
+[WebServer]                               value="12000000"
+[WebServer]                               onChange={function onChange}
+[WebServer] -                             style={{caret-color:"transparent"}}
+[WebServer]                             >
+[WebServer]                           ...
+[WebServer]                         ...
+[WebServer]               ...
+[WebServer]             ...
+[WebServer]  
+  ✘   51 e2e/dl06-evidence.spec.ts:29:9 › DL06 Evidence Screenshot Capture › captures investigations at 1440px and 375px (14.5s)
+  ✘   52 e2e/dl06-evidence.spec.ts:29:9 › DL06 Evidence Screenshot Capture › captures trends at 1440px and 375px (14.5s)
+  ✘   49 e2e/dl06-evidence.spec.ts:29:9 › DL06 Evidence Screenshot Capture › captures stat-line-shift at 1440px and 375px (14.6s)
+  ✘   50 e2e/dl06-evidence.spec.ts:29:9 › DL06 Evidence Screenshot Capture › captures case-studies at 1440px and 375px (14.5s)
+  ✓   55 e2e/dl07-evidence.spec.ts:29:9 › DL07 Evidence Screenshot Capture › captures tierlist at 1440px and 375px (14.7s)
+  ✘   54 e2e/dl07-evidence.spec.ts:29:9 › DL07 Evidence Screenshot Capture › captures data-status at 1440px and 375px (32.3s)
+  ✘   53 e2e/dl07-evidence.spec.ts:29:9 › DL07 Evidence Screenshot Capture › captures contracts at 1440px and 375px (32.4s)
+[PERF stats] CLS: 0, tasks: [{"name":"self","duration":83,"startTime":3184.600000023842},{"name":"self","duration":62,"startTime":5265.900000035763},{"name":"self","duration":210,"startTime":5540.699999988079},{"name":"self","duration":62,"startTime":5750.800000011921},{"name":"self","duration":86,"startTime":8583},{"name":"self","duration":107,"startTime":8700.5},{"name":"self","duration":165,"startTime":8865.100000023842},{"name":"self","duration":131,"startTime":9142.400000035763},{"name":"self","duration":121,"startTime":9371.699999988079},{"name":"self","duration":144,"startTime":9623.600000023842},{"name":"self","duration":178,"startTime":9829.900000035763},{"name":"self","duration":53,"startTime":10276.600000023842},{"name":"self","duration":50,"startTime":11077},{"name":"self","duration":510,"startTime":11505.699999988079},{"name":"self","duration":100,"startTime":13747.400000035763},{"name":"self","duration":528,"startTime":14205},{"name":"self","duration":271,"startTime":15339.400000035763},{"name":"self","duration":53,"startTime":15660.300000011921},{"name":"self","duration":256,"startTime":16178.900000035763}]
+  ✓   56 e2e/dl07-evidence.spec.ts:29:9 › DL07 Evidence Screenshot Capture › captures settings at 1440px and 375px (27.0s)
+  ✓   60 e2e/dl08-evidence.spec.ts:88:9 › DL08 Performance, Loading Skeletons & Action Toasts Evidence › measures performance and CLS on stats (/stats) (22.9s)
+  ✓   59 e2e/dl07-evidence.spec.ts:29:9 › DL07 Evidence Screenshot Capture › captures patch-notes at 1440px and 375px (22.9s)
+  ✓   57 e2e/dl07-evidence.spec.ts:29:9 › DL07 Evidence Screenshot Capture › captures calculator at 1440px and 375px (23.0s)
+[PERF player-profile] CLS: 0, tasks: [{"name":"self","duration":206,"startTime":1366}]
+  ✓   58 e2e/dl07-evidence.spec.ts:50:7 › DL07 Evidence Screenshot Capture › captures ask-drawer attached to player context at 1440px and 375px (27.2s)
+  ✘   61 e2e/dl07-evidence.spec.ts:29:9 › DL07 Evidence Screenshot Capture › captures forecasts at 1440px and 375px (24.4s)
+  ✓   63 e2e/dl08-evidence.spec.ts:88:9 › DL08 Performance, Loading Skeletons & Action Toasts Evidence › measures performance and CLS on player-profile (/players/2544) (5.3s)
+[PERF team-detail] CLS: 0.0001, tasks: [{"name":"self","duration":157,"startTime":2870.600000023842},{"name":"self","duration":339,"startTime":4365},{"name":"self","duration":59,"startTime":7836}]
+[PERF ask] CLS: 0.0082, tasks: [{"name":"self","duration":178,"startTime":2863.899999976158},{"name":"self","duration":315,"startTime":4363.699999988079},{"name":"self","duration":59,"startTime":7829.5},{"name":"self","duration":225,"startTime":9214},{"name":"self","duration":131,"startTime":13812.899999976158},{"name":"self","duration":533,"startTime":15174.300000011921}]
+  ✘   64 e2e/dl08-evidence.spec.ts:88:9 › DL08 Performance, Loading Skeletons & Action Toasts Evidence › measures performance and CLS on team-detail (/teams/1610612747) (16.5s)
+  ✓   65 e2e/dl08-evidence.spec.ts:88:9 › DL08 Performance, Loading Skeletons & Action Toasts Evidence › measures performance and CLS on ask (/research/ask) (17.5s)
+  ✘   66 e2e/dl07-evidence.spec.ts:29:9 › DL07 Evidence Screenshot Capture › captures blog at 1440px and 375px (30.1s)
+  ✘   62 e2e/dl07-evidence.spec.ts:29:9 › DL07 Evidence Screenshot Capture › captures methodology at 1440px and 375px (30.8s)
+  ✘   68 e2e/dl08-evidence.spec.ts:150:7 › DL08 Performance, Loading Skeletons & Action Toasts Evidence › verifies action toast notification lifecycle and appearance (25.6s)
+  ✘   67 e2e/dl07-evidence.spec.ts:29:9 › DL07 Evidence Screenshot Capture › captures learning at 1440px and 375px (30.0s)
+  ✓   70 e2e/dl08-evidence.spec.ts:190:7 › DL08 Performance, Loading Skeletons & Action Toasts Evidence › verifies route enter transition presence without height collapse (25.8s)
+  ✓   72 e2e/entity-selection.spec.ts:26:5 › editing and clear invalidate committed single ID; form never submits draft text (14.2s)
+  ✓   71 e2e/entity-selection.spec.ts:13:5 › two mounted pickers have distinct active descendants; ambiguous Enter never commits (14.4s)
+  ✘   69 e2e/dl08-evidence.spec.ts:205:7 › DL08 Performance, Loading Skeletons & Action Toasts Evidence › captures layout-matching route loading skeletons at 1440px and 375px (32.1s)
+  ✓   79 e2e/entity-selection.spec.ts:87:7 › trends selection preserves release, phase, cutoff and window context (5.5s)
+  ✓   74 e2e/entity-selection.spec.ts:44:5 › IME composition suppresses lookup and Enter; Tab closes and keeps natural focus (6.4s)
+  ✓   75 e2e/entity-selection.spec.ts:50:5 › API failure preserves text; retry and no-match states are distinct (6.4s)
+  ✓   78 e2e/entity-selection.spec.ts:70:5 › changing lookup scope discards an obsolete response for the same text (5.7s)
+  ✓   73 e2e/entity-selection.spec.ts:34:5 › debounce and cache-hit paths reject delayed responses; empty input clears stale options (6.6s)
+  ✓   76 e2e/entity-selection.spec.ts:56:5 › WOWY chips remove by name, prevent duplicates and enforce unit maximum without IDs (7.4s)
+  ✓   77 e2e/entity-selection.spec.ts:64:5 › touch selection and removal work at 375px (6.9s)
+  ✘   86 e2e/finance.spec.ts:36:5 › filters, as-of emptiness and changed context hide stale totals (9.6s)
+  ✘   87 e2e/finance.spec.ts:43:5 › option scenario stays separate from reported money and groups (9.5s)
+  ✘   85 e2e/finance.spec.ts:23:5 › retained historical terms stay unknown, drawer sources and financial context survive navigation (10.4s)
+  ✓   81 e2e/entity-selection.spec.ts:99:7 › rankings picker adds canonical named selection to its explicit personal target (11.0s)
+  ✓   80 e2e/entity-selection.spec.ts:87:7 › similarity selection preserves release, phase, cutoff and window context (11.1s)
+  ✓   82 e2e/entity-selection.spec.ts:99:7 › tierlist picker adds canonical named selection to its explicit personal target (11.1s)
+  ✓   84 e2e/entity-selection.spec.ts:87:7 › distributions selection preserves release, phase, cutoff and window context (10.6s)
+  ✓   83 e2e/entity-selection.spec.ts:118:5 › planner selections stay within roster/watchlist and never query the public catalog (12.5s)
+  ✘   93 e2e/finance.spec.ts:57:5 › mobile and landscape table/drawer preserve keyboard access without body overflow (10.3s)
+  ✓   89 e2e/finance.spec.ts:83:5 › a delayed old financial response cannot replace a newer financial context (11.7s)
+  ✓   88 e2e/finance.spec.ts:71:5 › embedded Stats uses a separate basketball season and retains its resolved release (11.7s)
+  ✓   92 e2e/finance.spec.ts:64:5 › Refresh staged import returns a tracked job and exposes failed worker state (11.4s)
+  -   98 e2e/im06-real.spec.ts:16:9 › impact served values at 1440px
+  -   99 e2e/im06-real.spec.ts:16:9 › onoff served values at 1440px
+  -  100 e2e/im06-real.spec.ts:16:9 › sixfactor served values at 1440px
+  -  101 e2e/im06-real.spec.ts:16:9 › defense served values at 1440px
+  -  102 e2e/im06-real.spec.ts:37:7 › profile and research at 1440px
+  -  103 e2e/im06-real.spec.ts:49:7 › earlier cutoff remains unavailable at 1440px
+  -  104 e2e/im06-real.spec.ts:16:9 › impact served values at 375px
+  -  105 e2e/im06-real.spec.ts:16:9 › onoff served values at 375px
+  -  106 e2e/im06-real.spec.ts:16:9 › sixfactor served values at 375px
+  -  107 e2e/im06-real.spec.ts:16:9 › defense served values at 375px
+  -  108 e2e/im06-real.spec.ts:37:7 › profile and research at 375px
+  -  109 e2e/im06-real.spec.ts:49:7 › earlier cutoff remains unavailable at 375px
+  ✘   91 e2e/header-command-palette.spec.ts:50:7 › DL03 Header and Command Palette › dropdown menus support keyboard navigation, ArrowDown to enter, and Escape returns focus (33.6s)
+  ✘   95 e2e/header-command-palette.spec.ts:80:7 › DL03 Header and Command Palette › command palette opens via shortcut, searches global lookup, supports arrow traversal, and restores focus (34.1s)
+  ✘   94 e2e/finance.spec.ts:50:5 › query rejection has retry, and book chooser never silently chooses newest (34.9s)
+  ✘   90 e2e/header-command-palette.spec.ts:7:7 › DL03 Header and Command Palette › header is single 56px sticky row without bottom border line and zero layout shift on scroll (33.7s)
+  ✓  111 e2e/live.spec.ts:21:5 › selected source boxes keep zero, missingness, clock and errors explicit (24.6s)
+  ✘   97 e2e/header-command-palette.spec.ts:174:7 › DL03 Header and Command Palette › captures evidence screenshots at 1440px and 375px (44.8s)
+  ✘   96 e2e/header-command-palette.spec.ts:133:7 › DL03 Header and Command Palette › mobile viewport collapses to search icon and drawer button with accordions (44.9s)
+  ✘  110 e2e/header-command-palette.spec.ts:112:7 › DL03 Header and Command Palette › More options menu contains Settings, Data status, Availability, and Help items (44.9s)
+  ✓  114 e2e/live.spec.ts:37:5 › offline retains last observation; capacity and disabled acquisition stay usable (21.0s)
+  ✓  115 e2e/live.spec.ts:48:5 › mobile and landscape source box regions contain overflow and keyboard focus (21.1s)
+  ✓  112 e2e/live.spec.ts:53:5 › a delayed old selection cannot overwrite new date observations (21.7s)
+  ✘  116 e2e/live.spec.ts:28:5 › pause, visibility and navigation release leases and prevent hidden renewals (34.7s)
+  ✘  120 e2e/motion-coverage.spec.ts:26:9 › Design Language v1: Motion Coverage Suite › interactive elements on /stats have transitions or motion wrappers (1.5m)
+  ✘  117 e2e/motion-coverage.spec.ts:26:9 › Design Language v1: Motion Coverage Suite › interactive elements on /teams have transitions or motion wrappers (1.5m)
+  ✘  113 e2e/live.spec.ts:42:5 › historical final detail has no demand and pins resolved release in links (37.0s)
+  ✘  121 e2e/live.spec.ts:58:5 › disabled acquisition, observed empty slate and invalid dates stay distinct (1.5m)
+  ✘  122 e2e/motion-coverage.spec.ts:26:9 › Design Language v1: Motion Coverage Suite › interactive elements on /live have transitions or motion wrappers (1.5m)
+  ✘  119 e2e/motion-coverage.spec.ts:26:9 › Design Language v1: Motion Coverage Suite › interactive elements on /players have transitions or motion wrappers (1.5m)
+  ✘  118 e2e/motion-coverage.spec.ts:26:9 › Design Language v1: Motion Coverage Suite › interactive elements on /compare have transitions or motion wrappers (1.5m)
+  ✓  126 e2e/motion-coverage.spec.ts:94:7 › Design Language v1: Motion Coverage Suite › reduced motion overrides preserve instant transitions without layout snapping errors (3.9s)
+  ✓  123 e2e/player-profile.spec.ts:19:5 › unsupported replay date keeps the input and offers recovery (5.8s)
+  ✓  124 e2e/motion-coverage.spec.ts:26:9 › Design Language v1: Motion Coverage Suite › interactive elements on /research/ask have transitions or motion wrappers (5.9s)
+  ✓  130 e2e/motion-coverage.spec.ts:26:9 › Design Language v1: Motion Coverage Suite › interactive elements on /design have transitions or motion wrappers (5.9s)
+  ✓  131 e2e/route-polish.spec.ts:32:5 › settings distinguishes configured key from provider health and hides operator details (3.4s)
+  ✓  127 e2e/route-polish.spec.ts:20:5 › catalog scope options keep unavailable context explicit and synchronize navigation (17.2s)
+  ✘  135 e2e/saved-operations.spec.ts:29:5 › explicit save excludes question by default, reuses identity after failure and survives clearing (9.7s)
+  ✘  129 e2e/motion-coverage.spec.ts:67:7 › Design Language v1: Motion Coverage Suite › menus, command palette, and dialogs have enter animations (17.0s)
+  ✘  125 e2e/player-profile.spec.ts:3:5 › search opens a snapshot-pinned real route and changes replay date (16.9s)
+  ✓  134 e2e/route-polish.spec.ts:86:5 › research without a catalog explains the missing context (11.3s)
+  ✓  133 e2e/route-polish.spec.ts:71:5 › distribution subtools retain release, postseason and exclusive cutoff (15.0s)
+  ✓  132 e2e/route-polish.spec.ts:47:5 › partial source keeps tools primary; service failure remains a distinct availability state (16.7s)
+  ✓  138 e2e/saved-operations.spec.ts:40:5 › combined library keeps legacy section and opens exact retained namespace (4.7s)
+  ✓  137 e2e/saved-operations.spec.ts:43:39 › profile retained result exposes evidence, pinned reopening, exports and reproduction (5.7s)
+  ✓  139 e2e/saved-operations.spec.ts:43:39 › definition retained result exposes evidence, pinned reopening, exports and reproduction (5.1s)
+  ✓  140 e2e/saved-operations.spec.ts:43:39 › query retained result exposes evidence, pinned reopening, exports and reproduction (5.3s)
+  ✘  142 e2e/saved-operations.spec.ts:43:39 › team retained result exposes evidence, pinned reopening, exports and reproduction (8.2s)
+  ✘  143 e2e/saved-operations.spec.ts:43:39 › forecast retained result exposes evidence, pinned reopening, exports and reproduction (8.2s)
+  ✘  145 e2e/saved-operations.spec.ts:43:39 › compare_periods retained result exposes evidence, pinned reopening, exports and reproduction (7.8s)
+  ✘  141 e2e/saved-operations.spec.ts:43:39 › compare retained result exposes evidence, pinned reopening, exports and reproduction (9.8s)
+  ✘  146 e2e/saved-operations.spec.ts:43:39 › splits retained result exposes evidence, pinned reopening, exports and reproduction (7.6s)
+  ✘  144 e2e/saved-operations.spec.ts:43:39 › distribution retained result exposes evidence, pinned reopening, exports and reproduction (7.8s)
+  ✘  128 e2e/route-polish.spec.ts:4:5 › release availability agrees across desktop and mobile and preserves context (30.7s)
