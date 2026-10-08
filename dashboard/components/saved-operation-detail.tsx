@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { getSavedOperation, operationExportUrl, reproduceOperation, type SavedDetail, type SavedReproduction } from "@/lib/saved-operations";
 import { ConversationResult } from "./conversation-result";
+import { useToast } from "./ui/toast";
 
 export function SavedOperationDetail({ id }: {id: string}) {
   const [detail, setDetail] = useState<SavedDetail | null>(null);
@@ -13,11 +14,39 @@ export function SavedOperationDetail({ id }: {id: string}) {
   const [verifyError, setVerifyError] = useState<string | null>(null);
   const [retry, setRetry] = useState(0);
   const busy = useRef(false);
+  const { toast } = useToast();
+
   useEffect(() => {let active=true;getSavedOperation(id).then(value=>{if(active){setDetail(value);setError(null);}}).catch(cause=>{if(active)setError(cause instanceof Error ? cause.message : "Could not read retained evidence");});return()=>{active=false;};},[id,retry]);
   async function verify() {
     if(busy.current) return;
     busy.current=true;setVerifying(true);setVerifyError(null);setReport(null);
-    try {setReport(await reproduceOperation(id));} catch(cause) {setVerifyError(cause instanceof Error ? cause.message : "Reproduction failed");} finally {busy.current=false;setVerifying(false);}
+    try {
+      const rep = await reproduceOperation(id);
+      setReport(rep);
+      if (rep.match) {
+        toast({
+          title: "Reproduction Verified",
+          description: "All retained results, evidence and destinations match.",
+          variant: "positive",
+        });
+      } else {
+        toast({
+          title: "Reproduction Mismatch",
+          description: rep.reason ?? "Retained semantics differ",
+          variant: "negative",
+        });
+      }
+    } catch(cause) {
+      const msg = cause instanceof Error ? cause.message : "Reproduction failed";
+      setVerifyError(msg);
+      toast({
+        title: "Verification Failed",
+        description: msg,
+        variant: "negative",
+      });
+    } finally {
+      busy.current=false;setVerifying(false);
+    }
   }
   if(error) return <div role="alert"><p>{error}</p><button className="button" onClick={()=>{setError(null);setRetry(value=>value+1);}}>Retry saved detail</button><Link href="/investigations">Back to library</Link></div>;
   if(!detail) return <p role="status">Loading retained evidence…</p>;

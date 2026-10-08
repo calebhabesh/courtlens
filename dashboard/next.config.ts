@@ -8,6 +8,7 @@ const nextConfig: NextConfig = {
   outputFileTracingIncludes: { "/blog": ["./content/*.md"], "/patch-notes": ["./content/*.md"] },
   poweredByHeader: false,
   reactStrictMode: true,
+  devIndicators: false,
   experimental: {
     typedEnv: true
   },

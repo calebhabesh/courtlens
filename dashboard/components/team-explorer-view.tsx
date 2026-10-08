@@ -185,20 +185,10 @@ export function TeamExplorerView({
   }, [initialTeams]);
 
   return (
-    <div className="team-explorer-container" style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+    <div className="team-explorer-container">
       {/* Top Controls Toolbar */}
-      <div
-        className="panel"
-        style={{
-          padding: "0.875rem 1rem",
-          display: "flex",
-          flexWrap: "wrap",
-          gap: "1rem",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
-      >
-        <div style={{ display: "flex", flexWrap: "wrap", gap: "0.75rem", alignItems: "center" }}>
+      <div className="panel team-explorer-toolbar">
+        <div className="team-explorer-controls-left">
           {/* View mode toggle */}
           <div className="button-group" role="group" aria-label="View mode">
             <button
@@ -250,18 +240,17 @@ export function TeamExplorerView({
           </div>
         </div>
 
-        <div style={{ display: "flex", gap: "0.75rem", alignItems: "center", flex: "1 1 240px", maxWidth: "400px" }}>
+        <div className="team-explorer-search-group">
           {/* Search box */}
           <input
             type="search"
             placeholder="Search franchise (e.g. BOS, Celtics)..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="input-field"
-            style={{ width: "100%", padding: "0.4rem 0.75rem", fontSize: "0.875rem" }}
+            className="input-field team-explorer-search-input"
           />
 
-          <Link href="/team-compare" className="button button-small button-accent" style={{ whiteSpace: "nowrap" }}>
+          <Link href="/team-compare" className="button button-small button-accent whitespace-nowrap">
             Compare Teams ⇄
           </Link>
         </div>
@@ -269,8 +258,8 @@ export function TeamExplorerView({
 
       {/* Table Presets Tabs (when in Table View) */}
       {viewMode === "table" && (
-        <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap", alignItems: "center" }}>
-          <span className="text-xs text-muted font-mono" style={{ marginRight: "0.25rem" }}>
+        <div className="team-explorer-metric-presets">
+          <span className="text-xs text-muted font-mono team-explorer-metric-label">
             METRIC SET:
           </span>
           <button
@@ -306,20 +295,8 @@ export function TeamExplorerView({
 
       {/* League Averages Bar */}
       {leagueAverages && (
-        <div
-          style={{
-            display: "flex",
-            flexWrap: "wrap",
-            gap: "1rem",
-            background: "var(--surface)",
-            padding: "0.5rem 0.875rem",
-            borderRadius: "6px",
-            border: "1px solid var(--border-subtle)",
-            fontSize: "0.8rem",
-            alignItems: "center",
-          }}
-        >
-          <span className="text-muted font-mono font-semibold" style={{ letterSpacing: "0.05em" }}>
+        <div className="team-explorer-league-averages">
+          <span className="text-muted font-mono font-semibold team-explorer-league-averages-label">
             LEAGUE AVERAGES:
           </span>
           <span className="font-mono">
@@ -355,11 +332,11 @@ export function TeamExplorerView({
 
       {/* VIEW 1: TABLE VIEW */}
       {viewMode === "table" && (
-        <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+        <div className="team-explorer-stack">
           {groupedData.map((group) => (
             <div key={group.groupName} className="panel">
-              <div className="panel-header" style={{ padding: "0.75rem 1rem", borderBottom: "1px solid var(--border)" }}>
-                <h2 style={{ fontSize: "1rem", fontWeight: 700, margin: 0, color: "var(--accent)" }}>
+              <div className="panel-header team-explorer-panel-header">
+                <h2 className="team-explorer-panel-title">
                   {group.groupName}
                 </h2>
                 <span className="badge font-mono text-xs">{group.teams.length} teams</span>
@@ -369,7 +346,7 @@ export function TeamExplorerView({
                 <table className="data-table" aria-label={`${group.groupName} table`}>
                   <thead>
                     <tr>
-                      <th style={{ width: "36px" }}>#</th>
+                      <th className="team-col-num">#</th>
                       <th>Franchise</th>
                       <SortHeader className="num" label="W-L" metric="wins" active={sortField === "wins"} direction={sortDirection} onSort={handleSort} />
                       <SortHeader className="num" label="Win%" metric="win_pct" active={sortField === "win_pct"} direction={sortDirection} onSort={handleSort} />
@@ -426,7 +403,7 @@ export function TeamExplorerView({
                         </>
                       )}
 
-                      <th style={{ textAlign: "right" }}>Actions</th>
+                      <th className="text-right">Actions</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -441,7 +418,7 @@ export function TeamExplorerView({
                         <tr key={t.team_id}>
                           <td className="font-mono text-muted text-xs">{idx + 1}</td>
                           <td>
-                            <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                            <div className="team-cell-identity">
                               <TeamLogo team={t.tricode} size={32} />
                               <Link
                                 href={`/teams/${t.team_id}?season=${season}&phase=${phase}&beforeDate=${beforeDate}`}
@@ -450,7 +427,7 @@ export function TeamExplorerView({
                                 {t.name}
                               </Link>
                               {t.division && (
-                                <span className="text-muted text-xs" style={{ marginLeft: "0.25rem" }}>
+                                <span className="text-muted text-xs team-cell-division">
                                   ({t.division})
                                 </span>
                               )}
@@ -594,8 +571,8 @@ export function TeamExplorerView({
                           )}
 
                           {/* Actions */}
-                          <td style={{ textAlign: "right", whiteSpace: "nowrap" }}>
-                            <div style={{ display: "inline-flex", gap: "0.35rem" }}>
+                          <td className="text-right whitespace-nowrap">
+                            <div className="table-actions-group">
                               <Link
                                 href={`/team-compare?teamA=${t.team_id}&season=${season}&phase=${phase}&beforeDate=${beforeDate}`}
                                 className="button button-small"
@@ -624,50 +601,26 @@ export function TeamExplorerView({
 
       {/* VIEW 2: CARDS GRID VIEW */}
       {viewMode === "cards" && (
-        <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+        <div className="team-explorer-stack">
           {groupedData.map((group) => (
             <div key={group.groupName}>
-              <h2
-                style={{
-                  fontSize: "1.1rem",
-                  fontWeight: 700,
-                  marginBottom: "0.75rem",
-                  color: "var(--accent)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                }}
-              >
+              <h2 className="team-group-header">
                 <span>{group.groupName}</span>
                 <span className="badge font-mono text-xs">{group.teams.length} franchises</span>
               </h2>
 
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
-                  gap: "1rem",
-                }}
-              >
+              <div className="team-cards-grid">
                 {group.teams.map((t) => {
                   const netRating = t.ratings?.net_rating ?? null;
                   return (
                     <div
                       key={t.team_id}
-                      className="panel"
-                      style={{
-                        padding: "1rem",
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: "0.75rem",
-                        position: "relative",
-                        borderTop: "3px solid var(--accent)",
-                      }}
+                      className="panel team-card-panel"
                     >
-                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+                      <div className="team-card-header">
                         <div>
                           <TeamLogo team={t.tricode} size={32} />
-                          <h3 style={{ fontSize: "1rem", fontWeight: 700, margin: 0 }}>
+                          <h3 className="team-card-title">
                             <Link
                               href={`/teams/${t.team_id}?season=${season}&phase=${phase}&beforeDate=${beforeDate}`}
                               className="text-foreground hover:text-accent"
@@ -679,7 +632,7 @@ export function TeamExplorerView({
                             {t.conference} · {t.division}
                           </span>
                         </div>
-                        <div style={{ textAlign: "right" }}>
+                        <div className="text-right">
                           <span className="font-mono font-bold text-lg">
                             {t.wins}-{t.losses}
                           </span>
@@ -690,17 +643,7 @@ export function TeamExplorerView({
                       </div>
 
                       {/* Ratings summary */}
-                      <div
-                        style={{
-                          display: "grid",
-                          gridTemplateColumns: "1fr 1fr 1fr",
-                          gap: "0.5rem",
-                          background: "var(--surface)",
-                          padding: "0.5rem",
-                          borderRadius: "6px",
-                          textAlign: "center",
-                        }}
-                      >
+                      <div className="team-card-ratings">
                         <div>
                           <div className="text-xs text-muted">ORTG</div>
                           <div className="font-mono font-semibold text-accent">
@@ -726,21 +669,21 @@ export function TeamExplorerView({
                       </div>
 
                       {/* Four Factors Snapshot */}
-                      <div style={{ fontSize: "0.8rem", display: "flex", flexDirection: "column", gap: "0.3rem" }}>
-                        <div style={{ display: "flex", justifyContent: "space-between" }}>
+                      <div className="team-card-factors">
+                        <div className="team-card-factor-row">
                           <span className="text-muted">eFG% (Off / Def):</span>
                           <span className="font-mono">
                             {t.four_factors?.efg_pct != null ? `${(t.four_factors.efg_pct * 100).toFixed(1)}%` : "—"} /{" "}
                             {t.four_factors?.opp_efg_pct != null ? `${(t.four_factors.opp_efg_pct * 100).toFixed(1)}%` : "—"}
                           </span>
                         </div>
-                        <div style={{ display: "flex", justifyContent: "space-between" }}>
+                        <div className="team-card-factor-row">
                           <span className="text-muted">Turnover Ratio:</span>
                           <span className="font-mono">
                             {t.four_factors?.tov_pct != null ? `${(t.four_factors.tov_pct * 100).toFixed(1)}%` : "—"}
                           </span>
                         </div>
-                        <div style={{ display: "flex", justifyContent: "space-between" }}>
+                        <div className="team-card-factor-row">
                           <span className="text-muted">Off Rebound %:</span>
                           <span className="font-mono">
                             {t.four_factors?.oreb_pct != null ? `${(t.four_factors.oreb_pct * 100).toFixed(1)}%` : "—"}
@@ -749,18 +692,16 @@ export function TeamExplorerView({
                       </div>
 
                       {/* Card buttons */}
-                      <div style={{ display: "flex", gap: "0.5rem", marginTop: "auto", paddingTop: "0.5rem" }}>
+                      <div className="team-card-actions">
                         <Link
                           href={`/team-compare?teamA=${t.team_id}&season=${season}&phase=${phase}&beforeDate=${beforeDate}`}
-                          className="button button-small"
-                          style={{ flex: 1, textAlign: "center" }}
+                          className="button button-small team-card-button"
                         >
                           Compare
                         </Link>
                         <Link
                           href={`/teams/${t.team_id}?season=${season}&phase=${phase}&beforeDate=${beforeDate}`}
-                          className="button button-small button-primary"
-                          style={{ flex: 1, textAlign: "center" }}
+                          className="button button-small button-primary team-card-button"
                         >
                           Profile →
                         </Link>
@@ -776,45 +717,34 @@ export function TeamExplorerView({
 
       {/* VIEW 3: PACE & EFFICIENCY SCATTER PLOT */}
       {viewMode === "scatter" && (
-        <div className="panel" style={{ padding: "1.25rem" }}>
-          <div style={{ marginBottom: "1rem" }}>
-            <h2 style={{ fontSize: "1.1rem", fontWeight: 700, margin: 0, color: "var(--accent)" }}>
+        <div className="panel team-scatter-panel">
+          <div className="team-scatter-header">
+            <h2 className="team-scatter-title">
               Pace & Efficiency Distribution ({season} {phase.replace("_", " ")})
             </h2>
-            <p className="text-muted text-xs" style={{ margin: "0.25rem 0 0 0" }}>
+            <p className="text-muted text-xs team-scatter-subtitle">
               X-axis shows Offensive Rating (points scored per 100 possessions); Y-axis shows Defensive Rating (points allowed per 100 possessions, inverted so up is better defense). Circle size corresponds to estimated Pace.
             </p>
           </div>
 
-          <div
-            style={{
-              position: "relative",
-              width: "100%",
-              maxWidth: "800px",
-              margin: "0 auto",
-              background: "var(--surface)",
-              borderRadius: "8px",
-              border: "1px solid var(--border)",
-              padding: "1rem",
-            }}
-          >
+          <div className="team-scatter-chart-wrap">
             {/* SVG Plot */}
             <svg
               viewBox="0 0 600 450"
-              style={{ width: "100%", height: "auto", overflow: "visible" }}
+              className="team-scatter-svg"
               aria-label="Pace vs Efficiency Scatter Plot"
             >
               {/* Axes lines */}
-              <line x1="60" y1="400" x2="570" y2="400" stroke="var(--border)" strokeWidth="1.5" />
-              <line x1="60" y1="30" x2="60" y2="400" stroke="var(--border)" strokeWidth="1.5" />
+              <line x1="60" y1="400" x2="570" y2="400" stroke="var(--color-hairline-strong)" strokeWidth="1.5" />
+              <line x1="60" y1="30" x2="60" y2="400" stroke="var(--color-hairline-strong)" strokeWidth="1.5" />
 
               {/* Gridlines */}
               {[110, 115, 120].map((val) => {
                 const normX = ((val - scatterBounds.minX) / (scatterBounds.maxX - scatterBounds.minX)) * 510 + 60;
                 return (
                   <g key={`grid-x-${val}`}>
-                    <line x1={normX} y1="30" x2={normX} y2="400" stroke="var(--border-subtle)" strokeDasharray="3 3" />
-                    <text x={normX} y="418" textAnchor="middle" fill="var(--text-muted)" fontSize="10" fontFamily="var(--font-mono)">
+                    <line x1={normX} y1="30" x2={normX} y2="400" stroke="var(--color-hairline)" strokeDasharray="3 3" />
+                    <text x={normX} y="418" textAnchor="middle" fill="var(--color-text-secondary)" fontSize="10" fontFamily="var(--font-mono)">
                       {val}
                     </text>
                   </g>
@@ -827,8 +757,8 @@ export function TeamExplorerView({
                 const normY = ((val - scatterBounds.minY) / (scatterBounds.maxY - scatterBounds.minY)) * 370 + 30;
                 return (
                   <g key={`grid-y-${val}`}>
-                    <line x1="60" y1={normY} x2="570" y2={normY} stroke="var(--border-subtle)" strokeDasharray="3 3" />
-                    <text x="50" y={normY + 3} textAnchor="end" fill="var(--text-muted)" fontSize="10" fontFamily="var(--font-mono)">
+                    <line x1="60" y1={normY} x2="570" y2={normY} stroke="var(--color-hairline)" strokeDasharray="3 3" />
+                    <text x="50" y={normY + 3} textAnchor="end" fill="var(--color-text-secondary)" fontSize="10" fontFamily="var(--font-mono)">
                       {val}
                     </text>
                   </g>
@@ -836,7 +766,7 @@ export function TeamExplorerView({
               })}
 
               {/* Labels */}
-              <text x="315" y="438" textAnchor="middle" fill="var(--foreground)" fontSize="11" fontWeight="600">
+              <text x="315" y="438" textAnchor="middle" fill="var(--color-text)" fontSize="11" fontWeight="600">
                 Offensive Rating (Points Scored / 100 Poss) →
               </text>
               <text
@@ -844,7 +774,7 @@ export function TeamExplorerView({
                 y="20"
                 textAnchor="middle"
                 transform="rotate(-90)"
-                fill="var(--foreground)"
+                fill="var(--color-text)"
                 fontSize="11"
                 fontWeight="600"
               >
@@ -852,10 +782,10 @@ export function TeamExplorerView({
               </text>
 
               {/* Quadrant hints */}
-              <text x="550" y="50" textAnchor="end" fill="var(--text-muted)" fontSize="9" opacity="0.6">
+              <text x="550" y="50" textAnchor="end" fill="var(--color-text-secondary)" fontSize="9" opacity="0.6">
                 Elite (Top Right)
               </text>
-              <text x="80" y="380" textAnchor="start" fill="var(--text-muted)" fontSize="9" opacity="0.6">
+              <text x="80" y="380" textAnchor="start" fill="var(--color-text-secondary)" fontSize="9" opacity="0.6">
                 Rebuilding (Bottom Left)
               </text>
 
@@ -878,13 +808,13 @@ export function TeamExplorerView({
                     key={t.team_id}
                     onMouseEnter={() => setHoveredTeam(t)}
                     onMouseLeave={() => setHoveredTeam(null)}
-                    style={{ cursor: "pointer" }}
+                    className="team-scatter-point"
                   >
                     <circle
                       cx={cx}
                       cy={cy}
                       r={isHovered ? r + 3 : r}
-                      fill={isEast ? "var(--accent)" : "var(--positive)"}
+                      fill={isEast ? "var(--color-accent)" : "var(--color-positive)"}
                       opacity={isHovered ? 1 : 0.8}
                       stroke="var(--background)"
                       strokeWidth="1.5"
@@ -893,7 +823,7 @@ export function TeamExplorerView({
                       x={cx}
                       y={cy - r - 3}
                       textAnchor="middle"
-                      fill={isHovered ? "var(--foreground)" : "var(--text-muted)"}
+                      fill={isHovered ? "var(--color-text)" : "var(--color-text-secondary)"}
                       fontSize={isHovered ? "11" : "9"}
                       fontWeight={isHovered ? "bold" : "normal"}
                       fontFamily="var(--font-mono)"
@@ -907,28 +837,15 @@ export function TeamExplorerView({
 
             {/* Hover Tooltip Card */}
             {hoveredTeam && (
-              <div
-                style={{
-                  position: "absolute",
-                  bottom: "1.5rem",
-                  right: "1.5rem",
-                  background: "var(--surface-raised)",
-                  border: "1px solid var(--accent)",
-                  borderRadius: "6px",
-                  padding: "0.75rem",
-                  boxShadow: "0 4px 12px rgba(0,0,0,0.4)",
-                  pointerEvents: "none",
-                  minWidth: "180px",
-                }}
-              >
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <div className="team-scatter-tooltip">
+                <div className="team-scatter-tooltip-header">
                   <strong className="text-accent">{hoveredTeam.name}</strong>
                   <span className="font-mono text-xs">{hoveredTeam.wins}-{hoveredTeam.losses}</span>
                 </div>
-                <div className="font-mono text-xs text-muted" style={{ margin: "0.25rem 0" }}>
+                <div className="font-mono text-xs text-muted team-scatter-tooltip-conf">
                   {hoveredTeam.conference} Conference
                 </div>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.25rem", fontSize: "0.8rem", marginTop: "0.4rem" }}>
+                <div className="team-scatter-tooltip-grid">
                   <div>ORTG: <strong>{hoveredTeam.ratings?.off_rating?.toFixed(1) ?? "—"}</strong></div>
                   <div>DRTG: <strong>{hoveredTeam.ratings?.def_rating?.toFixed(1) ?? "—"}</strong></div>
                   <div>NET: <strong>{hoveredTeam.ratings?.net_rating?.toFixed(1) ?? "—"}</strong></div>

@@ -146,19 +146,19 @@ export function PlayerShowcaseView({
   return (
     <div className="showcase-container">
       {/* Header & Controls Toolbar */}
-      <div className="panel" style={{ padding: "0.75rem 1rem", marginBottom: "1.25rem" }}>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "0.75rem" }}>
+      <div className="panel showcase-header-panel">
+        <div className="showcase-header-row">
           <div>
-            <h1 className="panel-title" style={{ fontSize: "1.25rem", margin: 0 }}>
+            <h1 className="panel-title showcase-header-title">
               Player Showcase & Cards
             </h1>
-            <p className="text-muted text-xs" style={{ margin: "0.2rem 0 0" }}>
+            <p className="text-muted text-xs panel-subtitle-margin">
               High-density statistical player cards with manually controlled slideshow and context-stamped export.
             </p>
           </div>
 
           {/* Quick Lookup to Add Player */}
-          <div style={{ width: "240px" }}>
+          <div className="showcase-lookup-wrap">
             <LookupInput label="Add or jump to player" value={lookupText} onChange={setLookupText}
               kinds={["player"]}
               releaseId={releaseId}
@@ -177,9 +177,9 @@ export function PlayerShowcaseView({
         </div>
 
         {/* Preset & Carousel Toolbar */}
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "0.75rem", marginTop: "0.75rem", paddingTop: "0.75rem", borderTop: "1px solid var(--border)" }}>
+        <div className="showcase-toolbar-row">
           {/* Preset Focus Selector */}
-          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+          <div className="showcase-focus-group">
             <span className="text-xs text-muted uppercase font-mono font-semibold">Focus:</span>
             <div className="segmented-control showcase-focus" role="group" aria-label="Showcase metric focus">
               {SHOWCASE_PRESETS.map((preset) => (
@@ -196,7 +196,7 @@ export function PlayerShowcaseView({
           </div>
 
           {/* Carousel Controls */}
-          <div style={{ display: "flex", alignItems: "center", flexWrap: "wrap", gap: "0.4rem" }}>
+          <div className="showcase-carousel-controls">
             <button
               type="button"
               className="button button-small"
@@ -227,13 +227,13 @@ export function PlayerShowcaseView({
               Next<Icon name="right" />
             </button>
 
-            <span className="text-xs font-mono text-muted" style={{ margin: "0 0.4rem" }}>
+            <span className="text-xs font-mono text-muted showcase-counter">
               {currentIndex + 1} / {playersList.length}
             </span>
           </div>
 
           {/* Export Actions */}
-          <div style={{ display: "flex", alignItems: "center", flexWrap: "wrap", gap: "0.4rem" }}>
+          <div className="showcase-export-group">
             <button
               type="button"
               className="button button-small"
@@ -257,25 +257,15 @@ export function PlayerShowcaseView({
       </div>
 
       {/* Main Showcase Stage */}
-      <div className="responsive-pair" style={{ display: "grid", gridTemplateColumns: "minmax(0, 1fr) 340px", gap: "1.5rem", alignItems: "start" }}>
+      <div className="responsive-pair showcase-main-grid">
         {/* Visual SVG Card Stage */}
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-          <div
-            style={{
-              background: "var(--surface)",
-              borderRadius: "12px",
-              border: "1px solid var(--border)",
-              boxShadow: "0 8px 32px rgba(0, 0, 0, 0.5)",
-              padding: "1.25rem",
-              width: "100%",
-              maxWidth: "480px"
-            }}
-          >
+        <div className="showcase-card-column">
+          <div className="showcase-card-container">
             {/* Embedded Rendered SVG Card (Used for presentation & pure client-side rasterization) */}
             <svg
               ref={cardSvgRef}
               viewBox="0 0 460 580"
-              style={{ width: "100%", height: "auto", display: "block" }}
+              className="showcase-card-svg"
               role="img"
               aria-label={`Showcase card for ${currentPlayer.player_name}`}
             >
@@ -393,8 +383,8 @@ export function PlayerShowcaseView({
 
         {/* Side Details & Actions Sidebar */}
         <div>
-          <div className="panel" style={{ padding: "1.25rem", marginBottom: "1rem" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "1rem" }}>
+          <div className="panel showcase-sidebar-panel">
+            <div className="showcase-identity-header">
               <PlayerPortrait
                 playerId={currentPlayer.player_id}
                 name={currentPlayer.player_name}
@@ -402,16 +392,15 @@ export function PlayerShowcaseView({
                 size="md"
               />
               <div>
-                <strong className="block" style={{ fontSize: "1.1rem" }}>{currentPlayer.player_name}</strong>
+                <strong className="block showcase-player-title">{currentPlayer.player_name}</strong>
                 <span className="text-xs text-muted font-mono">{currentPlayer.teams.join(" / ")}</span>
               </div>
             </div>
 
-            <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+            <div className="showcase-actions-column">
               <button
                 type="button"
-                className={`button ${isFavorite ? "button-accent" : ""}`}
-                style={{ width: "100%", justifyContent: "center" }}
+                className={`button showcase-action-btn ${isFavorite ? "button-accent" : ""}`}
                 onClick={() => toggleFavorite(currentPlayer.player_id)}
               >
                 {isFavorite ? "★ In Workspace Favorites" : "☆ Add to Favorites"}
@@ -419,8 +408,7 @@ export function PlayerShowcaseView({
 
               <button
                 type="button"
-                className={`button ${inTray ? "button-accent" : ""}`}
-                style={{ width: "100%", justifyContent: "center" }}
+                className={`button showcase-action-btn ${inTray ? "button-accent" : ""}`}
                 onClick={() => toggleCompare(currentPlayer.player_id)}
               >
                 {inTray ? "✓ In Compare Tray" : "+ Add to Compare Tray"}
@@ -428,24 +416,21 @@ export function PlayerShowcaseView({
 
               <Link
                 href={`/last-games?playerId=${currentPlayer.player_id}&season=${season}&phase=${phase}&beforeDate=${beforeDate}`}
-                className="button button-dark"
-                style={{ width: "100%", justifyContent: "center" }}
+                className="button button-dark showcase-action-btn"
               >
                 Recent Games Log →
               </Link>
 
               <Link
                 href={`/players/${currentPlayer.player_id}?season=${season}&phase=${phase}&beforeDate=${beforeDate}`}
-                className="button button-dark"
-                style={{ width: "100%", justifyContent: "center" }}
+                className="button button-dark showcase-action-btn"
               >
                 Full Player Dashboard →
               </Link>
 
               <Link
                 href={`/compare?playerA=${currentPlayer.player_id}&season=${season}&phase=${phase}&beforeDate=${beforeDate}`}
-                className="button"
-                style={{ width: "100%", justifyContent: "center" }}
+                className="button showcase-action-btn"
               >
                 Compare in PvP →
               </Link>
@@ -453,11 +438,11 @@ export function PlayerShowcaseView({
           </div>
 
           {/* Roster Thumbnail Strip */}
-          <div className="panel" style={{ padding: "1rem" }}>
-            <h3 className="panel-title" style={{ fontSize: "0.85rem", marginBottom: "0.6rem" }}>
+          <div className="panel showcase-roster-panel">
+            <h3 className="panel-title showcase-roster-title">
               Showcase Roster ({playersList.length})
             </h3>
-            <div style={{ display: "flex", flexDirection: "column", gap: "0.35rem", maxHeight: "280px", overflowY: "auto" }}>
+            <div className="showcase-roster-list">
               {playersList.map((p, idx) => {
                 const active = idx === currentIndex;
                 return (
@@ -465,20 +450,9 @@ export function PlayerShowcaseView({
                     key={p.player_id}
                     type="button"
                     onClick={() => setCurrentIndex(idx)}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                      padding: "0.4rem 0.6rem",
-                      borderRadius: "var(--radius)",
-                      background: active ? "var(--surface-raised)" : "transparent",
-                      border: active ? "1px solid var(--accent)" : "1px solid transparent",
-                      color: active ? "var(--text)" : "var(--text-muted)",
-                      cursor: "pointer",
-                      textAlign: "left"
-                    }}
+                    className={`showcase-roster-item ${active ? "active" : ""}`}
                   >
-                    <span style={{ fontSize: "0.82rem", fontWeight: active ? "bold" : "normal" }}>
+                    <span className={`showcase-roster-name ${active ? "font-bold" : ""}`}>
                       {p.player_name}
                     </span>
                     <span className="font-mono text-xs text-muted">{p.teams.join("/")}</span>

@@ -237,16 +237,16 @@ export function RankingBoardsView() {
   };
 
   return (
-    <div className="workbench-content" style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
+    <div className="workbench-content ranking-boards-container">
       {/* Page Header */}
-      <div className="page-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "1rem" }}>
+      <div className="page-header ranking-boards-header">
         <div>
           <h1 className="page-title">Personal Ranking Boards</h1>
           <p className="page-subtitle">
             F16 Personal Ranking Boards · Subjective player rankings with explicit notes, keyboard reordering, and transparent mathematical aggregation.
           </p>
         </div>
-        <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
+        <div className="ranking-header-actions">
           <button
             type="button"
             onClick={() => setShowAggSection((prev) => !prev)}
@@ -266,9 +266,9 @@ export function RankingBoardsView() {
       </div>
 
       {/* Zero Inferred Claims & Provenance Notice */}
-      <div className="notice-box" style={{ borderLeftColor: "var(--accent)", margin: 0 }}>
+      <div className="notice-box notice-box-accent">
         <strong className="text-accent text-xs">Subjective Provenance &amp; Zero Inferred Claims:</strong>
-        <p className="text-xs text-muted" style={{ margin: "0.2rem 0 0" }}>
+        <p className="text-xs text-muted mt-1">
           Ranking boards represent personal subjective evaluations. CourtLens never fabricates a &quot;global community consensus&quot; or automated public authority from subjective inputs.
         </p>
       </div>
@@ -283,7 +283,7 @@ export function RankingBoardsView() {
           role="dialog"
           aria-modal="true"
         >
-          <div className="modal-card" style={{ maxWidth: "480px" }}>
+          <div className="modal-card ranking-modal-card">
             <div className="modal-header">
               <h2 className="modal-title">Create Personal Ranking Board</h2>
               <button
@@ -294,9 +294,9 @@ export function RankingBoardsView() {
                 ✕
               </button>
             </div>
-            <form onSubmit={handleCreateBoardSubmit} className="modal-body" style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+            <form onSubmit={handleCreateBoardSubmit} className="modal-body ranking-modal-form">
               <div>
-                <label htmlFor="new-board-title" className="text-xs font-semibold text-muted" style={{ display: "block", marginBottom: "0.3rem" }}>
+                <label htmlFor="new-board-title" className="ranking-field-label">
                   Board Title *
                 </label>
                 <input
@@ -306,19 +306,19 @@ export function RankingBoardsView() {
                   onChange={(e) => setNewTitle(e.target.value)}
                   placeholder="e.g. 2024-25 MVP Candidates, Top Wing Defenders"
                   required
-                  style={{ width: "100%", padding: "0.45rem 0.65rem", background: "var(--surface)", border: "1px solid var(--border)", borderRadius: "var(--radius)", color: "var(--text)" }}
+                  className="ranking-field-input"
                 />
               </div>
 
               <div>
-                <label htmlFor="new-board-type" className="text-xs font-semibold text-muted" style={{ display: "block", marginBottom: "0.3rem" }}>
+                <label htmlFor="new-board-type" className="ranking-field-label">
                   Board Category / Type
                 </label>
                 <select
                   id="new-board-type"
                   value={newBoardType}
                   onChange={(e) => setNewBoardType(e.target.value as RankingBoardType)}
-                  style={{ width: "100%", padding: "0.45rem 0.65rem", background: "var(--surface)", border: "1px solid var(--border)", borderRadius: "var(--radius)", color: "var(--text)" }}
+                  className="ranking-field-input"
                 >
                   {BOARD_TYPES.map((bt) => (
                     <option key={bt.id} value={bt.id}>
@@ -329,7 +329,7 @@ export function RankingBoardsView() {
               </div>
 
               <div>
-                <label htmlFor="new-board-notes" className="text-xs font-semibold text-muted" style={{ display: "block", marginBottom: "0.3rem" }}>
+                <label htmlFor="new-board-notes" className="ranking-field-label">
                   Evaluation Scope &amp; Notes (optional)
                 </label>
                 <textarea
@@ -338,11 +338,11 @@ export function RankingBoardsView() {
                   onChange={(e) => setNewNotes(e.target.value)}
                   placeholder="Declared criteria, temporal scope (e.g. Regular Season 2024-25), or subjective methodology..."
                   rows={3}
-                  style={{ width: "100%", padding: "0.45rem 0.65rem", background: "var(--surface)", border: "1px solid var(--border)", borderRadius: "var(--radius)", color: "var(--text)", resize: "vertical" }}
+                  className="ranking-field-textarea"
                 />
               </div>
 
-              <div className="modal-footer" style={{ display: "flex", justifyContent: "flex-end", gap: "0.5rem" }}>
+              <div className="modal-footer ranking-modal-footer">
                 <button
                   type="button"
                   onClick={() => setIsCreatingBoard(false)}
@@ -365,47 +365,27 @@ export function RankingBoardsView() {
 
       {/* BOARD AGGREGATION SECTION (F16) */}
       {showAggSection && (
-        <div
-          style={{
-            padding: "1.25rem",
-            background: "var(--surface)",
-            border: "1px solid var(--border)",
-            borderRadius: "var(--radius)",
-            display: "flex",
-            flexDirection: "column",
-            gap: "1rem"
-          }}
-        >
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <div className="ranking-consensus-card">
+          <div className="ranking-consensus-header">
             <div>
-              <strong style={{ fontSize: "0.95rem", color: "var(--text)" }}>
+              <strong className="ranking-consensus-title">
                 Mathematical Board Aggregation
               </strong>
-              <p className="text-xs text-muted" style={{ margin: "0.2rem 0 0" }}>
+              <p className="text-xs text-muted mt-1">
                 Combine selected personal boards into an aggregate ranking with explicit missing-rank penalty rules.
               </p>
             </div>
           </div>
 
           {/* Board multi-select */}
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem", alignItems: "center" }}>
+          <div className="ranking-chips-row">
             <span className="text-xs text-muted font-semibold">Select Boards to Aggregate:</span>
             {rankingBoards.map((b) => {
               const isChecked = selectedBoardsForAgg.includes(b.id);
               return (
                 <label
                   key={b.id}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "0.35rem",
-                    padding: "0.25rem 0.55rem",
-                    background: isChecked ? "var(--surface-raised)" : "transparent",
-                    border: `1px solid ${isChecked ? "var(--accent)" : "var(--border)"}`,
-                    borderRadius: "16px",
-                    cursor: "pointer",
-                    fontSize: "0.78rem"
-                  }}
+                  className={`ranking-chip-btn ${isChecked ? "is-selected" : ""}`}
                 >
                   <input
                     type="checkbox"
@@ -425,20 +405,20 @@ export function RankingBoardsView() {
           </div>
 
           {/* Method and Penalty controls */}
-          <div style={{ display: "flex", gap: "1.25rem", alignItems: "center", flexWrap: "wrap" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
+          <div className="ranking-board-controls">
+            <div className="ranking-board-filter-group">
               <span className="text-xs text-muted">Scoring Method:</span>
               <select
                 value={aggMethod}
                 onChange={(e) => setAggMethod(e.target.value as AggregationMethod)}
-                style={{ padding: "0.25rem 0.5rem", fontSize: "0.78rem", background: "var(--surface-raised)", border: "1px solid var(--border)", borderRadius: "var(--radius)", color: "var(--text)" }}
+                className="ranking-board-select"
               >
                 <option value="borda">Borda Count (points = max_rank - rank + 1)</option>
                 <option value="average_rank">Average Rank (lower is better)</option>
               </select>
             </div>
 
-            <div style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
+            <div className="ranking-board-filter-group">
               <span className="text-xs text-muted">Missing Rank Penalty:</span>
               <input
                 type="number"
@@ -446,7 +426,7 @@ export function RankingBoardsView() {
                 placeholder="Auto (max + 1)"
                 value={aggPenalty}
                 onChange={(e) => setAggPenalty(e.target.value ? Number(e.target.value) : "")}
-                style={{ width: "90px", padding: "0.25rem 0.5rem", fontSize: "0.78rem", background: "var(--surface-raised)", border: "1px solid var(--border)", borderRadius: "var(--radius)", color: "var(--text)" }}
+                className="ranking-board-select ranking-board-select-w90"
               />
             </div>
 
@@ -462,8 +442,8 @@ export function RankingBoardsView() {
 
           {/* Aggregation Results Table */}
           {aggResult && (
-            <div style={{ borderTop: "1px solid var(--border)", paddingTop: "0.75rem", display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <div className="ranking-board-meta-col">
+              <div className="ranking-consensus-header">
                 <span className="text-xs text-muted font-mono">
                   Methodology: {aggResult.methodology_notes}
                 </span>
@@ -476,26 +456,26 @@ export function RankingBoardsView() {
                 <table className="data-table" aria-label="Aggregated ranking table">
                   <thead>
                     <tr>
-                      <th style={{ width: "45px", textAlign: "center" }}>Rank</th>
-                      <th style={{ textAlign: "left" }}>Player</th>
-                      <th className="num" style={{ width: "100px" }}>Borda Pts</th>
-                      <th className="num" style={{ width: "100px" }}>Avg Rank</th>
-                      <th className="num" style={{ width: "100px" }}>Present</th>
-                      <th className="num" style={{ width: "80px" }}>Best</th>
-                      <th className="num" style={{ width: "80px" }}>Worst</th>
+                      <th className="th-rank-center">Rank</th>
+                      <th className="text-left">Player</th>
+                      <th className="num th-w100">Borda Pts</th>
+                      <th className="num th-w100">Avg Rank</th>
+                      <th className="num th-w100">Present</th>
+                      <th className="num th-w80">Best</th>
+                      <th className="num th-w80">Worst</th>
                     </tr>
                   </thead>
                   <tbody>
                     {aggResult.ranked_players.length === 0 ? (
                       <tr>
-                        <td colSpan={7} style={{ textAlign: "center", padding: "1.5rem" }} className="text-muted">
+                        <td colSpan={7} className="text-center p-6 text-muted">
                           No players found across selected boards.
                         </td>
                       </tr>
                     ) : (
                       aggResult.ranked_players.map((item) => (
                         <tr key={item.player_id}>
-                          <td className="font-mono text-muted" style={{ textAlign: "center" }}>
+                          <td className="font-mono text-muted text-center">
                             {item.aggregated_rank}
                           </td>
                           <td>
@@ -529,17 +509,9 @@ export function RankingBoardsView() {
 
       {/* BOARDS TABS & SELECTOR */}
       {rankingBoards.length === 0 ? (
-        <div
-          style={{
-            padding: "3.5rem 1.5rem",
-            textAlign: "center",
-            background: "var(--surface)",
-            borderRadius: "var(--radius)",
-            border: "1px dashed var(--border)"
-          }}
-        >
-          <h3 style={{ margin: "0 0 0.5rem", color: "var(--text)" }}>No Ranking Boards Yet</h3>
-          <p className="text-muted text-xs" style={{ margin: "0 0 1rem", maxWidth: "460px", marginInline: "auto" }}>
+        <div className="ranking-empty-state">
+          <h3 className="ranking-empty-title">No Ranking Boards Yet</h3>
+          <p className="text-muted text-xs ranking-empty-desc">
             Create personal boards to rank NBA players overall, by defense, offense, or custom categories.
             All boards persist locally with atomic version protection.
           </p>
@@ -552,9 +524,9 @@ export function RankingBoardsView() {
           </button>
         </div>
       ) : (
-        <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+        <div className="ranking-active-container">
           {/* Boards Tabs */}
-          <div className="stats-preset-tabs-wrapper" style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <div className="stats-preset-tabs-wrapper ranking-tabs-wrapper">
             <div className="stats-preset-tabs" role="tablist" aria-label="Personal Ranking Boards">
               {rankingBoards.map((b) => {
                 const isActive = b.id === activeBoard?.id;
@@ -569,7 +541,7 @@ export function RankingBoardsView() {
                     title={b.notes || b.title}
                   >
                     <span>{b.title}</span>
-                    <span className="font-mono text-xs text-muted" style={{ marginLeft: "0.3rem" }}>
+                    <span className="font-mono text-xs text-muted ml-1">
                       ({b.entries.length})
                     </span>
                   </button>
@@ -579,12 +551,11 @@ export function RankingBoardsView() {
 
             {/* Board Actions */}
             {activeBoard && (
-              <div style={{ display: "flex", gap: "0.35rem", alignItems: "center", marginLeft: "0.5rem" }}>
+              <div className="ranking-header-actions ml-2">
                 <button
                   type="button"
                   onClick={handleDeleteActiveBoard}
-                  className="button button-small"
-                  style={{ color: "var(--negative)", borderColor: "var(--border)", fontSize: "0.75rem" }}
+                  className="button button-small ranking-delete-btn"
                   title="Delete this ranking board"
                 >
                   Delete Board
@@ -595,30 +566,20 @@ export function RankingBoardsView() {
 
           {/* ACTIVE BOARD DETAIL & ENTRIES */}
           {activeBoard && (
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: "1rem",
-                background: "var(--surface)",
-                padding: "1rem 1.25rem",
-                borderRadius: "var(--radius)",
-                border: "1px solid var(--border)"
-              }}
-            >
+            <div className="ranking-board-panel">
               {/* Board Meta */}
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "0.5rem" }}>
+              <div className="ranking-board-panel-header">
                 <div>
-                  <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-                    <h2 style={{ margin: 0, fontSize: "1.15rem", color: "var(--text)" }}>
+                  <div className="ranking-board-title-group">
+                    <h2 className="ranking-board-title">
                       {activeBoard.title}
                     </h2>
-                    <span className="replica-badge-active" style={{ textTransform: "capitalize" }}>
+                    <span className="replica-badge-active capitalize">
                       {activeBoard.board_type}
                     </span>
                   </div>
                   {activeBoard.notes && (
-                    <p className="text-xs text-muted" style={{ margin: "0.3rem 0 0" }}>
+                    <p className="text-xs text-muted mt-1">
                       {activeBoard.notes}
                     </p>
                   )}
@@ -630,12 +591,12 @@ export function RankingBoardsView() {
               </div>
 
               {/* Add Player Search Box */}
-              <div style={{ display: "flex", gap: "0.5rem", alignItems: "center", position: "relative" }}>
-                <div style={{flex:1}}><LookupInput label="Add player to board" value={searchQuery} onChange={setSearchQuery} kinds={["player"]} excludedIds={activeBoard.entries.map(entry=>entry.player_id)} onSelect={item=>{setSearchQuery("");void handleAddPlayer({id:item.canonical_id,name:item.display_name});}} /></div>
+              <div className="ranking-add-player-bar">
+                <div className="flex-1"><LookupInput label="Add player to board" value={searchQuery} onChange={setSearchQuery} kinds={["player"]} excludedIds={activeBoard.entries.map(entry=>entry.player_id)} onSelect={item=>{setSearchQuery("");void handleAddPlayer({id:item.canonical_id,name:item.display_name});}} /></div>
 
                 {/* Quick-add from favorites */}
                 {favorites.length > 0 && (
-                  <div style={{ display: "flex", alignItems: "center", gap: "0.3rem" }}>
+                  <div className="ranking-add-meta-group">
                     <span className="text-xs text-muted">Favorites:</span>
                     {favorites.slice(0, 4).map((favId) => {
                       const isAdded = activeBoard.entries.some((e) => e.player_id === favId);
@@ -645,8 +606,7 @@ export function RankingBoardsView() {
                           type="button"
                           disabled={isAdded}
                           onClick={() => handleAddPlayer({ id: favId, name: `Player #${favId}` })}
-                          className="button button-small"
-                          style={{ fontSize: "0.72rem", padding: "0.15rem 0.45rem" }}
+                          className="button button-small ranking-meta-btn"
                           title={isAdded ? "Already on board" : `Add player ${favId}`}
                         >
                           {isAdded ? "✓" : "+"} #{favId}
@@ -662,17 +622,17 @@ export function RankingBoardsView() {
                 <table className="data-table" aria-label={`Rankings for ${activeBoard.title}`}>
                   <thead>
                     <tr>
-                      <th style={{ width: "45px", textAlign: "center" }}>#</th>
-                      <th style={{ minWidth: "220px", textAlign: "left" }}>Player</th>
-                      <th style={{ minWidth: "200px", textAlign: "left" }}>Evaluation Notes</th>
-                      <th style={{ width: "110px", textAlign: "center" }}>Reorder</th>
-                      <th style={{ width: "50px", textAlign: "center" }}>Action</th>
+                      <th className="th-rank-center">#</th>
+                      <th className="th-player-col">Player</th>
+                      <th className="th-notes-col">Evaluation Notes</th>
+                      <th className="th-reorder-col">Reorder</th>
+                      <th className="th-action-col">Action</th>
                     </tr>
                   </thead>
                   <tbody>
                     {activeBoard.entries.length === 0 ? (
                       <tr>
-                        <td colSpan={5} style={{ textAlign: "center", padding: "2.5rem" }} className="text-muted">
+                        <td colSpan={5} className="text-center p-8 text-muted">
                           No players ranked on this board yet. Use the search bar above to add players.
                         </td>
                       </tr>
@@ -680,13 +640,13 @@ export function RankingBoardsView() {
                       activeBoard.entries.map((entry, idx) => (
                         <tr key={entry.player_id}>
                           {/* Rank # */}
-                          <td className="font-mono text-accent font-bold" style={{ textAlign: "center", fontSize: "0.95rem" }}>
+                          <td className="font-mono text-accent font-bold text-center text-sm">
                             {entry.rank}
                           </td>
 
                           {/* Player Identity */}
                           <td>
-                            <div style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
+                            <div className="ranking-player-cell">
                               <PlayerPortrait
                                 playerId={entry.player_id}
                                 name={entry.player_name || `Player #${entry.player_id}`}
@@ -695,12 +655,11 @@ export function RankingBoardsView() {
                               <div>
                                 <Link
                                   href={`/players/${entry.player_id}`}
-                                  className="text-accent font-semibold"
-                                  style={{ fontSize: "0.88rem" }}
+                                  className="text-accent font-semibold text-sm"
                                 >
                                   {entry.player_name || `Player #${entry.player_id}`}
                                 </Link>
-                                <span className="font-mono text-xs text-muted" style={{ display: "block" }}>
+                                <span className="font-mono text-xs text-muted block">
                                   ID: {entry.player_id}
                                 </span>
                               </div>
@@ -714,27 +673,18 @@ export function RankingBoardsView() {
                               defaultValue={entry.notes || ""}
                               placeholder="Add subjective note or scouting context..."
                               onBlur={(e) => handleUpdatePlayerNotes(entry.player_id, e.target.value.trim())}
-                              style={{
-                                width: "100%",
-                                padding: "0.25rem 0.5rem",
-                                background: "var(--surface-raised)",
-                                border: "1px solid var(--border)",
-                                borderRadius: "var(--radius)",
-                                color: "var(--text)",
-                                fontSize: "0.78rem"
-                              }}
+                              className="ranking-notes-input"
                             />
                           </td>
 
                           {/* Accessible Reorder Controls */}
-                          <td style={{ textAlign: "center" }}>
-                            <div style={{ display: "inline-flex", gap: "0.25rem" }}>
+                          <td className="text-center">
+                            <div className="ranking-reorder-group">
                               <button
                                 type="button"
                                 onClick={() => handleMoveUp(idx)}
                                 disabled={idx === 0}
-                                className="button button-small"
-                                style={{ padding: "0.15rem 0.4rem", fontSize: "0.75rem" }}
+                                className="button button-small ranking-reorder-btn"
                                 title="Move up 1 rank"
                                 aria-label={`Move ${entry.player_name || entry.player_id} up`}
                               >
@@ -744,8 +694,7 @@ export function RankingBoardsView() {
                                 type="button"
                                 onClick={() => handleMoveDown(idx)}
                                 disabled={idx === activeBoard.entries.length - 1}
-                                className="button button-small"
-                                style={{ padding: "0.15rem 0.4rem", fontSize: "0.75rem" }}
+                                className="button button-small ranking-reorder-btn"
                                 title="Move down 1 rank"
                                 aria-label={`Move ${entry.player_name || entry.player_id} down`}
                               >
@@ -755,12 +704,11 @@ export function RankingBoardsView() {
                           </td>
 
                           {/* Remove action */}
-                          <td style={{ textAlign: "center" }}>
+                          <td className="text-center">
                             <button
                               type="button"
                               onClick={() => handleRemoveEntry(entry.player_id)}
-                              className="button button-small"
-                              style={{ color: "var(--negative)", padding: "0.15rem 0.45rem", fontSize: "0.75rem" }}
+                              className="button button-small ranking-delete-btn"
                               title="Remove from board"
                               aria-label={`Remove ${entry.player_name || entry.player_id} from board`}
                             >

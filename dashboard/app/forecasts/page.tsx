@@ -124,7 +124,7 @@ export default async function ForecastsPage() {
       </div>
 
       {/* Protocol Banner */}
-      <div className="notice-box" style={{ borderLeftColor: "var(--accent)" }}>
+      <div className="notice-box forecast-protocol-box">
         <strong>Protocol rule:</strong> CourtLens strictly isolates historical reconstruction from genuine prospective forecast issuance. Out-of-time chronological validation ensures feature computations never observe future game outcomes (<code>game_date &lt; replay_date</code>). Absent box scores are unknown, not zeros.
       </div>
 
@@ -133,7 +133,7 @@ export default async function ForecastsPage() {
         <div className="panel-header">
           <div>
             <h2 className="panel-title">Active Forecast Policy</h2>
-            <p className="text-xs text-muted" style={{ margin: "0.2rem 0 0" }}>
+            <p className="text-xs text-muted forecast-header-desc">
               Active policy registered in database and serving prospective next-game predictions.
             </p>
           </div>
@@ -144,7 +144,7 @@ export default async function ForecastsPage() {
             ? "No policy currently activated. Execute points experiment evaluation to activate a policy."
             : `Serving registered policy '${policyStatus}' for next-game points estimation conditional on appearance.`}
         </p>
-        <div style={{ marginTop: "0.75rem", display: "flex", flexWrap: "wrap", gap: "0.5rem" }}>
+        <div className="forecast-badge-row">
           <span className="badge">Target: Points (PTS)</span>
           <span className="badge">Estimator: {evaluation?.active_policy?.estimator_identity || baselineKey}</span>
           <span className="badge">Interval: Calibrated 80% Empirical</span>
@@ -160,27 +160,22 @@ export default async function ForecastsPage() {
       {/* Promotion Decision Banner */}
       {promo && (
         <div
-          className="notice-box"
-          style={{
-            borderLeftColor: promo.decision === "promote" ? "var(--positive)" : "var(--accent)",
-            backgroundColor: "var(--surface)",
-            padding: "1rem 1.25rem",
-          }}
+          className={`notice-box forecast-promo-box ${promo.decision === "promote" ? "promo-promote" : "promo-demote"}`}
         >
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.5rem" }}>
-            <h3 style={{ margin: 0, fontSize: "1rem", fontWeight: 600 }}>
+          <div className="forecast-promo-header">
+            <h3 className="forecast-promo-title">
               Promotion Decision:{" "}
               {promo.decision === "promote" ? (
                 <span className="text-positive">Promote Challenger ({challengerKey})</span>
               ) : (
-                <span style={{ color: "var(--accent)" }}>Do Not Promote Challenger — Retain Winner Baseline ({baselineKey})</span>
+                <span className="text-accent">Do Not Promote Challenger — Retain Winner Baseline ({baselineKey})</span>
               )}
             </h3>
             <span className={`badge ${promo.decision === "promote" ? "badge-positive" : "badge-accent"}`}>
               {promo.decision.toUpperCase()}
             </span>
           </div>
-          <p className="text-xs text-muted" style={{ margin: 0, lineHeight: 1.5 }}>
+          <p className="text-xs text-muted forecast-promo-desc">
             {promo.decision === "do_not_promote"
               ? `The transparent carryover baseline '${baselineKey}' achieved superior validation error (4.613 vs 4.633 MAE) and challenger failed promotion gates 1 and 2. Following scientific protocol, CourtLens automatically demotes the challenger and serves the baseline winner without forced promotion.`
               : `The challenger met all 4 pre-registered promotion gates with statistically significant holdout superiority.`}
@@ -195,15 +190,15 @@ export default async function ForecastsPage() {
             <h2 className="panel-title">Pre-registered Promotion Gates</h2>
             <span className="text-xs text-muted font-mono">Frozen before Block F Opening</span>
           </div>
-          <div className="grid-2" style={{ gap: "0.75rem" }}>
-            <div className="panel" style={{ margin: 0, backgroundColor: "var(--background)" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.4rem" }}>
+          <div className="grid-2 forecast-gates-grid">
+            <div className="panel forecast-gate-panel">
+              <div className="forecast-gate-header">
                 <strong className="text-sm">Gate 1: Validation Improvement &gt;= 5%</strong>
                 <span className={`badge ${gates.validation_improvement.passed ? "badge-positive" : "badge-accent"}`}>
                   {gates.validation_improvement.passed ? "PASSED" : "FAILED"}
                 </span>
               </div>
-              <p className="text-xs text-muted" style={{ margin: 0 }}>
+              <p className="text-xs text-muted forecast-gate-desc">
                 Challenger must beat baseline by &gt;= 5% in pooled validation and both folds. Observed:{" "}
                 <span className="font-mono">
                   {(gates.validation_improvement.pooled_relative_improvement * 100).toFixed(2)}%
@@ -212,14 +207,14 @@ export default async function ForecastsPage() {
               </p>
             </div>
 
-            <div className="panel" style={{ margin: 0, backgroundColor: "var(--background)" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.4rem" }}>
+            <div className="panel forecast-gate-panel">
+              <div className="forecast-gate-header">
                 <strong className="text-sm">Gate 2: Final Paired Superiority (CI Upper &lt; 0)</strong>
                 <span className={`badge ${gates.final_paired_superiority.passed ? "badge-positive" : "badge-accent"}`}>
                   {gates.final_paired_superiority.passed ? "PASSED" : "FAILED"}
                 </span>
               </div>
-              <p className="text-xs text-muted" style={{ margin: 0 }}>
+              <p className="text-xs text-muted forecast-gate-desc">
                 95% moving-block bootstrap difference CI upper bound must be strictly negative. Observed MAE diff:{" "}
                 <span className="font-mono">{gates.final_paired_superiority.mae_difference.toFixed(3)}</span> (95% CI: [
                 <span className="font-mono">{gates.final_paired_superiority.lower?.toFixed(3)}</span>,{" "}
@@ -227,28 +222,28 @@ export default async function ForecastsPage() {
               </p>
             </div>
 
-            <div className="panel" style={{ margin: 0, backgroundColor: "var(--background)" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.4rem" }}>
+            <div className="panel forecast-gate-panel">
+              <div className="forecast-gate-header">
                 <strong className="text-sm">Gate 3: Supported Slices (No Regression &gt; 5%)</strong>
                 <span className={`badge ${gates.supported_slices.passed ? "badge-positive" : "badge-accent"}`}>
                   {gates.supported_slices.passed ? "PASSED" : "FAILED"}
                 </span>
               </div>
-              <p className="text-xs text-muted" style={{ margin: 0 }}>
+              <p className="text-xs text-muted forecast-gate-desc">
                 No supported evaluation slice may degrade by more than 5% relative MAE. Evaluated:{" "}
                 <span className="font-mono">{gates.supported_slices.supported_count}</span> slices, regressions over limit:{" "}
                 <span className="font-mono">{gates.supported_slices.regressions_over_limit.length}</span>.
               </p>
             </div>
 
-            <div className="panel" style={{ margin: 0, backgroundColor: "var(--background)" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.4rem" }}>
+            <div className="panel forecast-gate-panel">
+              <div className="forecast-gate-header">
                 <strong className="text-sm">Gate 4: Interval Guardrails</strong>
                 <span className={`badge ${gates.interval_guardrails.passed ? "badge-positive" : "badge-accent"}`}>
                   {gates.interval_guardrails.passed ? "PASSED" : "FAILED"}
                 </span>
               </div>
-              <p className="text-xs text-muted" style={{ margin: 0 }}>
+              <p className="text-xs text-muted forecast-gate-desc">
                 Challenger empirical coverage must be &gt;= 75% with width &lt;= 110% of baseline. Observed coverage:{" "}
                 <span className="font-mono">
                   {((gates.interval_guardrails.challenger_coverage ?? 0) * 100).toFixed(1)}%
@@ -267,7 +262,7 @@ export default async function ForecastsPage() {
           <div className="panel-header">
             <div>
               <h2 className="panel-title">Out-of-Time Performance on Holdout Block F (2025-26 Regular Season)</h2>
-              <p className="text-xs text-muted" style={{ margin: "0.2rem 0 0" }}>
+              <p className="text-xs text-muted forecast-header-desc">
                 Unopened until calibration and preopen registration were committed. 48,870 forecast rows across 162 target dates.
               </p>
             </div>
@@ -379,7 +374,7 @@ export default async function ForecastsPage() {
         <div className="panel-header">
           <div>
             <h2 className="panel-title">Prespecified Out-of-Time Error Slices</h2>
-            <p className="text-muted text-xs" style={{ margin: "0.2rem 0 0" }}>
+            <p className="text-muted text-xs forecast-header-desc">
               Protocol-mandated evaluation slices evaluated chronologically without target data leakage.
             </p>
           </div>
@@ -407,7 +402,7 @@ export default async function ForecastsPage() {
                   <td className="font-mono">{row.chalMae != null ? row.chalMae.toFixed(3) : "—"}</td>
                   <td className="font-mono">
                     {row.delta != null ? (
-                      <span style={{ color: row.delta <= 0 ? "var(--positive)" : "var(--accent)" }}>
+                      <span className={row.delta <= 0 ? "text-positive" : "text-accent"}>
                         {(row.delta >= 0 ? "+" : "") + row.delta.toFixed(3)}
                       </span>
                     ) : (
@@ -432,17 +427,7 @@ export default async function ForecastsPage() {
           <p className="text-xs text-muted">
             The complete points forecasting evaluation pipeline is fully reproducible from the CLI:
           </p>
-          <pre
-            className="font-mono text-xs"
-            style={{
-              backgroundColor: "var(--background)",
-              padding: "0.75rem 1rem",
-              borderRadius: "4px",
-              overflowX: "auto",
-              margin: "0.5rem 0",
-              lineHeight: 1.6,
-            }}
-          >
+          <pre className="font-mono text-xs forecast-code-block">
             {`courtlens evaluate-points --config evaluation/config/points-v1.yaml --dataset evaluation/manifests/accepted-points-v1.json --stage validate
 courtlens evaluate-points --config evaluation/config/points-v1.yaml --dataset evaluation/manifests/accepted-points-v1.json --stage calibrate
 courtlens evaluate-points --registered-run ${evaluation.run_id || "b0e4bb3300011b5a3499"} --stage final --open-final-test
@@ -456,7 +441,7 @@ courtlens activate-points-policy --registered-run ${evaluation.run_id || "b0e4bb
         <div className="panel-header">
           <div>
             <h2 className="panel-title">Genuine Prospective Issuance Status</h2>
-            <p className="text-muted text-xs" style={{ margin: "0.2rem 0 0" }}>
+            <p className="text-muted text-xs forecast-header-desc">
               Prospective ledger immutable append-only logs for the 2026-27 season.
             </p>
           </div>
@@ -468,7 +453,7 @@ courtlens activate-points-policy --registered-run ${evaluation.run_id || "b0e4bb
           <strong>Prospective accuracy not yet observed:</strong> The 2026-27 NBA regular season begins October 2026. Prospective forecasts will be logged prior to game tipoffs using active policy <code>{policyStatus}</code> and scored after official box scores are finalized. CourtLens never fabricates unobserved live forecast accuracy.
         </p>
 
-        <div style={{ marginTop: "0.75rem", display: "flex", flexWrap: "wrap", gap: "0.5rem" }}>
+        <div className="forecast-badge-row">
           <span className="badge font-mono">Issued: {prospectiveData?.summary.total_issued ?? 0}</span>
           <span className="badge font-mono">Scored: {prospectiveData?.summary.total_scored ?? 0}</span>
           <span className="badge font-mono">Pending: {prospectiveData?.summary.total_pending ?? 0}</span>
@@ -482,7 +467,7 @@ courtlens activate-points-policy --registered-run ${evaluation.run_id || "b0e4bb
           <div className="panel-header">
             <div>
               <h2 className="panel-title">Prospective Forecasts Ledger</h2>
-              <p className="text-muted text-xs" style={{ margin: "0.2rem 0 0" }}>
+              <p className="text-muted text-xs forecast-header-desc">
                 Immutable prospective estimates logged prior to game tipoffs. Scored observations append when official box scores finalize.
               </p>
             </div>
@@ -509,7 +494,7 @@ courtlens activate-points-policy --registered-run ${evaluation.run_id || "b0e4bb
                 {prospectiveData.items.map((item) => (
                   <tr key={item.id}>
                     <td>
-                      <Link href={`/players/${item.player_id}`} style={{ fontWeight: 600 }}>
+                      <Link href={`/players/${item.player_id}`} className="font-semibold">
                         {item.player_name}
                       </Link>
                     </td>

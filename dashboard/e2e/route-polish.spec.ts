@@ -3,7 +3,8 @@ import { openWorkbench } from "./workbench-navigation";
 
 test("release availability agrees across desktop and mobile and preserves context", async ({ page }) => {
   await openWorkbench(page, "/stats?season=2025-26&phase=regular_season&beforeDate=2026-06-30");
-  await page.getByRole("button", { name: "Availability", exact: true }).click();
+  await page.getByRole("button", { name: "More options", exact: true }).click();
+  await page.getByRole("menuitem", { name: /Availability/, exact: false }).click();
   const menu = page.locator(".availability-menu");
   await expect(menu.getByRole("menuitem", { name: /WOWY/ })).toBeVisible();
   const links = await menu.locator("a").evaluateAll(items => items.map(item => item.getAttribute("href")));
@@ -54,13 +55,15 @@ test("partial source keeps tools primary; service failure remains a distinct ava
   await page.getByRole("button", { name: "Players", exact: true }).click();
   await expect(page.getByRole("menuitem", { name: "Recent Games", exact: true })).toBeVisible();
   await page.keyboard.press("Escape");
-  await page.getByRole("button", { name: "Availability", exact: true }).click();
+  await page.getByRole("button", { name: "More options", exact: true }).click();
+  await page.getByRole("menuitem", { name: /Availability/, exact: false }).click();
   await expect(page.getByRole("menuitem", { name: /WOWY/ })).toContainText("not declared");
   await page.unroute("**/api/workbench/catalog*");
   await page.route("**/api/workbench/catalog*", route => route.fulfill({ status: 503, json: { detail: "Temporary backend failure" } }));
   // Reload starts a new bounded client catalog cache.
   await page.reload(); await page.waitForLoadState("networkidle");
-  await page.getByRole("button", { name: "Availability", exact: true }).click();
+  await page.getByRole("button", { name: "More options", exact: true }).click();
+  await page.getByRole("menuitem", { name: /Availability/, exact: false }).click();
   await expect(page.getByRole("menuitem", { name: /Recent Games/ })).toContainText("could not be verified");
   await expect(page.getByRole("region", { name: "Scenario output" })).toBeVisible();
 });

@@ -84,7 +84,7 @@ export default async function TeamDetailPage({
   if (loadError || !detail) {
     return (
       <div className="workbench-content">
-        <div className="notice-box" style={{ borderLeftColor: "var(--negative)" }}>
+        <div className="notice-box notice-box-error">
           <strong>Error loading team:</strong> {loadError || "Team not found in this release."}
         </div>
         <Link href="/teams" className="button button-small">
@@ -115,18 +115,7 @@ export default async function TeamDetailPage({
       <div className="workbench-content">
         {/* Team Identity Header */}
         <div className="player-identity-card">
-          <div
-            className="callout-number"
-            style={{
-              width: "64px",
-              height: "64px",
-              borderRadius: "12px",
-              background: "var(--surface-raised)",
-              border: "2px solid var(--accent)",
-              display: "grid",
-              placeItems: "center",
-            }}
-          >
+          <div className="callout-number team-badge-box">
             <TeamLogo team={team.tricode} size={48} />
           </div>
           <div className="player-identity-info">
@@ -151,7 +140,7 @@ export default async function TeamDetailPage({
               </span>
             </div>
           </div>
-          <div style={{ marginLeft: "auto", display: "flex", gap: "0.5rem" }}>
+          <div className="team-header-actions">
             <Link
               href={`/team-compare?teamA=${team.id}&season=${season}&phase=${phase}&beforeDate=${beforeDate}&releaseId=${resolvedReleaseId || ""}` }
               className="button button-small button-accent"
@@ -170,7 +159,7 @@ export default async function TeamDetailPage({
         </div>
 
         {/* Production & Allowance Summary Grid */}
-        <div className="grid-4" style={{ marginBottom: "1.25rem" }}>
+        <div className="grid-4 mb-5">
           <div className="stat-card">
             <span className="stat-value font-mono">{ppg.toFixed(1)}</span>
             <span className="stat-label">Points Per Game</span>
@@ -210,15 +199,15 @@ export default async function TeamDetailPage({
 
         {/* Block B15b: Dean Oliver Four Factors */}
         {fourFactors && (
-          <div className="panel" style={{ marginBottom: "1.25rem" }}>
+          <div className="panel mb-5">
             <div className="panel-header">
               <div>
                 <h2 className="panel-title">Dean Oliver Four Factors & Efficiency</h2>
-                <p className="text-muted text-xs" style={{ margin: "0.2rem 0 0" }}>
+                <p className="text-muted text-xs panel-subtitle-margin">
                   Four factors of basketball success: Shooting (40%), Turnovers (25%), Rebounding (20%), Free Throws (15%). Ranks out of {fourFactors.games_played > 0 ? "30" : "—"} NBA teams.
                 </p>
               </div>
-              <div style={{ display: "flex", gap: "0.5rem" }}>
+              <div className="header-badge-group">
                 <span className="badge badge-accent font-mono">
                   PACE: {fourFactors.pace?.toFixed(1) ?? "—"}
                 </span>
@@ -234,13 +223,13 @@ export default async function TeamDetailPage({
               </div>
             </div>
 
-            <div className="responsive-pair" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem", padding: "1rem" }}>
+            <div className="responsive-pair factors-grid">
               {/* Offensive Four Factors */}
-              <div style={{ background: "var(--surface)", padding: "1rem", borderRadius: "8px", border: "1px solid var(--border)" }}>
-                <h3 style={{ fontSize: "0.875rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em", color: "var(--accent)", margin: "0 0 0.75rem 0" }}>
+              <div className="factors-card">
+                <h3 className="factors-heading">
                   Offensive Four Factors
                 </h3>
-                <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+                <div className="factors-list">
                   {fourFactors.offense_factors.map((factor) => {
                     const pctFormatted = factor.unit === "percentage" && factor.value != null
                       ? `${(factor.value * 100).toFixed(1)}%`
@@ -250,16 +239,16 @@ export default async function TeamDetailPage({
                       : factor.league_avg?.toFixed(3) ?? "—";
 
                     return (
-                      <div key={factor.key} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid var(--border-subtle)", paddingBottom: "0.5rem" }}>
+                      <div key={factor.key} className="factors-row">
                         <div>
-                          <div style={{ fontWeight: 600, fontSize: "0.875rem" }}>{factor.display_name}</div>
+                          <div className="factors-name">{factor.display_name}</div>
                           <div className="text-muted text-xs font-mono">
                             League Avg: {lgAvgFormatted} · Weight: {factor.weight ? `${(factor.weight * 100).toFixed(0)}%` : "—"}
                           </div>
                         </div>
-                        <div style={{ textAlign: "right" }}>
-                          <span className="font-mono font-bold" style={{ fontSize: "1rem" }}>{pctFormatted}</span>
-                          <div style={{ display: "flex", gap: "0.25rem", justifyContent: "flex-end", marginTop: "0.15rem" }}>
+                        <div className="text-right">
+                          <span className="font-mono font-bold text-base">{pctFormatted}</span>
+                          <div className="factors-rank-badges">
                             <span className="badge badge-accent text-xs font-mono">#{factor.rank ?? "—"}</span>
                             <span className="badge text-xs font-mono text-muted">{factor.percentile?.toFixed(0)}%ile</span>
                           </div>
@@ -271,11 +260,11 @@ export default async function TeamDetailPage({
               </div>
 
               {/* Defensive Four Factors */}
-              <div style={{ background: "var(--surface)", padding: "1rem", borderRadius: "8px", border: "1px solid var(--border)" }}>
-                <h3 style={{ fontSize: "0.875rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em", color: "var(--accent)", margin: "0 0 0.75rem 0" }}>
+              <div className="factors-card">
+                <h3 className="factors-heading">
                   Defensive Four Factors (Allowed)
                 </h3>
-                <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+                <div className="factors-list">
                   {fourFactors.defense_factors.map((factor) => {
                     const pctFormatted = factor.unit === "percentage" && factor.value != null
                       ? `${(factor.value * 100).toFixed(1)}%`
@@ -285,16 +274,16 @@ export default async function TeamDetailPage({
                       : factor.league_avg?.toFixed(3) ?? "—";
 
                     return (
-                      <div key={factor.key} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid var(--border-subtle)", paddingBottom: "0.5rem" }}>
+                      <div key={factor.key} className="factors-row">
                         <div>
-                          <div style={{ fontWeight: 600, fontSize: "0.875rem" }}>{factor.display_name}</div>
+                          <div className="factors-name">{factor.display_name}</div>
                           <div className="text-muted text-xs font-mono">
                             League Avg: {lgAvgFormatted} · Weight: {factor.weight ? `${(factor.weight * 100).toFixed(0)}%` : "—"}
                           </div>
                         </div>
-                        <div style={{ textAlign: "right" }}>
-                          <span className="font-mono font-bold" style={{ fontSize: "1rem" }}>{pctFormatted}</span>
-                          <div style={{ display: "flex", gap: "0.25rem", justifyContent: "flex-end", marginTop: "0.15rem" }}>
+                        <div className="text-right">
+                          <span className="font-mono font-bold text-base">{pctFormatted}</span>
+                          <div className="factors-rank-badges">
                             <span className="badge badge-accent text-xs font-mono">#{factor.rank ?? "—"}</span>
                             <span className="badge text-xs font-mono text-muted">{factor.percentile?.toFixed(0)}%ile</span>
                           </div>
@@ -308,18 +297,18 @@ export default async function TeamDetailPage({
 
             {/* Feature F18: Three-Point Variation Scenario */}
             {fourFactors.three_point_scenario && (
-              <div style={{ padding: "0 1rem 1rem" }}>
-                <div style={{ background: "var(--surface-raised)", border: "1px solid var(--border)", borderRadius: "8px", padding: "0.875rem" }}>
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.5rem" }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+              <div className="factors-scenario-wrapper">
+                <div className="factors-scenario-card">
+                  <div className="factors-scenario-header">
+                    <div className="factors-scenario-title">
                       <span className="badge badge-accent">F18</span>
-                      <strong style={{ fontSize: "0.875rem" }}>Three-Point Variation What-If Scenario</strong>
+                      <strong className="text-sm">Three-Point Variation What-If Scenario</strong>
                     </div>
                     <span className="text-muted text-xs font-mono">
                       Observed: {(fourFactors.three_point_scenario.observed_3p_pct * 100).toFixed(1)}% vs League: {(fourFactors.three_point_scenario.league_3p_pct * 100).toFixed(1)}%
                     </span>
                   </div>
-                  <div style={{ display: "flex", gap: "1.5rem", fontSize: "0.875rem", fontFamily: "var(--font-mono)" }}>
+                  <div className="factors-scenario-metrics">
                     <div>
                       <span className="text-muted text-xs">Delta Points: </span>
                       <strong className={fourFactors.three_point_scenario.delta_points >= 0 ? "text-positive" : "text-negative"}>
@@ -343,7 +332,7 @@ export default async function TeamDetailPage({
                       </strong>
                     </div>
                   </div>
-                  <p className="text-muted text-xs" style={{ margin: "0.5rem 0 0 0", fontStyle: "italic" }}>
+                  <p className="text-muted text-xs factors-scenario-disclaimer">
                     {fourFactors.three_point_scenario.disclaimer}
                   </p>
                 </div>
@@ -354,15 +343,15 @@ export default async function TeamDetailPage({
 
         {/* Block B15a: Schedule & Rest Context Panel */}
         {schedule && (
-          <div className="panel" style={{ marginBottom: "1.25rem" }}>
+          <div className="panel mb-5">
             <div className="panel-header">
               <div>
                 <h2 className="panel-title">Schedule Context, Venue & Rest Splits</h2>
-                <p className="text-muted text-xs" style={{ margin: "0.2rem 0 0" }}>
+                <p className="text-muted text-xs panel-subtitle-margin">
                   Venue splits, rest day buckets (calendar difference minus 1 day), and back-to-back performance reconstructed strictly prior to cutoff.
                 </p>
               </div>
-              <div style={{ display: "flex", gap: "0.5rem" }}>
+              <div className="header-badge-group">
                 <span className="badge font-mono">
                   Homestand: {schedule.longest_homestand} games
                 </span>
@@ -372,10 +361,10 @@ export default async function TeamDetailPage({
               </div>
             </div>
 
-            <div className="responsive-pair" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem", padding: "1rem" }}>
+            <div className="responsive-pair factors-grid">
               {/* Venue Splits */}
               <div>
-                <h3 style={{ fontSize: "0.875rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em", color: "var(--accent)", margin: "0 0 0.5rem 0" }}>
+                <h3 className="factors-heading mb-2">
                   Venue Splits
                 </h3>
                 <div className="table-wrapper" role="region" aria-label="Team analytical values" tabIndex={0}><table className="data-table">
@@ -419,7 +408,7 @@ export default async function TeamDetailPage({
 
               {/* Rest Splits & Back-to-Backs */}
               <div>
-                <h3 style={{ fontSize: "0.875rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em", color: "var(--accent)", margin: "0 0 0.5rem 0" }}>
+                <h3 className="factors-heading mb-2">
                   Rest Day Splits
                 </h3>
                 <div className="table-wrapper" role="region" aria-label="Team analytical values" tabIndex={0}><table className="data-table">
@@ -437,7 +426,7 @@ export default async function TeamDetailPage({
                       <tr key={rs.bucket_key}>
                         <td>
                           <strong>{rs.bucket_label}</strong>
-                          {rs.bucket_key === "0_days_rest" && <span className="badge badge-warning text-xs" style={{ marginLeft: "0.3rem" }}>B2B</span>}
+                          {rs.bucket_key === "0_days_rest" && <span className="badge badge-warning text-xs ml-1">B2B</span>}
                         </td>
                         <td className="num font-mono">{rs.games_played}</td>
                         <td className="num font-mono">{rs.wins}-{rs.losses}</td>
@@ -455,11 +444,11 @@ export default async function TeamDetailPage({
         )}
 
         {/* Flagship Demonstration 2: Season Participation Player Cohort */}
-        <div className="panel" style={{ marginBottom: "1.25rem" }}>
+        <div className="panel mb-5">
           <div className="panel-header">
             <div>
               <h2 className="panel-title">{team.name} Season Participation Cohort</h2>
-              <p className="text-muted text-xs" style={{ margin: "0.2rem 0 0" }}>
+              <p className="text-muted text-xs panel-subtitle-margin">
                 All players with observed participation for {team.tricode} in {season} before {beforeDate}. Includes traded players with team-filtered stints.
               </p>
             </div>
@@ -470,13 +459,13 @@ export default async function TeamDetailPage({
             <div className="table-wrapper" role="region" aria-label="Team analytical values" tabIndex={0}><table className="data-table">
               <thead>
                 <tr>
-                  <th style={{ width: "40px" }}>#</th>
+                  <th className="col-idx">#</th>
                   <th>Player</th>
                   <th className="num">Stint Games</th>
                   <th className="num">Stint Minutes</th>
                   <th className="num">Stint Points</th>
                   <th className="num">PPG</th>
-                  <th style={{ textAlign: "right" }}>Actions</th>
+                  <th className="text-right">Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -502,7 +491,7 @@ export default async function TeamDetailPage({
                     <td className="num font-mono font-semibold">
                       {p.points_per_game !== undefined && p.points_per_game !== null ? p.points_per_game.toFixed(1) : "—"}
                     </td>
-                    <td style={{ textAlign: "right" }}>
+                    <td className="text-right">
                       <Link
                         href={`/players/${p.player_id}?season=${season}&phase=${phase}&beforeDate=${beforeDate}&releaseId=${resolvedReleaseId || ""}` }
                         className="button button-small button-primary"
@@ -519,11 +508,11 @@ export default async function TeamDetailPage({
 
         {/* Statistical Team Peers Panel */}
         {peers && peers.peers && peers.peers.length > 0 && (
-          <div className="panel" style={{ marginBottom: "1.25rem" }}>
+          <div className="panel mb-5">
             <div className="panel-header">
               <div>
                 <h2 className="panel-title">{team.name} Statistical Team Peers</h2>
-                <p className="text-muted text-xs" style={{ margin: "0.2rem 0 0" }}>
+                <p className="text-muted text-xs panel-subtitle-margin">
                   Closest analytical cohorts determined by standardized Euclidean distance across Pace, Ratings, and Dean Oliver Four Factors.
                 </p>
               </div>
@@ -534,11 +523,11 @@ export default async function TeamDetailPage({
               <div className="table-wrapper" role="region" aria-label="Team analytical values" tabIndex={0}><table className="data-table">
                 <thead>
                   <tr>
-                    <th style={{ width: "40px" }}>#</th>
+                    <th className="col-idx">#</th>
                     <th>Peer Franchise</th>
                     <th className="num">Similarity Score</th>
                     <th className="num">Euclidean Distance</th>
-                    <th style={{ textAlign: "right" }}>Actions</th>
+                    <th className="text-right">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -546,16 +535,8 @@ export default async function TeamDetailPage({
                     <tr key={peer.team_id}>
                       <td className="font-mono text-muted text-xs">{pIdx + 1}</td>
                       <td>
-                        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-                          <span
-                            className="font-mono font-bold text-accent"
-                            style={{
-                              background: "var(--surface-raised)",
-                              padding: "0.15rem 0.35rem",
-                              borderRadius: "4px",
-                              fontSize: "0.8rem",
-                            }}
-                          >
+                        <div className="peer-cell">
+                          <span className="font-mono font-bold text-accent peer-tricode-badge">
                             {peer.tricode}
                           </span>
                           <Link
@@ -571,8 +552,8 @@ export default async function TeamDetailPage({
                       </td>
                       <td className="num font-mono font-bold">{(peer.similarity_score * 100).toFixed(1)}%</td>
                       <td className="num font-mono text-muted">{peer.distance.toFixed(3)}</td>
-                      <td style={{ textAlign: "right", whiteSpace: "nowrap" }}>
-                        <div style={{ display: "inline-flex", gap: "0.35rem" }}>
+                      <td className="text-right whitespace-nowrap">
+                        <div className="table-actions-group">
                           <Link
                             href={`/team-compare?teamA=${team.id}&teamB=${peer.team_id}&season=${season}&phase=${phase}&beforeDate=${beforeDate}&releaseId=${resolvedReleaseId || ""}` }
                             className="button button-small"
@@ -600,7 +581,7 @@ export default async function TeamDetailPage({
           <div className="panel-header">
             <div>
               <h2 className="panel-title">Completed Game Schedule & Outcomes</h2>
-              <p className="text-muted text-xs" style={{ margin: "0.2rem 0 0" }}>
+              <p className="text-muted text-xs panel-subtitle-margin">
                 Chronological validated two-sided game outcomes strictly prior to cutoff.
               </p>
             </div>

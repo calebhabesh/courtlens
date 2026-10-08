@@ -31,13 +31,13 @@ export default async function DataStatusPage() {
       </div>
 
       {error && (
-        <div className="notice-box" style={{ borderLeftColor: "var(--warning)" }}>
+        <div className="notice-box notice-box-warning">
           <strong>Notice:</strong> {error}. Running in local offline mode.
         </div>
       )}
 
       {/* Freshness & Release Overview */}
-      <div className="grid-4" style={{ marginBottom: "1.25rem" }}>
+      <div className="grid-4 data-status-overview-grid">
         <div className="stat-card">
           <span className="stat-value text-accent font-mono">
             {status?.release?.channel ?? "public"}
@@ -110,7 +110,7 @@ export default async function DataStatusPage() {
         <div className="panel-header">
           <h2 className="panel-title">Source Capabilities & Zero-Inferred Rules</h2>
         </div>
-        <ul className="text-sm text-muted" style={{ lineHeight: 1.6, margin: 0, paddingLeft: "1.25rem" }}>
+        <ul className="text-sm text-muted data-status-rules-list">
           <li>
             <strong>Preseason Outcomes:</strong> Preseason games are admitted as <code>schedule_only</code>; absence of preseason player box scores is treated as unobserved, not zero.
           </li>

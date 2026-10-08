@@ -12,7 +12,7 @@ import type { AnalyticsGame, AnalyticsProfile, AnalyticsSummary, PlayerGameLogRe
 
 import { ContextBar } from "@/components/context-bar";
 import { WorkbenchPlayerProfile } from "@/components/workbench-player-profile";
-import { getPlayerProfile, getPlayerGameLog, getWorkbenchCatalog } from "@/lib/workbench-api";
+import { getPlayerProfile, getPlayerGameLog, getWorkbenchCatalog, getImpact } from "@/lib/workbench-api";
 import { aggregateCareerStats, type SeasonCareerRow } from "@/lib/player-pages";
 
 export const dynamic = "force-dynamic";
@@ -153,6 +153,7 @@ export default async function PlayerPage({
 
     // Compute aggregated career rollup with explicit incomplete career disclosures
     const careerRollup = aggregateCareerStats(careerRows, admittedSeasons);
+    const impact = await getImpact({ season, phase, beforeDate, playerId: id, window: windowParam }).catch(() => null);
 
     return (
       <>
@@ -170,6 +171,7 @@ export default async function PlayerPage({
             games={wbLoaded.log.games}
             careerRows={careerRows}
             careerRollup={careerRollup}
+            impact={impact}
           />
         </div>
       </>

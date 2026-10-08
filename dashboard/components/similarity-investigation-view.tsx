@@ -2,6 +2,7 @@
 
 import { useReleaseCatalog } from "@/lib/use-release-catalog";
 import { EntityField } from "./entity-picker";
+import { useToast } from "./ui/toast";
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
@@ -60,6 +61,7 @@ export function SimilarityInvestigationView() {
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<StatisticalPeersResponse | null>(null);
   const [copiedUrl, setCopiedUrl] = useState(false);
+  const { toast } = useToast();
 
   const [previousUrl,setPreviousUrl] = useState(searchParams.toString());
   if(previousUrl !== searchParams.toString()) {setPreviousUrl(searchParams.toString());setPlayerId(initialPlayerId);setSeason(initialSeason);setWindowMode(searchParams.get("window") === "season" ? "season" : "last_10");}
@@ -123,6 +125,11 @@ export function SimilarityInvestigationView() {
     try {
       await navigator.clipboard.writeText(window.location.href);
       setCopiedUrl(true);
+      toast({
+        title: "Link Copied",
+        description: "Investigation link copied to clipboard.",
+        variant: "info",
+      });
       setTimeout(() => setCopiedUrl(false), 2000);
     } catch {
       // ignore
@@ -135,11 +142,10 @@ export function SimilarityInvestigationView() {
       {/* Page Header */}
       <div className="page-header">
         <div>
-          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.25rem" }}>
+          <div className="dist-header-meta">
             <span className="font-mono text-xs text-muted">F14</span>
             <span
-              className="replica-badge-gated"
-              style={{ background: "rgba(96, 211, 148, 0.15)", color: "var(--positive)" }}
+              className="replica-badge-gated dist-badge-positive"
             >
               Statistical Twin Modeling
             </span>
@@ -151,7 +157,7 @@ export function SimilarityInvestigationView() {
           </p>
         </div>
 
-        <div className="page-actions" style={{ display: "flex", gap: "0.5rem" }}>
+        <div className="page-actions dist-actions">
           <button
             type="button"
             className="button button-secondary text-xs"
@@ -167,24 +173,11 @@ export function SimilarityInvestigationView() {
       </div>
 
       {/* Control Bar */}
-      <div
-        className="filter-bar"
-        style={{
-          display: "flex",
-          flexWrap: "wrap",
-          gap: "1rem",
-          alignItems: "center",
-          background: "var(--surface)",
-          padding: "1rem",
-          borderRadius: "6px",
-          border: "1px solid var(--border)",
-          marginBottom: "1.5rem"
-        }}
-      >
+      <div className="filter-bar dist-filter-bar">
         {/* Quick Player Selectors */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "0.25rem" }}>
+        <div className="dist-field-group">
           <label className="text-xs font-mono text-muted uppercase">Featured Targets</label>
-          <div style={{ display: "flex", gap: "0.35rem", flexWrap: "wrap" }}>
+          <div className="dist-quick-pills">
             {FEATURED_PLAYERS.map((p) => (
               <button
                 key={p.id}
@@ -202,7 +195,7 @@ export function SimilarityInvestigationView() {
         <EntityField label="Target player" value={playerId} releaseId={releaseId} season={season} phase={phase} beforeDate={beforeDate} onChange={id => { if(id) handleSelectPlayer(id); else setPlayerId(""); }} />
 
         {/* Window Selector */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "0.25rem" }}>
+        <div className="dist-field-group">
           <label className="text-xs font-mono text-muted uppercase">Window Mode</label>
           <select
             value={windowMode}
@@ -211,8 +204,7 @@ export function SimilarityInvestigationView() {
               setWindowMode(val);
               updateUrl(playerId, val, topK);
             }}
-            className="input text-xs"
-            style={{ padding: "0.25rem 0.5rem" }}
+            className="input text-xs dist-select-compact"
           >
             <option value="last_10">Recent Form (Last 10 Games)</option>
             <option value="season">Full Season Aggregate</option>
@@ -220,7 +212,7 @@ export function SimilarityInvestigationView() {
         </div>
 
         {/* Top K */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "0.25rem" }}>
+        <div className="dist-field-group">
           <label className="text-xs font-mono text-muted uppercase">Top Twins (K)</label>
           <select
             value={topK}
@@ -229,8 +221,7 @@ export function SimilarityInvestigationView() {
               setTopK(val);
               updateUrl(playerId, windowMode, val);
             }}
-            className="input text-xs"
-            style={{ padding: "0.25rem 0.5rem" }}
+            className="input text-xs dist-select-compact"
           >
             <option value={3}>Top 3</option>
             <option value={5}>Top 5 (Default)</option>
@@ -240,13 +231,12 @@ export function SimilarityInvestigationView() {
         </div>
 
         {/* Min Appearances */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "0.25rem" }}>
+        <div className="dist-field-group">
           <label className="text-xs font-mono text-muted uppercase">Min Games</label>
           <select
             value={minAppearances}
             onChange={(e) => setMinAppearances(parseInt(e.target.value, 10))}
-            className="input text-xs"
-            style={{ padding: "0.25rem 0.5rem" }}
+            className="input text-xs dist-select-compact"
           >
             <option value={5}>≥ 5 games</option>
             <option value={10}>≥ 10 games (Default)</option>
@@ -256,13 +246,12 @@ export function SimilarityInvestigationView() {
         </div>
 
         {/* Min Minutes */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "0.25rem" }}>
+        <div className="dist-field-group">
           <label className="text-xs font-mono text-muted uppercase">Min Minutes</label>
           <select
             value={minMinutes}
             onChange={(e) => setMinMinutes(parseFloat(e.target.value))}
-            className="input text-xs"
-            style={{ padding: "0.25rem 0.5rem" }}
+            className="input text-xs dist-select-compact"
           >
             <option value={50}>≥ 50 min</option>
             <option value={100}>≥ 100 min</option>
@@ -272,13 +261,12 @@ export function SimilarityInvestigationView() {
         </div>
 
         {/* Season */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "0.25rem" }}>
+        <div className="dist-field-group">
           <label className="text-xs font-mono text-muted uppercase">Season</label>
           <select
             value={season}
             onChange={(e) => setSeason(e.target.value)}
-            className="input text-xs"
-            style={{ padding: "0.25rem 0.5rem" }}
+            className="input text-xs dist-select-compact"
           >
             {season && !catalog?.seasons.includes(season) && <option value={season}>{season} · availability unverified</option>}{catalog?.seasons.map(value => <option key={value} value={value}>{value}</option>)}
           </select>
@@ -286,13 +274,13 @@ export function SimilarityInvestigationView() {
       </div>
 
       {loading && (
-        <div className="table-card" style={{ padding: "2rem", textAlign: "center" }}>
+        <div className="table-card dist-loading-card">
           <div className="text-muted">Standardizing cohort z-scores and evaluating Euclidean distances...</div>
         </div>
       )}
 
       {error && (
-        <div className="notice-box" style={{ borderLeftColor: "var(--negative)", marginBottom: "1.5rem" }}>
+        <div className="notice-box dist-notice-error">
           <strong>Peer Matching Error:</strong> {error}
         </div>
       )}
@@ -300,59 +288,40 @@ export function SimilarityInvestigationView() {
       {data && !loading && (
         <>
           {/* Target Profile and Cohort Summary Grid */}
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
-              gap: "1rem",
-              marginBottom: "1.5rem"
-            }}
-          >
+          <div className="trend-inv-grid-2col">
             {/* Target Player Card */}
-            <div className="table-card" style={{ padding: "1.25rem", borderTop: "3px solid var(--accent)" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: "0.5rem" }}>
+            <div className="table-card similarity-target-card">
+              <div className="trend-inv-stat-head">
                 <span className="font-mono text-xs text-muted uppercase">Target Baseline Profile</span>
-                <span className="text-xs font-mono" style={{ color: "var(--accent)" }}>
+                <span className="text-xs font-mono text-accent">
                   {data.target.team_tricode || "TOT"} · {data.target.games_played} GP · {data.target.total_minutes} MIN
                 </span>
               </div>
-              <h2 style={{ margin: "0 0 0.75rem 0", fontSize: "1.3rem" }}>{data.target.player_name}</h2>
+              <h2 className="section-title mb-3">{data.target.player_name}</h2>
 
               {/* 8 Dimensions Grid */}
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.5rem", fontSize: "0.8rem" }}>
+              <div className="similarity-dim-grid">
                 {Object.entries(data.target.raw_values).map(([key, val]) => {
                   const zScore = data.target.standardized_values[key];
                   const zSign = zScore && zScore > 0 ? "+" : "";
-                  const zColor =
+                  const zClass =
                     zScore && zScore > 0.5
-                      ? "var(--positive)"
+                      ? "text-positive"
                       : zScore && zScore < -0.5
-                      ? "var(--negative)"
-                      : "var(--text-muted)";
+                      ? "text-negative"
+                      : "text-muted";
 
                   return (
                     <div
                       key={key}
-                      style={{
-                        padding: "0.4rem 0.6rem",
-                        background: "var(--bg-main)",
-                        borderRadius: "4px",
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center"
-                      }}
+                      className="similarity-dim-row"
                     >
                       <div>
-                        <div style={{ fontWeight: 500 }}>{DIMENSION_LABELS[key] || key}</div>
+                        <div className="font-medium">{DIMENSION_LABELS[key] || key}</div>
                         <span className="text-muted font-mono">{val !== null ? val : "—"}</span>
                       </div>
                       <div
-                        style={{
-                          fontWeight: 700,
-                          fontSize: "0.75rem",
-                          fontFamily: "var(--font-mono)",
-                          color: zColor
-                        }}
+                        className={`font-mono text-xs font-bold ${zClass}`}
                         title={`Cohort z-score: ${zScore ?? "—"}`}
                       >
                         {zScore !== null ? `${zSign}${zScore}σ` : "—"}
@@ -364,30 +333,25 @@ export function SimilarityInvestigationView() {
             </div>
 
             {/* Cohort Summary Card */}
-            <div className="table-card" style={{ padding: "1.25rem", borderTop: "3px solid var(--border)" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: "0.5rem" }}>
+            <div className="table-card similarity-weights-card">
+              <div className="trend-inv-stat-head">
                 <span className="font-mono text-xs text-muted uppercase">Comparison Cohort</span>
                 <span className="text-xs font-mono text-muted">{data.cohort.cohort_size} Eligible Candidates</span>
               </div>
-              <h3 style={{ margin: "0 0 0.5rem 0", fontSize: "1.1rem" }}>
+              <h3 className="section-title mb-2">
                 Active Standardization Cohort ({data.cohort.window_description})
               </h3>
-              <p className="text-xs text-muted" style={{ margin: "0 0 0.75rem 0" }}>
+              <p className="text-xs text-muted mb-3">
                 Filtered strictly to candidates with $\ge {data.cohort.min_appearances}$ games and $\ge {data.cohort.min_minutes}$ minutes. Requires $\ge 6$ overlapping dimensions.
               </p>
 
-              <div style={{ display: "flex", flexDirection: "column", gap: "0.35rem", fontSize: "0.8rem" }}>
+              <div className="trend-inv-meta-col text-sm">
                 {data.cohort.dimensions.map((dim: DimensionStats) => (
                   <div
                     key={dim.dimension_key}
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      padding: "0.25rem 0",
-                      borderBottom: "1px solid rgba(255,255,255,0.05)"
-                    }}
+                    className="similarity-dim-row"
                   >
-                    <span style={{ color: "var(--text-muted)" }}>{dim.display_name}</span>
+                    <span className="text-muted">{dim.display_name}</span>
                     <span className="font-mono text-xs">
                       μ = {dim.cohort_mean} · σ = {dim.cohort_sd}
                     </span>
@@ -398,9 +362,9 @@ export function SimilarityInvestigationView() {
           </div>
 
           {/* Matched Statistical Twin Cards */}
-          <div className="table-card" style={{ marginBottom: "1.5rem" }}>
-            <div style={{ padding: "1rem 1.25rem", borderBottom: "1px solid var(--border)" }}>
-              <h3 style={{ margin: 0, fontSize: "1rem" }}>
+          <div className="table-card dist-table-card">
+            <div className="dist-table-header">
+              <h3 className="dist-table-title">
                 Closest Statistical Peers (Top {data.peers.length})
               </h3>
               <span className="text-xs text-muted">
@@ -408,44 +372,24 @@ export function SimilarityInvestigationView() {
               </span>
             </div>
 
-            <div style={{ display: "flex", flexDirection: "column", gap: "1rem", padding: "1.25rem" }}>
+            <div className="trend-inv-meta-col p-5">
               {data.peers.map((peer: PeerMatchItem, idx: number) => {
 
                 return (
                   <div
                     key={peer.player_id}
-                    style={{
-                      padding: "1rem",
-                      background: "var(--bg-main)",
-                      borderRadius: "6px",
-                      border: "1px solid var(--border)",
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: "0.75rem"
-                    }}
+                    className="table-card similarity-match-card"
                   >
                     {/* Peer Header Row */}
-                    <div
-                      style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                        flexWrap: "wrap",
-                        gap: "0.5rem"
-                      }}
-                    >
-                      <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+                    <div className="similarity-match-header">
+                      <div className="dist-actions">
                         <span
-                          style={{
-                            fontSize: "1.25rem",
-                            fontWeight: 800,
-                            color: idx === 0 ? "var(--accent)" : "var(--text-muted)"
-                          }}
+                          className={`font-mono text-lg font-bold ${idx === 0 ? "text-accent" : "text-muted"}`}
                         >
                           #{idx + 1}
                         </span>
                         <div>
-                          <div style={{ fontSize: "1.1rem", fontWeight: 700 }}>{peer.player_name}</div>
+                          <div className="font-bold text-md">{peer.player_name}</div>
                           <span className="text-xs font-mono text-muted">
                             {peer.team_tricode || "TOT"} · {peer.games_played} GP · {peer.total_minutes} MIN · {peer.overlapping_dimensions_count} dims
                           </span>
@@ -453,9 +397,9 @@ export function SimilarityInvestigationView() {
                       </div>
 
                       {/* Distance Score Badge and PvP compare link */}
-                      <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
-                        <div style={{ textAlign: "right" }}>
-                          <div style={{ fontSize: "1.1rem", fontWeight: 700, fontFamily: "var(--font-mono)", color: "var(--accent)" }}>
+                      <div className="dist-actions">
+                        <div className="text-right">
+                          <div className="similarity-match-score">
                             D = {peer.distance.toFixed(3)}
                           </div>
                           <span className="text-xs text-muted">Euclidean Distance</span>
@@ -481,16 +425,7 @@ export function SimilarityInvestigationView() {
                     </div>
 
                     {/* Dimension Comparison Grid */}
-                    <div
-                      style={{
-                        display: "grid",
-                        gridTemplateColumns: "repeat(auto-fit, minmax(130px, 1fr))",
-                        gap: "0.5rem",
-                        paddingTop: "0.5rem",
-                        borderTop: "1px solid rgba(255,255,255,0.05)",
-                        fontSize: "0.75rem"
-                      }}
-                    >
+                    <div className="similarity-dim-grid pt-2">
                       {Object.entries(peer.raw_values).map(([dimKey, peerRaw]) => {
                         const targetRaw = data.target.raw_values[dimKey];
                         const diff = peer.dimension_contributions[dimKey];
@@ -498,24 +433,17 @@ export function SimilarityInvestigationView() {
                         return (
                           <div
                             key={dimKey}
-                            style={{
-                              padding: "0.35rem 0.5rem",
-                              background: "var(--surface)",
-                              borderRadius: "4px",
-                              display: "flex",
-                              flexDirection: "column",
-                              gap: "2px"
-                            }}
+                            className="similarity-dim-row"
                           >
                             <span className="text-muted font-mono text-xs">{DIMENSION_LABELS[dimKey] || dimKey}</span>
-                            <div style={{ display: "flex", justifyContent: "space-between" }}>
-                              <span style={{ fontWeight: 600 }}>{peerRaw !== null ? peerRaw : "—"}</span>
+                            <div className="flex gap-2">
+                              <span className="font-semibold">{peerRaw !== null ? peerRaw : "—"}</span>
                               <span className="text-muted" title="Target player value">
                                 vs {targetRaw !== null ? targetRaw : "—"}
                               </span>
                             </div>
                             {diff !== undefined && (
-                              <span className="text-xs font-mono" style={{ color: "var(--text-muted)", fontSize: "0.65rem" }}>
+                              <span className="text-xs font-mono text-muted">
                                 Δ²: {diff.toFixed(2)}
                               </span>
                             )}
@@ -530,24 +458,14 @@ export function SimilarityInvestigationView() {
           </div>
 
           {/* Cryptographic Lineage Footer */}
-          <div
-            className="table-card"
-            style={{
-              padding: "1rem 1.25rem",
-              background: "var(--surface)",
-              fontSize: "0.8rem",
-              display: "flex",
-              flexDirection: "column",
-              gap: "0.5rem"
-            }}
-          >
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap" }}>
+          <div className="table-card dist-provenance-box">
+            <div className="dist-provenance-header">
               <span className="font-mono text-muted uppercase text-xs">Cryptographic Lineage & Invariants</span>
               <span className="font-mono text-xs text-muted">
                 SHA-256: <code>{data.evidence_hash}</code>
               </span>
             </div>
-            <ul style={{ margin: 0, paddingLeft: "1.2rem", color: "var(--text-muted)" }}>
+            <ul className="dist-provenance-list">
               {data.disclosures.map((disc: string, idx: number) => (
                 <li key={idx}>{disc}</li>
               ))}

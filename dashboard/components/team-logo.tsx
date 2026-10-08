@@ -11,7 +11,7 @@ export function TeamLogo({ team, size = 24 }: { team: string; size?: number }) {
   return (
     <span
       className="team-logo"
-      style={{ width: size, height: size, minWidth: size }}
+      style={{ "--logo-size": `${size}px` } as React.CSSProperties}
       title={`${abbreviation}${record ? ` · ${record.artwork_name} artwork (current franchise)` : " · Artwork unavailable"}`}
       aria-label={abbreviation}
       role="img"

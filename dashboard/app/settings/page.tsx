@@ -43,7 +43,7 @@ export default async function SettingsPage() {
       </div>
 
       {loadError && (
-        <div className="notice-box" style={{ borderLeftColor: "var(--warning)" }}>
+        <div className="notice-box notice-box-warning">
           <strong>Notice:</strong> {loadError}. Live configuration and health values are unavailable.
         </div>
       )}
@@ -71,7 +71,7 @@ export default async function SettingsPage() {
         <div className="panel-header">
           <h2 className="panel-title">Admitted Source Attribution & Terms</h2>
         </div>
-        <div className="text-sm text-muted" style={{ lineHeight: 1.6 }}>
+        <div className="text-sm text-muted prose-line-relaxed">
           <p>
             <strong>SportsDataverse NBA Stats:</strong> Historical and recent regular-season and playoff box score data acquired from open, zero-cost public release archives.
           </p>

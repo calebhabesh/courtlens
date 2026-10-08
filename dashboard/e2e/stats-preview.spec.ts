@@ -60,6 +60,7 @@ test("wide and smaller desktop columns align with stable pinned identity while s
   for (const width of [2560, 1440]) {
     await page.setViewportSize({ width, height: 1100 });
     await openWorkbench(page, "/stats?identityMode=photos&density=standard");
+    await expect(rows(page).first()).toBeVisible();
     const geometry = await page.locator(".dense-stats-table").evaluate(element => {
       const table = element as HTMLTableElement;
       const headers = [...table.tHead!.rows[1].cells].map(cell => cell.getBoundingClientRect());

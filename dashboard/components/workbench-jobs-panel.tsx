@@ -42,11 +42,11 @@ export function WorkbenchJobsPanel({ initialJobs }: { initialJobs: WorkbenchJobI
       <div className="panel-header">
         <div>
           <h2 className="panel-title">Background Worker Jobs</h2>
-          <p className="text-muted text-xs" style={{ margin: "0.2rem 0 0" }}>
+          <p className="text-muted text-xs jobs-panel-desc">
             Tracked executions protected by PostgreSQL advisory locking (09:00 UTC schedule & on-demand triggers).
           </p>
         </div>
-        <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap" }}>
+        <div className="jobs-panel-actions">
           <button
             type="button"
             className="button button-small button-primary"
@@ -75,7 +75,7 @@ export function WorkbenchJobsPanel({ initialJobs }: { initialJobs: WorkbenchJobI
       </div>
 
       {actionMessage && (
-        <div className="notice-box" style={{ marginBottom: "1rem" }}>
+        <div className="notice-box jobs-panel-notice">
           {actionMessage}
         </div>
       )}
@@ -97,14 +97,14 @@ export function WorkbenchJobsPanel({ initialJobs }: { initialJobs: WorkbenchJobI
           <tbody>
             {jobs.length === 0 ? (
               <tr>
-                <td colSpan={8} style={{ textAlign: "center", padding: "2rem" }} className="text-muted">
+                <td colSpan={8} className="text-muted table-empty-cell">
                   No jobs recorded yet.
                 </td>
               </tr>
             ) : (
-              jobs.map((j) => (
-                <tr key={j.job_id}>
-                  <td className="font-mono text-xs">{j.job_id.slice(0, 8)}...</td>
+              jobs.map((j, idx) => (
+                <tr key={j.job_id || idx}>
+                  <td className="font-mono text-xs">{j.job_id ? `${j.job_id.slice(0, 8)}...` : "—"}</td>
                   <td><strong>{j.job_type}</strong></td>
                   <td>
                     <span className={`badge ${j.status === "succeeded" ? "badge-positive" : j.status === "running" ? "badge-accent" : j.status === "failed" ? "badge-warning" : ""}`}>
@@ -121,7 +121,7 @@ export function WorkbenchJobsPanel({ initialJobs }: { initialJobs: WorkbenchJobI
                   <td className="text-xs text-muted">
                     {j.finished_at ? new Date(j.finished_at).toLocaleTimeString() : "—"}
                   </td>
-                  <td className="text-xs" style={{ maxWidth: "250px", overflow: "hidden", textOverflow: "ellipsis" }}>
+                  <td className="text-xs jobs-panel-error-cell">
                     {j.error_summary ? (
                       <span className="text-negative font-mono">{j.error_summary}</span>
                     ) : j.output_refs ? (

@@ -10,14 +10,17 @@ test.describe("Workbench Dark Research Interface", () => {
     await expect(page.getByRole("banner").getByRole("link", { name: "CourtLens Research Workbench home" })).toContainText("CourtLens");
     const navigation = page.getByRole("navigation", { name: "Workspace Navigation" });
     await expect(navigation.getByRole("link", { name: "Stats", exact: true })).toBeVisible();
-    for (const name of ["Players", "Teams", "Compare", "Research", "Help"]) {
+    for (const name of ["Live", "Players", "Teams", "Compare", "Research"]) {
       await navigation.getByRole("button", { name, exact: true }).click();
       await expect(navigation.getByRole("button", { name, exact: true })).toHaveAttribute("aria-expanded", "true");
       await page.keyboard.press("Escape");
       await expect(navigation.getByRole("button", { name, exact: true })).toHaveAttribute("aria-expanded", "false");
     }
-    await expect(page.getByRole("banner").getByRole("link", { name: "Data status" })).toBeVisible();
-    await expect(page.getByRole("banner").getByRole("link", { name: "Settings" })).toBeVisible();
+    const moreBtn = page.getByRole("button", { name: "More options" });
+    await moreBtn.click();
+    await expect(page.getByRole("menuitem", { name: "Data status" })).toBeVisible();
+    await expect(page.getByRole("menuitem", { name: "Settings" })).toBeVisible();
+    await page.keyboard.press("Escape");
     await expect(page.getByLabel("Filter by season")).toHaveValue("2025-26");
     await expect(page.getByRole("heading", { name: "Stats Explorer" })).toBeVisible();
     await expect(page.getByText("Fixture Star", { exact: true })).toBeVisible();

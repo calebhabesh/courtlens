@@ -141,7 +141,7 @@ export function RecentGamesView({
   return (
     <div className="recent-games-container">
       {/* Player Identity Hero */}
-      <div className="player-identity-card" style={{ marginBottom: "1.25rem" }}>
+      <div className="player-identity-card">
         <PlayerPortrait
           playerId={player.id}
           name={player.name}
@@ -150,14 +150,14 @@ export function RecentGamesView({
         />
 
         <div className="player-identity-info">
-          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+          <div className="player-identity-meta">
             <span className="text-xs text-accent font-mono uppercase">
               Recent Games Explorer · {context.season} {context.phase.replace("_", " ")}
             </span>
             <span className="badge font-mono text-xs">ID: {player.id}</span>
           </div>
 
-          <h1 className="player-identity-name" style={{ margin: "0.2rem 0" }}>
+          <h1 className="player-identity-name">
             {player.name}
           </h1>
 
@@ -177,8 +177,8 @@ export function RecentGamesView({
         </div>
 
         {/* Global Lookup & Quick Actions */}
-        <div style={{ marginLeft: "auto", display: "flex", flexDirection: "column", gap: "0.5rem", alignItems: "flex-end" }}>
-          <div style={{ width: "240px" }}>
+        <div className="player-identity-actions">
+          <div className="player-lookup-box">
             <LookupInput label="Switch player" value={lookupText} onChange={setLookupText}
               kinds={["player"]}
               releaseId={context.release_id}
@@ -195,7 +195,7 @@ export function RecentGamesView({
             />
           </div>
 
-          <div style={{ display: "flex", gap: "0.4rem", flexWrap: "wrap", justifyContent: "flex-end" }}>
+          <div className="player-action-buttons">
             <button
               type="button"
               className={`button button-small ${isFavorite ? "button-accent" : ""}`}
@@ -234,10 +234,10 @@ export function RecentGamesView({
       </div>
 
       {/* Toolbar & Filter Controls */}
-      <div className="panel" style={{ padding: "0.75rem 1rem", marginBottom: "1.25rem" }}>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "0.75rem" }}>
+      <div className="panel recent-games-toolbar-panel">
+        <div className="recent-games-toolbar">
           {/* Appearance Window Selector */}
-          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+          <div className="recent-games-control-group">
             <span className="text-xs text-muted uppercase font-mono font-semibold">Window:</span>
             <div className="segmented-control" role="group" aria-label="Recent appearance window">
               <button
@@ -272,7 +272,7 @@ export function RecentGamesView({
           </div>
 
           {/* Exposure Mode (Per Game vs Per 36) */}
-          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+          <div className="recent-games-control-group">
             <span className="text-xs text-muted uppercase font-mono font-semibold">Exposure:</span>
             <div className="segmented-control" role="group" aria-label="Counting exposure mode">
               <button
@@ -295,7 +295,7 @@ export function RecentGamesView({
           </div>
 
           {/* View Mode (Table vs Cards) */}
-          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+          <div className="recent-games-control-group">
             <span className="text-xs text-muted uppercase font-mono font-semibold">Format:</span>
             <div className="segmented-control" role="group" aria-label="View layout mode">
               <button
@@ -316,7 +316,7 @@ export function RecentGamesView({
           </div>
 
           {/* Export Actions */}
-          <div style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
+          <div className="recent-games-export-group">
             <button
               type="button"
               className="button button-small"
@@ -355,7 +355,7 @@ export function RecentGamesView({
       </div>
 
       {/* Recent Form Summary Grid */}
-      <div className="grid-4" style={{ marginBottom: "1.25rem" }}>
+      <div className="grid-4">
         <div className="stat-card">
           <span className="stat-label">Scoring Production</span>
           <span className="stat-value font-mono">
@@ -390,13 +390,13 @@ export function RecentGamesView({
         <div className="stat-card">
           <span className="stat-label">Window Statistical Highs</span>
           {summary.highGamePoints ? (
-            <div style={{ marginTop: "0.2rem" }}>
+            <div className="stat-high-box">
               <span className="font-mono text-sm font-bold text-accent">
                 {summary.highGamePoints.points} PTS
               </span>
               <span className="text-xs text-muted"> vs {summary.highGamePoints.opponent} ({summary.highGamePoints.date})</span>
               {summary.highGameRebounds && (
-                <div className="text-xs text-muted font-mono" style={{ marginTop: "0.15rem" }}>
+                <div className="text-xs text-muted font-mono stat-high-sub">
                   {summary.highGameRebounds.rebounds} REB vs {summary.highGameRebounds.opponent}
                 </div>
               )}
@@ -409,33 +409,33 @@ export function RecentGamesView({
 
       {/* Production Trajectory Plot */}
       {plotData.length > 0 && (
-        <div className="panel" style={{ marginBottom: "1.25rem" }}>
+        <div className="panel recent-games-section-panel">
           <div className="panel-header">
             <div>
               <h2 className="panel-title">Recent Trajectory (Chronological)</h2>
-              <p className="text-muted text-xs" style={{ margin: "0.2rem 0 0" }}>
+              <p className="text-muted text-xs panel-subtitle-tight">
                 Empirical scoring (gold line) and minutes (blue line) across {plotData.length} appearances. Dashed line denotes window mean.
               </p>
             </div>
             <span className="badge font-mono">{plotData.length} games</span>
           </div>
 
-          <div style={{ padding: "1rem", overflowX: "auto" }}>
+          <div className="trajectory-chart-container">
             <svg
               ref={plotSvgRef}
               viewBox="0 0 760 180"
-              style={{ width: "100%", maxWidth: "760px", height: "auto", display: "block" }}
+              className="trajectory-plot-svg"
               aria-label={`Recent scoring trajectory for ${player.name}`}
               role="img"
             >
               {/* Background */}
-              <rect width="760" height="180" fill="var(--surface)" rx="4" />
+              <rect width="760" height="180" fill="var(--color-surface-1)" rx="4" />
 
               {/* Gridlines */}
-              <line x1="40" y1="30" x2="720" y2="30" stroke="var(--border)" strokeWidth="0.5" strokeDasharray="3 3" />
-              <line x1="40" y1="80" x2="720" y2="80" stroke="var(--border)" strokeWidth="0.5" strokeDasharray="3 3" />
-              <line x1="40" y1="130" x2="720" y2="130" stroke="var(--border)" strokeWidth="0.5" strokeDasharray="3 3" />
-              <line x1="40" y1="150" x2="720" y2="150" stroke="var(--border)" strokeWidth="1" />
+              <line x1="40" y1="30" x2="720" y2="30" stroke="var(--color-hairline-strong)" strokeWidth="0.5" strokeDasharray="3 3" />
+              <line x1="40" y1="80" x2="720" y2="80" stroke="var(--color-hairline-strong)" strokeWidth="0.5" strokeDasharray="3 3" />
+              <line x1="40" y1="130" x2="720" y2="130" stroke="var(--color-hairline-strong)" strokeWidth="0.5" strokeDasharray="3 3" />
+              <line x1="40" y1="150" x2="720" y2="150" stroke="var(--color-hairline-strong)" strokeWidth="1" />
 
               {/* Max points calculation */}
               {(() => {
@@ -463,15 +463,15 @@ export function RecentGamesView({
                     {/* Mean line */}
                     {avgY !== null && (
                       <g>
-                        <line x1="40" y1={avgY} x2="720" y2={avgY} stroke="var(--text-muted)" strokeDasharray="4 4" strokeWidth="1" />
-                        <text x="724" y={avgY + 4} fill="var(--text-muted)" fontSize="10" fontFamily="monospace">
+                        <line x1="40" y1={avgY} x2="720" y2={avgY} stroke="var(--color-text-secondary)" strokeDasharray="4 4" strokeWidth="1" />
+                        <text x="724" y={avgY + 4} fill="var(--color-text-secondary)" fontSize="10" fontFamily="monospace">
                           Avg: {summary.ptsPerGame}
                         </text>
                       </g>
                     )}
 
                     {/* Scoring Path */}
-                    <path d={pathD} fill="none" stroke="var(--accent)" strokeWidth="2.5" strokeLinejoin="round" />
+                    <path d={pathD} fill="none" stroke="var(--color-accent)" strokeWidth="2.5" strokeLinejoin="round" />
 
                     {/* Discrete Points */}
                     {points.map((p) => (
@@ -480,8 +480,8 @@ export function RecentGamesView({
                           cx={p.x}
                           cy={p.y}
                           r="4.5"
-                          fill="var(--accent)"
-                          stroke="var(--surface)"
+                          fill="var(--color-accent)"
+                          stroke="var(--color-surface-1)"
                           strokeWidth="2"
                         >
                           <title>{`${p.date} vs ${p.opp}: ${p.pts} PTS (${p.min.toFixed(0)} MIN)`}</title>
@@ -489,7 +489,7 @@ export function RecentGamesView({
                         <text
                           x={p.x}
                           y={p.y - 8}
-                          fill="var(--text)"
+                          fill="var(--color-text)"
                           fontSize="10"
                           fontFamily="monospace"
                           fontWeight="bold"
@@ -500,7 +500,7 @@ export function RecentGamesView({
                         <text
                           x={p.x}
                           y="168"
-                          fill="var(--text-muted)"
+                          fill="var(--color-text-secondary)"
                           fontSize="9"
                           fontFamily="monospace"
                           textAnchor="middle"
@@ -519,11 +519,11 @@ export function RecentGamesView({
 
       {/* Main Content: Table or Cards View */}
       {viewMode === "table" ? (
-        <div className="panel" style={{ marginBottom: "1.25rem" }}>
+        <div className="panel recent-games-section-panel">
           <div className="panel-header">
             <div>
               <h2 className="panel-title">Appearance Game Log</h2>
-              <p className="text-muted text-xs" style={{ margin: "0.2rem 0 0" }}>
+              <p className="text-muted text-xs panel-subtitle-tight">
                 Strict chronological order prior to {context.before_date}. Click Lineage to inspect contributing raw observation hash.
               </p>
             </div>
@@ -550,7 +550,7 @@ export function RecentGamesView({
                   <th className="num">3P%</th>
                   <th className="num">TS%</th>
                   <th className="num">Fantasy</th>
-                  <th style={{ textAlign: "right" }}>Provenance</th>
+                  <th className="text-right">Provenance</th>
                 </tr>
               </thead>
               <tbody>
@@ -600,7 +600,7 @@ export function RecentGamesView({
                       <td className="num font-mono">{formatPercent(fg3Pct)}</td>
                       <td className="num font-mono font-semibold">{formatPercent(tsPct)}</td>
                       <td className="num font-mono">{g.legacy_fantasy_score?.toFixed(1) ?? "—"}</td>
-                      <td style={{ textAlign: "right" }}>
+                      <td className="text-right">
                         <button
                           type="button"
                           className="button button-small"
@@ -619,7 +619,7 @@ export function RecentGamesView({
         </div>
       ) : (
         /* Cards View */
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "1rem", marginBottom: "1.25rem" }}>
+        <div className="recent-games-cards-grid">
           {visibleGames.map((g) => {
             const mins = g.minutes;
             const pts = exposureMode === "per_36" ? scaleToPer36(g.points, mins) : g.points;
@@ -630,33 +630,28 @@ export function RecentGamesView({
             return (
               <div
                 key={g.game_id}
-                className="panel"
-                style={{
-                  padding: "1rem",
-                  borderLeft: isHigh ? "3px solid var(--accent)" : "1px solid var(--border)",
-                  position: "relative"
-                }}
+                className={isHigh ? "recent-game-card-high" : "recent-game-card"}
               >
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: "0.5rem" }}>
+                <div className="recent-game-card-header">
                   <span className="font-mono text-xs text-muted">{g.game_date}</span>
                   <span className="badge badge-accent font-mono text-xs">
                     {g.team_tricode} {g.side === "home" ? "vs" : "@"} {g.opponent_tricode}
                   </span>
                 </div>
 
-                <div style={{ display: "flex", alignItems: "baseline", gap: "0.75rem", margin: "0.4rem 0" }}>
+                <div className="recent-game-card-hero">
                   <span className="font-mono text-3xl font-bold text-accent">
                     {pts !== null ? pts : "—"}
                   </span>
                   <span className="text-xs text-muted uppercase font-mono">
                     {exposureMode === "per_36" ? "PTS/36" : "PTS"}
                   </span>
-                  <span className="text-xs text-muted font-mono" style={{ marginLeft: "auto" }}>
+                  <span className="text-xs text-muted font-mono recent-game-card-mins">
                     {mins?.toFixed(1) ?? "—"} MIN
                   </span>
                 </div>
 
-                <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "0.4rem", margin: "0.6rem 0", background: "var(--surface-raised)", padding: "0.5rem", borderRadius: "var(--radius)" }}>
+                <div className="recent-game-card-stat-grid">
                   <div>
                     <span className="text-xs text-muted font-mono block">REB</span>
                     <strong className="font-mono text-sm">{reb ?? "—"}</strong>
@@ -671,7 +666,7 @@ export function RecentGamesView({
                   </div>
                 </div>
 
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "0.5rem" }}>
+                <div className="recent-game-card-footer">
                   <span className="text-xs text-muted font-mono">
                     FG: {g.stats?.field_goals_made ?? 0}/{g.stats?.field_goals_attempted ?? 0}
                   </span>
@@ -690,7 +685,7 @@ export function RecentGamesView({
       )}
 
       {/* Strict Guardrail Notice */}
-      <div className="notice-box" style={{ marginTop: "1rem" }}>
+      <div className="notice-box recent-games-notice">
         <strong>Temporal Discipline & Provenance:</strong> Only games strictly prior to cutoff ({context.before_date}) are evaluated. Changing future records never alters prior feature hashes. Unobserved dates are unknown, not confirmed DNPs or zero outcomes.
       </div>
 

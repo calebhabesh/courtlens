@@ -9,9 +9,8 @@ import type { AssistantPageContext, ConversationContext, DurableThreadHeader, Hy
 import type { StoredTurnRecord as DurableTurnRecord } from "@/lib/assistant-v3.generated";
 import { activeThreadKey, announceHistoryChange, assistantThreads, assistantTurns, deleteAssistantThread, historyChangeEvent, historyChangeKey, newAssistantThread, stopAssistantTurn } from "@/lib/assistant-history";
 import { phaseLabels, streamAssistantTurn, streamProgress, type StreamProgress } from "@/lib/assistant-stream";
-import { composerKeyAction, examplePrompts, groupThreads, scopeChipLabel } from "@/lib/assistant-chat";
+import { composerKeyAction, examplePrompts, groupThreads } from "@/lib/assistant-chat";
 import { BrandMark } from "./brand";
-import { CatalogScopeFields } from "./catalog-scope-fields";
 import { HybridAnswer } from "./hybrid-answer";
 import { AgentAnswer } from "./agent-answer";
 import { Button, IconButton } from "./ui/controls";
@@ -26,11 +25,6 @@ const narrowQuery = "(max-width: 900px)";
 function subscribeNarrow(change: () => void) { const media = window.matchMedia(narrowQuery); media.addEventListener("change", change); return () => media.removeEventListener("change", change); }
 const messageOf = (cause: unknown) => cause instanceof Error ? cause.message : "The assistant service could not be reached. Your question is preserved.";
 type LiveTurn = StreamProgress & { requestId: string };
-function turnSelections(turn: DurableTurnRecord) {
-  const response = turn.response;
-  if (!response) return undefined;
-  return "answer" in response ? response.selections : response.scope?.selections;
-}
 function remember(thread: string | null) { try { if (thread) localStorage.setItem(activeThreadKey, thread); else localStorage.removeItem(activeThreadKey); } catch { /* History itself remains on the server. */ } }
 
 // AR06: full-height chat on /ask; "panel" is the header drawer, where conversations always overlay.
@@ -277,19 +271,20 @@ export function ThreadedAssistant({ initialContext = {}, variant = "page", pageC
     } catch (cause) { setError(messageOf(cause)); }
     finally { lock.current = false; setBusy(false); }
   }
-  function editScope(value: Partial<ConversationContext>) {
-    const latest = [...turns].reverse().map(turnSelections).find(Boolean);
-    const base = scopeChanged.current ? undefined : latest;
-    scopeChanged.current = true;
-    setContext(previous => ({ ...(base ?? previous), ...value })); setScopeEdited(true);
-  }
-  const shownContext = scopeEdited || attachedPage ? context : [...turns].reverse().map(turnSelections).find(Boolean) ?? context;
   const blocked = busy || !!pending || !ready;
   const lastTurn = turns.at(-1);
   // Follow new turns and streamed prose to the bottom of the transcript.
   useEffect(() => { const node = scroller.current; if (node) node.scrollTop = node.scrollHeight; }, [turns.length, lastTurn?.state, live?.text, live?.phase, live?.step]);
   const title = threads.find(header => header.thread_id === thread)?.title ?? "New chat";
   const sidebarId = `${id}-conversations`;
+  const isEmpty = ready && turns.length === 0 && !turnCursor;
+  const composer = (
+        <form className="ask-composer" onSubmit={event => { event.preventDefault(); void submit(); }}>
+          <label htmlFor={`${id}-question`} className="sr-only">Your question</label>
+          <textarea ref={input} id={`${id}-question`} rows={1} maxLength={2000} placeholder="Ask a basketball question" value={question} onChange={event => setQuestion(event.target.value)} onKeyDown={event => { if (composerKeyAction({ key: event.key, shiftKey: event.shiftKey, isComposing: event.nativeEvent.isComposing }) === "send") { event.preventDefault(); void submit(); } }} />
+          {busy || pending ? <Button className="ask-send" disabled={!pending} onClick={() => void stop()} aria-label="Stop" title="Stop"><Icon name="stop" /></Button> : <Button type="submit" variant="primary" className="ask-send" aria-label="Send question" title="Send question" disabled={!ready || !!turnCursor || !question.trim()}><Icon name="up" /></Button>}
+        </form>
+  );
   return <section className="ask-chat" data-variant={variant} data-collapsed={collapsed} data-drawer={drawer ? "open" : "closed"} aria-label="CourtLens assistant">
     {drawer && <div className="ask-backdrop" aria-hidden="true" onClick={() => setDrawer(false)} />}
     <aside className="ask-sidebar" id={sidebarId} aria-label="Conversations">
@@ -301,7 +296,7 @@ export function ThreadedAssistant({ initialContext = {}, variant = "page", pageC
       </nav>
       <div className="ask-sidebar-foot"><Link href="/research/ask?experience=manual">Open manual research</Link><Link href="/settings">History and privacy settings</Link></div>
     </aside>
-    <div className="ask-main">
+    <div className={`ask-main${isEmpty ? " is-empty" : ""}`}>
       <div className="ask-topbar">
         <IconButton icon="sidebar" label="Conversations" className="button-quiet" aria-expanded={overlay ? drawer : !collapsed} aria-controls={sidebarId} onClick={toggleSidebar} />
         <p className="ask-title" title={title}>{title}</p>
@@ -311,10 +306,11 @@ export function ThreadedAssistant({ initialContext = {}, variant = "page", pageC
       <div className="ask-scroll" ref={scroller}>
         <div className="ask-column">
           {!ready && <p role="status">Reading local history…</p>}
-          {ready && turns.length === 0 && !turnCursor && <div className="ask-empty">
+          {isEmpty && <div className="ask-empty">
             <BrandMark size={44} />
             <h2>What do you want to know?</h2>
             <p className="text-muted">Ask about NBA stats, history and news. Answers use CourtLens data first, then cited web sources.</p>
+            {composer}
             <div className="ask-examples">{examplePrompts.map(example => <button type="button" key={example.prompt} className="ask-example" disabled={blocked} onClick={() => void submit(example.prompt)}><span>{example.label}</span>{example.prompt}</button>)}</div>
           </div>}
           <div aria-label="Messages" className="ask-messages">{turns.map(turn => <article key={turn.turn_id} className="ask-turn">
@@ -331,18 +327,11 @@ export function ThreadedAssistant({ initialContext = {}, variant = "page", pageC
       <div className="ask-dock">
         {confirmDelete && <div role="alert" className="ask-notice"><p>Delete this local conversation? Saved findings remain available.</p><Button disabled={blocked} onClick={() => void remove()}>Confirm deletion</Button> <Button onClick={() => setConfirmDelete(false)}>Keep history</Button></div>}
         {error && <div role="alert" className="ask-notice"><p>{error}</p>{transportRetry && <Button disabled={blocked} onClick={() => void execute(transportRetry)}>Check or replay request</Button>}<Button disabled={blocked} onClick={() => { if (thread) void openThread(thread); else void refreshThreads().then(() => setError(null)).catch(cause => setError(messageOf(cause))); }}>Reload history</Button></div>}
-        <form className="ask-composer" onSubmit={event => { event.preventDefault(); void submit(); }}>
-          {attachedPage && <div className="ask-page-context" aria-label="Attached page context"><span>{pageContextLabel(attachedPage, pageLabel)}</span><button type="button" className="button button-quiet" aria-label="Remove page context" disabled={blocked} onClick={() => setRemovedPage(pageKey)}>×</button></div>}
-          <label htmlFor={`${id}-question`} className="sr-only">Your question</label>
-          <textarea ref={input} id={`${id}-question`} rows={1} maxLength={2000} placeholder="Ask a basketball question" value={question} onChange={event => setQuestion(event.target.value)} onKeyDown={event => { if (composerKeyAction({ key: event.key, shiftKey: event.shiftKey, isComposing: event.nativeEvent.isComposing }) === "send") { event.preventDefault(); void submit(); } }} />
-          <div className="ask-composer-row">
-            <details className="ask-scope"><summary>Scope: {scopeChipLabel(shownContext)}{scopeEdited ? " · edited" : ""}<span className="sr-only"> · Edit scope for the next question</span></summary><div className="ask-scope-pop"><p className="text-muted">Applies to the next question. Earlier answers keep their scope, and relative dates in your question are resolved by the assistant.</p><fieldset disabled={blocked} className="conversation-controls"><legend>Next question scope</legend><CatalogScopeFields release={shownContext.release_id ?? undefined} season={shownContext.season ?? ""} phase={shownContext.phase ?? ""} before={shownContext.before_date ?? ""} onSeason={season => editScope({ season: season || null })} onPhase={phase => editScope({ phase: (phase || undefined) as ConversationContext["phase"] })} onBefore={before_date => editScope({ before_date: before_date || null })} /><label>Window<select value={shownContext.window ?? ""} onChange={event => editScope({ window: (event.target.value || undefined) as ConversationContext["window"] })}><option value="">Inherit or use default</option><option value="season">Season to date</option><option value="last_10">Last 10 appearances</option><option value="last_5">Last 5 appearances</option></select></label></fieldset></div></details>
-            <span className="ask-hint text-muted" aria-hidden="true">{question.length > 1800 ? `${question.length} / 2000` : "Enter to send · Shift+Enter for a new line"}</span>
-            {busy || pending ? <Button className="ask-send" disabled={!pending} onClick={() => void stop()} aria-label="Stop" title="Stop"><Icon name="stop" /></Button> : <Button type="submit" variant="primary" className="ask-send" aria-label="Send question" title="Send question" disabled={!ready || !!turnCursor || !question.trim()}><Icon name="up" /></Button>}
-          </div>
-        </form>
+        {attachedPage && <div className="ask-composer-meta"><div className="ask-page-context" aria-label="Attached page context"><span>{pageContextLabel(attachedPage, pageLabel)}</span><button type="button" className="button button-quiet" aria-label="Remove page context" disabled={blocked} onClick={() => setRemovedPage(pageKey)}>×</button></div></div>}
+        {!isEmpty && composer}
         <p role="status" aria-live="polite" aria-atomic="true" className="sr-only">{busy || pending ? live?.step?.label ?? (live?.phase ? phaseLabels[live.phase] : "Question retained; verifying the answer…") : "Ready"}</p>
       </div>
     </div>
   </section>;
 }
+

@@ -2,17 +2,18 @@
 
 import { readStoredValue, storageKeys } from "@/lib/storage-keys";
 
-import { routeAvailability } from "@/lib/route-availability";
 import Link from "next/link";
 import { ChartNoAxesCombined, ChartScatter, CircleHelp, Maximize2, Minimize2, Pin, Save, SlidersHorizontal, Table2 } from "lucide-react";
 import { LookupInput } from "./lookup-input";
 import { CourtLensWordmark } from "./courtlens-wordmark";
 import { StatsPreviewRail } from "./stats-preview-rail";
-import { SharedFloorView } from "@/components/shared-floor-view";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
-import { useState, useMemo, useCallback, Fragment, type KeyboardEvent } from "react";
+import { useState, useMemo, useCallback, useTransition, Fragment, type KeyboardEvent } from "react";
 import { SortHeader, GroupGuide } from "./table-ui";
 import { Icon } from "./ui/icon";
+import { useToast } from "./ui/toast";
+import { Skeleton } from "./ui/skeleton";
+import { SlidingIndicator } from "./ui/sliding-indicator";
 import { TeamLogoStack } from "./team-logo";
 import { PlayerPortrait } from "./player-portrait";
 import { StatsDetailDrawer } from "./stats-detail-drawer";
@@ -25,6 +26,7 @@ import { useWorkspace } from "@/lib/workspace-context";
 import { saveInvestigation } from "@/lib/workbench-api";
 import {
   STATS_PRESETS,
+  IMPACT_COLUMNS,
   getPresetById,
   tableGroups,
   formatColumnValue,
@@ -49,6 +51,8 @@ interface WorkbenchPlayerExplorerProps {
 }
 
 const LOCAL_STORAGE_DENSITY_KEY = storageKeys.density;
+
+const SKELETON_ROW_COUNT = 12;
 
 export function WorkbenchPlayerExplorer({
   data,
@@ -77,8 +81,15 @@ export function WorkbenchPlayerExplorer({
   } = useWorkspace();
 
   // Active preset derived from URL viewId or default view
-  const urlViewId = searchParams?.get("viewId") || searchParams?.get("view_id");
-  const activePresetId: PresetId = (urlViewId as PresetId) || (defaultViewId as PresetId) || "overview";
+  const urlViewId = searchParams?.get("viewId") || searchParams?.get("view_id") || searchParams?.get("preset");
+  const urlPresetId: PresetId = (urlViewId as PresetId) || (defaultViewId as PresetId) || "overview";
+
+  // Navigations run in a transition: the selected tab and column headers switch immediately,
+  // and analytical changes swap the table body for skeleton rows until the server query lands.
+  const [isNavigating, startNavigation] = useTransition();
+  const [pendingNav, setPendingNav] = useState<{ presetId: PresetId | null; data: boolean } | null>(null);
+  const activePresetId: PresetId = (isNavigating && pendingNav?.presetId) || urlPresetId;
+  const loadingRows = isNavigating && Boolean(pendingNav?.data);
 
   // Counting Mode derived from URL or workspace preferences
   const countingMode: CountingMode = resolvedCountingMode ||
@@ -146,6 +157,8 @@ export function WorkbenchPlayerExplorer({
     return "table";
   });
 
+  const { toast } = useToast();
+
   // Saving state
   const [saving, setSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState<string | null>(null);
@@ -206,7 +219,7 @@ export function WorkbenchPlayerExplorer({
 
   // URL updater preserving context parameters
   const updateParam = useCallback(
-    (updates: Record<string, string | null>) => {
+    (updates: Record<string, string | null>, options?: { presetId?: PresetId }) => {
       const params = new URLSearchParams(searchParams?.toString() ?? "");
       const aliases: Record<string, string> = { sortMetric: "sort_metric", sortDirection: "sort_direction", teamId: "team_id", minGames: "min_games", minMinutes: "min_minutes", minAvgMinutes: "min_avg_minutes", countingMode: "counting_mode", identityMode: "identity_mode", viewId: "view_id" };
       for (const [key, value] of Object.entries(updates)) {
@@ -221,7 +234,10 @@ export function WorkbenchPlayerExplorer({
       // Analytical/paging changes reset the cursor; presentation-only controls retain it.
       const presentationKeys = new Set(["identityMode", "identity_mode", "viewId", "view_id", "density", "viewMode"]);
       if (!("cursor" in updates) && Object.keys(updates).some(key => !presentationKeys.has(key))) params.delete("cursor");
-      router.push(`${pathname}?${params.toString()}`);
+      // Only identity/density/plot-mode changes keep the current rows; anything else refetches.
+      const visualKeys = new Set(["identityMode", "identity_mode", "density", "viewMode"]);
+      setPendingNav({ presetId: options?.presetId ?? null, data: Object.keys(updates).some(key => !visualKeys.has(key)) });
+      startNavigation(() => router.push(`${pathname}?${params.toString()}`));
     },
     [router, pathname, searchParams]
   );
@@ -241,13 +257,9 @@ export function WorkbenchPlayerExplorer({
   };
 
   const handlePresetSelect = (id: PresetId) => {
-    if (id === "onoff") {
-      const params = new URLSearchParams(searchParams.toString());
-      params.set("preset", "onoff");
-      router.push(`/stats?${params}`);
-      return;
-    }
-    updateParam({ viewId: id === "overview" ? null : id });
+    const metric = id === "impact" ? "rapm" : id === "onoff" ? "onoff_net_rating" : id === "sixfactor" ? "rapm" : "pts_per_game";
+    updateParam({ viewId: id === "overview" ? null : id, preset: null, view_id: null,
+      sortMetric: normalizedSortMetric(metric, countingMode), sort: null, sort_metric: null, cursor: null }, { presetId: id });
   };
 
   const handleCountingModeSelect = (mode: CountingMode) => {
@@ -335,10 +347,23 @@ export function WorkbenchPlayerExplorer({
     setSaving(true);
     setSaveSuccess(null);
     try {
-      const saved = await saveInvestigation(title.trim(), query as unknown as Record<string, unknown>);
-      setSaveSuccess(`Legacy analytical scope saved (retained arithmetic; Favorites and percentiles excluded), manifest SHA-256: ${saved.manifest_sha256.slice(0, 8)}...`);
+      const impactMetrics = preset.columns.filter(column => column.key in IMPACT_COLUMNS).map(column => column.key);
+      const saveQuery = { ...query, ...(impactMetrics.length ? { metrics: impactMetrics } : {}) };
+      const saved = await saveInvestigation(title.trim(), saveQuery as unknown as Record<string, unknown>);
+      const msg = `Legacy analytical scope saved (retained arithmetic; Favorites and percentiles excluded), manifest SHA-256: ${saved.manifest_sha256.slice(0, 8)}...`;
+      setSaveSuccess(msg);
+      toast({
+        title: "Investigation Saved",
+        description: `Saved "${title.trim()}". Manifest SHA-256: ${saved.manifest_sha256.slice(0, 8)}...`,
+        variant: "positive",
+      });
     } catch (err) {
-      alert(err instanceof Error ? err.message : "Failed to save investigation");
+      const errText = err instanceof Error ? err.message : "Failed to save investigation";
+      toast({
+        title: "Save Failed",
+        description: errText,
+        variant: "negative",
+      });
     } finally {
       setSaving(false);
     }
@@ -361,6 +386,11 @@ export function WorkbenchPlayerExplorer({
       minMinutes: null
     });
     setLocalName("");
+    toast({
+      title: "Filters Reset",
+      description: "Restored default filter parameters for current dataset scope.",
+      variant: "info",
+    });
   };
 
   // Compute column header groups
@@ -378,7 +408,6 @@ export function WorkbenchPlayerExplorer({
     release_id: query.release_id
   };
 
-  if (activePresetId === "onoff") return <SharedFloorView initialOperation="on-off" statsPreset />;
 
   return (
     <div className={`player-explorer-container ${isExpanded ? "table-expanded" : ""}`}>
@@ -387,7 +416,6 @@ export function WorkbenchPlayerExplorer({
         <div className="stats-preset-tabs" role="tablist" aria-label="Stats Explorer Presets">
           {STATS_PRESETS.map((p) => {
             const isActive = p.id === activePresetId;
-            const availability = p.id === "onoff" ? routeAvailability("/wowy", catalog ?? null, query.season, query.phase) : null;
             return (
               <button
                 key={p.id}
@@ -395,10 +423,11 @@ export function WorkbenchPlayerExplorer({
                 aria-selected={isActive}
                 onClick={() => handlePresetSelect(p.id)}
                 className={`stats-preset-tab ${isActive ? "active" : ""}`}
-                title={availability?.reason || p.description}
+                title={p.description}
               >
+                {isActive && <SlidingIndicator layoutId="stats-preset-indicator" className="stats-preset-indicator" />}
                 <span>{p.label}</span>
-                {p.gated && <span className="stats-preset-gated-tag">{p.id === "onoff" ? availability?.secondary ? "Unavailable" : "Available" : "Proxy"}</span>}
+                {p.gated && <span className="stats-preset-gated-tag">Partial</span>}
               </button>
             );
           })}
@@ -417,8 +446,9 @@ export function WorkbenchPlayerExplorer({
                 className={`stats-preset-tab ${isActive ? "active" : ""}`}
                 title={`Custom View: ${v.name} (${v.columns.length} columns)`}
               >
+                {isActive && <SlidingIndicator layoutId="stats-preset-indicator" className="stats-preset-indicator" />}
                 <span>{v.name}</span>
-                {isDefault && <span style={{ marginLeft: "0.2rem", color: "var(--accent)" }}>★</span>}
+                {isDefault && <span className="stats-default-view-star">★</span>}
                 {hasUnavailable && <span className="stats-preset-gated-tag">Unavailable: {v.unavailable_columns?.length}</span>}
               </button>
             );
@@ -426,12 +456,11 @@ export function WorkbenchPlayerExplorer({
         </div>
 
         {/* Manage Views Button (F04) */}
-        <div style={{ display: "flex", gap: "0.4rem", alignItems: "center", marginLeft: "0.5rem", flexShrink: 0 }}>
+        <div className="stats-preset-manage-wrapper">
           <button
             type="button"
             onClick={() => setIsManageViewsOpen(true)}
-            className="button button-small"
-            style={{ fontSize: "0.74rem", padding: "0.25rem 0.55rem", whiteSpace: "nowrap" }}
+            className="button button-small stats-manage-views-btn"
             title="Manage custom views, default view, and import/export"
           >
             <Icon name="settings" /> Manage Views
@@ -526,7 +555,7 @@ export function WorkbenchPlayerExplorer({
 
       {/* Save Success Notice */}
       {saveSuccess && (
-        <div className="notice-box" style={{ borderLeftColor: "var(--positive)", marginBottom: "1rem" }}>
+        <div className="notice-box notice-box-success">
           <strong>Saved:</strong> {saveSuccess}. Inspect under{" "}
           <Link href="/investigations" className="text-accent underline">
             Saved Investigations
@@ -560,8 +589,8 @@ export function WorkbenchPlayerExplorer({
             id="min-games-filter"
             type="number"
             min="0"
-                        placeholder="0"
-            style={{ width: "70px" }}
+            placeholder="0"
+            className="stats-filter-num-sm"
             key={searchParams?.get("minGames") || searchParams?.get("min_games") || ""}
             defaultValue={searchParams?.get("minGames") || searchParams?.get("min_games") || ""}
             onBlur={(e) => updateParam({ minGames: e.target.value || null })}
@@ -581,7 +610,7 @@ export function WorkbenchPlayerExplorer({
             min="0"
             max="48"
             placeholder="0"
-            style={{ width: "70px" }}
+            className="stats-filter-num-sm"
             key={searchParams?.get("minAvgMinutes") || searchParams?.get("min_avg_minutes") || ""}
             defaultValue={searchParams?.get("minAvgMinutes") || searchParams?.get("min_avg_minutes") || ""}
             onBlur={(e) => updateParam({ minAvgMinutes: e.target.value || null })}
@@ -594,7 +623,7 @@ export function WorkbenchPlayerExplorer({
 
         <div className="filter-group">
           <label htmlFor="min-total-minutes-filter">Min total MIN</label>
-          <input id="min-total-minutes-filter" type="number" min="0" placeholder="0" style={{ width: "100px" }}
+          <input id="min-total-minutes-filter" type="number" min="0" placeholder="0" className="stats-filter-num-md"
             key={searchParams.get("minMinutes") || searchParams.get("min_minutes") || ""}
             defaultValue={searchParams.get("minMinutes") || searchParams.get("min_minutes") || ""}
             onBlur={event => updateParam({ minMinutes: event.target.value || null })}
@@ -640,8 +669,7 @@ export function WorkbenchPlayerExplorer({
           <button
             type="button"
             onClick={handleResetFilters}
-            className="button button-small"
-            style={{ alignSelf: "flex-end" }}
+            className="button button-small stats-filter-reset"
             title="Reset all active search and sample filters"
           >
             Reset Filters
@@ -709,28 +737,27 @@ export function WorkbenchPlayerExplorer({
       {viewMode === "table" && (
         <>
           <div className={`stats-table-layout ${previewCollapsed ? "preview-collapsed" : ""}`}>
-          <div role="region" aria-label="Player statistics scroll area" tabIndex={0} onKeyDown={handleTableKey} className={`table-wrapper stats-scroll-region ${tableDensity === "compact" ? "density-compact" : "density-standard"}`}>
+          <div role="region" aria-label="Player statistics scroll area" aria-busy={loadingRows} tabIndex={0} onKeyDown={handleTableKey} className={`table-wrapper stats-scroll-region ${tableDensity === "compact" ? "density-compact" : "density-standard"}`}>
             <table className="data-table dense-stats-table" aria-label="Dense player statistics explorer"
               style={{
-                minWidth: `calc(114px + var(--identity-name-width) + ${preset.columns.length * 84 + guideCount * 40}px)`,
-                width: `min(100%, calc(114px + var(--identity-name-width) + ${preset.columns.length * 140 + guideCount * 40}px))`
-              }}>
+                "--table-min-width": `calc(114px + var(--identity-name-width) + ${preset.columns.length * 84 + guideCount * 40}px)`,
+                "--table-width": `min(100%, calc(114px + var(--identity-name-width) + ${preset.columns.length * 140 + guideCount * 40}px))`
+              } as React.CSSProperties}>
               <colgroup>
-                <col style={{ width: 28 }} /><col style={{ width: 26 }} />
+                <col className="col-select" /><col className="col-rank" />
                 <col className="stats-name-column" />
                 {preset.columns.map((col, index) => <Fragment key={col.key}>
-                  {identityMode !== "none" && guideStarts.has(index) && <col style={{ width: 40 }} />}
+                  {identityMode !== "none" && guideStarts.has(index) && <col className="col-guide" />}
                   <col className="stats-metric-column" />
                 </Fragment>)}
-                <col style={{ width: 60 }} />
+                <col className="col-actions" />
               </colgroup>
               <thead>
                 {/* Tier 1 Header: Group Categories */}
                 <tr className="stats-header-tier-1">
               <th
                 colSpan={3}
-                className="pinned-col-group"
-                style={{ textAlign: "left", paddingLeft: "0.75rem" }}
+                className="pinned-col-group text-left pl-3"
               >
                 Players
               </th>
@@ -743,15 +770,14 @@ export function WorkbenchPlayerExplorer({
                   {group.label}
                 </th>
               ))}
-              <th style={{ width: "60px" }}>Actions</th>
+              <th className="stats-actions-header">Actions</th>
             </tr>
 
             {/* Tier 2 Header: Individual Metrics */}
             <tr className="stats-header-tier-2">
               {/* Pinned Col 1: Select Checkbox */}
               <th
-                className="pinned-col pinned-col-select"
-                style={{ textAlign: "center" }}
+                className="pinned-col pinned-col-select text-center"
                 title="Select players for comparison (max 8)"
               >
                 ✓
@@ -759,8 +785,7 @@ export function WorkbenchPlayerExplorer({
 
               {/* Pinned Col 2: Rank # */}
               <th
-                className="pinned-col pinned-col-rank"
-                style={{ textAlign: "center" }}
+                className="pinned-col pinned-col-rank text-center"
               >
                 #
               </th>
@@ -785,19 +810,44 @@ export function WorkbenchPlayerExplorer({
                   description={col.tooltip} className={col.num ? "num" : ""} />
               </Fragment>)}
 
-              <th style={{ width: "60px", textAlign: "center" }}>Detail</th>
+              <th className="stats-detail-header text-center">Detail</th>
             </tr>
           </thead>
 
-          <tbody>
+          {loadingRows ? (
+            <tbody className="stats-skeleton-body" aria-hidden="true">
+              {Array.from({ length: SKELETON_ROW_COUNT }, (_, rowIndex) => (
+                <tr key={rowIndex} className="stats-table-row stats-skeleton-row">
+                  <td className="pinned-col pinned-col-select" />
+                  <td className="pinned-col pinned-col-rank" />
+                  <td className="pinned-col pinned-col-name">
+                    <div className="player-cell">
+                      <Skeleton variant="circle" width={40} height={40} />
+                      <div className="stats-skeleton-identity">
+                        <Skeleton variant="text" width="70%" />
+                        <Skeleton variant="text" width="40%" />
+                      </div>
+                    </div>
+                  </td>
+                  {preset.columns.map((col, index) => <Fragment key={col.key}>
+                    {identityMode !== "none" && guideStarts.has(index) && <td className="stats-guide-cell"><Skeleton variant="circle" width={30} height={30} /></td>}
+                    <td className={`stats-metric-cell stats-group-${headerGroups.findIndex(group => index >= group.start && index < group.start + group.colSpan) % 2}`}>
+                      <Skeleton variant="text" width={40} className="stats-skeleton-value" />
+                    </td>
+                  </Fragment>)}
+                  <td className="stats-row-actions" />
+                </tr>
+              ))}
+            </tbody>
+          ) : (
+          <tbody className="stats-table-body-enter">
             {items.length === 0 ? (
               <tr>
                 <td
                   colSpan={preset.columns.length + guideCount + 4}
-                  style={{ textAlign: "center", padding: "3.5rem" }}
-                  className="text-muted"
+                  className="stats-empty-cell text-muted text-center"
                 >
-                  <p style={{ margin: "0 0 0.5rem", fontSize: "1rem" }}>
+                  <p className="stats-empty-title">
                     No players matched the current query filters.
                   </p>
                   <button
@@ -830,7 +880,7 @@ export function WorkbenchPlayerExplorer({
                     }}
                   >
                     {/* Pinned Col 1: Select Checkbox */}
-                    <td className="pinned-col pinned-col-select" style={{ textAlign: "center" }}>
+                    <td className="pinned-col pinned-col-select text-center">
                       <input
                         type="checkbox"
                         checked={isCompared}
@@ -841,7 +891,7 @@ export function WorkbenchPlayerExplorer({
                     </td>
 
                     {/* Pinned Col 2: Rank # */}
-                    <td className="pinned-col pinned-col-rank font-mono text-muted text-xs" style={{ textAlign: "center" }}>
+                    <td className="pinned-col pinned-col-rank font-mono text-muted text-xs text-center">
                       {(data.output_offset ?? 0) + idx + 1}
                     </td>
 
@@ -865,17 +915,8 @@ export function WorkbenchPlayerExplorer({
                             e.stopPropagation();
                             handleFavorite(player.player_id);
                           }}
-                          className="stats-favorite-button"
+                          className={`stats-favorite-button ${isFavorite(player.player_id) ? "is-favorite" : ""}`}
                           aria-pressed={isFavorite(player.player_id)}
-                          style={{
-                            background: "transparent",
-                            border: 0,
-                            cursor: "pointer",
-                            fontSize: "1rem",
-                            lineHeight: 1,
-                            padding: "0 0.15rem",
-                            color: isFavorite(player.player_id) ? "var(--accent)" : "var(--text-muted)"
-                          }}
                           title={isFavorite(player.player_id) ? "Remove from favorites" : "Add to favorites"}
                           aria-label={
                             isFavorite(player.player_id)
@@ -952,6 +993,7 @@ export function WorkbenchPlayerExplorer({
               })
             )}
           </tbody>
+          )}
         </table>
       </div>
 

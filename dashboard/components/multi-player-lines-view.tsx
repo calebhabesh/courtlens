@@ -385,11 +385,11 @@ export function MultiPlayerLinesView({
   // If no players are selected
   if (effectivePlayerIds.length === 0) {
     return (
-      <div className="panel" style={{ padding: "2.5rem 1.5rem", textAlign: "center" }}>
-        <h3 className="panel-title" style={{ marginBottom: "0.5rem" }}>
+      <div className="panel lines-empty-panel">
+        <h3 className="panel-title lines-empty-lead">
           No Players Selected for Comparison Lines
         </h3>
-        <p className="text-muted text-sm" style={{ maxWidth: "480px", margin: "0 auto 1.25rem" }}>
+        <p className="text-muted text-sm lines-empty-desc">
           Select up to 8 players from the Stats table or Compare Tray to plot and compare their recent game progression side by side.
         </p>
       </div>
@@ -399,21 +399,21 @@ export function MultiPlayerLinesView({
   return (
     <div className="panel multi-player-lines-panel" role="region" aria-label="Multi-Player Lines Progression Explorer">
       {/* Top Header */}
-      <div className="panel-header" style={{ flexWrap: "wrap", gap: "1rem" }}>
+      <div className="panel-header panel-header-wrap">
         <div>
-          <h2 className="panel-title" style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+          <h2 className="panel-title lines-panel-title">
             <span>Multi-Player Trend Lines</span>
-            <span className="badge font-mono" style={{ fontSize: "0.75rem" }}>
+            <span className="badge font-mono text-xs">
               {seriesList.length} player{seriesList.length === 1 ? "" : "s"}
             </span>
           </h2>
-          <p className="text-muted text-xs" style={{ margin: "0.2rem 0 0" }}>
+          <p className="text-muted text-xs mt-1">
             Historical game-by-game progression prior to cutoff date ({context.before_date || "season start"}).
           </p>
         </div>
 
         {/* Action Buttons: Export & Share */}
-        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+        <div className="lines-header-actions">
           <button
             type="button"
             onClick={handleExportPng}
@@ -444,7 +444,7 @@ export function MultiPlayerLinesView({
       </div>
 
       {/* Toolbar: Metric Selector, Rolling Mode, Game Window */}
-      <div className="filter-toolbar" style={{ margin: "0.75rem 0", background: "var(--surface)", padding: "0.6rem 0.8rem", borderRadius: "6px" }}>
+      <div className="filter-toolbar lines-filter-toolbar">
         {/* Metric Selector */}
         <div className="filter-group">
           <label htmlFor="lines-metric-select">Metric</label>
@@ -496,8 +496,7 @@ export function MultiPlayerLinesView({
         <button
           type="button"
           onClick={() => setShowDataTable((prev) => !prev)}
-          className={`control-pill ${showDataTable ? "active" : ""}`}
-          style={{ alignSelf: "flex-end", minHeight: "40px" }}
+          className={`control-pill filter-action-pill ${showDataTable ? "active" : ""}`}
           title="Toggle accessible chart data table"
         >
           {showDataTable ? "Hide Table" : "Show Data Table"}
@@ -505,32 +504,24 @@ export function MultiPlayerLinesView({
       </div>
 
       {loading && (
-        <div className="empty-panel" style={{ padding: "1.5rem" }}>
+        <div className="empty-panel lines-empty-panel">
           <p className="text-muted">Loading player game logs…</p>
         </div>
       )}
 
       {error && (
-        <div className="notice-box" style={{ borderLeftColor: "var(--negative)", margin: "0.5rem 0" }}>
+        <div className="notice-box lines-notice-warning">
           <strong>Error loading game logs:</strong> {error}
         </div>
       )}
 
       {/* SVG Chart */}
       {!loading && !error && (
-        <div className="lines-svg-container" style={{ position: "relative", width: "100%", overflowX: "auto" }}>
+        <div className="lines-svg-container">
           <svg
             ref={svgRef}
             viewBox={`0 0 ${width} ${height}`}
-            style={{
-              display: "block",
-              width: "100%",
-              maxWidth: "100%",
-              height: "auto",
-              background: "#20252e",
-              borderRadius: "6px",
-              border: "1px solid var(--border)"
-            }}
+            className="lines-svg"
             role="img"
             aria-label={`Line chart of ${metricDef.label} across recent games`}
           >
@@ -570,7 +561,7 @@ export function MultiPlayerLinesView({
               y1={height - padBottom}
               x2={width - padRight}
               y2={height - padBottom}
-              stroke="var(--border)"
+              stroke="var(--color-hairline-strong)"
               strokeWidth="1.5"
             />
             <text
@@ -657,7 +648,7 @@ export function MultiPlayerLinesView({
                           })
                         }
                         onMouseLeave={() => setHoveredPoint(null)}
-                        style={{ cursor: "pointer" }}
+                        className="lines-point-group"
                       >
                         {renderMarkerSymbol(series.marker, pt.x, pt.y, series.color, isHovered ? 7 : 4.5)}
                       </g>
@@ -699,26 +690,17 @@ export function MultiPlayerLinesView({
             <div
               className="lines-tooltip"
               style={{
-                position: "absolute",
-                left: `${Math.min(hoveredPoint.x + 12, width - 200)}px`,
-                top: `${Math.max(hoveredPoint.y - 50, 10)}px`,
-                background: "rgba(32, 37, 46, 0.95)",
-                border: "1px solid var(--accent)",
-                borderRadius: "6px",
-                padding: "0.5rem 0.75rem",
-                boxShadow: "0 6px 16px rgba(0,0,0,0.5)",
-                pointerEvents: "none",
-                zIndex: 10,
-                minWidth: "160px"
-              }}
+                "--tooltip-left": `${Math.min(hoveredPoint.x + 12, width - 200)}px`,
+                "--tooltip-top": `${Math.max(hoveredPoint.y - 50, 10)}px`
+              } as React.CSSProperties}
             >
-              <div style={{ fontWeight: "bold", color: "var(--accent)", fontSize: "0.85rem" }}>
+              <div className="lines-tooltip-title">
                 {hoveredPoint.playerName}
               </div>
-              <div className="text-xs text-muted" style={{ margin: "0.1rem 0 0.3rem" }}>
+              <div className="text-xs text-muted lines-tooltip-sub">
                 {hoveredPoint.gameDate} · vs {hoveredPoint.opponent}
               </div>
-              <div style={{ fontSize: "0.8rem", display: "grid", gridTemplateColumns: "1fr auto", gap: "0.2rem 0.5rem" }}>
+              <div className="lines-tooltip-grid">
                 <span className="text-muted">Actual {metricDef.label}:</span>
                 <strong className="font-mono">{hoveredPoint.val} {metricDef.unit}</strong>
                 {hoveredPoint.rollingVal !== null && hoveredPoint.rollingVal !== undefined && (
@@ -734,47 +716,20 @@ export function MultiPlayerLinesView({
       )}
 
       {/* Legend with Player Chips, Unique Colors and Marker Symbols */}
-      <div
-        className="lines-legend"
-        style={{
-          display: "flex",
-          flexWrap: "wrap",
-          alignItems: "center",
-          gap: "0.75rem",
-          marginTop: "0.75rem",
-          padding: "0.6rem 0.8rem",
-          background: "var(--surface)",
-          borderRadius: "4px"
-        }}
-      >
+      <div className="lines-legend">
         {seriesList.map((series) => (
           <div
             key={series.playerId}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "0.4rem",
-              background: "rgba(255,255,255,0.04)",
-              padding: "0.25rem 0.6rem",
-              borderRadius: "4px",
-              border: `1px solid ${series.color}`,
-              fontSize: "0.8rem"
-            }}
+            className="lines-series-card"
+            style={{ "--series-color": series.color } as React.CSSProperties}
           >
-            <span style={{ color: series.color, fontSize: "0.95rem", lineHeight: 1 }}>{series.symbol}</span>
-            <span style={{ fontWeight: "bold", color: "#f1f3f6" }}>{series.playerName}</span>
+            <span className="lines-symbol">{series.symbol}</span>
+            <span className="lines-player-name">{series.playerName}</span>
             <span className="text-xs font-mono text-muted">({series.games.length}G)</span>
             <button
               type="button"
               onClick={() => removeCompare(series.playerId)}
-              style={{
-                background: "none",
-                border: "none",
-                color: "var(--text-muted)",
-                cursor: "pointer",
-                padding: "0 0.2rem",
-                marginLeft: "0.2rem"
-              }}
+              className="lines-card-remove"
               title={`Remove ${series.playerName} from comparison`}
               aria-label={`Remove ${series.playerName}`}
             >
@@ -784,25 +739,29 @@ export function MultiPlayerLinesView({
         ))}
       </div>
 
-      <p className="snapshot-footnote" style={{ marginTop: "0.5rem" }}>
+      <p className="snapshot-footnote mt-2">
         <strong>Rolling statistic discipline:</strong> Rolling averages are calculated strictly chronologically across confirmed active appearances prior to {context.before_date || "cutoff date"}. Gaps between games are preserved without zero-fill.
       </p>
 
       {/* Accessible Chart Data Table (F06) */}
       {showDataTable && (
-        <div style={{ marginTop: "1rem" }}>
+        <div className="lines-table-container">
           <div className="panel-header">
-            <h3 className="panel-title" style={{ fontSize: "0.95rem" }}>
+            <h3 className="panel-title text-sm">
               Multi-Player Game Log Matrix ({metricDef.label} - {metricDef.unit})
             </h3>
           </div>
-          <div className="table-wrapper" style={{ maxHeight: "360px", overflowY: "auto" }}>
+          <div className="table-wrapper lines-table-wrapper">
             <table className="data-table" aria-label="Tabular game log data for multi-player lines">
               <thead>
                 <tr>
-                  <th style={{ width: "40px" }}>#</th>
+                  <th className="th-rank">#</th>
                   {seriesList.map((s) => (
-                    <th key={`th-${s.playerId}`} style={{ color: s.color }}>
+                    <th
+                      key={`th-${s.playerId}`}
+                      className="lines-th-series"
+                      style={{ "--series-color": s.color } as React.CSSProperties}
+                    >
                       {s.symbol} {s.playerName}
                     </th>
                   ))}
@@ -825,7 +784,7 @@ export function MultiPlayerLinesView({
                       return (
                         <td key={`cell-${s.playerId}-${gameIdx}`} className="font-mono text-xs">
                           <strong>{typeof val === "number" ? val.toFixed(rollingMode !== "none" ? 1 : 0) : "—"}</strong>
-                          <span className="text-muted" style={{ marginLeft: "0.3rem" }}>
+                          <span className="text-muted lines-game-context">
                             ({game.game_date} vs {game.opponent_tricode})
                           </span>
                         </td>

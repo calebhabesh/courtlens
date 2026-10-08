@@ -1,0 +1,36 @@
+{
+  "rules": {
+    "color-no-hex": [true, { "severity": "error" }],
+    "color-named": ["never", { "severity": "error" }],
+    "function-disallowed-list": [["rgb", "rgba", "hsl", "hsla"], { "severity": "error" }],
+    "declaration-property-value-disallowed-list": [
+      {
+        "/^(padding|margin|gap|border-radius|font-size|line-height)/": [
+          "/(?:\\b0\\.\\d+px|\\b(?:[02-9]|[1-9]\\d+)(?:\\.\\d+)?px|[0-9]+(?:\\.[0-9]+)?rem)/"
+        ],
+        "z-index": ["/(?<![0-9])[1-9][0-9]*/"],
+        "/^transition/": ["/\\ball\\b/"],
+        "transition-duration": ["/[0-9]+(?:s|ms)/"]
+      },
+      { "severity": "error" }
+    ],
+    "declaration-no-important": [true, { "severity": "error" }]
+  },
+  "overrides": [
+    {
+      "files": ["**/tokens.css"],
+      "rules": {
+        "color-no-hex": null,
+        "color-named": null,
+        "function-disallowed-list": null,
+        "declaration-property-value-disallowed-list": null
+      }
+    },
+    {
+      "files": ["**/motion.css"],
+      "rules": {
+        "declaration-no-important": null
+      }
+    }
+  ]
+}

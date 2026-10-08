@@ -10,7 +10,7 @@ const titles: Record<string, string> = {
   "courtload-six-factor-v1": "CourtLens six-factor research",
   "courtload-adjusted-shooting-v1": "CourtLens playtype-adjusted shooting"
 };
-export function ResearchResultsView({ experiment = "courtload-expected-shot-retrospective-v2" }: { experiment?: string }) {
+export function ResearchResultsView({ experiment = "courtload-expected-shot-retrospective-v2", embedded = false }: { experiment?: string; embedded?: boolean }) {
   const [registry, setRegistry] = useState<Experiment[] | null>(null);
   const [runs, setRuns] = useState<RunSummary[]>([]);
   const [runId, setRunId] = useState("");
@@ -38,14 +38,14 @@ export function ResearchResultsView({ experiment = "courtload-expected-shot-retr
   const selection = result?.evaluation?.selection;
   const fmt = (v: number | null | undefined) => v == null ? "—" : v.toFixed(9);
   return <div className="advanced-research">
-    <h1>{titles[experiment] ?? experiment}</h1>
+    {embedded ? <h3>{titles[experiment] ?? experiment}</h3> : <h1>{titles[experiment] ?? experiment}</h1>}
     <p>Registered offline research. Reports retain their own fit and evaluation horizons and do not replace historical profiles or the active points policy.</p>
     <nav className="research-links" aria-label="Research experiments">
       <Link href="/research/expected-shots">Expected shots</Link><Link href="/research/rapm">RAPM</Link><Link href="/six-factor-rapm">Six-factor</Link><Link href="/research/adjusted-shooting">Adjusted shooting</Link>
     </nav>
     {error ? <div role="alert" className="notice">Report unavailable: {error} <button className="button" onClick={() => { setError(null); setResult(null); setRegistry(null); setRetry(v => v+1); }}>Retry reads</button></div> : !registry && <p role="status">Loading registered experiments…</p>}
     {!error && registry && !entry && <p className="notice">This experiment has no registered entry. No model output is available.</p>}
-    {!error && entry && <section className="panel"><h2>Experiment availability</h2><p><strong>{humanLabel(entry.status)}</strong></p><p>{entry.gate ?? "Read the registered run below for its selection outcome and limits."}</p><p>Protocol SHA-256: <code>{entry.protocol_sha256}</code></p><p>Unfitted coefficients, uncertainty intervals and player impact rankings are unavailable. A completed negative result is available as research evidence only.</p></section>}
+    {!error && entry && <section className="panel"><h2>Experiment availability</h2><p><strong>{humanLabel(entry.status)}</strong></p><p>{entry.gate ?? "Read the registered run below for its selection outcome and limits."}</p><p>Protocol SHA-256: <code>{entry.protocol_sha256}</code></p><p>Unfitted coefficients, uncertainty intervals and rankings from this registered experiment are unavailable. A completed negative result is available as research evidence only.</p></section>}
     {!error && runs.length > 0 && <label>Registered run <select value={runId} onChange={e => { setResult(null); setError(null); setRunId(e.target.value); }}>{runs.map(r => <option key={r.run_id} value={r.run_id}>{humanLabel(r.status)} · {r.run_id}</option>)}</select></label>}
     {!error && runId && !result && <p role="status">Verifying and loading sealed run…</p>}
     {!error && result && <section aria-label="Registered research result" className="panel">

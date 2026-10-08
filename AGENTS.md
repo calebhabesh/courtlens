@@ -47,6 +47,13 @@ For the CourtLoad → CourtLens rename (package, CLI, env vars, database) or any
    - Strict mypy (`.venv/bin/mypy src/courtlens`) and Ruff (`.venv/bin/ruff check . && .venv/bin/ruff format --check .`) must pass with zero warnings.
    - Dashboard tests include Vitest component/unit tests (`npm --prefix dashboard test`) and Playwright browser tests (`npm --prefix dashboard run test:browser`).
 
+5. **Design System & Presentation Rigor:**
+   - All dashboard presentation must adhere strictly to [Design Language v1](docs/design/design-language-v1.md).
+   - Zero raw inline styles (`style={{ ... }}`) are permitted across dashboard code; dynamic geometry and visualization variables must pass type-safe CSS custom properties (`--*`).
+   - Strict 4px spatial rhythm (`--space-*`), fixed type scale (`--text-*`), and tonal elevation surfaces (`--color-surface-*`, `--shadow-*`) without bright container borders (hairlines only at 6–10% white).
+   - ESLint (`no-restricted-syntax`, `no-restricted-imports`) and Stylelint rules enforce Design Language v1 contracts at `error` level and must pass with 0 errors and 0 warnings (`npm --prefix dashboard run lint`).
+   - Motion and physics springs (`lib/motion.ts`) must respect reduced motion (`prefers-reduced-motion` token duration collapse to 1ms).
+
 ## Common Commands
 
 ```bash
@@ -73,4 +80,8 @@ courtlens verify-restore
 make lint
 make typecheck
 make test
+npm --prefix dashboard run lint
+npm --prefix dashboard run typecheck
+npm --prefix dashboard test
+npm --prefix dashboard run test:browser
 ```

@@ -1,0 +1,206 @@
+[
+  {
+    "key": "01-home",
+    "viewport": "1440",
+    "path": "/",
+    "file": "01-home-1440.png"
+  },
+  {
+    "key": "02-stats",
+    "viewport": "1440",
+    "path": "/stats",
+    "file": "02-stats-1440.png"
+  },
+  {
+    "key": "03-players",
+    "viewport": "1440",
+    "path": "/players",
+    "file": "03-players-1440.png"
+  },
+  {
+    "key": "04-player-detail",
+    "viewport": "1440",
+    "path": "/players/1629029?season=2025-26",
+    "file": "04-player-detail-1440.png"
+  },
+  {
+    "key": "05-teams",
+    "viewport": "1440",
+    "path": "/teams",
+    "file": "05-teams-1440.png"
+  },
+  {
+    "key": "06-team-detail",
+    "viewport": "1440",
+    "path": "/teams/1610612738?season=2025-26",
+    "file": "06-team-detail-1440.png"
+  },
+  {
+    "key": "07-compare",
+    "viewport": "1440",
+    "path": "/compare",
+    "file": "07-compare-1440.png"
+  },
+  {
+    "key": "08-live",
+    "viewport": "1440",
+    "path": "/live",
+    "file": "08-live-1440.png"
+  },
+  {
+    "key": "09-live-game",
+    "viewport": "1440",
+    "path": "/live/games/123",
+    "file": "09-live-game-1440.png"
+  },
+  {
+    "key": "10-playoffs",
+    "viewport": "1440",
+    "path": "/playoffs",
+    "file": "10-playoffs-1440.png"
+  },
+  {
+    "key": "11-ask-empty",
+    "viewport": "1440",
+    "path": "/research/ask",
+    "file": "11-ask-empty-1440.png"
+  },
+  {
+    "key": "12-ask-answered",
+    "viewport": "1440",
+    "path": "/research/ask?thread=b41147e7-3840-47e9-a9af-68bd862473b1",
+    "file": "12-ask-answered-1440.png"
+  },
+  {
+    "key": "13-rapm",
+    "viewport": "1440",
+    "path": "/research/rapm",
+    "file": "13-rapm-1440.png"
+  },
+  {
+    "key": "14-wowy",
+    "viewport": "1440",
+    "path": "/wowy",
+    "file": "14-wowy-1440.png"
+  },
+  {
+    "key": "15-contracts",
+    "viewport": "1440",
+    "path": "/contracts",
+    "file": "15-contracts-1440.png"
+  },
+  {
+    "key": "16-settings",
+    "viewport": "1440",
+    "path": "/settings",
+    "file": "16-settings-1440.png"
+  },
+  {
+    "key": "17-data-status",
+    "viewport": "1440",
+    "path": "/data-status",
+    "file": "17-data-status-1440.png"
+  },
+  {
+    "key": "01-home",
+    "viewport": "375",
+    "path": "/",
+    "file": "01-home-375.png"
+  },
+  {
+    "key": "02-stats",
+    "viewport": "375",
+    "path": "/stats",
+    "file": "02-stats-375.png"
+  },
+  {
+    "key": "03-players",
+    "viewport": "375",
+    "path": "/players",
+    "file": "03-players-375.png"
+  },
+  {
+    "key": "04-player-detail",
+    "viewport": "375",
+    "path": "/players/1629029?season=2025-26",
+    "file": "04-player-detail-375.png"
+  },
+  {
+    "key": "05-teams",
+    "viewport": "375",
+    "path": "/teams",
+    "file": "05-teams-375.png"
+  },
+  {
+    "key": "06-team-detail",
+    "viewport": "375",
+    "path": "/teams/1610612738?season=2025-26",
+    "file": "06-team-detail-375.png"
+  },
+  {
+    "key": "07-compare",
+    "viewport": "375",
+    "path": "/compare",
+    "file": "07-compare-375.png"
+  },
+  {
+    "key": "08-live",
+    "viewport": "375",
+    "path": "/live",
+    "file": "08-live-375.png"
+  },
+  {
+    "key": "09-live-game",
+    "viewport": "375",
+    "path": "/live/games/123",
+    "file": "09-live-game-375.png"
+  },
+  {
+    "key": "10-playoffs",
+    "viewport": "375",
+    "path": "/playoffs",
+    "file": "10-playoffs-375.png"
+  },
+  {
+    "key": "11-ask-empty",
+    "viewport": "375",
+    "path": "/research/ask",
+    "file": "11-ask-empty-375.png"
+  },
+  {
+    "key": "12-ask-answered",
+    "viewport": "375",
+    "path": "/research/ask?thread=b41147e7-3840-47e9-a9af-68bd862473b1",
+    "file": "12-ask-answered-375.png"
+  },
+  {
+    "key": "13-rapm",
+    "viewport": "375",
+    "path": "/research/rapm",
+    "file": "13-rapm-375.png"
+  },
+  {
+    "key": "14-wowy",
+    "viewport": "375",
+    "path": "/wowy",
+    "file": "14-wowy-375.png"
+  },
+  {
+    "key": "15-contracts",
+    "viewport": "375",
+    "path": "/contracts",
+    "file": "15-contracts-375.png"
+  },
+  {
+    "key": "16-settings",
+    "viewport": "375",
+    "path": "/settings",
+    "file": "16-settings-375.png"
+  },
+  {
+    "key": "17-data-status",
+    "viewport": "375",
+    "path": "/data-status",
+    "file": "17-data-status-375.png"
+  }
+]
