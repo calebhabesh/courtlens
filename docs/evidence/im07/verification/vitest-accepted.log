@@ -1,0 +1,13 @@
+
+> courtlens-dashboard@0.1.0 test
+> vitest run
+
+
+ RUN  v4.1.11 /home/ethioking/dev/nba-analytics/dashboard
+
+
+ Test Files  39 passed (39)
+      Tests  286 passed (286)
+   Start at  03:08:17
+   Duration  1.39s (transform 4.88s, setup 0ms, import 7.72s, tests 1.26s, environment 879ms)
+

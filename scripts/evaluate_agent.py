@@ -43,14 +43,17 @@ def main() -> None:
     parser.add_argument("--corpus", type=Path, default=CORPUS)
     parser.add_argument("--output", type=Path)
     parser.add_argument(
-        "--transcripts", type=Path, default=Path("evaluation/assistant/transcripts/ag-v3")
+        "--transcripts", type=Path, default=Path("evaluation/assistant/transcripts/ag-v3-im07")
     )
     parser.add_argument("--split", choices=("dev", "holdout"), default="dev")
     parser.add_argument("--open-holdout", action="store_true")
     parser.add_argument("--release-id")
+    parser.add_argument("--case-id", action="append", help="Dev-only bounded measurement")
     args = parser.parse_args()
     if args.split == "holdout" and not args.open_holdout:
         parser.error("Fresh v3 holdout is sealed until AG08; no holdout tuning")
+    if args.case_id and args.split != "dev":
+        parser.error("Case selection is development-only; frozen holdout stays sealed")
     corpus, digest = load_corpus(args.corpus)
     settings = get_settings()
     updates = {}
@@ -66,6 +69,11 @@ def main() -> None:
     if output.exists():
         parser.error("Refusing to overwrite evaluation evidence")
     cases = [c for c in corpus["cases"] if c["split"] == args.split]
+    if args.case_id:
+        known = {c["id"] for c in cases}
+        if set(args.case_id) - known:
+            parser.error("Unknown development case ID")
+        cases = [c for c in cases if c["id"] in args.case_id]
     report: dict[str, Any] = {
         "version": "courtlens-ag06-report-v1",
         "started_at": datetime.now(UTC).isoformat(),
@@ -75,6 +83,8 @@ def main() -> None:
         "mode": "live",
         "split": args.split,
         "corpus_sha256": digest,
+        "corpus_version": corpus["version"],
+        "selected_case_ids": [case["id"] for case in cases],
         "runs": corpus["runs"],
         "complete": False,
         "records": [],

@@ -1,0 +1,46 @@
+INFO  [alembic.runtime.migration] Context impl PostgresqlImpl.
+INFO  [alembic.runtime.migration] Will assume transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade  -> 0001, Create the initial CourtLoad operational schema.
+INFO  [alembic.runtime.migration] Running upgrade 0001 -> 8ffd4c5912e2, archive lineage and facts
+INFO  [alembic.runtime.migration] Running upgrade 8ffd4c5912e2 -> 4b19f0a2c7de, warehouse publication state and immutable serving rows
+INFO  [alembic.runtime.migration] Running upgrade 4b19f0a2c7de -> 882c8b450cb3, workbench_contracts_and_tables
+INFO  [alembic.runtime.migration] Running upgrade 882c8b450cb3 -> 1b66214e7c08, personal_workspace_state
+INFO  [alembic.runtime.migration] Running upgrade 1b66214e7c08 -> c7e21a084f91, identity_crosswalk_and_measurements
+INFO  [alembic.runtime.migration] Running upgrade c7e21a084f91 -> e8b19a084f92, rich_source_admission_tables
+INFO  [alembic.runtime.migration] Running upgrade e8b19a084f92 -> f9c31a084f93, possession_and_stint_warehouse_tables
+INFO  [alembic.runtime.migration] Running upgrade f9c31a084f93 -> 0af4286cb194, Append-only independent research inputs; no release publication or retained-row changes.
+INFO  [alembic.runtime.migration] Running upgrade 0af4286cb194 -> 27b810a4f001, B28 immutable financial source books and correction lineage.
+INFO  [alembic.runtime.migration] Running upgrade 27b810a4f001 -> 31b810a4f002, B31 bounded Live demand, provisional observations and reconciliation evidence.
+INFO  [alembic.runtime.migration] Running upgrade 31b810a4f002 -> 35b810a4f003, B35a explicit retained conversational analytical manifests.
+INFO  [alembic.runtime.migration] Running upgrade 35b810a4f003 -> 19b810a4f004, B19b independent assignment datasets and transaction-sealed memberships.
+INFO  [alembic.runtime.migration] Running upgrade 19b810a4f004 -> 07b810a4f005, PF07b durable local assistant history, isolated from saved findings.
+INFO  [alembic.runtime.migration] Running upgrade 07b810a4f005 -> 08b810a4f006, AG03 server-owned provider transcripts; existing turn/history payloads stay valid.
+INFO  [alembic.runtime.migration] Running upgrade 08b810a4f006 -> 09b810a4f007, RN02 rename PostgreSQL functions and the administrative mutation namespace.
+INFO  [alembic.runtime.migration] Running upgrade 09b810a4f007 -> 10b810a4f008, Seal IM03 memberships at the admitting transaction, including ordinary inserts.
+.........F.............................................................. [ 76%]
+......................                                                   [100%]
+=================================== FAILURES ===================================
+___ test_web_only_impact_claim_audits_actual_cell_and_respects_phase_cutoff ____
+
+impact_agent = (<sqlalchemy.orm.session.Session object at 0x7fb8a69c7250>, ConversationContext(release_id='02851558-5d91-4e11-8a84-51...ing/pytest-282/test_web_only_impact_claim_aud0/46f082baf27ab0f47ae857a7bb2e94916d6318ebd761b9f52235a0c66819d199.json'))
+
+    def test_web_only_impact_claim_audits_actual_cell_and_respects_phase_cutoff(impact_agent):
+        import time
+    
+        session, selections, _ = impact_agent
+>       source = AgentSource(
+            source_id="s1",
+            origin="web",
+            title="Synthetic web claim",
+            url="https://example.org/fixture",
+            excerpt="+99.0",
+        )
+E       pydantic_core._pydantic_core.ValidationError: 1 validation error for AgentSource
+E       publisher
+E         Field required [type=missing, input_value={'source_id': 's1', 'orig...re', 'excerpt': '+99.0'}, input_type=dict]
+E           For further information visit https://errors.pydantic.dev/2.13/v/missing
+
+tests/integration/test_impact_agent_postgres.py:206: ValidationError
+=========================== short test summary info ============================
+FAILED tests/integration/test_impact_agent_postgres.py::test_web_only_impact_claim_audits_actual_cell_and_respects_phase_cutoff
+1 failed, 93 passed in 23.85s

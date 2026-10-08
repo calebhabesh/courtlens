@@ -1,0 +1,118 @@
+Traceback (most recent call last):
+  File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/sqlalchemy/engine/base.py", line 1969, in _exec_single_context
+    self.dialect.do_execute(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        cursor, str_statement, effective_parameters, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/sqlalchemy/engine/default.py", line 952, in do_execute
+    cursor.execute(statement, parameters)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/psycopg/cursor.py", line 117, in execute
+    raise ex.with_traceback(None)
+psycopg.errors.AmbiguousParameter: could not determine data type of parameter $6
+LINE 12:         WHERE ($6 IS NULL OR m.player_id = $6)
+                        ^
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/ethioking/dev/nba-analytics/scripts/verify_im07_agent.py", line 259, in <module>
+    verify(args.output, live=args.live)
+    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ethioking/dev/nba-analytics/scripts/verify_im07_agent.py", line 134, in verify
+    expected = oracle_answer(session, context, case)
+  File "/home/ethioking/dev/nba-analytics/src/courtlens/services/assistant/agent/evaluation.py", line 67, in oracle_answer
+    return impact_answer(session, context, case)
+  File "/home/ethioking/dev/nba-analytics/src/courtlens/services/assistant/agent/impact_oracle.py", line 140, in oracle_answer
+        session.execute(
+        ~~~~~~~~~~~~~~~^
+            text("""
+            ^^^^^^^^
+    ...<22 lines>...
+            },
+            ^^
+        )
+        ^
+  File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/sqlalchemy/orm/session.py", line 2373, in execute
+    return self._execute_internal(
+           ~~~~~~~~~~~~~~~~~~~~~~^
+        statement,
+        ^^^^^^^^^^
+    ...<4 lines>...
+        _add_event=_add_event,
+        ^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/sqlalchemy/orm/session.py", line 2280, in _execute_internal
+    result = conn.execute(
+        statement, params or {}, execution_options=execution_options
+    )
+  File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/sqlalchemy/engine/base.py", line 1421, in execute
+    return meth(
+        self,
+        distilled_parameters,
+        execution_options or NO_OPTIONS,
+    )
+  File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/sqlalchemy/sql/elements.py", line 526, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self, distilled_params, execution_options
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/sqlalchemy/engine/base.py", line 1643, in _execute_clauseelement
+    ret = self._execute_context(
+        dialect,
+    ...<8 lines>...
+        cache_hit=cache_hit,
+    )
+  File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/sqlalchemy/engine/base.py", line 1848, in _execute_context
+    return self._exec_single_context(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~^
+        dialect, context, statement, parameters
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/sqlalchemy/engine/base.py", line 1988, in _exec_single_context
+    self._handle_dbapi_exception(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        e, str_statement, effective_parameters, cursor, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/sqlalchemy/engine/base.py", line 2365, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/sqlalchemy/engine/base.py", line 1969, in _exec_single_context
+    self.dialect.do_execute(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        cursor, str_statement, effective_parameters, context
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/sqlalchemy/engine/default.py", line 952, in do_execute
+    cursor.execute(statement, parameters)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/psycopg/cursor.py", line 117, in execute
+    raise ex.with_traceback(None)
+sqlalchemy.exc.ProgrammingError: (psycopg.errors.AmbiguousParameter) could not determine data type of parameter $6
+LINE 12:         WHERE ($6 IS NULL OR m.player_id = $6)
+                        ^
+[SQL: 
+        WITH members AS (
+            SELECT DISTINCT player_id FROM workbench_player_games
+            WHERE dataset_id = %(dataset_id)s AND season = %(season)s AND phase = %(phase)s
+              AND game_date < %(cutoff)s AND appearance = 'appeared'
+        ), coefficients AS (
+            SELECT * FROM jsonb_to_recordset(CAST(%(coefficients)s AS jsonb))
+              AS c(player_id text, value double precision, n integer, qualified boolean)
+        )
+        SELECT m.player_id, c.value, coalesce(c.n, 0) AS n
+        FROM members m LEFT JOIN coefficients c USING (player_id)
+        WHERE (%(player_id)s IS NULL OR m.player_id = %(player_id)s)
+        ORDER BY c.qualified DESC NULLS LAST, c.value DESC NULLS LAST, m.player_id
+        LIMIT %(limit)s
+    ]
+[parameters: {'dataset_id': '17251a08-a4eb-4f46-b356-999fcf37c65d', 'season': '2025-26', 'phase': 'regular_season', 'cutoff': datetime.date(2026, 10, 7), 'coefficients': '[{"player_id": "101108", "value": null, "n": 16, "qualified": false}, {"player_id": "1626145", "value": -4.097790407532338, "n": 66, "qualified": tru ... (45347 characters truncated) ... "204456", "value": -1.1336593666742352, "n": 56, "qualified": true}, {"player_id": "2544", "value": -0.9888711202944506, "n": 60, "qualified": true}]', 'player_id': '1641705', 'limit': 1}]
+(Background on this error at: https://sqlalche.me/e/20/f405)

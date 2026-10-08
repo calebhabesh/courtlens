@@ -1,0 +1,19 @@
+F401 [*] `courtlens.domain.conversation.ConversationContext` imported but unused
+  --> tests/integration/test_impact_agent_postgres.py:14:43
+   |
+12 | from courtlens.config import Settings
+13 | from courtlens.domain.assistant_agent import AgentSource
+14 | from courtlens.domain.conversation import ConversationContext
+   |                                           ^^^^^^^^^^^^^^^^^^^
+15 | from courtlens.domain.hybrid_assistant import HybridTurnRequest
+16 | from courtlens.evaluation.impact_rating_inputs import write_artifact
+   |
+help: Remove unused import: `courtlens.domain.conversation.ConversationContext`
+   |
+13 | from courtlens.domain.assistant_agent import AgentSource
+   - from courtlens.domain.conversation import ConversationContext
+14 | from courtlens.domain.hybrid_assistant import HybridTurnRequest
+   |
+
+Found 1 error.
+[*] 1 fixable with the `--fix` option.

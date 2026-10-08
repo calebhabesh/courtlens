@@ -1,4 +1,4 @@
-"""Frozen AG06 scoring against independent SQL, never model-authored expectations."""
+"""Versioned agent scoring against independent SQL, preserving the AG06 holdout."""
 
 from __future__ import annotations
 
@@ -16,7 +16,8 @@ from courtlens.domain.assistant_agent import MARKER, AgentTurnResponse
 from courtlens.services.assistant.revamp_evaluation import expected_answer
 from courtlens.services.workbench_analytics import ResolvedContext
 
-CORPUS = Path("evaluation/assistant/ag-v3.json")
+LEGACY_CORPUS = Path("evaluation/assistant/ag-v3.json")
+CORPUS = Path("evaluation/assistant/ag-v3-im07.json")
 WAREHOUSE_CATEGORIES = {"leaders", "single_player", "compare", "follow_up", "forecast", "mixed"}
 
 
@@ -45,12 +46,25 @@ def load_corpus(path: Path = CORPUS) -> tuple[dict[str, Any], str]:
         raise ValueError("AG06 dev/holdout leakage")
     if not {f"ar02-{i:03}" for i in range(1, 151)} <= ids:
         raise ValueError("AG06 must retain every v2 case ID")
+    if corpus.get("version") == "courtlens-assistant-ag-v3-im07":
+        parent_raw = path.with_name("ag-v3.json").read_bytes()
+        if hashlib.sha256(parent_raw).hexdigest() != corpus["parent_sha256"]:
+            raise ValueError("IM07 parent corpus checksum mismatch")
+        parent = json.loads(parent_raw)
+        if [c for c in corpus["cases"] if c["split"] == "holdout"] != [
+            c for c in parent["cases"] if c["split"] == "holdout"
+        ]:
+            raise ValueError("IM07 changed the frozen AG06 holdout")
     return corpus, digest
 
 
 def oracle_answer(
     session: Session, context: ResolvedContext, case: dict[str, Any]
 ) -> dict[str, Any]:
+    if case["oracle"]["kind"] in {"impact_single", "impact_ranking"}:
+        from courtlens.services.assistant.agent.impact_oracle import oracle_answer as impact_answer
+
+        return impact_answer(session, context, case)
     if case["oracle"]["kind"] in {"web", "refusal", "assumption", "position"}:
         return {"status": case["expected_status"], **case["oracle"]}
     expected = expected_answer(session, context, case)
@@ -166,7 +180,33 @@ def score_answer(
     web_cited = bool(web_ids.intersection(MARKER.findall(answer.answer.text)))
     if kind == "web" and not web_cited:
         failures.append("web_citation_missing")
-    if case["category"] == "conflict" and answer.provenance.warehouse_override_missed:
+    if case.get("require_warehouse"):
+        metric = expected["metric"]
+        if not any(t.tool == "query_stats" and t.status == "ok" for t in answer.trace):
+            failures.append("warehouse_tool_missing")
+        warehouse_ids = {s.source_id for s in answer.sources if s.origin == "warehouse"}
+        if not warehouse_ids.intersection(MARKER.findall(answer.answer.text)):
+            failures.append("warehouse_citation_missing")
+        from courtlens.domain.impact_catalog import IMPACT_CATALOG
+
+        if not any(
+            c.metric == metric
+            and "/metrics/" in c.path
+            and c.unit == IMPACT_CATALOG[metric].unit
+            and c.metric_version == IMPACT_CATALOG[metric].version
+            for block in answer.results
+            for c in block.result.evidence
+        ):
+            failures.append("impact_metric_evidence_missing")
+        if not any(
+            a["sha256"] == expected["artifact_sha256"]
+            for result in results
+            for a in result.get("impact", {}).get("artifacts", [])
+        ):
+            failures.append("impact_artifact_missing")
+    if (
+        case["category"] == "conflict" or case.get("require_warehouse")
+    ) and answer.provenance.warehouse_override_missed:
         failures.append("warehouse_override_missed")
     return {
         "id": case["id"],

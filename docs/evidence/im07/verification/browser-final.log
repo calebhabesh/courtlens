@@ -1,0 +1,41 @@
+
+> courtlens-dashboard@0.1.0 test:browser
+> playwright test
+
+Error: ENOENT: no such file or directory, open '/tmp/courtlens-im07-dashboard-05y3uy5l/docs/evidence/b29-finance-query.json'
+
+   at finance.spec.ts:6
+
+  4 | import path from "node:path";
+  5 |
+> 6 | const evidence=JSON.parse(fs.readFileSync(path.resolve(process.cwd(),"../docs/evidence/b29-finance-query.json"),"utf8"));
+    |                              ^
+  7 | const retained=evidence.cases.corrected.result;
+  8 | const bookId=retained.context.book_id;
+  9 | const known=retained.context.known_at;
+    at Object.<anonymous> (/tmp/courtlens-im07-dashboard-05y3uy5l/dashboard/e2e/finance.spec.ts:6:30)
+Error: ENOENT: no such file or directory, open '../docs/evidence/b21-api-smoke.json'
+
+   at shared-floor.spec.ts:4
+
+  2 | import { openWorkbench } from "./workbench-navigation";
+  3 | import { readFileSync } from "node:fs";
+> 4 | const empty = JSON.parse(readFileSync("../docs/evidence/b21-api-smoke.json", "utf8")).response;
+    |                                      ^
+  5 |
+  6 | async function pick(page: import("@playwright/test").Page, label: string, ids: string, replace = false) {
+  7 |   const group=page.getByRole("group",{name:label,exact:true});
+    at Object.<anonymous> (/tmp/courtlens-im07-dashboard-05y3uy5l/dashboard/e2e/shared-floor.spec.ts:4:38)
+Error: ENOENT: no such file or directory, open '../docs/evidence/b23-api-smoke.json'
+
+   at shooting.spec.ts:4
+
+  2 | import { openWorkbench } from "./workbench-navigation";
+  3 | import { readFileSync } from "node:fs";
+> 4 | const smoke = JSON.parse(readFileSync("../docs/evidence/b23-api-smoke.json", "utf8"));
+    |                                      ^
+  5 | function fixture(operation: string, request: Record<string, unknown>) {
+  6 |   const data = structuredClone(smoke.operations[operation].response);
+  7 |   data.request = { ...data.request, ...request };
+    at Object.<anonymous> (/tmp/courtlens-im07-dashboard-05y3uy5l/dashboard/e2e/shooting.spec.ts:4:38)
+

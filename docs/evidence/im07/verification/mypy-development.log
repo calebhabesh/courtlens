@@ -1,0 +1,8 @@
+src/courtlens/services/assistant/agent/tools.py:420: error: Incompatible types in assignment (expression has type "dict[str, Any] | KnowledgeEntry | None", variable has type "dict[str, Any]")  [assignment]
+src/courtlens/services/assistant/agent/tools.py:421: error: Generator has incompatible item type "KnowledgeEntry"; expected "dict[str, Any]"  [misc]
+src/courtlens/services/assistant/agent/tools.py:421: error: Argument 2 to "next" has incompatible type "None"; expected "dict[str, Any]"  [arg-type]
+src/courtlens/services/assistant/agent/tools.py:429: error: "dict[str, Any]" has no attribute "key"; maybe "keys"?  [attr-defined]
+src/courtlens/services/assistant/agent/tools.py:430: error: "dict[str, Any]" has no attribute "text"  [attr-defined]
+src/courtlens/services/assistant/agent/tools.py:431: error: "dict[str, Any]" has no attribute "routes"  [attr-defined]
+src/courtlens/services/assistant/agent/tools.py:432: error: "dict[str, Any]" has no attribute "source"  [attr-defined]
+Found 7 errors in 1 file (checked 201 source files)

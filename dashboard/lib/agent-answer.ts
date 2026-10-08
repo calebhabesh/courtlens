@@ -47,7 +47,7 @@ export function agentResultView(result: OperationResult) {
 
 /** Prefer recorded units; explicitly disclose missing units rather than guess them. */
 export function resultColumnLabel(key: string, result: OperationResult): string {
-  const pathKey = (path: string) => path.replace(/^\/?(?:rows[/.])?\d+[/.]/, "").replace(/^\//, "").replaceAll("/", " · ").replaceAll(".", " · ").replaceAll("_", " ");
+  const pathKey = (path: string) => path.replace(/^\/?(?:(?:rows|items)[/.])?\d+[/.]/, "").replace(/^\//, "").replaceAll("/", " · ").replaceAll(".", " · ").replaceAll("_", " ");
   const cell = result.evidence.find(cell => pathKey(cell.path) === key) ?? result.evidence.find(cell => cell.metric.replaceAll("_", " ") === key);
   const units = cell?.unit ?? (key === "rank" ? "ordinal" : result.rows.some(row => typeof tableRow(row)[key] === "number") ? "unit not supplied" : "label");
   const labels: Record<string, string> = { rank: "Rank", "player name": "Player", "team tricode": "Team", "team tricodes": "Team", "blk per game": "Blocks" };

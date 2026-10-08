@@ -38,7 +38,8 @@ from courtlens.domain.assistant_agent import (
     UnverifiedSentence,
 )
 from courtlens.domain.conversation import OperationResult
-from courtlens.domain.metrics import METRIC_CATALOG
+from courtlens.domain.impact_catalog import IMPACT_CATALOG
+from courtlens.domain.impact_catalog import SERVING_CATALOG as METRIC_CATALOG
 
 # Sentence boundaries preserve decimal points and citation markers after punctuation.
 SENTENCE = re.compile(r"[^\n]+?(?:[.!?](?=\s+(?!\[\^)|$)|(?=\n|$))")
@@ -179,6 +180,10 @@ def _covered_claim(
     lower = sentence.lower()
     for result in results:
         for cell in result.evidence:
+            if cell.value is None or cell.unit == "observations":
+                continue
+            if cell.metric in IMPACT_CATALOG and "/metrics/" not in cell.path:
+                continue
             metric = METRIC_CATALOG.get(cell.metric)
             labels = [cell.metric.replace("_", " ")]
             if metric:
@@ -213,6 +218,7 @@ def audit_warehouse_coverage(
     *,
     today: date,
     deadline: float,
+    include_impact: bool = True,
 ) -> tuple[int, list[DispatchedTool]]:
     """Check named web stat claims against real cells, even when the model skipped SQL.
 
@@ -242,6 +248,12 @@ def audit_warehouse_coverage(
             prose,
         )
         if not subject:
+            subject = re.search(
+                r"([A-ZÀ-Ž][\w.'\u2019\-]*(?:\s+[A-ZÀ-Ž][\w.'\u2019\-]*){1,4})"
+                r"['\u2019]s\s+(?:\dY\s+)?(?:RAPM|ORAPM|DRAPM|BPR|OBPR|DBPR)\b",
+                prose,
+            )
+        if not subject:
             continue
         name = subject[1]
         season_match = SEASON.search(prose)
@@ -253,12 +265,23 @@ def audit_warehouse_coverage(
             m
             for m in METRIC_CATALOG.values()
             if m.key in COLUMN_MAP
-            and m.capability_requirement == "core_stats"
-            and (m.display_name.lower() in lower or m.key.replace("_", " ") in lower)
+            and (
+                m.capability_requirement == "core_stats"
+                or (include_impact and m.key in IMPACT_CATALOG)
+            )
+            and (
+                m.display_name.lower() in lower
+                or re.search(r"\b" + re.escape(m.key.replace("_", " ")) + r"\b", lower)
+            )
         ]
         if not metrics:
             continue
         metric = max(metrics, key=lambda m: len(m.display_name))
+        if metric.key in IMPACT_CATALOG:
+            from courtlens.services.impact_serving import load_impact_store
+
+            if load_impact_store() is None:
+                continue
         phase = (
             "playoffs"
             if re.search(r"\b(playoffs|postseason)\b", lower)
@@ -278,7 +301,20 @@ def audit_warehouse_coverage(
                 arguments={
                     "operation": "query",
                     "season": season,
+                    **(
+                        {
+                            "phase": phase,
+                            **(
+                                {"before_date": selections.before_date.isoformat()}
+                                if selections.before_date and selections.season == season
+                                else {}
+                            ),
+                        }
+                        if metric.key in IMPACT_CATALOG
+                        else {}
+                    ),
                     "arguments": {
+                        **({"window": {"kind": "season"}} if metric.key in IMPACT_CATALOG else {}),
                         "name": name,
                         "metric_selectors": [{"key": metric.key}],
                         "page": {"limit": 1},
@@ -292,7 +328,8 @@ def audit_warehouse_coverage(
         checked.append(tool)
         # Actual non-null metric cells, not IDs, ranks, sample counts or observed seasons.
         if tool.warehouse_result and any(
-            c.metric == metric.key and c.value is not None for c in tool.warehouse_result.evidence
+            c.metric == metric.key and c.value is not None and "/metrics/" in c.path
+            for c in tool.warehouse_result.evidence
         ):
             overrides += 1
     return overrides, checked

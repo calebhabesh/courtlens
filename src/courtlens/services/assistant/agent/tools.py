@@ -2,9 +2,10 @@
 
 from __future__ import annotations
 
+import contextlib
 import json
 import time
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from datetime import date
 from functools import lru_cache, reduce
 from operator import or_
@@ -22,13 +23,17 @@ from courtlens.domain.conversation import (
     StrictModel,
 )
 from courtlens.domain.finance_query import FinanceQuery
+from courtlens.domain.impact_catalog import IMPACT_CATALOG, SERVING_CATALOG
+from courtlens.domain.impact_catalog import VERSION as SERVING_CATALOG_VERSION
 from courtlens.domain.metrics import METRIC_CATALOG, METRIC_CATALOG_VERSION
+from courtlens.domain.query_spec import QuerySpec
 from courtlens.services.assistant import awards, knowledge, operations
 from courtlens.services.assistant.agent.providers.base import ToolCall, ToolDeclaration, ToolResult
 from courtlens.services.assistant.defaults import civil_today, last_completed_season
 from courtlens.services.assistant.execution import execute_bounded, query_deadline
 from courtlens.services.assistant.rendering import render_result
 from courtlens.services.assistant.tools import resolve_player_identifier
+from courtlens.services.impact_serving import impact_catalog_scope, query_uses_impact
 from courtlens.services.starting_positions import PositionEvidenceUnavailable
 from courtlens.services.stats_catalog import stats_catalog_scope
 from courtlens.services.stats_engine import COLUMN_MAP
@@ -258,6 +263,7 @@ def _run(
     selections: ConversationContext | None,
     as_of: date,
     deadline: float,
+    legacy_catalog: bool,
 ) -> tuple[dict[str, Any], OperationResult | None, ResolvedContext | None]:
     arguments = call.arguments
     if call.name == "query_stats":
@@ -277,6 +283,10 @@ def _run(
             args["window"] = {"kind": context.window}
         if name == "position_query" and "window" not in args["query"]:
             args["query"]["window"] = {"kind": context.window}
+        if name in {"query", "position_query"}:
+            query = QuerySpec.model_validate(args if name == "query" else args["query"])
+            if query_uses_impact(query):
+                context = replace(context, window=query.window.kind.value)
         step = operations.canonical_step(
             session, context, OperationStep(step_id="agent_tool", operation=name, arguments=args)
         )
@@ -309,6 +319,8 @@ def _run(
             session, release_id=selections.release_id if selections else None
         )
         scopes = stats_catalog_scope(session, context)["stats_scopes"]
+        catalog = METRIC_CATALOG if legacy_catalog else SERVING_CATALOG
+        impact = impact_catalog_scope() if not legacy_catalog else None
         entries = [
             {
                 **metric.to_dict(),
@@ -318,16 +330,38 @@ def _run(
                 if metric.key in COLUMN_MAP and metric.capability_requirement == "core_stats"
                 else [],
             }
-            for metric in METRIC_CATALOG.values()
+            for metric in catalog.values()
             if (parsed.key is None or metric.key == parsed.key)
             and (parsed.category is None or metric.category == parsed.category)
         ]
+        for metric_entry in entries:
+            if metric_entry["key"] in IMPACT_CATALOG:
+                assert impact is not None
+                metric_entry["queryable"] = True
+                metric_entry["source"] = impact["source"]
+                metric_entry["methodology_url"] = impact["methodology_url"]
+                metric_entry["availability"] = impact["status"]
+                metric_entry["observed_scopes"] = [
+                    scope
+                    for scope in impact["scopes"]
+                    if scope["phase"] in metric_entry["phase_scope"]
+                    and scope["years"]
+                    == (
+                        3
+                        if metric_entry["key"].endswith("_3y")
+                        else 2
+                        if metric_entry["key"].endswith("_2y")
+                        else 1
+                    )
+                ]
         if not entries:
             raise ToolError("unknown_metric", "No catalog metrics match this selection.")
         rows = entries[parsed.offset : parsed.offset + MAX_ROWS]
         return (
             {
-                "catalog_version": METRIC_CATALOG_VERSION,
+                "catalog_version": METRIC_CATALOG_VERSION
+                if legacy_catalog
+                else SERVING_CATALOG_VERSION,
                 "release_id": context.release_id,
                 "metrics": rows,
                 "total_metrics": len(entries),
@@ -415,6 +449,7 @@ def dispatch(
     selections: ConversationContext | None = None,
     as_of: date | None = None,
     deadline: float | None = None,
+    legacy_catalog: bool = False,
 ) -> DispatchedTool:
     """The sole dispatch seam. Validation/execution failures are data for the next agent step."""
     deadline = min(
@@ -426,9 +461,12 @@ def dispatch(
         if len(json.dumps(call.arguments, allow_nan=False).encode()) > MAX_ARGUMENT_BYTES:
             raise ToolError("invalid_arguments", "Tool arguments exceed the payload limit.")
         # A failed parent resolution query must not poison the next tool call's transaction.
-        with session.begin_nested(), query_deadline(session, deadline):
+        nested = (
+            session.begin_nested() if hasattr(session, "begin_nested") else contextlib.nullcontext()
+        )
+        with nested, query_deadline(session, deadline):
             payload, warehouse, context = _run(
-                session, call, selections, as_of or civil_today(), deadline
+                session, call, selections, as_of or civil_today(), deadline, legacy_catalog
             )
         if time.monotonic() >= deadline:
             raise TimeoutError("tool deadline")
@@ -467,7 +505,7 @@ def dispatch(
             exc.status_code, "invalid_arguments"
         )
         return _error(call, code, "The requested data or scope is unavailable.")
-    except (ValueError, TypeError, RecursionError):
+    except (AttributeError, ValueError, TypeError, RecursionError):
         return _error(
             call,
             "invalid_arguments",

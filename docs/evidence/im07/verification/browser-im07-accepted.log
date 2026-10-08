@@ -1,0 +1,12 @@
+
+> courtlens-dashboard@0.1.0 test:browser
+> playwright test e2e/im07-agent.spec.ts --workers=2
+
+[WebServer] ⚠ "next start" does not work with "output: standalone" configuration. Use "node .next/standalone/server.js" instead.
+
+Running 2 tests using 2 workers
+
+  ✓  1 e2e/im07-agent.spec.ts:9:7 › IM07 recorded warehouse RAPM renders its CourtLens chip at 375px (774ms)
+  ✓  2 e2e/im07-agent.spec.ts:9:7 › IM07 recorded warehouse RAPM renders its CourtLens chip at 1440px (800ms)
+
+  2 passed (1.6s)
