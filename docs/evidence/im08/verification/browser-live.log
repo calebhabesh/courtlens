@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 194, in _run_module_as_main
+  File "<frozen runpy>", line 164, in _get_module_details
+  File "<frozen importlib._bootstrap_external>", line 893, in get_code
+  File "<frozen importlib._bootstrap_external>", line 823, in source_to_code
+  File "<frozen importlib._bootstrap>", line 491, in _call_with_frames_removed
+  File "/home/ethioking/dev/nba-analytics/src/courtlens/ingestion/nba_browser.py", line 436
+    "technical_status": r["technical_status"]} for r in report["results"]}, indent=2))
+                                                                         ^
+SyntaxError: closing parenthesis '}' does not match opening parenthesis '[' on line 435
