@@ -1,0 +1,23 @@
+{
+  "changed_files": [],
+  "existing_services_redeployed": false,
+  "holdout_inference": false,
+  "provider_calls": 0,
+  "publication_after": {
+    "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+    "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+    "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666",
+    "snapshot_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad"
+  },
+  "publication_before": {
+    "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+    "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+    "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666",
+    "snapshot_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad"
+  },
+  "publication_matches_im07": true,
+  "retained_files": 3130,
+  "shared_progress_original_matches_im07": true,
+  "shared_progress_original_sha256": "19430ac817b3cec9c1f439428e7d942019a271b84f67baa4b2253b977f40eb3b",
+  "version": "courtlens-im08-preservation-v1"
+}

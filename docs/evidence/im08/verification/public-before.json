@@ -1,0 +1,565 @@
+{
+  "capabilities": {
+    "core_stats": {
+      "coverage_end": "2026-06-13",
+      "coverage_start": "2023-10-24",
+      "expected_grains": [],
+      "limitations": [],
+      "metric_requirements": [],
+      "name": "core_stats",
+      "phases": [
+        "cup_final",
+        "play_in",
+        "playoffs",
+        "regular_season"
+      ],
+      "seasons": [
+        "2023-24",
+        "2024-25",
+        "2025-26"
+      ],
+      "source_freshness": null,
+      "status": "available"
+    },
+    "draft_metadata": {
+      "coverage_end": null,
+      "coverage_start": null,
+      "expected_grains": [],
+      "limitations": [
+        "Undrafted players have draft_type='undrafted' with null round/pick."
+      ],
+      "metric_requirements": [],
+      "name": "draft_metadata",
+      "phases": [],
+      "seasons": [],
+      "source_freshness": null,
+      "status": "available"
+    },
+    "hypothetical": {
+      "coverage_end": null,
+      "coverage_start": null,
+      "expected_grains": [],
+      "limitations": [],
+      "metric_requirements": [],
+      "name": "hypothetical",
+      "phases": [],
+      "seasons": [],
+      "source_freshness": null,
+      "status": "not_implemented"
+    },
+    "identity_crosswalk": {
+      "coverage_end": null,
+      "coverage_start": null,
+      "expected_grains": [],
+      "limitations": [
+        "Verified crosswalk mappings across NBA, ESPN, BRef, and Spotrac namespaces."
+      ],
+      "metric_requirements": [],
+      "name": "identity_crosswalk",
+      "phases": [],
+      "seasons": [],
+      "source_freshness": null,
+      "status": "available"
+    },
+    "measurements": {
+      "coverage_end": null,
+      "coverage_start": null,
+      "expected_grains": [],
+      "limitations": [
+        "Listed roster measurements reflect team-reported values and are not interchangeable with combine measurements.",
+        "Missing measurements are null, never zero."
+      ],
+      "metric_requirements": [],
+      "name": "measurements",
+      "phases": [],
+      "seasons": [],
+      "source_freshness": null,
+      "status": "available"
+    },
+    "schedules": {
+      "coverage_end": "2026-06-13",
+      "coverage_start": "2023-10-24",
+      "expected_grains": [],
+      "limitations": [],
+      "metric_requirements": [],
+      "name": "schedules",
+      "phases": [
+        "regular_season"
+      ],
+      "seasons": [
+        "2023-24"
+      ],
+      "source_freshness": null,
+      "status": "available"
+    }
+  },
+  "coverage_end": "2026-06-13",
+  "coverage_start": "2023-10-24",
+  "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+  "default_before_date": "2026-04-13",
+  "default_phase": "regular_season",
+  "default_season": "2025-26",
+  "impact": {
+    "limitations": [
+      "Descriptive model estimates under lineup confounding; not causal or forecast features.",
+      "RAPM omits zero-control side observations; on/off retains their scoring.",
+      "The unchanged box-estimate \u00b12 diagnostic is not an event acceptance gate.",
+      "Patched lineups retain minute/plus-minus and unavailable period-minute limitations.",
+      "On/off off-court references include team games without a player appearance.",
+      "Multi-team on/off is unavailable without a selected team; team records remain separate.",
+      "PBP play-type buckets are CourtLens analogues, including Unknown and free throws."
+    ],
+    "manifest_sha256": "2cd9c98b2594d948edc2c574e082e1b8b06ff4d6bfeca294f87e8062eae76d48",
+    "methodology_url": "/methodology#impact",
+    "scopes": [
+      {
+        "cutoff": "2025-07-01",
+        "last_included_date": "2025-04-13",
+        "phase": "regular_season",
+        "season": "2024-25",
+        "seasons": [
+          "2023-24",
+          "2024-25"
+        ],
+        "years": 2
+      },
+      {
+        "cutoff": "2024-07-01",
+        "last_included_date": "2024-06-17",
+        "phase": "playoffs",
+        "season": "2023-24",
+        "seasons": [
+          "2023-24"
+        ],
+        "years": 1
+      },
+      {
+        "cutoff": "2025-07-01",
+        "last_included_date": "2025-06-22",
+        "phase": "playoffs",
+        "season": "2024-25",
+        "seasons": [
+          "2023-24",
+          "2024-25"
+        ],
+        "years": 2
+      },
+      {
+        "cutoff": "2026-07-01",
+        "last_included_date": "2026-04-12",
+        "phase": "regular_season",
+        "season": "2025-26",
+        "seasons": [
+          "2024-25",
+          "2025-26"
+        ],
+        "years": 2
+      },
+      {
+        "cutoff": "2026-07-01",
+        "last_included_date": "2026-06-13",
+        "phase": "playoffs",
+        "season": "2025-26",
+        "seasons": [
+          "2025-26"
+        ],
+        "years": 1
+      },
+      {
+        "cutoff": "2025-07-01",
+        "last_included_date": "2025-04-13",
+        "phase": "regular_season",
+        "season": "2024-25",
+        "seasons": [
+          "2024-25"
+        ],
+        "years": 1
+      },
+      {
+        "cutoff": "2025-07-01",
+        "last_included_date": "2025-06-22",
+        "phase": "playoffs",
+        "season": "2024-25",
+        "seasons": [
+          "2024-25"
+        ],
+        "years": 1
+      },
+      {
+        "cutoff": "2026-07-01",
+        "last_included_date": "2026-06-13",
+        "phase": "playoffs",
+        "season": "2025-26",
+        "seasons": [
+          "2023-24",
+          "2024-25",
+          "2025-26"
+        ],
+        "years": 3
+      },
+      {
+        "cutoff": "2026-07-01",
+        "last_included_date": "2026-04-12",
+        "phase": "regular_season",
+        "season": "2025-26",
+        "seasons": [
+          "2025-26"
+        ],
+        "years": 1
+      },
+      {
+        "cutoff": "2026-07-01",
+        "last_included_date": "2026-06-13",
+        "phase": "playoffs",
+        "season": "2025-26",
+        "seasons": [
+          "2024-25",
+          "2025-26"
+        ],
+        "years": 2
+      },
+      {
+        "cutoff": "2024-07-01",
+        "last_included_date": "2024-04-14",
+        "phase": "regular_season",
+        "season": "2023-24",
+        "seasons": [
+          "2023-24"
+        ],
+        "years": 1
+      },
+      {
+        "cutoff": "2026-07-01",
+        "last_included_date": "2026-04-12",
+        "phase": "regular_season",
+        "season": "2025-26",
+        "seasons": [
+          "2023-24",
+          "2024-25",
+          "2025-26"
+        ],
+        "years": 3
+      },
+      {
+        "cutoff": "2024-07-01",
+        "last_included_date": "2024-04-14",
+        "phase": "regular_season",
+        "season": "2023-24",
+        "seasons": [
+          "2023-24"
+        ],
+        "years": 1
+      },
+      {
+        "cutoff": "2024-07-01",
+        "last_included_date": "2024-06-17",
+        "phase": "playoffs",
+        "season": "2023-24",
+        "seasons": [
+          "2023-24"
+        ],
+        "years": 1
+      },
+      {
+        "cutoff": "2026-07-01",
+        "last_included_date": "2026-06-13",
+        "phase": "playoffs",
+        "season": "2025-26",
+        "seasons": [
+          "2025-26"
+        ],
+        "years": 1
+      },
+      {
+        "cutoff": "2025-07-01",
+        "last_included_date": "2025-04-13",
+        "phase": "regular_season",
+        "season": "2024-25",
+        "seasons": [
+          "2024-25"
+        ],
+        "years": 1
+      },
+      {
+        "cutoff": "2025-07-01",
+        "last_included_date": "2025-06-22",
+        "phase": "playoffs",
+        "season": "2024-25",
+        "seasons": [
+          "2024-25"
+        ],
+        "years": 1
+      },
+      {
+        "cutoff": "2026-07-01",
+        "last_included_date": "2026-04-12",
+        "phase": "regular_season",
+        "season": "2025-26",
+        "seasons": [
+          "2025-26"
+        ],
+        "years": 1
+      }
+    ],
+    "source": "CourtLens model",
+    "status": "available",
+    "unavailable_columns": {
+      "d_sqi": "undefined proprietary model; needs a separately documented CourtLens method",
+      "deflections": "requires admitted hustle data",
+      "forced_turnovers": "complete forced-turnover attribution is absent; credited analogue only",
+      "on_ball_pct": "requires tracking possession-time attribution",
+      "potential_assists": "requires admitted complete tracking data",
+      "rim_points_saved_per100": "no per-shot defender and rim-zone join in aggregate matchups",
+      "stolen_tov_pct": "requires complete linked steal attribution, not assumed from box steals",
+      "stop_pct": "requires an explicit individual stop attribution method",
+      "tracking_dfga_per100": "aggregate matchups are not shot contests"
+    },
+    "version": "courtlens-impact-serving-v1"
+  },
+  "metric_version": "v1",
+  "mode": "workbench_recent",
+  "phases": [
+    "cup_final",
+    "play_in",
+    "playoffs",
+    "regular_season"
+  ],
+  "published_at": "2026-10-01T17:47:29.173164+00:00",
+  "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+  "seasons": [
+    "2023-24",
+    "2024-25",
+    "2025-26"
+  ],
+  "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666",
+  "snapshot_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+  "source": "sportsdataverse",
+  "stats_normalizations": [
+    "per_game",
+    "raw",
+    "per_36"
+  ],
+  "stats_scopes": [
+    {
+      "coverage_end": "2023-12-09",
+      "coverage_start": "2023-12-09",
+      "default_before_date": "2023-12-10",
+      "phase": "cup_final",
+      "season": "2023-24"
+    },
+    {
+      "coverage_end": "2024-04-19",
+      "coverage_start": "2024-04-16",
+      "default_before_date": "2024-04-20",
+      "phase": "play_in",
+      "season": "2023-24"
+    },
+    {
+      "coverage_end": "2024-06-17",
+      "coverage_start": "2024-04-20",
+      "default_before_date": "2024-06-18",
+      "phase": "playoffs",
+      "season": "2023-24"
+    },
+    {
+      "coverage_end": "2024-04-14",
+      "coverage_start": "2023-10-24",
+      "default_before_date": "2024-04-15",
+      "phase": "regular_season",
+      "season": "2023-24"
+    },
+    {
+      "coverage_end": "2024-12-17",
+      "coverage_start": "2024-12-17",
+      "default_before_date": "2024-12-18",
+      "phase": "cup_final",
+      "season": "2024-25"
+    },
+    {
+      "coverage_end": "2025-04-18",
+      "coverage_start": "2025-04-15",
+      "default_before_date": "2025-04-19",
+      "phase": "play_in",
+      "season": "2024-25"
+    },
+    {
+      "coverage_end": "2025-06-22",
+      "coverage_start": "2025-04-19",
+      "default_before_date": "2025-06-23",
+      "phase": "playoffs",
+      "season": "2024-25"
+    },
+    {
+      "coverage_end": "2025-04-13",
+      "coverage_start": "2024-10-22",
+      "default_before_date": "2025-04-14",
+      "phase": "regular_season",
+      "season": "2024-25"
+    },
+    {
+      "coverage_end": "2025-12-16",
+      "coverage_start": "2025-12-16",
+      "default_before_date": "2025-12-17",
+      "phase": "cup_final",
+      "season": "2025-26"
+    },
+    {
+      "coverage_end": "2026-04-17",
+      "coverage_start": "2026-04-14",
+      "default_before_date": "2026-04-18",
+      "phase": "play_in",
+      "season": "2025-26"
+    },
+    {
+      "coverage_end": "2026-06-13",
+      "coverage_start": "2026-04-18",
+      "default_before_date": "2026-06-14",
+      "phase": "playoffs",
+      "season": "2025-26"
+    },
+    {
+      "coverage_end": "2026-04-12",
+      "coverage_start": "2025-10-21",
+      "default_before_date": "2026-04-13",
+      "phase": "regular_season",
+      "season": "2025-26"
+    }
+  ],
+  "stats_sort_fields": [
+    "ast",
+    "ast_per_36",
+    "ast_per_game",
+    "blk",
+    "blk_per_36",
+    "blk_per_game",
+    "bpr",
+    "bpr_2y",
+    "bpr_3y",
+    "d_reb",
+    "d_tov",
+    "d_ts",
+    "dbpr",
+    "dbpr_2y",
+    "dbpr_3y",
+    "drapm",
+    "drapm_2y",
+    "drapm_3y",
+    "dreb",
+    "dreb_per_36",
+    "dreb_per_game",
+    "efg_pct",
+    "fg3_pct",
+    "fg3a",
+    "fg3a_per_36",
+    "fg3m",
+    "fg_pct",
+    "fga",
+    "fga_per_36",
+    "fgm",
+    "ft_pct",
+    "fta",
+    "fta_per_36",
+    "ftm",
+    "ftr",
+    "games_played",
+    "gp",
+    "impact_ast_per100",
+    "impact_ftr",
+    "impact_rts",
+    "impact_three_point_rate",
+    "impact_ts_pct",
+    "impact_tsadd_per100",
+    "legacy_fantasy_score_per_game",
+    "matchup_fga_per100",
+    "min",
+    "min_avg_minutes",
+    "min_per_game",
+    "name",
+    "o_reb",
+    "o_tov",
+    "o_ts",
+    "obpr",
+    "obpr_2y",
+    "obpr_3y",
+    "on_defensive_rating",
+    "on_net_rating",
+    "on_offensive_rating",
+    "onoff_defensive_rating",
+    "onoff_net_rating",
+    "onoff_offensive_rating",
+    "orapm",
+    "orapm_2y",
+    "orapm_3y",
+    "oreb",
+    "oreb_per_36",
+    "oreb_per_game",
+    "pbp_bad_pass_tov",
+    "pbp_blk_per100",
+    "pbp_block_recovered_pct",
+    "pbp_charges_drawn",
+    "pbp_create_frequency",
+    "pbp_create_rts",
+    "pbp_create_ts",
+    "pbp_create_tsa",
+    "pbp_credited_ftov_per100",
+    "pbp_drb_pct",
+    "pbp_finish_frequency",
+    "pbp_finish_rts",
+    "pbp_finish_ts",
+    "pbp_finish_tsa",
+    "pbp_foul_frequency",
+    "pbp_rim_assists",
+    "pbp_self_miss_orb_pct",
+    "pbp_space_frequency",
+    "pbp_space_rts",
+    "pbp_space_ts",
+    "pbp_space_tsa",
+    "pbp_stl_per100",
+    "pbp_team_miss_orb_pct",
+    "pbp_trans_frequency",
+    "pbp_trans_rts",
+    "pbp_trans_ts",
+    "pbp_trans_tsa",
+    "pbp_unknown_frequency",
+    "pbp_unknown_rts",
+    "pbp_unknown_ts",
+    "pbp_unknown_tsa",
+    "pf",
+    "pf_per_36",
+    "pf_per_game",
+    "player_id",
+    "player_name",
+    "pts",
+    "pts_per_36",
+    "pts_per_game",
+    "rapm",
+    "rapm_2y",
+    "rapm_3y",
+    "reb",
+    "reb_per_36",
+    "reb_per_game",
+    "reb_total",
+    "reb_total_per_game",
+    "stints_count",
+    "stl",
+    "stl_per_36",
+    "stl_per_game",
+    "total_minutes",
+    "tov",
+    "tov_per_36",
+    "tov_per_game",
+    "ts_pct"
+  ],
+  "stats_windows": [
+    "season",
+    "last_10",
+    "last_5"
+  ],
+  "supported_dates": [
+    "2026-06-13"
+  ],
+  "warnings": [
+    "Historical reconstruction from completed records.",
+    "Prior-day boundary: game_date < before_date is strictly enforced."
+  ]
+}

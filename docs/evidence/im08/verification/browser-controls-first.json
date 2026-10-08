@@ -1,0 +1,48 @@
+{
+  "version": "courtlens-im08-browser-controls-v1",
+  "chromium_version": "153.0.8010.12",
+  "boundary": "actual local Chromium; no NBA traffic",
+  "passed": 10,
+  "checks": [
+    {
+      "check": "exact decoded bytes including whitespace and Unicode",
+      "passed": true
+    },
+    {
+      "check": "HTTP denial retains actual status and body",
+      "passed": true
+    },
+    {
+      "check": "/declared size limit aborts without partial asset",
+      "passed": true
+    },
+    {
+      "check": "/chunked size limit aborts without partial asset",
+      "passed": true
+    },
+    {
+      "check": "deadline aborts incomplete stream",
+      "passed": true
+    },
+    {
+      "check": "redirect rejected without following",
+      "passed": true
+    },
+    {
+      "check": "ordinary Chromium CORS remains enforced",
+      "passed": true
+    },
+    {
+      "check": "empty body not retained",
+      "passed": true
+    },
+    {
+      "check": "fixed NBA origin/path/scheme credential restrictions",
+      "passed": true
+    },
+    {
+      "check": "request rate/time/size/count and duplicate limits",
+      "passed": true
+    }
+  ]
+}
