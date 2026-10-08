@@ -8,7 +8,7 @@ import re
 import threading
 import time
 from collections.abc import Callable, Sequence
-from contextlib import suppress
+from contextlib import nullcontext, suppress
 from dataclasses import dataclass
 from datetime import UTC, date, datetime
 from typing import Any
@@ -180,7 +180,8 @@ def _selections(
         selections = resolve_scope(request.message, selections, as_of=today).selections
     bindings: dict[str, str] = {}
     try:
-        with session.begin_nested(), query_deadline(session, deadline):
+        nested = session.begin_nested() if hasattr(session, "begin_nested") else nullcontext()
+        with nested, query_deadline(session, deadline):
             # Pin the published release once for all tools; tool scope stays model-selectable.
             context = resolve_workbench_context(
                 session,
@@ -196,7 +197,7 @@ def _selections(
     except HTTPException as exc:
         if exc.status_code not in (404, 503):
             raise
-    except (DBAPIError, TimeoutError):
+    except (DBAPIError, TimeoutError, AttributeError):
         return selections, {}
     return selections, bindings
 
@@ -376,6 +377,9 @@ def run_turn(
     on_reset: Callable[[], None] | None = None,
 ) -> AgentRun:
     settings = settings or get_settings()
+    prompt_version = (
+        provider.prompt_version if isinstance(provider, ReplayProvider) else PROMPT_VERSION
+    )
     today = today or civil_today()
     started = time.monotonic()
     deadline = started + settings.assistant_turn_timeout_seconds
@@ -436,7 +440,7 @@ def run_turn(
         answer = answer.model_copy(update={"accounting": accounting})
         transcript = {
             "format": "courtlens-agent-transcript-v1",
-            "prompt_version": PROMPT_VERSION,
+            "prompt_version": prompt_version,
             "model": accounting.model,
             "steps": [r.model_dump(mode="json") for r in recording.records] if recording else [],
             "tools": tools_run,
@@ -462,7 +466,7 @@ def run_turn(
             accounting=AgentAccounting(
                 provider=settings.resolved_assistant_provider,
                 model=settings.resolved_assistant_model,
-                prompt_version=PROMPT_VERSION,
+                prompt_version=prompt_version,
             ),
         )
 
@@ -481,6 +485,7 @@ def run_turn(
             selections=selections,
             page_context=request.page_context,
             page_bindings=page_bindings,
+            version=prompt_version,
         )
     except CalendarUnavailable:
         answer = base(
@@ -638,7 +643,12 @@ def run_turn(
                         )
                     else:
                         tool = dispatch(
-                            session, call, selections=selections, as_of=today, deadline=deadline
+                            session,
+                            call,
+                            selections=selections,
+                            as_of=today,
+                            deadline=deadline,
+                            legacy_catalog=prompt_version == "courtlens-agent-prompt-v1",
                         )
                 if tool.warehouse_result:
                     if selections.release_id is None and tool.context:
@@ -826,7 +836,13 @@ def run_turn(
     if time.monotonic() < deadline and any(s.origin == "web" for s in sources):
         audit_start = time.monotonic()
         overrides, audits = audit_warehouse_coverage(
-            session, final_text, sources, selections, today=today, deadline=deadline
+            session,
+            final_text,
+            sources,
+            selections,
+            today=today,
+            deadline=deadline,
+            include_impact=prompt_version != "courtlens-agent-prompt-v1",
         )
         if audits:
             report = report.model_copy(

@@ -31,7 +31,8 @@ from courtlens.domain.entity_lookup import (
     tokenize_lookup_text,
 )
 from courtlens.domain.finance_query import FinanceQuery
-from courtlens.domain.metrics import METRIC_CATALOG, METRIC_CATALOG_VERSION
+from courtlens.domain.impact_catalog import SERVING_CATALOG as METRIC_CATALOG
+from courtlens.domain.metrics import METRIC_CATALOG_VERSION
 from courtlens.domain.query_spec import QuerySpec
 from courtlens.domain.query_url import serialize_query_to_url_string
 from courtlens.services import analytical_ops
@@ -288,7 +289,10 @@ def canonical_step(
         )
         return step.model_copy(update={"arguments": parsed_position.model_dump(mode="json")})
     schema = operation.schema.model_json_schema()
-    reject_unknown_fields(schema, args, schema)
+    validation_args = dict(args)
+    if step.operation == "query":
+        validation_args.pop("impact_manifest_sha256", None)
+    reject_unknown_fields(schema, validation_args, schema)
     if len(json.dumps(args).encode()) > 16 * 1024:
         raise ValueError("operation argument payload exceeds limit")
     for field in CONTEXT_FIELDS:
@@ -323,7 +327,7 @@ def canonical_step(
         ):
             raise ValueError("unsupported Stats planning scope")
         if any(
-            m.version not in (None, METRIC_CATALOG_VERSION) or m.normalization != "raw"
+            m.version not in (None, METRIC_CATALOG[m.key].version) or m.normalization != "raw"
             for m in query.metric_selectors
         ):
             raise ValueError("use actual catalog metric keys and current versions")
@@ -331,6 +335,12 @@ def canonical_step(
             raise ValueError("too many selected metrics")
         if not query.metric_selectors:
             canonical["metric_selectors"] = [{"key": "pts_per_game"}, {"key": "min_per_game"}]
+        from courtlens.services.impact_serving import impact_for_query, query_uses_impact
+
+        if query_uses_impact(query) and query.impact_manifest_sha256 is None:
+            impact = impact_for_query(query, context.before_date.isoformat())
+            if impact["manifest_sha256"]:
+                canonical["impact_manifest_sha256"] = impact["manifest_sha256"]
         if query.team_scope.team_id:
             from courtlens.domain.teams import get_team_info
 
@@ -426,7 +436,19 @@ def execute_operation(
         for row in rows:
             row["metrics"] = {k: row["metrics"].get(k) for k in keys}
             row["sample_sizes"] = {k: row["sample_sizes"].get(k) for k in keys}
-        return {"items": rows, "total_eligible": count, "next_cursor": cursor, "has_more": more}
+            if "impact_support" in row:
+                row["impact_support"] = {
+                    k: v for k, v in row["impact_support"].items() if k in keys
+                }
+        result = {"items": rows, "total_eligible": count, "next_cursor": cursor, "has_more": more}
+        from courtlens.services.impact_serving import impact_for_query, query_uses_impact
+
+        query = QuerySpec.model_validate(args)
+        if query_uses_impact(query):
+            impact = impact_for_query(query, context.before_date.isoformat())
+            result["impact"] = {k: v for k, v in impact.items() if k != "players"}
+            result["disclosures"] = impact["limitations"]
+        return result
     if step.operation == "position_query":
         from courtlens.services.starting_positions import POSITION_CODES, starting_positions
 
@@ -448,6 +470,10 @@ def execute_operation(
         for row in matched:
             row["metrics"] = {k: row["metrics"].get(k) for k in keys}
             row["sample_sizes"] = {k: row["sample_sizes"].get(k) for k in keys}
+            if "impact_support" in row:
+                row["impact_support"] = {
+                    k: v for k, v in row["impact_support"].items() if k in keys
+                }
             row["starting_position"] = code
             row["starts"] = cohort.starts[str(row["player_id"])]
         limit = query.page.limit

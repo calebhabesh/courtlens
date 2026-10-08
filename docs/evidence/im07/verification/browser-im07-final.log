@@ -1,0 +1,65 @@
+
+> courtlens-dashboard@0.1.0 test:browser
+> playwright test e2e/im07-agent.spec.ts --workers=2
+
+[WebServer] ⚠ "next start" does not work with "output: standalone" configuration. Use "node .next/standalone/server.js" instead.
+
+Running 2 tests using 2 workers
+
+  ✘  1 e2e/im07-agent.spec.ts:9:7 › IM07 recorded warehouse RAPM renders its CourtLens chip at 375px (5.7s)
+  ✘  2 e2e/im07-agent.spec.ts:9:7 › IM07 recorded warehouse RAPM renders its CourtLens chip at 1440px (5.7s)
+
+
+  1) e2e/im07-agent.spec.ts:9:7 › IM07 recorded warehouse RAPM renders its CourtLens chip at 1440px 
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: locator('#content').getByRole('region', { name: 'query results table' })
+    Expected substring: "Victor Wembanyama"
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toContainText" locator('#content').getByRole('region', { name: 'query results table' }) with timeout 5000ms
+      - waiting for locator('#content').getByRole('region', { name: 'query results table' })
+
+
+      39 |     await expect(prose.getByRole("link", { name: "View CourtLens result" })).toHaveAttribute("href", /#answer-/);
+      40 |     const result = content.getByRole("region", { name: "query results table" });
+    > 41 |     await expect(result).toContainText("Victor Wembanyama");
+         |                          ^
+      42 |     await expect(result).toContainText("9.123");
+      43 |     await expect(result).toContainText("points per 100 controls");
+      44 |     await expect(content.getByRole("link", { name: "Open equivalent analysis", exact: true })).toHaveAttribute("href", /2cd9c98b2594d948/);
+        at /tmp/courtlens-im07-dashboard-05y3uy5l/dashboard/e2e/im07-agent.spec.ts:41:26
+
+    Error Context: test-results/im07-agent-IM07-recorded-w-764d4-ts-CourtLens-chip-at-1440px/error-context.md
+
+  2) e2e/im07-agent.spec.ts:9:7 › IM07 recorded warehouse RAPM renders its CourtLens chip at 375px ─
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: locator('#content').getByRole('region', { name: 'query results table' })
+    Expected substring: "Victor Wembanyama"
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toContainText" locator('#content').getByRole('region', { name: 'query results table' }) with timeout 5000ms
+      - waiting for locator('#content').getByRole('region', { name: 'query results table' })
+
+
+      39 |     await expect(prose.getByRole("link", { name: "View CourtLens result" })).toHaveAttribute("href", /#answer-/);
+      40 |     const result = content.getByRole("region", { name: "query results table" });
+    > 41 |     await expect(result).toContainText("Victor Wembanyama");
+         |                          ^
+      42 |     await expect(result).toContainText("9.123");
+      43 |     await expect(result).toContainText("points per 100 controls");
+      44 |     await expect(content.getByRole("link", { name: "Open equivalent analysis", exact: true })).toHaveAttribute("href", /2cd9c98b2594d948/);
+        at /tmp/courtlens-im07-dashboard-05y3uy5l/dashboard/e2e/im07-agent.spec.ts:41:26
+
+    Error Context: test-results/im07-agent-IM07-recorded-w-6a044-its-CourtLens-chip-at-375px/error-context.md
+
+  2 failed
+    e2e/im07-agent.spec.ts:9:7 › IM07 recorded warehouse RAPM renders its CourtLens chip at 1440px ─
+    e2e/im07-agent.spec.ts:9:7 › IM07 recorded warehouse RAPM renders its CourtLens chip at 375px ──

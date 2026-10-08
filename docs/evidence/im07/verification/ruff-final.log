@@ -1,0 +1,12 @@
+E501 Line too long (102 > 100)
+  --> scripts/verify_im07_agent.py:85:101
+   |
+83 |         if self.case.get("require_assumption"):
+84 |             answer = (
+85 |                 "Assumption: Best defender means the highest CourtLens DRAPM in the regular season.\n"
+   |                                                                                                     ^^
+86 |                 + answer
+87 |             )
+   |
+
+Found 1 error.

@@ -1,0 +1,114 @@
+{
+  "version": "courtlens-ag06-continuation-preflight-v1",
+  "checked_at": "2026-10-08T15:20:24.524154+00:00",
+  "mode": "offline_preflight",
+  "provider_calls": 0,
+  "configured_provider": "gemini",
+  "configured_model": "gemini-3.5-flash-lite",
+  "key_present": {
+    "gemini": true,
+    "anthropic": false,
+    "openai": false
+  },
+  "constraint": "Owner prohibits Gemini calls for this continuation; no owner acceptance of the quality gap.",
+  "ar02_fixture_baseline": {
+    "path": "docs/evidence/ar02-evaluation/fixture-baseline.json",
+    "sha256": "d15163e7bc00e48361bc9d37c2566b9741c66ab65084bed7e4712899eae79d90",
+    "categories": [
+      "compare",
+      "follow_up",
+      "forecast",
+      "leaders",
+      "mixed",
+      "single_player"
+    ],
+    "correct": 255,
+    "total": 279,
+    "rate": 0.9139784946236559
+  },
+  "corpora": {
+    "ag-v3.json": {
+      "path": "evaluation/assistant/ag-v3.json",
+      "sha256": "308d3973d0d31add2ecf5d3964213a60ae8331014beb80ee5e6d7f2e636be7c4",
+      "dev_cases": 180,
+      "holdout_cases": 24,
+      "runs": 3,
+      "planned_development_turns": 540,
+      "planned_warehouse_turns": 345
+    },
+    "ag-v3-im07.json": {
+      "path": "evaluation/assistant/ag-v3-im07.json",
+      "sha256": "bf367cbcffd4e8e3a13b3dc074ff76cc98376aa9a49173cf97bf04782225fb2f",
+      "dev_cases": 191,
+      "holdout_cases": 24,
+      "runs": 3,
+      "planned_development_turns": 573,
+      "planned_warehouse_turns": 393
+    }
+  },
+  "retained_reports": {
+    "gemini": {
+      "path": "docs/evidence/ag06-eval/gemini-dev.json",
+      "sha256": "dc4b676b94b0df8bff331877e923c0061876ceb1f87733a1da6c4eceed9ec410",
+      "complete": false,
+      "stopped": {
+        "reason": "provider_quota",
+        "retry_after": 60,
+        "case_id": "ar02-001",
+        "stage": "answer",
+        "run": 1
+      },
+      "coverage": {
+        "completed_runs": 1,
+        "planned_runs": 540,
+        "completed_questions": 0,
+        "planned_questions": 180
+      }
+    },
+    "anthropic": {
+      "path": "docs/evidence/ag06-eval/anthropic-dev.json",
+      "sha256": "fac95d9ffbb3bfebb5fc5a0abaacf67b542bb58dcb8b17b73ab9ed5f7e0fc020",
+      "complete": false,
+      "stopped": {
+        "reason": "provider_disabled",
+        "retry_after": null
+      },
+      "coverage": {
+        "completed_runs": 0,
+        "planned_runs": 540,
+        "completed_questions": 0,
+        "planned_questions": 180
+      }
+    },
+    "openai": {
+      "path": "docs/evidence/ag06-eval/openai-dev.json",
+      "sha256": "e913a60c4104cd78db2692c2251ed52952b5b5bd1a8be084d7936e3abd208aee",
+      "complete": false,
+      "stopped": {
+        "reason": "provider_disabled",
+        "retry_after": null
+      },
+      "coverage": {
+        "completed_runs": 0,
+        "planned_runs": 540,
+        "completed_questions": 0,
+        "planned_questions": 180
+      }
+    }
+  },
+  "gate": {
+    "ag06_live_measurement": "verification_blocked",
+    "ag07": "verification_blocked",
+    "ag08": "planned",
+    "eligible_implementation_blocks": [],
+    "reason": "No permitted keyed provider can perform live development measurement. AG07 requires a complete live baseline >= 255/279 or explicit owner gap acceptance; AG08 depends on AG07."
+  },
+  "holdout_inference_performed": false,
+  "im06_im07_repeated": false,
+  "checks": {
+    "retained_report_checksums": "passed",
+    "ar02_baseline_checksum_and_counts": "passed",
+    "corpus_checksums_and_split_contracts": "passed"
+  },
+  "preserved_existing_evidence_files": 3002
+}

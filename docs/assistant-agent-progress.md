@@ -29,7 +29,7 @@ table.
 | AG05 | verified | [Answer UI](evidence/ag05-answer-ui/README.md): safe prose/source chips, assumptions, result tables and pinned review actions, follow-ups, trace/accounting, provenance/failure labels, Settings and examples. 223 Vitest tests, 1089 Python units and 169 full-suite browser cases pass; three external-integration browser cases skip. Ruff/format/mypy, dashboard lint/types and contracts pass. Screenshots at 1440/375 px plus keyboard/reduced-motion landscape evidence. Mocked UI boundary only; live-provider and broader acceptance gaps remain. |
 | AG06 | verified | [V3 evaluation tooling and measured incomplete dev reports](evidence/ag06-eval/README.md): 204 frozen cases (180 dev / 24 fresh holdout), 33-case exact replay over real fixture SQL, payload-drift control and 6 scorer checks. Clean full Python: 1596 passed / 0 failed / 0 errors, 1 documented skip / 19 published-data checks; Ruff/format/mypy clean. Gemini stopped on quota at 1/540 planned turns; other providers have no key. No complete live quality baseline or holdout inference claimed. |
 | AG07 | verification_blocked | QA01 is verified. The separate AG06 quality gate is unmet: no complete measured v3 warehouse baseline to compare with AR02's 255/279 (91.40%), and no recorded owner gap acceptance. Legacy pipeline and its tests remain; no cleanup or dashboard changes occurred. |
-| AG08 | planned | |
+| AG08 | planned | Depends on AG07. Live holdout per available provider, three owner examples and measured README update remain pending; the no-Gemini-call continuation does not clear that dependency. |
 | AD01–AD04 | superseded 2026-10-07 | Replaced by the [impact metrics track](impact-metrics-progress.md) (IM01–IM08). The owner wants CourtLens-computed metrics, not imported Databallr data. No Databallr access occurred. |
 
 ## AG01 checkpoint: 2026-10-07
@@ -175,3 +175,48 @@ table.
 - **AG05 is verified at its mocked UI boundary. AG06 is next.** Live-provider success, provider
   quality, holdout and broader database/external-integration acceptance remain pending. AD01
   permission is unresolved; AD02–AD04 remain source-blocked.
+
+
+## 2026-10-08 — IM07 impact warehouse/eval integration
+
+- [IM07 evidence](evidence/im07/README.md) and the
+  [impact progress entry](impact-metrics-progress.md) record the bounded integration.
+  New turns use prompt v2 and the serving catalog through existing read-only tools.
+  Historical v1 prompt/catalog requests still replay exactly; AG06's original
+  corpus, transcripts and 24-case holdout remain unchanged.
+- Separate `ag-v3-im07.json` contains 191 dev / 24 unchanged holdout cases. Five
+  development RAPM/DRAPM web cases now use original-artifact/SQL warehouse oracles;
+  eleven added impact development cases cover the other declared fit windows,
+  on/off, six-factor coefficients and BPR. No holdout inference or scoring/tuning
+  revision of the frozen holdout occurred.
+- 48/48 real-data authored replays pass, with zero missed overrides and unsupported
+  numbers. The owner's Wembanyama RAPM answer renders a CourtLens chip and correct
+  unit at 1440/375 px. These replays/screenshots are not language accuracy.
+  The configured live Gemini attempt stopped on quota at 1/3 planned turns, with
+  no retry, model change or provider substitution. AG07's live-quality gate and
+  AG08 acceptance remain unchanged; no legacy cleanup occurred.
+- Final regression: 1,795 Python, 286 Vitest and 231 browser passes; Ruff/format,
+  strict mypy, dashboard lint/types/build and Compose validation pass. Existing
+  skip/SDK/standalone notices are recorded in the evidence. All 2,878 prior
+  evidence/corpus/fixture hashes and the public publication identities are retained.
+
+## 2026-10-08 — AG06 continuation under the no-Gemini-call constraint
+
+- [Continuation preflight](evidence/ag06-continuation/README.md) records local
+  configuration presence only: Gemini has a key; Anthropic and OpenAI do not.
+  Zero provider calls were made. Current quota/access was not probed.
+- Independently verified the retained AR02 fixture checksum and warehouse counts:
+  **255/279 (91.40%)**. All three original AG06 report checksums match the retained
+  summary; none is a complete live baseline. Both corpus checksums and split
+  contracts pass; 3,002 existing evidence/corpus files were preserved.
+- The current IM07 corpus requires 191 development cases × 3 runs (573 turns),
+  including 393 warehouse-category turns. Its 24-case holdout remains unchanged
+  and was not inferred. These workload counts are not completed live measurement.
+- No implementation block in the requested sequence is eligible under the
+  current constraint. AG06 tooling stays verified at its recorded boundary;
+  its live measurement continuation is blocked. AG07 remains
+  `verification_blocked`, with no owner quality-gap acceptance. AG08 stays
+  `planned` until AG07. No pipeline code was removed and no application code was
+  changed; regression suites were not repeated for this documentation-only check.
+- IM06/IM07 were not repeated. IM08's seal does not satisfy the assistant quality
+  prerequisite. Direct NBA source admission remains a separate future gate.

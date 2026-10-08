@@ -1,0 +1,17 @@
+ag06-web-01: exact original-artifact/SQL match, replayed 3 times
+ag06-web-02: exact original-artifact/SQL match, replayed 3 times
+ag06-web-03: exact original-artifact/SQL match, replayed 3 times
+ag06-web-05: exact original-artifact/SQL match, replayed 3 times
+ag06-web-07: exact original-artifact/SQL match, replayed 3 times
+im07-impact-01: exact original-artifact/SQL match, replayed 3 times
+im07-impact-02: exact original-artifact/SQL match, replayed 3 times
+im07-impact-03: exact original-artifact/SQL match, replayed 3 times
+im07-impact-04: exact original-artifact/SQL match, replayed 3 times
+im07-impact-05: exact original-artifact/SQL match, replayed 3 times
+im07-impact-06: exact original-artifact/SQL match, replayed 3 times
+im07-impact-07: exact original-artifact/SQL match, replayed 3 times
+im07-impact-08: exact original-artifact/SQL match, replayed 3 times
+im07-impact-09: exact original-artifact/SQL match, replayed 3 times
+im07-impact-10: exact original-artifact/SQL match, replayed 3 times
+im07-impact-11: exact original-artifact/SQL match, replayed 3 times
+{"output": "docs/evidence/im07/verification/accepted-replay.json", "replay": {"completed_runs": 48, "planned_runs": 48, "completed_questions": 16, "planned_questions": 16}, "override_missed": 0, "live": null}

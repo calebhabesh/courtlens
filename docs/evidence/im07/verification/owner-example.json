@@ -1,0 +1,336 @@
+{
+  "question": "What was Victor Wembanyama's RAPM last season?",
+  "mode": "authored_transport_not_language_accuracy",
+  "prompt_version": "courtlens-agent-prompt-v2",
+  "answer": "Victor Wembanyama had a CourtLens RAPM of +9.1230 in 2025-26.[^s1]\nThese are descriptive estimates under lineup confounding.",
+  "sources": [
+    {
+      "source_id": "s1",
+      "origin": "warehouse",
+      "title": "CourtLens: query",
+      "publisher": "CourtLens",
+      "url": "/stats?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&impactManifest=2cd9c98b2594d948edc2c574e082e1b8b06ff4d6bfeca294f87e8062eae76d48&season=2025-26&phase=regular_season&beforeDate=2026-10-07&window=season&name=Victor+Wembanyama&sortMetric=rapm&sortDirection=desc&limit=1&metrics=%5B%7B%22key%22%3A+%22rapm%22%2C+%22version%22%3A+null%2C+%22normalization%22%3A+%22raw%22%2C+%22denominator_type%22%3A+null%7D%5D",
+      "retrieved_at": "2026-10-08T06:48:25.808338Z",
+      "as_of": null,
+      "excerpt": "",
+      "span": null,
+      "operation_hash": "30a31664cad82742e7eb86d493dedb299a994bfa924998884504daae5ae56585",
+      "content_sha256": null
+    }
+  ],
+  "cells": [
+    {
+      "evidence_id": "e9833d0944bb78788f2673d260893a08dc952bfdb07d1bca39bfe288887ced3d",
+      "result_hash": "71f74fc5fd7606ad8de2a31c2cc7146752ecb6581bd309535f1fab4a00f71f8e",
+      "operation_hash": "30a31664cad82742e7eb86d493dedb299a994bfa924998884504daae5ae56585",
+      "operation_version": "courtload-assistant-operations-v1",
+      "context_fingerprint": "6280258a5015f1d5b79d9105680fa936ae5e1dadbcc37ab558d4c5f760e213bb",
+      "entity_id": "1641705",
+      "row_identity": "/items/0/metrics",
+      "path": "/items/0/metrics/rapm",
+      "metric": "rapm",
+      "metric_version": "courtlens-impact-serving-v1",
+      "unit": "points per 100 controls",
+      "value": 9.123015906749517,
+      "sample": {
+        "games_played": 63,
+        "total_minutes": 1843.7,
+        "sample_sizes": {
+          "rapm": 63
+        },
+        "impact_support": {
+          "rapm": {
+            "games": 63,
+            "total": 9.123015906749517,
+            "years": 1,
+            "cutoff": "2026-07-01",
+            "defense": 6.690787843584108,
+            "offense": 2.4322280631654087,
+            "seconds": 109929.9,
+            "qualified": true,
+            "covered_games": 63,
+            "artifact_sha256": "d97363bee6e48f1ba9454d28b3e7d82748cc3017e52fe887d4da994ac00666a5",
+            "total_percentile": 99.60732984293193,
+            "def_opportunities": 3781.0,
+            "off_opportunities": 3809.0,
+            "defense_percentile": 99.86910994764398,
+            "offense_percentile": 89.92146596858639
+          }
+        }
+      },
+      "input_identity": {
+        "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+        "snapshot_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+        "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+        "dataset_type": "workbench",
+        "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666",
+        "mode": "workbench_recent",
+        "source": "sportsdataverse",
+        "season": "2025-26",
+        "phase": "regular_season",
+        "before_date": "2026-10-07",
+        "cutoff_utc": "2026-10-07T04:00:00+00:00",
+        "window": "season",
+        "coverage_start": "2023-10-24",
+        "coverage_end": "2026-06-13",
+        "metric_version": "v2",
+        "published_at": null,
+        "impact": {
+          "status": "available",
+          "source": "CourtLens model",
+          "version": "courtlens-impact-serving-v1",
+          "methodology_url": "/methodology#impact",
+          "manifest_sha256": "2cd9c98b2594d948edc2c574e082e1b8b06ff4d6bfeca294f87e8062eae76d48",
+          "artifacts": [
+            {
+              "sha256": "477fb7edd2d8f910fcecca45ef2b63a0f16d818a6ff3890ceba8d974c008811e",
+              "cutoff": "2026-07-01",
+              "last_included_date": "2026-04-12",
+              "phase": "regular_season",
+              "season": "2025-26",
+              "seasons": [
+                "2024-25",
+                "2025-26"
+              ],
+              "years": 2
+            },
+            {
+              "sha256": "d97363bee6e48f1ba9454d28b3e7d82748cc3017e52fe887d4da994ac00666a5",
+              "cutoff": "2026-07-01",
+              "last_included_date": "2026-04-12",
+              "phase": "regular_season",
+              "season": "2025-26",
+              "seasons": [
+                "2025-26"
+              ],
+              "years": 1
+            },
+            {
+              "sha256": "fd50b09bb20939e2b550476d8f6a2739191237bbed1f96b952c6dd839506ac88",
+              "cutoff": "2026-07-01",
+              "last_included_date": "2026-04-12",
+              "phase": "regular_season",
+              "season": "2025-26",
+              "seasons": [
+                "2023-24",
+                "2024-25",
+                "2025-26"
+              ],
+              "years": 3
+            },
+            {
+              "sha256": "ba712f04bc494bc591d7e872ded977f56bc2b346d3c9d7ab8c4d089fd037d102",
+              "cutoff": "2026-07-01",
+              "last_included_date": "2026-04-12",
+              "phase": "regular_season",
+              "season": "2025-26",
+              "seasons": [
+                "2025-26"
+              ],
+              "years": 1
+            }
+          ],
+          "coverage": [
+            {
+              "admitted_games": 1212,
+              "clean_games": 0,
+              "dataset": {
+                "admission_transaction": "773",
+                "content_sha256": "b3fe49d5919562bc017e56652197057850f729e12031ca76eab66541967ec939",
+                "id": "9dea364c-0c9a-453d-8c09-21663cabcb7e",
+                "membership_sha256": "a24611b8ada765a77327c87fdcb0c29bb2ecbc6bc76ebea667665a139987994b",
+                "status": "ready"
+              },
+              "estimate_within_two_percent": 50.0,
+              "excluded_games": 18,
+              "minute_diagnostic": {
+                "comparisons": 25924,
+                "exact": 19398,
+                "exact_percent": 74.8264,
+                "max_absolute_error": 0.5,
+                "median_absolute_error": 0.0,
+                "p95_absolute_error": 0.4,
+                "within_one": 25924,
+                "within_thirty": 25924
+              },
+              "patch_rate": 1.0,
+              "patched_games": 1212,
+              "phase": "regular_season",
+              "plus_minus_diagnostic": {
+                "comparisons": 32036,
+                "exact": 17037,
+                "exact_percent": 53.1808,
+                "max_absolute_error": 9,
+                "median_absolute_error": 0,
+                "p95_absolute_error": 2,
+                "within_one": 27024,
+                "within_thirty": 32036
+              },
+              "scheduled_games": 1230,
+              "season": "2024-25"
+            },
+            {
+              "admitted_games": 1227,
+              "clean_games": 0,
+              "dataset": {
+                "admission_transaction": "760",
+                "content_sha256": "25002650fb6f299948c75cc9caf6a11d03e32c2dd0aefeb8a7c06a1126c59291",
+                "id": "c172eb00-dca8-4714-a490-a80350e9838f",
+                "membership_sha256": "287b944aa937be8ab5a7b9440464b073af327599f6524251ad61b2afed901555",
+                "status": "ready"
+              },
+              "estimate_within_two_percent": 43.88753056234719,
+              "excluded_games": 3,
+              "minute_diagnostic": {
+                "comparisons": 26588,
+                "exact": 19271,
+                "exact_percent": 72.4801,
+                "max_absolute_error": 0.5,
+                "median_absolute_error": 0.0,
+                "p95_absolute_error": 0.4,
+                "within_one": 26588,
+                "within_thirty": 26588
+              },
+              "patch_rate": 1.0,
+              "patched_games": 1227,
+              "phase": "regular_season",
+              "plus_minus_diagnostic": {
+                "comparisons": 32103,
+                "exact": 15638,
+                "exact_percent": 48.712,
+                "max_absolute_error": 7,
+                "median_absolute_error": 1,
+                "p95_absolute_error": 3,
+                "within_one": 26216,
+                "within_thirty": 32103
+              },
+              "scheduled_games": 1230,
+              "season": "2025-26"
+            },
+            {
+              "admitted_games": 1216,
+              "clean_games": 0,
+              "dataset": {
+                "admission_transaction": "771",
+                "content_sha256": "1aa4bbe6f275ae06647241a72c6900d377c101e10cbdc0b898b961e718effdd5",
+                "id": "01c5b713-fcd8-480d-8689-942ef1a16476",
+                "membership_sha256": "0c66cf3fc2a82dba058b7eb5fc2a792a1fdf69090392d6790ac3b32e23bf40ab",
+                "status": "ready"
+              },
+              "estimate_within_two_percent": 47.203947368421055,
+              "excluded_games": 14,
+              "minute_diagnostic": {
+                "comparisons": 26087,
+                "exact": 19269,
+                "exact_percent": 73.8644,
+                "max_absolute_error": 23.2,
+                "median_absolute_error": 0.0,
+                "p95_absolute_error": 0.4,
+                "within_one": 26081,
+                "within_thirty": 26087
+              },
+              "patch_rate": 1.0,
+              "patched_games": 1216,
+              "phase": "regular_season",
+              "plus_minus_diagnostic": {
+                "comparisons": 32007,
+                "exact": 16688,
+                "exact_percent": 52.1386,
+                "max_absolute_error": 7,
+                "median_absolute_error": 0,
+                "p95_absolute_error": 2,
+                "within_one": 26976,
+                "within_thirty": 32007
+              },
+              "scheduled_games": 1230,
+              "season": "2023-24"
+            }
+          ],
+          "limitations": [
+            "Descriptive model estimates under lineup confounding; not causal or forecast features.",
+            "RAPM omits zero-control side observations; on/off retains their scoring.",
+            "The unchanged box-estimate \u00b12 diagnostic is not an event acceptance gate.",
+            "Patched lineups retain minute/plus-minus and unavailable period-minute limitations.",
+            "On/off off-court references include team games without a player appearance.",
+            "Multi-team on/off is unavailable without a selected team; team records remain separate.",
+            "PBP play-type buckets are CourtLens analogues, including Unknown and free throws."
+          ],
+          "unavailable_columns": {
+            "deflections": "requires admitted hustle data",
+            "potential_assists": "requires admitted complete tracking data",
+            "on_ball_pct": "requires tracking possession-time attribution",
+            "tracking_dfga_per100": "aggregate matchups are not shot contests",
+            "rim_points_saved_per100": "no per-shot defender and rim-zone join in aggregate matchups",
+            "stop_pct": "requires an explicit individual stop attribution method",
+            "d_sqi": "undefined proprietary model; needs a separately documented CourtLens method",
+            "forced_turnovers": "complete forced-turnover attribution is absent; credited analogue only",
+            "stolen_tov_pct": "requires complete linked steal attribution, not assumed from box steals"
+          }
+        }
+      },
+      "null_reason": null
+    }
+  ],
+  "selected_artifacts": [
+    {
+      "sha256": "477fb7edd2d8f910fcecca45ef2b63a0f16d818a6ff3890ceba8d974c008811e",
+      "cutoff": "2026-07-01",
+      "last_included_date": "2026-04-12",
+      "phase": "regular_season",
+      "season": "2025-26",
+      "seasons": [
+        "2024-25",
+        "2025-26"
+      ],
+      "years": 2
+    },
+    {
+      "sha256": "d97363bee6e48f1ba9454d28b3e7d82748cc3017e52fe887d4da994ac00666a5",
+      "cutoff": "2026-07-01",
+      "last_included_date": "2026-04-12",
+      "phase": "regular_season",
+      "season": "2025-26",
+      "seasons": [
+        "2025-26"
+      ],
+      "years": 1
+    },
+    {
+      "sha256": "fd50b09bb20939e2b550476d8f6a2739191237bbed1f96b952c6dd839506ac88",
+      "cutoff": "2026-07-01",
+      "last_included_date": "2026-04-12",
+      "phase": "regular_season",
+      "season": "2025-26",
+      "seasons": [
+        "2023-24",
+        "2024-25",
+        "2025-26"
+      ],
+      "years": 3
+    },
+    {
+      "sha256": "ba712f04bc494bc591d7e872ded977f56bc2b346d3c9d7ab8c4d089fd037d102",
+      "cutoff": "2026-07-01",
+      "last_included_date": "2026-04-12",
+      "phase": "regular_season",
+      "season": "2025-26",
+      "seasons": [
+        "2025-26"
+      ],
+      "years": 1
+    }
+  ],
+  "provenance": {
+    "checker_version": "agent-provenance-v1",
+    "bound_numbers": [
+      "9.1230"
+    ],
+    "cited_numbers": [],
+    "unsupported_numbers": [],
+    "unverified_sentences": [],
+    "warehouse_override_missed": 0,
+    "repaired": false,
+    "assumption_unverified": false
+  },
+  "transcript_sha256": "3ea4c15af7fb32300229fb4b726e2737cf188539a7b4e83d0b06e25d783751d9"
+}
