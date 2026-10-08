@@ -1,0 +1,25 @@
+fitting playoffs ['2023-24'] 3905 stints
+saved 85dd70f06aae69b79db52b3bb028843a42928e5af0a27f8bb81facb00409b159 alpha=1000.0/1000.0
+fitting playoffs ['2024-25'] 4154 stints
+saved 3c37d0b24d89d70dda380b3b1ad10653efdea433ea658ff80d2c75266e54ad59 alpha=1000.0/1000.0
+fitting playoffs ['2023-24', '2024-25'] 8059 stints
+saved 9c8028ef4e5e6b551bb34f97d9f30e29eff3e0e860d21bdd70d2e60a7277188b alpha=1000.0/1000.0
+fitting playoffs ['2025-26'] 4913 stints
+saved 545e3bedb24782753bd5e9ebc6e4698d3cf42c1ccc78a38ec2fd1940cd886e8f alpha=1000.0/1000.0
+fitting playoffs ['2024-25', '2025-26'] 9067 stints
+saved a7a58289ecc713268c4543da0b2922af48a6c77f71928dbc440745356bbddbdd alpha=1000.0/1000.0
+fitting playoffs ['2023-24', '2024-25', '2025-26'] 12972 stints
+saved dbfe119648a58e9024fb10671d96930a1a15c0559075811c7d9b70ed1fe29eed alpha=1000.0/1000.0
+fitting regular_season ['2023-24'] 58652 stints
+saved 07e9acc8483ea666054a675b49736fc4f546feda7d0a6ba141743d187f277427 alpha=1000.0/1000.0
+fitting regular_season ['2024-25'] 61514 stints
+saved d6861b00e25046570aee2420426be23ee6d6c3f1047925b62c080c3c158a7d63 alpha=1000.0/1000.0
+fitting regular_season ['2023-24', '2024-25'] 120166 stints
+saved 8bfbfdd881853bb04046de3fff000b0ee9669c9db2c2ac36c2ff0b2153d244c0 alpha=1000.0/1000.0
+fitting regular_season ['2025-26'] 68925 stints
+saved 2b2f79f6836509982017487f8e71878a45fbae3e8c340a0c8ef393d21e6b3a1d alpha=1000.0/1000.0
+fitting regular_season ['2024-25', '2025-26'] 130439 stints
+saved 2b0169a6cb654720a44dd66286e5cf53cc7da9a19f29486f34116ddd8793e3bf alpha=1000.0/1000.0
+fitting regular_season ['2023-24', '2024-25', '2025-26'] 189091 stints
+saved 682b30b08661770619ddababadea8c495fda6544b0731135cee2592b80760df8 alpha=1000.0/1000.0
+{"receipt": "data/derived/impact-ratings-v1/runs/ae86b9a22117fa86f04ad4c6d925e7fb4fab41d7d4667b667ff7c6d4062ed380.json", "sha256": "ae86b9a22117fa86f04ad4c6d925e7fb4fab41d7d4667b667ff7c6d4062ed380", "elapsed_seconds": 151.136}
