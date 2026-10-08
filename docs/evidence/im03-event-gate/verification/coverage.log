@@ -1,0 +1,7 @@
+totals {'games': 3901, 'stints': 202063, 'records': 775941, 'counted_controls': 770161, 'event_repairs': 1, 'team_games': 7802, 'box_within_two': 3647, 'public_compared': 4852}
+changed boundary games 729
+public rules {'selected_control_without_public_group': 1479, 'public_without_observed_control': 2049, 'public_grouping_boundary_difference': 52, 'public_team_label_difference': 12}
+source revisions 5
+continuations {'player_rebound_continuation': 85517, 'team_rebound_continuation': 21116, 'and_one_continuation': 18341, 'observed_same_team_continuation': 47}
+boundary rules {'defensive_rebound': 273170, 'made_field_goal': 307408, 'made_final_ft': 73412, 'period_end': 6165, 'retained_ball_ft': 5780, 'turnover': 109996, 'opponent_observed_control': 10}
+content_sha256 743cfaef40214774f0ba7615825472340f18d4f056b7f5d97e49dd39b8dd454e

@@ -1,0 +1,25 @@
+2025-26 regular_season 200
+2025-26 regular_season 400
+2025-26 regular_season 600
+2025-26 regular_season 800
+2025-26 regular_season 1000
+2025-26 regular_season 1200
+2025-26 regular_season {'stints': 68925, 'possessions': 245711} {'comparisons': 2454, 'within_two': 1077, 'mean_delta': -2.465411572942135, 'p95_absolute_delta': 5.96, 'max_absolute_delta': 10.4} seconds 96.737
+2025-26 playoffs {'stints': 4913, 'possessions': 15790} {'comparisons': 164, 'within_two': 62, 'mean_delta': -2.7434146341463417, 'p95_absolute_delta': 6.68, 'max_absolute_delta': 8.52} seconds 7.735
+2023-24 regular_season 200
+2023-24 regular_season 400
+2023-24 regular_season 600
+2023-24 regular_season 800
+2023-24 regular_season 1000
+2023-24 regular_season 1200
+2023-24 regular_season {'stints': 58652, 'possessions': 241673} {'comparisons': 2432, 'within_two': 1148, 'mean_delta': -2.248980263157895, 'p95_absolute_delta': 5.6, 'max_absolute_delta': 11.28} seconds 199.237
+2023-24 playoffs {'stints': 3905, 'possessions': 15133} {'comparisons': 162, 'within_two': 85, 'mean_delta': -1.9207407407407409, 'p95_absolute_delta': 5.12, 'max_absolute_delta': 7.56} seconds 6.078
+2024-25 regular_season 200
+2024-25 regular_season 400
+2024-25 regular_season 600
+2024-25 regular_season 800
+2024-25 regular_season 1000
+2024-25 regular_season 1200
+2024-25 regular_season {'stints': 61514, 'possessions': 241609} {'comparisons': 2424, 'within_two': 1212, 'mean_delta': -2.142755775577558, 'p95_absolute_delta': 5.64, 'max_absolute_delta': 9.6} seconds 106.335
+2024-25 playoffs {'stints': 4154, 'possessions': 16025} {'comparisons': 166, 'within_two': 63, 'mean_delta': -2.303855421686747, 'p95_absolute_delta': 5.4, 'max_absolute_delta': 9.28} seconds 6.734
+{"bundles": ["data/derived/impact-event-gate/bundles/25002650fb6f299948c75cc9caf6a11d03e32c2dd0aefeb8a7c06a1126c59291.json.gz", "data/derived/impact-event-gate/bundles/37e961014436d108114e084addcaf5d23f50a95a7511908700579fa01b20915a.json.gz", "data/derived/impact-event-gate/bundles/1aa4bbe6f275ae06647241a72c6900d377c101e10cbdc0b898b961e718effdd5.json.gz", "data/derived/impact-event-gate/bundles/3ea14258d4c4ac7c9d376ec95f65f9ac418ac158c12f0097d91beaa9ed026881.json.gz", "data/derived/impact-event-gate/bundles/b3fe49d5919562bc017e56652197057850f729e12031ca76eab66541967ec939.json.gz", "data/derived/impact-event-gate/bundles/91cc3abe10a43b4a073f0c96d3ce2128a06f0a8f224a5f1fbbd813ab9e84bd6a.json.gz"]}

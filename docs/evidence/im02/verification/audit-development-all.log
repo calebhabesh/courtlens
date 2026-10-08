@@ -1,0 +1,24 @@
+2025-26:regular_season 200 {'patched': 198, 'excluded': 2}
+2025-26:regular_season 400 {'patched': 397, 'excluded': 3}
+2025-26:regular_season 600 {'patched': 596, 'excluded': 4}
+2025-26:regular_season 800 {'patched': 795, 'excluded': 5}
+2025-26:regular_season 1000 {'patched': 995, 'excluded': 5}
+2025-26:regular_season 1200 {'patched': 1195, 'excluded': 5}
+2025-26:regular_season {"clean": 0, "patched": 1224, "excluded": 6}
+2025-26:playoffs {"clean": 21, "patched": 61, "excluded": 3}
+2023-24:regular_season 200 {'patched': 176, 'excluded': 24}
+2023-24:regular_season 400 {'patched': 360, 'excluded': 40}
+2023-24:regular_season 600 {'patched': 552, 'excluded': 48}
+2023-24:regular_season 800 {'patched': 740, 'excluded': 60}
+2023-24:regular_season 1000 {'patched': 918, 'excluded': 82}
+2023-24:regular_season 1200 {'patched': 1109, 'excluded': 91}
+2023-24:regular_season {"clean": 0, "patched": 1137, "excluded": 93}
+2023-24:playoffs {"clean": 0, "patched": 72, "excluded": 10}
+2024-25:regular_season 200 {'patched': 194, 'excluded': 6}
+2024-25:regular_season 400 {'patched': 390, 'excluded': 10}
+2024-25:regular_season 600 {'patched': 588, 'excluded': 12}
+2024-25:regular_season 800 {'patched': 782, 'excluded': 18}
+2024-25:regular_season 1000 {'patched': 974, 'excluded': 26}
+2024-25:regular_season 1200 {'patched': 1170, 'excluded': 30}
+2024-25:regular_season {"clean": 0, "patched": 1198, "excluded": 32}
+2024-25:playoffs {"clean": 0, "patched": 81, "excluded": 3}

@@ -1,0 +1,12 @@
+E501 Line too long (111 > 100)
+   --> tests/fixture_data.py:249:101
+    |
+247 |         )
+248 |     )
+249 |     session.add(PublishedSnapshot(channel="public", snapshot_id=snapshot.id, published_at=snapshot.created_at))
+    |                                                                                                     ^^^^^^^^^^^
+250 |     session.commit()
+251 |     return dataset.id
+    |
+
+Found 1 error.

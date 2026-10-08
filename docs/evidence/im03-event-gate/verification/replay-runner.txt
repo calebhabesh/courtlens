@@ -1,0 +1,26 @@
+from pathlib import Path
+import time
+from sqlalchemy import text
+from courtlens.database import engine,SessionLocal
+from courtlens.ingestion.impact_population import read_json
+from courtlens.ingestion.impact_repair_audit import retain_candidate
+from courtlens.ingestion.native_reconstruction import content_hash
+from courtlens.models import new_uuid
+from courtlens.services.possession_warehouse import build_possession_warehouse_for_season
+population=read_json(Path('docs/evidence/im03-event-gate/population-receipts.json.gz'))
+tables=list(read_json(Path('docs/evidence/im03/idempotence.json.gz'))['before'])
+def counts():
+ with engine.connect() as c:
+  return {t:c.scalar(text('SELECT count(*) FROM '+t)) for t in tables}
+start=time.monotonic();before=counts();replays=[]
+for receipt in population['receipts']:
+ phase_start=time.monotonic()
+ with SessionLocal.begin() as session:
+  replay=build_possession_warehouse_for_season(session,dataset_id=new_uuid(),season=receipt['season'],impact_bundle=Path(receipt['bundle_path']))
+ assert replay['reused'] and replay['dataset_id']==receipt['dataset_id'] and replay['status']=='ready'
+ replay.update(season=receipt['season'],phase=receipt['phase'],elapsed_seconds=round(time.monotonic()-phase_start,3))
+ replays.append(replay);print(replay,flush=True)
+after=counts();assert before==after
+result={'before':before,'after':after,'replays':replays};result['content_sha256']=content_hash(result);result['elapsed_seconds']=round(time.monotonic()-start,3)
+retain_candidate(Path('docs/evidence/im03-event-gate/idempotence.json.gz'),result)
+print('six sealed replays complete; all twelve table counts unchanged',result['elapsed_seconds'],flush=True)

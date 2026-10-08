@@ -1,0 +1,17 @@
+................F...                                                     [100%]
+=================================== FAILURES ===================================
+_ test_real_archive_missing_substitutions_tolerance_arbitration_and_exclusion __
+
+    def test_real_archive_missing_substitutions_tolerance_arbitration_and_exclusion():
+        fixture_path = FIXTURE.parent / "archive-failures.json.gz"
+        fixture = json.loads(gzip.decompress(fixture_path.read_bytes()))
+        assert content_hash(fixture["games"]) == fixture["content_sha256"]
+        repaired = reconstruct_repaired_game(game_id="0022501221", **fixture["games"]["0022501221"])
+        assert repaired["quality"] == "patched"
+>       assert repaired["rule_counts"]["IM02-R2"] == 7
+E       assert 0 == 7
+
+tests/unit/test_possession_repair.py:308: AssertionError
+=========================== short test summary info ============================
+FAILED tests/unit/test_possession_repair.py::test_real_archive_missing_substitutions_tolerance_arbitration_and_exclusion
+1 failed, 19 passed in 0.50s

@@ -1,0 +1,8 @@
+2025-26:regular_season 200 {'patched': 198, 'excluded': 2}
+2025-26:regular_season 400 {'patched': 397, 'excluded': 3}
+2025-26:regular_season 600 {'patched': 596, 'excluded': 4}
+2025-26:regular_season 800 {'patched': 795, 'excluded': 5}
+2025-26:regular_season 1000 {'patched': 995, 'excluded': 5}
+2025-26:regular_season 1200 {'patched': 1195, 'excluded': 5}
+2025-26:regular_season {"clean": 0, "patched": 1224, "excluded": 6}
+2025-26:playoffs {"clean": 21, "patched": 61, "excluded": 3}

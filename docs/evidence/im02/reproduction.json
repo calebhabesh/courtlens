@@ -1,0 +1,13 @@
+{
+  "archive_content_sha256": "c657a3c63929476fa60004be2e428d1310f771ebce6840e537aa6d61d38512cb",
+  "archive_elapsed_seconds": [
+    200.646,
+    204.171
+  ],
+  "candidate_count": 3941,
+  "code_and_policy_hashes_match": true,
+  "native_byte_identical": true,
+  "native_content_sha256": "6c39a7b666b756efd783444cc435ce1b7d109d5014c58666f18538dc757231a0",
+  "native_starter_overrides": 23,
+  "repair_envelopes": 472716
+}

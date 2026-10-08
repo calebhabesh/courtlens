@@ -87,3 +87,26 @@ models:
       - name: player_id
         data_tests: [not_null]
 
+
+  - name: mart_workbench_possession_factors
+    description: >-
+      IM03 additive six-factor outcomes per team/game with method quality and source policy.
+      Candidate datasets retain the unresolved box-estimate possession gate.
+    columns:
+      - name: dataset_id
+        data_tests: [not_null]
+      - name: game_id
+        data_tests: [not_null]
+      - name: offense_team_id
+        data_tests: [not_null]
+      - name: defense_team_id
+        data_tests: [not_null]
+      - name: ts_attempts
+        data_tests: [not_null]
+      - name: orb_opportunities
+        data_tests: [not_null]
+      - name: quality
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: [clean, patched]

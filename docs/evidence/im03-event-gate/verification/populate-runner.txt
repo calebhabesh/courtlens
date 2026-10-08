@@ -1,0 +1,40 @@
+from pathlib import Path
+import time
+from datetime import datetime, timezone
+from sqlalchemy import text, select
+from courtlens.database import engine, SessionLocal
+from courtlens.ingestion.impact_population import read_json
+from courtlens.ingestion.impact_repair_audit import retain_candidate
+from courtlens.ingestion.native_reconstruction import content_hash
+from courtlens.ingestion.sportsdataverse import hash_file
+from courtlens.services.possession_warehouse import build_possession_warehouse_for_season
+from courtlens.models import new_uuid
+from courtlens.workbench_models import WorkbenchDataset
+root=Path('data/derived/impact-event-gate/bundles')
+while len(list(root.glob('*.json.gz')))!=6:
+ time.sleep(2)
+items=[(path,read_json(path)) for path in root.glob('*.json.gz')]
+items.sort(key=lambda x: ({'2025-26':0,'2023-24':1,'2024-25':2}[x[1]['season']],x[1]['phase']=='playoffs'))
+assert str(engine.url).endswith('127.0.0.1:55434/courtlens_im03_event')
+start=time.monotonic()
+receipts=[]
+with engine.connect() as c:
+ version=c.scalar(text('SELECT version()'))
+ assert c.scalar(text('SELECT count(*) FROM workbench_datasets'))==0
+ for path,bundle in items:
+  assert all(bundle['verification_gate'].values()),bundle['verification_gate']
+for path,bundle in items:
+ phase_start=time.monotonic()
+ with SessionLocal.begin() as session:
+  receipt=build_possession_warehouse_for_season(session,dataset_id=new_uuid(),season=bundle['season'],impact_bundle=path)
+ with SessionLocal() as session:
+  status=session.scalar(select(WorkbenchDataset.status).where(WorkbenchDataset.id==receipt['dataset_id']))
+ assert status=='ready' and not receipt['reused']
+ receipt.update(status=status,bundle_path=str(path),season=bundle['season'],phase=bundle['phase'],verification_gate=bundle['verification_gate'],elapsed_seconds=round(time.monotonic()-phase_start,3))
+ receipts.append(receipt)
+ print(receipt,flush=True)
+result={'database_version':version,'observed_at':datetime.now(timezone.utc).isoformat(),'receipts':receipts,'schema_and_method_sha256':{p:hash_file(Path(p))[0] for p in ('migrations/versions/10b810a4f008_impact_membership_sealing.py','src/courtlens/workbench_models.py','docs/design/impact-possession-method-v2.md','docs/design/impact-event-verification-v1.md')},'runner_sha256':hash_file(Path(__file__))[0]}
+result['content_sha256']=content_hash(result)
+result['elapsed_seconds']=round(time.monotonic()-start,3)
+retain_candidate(Path('docs/evidence/im03-event-gate/population-receipts.json.gz'),result)
+print('population complete',result['elapsed_seconds'],flush=True)

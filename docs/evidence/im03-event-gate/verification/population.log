@@ -1,0 +1,25 @@
+persisted 2025-26 regular_season 200
+persisted 2025-26 regular_season 400
+persisted 2025-26 regular_season 600
+persisted 2025-26 regular_season 800
+persisted 2025-26 regular_season 1000
+persisted 2025-26 regular_season 1200
+{'dataset_id': 'c172eb00-dca8-4714-a490-a80350e9838f', 'content_sha256': '25002650fb6f299948c75cc9caf6a11d03e32c2dd0aefeb8a7c06a1126c59291', 'reused': False, 'verification_gate': {'accepted_player_seconds_preserved': True, 'all_available_public_sequences_reviewed': True, 'all_event_boundaries_and_factors_verified': True, 'points_and_shooting_conserved': True}, 'possessions': 245711, 'stints': 68925, 'status': 'ready', 'bundle_path': 'data/derived/impact-event-gate/bundles/25002650fb6f299948c75cc9caf6a11d03e32c2dd0aefeb8a7c06a1126c59291.json.gz', 'season': '2025-26', 'phase': 'regular_season', 'elapsed_seconds': 129.502}
+{'dataset_id': 'e89858b1-fd90-4efd-9d0e-f30469819732', 'content_sha256': '37e961014436d108114e084addcaf5d23f50a95a7511908700579fa01b20915a', 'reused': False, 'verification_gate': {'accepted_player_seconds_preserved': True, 'all_available_public_sequences_reviewed': True, 'all_event_boundaries_and_factors_verified': True, 'points_and_shooting_conserved': True}, 'possessions': 15790, 'stints': 4913, 'status': 'ready', 'bundle_path': 'data/derived/impact-event-gate/bundles/37e961014436d108114e084addcaf5d23f50a95a7511908700579fa01b20915a.json.gz', 'season': '2025-26', 'phase': 'playoffs', 'elapsed_seconds': 10.232}
+persisted 2023-24 regular_season 200
+persisted 2023-24 regular_season 400
+persisted 2023-24 regular_season 600
+persisted 2023-24 regular_season 800
+persisted 2023-24 regular_season 1000
+persisted 2023-24 regular_season 1200
+{'dataset_id': '01c5b713-fcd8-480d-8689-942ef1a16476', 'content_sha256': '1aa4bbe6f275ae06647241a72c6900d377c101e10cbdc0b898b961e718effdd5', 'reused': False, 'verification_gate': {'accepted_player_seconds_preserved': True, 'all_available_public_sequences_reviewed': True, 'all_event_boundaries_and_factors_verified': True, 'points_and_shooting_conserved': True}, 'possessions': 241673, 'stints': 58652, 'status': 'ready', 'bundle_path': 'data/derived/impact-event-gate/bundles/1aa4bbe6f275ae06647241a72c6900d377c101e10cbdc0b898b961e718effdd5.json.gz', 'season': '2023-24', 'phase': 'regular_season', 'elapsed_seconds': 139.071}
+{'dataset_id': 'db8c7bc8-5218-4544-b10e-60e48be2ca43', 'content_sha256': '3ea14258d4c4ac7c9d376ec95f65f9ac418ac158c12f0097d91beaa9ed026881', 'reused': False, 'verification_gate': {'accepted_player_seconds_preserved': True, 'all_available_public_sequences_reviewed': True, 'all_event_boundaries_and_factors_verified': True, 'points_and_shooting_conserved': True}, 'possessions': 15133, 'stints': 3905, 'status': 'ready', 'bundle_path': 'data/derived/impact-event-gate/bundles/3ea14258d4c4ac7c9d376ec95f65f9ac418ac158c12f0097d91beaa9ed026881.json.gz', 'season': '2023-24', 'phase': 'playoffs', 'elapsed_seconds': 10.455}
+persisted 2024-25 regular_season 200
+persisted 2024-25 regular_season 400
+persisted 2024-25 regular_season 600
+persisted 2024-25 regular_season 800
+persisted 2024-25 regular_season 1000
+persisted 2024-25 regular_season 1200
+{'dataset_id': '9dea364c-0c9a-453d-8c09-21663cabcb7e', 'content_sha256': 'b3fe49d5919562bc017e56652197057850f729e12031ca76eab66541967ec939', 'reused': False, 'verification_gate': {'accepted_player_seconds_preserved': True, 'all_available_public_sequences_reviewed': True, 'all_event_boundaries_and_factors_verified': True, 'points_and_shooting_conserved': True}, 'possessions': 241609, 'stints': 61514, 'status': 'ready', 'bundle_path': 'data/derived/impact-event-gate/bundles/b3fe49d5919562bc017e56652197057850f729e12031ca76eab66541967ec939.json.gz', 'season': '2024-25', 'phase': 'regular_season', 'elapsed_seconds': 148.733}
+{'dataset_id': 'd7515981-d1b2-44c6-bbc1-25f5d72ae3d8', 'content_sha256': '91cc3abe10a43b4a073f0c96d3ce2128a06f0a8f224a5f1fbbd813ab9e84bd6a', 'reused': False, 'verification_gate': {'accepted_player_seconds_preserved': True, 'all_available_public_sequences_reviewed': True, 'all_event_boundaries_and_factors_verified': True, 'points_and_shooting_conserved': True}, 'possessions': 16025, 'stints': 4154, 'status': 'ready', 'bundle_path': 'data/derived/impact-event-gate/bundles/91cc3abe10a43b4a073f0c96d3ce2128a06f0a8f224a5f1fbbd813ab9e84bd6a.json.gz', 'season': '2024-25', 'phase': 'playoffs', 'elapsed_seconds': 12.787}
+population complete 450.791

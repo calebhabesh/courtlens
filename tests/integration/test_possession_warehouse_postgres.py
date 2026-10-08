@@ -615,3 +615,87 @@ def test_cutoff_safe_exposure_queries(
                 )
             )
             db_session.commit()
+
+
+def _v2_repair_result() -> dict:
+    import gzip
+    import json
+    from pathlib import Path
+
+    from courtlens.domain.possession_repair import reconstruct_repaired_game
+
+    path = Path(__file__).resolve().parents[1] / "fixtures/impact_repair/b19d.json.gz"
+    fixture = json.loads(gzip.decompress(path.read_bytes()))["games"]["0022500007"]
+    evidence = {
+        (e["period"], e["team"]): {
+            k: v for k, v in e.items() if k not in ("period", "team", "expected")
+        }
+        for e in fixture["evidence"]
+    }
+    return reconstruct_repaired_game(
+        game_id="0022500007",
+        v3_rows=fixture["rows"],
+        cdn_rows=None,
+        boxes=fixture["boxes"],
+        team_points=fixture["team_points"],
+        input_hashes=fixture["input_hashes"],
+        starter_evidence=evidence,
+    )
+
+
+def test_v2_repairs_use_existing_registry_and_caller_transaction(db_session, test_dataset):
+    from courtlens.services.possession_warehouse import record_repair_result_overrides
+
+    result = _v2_repair_result()
+    rows = record_repair_result_overrides(
+        db_session, dataset_id=test_dataset.id, result=result, author="IM02 automated policy"
+    )
+    assert len(rows) == 7
+    assert result["rule_counts"]["IM02-R1"] == 6
+    assert result["rule_counts"]["IM02-R5"] == 1
+    assert all(r.override_type == "policy_v2_repair" for r in rows)
+    assert rows[0].original_value_json == "25:60"
+    assert rows[0].override_value_json == result["repairs"][0]
+    again = record_repair_result_overrides(
+        db_session, dataset_id=test_dataset.id, result=result, author="repeat"
+    )
+    assert [r.id for r in again] == [r.id for r in rows]
+    identifiers = [r.id for r in rows]
+    db_session.rollback()
+    assert all(db_session.get(WorkbenchReconstructionOverride, key) is None for key in identifiers)
+    rows = record_repair_result_overrides(
+        db_session, dataset_id=test_dataset.id, result=result, author="IM02 automated policy"
+    )
+    db_session.commit()
+    assert len(get_reconstruction_overrides(db_session, dataset_id=test_dataset.id)) == 7
+    rows[0].reason = "silently replace evidence"
+    with pytest.raises(RuntimeError, match=r"[Ss]ealed"):
+        db_session.flush()
+    db_session.rollback()
+
+
+def test_v2_tampered_envelope_is_rejected_before_any_write(db_session, test_dataset):
+    from courtlens.ingestion.native_reconstruction import content_hash
+    from courtlens.services.possession_warehouse import record_repair_result_overrides
+
+    result = _v2_repair_result()
+    result["repairs"][1]["replacement"] = "0"
+    result["content_sha256"] = content_hash(
+        {k: v for k, v in result.items() if k != "content_sha256"}
+    )
+    with pytest.raises(ValueError, match="envelope"):
+        record_repair_result_overrides(
+            db_session, dataset_id=test_dataset.id, result=result, author="test"
+        )
+    assert get_reconstruction_overrides(db_session, dataset_id=test_dataset.id) == []
+
+
+def test_v2_repairs_cannot_be_used_as_v1_starter_values(db_session, test_dataset):
+    from courtlens.services.possession_warehouse import record_repair_result_overrides
+
+    record_repair_result_overrides(
+        db_session, dataset_id=test_dataset.id, result=_v2_repair_result(), author="test"
+    )
+    overrides = get_reconstruction_overrides(db_session, dataset_id=test_dataset.id)
+    assert all(r.override_type != "starter_override" for r in overrides)
+    db_session.rollback()
