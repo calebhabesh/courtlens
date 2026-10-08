@@ -1,0 +1,114 @@
+terms: HTTP 403
+hustle: timeout
+defense: timeout
+rim_defense: timeout
+passing: timeout
+playtype_Isolation: timeout
+playtype_Transition: timeout
+playtype_PRBallHandler: timeout
+playtype_PRRollman: timeout
+playtype_Postup: timeout
+playtype_Spotup: timeout
+playtype_Handoff: timeout
+playtype_Cut: timeout
+playtype_OffScreen: timeout
+playtype_OffRebound: timeout
+playtype_Misc: timeout
+scoreboard: browser_network_error
+play_by_play: browser_network_error
+{
+  "observation_id": "21d1c8da-6cd7-4d61-87e2-0e0155ef2ba2",
+  "content_sha256": "9fe6464d31fe321ec35e29d30c41f2c6d8687b6eba5e477d3ed91cb047123532",
+  "endpoints": [
+    {
+      "key": "terms",
+      "status": "source_blocked",
+      "technical_status": "http_403"
+    },
+    {
+      "key": "hustle",
+      "status": "source_blocked",
+      "technical_status": "timeout"
+    },
+    {
+      "key": "defense",
+      "status": "source_blocked",
+      "technical_status": "timeout"
+    },
+    {
+      "key": "rim_defense",
+      "status": "source_blocked",
+      "technical_status": "timeout"
+    },
+    {
+      "key": "passing",
+      "status": "source_blocked",
+      "technical_status": "timeout"
+    },
+    {
+      "key": "playtype_Isolation",
+      "status": "source_blocked",
+      "technical_status": "timeout"
+    },
+    {
+      "key": "playtype_Transition",
+      "status": "source_blocked",
+      "technical_status": "timeout"
+    },
+    {
+      "key": "playtype_PRBallHandler",
+      "status": "source_blocked",
+      "technical_status": "timeout"
+    },
+    {
+      "key": "playtype_PRRollman",
+      "status": "source_blocked",
+      "technical_status": "timeout"
+    },
+    {
+      "key": "playtype_Postup",
+      "status": "source_blocked",
+      "technical_status": "timeout"
+    },
+    {
+      "key": "playtype_Spotup",
+      "status": "source_blocked",
+      "technical_status": "timeout"
+    },
+    {
+      "key": "playtype_Handoff",
+      "status": "source_blocked",
+      "technical_status": "timeout"
+    },
+    {
+      "key": "playtype_Cut",
+      "status": "source_blocked",
+      "technical_status": "timeout"
+    },
+    {
+      "key": "playtype_OffScreen",
+      "status": "source_blocked",
+      "technical_status": "timeout"
+    },
+    {
+      "key": "playtype_OffRebound",
+      "status": "source_blocked",
+      "technical_status": "timeout"
+    },
+    {
+      "key": "playtype_Misc",
+      "status": "source_blocked",
+      "technical_status": "timeout"
+    },
+    {
+      "key": "scoreboard",
+      "status": "source_blocked",
+      "technical_status": "browser_network_error"
+    },
+    {
+      "key": "play_by_play",
+      "status": "source_blocked",
+      "technical_status": "browser_network_error"
+    }
+  ]
+}

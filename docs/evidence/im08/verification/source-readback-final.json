@@ -1,0 +1,34 @@
+{
+  "boundary": "source diagnostics only; no analytical values or freshness established",
+  "complete_endpoint_matrix": 18,
+  "database_admission": false,
+  "expected_games": 1230,
+  "expected_players": 582,
+  "independent_scope_reproduced": true,
+  "maximum_request_start_gap_seconds": 30.003,
+  "minimum_request_start_gap_seconds": 10.001,
+  "observation_content_sha256": "9fe6464d31fe321ec35e29d30c41f2c6d8687b6eba5e477d3ed91cb047123532",
+  "observation_id": "21d1c8da-6cd7-4d61-87e2-0e0155ef2ba2",
+  "receipt_sha256": "8df0640f1100d2b139a3cfaa1b9b92a5645dfdee5b1520e07aa610fc51a380eb",
+  "retained_assets": [
+    {
+      "attribution": "NBA.com / NBA Stats; private noncommercial source diagnostics only.",
+      "bytes": 375,
+      "content_version_id": "fd2072ae-7b79-543f-8445-68e40ca2a19c",
+      "name": "terms",
+      "object": "objects/a6/a61feb815b0c07fb2e800b93a4666480024b6023521bb10ca356217036b8003e",
+      "observation_id": "2bd77abc-6b0d-4e19-9edd-050c820d062a",
+      "observed_at": "2026-10-08T14:19:07.478Z",
+      "sha256": "a61feb815b0c07fb2e800b93a4666480024b6023521bb10ca356217036b8003e",
+      "url": "https://www.nba.com/termsofuse"
+    }
+  ],
+  "source_blocked": 18,
+  "technical_outcomes": {
+    "browser_network_error": 2,
+    "http_403": 1,
+    "timeout": 15
+  },
+  "two_identical_readbacks": true,
+  "version": "courtlens-im08-source-verification-v1"
+}
