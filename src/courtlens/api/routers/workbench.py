@@ -33,6 +33,7 @@ from courtlens.api.workbench_schemas import (
     DistributionResponse,
     ForecastIssuanceDetailResponse,
     ForecastsListResponse,
+    ImpactResponse,
     ImportWorkspaceRequest,
     InvestigationDetailResponse,
     InvestigationReproduceResponse,
@@ -92,14 +93,15 @@ from courtlens.api.workbench_schemas import (
 from courtlens.config import get_settings
 from courtlens.database import get_db
 from courtlens.domain.context import CapabilityEntry, CapabilityStatus
+from courtlens.domain.impact_catalog import SERVING_CATALOG as METRIC_CATALOG
+from courtlens.domain.impact_catalog import VERSION as SERVING_VERSION
 from courtlens.domain.metrics import (
-    METRIC_CATALOG,
     METRIC_CATALOG_VERSION,
     SUPPORTED_PHASES,
     list_metric_definitions,
 )
 from courtlens.domain.personal_state import CANONICAL_BUILTIN_VIEWS
-from courtlens.domain.query_spec import ALLOWED_METADATA_FIELDS
+from courtlens.domain.query_spec import ALLOWED_METADATA_FIELDS, QuerySpec, WindowKind
 from courtlens.domain.query_url import deserialize_params_to_query, query_spec_to_research_query
 from courtlens.services.analytical_ops import (
     compare_periods_service,
@@ -116,6 +118,11 @@ from courtlens.services.entity_lookup import (
     scoped_team_associations,
 )
 from courtlens.services.identity_crosswalk import resolve_crosswalk
+from courtlens.services.impact_serving import (
+    impact_catalog_scope,
+    impact_for_query,
+    query_uses_impact,
+)
 from courtlens.services.measurements import (
     get_player_measurements_detail_service,
     query_measurements_service,
@@ -187,6 +194,7 @@ from courtlens.workbench_models import (
     ModelPolicyActivation,
     PlayerPortrait,
     SavedInvestigation,
+    WorkbenchIdentity,
     WorkbenchJob,
 )
 
@@ -303,6 +311,7 @@ def get_catalog(
         published_at=context.published_at,
         warnings=context.warnings,
         capabilities=capabilities,
+        impact=impact_catalog_scope(),
     )
 
 
@@ -312,9 +321,65 @@ def get_metrics(version: str | None = None) -> MetricCatalogResponse:
     target_version = version or METRIC_CATALOG_VERSION
     definitions = [
         MetricDefinitionSchema(**m.to_dict())
-        for m in list_metric_definitions(version=target_version)
+        for m in (
+            METRIC_CATALOG.values()
+            if target_version == SERVING_VERSION
+            else list_metric_definitions(version=target_version)
+        )
     ]
     return MetricCatalogResponse(version=target_version, metrics=definitions)
+
+
+@router.get("/impact", response_model=ImpactResponse)
+def get_impact(
+    season: str = Query("2025-26", pattern=r"^\d{4}-\d{2}$"),
+    phase: Literal["regular_season", "playoffs"] = "regular_season",
+    before_date: date = Query(date(2026, 7, 1), alias="beforeDate"),
+    player_id: str | None = Query(None, alias="playerId", max_length=128),
+    team_id: str | None = Query(None, alias="teamId", max_length=128),
+    limit: int = Query(20, ge=1, le=100),
+    window: WindowKind = WindowKind.SEASON,
+    session: Session = Depends(get_db),
+) -> ImpactResponse:
+    """Bounded descriptive coefficients; no acquisition, fitting or raw source export."""
+    from courtlens.domain.query_spec import TeamScope, WindowSpec
+
+    query = QuerySpec(
+        season=season,
+        phase=phase,
+        before_date=before_date,
+        team_scope=TeamScope(team_id=team_id),
+        window=WindowSpec(kind=WindowKind(window)),
+    )
+    result = impact_for_query(query, before_date.isoformat())
+    players = result.pop("players")
+    ids = (
+        [player_id]
+        if player_id
+        else sorted(
+            [pid for pid in players if players[pid]["metrics"].get("rapm") is not None],
+            key=lambda pid: (
+                players[pid]["metrics"].get("rapm") is None,
+                -(players[pid]["metrics"].get("rapm") or 0),
+                pid,
+            ),
+        )[:limit]
+    )
+    identities = session.execute(
+        select(WorkbenchIdentity.external_id, WorkbenchIdentity.display_name).where(
+            WorkbenchIdentity.kind == "player", WorkbenchIdentity.external_id.in_(ids)
+        )
+    ).all()
+    names = {pid: name for pid, name in identities}
+    return ImpactResponse(
+        **result,
+        total_players=len(players),
+        players=[
+            {"player_id": pid, "player_name": names.get(pid) or f"NBA player {pid}", **players[pid]}
+            for pid in ids
+            if pid in players
+        ],
+    )
 
 
 @router.post("/query", response_model=WorkbenchQueryResponse)
@@ -374,6 +439,7 @@ def execute_query_endpoint(
             sample_sizes=r["sample_sizes"],
             percentiles=r.get("percentiles"),
             cohort_sample_sizes=r.get("cohort_sample_sizes"),
+            impact_support=r.get("impact_support"),
         )
         for r in items_raw
     ]
@@ -395,6 +461,13 @@ def execute_query_endpoint(
         next_cursor=next_cursor,
         has_more=has_more,
         warnings=context.warnings,
+        impact={
+            k: v
+            for k, v in impact_for_query(spec, context.before_date.isoformat()).items()
+            if k != "players"
+        }
+        if query_uses_impact(spec)
+        else None,
     )
 
 
@@ -898,6 +971,9 @@ def create_saved_analysis(
         requested_before_date=spec.before_date,
         requested_window=spec.window.kind.value,
     )
+    if query_uses_impact(spec) and spec.impact_manifest_sha256 is None:
+        digest = impact_for_query(spec, context.before_date.isoformat())["manifest_sha256"]
+        spec = spec.model_copy(update={"impact_manifest_sha256": digest})
     query = query_spec_to_research_query(spec)
     inv = save_investigation(session, context, title=payload.title, query=query)
     inv_data = get_investigation(session, inv.id)
@@ -1382,6 +1458,7 @@ def add_custom_view_endpoint(
     try:
         view = CustomViewDefinition(
             name=payload.name,
+            metric_version=payload.metric_version,
             columns=payload.columns,
             unavailable_columns=payload.unavailable_columns,
             sort_field=payload.sort_field,

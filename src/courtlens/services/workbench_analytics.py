@@ -23,6 +23,7 @@ from courtlens.archive_models import (
     ArchiveTeamGame,
     ArchiveVersion,
 )
+from courtlens.domain.impact_catalog import SERVING_CATALOG
 from courtlens.domain.metrics import (
     METRIC_CATALOG,
     METRIC_CATALOG_VERSION,
@@ -106,6 +107,7 @@ class ResearchQuery:
     sort_direction: str | None = None
     limit: int = 50
     cursor: str | None = None
+    impact_manifest_sha256: str | None = None
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -123,6 +125,11 @@ class ResearchQuery:
             "sort_metric": self.sort_metric,
             "sort_direction": self.sort_direction,
             "limit": self.limit,
+            **(
+                {"impact_manifest_sha256": self.impact_manifest_sha256}
+                if self.impact_manifest_sha256
+                else {}
+            ),
         }
 
 
@@ -150,7 +157,7 @@ def compute_query_context_hash(context: ResolvedContext, query: ResearchQuery) -
         query.min_minutes or 0.0,
         query.min_avg_minutes or 0.0,
         query.sort_metric,
-        query.sort_direction or METRIC_CATALOG[query.sort_metric].default_sort_direction,
+        query.sort_direction or SERVING_CATALOG[query.sort_metric].default_sort_direction,
     ]
     return canonical_hash(payload)[:32]
 
@@ -1280,6 +1287,7 @@ def save_investigation(
         sort_direction=query.sort_direction,
         limit=MAX_EXPORT_ROWS,
         cursor=None,
+        impact_manifest_sha256=query.impact_manifest_sha256,
     )
     items, _, _, _ = execute_player_research_query(session, context, unbounded_query)
 
@@ -1290,7 +1298,9 @@ def save_investigation(
         "title": title,
         "query": query.to_dict(),
         "context": context.to_dict(),
-        "metric_version": METRIC_CATALOG_VERSION,
+        "metric_version": "courtlens-stats-v3"
+        if query.impact_manifest_sha256
+        else METRIC_CATALOG_VERSION,
         "total_rows": len(result_payload),
         "result_sha256": result_sha256,
         "timestamp": utc_now().isoformat(),
@@ -1307,7 +1317,9 @@ def save_investigation(
         title=title,
         query_json=query.to_dict(),
         context_json=context.to_dict(),
-        metric_version=METRIC_CATALOG_VERSION,
+        metric_version="courtlens-stats-v3"
+        if query.impact_manifest_sha256
+        else METRIC_CATALOG_VERSION,
         result_sha256=result_sha256,
         result_artifact_path=str(artifact_path),
         warnings_json=list(context.warnings),
@@ -1382,6 +1394,7 @@ def reproduce_investigation(session: Session, investigation_id: str) -> dict[str
         team_id=q_dict.get("team_id"),
         name=q_dict.get("name"),
         metrics=q_dict.get("metrics"),
+        impact_manifest_sha256=q_dict.get("impact_manifest_sha256"),
         min_games=q_dict.get("min_games"),
         min_minutes=q_dict.get("min_minutes"),
         min_avg_minutes=q_dict.get("min_avg_minutes"),

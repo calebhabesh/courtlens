@@ -36,6 +36,9 @@ class Settings(BaseSettings):
     bdl_requests_per_minute: int = Field(default=5, ge=1, le=600)
     raw_store_path: Path = Path("data/raw")
     artifacts_root: Path = Path("data/artifacts")
+    impact_serving_manifest: Path | None = Path(
+        "data/derived/impact-serving-v1/2cd9c98b2594d948edc2c574e082e1b8b06ff4d6bfeca294f87e8062eae76d48.json"
+    )
     portraits_cache_path: Path = Path("data/cache/portraits")
     operator_token: SecretStr = SecretStr("local-operator-secret-change-before-deploy")
     live_enabled: bool = False

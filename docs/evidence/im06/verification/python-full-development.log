@@ -1,0 +1,281 @@
+INFO  [alembic.runtime.migration] Context impl PostgresqlImpl.
+INFO  [alembic.runtime.migration] Will assume transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade  -> 0001, Create the initial CourtLoad operational schema.
+INFO  [alembic.runtime.migration] Running upgrade 0001 -> 8ffd4c5912e2, archive lineage and facts
+INFO  [alembic.runtime.migration] Running upgrade 8ffd4c5912e2 -> 4b19f0a2c7de, warehouse publication state and immutable serving rows
+INFO  [alembic.runtime.migration] Running upgrade 4b19f0a2c7de -> 882c8b450cb3, workbench_contracts_and_tables
+INFO  [alembic.runtime.migration] Running upgrade 882c8b450cb3 -> 1b66214e7c08, personal_workspace_state
+INFO  [alembic.runtime.migration] Running upgrade 1b66214e7c08 -> c7e21a084f91, identity_crosswalk_and_measurements
+INFO  [alembic.runtime.migration] Running upgrade c7e21a084f91 -> e8b19a084f92, rich_source_admission_tables
+INFO  [alembic.runtime.migration] Running upgrade e8b19a084f92 -> f9c31a084f93, possession_and_stint_warehouse_tables
+INFO  [alembic.runtime.migration] Running upgrade f9c31a084f93 -> 0af4286cb194, Append-only independent research inputs; no release publication or retained-row changes.
+INFO  [alembic.runtime.migration] Running upgrade 0af4286cb194 -> 27b810a4f001, B28 immutable financial source books and correction lineage.
+INFO  [alembic.runtime.migration] Running upgrade 27b810a4f001 -> 31b810a4f002, B31 bounded Live demand, provisional observations and reconciliation evidence.
+INFO  [alembic.runtime.migration] Running upgrade 31b810a4f002 -> 35b810a4f003, B35a explicit retained conversational analytical manifests.
+INFO  [alembic.runtime.migration] Running upgrade 35b810a4f003 -> 19b810a4f004, B19b independent assignment datasets and transaction-sealed memberships.
+INFO  [alembic.runtime.migration] Running upgrade 19b810a4f004 -> 07b810a4f005, PF07b durable local assistant history, isolated from saved findings.
+INFO  [alembic.runtime.migration] Running upgrade 07b810a4f005 -> 08b810a4f006, AG03 server-owned provider transcripts; existing turn/history payloads stay valid.
+INFO  [alembic.runtime.migration] Running upgrade 08b810a4f006 -> 09b810a4f007, RN02 rename PostgreSQL functions and the administrative mutation namespace.
+INFO  [alembic.runtime.migration] Running upgrade 09b810a4f007 -> 10b810a4f008, Seal IM03 memberships at the admitting transaction, including ordinary inserts.
+============================= test session starts ==============================
+platform linux -- Python 3.14.7, pytest-8.4.2, pluggy-1.6.0
+rootdir: /tmp/courtlens-python-0qkhu5s4
+configfile: pyproject.toml
+testpaths: tests
+plugins: anyio-4.14.2, cov-7.1.0
+collected 1796 items / 19 deselected / 1777 selected
+
+tests/integration/test_agent_evaluation_postgres.py .................... [  1%]
+..............                                                           [  1%]
+tests/integration/test_agent_loop_postgres.py ....................       [  3%]
+tests/integration/test_agent_tools_postgres.py ......................... [  4%]
+.......                                                                  [  4%]
+tests/integration/test_analytical_ops_api.py ......                      [  5%]
+tests/integration/test_analytics_api.py ......                           [  5%]
+tests/integration/test_api.py .........                                  [  6%]
+tests/integration/test_assignment_admission_postgres.py ..........       [  6%]
+tests/integration/test_assistant_history_postgres.py ..................  [  7%]
+tests/integration/test_assistant_panel_browser.py s                      [  7%]
+tests/integration/test_assistant_positions_postgres.py .......           [  8%]
+tests/integration/test_assistant_retrieval_postgres.py ...               [  8%]
+tests/integration/test_assistant_rule_planner_postgres.py ...........    [  8%]
+tests/integration/test_b14_api.py .......                                [  9%]
+tests/integration/test_b15_api.py ...                                    [  9%]
+tests/integration/test_b16_api.py .                                      [  9%]
+tests/integration/test_b17_api.py .                                      [  9%]
+tests/integration/test_b21_api.py ......                                 [  9%]
+tests/integration/test_b23_api.py ........                               [ 10%]
+tests/integration/test_conversation_postgres.py ......                   [ 10%]
+tests/integration/test_finance_postgres.py ........                      [ 11%]
+tests/integration/test_finance_query_postgres.py ...                     [ 11%]
+tests/integration/test_hybrid_assistant_postgres.py .................... [ 12%]
+..........                                                               [ 12%]
+tests/integration/test_hybrid_evaluation_postgres.py ................... [ 14%]
+..............................................                           [ 16%]
+tests/integration/test_impact_population_postgres.py .......             [ 16%]
+tests/integration/test_impact_serving_postgres.py ..                     [ 17%]
+tests/integration/test_ingestion.py ....                                 [ 17%]
+tests/integration/test_live_postgres.py .............                    [ 18%]
+tests/integration/test_lookup_identity_postgres.py ......                [ 18%]
+tests/integration/test_migration_b14.py .                                [ 18%]
+tests/integration/test_personal_workspace_api.py .....                   [ 18%]
+tests/integration/test_personal_workspace_migration.py ........          [ 19%]
+tests/integration/test_personal_workspace_postgres.py ..                 [ 19%]
+tests/integration/test_planner.py .....                                  [ 19%]
+tests/integration/test_possession_warehouse_postgres.py .......          [ 19%]
+tests/integration/test_publication_postgres.py ..                        [ 20%]
+tests/integration/test_rename_database_postgres.py ..................... [ 21%]
+........................                                                 [ 22%]
+tests/integration/test_research_input_sealing.py .......                 [ 23%]
+tests/integration/test_research_limits.py .....                          [ 23%]
+tests/integration/test_research_readiness_postgres.py ...                [ 23%]
+tests/integration/test_research_results_api.py ..                        [ 23%]
+tests/integration/test_restore_postgres.py ..                            [ 23%]
+tests/integration/test_revamp_evaluation_postgres.py ...                 [ 23%]
+tests/integration/test_rich_admission_postgres.py .....                  [ 24%]
+tests/integration/test_saved_conversation_postgres.py .................. [ 25%]
+...                                                                      [ 25%]
+tests/integration/test_stats_presentation_postgres.py ................   [ 26%]
+tests/integration/test_workbench_api.py .F.....................          [ 27%]
+tests/integration/test_workbench_jobs_postgres.py ............           [ 28%]
+tests/integration/test_workbench_postgres.py ..                          [ 28%]
+tests/unit/test_agent_evaluation.py ......                               [ 28%]
+tests/unit/test_agent_loop.py .......................................... [ 31%]
+....                                                                     [ 31%]
+tests/unit/test_agent_providers.py ..................................... [ 33%]
+...                                                                      [ 33%]
+tests/unit/test_agent_tools.py .....................                     [ 34%]
+tests/unit/test_analytical_ops.py ...............                        [ 35%]
+tests/unit/test_archive_spike.py .....                                   [ 35%]
+tests/unit/test_assignment_admission.py ............                     [ 36%]
+tests/unit/test_assistant.py .......                                     [ 36%]
+tests/unit/test_assistant_awards.py ............                         [ 37%]
+tests/unit/test_assistant_page_context.py ..........                     [ 38%]
+tests/unit/test_assistant_retrieval.py ................................. [ 39%]
+.......................                                                  [ 41%]
+tests/unit/test_assistant_streaming.py .........                         [ 41%]
+tests/unit/test_b19_event_conservation.py ....................           [ 42%]
+tests/unit/test_b19_source_audit.py ...........                          [ 43%]
+tests/unit/test_backfill_resumable.py ...                                [ 43%]
+tests/unit/test_backup_connection.py ....                                [ 43%]
+tests/unit/test_challenger.py ....                                       [ 44%]
+tests/unit/test_cli.py ...                                               [ 44%]
+tests/unit/test_config.py .....                                          [ 44%]
+tests/unit/test_contract_fixture.py .                                    [ 44%]
+tests/unit/test_conversations.py ....................................... [ 46%]
+........................................................                 [ 49%]
+tests/unit/test_entity_lookup.py ...............                         [ 50%]
+tests/unit/test_evaluation.py ....                                       [ 51%]
+tests/unit/test_expected_shot.py ...                                     [ 51%]
+tests/unit/test_finance_catalog.py ..                                    [ 51%]
+tests/unit/test_finance_import.py .......................                [ 52%]
+tests/unit/test_finance_query.py ...........                             [ 53%]
+tests/unit/test_frozen_identifiers.py ......                             [ 53%]
+tests/unit/test_hybrid_assistant.py .................................... [ 55%]
+.............                                                            [ 56%]
+tests/unit/test_hybrid_evaluation.py ....                                [ 56%]
+tests/unit/test_hybrid_evaluation_quota_policy.py ........               [ 57%]
+tests/unit/test_identity_crosswalk.py ...                                [ 57%]
+tests/unit/test_impact_archive.py .......................                [ 58%]
+tests/unit/test_impact_event_repairs.py ...                              [ 58%]
+tests/unit/test_impact_extras.py ....................................... [ 60%]
+....................                                                     [ 61%]
+tests/unit/test_impact_possessions.py ..........                         [ 62%]
+tests/unit/test_impact_public_verification.py ......                     [ 62%]
+tests/unit/test_impact_ratings.py ......................                 [ 64%]
+tests/unit/test_impact_retained_ft.py ..                                 [ 64%]
+tests/unit/test_impact_serving.py ........                               [ 64%]
+tests/unit/test_impact_verification.py ...........                       [ 65%]
+tests/unit/test_live.py .........................                        [ 66%]
+tests/unit/test_live_history.py ...                                      [ 66%]
+tests/unit/test_matching.py ....                                         [ 67%]
+tests/unit/test_measurements.py ...                                      [ 67%]
+tests/unit/test_metrics_v2.py ......................                     [ 68%]
+tests/unit/test_migrate_env_names.py ..                                  [ 68%]
+tests/unit/test_narrative_check.py ..................................... [ 70%]
+...........                                                              [ 71%]
+tests/unit/test_narrative_turn.py ..............                         [ 72%]
+tests/unit/test_native_reconstruction.py ......................          [ 73%]
+tests/unit/test_on_off.py ...................                            [ 74%]
+tests/unit/test_personal_state.py ....                                   [ 74%]
+tests/unit/test_playoffs.py .........                                    [ 75%]
+tests/unit/test_points_forecast.py ....                                  [ 75%]
+tests/unit/test_portrait_jobs.py ....                                    [ 75%]
+tests/unit/test_possession_repair.py ........................            [ 76%]
+tests/unit/test_prospective_forecasts.py ........                        [ 77%]
+tests/unit/test_provider_client.py ........                              [ 77%]
+tests/unit/test_publication.py ....                                      [ 78%]
+tests/unit/test_query_contracts.py ..............                        [ 78%]
+tests/unit/test_raw_store.py .                                           [ 78%]
+tests/unit/test_research_readiness.py ....                               [ 79%]
+tests/unit/test_research_registration.py ..............................  [ 80%]
+tests/unit/test_research_reproduce.py .                                  [ 80%]
+tests/unit/test_retrospective_binding.py .....                           [ 81%]
+tests/unit/test_revamp_evaluation.py ..................                  [ 82%]
+tests/unit/test_revamp_evaluation_runner.py .........                    [ 82%]
+tests/unit/test_revamp_provider_replay.py ................FFF.F.FFF      [ 84%]
+tests/unit/test_revamp_routing.py ...................................... [ 86%]
+..                                                                       [ 86%]
+tests/unit/test_revamp_routing_replay.py ............................... [ 88%]
+....................................                                     [ 90%]
+tests/unit/test_rich_sources.py ..........                               [ 90%]
+tests/unit/test_saved_conversations.py ...............                   [ 91%]
+tests/unit/test_scoring.py ...                                           [ 91%]
+tests/unit/test_season_discovery.py ......                               [ 92%]
+tests/unit/test_shooting.py ...................                          [ 93%]
+tests/unit/test_shot_corrections.py .........                            [ 93%]
+tests/unit/test_shotchart_admission.py ................................. [ 95%]
+..........................                                               [ 96%]
+tests/unit/test_sportsdataverse.py ........                              [ 97%]
+tests/unit/test_stats_engine.py ..............                           [ 98%]
+tests/unit/test_stints.py ...........                                    [ 98%]
+tests/unit/test_team_analytics.py ...........                            [ 99%]
+tests/unit/test_workbench_contracts.py ......                            [ 99%]
+tests/unit/test_workbench_metrics.py .....                               [100%]
+
+=================================== FAILURES ===================================
+____________________________ test_workbench_metrics ____________________________
+
+client = <starlette.testclient.TestClient object at 0x7f1402ad87c0>
+
+>   ???
+E   AssertionError: assert 'courtlens-stats-v3' == 'v2'
+E     
+E     - v2
+E     + courtlens-stats-v3
+
+/tmp/courtlens-python-db8vvql_/tests/integration/test_workbench_api.py:58: AssertionError
+__________________ test_recorded_provider_replay[ar02-014-1] ___________________
+
+session = <sqlalchemy.orm.session.Session object at 0x7f13fb853250>
+record = {'analytical_calls': 1, 'answer_signature': '788e425739f7ae1d5bf6450366709132b98ab7fe73ac4b4bb0def091e80acd52', 'calls... 'input_sha256': 'f34a417b31a18a712aafb628779b51af4c90a40131c488f3f84539980e242d88', ...}], 'category': 'leaders', ...}
+
+>   ???
+E   assert False == True
+
+/tmp/courtlens-rn01-1ibmxth5/tests/unit/test_revamp_provider_replay.py:125: AssertionError
+------------------------------ Captured log call -------------------------------
+WARNING  courtlens.services.assistant.hybrid:hybrid.py:617 planner output rejected (attempt 1): metric_selectors.0: Value error, unsupported metric key 'blocks_per_game'; valid metrics are: ast, ast_per_36, ast_per_game, blk, blk_per_36, blk_per_game, bpr, bpr_2y, bpr_3y, d_reb, d_tov, d_ts, dbpr, dbpr_2y, dbpr_3y, drapm, drapm_2y, drapm_3y, dreb, dreb_per_36, dreb_per_game, efg_pct, fg3_pct, fg3a, fg3a_per_36, fg3m, fg_pct, fga, fga_per_36, fgm, ft_pct, fta, fta_per_36, ftm, ftr, gp, impact_ast_per100, impact_ftr, impact_rts, impact_three_point_rate, impact_ts_pct, impact_tsadd_per100, legacy_fantasy_score, legacy_fantasy_score_per_game, matchup_fga_per100, min, min_per_game, o_reb, o_tov, o_ts, obpr, obpr_2y, obpr_3y, on_defensive_rating, on_net_rating, on_offensive_rating, onoff_defensive_rating, onoff_net_rating, onoff_offensive_rating, orapm, orapm_2y, orapm_3y, oreb, oreb_per_3; plan={"plan_version": "courtload-analysis-plan-v1", "status": "execute", "clarification": null, "context_changes": null, "steps": [{"step_id": "top_blocks_query", "operation": "query", "arguments": {"metric_selectors": [{"key": "blocks_per_game", "normalization": "raw"}], "sort": [{"field": "blocks_per_game", "direction": "desc"}], "page": {"limit": 10}}, "depends_on": []}], "output_kind": "table"}
+__________________ test_recorded_provider_replay[ar02-014-2] ___________________
+
+session = <sqlalchemy.orm.session.Session object at 0x7f13fb852f50>
+record = {'analytical_calls': 1, 'answer_signature': '788e425739f7ae1d5bf6450366709132b98ab7fe73ac4b4bb0def091e80acd52', 'calls... 'input_sha256': 'f34a417b31a18a712aafb628779b51af4c90a40131c488f3f84539980e242d88', ...}], 'category': 'leaders', ...}
+
+>   ???
+E   assert False == True
+
+/tmp/courtlens-rn01-1ibmxth5/tests/unit/test_revamp_provider_replay.py:125: AssertionError
+------------------------------ Captured log call -------------------------------
+WARNING  courtlens.services.assistant.hybrid:hybrid.py:617 planner output rejected (attempt 1): metric_selectors.0: Value error, unsupported metric key 'blocks_per_game'; valid metrics are: ast, ast_per_36, ast_per_game, blk, blk_per_36, blk_per_game, bpr, bpr_2y, bpr_3y, d_reb, d_tov, d_ts, dbpr, dbpr_2y, dbpr_3y, drapm, drapm_2y, drapm_3y, dreb, dreb_per_36, dreb_per_game, efg_pct, fg3_pct, fg3a, fg3a_per_36, fg3m, fg_pct, fga, fga_per_36, fgm, ft_pct, fta, fta_per_36, ftm, ftr, gp, impact_ast_per100, impact_ftr, impact_rts, impact_three_point_rate, impact_ts_pct, impact_tsadd_per100, legacy_fantasy_score, legacy_fantasy_score_per_game, matchup_fga_per100, min, min_per_game, o_reb, o_tov, o_ts, obpr, obpr_2y, obpr_3y, on_defensive_rating, on_net_rating, on_offensive_rating, onoff_defensive_rating, onoff_net_rating, onoff_offensive_rating, orapm, orapm_2y, orapm_3y, oreb, oreb_per_3; plan={"plan_version": "courtload-analysis-plan-v1", "status": "execute", "clarification": null, "context_changes": null, "steps": [{"step_id": "top_blocks_per_game", "operation": "query", "arguments": {"metric_selectors": [{"key": "blocks_per_game", "normalization": "raw"}], "sort": [{"field": "blocks_per_game", "direction": "desc"}], "page": {"limit": 10}}}], "output_kind": "table"}
+__________________ test_recorded_provider_replay[ar02-014-3] ___________________
+
+session = <sqlalchemy.orm.session.Session object at 0x7f13fb853050>
+record = {'analytical_calls': 1, 'answer_signature': '788e425739f7ae1d5bf6450366709132b98ab7fe73ac4b4bb0def091e80acd52', 'calls... 'input_sha256': 'f34a417b31a18a712aafb628779b51af4c90a40131c488f3f84539980e242d88', ...}], 'category': 'leaders', ...}
+
+>   ???
+E   assert False == True
+
+/tmp/courtlens-rn01-1ibmxth5/tests/unit/test_revamp_provider_replay.py:125: AssertionError
+------------------------------ Captured log call -------------------------------
+WARNING  courtlens.services.assistant.hybrid:hybrid.py:617 planner output rejected (attempt 1): metric_selectors.0: Value error, unsupported metric key 'blocks_per_game'; valid metrics are: ast, ast_per_36, ast_per_game, blk, blk_per_36, blk_per_game, bpr, bpr_2y, bpr_3y, d_reb, d_tov, d_ts, dbpr, dbpr_2y, dbpr_3y, drapm, drapm_2y, drapm_3y, dreb, dreb_per_36, dreb_per_game, efg_pct, fg3_pct, fg3a, fg3a_per_36, fg3m, fg_pct, fga, fga_per_36, fgm, ft_pct, fta, fta_per_36, ftm, ftr, gp, impact_ast_per100, impact_ftr, impact_rts, impact_three_point_rate, impact_ts_pct, impact_tsadd_per100, legacy_fantasy_score, legacy_fantasy_score_per_game, matchup_fga_per100, min, min_per_game, o_reb, o_tov, o_ts, obpr, obpr_2y, obpr_3y, on_defensive_rating, on_net_rating, on_offensive_rating, onoff_defensive_rating, onoff_net_rating, onoff_offensive_rating, orapm, orapm_2y, orapm_3y, oreb, oreb_per_3; plan={"plan_version": "courtload-analysis-plan-v1", "status": "execute", "clarification": null, "context_changes": null, "steps": [{"step_id": "top_blocks_2025_26", "operation": "query", "arguments": {"metric_selectors": [{"key": "blocks_per_game", "normalization": "raw"}], "sort": [{"field": "blocks_per_game", "direction": "desc"}], "page": {"limit": 10}}, "depends_on": []}], "output_kind": "table"}
+__________________ test_recorded_provider_replay[ar02-028-2] ___________________
+
+session = <sqlalchemy.orm.session.Session object at 0x7f13fb852750>
+record = {'analytical_calls': 1, 'answer_signature': '405c1fe23be6121a941a54a37ee40b5409d5d3db745a2aa96dbb5a31104c7b40', 'calls... 'input_sha256': '8ebc285c68f26f28913ac630e7542957fcb3c9a4e25508983507af75681fa888', ...}], 'category': 'leaders', ...}
+
+>   ???
+E   assert False == True
+
+/tmp/courtlens-rn01-1ibmxth5/tests/unit/test_revamp_provider_replay.py:125: AssertionError
+------------------------------ Captured log call -------------------------------
+WARNING  courtlens.services.assistant.hybrid:hybrid.py:617 planner output rejected (attempt 1): metric_selectors.0: Value error, unsupported metric key 'games_played'; valid metrics are: ast, ast_per_36, ast_per_game, blk, blk_per_36, blk_per_game, bpr, bpr_2y, bpr_3y, d_reb, d_tov, d_ts, dbpr, dbpr_2y, dbpr_3y, drapm, drapm_2y, drapm_3y, dreb, dreb_per_36, dreb_per_game, efg_pct, fg3_pct, fg3a, fg3a_per_36, fg3m, fg_pct, fga, fga_per_36, fgm, ft_pct, fta, fta_per_36, ftm, ftr, gp, impact_ast_per100, impact_ftr, impact_rts, impact_three_point_rate, impact_ts_pct, impact_tsadd_per100, legacy_fantasy_score, legacy_fantasy_score_per_game, matchup_fga_per100, min, min_per_game, o_reb, o_tov, o_ts, obpr, obpr_2y, obpr_3y, on_defensive_rating, on_net_rating, on_offensive_rating, onoff_defensive_rating, onoff_net_rating, onoff_offensive_rating, orapm, orapm_2y, orapm_3y, oreb, oreb_per_36, ; plan={"plan_version": "courtload-analysis-plan-v1", "status": "execute", "clarification": null, "context_changes": null, "steps": [{"step_id": "step_1", "operation": "query", "arguments": {"metric_selectors": [{"key": "games_played", "normalization": "raw"}], "sort": [{"field": "games_played", "direction": "desc"}], "page": {"limit": 10}}}], "output_kind": "table"}
+__________________ test_recorded_provider_replay[ar02-029-1] ___________________
+
+session = <sqlalchemy.orm.session.Session object at 0x7f13fb853450>
+record = {'analytical_calls': 1, 'answer_signature': '405c1fe23be6121a941a54a37ee40b5409d5d3db745a2aa96dbb5a31104c7b40', 'calls... 'input_sha256': 'c33a2ad9557b74fdad6302fcdd8566dd4267a3178f8584897d777eb179420749', ...}], 'category': 'leaders', ...}
+
+>   ???
+E   assert False == True
+
+/tmp/courtlens-rn01-1ibmxth5/tests/unit/test_revamp_provider_replay.py:125: AssertionError
+------------------------------ Captured log call -------------------------------
+WARNING  courtlens.services.assistant.hybrid:hybrid.py:617 planner output rejected (attempt 1): metric_selectors.0: Value error, unsupported metric key 'games_played'; valid metrics are: ast, ast_per_36, ast_per_game, blk, blk_per_36, blk_per_game, bpr, bpr_2y, bpr_3y, d_reb, d_tov, d_ts, dbpr, dbpr_2y, dbpr_3y, drapm, drapm_2y, drapm_3y, dreb, dreb_per_36, dreb_per_game, efg_pct, fg3_pct, fg3a, fg3a_per_36, fg3m, fg_pct, fga, fga_per_36, fgm, ft_pct, fta, fta_per_36, ftm, ftr, gp, impact_ast_per100, impact_ftr, impact_rts, impact_three_point_rate, impact_ts_pct, impact_tsadd_per100, legacy_fantasy_score, legacy_fantasy_score_per_game, matchup_fga_per100, min, min_per_game, o_reb, o_tov, o_ts, obpr, obpr_2y, obpr_3y, on_defensive_rating, on_net_rating, on_offensive_rating, onoff_defensive_rating, onoff_net_rating, onoff_offensive_rating, orapm, orapm_2y, orapm_3y, oreb, oreb_per_36, ; plan={"plan_version": "courtload-analysis-plan-v1", "status": "execute", "clarification": null, "context_changes": null, "steps": [{"step_id": "top_players_games_played", "operation": "query", "arguments": {"metric_selectors": [{"key": "games_played", "normalization": "raw"}], "sort": [{"field": "games_played", "direction": "desc"}], "page": {"limit": 10}}}], "output_kind": "table"}
+__________________ test_recorded_provider_replay[ar02-029-2] ___________________
+
+session = <sqlalchemy.orm.session.Session object at 0x7f13fb853050>
+record = {'analytical_calls': 1, 'answer_signature': '405c1fe23be6121a941a54a37ee40b5409d5d3db745a2aa96dbb5a31104c7b40', 'calls... 'input_sha256': 'c33a2ad9557b74fdad6302fcdd8566dd4267a3178f8584897d777eb179420749', ...}], 'category': 'leaders', ...}
+
+>   ???
+E   assert False == True
+
+/tmp/courtlens-rn01-1ibmxth5/tests/unit/test_revamp_provider_replay.py:125: AssertionError
+------------------------------ Captured log call -------------------------------
+WARNING  courtlens.services.assistant.hybrid:hybrid.py:617 planner output rejected (attempt 1): metric_selectors.0: Value error, unsupported metric key 'games_played'; valid metrics are: ast, ast_per_36, ast_per_game, blk, blk_per_36, blk_per_game, bpr, bpr_2y, bpr_3y, d_reb, d_tov, d_ts, dbpr, dbpr_2y, dbpr_3y, drapm, drapm_2y, drapm_3y, dreb, dreb_per_36, dreb_per_game, efg_pct, fg3_pct, fg3a, fg3a_per_36, fg3m, fg_pct, fga, fga_per_36, fgm, ft_pct, fta, fta_per_36, ftm, ftr, gp, impact_ast_per100, impact_ftr, impact_rts, impact_three_point_rate, impact_ts_pct, impact_tsadd_per100, legacy_fantasy_score, legacy_fantasy_score_per_game, matchup_fga_per100, min, min_per_game, o_reb, o_tov, o_ts, obpr, obpr_2y, obpr_3y, on_defensive_rating, on_net_rating, on_offensive_rating, onoff_defensive_rating, onoff_net_rating, onoff_offensive_rating, orapm, orapm_2y, orapm_3y, oreb, oreb_per_36, ; plan={"plan_version": "courtload-analysis-plan-v1", "status": "execute", "clarification": null, "context_changes": null, "steps": [{"step_id": "top_games_played", "operation": "query", "arguments": {"metric_selectors": [{"key": "games_played", "normalization": "raw"}], "sort": [{"field": "games_played", "direction": "desc"}], "page": {"limit": 10}}}], "output_kind": "table"}
+__________________ test_recorded_provider_replay[ar02-029-3] ___________________
+
+session = <sqlalchemy.orm.session.Session object at 0x7f13fb852150>
+record = {'analytical_calls': 1, 'answer_signature': 'a7786621dfe262d5df0d81e9376e644b5b478f5735b3b6c6f55f2ade4ff0332c', 'calls... 'input_sha256': 'c33a2ad9557b74fdad6302fcdd8566dd4267a3178f8584897d777eb179420749', ...}], 'category': 'leaders', ...}
+
+>   ???
+E   assert False == True
+
+/tmp/courtlens-rn01-1ibmxth5/tests/unit/test_revamp_provider_replay.py:125: AssertionError
+------------------------------ Captured log call -------------------------------
+WARNING  courtlens.services.assistant.hybrid:hybrid.py:617 planner output rejected (attempt 1): metric_selectors.0: Value error, unsupported metric key 'games_played'; valid metrics are: ast, ast_per_36, ast_per_game, blk, blk_per_36, blk_per_game, bpr, bpr_2y, bpr_3y, d_reb, d_tov, d_ts, dbpr, dbpr_2y, dbpr_3y, drapm, drapm_2y, drapm_3y, dreb, dreb_per_36, dreb_per_game, efg_pct, fg3_pct, fg3a, fg3a_per_36, fg3m, fg_pct, fga, fga_per_36, fgm, ft_pct, fta, fta_per_36, ftm, ftr, gp, impact_ast_per100, impact_ftr, impact_rts, impact_three_point_rate, impact_ts_pct, impact_tsadd_per100, legacy_fantasy_score, legacy_fantasy_score_per_game, matchup_fga_per100, min, min_per_game, o_reb, o_tov, o_ts, obpr, obpr_2y, obpr_3y, on_defensive_rating, on_net_rating, on_offensive_rating, onoff_defensive_rating, onoff_net_rating, onoff_offensive_rating, orapm, orapm_2y, orapm_3y, oreb, oreb_per_36, ; plan={"plan_version": "courtload-analysis-plan-v1", "status": "execute", "clarification": null, "context_changes": null, "steps": [{"step_id": "top_games_played", "operation": "query", "arguments": {"metric_selectors": [{"key": "games_played", "normalization": "raw"}], "sort": [{"field": "games_played", "direction": "desc"}], "page": {"limit": 10}}}], "output_kind": "table"}
+=============================== warnings summary ===============================
+../../home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/google/genai/types.py:42
+  /home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/google/genai/types.py:42: DeprecationWarning: '_UnionGenericAlias' is deprecated and slated for removal in Python 3.17
+    VersionedUnionType = Union[builtin_types.UnionType, _UnionGenericAlias]
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+SKIPPED [1] ../courtlens-rn01-1ibmxth5/tests/integration/test_assistant_panel_browser.py:27: isolated Next browser server required
+FAILED tests/integration/test_workbench_api.py::test_workbench_metrics - Asse...
+FAILED tests/unit/test_revamp_provider_replay.py::test_recorded_provider_replay[ar02-014-1]
+FAILED tests/unit/test_revamp_provider_replay.py::test_recorded_provider_replay[ar02-014-2]
+FAILED tests/unit/test_revamp_provider_replay.py::test_recorded_provider_replay[ar02-014-3]
+FAILED tests/unit/test_revamp_provider_replay.py::test_recorded_provider_replay[ar02-028-2]
+FAILED tests/unit/test_revamp_provider_replay.py::test_recorded_provider_replay[ar02-029-1]
+FAILED tests/unit/test_revamp_provider_replay.py::test_recorded_provider_replay[ar02-029-2]
+FAILED tests/unit/test_revamp_provider_replay.py::test_recorded_provider_replay[ar02-029-3]
+= 8 failed, 1768 passed, 1 skipped, 19 deselected, 1 warning in 277.41s (0:04:37) =

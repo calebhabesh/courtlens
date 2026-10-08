@@ -1,0 +1,194 @@
+
+> courtlens-dashboard@0.1.0 test:browser
+> playwright test e2e/im06-real.spec.ts --workers=1
+
+
+Running 12 tests using 1 worker
+
+  ✘   1 e2e/im06-real.spec.ts:16:9 › impact served values at 1440px (3.8s)
+  ✘   2 e2e/im06-real.spec.ts:16:9 › onoff served values at 1440px (2.9s)
+  ✘   3 e2e/im06-real.spec.ts:16:9 › sixfactor served values at 1440px (2.9s)
+  ✘   4 e2e/im06-real.spec.ts:16:9 › defense served values at 1440px (2.8s)
+  ✓   5 e2e/im06-real.spec.ts:37:7 › profile and research at 1440px (1.7s)
+  ✓   6 e2e/im06-real.spec.ts:49:7 › earlier cutoff remains unavailable at 1440px (1.3s)
+  ✘   7 e2e/im06-real.spec.ts:16:9 › impact served values at 375px (2.7s)
+  ✘   8 e2e/im06-real.spec.ts:16:9 › onoff served values at 375px (2.8s)
+  ✘   9 e2e/im06-real.spec.ts:16:9 › sixfactor served values at 375px (2.8s)
+  ✘  10 e2e/im06-real.spec.ts:16:9 › defense served values at 375px (2.8s)
+  ✘  11 e2e/im06-real.spec.ts:37:7 › profile and research at 375px (767ms)
+  ✓  12 e2e/im06-real.spec.ts:49:7 › earlier cutoff remains unavailable at 375px (1.2s)
+
+
+  1) e2e/im06-real.spec.ts:16:9 › impact served values at 1440px ───────────────────────────────────
+
+    Error: expect(received).toBeGreaterThanOrEqual(expected)
+
+    Expected: >= 0
+    Received:    -1
+
+      27 |       const headers = page.locator(".stats-metric-header");
+      28 |       const index = await headers.evaluateAll((elements, name) => elements.findIndex(element => element.textContent?.includes(name)), label);
+    > 29 |       expect(index).toBeGreaterThanOrEqual(0);
+         |                     ^
+      30 |       const cell = page.locator(".stats-metric-cell").nth(index);
+      31 |       await expect(cell).toContainText(Number(value).toFixed(2));
+      32 |       await expect(page.getByText(/1,227 \/ 1,230 games admitted/)).toBeVisible();
+        at /home/ethioking/dev/nba-analytics/dashboard/e2e/im06-real.spec.ts:29:21
+
+    Error Context: test-results/im06-real-impact-served-values-at-1440px/error-context.md
+
+  2) e2e/im06-real.spec.ts:16:9 › onoff served values at 1440px ────────────────────────────────────
+
+    Error: expect(received).toBeGreaterThanOrEqual(expected)
+
+    Expected: >= 0
+    Received:    -1
+
+      27 |       const headers = page.locator(".stats-metric-header");
+      28 |       const index = await headers.evaluateAll((elements, name) => elements.findIndex(element => element.textContent?.includes(name)), label);
+    > 29 |       expect(index).toBeGreaterThanOrEqual(0);
+         |                     ^
+      30 |       const cell = page.locator(".stats-metric-cell").nth(index);
+      31 |       await expect(cell).toContainText(Number(value).toFixed(2));
+      32 |       await expect(page.getByText(/1,227 \/ 1,230 games admitted/)).toBeVisible();
+        at /home/ethioking/dev/nba-analytics/dashboard/e2e/im06-real.spec.ts:29:21
+
+    Error Context: test-results/im06-real-onoff-served-values-at-1440px/error-context.md
+
+  3) e2e/im06-real.spec.ts:16:9 › sixfactor served values at 1440px ────────────────────────────────
+
+    Error: expect(received).toBeGreaterThanOrEqual(expected)
+
+    Expected: >= 0
+    Received:    -1
+
+      27 |       const headers = page.locator(".stats-metric-header");
+      28 |       const index = await headers.evaluateAll((elements, name) => elements.findIndex(element => element.textContent?.includes(name)), label);
+    > 29 |       expect(index).toBeGreaterThanOrEqual(0);
+         |                     ^
+      30 |       const cell = page.locator(".stats-metric-cell").nth(index);
+      31 |       await expect(cell).toContainText(Number(value).toFixed(2));
+      32 |       await expect(page.getByText(/1,227 \/ 1,230 games admitted/)).toBeVisible();
+        at /home/ethioking/dev/nba-analytics/dashboard/e2e/im06-real.spec.ts:29:21
+
+    Error Context: test-results/im06-real-sixfactor-served-values-at-1440px/error-context.md
+
+  4) e2e/im06-real.spec.ts:16:9 › defense served values at 1440px ──────────────────────────────────
+
+    Error: expect(received).toBeGreaterThanOrEqual(expected)
+
+    Expected: >= 0
+    Received:    -1
+
+      27 |       const headers = page.locator(".stats-metric-header");
+      28 |       const index = await headers.evaluateAll((elements, name) => elements.findIndex(element => element.textContent?.includes(name)), label);
+    > 29 |       expect(index).toBeGreaterThanOrEqual(0);
+         |                     ^
+      30 |       const cell = page.locator(".stats-metric-cell").nth(index);
+      31 |       await expect(cell).toContainText(Number(value).toFixed(2));
+      32 |       await expect(page.getByText(/1,227 \/ 1,230 games admitted/)).toBeVisible();
+        at /home/ethioking/dev/nba-analytics/dashboard/e2e/im06-real.spec.ts:29:21
+
+    Error Context: test-results/im06-real-defense-served-values-at-1440px/error-context.md
+
+  5) e2e/im06-real.spec.ts:16:9 › impact served values at 375px ────────────────────────────────────
+
+    Error: expect(received).toBeGreaterThanOrEqual(expected)
+
+    Expected: >= 0
+    Received:    -1
+
+      27 |       const headers = page.locator(".stats-metric-header");
+      28 |       const index = await headers.evaluateAll((elements, name) => elements.findIndex(element => element.textContent?.includes(name)), label);
+    > 29 |       expect(index).toBeGreaterThanOrEqual(0);
+         |                     ^
+      30 |       const cell = page.locator(".stats-metric-cell").nth(index);
+      31 |       await expect(cell).toContainText(Number(value).toFixed(2));
+      32 |       await expect(page.getByText(/1,227 \/ 1,230 games admitted/)).toBeVisible();
+        at /home/ethioking/dev/nba-analytics/dashboard/e2e/im06-real.spec.ts:29:21
+
+    Error Context: test-results/im06-real-impact-served-values-at-375px/error-context.md
+
+  6) e2e/im06-real.spec.ts:16:9 › onoff served values at 375px ─────────────────────────────────────
+
+    Error: expect(received).toBeGreaterThanOrEqual(expected)
+
+    Expected: >= 0
+    Received:    -1
+
+      27 |       const headers = page.locator(".stats-metric-header");
+      28 |       const index = await headers.evaluateAll((elements, name) => elements.findIndex(element => element.textContent?.includes(name)), label);
+    > 29 |       expect(index).toBeGreaterThanOrEqual(0);
+         |                     ^
+      30 |       const cell = page.locator(".stats-metric-cell").nth(index);
+      31 |       await expect(cell).toContainText(Number(value).toFixed(2));
+      32 |       await expect(page.getByText(/1,227 \/ 1,230 games admitted/)).toBeVisible();
+        at /home/ethioking/dev/nba-analytics/dashboard/e2e/im06-real.spec.ts:29:21
+
+    Error Context: test-results/im06-real-onoff-served-values-at-375px/error-context.md
+
+  7) e2e/im06-real.spec.ts:16:9 › sixfactor served values at 375px ─────────────────────────────────
+
+    Error: expect(received).toBeGreaterThanOrEqual(expected)
+
+    Expected: >= 0
+    Received:    -1
+
+      27 |       const headers = page.locator(".stats-metric-header");
+      28 |       const index = await headers.evaluateAll((elements, name) => elements.findIndex(element => element.textContent?.includes(name)), label);
+    > 29 |       expect(index).toBeGreaterThanOrEqual(0);
+         |                     ^
+      30 |       const cell = page.locator(".stats-metric-cell").nth(index);
+      31 |       await expect(cell).toContainText(Number(value).toFixed(2));
+      32 |       await expect(page.getByText(/1,227 \/ 1,230 games admitted/)).toBeVisible();
+        at /home/ethioking/dev/nba-analytics/dashboard/e2e/im06-real.spec.ts:29:21
+
+    Error Context: test-results/im06-real-sixfactor-served-values-at-375px/error-context.md
+
+  8) e2e/im06-real.spec.ts:16:9 › defense served values at 375px ───────────────────────────────────
+
+    Error: expect(received).toBeGreaterThanOrEqual(expected)
+
+    Expected: >= 0
+    Received:    -1
+
+      27 |       const headers = page.locator(".stats-metric-header");
+      28 |       const index = await headers.evaluateAll((elements, name) => elements.findIndex(element => element.textContent?.includes(name)), label);
+    > 29 |       expect(index).toBeGreaterThanOrEqual(0);
+         |                     ^
+      30 |       const cell = page.locator(".stats-metric-cell").nth(index);
+      31 |       await expect(cell).toContainText(Number(value).toFixed(2));
+      32 |       await expect(page.getByText(/1,227 \/ 1,230 games admitted/)).toBeVisible();
+        at /home/ethioking/dev/nba-analytics/dashboard/e2e/im06-real.spec.ts:29:21
+
+    Error Context: test-results/im06-real-defense-served-values-at-375px/error-context.md
+
+  9) e2e/im06-real.spec.ts:37:7 › profile and research at 375px ────────────────────────────────────
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+      39 |     await openWorkbench(page, `/players/1641705?${scope}`);
+      40 |     await expect(page.getByRole("region", { name: "Player impact", exact: true })).toContainText("9.12");
+    > 41 |     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+         |                                                                                           ^
+      42 |     await page.screenshot({ path: path.join(evidence, `profile-${width}.png`), fullPage: true, animations: "disabled" });
+      43 |     await openWorkbench(page, `/research/rapm?${scope}`);
+      44 |     await expect(page.getByRole("region", { name: "Served impact ratings" })).toContainText("9.12");
+        at /home/ethioking/dev/nba-analytics/dashboard/e2e/im06-real.spec.ts:41:91
+
+    Error Context: test-results/im06-real-profile-and-research-at-375px/error-context.md
+
+  9 failed
+    e2e/im06-real.spec.ts:16:9 › impact served values at 1440px ────────────────────────────────────
+    e2e/im06-real.spec.ts:16:9 › onoff served values at 1440px ─────────────────────────────────────
+    e2e/im06-real.spec.ts:16:9 › sixfactor served values at 1440px ─────────────────────────────────
+    e2e/im06-real.spec.ts:16:9 › defense served values at 1440px ───────────────────────────────────
+    e2e/im06-real.spec.ts:16:9 › impact served values at 375px ─────────────────────────────────────
+    e2e/im06-real.spec.ts:16:9 › onoff served values at 375px ──────────────────────────────────────
+    e2e/im06-real.spec.ts:16:9 › sixfactor served values at 375px ──────────────────────────────────
+    e2e/im06-real.spec.ts:16:9 › defense served values at 375px ────────────────────────────────────
+    e2e/im06-real.spec.ts:37:7 › profile and research at 375px ─────────────────────────────────────
+  3 passed (31.8s)

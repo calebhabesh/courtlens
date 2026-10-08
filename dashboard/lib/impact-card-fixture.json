@@ -1,0 +1,314 @@
+{
+  "status": "available",
+  "source": "CourtLens model",
+  "version": "courtlens-impact-serving-v1",
+  "methodology_url": "/methodology#impact",
+  "manifest_sha256": "2cd9c98b2594d948edc2c574e082e1b8b06ff4d6bfeca294f87e8062eae76d48",
+  "artifacts": [
+    {
+      "sha256": "477fb7edd2d8f910fcecca45ef2b63a0f16d818a6ff3890ceba8d974c008811e",
+      "cutoff": "2026-07-01",
+      "last_included_date": "2026-04-12",
+      "phase": "regular_season",
+      "season": "2025-26",
+      "seasons": [
+        "2024-25",
+        "2025-26"
+      ],
+      "years": 2
+    },
+    {
+      "sha256": "d97363bee6e48f1ba9454d28b3e7d82748cc3017e52fe887d4da994ac00666a5",
+      "cutoff": "2026-07-01",
+      "last_included_date": "2026-04-12",
+      "phase": "regular_season",
+      "season": "2025-26",
+      "seasons": [
+        "2025-26"
+      ],
+      "years": 1
+    },
+    {
+      "sha256": "fd50b09bb20939e2b550476d8f6a2739191237bbed1f96b952c6dd839506ac88",
+      "cutoff": "2026-07-01",
+      "last_included_date": "2026-04-12",
+      "phase": "regular_season",
+      "season": "2025-26",
+      "seasons": [
+        "2023-24",
+        "2024-25",
+        "2025-26"
+      ],
+      "years": 3
+    },
+    {
+      "sha256": "ba712f04bc494bc591d7e872ded977f56bc2b346d3c9d7ab8c4d089fd037d102",
+      "cutoff": "2026-07-01",
+      "last_included_date": "2026-04-12",
+      "phase": "regular_season",
+      "season": "2025-26",
+      "seasons": [
+        "2025-26"
+      ],
+      "years": 1
+    }
+  ],
+  "coverage": [
+    {
+      "admitted_games": 1212,
+      "clean_games": 0,
+      "dataset": {
+        "admission_transaction": "773",
+        "content_sha256": "b3fe49d5919562bc017e56652197057850f729e12031ca76eab66541967ec939",
+        "id": "9dea364c-0c9a-453d-8c09-21663cabcb7e",
+        "membership_sha256": "a24611b8ada765a77327c87fdcb0c29bb2ecbc6bc76ebea667665a139987994b",
+        "status": "ready"
+      },
+      "estimate_within_two_percent": 50.0,
+      "excluded_games": 18,
+      "minute_diagnostic": {
+        "comparisons": 25924,
+        "exact": 19398,
+        "exact_percent": 74.8264,
+        "max_absolute_error": 0.5,
+        "median_absolute_error": 0.0,
+        "p95_absolute_error": 0.4,
+        "within_one": 25924,
+        "within_thirty": 25924
+      },
+      "patch_rate": 1.0,
+      "patched_games": 1212,
+      "phase": "regular_season",
+      "plus_minus_diagnostic": {
+        "comparisons": 32036,
+        "exact": 17037,
+        "exact_percent": 53.1808,
+        "max_absolute_error": 9,
+        "median_absolute_error": 0,
+        "p95_absolute_error": 2,
+        "within_one": 27024,
+        "within_thirty": 32036
+      },
+      "scheduled_games": 1230,
+      "season": "2024-25"
+    },
+    {
+      "admitted_games": 1227,
+      "clean_games": 0,
+      "dataset": {
+        "admission_transaction": "760",
+        "content_sha256": "25002650fb6f299948c75cc9caf6a11d03e32c2dd0aefeb8a7c06a1126c59291",
+        "id": "c172eb00-dca8-4714-a490-a80350e9838f",
+        "membership_sha256": "287b944aa937be8ab5a7b9440464b073af327599f6524251ad61b2afed901555",
+        "status": "ready"
+      },
+      "estimate_within_two_percent": 43.88753056234719,
+      "excluded_games": 3,
+      "minute_diagnostic": {
+        "comparisons": 26588,
+        "exact": 19271,
+        "exact_percent": 72.4801,
+        "max_absolute_error": 0.5,
+        "median_absolute_error": 0.0,
+        "p95_absolute_error": 0.4,
+        "within_one": 26588,
+        "within_thirty": 26588
+      },
+      "patch_rate": 1.0,
+      "patched_games": 1227,
+      "phase": "regular_season",
+      "plus_minus_diagnostic": {
+        "comparisons": 32103,
+        "exact": 15638,
+        "exact_percent": 48.712,
+        "max_absolute_error": 7,
+        "median_absolute_error": 1,
+        "p95_absolute_error": 3,
+        "within_one": 26216,
+        "within_thirty": 32103
+      },
+      "scheduled_games": 1230,
+      "season": "2025-26"
+    },
+    {
+      "admitted_games": 1216,
+      "clean_games": 0,
+      "dataset": {
+        "admission_transaction": "771",
+        "content_sha256": "1aa4bbe6f275ae06647241a72c6900d377c101e10cbdc0b898b961e718effdd5",
+        "id": "01c5b713-fcd8-480d-8689-942ef1a16476",
+        "membership_sha256": "0c66cf3fc2a82dba058b7eb5fc2a792a1fdf69090392d6790ac3b32e23bf40ab",
+        "status": "ready"
+      },
+      "estimate_within_two_percent": 47.203947368421055,
+      "excluded_games": 14,
+      "minute_diagnostic": {
+        "comparisons": 26087,
+        "exact": 19269,
+        "exact_percent": 73.8644,
+        "max_absolute_error": 23.2,
+        "median_absolute_error": 0.0,
+        "p95_absolute_error": 0.4,
+        "within_one": 26081,
+        "within_thirty": 26087
+      },
+      "patch_rate": 1.0,
+      "patched_games": 1216,
+      "phase": "regular_season",
+      "plus_minus_diagnostic": {
+        "comparisons": 32007,
+        "exact": 16688,
+        "exact_percent": 52.1386,
+        "max_absolute_error": 7,
+        "median_absolute_error": 0,
+        "p95_absolute_error": 2,
+        "within_one": 26976,
+        "within_thirty": 32007
+      },
+      "scheduled_games": 1230,
+      "season": "2023-24"
+    }
+  ],
+  "limitations": [
+    "Descriptive model estimates under lineup confounding; not causal or forecast features.",
+    "RAPM omits zero-control side observations; on/off retains their scoring.",
+    "The unchanged box-estimate \u00b12 diagnostic is not an event acceptance gate.",
+    "Patched lineups retain minute/plus-minus and unavailable period-minute limitations.",
+    "On/off off-court references include team games without a player appearance.",
+    "Multi-team on/off is unavailable without a selected team; team records remain separate.",
+    "PBP play-type buckets are CourtLens analogues, including Unknown and free throws."
+  ],
+  "unavailable_columns": {
+    "deflections": "requires admitted hustle data",
+    "potential_assists": "requires admitted complete tracking data",
+    "on_ball_pct": "requires tracking possession-time attribution",
+    "tracking_dfga_per100": "aggregate matchups are not shot contests",
+    "rim_points_saved_per100": "no per-shot defender and rim-zone join in aggregate matchups",
+    "stop_pct": "requires an explicit individual stop attribution method",
+    "d_sqi": "undefined proprietary model; needs a separately documented CourtLens method",
+    "forced_turnovers": "complete forced-turnover attribution is absent; credited analogue only",
+    "stolen_tov_pct": "requires complete linked steal attribution, not assumed from box steals"
+  },
+  "reason": null,
+  "players": [
+    {
+      "player_id": "1641705",
+      "player_name": "Victor Wembanyama",
+      "metrics": {
+        "rapm": 9.123015906749517,
+        "orapm": 2.4322280631654087,
+        "drapm": 6.690787843584108,
+        "bpr": 10.768030420082894,
+        "rapm_2y": 10.456703309895277,
+        "rapm_3y": 8.643584844679848
+      },
+      "support": {
+        "rapm": {
+          "artifact_sha256": "d97363bee6e48f1ba9454d28b3e7d82748cc3017e52fe887d4da994ac00666a5",
+          "covered_games": 63,
+          "cutoff": "2026-07-01",
+          "def_opportunities": 3781.0,
+          "defense": 6.690787843584108,
+          "defense_percentile": 99.86910994764398,
+          "games": 63,
+          "off_opportunities": 3809.0,
+          "offense": 2.4322280631654087,
+          "offense_percentile": 89.92146596858639,
+          "qualified": true,
+          "seconds": 109929.9,
+          "total": 9.123015906749517,
+          "total_percentile": 99.60732984293193,
+          "years": 1
+        },
+        "orapm": {
+          "artifact_sha256": "d97363bee6e48f1ba9454d28b3e7d82748cc3017e52fe887d4da994ac00666a5",
+          "covered_games": 63,
+          "cutoff": "2026-07-01",
+          "def_opportunities": 3781.0,
+          "defense": 6.690787843584108,
+          "defense_percentile": 99.86910994764398,
+          "games": 63,
+          "off_opportunities": 3809.0,
+          "offense": 2.4322280631654087,
+          "offense_percentile": 89.92146596858639,
+          "qualified": true,
+          "seconds": 109929.9,
+          "total": 9.123015906749517,
+          "total_percentile": 99.60732984293193,
+          "years": 1
+        },
+        "drapm": {
+          "artifact_sha256": "d97363bee6e48f1ba9454d28b3e7d82748cc3017e52fe887d4da994ac00666a5",
+          "covered_games": 63,
+          "cutoff": "2026-07-01",
+          "def_opportunities": 3781.0,
+          "defense": 6.690787843584108,
+          "defense_percentile": 99.86910994764398,
+          "games": 63,
+          "off_opportunities": 3809.0,
+          "offense": 2.4322280631654087,
+          "offense_percentile": 89.92146596858639,
+          "qualified": true,
+          "seconds": 109929.9,
+          "total": 9.123015906749517,
+          "total_percentile": 99.60732984293193,
+          "years": 1
+        },
+        "bpr": {
+          "artifact_sha256": "d97363bee6e48f1ba9454d28b3e7d82748cc3017e52fe887d4da994ac00666a5",
+          "covered_games": 63,
+          "cutoff": "2026-07-01",
+          "def_opportunities": 3781.0,
+          "defense": 8.263295216768206,
+          "defense_percentile": 99.86910994764398,
+          "games": 63,
+          "off_opportunities": 3809.0,
+          "offense": 2.504735203314687,
+          "offense_percentile": 89.65968586387434,
+          "prior_available": true,
+          "qualified": true,
+          "seconds": 109929.9,
+          "total": 10.768030420082894,
+          "total_percentile": 99.86910994764398,
+          "years": 1
+        },
+        "rapm_2y": {
+          "artifact_sha256": "477fb7edd2d8f910fcecca45ef2b63a0f16d818a6ff3890ceba8d974c008811e",
+          "covered_games": 109,
+          "cutoff": "2026-07-01",
+          "def_opportunities": 6916.0,
+          "defense": 8.328246310078216,
+          "defense_percentile": 99.89711934156378,
+          "games": 109,
+          "off_opportunities": 6948.0,
+          "offense": 2.128456999817061,
+          "offense_percentile": 87.96296296296296,
+          "qualified": true,
+          "seconds": 201565.1,
+          "total": 10.456703309895277,
+          "total_percentile": 99.69135802469135,
+          "years": 2
+        },
+        "rapm_3y": {
+          "artifact_sha256": "fd50b09bb20939e2b550476d8f6a2739191237bbed1f96b952c6dd839506ac88",
+          "covered_games": 180,
+          "cutoff": "2026-07-01",
+          "def_opportunities": 11333.0,
+          "defense": 7.388189323160602,
+          "defense_percentile": 99.9084249084249,
+          "games": 180,
+          "off_opportunities": 11358.0,
+          "offense": 1.255395521519246,
+          "offense_percentile": 81.22710622710623,
+          "qualified": true,
+          "seconds": 327939.2000000002,
+          "total": 8.643584844679848,
+          "total_percentile": 99.54212454212454,
+          "years": 3
+        }
+      },
+      "on_off": {}
+    }
+  ],
+  "total_players": 802
+}

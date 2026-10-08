@@ -101,6 +101,7 @@ def serialize_query_to_params(query: QuerySpec, *, style: str = "camelCase") -> 
 
     # Core context dimensions
     set_param("releaseId", "release_id", query.release_id)
+    set_param("impactManifest", "impact_manifest_sha256", query.impact_manifest_sha256)
     set_param("season", "season", query.season)
     set_param("phase", "phase", query.phase)
     if query.before_date:
@@ -349,6 +350,7 @@ def deserialize_params_to_query(params: Mapping[str, Any]) -> QuerySpec:
 
     return QuerySpec(
         release_id=release_id,
+        impact_manifest_sha256=get_val("impactManifest", "impact_manifest_sha256"),
         season=season,
         phase=phase,
         before_date=before_date,
@@ -372,6 +374,7 @@ def query_spec_to_research_query(spec: QuerySpec) -> ResearchQuery:
     metrics = [m.key for m in spec.metric_selectors] if spec.metric_selectors else None
     primary_sort = spec.sort[0] if spec.sort else SortSpec(field="pts", direction="desc")
     return ResearchQuery(
+        impact_manifest_sha256=spec.impact_manifest_sha256,
         release_id=spec.release_id,
         season=spec.season,
         phase=spec.phase,
@@ -406,6 +409,7 @@ def research_query_to_query_spec(query: ResearchQuery) -> QuerySpec:
 
     return QuerySpec(
         release_id=query.release_id,
+        impact_manifest_sha256=query.impact_manifest_sha256,
         season=query.season or "2025-26",
         phase=query.phase or "regular_season",
         before_date=query.before_date,
