@@ -1,0 +1,67 @@
+.................................................F.F...F                 [100%]
+=================================== FAILURES ===================================
+____ test_real_game_conserves_every_player_and_correct_matchup_orientation _____
+
+real = {'boxes': [{'_row_index': '0', 'assists': '5', 'blocks': '0', 'comment': '', ...}, {'_row_index': '1', 'assists': '2',...ontent_sha256': '0829e1252ccb8aab519da7c1109ed8dfba1d1eb24a928bbd8ddb18b68696fab5', 'game_id': '0022500001', ...}, ...}
+
+    def test_real_game_conserves_every_player_and_correct_matchup_orientation(real):
+        facts = game_facts(**real)
+>       assert len(facts["players"]) == 19
+E       AssertionError: assert 20 == 19
+E        +  where 20 = len({'1627936': {'box': {'assists': 3, 'blocks': 1, 'fg3a': 6, 'fg3m': 2, ...}, 'buckets': {'create': {'fga': 4, 'fgm': 0,...omplete': False, 'counts': {'block_known': 1, 'block_recovered': 1, 'drb': 1, 'drb_opportunities': 17, ...}, ...}, ...})
+
+tests/unit/test_impact_extras.py:256: AssertionError
+________ test_missing_auxiliary_sources_keep_counts_and_unknown_buckets ________
+
+real = {'boxes': [{'_row_index': '0', 'assists': '5', 'blocks': '0', 'comment': '', ...}, {'_row_index': '1', 'assists': '2',...ontent_sha256': '0829e1252ccb8aab519da7c1109ed8dfba1d1eb24a928bbd8ddb18b68696fab5', 'game_id': '0022500001', ...}, ...}
+
+    def test_missing_auxiliary_sources_keep_counts_and_unknown_buckets(real):
+        real["cdn"], real["shots"], real["matchups"] = [], [], []
+        facts = game_facts(**real)
+>       assert facts["coverage"]["unjoined_shots"] == 195
+E       assert 201 == 195
+
+tests/unit/test_impact_extras.py:293: AssertionError
+_______________ test_descriptive_extras_never_enter_forecasting ________________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f0dc618a9e0>
+
+    def test_descriptive_extras_never_enter_forecasting(monkeypatch):
+        from datetime import date
+    
+        from courtlens.evaluation import points_features
+    
+        def forbidden(*args, **kwargs):
+            pytest.fail("IM05 reached forecasting")
+    
+        monkeypatch.setattr("courtlens.domain.impact_extras.aggregate", forbidden)
+        monkeypatch.setattr("courtlens.domain.impact_extras.game_facts", forbidden)
+        monkeypatch.setattr("courtlens.evaluation.impact_extras_runner.run", forbidden)
+        assert "impact_extras" not in Path(points_features.__file__).read_text()
+        row = points_features.PointsPlayerGame(
+            "past",
+            "p",
+            "t",
+            "o",
+            date(2025, 1, 1),
+            "2024-25",
+            "regular_season",
+            "appeared",
+            1800,
+            10,
+            8,
+            3,
+        )
+        features, _, _ = points_features.compute_player_features(
+            [row], None, date(2025, 1, 2), date(2025, 1, 2)
+        )
+>       assert not any(key in IMPACT_EXTRAS_CATALOG for key in features[0])
+                                                               ^^^^^^^^^^^
+E       KeyError: 0
+
+tests/unit/test_impact_extras.py:382: KeyError
+=========================== short test summary info ============================
+FAILED tests/unit/test_impact_extras.py::test_real_game_conserves_every_player_and_correct_matchup_orientation
+FAILED tests/unit/test_impact_extras.py::test_missing_auxiliary_sources_keep_counts_and_unknown_buckets
+FAILED tests/unit/test_impact_extras.py::test_descriptive_extras_never_enter_forecasting
+3 failed, 53 passed in 0.96s

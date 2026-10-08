@@ -1,0 +1,30 @@
+{"season": "2023-24", "phase": "regular_season", "sha256": "efea5c769ea89ca19570a0ae462d77aa975544448d2af1c30e15a883d839aa8b", "games": 1216, "players": 572}
+{"season": "2025-26", "phase": "regular_season", "sha256": "c3bd316eeacb1c5f450c31e4881651450ebb126280695d9bb3746606fb068a9a", "games": 1227, "players": 582}
+{"season": "2025-26", "phase": "playoffs", "sha256": "f33ca4e35dbcc2b0749d1639dcb2a2dfc28a5d5a149841ca74c839c4f5b9f010", "games": 82, "players": 230}
+{"season": "2023-24", "phase": "playoffs", "sha256": "559f15654368d443175d97654f5c30c2c5add8eece5736079eabe2b7b027e188", "games": 81, "players": 214}
+{"season": "2024-25", "phase": "playoffs", "sha256": "3d8037a4fd58a18771dd09f87ad8ff2e3e209a77e858479d65d863398f83a6ad", "games": 83, "players": 219}
+Traceback (most recent call last):
+  File "<frozen runpy>", line 203, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/home/ethioking/dev/nba-analytics/src/courtlens/evaluation/impact_extras_runner.py", line 249, in <module>
+    main()
+    ~~~~^^
+  File "/home/ethioking/dev/nba-analytics/src/courtlens/evaluation/impact_extras_runner.py", line 233, in main
+    run(
+    ~~~^
+        acceptance=args.acceptance,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+        database=database,
+        ^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/ethioking/dev/nba-analytics/src/courtlens/evaluation/impact_extras_runner.py", line 113, in run
+    f = game_facts(
+        game,
+    ...<5 lines>...
+        matchups.get(gid, []),
+    )
+  File "/home/ethioking/dev/nba-analytics/src/courtlens/domain/impact_extras.py", line 357, in game_facts
+    or defender not in roster
+ValueError: invalid matchup orientation or duplicate pair

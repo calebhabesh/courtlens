@@ -1,0 +1,16 @@
+...................F.                                                    [100%]
+=================================== FAILURES ===================================
+____________ test_impact_ratings_cannot_enter_forecasting_features _____________
+
+    def test_impact_ratings_cannot_enter_forecasting_features():
+        from courtlens.evaluation import points_features
+    
+        source = Path(points_features.__file__).read_text()
+        assert "impact_rating" not in source
+>       from courtlens.evaluation.points_features import FEATURE_NAMES
+E       ImportError: cannot import name 'FEATURE_NAMES' from 'courtlens.evaluation.points_features' (/home/ethioking/dev/nba-analytics/src/courtlens/evaluation/points_features.py)
+
+tests/unit/test_impact_ratings.py:297: ImportError
+=========================== short test summary info ============================
+FAILED tests/unit/test_impact_ratings.py::test_impact_ratings_cannot_enter_forecasting_features
+1 failed, 20 passed in 0.52s
