@@ -92,9 +92,11 @@ The owner's standard is the current **Stats Explorer** (`/stats`, `components/st
   `lucide-react` imports also appear in `stats-workspace.tsx`, `stats-preview-rail.tsx` and
   `workbench-player-explorer.tsx`. About 100 text-character/emoji icons: → 38, ✓ 16, ✕ 14, ★/☆ 14,
   ← 7, 🏀 3, 📊 2, ◀ 2, and one each of ▶ ↑ ↓ ⚠ 📈 ⚡.
-- 41 `style={{` remain despite DL07's "zero" claim: `app/design/page.tsx` 24, distributions view 7,
-  multi-player lines 3, team compare 2, and one each in scatter plot, team logo, player explorer,
-  tier list and skeleton. FO14 brings these to 0, or to allowlisted custom-property-only uses.
+- 41 `style={{` uses: `app/design/page.tsx` 24, distributions view 7, multi-player lines 3, team
+  compare 2, and one each in scatter plot, team logo, player explorer, tier list and skeleton.
+  **Corrected in FO00:** all 41 set only CSS custom properties, which ESLint enforces and DL07
+  allows, so DL07's "zero raw inline styles" holds. FO14 removes the six spacing-utility props
+  on `/design` (`--mt`, `--p`, `--page-gutter`) and keeps geometry/color props.
 - CSS: `app/styles/components.css` is 5,100 lines and `pages.css` 4,603. Tokens 97, base 135,
   motion 120. `components/stats-explorer.css` is 214 and `components/impact.css` is separate.
 - UI primitives already exist in `components/ui/`: accordion, badge, button, checkbox, controls,
