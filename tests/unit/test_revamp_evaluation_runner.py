@@ -13,7 +13,7 @@ from uuid import uuid4
 import pytest
 
 from courtlens.domain.hybrid_assistant import HybridTurnResponse, InabilityBlock
-from courtlens.services.assistant.planner import PlanningOutput, ProviderFailure
+from courtlens.services.assistant.legacy.planner import PlanningOutput, ProviderFailure
 
 SCRIPT = Path(__file__).resolve().parents[2] / "scripts/evaluate_assistant.py"
 SPEC = importlib.util.spec_from_file_location("ar02_runner", SCRIPT)

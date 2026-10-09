@@ -11,9 +11,9 @@ from test_conversation_postgres import postgres_conversation as _postgres_fixtur
 from courtlens.config import get_settings
 from courtlens.domain.conversation import AnalysisPlan, ConversationContext, OperationStep
 from courtlens.domain.hybrid_assistant import HybridTurnRequest
-from courtlens.services.assistant.hybrid import run_hybrid_turn
+from courtlens.services.assistant.legacy.hybrid import run_hybrid_turn
+from courtlens.services.assistant.legacy.planner import PlanningOutput
 from courtlens.services.assistant.operations import canonical_step
-from courtlens.services.assistant.planner import PlanningOutput
 from courtlens.services.workbench_ingestion import workbench_content_sha256
 from courtlens.workbench_models import WorkbenchDataset
 

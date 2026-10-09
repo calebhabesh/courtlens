@@ -5084,6 +5084,17 @@ textarea, input, select { max-width: 100%; }
 
 
 /* Empty chat: the composer sits centred with the prompt above and examples below. */
-.ask-main.is-empty .ask-scroll { display: flex; flex-direction: column; justify-content: center; }
+.ask-main.is-empty .ask-scroll { display: flex; flex-direction: column; }
+.ask-main.is-empty .ask-column { flex: none; margin-block: auto; }
 .ask-main.is-empty .ask-empty { width: 100%; padding: 0 0 8vh; }
 .ask-empty > .ask-composer { width: 100%; margin-top: var(--space-4); text-align: left; }
+
+/* Keep next-question scope editable without changing retained answers. */
+.ask-scope { margin-bottom: var(--space-2); }
+.ask-scope > summary { width: fit-content; max-width: 100%; color: var(--color-text-secondary); font-size: var(--text-xs); cursor: pointer; overflow-wrap: anywhere; }
+.ask-scope-pop { max-height: 40dvh; overflow-y: auto; padding: var(--space-3); border-radius: var(--radius-md); background: var(--color-surface-2); }
+.ask-scope-pop p { margin: 0 0 var(--space-2); font-size: var(--text-sm); }
+.ask-scope-pop .conversation-controls { margin: 0; }
+.ask-scope-pop label { display: grid; gap: var(--space-1); }
+.ask-scope-pop :where(input, select) { width: 100%; min-width: 0; }
+.ask-topbar, .ask-dock, .conversation-dialog:has(.ask-chat) > .conversation-row { flex-shrink: 0; }

@@ -1,0 +1,703 @@
+
+> courtlens-dashboard@0.1.0 test:browser
+> playwright test --workers=2
+
+
+Running 199 tests using 2 workers
+
+  ✓    1 e2e/advanced-research.spec.ts:34:5 › each unavailable model names its independent requirement (2.2s)
+  ✓    2 e2e/advanced-research.spec.ts:16:5 › completed negative report shows amended identity, honest horizons, metrics and export (2.5s)
+  ✓    3 e2e/advanced-research.spec.ts:41:5 › integrity rejection hides numerical outputs and retry recovers (498ms)
+  ✓    4 e2e/advanced-research.spec.ts:48:5 › calculator rejects invalid scenarios and shows checked finite differences on mobile (699ms)
+  ✓    5 e2e/advanced-research.spec.ts:59:5 › roster keeps observed and projected inputs separate and exports context (934ms)
+  -    7 e2e/assistant-panel-real.spec.ts:9:7 › AR07 real server resolves his and this team at 1440px
+  -    8 e2e/assistant-panel-real.spec.ts:9:7 › AR07 real server resolves his and this team at 375px
+  ✓    6 e2e/advanced-research.spec.ts:70:5 › measurements preserve unknown picks, null lengths and units in bounded sample (1.5s)
+  ✓   10 e2e/comparison-evaluation.spec.ts:31:5 › evaluation presents the no-promotion decision and failed build state (408ms)
+  ✓    9 e2e/comparison-evaluation.spec.ts:11:5 › shared-cutoff comparison keeps different target dates and missing context visible (2.2s)
+  ✓   12 e2e/comparison-evaluation.spec.ts:61:5 › invalid date preserves selections and recovers to sparse history (627ms)
+  ✓   11 e2e/comparison-evaluation.spec.ts:39:5 › comparison controls work by keyboard and fit a 375px viewport (1.5s)
+  ✓   13 e2e/conversation.spec.ts:24:5 › AI disabled manual paired distributions preserve zero, unknown and exact evidence (2.2s)
+  ✓   14 e2e/conversation.spec.ts:31:5 › natural follow-ups and canonical identity choices retain conversation fingerprints (2.6s)
+  ✓   15 e2e/conversation.spec.ts:37:5 › quota, unsupported and empty states preserve question and manual execution (2.0s)
+  ✓   16 e2e/conversation.spec.ts:40:5 › network retry reuses the request identity (2.3s)
+  ✓   17 e2e/conversation.spec.ts:45:5 › exact Research destination retains a saveable turn and clears on client navigation (1.0s)
+[WebServer] ⨯ Error: The destination stream closed early.
+[WebServer]     at ignore-listed frames {
+[WebServer]   digest: '2825932550'
+[WebServer] }
+  ✓   19 e2e/conversation.spec.ts:53:5 › unmounted pending answer is discarded and its local state is cleared (1.2s)
+  ✓   18 e2e/conversation.spec.ts:49:5 › drawer traps keyboard focus, escapes, and supports narrow reduced-motion layout (1.5s)
+  ✓   20 e2e/conversation.spec.ts:58:7 › unsupported preserves manual alternatives and entered question (744ms)
+  ✓   22 e2e/conversation.spec.ts:58:7 › timeout preserves manual alternatives and entered question (720ms)
+  ✓   21 e2e/conversation.spec.ts:58:7 › insufficient_sample preserves manual alternatives and entered question (1.4s)
+  ✓   23 e2e/conversation.spec.ts:58:7 › provider_error preserves manual alternatives and entered question (753ms)
+  ✓   24 e2e/conversation.spec.ts:58:7 › busy preserves manual alternatives and entered question (747ms)
+  ✓   26 e2e/entity-selection.spec.ts:13:5 › two mounted pickers have distinct active descendants; ambiguous Enter never commits (862ms)
+  ✓   25 e2e/conversation.spec.ts:62:5 › proposed context needs an explicit new conversation (1.0s)
+  ✓   27 e2e/entity-selection.spec.ts:26:5 › editing and clear invalidate committed single ID; form never submits draft text (898ms)
+  ✓   28 e2e/entity-selection.spec.ts:34:5 › debounce and cache-hit paths reject delayed responses; empty input clears stale options (973ms)
+  ✓   29 e2e/entity-selection.spec.ts:44:5 › IME composition suppresses lookup and Enter; Tab closes and keeps natural focus (848ms)
+  ✓   30 e2e/entity-selection.spec.ts:50:5 › API failure preserves text; retry and no-match states are distinct (979ms)
+  ✓   31 e2e/entity-selection.spec.ts:56:5 › WOWY chips remove by name, prevent duplicates and enforce unit maximum without IDs (1.9s)
+  ✓   32 e2e/entity-selection.spec.ts:64:5 › touch selection and removal work at 375px (1.9s)
+  ✓   33 e2e/entity-selection.spec.ts:70:5 › changing lookup scope discards an obsolete response for the same text (999ms)
+  ✓   34 e2e/entity-selection.spec.ts:87:7 › trends selection preserves release, phase, cutoff and window context (949ms)
+  ✓   35 e2e/entity-selection.spec.ts:87:7 › distributions selection preserves release, phase, cutoff and window context (929ms)
+  ✓   36 e2e/entity-selection.spec.ts:87:7 › similarity selection preserves release, phase, cutoff and window context (887ms)
+  ✓   37 e2e/entity-selection.spec.ts:99:7 › rankings picker adds canonical named selection to its explicit personal target (835ms)
+  ✓   38 e2e/entity-selection.spec.ts:99:7 › tierlist picker adds canonical named selection to its explicit personal target (1.0s)
+  ✓   39 e2e/entity-selection.spec.ts:118:5 › planner selections stay within roster/watchlist and never query the public catalog (2.1s)
+  ✓   40 e2e/finance.spec.ts:23:5 › retained historical terms stay unknown, drawer sources and financial context survive navigation (2.1s)
+  ✓   41 e2e/finance.spec.ts:36:5 › filters, as-of emptiness and changed context hide stale totals (1.2s)
+  ✓   42 e2e/finance.spec.ts:43:5 › option scenario stays separate from reported money and groups (839ms)
+  ✓   43 e2e/finance.spec.ts:57:5 › mobile and landscape table/drawer preserve keyboard access without body overflow (977ms)
+  ✓   44 e2e/finance.spec.ts:50:5 › query rejection has retry, and book chooser never silently chooses newest (1.8s)
+  ✓   45 e2e/finance.spec.ts:64:5 › Refresh staged import returns a tracked job and exposes failed worker state (1.2s)
+  ✓   46 e2e/finance.spec.ts:71:5 › embedded Stats uses a separate basketball season and retains its resolved release (934ms)
+  ✓   47 e2e/finance.spec.ts:83:5 › a delayed old financial response cannot replace a newer financial context (675ms)
+  ✓   48 e2e/header-command-palette.spec.ts:7:7 › DL03 Header and Command Palette › header is single 56px sticky row without bottom border line and zero layout shift on scroll (3.0s)
+  ✓   49 e2e/header-command-palette.spec.ts:50:7 › DL03 Header and Command Palette › dropdown menus support keyboard navigation, ArrowDown to enter, and Escape returns focus (3.0s)
+  ✓   51 e2e/header-command-palette.spec.ts:112:7 › DL03 Header and Command Palette › More options menu contains Settings, Data status, Availability, and Help items (2.2s)
+  ✓   50 e2e/header-command-palette.spec.ts:80:7 › DL03 Header and Command Palette › command palette opens via shortcut, searches global lookup, supports arrow traversal, and restores focus (2.5s)
+[WebServer] [browser] A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client Component used:
+[WebServer] 
+[WebServer] - A server/client branch `if (typeof window !== 'undefined')`.
+[WebServer] - Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+[WebServer] - Date formatting in a user's locale which doesn't match the server.
+[WebServer] - External changing data without sending a snapshot of it along with the HTML.
+[WebServer] - Invalid HTML tag nesting.
+[WebServer] 
+[WebServer] It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+[WebServer] 
+[WebServer] https://react.dev/link/hydration-mismatch
+[WebServer] 
+[WebServer]   ...
+[WebServer]     <HTTPAccessFallbackBoundary notFound={undefined} forbidden={undefined} unauthorized={undefined}>
+[WebServer]       <RedirectBoundary>
+[WebServer]         <RedirectErrorBoundary router={{...}}>
+[WebServer]           <InnerLayoutRouter url={"/stats?r..."} tree={[...]} params={{}} cacheNode={{rsc:{...}, ...}} ...>
+[WebServer]             <SegmentViewNode type="page" pagePath="stats/page...">
+[WebServer]               <SegmentTrieNode>
+[WebServer]               <StatsPage>
+[WebServer]                 <StatsWorkspace>
+[WebServer]                   <section className="stats-work...">
+[WebServer]                     <div className="workbench-...">
+[WebServer]                       <div>
+[WebServer]                       <ContextBar catalog={{...}} sampleNoun="eligible p..." initialReleaseId="5bbb6035-6..." ...>
+[WebServer]                         <header className="context-bar" aria-label="Research c...">
+[WebServer]                           <div className="context-co...">
+[WebServer]                             <label>
+[WebServer]                             <label>
+[WebServer]                             <label className="context-field">
+[WebServer]                               <span>
+[WebServer]                               <CutoffDateField value="2026-06-30" onCommit={function onCommit}>
+[WebServer]                                 <input
+[WebServer]                                   type="date"
+[WebServer]                                   value="2026-06-30"
+[WebServer]                                   onChange={function onChange}
+[WebServer]                                   onBlur={function commit}
+[WebServer]                                   onKeyDown={function onKeyDown}
+[WebServer]                                   className="context-input"
+[WebServer]                                   aria-label="Before date cutoff"
+[WebServer] -                                 style={{caret-color:"transparent"}}
+[WebServer]                                 >
+[WebServer]                             ...
+[WebServer]                           ...
+[WebServer]                       ...
+[WebServer]                         <div role="region" aria-label="Player sta..." aria-busy={false} tabIndex={0} ...>
+[WebServer]                           <table className="data-table..." aria-label="Dense play..." style={{...}}>
+[WebServer]                             <colgroup>
+[WebServer]                             ...
+[WebServer]                               <LookupInput label="Filter pla..." placeholder="Search pla..." value="" ...>
+[WebServer]                                 <div ref={{current:null}} className="lookup-com..." onBlur={function blur}>
+[WebServer]                                   <div className="lookup-inp...">
+[WebServer]                                     <Icon>
+[WebServer]                                     <input
+[WebServer]                                       ref={{current:null}}
+[WebServer]                                       role="combobox"
+[WebServer]                                       aria-label="Filter players by name"
+[WebServer]                                       aria-autocomplete="list"
+[WebServer]                                       aria-expanded={false}
+[WebServer]                                       aria-controls={undefined}
+[WebServer]                                       aria-activedescendant={undefined}
+[WebServer]                                       aria-describedby="_R_n9c4iatpdn6lb_-status"
+[WebServer]                                       autoComplete="off"
+[WebServer]                                       spellCheck={false}
+[WebServer]                                       className="lookup-input"
+[WebServer]                                       value=""
+[WebServer]                                       placeholder="Search players…"
+[WebServer]                                       required={undefined}
+[WebServer]                                       disabled={undefined}
+[WebServer]                                       autoFocus={undefined}
+[WebServer]                                       onChange={function onChange}
+[WebServer]                                       onFocus={function onFocus}
+[WebServer]                                       onCompositionStart={function onCompositionStart}
+[WebServer]                                       onCompositionEnd={function onCompositionEnd}
+[WebServer]                                       onKeyDown={function onKeyDown}
+[WebServer] -                                     style={{caret-color:"transparent"}}
+[WebServer]                                     >
+[WebServer]                                   ...
+[WebServer]                             <tbody className="stats-tabl...">
+[WebServer]                               <tr className={"stats-ta..."} onMouseEnter={function onMouseEnter} ...>
+[WebServer]                                 <td className="pinned-col...">
+[WebServer]                                   <input
+[WebServer]                                     type="checkbox"
+[WebServer]                                     checked={false}
+[WebServer]                                     onChange={function onChange}
+[WebServer]                                     aria-label="Select Fixture Star for comparison"
+[WebServer]                                     className="stats-compare-checkbox"
+[WebServer] -                                   style={{caret-color:"transparent"}}
+[WebServer]                                   >
+[WebServer]                                 ...
+[WebServer]                               <tr className={"stats-ta..."} onMouseEnter={function onMouseEnter} ...>
+[WebServer]                                 <td className="pinned-col...">
+[WebServer]                                   <input
+[WebServer]                                     type="checkbox"
+[WebServer]                                     checked={false}
+[WebServer]                                     onChange={function onChange}
+[WebServer]                                     aria-label="Select Fixture Guard for comparison"
+[WebServer]                                     className="stats-compare-checkbox"
+[WebServer] -                                   style={{caret-color:"transparent"}}
+[WebServer]                                   >
+[WebServer]                                 ...
+[WebServer]             ...
+[WebServer]           ...
+[WebServer]  
+  ✓   52 e2e/header-command-palette.spec.ts:133:7 › DL03 Header and Command Palette › mobile viewport collapses to search icon and drawer button with accordions (5.8s)
+  -   54 e2e/im06-real.spec.ts:16:9 › impact served values at 1440px
+  -   55 e2e/im06-real.spec.ts:16:9 › onoff served values at 1440px
+  -   56 e2e/im06-real.spec.ts:16:9 › sixfactor served values at 1440px
+  -   57 e2e/im06-real.spec.ts:16:9 › defense served values at 1440px
+  -   58 e2e/im06-real.spec.ts:37:7 › profile and research at 1440px
+  -   59 e2e/im06-real.spec.ts:49:7 › earlier cutoff remains unavailable at 1440px
+  -   60 e2e/im06-real.spec.ts:16:9 › impact served values at 375px
+  -   61 e2e/im06-real.spec.ts:16:9 › onoff served values at 375px
+  -   62 e2e/im06-real.spec.ts:16:9 › sixfactor served values at 375px
+  -   63 e2e/im06-real.spec.ts:16:9 › defense served values at 375px
+  -   64 e2e/im06-real.spec.ts:37:7 › profile and research at 375px
+  -   65 e2e/im06-real.spec.ts:49:7 › earlier cutoff remains unavailable at 375px
+[WebServer] [browser] A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client Component used:
+[WebServer] 
+[WebServer] - A server/client branch `if (typeof window !== 'undefined')`.
+[WebServer] - Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+[WebServer] - Date formatting in a user's locale which doesn't match the server.
+[WebServer] - External changing data without sending a snapshot of it along with the HTML.
+[WebServer] - Invalid HTML tag nesting.
+[WebServer] 
+[WebServer] It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+[WebServer] 
+[WebServer] https://react.dev/link/hydration-mismatch
+[WebServer] 
+[WebServer]   ...
+[WebServer]     <HTTPAccessFallbackBoundary notFound={undefined} forbidden={undefined} unauthorized={undefined}>
+[WebServer]       <RedirectBoundary>
+[WebServer]         <RedirectErrorBoundary router={{...}}>
+[WebServer]           <InnerLayoutRouter url={"/stats?r..."} tree={[...]} params={{}} cacheNode={{rsc:{...}, ...}} ...>
+[WebServer]             <SegmentViewNode type="page" pagePath="stats/page...">
+[WebServer]               <SegmentTrieNode>
+[WebServer]               <StatsPage>
+[WebServer]                 <StatsWorkspace>
+[WebServer]                   <section className="stats-work...">
+[WebServer]                     <div className="workbench-...">
+[WebServer]                       <div>
+[WebServer]                       <ContextBar catalog={{...}} sampleNoun="eligible p..." initialReleaseId="5bbb6035-6..." ...>
+[WebServer]                         <header className="context-bar" aria-label="Research c...">
+[WebServer]                           <div className="context-co...">
+[WebServer]                             <label>
+[WebServer]                             <label>
+[WebServer]                             <label className="context-field">
+[WebServer]                               <span>
+[WebServer]                               <CutoffDateField value="2026-06-30" onCommit={function onCommit}>
+[WebServer]                                 <input
+[WebServer]                                   type="date"
+[WebServer]                                   value="2026-06-30"
+[WebServer]                                   onChange={function onChange}
+[WebServer]                                   onBlur={function commit}
+[WebServer]                                   onKeyDown={function onKeyDown}
+[WebServer]                                   className="context-input"
+[WebServer]                                   aria-label="Before date cutoff"
+[WebServer] -                                 style={{caret-color:"transparent"}}
+[WebServer]                                 >
+[WebServer]                             ...
+[WebServer]                           ...
+[WebServer]                       ...
+[WebServer]                         <div role="region" aria-label="Player sta..." aria-busy={false} tabIndex={0} ...>
+[WebServer]                           <table className="data-table..." aria-label="Dense play..." style={{...}}>
+[WebServer]                             <colgroup>
+[WebServer]                             ...
+[WebServer]                               <LookupInput label="Filter pla..." placeholder="Search pla..." value="" ...>
+[WebServer]                                 <div ref={{current:null}} className="lookup-com..." onBlur={function blur}>
+[WebServer]                                   <div className="lookup-inp...">
+[WebServer]                                     <Icon>
+[WebServer]                                     <input
+[WebServer]                                       ref={{current:null}}
+[WebServer]                                       role="combobox"
+[WebServer]                                       aria-label="Filter players by name"
+[WebServer]                                       aria-autocomplete="list"
+[WebServer]                                       aria-expanded={false}
+[WebServer]                                       aria-controls={undefined}
+[WebServer]                                       aria-activedescendant={undefined}
+[WebServer]                                       aria-describedby="_R_n9c4iatpdn6lb_-status"
+[WebServer]                                       autoComplete="off"
+[WebServer]                                       spellCheck={false}
+[WebServer]                                       className="lookup-input"
+[WebServer]                                       value=""
+[WebServer]                                       placeholder="Search players…"
+[WebServer]                                       required={undefined}
+[WebServer]                                       disabled={undefined}
+[WebServer]                                       autoFocus={undefined}
+[WebServer]                                       onChange={function onChange}
+[WebServer]                                       onFocus={function onFocus}
+[WebServer]                                       onCompositionStart={function onCompositionStart}
+[WebServer]                                       onCompositionEnd={function onCompositionEnd}
+[WebServer]                                       onKeyDown={function onKeyDown}
+[WebServer] -                                     style={{caret-color:"transparent"}}
+[WebServer]                                     >
+[WebServer]                                   ...
+[WebServer]                             <tbody className="stats-tabl...">
+[WebServer]                               <tr className={"stats-ta..."} onMouseEnter={function onMouseEnter} ...>
+[WebServer]                                 <td className="pinned-col...">
+[WebServer]                                   <input
+[WebServer]                                     type="checkbox"
+[WebServer]                                     checked={false}
+[WebServer]                                     onChange={function onChange}
+[WebServer]                                     aria-label="Select Fixture Star for comparison"
+[WebServer]                                     className="stats-compare-checkbox"
+[WebServer] -                                   style={{caret-color:"transparent"}}
+[WebServer]                                   >
+[WebServer]                                 ...
+[WebServer]                               <tr className={"stats-ta..."} onMouseEnter={function onMouseEnter} ...>
+[WebServer]                                 <td className="pinned-col...">
+[WebServer]                                   <input
+[WebServer]                                     type="checkbox"
+[WebServer]                                     checked={false}
+[WebServer]                                     onChange={function onChange}
+[WebServer]                                     aria-label="Select Fixture Guard for comparison"
+[WebServer]                                     className="stats-compare-checkbox"
+[WebServer] -                                   style={{caret-color:"transparent"}}
+[WebServer]                                   >
+[WebServer]                                 ...
+[WebServer]             ...
+[WebServer]           ...
+[WebServer]  
+  ✓   53 e2e/header-command-palette.spec.ts:174:7 › DL03 Header and Command Palette › captures evidence screenshots at 1440px and 375px (8.1s)
+  ✓   66 e2e/live.spec.ts:21:5 › selected source boxes keep zero, missingness, clock and errors explicit (2.5s)
+  ✘   67 e2e/live.spec.ts:28:5 › pause, visibility and navigation release leases and prevent hidden renewals (1.7m)
+  ✘   68 e2e/live.spec.ts:37:5 › offline retains last observation; capacity and disabled acquisition stay usable (1.7m)
+  ✓   69 e2e/live.spec.ts:48:5 › mobile and landscape source box regions contain overflow and keyboard focus (863ms)
+  ✓   71 e2e/live.spec.ts:53:5 › a delayed old selection cannot overwrite new date observations (679ms)
+  ✓   70 e2e/live.spec.ts:42:5 › historical final detail has no demand and pins resolved release in links (1.6s)
+  ✓   73 e2e/motion-coverage.spec.ts:26:9 › Design Language v1: Motion Coverage Suite › interactive elements on /stats have transitions or motion wrappers (720ms)
+  ✓   72 e2e/live.spec.ts:58:5 › disabled acquisition, observed empty slate and invalid dates stay distinct (1.6s)
+  ✓   74 e2e/motion-coverage.spec.ts:26:9 › Design Language v1: Motion Coverage Suite › interactive elements on /players have transitions or motion wrappers (986ms)
+  ✓   76 e2e/motion-coverage.spec.ts:26:9 › Design Language v1: Motion Coverage Suite › interactive elements on /compare have transitions or motion wrappers (472ms)
+  ✓   75 e2e/motion-coverage.spec.ts:26:9 › Design Language v1: Motion Coverage Suite › interactive elements on /teams have transitions or motion wrappers (716ms)
+  ✓   78 e2e/motion-coverage.spec.ts:26:9 › Design Language v1: Motion Coverage Suite › interactive elements on /research/ask have transitions or motion wrappers (484ms)
+  ✓   77 e2e/motion-coverage.spec.ts:26:9 › Design Language v1: Motion Coverage Suite › interactive elements on /live have transitions or motion wrappers (672ms)
+  ✓   79 e2e/motion-coverage.spec.ts:26:9 › Design Language v1: Motion Coverage Suite › interactive elements on /design have transitions or motion wrappers (1.2s)
+  ✓   80 e2e/motion-coverage.spec.ts:67:7 › Design Language v1: Motion Coverage Suite › menus, command palette, and dialogs have enter animations (1.3s)
+[WebServer] [browser] You have Reduced Motion enabled on your device. Animations may not appear as expected.. For more information and steps for solving, visit https://motion.dev/troubleshooting/reduced-motion-disabled (lib/motion.ts:52:43)
+  ✓   81 e2e/motion-coverage.spec.ts:94:7 › Design Language v1: Motion Coverage Suite › reduced motion overrides preserve instant transitions without layout snapping errors (891ms)
+  ✓   82 e2e/player-profile.spec.ts:3:5 › search opens a snapshot-pinned real route and changes replay date (1.0s)
+  ✓   83 e2e/player-profile.spec.ts:19:5 › unsupported replay date keeps the input and offers recovery (486ms)
+  ✓   85 e2e/route-polish.spec.ts:20:5 › catalog scope options keep unavailable context explicit and synchronize navigation (697ms)
+  ✓   84 e2e/route-polish.spec.ts:4:5 › release availability agrees across desktop and mobile and preserves context (1.2s)
+  ✓   86 e2e/route-polish.spec.ts:32:5 › settings distinguishes configured key from provider health and hides operator details (1.5s)
+  ✓   87 e2e/route-polish.spec.ts:47:5 › partial source keeps tools primary; service failure remains a distinct availability state (1.8s)
+  ✓   88 e2e/route-polish.spec.ts:71:5 › distribution subtools retain release, postseason and exclusive cutoff (683ms)
+  ✓   89 e2e/route-polish.spec.ts:86:5 › research without a catalog explains the missing context (392ms)
+  ✓   90 e2e/saved-operations.spec.ts:29:5 › explicit save excludes question by default, reuses identity after failure and survives clearing (1.6s)
+  ✓   92 e2e/saved-operations.spec.ts:40:5 › combined library keeps legacy section and opens exact retained namespace (1.0s)
+  ✓   91 e2e/saved-operations.spec.ts:37:5 › question opt-in is independent from execution and title (3.2s)
+  ✓   93 e2e/saved-operations.spec.ts:43:39 › query retained result exposes evidence, pinned reopening, exports and reproduction (1.7s)
+  ✓   94 e2e/saved-operations.spec.ts:43:39 › definition retained result exposes evidence, pinned reopening, exports and reproduction (1.7s)
+  ✓   95 e2e/saved-operations.spec.ts:43:39 › profile retained result exposes evidence, pinned reopening, exports and reproduction (1.8s)
+  ✓   96 e2e/saved-operations.spec.ts:43:39 › compare retained result exposes evidence, pinned reopening, exports and reproduction (1.8s)
+  ✓   97 e2e/saved-operations.spec.ts:43:39 › team retained result exposes evidence, pinned reopening, exports and reproduction (1.9s)
+  ✓   98 e2e/saved-operations.spec.ts:43:39 › forecast retained result exposes evidence, pinned reopening, exports and reproduction (1.8s)
+  ✓   99 e2e/saved-operations.spec.ts:43:39 › distribution retained result exposes evidence, pinned reopening, exports and reproduction (1.7s)
+  ✓  100 e2e/saved-operations.spec.ts:43:39 › compare_periods retained result exposes evidence, pinned reopening, exports and reproduction (1.7s)
+  ✓  101 e2e/saved-operations.spec.ts:43:39 › splits retained result exposes evidence, pinned reopening, exports and reproduction (1.7s)
+  ✓  102 e2e/saved-operations.spec.ts:43:39 › similarity retained result exposes evidence, pinned reopening, exports and reproduction (1.7s)
+  ✓  103 e2e/saved-operations.spec.ts:43:39 › workload_shifts retained result exposes evidence, pinned reopening, exports and reproduction (1.7s)
+  ✓  105 e2e/saved-operations.spec.ts:49:5 › reproduction mismatch keeps exports and retained evidence usable on narrow screens (530ms)
+  ✓  104 e2e/saved-operations.spec.ts:43:39 › finance retained result exposes evidence, pinned reopening, exports and reproduction (1.9s)
+  ✓  106 e2e/saved-operations.spec.ts:52:5 › original content, live catalog version and installation metadata are local and truthful (27.9s)
+  ✓  107 e2e/saved-operations.spec.ts:60:5 › saved-operation pagination preserves boundaries and failed pages stay explicit (28.2s)
+  ✓  108 e2e/saved-operations.spec.ts:69:5 › install prompt accepts a browser event and exposes installed state (1.5s)
+  ✓  109 e2e/shared-floor.spec.ts:36:5 › empty source preserves unknown values, exact downloads and resolved links (1.3s)
+  ✓  110 e2e/shared-floor.spec.ts:57:5 › two and five player units use the same operation with all partitions (2.4s)
+  ✓  111 e2e/shared-floor.spec.ts:71:5 › stat shifts reject focal contradictions and request per-possession production (1.9s)
+  ✓  113 e2e/shared-floor.spec.ts:95:5 › Stats on/off preset opens served per-team rating columns (550ms)
+  ✓  112 e2e/shared-floor.spec.ts:82:5 › bounded leaders pin a resolved release across candidates (1.2s)
+  ✓  115 e2e/shared-floor.spec.ts:133:5 › query overflow is actionable and exports are unavailable after failed queries (617ms)
+  ✓  114 e2e/shared-floor.spec.ts:102:5 › partial samples show raw rates and directional denominators while gating differences (1.4s)
+  ✓  116 e2e/shooting.spec.ts:14:5 › blocked source exports complete evidence and pins resolved links (896ms)
+  ✓  117 e2e/shooting.spec.ts:27:5 › court and table preserve zero versus unknown; exports and peer zones agree (1.2s)
+  ✓  119 e2e/shooting.spec.ts:59:5 › aftermath keeps branch samples, unknown membership and censoring distinct (861ms)
+  ✓  118 e2e/shooting.spec.ts:46:5 › assignment matrix shows fractional exposure and null pooled rates at 375px (1.6s)
+  ✓  120 e2e/shooting.spec.ts:73:5 › query overflow is actionable and cannot export a partial result (525ms)
+  ✓  122 e2e/shooting.spec.ts:82:5 › shooting tabs and name lookup resolve IDs without analytical requests (688ms)
+  ✓  121 e2e/shooting.spec.ts:77:5 › cancelling an abandoned request prevents stale results (1.3s)
+  ✓  123 e2e/shooting.spec.ts:96:5 › shot pagination bounds the court/table while exports retain all facts (782ms)
+  ✓  124 e2e/stats-preview.spec.ts:7:5 › hover and keyboard preview reuse table values without fetching or stealing focus (1.5s)
+  ✓  125 e2e/stats-preview.spec.ts:36:5 › pinning, collapsing and expanding preserve the preview and table geometry (1.3s)
+  ✓  126 e2e/stats-preview.spec.ts:59:5 › wide and smaller desktop columns align with stable pinned identity while scrolling (1.5s)
+  ✓  128 e2e/stats-readability-search.spec.ts:5:5 › standard records are readable and portrait gutters center between metric values (802ms)
+  ✓  127 e2e/stats-preview.spec.ts:90:5 › mobile details, collapsed filters and submitted search remain accessible (2.0s)
+  ✓  129 e2e/stats-readability-search.spec.ts:25:5 › header branding and secondary navigation align (634ms)
+  ✓  130 e2e/stats-readability-search.spec.ts:38:5 › profile exports keep the same shared wordmark artwork (711ms)
+  ✓  131 e2e/stats-readability-search.spec.ts:55:5 › global search clear button uses the right edge and concise player captions (951ms)
+  ✓  132 e2e/stats-readability-search.spec.ts:80:5 › table suggestions remain visible outside the scroll region and filter in place (1.2s)
+  ✓  133 e2e/stats-readability-search.spec.ts:103:5 › touch can pick a table suggestion and Escape preserves the draft (1.3s)
+  ✓  135 e2e/table-interactions.spec.ts:48:5 › keyboard sorting, single compare shortcut and drawer focus stay scoped (1.5s)
+  ✓  134 e2e/table-interactions.spec.ts:27:5 › recurring guide modes preserve primary identity, header alignment and reload (2.5s)
+  ✓  136 e2e/table-interactions.spec.ts:64:5 › custom selected columns deduplicate normalization and preserve recurring group order (1.3s)
+  ✓  137 e2e/table-interactions.spec.ts:73:5 › selection failure remains actionable and does not change the selected row (1.4s)
+  ✓  138 e2e/table-interactions.spec.ts:85:5 › playoff player table shares native keyboard sorting (1.3s)
+  ✓  139 e2e/table-interactions.spec.ts:94:5 › a larger tray names the two-player comparison action accurately (1.2s)
+  ✓  140 e2e/threaded-assistant.spec.ts:99:5 › standalone defaults, reload, new chat, history and deletion keep durable questions (1.7s)
+  ✓  142 e2e/threaded-assistant.spec.ts:130:5 › transport replay preserves request identity; intentional retry links a new turn (753ms)
+  ✓  143 e2e/threaded-assistant.spec.ts:140:5 › Stop is durable, releases controls and fences a late response (1.2s)
+  ✓  144 e2e/threaded-assistant.spec.ts:148:5 › closing drawer retains pending history and full-page link preserves scope (1.1s)
+  ✓  145 e2e/threaded-assistant.spec.ts:156:5 › clarifications, external citations and hostile text render safely (644ms)
+  ✓  146 e2e/threaded-assistant.spec.ts:163:5 › paginated turns are loaded without losing earlier questions (1.1s)
+  ✓  147 e2e/threaded-assistant.spec.ts:176:7 › threaded wide layout, keyboard dialog and screenshot (1.3s)
+  ✓  148 e2e/threaded-assistant.spec.ts:176:7 › threaded desktop layout, keyboard dialog and screenshot (1.2s)
+  ✓  149 e2e/threaded-assistant.spec.ts:176:7 › threaded mobile layout, keyboard dialog and screenshot (1.1s)
+  ✓  150 e2e/threaded-assistant.spec.ts:176:7 › threaded zoom-equivalent layout, keyboard dialog and screenshot (982ms)
+  ✓  151 e2e/threaded-assistant.spec.ts:196:5 › typing a next question during execution preserves the new draft (997ms)
+  ✓  152 e2e/threaded-assistant.spec.ts:204:5 › verified local results preserve zero, unknown, scope and equivalent actions (709ms)
+  ✓  153 e2e/threaded-assistant.spec.ts:216:5 › default assistant and manual entry are available without preview selection (630ms)
+  ✓  154 e2e/threaded-assistant.spec.ts:223:5 › page and panel share retained updates and deletion across navigation (2.0s)
+  ✓  155 e2e/threaded-assistant.spec.ts:243:7 › provider_disabled retains history and retry creates a linked attempt (1.1s)
+  ✓  156 e2e/threaded-assistant.spec.ts:243:7 › provider_quota retains history and retry creates a linked attempt (1.0s)
+  ✓  157 e2e/threaded-assistant.spec.ts:243:7 › provider_busy retains history and retry creates a linked attempt (1.0s)
+  ✓  158 e2e/threaded-assistant.spec.ts:243:7 › provider_timeout retains history and retry creates a linked attempt (1.2s)
+  ✓  159 e2e/threaded-assistant.spec.ts:243:7 › malformed_output retains history and retry creates a linked attempt (1.3s)
+  ✓  160 e2e/threaded-assistant.spec.ts:243:7 › external_unavailable retains history and retry creates a linked attempt (1.1s)
+  ✓  161 e2e/threaded-assistant.spec.ts:243:7 › external_stale retains history and retry creates a linked attempt (1.1s)
+  ✓  162 e2e/threaded-assistant.spec.ts:243:7 › backend_failure retains history and retry creates a linked attempt (1.1s)
+  ✘  141 e2e/threaded-assistant.spec.ts:118:5 › scope changes retain old answers and unedited follow-ups inherit on server (30.0s)
+  ✓  164 e2e/threaded-assistant.spec.ts:267:7 › general knowledge label stays visible after reload at 1440px (877ms)
+  ✓  165 e2e/threaded-assistant.spec.ts:267:7 › general knowledge label stays visible after reload at 375px (919ms)
+  ✓  166 e2e/threaded-assistant.spec.ts:285:5 › AG04 unavailable stream replays a v3 final with the same request identity (934ms)
+  ✓  167 e2e/threaded-assistant.spec.ts:293:5 › AG04 minimal final preserves limited and unverified labels after fallback and reload (945ms)
+  ✓  168 e2e/threaded-assistant.spec.ts:302:5 › checked narrative renders above its supporting result and survives reload (784ms)
+  ✓  169 e2e/threaded-assistant.spec.ts:320:5 › streamed turn shows each phase, the checked narrative, then the retained answer (4.9s)
+  ✓  170 e2e/threaded-assistant.spec.ts:333:5 › unavailable stream falls back to request/response with the same request identity (743ms)
+  ✓  171 e2e/threaded-assistant.spec.ts:340:7 › AG04 live agent steps, deltas, reset and retained final through real proxy at 1440px (7.2s)
+  ✘  163 e2e/threaded-assistant.spec.ts:254:5 › browser history scope changes update only the next request (30.0s)
+  ✓  172 e2e/threaded-assistant.spec.ts:340:7 › AG04 live agent steps, deltas, reset and retained final through real proxy at 375px (7.2s)
+  ✓  173 e2e/threaded-assistant.spec.ts:360:5 › Enter sends, Shift+Enter adds a line and an example prompt sends directly (940ms)
+  ✓  174 e2e/threaded-assistant.spec.ts:373:5 › user message is a right-aligned bubble and assistant prose has no bubble (614ms)
+  ✓  176 e2e/threaded-assistant.spec.ts:406:5 › mobile conversations open as a drawer and close after choosing a thread (643ms)
+  ✓  175 e2e/threaded-assistant.spec.ts:388:5 › an old thread without narrative renders its template answer in the new layout (775ms)
+  ✓  177 e2e/threaded-assistant.spec.ts:418:5 › desktop sidebar collapses and stays collapsed after reload (1.1s)
+  ✓  179 e2e/threaded-assistant.spec.ts:438:5 › /ask opens the assistant (411ms)
+  ✓  180 e2e/threaded-assistant.spec.ts:448:9 › AR07 1440px player_ids panel attaches and removes resolved page context (878ms)
+  ✓  178 e2e/threaded-assistant.spec.ts:426:5 › clearing history in Settings empties an open chat in another tab (2.7s)
+  ✓  181 e2e/threaded-assistant.spec.ts:448:9 › AR07 1440px team_ids panel attaches and removes resolved page context (1.4s)
+  ✘  182 e2e/threaded-assistant.spec.ts:448:9 › AR07 375px player_ids panel attaches and removes resolved page context (30.0s)
+  ✘  183 e2e/threaded-assistant.spec.ts:448:9 › AR07 375px team_ids panel attaches and removes resolved page context (30.0s)
+  ✓  184 e2e/threaded-assistant.spec.ts:472:5 › AR07 compare attaches both players, and the full Ask page uses the standalone entry (935ms)
+  ✓  186 e2e/threaded-assistant.spec.ts:544:7 › AG05 web-only limited failure and retry in the shared panel at 1440px (1.0s)
+  ✓  185 e2e/threaded-assistant.spec.ts:505:7 › AG05 answer-first chips, tables, trace, follow-up and retained scope at 1440px (1.7s)
+  ✓  187 e2e/threaded-assistant.spec.ts:505:7 › AG05 answer-first chips, tables, trace, follow-up and retained scope at 375px (1.6s)
+  ✓  189 e2e/threaded-assistant.spec.ts:557:5 › AG05 Settings reports active provider, model, limits and limited mode (343ms)
+  ✘  188 e2e/threaded-assistant.spec.ts:544:7 › AG05 web-only limited failure and retry in the shared panel at 375px (30.0s)
+  ✘  190 e2e/threaded-assistant.spec.ts:565:5 › AG05 source details preserve keyboard focus in landscape with reduced motion (30.0s)
+  ✓  191 e2e/workbench.spec.ts:5:7 › Workbench Dark Research Interface › home opens Stats with dark theme, horizontal navigation, context and data (1.8s)
+  ✓  193 e2e/workbench.spec.ts:53:7 › Workbench Dark Research Interface › player detail presents profile summaries, game logs, and lineage trigger (1.1s)
+  ✓  192 e2e/workbench.spec.ts:30:7 › Workbench Dark Research Interface › player explorer allows filtering and links to detail view (2.5s)
+  ✓  194 e2e/workbench.spec.ts:71:7 › Workbench Dark Research Interface › team research lists cohorts and navigates to team detail (1.1s)
+  ✓  196 e2e/workbench.spec.ts:101:7 › Workbench Dark Research Interface › forecasts view displays active policy, promotion decision, gates, and prespecified slices (643ms)
+  ✓  195 e2e/workbench.spec.ts:88:7 › Workbench Dark Research Interface › comparison view displays head-to-head metrics without declaring forced winners (1.1s)
+  ✓  197 e2e/workbench.spec.ts:130:7 › Workbench Dark Research Interface › dense dark research layout fits a 375px mobile viewport without horizontal overflow (1.3s)
+  ✓  198 e2e/workbench.spec.ts:143:7 › Workbench Dark Research Interface › Ask drawer offers manual research and links to optional configuration (1.2s)
+  -  199 e2e/workspace-persistence.spec.ts:3:5 › real workspace proxy persists, conflicts, exports and restores
+
+
+  1) e2e/live.spec.ts:28:5 › pause, visibility and navigation release leases and prevent hidden renewals 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: getByRole('region', { name: 'Game slate' })
+    Expected substring: "Boston Celtics"
+    Received string:    ""
+
+    Call log:
+      - Expect "toContainText" getByRole('region', { name: 'Game slate' }) with timeout 5000ms
+      - waiting for getByRole('region', { name: 'Game slate' })
+        5 × locator resolved to <section class="live-game-grid" aria-label="Game slate"></section>
+          - unexpected value ""
+      - Test timeout of 30000ms exceeded.
+
+
+      27 |
+      28 | test("pause, visibility and navigation release leases and prevent hidden renewals",async({page})=>{
+    > 29 |   await page.clock.install();const calls=await mock(page);await page.goto(`/live/${slate}`);await expect(page.getByRole("region",{name:"Game slate"})).toContainText("Boston Celtics");await expect.poll(()=>calls.filter(c=>c.method==="POST").length).toBeGreaterThan(0);
+         |                                                                                                                                                        ^
+      30 |   await page.getByRole("button",{name:"Pause updates"}).click();await expect.poll(()=>calls.filter(c=>c.method==="DELETE").length).toBeGreaterThan(0);const count=calls.length;await page.clock.fastForward(180000);expect(calls.length).toBe(count);
+      31 |   await page.getByRole("button",{name:"Resume updates"}).click();await expect(page.getByRole("status").filter({hasText:"Visible"})).toBeVisible();await expect.poll(()=>calls.length).toBeGreaterThan(count);
+      32 |   await page.evaluate(()=>{Object.defineProperty(document,"visibilityState",{configurable:true,value:"hidden"});document.dispatchEvent(new Event("visibilitychange"));});await expect(page.getByRole("status").filter({hasText:"Hidden"})).toBeVisible();const hiddenCount=calls.length;await page.clock.fastForward(180000);expect(calls.length).toBe(hiddenCount);
+        at /tmp/courtlens-ag07-browser-05swpp3v/dashboard/e2e/live.spec.ts:29:152
+
+    Error Context: test-results/live-pause-visibility-and--1a9d9-and-prevent-hidden-renewals/error-context.md
+
+  2) e2e/live.spec.ts:37:5 › offline retains last observation; capacity and disabled acquisition stay usable 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByRole('alert').filter({ hasText: 'capacity' })
+    Expected: visible
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByRole('alert').filter({ hasText: 'capacity' }) with timeout 5000ms
+      - waiting for getByRole('alert').filter({ hasText: 'capacity' })
+      - Test timeout of 30000ms exceeded.
+
+
+      36 |
+      37 | test("offline retains last observation; capacity and disabled acquisition stay usable",async({page,context})=>{
+    > 38 |   await mock(page);await page.route("**/api/live/subscriptions",r=>r.fulfill({status:429,json:{detail:"capacity"}}));await page.goto(`/live/${slate}`);await expect(page.getByRole("alert").filter({hasText:"capacity"})).toBeVisible();await expect(page.getByRole("region",{name:"Game slate"})).toContainText("Boston Celtics");
+         |                                                                                                                                                                                                                           ^
+      39 |   await context.setOffline(true);await expect(page.getByRole("status").filter({hasText:"Offline"})).toBeVisible();await expect(page.getByRole("region",{name:"Game slate"})).toContainText("Boston Celtics");await context.setOffline(false);
+      40 | });
+      41 |
+        at /tmp/courtlens-ag07-browser-05swpp3v/dashboard/e2e/live.spec.ts:38:219
+
+    Error Context: test-results/live-offline-retains-last--96d93-led-acquisition-stay-usable/error-context.md
+
+  3) e2e/threaded-assistant.spec.ts:118:5 › scope changes retain old answers and unedited follow-ups inherit on server 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.click: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for locator('#content').locator('summary').filter({ hasText: 'Edit scope for the next question' })
+
+
+      91 | const messages = (scope: Page | Locator) => live(scope).getByLabel("Messages");
+      92 | const composer = (scope: Page | Locator) => live(scope).getByLabel("Your question", { exact: true });
+    > 93 | const openScope = (page: Page) => live(page).locator("summary",{hasText:"Edit scope for the next question"}).click();
+         |                                                                                                              ^
+      94 | async function send(page: Page, message: string) {
+      95 |   await composer(page).fill(message);
+      96 |   await page.getByRole("button",{name:"Send question",exact:true}).click();
+        at openScope (/tmp/courtlens-ag07-browser-05swpp3v/dashboard/e2e/threaded-assistant.spec.ts:93:110)
+        at /tmp/courtlens-ag07-browser-05swpp3v/dashboard/e2e/threaded-assistant.spec.ts:123:9
+
+    Error Context: test-results/threaded-assistant-scope-c-daae2-ollow-ups-inherit-on-server/error-context.md
+
+  4) e2e/threaded-assistant.spec.ts:254:5 › browser history scope changes update only the next request 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.click: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for locator('#content').locator('summary').filter({ hasText: 'Edit scope for the next question' })
+
+
+      91 | const messages = (scope: Page | Locator) => live(scope).getByLabel("Messages");
+      92 | const composer = (scope: Page | Locator) => live(scope).getByLabel("Your question", { exact: true });
+    > 93 | const openScope = (page: Page) => live(page).locator("summary",{hasText:"Edit scope for the next question"}).click();
+         |                                                                                                              ^
+      94 | async function send(page: Page, message: string) {
+      95 |   await composer(page).fill(message);
+      96 |   await page.getByRole("button",{name:"Send question",exact:true}).click();
+        at openScope (/tmp/courtlens-ag07-browser-05swpp3v/dashboard/e2e/threaded-assistant.spec.ts:93:110)
+        at /tmp/courtlens-ag07-browser-05swpp3v/dashboard/e2e/threaded-assistant.spec.ts:259:9
+
+    Error Context: test-results/threaded-assistant-browser-8ecaa-pdate-only-the-next-request/error-context.md
+
+  5) e2e/threaded-assistant.spec.ts:448:9 › AR07 375px player_ids panel attaches and removes resolved page context 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.click: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for getByRole('dialog').getByRole('button', { name: 'Send question', exact: true })
+        - locator resolved to <button type="submit" title="Send question" aria-label="Send question" class="ui-button ui-button-primary ui-button-md button button-primary  ask-send">…</button>
+      - attempting click action
+        2 × waiting for element to be visible, enabled and stable
+          - element is visible, enabled and stable
+          - scrolling into view if needed
+          - done scrolling
+          - <div class="ask-topbar">…</div> intercepts pointer events
+        - retrying click action
+        - waiting 20ms
+        2 × waiting for element to be visible, enabled and stable
+          - element is visible, enabled and stable
+          - scrolling into view if needed
+          - done scrolling
+          - <div class="ask-topbar">…</div> intercepts pointer events
+        - retrying click action
+          - waiting 100ms
+        57 × waiting for element to be visible, enabled and stable
+           - element is visible, enabled and stable
+           - scrolling into view if needed
+           - done scrolling
+           - <div class="ask-topbar">…</div> intercepts pointer events
+         - retrying click action
+           - waiting 500ms
+
+
+      452 |       const dialog = page.getByRole("dialog");
+      453 |       await expect(dialog.getByLabel("Attached page context")).toContainText(entityKey === "player_ids" ? "Fixture Star" : "Toronto Raptors");
+    > 454 |       await composer(dialog).fill(message); await dialog.getByRole("button",{name:"Send question",exact:true}).click();
+          |                                                                                                                ^
+      455 |       await expect.poll(() => state.requests.length).toBe(1);
+      456 |       expect(state.requests[0].page_context?.[entityKey]).toEqual([entity]);
+      457 |       expect(state.requests[0].page_context?.selections.season).toBe("2025-26");
+        at /tmp/courtlens-ag07-browser-05swpp3v/dashboard/e2e/threaded-assistant.spec.ts:454:112
+
+    Error Context: test-results/threaded-assistant-AR07-37-f5adf-moves-resolved-page-context/error-context.md
+
+  6) e2e/threaded-assistant.spec.ts:448:9 › AR07 375px team_ids panel attaches and removes resolved page context 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.click: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for getByRole('dialog').getByRole('button', { name: 'Send question', exact: true })
+        - locator resolved to <button type="submit" title="Send question" aria-label="Send question" class="ui-button ui-button-primary ui-button-md button button-primary  ask-send">…</button>
+      - attempting click action
+        2 × waiting for element to be visible, enabled and stable
+          - element is visible, enabled and stable
+          - scrolling into view if needed
+          - done scrolling
+          - <div class="ask-topbar">…</div> intercepts pointer events
+        - retrying click action
+        - waiting 20ms
+        2 × waiting for element to be visible, enabled and stable
+          - element is visible, enabled and stable
+          - scrolling into view if needed
+          - done scrolling
+          - <div class="ask-topbar">…</div> intercepts pointer events
+        - retrying click action
+          - waiting 100ms
+        57 × waiting for element to be visible, enabled and stable
+           - element is visible, enabled and stable
+           - scrolling into view if needed
+           - done scrolling
+           - <div class="ask-topbar">…</div> intercepts pointer events
+         - retrying click action
+           - waiting 500ms
+
+
+      452 |       const dialog = page.getByRole("dialog");
+      453 |       await expect(dialog.getByLabel("Attached page context")).toContainText(entityKey === "player_ids" ? "Fixture Star" : "Toronto Raptors");
+    > 454 |       await composer(dialog).fill(message); await dialog.getByRole("button",{name:"Send question",exact:true}).click();
+          |                                                                                                                ^
+      455 |       await expect.poll(() => state.requests.length).toBe(1);
+      456 |       expect(state.requests[0].page_context?.[entityKey]).toEqual([entity]);
+      457 |       expect(state.requests[0].page_context?.selections.season).toBe("2025-26");
+        at /tmp/courtlens-ag07-browser-05swpp3v/dashboard/e2e/threaded-assistant.spec.ts:454:112
+
+    Error Context: test-results/threaded-assistant-AR07-37-a887b-moves-resolved-page-context/error-context.md
+
+  7) e2e/threaded-assistant.spec.ts:544:7 › AG05 web-only limited failure and retry in the shared panel at 375px 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.click: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for getByRole('dialog').getByRole('button', { name: 'Send question', exact: true })
+        - locator resolved to <button type="submit" title="Send question" aria-label="Send question" class="ui-button ui-button-primary ui-button-md button button-primary  ask-send">…</button>
+      - attempting click action
+        2 × waiting for element to be visible, enabled and stable
+          - element is visible, enabled and stable
+          - scrolling into view if needed
+          - done scrolling
+          - <div class="ask-topbar">…</div> intercepts pointer events
+        - retrying click action
+        - waiting 20ms
+        2 × waiting for element to be visible, enabled and stable
+          - element is visible, enabled and stable
+          - scrolling into view if needed
+          - done scrolling
+          - <div class="ask-topbar">…</div> intercepts pointer events
+        - retrying click action
+          - waiting 100ms
+        57 × waiting for element to be visible, enabled and stable
+           - element is visible, enabled and stable
+           - scrolling into view if needed
+           - done scrolling
+           - <div class="ask-topbar">…</div> intercepts pointer events
+         - retrying click action
+           - waiting 500ms
+
+
+      546 |     const state = await mock(page, { agentResponse: request => ({ ...agentAnswer(request), mode: "limited", status: "failed", answer: { text: "The provider quota is exhausted. Simple stat questions remain available." }, results: [], failure: "provider_quota", retry_after: 60, follow_ups: ["Show scoring leaders"], accounting: { provider: "replay", model: "synthetic-ag05", prompt_version: "fixture", est_cost_usd: null } }) });
+      547 |     await openPage(page, playerPage); await page.getByRole("button", { name: "Ask", exact: true }).click();
+    > 548 |     const dialog = page.getByRole("dialog"); await composer(dialog).fill("Explain RAPM"); await dialog.getByRole("button", { name: "Send question", exact: true }).click();
+          |                                                                                                                                                                    ^
+      549 |     const answer = messages(dialog).locator(".agent-answer"); await expect(answer.locator(".agent-limited")).toContainText("add a provider key"); await expect(answer).toContainText("Retry after 60 seconds");
+      550 |     await expect(answer.locator("table")).toHaveCount(0); await expect(answer.getByRole("link", { name: /Review and save/ })).toHaveCount(0);
+      551 |     await answer.getByText("How I got this", { exact: true }).click(); await expect(answer.locator(".ask-how")).toContainText("Cost unknown");
+        at /tmp/courtlens-ag07-browser-05swpp3v/dashboard/e2e/threaded-assistant.spec.ts:548:164
+
+    Error Context: test-results/threaded-assistant-AG05-we-60c8a-n-the-shared-panel-at-375px/error-context.md
+
+  8) e2e/threaded-assistant.spec.ts:565:5 › AG05 source details preserve keyboard focus in landscape with reduced motion 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.click: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for getByRole('button', { name: 'Send question', exact: true })
+        - locator resolved to <button type="submit" title="Send question" aria-label="Send question" class="ui-button ui-button-primary ui-button-md button button-primary  ask-send">…</button>
+      - attempting click action
+        2 × waiting for element to be visible, enabled and stable
+          - element is visible, enabled and stable
+          - scrolling into view if needed
+          - done scrolling
+          - <div class="ask-topbar">…</div> intercepts pointer events
+        - retrying click action
+        - waiting 20ms
+        2 × waiting for element to be visible, enabled and stable
+          - element is visible, enabled and stable
+          - scrolling into view if needed
+          - done scrolling
+          - <div class="ask-topbar">…</div> intercepts pointer events
+        - retrying click action
+          - waiting 100ms
+        57 × waiting for element to be visible, enabled and stable
+           - element is visible, enabled and stable
+           - scrolling into view if needed
+           - done scrolling
+           - <div class="ask-topbar">…</div> intercepts pointer events
+         - retrying click action
+           - waiting 500ms
+
+
+      94 | async function send(page: Page, message: string) {
+      95 |   await composer(page).fill(message);
+    > 96 |   await page.getByRole("button",{name:"Send question",exact:true}).click();
+         |                                                                    ^
+      97 | }
+      98 |
+      99 | test("standalone defaults, reload, new chat, history and deletion keep durable questions",async({page})=>{
+        at send (/tmp/courtlens-ag07-browser-05swpp3v/dashboard/e2e/threaded-assistant.spec.ts:96:68)
+        at /tmp/courtlens-ag07-browser-05swpp3v/dashboard/e2e/threaded-assistant.spec.ts:567:80
+
+    Error Context: test-results/threaded-assistant-AG05-so-824ed-ndscape-with-reduced-motion/error-context.md
+
+  8 failed
+    e2e/live.spec.ts:28:5 › pause, visibility and navigation release leases and prevent hidden renewals 
+    e2e/live.spec.ts:37:5 › offline retains last observation; capacity and disabled acquisition stay usable 
+    e2e/threaded-assistant.spec.ts:118:5 › scope changes retain old answers and unedited follow-ups inherit on server 
+    e2e/threaded-assistant.spec.ts:254:5 › browser history scope changes update only the next request 
+    e2e/threaded-assistant.spec.ts:448:9 › AR07 375px player_ids panel attaches and removes resolved page context 
+    e2e/threaded-assistant.spec.ts:448:9 › AR07 375px team_ids panel attaches and removes resolved page context 
+    e2e/threaded-assistant.spec.ts:544:7 › AG05 web-only limited failure and retry in the shared panel at 375px 
+    e2e/threaded-assistant.spec.ts:565:5 › AG05 source details preserve keyboard focus in landscape with reduced motion 
+  15 skipped
+  176 passed (5.8m)

@@ -1,0 +1,211 @@
+INFO  [alembic.runtime.migration] Context impl PostgresqlImpl.
+INFO  [alembic.runtime.migration] Will assume transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade  -> 0001, Create the initial CourtLoad operational schema.
+INFO  [alembic.runtime.migration] Running upgrade 0001 -> 8ffd4c5912e2, archive lineage and facts
+INFO  [alembic.runtime.migration] Running upgrade 8ffd4c5912e2 -> 4b19f0a2c7de, warehouse publication state and immutable serving rows
+INFO  [alembic.runtime.migration] Running upgrade 4b19f0a2c7de -> 882c8b450cb3, workbench_contracts_and_tables
+INFO  [alembic.runtime.migration] Running upgrade 882c8b450cb3 -> 1b66214e7c08, personal_workspace_state
+INFO  [alembic.runtime.migration] Running upgrade 1b66214e7c08 -> c7e21a084f91, identity_crosswalk_and_measurements
+INFO  [alembic.runtime.migration] Running upgrade c7e21a084f91 -> e8b19a084f92, rich_source_admission_tables
+INFO  [alembic.runtime.migration] Running upgrade e8b19a084f92 -> f9c31a084f93, possession_and_stint_warehouse_tables
+INFO  [alembic.runtime.migration] Running upgrade f9c31a084f93 -> 0af4286cb194, Append-only independent research inputs; no release publication or retained-row changes.
+INFO  [alembic.runtime.migration] Running upgrade 0af4286cb194 -> 27b810a4f001, B28 immutable financial source books and correction lineage.
+INFO  [alembic.runtime.migration] Running upgrade 27b810a4f001 -> 31b810a4f002, B31 bounded Live demand, provisional observations and reconciliation evidence.
+INFO  [alembic.runtime.migration] Running upgrade 31b810a4f002 -> 35b810a4f003, B35a explicit retained conversational analytical manifests.
+INFO  [alembic.runtime.migration] Running upgrade 35b810a4f003 -> 19b810a4f004, B19b independent assignment datasets and transaction-sealed memberships.
+INFO  [alembic.runtime.migration] Running upgrade 19b810a4f004 -> 07b810a4f005, PF07b durable local assistant history, isolated from saved findings.
+INFO  [alembic.runtime.migration] Running upgrade 07b810a4f005 -> 08b810a4f006, AG03 server-owned provider transcripts; existing turn/history payloads stay valid.
+INFO  [alembic.runtime.migration] Running upgrade 08b810a4f006 -> 09b810a4f007, RN02 rename PostgreSQL functions and the administrative mutation namespace.
+INFO  [alembic.runtime.migration] Running upgrade 09b810a4f007 -> 10b810a4f008, Seal IM03 memberships at the admitting transaction, including ordinary inserts.
+............................F........................................... [  3%]
+...............................................................s........ [  7%]
+........................................................................ [ 11%]
+........................................................................ [ 15%]
+........................................................................ [ 19%]
+........................................................................ [ 23%]
+...............................................................F........ [ 27%]
+........................................................................ [ 31%]
+........................................................................ [ 35%]
+.....................F.................................................. [ 39%]
+........................................................................ [ 42%]
+........................................................................ [ 46%]
+........................................................................ [ 50%]
+........................................................................ [ 54%]
+........................................................................ [ 58%]
+........................................................................ [ 62%]
+........................................................................ [ 66%]
+........................................................................ [ 70%]
+........................................................................ [ 74%]
+........................................................................ [ 78%]
+........................................................................ [ 81%]
+........................................................................ [ 85%]
+........................................................................ [ 89%]
+........................................................................ [ 93%]
+........................................................................ [ 97%]
+..............................................                           [100%]
+=================================== FAILURES ===================================
+_______________ test_frozen_replay_against_fixture_sql[ar02-146] _______________
+
+replay_db = <sqlalchemy.orm.session.Session object at 0x7f3f16109e80>
+case = {'before_date': '2026-01-15', 'category': 'forecast', 'expected_status': 'answered', 'group': 'forecast-203999', ...}
+
+    @pytest.mark.parametrize("case", CASES, ids=lambda c: c["id"])
+    def test_frozen_replay_against_fixture_sql(replay_db, case):
+        session = replay_db
+        context = resolve_workbench_context(
+            session,
+            release_id=FIXTURE_RELEASE,
+            requested_season=case.get("season", "2025-26"),
+            requested_before_date=request_for(case).context.before_date,
+        )
+        expected = oracle_answer(session, context, case)
+        previous = []
+        stages = [("setup", case["setup"]["message"])] if case.get("setup") else []
+        stages.append(("answer", case["message"]))
+        for stage, message in stages:
+            path = TRANSCRIPTS / f"{case['id']}-{stage}.json.gz"
+            request = request_for(case, message)
+            if os.environ.get("AG06_CAPTURE_REPLAY") == "1":
+                provider = AuthoredProvider(session, case, setup=stage == "setup")
+            else:
+                record = read_record(path)
+                assert record["capture_mode"] == "authored_fixture_not_language_accuracy"
+                assert record["corpus_sha256"] == DIGEST
+                assert record["request"] == request.model_dump(mode="json")
+                provider = ReplayProvider(
+                    record["model"],
+                    [RecordedStep.model_validate(s) for s in record["steps"]],
+                    expected_tools=record["tools"],
+                )
+>           run = run_turn(
+                session,
+                request,
+                provider=provider,
+                settings=Settings(_env_file=None, assistant_provider="none"),
+                today=TODAY,
+                turn_id=UUID(int=608),
+                history=previous,
+            )
+
+tests/integration/test_agent_evaluation_postgres.py:94: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/home/ethioking/dev/nba-analytics/src/courtlens/services/assistant/agent/loop.py:893: in run_turn
+    return finish(answer)
+           ^^^^^^^^^^^^^^
+/home/ethioking/dev/nba-analytics/src/courtlens/services/assistant/agent/loop.py:414: in finish
+    provider.verify_tools(tools_run)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <courtlens.services.assistant.agent.providers.replay.ReplayProvider object at 0x7f3f761435b0>
+actual = [{'call': {'arguments': {'arguments': {'player_id': '203999'}, 'operation': 'forecast'}, 'id': 'answer', 'name': 'quer...', 'message': 'The read-only tool exceeded its execution deadline.', 'recoverable': True}}}, 'warehouse_result': None}]
+
+    def verify_tools(self, actual: Sequence[dict[str, Any]]) -> None:
+        if self.expected_tools is not None and list(actual) != self.expected_tools:
+>           raise ValueError("agent transcript retained tool/audit payload drift")
+E           ValueError: agent transcript retained tool/audit payload drift
+
+/home/ethioking/dev/nba-analytics/src/courtlens/services/assistant/agent/providers/replay.py:150: ValueError
+___________________ test_workbench_assistant_query_disabled ____________________
+
+client = <starlette.testclient.TestClient object at 0x7f3f10371590>
+
+    def test_workbench_assistant_query_disabled(client: TestClient) -> None:
+        """Assistant query returns typed disabled response when server API key is not configured."""
+        from unittest.mock import patch
+    
+        with (
+>           patch("courtlens.services.assistant.service.get_settings") as mock_settings,
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            patch("courtlens.services.assistant.conversations.get_settings") as conversation_settings,
+        ):
+
+tests/integration/test_workbench_api.py:517: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/usr/lib/python3.14/unittest/mock.py:1510: in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <unittest.mock._patch object at 0x7f3efb70d0f0>
+
+    def get_original(self):
+        target = self.getter()
+        name = self.attribute
+    
+        original = DEFAULT
+        local = False
+    
+        try:
+            original = target.__dict__[name]
+        except (AttributeError, KeyError):
+            original = getattr(target, name, DEFAULT)
+        else:
+            local = True
+    
+        if name in _builtins and isinstance(target, ModuleType):
+            self.create = True
+    
+        if not self.create and original is DEFAULT:
+>           raise AttributeError(
+                "%s does not have the attribute %r" % (target, name)
+            )
+E           AttributeError: <module 'courtlens.services.assistant.service' from '/home/ethioking/dev/nba-analytics/src/courtlens/services/assistant/service.py'> does not have the attribute 'get_settings'
+
+/usr/lib/python3.14/unittest/mock.py:1480: AttributeError
+______________________ test_assistant_query_when_disabled ______________________
+
+postgres_session = <sqlalchemy.orm.session.Session object at 0x7f3f03a2bb50>
+
+    def test_assistant_query_when_disabled(postgres_session: Session):
+        """Verify run_assistant_query returns typed disabled answer when key is unset."""
+        with (
+>           patch("courtlens.services.assistant.service.get_settings") as mock_settings,
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            patch("courtlens.services.assistant.conversations.get_settings") as conversation_settings,
+        ):
+
+tests/unit/test_assistant.py:143: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/usr/lib/python3.14/unittest/mock.py:1510: in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <unittest.mock._patch object at 0x7f3f1096ab30>
+
+    def get_original(self):
+        target = self.getter()
+        name = self.attribute
+    
+        original = DEFAULT
+        local = False
+    
+        try:
+            original = target.__dict__[name]
+        except (AttributeError, KeyError):
+            original = getattr(target, name, DEFAULT)
+        else:
+            local = True
+    
+        if name in _builtins and isinstance(target, ModuleType):
+            self.create = True
+    
+        if not self.create and original is DEFAULT:
+>           raise AttributeError(
+                "%s does not have the attribute %r" % (target, name)
+            )
+E           AttributeError: <module 'courtlens.services.assistant.service' from '/home/ethioking/dev/nba-analytics/src/courtlens/services/assistant/service.py'> does not have the attribute 'get_settings'
+
+/usr/lib/python3.14/unittest/mock.py:1480: AttributeError
+=============================== warnings summary ===============================
+../../home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/google/genai/types.py:42
+  /home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/google/genai/types.py:42: DeprecationWarning: '_UnionGenericAlias' is deprecated and slated for removal in Python 3.17
+    VersionedUnionType = Union[builtin_types.UnionType, _UnionGenericAlias]
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+SKIPPED [1] tests/integration/test_assistant_panel_browser.py:27: isolated Next browser server required
+FAILED tests/integration/test_agent_evaluation_postgres.py::test_frozen_replay_against_fixture_sql[ar02-146]
+FAILED tests/integration/test_workbench_api.py::test_workbench_assistant_query_disabled
+FAILED tests/unit/test_assistant.py::test_assistant_query_when_disabled - Att...
+3 failed, 1842 passed, 1 skipped, 19 deselected, 1 warning in 440.33s (0:07:20)

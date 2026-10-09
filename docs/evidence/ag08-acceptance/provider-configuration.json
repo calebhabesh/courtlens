@@ -1,0 +1,7 @@
+{
+  "provider": "gemini",
+  "model": "gemini-3.5-flash-lite",
+  "configured": true,
+  "provider_calls": 0,
+  "access_probed": false
+}

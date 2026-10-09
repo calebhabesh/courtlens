@@ -15,8 +15,8 @@ from courtlens.config import get_settings
 from courtlens.database import get_db
 from courtlens.domain.conversation import AnalysisPlan, ConversationContext, OperationStep
 from courtlens.domain.hybrid_assistant import HybridTurnRequest
-from courtlens.services.assistant.hybrid import run_hybrid_turn
-from courtlens.services.assistant.planner import PlanningOutput, ProviderFailure
+from courtlens.services.assistant.legacy.hybrid import run_hybrid_turn
+from courtlens.services.assistant.legacy.planner import PlanningOutput, ProviderFailure
 from courtlens.services.workbench_analytics import canonical_hash
 from courtlens.workbench_models import WorkbenchPlayerGame
 
@@ -189,7 +189,7 @@ def test_runtime_knowledge_scope_changes_are_measured(postgres_conversation):
 def test_source_failure_sanitized_not_optional_ai(postgres_conversation):
     session, context = postgres_conversation
     with patch(
-        "courtlens.services.assistant.hybrid.execute_bounded",
+        "courtlens.services.assistant.legacy.hybrid.execute_bounded",
         side_effect=RuntimeError("database secret"),
     ):
         answer = run_hybrid_turn(session, request(context))
@@ -279,7 +279,7 @@ def test_execution_value_error_is_not_reported_as_planner_failure(postgres_conve
             return PlanningOutput(request(context).plan.model_dump(mode="json"))
 
     with patch(
-        "courtlens.services.assistant.hybrid.execute_bounded",
+        "courtlens.services.assistant.legacy.hybrid.execute_bounded",
         side_effect=ValueError("row budget"),
     ):
         answer = run_hybrid_turn(session, request(context, plan=False), provider=Provider())
@@ -374,8 +374,8 @@ def test_ar04_checked_narrative_survives_http_history_or_falls_back(
     headers = {"X-Operator-Token": get_settings().operator_token.get_secret_value()}
     body = request(context, "Show scoring in 2024-25", plan=False)
     with (
-        patch("courtlens.services.assistant.hybrid.GeminiPlanProvider", Provider),
-        patch("courtlens.services.assistant.hybrid.get_settings", return_value=Settings()),
+        patch("courtlens.services.assistant.legacy.hybrid.GeminiPlanProvider", Provider),
+        patch("courtlens.services.assistant.legacy.hybrid.get_settings", return_value=Settings()),
         TestClient(app) as client,
     ):
         response = client.post(
@@ -437,8 +437,8 @@ def test_ar05_stream_phases_final_and_request_response_fallback(postgres_convers
     body = request(context, "Show scoring in 2024-25", plan=False).model_dump(mode="json")
     stream_url = "/api/workbench/assistant/v2/turn/stream"
     with (
-        patch("courtlens.services.assistant.hybrid.GeminiPlanProvider", Provider),
-        patch("courtlens.services.assistant.hybrid.get_settings", return_value=Settings()),
+        patch("courtlens.services.assistant.legacy.hybrid.GeminiPlanProvider", Provider),
+        patch("courtlens.services.assistant.legacy.hybrid.get_settings", return_value=Settings()),
         TestClient(app) as client,
     ):
         streamed = client.post(stream_url, json=body, headers=headers)

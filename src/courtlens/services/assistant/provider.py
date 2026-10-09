@@ -8,7 +8,7 @@ import re
 from dataclasses import dataclass
 from typing import Any, Protocol
 
-from courtlens.services.assistant.planner import PlanningOutput
+from courtlens.services.assistant.legacy.planner import PlanningOutput
 
 logger = logging.getLogger(__name__)
 

@@ -1,0 +1,132 @@
+
+Running 24 tests using 1 worker
+
+  ✓   1 e2e/advanced-research.spec.ts:16:5 › completed negative report shows amended identity, honest horizons, metrics and export (1.3s)
+  ✘   2 e2e/advanced-research.spec.ts:34:5 › each unavailable model names its independent requirement (395ms)
+  ✓   3 e2e/advanced-research.spec.ts:41:5 › integrity rejection hides numerical outputs and retry recovers (540ms)
+  ✓   4 e2e/advanced-research.spec.ts:48:5 › calculator rejects invalid scenarios and shows checked finite differences on mobile (658ms)
+  ✓   5 e2e/advanced-research.spec.ts:59:5 › roster keeps observed and projected inputs separate and exports context (680ms)
+  ✓   6 e2e/advanced-research.spec.ts:70:5 › measurements preserve unknown picks, null lengths and units in bounded sample (1.4s)
+  ✘   7 e2e/route-polish.spec.ts:4:5 › release availability agrees across desktop and mobile and preserves context (30.1s)
+  ✓   8 e2e/route-polish.spec.ts:20:5 › catalog scope options keep unavailable context explicit and synchronize navigation (1.1s)
+  ✓   9 e2e/route-polish.spec.ts:32:5 › settings distinguishes configured key from provider health and hides operator details (706ms)
+  ✓  10 e2e/route-polish.spec.ts:47:5 › partial source keeps tools primary; service failure remains a distinct availability state (2.2s)
+  ✓  11 e2e/route-polish.spec.ts:71:5 › distribution subtools retain release, postseason and exclusive cutoff (1.1s)
+  ✓  12 e2e/route-polish.spec.ts:86:5 › research without a catalog explains the missing context (520ms)
+  ✓  13 e2e/advanced-research.spec.ts:16:5 › completed negative report shows amended identity, honest horizons, metrics and export (2.0s)
+  ✘  14 e2e/advanced-research.spec.ts:34:5 › each unavailable model names its independent requirement (855ms)
+  ✓  15 e2e/advanced-research.spec.ts:41:5 › integrity rejection hides numerical outputs and retry recovers (757ms)
+  ✓  16 e2e/advanced-research.spec.ts:48:5 › calculator rejects invalid scenarios and shows checked finite differences on mobile (652ms)
+  ✓  17 e2e/advanced-research.spec.ts:59:5 › roster keeps observed and projected inputs separate and exports context (744ms)
+  ✘  18 e2e/advanced-research.spec.ts:70:5 › measurements preserve unknown picks, null lengths and units in bounded sample (364ms)
+  ✓  19 e2e/route-polish.spec.ts:4:5 › release availability agrees across desktop and mobile and preserves context (1.4s)
+  ✓  20 e2e/route-polish.spec.ts:20:5 › catalog scope options keep unavailable context explicit and synchronize navigation (619ms)
+  ✓  21 e2e/route-polish.spec.ts:32:5 › settings distinguishes configured key from provider health and hides operator details (1.4s)
+  ✓  22 e2e/route-polish.spec.ts:47:5 › partial source keeps tools primary; service failure remains a distinct availability state (1.7s)
+  ✓  23 e2e/route-polish.spec.ts:71:5 › distribution subtools retain release, postseason and exclusive cutoff (658ms)
+  ✓  24 e2e/route-polish.spec.ts:86:5 › research without a catalog explains the missing context (309ms)
+
+
+  1) e2e/advanced-research.spec.ts:34:5 › each unavailable model names its independent requirement ─
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: locator('.advanced-research')
+    Expected substring: "stint and possession"
+    Error: strict mode violation: locator('.advanced-research') resolved to 2 elements:
+        1) <div class="advanced-research">…</div> aka getByRole('region', { name: 'B26 preregistered experiment' }).getByText('CourtLens RAPMRegistered')
+        2) <div class="advanced-research">…</div> aka getByText('CourtLens RAPMRegistered').nth(1)
+
+    Call log:
+      - Expect "toContainText" locator('.advanced-research') with timeout 5000ms
+      - waiting for locator('.advanced-research')
+        2 × locator resolved to <div class="advanced-research">…</div>
+          - unexpected value "CourtLens RAPMRegistered offline research. Reports retain their own fit and evaluation horizons and do not replace historical profiles or the active points policy.Expected shotsRAPMSix-factorAdjusted shootingLoading registered experiments…Vendor ShotQuality, optical tracking, nearest/second defender, spatial EPV and external impact outputs require independently admitted sources and models. CourtLens expected-shot research does not inherit those identities.Roster allocationsMeasurementsHypothetical calculatorConventional statistics"
+
+
+      35 |   await researchRoutes(page);
+      36 |   for(const [path,requirement] of [["/research/rapm","stint and possession"],["/six-factor-rapm","turnover and rebound"],["/research/adjusted-shooting","playtypes and foul trips"]]) {
+    > 37 |     await page.goto(path); await expect(page.locator(".advanced-research")).toContainText(requirement);
+         |                                                                             ^
+      38 |     await expect(page.getByRole("region",{name:"Registered research result"})).toHaveCount(0);
+      39 |   }
+      40 | });
+        at ~/.cache/courtlens-ag-verify/dashboard/e2e/advanced-research.spec.ts:37:77
+
+    Error Context: ../results-rerun/advanced-research-each-una-20ed3-its-independent-requirement/error-context.md
+
+  2) e2e/advanced-research.spec.ts:34:5 › each unavailable model names its independent requirement ─
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: locator('.advanced-research')
+    Expected substring: "turnover and rebound"
+    Error: strict mode violation: locator('.advanced-research') resolved to 2 elements:
+        1) <div class="advanced-research">…</div> aka locator('#content').getByText('CourtLens six-factor researchRegistered offline research. Reports retain their')
+        2) <div class="advanced-research">…</div> aka getByText('CourtLens six-factor researchRegistered offline research. Reports retain their').nth(1)
+
+    Call log:
+      - Expect "toContainText" locator('.advanced-research') with timeout 5000ms
+      - waiting for locator('.advanced-research')
+        - locator resolved to <div class="advanced-research">…</div>
+        - unexpected value "CourtLens six-factor researchRegistered offline research. Reports retain their own fit and evaluation horizons and do not replace historical profiles or the active points policy.Expected shotsRAPMSix-factorAdjusted shootingLoading registered experiments…Vendor ShotQuality, optical tracking, nearest/second defender, spatial EPV and external impact outputs require independently admitted sources and models. CourtLens expected-shot research does not inherit those identities.Roster allocationsMeasurementsHypothetical calculatorConventional statistics"
+
+
+      35 |   await researchRoutes(page);
+      36 |   for(const [path,requirement] of [["/research/rapm","stint and possession"],["/six-factor-rapm","turnover and rebound"],["/research/adjusted-shooting","playtypes and foul trips"]]) {
+    > 37 |     await page.goto(path); await expect(page.locator(".advanced-research")).toContainText(requirement);
+         |                                                                             ^
+      38 |     await expect(page.getByRole("region",{name:"Registered research result"})).toHaveCount(0);
+      39 |   }
+      40 | });
+        at ~/.cache/courtlens-ag-verify/dashboard/e2e/advanced-research.spec.ts:37:77
+
+    Error Context: ../results-rerun/advanced-research-each-una-20ed3-its-independent-requirement-repeat1/error-context.md
+
+  3) e2e/advanced-research.spec.ts:70:5 › measurements preserve unknown picks, null lengths and units in bounded sample 
+
+    Error: locator.selectOption: Error: strict mode violation: getByLabel('Length units') resolved to 2 elements:
+        1) <select>…</select> aka locator('#content').getByLabel('Length unitsInchesCentimeters')
+        2) <select>…</select> aka getByLabel('Length unitsInchesCentimeters').nth(1)
+
+    Call log:
+      - waiting for getByLabel('Length units')
+
+
+      71 |   await page.route("**/api/workbench/measurements?*",route => route.fulfill({json:{items:[{player_id:"fixture",display_name:"Fixture Player",measurement_type:"combine",source_name:"fixture-combine",draft_year:2021,pick_overall:null,drafting_team_id:null,height_no_shoes_inches:80,height_shoes_inches:null,wingspan_inches:86,standing_reach_inches:null,weight_lbs:200,body_fat_pct:null,wingspan_to_height_ratio:null}],count:1,disclaimer:"Fixture only"}}));
+      72 |   await page.goto("/wingspan");await expect(page.getByRole("region",{name:"Measurement records"})).toContainText("Unknown pick");
+    > 73 |   await page.getByLabel("Length units").selectOption("cm");await expect(page.getByRole("region",{name:"Measurement records"})).toContainText("218.44 cm");
+         |                                         ^
+      74 |   await page.getByLabel("Compare Fixture Player combine").check();await expect(page.getByRole("region",{name:"Measurement comparison"})).toContainText("fixture-combine");
+      75 |   await page.setViewportSize({width:390,height:844});expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+      76 | });
+        at ~/.cache/courtlens-ag-verify/dashboard/e2e/advanced-research.spec.ts:73:41
+
+    Error Context: ../results-rerun/advanced-research-measurem-d3daf-and-units-in-bounded-sample-repeat1/error-context.md
+
+  4) e2e/route-polish.spec.ts:4:5 › release availability agrees across desktop and mobile and preserves context 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.click: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for getByRole('menuitem', { name: /Availability/ })
+
+
+       5 |   await openWorkbench(page, "/stats?season=2025-26&phase=regular_season&beforeDate=2026-06-30");
+       6 |   await page.getByRole("button", { name: "More options", exact: true }).click();
+    >  7 |   await page.getByRole("menuitem", { name: /Availability/, exact: false }).click();
+         |                                                                            ^
+       8 |   const menu = page.locator(".availability-menu");
+       9 |   await expect(menu.getByRole("menuitem", { name: /WOWY/ })).toBeVisible();
+      10 |   const links = await menu.locator("a").evaluateAll(items => items.map(item => item.getAttribute("href")));
+        at ~/.cache/courtlens-ag-verify/dashboard/e2e/route-polish.spec.ts:7:76
+
+    Error Context: ../results-rerun/route-polish-release-avail-d8a1c-obile-and-preserves-context/error-context.md
+
+  4 failed
+    e2e/advanced-research.spec.ts:34:5 › each unavailable model names its independent requirement ──
+    e2e/advanced-research.spec.ts:34:5 › each unavailable model names its independent requirement ──
+    e2e/advanced-research.spec.ts:70:5 › measurements preserve unknown picks, null lengths and units in bounded sample 
+    e2e/route-polish.spec.ts:4:5 › release availability agrees across desktop and mobile and preserves context 
+  20 passed (56.2s)

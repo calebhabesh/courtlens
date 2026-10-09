@@ -8,8 +8,8 @@ from test_conversation_postgres import postgres_conversation as _postgres_fixtur
 
 from courtlens.domain.conversation import ConversationContext
 from courtlens.domain.hybrid_assistant import HybridTurnRequest
-from courtlens.services.assistant.hybrid import run_hybrid_turn
-from courtlens.services.assistant.planner import ProviderFailure
+from courtlens.services.assistant.legacy.hybrid import run_hybrid_turn
+from courtlens.services.assistant.legacy.planner import ProviderFailure
 from courtlens.services.assistant.rule_planner import RULE_NOTE
 
 postgres_conversation = _postgres_fixture

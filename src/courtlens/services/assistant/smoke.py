@@ -12,9 +12,9 @@ from courtlens.services.assistant.provider import (
     OfflinePlanFixtureProvider,
 )
 from courtlens.services.assistant.service import (
-    get_assistant_status,
     run_assistant_query,
 )
+from courtlens.services.assistant.status import get_assistant_status
 
 
 def run_assistant_smoke(live: bool = False) -> int:

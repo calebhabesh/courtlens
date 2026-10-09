@@ -24,6 +24,7 @@ from courtlens.domain.metrics import (
     get_metric_definition as get_domain_metric_def,
 )
 from courtlens.domain.teams import get_team_by_tricode
+from courtlens.services.assistant.entities import resolve_player_identifier
 from courtlens.services.workbench_analytics import (
     ResearchQuery,
     ResolvedContext,
@@ -43,7 +44,7 @@ from courtlens.services.workbench_forecasts import (
     get_forecast_issuance_detail,
     query_forecast_issuances,
 )
-from courtlens.workbench_models import ModelPolicyActivation, WorkbenchIdentity
+from courtlens.workbench_models import ModelPolicyActivation
 
 
 class EvidenceLedger:
@@ -156,27 +157,6 @@ class GetEvaluationSummaryArgs(BaseModel):
 # -----------------------------------------------------------------------------
 # Tool Implementations
 # -----------------------------------------------------------------------------
-
-
-def resolve_player_identifier(
-    session: Session, identifier: str, *, max_typo_distance: int | None = None
-) -> tuple[str, str]:
-    """Resolve an identifier (numeric ID or player name) to (player_id, player_name)."""
-    from courtlens.services.assistant.operations import resolve_entity
-
-    player_id = resolve_entity(
-        session, None, identifier.strip(), "player_id", max_typo_distance=max_typo_distance
-    )
-    identity = session.scalar(
-        select(WorkbenchIdentity).where(
-            WorkbenchIdentity.namespace == "nba",
-            WorkbenchIdentity.kind == "player",
-            WorkbenchIdentity.external_id == player_id,
-        )
-    )
-    if identity is None:
-        raise ValueError("canonical NBA player not found")
-    return player_id, identity.display_name
 
 
 def resolve_team_identifier(team_id: str) -> str:

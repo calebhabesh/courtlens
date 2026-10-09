@@ -11,7 +11,8 @@ from test_conversation_postgres import postgres_conversation as _postgres_fixtur
 
 from courtlens.assistant_history_models import AssistantTurnInput
 from courtlens.domain.hybrid_assistant import HybridTurnRequest
-from courtlens.services.assistant import history, retrieval
+from courtlens.services.assistant import history
+from courtlens.services.assistant.legacy import retrieval
 
 postgres_conversation = _postgres_fixture
 
