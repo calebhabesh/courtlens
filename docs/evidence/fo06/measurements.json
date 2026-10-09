@@ -1,0 +1,106 @@
+{
+  "base": "http://localhost:3100",
+  "measuredAt": "2026-10-09T17:41:05.686Z",
+  "searchPill": {
+    "1024": {
+      "pillWidth": 380,
+      "offsetFromPageCenter": 0,
+      "gapAfterNav": null,
+      "gapBeforeActions": 188
+    },
+    "1280": {
+      "pillWidth": 380,
+      "offsetFromPageCenter": 198,
+      "gapAfterNav": 16,
+      "gapBeforeActions": 127
+    },
+    "1440": {
+      "pillWidth": 380,
+      "offsetFromPageCenter": 118,
+      "gapAfterNav": 16,
+      "gapBeforeActions": 287
+    },
+    "1740": {
+      "pillWidth": 380,
+      "offsetFromPageCenter": 0,
+      "gapAfterNav": 49,
+      "gapBeforeActions": 554
+    },
+    "1920": {
+      "pillWidth": 380,
+      "offsetFromPageCenter": 0,
+      "gapAfterNav": 139,
+      "gapBeforeActions": 644
+    },
+    "2000": {
+      "pillWidth": 380,
+      "offsetFromPageCenter": 0,
+      "gapAfterNav": 179,
+      "gapBeforeActions": 684
+    }
+  },
+  "modeRows": {
+    "/showcase@390": {
+      "visibleOutsideSheet": true,
+      "labels": [
+        "Overall",
+        "Scoring",
+        "Playmaking & Defense",
+        "Per 36"
+      ],
+      "itemHeights": [
+        40,
+        40,
+        40,
+        40
+      ],
+      "overflowPx": 0,
+      "pageSidewaysScroll": false
+    },
+    "/roster-shapes?team=1610612738@390": {
+      "visibleOutsideSheet": true,
+      "labels": [
+        "Observed",
+        "Projected"
+      ],
+      "itemHeights": [
+        40,
+        40
+      ],
+      "overflowPx": 0,
+      "pageSidewaysScroll": false
+    },
+    "/showcase@360": {
+      "visibleOutsideSheet": true,
+      "labels": [
+        "Overall",
+        "Scoring",
+        "Playmaking & Defense",
+        "Per 36"
+      ],
+      "itemHeights": [
+        40,
+        40,
+        40,
+        40
+      ],
+      "overflowPx": 0,
+      "pageSidewaysScroll": false
+    },
+    "/roster-shapes?team=1610612738@360": {
+      "visibleOutsideSheet": true,
+      "labels": [
+        "Observed",
+        "Projected"
+      ],
+      "itemHeights": [
+        40,
+        40
+      ],
+      "overflowPx": 0,
+      "pageSidewaysScroll": false
+    }
+  },
+  "designTeamTiles": 30,
+  "designModesSlot": 1
+}

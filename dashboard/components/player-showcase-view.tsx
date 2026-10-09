@@ -178,7 +178,7 @@ export function PlayerShowcaseView({
         sampleSize={eligiblePlayers}
         lastIncludedDate={lastIncludedDate}
         showWindow={false}
-        filters={<SegmentedControl<ShowcasePresetId> name="showcase-focus" value={focus} onChange={setFocus}
+        modes={<SegmentedControl<ShowcasePresetId> name="showcase-focus" value={focus} onChange={setFocus}
           options={SHOWCASE_PRESETS.map((entry) => ({ value: entry.id, label: FOCUS_LABELS[entry.id] }))} />}
       />
 

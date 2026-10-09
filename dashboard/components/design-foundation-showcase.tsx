@@ -23,6 +23,7 @@ import {
   TemplateSkeleton,
   type PageTemplate
 } from "@/components/ui";
+import { TeamGrid } from "@/components/team-grid";
 import { useAdvancedMode } from "@/lib/advanced-mode";
 import { formatDate, parseIsoDate } from "@/lib/format-date";
 
@@ -49,6 +50,8 @@ export function DesignFoundationShowcase() {
   const [positions, setPositions] = useState<string[]>(["G"]);
   const [focus, setFocus] = useState("overall");
   const [template, setTemplate] = useState<PageTemplate>("board");
+  const [basis, setBasis] = useState("observed");
+  const [team, setTeam] = useState("1610612738");
   const [advanced, setAdvanced] = useAdvancedMode();
   const weekday = (value: string) => parseIsoDate(value)?.getUTCDay();
 
@@ -62,7 +65,7 @@ export function DesignFoundationShowcase() {
         />
       </Panel>
 
-      <Panel title="FilterBar (D6) · Field · DatePicker · ChipGroup · Data details" compact>
+      <Panel title="FilterBar (D6) · modes (v1.1) · Field · DatePicker · ChipGroup · Data details" compact>
         <FilterBar
           label="Example filter bar"
           summary={`${season} · Regular Season · ${formatDate(through, "compact")}`}
@@ -85,6 +88,8 @@ export function DesignFoundationShowcase() {
           </>}
           filters={<ChipGroup label="Example positions" multiple value={positions} onChange={setPositions}
             options={[{ value: "G", label: "Guards" }, { value: "F", label: "Forwards" }, { value: "C", label: "Centers" }]} />}
+          modes={<SegmentedControl name="Example basis" value={basis} onChange={setBasis}
+            options={[{ value: "observed", label: "Observed" }, { value: "projected", label: "Projected" }]} />}
           count={<CountChip>591 players</CountChip>}
           details={<DataDetailsButton scope={{ releaseId: "5bbb6035-6794-4bb0-b894-7208f52ef7ad", season, phase, beforeDate: "2026-04-13", window: "season" }}
             rows={[{ label: "Source", value: "sportsdataverse" }]} />}
@@ -148,6 +153,10 @@ export function DesignFoundationShowcase() {
       <Panel title="Template skeletons (D11/D22)" compact>
         <SegmentedControl name="Skeleton template" options={TEMPLATES} value={template} onChange={setTemplate} />
         <div className="ui-design-skeleton-frame"><TemplateSkeleton template={template} /></div>
+      </Panel>
+
+      <Panel title="Logo-grid picker (v1.1 Board pattern, gate 2)" compact>
+        <TeamGrid selected={team} onSelect={setTeam} />
       </Panel>
 
       <Panel title="Advanced mode (D5)" compact>

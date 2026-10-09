@@ -115,6 +115,12 @@ test.describe("FO05 Roster Shapes", () => {
     await openWorkbench(page, `/roster-shapes?team=${BOS}`);
     await expect(page.getByRole("region", { name: "Roster allocations" })).toBeVisible();
     await expect(page.getByRole("button", { name: /^Filters/ })).toBeVisible();
+    // Gate 2 (Design Language v1.1): the mode switch stays visible outside the Filters sheet.
+    const projected = page.getByRole("radio", { name: "Projected" });
+    await expect(projected).toBeVisible();
+    expect((await projected.boundingBox())!.height).toBeGreaterThanOrEqual(40);
+    await projected.click();
+    await expect(page.getByLabel("Projected minutes for Fixture Guard")).toBeVisible();
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     const heights = await page.locator(".roster-chip-menu .ui-menu-trigger").evaluateAll((els) => els.map((el) => el.getBoundingClientRect().height));
     expect(Math.min(...heights)).toBeGreaterThanOrEqual(40);

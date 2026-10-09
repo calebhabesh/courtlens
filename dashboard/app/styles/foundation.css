@@ -167,7 +167,8 @@
     min-width: 0;
   }
 
-  .ui-filter-bar-page { padding-left: var(--space-3); border-left: 1px solid var(--color-hairline); }
+  .ui-filter-bar-page, .ui-filter-bar-modes { padding-left: var(--space-3); border-left: 1px solid var(--color-hairline); }
+  .ui-filter-bar-modes { display: flex; align-items: center; min-width: 0; }
   .ui-filter-bar-scope .ui-select-wrapper { width: auto; }
 
   .ui-filter-bar-meta {
@@ -771,6 +772,20 @@
     .ui-filter-bar-summary { overflow: hidden; text-overflow: ellipsis; }
     .ui-filter-bar-meta { gap: var(--space-1); }
     .ui-filter-bar-meta .ui-button { min-width: var(--control-lg); min-height: var(--control-lg); }
+    /* Mode switches stay visible as a full-width second row (gate 2). */
+    .ui-filter-bar.has-modes { flex-wrap: wrap; }
+    .ui-filter-bar-modes { order: 10; flex: 1 0 100%; padding-left: 0; border-left: 0; }
+    .ui-filter-bar-modes .ui-segmented-control { display: flex; width: 100%; overflow-x: auto; scrollbar-width: none; }
+    /* Long labels ("Playmaking & Defense") wrap to two lines instead of clipping off the row. */
+    .ui-filter-bar .ui-filter-bar-modes .ui-segmented-item {
+      flex: 1 1 auto;
+      justify-content: center;
+      min-height: var(--control-lg);
+      padding-inline: var(--space-2);
+      white-space: normal;
+      text-align: center;
+      line-height: var(--text-xs-lh);
+    }
     .ui-hide-narrow { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
     .ui-page-header-title { font-size: var(--text-xl); line-height: var(--text-xl-lh); }
     .ui-page-header-actions { width: 100%; flex-wrap: wrap; margin-left: 0; }
