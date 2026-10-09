@@ -6,7 +6,15 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ContextBar } from "@/components/context-bar";
 import { TeamLogo } from "@/components/team-logo";
-import { PlayerPortrait } from "@/components/player-portrait";
+import { PageShell } from "@/components/ui/page-shell";
+import { PageHeader } from "@/components/ui/panel";
+import { TeamIdentity } from "@/components/ui/identity";
+import { StatTile } from "@/components/ui/stat-tile";
+import { GatedNote } from "@/components/ui/gated-note";
+import { TeamProfileTabs } from "@/components/team-profile-tabs";
+import type { CSSProperties } from "react";
+import { teamAccent } from "@/lib/team-colors";
+import { formatDate, throughLabel } from "@/lib/format-date";
 import {
   getTeamDetail,
   getTeamFourFactors,
@@ -46,6 +54,7 @@ export default async function TeamDetailPage({
   const phase = query?.phase || sp.phase || "";
   const beforeDate = query?.before_date || sp.beforeDate || sp.before_date || "";
   const resolvedReleaseId = query?.release_id || sp.releaseId || sp.release_id;
+  const contextParams = new URLSearchParams({ season, phase, beforeDate, ...(resolvedReleaseId ? { releaseId: resolvedReleaseId } : {}) });
 
   let detail: TeamDetailResponse | null = null;
   let fourFactors: TeamFourFactorsResponse | null = null;
@@ -82,131 +91,186 @@ export default async function TeamDetailPage({
     loadError = err instanceof Error ? err.message : "Failed to load team data";
   }
 
-  if (loadError || !detail) {
-    return (
-      <div className="workbench-content">
-        <div className="notice-box notice-box-error">
-          <strong>Error loading team:</strong> {loadError || "Team not found in this release."}
-        </div>
-        <Link href="/teams" className="button button-small">
-          <Icon name="left" size={14} />Return to all teams
-        </Link>
-      </div>
-    );
-  }
+  if (loadError || !detail) return <PageShell template="profile"><PageHeader title="Team Profile" /><GatedNote why={loadError || "Team not found in this release."} action={<Link href="/teams" className="button">Return to all teams</Link>}>Team details are unavailable.</GatedNote></PageShell>;
 
   const { team, record, production, allowance, player_cohort, recent_games } = detail;
-  const ppg = production.pts_per_game ?? 0;
-  const oppPpg = allowance.pts_allowed_per_game ?? 0;
-  const netMargin = (ppg - oppPpg).toFixed(1);
+  const ppg = production.pts_per_game ?? null;
+  const oppPpg = allowance.pts_allowed_per_game ?? null;
+  const netMargin = ppg !== null && oppPpg !== null ? (ppg - oppPpg).toFixed(1) : null;
   const currentStreak = detail.current_streak || schedule?.overall_record?.current_streak;
 
   return (
-    <>
+    <PageShell template="profile" className="team-profile-page">
       <AssistantPageSelection route={`/teams/${team.id}`} teamIds={[team.id]} scope={detail.context} label={team.name} />
-      <ContextBar
-        catalog={catalog ?? undefined}
-        initialReleaseId={resolvedReleaseId}
-        initialSeason={season}
-        initialPhase={phase}
-        initialBeforeDate={beforeDate}
-        sampleSize={record?.games_played}
+      <PageHeader title={team.name} subtitle={`${season} · ${phase.replaceAll("_", " ")} · ${throughLabel(beforeDate)}`} actions={<>
+        <Link href={`/team-compare?teamA=${team.id}&season=${season}&phase=${phase}&beforeDate=${beforeDate}&releaseId=${resolvedReleaseId || ""}`} className="button">Compare Team</Link>
+        <Link href={`/teams?${contextParams}`} className="button"><Icon name="left" size={16} />All Teams</Link>
+      </>} />
+      <ContextBar catalog={catalog ?? undefined} initialReleaseId={resolvedReleaseId} initialSeason={season} initialPhase={phase} initialBeforeDate={beforeDate} showWindow={false} sampleSize={record.games_played}
+        detailRows={[
+          {label:"Franchise ID",value:team.id,mono:true},
+          {label:"Resolved context",value:JSON.stringify(detail.context),mono:true},
+          {label:"Source warnings",value:[...(detail.warnings ?? []),...(fourFactors?.warnings ?? []),...(schedule?.warnings ?? []),...(peers?.warnings ?? [])].join(" · ") || "None"}
+        ]}
       />
-
-      <div className="workbench-content">
-        {/* Team Identity Header */}
-        <div className="player-identity-card">
-          <div className="callout-number team-badge-box">
-            <TeamLogo team={team.tricode} size={48} />
+      <TeamProfileTabs hero={<section className="team-profile-hero" style={{"--team-color":teamAccent(team.tricode) ?? "var(--color-accent)"} as CSSProperties} aria-label="Team summary">
+        <TeamIdentity team={team.tricode} name={team.name} size="xl" subtitle={`${record.wins}W · ${record.losses}L${currentStreak ? ` · ${currentStreak}` : ""}`} />
+        <div className="team-profile-tiles">
+          <StatTile label="Points Per Game" value={ppg?.toFixed(1)} />
+          <StatTile label="Opponent PPG" value={oppPpg?.toFixed(1)} />
+          <StatTile label="Field Goal %" value={production.fg_pct != null ? `${(production.fg_pct * 100).toFixed(1)}%` : null} footnote={production.efg_pct != null ? `eFG ${(production.efg_pct * 100).toFixed(1)}%` : "eFG unknown"} />
+          <StatTile label="Opponent FG %" value={allowance.fg_pct_allowed != null ? `${(allowance.fg_pct_allowed * 100).toFixed(1)}%` : null} footnote={allowance.efg_pct_allowed != null ? `eFG ${(allowance.efg_pct_allowed * 100).toFixed(1)}%` : "eFG unknown"} />
+          <StatTile label="Net Margin" value={netMargin} />
+          <StatTile label="Win Percentage" value={record.win_pct?.toFixed(3)} />
+          <StatTile label="Offensive Rating" value={fourFactors?.off_rating?.toFixed(1)} />
+          <StatTile label="Defensive Rating" value={fourFactors?.def_rating?.toFixed(1)} />
+        </div>
+      </section>}
+      overview={<>
+        <GatedNote why={<>Participation / Current-Roster Distinction: Player cohort reflects all athletes with observed on-court minutes for {team.tricode} in the selected period (including in-season trades). Ties in record ordering do not establish official conference placement.</>}>Observed participation is a season cohort, not a current roster.</GatedNote>
+        {/* Flagship Demonstration 2: Season Participation Player Cohort */}
+        <div className="panel mb-5">
+          <div className="panel-header">
+            <div>
+              <h2 className="panel-title">{team.name} Season Participation Cohort</h2>
+              <details className="team-method"><summary>Why?</summary><p>
+                All players with observed participation for {team.tricode} in {season} before {beforeDate}. Includes traded players with team-filtered stints.
+              </p></details>
+            </div>
+            <span className="badge font-mono">{player_cohort.length} players</span>
           </div>
-          <div className="player-identity-info">
-            <span className="text-xs text-muted font-mono uppercase">
-              NBA Franchise ID: {team.id} · {season} {phase.replaceAll("_", " ")}
-            </span>
-            <h1 className="player-identity-name">{team.name}</h1>
-            <div className="player-identity-badges">
-              <span className="badge badge-accent">
-                {record.wins}W - {record.losses}L ({record.win_pct !== null ? record.win_pct.toFixed(3) : "—"})
-              </span>
-              <span className={`badge ${parseFloat(netMargin) > 0 ? "badge-positive" : "badge-warning"}`}>
-                Net: {parseFloat(netMargin) > 0 ? `+${netMargin}` : netMargin} PPG
-              </span>
-              {currentStreak && (
-                <span className={`badge ${currentStreak.startsWith("W") ? "badge-positive" : "badge-warning"}`}>
-                  Streak: {currentStreak}
-                </span>
-              )}
-              <span className="badge font-mono">
-                {player_cohort.length} Cohort Players
-              </span>
+
+          <div>
+            <div className="table-wrapper" role="region" aria-label="Team analytical values" tabIndex={0}><table className="data-table">
+              <thead>
+                <tr>
+                  <th className="col-idx">#</th>
+                  <th>Player</th>
+                  <th className="num">Stint Games</th>
+                  <th className="num">Stint Minutes</th>
+                  <th className="num">Stint Points</th>
+                  <th className="num">PPG</th>
+                  <th className="text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {player_cohort.map((p, idx) => (
+                  <tr key={p.player_id}>
+                    <td className="font-mono text-muted text-xs">{idx + 1}</td>
+                    <td>
+                      <div className="player-cell">
+                        <TeamLogo team={team.tricode} size={20} />
+                        <Link
+                          href={`/players/${p.player_id}?season=${season}&phase=${phase}&beforeDate=${beforeDate}&releaseId=${resolvedReleaseId || ""}` }
+                          className="player-cell-name text-accent font-semibold"
+                        >
+                          {p.player_name}
+                        </Link>
+                      </div>
+                    </td>
+                    <td className="num font-mono">{p.games_played}</td>
+                    <td className="num font-mono">
+                      {p.total_minutes !== undefined && p.total_minutes !== null ? p.total_minutes.toFixed(0) : "—"}
+                    </td>
+                    <td className="num font-mono font-bold">{p.points ?? "—"}</td>
+                    <td className="num font-mono font-semibold">
+                      {p.points_per_game !== undefined && p.points_per_game !== null ? p.points_per_game.toFixed(1) : "—"}
+                    </td>
+                    <td className="text-right">
+                      <Link
+                        href={`/players/${p.player_id}?season=${season}&phase=${phase}&beforeDate=${beforeDate}&releaseId=${resolvedReleaseId || ""}` }
+                        className="button button-small button-primary"
+                      >
+                        Profile
+                      </Link>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table></div>
+          </div>
+        </div>
+
+        {/* Statistical Team Peers Panel */}
+        {peers && peers.peers && peers.peers.length > 0 && (
+          <div className="panel mb-5">
+            <div className="panel-header">
+              <div>
+                <h2 className="panel-title">{team.name} Statistical Team Peers</h2>
+                <details className="team-method"><summary>Why?</summary><p>
+                  Closest analytical cohorts determined by standardized Euclidean distance across Pace, Ratings, and Dean Oliver Four Factors.
+                </p></details>
+              </div>
+              <span className="badge font-mono">{peers.peers.length} peers</span>
+            </div>
+
+            <div className="table-wrapper">
+              <div className="table-wrapper" role="region" aria-label="Team analytical values" tabIndex={0}><table className="data-table">
+                <thead>
+                  <tr>
+                    <th className="col-idx">#</th>
+                    <th>Peer Franchise</th>
+                    <th className="num">Similarity Score</th>
+                    <th className="num">Euclidean Distance</th>
+                    <th className="text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {peers.peers.map((peer, pIdx) => (
+                    <tr key={peer.team_id}>
+                      <td className="font-mono text-muted text-xs">{pIdx + 1}</td>
+                      <td>
+                        <div className="peer-cell">
+                          <TeamLogo team={peer.tricode} size={20} /><span>{peer.tricode}</span>
+                          <Link
+                            href={`/teams/${peer.team_id}?season=${season}&phase=${phase}&beforeDate=${beforeDate}&releaseId=${resolvedReleaseId || ""}` }
+                            className="font-semibold text-accent"
+                          >
+                            {peer.name}
+                          </Link>
+                          {peer.conference && (
+                            <span className="text-muted text-xs">({peer.conference})</span>
+                          )}
+                        </div>
+                      </td>
+                      <td className="num font-mono font-bold">{(peer.similarity_score * 100).toFixed(1)}%</td>
+                      <td className="num font-mono text-muted">{peer.distance.toFixed(3)}</td>
+                      <td className="text-right whitespace-nowrap">
+                        <div className="table-actions-group">
+                          <Link
+                            href={`/team-compare?teamA=${team.id}&teamB=${peer.team_id}&season=${season}&phase=${phase}&beforeDate=${beforeDate}&releaseId=${resolvedReleaseId || ""}` }
+                            className="button button-small"
+                          >
+                            Compare
+                          </Link>
+                          <Link
+                            href={`/teams/${peer.team_id}?season=${season}&phase=${phase}&beforeDate=${beforeDate}&releaseId=${resolvedReleaseId || ""}` }
+                            className="button button-small button-primary"
+                          >
+                            Profile
+                          </Link>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table></div>
             </div>
           </div>
-          <div className="team-header-actions">
-            <Link
-              href={`/team-compare?teamA=${team.id}&season=${season}&phase=${phase}&beforeDate=${beforeDate}&releaseId=${resolvedReleaseId || ""}` }
-              className="button button-small button-accent"
-            >
-              Compare Franchise
-            </Link>
-            <Link href="/teams" className="button button-small">
-              <Icon name="left" size={14} />All Teams
-            </Link>
-          </div>
-        </div>
+        )}
 
-        {/* Disclaimer */}
-        <div className="notice-box">
-          <strong>Participation / Current-Roster Distinction:</strong> Player cohort reflects all athletes with observed on-court minutes for {team.tricode} prior to cutoff {beforeDate} (such as Toronto&apos;s 31-player cohort across in-season trades). Ties in record ordering do not establish official conference placement.
-        </div>
 
-        {/* Production & Allowance Summary Grid */}
-        <div className="grid-4 mb-5">
-          <div className="stat-card">
-            <span className="stat-value font-mono">{ppg.toFixed(1)}</span>
-            <span className="stat-label">Points Per Game</span>
-            <span className="stat-subtext">Scoring production</span>
-          </div>
-
-          <div className="stat-card">
-            <span className="stat-value font-mono">{oppPpg.toFixed(1)}</span>
-            <span className="stat-label">Opponent PPG</span>
-            <span className="stat-subtext">Defensive allowance</span>
-          </div>
-
-          <div className="stat-card">
-            <span className="stat-value font-mono">
-              {production.fg_pct !== null && production.fg_pct !== undefined
-                ? `${(production.fg_pct * 100).toFixed(1)}%`
-                : "—"}
-            </span>
-            <span className="stat-label">Field Goal %</span>
-            <span className="stat-subtext">
-              eFG: {production.efg_pct ? `${(production.efg_pct * 100).toFixed(1)}%` : "—"}
-            </span>
-          </div>
-
-          <div className="stat-card">
-            <span className="stat-value font-mono">
-              {allowance.fg_pct_allowed !== null && allowance.fg_pct_allowed !== undefined
-                ? `${(allowance.fg_pct_allowed * 100).toFixed(1)}%`
-                : "—"}
-            </span>
-            <span className="stat-label">Opponent FG %</span>
-            <span className="stat-subtext">
-              Opp eFG: {allowance.efg_pct_allowed ? `${(allowance.efg_pct_allowed * 100).toFixed(1)}%` : "—"}
-            </span>
-          </div>
-        </div>
-
+      </>}
+      factors={<>
         {/* Block B15b: Dean Oliver Four Factors */}
         {fourFactors && (
           <div className="panel mb-5">
             <div className="panel-header">
               <div>
                 <h2 className="panel-title">Dean Oliver Four Factors & Efficiency</h2>
-                <p className="text-muted text-xs panel-subtitle-margin">
+                <details className="team-method"><summary>Why?</summary><p>
                   Four factors of basketball success: Shooting (40%), Turnovers (25%), Rebounding (20%), Free Throws (15%). Ranks out of {fourFactors.games_played > 0 ? "30" : "—"} NBA teams.
-                </p>
+                </p></details>
               </div>
               <div className="header-badge-group">
                 <span className="badge badge-accent font-mono">
@@ -244,14 +308,14 @@ export default async function TeamDetailPage({
                         <div>
                           <div className="factors-name">{factor.display_name}</div>
                           <div className="text-muted text-xs font-mono">
-                            League Avg: {lgAvgFormatted} · Weight: {factor.weight ? `${(factor.weight * 100).toFixed(0)}%` : "—"}
+                            League Avg: {lgAvgFormatted} · Weight: {factor.weight != null ? `${(factor.weight * 100).toFixed(0)}%` : "—"}
                           </div>
                         </div>
                         <div className="text-right">
                           <span className="font-mono font-bold text-base">{pctFormatted}</span>
                           <div className="factors-rank-badges">
-                            <span className="badge badge-accent text-xs font-mono">#{factor.rank ?? "—"}</span>
-                            <span className="badge text-xs font-mono text-muted">{factor.percentile?.toFixed(0)}%ile</span>
+                            <span className="badge badge-accent text-xs font-mono">{factor.rank != null ? `#${factor.rank}` : "—"}</span>
+                            <span className="badge text-xs font-mono text-muted">{factor.percentile != null ? `${factor.percentile.toFixed(0)}%ile` : "—"}</span>
                           </div>
                         </div>
                       </div>
@@ -279,14 +343,14 @@ export default async function TeamDetailPage({
                         <div>
                           <div className="factors-name">{factor.display_name}</div>
                           <div className="text-muted text-xs font-mono">
-                            League Avg: {lgAvgFormatted} · Weight: {factor.weight ? `${(factor.weight * 100).toFixed(0)}%` : "—"}
+                            League Avg: {lgAvgFormatted} · Weight: {factor.weight != null ? `${(factor.weight * 100).toFixed(0)}%` : "—"}
                           </div>
                         </div>
                         <div className="text-right">
                           <span className="font-mono font-bold text-base">{pctFormatted}</span>
                           <div className="factors-rank-badges">
-                            <span className="badge badge-accent text-xs font-mono">#{factor.rank ?? "—"}</span>
-                            <span className="badge text-xs font-mono text-muted">{factor.percentile?.toFixed(0)}%ile</span>
+                            <span className="badge badge-accent text-xs font-mono">{factor.rank != null ? `#${factor.rank}` : "—"}</span>
+                            <span className="badge text-xs font-mono text-muted">{factor.percentile != null ? `${factor.percentile.toFixed(0)}%ile` : "—"}</span>
                           </div>
                         </div>
                       </div>
@@ -333,24 +397,26 @@ export default async function TeamDetailPage({
                       </strong>
                     </div>
                   </div>
-                  <p className="text-muted text-xs factors-scenario-disclaimer">
-                    {fourFactors.three_point_scenario.disclaimer}
-                  </p>
+                  <GatedNote why={fourFactors.three_point_scenario.disclaimer}>Hypothetical shooting scenario.</GatedNote>
                 </div>
               </div>
             )}
           </div>
         )}
 
+
+        {!fourFactors && <GatedNote action={<Link className="button" href={`/teams/${team.id}?${contextParams}&tab=factors`}>Retry</Link>}>Four Factors are unavailable in this scope.</GatedNote>}
+      </>}
+      schedule={<>
         {/* Block B15a: Schedule & Rest Context Panel */}
         {schedule && (
           <div className="panel mb-5">
             <div className="panel-header">
               <div>
                 <h2 className="panel-title">Schedule Context, Venue & Rest Splits</h2>
-                <p className="text-muted text-xs panel-subtitle-margin">
+                <details className="team-method"><summary>Why?</summary><p>
                   Venue splits, rest day buckets (calendar difference minus 1 day), and back-to-back performance reconstructed strictly prior to cutoff.
-                </p>
+                </p></details>
               </div>
               <div className="header-badge-group">
                 <span className="badge font-mono">
@@ -444,154 +510,21 @@ export default async function TeamDetailPage({
           </div>
         )}
 
-        {/* Flagship Demonstration 2: Season Participation Player Cohort */}
-        <div className="panel mb-5">
-          <div className="panel-header">
-            <div>
-              <h2 className="panel-title">{team.name} Season Participation Cohort</h2>
-              <p className="text-muted text-xs panel-subtitle-margin">
-                All players with observed participation for {team.tricode} in {season} before {beforeDate}. Includes traded players with team-filtered stints.
-              </p>
-            </div>
-            <span className="badge font-mono">{player_cohort.length} players</span>
-          </div>
-
-          <div className="table-wrapper">
-            <div className="table-wrapper" role="region" aria-label="Team analytical values" tabIndex={0}><table className="data-table">
-              <thead>
-                <tr>
-                  <th className="col-idx">#</th>
-                  <th>Player</th>
-                  <th className="num">Stint Games</th>
-                  <th className="num">Stint Minutes</th>
-                  <th className="num">Stint Points</th>
-                  <th className="num">PPG</th>
-                  <th className="text-right">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {player_cohort.map((p, idx) => (
-                  <tr key={p.player_id}>
-                    <td className="font-mono text-muted text-xs">{idx + 1}</td>
-                    <td>
-                      <div className="player-cell">
-                        <PlayerPortrait playerId={p.player_id} name={p.player_name} size="sm" />
-                        <Link
-                          href={`/players/${p.player_id}?season=${season}&phase=${phase}&beforeDate=${beforeDate}&releaseId=${resolvedReleaseId || ""}` }
-                          className="player-cell-name text-accent font-semibold"
-                        >
-                          {p.player_name}
-                        </Link>
-                      </div>
-                    </td>
-                    <td className="num font-mono">{p.games_played}</td>
-                    <td className="num font-mono">
-                      {p.total_minutes !== undefined && p.total_minutes !== null ? p.total_minutes.toFixed(0) : "—"}
-                    </td>
-                    <td className="num font-mono font-bold">{p.points ?? "—"}</td>
-                    <td className="num font-mono font-semibold">
-                      {p.points_per_game !== undefined && p.points_per_game !== null ? p.points_per_game.toFixed(1) : "—"}
-                    </td>
-                    <td className="text-right">
-                      <Link
-                        href={`/players/${p.player_id}?season=${season}&phase=${phase}&beforeDate=${beforeDate}&releaseId=${resolvedReleaseId || ""}` }
-                        className="button button-small button-primary"
-                      >
-                        Profile
-                      </Link>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table></div>
-          </div>
-        </div>
-
-        {/* Statistical Team Peers Panel */}
-        {peers && peers.peers && peers.peers.length > 0 && (
-          <div className="panel mb-5">
-            <div className="panel-header">
-              <div>
-                <h2 className="panel-title">{team.name} Statistical Team Peers</h2>
-                <p className="text-muted text-xs panel-subtitle-margin">
-                  Closest analytical cohorts determined by standardized Euclidean distance across Pace, Ratings, and Dean Oliver Four Factors.
-                </p>
-              </div>
-              <span className="badge font-mono">{peers.peers.length} peers</span>
-            </div>
-
-            <div className="table-wrapper">
-              <div className="table-wrapper" role="region" aria-label="Team analytical values" tabIndex={0}><table className="data-table">
-                <thead>
-                  <tr>
-                    <th className="col-idx">#</th>
-                    <th>Peer Franchise</th>
-                    <th className="num">Similarity Score</th>
-                    <th className="num">Euclidean Distance</th>
-                    <th className="text-right">Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {peers.peers.map((peer, pIdx) => (
-                    <tr key={peer.team_id}>
-                      <td className="font-mono text-muted text-xs">{pIdx + 1}</td>
-                      <td>
-                        <div className="peer-cell">
-                          <span className="font-mono font-bold text-accent peer-tricode-badge">
-                            {peer.tricode}
-                          </span>
-                          <Link
-                            href={`/teams/${peer.team_id}?season=${season}&phase=${phase}&beforeDate=${beforeDate}&releaseId=${resolvedReleaseId || ""}` }
-                            className="font-semibold text-accent"
-                          >
-                            {peer.name}
-                          </Link>
-                          {peer.conference && (
-                            <span className="text-muted text-xs">({peer.conference})</span>
-                          )}
-                        </div>
-                      </td>
-                      <td className="num font-mono font-bold">{(peer.similarity_score * 100).toFixed(1)}%</td>
-                      <td className="num font-mono text-muted">{peer.distance.toFixed(3)}</td>
-                      <td className="text-right whitespace-nowrap">
-                        <div className="table-actions-group">
-                          <Link
-                            href={`/team-compare?teamA=${team.id}&teamB=${peer.team_id}&season=${season}&phase=${phase}&beforeDate=${beforeDate}&releaseId=${resolvedReleaseId || ""}` }
-                            className="button button-small"
-                          >
-                            Compare
-                          </Link>
-                          <Link
-                            href={`/teams/${peer.team_id}?season=${season}&phase=${phase}&beforeDate=${beforeDate}&releaseId=${resolvedReleaseId || ""}` }
-                            className="button button-small button-primary"
-                          >
-                            Profile
-                          </Link>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table></div>
-            </div>
-          </div>
-        )}
-
         {/* Completed Game Outcomes */}
         <div className="panel">
           <div className="panel-header">
             <div>
               <h2 className="panel-title">Completed Game Schedule & Outcomes</h2>
-              <p className="text-muted text-xs panel-subtitle-margin">
+              <details className="team-method"><summary>Why?</summary><p>
                 Chronological validated two-sided game outcomes strictly prior to cutoff.
-              </p>
+              </p></details>
             </div>
             <span className="badge font-mono">
               {schedule?.games?.length ?? recent_games?.length ?? 0} games
             </span>
           </div>
 
-          <div className="table-wrapper">
+          <div>
             <div className="table-wrapper" role="region" aria-label="Team analytical values" tabIndex={0}><table className="data-table">
               <thead>
                 <tr>
@@ -617,11 +550,11 @@ export default async function TeamDetailPage({
 
                   return (
                     <tr key={g.game_id}>
-                      <td className="font-mono">{g.game_date}</td>
+                      <td className="font-mono">{formatDate(g.game_date)}</td>
                       <td>
-                        <strong>{g.opponent_tricode}</strong>
+                        <span className="team-cell-identity"><TeamLogo team={g.opponent_tricode} size={20} /><strong>{g.opponent_tricode}</strong></span>
                       </td>
-                      <td>{g.side === "home" ? "Home" : "Away"}</td>
+                      <td>{g.side === "home" ? "Home" : g.side === "away" ? "Away" : "—"}</td>
                       <td>
                         {"rest_days" in g && g.rest_days !== undefined && g.rest_days !== null ? (
                           g.rest_days === 0 ? (
@@ -649,7 +582,7 @@ export default async function TeamDetailPage({
                       </td>
                       <td>
                         <span className={`badge ${isWin ? "badge-positive" : "badge-warning"}`}>
-                          {isWin ? "WIN" : "LOSS"}
+                          {isWin === true ? "WIN" : isWin === false ? "LOSS" : "—"}
                         </span>
                       </td>
                     </tr>
@@ -659,7 +592,9 @@ export default async function TeamDetailPage({
             </table></div>
           </div>
         </div>
-      </div>
-    </>
+
+      </>}
+      />
+    </PageShell>
   );
 }
