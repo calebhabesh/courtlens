@@ -1,4 +1,6 @@
 import { test, expect, type Page } from "@playwright/test";
+import { mockFinance, initial as financeInitial } from "./finance-fixture";
+import { readFileSync } from "node:fs";
 import { openWorkbench } from "./workbench-navigation";
 
 // FO06 screenshot baselines for the pages approved at owner gate 2 and the /design style guide,
@@ -116,6 +118,31 @@ for (const view of WIDTHS) {
       await expect(page.getByLabel("Window summary")).toBeVisible();
       await settle(page);
       await expect(page).toHaveScreenshot(`recent-games-${view.name}.png`, shot);
+    });
+
+    // FO10: team explorer/profile, stat shift and finance pages.
+    test("team stats", async ({ page }) => {
+      await openWorkbench(page, "/teams?season=2025-26&beforeDate=2026-04-13");
+      await expect(page.locator("tbody tr")).toHaveCount(2);
+      await settle(page);await expect(page).toHaveScreenshot(`team-stats-${view.name}.png`, shot);
+    });
+    test("team profile", async ({ page }) => {
+      await openWorkbench(page, "/teams/100?season=2025-26&beforeDate=2026-04-13");
+      await expect(page.getByLabel("Team summary")).toBeVisible();
+      await settle(page);await expect(page).toHaveScreenshot(`team-profile-${view.name}.png`, shot);
+    });
+    test("teammate stat shift", async ({ page }) => {
+      const empty = JSON.parse(readFileSync("../docs/evidence/b21-api-smoke.json", "utf8")).response;
+      await page.route("**/api/workbench/operations/stat-shift", route => route.fulfill({json:{...empty,operation:"stat-shift",request:{...empty.request,...route.request().postDataJSON()}}}));
+      await openWorkbench(page, "/stat-line-shift?player_id=1&together=2&season=2025-26&beforeDate=2026-04-13");
+      await expect(page.getByRole("heading",{name:"Observed Stat Shift"})).toBeVisible();
+      await settle(page);await expect(page).toHaveScreenshot(`stat-shift-${view.name}.png`, shot);
+    });
+    for(const route of ["contracts","contracts/TOR","free-agency"]) test(`finance ${route}`, async ({ page }) => {
+      await mockFinance(page);
+      await openWorkbench(page,financeInitial.replace("/contracts?",`/${route}?`));
+      await expect(page.getByRole("region",{name:"Financial query result"})).toBeVisible();
+      await settle(page);await expect(page).toHaveScreenshot(`${route.replace("/","-")}-${view.name}.png`, shot);
     });
 
     test("design style guide", async ({ page }) => {

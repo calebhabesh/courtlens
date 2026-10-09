@@ -475,3 +475,19 @@ repair, not a repeat of DL milestones or their sealed screenshot capture.
   IM06 real-data cases retain sealed evidence. Dashboard unit tests: 286 passed;
   lint/types and production build pass. Full Python evidence is recorded in the linked
   report. No raw inline styles or new motion mechanism was introduced.
+
+
+## 2026-10-09 — FO10 Teams and finance presentation
+
+The subsequent [frontend overhaul FO10 block](evidence/fo10/README.md) rebuilds Team Stats,
+Team Profile, Teammate Stat Shift, Contracts, team contracts and Free Agency on the shared
+v1.1 templates. Shared controls, logo/headshot identity, styled dates, loading skeletons,
+phone table containment and Data details preserve existing analytical and finance contracts.
+No rename, source acquisition or frozen identifier change; prior DL/AR/AG evidence is retained.
+
+Measured: 27 real-data captures at 1440/768/390px, desktop results at 227–389px, no page overflow
+or visible UUID/hash/cutoff rules; lint 0, typecheck and production build pass, 344 Vitest tests,
+full fixture browser suite **284 passed / 15 skipped / 0 failed**, 30 stable baselines including
+12 new FO10 views. The [FO progress log](frontend-overhaul-progress.md) records implementation
+without claiming owner visual acceptance. The current shared-floor and financial source gates
+remain unresolved. This entry does not advance older refresh/DL milestones.

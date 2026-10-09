@@ -72,11 +72,11 @@ test("stat shifts reject focal contradictions and request per-possession product
   await openWorkbench(page, "/stat-line-shift");
   await pick(page,"Focal player","1");
   await pick(page,"Together players","1");
-  await page.getByRole("button", { name: "Run shared-floor analysis" }).click();
   await expect(page.locator(".shared-floor").getByRole("alert")).toContainText("separate");
   await pick(page,"Together players","2",true);
-  await page.getByRole("button", { name: "Run shared-floor analysis" }).click();
-  await expect(page.getByRole("heading", { name: /stat-shift · TOR · Fixture Player 2/ })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Observed Stat Shift" })).toBeVisible();
+  await expect(page.locator(".floor-result")).toContainText("finalized games reconstructed");
+  await expect(page.getByRole("button", { name: "Run shared-floor analysis" })).toHaveCount(0);
 });
 
 test("bounded leaders pin a resolved release across candidates", async ({ page }) => {

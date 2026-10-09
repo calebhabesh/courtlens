@@ -74,17 +74,19 @@ test.describe("Workbench Dark Research Interface", () => {
     await page.goto("/teams");
     await page.waitForLoadState("networkidle");
 
-    await expect(page.locator("h1.page-title")).toHaveText("Team Explorer");
+    await expect(page.getByRole("heading", { level: 1 })).toHaveText("Team Stats & Cohorts");
     await expect(page.getByText("Toronto Raptors")).toBeVisible();
     await expect(page.getByText("Boston Celtics")).toBeVisible();
 
     // Standings notice
-    await expect(page.getByText("Official standings notice:")).toBeVisible();
+    await expect(page.getByText("Record order is descriptive; ties have no official placement.")).toBeVisible();
+    await page.getByText("Why?", { exact: true }).click();
+    await expect(page.getByText(/Ties in record ordering/)).toBeVisible();
 
     // Navigate to team detail
     await page.locator("a[href*='/teams/100']").first().click();
     await page.waitForURL("**/teams/100**");
-    await expect(page.locator("h1.player-identity-name")).toContainText("Toronto Raptors");
+    await expect(page.getByRole("heading", { level: 1 })).toHaveText("Toronto Raptors");
   });
 
   test("comparison view displays head-to-head metrics without declaring forced winners", async ({ page }) => {

@@ -199,6 +199,7 @@ const workbenchTeams = {
       losses: 27,
       win_pct: 0.625,
       production: { pts_per_game: 115.4, reb_per_game: 44.2, ast_per_game: 28.1 },
+      ratings: {off_rating:115.4,def_rating:110.2,net_rating:5.2,pace:null},
       allowance: { pts_allowed_per_game: 110.2, reb_allowed_per_game: 42.1, ast_allowed_per_game: 24.5 },
       observed_games: 72,
       exclusions: 0
@@ -212,6 +213,7 @@ const workbenchTeams = {
       losses: 17,
       win_pct: 0.764,
       production: { pts_per_game: 118.9, reb_per_game: 45.6, ast_per_game: 27.4 },
+      ratings: {off_rating:null,def_rating:108.5,net_rating:null,pace:99},
       allowance: { pts_allowed_per_game: 108.5, reb_allowed_per_game: 41.8, ast_allowed_per_game: 23.9 },
       observed_games: 72,
       exclusions: 0
@@ -633,6 +635,21 @@ createServer(async (request, response) => {
   if (url.pathname === "/api/workbench/players/24") return json(response, 200, workbenchPlayerProfile("24"));
   if (url.pathname === "/api/workbench/players/23/games") return json(response, 200, workbenchPlayerGames("23"));
   if (url.pathname === "/api/workbench/players/24/games") return json(response, 200, workbenchPlayerGames("24"));
+  // FO10: bounded synthetic detail fixtures cover tabs, known zero and unknown outcomes.
+  if (url.pathname === "/api/workbench/teams/100/four-factors") return json(response, 200, {
+    team:workbenchTeamDetail.team,context:workbenchContext,games_played:72,pace:99.4,off_rating:115.4,def_rating:110.2,net_rating:5.2,
+    ratings:[], shooting_percentages:{},league_averages:{},warnings:[],
+    offense_factors:[{key:"efg_pct",display_name:"Effective Field Goal %",value:0.54,league_avg:0.53,rank:8,percentile:74,total_teams:30,good_direction:"higher",unit:"percentage",formula:"Synthetic fixture",weight:0.4}],
+    defense_factors:[{key:"opp_efg_pct",display_name:"Opponent eFG%",value:null,league_avg:0.53,rank:null,percentile:null,total_teams:30,good_direction:"lower",unit:"percentage",formula:"Synthetic fixture",weight:0.4}],
+    three_point_scenario:{observed_fg3m:12,observed_fg3a:32,observed_3p_pct:0.375,league_3p_pct:0.375,hypothetical_fg3m:12,delta_points:0,actual_ppg:115.4,hypothetical_ppg:115.4,delta_off_rating:0,delta_net_rating:0,disclaimer:"Synthetic what-if accounting fixture, not a causal effect."}
+  });
+  if (url.pathname === "/api/workbench/teams/100/schedule") return json(response,200,{
+    team:workbenchTeamDetail.team,context:workbenchContext,overall_record:{...workbenchTeamDetail.record,current_streak:"W2",differential:5.2},
+    home_split:{games_played:36,wins:24,losses:12,win_pct:0.667,ppg:115.4,opp_ppg:110.2,differential:5.2},away_split:{games_played:36,wins:21,losses:15,win_pct:0.583,ppg:115.4,opp_ppg:110.2,differential:5.2},
+    rest_splits:[],back_to_back_summary:{},longest_homestand:4,longest_road_trip:3,warnings:[],
+    games:[{game_id:"fo10-unknown",game_date:"2026-03-01",opponent_tricode:"BOS",opponent_name:"Boston Celtics",side:"home",team_points:0,opponent_points:null,is_win:null,rest_days:0,is_back_to_back:true,rest_bucket:"0_days_rest"}]
+  });
+  if (url.pathname === "/api/workbench/teams/100/peers") return json(response,200,{team:workbenchTeamDetail.team,context:workbenchContext,dimensions:[],warnings:[],peers:[{team_id:"200",tricode:"BOS",name:"Boston Celtics",similarity_score:0.95,distance:0.1,conference:"Eastern"}]});
   if (url.pathname === "/api/workbench/teams") return json(response, 200, workbenchTeams);
   if (url.pathname === "/api/workbench/teams/1610612761") return json(response, 200, { ...workbenchTeamDetail, team: { ...workbenchTeamDetail.team, id: "1610612761" } });
   if (url.pathname === "/api/workbench/teams/100") return json(response, 200, workbenchTeamDetail);

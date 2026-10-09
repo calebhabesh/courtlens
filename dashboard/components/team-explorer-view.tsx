@@ -1,10 +1,19 @@
 "use client";
 
 import { useState, useMemo, useCallback } from "react";
+import { useSearchParams } from "next/navigation";
+import { ContextBar } from "./context-bar";
+import { PageHeader } from "./ui/panel";
+import { Field } from "./ui/field";
+import { Select } from "./ui/select";
+import { Input } from "./ui/input";
+import { SegmentedControl } from "./ui/segmented-control";
+import { GatedNote } from "./ui/gated-note";
+import { buildPreservedContextUrl } from "@/lib/query-url";
 import Link from "next/link";
 import { SortHeader } from "./table-ui";
 import { TeamLogo } from "./team-logo";
-import type { TeamResearchItem } from "@/lib/types";
+import type { TeamResearchItem, WorkbenchCatalog } from "@/lib/types";
 
 export type ExplorerViewMode = "table" | "cards" | "scatter";
 export type TablePreset = "overview" | "four_factors_off" | "four_factors_def" | "all_ratings";
@@ -12,6 +21,8 @@ export type GroupingMode = "all" | "conference" | "division";
 
 interface TeamExplorerViewProps {
   initialTeams: TeamResearchItem[];
+  catalog?: WorkbenchCatalog;
+  releaseId?: string;
   season: string;
   phase: string;
   beforeDate: string;
@@ -20,19 +31,34 @@ interface TeamExplorerViewProps {
 }
 
 export function TeamExplorerView({
-  initialTeams,
+  initialTeams, catalog, releaseId,
   season,
   phase,
   beforeDate,
   orderNotice,
   leagueAverages,
 }: TeamExplorerViewProps) {
-  const [viewMode, setViewMode] = useState<ExplorerViewMode>("table");
-  const [tablePreset, setTablePreset] = useState<TablePreset>("overview");
-  const [groupingMode, setGroupingMode] = useState<GroupingMode>("all");
-  const [searchQuery, setSearchQuery] = useState("");
-  const [sortField, setSortField] = useState<string>("win_pct");
-  const [sortDirection, setSortDirection] = useState<"asc" | "desc">("desc");
+  const params = useSearchParams();
+  const [viewMode, setViewMode] = useState<ExplorerViewMode>(() => params.get("view") === "cards" ? "cards" : params.get("view") === "scatter" ? "scatter" : "table");
+  const [tablePreset, setTablePreset] = useState<TablePreset>(() => ["four_factors_off", "four_factors_def", "all_ratings"].includes(params.get("metrics") ?? "") ? params.get("metrics") as TablePreset : "overview");
+  const [groupingMode, setGroupingMode] = useState<GroupingMode>(() => params.get("group") === "conference" ? "conference" : params.get("group") === "division" ? "division" : "all");
+  const [searchQuery, setSearchQuery] = useState(params.get("search") ?? "");
+  const [sortField, setSortField] = useState<string>(params.get("sort") ?? "win_pct");
+  const [sortDirection, setSortDirection] = useState<"asc" | "desc">(params.get("direction") === "asc" ? "asc" : "desc");
+  const [previousUrl,setPreviousUrl] = useState(params.toString());
+  if(previousUrl !== params.toString()) {
+    setPreviousUrl(params.toString());
+    setViewMode(params.get("view") === "cards" ? "cards" : params.get("view") === "scatter" ? "scatter" : "table");
+    setGroupingMode(params.get("group") === "conference" ? "conference" : params.get("group") === "division" ? "division" : "all");
+    setTablePreset(["four_factors_off", "four_factors_def", "all_ratings"].includes(params.get("metrics") ?? "") ? params.get("metrics") as TablePreset : "overview");
+    setSearchQuery(params.get("search") ?? "");setSortField(params.get("sort") ?? "win_pct");setSortDirection(params.get("direction") === "asc" ? "asc" : "desc");
+  }
+  function preference(key: string, value: string) {
+    const next = new URLSearchParams(window.location.search); next.set(key, value);
+    window.history.replaceState(null, "", `${window.location.pathname}?${next}`);
+  }
+  const context = new URLSearchParams({ season, phase, beforeDate, ...(releaseId ? { releaseId } : {}) });
+  const link = (path: string) => buildPreservedContextUrl(path, context);
   const [hoveredTeam, setHoveredTeam] = useState<TeamResearchItem | null>(null);
 
   // Filter teams by search
@@ -56,71 +82,73 @@ export function TeamExplorerView({
 
       switch (sortField) {
         case "win_pct":
-          valA = a.win_pct ?? -1;
-          valB = b.win_pct ?? -1;
+          valA = a.win_pct ?? null;
+          valB = b.win_pct ?? null;
           break;
         case "wins":
           valA = a.wins;
           valB = b.wins;
           break;
         case "ppg":
-          valA = a.production?.pts_per_game ?? -1;
-          valB = b.production?.pts_per_game ?? -1;
+          valA = a.production?.pts_per_game ?? null;
+          valB = b.production?.pts_per_game ?? null;
           break;
         case "opp_ppg":
-          valA = a.allowance?.pts_allowed_per_game ?? 999;
-          valB = b.allowance?.pts_allowed_per_game ?? 999;
+          valA = a.allowance?.pts_allowed_per_game ?? null;
+          valB = b.allowance?.pts_allowed_per_game ?? null;
           break;
         case "net_margin":
-          valA = (a.production?.pts_per_game ?? 0) - (a.allowance?.pts_allowed_per_game ?? 0);
-          valB = (b.production?.pts_per_game ?? 0) - (b.allowance?.pts_allowed_per_game ?? 0);
+          valA = a.production?.pts_per_game != null && a.allowance?.pts_allowed_per_game != null ? a.production.pts_per_game - a.allowance.pts_allowed_per_game : null;
+          valB = b.production?.pts_per_game != null && b.allowance?.pts_allowed_per_game != null ? b.production.pts_per_game - b.allowance.pts_allowed_per_game : null;
           break;
         case "off_rating":
-          valA = a.ratings?.off_rating ?? -1;
-          valB = b.ratings?.off_rating ?? -1;
+          valA = a.ratings?.off_rating ?? null;
+          valB = b.ratings?.off_rating ?? null;
           break;
         case "def_rating":
-          valA = a.ratings?.def_rating ?? 999;
-          valB = b.ratings?.def_rating ?? 999;
+          valA = a.ratings?.def_rating ?? null;
+          valB = b.ratings?.def_rating ?? null;
           break;
         case "net_rating":
-          valA = a.ratings?.net_rating ?? -999;
-          valB = b.ratings?.net_rating ?? -999;
+          valA = a.ratings?.net_rating ?? null;
+          valB = b.ratings?.net_rating ?? null;
           break;
         case "pace":
-          valA = a.ratings?.pace ?? -1;
-          valB = b.ratings?.pace ?? -1;
+          valA = a.ratings?.pace ?? null;
+          valB = b.ratings?.pace ?? null;
           break;
         case "efg_pct":
-          valA = a.four_factors?.efg_pct ?? -1;
-          valB = b.four_factors?.efg_pct ?? -1;
+          valA = a.four_factors?.efg_pct ?? null;
+          valB = b.four_factors?.efg_pct ?? null;
           break;
         case "tov_pct":
-          valA = a.four_factors?.tov_pct ?? 999;
-          valB = b.four_factors?.tov_pct ?? 999;
+          valA = a.four_factors?.tov_pct ?? null;
+          valB = b.four_factors?.tov_pct ?? null;
           break;
         case "oreb_pct":
-          valA = a.four_factors?.oreb_pct ?? -1;
-          valB = b.four_factors?.oreb_pct ?? -1;
+          valA = a.four_factors?.oreb_pct ?? null;
+          valB = b.four_factors?.oreb_pct ?? null;
           break;
         case "ftr":
-          valA = a.four_factors?.ftr ?? -1;
-          valB = b.four_factors?.ftr ?? -1;
+          valA = a.four_factors?.ftr ?? null;
+          valB = b.four_factors?.ftr ?? null;
           break;
         case "opp_efg_pct":
-          valA = a.four_factors?.opp_efg_pct ?? 999;
-          valB = b.four_factors?.opp_efg_pct ?? 999;
+          valA = a.four_factors?.opp_efg_pct ?? null;
+          valB = b.four_factors?.opp_efg_pct ?? null;
           break;
         default:
-          valA = a.win_pct ?? -1;
-          valB = b.win_pct ?? -1;
+          valA = a.win_pct ?? null;
+          valB = b.win_pct ?? null;
       }
 
+      if (valA === null) return valB === null ? a.name.localeCompare(b.name) : 1;
+      if (valB === null) return -1;
       if (valA === valB) {
         // Tiebreak by net margin then team name
-        const netA = (a.production?.pts_per_game ?? 0) - (a.allowance?.pts_allowed_per_game ?? 0);
-        const netB = (b.production?.pts_per_game ?? 0) - (b.allowance?.pts_allowed_per_game ?? 0);
-        return netB - netA || a.name.localeCompare(b.name);
+        const netA = a.production?.pts_per_game != null && a.allowance?.pts_allowed_per_game != null ? a.production.pts_per_game - a.allowance.pts_allowed_per_game : null;
+        const netB = b.production?.pts_per_game != null && b.allowance?.pts_allowed_per_game != null ? b.production.pts_per_game - b.allowance.pts_allowed_per_game : null;
+        return (netA == null ? netB == null ? 0 : 1 : netB == null ? -1 : netB - netA) || a.name.localeCompare(b.name);
       }
 
       if (typeof valA === "number" && typeof valB === "number") {
@@ -132,14 +160,14 @@ export function TeamExplorerView({
 
   const handleSort = (field: string) => {
     if (sortField === field) {
-      setSortDirection((prev) => (prev === "desc" ? "asc" : "desc"));
+      const next = sortDirection === "desc" ? "asc" : "desc"; setSortDirection(next); preference("direction", next);
     } else {
-      setSortField(field);
+      setSortField(field); preference("sort", field);
       // For defensive stats where lower is better, default to asc
       if (field === "def_rating" || field === "opp_ppg" || field === "tov_pct" || field === "opp_efg_pct") {
-        setSortDirection("asc");
+        setSortDirection("asc"); preference("direction", "asc");
       } else {
-        setSortDirection("desc");
+        setSortDirection("desc"); preference("direction", "desc");
       }
     }
   };
@@ -147,7 +175,7 @@ export function TeamExplorerView({
   // Grouped structure
   const groupedData = useMemo(() => {
     if (groupingMode === "all") {
-      return [{ groupName: "All Teams (30)", teams: sortTeams(filteredTeams) }];
+      return [{ groupName: "All Teams", teams: sortTeams(filteredTeams) }];
     }
 
     if (groupingMode === "conference") {
@@ -186,150 +214,18 @@ export function TeamExplorerView({
 
   return (
     <div className="team-explorer-container">
-      {/* Top Controls Toolbar */}
-      <div className="panel team-explorer-toolbar">
-        <div className="team-explorer-controls-left">
-          {/* View mode toggle */}
-          <div className="button-group" role="group" aria-label="View mode">
-            <button
-              type="button"
-              className={`button button-small ${viewMode === "table" ? "button-primary" : ""}`}
-              onClick={() => setViewMode("table")}
-            >
-              Standings Table
-            </button>
-            <button
-              type="button"
-              className={`button button-small ${viewMode === "cards" ? "button-primary" : ""}`}
-              onClick={() => setViewMode("cards")}
-            >
-              Franchise Cards
-            </button>
-            <button
-              type="button"
-              className={`button button-small ${viewMode === "scatter" ? "button-primary" : ""}`}
-              onClick={() => setViewMode("scatter")}
-            >
-              Pace & Efficiency Plot
-            </button>
-          </div>
-
-          {/* Grouping Mode Toggle */}
-          <div className="button-group" role="group" aria-label="Grouping mode">
-            <button
-              type="button"
-              className={`button button-small ${groupingMode === "all" ? "button-primary" : ""}`}
-              onClick={() => setGroupingMode("all")}
-            >
-              League Overall
-            </button>
-            <button
-              type="button"
-              className={`button button-small ${groupingMode === "conference" ? "button-primary" : ""}`}
-              onClick={() => setGroupingMode("conference")}
-            >
-              Conferences
-            </button>
-            <button
-              type="button"
-              className={`button button-small ${groupingMode === "division" ? "button-primary" : ""}`}
-              onClick={() => setGroupingMode("division")}
-            >
-              Divisions
-            </button>
-          </div>
-        </div>
-
-        <div className="team-explorer-search-group">
-          {/* Search box */}
-          <input
-            type="search"
-            placeholder="Search franchise (e.g. BOS, Celtics)..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="input-field team-explorer-search-input"
-          />
-
-          <Link href="/team-compare" className="button button-small button-accent whitespace-nowrap">
-            Compare Teams
-          </Link>
-        </div>
-      </div>
-
-      {/* Table Presets Tabs (when in Table View) */}
-      {viewMode === "table" && (
-        <div className="team-explorer-metric-presets">
-          <span className="text-xs text-muted font-mono team-explorer-metric-label">
-            METRIC SET:
-          </span>
-          <button
-            type="button"
-            className={`button button-small ${tablePreset === "overview" ? "button-primary" : ""}`}
-            onClick={() => setTablePreset("overview")}
-          >
-            Standings & Scoring
-          </button>
-          <button
-            type="button"
-            className={`button button-small ${tablePreset === "four_factors_off" ? "button-primary" : ""}`}
-            onClick={() => setTablePreset("four_factors_off")}
-          >
-            Offensive Four Factors
-          </button>
-          <button
-            type="button"
-            className={`button button-small ${tablePreset === "four_factors_def" ? "button-primary" : ""}`}
-            onClick={() => setTablePreset("four_factors_def")}
-          >
-            Defensive Four Factors
-          </button>
-          <button
-            type="button"
-            className={`button button-small ${tablePreset === "all_ratings" ? "button-primary" : ""}`}
-            onClick={() => setTablePreset("all_ratings")}
-          >
-            Ratings, Tempo & Factors
-          </button>
-        </div>
-      )}
-
-      {/* League Averages Bar */}
-      {leagueAverages && (
-        <div className="team-explorer-league-averages">
-          <span className="text-muted font-mono font-semibold team-explorer-league-averages-label">
-            LEAGUE AVERAGES:
-          </span>
-          <span className="font-mono">
-            ORTG: <strong>{leagueAverages.off_rating?.toFixed(1) ?? "—"}</strong>
-          </span>
-          <span className="font-mono">
-            DRTG: <strong>{leagueAverages.def_rating?.toFixed(1) ?? "—"}</strong>
-          </span>
-          <span className="font-mono">
-            Pace: <strong>{leagueAverages.pace?.toFixed(1) ?? "—"}</strong>
-          </span>
-          <span className="font-mono">
-            eFG%: <strong>{leagueAverages.efg_pct != null ? `${(leagueAverages.efg_pct * 100).toFixed(1)}%` : "—"}</strong>
-          </span>
-          <span className="font-mono">
-            TOV%: <strong>{leagueAverages.tov_pct != null ? `${(leagueAverages.tov_pct * 100).toFixed(1)}%` : "—"}</strong>
-          </span>
-          <span className="font-mono">
-            ORB%: <strong>{leagueAverages.oreb_pct != null ? `${(leagueAverages.oreb_pct * 100).toFixed(1)}%` : "—"}</strong>
-          </span>
-          <span className="font-mono">
-            FTR: <strong>{leagueAverages.ftr?.toFixed(3) ?? "—"}</strong>
-          </span>
-        </div>
-      )}
-
-      {/* Official Placement Disclaimer Notice */}
-      <div className="notice-box">
-        <strong>Official standings notice:</strong>{" "}
-        {orderNotice ||
-          "Ties in record ordering do not establish official conference placement. Standings are presented by win percentage without tiebreaker resolution."}
-      </div>
-
+      <PageHeader title="Team Stats & Cohorts" subtitle="Standings, scoring and Four Factors." actions={<Link href={link("/team-compare")} className="button">Compare Teams</Link>} />
+      <ContextBar catalog={catalog} initialReleaseId={releaseId} initialSeason={season} initialPhase={phase} initialBeforeDate={beforeDate}
+        detailRows={leagueAverages ? [{label:"League averages",value:Object.entries(leagueAverages).map(([key,value]) => `${key}: ${value}`).join(" · ")}] : []} showWindow={false} sampleNoun="teams" sampleSize={filteredTeams.length}
+        filters={<>
+          <Field label="Find" layout="inline"><Input type="search" aria-label="Search franchises" placeholder="Team or division" value={searchQuery} onChange={e => { setSearchQuery(e.target.value); preference("search", e.target.value); }} /></Field>
+          <Field label="Group" layout="inline"><Select aria-label="Group teams" value={groupingMode} onChange={e => {setGroupingMode(e.target.value as GroupingMode); preference("group", e.target.value);}}><option value="all">League</option><option value="conference">Conference</option><option value="division">Division</option></Select></Field>
+          {viewMode === "table" && <Field label="Metrics" layout="inline"><Select aria-label="Team metric set" value={tablePreset} onChange={e => {setTablePreset(e.target.value as TablePreset); preference("metrics", e.target.value);}}><option value="overview">Standings & Scoring</option><option value="four_factors_off">Offensive Four Factors</option><option value="four_factors_def">Defensive Four Factors</option><option value="all_ratings">Ratings & Factors</option></Select></Field>}
+        </>}
+        modes={<SegmentedControl name="Team view" value={viewMode} onChange={value => {setViewMode(value); preference("view", value);}} options={[{value:"table",label:"Table"},{value:"cards",label:"Cards"},{value:"scatter",label:"Efficiency Plot"}]} />}
+      />
+      <GatedNote why={orderNotice || "Ties in record ordering do not establish official conference placement. Standings are presented by win percentage without tiebreaker resolution."}>Record order is descriptive; ties have no official placement.</GatedNote>
+      {!filteredTeams.length && <GatedNote action={<button className="button" onClick={() => {setSearchQuery(""); preference("search", "");}}>Clear search</button>}>No teams match this search.</GatedNote>}
       {/* VIEW 1: TABLE VIEW */}
       {viewMode === "table" && (
         <div className="team-explorer-stack">
@@ -419,9 +315,9 @@ export function TeamExplorerView({
                           <td className="font-mono text-muted text-xs">{idx + 1}</td>
                           <td>
                             <div className="team-cell-identity">
-                              <TeamLogo team={t.tricode} size={32} />
+                              <TeamLogo team={t.tricode} size={20} />
                               <Link
-                                href={`/teams/${t.team_id}?season=${season}&phase=${phase}&beforeDate=${beforeDate}`}
+                                href={link(`/teams/${t.team_id}`)}
                                 className="font-semibold text-accent"
                               >
                                 {t.name}
@@ -574,14 +470,14 @@ export function TeamExplorerView({
                           <td className="text-right whitespace-nowrap">
                             <div className="table-actions-group">
                               <Link
-                                href={`/team-compare?teamA=${t.team_id}&season=${season}&phase=${phase}&beforeDate=${beforeDate}`}
+                                href={link(`/team-compare?teamA=${t.team_id}`)}
                                 className="button button-small"
                                 title={`Compare ${t.name}`}
                               >
                                 Compare
                               </Link>
                               <Link
-                                href={`/teams/${t.team_id}?season=${season}&phase=${phase}&beforeDate=${beforeDate}`}
+                                href={link(`/teams/${t.team_id}`)}
                                 className="button button-small button-primary"
                               >
                                 Profile
@@ -622,7 +518,7 @@ export function TeamExplorerView({
                           <TeamLogo team={t.tricode} size={32} />
                           <h3 className="team-card-title">
                             <Link
-                              href={`/teams/${t.team_id}?season=${season}&phase=${phase}&beforeDate=${beforeDate}`}
+                              href={link(`/teams/${t.team_id}`)}
                               className="text-foreground hover:text-accent"
                             >
                               {t.name}
@@ -694,13 +590,13 @@ export function TeamExplorerView({
                       {/* Card buttons */}
                       <div className="team-card-actions">
                         <Link
-                          href={`/team-compare?teamA=${t.team_id}&season=${season}&phase=${phase}&beforeDate=${beforeDate}`}
+                          href={link(`/team-compare?teamA=${t.team_id}`)}
                           className="button button-small team-card-button"
                         >
                           Compare
                         </Link>
                         <Link
-                          href={`/teams/${t.team_id}?season=${season}&phase=${phase}&beforeDate=${beforeDate}`}
+                          href={link(`/teams/${t.team_id}`)}
                           className="button button-small button-primary team-card-button"
                         >
                           Profile
@@ -722,9 +618,7 @@ export function TeamExplorerView({
             <h2 className="team-scatter-title">
               Pace & Efficiency Distribution ({season} {phase.replace("_", " ")})
             </h2>
-            <p className="text-muted text-xs team-scatter-subtitle">
-              X-axis shows Offensive Rating (points scored per 100 possessions); Y-axis shows Defensive Rating (points allowed per 100 possessions, inverted so up is better defense). Circle size corresponds to estimated Pace.
-            </p>
+            <GatedNote why="Lower defensive rating is placed higher; offensive rating increases to the right. Conference colors are descriptive. A known Pace sets bubble size; unknown Pace uses a fixed small marker. Focus a team for details and press Enter for its profile.">Offense and allowance per 100 estimated possessions.</GatedNote>
           </div>
 
           <div className="team-scatter-chart-wrap">
@@ -785,29 +679,33 @@ export function TeamExplorerView({
 
               {/* Quadrant hints */}
               <text x="550" y="50" textAnchor="end" fill="var(--color-text-secondary)" fontSize="9" opacity="0.6">
-                Elite (Top Right)
+                Higher offense / lower allowance
               </text>
               <text x="80" y="380" textAnchor="start" fill="var(--color-text-secondary)" fontSize="9" opacity="0.6">
-                Rebuilding (Bottom Left)
+                Lower offense / higher allowance
               </text>
 
               {/* Team Data Points */}
-              {initialTeams.map((t) => {
+              {filteredTeams.map((t) => {
                 const off = t.ratings?.off_rating;
                 const def = t.ratings?.def_rating;
-                const pace = t.ratings?.pace ?? 98;
+                const pace = t.ratings?.pace;
                 if (off == null || def == null) return null;
 
                 const cx = ((off - scatterBounds.minX) / (scatterBounds.maxX - scatterBounds.minX)) * 510 + 60;
                 // Invert Y: lower def rating is placed closer to y=30
                 const cy = ((def - scatterBounds.minY) / (scatterBounds.maxY - scatterBounds.minY)) * 370 + 30;
-                const r = Math.max(5, Math.min(12, ((pace - 94) / 10) * 8 + 5));
+                const r = pace == null ? 5 : Math.max(5, Math.min(12, ((pace - 94) / 10) * 8 + 5));
                 const isEast = t.conference === "Eastern";
                 const isHovered = hoveredTeam?.team_id === t.team_id;
 
                 return (
-                  <g
+                  <a
                     key={t.team_id}
+                    href={link(`/teams/${t.team_id}`)}
+                    aria-label={`${t.name}: offensive rating ${off}, defensive rating ${def}, pace ${pace ?? "unknown"}`}
+                    onFocus={() => setHoveredTeam(t)}
+                    onBlur={() => setHoveredTeam(null)}
                     onMouseEnter={() => setHoveredTeam(t)}
                     onMouseLeave={() => setHoveredTeam(null)}
                     className="team-scatter-point"
@@ -832,7 +730,7 @@ export function TeamExplorerView({
                     >
                       {t.tricode}
                     </text>
-                  </g>
+                  </a>
                 );
               })}
             </svg>

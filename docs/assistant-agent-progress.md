@@ -278,3 +278,15 @@ table.
 - AG07 is now `verified`. AG08 stays `accepted_with_waiver`: AG01 live smoke, AG06 live
   development accuracy and the AG08 holdout remain unmeasured by owner waiver. Zero
   provider calls. Direct NBA remains `source_blocked`.
+
+
+## 2026-10-09 — history test gate correction during FO10 verification
+
+The FO10 full browser run exposed a fixture race in the existing composer-initialization
+regression. Its exact `/threads` glob did not intercept the paginated `/threads?limit=20`
+request. A request-count assertion reproduced zero held requests; matching the pathname
+and requiring a held GET before asserting disabled state fixes the test. The composer
+and all assistant product code are unchanged. The corrected case passes 8/8 repeats;
+[FO10 evidence](evidence/fo10/README.md) retains the initial full-run failure, deterministic
+red probe and green repeats. No provider calls, corpus changes, sealed evidence changes or
+assistant milestone/status changes. Final broad verification is recorded in the FO10 log.

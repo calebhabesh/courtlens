@@ -143,6 +143,6 @@ export function SharedFloorView({ initialOperation = "wowy", statsPreset = false
   </div>;
 }
 
-function ExposureTable({ cells, name }: { cells: FloorCell[]; name: (id: string) => string }) {
+export function ExposureTable({ cells, name }: { cells: FloorCell[]; name: (id: string) => string }) {
   return <div className="floor-scroll"><table className="data-table"><caption>Observed exposure and raw team ratings per 100 directional possessions</caption><thead><tr><th>Cell / conditions</th><th>Games</th><th>Stints</th><th>Minutes</th><th>Off. poss.</th><th>Def. poss.</th><th>Points</th><th>Allowed</th><th>ORTG</th><th>DRTG</th><th>NET</th><th>Sample gate</th></tr></thead><tbody>{cells.map(cell => <tr key={cell.key}><th scope="row">{cell.key}{cell.present.length > 0 && <div>Present: {cell.present.map(name).join(", ")}</div>}{cell.absent.length > 0 && <div>Absent: {cell.absent.map(name).join(", ")}</div>}</th><td>{cell.games}</td><td>{cell.stints}</td><td>{floorNumber(cell.minutes)}</td><td>{floorNumber(cell.offensive_possessions)}</td><td>{floorNumber(cell.defensive_possessions)}</td><td>{cell.points ?? "—"}</td><td>{cell.points_allowed ?? "—"}</td><td>{floorNumber(cell.raw_metrics.offensive_rating)}</td><td>{floorNumber(cell.raw_metrics.defensive_rating)}</td><td>{floorNumber(cell.raw_metrics.net_rating)}</td><td>{cell.sample_status}<div>{cell.reason}</div></td></tr>)}</tbody></table></div>;
 }

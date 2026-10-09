@@ -4503,3 +4503,66 @@
   .similarity-target-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-3); margin-bottom: var(--space-3); }
   .similarity-target-lookup { width: 240px; min-width: 0; }
 }
+
+/* FO10 — Teams use the shared Explorer/Profile/Compare anatomy. */
+.teams-page .team-explorer-container { display: grid; gap: var(--space-4); min-width: 0; }
+.teams-page .team-explorer-stack, .team-profile-page .ui-profile-body { min-width: 0; }
+.teams-page .ui-filter-bar .ui-input-wrapper { max-width: 160px; }
+.teams-page .ui-filter-bar .ui-select-wrapper { max-width: 180px; }
+.teams-page .team-explorer-league-averages { margin: 0; padding: var(--space-2) var(--space-3); }
+.team-profile-hero { display: grid; grid-template-columns: minmax(240px, 1fr) minmax(0, 3fr); gap: var(--space-6); align-items: center; padding: var(--space-5); background: var(--color-surface-1); border-radius: var(--radius-md); box-shadow: inset var(--space-1) 0 var(--team-color, var(--color-accent)); }
+.team-profile-tiles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-2); }
+.team-profile-page .ui-profile-body > div > div { display: grid; gap: var(--space-4); }
+.team-profile-page .panel { margin: 0; }
+.team-profile-page .panel-header { margin-bottom: var(--space-3); }
+.team-method summary { cursor: pointer; min-height: var(--control-lg); display: flex; align-items: center; color: var(--color-text-secondary); font-size: var(--text-sm); }
+.team-method p { max-width: 64ch; font-size: var(--text-sm); }
+.team-stat-shift { display: grid; gap: var(--space-4); }
+.shift-players { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-4); }
+.shift-subjects { display: flex; gap: var(--space-6); align-items: center; }
+.team-stat-shift .ui-filter-bar .entity-field { min-width: 0; max-width: 240px; }
+.team-stat-shift .ui-filter-bar .ui-input-wrapper { max-width: 80px; }
+.finance-workspace { gap: var(--space-4); }
+.finance-workspace .ui-page-header nav { display: flex; gap: var(--space-2); }
+.finance-filter-bar .ui-filter-bar-scope, .finance-filter-bar .ui-filter-bar-page { flex-wrap: wrap; }
+.finance-filter-bar .ui-input-wrapper { max-width: 96px; }
+.finance-filter-bar .ui-select-wrapper { max-width: 200px; }
+.finance-filter-bar .ui-field-label { white-space: nowrap; }
+.finance-result { display: grid; gap: var(--space-4); }
+.finance-result > h2 { font-size: var(--text-lg); margin: 0; }
+.finance-context-title { display: flex; align-items: center; gap: var(--space-2); }
+.finance-result .finance-summary > div { border: 0; border-radius: var(--radius-sm); }
+.finance-row-filters { display: grid; grid-template-columns: minmax(0, 2fr) repeat(3, minmax(0, 1fr)); gap: var(--space-3); }
+.finance-row-filters input, .finance-row-filters select { min-height: var(--control-lg); }
+.finance-team-link { display: inline-flex; gap: var(--space-2); align-items: center; white-space: nowrap; min-height: var(--control-lg); }
+.finance-team-hero { display: grid; grid-template-columns: minmax(200px, 1fr) minmax(0, 3fr); align-items: center; gap: var(--space-4); }
+.finance-workspace summary { display: flex; align-items: center; min-height: var(--control-lg); cursor: pointer; }
+.finance-dialog .ui-date-picker { min-width: 0; }
+.finance-dialog input, .finance-dialog select { min-height: var(--control-lg); }
+@media (max-width: 1279px) {
+  .team-profile-hero { grid-template-columns: 1fr; }
+  .team-profile-tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 767px) {
+  .team-profile-hero { padding: var(--space-4); gap: var(--space-4); }
+  .team-profile-hero .ui-identity-name { white-space: normal; overflow: visible; text-overflow: clip; }
+  .team-profile-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .shift-players, .finance-row-filters, .finance-team-hero { grid-template-columns: 1fr; }
+  .shift-subjects { flex-wrap: wrap; }
+  .team-stat-shift .ui-filter-sheet .ui-input-wrapper, .finance-workspace .ui-filter-sheet .ui-input-wrapper, .finance-workspace .ui-filter-sheet .ui-select-wrapper { max-width: 100%; }
+  .finance-workspace .finance-summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .finance-summary strong { font-size: var(--text-lg); }
+  .team-profile-page .data-table th:first-child, .team-profile-page .data-table td:first-child, .finance-workspace .data-table th:first-child, .team-stat-shift .data-table th:first-child, .team-stat-shift .data-table td:first-child { position: sticky; left: 0; z-index: var(--z-base); background: var(--color-surface-1); }
+  .teams-page .data-table th:nth-child(2), .teams-page .data-table td:nth-child(2) { position: sticky; left: 0; z-index: var(--z-base); background: var(--color-surface-1); }
+  .team-profile-page .table-wrapper, .finance-workspace .table-wrapper, .team-stat-shift .floor-scroll, .teams-page .research-table-scroll { isolation: isolate; }
+  .team-profile-page .button, .teams-page .button, .finance-workspace .button, .finance-workspace a, .team-stat-shift .button, .team-stat-shift summary { min-height: var(--control-lg); }
+}
+.teams-page .team-explorer-stack > .panel { padding: var(--space-3); }
+.teams-page .team-explorer-panel-header { padding: 0 0 var(--space-2); margin: 0; }
+.team-stat-shift .ui-filter-bar-scope .ui-field { flex-direction: row; align-items: center; }
+.team-stat-shift .ui-filter-bar-scope .ui-select-wrapper { max-width: 160px; }
+.team-stat-shift .shift-players .entity-chips:empty { display: none; }
+.team-profile-page .ui-tabs, .team-profile-page .ui-tabs-content { min-width: 0; max-width: 100%; }
+.team-profile-page .ui-profile-body > div > div { grid-template-columns: minmax(0, 1fr); }
+.team-profile-page .ui-tab-trigger { min-height: var(--control-lg); }
+.team-scatter-point:focus-visible { outline: 2px solid var(--color-accent); outline-offset: var(--space-1); }

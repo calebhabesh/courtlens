@@ -1,0 +1,1291 @@
+{
+  "capturedAt": "2026-10-09T22:38:59.387Z",
+  "base": "http://localhost:3100",
+  "api": "http://localhost:8000",
+  "releaseId": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+  "financeBookId": "256f66b1-129d-4904-be30-7b946f6e92fc",
+  "measurements": [
+    {
+      "name": "teams",
+      "url": "/teams?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13",
+      "width": 1440,
+      "title": "Team Stats & Cohorts",
+      "template": "explorer",
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "mainTop": 389,
+      "filterBottom": 263,
+      "controls": [
+        {
+          "label": "Filter by season",
+          "height": 40
+        },
+        {
+          "label": "Filter by competition phase",
+          "height": 40
+        },
+        {
+          "label": "Through date: Apr 12, 2026",
+          "height": 40
+        },
+        {
+          "label": "Search franchises",
+          "height": 40
+        },
+        {
+          "label": "Group teams",
+          "height": 40
+        },
+        {
+          "label": "Team metric set",
+          "height": 40
+        },
+        {
+          "label": "Table",
+          "height": 36
+        },
+        {
+          "label": "Cards",
+          "height": 36
+        },
+        {
+          "label": "Efficiency Plot",
+          "height": 36
+        },
+        {
+          "label": "Data details",
+          "height": 40
+        }
+      ],
+      "filtersButton": false,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "loadButtons": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "errors": []
+    },
+    {
+      "name": "team-overview",
+      "url": "/teams/1610612761?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13",
+      "width": 1440,
+      "title": "Toronto Raptors",
+      "template": "profile",
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "mainTop": 227,
+      "filterBottom": 211,
+      "controls": [
+        {
+          "label": "Filter by season",
+          "height": 40
+        },
+        {
+          "label": "Filter by competition phase",
+          "height": 40
+        },
+        {
+          "label": "Through date: Apr 12, 2026",
+          "height": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40
+        },
+        {
+          "label": "Overview",
+          "height": 40
+        },
+        {
+          "label": "Four Factors",
+          "height": 40
+        },
+        {
+          "label": "Schedule",
+          "height": 40
+        }
+      ],
+      "filtersButton": false,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "loadButtons": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "errors": []
+    },
+    {
+      "name": "team-factors",
+      "url": "/teams/1610612761?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&tab=factors",
+      "width": 1440,
+      "title": "Toronto Raptors",
+      "template": "profile",
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "mainTop": 227,
+      "filterBottom": 211,
+      "controls": [
+        {
+          "label": "Filter by season",
+          "height": 40
+        },
+        {
+          "label": "Filter by competition phase",
+          "height": 40
+        },
+        {
+          "label": "Through date: Apr 12, 2026",
+          "height": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40
+        },
+        {
+          "label": "Overview",
+          "height": 40
+        },
+        {
+          "label": "Four Factors",
+          "height": 40
+        },
+        {
+          "label": "Schedule",
+          "height": 40
+        }
+      ],
+      "filtersButton": false,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "loadButtons": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "errors": []
+    },
+    {
+      "name": "team-schedule",
+      "url": "/teams/1610612761?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&tab=schedule",
+      "width": 1440,
+      "title": "Toronto Raptors",
+      "template": "profile",
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "mainTop": 227,
+      "filterBottom": 211,
+      "controls": [
+        {
+          "label": "Filter by season",
+          "height": 40
+        },
+        {
+          "label": "Filter by competition phase",
+          "height": 40
+        },
+        {
+          "label": "Through date: Apr 12, 2026",
+          "height": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40
+        },
+        {
+          "label": "Overview",
+          "height": 40
+        },
+        {
+          "label": "Four Factors",
+          "height": 40
+        },
+        {
+          "label": "Schedule",
+          "height": 40
+        }
+      ],
+      "filtersButton": false,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "loadButtons": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "errors": []
+    },
+    {
+      "name": "stat-shift",
+      "url": "/stat-line-shift?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&team_id=TOR&player_id=1630567&together=1627742",
+      "width": 1440,
+      "title": "Teammate Stat Shift",
+      "template": "compare",
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "mainTop": 368,
+      "filterBottom": 211,
+      "controls": [
+        {
+          "label": "Season",
+          "height": 40
+        },
+        {
+          "label": "Phase",
+          "height": 40
+        },
+        {
+          "label": "Through date: Apr 12, 2026",
+          "height": 40
+        },
+        {
+          "label": "Change team",
+          "height": 40
+        },
+        {
+          "label": "From date (inclusive): Select a date",
+          "height": 40
+        },
+        {
+          "label": "Minimum possessions",
+          "height": 40
+        },
+        {
+          "label": "Minimum games",
+          "height": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40
+        }
+      ],
+      "filtersButton": false,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "loadButtons": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "errors": []
+    },
+    {
+      "name": "contracts",
+      "url": "/contracts?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&finance_book_id=256f66b1-129d-4904-be30-7b946f6e92fc&finance_financial_season=2025-26&finance_known_at=2026-10-03T16%3A53%3A28.617539Z&finance_effective_on=2025-02-12&finance_team_id=1610612761",
+      "width": 1440,
+      "title": "Contracts & Payroll",
+      "template": "explorer",
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "mainTop": 279,
+      "filterBottom": 263,
+      "controls": [
+        {
+          "label": "Immutable finance book",
+          "height": 40
+        },
+        {
+          "label": "Financial season",
+          "height": 40
+        },
+        {
+          "label": "Known date (UTC): Oct 3, 2026",
+          "height": 40
+        },
+        {
+          "label": "Effective on (inclusive): Feb 12, 2025",
+          "height": 40
+        },
+        {
+          "label": "Explicit contract team",
+          "height": 40
+        },
+        {
+          "label": "Seasonal amount kind",
+          "height": 40
+        },
+        {
+          "label": "Status scope",
+          "height": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40
+        }
+      ],
+      "filtersButton": false,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "loadButtons": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "errors": []
+    },
+    {
+      "name": "team-contracts",
+      "url": "/contracts/TOR?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&finance_book_id=256f66b1-129d-4904-be30-7b946f6e92fc&finance_financial_season=2025-26&finance_known_at=2026-10-03T16%3A53%3A28.617539Z&finance_effective_on=2025-02-12&finance_team_id=1610612761",
+      "width": 1440,
+      "title": "Contracts & Payroll",
+      "template": "profile",
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "mainTop": 281.5,
+      "filterBottom": 263,
+      "controls": [
+        {
+          "label": "Immutable finance book",
+          "height": 40
+        },
+        {
+          "label": "Financial season",
+          "height": 40
+        },
+        {
+          "label": "Known date (UTC): Oct 3, 2026",
+          "height": 40
+        },
+        {
+          "label": "Effective on (inclusive): Feb 12, 2025",
+          "height": 40
+        },
+        {
+          "label": "Explicit contract team",
+          "height": 40
+        },
+        {
+          "label": "Seasonal amount kind",
+          "height": 40
+        },
+        {
+          "label": "Status scope",
+          "height": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40
+        }
+      ],
+      "filtersButton": false,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "loadButtons": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "errors": []
+    },
+    {
+      "name": "free-agency",
+      "url": "/free-agency?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&finance_book_id=256f66b1-129d-4904-be30-7b946f6e92fc&finance_financial_season=2025-26&finance_known_at=2026-10-03T16%3A53%3A28.617539Z&finance_effective_on=2025-02-12&finance_team_id=1610612761",
+      "width": 1440,
+      "title": "Free Agency Tracker",
+      "template": "explorer",
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "mainTop": 279,
+      "filterBottom": 263,
+      "controls": [
+        {
+          "label": "Immutable finance book",
+          "height": 40
+        },
+        {
+          "label": "Financial season",
+          "height": 40
+        },
+        {
+          "label": "Known date (UTC): Oct 3, 2026",
+          "height": 40
+        },
+        {
+          "label": "Effective on (inclusive): Feb 12, 2025",
+          "height": 40
+        },
+        {
+          "label": "Explicit contract team",
+          "height": 40
+        },
+        {
+          "label": "Seasonal amount kind",
+          "height": 40
+        },
+        {
+          "label": "Status scope",
+          "height": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40
+        }
+      ],
+      "filtersButton": false,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "loadButtons": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "errors": []
+    },
+    {
+      "name": "contracts-unpinned",
+      "url": "/contracts",
+      "width": 1440,
+      "title": "Contracts & Payroll",
+      "template": "explorer",
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "mainTop": 279,
+      "filterBottom": 263,
+      "controls": [
+        {
+          "label": "Immutable finance book",
+          "height": 40
+        },
+        {
+          "label": "Financial season",
+          "height": 40
+        },
+        {
+          "label": "Known date (UTC): Select a date",
+          "height": 40
+        },
+        {
+          "label": "Effective on (inclusive): Select a date",
+          "height": 40
+        },
+        {
+          "label": "Explicit contract team",
+          "height": 40
+        },
+        {
+          "label": "Seasonal amount kind",
+          "height": 40
+        },
+        {
+          "label": "Status scope",
+          "height": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40
+        }
+      ],
+      "filtersButton": false,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "loadButtons": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "errors": []
+    },
+    {
+      "name": "teams",
+      "url": "/teams?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13",
+      "width": 768,
+      "title": "Team Stats & Cohorts",
+      "template": "explorer",
+      "documentWidth": 768,
+      "viewportWidth": 768,
+      "mainTop": 597,
+      "filterBottom": 471,
+      "controls": [
+        {
+          "label": "Filter by season",
+          "height": 40
+        },
+        {
+          "label": "Filter by competition phase",
+          "height": 40
+        },
+        {
+          "label": "Through date: Apr 12, 2026",
+          "height": 40
+        },
+        {
+          "label": "Search franchises",
+          "height": 40
+        },
+        {
+          "label": "Group teams",
+          "height": 40
+        },
+        {
+          "label": "Team metric set",
+          "height": 40
+        },
+        {
+          "label": "Table",
+          "height": 36
+        },
+        {
+          "label": "Cards",
+          "height": 36
+        },
+        {
+          "label": "Efficiency Plot",
+          "height": 36
+        },
+        {
+          "label": "Data details",
+          "height": 40
+        }
+      ],
+      "filtersButton": false,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "loadButtons": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "errors": []
+    },
+    {
+      "name": "team-overview",
+      "url": "/teams/1610612761?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13",
+      "width": 768,
+      "title": "Toronto Raptors",
+      "template": "profile",
+      "documentWidth": 768,
+      "viewportWidth": 768,
+      "mainTop": 279,
+      "filterBottom": 263,
+      "controls": [
+        {
+          "label": "Filter by season",
+          "height": 40
+        },
+        {
+          "label": "Filter by competition phase",
+          "height": 40
+        },
+        {
+          "label": "Through date: Apr 12, 2026",
+          "height": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40
+        },
+        {
+          "label": "Overview",
+          "height": 40
+        },
+        {
+          "label": "Four Factors",
+          "height": 40
+        },
+        {
+          "label": "Schedule",
+          "height": 40
+        }
+      ],
+      "filtersButton": false,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "loadButtons": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "errors": []
+    },
+    {
+      "name": "team-factors",
+      "url": "/teams/1610612761?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&tab=factors",
+      "width": 768,
+      "title": "Toronto Raptors",
+      "template": "profile",
+      "documentWidth": 768,
+      "viewportWidth": 768,
+      "mainTop": 279,
+      "filterBottom": 263,
+      "controls": [
+        {
+          "label": "Filter by season",
+          "height": 40
+        },
+        {
+          "label": "Filter by competition phase",
+          "height": 40
+        },
+        {
+          "label": "Through date: Apr 12, 2026",
+          "height": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40
+        },
+        {
+          "label": "Overview",
+          "height": 40
+        },
+        {
+          "label": "Four Factors",
+          "height": 40
+        },
+        {
+          "label": "Schedule",
+          "height": 40
+        }
+      ],
+      "filtersButton": false,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "loadButtons": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "errors": []
+    },
+    {
+      "name": "team-schedule",
+      "url": "/teams/1610612761?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&tab=schedule",
+      "width": 768,
+      "title": "Toronto Raptors",
+      "template": "profile",
+      "documentWidth": 768,
+      "viewportWidth": 768,
+      "mainTop": 279,
+      "filterBottom": 263,
+      "controls": [
+        {
+          "label": "Filter by season",
+          "height": 40
+        },
+        {
+          "label": "Filter by competition phase",
+          "height": 40
+        },
+        {
+          "label": "Through date: Apr 12, 2026",
+          "height": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40
+        },
+        {
+          "label": "Overview",
+          "height": 40
+        },
+        {
+          "label": "Four Factors",
+          "height": 40
+        },
+        {
+          "label": "Schedule",
+          "height": 40
+        }
+      ],
+      "filtersButton": false,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "loadButtons": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "errors": []
+    },
+    {
+      "name": "stat-shift",
+      "url": "/stat-line-shift?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&team_id=TOR&player_id=1630567&together=1627742",
+      "width": 768,
+      "title": "Teammate Stat Shift",
+      "template": "compare",
+      "documentWidth": 768,
+      "viewportWidth": 768,
+      "mainTop": 541.5,
+      "filterBottom": 367,
+      "controls": [
+        {
+          "label": "Season",
+          "height": 40
+        },
+        {
+          "label": "Phase",
+          "height": 40
+        },
+        {
+          "label": "Through date: Apr 12, 2026",
+          "height": 40
+        },
+        {
+          "label": "Change team",
+          "height": 40
+        },
+        {
+          "label": "From date (inclusive): Select a date",
+          "height": 40
+        },
+        {
+          "label": "Minimum possessions",
+          "height": 40
+        },
+        {
+          "label": "Minimum games",
+          "height": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40
+        }
+      ],
+      "filtersButton": false,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "loadButtons": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "errors": []
+    },
+    {
+      "name": "contracts",
+      "url": "/contracts?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&finance_book_id=256f66b1-129d-4904-be30-7b946f6e92fc&finance_financial_season=2025-26&finance_known_at=2026-10-03T16%3A53%3A28.617539Z&finance_effective_on=2025-02-12&finance_team_id=1610612761",
+      "width": 768,
+      "title": "Contracts & Payroll",
+      "template": "explorer",
+      "documentWidth": 768,
+      "viewportWidth": 768,
+      "mainTop": 383,
+      "filterBottom": 367,
+      "controls": [
+        {
+          "label": "Immutable finance book",
+          "height": 40
+        },
+        {
+          "label": "Financial season",
+          "height": 40
+        },
+        {
+          "label": "Known date (UTC): Oct 3, 2026",
+          "height": 40
+        },
+        {
+          "label": "Effective on (inclusive): Feb 12, 2025",
+          "height": 40
+        },
+        {
+          "label": "Explicit contract team",
+          "height": 40
+        },
+        {
+          "label": "Seasonal amount kind",
+          "height": 40
+        },
+        {
+          "label": "Status scope",
+          "height": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40
+        }
+      ],
+      "filtersButton": false,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "loadButtons": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "errors": []
+    },
+    {
+      "name": "team-contracts",
+      "url": "/contracts/TOR?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&finance_book_id=256f66b1-129d-4904-be30-7b946f6e92fc&finance_financial_season=2025-26&finance_known_at=2026-10-03T16%3A53%3A28.617539Z&finance_effective_on=2025-02-12&finance_team_id=1610612761",
+      "width": 768,
+      "title": "Contracts & Payroll",
+      "template": "profile",
+      "documentWidth": 768,
+      "viewportWidth": 768,
+      "mainTop": 383,
+      "filterBottom": 367,
+      "controls": [
+        {
+          "label": "Immutable finance book",
+          "height": 40
+        },
+        {
+          "label": "Financial season",
+          "height": 40
+        },
+        {
+          "label": "Known date (UTC): Oct 3, 2026",
+          "height": 40
+        },
+        {
+          "label": "Effective on (inclusive): Feb 12, 2025",
+          "height": 40
+        },
+        {
+          "label": "Explicit contract team",
+          "height": 40
+        },
+        {
+          "label": "Seasonal amount kind",
+          "height": 40
+        },
+        {
+          "label": "Status scope",
+          "height": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40
+        }
+      ],
+      "filtersButton": false,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "loadButtons": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "errors": []
+    },
+    {
+      "name": "free-agency",
+      "url": "/free-agency?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&finance_book_id=256f66b1-129d-4904-be30-7b946f6e92fc&finance_financial_season=2025-26&finance_known_at=2026-10-03T16%3A53%3A28.617539Z&finance_effective_on=2025-02-12&finance_team_id=1610612761",
+      "width": 768,
+      "title": "Free Agency Tracker",
+      "template": "explorer",
+      "documentWidth": 768,
+      "viewportWidth": 768,
+      "mainTop": 383,
+      "filterBottom": 367,
+      "controls": [
+        {
+          "label": "Immutable finance book",
+          "height": 40
+        },
+        {
+          "label": "Financial season",
+          "height": 40
+        },
+        {
+          "label": "Known date (UTC): Oct 3, 2026",
+          "height": 40
+        },
+        {
+          "label": "Effective on (inclusive): Feb 12, 2025",
+          "height": 40
+        },
+        {
+          "label": "Explicit contract team",
+          "height": 40
+        },
+        {
+          "label": "Seasonal amount kind",
+          "height": 40
+        },
+        {
+          "label": "Status scope",
+          "height": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40
+        }
+      ],
+      "filtersButton": false,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "loadButtons": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "errors": []
+    },
+    {
+      "name": "contracts-unpinned",
+      "url": "/contracts",
+      "width": 768,
+      "title": "Contracts & Payroll",
+      "template": "explorer",
+      "documentWidth": 768,
+      "viewportWidth": 768,
+      "mainTop": 383,
+      "filterBottom": 367,
+      "controls": [
+        {
+          "label": "Immutable finance book",
+          "height": 40
+        },
+        {
+          "label": "Financial season",
+          "height": 40
+        },
+        {
+          "label": "Known date (UTC): Select a date",
+          "height": 40
+        },
+        {
+          "label": "Effective on (inclusive): Select a date",
+          "height": 40
+        },
+        {
+          "label": "Explicit contract team",
+          "height": 40
+        },
+        {
+          "label": "Seasonal amount kind",
+          "height": 40
+        },
+        {
+          "label": "Status scope",
+          "height": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40
+        }
+      ],
+      "filtersButton": false,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "loadButtons": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "errors": []
+    },
+    {
+      "name": "teams",
+      "url": "/teams?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13",
+      "width": 390,
+      "title": "Team Stats & Cohorts",
+      "template": "explorer",
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "mainTop": 461,
+      "filterBottom": 295,
+      "controls": [
+        {
+          "label": "Table",
+          "height": 40
+        },
+        {
+          "label": "Cards",
+          "height": 40
+        },
+        {
+          "label": "Efficiency Plot",
+          "height": 40
+        },
+        {
+          "label": "Filters2025-26 · Regular Season · Apr 12",
+          "height": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40
+        }
+      ],
+      "filtersButton": true,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "loadButtons": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "errors": []
+    },
+    {
+      "name": "team-overview",
+      "url": "/teams/1610612761?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13",
+      "width": 390,
+      "title": "Toronto Raptors",
+      "template": "profile",
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "mainTop": 259,
+      "filterBottom": 243,
+      "controls": [
+        {
+          "label": "Filters2025-26 · Regular Season · Apr 12",
+          "height": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40
+        },
+        {
+          "label": "Overview",
+          "height": 40
+        },
+        {
+          "label": "Four Factors",
+          "height": 40
+        },
+        {
+          "label": "Schedule",
+          "height": 40
+        }
+      ],
+      "filtersButton": true,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "loadButtons": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "errors": []
+    },
+    {
+      "name": "team-factors",
+      "url": "/teams/1610612761?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&tab=factors",
+      "width": 390,
+      "title": "Toronto Raptors",
+      "template": "profile",
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "mainTop": 259,
+      "filterBottom": 243,
+      "controls": [
+        {
+          "label": "Filters2025-26 · Regular Season · Apr 12",
+          "height": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40
+        },
+        {
+          "label": "Overview",
+          "height": 40
+        },
+        {
+          "label": "Four Factors",
+          "height": 40
+        },
+        {
+          "label": "Schedule",
+          "height": 40
+        }
+      ],
+      "filtersButton": true,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "loadButtons": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "errors": []
+    },
+    {
+      "name": "team-schedule",
+      "url": "/teams/1610612761?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&tab=schedule",
+      "width": 390,
+      "title": "Toronto Raptors",
+      "template": "profile",
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "mainTop": 259,
+      "filterBottom": 243,
+      "controls": [
+        {
+          "label": "Filters2025-26 · Regular Season · Apr 12",
+          "height": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40
+        },
+        {
+          "label": "Overview",
+          "height": 40
+        },
+        {
+          "label": "Four Factors",
+          "height": 40
+        },
+        {
+          "label": "Schedule",
+          "height": 40
+        }
+      ],
+      "filtersButton": true,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "loadButtons": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "errors": []
+    },
+    {
+      "name": "stat-shift",
+      "url": "/stat-line-shift?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&team_id=TOR&player_id=1630567&together=1627742",
+      "width": 390,
+      "title": "Teammate Stat Shift",
+      "template": "compare",
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "mainTop": 634,
+      "filterBottom": 243,
+      "controls": [
+        {
+          "label": "Filters2025-26",
+          "height": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40
+        }
+      ],
+      "filtersButton": true,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "loadButtons": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "errors": []
+    },
+    {
+      "name": "contracts",
+      "url": "/contracts?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&finance_book_id=256f66b1-129d-4904-be30-7b946f6e92fc&finance_financial_season=2025-26&finance_known_at=2026-10-03T16%3A53%3A28.617539Z&finance_effective_on=2025-02-12&finance_team_id=1610612761",
+      "width": 390,
+      "title": "Contracts & Payroll",
+      "template": "explorer",
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "mainTop": 259,
+      "filterBottom": 243,
+      "controls": [
+        {
+          "label": "Filters2025-26",
+          "height": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40
+        }
+      ],
+      "filtersButton": true,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "loadButtons": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "errors": []
+    },
+    {
+      "name": "team-contracts",
+      "url": "/contracts/TOR?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&finance_book_id=256f66b1-129d-4904-be30-7b946f6e92fc&finance_financial_season=2025-26&finance_known_at=2026-10-03T16%3A53%3A28.617539Z&finance_effective_on=2025-02-12&finance_team_id=1610612761",
+      "width": 390,
+      "title": "Contracts & Payroll",
+      "template": "profile",
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "mainTop": 363,
+      "filterBottom": 243,
+      "controls": [
+        {
+          "label": "Filters2025-26",
+          "height": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40
+        }
+      ],
+      "filtersButton": true,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "loadButtons": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "errors": []
+    },
+    {
+      "name": "free-agency",
+      "url": "/free-agency?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&finance_book_id=256f66b1-129d-4904-be30-7b946f6e92fc&finance_financial_season=2025-26&finance_known_at=2026-10-03T16%3A53%3A28.617539Z&finance_effective_on=2025-02-12&finance_team_id=1610612761",
+      "width": 390,
+      "title": "Free Agency Tracker",
+      "template": "explorer",
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "mainTop": 259,
+      "filterBottom": 243,
+      "controls": [
+        {
+          "label": "Filters2025-26",
+          "height": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40
+        }
+      ],
+      "filtersButton": true,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "loadButtons": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "errors": []
+    },
+    {
+      "name": "contracts-unpinned",
+      "url": "/contracts",
+      "width": 390,
+      "title": "Contracts & Payroll",
+      "template": "explorer",
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "mainTop": 259,
+      "filterBottom": 243,
+      "controls": [
+        {
+          "label": "Filters2025-26",
+          "height": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40
+        }
+      ],
+      "filtersButton": true,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "loadButtons": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "errors": []
+    }
+  ]
+}
