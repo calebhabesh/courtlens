@@ -57,7 +57,7 @@ recorded owner approval.
 
 | Gate | After | Status | Notes |
 | --- | --- | --- | --- |
-| 1 | FO03 | **awaiting owner review** | Header, search, drawer, filter bar, primitives. Review list: [FO03 evidence](evidence/fo03/README.md#owner-review-gate-1) |
+| 1 | FO03 | **approved 2026-10-09** (owner: "Go ahead with the next block. I approve.") | Header, search, drawer, filter bar, primitives. Review list: [FO03 evidence](evidence/fo03/README.md#owner-review-gate-1) |
 | 2 | FO05 | pending | Showcase, Roster Shapes, search |
 
 ## Block status
