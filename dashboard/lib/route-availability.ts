@@ -7,10 +7,10 @@ const requirements: Record<string, string> = {
   "/stats": "core_stats", "/players": "core_stats", "/teams": "core_stats",
   "/compare": "core_stats", "/team-compare": "core_stats", "/last-games": "core_stats",
   "/showcase": "core_stats", "/research/trends": "core_stats",
-  "/research/distributions": "core_stats", "/research/similarity": "core_stats",
+  "/research/distributions": "core_stats", "/similar-players": "core_stats",
   "/roster-shapes": "core_stats", "/playoffs": "core_stats",
   "/wowy": "on_off", "/stat-line-shift": "on_off",
-  "/shot-profile-twin": "shots", "/shot-aftermath": "shots", "/matchups": "matchups",
+  "/similar-players/shot-profile": "shots", "/research/shooting/aftermath": "shots", "/matchups": "matchups",
   "/wingspan": "measurements",
   "/research/defensive-matchups": "defensive_tracking", "/research/epv": "tracking",
 };

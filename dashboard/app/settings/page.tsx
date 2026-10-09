@@ -49,7 +49,7 @@ export default async function SettingsPage() {
         </div>
       )}
 
-      <div className="page-actions"><Link href="/data-status">Source lineage, freshness and jobs</Link><Link href="/methodology">Definitions</Link><Link href="/investigations">Saved evidence</Link><Link href="/patch-notes">Dated changes</Link></div>
+      <div className="page-actions"><Link href="/data-status">Source lineage, freshness and jobs</Link><Link href="/methodology">Definitions</Link><Link href="/investigations">Saved evidence</Link><Link href="/whats-new">Dated changes</Link></div>
 
       <AdvancedModeSetting />
 

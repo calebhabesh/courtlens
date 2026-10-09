@@ -10,6 +10,7 @@ const titles: Record<string, string> = {
   "courtload-six-factor-v1": "CourtLens six-factor research",
   "courtload-adjusted-shooting-v1": "CourtLens playtype-adjusted shooting"
 };
+// Rendered as a tab of a merged page (h2 under the page title) or nested in a section (h3).
 export function ResearchResultsView({ experiment = "courtload-expected-shot-retrospective-v2", embedded = false }: { experiment?: string; embedded?: boolean }) {
   const [registry, setRegistry] = useState<Experiment[] | null>(null);
   const [runs, setRuns] = useState<RunSummary[]>([]);
@@ -38,10 +39,10 @@ export function ResearchResultsView({ experiment = "courtload-expected-shot-retr
   const selection = result?.evaluation?.selection;
   const fmt = (v: number | null | undefined) => v == null ? "—" : v.toFixed(9);
   return <div className="advanced-research">
-    {embedded ? <h3>{titles[experiment] ?? experiment}</h3> : <h1>{titles[experiment] ?? experiment}</h1>}
+    {embedded ? <h3>{titles[experiment] ?? experiment}</h3> : <h2>{titles[experiment] ?? experiment}</h2>}
     <p>Registered offline research. Reports retain their own fit and evaluation horizons and do not replace historical profiles or the active points policy.</p>
     <nav className="research-links" aria-label="Research experiments">
-      <Link href="/research/expected-shots">Expected shots</Link><Link href="/research/rapm">RAPM</Link><Link href="/six-factor-rapm">Six-factor</Link><Link href="/research/adjusted-shooting">Adjusted shooting</Link>
+      <Link href="/research/shooting">Expected shots</Link><Link href="/research/rapm">RAPM</Link><Link href="/research/rapm/six-factor">Six-factor</Link><Link href="/research/shooting/adjusted">Adjusted shooting</Link>
     </nav>
     {error ? <div role="alert" className="notice">Report unavailable: {error} <button className="button" onClick={() => { setError(null); setResult(null); setRegistry(null); setRetry(v => v+1); }}>Retry reads</button></div> : !registry && <p role="status">Loading registered experiments…</p>}
     {!error && registry && !entry && <p className="notice">This experiment has no registered entry. No model output is available.</p>}

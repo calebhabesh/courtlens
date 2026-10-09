@@ -17,6 +17,7 @@ import { getSharedCatalog, routeAvailability } from "@/lib/route-availability";
 import type { WorkbenchCatalog } from "@/lib/types";
 import { buildPreservedContextUrl } from "@/lib/query-url";
 import { MORE_LINKS, NAV_MENUS, STATS_LINK, activeNavSection, analyticalNavItems } from "@/lib/nav-model";
+import { mergedPagePath } from "@/lib/route-consolidation";
 
 export function Header() {
   const pathname = usePathname();
@@ -191,7 +192,7 @@ export function Header() {
   const activeSection = activeNavSection(pathname);
   const isCurrent = (href: string) => {
     const [path, query] = href.split("?");
-    if (path !== pathname) return false;
+    if (path !== mergedPagePath(pathname)) return false;
     if (!query) return !(path === "/live" && searchParams.get("live_mode") === "history");
     return Array.from(new URLSearchParams(query).entries()).every(([key, value]) => searchParams.get(key) === value);
   };

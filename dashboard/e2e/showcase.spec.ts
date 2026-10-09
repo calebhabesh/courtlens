@@ -62,7 +62,8 @@ test.describe("FO04 Player Showcase", () => {
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     for (const name of ["Previous player", "Next player", "Add to favorites"]) {
       const box = await page.getByRole("button", { name, exact: true }).boundingBox();
-      expect(box!.height).toBeGreaterThanOrEqual(40);
+      // Sub-pixel tolerance: a settling scale transform can report 39.9999px for a 40px target.
+      expect(box!.height).toBeGreaterThanOrEqual(39.99);
     }
   });
 });
