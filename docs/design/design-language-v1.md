@@ -286,7 +286,9 @@ the main result except at most one one-line `GatedNote`.
   line (it truncates with an ellipsis rather than wrap), and the page's main actions right-aligned
   on the title row (they wrap under the title only below 768px). Disclaimers never go here.
 - **Filter bar (D6):** one sticky bar directly under the header. Slots, left to right:
-  - `scope`: Season · Phase · Through, plus Window only where results depend on it;
+  - `scope`: Season · Phase · Through, plus Window only where results depend on it. The Live board
+    is the one exception: its scope is the slate date (Live ignores season and phase; Finals adds
+    Season · Phase and takes its cutoff from the date, with any explicit cutoff in Data details);
   - `filters`: page-specific filters (chips or segmented controls) after a hairline;
   - `modes`: controls that change **what the page shows** rather than which data is in scope
     (Showcase Focus, Roster Shapes Observed/Projected);
@@ -353,6 +355,28 @@ the main result except at most one one-line `GatedNote`.
 - **Target gauges:** a bar against a fixed target (240 team minutes): amber (`--color-accent`)
   under, red (`--color-negative`) over, green (`--color-positive`) on target, with the gap and the
   count of blanks in words.
+
+### Section tabs and the Live board (FO07, FO08)
+
+- **Section tabs (`RouteTabs`):** a merged page is one title with link tabs under the header, each
+  tab its own URL (the first at the page's path, the rest at sub-paths) so redirects, sharing and
+  views that rewrite their own URL keep the tab. Tabs carry the scope (and the player where both
+  tabs use one), are 40px tall and read as secondary when their source is unavailable. Pages whose
+  sections share a path and differ by query (Live · Finals) pass the selected tab explicitly.
+- **Live board (D19):** title "Live" with Live · Finals · Playoffs tabs; the Live menu lists the
+  same three. Live and Finals keep the slate date between them.
+- **Date strip:** 15 days centred on the slate (Today labelled), each with a weekday, a compact date
+  and a game-count badge from the release's retained schedule (Live) or admitted finals (Finals).
+  Zero-count days are dimmed but stay clickable so their empty state and jumps are reachable; an
+  unknown count shows no badge. Chevrons move the window by a week.
+- **Empty slate:** one `GatedNote` line ("No games on Oct 8.") with jumps to the nearest earlier and
+  later dates that have games; the contract wording ("No games in the observed source slate", the
+  admitted-finals coverage note) sits behind Why?. A slate that has not been observed is "Awaiting
+  a cached slate.", never "0 games".
+- **Game cards:** away team first, each row a logo (only through a verified canonical ID; unmapped
+  source teams get initials, never a guessed logo), name and a right-aligned tabular score (em dash
+  when missing). The status and an Eastern tipoff time sit on the meta row; an unknown tipoff is
+  omitted visually and stated in the card's accessible name.
 
 ### Breakpoints (D25)
 

@@ -30,7 +30,6 @@ const baseSyntaxRules = [
 // Ratchets: files that still use the old pattern until their overhaul block rebuilds them. A block
 // that migrates a file removes it here; nothing may be added.
 const PENDING_NATIVE_DATE = [
-  "components/live-workspace.tsx", "components/playoffs-bracket-view.tsx", "app/schedule/page.tsx", // FO08
   "components/finance-contract-drawer.tsx", "components/finance-workspace.tsx", // FO10
   "components/shared-floor-view.tsx", // FO11
   "components/shooting-view.tsx", "components/trends-investigation-view.tsx", "app/research/rapm/page.tsx", // FO12
@@ -38,7 +37,6 @@ const PENDING_NATIVE_DATE = [
 ];
 // Dynamic route folders are escaped because these are glob patterns.
 const PENDING_RAW_TITLE = [
-  "components/live-workspace.tsx", "components/playoffs-series-view.tsx", "app/playoffs/page.tsx", "app/schedule/page.tsx", // FO08
   "app/players/page.tsx", "app/players/\\[id\\]/page.tsx", "components/workbench-player-profile.tsx", "app/last-games/page.tsx",
   "components/recent-games-view.tsx", "components/ranking-boards-view.tsx", "components/tier-list-view.tsx", // FO09
   "app/teams/page.tsx", "app/teams/\\[id\\]/page.tsx", "components/finance-workspace.tsx", // FO10

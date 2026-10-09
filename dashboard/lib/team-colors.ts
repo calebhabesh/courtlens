@@ -61,3 +61,8 @@ export function teamBrandColor(team: string | null | undefined): string | null {
   const record = catalog.teams.find((entry) => entry.team_id === team || entry.tricode === team);
   return record ? BRAND[record.tricode] ?? null : null;
 }
+
+/** True when an exact catalog ID or code has logo artwork, so callers can skip the text fallback. */
+export function hasTeamLogo(team: string): boolean {
+  return catalog.teams.some((entry) => entry.team_id === team || entry.tricode === team);
+}

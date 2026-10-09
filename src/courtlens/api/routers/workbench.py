@@ -66,6 +66,7 @@ from courtlens.api.workbench_schemas import (
     ResearchQuerySchema,
     SavedInvestigationResponse,
     SaveInvestigationRequest,
+    ScheduleDatesResponse,
     SplitProfileRequest,
     SplitProfileResponse,
     SplitType,
@@ -153,6 +154,7 @@ from courtlens.services.personal_state import (
     update_preferences_service,
     update_workspace_state,
 )
+from courtlens.services.schedule_dates import schedule_dates
 from courtlens.services.stats_catalog import stats_catalog_scope
 from courtlens.services.stats_engine import (
     decode_cursor,
@@ -780,6 +782,26 @@ def get_team_schedule_endpoint(
     )
     result = get_team_schedule(session, context, team_id=id)
     return TeamScheduleResponse(**result)
+
+
+@router.get("/schedule/dates", response_model=ScheduleDatesResponse)
+def get_schedule_dates_endpoint(
+    start: date,
+    end: date,
+    response: Response,
+    release_id: str | None = Query(None, alias="releaseId"),
+    phase: str | None = Query(None),
+    before_date: date | None = Query(None, alias="beforeDate"),
+    focus: date | None = Query(None),
+    session: Session = Depends(get_db),
+) -> ScheduleDatesResponse:
+    """Per-date scheduled and admitted final game counts for a release (Live date strip)."""
+    context = resolve_workbench_context(session, release_id=release_id)
+    response.headers["Cache-Control"] = "no-store"
+    result = schedule_dates(
+        session, context, start, end, phase=phase, before_date=before_date, focus=focus
+    )
+    return ScheduleDatesResponse(**result)
 
 
 @router.get("/teams/{id}/four-factors", response_model=TeamFourFactorsResponse)

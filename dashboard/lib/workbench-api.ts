@@ -31,6 +31,7 @@ import type {
   PlayerResearchResponse,
   PlayoffBracketResponse,
   PlayoffSeriesDetailResponse,
+  ScheduleDatesResponse,
   PointsForecastEvaluation,
   RankOperationRequest,
   RankOperationResponse,
@@ -829,4 +830,20 @@ export async function runShooting(
     throw new WorkbenchApiError(response.status, typeof body?.detail === "string" ? body.detail : JSON.stringify(body?.detail ?? body ?? "Shooting request failed"));
   }
   return response.json();
+}
+
+export async function getScheduleDates(params: {
+  start: string;
+  end: string;
+  releaseId?: string;
+  phase?: string;
+  beforeDate?: string;
+  focus?: string;
+}): Promise<ScheduleDatesResponse> {
+  const sp = new URLSearchParams({ start: params.start, end: params.end });
+  if (params.releaseId) sp.set("releaseId", params.releaseId);
+  if (params.phase) sp.set("phase", params.phase);
+  if (params.beforeDate) sp.set("beforeDate", params.beforeDate);
+  if (params.focus) sp.set("focus", params.focus);
+  return wbFetch<ScheduleDatesResponse>(`/api/workbench/schedule/dates?${sp}`);
 }

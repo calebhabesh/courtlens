@@ -18,6 +18,8 @@ export interface RouteTabsProps {
   "aria-label": string;
   /** Query keys carried to every tab besides the shared context (season, phase, through date, release). */
   carry?: readonly string[];
+  /** The selected tab's href, when tabs share a path and differ by query (Live · Finals). */
+  active?: string;
   className?: string;
 }
 
@@ -36,11 +38,11 @@ export function activeRouteTab(tabs: readonly RouteTabItem[], pathname: string):
  * source is unavailable in the selected scope stay reachable but read as secondary (D4), with the
  * reason as a tooltip, like the header menus.
  */
-export function RouteTabs({ tabs, "aria-label": ariaLabel, carry = [], className = "" }: RouteTabsProps) {
+export function RouteTabs({ tabs, "aria-label": ariaLabel, carry = [], active: activeHref, className = "" }: RouteTabsProps) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const indicatorId = useId();
-  const active = activeRouteTab(tabs, pathname);
+  const active = activeHref ? tabs.find(tab => tab.href === activeHref) : activeRouteTab(tabs, pathname);
 
   const releaseId = searchParams.get("releaseId") ?? searchParams.get("release_id") ?? undefined;
   const [catalog, setCatalog] = useState<WorkbenchCatalog | null>(null);

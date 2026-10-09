@@ -1,10 +1,19 @@
 import type { Metadata } from "next";
-import { DataBadge } from "@/components/data-badge";
+import { Suspense } from "react";
 import { ScheduleGrid } from "@/components/schedule-grid";
+import { ScheduleWeekBar } from "@/components/schedule-week-bar";
+import { PageShell } from "@/components/ui/page-shell";
+import { PageHeader } from "@/components/ui/panel";
 import { getDataStatus, getSchedule, mondayFor } from "@/lib/api";
+import { formatDate } from "@/lib/format-date";
 
-export const metadata: Metadata = { title: "Team schedule explorer" };
+export const metadata: Metadata = { title: "Schedule" };
 export const dynamic = "force-dynamic";
+
+const CLASSIFICATION: Record<string, string> = {
+  operational: "Operational source data",
+  fixture: "Fixture data",
+};
 
 export default async function SchedulePage({
   searchParams
@@ -19,28 +28,22 @@ export default async function SchedulePage({
   const totalGames = schedule.days.reduce((sum, day) => sum + day.game_count, 0);
 
   return (
-    <section className="page shell">
-      <div className="page-heading">
-        <div>
-          <p className="kicker">Public explorer</p>
-          <h1>Team schedule</h1>
-          <p>Scan loaded game dates and light slates without creating a private roster.</p>
-        </div>
-        <DataBadge status={status} />
-      </div>
-      <form className="toolbar" method="get">
-        <label>
-          Scoring week starts
-          <input defaultValue={start} name="start" type="date" />
-        </label>
-        <button className="button button-dark" type="submit">Load week</button>
-        <span className="toolbar-note">{totalGames} games · {schedule.timezone}</span>
-      </form>
+    <PageShell template="explorer">
+      <PageHeader title="Schedule" subtitle={`Games and light slates for the week of ${formatDate(start)}.`} />
+      <Suspense fallback={null}>
+        <ScheduleWeekBar
+          start={start}
+          games={totalGames}
+          rows={[
+            { label: "Week", value: `${formatDate(schedule.week_start)} – ${formatDate(schedule.week_end)}` },
+            { label: "Time zone", value: schedule.timezone, mono: true },
+            { label: "Light slate", value: `${schedule.light_slate_threshold} games or fewer` },
+            { label: "Data", value: CLASSIFICATION[status.classification] ?? "Data service unavailable" },
+            { label: "Excluded", value: "Postponed, cancelled and abandoned games are not usable schedule opportunities." },
+          ]}
+        />
+      </Suspense>
       <ScheduleGrid schedule={schedule} />
-      <p className="method-note">
-        A light slate has no more than {schedule.light_slate_threshold} games. Postponed, cancelled,
-        and abandoned games are not treated as usable schedule opportunities.
-      </p>
-    </section>
+    </PageShell>
   );
 }
