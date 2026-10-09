@@ -1,0 +1,7253 @@
+{
+  "summary": {
+    "total": 388,
+    "caveat": 44,
+    "label": 344,
+    "contract_required": 24
+  },
+  "entries": [
+    {
+      "text": "AI temporarily unavailable",
+      "class": "caveat",
+      "required_by": [
+        {
+          "kind": "contract",
+          "at": "docs/design/polish-assistant-contract.md:102"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/lib/conversation.ts:10"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "An idle job queue does not establish worker liveness.",
+      "class": "caveat",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/route-polish.spec.ts:35"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/settings/page.tsx:68"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Basketball exclusive cutoff",
+      "class": "caveat",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/finance.spec.ts:78"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/finance-contract-drawer.tsx:39"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Chat history is retained separately",
+      "class": "caveat",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:213"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/hybrid-answer.tsx:66"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Configuration alone does not establish provider availability or answer accuracy",
+      "class": "caveat",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/route-polish.spec.ts:37"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/assistant-status-card.tsx:14"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Confirm deletion",
+      "class": "caveat",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:109"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:114"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:236"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:434"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/assistant-history-settings.tsx:25",
+        "dashboard/components/threaded-assistant.tsx:342"
+      ],
+      "rendered_count": 2
+    },
+    {
+      "text": "Cost unknown",
+      "class": "caveat",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:551"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/agent-answer.tsx:124"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "could not be verified",
+      "class": "caveat",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/route-polish.spec.ts:67"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/lib/route-availability.ts:21"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "does not establish unsigned status",
+      "class": "caveat",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/finance.spec.ts:40"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/finance-workspace.tsx:79"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Estimate gap",
+      "class": "caveat",
+      "required_by": [
+        {
+          "kind": "contract",
+          "at": "docs/design/product-contract.md:50"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/compare/page.tsx:240"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Estimate unavailable at this cutoff",
+      "class": "caveat",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/comparison-evaluation.spec.ts:25"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/compare/page.tsx:261"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "History stays in this local installation",
+      "class": "caveat",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:113"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/lib/assistant-history.ts:9"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Include a minutes distribution with the same window",
+      "class": "caveat",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/conversation.spec.ts:26"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/ask-courtlens.tsx:110"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Investigate historical scoring variation",
+      "class": "caveat",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/saved-operations.spec.ts:53"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/learning-workshop.tsx:11"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Manual research needs no provider key",
+      "class": "caveat",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/workbench.spec.ts:158"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/assistant-status-card.tsx:14"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "No calibration fit",
+      "class": "caveat",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/advanced-research.spec.ts:22"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/research-results-view.tsx:54"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "No challenger promoted",
+      "class": "caveat",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/comparison-evaluation.spec.ts:34"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/evaluation/page.tsx:46"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "No games in the observed source slate",
+      "class": "caveat",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/live.spec.ts:66"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/live-workspace.tsx:116"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "No history before this cutoff",
+      "class": "caveat",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/player-profile.spec.ts:16"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/players/[id]/page.tsx:357"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "No matches for",
+      "class": "caveat",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/entity-selection.spec.ts:53"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/entity-selection.spec.ts:114"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/lookup-input.tsx:148",
+        "dashboard/components/ui/command-palette.tsx:581"
+      ],
+      "rendered_count": 2
+    },
+    {
+      "text": "No reconstructed target",
+      "class": "caveat",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/comparison-evaluation.spec.ts:72"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/compare/page.tsx:207"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "No represented contracts match",
+      "class": "caveat",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/finance.spec.ts:38"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/finance-workspace.tsx:79"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "No results",
+      "class": "caveat",
+      "required_by": [
+        {
+          "kind": "unit",
+          "at": "dashboard/components/ui/primitives.test.tsx:503"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/ui/command-palette.tsx:160"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "No shrinkage or prior is applied",
+      "class": "caveat",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/shared-floor.spec.ts:127"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/shared-floor-view.tsx:116"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "not declared",
+      "class": "caveat",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/route-polish.spec.ts:60"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/lib/route-availability.ts:23"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Out-of-Time Performance on Holdout Block F",
+      "class": "caveat",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/workbench.spec.ts:115"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/forecasts/page.tsx:264"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Player boxes unknown",
+      "class": "caveat",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/live.spec.ts:44"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/live-workspace.tsx:20"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Prior Appearance Game Log",
+      "class": "caveat",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/workbench.spec.ts:61"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/workbench-player-profile.tsx:570"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Real analytics are unavailable",
+      "class": "caveat",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/shared-floor.spec.ts:39"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/shared-floor.spec.ts:65"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/shooting.spec.ts:17"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/shared-floor-view.tsx:131",
+        "dashboard/components/shooting-view.tsx:135"
+      ],
+      "rendered_count": 2
+    },
+    {
+      "text": "Replay date not supported",
+      "class": "caveat",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/player-profile.spec.ts:22"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/players/[id]/page.tsx:368"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Retain my selected question as durable metadata",
+      "class": "caveat",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/saved-operations.spec.ts:31"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/saved-operations.spec.ts:38"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/save-operation.tsx:36"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Search is unavailable.",
+      "class": "caveat",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/entity-selection.spec.ts:52"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/lookup-input.tsx:108",
+        "dashboard/components/player-search.tsx:29"
+      ],
+      "rendered_count": 2
+    },
+    {
+      "text": "Source video unavailable: no admitted exact",
+      "class": "caveat",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/shooting.spec.ts:43"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/shooting-view.tsx:149"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "The question was not retained.",
+      "class": "caveat",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/saved-operations.spec.ts:35"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/saved-operation-detail.tsx:58"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "The selected observations are shown below with their sample and scope.",
+      "class": "caveat",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:401"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/lib/assistant-v2.generated.ts:167",
+        "dashboard/lib/assistant-v3.generated.ts:223"
+      ],
+      "rendered_count": 2
+    },
+    {
+      "text": "This answer contains unverified numbers.",
+      "class": "caveat",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:296"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:299"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/agent-answer.tsx:112"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "unavailable",
+      "class": "caveat",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/route-polish.spec.ts:24"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/api/assistant-v2/[[...path]]/route.ts:49",
+        "dashboard/app/api/finance-import/route.ts:22",
+        "dashboard/app/api/jobs/[id]/route.ts:6",
+        "dashboard/app/api/live/[[...path]]/route.ts:34",
+        "dashboard/app/api/workspace/[[...path]]/route.ts:37",
+        "dashboard/app/compare/page.tsx:35",
+        "dashboard/app/compare/page.tsx:99",
+        "dashboard/app/compare/page.tsx:176"
+      ],
+      "rendered_count": 124
+    },
+    {
+      "text": "Unknown",
+      "class": "caveat",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/conversation.spec.ts:27"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/finance.spec.ts:26"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/finance.spec.ts:47"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/saved-operations.spec.ts:44"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:208"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:211"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:526"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/api/assistant-v2/[[...path]]/route.ts:11",
+        "dashboard/app/api/live/[[...path]]/route.ts:11",
+        "dashboard/app/api/workspace/[[...path]]/route.ts:13",
+        "dashboard/app/methodology/page.tsx:65",
+        "dashboard/components/finance-contract-drawer.tsx:7",
+        "dashboard/components/finance-contract-drawer.tsx:8",
+        "dashboard/components/finance-contract-drawer.tsx:12",
+        "dashboard/components/finance-contract-drawer.tsx:32"
+      ],
+      "rendered_count": 36
+    },
+    {
+      "text": "unknown",
+      "class": "caveat",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/finance.spec.ts:47"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/api/jobs/route.ts:25",
+        "dashboard/app/api/jobs/route.ts:47",
+        "dashboard/app/design/page.tsx:553",
+        "dashboard/app/evaluation/page.tsx:41",
+        "dashboard/app/evaluation/page.tsx:42",
+        "dashboard/app/forecasts/page.tsx:128",
+        "dashboard/app/methodology/page.tsx:46",
+        "dashboard/app/methodology/page.tsx:62"
+      ],
+      "rendered_count": 189
+    },
+    {
+      "text": "Unknown pick",
+      "class": "caveat",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/advanced-research.spec.ts:72"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/wingspan-explorer-view.tsx:40"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Use proposed context in a new conversation",
+      "class": "caveat",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/conversation.spec.ts:63"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/ask-courtlens.tsx:114"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "What was Victor Wembanyama's RAPM last season",
+      "class": "caveat",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:508"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/lib/assistant-chat.ts:9"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Which players have produced similarly to Scottie Barnes over their last ten appearances?",
+      "class": "caveat",
+      "required_by": [
+        {
+          "kind": "contract",
+          "at": "docs/design/replica-search-contract.md:138"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/ask-courtlens.tsx:16"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Whose minutes increased recently without scoring increasing?",
+      "class": "caveat",
+      "required_by": [
+        {
+          "kind": "contract",
+          "at": "docs/design/replica-search-contract.md:137"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/ask-courtlens.tsx:16"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "1630567",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/conversation.spec.ts:28"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/ask-courtlens.tsx:18",
+        "dashboard/components/case-studies-view.tsx:151",
+        "dashboard/components/case-studies-view.tsx:152",
+        "dashboard/components/case-studies-view.tsx:153",
+        "dashboard/components/case-studies-view.tsx:156",
+        "dashboard/components/case-studies-view.tsx:157",
+        "dashboard/components/case-studies-view.tsx:158",
+        "dashboard/components/distributions-investigation-view.tsx:29"
+      ],
+      "rendered_count": 11
+    },
+    {
+      "text": "2024-04-14",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/advanced-research.spec.ts:24"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/forecasts/page.tsx:351"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "2024-25",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:122"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:213"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:257"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/compare/page.tsx:89",
+        "dashboard/app/forecasts/page.tsx:358",
+        "dashboard/app/last-games/page.tsx:36",
+        "dashboard/app/players/[id]/page.tsx:66",
+        "dashboard/app/players/[id]/page.tsx:68",
+        "dashboard/app/research/rapm/page.tsx:22",
+        "dashboard/app/showcase/page.tsx:35",
+        "dashboard/components/playoffs-bracket-view.tsx:117"
+      ],
+      "rendered_count": 13
+    },
+    {
+      "text": "2025-26",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:124"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:158"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/design/page.tsx:330",
+        "dashboard/app/forecasts/page.tsx:43",
+        "dashboard/app/forecasts/page.tsx:264",
+        "dashboard/app/forecasts/page.tsx:364",
+        "dashboard/app/players/[id]/page.tsx:66",
+        "dashboard/app/research/ask/page.tsx:11",
+        "dashboard/app/research/rapm/page.tsx:13",
+        "dashboard/app/research/rapm/page.tsx:22"
+      ],
+      "rendered_count": 14
+    },
+    {
+      "text": "2P category probability",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/advanced-research.spec.ts:51"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/lib/advanced-research.ts:42"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "50.0%",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/shooting.spec.ts:40"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/case-studies-view.tsx:128"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "A player",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "unit",
+          "at": "dashboard/lib/assistant-chat.test.ts:63"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/tierlist/page.tsx:6",
+        "dashboard/components/ranking-boards-view.tsx:515",
+        "dashboard/components/stats-workspace.tsx:87",
+        "dashboard/components/tier-list-view.tsx:65",
+        "dashboard/components/tier-list-view.tsx:466"
+      ],
+      "rendered_count": 5
+    },
+    {
+      "text": "Acquire more portraits",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/dl08-evidence.spec.ts:156"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/workbench-portrait-settings.tsx:69"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Action",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "unit",
+          "at": "dashboard/components/ui/primitives.test.tsx:90"
+        },
+        {
+          "kind": "unit",
+          "at": "dashboard/components/ui/primitives.test.tsx:277"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/design/page.tsx:85",
+        "dashboard/app/design/page.tsx:493",
+        "dashboard/app/teams/[id]/page.tsx:468",
+        "dashboard/app/teams/[id]/page.tsx:530",
+        "dashboard/components/distributions-investigation-view.tsx:1037",
+        "dashboard/components/manage-views-modal.tsx:768",
+        "dashboard/components/multi-player-lines-view.tsx:415",
+        "dashboard/components/player-compare-view.tsx:412"
+      ],
+      "rendered_count": 49
+    },
+    {
+      "text": "Active Forecast Policy",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/workbench.spec.ts:105"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/forecasts/page.tsx:135"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Actual slate:",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/live.spec.ts:23"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/live-workspace.tsx:115",
+        "dashboard/components/live-workspace.tsx:117"
+      ],
+      "rendered_count": 2
+    },
+    {
+      "text": "add a provider key",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:549"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/agent-answer.tsx:109"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Add candidate",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/entity-selection.spec.ts:137"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/planner-client.tsx:207"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Aftermath branches",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/shooting.spec.ts:67"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/shooting-view.tsx:153"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "AI disabled · manual research available",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/conversation.spec.ts:25"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/conversation.spec.ts:43"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/saved-operations.spec.ts:30"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/saved-operations.spec.ts:38"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/ask-courtlens.tsx:99"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "AI quota reached",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/conversation.spec.ts:38"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/lib/conversation.ts:10"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Allocation basis",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/advanced-research.spec.ts:65"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/roster-allocation-view.tsx:38"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "America/New_York",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "contract",
+          "at": "docs/design/data-serving-contracts.md:61"
+        },
+        {
+          "kind": "contract",
+          "at": "docs/design/workbench-data-contracts.md:13"
+        },
+        {
+          "kind": "contract",
+          "at": "docs/design/workbench-interface-contract.md:54"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/context-bar.tsx:183",
+        "dashboard/lib/assistant-v2.generated.ts:147",
+        "dashboard/lib/assistant-v3.generated.ts:203",
+        "dashboard/lib/live.ts:14"
+      ],
+      "rendered_count": 4
+    },
+    {
+      "text": "AnalysisPlan",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "contract",
+          "at": "docs/design/replica-search-contract.md:59"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/lib/assistant-v2.generated.ts:4",
+        "dashboard/lib/assistant-v2.generated.ts:119",
+        "dashboard/lib/assistant-v2.generated.ts:133",
+        "dashboard/lib/assistant-v3.generated.ts:72",
+        "dashboard/lib/assistant-v3.generated.ts:175",
+        "dashboard/lib/assistant-v3.generated.ts:189"
+      ],
+      "rendered_count": 6
+    },
+    {
+      "text": "Ask CourtLens",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/conversation.spec.ts:33"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/conversation.spec.ts:35"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/conversation.spec.ts:38"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/conversation.spec.ts:59"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/conversation.spec.ts:63"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/workbench.spec.ts:147"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/research/ask/page.tsx:19",
+        "dashboard/app/research/ask/page.tsx:28",
+        "dashboard/components/ask-courtlens.tsx:98",
+        "dashboard/components/ask-courtlens.tsx:111",
+        "dashboard/components/learning-workshop.tsx:11",
+        "dashboard/components/ui/command-palette.tsx:279",
+        "dashboard/components/ui/header.tsx:230"
+      ],
+      "rendered_count": 7
+    },
+    {
+      "text": "AskLoading",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "unit",
+          "at": "dashboard/components/ui/loading-skeletons.test.tsx:37"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/research/ask/loading.tsx:3"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Assign to tier",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/entity-selection.spec.ts:107"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/tier-list-view.tsx:540"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Assignment matrix",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/shooting.spec.ts:54"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/shooting.spec.ts:56"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/shooting-view.tsx:152"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Assistant",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/workbench.spec.ts:156"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/api/assistant-v2/[[...path]]/route.ts:31",
+        "dashboard/app/api/assistant-v2/[[...path]]/route.ts:49",
+        "dashboard/app/layout.tsx:6",
+        "dashboard/app/layout.tsx:56",
+        "dashboard/app/layout.tsx:67",
+        "dashboard/app/settings/page.tsx:6",
+        "dashboard/app/settings/page.tsx:7",
+        "dashboard/app/settings/page.tsx:8"
+      ],
+      "rendered_count": 83
+    },
+    {
+      "text": "Assistant configuration",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/route-polish.spec.ts:36"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:559"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/workbench.spec.ts:155"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/assistant-status-card.tsx:6",
+        "dashboard/components/assistant-status-card.tsx:15"
+      ],
+      "rendered_count": 2
+    },
+    {
+      "text": "Assistant history and privacy",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:112"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:430"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/assistant-history-settings.tsx:22"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "AssistantAnswer",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "contract",
+          "at": "docs/design/workbench-data-contracts.md:169"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/lib/types.ts:1428",
+        "dashboard/lib/workbench-api.ts:6",
+        "dashboard/lib/workbench-api.ts:445"
+      ],
+      "rendered_count": 3
+    },
+    {
+      "text": "Attached page context",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/assistant-panel-real.spec.ts:19"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:453"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:462"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:477"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/threaded-assistant.tsx:344"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Availability",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/route-polish.spec.ts:7"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/route-polish.spec.ts:14"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/route-polish.spec.ts:59"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/route-polish.spec.ts:66"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/forecasts/page.tsx:487",
+        "dashboard/components/ui/command-palette.tsx:15",
+        "dashboard/components/ui/command-palette.tsx:212",
+        "dashboard/components/ui/header.tsx:16",
+        "dashboard/components/ui/header.tsx:42",
+        "dashboard/components/ui/header.tsx:70",
+        "dashboard/components/ui/header.tsx:148",
+        "dashboard/components/ui/header.tsx:361"
+      ],
+      "rendered_count": 18
+    },
+    {
+      "text": "Awaiting 2026-27 Tipoff",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/workbench.spec.ts:125"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/forecasts/page.tsx:449"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Awaiting a cached slate",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/live.spec.ts:63"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/live-workspace.tsx:116"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "B26 preregistered experiment",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/im06-real.spec.ts:45"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/research/rapm/page.tsx:40"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Bam Adebayo",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/dl05-evidence.spec.ts:62"
+        },
+        {
+          "kind": "unit",
+          "at": "dashboard/lib/investigation-tools.test.ts:54"
+        },
+        {
+          "kind": "unit",
+          "at": "dashboard/lib/investigation-tools.test.ts:111"
+        },
+        {
+          "kind": "unit",
+          "at": "dashboard/lib/investigation-tools.test.ts:192"
+        },
+        {
+          "kind": "unit",
+          "at": "dashboard/lib/investigation-tools.test.ts:275"
+        },
+        {
+          "kind": "unit",
+          "at": "dashboard/lib/player-comparison.test.ts:65"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/last-games/page.tsx:39",
+        "dashboard/app/last-games/page.tsx:79",
+        "dashboard/components/distributions-investigation-view.tsx:28",
+        "dashboard/components/similarity-investigation-view.tsx:18",
+        "dashboard/components/trends-investigation-view.tsx:20"
+      ],
+      "rendered_count": 5
+    },
+    {
+      "text": "Basketball season",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/finance.spec.ts:80"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/finance-contract-drawer.tsx:37",
+        "dashboard/components/finance-contract-drawer.tsx:43"
+      ],
+      "rendered_count": 2
+    },
+    {
+      "text": "Before date",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/route-polish.spec.ts:27"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/route-polish.spec.ts:29"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/research/rapm/page.tsx:24",
+        "dashboard/components/ask-courtlens.tsx:106",
+        "dashboard/components/catalog-scope-fields.tsx:29",
+        "dashboard/components/context-bar.tsx:42",
+        "dashboard/components/context-bar.tsx:160"
+      ],
+      "rendered_count": 5
+    },
+    {
+      "text": "Boston Celtics",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/dl05-evidence.spec.ts:20"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/live.spec.ts:6"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/live.spec.ts:29"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/live.spec.ts:38"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/live.spec.ts:39"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/live.spec.ts:55"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/workbench.spec.ts:77"
+        },
+        {
+          "kind": "unit",
+          "at": "dashboard/lib/investigation-tools.test.ts:246"
+        },
+        {
+          "kind": "unit",
+          "at": "dashboard/lib/playoffs.test.ts:43"
+        },
+        {
+          "kind": "unit",
+          "at": "dashboard/lib/playoffs.test.ts:124"
+        },
+        {
+          "kind": "unit",
+          "at": "dashboard/lib/playoffs.test.ts:174"
+        },
+        {
+          "kind": "unit",
+          "at": "dashboard/lib/playoffs.test.ts:225"
+        },
+        {
+          "kind": "unit",
+          "at": "dashboard/lib/team-analytics.test.ts:104"
+        },
+        {
+          "kind": "unit",
+          "at": "dashboard/lib/team-explorer.test.ts:9"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/design/page.tsx:416",
+        "dashboard/app/design/page.tsx:417",
+        "dashboard/app/team-compare/page.tsx:51",
+        "dashboard/lib/finance-teams.ts:10",
+        "dashboard/lib/stats-presets.ts:61"
+      ],
+      "rendered_count": 5
+    },
+    {
+      "text": "calculator",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/dl07-evidence.spec.ts:22"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/calculator/page.tsx:1",
+        "dashboard/components/possession-calculator-view.tsx:11",
+        "dashboard/components/research-results-view.tsx:66",
+        "dashboard/components/ui/header.tsx:249",
+        "dashboard/components/ui/header.tsx:320"
+      ],
+      "rendered_count": 5
+    },
+    {
+      "text": "Cancel",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/shooting.spec.ts:79"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/design/page.tsx:658",
+        "dashboard/components/finance-contract-drawer.tsx:29",
+        "dashboard/components/manage-views-modal.tsx:776",
+        "dashboard/components/ranking-boards-view.tsx:351",
+        "dashboard/components/shooting-view.tsx:128",
+        "dashboard/components/tier-list-view.tsx:446",
+        "dashboard/lib/live.ts:20"
+      ],
+      "rendered_count": 7
+    },
+    {
+      "text": "Canonical Metric Catalog",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/saved-operations.spec.ts:54"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/methodology/page.tsx:75"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "cap / tax / apron status pending",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/finance.spec.ts:26"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/finance-workspace.tsx:72"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "case-studies",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/dl06-evidence.spec.ts:21"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/learning/page.tsx:14",
+        "dashboard/app/research/case-studies/page.tsx:2",
+        "dashboard/components/ui/header.tsx:233"
+      ],
+      "rendered_count": 3
+    },
+    {
+      "text": "censored",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/shooting.spec.ts:69"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/shooting-view.tsx:153",
+        "dashboard/lib/shooting-types.ts:10",
+        "dashboard/lib/shooting-types.ts:20"
+      ],
+      "rendered_count": 3
+    },
+    {
+      "text": "Change date",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/player-profile.spec.ts:14"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/players/[id]/page.tsx:233"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Check import job",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/finance.spec.ts:68"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/finance-import.tsx:18"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Check or replay request",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:134"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/threaded-assistant.tsx:343"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Clear conversation",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/conversation.spec.ts:29"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/saved-operations.spec.ts:35"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/ask-courtlens.tsx:98"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Clear history",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:111"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:114"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:431"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/assistant-history-settings.tsx:26"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Clear player search",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/stats-readability-search.spec.ts:98"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/workbench-player-explorer.tsx:706",
+        "dashboard/components/workbench-player-explorer.tsx:799"
+      ],
+      "rendered_count": 2
+    },
+    {
+      "text": "Clear search",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "unit",
+          "at": "dashboard/components/ui/primitives.test.tsx:137"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/ui/command-palette.tsx:551",
+        "dashboard/components/ui/input.tsx:88"
+      ],
+      "rendered_count": 2
+    },
+    {
+      "text": "Close drawer",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "unit",
+          "at": "dashboard/components/ui/primitives.test.tsx:403"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/ui/drawer.tsx:121"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Close player details sidebar",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/stats-preview.spec.ts:107"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/stats-detail-drawer.tsx:128"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Close research conversation",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/conversation.spec.ts:50"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/conversation.spec.ts:54"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/ask-drawer.tsx:24"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Collapse player preview",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/stats-preview.spec.ts:45"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/stats-preview-rail.tsx:26",
+        "dashboard/components/stats-preview-rail.tsx:27"
+      ],
+      "rendered_count": 2
+    },
+    {
+      "text": "CommandPalette",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "contract",
+          "at": "docs/design/design-language-v1.md:231"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/design/page.tsx:37",
+        "dashboard/app/design/page.tsx:676",
+        "dashboard/components/ui/command-palette.tsx:30",
+        "dashboard/components/ui/command-palette.tsx:38",
+        "dashboard/components/ui/command-palette.tsx:39",
+        "dashboard/components/ui/command-palette.tsx:45",
+        "dashboard/components/ui/command-palette.tsx:299",
+        "dashboard/components/ui/command-palette.tsx:306"
+      ],
+      "rendered_count": 12
+    },
+    {
+      "text": "compare",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/dl04-evidence.spec.ts:20"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/api/workspace/[[...path]]/route.ts:5",
+        "dashboard/app/compare/page.tsx:3",
+        "dashboard/app/compare/page.tsx:4",
+        "dashboard/app/compare/page.tsx:6",
+        "dashboard/app/compare/page.tsx:75",
+        "dashboard/app/compare/page.tsx:107",
+        "dashboard/app/compare/page.tsx:149",
+        "dashboard/app/compare/page.tsx:154"
+      ],
+      "rendered_count": 315
+    },
+    {
+      "text": "Compare",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/header-command-palette.spec.ts:166"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/compare/loading.tsx:3",
+        "dashboard/app/compare/page.tsx:3",
+        "dashboard/app/compare/page.tsx:4",
+        "dashboard/app/compare/page.tsx:5",
+        "dashboard/app/compare/page.tsx:7",
+        "dashboard/app/compare/page.tsx:10",
+        "dashboard/app/compare/page.tsx:12",
+        "dashboard/app/compare/page.tsx:50"
+      ],
+      "rendered_count": 181
+    },
+    {
+      "text": "Compare first 2 →",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/table-interactions.spec.ts:96"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/compare-tray.tsx:93"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Compare players",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/comparison-evaluation.spec.ts:18"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/comparison-evaluation.spec.ts:27"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/comparison-evaluation.spec.ts:70"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/entity-selection.spec.ts:28"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/entity-selection.spec.ts:30"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/compare-selector.tsx:33"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Compare Players",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/workbench.spec.ts:92"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/compare/page.tsx:10",
+        "dashboard/app/compare/page.tsx:50"
+      ],
+      "rendered_count": 2
+    },
+    {
+      "text": "CompareLoading",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "unit",
+          "at": "dashboard/components/ui/loading-skeletons.test.tsx:33"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/compare/loading.tsx:3"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Completed negative result",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/advanced-research.spec.ts:21"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/advanced-research.spec.ts:46"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/research-results-view.tsx:52",
+        "dashboard/lib/route-availability.ts:51"
+      ],
+      "rendered_count": 2
+    },
+    {
+      "text": "Configuration details",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/route-polish.spec.ts:39"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/workbench.spec.ts:159"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/assistant-status-card.tsx:15"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Consistent",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "contract",
+          "at": "docs/design/replica-search-contract.md:76"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/distributions-investigation-view.tsx:998"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "contracts",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/dl07-evidence.spec.ts:15"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/contracts/[team]/page.tsx:3",
+        "dashboard/app/contracts/page.tsx:3",
+        "dashboard/app/investigations/page.tsx:45",
+        "dashboard/components/case-studies-view.tsx:413",
+        "dashboard/components/finance-workspace.tsx:14",
+        "dashboard/components/finance-workspace.tsx:46",
+        "dashboard/components/finance-workspace.tsx:50",
+        "dashboard/components/finance-workspace.tsx:71"
+      ],
+      "rendered_count": 22
+    },
+    {
+      "text": "Contracts and status table",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/finance.spec.ts:47"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/finance-workspace.tsx:78"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "ContractsLoading",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "unit",
+          "at": "dashboard/components/ui/loading-skeletons.test.tsx:39"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/contracts/loading.tsx:3"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Conversation history",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:106"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:398"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:409"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:420"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/ask-courtlens.tsx:114",
+        "dashboard/components/threaded-assistant.tsx:306"
+      ],
+      "rendered_count": 2
+    },
+    {
+      "text": "Conversations",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:411"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:421"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:423"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/threaded-assistant.tsx:304",
+        "dashboard/components/threaded-assistant.tsx:305",
+        "dashboard/components/threaded-assistant.tsx:315"
+      ],
+      "rendered_count": 3
+    },
+    {
+      "text": "CourtLens",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/im07-agent.spec.ts:36"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:522"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/workbench.spec.ts:10"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/compare/page.tsx:10",
+        "dashboard/app/compare/page.tsx:200",
+        "dashboard/app/compare/page.tsx:201",
+        "dashboard/app/compare/page.tsx:202",
+        "dashboard/app/compare/page.tsx:243",
+        "dashboard/app/data-status/page.tsx:6",
+        "dashboard/app/design/page.tsx:97",
+        "dashboard/app/design/page.tsx:549"
+      ],
+      "rendered_count": 132
+    },
+    {
+      "text": "CourtLens assistant",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:108"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:132"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:134"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/threaded-assistant.tsx:302"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "CourtLens global command palette",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "unit",
+          "at": "dashboard/components/ui/header.test.tsx:123"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/header-command-palette.spec.ts:88"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/header-command-palette.spec.ts:150"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/ui/command-palette.tsx:512"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "CourtLens model",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "unit",
+          "at": "dashboard/components/impact.test.tsx:19"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/im06-real.spec.ts:25"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/impact-disclosure.tsx:10"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "CourtLens Research Workbench home",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/workbench.spec.ts:10"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/brand.tsx:21"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Daily player assignments",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/entity-selection.spec.ts:139"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/plan-table.tsx:9"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Dallas Mavericks",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "unit",
+          "at": "dashboard/lib/playoffs.test.ts:175"
+        },
+        {
+          "kind": "unit",
+          "at": "dashboard/lib/playoffs.test.ts:247"
+        },
+        {
+          "kind": "unit",
+          "at": "dashboard/lib/team-explorer.test.ts:26"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/team-compare/page.tsx:51",
+        "dashboard/lib/finance-teams.ts:30",
+        "dashboard/lib/stats-presets.ts:66"
+      ],
+      "rendered_count": 3
+    },
+    {
+      "text": "Data status",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "unit",
+          "at": "dashboard/components/ui/header.test.tsx:105"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/header-command-palette.spec.ts:124"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/workbench.spec.ts:21"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/settings/page.tsx:68",
+        "dashboard/components/install-interface.tsx:18",
+        "dashboard/components/ui/header.tsx:790",
+        "dashboard/components/ui/header.tsx:1014",
+        "dashboard/lib/route-availability.ts:23",
+        "dashboard/lib/route-availability.ts:29"
+      ],
+      "rendered_count": 6
+    },
+    {
+      "text": "data-status",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/dl07-evidence.spec.ts:18"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/data-status/page.tsx:40",
+        "dashboard/app/data-status/page.tsx:113",
+        "dashboard/app/learning/page.tsx:15",
+        "dashboard/app/methodology/page.tsx:31",
+        "dashboard/app/settings/page.tsx:51",
+        "dashboard/components/footer.tsx:14",
+        "dashboard/components/nav-rail.tsx:28",
+        "dashboard/components/saved-operation-detail.tsx:60"
+      ],
+      "rendered_count": 12
+    },
+    {
+      "text": "DataStatusLoading",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "unit",
+          "at": "dashboard/components/ui/loading-skeletons.test.tsx:41"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/data-status/loading.tsx:3"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Default",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "unit",
+          "at": "dashboard/lib/workspace-client.test.ts:68"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/design/page.tsx:406",
+        "dashboard/app/design/page.tsx:434",
+        "dashboard/app/last-games/page.tsx:39",
+        "dashboard/app/team-compare/page.tsx:51",
+        "dashboard/components/ask-courtlens.tsx:111",
+        "dashboard/components/compare-tray.tsx:87",
+        "dashboard/components/distributions-investigation-view.tsx:443",
+        "dashboard/components/entity-picker.tsx:34"
+      ],
+      "rendered_count": 136
+    },
+    {
+      "text": "Default Workspace",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "unit",
+          "at": "dashboard/lib/workspace-client.test.ts:18"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/lib/workspace-context.tsx:58"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Definitions & Glossary",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "unit",
+          "at": "dashboard/components/ui/header.test.tsx:106"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/header-command-palette.spec.ts:125"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/ui/header.tsx:255",
+        "dashboard/components/ui/header.tsx:1028"
+      ],
+      "rendered_count": 2
+    },
+    {
+      "text": "Delete chat",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:108"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:235"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/threaded-assistant.tsx:318"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "deleted",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:115"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:434"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/assistant-history-settings.tsx:18"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Dismiss",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/table-interactions.spec.ts:81"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/manage-views-modal.tsx:382",
+        "dashboard/components/ui/toast.tsx:93",
+        "dashboard/components/workbench-player-explorer.tsx:553"
+      ],
+      "rendered_count": 3
+    },
+    {
+      "text": "Dismiss notification",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "unit",
+          "at": "dashboard/components/ui/primitives.test.tsx:479"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/ui/toast.tsx:93"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Display zone",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/shooting.spec.ts:41"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/shooting-view.tsx:141"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "distribution",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/conversation.spec.ts:16"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/methodology/page.tsx:66",
+        "dashboard/app/research/distributions/page.tsx:3",
+        "dashboard/app/teams/page.tsx:11",
+        "dashboard/app/teams/page.tsx:67",
+        "dashboard/components/ask-courtlens.tsx:18",
+        "dashboard/components/ask-courtlens.tsx:76",
+        "dashboard/components/ask-courtlens.tsx:110",
+        "dashboard/components/case-studies-view.tsx:106"
+      ],
+      "rendered_count": 45
+    },
+    {
+      "text": "distributions",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/dl06-evidence.spec.ts:18"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/research/distributions/page.tsx:3",
+        "dashboard/app/teams/page.tsx:11",
+        "dashboard/app/teams/page.tsx:67",
+        "dashboard/components/case-studies-view.tsx:106",
+        "dashboard/components/case-studies-view.tsx:152",
+        "dashboard/components/case-studies-view.tsx:157",
+        "dashboard/components/case-studies-view.tsx:215",
+        "dashboard/components/case-studies-view.tsx:220"
+      ],
+      "rendered_count": 14
+    },
+    {
+      "text": "Effective Field Goal %",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "unit",
+          "at": "dashboard/lib/team-analytics.test.ts:163"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/lib/stats-presets.ts:218",
+        "dashboard/lib/stats-presets.ts:263",
+        "dashboard/lib/stats-presets.ts:335",
+        "dashboard/lib/stats-presets.ts:358",
+        "dashboard/lib/stats-presets.ts:439"
+      ],
+      "rendered_count": 5
+    },
+    {
+      "text": "Email",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/entity-selection.spec.ts:134"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/planner-client.tsx:37",
+        "dashboard/components/planner-client.tsx:163"
+      ],
+      "rendered_count": 2
+    },
+    {
+      "text": "Embedded player Stats",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/finance.spec.ts:79"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/finance.spec.ts:80"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/finance-contract-drawer.tsx:35",
+        "dashboard/components/finance-contract-drawer.tsx:43"
+      ],
+      "rendered_count": 2
+    },
+    {
+      "text": "EmptyState",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "contract",
+          "at": "docs/design/design-language-v1.md:232"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/design/page.tsx:41",
+        "dashboard/app/design/page.tsx:547",
+        "dashboard/app/design/page.tsx:623",
+        "dashboard/components/ui/empty-state.tsx:4",
+        "dashboard/components/ui/empty-state.tsx:12",
+        "dashboard/components/ui/empty-state.tsx:18"
+      ],
+      "rendered_count": 6
+    },
+    {
+      "text": "Evaluation",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/comparison-evaluation.spec.ts:33"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/design/page.tsx:649",
+        "dashboard/app/evaluation/page.tsx:3",
+        "dashboard/app/evaluation/page.tsx:4",
+        "dashboard/app/evaluation/page.tsx:22",
+        "dashboard/app/evaluation/page.tsx:26",
+        "dashboard/app/evaluation/page.tsx:27",
+        "dashboard/app/evaluation/page.tsx:28",
+        "dashboard/app/evaluation/page.tsx:31"
+      ],
+      "rendered_count": 26
+    },
+    {
+      "text": "Evidence before narrative",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/saved-operations.spec.ts:53"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/learning/page.tsx:15"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Exact unit",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/entity-selection.spec.ts:59"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/entity-selection.spec.ts:60"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/shared-floor-view.tsx:110"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Expand player preview",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/stats-preview.spec.ts:47"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/stats-preview-rail.tsx:26",
+        "dashboard/components/stats-preview-rail.tsx:27"
+      ],
+      "rendered_count": 2
+    },
+    {
+      "text": "Expand Table (T)",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/stats-preview.spec.ts:50"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/workbench-player-explorer.tsx:1017"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Expected Shots",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/route-polish.spec.ts:16"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/ui/header.tsx:244"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Explain pick and roll",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:102"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:106"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:107"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:414"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/lib/assistant-chat.ts:15"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Explicit book UUID",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/finance.spec.ts:51"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/finance-workspace.tsx:54"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Export allocation inputs JSON",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/advanced-research.spec.ts:67"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/roster-allocation-view.tsx:44"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Export court SVG",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/shooting.spec.ts:38"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/shooting-view.tsx:146"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Export CSV",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/saved-operations.spec.ts:50"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/design/page.tsx:291",
+        "dashboard/components/distributions-investigation-view.tsx:331",
+        "dashboard/components/saved-operation-detail.tsx:60",
+        "dashboard/components/trends-investigation-view.tsx:270",
+        "dashboard/components/workbench-investigations-list.tsx:91"
+      ],
+      "rendered_count": 5
+    },
+    {
+      "text": "Export evidence CSV",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/shooting.spec.ts:70"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/shooting-view.tsx:137"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Export JSON",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/saved-operations.spec.ts:46"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/saved-operation-detail.tsx:60",
+        "dashboard/components/workbench-investigations-list.tsx:98"
+      ],
+      "rendered_count": 2
+    },
+    {
+      "text": "Export PNG",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/stats-readability-search.spec.ts:50"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/multi-player-lines-view.tsx:424",
+        "dashboard/components/player-showcase-view.tsx:244",
+        "dashboard/components/recent-games-view.tsx:335",
+        "dashboard/components/scatter-plot-view.tsx:200",
+        "dashboard/components/workbench-player-profile.tsx:238"
+      ],
+      "rendered_count": 5
+    },
+    {
+      "text": "Export scenario JSON",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/advanced-research.spec.ts:53"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/possession-calculator-view.tsx:22"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Export SVG",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/stats-readability-search.spec.ts:43"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/player-showcase-view.tsx:251",
+        "dashboard/components/player-showcase-view.tsx:253",
+        "dashboard/components/workbench-player-profile.tsx:246"
+      ],
+      "rendered_count": 3
+    },
+    {
+      "text": "Export verified report JSON",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/advanced-research.spec.ts:27"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/advanced-research.spec.ts:44"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/research-results-view.tsx:63"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Favorite player",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "unit",
+          "at": "dashboard/components/ui/primitives.test.tsx:112"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/design/page.tsx:290"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Fewer than 5 valid games",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/comparison-evaluation.spec.ts:73"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/compare/page.tsx:259"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Filter by NBA team",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/stats-preview.spec.ts:96"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/workbench-player-explorer.tsx:574"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Filter by season",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/workbench.spec.ts:24"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/context-bar.tsx:131"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Filter players by name",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/stats-preview.spec.ts:12"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/stats-preview.spec.ts:99"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/stats-readability-search.spec.ts:83"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/stats-readability-search.spec.ts:84"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/stats-readability-search.spec.ts:106"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/table-interactions.spec.ts:56"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/workbench.spec.ts:38"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/workbench-player-explorer.tsx:696",
+        "dashboard/components/workbench-player-explorer.tsx:795"
+      ],
+      "rendered_count": 2
+    },
+    {
+      "text": "Filters",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/stats-preview.spec.ts:95"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/stats-preview.spec.ts:98"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/design/page.tsx:627",
+        "dashboard/components/playoffs-bracket-view.tsx:155",
+        "dashboard/components/workbench-player-explorer.tsx:136",
+        "dashboard/components/workbench-player-explorer.tsx:372",
+        "dashboard/components/workbench-player-explorer.tsx:380",
+        "dashboard/components/workbench-player-explorer.tsx:390",
+        "dashboard/components/workbench-player-explorer.tsx:540",
+        "dashboard/components/workbench-player-explorer.tsx:541"
+      ],
+      "rendered_count": 17
+    },
+    {
+      "text": "Finalized research",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/live.spec.ts:44"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/live-workspace.tsx:85",
+        "dashboard/components/live-workspace.tsx:117"
+      ],
+      "rendered_count": 2
+    },
+    {
+      "text": "Finance views",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/finance.spec.ts:30"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/finance-workspace.tsx:50"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "FinanceQuery",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "contract",
+          "at": "docs/design/finance-query-v1.md:3"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/finance-workspace.tsx:6",
+        "dashboard/components/finance-workspace.tsx:26",
+        "dashboard/components/finance-workspace.tsx:31",
+        "dashboard/components/finance-workspace.tsx:59",
+        "dashboard/components/finance-workspace.tsx:60",
+        "dashboard/components/finance-workspace.tsx:61",
+        "dashboard/components/finance-workspace.tsx:63",
+        "dashboard/lib/finance.ts:8"
+      ],
+      "rendered_count": 13
+    },
+    {
+      "text": "FinanceResult",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "contract",
+          "at": "docs/design/finance-query-v1.md:3"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/finance-contract-drawer.tsx:4",
+        "dashboard/components/finance-contract-drawer.tsx:19",
+        "dashboard/components/finance-workspace.tsx:6",
+        "dashboard/components/finance-workspace.tsx:19",
+        "dashboard/components/finance-workspace.tsx:33",
+        "dashboard/components/finance-workspace.tsx:40",
+        "dashboard/lib/finance.ts:36"
+      ],
+      "rendered_count": 7
+    },
+    {
+      "text": "Financial query result",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/finance.spec.ts:25"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/finance.spec.ts:32"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/finance.spec.ts:33"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/finance.spec.ts:37"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/finance.spec.ts:44"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/finance.spec.ts:51"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/finance.spec.ts:54"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/finance.spec.ts:58"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/finance.spec.ts:91"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/finance.spec.ts:92"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/finance-workspace.tsx:69"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Financial season",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/finance.spec.ts:32"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/finance.spec.ts:90"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/finance-contract-drawer.tsx:31",
+        "dashboard/components/finance-workspace.tsx:55"
+      ],
+      "rendered_count": 2
+    },
+    {
+      "text": "Finite-difference sensitivities",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/advanced-research.spec.ts:55"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/possession-calculator-view.tsx:20"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Fixture",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/entity-selection.spec.ts:100"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/data-badge.tsx:12",
+        "dashboard/components/planner-client.tsx:185"
+      ],
+      "rendered_count": 2
+    },
+    {
+      "text": "Follow-up question",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/conversation.spec.ts:35"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/conversation.spec.ts:38"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/conversation.spec.ts:59"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/agent-answer.tsx:115",
+        "dashboard/components/ask-courtlens.tsx:111"
+      ],
+      "rendered_count": 2
+    },
+    {
+      "text": "forecasts",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/dl07-evidence.spec.ts:21"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/evaluation/page.tsx:47",
+        "dashboard/app/evaluation/page.tsx:57",
+        "dashboard/app/forecasts/page.tsx:453",
+        "dashboard/app/learning/page.tsx:14",
+        "dashboard/app/methodology/page.tsx:136",
+        "dashboard/app/methodology/page.tsx:140",
+        "dashboard/components/capability-notice.tsx:30",
+        "dashboard/components/case-studies-view.tsx:151"
+      ],
+      "rendered_count": 15
+    },
+    {
+      "text": "ForecastsLoading",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "unit",
+          "at": "dashboard/components/ui/loading-skeletons.test.tsx:42"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/forecasts/loading.tsx:3"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Free agency",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/finance.spec.ts:30"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/finance-workspace.tsx:50"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "free-agency",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/dl07-evidence.spec.ts:16"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/free-agency/page.tsx:3",
+        "dashboard/components/finance-workspace.tsx:14",
+        "dashboard/components/finance-workspace.tsx:50",
+        "dashboard/components/ui/header.tsx:215",
+        "dashboard/components/ui/header.tsx:306"
+      ],
+      "rendered_count": 5
+    },
+    {
+      "text": "FreeAgencyLoading",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "unit",
+          "at": "dashboard/components/ui/loading-skeletons.test.tsx:40"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/free-agency/loading.tsx:3"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Game slate",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/live.spec.ts:29"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/live.spec.ts:38"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/live.spec.ts:39"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/live.spec.ts:44"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/live.spec.ts:55"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/live-workspace.tsx:115"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Gate 2: Final Paired Superiority",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/workbench.spec.ts:112"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/forecasts/page.tsx:212"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Genuine Prospective Issuance Status",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/workbench.spec.ts:124"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/forecasts/page.tsx:443"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Group guides",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/table-interactions.spec.ts:30"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/workbench-player-explorer.tsx:470",
+        "dashboard/components/workbench-player-explorer.tsx:471"
+      ],
+      "rendered_count": 2
+    },
+    {
+      "text": "Historical reconstruction",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/finance.spec.ts:25"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/finance-workspace.tsx:70"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Historical replay",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "contract",
+          "at": "docs/design/product-contract.md:15"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/players/[id]/page.tsx:219",
+        "dashboard/app/players/[id]/page.tsx:238"
+      ],
+      "rendered_count": 2
+    },
+    {
+      "text": "History and privacy settings",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:112"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/threaded-assistant.tsx:311"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Hover over a player",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/stats-preview.spec.ts:11"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/stats-preview-rail.tsx:73"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "How do I compare two players here?",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "contract",
+          "at": "docs/design/polish-assistant-contract.md:140"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/lib/assistant-chat.ts:16"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "How I got this",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:211"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:315"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:537"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:551"
+        },
+        {
+          "kind": "contract",
+          "at": "docs/design/polish-assistant-contract.md:420"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/agent-answer.tsx:121",
+        "dashboard/components/hybrid-answer.tsx:24",
+        "dashboard/components/hybrid-answer.tsx:63",
+        "dashboard/lib/assistant-chat.ts:6"
+      ],
+      "rendered_count": 4
+    },
+    {
+      "text": "How this was calculated",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "contract",
+          "at": "docs/design/product-contract.md:42"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/players/[id]/page.tsx:302"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Hypothetical option scenario",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/finance.spec.ts:46"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/finance-workspace.tsx:73"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "IconButton",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "contract",
+          "at": "docs/design/design-language-v1.md:227"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/design/page.tsx:7",
+        "dashboard/app/design/page.tsx:290",
+        "dashboard/app/design/page.tsx:291",
+        "dashboard/components/threaded-assistant.tsx:17",
+        "dashboard/components/threaded-assistant.tsx:305",
+        "dashboard/components/threaded-assistant.tsx:315",
+        "dashboard/components/threaded-assistant.tsx:318",
+        "dashboard/components/ui/button.tsx:57"
+      ],
+      "rendered_count": 20
+    },
+    {
+      "text": "Indiana Pacers",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "unit",
+          "at": "dashboard/lib/playoffs.test.ts:44"
+        },
+        {
+          "kind": "unit",
+          "at": "dashboard/lib/team-analytics.test.ts:247"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/lib/finance-teams.ts:90",
+        "dashboard/lib/stats-presets.ts:71"
+      ],
+      "rendered_count": 2
+    },
+    {
+      "text": "Install CourtLens",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/saved-operations.spec.ts:54"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/saved-operations.spec.ts:70"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/install-interface.tsx:18"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Install local app",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/saved-operations.spec.ts:72"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/install-interface.tsx:18"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Insufficient opponent coverage",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/comparison-evaluation.spec.ts:24"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/compare/page.tsx:209"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "insufficient_sample",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/shared-floor.spec.ts:125"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/shooting.spec.ts:67"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/lib/assistant-v2.generated.ts:140",
+        "dashboard/lib/assistant-v3.generated.ts:196",
+        "dashboard/lib/conversation.ts:8",
+        "dashboard/lib/conversation.ts:10",
+        "dashboard/lib/saved-operations.ts:12",
+        "dashboard/lib/shared-floor.ts:24",
+        "dashboard/lib/shooting-types.ts:24",
+        "dashboard/lib/shooting-types.ts:77"
+      ],
+      "rendered_count": 8
+    },
+    {
+      "text": "Investigating…",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/conversation.spec.ts:54"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/ask-courtlens.tsx:111"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Investigation title",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/saved-operations.spec.ts:32"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/saved-operations.spec.ts:38"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/save-operation.tsx:34"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "investigations",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/dl06-evidence.spec.ts:25"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/investigations/page.tsx:4",
+        "dashboard/app/investigations/page.tsx:18",
+        "dashboard/app/investigations/page.tsx:45",
+        "dashboard/app/learning/page.tsx:15",
+        "dashboard/app/manifest.ts:8",
+        "dashboard/app/methodology/page.tsx:31",
+        "dashboard/app/settings/page.tsx:51",
+        "dashboard/components/ask-courtlens.tsx:109"
+      ],
+      "rendered_count": 34
+    },
+    {
+      "text": "InvestigationsLoading",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "unit",
+          "at": "dashboard/components/ui/loading-skeletons.test.tsx:45"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/investigations/loading.tsx:3"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Jayson Tatum",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/dl05-evidence.spec.ts:60"
+        },
+        {
+          "kind": "unit",
+          "at": "dashboard/lib/investigation-tools.test.ts:293"
+        },
+        {
+          "kind": "unit",
+          "at": "dashboard/lib/playoffs.test.ts:319"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/distributions-investigation-view.tsx:31",
+        "dashboard/components/similarity-investigation-view.tsx:21",
+        "dashboard/components/trends-investigation-view.tsx:23"
+      ],
+      "rendered_count": 3
+    },
+    {
+      "text": "Known at (UTC / explicit offset)",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/finance.spec.ts:40"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/finance-workspace.tsx:56"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "learning",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/dl07-evidence.spec.ts:23"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/learning/page.tsx:3",
+        "dashboard/app/methodology/page.tsx:31",
+        "dashboard/components/learning-workshop.tsx:10",
+        "dashboard/components/ui/header.tsx:256",
+        "dashboard/components/ui/header.tsx:1031"
+      ],
+      "rendered_count": 5
+    },
+    {
+      "text": "Legacy saved investigations",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/saved-operations.spec.ts:41"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/investigations/page.tsx:45"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Length units",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/advanced-research.spec.ts:73"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/wingspan-explorer-view.tsx:32"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Lesson player",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/saved-operations.spec.ts:53"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/learning-workshop.tsx:11"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Limited mode",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:295"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:298"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/workbench.spec.ts:157"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/agent-answer.tsx:109",
+        "dashboard/components/assistant-status-card.tsx:11"
+      ],
+      "rendered_count": 2
+    },
+    {
+      "text": "Limits per turn",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/route-polish.spec.ts:38"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/assistant-status-card.tsx:12"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "LiveGameLoading",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "unit",
+          "at": "dashboard/components/ui/loading-skeletons.test.tsx:35"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/live/games/[id]/loading.tsx:3"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "LiveLoading",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "unit",
+          "at": "dashboard/components/ui/loading-skeletons.test.tsx:34"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/design/page.tsx:50",
+        "dashboard/app/design/page.tsx:637",
+        "dashboard/app/live/loading.tsx:3"
+      ],
+      "rendered_count": 3
+    },
+    {
+      "text": "Load newer turns",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:165"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:166"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/threaded-assistant.tsx:338"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Load participation",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/advanced-research.spec.ts:62"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/roster-allocation-view.tsx:34"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Load player Stats",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/finance.spec.ts:78"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/finance-contract-drawer.tsx:41"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "matchups",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/dl06-evidence.spec.ts:17"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/compare/page.tsx:107",
+        "dashboard/app/matchups/page.tsx:5",
+        "dashboard/app/methodology/page.tsx:67",
+        "dashboard/app/methodology/page.tsx:133",
+        "dashboard/app/research/defensive-matchups/page.tsx:11",
+        "dashboard/components/shooting-view.tsx:12",
+        "dashboard/components/shooting-view.tsx:13",
+        "dashboard/components/shooting-view.tsx:68"
+      ],
+      "rendered_count": 19
+    },
+    {
+      "text": "Measurement comparison",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/advanced-research.spec.ts:74"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/wingspan-explorer-view.tsx:43"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Measurement records",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/advanced-research.spec.ts:72"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/advanced-research.spec.ts:73"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/wingspan-explorer-view.tsx:40"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Messages",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/assistant-panel-real.spec.ts:44"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:91"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:103"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/threaded-assistant.tsx:330"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "methodology",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/dl07-evidence.spec.ts:19"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/evaluation/page.tsx:58",
+        "dashboard/app/forecasts/page.tsx:120",
+        "dashboard/app/learning/page.tsx:12",
+        "dashboard/app/methodology/page.tsx:33",
+        "dashboard/app/methodology/page.tsx:36",
+        "dashboard/app/methodology/page.tsx:37",
+        "dashboard/app/methodology/page.tsx:44",
+        "dashboard/app/methodology/page.tsx:45"
+      ],
+      "rendered_count": 27
+    },
+    {
+      "text": "Methodology and definitions",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "unit",
+          "at": "dashboard/components/impact.test.tsx:22"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/impact-disclosure.tsx:11"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "MetricDefinition",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "contract",
+          "at": "docs/design/impact-extras-v1.md:6"
+        },
+        {
+          "kind": "contract",
+          "at": "docs/design/workbench-data-contracts.md:88"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/lib/player-pages.ts:314",
+        "dashboard/lib/player-pages.ts:323",
+        "dashboard/lib/types.ts:309",
+        "dashboard/lib/types.ts:333"
+      ],
+      "rendered_count": 4
+    },
+    {
+      "text": "Miami Heat",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/dl05-evidence.spec.ts:21"
+        },
+        {
+          "kind": "unit",
+          "at": "dashboard/lib/playoffs.test.ts:125"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/lib/finance-teams.ts:60",
+        "dashboard/lib/stats-presets.ts:75"
+      ],
+      "rendered_count": 2
+    },
+    {
+      "text": "Minimum total minutes played",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/stats-preview.spec.ts:97"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/workbench-player-explorer.tsx:631"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "More options",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "unit",
+          "at": "dashboard/components/ui/header.test.tsx:68"
+        },
+        {
+          "kind": "unit",
+          "at": "dashboard/components/ui/header.test.tsx:96"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/header-command-palette.spec.ts:117"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/motion-coverage.spec.ts:71"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/route-polish.spec.ts:6"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/route-polish.spec.ts:58"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/route-polish.spec.ts:65"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/stats-readability-search.spec.ts:29"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/workbench.spec.ts:19"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/ui/header.tsx:756"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Narrow",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/shared-floor.spec.ts:138"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/shooting-view.tsx:152",
+        "dashboard/components/threaded-assistant.tsx:26",
+        "dashboard/components/threaded-assistant.tsx:73"
+      ],
+      "rendered_count": 3
+    },
+    {
+      "text": "Net Rating",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "unit",
+          "at": "dashboard/lib/team-analytics.test.ts:149"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/teams/[id]/page.tsx:329",
+        "dashboard/components/team-compare-view.tsx:565",
+        "dashboard/lib/playoffs.ts:152"
+      ],
+      "rendered_count": 3
+    },
+    {
+      "text": "New chat",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/assistant-panel-real.spec.ts:20"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/assistant-panel-real.spec.ts:21"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:104"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:143"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:368"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:408"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/threaded-assistant.tsx:292",
+        "dashboard/components/threaded-assistant.tsx:317"
+      ],
+      "rendered_count": 2
+    },
+    {
+      "text": "Next saved operations",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/saved-operations.spec.ts:67"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/saved-operation-library.tsx:26"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Next shots",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/shooting.spec.ts:106"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/shooting-view.tsx:148"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Nikola Jokić",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:182"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:307"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:402"
+        },
+        {
+          "kind": "unit",
+          "at": "dashboard/lib/assistant-chat.test.ts:47"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/lib/assistant-chat.ts:13",
+        "dashboard/lib/assistant-chat.ts:14"
+      ],
+      "rendered_count": 2
+    },
+    {
+      "text": "Observed",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "unit",
+          "at": "dashboard/lib/conversation.test.ts:23"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/forecasts/page.tsx:202",
+        "dashboard/app/forecasts/page.tsx:218",
+        "dashboard/app/forecasts/page.tsx:247",
+        "dashboard/app/forecasts/page.tsx:489",
+        "dashboard/app/teams/[id]/page.tsx:308",
+        "dashboard/components/case-studies-view.tsx:121",
+        "dashboard/components/case-studies-view.tsx:312",
+        "dashboard/components/conversation-result.tsx:38"
+      ],
+      "rendered_count": 27
+    },
+    {
+      "text": "Official standings notice:",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/workbench.spec.ts:80"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/team-explorer-view.tsx:328"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Older",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:399"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/multi-player-lines-view.tsx:575",
+        "dashboard/lib/assistant-chat.ts:40"
+      ],
+      "rendered_count": 2
+    },
+    {
+      "text": "On-Off",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/shared-floor.spec.ts:98"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/manage-views-modal.tsx:571",
+        "dashboard/lib/stats-presets.ts:398"
+      ],
+      "rendered_count": 2
+    },
+    {
+      "text": "Open equivalent analysis",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/im07-agent.spec.ts:44"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:533"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/agent-answer.tsx:96"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Open full research page",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:151"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/ask-drawer.tsx:24"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Open in Research",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "contract",
+          "at": "docs/design/conversational-analytics-v1.md:32"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/conversation-result.tsx:42"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Open in Stats",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/saved-operations.spec.ts:45"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:212"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:382"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/case-studies-view.tsx:255",
+        "dashboard/components/conversation-result.tsx:42",
+        "dashboard/components/distributions-investigation-view.tsx:335",
+        "dashboard/components/similarity-investigation-view.tsx:170",
+        "dashboard/components/trends-investigation-view.tsx:274"
+      ],
+      "rendered_count": 5
+    },
+    {
+      "text": "Open manual research",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:219"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/threaded-assistant.tsx:311"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Open source",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:519"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:570"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/agent-answer.tsx:24"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Operator-staged bundle SHA-256",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/finance.spec.ts:67"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/finance-import.tsx:17"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Option scenario",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/finance.spec.ts:45"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/finance-workspace.tsx:61"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "PageHeader",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "contract",
+          "at": "docs/design/design-language-v1.md:229"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/design/page.tsx:22",
+        "dashboard/app/design/page.tsx:95",
+        "dashboard/components/ui/panel.tsx:64",
+        "dashboard/components/ui/panel.tsx:72",
+        "dashboard/components/ui/panel.tsx:80"
+      ],
+      "rendered_count": 5
+    },
+    {
+      "text": "Pages",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "unit",
+          "at": "dashboard/components/ui/primitives.test.tsx:421"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/lookup-input.tsx:150",
+        "dashboard/components/ui/command-palette.tsx:439",
+        "dashboard/lib/player-pages.ts:3"
+      ],
+      "rendered_count": 3
+    },
+    {
+      "text": "Pascal Siakam",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "unit",
+          "at": "dashboard/lib/measurements-crosswalk.test.ts:59"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/case-studies-view.tsx:38",
+        "dashboard/components/distributions-investigation-view.tsx:30",
+        "dashboard/components/similarity-investigation-view.tsx:20",
+        "dashboard/components/trends-investigation-view.tsx:22"
+      ],
+      "rendered_count": 4
+    },
+    {
+      "text": "Password",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/entity-selection.spec.ts:134"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/planner-client.tsx:38",
+        "dashboard/components/planner-client.tsx:164"
+      ],
+      "rendered_count": 2
+    },
+    {
+      "text": "patch-notes",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/dl07-evidence.spec.ts:24"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/patch-notes/page.tsx:5",
+        "dashboard/app/settings/page.tsx:51",
+        "dashboard/components/ui/header.tsx:257",
+        "dashboard/components/ui/header.tsx:1038",
+        "dashboard/lib/original-content.ts:5"
+      ],
+      "rendered_count": 5
+    },
+    {
+      "text": "Pause updates",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/live.spec.ts:30"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/live.spec.ts:68"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/live-workspace.tsx:102"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Phase",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/route-polish.spec.ts:26"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/last-games/page.tsx:91",
+        "dashboard/app/players/[id]/page.tsx:162",
+        "dashboard/app/playoffs/[seriesId]/page.tsx:61",
+        "dashboard/app/playoffs/[seriesId]/page.tsx:63",
+        "dashboard/app/playoffs/page.tsx:47",
+        "dashboard/app/playoffs/page.tsx:52",
+        "dashboard/app/research/ask/page.tsx:20",
+        "dashboard/app/research/ask/page.tsx:40"
+      ],
+      "rendered_count": 56
+    },
+    {
+      "text": "Pin for comparison",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/shared-floor.spec.ts:51"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/shared-floor-view.tsx:124"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Pinned eligible differences",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/shared-floor.spec.ts:54"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/shared-floor-view.tsx:141"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "player",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/dl08-evidence.spec.ts:208"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/compare/page.tsx:4",
+        "dashboard/app/compare/page.tsx:14",
+        "dashboard/app/compare/page.tsx:15",
+        "dashboard/app/compare/page.tsx:16",
+        "dashboard/app/compare/page.tsx:37",
+        "dashboard/app/compare/page.tsx:62",
+        "dashboard/app/compare/page.tsx:63",
+        "dashboard/app/compare/page.tsx:67"
+      ],
+      "rendered_count": 1121
+    },
+    {
+      "text": "Player",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/shooting.spec.ts:87"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/compare/page.tsx:4",
+        "dashboard/app/compare/page.tsx:6",
+        "dashboard/app/compare/page.tsx:7",
+        "dashboard/app/compare/page.tsx:10",
+        "dashboard/app/compare/page.tsx:43",
+        "dashboard/app/compare/page.tsx:49",
+        "dashboard/app/compare/page.tsx:50",
+        "dashboard/app/compare/page.tsx:57"
+      ],
+      "rendered_count": 579
+    },
+    {
+      "text": "Player A",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/comparison-evaluation.spec.ts:14"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/entity-selection.spec.ts:15"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/entity-selection.spec.ts:29"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/entity-selection.spec.ts:31"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/entity-selection.spec.ts:35"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/entity-selection.spec.ts:45"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/entity-selection.spec.ts:52"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/player-compare-view.tsx:143",
+        "dashboard/components/player-compare-view.tsx:306",
+        "dashboard/components/player-compare-view.tsx:313",
+        "dashboard/components/player-compare-view.tsx:418",
+        "dashboard/components/player-compare-view.tsx:581",
+        "dashboard/components/player-compare-view.tsx:634",
+        "dashboard/components/player-compare-view.tsx:712",
+        "dashboard/components/player-compare-view.tsx:722"
+      ],
+      "rendered_count": 11
+    },
+    {
+      "text": "Player B",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/comparison-evaluation.spec.ts:16"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/entity-selection.spec.ts:15"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/player-compare-view.tsx:143",
+        "dashboard/components/player-compare-view.tsx:335",
+        "dashboard/components/player-compare-view.tsx:342",
+        "dashboard/components/player-compare-view.tsx:418",
+        "dashboard/components/player-compare-view.tsx:586",
+        "dashboard/components/player-compare-view.tsx:655",
+        "dashboard/components/player-compare-view.tsx:722",
+        "dashboard/components/workbench-compare-view.tsx:39"
+      ],
+      "rendered_count": 8
+    },
+    {
+      "text": "Player Explorer",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/workbench.spec.ts:34"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/players/page.tsx:7",
+        "dashboard/app/players/page.tsx:66",
+        "dashboard/components/workbench-investigations-list.tsx:29"
+      ],
+      "rendered_count": 3
+    },
+    {
+      "text": "Player impact",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/im06-real.spec.ts:40"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/impact-player-card.tsx:7",
+        "dashboard/components/impact-player-card.tsx:8"
+      ],
+      "rendered_count": 2
+    },
+    {
+      "text": "Player name",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "unit",
+          "at": "dashboard/components/ui/primitives.test.tsx:121"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/player-profile.spec.ts:5"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/finance-workspace.tsx:76",
+        "dashboard/components/player-search.tsx:39"
+      ],
+      "rendered_count": 2
+    },
+    {
+      "text": "Player preview",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/stats-preview.spec.ts:5"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/stats-preview-rail.tsx:23",
+        "dashboard/components/stats-preview-rail.tsx:30"
+      ],
+      "rendered_count": 2
+    },
+    {
+      "text": "Player statistics scroll area",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/stats-preview.spec.ts:39"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/stats-preview.spec.ts:76"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/stats-preview.spec.ts:102"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/workbench-player-explorer.tsx:740"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "player-profile",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/dl04-evidence.spec.ts:16"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/dl08-evidence.spec.ts:82"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/players/[id]/page.tsx:14",
+        "dashboard/app/players/[id]/page.tsx:216"
+      ],
+      "rendered_count": 2
+    },
+    {
+      "text": "PlayerPortrait",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "contract",
+          "at": "docs/design/workbench-interface-contract.md:95"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/teams/[id]/page.tsx:8",
+        "dashboard/app/teams/[id]/page.tsx:477",
+        "dashboard/components/compare-tray.tsx:8",
+        "dashboard/components/compare-tray.tsx:125",
+        "dashboard/components/lookup-input.tsx:10",
+        "dashboard/components/lookup-input.tsx:38",
+        "dashboard/components/player-compare-view.tsx:9",
+        "dashboard/components/player-compare-view.tsx:309"
+      ],
+      "rendered_count": 40
+    },
+    {
+      "text": "PlayerProfileLoading",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "unit",
+          "at": "dashboard/components/ui/loading-skeletons.test.tsx:30"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/design/page.tsx:49",
+        "dashboard/app/design/page.tsx:636",
+        "dashboard/app/players/[id]/loading.tsx:3"
+      ],
+      "rendered_count": 3
+    },
+    {
+      "text": "players",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/dl04-evidence.spec.ts:15"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/compare/page.tsx:16",
+        "dashboard/app/compare/page.tsx:37",
+        "dashboard/app/compare/page.tsx:106",
+        "dashboard/app/compare/page.tsx:121",
+        "dashboard/app/compare/page.tsx:134",
+        "dashboard/app/compare/page.tsx:135",
+        "dashboard/app/compare/page.tsx:136",
+        "dashboard/app/compare/page.tsx:149"
+      ],
+      "rendered_count": 220
+    },
+    {
+      "text": "Players",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/header-command-palette.spec.ts:164"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/route-polish.spec.ts:55"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/compare/page.tsx:6",
+        "dashboard/app/compare/page.tsx:10",
+        "dashboard/app/compare/page.tsx:50",
+        "dashboard/app/compare/page.tsx:135",
+        "dashboard/app/compare/page.tsx:139",
+        "dashboard/app/compare/page.tsx:140",
+        "dashboard/app/compare/page.tsx:141",
+        "dashboard/app/compare/page.tsx:154"
+      ],
+      "rendered_count": 74
+    },
+    {
+      "text": "Players Directory",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "unit",
+          "at": "dashboard/components/ui/primitives.test.tsx:433"
+        },
+        {
+          "kind": "unit",
+          "at": "dashboard/components/ui/primitives.test.tsx:438"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/design/page.tsx:80",
+        "dashboard/app/last-games/page.tsx:76",
+        "dashboard/app/showcase/page.tsx:64"
+      ],
+      "rendered_count": 3
+    },
+    {
+      "text": "PlayersLoading",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "unit",
+          "at": "dashboard/components/ui/loading-skeletons.test.tsx:29"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/players/loading.tsx:3"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "PlayoffsLoading",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "unit",
+          "at": "dashboard/components/ui/loading-skeletons.test.tsx:36"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/playoffs/loading.tsx:3"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Points",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "unit",
+          "at": "dashboard/components/ui/primitives.test.tsx:318"
+        },
+        {
+          "kind": "unit",
+          "at": "dashboard/components/ui/primitives.test.tsx:320"
+        },
+        {
+          "kind": "unit",
+          "at": "dashboard/lib/investigation-tools.test.ts:113"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/forecasts/page.tsx:4",
+        "dashboard/app/forecasts/page.tsx:9",
+        "dashboard/app/forecasts/page.tsx:53",
+        "dashboard/app/forecasts/page.tsx:111",
+        "dashboard/app/forecasts/page.tsx:148",
+        "dashboard/app/players/[id]/page.tsx:278",
+        "dashboard/app/teams/[id]/page.tsx:165",
+        "dashboard/app/teams/[id]/page.tsx:313"
+      ],
+      "rendered_count": 69
+    },
+    {
+      "text": "points",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/conversation.spec.ts:28"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/saved-operations.spec.ts:45"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/compare/page.tsx:200",
+        "dashboard/app/compare/page.tsx:201",
+        "dashboard/app/compare/page.tsx:202",
+        "dashboard/app/compare/page.tsx:210",
+        "dashboard/app/compare/page.tsx:211",
+        "dashboard/app/compare/page.tsx:243",
+        "dashboard/app/compare/page.tsx:252",
+        "dashboard/app/evaluation/page.tsx:45"
+      ],
+      "rendered_count": 171
+    },
+    {
+      "text": "Points Forecasts & Protocol",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/workbench.spec.ts:104"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/forecasts/page.tsx:111"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Portrait Job Enqueued",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/dl08-evidence.spec.ts:163"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/workbench-portrait-settings.tsx:35"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Prespecified Out-of-Time Error Slices",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/workbench.spec.ts:120"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/forecasts/page.tsx:376"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Previous saved operations",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/saved-operations.spec.ts:67"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/saved-operation-library.tsx:26"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Promotion Decision:",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/workbench.spec.ts:109"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/forecasts/page.tsx:167"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Prospective Forecasts Ledger",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/workbench.spec.ts:126"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/forecasts/page.tsx:464",
+        "dashboard/app/forecasts/page.tsx:469"
+      ],
+      "rendered_count": 2
+    },
+    {
+      "text": "queued",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/finance.spec.ts:68"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/workbench-portrait-settings.tsx:32",
+        "dashboard/components/workbench-portrait-settings.tsx:35"
+      ],
+      "rendered_count": 2
+    },
+    {
+      "text": "Ranking Boards",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "unit",
+          "at": "dashboard/components/ui/header.test.tsx:85"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/rankings/page.tsx:5",
+        "dashboard/components/ranking-boards-view.tsx:244",
+        "dashboard/components/ranking-boards-view.tsx:246",
+        "dashboard/components/ranking-boards-view.tsx:513",
+        "dashboard/components/ranking-boards-view.tsx:530",
+        "dashboard/components/ui/header.tsx:207",
+        "dashboard/lib/workspace-client.ts:351"
+      ],
+      "rendered_count": 7
+    },
+    {
+      "text": "rankings",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/dl06-evidence.spec.ts:22"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/ranking-boards-view.tsx:246",
+        "dashboard/components/research-results-view.tsx:48",
+        "dashboard/components/ui/header.tsx:207",
+        "dashboard/components/ui/header.tsx:300"
+      ],
+      "rendered_count": 4
+    },
+    {
+      "text": "Recent Games",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/route-polish.spec.ts:56"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/route-polish.spec.ts:67"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/last-games/page.tsx:10",
+        "dashboard/components/player-showcase-view.tsx:421",
+        "dashboard/components/recent-games-view.tsx:155",
+        "dashboard/components/ui/header.tsx:202",
+        "dashboard/components/workbench-player-profile.tsx:182",
+        "dashboard/components/workbench-player-profile.tsx:184",
+        "dashboard/lib/player-pages.ts:3"
+      ],
+      "rendered_count": 7
+    },
+    {
+      "text": "Refresh / import / correction workflow",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/finance.spec.ts:67"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/finance-import.tsx:13"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Refresh staged import",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/finance.spec.ts:67"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/finance-import.tsx:17"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Registered research result",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/advanced-research.spec.ts:20"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/advanced-research.spec.ts:38"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/advanced-research.spec.ts:46"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/research-results-view.tsx:51"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Release",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/conversation.spec.ts:29"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/conversation.spec.ts:35"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/conversation.spec.ts:63"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/data-status/loading.tsx:15",
+        "dashboard/app/data-status/page.tsx:39",
+        "dashboard/app/data-status/page.tsx:72",
+        "dashboard/app/data-status/page.tsx:75",
+        "dashboard/app/last-games/page.tsx:94",
+        "dashboard/app/playoffs/page.tsx:49",
+        "dashboard/app/research/ask/page.tsx:20",
+        "dashboard/app/research/ask/page.tsx:38"
+      ],
+      "rendered_count": 67
+    },
+    {
+      "text": "Release ID",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/shooting.spec.ts:44"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/roster-allocation-view.tsx:34",
+        "dashboard/components/shared-floor-view.tsx:104",
+        "dashboard/components/shooting-view.tsx:120"
+      ],
+      "rendered_count": 3
+    },
+    {
+      "text": "Reliability bins",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/advanced-research.spec.ts:26"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/research-results-view.tsx:58"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Remove",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "unit",
+          "at": "dashboard/components/ui/primitives.test.tsx:263"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/design/page.tsx:413",
+        "dashboard/app/design/page.tsx:416",
+        "dashboard/app/design/page.tsx:500",
+        "dashboard/components/compare-tray.tsx:13",
+        "dashboard/components/compare-tray.tsx:26",
+        "dashboard/components/compare-tray.tsx:71",
+        "dashboard/components/compare-tray.tsx:101",
+        "dashboard/components/compare-tray.tsx:102"
+      ],
+      "rendered_count": 49
+    },
+    {
+      "text": "Remove page context",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:461"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/threaded-assistant.tsx:344"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Replay date",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/comparison-evaluation.spec.ts:68"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/comparison-evaluation.spec.ts:69"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/player-profile.spec.ts:13"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/compare/page.tsx:173",
+        "dashboard/app/players/[id]/page.tsx:228",
+        "dashboard/app/players/[id]/page.tsx:368",
+        "dashboard/components/compare-selector.tsx:32"
+      ],
+      "rendered_count": 4
+    },
+    {
+      "text": "Reported amount coverage",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/finance.spec.ts:47"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/finance-workspace.tsx:71"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Reported nonappearance",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/live.spec.ts:24"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/live-workspace.tsx:26"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Research",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/header-command-palette.spec.ts:167"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/investigations/page.tsx:25",
+        "dashboard/app/manifest.ts:4",
+        "dashboard/app/players/[id]/page.tsx:19",
+        "dashboard/app/players/[id]/page.tsx:64",
+        "dashboard/app/research/adjusted-shooting/page.tsx:1",
+        "dashboard/app/research/adjusted-shooting/page.tsx:3",
+        "dashboard/app/research/case-studies/page.tsx:5",
+        "dashboard/app/research/defensive-matchups/page.tsx:12"
+      ],
+      "rendered_count": 145
+    },
+    {
+      "text": "Research conversation",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/conversation.spec.ts:50"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/workbench.spec.ts:146"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/ask-drawer.tsx:24"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Research operation",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/conversation.spec.ts:26"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/workbench.spec.ts:148"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/ask-courtlens.tsx:110",
+        "dashboard/components/research-operation-view.tsx:30",
+        "dashboard/components/research-operation-view.tsx:37",
+        "dashboard/components/research-operation-view.tsx:42",
+        "dashboard/lib/conversation.ts:31"
+      ],
+      "rendered_count": 5
+    },
+    {
+      "text": "Research question",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/conversation.spec.ts:33"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/conversation.spec.ts:38"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/conversation.spec.ts:59"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/conversation.spec.ts:63"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/ask-courtlens.tsx:111"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "ResearchQuery",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "contract",
+          "at": "docs/design/workbench-data-contracts.md:94"
+        },
+        {
+          "kind": "contract",
+          "at": "docs/design/workbench-data-contracts.md:161"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/lib/query-url.ts:11",
+        "dashboard/lib/query-url.ts:260",
+        "dashboard/lib/types.ts:625",
+        "dashboard/lib/types.ts:658",
+        "dashboard/lib/workbench-api.ts:30",
+        "dashboard/lib/workbench-api.ts:134"
+      ],
+      "rendered_count": 6
+    },
+    {
+      "text": "Reset",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "unit",
+          "at": "dashboard/components/ui/primitives.test.tsx:504"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/design/page.tsx:88",
+        "dashboard/app/design/page.tsx:627",
+        "dashboard/components/context-bar.tsx:115",
+        "dashboard/components/manage-views-modal.tsx:80",
+        "dashboard/components/manage-views-modal.tsx:293",
+        "dashboard/components/manage-views-modal.tsx:418",
+        "dashboard/components/manage-views-modal.tsx:866",
+        "dashboard/components/manage-views-modal.tsx:869"
+      ],
+      "rendered_count": 24
+    },
+    {
+      "text": "Reset hypothetical defaults",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/advanced-research.spec.ts:54"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/possession-calculator-view.tsx:15"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Resume updates",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/live.spec.ts:31"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/live-workspace.tsx:102"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Retry library",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/saved-operations.spec.ts:67"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/saved-operation-library.tsx:23"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Retry query",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/finance.spec.ts:54"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/finance-workspace.tsx:68"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Retry question",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:136"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:248"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:553"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/agent-answer.tsx:119",
+        "dashboard/components/hybrid-answer.tsx:57"
+      ],
+      "rendered_count": 2
+    },
+    {
+      "text": "Retry reads",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/advanced-research.spec.ts:46"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/research-results-view.tsx:46"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Retry saving investigation",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/saved-operations.spec.ts:33"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/save-operation.tsx:37"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Retry search",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/entity-selection.spec.ts:53"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/lookup-input.tsx:147"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Retry this request",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/conversation.spec.ts:43"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/ask-courtlens.tsx:112"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Return to player search",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/player-profile.spec.ts:24"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/players/[id]/page.tsx:371"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Review and save",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:279"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:550"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/agent-answer.tsx:96",
+        "dashboard/components/hybrid-answer.tsx:56"
+      ],
+      "rendered_count": 2
+    },
+    {
+      "text": "RootLoading",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "unit",
+          "at": "dashboard/components/ui/loading-skeletons.test.tsx:27"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/design/page.tsx:47",
+        "dashboard/app/design/page.tsx:638",
+        "dashboard/app/loading.tsx:3"
+      ],
+      "rendered_count": 3
+    },
+    {
+      "text": "Roster allocations",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/advanced-research.spec.ts:63"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/advanced-research.spec.ts:66"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/advanced-research.spec.ts:68"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/research-results-view.tsx:66",
+        "dashboard/components/roster-allocation-view.tsx:37"
+      ],
+      "rendered_count": 2
+    },
+    {
+      "text": "Run financial query",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/finance.spec.ts:39"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/finance.spec.ts:40"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/finance.spec.ts:45"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/finance.spec.ts:90"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/finance-workspace.tsx:64"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Run manual operation",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/conversation.spec.ts:26"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/conversation.spec.ts:38"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/conversation.spec.ts:43"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/conversation.spec.ts:51"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/conversation.spec.ts:54"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/saved-operations.spec.ts:30"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/saved-operations.spec.ts:38"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/ask-courtlens.tsx:111"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Run manually without AI",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/conversation.spec.ts:38"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/conversation.spec.ts:59"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:220"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/ask-courtlens.tsx:109"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Run shared-floor analysis",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/shared-floor.spec.ts:38"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/shared-floor.spec.ts:53"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/shared-floor.spec.ts:64"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/shared-floor.spec.ts:75"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/shared-floor.spec.ts:78"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/shared-floor.spec.ts:88"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/shared-floor.spec.ts:120"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/shared-floor.spec.ts:136"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/shared-floor-view.tsx:117"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Run shooting analysis",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/shooting.spec.ts:16"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/shooting.spec.ts:36"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/shooting.spec.ts:53"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/shooting.spec.ts:66"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/shooting.spec.ts:75"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/shooting.spec.ts:79"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/shooting.spec.ts:91"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/shooting.spec.ts:104"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/shooting-view.tsx:128"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Save evidence JSON",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/shared-floor.spec.ts:45"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/shared-floor.spec.ts:139"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/shooting.spec.ts:20"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/shooting.spec.ts:75"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/shooting.spec.ts:108"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/shared-floor-view.tsx:122",
+        "dashboard/components/shooting-view.tsx:137"
+      ],
+      "rendered_count": 2
+    },
+    {
+      "text": "Save investigation",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/saved-operations.spec.ts:32"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/saved-operations.spec.ts:38"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/save-operation.tsx:37"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Saved findings remain",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:108"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/assistant-history-settings.tsx:18",
+        "dashboard/components/assistant-history-settings.tsx:25",
+        "dashboard/components/threaded-assistant.tsx:342"
+      ],
+      "rendered_count": 3
+    },
+    {
+      "text": "Scenario output",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/advanced-research.spec.ts:50"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/advanced-research.spec.ts:55"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/route-polish.spec.ts:68"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/possession-calculator-view.tsx:16"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Schedule Rest",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/workbench.spec.ts:121"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/forecasts/page.tsx:19"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Scottie Barnes",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/conversation.spec.ts:8"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/table-interactions.spec.ts:100"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:205"
+        },
+        {
+          "kind": "unit",
+          "at": "dashboard/lib/investigation-tools.test.ts:383"
+        },
+        {
+          "kind": "unit",
+          "at": "dashboard/lib/investigation-tools.test.ts:387"
+        },
+        {
+          "kind": "unit",
+          "at": "dashboard/lib/measurements-crosswalk.test.ts:100"
+        },
+        {
+          "kind": "unit",
+          "at": "dashboard/lib/measurements-crosswalk.test.ts:160"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/ask-courtlens.tsx:16",
+        "dashboard/components/case-studies-view.tsx:102",
+        "dashboard/components/distributions-investigation-view.tsx:29",
+        "dashboard/components/similarity-investigation-view.tsx:19",
+        "dashboard/components/trends-investigation-view.tsx:21"
+      ],
+      "rendered_count": 5
+    },
+    {
+      "text": "Search",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/player-profile.spec.ts:6"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/compare/page.tsx:107",
+        "dashboard/app/design/page.tsx:9",
+        "dashboard/app/design/page.tsx:58",
+        "dashboard/app/design/page.tsx:295",
+        "dashboard/app/design/page.tsx:317",
+        "dashboard/app/design/page.tsx:319",
+        "dashboard/app/design/page.tsx:320",
+        "dashboard/app/design/page.tsx:321"
+      ],
+      "rendered_count": 191
+    },
+    {
+      "text": "Search player, team, or source note",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/finance.spec.ts:38"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/finance-workspace.tsx:76"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Search players, teams and pages",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "unit",
+          "at": "dashboard/components/ui/header.test.tsx:63"
+        },
+        {
+          "kind": "unit",
+          "at": "dashboard/components/ui/header.test.tsx:117"
+        },
+        {
+          "kind": "unit",
+          "at": "dashboard/components/ui/header.test.tsx:126"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/header-command-palette.spec.ts:91"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/stats-readability-search.spec.ts:69"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/global-lookup.tsx:18",
+        "dashboard/components/global-lookup.tsx:21",
+        "dashboard/components/ui/command-palette.tsx:528",
+        "dashboard/components/ui/header.tsx:712"
+      ],
+      "rendered_count": 4
+    },
+    {
+      "text": "SearchField",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "contract",
+          "at": "docs/design/design-language-v1.md:228"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/design/page.tsx:9",
+        "dashboard/app/design/page.tsx:295",
+        "dashboard/app/design/page.tsx:317",
+        "dashboard/components/ui/input.tsx:59",
+        "dashboard/components/ui/input.tsx:64",
+        "dashboard/components/ui/input.tsx:72"
+      ],
+      "rendered_count": 6
+    },
+    {
+      "text": "Season",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/conversation.spec.ts:63"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/entity-selection.spec.ts:79"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/entity-selection.spec.ts:83"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/route-polish.spec.ts:22"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:123"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:260"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/compare/page.tsx:202",
+        "dashboard/app/compare/page.tsx:205",
+        "dashboard/app/data-status/page.tsx:59",
+        "dashboard/app/design/page.tsx:330",
+        "dashboard/app/forecasts/page.tsx:17",
+        "dashboard/app/forecasts/page.tsx:23",
+        "dashboard/app/forecasts/page.tsx:24",
+        "dashboard/app/forecasts/page.tsx:43"
+      ],
+      "rendered_count": 129
+    },
+    {
+      "text": "SegmentedControl",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "contract",
+          "at": "docs/design/design-language-v1.md:228"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/design/page.tsx:13",
+        "dashboard/app/design/page.tsx:371",
+        "dashboard/app/design/page.tsx:429",
+        "dashboard/app/design/page.tsx:580",
+        "dashboard/components/ui/segmented-control.tsx:12",
+        "dashboard/components/ui/segmented-control.tsx:21",
+        "dashboard/components/ui/segmented-control.tsx:28"
+      ],
+      "rendered_count": 7
+    },
+    {
+      "text": "Selected game details",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/live.spec.ts:23"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/live.spec.ts:44"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/live.spec.ts:49"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/live-workspace.tsx:117"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Selected shot evidence",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/shooting.spec.ts:42"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/shooting-view.tsx:149"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Selection reliability bins and samples",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/advanced-research.spec.ts:25"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/research-results-view.tsx:58"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Send question",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/assistant-panel-real.spec.ts:24"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/assistant-panel-real.spec.ts:45"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/im07-agent.spec.ts:33"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:96"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:150"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:165"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:200"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:230"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:454"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:463"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:478"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:548"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:594"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/threaded-assistant.tsx:299"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "separate",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/shared-floor.spec.ts:76"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/compare/page.tsx:134",
+        "dashboard/app/learning/page.tsx:15",
+        "dashboard/app/methodology/page.tsx:62",
+        "dashboard/app/methodology/page.tsx:63",
+        "dashboard/components/distributions-investigation-view.tsx:725",
+        "dashboard/components/finance-contract-drawer.tsx:33",
+        "dashboard/components/finance-contract-drawer.tsx:35",
+        "dashboard/components/finance-workspace.tsx:50"
+      ],
+      "rendered_count": 20
+    },
+    {
+      "text": "Sequence evidence",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/shooting.spec.ts:69"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/shooting-view.tsx:154"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Served impact ratings",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/im06-real.spec.ts:44"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/research/rapm/page.tsx:29"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Settings",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "unit",
+          "at": "dashboard/components/ui/header.test.tsx:104"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/header-command-palette.spec.ts:123"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/route-polish.spec.ts:34"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/workbench.spec.ts:22"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/settings/loading.tsx:3",
+        "dashboard/app/settings/page.tsx:5",
+        "dashboard/app/settings/page.tsx:7",
+        "dashboard/app/settings/page.tsx:11",
+        "dashboard/app/settings/page.tsx:14",
+        "dashboard/app/settings/page.tsx:38",
+        "dashboard/app/settings/page.tsx:55",
+        "dashboard/app/settings/page.tsx:65"
+      ],
+      "rendered_count": 17
+    },
+    {
+      "text": "settings",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/dl07-evidence.spec.ts:17"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/design/page.tsx:87",
+        "dashboard/app/design/page.tsx:305",
+        "dashboard/app/settings/page.tsx:5",
+        "dashboard/app/settings/page.tsx:7",
+        "dashboard/components/ask-courtlens.tsx:101",
+        "dashboard/components/assistant-history-settings.tsx:17",
+        "dashboard/components/manage-views-modal.tsx:303",
+        "dashboard/components/nav-rail.tsx:31"
+      ],
+      "rendered_count": 19
+    },
+    {
+      "text": "SettingsLoading",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "unit",
+          "at": "dashboard/components/ui/loading-skeletons.test.tsx:43"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/settings/loading.tsx:3"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Shai Gilgeous-Alexander",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "unit",
+          "at": "dashboard/lib/scatter-plot-math.test.ts:54"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/design/page.tsx:462"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Shooting profile",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/shooting.spec.ts:90"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/shooting.spec.ts:92"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/shooting-view.tsx:12"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Shooting result",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/shooting.spec.ts:79"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/shooting-view.tsx:132"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Shot facts",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/shooting.spec.ts:105"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/shooting.spec.ts:106"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/shooting-view.tsx:147"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "shot-aftermath",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/dl06-evidence.spec.ts:15"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/shot-aftermath/page.tsx:5",
+        "dashboard/components/shooting-view.tsx:12",
+        "dashboard/components/shooting-view.tsx:13",
+        "dashboard/components/shooting-view.tsx:114",
+        "dashboard/components/shooting-view.tsx:153",
+        "dashboard/components/ui/header.tsx:245",
+        "dashboard/components/ui/header.tsx:318",
+        "dashboard/lib/route-availability.ts:13"
+      ],
+      "rendered_count": 9
+    },
+    {
+      "text": "shot-profile-twin",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/dl06-evidence.spec.ts:14"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/shooting-view.tsx:13",
+        "dashboard/components/ui/header.tsx:206",
+        "dashboard/components/ui/header.tsx:300",
+        "dashboard/components/workbench-player-profile.tsx:219",
+        "dashboard/components/workbench-player-profile.tsx:323",
+        "dashboard/lib/route-availability.ts:13"
+      ],
+      "rendered_count": 6
+    },
+    {
+      "text": "Show fewer",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:532"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/agent-answer.tsx:94"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Show the registered points forecast",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:369"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/lib/assistant-chat.ts:13"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Side by side",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/comparison-evaluation.spec.ts:21"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/comparison-evaluation.spec.ts:53"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/compare/page.tsx:217"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Sign in",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/entity-selection.spec.ts:134"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/planner-client.tsx:51",
+        "dashboard/components/planner-client.tsx:165"
+      ],
+      "rendered_count": 2
+    },
+    {
+      "text": "similarity",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/dl06-evidence.spec.ts:20"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/design/page.tsx:377",
+        "dashboard/app/research/similarity/page.tsx:3",
+        "dashboard/app/teams/[id]/page.tsx:553",
+        "dashboard/components/ask-courtlens.tsx:18",
+        "dashboard/components/conversation-result.tsx:13",
+        "dashboard/components/conversation-result.tsx:18",
+        "dashboard/components/conversation-result.tsx:24",
+        "dashboard/components/hybrid-answer.tsx:31"
+      ],
+      "rendered_count": 33
+    },
+    {
+      "text": "Slate date",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/live.spec.ts:55"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/live-workspace.tsx:103"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Source assignment matchups",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/shooting.spec.ts:24"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/shooting-view.tsx:12"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Source Lineage",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/workbench.spec.ts:68"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/lineage-drawer.tsx:55"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "source-book tracker",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/finance.spec.ts:31"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/finance-workspace.tsx:50"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Stale",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/live.spec.ts:23"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/live-workspace.tsx:11"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Standard Height",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/stats-preview.spec.ts:53"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/workbench-player-explorer.tsx:1017"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "stat-line-shift",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/dl06-evidence.spec.ts:23"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/shared-floor-view.tsx:94",
+        "dashboard/components/ui/header.tsx:213",
+        "dashboard/components/ui/header.tsx:306",
+        "dashboard/lib/route-availability.ts:12"
+      ],
+      "rendered_count": 4
+    },
+    {
+      "text": "Statistics filters",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/stats-preview.spec.ts:94"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/workbench-player-explorer.tsx:566"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Stats",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "unit",
+          "at": "dashboard/components/ui/header.test.tsx:48"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/conversation.spec.ts:47"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/workbench.spec.ts:12"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/design/page.tsx:48",
+        "dashboard/app/design/page.tsx:79",
+        "dashboard/app/design/page.tsx:585",
+        "dashboard/app/design/page.tsx:635",
+        "dashboard/app/players/[id]/loading.tsx:28",
+        "dashboard/app/players/[id]/page.tsx:16",
+        "dashboard/app/players/[id]/page.tsx:155",
+        "dashboard/app/players/page.tsx:2"
+      ],
+      "rendered_count": 132
+    },
+    {
+      "text": "stats",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/dl04-evidence.spec.ts:14"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/dl08-evidence.spec.ts:81"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/dl08-evidence.spec.ts:207"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/design/page.tsx:48",
+        "dashboard/app/design/page.tsx:73",
+        "dashboard/app/design/page.tsx:79",
+        "dashboard/app/design/page.tsx:585",
+        "dashboard/app/design/page.tsx:635",
+        "dashboard/app/manifest.ts:6",
+        "dashboard/app/page.tsx:22",
+        "dashboard/app/players/[id]/page.tsx:257"
+      ],
+      "rendered_count": 372
+    },
+    {
+      "text": "Stats Explorer",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "unit",
+          "at": "dashboard/components/ui/primitives.test.tsx:432"
+        },
+        {
+          "kind": "unit",
+          "at": "dashboard/components/ui/primitives.test.tsx:437"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/shared-floor.spec.ts:97"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/workbench.spec.ts:25"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/design/page.tsx:79",
+        "dashboard/app/stats/page.tsx:5",
+        "dashboard/components/capability-notice.tsx:26",
+        "dashboard/components/case-studies-view.tsx:216",
+        "dashboard/components/stats-workspace.tsx:13",
+        "dashboard/components/workbench-player-explorer.tsx:416"
+      ],
+      "rendered_count": 6
+    },
+    {
+      "text": "StatsLoading",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "unit",
+          "at": "dashboard/components/ui/loading-skeletons.test.tsx:28"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/design/page.tsx:48",
+        "dashboard/app/design/page.tsx:635",
+        "dashboard/app/stats/loading.tsx:3"
+      ],
+      "rendered_count": 3
+    },
+    {
+      "text": "Status scope",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/finance.spec.ts:39"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/finance-workspace.tsx:63"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Submit",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "unit",
+          "at": "dashboard/components/ui/primitives.test.tsx:103"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/ask-courtlens.tsx:111",
+        "dashboard/components/finance-contract-drawer.tsx:36",
+        "dashboard/components/finance-import.tsx:16",
+        "dashboard/components/finance-workspace.tsx:52",
+        "dashboard/components/global-lookup.tsx:21",
+        "dashboard/components/live-workspace.tsx:105",
+        "dashboard/components/lookup-input.tsx:46",
+        "dashboard/components/lookup-input.tsx:64"
+      ],
+      "rendered_count": 31
+    },
+    {
+      "text": "Swap players",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/comparison-evaluation.spec.ts:26"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/compare-selector.tsx:34"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Target",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "unit",
+          "at": "dashboard/components/ui/primitives.test.tsx:366"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/forecasts/page.tsx:148",
+        "dashboard/app/forecasts/page.tsx:483",
+        "dashboard/app/methodology/page.tsx:133",
+        "dashboard/components/conversation-result.tsx:18",
+        "dashboard/components/conversation-result.tsx:20",
+        "dashboard/components/conversation-result.tsx:21",
+        "dashboard/components/conversation-result.tsx:37",
+        "dashboard/components/distributions-investigation-view.tsx:407"
+      ],
+      "rendered_count": 40
+    },
+    {
+      "text": "Tatum",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "unit",
+          "at": "dashboard/lib/query-url.test.ts:16"
+        },
+        {
+          "kind": "unit",
+          "at": "dashboard/lib/replica-nav.test.ts:28"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/distributions-investigation-view.tsx:31",
+        "dashboard/components/similarity-investigation-view.tsx:21",
+        "dashboard/components/trends-investigation-view.tsx:23"
+      ],
+      "rendered_count": 3
+    },
+    {
+      "text": "Team Explorer",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/workbench.spec.ts:75"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/teams/page.tsx:10",
+        "dashboard/app/teams/page.tsx:65"
+      ],
+      "rendered_count": 2
+    },
+    {
+      "text": "team-compare",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/dl04-evidence.spec.ts:19"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/team-compare/page.tsx:5",
+        "dashboard/app/teams/[id]/page.tsx:145",
+        "dashboard/app/teams/[id]/page.tsx:558",
+        "dashboard/components/playoffs-series-view.tsx:104",
+        "dashboard/components/team-compare-view.tsx:72",
+        "dashboard/components/team-compare-view.tsx:148",
+        "dashboard/components/team-compare-view.tsx:150",
+        "dashboard/components/team-compare-view.tsx:153"
+      ],
+      "rendered_count": 151
+    },
+    {
+      "text": "team-detail",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/dl04-evidence.spec.ts:18"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/dl08-evidence.spec.ts:83"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/roster-allocation-view.tsx:44"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "TeamDetailLoading",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "unit",
+          "at": "dashboard/components/ui/loading-skeletons.test.tsx:32"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/teams/[id]/loading.tsx:3"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "teams",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/dl04-evidence.spec.ts:17"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/design/page.tsx:81",
+        "dashboard/app/design/page.tsx:321",
+        "dashboard/app/players/[id]/page.tsx:122",
+        "dashboard/app/team-compare/page.tsx:55",
+        "dashboard/app/team-compare/page.tsx:70",
+        "dashboard/app/team-compare/page.tsx:91",
+        "dashboard/app/team-compare/page.tsx:110",
+        "dashboard/app/team-compare/page.tsx:114"
+      ],
+      "rendered_count": 143
+    },
+    {
+      "text": "Teams",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/header-command-palette.spec.ts:165"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/design/page.tsx:81",
+        "dashboard/app/team-compare/page.tsx:7",
+        "dashboard/app/team-compare/page.tsx:80",
+        "dashboard/app/teams/[id]/page.tsx:151",
+        "dashboard/app/teams/loading.tsx:3",
+        "dashboard/app/teams/page.tsx:6",
+        "dashboard/app/teams/page.tsx:15",
+        "dashboard/app/teams/page.tsx:26"
+      ],
+      "rendered_count": 49
+    },
+    {
+      "text": "TeamsLoading",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "unit",
+          "at": "dashboard/components/ui/loading-skeletons.test.tsx:31"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/teams/loading.tsx:3"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "tierlist",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/dl07-evidence.spec.ts:20"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/ui/header.tsx:222",
+        "dashboard/components/ui/header.tsx:309"
+      ],
+      "rendered_count": 2
+    },
+    {
+      "text": "TierListLoading",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "unit",
+          "at": "dashboard/components/ui/loading-skeletons.test.tsx:44"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/tierlist/loading.tsx:3"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Together players",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/entity-selection.spec.ts:66"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/entity-selection.spec.ts:82"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/shared-floor-view.tsx:111"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Toggle navigation drawer",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "unit",
+          "at": "dashboard/components/ui/header.test.tsx:132"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/header-command-palette.spec.ts:156"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/header-command-palette.spec.ts:195"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/route-polish.spec.ts:13"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/ui/header.tsx:869"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Toronto Raptors",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/live.spec.ts:6"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/workbench.spec.ts:58"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/workbench.spec.ts:76"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/workbench.spec.ts:85"
+        },
+        {
+          "kind": "unit",
+          "at": "dashboard/lib/assistant-chat.test.ts:68"
+        },
+        {
+          "kind": "unit",
+          "at": "dashboard/lib/measurements-crosswalk.test.ts:128"
+        },
+        {
+          "kind": "unit",
+          "at": "dashboard/lib/team-analytics.test.ts:50"
+        },
+        {
+          "kind": "unit",
+          "at": "dashboard/lib/team-analytics.test.ts:139"
+        },
+        {
+          "kind": "unit",
+          "at": "dashboard/lib/team-analytics.test.ts:241"
+        },
+        {
+          "kind": "unit",
+          "at": "dashboard/lib/team-analytics.test.ts:274"
+        },
+        {
+          "kind": "unit",
+          "at": "dashboard/lib/team-explorer.test.ts:43"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/case-studies-view.tsx:82",
+        "dashboard/components/case-studies-view.tsx:166",
+        "dashboard/lib/finance-teams.ts:125",
+        "dashboard/lib/stats-presets.ts:87"
+      ],
+      "rendered_count": 4
+    },
+    {
+      "text": "Total Points",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "unit",
+          "at": "dashboard/lib/investigation-tools.test.ts:85"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/case-studies-view.tsx:83",
+        "dashboard/components/trends-investigation-view.tsx:659",
+        "dashboard/lib/stats-presets.ts:327",
+        "dashboard/lib/stats-presets.ts:421"
+      ],
+      "rendered_count": 4
+    },
+    {
+      "text": "Totals",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/table-interactions.spec.ts:69"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/workbench-player-profile.tsx:530",
+        "dashboard/lib/stats-presets.ts:99"
+      ],
+      "rendered_count": 2
+    },
+    {
+      "text": "trends",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/dl06-evidence.spec.ts:19"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/design/page.tsx:376",
+        "dashboard/app/players/[id]/page.tsx:252",
+        "dashboard/app/players/[id]/page.tsx:253",
+        "dashboard/app/research/trends/page.tsx:3",
+        "dashboard/components/case-studies-view.tsx:87",
+        "dashboard/components/case-studies-view.tsx:92",
+        "dashboard/components/stats-detail-drawer.tsx:174",
+        "dashboard/components/stats-detail-drawer.tsx:176"
+      ],
+      "rendered_count": 14
+    },
+    {
+      "text": "Unable to compare",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/comparison-evaluation.spec.ts:66"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/compare/page.tsx:75"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Unpin player preview",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/stats-preview.spec.ts:43"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/stats-preview.spec.ts:54"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/stats-preview-rail.tsx:31"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Verified",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "unit",
+          "at": "dashboard/components/ui/primitives.test.tsx:262"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/playoffs/page.tsx:62",
+        "dashboard/app/teams/page.tsx:67",
+        "dashboard/components/ask-courtlens.tsx:114",
+        "dashboard/components/saved-operation-detail.tsx:28",
+        "dashboard/components/shooting-view.tsx:157",
+        "dashboard/components/workbench-portrait-settings.tsx:83"
+      ],
+      "rendered_count": 6
+    },
+    {
+      "text": "Verify reproduction without AI",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/saved-operations.spec.ts:47"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/saved-operations.spec.ts:50"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/saved-operation-detail.tsx:60"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Victor Wembanyama",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/im06-real.spec.ts:26"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/im07-agent.spec.ts:41"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/lib/assistant-chat.ts:9",
+        "dashboard/lib/assistant-chat.ts:14"
+      ],
+      "rendered_count": 2
+    },
+    {
+      "text": "View CourtLens result",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/im07-agent.spec.ts:39"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:523"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/agent-answer.tsx:24"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "View Full Profile →",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/workbench.spec.ts:48"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/stats-detail-drawer.tsx:140"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Week starts",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/entity-selection.spec.ts:135"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/planner-client.tsx:177"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "What do you want to know?",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:179"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:422"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:435"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:440"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/threaded-assistant.tsx:325"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Who won MVP last season",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:509"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/lib/assistant-chat.ts:11"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "wingspan",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/dl06-evidence.spec.ts:24"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/wingspan/page.tsx:1",
+        "dashboard/app/wingspan/page.tsx:6",
+        "dashboard/components/research-results-view.tsx:66",
+        "dashboard/components/ui/header.tsx:248",
+        "dashboard/components/ui/header.tsx:319",
+        "dashboard/components/wingspan-explorer-view.tsx:23",
+        "dashboard/components/wingspan-explorer-view.tsx:24",
+        "dashboard/components/wingspan-explorer-view.tsx:26"
+      ],
+      "rendered_count": 27
+    },
+    {
+      "text": "Workspace Navigation",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/workbench.spec.ts:11"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/ui/header.tsx:390"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "WowyLoading",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "unit",
+          "at": "dashboard/components/ui/loading-skeletons.test.tsx:38"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/app/wowy/loading.tsx:3"
+      ],
+      "rendered_count": 1
+    },
+    {
+      "text": "Your question",
+      "class": "label",
+      "required_by": [
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/assistant-panel-real.spec.ts:22"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/im07-agent.spec.ts:32"
+        },
+        {
+          "kind": "e2e",
+          "at": "dashboard/e2e/threaded-assistant.spec.ts:92"
+        }
+      ],
+      "rendered_at": [
+        "dashboard/components/save-operation.tsx:32",
+        "dashboard/components/threaded-assistant.tsx:27",
+        "dashboard/components/threaded-assistant.tsx:297"
+      ],
+      "rendered_count": 3
+    }
+  ]
+}
