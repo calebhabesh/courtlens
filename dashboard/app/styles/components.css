@@ -91,9 +91,11 @@
   z-index: var(--z-header);
   height: var(--header-height);
   width: 100%;
-  /* The centre track takes only the width the nav and actions leave, so the pill cannot overlap them. */
+  /* Equal flexible side tracks that never shrink below their content: the search pill is centred
+     on the page whenever the nav leaves room (about 1740px and wider), otherwise it sits as close
+     to the centre as the nav allows. It can never overlap the nav or the actions. */
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-columns: minmax(max-content, 1fr) minmax(0, 380px) minmax(max-content, 1fr);
   align-items: center;
   column-gap: var(--space-4);
   padding: 0 var(--space-6);
