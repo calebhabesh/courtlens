@@ -1,12 +1,13 @@
 // FO00 baseline: screenshots every route at 1440x900 and 390x844 and records per-page measurements.
 // Usage: node scripts/capture_fo00_baseline.cjs [baseURL] [route,route,...]
-//   baseURL defaults to http://127.0.0.1:3100. With a route list, only those routes are captured and
+//   baseURL defaults to http://localhost:3100. With a route list, only those routes are captured and
 //   merged into the existing measurements.json (no discovery, no overlay captures).
 const path = require("path");
 const fs = require("fs");
 const { chromium } = require(path.join(__dirname, "../dashboard/node_modules/@playwright/test"));
 
-const BASE = process.argv[2] || "http://127.0.0.1:3100";
+// Use localhost: the API CORS allowlist (COURTLENS_CORS_ORIGINS) does not include 127.0.0.1.
+const BASE = process.argv[2] || "http://localhost:3100";
 const ONLY = process.argv[3] ? process.argv[3].split(",") : null;
 const OUT = path.join(__dirname, "../docs/evidence/fo00/before");
 const VIEWPORTS = { desktop: { width: 1440, height: 900 }, phone: { width: 390, height: 844 } };
@@ -19,8 +20,10 @@ const STATIC_ROUTES = [
   "/investigations", "/research/ask", "/research/case-studies", "/research/trends", "/research/distributions",
   "/research/similarity", "/shot-profile-twin", "/research/adjusted-shooting", "/research/expected-shots",
   "/shot-aftermath", "/research/rapm", "/six-factor-rapm", "/research/defensive-matchups", "/research/epv",
-  "/research/operation",
+  "/research/operation", "/", "/live/2026-04-12",
 ];
+// Used when a dynamic route has no link to discover on its listing page.
+const FALLBACK = { "/contracts/[team]": "/contracts/BOS" };
 // Dynamic routes: [pattern, page to discover a sample link on, href regex]
 const DYNAMIC = [
   ["/players/[id]", "/stats", /^\/players\/\d+/],
@@ -116,7 +119,7 @@ async function captureOnly(browser, outFile) {
       await discover.goto(BASE + from, { timeout: 60000 });
       await settle(discover);
       const hrefs = await discover.$$eval("a[href]", (as) => as.map((a) => a.getAttribute("href")));
-      const href = hrefs.find((h) => h && re.test(h));
+      const href = hrefs.find((h) => h && re.test(h)) || FALLBACK[pattern];
       results.dynamic_samples[pattern] = href || null;
       if (href) routes.push(href);
     } catch (e) {
