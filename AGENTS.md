@@ -16,6 +16,8 @@ For RAPM, on/off, six-factor, defensive and other impact metrics computed from p
 
 For the CourtLoad → CourtLens rename (package, CLI, env vars, database) or any dashboard styling, layout, header or animation work, read the [refresh handoff](docs/courtlens-refresh-plan.md) and the [design language contract](docs/design/design-language-v1.md) first. Record evidence in the [refresh progress log](docs/courtlens-refresh-progress.md). Never rename frozen `courtload-…-vN` hash identifiers.
 
+For any page layout, page structure, filter bar, header/search/drawer, copy density, imagery or icon work, read the [frontend overhaul handoff](docs/frontend-overhaul-plan.md) first. It supersedes the refresh and freeze handoffs for page layout and structure, and keeps all analytical, identity and data contracts. Execute its blocks in order, stop at its owner review gates, and record evidence (including the glance test) in the [overhaul progress log](docs/frontend-overhaul-progress.md).
+
 ## Architecture and Stack
 
 - **Backend:** Python 3.12+ / FastAPI with typed Pydantic models and SQLAlchemy 2.0.
