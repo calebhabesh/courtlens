@@ -534,6 +534,16 @@ const mockPlayoffSeriesDetail = {
 
 createServer(async (request, response) => {
   const url = new URL(request.url ?? "/", "http://127.0.0.1:4100");
+  // Browser JSON POSTs (for example Showcase rank queries) send a CORS preflight, as the real API allows.
+  if (request.method === "OPTIONS") {
+    response.writeHead(204, {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+      "Access-Control-Allow-Headers": "content-type"
+    });
+    response.end();
+    return;
+  }
   if (url.pathname === "/api/workbench/lookup") {
     const q = (url.searchParams.get("q") || "").toLowerCase();
     const kinds = (url.searchParams.get("kinds") || "player,team,page").split(",");

@@ -1,0 +1,204 @@
+{
+  "base": "http://localhost:3100",
+  "measuredAt": "2026-10-09T16:38:37.602Z",
+  "views": {
+    "overall-1440": {
+      "viewport": 1440,
+      "header": "Player Showcase",
+      "cardOffsetFromMain": 0,
+      "playbackOffsetFromCard": 0,
+      "cardTop": 227,
+      "cardWidth": 480,
+      "horizontalScroll": false,
+      "ranks": [
+        "1st",
+        "36th",
+        "4th",
+        "5th"
+      ],
+      "percentiles": [
+        "99th pct",
+        "94th pct",
+        "99th pct",
+        "99th pct",
+        "77th pct",
+        "66th pct"
+      ],
+      "contextLine": "2025-26 Regular Season · Through Apr 12, 2026",
+      "subtitleLines": 1,
+      "actionsOnTitleRow": true,
+      "headshots": 28,
+      "glyphs": 0,
+      "codeRules": false,
+      "loadButtons": 0,
+      "controlHeights": [
+        40,
+        40,
+        40,
+        40,
+        40
+      ]
+    },
+    "scoring-1440": {
+      "viewport": 1440,
+      "header": "Player Showcase",
+      "cardOffsetFromMain": 0,
+      "playbackOffsetFromCard": 0,
+      "cardTop": 227,
+      "cardWidth": 480,
+      "horizontalScroll": false,
+      "ranks": [
+        "1st"
+      ],
+      "percentiles": [
+        "99th pct",
+        "61st pct",
+        "63rd pct",
+        "51st pct",
+        "66th pct",
+        "77th pct"
+      ],
+      "contextLine": "2025-26 Regular Season · Through Apr 12, 2026",
+      "subtitleLines": 1,
+      "actionsOnTitleRow": true,
+      "headshots": 28,
+      "glyphs": 0,
+      "codeRules": false,
+      "loadButtons": 0,
+      "controlHeights": [
+        40,
+        40,
+        40,
+        40,
+        40
+      ]
+    },
+    "next-1440": {
+      "viewport": 1440,
+      "header": "Player Showcase",
+      "cardOffsetFromMain": 0,
+      "playbackOffsetFromCard": 0,
+      "cardTop": 227,
+      "cardWidth": 480,
+      "horizontalScroll": false,
+      "ranks": [
+        "2nd",
+        "82nd",
+        "81st",
+        "56th"
+      ],
+      "percentiles": [
+        "99th pct",
+        "86th pct",
+        "75th pct",
+        "86th pct",
+        "81st pct",
+        "90th pct"
+      ],
+      "contextLine": "2025-26 Regular Season · Through Apr 12, 2026",
+      "subtitleLines": 1,
+      "actionsOnTitleRow": true,
+      "headshots": 28,
+      "glyphs": 0,
+      "codeRules": false,
+      "loadButtons": 0,
+      "controlHeights": [
+        40,
+        40,
+        40,
+        40,
+        40
+      ]
+    },
+    "deep-link-1440": {
+      "viewport": 1440,
+      "header": "Player Showcase",
+      "cardOffsetFromMain": 0,
+      "playbackOffsetFromCard": 0,
+      "cardTop": 227,
+      "cardWidth": 480,
+      "horizontalScroll": false,
+      "ranks": [
+        "81st",
+        "41st",
+        "20th"
+      ],
+      "percentiles": [
+        "86th pct",
+        "71st pct",
+        "93rd pct",
+        "97th pct",
+        "25th pct",
+        "21st pct"
+      ],
+      "contextLine": "2025-26 Regular Season · Through Apr 12, 2026",
+      "subtitleLines": 1,
+      "actionsOnTitleRow": true,
+      "headshots": 29,
+      "glyphs": 0,
+      "codeRules": false,
+      "loadButtons": 0,
+      "controlHeights": [
+        40,
+        40,
+        40,
+        40,
+        40
+      ],
+      "selected": "Derrick White"
+    },
+    "overall-390": {
+      "viewport": 390,
+      "header": "Player Showcase",
+      "cardOffsetFromMain": 0,
+      "playbackOffsetFromCard": 0,
+      "cardTop": 259,
+      "cardWidth": 366,
+      "horizontalScroll": false,
+      "ranks": [
+        "1st",
+        "36th",
+        "4th",
+        "5th"
+      ],
+      "percentiles": [
+        "99th pct",
+        "94th pct",
+        "99th pct",
+        "99th pct",
+        "77th pct",
+        "66th pct"
+      ],
+      "contextLine": "2025-26 Regular Season · Through Apr 12, 2026",
+      "subtitleLines": 1,
+      "actionsOnTitleRow": false,
+      "headshots": 28,
+      "glyphs": 0,
+      "codeRules": false,
+      "loadButtons": 0,
+      "controlHeights": [
+        40,
+        40
+      ]
+    }
+  },
+  "exports": {
+    "png": {
+      "filename": "shai_gilgeous_alexander-showcase-scoring.png",
+      "bytes": 245648,
+      "pngSignature": true
+    },
+    "svg": {
+      "filename": "shai_gilgeous_alexander-showcase-scoring.svg",
+      "bytes": 250409,
+      "hasContextLine": true,
+      "inlinedImages": 2,
+      "externalImages": 0,
+      "cssVariables": false
+    }
+  },
+  "keyboardAdvance": {
+    "before": "1 / 25",
+    "after": "2 / 25"
+  }
+}

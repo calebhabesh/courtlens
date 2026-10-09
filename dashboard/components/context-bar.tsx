@@ -4,6 +4,7 @@ import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 
 import { CountChip, FilterBar } from "@/components/ui/filter-bar";
+import { phaseLabel } from "@/lib/scope-labels";
 import { DataDetailsButton } from "@/components/ui/data-details";
 import { DatePicker } from "@/components/ui/date-picker";
 import { Field } from "@/components/ui/field";
@@ -30,13 +31,6 @@ interface ContextBarProps {
   filters?: React.ReactNode;
 }
 
-const PHASES = [
-  { value: "regular_season", label: "Regular Season" },
-  { value: "playoffs", label: "Playoffs" },
-  { value: "preseason", label: "Preseason" },
-  { value: "play_in", label: "Play-in" },
-  { value: "cup_final", label: "NBA Cup final" }
-];
 const WINDOWS = [
   { value: "season", label: "Season-to-date" },
   { value: "last_10", label: "Last 10 appearances" },
@@ -93,7 +87,6 @@ export function ContextBar({
     [router, pathname, searchParams, releaseId, catalog, phase, season, allowedPhases]
   );
 
-  const phaseLabel = (value: string) => PHASES.find((p) => p.value === value)?.label ?? value;
   const throughDate = /^\d{4}-\d{2}-\d{2}$/.test(beforeDate) ? throughDateFromBefore(beforeDate) : "";
 
   const scope = (

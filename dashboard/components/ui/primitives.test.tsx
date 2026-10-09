@@ -345,6 +345,21 @@ describe("Menu, Popover and Tooltip Primitives", () => {
     expect(trigger.getAttribute("aria-expanded")).toBe("false");
   });
 
+  it("closes Menu after an item is chosen and returns focus to the trigger", () => {
+    let chosen = 0;
+    render(
+      <Menu trigger={<span>Export</span>}>
+        <MenuItem label="PNG image" onClick={() => { chosen += 1; }} />
+      </Menu>
+    );
+    const trigger = screen.getByRole("button", { name: "Export" });
+    fireEvent.click(trigger);
+    fireEvent.click(screen.getByRole("menuitem", { name: "PNG image" }));
+    expect(chosen).toBe(1);
+    expect(trigger.getAttribute("aria-expanded")).toBe("false");
+    expect(document.activeElement).toBe(trigger);
+  });
+
   it("opens Popover on click and toggles visibility", () => {
     render(
       <Popover trigger={<span>Open Popover</span>}>

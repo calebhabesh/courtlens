@@ -53,6 +53,15 @@ recorded owner approval.
   should measure the gutter, not only label/control alignment.
 - `components/nav-rail.tsx` and `components/workbench-shell.tsx` were dead code and were removed.
 
+## FO04 findings that change later blocks
+
+- `foundation` beats `pages`, so page CSS cannot adjust primitives; primitive defaults must already
+  match the plan (FO04 fixed header actions wrapping and segmented-control height that way).
+- The shared `Menu` did not close after an item was chosen; fixed for every menu.
+- SVG exports with images must inline them (`inlineSvgImages`) and fetch with `cache: "no-store"`.
+- Ranks are not in the API; FO04 reads them from the server's best-first ordering (top 100).
+  Profiles (FO09) and Compare (FO11) can reuse `useCohortRanks` and `lib/percentile-display.ts`.
+
 ## Owner gates
 
 | Gate | After | Status | Notes |
@@ -68,7 +77,7 @@ recorded owner approval.
 | FO01 | implemented_unverified | 2026-10-09. [Evidence](evidence/fo01/README.md): PageShell + 5 templates, PageHeader, FilterBar (ContextBar migrated; bottom sheet <768px), Field, DatePicker + `formatDate`, ChipGroup, segmented variants, GatedNote, Data details (lineage drawer inside it), PlayerIdentity/TeamIdentity/EntityChip + team accents, StatTile, template skeletons, Advanced mode. Lint 0, typecheck pass, Vitest 43 files/314 tests; Playwright 231 pass/15 skip/1 pre-existing race (motion reduced-motion, reproduces on FO00). Glance items 2/6/7/8/9/10 pass on measured pages (`glance.json`). Drawer-blur root cause confirmed and fixed (scrim z-index above panel). Awaits owner gate 1. |
 | FO02 | implemented_unverified | 2026-10-09. [Evidence](evidence/fo02/README.md): hypothesis tested first (synthetic reproduction confirms the mechanism; the observed bugs had other causes, all fixed). Shared `OverlayPortal` for Drawer/Modal/palettes/hotkeys; one 640px search modal with Players/Teams/Pages/Recent; hamburger only below 1280px; `⋯` holds the D9 links; nav regrouped to FO07 targets from `lib/nav-model.ts`. Re-test: 12/12 overlay cases pass, scrolled and unscrolled, at 1440/1280/1024/390. Lint 0, typecheck pass, Vitest 45 files/325 tests, Playwright 232 pass/15 skip/0 fail. Awaits owner gate 1. |
 | FO03 | implemented_unverified | 2026-10-09. [Evidence](evidence/fo03/README.md): 3 direct Lucide files and 151 glyph/emoji occurrences in 37 files moved to the wrapper; sizes limited to 14/16/20 by type; ESLint bans `lucide-react` outside the wrapper and glyph/emoji ranges in JSX text, string literals and template strings (3 reasoned exceptions). Rendered: 0 glyphs on all 54 routes (FO00: 382), 0 Lucide SVGs outside the wrapper. Design language documents icon sizes and colors. Also fixed the FO01 filter-bar gutter regression. Lint 0, typecheck pass, Vitest 46 files/327 tests, Playwright 232 pass/15 skip/0 fail. Awaits owner gate 1. |
-| FO04 | planned | |
+| FO04 | implemented_unverified | 2026-10-09. [Evidence](evidence/fo04/README.md): Showcase rebuilt on the Board template: title row with search and one Export menu, Focus in the filter bar, SVG card with headshot, logo, team accent, value/rank/percentile per stat and one context line, centered playback (0px offset at both widths), rail with icon actions and roster. Percentiles from the Stats query and cohort; ranks from the server ordering; `?playerId=` deep link fixed; exports self-contained. Glance test passes at 1440 and 390. Lint 0, typecheck pass, Vitest 48 files/333 tests, Playwright 235 pass/15 skip/0 fail. Reviewed at gate 2 after FO05. |
 | FO05 | planned | |
 | FO06 | planned | |
 | FO07 | planned | |

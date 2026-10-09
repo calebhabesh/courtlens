@@ -36,7 +36,7 @@ export const NAV_MENUS: NavMenu[] = [
     groups: [{ items: [
       { label: "Player Directory", href: "/players" },
       { label: "Recent Games", href: "/last-games" },
-      { label: "Showcase Cards", href: "/showcase" },
+      { label: "Player Showcase", href: "/showcase" },
       { label: "Ranking Boards", href: "/rankings" },
       { label: "Tier Lists", href: "/tierlist" },
       { label: "Similar Players", href: "/research/similarity" },
