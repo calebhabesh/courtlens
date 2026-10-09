@@ -1794,7 +1794,6 @@
 .advanced-research .panel > * + * { margin-top: var(--space-4); }
 .availability-reason { display: block; white-space: normal; color: var(--color-text-secondary); font-size: var(--text-xs); line-height: 1.5; margin-top: var(--space-1); }
 .availability-menu { max-width: min(420px, calc(100vw - 32px)); max-height: 60vh; overflow-y: auto; }
-.replica-mobile-drawer { max-height: 70vh; overflow-y: auto; }
 .panel details, details.panel { overflow-wrap: anywhere; }
 @media (max-width: 600px) {
   .advanced-research { padding: var(--space-4); }

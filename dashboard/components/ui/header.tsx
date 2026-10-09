@@ -16,18 +16,7 @@ import { HotkeysModal } from "../hotkeys-modal";
 import { getSharedCatalog, routeAvailability } from "@/lib/route-availability";
 import type { WorkbenchCatalog } from "@/lib/types";
 import { buildPreservedContextUrl } from "@/lib/query-url";
-
-interface NavDropdownItem {
-  label: string;
-  href: string;
-  badge?: string;
-  gated?: boolean;
-}
-
-interface NavSection {
-  title: string;
-  items: NavDropdownItem[];
-}
+import { MORE_LINKS, NAV_MENUS, STATS_LINK, activeNavSection, analyticalNavItems } from "@/lib/nav-model";
 
 export function Header() {
   const pathname = usePathname();
@@ -191,137 +180,21 @@ export function Header() {
     setMoreMenuOpen(false);
   };
 
-  // Nav menus definition
-  const liveItems: NavDropdownItem[] = [
-    { label: "Live Scoreboard", href: "/live" },
-    { label: "Historical Finals", href: "/live?live_mode=history" },
-    { label: "Playoff Series", href: "/playoffs" },
-  ];
-
-  const playersItems: NavDropdownItem[] = [
-    { label: "Recent Games", href: "/last-games" },
-    { label: "Showcase Cards", href: "/showcase" },
-    { label: "Player Directory", href: "/players" },
-    { label: "Statistical Peers", href: "/research/similarity" },
-    { label: "Shot-Profile Twins", href: "/shot-profile-twin" },
-    { label: "Ranking Boards", href: "/rankings" },
-  ];
-
-  const teamsItems: NavDropdownItem[] = [
-    { label: "Team Stats & Cohorts", href: "/teams" },
-    { label: "Roster Shapes", href: "/roster-shapes" },
-    { label: "Teammate Stat Shift", href: "/stat-line-shift" },
-    { label: "Contracts & Payroll", href: "/contracts" },
-    { label: "Free Agency Tracker", href: "/free-agency" },
-  ];
-
-  const compareItems: NavDropdownItem[] = [
-    { label: "Player Comparison", href: "/compare" },
-    { label: "Team Comparison", href: "/team-compare" },
-    { label: "Player Matchups", href: "/matchups" },
-    { label: "Tier Lists", href: "/tierlist" },
-  ];
-
-  const researchSections: NavSection[] = [
-    {
-      title: "Core Research",
-      items: [
-        { label: "Saved Investigations", href: "/investigations" },
-        { label: "Ask CourtLens AI", href: "/research/ask" },
-        { label: "Points Forecasts", href: "/forecasts" },
-        { label: "Evaluation Archive", href: "/evaluation" },
-        { label: "Case Studies", href: "/research/case-studies" },
-      ],
-    },
-    {
-      title: "Advanced Analytics",
-      items: [
-        { label: "Workload Trends", href: "/research/trends" },
-        { label: "Distributions & Splits", href: "/research/distributions" },
-        { label: "Adjusted Shooting", href: "/research/adjusted-shooting" },
-        { label: "RAPM Research", href: "/research/rapm" },
-        { label: "Six-Factor RAPM", href: "/six-factor-rapm" },
-        { label: "Expected Shots", href: "/research/expected-shots" },
-        { label: "Shot Aftermath", href: "/shot-aftermath" },
-        { label: "Defensive Matchups", href: "/research/defensive-matchups" },
-        { label: "Spatial EPV", href: "/research/epv" },
-        { label: "Combine & Wingspan", href: "/wingspan" },
-        { label: "Hypothetical Calculator", href: "/calculator" },
-      ],
-    },
-  ];
-
-  const helpItems: NavDropdownItem[] = [
-    { label: "Definitions & Glossary", href: "/methodology" },
-    { label: "Interactive Learning", href: "/learning" },
-    { label: "Patch Notes", href: "/patch-notes" },
-    { label: "Blog & Updates", href: "/blog" },
-  ];
-
-  // Route availability filtering
-  const allSections = [
-    { title: "Live", items: liveItems },
-    { title: "Players", items: playersItems },
-    { title: "Teams", items: teamsItems },
-    { title: "Compare", items: compareItems },
-    ...researchSections,
-    { title: "Help", items: helpItems },
-    {
-      title: "Primary",
-      items: [
-        { label: "Stats", href: "/stats" },
-        { label: "WOWY", href: "/wowy" },
-      ],
-    },
-  ];
-
-  const unavailableItems = allSections
-    .flatMap(s => s.items)
-    .filter(item => availability(item.href).secondary);
-
-  const filteredLiveItems = liveItems.filter(i => !availability(i.href).secondary);
-  const filteredPlayersItems = playersItems.filter(i => !availability(i.href).secondary);
-  const filteredTeamsItems = teamsItems.filter(i => !availability(i.href).secondary);
-  const filteredCompareItems = compareItems.filter(i => !availability(i.href).secondary);
-  const filteredResearchSections = researchSections.map(s => ({
-    ...s,
-    items: s.items.filter(i => !availability(i.href).secondary),
+  // Navigation model (lib/nav-model.ts) shared by the desktop menus and the drawer
+  const unavailableItems = analyticalNavItems().filter(item => availability(item.href).secondary);
+  const visibleMenus = NAV_MENUS.map(menu => ({
+    ...menu,
+    groups: menu.groups
+      .map(group => ({ ...group, items: group.items.filter(item => !availability(item.href).secondary) }))
+      .filter(group => group.items.length > 0),
   }));
-
-  // Active section identification
-  let activeSection = "";
-  if (pathname === "/stats" || pathname === "/" || pathname === "/players") {
-    activeSection = "stats";
-  } else if (pathname === "/wowy") {
-    activeSection = "wowy";
-  } else if (pathname.startsWith("/live") || pathname.startsWith("/playoffs")) {
-    activeSection = "live";
-  } else if (
-    ["/last-games", "/showcase", "/rankings", "/shot-profile-twin", "/research/similarity"].includes(pathname) ||
-    pathname.startsWith("/players/")
-  ) {
-    activeSection = "players";
-  } else if (
-    pathname.startsWith("/teams") ||
-    ["/roster-shapes", "/stat-line-shift", "/contracts", "/free-agency"].includes(pathname)
-  ) {
-    activeSection = "teams";
-  } else if (["/compare", "/team-compare", "/matchups", "/tierlist"].includes(pathname)) {
-    activeSection = "compare";
-  } else if (
-    pathname.startsWith("/research") ||
-    [
-      "/investigations",
-      "/forecasts",
-      "/evaluation",
-      "/six-factor-rapm",
-      "/shot-aftermath",
-      "/wingspan",
-      "/calculator",
-    ].includes(pathname)
-  ) {
-    activeSection = "research";
-  }
+  const activeSection = activeNavSection(pathname);
+  const isCurrent = (href: string) => {
+    const [path, query] = href.split("?");
+    if (path !== pathname) return false;
+    if (!query) return !(path === "/live" && searchParams.get("live_mode") === "history");
+    return Array.from(new URLSearchParams(query).entries()).every(([key, value]) => searchParams.get(key) === value);
+  };
 
   // Keyboard navigation within dropdowns
   const handleDropdownKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
@@ -378,332 +251,101 @@ export function Header() {
     }
   };
 
+  const indicator = (
+    <motion.span
+      layoutId="header-active-indicator"
+      className="courtlens-nav-indicator"
+      transition={{ type: "spring", stiffness: 520, damping: 38, mass: 0.9 }}
+    />
+  );
+
+  const closeDrawer = () => setMobileDrawerOpen(false);
+
   return (
     <header
       ref={navRef}
       className={`courtlens-header replica-header ${isScrolled ? "is-scrolled scrolled" : ""}`}
     >
-      {/* Left: Brand + Menus with sliding active indicator */}
+      {/* Left: Brand + menus with sliding active indicator (desktop only, D9) */}
       <div className="courtlens-header-left">
         <Brand />
 
         <nav className="courtlens-nav" aria-label="Workspace Navigation">
-          {/* Stats direct link */}
           <div className="courtlens-nav-item">
             <Link
-              href={preserveContextUrl("/stats")}
+              href={preserveContextUrl(STATS_LINK.href)}
               className={`courtlens-nav-link ${activeSection === "stats" ? "active" : ""}`}
             >
-              Stats
-              {activeSection === "stats" && (
-                <motion.span
-                  layoutId="header-active-indicator"
-                  className="courtlens-nav-indicator"
-                  transition={{ type: "spring", stiffness: 520, damping: 38, mass: 0.9 }}
-                />
-              )}
+              {STATS_LINK.label}
+              {activeSection === "stats" && indicator}
             </Link>
           </div>
 
-          {/* WOWY direct link */}
-          {!availability("/wowy").secondary && (
-            <div className="courtlens-nav-item">
-              <Link
-                href={preserveContextUrl("/wowy")}
-                className={`courtlens-nav-link ${activeSection === "wowy" ? "active" : ""}`}
+          {visibleMenus.map(menu => {
+            const multi = menu.groups.length > 1;
+            return (
+              <div
+                key={menu.id}
+                className="courtlens-nav-item"
+                onMouseEnter={() => handleDropdownEnter(menu.id)}
+                onMouseLeave={handleDropdownLeave}
               >
-                WOWY
-                {activeSection === "wowy" && (
-                  <motion.span
-                    layoutId="header-active-indicator"
-                    className="courtlens-nav-indicator"
-                    transition={{ type: "spring", stiffness: 520, damping: 38, mass: 0.9 }}
-                  />
-                )}
-              </Link>
-            </div>
-          )}
-
-          {/* Live dropdown */}
-          <div
-            className="courtlens-nav-item"
-            onMouseEnter={() => handleDropdownEnter("live")}
-            onMouseLeave={handleDropdownLeave}
-          >
-            <button
-              type="button"
-              data-dropdown-id="live"
-              aria-haspopup="menu"
-              aria-expanded={openDropdown === "live"}
-              onClick={() => toggleDropdown("live")}
-              onKeyDown={e => handleTriggerKeyDown(e, "live")}
-              className={`courtlens-nav-dropdown-btn ${activeSection === "live" ? "active" : ""}`}
-            >
-              <span>Live</span>
-              <Icon name="chevron-down" size={14} className="courtlens-nav-chevron" />
-              {activeSection === "live" && (
-                <motion.span
-                  layoutId="header-active-indicator"
-                  className="courtlens-nav-indicator"
-                  transition={{ type: "spring", stiffness: 520, damping: 38, mass: 0.9 }}
-                />
-              )}
-            </button>
-
-            <AnimatePresence>
-              {openDropdown === "live" && (
-                <motion.div
-                  data-dropdown-panel="live"
-                  role="menu"
-                  variants={popoverVariants}
-                  initial="initial"
-                  animate="animate"
-                  exit="exit"
-                  className="courtlens-dropdown-menu"
-                  onKeyDown={handleDropdownKeyDown}
+                <button
+                  type="button"
+                  data-dropdown-id={menu.id}
+                  aria-haspopup="menu"
+                  aria-expanded={openDropdown === menu.id}
+                  onClick={() => toggleDropdown(menu.id)}
+                  onKeyDown={e => handleTriggerKeyDown(e, menu.id)}
+                  className={`courtlens-nav-dropdown-btn ${activeSection === menu.id ? "active" : ""}`}
                 >
-                  {filteredLiveItems.map(item => (
-                    <Link
-                      key={item.href}
-                      href={preserveContextUrl(item.href)}
-                      role="menuitem"
-                      className={`courtlens-dropdown-item ${pathname === item.href ? "active" : ""}`}
-                      onClick={() => setOpenDropdown(null)}
+                  <span>{menu.label}</span>
+                  <Icon name="chevron-down" size={14} className="courtlens-nav-chevron" />
+                  {activeSection === menu.id && indicator}
+                </button>
+
+                <AnimatePresence>
+                  {openDropdown === menu.id && (
+                    <motion.div
+                      data-dropdown-panel={menu.id}
+                      role="menu"
+                      aria-label={menu.label}
+                      variants={popoverVariants}
+                      initial="initial"
+                      animate="animate"
+                      exit="exit"
+                      className={`courtlens-dropdown-menu ${multi ? "courtlens-dropdown-multicol" : ""}`}
+                      onKeyDown={handleDropdownKeyDown}
                     >
-                      <span>{item.label}</span>
-                    </Link>
-                  ))}
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-
-          {/* Players dropdown */}
-          <div
-            className="courtlens-nav-item"
-            onMouseEnter={() => handleDropdownEnter("players")}
-            onMouseLeave={handleDropdownLeave}
-          >
-            <button
-              type="button"
-              data-dropdown-id="players"
-              aria-haspopup="menu"
-              aria-expanded={openDropdown === "players"}
-              onClick={() => toggleDropdown("players")}
-              onKeyDown={e => handleTriggerKeyDown(e, "players")}
-              className={`courtlens-nav-dropdown-btn ${activeSection === "players" ? "active" : ""}`}
-            >
-              <span>Players</span>
-              <Icon name="chevron-down" size={14} className="courtlens-nav-chevron" />
-              {activeSection === "players" && (
-                <motion.span
-                  layoutId="header-active-indicator"
-                  className="courtlens-nav-indicator"
-                  transition={{ type: "spring", stiffness: 520, damping: 38, mass: 0.9 }}
-                />
-              )}
-            </button>
-
-            <AnimatePresence>
-              {openDropdown === "players" && (
-                <motion.div
-                  data-dropdown-panel="players"
-                  role="menu"
-                  variants={popoverVariants}
-                  initial="initial"
-                  animate="animate"
-                  exit="exit"
-                  className="courtlens-dropdown-menu"
-                  onKeyDown={handleDropdownKeyDown}
-                >
-                  {filteredPlayersItems.map(item => (
-                    <Link
-                      key={item.href}
-                      href={preserveContextUrl(item.href)}
-                      role="menuitem"
-                      className={`courtlens-dropdown-item ${pathname === item.href ? "active" : ""}`}
-                      onClick={() => setOpenDropdown(null)}
-                    >
-                      <span>{item.label}</span>
-                    </Link>
-                  ))}
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-
-          {/* Teams dropdown */}
-          <div
-            className="courtlens-nav-item"
-            onMouseEnter={() => handleDropdownEnter("teams")}
-            onMouseLeave={handleDropdownLeave}
-          >
-            <button
-              type="button"
-              data-dropdown-id="teams"
-              aria-haspopup="menu"
-              aria-expanded={openDropdown === "teams"}
-              onClick={() => toggleDropdown("teams")}
-              onKeyDown={e => handleTriggerKeyDown(e, "teams")}
-              className={`courtlens-nav-dropdown-btn ${activeSection === "teams" ? "active" : ""}`}
-            >
-              <span>Teams</span>
-              <Icon name="chevron-down" size={14} className="courtlens-nav-chevron" />
-              {activeSection === "teams" && (
-                <motion.span
-                  layoutId="header-active-indicator"
-                  className="courtlens-nav-indicator"
-                  transition={{ type: "spring", stiffness: 520, damping: 38, mass: 0.9 }}
-                />
-              )}
-            </button>
-
-            <AnimatePresence>
-              {openDropdown === "teams" && (
-                <motion.div
-                  data-dropdown-panel="teams"
-                  role="menu"
-                  variants={popoverVariants}
-                  initial="initial"
-                  animate="animate"
-                  exit="exit"
-                  className="courtlens-dropdown-menu"
-                  onKeyDown={handleDropdownKeyDown}
-                >
-                  {filteredTeamsItems.map(item => (
-                    <Link
-                      key={item.href}
-                      href={preserveContextUrl(item.href)}
-                      role="menuitem"
-                      className={`courtlens-dropdown-item ${pathname === item.href ? "active" : ""}`}
-                      onClick={() => setOpenDropdown(null)}
-                    >
-                      <span>{item.label}</span>
-                    </Link>
-                  ))}
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-
-          {/* Compare dropdown */}
-          <div
-            className="courtlens-nav-item"
-            onMouseEnter={() => handleDropdownEnter("compare")}
-            onMouseLeave={handleDropdownLeave}
-          >
-            <button
-              type="button"
-              data-dropdown-id="compare"
-              aria-haspopup="menu"
-              aria-expanded={openDropdown === "compare"}
-              onClick={() => toggleDropdown("compare")}
-              onKeyDown={e => handleTriggerKeyDown(e, "compare")}
-              className={`courtlens-nav-dropdown-btn ${activeSection === "compare" ? "active" : ""}`}
-            >
-              <span>Compare</span>
-              <Icon name="chevron-down" size={14} className="courtlens-nav-chevron" />
-              {activeSection === "compare" && (
-                <motion.span
-                  layoutId="header-active-indicator"
-                  className="courtlens-nav-indicator"
-                  transition={{ type: "spring", stiffness: 520, damping: 38, mass: 0.9 }}
-                />
-              )}
-            </button>
-
-            <AnimatePresence>
-              {openDropdown === "compare" && (
-                <motion.div
-                  data-dropdown-panel="compare"
-                  role="menu"
-                  variants={popoverVariants}
-                  initial="initial"
-                  animate="animate"
-                  exit="exit"
-                  className="courtlens-dropdown-menu"
-                  onKeyDown={handleDropdownKeyDown}
-                >
-                  {filteredCompareItems.map(item => (
-                    <Link
-                      key={item.href}
-                      href={preserveContextUrl(item.href)}
-                      role="menuitem"
-                      className={`courtlens-dropdown-item ${pathname === item.href ? "active" : ""}`}
-                      onClick={() => setOpenDropdown(null)}
-                    >
-                      <span>{item.label}</span>
-                    </Link>
-                  ))}
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-
-          {/* Research dropdown (multi-column) */}
-          <div
-            className="courtlens-nav-item"
-            onMouseEnter={() => handleDropdownEnter("research")}
-            onMouseLeave={handleDropdownLeave}
-          >
-            <button
-              type="button"
-              data-dropdown-id="research"
-              aria-haspopup="menu"
-              aria-expanded={openDropdown === "research"}
-              onClick={() => toggleDropdown("research")}
-              onKeyDown={e => handleTriggerKeyDown(e, "research")}
-              className={`courtlens-nav-dropdown-btn ${activeSection === "research" ? "active" : ""}`}
-            >
-              <span>Research</span>
-              <Icon name="chevron-down" size={14} className="courtlens-nav-chevron" />
-              {activeSection === "research" && (
-                <motion.span
-                  layoutId="header-active-indicator"
-                  className="courtlens-nav-indicator"
-                  transition={{ type: "spring", stiffness: 520, damping: 38, mass: 0.9 }}
-                />
-              )}
-            </button>
-
-            <AnimatePresence>
-              {openDropdown === "research" && (
-                <motion.div
-                  data-dropdown-panel="research"
-                  role="menu"
-                  variants={popoverVariants}
-                  initial="initial"
-                  animate="animate"
-                  exit="exit"
-                  className="courtlens-dropdown-menu courtlens-dropdown-multicol"
-                  onKeyDown={handleDropdownKeyDown}
-                >
-                  {filteredResearchSections.map(section => (
-                    <div key={section.title} className="courtlens-dropdown-col">
-                      <span className="courtlens-dropdown-section-title">
-                        {section.title}
-                      </span>
-                      {section.items.map(item => (
-                        <Link
-                          key={item.href}
-                          href={preserveContextUrl(item.href)}
-                          role="menuitem"
-                          className={`courtlens-dropdown-item ${pathname === item.href ? "active" : ""}`}
-                          onClick={() => setOpenDropdown(null)}
-                        >
-                          <span>{item.label}</span>
-                        </Link>
+                      {menu.groups.map((group, index) => (
+                        <div key={group.title ?? index} className={multi ? "courtlens-dropdown-col" : "courtlens-dropdown-group"}>
+                          {group.title && (
+                            <span className="courtlens-dropdown-section-title">{group.title}</span>
+                          )}
+                          {group.items.map(item => (
+                            <Link
+                              key={item.href}
+                              href={preserveContextUrl(item.href)}
+                              role="menuitem"
+                              aria-current={isCurrent(item.href) ? "page" : undefined}
+                              className={`courtlens-dropdown-item ${isCurrent(item.href) ? "active" : ""}`}
+                              onClick={() => setOpenDropdown(null)}
+                            >
+                              <span>{item.label}</span>
+                            </Link>
+                          ))}
+                        </div>
                       ))}
-                    </div>
-                  ))}
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            );
+          })}
         </nav>
       </div>
 
-      {/* Center: Search pill opening command palette */}
+      {/* Center: the one search entry (D8); below 768px the icon button replaces the pill */}
       <div className="courtlens-header-center">
         <button
           ref={searchPillRef}
@@ -714,15 +356,14 @@ export function Header() {
           className="courtlens-search-pill"
           onClick={() => setPaletteOpen(true)}
         >
-          <Icon name="search" size={14} className="courtlens-search-pill-icon" />
+          <Icon name="search" size={16} className="courtlens-search-pill-icon" />
           <span className="courtlens-search-pill-label">Search players, teams…</span>
           <kbd className="courtlens-search-pill-kbd">⌘K</kbd>
         </button>
       </div>
 
-      {/* Right: Ask, More (⋯), and Mobile controls */}
+      {/* Right: search icon (phones), Ask, More (desktop), drawer toggle (below desktop) */}
       <div className="courtlens-header-right replica-nav-right">
-        {/* Mobile Search button */}
         <IconButton
           icon="search"
           label="Search workbench"
@@ -732,7 +373,6 @@ export function Header() {
           onClick={() => setPaletteOpen(true)}
         />
 
-        {/* Ask button */}
         <Button
           variant="ghost"
           size="sm"
@@ -748,8 +388,7 @@ export function Header() {
           <span>Ask</span>
         </Button>
 
-        {/* More (⋯) dropdown */}
-        <div className="courtlens-nav-item">
+        <div className="courtlens-nav-item courtlens-more">
           <IconButton
             ref={moreButtonRef}
             icon="more-horizontal"
@@ -765,6 +404,7 @@ export function Header() {
             {moreMenuOpen && (
               <motion.div
                 role="menu"
+                aria-label="More"
                 variants={popoverVariants}
                 initial="initial"
                 animate="animate"
@@ -772,25 +412,21 @@ export function Header() {
                 className="courtlens-dropdown-menu courtlens-dropdown-menu-right"
                 onKeyDown={handleDropdownKeyDown}
               >
-                <Link
-                  href={preserveContextUrl("/settings")}
-                  role="menuitem"
-                  className={`courtlens-dropdown-item ${pathname === "/settings" ? "active" : ""}`}
-                  onClick={() => setMoreMenuOpen(false)}
-                >
-                  <span>Settings</span>
-                </Link>
+                {MORE_LINKS.map(item => (
+                  <Link
+                    key={item.href}
+                    href={preserveContextUrl(item.href)}
+                    role="menuitem"
+                    aria-current={isCurrent(item.href) ? "page" : undefined}
+                    className={`courtlens-dropdown-item ${isCurrent(item.href) ? "active" : ""}`}
+                    onClick={() => setMoreMenuOpen(false)}
+                  >
+                    <span>{item.label}</span>
+                  </Link>
+                ))}
 
-                <Link
-                  href={preserveContextUrl("/data-status")}
-                  role="menuitem"
-                  className={`courtlens-dropdown-item ${pathname === "/data-status" ? "active" : ""}`}
-                  onClick={() => setMoreMenuOpen(false)}
-                >
-                  <span>Data status</span>
-                </Link>
+                <div className="courtlens-dropdown-divider" />
 
-                {/* Availability item */}
                 {unavailableItems.length > 0 ? (
                   <div className="courtlens-availability-section">
                     <button
@@ -832,20 +468,6 @@ export function Header() {
                   </div>
                 )}
 
-                <div className="courtlens-dropdown-divider" />
-
-                {helpItems.map(item => (
-                  <Link
-                    key={item.href}
-                    href={preserveContextUrl(item.href)}
-                    role="menuitem"
-                    className={`courtlens-dropdown-item ${pathname === item.href ? "active" : ""}`}
-                    onClick={() => setMoreMenuOpen(false)}
-                  >
-                    <span>{item.label}</span>
-                  </Link>
-                ))}
-
                 <button
                   type="button"
                   role="menuitem"
@@ -863,7 +485,6 @@ export function Header() {
           </AnimatePresence>
         </div>
 
-        {/* Mobile menu toggle */}
         <IconButton
           icon="menu"
           label="Toggle navigation drawer"
@@ -875,109 +496,53 @@ export function Header() {
         />
       </div>
 
-      {/* Mobile Drawer */}
+      {/* Navigation drawer below the desktop breakpoint; rendered at document.body by Drawer */}
       <Drawer
         isOpen={mobileDrawerOpen}
-        onClose={() => setMobileDrawerOpen(false)}
+        onClose={closeDrawer}
         side="left"
         className="replica-mobile-drawer"
         title={<Brand />}
       >
-        <div className="courtlens-mobile-drawer-body">
+        <nav className="courtlens-mobile-drawer-body" aria-label="Drawer navigation">
           <div className="courtlens-mobile-direct-links">
             <Link
-              href={preserveContextUrl("/stats")}
+              href={preserveContextUrl(STATS_LINK.href)}
+              aria-current={activeSection === "stats" ? "page" : undefined}
               className={`courtlens-mobile-link ${activeSection === "stats" ? "active" : ""}`}
-              onClick={() => setMobileDrawerOpen(false)}
+              onClick={closeDrawer}
             >
-              Stats
+              {STATS_LINK.label}
             </Link>
-            {!availability("/wowy").secondary && (
-              <Link
-                href={preserveContextUrl("/wowy")}
-                className={`courtlens-mobile-link ${activeSection === "wowy" ? "active" : ""}`}
-                onClick={() => setMobileDrawerOpen(false)}
-              >
-                WOWY
-              </Link>
-            )}
           </div>
 
           <Accordion>
-            <AccordionItem title="Live" defaultExpanded={activeSection === "live"}>
-              <div className="courtlens-mobile-section-links">
-                {filteredLiveItems.map(item => (
-                  <Link
-                    key={item.href}
-                    href={preserveContextUrl(item.href)}
-                    className="courtlens-mobile-sublink"
-                    onClick={() => setMobileDrawerOpen(false)}
-                  >
-                    {item.label}
-                  </Link>
-                ))}
-              </div>
-            </AccordionItem>
-
-            <AccordionItem title="Players" defaultExpanded={activeSection === "players"}>
-              <div className="courtlens-mobile-section-links">
-                {filteredPlayersItems.map(item => (
-                  <Link
-                    key={item.href}
-                    href={preserveContextUrl(item.href)}
-                    className="courtlens-mobile-sublink"
-                    onClick={() => setMobileDrawerOpen(false)}
-                  >
-                    {item.label}
-                  </Link>
-                ))}
-              </div>
-            </AccordionItem>
-
-            <AccordionItem title="Teams" defaultExpanded={activeSection === "teams"}>
-              <div className="courtlens-mobile-section-links">
-                {filteredTeamsItems.map(item => (
-                  <Link
-                    key={item.href}
-                    href={preserveContextUrl(item.href)}
-                    className="courtlens-mobile-sublink"
-                    onClick={() => setMobileDrawerOpen(false)}
-                  >
-                    {item.label}
-                  </Link>
-                ))}
-              </div>
-            </AccordionItem>
-
-            <AccordionItem title="Compare" defaultExpanded={activeSection === "compare"}>
-              <div className="courtlens-mobile-section-links">
-                {filteredCompareItems.map(item => (
-                  <Link
-                    key={item.href}
-                    href={preserveContextUrl(item.href)}
-                    className="courtlens-mobile-sublink"
-                    onClick={() => setMobileDrawerOpen(false)}
-                  >
-                    {item.label}
-                  </Link>
-                ))}
-              </div>
-            </AccordionItem>
-
-            <AccordionItem title="Research" defaultExpanded={true}>
-              <div className="courtlens-mobile-section-links">
-                {filteredResearchSections.flatMap(s => s.items).map(item => (
-                  <Link
-                    key={item.href}
-                    href={preserveContextUrl(item.href)}
-                    className="courtlens-mobile-sublink"
-                    onClick={() => setMobileDrawerOpen(false)}
-                  >
-                    {item.label}
-                  </Link>
-                ))}
-              </div>
-            </AccordionItem>
+            {visibleMenus.map(menu => (
+              <AccordionItem
+                key={menu.id}
+                title={menu.label}
+                defaultExpanded={activeSection === menu.id || menu.id === "research"}
+              >
+                <div className="courtlens-mobile-section-links">
+                  {menu.groups.map((group, index) => (
+                    <div key={group.title ?? index} className="courtlens-mobile-group">
+                      {group.title && <span className="courtlens-mobile-group-title">{group.title}</span>}
+                      {group.items.map(item => (
+                        <Link
+                          key={item.href}
+                          href={preserveContextUrl(item.href)}
+                          aria-current={isCurrent(item.href) ? "page" : undefined}
+                          className={`courtlens-mobile-sublink ${isCurrent(item.href) ? "active" : ""}`}
+                          onClick={closeDrawer}
+                        >
+                          {item.label}
+                        </Link>
+                      ))}
+                    </div>
+                  ))}
+                </div>
+              </AccordionItem>
+            ))}
 
             {unavailableItems.length > 0 && (
               <AccordionItem title={`Availability (${unavailableItems.length})`}>
@@ -988,7 +553,7 @@ export function Header() {
                       key={item.href}
                       href={preserveContextUrl(item.href)}
                       className="courtlens-mobile-sublink"
-                      onClick={() => setMobileDrawerOpen(false)}
+                      onClick={closeDrawer}
                     >
                       <span>
                         {item.label}
@@ -1006,70 +571,37 @@ export function Header() {
           <div className="courtlens-dropdown-divider" />
 
           <div className="courtlens-mobile-direct-links">
-            <Link
-              href={preserveContextUrl("/data-status")}
-              className="courtlens-mobile-link"
-              onClick={() => setMobileDrawerOpen(false)}
-            >
-              Data status
-            </Link>
-            <Link
-              href={preserveContextUrl("/settings")}
-              className="courtlens-mobile-link"
-              onClick={() => setMobileDrawerOpen(false)}
-            >
-              Settings
-            </Link>
-            <Link
-              href={preserveContextUrl("/methodology")}
-              className="courtlens-mobile-link"
-              onClick={() => setMobileDrawerOpen(false)}
-            >
-              Definitions & Glossary
-            </Link>
-            <Link
-              href={preserveContextUrl("/learning")}
-              className="courtlens-mobile-link"
-              onClick={() => setMobileDrawerOpen(false)}
-            >
-              Interactive Learning
-            </Link>
-            <Link
-              href={preserveContextUrl("/patch-notes")}
-              className="courtlens-mobile-link"
-              onClick={() => setMobileDrawerOpen(false)}
-            >
-              Patch Notes
-            </Link>
-            <Link
-              href={preserveContextUrl("/blog")}
-              className="courtlens-mobile-link"
-              onClick={() => setMobileDrawerOpen(false)}
-            >
-              Blog & Updates
-            </Link>
+            {MORE_LINKS.map(item => (
+              <Link
+                key={item.href}
+                href={preserveContextUrl(item.href)}
+                aria-current={isCurrent(item.href) ? "page" : undefined}
+                className={`courtlens-mobile-link ${isCurrent(item.href) ? "active" : ""}`}
+                onClick={closeDrawer}
+              >
+                {item.label}
+              </Link>
+            ))}
             <button
               type="button"
               className="courtlens-mobile-link"
               onClick={() => {
-                setMobileDrawerOpen(false);
+                closeDrawer();
                 setHotkeysOpen(true);
               }}
             >
-              Keyboard shortcuts (?)
+              Keyboard Shortcuts
             </button>
           </div>
-        </div>
+        </nav>
       </Drawer>
 
-      {/* Global Command Palette */}
       <GlobalCommandPalette
         isOpen={paletteOpen}
         onClose={() => setPaletteOpen(false)}
         triggerRef={searchPillRef}
       />
 
-      {/* Ask Side Drawer (when attached to entity page context) */}
       {askOpen && assistantPage && (
         <AskDrawer
           pageContext={assistantPage.context}
@@ -1078,7 +610,6 @@ export function Header() {
         />
       )}
 
-      {/* Hotkeys Modal */}
       <HotkeysModal isOpen={hotkeysOpen} onClose={() => setHotkeysOpen(false)} />
     </header>
   );
