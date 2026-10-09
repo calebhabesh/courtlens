@@ -116,7 +116,8 @@
 .stats-workspace .dense-stats-table .stat-pct-sublabel { font-size: var(--text-xs); color: var(--color-text-secondary); font-weight: 400; }
 .stats-workspace .dense-stats-table .pct-elite, .stats-workspace .dense-stats-table .pct-good { color: var(--color-accent); }
 .stats-workspace .stats-header-search { position: relative; display: inline-flex; width: calc(100% - 22px); }
-.stats-workspace .stats-header-search input { width: 100%; min-width: 0; min-height: 26px; padding: var(--space-1) var(--space-6) var(--space-1) var(--space-6); font-size: var(--text-xs); background: var(--color-surface-2); border: 0; border-radius: var(--radius-sm); }
+.stats-workspace .stats-header-search .lookup-input-wrapper { min-height: 26px; padding-inline: var(--space-2) 0; gap: var(--space-1); background: var(--color-surface-2); border: 0; }
+.stats-workspace .stats-header-search input { width: 100%; min-width: 0; min-height: 26px; padding: 0; font-size: var(--text-xs); background: transparent; border: 0; border-radius: 0; }
 .stats-workspace .stats-header-search input::-webkit-search-cancel-button { display: none; }
 .stats-workspace .stats-name-sort { width: 22px; height: 26px; vertical-align: middle; color: var(--color-text-secondary); }
 .stats-workspace .stats-row-actions { text-align: center; white-space: nowrap; }
@@ -173,8 +174,8 @@
 
 .stats-workspace .stats-metric-cell, .stats-workspace .stats-header-tier-2 .num { text-align: center; }
 .stats-workspace .stats-guide-cell > * { display: block; margin-inline: auto; }
-.stats-workspace .stats-header-search .lookup-search-icon { left: var(--space-2); width: 14px; height: 14px; }
-.stats-workspace .stats-header-search .lookup-clear-btn { right: var(--space-1); }
+.stats-workspace .stats-header-search .lookup-search-icon { width: 14px; height: 14px; }
+.stats-workspace .stats-header-search .lookup-clear-btn { min-width: 24px; min-height: 24px; }
 .stats-workspace .density-compact .stat-pct-sublabel { font-size: var(--text-xs); }
 .stats-workspace .density-compact .player-cell-name { font-size: var(--text-sm); }
 .stats-workspace .density-compact .player-cell-teams { font-size: var(--text-xs); }

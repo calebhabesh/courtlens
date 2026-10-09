@@ -1,0 +1,111 @@
+{
+  "captured_at": "2026-10-09T05:48:31.600Z",
+  "base_url": "http://localhost:3100",
+  "shots": [
+    {
+      "file": "design-foundation--desktop.png",
+      "route": "/design",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "file": "design-foundation--phone.png",
+      "route": "/design",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "file": "design-datepicker-open--desktop.png",
+      "route": "/design",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "file": "design-why-open--desktop.png",
+      "route": "/design",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "file": "stats-filterbar--desktop.png",
+      "route": "/stats",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "file": "stats-filterbar--phone.png",
+      "route": "/stats",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "file": "stats-filter-sheet--phone.png",
+      "route": "/stats",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "file": "stats-data-details--desktop.png",
+      "route": "/stats",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "file": "teams-filterbar--desktop.png",
+      "route": "/teams",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "file": "roster-shapes-fields--desktop.png",
+      "route": "/roster-shapes",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "file": "roster-shapes-fields--phone.png",
+      "route": "/roster-shapes",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      }
+    },
+    {
+      "file": "wowy-scope-fields--desktop.png",
+      "route": "/wowy",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    },
+    {
+      "file": "settings-advanced-mode--desktop.png",
+      "route": "/settings",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      }
+    }
+  ],
+  "page_errors": {}
+}
