@@ -29,6 +29,8 @@ interface ContextBarProps {
   showWindow?: boolean;
   /** Page-specific filters rendered to the right of the scope controls. */
   filters?: React.ReactNode;
+  /** View/mode switches that stay visible on phones (see `FilterBar` `modes`). */
+  modes?: React.ReactNode;
   /** Page-specific Data details rows (source routes, resolved context), after the catalog rows. */
   detailRows?: DataDetailRow[];
 }
@@ -52,6 +54,7 @@ export function ContextBar({
   lastIncludedDate,
   showWindow = true,
   filters,
+  modes,
   detailRows = []
 }: ContextBarProps) {
   const router = useRouter();
@@ -130,6 +133,7 @@ export function ContextBar({
     <FilterBar
       scope={scope}
       filters={filters}
+      modes={modes}
       summary={`${season} · ${phaseLabel(phase)}${throughDate ? ` · ${formatDate(throughDate, "compact")}` : ""}`}
       count={sampleSize !== undefined ? <CountChip>{sampleSize.toLocaleString("en-US")} {sampleNoun}</CountChip> : undefined}
       details={

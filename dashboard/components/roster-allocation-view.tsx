@@ -220,7 +220,7 @@ export function RosterAllocationView({ catalog, teamId, scope }: RosterAllocatio
         initialBeforeDate={scope.beforeDate}
         sampleSize={data ? rows.length : undefined}
         showWindow={false}
-        filters={<SegmentedControl<AllocationMode> name="roster-basis" value={mode} onChange={setMode}
+        modes={<SegmentedControl<AllocationMode> name="roster-basis" value={mode} onChange={setMode}
           options={[{ value: "observed", label: "Observed" }, { value: "projected", label: "Projected" }]} />}
         detailRows={data ? [
           { label: "Roster source", value: "Team player-game boxes (team detail)" },
