@@ -2263,7 +2263,11 @@ textarea, input, select { max-width: 100%; }
   font-family: var(--font-mono), monospace;
   font-size: var(--text-xs);
   color: var(--color-text-secondary);
-  overflow-wrap: anywhere;
+  /* An unknown code stays on one line inside the logo box instead of wrapping ("10 0"). */
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: clip;
+  white-space: nowrap;
   text-align: center;
 }
 .team-logo-stack { display: inline-flex; align-items: center; gap: var(--space-0-5); flex-wrap: wrap; }

@@ -31,7 +31,7 @@ test.describe("Workbench Dark Research Interface", () => {
     await openWorkbench(page, "/players");
     await page.waitForLoadState("networkidle");
 
-    await expect(page.locator("h1.page-title")).toHaveText("Player Explorer");
+    await expect(page.locator("h1")).toHaveText("Player Directory");
     await expect(page.getByRole("link", { name: "Fixture Star", exact: true })).toBeVisible();
 
     // Filter by name
@@ -47,19 +47,21 @@ test.describe("Workbench Dark Research Interface", () => {
     await page.getByRole("button", { name: "Open details for Fixture Guard" }).click();
     await page.getByRole("link", { name: "View Full Profile" }).click();
     await page.waitForURL("**/players/24**");
-    await expect(page.locator("h1.player-identity-name")).toContainText("Fixture Guard");
+    await expect(page.locator("h1")).toContainText("Fixture Guard");
   });
 
   test("player detail presents profile summaries, game logs, and lineage trigger", async ({ page }) => {
     await openWorkbench(page, "/players/23");
     await page.waitForLoadState("networkidle");
 
-    await expect(page.locator("h1.player-identity-name")).toContainText("Fixture Star");
+    await expect(page.locator("h1")).toContainText("Fixture Star");
     await expect(page.getByText("Toronto Raptors").first()).toBeVisible();
 
-    // Verify summaries tabs or panels
+    // FO09: the game log is its own profile tab and the URL keeps the tab.
+    await page.getByRole("tab", { name: "Game Log" }).click();
+    await expect(page).toHaveURL(/tab=games/);
     await expect(page.getByText("Prior Appearance Game Log")).toBeVisible();
-    await expect(page.locator("td.font-mono:has-text('2026-04-12')")).toBeVisible();
+    await expect(page.locator("td.font-mono:has-text('Apr 12, 2026')")).toBeVisible();
 
     // Verify lineage drawer button exists and opens drawer
     const lineageButton = page.locator("button:has-text('Lineage')").first();

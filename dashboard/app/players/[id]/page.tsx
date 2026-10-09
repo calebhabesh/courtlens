@@ -11,12 +11,19 @@ import {
 import type { AnalyticsGame, AnalyticsProfile, AnalyticsSummary, PlayerGameLogResponse, PlayerProfile } from "@/lib/types";
 
 import { ContextBar } from "@/components/context-bar";
-import { WorkbenchPlayerProfile } from "@/components/workbench-player-profile";
-import { getPlayerProfile, getPlayerGameLog, getWorkbenchCatalog, getImpact } from "@/lib/workbench-api";
+import { WorkbenchPlayerProfile, type ProfileHeroStats } from "@/components/workbench-player-profile";
+import { GatedNote } from "@/components/ui/gated-note";
+import { PageShell } from "@/components/ui/page-shell";
+import { PageHeader } from "@/components/ui/panel";
+import { formatDate } from "@/lib/format-date";
+import type { GoodDirection } from "@/lib/percentile-display";
+import { resolveStatsQuery } from "@/lib/stats-query";
+import type { WorkbenchCatalog } from "@/lib/types";
+import { executeWorkbenchQuery, getPlayerProfile, getPlayerGameLog, getWorkbenchCatalog, getImpact } from "@/lib/workbench-api";
 import { aggregateCareerStats, type SeasonCareerRow } from "@/lib/player-pages";
 
 export const dynamic = "force-dynamic";
-export const metadata: Metadata = { title: "Player Research Profile" };
+export const metadata: Metadata = { title: "Player Profile" };
 
 export default async function PlayerPage({
   params,
@@ -154,27 +161,27 @@ export default async function PlayerPage({
     // Compute aggregated career rollup with explicit incomplete career disclosures
     const careerRollup = aggregateCareerStats(careerRows, admittedSeasons);
     const impact = await getImpact({ season, phase, beforeDate, playerId: id, window: windowParam }).catch(() => null);
+    const hero = catalog ? await heroStats(id, selected, catalog) : null;
 
     return (
-      <>
-        <ContextBar
+      <WorkbenchPlayerProfile
+        profile={wbLoaded.profile}
+        games={wbLoaded.log.games}
+        careerRows={careerRows}
+        careerRollup={careerRollup}
+        impact={impact}
+        hero={hero}
+        filterBar={<ContextBar
+          key="filter-bar"
           initialSeason={season}
           initialPhase={phase}
           initialBeforeDate={beforeDate}
           initialWindow={windowParam}
           sampleSize={wbLoaded.log.games.length}
           lastIncludedDate={wbLoaded.profile.last_observed_date}
-        />
-        <div className="workbench-content">
-          <WorkbenchPlayerProfile
-            profile={wbLoaded.profile}
-            games={wbLoaded.log.games}
-            careerRows={careerRows}
-            careerRollup={careerRollup}
-            impact={impact}
-          />
-        </div>
-      </>
+          detailRows={[{ label: "Player", value: id, mono: true }]}
+        />}
+      />
     );
   }
 
@@ -202,6 +209,26 @@ export default async function PlayerPage({
   return <PlayerError error={loadError} id={id} date={selected.date} />;
 }
 
+/**
+ * The player's season row from the Stats query with the same scope resolution and cohort as Stats
+ * and Showcase (D16: no new formula). Season-to-date, as the hero shows season values.
+ */
+async function heroStats(id: string, params: Record<string, string | undefined>, catalog: WorkbenchCatalog): Promise<ProfileHeroStats | null> {
+  try {
+    const query = resolveStatsQuery(params, catalog, "per_game");
+    query.window = { kind: "season" };
+    const result = await executeWorkbenchQuery({ ...query, page: { limit: 1 } }, { player_ids: [id] });
+    return {
+      item: result.items[0] ?? null,
+      query,
+      eligible: result.cohort?.eligible_players ?? result.total_eligible_players,
+      goodDirections: (result.cohort?.good_directions ?? {}) as Record<string, GoodDirection>,
+    };
+  } catch {
+    return null;
+  }
+}
+
 function ProfileView({
   profile,
   games,
@@ -213,17 +240,11 @@ function ProfileView({
 }) {
   const opponent = profile.opponent_context;
   return (
-    <article className="player-profile shell">
-      <header className="profile-hero">
-        <div>
-          <p className="kicker">Historical replay · {profile.replay_date}</p>
-          <h1>{profile.player.name}</h1>
-          <p className="profile-subtitle">
-            {profile.player.season} · last observed {profile.last_observed?.date ?? "not yet observed"}
-            {profile.last_observed ? ` for team ${profile.last_observed.team_id}` : ""}
-          </p>
-        </div>
-        <form className="replay-control" method="get">
+    <PageShell template="profile" className="player-profile">
+      <PageHeader
+        title={profile.player.name}
+        subtitle={`Historical replay · ${formatDate(profile.replay_date)} · ${profile.player.season} · last observed ${profile.last_observed?.date ? formatDate(profile.last_observed.date) : "not yet observed"}`}
+        actions={<form className="replay-control" method="get">
           <input name="snapshotId" type="hidden" value={profile.snapshot_id} />
           <label htmlFor="replay-date">Replay date
             <select defaultValue={profile.replay_date} id="replay-date" name="date">
@@ -231,13 +252,12 @@ function ProfileView({
             </select>
           </label>
           <button className="button button-dark" type="submit">Change date</button>
-        </form>
-      </header>
+        </form>}
+      />
 
-      <div className="replay-banner">
-        <strong>Historical replay</strong>
-        <span>Only games before {profile.replay_date} are included. This is not a live profile.</span>
-      </div>
+      <GatedNote why={`Only games before ${formatDate(profile.replay_date)} are included. This is not a live profile.${profile.last_observed ? ` Last observed for team ${profile.last_observed.team_id}.` : ""}`}>
+        Historical replay of a fixture snapshot.
+      </GatedNote>
 
       <section aria-labelledby="summary-title">
         <div className="profile-section-heading"><p className="kicker">At the cutoff</p><h2 id="summary-title">Production and role</h2></div>
@@ -308,7 +328,7 @@ function ProfileView({
         </dl>
         {profile.warnings.map((warning) => <p key={warning}>{warning}</p>)}
       </details>
-    </article>
+    </PageShell>
   );
 }
 
@@ -362,15 +382,15 @@ function PlayerError({ error, id, date }: { error: unknown; id: string; date?: s
   const detail = apiError?.detail && typeof apiError.detail === "object" ? apiError.detail as Record<string, unknown> : null;
   const unsupported = apiError?.status === 422;
   return (
-    <section className="page shell">
+    <PageShell template="profile">
+      <PageHeader title={unsupported ? "Replay date not supported" : apiError?.status === 404 ? "Player not found" : "Profile unavailable"} />
       <div className="empty-state tall" role="alert">
         <span className="empty-code">{apiError?.status ?? "ERROR"}</span>
-        <h1>{unsupported ? "Replay date not supported" : apiError?.status === 404 ? "Player not found" : "Profile unavailable"}</h1>
         <p>{unsupported ? `${date ?? "This date"} is outside the available replay dates.` : `CourtLens could not open player ${id} from this snapshot.`}</p>
         {Array.isArray(detail?.nearest_supported_dates) && <p>Nearest dates: {(detail.nearest_supported_dates as string[]).join(" or ")}</p>}
         <Link className="button button-dark" href="/players">Return to player search</Link>
       </div>
-    </section>
+    </PageShell>
   );
 }
 

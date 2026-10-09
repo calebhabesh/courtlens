@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import { StatsWorkspace } from "@/components/stats-workspace";
 import { PlayerSearch } from "@/components/player-search";
+import { PageShell } from "@/components/ui/page-shell";
+import { PageHeader } from "@/components/ui/panel";
 import { getAnalyticsCatalog } from "@/lib/api";
 import type { AnalyticsCatalog } from "@/lib/types";
 
-export const metadata: Metadata = { title: "Player Explorer · CourtLens" };
+export const metadata: Metadata = { title: "Player Directory" };
 export const dynamic = "force-dynamic";
 
 interface PlayersPageProps {
@@ -51,17 +53,13 @@ export default async function PlayersPage({ searchParams }: PlayersPageProps) {
 
   if (legacyCatalog) {
     return (
-      <section className="workbench-content">
-        <div className="page-header">
-          <div>
-            <span className="text-xs text-muted font-mono uppercase">Historical Replay</span>
-            <h1 className="page-title">Players</h1>
-          </div>
-        </div>
+      <PageShell template="explorer">
+        <PageHeader title="Player Directory" subtitle="Historical replay of a fixture snapshot." />
         <PlayerSearch catalog={legacyCatalog} />
-      </section>
+      </PageShell>
     );
   }
 
-  return <StatsWorkspace params={params} basePath="/players" title="Player Explorer" />;
+  // D7: the title matches the nav label.
+  return <StatsWorkspace params={params} basePath="/players" title="Player Directory" />;
 }

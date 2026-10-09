@@ -40,14 +40,16 @@ test("profile exports keep the same shared wordmark artwork", async ({ page }) =
   const brandPath = await page.locator(".brand-title path").getAttribute("d");
   expect(await page.locator(".player-detail-container .courtlens-wordmark path").getAttribute("d")).toBe(brandPath);
   const svgDownload = page.waitForEvent("download");
-  await page.getByRole("button", { name: "Export SVG", exact: true }).click();
+  await page.getByRole("button", { name: "Export", exact: true }).click();
+  await page.getByRole("menuitem", { name: "Export SVG", exact: true }).click();
   const path = await (await svgDownload).path();
   const { readFile } = await import("node:fs/promises");
   const svg = await readFile(path!, "utf8");
   expect(svg).toContain(brandPath!);
   expect(svg).not.toContain("fontshare.com/wf");
   const pngDownload = page.waitForEvent("download");
-  await page.getByRole("button", { name: "Export PNG", exact: true }).click();
+  await page.getByRole("button", { name: "Export", exact: true }).click();
+  await page.getByRole("menuitem", { name: "Export PNG", exact: true }).click();
   const png = await readFile((await (await pngDownload).path())!, "hex");
   expect(png.startsWith("89504e470d0a1a0a")).toBe(true);
 });

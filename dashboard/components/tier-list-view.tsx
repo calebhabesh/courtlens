@@ -1,6 +1,10 @@
 "use client";
 
 import { Icon } from "./ui/icon";
+import { Button } from "./ui/button";
+import { GatedNote } from "./ui/gated-note";
+import { PageShell } from "./ui/page-shell";
+import { PageHeader } from "./ui/panel";
 import { LookupInput } from "./lookup-input";
 
 import React, { useState, useMemo } from "react";
@@ -350,43 +354,19 @@ export function TierListView() {
   };
 
   return (
-    <div className="workbench-content tier-workspace-wrapper">
-      {/* Header */}
-      <div className="page-header tier-header">
-        <div>
-          <h1 className="page-title">Tier List Builder</h1>
-          <p className="page-subtitle">
-            F27 Tier Lists · Interactive personal tier lists with drag-and-drop, full keyboard accessibility, and local persistence.
-          </p>
-        </div>
-        <div className="tier-header-actions">
-          {activeList && (
-            <button
-              type="button"
-              onClick={handleAddTierRow}
-              className="button button-small"
-              title="Add a new tier row"
-            >
-              <Icon name="plus" size={14} />Add Tier Row
-            </button>
-          )}
-          <button
-            type="button"
-            onClick={() => setIsCreatingList(true)}
-            className="button button-primary button-small"
-          >
-            <Icon name="plus" size={14} />New Tier List
-          </button>
-        </div>
-      </div>
+    <PageShell template="board" className="tier-workspace-wrapper">
+      <PageHeader
+        title="Tier Lists"
+        subtitle="Your own player tiers, arranged by drag and drop or keyboard."
+        actions={<>
+          {activeList && <Button variant="secondary" icon="plus" onClick={handleAddTierRow}>Add tier row</Button>}
+          <Button variant="primary" icon="plus" onClick={() => setIsCreatingList(true)}>New tier list</Button>
+        </>}
+      />
 
-      {/* Notice */}
-      <div className="notice-box tier-notice">
-        <strong className="text-accent text-xs">Subjective Categorization Notice:</strong>
-        <p className="text-xs text-muted tier-notice-text">
-          Tier allocations reflect personal subjective categorizations. Cards support HTML5 drag-and-drop as well as accessible keyboard controls (move up/down buttons or tier dropdown).
-        </p>
-      </div>
+      <GatedNote why="Tier allocations reflect personal subjective categorizations. Cards support HTML5 drag-and-drop as well as accessible keyboard controls (move up/down buttons or tier dropdown).">
+        Tiers are personal categorizations.
+      </GatedNote>
 
       {/* CREATE MODAL */}
       {isCreatingList && (
@@ -685,6 +665,6 @@ export function TierListView() {
           )}
         </div>
       )}
-    </div>
+    </PageShell>
   );
 }

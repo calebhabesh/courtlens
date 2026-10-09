@@ -13,7 +13,7 @@ export type IdentitySize = "sm" | "md" | "lg" | "xl";
 const LOGO_SIZE: Record<IdentitySize, number> = { sm: 16, md: 20, lg: 28, xl: 40 };
 const PORTRAIT_SIZE: Record<IdentitySize, "sm" | "md" | "lg"> = { sm: "sm", md: "md", lg: "lg", xl: "lg" };
 
-function teamStyle(team?: string | null): CSSProperties | undefined {
+export function teamStyle(team?: string | null): CSSProperties | undefined {
   const accent = teamAccent(team);
   return accent ? ({ "--team-color": accent } as CSSProperties) : undefined;
 }

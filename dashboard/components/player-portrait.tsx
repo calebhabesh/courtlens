@@ -1,7 +1,7 @@
 "use client";
 
 import { Icon } from "./ui/icon";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { browserApi } from "@/lib/workbench-api";
 
 interface PlayerPortraitProps {
@@ -22,6 +22,12 @@ export function PlayerPortrait({
   alt
 }: PlayerPortraitProps) {
   const [error, setError] = useState(false);
+  const imageRef = useRef<HTMLImageElement>(null);
+  // An image that failed before hydration never fires onError; detect it after mount.
+  useEffect(() => {
+    const image = imageRef.current;
+    if (image?.complete && image.naturalWidth === 0) setError(true);
+  }, []);
 
   // Compute initials
   const initials = name
@@ -57,6 +63,7 @@ export function PlayerPortrait({
   return (
     // eslint-disable-next-line @next/next/no-img-element
     <img
+      ref={imageRef}
       src={source}
       alt={alt ?? `${name} portrait`}
       width={dimension}
