@@ -1,6 +1,7 @@
 "use client";
 
 import { Icon } from "./ui/icon";
+import { favorablePercentile, type GoodDirection } from "@/lib/percentile-display";
 
 import { PlayerPortrait } from "./player-portrait";
 import { TeamLogoStack } from "./team-logo";
@@ -47,7 +48,7 @@ export function StatsPreviewRail({ player, columns, season, eligiblePlayers, goo
         {columns.map(column => {
           const percentile = player.percentiles?.[column.key];
           const direction = goodDirections?.[column.key];
-          const favorable = percentile == null ? null : direction === "low" ? 100 - percentile : direction === "high" ? percentile : null;
+          const favorable = favorablePercentile(percentile, direction as GoodDirection);
           return <div key={column.key} className="stats-preview-metric">
             <dt title={column.tooltip}>{column.label}</dt>
             <dd><strong>{formatColumnValue(column, player)}</strong>{showPercentiles && <span
