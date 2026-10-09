@@ -1799,12 +1799,12 @@
   .research-links :where(input, select) { max-width: 100%; min-width: 0; }
 }
 
-.workbench-content > *, .advanced-research > *, .panel-header > * { min-width: 0; }
-.workbench-content .table-card { min-width: 0; }
-.workbench-content code { overflow-wrap: anywhere; }
+.workbench-content > *, .ui-tabbed-page-body > *, .advanced-research > *, .panel-header > * { min-width: 0; }
+.workbench-content .table-card, .ui-tabbed-page-body .table-card { min-width: 0; }
+.workbench-content code, .ui-tabbed-page-body code { overflow-wrap: anywhere; }
 @media (max-width: 600px) {
-  .workbench-content .panel :where(input, select) { max-width: 100%; min-width: 0; }
-  .workbench-content .panel-header > *, .page-header > * { max-width: 100%; }
+  :is(.workbench-content, .ui-tabbed-page-body) .panel :where(input, select) { max-width: 100%; min-width: 0; }
+  :is(.workbench-content, .ui-tabbed-page-body) .panel-header > *, .page-header > * { max-width: 100%; }
 }
 
 .table-responsive { max-width: 100%; overflow-x: auto; }

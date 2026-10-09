@@ -74,7 +74,7 @@ export function SimilarityInvestigationView() {
     sp.set("season", season);
     sp.set("window", win);
     sp.set("topK", String(k));
-    router.replace(`/research/similarity?${sp.toString()}`);
+    router.replace(`/similar-players?${sp.toString()}`);
   };
 
   const handleSelectPlayer = (id: string) => {
@@ -138,21 +138,12 @@ export function SimilarityInvestigationView() {
   };
 
   return (
-    <div className="workbench-content">
+    <div>
       {catalog === null && <p role="status">Context catalog unavailable. Explicit URL scope is retained; reload to retry.</p>}
       {/* Page Header */}
       <div className="page-header">
         <div>
-          <div className="dist-header-meta">
-            <span className="font-mono text-xs text-muted">F14</span>
-            <span
-              className="replica-badge-gated dist-badge-positive"
-            >
-              Statistical Twin Modeling
-            </span>
-
-          </div>
-          <h1 className="page-title">Statistical Peers & Profile Twins</h1>
+          {/* The Similar Players page header and tabs (FO07) own the title. */}
           <p className="page-subtitle">
             Multidimensional Euclidean distance matching across 8 standardized workload and production dimensions. Standardized z-score calculation relative to the active league cohort.
           </p>

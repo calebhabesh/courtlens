@@ -1,0 +1,404 @@
+[
+  {
+    "route": "/research/rapm",
+    "width": 1440,
+    "status": 200,
+    "h1": [
+      "RAPM Research"
+    ],
+    "activeTab": "RAPM",
+    "tabHeights": [
+      40,
+      40
+    ],
+    "tabsBottom": 195,
+    "headerLeft": 24,
+    "tabsLeft": 24,
+    "pageOverflow": false,
+    "screenshot": "research_rapm-1440.png"
+  },
+  {
+    "route": "/research/rapm/six-factor",
+    "width": 1440,
+    "status": 200,
+    "h1": [
+      "RAPM Research"
+    ],
+    "activeTab": "Six-Factor",
+    "tabHeights": [
+      40,
+      40
+    ],
+    "tabsBottom": 195,
+    "headerLeft": 24,
+    "tabsLeft": 24,
+    "pageOverflow": false,
+    "screenshot": "research_rapm_six-factor-1440.png"
+  },
+  {
+    "route": "/similar-players",
+    "width": 1440,
+    "status": 200,
+    "h1": [
+      "Similar Players"
+    ],
+    "activeTab": "Box Score",
+    "tabHeights": [
+      40,
+      40
+    ],
+    "tabsBottom": 195,
+    "headerLeft": 24,
+    "tabsLeft": 24,
+    "pageOverflow": false,
+    "screenshot": "similar-players-1440.png"
+  },
+  {
+    "route": "/similar-players/shot-profile",
+    "width": 1440,
+    "status": 200,
+    "h1": [
+      "Similar Players"
+    ],
+    "activeTab": "Shot Profile",
+    "tabHeights": [
+      40,
+      40
+    ],
+    "tabsBottom": 195,
+    "headerLeft": 24,
+    "tabsLeft": 24,
+    "pageOverflow": false,
+    "screenshot": "similar-players_shot-profile-1440.png"
+  },
+  {
+    "route": "/research/shooting",
+    "width": 1440,
+    "status": 200,
+    "h1": [
+      "Shooting"
+    ],
+    "activeTab": "Expected Shots",
+    "tabHeights": [
+      40,
+      40,
+      40
+    ],
+    "tabsBottom": 195,
+    "headerLeft": 24,
+    "tabsLeft": 24,
+    "pageOverflow": false,
+    "screenshot": "research_shooting-1440.png"
+  },
+  {
+    "route": "/research/shooting/adjusted",
+    "width": 1440,
+    "status": 200,
+    "h1": [
+      "Shooting"
+    ],
+    "activeTab": "Adjusted Shooting",
+    "tabHeights": [
+      40,
+      40,
+      40
+    ],
+    "tabsBottom": 195,
+    "headerLeft": 24,
+    "tabsLeft": 24,
+    "pageOverflow": false,
+    "screenshot": "research_shooting_adjusted-1440.png"
+  },
+  {
+    "route": "/research/shooting/aftermath",
+    "width": 1440,
+    "status": 200,
+    "h1": [
+      "Shooting"
+    ],
+    "activeTab": "Shot Aftermath",
+    "tabHeights": [
+      40,
+      40,
+      40
+    ],
+    "tabsBottom": 195,
+    "headerLeft": 24,
+    "tabsLeft": 24,
+    "pageOverflow": false,
+    "screenshot": "research_shooting_aftermath-1440.png"
+  },
+  {
+    "route": "/whats-new",
+    "width": 1440,
+    "status": 200,
+    "h1": [
+      "What's New"
+    ],
+    "activeTab": "Patch Notes",
+    "tabHeights": [
+      40,
+      40
+    ],
+    "tabsBottom": 195,
+    "headerLeft": 24,
+    "tabsLeft": 24,
+    "pageOverflow": false,
+    "screenshot": "whats-new-1440.png"
+  },
+  {
+    "route": "/whats-new/blog",
+    "width": 1440,
+    "status": 200,
+    "h1": [
+      "What's New"
+    ],
+    "activeTab": "Blog",
+    "tabHeights": [
+      40,
+      40
+    ],
+    "tabsBottom": 195,
+    "headerLeft": 24,
+    "tabsLeft": 24,
+    "pageOverflow": false,
+    "screenshot": "whats-new_blog-1440.png"
+  },
+  {
+    "route": "/methodology",
+    "width": 1440,
+    "status": 200,
+    "h1": [
+      "Methodology"
+    ],
+    "activeTab": "Definitions",
+    "tabHeights": [
+      40,
+      40
+    ],
+    "tabsBottom": 195,
+    "headerLeft": 24,
+    "tabsLeft": 24,
+    "pageOverflow": false,
+    "screenshot": "methodology-1440.png"
+  },
+  {
+    "route": "/methodology/learning",
+    "width": 1440,
+    "status": 200,
+    "h1": [
+      "Methodology"
+    ],
+    "activeTab": "Learning",
+    "tabHeights": [
+      40,
+      40
+    ],
+    "tabsBottom": 195,
+    "headerLeft": 24,
+    "tabsLeft": 24,
+    "pageOverflow": false,
+    "screenshot": "methodology_learning-1440.png"
+  },
+  {
+    "route": "/research/rapm",
+    "width": 390,
+    "status": 200,
+    "h1": [
+      "RAPM Research"
+    ],
+    "activeTab": "RAPM",
+    "tabHeights": [
+      40,
+      40
+    ],
+    "tabsBottom": 191,
+    "headerLeft": 12,
+    "tabsLeft": 12,
+    "pageOverflow": false,
+    "screenshot": "research_rapm-390.png"
+  },
+  {
+    "route": "/research/rapm/six-factor",
+    "width": 390,
+    "status": 200,
+    "h1": [
+      "RAPM Research"
+    ],
+    "activeTab": "Six-Factor",
+    "tabHeights": [
+      40,
+      40
+    ],
+    "tabsBottom": 191,
+    "headerLeft": 12,
+    "tabsLeft": 12,
+    "pageOverflow": false,
+    "screenshot": "research_rapm_six-factor-390.png"
+  },
+  {
+    "route": "/similar-players",
+    "width": 390,
+    "status": 200,
+    "h1": [
+      "Similar Players"
+    ],
+    "activeTab": "Box Score",
+    "tabHeights": [
+      40,
+      40
+    ],
+    "tabsBottom": 191,
+    "headerLeft": 12,
+    "tabsLeft": 12,
+    "pageOverflow": false,
+    "screenshot": "similar-players-390.png"
+  },
+  {
+    "route": "/similar-players/shot-profile",
+    "width": 390,
+    "status": 200,
+    "h1": [
+      "Similar Players"
+    ],
+    "activeTab": "Shot Profile",
+    "tabHeights": [
+      40,
+      40
+    ],
+    "tabsBottom": 191,
+    "headerLeft": 12,
+    "tabsLeft": 12,
+    "pageOverflow": false,
+    "screenshot": "similar-players_shot-profile-390.png"
+  },
+  {
+    "route": "/research/shooting",
+    "width": 390,
+    "status": 200,
+    "h1": [
+      "Shooting"
+    ],
+    "activeTab": "Expected Shots",
+    "tabHeights": [
+      40,
+      40,
+      40
+    ],
+    "tabsBottom": 191,
+    "headerLeft": 12,
+    "tabsLeft": 12,
+    "pageOverflow": false,
+    "screenshot": "research_shooting-390.png"
+  },
+  {
+    "route": "/research/shooting/adjusted",
+    "width": 390,
+    "status": 200,
+    "h1": [
+      "Shooting"
+    ],
+    "activeTab": "Adjusted Shooting",
+    "tabHeights": [
+      40,
+      40,
+      40
+    ],
+    "tabsBottom": 191,
+    "headerLeft": 12,
+    "tabsLeft": 12,
+    "pageOverflow": false,
+    "screenshot": "research_shooting_adjusted-390.png"
+  },
+  {
+    "route": "/research/shooting/aftermath",
+    "width": 390,
+    "status": 200,
+    "h1": [
+      "Shooting"
+    ],
+    "activeTab": "Shot Aftermath",
+    "tabHeights": [
+      40,
+      40,
+      40
+    ],
+    "tabsBottom": 191,
+    "headerLeft": 12,
+    "tabsLeft": 12,
+    "pageOverflow": false,
+    "screenshot": "research_shooting_aftermath-390.png"
+  },
+  {
+    "route": "/whats-new",
+    "width": 390,
+    "status": 200,
+    "h1": [
+      "What's New"
+    ],
+    "activeTab": "Patch Notes",
+    "tabHeights": [
+      40,
+      40
+    ],
+    "tabsBottom": 191,
+    "headerLeft": 12,
+    "tabsLeft": 12,
+    "pageOverflow": false,
+    "screenshot": "whats-new-390.png"
+  },
+  {
+    "route": "/whats-new/blog",
+    "width": 390,
+    "status": 200,
+    "h1": [
+      "What's New"
+    ],
+    "activeTab": "Blog",
+    "tabHeights": [
+      40,
+      40
+    ],
+    "tabsBottom": 191,
+    "headerLeft": 12,
+    "tabsLeft": 12,
+    "pageOverflow": false,
+    "screenshot": "whats-new_blog-390.png"
+  },
+  {
+    "route": "/methodology",
+    "width": 390,
+    "status": 200,
+    "h1": [
+      "Methodology"
+    ],
+    "activeTab": "Definitions",
+    "tabHeights": [
+      40,
+      40
+    ],
+    "tabsBottom": 191,
+    "headerLeft": 12,
+    "tabsLeft": 12,
+    "pageOverflow": false,
+    "screenshot": "methodology-390.png"
+  },
+  {
+    "route": "/methodology/learning",
+    "width": 390,
+    "status": 200,
+    "h1": [
+      "Methodology"
+    ],
+    "activeTab": "Learning",
+    "tabHeights": [
+      40,
+      40
+    ],
+    "tabsBottom": 191,
+    "headerLeft": 12,
+    "tabsLeft": 12,
+    "pageOverflow": false,
+    "screenshot": "methodology_learning-390.png"
+  }
+]

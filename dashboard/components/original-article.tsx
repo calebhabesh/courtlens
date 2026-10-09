@@ -13,7 +13,8 @@ function Inline({text}:{text:string}) {
 export function OriginalArticle({source}:{source:string}) {
   return <article className="original-article">{parseMarkdown(source).map((block,i)=>{
     const text=<Inline text={block.text} />;
-    if(block.kind==="heading")return block.level===1 ? <h1 key={i}>{text}</h1> : block.level===2 ? <h2 key={i}>{text}</h2> : <h3 key={i}>{text}</h3>;
+    // The page header owns the h1, so article headings start one level down.
+    if(block.kind==="heading")return block.level===1 ? <h2 key={i}>{text}</h2> : block.level===2 ? <h3 key={i}>{text}</h3> : <h4 key={i}>{text}</h4>;
     if(block.kind==="code")return <pre key={i}><code>{block.text}</code></pre>;
     if(block.kind==="list")return <ul key={i}>{block.text.split("\n").map((line,j)=><li key={j}><Inline text={line} /></li>)}</ul>;
     return <p key={i}>{text}</p>;

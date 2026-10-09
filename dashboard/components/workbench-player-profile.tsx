@@ -202,7 +202,7 @@ export function WorkbenchPlayerProfile({
             </Link>
 
             <Link
-              href={`/research/similarity?playerId=${player.id}&season=${context.season}&phase=${context.phase}&beforeDate=${context.before_date}`}
+              href={`/similar-players?playerId=${player.id}&season=${context.season}&phase=${context.phase}&beforeDate=${context.before_date}`}
               className="button button-small"
               title="Find statistical twin players across standardized dimensions"
             >
@@ -217,7 +217,7 @@ export function WorkbenchPlayerProfile({
               Compare PvP
             </Link>
 
-            <Link href={`/shot-profile-twin?player_id=${player.id}&release_id=${context.release_id}&season=${context.season}&phase=${context.phase}&before_date=${context.before_date}`} className="button button-small">Shooting</Link>
+            <Link href={`/similar-players/shot-profile?player_id=${player.id}&release_id=${context.release_id}&season=${context.season}&phase=${context.phase}&before_date=${context.before_date}`} className="button button-small">Shooting</Link>
 
             <Link
               href={`/wingspan?playerId=${player.id}`}
@@ -321,7 +321,7 @@ export function WorkbenchPlayerProfile({
                 Official NBA Draft Combine measurements vs. team-reported roster cards. Missing values are null, never scored as zero.
               </p>
             </div>
-            <Link href={`/shot-profile-twin?player_id=${player.id}&release_id=${context.release_id}&season=${context.season}&phase=${context.phase}&before_date=${context.before_date}`} className="button button-small">Shooting</Link>
+            <Link href={`/similar-players/shot-profile?player_id=${player.id}&release_id=${context.release_id}&season=${context.season}&phase=${context.phase}&before_date=${context.before_date}`} className="button button-small">Shooting</Link>
 
             <Link
               href={`/wingspan?playerId=${player.id}`}

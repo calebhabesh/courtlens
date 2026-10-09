@@ -40,17 +40,16 @@ const PENDING_NATIVE_DATE = [
 const PENDING_RAW_TITLE = [
   "components/live-workspace.tsx", "components/playoffs-series-view.tsx", "app/playoffs/page.tsx", "app/schedule/page.tsx", // FO08
   "app/players/page.tsx", "app/players/\\[id\\]/page.tsx", "components/workbench-player-profile.tsx", "app/last-games/page.tsx",
-  "components/recent-games-view.tsx", "components/ranking-boards-view.tsx", "components/tier-list-view.tsx",
-  "components/similarity-investigation-view.tsx", // FO09
+  "components/recent-games-view.tsx", "components/ranking-boards-view.tsx", "components/tier-list-view.tsx", // FO09
   "app/teams/page.tsx", "app/teams/\\[id\\]/page.tsx", "components/finance-workspace.tsx", // FO10
   "app/compare/page.tsx", "app/team-compare/page.tsx", "components/shared-floor-view.tsx", // FO11
-  "app/research/rapm/page.tsx", "components/shooting-view.tsx", "components/trends-investigation-view.tsx",
+  "components/shooting-view.tsx", "components/trends-investigation-view.tsx",
   "components/distributions-investigation-view.tsx", "app/forecasts/page.tsx", "app/evaluation/page.tsx",
   "components/case-studies-view.tsx", "app/investigations/page.tsx", "components/saved-operation-detail.tsx",
-  "components/research-operation-view.tsx", "components/research-results-view.tsx", "components/possession-calculator-view.tsx",
+  "components/research-operation-view.tsx", "components/possession-calculator-view.tsx",
   "components/wingspan-explorer-view.tsx", // FO12
-  "app/settings/page.tsx", "app/data-status/page.tsx", "app/methodology/page.tsx", "app/learning/page.tsx",
-  "app/planner/page.tsx", "components/stats-workspace.tsx", "app/research/ask/page.tsx", "components/original-article.tsx", // FO13
+  "app/settings/page.tsx", "app/data-status/page.tsx",
+  "app/planner/page.tsx", "components/stats-workspace.tsx", "app/research/ask/page.tsx", // FO13
   "app/not-found.tsx", "components/capability-notice.tsx" // FO14
 ];
 const lucideImport = {

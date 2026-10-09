@@ -1,11 +1,12 @@
 import type { NextConfig } from "next";
+import { COMPATIBILITY_REDIRECTS, CONSOLIDATED_REDIRECTS } from "./lib/route-consolidation";
 
 const nextConfig: NextConfig = {
   output: "standalone",
   turbopack: {
     root: process.cwd()
   },
-  outputFileTracingIncludes: { "/blog": ["./content/*.md"], "/patch-notes": ["./content/*.md"] },
+  outputFileTracingIncludes: { "/whats-new": ["./content/*.md"], "/whats-new/blog": ["./content/*.md"] },
   poweredByHeader: false,
   reactStrictMode: true,
   devIndicators: false,
@@ -25,48 +26,7 @@ const nextConfig: NextConfig = {
     ];
   },
   async redirects() {
-    return [
-      {
-        source: "/pvp",
-        destination: "/compare",
-        permanent: false
-      },
-      {
-        source: "/StatLineShift",
-        destination: "/stat-line-shift",
-        permanent: false
-      },
-      {
-        source: "/zts",
-        destination: "/research/adjusted-shooting",
-        permanent: false
-      },
-      {
-        source: "/shotquality",
-        destination: "/research/expected-shots",
-        permanent: false
-      },
-      {
-        source: "/d-shotquality",
-        destination: "/research/defensive-matchups",
-        permanent: false
-      },
-      {
-        source: "/kawhifiles",
-        destination: "/research/case-studies",
-        permanent: false
-      },
-      {
-        source: "/ask",
-        destination: "/research/ask",
-        permanent: false
-      },
-      {
-        source: "/dashboard",
-        destination: "/players",
-        permanent: false
-      }
-    ];
+    return [...COMPATIBILITY_REDIRECTS, ...CONSOLIDATED_REDIRECTS].map(redirect => ({ ...redirect, permanent: false }));
   }
 };
 

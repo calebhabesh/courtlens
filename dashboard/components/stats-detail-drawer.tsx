@@ -185,7 +185,7 @@ export function StatsDetailDrawer({
             Distributions
           </Link>
           <Link
-            href={`/research/similarity?playerId=${player.player_id}&${queryString}`}
+            href={`/similar-players?playerId=${player.player_id}&${queryString}`}
             className="button button-small"
             title="Find statistical twin players across standardized dimensions"
           >

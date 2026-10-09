@@ -22,6 +22,7 @@ export * from "./accordion";
 export * from "./presence";
 export * from "./header";
 export * from "./page-shell";
+export * from "./route-tabs";
 export * from "./field";
 export * from "./filter-bar";
 export * from "./date-picker";

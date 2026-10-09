@@ -15,9 +15,8 @@ export default async function Page({ searchParams }: {
   const beforeDate = typeof params.beforeDate === "string" ? params.beforeDate : "2026-07-01";
   const data = await getImpact({ season, phase, beforeDate }).catch(() => null);
   const metrics = ["rapm", "orapm", "drapm", "bpr", "rapm_2y", "rapm_3y"];
-  return <div className="workbench-content">
-    <h1>CourtLens descriptive impact</h1>
-    <p>Served public-source estimates with declared windows and samples.</p>
+  return <>
+    <h2>CourtLens descriptive impact</h2>
     <form className="control-button-group" action="/research/rapm">
       <label>Season <select name="season" defaultValue={season}>{["2023-24", "2024-25", "2025-26"].map(value => <option key={value}>{value}</option>)}</select></label>
       <label>Phase <select name="phase" defaultValue={phase}><option value="regular_season">Regular season</option><option value="playoffs">Playoffs</option></select></label>
@@ -41,5 +40,5 @@ export default async function Page({ searchParams }: {
       <p>The descriptive serving artifacts above do not execute or promote this frozen out-of-time experiment.</p>
       <ResearchResultsView experiment="courtload-rapm-v1" embedded />
     </section>
-  </div>;
+  </>;
 }

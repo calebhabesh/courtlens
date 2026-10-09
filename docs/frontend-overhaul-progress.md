@@ -100,6 +100,13 @@ recorded owner approval.
   differ.
 - Open owner choice for FO13: the proposed Article template (Design Language v1.1, Templates).
 
+## FO07 findings that change later blocks
+
+- Routes move through `lib/route-consolidation.ts` only; a unit test checks every redirect lands on an existing page in one hop.
+- Tab bodies render inside `.ui-tabbed-page-body`, not `.workbench-content`; FO09/FO12/FO13 rebuild them without their own page header.
+- FO09: Similar Players' "Open in Stats" button text is unreadable (pre-existing) and its evidence hash belongs in Data details.
+- FO12: the shot-tools and research-experiment link rows inside the Shooting and RAPM tabs duplicate the tabs; fold them in.
+
 ## Owner gates
 
 | Gate | After | Status | Notes |
@@ -118,7 +125,7 @@ recorded owner approval.
 | FO04 | implemented_unverified | 2026-10-09. [Evidence](evidence/fo04/README.md): Showcase rebuilt on the Board template: title row with search and one Export menu, Focus in the filter bar, SVG card with headshot, logo, team accent, value/rank/percentile per stat and one context line, centered playback (0px offset at both widths), rail with icon actions and roster. Percentiles from the Stats query and cohort; ranks from the server ordering; `?playerId=` deep link fixed; exports self-contained. Glance test passes at 1440 and 390. Lint 0, typecheck pass, Vitest 48 files/333 tests, Playwright 235 pass/15 skip/0 fail. Reviewed at gate 2 after FO05. |
 | FO05 | implemented_unverified | 2026-10-09. [Evidence](evidence/fo05/README.md): Roster Shapes rebuilt on the Board template with no form, release input or Load button: shared filter bar + Observed/Projected, 30-logo team grid (inline, then a Change team modal) with the team in the URL, team header with logo and color, Unassigned pool above five position columns with share bars, drag and drop plus a keyboard menu (focus follows the chip), projected minutes on chips with a 240 gauge (amber/red/green), caveats behind Why?, IDs, rules and source warnings in Data details, collapsed table. Export `roster-minute-allocation-v1` byte-identical to the old formula (unit test and real data). Glance test passes at 1440 and 390. Lint 0, typecheck pass, Vitest 49 files/337 tests, Playwright 239 pass/15 skip/0 fail. Awaits owner gate 2. |
 | FO06 | implemented_unverified | 2026-10-09. [Evidence](evidence/fo06/README.md): Design Language v1.1 (templates, page anatomy with filter-bar slots, missing-data/Data details rules, identity, dates, gate-2 Board patterns, breakpoints, glance test, rewritten header section, enforcement). Gate-2 follow-ups: FilterBar `modes` slot keeps Showcase Focus and Roster Observed/Projected visible on phones (40px, no clipping at 390/360); search pill page-centred where it fits (0px offset at 1024 and ≥1740, was +253px). ESLint ratchets for native date inputs and raw `<h1>` with per-block pending lists. 10 screenshot baselines (Showcase, Roster picker and chart, search, `/design` × 1440/390), stable on repeat runs. Lint 0, typecheck pass, Vitest 49 files/337 tests, Playwright 249 pass/15 skip/0 fail. Article template left as an owner choice for FO13. |
-| FO07 | planned | |
+| FO07 | implemented_unverified | 2026-10-09. [Evidence](evidence/fo07/README.md): merged pages are path tabs from one table (`lib/route-consolidation.ts`, also feeding `next.config.ts` redirects): RAPM Research (+Six-Factor), Similar Players (Box Score, Shot Profile), Shooting (Expected, Adjusted, Aftermath), What's New (Patch Notes, Blog), Methodology (Definitions, Learning). 9 removed URLs → 307 to their tab with the query kept; old aliases repointed so nothing takes two hops. `RouteTabs` primitive (links, `aria-current`, context and player carried, 40px, secondary when gated), one `h1` per page, nav lists each merged page once, backend search entries updated, `/design` noindex, raw-title ratchet 41 → 35. 11 tab URLs × 1440/390: titles match nav, tabs 40px, shared left edge, no sideways scroll (fixed a pre-existing 390px overflow on Similar Players). Glance items 1/4/7/9 pass; 2/3/5/6/8/10 belong to the tab bodies (FO09/FO12/FO13). Lint 0, typecheck pass, Vitest 50 files/344 tests, ruff/mypy clean, lookup pytest 16 pass, Playwright 254 pass/15 skip/0 fail. |
 | FO08 | planned | |
 | FO09 | planned | |
 | FO10 | planned | |
