@@ -810,3 +810,24 @@
   .ui-design-tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: var(--space-3); }
   .ui-design-skeleton-frame { max-height: 480px; overflow: hidden; border-radius: var(--radius-md); background: var(--color-bg); }
 }
+
+/* FO07 route tabs: tabs that are links to separate URLs on merged pages. */
+@layer foundation {
+  .ui-route-tabs { min-width: 0; max-width: 100%; overflow-x: auto; scrollbar-width: none; }
+  .ui-route-tabs::-webkit-scrollbar { display: none; }
+  .ui-route-tabs-list { display: flex; width: 100%; min-height: 40px; margin: 0; padding: 0; list-style: none; }
+  .ui-route-tabs-list > li { display: flex; flex: none; }
+  .ui-route-tab {
+    display: inline-flex;
+    align-items: center;
+    min-height: 40px;
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .ui-route-tab:hover { color: var(--color-text); text-decoration: none; }
+  .ui-route-tab[data-active=true] { color: var(--color-accent); }
+  .ui-route-tab[data-secondary=true]:not([data-active=true]) { color: var(--color-text-tertiary); }
+  .ui-tabbed-page-body { display: flex; flex-direction: column; gap: var(--space-4); min-width: 0; }
+  .ui-tabbed-page-body > * { min-width: 0; }
+}

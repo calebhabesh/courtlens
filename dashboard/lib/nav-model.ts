@@ -1,6 +1,6 @@
 // One navigation model for the desktop menus, the narrow-width drawer and availability (FO02, D9).
-// Groups follow the FO07 targets. Until FO07 merges routes, hrefs still point at the existing pages,
-// so a target such as "Shooting" lists its current pages instead of a single tabbed page.
+// Groups follow the FO07 targets. A merged page (lib/route-consolidation.ts) appears once, under its
+// page title; its tabs are reached on the page and through search.
 
 export interface NavItem {
   label: string;
@@ -39,8 +39,7 @@ export const NAV_MENUS: NavMenu[] = [
       { label: "Player Showcase", href: "/showcase" },
       { label: "Ranking Boards", href: "/rankings" },
       { label: "Tier Lists", href: "/tierlist" },
-      { label: "Similar Players", href: "/research/similarity" },
-      { label: "Shot-Profile Twins", href: "/shot-profile-twin" },
+      { label: "Similar Players", href: "/similar-players" },
     ] }],
   },
   {
@@ -69,15 +68,12 @@ export const NAV_MENUS: NavMenu[] = [
     groups: [
       { title: "Impact", items: [
         { label: "RAPM Research", href: "/research/rapm" },
-        { label: "Six-Factor RAPM", href: "/six-factor-rapm" },
         { label: "WOWY", href: "/wowy" },
         { label: "Defensive Matchups", href: "/research/defensive-matchups" },
         { label: "Spatial EPV", href: "/research/epv" },
       ] },
       { title: "Shooting", items: [
-        { label: "Expected Shots", href: "/research/expected-shots" },
-        { label: "Adjusted Shooting", href: "/research/adjusted-shooting" },
-        { label: "Shot Aftermath", href: "/shot-aftermath" },
+        { label: "Shooting", href: "/research/shooting" },
       ] },
       { title: "Trends & Distributions", items: [
         { label: "Workload Trends", href: "/research/trends" },
@@ -102,7 +98,7 @@ export const MORE_LINKS: NavItem[] = [
   { label: "Settings", href: "/settings" },
   { label: "Data status", href: "/data-status" },
   { label: "Methodology", href: "/methodology" },
-  { label: "What's New", href: "/patch-notes" },
+  { label: "What's New", href: "/whats-new" },
   { label: "Schedule", href: "/schedule" },
   { label: "Planner", href: "/planner" },
 ];
@@ -121,7 +117,8 @@ export function activeNavSection(pathname: string): string {
   if (pathname === "/" || pathname === "/stats") return "stats";
   for (const menu of NAV_MENUS) {
     for (const group of menu.groups) {
-      if (group.items.some(item => pathOf(item.href) === pathname)) return menu.id;
+      // A merged page's tabs live under its path (FO07), so they belong to the same menu.
+      if (group.items.some(item => pathname === pathOf(item.href) || pathname.startsWith(`${pathOf(item.href)}/`))) return menu.id;
     }
   }
   if (pathname.startsWith("/live") || pathname.startsWith("/playoffs")) return "live";

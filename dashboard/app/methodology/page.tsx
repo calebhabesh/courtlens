@@ -1,9 +1,7 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import { getMetricCatalog } from "@/lib/workbench-api";
 import type { MetricCatalog } from "@/lib/types";
 
-export const metadata: Metadata = { title: "Methodology & Catalog · CourtLens" };
 export const dynamic = "force-dynamic";
 
 export default async function MethodologyPage() {
@@ -17,18 +15,8 @@ export default async function MethodologyPage() {
   const metrics = catalog?.metrics ?? [];
 
   return (
-    <div className="workbench-content">
-      <div className="page-header">
-        <div>
-          <span className="text-xs text-muted font-mono uppercase">System Principles & Metrics</span>
-          <h1 className="page-title">Methodology & Metric Catalog</h1>
-          <p className="page-subtitle">
-            Formal mathematical formulas, zero-inferred principles, and temporal discipline guardrails governing CourtLens.
-          </p>
-        </div>
-      </div>
-
-      <div className="page-actions"><Link href="/learning">Worked lessons</Link><Link href="/data-status">Source coverage and lineage</Link><Link href="/evaluation">Model evaluation</Link><Link href="/investigations">Retained investigations</Link></div>
+    <>
+      <div className="page-actions"><Link href="/data-status">Source coverage and lineage</Link><Link href="/evaluation">Model evaluation</Link><Link href="/investigations">Retained investigations</Link></div>
       {/* Core Principles Grid */}
       <div className="grid-3 methodology-principles-grid">
         <div className="panel">
@@ -143,6 +131,6 @@ export default async function MethodologyPage() {
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

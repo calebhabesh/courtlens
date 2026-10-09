@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { SimilarityInvestigationView } from "@/components/similarity-investigation-view";
 
 export const metadata: Metadata = {
-  title: "Statistical Peers & Twin Modeling · CourtLens Research",
+  title: "Similar Players",
   description: "Standardized Euclidean distance player twins across production and workload dimensions."
 };
 

@@ -14,7 +14,7 @@ function routeExists(href: string): boolean {
 }
 
 describe("navigation model (FO02, D9 and FO07 groups)", () => {
-  it("points every entry at an existing page until FO07 merges routes", () => {
+  it("points every entry at an existing page", () => {
     for (const item of [...analyticalNavItems(), ...MORE_LINKS]) expect(routeExists(item.href), item.href).toBe(true);
   });
 
@@ -26,7 +26,8 @@ describe("navigation model (FO02, D9 and FO07 groups)", () => {
   it("groups Research by the FO07 targets and moves Tier Lists under Players", () => {
     const research = NAV_MENUS.find(menu => menu.id === "research")!;
     expect(research.groups.map(group => group.title)).toEqual(["Impact", "Shooting", "Trends & Distributions", "Forecasts & Evaluation", "Tools"]);
-    expect(research.groups[0].items.map(item => item.href)).toEqual(["/research/rapm", "/six-factor-rapm", "/wowy", "/research/defensive-matchups", "/research/epv"]);
+    expect(research.groups[0].items.map(item => item.href)).toEqual(["/research/rapm", "/wowy", "/research/defensive-matchups", "/research/epv"]);
+    expect(research.groups[1].items.map(item => item.href)).toEqual(["/research/shooting"]);
     expect(research.groups[3].items.map(item => item.label)).toEqual(["Points Forecasts", "Evaluation Archive", "Case Studies", "Saved Investigations"]);
     const players = NAV_MENUS.find(menu => menu.id === "players")!.groups.flatMap(group => group.items.map(item => item.href));
     expect(players).toEqual(expect.arrayContaining(["/tierlist", "/rankings"]));
@@ -44,6 +45,9 @@ describe("navigation model (FO02, D9 and FO07 groups)", () => {
     expect(activeNavSection("/teams/1610612738")).toBe("teams");
     expect(activeNavSection("/live/2026-04-12")).toBe("live");
     expect(activeNavSection("/settings")).toBe("");
+    expect(activeNavSection("/research/rapm/six-factor")).toBe("research");
+    expect(activeNavSection("/similar-players/shot-profile")).toBe("players");
+    expect(activeNavSection("/research/shooting/aftermath")).toBe("research");
   });
 
   it("keeps app directory routes discoverable (sanity check on the route probe)", () => {

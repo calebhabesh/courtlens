@@ -16,7 +16,7 @@ async function researchRoutes(page: import("@playwright/test").Page) {
 test("completed negative report shows amended identity, honest horizons, metrics and export", async ({page}) => {
   const methods: string[] = [];
   page.on("request",request => { if(request.url().includes("/research/")) methods.push(request.method()); });
-  await researchRoutes(page); await page.goto("/research/expected-shots");
+  await researchRoutes(page); await page.goto("/research/shooting");
   const region = page.getByRole("region",{name:"Registered research result"});
   await expect(region).toContainText("Completed negative result");
   await expect(region).toContainText("0.08127%"); await expect(region).toContainText("No calibration fit");
@@ -33,14 +33,14 @@ test("completed negative report shows amended identity, honest horizons, metrics
 });
 test("each unavailable model names its independent requirement",async ({page}) => {
   await researchRoutes(page);
-  for(const [path,requirement] of [["/research/rapm","stint and possession"],["/six-factor-rapm","turnover and rebound"],["/research/adjusted-shooting","playtypes and foul trips"]]) {
+  for(const [path,requirement] of [["/research/rapm","stint and possession"],["/research/rapm/six-factor","turnover and rebound"],["/research/shooting/adjusted","playtypes and foul trips"]]) {
     await page.goto(path); await expect(page.locator(".advanced-research")).toContainText(requirement);
     await expect(page.getByRole("region",{name:"Registered research result"})).toHaveCount(0);
   }
 });
 test("integrity rejection hides numerical outputs and retry recovers",async ({page}) => {
   await researchRoutes(page); await page.route(`**/api/workbench/research/runs/${run.run_id}`,route => route.fulfill({status:503,json:{detail:"artifact failed integrity verification"}}));
-  await page.goto("/research/expected-shots");await expect(page.getByRole("alert").filter({hasText:"Report unavailable"})).toContainText("integrity verification");
+  await page.goto("/research/shooting");await expect(page.getByRole("alert").filter({hasText:"Report unavailable"})).toContainText("integrity verification");
   await expect(page.getByRole("button",{name:"Export verified report JSON"})).toHaveCount(0);
   await page.unroute(`**/api/workbench/research/runs/${run.run_id}`);await page.route(`**/api/workbench/research/runs/${run.run_id}`,route => route.fulfill({json:result}));
   await page.getByRole("button",{name:"Retry reads"}).click();await expect(page.getByRole("region",{name:"Registered research result"})).toContainText("Completed negative result");

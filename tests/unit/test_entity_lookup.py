@@ -10,6 +10,7 @@ from sqlalchemy.orm import Session
 
 from courtlens.domain.entity_lookup import (
     LOOKUP_CATALOG_VERSION,
+    STATIC_NAVIGATION_PAGES,
     damerau_levenshtein_distance,
     generate_player_aliases,
     normalize_lookup_text,
@@ -321,6 +322,38 @@ def test_kind_filtering(test_db_session: Session):
     res_pages = lookup_entities(test_db_session, query="stats", kinds=["page"])
     assert all(i.kind == "page" for i in res_pages.items)
     assert any(i.canonical_id == "stats" for i in res_pages.items)
+
+
+def test_merged_pages_resolve_to_their_fo07_tabs(test_db_session: Session):
+    """Old page names still find the merged pages, which point at their tab URLs (FO07)."""
+    expected = {
+        "patch notes": "whats-new",
+        "six factor": "research/rapm",
+        "shot aftermath": "research/shooting",
+        "shot profile twin": "similar-players/shot-profile",
+        "statistical peers": "similar-players",
+        "learning": "learning",
+    }
+    for query, canonical_id in expected.items():
+        res = lookup_entities(test_db_session, query=query, kinds=["page"])
+        assert res.items, query
+        assert res.items[0].canonical_id == canonical_id, query
+
+    removed = (
+        "/six-factor-rapm",
+        "/research/similarity",
+        "/shot-profile-twin",
+        "/research/expected-shots",
+        "/research/adjusted-shooting",
+        "/shot-aftermath",
+        "/patch-notes",
+        "/blog",
+        "/learning",
+    )
+    destinations = {page["base_destination"] for page in STATIC_NAVIGATION_PAGES}
+    assert not destinations.intersection(removed)
+    ids = [page["id"] for page in STATIC_NAVIGATION_PAGES]
+    assert len(ids) == len(set(ids))
 
 
 def test_context_preservation_in_destination_urls(test_db_session: Session):

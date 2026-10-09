@@ -10,7 +10,7 @@ import type { ShotProfile, ShootingInput, ShootingOperation, ShootingResponse } 
 import { courtPosition, resolvedShooting, shootingCsv, shootingNumber as n, shootingPercent as pct, shootingUrl, validateShooting } from "@/lib/shooting";
 
 const titles: Record<ShootingOperation, string> = { "shot-profile": "Shooting profile", "shot-profile-peers": "Shot-profile twins", matchups: "Source assignment matchups", "shot-aftermath": "Shot aftermath" };
-const routes: Record<ShootingOperation, string> = { "shot-profile": "/shot-profile-twin", "shot-profile-peers": "/shot-profile-twin", matchups: "/matchups", "shot-aftermath": "/shot-aftermath" };
+const routes: Record<ShootingOperation, string> = { "shot-profile": "/similar-players/shot-profile", "shot-profile-peers": "/similar-players/shot-profile", matchups: "/matchups", "shot-aftermath": "/research/shooting/aftermath" };
 function download(text: string, name: string, type: string) {
   const url = URL.createObjectURL(new Blob([text], { type }));
   const link = document.createElement("a"); link.href = url; link.download = name; link.click();
@@ -19,7 +19,8 @@ function download(text: string, name: string, type: string) {
 function Zones({ profile }: { profile: ShotProfile }) {
   return <div className="floor-scroll" tabIndex={0} role="region" aria-label={`Zone profile ${profile.player_id}`}><table className="data-table"><caption>{profile.player_id} · {profile.sample_status} · {profile.games} games · {profile.located_attempts} located / {profile.unknown_attempts} unknown attempts</caption><thead><tr><th scope="col">Zone</th><th scope="col">Attempts</th><th scope="col">Makes</th><th scope="col">Points</th><th scope="col">FG%</th><th scope="col">All-attempt share</th><th scope="col">Located-attempt share</th></tr></thead><tbody>{profile.zones.map(z => <tr key={z.zone}><th scope="row">{z.zone}</th><td>{z.attempts}</td><td>{z.makes}</td><td>{z.points}</td><td>{pct(z.fg_pct)}</td><td>{pct(z.attempt_share)}</td><td>{pct(z.zone === "Unknown" || !profile.located_attempts ? null : z.attempts / profile.located_attempts)}</td></tr>)}</tbody></table></div>;
 }
-export function ShootingView({ initialOperation = "shot-profile-peers" }: { initialOperation?: ShootingOperation }) {
+/** `embedded`: a tab of an FO07 merged page, whose header owns the title. */
+export function ShootingView({ initialOperation = "shot-profile-peers", embedded = false }: { initialOperation?: ShootingOperation; embedded?: boolean }) {
   const params = useSearchParams(), path = usePathname();
   const fromUrl = params.get("operation") as ShootingOperation;
   const [operation, setOperation] = useState<ShootingOperation>(initialOperation === "shot-profile-peers" && (fromUrl === "shot-profile" || fromUrl === "shot-profile-peers") ? fromUrl : initialOperation);
@@ -109,8 +110,8 @@ export function ShootingView({ initialOperation = "shot-profile-peers" }: { init
     const metadata = document.createElementNS("http://www.w3.org/2000/svg", "metadata"); metadata.textContent = context; svg.append(metadata);
     download(new XMLSerializer().serializeToString(svg), "shooting-court.svg", "image/svg+xml");
   }
-  return <div className="workbench-content shared-floor shooting-workspace">
-    <div className="page-header"><div><h1 className="page-title">{titles[operation]}</h1><p className="page-subtitle">Observed shooting, explicit assignments and bounded possession sequences.</p></div></div>
+  return <div className={`${embedded ? "" : "workbench-content "}shared-floor shooting-workspace`}>
+    {!embedded && <div className="page-header"><div><h1 className="page-title">{titles[operation]}</h1><p className="page-subtitle">Observed shooting, explicit assignments and bounded possession sequences.</p></div></div>}
     <nav className="floor-actions" aria-label="Shooting tools">{(["shot-profile-peers", "matchups", "shot-aftermath"] as const).map(op => <Link key={op} href={result ? shootingUrl(routes[op], op, { ...resolvedShooting(result), defender_id: op === "matchups" ? result.request.defender_id : null }) : routes[op]}>{titles[op]}</Link>)}</nav>
     <form className="table-card floor-form" onSubmit={submit}>
       {initialOperation === "shot-profile-peers" && <div className="floor-actions" role="group" aria-label="Shooting tabs">{(["shot-profile", "shot-profile-peers"] as const).map(op => <button type="button" aria-pressed={operation === op} key={op} onClick={() => { active.current?.abort(); setBusy(false); setOperation(op); setResult(null); setError(""); }}>{titles[op]}</button>)}</div>}
