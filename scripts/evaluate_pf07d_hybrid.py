@@ -17,8 +17,8 @@ from courtlens.database import SessionLocal
 from courtlens.domain.conversation import AnalysisPlan, ConversationContext
 from courtlens.domain.hybrid_assistant import HybridTurnRequest
 from courtlens.services.assistant.evaluation import score_case
-from courtlens.services.assistant.hybrid import run_hybrid_turn
-from courtlens.services.assistant.planner import (
+from courtlens.services.assistant.legacy.hybrid import run_hybrid_turn
+from courtlens.services.assistant.legacy.planner import (
     PLANNER_PROMPT,
     GeminiPlanProvider,
     PlanningOutput,

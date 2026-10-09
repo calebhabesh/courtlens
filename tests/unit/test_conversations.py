@@ -24,13 +24,13 @@ from courtlens.domain.conversation import (
 from courtlens.domain.query_url import deserialize_params_to_query
 from courtlens.services.assistant import conversations
 from courtlens.services.assistant.conversations import clear_conversation, run_conversation_turn
+from courtlens.services.assistant.legacy.planner import PlanningOutput, ProviderFailure
 from courtlens.services.assistant.operations import (
     EntityClarification,
     canonical_step,
     execute_operation,
     open_url,
 )
-from courtlens.services.assistant.planner import PlanningOutput, ProviderFailure
 from courtlens.services.assistant.rendering import bind_evidence, render_result
 from courtlens.services.workbench_analytics import ResolvedContext
 
@@ -767,8 +767,8 @@ def test_browser_conversation_reset_preflight_respects_cors_origins():
 def test_planner_argument_guidance_matches_registered_schemas():
     import re
 
+    from courtlens.services.assistant.legacy.planner import PLANNER_PROMPT
     from courtlens.services.assistant.operations import REGISTRY
-    from courtlens.services.assistant.planner import PLANNER_PROMPT
 
     guidance = re.findall(r"operation '(\w+)' with (\w+)", PLANNER_PROMPT)
     assert guidance
@@ -795,7 +795,7 @@ def test_provider_receives_canonical_team_catalog(session):
     "DeprecationWarning:google.genai.types"
 )
 def test_gemini_planning_disables_automatic_function_calls():
-    from courtlens.services.assistant.planner import GeminiPlanProvider
+    from courtlens.services.assistant.legacy.planner import GeminiPlanProvider
 
     with patch("google.genai.Client") as client:
         transport = client.return_value.__enter__.return_value

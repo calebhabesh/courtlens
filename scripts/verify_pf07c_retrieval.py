@@ -12,7 +12,7 @@ import httpx
 from sqlalchemy import create_engine, text
 
 from courtlens.domain.hybrid_assistant import HybridTurnResponse
-from courtlens.services.assistant.retrieval import (
+from courtlens.services.assistant.legacy.retrieval import (
     SOURCES,
     RetrievalBudget,
     clear_cache,

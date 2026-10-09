@@ -7,11 +7,13 @@ is recovered on polling/acceptance, never retried implicitly. This service owns 
 transaction boundaries.
 """
 
+from __future__ import annotations
+
 from collections.abc import Callable, Iterator
 from contextlib import contextmanager
 from dataclasses import dataclass
 from datetime import UTC, datetime, timedelta
-from typing import Any
+from typing import TYPE_CHECKING, Any
 from uuid import UUID, uuid4
 
 from fastapi import HTTPException
@@ -44,10 +46,12 @@ from courtlens.domain.hybrid_assistant import (
 )
 from courtlens.services.assistant.agent.loop import StepCallback, run_turn
 from courtlens.services.assistant.agent.providers.base import AgentProvider
-from courtlens.services.assistant.conversations import MAX_TURN_BYTES
-from courtlens.services.assistant.hybrid import run_hybrid_turn
-from courtlens.services.assistant.planner import PlanProvider
+from courtlens.services.assistant.limits import MAX_TURN_BYTES
 from courtlens.services.workbench_analytics import canonical_hash
+
+if TYPE_CHECKING:
+    from courtlens.services.assistant.legacy.planner import PlanProvider
+
 
 ACTIVE = ("pending", "running")
 LEASE_SECONDS = 50
@@ -424,6 +428,9 @@ def complete_turn(
                 }
             )
         else:
+            # Explicit v2 fixture/manual-plan compatibility only; ordinary Ask uses v3.
+            from courtlens.services.assistant.legacy.hybrid import run_hybrid_turn
+
             answer = run_hybrid_turn(
                 session,
                 execution,

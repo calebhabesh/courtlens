@@ -35,7 +35,7 @@ from courtlens.services.assistant.agent.providers.base import (
 from courtlens.services.assistant.agent.providers.gemini import GeminiProvider
 from courtlens.services.assistant.agent.providers.openai import OpenAIProvider
 from courtlens.services.assistant.agent.providers.replay import RecordingProvider, ReplayProvider
-from courtlens.services.assistant.service import get_assistant_status
+from courtlens.services.assistant.status import get_assistant_status
 
 FIXTURES = Path(__file__).parents[1] / "fixtures/agent-providers"
 TOOL = ToolDeclaration(
@@ -458,7 +458,7 @@ def test_blank_env_template_and_generic_key_alias(
 
 def test_status_never_returns_keys(monkeypatch: pytest.MonkeyPatch) -> None:
     settings = Settings(_env_file=None, openai_api_key="secret-openai", assistant_max_steps=4)
-    monkeypatch.setattr("courtlens.services.assistant.service.get_settings", lambda: settings)
+    monkeypatch.setattr("courtlens.services.assistant.status.get_settings", lambda: settings)
     status = get_assistant_status()
     assert status.configured and not status.limited_mode
     assert status.provider == "openai" and status.model == DEFAULT_MODELS["openai"]
@@ -480,7 +480,7 @@ def test_status_api_reports_explicit_missing_key_without_falling_back(
     api_client: TestClient,
 ) -> None:
     settings = Settings(_env_file=None, assistant_provider="openai", gemini_api_key="secret")
-    monkeypatch.setattr("courtlens.services.assistant.service.get_settings", lambda: settings)
+    monkeypatch.setattr("courtlens.services.assistant.status.get_settings", lambda: settings)
     response = api_client.get("/api/workbench/assistant/status")
     assert response.status_code == 200
     body = response.json()

@@ -1,42 +1,92 @@
 # CourtLens — Local NBA Research & Forecast Workbench
 
-**Current stage:** the Databallr replica is in progress. B35a/B35b retained operations,
-original content and installable metadata are verified; real Gemini language evaluation,
-actual OS installation, changing Live-game observations and deeper source/model gates
-remain open. See the [current capability ledger and measured evidence](docs/databallr-replica-implementation-progress.md).
-The historical figures and milestone table below describe earlier workbench evidence,
-not current source coverage or full replica acceptance.
-The [assistant revamp progress](docs/assistant-revamp-progress.md) records AR01–AR07's measured
-boundaries. AR08's live holdout was opened and stopped on Gemini quota after 2/90 planned runs;
-final live acceptance remains incomplete. See the [acceptance evidence](docs/evidence/ar08-acceptance/README.md).
-
-CourtLens is an engineer's local NBA research and forecasting workbench engineered with strict temporal discipline, source-traceable box-score lineage, out-of-time machine learning evaluation, and an optional tool-backed analytical assistant.
-
-Operating on six complete NBA regular seasons (2019–20 through 2024–25) and prospective 2025–26 schedules, CourtLens turns 104,533 player-game records into reproducible cohort explorations, multi-team trade stint reconciliations, contextual opponent metrics, calibrated empirical forecast intervals, and verified natural-language answers.
+**A local NBA research workbench: a versioned data warehouse, player impact
+ratings computed from play-by-play, out-of-time forecast evaluation and a
+tool-calling assistant that answers from the warehouse.** Python, PostgreSQL,
+dbt, FastAPI and Next.js.
 
 ![Desktop Comparison](docs/assets/real-comparison.png)
 
-> **Demonstration & Walkthrough:** A comprehensive step-by-step user journey across Explorer, Profiles, Comparisons, Forecasting Ledger, Assistant, and Disaster Recovery is documented in [docs/evidence/workbench-demo-walkthrough.md](docs/evidence/workbench-demo-walkthrough.md).
+## The problem
+
+Basketball stats sites make it easy to compare averages and hard to trust
+them. Recent form gets mixed with future games during backtests, a player
+traded mid-season is merged into one team, a missing box score quietly becomes
+a zero, and a model's "projection" rarely says how often it has been right.
+CourtLens treats each of those as an engineering requirement: every number
+traces to a source version and a cutoff date, and every forecast is scored
+against what actually happened.
+
+## What it does
+
+- **Versioned warehouse:** 104,533 player-game records across six regular
+  seasons (2019–20 to 2024–25), built through 39 layered dbt models. Raw
+  inputs are content-hashed, and serving releases are published by an atomic
+  pointer swap under PostgreSQL advisory locks, so a failed rebuild never
+  replaces the last good release.
+- **Temporal correctness:** features use only games before the replay date.
+  Changing a later game cannot alter an earlier profile's hash.
+- **Impact metrics from play-by-play:** 202,063 lineup stints reconstructed
+  from public play-by-play feed ridge-regression RAPM, six-factor and on/off
+  ratings, served with sample sizes and source gaps shown.
+- **Honest forecasting:** next-game points forecasts evaluated across 10
+  chronological folds, with empirical intervals and an append-only log of
+  forward forecasts. Missed games are recorded as unobserved, not as zero.
+- **Assistant:** a tool-calling agent with read-only warehouse tools. Numbers
+  in generated answers are checked against executed query results before
+  they stream. It runs on Gemini, Anthropic or OpenAI, or in a limited
+  rule-based mode with no key.
+
+## Measured results
+
+- **Forecasting:** across 10 chronological folds (10,488 held-out player
+  games), the prior-season blend reached MAE 4.88 points against a rolling
+  baseline's 5.09, with 81.2% of outcomes inside the 80% interval. A
+  gradient-boosted challenger did not clear the preregistered margin and was
+  not adopted ([case studies](docs/evidence/release-case-studies.md),
+  [performance](docs/evidence/performance.md)).
+- **Assistant accuracy:** against SQL answers computed independently on a
+  pinned snapshot, the initial Gemini development baseline answered 70.28% of
+  360 runs exactly ([evaluation](docs/evidence/ar02-evaluation/README.md)).
+  A final held-out measurement is still outstanding (see Status).
+- **API latency:** median under 55 ms for core research views across 15
+  endpoints, 0 errors in 450 concurrent requests ([performance](docs/evidence/performance.md)).
+- **Recovery:** backup bundles are restored into fresh disposable databases
+  and verified automatically.
+
+## Status
+
+Core data, forecasting and dashboard work is complete. The assistant's
+held-out live evaluation stopped on Gemini free-tier quota after 2 of 90
+planned runs, so no holdout accuracy is claimed. Offline, 1,845 Python tests
+and 286 dashboard unit tests pass, and nine browser UI checks still fail
+([details](docs/evidence/ag07-cleanup/README.md)). Detailed progress is in the
+[capability ledger](docs/databallr-replica-implementation-progress.md),
+[impact metrics log](docs/impact-metrics-progress.md) and
+[assistant progress](docs/assistant-agent-progress.md). The milestone table
+below records earlier workbench evidence.
+
+> **Walkthrough:** a step-by-step journey across Explorer, Profiles, Comparisons, Forecasting Ledger, Assistant and Disaster Recovery is in [docs/evidence/workbench-demo-walkthrough.md](docs/evidence/workbench-demo-walkthrough.md).
 
 ---
 
 > **Naming:** the Python package and CLI are `courtlens`, and environment variables use `COURTLENS_*`. Existing installations use `scripts/migrate_env_names.py` for the one-time environment rewrite. RN02 migrates the database and Docker volumes while retaining the old volume; historical evidence and frozen hash identifiers keep their original names.
 
-## 1. What Is Built
+## 1. Feature Detail
 
 - **Comprehensive NBA Historical & Prospective Scope:** 104,533 normalized player-game facts, 7,924 team-game facts, and 5,470 schedules across 6 complete regular seasons plus 2025–26 prospective schedules.
 - **dbt Warehouse & Serving Layer:** 39 layered dbt models and schema tests building staging (`stg_`), intermediate facts (`fct_`), and analytical serving marts (`mart_`).
 - **Atomic Pointer Publication & Safe Rollback:** Dedicated PostgreSQL session advisory locks protect candidate schema building, candidate validation, serving-row copy, and pointer swap. Rollback is atomic and non-destructive.
 - **Strict Temporal Discipline:** Feature calculation strictly excludes target and future dates ($game\_date < replay\_date$). Replaying historical cutoffs reproduces profiles deterministically without future information leakage.
 - **Prospective Points Forecasting & DNP Conditionality:** Out-of-time evaluation across 10 chronological folds with an active prior-blend model (MAE 4.88 vs. baseline MAE 5.09; 81.2% empirical 80% interval coverage). Features an immutable prospective issuance ledger (489 issuances, 489 scores) that strictly separates DNP injuries from 0-point appearances.
-- **Tool-Backed Analytical Assistant:** Read-only analytical assistant backed by 8 allowlisted domain functions, strict input validation, loop bounds ($\le 4$ rounds, $\le 8$ tool calls, $\le 100$ rows), numerical tolerance claim verification ($\pm 0.05$), and a zero-cost deterministic offline fixture provider.
+- **Tool-Backed Analytical Assistant:** V3 tool-calling agent with typed read-only warehouse tools, provider-native search, source-bound numerical checks, durable threads and streaming. Gemini, Anthropic and OpenAI adapters share configurable step/search/token limits. Without a key, labelled rule-planner limited mode answers supported local queries; deterministic replay supports offline testing.
 - **Reproducible Saved Investigations:** Persists parameterized research queries with cryptographic SHA-256 result digests, enabling one-click reproduction and JSON audit export.
 - **Dense Dark Dashboard (Next.js 15):** High-density desktop and 375px mobile layouts featuring Player Explorer, Multi-Stint Player Profiles (e.g. Pascal Siakam's TOR/IND trade split), Head-to-Head Comparisons without forced winners, Team Research, Forecasting Ledger, and Ask CourtLens AI.
 - **Complete Disaster Recovery:** Atomic backup and restore commands (`courtlens backup-archive` / `courtlens restore-archive`) coordinated under a PostgreSQL mutation lock, verified by automated restore testing against fresh disposable databases.
 
 ---
 
-## 2. Portfolio Highlights & Resume Evidence
+## 2. Highlights in Detail
 
 - **Data Engineering:** Built a local NBA research workbench using Python 3.14, PostgreSQL 17, and dbt, versioning 104,533 player-game records across 6 NBA seasons and exposing reproducible player/team investigations with upstream transform lineage.
 - **Offline ML & Forecasting:** Evaluated next-game points baselines and challengers across 10 chronological holdout folds, reporting an active prior-blend MAE of 4.88 (vs. baseline 5.09) with 81.2% empirical interval coverage; implemented immutable prospective forecast logging separating DNP injuries from 0 PTS appearances.
@@ -226,7 +276,7 @@ courtlens verify-restore
 - **Empirical Uncertainty:** Predictions serve calibrated 80% empirical intervals; overlapping intervals never compute synthetic "win probabilities".
 - **Defensive Modeling Honesty:** CourtLens serves exact box-score event totals (steals, blocks, rebounds) and rejects composite "best defender" impact ratings.
 - **Deferred Out-of-Scope Forecasting:** Requests for conference-winner or championship forecasts return typed `model_not_available` explanations with factual team standings.
-- **Zero-Cost Core:** The full research workbench, including the assistant via deterministic offline fixtures, operates 100% locally without external API dependencies.
+- **Zero-Cost Core:** Research analytics and the assistant’s labelled rule-planner limited mode run locally. Full agent answers and native web search require a configured provider; replay fixtures are for testing.
 
 ---
 

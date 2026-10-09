@@ -1,8 +1,8 @@
 import { expect, test } from "@playwright/test";
-import type { HybridTurnResponse } from "../lib/assistant-v2.generated";
+import type { AgentTurnResponse } from "../lib/assistant-v3.generated";
 import { waitForStreamedPage } from "./workbench-navigation";
 
-// Launched by the isolated PostgreSQL/FastAPI pytest harness, with a deterministic fixture planner.
+// Launched by the isolated PostgreSQL/FastAPI pytest harness, with a scripted V3 tool provider.
 const release = process.env.COURTLENS_AR07_RELEASE_ID;
 test.skip(!release, "AR07 disposable PostgreSQL/FastAPI fixture required");
 for (const width of [1440, 375]) {
@@ -27,7 +27,7 @@ for (const width of [1440, 375]) {
       const request = response.request().postDataJSON();
       // The client closes SSE after final; Chromium cannot retrieve that aborted body.
       // Inspect the same immutable final response through the durable history proxy.
-      let answer: HybridTurnResponse | undefined;
+      let answer: AgentTurnResponse | undefined;
       await expect.poll(async () => {
         const history = await page.request.get(`/api/assistant-v2/threads/${request.thread_id}/turns`);
         const records = await history.json();
@@ -35,9 +35,12 @@ for (const width of [1440, 375]) {
         return answer?.status;
       }).toBe("answered");
       expect(answer!.status).toBe("answered");
-      expect(answer!.plan!.steps?.[0]?.arguments?.[field]).toBe(identity);
-      expect(answer!.scope!.selections.release_id).toBe(release);
-      expect(answer!.scope!.assumptions!.join(" ")).toContain(`${field}=${identity}`);
+      expect(answer!.schema_version).toBe("courtlens-assistant-v3");
+      const result = answer!.results?.[0];
+      expect(result).toBeDefined();
+      expect(result!.result.arguments[field]).toBe(identity);
+      expect(result!.context?.release_id).toBe(release);
+      expect(answer!.trace?.find(step => step.tool === "query_stats")?.status).toBe("ok");
       await expect(panel.getByLabel("Messages")).toContainText(question);
       await expect(panel.getByRole("button",{name:"Send question",exact:true})).toBeDisabled();
       await page.screenshot({path:test.info().outputPath(`ar07-real-${field}-${width}.png`)});

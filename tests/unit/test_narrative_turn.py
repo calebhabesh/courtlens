@@ -13,9 +13,9 @@ from pydantic import ValidationError
 
 from courtlens.domain.conversation import ConversationContext
 from courtlens.domain.hybrid_assistant import HybridTurnRequest, HybridTurnResponse
-from courtlens.services.assistant.hybrid import run_hybrid_turn
-from courtlens.services.assistant.narrative import NarrativeOutcome
-from courtlens.services.assistant.planner import PlanningOutput, ProviderFailure
+from courtlens.services.assistant.legacy.hybrid import run_hybrid_turn
+from courtlens.services.assistant.legacy.narrative import NarrativeOutcome
+from courtlens.services.assistant.legacy.planner import PlanningOutput, ProviderFailure
 from courtlens.services.workbench_analytics import ResolvedContext
 
 CAPTURE = json.loads(Path("tests/fixtures/assistant/ar02/recorded-provider-v1.json").read_text())
@@ -69,15 +69,18 @@ def run(session, provider, on_phase=None) -> tuple[HybridTurnResponse, list[Narr
     outcomes: list[NarrativeOutcome] = []
     with (
         patch(
-            "courtlens.services.assistant.hybrid.resolve_workbench_context", return_value=context
+            "courtlens.services.assistant.legacy.hybrid.resolve_workbench_context",
+            return_value=context,
         ),
-        patch("courtlens.services.assistant.hybrid.stats_catalog_scope", return_value=catalog),
         patch(
-            "courtlens.services.assistant.hybrid.execute_bounded",
+            "courtlens.services.assistant.legacy.hybrid.stats_catalog_scope", return_value=catalog
+        ),
+        patch(
+            "courtlens.services.assistant.legacy.hybrid.execute_bounded",
             side_effect=lambda *_: deepcopy(RESULT["data"]),
         ),
         patch(
-            "courtlens.services.assistant.planner.GeminiPlanProvider._generate",
+            "courtlens.services.assistant.legacy.planner.GeminiPlanProvider._generate",
             side_effect=AssertionError("Tests must not call Gemini"),
         ),
     ):
@@ -175,7 +178,7 @@ def test_provider_without_narrate_skips_without_a_call(session):
 
 def test_narrative_is_skipped_when_the_turn_deadline_is_nearly_spent(session):
     narrator = Narrator({"status": "answered", "text": leader_text()})
-    with patch("courtlens.services.assistant.narrative.MIN_SECONDS", 10_000):
+    with patch("courtlens.services.assistant.legacy.narrative.MIN_SECONDS", 10_000):
         answer, outcomes = run(session, narrator)
     assert narrator.payloads == [] and answer.accounting.provider_calls == 1
     assert [(o.outcome, o.reason) for o in outcomes] == [("skipped", "deadline")]
@@ -212,7 +215,7 @@ def test_eval_reports_fallback_rate_over_attempted_narratives():
 def test_gemini_narrative_call_uses_its_own_prompt_schema_and_no_tools():
     from types import SimpleNamespace
 
-    from courtlens.services.assistant.planner import NARRATIVE_PROMPT, GeminiPlanProvider
+    from courtlens.services.assistant.legacy.planner import NARRATIVE_PROMPT, GeminiPlanProvider
 
     with patch("google.genai.Client") as client:
         transport = client.return_value.__enter__.return_value

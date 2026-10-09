@@ -16,8 +16,8 @@ import pytest
 
 from courtlens.domain.conversation import ConversationContext
 from courtlens.domain.hybrid_assistant import HybridTurnRequest
-from courtlens.services.assistant.hybrid import run_hybrid_turn
-from courtlens.services.assistant.planner import PlanningOutput, ProviderFailure
+from courtlens.services.assistant.legacy.hybrid import run_hybrid_turn
+from courtlens.services.assistant.legacy.planner import PlanningOutput, ProviderFailure
 from courtlens.services.assistant.revamp_evaluation import load_corpus, score_answer
 from courtlens.services.assistant.rule_planner import RULE_NOTE
 from courtlens.services.workbench_analytics import ResolvedContext
@@ -94,16 +94,19 @@ def test_recorded_provider_replay(session, record):
     }
     with (
         patch(
-            "courtlens.services.assistant.hybrid.resolve_workbench_context", return_value=context
+            "courtlens.services.assistant.legacy.hybrid.resolve_workbench_context",
+            return_value=context,
         ),
-        patch("courtlens.services.assistant.hybrid.stats_catalog_scope", return_value=catalog),
-        patch("courtlens.services.assistant.hybrid.execute_bounded", side_effect=execute),
         patch(
-            "courtlens.services.assistant.planner.GeminiPlanProvider.plan",
+            "courtlens.services.assistant.legacy.hybrid.stats_catalog_scope", return_value=catalog
+        ),
+        patch("courtlens.services.assistant.legacy.hybrid.execute_bounded", side_effect=execute),
+        patch(
+            "courtlens.services.assistant.legacy.planner.GeminiPlanProvider.plan",
             side_effect=AssertionError("CI must not call Gemini"),
         ),
         patch(
-            "courtlens.services.assistant.hybrid.retrieve_source",
+            "courtlens.services.assistant.legacy.hybrid.retrieve_source",
             side_effect=AssertionError("CI must not retrieve external sources"),
         ),
     ):

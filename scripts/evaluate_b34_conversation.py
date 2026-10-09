@@ -20,7 +20,7 @@ from courtlens.config import get_settings
 from courtlens.database import engine
 from courtlens.domain.conversation import AnalysisPlan, ConversationTurnRequest
 from courtlens.services.assistant.conversations import clear_conversation, run_conversation_turn
-from courtlens.services.assistant.planner import GeminiPlanProvider, PlanningOutput
+from courtlens.services.assistant.legacy.planner import GeminiPlanProvider, PlanningOutput
 from courtlens.services.workbench_analytics import resolve_workbench_context
 
 CORPUS = Path("tests/fixtures/assistant/b33-corpus-v1.json")

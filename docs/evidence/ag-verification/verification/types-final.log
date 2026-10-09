@@ -1,0 +1,6 @@
+
+> courtlens-dashboard@0.1.0 typecheck
+> tsc --noEmit
+
+e2e/assistant-panel-real.spec.ts(39,14): error TS2532: Object is possibly 'undefined'.
+e2e/assistant-panel-real.spec.ts(40,14): error TS2532: Object is possibly 'undefined'.

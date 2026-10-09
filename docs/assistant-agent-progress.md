@@ -5,7 +5,8 @@ CourtLoad was renamed to CourtLens on 2026-10-07; identifiers below are historic
 Parent: [assistant agent handoff](assistant-agent-plan.md). Plans are not runtime evidence.
 
 Allowed states: `planned`, `in_progress`, `implemented_unverified`, `verified`, `source_blocked`,
-`verification_blocked`. `verified` requires the completion evidence named in the handoff's block
+`verification_blocked`, `accepted_with_waiver`. The last state records explicit owner acceptance
+of named unmeasured criteria and must not be read as runtime verification. `verified` requires the completion evidence named in the handoff's block
 table.
 
 ## Planning baseline: 2026-10-07
@@ -28,8 +29,8 @@ table.
 | AG04 | verified | [Live streaming transport](evidence/ag04-streaming/README.md): typed `step`/`delta`/`reset`/v2-v3 `final`, durable callbacks, draft replacement and same-ID fallback. 1089 unit tests, 20 agent PostgreSQL tests, 110 PostgreSQL regressions, 213 Vitest tests and 45 threaded browser tests pass; Ruff/format/mypy and dashboard lint/types clean. Paced synthetic SSE travels through the real Next proxy at 1440/375 px. Live-provider success and the full v3 answer UI remain pending. |
 | AG05 | verified | [Answer UI](evidence/ag05-answer-ui/README.md): safe prose/source chips, assumptions, result tables and pinned review actions, follow-ups, trace/accounting, provenance/failure labels, Settings and examples. 223 Vitest tests, 1089 Python units and 169 full-suite browser cases pass; three external-integration browser cases skip. Ruff/format/mypy, dashboard lint/types and contracts pass. Screenshots at 1440/375 px plus keyboard/reduced-motion landscape evidence. Mocked UI boundary only; live-provider and broader acceptance gaps remain. |
 | AG06 | verified | [V3 evaluation tooling and measured incomplete dev reports](evidence/ag06-eval/README.md): 204 frozen cases (180 dev / 24 fresh holdout), 33-case exact replay over real fixture SQL, payload-drift control and 6 scorer checks. Clean full Python: 1596 passed / 0 failed / 0 errors, 1 documented skip / 19 published-data checks; Ruff/format/mypy clean. Gemini stopped on quota at 1/540 planned turns; other providers have no key. No complete live quality baseline or holdout inference claimed. |
-| AG07 | verification_blocked | QA01 is verified. The separate AG06 quality gate is unmet: no complete measured v3 warehouse baseline to compare with AR02's 255/279 (91.40%), and no recorded owner gap acceptance. Legacy pipeline and its tests remain; no cleanup or dashboard changes occurred. |
-| AG08 | planned | Depends on AG07. Live holdout per available provider, three owner examples and measured README update remain pending; the no-Gemini-call continuation does not clear that dependency. |
+| AG07 | verified | Owner accepted the AG06 live-quality gap. [Cleanup](evidence/ag07-cleanup/README.md) retires four pipeline modules and moves shared helpers. [Follow-up repair](evidence/ag-verification/README.md) restored the next-question scope editor, fixed the mobile Send hit target and history-load input race: production browser suite 191 passed / 15 skipped / 0 failed, real-backend panel and workspace 3 passed, full Python 1,845 passed, 286 Vitest, lint/types/mypy/build clean, sealed evidence unchanged. |
+| AG08 | accepted_with_waiver | [Owner-directed closure](evidence/ag08-acceptance/README.md): zero provider calls, live dev/holdout explicitly waived, scores null, six synthetic owner screenshots pass, README updated. Lint/types/tests/browser are now green (see AG07). Only the live holdout report remains unmeasured under the waiver. |
 | AD01–AD04 | superseded 2026-10-07 | Replaced by the [impact metrics track](impact-metrics-progress.md) (IM01–IM08). The owner wants CourtLens-computed metrics, not imported Databallr data. No Databallr access occurred. |
 
 ## AG01 checkpoint: 2026-10-07
@@ -220,3 +221,60 @@ table.
   changed; regression suites were not repeated for this documentation-only check.
 - IM06/IM07 were not repeated. IM08's seal does not satisfy the assistant quality
   prerequisite. Direct NBA source admission remains a separate future gate.
+
+## 2026-10-08 — owner-directed AG06–AG08 closure without live provider tests
+
+- The owner explicitly requested finishing under the assumption that provider behavior
+  is acceptable, without exhausting Gemini quota in testing. This accepts the AG06
+  quality gap and waives the live development/holdout requirements. It does not prove
+  access, warehouse accuracy, provider-native search success or holdout performance.
+  The previous continuation's “no owner gap acceptance” statement is superseded here.
+- Local configuration already enables Gemini. No key/model/environment change, quota
+  probe or provider call occurred. No replacement credentials or quota bypass was needed.
+  AG01's historical live-smoke limitation remains unmeasured.
+- AG07 uses the handoff's **retirement** option: four old pipeline modules now live in
+  `assistant/legacy/`, referenced only by compatibility boundaries, old evaluations and
+  their regression tests. Supported V1 routes and explicit V2/manual plans still have
+  callers and remain. New Ask, status, streaming and history imports do not load the
+  retired implementation. Shared entity, status and response-budget helpers were moved;
+  numeric parsing was already shared. This is not a claim of deleting all legacy code.
+- [AG07 evidence](evidence/ag07-cleanup/README.md) records caller proof, actual line
+  counts and retained-file checks. [AG08 acceptance](evidence/ag08-acceptance/README.md)
+  records null live scores and six screenshots of the three retained synthetic owner
+  examples. The screenshots are UI demonstrations, not live quality or basketball claims.
+- Browser regression exposed pre-existing scope-control and mobile-overlay failures in
+  the unchanged dashboard. They are disclosed, not silently passed or fixed by reopening
+  DL. The closure is owner-directed acceptance with named gaps, not full verification
+  against the original AG07/AG08 criteria. Final offline counts are recorded below.
+- README distinguishes V3 from the historical 255/279 (91.40%) AR02 warehouse reference.
+  No holdout inference, DL/IM milestone repeat, Databallr fetch, direct NBA admission,
+  publication change or source-consent change occurred. Direct NBA remains `source_blocked`.
+
+- Final offline result: **1,845 Python passed**, one existing browser skip and 19
+  published-data deselections; **286 Vitest passed**; Ruff/format/mypy and dashboard
+  lint/types/build pass. Six synthetic owner captures pass. The broader browser run
+  records **180 passed / 15 skipped / 10 failed**; one owner capture then passes in
+  the six-case rerun, leaving nine unchanged-UI failures disclosed in AG07. AG07
+  remains `implemented_unverified`, not falsely `verified`. AG08's owner-directed
+  no-live closure is `accepted_with_waiver`; original full acceptance is unverified.
+- Preservation check: 3,006 pre-existing evidence/corpus/fixture files unchanged;
+  sealed tracked contracts and fixtures have no diff. No live score is invented.
+
+## 2026-10-08 — offline verification gaps closed
+
+- [Follow-up evidence](evidence/ag-verification/README.md) fixes the nine AG07 browser
+  failures in the dashboard: the restored next-question scope editor, empty-chat centering
+  that put the mobile Send button behind the header, and input accepted before history
+  initialization. A delayed-history regression fails before the fix and passes after it.
+- Measured: production browser suite **191 passed / 15 skipped / 0 failed**. Real
+  PostgreSQL/FastAPI panel and workspace run: **3 passed**. Full Python: **1,845 passed**,
+  one browser-harness skip covered by that real run, 19 published-data deselections.
+  **286 Vitest**; Ruff/format/mypy, dashboard lint/types and production build clean.
+  All 2,990 preserved evidence files are unchanged.
+- An independent rerun with the default `next dev` Playwright config passed all 52
+  threaded-assistant and owner-example cases. Two `advanced-research` cases fail only under
+  `next dev` (duplicate subtree during navigation) and pass in production. This is
+  disclosed and outside assistant scope.
+- AG07 is now `verified`. AG08 stays `accepted_with_waiver`: AG01 live smoke, AG06 live
+  development accuracy and the AG08 holdout remain unmeasured by owner waiver. Zero
+  provider calls. Direct NBA remains `source_blocked`.

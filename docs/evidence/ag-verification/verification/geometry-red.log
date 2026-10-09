@@ -1,0 +1,54 @@
+
+> courtlens-dashboard@0.1.0 test:browser
+> playwright test ag-layout-probe.spec.ts --workers=1 --output=/tmp/ag-layout-probe
+
+[WebServer] ⚠ "next start" does not work with "output: standalone" configuration. Use "node .next/standalone/server.js" instead.
+
+Running 1 test using 1 worker
+
+{"button":{"x":309,"y":156.203125,"width":44,"height":44,"top":156.203125,"right":353,"bottom":200.203125,"left":309},"at":"<div class=\"ask-topbar\"><button type=\"button\" class=\"ui-button ui-button-secondary ui-button-md button   ui-icon-button icon-button button-quiet\" aria-label=\"Conversations\" title=\"Conversations\" aria-expanded=\"false\" aria-controls=\"_r_0_-conversations\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-panel-left lucide-sidebar ui-icon\" aria-hidden=\"true\" focusable=\"false\"><rect width=\"18\" height=\"18\" x=\"3\" y=\"3\" rx=\"2\"></rect><path d=\"M9 3v18\"></path></svg></button><p class=\"ask-title\" title=\"New chat\">New chat</p><button type=\"button\" class=\"ui-button ui-button-ghost ui-button-md button button-quiet  \"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-square-pen lucide-pen-box lucide-edit lucide-pen-square ui-icon\" aria-hidden=\"true\" focusable=\"false\"><path d=\"M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7\"></path><path d=\"M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z\"></path></svg>New chat</button><button type=\"button\" disabled=\"\" class=\"ui-button ui-button-secondary ui-button-md button   ui-icon-button icon-button button-quiet\" aria-label=\"Delete chat\" title=\"Delete chat\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-trash lucide-trash-2 ui-icon\" aria-hidden=\"true\" focusable=\"false\"><path d=\"M10 11v6\"></path><path d=\"M14 11v6\"></path><path d=\"M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6\"></path><path d=\"M3 6h18\"></path><path d=\"M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2\"></path></svg></button></div>","parents":[{"class":"conversation-dialog","box":{"x":0,"y":0,"width":375,"height":812,"top":0,"right":375,"bottom":812,"left":0},"scroll":810},{"class":"ask-main is-empty","box":{"x":1,"y":169.34375,"width":373,"height":641.65625,"top":169.34375,"right":374,"bottom":811,"left":1},"scroll":642},{"class":"ask-scroll","box":{"x":1,"y":230.34375,"width":373,"height":506.65625,"top":230.34375,"right":374,"bottom":737,"left":1},"scroll":780},{"class":"ask-column","box":{"x":1,"y":-42.796875,"width":373,"height":1052.953125,"top":-42.796875,"right":374,"bottom":1010.15625,"left":1},"scroll":1053},{"class":"ask-empty","box":{"x":17,"y":-18.796875,"width":341,"height":1012.953125,"top":-18.796875,"right":358,"bottom":994.15625,"left":17},"scroll":1013}]}
+  ✘  1 e2e/ag-layout-probe.spec.ts:2:5 › empty drawer composer hit target (2.4s)
+
+
+  1) e2e/ag-layout-probe.spec.ts:2:5 › empty drawer composer hit target ────────────────────────────
+
+    TimeoutError: locator.click: Timeout 2000ms exceeded.
+    Call log:
+      - waiting for getByRole('dialog').getByRole('button', { name: 'Send question', exact: true })
+        - locator resolved to <button type="submit" title="Send question" aria-label="Send question" class="ui-button ui-button-primary ui-button-md button button-primary  ask-send">…</button>
+      - attempting click action (trial run)
+        2 × waiting for element to be visible, enabled and stable
+          - element is visible, enabled and stable
+          - scrolling into view if needed
+          - done scrolling
+          - <div class="ask-topbar">…</div> intercepts pointer events
+        - retrying click action (trial run)
+        - waiting 20ms
+        2 × waiting for element to be visible, enabled and stable
+          - element is visible, enabled and stable
+          - scrolling into view if needed
+          - done scrolling
+          - <div class="ask-topbar">…</div> intercepts pointer events
+        - retrying click action (trial run)
+          - waiting 100ms
+        4 × waiting for element to be visible, enabled and stable
+          - element is visible, enabled and stable
+          - scrolling into view if needed
+          - done scrolling
+          - <div class="ask-topbar">…</div> intercepts pointer events
+        - retrying click action (trial run)
+          - waiting 500ms
+
+
+      14 |  })));
+      15 |  await expect(send).toBeEnabled();
+    > 16 |  await send.click({trial:true,timeout:2000});
+         |             ^
+      17 | });
+      18 |
+        at /tmp/courtlens-ag07-browser-05swpp3v/dashboard/e2e/ag-layout-probe.spec.ts:16:13
+
+    Error Context: ../../ag-layout-probe/ag-layout-probe-empty-drawer-composer-hit-target/error-context.md
+
+  1 failed
+    e2e/ag-layout-probe.spec.ts:2:5 › empty drawer composer hit target ─────────────────────────────

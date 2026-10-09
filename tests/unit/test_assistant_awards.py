@@ -10,7 +10,7 @@ import pytest
 
 from courtlens.domain.hybrid_assistant import HybridTurnRequest
 from courtlens.services.assistant import awards
-from courtlens.services.assistant.hybrid import route_intent, run_hybrid_turn
+from courtlens.services.assistant.legacy.hybrid import route_intent, run_hybrid_turn
 
 TODAY = date(2026, 10, 7)
 

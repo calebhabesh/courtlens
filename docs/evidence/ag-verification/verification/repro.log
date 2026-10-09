@@ -1,0 +1,79 @@
+
+> courtlens-dashboard@0.1.0 test:browser
+> playwright test threaded-assistant.spec.ts --grep scope changes retain|AR07 375px player_ids --workers=1
+
+[WebServer] ⚠ "next start" does not work with "output: standalone" configuration. Use "node .next/standalone/server.js" instead.
+
+Running 2 tests using 1 worker
+
+  ✘  1 e2e/threaded-assistant.spec.ts:118:5 › scope changes retain old answers and unedited follow-ups inherit on server (30.0s)
+  ✘  2 e2e/threaded-assistant.spec.ts:448:9 › AR07 375px player_ids panel attaches and removes resolved page context (30.0s)
+
+
+  1) e2e/threaded-assistant.spec.ts:118:5 › scope changes retain old answers and unedited follow-ups inherit on server 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.click: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for locator('#content').locator('summary').filter({ hasText: 'Edit scope for the next question' })
+
+
+      91 | const messages = (scope: Page | Locator) => live(scope).getByLabel("Messages");
+      92 | const composer = (scope: Page | Locator) => live(scope).getByLabel("Your question", { exact: true });
+    > 93 | const openScope = (page: Page) => live(page).locator("summary",{hasText:"Edit scope for the next question"}).click();
+         |                                                                                                              ^
+      94 | async function send(page: Page, message: string) {
+      95 |   await composer(page).fill(message);
+      96 |   await page.getByRole("button",{name:"Send question",exact:true}).click();
+        at openScope (/tmp/courtlens-ag07-browser-05swpp3v/dashboard/e2e/threaded-assistant.spec.ts:93:110)
+        at /tmp/courtlens-ag07-browser-05swpp3v/dashboard/e2e/threaded-assistant.spec.ts:123:9
+
+    Error Context: test-results/threaded-assistant-scope-c-daae2-ollow-ups-inherit-on-server/error-context.md
+
+  2) e2e/threaded-assistant.spec.ts:448:9 › AR07 375px player_ids panel attaches and removes resolved page context 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.click: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for getByRole('dialog').getByRole('button', { name: 'Send question', exact: true })
+        - locator resolved to <button type="submit" title="Send question" aria-label="Send question" class="ui-button ui-button-primary ui-button-md button button-primary  ask-send">…</button>
+      - attempting click action
+        2 × waiting for element to be visible, enabled and stable
+          - element is visible, enabled and stable
+          - scrolling into view if needed
+          - done scrolling
+          - <div class="ask-topbar">…</div> intercepts pointer events
+        - retrying click action
+        - waiting 20ms
+        2 × waiting for element to be visible, enabled and stable
+          - element is visible, enabled and stable
+          - scrolling into view if needed
+          - done scrolling
+          - <div class="ask-topbar">…</div> intercepts pointer events
+        - retrying click action
+          - waiting 100ms
+        57 × waiting for element to be visible, enabled and stable
+           - element is visible, enabled and stable
+           - scrolling into view if needed
+           - done scrolling
+           - <div class="ask-topbar">…</div> intercepts pointer events
+         - retrying click action
+           - waiting 500ms
+
+
+      452 |       const dialog = page.getByRole("dialog");
+      453 |       await expect(dialog.getByLabel("Attached page context")).toContainText(entityKey === "player_ids" ? "Fixture Star" : "Toronto Raptors");
+    > 454 |       await composer(dialog).fill(message); await dialog.getByRole("button",{name:"Send question",exact:true}).click();
+          |                                                                                                                ^
+      455 |       await expect.poll(() => state.requests.length).toBe(1);
+      456 |       expect(state.requests[0].page_context?.[entityKey]).toEqual([entity]);
+      457 |       expect(state.requests[0].page_context?.selections.season).toBe("2025-26");
+        at /tmp/courtlens-ag07-browser-05swpp3v/dashboard/e2e/threaded-assistant.spec.ts:454:112
+
+    Error Context: test-results/threaded-assistant-AR07-37-f5adf-moves-resolved-page-context/error-context.md
+
+  2 failed
+    e2e/threaded-assistant.spec.ts:118:5 › scope changes retain old answers and unedited follow-ups inherit on server 
+    e2e/threaded-assistant.spec.ts:448:9 › AR07 375px player_ids panel attaches and removes resolved page context 

@@ -21,9 +21,9 @@ from courtlens.config import get_settings
 from courtlens.database import SessionLocal
 from courtlens.domain.conversation import ConversationContext
 from courtlens.domain.hybrid_assistant import HybridTurnRequest, HybridTurnResponse
-from courtlens.services.assistant.hybrid import run_hybrid_turn
-from courtlens.services.assistant.narrative import NarrativeOutcome
-from courtlens.services.assistant.planner import (
+from courtlens.services.assistant.legacy.hybrid import run_hybrid_turn
+from courtlens.services.assistant.legacy.narrative import NarrativeOutcome
+from courtlens.services.assistant.legacy.planner import (
     GENERAL_PROMPT,
     NARRATIVE_PROMPT,
     PLANNER_PROMPT,
@@ -221,11 +221,11 @@ def main() -> None:
             for path in (
                 Path("src/courtlens/domain/hybrid_assistant.py"),
                 Path("src/courtlens/domain/narrative_check.py"),
-                Path("src/courtlens/services/assistant/hybrid.py"),
-                Path("src/courtlens/services/assistant/narrative.py"),
+                Path("src/courtlens/services/assistant/legacy/hybrid.py"),
+                Path("src/courtlens/services/assistant/legacy/narrative.py"),
                 Path("src/courtlens/services/assistant/knowledge.py"),
                 Path("src/courtlens/services/assistant/knowledge/guide.md"),
-                Path("src/courtlens/services/assistant/planner.py"),
+                Path("src/courtlens/services/assistant/legacy/planner.py"),
             )
         },
         "evaluator_sha256": {
