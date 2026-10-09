@@ -1,3 +1,4 @@
+import { Icon } from "@/components/ui/icon";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ContextBar } from "@/components/context-bar";
@@ -49,7 +50,7 @@ export default async function PlayoffSeriesDetailPage({
           <strong>Error loading playoff series:</strong> {loadError || "Series not found."}
         </div>
         <Link href="/playoffs" className="button button-small">
-          ← Return to Playoff Bracket
+          <Icon name="left" size={14} />Return to Playoff Bracket
         </Link>
       </div>
     );

@@ -32,7 +32,7 @@ export function Select({
         {children}
       </select>
       <span className="ui-select-chevron" aria-hidden="true">
-        <Icon name="chevron-down" size={selectSize === "sm" ? 14 : selectSize === "lg" ? 18 : 16} />
+        <Icon name="chevron-down" size={selectSize === "sm" ? 14 : selectSize === "lg" ? 20 : 16} />
       </span>
     </div>
   );

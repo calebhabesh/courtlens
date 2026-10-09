@@ -1,5 +1,5 @@
+import { Icon } from "./ui/icon";
 import "./stats-explorer.css";
-import { ChartNoAxesColumn } from "lucide-react";
 import { redirect } from "next/navigation";
 import { ContextBar } from "@/components/context-bar";
 import { WorkbenchPlayerExplorer } from "@/components/workbench-player-explorer";
@@ -82,7 +82,7 @@ export async function StatsWorkspace({ params: rawParams, basePath = "/stats", t
       <div className="workbench-content">
         <div className="page-header">
           <div>
-            <h1 className="page-title"><ChartNoAxesColumn size={28} aria-hidden="true" />{title}</h1>
+            <h1 className="page-title"><Icon name="chart-column" size={20} />{title}</h1>
             <p className="page-subtitle">
               NBA player statistics. Explore production, shooting and efficiency within your selected scope.
             </p>

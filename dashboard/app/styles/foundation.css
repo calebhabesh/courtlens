@@ -140,6 +140,11 @@
   }
 
   /* ---------- Filter bar (D6) ---------- */
+  /* A full-width bar (a direct child of the route, not inside a padded workspace such as Stats)
+   * keeps the old context-bar gutter. FO01 dropped it; found in FO03 screenshots. */
+  .route-enter > .ui-filter-bar { padding-inline: var(--space-6); }
+  @media (max-width: 767px) { .route-enter > .ui-filter-bar { padding-inline: var(--space-4); } }
+
   .ui-filter-bar {
     position: sticky;
     top: var(--header-height);

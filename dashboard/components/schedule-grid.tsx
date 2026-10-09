@@ -1,3 +1,4 @@
+import { Icon } from "./ui/icon";
 import type { ScheduleWeek } from "@/lib/types";
 
 const weekday = new Intl.DateTimeFormat("en-CA", { weekday: "short", timeZone: "UTC" });
@@ -7,7 +8,7 @@ export function ScheduleGrid({ schedule }: { schedule: ScheduleWeek }) {
   if (!schedule.days.length) {
     return (
       <div className="empty-state">
-        <span className="empty-icon">○</span>
+        <span className="empty-icon"><Icon name="calendar" size={20} /></span>
         <h3>No games loaded for this week</h3>
         <p>Choose another week or run the documented-provider refresh.</p>
       </div>

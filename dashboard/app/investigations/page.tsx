@@ -1,3 +1,4 @@
+import { Icon } from "@/components/ui/icon";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { SavedOperationLibrary } from "@/components/saved-operation-library";
@@ -30,7 +31,7 @@ export default async function InvestigationsPage() {
         </div>
         <div className="page-actions">
           <Link href="/research/ask" className="button button-primary">
-            + New Investigation
+            <Icon name="plus" size={14} />New Investigation
           </Link>
         </div>
       </div>

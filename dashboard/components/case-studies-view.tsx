@@ -291,7 +291,7 @@ export function CaseStudiesView() {
                   href={link.href}
                   className={`button ${link.primary ? "button-primary" : "button-secondary"} text-xs`}
                 >
-                  {link.label} →
+                  {link.label}
                 </Link>
               ))}
             </div>

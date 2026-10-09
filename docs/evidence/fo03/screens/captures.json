@@ -1,0 +1,30 @@
+{
+  "base": "http://localhost:3100",
+  "capturedAt": "2026-10-09T16:10:38.553Z",
+  "captured": [
+    "stats-1440",
+    "player-profile-1440",
+    "team-profile-1440",
+    "playoff-series-1440",
+    "compare-1440",
+    "last-games-1440",
+    "data-status-1440",
+    "investigations-1440",
+    "rankings-1440",
+    "filter-bar-teams-1440",
+    "design-1440",
+    "stats-detail-1440",
+    "manage-views-1440",
+    "stats-390",
+    "player-profile-390",
+    "team-profile-390",
+    "playoff-series-390",
+    "compare-390",
+    "last-games-390",
+    "data-status-390",
+    "investigations-390",
+    "rankings-390",
+    "filter-bar-teams-390",
+    "design-390"
+  ]
+}

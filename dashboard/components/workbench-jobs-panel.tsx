@@ -1,5 +1,6 @@
 "use client";
 
+import { Icon } from "./ui/icon";
 import { useEffect, useState } from "react";
 import { enqueueJob, getWorkbenchJobs } from "@/lib/workbench-api";
 import type { WorkbenchJobItem } from "@/lib/types";
@@ -53,7 +54,7 @@ export function WorkbenchJobsPanel({ initialJobs }: { initialJobs: WorkbenchJobI
             onClick={() => handleTrigger("refresh")}
             disabled={submitting !== null}
           >
-            {submitting === "refresh" ? "Enqueueing…" : "🔄 Refresh Workbench"}
+            {submitting === "refresh" ? "Enqueueing…" : <><Icon name="refresh" size={14} />Refresh Workbench</>}
           </button>
           <button
             type="button"
@@ -61,7 +62,7 @@ export function WorkbenchJobsPanel({ initialJobs }: { initialJobs: WorkbenchJobI
             onClick={() => handleTrigger("portraits")}
             disabled={submitting !== null}
           >
-            {submitting === "portraits" ? "Enqueueing…" : "📸 Acquire Portraits"}
+            {submitting === "portraits" ? "Enqueueing…" : <><Icon name="camera" size={14} />Acquire Portraits</>}
           </button>
           <button
             type="button"
@@ -69,7 +70,7 @@ export function WorkbenchJobsPanel({ initialJobs }: { initialJobs: WorkbenchJobI
             onClick={() => handleTrigger("bootstrap")}
             disabled={submitting !== null}
           >
-            {submitting === "bootstrap" ? "Enqueueing…" : "⚡ Run Bootstrap"}
+            {submitting === "bootstrap" ? "Enqueueing…" : <><Icon name="zap" size={14} />Run Bootstrap</>}
           </button>
         </div>
       </div>

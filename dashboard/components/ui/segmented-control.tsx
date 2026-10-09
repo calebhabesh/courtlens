@@ -92,7 +92,7 @@ export function SegmentedControl<T extends string = string>({
             )}
             <span className="ui-segmented-label">
               {option.icon && (
-                <Icon name={option.icon} size={size === "sm" ? 12 : 14} />
+                <Icon name={option.icon} size={14} />
               )}
               {option.label}
             </span>

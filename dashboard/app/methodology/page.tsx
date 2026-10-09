@@ -138,7 +138,7 @@ export default async function MethodologyPage() {
           </p>
           <div className="methodology-actions">
             <Link href="/forecasts" className="button button-small button-primary">
-              Inspect Forecast Protocol →
+              Inspect Forecast Protocol
             </Link>
           </div>
         </div>

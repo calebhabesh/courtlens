@@ -1,4 +1,6 @@
 "use client";
+
+import { Icon } from "./ui/icon";
 import { LookupInput } from "./lookup-input";
 
 import React, { useState, useMemo } from "react";
@@ -253,14 +255,14 @@ export function RankingBoardsView() {
             className={`button ${showAggSection ? "button-primary" : ""}`}
             title="Aggregate multiple personal boards using Borda score or Average Rank"
           >
-            ⚖ {showAggSection ? "Hide Aggregator" : "Aggregate Boards"}
+            <Icon name="scale" size={14} />{showAggSection ? "Hide Aggregator" : "Aggregate Boards"}
           </button>
           <button
             type="button"
             onClick={() => setIsCreatingBoard(true)}
             className="button button-primary"
           >
-            + New Board
+            <Icon name="plus" size={14} />New Board
           </button>
         </div>
       </div>
@@ -290,8 +292,9 @@ export function RankingBoardsView() {
                 type="button"
                 className="modal-close-btn"
                 onClick={() => setIsCreatingBoard(false)}
+                aria-label="Close create ranking board dialog"
               >
-                ✕
+                <Icon name="close" size={14} />
               </button>
             </div>
             <form onSubmit={handleCreateBoardSubmit} className="modal-body ranking-modal-form">
@@ -609,7 +612,7 @@ export function RankingBoardsView() {
                           className="button button-small ranking-meta-btn"
                           title={isAdded ? "Already on board" : `Add player ${favId}`}
                         >
-                          {isAdded ? "✓" : "+"} #{favId}
+                          {isAdded ? <Icon name="check" size={14} /> : <Icon name="plus" size={14} />}#{favId}
                         </button>
                       );
                     })}
@@ -688,7 +691,7 @@ export function RankingBoardsView() {
                                 title="Move up 1 rank"
                                 aria-label={`Move ${entry.player_name || entry.player_id} up`}
                               >
-                                ▲
+                                <Icon name="chevron-up" size={14} />
                               </button>
                               <button
                                 type="button"
@@ -698,7 +701,7 @@ export function RankingBoardsView() {
                                 title="Move down 1 rank"
                                 aria-label={`Move ${entry.player_name || entry.player_id} down`}
                               >
-                                ▼
+                                <Icon name="chevron-down" size={14} />
                               </button>
                             </div>
                           </td>
@@ -712,7 +715,7 @@ export function RankingBoardsView() {
                               title="Remove from board"
                               aria-label={`Remove ${entry.player_name || entry.player_id} from board`}
                             >
-                              ✕
+                              <Icon name="close" size={14} />
                             </button>
                           </td>
                         </tr>

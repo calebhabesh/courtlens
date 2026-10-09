@@ -1,5 +1,6 @@
 "use client";
 
+import { Icon } from "./ui/icon";
 import { CourtLensWordmark } from "./courtlens-wordmark";
 import { ImpactPlayerCard } from "./impact-player-card";
 
@@ -164,7 +165,7 @@ export function WorkbenchPlayerProfile({
               onClick={() => toggleFavorite(player.id)}
               title={isFavorite ? "Remove from favorites" : "Add to favorites"}
             >
-              {isFavorite ? "★ Favorited" : "☆ Favorite"}
+              {isFavorite ? <><Icon name="star" size={14} filled />Favorited</> : <><Icon name="star" size={14} />Favorite</>}
             </button>
 
             <button
@@ -173,7 +174,7 @@ export function WorkbenchPlayerProfile({
               onClick={() => toggleCompare(player.id)}
               title={inTray ? "Remove from Compare Tray" : "Add to Compare Tray"}
             >
-              {inTray ? "✓ In Compare Tray" : "+ Compare Tray"}
+              {inTray ? <><Icon name="check" size={14} />In Compare Tray</> : <><Icon name="plus" size={14} />Compare Tray</>}
             </button>
 
             <Link
@@ -181,7 +182,7 @@ export function WorkbenchPlayerProfile({
               className="button button-small button-dark"
               title="Inspect recent appearances in Recent Games Explorer"
             >
-              Recent Games →
+              Recent Games
             </Link>
 
             <Link
@@ -189,7 +190,7 @@ export function WorkbenchPlayerProfile({
               className="button button-small"
               title="Analyze workload and performance trends across disjoint windows"
             >
-              Trends →
+              Trends
             </Link>
 
             <Link
@@ -197,7 +198,7 @@ export function WorkbenchPlayerProfile({
               className="button button-small"
               title="View empirical quantiles, dispersion, and contextual splits"
             >
-              Distributions →
+              Distributions
             </Link>
 
             <Link
@@ -205,7 +206,7 @@ export function WorkbenchPlayerProfile({
               className="button button-small"
               title="Find statistical twin players across standardized dimensions"
             >
-              Peers →
+              Peers
             </Link>
 
             <Link
@@ -213,17 +214,17 @@ export function WorkbenchPlayerProfile({
               className="button button-small"
               title="Compare with peer in head-to-head PvP view"
             >
-              Compare PvP →
+              Compare PvP
             </Link>
 
-            <Link href={`/shot-profile-twin?player_id=${player.id}&release_id=${context.release_id}&season=${context.season}&phase=${context.phase}&before_date=${context.before_date}`} className="button button-small">Shooting →</Link>
+            <Link href={`/shot-profile-twin?player_id=${player.id}&release_id=${context.release_id}&season=${context.season}&phase=${context.phase}&before_date=${context.before_date}`} className="button button-small">Shooting</Link>
 
             <Link
               href={`/wingspan?playerId=${player.id}`}
               className="button button-small"
               title="Explore physical wingspan and draft combine anthropometry"
             >
-              Wingspan →
+              Wingspan
             </Link>
           </div>
 
@@ -320,13 +321,13 @@ export function WorkbenchPlayerProfile({
                 Official NBA Draft Combine measurements vs. team-reported roster cards. Missing values are null, never scored as zero.
               </p>
             </div>
-            <Link href={`/shot-profile-twin?player_id=${player.id}&release_id=${context.release_id}&season=${context.season}&phase=${context.phase}&before_date=${context.before_date}`} className="button button-small">Shooting →</Link>
+            <Link href={`/shot-profile-twin?player_id=${player.id}&release_id=${context.release_id}&season=${context.season}&phase=${context.phase}&before_date=${context.before_date}`} className="button button-small">Shooting</Link>
 
             <Link
               href={`/wingspan?playerId=${player.id}`}
               className="button button-small button-dark"
             >
-              Open Wingspan Explorer →
+              Open Wingspan Explorer
             </Link>
           </div>
 
@@ -507,7 +508,7 @@ export function WorkbenchPlayerProfile({
                           className={`font-mono ${isCurrent ? "font-bold text-accent" : ""}`}
                           title={`Switch view to ${r.season}`}
                         >
-                          {r.season} {isCurrent && "◀"}
+                          {r.season} {isCurrent && <><Icon name="left" size={14} /><span className="sr-only">Current season</span></>}
                         </Link>
                       </td>
                       <td><strong>{r.teams}</strong></td>

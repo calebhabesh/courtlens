@@ -289,7 +289,7 @@ function ProfileView({
         <div><p>{estimateDescription(profile.estimate.status)}</p>
           {profile.estimate.interval && <p>80% empirical interval: {profile.estimate.interval.lower.toFixed(1)}–{profile.estimate.interval.upper.toFixed(1)} CourtLens points.</p>}
           {profile.estimate.point != null && <p>Conditional on appearance in the reconstructed next team game. Based on {profile.estimate.history_n} valid same-season appearances.</p>}
-          <Link href="/evaluation">Read the evaluation →</Link>
+          <Link href="/evaluation">Read the evaluation</Link>
         </div>
       </section>
 

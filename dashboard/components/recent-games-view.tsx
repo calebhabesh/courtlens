@@ -1,5 +1,6 @@
 "use client";
 
+import { Icon } from "./ui/icon";
 import { useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -202,7 +203,7 @@ export function RecentGamesView({
               onClick={() => toggleFavorite(player.id)}
               title={isFavorite ? "Remove from favorites" : "Add to favorites"}
             >
-              {isFavorite ? "★ Favorited" : "☆ Favorite"}
+              {isFavorite ? <><Icon name="star" size={14} filled />Favorited</> : <><Icon name="star" size={14} />Favorite</>}
             </button>
 
             <button
@@ -211,7 +212,7 @@ export function RecentGamesView({
               onClick={() => toggleCompare(player.id)}
               title={inTray ? "Remove from Compare Tray" : "Add to Compare Tray"}
             >
-              {inTray ? "✓ In Compare Tray" : "+ Compare Tray"}
+              {inTray ? <><Icon name="check" size={14} />In Compare Tray</> : <><Icon name="plus" size={14} />Compare Tray</>}
             </button>
 
             <Link
@@ -219,7 +220,7 @@ export function RecentGamesView({
               className="button button-small"
               title="Compare in head-to-head PvP view"
             >
-              PvP Head-to-Head →
+              PvP Head-to-Head
             </Link>
 
             <Link
@@ -227,7 +228,7 @@ export function RecentGamesView({
               className="button button-small button-dark"
               title="Open full player profile"
             >
-              Full Profile →
+              Full Profile
             </Link>
           </div>
         </div>
@@ -303,14 +304,14 @@ export function RecentGamesView({
                 className={`segmented-button ${viewMode === "table" ? "active" : ""}`}
                 onClick={() => setViewMode("table")}
               >
-                ☷ Table
+                <Icon name="table" size={14} />Table
               </button>
               <button
                 type="button"
                 className={`segmented-button ${viewMode === "cards" ? "active" : ""}`}
                 onClick={() => setViewMode("cards")}
               >
-                🂡 Cards
+                <Icon name="cards" size={14} />Cards
               </button>
             </div>
           </div>
@@ -348,7 +349,7 @@ export function RecentGamesView({
               onClick={handleCopyUrl}
               title="Copy local query URL"
             >
-              {copiedUrl ? "✓ Copied" : "Copy URL"}
+              {copiedUrl ? <><Icon name="check" size={14} />Copied</> : "Copy URL"}
             </button>
           </div>
         </div>

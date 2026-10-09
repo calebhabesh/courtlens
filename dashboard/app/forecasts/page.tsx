@@ -115,7 +115,7 @@ export default async function ForecastsPage() {
         </div>
         <div className="page-actions">
           <Link href="/evaluation" className="button">
-            View M6 Archive →
+            View M6 Archive
           </Link>
           <Link href="/methodology" className="button button-primary">
             Evaluation Protocol

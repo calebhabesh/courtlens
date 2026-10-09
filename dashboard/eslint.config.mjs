@@ -2,6 +2,21 @@ import { defineConfig, globalIgnores } from "eslint/config";
 import nextVitals from "eslint-config-next/core-web-vitals";
 import nextTypescript from "eslint-config-next/typescript";
 
+// D26: arrows (U+2190–21FF), geometric shapes (U+25A0–25FF), misc symbols and dingbats incl. check
+// marks and stars (U+2600–27BF), more arrows (U+2B00–2BFF) and emoji (surrogate pairs for
+// U+1F000–1FAFF, matched by range so new emoji are caught too). U+2318 (⌘ in shortcut hints) and
+// U+00D7 (× as multiplication) are outside these ranges.
+const GLYPH = "/[\\u2190-\\u21FF\\u25A0-\\u25FF\\u2600-\\u27BF\\u2B00-\\u2BFF]|[\\uD83C-\\uD83E][\\uDC00-\\uDFFF]/";
+const GLYPH_MESSAGE = "Use <Icon> from components/ui/icon.tsx instead of arrow, check, shape or emoji characters (D26). Genuine prose or a data encoding needs an eslint-disable comment that says why.";
+const inlineStyleRule = {
+  selector: "JSXAttribute[name.name='style'] > JSXExpressionContainer > ObjectExpression > Property:not([key.name=/^--/]):not([key.value=/^--/])",
+  message: "Inline styles must be CSS custom properties (--*) or computed chart/virtualization geometry (design-language-v1)."
+};
+const lucideImport = {
+  name: "lucide-react",
+  message: "Import icons through components/ui/icon.tsx (D26); add missing glyphs to its map."
+};
+
 export default defineConfig([
   ...nextVitals,
   ...nextTypescript,
@@ -10,10 +25,10 @@ export default defineConfig([
     rules: {
       "no-restricted-syntax": [
         "error",
-        {
-          selector: "JSXAttribute[name.name='style'] > JSXExpressionContainer > ObjectExpression > Property:not([key.name=/^--/]):not([key.value=/^--/])",
-          message: "Inline styles must be CSS custom properties (--*) or computed chart/virtualization geometry (design-language-v1)."
-        }
+        inlineStyleRule,
+        { selector: `JSXText[value=${GLYPH}]`, message: GLYPH_MESSAGE },
+        { selector: `Literal[value=${GLYPH}]`, message: GLYPH_MESSAGE },
+        { selector: `TemplateElement[value.raw=${GLYPH}]`, message: GLYPH_MESSAGE }
       ],
       "no-restricted-imports": [
         "error",
@@ -30,7 +45,8 @@ export default defineConfig([
             {
               name: "framer-motion",
               message: "Use motion or motion/react per lib/motion.ts."
-            }
+            },
+            lucideImport
           ]
         }
       ]
@@ -39,7 +55,20 @@ export default defineConfig([
   {
     files: ["components/ui/**/*.{ts,tsx}", "components/charts/**/*.{ts,tsx}", "lib/motion.ts", "lib/motion.tsx"],
     rules: {
+      "no-restricted-imports": ["error", { paths: [lucideImport] }]
+    }
+  },
+  {
+    files: ["components/ui/icon.tsx"],
+    rules: {
       "no-restricted-imports": "off"
+    }
+  },
+  {
+    // Tests and e2e specs assert real content (for example an emoji in an assistant answer).
+    files: ["**/*.test.{ts,tsx}", "e2e/**/*.{ts,tsx}"],
+    rules: {
+      "no-restricted-syntax": ["error", inlineStyleRule]
     }
   },
   globalIgnores([".next/**", "out/**", "next-env.d.ts"])

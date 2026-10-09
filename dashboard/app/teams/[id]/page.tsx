@@ -1,3 +1,4 @@
+import { Icon } from "@/components/ui/icon";
 import { AssistantPageSelection } from "@/lib/assistant-page-context";
 import { resolveStatsQuery } from "@/lib/stats-query";
 import { getWorkbenchCatalog } from "@/lib/workbench-api";
@@ -88,7 +89,7 @@ export default async function TeamDetailPage({
           <strong>Error loading team:</strong> {loadError || "Team not found in this release."}
         </div>
         <Link href="/teams" className="button button-small">
-          ← Return to all teams
+          <Icon name="left" size={14} />Return to all teams
         </Link>
       </div>
     );
@@ -145,10 +146,10 @@ export default async function TeamDetailPage({
               href={`/team-compare?teamA=${team.id}&season=${season}&phase=${phase}&beforeDate=${beforeDate}&releaseId=${resolvedReleaseId || ""}` }
               className="button button-small button-accent"
             >
-              Compare Franchise ⇄
+              Compare Franchise
             </Link>
             <Link href="/teams" className="button button-small">
-              ← All Teams
+              <Icon name="left" size={14} />All Teams
             </Link>
           </div>
         </div>
@@ -496,7 +497,7 @@ export default async function TeamDetailPage({
                         href={`/players/${p.player_id}?season=${season}&phase=${phase}&beforeDate=${beforeDate}&releaseId=${resolvedReleaseId || ""}` }
                         className="button button-small button-primary"
                       >
-                        Profile →
+                        Profile
                       </Link>
                     </td>
                   </tr>
@@ -558,13 +559,13 @@ export default async function TeamDetailPage({
                             href={`/team-compare?teamA=${team.id}&teamB=${peer.team_id}&season=${season}&phase=${phase}&beforeDate=${beforeDate}&releaseId=${resolvedReleaseId || ""}` }
                             className="button button-small"
                           >
-                            Compare ⇄
+                            Compare
                           </Link>
                           <Link
                             href={`/teams/${peer.team_id}?season=${season}&phase=${phase}&beforeDate=${beforeDate}&releaseId=${resolvedReleaseId || ""}` }
                             className="button button-small button-primary"
                           >
-                            Profile →
+                            Profile
                           </Link>
                         </div>
                       </td>

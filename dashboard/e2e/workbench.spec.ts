@@ -45,7 +45,7 @@ test.describe("Workbench Dark Research Interface", () => {
 
     // Navigate to player detail
     await page.getByRole("button", { name: "Open details for Fixture Guard" }).click();
-    await page.getByRole("link", { name: "View Full Profile →" }).click();
+    await page.getByRole("link", { name: "View Full Profile" }).click();
     await page.waitForURL("**/players/24**");
     await expect(page.locator("h1.player-identity-name")).toContainText("Fixture Guard");
   });

@@ -29,7 +29,7 @@ export function WorkbenchInvestigationsList({ items }: { items: SavedInvestigati
           You can save reproducible analytical queries with cryptographic manifests from the Player Explorer.
         </p>
         <Link href="/players" className="button button-primary">
-          Explore Players & Save an Analysis →
+          Explore Players & Save an Analysis
         </Link>
       </div>
     );
@@ -101,7 +101,7 @@ export function WorkbenchInvestigationsList({ items }: { items: SavedInvestigati
                   href={`/players?${sp.toString()}`}
                   className="button button-small button-primary"
                 >
-                  Open in Explorer →
+                  Open in Explorer
                 </Link>
               </div>
             </div>
