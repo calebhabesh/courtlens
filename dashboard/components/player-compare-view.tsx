@@ -328,7 +328,7 @@ export function PlayerCompareView({
             onClick={() => toggleCompare(player_a.id)}
             title={compareTray.includes(player_a.id) ? "Remove from compare tray" : "Keep in compare tray"}
           >
-            {compareTray.includes(player_a.id) ? "✓ In Tray" : "+ Tray"}
+            {compareTray.includes(player_a.id) ? <><Icon name="check" size={14} />In Tray</> : <><Icon name="plus" size={14} />Tray</>}
           </button>
         </div>
 
@@ -357,7 +357,7 @@ export function PlayerCompareView({
             onClick={() => toggleCompare(player_b.id)}
             title={compareTray.includes(player_b.id) ? "Remove from compare tray" : "Keep in compare tray"}
           >
-            {compareTray.includes(player_b.id) ? "✓ In Tray" : "+ Tray"}
+            {compareTray.includes(player_b.id) ? <><Icon name="check" size={14} />In Tray</> : <><Icon name="plus" size={14} />Tray</>}
           </button>
         </div>
       </div>
@@ -389,7 +389,7 @@ export function PlayerCompareView({
             className={`control-pill ${mainViewMode === "table" ? "active" : ""}`}
             title="Display aligned descriptive data table"
           >
-            ☷ Table
+            <Icon name="table" size={14} />Table
           </button>
           <button
             type="button"
@@ -397,7 +397,7 @@ export function PlayerCompareView({
             className={`control-pill ${mainViewMode === "bars" ? "active" : ""}`}
             title="Display side-by-side comparative metric bars"
           >
-            📊 Visual Bars
+            <Icon name="chart" size={14} />Visual Bars
           </button>
           <button
             type="button"
@@ -405,7 +405,7 @@ export function PlayerCompareView({
             className={`control-pill ${mainViewMode === "lines" ? "active" : ""}`}
             title="Display multi-player game log trend lines"
           >
-            📈 Trend Lines
+            <Icon name="trend" size={14} />Trend Lines
           </button>
         </div>
 
@@ -417,7 +417,7 @@ export function PlayerCompareView({
             className="button button-small"
             title="Swap Player A and Player B"
           >
-            ⇄ Swap (A ⇄ B)
+            <Icon name="swap" size={14} />Swap A and B
           </button>
 
           <button
@@ -445,7 +445,7 @@ export function PlayerCompareView({
             className="button button-small"
             title="Copy local query link to clipboard"
           >
-            {copySuccess ? "✓ Copied" : <><Icon name="copy" />Copy local URL</>}
+            {copySuccess ? <><Icon name="check" size={14} />Copied</> : <><Icon name="copy" />Copy local URL</>}
           </button>
 
           <button
@@ -455,7 +455,7 @@ export function PlayerCompareView({
             className="button button-small"
             title="Save this comparison to immutable investigations"
           >
-            {saving ? "Saving…" : "💾 Save"}
+            {saving ? "Saving…" : <><Icon name="save" size={14} />Save</>}
           </button>
         </div>
       </div>
@@ -477,7 +477,7 @@ export function PlayerCompareView({
             ))}
           </select>
           <Link href="/stats" className="text-accent underline ml-auto">
-            ⚙ Manage Views in Stats
+            <Icon name="settings" size={14} />Manage Views in Stats
           </Link>
         </div>
       )}
@@ -767,8 +767,9 @@ export function PlayerCompareView({
                   onClick={() => removeCompare(id)}
                   className="compare-tray-remove"
                   title="Remove from compare tray"
+                  aria-label="Remove from compare tray"
                 >
-                  ✕
+                  <Icon name="close" size={14} />
                 </button>
               </div>
             ))}

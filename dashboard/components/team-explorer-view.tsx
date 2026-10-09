@@ -251,7 +251,7 @@ export function TeamExplorerView({
           />
 
           <Link href="/team-compare" className="button button-small button-accent whitespace-nowrap">
-            Compare Teams ⇄
+            Compare Teams
           </Link>
         </div>
       </div>
@@ -584,7 +584,7 @@ export function TeamExplorerView({
                                 href={`/teams/${t.team_id}?season=${season}&phase=${phase}&beforeDate=${beforeDate}`}
                                 className="button button-small button-primary"
                               >
-                                Profile →
+                                Profile
                               </Link>
                             </div>
                           </td>
@@ -703,7 +703,7 @@ export function TeamExplorerView({
                           href={`/teams/${t.team_id}?season=${season}&phase=${phase}&beforeDate=${beforeDate}`}
                           className="button button-small button-primary team-card-button"
                         >
-                          Profile →
+                          Profile
                         </Link>
                       </div>
                     </div>
@@ -767,7 +767,8 @@ export function TeamExplorerView({
 
               {/* Labels */}
               <text x="315" y="438" textAnchor="middle" fill="var(--color-text)" fontSize="11" fontWeight="600">
-                Offensive Rating (Points Scored / 100 Poss) →
+                {/* eslint-disable-next-line no-restricted-syntax -- axis direction in SVG text, not an icon (D26) */}
+                {"Offensive Rating (Points Scored / 100 Poss) →"}
               </text>
               <text
                 x="-215"
@@ -778,7 +779,8 @@ export function TeamExplorerView({
                 fontSize="11"
                 fontWeight="600"
               >
-                ← Defensive Rating (Lower/Better Allowed / 100 Poss)
+                {/* eslint-disable-next-line no-restricted-syntax -- axis direction in SVG text, not an icon (D26) */}
+                {"← Defensive Rating (Lower/Better Allowed / 100 Poss)"}
               </text>
 
               {/* Quadrant hints */}

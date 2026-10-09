@@ -1,4 +1,6 @@
 "use client";
+
+import { Icon } from "./ui/icon";
 import { EntityField } from "./entity-picker";
 import { useSearchParams } from "next/navigation";
 import { buildPreservedContextUrl } from "@/lib/query-url";
@@ -164,7 +166,7 @@ export function TeamCompareView({
             onClick={handleSwap}
             title="Swap Teams"
           >
-            ⇄ Swap
+            <Icon name="swap" size={14} />Swap
           </button>
 
           {/* Team B Select */}
@@ -1025,7 +1027,7 @@ export function TeamCompareView({
                           className="button button-small"
                           onClick={() => handleTeamChange(selectedA, peer.team_id)}
                         >
-                          Compare ⇄
+                          Compare
                         </button>
                       </td>
                     </tr>
@@ -1068,7 +1070,7 @@ export function TeamCompareView({
                           className="button button-small"
                           onClick={() => handleTeamChange(peer.team_id, selectedB)}
                         >
-                          Compare ⇄
+                          Compare
                         </button>
                       </td>
                     </tr>

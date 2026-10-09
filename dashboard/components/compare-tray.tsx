@@ -90,7 +90,7 @@ export function CompareTray({
             tabIndex={canCompare ? 0 : -1}
             title={canCompare ? "Compare the first two selected players (Z)" : "Select at least 2 players to compare"}
           >
-            {canCompare ? selectedPlayers.length > 2 ? "Compare first 2 →" : "Compare (2) →" : "Select 2+ players"}
+            {canCompare ? selectedPlayers.length > 2 ? "Compare first 2" : "Compare (2)" : "Select 2+ players"}
           </Link>
         </div>
       </div>

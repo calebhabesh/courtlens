@@ -85,7 +85,7 @@ export function PageHeader({
       <div className="ui-page-header-title-row">
         {icon && (
           <span className="ui-page-header-icon">
-            <Icon name={icon} size={24} />
+            <Icon name={icon} size={20} />
           </span>
         )}
         <h1 className="ui-page-header-title">{title}</h1>

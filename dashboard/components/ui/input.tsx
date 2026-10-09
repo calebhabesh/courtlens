@@ -32,7 +32,7 @@ export function Input({
     >
       {prefixIcon ? (
         <span className="ui-input-prefix">
-          <Icon name={prefixIcon} size={inputSize === "sm" ? 14 : inputSize === "lg" ? 18 : 16} />
+          <Icon name={prefixIcon} size={inputSize === "sm" ? 14 : inputSize === "lg" ? 20 : 16} />
         </span>
       ) : prefixElement ? (
         <span className="ui-input-prefix">{prefixElement}</span>
@@ -47,7 +47,7 @@ export function Input({
 
       {suffixIcon ? (
         <span className="ui-input-suffix">
-          <Icon name={suffixIcon} size={inputSize === "sm" ? 14 : inputSize === "lg" ? 18 : 16} />
+          <Icon name={suffixIcon} size={inputSize === "sm" ? 14 : inputSize === "lg" ? 20 : 16} />
         </span>
       ) : suffixElement ? (
         <span className="ui-input-suffix">{suffixElement}</span>

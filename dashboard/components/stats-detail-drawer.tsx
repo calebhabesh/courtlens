@@ -137,7 +137,7 @@ export function StatsDetailDrawer({
             href={`/players/${player.player_id}?${queryString}`}
             className="button button-primary stats-drawer-action-primary"
           >
-            View Full Profile →
+            View Full Profile
           </Link>
           <Link
             href={`/compare?playerA=${player.player_id}&${queryString}`}
@@ -152,7 +152,7 @@ export function StatsDetailDrawer({
               className={`button ${isCompared ? "button-active" : ""}`}
               title={isCompared ? "Remove from Compare Tray" : "Add to Compare Tray (C)"}
             >
-              {isCompared ? "✓ In Compare Tray" : "+ Add to Tray"}
+              {isCompared ? <><Icon name="check" size={14} />In Compare Tray</> : <><Icon name="plus" size={14} />Add to Tray</>}
             </button>
           )}
           {onToggleFavorite && (
@@ -163,7 +163,7 @@ export function StatsDetailDrawer({
               title={isFavorite ? "Remove from Favorites" : "Add to Favorites"}
               aria-label={isFavorite ? "Remove from Favorites" : "Add to Favorites"}
             >
-              {isFavorite ? "★ Favorited" : "☆ Favorite"}
+              {isFavorite ? <><Icon name="star" size={14} filled />Favorited</> : <><Icon name="star" size={14} />Favorite</>}
             </button>
           )}
         </div>
@@ -175,21 +175,21 @@ export function StatsDetailDrawer({
             className="button button-small"
             title="Analyze workload and performance trends across disjoint windows"
           >
-            Trends →
+            Trends
           </Link>
           <Link
             href={`/research/distributions?playerId=${player.player_id}&${queryString}`}
             className="button button-small"
             title="View empirical quantiles, dispersion, and contextual splits"
           >
-            Distributions →
+            Distributions
           </Link>
           <Link
             href={`/research/similarity?playerId=${player.player_id}&${queryString}`}
             className="button button-small"
             title="Find statistical twin players across standardized dimensions"
           >
-            Peers →
+            Peers
           </Link>
         </div>
 

@@ -218,6 +218,11 @@ One 56px row, sticky:
   opens a left drawer with the menus as accordions.
 - The header has no bottom border. The scrolled state uses the sticky-header pattern.
 
+> **Superseded in part by FO02 (2026-10-09):** the hamburger shows below 1280px, the search icon
+> below 768px, and the `⋯` menu holds Settings, Data status, Methodology, What's New, Schedule and
+> Planner. Overlays render at `document.body`. See
+> [FO02 evidence](../evidence/fo02/README.md); FO06 folds this into v1.1.
+
 ## Components (`dashboard/components/ui/`)
 
 DL02 builds these primitives, extending `ui/controls.tsx` and `ui/icon.tsx`. Pages compose them;
@@ -231,12 +236,36 @@ tokens.
 header, skeleton rows) · `Menu`/`Popover` · `Tooltip` · `Drawer` · `Modal` · `CommandPalette` ·
 `Toast` · `Skeleton` · `EmptyState` · `Accordion` · `Presence` (enter/exit wrapper).
 
+## Icons (D26, FO03)
+
+- **Source:** Lucide only, always through `components/ui/icon.tsx` (`<Icon name=… />`). Add a
+  missing glyph to the wrapper's map; never import `lucide-react` elsewhere.
+- **No text-character icons:** no arrows (→ ← ⇄), check marks (✓ ✕), stars (★ ☆), triangles
+  (▲ ▼ ◀ ▶), shapes or emoji used as icons. Links and buttons carry no decorative arrows
+  ("Recent Games Log", not "Recent Games Log →"). Back links use the `left` chevron icon.
+- **Sizes:** 14px inline or in dense controls (`sm` buttons, badges, table headers, menu rows),
+  16px by default (`md` buttons, inputs), 20px in page headers, empty states and `lg` controls.
+  The `IconSize` type allows only these three. Use one size per context.
+- **Stroke and color:** one stroke width (2). Color follows the surrounding text
+  (`currentColor`). Accent color only for active or selected states. No multicolor icons.
+  `filled` is allowed only for the active state of an outline glyph, such as a favorited star.
+- **Spacing and accessibility:** `--space-2` between icon and label, centred on the label. The
+  icon is `aria-hidden`; an icon-only button needs an `aria-label`. When a glyph carried meaning
+  (current season, advantage, favorite), add `sr-only` text.
+- **Not icons:** team logos, headshots and the CourtLens mark are content. Characters that encode
+  data or name a direction in prose (chart legend marker shapes, SVG axis labels such as "Older
+  games (←)", "○ made") stay as text with an `eslint-disable` comment that states the reason.
+
 ## Enforcement
 
 - **Stylelint** (new dev dependency) over `dashboard/**/*.css`: raw colors are banned outside
   `tokens.css`; raw px/rem for `padding`, `margin`, `gap`, `border-radius`, `font-size`,
   `line-height`, `z-index` and `transition-duration` are banned except `0`, `1px` and percentages;
   `transition: all` is banned; `!important` is banned outside `reduced-motion` and `forced-colors`.
+- **ESLint, icons (D26):** `no-restricted-imports` bans `lucide-react` outside
+  `components/ui/icon.tsx`. `no-restricted-syntax` bans characters in U+2190–21FF, U+25A0–25FF,
+  U+2600–27BF, U+2B00–2BFF and emoji (U+1F000–1FAFF) in JSX text, string literals and template
+  strings. Ranges, not a list, so new emoji are caught. Tests and e2e specs are exempt.
 - **ESLint** (`no-restricted-syntax`): `style={{…}}` objects may contain only CSS custom-property
   assignments (`{"--col-width": …}`) and computed geometry for charts and virtualization. Imports
   of `motion` / `motion/react` are allowed only from `components/ui/**`, `components/charts/**`
