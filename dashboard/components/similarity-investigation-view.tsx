@@ -1,5 +1,6 @@
 "use client";
 
+import { Icon } from "./ui/icon";
 import { useReleaseCatalog } from "@/lib/use-release-catalog";
 import { EntityField } from "./entity-picker";
 import { useToast } from "./ui/toast";
@@ -164,7 +165,7 @@ export function SimilarityInvestigationView() {
             onClick={handleCopyUrl}
             title="Copy shareable link with current similarity parameters"
           >
-            {copiedUrl ? "✓ Copied!" : "Share Link"}
+            {copiedUrl ? <><Icon name="check" size={14} />Copied</> : "Share Link"}
           </button>
           <Link href="/stats" className="button button-primary text-xs">
             Open in Stats

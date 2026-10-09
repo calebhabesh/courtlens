@@ -1,5 +1,6 @@
 "use client";
 
+import { Icon } from "./ui/icon";
 import { useState } from "react";
 import { browserApi } from "@/lib/workbench-api";
 
@@ -48,7 +49,7 @@ export function PlayerPortrait({
         title={name}
         aria-label={alt ?? `${name} portrait placeholder`}
       >
-        {initials || "🏀"}
+        {initials || <Icon name="person" size={16} />}
       </div>
     );
   }

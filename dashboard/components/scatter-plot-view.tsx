@@ -213,7 +213,7 @@ export function ScatterPlotView({
             className="button button-small"
             title="Copy local query link to clipboard"
           >
-            {copySuccess ? "✓ Copied" : <><Icon name="copy" />Copy local URL</>}
+            {copySuccess ? <><Icon name="check" size={14} />Copied</> : <><Icon name="copy" />Copy local URL</>}
           </button>
         </div>
       </div>
@@ -553,7 +553,7 @@ export function ScatterPlotView({
             </div>
             {activePoint.outlierReason && (
               <div className="scatter-tooltip-outlier">
-                ★ {activePoint.outlierReason}
+                <Icon name="alert" size={14} />{activePoint.outlierReason}
               </div>
             )}
             <div className="scatter-tooltip-footer">
@@ -575,7 +575,7 @@ export function ScatterPlotView({
         </span>
         <span className="scatter-legend-item">
           <span className="scatter-dot-active" />
-          Favorite ★
+          Favorite
         </span>
         <span className="scatter-legend-item">
           <span className="scatter-dot-highlight" />
@@ -610,7 +610,7 @@ export function ScatterPlotView({
                   <tr key={pt.playerId}>
                     <td className="font-mono text-muted text-xs">{idx + 1}</td>
                     <td className="font-semibold">
-                      {pt.playerName} {favorites.includes(pt.playerId) ? "★" : ""}
+                      {pt.playerName} {favorites.includes(pt.playerId) && <><Icon name="star" size={14} filled /><span className="sr-only">Favorite</span></>}
                     </td>
                     <td className="text-muted text-xs">{pt.teams.join(", ") || "—"}</td>
                     <td className="num font-mono">{pt.gamesPlayed}</td>

@@ -403,7 +403,7 @@ export function PlayerShowcaseView({
                 className={`button showcase-action-btn ${isFavorite ? "button-accent" : ""}`}
                 onClick={() => toggleFavorite(currentPlayer.player_id)}
               >
-                {isFavorite ? "★ In Workspace Favorites" : "☆ Add to Favorites"}
+                {isFavorite ? <><Icon name="star" size={14} filled />In Workspace Favorites</> : <><Icon name="star" size={14} />Add to Favorites</>}
               </button>
 
               <button
@@ -411,28 +411,28 @@ export function PlayerShowcaseView({
                 className={`button showcase-action-btn ${inTray ? "button-accent" : ""}`}
                 onClick={() => toggleCompare(currentPlayer.player_id)}
               >
-                {inTray ? "✓ In Compare Tray" : "+ Add to Compare Tray"}
+                {inTray ? <><Icon name="check" size={14} />In Compare Tray</> : <><Icon name="plus" size={14} />Add to Compare Tray</>}
               </button>
 
               <Link
                 href={`/last-games?playerId=${currentPlayer.player_id}&season=${season}&phase=${phase}&beforeDate=${beforeDate}`}
                 className="button button-dark showcase-action-btn"
               >
-                Recent Games Log →
+                Recent Games Log
               </Link>
 
               <Link
                 href={`/players/${currentPlayer.player_id}?season=${season}&phase=${phase}&beforeDate=${beforeDate}`}
                 className="button button-dark showcase-action-btn"
               >
-                Full Player Dashboard →
+                Full Player Dashboard
               </Link>
 
               <Link
                 href={`/compare?playerA=${currentPlayer.player_id}&season=${season}&phase=${phase}&beforeDate=${beforeDate}`}
                 className="button showcase-action-btn"
               >
-                Compare in PvP →
+                Compare in PvP
               </Link>
             </div>
           </div>

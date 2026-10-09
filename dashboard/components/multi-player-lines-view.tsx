@@ -89,7 +89,9 @@ const LINE_METRIC_OPTIONS: MetricOption[] = [
   }
 ];
 
-// Distinct visual identifiers (color, marker shape, dash style) for up to 8 players
+// Distinct visual identifiers (color, marker shape, dash style) for up to 8 players. The legend
+// symbol is data encoding (it names the series' marker shape), not an icon (D26 exception).
+/* eslint-disable no-restricted-syntax */
 const PLAYER_STYLES = [
   { color: "#ffd166", marker: "circle", dash: "none", symbol: "●" },
   { color: "#4ecdc4", marker: "square", dash: "none", symbol: "■" },
@@ -100,6 +102,7 @@ const PLAYER_STYLES = [
   { color: "#f0932b", marker: "cross", dash: "8 3 2 3", symbol: "✚" },
   { color: "#70a1ff", marker: "star", dash: "2 2", symbol: "★" }
 ];
+/* eslint-enable no-restricted-syntax */
 
 interface PlayerLogSeries {
   playerId: string;
@@ -438,7 +441,7 @@ export function MultiPlayerLinesView({
             className="button button-small"
             title="Copy local query link to clipboard"
           >
-            {copySuccess ? "✓ Copied" : <><Icon name="copy" />Copy local URL</>}
+            {copySuccess ? <><Icon name="check" size={14} />Copied</> : <><Icon name="copy" />Copy local URL</>}
           </button>
         </div>
       </div>
@@ -572,7 +575,8 @@ export function MultiPlayerLinesView({
               fontFamily="monospace"
               textAnchor="start"
             >
-              Older games (←)
+              {/* eslint-disable-next-line no-restricted-syntax -- axis direction in SVG text, not an icon (D26) */}
+              {"Older games (←)"}
             </text>
             <text
               x={width - padRight}
@@ -582,7 +586,8 @@ export function MultiPlayerLinesView({
               fontFamily="monospace"
               textAnchor="end"
             >
-              Latest games (→)
+              {/* eslint-disable-next-line no-restricted-syntax -- axis direction in SVG text, not an icon (D26) */}
+              {"Latest games (→)"}
             </text>
 
             {/* Polylines and Data Points for each Player Series */}
@@ -733,7 +738,7 @@ export function MultiPlayerLinesView({
               title={`Remove ${series.playerName} from comparison`}
               aria-label={`Remove ${series.playerName}`}
             >
-              ✕
+              <Icon name="close" size={14} />
             </button>
           </div>
         ))}

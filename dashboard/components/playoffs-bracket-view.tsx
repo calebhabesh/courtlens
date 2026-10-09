@@ -474,7 +474,7 @@ function SeriesBracketCard({
           {series.summary_text}
         </span>
         <Link href={detailHref} className="button button-small button-primary font-mono text-xs">
-          Series Detail →
+          Series Detail
         </Link>
       </div>
     </div>

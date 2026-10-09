@@ -1,5 +1,6 @@
 "use client";
 
+import { Icon } from "./ui/icon";
 import { useState, useMemo } from "react";
 import Link from "next/link";
 import { SortHeader } from "./table-ui";
@@ -97,14 +98,14 @@ export function PlayoffsSeriesView({ detail, cutoffDate }: PlayoffsSeriesViewPro
           href={`/playoffs?season=${encodeURIComponent(detail.season)}${cutoffDate ? `&cutoff_date=${encodeURIComponent(cutoffDate)}` : ""}`}
           className="button button-small"
         >
-          ← Back to Playoff Bracket
+          <Icon name="left" size={14} />Back to Playoff Bracket
         </Link>
         <div className="playoff-series-header-actions">
           <Link
             href={`/team-compare?teamA=${team1.team_id}&teamB=${team2.team_id}&season=${detail.season}&phase=playoffs`}
             className="button button-small button-accent"
           >
-            Compare Franchises ⇄
+            Compare Franchises
           </Link>
         </div>
       </div>
@@ -328,12 +329,12 @@ export function PlayoffsSeriesView({ detail, cutoffDate }: PlayoffsSeriesViewPro
                     <td className="playoff-factors-adv-cell">
                       {isT1Adv && (
                         <span className="badge badge-accent text-xs font-mono">
-                          ◀ {team1.tricode}
+                          <Icon name="left" size={14} />{team1.tricode}<span className="sr-only"> advantage</span>
                         </span>
                       )}
                       {isT2Adv && (
                         <span className="badge badge-accent text-xs font-mono">
-                          {team2.tricode} ▶
+                          {team2.tricode}<span className="sr-only"> advantage</span><Icon name="right" size={14} />
                         </span>
                       )}
                       {r.advantage === "tied" && (
@@ -447,7 +448,7 @@ export function PlayoffsSeriesView({ detail, cutoffDate }: PlayoffsSeriesViewPro
                       href={`/players/${p.player_id}?season=${detail.season}&phase=playoffs`}
                       className="button button-small button-primary"
                     >
-                      Profile →
+                      Profile
                     </Link>
                   </td>
                 </tr>

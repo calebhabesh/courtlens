@@ -142,7 +142,7 @@ export function CommandPalette({
               onKeyDown={handleKeyDown}
             >
               <div className="ui-command-input-wrapper">
-                <Icon name="search" size={18} className="ui-command-search-icon" />
+                <Icon name="search" size={20} className="ui-command-search-icon" />
                 <input
                   ref={inputRef}
                   type="text"
@@ -533,7 +533,7 @@ export function GlobalCommandPalette({
               onKeyDown={handleKeyDown}
             >
               <div className="ui-command-input-wrapper lookup-input-wrapper">
-                <Icon name="search" size={18} className="ui-command-search-icon lookup-search-icon" />
+                <Icon name="search" size={20} className="ui-command-search-icon lookup-search-icon" />
                 <input
                   ref={inputRef}
                   type="text"
