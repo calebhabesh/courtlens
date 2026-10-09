@@ -3,7 +3,7 @@
 
 from pathlib import Path
 
-ROOT = Path("/home/ethioking/dev/nba-analytics")
+ROOT = Path(__file__).resolve().parents[1]
 GLOBALS_CSS = ROOT / "dashboard/app/globals.css"
 STYLES_DIR = ROOT / "dashboard/app/styles"
 STYLES_DIR.mkdir(parents=True, exist_ok=True)
