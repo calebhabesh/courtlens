@@ -1,12 +1,17 @@
 # FO00 inventory and baseline
 
 Captured 2026-10-09 on branch `frontend-overhaul` from the running local stack (dashboard
-`127.0.0.1:3100`, API `127.0.0.1:8000`, published release `5bbb6035-…`). Parent:
+`localhost:3100`, API `localhost:8000`, published release `5bbb6035-…`). Parent:
 [frontend overhaul handoff](../../frontend-overhaul-plan.md).
+
+**Recaptured once.** The first capture used `127.0.0.1:3100`, which is not in the API's CORS
+allowlist (`COURTLENS_CORS_ORIGINS`), so every browser-side fetch failed. Screenshots and
+runtime counts below come from the recapture through `localhost:3100` against the FO00 code.
 
 Artifacts in this directory:
 
-- `before/*.png`: 55 routes × 1440×900 and 390×844 full-page screenshots (110 files), plus
+- `before/*.png`: 54 pages (all 53 routes, plus a second Live date that has finals) × 1440×900
+  and 390×844 full-page screenshots (108 files), plus
   three overlay captures on a scrolled `/stats` (search at both widths, phone drawer).
 - `before/measurements.json`: per-route, per-width runtime measurements (status, final URL,
   `document.title`, visible `h1`, subtitles, Load buttons, native date inputs, notice boxes, date
@@ -60,7 +65,7 @@ Template = D22 target. Action = FO07 target. Capability = `lib/route-availabilit
 | `/design` | — | CourtLens Design Language v1 | — | hide (internal) | `app/design/page.tsx` | none |
 | `/research/ask` | Ask CourtLens AI | Ask CourtLens | out of scope (D23) | keep | `ask-courtlens` | assistant |
 | `/investigations` | Saved Investigations | Saved Investigations | Research | keep (Forecasts & Evaluation group) | `saved-operation-library` + `workbench-investigations-list` | saved operations, saved investigations |
-| `/investigations/saved/[id]` | — | not captured (5.3) | Research | keep | `saved-operation-detail` | saved operation |
+| `/investigations/saved/[id]` | — | saved title (e.g. "B35b production-browser: scoring distribution") | Research | keep | `saved-operation-detail` | saved operation |
 | `/forecasts` | Points Forecasts | Points Forecasts & Protocol | Research | keep (Forecasts & Evaluation) | `app/forecasts/page.tsx` | forecast evaluation, prospective forecasts |
 | `/evaluation` | Evaluation Archive | Evaluation unavailable | Research | keep (Forecasts & Evaluation) | `app/evaluation/page.tsx` | analytics evaluation |
 | `/research/case-studies` | Case Studies | Flagship Research Case Studies | Research | keep (Forecasts & Evaluation) | `case-studies-view` | sealed reports |
@@ -147,10 +152,10 @@ Contract rules that constrain copy without fixing exact wording (keep the meanin
 
 ## 3. Baseline screenshots
 
-`before/` has every route except `/investigations/saved/[id]` at both widths. Every response
-returned HTTP 200. Dynamic samples: `/players/1629029` (Luka Dončić), `/teams/1610612737` (Atlanta),
-`/contracts/BOS`, `/playoffs/2026-r1-det-orl`, `/live/2026-04-12` (has finals),
-`/live/2026-10-09` (today, no games), `/live/games/0022501186`.
+`before/` has every route at both widths, and every response returned HTTP 200. Dynamic samples:
+`/players/1629029` (Luka Dončić), `/teams/1610612760` (Oklahoma City), `/contracts/BOS`,
+`/playoffs/2026-r1-det-orl`, `/live/2026-04-12` (has finals), `/live/2026-10-09` (today, no
+games), `/live/games/0022501186`, `/investigations/saved/3bcb37c9-…`.
 
 ## 4. Counts
 
@@ -168,17 +173,17 @@ Source counts (non-test `.ts/.tsx` under `app`, `components`, `lib`):
 | "Strictly prior" | 3 | `context-bar.tsx:184`, `workbench-player-profile.tsx:572`, `multi-player-lines-view.tsx:671` |
 | `game_date <` in UI text | 3 | `case-studies-view.tsx:146`, `lib/image-export.ts:153,197` (export card) |
 
-Runtime counts (desktop, 55 captured routes):
+Runtime counts (desktop, 54 captured pages):
 
 | Measure | Result |
 | --- | --- |
 | Visible "Load …" buttons | 4 pages: `/roster-shapes`, `/schedule`, `/live/2026-04-12` and `/live/games/…` ("Load finalized research") |
-| Native date inputs visible | 27 pages |
-| Notice boxes visible | 44 across 30 pages |
-| Date formats in rendered text | ISO `YYYY-MM-DD` on 22 pages; `M/D/YYYY` on 2 (`/forecasts`, `/investigations`); "Apr 12, 2026" style on **0** |
-| UUIDs in rendered text | `/data-status` 24, `/live/…` 2 each, `/compare` 1 (footer "Snapshot 5bbb…"), `/learning` 1 |
-| Glyph icons in rendered text | 15 pages; worst `/investigations` (236 →), `/playoffs/[seriesId]` (40), `/teams/[id]` (34), `/teams` (30), `/playoffs` (15) |
-| Phone horizontal page scroll | 1 page: `/design` |
+| Native date inputs visible | 28 pages |
+| Notice boxes visible | 27 across 23 pages |
+| Date formats in rendered text | ISO `YYYY-MM-DD` on 28 pages; `M/D/YYYY` on 2 (`/forecasts`, `/investigations`); "Apr 12, 2026" style on **0** |
+| UUIDs in rendered text | 11 pages: `/investigations` 33, `/data-status` 24, `/research/expected-shots` 3, `/contracts`, `/contracts/BOS`, `/free-agency`, `/live/…` 2 each, `/compare`, `/learning`, `/investigations/saved/…` 1 each |
+| Glyph icons in rendered text | 16 pages; worst `/investigations` (236 →), `/playoffs/[seriesId]` (40), `/teams` (30), `/teams/[id]` (27), `/playoffs` (15) |
+| Phone horizontal page scroll | 2 pages: `/design`, `/research/similarity` |
 
 ## 5. Findings not in the plan
 
@@ -187,10 +192,10 @@ Runtime counts (desktop, 55 captured routes):
    it.
 2. **Hamburger and the duplicate magnifier show at 1440px** (D8/D9 already call for removing
    them; confirmed present).
-3. **`/investigations` saved-operation library shows "Failed to fetch"** against the running API,
-   so there was no `/investigations/saved/[id]` sample to capture. This is a before-state defect,
-   not caused by FO00. It needs a diagnosis before FO12. The page is also 8.6 MB at full height
-   because the legacy list renders 236 "→" rows.
+3. **`/investigations` is the densest page for raw identifiers.** It loads correctly through
+   `localhost` (the first capture's "Failed to fetch" was the CORS artifact above, not a page
+   defect), but each saved operation shows a raw ISO timestamp, the release UUID and a 64-char
+   hash in the main list (33 UUIDs on one page). The legacy list also renders 236 "→" rows.
 4. **`/evaluation` renders "Evaluation unavailable" as its h1.** The empty state replaces the
    page title.
 5. **Two emoji not in the plan's glyph list** render on `/data-status`: 🔄 and 📸. FO03's lint
@@ -205,10 +210,13 @@ Runtime counts (desktop, 55 captured routes):
    containing-block hypothesis. FO02 still needs a minimal reproduction to confirm the cause.
 8. **Native date inputs display `MM/DD/YYYY`** (e.g. "04/13/2026" in the `/teams` context bar)
    beside ISO text ("Strictly prior to 2026-04-13") on the same screen. The rendered-text counts in
-   section 4 miss these because input values are not in `innerText`. The 27 pages with native
+   section 4 miss these because input values are not in `innerText`. The 28 pages with native
    date inputs all mix two formats.
 9. **Capture caveat:** in tall full-page screenshots, lazy-loaded logos below the first screens
    can be missing (`/teams` rows 24–30). Treat that as a capture artifact, not a page defect.
    FO06 baselines should scroll or force-load images before capturing.
-10. **The export card prints the code rule** `Temporal Constraint: game_date < …`
+10. **`/research/similarity` scrolls sideways on phones** (along with the internal `/design`).
+11. **Capture setup:** tools that drive the dashboard in a browser must use `localhost:3100`;
+    `127.0.0.1` silently breaks every client-side fetch through CORS.
+12. **The export card prints the code rule** `Temporal Constraint: game_date < …`
    (`lib/image-export.ts:153`). D16 replaces it with the context line in FO04.
