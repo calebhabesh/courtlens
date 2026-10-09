@@ -58,14 +58,19 @@ test("calculator rejects invalid scenarios and shows checked finite differences 
 });
 test("roster keeps observed and projected inputs separate and exports context",async ({page}) => {
   await page.route("**/api/workbench/teams/fixture?*",route => { expect(new URL(route.request().url()).searchParams.get("phase")).toBe("regular_season"); return route.fulfill({json:{team:{id:"fixture",name:"Fixture Team",tricode:"FIX"},context:{release_id:"fixture-release",season:"2025-26",phase:"regular",before_date:"2026-07-01"},record:{games_played:1},player_cohort:[{player_id:"1",player_name:"Fixture Player",games_played:1,total_minutes:30,points:0,points_per_game:0}],warnings:["Fixture scope only"]}}); });
-  await page.route("**/api/workbench/lookup?*", route => route.fulfill({json:{items:[{kind:"team",canonical_id:"fixture",display_name:"Fixture Team",destination:"/teams/fixture",matching_alias:"Fixture",season_available:true,season_scope:"2025-26",associations:[]}],total_matches:1,catalog_version:"fixture"}}));
-  await page.goto("/roster-shapes?season=2025-26&phase=regular_season");await page.getByRole("combobox",{name:"Team",exact:true}).fill("Fixture");await page.getByRole("option",{name:/Fixture Team/}).click(); await page.getByRole("button",{name:"Load participation"}).click();
-  await expect(page.getByRole("region",{name:"Roster allocations",exact:true})).toContainText("total 30.0");
+  // FO05: no form or Load button; the team loads from the URL as soon as it is chosen.
+  await page.goto("/roster-shapes?season=2025-26&phase=regular_season&team=fixture");
+  const chart = page.getByRole("region",{name:"Roster allocations",exact:true});
+  await expect(page.locator(".roster-team")).toContainText("30 observed minutes");
+  await expect(chart.getByRole("region",{name:"Unassigned lane"})).toContainText("30 min · 100.0%");
+  await page.getByRole("button",{name:"All players (1)"}).click();
   await page.getByLabel("Position for Fixture Player").selectOption("PG");
-  await page.getByLabel("Allocation basis").selectOption("projected");
-  await expect(page.getByRole("region",{name:"Roster allocations",exact:true})).toContainText("total 0.0");
-  await page.getByLabel("Projected minutes for Fixture Player").fill("-1");await expect(page.getByRole("button",{name:"Export allocation inputs JSON"})).toBeDisabled();
-  await page.getByLabel("Projected minutes for Fixture Player").fill("24");await expect(page.getByRole("region",{name:"Roster allocations",exact:true})).toContainText("total 24.0");
+  await expect(chart.getByRole("region",{name:"PG lane"})).toContainText("Fixture Player");
+  await page.getByRole("radio",{name:"Projected"}).click();
+  await expect(page.getByRole("meter",{name:"Projected team minutes per game"})).toHaveAttribute("aria-valuenow","0");
+  await page.getByLabel("Projected minutes for Fixture Player").fill("-1");await expect(page.getByRole("button",{name:"Export JSON"})).toBeDisabled();
+  await page.getByLabel("Projected minutes for Fixture Player").fill("24");await expect(page.getByRole("meter",{name:"Projected team minutes per game"})).toHaveAttribute("aria-valuenow","24");
+  await expect(page.getByRole("button",{name:"Export JSON"})).toBeEnabled();
 });
 test("measurements preserve unknown picks, null lengths and units in bounded sample",async ({page}) => {
   await page.route("**/api/workbench/measurements?*",route => route.fulfill({json:{items:[{player_id:"fixture",display_name:"Fixture Player",measurement_type:"combine",source_name:"fixture-combine",draft_year:2021,pick_overall:null,drafting_team_id:null,height_no_shoes_inches:80,height_shoes_inches:null,wingspan_inches:86,standing_reach_inches:null,weight_lbs:200,body_fat_pct:null,wingspan_to_height_ratio:null}],count:1,disclaimer:"Fixture only"}}));

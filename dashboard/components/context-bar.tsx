@@ -5,7 +5,7 @@ import { useCallback, useEffect, useState } from "react";
 
 import { CountChip, FilterBar } from "@/components/ui/filter-bar";
 import { phaseLabel } from "@/lib/scope-labels";
-import { DataDetailsButton } from "@/components/ui/data-details";
+import { DataDetailsButton, type DataDetailRow } from "@/components/ui/data-details";
 import { DatePicker } from "@/components/ui/date-picker";
 import { Field } from "@/components/ui/field";
 import { Select } from "@/components/ui/select";
@@ -29,6 +29,8 @@ interface ContextBarProps {
   showWindow?: boolean;
   /** Page-specific filters rendered to the right of the scope controls. */
   filters?: React.ReactNode;
+  /** Page-specific Data details rows (source routes, resolved context), after the catalog rows. */
+  detailRows?: DataDetailRow[];
 }
 
 const WINDOWS = [
@@ -49,7 +51,8 @@ export function ContextBar({
   sampleSize,
   lastIncludedDate,
   showWindow = true,
-  filters
+  filters,
+  detailRows = []
 }: ContextBarProps) {
   const router = useRouter();
   const pathname = usePathname();
@@ -132,12 +135,12 @@ export function ContextBar({
       details={
         <DataDetailsButton
           scope={{ releaseId: releaseId ?? catalog?.release_id, season, phase, beforeDate, window: showWindow ? windowParam : null, lastIncludedDate }}
-          rows={catalog ? [
+          rows={[...(catalog ? [
             { label: "Dataset", value: catalog.dataset_id, mono: true },
             { label: "Snapshot", value: catalog.snapshot_id, mono: true },
             { label: "Source", value: catalog.source },
             { label: "Coverage", value: `${formatDate(catalog.coverage_start)} – ${formatDate(catalog.coverage_end)}` }
-          ] : []}
+          ] : []), ...detailRows]}
         />
       }
     />
