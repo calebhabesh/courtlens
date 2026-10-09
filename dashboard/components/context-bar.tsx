@@ -27,6 +27,11 @@ interface ContextBarProps {
   lastIncludedDate?: string | null;
   /** D6: Window appears only on pages whose results depend on it. */
   showWindow?: boolean;
+  /**
+   * Hide the Through picker where the page's own date sets the cutoff (Live Finals: the slate date).
+   * An explicit `beforeDate` in the URL still applies and is listed in Data details.
+   */
+  showThrough?: boolean;
   /** Page-specific filters rendered to the right of the scope controls. */
   filters?: React.ReactNode;
   /** View/mode switches that stay visible on phones (see `FilterBar` `modes`). */
@@ -53,6 +58,7 @@ export function ContextBar({
   sampleSize,
   lastIncludedDate,
   showWindow = true,
+  showThrough = true,
   filters,
   modes,
   detailRows = []
@@ -105,11 +111,11 @@ export function ContextBar({
       </Field>
       <Field label="Phase" layout="inline">
         <Select value={phase} onChange={(e) => updateParam("phase", e.target.value)} aria-label="Filter by competition phase">
-          {!phases.includes(phase) && <option value={phase}>{phase} · unavailable</option>}
+          {!phases.includes(phase) && <option value={phase}>{phaseLabel(phase)} · unavailable</option>}
           {phases.map((value) => <option key={value} value={value}>{phaseLabel(value)}</option>)}
         </Select>
       </Field>
-      <Field label="Through" layout="inline">
+      {showThrough && <Field label="Through" layout="inline">
         <DatePicker
           label="Through date"
           value={throughDate}
@@ -117,7 +123,7 @@ export function ContextBar({
           max={coverage?.coverage_end}
           onChange={(value) => updateParam("beforeDate", beforeDateFromThrough(value))}
         />
-      </Field>
+      </Field>}
       {showWindow && (
         <Field label="Window" layout="inline">
           <Select value={windowParam} onChange={(e) => updateParam("window", e.target.value)} aria-label="Analysis window">
@@ -134,7 +140,7 @@ export function ContextBar({
       scope={scope}
       filters={filters}
       modes={modes}
-      summary={`${season} · ${phaseLabel(phase)}${throughDate ? ` · ${formatDate(throughDate, "compact")}` : ""}`}
+      summary={`${season} · ${phaseLabel(phase)}${showThrough && throughDate ? ` · ${formatDate(throughDate, "compact")}` : ""}`}
       count={sampleSize !== undefined ? <CountChip>{sampleSize.toLocaleString("en-US")} {sampleNoun}</CountChip> : undefined}
       details={
         <DataDetailsButton

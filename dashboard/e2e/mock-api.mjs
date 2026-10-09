@@ -636,6 +636,20 @@ createServer(async (request, response) => {
   if (url.pathname === "/api/workbench/teams") return json(response, 200, workbenchTeams);
   if (url.pathname === "/api/workbench/teams/1610612761") return json(response, 200, { ...workbenchTeamDetail, team: { ...workbenchTeamDetail.team, id: "1610612761" } });
   if (url.pathname === "/api/workbench/teams/100") return json(response, 200, workbenchTeamDetail);
+  if (url.pathname === "/api/workbench/schedule/dates") {
+    // FO08 date strip: deterministic counts, with every fifth day of the month empty except the focus.
+    const start = new Date(`${url.searchParams.get("start")}T12:00:00Z`), end = new Date(`${url.searchParams.get("end")}T12:00:00Z`);
+    const focus = url.searchParams.get("focus") ?? url.searchParams.get("start");
+    const days = [];
+    for (let day = start; day <= end; day = new Date(day.getTime() + 86400000)) {
+      const iso = day.toISOString().slice(0, 10);
+      const games = day.getUTCDate() % 5 === 0 && iso !== focus ? 0 : 3;
+      days.push({ date: iso, scheduled: games, finals: games });
+    }
+    const shift = n => new Date(Date.parse(`${focus}T12:00:00Z`) + n * 86400000).toISOString().slice(0, 10);
+    const nearest = { before: shift(-1), after: shift(1) };
+    return json(response, 200, { release_id: workbenchContext.release_id, dataset_id: "fixture-dataset", start: url.searchParams.get("start"), end: url.searchParams.get("end"), phase: url.searchParams.get("phase"), before_date: url.searchParams.get("beforeDate"), focus, days, nearest_scheduled: nearest, nearest_finals: nearest, warnings: [] });
+  }
   if (url.pathname === "/api/workbench/playoffs") {
     return json(response, 200, mockPlayoffBracket);
   }
