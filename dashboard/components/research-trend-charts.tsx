@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { formatDate } from "@/lib/format-date";
 import type { PlayerGameLogItem } from "@/lib/types";
 
 interface ResearchTrendChartsProps {
@@ -117,15 +118,15 @@ export function ResearchTrendCharts({ games, playerName }: ResearchTrendChartsPr
               stroke="var(--color-surface-1)"
               strokeWidth="1.5"
             >
-              <title>{`${validGames[idx].game_date}: ${p.val} ${unit}`}</title>
+              <title>{`${formatDate(validGames[idx].game_date)}: ${p.val} ${unit}`}</title>
             </circle>
           ))}
         </svg>
 
         <div className="trend-card-footer">
-          <span className="text-xs text-muted font-mono">{validGames[0].game_date}</span>
+          <span className="text-xs text-muted font-mono">{formatDate(validGames[0].game_date)}</span>
           <span className="text-xs text-muted font-mono">
-            {validGames[validGames.length - 1].game_date}
+            {formatDate(validGames[validGames.length - 1].game_date)}
           </span>
         </div>
       </div>
@@ -158,7 +159,7 @@ export function ResearchTrendCharts({ games, playerName }: ResearchTrendChartsPr
       </div>
 
       <p className="trend-narrative">
-        <strong>Interpretation:</strong> Over the last {validGames.length} appearances for {playerName}, scoring peaked at {Math.max(...pointsSeries)} points ({validGames[pointsSeries.indexOf(Math.max(...pointsSeries))].game_date}) while averaging {avgMinutes} minutes and {avgAttempts} field goal attempts.
+        <strong>Interpretation:</strong> Over the last {validGames.length} appearances for {playerName}, scoring peaked at {Math.max(...pointsSeries)} points ({formatDate(validGames[pointsSeries.indexOf(Math.max(...pointsSeries))].game_date)}) while averaging {avgMinutes} minutes and {avgAttempts} field goal attempts.
       </p>
 
       {showTable && (
@@ -177,7 +178,7 @@ export function ResearchTrendCharts({ games, playerName }: ResearchTrendChartsPr
             <tbody>
               {validGames.map((g) => (
                 <tr key={g.game_id}>
-                  <td>{g.game_date}</td>
+                  <td>{formatDate(g.game_date)}</td>
                   <td>{g.team_tricode}</td>
                   <td>{g.opponent_tricode}</td>
                   <td className="num font-mono">{g.minutes?.toFixed(1) ?? "—"}</td>

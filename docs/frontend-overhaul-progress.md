@@ -14,6 +14,22 @@ recorded owner approval.
 - The owner confirmed D1–D26 through a grilling interview.
 - The owner chose Opus 5.5 to implement every block.
 
+## 2026-10-09 — owner-reported Stats divider correction
+
+Follow-up toolbar request: Manage Views now follows the guide group in DOM/keyboard order,
+matches the adjacent selector groups at 32px, and the visible label is `Group Guides:`.
+Measured at 1440/2048/390px with working dialog/Escape and no page overflow; lint/types and 344
+unit tests pass. [Screenshots and scoped glance evidence](evidence/stats-manage-views/README.md).
+
+Bounded spacing repair, separate from FO milestone acceptance: the filter bar hairline had 0px
+clearance above the preset row, visually touching Manage Views and Group guides. A scoped
+`--space-4` top margin now gives exactly 16px at 1440/2048/390px. Both controls work; no sideways
+page scroll. [Screenshots, measurements, scoped glance test and verification](evidence/stats-divider-fix/README.md).
+Dashboard lint/typecheck pass; Vitest 344 pass. Existing production-fixture Stats browser checks
+cover 10 passing cases across the initial run and an isolated rerun after a Chromium crash.
+Source stylesheet separately loaded and measured on that fixture server; live 1440px screenshot
+confirms the source change. No FO block status changes.
+
 ## FO00 findings that change later blocks
 
 - Header search pill overlaps the "Research" nav item at 1440px (FO02).
@@ -71,6 +87,12 @@ recorded owner approval.
 - A chip that moves between lists remounts, so keyboard focus must be restored explicitly; reuse
   the pattern for Tier List (FO09).
 - `components/team-grid.tsx` (30 logos + filter) is reusable for Teams (FO10) and team compare (FO11).
+
+## FO09 findings that change later blocks
+
+- `/tmp` is RAM-backed here; with swap full, stale isolated copies from earlier sessions (about 9 GB under `/tmp/courtlens-*` and `/tmp/courtload-*`) made Chromium fail to fork and every Playwright test time out. Keep isolated copies small (no evidence PNGs) and ask the owner before deleting old ones.
+- Entity pickers belong in the filter bar or header, never only inside a result that can fail.
+- Profile pages (FO10 teams) can reuse `ProfileLayout` + the server-side `resolveStatsQuery` hero query + `useCohortRanks`, as `/players/[id]` does.
 
 ## FO08 findings that change later blocks
 
@@ -135,7 +157,7 @@ recorded owner approval.
 | FO06 | implemented_unverified | 2026-10-09. [Evidence](evidence/fo06/README.md): Design Language v1.1 (templates, page anatomy with filter-bar slots, missing-data/Data details rules, identity, dates, gate-2 Board patterns, breakpoints, glance test, rewritten header section, enforcement). Gate-2 follow-ups: FilterBar `modes` slot keeps Showcase Focus and Roster Observed/Projected visible on phones (40px, no clipping at 390/360); search pill page-centred where it fits (0px offset at 1024 and ≥1740, was +253px). ESLint ratchets for native date inputs and raw `<h1>` with per-block pending lists. 10 screenshot baselines (Showcase, Roster picker and chart, search, `/design` × 1440/390), stable on repeat runs. Lint 0, typecheck pass, Vitest 49 files/337 tests, Playwright 249 pass/15 skip/0 fail. Article template left as an owner choice for FO13. |
 | FO07 | implemented_unverified | 2026-10-09. [Evidence](evidence/fo07/README.md): merged pages are path tabs from one table (`lib/route-consolidation.ts`, also feeding `next.config.ts` redirects): RAPM Research (+Six-Factor), Similar Players (Box Score, Shot Profile), Shooting (Expected, Adjusted, Aftermath), What's New (Patch Notes, Blog), Methodology (Definitions, Learning). 9 removed URLs → 307 to their tab with the query kept; old aliases repointed so nothing takes two hops. `RouteTabs` primitive (links, `aria-current`, context and player carried, 40px, secondary when gated), one `h1` per page, nav lists each merged page once, backend search entries updated, `/design` noindex, raw-title ratchet 41 → 35. 11 tab URLs × 1440/390: titles match nav, tabs 40px, shared left edge, no sideways scroll (fixed a pre-existing 390px overflow on Similar Players). Glance items 1/4/7/9 pass; 2/3/5/6/8/10 belong to the tab bodies (FO09/FO12/FO13). Lint 0, typecheck pass, Vitest 50 files/344 tests, ruff/mypy clean, lookup pytest 16 pass, Playwright 254 pass/15 skip/0 fail. |
 | FO08 | implemented_unverified | 2026-10-09. [Evidence](evidence/fo08/README.md): one Live board titled "Live" with Live · Finals · Playoffs tabs (`/live`, `/live/[date]`, `/live/games/[id]`, `/playoffs`); research form and Load button removed (Finals on the shared bar, release/cutoff/provenance in Data details); 15-day date strip with counts from a new read-only `GET /api/workbench/schedule/dates` (retained schedule + admitted finals, unknown never zero); one-line states with Why? and nearest-date jumps; game cards with verified-ID logos and Eastern tipoffs. Playoffs, series detail and `/schedule` rebuilt on the shared header/bar; decided series no longer show SCHEDULED (`finished` status bug). All B32 behaviour tests kept. Ratchets: native date 11 → 8, raw title 35 → 31. Glance test passes on all 6 pages at 1440 and 390 (first result ≤400px, 0 UUIDs/rules/ISO dates visible, no sideways scroll). Lint 0, typecheck pass, Vitest 50 files/344 tests, ruff/mypy clean, pytest unit 1,324 pass, Playwright 259 pass/15 skip/0 fail, 14 baselines stable. |
-| FO09 | planned | |
+| FO09 | implemented_unverified | 2026-10-09. [Evidence](evidence/fo09/README.md): player profile on the Profile template (name header with icon actions, Explore and Export menus; shared bar; hero with headshot, team accent and six StatTiles with Stats-cohort percentile and rank; Overview · Game Log · Measurements tabs kept in `?tab=`); impact card values first with methodology behind Why?; Recent Games, Ranking Boards, Tier Lists and Player Directory titled by their nav labels with shared headers, separated 40px controls and one-line notes; Similar Players on the shared FilterBar with the target picker always reachable, hash in Data details and headshots for target and peers. Shared fallbacks fixed (broken headshot → initials, unknown team code no wrap). Raw-title ratchet 31 → 24. Glance test passes on all 7 views at 1440 and 390. Lint 0, typecheck pass, Vitest 50 files/344 tests, Playwright 266 pass/15 skip/1 sub-pixel flake (fixed, 16/16 on repeat), 18 baselines stable. |
 | FO10 | planned | |
 | FO11 | planned | |
 | FO12 | planned | |

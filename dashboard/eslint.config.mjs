@@ -37,8 +37,6 @@ const PENDING_NATIVE_DATE = [
 ];
 // Dynamic route folders are escaped because these are glob patterns.
 const PENDING_RAW_TITLE = [
-  "app/players/page.tsx", "app/players/\\[id\\]/page.tsx", "components/workbench-player-profile.tsx", "app/last-games/page.tsx",
-  "components/recent-games-view.tsx", "components/ranking-boards-view.tsx", "components/tier-list-view.tsx", // FO09
   "app/teams/page.tsx", "app/teams/\\[id\\]/page.tsx", "components/finance-workspace.tsx", // FO10
   "app/compare/page.tsx", "app/team-compare/page.tsx", "components/shared-floor-view.tsx", // FO11
   "components/shooting-view.tsx", "components/trends-investigation-view.tsx",

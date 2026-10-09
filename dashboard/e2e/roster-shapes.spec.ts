@@ -118,12 +118,13 @@ test.describe("FO05 Roster Shapes", () => {
     // Gate 2 (Design Language v1.1): the mode switch stays visible outside the Filters sheet.
     const projected = page.getByRole("radio", { name: "Projected" });
     await expect(projected).toBeVisible();
-    expect((await projected.boundingBox())!.height).toBeGreaterThanOrEqual(40);
+    // Sub-pixel tolerance: a settling transform can report 39.9999px for a 40px target.
+    expect((await projected.boundingBox())!.height).toBeGreaterThanOrEqual(39.99);
     await projected.click();
     await expect(page.getByLabel("Projected minutes for Fixture Guard")).toBeVisible();
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     const heights = await page.locator(".roster-chip-menu .ui-menu-trigger").evaluateAll((els) => els.map((el) => el.getBoundingClientRect().height));
-    expect(Math.min(...heights)).toBeGreaterThanOrEqual(40);
+    expect(Math.min(...heights)).toBeGreaterThanOrEqual(39.99);
     await page.getByRole("button", { name: "Change team" }).click();
     await expect(page.getByRole("dialog", { name: "Choose a team" }).getByRole("button", { name: "Boston Celtics" })).toHaveAttribute("aria-pressed", "true");
   });
