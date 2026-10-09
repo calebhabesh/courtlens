@@ -2,7 +2,7 @@ import { test, expect, type Page } from "@playwright/test";
 import { openWorkbench } from "./workbench-navigation";
 
 // FO06 screenshot baselines for the pages approved at owner gate 2 and the /design style guide,
-// plus each later block's rebuilt pages (FO08: Live Finals, Playoffs).
+// plus each later block's rebuilt pages (FO08: Live Finals, Playoffs; FO09: profile, Recent Games).
 // Update a baseline only in a commit that names the reason (Design Language v1.1, Enforcement).
 const WIDTHS = [{ name: "desktop", width: 1440, height: 900 }, { name: "phone", width: 390, height: 844 }];
 const BOS = "1610612738";
@@ -101,6 +101,21 @@ for (const view of WIDTHS) {
       await expect(page.getByRole("heading", { level: 1, name: "Live" })).toBeVisible();
       await settle(page);
       await expect(page).toHaveScreenshot(`playoffs-${view.name}.png`, shot);
+    });
+
+    // FO09: Profile template and Recent Games.
+    test("player profile", async ({ page }) => {
+      await openWorkbench(page, "/players/23");
+      await expect(page.getByLabel("Season summary").locator(".ui-stat-tile")).toHaveCount(6);
+      await settle(page);
+      await expect(page).toHaveScreenshot(`player-profile-${view.name}.png`, shot);
+    });
+
+    test("recent games", async ({ page }) => {
+      await openWorkbench(page, "/last-games?playerId=23");
+      await expect(page.getByLabel("Window summary")).toBeVisible();
+      await settle(page);
+      await expect(page).toHaveScreenshot(`recent-games-${view.name}.png`, shot);
     });
 
     test("design style guide", async ({ page }) => {
