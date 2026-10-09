@@ -1,0 +1,628 @@
+{
+  "base": "http://localhost:3100",
+  "measuredAt": "2026-10-09T15:22:02.681Z",
+  "synthetic": {
+    "viewport": {
+      "w": 800,
+      "h": 600
+    },
+    "fixedChildWithoutFilter": {
+      "w": 800,
+      "h": 600
+    },
+    "fixedChildWithBackdropFilterParent": {
+      "w": 800,
+      "h": 56
+    }
+  },
+  "app": [
+    {
+      "label": "palette-1440",
+      "viewport": {
+        "w": 1440,
+        "h": 900,
+        "scrollY": 0
+      },
+      "header": {
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "w": 1440,
+          "h": 56
+        },
+        "backdropFilter": "none",
+        "className": "courtlens-header replica-header "
+      },
+      "scrim": {
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "w": 1440,
+          "h": 900
+        },
+        "coversViewport": true,
+        "insideHeader": false,
+        "maxWidth": "none",
+        "position": "fixed"
+      },
+      "palette": {
+        "rect": {
+          "x": 400,
+          "y": 108,
+          "w": 640,
+          "h": 543
+        }
+      },
+      "drawerRoot": null,
+      "drawerPanel": null,
+      "chrome": {
+        "hamburger": false,
+        "searchIcon": false,
+        "pill": true,
+        "nav": true,
+        "more": true,
+        "pillOverlapsNav": false,
+        "pillOverlapsRight": false
+      },
+      "closedOnEscape": true
+    },
+    {
+      "label": "palette-1440-scrolled",
+      "viewport": {
+        "w": 1440,
+        "h": 900,
+        "scrollY": 600
+      },
+      "header": {
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "w": 1440,
+          "h": 56
+        },
+        "backdropFilter": "blur(12px) saturate(1.4)",
+        "className": "courtlens-header replica-header is-scrolled scrolled"
+      },
+      "scrim": {
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "w": 1440,
+          "h": 900
+        },
+        "coversViewport": true,
+        "insideHeader": false,
+        "maxWidth": "none",
+        "position": "fixed"
+      },
+      "palette": {
+        "rect": {
+          "x": 400,
+          "y": 108,
+          "w": 640,
+          "h": 543
+        }
+      },
+      "drawerRoot": null,
+      "drawerPanel": null,
+      "chrome": {
+        "hamburger": false,
+        "searchIcon": false,
+        "pill": true,
+        "nav": true,
+        "more": true,
+        "pillOverlapsNav": false,
+        "pillOverlapsRight": false
+      },
+      "closedOnEscape": true
+    },
+    {
+      "label": "palette-1280",
+      "viewport": {
+        "w": 1280,
+        "h": 900,
+        "scrollY": 0
+      },
+      "header": {
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "w": 1280,
+          "h": 56
+        },
+        "backdropFilter": "none",
+        "className": "courtlens-header replica-header "
+      },
+      "scrim": {
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "w": 1280,
+          "h": 900
+        },
+        "coversViewport": true,
+        "insideHeader": false,
+        "maxWidth": "none",
+        "position": "fixed"
+      },
+      "palette": {
+        "rect": {
+          "x": 320,
+          "y": 108,
+          "w": 640,
+          "h": 543
+        }
+      },
+      "drawerRoot": null,
+      "drawerPanel": null,
+      "chrome": {
+        "hamburger": false,
+        "searchIcon": false,
+        "pill": true,
+        "nav": true,
+        "more": true,
+        "pillOverlapsNav": false,
+        "pillOverlapsRight": false
+      },
+      "closedOnEscape": true
+    },
+    {
+      "label": "palette-1280-scrolled",
+      "viewport": {
+        "w": 1280,
+        "h": 900,
+        "scrollY": 600
+      },
+      "header": {
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "w": 1280,
+          "h": 56
+        },
+        "backdropFilter": "blur(12px) saturate(1.4)",
+        "className": "courtlens-header replica-header is-scrolled scrolled"
+      },
+      "scrim": {
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "w": 1280,
+          "h": 900
+        },
+        "coversViewport": true,
+        "insideHeader": false,
+        "maxWidth": "none",
+        "position": "fixed"
+      },
+      "palette": {
+        "rect": {
+          "x": 320,
+          "y": 108,
+          "w": 640,
+          "h": 543
+        }
+      },
+      "drawerRoot": null,
+      "drawerPanel": null,
+      "chrome": {
+        "hamburger": false,
+        "searchIcon": false,
+        "pill": true,
+        "nav": true,
+        "more": true,
+        "pillOverlapsNav": false,
+        "pillOverlapsRight": false
+      },
+      "closedOnEscape": true
+    },
+    {
+      "label": "palette-1024",
+      "viewport": {
+        "w": 1024,
+        "h": 900,
+        "scrollY": 0
+      },
+      "header": {
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "w": 1024,
+          "h": 56
+        },
+        "backdropFilter": "none",
+        "className": "courtlens-header replica-header "
+      },
+      "scrim": {
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "w": 1024,
+          "h": 900
+        },
+        "coversViewport": true,
+        "insideHeader": false,
+        "maxWidth": "none",
+        "position": "fixed"
+      },
+      "palette": {
+        "rect": {
+          "x": 192,
+          "y": 108,
+          "w": 640,
+          "h": 543
+        }
+      },
+      "drawerRoot": null,
+      "drawerPanel": null,
+      "chrome": {
+        "hamburger": true,
+        "searchIcon": false,
+        "pill": true,
+        "nav": false,
+        "more": false,
+        "pillOverlapsNav": false,
+        "pillOverlapsRight": false
+      },
+      "closedOnEscape": true
+    },
+    {
+      "label": "drawer-1024",
+      "viewport": {
+        "w": 1024,
+        "h": 900,
+        "scrollY": 0
+      },
+      "header": {
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "w": 1024,
+          "h": 56
+        },
+        "backdropFilter": "none",
+        "className": "courtlens-header replica-header "
+      },
+      "scrim": null,
+      "palette": null,
+      "drawerRoot": {
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "w": 1024,
+          "h": 900
+        },
+        "insideHeader": false
+      },
+      "drawerPanel": {
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "w": 440,
+          "h": 900
+        },
+        "fullHeight": true,
+        "maxHeight": "none"
+      },
+      "chrome": {
+        "hamburger": true,
+        "searchIcon": false,
+        "pill": true,
+        "nav": false,
+        "more": false,
+        "pillOverlapsNav": false,
+        "pillOverlapsRight": false
+      },
+      "drawerFocus": true,
+      "focusTrapped": true,
+      "panelOnTop": true,
+      "closedOnEscape": true
+    },
+    {
+      "label": "palette-1024-scrolled",
+      "viewport": {
+        "w": 1024,
+        "h": 900,
+        "scrollY": 600
+      },
+      "header": {
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "w": 1024,
+          "h": 56
+        },
+        "backdropFilter": "blur(12px) saturate(1.4)",
+        "className": "courtlens-header replica-header is-scrolled scrolled"
+      },
+      "scrim": {
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "w": 1024,
+          "h": 900
+        },
+        "coversViewport": true,
+        "insideHeader": false,
+        "maxWidth": "none",
+        "position": "fixed"
+      },
+      "palette": {
+        "rect": {
+          "x": 192,
+          "y": 108,
+          "w": 640,
+          "h": 543
+        }
+      },
+      "drawerRoot": null,
+      "drawerPanel": null,
+      "chrome": {
+        "hamburger": true,
+        "searchIcon": false,
+        "pill": true,
+        "nav": false,
+        "more": false,
+        "pillOverlapsNav": false,
+        "pillOverlapsRight": false
+      },
+      "closedOnEscape": true
+    },
+    {
+      "label": "drawer-1024-scrolled",
+      "viewport": {
+        "w": 1024,
+        "h": 900,
+        "scrollY": 600
+      },
+      "header": {
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "w": 1024,
+          "h": 56
+        },
+        "backdropFilter": "blur(12px) saturate(1.4)",
+        "className": "courtlens-header replica-header is-scrolled scrolled"
+      },
+      "scrim": null,
+      "palette": null,
+      "drawerRoot": {
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "w": 1024,
+          "h": 900
+        },
+        "insideHeader": false
+      },
+      "drawerPanel": {
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "w": 440,
+          "h": 900
+        },
+        "fullHeight": true,
+        "maxHeight": "none"
+      },
+      "chrome": {
+        "hamburger": true,
+        "searchIcon": false,
+        "pill": true,
+        "nav": false,
+        "more": false,
+        "pillOverlapsNav": false,
+        "pillOverlapsRight": false
+      },
+      "drawerFocus": true,
+      "focusTrapped": true,
+      "panelOnTop": true,
+      "closedOnEscape": true
+    },
+    {
+      "label": "palette-390",
+      "viewport": {
+        "w": 390,
+        "h": 844,
+        "scrollY": 0
+      },
+      "header": {
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "w": 390,
+          "h": 56
+        },
+        "backdropFilter": "none",
+        "className": "courtlens-header replica-header "
+      },
+      "scrim": {
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "w": 390,
+          "h": 844
+        },
+        "coversViewport": true,
+        "insideHeader": false,
+        "maxWidth": "none",
+        "position": "fixed"
+      },
+      "palette": {
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "w": 390,
+          "h": 844
+        }
+      },
+      "drawerRoot": null,
+      "drawerPanel": null,
+      "chrome": {
+        "hamburger": true,
+        "searchIcon": true,
+        "pill": false,
+        "nav": false,
+        "more": false,
+        "pillOverlapsNav": false,
+        "pillOverlapsRight": false
+      },
+      "closedOnEscape": true
+    },
+    {
+      "label": "drawer-390",
+      "viewport": {
+        "w": 390,
+        "h": 844,
+        "scrollY": 0
+      },
+      "header": {
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "w": 390,
+          "h": 56
+        },
+        "backdropFilter": "none",
+        "className": "courtlens-header replica-header "
+      },
+      "scrim": null,
+      "palette": null,
+      "drawerRoot": {
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "w": 390,
+          "h": 844
+        },
+        "insideHeader": false
+      },
+      "drawerPanel": {
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "w": 390,
+          "h": 844
+        },
+        "fullHeight": true,
+        "maxHeight": "none"
+      },
+      "chrome": {
+        "hamburger": true,
+        "searchIcon": true,
+        "pill": false,
+        "nav": false,
+        "more": false,
+        "pillOverlapsNav": false,
+        "pillOverlapsRight": false
+      },
+      "drawerFocus": true,
+      "focusTrapped": true,
+      "panelOnTop": true,
+      "closedOnEscape": true
+    },
+    {
+      "label": "palette-390-scrolled",
+      "viewport": {
+        "w": 390,
+        "h": 844,
+        "scrollY": 600
+      },
+      "header": {
+        "rect": {
+          "x": 0,
+          "y": -600,
+          "w": 390,
+          "h": 56
+        },
+        "backdropFilter": "blur(12px) saturate(1.4)",
+        "className": "courtlens-header replica-header is-scrolled scrolled"
+      },
+      "scrim": {
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "w": 390,
+          "h": 844
+        },
+        "coversViewport": true,
+        "insideHeader": false,
+        "maxWidth": "none",
+        "position": "fixed"
+      },
+      "palette": {
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "w": 390,
+          "h": 844
+        }
+      },
+      "drawerRoot": null,
+      "drawerPanel": null,
+      "chrome": {
+        "hamburger": true,
+        "searchIcon": true,
+        "pill": false,
+        "nav": false,
+        "more": false,
+        "pillOverlapsNav": false,
+        "pillOverlapsRight": false
+      },
+      "closedOnEscape": true
+    },
+    {
+      "label": "drawer-390-scrolled",
+      "viewport": {
+        "w": 390,
+        "h": 844,
+        "scrollY": 600
+      },
+      "header": {
+        "rect": {
+          "x": 0,
+          "y": -600,
+          "w": 390,
+          "h": 56
+        },
+        "backdropFilter": "blur(12px) saturate(1.4)",
+        "className": "courtlens-header replica-header is-scrolled scrolled"
+      },
+      "scrim": null,
+      "palette": null,
+      "drawerRoot": {
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "w": 390,
+          "h": 844
+        },
+        "insideHeader": false
+      },
+      "drawerPanel": {
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "w": 390,
+          "h": 844
+        },
+        "fullHeight": true,
+        "maxHeight": "none"
+      },
+      "chrome": {
+        "hamburger": true,
+        "searchIcon": true,
+        "pill": false,
+        "nav": false,
+        "more": false,
+        "pillOverlapsNav": false,
+        "pillOverlapsRight": false
+      },
+      "drawerFocus": true,
+      "focusTrapped": true,
+      "panelOnTop": true,
+      "closedOnEscape": true
+    }
+  ]
+}

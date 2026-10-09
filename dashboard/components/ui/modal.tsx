@@ -7,6 +7,7 @@ import {
 } from "react";
 import { motion, AnimatePresence, modalVariants, scrimVariants } from "../../lib/motion";
 import { IconButton } from "./button";
+import { OverlayPortal } from "./overlay-portal";
 
 export interface ModalProps {
   isOpen: boolean;
@@ -66,7 +67,7 @@ export function Modal({
         panelRef.current?.querySelectorAll<HTMLElement>(
           'button:not(:disabled), [href], input:not(:disabled), select:not(:disabled), textarea:not(:disabled), [tabindex]:not([tabindex="-1"])'
         ) || []
-      );
+      ).filter(element => !element.closest("[inert]"));
       if (focusables.length === 0) return;
 
       const first = focusables[0];
@@ -83,56 +84,58 @@ export function Modal({
   };
 
   return (
-    <AnimatePresence>
-      {isOpen && (
-        <motion.div
-          variants={scrimVariants}
-          initial="initial"
-          animate="animate"
-          exit="exit"
-          className="ui-scrim"
-          onClick={onClose}
-        >
+    <OverlayPortal>
+      <AnimatePresence>
+        {isOpen && (
           <motion.div
-            ref={panelRef}
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby={title ? titleId : undefined}
-            aria-describedby={description ? descId : undefined}
-            tabIndex={-1}
-            variants={modalVariants}
+            variants={scrimVariants}
             initial="initial"
             animate="animate"
             exit="exit"
-            className={`ui-modal-panel ${className}`}
-            onClick={e => e.stopPropagation()}
-            onKeyDown={handleKeyDown}
+            className="ui-scrim"
+            onClick={onClose}
           >
-            <div className="ui-modal-header">
-              <div>
-                {title && (
-                  <h2 id={titleId} className="ui-modal-title">
-                    {title}
-                  </h2>
-                )}
-                {description && (
-                  <p id={descId} className="ui-modal-desc text-muted">
-                    {description}
-                  </p>
-                )}
+            <motion.div
+              ref={panelRef}
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby={title ? titleId : undefined}
+              aria-describedby={description ? descId : undefined}
+              tabIndex={-1}
+              variants={modalVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+              className={`ui-modal-panel ${className}`}
+              onClick={e => e.stopPropagation()}
+              onKeyDown={handleKeyDown}
+            >
+              <div className="ui-modal-header">
+                <div>
+                  {title && (
+                    <h2 id={titleId} className="ui-modal-title">
+                      {title}
+                    </h2>
+                  )}
+                  {description && (
+                    <p id={descId} className="ui-modal-desc text-muted">
+                      {description}
+                    </p>
+                  )}
+                </div>
+                <IconButton
+                  icon="close"
+                  label="Close dialog"
+                  variant="ghost"
+                  size="sm"
+                  onClick={onClose}
+                />
               </div>
-              <IconButton
-                icon="close"
-                label="Close dialog"
-                variant="ghost"
-                size="sm"
-                onClick={onClose}
-              />
-            </div>
-            <div className="ui-modal-body">{children}</div>
+              <div className="ui-modal-body">{children}</div>
+            </motion.div>
           </motion.div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+        )}
+      </AnimatePresence>
+    </OverlayPortal>
   );
 }

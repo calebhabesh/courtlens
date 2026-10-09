@@ -91,7 +91,7 @@ describe("Design Language v1 Header Component", () => {
     expect(playersBtn?.getAttribute("aria-expanded")).toBe("false");
   });
 
-  it("opens More (⋯) menu and displays Settings, Data status, and Help items", () => {
+  it("opens More (⋯) menu with the D9 support links", () => {
     render(<Header />);
     const moreBtn = screen.getByRole("button", { name: "More options" });
     expect(moreBtn.getAttribute("aria-expanded")).toBe("false");
@@ -103,7 +103,9 @@ describe("Design Language v1 Header Component", () => {
 
     expect(screen.getByRole("menuitem", { name: "Settings" })).toBeDefined();
     expect(screen.getByRole("menuitem", { name: "Data status" })).toBeDefined();
-    expect(screen.getByRole("menuitem", { name: "Definitions & Glossary" })).toBeDefined();
+    for (const name of ["Methodology", "What's New", "Schedule", "Planner"]) {
+      expect(screen.getByRole("menuitem", { name })).toBeDefined();
+    }
 
     // Press Escape to close
     act(() => {
@@ -113,7 +115,7 @@ describe("Design Language v1 Header Component", () => {
   });
 
   it("opens command palette dialog when clicking search pill", () => {
-    render(<Header />);
+    const { container } = render(<Header />);
     const searchPill = screen.getByRole("searchbox", { name: "Search players, teams and pages" });
 
     act(() => {
@@ -125,6 +127,8 @@ describe("Design Language v1 Header Component", () => {
 
     const input = screen.getByRole("combobox", { name: "Search players, teams and pages" });
     expect(input).not.toBeNull();
+    expect(container.querySelector("header")?.contains(dialog)).toBe(false);
+    expect(dialog.closest(".ui-command-palette-scrim")?.parentElement).toBe(document.body);
   });
 
   it("opens mobile navigation drawer when clicking mobile toggle", () => {
@@ -137,7 +141,48 @@ describe("Design Language v1 Header Component", () => {
     });
     expect(mobileToggle.getAttribute("aria-expanded")).toBe("true");
 
-    const drawerPanel = container.querySelector(".replica-mobile-drawer");
+    // Overlays render at document.body (FO02), outside the header's containing block.
+    const drawerPanel = document.querySelector(".replica-mobile-drawer");
     expect(drawerPanel).not.toBeNull();
+    expect(container.contains(drawerPanel)).toBe(false);
+  });
+});
+
+describe("FO02 search and drawer", () => {
+  afterEach(() => window.localStorage.clear());
+
+  it("shows Recent above Pages in the empty search state once something was opened", () => {
+    window.localStorage.setItem("courtlens-recent-searches-v1", JSON.stringify([{
+      id: "team-bos", kind: "team", canonical_id: "1610612738", display_name: "Boston Celtics", match_basis: "exact",
+      match_score: 1, destination_url: "/teams/1610612738", portrait_fallback: "BOS",
+      availability: { has_current_season: true, status: "available", seasons: [] }
+    }]));
+    render(<Header />);
+    act(() => {
+      fireEvent.click(screen.getByRole("searchbox", { name: "Search players, teams and pages" }));
+    });
+    const headings = Array.from(document.querySelectorAll(".ui-command-group-heading")).map(node => node.textContent);
+    expect(headings).toEqual(["Recent", "Pages"]);
+    expect(screen.getByRole("option", { name: /Boston Celtics/ })).toBeDefined();
+    expect(screen.getByRole("button", { name: "Close search" })).toBeDefined();
+  });
+
+  it("drawer lists the same Research groups as the desktop menu, and collapsed sections are inert", () => {
+    const { container } = render(<Header />);
+    act(() => {
+      fireEvent.click(container.querySelector<HTMLButtonElement>('[data-dropdown-id="research"]')!);
+    });
+    const desktop = Array.from(container.querySelectorAll('[data-dropdown-panel="research"] .courtlens-dropdown-section-title')).map(node => node.textContent);
+    act(() => {
+      fireEvent.click(screen.getByRole("button", { name: "Toggle navigation drawer" }));
+    });
+    const drawer = document.querySelector(".replica-mobile-drawer")!;
+    const titles = Array.from(drawer.querySelectorAll(".courtlens-mobile-group-title")).map(node => node.textContent);
+    // Both derive from lib/nav-model.ts and the same availability filter (the mock declares no sources).
+    expect(desktop.length).toBeGreaterThan(2);
+    expect(titles).toEqual(desktop);
+    const live = Array.from(drawer.querySelectorAll<HTMLButtonElement>(".ui-accordion-trigger")).find(node => node.textContent === "Live")!;
+    expect(live.getAttribute("aria-expanded")).toBe("false");
+    expect(document.getElementById(live.getAttribute("aria-controls")!)?.hasAttribute("inert")).toBe(true);
   });
 });

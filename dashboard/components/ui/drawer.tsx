@@ -7,6 +7,7 @@ import {
 } from "react";
 import { motion, AnimatePresence, getDrawerVariants, scrimVariants } from "../../lib/motion";
 import { IconButton } from "./button";
+import { OverlayPortal } from "./overlay-portal";
 
 export interface DrawerProps {
   isOpen: boolean;
@@ -67,7 +68,7 @@ export function Drawer({
         panelRef.current?.querySelectorAll<HTMLElement>(
           'button:not(:disabled), [href], input:not(:disabled), select:not(:disabled), textarea:not(:disabled), [tabindex]:not([tabindex="-1"])'
         ) || []
-      );
+      ).filter(element => !element.closest("[inert]"));
       if (focusables.length === 0) return;
 
       const first = focusables[0];
@@ -86,48 +87,50 @@ export function Drawer({
   const drawerVariants = getDrawerVariants(side);
 
   return (
-    <AnimatePresence>
-      {isOpen && (
-        <div className="ui-drawer-root">
-          <motion.div
-            variants={scrimVariants}
-            initial="initial"
-            animate="animate"
-            exit="exit"
-            className="ui-scrim"
-            onClick={onClose}
-          />
-          <motion.div
-            ref={panelRef}
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby={title ? titleId : undefined}
-            tabIndex={-1}
-            variants={drawerVariants}
-            initial="initial"
-            animate="animate"
-            exit="exit"
-            className={`ui-drawer-panel ui-drawer-${side} ${className}`}
-            onKeyDown={handleKeyDown}
-          >
-            <div className="ui-drawer-header">
-              {title && (
-                <h2 id={titleId} className="ui-drawer-title">
-                  {title}
-                </h2>
-              )}
-              <IconButton
-                icon="close"
-                label="Close drawer"
-                variant="ghost"
-                size="sm"
-                onClick={onClose}
-              />
-            </div>
-            <div className="ui-drawer-body">{children}</div>
-          </motion.div>
-        </div>
-      )}
-    </AnimatePresence>
+    <OverlayPortal>
+      <AnimatePresence>
+        {isOpen && (
+          <div className="ui-drawer-root">
+            <motion.div
+              variants={scrimVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+              className="ui-scrim"
+              onClick={onClose}
+            />
+            <motion.div
+              ref={panelRef}
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby={title ? titleId : undefined}
+              tabIndex={-1}
+              variants={drawerVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+              className={`ui-drawer-panel ui-drawer-${side} ${className}`}
+              onKeyDown={handleKeyDown}
+            >
+              <div className="ui-drawer-header">
+                {title && (
+                  <h2 id={titleId} className="ui-drawer-title">
+                    {title}
+                  </h2>
+                )}
+                <IconButton
+                  icon="close"
+                  label="Close drawer"
+                  variant="ghost"
+                  size="sm"
+                  onClick={onClose}
+                />
+              </div>
+              <div className="ui-drawer-body">{children}</div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+    </OverlayPortal>
   );
 }

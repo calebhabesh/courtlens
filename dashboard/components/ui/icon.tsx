@@ -1,7 +1,8 @@
 import {
   Download, Copy, Play, Pause, ChevronLeft, ChevronRight, ArrowUp, ArrowDown, Star, ChevronDown,
   Menu, MessageCircle, Search, Settings, X, PanelLeft, SquarePen, Square, Trash2,
-  Check, ChevronUp, Loader2, Info, AlertTriangle, Command, SlidersHorizontal, MoreHorizontal, Sparkles, Filter, Calendar, Database
+  Check, ChevronUp, Loader2, Info, AlertTriangle, Command, SlidersHorizontal, MoreHorizontal, Sparkles, Filter, Calendar, Database,
+  CornerDownLeft, History, FileText
 } from "lucide-react";
 
 const icons = {
@@ -10,7 +11,7 @@ const icons = {
   search: Search, settings: Settings, close: X, sidebar: PanelLeft, compose: SquarePen, stop: Square,
   trash: Trash2, check: Check, "chevron-up": ChevronUp, loader: Loader2, info: Info, alert: AlertTriangle,
   command: Command, sliders: SlidersHorizontal, more: MoreHorizontal, "more-horizontal": MoreHorizontal, sparkles: Sparkles, filter: Filter,
-  calendar: Calendar, database: Database
+  calendar: Calendar, database: Database, enter: CornerDownLeft, history: History, page: FileText
 };
 
 export type IconName = keyof typeof icons;

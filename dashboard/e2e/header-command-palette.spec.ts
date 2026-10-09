@@ -109,7 +109,7 @@ test.describe("DL03 Header and Command Palette", () => {
     await expect(palette).toBeHidden();
   });
 
-  test("More options menu contains Settings, Data status, Availability, and Help items", async ({ page }) => {
+  test("More options menu contains Settings, Data status, Availability, and the D9 support links", async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await openWorkbench(page, "/stats");
     await page.waitForLoadState("networkidle");
@@ -122,7 +122,7 @@ test.describe("DL03 Header and Command Palette", () => {
 
     await expect(menu.getByRole("menuitem", { name: "Settings" })).toBeVisible();
     await expect(menu.getByRole("menuitem", { name: "Data status" })).toBeVisible();
-    await expect(menu.getByRole("menuitem", { name: "Definitions & Glossary" })).toBeVisible();
+    await expect(menu.getByRole("menuitem", { name: "Methodology" })).toBeVisible();
 
     // Escape closes menu and returns focus
     await page.keyboard.press("Escape");
