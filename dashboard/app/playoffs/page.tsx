@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
-import { ContextBar } from "@/components/context-bar";
+import { LiveBoardHeader } from "@/components/live-board";
 import { PlayoffsBracketView } from "@/components/playoffs-bracket-view";
+import { PageShell } from "@/components/ui/page-shell";
 import { getWorkbenchCatalog, getPlayoffBracket } from "@/lib/workbench-api";
 import type { PlayoffBracketResponse } from "@/lib/types";
 
 export const metadata: Metadata = {
-  title: "Playoff Bracket & Series Explorer · CourtLens",
+  title: "Playoffs · Live",
   description:
     "NBA postseason tournament bracket hierarchy, 7-game cards, Dean Oliver Four Factors, player series box scores, and explicit seed evidence."
 };
@@ -26,7 +27,8 @@ export default async function PlayoffsPage({ searchParams }: PlayoffsPageProps) 
   const params = await searchParams;
   const catalog = await getWorkbenchCatalog(params.releaseId).catch(() => null);
   const season = params.season || catalog?.default_season || "";
-  const cutoffDate = params.cutoff_date || params.cutoffDate || params.beforeDate || catalog?.stats_scopes?.find(scope => scope.season === season && scope.phase === "playoffs")?.default_before_date;
+  // The shared filter bar writes `beforeDate`; older links used `cutoff_date`.
+  const cutoffDate = params.beforeDate || params.cutoff_date || params.cutoffDate || catalog?.stats_scopes?.find(scope => scope.season === season && scope.phase === "playoffs")?.default_before_date;
 
   let bracketData: PlayoffBracketResponse | null = null;
   let loadError: string | null = null;
@@ -42,42 +44,16 @@ export default async function PlayoffsPage({ searchParams }: PlayoffsPageProps) 
   }
 
   return (
-    <>
-      <ContextBar
-        allowedPhases={["playoffs"]}
+    <PageShell template="board">
+      <LiveBoardHeader section="playoffs" subtitle={`Postseason series for ${season || "the selected season"}.`} />
+      <PlayoffsBracketView
+        bracket={bracketData}
+        season={season}
+        cutoffDate={cutoffDate}
         catalog={catalog ?? undefined}
-        initialReleaseId={params.releaseId || catalog?.release_id}
-        sampleNoun="series"
-        initialSeason={season}
-        initialPhase="playoffs"
-        initialBeforeDate={cutoffDate || "2026-06-30"}
-        sampleSize={bracketData?.rounds?.reduce((acc, r) => acc + r.series.length, 0)}
+        releaseId={params.releaseId || catalog?.release_id}
+        loadError={loadError}
       />
-
-      <div className="workbench-content">
-        <div className="page-header">
-          <div>
-            <h1 className="page-title">Playoff Bracket &amp; Series Explorer</h1>
-            <p className="page-subtitle">
-              Verified NBA postseason series outcomes, 2-2-1-1-1 host sequence, seed evidence, and Dean Oliver Four Factors for {season}.
-            </p>
-          </div>
-        </div>
-
-        {loadError && (
-          <div className="notice-box error-notice" role="alert">
-            <strong>Error:</strong> {loadError}
-          </div>
-        )}
-
-        {bracketData && (
-          <PlayoffsBracketView
-            bracket={bracketData}
-            season={season}
-            cutoffDate={cutoffDate}
-          />
-        )}
-      </div>
-    </>
+    </PageShell>
   );
 }

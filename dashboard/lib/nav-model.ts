@@ -25,9 +25,10 @@ export const NAV_MENUS: NavMenu[] = [
     id: "live",
     label: "Live",
     groups: [{ items: [
-      { label: "Live Scoreboard", href: "/live" },
-      { label: "Historical Finals", href: "/live?live_mode=history" },
-      { label: "Playoff Series", href: "/playoffs" },
+      // The Live page's tabs (D19); every entry opens the page titled "Live".
+      { label: "Live", href: "/live" },
+      { label: "Finals", href: "/live?live_mode=history" },
+      { label: "Playoffs", href: "/playoffs" },
     ] }],
   },
   {

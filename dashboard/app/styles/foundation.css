@@ -168,7 +168,8 @@
   }
 
   .ui-filter-bar-page, .ui-filter-bar-modes { padding-left: var(--space-3); border-left: 1px solid var(--color-hairline); }
-  .ui-filter-bar-modes { display: flex; align-items: center; min-width: 0; }
+  /* Modes never clip on desktop; scope and filters wrap first. Below 768px they take their own row. */
+  .ui-filter-bar-modes { display: flex; flex-shrink: 0; align-items: center; min-width: 0; }
   .ui-filter-bar-scope .ui-select-wrapper { width: auto; }
 
   .ui-filter-bar-meta {

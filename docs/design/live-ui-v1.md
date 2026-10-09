@@ -85,3 +85,25 @@ The Live notice now describes provisional source values and independent final ad
 without a dated "changing freshness not observed" assertion. Independent final
 reconciliation, real corrections, full three-box load and the other source gates remain
 open; this does not mark the parent B32 or full replica complete.
+
+## FO08 presentation (frontend overhaul, 2026-10-09)
+
+The behaviour above is unchanged: routes, lease generations, pause/hidden/offline/pagehide
+handling, the credential boundary, historical reads and pinning, em dashes for missing values and
+the separation of provisional and admitted values. FO08 changed presentation only:
+
+- The page is the Board template titled "Live" with Live · Finals · Playoffs tabs. The research
+  release/season/phase/cutoff form is gone: Finals uses the shared filter bar (Season · Phase plus
+  the slate date) and the resolved release, dataset, exclusive cutoff, status and warnings are in
+  Data details. An explicit `beforeDate` in the URL still applies and is never relaxed.
+- Observation provenance (acquisition, last success, source time, next fetch, namespace,
+  observation ID, SHA-256, HTTP date, last poll) moved into Data details. The status line keeps the
+  connection state, observation status, stale and shared-feed-idle flags and the age at last read;
+  source and read errors stay `role="alert"` in the main flow, including inside the selected game.
+- The date strip's counts come from `GET /api/workbench/schedule/dates` (retained schedule rows and
+  admitted finals for the release; no Live demand or provider I/O). Live demand is unchanged.
+- Game cards drop the visible side and identity labels (away is listed first; identity remains in
+  the selected game detail) and show an Eastern tipoff time, or nothing when the time is unknown
+  (stated in the card's accessible name). Logos appear only for verified canonical team IDs.
+- The provisional-values notice and empty-slate explanations are one line each with the original
+  wording behind Why?.

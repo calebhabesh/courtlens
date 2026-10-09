@@ -2,62 +2,47 @@
 
 import { useState, useMemo } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import type { PlayoffBracketResponse, PlayoffSeriesSummary } from "@/lib/types";
 import { getSeriesStatusBadge } from "@/lib/playoffs";
+import { buildPreservedContextUrl } from "@/lib/query-url";
+import type { WorkbenchCatalog } from "@/lib/types";
+import { ContextBar } from "./context-bar";
+import { hasTeamLogo } from "@/lib/team-colors";
+import { TeamLogo } from "./team-logo";
+import { GatedNote } from "./ui/gated-note";
+import { SegmentedControl } from "./ui/segmented-control";
 
 interface PlayoffsBracketViewProps {
-  bracket: PlayoffBracketResponse;
+  bracket: PlayoffBracketResponse | null;
   season: string;
   cutoffDate?: string;
+  catalog?: WorkbenchCatalog;
+  releaseId?: string;
+  loadError?: string | null;
 }
 
-export function PlayoffsBracketView({
-  bracket,
-  season,
-  cutoffDate
-}: PlayoffsBracketViewProps) {
-  const router = useRouter();
-  const [activeTab, setActiveTab] = useState<"bracket" | "seed_evidence" | "capabilities">("bracket");
-  const [roundFilter, setRoundFilter] = useState<number | "all">("all");
-  const [conferenceFilter, setConferenceFilter] = useState<"all" | "East" | "West" | "Finals">("all");
-  const [cutoffInput, setCutoffInput] = useState(cutoffDate || "");
+type BracketView = "bracket" | "seed_evidence" | "capabilities";
+type RoundFilter = "all" | "1" | "2" | "3" | "4";
+type ConferenceFilter = "all" | "East" | "West";
 
-  const handleApplyCutoff = () => {
-    const sp = new URLSearchParams();
-    sp.set("season", season);
-    if (cutoffInput.trim()) {
-      sp.set("cutoff_date", cutoffInput.trim());
-    }
-    router.push(`/playoffs?${sp.toString()}`);
-  };
-
-  const handleClearCutoff = () => {
-    setCutoffInput("");
-    router.push(`/playoffs?season=${encodeURIComponent(season)}`);
-  };
-
-  const handleSeasonChange = (newSeason: string) => {
-    const sp = new URLSearchParams();
-    sp.set("season", newSeason);
-    if (cutoffDate) {
-      sp.set("cutoff_date", cutoffDate);
-    }
-    router.push(`/playoffs?${sp.toString()}`);
-  };
+export function PlayoffsBracketView({ bracket, season, cutoffDate, catalog, releaseId, loadError }: PlayoffsBracketViewProps) {
+  const searchParams = useSearchParams();
+  const [activeTab, setActiveTab] = useState<BracketView>("bracket");
+  const [roundFilter, setRoundFilter] = useState<RoundFilter>("all");
+  const [conferenceFilter, setConferenceFilter] = useState<ConferenceFilter>("all");
+  const seriesHref = (slug: string) => buildPreservedContextUrl(`/playoffs/${slug}`, searchParams);
 
   // Filter rounds
   const displayedRounds = useMemo(() => {
-    return bracket.rounds
-      .filter((r) => roundFilter === "all" || r.round_number === roundFilter)
+    return (bracket?.rounds ?? [])
+      .filter((r) => roundFilter === "all" || r.round_number === Number(roundFilter))
       .map((r) => {
         let seriesList = r.series;
         if (conferenceFilter === "East") {
           seriesList = r.eastern_series;
         } else if (conferenceFilter === "West") {
           seriesList = r.western_series;
-        } else if (conferenceFilter === "Finals") {
-          seriesList = r.finals_series;
         }
         return {
           ...r,
@@ -65,161 +50,53 @@ export function PlayoffsBracketView({
         };
       })
       .filter((r) => r.series.length > 0);
-  }, [bracket.rounds, roundFilter, conferenceFilter]);
+  }, [bracket?.rounds, roundFilter, conferenceFilter]);
 
   // Seed Evidence
-  const eastSeeds = bracket.seeds?.East ?? [];
-  const westSeeds = bracket.seeds?.West ?? [];
+  const eastSeeds = bracket?.seeds?.East ?? [];
+  const westSeeds = bracket?.seeds?.West ?? [];
+
+  const filters = activeTab === "bracket" ? <>
+    <SegmentedControl<RoundFilter> name="Round" value={roundFilter} onChange={setRoundFilter} options={[
+      { value: "all", label: "All rounds" }, { value: "1", label: "Round 1" }, { value: "2", label: "Semis" },
+      { value: "3", label: "Conf Finals" }, { value: "4", label: "Finals" }
+    ]} />
+    <SegmentedControl<ConferenceFilter> name="Conference" value={conferenceFilter} onChange={setConferenceFilter} options={[
+      { value: "all", label: "Both" }, { value: "East", label: "East" }, { value: "West", label: "West" }
+    ]} />
+  </> : undefined;
 
   return (
     <div className="playoffs-view-container">
-      {/* Controls & Filter Toolbar */}
-      <div className="panel playoffs-controls-panel">
-        <div className="playoffs-controls-row">
-          {/* Left: View Tabs */}
-          <div className="playoffs-tabs">
-            <button
-              type="button"
-              className={`button button-small ${activeTab === "bracket" ? "button-primary" : ""}`}
-              onClick={() => setActiveTab("bracket")}
-            >
-              Tournament Bracket
-            </button>
-            <button
-              type="button"
-              className={`button button-small ${activeTab === "seed_evidence" ? "button-primary" : ""}`}
-              onClick={() => setActiveTab("seed_evidence")}
-            >
-              Seed Evidence & Standings
-            </button>
-            <button
-              type="button"
-              className={`button button-small ${activeTab === "capabilities" ? "button-primary" : ""}`}
-              onClick={() => setActiveTab("capabilities")}
-            >
-              Capabilities & Gates
-            </button>
-          </div>
+      <ContextBar
+        allowedPhases={["playoffs"]}
+        catalog={catalog}
+        initialReleaseId={releaseId}
+        sampleNoun="series"
+        initialSeason={season}
+        initialPhase="playoffs"
+        initialBeforeDate={cutoffDate || "2026-06-30"}
+        showWindow={false}
+        sampleSize={bracket?.rounds?.reduce((acc, r) => acc + r.series.length, 0)}
+        filters={filters}
+        modes={<SegmentedControl<BracketView> name="Playoff view" value={activeTab} onChange={setActiveTab} options={[
+          { value: "bracket", label: "Bracket" }, { value: "seed_evidence", label: "Seeds" }, { value: "capabilities", label: "Coverage" }
+        ]} />}
+        detailRows={bracket?.disclaimers?.map((text, i) => ({ label: i ? "" : "Disclaimers", value: text })) ?? []}
+      />
 
-          {/* Right: Season & Temporal Replay Controls */}
-          <div className="playoffs-replay-controls">
-            <div className="playoffs-control-item">
-              <label htmlFor="playoff-season-select" className="text-xs text-muted font-mono">
-                Season:
-              </label>
-              <select
-                id="playoff-season-select"
-                value={season}
-                onChange={(e) => handleSeasonChange(e.target.value)}
-                className="playoffs-select-sm"
-              >
-                <option value="2023-24">2023-24 Postseason</option>
-                <option value="2024-25">2024-25 Postseason</option>
-                <option value="2025-26">2025-26 Postseason</option>
-              </select>
-            </div>
+      {loadError && <GatedNote tone="warning" why={loadError}>The playoff bracket could not be loaded.</GatedNote>}
 
-            <div className="playoffs-control-item">
-              <label htmlFor="playoff-cutoff-input" className="text-xs text-muted font-mono">
-                Replay Cutoff:
-              </label>
-              <input
-                id="playoff-cutoff-input"
-                type="date"
-                value={cutoffInput}
-                onChange={(e) => setCutoffInput(e.target.value)}
-                placeholder="YYYY-MM-DD"
-                className="playoffs-input-date"
-              />
-              <button
-                type="button"
-                className="button button-small button-primary"
-                onClick={handleApplyCutoff}
-              >
-                Apply
-              </button>
-              {cutoffDate && (
-                <button
-                  type="button"
-                  className="button button-small"
-                  onClick={handleClearCutoff}
-                  title="Clear cutoff and view all final series"
-                >
-                  Clear
-                </button>
-              )}
-            </div>
-          </div>
-        </div>
-
-        {/* Sub-toolbar for Bracket Filters */}
-        {activeTab === "bracket" && (
-          <div className="playoffs-subtoolbar">
-            <div className="playoffs-control-item">
-              <span className="text-muted text-xs font-mono">Round:</span>
-              <div className="playoffs-pill-group">
-                {[
-                  { id: "all", label: "All Rounds" },
-                  { id: 1, label: "Round 1" },
-                  { id: 2, label: "Semis" },
-                  { id: 3, label: "Conf Finals" },
-                  { id: 4, label: "Finals" }
-                ].map((item) => (
-                  <button
-                    key={item.id}
-                    type="button"
-                    className={`button button-small playoffs-pill-button ${roundFilter === item.id ? "button-primary" : ""}`}
-                    onClick={() => setRoundFilter(item.id as number | "all")}
-                  >
-                    {item.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div className="playoffs-control-item">
-              <span className="text-muted text-xs font-mono">Conference:</span>
-              <div className="playoffs-pill-group">
-                {[
-                  { id: "all", label: "All" },
-                  { id: "East", label: "Eastern" },
-                  { id: "West", label: "Western" },
-                  { id: "Finals", label: "Finals Only" }
-                ].map((item) => (
-                  <button
-                    key={item.id}
-                    type="button"
-                    className={`button button-small playoffs-pill-button ${conferenceFilter === item.id ? "button-primary" : ""}`}
-                    onClick={() => setConferenceFilter(item.id as "all" | "East" | "West" | "Finals")}
-                  >
-                    {item.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {bracket.cutoff_date && (
-              <div className="playoffs-ml-auto">
-                <span className="badge badge-warning font-mono text-xs">
-                  Replay Filtered to {bracket.cutoff_date}
-                </span>
-              </div>
-            )}
-          </div>
-        )}
-      </div>
-
-      {/* Disclaimers Banner */}
-      <div className="notice-box">
-        <strong>Temporal Discipline & Zero Inferred Forecasts:</strong> Descriptive completed-game facts only. Unplayed placeholder games (e.g., Games 6–7 in a 4–1 series) and games scheduled after cutoff are strictly excluded from outcomes, team ratings, and player stat denominators. Subjective win probabilities and automated winner projections are prohibited.
-      </div>
+      {bracket && <GatedNote why="Descriptive completed-game facts only. Unplayed placeholder games (e.g., Games 6–7 in a 4–1 series) and games scheduled after cutoff are strictly excluded from outcomes, team ratings, and player stat denominators. Subjective win probabilities and automated winner projections are prohibited.">
+        Completed games only; no winner projections.
+      </GatedNote>}
 
       {/* TAB 1: TOURNAMENT BRACKET */}
-      {activeTab === "bracket" && (
+      {bracket && activeTab === "bracket" && (
         <div className="playoffs-bracket-content">
           {displayedRounds.length === 0 ? (
             <div className="panel playoffs-empty-panel">
-              <p className="text-muted">No playoff series match the current round/conference filter.</p>
+              <p className="text-muted">No playoff series match the current round and conference.</p>
             </div>
           ) : (
             displayedRounds.map((rnd) => (
@@ -239,7 +116,7 @@ export function PlayoffsBracketView({
                     <SeriesBracketCard
                       key={s.series_id}
                       series={s}
-                      cutoffDate={bracket.cutoff_date || undefined}
+                      href={seriesHref(s.slug)}
                     />
                   ))}
                 </div>
@@ -250,13 +127,13 @@ export function PlayoffsBracketView({
       )}
 
       {/* TAB 2: SEED EVIDENCE & STANDINGS */}
-      {activeTab === "seed_evidence" && (
+      {bracket && activeTab === "seed_evidence" && (
         <div className="panel">
           <div className="panel-header">
             <div>
               <h2 className="panel-title">Postseason Seed Evidence & Pre-Playoff Standings</h2>
               <p className="text-muted text-xs playoffs-round-subtitle">
-                Standings reconstructed strictly prior to playoff tipoff (<code className="font-mono">game_date &lt; playoff_start_date</code>). Regular-season record ties do not establish official conference placement without tiebreaker evidence.
+                Standings before the first playoff game. Tied records need tiebreaker evidence for official placement.
               </p>
             </div>
             <span className="badge font-mono">Explicit Standings Proof</span>
@@ -285,7 +162,8 @@ export function PlayoffsBracketView({
                         <td className="font-mono font-bold">#{st.seed}</td>
                         <td>
                           <div className="playoffs-seed-team-cell">
-                            <span className="font-mono font-bold text-accent playoffs-seed-tricode">
+                            {hasTeamLogo(st.team_id) && <TeamLogo team={st.team_id} size={20} />}
+                            <span className="font-mono font-bold playoffs-seed-tricode">
                               {st.tricode}
                             </span>
                             <Link
@@ -343,7 +221,8 @@ export function PlayoffsBracketView({
                         <td className="font-mono font-bold">#{st.seed}</td>
                         <td>
                           <div className="playoffs-seed-team-cell">
-                            <span className="font-mono font-bold text-accent playoffs-seed-tricode">
+                            {hasTeamLogo(st.team_id) && <TeamLogo team={st.team_id} size={20} />}
+                            <span className="font-mono font-bold playoffs-seed-tricode">
                               {st.tricode}
                             </span>
                             <Link
@@ -383,7 +262,7 @@ export function PlayoffsBracketView({
       )}
 
       {/* TAB 3: CAPABILITIES & GATES */}
-      {activeTab === "capabilities" && (
+      {bracket && activeTab === "capabilities" && (
         <div className="panel playoffs-capabilities-panel">
           <h2 className="panel-title playoffs-capabilities-title">
             Postseason Analytics Capability Disclosures
@@ -397,9 +276,7 @@ export function PlayoffsBracketView({
             ))}
           </div>
 
-          <div className="notice-box playoffs-notice-box">
-            Final box-score summaries remain available. Lineup, rotation and defensive tracking require separately admitted inputs.
-          </div>
+          <GatedNote why="Lineup, rotation and defensive tracking require separately admitted inputs.">Final box-score summaries remain available.</GatedNote>
         </div>
       )}
     </div>
@@ -411,13 +288,12 @@ export function PlayoffsBracketView({
  */
 function SeriesBracketCard({
   series,
-  cutoffDate
+  href: detailHref
 }: {
   series: PlayoffSeriesSummary;
-  cutoffDate?: string;
+  href: string;
 }) {
   const badge = getSeriesStatusBadge(series);
-  const detailHref = `/playoffs/${series.slug}${cutoffDate ? `?cutoff_date=${encodeURIComponent(cutoffDate)}` : ""}`;
   const isTeam1Winner = series.winner_team_id === series.team1.team_id;
   const isTeam2Winner = series.winner_team_id === series.team2.team_id;
 
@@ -439,9 +315,7 @@ function SeriesBracketCard({
         <div className={`playoff-bracket-team-row ${isTeam1Winner ? "winner" : ""}`}>
           <div className="playoff-bracket-team-info">
             <span className="playoff-bracket-team-seed">#{series.team1.seed ?? "—"}</span>
-            <span className="font-mono font-bold text-sm">
-              {series.team1.tricode}
-            </span>
+            {hasTeamLogo(series.team1.team_id) && <TeamLogo team={series.team1.team_id} size={20} />}
             <span className={`playoff-bracket-team-name ${isTeam1Winner ? "winner" : ""}`}>
               {series.team1.name}
             </span>
@@ -455,9 +329,7 @@ function SeriesBracketCard({
         <div className={`playoff-bracket-team-row ${isTeam2Winner ? "winner" : ""}`}>
           <div className="playoff-bracket-team-info">
             <span className="playoff-bracket-team-seed">#{series.team2.seed ?? "—"}</span>
-            <span className="font-mono font-bold text-sm">
-              {series.team2.tricode}
-            </span>
+            {hasTeamLogo(series.team2.team_id) && <TeamLogo team={series.team2.team_id} size={20} />}
             <span className={`playoff-bracket-team-name ${isTeam2Winner ? "winner" : ""}`}>
               {series.team2.name}
             </span>
@@ -473,8 +345,8 @@ function SeriesBracketCard({
         <span className="text-xs text-muted font-mono">
           {series.summary_text}
         </span>
-        <Link href={detailHref} className="button button-small button-primary font-mono text-xs">
-          Series Detail
+        <Link href={detailHref} className="button button-small" aria-label={`${series.team1.name} vs ${series.team2.name} series details`}>
+          Details
         </Link>
       </div>
     </div>

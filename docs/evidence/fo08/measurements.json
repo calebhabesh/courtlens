@@ -1,0 +1,293 @@
+[
+  {
+    "name": "live",
+    "route": "/live",
+    "width": 1440,
+    "status": 200,
+    "consoleErrors": [],
+    "h1": [
+      "Live"
+    ],
+    "subtitleLines": 1,
+    "filterBar": true,
+    "controlHeights": [
+      40
+    ],
+    "loadButtons": 0,
+    "nativeDateInputs": 0,
+    "uuidsVisible": 0,
+    "codeRulesVisible": 0,
+    "isoDatesVisible": 0,
+    "noticeBoxes": 0,
+    "firstResultTop": 374,
+    "pageOverflow": false,
+    "screenshot": "live-1440.png"
+  },
+  {
+    "name": "finals",
+    "route": "/live/2026-04-12?live_mode=history",
+    "width": 1440,
+    "status": 200,
+    "consoleErrors": [],
+    "h1": [
+      "Live"
+    ],
+    "subtitleLines": 1,
+    "filterBar": true,
+    "controlHeights": [
+      40
+    ],
+    "loadButtons": 0,
+    "nativeDateInputs": 0,
+    "uuidsVisible": 0,
+    "codeRulesVisible": 0,
+    "isoDatesVisible": 0,
+    "noticeBoxes": 0,
+    "firstResultTop": 374,
+    "pageOverflow": false,
+    "screenshot": "finals-1440.png"
+  },
+  {
+    "name": "finals-game",
+    "route": "/live/games/0022501186?date=2026-04-12&live_mode=history",
+    "width": 1440,
+    "status": 200,
+    "consoleErrors": [],
+    "h1": [
+      "Live"
+    ],
+    "subtitleLines": 1,
+    "filterBar": true,
+    "controlHeights": [
+      40
+    ],
+    "loadButtons": 0,
+    "nativeDateInputs": 0,
+    "uuidsVisible": 0,
+    "codeRulesVisible": 0,
+    "isoDatesVisible": 0,
+    "noticeBoxes": 0,
+    "firstResultTop": 374,
+    "pageOverflow": false,
+    "screenshot": "finals-game-1440.png"
+  },
+  {
+    "name": "playoffs",
+    "route": "/playoffs",
+    "width": 1440,
+    "status": 200,
+    "consoleErrors": [],
+    "h1": [
+      "Live"
+    ],
+    "subtitleLines": 1,
+    "filterBar": true,
+    "controlHeights": [
+      36,
+      40
+    ],
+    "loadButtons": 0,
+    "nativeDateInputs": 0,
+    "uuidsVisible": 0,
+    "codeRulesVisible": 0,
+    "isoDatesVisible": 0,
+    "noticeBoxes": 0,
+    "firstResultTop": 340,
+    "pageOverflow": false,
+    "screenshot": "playoffs-1440.png"
+  },
+  {
+    "name": "series",
+    "route": "/playoffs/2026-r1-det-orl",
+    "width": 1440,
+    "status": 200,
+    "consoleErrors": [
+      "Failed to load resource: net::ERR_INSUFFICIENT_RESOURCES"
+    ],
+    "h1": [
+      "Detroit Pistons vs Orlando Magic"
+    ],
+    "subtitleLines": 1,
+    "filterBar": true,
+    "controlHeights": [
+      40
+    ],
+    "loadButtons": 0,
+    "nativeDateInputs": 0,
+    "uuidsVisible": 0,
+    "codeRulesVisible": 0,
+    "isoDatesVisible": 0,
+    "noticeBoxes": 0,
+    "firstResultTop": 235,
+    "pageOverflow": false,
+    "screenshot": "series-1440.png"
+  },
+  {
+    "name": "schedule",
+    "route": "/schedule",
+    "width": 1440,
+    "status": 200,
+    "consoleErrors": [],
+    "h1": [
+      "Schedule"
+    ],
+    "subtitleLines": 1,
+    "filterBar": true,
+    "controlHeights": [
+      40
+    ],
+    "loadButtons": 0,
+    "nativeDateInputs": 0,
+    "uuidsVisible": 0,
+    "codeRulesVisible": 0,
+    "isoDatesVisible": 0,
+    "noticeBoxes": 0,
+    "firstResultTop": 243,
+    "pageOverflow": false,
+    "screenshot": "schedule-1440.png"
+  },
+  {
+    "name": "live",
+    "route": "/live",
+    "width": 390,
+    "status": 200,
+    "consoleErrors": [],
+    "h1": [
+      "Live"
+    ],
+    "subtitleLines": 1,
+    "filterBar": true,
+    "controlHeights": [
+      40
+    ],
+    "loadButtons": 0,
+    "nativeDateInputs": 0,
+    "uuidsVisible": 0,
+    "codeRulesVisible": 0,
+    "isoDatesVisible": 0,
+    "noticeBoxes": 0,
+    "firstResultTop": 400,
+    "pageOverflow": false,
+    "screenshot": "live-390.png"
+  },
+  {
+    "name": "finals",
+    "route": "/live/2026-04-12?live_mode=history",
+    "width": 390,
+    "status": 200,
+    "consoleErrors": [],
+    "h1": [
+      "Live"
+    ],
+    "subtitleLines": 1,
+    "filterBar": true,
+    "controlHeights": [
+      40
+    ],
+    "loadButtons": 0,
+    "nativeDateInputs": 0,
+    "uuidsVisible": 0,
+    "codeRulesVisible": 0,
+    "isoDatesVisible": 0,
+    "noticeBoxes": 0,
+    "firstResultTop": 370,
+    "pageOverflow": false,
+    "screenshot": "finals-390.png"
+  },
+  {
+    "name": "finals-game",
+    "route": "/live/games/0022501186?date=2026-04-12&live_mode=history",
+    "width": 390,
+    "status": 200,
+    "consoleErrors": [],
+    "h1": [
+      "Live"
+    ],
+    "subtitleLines": 1,
+    "filterBar": true,
+    "controlHeights": [
+      40
+    ],
+    "loadButtons": 0,
+    "nativeDateInputs": 0,
+    "uuidsVisible": 0,
+    "codeRulesVisible": 0,
+    "isoDatesVisible": 0,
+    "noticeBoxes": 0,
+    "firstResultTop": 370,
+    "pageOverflow": false,
+    "screenshot": "finals-game-390.png"
+  },
+  {
+    "name": "playoffs",
+    "route": "/playoffs",
+    "width": 390,
+    "status": 200,
+    "consoleErrors": [],
+    "h1": [
+      "Live"
+    ],
+    "subtitleLines": 1,
+    "filterBar": true,
+    "controlHeights": [
+      40
+    ],
+    "loadButtons": 0,
+    "nativeDateInputs": 0,
+    "uuidsVisible": 0,
+    "codeRulesVisible": 0,
+    "isoDatesVisible": 0,
+    "noticeBoxes": 0,
+    "firstResultTop": 336,
+    "pageOverflow": false,
+    "screenshot": "playoffs-390.png"
+  },
+  {
+    "name": "series",
+    "route": "/playoffs/2026-r1-det-orl",
+    "width": 390,
+    "status": 200,
+    "consoleErrors": [],
+    "h1": [
+      "Detroit Pistons vs Orlando Magic"
+    ],
+    "subtitleLines": 1,
+    "filterBar": true,
+    "controlHeights": [
+      40
+    ],
+    "loadButtons": 0,
+    "nativeDateInputs": 0,
+    "uuidsVisible": 0,
+    "codeRulesVisible": 0,
+    "isoDatesVisible": 0,
+    "noticeBoxes": 0,
+    "firstResultTop": 267,
+    "pageOverflow": false,
+    "screenshot": "series-390.png"
+  },
+  {
+    "name": "schedule",
+    "route": "/schedule",
+    "width": 390,
+    "status": 200,
+    "consoleErrors": [],
+    "h1": [
+      "Schedule"
+    ],
+    "subtitleLines": 1,
+    "filterBar": true,
+    "controlHeights": [
+      40
+    ],
+    "loadButtons": 0,
+    "nativeDateInputs": 0,
+    "uuidsVisible": 0,
+    "codeRulesVisible": 0,
+    "isoDatesVisible": 0,
+    "noticeBoxes": 0,
+    "firstResultTop": 239,
+    "pageOverflow": false,
+    "screenshot": "schedule-390.png"
+  }
+]

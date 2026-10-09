@@ -35,8 +35,8 @@ export interface DataDetailsProps {
 function DetailList({ rows }: { rows: DataDetailRow[] }) {
   return (
     <dl className="ui-data-details-list">
-      {rows.map((row) => (
-        <div className="ui-data-details-row" key={row.label}>
+      {rows.map((row, index) => (
+        <div className="ui-data-details-row" key={`${index}-${row.label}`}>
           <dt>{row.label}</dt>
           <dd className={row.mono ? "font-mono" : undefined}>{row.value ?? "—"}</dd>
         </div>
