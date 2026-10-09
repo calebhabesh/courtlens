@@ -1,0 +1,30 @@
+
+> courtlens-dashboard@0.1.0 test:browser
+> playwright test ag-layout-probe.spec.ts --workers=1 --output=/tmp/ag-layout-probe
+
+
+Running 1 test using 1 worker
+
+  ✘  1 e2e/ag-layout-probe.spec.ts:2:5 › empty drawer composer hit target (1.1s)
+
+
+  1) e2e/ag-layout-probe.spec.ts:2:5 › empty drawer composer hit target ────────────────────────────
+
+    Error: page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3300/players/23?season=2025-26
+    Call log:
+      - navigating to "http://localhost:3300/players/23?season=2025-26", waiting until "load"
+
+
+      3 |  await page.setViewportSize({width:375,height:812});
+      4 |  await page.route('**/api/assistant-v2/threads**', r => r.fulfill({json:{threads:[],next_cursor:null}}));
+    > 5 |  await page.goto('/players/23?season=2025-26');
+        |             ^
+      6 |  await page.getByRole('button',{name:'Ask',exact:true}).click();
+      7 |  const dialog=page.getByRole('dialog');
+      8 |  const input=dialog.getByLabel('Your question',{exact:true});
+        at /tmp/courtlens-ag07-browser-05swpp3v/dashboard/e2e/ag-layout-probe.spec.ts:5:13
+
+    Error Context: ../../ag-layout-probe/ag-layout-probe-empty-drawer-composer-hit-target/error-context.md
+
+  1 failed
+    e2e/ag-layout-probe.spec.ts:2:5 › empty drawer composer hit target ─────────────────────────────

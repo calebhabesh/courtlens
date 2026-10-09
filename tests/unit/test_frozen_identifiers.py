@@ -86,8 +86,12 @@ def test_frozen_hash_identifiers_keep_their_production_occurrences() -> None:
     pattern = re.compile(r"courtload-[a-z0-9-]+-v[0-9]+")
     assert sorted(FROZEN_IDENTIFIERS) == json.loads(BASELINE.read_text())["frozen_identifiers"]
     baseline = json.loads(BASELINE.read_text())["identifier_occurrences"]
+    retired = {"hybrid.py", "planner.py", "narrative.py", "retrieval.py"}
     for relative, expected in baseline.items():
-        assert dict(Counter(pattern.findall((ROOT / relative).read_text()))) == expected, relative
+        path = ROOT / relative
+        if path.parent == ROOT / "src/courtlens/services/assistant" and path.name in retired:
+            path = path.parent / "legacy" / path.name
+        assert dict(Counter(pattern.findall(path.read_text()))) == expected, relative
     for base in ("src", "dashboard", "evaluation", "tests", "docs/design"):
         for path in (ROOT / base).rglob("*"):
             if not path.is_file() or path.suffix not in {".py", ".ts", ".tsx", ".json", ".mjs"}:

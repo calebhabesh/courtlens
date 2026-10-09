@@ -97,6 +97,14 @@ def main() -> int:
                 COURTLENS_ARTIFACTS_ROOT=str(workspace / "data/artifacts"),
                 COURTLENS_ASSISTANT_PROVIDER="none",
             )
+            # Explicit isolated browser fixture endpoints only; never forward provider keys.
+            for option in (
+                "COURTLENS_AR07_BROWSER_BASE_URL",
+                "COURTLENS_AR07_DASHBOARD_DIR",
+                "COURTLENS_AR07_API_PORT",
+            ):
+                if option in os.environ:
+                    environment[option] = os.environ[option]
             if container or os.environ.get("COURTLENS_TEST_POSTGRES_CONTAINER"):
                 environment["COURTLENS_TEST_POSTGRES_CONTAINER"] = (
                     container or os.environ["COURTLENS_TEST_POSTGRES_CONTAINER"]

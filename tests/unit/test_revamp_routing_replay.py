@@ -12,7 +12,7 @@ import pytest
 from test_revamp_provider_replay import test_recorded_provider_replay as _replay_local
 
 from courtlens.domain.hybrid_assistant import HybridTurnRequest
-from courtlens.services.assistant.hybrid import run_hybrid_turn
+from courtlens.services.assistant.legacy.hybrid import run_hybrid_turn
 from courtlens.services.assistant.revamp_evaluation import load_corpus, score_answer
 
 PATH = Path("docs/evidence/ar03-routing/live-capture.json.gz")
@@ -39,11 +39,11 @@ def test_ar03_actual_plan_and_general_replay(session, record):
         return
     with (
         patch(
-            "courtlens.services.assistant.planner.GeminiPlanProvider.plan",
+            "courtlens.services.assistant.legacy.planner.GeminiPlanProvider.plan",
             side_effect=AssertionError("Replay cannot call Gemini"),
         ),
         patch(
-            "courtlens.services.assistant.hybrid.retrieve_source",
+            "courtlens.services.assistant.legacy.hybrid.retrieve_source",
             side_effect=AssertionError("Replay cannot retrieve sources"),
         ),
     ):

@@ -18,8 +18,8 @@ from courtlens.domain.conversation import AnalysisPlan
 from courtlens.domain.hybrid_assistant import HybridTurnResponse
 from courtlens.services.assistant.evaluation import score_case
 from courtlens.services.assistant.history import run_durable_turn
-from courtlens.services.assistant.hybrid import run_hybrid_turn
-from courtlens.services.assistant.planner import PlanningOutput
+from courtlens.services.assistant.legacy.hybrid import run_hybrid_turn
+from courtlens.services.assistant.legacy.planner import PlanningOutput
 
 postgres_conversation = _postgres_fixture
 CORPUS = Path("tests/fixtures/assistant/pf07d-hybrid-v1.json")
@@ -138,7 +138,7 @@ def test_hybrid_corpus_durable_http_manual_equivalence(postgres_conversation, ca
             )
         )
 
-    with patch("courtlens.services.assistant.hybrid.retrieve_source", side_effect=source):
+    with patch("courtlens.services.assistant.legacy.hybrid.retrieve_source", side_effect=source):
         if case.get("fixture_plan"):
             manual = run_hybrid_turn(
                 session,
@@ -159,7 +159,9 @@ def test_hybrid_corpus_durable_http_manual_equivalence(postgres_conversation, ca
                     db, request, provider=Planner()
                 ),
             ),
-            patch("courtlens.services.assistant.history.run_hybrid_turn", side_effect=execute),
+            patch(
+                "courtlens.services.assistant.legacy.hybrid.run_hybrid_turn", side_effect=execute
+            ),
             TestClient(app) as client,
         ):
             headers = {"X-Operator-Token": get_settings().operator_token.get_secret_value()}

@@ -1,0 +1,40 @@
+
+> courtlens-dashboard@0.1.0 test:browser
+> playwright test threaded-assistant.spec.ts --grep composer waits --workers=1
+
+[WebServer] ⚠ "next start" does not work with "output: standalone" configuration. Use "node .next/standalone/server.js" instead.
+
+Running 1 test using 1 worker
+
+  ✘  1 e2e/threaded-assistant.spec.ts:579:5 › composer waits for history initialization before accepting input (5.2s)
+
+
+  1) e2e/threaded-assistant.spec.ts:579:5 › composer waits for history initialization before accepting input 
+
+    Error: expect(locator).toBeDisabled() failed
+
+    Locator:  locator('#content').getByLabel('Your question', { exact: true })
+    Expected: disabled
+    Received: enabled
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toBeDisabled" locator('#content').getByLabel('Your question', { exact: true }) with timeout 5000ms
+      - waiting for locator('#content').getByLabel('Your question', { exact: true })
+        14 × locator resolved to <textarea rows="1" maxlength="2000" id="_R_15fiv5udb_-question" placeholder="Ask a basketball question"></textarea>
+           - unexpected value "enabled"
+
+
+      587 |   });
+      588 |   await openPage(page, path);
+    > 589 |   await expect(composer(page)).toBeDisabled();
+          |                                ^
+      590 |   release();
+      591 |   await expect(composer(page)).toBeEnabled();
+      592 |   await composer(page).fill("Explain pick and roll");
+        at /tmp/courtlens-ag07-browser-05swpp3v/dashboard/e2e/threaded-assistant.spec.ts:589:32
+
+    Error Context: test-results/threaded-assistant-compose-058ad-tion-before-accepting-input/error-context.md
+
+  1 failed
+    e2e/threaded-assistant.spec.ts:579:5 › composer waits for history initialization before accepting input 

@@ -111,7 +111,8 @@ from courtlens.services.analytical_ops import (
     split_profile_service,
     statistical_peers_service,
 )
-from courtlens.services.assistant import get_assistant_status, run_assistant_query
+from courtlens.services.assistant.service import run_assistant_query
+from courtlens.services.assistant.status import get_assistant_status
 from courtlens.services.entity_lookup import (
     lookup_entities,
     resolve_lookup_binding,

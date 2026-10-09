@@ -1,0 +1,176 @@
+INFO  [alembic.runtime.migration] Context impl PostgresqlImpl.
+INFO  [alembic.runtime.migration] Will assume transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade  -> 0001, Create the initial CourtLoad operational schema.
+INFO  [alembic.runtime.migration] Running upgrade 0001 -> 8ffd4c5912e2, archive lineage and facts
+INFO  [alembic.runtime.migration] Running upgrade 8ffd4c5912e2 -> 4b19f0a2c7de, warehouse publication state and immutable serving rows
+INFO  [alembic.runtime.migration] Running upgrade 4b19f0a2c7de -> 882c8b450cb3, workbench_contracts_and_tables
+INFO  [alembic.runtime.migration] Running upgrade 882c8b450cb3 -> 1b66214e7c08, personal_workspace_state
+INFO  [alembic.runtime.migration] Running upgrade 1b66214e7c08 -> c7e21a084f91, identity_crosswalk_and_measurements
+INFO  [alembic.runtime.migration] Running upgrade c7e21a084f91 -> e8b19a084f92, rich_source_admission_tables
+INFO  [alembic.runtime.migration] Running upgrade e8b19a084f92 -> f9c31a084f93, possession_and_stint_warehouse_tables
+INFO  [alembic.runtime.migration] Running upgrade f9c31a084f93 -> 0af4286cb194, Append-only independent research inputs; no release publication or retained-row changes.
+INFO  [alembic.runtime.migration] Running upgrade 0af4286cb194 -> 27b810a4f001, B28 immutable financial source books and correction lineage.
+INFO  [alembic.runtime.migration] Running upgrade 27b810a4f001 -> 31b810a4f002, B31 bounded Live demand, provisional observations and reconciliation evidence.
+INFO  [alembic.runtime.migration] Running upgrade 31b810a4f002 -> 35b810a4f003, B35a explicit retained conversational analytical manifests.
+INFO  [alembic.runtime.migration] Running upgrade 35b810a4f003 -> 19b810a4f004, B19b independent assignment datasets and transaction-sealed memberships.
+INFO  [alembic.runtime.migration] Running upgrade 19b810a4f004 -> 07b810a4f005, PF07b durable local assistant history, isolated from saved findings.
+INFO  [alembic.runtime.migration] Running upgrade 07b810a4f005 -> 08b810a4f006, AG03 server-owned provider transcripts; existing turn/history payloads stay valid.
+INFO  [alembic.runtime.migration] Running upgrade 08b810a4f006 -> 09b810a4f007, RN02 rename PostgreSQL functions and the administrative mutation namespace.
+INFO  [alembic.runtime.migration] Running upgrade 09b810a4f007 -> 10b810a4f008, Seal IM03 memberships at the admitting transaction, including ordinary inserts.
+[DEBUG-agverify] [{'call': {'id': 'page', 'name': 'query_stats', 'arguments': {'operation': 'team', 'arguments': {'team_id': '1610612761'}}}, 'result': {'call_id': 'page', 'name': 'query_stats', 'payload': {'error': {'code': 'no_observations', 'message': 'No observed team games before the cutoff.', 'recoverable': True}, 'answer_sources': []}, 'is_error': True}, 'full_payload': {'error': {'code': 'no_observations', 'message': 'No observed team games before the cutoff.', 'recoverable': True}}, 'warehouse_result': None}]
+[DEBUG-agverify] [{'call': {'id': 'page', 'name': 'query_stats', 'arguments': {'operation': 'team', 'arguments': {'team_id': '1610612761'}}}, 'result': {'call_id': 'page', 'name': 'query_stats', 'payload': {'error': {'code': 'no_observations', 'message': 'No observed team games before the cutoff.', 'recoverable': True}, 'answer_sources': []}, 'is_error': True}, 'full_payload': {'error': {'code': 'no_observations', 'message': 'No observed team games before the cutoff.', 'recoverable': True}}, 'warehouse_result': None}]
+
+> courtlens-dashboard@0.1.0 test:browser
+> playwright test e2e/assistant-panel-real.spec.ts e2e/workspace-persistence.spec.ts --workers=1
+
+
+Running 3 tests using 1 worker
+
+  ✘  1 e2e/assistant-panel-real.spec.ts:9:7 › AR07 real server resolves his and this team at 1440px (3.4s)
+  ✘  2 e2e/assistant-panel-real.spec.ts:9:7 › AR07 real server resolves his and this team at 375px (3.3s)
+  ✓  3 e2e/workspace-persistence.spec.ts:3:5 › real workspace proxy persists, conflicts, exports and restores (164ms)
+
+
+  1) e2e/assistant-panel-real.spec.ts:9:7 › AR07 real server resolves his and this team at 1440px ──
+
+    TypeError: Cannot read properties of undefined (reading 'result')
+
+      37 |       expect(answer!.status).toBe("answered");
+      38 |       expect(answer!.schema_version).toBe("courtlens-assistant-v3");
+    > 39 |       expect(answer!.results[0].result.arguments[field]).toBe(identity);
+         |                                 ^
+      40 |       expect(answer!.results[0].context?.release_id).toBe(release);
+      41 |       expect(answer!.trace?.find(step => step.tool === "query_stats")?.status).toBe("ok");
+      42 |       await expect(panel.getByLabel("Messages")).toContainText(question);
+        at /tmp/courtlens-ag07-browser-05swpp3v/dashboard/e2e/assistant-panel-real.spec.ts:39:33
+
+    Error Context: test-results/assistant-panel-real-AR07--dd69a-his-and-this-team-at-1440px/error-context.md
+
+  2) e2e/assistant-panel-real.spec.ts:9:7 › AR07 real server resolves his and this team at 375px ───
+
+    TypeError: Cannot read properties of undefined (reading 'result')
+
+      37 |       expect(answer!.status).toBe("answered");
+      38 |       expect(answer!.schema_version).toBe("courtlens-assistant-v3");
+    > 39 |       expect(answer!.results[0].result.arguments[field]).toBe(identity);
+         |                                 ^
+      40 |       expect(answer!.results[0].context?.release_id).toBe(release);
+      41 |       expect(answer!.trace?.find(step => step.tool === "query_stats")?.status).toBe("ok");
+      42 |       await expect(panel.getByLabel("Messages")).toContainText(question);
+        at /tmp/courtlens-ag07-browser-05swpp3v/dashboard/e2e/assistant-panel-real.spec.ts:39:33
+
+    Error Context: test-results/assistant-panel-real-AR07--b3203--his-and-this-team-at-375px/error-context.md
+
+  2 failed
+    e2e/assistant-panel-real.spec.ts:9:7 › AR07 real server resolves his and this team at 1440px ───
+    e2e/assistant-panel-real.spec.ts:9:7 › AR07 real server resolves his and this team at 375px ────
+  1 passed (7.8s)
+
+
+F
+=================================== FAILURES ===================================
+_________________ test_rendered_panels_resolve_page_referents __________________
+
+postgres_conversation = (<sqlalchemy.orm.session.Session object at 0x7f4fc757b4d0>, ResolvedContext(release_id='54df82e1-101d-4912-af27-edca98...torical reconstruction from completed records.', 'Prior-day boundary: game_date < before_date is strictly enforced.']))
+
+    @pytest.mark.skipif(
+        not os.environ.get("COURTLENS_AR07_BROWSER_BASE_URL"),
+        reason="isolated Next browser server required",
+    )
+    def test_rendered_panels_resolve_page_referents(postgres_conversation):
+        session, context = postgres_conversation
+        engine = session.get_bind()
+        app = create_app()
+    
+        def database():
+            with Session(engine) as local:
+                yield local
+    
+        app.dependency_overrides[get_db] = database
+    
+        class FixtureProvider:
+            model = "synthetic-browser-verification"
+    
+            def __init__(self):
+                self.calls = 0
+    
+            def step(self, prompt, messages, tools, **kwargs):
+                self.calls += 1
+                if self.calls > 1:
+                    return AgentStep(text="The requested observations are shown below.")
+                message = messages[-1].text
+                team = "this team" in message
+                return AgentStep(
+                    tool_calls=[
+                        ToolCall(
+                            id="page",
+                            name="query_stats",
+                            arguments={
+                                "operation": "team" if team else "profile",
+                                "arguments": {
+                                    "team_id" if team else "player_id": "this team" if team else "his"
+                                },
+                            },
+                        )
+                    ]
+                )
+    
+        def fixture_turn(*args, **kwargs):
+            kwargs["provider"] = FixtureProvider()
+            outcome = run_turn(*args, **kwargs)
+            if not outcome.response.results:
+                print("[DEBUG-agverify]", outcome.transcript["tools"])
+            return outcome
+    
+        server = uvicorn.Server(
+            uvicorn.Config(
+                app,
+                host="127.0.0.1",
+                port=int(os.environ.get("COURTLENS_AR07_API_PORT", "4208")),
+                log_level="warning",
+            )
+        )
+        worker = threading.Thread(target=server.run, daemon=True)
+        with patch("courtlens.services.assistant.history.run_turn", side_effect=fixture_turn):
+            worker.start()
+            try:
+                # Browser navigation retries its API calls; a bounded event wait only covers startup.
+                for _ in range(100):
+                    if server.started:
+                        break
+                    threading.Event().wait(0.05)
+                assert server.started
+                env = {
+                    **os.environ,
+                    "PLAYWRIGHT_EXTERNAL_SERVER": "true",
+                    "PLAYWRIGHT_BASE_URL": os.environ["COURTLENS_AR07_BROWSER_BASE_URL"],
+                    "COURTLENS_AR07_RELEASE_ID": context.release_id,
+                    "COURTLENS_REAL_WORKSPACE_TEST": "1",
+                }
+                result = subprocess.run(
+                    [
+                        "npm",
+                        "run",
+                        "test:browser",
+                        "--",
+                        "e2e/assistant-panel-real.spec.ts",
+                        "e2e/workspace-persistence.spec.ts",
+                        "--workers=1",
+                    ],
+                    cwd=os.environ["COURTLENS_AR07_DASHBOARD_DIR"],
+                    env=env,
+                    capture_output=True,
+                    text=True,
+                    timeout=180,
+                    check=False,
+                )
+                print(result.stdout)
+                print(result.stderr)
+>               assert result.returncode == 0
+E               AssertionError: assert 1 == 0
+E                +  where 1 = CompletedProcess(args=['npm', 'run', 'test:browser', '--', 'e2e/assistant-panel-real.spec.ts', 'e2e/workspace-persiste...nt-panel-real.spec.ts:9:7 › AR07 real server resolves his and this team at 375px ────\n  1 passed (7.8s)\n', stderr='').returncode
+
+tests/integration/test_assistant_panel_browser.py:118: AssertionError
+=========================== short test summary info ============================
+FAILED tests/integration/test_assistant_panel_browser.py::test_rendered_panels_resolve_page_referents
+1 failed in 8.68s

@@ -1,0 +1,10 @@
+{
+  "dashboard_diff": [],
+  "browser_backend": "mock API only; no Python/provider backend",
+  "isolation": "physical scratch dashboard, copied sealed evidence, ports 3300/4300",
+  "excluded_specs": [
+    "dl*-evidence.spec.ts",
+    "im07-agent.spec.ts"
+  ],
+  "note": "Existing missing scope control and mobile overlay failures are not changes introduced by this backend retirement."
+}

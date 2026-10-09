@@ -23,9 +23,9 @@ from courtlens.services.assistant.curated_questions import CURATED_QUESTIONS
 from courtlens.services.assistant.provider import OfflinePlanFixtureProvider
 from courtlens.services.assistant.service import (
     MAX_QUESTION_LENGTH,
-    get_assistant_status,
     run_assistant_query,
 )
+from courtlens.services.assistant.status import get_assistant_status
 from courtlens.services.assistant.tools import (
     ALLOWLISTED_TOOLS,
     ASSISTANT_TOOL_DECLARATIONS,
@@ -130,7 +130,7 @@ def test_assistant_question_length_and_empty_validation():
 
 def test_assistant_status_when_disabled():
     """Verify get_assistant_status correctly reports disabled when API key is missing."""
-    with patch("courtlens.services.assistant.service.get_settings") as mock_settings:
+    with patch("courtlens.services.assistant.status.get_settings") as mock_settings:
         mock_settings.return_value = Settings(_env_file=None, assistant_provider="none")
         status = get_assistant_status()
         assert status.configured is False
@@ -139,13 +139,9 @@ def test_assistant_status_when_disabled():
 
 def test_assistant_query_when_disabled(postgres_session: Session):
     """Verify run_assistant_query returns typed disabled answer when key is unset."""
-    with (
-        patch("courtlens.services.assistant.service.get_settings") as mock_settings,
-        patch("courtlens.services.assistant.conversations.get_settings") as conversation_settings,
-    ):
+    with patch("courtlens.services.assistant.conversations.get_settings") as mock_settings:
         mock_settings.return_value.gemini_api_key = None
         mock_settings.return_value.gemini_model = "gemini-2.5-flash"
-        conversation_settings.return_value = mock_settings.return_value
         answer = run_assistant_query(
             session=postgres_session,
             question="Who leads the league in scoring?",

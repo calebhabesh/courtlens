@@ -21,7 +21,7 @@ from courtlens.domain.conversation import EvidenceCell, OperationResult
 from courtlens.domain.hybrid_assistant import claim_text
 from courtlens.domain.metrics import METRIC_CATALOG
 from courtlens.domain.narrative_check import NarrativeRejected, check_narrative
-from courtlens.services.assistant.planner import (
+from courtlens.services.assistant.legacy.planner import (
     NarrativeDraft,
     PlanningOutput,
     ProviderFailure,

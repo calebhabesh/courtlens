@@ -1,0 +1,331 @@
+INFO  [alembic.runtime.migration] Context impl PostgresqlImpl.
+INFO  [alembic.runtime.migration] Will assume transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade  -> 0001, Create the initial CourtLoad operational schema.
+INFO  [alembic.runtime.migration] Running upgrade 0001 -> 8ffd4c5912e2, archive lineage and facts
+INFO  [alembic.runtime.migration] Running upgrade 8ffd4c5912e2 -> 4b19f0a2c7de, warehouse publication state and immutable serving rows
+INFO  [alembic.runtime.migration] Running upgrade 4b19f0a2c7de -> 882c8b450cb3, workbench_contracts_and_tables
+INFO  [alembic.runtime.migration] Running upgrade 882c8b450cb3 -> 1b66214e7c08, personal_workspace_state
+INFO  [alembic.runtime.migration] Running upgrade 1b66214e7c08 -> c7e21a084f91, identity_crosswalk_and_measurements
+INFO  [alembic.runtime.migration] Running upgrade c7e21a084f91 -> e8b19a084f92, rich_source_admission_tables
+INFO  [alembic.runtime.migration] Running upgrade e8b19a084f92 -> f9c31a084f93, possession_and_stint_warehouse_tables
+INFO  [alembic.runtime.migration] Running upgrade f9c31a084f93 -> 0af4286cb194, Append-only independent research inputs; no release publication or retained-row changes.
+INFO  [alembic.runtime.migration] Running upgrade 0af4286cb194 -> 27b810a4f001, B28 immutable financial source books and correction lineage.
+INFO  [alembic.runtime.migration] Running upgrade 27b810a4f001 -> 31b810a4f002, B31 bounded Live demand, provisional observations and reconciliation evidence.
+INFO  [alembic.runtime.migration] Running upgrade 31b810a4f002 -> 35b810a4f003, B35a explicit retained conversational analytical manifests.
+INFO  [alembic.runtime.migration] Running upgrade 35b810a4f003 -> 19b810a4f004, B19b independent assignment datasets and transaction-sealed memberships.
+INFO  [alembic.runtime.migration] Running upgrade 19b810a4f004 -> 07b810a4f005, PF07b durable local assistant history, isolated from saved findings.
+INFO  [alembic.runtime.migration] Running upgrade 07b810a4f005 -> 08b810a4f006, AG03 server-owned provider transcripts; existing turn/history payloads stay valid.
+INFO  [alembic.runtime.migration] Running upgrade 08b810a4f006 -> 09b810a4f007, RN02 rename PostgreSQL functions and the administrative mutation namespace.
+INFO  [alembic.runtime.migration] Running upgrade 09b810a4f007 -> 10b810a4f008, Seal IM03 memberships at the admitting transaction, including ordinary inserts.
+........................................................................ [  3%]
+.............................................F.FFFF............s........ [  7%]
+........................................................................ [ 11%]
+
+=================================== FAILURES ===================================
+____ test_accept_committed_before_execution_and_process_state_is_irrelevant ____
+
+postgres_conversation = (<sqlalchemy.orm.session.Session object at 0x7f40aad21050>, ResolvedContext(release_id='a9f30fef-eee0-415c-a0d3-60752d...torical reconstruction from completed records.', 'Prior-day boundary: game_date < before_date is strictly enforced.']))
+
+    def test_accept_committed_before_execution_and_process_state_is_irrelevant(postgres_conversation):
+        session, _ = postgres_conversation
+        req = question()
+>       with patch.object(history, "run_hybrid_turn", wraps=run_hybrid_turn) as execute:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/integration/test_assistant_history_postgres.py:47: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/usr/lib/python3.14/unittest/mock.py:1510: in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <unittest.mock._patch object at 0x7f40a07a8d70>
+
+    def get_original(self):
+        target = self.getter()
+        name = self.attribute
+    
+        original = DEFAULT
+        local = False
+    
+        try:
+            original = target.__dict__[name]
+        except (AttributeError, KeyError):
+            original = getattr(target, name, DEFAULT)
+        else:
+            local = True
+    
+        if name in _builtins and isinstance(target, ModuleType):
+            self.create = True
+    
+        if not self.create and original is DEFAULT:
+>           raise AttributeError(
+                "%s does not have the attribute %r" % (target, name)
+            )
+E           AttributeError: <module 'courtlens.services.assistant.history' from '/home/ethioking/dev/nba-analytics/src/courtlens/services/assistant/history.py'> does not have the attribute 'run_hybrid_turn'
+
+/usr/lib/python3.14/unittest/mock.py:1480: AttributeError
+______________ test_duplicate_race_accepts_once_and_one_executor _______________
+
+postgres_conversation = (<sqlalchemy.orm.session.Session object at 0x7f40a0690450>, ResolvedContext(release_id='8909c9f7-5cc2-453e-aa4e-9619a8...torical reconstruction from completed records.', 'Prior-day boundary: game_date < before_date is strictly enforced.']))
+
+    def test_duplicate_race_accepts_once_and_one_executor(postgres_conversation):
+        session, _ = postgres_conversation
+        engine = session.get_bind()
+        req = question()
+        entered, release = Event(), Event()
+    
+        def delayed(db, request, **kwargs):
+            entered.set()
+            assert release.wait(10)
+            return run_hybrid_turn(db, request, **kwargs)
+    
+        def execute():
+            with Session(engine) as independent:
+                return legacy_turn(independent, req)
+    
+        with (
+>           patch.object(history, "run_hybrid_turn", side_effect=delayed) as executor,
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            ThreadPoolExecutor() as pool,
+        ):
+
+tests/integration/test_assistant_history_postgres.py:92: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/usr/lib/python3.14/unittest/mock.py:1510: in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <unittest.mock._patch object at 0x7f40a10e0a50>
+
+    def get_original(self):
+        target = self.getter()
+        name = self.attribute
+    
+        original = DEFAULT
+        local = False
+    
+        try:
+            original = target.__dict__[name]
+        except (AttributeError, KeyError):
+            original = getattr(target, name, DEFAULT)
+        else:
+            local = True
+    
+        if name in _builtins and isinstance(target, ModuleType):
+            self.create = True
+    
+        if not self.create and original is DEFAULT:
+>           raise AttributeError(
+                "%s does not have the attribute %r" % (target, name)
+            )
+E           AttributeError: <module 'courtlens.services.assistant.history' from '/home/ethioking/dev/nba-analytics/src/courtlens/services/assistant/history.py'> does not have the attribute 'run_hybrid_turn'
+
+/usr/lib/python3.14/unittest/mock.py:1480: AttributeError
+_____________ test_stop_and_delete_fence_late_publication[cancel] ______________
+
+postgres_conversation = (<sqlalchemy.orm.session.Session object at 0x7f40a0691b50>, ResolvedContext(release_id='8b3cbe80-5332-48eb-b087-86b258...torical reconstruction from completed records.', 'Prior-day boundary: game_date < before_date is strictly enforced.']))
+mutation = 'cancel'
+
+    @pytest.mark.parametrize("mutation", ["cancel", "delete", "clear"])
+    def test_stop_and_delete_fence_late_publication(postgres_conversation, mutation):
+        session, _ = postgres_conversation
+        engine = session.get_bind()
+        req = question()
+        entered, release = Event(), Event()
+    
+        def delayed(db, request, **kwargs):
+            entered.set()
+            assert release.wait(10)
+            return run_hybrid_turn(db, request, **kwargs)
+    
+        def execute():
+            with Session(engine) as independent:
+                try:
+                    return legacy_turn(independent, req)
+                except HTTPException as exc:
+                    return exc.status_code
+    
+        with (
+>           patch.object(history, "run_hybrid_turn", side_effect=delayed),
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            ThreadPoolExecutor() as pool,
+        ):
+
+tests/integration/test_assistant_history_postgres.py:135: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/usr/lib/python3.14/unittest/mock.py:1510: in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <unittest.mock._patch object at 0x7f40a0b65310>
+
+    def get_original(self):
+        target = self.getter()
+        name = self.attribute
+    
+        original = DEFAULT
+        local = False
+    
+        try:
+            original = target.__dict__[name]
+        except (AttributeError, KeyError):
+            original = getattr(target, name, DEFAULT)
+        else:
+            local = True
+    
+        if name in _builtins and isinstance(target, ModuleType):
+            self.create = True
+    
+        if not self.create and original is DEFAULT:
+>           raise AttributeError(
+                "%s does not have the attribute %r" % (target, name)
+            )
+E           AttributeError: <module 'courtlens.services.assistant.history' from '/home/ethioking/dev/nba-analytics/src/courtlens/services/assistant/history.py'> does not have the attribute 'run_hybrid_turn'
+
+/usr/lib/python3.14/unittest/mock.py:1480: AttributeError
+_____________ test_stop_and_delete_fence_late_publication[delete] ______________
+
+postgres_conversation = (<sqlalchemy.orm.session.Session object at 0x7f40a0693750>, ResolvedContext(release_id='f4fe6b65-3110-4b3e-8907-d15429...torical reconstruction from completed records.', 'Prior-day boundary: game_date < before_date is strictly enforced.']))
+mutation = 'delete'
+
+    @pytest.mark.parametrize("mutation", ["cancel", "delete", "clear"])
+    def test_stop_and_delete_fence_late_publication(postgres_conversation, mutation):
+        session, _ = postgres_conversation
+        engine = session.get_bind()
+        req = question()
+        entered, release = Event(), Event()
+    
+        def delayed(db, request, **kwargs):
+            entered.set()
+            assert release.wait(10)
+            return run_hybrid_turn(db, request, **kwargs)
+    
+        def execute():
+            with Session(engine) as independent:
+                try:
+                    return legacy_turn(independent, req)
+                except HTTPException as exc:
+                    return exc.status_code
+    
+        with (
+>           patch.object(history, "run_hybrid_turn", side_effect=delayed),
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            ThreadPoolExecutor() as pool,
+        ):
+
+tests/integration/test_assistant_history_postgres.py:135: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/usr/lib/python3.14/unittest/mock.py:1510: in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <unittest.mock._patch object at 0x7f40a9aa3bb0>
+
+    def get_original(self):
+        target = self.getter()
+        name = self.attribute
+    
+        original = DEFAULT
+        local = False
+    
+        try:
+            original = target.__dict__[name]
+        except (AttributeError, KeyError):
+            original = getattr(target, name, DEFAULT)
+        else:
+            local = True
+    
+        if name in _builtins and isinstance(target, ModuleType):
+            self.create = True
+    
+        if not self.create and original is DEFAULT:
+>           raise AttributeError(
+                "%s does not have the attribute %r" % (target, name)
+            )
+E           AttributeError: <module 'courtlens.services.assistant.history' from '/home/ethioking/dev/nba-analytics/src/courtlens/services/assistant/history.py'> does not have the attribute 'run_hybrid_turn'
+
+/usr/lib/python3.14/unittest/mock.py:1480: AttributeError
+______________ test_stop_and_delete_fence_late_publication[clear] ______________
+
+postgres_conversation = (<sqlalchemy.orm.session.Session object at 0x7f40a197a950>, ResolvedContext(release_id='09b93700-6d2c-49f1-803d-5f5e72...torical reconstruction from completed records.', 'Prior-day boundary: game_date < before_date is strictly enforced.']))
+mutation = 'clear'
+
+    @pytest.mark.parametrize("mutation", ["cancel", "delete", "clear"])
+    def test_stop_and_delete_fence_late_publication(postgres_conversation, mutation):
+        session, _ = postgres_conversation
+        engine = session.get_bind()
+        req = question()
+        entered, release = Event(), Event()
+    
+        def delayed(db, request, **kwargs):
+            entered.set()
+            assert release.wait(10)
+            return run_hybrid_turn(db, request, **kwargs)
+    
+        def execute():
+            with Session(engine) as independent:
+                try:
+                    return legacy_turn(independent, req)
+                except HTTPException as exc:
+                    return exc.status_code
+    
+        with (
+>           patch.object(history, "run_hybrid_turn", side_effect=delayed),
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            ThreadPoolExecutor() as pool,
+        ):
+
+tests/integration/test_assistant_history_postgres.py:135: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/usr/lib/python3.14/unittest/mock.py:1510: in __enter__
+    original, local = self.get_original()
+                      ^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <unittest.mock._patch object at 0x7f40a10b4fc0>
+
+    def get_original(self):
+        target = self.getter()
+        name = self.attribute
+    
+        original = DEFAULT
+        local = False
+    
+        try:
+            original = target.__dict__[name]
+        except (AttributeError, KeyError):
+            original = getattr(target, name, DEFAULT)
+        else:
+            local = True
+    
+        if name in _builtins and isinstance(target, ModuleType):
+            self.create = True
+    
+        if not self.create and original is DEFAULT:
+>           raise AttributeError(
+                "%s does not have the attribute %r" % (target, name)
+            )
+E           AttributeError: <module 'courtlens.services.assistant.history' from '/home/ethioking/dev/nba-analytics/src/courtlens/services/assistant/history.py'> does not have the attribute 'run_hybrid_turn'
+
+/usr/lib/python3.14/unittest/mock.py:1480: AttributeError
+=============================== warnings summary ===============================
+../../home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/google/genai/types.py:42
+  /home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/google/genai/types.py:42: DeprecationWarning: '_UnionGenericAlias' is deprecated and slated for removal in Python 3.17
+    VersionedUnionType = Union[builtin_types.UnionType, _UnionGenericAlias]
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+SKIPPED [1] tests/integration/test_assistant_panel_browser.py:27: isolated Next browser server required
+FAILED tests/integration/test_assistant_history_postgres.py::test_accept_committed_before_execution_and_process_state_is_irrelevant
+FAILED tests/integration/test_assistant_history_postgres.py::test_duplicate_race_accepts_once_and_one_executor
+FAILED tests/integration/test_assistant_history_postgres.py::test_stop_and_delete_fence_late_publication[cancel]
+FAILED tests/integration/test_assistant_history_postgres.py::test_stop_and_delete_fence_late_publication[delete]
+FAILED tests/integration/test_assistant_history_postgres.py::test_stop_and_delete_fence_late_publication[clear]
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! KeyboardInterrupt !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+/home/ethioking/dev/nba-analytics/.venv/lib/python3.14/site-packages/psycopg/cursor.py:117: KeyboardInterrupt
+(to show a full traceback on KeyboardInterrupt use --full-trace)
+5 failed, 210 passed, 1 skipped, 19 deselected, 1 warning in 106.76s (0:01:46)

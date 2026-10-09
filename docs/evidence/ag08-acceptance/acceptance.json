@@ -1,0 +1,41 @@
+{
+  "status": "accepted_with_waiver",
+  "date": "2026-10-08",
+  "authorization": "Owner requested finishing without live testing to conserve Gemini quota, explicitly accepting the unmeasured quality gap.",
+  "provider_calls": 0,
+  "live_development": {
+    "status": "waived",
+    "completed_runs": 0,
+    "warehouse_accuracy": null,
+    "comparison_baseline": {
+      "correct": 255,
+      "total": 279,
+      "accuracy_percent": 91.4,
+      "origin": "retained AR02 fixture baseline; not V3 accuracy"
+    }
+  },
+  "holdout": {
+    "status": "not_run_owner_waiver",
+    "inferred_cases": 0,
+    "score": null
+  },
+  "providers": {
+    "gemini": "configured; access and quality unprobed",
+    "anthropic": "no configured key at retained preflight",
+    "openai": "no configured key at retained preflight"
+  },
+  "owner_examples": "Retained AG03 synthetic responses replayed for UI screenshots; not live answers or new basketball measurements.",
+  "direct_nba": "source_blocked; no admission or consent changes",
+  "offline_verification": {
+    "python_passed": 1845,
+    "vitest_passed": 286,
+    "owner_captures_passed": 6,
+    "browser": {
+      "passed": 180,
+      "skipped": 15,
+      "failed": 10,
+      "owner_capture_subsequent_rerun": "6 passed; nine other UI failures remain"
+    },
+    "full_original_acceptance": false
+  }
+}

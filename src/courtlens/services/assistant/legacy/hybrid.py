@@ -55,26 +55,26 @@ from courtlens.services.assistant.defaults import (
 )
 from courtlens.services.assistant.execution import execute_bounded, query_deadline
 from courtlens.services.assistant.knowledge import retrieve, runtime_guidance
-from courtlens.services.assistant.narrative import NarrativeOutcome, compose_narrative
+from courtlens.services.assistant.legacy.narrative import NarrativeOutcome, compose_narrative
+from courtlens.services.assistant.legacy.planner import (
+    GeminiPlanProvider,
+    GeneralKnowledgeDraft,
+    PlanProvider,
+    ProviderFailure,
+)
+from courtlens.services.assistant.legacy.retrieval import (
+    RetrievalBudget,
+    RetrievalFailure,
+    retrieve_source,
+    select_source,
+)
 from courtlens.services.assistant.operations import (
     EntityClarification,
     canonical_step,
     declarations,
 )
 from courtlens.services.assistant.page_context import bind_page_step, resolve_page_message
-from courtlens.services.assistant.planner import (
-    GeminiPlanProvider,
-    GeneralKnowledgeDraft,
-    PlanProvider,
-    ProviderFailure,
-)
 from courtlens.services.assistant.rendering import MAX_RESULT_BYTES, render_result
-from courtlens.services.assistant.retrieval import (
-    RetrievalBudget,
-    RetrievalFailure,
-    retrieve_source,
-    select_source,
-)
 from courtlens.services.assistant.rule_planner import RulePlan, rule_plan
 from courtlens.services.starting_positions import PositionEvidenceUnavailable
 from courtlens.services.stats_catalog import stats_catalog_scope

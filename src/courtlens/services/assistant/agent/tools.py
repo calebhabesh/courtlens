@@ -30,9 +30,9 @@ from courtlens.domain.query_spec import QuerySpec
 from courtlens.services.assistant import awards, knowledge, operations
 from courtlens.services.assistant.agent.providers.base import ToolCall, ToolDeclaration, ToolResult
 from courtlens.services.assistant.defaults import civil_today, last_completed_season
+from courtlens.services.assistant.entities import resolve_player_identifier
 from courtlens.services.assistant.execution import execute_bounded, query_deadline
 from courtlens.services.assistant.rendering import render_result
-from courtlens.services.assistant.tools import resolve_player_identifier
 from courtlens.services.impact_serving import impact_catalog_scope, query_uses_impact
 from courtlens.services.starting_positions import PositionEvidenceUnavailable
 from courtlens.services.stats_catalog import stats_catalog_scope

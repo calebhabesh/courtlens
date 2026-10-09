@@ -27,7 +27,7 @@ from courtlens.database import engine
 from courtlens.domain.conversation import AnalysisPlan, ConversationTurnRequest, OperationStep
 from courtlens.finance_models import FinanceRelease
 from courtlens.services.assistant.conversations import clear_conversation, run_conversation_turn
-from courtlens.services.assistant.planner import GeminiPlanProvider
+from courtlens.services.assistant.legacy.planner import GeminiPlanProvider
 from courtlens.services.workbench_analytics import resolve_workbench_context
 
 

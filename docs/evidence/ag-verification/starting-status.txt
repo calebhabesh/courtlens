@@ -1,0 +1,51 @@
+ M README.md
+ M docs/assistant-agent-progress.md
+ M scripts/evaluate_assistant.py
+ M scripts/evaluate_b34_conversation.py
+ M scripts/evaluate_b34_supplemental.py
+ M scripts/evaluate_pf07d_hybrid.py
+ M scripts/verify_pf07c_retrieval.py
+ M src/courtlens/api/routers/workbench.py
+ M src/courtlens/services/assistant/__init__.py
+ M src/courtlens/services/assistant/agent/tools.py
+ M src/courtlens/services/assistant/conversations.py
+ M src/courtlens/services/assistant/history.py
+ D src/courtlens/services/assistant/hybrid.py
+ D src/courtlens/services/assistant/narrative.py
+ D src/courtlens/services/assistant/planner.py
+ M src/courtlens/services/assistant/provider.py
+ D src/courtlens/services/assistant/retrieval.py
+ M src/courtlens/services/assistant/service.py
+ M src/courtlens/services/assistant/smoke.py
+ M src/courtlens/services/assistant/streaming.py
+ M src/courtlens/services/assistant/tools.py
+ M tests/integration/test_assistant_history_postgres.py
+ M tests/integration/test_assistant_panel_browser.py
+ M tests/integration/test_assistant_positions_postgres.py
+ M tests/integration/test_assistant_retrieval_postgres.py
+ M tests/integration/test_assistant_rule_planner_postgres.py
+ M tests/integration/test_hybrid_assistant_postgres.py
+ M tests/integration/test_hybrid_evaluation_postgres.py
+ M tests/integration/test_workbench_api.py
+ M tests/unit/test_agent_providers.py
+ M tests/unit/test_assistant.py
+ M tests/unit/test_assistant_awards.py
+ M tests/unit/test_assistant_retrieval.py
+ M tests/unit/test_assistant_streaming.py
+ M tests/unit/test_conversations.py
+ M tests/unit/test_frozen_identifiers.py
+ M tests/unit/test_hybrid_assistant.py
+ M tests/unit/test_hybrid_evaluation_quota_policy.py
+ M tests/unit/test_narrative_turn.py
+ M tests/unit/test_revamp_evaluation_runner.py
+ M tests/unit/test_revamp_provider_replay.py
+ M tests/unit/test_revamp_routing.py
+ M tests/unit/test_revamp_routing_replay.py
+?? docs/evidence/ag-verification/
+?? docs/evidence/ag07-cleanup/
+?? docs/evidence/ag08-acceptance/
+?? src/courtlens/services/assistant/entities.py
+?? src/courtlens/services/assistant/legacy/
+?? src/courtlens/services/assistant/limits.py
+?? src/courtlens/services/assistant/status.py
+?? tests/unit/test_agent_architecture.py

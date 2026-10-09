@@ -26,8 +26,8 @@ from courtlens.services.assistant.defaults import (
     last_completed_season,
     resolve_scope,
 )
-from courtlens.services.assistant.hybrid import route_intent, run_hybrid_turn
 from courtlens.services.assistant.knowledge import registry
+from courtlens.services.assistant.legacy.hybrid import route_intent, run_hybrid_turn
 from courtlens.services.assistant.qualification import pg_label_supported, qualify_apg
 from courtlens.services.assistant.rendering import render_result
 from courtlens.services.workbench_analytics import ResolvedContext, canonical_hash
@@ -272,7 +272,7 @@ def test_frozen_holdout_router():
 
 def test_database_failure_does_not_become_provider_failure():
     with patch(
-        "courtlens.services.assistant.hybrid.resolve_workbench_context",
+        "courtlens.services.assistant.legacy.hybrid.resolve_workbench_context",
         side_effect=RuntimeError("secret"),
     ):
         answer = run_hybrid_turn(

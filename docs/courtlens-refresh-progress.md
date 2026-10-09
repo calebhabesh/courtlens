@@ -439,3 +439,25 @@ cases; 14 screenshots at 1440/375 px; dashboard lint/typecheck and isolated prod
 build pass. Ruff/format/mypy and 1,778 full Python tests pass. Historical DL evidence
 is retained; fixture screenshot suites wrote only inside an isolated dashboard copy.
 This records IM06's presentation verification and does not advance another DL block.
+
+
+## 2026-10-08 — bounded Ask verification repair after AG07/AG08
+
+The owner requested closing remaining offline verification gaps. This is a targeted
+repair, not a repeat of DL milestones or their sealed screenshot capture.
+[New evidence](evidence/ag-verification/README.md) preserves the earlier reports.
+
+- Restored the existing next-question scope editor and its retained V2/V3 scope helper.
+  Per-turn edits and browser-history navigation preserve old answer scope.
+- Fixed empty-chat vertical centering on short panels: oversized content starts at the
+  top and scrolls; header/composer rows do not shrink. A measured mobile hit test had
+  found the Send button behind the header. Desktop, mobile and reduced-motion landscape
+  interaction/focus tests now pass.
+- Disabled input only while initial history loads, preventing input loss as the composer
+  moves to its empty-state placement. A delayed-history regression fails before and
+  passes after the change; drafting during execution remains available.
+- Targeted suite: 53 passes. Broad browser run: 191 passed / 15 skipped / zero failed;
+  three skipped real-backend cases pass separately on disposable PostgreSQL. Twelve
+  IM06 real-data cases retain sealed evidence. Dashboard unit tests: 286 passed;
+  lint/types and production build pass. Full Python evidence is recorded in the linked
+  report. No raw inline styles or new motion mechanism was introduced.

@@ -71,7 +71,7 @@ def test_real_turn_reports_phases_in_order_before_narrative(session):
 
 
 def test_guidance_turn_never_claims_to_query_or_write(session):
-    from courtlens.services.assistant.hybrid import run_hybrid_turn
+    from courtlens.services.assistant.legacy.hybrid import run_hybrid_turn
 
     phases: list[str] = []
     answer = run_hybrid_turn(

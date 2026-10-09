@@ -25,18 +25,19 @@ from courtlens.domain.conversation import (
 from courtlens.domain.metrics import METRIC_CATALOG, METRIC_CATALOG_VERSION
 from courtlens.domain.teams import NBA_TEAMS
 from courtlens.services.assistant.execution import execute_bounded, query_deadline
-from courtlens.services.assistant.operations import (
-    EntityClarification,
-    canonical_step,
-    declarations,
-    operation_hash,
-)
-from courtlens.services.assistant.planner import (
+from courtlens.services.assistant.legacy.planner import (
     PLANNER_PROMPT,
     GeminiPlanProvider,
     PlanningOutput,
     PlanProvider,
     ProviderFailure,
+)
+from courtlens.services.assistant.limits import MAX_TURN_BYTES
+from courtlens.services.assistant.operations import (
+    EntityClarification,
+    canonical_step,
+    declarations,
+    operation_hash,
 )
 from courtlens.services.assistant.rendering import MAX_RESULT_BYTES, render_result
 from courtlens.services.workbench_analytics import (
@@ -49,7 +50,6 @@ TTL_SECONDS = 1800
 MAX_CONVERSATIONS = 64
 MAX_PROVIDER_BYTES = 64 * 1024
 MAX_CACHE_BYTES = 8 * 1024 * 1024
-MAX_TURN_BYTES = 3 * 1024 * 1024
 DEADLINE_SECONDS = 45.0
 PROVIDER_TIMEOUT_SECONDS = 20.0
 

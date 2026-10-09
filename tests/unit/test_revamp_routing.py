@@ -11,9 +11,9 @@ from pydantic import ValidationError
 
 from courtlens.domain.conversation import AnalysisPlan, OperationStep
 from courtlens.domain.hybrid_assistant import GENERAL_LABEL, HybridTurnRequest, TextBlock
-from courtlens.services.assistant.hybrid import route_intent, run_hybrid_turn
 from courtlens.services.assistant.knowledge import registry
-from courtlens.services.assistant.planner import (
+from courtlens.services.assistant.legacy.hybrid import route_intent, run_hybrid_turn
+from courtlens.services.assistant.legacy.planner import (
     GENERAL_PROMPT,
     GeminiPlanProvider,
     PlanningOutput,

@@ -20,8 +20,8 @@ from courtlens.config import get_settings
 from courtlens.database import get_db
 from courtlens.domain.hybrid_assistant import HybridTurnRequest
 from courtlens.services.assistant import history
-from courtlens.services.assistant.hybrid import run_hybrid_turn
-from courtlens.services.assistant.planner import ProviderFailure
+from courtlens.services.assistant.legacy.hybrid import run_hybrid_turn
+from courtlens.services.assistant.legacy.planner import ProviderFailure
 
 postgres_conversation = _postgres_fixture
 
@@ -44,7 +44,9 @@ def question(thread_id=None, message="Explain pick and roll", **kwargs):
 def test_accept_committed_before_execution_and_process_state_is_irrelevant(postgres_conversation):
     session, _ = postgres_conversation
     req = question()
-    with patch.object(history, "run_hybrid_turn", wraps=run_hybrid_turn) as execute:
+    with patch(
+        "courtlens.services.assistant.legacy.hybrid.run_hybrid_turn", wraps=run_hybrid_turn
+    ) as execute:
         answer = legacy_turn(session, req)
         replay = legacy_turn(session, req)
     assert execute.call_count == 1
@@ -89,7 +91,9 @@ def test_duplicate_race_accepts_once_and_one_executor(postgres_conversation):
             return legacy_turn(independent, req)
 
     with (
-        patch.object(history, "run_hybrid_turn", side_effect=delayed) as executor,
+        patch(
+            "courtlens.services.assistant.legacy.hybrid.run_hybrid_turn", side_effect=delayed
+        ) as executor,
         ThreadPoolExecutor() as pool,
     ):
         first = pool.submit(execute)
@@ -132,7 +136,7 @@ def test_stop_and_delete_fence_late_publication(postgres_conversation, mutation)
                 return exc.status_code
 
     with (
-        patch.object(history, "run_hybrid_turn", side_effect=delayed),
+        patch("courtlens.services.assistant.legacy.hybrid.run_hybrid_turn", side_effect=delayed),
         ThreadPoolExecutor() as pool,
     ):
         work = pool.submit(execute)

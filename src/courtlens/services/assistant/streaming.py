@@ -7,11 +7,14 @@ the retained typed response. A client that loses the stream replays the same req
 `POST /v2/turn` or polls history.
 """
 
+from __future__ import annotations
+
 import asyncio
 import logging
 import re
 import threading
 from collections.abc import AsyncIterator, Iterator
+from typing import TYPE_CHECKING
 
 import anyio
 from sqlalchemy.orm import Session
@@ -37,7 +40,9 @@ from courtlens.domain.hybrid_assistant import (
 )
 from courtlens.services.assistant.agent.providers.base import AgentProvider
 from courtlens.services.assistant.history import ClaimedTurn, complete_turn
-from courtlens.services.assistant.planner import PlanProvider
+
+if TYPE_CHECKING:
+    from courtlens.services.assistant.legacy.planner import PlanProvider
 
 logger = logging.getLogger(__name__)
 

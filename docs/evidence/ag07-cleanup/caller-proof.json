@@ -1,0 +1,11 @@
+{
+  "removed_module_path_callers": [],
+  "agent_legacy_imports": [],
+  "retained_boundaries": [
+    "history.complete_turn: explicitly injected PlanProvider or manual plan",
+    "conversations: V1 conversation API",
+    "provider/service/smoke: V1 query API and diagnostics",
+    "legacy evaluation scripts and compatibility tests"
+  ],
+  "default_evaluation": "scripts/evaluate_agent.py"
+}

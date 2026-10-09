@@ -1,0 +1,56 @@
+
+Running 52 tests using 2 workers
+
+[1/52] e2e/threaded-assistant.spec.ts:118:5 › scope changes retain old answers and unedited follow-ups inherit on server
+[2/52] e2e/threaded-assistant.spec.ts:99:5 › standalone defaults, reload, new chat, history and deletion keep durable questions
+[3/52] e2e/threaded-assistant.spec.ts:130:5 › transport replay preserves request identity; intentional retry links a new turn
+[4/52] e2e/threaded-assistant.spec.ts:140:5 › Stop is durable, releases controls and fences a late response
+[5/52] e2e/threaded-assistant.spec.ts:148:5 › closing drawer retains pending history and full-page link preserves scope
+[6/52] e2e/threaded-assistant.spec.ts:156:5 › clarifications, external citations and hostile text render safely
+[7/52] e2e/threaded-assistant.spec.ts:163:5 › paginated turns are loaded without losing earlier questions
+[8/52] e2e/threaded-assistant.spec.ts:176:7 › threaded wide layout, keyboard dialog and screenshot
+[9/52] e2e/threaded-assistant.spec.ts:176:7 › threaded desktop layout, keyboard dialog and screenshot
+[10/52] e2e/threaded-assistant.spec.ts:176:7 › threaded mobile layout, keyboard dialog and screenshot
+[11/52] e2e/threaded-assistant.spec.ts:176:7 › threaded zoom-equivalent layout, keyboard dialog and screenshot
+[12/52] e2e/threaded-assistant.spec.ts:196:5 › typing a next question during execution preserves the new draft
+[13/52] e2e/threaded-assistant.spec.ts:204:5 › verified local results preserve zero, unknown, scope and equivalent actions
+[14/52] e2e/threaded-assistant.spec.ts:216:5 › default assistant and manual entry are available without preview selection
+[15/52] e2e/threaded-assistant.spec.ts:223:5 › page and panel share retained updates and deletion across navigation
+[16/52] e2e/threaded-assistant.spec.ts:243:7 › provider_disabled retains history and retry creates a linked attempt
+[17/52] e2e/threaded-assistant.spec.ts:243:7 › provider_quota retains history and retry creates a linked attempt
+[18/52] e2e/threaded-assistant.spec.ts:243:7 › provider_busy retains history and retry creates a linked attempt
+[19/52] e2e/threaded-assistant.spec.ts:243:7 › provider_timeout retains history and retry creates a linked attempt
+[20/52] e2e/threaded-assistant.spec.ts:243:7 › malformed_output retains history and retry creates a linked attempt
+[21/52] e2e/threaded-assistant.spec.ts:243:7 › external_unavailable retains history and retry creates a linked attempt
+[22/52] e2e/threaded-assistant.spec.ts:243:7 › external_stale retains history and retry creates a linked attempt
+[23/52] e2e/threaded-assistant.spec.ts:243:7 › backend_failure retains history and retry creates a linked attempt
+[24/52] e2e/threaded-assistant.spec.ts:254:5 › browser history scope changes update only the next request
+[25/52] e2e/threaded-assistant.spec.ts:267:7 › general knowledge label stays visible after reload at 1440px
+[26/52] e2e/threaded-assistant.spec.ts:267:7 › general knowledge label stays visible after reload at 375px
+[27/52] e2e/threaded-assistant.spec.ts:285:5 › AG04 unavailable stream replays a v3 final with the same request identity
+[28/52] e2e/threaded-assistant.spec.ts:293:5 › AG04 minimal final preserves limited and unverified labels after fallback and reload
+[29/52] e2e/threaded-assistant.spec.ts:302:5 › checked narrative renders above its supporting result and survives reload
+[30/52] e2e/threaded-assistant.spec.ts:320:5 › streamed turn shows each phase, the checked narrative, then the retained answer
+[31/52] e2e/threaded-assistant.spec.ts:333:5 › unavailable stream falls back to request/response with the same request identity
+[32/52] e2e/threaded-assistant.spec.ts:340:7 › AG04 live agent steps, deltas, reset and retained final through real proxy at 1440px
+[33/52] e2e/threaded-assistant.spec.ts:340:7 › AG04 live agent steps, deltas, reset and retained final through real proxy at 375px
+[34/52] e2e/threaded-assistant.spec.ts:360:5 › Enter sends, Shift+Enter adds a line and an example prompt sends directly
+[35/52] e2e/threaded-assistant.spec.ts:373:5 › user message is a right-aligned bubble and assistant prose has no bubble
+[36/52] e2e/threaded-assistant.spec.ts:388:5 › an old thread without narrative renders its template answer in the new layout
+[37/52] e2e/threaded-assistant.spec.ts:406:5 › mobile conversations open as a drawer and close after choosing a thread
+[38/52] e2e/threaded-assistant.spec.ts:418:5 › desktop sidebar collapses and stays collapsed after reload
+[39/52] e2e/threaded-assistant.spec.ts:426:5 › clearing history in Settings empties an open chat in another tab
+[40/52] e2e/threaded-assistant.spec.ts:438:5 › /ask opens the assistant
+[41/52] e2e/threaded-assistant.spec.ts:448:9 › AR07 1440px player_ids panel attaches and removes resolved page context
+[42/52] e2e/threaded-assistant.spec.ts:448:9 › AR07 1440px team_ids panel attaches and removes resolved page context
+[43/52] e2e/threaded-assistant.spec.ts:448:9 › AR07 375px player_ids panel attaches and removes resolved page context
+[44/52] e2e/threaded-assistant.spec.ts:448:9 › AR07 375px team_ids panel attaches and removes resolved page context
+[45/52] e2e/threaded-assistant.spec.ts:472:5 › AR07 compare attaches both players, and the full Ask page uses the standalone entry
+[46/52] e2e/threaded-assistant.spec.ts:505:7 › AG05 answer-first chips, tables, trace, follow-up and retained scope at 1440px
+[47/52] e2e/threaded-assistant.spec.ts:544:7 › AG05 web-only limited failure and retry in the shared panel at 1440px
+[48/52] e2e/threaded-assistant.spec.ts:505:7 › AG05 answer-first chips, tables, trace, follow-up and retained scope at 375px
+[49/52] e2e/threaded-assistant.spec.ts:544:7 › AG05 web-only limited failure and retry in the shared panel at 375px
+[50/52] e2e/threaded-assistant.spec.ts:557:5 › AG05 Settings reports active provider, model, limits and limited mode
+[51/52] e2e/threaded-assistant.spec.ts:565:5 › AG05 source details preserve keyboard focus in landscape with reduced motion
+[52/52] e2e/threaded-assistant.spec.ts:579:5 › composer waits for history initialization before accepting input
+  52 passed (41.0s)

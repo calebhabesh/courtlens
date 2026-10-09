@@ -575,3 +575,21 @@ test("AG05 source details preserve keyboard focus in landscape with reduced moti
   await page.screenshot({ path: test.info().outputPath("ag05-landscape-source-details.png") });
   await sourceLink.press("Escape"); await expect(chip).toHaveAttribute("aria-expanded", "false"); await expect(chip).toBeFocused();
 });
+
+test("composer waits for history initialization before accepting input", async ({ page }) => {
+  await mock(page);
+  let release!: () => void;
+  const gate = new Promise<void>(resolve => { release = resolve; });
+  await page.route("**/api/assistant-v2/threads", async route => {
+    if (route.request().method() !== "GET") return route.fallback();
+    await gate;
+    return route.fallback();
+  });
+  await openPage(page, path);
+  await expect(composer(page)).toBeDisabled();
+  release();
+  await expect(composer(page)).toBeEnabled();
+  await composer(page).fill("Explain pick and roll");
+  await expect(composer(page)).toHaveValue("Explain pick and roll");
+  await expect(live(page).getByRole("button", { name: "Send question", exact: true })).toBeEnabled();
+});

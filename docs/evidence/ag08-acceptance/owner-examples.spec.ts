@@ -1,0 +1,48 @@
+import fs from "node:fs/promises";
+import path from "node:path";
+import { expect, test } from "@playwright/test";
+import { readFileSync } from "node:fs";
+import { waitForStreamedPage } from "./workbench-navigation";
+
+// Retained synthetic AG03 examples: UI demonstration only, not live language accuracy.
+for (const name of ["owner-mvp", "owner-best-defender", "owner-rapm"]) {
+const fixture = JSON.parse(readFileSync(path.resolve(process.cwd(), `../docs/evidence/ag03-agent-loop/fixtures/${name}.json`), "utf8"));
+const measured = fixture.response;
+for (const width of [1440, 375]) {
+  test(`AG08 synthetic ${name} renders at ${width}px`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 900 });
+    const threadId = "11111111-1111-4111-8111-000000000707";
+    const header = { thread_id: threadId, title: "New conversation", created_at: "2026-10-08T12:00:00Z", updated_at: "2026-10-08T12:00:00Z" };
+    const turns: unknown[] = [];
+    let created = false;
+    await page.route("**/api/assistant-v2/**", async route => {
+      const request = route.request();
+      const endpoint = new URL(request.url()).pathname.replace("/api/assistant-v2/", "");
+      if (endpoint === "threads") {
+        if (request.method() === "POST") { created = true; return route.fulfill({ json: header }); }
+        return route.fulfill({ json: { threads: created ? [header] : [], next_cursor: null } });
+      }
+      if (endpoint.startsWith("threads/")) return route.fulfill({ json: { thread: header, turns, next_cursor: null } });
+      if (endpoint === "turn/stream") return route.fulfill({ status: 404, json: { detail: "Recorded response uses request/response" } });
+      const body = request.postDataJSON();
+      const response = { ...measured, request_id: body.request_id, thread_id: body.thread_id, turn_id: body.request_id };
+      turns.push({ thread_id: body.thread_id, turn_id: body.request_id, request: body, request_sha256: "a".repeat(64), accepted_at: header.created_at, state: "completed", response });
+      return route.fulfill({ json: response });
+    });
+    await page.goto("/research/ask");
+    await waitForStreamedPage(page);
+    const content = page.locator("#content");
+    await content.getByLabel("Your question", { exact: true }).fill(fixture.request.message);
+    await content.getByRole("button", { name: "Send question", exact: true }).click();
+    const prose = content.locator(".agent-prose");
+    await expect(prose).toBeVisible();
+    await expect(prose).toContainText(measured.answer.text.split("[^", 1)[0].slice(0, 40));
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+    await content.locator(".ask-scroll").evaluate(element => { element.scrollTop = 0; });
+    const directory = "/home/ethioking/dev/nba-analytics/docs/evidence/ag08-acceptance/screenshots";
+    await fs.mkdir(directory, { recursive: true });
+    await page.screenshot({ path: path.join(directory, `${name}-${width}.png`), fullPage: true });
+  });
+}
+
+}
