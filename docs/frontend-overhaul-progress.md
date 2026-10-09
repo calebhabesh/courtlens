@@ -72,12 +72,31 @@ recorded owner approval.
   the pattern for Tier List (FO09).
 - `components/team-grid.tsx` (30 logos + filter) is reusable for Teams (FO10) and team compare (FO11).
 
+## Gate 2 decisions (owner delegated: "use your best recommendation/suggestion wrt. direction")
+
+- **Roster Shapes layout:** keep the Unassigned pool across the top with five position columns below.
+- **Page mode controls on phones:** controls that switch what the board shows (Roster Shapes
+  Observed/Projected, Showcase Focus) stay visible above the board below 768px instead of moving
+  into the Filters sheet with the scope controls. FO06 records this in the filter-bar pattern
+  and applies it to both pages.
+- **Roster Shapes persistence:** not now. Assignments stay in page state; saving them to the
+  workspace is a later, separately scoped request (no FO block).
+- **Showcase:** approved as built in FO04.
+
+## Owner review notes at gate 2 (2026-10-09)
+
+| # | Owner report | Measured cause | Where it is fixed |
+| --- | --- | --- | --- |
+| 1 | Thin line above Stats' preset tabs, Manage Views and Group guides | The shared filter bar's 6% bottom hairline sits at y=198 and Stats' preset row starts at y=199 (0px gap), so the hairline reads as a stray top border on the controls. Other pages leave a gap | **FO13** (`/stats` aligned with shared patterns): give the row after the filter bar the shared gap; check every page for the same 0px gap in FO14 |
+| 2 | Search results list many "Test Player" rows ("No stats in selected scope") | `tests/integration/test_workbench_postgres.py` commits a `WorkbenchIdentity` (`test_player_<uid>`, "Test Player") on each run into the database named by `COURTLENS_TEST_POSTGRES_URL`, which is the dev database: 36 rows, 36 matches from `/api/workbench/lookup` | **Not in any FO block** (backend/test hygiene is out of scope here). Needs its own fix: point the test at a disposable database or clean up its rows, then remove the 36 rows from the dev database with owner approval |
+| 3 | Header search pill is not horizontally centered | The pill is centered in the space between the nav and the right actions, so it sits 253px right of the page center at 1280, 1440 and 2000. True page centering collides with the nav (ends at x=632) below about 1,700px unless the pill shrinks | **FO06** (header pattern in Design Language v1.1): center on the page where it fits, otherwise place it in the free space, and record the rule; FO14 re-measures at 1280/1440/1920 |
+
 ## Owner gates
 
 | Gate | After | Status | Notes |
 | --- | --- | --- | --- |
 | 1 | FO03 | **approved 2026-10-09** (owner: "Go ahead with the next block. I approve.") | Header, search, drawer, filter bar, primitives. Review list: [FO03 evidence](evidence/fo03/README.md#owner-review-gate-1) |
-| 2 | FO05 | pending | Showcase, Roster Shapes, search |
+| 2 | FO05 | **approved 2026-10-09** (owner: "For Review gate 2, use your best recommendation/suggestion wrt. direction.") | Showcase, Roster Shapes, search. Decisions and review notes above; review list: [FO05 evidence](evidence/fo05/README.md#owner-review-gate-2) |
 
 ## Block status
 
