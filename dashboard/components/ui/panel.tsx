@@ -62,39 +62,36 @@ export function Section({
 }
 
 export interface PageHeaderProps extends Omit<HTMLAttributes<HTMLDivElement>, "title"> {
+  /** Title Case, matching the page's nav label exactly (D7). */
   title: ReactNode;
-  subtitle?: ReactNode;
+  /** At most one short line; longer text is clipped. Disclaimers belong in "Why?" or Data details. */
+  subtitle?: string;
   icon?: IconName;
+  /** The page's main actions, aligned right on the title row. */
   actions?: ReactNode;
-  breadcrumbs?: ReactNode;
 }
 
+/** Page header (D7): title and actions share one row; one optional subtitle line below. */
 export function PageHeader({
   title,
   subtitle,
   icon,
   actions,
-  breadcrumbs,
   className = "",
   ...props
 }: PageHeaderProps) {
   return (
-    <div className={`ui-page-header ${className}`} {...props}>
-      <div className="ui-page-header-main">
-        {breadcrumbs && <div className="ui-page-header-breadcrumbs">{breadcrumbs}</div>}
-        <div className="ui-page-header-title-row">
-          {icon && (
-            <span className="ui-page-header-icon">
-              <Icon name={icon} size={24} />
-            </span>
-          )}
-          <div>
-            <h1 className="ui-page-header-title">{title}</h1>
-            {subtitle && <p className="ui-page-header-subtitle text-muted">{subtitle}</p>}
-          </div>
-        </div>
+    <header className={`ui-page-header ${className}`} {...props}>
+      <div className="ui-page-header-title-row">
+        {icon && (
+          <span className="ui-page-header-icon">
+            <Icon name={icon} size={24} />
+          </span>
+        )}
+        <h1 className="ui-page-header-title">{title}</h1>
+        {actions && <div className="ui-page-header-actions">{actions}</div>}
       </div>
-      {actions && <div className="ui-page-header-actions">{actions}</div>}
-    </div>
+      {subtitle && <p className="ui-page-header-subtitle" title={subtitle}>{subtitle}</p>}
+    </header>
   );
 }

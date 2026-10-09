@@ -24,9 +24,10 @@ test("catalog scope options keep unavailable context explicit and synchronize na
   await expect(season.locator("option:checked")).toContainText("unavailable");
   await season.selectOption("2025-26");
   await expect(page.getByLabel("Phase", { exact: true })).toHaveValue("regular_season");
-  await expect(page.getByLabel("Before date", { exact: true })).toHaveValue("2026-06-30");
+  // The picker shows the last included day; the URL keeps the exclusive cutoff (2026-06-30).
+  await expect(page.getByRole("button", { name: /^Through date:/ })).toHaveAttribute("data-value", "2026-06-29");
   await openWorkbench(page, "/wowy?season=2025-26&phase=regular_season&beforeDate=2026-04-01");
-  await expect(page.getByLabel("Before date", { exact: true })).toHaveValue("2026-04-01");
+  await expect(page.getByRole("button", { name: /^Through date:/ })).toHaveAttribute("data-value", "2026-03-31");
 });
 
 test("settings distinguishes configured key from provider health and hides operator details", async ({ page }) => {

@@ -5,6 +5,7 @@ import { InstallInterface } from "@/components/install-interface";
 import { WorkbenchPortraitSettings } from "@/components/workbench-portrait-settings";
 import { AssistantStatusCard } from "@/components/assistant-status-card";
 import { AssistantHistorySettings } from "@/components/assistant-history-settings";
+import { AdvancedModeSetting } from "@/components/advanced-mode-setting";
 import { getAssistantStatus, getWorkbenchStatus } from "@/lib/workbench-api";
 import type { AssistantStatusResponse, WorkbenchStatus } from "@/lib/types";
 
@@ -50,6 +51,7 @@ export default async function SettingsPage() {
 
       <div className="page-actions"><Link href="/data-status">Source lineage, freshness and jobs</Link><Link href="/methodology">Definitions</Link><Link href="/investigations">Saved evidence</Link><Link href="/patch-notes">Dated changes</Link></div>
 
+      <AdvancedModeSetting />
 
       {/* Player Portrait Cache Coverage */}
       <WorkbenchPortraitSettings

@@ -1,7 +1,8 @@
-@layer tokens, base, motion, components, pages;
+@layer tokens, base, motion, components, pages, foundation;
 
 @import "./styles/tokens.css";
 @import "./styles/base.css";
 @import "./styles/motion.css";
 @import "./styles/components.css";
 @import "./styles/pages.css";
+@import "./styles/foundation.css";

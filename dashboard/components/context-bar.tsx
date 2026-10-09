@@ -3,7 +3,14 @@
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 
+import { CountChip, FilterBar } from "@/components/ui/filter-bar";
+import { DataDetailsButton } from "@/components/ui/data-details";
+import { DatePicker } from "@/components/ui/date-picker";
+import { Field } from "@/components/ui/field";
+import { Select } from "@/components/ui/select";
+import { beforeDateFromThrough, formatDate, throughDateFromBefore } from "@/lib/format-date";
 import { getSharedCatalog } from "@/lib/route-availability";
+import { applyScopeChange, type ScopeKey } from "@/lib/scope-url";
 import type { WorkbenchCatalog } from "@/lib/types";
 
 interface ContextBarProps {
@@ -17,6 +24,10 @@ interface ContextBarProps {
   initialWindow?: string;
   sampleSize?: number;
   lastIncludedDate?: string | null;
+  /** D6: Window appears only on pages whose results depend on it. */
+  showWindow?: boolean;
+  /** Page-specific filters rendered to the right of the scope controls. */
+  filters?: React.ReactNode;
 }
 
 const PHASES = [
@@ -32,16 +43,6 @@ const WINDOWS = [
   { value: "last_5", label: "Last 5 appearances" }
 ];
 
-function CutoffDateField({ value, onCommit }: { value: string; onCommit: (value: string) => void }) {
-  const [draft, setDraft] = useState(value);
-  const commit = () => {
-    if (draft !== value && /^\d{4}-\d{2}-\d{2}$/.test(draft)) onCommit(draft);
-  };
-  return <input type="date" value={draft} onChange={(event) => setDraft(event.target.value)}
-    onBlur={commit} onKeyDown={(event) => { if (event.key === "Enter") commit(); }}
-    className="context-input" aria-label="Before date cutoff" />;
-}
-
 export function ContextBar({
   catalog: suppliedCatalog,
   allowedPhases,
@@ -52,7 +53,9 @@ export function ContextBar({
   initialBeforeDate = "2026-06-30",
   initialWindow = "season",
   sampleSize,
-  lastIncludedDate
+  lastIncludedDate,
+  showWindow = true,
+  filters
 }: ContextBarProps) {
   const router = useRouter();
   const pathname = usePathname();
@@ -76,120 +79,74 @@ export function ContextBar({
   }, [suppliedCatalog, releaseId]);
   const catalog = suppliedCatalog ?? (loadedCatalog?.releaseId === releaseId ? loadedCatalog?.catalog : undefined);
 
-
-  const dateScope = `${releaseId}:${season}:${phase}:${beforeDate}:${windowParam}`;
   const seasons = catalog?.seasons ?? [initialSeason];
   const observedPhases = catalog?.stats_scopes?.filter((scope) => scope.season === season).map((scope) => scope.phase) ?? catalog?.phases;
   const phases = allowedPhases ?? observedPhases ?? [initialPhase];
   const windows = catalog?.stats_windows ?? WINDOWS.map((w) => w.value);
+  const coverage = catalog?.stats_scopes?.find((scope) => scope.season === season && scope.phase === phase);
 
   const updateParam = useCallback(
-    (key: string, value: string) => {
-      const params = new URLSearchParams(searchParams?.toString() ?? "");
-      const aliases: Record<string, string> = { beforeDate: "before_date", releaseId: "release_id" };
-      if (aliases[key]) params.delete(aliases[key]);
-      if (key === "season" && catalog?.stats_scopes) {
-        const scopes = catalog.stats_scopes.filter((scope) => scope.season === value && (!allowedPhases || allowedPhases.includes(scope.phase)));
-        const scope = scopes.find((scope) => scope.phase === phase) ?? scopes.find((scope) => scope.phase === "regular_season") ?? scopes[0];
-        if (scope) {
-          params.set("phase", scope.phase);
-          params.delete("before_date");
-          params.set("beforeDate", scope.default_before_date);
-        }
-      }
-      if (key === "phase") {
-        const scope = catalog?.stats_scopes?.find((scope) => scope.season === season && scope.phase === value);
-        if (scope) { params.delete("before_date"); params.set("beforeDate", scope.default_before_date); }
-      }
-      if (key === "window") {
-        for (const name of ["windowN", "window_n", "fromDate", "from_date", "toDate", "to_date"]) params.delete(name);
-      }
-      if (value) {
-        params.set(key, value);
-      } else {
-        params.delete(key);
-      }
-      if (releaseId && !params.has("releaseId") && !params.has("release_id")) {
-        params.set("releaseId", releaseId);
-      }
-      // Reset cursor pagination when context parameters change
-      params.delete("cursor");
+    (key: ScopeKey, value: string) => {
+      const params = applyScopeChange(searchParams?.toString() ?? "", key, value, { catalog, season, phase, releaseId, allowedPhases });
       router.push(`${pathname}?${params.toString()}`);
     },
     [router, pathname, searchParams, releaseId, catalog, phase, season, allowedPhases]
   );
 
-  return (
-    <header className="context-bar" aria-label="Research context controls">
-      <div className="context-controls">
-        <label className="context-field">
-          <span className="context-label">Season</span>
-          <select
-            value={season}
-            onChange={(e) => updateParam("season", e.target.value)}
-            className="context-select"
-            aria-label="Filter by season"
-          >
-            {!seasons.includes(season) && <option value={season}>{season} · unavailable</option>}
-            {seasons.map((s) => (
-              <option key={s} value={s}>
-                {s}
-              </option>
-            ))}
-          </select>
-        </label>
+  const phaseLabel = (value: string) => PHASES.find((p) => p.value === value)?.label ?? value;
+  const throughDate = /^\d{4}-\d{2}-\d{2}$/.test(beforeDate) ? throughDateFromBefore(beforeDate) : "";
 
-        <label className="context-field">
-          <span className="context-label">Phase</span>
-          <select
-            value={phase}
-            onChange={(e) => updateParam("phase", e.target.value)}
-            className="context-select"
-            aria-label="Filter by competition phase"
-          >
-            {!phases.includes(phase) && <option value={phase}>{phase} · unavailable</option>}
-            {phases.map((value) => ({ value, label: PHASES.find((p) => p.value === value)?.label ?? value })).map((p) => (
-              <option key={p.value} value={p.value}>
-                {p.label}
-              </option>
-            ))}
-          </select>
-        </label>
-
-        <label className="context-field">
-          <span className="context-label">Before date</span>
-          <CutoffDateField key={dateScope} value={beforeDate} onCommit={(value) => updateParam("beforeDate", value)} />
-        </label>
-
-        <label className="context-field">
-          <span className="context-label">Window</span>
-          <select
-            value={windowParam}
-            onChange={(e) => updateParam("window", e.target.value)}
-            className="context-select"
-            aria-label="Analysis window"
-          >
+  const scope = (
+    <>
+      <Field label="Season" layout="inline">
+        <Select value={season} onChange={(e) => updateParam("season", e.target.value)} aria-label="Filter by season">
+          {!seasons.includes(season) && <option value={season}>{season} · unavailable</option>}
+          {seasons.map((s) => <option key={s} value={s}>{s}</option>)}
+        </Select>
+      </Field>
+      <Field label="Phase" layout="inline">
+        <Select value={phase} onChange={(e) => updateParam("phase", e.target.value)} aria-label="Filter by competition phase">
+          {!phases.includes(phase) && <option value={phase}>{phase} · unavailable</option>}
+          {phases.map((value) => <option key={value} value={value}>{phaseLabel(value)}</option>)}
+        </Select>
+      </Field>
+      <Field label="Through" layout="inline">
+        <DatePicker
+          label="Through date"
+          value={throughDate}
+          min={coverage?.coverage_start}
+          max={coverage?.coverage_end}
+          onChange={(value) => updateParam("beforeDate", beforeDateFromThrough(value))}
+        />
+      </Field>
+      {showWindow && (
+        <Field label="Window" layout="inline">
+          <Select value={windowParam} onChange={(e) => updateParam("window", e.target.value)} aria-label="Analysis window">
             {!windows.includes(windowParam) && <option value={windowParam}>{windowParam} · unavailable</option>}
-            {WINDOWS.filter((w) => windows.includes(w.value)).map((w) => (
-              <option key={w.value} value={w.value}>
-                {w.label}
-              </option>
-            ))}
-          </select>
-        </label>
-      </div>
+            {WINDOWS.filter((w) => windows.includes(w.value)).map((w) => <option key={w.value} value={w.value}>{w.label}</option>)}
+          </Select>
+        </Field>
+      )}
+    </>
+  );
 
-      <div className="context-meta">
-        <span className="context-cutoff-badge" title="Exclusive cutoff: includes only games dated before this day in America/New_York.">
-          Strictly prior to {beforeDate}
-        </span>
-        {lastIncludedDate && (
-          <span className="context-last-date">Last game: {lastIncludedDate}</span>
-        )}
-        {sampleSize !== undefined && (
-          <span className="context-sample">{sampleSize} {sampleNoun}</span>
-        )}
-      </div>
-    </header>
+  return (
+    <FilterBar
+      scope={scope}
+      filters={filters}
+      summary={`${season} · ${phaseLabel(phase)}${throughDate ? ` · ${formatDate(throughDate, "compact")}` : ""}`}
+      count={sampleSize !== undefined ? <CountChip>{sampleSize.toLocaleString("en-US")} {sampleNoun}</CountChip> : undefined}
+      details={
+        <DataDetailsButton
+          scope={{ releaseId: releaseId ?? catalog?.release_id, season, phase, beforeDate, window: showWindow ? windowParam : null, lastIncludedDate }}
+          rows={catalog ? [
+            { label: "Dataset", value: catalog.dataset_id, mono: true },
+            { label: "Snapshot", value: catalog.snapshot_id, mono: true },
+            { label: "Source", value: catalog.source },
+            { label: "Coverage", value: `${formatDate(catalog.coverage_start)} – ${formatDate(catalog.coverage_end)}` }
+          ] : []}
+        />
+      }
+    />
   );
 }

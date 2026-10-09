@@ -43,6 +43,7 @@ import {
   AccordionItem,
   Presence,
 } from "@/components/ui";
+import { DesignFoundationShowcase } from "@/components/design-foundation-showcase";
 import { motion, DURATIONS, SPRING, useReducedMotion } from "@/lib/motion";
 import RootLoading from "@/app/loading";
 import StatsLoading from "@/app/stats/loading";
@@ -124,6 +125,10 @@ function DesignShowcase() {
 
       <div className="ui-design-grid">
         {/* SECTION 1: DESIGN TOKENS */}
+        <Section title="0. Foundation (frontend overhaul FO01)" description="Page header, filter bar, fields, date picker, chips, gated notes, Data details, identity, stat tiles and template skeletons.">
+          <DesignFoundationShowcase />
+        </Section>
+
         <Section title="1. Design Tokens" description="Strict 4px rhythm, tonal surfaces, and zero harsh outlines.">
           <div className="ui-design-token-row">
             {/* Color Swatches */}
