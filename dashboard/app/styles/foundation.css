@@ -637,6 +637,118 @@
   .ui-drawer-root > .ui-scrim { z-index: var(--z-base); }
   .ui-drawer-root > .ui-drawer-panel { z-index: var(--z-sticky); }
 
+  /* ---------- Header, search and drawer (FO02, D8/D9) ----------
+   * Desktop (>=1280px): nav + centred search pill + Ask + More. Below 1280px the nav and More
+   * move into the drawer behind the hamburger. Below 768px the pill becomes one search icon.
+   * The palette, drawer and dialogs render at document.body (OverlayPortal), so the header's
+   * backdrop-filter can no longer become their containing block. */
+  .courtlens-header .courtlens-mobile-toggle,
+  .courtlens-header .courtlens-mobile-search-btn { display: none; }
+  .courtlens-header-right .ui-button { height: var(--control-md); }
+  .courtlens-header-right .ui-icon-button { width: var(--control-md); }
+
+  .ui-command-palette-scrim { align-items: flex-start; padding: 12vh var(--space-4) var(--space-4); }
+  .ui-command-palette { width: min(640px, 100%); max-height: min(600px, 76vh); }
+  /* Inside the modal the input is a flat row: the modal is the box, so no second border or ring. */
+  .ui-command-palette .lookup-input-wrapper,
+  .ui-command-palette .lookup-input-wrapper:focus-within {
+    height: auto;
+    min-height: var(--header-height);
+    padding-inline: var(--space-4) var(--space-2);
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid var(--color-hairline);
+    border-radius: 0;
+  }
+  .ui-command-palette .ui-command-input { padding: 0; font-size: var(--text-md); }
+  .ui-command-palette .lookup-clear-btn { transform: none; }
+  .ui-command-palette .lookup-group-header { background: transparent; }
+  .ui-command-close { display: none; }
+  .ui-command-palette .ui-command-list { flex: 1; min-height: 0; }
+  .ui-command-palette .lookup-option { min-height: var(--control-lg); }
+  /* One fixed leading column (headshot, logo or icon) so every name starts at the same x; a
+   * player's team logos sit in the caption line beside the team text. */
+  .ui-command-palette .lookup-item-leading {
+    display: inline-grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: var(--space-8);
+    color: var(--color-text-secondary);
+  }
+  .ui-command-palette .lookup-item-subtitle { display: flex; align-items: center; gap: var(--space-1); }
+  .ui-command-footer kbd {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: var(--space-5);
+    height: var(--space-5);
+    margin-inline-end: var(--space-1);
+    padding: 0 var(--space-1);
+    border-radius: var(--radius-xs);
+    background: var(--color-surface-3);
+    font-family: var(--font-mono), monospace;
+  }
+
+  /* A collapsed accordion keeps a 0fr row, but its inner padding still showed a sliver of the
+   * first link. Collapse the padding with the row; `inert` (accordion.tsx) removes it from Tab. */
+  .ui-accordion-content-inner { min-height: 0; transition: padding var(--dur-slow) var(--ease-out); }
+  .ui-accordion-content[data-expanded="false"] > .ui-accordion-content-inner { padding-block-end: 0; }
+
+  /* Menu group titles: one quiet line, never wrapped (Research has five groups). */
+  .courtlens-dropdown-section-title {
+    padding: var(--space-1) var(--space-3);
+    font-family: inherit;
+    font-size: var(--text-xs);
+    font-weight: 600;
+    letter-spacing: 0;
+    text-transform: none;
+    white-space: nowrap;
+    color: var(--color-text-tertiary);
+  }
+
+  .replica-mobile-drawer .ui-drawer-body { padding: 0; }
+  .courtlens-mobile-group { display: flex; flex-direction: column; gap: var(--space-0-5); }
+  .courtlens-mobile-group + .courtlens-mobile-group { margin-top: var(--space-2); }
+  .courtlens-mobile-group-title {
+    padding: var(--space-1) var(--space-3);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    color: var(--color-text-tertiary);
+  }
+  .courtlens-mobile-link,
+  .courtlens-mobile-sublink { min-height: var(--control-lg); }
+  .courtlens-mobile-sublink.active { color: var(--color-accent); font-weight: 600; }
+
+  @media (max-width: 1279px) {
+    .courtlens-header .courtlens-nav,
+    .courtlens-header .courtlens-more { display: none; }
+    .courtlens-header .courtlens-mobile-toggle { display: inline-flex; }
+    .courtlens-header-right .ui-button { height: var(--control-lg); }
+    .courtlens-header-right .ui-icon-button { width: var(--control-lg); }
+  }
+
+  @media (max-width: 767px) {
+    .courtlens-header { grid-template-columns: minmax(0, 1fr) auto; padding: 0 var(--space-4); }
+    .courtlens-header .courtlens-header-center { display: none; }
+    .courtlens-header .courtlens-mobile-search-btn { display: inline-flex; }
+    .ui-command-palette-scrim { padding: 0; }
+    .ui-command-palette { width: 100%; height: 100dvh; max-height: 100dvh; border-radius: 0; }
+    .ui-command-palette .ui-command-shortcut,
+    .ui-command-footer { display: none; }
+    .ui-command-close {
+      display: inline-grid;
+      place-items: center;
+      flex-shrink: 0;
+      height: var(--control-lg);
+      padding: 0 var(--space-2);
+      border: 0;
+      font-size: var(--text-sm);
+      border-radius: var(--radius-sm);
+      background: transparent;
+      color: var(--color-text-secondary);
+    }
+  }
+
   /* ---------- Responsive (D25) ---------- */
   @media (max-width: 1279px) {
     .ui-board { grid-template-columns: minmax(0, 1fr); }

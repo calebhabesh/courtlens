@@ -68,12 +68,13 @@ test("global search clear button uses the right edge and concise player captions
   await page.locator(".courtlens-search-pill").click();
   const input = page.getByRole("combobox", { name: "Search players, teams and pages", exact: true });
   await input.fill("Star");
-  const gap = await page.locator(".replica-search-container").evaluate(element =>
+  // FO02: the search modal is .ui-command-palette; .ui-command-palette on its scrim caused the 480px dim column.
+  const gap = await page.locator(".ui-command-palette").evaluate(element =>
     element.querySelector("input")!.getBoundingClientRect().right - element.querySelector(".lookup-clear-btn")!.getBoundingClientRect().right);
   expect(gap).toBeLessThanOrEqual(8);
-  await expect(page.locator(".replica-search-container").getByRole("option")).toHaveCount(3);
-  await expect(page.locator(".replica-search-container .lookup-alias-badge")).toHaveCount(0);
-  const captions = await page.locator(".replica-search-container .lookup-item-subtitle").allTextContents();
+  await expect(page.locator(".ui-command-palette").getByRole("option")).toHaveCount(3);
+  await expect(page.locator(".ui-command-palette .lookup-alias-badge")).toHaveCount(0);
+  const captions = await page.locator(".ui-command-palette .lookup-item-subtitle").allTextContents();
   expect(captions).toEqual(["TOR · 2025-26", "No stats in selected scope", "BOS · Last observed team"]);
 });
 

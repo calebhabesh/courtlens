@@ -91,9 +91,9 @@
   z-index: var(--z-header);
   height: var(--header-height);
   width: 100%;
-  /* Symmetric side tracks keep the search pill at the true centre of the bar. */
+  /* The centre track takes only the width the nav and actions leave, so the pill cannot overlap them. */
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
   column-gap: var(--space-4);
   padding: 0 var(--space-6);
@@ -109,8 +109,9 @@
 .courtlens-header.scrolled,
 .replica-header.scrolled {
   background: color-mix(in srgb, var(--color-surface-1) 85%, transparent);
+  /* Write only the standard property; with an explicit -webkit- copy after it the CSS compiler
+     kept only the prefixed form, which Chromium ignores (FO02 finding). */
   backdrop-filter: blur(12px) saturate(140%);
-  -webkit-backdrop-filter: blur(12px) saturate(140%);
   box-shadow: var(--shadow-1);
 }
 
@@ -194,7 +195,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: clamp(240px, 26vw, 380px);
+  justify-self: center;
+  width: 100%;
+  max-width: 380px;
+  min-width: 0;
 }
 
 .courtlens-search-pill {
@@ -662,10 +666,10 @@
 .courtlens-dropdown-multicol,
 .replica-dropdown-multicol {
   display: grid;
-  grid-template-columns: 200px 240px;
+  grid-template-columns: repeat(3, minmax(180px, auto));
   gap: var(--space-3);
   padding: var(--space-3);
-  min-width: 460px;
+  min-width: 0;
 }
 
 .courtlens-dropdown-col,
@@ -851,67 +855,6 @@
 .courtlens-mobile-sublink:focus {
   color: var(--color-accent);
   background-color: var(--color-surface-hover);
-}
-
-/* Responsive adjustments <= 900px */
-@media (max-width: 900px) {
-  .courtlens-nav,
-  .courtlens-header-center {
-    display: none;
-  }
-
-  .courtlens-mobile-search-btn,
-  .courtlens-mobile-toggle {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .courtlens-header,
-  .replica-header {
-    grid-template-columns: minmax(0, 1fr) auto;
-    padding: 0 var(--space-4);
-  }
-}
-
-/* Command Palette styles */
-.ui-command-palette-scrim {
-  position: fixed;
-  inset: 0;
-  background: var(--color-scrim);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  z-index: var(--z-modal);
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  padding-top: var(--space-16);
-}
-
-.ui-command-palette {
-  background: var(--color-surface-3);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-3);
-  border: 1px solid var(--color-hairline-strong);
-  width: min(600px, calc(100vw - 32px));
-  max-height: min(560px, 80vh);
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  outline: none;
-}
-
-@media (max-width: 600px) {
-  .ui-command-palette-scrim {
-    padding-top: 0;
-  }
-  .ui-command-palette {
-    width: 100vw;
-    height: 100vh;
-    max-height: 100vh;
-    border-radius: 0;
-    border: none;
-  }
 }
 
 .ui-command-input-wrapper {
@@ -2285,7 +2228,6 @@ textarea, input, select { max-width: 100%; }
 @media (max-width: 900px) {
   :root { --shell-height: var(--header-height); --page-gutter: 16px; }
   .replica-mobile-toggle { min-width: 44px; min-height: 44px; }
-  .replica-mobile-drawer { max-height: calc(100dvh - var(--header-height)); }
 }
 @media (max-width: 600px) {
   :root { --page-gutter: 12px; --control-height: 44px; }
