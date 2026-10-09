@@ -1,0 +1,3001 @@
+{
+  "captured_at": "2026-10-09T04:38:30.844Z",
+  "base_url": "http://127.0.0.1:3100",
+  "routes": {
+    "/stats": {
+      "desktop": {
+        "status": 200,
+        "final_url": "/stats?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&window=season&countingMode=per_game",
+        "screenshot": "stats--desktop.png",
+        "load_ms": 2350,
+        "title": "Stats Explorer \u00b7 CourtLens \u00b7 CourtLens",
+        "h1": [
+          "Stats Explorer"
+        ],
+        "subtitles": [
+          "NBA player statistics. Explore production, shooting and efficiency within your selected scope."
+        ],
+        "loadButtons": [],
+        "nativeDateInputs": 1,
+        "notices": 0,
+        "dateFormats": {
+          "iso": 1,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {
+          "\u2713": 1,
+          "\u2190": 1,
+          "\u2192": 1
+        },
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 1,
+        "horizontalOverflow": false,
+        "scrollHeight": 900
+      },
+      "phone": {
+        "status": 200,
+        "final_url": "/stats?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&window=season&countingMode=per_game",
+        "screenshot": "stats--phone.png",
+        "load_ms": 2386,
+        "title": "Stats Explorer \u00b7 CourtLens \u00b7 CourtLens",
+        "h1": [
+          "Stats Explorer"
+        ],
+        "subtitles": [
+          "NBA player statistics. Explore production, shooting and efficiency within your selected scope."
+        ],
+        "loadButtons": [],
+        "nativeDateInputs": 1,
+        "notices": 0,
+        "dateFormats": {
+          "iso": 1,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {
+          "\u2713": 1,
+          "\u2190": 1,
+          "\u2192": 1
+        },
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 1,
+        "horizontalOverflow": false,
+        "scrollHeight": 1327
+      }
+    },
+    "/players": {
+      "desktop": {
+        "status": 200,
+        "final_url": "/players?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&window=season&countingMode=per_game",
+        "screenshot": "players--desktop.png",
+        "load_ms": 2300,
+        "title": "Player Explorer \u00b7 CourtLens \u00b7 CourtLens",
+        "h1": [
+          "Player Explorer"
+        ],
+        "subtitles": [
+          "NBA player statistics. Explore production, shooting and efficiency within your selected scope."
+        ],
+        "loadButtons": [],
+        "nativeDateInputs": 1,
+        "notices": 0,
+        "dateFormats": {
+          "iso": 1,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {
+          "\u2713": 1,
+          "\u2190": 1,
+          "\u2192": 1
+        },
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 1,
+        "horizontalOverflow": false,
+        "scrollHeight": 900
+      },
+      "phone": {
+        "status": 200,
+        "final_url": "/players?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&window=season&countingMode=per_game",
+        "screenshot": "players--phone.png",
+        "load_ms": 2298,
+        "title": "Player Explorer \u00b7 CourtLens \u00b7 CourtLens",
+        "h1": [
+          "Player Explorer"
+        ],
+        "subtitles": [
+          "NBA player statistics. Explore production, shooting and efficiency within your selected scope."
+        ],
+        "loadButtons": [],
+        "nativeDateInputs": 1,
+        "notices": 0,
+        "dateFormats": {
+          "iso": 1,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {
+          "\u2713": 1,
+          "\u2190": 1,
+          "\u2192": 1
+        },
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 1,
+        "horizontalOverflow": false,
+        "scrollHeight": 1327
+      }
+    },
+    "/teams": {
+      "desktop": {
+        "status": 200,
+        "final_url": "/teams",
+        "screenshot": "teams--desktop.png",
+        "load_ms": 1631,
+        "title": "Team Explorer & Four Factors \u00b7 CourtLens \u00b7 CourtLens",
+        "h1": [
+          "Team Explorer"
+        ],
+        "subtitles": [
+          "Verified franchise standings, Dean Oliver Four Factors, offensive/defensive ratings, and pace distributions across 2025-26 regular season."
+        ],
+        "loadButtons": [],
+        "nativeDateInputs": 1,
+        "notices": 1,
+        "dateFormats": {
+          "iso": 1,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {
+          "\u2192": 30
+        },
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 1,
+        "horizontalOverflow": false,
+        "scrollHeight": 2729
+      },
+      "phone": {
+        "status": 200,
+        "final_url": "/teams",
+        "screenshot": "teams--phone.png",
+        "load_ms": 1644,
+        "title": "Team Explorer & Four Factors \u00b7 CourtLens \u00b7 CourtLens",
+        "h1": [
+          "Team Explorer"
+        ],
+        "subtitles": [
+          "Verified franchise standings, Dean Oliver Four Factors, offensive/defensive ratings, and pace distributions across 2025-26 regular season."
+        ],
+        "loadButtons": [],
+        "nativeDateInputs": 1,
+        "notices": 1,
+        "dateFormats": {
+          "iso": 1,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {
+          "\u2192": 30
+        },
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 1,
+        "horizontalOverflow": false,
+        "scrollHeight": 3292
+      }
+    },
+    "/compare": {
+      "desktop": {
+        "status": 200,
+        "final_url": "/compare",
+        "screenshot": "compare--desktop.png",
+        "load_ms": 1501,
+        "title": "Compare Players \u00b7 CourtLens \u00b7 CourtLens",
+        "h1": [
+          "Compare Players"
+        ],
+        "subtitles": [
+          "Side-by-side descriptive metrics, visual comparison bars, and game-log progression under an identical cutoff."
+        ],
+        "loadButtons": [],
+        "nativeDateInputs": 0,
+        "notices": 0,
+        "dateFormats": {
+          "iso": 2,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {},
+        "uuids": 1,
+        "codeRules": 0,
+        "strictlyPrior": 0,
+        "horizontalOverflow": false,
+        "scrollHeight": 900
+      },
+      "phone": {
+        "status": 200,
+        "final_url": "/compare",
+        "screenshot": "compare--phone.png",
+        "load_ms": 1512,
+        "title": "Compare Players \u00b7 CourtLens \u00b7 CourtLens",
+        "h1": [
+          "Compare Players"
+        ],
+        "subtitles": [
+          "Side-by-side descriptive metrics, visual comparison bars, and game-log progression under an identical cutoff."
+        ],
+        "loadButtons": [],
+        "nativeDateInputs": 0,
+        "notices": 0,
+        "dateFormats": {
+          "iso": 2,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {},
+        "uuids": 1,
+        "codeRules": 0,
+        "strictlyPrior": 0,
+        "horizontalOverflow": false,
+        "scrollHeight": 965
+      }
+    },
+    "/team-compare": {
+      "desktop": {
+        "status": 200,
+        "final_url": "/team-compare",
+        "screenshot": "team-compare--desktop.png",
+        "load_ms": 1780,
+        "title": "Team Comparison & Four Factors Analysis \u00b7 CourtLens \u00b7 CourtLens",
+        "h1": [
+          "Team Comparison & Four Factors Analysis"
+        ],
+        "subtitles": [
+          "Head-to-head encounters, Dean Oliver Four Factors, Feature F18 3-point variation scenario, and rotation participation cohorts for 2025-26 regular season."
+        ],
+        "loadButtons": [],
+        "nativeDateInputs": 1,
+        "notices": 4,
+        "dateFormats": {
+          "iso": 4,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {},
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 2,
+        "horizontalOverflow": false,
+        "scrollHeight": 1680
+      },
+      "phone": {
+        "status": 200,
+        "final_url": "/team-compare",
+        "screenshot": "team-compare--phone.png",
+        "load_ms": 1867,
+        "title": "Team Comparison & Four Factors Analysis \u00b7 CourtLens \u00b7 CourtLens",
+        "h1": [
+          "Team Comparison & Four Factors Analysis"
+        ],
+        "subtitles": [
+          "Head-to-head encounters, Dean Oliver Four Factors, Feature F18 3-point variation scenario, and rotation participation cohorts for 2025-26 regular season."
+        ],
+        "loadButtons": [],
+        "nativeDateInputs": 1,
+        "notices": 4,
+        "dateFormats": {
+          "iso": 4,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {},
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 2,
+        "horizontalOverflow": false,
+        "scrollHeight": 3043
+      }
+    },
+    "/matchups": {
+      "desktop": {
+        "status": 200,
+        "final_url": "/matchups",
+        "screenshot": "matchups--desktop.png",
+        "load_ms": 1552,
+        "title": "CourtLens \u00b7 NBA Analytics",
+        "h1": [
+          "Source assignment matchups"
+        ],
+        "subtitles": [
+          "Observed shooting, explicit assignments and bounded possession sequences."
+        ],
+        "loadButtons": [],
+        "nativeDateInputs": 2,
+        "notices": 0,
+        "dateFormats": {
+          "iso": 0,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {},
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 0,
+        "horizontalOverflow": false,
+        "scrollHeight": 900
+      },
+      "phone": {
+        "status": 200,
+        "final_url": "/matchups",
+        "screenshot": "matchups--phone.png",
+        "load_ms": 1494,
+        "title": "CourtLens \u00b7 NBA Analytics",
+        "h1": [
+          "Source assignment matchups"
+        ],
+        "subtitles": [
+          "Observed shooting, explicit assignments and bounded possession sequences."
+        ],
+        "loadButtons": [],
+        "nativeDateInputs": 2,
+        "notices": 0,
+        "dateFormats": {
+          "iso": 0,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {},
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 0,
+        "horizontalOverflow": false,
+        "scrollHeight": 1389
+      }
+    },
+    "/wowy": {
+      "desktop": {
+        "status": 200,
+        "final_url": "/wowy",
+        "screenshot": "wowy--desktop.png",
+        "load_ms": 1520,
+        "title": "CourtLens \u00b7 NBA Analytics",
+        "h1": [
+          "WOWY \u00b7 Shared floor"
+        ],
+        "subtitles": [
+          "Observed lineup exposure, raw rates and descriptive differences."
+        ],
+        "loadButtons": [],
+        "nativeDateInputs": 2,
+        "notices": 1,
+        "dateFormats": {
+          "iso": 0,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {},
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 0,
+        "horizontalOverflow": false,
+        "scrollHeight": 900
+      },
+      "phone": {
+        "status": 200,
+        "final_url": "/wowy",
+        "screenshot": "wowy--phone.png",
+        "load_ms": 1495,
+        "title": "CourtLens \u00b7 NBA Analytics",
+        "h1": [
+          "WOWY \u00b7 Shared floor"
+        ],
+        "subtitles": [
+          "Observed lineup exposure, raw rates and descriptive differences."
+        ],
+        "loadButtons": [],
+        "nativeDateInputs": 2,
+        "notices": 1,
+        "dateFormats": {
+          "iso": 0,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {},
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 0,
+        "horizontalOverflow": false,
+        "scrollHeight": 1676
+      }
+    },
+    "/stat-line-shift": {
+      "desktop": {
+        "status": 200,
+        "final_url": "/stat-line-shift",
+        "screenshot": "stat-line-shift--desktop.png",
+        "load_ms": 1522,
+        "title": "CourtLens \u00b7 NBA Analytics",
+        "h1": [
+          "Teammate stat-line shift"
+        ],
+        "subtitles": [
+          "Observed lineup exposure, raw rates and descriptive differences."
+        ],
+        "loadButtons": [],
+        "nativeDateInputs": 2,
+        "notices": 1,
+        "dateFormats": {
+          "iso": 0,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {},
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 0,
+        "horizontalOverflow": false,
+        "scrollHeight": 900
+      },
+      "phone": {
+        "status": 200,
+        "final_url": "/stat-line-shift",
+        "screenshot": "stat-line-shift--phone.png",
+        "load_ms": 1540,
+        "title": "CourtLens \u00b7 NBA Analytics",
+        "h1": [
+          "Teammate stat-line shift"
+        ],
+        "subtitles": [
+          "Observed lineup exposure, raw rates and descriptive differences."
+        ],
+        "loadButtons": [],
+        "nativeDateInputs": 2,
+        "notices": 1,
+        "dateFormats": {
+          "iso": 0,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {},
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 0,
+        "horizontalOverflow": false,
+        "scrollHeight": 1603
+      }
+    },
+    "/last-games": {
+      "desktop": {
+        "status": 200,
+        "final_url": "/last-games",
+        "screenshot": "last-games--desktop.png",
+        "load_ms": 1694,
+        "title": "Recent Games Explorer \u00b7 CourtLens \u00b7 CourtLens",
+        "h1": [
+          "Bam Adebayo"
+        ],
+        "subtitles": [],
+        "loadButtons": [],
+        "nativeDateInputs": 1,
+        "notices": 1,
+        "dateFormats": {
+          "iso": 16,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {
+          "\u2606": 1,
+          "\u2192": 2
+        },
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 2,
+        "horizontalOverflow": false,
+        "scrollHeight": 1826
+      },
+      "phone": {
+        "status": 200,
+        "final_url": "/last-games",
+        "screenshot": "last-games--phone.png",
+        "load_ms": 1721,
+        "title": "Recent Games Explorer \u00b7 CourtLens \u00b7 CourtLens",
+        "h1": [
+          "Bam Adebayo"
+        ],
+        "subtitles": [],
+        "loadButtons": [],
+        "nativeDateInputs": 1,
+        "notices": 1,
+        "dateFormats": {
+          "iso": 16,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {
+          "\u2606": 1,
+          "\u2192": 2
+        },
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 2,
+        "horizontalOverflow": false,
+        "scrollHeight": 2910
+      }
+    },
+    "/showcase": {
+      "desktop": {
+        "status": 200,
+        "final_url": "/showcase",
+        "screenshot": "showcase--desktop.png",
+        "load_ms": 1772,
+        "title": "Player Showcase & Cards \u00b7 CourtLens \u00b7 CourtLens",
+        "h1": [
+          "Player Showcase & Cards"
+        ],
+        "subtitles": [],
+        "loadButtons": [],
+        "nativeDateInputs": 1,
+        "notices": 0,
+        "dateFormats": {
+          "iso": 2,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {
+          "\u2606": 1,
+          "\u2192": 3
+        },
+        "uuids": 0,
+        "codeRules": 1,
+        "strictlyPrior": 1,
+        "horizontalOverflow": false,
+        "scrollHeight": 1070
+      },
+      "phone": {
+        "status": 200,
+        "final_url": "/showcase",
+        "screenshot": "showcase--phone.png",
+        "load_ms": 1764,
+        "title": "Player Showcase & Cards \u00b7 CourtLens \u00b7 CourtLens",
+        "h1": [
+          "Player Showcase & Cards"
+        ],
+        "subtitles": [],
+        "loadButtons": [],
+        "nativeDateInputs": 1,
+        "notices": 0,
+        "dateFormats": {
+          "iso": 2,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {
+          "\u2606": 1,
+          "\u2192": 3
+        },
+        "uuids": 0,
+        "codeRules": 1,
+        "strictlyPrior": 1,
+        "horizontalOverflow": false,
+        "scrollHeight": 1907
+      }
+    },
+    "/rankings": {
+      "desktop": {
+        "status": 200,
+        "final_url": "/rankings",
+        "screenshot": "rankings--desktop.png",
+        "load_ms": 1536,
+        "title": "Personal Ranking Boards \u00b7 CourtLens \u00b7 CourtLens",
+        "h1": [
+          "Personal Ranking Boards"
+        ],
+        "subtitles": [
+          "F16 Personal Ranking Boards \u00b7 Subjective player rankings with explicit notes, keyboard reordering, and transparent mathematical aggregation."
+        ],
+        "loadButtons": [],
+        "nativeDateInputs": 0,
+        "notices": 1,
+        "dateFormats": {
+          "iso": 0,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {},
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 0,
+        "horizontalOverflow": false,
+        "scrollHeight": 900
+      },
+      "phone": {
+        "status": 200,
+        "final_url": "/rankings",
+        "screenshot": "rankings--phone.png",
+        "load_ms": 1496,
+        "title": "Personal Ranking Boards \u00b7 CourtLens \u00b7 CourtLens",
+        "h1": [
+          "Personal Ranking Boards"
+        ],
+        "subtitles": [
+          "F16 Personal Ranking Boards \u00b7 Subjective player rankings with explicit notes, keyboard reordering, and transparent mathematical aggregation."
+        ],
+        "loadButtons": [],
+        "nativeDateInputs": 0,
+        "notices": 1,
+        "dateFormats": {
+          "iso": 0,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {},
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 0,
+        "horizontalOverflow": false,
+        "scrollHeight": 844
+      }
+    },
+    "/tierlist": {
+      "desktop": {
+        "status": 200,
+        "final_url": "/tierlist",
+        "screenshot": "tierlist--desktop.png",
+        "load_ms": 1524,
+        "title": "Tier List Builder \u00b7 CourtLens \u00b7 CourtLens",
+        "h1": [
+          "Tier List Builder"
+        ],
+        "subtitles": [
+          "F27 Tier Lists \u00b7 Interactive personal tier lists with drag-and-drop, full keyboard accessibility, and local persistence."
+        ],
+        "loadButtons": [],
+        "nativeDateInputs": 0,
+        "notices": 1,
+        "dateFormats": {
+          "iso": 0,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {},
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 0,
+        "horizontalOverflow": false,
+        "scrollHeight": 900
+      },
+      "phone": {
+        "status": 200,
+        "final_url": "/tierlist",
+        "screenshot": "tierlist--phone.png",
+        "load_ms": 1522,
+        "title": "Tier List Builder \u00b7 CourtLens \u00b7 CourtLens",
+        "h1": [
+          "Tier List Builder"
+        ],
+        "subtitles": [
+          "F27 Tier Lists \u00b7 Interactive personal tier lists with drag-and-drop, full keyboard accessibility, and local persistence."
+        ],
+        "loadButtons": [],
+        "nativeDateInputs": 0,
+        "notices": 1,
+        "dateFormats": {
+          "iso": 0,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {},
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 0,
+        "horizontalOverflow": false,
+        "scrollHeight": 844
+      }
+    },
+    "/roster-shapes": {
+      "desktop": {
+        "status": 200,
+        "final_url": "/roster-shapes",
+        "screenshot": "roster-shapes--desktop.png",
+        "load_ms": 1507,
+        "title": "CourtLens \u00b7 NBA Analytics",
+        "h1": [
+          "Roster allocation diagrams"
+        ],
+        "subtitles": [],
+        "loadButtons": [
+          "Load participation"
+        ],
+        "nativeDateInputs": 1,
+        "notices": 1,
+        "dateFormats": {
+          "iso": 0,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {},
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 0,
+        "horizontalOverflow": false,
+        "scrollHeight": 900
+      },
+      "phone": {
+        "status": 200,
+        "final_url": "/roster-shapes",
+        "screenshot": "roster-shapes--phone.png",
+        "load_ms": 1495,
+        "title": "CourtLens \u00b7 NBA Analytics",
+        "h1": [
+          "Roster allocation diagrams"
+        ],
+        "subtitles": [],
+        "loadButtons": [
+          "Load participation"
+        ],
+        "nativeDateInputs": 1,
+        "notices": 1,
+        "dateFormats": {
+          "iso": 0,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {},
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 0,
+        "horizontalOverflow": false,
+        "scrollHeight": 844
+      }
+    },
+    "/contracts": {
+      "desktop": {
+        "status": 200,
+        "final_url": "/contracts",
+        "screenshot": "contracts--desktop.png",
+        "load_ms": 1540,
+        "title": "CourtLens \u00b7 NBA Analytics",
+        "h1": [
+          "Contracts & known payroll"
+        ],
+        "subtitles": [],
+        "loadButtons": [],
+        "nativeDateInputs": 1,
+        "notices": 2,
+        "dateFormats": {
+          "iso": 0,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {},
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 0,
+        "horizontalOverflow": false,
+        "scrollHeight": 900
+      },
+      "phone": {
+        "status": 200,
+        "final_url": "/contracts",
+        "screenshot": "contracts--phone.png",
+        "load_ms": 1526,
+        "title": "CourtLens \u00b7 NBA Analytics",
+        "h1": [
+          "Contracts & known payroll"
+        ],
+        "subtitles": [],
+        "loadButtons": [],
+        "nativeDateInputs": 1,
+        "notices": 2,
+        "dateFormats": {
+          "iso": 0,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {},
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 0,
+        "horizontalOverflow": false,
+        "scrollHeight": 1757
+      }
+    },
+    "/free-agency": {
+      "desktop": {
+        "status": 200,
+        "final_url": "/free-agency",
+        "screenshot": "free-agency--desktop.png",
+        "load_ms": 1531,
+        "title": "CourtLens \u00b7 NBA Analytics",
+        "h1": [
+          "Free agency \u00b7 source-book tracker"
+        ],
+        "subtitles": [],
+        "loadButtons": [],
+        "nativeDateInputs": 1,
+        "notices": 2,
+        "dateFormats": {
+          "iso": 0,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {},
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 0,
+        "horizontalOverflow": false,
+        "scrollHeight": 900
+      },
+      "phone": {
+        "status": 200,
+        "final_url": "/free-agency",
+        "screenshot": "free-agency--phone.png",
+        "load_ms": 1520,
+        "title": "CourtLens \u00b7 NBA Analytics",
+        "h1": [
+          "Free agency \u00b7 source-book tracker"
+        ],
+        "subtitles": [],
+        "loadButtons": [],
+        "nativeDateInputs": 1,
+        "notices": 2,
+        "dateFormats": {
+          "iso": 0,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {},
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 0,
+        "horizontalOverflow": false,
+        "scrollHeight": 1799
+      }
+    },
+    "/live": {
+      "desktop": {
+        "status": 200,
+        "final_url": "/live",
+        "screenshot": "live--desktop.png",
+        "load_ms": 1499,
+        "title": "CourtLens \u00b7 NBA Analytics",
+        "h1": [
+          "Live games"
+        ],
+        "subtitles": [
+          "Provisional ESPN observations \u00b7 Eastern slate dates \u00b7 UTC event times"
+        ],
+        "loadButtons": [],
+        "nativeDateInputs": 1,
+        "notices": 2,
+        "dateFormats": {
+          "iso": 5,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {},
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 0,
+        "horizontalOverflow": false,
+        "scrollHeight": 900
+      },
+      "phone": {
+        "status": 200,
+        "final_url": "/live",
+        "screenshot": "live--phone.png",
+        "load_ms": 1529,
+        "title": "CourtLens \u00b7 NBA Analytics",
+        "h1": [
+          "Live games"
+        ],
+        "subtitles": [
+          "Provisional ESPN observations \u00b7 Eastern slate dates \u00b7 UTC event times"
+        ],
+        "loadButtons": [],
+        "nativeDateInputs": 1,
+        "notices": 2,
+        "dateFormats": {
+          "iso": 5,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {},
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 0,
+        "horizontalOverflow": false,
+        "scrollHeight": 1042
+      }
+    },
+    "/playoffs": {
+      "desktop": {
+        "status": 200,
+        "final_url": "/playoffs",
+        "screenshot": "playoffs--desktop.png",
+        "load_ms": 1684,
+        "title": "Playoff Bracket & Series Explorer \u00b7 CourtLens \u00b7 CourtLens",
+        "h1": [
+          "Playoff Bracket & Series Explorer"
+        ],
+        "subtitles": [
+          "Verified NBA postseason series outcomes, 2-2-1-1-1 host sequence, seed evidence, and Dean Oliver Four Factors for 2025-26."
+        ],
+        "loadButtons": [],
+        "nativeDateInputs": 2,
+        "notices": 1,
+        "dateFormats": {
+          "iso": 2,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {
+          "\u2192": 15
+        },
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 1,
+        "horizontalOverflow": false,
+        "scrollHeight": 2618
+      },
+      "phone": {
+        "status": 200,
+        "final_url": "/playoffs",
+        "screenshot": "playoffs--phone.png",
+        "load_ms": 1549,
+        "title": "Playoff Bracket & Series Explorer \u00b7 CourtLens \u00b7 CourtLens",
+        "h1": [
+          "Playoff Bracket & Series Explorer"
+        ],
+        "subtitles": [
+          "Verified NBA postseason series outcomes, 2-2-1-1-1 host sequence, seed evidence, and Dean Oliver Four Factors for 2025-26."
+        ],
+        "loadButtons": [],
+        "nativeDateInputs": 2,
+        "notices": 1,
+        "dateFormats": {
+          "iso": 2,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {
+          "\u2192": 15
+        },
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 1,
+        "horizontalOverflow": false,
+        "scrollHeight": 5128
+      }
+    },
+    "/schedule": {
+      "desktop": {
+        "status": 200,
+        "final_url": "/schedule",
+        "screenshot": "schedule--desktop.png",
+        "load_ms": 1903,
+        "title": "Team schedule explorer \u00b7 CourtLens",
+        "h1": [
+          "Team schedule"
+        ],
+        "subtitles": [],
+        "loadButtons": [
+          "Load week"
+        ],
+        "nativeDateInputs": 1,
+        "notices": 0,
+        "dateFormats": {
+          "iso": 0,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {},
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 0,
+        "horizontalOverflow": false,
+        "scrollHeight": 900
+      },
+      "phone": {
+        "status": 200,
+        "final_url": "/schedule",
+        "screenshot": "schedule--phone.png",
+        "load_ms": 1514,
+        "title": "Team schedule explorer \u00b7 CourtLens",
+        "h1": [
+          "Team schedule"
+        ],
+        "subtitles": [],
+        "loadButtons": [
+          "Load week"
+        ],
+        "nativeDateInputs": 1,
+        "notices": 0,
+        "dateFormats": {
+          "iso": 0,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {},
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 0,
+        "horizontalOverflow": false,
+        "scrollHeight": 1062
+      }
+    },
+    "/planner": {
+      "desktop": {
+        "status": 200,
+        "final_url": "/planner",
+        "screenshot": "planner--desktop.png",
+        "load_ms": 1504,
+        "title": "Weekly roster planner \u00b7 CourtLens",
+        "h1": [
+          "Weekly roster planner"
+        ],
+        "subtitles": [],
+        "loadButtons": [],
+        "nativeDateInputs": 0,
+        "notices": 0,
+        "dateFormats": {
+          "iso": 0,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {},
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 0,
+        "horizontalOverflow": false,
+        "scrollHeight": 900
+      },
+      "phone": {
+        "status": 200,
+        "final_url": "/planner",
+        "screenshot": "planner--phone.png",
+        "load_ms": 1500,
+        "title": "Weekly roster planner \u00b7 CourtLens",
+        "h1": [
+          "Weekly roster planner"
+        ],
+        "subtitles": [],
+        "loadButtons": [],
+        "nativeDateInputs": 0,
+        "notices": 0,
+        "dateFormats": {
+          "iso": 0,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {},
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 0,
+        "horizontalOverflow": false,
+        "scrollHeight": 844
+      }
+    },
+    "/data-status": {
+      "desktop": {
+        "status": 200,
+        "final_url": "/data-status",
+        "screenshot": "data-status--desktop.png",
+        "load_ms": 1575,
+        "title": "Data & Pipelines \u00b7 CourtLens \u00b7 CourtLens",
+        "h1": [
+          "Data & Pipelines"
+        ],
+        "subtitles": [
+          "Immutable versioned admissions, cryptographic semantic signatures, and background worker executions."
+        ],
+        "loadButtons": [],
+        "nativeDateInputs": 0,
+        "notices": 0,
+        "dateFormats": {
+          "iso": 1,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {
+          "\ud83d\udd04": 1,
+          "\ud83d\udcf8": 1,
+          "\u26a1": 1
+        },
+        "uuids": 24,
+        "codeRules": 0,
+        "strictlyPrior": 0,
+        "horizontalOverflow": false,
+        "scrollHeight": 1971
+      },
+      "phone": {
+        "status": 200,
+        "final_url": "/data-status",
+        "screenshot": "data-status--phone.png",
+        "load_ms": 1539,
+        "title": "Data & Pipelines \u00b7 CourtLens \u00b7 CourtLens",
+        "h1": [
+          "Data & Pipelines"
+        ],
+        "subtitles": [
+          "Immutable versioned admissions, cryptographic semantic signatures, and background worker executions."
+        ],
+        "loadButtons": [],
+        "nativeDateInputs": 0,
+        "notices": 0,
+        "dateFormats": {
+          "iso": 1,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {
+          "\ud83d\udd04": 1,
+          "\ud83d\udcf8": 1,
+          "\u26a1": 1
+        },
+        "uuids": 24,
+        "codeRules": 0,
+        "strictlyPrior": 0,
+        "horizontalOverflow": false,
+        "scrollHeight": 2794
+      }
+    },
+    "/settings": {
+      "desktop": {
+        "status": 200,
+        "final_url": "/settings",
+        "screenshot": "settings--desktop.png",
+        "load_ms": 1529,
+        "title": "Workbench Settings \u00b7 CourtLens \u00b7 CourtLens",
+        "h1": [
+          "Settings"
+        ],
+        "subtitles": [
+          "Configure portraits and the optional assistant; inspect local service status."
+        ],
+        "loadButtons": [],
+        "nativeDateInputs": 0,
+        "notices": 0,
+        "dateFormats": {
+          "iso": 0,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {},
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 0,
+        "horizontalOverflow": false,
+        "scrollHeight": 1910
+      },
+      "phone": {
+        "status": 200,
+        "final_url": "/settings",
+        "screenshot": "settings--phone.png",
+        "load_ms": 1530,
+        "title": "Workbench Settings \u00b7 CourtLens \u00b7 CourtLens",
+        "h1": [
+          "Settings"
+        ],
+        "subtitles": [
+          "Configure portraits and the optional assistant; inspect local service status."
+        ],
+        "loadButtons": [],
+        "nativeDateInputs": 0,
+        "notices": 0,
+        "dateFormats": {
+          "iso": 0,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {},
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 0,
+        "horizontalOverflow": false,
+        "scrollHeight": 2779
+      }
+    },
+    "/methodology": {
+      "desktop": {
+        "status": 200,
+        "final_url": "/methodology",
+        "screenshot": "methodology--desktop.png",
+        "load_ms": 1736,
+        "title": "Methodology & Catalog \u00b7 CourtLens \u00b7 CourtLens",
+        "h1": [
+          "Methodology & Metric Catalog"
+        ],
+        "subtitles": [
+          "Formal mathematical formulas, zero-inferred principles, and temporal discipline guardrails governing CourtLens."
+        ],
+        "loadButtons": [],
+        "nativeDateInputs": 0,
+        "notices": 0,
+        "dateFormats": {
+          "iso": 0,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {
+          "\u2192": 1
+        },
+        "uuids": 0,
+        "codeRules": 1,
+        "strictlyPrior": 0,
+        "horizontalOverflow": false,
+        "scrollHeight": 31273
+      },
+      "phone": {
+        "status": 200,
+        "final_url": "/methodology",
+        "screenshot": "methodology--phone.png",
+        "load_ms": 1690,
+        "title": "Methodology & Catalog \u00b7 CourtLens \u00b7 CourtLens",
+        "h1": [
+          "Methodology & Metric Catalog"
+        ],
+        "subtitles": [
+          "Formal mathematical formulas, zero-inferred principles, and temporal discipline guardrails governing CourtLens."
+        ],
+        "loadButtons": [],
+        "nativeDateInputs": 0,
+        "notices": 0,
+        "dateFormats": {
+          "iso": 0,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {
+          "\u2192": 1
+        },
+        "uuids": 0,
+        "codeRules": 1,
+        "strictlyPrior": 0,
+        "horizontalOverflow": false,
+        "scrollHeight": 35082
+      }
+    },
+    "/learning": {
+      "desktop": {
+        "status": 200,
+        "final_url": "/learning",
+        "screenshot": "learning--desktop.png",
+        "load_ms": 1599,
+        "title": "Learning \u00b7 CourtLens",
+        "h1": [
+          "Learn with CourtLens evidence"
+        ],
+        "subtitles": [],
+        "loadButtons": [],
+        "nativeDateInputs": 0,
+        "notices": 1,
+        "dateFormats": {
+          "iso": 2,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {},
+        "uuids": 1,
+        "codeRules": 0,
+        "strictlyPrior": 0,
+        "horizontalOverflow": false,
+        "scrollHeight": 1713
+      },
+      "phone": {
+        "status": 200,
+        "final_url": "/learning",
+        "screenshot": "learning--phone.png",
+        "load_ms": 1556,
+        "title": "Learning \u00b7 CourtLens",
+        "h1": [
+          "Learn with CourtLens evidence"
+        ],
+        "subtitles": [],
+        "loadButtons": [],
+        "nativeDateInputs": 0,
+        "notices": 1,
+        "dateFormats": {
+          "iso": 2,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {},
+        "uuids": 1,
+        "codeRules": 0,
+        "strictlyPrior": 0,
+        "horizontalOverflow": false,
+        "scrollHeight": 2540
+      }
+    },
+    "/blog": {
+      "desktop": {
+        "status": 200,
+        "final_url": "/blog",
+        "screenshot": "blog--desktop.png",
+        "load_ms": 1539,
+        "title": "Engineering notes \u00b7 CourtLens",
+        "h1": [
+          "Evidence before narrative"
+        ],
+        "subtitles": [],
+        "loadButtons": [],
+        "nativeDateInputs": 0,
+        "notices": 0,
+        "dateFormats": {
+          "iso": 1,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {},
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 0,
+        "horizontalOverflow": false,
+        "scrollHeight": 1104
+      },
+      "phone": {
+        "status": 200,
+        "final_url": "/blog",
+        "screenshot": "blog--phone.png",
+        "load_ms": 1507,
+        "title": "Engineering notes \u00b7 CourtLens",
+        "h1": [
+          "Evidence before narrative"
+        ],
+        "subtitles": [],
+        "loadButtons": [],
+        "nativeDateInputs": 0,
+        "notices": 0,
+        "dateFormats": {
+          "iso": 1,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {},
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 0,
+        "horizontalOverflow": false,
+        "scrollHeight": 1811
+      }
+    },
+    "/patch-notes": {
+      "desktop": {
+        "status": 200,
+        "final_url": "/patch-notes",
+        "screenshot": "patch-notes--desktop.png",
+        "load_ms": 1535,
+        "title": "Patch notes \u00b7 CourtLens",
+        "h1": [
+          "Patch notes: retained analytical operations"
+        ],
+        "subtitles": [],
+        "loadButtons": [],
+        "nativeDateInputs": 0,
+        "notices": 0,
+        "dateFormats": {
+          "iso": 1,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {},
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 0,
+        "horizontalOverflow": false,
+        "scrollHeight": 900
+      },
+      "phone": {
+        "status": 200,
+        "final_url": "/patch-notes",
+        "screenshot": "patch-notes--phone.png",
+        "load_ms": 1489,
+        "title": "Patch notes \u00b7 CourtLens",
+        "h1": [
+          "Patch notes: retained analytical operations"
+        ],
+        "subtitles": [],
+        "loadButtons": [],
+        "nativeDateInputs": 0,
+        "notices": 0,
+        "dateFormats": {
+          "iso": 1,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {},
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 0,
+        "horizontalOverflow": false,
+        "scrollHeight": 1442
+      }
+    },
+    "/design": {
+      "desktop": {
+        "status": 200,
+        "final_url": "/design",
+        "screenshot": "design--desktop.png",
+        "load_ms": 1570,
+        "title": "CourtLens \u00b7 NBA Analytics",
+        "h1": [
+          "CourtLens Design Language v1"
+        ],
+        "subtitles": [],
+        "loadButtons": [],
+        "nativeDateInputs": 0,
+        "notices": 0,
+        "dateFormats": {
+          "iso": 0,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {},
+        "uuids": 0,
+        "codeRules": 1,
+        "strictlyPrior": 0,
+        "horizontalOverflow": false,
+        "scrollHeight": 4918
+      },
+      "phone": {
+        "status": 200,
+        "final_url": "/design",
+        "screenshot": "design--phone.png",
+        "load_ms": 1531,
+        "title": "CourtLens \u00b7 NBA Analytics",
+        "h1": [
+          "CourtLens Design Language v1"
+        ],
+        "subtitles": [],
+        "loadButtons": [],
+        "nativeDateInputs": 0,
+        "notices": 0,
+        "dateFormats": {
+          "iso": 0,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {},
+        "uuids": 0,
+        "codeRules": 1,
+        "strictlyPrior": 0,
+        "horizontalOverflow": true,
+        "scrollHeight": 6592
+      }
+    },
+    "/calculator": {
+      "desktop": {
+        "status": 200,
+        "final_url": "/calculator",
+        "screenshot": "calculator--desktop.png",
+        "load_ms": 1498,
+        "title": "CourtLens \u00b7 NBA Analytics",
+        "h1": [
+          "Hypothetical offensive rating calculator"
+        ],
+        "subtitles": [],
+        "loadButtons": [],
+        "nativeDateInputs": 0,
+        "notices": 0,
+        "dateFormats": {
+          "iso": 0,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {},
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 0,
+        "horizontalOverflow": false,
+        "scrollHeight": 1406
+      },
+      "phone": {
+        "status": 200,
+        "final_url": "/calculator",
+        "screenshot": "calculator--phone.png",
+        "load_ms": 1489,
+        "title": "CourtLens \u00b7 NBA Analytics",
+        "h1": [
+          "Hypothetical offensive rating calculator"
+        ],
+        "subtitles": [],
+        "loadButtons": [],
+        "nativeDateInputs": 0,
+        "notices": 0,
+        "dateFormats": {
+          "iso": 0,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {},
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 0,
+        "horizontalOverflow": false,
+        "scrollHeight": 2346
+      }
+    },
+    "/wingspan": {
+      "desktop": {
+        "status": 200,
+        "final_url": "/wingspan",
+        "screenshot": "wingspan--desktop.png",
+        "load_ms": 1529,
+        "title": "Combine Anthropometry & Wingspan Explorer | CourtLens Workbench \u00b7 CourtLens",
+        "h1": [
+          "Measurements & wingspan explorer"
+        ],
+        "subtitles": [],
+        "loadButtons": [],
+        "nativeDateInputs": 0,
+        "notices": 2,
+        "dateFormats": {
+          "iso": 0,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {},
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 0,
+        "horizontalOverflow": false,
+        "scrollHeight": 900
+      },
+      "phone": {
+        "status": 200,
+        "final_url": "/wingspan",
+        "screenshot": "wingspan--phone.png",
+        "load_ms": 1510,
+        "title": "Combine Anthropometry & Wingspan Explorer | CourtLens Workbench \u00b7 CourtLens",
+        "h1": [
+          "Measurements & wingspan explorer"
+        ],
+        "subtitles": [],
+        "loadButtons": [],
+        "nativeDateInputs": 0,
+        "notices": 2,
+        "dateFormats": {
+          "iso": 0,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {},
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 0,
+        "horizontalOverflow": false,
+        "scrollHeight": 844
+      }
+    },
+    "/forecasts": {
+      "desktop": {
+        "status": 200,
+        "final_url": "/forecasts",
+        "screenshot": "forecasts--desktop.png",
+        "load_ms": 1606,
+        "title": "Points Forecasting \u00b7 CourtLens \u00b7 CourtLens",
+        "h1": [
+          "Points Forecasts & Protocol"
+        ],
+        "subtitles": [
+          "Next-game basketball points estimation under chronological holdouts and calibrated empirical intervals."
+        ],
+        "loadButtons": [],
+        "nativeDateInputs": 0,
+        "notices": 2,
+        "dateFormats": {
+          "iso": 60,
+          "us_slash": 1,
+          "month_day_year": 0
+        },
+        "glyphs": {
+          "\u2192": 1
+        },
+        "uuids": 0,
+        "codeRules": 1,
+        "strictlyPrior": 0,
+        "horizontalOverflow": false,
+        "scrollHeight": 5549
+      },
+      "phone": {
+        "status": 200,
+        "final_url": "/forecasts",
+        "screenshot": "forecasts--phone.png",
+        "load_ms": 1567,
+        "title": "Points Forecasting \u00b7 CourtLens \u00b7 CourtLens",
+        "h1": [
+          "Points Forecasts & Protocol"
+        ],
+        "subtitles": [
+          "Next-game basketball points estimation under chronological holdouts and calibrated empirical intervals."
+        ],
+        "loadButtons": [],
+        "nativeDateInputs": 0,
+        "notices": 2,
+        "dateFormats": {
+          "iso": 60,
+          "us_slash": 1,
+          "month_day_year": 0
+        },
+        "glyphs": {
+          "\u2192": 1
+        },
+        "uuids": 0,
+        "codeRules": 1,
+        "strictlyPrior": 0,
+        "horizontalOverflow": false,
+        "scrollHeight": 6809
+      }
+    },
+    "/evaluation": {
+      "desktop": {
+        "status": 200,
+        "final_url": "/evaluation",
+        "screenshot": "evaluation--desktop.png",
+        "load_ms": 1519,
+        "title": "Historical evaluation \u00b7 CourtLens",
+        "h1": [
+          "Evaluation unavailable"
+        ],
+        "subtitles": [],
+        "loadButtons": [],
+        "nativeDateInputs": 0,
+        "notices": 1,
+        "dateFormats": {
+          "iso": 0,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {},
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 0,
+        "horizontalOverflow": false,
+        "scrollHeight": 900
+      },
+      "phone": {
+        "status": 200,
+        "final_url": "/evaluation",
+        "screenshot": "evaluation--phone.png",
+        "load_ms": 1490,
+        "title": "Historical evaluation \u00b7 CourtLens",
+        "h1": [
+          "Evaluation unavailable"
+        ],
+        "subtitles": [],
+        "loadButtons": [],
+        "nativeDateInputs": 0,
+        "notices": 1,
+        "dateFormats": {
+          "iso": 0,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {},
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 0,
+        "horizontalOverflow": false,
+        "scrollHeight": 844
+      }
+    },
+    "/investigations": {
+      "desktop": {
+        "status": 200,
+        "final_url": "/investigations",
+        "screenshot": "investigations--desktop.png",
+        "load_ms": 1892,
+        "title": "Saved Investigations \u00b7 CourtLens \u00b7 CourtLens",
+        "h1": [
+          "Saved Investigations"
+        ],
+        "subtitles": [
+          "Cryptographically bound research findings. Re-execute queries against frozen releases and verify exact SHA-256 result matching."
+        ],
+        "loadButtons": [],
+        "nativeDateInputs": 0,
+        "notices": 1,
+        "dateFormats": {
+          "iso": 0,
+          "us_slash": 236,
+          "month_day_year": 0
+        },
+        "glyphs": {
+          "\u2192": 236
+        },
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 0,
+        "horizontalOverflow": false,
+        "scrollHeight": 60933
+      },
+      "phone": {
+        "status": 200,
+        "final_url": "/investigations",
+        "screenshot": "investigations--phone.png",
+        "load_ms": 1970,
+        "title": "Saved Investigations \u00b7 CourtLens \u00b7 CourtLens",
+        "h1": [
+          "Saved Investigations"
+        ],
+        "subtitles": [
+          "Cryptographically bound research findings. Re-execute queries against frozen releases and verify exact SHA-256 result matching."
+        ],
+        "loadButtons": [],
+        "nativeDateInputs": 0,
+        "notices": 1,
+        "dateFormats": {
+          "iso": 0,
+          "us_slash": 236,
+          "month_day_year": 0
+        },
+        "glyphs": {
+          "\u2192": 236
+        },
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 0,
+        "horizontalOverflow": false,
+        "scrollHeight": 113486
+      }
+    },
+    "/research/ask": {
+      "desktop": {
+        "status": 200,
+        "final_url": "/research/ask",
+        "screenshot": "research_ask--desktop.png",
+        "load_ms": 1878,
+        "title": "CourtLens \u00b7 NBA Analytics",
+        "h1": [
+          "Ask CourtLens"
+        ],
+        "subtitles": [],
+        "loadButtons": [],
+        "nativeDateInputs": 1,
+        "notices": 0,
+        "dateFormats": {
+          "iso": 0,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {},
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 0,
+        "horizontalOverflow": false,
+        "scrollHeight": 900
+      },
+      "phone": {
+        "status": 200,
+        "final_url": "/research/ask",
+        "screenshot": "research_ask--phone.png",
+        "load_ms": 1535,
+        "title": "CourtLens \u00b7 NBA Analytics",
+        "h1": [
+          "Ask CourtLens"
+        ],
+        "subtitles": [],
+        "loadButtons": [],
+        "nativeDateInputs": 1,
+        "notices": 0,
+        "dateFormats": {
+          "iso": 0,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {},
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 0,
+        "horizontalOverflow": false,
+        "scrollHeight": 844
+      }
+    },
+    "/research/case-studies": {
+      "desktop": {
+        "status": 200,
+        "final_url": "/research/case-studies",
+        "screenshot": "research_case-studies--desktop.png",
+        "load_ms": 1762,
+        "title": "Flagship Research Case Studies \u00b7 CourtLens \u00b7 CourtLens",
+        "h1": [
+          "Flagship Research Case Studies"
+        ],
+        "subtitles": [
+          "Empirical investigations demonstrating CourtLens's data integrity guarantees: mid-season stint reconciliation, prospective forecast conditionality, and zero-inf"
+        ],
+        "loadButtons": [],
+        "nativeDateInputs": 0,
+        "notices": 0,
+        "dateFormats": {
+          "iso": 0,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {
+          "\u2192": 3
+        },
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 0,
+        "horizontalOverflow": false,
+        "scrollHeight": 1448
+      },
+      "phone": {
+        "status": 200,
+        "final_url": "/research/case-studies",
+        "screenshot": "research_case-studies--phone.png",
+        "load_ms": 1484,
+        "title": "Flagship Research Case Studies \u00b7 CourtLens \u00b7 CourtLens",
+        "h1": [
+          "Flagship Research Case Studies"
+        ],
+        "subtitles": [
+          "Empirical investigations demonstrating CourtLens's data integrity guarantees: mid-season stint reconciliation, prospective forecast conditionality, and zero-inf"
+        ],
+        "loadButtons": [],
+        "nativeDateInputs": 0,
+        "notices": 0,
+        "dateFormats": {
+          "iso": 0,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {
+          "\u2192": 3
+        },
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 0,
+        "horizontalOverflow": false,
+        "scrollHeight": 2397
+      }
+    },
+    "/research/trends": {
+      "desktop": {
+        "status": 200,
+        "final_url": "/research/trends",
+        "screenshot": "research_trends--desktop.png",
+        "load_ms": 1515,
+        "title": "Workload & Performance Trends \u00b7 CourtLens Research \u00b7 CourtLens",
+        "h1": [
+          "Workload & Trajectory Trends"
+        ],
+        "subtitles": [
+          "Disjoint window delta analysis across consecutive appearance slices and calendar periods. Detect usage shifts, scoring surges, and shooting percentage variance "
+        ],
+        "loadButtons": [],
+        "nativeDateInputs": 0,
+        "notices": 1,
+        "dateFormats": {
+          "iso": 0,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {},
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 0,
+        "horizontalOverflow": false,
+        "scrollHeight": 900
+      },
+      "phone": {
+        "status": 200,
+        "final_url": "/research/trends",
+        "screenshot": "research_trends--phone.png",
+        "load_ms": 1512,
+        "title": "Workload & Performance Trends \u00b7 CourtLens Research \u00b7 CourtLens",
+        "h1": [
+          "Workload & Trajectory Trends"
+        ],
+        "subtitles": [
+          "Disjoint window delta analysis across consecutive appearance slices and calendar periods. Detect usage shifts, scoring surges, and shooting percentage variance "
+        ],
+        "loadButtons": [],
+        "nativeDateInputs": 0,
+        "notices": 1,
+        "dateFormats": {
+          "iso": 0,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {},
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 0,
+        "horizontalOverflow": false,
+        "scrollHeight": 919
+      }
+    },
+    "/research/distributions": {
+      "desktop": {
+        "status": 200,
+        "final_url": "/research/distributions",
+        "screenshot": "research_distributions--desktop.png",
+        "load_ms": 1520,
+        "title": "Metric Distributions & Contextual Splits \u00b7 CourtLens Research \u00b7 CourtLens",
+        "h1": [
+          "Distributions, Dispersion & Splits"
+        ],
+        "subtitles": [
+          "Empirical sample quantiles (Type 7 linear interpolation), interquartile ranges, home/away splits, schedule-based team rest days, and league-wide opponent defens"
+        ],
+        "loadButtons": [],
+        "nativeDateInputs": 0,
+        "notices": 1,
+        "dateFormats": {
+          "iso": 0,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {},
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 0,
+        "horizontalOverflow": false,
+        "scrollHeight": 900
+      },
+      "phone": {
+        "status": 200,
+        "final_url": "/research/distributions",
+        "screenshot": "research_distributions--phone.png",
+        "load_ms": 1485,
+        "title": "Metric Distributions & Contextual Splits \u00b7 CourtLens Research \u00b7 CourtLens",
+        "h1": [
+          "Distributions, Dispersion & Splits"
+        ],
+        "subtitles": [
+          "Empirical sample quantiles (Type 7 linear interpolation), interquartile ranges, home/away splits, schedule-based team rest days, and league-wide opponent defens"
+        ],
+        "loadButtons": [],
+        "nativeDateInputs": 0,
+        "notices": 1,
+        "dateFormats": {
+          "iso": 0,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {},
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 0,
+        "horizontalOverflow": false,
+        "scrollHeight": 1013
+      }
+    },
+    "/research/similarity": {
+      "desktop": {
+        "status": 200,
+        "final_url": "/research/similarity",
+        "screenshot": "research_similarity--desktop.png",
+        "load_ms": 1524,
+        "title": "Statistical Peers & Twin Modeling \u00b7 CourtLens Research \u00b7 CourtLens",
+        "h1": [
+          "Statistical Peers & Profile Twins"
+        ],
+        "subtitles": [
+          "Multidimensional Euclidean distance matching across 8 standardized workload and production dimensions. Standardized z-score calculation relative to the active l"
+        ],
+        "loadButtons": [],
+        "nativeDateInputs": 0,
+        "notices": 1,
+        "dateFormats": {
+          "iso": 0,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {},
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 0,
+        "horizontalOverflow": false,
+        "scrollHeight": 900
+      },
+      "phone": {
+        "status": 200,
+        "final_url": "/research/similarity",
+        "screenshot": "research_similarity--phone.png",
+        "load_ms": 1495,
+        "title": "Statistical Peers & Twin Modeling \u00b7 CourtLens Research \u00b7 CourtLens",
+        "h1": [
+          "Statistical Peers & Profile Twins"
+        ],
+        "subtitles": [
+          "Multidimensional Euclidean distance matching across 8 standardized workload and production dimensions. Standardized z-score calculation relative to the active l"
+        ],
+        "loadButtons": [],
+        "nativeDateInputs": 0,
+        "notices": 1,
+        "dateFormats": {
+          "iso": 0,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {},
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 0,
+        "horizontalOverflow": false,
+        "scrollHeight": 955
+      }
+    },
+    "/shot-profile-twin": {
+      "desktop": {
+        "status": 200,
+        "final_url": "/shot-profile-twin",
+        "screenshot": "shot-profile-twin--desktop.png",
+        "load_ms": 1524,
+        "title": "CourtLens \u00b7 NBA Analytics",
+        "h1": [
+          "Shot-profile twins"
+        ],
+        "subtitles": [
+          "Observed shooting, explicit assignments and bounded possession sequences."
+        ],
+        "loadButtons": [],
+        "nativeDateInputs": 2,
+        "notices": 0,
+        "dateFormats": {
+          "iso": 0,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {},
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 0,
+        "horizontalOverflow": false,
+        "scrollHeight": 900
+      },
+      "phone": {
+        "status": 200,
+        "final_url": "/shot-profile-twin",
+        "screenshot": "shot-profile-twin--phone.png",
+        "load_ms": 1486,
+        "title": "CourtLens \u00b7 NBA Analytics",
+        "h1": [
+          "Shot-profile twins"
+        ],
+        "subtitles": [
+          "Observed shooting, explicit assignments and bounded possession sequences."
+        ],
+        "loadButtons": [],
+        "nativeDateInputs": 2,
+        "notices": 0,
+        "dateFormats": {
+          "iso": 0,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {},
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 0,
+        "horizontalOverflow": false,
+        "scrollHeight": 1443
+      }
+    },
+    "/research/adjusted-shooting": {
+      "desktop": {
+        "status": 200,
+        "final_url": "/research/adjusted-shooting",
+        "screenshot": "research_adjusted-shooting--desktop.png",
+        "load_ms": 1520,
+        "title": "CourtLens \u00b7 NBA Analytics",
+        "h1": [
+          "CourtLens playtype-adjusted shooting"
+        ],
+        "subtitles": [],
+        "loadButtons": [],
+        "nativeDateInputs": 0,
+        "notices": 2,
+        "dateFormats": {
+          "iso": 0,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {},
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 0,
+        "horizontalOverflow": false,
+        "scrollHeight": 900
+      },
+      "phone": {
+        "status": 200,
+        "final_url": "/research/adjusted-shooting",
+        "screenshot": "research_adjusted-shooting--phone.png",
+        "load_ms": 1509,
+        "title": "CourtLens \u00b7 NBA Analytics",
+        "h1": [
+          "CourtLens playtype-adjusted shooting"
+        ],
+        "subtitles": [],
+        "loadButtons": [],
+        "nativeDateInputs": 0,
+        "notices": 2,
+        "dateFormats": {
+          "iso": 0,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {},
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 0,
+        "horizontalOverflow": false,
+        "scrollHeight": 844
+      }
+    },
+    "/research/expected-shots": {
+      "desktop": {
+        "status": 200,
+        "final_url": "/research/expected-shots",
+        "screenshot": "research_expected-shots--desktop.png",
+        "load_ms": 1529,
+        "title": "CourtLens \u00b7 NBA Analytics",
+        "h1": [
+          "CourtLens expected-shot experiment"
+        ],
+        "subtitles": [],
+        "loadButtons": [],
+        "nativeDateInputs": 0,
+        "notices": 2,
+        "dateFormats": {
+          "iso": 0,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {},
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 0,
+        "horizontalOverflow": false,
+        "scrollHeight": 900
+      },
+      "phone": {
+        "status": 200,
+        "final_url": "/research/expected-shots",
+        "screenshot": "research_expected-shots--phone.png",
+        "load_ms": 1500,
+        "title": "CourtLens \u00b7 NBA Analytics",
+        "h1": [
+          "CourtLens expected-shot experiment"
+        ],
+        "subtitles": [],
+        "loadButtons": [],
+        "nativeDateInputs": 0,
+        "notices": 2,
+        "dateFormats": {
+          "iso": 0,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {},
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 0,
+        "horizontalOverflow": false,
+        "scrollHeight": 844
+      }
+    },
+    "/shot-aftermath": {
+      "desktop": {
+        "status": 200,
+        "final_url": "/shot-aftermath",
+        "screenshot": "shot-aftermath--desktop.png",
+        "load_ms": 1532,
+        "title": "CourtLens \u00b7 NBA Analytics",
+        "h1": [
+          "Shot aftermath"
+        ],
+        "subtitles": [
+          "Observed shooting, explicit assignments and bounded possession sequences."
+        ],
+        "loadButtons": [],
+        "nativeDateInputs": 2,
+        "notices": 0,
+        "dateFormats": {
+          "iso": 0,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {},
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 0,
+        "horizontalOverflow": false,
+        "scrollHeight": 900
+      },
+      "phone": {
+        "status": 200,
+        "final_url": "/shot-aftermath",
+        "screenshot": "shot-aftermath--phone.png",
+        "load_ms": 1488,
+        "title": "CourtLens \u00b7 NBA Analytics",
+        "h1": [
+          "Shot aftermath"
+        ],
+        "subtitles": [
+          "Observed shooting, explicit assignments and bounded possession sequences."
+        ],
+        "loadButtons": [],
+        "nativeDateInputs": 2,
+        "notices": 0,
+        "dateFormats": {
+          "iso": 0,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {},
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 0,
+        "horizontalOverflow": false,
+        "scrollHeight": 1304
+      }
+    },
+    "/research/rapm": {
+      "desktop": {
+        "status": 200,
+        "final_url": "/research/rapm",
+        "screenshot": "research_rapm--desktop.png",
+        "load_ms": 1521,
+        "title": "CourtLens \u00b7 NBA Analytics",
+        "h1": [
+          "CourtLens descriptive impact"
+        ],
+        "subtitles": [],
+        "loadButtons": [],
+        "nativeDateInputs": 1,
+        "notices": 2,
+        "dateFormats": {
+          "iso": 6,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {},
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 0,
+        "horizontalOverflow": false,
+        "scrollHeight": 1758
+      },
+      "phone": {
+        "status": 200,
+        "final_url": "/research/rapm",
+        "screenshot": "research_rapm--phone.png",
+        "load_ms": 1495,
+        "title": "CourtLens \u00b7 NBA Analytics",
+        "h1": [
+          "CourtLens descriptive impact"
+        ],
+        "subtitles": [],
+        "loadButtons": [],
+        "nativeDateInputs": 1,
+        "notices": 2,
+        "dateFormats": {
+          "iso": 6,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {},
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 0,
+        "horizontalOverflow": false,
+        "scrollHeight": 2450
+      }
+    },
+    "/six-factor-rapm": {
+      "desktop": {
+        "status": 200,
+        "final_url": "/six-factor-rapm",
+        "screenshot": "six-factor-rapm--desktop.png",
+        "load_ms": 1518,
+        "title": "CourtLens \u00b7 NBA Analytics",
+        "h1": [
+          "CourtLens six-factor research"
+        ],
+        "subtitles": [],
+        "loadButtons": [],
+        "nativeDateInputs": 0,
+        "notices": 2,
+        "dateFormats": {
+          "iso": 0,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {},
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 0,
+        "horizontalOverflow": false,
+        "scrollHeight": 900
+      },
+      "phone": {
+        "status": 200,
+        "final_url": "/six-factor-rapm",
+        "screenshot": "six-factor-rapm--phone.png",
+        "load_ms": 1497,
+        "title": "CourtLens \u00b7 NBA Analytics",
+        "h1": [
+          "CourtLens six-factor research"
+        ],
+        "subtitles": [],
+        "loadButtons": [],
+        "nativeDateInputs": 0,
+        "notices": 2,
+        "dateFormats": {
+          "iso": 0,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {},
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 0,
+        "horizontalOverflow": false,
+        "scrollHeight": 844
+      }
+    },
+    "/research/defensive-matchups": {
+      "desktop": {
+        "status": 200,
+        "final_url": "/research/defensive-matchups",
+        "screenshot": "research_defensive-matchups--desktop.png",
+        "load_ms": 1620,
+        "title": "CourtLens \u00b7 NBA Analytics",
+        "h1": [
+          "Defensive Contests & Matchups"
+        ],
+        "subtitles": [
+          "Evaluates perimeter contest frequency, rim deterrence rates, and points saved per 100 possessions by defensive anchors and wing stoppers."
+        ],
+        "loadButtons": [],
+        "nativeDateInputs": 0,
+        "notices": 0,
+        "dateFormats": {
+          "iso": 0,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {},
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 0,
+        "horizontalOverflow": false,
+        "scrollHeight": 900
+      },
+      "phone": {
+        "status": 200,
+        "final_url": "/research/defensive-matchups",
+        "screenshot": "research_defensive-matchups--phone.png",
+        "load_ms": 1511,
+        "title": "CourtLens \u00b7 NBA Analytics",
+        "h1": [
+          "Defensive Contests & Matchups"
+        ],
+        "subtitles": [
+          "Evaluates perimeter contest frequency, rim deterrence rates, and points saved per 100 possessions by defensive anchors and wing stoppers."
+        ],
+        "loadButtons": [],
+        "nativeDateInputs": 0,
+        "notices": 0,
+        "dateFormats": {
+          "iso": 0,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {},
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 0,
+        "horizontalOverflow": false,
+        "scrollHeight": 844
+      }
+    },
+    "/research/epv": {
+      "desktop": {
+        "status": 200,
+        "final_url": "/research/epv",
+        "screenshot": "research_epv--desktop.png",
+        "load_ms": 1609,
+        "title": "CourtLens \u00b7 NBA Analytics",
+        "h1": [
+          "Spatial Expected Possession Value (EPV)"
+        ],
+        "subtitles": [
+          "Microeconomic spatial tracking model calculating continuous possession value at every 40-millisecond frame of an NBA half-court possession."
+        ],
+        "loadButtons": [],
+        "nativeDateInputs": 0,
+        "notices": 0,
+        "dateFormats": {
+          "iso": 0,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {},
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 0,
+        "horizontalOverflow": false,
+        "scrollHeight": 900
+      },
+      "phone": {
+        "status": 200,
+        "final_url": "/research/epv",
+        "screenshot": "research_epv--phone.png",
+        "load_ms": 1497,
+        "title": "CourtLens \u00b7 NBA Analytics",
+        "h1": [
+          "Spatial Expected Possession Value (EPV)"
+        ],
+        "subtitles": [
+          "Microeconomic spatial tracking model calculating continuous possession value at every 40-millisecond frame of an NBA half-court possession."
+        ],
+        "loadButtons": [],
+        "nativeDateInputs": 0,
+        "notices": 0,
+        "dateFormats": {
+          "iso": 0,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {},
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 0,
+        "horizontalOverflow": false,
+        "scrollHeight": 844
+      }
+    },
+    "/research/operation": {
+      "desktop": {
+        "status": 200,
+        "final_url": "/research/operation",
+        "screenshot": "research_operation--desktop.png",
+        "load_ms": 1510,
+        "title": "CourtLens \u00b7 NBA Analytics",
+        "h1": [
+          "Research operation"
+        ],
+        "subtitles": [],
+        "loadButtons": [],
+        "nativeDateInputs": 0,
+        "notices": 1,
+        "dateFormats": {
+          "iso": 0,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {},
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 0,
+        "horizontalOverflow": false,
+        "scrollHeight": 900
+      },
+      "phone": {
+        "status": 200,
+        "final_url": "/research/operation",
+        "screenshot": "research_operation--phone.png",
+        "load_ms": 1509,
+        "title": "CourtLens \u00b7 NBA Analytics",
+        "h1": [
+          "Research operation"
+        ],
+        "subtitles": [],
+        "loadButtons": [],
+        "nativeDateInputs": 0,
+        "notices": 1,
+        "dateFormats": {
+          "iso": 0,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {},
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 0,
+        "horizontalOverflow": false,
+        "scrollHeight": 844
+      }
+    },
+    "/players/1629029?season=2025-26&phase=regular_season&beforeDate=2026-04-13&window=season&releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad": {
+      "desktop": {
+        "status": 200,
+        "final_url": "/players/1629029?season=2025-26&phase=regular_season&beforeDate=2026-04-13&window=season&releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+        "screenshot": "players_1629029--desktop.png",
+        "load_ms": 1987,
+        "title": "Player Research Profile \u00b7 CourtLens",
+        "h1": [
+          "Luka Don\u010di\u0107"
+        ],
+        "subtitles": [],
+        "loadButtons": [],
+        "nativeDateInputs": 1,
+        "notices": 1,
+        "dateFormats": {
+          "iso": 67,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {
+          "\u2606": 1,
+          "\u2192": 7,
+          "\u25c0": 1
+        },
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 2,
+        "horizontalOverflow": false,
+        "scrollHeight": 5162
+      },
+      "phone": {
+        "status": 200,
+        "final_url": "/players/1629029?season=2025-26&phase=regular_season&beforeDate=2026-04-13&window=season&releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+        "screenshot": "players_1629029--phone.png",
+        "load_ms": 1842,
+        "title": "Player Research Profile \u00b7 CourtLens",
+        "h1": [
+          "Luka Don\u010di\u0107"
+        ],
+        "subtitles": [],
+        "loadButtons": [],
+        "nativeDateInputs": 1,
+        "notices": 1,
+        "dateFormats": {
+          "iso": 67,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {
+          "\u2606": 1,
+          "\u2192": 7,
+          "\u25c0": 1
+        },
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 2,
+        "horizontalOverflow": false,
+        "scrollHeight": 6856
+      }
+    },
+    "/playoffs/2026-r1-det-orl?cutoff_date=2026-06-14": {
+      "desktop": {
+        "status": 200,
+        "final_url": "/playoffs/2026-r1-det-orl?cutoff_date=2026-06-14",
+        "screenshot": "playoffs_2026-r1-det-orl--desktop.png",
+        "load_ms": 1736,
+        "title": "Playoff Series Detail \u00b7 CourtLens \u00b7 CourtLens",
+        "h1": [
+          "Detroit Pistons vs Orlando Magic"
+        ],
+        "subtitles": [],
+        "loadButtons": [],
+        "nativeDateInputs": 1,
+        "notices": 1,
+        "dateFormats": {
+          "iso": 9,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {
+          "\u2190": 1,
+          "\u25c0": 8,
+          "\u25b6": 2,
+          "\u2192": 29
+        },
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 1,
+        "horizontalOverflow": false,
+        "scrollHeight": 4206
+      },
+      "phone": {
+        "status": 200,
+        "final_url": "/playoffs/2026-r1-det-orl?cutoff_date=2026-06-14",
+        "screenshot": "playoffs_2026-r1-det-orl--phone.png",
+        "load_ms": 1543,
+        "title": "Playoff Series Detail \u00b7 CourtLens \u00b7 CourtLens",
+        "h1": [
+          "Detroit Pistons vs Orlando Magic"
+        ],
+        "subtitles": [],
+        "loadButtons": [],
+        "nativeDateInputs": 1,
+        "notices": 1,
+        "dateFormats": {
+          "iso": 9,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {
+          "\u2190": 1,
+          "\u25c0": 8,
+          "\u25b6": 2,
+          "\u2192": 29
+        },
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 1,
+        "horizontalOverflow": false,
+        "scrollHeight": 6282
+      }
+    },
+    "/live/2026-10-09": {
+      "desktop": {
+        "status": 200,
+        "final_url": "/live/2026-10-09",
+        "screenshot": "live_2026-10-09--desktop.png",
+        "load_ms": 1563,
+        "title": "CourtLens \u00b7 NBA Analytics",
+        "h1": [
+          "Live games"
+        ],
+        "subtitles": [
+          "Provisional ESPN observations \u00b7 Eastern slate dates \u00b7 UTC event times"
+        ],
+        "loadButtons": [],
+        "nativeDateInputs": 1,
+        "notices": 2,
+        "dateFormats": {
+          "iso": 5,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {},
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 0,
+        "horizontalOverflow": false,
+        "scrollHeight": 900
+      },
+      "phone": {
+        "status": 200,
+        "final_url": "/live/2026-10-09",
+        "screenshot": "live_2026-10-09--phone.png",
+        "load_ms": 1553,
+        "title": "CourtLens \u00b7 NBA Analytics",
+        "h1": [
+          "Live games"
+        ],
+        "subtitles": [
+          "Provisional ESPN observations \u00b7 Eastern slate dates \u00b7 UTC event times"
+        ],
+        "loadButtons": [],
+        "nativeDateInputs": 1,
+        "notices": 2,
+        "dateFormats": {
+          "iso": 5,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {},
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 0,
+        "horizontalOverflow": false,
+        "scrollHeight": 1042
+      }
+    },
+    "/teams/1610612737?season=2025-26&phase=regular_season&beforeDate=2026-04-13": {
+      "desktop": {
+        "status": 200,
+        "final_url": "/teams/1610612737?season=2025-26&phase=regular_season&beforeDate=2026-04-13",
+        "screenshot": "teams_1610612737--desktop.png",
+        "load_ms": 2145,
+        "title": "Team Cohort, Four Factors & Schedule \u00b7 CourtLens \u00b7 CourtLens",
+        "h1": [
+          "Atlanta Hawks"
+        ],
+        "subtitles": [],
+        "loadButtons": [],
+        "nativeDateInputs": 1,
+        "notices": 1,
+        "dateFormats": {
+          "iso": 85,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {
+          "\u2190": 1,
+          "\u2192": 32
+        },
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 3,
+        "horizontalOverflow": false,
+        "scrollHeight": 7931
+      },
+      "phone": {
+        "status": 200,
+        "final_url": "/teams/1610612737?season=2025-26&phase=regular_season&beforeDate=2026-04-13",
+        "screenshot": "teams_1610612737--phone.png",
+        "load_ms": 2007,
+        "title": "Team Cohort, Four Factors & Schedule \u00b7 CourtLens \u00b7 CourtLens",
+        "h1": [
+          "Atlanta Hawks"
+        ],
+        "subtitles": [],
+        "loadButtons": [],
+        "nativeDateInputs": 1,
+        "notices": 1,
+        "dateFormats": {
+          "iso": 85,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {
+          "\u2190": 1,
+          "\u2192": 32
+        },
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 3,
+        "horizontalOverflow": false,
+        "scrollHeight": 9991
+      }
+    },
+    "/contracts/BOS": {
+      "desktop": {
+        "status": 200,
+        "final_url": "/contracts/BOS",
+        "screenshot": "contracts_BOS--desktop.png",
+        "load_ms": 1708,
+        "title": "CourtLens \u00b7 NBA Analytics",
+        "h1": [
+          "Contracts & known payroll"
+        ],
+        "subtitles": [],
+        "loadButtons": [],
+        "nativeDateInputs": 1,
+        "notices": 2,
+        "dateFormats": {
+          "iso": 0,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {},
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 0,
+        "horizontalOverflow": false,
+        "scrollHeight": 900
+      },
+      "phone": {
+        "status": 200,
+        "final_url": "/contracts/BOS",
+        "screenshot": "contracts_BOS--phone.png",
+        "load_ms": 1541,
+        "title": "CourtLens \u00b7 NBA Analytics",
+        "h1": [
+          "Contracts & known payroll"
+        ],
+        "subtitles": [],
+        "loadButtons": [],
+        "nativeDateInputs": 1,
+        "notices": 2,
+        "dateFormats": {
+          "iso": 0,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {},
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 0,
+        "horizontalOverflow": false,
+        "scrollHeight": 1757
+      }
+    },
+    "/live/games/0022501186?date=2026-04-12&live_mode=history": {
+      "desktop": {
+        "status": 200,
+        "final_url": "/live/games/0022501186?date=2026-04-12&live_mode=history&releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+        "screenshot": "live_games_0022501186--desktop.png",
+        "load_ms": 1876,
+        "title": "CourtLens \u00b7 NBA Analytics",
+        "h1": [
+          "Live games"
+        ],
+        "subtitles": [
+          "Retained finalized research facts \u00b7 Eastern slate dates \u00b7 UTC event times"
+        ],
+        "loadButtons": [
+          "Load finalized research"
+        ],
+        "nativeDateInputs": 2,
+        "notices": 0,
+        "dateFormats": {
+          "iso": 8,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {},
+        "uuids": 2,
+        "codeRules": 1,
+        "strictlyPrior": 0,
+        "horizontalOverflow": false,
+        "scrollHeight": 2491
+      },
+      "phone": {
+        "status": 200,
+        "final_url": "/live/games/0022501186?date=2026-04-12&live_mode=history&releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+        "screenshot": "live_games_0022501186--phone.png",
+        "load_ms": 1706,
+        "title": "CourtLens \u00b7 NBA Analytics",
+        "h1": [
+          "Live games"
+        ],
+        "subtitles": [
+          "Retained finalized research facts \u00b7 Eastern slate dates \u00b7 UTC event times"
+        ],
+        "loadButtons": [
+          "Load finalized research"
+        ],
+        "nativeDateInputs": 2,
+        "notices": 0,
+        "dateFormats": {
+          "iso": 8,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {},
+        "uuids": 2,
+        "codeRules": 1,
+        "strictlyPrior": 0,
+        "horizontalOverflow": false,
+        "scrollHeight": 3140
+      }
+    },
+    "/live/2026-04-12": {
+      "desktop": {
+        "status": 200,
+        "final_url": "/live/2026-04-12?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&date=2026-04-12&live_mode=history",
+        "screenshot": "live_2026-04-12--desktop.png",
+        "load_ms": 1675,
+        "title": "CourtLens \u00b7 NBA Analytics",
+        "h1": [
+          "Live games"
+        ],
+        "subtitles": [
+          "Retained finalized research facts \u00b7 Eastern slate dates \u00b7 UTC event times"
+        ],
+        "loadButtons": [
+          "Load finalized research"
+        ],
+        "nativeDateInputs": 2,
+        "notices": 0,
+        "dateFormats": {
+          "iso": 21,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {},
+        "uuids": 2,
+        "codeRules": 1,
+        "strictlyPrior": 0,
+        "horizontalOverflow": false,
+        "scrollHeight": 1656
+      },
+      "phone": {
+        "status": 200,
+        "final_url": "/live/2026-04-12?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&date=2026-04-12&live_mode=history",
+        "screenshot": "live_2026-04-12--phone.png",
+        "load_ms": 1711,
+        "title": "CourtLens \u00b7 NBA Analytics",
+        "h1": [
+          "Live games"
+        ],
+        "subtitles": [
+          "Retained finalized research facts \u00b7 Eastern slate dates \u00b7 UTC event times"
+        ],
+        "loadButtons": [
+          "Load finalized research"
+        ],
+        "nativeDateInputs": 2,
+        "notices": 0,
+        "dateFormats": {
+          "iso": 21,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {},
+        "uuids": 2,
+        "codeRules": 1,
+        "strictlyPrior": 0,
+        "horizontalOverflow": false,
+        "scrollHeight": 4744
+      }
+    },
+    "/": {
+      "desktop": {
+        "status": 200,
+        "final_url": "/stats?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&window=season&countingMode=per_game",
+        "screenshot": "root--desktop.png",
+        "load_ms": 2506,
+        "title": "Stats Explorer \u00b7 CourtLens \u00b7 CourtLens",
+        "h1": [
+          "Stats Explorer"
+        ],
+        "subtitles": [
+          "NBA player statistics. Explore production, shooting and efficiency within your selected scope."
+        ],
+        "loadButtons": [],
+        "nativeDateInputs": 1,
+        "notices": 0,
+        "dateFormats": {
+          "iso": 1,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {
+          "\u2713": 1,
+          "\u2190": 1,
+          "\u2192": 1
+        },
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 1,
+        "horizontalOverflow": false,
+        "scrollHeight": 900
+      },
+      "phone": {
+        "status": 200,
+        "final_url": "/stats?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&window=season&countingMode=per_game",
+        "screenshot": "root--phone.png",
+        "load_ms": 2470,
+        "title": "Stats Explorer \u00b7 CourtLens \u00b7 CourtLens",
+        "h1": [
+          "Stats Explorer"
+        ],
+        "subtitles": [
+          "NBA player statistics. Explore production, shooting and efficiency within your selected scope."
+        ],
+        "loadButtons": [],
+        "nativeDateInputs": 1,
+        "notices": 0,
+        "dateFormats": {
+          "iso": 1,
+          "us_slash": 0,
+          "month_day_year": 0
+        },
+        "glyphs": {
+          "\u2713": 1,
+          "\u2190": 1,
+          "\u2192": 1
+        },
+        "uuids": 0,
+        "codeRules": 0,
+        "strictlyPrior": 1,
+        "horizontalOverflow": false,
+        "scrollHeight": 1327
+      }
+    }
+  },
+  "overlays": {
+    "search-scrolled-desktop": "overlay-search-scrolled--desktop.png",
+    "search-scrolled-phone": "overlay-search-scrolled--phone.png",
+    "drawer-scrolled-phone": "overlay-drawer-scrolled--phone.png"
+  },
+  "dynamic_samples": {
+    "/players/[id]": "/players/1629029?season=2025-26&phase=regular_season&beforeDate=2026-04-13&window=season&releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+    "/teams/[id]": null,
+    "/contracts/[team]": null,
+    "/playoffs/[seriesId]": "/playoffs/2026-r1-det-orl?cutoff_date=2026-06-14",
+    "/live/games/[id]": null,
+    "/investigations/saved/[id]": null,
+    "/live/[date]": "/live/2026-10-09"
+  },
+  "supplemented_at": "2026-10-09T04:42:46.605Z"
+}
