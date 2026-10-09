@@ -1,5 +1,19 @@
 # CourtLens refresh progress
 
+## 2026-10-09 — Stats filter-divider spacing repair
+
+Follow-up: Manage Views follows the guide group, its 32px height matches the adjacent selectors,
+and the visible label is `Group Guides:`. Live-browser checks at 1440/2048/390px verify sizing,
+order, dialog interaction and no document overflow. Dashboard lint/types and 344 unit tests pass.
+[Evidence](evidence/stats-manage-views/README.md).
+
+The owner-reported hairline touching Manage Views and Group guides is corrected with a scoped
+16px (`--space-4`) top margin before the explorer, per Design Language v1.1. Measured at
+1440/2048/390px with working controls and no page overflow. Dashboard lint/types and 344 Vitest
+tests pass; 10 existing fixture browser cases pass across initial and isolated rerun.
+[Evidence and browser-environment limits](evidence/stats-divider-fix/README.md).
+This does not advance a refresh or overhaul milestone.
+
 Parent: [refresh handoff](courtlens-refresh-plan.md). Design contract:
 [design-language-v1](design/design-language-v1.md). Plans are not runtime evidence.
 

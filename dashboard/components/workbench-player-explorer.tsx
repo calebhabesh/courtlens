@@ -454,20 +454,9 @@ export function WorkbenchPlayerExplorer({
           })}
         </div>
 
-        {/* Manage Views Button (F04) */}
-        <div className="stats-preset-manage-wrapper">
-          <button
-            type="button"
-            onClick={() => setIsManageViewsOpen(true)}
-            className="button button-small stats-manage-views-btn"
-            title="Manage custom views, default view, and import/export"
-          >
-            <Icon name="settings" /> Manage Views
-          </button>
-        </div>
         {/* Identity Density Mode Buttons (F03) */}
         <div className="control-button-group" role="group" aria-label="Group guides">
-          <span className="control-group-label">Group guides:</span>
+          <span className="control-group-label">Group Guides:</span>
           {IDENTITY_MODES.map((im) => (
             <button
               key={im.id}
@@ -480,6 +469,18 @@ export function WorkbenchPlayerExplorer({
               {im.label}
             </button>
           ))}
+        </div>
+
+        {/* Manage Views Button (F04) */}
+        <div className="stats-preset-manage-wrapper">
+          <button
+            type="button"
+            onClick={() => setIsManageViewsOpen(true)}
+            className="button button-small stats-manage-views-btn"
+            title="Manage custom views, default view, and import/export"
+          >
+            <Icon name="settings" /> Manage Views
+          </button>
         </div>
 
       </div>
