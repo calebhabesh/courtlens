@@ -1,0 +1,13 @@
+
+Running 8 tests using 1 worker
+
+  ✓  1 e2e/shared-floor.spec.ts:65:5 › two and five player units use the same operation with all partitions (2.3s)
+  ✓  2 e2e/shared-floor.spec.ts:65:5 › two and five player units use the same operation with all partitions (2.3s)
+  ✓  3 e2e/shared-floor.spec.ts:65:5 › two and five player units use the same operation with all partitions (2.3s)
+  ✓  4 e2e/shared-floor.spec.ts:65:5 › two and five player units use the same operation with all partitions (2.4s)
+  ✓  5 e2e/shared-floor.spec.ts:65:5 › two and five player units use the same operation with all partitions (2.3s)
+  ✓  6 e2e/shared-floor.spec.ts:65:5 › two and five player units use the same operation with all partitions (2.4s)
+  ✓  7 e2e/shared-floor.spec.ts:65:5 › two and five player units use the same operation with all partitions (2.5s)
+  ✓  8 e2e/shared-floor.spec.ts:65:5 › two and five player units use the same operation with all partitions (2.3s)
+
+  8 passed (21.5s)

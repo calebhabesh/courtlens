@@ -1,13 +1,24 @@
+import type { ReactNode } from "react";
+import { ComparisonRows } from "@/components/ui/comparison-rows";
+import { TeamLogo } from "@/components/team-logo";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { CompareSelector } from "@/components/compare-selector";
 import { PlayerCompareView } from "@/components/player-compare-view";
 import { AnalyticsApiError, getAnalyticsCatalog, getAnalyticsCompare } from "@/lib/api";
+import { ContextBar } from "@/components/context-bar";
+import { PageShell, CompareLayout } from "@/components/ui/page-shell";
+import { PageHeader } from "@/components/ui/panel";
+import { GatedNote } from "@/components/ui/gated-note";
+import { PlayerIdentity } from "@/components/ui/identity";
+import { formatDate } from "@/lib/format-date";
+import { resolveStatsQuery } from "@/lib/stats-query";
+import { getWorkbenchCatalog, executeWorkbenchQuery } from "@/lib/workbench-api";
 import { comparePlayers } from "@/lib/workbench-api";
 import type { AnalyticsCompare, AnalyticsProfile, AnalyticsSummary, PlayerComparisonResponse } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
-export const metadata: Metadata = { title: "Compare Players · CourtLens" };
+export const metadata: Metadata = { title: "Player Comparison · CourtLens" };
 
 export default async function ComparePage({ searchParams }: {
   searchParams: Promise<{
@@ -28,91 +39,28 @@ export default async function ComparePage({ searchParams }: {
   const rawSelected = await searchParams;
   const selected = { ...rawSelected, releaseId: rawSelected.releaseId ?? rawSelected.release_id, beforeDate: rawSelected.beforeDate ?? rawSelected.before_date };
   const loaded = await loadComparison(selected);
-  if (!loaded) {
-    return (
-      <section className="workbench-content">
-        <div className="empty-state tall" role="alert">
-          <h1>Comparison unavailable</h1>
-          <p>No published archive could be opened.</p>
-          <Link className="button button-dark" href="/players">Open players</Link>
-        </div>
-      </section>
-    );
-  }
-
-  const { catalog, date, comparison, wbComparison, error, targetA, targetB, additionalPlayerIds } = loaded;
-
-  return (
-    <div className="workbench-content">
-      <header className="page-header">
-        <div>
-          <span className="text-xs text-muted font-mono uppercase">Player Comparison · PvP</span>
-          <h1 className="page-title">Compare Players</h1>
-          <p className="page-subtitle">
-            Side-by-side descriptive metrics, visual comparison bars, and game-log progression under an identical cutoff.
-          </p>
-        </div>
-      </header>
-
-      {/* Player Selector Bar */}
-      <CompareSelector
-        catalog={catalog}
-        date={date}
-        initialA={
-          wbComparison ? { id: wbComparison.player_a.id, name: wbComparison.player_a.name } :
-          comparison ? comparison.player_a.player :
-          targetA ? { id: targetA, name: `Player ${targetA}` } : null
-        }
-        initialB={
-          wbComparison ? { id: wbComparison.player_b.id, name: wbComparison.player_b.name } :
-          comparison ? comparison.player_b.player :
-          targetB ? { id: targetB, name: `Player ${targetB}` } : null
-        }
-      />
-
-      {error && (
-        <div className="empty-state mt-4" role="alert">
-          <h2>Unable to compare</h2>
-          <p>{error}</p>
-          <p>Your date and snapshot remain in the URL.</p>
-        </div>
-      )}
-
-      {/* Interactive Player Comparison View with Presets, Comparative Bars, and Lines */}
-      {wbComparison && (
-        <div className="mt-5">
-          <PlayerCompareView
-            comparison={wbComparison}
-            catalog={catalog}
-            additionalPlayerIds={additionalPlayerIds}
-            context={{
-              season: selected.season || (wbComparison.context?.season as string) || "2024-25",
-              phase: selected.phase || (wbComparison.context?.phase as string) || "regular_season",
-              before_date: selected.beforeDate || (wbComparison.context?.before_date as string) || date,
-              window: selected.window || (wbComparison.context?.window as string) || "season",
-              release_id: selected.releaseId || (wbComparison.context?.release_id as string) || catalog.snapshot_id
-            }}
-          />
-        </div>
-      )}
-
-      {/* Legacy Fallback View when Workbench API is unavailable */}
-      {comparison && !wbComparison && (
-        <ComparisonView comparison={comparison} />
-      )}
-
-      {!comparison && !wbComparison && !error && (
-        <div className="empty-state mt-5" role="status">
-          <h2>Select two players</h2>
-          <p>Search by name and choose a shared replay date to compare their prior form and reconstructed matchups.</p>
-        </div>
-      )}
-
-      <p className="snapshot-footnote mt-5">
-        Snapshot {catalog.snapshot_id} · source {catalog.source}
-      </p>
-    </div>
-  );
+  if (!loaded) return <PageShell template="compare"><PageHeader title="Player Comparison" /><GatedNote action={<Link className="button" href="/players">Open players</Link>}>Comparison unavailable.</GatedNote></PageShell>;
+  const { catalog, workbenchCatalog, date, comparison, wbComparison, error, targetA, targetB, additionalPlayerIds, cohort } = loaded;
+  const context = {
+    season: String(wbComparison?.context?.season ?? selected.season ?? workbenchCatalog?.default_season ?? ""),
+    phase: String(wbComparison?.context?.phase ?? selected.phase ?? workbenchCatalog?.default_phase ?? "regular_season"),
+    before_date: String(wbComparison?.context?.before_date ?? selected.beforeDate ?? date),
+    window: String(wbComparison?.context?.window ?? selected.window ?? "season"),
+    release_id: String(wbComparison?.context?.release_id ?? selected.releaseId ?? workbenchCatalog?.release_id ?? "")
+  };
+  const selector = (    <CompareSelector catalog={catalog} date={date} legacy={Boolean(selected.snapshotId === "snapshot-browser-fixture" || comparison && !wbComparison)}
+      initialA={wbComparison ? { id: wbComparison.player_a.id, name: wbComparison.player_a.name } : comparison ? comparison.player_a.player : targetA ? {id:targetA,name:`Player ${targetA}`} : null}
+      initialB={wbComparison ? { id: wbComparison.player_b.id, name: wbComparison.player_b.name } : comparison ? comparison.player_b.player : targetB ? {id:targetB,name:`Player ${targetB}`} : null} />);
+  if(wbComparison) return <PageShell template="compare" className="fo11-player-comparison"><PlayerCompareView comparison={wbComparison} catalog={catalog} workbenchCatalog={workbenchCatalog} selector={selector} additionalPlayerIds={additionalPlayerIds} context={context} cohort={cohort} /></PageShell>;
+  return <PageShell template="compare" className="fo11-player-comparison">
+    <PageHeader title="Player Comparison" subtitle="Descriptive metrics under a shared scope." />
+    <ContextBar catalog={workbenchCatalog ?? undefined} initialReleaseId={context.release_id} initialSeason={context.season} initialPhase={context.phase} initialBeforeDate={context.before_date} initialWindow={context.window}
+      detailRows={[{label:"Legacy snapshot",value:catalog.snapshot_id,mono:true},{label:"Source",value:catalog.source}, ...(cohort ? [{label:"Percentile cohort",value:`${cohort.total_eligible_players} eligible players; Stats midrank percentiles, oriented by catalog direction.`}] : [])]} />
+    {selector}
+    {error && <div role="alert"><GatedNote why={error} action={<Link className="button" href="/compare">Choose players</Link>}>Unable to compare.</GatedNote></div>}
+    {comparison && !wbComparison && <ComparisonView comparison={comparison} />}
+    {!comparison && !wbComparison && !error && <GatedNote>Select two players to compare.</GatedNote>}
+  </PageShell>;
 }
 
 async function loadComparison(selected: {
@@ -129,7 +77,9 @@ async function loadComparison(selected: {
 }) {
   try {
     const catalog = await getAnalyticsCatalog(selected.snapshotId);
-    const date = selected.date ?? catalog.default_replay_date;
+    const workbenchCatalog = await getWorkbenchCatalog(selected.releaseId).catch(() => null);
+    const scope = workbenchCatalog ? resolveStatsQuery(selected, workbenchCatalog, "per_game") : null;
+    const date = selected.date ?? (selected.snapshotId === "snapshot-browser-fixture" ? catalog.default_replay_date : scope?.before_date) ?? catalog.default_replay_date;
 
     // Resolve Player IDs from playerA/playerB or comma-separated players param
     const parsedPlayers = selected.players
@@ -152,11 +102,11 @@ async function loadComparison(selected: {
         if (selected.snapshotId !== "snapshot-browser-fixture") {
           try {
             wbComparison = await comparePlayers(targetA, targetB, {
-              season: selected.season,
-              phase: selected.phase,
-              beforeDate: selected.beforeDate || date,
+              season: scope?.season ?? selected.season,
+              phase: scope?.phase ?? selected.phase,
+              beforeDate: selected.beforeDate || scope?.before_date || date,
               window: selected.window,
-              releaseId: selected.releaseId
+              releaseId: scope?.release_id ?? selected.releaseId
             });
           } catch {
             // Fall through to legacy comparison
@@ -178,8 +128,11 @@ async function loadComparison(selected: {
         }
       }
     }
+    const cohort = wbComparison && scope ? await executeWorkbenchQuery({...scope,page:{limit:2}}, {player_ids:[wbComparison.player_a.id,wbComparison.player_b.id]}).catch(() => null) : null;
     return {
       catalog,
+      workbenchCatalog,
+      cohort,
       date,
       comparison,
       wbComparison,
@@ -196,15 +149,15 @@ async function loadComparison(selected: {
 function ComparisonView({ comparison }: { comparison: AnalyticsCompare }) {
   const a = comparison.player_a;
   const b = comparison.player_b;
-  const rows: Array<[string, (profile: AnalyticsProfile) => string]> = [
+  const rows: Array<[string, (profile: AnalyticsProfile) => ReactNode]> = [
     ["Last 5 · CourtLens points / game", (p) => summaryValue(p.summaries.last_5, "reference_points_per_game")],
     ["Last 10 · CourtLens points / game", (p) => summaryValue(p.summaries.last_10, "reference_points_per_game")],
     ["Season · CourtLens points / game", (p) => summaryValue(p.summaries.season, "reference_points_per_game")],
     ["Last 5 · minutes / game", (p) => summaryValue(p.summaries.last_5, "minutes_per_game")],
     ["Last 10 · minutes / game", (p) => summaryValue(p.summaries.last_10, "minutes_per_game")],
     ["Season · minutes / game", (p) => summaryValue(p.summaries.season, "minutes_per_game")],
-    ["Last 10 sample", (p) => String(p.summaries.last_10?.n ?? 0)],
-    ["Next team game", (p) => p.target ? `${p.target.date} · ${p.target.team ?? p.target.team_id} ${p.target.side === "home" ? "vs" : "at"} ${p.target.opponent ?? p.target.opponent_id}` : "No reconstructed target"],
+    ["Last 10 sample", (p) => p.summaries.last_10 == null ? "Unavailable" : String(p.summaries.last_10.n)],
+    ["Next team game", (p) => p.target ? <>{formatDate(p.target.date)} · <TeamLogo team={p.target.team ?? p.target.team_id} size={20} />{p.target.team ?? p.target.team_id} {p.target.side === "home" ? "vs" : "at"} <TeamLogo team={p.target.opponent ?? p.target.opponent_id} size={20} />{p.target.opponent ?? p.target.opponent_id}</> : "No reconstructed target"],
     ["Rest before game", (p) => p.target?.rest_days == null ? "Unavailable" : `${p.target.rest_days} days`],
     ["Opponent context", (p) => p.opponent_context && p.opponent_context.eligible_games >= 5 ? `${p.opponent_context.eligible_games} prior games` : "Insufficient opponent coverage"],
     ["Next-game estimate", (p) => p.estimate.point == null ? estimateReason(p.estimate.status) : `${p.estimate.point.toFixed(1)} points`],
@@ -212,10 +165,13 @@ function ComparisonView({ comparison }: { comparison: AnalyticsCompare }) {
   ];
 
   return (
-    <section className="comparison-results mt-5" aria-labelledby="comparison-title">
+    <section className="comparison-results" aria-labelledby="comparison-title">
+      <CompareLayout sides={[a,b].map(p => <PlayerIdentity key={p.player.id} playerId={p.player.id} name={p.player.name} team={p.target?.team} size="xl" />)}>
+
       <div className="panel-header">
         <h2 id="comparison-title" className="panel-title">Side by side</h2>
       </div>
+      <ComparisonRows names={[a.player.name,b.player.name]} rows={(["last_5","last_10","season"] as const).flatMap(window=>(["reference_points_per_game","minutes_per_game"] as const).map(key=>({key:`${window}-${key}`,label:`${window.replaceAll("_"," ")} · ${key === "reference_points_per_game" ? "CourtLens points / game" : "minutes / game"}`,a:a.summaries[window]?.[key],b:b.summaries[window]?.[key],formattedA:summaryValue(a.summaries[window],key),formattedB:summaryValue(b.summaries[window],key)})))} />
       <div className="table-wrapper">
         <table className="data-table">
           <thead>
@@ -226,7 +182,7 @@ function ComparisonView({ comparison }: { comparison: AnalyticsCompare }) {
             </tr>
           </thead>
           <tbody>
-            {rows.map(([label, value]) => (
+            {rows.slice(6).map(([label, value]) => (
               <tr key={label}>
                 <td className="font-semibold">{label}</td>
                 <td>{value(a)}</td>
@@ -236,7 +192,7 @@ function ComparisonView({ comparison }: { comparison: AnalyticsCompare }) {
           </tbody>
         </table>
       </div>
-      <div className="notice-box mt-4">
+      <GatedNote why={<>
         <strong>Estimate gap:</strong>{" "}
         {comparison.estimate_gap == null
           ? "Unavailable until both players have a supported estimate at this cutoff."
@@ -244,7 +200,8 @@ function ComparisonView({ comparison }: { comparison: AnalyticsCompare }) {
         <p className="panel-subtitle-margin">
           Different next-game dates are possible. An estimate covers production conditional on appearance; it does not estimate availability.
         </p>
-      </div>
+      </>}>Estimates are conditional on appearance.</GatedNote>
+      </CompareLayout>
     </section>
   );
 }
