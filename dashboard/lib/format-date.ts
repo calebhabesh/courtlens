@@ -48,3 +48,15 @@ export function beforeDateFromThrough(throughDate: string): string {
 export function throughLabel(beforeDate: string | null | undefined): string {
   return beforeDate && parseIsoDate(beforeDate) ? `Through ${formatDate(throughDateFromBefore(beforeDate))}` : "";
 }
+
+/**
+ * "Oct 7, 2026 · 07:01 UTC" for an ISO timestamp. UTC keeps the server render and the browser
+ * identical; job and publication times are operational records, not game dates.
+ */
+export function formatTimestamp(value: string | null | undefined): string {
+  if (!value) return "";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return value;
+  const time = date.toISOString().slice(11, 16);
+  return `${formatDate(toIsoDate(date))} · ${time} UTC`;
+}

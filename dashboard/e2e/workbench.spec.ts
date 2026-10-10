@@ -18,11 +18,11 @@ test.describe("Workbench Dark Research Interface", () => {
     }
     const moreBtn = page.getByRole("button", { name: "More options" });
     await moreBtn.click();
-    await expect(page.getByRole("menuitem", { name: "Data status" })).toBeVisible();
+    await expect(page.getByRole("menuitem", { name: "Data Status" })).toBeVisible();
     await expect(page.getByRole("menuitem", { name: "Settings" })).toBeVisible();
     await page.keyboard.press("Escape");
     await expect(page.getByLabel("Filter by season")).toHaveValue("2025-26");
-    await expect(page.getByRole("heading", { name: "Stats Explorer" })).toBeVisible();
+    await expect(page.getByRole("heading", { level: 1, name: "Stats", exact: true })).toBeVisible();
     await expect(page.getByText("Fixture Star", { exact: true })).toBeVisible();
     await expect(page.getByText("Fixture Guard", { exact: true })).toBeVisible();
   });

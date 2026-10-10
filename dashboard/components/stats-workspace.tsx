@@ -1,4 +1,5 @@
-import { Icon } from "./ui/icon";
+import { GatedNote } from "./ui/gated-note";
+import { PageHeader } from "./ui/panel";
 import "./stats-explorer.css";
 import { redirect } from "next/navigation";
 import { ContextBar } from "@/components/context-bar";
@@ -10,7 +11,7 @@ import { getPresetById, IMPACT_COLUMNS, type CountingMode } from "@/lib/stats-pr
 import { getWorkspace } from "@/lib/workspace-client";
 import type { PlayerResearchResponse, WorkbenchCatalog } from "@/lib/types";
 
-export async function StatsWorkspace({ params: rawParams, basePath = "/stats", title = "Stats Explorer" }: {
+export async function StatsWorkspace({ params: rawParams, basePath = "/stats", title = "Stats" }: {
   params: Record<string, string | string[] | undefined>;
   basePath?: string;
   title?: string;
@@ -20,7 +21,7 @@ export async function StatsWorkspace({ params: rawParams, basePath = "/stats", t
   try {
     catalog = await getWorkbenchCatalog(String(params.releaseId || params.release_id || "") || undefined);
   } catch {
-    return <div className="empty-state" role="alert">Stats catalog unavailable. Try again.</div>;
+    return <div className="workbench-content"><GatedNote tone="warning">Stats catalog unavailable. Try again.</GatedNote></div>;
   }
   let workspace;
   try { workspace = await getWorkspace(); } catch {
@@ -80,14 +81,7 @@ export async function StatsWorkspace({ params: rawParams, basePath = "/stats", t
   return (
     <section className="stats-workspace">
       <div className="workbench-content">
-        <div className="page-header">
-          <div>
-            <h1 className="page-title"><Icon name="chart-column" size={20} />{title}</h1>
-            <p className="page-subtitle">
-              NBA player statistics. Explore production, shooting and efficiency within your selected scope.
-            </p>
-          </div>
-        </div>
+        <PageHeader icon="chart-column" title={title} subtitle="NBA player statistics. Explore production, shooting and efficiency within your selected scope." />
 
         <ContextBar
           catalog={catalog}
@@ -102,9 +96,9 @@ export async function StatsWorkspace({ params: rawParams, basePath = "/stats", t
         />
 
         {loadError && (
-          <div className="notice-box notice-box-error">
-            <strong>Error:</strong> {loadError}
-          </div>
+          <GatedNote tone="warning" action={<a href={`${basePath}?${new URLSearchParams(Object.entries(params).filter((entry): entry is [string, string] => typeof entry[1] === "string"))}`} className="ui-button ui-button-secondary ui-button-sm">Retry</a>}>
+            {loadError}
+          </GatedNote>
         )}
 
         {researchData && (

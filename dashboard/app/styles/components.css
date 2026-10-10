@@ -2161,10 +2161,7 @@
 .saved-operation-form input:not([type="checkbox"]) { width: 100%; min-width: 0; }
 .saved-hash, .saved-operation-detail pre, .original-article pre { overflow-wrap: anywhere; word-break: break-word; white-space: pre-wrap; }
 .saved-operation-detail, .saved-operation-detail > *, .original-article { min-width: 0; }
-.original-article { max-width: 960px; line-height: 1.65; }
-.original-article h2 { margin-top: var(--space-6); }
-.original-article pre { padding: var(--space-4); background: var(--color-surface-1); border: 1px solid var(--color-hairline-strong); }
-.saved-operation-detail .page-actions, .original-article .page-actions { flex-wrap: wrap; }
+.saved-operation-detail .page-actions { flex-wrap: wrap; }
 
 /* Shared control conventions also cover preserved route-specific controls. */
 html { scroll-padding-top: calc(var(--header-height) + 80px); }
@@ -2222,6 +2219,7 @@ textarea, input, select { max-width: 100%; }
 .conversation { max-width: 1100px; padding: var(--space-5); }
 .conversation-controls { padding: var(--space-4); border: 1px solid var(--color-hairline); border-radius: var(--radius-sm); }
 .conversation-controls label { min-width: 0; }
+.conversation-date { display: flex; flex-direction: column; gap: var(--space-1); min-width: 0; }
 .page-actions { margin-bottom: var(--space-5); }
 .page-actions a { display: inline-flex; align-items: center; min-height: var(--control-lg); padding: var(--space-2) var(--space-3); background: var(--color-surface-2); border-radius: var(--radius-sm); }
 @media (max-width: 1100px) {

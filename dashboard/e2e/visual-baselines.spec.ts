@@ -197,3 +197,13 @@ for (const view of WIDTHS) test.describe(`FO12 baselines ${view.name}`, () => {
     await settle(page); await expect(page).toHaveScreenshot(`${name}-${view.name}.png`, shot);
   });
 });
+
+// FO13: Article template pages (Settings, Methodology, What's New) and Data Status on the mock API.
+for (const view of WIDTHS) test.describe(`FO13 baselines ${view.name}`, () => {
+  test.beforeEach(async ({ page }) => { await page.setViewportSize({ width: view.width, height: view.height }); await stableWorkspace(page); });
+  for (const [name, path, ready] of [["settings", "/settings", "Background worker"], ["data-status", "/data-status", "Background jobs"], ["methodology", "/methodology", "Principles"], ["whats-new", "/whats-new", "Open gates"]] as const) test(name, async ({ page }) => {
+    await openWorkbench(page, path);
+    await expect(page.getByRole("heading", { name: ready, exact: true })).toBeVisible();
+    await settle(page); await expect(page).toHaveScreenshot(`${name}-${view.name}.png`, shot);
+  });
+});

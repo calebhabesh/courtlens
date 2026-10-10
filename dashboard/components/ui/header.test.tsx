@@ -102,8 +102,8 @@ describe("Design Language v1 Header Component", () => {
     expect(moreBtn.getAttribute("aria-expanded")).toBe("true");
 
     expect(screen.getByRole("menuitem", { name: "Settings" })).toBeDefined();
-    expect(screen.getByRole("menuitem", { name: "Data status" })).toBeDefined();
-    for (const name of ["Methodology", "What's New", "Schedule", "Planner"]) {
+    expect(screen.getByRole("menuitem", { name: "Data Status" })).toBeDefined();
+    for (const name of ["Methodology", "What's New", "Planner"]) {
       expect(screen.getByRole("menuitem", { name })).toBeDefined();
     }
 

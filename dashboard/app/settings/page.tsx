@@ -1,16 +1,35 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Section } from "@/components/ui/controls";
 import { InstallInterface } from "@/components/install-interface";
 import { WorkbenchPortraitSettings } from "@/components/workbench-portrait-settings";
 import { AssistantStatusCard } from "@/components/assistant-status-card";
 import { AssistantHistorySettings } from "@/components/assistant-history-settings";
 import { AdvancedModeSetting } from "@/components/advanced-mode-setting";
+import { ArticleLayout, ArticleSection } from "@/components/ui/article-layout";
+import { GatedNote } from "@/components/ui/gated-note";
+import { PageShell } from "@/components/ui/page-shell";
+import { PageHeader } from "@/components/ui/panel";
+import { formatTimestamp } from "@/lib/format-date";
 import { getAssistantStatus, getWorkbenchStatus } from "@/lib/workbench-api";
 import type { AssistantStatusResponse, WorkbenchStatus } from "@/lib/types";
 
-export const metadata: Metadata = { title: "Workbench Settings · CourtLens" };
+export const metadata: Metadata = { title: "Settings · CourtLens" };
 export const dynamic = "force-dynamic";
+
+// Configuration a person can change comes first; read-only service state follows (FO13).
+const TOC = [
+  { id: "display", label: "Display" },
+  { id: "assistant", label: "Assistant" },
+  { id: "history", label: "History and privacy" },
+  { id: "portraits", label: "Player portraits" },
+  { id: "install", label: "Install" },
+  { id: "worker", label: "Background worker" },
+  { id: "sources", label: "Sources and terms" },
+];
+
+function jobLabel(type: string) {
+  return type.charAt(0).toUpperCase() + type.slice(1).replaceAll("_", " ");
+}
 
 export default async function SettingsPage() {
   let status: WorkbenchStatus | null = null;
@@ -26,62 +45,45 @@ export default async function SettingsPage() {
   try {
     assistantStatus = await getAssistantStatus();
   } catch {
-    // Graceful fallback
+    // The assistant section states that its configuration is unavailable.
   }
 
   const portraits = status?.capabilities?.portraits;
+  const worker = status?.worker;
 
   return (
-    <div className="workbench-content">
-      <div className="page-header">
-        <div>
-          <span className="text-xs text-muted font-mono uppercase">System Configuration</span>
-          <h1 className="page-title">Settings</h1>
-          <p className="page-subtitle">
-            Configure portraits and the optional assistant; inspect local service status.
-          </p>
-        </div>
-      </div>
-
+    <PageShell template="article">
+      <PageHeader title="Settings" subtitle="Display, assistant, portraits and installation for this local workbench." />
       {loadError && (
-        <div className="notice-box notice-box-warning">
-          <strong>Notice:</strong> {loadError}. Live configuration and health values are unavailable.
-        </div>
+        <GatedNote tone="warning" why={<p>{loadError}. Portrait counts and worker state are unknown until the local API answers.</p>}>
+          Workbench status is unavailable.
+        </GatedNote>
       )}
-
-      <div className="page-actions"><Link href="/data-status">Source lineage, freshness and jobs</Link><Link href="/methodology">Definitions</Link><Link href="/investigations">Saved evidence</Link><Link href="/whats-new">Dated changes</Link></div>
-
-      <AdvancedModeSetting />
-
-      {/* Player Portrait Cache Coverage */}
-      <WorkbenchPortraitSettings
-        available={Boolean(portraits)}
-        totalCached={portraits?.total_cached ?? 0}
-        active={portraits?.active ?? 0}
-        totalPlayers={portraits?.total_players ?? 0}
-        storagePath={portraits?.storage_path ?? "data/cache/portraits"}
-      />
-
-      <AssistantStatusCard status={assistantStatus} />
-
-      <AssistantHistorySettings />
-
-      <InstallInterface />
-      <Section title="Reported local worker state"><p>Scheduled refresh: {status?.worker.scheduled_refresh_utc ?? "Unavailable"}</p><p>Active job: {status?.worker.active_job ? `${status.worker.active_job.job_type} · ${status.worker.active_job.stage ?? "stage unavailable"}` : status ? "No active job reported" : "Unavailable"}</p><p>Latest job: {status?.worker.latest_job ? `${status.worker.latest_job.job_type} · ${status.worker.latest_job.status}` : "Unavailable"}</p><p>An idle job queue does not establish worker liveness. Inspect job heartbeats and source coverage in Data status.</p></Section>
-      {/* Admitted Source Licenses & Attribution */}
-      <div className="panel">
-        <div className="panel-header">
-          <h2 className="panel-title">Admitted Source Attribution & Terms</h2>
-        </div>
-        <div className="text-sm text-muted prose-line-relaxed">
-          <p>
-            <strong>SportsDataverse NBA Stats:</strong> Historical and recent regular-season and playoff box score data acquired from open, zero-cost public release archives.
-          </p>
-          <p>
-            <strong>NBA CDN Media:</strong> Player headshots fetched from the public CDN and cached locally by cryptographic SHA-256 digest. Unofficial and not affiliated with the National Basketball Association.
-          </p>
-        </div>
-      </div>
-    </div>
+      <ArticleLayout toc={TOC}>
+        <AdvancedModeSetting />
+        <AssistantStatusCard status={assistantStatus} />
+        <AssistantHistorySettings />
+        <WorkbenchPortraitSettings
+          available={Boolean(portraits)}
+          totalCached={portraits?.total_cached ?? 0}
+          active={portraits?.active ?? 0}
+          totalPlayers={portraits?.total_players ?? 0}
+          storagePath={portraits?.storage_path ?? "data/cache/portraits"}
+        />
+        <InstallInterface />
+        <ArticleSection id="worker" title="Background worker" actions={<Link href="/data-status" className="ui-button ui-button-secondary ui-button-sm">Open Data Status</Link>}>
+          <dl className="ui-article-facts">
+            <div><dt>Scheduled refresh</dt><dd>{worker ? `${worker.scheduled_refresh_utc} UTC daily` : "Unavailable"}</dd></div>
+            <div><dt>Active job</dt><dd>{worker?.active_job ? `${jobLabel(worker.active_job.job_type)} · ${worker.active_job.stage ?? "stage unavailable"}` : worker ? "No active job reported" : "Unavailable"}</dd></div>
+            <div><dt>Latest job</dt><dd>{worker?.latest_job ? `${jobLabel(worker.latest_job.job_type)} · ${worker.latest_job.status}${worker.latest_job.finished_at ? ` · ${formatTimestamp(worker.latest_job.finished_at)}` : ""}` : "Unavailable"}</dd></div>
+          </dl>
+          <p>An idle job queue does not establish worker liveness. Job heartbeats and source coverage are in Data Status.</p>
+        </ArticleSection>
+        <ArticleSection id="sources" title="Sources and terms">
+          <p><strong>SportsDataverse NBA Stats:</strong> historical and recent regular-season and playoff box scores from open, zero-cost public release archives.</p>
+          <p><strong>NBA CDN media:</strong> player headshots fetched from the public CDN and cached locally by SHA-256 digest. Unofficial and not affiliated with the National Basketball Association.</p>
+        </ArticleSection>
+      </ArticleLayout>
+    </PageShell>
   );
 }

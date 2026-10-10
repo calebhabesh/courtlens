@@ -38,6 +38,13 @@ function Body({ template }: { template: PageTemplate }) {
           <Skeleton height={360} />
         </div>
       );
+    case "article":
+      return (
+        <div className="ui-article">
+          <div className="ui-skeleton-stack"><Rows count={5} height={28} /></div>
+          <div className="ui-article-body"><Skeleton variant="text" width="45%" height={28} /><Rows count={6} height={20} /><Skeleton height={160} /></div>
+        </div>
+      );
   }
 }
 
@@ -46,7 +53,7 @@ export function TemplateSkeleton({ template }: { template: PageTemplate }) {
   return (
     <div className={`ui-page ui-page-${template}`} aria-busy="true" aria-label="Loading">
       <div className="ui-skeleton-header"><Skeleton variant="text" width={240} height={32} /><Skeleton variant="text" width={420} /></div>
-      <div className="ui-skeleton-filters"><Rows count={4} height={40} /></div>
+      {template !== "article" && <div className="ui-skeleton-filters"><Rows count={4} height={40} /></div>}
       <Body template={template} />
     </div>
   );

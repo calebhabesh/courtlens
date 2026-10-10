@@ -2,10 +2,22 @@
 import { EntityField } from "./entity-picker";
 
 import { FormEvent, useCallback, useEffect, useState } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { browserApi } from "@/lib/api";
+import { formatDate, parseIsoDate } from "@/lib/format-date";
 import type { LookupItem, Plan, PrivatePlayer, Scenario } from "@/lib/types";
-import { Metric } from "./metric";
 import { PlanTable } from "./plan-table";
+import { BoardLayout } from "./ui/page-shell";
+import { Button } from "./ui/button";
+import { DataDetailsButton } from "./ui/data-details";
+import { DatePicker } from "./ui/date-picker";
+import { Field } from "./ui/field";
+import { CountChip, FilterBar } from "./ui/filter-bar";
+import { GatedNote } from "./ui/gated-note";
+import { Input } from "./ui/input";
+import { Select } from "./ui/select";
+import { Skeleton } from "./ui/skeleton";
+import { StatTile } from "./ui/stat-tile";
 
 type League = { id: string; name: string; timezone: string; lineup_slots: Record<string, number> };
 
@@ -33,60 +45,62 @@ function plannerCandidates(players: PrivatePlayer[]): LookupItem[] {
   return players.map(player=>({id:String(player.player_id),canonical_id:String(player.player_id),kind:"player",display_name:player.name,subtitle:`${player.team ?? "Unknown team"} · Selected league roster/watchlist`,match_basis:"suggestion",match_score:1,availability:{has_current_season:false,status:"available",seasons:[]},destination_url:"",metadata:{identity_namespace:"planner"}}));
 }
 
-export function PlannerClient({ fixtureMode }: { fixtureMode: boolean }) {
+/**
+ * Planner (FO13, Board template): sign in, then the shared filter bar holds League and Week, which
+ * apply immediately and live in the URL. The weekly plan is the main surface; the one-transaction
+ * what-if sits in the rail. Snapshot, roster and rules versions are in Data details.
+ */
+export function PlannerClient({ fixtureMode, defaultWeek }: { fixtureMode: boolean; defaultWeek: string }) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const params = useSearchParams();
+  const urlWeek = params.get("week");
+  const weekStart = urlWeek && parseIsoDate(urlWeek) ? urlWeek : defaultWeek;
   const [email, setEmail] = useState(fixtureMode ? "demo@courtlens.dev" : "");
   const [password, setPassword] = useState(fixtureMode ? "CourtLens-demo-2026" : "");
   const [token, setToken] = useState("");
   const [leagues, setLeagues] = useState<League[]>([]);
-  const [leagueId, setLeagueId] = useState("");
-  const [weekStart, setWeekStart] = useState(fixtureMode ? "2025-02-03" : "");
-  const [plan, setPlan] = useState<Plan | null>(null);
+  const requestedLeague = params.get("league");
+  const leagueId = leagues.find(league => league.id === requestedLeague)?.id ?? leagues[0]?.id ?? "";
+  const [loadedPlan, setPlan] = useState<Plan | null>(null);
+  // Results always describe the visible URL scope, including while a replacement is pending.
+  const plan = loadedPlan?.league.id === leagueId && loadedPlan.week_start === weekStart ? loadedPlan : null;
   const [roster, setRoster] = useState<PrivatePlayer[]>([]);
   const [watchlist, setWatchlist] = useState<PrivatePlayer[]>([]);
   const [dropId, setDropId] = useState("");
   const [addId, setAddId] = useState("");
   const [addEligibleSlots, setAddEligibleSlots] = useState("UTIL");
-  const [effectiveDate, setEffectiveDate] = useState(fixtureMode ? "2025-02-03" : "");
+  const [effectiveDate, setEffectiveDate] = useState(weekStart);
   const [scenario, setScenario] = useState<Scenario | null>(null);
-  const [message, setMessage] = useState(fixtureMode ? "Loading the labeled fixture workspace…" : "Sign in to load your private leagues.");
+  const [message, setMessage] = useState(fixtureMode ? "Opening the labeled fixture workspace…" : "Sign in to open your private leagues.");
+  const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
-  const loadWorkspace = useCallback(async (accessToken: string, selectedLeague?: string) => {
-    const loadedLeagues = await api<League[]>("/api/fantasy/leagues", {}, accessToken);
-    setLeagues(loadedLeagues);
-    const id = selectedLeague ?? loadedLeagues[0]?.id;
-    if (!id) {
-      setMessage("No league exists yet. Create one through the API docs, then add your roster.");
-      return;
-    }
-    setLeagueId(id);
-    const [loadedRoster, loadedWatchlist] = await Promise.all([
-      api<PrivatePlayer[]>(`/api/fantasy/leagues/${id}/roster`, {}, accessToken),
-      api<PrivatePlayer[]>(`/api/fantasy/leagues/${id}/watchlist`, {}, accessToken)
-    ]);
-    setRoster(loadedRoster);
-    setWatchlist(loadedWatchlist);
-    setDropId(String(loadedRoster[0]?.player_id ?? ""));
-    setAddId(String(loadedWatchlist[0]?.player_id ?? ""));
-    setMessage("Workspace ready. Scheduled never means healthy or available.");
-  }, []);
+  const setQuery = useCallback((key: string, value: string) => {
+    const next = new URLSearchParams(params.toString());
+    next.set(key, value);
+    router.replace(`${pathname}?${next}`, { scroll: false });
+  }, [params, pathname, router]);
 
   const signIn = useCallback(async (event?: FormEvent) => {
     event?.preventDefault();
     setBusy(true);
+    setError(null);
     try {
       const result = await api<{ access_token: string }>("/api/auth/token", {
         method: "POST",
         body: JSON.stringify({ email, password })
       });
+      const loadedLeagues = await api<League[]>("/api/fantasy/leagues", {}, result.access_token);
+      setLeagues(loadedLeagues);
+      if (!loadedLeagues.length) setError("No league exists yet. Create one through the API docs, then add your roster.");
       setToken(result.access_token);
-      await loadWorkspace(result.access_token);
-    } catch (error) {
-      setMessage(`Could not sign in: ${error instanceof Error ? error.message : "unknown error"}`);
+    } catch (cause) {
+      setMessage(`Could not sign in: ${cause instanceof Error ? cause.message : "unknown error"}`);
     } finally {
       setBusy(false);
     }
-  }, [email, loadWorkspace, password]);
+  }, [email, password]);
 
   useEffect(() => {
     if (!fixtureMode) return;
@@ -94,36 +108,40 @@ export function PlannerClient({ fixtureMode }: { fixtureMode: boolean }) {
     return () => window.clearTimeout(task);
   }, [fixtureMode, signIn]);
 
-  const loadPlan = useCallback(async () => {
-    if (!token || !leagueId || !weekStart) return;
-    setBusy(true);
-    setScenario(null);
-    try {
-      const loaded = await api<Plan>(
-        `/api/fantasy/leagues/${leagueId}/planner?weekStart=${weekStart}`,
-        {},
-        token
-      );
-      setPlan(loaded);
-      setEffectiveDate(weekStart);
-      setMessage("Plan reconciled to the visible daily assignments.");
-    } catch (error) {
-      setMessage(`Could not build plan: ${error instanceof Error ? error.message : "unknown error"}`);
-    } finally {
-      setBusy(false);
-    }
-  }, [leagueId, token, weekStart]);
-
   useEffect(() => {
     if (!token || !leagueId || !weekStart) return;
-    const task = window.setTimeout(() => void loadPlan(), 0);
-    return () => window.clearTimeout(task);
-  }, [leagueId, loadPlan, token, weekStart]);
+    let active = true;
+    const task = window.setTimeout(async () => {
+      setBusy(true);
+      setScenario(null);
+      setError(null);
+      try {
+        const [loaded, loadedRoster, loadedWatchlist] = await Promise.all([
+          api<Plan>(`/api/fantasy/leagues/${leagueId}/planner?weekStart=${weekStart}`, {}, token),
+          api<PrivatePlayer[]>(`/api/fantasy/leagues/${leagueId}/roster`, {}, token),
+          api<PrivatePlayer[]>(`/api/fantasy/leagues/${leagueId}/watchlist`, {}, token),
+        ]);
+        if (!active) return;
+        setPlan(loaded);
+        setRoster(loadedRoster);
+        setWatchlist(loadedWatchlist);
+        setDropId(String(loadedRoster[0]?.player_id ?? ""));
+        setAddId(String(loadedWatchlist[0]?.player_id ?? ""));
+        setEffectiveDate(weekStart);
+      } catch (cause) {
+        if (active) setError(`Could not build the plan: ${cause instanceof Error ? cause.message : "unknown error"}`);
+      } finally {
+        if (active) setBusy(false);
+      }
+    }, 0);
+    return () => { active = false; window.clearTimeout(task); };
+  }, [leagueId, token, weekStart]);
 
   async function runScenario(event: FormEvent) {
     event.preventDefault();
     if (!dropId || !addId) return;
     setBusy(true);
+    setError(null);
     try {
       const created = await api<Scenario>(
         `/api/fantasy/leagues/${leagueId}/scenarios`,
@@ -143,9 +161,8 @@ export function PlannerClient({ fixtureMode }: { fixtureMode: boolean }) {
         token
       );
       setScenario(created);
-      setMessage("Scenario persisted against the same source snapshot and league versions.");
-    } catch (error) {
-      setMessage(`Scenario is invalid: ${error instanceof Error ? error.message : "unknown error"}`);
+    } catch (cause) {
+      setError(`The scenario is invalid: ${cause instanceof Error ? cause.message : "unknown error"}`);
     } finally {
       setBusy(false);
     }
@@ -153,70 +170,46 @@ export function PlannerClient({ fixtureMode }: { fixtureMode: boolean }) {
 
   if (!token) {
     return (
-      <div className="auth-card">
-        <div>
-          <p className="kicker">Private configuration</p>
-          <h2>Open your planner</h2>
-          <p>League settings, roster, watchlist, and scenarios are owner-scoped.</p>
-        </div>
-        <form onSubmit={signIn}>
-          <label>Email<input autoComplete="email" onChange={(event) => setEmail(event.target.value)} required type="email" value={email} /></label>
-          <label>Password<input autoComplete="current-password" onChange={(event) => setPassword(event.target.value)} required type="password" value={password} /></label>
-          <button className="button" disabled={busy} type="submit">{busy ? "Opening…" : "Sign in"}</button>
-          {fixtureMode ? <small>These are local demo credentials for fictional fixture records.</small> : null}
+      <section className="planner-auth" aria-labelledby="planner-sign-in">
+        <h2 id="planner-sign-in">Open your planner</h2>
+        <p>League settings, roster, watchlist and scenarios are private to your account.</p>
+        <form onSubmit={signIn} className="planner-auth-form">
+          <Field label="Email"><Input autoComplete="email" aria-label="Email" onChange={(event) => setEmail(event.target.value)} required type="email" value={email} /></Field>
+          <Field label="Password"><Input autoComplete="current-password" aria-label="Password" onChange={(event) => setPassword(event.target.value)} required type="password" value={password} /></Field>
+          <Button variant="primary" loading={busy} type="submit">{busy ? "Opening…" : "Sign in"}</Button>
         </form>
-        <p className="form-hint" role="status">{message}</p>
-      </div>
+        {fixtureMode ? <p className="planner-note">These are local demo credentials for fictional fixture records.</p> : null}
+        <p className="planner-note" role="status">{message}</p>
+      </section>
     );
   }
 
-  return (
-    <div className="planner-workspace">
-      <div className="planner-toolbar">
-        <label>League<select onChange={(event) => void loadWorkspace(token, event.target.value)} value={leagueId}>{leagues.map((league) => <option key={league.id} value={league.id}>{league.name}</option>)}</select></label>
-        <label>Week starts<input onChange={(event) => setWeekStart(event.target.value)} type="date" value={weekStart} /></label>
-        <button className="button button-dark" disabled={busy} onClick={() => void loadPlan()} type="button">{busy ? "Calculating…" : "Recalculate"}</button>
-        <p role="status">{message}</p>
-      </div>
+  const fixture = plan?.data_snapshot.classification === "fixture";
+  const details = plan ? [
+    { label: "Data", value: fixture ? "Fixture snapshot (fictional records)" : "Operational snapshot" },
+    { label: "Snapshot ID", value: plan.data_snapshot.id ?? "None", mono: true },
+    { label: "Roster version", value: String(plan.league.roster_version) },
+    { label: "Scoring rules version", value: plan.league.scoring_rules_version, mono: true },
+    { label: "League time zone", value: plan.league.timezone, mono: true },
+    { label: "Week", value: `${formatDate(plan.week_start)} – ${formatDate(plan.week_end)}` },
+    { label: "Meaning", value: "Scheduled never means healthy or available. A watchlist player is one to compare, not one available in your league." },
+  ] : [];
 
+  const main = (
+    <div className="planner-main">
+      {error && <GatedNote tone="warning">{error}</GatedNote>}
       {plan ? (
         <>
-          <div className="snapshot-strip">
-            <span className={`data-badge ${plan.data_snapshot.classification}`}><span className="status-dot" />{plan.data_snapshot.classification === "fixture" ? "Fixture snapshot" : "Operational snapshot"}</span>
-            <span>Roster v{plan.league.roster_version}</span>
-            <span>Rules {plan.league.scoring_rules_version.slice(0, 8)}</span>
-            <span>{plan.week_state.acquisitions_remaining}/{plan.league.acquisition_limit} moves left</span>
-            <span>Snapshot {plan.data_snapshot.id?.slice(0, 8) ?? "none"}</span>
-          </div>
-          <div className="metrics-grid planner-metrics">
-            <Metric value={plan.summary.scheduled_player_games} label="scheduled games" note="team has a game" />
-            <Metric value={plan.summary.startable_player_games} label="startable games" note="compatible slot found" />
-            <Metric value={plan.summary.lineup_conflicts} label="lineup conflicts" note="productive bench risk" />
-            <Metric value={Object.values(plan.league.lineup_slots).reduce((a, b) => a + b, 0)} label="daily slots" note="configured capacity" />
-          </div>
-          <PlanTable plan={plan} />
-
-          <section className="scenario-builder">
-            <div>
-              <p className="kicker">One transaction · no autopilot</p>
-              <h2>Add/drop what-if</h2>
-              <p>Watchlist means “compare this player,” not “available in my league.”</p>
-            </div>
-            <form onSubmit={runScenario}>
-              <EntityField label="Drop" value={dropId} onChange={setDropId} candidates={plannerCandidates(roster)} required />
-              <EntityField label="Add candidate" value={addId} onChange={setAddId} candidates={plannerCandidates(watchlist)} required />
-              <label>Candidate slots<input aria-label="Candidate eligible slots" onChange={(event) => setAddEligibleSlots(event.target.value)} placeholder="G, UTIL" required value={addEligibleSlots} /></label>
-              <label>Effective date<input min={weekStart} max={plan.week_end} onChange={(event) => setEffectiveDate(event.target.value)} type="date" value={effectiveDate} /></label>
-              <button className="button" disabled={busy || !watchlist.length} type="submit">Compare scenario</button>
-            </form>
+          <section className="ui-findings" aria-label="Key findings">
+            <StatTile label="Scheduled Games" value={plan.summary.scheduled_player_games} footnote="Team has a game" />
+            <StatTile label="Startable Games" value={plan.summary.startable_player_games} footnote="A compatible slot is free" />
+            <StatTile label="Lineup Conflicts" value={plan.summary.lineup_conflicts} footnote="Productive bench risk" />
+            <StatTile label="Daily Slots" value={Object.values(plan.league.lineup_slots).reduce((a, b) => a + b, 0)} footnote="Configured capacity" />
           </section>
-
+          <PlanTable plan={plan} />
           {scenario ? (
-            <section className="scenario-result">
-              <div className="delta-heading">
-                <div><p className="kicker">Component delta</p><h2>What actually changes</h2></div>
-                <span className="scenario-id">Scenario {scenario.id.slice(0, 8)}</span>
-              </div>
+            <section className="scenario-result" aria-labelledby="planner-delta">
+              <h2 id="planner-delta">What actually changes</h2>
               <div className="delta-grid">
                 <Delta value={scenario.delta.scheduled_player_games} label="scheduled games" />
                 <Delta value={scenario.delta.startable_player_games} label="startable games" primary />
@@ -224,14 +217,46 @@ export function PlannerClient({ fixtureMode }: { fixtureMode: boolean }) {
                 <Delta value={scenario.delta.recent_fantasy_points_per_game} label="recent FP / game" />
               </div>
               <PlanTable plan={scenario.after} title="After the selected effective date" />
-              <p className="method-note compact">{scenario.explanation}</p>
+              <p className="planner-note">{scenario.explanation}</p>
             </section>
           ) : null}
         </>
-      ) : (
-        <div className="empty-state tall"><span className="empty-icon">⌁</span><h3>No plan loaded</h3><p>Select a league and scoring week.</p></div>
-      )}
+      ) : busy ? (
+        <div className="planner-loading" aria-busy="true" aria-label="Loading plan"><div className="ui-findings">{[0, 1, 2, 3].map(i => <Skeleton key={i} height={88} />)}</div><Skeleton height={320} /></div>
+      ) : !error ? (
+        <GatedNote>No plan for this week yet.</GatedNote>
+      ) : null}
     </div>
+  );
+
+  const rail = plan ? (
+    <section className="scenario-builder" aria-labelledby="planner-what-if">
+      <h2 id="planner-what-if">Add/drop what-if</h2>
+      <p className="planner-note">One transaction, no autopilot.</p>
+      <form onSubmit={runScenario}>
+        <EntityField label="Drop" value={dropId} onChange={setDropId} candidates={plannerCandidates(roster)} required />
+        <EntityField label="Add candidate" value={addId} onChange={setAddId} candidates={plannerCandidates(watchlist)} required />
+        <Field label="Candidate slots"><Input aria-label="Candidate eligible slots" onChange={(event) => setAddEligibleSlots(event.target.value)} placeholder="G, UTIL" required value={addEligibleSlots} /></Field>
+        <Field label="Effective date"><DatePicker label="Effective date" value={effectiveDate} min={weekStart} max={plan.week_end} onChange={setEffectiveDate} /></Field>
+        <Button variant="primary" loading={busy} disabled={!watchlist.length} type="submit">Compare scenario</Button>
+      </form>
+    </section>
+  ) : undefined;
+
+  return (
+    <>
+      <FilterBar
+        label="Planner scope"
+        summary={`${leagues.find(item => item.id === leagueId)?.name ?? "League"} · Week of ${formatDate(weekStart)}`}
+        scope={<>
+          <Field label="League" layout="inline"><Select aria-label="League" value={leagueId} onChange={(event) => setQuery("league", event.target.value)}>{leagues.map((item) => <option key={item.id} value={item.id}>{item.name}</option>)}</Select></Field>
+          <Field label="Week" layout="inline"><DatePicker label="Week starts" value={weekStart} onChange={(value) => setQuery("week", value)} /></Field>
+        </>}
+        count={plan ? <CountChip>{plan.week_state.acquisitions_remaining}/{plan.league.acquisition_limit} moves left{fixture ? " · Fixture" : ""}</CountChip> : undefined}
+        details={plan ? <DataDetailsButton rows={details} /> : undefined}
+      />
+      <BoardLayout main={main} rail={rail} />
+    </>
   );
 }
 

@@ -308,7 +308,7 @@ export function ThreadedAssistant({ initialContext = {}, variant = "page", pageC
         {threads.length === 0 && <p className="text-muted">No saved conversations yet.</p>}
         {threadCursor && <Button className="button-small" disabled={blocked} onClick={() => void refreshThreads(threadCursor).catch(cause => setError(messageOf(cause)))}>Load more conversations</Button>}
       </nav>
-      <div className="ask-sidebar-foot"><Link href="/research/ask?experience=manual">Open manual research</Link><Link href="/settings">History and privacy settings</Link></div>
+      <div className="ask-sidebar-foot"><Link href="/research/ask?experience=manual">Open manual research</Link><Link href="/settings#history">History and privacy settings</Link></div>
     </aside>
     <div className={`ask-main${isEmpty ? " is-empty" : ""}`}>
       <div className="ask-topbar">

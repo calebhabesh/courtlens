@@ -1,0 +1,7 @@
+{
+  "scenario": "Server API unreachable at http://127.0.0.1:1",
+  "findings": "Service\n—\nUnknown\nAdmitted Seasons\n—\nUnknown\nLatest Final\n—\nNewest admitted final game\nDaily Refresh\n—\nUnknown",
+  "notice": "Workbench status is unavailable.\nRetry\nWhy?",
+  "scope": "Release unavailable\nData details",
+  "pageErrors": []
+}

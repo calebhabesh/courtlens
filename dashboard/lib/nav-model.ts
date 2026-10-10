@@ -94,13 +94,13 @@ export const NAV_MENUS: NavMenu[] = [
   },
 ];
 
-/** The desktop `⋯` menu (D9); below the desktop breakpoint the same links sit at the end of the drawer. */
+/**
+ * The desktop `⋯` menu (D9); Schedule was hidden in FO13 (owner decision). Below the desktop breakpoint the same links sit at the end of the drawer. */
 export const MORE_LINKS: NavItem[] = [
   { label: "Settings", href: "/settings" },
-  { label: "Data status", href: "/data-status" },
+  { label: "Data Status", href: "/data-status" },
   { label: "Methodology", href: "/methodology" },
   { label: "What's New", href: "/whats-new" },
-  { label: "Schedule", href: "/schedule" },
   { label: "Planner", href: "/planner" },
 ];
 

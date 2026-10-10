@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { activeThreadKey, announceHistoryChange, assistantPrivacyNotice, clearAssistantHistory } from "@/lib/assistant-history";
-import { Button, Section } from "./ui/controls";
+import { ArticleSection } from "./ui/article-layout";
+import { Button } from "./ui/controls";
 
 // AR06 moved clearing all conversations and the privacy notice here from the chat page.
 export function AssistantHistorySettings() {
@@ -19,11 +20,11 @@ export function AssistantHistorySettings() {
     } catch (cause) { setStatus(cause instanceof Error ? cause.message : "Could not delete conversations."); }
     finally { setBusy(false); }
   }
-  return <Section title="Assistant history and privacy" aria-label="Assistant history and privacy">
-    <p className="text-muted">{assistantPrivacyNotice}</p>
+  return <ArticleSection id="history" title="History and privacy" label="Assistant history and privacy">
+    <p>{assistantPrivacyNotice}</p>
     {confirming
-      ? <div role="alert"><p>Delete all local conversations? Saved findings remain available.</p><Button disabled={busy} onClick={() => void clear()}>Confirm deletion</Button> <Button disabled={busy} onClick={() => setConfirming(false)}>Keep history</Button></div>
-      : <Button onClick={() => { setConfirming(true); setStatus(null); }}>Clear history</Button>}
+      ? <div role="alert" className="ui-article-actions"><p>Delete all local conversations? Saved findings remain available.</p><Button disabled={busy} onClick={() => void clear()}>Confirm deletion</Button><Button disabled={busy} onClick={() => setConfirming(false)}>Keep history</Button></div>
+      : <div className="ui-article-actions"><Button onClick={() => { setConfirming(true); setStatus(null); }}>Clear history</Button></div>}
     {status && <p role="status">{status}</p>}
-  </Section>;
+  </ArticleSection>;
 }
