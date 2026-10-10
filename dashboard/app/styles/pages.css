@@ -4566,3 +4566,211 @@
 .team-profile-page .ui-profile-body > div > div { grid-template-columns: minmax(0, 1fr); }
 .team-profile-page .ui-tab-trigger { min-height: var(--control-lg); }
 .team-scatter-point:focus-visible { outline: 2px solid var(--color-accent); outline-offset: var(--space-1); }
+
+/* FO11 Compare pages use the shared frame; selectors stay reachable outside the scope sheet. */
+.fo11-selectors {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: var(--space-4);
+  margin-block: var(--space-4);
+  min-width: 0;
+}
+
+.fo11-selectors > .entity-field,
+.fo11-selectors > .compare-picker {
+  flex: 1 1 240px;
+  min-width: 0;
+}
+
+.fo11-selectors button,
+.fo11-selectors select,
+.fo11-wowy .ui-filter-bar input,
+.fo11-matchups .ui-filter-bar input {
+  min-height: 40px;
+}
+
+.fo11-entity {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.fo11-team-splits {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-4);
+}
+
+.fo11-team-splits h3 {
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+}
+
+.fo11-team-splits dl {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: var(--space-2);
+  font-variant-numeric: tabular-nums;
+}
+
+.fo11-team-splits dd {
+  text-align: right;
+}
+
+.fo11-export-chart {
+  margin-block: var(--space-4);
+}
+
+.fo11-entity-placeholder {
+  padding: var(--space-4);
+  color: var(--color-text-secondary);
+}
+
+.fo11-player-comparison .compare-filter-toolbar {
+  margin-block: var(--space-4);
+  gap: var(--space-3);
+}
+
+.fo11-player-comparison .compare-date {
+  flex: 0 1 200px;
+}
+
+.fo11-player-comparison .compare-picker,
+.fo11-team-comparison .entity-field,
+.fo11-matchups .entity-field,
+.fo11-wowy .entity-field {
+  min-width: 0;
+}
+
+.fo11-player-comparison .comparison-results > .ui-compare {
+  gap: var(--space-4);
+}
+
+.fo11-matchups .floor-scroll td,
+.fo11-wowy .floor-scroll td {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.fo11-matchups .floor-scroll th:first-child,
+.fo11-wowy .floor-scroll th:first-child {
+  text-align: left;
+}
+
+@media (width < 768px) {
+  .fo11-team-splits {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .fo11-selectors {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .fo11-player-comparison .compare-filter-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .fo11-player-comparison .compare-toolbar-actions {
+    flex-wrap: wrap;
+  }
+
+  .fo11-player-comparison .control-pill,
+  .fo11-player-comparison .button,
+  .fo11-team-comparison .button {
+    min-height: 40px;
+  }
+
+  .fo11-player-comparison .control-button-group {
+    display: flex;
+    flex-wrap: wrap;
+  }
+}
+
+.fo11-player-comparison .compare-controls {
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+.fo11-comparison-modes {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.fo11-selectors > .form-hint:empty {
+  display: none;
+}
+
+.fo11-team-body > .ui-filter-bar {
+  margin-inline: 0;
+}
+
+.fo11-wowy .ui-filter-bar-controls,
+.fo11-matchups .ui-filter-bar-controls {
+  flex: 1;
+}
+
+.fo11-wowy .ui-filter-bar-page input,
+.fo11-matchups .ui-filter-bar-page input {
+  max-width: 80px;
+}
+
+.fo11-team-body .fo11-selectors,
+.fo11-matchups .fo11-selectors,
+.fo11-wowy .fo11-selectors {
+  margin-block: var(--space-2) 0;
+}
+
+.fo11-conditions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.fo11-wowy .ui-filter-bar-scope .ui-select-wrapper,
+.fo11-matchups .ui-filter-bar-scope .ui-select-wrapper {
+  max-width: 160px;
+}
+
+.fo11-wowy .ui-identity,
+.fo11-matchups .ui-identity,
+.fo11-player-comparison .ui-identity {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.fo11-wowy .ui-identity-text,
+.fo11-matchups .ui-identity-text,
+.fo11-player-comparison .ui-identity-text {
+  min-width: 0;
+}
+
+.fo11-wowy .ui-identity-name,
+.fo11-matchups .ui-identity-name,
+.fo11-player-comparison .ui-identity-name {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.fo11-matchups .ui-compare-rows,
+.fo11-wowy .ui-compare-rows {
+  min-width: 0;
+}
+
+@media (width < 768px) {
+  .fo11-matchups .floor-scroll th:first-child,
+  .fo11-wowy .floor-scroll th:first-child {
+    position: sticky;
+    left: 0;
+    z-index: var(--z-base);
+    background: var(--color-surface-1);
+    min-width: 120px;
+    max-width: 160px;
+  }
+}

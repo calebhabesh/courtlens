@@ -50,7 +50,7 @@ test("assignment matrix shows fractional exposure and null pooled rates at 375px
     data.assignments = [{ offensive_player_id: "1", defensive_player_id: "2", games: 1, seconds: 0, fractional_possessions: .125, attempts: 0, makes: 0, player_points: 0, team_points: 0, fg_pct: null }];
     await route.fulfill({ json: data });
   });
-  await openWorkbench(page, "/matchups?player_id=1&defender_id=2"); await page.getByRole("button", { name: "Run shooting analysis" }).click();
+  await openWorkbench(page, "/matchups?player_id=1&defender_id=2");
   await expect(page.getByRole("region", { name: "Assignment matrix" })).toContainText("0.125"); await expect(page.getByRole("region", { name: "Assignment matrix" })).toContainText("—");
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await page.getByRole("region", { name: "Assignment matrix" }).focus(); await page.keyboard.press("ArrowRight");

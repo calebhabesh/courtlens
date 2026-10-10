@@ -1,0 +1,44 @@
+
+Running 5 tests using 1 worker
+
+  ✓  1 e2e/compare-overhaul.spec.ts:7:5 › player comparison uses shared scope, signed values and contextual URL modes (1.4s)
+  ✘  2 e2e/compare-overhaul.spec.ts:21:5 › team comparison preserves unknown versus zero, unknown outcomes and scope across tabs (5.2s)
+  ✓  3 e2e/compare-overhaul.spec.ts:33:5 › WOWY cancels an old context and a late response cannot replace the new result (1.4s)
+  ✓  4 e2e/compare-overhaul.spec.ts:48:5 › Matchups applies scoped changes automatically and shows fractional assignments without inventing rates (788ms)
+  ✓  5 e2e/compare-overhaul.spec.ts:64:5 › an initially default WOWY query retains its resolved release and cutoff when a gate changes (774ms)
+
+
+  1) e2e/compare-overhaul.spec.ts:21:5 › team comparison preserves unknown versus zero, unknown outcomes and scope across tabs
+
+    Error: expect(locator).toHaveCount(expected) failed
+
+    Locator:  locator('body > div[hidden][id^="S:"]')
+    Expected: 0
+    Received: 1
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveCount" locator('body > div[hidden][id^="S:"]') with timeout 5000ms
+      - waiting for locator('body > div[hidden][id^="S:"]')
+        14 × locator resolved to 1 element
+           - unexpected value "1"
+
+
+       at workbench-navigation.ts:6
+
+      4 |   // Shell hydration can finish before React reveals its staged server HTML. Hidden copies
+      5 |   // also match text/label locators; require staging to settle before testing page controls.
+    > 6 |   await expect(page.locator('body > div[hidden][id^="S:"]')).toHaveCount(0);
+        |                                                              ^
+      7 | }
+      8 |
+      9 | export async function openWorkbench(page: Page, path = "/") {
+        at waitForStreamedPage (/home/ethioking/.cache/courtlens-fo11/dashboard/e2e/workbench-navigation.ts:6:62)
+        at openWorkbench (/home/ethioking/.cache/courtlens-fo11/dashboard/e2e/workbench-navigation.ts:17:9)
+        at /home/ethioking/.cache/courtlens-fo11/dashboard/e2e/compare-overhaul.spec.ts:22:3
+
+    Error Context: test-results/compare-overhaul-team-comp-fee6b-comes-and-scope-across-tabs/error-context.md
+
+  1 failed
+    e2e/compare-overhaul.spec.ts:21:5 › team comparison preserves unknown versus zero, unknown outcomes and scope across tabs
+  4 passed (10.4s)

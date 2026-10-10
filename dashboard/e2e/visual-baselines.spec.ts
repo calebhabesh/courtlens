@@ -152,3 +152,28 @@ for (const view of WIDTHS) {
     });
   });
 }
+
+// FO11: four Compare routes, including team factors and WOWY's exact-unit view.
+for (const view of WIDTHS) test.describe(`FO11 baselines ${view.name}`,()=>{
+  test.beforeEach(async({page})=>{await page.setViewportSize({width:view.width,height:view.height});await stableWorkspace(page);});
+  test("player comparison",async({page})=>{
+    await openWorkbench(page,"/compare?playerA=23&playerB=24&releaseId=fixture-release&season=2025-26&beforeDate=2026-04-13");
+    await expect(page.getByRole("table",{name:"Descriptive comparison"})).toBeVisible();await settle(page);await expect(page).toHaveScreenshot(`player-comparison-${view.name}.png`,shot);
+  });
+  for(const tab of ["overview","factors"])test(`team comparison ${tab}`,async({page})=>{
+    await openWorkbench(page,`/team-compare?teamA=100&teamB=200&releaseId=fixture-release&season=2025-26&beforeDate=2026-04-13&tab=${tab}`);
+    await expect(page.locator(".ui-compare-sides")).toBeVisible();await settle(page);await expect(page).toHaveScreenshot(`team-comparison-${tab}-${view.name}.png`,shot);
+  });
+  for(const unit of [false,true])test(`WOWY ${unit ? "unit" : "team sets"}`,async({page})=>{
+    const empty=JSON.parse(readFileSync("../docs/evidence/b21-api-smoke.json","utf8")).response;
+    await page.route("**/api/workbench/operations/wowy",route=>route.fulfill({json:{...empty,operation:"wowy",request:{...empty.request,...route.request().postDataJSON()},context:{...empty.context,season:"2025-26",before_date:"2026-04-13",release_id:"fixture-release"}}}));
+    await openWorkbench(page,`/wowy?team_id=TOR&${unit ? "exact_unit=1,2" : "together=1"}&releaseId=fixture-release&season=2025-26&beforeDate=2026-04-13`);
+    await expect(page.locator(".floor-result")).toBeVisible();await settle(page);await expect(page).toHaveScreenshot(`wowy-${unit ? "unit" : "team"}-${view.name}.png`,shot);
+  });
+  test("player matchups",async({page})=>{
+    const response=JSON.parse(readFileSync("../docs/evidence/b23-api-smoke.json","utf8")).operations.matchups.response;
+    await page.route("**/api/workbench/operations/matchups",route=>route.fulfill({json:{...response,request:{...response.request,...route.request().postDataJSON()},context:{...response.context,season:"2025-26",before_date:"2026-04-13",release_id:"fixture-release"}}}));
+    await openWorkbench(page,"/matchups?player_id=1&defender_id=2&releaseId=fixture-release&season=2025-26&beforeDate=2026-04-13");
+    await expect(page.locator(".floor-result")).toBeVisible();await settle(page);await expect(page).toHaveScreenshot(`matchups-${view.name}.png`,shot);
+  });
+});

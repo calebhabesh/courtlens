@@ -18,16 +18,16 @@ test("two mounted pickers have distinct active descendants; ambiguous Enter neve
   await a.press("ArrowDown"); const aid = await a.getAttribute("aria-activedescendant");
   expect(await page.locator(`[id=${JSON.stringify(aid)}]`).count()).toBe(1);
   await a.press("Enter"); await expect(page.locator('input[name="playerA"]')).not.toHaveValue("");
-  await b.fill("Fixture"); await expect(page.getByRole("option").first()).toBeVisible();await b.press("ArrowDown");
+  await b.fill("Fixture"); await expect(page.locator('[role="option"]').first()).toBeVisible();await b.press("ArrowDown");
   const bid=await b.getAttribute("aria-activedescendant");expect(bid).not.toBe(aid);
   await b.press("Escape");await expect(b).toHaveAttribute("aria-expanded","false");
 });
 
 test("editing and clear invalidate committed single ID; form never submits draft text",async({page})=>{
   await openWorkbench(page,"/compare");await choose(page,"Player A","Fixture Star");await choose(page,"Player B","Fixture Guard");
-  await expect(page.getByRole("button",{name:"Compare players"})).toBeEnabled();
+  await expect(page).toHaveURL(/playerA=23.*playerB=24/);
   await page.getByRole("combobox",{name:"Player A",exact:true}).fill("uncommitted");
-  await expect(page.locator('input[name="playerA"]')).toHaveValue("");await expect(page.getByRole("button",{name:"Compare players"})).toBeDisabled();
+  await expect(page.locator('input[name="playerA"]')).toHaveValue("");await expect(page.getByRole("button",{name:"Compare players"})).toHaveCount(0);
   await page.getByRole("button",{name:"Clear Player A",exact:true}).click();await expect(page.getByRole("combobox",{name:"Player A",exact:true})).toHaveValue("");
 });
 

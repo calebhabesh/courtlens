@@ -93,7 +93,7 @@ test.describe("Workbench Dark Research Interface", () => {
     await openWorkbench(page, "/compare?playerA=23&playerB=24");
     await page.waitForLoadState("networkidle");
 
-    await expect(page.locator("h1.page-title")).toHaveText("Compare Players");
+    await expect(page.getByRole("heading", {level:1})).toHaveText("Player Comparison");
     await expect(page.getByRole("link", { name: "Fixture Star" })).toBeVisible();
     await expect(page.getByRole("link", { name: "Fixture Guard" })).toBeVisible();
 
