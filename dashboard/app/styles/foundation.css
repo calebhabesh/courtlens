@@ -776,6 +776,11 @@
     .ui-filter-bar-summary { overflow: hidden; text-overflow: ellipsis; }
     .ui-filter-bar-meta { gap: var(--space-1); }
     .ui-filter-bar-meta .ui-button { min-width: var(--control-lg); min-height: var(--control-lg); }
+    /* A fixed scope has nothing to choose, so its one-line label stays in the bar. */
+    .ui-filter-bar.is-fixed-scope .ui-filter-bar-controls { display: flex; flex: 1; min-width: 0; }
+    .ui-filter-bar.is-fixed-scope .ui-filter-bar-scope { flex-wrap: nowrap; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    /* Key findings pair up so a four-tile row stays on the first screen. */
+    .ui-findings { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     /* Mode switches stay visible as a full-width second row (gate 2). */
     .ui-filter-bar.has-modes { flex-wrap: wrap; }
     .ui-filter-bar-modes { order: 10; flex: 1 0 100%; padding-left: 0; border-left: 0; }

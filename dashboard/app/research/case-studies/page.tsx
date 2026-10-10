@@ -1,11 +1,13 @@
+import { Suspense } from "react";
 import type { Metadata } from "next";
 import { CaseStudiesView } from "@/components/case-studies-view";
+import { TemplateSkeleton } from "@/components/ui/template-skeleton";
 
 export const metadata: Metadata = {
-  title: "Flagship Research Case Studies · CourtLens",
+  title: "Case Studies",
   description: "Reproducible empirical case studies demonstrating CourtLens data integrity guarantees."
 };
 
 export default function CaseStudiesPage() {
-  return <CaseStudiesView />;
+  return <Suspense fallback={<TemplateSkeleton template="research" />}><CaseStudiesView /></Suspense>;
 }

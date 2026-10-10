@@ -621,7 +621,8 @@ export async function getRankOperation(
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(req),
     cache: "no-store",
-    signal: AbortSignal.timeout(15000)
+    // League-wide ranks scan every eligible player (about 15s on a full season), like other operations.
+    signal: AbortSignal.timeout(50000)
   });
 
   if (!response.ok) {

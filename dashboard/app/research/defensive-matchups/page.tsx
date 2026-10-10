@@ -1,4 +1,7 @@
+import type { Metadata } from "next";
 import { CapabilityNotice } from "@/components/capability-notice";
+
+export const metadata: Metadata = { title: "Defensive Matchups" };
 
 export default async function DefensiveMatchupsPage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
   const params = await searchParams;
@@ -7,7 +10,9 @@ export default async function DefensiveMatchupsPage({ searchParams }: { searchPa
     <CapabilityNotice
       contextParams={contextParams}
       featureId="F32"
-      featureTitle="Defensive Contests & Matchups"
+      featureTitle="Defensive Matchups"
+      summary="Contest, rim-deterrence and points-saved research for defenders."
+      requiredSource="Defender tracking"
       canonicalRoute="/research/defensive-matchups"
       targetBlock="B23–B27 (Defensive Research)"
       status="gated"

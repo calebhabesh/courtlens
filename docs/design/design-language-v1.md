@@ -298,6 +298,13 @@ the main result except at most one one-line `GatedNote`.
   "Load …" button or a release-ID input. **Below 768px** scope and filters collapse into a
   "Filters" button that opens a bottom sheet, while `modes` stay visible as a full-width row under
   it (gate 2 decision); long mode labels wrap to two lines instead of clipping.
+- **Fixed scope (FO12):** a page with nothing to choose (a sealed report, a frozen protocol, a
+  calculator) still shows the bar, with a one-line scope label in `scope`, so Data details and the
+  count chip keep their position; it passes `collapsible={false}`, so phones keep the label inline
+  instead of a "Filters" sheet with no control in it.
+- **One player (FO12, after FO09):** a page about one player puts a single 40px `PlayerLookup` in
+  `filters`; its placeholder names the current player ("Target: Bam Adebayo" on Trends, matching Similar Players; "Player: …" elsewhere) and the player's
+  headshot appears with the result, not in a separate picker row above it.
 - **Spacing after the bar:** the first element after the filter bar starts at least `--space-4`
   below the bar's hairline, so the hairline never reads as a border on the next row (gate 2
   finding on Stats, fixed in FO13).

@@ -105,9 +105,11 @@ test.describe("Workbench Dark Research Interface", () => {
   test("forecasts view displays active policy, promotion decision, gates, and prespecified slices", async ({ page }) => {
     await page.goto("/forecasts");
 
-    await expect(page.locator("h1.page-title")).toHaveText("Points Forecasts & Protocol");
-    await expect(page.locator("main").getByRole("heading", { name: "Active Forecast Policy" })).toBeVisible();
-    await expect(page.locator(".panel-header .badge:has-text('points-v1-prior_blend')").filter({ visible: true })).toBeVisible();
+    // FO12: the title matches the nav label; the policy leads the key-findings row.
+    await expect(page.getByRole("heading", { level: 1 })).toHaveText("Points Forecasts");
+    const findings = page.getByRole("region", { name: "Key findings" });
+    await expect(findings).toContainText("Active Forecast Policy");
+    await expect(findings).toContainText("prior_blend");
 
     // Verify promotion decision banner and gates
     await expect(page.getByText("Promotion Decision:").filter({ visible: true })).toBeVisible();

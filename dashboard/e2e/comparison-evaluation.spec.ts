@@ -29,10 +29,10 @@ test("shared-cutoff comparison keeps different target dates and missing context 
 
 test("evaluation presents the no-promotion decision and failed build state", async ({ page }) => {
   await page.goto("/evaluation");
-  await expect(page.getByRole("heading", { name: "Evaluation" })).toBeVisible();
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Evaluation Archive");
   await expect(page.getByText("No challenger promoted").filter({ visible: true })).toBeVisible();
   await expect(page.getByText("7.82", { exact: true }).filter({ visible: true })).toBeVisible();
-  await expect(page.getByText(/failed · 2026-09-21/).filter({ visible: true })).toBeVisible();
+  await expect(page.getByText(/failed · Sep 21, 2026/).filter({ visible: true })).toBeVisible();
 });
 
 test("comparison controls work by keyboard and fit a 375px viewport", async ({ page }) => {

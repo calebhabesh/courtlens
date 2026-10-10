@@ -1,4 +1,7 @@
+import type { Metadata } from "next";
 import { CapabilityNotice } from "@/components/capability-notice";
+
+export const metadata: Metadata = { title: "Spatial EPV" };
 
 export default async function EpvPage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
   const params = await searchParams;
@@ -7,7 +10,9 @@ export default async function EpvPage({ searchParams }: { searchParams: Promise<
     <CapabilityNotice
       contextParams={contextParams}
       featureId="F33"
-      featureTitle="Spatial Expected Possession Value (EPV)"
+      featureTitle="Spatial EPV"
+      summary="Possession value at every moment of a half-court possession."
+      requiredSource="Optical tracking"
       canonicalRoute="/research/epv"
       targetBlock="B25–B27 (Spatial EPV Research)"
       status="gated"
