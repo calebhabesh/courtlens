@@ -1,12 +1,17 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import {
-  getPointsForecastEvaluation,
-  getProspectiveForecasts,
-  getWorkbenchStatus,
-} from "@/lib/workbench-api";
+import { getPointsForecastEvaluation, getProspectiveForecasts, getWorkbenchStatus } from "@/lib/workbench-api";
+import { formatDate } from "@/lib/format-date";
+import { humanLabel } from "@/lib/route-availability";
+import { TeamLogo } from "@/components/team-logo";
+import { CountChip, FilterBar } from "@/components/ui/filter-bar";
+import { DataDetailsButton } from "@/components/ui/data-details";
+import { GatedNote } from "@/components/ui/gated-note";
+import { PageShell, ResearchLayout } from "@/components/ui/page-shell";
+import { PageHeader } from "@/components/ui/panel";
+import { StatTile } from "@/components/ui/stat-tile";
 
-export const metadata: Metadata = { title: "Points Forecasting · CourtLens" };
+export const metadata: Metadata = { title: "Points Forecasts" };
 export const dynamic = "force-dynamic";
 
 const SLICE_DIMENSION_NAMES: Record<string, string> = {
@@ -20,519 +25,180 @@ const SLICE_DIMENSION_NAMES: Record<string, string> = {
 };
 
 const SUBGROUP_NAMES: Record<string, string> = {
-  "1_to_4": "1–4 Appearances (Early Season)",
-  "5_to_9": "5–9 Appearances (Early Season)",
-  "10_to_19": "10–19 Appearances (Core)",
-  "20_to_39": "20–39 Appearances (Core)",
-  "40_plus": "40+ Appearances (Core)",
-  "0": "0 Days (Game Day Issuance)",
-  "1_to_3": "1–3 Days Ahead",
-  "4_to_6": "4–6 Days Ahead",
-  "missing": "No Historical Opponent Context",
-  "present": "Opponent Context Available",
-  "less_15": "< 15 Min / Game",
-  "15_<28": "15–28 Min / Game",
-  "28_<35": "28–35 Min / Game",
-  "35_plus": "35+ Min / Game (High Volume)",
-  "changed": "Traded / Changed Team",
-  "same": "Same Team",
-  "1_day": "1 Day Rest",
-  "2_to_3_days": "2–3 Days Rest",
-  "4_plus_days": "4+ Days Rest",
-  "back_to_back": "Back-to-back (0 Rest Days)",
+  "1_to_4": "1–4 appearances (early season)",
+  "5_to_9": "5–9 appearances (early season)",
+  "10_to_19": "10–19 appearances (core)",
+  "20_to_39": "20–39 appearances (core)",
+  "40_plus": "40+ appearances (core)",
+  "0": "0 days (game-day issuance)",
+  "1_to_3": "1–3 days ahead",
+  "4_to_6": "4–6 days ahead",
+  "missing": "No historical opponent context",
+  "present": "Opponent context available",
+  "less_15": "Under 15 min per game",
+  "15_<28": "15–28 min per game",
+  "28_<35": "28–35 min per game",
+  "35_plus": "35+ min per game",
+  "changed": "Traded or changed team",
+  "same": "Same team",
+  "1_day": "1 day rest",
+  "2_to_3_days": "2–3 days rest",
+  "4_plus_days": "4+ days rest",
+  "back_to_back": "Back-to-back",
   "2025-26": "2025-26 Regular Season",
 };
 
+/** Frozen chronological splits of the registered protocol (basketball-points-v1). */
+const SPLITS = [
+  ["T", "2021-10-19", "2023-04-09", "Initial training fit (2021-22 and 2022-23)", "Executed"],
+  ["V1", "2023-10-24", "2024-01-15", "Fold 1 validation and tuning (2023-24 before Jan 15)", "Executed"],
+  ["V2", "2024-01-16", "2024-04-14", "Fold 2 validation and model selection (2023-24 after Jan 15)", "Executed"],
+  ["C", "2024-10-22", "2025-04-13", "Empirical interval calibration (2024-25)", "Executed"],
+  ["F", "2025-10-21", "2026-04-12", "Final out-of-time test holdout (2025-26)", "Evaluated"],
+] as const;
+
+const fixed = (value: number | null | undefined, digits = 3) => value == null ? "—" : value.toFixed(digits);
+const share = (value: number | null | undefined) => value == null ? "—" : `${(value * 100).toFixed(1)}%`;
+const signedFixed = (value: number | null | undefined) => value == null ? "—" : `${value >= 0 ? "+" : ""}${value.toFixed(3)}`;
+
 export default async function ForecastsPage() {
-  let status = null;
-  let evaluation = null;
-  let prospectiveData = null;
-  try {
-    [status, evaluation, prospectiveData] = await Promise.all([
-      getWorkbenchStatus().catch(() => null),
-      getPointsForecastEvaluation().catch(() => null),
-      getProspectiveForecasts({ pageSize: 50 }).catch(() => null),
-    ]);
-  } catch {
-    // Graceful offline fallback
-  }
-
-  const policyStatus =
-    evaluation?.active_policy?.policy_name ||
-    status?.capabilities?.forecasting ||
-    "no_policy_registered";
-
+  const [status, evaluation, prospective] = await Promise.all([
+    getWorkbenchStatus().catch(() => null),
+    getPointsForecastEvaluation().catch(() => null),
+    getProspectiveForecasts({ pageSize: 50 }).catch(() => null),
+  ]);
+  const policy = evaluation?.active_policy?.policy_name || status?.capabilities?.forecasting || "no_policy_registered";
   const promo = evaluation?.promotion;
   const gates = promo?.gates;
   const metrics = evaluation?.final_test?.metrics;
   const intervals = evaluation?.final_test?.intervals;
   const slices = evaluation?.final_test?.prespecified_slices;
-
   const baselineKey = evaluation?.validation?.baseline || "prior_blend";
   const challengerKey = evaluation?.validation?.challenger_finalist || "player_only";
+  const baseline = metrics?.[baselineKey];
+  const summary = prospective?.summary;
 
-  // Build slice table rows
-  const sliceRows: Array<{
-    dimension: string;
-    subgroup: string;
-    baseMae: number | null;
-    chalMae: number | null;
-    delta: number | null;
-    rows: number;
-  }> = [];
-
-  if (slices) {
-    for (const [dimKey, subgroups] of Object.entries(slices)) {
-      for (const [subKey, estimators] of Object.entries(subgroups)) {
-        const b = estimators[baselineKey];
-        const c = estimators[challengerKey];
-        if (b) {
-          const bMae = b.mae;
-          const cMae = c?.mae ?? null;
-          const delta = cMae != null && bMae != null ? cMae - bMae : null;
-          sliceRows.push({
-            dimension: SLICE_DIMENSION_NAMES[dimKey] || dimKey,
-            subgroup: SUBGROUP_NAMES[subKey] || subKey,
-            baseMae: bMae,
-            chalMae: cMae,
-            delta,
-            rows: b.forecast_rows,
-          });
-        }
-      }
-    }
-  }
+  const sliceRows = Object.entries(slices ?? {}).flatMap(([dimension, subgroups]) => Object.entries(subgroups).flatMap(([subgroup, estimators]) => {
+    const b = estimators[baselineKey];
+    const c = estimators[challengerKey];
+    return b ? [{ dimension: SLICE_DIMENSION_NAMES[dimension] || humanLabel(dimension), subgroup: SUBGROUP_NAMES[subgroup] || subgroup, baseMae: b.mae, chalMae: c?.mae ?? null, delta: c ? c.mae - b.mae : null, rows: b.forecast_rows }] : [];
+  }));
+  const gateRows = gates ? [
+    ["Gate 1: Validation Improvement >= 5%", gates.validation_improvement.passed, `Pooled ${share(gates.validation_improvement.pooled_relative_improvement)} · V1 ${signedFixed(gates.validation_improvement.fold_differences.v1)} · V2 ${signedFixed(gates.validation_improvement.fold_differences.v2)}`, "The challenger must beat the baseline by at least 5% in pooled validation and both folds."],
+    ["Gate 2: Final Paired Superiority", gates.final_paired_superiority.passed, `MAE difference ${signedFixed(gates.final_paired_superiority.mae_difference)} · 95% CI ${fixed(gates.final_paired_superiority.lower)} to ${fixed(gates.final_paired_superiority.upper)}`, "The upper bound of the 95% moving-block bootstrap interval must be below zero."],
+    ["Gate 3: Supported Slices", gates.supported_slices.passed, `${gates.supported_slices.supported_count} slices · ${gates.supported_slices.regressions_over_limit.length} over the limit`, "No supported slice may degrade by more than 5% relative MAE."],
+    ["Gate 4: Interval Guardrails", gates.interval_guardrails.passed, `Coverage ${share(gates.interval_guardrails.challenger_coverage)} · width ratio ${fixed(gates.interval_guardrails.width_ratio)}`, "Challenger coverage must be at least 75% with width at most 110% of the baseline."],
+  ] as const : [];
+  const runId = evaluation?.run_id;
 
   return (
-    <div className="workbench-content">
-      <div className="page-header">
-        <div>
-          <span className="text-xs text-muted font-mono uppercase">Forecasting & Evaluation</span>
-          <h1 className="page-title">Points Forecasts & Protocol</h1>
-          <p className="page-subtitle">
-            Next-game basketball points estimation under chronological holdouts and calibrated empirical intervals.
-          </p>
-        </div>
-        <div className="page-actions">
-          <Link href="/evaluation" className="button">
-            View M6 Archive
-          </Link>
-          <Link href="/methodology" className="button button-primary">
-            Evaluation Protocol
-          </Link>
-        </div>
-      </div>
+    <PageShell template="research" className="research-view forecasts-view">
+      <PageHeader title="Points Forecasts" subtitle="Next-game points estimates, their out-of-time test and the prospective ledger." actions={<>
+        <Link href="/evaluation" className="button">Evaluation Archive</Link>
+        <Link href="/methodology" className="button">Evaluation Protocol</Link>
+      </>} />
+      <FilterBar collapsible={false} label="Forecast protocol" summary="basketball-points-v1" scope={<span className="research-scope-label">basketball-points-v1 · 2025-26 holdout</span>}
+        count={metrics ? <CountChip>{(baseline?.forecast_rows ?? 0).toLocaleString("en-US")} scored forecasts</CountChip> : undefined}
+        details={<DataDetailsButton rows={[
+          { label: "Policy", value: policy, mono: true },
+          ...(evaluation?.active_policy ? [
+            { label: "Policy ID", value: evaluation.active_policy.id, mono: true },
+            { label: "Calibration", value: evaluation.active_policy.calibration_identity, mono: true },
+            { label: "Activated", value: formatDate(evaluation.active_policy.activated_at.slice(0, 10)) },
+          ] : []),
+          ...(runId ? [{ label: "Run", value: runId, mono: true }, { label: "Reproduce", value: `courtlens evaluate-points --config evaluation/config/points-v1.yaml --dataset evaluation/manifests/accepted-points-v1.json --stage validate\ncourtlens evaluate-points --config evaluation/config/points-v1.yaml --dataset evaluation/manifests/accepted-points-v1.json --stage calibrate\ncourtlens evaluate-points --registered-run ${runId} --stage final --open-final-test\ncourtlens activate-points-policy --registered-run ${runId}`, mono: true }] : []),
+          { label: "Protocol rule", value: "Feature computations exclude the target date and every later outcome (game_date < replay_date)." },
+        ]} />} />
+      {!evaluation ? <div role="alert"><GatedNote tone="warning" action={<Link className="button" href="/forecasts">Retry</Link>}>Forecast evaluation unavailable. Restore the local API connection.</GatedNote></div> :
+      <ResearchLayout findings={<>
+        <StatTile label="Active Forecast Policy" value={policy === "no_policy_registered" ? "None" : (evaluation.active_policy?.estimator_identity ?? baselineKey)} footnote={policy === "no_policy_registered" ? "No policy activated" : "Calibrated 80% intervals"} />
+        <StatTile label="Promotion Decision" value={promo ? (promo.decision === "promote" ? "Promote" : "Do not promote") : null} footnote={promo ? `Challenger ${challengerKey}` : undefined} />
+        <StatTile label="Holdout MAE" value={fixed(baseline?.mae)} unit=" pts" footnote={`${baselineKey} · ${metrics?.[challengerKey] ? `${challengerKey} ${fixed(metrics[challengerKey].mae)}` : "no challenger"}`} />
+        <StatTile label="Prospective Scored" value={summary ? summary.total_scored : 0} footnote={summary?.prospective_accuracy_status === "observed" ? "Scored after tipoff" : "Awaiting the 2026-27 season"} />
+      </>}>
+        <GatedNote why={<>
+          <p>CourtLens strictly isolates historical reconstruction from genuine prospective forecast issuance. Out-of-time chronological validation ensures feature computations never observe future game outcomes. Absent box scores are unknown, not zeros.</p>
+          <p>{policy === "no_policy_registered" ? "No policy currently activated. Execute points experiment evaluation to activate a policy." : `Serving registered policy '${policy}' for next-game points estimation conditional on appearance (target points, calibrated 80% empirical interval, appeared in at least one game).`}</p>
+          {(evaluation.limitations ?? []).map(limit => <p key={limit}>{limit}</p>)}
+        </>}>Estimates are conditional on appearance; intervals are calibrated empirical dispersion.</GatedNote>
 
-      {/* Protocol Banner */}
-      <div className="notice-box forecast-protocol-box">
-        <strong>Protocol rule:</strong> CourtLens strictly isolates historical reconstruction from genuine prospective forecast issuance. Out-of-time chronological validation ensures feature computations never observe future game outcomes (<code>game_date &lt; replay_date</code>). Absent box scores are unknown, not zeros.
-      </div>
-
-      {/* Active Policy Status Card */}
-      <div className="panel">
-        <div className="panel-header">
-          <div>
-            <h2 className="panel-title">Active Forecast Policy</h2>
-            <p className="text-xs text-muted forecast-header-desc">
-              Active policy registered in database and serving prospective next-game predictions.
-            </p>
-          </div>
-          <span className="badge font-mono badge-accent">{policyStatus}</span>
-        </div>
-        <p className="text-sm text-muted">
-          {policyStatus === "no_policy_registered"
-            ? "No policy currently activated. Execute points experiment evaluation to activate a policy."
-            : `Serving registered policy '${policyStatus}' for next-game points estimation conditional on appearance.`}
-        </p>
-        <div className="forecast-badge-row">
-          <span className="badge">Target: Points (PTS)</span>
-          <span className="badge">Estimator: {evaluation?.active_policy?.estimator_identity || baselineKey}</span>
-          <span className="badge">Interval: Calibrated 80% Empirical</span>
-          <span className="badge">Eligibility: Appeared in &gt;= 1 game</span>
-          {evaluation?.active_policy?.activated_at && (
-            <span className="badge font-mono text-muted">
-              Activated: {new Date(evaluation.active_policy.activated_at).toLocaleDateString()}
-            </span>
-          )}
-        </div>
-      </div>
-
-      {/* Promotion Decision Banner */}
-      {promo && (
-        <div
-          className={`notice-box forecast-promo-box ${promo.decision === "promote" ? "promo-promote" : "promo-demote"}`}
-        >
-          <div className="forecast-promo-header">
-            <h3 className="forecast-promo-title">
-              Promotion Decision:{" "}
-              {promo.decision === "promote" ? (
-                <span className="text-positive">Promote Challenger ({challengerKey})</span>
-              ) : (
-                <span className="text-accent">Do Not Promote Challenger — Retain Winner Baseline ({baselineKey})</span>
-              )}
-            </h3>
-            <span className={`badge ${promo.decision === "promote" ? "badge-positive" : "badge-accent"}`}>
-              {promo.decision.toUpperCase()}
-            </span>
-          </div>
-          <p className="text-xs text-muted forecast-promo-desc">
-            {promo.decision === "do_not_promote"
-              ? `The transparent carryover baseline '${baselineKey}' achieved superior validation error (4.613 vs 4.633 MAE) and challenger failed promotion gates 1 and 2. Following scientific protocol, CourtLens automatically demotes the challenger and serves the baseline winner without forced promotion.`
-              : `The challenger met all 4 pre-registered promotion gates with statistically significant holdout superiority.`}
-          </p>
-        </div>
-      )}
-
-      {/* Promotion Gates Grid */}
-      {gates && (
-        <div className="panel">
-          <div className="panel-header">
-            <h2 className="panel-title">Pre-registered Promotion Gates</h2>
-            <span className="text-xs text-muted font-mono">Frozen before Block F Opening</span>
-          </div>
-          <div className="grid-2 forecast-gates-grid">
-            <div className="panel forecast-gate-panel">
-              <div className="forecast-gate-header">
-                <strong className="text-sm">Gate 1: Validation Improvement &gt;= 5%</strong>
-                <span className={`badge ${gates.validation_improvement.passed ? "badge-positive" : "badge-accent"}`}>
-                  {gates.validation_improvement.passed ? "PASSED" : "FAILED"}
-                </span>
-              </div>
-              <p className="text-xs text-muted forecast-gate-desc">
-                Challenger must beat baseline by &gt;= 5% in pooled validation and both folds. Observed:{" "}
-                <span className="font-mono">
-                  {(gates.validation_improvement.pooled_relative_improvement * 100).toFixed(2)}%
-                </span>{" "}
-                (V1: {(gates.validation_improvement.fold_differences.v1 >= 0 ? "+" : "") + gates.validation_improvement.fold_differences.v1.toFixed(3)}, V2: {(gates.validation_improvement.fold_differences.v2 >= 0 ? "+" : "") + gates.validation_improvement.fold_differences.v2.toFixed(3)}).
-              </p>
-            </div>
-
-            <div className="panel forecast-gate-panel">
-              <div className="forecast-gate-header">
-                <strong className="text-sm">Gate 2: Final Paired Superiority (CI Upper &lt; 0)</strong>
-                <span className={`badge ${gates.final_paired_superiority.passed ? "badge-positive" : "badge-accent"}`}>
-                  {gates.final_paired_superiority.passed ? "PASSED" : "FAILED"}
-                </span>
-              </div>
-              <p className="text-xs text-muted forecast-gate-desc">
-                95% moving-block bootstrap difference CI upper bound must be strictly negative. Observed MAE diff:{" "}
-                <span className="font-mono">{gates.final_paired_superiority.mae_difference.toFixed(3)}</span> (95% CI: [
-                <span className="font-mono">{gates.final_paired_superiority.lower?.toFixed(3)}</span>,{" "}
-                <span className="font-mono">{gates.final_paired_superiority.upper?.toFixed(3)}</span>]).
-              </p>
-            </div>
-
-            <div className="panel forecast-gate-panel">
-              <div className="forecast-gate-header">
-                <strong className="text-sm">Gate 3: Supported Slices (No Regression &gt; 5%)</strong>
-                <span className={`badge ${gates.supported_slices.passed ? "badge-positive" : "badge-accent"}`}>
-                  {gates.supported_slices.passed ? "PASSED" : "FAILED"}
-                </span>
-              </div>
-              <p className="text-xs text-muted forecast-gate-desc">
-                No supported evaluation slice may degrade by more than 5% relative MAE. Evaluated:{" "}
-                <span className="font-mono">{gates.supported_slices.supported_count}</span> slices, regressions over limit:{" "}
-                <span className="font-mono">{gates.supported_slices.regressions_over_limit.length}</span>.
-              </p>
-            </div>
-
-            <div className="panel forecast-gate-panel">
-              <div className="forecast-gate-header">
-                <strong className="text-sm">Gate 4: Interval Guardrails</strong>
-                <span className={`badge ${gates.interval_guardrails.passed ? "badge-positive" : "badge-accent"}`}>
-                  {gates.interval_guardrails.passed ? "PASSED" : "FAILED"}
-                </span>
-              </div>
-              <p className="text-xs text-muted forecast-gate-desc">
-                Challenger empirical coverage must be &gt;= 75% with width &lt;= 110% of baseline. Observed coverage:{" "}
-                <span className="font-mono">
-                  {((gates.interval_guardrails.challenger_coverage ?? 0) * 100).toFixed(1)}%
-                </span>
-                , width ratio:{" "}
-                <span className="font-mono">{gates.interval_guardrails.width_ratio?.toFixed(3)}</span>.
-              </p>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Block F Final Holdout Metrics Table */}
-      {metrics && intervals && (
-        <div className="panel">
-          <div className="panel-header">
-            <div>
-              <h2 className="panel-title">Out-of-Time Performance on Holdout Block F (2025-26 Regular Season)</h2>
-              <p className="text-xs text-muted forecast-header-desc">
-                Unopened until calibration and preopen registration were committed. 48,870 forecast rows across 162 target dates.
-              </p>
-            </div>
-          </div>
-
-          <div className="table-wrapper">
-            <table className="data-table">
-              <thead>
-                <tr>
-                  <th>Estimator</th>
-                  <th>Role / Status</th>
-                  <th>MAE</th>
-                  <th>RMSE</th>
-                  <th>Player-Balanced MAE</th>
-                  <th>Core Coverage (80% Nom)</th>
-                  <th>Interval Width</th>
-                  <th>Forecast Rows</th>
-                </tr>
-              </thead>
-              <tbody>
-                {Object.entries(metrics).map(([name, m]) => {
-                  const intv = intervals[name]?.core;
-                  const isBaselineWinner = name === baselineKey;
-                  const isChallengerFinalist = name === challengerKey;
-
-                  return (
-                    <tr key={name}>
-                      <td>
-                        <strong className="font-mono">{name}</strong>
-                      </td>
-                      <td>
-                        {isBaselineWinner ? (
-                          <span className="badge badge-positive">Baseline Winner (Active Serving)</span>
-                        ) : isChallengerFinalist ? (
-                          <span className="badge badge-accent">Challenger Finalist (Demoted)</span>
-                        ) : (
-                          <span className="badge">Challenger Variant</span>
-                        )}
-                      </td>
-                      <td className="font-mono">{m.mae.toFixed(3)}</td>
-                      <td className="font-mono">{m.rmse.toFixed(3)}</td>
-                      <td className="font-mono">{m.player_balanced_mae ? m.player_balanced_mae.toFixed(3) : "—"}</td>
-                      <td className="font-mono">{intv ? `${(intv.coverage * 100).toFixed(1)}%` : "—"}</td>
-                      <td className="font-mono">{intv ? intv.mean_width.toFixed(2) : "—"}</td>
-                      <td className="font-mono">{m.forecast_rows.toLocaleString()}</td>
-                    </tr>
-                  );
-                })}
-              </tbody>
+        {promo && gates && <section className="panel research-section" aria-label="Promotion decision">
+          <h2>Promotion Decision: {promo.decision === "promote" ? `promote challenger (${challengerKey})` : `retain the served baseline (${baselineKey})`}</h2>
+          <span className={`badge ${promo.decision === "promote" ? "badge-positive" : "badge-accent"}`}>{promo.decision.toUpperCase()}</span>
+          <div className="table-wrapper research-table" role="region" aria-label="Pre-registered promotion gates" tabIndex={0}>
+            <table className="data-table"><caption>Pre-registered promotion gates, frozen before the holdout opened</caption>
+              <thead><tr><th>Gate</th><th>Result</th><th>Observed</th></tr></thead>
+              <tbody>{gateRows.map(([label, passed, observed, rule]) => <tr key={label}><th scope="row" title={rule}>{label}</th><td><span className={`badge ${passed ? "badge-positive" : "badge-accent"}`}>{passed ? "Passed" : "Failed"}</span></td><td>{observed}</td></tr>)}</tbody>
             </table>
           </div>
-        </div>
-      )}
+        </section>}
 
-      {/* Chronological Splits Summary */}
-      <div className="panel">
-        <div className="panel-header">
-          <h2 className="panel-title">Chronological Splits & Purpose</h2>
-          <span className="badge font-mono">basketball-points-v1</span>
-        </div>
-        <div className="table-wrapper">
-          <table className="data-table">
-            <thead>
-              <tr>
-                <th>Split</th>
-                <th>Dates</th>
-                <th>Purpose</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><strong className="font-mono">T</strong></td>
-                <td className="font-mono">2021-10-19 to 2023-04-09</td>
-                <td>Initial training fit (seasons 2021-22 and 2022-23)</td>
-                <td><span className="badge badge-positive">Executed</span></td>
-              </tr>
-              <tr>
-                <td><strong className="font-mono">V1</strong></td>
-                <td className="font-mono">2023-10-24 to 2024-01-15</td>
-                <td>Fold 1 validation and tuning (2023-24 pre-Jan 15)</td>
-                <td><span className="badge badge-positive">Executed</span></td>
-              </tr>
-              <tr>
-                <td><strong className="font-mono">V2</strong></td>
-                <td className="font-mono">2024-01-16 to 2024-04-14</td>
-                <td>Fold 2 validation and model selection (2023-24 post-Jan 15)</td>
-                <td><span className="badge badge-positive">Executed</span></td>
-              </tr>
-              <tr>
-                <td><strong className="font-mono">C</strong></td>
-                <td className="font-mono">2024-10-22 to 2025-04-13</td>
-                <td>Empirical interval calibration (2024-25 season)</td>
-                <td><span className="badge badge-positive">Executed</span></td>
-              </tr>
-              <tr>
-                <td><strong className="font-mono">F</strong></td>
-                <td className="font-mono">2025-10-21 to 2026-04-12</td>
-                <td>Final out-of-time test holdout (2025-26 season)</td>
-                <td><span className="badge badge-positive">Evaluated</span></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      {/* Prespecified Error Slices */}
-      <div className="panel">
-        <div className="panel-header">
-          <div>
-            <h2 className="panel-title">Prespecified Out-of-Time Error Slices</h2>
-            <p className="text-muted text-xs forecast-header-desc">
-              Protocol-mandated evaluation slices evaluated chronologically without target data leakage.
-            </p>
-          </div>
-          <span className="badge font-mono">{sliceRows.length} Slices Evaluated</span>
-        </div>
-
-        <div className="table-wrapper">
-          <table className="data-table">
-            <thead>
-              <tr>
-                <th>Slice Dimension</th>
-                <th>Subgroup</th>
-                <th>Baseline MAE ({baselineKey})</th>
-                <th>Challenger MAE ({challengerKey})</th>
-                <th>Delta (Pts)</th>
-                <th>Sample Rows</th>
-              </tr>
-            </thead>
-            <tbody>
-              {sliceRows.map((row, idx) => (
-                <tr key={`${row.dimension}-${row.subgroup}-${idx}`}>
-                  <td><strong>{row.dimension}</strong></td>
-                  <td>{row.subgroup}</td>
-                  <td className="font-mono">{row.baseMae != null ? row.baseMae.toFixed(3) : "—"}</td>
-                  <td className="font-mono">{row.chalMae != null ? row.chalMae.toFixed(3) : "—"}</td>
-                  <td className="font-mono">
-                    {row.delta != null ? (
-                      <span className={row.delta <= 0 ? "text-positive" : "text-accent"}>
-                        {(row.delta >= 0 ? "+" : "") + row.delta.toFixed(3)}
-                      </span>
-                    ) : (
-                      "—"
-                    )}
-                  </td>
-                  <td className="font-mono">{row.rows.toLocaleString()}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      {/* Model Card / Reproducibility Command */}
-      {evaluation?.model_card_markdown && (
-        <div className="panel">
-          <div className="panel-header">
-            <h2 className="panel-title">Model Card & Reproducibility Command</h2>
-            <span className="badge font-mono">Run {evaluation.run_id}</span>
-          </div>
-          <p className="text-xs text-muted">
-            The complete points forecasting evaluation pipeline is fully reproducible from the CLI:
-          </p>
-          <pre className="font-mono text-xs forecast-code-block">
-            {`courtlens evaluate-points --config evaluation/config/points-v1.yaml --dataset evaluation/manifests/accepted-points-v1.json --stage validate
-courtlens evaluate-points --config evaluation/config/points-v1.yaml --dataset evaluation/manifests/accepted-points-v1.json --stage calibrate
-courtlens evaluate-points --registered-run ${evaluation.run_id || "b0e4bb3300011b5a3499"} --stage final --open-final-test
-courtlens activate-points-policy --registered-run ${evaluation.run_id || "b0e4bb3300011b5a3499"}`}
-          </pre>
-        </div>
-      )}
-
-      {/* Prospective Issuance & Live Scoring Status */}
-      <div className="panel">
-        <div className="panel-header">
-          <div>
-            <h2 className="panel-title">Genuine Prospective Issuance Status</h2>
-            <p className="text-muted text-xs forecast-header-desc">
-              Prospective ledger immutable append-only logs for the 2026-27 season.
-            </p>
-          </div>
-          <span className={`badge ${prospectiveData?.summary.prospective_accuracy_status === "observed" ? "badge-positive" : "badge-warning"}`}>
-            {prospectiveData?.summary.prospective_accuracy_status === "observed" ? "Live Scored" : "Awaiting 2026-27 Tipoff"}
-          </span>
-        </div>
-        <p className="text-sm text-muted">
-          <strong>Prospective accuracy not yet observed:</strong> The 2026-27 NBA regular season begins October 2026. Prospective forecasts will be logged prior to game tipoffs using active policy <code>{policyStatus}</code> and scored after official box scores are finalized. CourtLens never fabricates unobserved live forecast accuracy.
-        </p>
-
-        <div className="forecast-badge-row">
-          <span className="badge font-mono">Issued: {prospectiveData?.summary.total_issued ?? 0}</span>
-          <span className="badge font-mono">Scored: {prospectiveData?.summary.total_scored ?? 0}</span>
-          <span className="badge font-mono">Pending: {prospectiveData?.summary.total_pending ?? 0}</span>
-          <span className="badge font-mono">DNP / Nonappearances: {prospectiveData?.summary.total_unscored_dnp ?? 0}</span>
-        </div>
-      </div>
-
-      {/* Prospective Forecasts Ledger Table */}
-      {prospectiveData && prospectiveData.items.length > 0 && (
-        <div className="panel">
-          <div className="panel-header">
-            <div>
-              <h2 className="panel-title">Prospective Forecasts Ledger</h2>
-              <p className="text-muted text-xs forecast-header-desc">
-                Immutable prospective estimates logged prior to game tipoffs. Scored observations append when official box scores finalize.
-              </p>
-            </div>
-            <span className="badge font-mono">{prospectiveData.items.length} Logged Forecasts</span>
-          </div>
-
-          <div className="table-wrapper">
+        {metrics && intervals && <section className="panel research-section" aria-label="Holdout performance">
+          <h2>Out-of-Time Performance on Holdout Block F (2025-26 Regular Season)</h2>
+          <div className="table-wrapper research-table" role="region" aria-label="Holdout metrics" tabIndex={0}>
             <table className="data-table">
-              <thead>
-                <tr>
-                  <th>Player</th>
-                  <th>Team</th>
-                  <th>Target Date</th>
-                  <th>Opponent</th>
-                  <th className="num">Point Est</th>
-                  <th className="num">80% Interval</th>
-                  <th>Cohort / Availability</th>
-                  <th>Status</th>
-                  <th className="num">Observed PTS</th>
-                  <th className="num">Error</th>
-                </tr>
-              </thead>
-              <tbody>
-                {prospectiveData.items.map((item) => (
-                  <tr key={item.id}>
-                    <td>
-                      <Link href={`/players/${item.player_id}`} className="font-semibold">
-                        {item.player_name}
-                      </Link>
-                    </td>
-                    <td><strong>{item.team_tricode}</strong></td>
-                    <td className="font-mono">{item.target_game_date}</td>
-                    <td>{item.target_opponent_tricode}</td>
-                    <td className="num font-mono font-bold text-accent">{item.point_estimate.toFixed(1)}</td>
-                    <td className="num font-mono">[{item.interval_lower.toFixed(1)}, {item.interval_upper.toFixed(1)}]</td>
-                    <td>
-                      <span className="badge text-xs font-mono">
-                        {item.availability_reason?.replace("eligible_", "") || "eligible"}
-                      </span>
-                    </td>
-                    <td>
-                      <span className={`badge font-mono ${item.latest_score?.score_status === "scored" ? "badge-positive" : item.latest_score?.score_status === "unscored_dnp" ? "badge" : "badge-accent"}`}>
-                        {item.latest_score?.score_status || item.issuance_status}
-                      </span>
-                    </td>
-                    <td className="num font-mono">
-                      {item.latest_score?.observed_points !== null && item.latest_score?.observed_points !== undefined
-                        ? item.latest_score.observed_points
-                        : item.latest_score?.score_status === "unscored_dnp"
-                        ? "DNP"
-                        : "—"}
-                    </td>
-                    <td className="num font-mono">
-                      {item.latest_score?.absolute_error !== null && item.latest_score?.absolute_error !== undefined
-                        ? item.latest_score.absolute_error.toFixed(1)
-                        : "—"}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
+              <thead><tr><th>Estimator</th><th>Role</th><th className="num">MAE</th><th className="num">RMSE</th><th className="num">Player-Balanced MAE</th><th className="num">Core Coverage (80%)</th><th className="num">Interval Width</th><th className="num">Forecast Rows</th></tr></thead>
+              <tbody>{Object.entries(metrics).map(([name, m]) => {
+                const core = intervals[name]?.core;
+                return <tr key={name}>
+                  <th scope="row"><strong className="font-mono">{name}</strong></th>
+                  <td>{name === baselineKey ? <span className="badge badge-positive">Served baseline</span> : name === challengerKey ? <span className="badge badge-accent">Challenger finalist (not promoted)</span> : <span className="badge">Challenger variant</span>}</td>
+                  <td className="num">{fixed(m.mae)}</td><td className="num">{fixed(m.rmse)}</td><td className="num">{fixed(m.player_balanced_mae)}</td>
+                  <td className="num">{share(core?.coverage)}</td><td className="num">{fixed(core?.mean_width, 2)}</td><td className="num">{m.forecast_rows.toLocaleString("en-US")}</td>
+                </tr>;
+              })}</tbody>
             </table>
           </div>
-        </div>
-      )}
-    </div>
+        </section>}
+
+        <section className="panel research-section" aria-label="Error slices">
+          <h2>Prespecified Out-of-Time Error Slices</h2>
+          <div className="table-wrapper research-table" role="region" aria-label="Prespecified slices" tabIndex={0}>
+            <table className="data-table"><caption>{sliceRows.length} protocol-mandated slices · negative change means the challenger erred less</caption>
+              <thead><tr><th>Slice</th><th>Subgroup</th><th className="num">Baseline MAE</th><th className="num">Challenger MAE</th><th className="num">Change (pts)</th><th className="num">Rows</th></tr></thead>
+              <tbody>{sliceRows.map((row, index) => <tr key={`${row.dimension}-${row.subgroup}-${index}`}>
+                <th scope="row">{row.dimension}</th><td>{row.subgroup}</td><td className="num">{fixed(row.baseMae)}</td><td className="num">{fixed(row.chalMae)}</td>
+                <td className="num">{row.delta == null ? "—" : <span className={row.delta <= 0 ? "text-positive" : "text-accent"}>{signedFixed(row.delta)}</span>}</td><td className="num">{row.rows.toLocaleString("en-US")}</td>
+              </tr>)}</tbody>
+            </table>
+          </div>
+          <details><summary>Chronological splits</summary>
+            <div className="table-wrapper research-table" role="region" aria-label="Chronological splits" tabIndex={0}>
+              <table className="data-table"><thead><tr><th>Split</th><th>Dates</th><th>Purpose</th><th>Status</th></tr></thead>
+                <tbody>{SPLITS.map(([split, start, end, purpose, state]) => <tr key={split}><th scope="row" className="font-mono">{split}</th><td>{formatDate(start)} – {formatDate(end)}</td><td>{purpose}</td><td>{state}</td></tr>)}</tbody>
+              </table>
+            </div>
+          </details>
+          {evaluation.model_card_markdown && <details><summary>Model card</summary><pre className="research-document">{evaluation.model_card_markdown}</pre></details>}
+        </section>
+
+        <section className="panel research-section" aria-label="Prospective issuance">
+          <h2>Genuine Prospective Issuance Status</h2>
+          <span className={`badge ${summary?.prospective_accuracy_status === "observed" ? "badge-positive" : "badge-warning"}`}>{summary?.prospective_accuracy_status === "observed" ? "Live Scored" : "Awaiting 2026-27 Tipoff"}</span>
+          <p className="research-caption">Issued {summary?.total_issued ?? 0} · scored {summary?.total_scored ?? 0} · pending {summary?.total_pending ?? 0} · nonappearances {summary?.total_unscored_dnp ?? 0}</p>
+          <GatedNote why={<p>Prospective accuracy not yet observed: the 2026-27 NBA regular season begins October 2026. Prospective forecasts are logged before tipoff using the active policy and scored after official box scores are finalized. CourtLens never fabricates unobserved live forecast accuracy.</p>}>Forecasts are logged before tipoff and scored once box scores are final.</GatedNote>
+          {prospective && prospective.items.length > 0 && <>
+            <h3>Prospective Forecasts Ledger</h3>
+            <div className="table-wrapper research-table" role="region" aria-label="Prospective forecasts ledger" tabIndex={0}>
+              <table className="data-table">
+                <thead><tr><th>Player</th><th>Team</th><th>Game</th><th>Opponent</th><th className="num">Estimate</th><th className="num">80% Interval</th><th>Availability</th><th>Status</th><th className="num">Observed PTS</th><th className="num">Error</th></tr></thead>
+                <tbody>{prospective.items.map(item => <tr key={item.id}>
+                  <th scope="row"><Link href={`/players/${item.player_id}`}>{item.player_name}</Link></th>
+                  <td><span className="research-team"><TeamLogo team={item.team_tricode} size={16} />{item.team_tricode}</span></td>
+                  <td>{formatDate(item.target_game_date)}</td>
+                  <td><span className="research-team"><TeamLogo team={item.target_opponent_tricode} size={16} />{item.target_opponent_tricode}</span></td>
+                  <td className="num">{item.point_estimate.toFixed(1)}</td>
+                  <td className="num">{item.interval_lower.toFixed(1)}–{item.interval_upper.toFixed(1)}</td>
+                  <td>{humanLabel(item.availability_reason?.replace("eligible_", "") || "eligible")}</td>
+                  <td><span className={`badge ${item.latest_score?.score_status === "scored" ? "badge-positive" : item.latest_score?.score_status === "unscored_dnp" ? "badge" : "badge-accent"}`}>{humanLabel(item.latest_score?.score_status || item.issuance_status)}</span></td>
+                  <td className="num">{item.latest_score?.observed_points != null ? item.latest_score.observed_points : item.latest_score?.score_status === "unscored_dnp" ? "DNP" : "—"}</td>
+                  <td className="num">{item.latest_score?.absolute_error != null ? item.latest_score.absolute_error.toFixed(1) : "—"}</td>
+                </tr>)}</tbody>
+              </table>
+            </div>
+          </>}
+        </section>
+      </ResearchLayout>}
+    </PageShell>
   );
 }
-

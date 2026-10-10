@@ -2,6 +2,7 @@ import { test, expect, type Page } from "@playwright/test";
 import { mockFinance, initial as financeInitial } from "./finance-fixture";
 import { readFileSync } from "node:fs";
 import { openWorkbench } from "./workbench-navigation";
+import research from "./fixtures/research-negative-result.json";
 
 // FO06 screenshot baselines for the pages approved at owner gate 2 and the /design style guide,
 // plus each later block's rebuilt pages (FO08: Live Finals, Playoffs; FO09: profile, Recent Games).
@@ -175,5 +176,24 @@ for (const view of WIDTHS) test.describe(`FO11 baselines ${view.name}`,()=>{
     await page.route("**/api/workbench/operations/matchups",route=>route.fulfill({json:{...response,request:{...response.request,...route.request().postDataJSON()},context:{...response.context,season:"2025-26",before_date:"2026-04-13",release_id:"fixture-release"}}}));
     await openWorkbench(page,"/matchups?player_id=1&defender_id=2&releaseId=fixture-release&season=2025-26&beforeDate=2026-04-13");
     await expect(page.locator(".floor-result")).toBeVisible();await settle(page);await expect(page).toHaveScreenshot(`matchups-${view.name}.png`,shot);
+  });
+});
+
+// FO12: Research template pages with deterministic data (mock API, sealed fixture or static content).
+for (const view of WIDTHS) test.describe(`FO12 baselines ${view.name}`, () => {
+  test.beforeEach(async ({ page }) => { await page.setViewportSize({ width: view.width, height: view.height }); await stableWorkspace(page); });
+  test("expected shots", async ({ page }) => {
+    const run = research.run;
+    await page.route("**/api/workbench/research/experiments", route => route.fulfill({ json: [{ experiment: run.experiment, status: run.status, run_id: run.run_id, protocol_sha256: run.protocol_sha256, gate: null, classification: run.classification, http_fitting_available: false }] }));
+    await page.route("**/api/workbench/research/runs?*", route => route.fulfill({ json: [run] }));
+    await page.route(`**/api/workbench/research/runs/${run.run_id}`, route => route.fulfill({ json: research }));
+    await openWorkbench(page, "/research/shooting");
+    await expect(page.getByRole("region", { name: "Registered research result" })).toBeVisible();
+    await settle(page); await expect(page).toHaveScreenshot(`expected-shots-${view.name}.png`, shot);
+  });
+  for (const [name, path, ready] of [["forecasts", "/forecasts", "Prespecified Out-of-Time Error Slices"], ["evaluation", "/evaluation", "Final Test · 2023–24"], ["case-studies", "/research/case-studies", "Mid-Season Trade & Jersey Stint Tracking"], ["calculator", "/calculator", "Scenario Output"], ["spatial-epv", "/research/epv", "Required source unavailable."]] as const) test(name, async ({ page }) => {
+    await openWorkbench(page, path);
+    await expect(page.getByText(ready, { exact: true }).first()).toBeVisible();
+    await settle(page); await expect(page).toHaveScreenshot(`${name}-${view.name}.png`, shot);
   });
 });
