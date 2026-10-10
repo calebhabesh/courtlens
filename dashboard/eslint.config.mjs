@@ -30,19 +30,13 @@ const baseSyntaxRules = [
 // Ratchets: files that still use the old pattern until their overhaul block rebuilds them. A block
 // that migrates a file removes it here; nothing may be added.
 const PENDING_NATIVE_DATE = [
-  "components/shooting-view.tsx", "components/trends-investigation-view.tsx", "app/research/rapm/page.tsx", // FO12
   "components/planner-client.tsx", "components/ask-courtlens.tsx" // FO13
 ];
 // Dynamic route folders are escaped because these are glob patterns.
 const PENDING_RAW_TITLE = [
-  "components/shooting-view.tsx", "components/trends-investigation-view.tsx",
-  "components/distributions-investigation-view.tsx", "app/forecasts/page.tsx", "app/evaluation/page.tsx",
-  "components/case-studies-view.tsx", "app/investigations/page.tsx", "components/saved-operation-detail.tsx",
-  "components/research-operation-view.tsx", "components/possession-calculator-view.tsx",
-  "components/wingspan-explorer-view.tsx", // FO12
   "app/settings/page.tsx", "app/data-status/page.tsx",
   "app/planner/page.tsx", "components/stats-workspace.tsx", "app/research/ask/page.tsx", // FO13
-  "app/not-found.tsx", "components/capability-notice.tsx" // FO14
+  "app/not-found.tsx" // FO14
 ];
 const lucideImport = {
   name: "lucide-react",
@@ -90,18 +84,12 @@ export default defineConfig([
       "no-restricted-imports": "off"
     }
   },
-  {
-    files: PENDING_NATIVE_DATE.filter((file) => !PENDING_RAW_TITLE.includes(file)),
-    rules: { "no-restricted-syntax": ["error", ...baseSyntaxRules, rawTitleRule] }
-  },
-  {
-    files: PENDING_RAW_TITLE.filter((file) => !PENDING_NATIVE_DATE.includes(file)),
-    rules: { "no-restricted-syntax": ["error", ...baseSyntaxRules, nativeDateRule] }
-  },
-  {
-    files: PENDING_NATIVE_DATE.filter((file) => PENDING_RAW_TITLE.includes(file)),
-    rules: { "no-restricted-syntax": ["error", ...baseSyntaxRules] }
-  },
+  // ESLint rejects an empty `files` list, so a ratchet group that has emptied out is dropped.
+  ...[
+    { files: PENDING_NATIVE_DATE.filter((file) => !PENDING_RAW_TITLE.includes(file)), rules: { "no-restricted-syntax": ["error", ...baseSyntaxRules, rawTitleRule] } },
+    { files: PENDING_RAW_TITLE.filter((file) => !PENDING_NATIVE_DATE.includes(file)), rules: { "no-restricted-syntax": ["error", ...baseSyntaxRules, nativeDateRule] } },
+    { files: PENDING_NATIVE_DATE.filter((file) => PENDING_RAW_TITLE.includes(file)), rules: { "no-restricted-syntax": ["error", ...baseSyntaxRules] } }
+  ].filter((group) => group.files.length > 0),
   {
     // PageHeader is the one place that renders the page title element.
     files: ["components/ui/panel.tsx"],
