@@ -121,7 +121,7 @@ test.describe("DL03 Header and Command Palette", () => {
     await expect(menu).toBeVisible();
 
     await expect(menu.getByRole("menuitem", { name: "Settings" })).toBeVisible();
-    await expect(menu.getByRole("menuitem", { name: "Data status" })).toBeVisible();
+    await expect(menu.getByRole("menuitem", { name: "Data Status" })).toBeVisible();
     await expect(menu.getByRole("menuitem", { name: "Methodology" })).toBeVisible();
 
     // Escape closes menu and returns focus

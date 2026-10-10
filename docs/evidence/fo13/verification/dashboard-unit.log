@@ -1,0 +1,16 @@
+$ npm --prefix dashboard test
+
+> courtlens-dashboard@0.1.0 test
+> vitest run
+
+
+ RUN  v4.1.11 /home/ethioking/dev/courtlens/dashboard
+
+
+ Test Files  54 passed (54)
+      Tests  357 passed (357)
+   Start at  00:11:01
+   Duration  1.51s (transform 5.17s, setup 0ms, import 9.08s, tests 1.73s, environment 1.91s)
+
+
+exit 0

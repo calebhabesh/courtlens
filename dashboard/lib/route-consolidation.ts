@@ -88,6 +88,14 @@ export const COMPATIBILITY_REDIRECTS: { source: string; destination: string }[] 
   { source: "/dashboard", destination: "/players" },
 ];
 
+/**
+ * Pages hidden by an owner decision rather than merged. `/schedule` read 14 legacy fixture games;
+ * Live's date strip shows the retained schedule (FO13, 2026-10-09).
+ */
+export const HIDDEN_REDIRECTS: { source: string; destination: string }[] = [
+  { source: "/schedule", destination: "/live" },
+];
+
 /** The path of the merged page that owns `pathname` when it is one of its tabs, else the pathname. */
 export function mergedPagePath(pathname: string): string {
   const page = Object.values(TABBED_PAGES).find(entry => entry.tabs.some(tab => tab.href === pathname));

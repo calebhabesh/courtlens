@@ -1,0 +1,363 @@
+
+Running 345 tests using 1 worker
+
+[1/345] e2e/advanced-research.spec.ts:16:5 › completed negative report shows amended identity, honest horizons, metrics and export
+[2/345] e2e/advanced-research.spec.ts:35:5 › each unavailable model names its independent requirement
+[3/345] e2e/advanced-research.spec.ts:43:5 › integrity rejection hides numerical outputs and retry recovers
+[4/345] e2e/advanced-research.spec.ts:50:5 › calculator rejects invalid scenarios and shows checked finite differences on mobile
+[5/345] e2e/advanced-research.spec.ts:61:5 › roster keeps observed and projected inputs separate and exports context
+[6/345] e2e/advanced-research.spec.ts:77:5 › measurements preserve unknown picks, null lengths and units in bounded sample
+[7/345] e2e/assistant-panel-real.spec.ts:9:7 › AR07 real server resolves his and this team at 1440px
+[8/345] e2e/assistant-panel-real.spec.ts:9:7 › AR07 real server resolves his and this team at 375px
+[9/345] e2e/compare-overhaul.spec.ts:7:5 › player comparison uses shared scope, signed values and contextual URL modes
+[10/345] e2e/compare-overhaul.spec.ts:22:5 › team comparison preserves unknown versus zero, unknown outcomes and scope across tabs
+[11/345] e2e/compare-overhaul.spec.ts:36:5 › WOWY cancels an old context and a late response cannot replace the new result
+[12/345] e2e/compare-overhaul.spec.ts:51:5 › Matchups applies scoped changes automatically and shows fractional assignments without inventing rates
+[13/345] e2e/compare-overhaul.spec.ts:67:5 › an initially default WOWY query retains its resolved release and cutoff when a gate changes
+[14/345] e2e/compare-overhaul.spec.ts:79:5 › an initially default Matchups query retains its resolved release and cutoff when a gate changes
+[15/345] e2e/comparison-evaluation.spec.ts:12:5 › shared-cutoff comparison keeps different target dates and missing context visible
+[16/345] e2e/comparison-evaluation.spec.ts:30:5 › evaluation presents the no-promotion decision and failed build state
+[17/345] e2e/comparison-evaluation.spec.ts:38:5 › comparison controls work by keyboard and fit a 375px viewport
+[18/345] e2e/comparison-evaluation.spec.ts:58:5 › invalid date preserves selections and recovers to sparse history
+[19/345] e2e/conversation.spec.ts:24:5 › AI disabled manual paired distributions preserve zero, unknown and exact evidence
+[20/345] e2e/conversation.spec.ts:31:5 › natural follow-ups and canonical identity choices retain conversation fingerprints
+[21/345] e2e/conversation.spec.ts:37:5 › quota, unsupported and empty states preserve question and manual execution
+[22/345] e2e/conversation.spec.ts:40:5 › network retry reuses the request identity
+[23/345] e2e/conversation.spec.ts:45:5 › exact Research destination retains a saveable turn and clears on client navigation
+[24/345] e2e/conversation.spec.ts:49:5 › drawer traps keyboard focus, escapes, and supports narrow reduced-motion layout
+[25/345] e2e/conversation.spec.ts:53:5 › unmounted pending answer is discarded and its local state is cleared
+[26/345] e2e/conversation.spec.ts:58:7 › unsupported preserves manual alternatives and entered question
+[27/345] e2e/conversation.spec.ts:58:7 › insufficient_sample preserves manual alternatives and entered question
+[28/345] e2e/conversation.spec.ts:58:7 › timeout preserves manual alternatives and entered question
+[29/345] e2e/conversation.spec.ts:58:7 › provider_error preserves manual alternatives and entered question
+[30/345] e2e/conversation.spec.ts:58:7 › busy preserves manual alternatives and entered question
+[31/345] e2e/conversation.spec.ts:62:5 › proposed context needs an explicit new conversation
+[32/345] e2e/dl04-evidence.spec.ts:24:9 › DL04 Evidence Screenshot Capture › captures stats at 1440px and 375px
+[33/345] e2e/dl04-evidence.spec.ts:24:9 › DL04 Evidence Screenshot Capture › captures players at 1440px and 375px
+[34/345] e2e/dl04-evidence.spec.ts:24:9 › DL04 Evidence Screenshot Capture › captures player-profile at 1440px and 375px
+[35/345] e2e/dl04-evidence.spec.ts:24:9 › DL04 Evidence Screenshot Capture › captures teams at 1440px and 375px
+[36/345] e2e/dl04-evidence.spec.ts:24:9 › DL04 Evidence Screenshot Capture › captures team-detail at 1440px and 375px
+[37/345] e2e/dl04-evidence.spec.ts:24:9 › DL04 Evidence Screenshot Capture › captures team-compare at 1440px and 375px
+[38/345] e2e/dl04-evidence.spec.ts:24:9 › DL04 Evidence Screenshot Capture › captures compare at 1440px and 375px
+[39/345] e2e/dl05-evidence.spec.ts:80:7 › DL05 Evidence Screenshot Capture › captures live workspace at 1440px and 375px
+[40/345] e2e/dl05-evidence.spec.ts:102:7 › DL05 Evidence Screenshot Capture › captures live game details at 1440px and 375px
+[41/345] e2e/dl05-evidence.spec.ts:124:7 › DL05 Evidence Screenshot Capture › captures last games explorer at 1440px and 375px
+[42/345] e2e/dl05-evidence.spec.ts:144:7 › DL05 Evidence Screenshot Capture › captures playoffs tournament bracket at 1440px and 375px
+[43/345] e2e/dl05-evidence.spec.ts:164:7 › DL05 Evidence Screenshot Capture › captures playoffs series detail at 1440px and 375px
+[44/345] e2e/dl06-evidence.spec.ts:29:9 › DL06 Evidence Screenshot Capture › captures shot-profile-twin at 1440px and 375px
+[45/345] e2e/dl06-evidence.spec.ts:29:9 › DL06 Evidence Screenshot Capture › captures shot-aftermath at 1440px and 375px
+[46/345] e2e/dl06-evidence.spec.ts:29:9 › DL06 Evidence Screenshot Capture › captures wowy at 1440px and 375px
+[47/345] e2e/dl06-evidence.spec.ts:29:9 › DL06 Evidence Screenshot Capture › captures matchups at 1440px and 375px
+[48/345] e2e/dl06-evidence.spec.ts:29:9 › DL06 Evidence Screenshot Capture › captures distributions at 1440px and 375px
+[49/345] e2e/dl06-evidence.spec.ts:29:9 › DL06 Evidence Screenshot Capture › captures trends at 1440px and 375px
+[50/345] e2e/dl06-evidence.spec.ts:29:9 › DL06 Evidence Screenshot Capture › captures similarity at 1440px and 375px
+[51/345] e2e/dl06-evidence.spec.ts:29:9 › DL06 Evidence Screenshot Capture › captures case-studies at 1440px and 375px
+[52/345] e2e/dl06-evidence.spec.ts:29:9 › DL06 Evidence Screenshot Capture › captures rankings at 1440px and 375px
+[53/345] e2e/dl06-evidence.spec.ts:29:9 › DL06 Evidence Screenshot Capture › captures stat-line-shift at 1440px and 375px
+[54/345] e2e/dl06-evidence.spec.ts:29:9 › DL06 Evidence Screenshot Capture › captures wingspan at 1440px and 375px
+[55/345] e2e/dl06-evidence.spec.ts:29:9 › DL06 Evidence Screenshot Capture › captures investigations at 1440px and 375px
+[56/345] e2e/dl07-evidence.spec.ts:29:9 › DL07 Evidence Screenshot Capture › captures ask at 1440px and 375px
+[57/345] e2e/dl07-evidence.spec.ts:29:9 › DL07 Evidence Screenshot Capture › captures contracts at 1440px and 375px
+[58/345] e2e/dl07-evidence.spec.ts:29:9 › DL07 Evidence Screenshot Capture › captures free-agency at 1440px and 375px
+[59/345] e2e/dl07-evidence.spec.ts:29:9 › DL07 Evidence Screenshot Capture › captures settings at 1440px and 375px
+[60/345] e2e/dl07-evidence.spec.ts:29:9 › DL07 Evidence Screenshot Capture › captures data-status at 1440px and 375px
+[61/345] e2e/dl07-evidence.spec.ts:29:9 › DL07 Evidence Screenshot Capture › captures methodology at 1440px and 375px
+[62/345] e2e/dl07-evidence.spec.ts:29:9 › DL07 Evidence Screenshot Capture › captures tierlist at 1440px and 375px
+[63/345] e2e/dl07-evidence.spec.ts:29:9 › DL07 Evidence Screenshot Capture › captures forecasts at 1440px and 375px
+[64/345] e2e/dl07-evidence.spec.ts:29:9 › DL07 Evidence Screenshot Capture › captures calculator at 1440px and 375px
+[65/345] e2e/dl07-evidence.spec.ts:29:9 › DL07 Evidence Screenshot Capture › captures learning at 1440px and 375px
+[66/345] e2e/dl07-evidence.spec.ts:29:9 › DL07 Evidence Screenshot Capture › captures patch-notes at 1440px and 375px
+[67/345] e2e/dl07-evidence.spec.ts:29:9 › DL07 Evidence Screenshot Capture › captures blog at 1440px and 375px
+[68/345] e2e/dl07-evidence.spec.ts:50:7 › DL07 Evidence Screenshot Capture › captures ask-drawer attached to player context at 1440px and 375px
+[69/345] e2e/dl08-evidence.spec.ts:88:9 › DL08 Performance, Loading Skeletons & Action Toasts Evidence › measures performance and CLS on stats (/stats)
+e2e/dl08-evidence.spec.ts:88:9 › DL08 Performance, Loading Skeletons & Action Toasts Evidence › measures performance and CLS on stats (/stats)
+[PERF stats] CLS: 0, tasks: []
+
+[70/345] e2e/dl08-evidence.spec.ts:88:9 › DL08 Performance, Loading Skeletons & Action Toasts Evidence › measures performance and CLS on player-profile (/players/2544)
+e2e/dl08-evidence.spec.ts:88:9 › DL08 Performance, Loading Skeletons & Action Toasts Evidence › measures performance and CLS on player-profile (/players/2544)
+[PERF player-profile] CLS: 0, tasks: []
+
+[71/345] e2e/dl08-evidence.spec.ts:88:9 › DL08 Performance, Loading Skeletons & Action Toasts Evidence › measures performance and CLS on team-detail (/teams/1610612747)
+e2e/dl08-evidence.spec.ts:88:9 › DL08 Performance, Loading Skeletons & Action Toasts Evidence › measures performance and CLS on team-detail (/teams/1610612747)
+[PERF team-detail] CLS: 0, tasks: []
+
+[72/345] e2e/dl08-evidence.spec.ts:88:9 › DL08 Performance, Loading Skeletons & Action Toasts Evidence › measures performance and CLS on ask (/research/ask)
+e2e/dl08-evidence.spec.ts:88:9 › DL08 Performance, Loading Skeletons & Action Toasts Evidence › measures performance and CLS on ask (/research/ask)
+[PERF ask] CLS: 0, tasks: []
+
+[73/345] e2e/dl08-evidence.spec.ts:150:7 › DL08 Performance, Loading Skeletons & Action Toasts Evidence › verifies action toast notification lifecycle and appearance
+[74/345] e2e/dl08-evidence.spec.ts:190:7 › DL08 Performance, Loading Skeletons & Action Toasts Evidence › verifies route enter transition presence without height collapse
+[75/345] e2e/dl08-evidence.spec.ts:205:7 › DL08 Performance, Loading Skeletons & Action Toasts Evidence › captures layout-matching route loading skeletons at 1440px and 375px
+[76/345] e2e/entity-selection.spec.ts:13:5 › two mounted pickers have distinct active descendants; ambiguous Enter never commits
+[77/345] e2e/entity-selection.spec.ts:26:5 › editing and clear invalidate committed single ID; form never submits draft text
+[78/345] e2e/entity-selection.spec.ts:34:5 › debounce and cache-hit paths reject delayed responses; empty input clears stale options
+[79/345] e2e/entity-selection.spec.ts:44:5 › IME composition suppresses lookup and Enter; Tab closes and keeps natural focus
+[80/345] e2e/entity-selection.spec.ts:50:5 › API failure preserves text; retry and no-match states are distinct
+[81/345] e2e/entity-selection.spec.ts:56:5 › WOWY chips remove by name, prevent duplicates and enforce unit maximum without IDs
+[82/345] e2e/entity-selection.spec.ts:64:5 › touch selection and removal work at 375px
+[83/345] e2e/entity-selection.spec.ts:70:5 › changing lookup scope discards an obsolete response for the same text
+[84/345] e2e/entity-selection.spec.ts:87:7 › trends selection preserves release, phase, cutoff and window context
+[85/345] e2e/entity-selection.spec.ts:87:7 › distributions selection preserves release, phase, cutoff and window context
+[86/345] e2e/entity-selection.spec.ts:87:7 › similarity selection preserves release, phase, cutoff and window context
+[87/345] e2e/entity-selection.spec.ts:99:7 › rankings picker adds canonical named selection to its explicit personal target
+[88/345] e2e/entity-selection.spec.ts:99:7 › tierlist picker adds canonical named selection to its explicit personal target
+[89/345] e2e/entity-selection.spec.ts:118:5 › planner selections stay within roster/watchlist and never query the public catalog
+[90/345] e2e/finance.spec.ts:6:5 › retained historical terms stay unknown, drawer sources and financial context survive navigation
+[91/345] e2e/finance.spec.ts:19:5 › filters, as-of emptiness and changed context hide stale totals
+[92/345] e2e/finance.spec.ts:26:5 › option scenario stays separate from reported money and groups
+[93/345] e2e/finance.spec.ts:33:5 › query rejection has retry, and book chooser never silently chooses newest
+[94/345] e2e/finance.spec.ts:40:5 › mobile and landscape table/drawer preserve keyboard access without body overflow
+[95/345] e2e/finance.spec.ts:47:5 › Refresh staged import returns a tracked job and exposes failed worker state
+[96/345] e2e/finance.spec.ts:54:5 › embedded Stats uses a separate basketball season and retains its resolved release
+[97/345] e2e/finance.spec.ts:66:5 › a delayed old financial response cannot replace a newer financial context
+[98/345] e2e/fo13-pages.spec.ts:6:5 › settings lists configuration first in a table of contents that reaches each section
+[99/345] e2e/fo13-pages.spec.ts:16:5 › data status keeps release identities and job IDs in Data details, not on the page
+[100/345] e2e/fo13-pages.spec.ts:27:5 › methodology and what's new use the Article template with anchored sections
+[101/345] e2e/fo13-pages.spec.ts:36:5 › the hidden Schedule page redirects to Live and is not in the More menu
+[102/345] e2e/header-command-palette.spec.ts:7:7 › DL03 Header and Command Palette › header is single 56px sticky row without bottom border line and zero layout shift on scroll
+[103/345] e2e/header-command-palette.spec.ts:50:7 › DL03 Header and Command Palette › dropdown menus support keyboard navigation, ArrowDown to enter, and Escape returns focus
+[104/345] e2e/header-command-palette.spec.ts:80:7 › DL03 Header and Command Palette › command palette opens via shortcut, searches global lookup, supports arrow traversal, and restores focus
+[105/345] e2e/header-command-palette.spec.ts:112:7 › DL03 Header and Command Palette › More options menu contains Settings, Data status, Availability, and the D9 support links
+[106/345] e2e/header-command-palette.spec.ts:133:7 › DL03 Header and Command Palette › mobile viewport collapses to search icon and drawer button with accordions
+[107/345] e2e/header-command-palette.spec.ts:174:7 › DL03 Header and Command Palette › captures evidence screenshots at 1440px and 375px
+[108/345] e2e/im06-real.spec.ts:16:9 › impact served values at 1440px
+[109/345] e2e/im06-real.spec.ts:16:9 › onoff served values at 1440px
+[110/345] e2e/im06-real.spec.ts:16:9 › sixfactor served values at 1440px
+[111/345] e2e/im06-real.spec.ts:16:9 › defense served values at 1440px
+[112/345] e2e/im06-real.spec.ts:37:7 › profile and research at 1440px
+[113/345] e2e/im06-real.spec.ts:49:7 › earlier cutoff remains unavailable at 1440px
+[114/345] e2e/im06-real.spec.ts:16:9 › impact served values at 375px
+[115/345] e2e/im06-real.spec.ts:16:9 › onoff served values at 375px
+[116/345] e2e/im06-real.spec.ts:16:9 › sixfactor served values at 375px
+[117/345] e2e/im06-real.spec.ts:16:9 › defense served values at 375px
+[118/345] e2e/im06-real.spec.ts:37:7 › profile and research at 375px
+[119/345] e2e/im06-real.spec.ts:49:7 › earlier cutoff remains unavailable at 375px
+[120/345] e2e/im07-agent.spec.ts:9:7 › IM07 recorded warehouse RAPM renders its CourtLens chip at 1440px
+[121/345] e2e/im07-agent.spec.ts:9:7 › IM07 recorded warehouse RAPM renders its CourtLens chip at 375px
+[122/345] e2e/live.spec.ts:21:5 › selected source boxes keep zero, missingness, clock and errors explicit
+[123/345] e2e/live.spec.ts:28:5 › pause, visibility and navigation release leases and prevent hidden renewals
+[124/345] e2e/live.spec.ts:37:5 › offline retains last observation; capacity and disabled acquisition stay usable
+[125/345] e2e/live.spec.ts:47:5 › historical final detail has no demand and pins resolved release in links
+[126/345] e2e/live.spec.ts:53:5 › mobile and landscape source box regions contain overflow and keyboard focus
+[127/345] e2e/live.spec.ts:58:5 › a delayed old selection cannot overwrite new date observations
+[128/345] e2e/live.spec.ts:63:5 › disabled acquisition, observed empty slate and invalid dates stay distinct
+[129/345] e2e/live.spec.ts:79:5 › FO08 board: one title, Live tabs, date strip counts and nearest-date jumps
+[130/345] e2e/motion-coverage.spec.ts:26:9 › Design Language v1: Motion Coverage Suite › interactive elements on /stats have transitions or motion wrappers
+[131/345] e2e/motion-coverage.spec.ts:26:9 › Design Language v1: Motion Coverage Suite › interactive elements on /players have transitions or motion wrappers
+[132/345] e2e/motion-coverage.spec.ts:26:9 › Design Language v1: Motion Coverage Suite › interactive elements on /teams have transitions or motion wrappers
+[133/345] e2e/motion-coverage.spec.ts:26:9 › Design Language v1: Motion Coverage Suite › interactive elements on /compare have transitions or motion wrappers
+[134/345] e2e/motion-coverage.spec.ts:26:9 › Design Language v1: Motion Coverage Suite › interactive elements on /live have transitions or motion wrappers
+[135/345] e2e/motion-coverage.spec.ts:26:9 › Design Language v1: Motion Coverage Suite › interactive elements on /research/ask have transitions or motion wrappers
+[136/345] e2e/motion-coverage.spec.ts:26:9 › Design Language v1: Motion Coverage Suite › interactive elements on /design have transitions or motion wrappers
+[137/345] e2e/motion-coverage.spec.ts:67:7 › Design Language v1: Motion Coverage Suite › menus, command palette, and dialogs have enter animations
+[138/345] e2e/motion-coverage.spec.ts:94:7 › Design Language v1: Motion Coverage Suite › reduced motion overrides preserve instant transitions without layout snapping errors
+[139/345] e2e/player-profile.spec.ts:3:5 › search opens a snapshot-pinned real route and changes replay date
+[140/345] e2e/player-profile.spec.ts:19:5 › unsupported replay date keeps the input and offers recovery
+[141/345] e2e/players-fo09.spec.ts:10:7 › FO09 Players › profile: one title, hero tiles, tabs in the URL, one Export menu
+[142/345] e2e/players-fo09.spec.ts:33:7 › FO09 Players › recent games: window, exposure and layout are separate 40px controls
+[143/345] e2e/players-fo09.spec.ts:49:7 › FO09 Players › ranking boards and tier lists use the nav labels and one-line notes
+[144/345] e2e/players-fo09.spec.ts:58:7 › FO09 Players › similar players: a 40px filter bar and the evidence hash only in Data details
+[145/345] e2e/research-fo12.spec.ts:10:5 › trends runs from the URL, formats shooting percentages and keeps the evidence hash in Data details
+[146/345] e2e/research-fo12.spec.ts:38:5 › distributions keeps the selected view in the URL and states the sample gate in one line
+[147/345] e2e/research-fo12.spec.ts:57:5 › a research operation deep link reruns without AI and keeps its context in Data details
+[148/345] e2e/research-fo12.spec.ts:71:5 › saved investigations list scope in words and keep each record's hash behind Details
+[149/345] e2e/research-fo12.spec.ts:82:5 › gated research pages are one line with Why? and next steps, at desktop and phone widths
+[150/345] e2e/roster-shapes.spec.ts:26:7 › FO05 Roster Shapes › picks a team from the logo grid and loads without a form
+[151/345] e2e/roster-shapes.spec.ts:51:7 › FO05 Roster Shapes › moves players by drag and by keyboard menu, with lane shares
+[152/345] e2e/roster-shapes.spec.ts:75:7 › FO05 Roster Shapes › projected minutes drive the 240 gauge and the export stays v1
+[153/345] e2e/roster-shapes.spec.ts:112:7 › FO05 Roster Shapes › phone layout stacks the board with 40px targets and no sideways scroll
+[154/345] e2e/route-consolidation.spec.ts:13:7 › FO07 route consolidation › every removed URL redirects to its tab and keeps the query
+[155/345] e2e/route-consolidation.spec.ts:24:7 › FO07 route consolidation › an old link opens the merged page with its tab selected
+[156/345] e2e/route-consolidation.spec.ts:38:7 › FO07 route consolidation › tabs switch in place and carry the scope and player
+[157/345] e2e/route-consolidation.spec.ts:51:7 › FO07 route consolidation › the Research menu lists each merged page once
+[158/345] e2e/route-consolidation.spec.ts:63:7 › FO07 route consolidation › tabs fit a phone without page overflow
+[159/345] e2e/route-polish.spec.ts:4:5 › release availability agrees across desktop and mobile and preserves context
+[160/345] e2e/route-polish.spec.ts:20:5 › catalog scope options keep unavailable context explicit and synchronize navigation
+[161/345] e2e/route-polish.spec.ts:33:5 › settings distinguishes configured key from provider health and hides operator details
+[162/345] e2e/route-polish.spec.ts:48:5 › partial source keeps tools primary; service failure remains a distinct availability state
+[163/345] e2e/route-polish.spec.ts:72:5 › distribution subtools retain release, postseason and exclusive cutoff
+[164/345] e2e/route-polish.spec.ts:87:5 › research without a catalog explains the missing context
+[165/345] e2e/saved-operations.spec.ts:29:5 › explicit save excludes question by default, reuses identity after failure and survives clearing
+[166/345] e2e/saved-operations.spec.ts:37:5 › question opt-in is independent from execution and title
+[167/345] e2e/saved-operations.spec.ts:40:5 › combined library keeps legacy section and opens exact retained namespace
+[168/345] e2e/saved-operations.spec.ts:43:39 › query retained result exposes evidence, pinned reopening, exports and reproduction
+[169/345] e2e/saved-operations.spec.ts:43:39 › definition retained result exposes evidence, pinned reopening, exports and reproduction
+[170/345] e2e/saved-operations.spec.ts:43:39 › profile retained result exposes evidence, pinned reopening, exports and reproduction
+[171/345] e2e/saved-operations.spec.ts:43:39 › compare retained result exposes evidence, pinned reopening, exports and reproduction
+[172/345] e2e/saved-operations.spec.ts:43:39 › team retained result exposes evidence, pinned reopening, exports and reproduction
+[173/345] e2e/saved-operations.spec.ts:43:39 › forecast retained result exposes evidence, pinned reopening, exports and reproduction
+[174/345] e2e/saved-operations.spec.ts:43:39 › distribution retained result exposes evidence, pinned reopening, exports and reproduction
+[175/345] e2e/saved-operations.spec.ts:43:39 › compare_periods retained result exposes evidence, pinned reopening, exports and reproduction
+[176/345] e2e/saved-operations.spec.ts:43:39 › splits retained result exposes evidence, pinned reopening, exports and reproduction
+[177/345] e2e/saved-operations.spec.ts:43:39 › similarity retained result exposes evidence, pinned reopening, exports and reproduction
+[178/345] e2e/saved-operations.spec.ts:43:39 › workload_shifts retained result exposes evidence, pinned reopening, exports and reproduction
+[179/345] e2e/saved-operations.spec.ts:43:39 › finance retained result exposes evidence, pinned reopening, exports and reproduction
+[180/345] e2e/saved-operations.spec.ts:49:5 › reproduction mismatch keeps exports and retained evidence usable on narrow screens
+[181/345] e2e/saved-operations.spec.ts:52:5 › original content, live catalog version and installation metadata are local and truthful
+[182/345] e2e/saved-operations.spec.ts:60:5 › saved-operation pagination preserves boundaries and failed pages stay explicit
+[183/345] e2e/saved-operations.spec.ts:69:5 › install prompt accepts a browser event and exposes installed state
+[184/345] e2e/shared-floor.spec.ts:44:5 › empty source preserves unknown values, exact downloads and resolved links
+[185/345] e2e/shared-floor.spec.ts:65:5 › two and five player units use the same operation with all partitions
+[186/345] e2e/shared-floor.spec.ts:78:5 › stat shifts reject focal contradictions and request per-possession production
+[187/345] e2e/shared-floor.spec.ts:89:5 › bounded leaders pin a resolved release across candidates
+[188/345] e2e/shared-floor.spec.ts:101:5 › Stats on/off preset opens served per-team rating columns
+[189/345] e2e/shared-floor.spec.ts:108:5 › partial samples show raw rates and directional denominators while gating differences
+[190/345] e2e/shared-floor.spec.ts:139:5 › query overflow is actionable and exports are unavailable after failed queries
+[191/345] e2e/shooting.spec.ts:14:5 › blocked source exports complete evidence and pins resolved links
+[192/345] e2e/shooting.spec.ts:27:5 › court and table preserve zero versus unknown; exports and peer zones agree
+[193/345] e2e/shooting.spec.ts:49:5 › assignment matrix shows fractional exposure and null pooled rates at 375px
+[194/345] e2e/shooting.spec.ts:62:5 › aftermath keeps branch samples, unknown membership and censoring distinct
+[195/345] e2e/shooting.spec.ts:76:5 › query overflow is actionable and cannot export a partial result
+[196/345] e2e/shooting.spec.ts:80:5 › cancelling an abandoned request prevents stale results
+[197/345] e2e/shooting.spec.ts:85:5 › name lookup alone never runs analysis; choosing a player and a view does
+[198/345] e2e/shooting.spec.ts:101:5 › shot pagination bounds the court/table while exports retain all facts
+[199/345] e2e/showcase.spec.ts:7:7 › FO04 Player Showcase › board shows a ranked, percentile card with centered playback and one context line
+[200/345] e2e/showcase.spec.ts:40:7 › FO04 Player Showcase › export menu downloads the on-screen card as a self-contained SVG and closes
+[201/345] e2e/showcase.spec.ts:56:7 › FO04 Player Showcase › a deep link selects the requested player and the phone layout stacks without sideways scroll
+[202/345] e2e/stats-preview.spec.ts:7:5 › hover and keyboard preview reuse table values without fetching or stealing focus
+[203/345] e2e/stats-preview.spec.ts:36:5 › pinning, collapsing and expanding preserve the preview and table geometry
+[204/345] e2e/stats-preview.spec.ts:59:5 › wide and smaller desktop columns align with stable pinned identity while scrolling
+[205/345] e2e/stats-preview.spec.ts:90:5 › mobile details, collapsed filters and submitted search remain accessible
+[206/345] e2e/stats-readability-search.spec.ts:5:5 › standard records are readable and portrait gutters center between metric values
+[207/345] e2e/stats-readability-search.spec.ts:25:5 › header branding and secondary navigation align
+[208/345] e2e/stats-readability-search.spec.ts:38:5 › profile exports keep the same shared wordmark artwork
+[209/345] e2e/stats-readability-search.spec.ts:57:5 › global search clear button uses the right edge and concise player captions
+[210/345] e2e/stats-readability-search.spec.ts:83:5 › table suggestions remain visible outside the scroll region and filter in place
+[211/345] e2e/stats-readability-search.spec.ts:106:5 › touch can pick a table suggestion and Escape preserves the draft
+[212/345] e2e/table-interactions.spec.ts:27:5 › recurring guide modes preserve primary identity, header alignment and reload
+[213/345] e2e/table-interactions.spec.ts:48:5 › keyboard sorting, single compare shortcut and drawer focus stay scoped
+[214/345] e2e/table-interactions.spec.ts:64:5 › custom selected columns deduplicate normalization and preserve recurring group order
+[215/345] e2e/table-interactions.spec.ts:73:5 › selection failure remains actionable and does not change the selected row
+[216/345] e2e/table-interactions.spec.ts:85:5 › playoff player table shares native keyboard sorting
+[217/345] e2e/table-interactions.spec.ts:94:5 › a larger tray names the two-player comparison action accurately
+[218/345] e2e/teams-overhaul.spec.ts:4:5 › missing ratings stay last in both sort directions and the plot supports keyboard access
+[219/345] e2e/teams-overhaul.spec.ts:20:7 › Team Stats scope, views and filters survive reload at 1440px
+[220/345] e2e/teams-overhaul.spec.ts:40:7 › Team profile tabs preserve unknowns and have keyboard access at 1440px
+[221/345] e2e/teams-overhaul.spec.ts:20:7 › Team Stats scope, views and filters survive reload at 390px
+[222/345] e2e/teams-overhaul.spec.ts:40:7 › Team profile tabs preserve unknowns and have keyboard access at 390px
+[223/345] e2e/threaded-assistant.spec.ts:99:5 › standalone defaults, reload, new chat, history and deletion keep durable questions
+[224/345] e2e/threaded-assistant.spec.ts:118:5 › scope changes retain old answers and unedited follow-ups inherit on server
+[225/345] e2e/threaded-assistant.spec.ts:130:5 › transport replay preserves request identity; intentional retry links a new turn
+[226/345] e2e/threaded-assistant.spec.ts:140:5 › Stop is durable, releases controls and fences a late response
+[227/345] e2e/threaded-assistant.spec.ts:148:5 › closing drawer retains pending history and full-page link preserves scope
+[228/345] e2e/threaded-assistant.spec.ts:156:5 › clarifications, external citations and hostile text render safely
+[229/345] e2e/threaded-assistant.spec.ts:163:5 › paginated turns are loaded without losing earlier questions
+[230/345] e2e/threaded-assistant.spec.ts:176:7 › threaded wide layout, keyboard dialog and screenshot
+[231/345] e2e/threaded-assistant.spec.ts:176:7 › threaded desktop layout, keyboard dialog and screenshot
+[232/345] e2e/threaded-assistant.spec.ts:176:7 › threaded mobile layout, keyboard dialog and screenshot
+[233/345] e2e/threaded-assistant.spec.ts:176:7 › threaded zoom-equivalent layout, keyboard dialog and screenshot
+[234/345] e2e/threaded-assistant.spec.ts:196:5 › typing a next question during execution preserves the new draft
+[235/345] e2e/threaded-assistant.spec.ts:204:5 › verified local results preserve zero, unknown, scope and equivalent actions
+[236/345] e2e/threaded-assistant.spec.ts:216:5 › default assistant and manual entry are available without preview selection
+[237/345] e2e/threaded-assistant.spec.ts:223:5 › page and panel share retained updates and deletion across navigation
+[238/345] e2e/threaded-assistant.spec.ts:243:7 › provider_disabled retains history and retry creates a linked attempt
+[239/345] e2e/threaded-assistant.spec.ts:243:7 › provider_quota retains history and retry creates a linked attempt
+[240/345] e2e/threaded-assistant.spec.ts:243:7 › provider_busy retains history and retry creates a linked attempt
+[241/345] e2e/threaded-assistant.spec.ts:243:7 › provider_timeout retains history and retry creates a linked attempt
+[242/345] e2e/threaded-assistant.spec.ts:243:7 › malformed_output retains history and retry creates a linked attempt
+[243/345] e2e/threaded-assistant.spec.ts:243:7 › external_unavailable retains history and retry creates a linked attempt
+[244/345] e2e/threaded-assistant.spec.ts:243:7 › external_stale retains history and retry creates a linked attempt
+[245/345] e2e/threaded-assistant.spec.ts:243:7 › backend_failure retains history and retry creates a linked attempt
+[246/345] e2e/threaded-assistant.spec.ts:254:5 › browser history scope changes update only the next request
+[247/345] e2e/threaded-assistant.spec.ts:267:7 › general knowledge label stays visible after reload at 1440px
+[248/345] e2e/threaded-assistant.spec.ts:267:7 › general knowledge label stays visible after reload at 375px
+[249/345] e2e/threaded-assistant.spec.ts:285:5 › AG04 unavailable stream replays a v3 final with the same request identity
+[250/345] e2e/threaded-assistant.spec.ts:293:5 › AG04 minimal final preserves limited and unverified labels after fallback and reload
+[251/345] e2e/threaded-assistant.spec.ts:302:5 › checked narrative renders above its supporting result and survives reload
+[252/345] e2e/threaded-assistant.spec.ts:320:5 › streamed turn shows each phase, the checked narrative, then the retained answer
+[253/345] e2e/threaded-assistant.spec.ts:333:5 › unavailable stream falls back to request/response with the same request identity
+[254/345] e2e/threaded-assistant.spec.ts:340:7 › AG04 live agent steps, deltas, reset and retained final through real proxy at 1440px
+[255/345] e2e/threaded-assistant.spec.ts:340:7 › AG04 live agent steps, deltas, reset and retained final through real proxy at 375px
+[256/345] e2e/threaded-assistant.spec.ts:360:5 › Enter sends, Shift+Enter adds a line and an example prompt sends directly
+[257/345] e2e/threaded-assistant.spec.ts:373:5 › user message is a right-aligned bubble and assistant prose has no bubble
+[258/345] e2e/threaded-assistant.spec.ts:388:5 › an old thread without narrative renders its template answer in the new layout
+[259/345] e2e/threaded-assistant.spec.ts:406:5 › mobile conversations open as a drawer and close after choosing a thread
+[260/345] e2e/threaded-assistant.spec.ts:418:5 › desktop sidebar collapses and stays collapsed after reload
+[261/345] e2e/threaded-assistant.spec.ts:426:5 › clearing history in Settings empties an open chat in another tab
+[262/345] e2e/threaded-assistant.spec.ts:438:5 › /ask opens the assistant
+[263/345] e2e/threaded-assistant.spec.ts:448:9 › AR07 1440px player_ids panel attaches and removes resolved page context
+[264/345] e2e/threaded-assistant.spec.ts:448:9 › AR07 1440px team_ids panel attaches and removes resolved page context
+[265/345] e2e/threaded-assistant.spec.ts:448:9 › AR07 375px player_ids panel attaches and removes resolved page context
+[266/345] e2e/threaded-assistant.spec.ts:448:9 › AR07 375px team_ids panel attaches and removes resolved page context
+[267/345] e2e/threaded-assistant.spec.ts:472:5 › AR07 compare attaches both players, and the full Ask page uses the standalone entry
+[268/345] e2e/threaded-assistant.spec.ts:505:7 › AG05 answer-first chips, tables, trace, follow-up and retained scope at 1440px
+[269/345] e2e/threaded-assistant.spec.ts:544:7 › AG05 web-only limited failure and retry in the shared panel at 1440px
+[270/345] e2e/threaded-assistant.spec.ts:505:7 › AG05 answer-first chips, tables, trace, follow-up and retained scope at 375px
+[271/345] e2e/threaded-assistant.spec.ts:544:7 › AG05 web-only limited failure and retry in the shared panel at 375px
+[272/345] e2e/threaded-assistant.spec.ts:557:5 › AG05 Settings reports active provider, model, limits and limited mode
+[273/345] e2e/threaded-assistant.spec.ts:565:5 › AG05 source details preserve keyboard focus in landscape with reduced motion
+[274/345] e2e/threaded-assistant.spec.ts:579:5 › composer waits for history initialization before accepting input
+[275/345] e2e/visual-baselines.spec.ts:54:9 › FO06 baselines desktop › player showcase
+[276/345] e2e/visual-baselines.spec.ts:61:9 › FO06 baselines desktop › roster shapes team picker
+[277/345] e2e/visual-baselines.spec.ts:68:9 › FO06 baselines desktop › roster shapes depth chart
+[278/345] e2e/visual-baselines.spec.ts:79:9 › FO06 baselines desktop › search modal
+[279/345] e2e/visual-baselines.spec.ts:91:9 › FO06 baselines desktop › live finals board
+[280/345] e2e/visual-baselines.spec.ts:102:9 › FO06 baselines desktop › playoffs bracket
+[281/345] e2e/visual-baselines.spec.ts:110:9 › FO06 baselines desktop › player profile
+[282/345] e2e/visual-baselines.spec.ts:117:9 › FO06 baselines desktop › recent games
+[283/345] e2e/visual-baselines.spec.ts:125:9 › FO06 baselines desktop › team stats
+[284/345] e2e/visual-baselines.spec.ts:130:9 › FO06 baselines desktop › team profile
+[285/345] e2e/visual-baselines.spec.ts:135:9 › FO06 baselines desktop › teammate stat shift
+[286/345] e2e/visual-baselines.spec.ts:142:73 › FO06 baselines desktop › finance contracts
+[287/345] e2e/visual-baselines.spec.ts:142:73 › FO06 baselines desktop › finance contracts/TOR
+[288/345] e2e/visual-baselines.spec.ts:142:73 › FO06 baselines desktop › finance free-agency
+[289/345] e2e/visual-baselines.spec.ts:149:9 › FO06 baselines desktop › design style guide
+[290/345] e2e/visual-baselines.spec.ts:54:9 › FO06 baselines phone › player showcase
+[291/345] e2e/visual-baselines.spec.ts:61:9 › FO06 baselines phone › roster shapes team picker
+[292/345] e2e/visual-baselines.spec.ts:68:9 › FO06 baselines phone › roster shapes depth chart
+[293/345] e2e/visual-baselines.spec.ts:79:9 › FO06 baselines phone › search modal
+[294/345] e2e/visual-baselines.spec.ts:91:9 › FO06 baselines phone › live finals board
+[295/345] e2e/visual-baselines.spec.ts:102:9 › FO06 baselines phone › playoffs bracket
+[296/345] e2e/visual-baselines.spec.ts:110:9 › FO06 baselines phone › player profile
+[297/345] e2e/visual-baselines.spec.ts:117:9 › FO06 baselines phone › recent games
+[298/345] e2e/visual-baselines.spec.ts:125:9 › FO06 baselines phone › team stats
+[299/345] e2e/visual-baselines.spec.ts:130:9 › FO06 baselines phone › team profile
+[300/345] e2e/visual-baselines.spec.ts:135:9 › FO06 baselines phone › teammate stat shift
+[301/345] e2e/visual-baselines.spec.ts:142:73 › FO06 baselines phone › finance contracts
+[302/345] e2e/visual-baselines.spec.ts:142:73 › FO06 baselines phone › finance contracts/TOR
+[303/345] e2e/visual-baselines.spec.ts:142:73 › FO06 baselines phone › finance free-agency
+[304/345] e2e/visual-baselines.spec.ts:149:9 › FO06 baselines phone › design style guide
+[305/345] e2e/visual-baselines.spec.ts:160:7 › FO11 baselines desktop › player comparison
+[306/345] e2e/visual-baselines.spec.ts:164:47 › FO11 baselines desktop › team comparison overview
+[307/345] e2e/visual-baselines.spec.ts:164:47 › FO11 baselines desktop › team comparison factors
+[308/345] e2e/visual-baselines.spec.ts:168:38 › FO11 baselines desktop › WOWY team sets
+[309/345] e2e/visual-baselines.spec.ts:168:38 › FO11 baselines desktop › WOWY unit
+[310/345] e2e/visual-baselines.spec.ts:174:7 › FO11 baselines desktop › player matchups
+[311/345] e2e/visual-baselines.spec.ts:160:7 › FO11 baselines phone › player comparison
+[312/345] e2e/visual-baselines.spec.ts:164:47 › FO11 baselines phone › team comparison overview
+[313/345] e2e/visual-baselines.spec.ts:164:47 › FO11 baselines phone › team comparison factors
+[314/345] e2e/visual-baselines.spec.ts:168:38 › FO11 baselines phone › WOWY team sets
+[315/345] e2e/visual-baselines.spec.ts:168:38 › FO11 baselines phone › WOWY unit
+[316/345] e2e/visual-baselines.spec.ts:174:7 › FO11 baselines phone › player matchups
+[317/345] e2e/visual-baselines.spec.ts:185:7 › FO12 baselines desktop › expected shots
+[318/345] e2e/visual-baselines.spec.ts:194:381 › FO12 baselines desktop › forecasts
+[319/345] e2e/visual-baselines.spec.ts:194:381 › FO12 baselines desktop › evaluation
+[320/345] e2e/visual-baselines.spec.ts:194:381 › FO12 baselines desktop › case-studies
+[321/345] e2e/visual-baselines.spec.ts:194:381 › FO12 baselines desktop › calculator
+[322/345] e2e/visual-baselines.spec.ts:194:381 › FO12 baselines desktop › spatial-epv
+[323/345] e2e/visual-baselines.spec.ts:185:7 › FO12 baselines phone › expected shots
+[324/345] e2e/visual-baselines.spec.ts:194:381 › FO12 baselines phone › forecasts
+[325/345] e2e/visual-baselines.spec.ts:194:381 › FO12 baselines phone › evaluation
+[326/345] e2e/visual-baselines.spec.ts:194:381 › FO12 baselines phone › case-studies
+[327/345] e2e/visual-baselines.spec.ts:194:381 › FO12 baselines phone › calculator
+[328/345] e2e/visual-baselines.spec.ts:194:381 › FO12 baselines phone › spatial-epv
+[329/345] e2e/visual-baselines.spec.ts:204:242 › FO13 baselines desktop › settings
+[330/345] e2e/visual-baselines.spec.ts:204:242 › FO13 baselines desktop › data-status
+[331/345] e2e/visual-baselines.spec.ts:204:242 › FO13 baselines desktop › methodology
+[332/345] e2e/visual-baselines.spec.ts:204:242 › FO13 baselines desktop › whats-new
+[333/345] e2e/visual-baselines.spec.ts:204:242 › FO13 baselines phone › settings
+[334/345] e2e/visual-baselines.spec.ts:204:242 › FO13 baselines phone › data-status
+[335/345] e2e/visual-baselines.spec.ts:204:242 › FO13 baselines phone › methodology
+[336/345] e2e/visual-baselines.spec.ts:204:242 › FO13 baselines phone › whats-new
+[337/345] e2e/workbench.spec.ts:5:7 › Workbench Dark Research Interface › home opens Stats with dark theme, horizontal navigation, context and data
+[338/345] e2e/workbench.spec.ts:30:7 › Workbench Dark Research Interface › player explorer allows filtering and links to detail view
+[339/345] e2e/workbench.spec.ts:53:7 › Workbench Dark Research Interface › player detail presents profile summaries, game logs, and lineage trigger
+[340/345] e2e/workbench.spec.ts:73:7 › Workbench Dark Research Interface › team research lists cohorts and navigates to team detail
+[341/345] e2e/workbench.spec.ts:92:7 › Workbench Dark Research Interface › comparison view displays head-to-head metrics without declaring forced winners
+[342/345] e2e/workbench.spec.ts:105:7 › Workbench Dark Research Interface › forecasts view displays active policy, promotion decision, gates, and prespecified slices
+[343/345] e2e/workbench.spec.ts:136:7 › Workbench Dark Research Interface › dense dark research layout fits a 375px mobile viewport without horizontal overflow
+[344/345] e2e/workbench.spec.ts:149:7 › Workbench Dark Research Interface › Ask drawer offers manual research and links to optional configuration
+[345/345] e2e/workspace-persistence.spec.ts:3:5 › real workspace proxy persists, conflicts, exports and restores
+  15 skipped
+  330 passed (5.1m)
+exit 0
