@@ -1,0 +1,68 @@
+
+> courtlens-dashboard@0.1.0 test:browser
+> playwright test e2e/fo13-pages.spec.ts --grep failed workspace|league URL --workers=1 --reporter=line
+
+
+Running 2 tests using 1 worker
+
+[1/2] e2e/fo13-pages.spec.ts:93:5 › planner keeps a failed workspace sign-in actionable and retries successfully
+  1) e2e/fo13-pages.spec.ts:93:5 › planner keeps a failed workspace sign-in actionable and retries successfully
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: getByRole('status')
+    Expected substring: "League service unavailable"
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toContainText" getByRole('status') with timeout 5000ms
+      - waiting for getByRole('status')
+        - locator resolved to <p role="status" class="planner-note">Sign in to open your private leagues.</p>
+        - unexpected value "Sign in to open your private leagues."
+
+
+      103 |   await page.goto("/planner?week=2026-10-05");
+      104 |   await signInPlanner(page);
+    > 105 |   await expect(page.getByRole("status")).toContainText("League service unavailable");
+          |                                          ^
+      106 |   await expect(page.getByRole("button", { name: "Sign in", exact: true })).toBeEnabled();
+      107 |   fail = false;
+      108 |   await signInPlanner(page);
+        at /home/ethioking/.cache/courtlens-fo13/dashboard/e2e/fo13-pages.spec.ts:105:42
+
+    Error Context: test-results/fo13-pages-planner-keeps-a-7d2ca-le-and-retries-successfully/error-context.md
+
+
+[2/2] e2e/fo13-pages.spec.ts:112:5 › planner follows league URL navigation and hides an old plan while the new scope loads
+  2) e2e/fo13-pages.spec.ts:112:5 › planner follows league URL navigation and hides an old plan while the new scope loads
+
+    Error: expect(locator).toHaveValue(expected) failed
+
+    Locator:  getByRole('combobox', { name: 'League', exact: true })
+    Expected: "second"
+    Received: "first"
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveValue" getByRole('combobox', { name: 'League', exact: true }) with timeout 5000ms
+      - waiting for getByRole('combobox', { name: 'League', exact: true })
+        14 × locator resolved to <select aria-label="League" class="ui-select ui-select-md ">…</select>
+           - unexpected value "first"
+
+
+      132 |   // Next integrates native history changes with useSearchParams; no reload or new sign-in.
+      133 |   await page.evaluate(() => window.history.pushState(null, "", "/planner?league=second&week=2026-10-05"));
+    > 134 |   await expect(page.getByRole("combobox", { name: "League", exact: true })).toHaveValue("second");
+          |                                                                             ^
+      135 |   await expect.poll(() => requests).toEqual(["first", "second"]);
+      136 |   await expect(page.getByRole("region", { name: "Key findings" })).toHaveCount(0);
+      137 |   releaseSecond();
+        at /home/ethioking/.cache/courtlens-fo13/dashboard/e2e/fo13-pages.spec.ts:134:77
+
+    Error Context: test-results/fo13-pages-planner-follows-68760-n-while-the-new-scope-loads/error-context.md
+
+
+  2 failed
+    e2e/fo13-pages.spec.ts:93:5 › planner keeps a failed workspace sign-in actionable and retries successfully
+    e2e/fo13-pages.spec.ts:112:5 › planner follows league URL navigation and hides an old plan while the new scope loads

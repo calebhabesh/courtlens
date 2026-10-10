@@ -129,10 +129,11 @@ test("planner selections stay within roster/watchlist and never query the public
     if(path.endsWith("/planner")) return request.fulfill({headers:cors,json:{league,week_start:"2026-10-05",week_end:"2026-10-11",week_state:{acquisitions_used:0,acquisitions_remaining:4},dates:[],players:[],days:[],summary:{scheduled_player_games:0,startable_player_games:0,lineup_conflicts:0,light_slate_threshold:5},data_snapshot:{classification:"fixture",id:"fixture"},caveats:[]}});
     return request.fulfill({headers:cors,json:[league]});
   });
-  await page.goto("/planner");
+  await page.goto("/planner?week=2026-10-05");
   await page.waitForLoadState("networkidle");
   await page.getByLabel("Email",{exact:true}).fill("fixture@courtlens.local");await page.getByLabel("Password",{exact:true}).fill("fixture-only");await page.getByRole("button",{name:"Sign in",exact:true}).click();
-  await page.getByLabel("Week starts").fill("2026-10-05");
+  // FO13: the week lives in the URL and the styled picker; the plan loads without a Recalculate button.
+  await expect(page.getByRole("button",{name:"Week starts: Oct 5, 2026"})).toHaveAttribute("data-value","2026-10-05");
   const drop=page.getByRole("combobox",{name:"Drop",exact:true});await drop.waitFor();await drop.fill("Jokic");await page.getByRole("option").filter({hasText:"Private Jokić"}).click();
   const add=page.getByRole("combobox",{name:"Add candidate",exact:true});await add.fill("Doncic");await page.getByRole("option").filter({hasText:"Private Dončić"}).click();await expect(page.getByRole("button",{name:"Remove Private Dončić from Add candidate",exact:true})).toBeVisible();expect(lookups).toBe(0);
   await page.setViewportSize({width:375,height:812});

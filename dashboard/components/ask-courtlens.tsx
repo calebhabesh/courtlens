@@ -11,6 +11,7 @@ import type { AssistantStatusResponse } from "@/lib/types";
 import { clearConversation, conversationRequest, pinnedContext, sendTurn, statusLabels, type Context, type Turn, type TurnRequest } from "@/lib/conversation";
 import { ConversationResult } from "./conversation-result";
 import { SaveOperation } from "./save-operation";
+import { DatePicker } from "./ui/date-picker";
 
 interface AskCourtLensProps { variant?: "page" | "panel"; initialReleaseId?: string; initialSeason?: string; initialPhase?: string; initialBeforeDate?: string; initialWindow?: string }
 const prompts = ["Whose minutes increased recently without scoring increasing?", "Which players have produced similarly to Scottie Barnes over their last ten appearances?", "How variable has Scottie Barnes’s scoring been, and did his minutes vary too?"];
@@ -103,7 +104,7 @@ function LegacyAskCourtLens(props: AskCourtLensProps) {
       <label>Release<input value={context.release_id ?? ""} placeholder="Resolve current release once" onChange={e=>setContext({...context,release_id:e.target.value || undefined})} /></label>
       <label>Season<input value={context.season ?? ""} onChange={e=>setContext({...context,season:e.target.value || undefined})} /></label>
       <label>Phase<select value={context.phase ?? "regular_season"} onChange={e=>setContext({...context,phase:e.target.value})}>{["regular_season","playoffs","preseason","play_in","cup_final","summer_league"].map(p=><option key={p}>{p}</option>)}</select></label>
-      <label>Before date (exclusive)<input type="date" value={context.before_date ?? ""} onChange={e=>setContext({...context,before_date:e.target.value || undefined})} /></label>
+      <div className="conversation-date"><span aria-hidden="true">Before date (exclusive)</span><DatePicker label="Before date (exclusive)" value={context.before_date ?? ""} placeholder="Release cutoff" onChange={value=>setContext({...context,before_date:value || undefined})} /></div>
       <label>Window<select value={context.window ?? "season"} onChange={e=>setContext({...context,window:e.target.value})}>{["season","last_10","last_5"].map(w=><option key={w}>{w}</option>)}</select></label>
     </fieldset>
     <div className="conversation-row"><label><input type="checkbox" checked={manual} disabled={loading} onChange={e=>{setManual(e.target.checked);setRetry(null);}} /> Run manually without AI</label><Link href="/investigations">Saved investigations</Link></div>

@@ -6,5 +6,5 @@ import { TABBED_PAGES } from "@/lib/route-consolidation";
 export const metadata: Metadata = { title: TABBED_PAGES.methodology.title };
 
 export default function Layout({ children }: { children: ReactNode }) {
-  return <TabbedPage page={TABBED_PAGES.methodology} template="research">{children}</TabbedPage>;
+  return <TabbedPage page={TABBED_PAGES.methodology} template="article">{children}</TabbedPage>;
 }

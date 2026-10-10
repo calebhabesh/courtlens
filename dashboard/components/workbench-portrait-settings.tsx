@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { enqueueJob } from "@/lib/workbench-api";
 import { useToast } from "./ui/toast";
+import { ArticleSection } from "./ui/article-layout";
+import { Button } from "./ui/button";
 
 interface PortraitSettingsProps {
   available?: boolean;
@@ -28,8 +30,7 @@ export function WorkbenchPortraitSettings({
     setMsg(null);
     try {
       const res = await enqueueJob("portraits", { limit: 200 });
-      const shortId = res.job_id ? res.job_id.slice(0, 8) : "job";
-      const statusText = `Portrait acquisition job enqueued: ${shortId}... (${res.status})`;
+      const statusText = `Portrait acquisition job ${res.status}. Track it in Data Status.`;
       setMsg(statusText);
       toast({
         title: "Portrait Job Enqueued",
@@ -37,7 +38,7 @@ export function WorkbenchPortraitSettings({
         variant: "positive",
       });
     } catch (err) {
-      const errText = `Error: ${err instanceof Error ? err.message : "Failed to enqueue job"}`;
+      const errText = `Could not queue portraits: ${err instanceof Error ? err.message : "the job was not accepted"}`;
       setMsg(errText);
       toast({
         title: "Acquisition Error",
@@ -49,70 +50,29 @@ export function WorkbenchPortraitSettings({
     }
   };
 
-  const coveragePct = totalPlayers > 0 ? ((active / totalPlayers) * 100).toFixed(1) : "0.0";
+  const count = (value: number) => (available ? value.toLocaleString("en-US") : "Unknown");
 
   return (
-    <div className="panel">
-      <div className="panel-header">
-        <div>
-          <h2 className="panel-title">Player portraits</h2>
-          <p className="text-muted text-xs portrait-settings-desc">
-            Best-effort headshots cached locally by cryptographic SHA-256 hash. Missing photos never exclude players from analytics.
-          </p>
-        </div>
-        <button
-          type="button"
-          className="button button-small button-primary"
-          onClick={handleAcquire}
-          disabled={loading}
-        >
-          {loading ? "Queuing…" : "Acquire more portraits"}
-        </button>
-      </div>
-
-      {msg && (
-        <div className="notice-box portrait-settings-notice">
-          {msg}
-        </div>
-      )}
-
-      <div className="grid-4 portrait-settings-grid">
-        <div className="stat-card">
-          <span className="stat-value font-mono">{available ? active : "Unknown"}</span>
-          <span className="stat-label">Active Cached</span>
-          <span className="stat-subtext">Verified image files</span>
-        </div>
-        <div className="stat-card">
-          <span className="stat-value font-mono">{available ? totalPlayers : "Unknown"}</span>
-          <span className="stat-label">Total Players</span>
-          <span className="stat-subtext">In research dataset</span>
-        </div>
-        <div className="stat-card">
-          <span className="stat-value font-mono text-accent">{available ? `${coveragePct}%` : "Unknown"}</span>
-          <span className="stat-label">Measured Coverage</span>
-          <span className="stat-subtext">Best-effort coverage</span>
-        </div>
-        <div className="stat-card">
-          <span className="stat-value font-mono">{available ? totalCached : "Unknown"}</span>
-          <span className="stat-label">Total Assets</span>
-          <span className="stat-subtext">PNG format</span>
-        </div>
-      </div>
-
-      <details><summary>Portrait source and storage</summary><div className="lineage-meta-box">
-        <div className="meta-row">
-          <span className="meta-label">Local Cache Path</span>
-          <span className="meta-value font-mono text-xs">{storagePath}</span>
-        </div>
-        <div className="meta-row">
-          <span className="meta-label">Source CDN</span>
-          <span className="meta-value font-mono text-xs">cdn.nba.com/headshots/nba/latest/260x190/</span>
-        </div>
-        <div className="meta-row">
-          <span className="meta-label">Serving Route</span>
-          <span className="meta-value font-mono text-xs">/api/workbench/players/&#123;id&#125;/portrait</span>
-        </div>
-      </div></details>
-    </div>
+    <ArticleSection
+      id="portraits"
+      title="Player portraits"
+      actions={<Button size="sm" variant="primary" icon="camera" onClick={handleAcquire} loading={loading}>{loading ? "Queuing…" : "Acquire more portraits"}</Button>}
+    >
+      <p>Headshots are cached locally on a best-effort basis. A missing photo never excludes a player from analytics.</p>
+      <dl className="ui-article-facts">
+        <div><dt>Cached portraits</dt><dd>{count(active)}</dd></div>
+        <div><dt>Players in the research dataset</dt><dd>{count(totalPlayers)}</dd></div>
+        <div><dt>Stored image files</dt><dd>{count(totalCached)}</dd></div>
+      </dl>
+      {msg && <p role="status">{msg}</p>}
+      <details className="ui-why">
+        <summary className="ui-why-summary">Source and storage</summary>
+        <dl className="ui-why-body ui-article-facts">
+          <div><dt>Local cache path</dt><dd className="font-mono">{storagePath}</dd></div>
+          <div><dt>Source CDN</dt><dd className="font-mono">cdn.nba.com/headshots/nba/latest/260x190/</dd></div>
+          <div><dt>Serving route</dt><dd className="font-mono">/api/workbench/players/&#123;id&#125;/portrait</dd></div>
+        </dl>
+      </details>
+    </ArticleSection>
   );
 }

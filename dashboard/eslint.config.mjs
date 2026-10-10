@@ -29,13 +29,9 @@ const baseSyntaxRules = [
 ];
 // Ratchets: files that still use the old pattern until their overhaul block rebuilds them. A block
 // that migrates a file removes it here; nothing may be added.
-const PENDING_NATIVE_DATE = [
-  "components/planner-client.tsx", "components/ask-courtlens.tsx" // FO13
-];
+const PENDING_NATIVE_DATE = [];
 // Dynamic route folders are escaped because these are glob patterns.
 const PENDING_RAW_TITLE = [
-  "app/settings/page.tsx", "app/data-status/page.tsx",
-  "app/planner/page.tsx", "components/stats-workspace.tsx", "app/research/ask/page.tsx", // FO13
   "app/not-found.tsx" // FO14
 ];
 const lucideImport = {

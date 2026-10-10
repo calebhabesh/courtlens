@@ -2,6 +2,10 @@
 
 import Link from "next/link";
 import { displayValue, tableRow, type Result } from "@/lib/conversation";
+import { formatDate, parseIsoDate } from "@/lib/format-date";
+
+// One date display format (D11); the cell title keeps the exact returned value.
+const dateText = (value: unknown) => typeof value === "string" && value.length === 10 && parseIsoDate(value) ? formatDate(value) : null;
 
 export function ConversationResult({ result }: {result: Result}) {
   const metric = typeof result.arguments.metric === "string" ? result.arguments.metric : null;
@@ -9,10 +13,10 @@ export function ConversationResult({ result }: {result: Result}) {
   const unit = result.evidence.find(cell => cell.metric === metric && cell.unit !== "observations")?.unit;
   const args = result.arguments;
   const scope = result.operation === "workload_shifts" ? `Last ${args.period_n} versus previous ${args.period_n} appearances; at least ${args.min_minutes} minutes across both windows.`
-    : result.operation === "distribution" ? `Last ${args.window_n} appearances; ${args.from_date ?? "season start"} through ${args.to_date ?? "the exclusive cutoff"}.`
+    : result.operation === "distribution" ? `Last ${args.window_n} appearances; ${dateText(args.from_date) ?? "season start"} through ${dateText(args.to_date) ?? "the exclusive cutoff"}.`
     : result.operation === "similarity" ? `${args.window} profile; at least ${args.min_appearances} appearances and ${args.min_minutes} minutes. Dimensions: ${Array.isArray(args.dimensions) ? args.dimensions.join(", ") : "registered defaults"}.`
-    : result.operation === "compare_periods" ? args.mode === "appearances" ? `${args.period_a_n} recent versus ${args.period_b_n} prior disjoint appearances.` : `${args.period_a_from}–${args.period_a_to} versus ${args.period_b_from}–${args.period_b_to}.`
-    : result.operation === "splits" ? `${args.split_type} splits; ${args.from_date ?? "season start"} through ${args.to_date ?? "the exclusive cutoff"}.`
+    : result.operation === "compare_periods" ? args.mode === "appearances" ? `${args.period_a_n} recent versus ${args.period_b_n} prior disjoint appearances.` : `${dateText(args.period_a_from) ?? String(args.period_a_from)} – ${dateText(args.period_a_to) ?? String(args.period_a_to)} versus ${dateText(args.period_b_from) ?? String(args.period_b_from)} – ${dateText(args.period_b_to) ?? String(args.period_b_to)}.`
+    : result.operation === "splits" ? `${args.split_type} splits; ${dateText(args.from_date) ?? "season start"} through ${dateText(args.to_date) ?? "the exclusive cutoff"}.`
     : null;
   const hasSummary = result.operation === "distribution" && result.data.summary != null && typeof result.data.summary === "object";
   const hasTarget = result.operation === "similarity" && result.data.target != null && typeof result.data.target === "object";
@@ -24,7 +28,7 @@ export function ConversationResult({ result }: {result: Result}) {
     : result.operation === "similarity" ? ["player name","distance","overlapping dimensions count","games played","total minutes","player id"] : [];
   const allColumns = [...new Set(rows.flatMap(row => Object.keys(row)))];
   const columns = [...priorities.filter(key => allColumns.includes(key)), ...allColumns.filter(key => !priorities.includes(key))];
-  const tableValue = (value: unknown) => typeof value === "number" ? value.toLocaleString("en-US", {maximumFractionDigits: 4}) : displayValue(value);
+  const tableValue = (value: unknown) => typeof value === "number" ? value.toLocaleString("en-US", {maximumFractionDigits: 4}) : dateText(value) ?? displayValue(value);
   const samples = result.operation === "distribution" && Array.isArray(result.data.samples) ? result.data.samples as Record<string, unknown>[] : [];
   const valid = samples.flatMap((row, index) => typeof row.value === "number" && Number.isFinite(row.value) ? [{value: row.value, index}] : []);
   const min = Math.min(0, ...valid.map(p => p.value));

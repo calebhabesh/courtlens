@@ -1,7 +1,10 @@
 import type { HTMLAttributes, ReactNode } from "react";
 
-/** The five page templates (frontend overhaul D22). Every page uses exactly one. */
-export type PageTemplate = "explorer" | "profile" | "compare" | "board" | "research";
+/**
+ * The page templates: the five of frontend overhaul D22 plus Article (FO13 owner decision) for
+ * reading and configuration pages. Every page uses exactly one.
+ */
+export type PageTemplate = "explorer" | "profile" | "compare" | "board" | "research" | "article";
 
 export interface PageShellProps extends HTMLAttributes<HTMLDivElement> {
   template: PageTemplate;

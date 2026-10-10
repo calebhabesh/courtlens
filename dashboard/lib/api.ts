@@ -9,8 +9,7 @@ import type {
   AnalyticsGames,
   AnalyticsProfile,
   DataStatus,
-  LookupResponse,
-  ScheduleWeek
+  LookupResponse
 } from "./types";
 
 const internalApi =
@@ -127,19 +126,6 @@ export async function getDataStatus(): Promise<DataStatus> {
     terms_url: "https://www.balldontlie.io/terms.html",
     limitations: ["The API is not reachable from this dashboard instance."]
   });
-}
-
-export async function getSchedule(start: string): Promise<ScheduleWeek> {
-  return safeFetch<ScheduleWeek>(
-    `/api/schedule/week?start=${encodeURIComponent(start)}&timezone=America%2FToronto`,
-    {
-      week_start: start,
-      week_end: start,
-      timezone: "America/Toronto",
-      light_slate_threshold: 5,
-      days: []
-    }
-  );
 }
 
 export function mondayFor(input = new Date()): string {

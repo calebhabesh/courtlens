@@ -840,3 +840,129 @@
   .ui-tabbed-page-body { display: flex; flex-direction: column; gap: var(--space-4); min-width: 0; }
   .ui-tabbed-page-body > * { min-width: 0; }
 }
+
+/* FO13 Article template: contents beside one readable column (Methodology, What's New, Settings). */
+@layer foundation {
+  .ui-article {
+    --article-measure: 720px;
+    display: grid;
+    grid-template-columns: 200px minmax(0, 1fr);
+    gap: var(--space-8);
+    align-items: start;
+  }
+  .ui-article-no-toc { grid-template-columns: minmax(0, 1fr); }
+  .ui-article-body { display: flex; flex-direction: column; gap: var(--space-8); min-width: 0; }
+  .ui-article-toc {
+    position: sticky;
+    top: calc(var(--header-height) + var(--space-4));
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    min-width: 0;
+  }
+  .ui-article-toc-title {
+    margin: 0;
+    font-size: var(--text-xs);
+    line-height: var(--text-xs-lh);
+    font-weight: 600;
+    color: var(--color-text-tertiary);
+  }
+  .ui-article-toc-list {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-left: 1px solid var(--color-hairline);
+  }
+  .ui-article-toc-link {
+    display: flex;
+    align-items: center;
+    min-height: var(--control-md);
+    margin-left: -1px;
+    padding: var(--space-1) var(--space-3);
+    border-left: 2px solid transparent;
+    font-size: var(--text-sm);
+    line-height: var(--text-sm-lh);
+    color: var(--color-text-secondary);
+    text-decoration: none;
+  }
+  .ui-article-toc-link:hover { color: var(--color-text); text-decoration: none; }
+  .ui-article-toc-link[aria-current=location] { color: var(--color-accent); border-left-color: var(--color-accent); }
+  .ui-article-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    max-width: var(--article-measure);
+    min-width: 0;
+    scroll-margin-top: calc(var(--header-height) + var(--space-4));
+  }
+  .ui-article-section.is-wide { max-width: none; }
+  .ui-article-section > * { min-width: 0; margin: 0; }
+  .ui-article-section-head { display: flex; align-items: center; gap: var(--space-3); min-height: var(--control-lg); }
+  .ui-article-section-title { margin: 0; font-size: var(--text-xl); line-height: var(--text-xl-lh); font-weight: 600; }
+  .ui-article-section-actions { display: flex; align-items: center; gap: var(--space-2); margin-left: auto; }
+  .ui-article-section p, .ui-article-section li { font-size: var(--text-md); line-height: 1.65; color: var(--color-text-secondary); }
+  .ui-article-section h3 { margin: var(--space-2) 0 0; font-size: var(--text-lg); line-height: var(--text-lg-lh); font-weight: 600; }
+  .ui-article-section strong { color: var(--color-text); }
+  .ui-article-section :where(p, li, dd) a:not(.ui-button) {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-decoration-color: color-mix(in srgb, var(--color-accent) 40%, transparent);
+    text-underline-offset: 3px;
+  }
+  .ui-article-section :where(p, li, dd) a:not(.ui-button):hover { text-decoration-color: var(--color-accent); }
+  .ui-article-section ul, .ui-article-section ol { display: flex; flex-direction: column; gap: var(--space-2); padding-left: var(--space-5); }
+  .ui-article-section pre {
+    padding: var(--space-4);
+    overflow-x: auto;
+    background: var(--color-surface-1);
+    border-radius: var(--radius-md);
+    font-size: var(--text-sm);
+    line-height: var(--text-sm-lh);
+  }
+  /* A labelled list of settings or facts: label left, value or control right. */
+  .ui-article-facts { display: flex; flex-direction: column; margin: 0; }
+  .ui-article-facts > div {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: var(--space-4);
+    min-height: var(--control-lg);
+    padding-block: var(--space-2);
+    border-bottom: 1px solid var(--color-hairline);
+  }
+  .ui-article-facts dt { font-size: var(--text-md); color: var(--color-text-secondary); }
+  .ui-article-facts dd { margin: 0; font-size: var(--text-md); color: var(--color-text); text-align: right; font-variant-numeric: tabular-nums; }
+  .ui-article-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
+
+  @media (max-width: 1023px) {
+    .ui-article { grid-template-columns: minmax(0, 1fr); gap: var(--space-4); }
+    .ui-article-toc { position: static; flex-direction: row; align-items: center; overflow-x: auto; scrollbar-width: none; }
+    .ui-article-toc::-webkit-scrollbar { display: none; }
+    .ui-article-toc-title { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+    /* Pills, not tabs: on merged pages the route tabs sit directly above this row. */
+    .ui-article-toc-list { flex-direction: row; gap: var(--space-2); border-left: 0; }
+    .ui-article-toc-link {
+      min-height: var(--control-lg);
+      margin: 0;
+      padding-inline: var(--space-3);
+      border: 0;
+      border-radius: var(--radius-pill);
+      background: var(--color-surface-1);
+      font-size: var(--text-xs);
+      white-space: nowrap;
+    }
+    .ui-article-toc-link[aria-current=location] { color: var(--color-accent); background: var(--color-accent-soft); }
+  }
+  @media (max-width: 767px) {
+    .ui-article-facts > div { grid-template-columns: minmax(0, 1fr); gap: var(--space-1); }
+    .ui-article-facts dd { text-align: left; }
+    .ui-article :is(.ui-button, .ui-switch, .ui-why-summary) { min-height: var(--control-lg); }
+    .data-status-view :is(.ui-button, .ui-menu-trigger) { min-height: var(--control-lg); }
+  }
+}
+
+@layer foundation {
+  .ui-design-article-frame .ui-article-toc { position: static; }
+}

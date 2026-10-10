@@ -34,7 +34,7 @@ describe("navigation model (FO02, D9 and FO07 groups)", () => {
   });
 
   it("keeps the D9 support links in the More menu", () => {
-    expect(MORE_LINKS.map(item => item.label)).toEqual(["Settings", "Data status", "Methodology", "What's New", "Schedule", "Planner"]);
+    expect(MORE_LINKS.map(item => item.label)).toEqual(["Settings", "Data Status", "Methodology", "What's New", "Planner"]);
   });
 
   it("resolves the active top-level entry from the pathname", () => {

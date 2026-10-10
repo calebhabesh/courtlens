@@ -125,10 +125,27 @@ confirms the source change. No FO block status changes.
 - A visually hidden (`sr-only`) label inside a horizontally scrolling table escapes the scroll
   clip unless the wrapper is positioned; `.research-table` is `position: relative`.
 - `loading.tsx` inside an FO07 tabbed layout must skeleton only the tab body.
-- `ConversationResult` (shared with Ask) still prints ISO dates on `/investigations/saved/[id]`
-  (FO13 Ask pickup or FO14).
+- `ConversationResult` (shared with Ask) printed ISO dates on `/investigations/saved/[id]`
+  (closed by the FO13 date pickup).
 - The measurements API returns duplicate rows; league rank operations take about 15s on a full
   season (client timeout raised to 50s).
+
+## FO13 findings for FO14
+
+- [FO13 evidence](evidence/fo13/README.md#glance-test) records three partial glance items instead
+  of claiming visual acceptance: retained centered Stats numeric cells (120 sampled across the
+  three widths), Article phone contents-skeleton geometry, and retained phone targets below 40px.
+- Small targets measured in the retained UI: Stats preset/guide/table controls (including 28px),
+  Planner Compare scenario (34px), Ask Open assistant (28px), Live Pause updates (34px) and Why?
+  (28px). Article and Data Status targets were corrected to 40px in FO13. FO14 owns the route-wide
+  responsive, keyboard, zoom and contrast pass and corresponding baseline changes.
+- Stats' title text starts after its leading icon; measure the header container for the 24px
+  shared desktop gutter. The explorer's dense phone gutter remains 8px.
+- Screenshot capture waits must intersect clipping ancestors, not just the viewport: lazy logos
+  in horizontally clipped Stats columns otherwise produce false image-loading timeouts.
+- Planner league/week selection comes from the URL; requests for plan/roster/watchlist settle
+  together, old scope results are hidden, and stale responses are discarded. A failed league
+  read after authentication leaves the sign-in form available to retry.
 
 ## Gate 2 decisions (owner delegated: "use your best recommendation/suggestion wrt. direction")
 
@@ -140,6 +157,15 @@ confirms the source change. No FO block status changes.
 - **Roster Shapes persistence:** not now. Assignments stay in page state; saving them to the
   workspace is a later, separately scoped request (no FO block).
 - **Showcase:** approved as built in FO04.
+
+## FO13 owner decisions (2026-10-09)
+
+- **Article template:** approved. A sixth template, one readable column of about 720px with a table
+  of contents, for Methodology (+ Learning), What's New and Settings. FO13 adds it to Design
+  Language v1.1.
+- **Schedule:** hide for now. `/schedule` leaves the `⋯` menu and search and redirects to Live
+  (which has the real date strip). Repointing it to `workbench_schedules` is a separate backend
+  task outside the FO blocks.
 
 ## Owner review notes at gate 2 (2026-10-09)
 
@@ -156,7 +182,7 @@ confirms the source change. No FO block status changes.
 - Page mode controls go in the FilterBar `modes` slot, not `filters` (Live tabs, Compare views).
 - Baselines must be generated from a production build of the isolated copy; `next dev` renders
   differ.
-- Open owner choice for FO13: the proposed Article template (Design Language v1.1, Templates).
+- The FO13 Article-template owner choice was approved on 2026-10-09 (decisions above).
 
 ## FO07 findings that change later blocks
 
@@ -189,5 +215,5 @@ confirms the source change. No FO block status changes.
 | FO10 | implemented_unverified | 2026-10-09. [Evidence](evidence/fo10/README.md): Team Stats & Cohorts on Explorer with shared immediate filters and URL-persisted views/sort; Team Profile with logo hero, eight summary tiles and Overview / Four Factors / Schedule tabs; Teammate Stat Shift on Compare with always-reachable entity pickers and automatic valid queries; Contracts & Payroll, team contracts and Free Agency Tracker on shared templates with explicitly selected immutable book and independent financial dates, summary first, source details and a headshot contract dialog. Unknown ratings sort last; zero/unknown outcomes, raw shared-floor estimates, financial money/scenario and provenance contracts preserved. Technical fields in Data details, one-line Why? notes, shared skeletons and styled dates. Ratchets: native date 8 → 6, raw title 24 → 21. Glance passes on 27 real-data states at 1440/768/390 (desktop results 227–389px, no page overflow, no visible UUID/hash/rules/ISO dates). Lint 0, typecheck/build pass, Vitest 50 files/344 tests, final Playwright 284 pass/15 skip/0 fail; 30 baselines stable (12 new, 18 prior bytes unchanged). Initial full run had two obsolete/racing test expectations; corrected cases pass 16/16 repeats before the green full run. Other session Stats work closed as 9abb1c7; unrelated dev-port/TODO work retained in two stashes. Implemented in active Codex runtime because the handoff-selected Opus 5.5 is unavailable; owner visual acceptance not claimed. |
 | FO11 | implemented_unverified | 2026-10-09. [Evidence](evidence/fo11/README.md): Player Comparison, Team Comparison, WOWY and Player Matchups on Compare with shared headers, immediate valid filters, URL-persisted modes/tabs, entity headshots/logos, descriptive magnitude bars and Data details. Player percentiles use the full Stats cohort; team percentiles retain the API's existing direction; assignment-only results retain their matrix. Unknown/zero, signed values, legacy targets/intervals, raw shared-floor estimates, support/partitions, scenarios, exports and source gates preserved. Swaps retain additional URL players; initially default analytical queries retain resolved scope; stale responses are ignored. Ratchets: native date 6 → 5, raw title 21 → 18. Glance passes on 39 real-data states at 1440/768/390 (desktop results 340–396px, no page overflow or visible UUID/hash/rules/ISO dates). Lint 0, typecheck/build pass, Vitest 51 files/346 tests; final Playwright 302 pass/15 skip/0 fail; 42 baselines match (12 new, 30 prior bytes unchanged). A chip-replacement test synchronization race was corrected and passes 8/8 repeats before the green full run. Unrelated Python edit and two stashes retained. Active Codex runtime used because Opus 5.5 is unavailable; owner visual acceptance unclaimed. |
 | FO12 | implemented_unverified | 2026-10-09. [Evidence](evidence/fo12/README.md): all Research routes on the Research template (header, shared bar, key findings, then results): RAPM (+Six-Factor/B26), sealed Expected/Adjusted Shooting, Shot Aftermath and Shot Profile (automatic queries, no Run button or release input), Workload Trends, Distributions & Splits (four URL modes), Defensive Matchups, Spatial EPV, Points Forecasts, Evaluation Archive, Case Studies, Saved Investigations + detail, Research Operation, Calculator, Combine & Wingspan. IDs, hashes, cutoff rules and resolved context in Data details; caveats behind Why?; titles match nav labels. Fixed a pre-existing Trends bug (fractions shown as `0.5466%`, now `54.7%` / pp changes) and a 15s rank timeout that failed on real data. `FilterBar collapsible={false}` for fixed scopes and 2-up findings on phones (Design Language v1.1 Anatomy). Ratchets: native date 5 → 2, raw title 18 → 6. Glance passes on 66 real-data states at 1440/768/390 (desktop results 154–304px, bar gap 16px, no page overflow, no visible UUID/hash/rule) except 5 ISO dates in the Ask-shared result renderer on the saved detail (D23, noted). Lint 0, typecheck/build pass, Vitest 52 files/349 tests, final Playwright 319 pass/15 skip/0 fail (repeated after the last CSS fix); 54 baselines (12 new, 42 prior bytes unchanged). Unrelated Python edit and two stashes retained. Owner visual acceptance not claimed. |
-| FO13 | planned | |
+| FO13 | implemented_unverified | 2026-10-10. [Evidence](evidence/fo13/README.md): owner-approved Article template (720px reading column, sticky contents / phone pills) added to Design Language v1.1 and /design; Settings configuration first, independent portrait counts; Data Status findings/jobs with IDs and hashes in Data details and measured unknowns on API failure; Methodology/Learning and What's New on Article; Planner immediate URL league/week, recovery after league-load failure, scope-matched results and no repeated sign-in; Stats shared header/title and 24px desktop gutter; Schedule hidden with query-preserving 307 to Live; Ask shared header/date pickup. Native-date ratchet 2 → 0, raw title 6 → 1. Final 33 captures at 1440/768/390: no page/image errors, page overflow or visible UUID/hash/cutoff rule/ISO date; bar controls 40px, post-bar gap 16px. Glance has three explicit FO14 follow-ups (Stats numeric alignment, Article phone skeleton, retained small touch targets), so visual acceptance is unclaimed. Lint/typecheck/build pass; Vitest 54 files/357 tests; Ruff/mypy/format pass; final Playwright 333 pass/15 skip/0 fail, all 348 cases; 62 baselines match (8 new, 54 prior byte-identical). Began in Opus 5.5 and completed in active Codex runtime at owner request. Unrelated Python edit and two stashes preserved. |
 | FO14 | planned | |

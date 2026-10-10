@@ -225,7 +225,7 @@ One 56px sticky row (`components/ui/header.tsx`, nav items from `lib/nav-model.t
   Recent, with arrow-key navigation, Enter to open and focus returned to the trigger. Below 768px
   the header shows a search icon and the modal is full screen.
 - **Ask:** a ghost button with the accent icon; it opens the Ask side panel (drawer pattern).
-- **`⋯` menu:** Settings, Data status, Methodology, What's New, Schedule and Planner.
+- **`⋯` menu:** Settings, Data Status, Methodology, What's New and Planner. Schedule was hidden in FO13 (owner decision) and `/schedule` redirects to Live.
 - **Below 1280px** the nav and `⋯` collapse into a hamburger that opens a left drawer with the
   menus as accordions. The drawer is readable (its scrim sits below its panel), traps focus and
   closes on Escape.
@@ -263,7 +263,7 @@ defaults must already be right; change the primitive, not the page.
 
 ### Templates (D22)
 
-Every page uses exactly one template through `<PageShell template=…>`.
+Every page uses exactly one template through `<PageShell template=…>`: the five of D22 plus Article.
 
 | Template | Body | Pages |
 | --- | --- | --- |
@@ -271,11 +271,18 @@ Every page uses exactly one template through `<PageShell template=…>`.
 | **Profile** | `ProfileLayout`: hero (large headshot or logo, team color, `StatTile` row), tabs, tab body | Player and team pages |
 | **Compare** | `CompareLayout`: one entity header per side, then one row per stat with a bar per side and percentile chips. The larger value may be bold; no winner, verdict or composite score (D21) | Player, Team, Matchups, WOWY |
 | **Board** | `BoardLayout`: one main surface (card, board, date strip) plus an optional 320px rail; one column below 1280px | Player Showcase, Roster Shapes, Tier List, Live |
-| **Research** | `ResearchLayout`: a key-findings row leads, then charts and tables; method notes go to Data details | RAPM, Shooting, Trends, Distributions, Forecasts, Evaluation and the rest of Research |
+| **Research** | `ResearchLayout`: a key-findings row leads, then charts and tables; method notes go to Data details | RAPM, Shooting, Trends, Distributions, Forecasts, Evaluation, Data Status and the rest of Research |
+| **Article** (FO13, owner decision 2026-10-09) | `ArticleLayout`: a 200px table of contents ("On this page", sticky under the header) beside one readable column of at most 720px; each `ArticleSection` is an anchored `h2`. A section marked `wide` (a definitions table) uses the full body width | Settings, Methodology (+ Learning), What's New |
 
-**Proposed, pending owner choice (needed by FO13):** an **Article** template (a readable column of
-about 720px with a table of contents) for Methodology, What's New and Settings, which none of the
-five fit. Until the owner decides, those pages are not rebuilt.
+**Article rules.** Article pages have no filter bar: nothing on them is scoped by season, phase or
+date. The header and, on merged pages, the route tabs come first; the contents and first section
+start right below. The contents mark the section being read (`aria-current="location"`) and are
+omitted when a page has one section. Below 1024px the contents become one horizontally scrolling
+row of 40px pills above the column (pills, not tabs, because route tabs may sit directly above).
+Settings lists configuration a person can change first (Display, Assistant, History and privacy,
+Player portraits, Install), then read-only service state (Background worker, Sources and terms).
+Labelled settings and facts use `.ui-article-facts` (label left, value right; stacked on phones).
+Dates in original content are shown with `formatDate` at render; the source text is unchanged.
 
 ### Anatomy
 
@@ -307,7 +314,7 @@ the main result except at most one one-line `GatedNote`.
   headshot appears with the result, not in a separate picker row above it.
 - **Spacing after the bar:** the first element after the filter bar starts at least `--space-4`
   below the bar's hairline, so the hairline never reads as a border on the next row (gate 2
-  finding on Stats, fixed in FO13).
+  finding on Stats; fixed by the Stats divider correction and re-measured in FO13).
 
 ### Missing data and technical detail (D4, D5, D14)
 
@@ -456,7 +463,8 @@ pass/fail per item in the block evidence.
   (use `DatePicker`) and raw `<h1>` (page titles come from `PageHeader`; `components/ui/panel.tsx`
   is the only exception). Files not yet rebuilt are listed in `PENDING_NATIVE_DATE` and
   `PENDING_RAW_TITLE` in `dashboard/eslint.config.mjs`, each tagged with the FO block that removes
-  them. These lists only shrink; adding a file is not allowed.
+  them. These lists only shrink; adding a file is not allowed. After FO13 the native-date list is
+  empty and only `app/not-found.tsx` (FO14) keeps a raw title.
 - **Visual baselines:** `dashboard/e2e/visual-baselines.spec.ts` captures Player Showcase, the
   Roster Shapes picker and depth chart, the search modal and `/design` at 1440×900 and 390×844
   against the mock API, with a fixed empty workspace, fonts and visible images loaded, animations

@@ -12,7 +12,7 @@ The B35a evidence reports 616 backend checks passed with 124 skipped, 215 focuse
 
 The interface adds a separate question opt-in, combined browsing of retained operations and legacy investigations, exact evidence inspection, canonical reopening, export and per-step reproduction status. Original learning material, definitions and engineering notes connect these workflows. Installation metadata describes a local standalone shell; analytical views require the local API and database.
 
-Use [saved investigations](/investigations), [learning](/learning), [methodology](/methodology) and [settings](/settings). Interface verification is recorded separately in the implementation progress and evidence files; this change record is not runtime evidence.
+Use [saved investigations](/investigations), [learning](/methodology/learning), [methodology](/methodology) and [settings](/settings). Interface verification is recorded separately in the implementation progress and evidence files; this change record is not runtime evidence.
 
 ## Open gates
 

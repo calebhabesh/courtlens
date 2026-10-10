@@ -1,5 +1,5 @@
 import type { NextConfig } from "next";
-import { COMPATIBILITY_REDIRECTS, CONSOLIDATED_REDIRECTS } from "./lib/route-consolidation";
+import { COMPATIBILITY_REDIRECTS, CONSOLIDATED_REDIRECTS, HIDDEN_REDIRECTS } from "./lib/route-consolidation";
 
 const nextConfig: NextConfig = {
   output: "standalone",
@@ -26,7 +26,7 @@ const nextConfig: NextConfig = {
     ];
   },
   async redirects() {
-    return [...COMPATIBILITY_REDIRECTS, ...CONSOLIDATED_REDIRECTS].map(redirect => ({ ...redirect, permanent: false }));
+    return [...COMPATIBILITY_REDIRECTS, ...CONSOLIDATED_REDIRECTS, ...HIDDEN_REDIRECTS].map(redirect => ({ ...redirect, permanent: false }));
   }
 };
 

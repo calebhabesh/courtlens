@@ -24,6 +24,7 @@ import {
   type PageTemplate
 } from "@/components/ui";
 import { TeamGrid } from "@/components/team-grid";
+import { ArticleLayout, ArticleSection } from "@/components/ui/article-layout";
 import { useAdvancedMode } from "@/lib/advanced-mode";
 import { formatDate, parseIsoDate } from "@/lib/format-date";
 
@@ -38,7 +39,8 @@ const TEMPLATES: { value: PageTemplate; label: string }[] = [
   { value: "profile", label: "Profile" },
   { value: "compare", label: "Compare" },
   { value: "board", label: "Board" },
-  { value: "research", label: "Research" }
+  { value: "research", label: "Research" },
+  { value: "article", label: "Article" }
 ];
 
 /** /design catalogue of the FO01 shared foundation primitives. */
@@ -153,6 +155,22 @@ export function DesignFoundationShowcase() {
       <Panel title="Template skeletons (D11/D22)" compact>
         <SegmentedControl name="Skeleton template" options={TEMPLATES} value={template} onChange={setTemplate} />
         <div className="ui-design-skeleton-frame"><TemplateSkeleton template={template} /></div>
+      </Panel>
+
+      <Panel title="Article template (FO13)" compact>
+        <div className="ui-design-article-frame">
+          <ArticleLayout toc={[{ id: "design-article-scope", label: "Scope" }, { id: "design-article-facts", label: "Facts" }]}>
+            <ArticleSection id="design-article-scope" title="Scope">
+              <p>One readable column of about 720px beside a table of contents. Methodology, What&apos;s New and Settings use it.</p>
+            </ArticleSection>
+            <ArticleSection id="design-article-facts" title="Facts">
+              <dl className="ui-article-facts">
+                <div><dt>Column</dt><dd>720px</dd></div>
+                <div><dt>Contents</dt><dd>Sticky beside the column; one row below 1024px</dd></div>
+              </dl>
+            </ArticleSection>
+          </ArticleLayout>
+        </div>
       </Panel>
 
       <Panel title="Logo-grid picker (v1.1 Board pattern, gate 2)" compact>

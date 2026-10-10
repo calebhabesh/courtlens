@@ -1,0 +1,15 @@
+
+> courtlens-dashboard@0.1.0 test:browser
+> playwright test e2e/fo13-pages.spec.ts --workers=1 --reporter=line
+
+
+Running 7 tests using 1 worker
+
+[1/7] e2e/fo13-pages.spec.ts:6:5 › settings lists configuration first in a table of contents that reaches each section
+[2/7] e2e/fo13-pages.spec.ts:16:5 › data status keeps release identities and job IDs in Data details, not on the page
+[3/7] e2e/fo13-pages.spec.ts:27:5 › methodology and what's new use the Article template with anchored sections
+[4/7] e2e/fo13-pages.spec.ts:36:5 › the hidden Schedule page redirects to Live and is not in the More menu
+[5/7] e2e/fo13-pages.spec.ts:47:5 › planner applies a week change immediately, keeps it in the URL and signs in once
+[6/7] e2e/fo13-pages.spec.ts:93:5 › planner keeps a failed workspace sign-in actionable and retries successfully
+[7/7] e2e/fo13-pages.spec.ts:112:5 › planner follows league URL navigation and hides an old plan while the new scope loads
+  7 passed (4.2s)

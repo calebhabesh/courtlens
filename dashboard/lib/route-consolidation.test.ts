@@ -3,7 +3,7 @@ import path from "node:path";
 import { describe, expect, it } from "vitest";
 import { activeRouteTab } from "@/components/ui/route-tabs";
 import { analyticalNavItems, MORE_LINKS } from "./nav-model";
-import { COMPATIBILITY_REDIRECTS, CONSOLIDATED_REDIRECTS, TABBED_PAGES, mergedPagePath } from "./route-consolidation";
+import { COMPATIBILITY_REDIRECTS, CONSOLIDATED_REDIRECTS, HIDDEN_REDIRECTS, TABBED_PAGES, mergedPagePath } from "./route-consolidation";
 import nextConfig from "../next.config";
 
 const appDir = path.resolve(__dirname, "../app");
@@ -46,7 +46,16 @@ describe("FO07 route consolidation (D3)", () => {
 
   it("serves the shared table as Next.js redirects", async () => {
     const redirects = await nextConfig.redirects!();
-    expect(redirects).toEqual([...COMPATIBILITY_REDIRECTS, ...CONSOLIDATED_REDIRECTS].map(r => ({ ...r, permanent: false })));
+    expect(redirects).toEqual([...COMPATIBILITY_REDIRECTS, ...CONSOLIDATED_REDIRECTS, ...HIDDEN_REDIRECTS].map(r => ({ ...r, permanent: false })));
+  });
+
+  it("removes hidden pages from the app and the navigation and sends them to an existing page", () => {
+    const nav = [...analyticalNavItems(), ...MORE_LINKS].map(item => item.href.split("?")[0]);
+    for (const { source, destination } of HIDDEN_REDIRECTS) {
+      expect(isFile(pageFile(source)), `${source} still has a page`).toBe(false);
+      expect(isFile(pageFile(destination)), destination).toBe(true);
+      expect(nav).not.toContain(source);
+    }
   });
 
   it("lists each merged page once in the navigation, under its page title", () => {

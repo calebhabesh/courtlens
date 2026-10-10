@@ -1469,21 +1469,19 @@
 .plan-block { min-width: 0; }
 .plan-scroll { max-width: 100%; overflow-x: auto; }
 .plan-scroll:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
-.legacy-planner .planner-workspace { display: grid; gap: var(--space-5); min-width: 0; }
-.legacy-planner .planner-toolbar,
-.legacy-planner .snapshot-strip,
-.legacy-planner .plan-legend { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); }
-.legacy-planner .planner-toolbar label,
-.legacy-planner .scenario-builder label { display: grid; gap: var(--space-2); min-width: 0; }
-.legacy-planner .planner-toolbar p { flex-basis: 100%; }
-.legacy-planner .snapshot-strip { padding: var(--space-4); background: var(--color-surface-1); border-radius: var(--radius-sm); }
-.legacy-planner .planner-metrics,
+/* Planner (FO13, Board template). */
+.planner-main { display: flex; flex-direction: column; gap: var(--space-4); min-width: 0; }
+.planner-loading { display: flex; flex-direction: column; gap: var(--space-4); }
+.planner-note { margin: 0; color: var(--color-text-secondary); font-size: var(--text-sm); line-height: 1.5; }
+.planner-auth { display: flex; flex-direction: column; gap: var(--space-3); max-width: 420px; padding: var(--space-5); background: var(--color-surface-1); border-radius: var(--radius-md); }
+.planner-auth h2, .legacy-planner .scenario-builder h2, .legacy-planner .scenario-result h2 { margin: 0; font-size: var(--text-lg); line-height: var(--text-lg-lh); font-weight: 600; }
+.planner-auth p { margin: 0; color: var(--color-text-secondary); font-size: var(--text-sm); }
+.planner-auth-form { display: flex; flex-direction: column; gap: var(--space-3); }
+.legacy-planner .scenario-builder { display: flex; flex-direction: column; gap: var(--space-3); }
+.legacy-planner .scenario-builder form { display: flex; flex-direction: column; gap: var(--space-3); }
 .legacy-planner .delta-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: var(--space-3); }
-.legacy-planner .metric,
-.legacy-planner .delta { display: grid; gap: var(--space-2); padding: var(--space-4); background: var(--color-surface-1); border-radius: var(--radius-sm); }
-.legacy-planner .metric-value,
+.legacy-planner .delta { display: grid; gap: var(--space-2); padding: var(--space-4); background: var(--color-surface-2); border-radius: var(--radius-sm); }
 .legacy-planner .delta strong { font-size: var(--text-2xl); font-variant-numeric: tabular-nums; }
-.legacy-planner .metric-note { font-size: var(--text-xs); color: var(--color-text-secondary); }
 .legacy-planner .plan-table { border-collapse: collapse; min-width: 760px; width: 100%; }
 .legacy-planner .plan-table th,
 .legacy-planner .plan-table td { padding: var(--space-3); text-align: left; border-bottom: 1px solid var(--color-hairline); }
@@ -1492,11 +1490,8 @@
 .legacy-planner .plan-table .light-column { background: var(--color-surface-2); }
 .legacy-planner .game-cell { display: grid; gap: var(--space-1); }
 .legacy-planner .game-cell.lineup_conflict small { color: var(--color-accent); }
-.legacy-planner .plan-legend { margin-top: var(--space-3); color: var(--color-text-secondary); font-size: var(--text-sm); }
-.legacy-planner .scenario-builder,
-.legacy-planner .scenario-result { padding: var(--space-5); background: var(--color-surface-1); border-radius: var(--radius-sm); }
-.legacy-planner .scenario-builder form { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); align-items: end; gap: var(--space-4); }
-.legacy-planner .scenario-result .plan-block { margin-top: var(--space-5); }
+.legacy-planner .plan-legend { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); margin-top: var(--space-3); color: var(--color-text-secondary); font-size: var(--text-sm); }
+.legacy-planner .scenario-result { display: flex; flex-direction: column; gap: var(--space-4); padding: var(--space-5); background: var(--color-surface-1); border-radius: var(--radius-md); }
 
 /* Design Language v1 /design Style Guide Layout */
 .ui-design-page {
@@ -3816,76 +3811,26 @@
   border-left-color: var(--color-positive);
 }
 
-/* Data Status */
-.data-status-overview-grid {
-  margin-bottom: var(--space-5);
-}
+/* Data Status (FO13) */
+.data-status-rules { display: flex; flex-direction: column; gap: var(--space-2); margin: 0; padding-left: var(--space-5); color: var(--color-text-secondary); font-size: var(--text-sm); line-height: 1.5; }
+.data-status-rules strong { color: var(--color-text); }
+.data-status-view .data-table td, .data-status-view .data-table th { white-space: nowrap; }
+.data-status-view .data-table td.data-status-result { min-width: 240px; white-space: normal; color: var(--color-text-secondary); }
 
-.data-status-rules-list {
-  line-height: var(--line-height-relaxed, 1.6);
-  margin: 0;
-  padding-left: var(--space-5);
-}
-
-/* Portrait Settings */
-.portrait-settings-desc {
-  margin-top: var(--space-1);
-}
-
-.portrait-settings-notice {
-  margin-bottom: var(--space-4);
-}
-
-.portrait-settings-grid {
-  margin-bottom: var(--space-4);
-}
-
-/* Jobs Panel */
-.jobs-panel-desc {
-  margin-top: var(--space-1);
-}
-
-.jobs-panel-actions {
-  display: flex;
-  gap: var(--space-2);
-  flex-wrap: wrap;
-}
-
-.jobs-panel-notice {
-  margin-bottom: var(--space-4);
-}
-
-.jobs-panel-error-cell {
-  max-width: 250px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-/* Methodology */
-.methodology-principles-grid {
-  margin-bottom: var(--space-6);
-}
-
-.methodology-principle-title {
-  margin: var(--space-1) 0;
-}
-
-.methodology-principle-desc {
-  line-height: var(--line-height-relaxed, 1.5);
-}
-
-.methodology-catalog-desc {
-  margin-top: var(--space-1);
-}
-
-.methodology-limitations-cell {
-  max-width: 260px;
-  white-space: normal;
-}
-
-.methodology-actions {
-  margin-top: var(--space-4);
-}
+/* Methodology catalog (FO13 Article template) */
+.methodology-catalog .data-table { min-width: 880px; table-layout: fixed; }
+.methodology-catalog .data-table th, .methodology-catalog .data-table td { vertical-align: top; white-space: normal; overflow-wrap: anywhere; }
+.methodology-catalog tbody th, .methodology-catalog td { font-size: var(--text-sm); line-height: var(--text-sm-lh); }
+.methodology-catalog tbody th { text-align: left; text-transform: none; letter-spacing: normal; font-weight: 500; background: none; }
+.methodology-catalog thead th:nth-child(1) { width: 20%; }
+.methodology-catalog thead th:nth-child(2) { width: 10%; }
+.methodology-catalog thead th:nth-child(3) { width: 26%; }
+.methodology-catalog thead th:nth-child(4) { width: 20%; }
+.methodology-group-row th { padding-top: var(--space-4); color: var(--color-text-tertiary); font-size: var(--text-xs); font-weight: 600; text-align: left; text-transform: none; }
+.methodology-metric-name { display: block; color: var(--color-text); font-weight: 500; }
+.methodology-metric-key, .methodology-denominator { display: block; margin-top: var(--space-1); color: var(--color-text-tertiary); font-family: var(--font-mono), ui-monospace, monospace; font-size: var(--text-xs); }
+.methodology-code { font-family: var(--font-mono), ui-monospace, monospace; font-size: var(--text-xs); overflow-wrap: anywhere; }
+.methodology-limitations { color: var(--color-text-secondary); }
 
 /* Forecasts */
 .forecast-protocol-box {
@@ -4858,3 +4803,8 @@
 .research-view .dist-strip-container { border: 0; }
 /* Row headers name a player, team or record; they read as text, not as column labels. */
 .research-view .data-table tbody th { background: none; color: var(--color-text); font-size: var(--text-sm); font-weight: 500; text-transform: none; letter-spacing: normal; user-select: text; }
+
+/* Learning workshop (FO13 Article template). */
+.learning-scope { color: var(--color-text-tertiary); font-size: var(--text-sm); }
+.learning-controls { display: flex; flex-direction: column; align-items: stretch; gap: var(--space-3); }
+.learning-controls > .ui-field { width: 200px; max-width: 100%; }
