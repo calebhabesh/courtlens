@@ -636,11 +636,11 @@ createServer(async (request, response) => {
   if (url.pathname === "/api/workbench/players/23/games") return json(response, 200, workbenchPlayerGames("23"));
   if (url.pathname === "/api/workbench/players/24/games") return json(response, 200, workbenchPlayerGames("24"));
   // FO10: bounded synthetic detail fixtures cover tabs, known zero and unknown outcomes.
-  if (url.pathname === "/api/workbench/teams/100/four-factors") return json(response, 200, {
+  if (["/api/workbench/teams/100/four-factors", "/api/workbench/teams/200/four-factors"].includes(url.pathname)) return json(response, 200, {
     team:workbenchTeamDetail.team,context:workbenchContext,games_played:72,pace:99.4,off_rating:115.4,def_rating:110.2,net_rating:5.2,
     ratings:[], shooting_percentages:{},league_averages:{},warnings:[],
-    offense_factors:[{key:"efg_pct",display_name:"Effective Field Goal %",value:0.54,league_avg:0.53,rank:8,percentile:74,total_teams:30,good_direction:"higher",unit:"percentage",formula:"Synthetic fixture",weight:0.4}],
-    defense_factors:[{key:"opp_efg_pct",display_name:"Opponent eFG%",value:null,league_avg:0.53,rank:null,percentile:null,total_teams:30,good_direction:"lower",unit:"percentage",formula:"Synthetic fixture",weight:0.4}],
+    offense_factors:[{key:"efg_pct",display_name:"Effective Field Goal %",value:0.54,league_avg:0.53,rank:8,percentile:74,total_teams:30,good_direction:"high",unit:"percentage",formula:"Synthetic fixture",weight:0.4}],
+    defense_factors:[{key:"opp_efg_pct",display_name:"Opponent eFG%",value:url.pathname.includes("/200/") ? 0.5 : null,league_avg:0.53,rank:url.pathname.includes("/200/") ? 4 : null,percentile:url.pathname.includes("/200/") ? 88.3 : null,total_teams:30,good_direction:"low",unit:"percentage",formula:"Synthetic fixture",weight:0.4}],
     three_point_scenario:{observed_fg3m:12,observed_fg3a:32,observed_3p_pct:0.375,league_3p_pct:0.375,hypothetical_fg3m:12,delta_points:0,actual_ppg:115.4,hypothetical_ppg:115.4,delta_off_rating:0,delta_net_rating:0,disclaimer:"Synthetic what-if accounting fixture, not a causal effect."}
   });
   if (url.pathname === "/api/workbench/teams/100/schedule") return json(response,200,{
@@ -652,6 +652,10 @@ createServer(async (request, response) => {
   if (url.pathname === "/api/workbench/teams/100/peers") return json(response,200,{team:workbenchTeamDetail.team,context:workbenchContext,dimensions:[],warnings:[],peers:[{team_id:"200",tricode:"BOS",name:"Boston Celtics",similarity_score:0.95,distance:0.1,conference:"Eastern"}]});
   if (url.pathname === "/api/workbench/teams") return json(response, 200, workbenchTeams);
   if (url.pathname === "/api/workbench/teams/1610612761") return json(response, 200, { ...workbenchTeamDetail, team: { ...workbenchTeamDetail.team, id: "1610612761" } });
+  // FO11: one deliberately missing-data opponent for descriptive comparison guards.
+  if (url.pathname === "/api/workbench/teams/200") return json(response,200,{
+    ...workbenchTeamDetail,team:{id:"200",tricode:"BOS",name:"Boston Celtics"},production:{pts_per_game:null,fg_pct:0,fg3_pct:null,ft_pct:null},allowance:{pts_allowed_per_game:null},player_cohort:[]
+  });
   if (url.pathname === "/api/workbench/teams/100") return json(response, 200, workbenchTeamDetail);
   if (url.pathname === "/api/workbench/schedule/dates") {
     // FO08 date strip: deterministic counts, with every fifth day of the month empty except the focus.
@@ -689,17 +693,17 @@ createServer(async (request, response) => {
       total_minutes: 2278
     };
     return json(response, 200, {
-      player_a: pA,
-      player_b: pB,
-      context: workbenchContext,
+      player_a: url.searchParams.get("playerA") === "24" ? pB : pA,
+      player_b: url.searchParams.get("playerB") === "23" ? pA : pB,
+      context: { ...workbenchContext, season:url.searchParams.get("season") || workbenchContext.season,phase:url.searchParams.get("phase") || workbenchContext.phase,before_date:url.searchParams.get("beforeDate") || workbenchContext.before_date,window:url.searchParams.get("window") || "season" },
       no_forced_winner_notice: "CourtLens displays descriptive differences and prediction intervals without declaring an automated start/sit decision or forced winner.",
       aligned_metrics: [
         {
           metric: "pts_per_game",
           display_name: "Points Per Game",
           unit: "pts/g",
-          val_a: 28.0,
-          val_b: 22.0,
+          value_a: 28.0,
+          value_b: 22.0,
           diff: 6.0,
           n_a: 70,
           n_b: 68
@@ -708,8 +712,8 @@ createServer(async (request, response) => {
           metric: "reb_total",
           display_name: "Rebounds Total",
           unit: "reb",
-          val_a: 560,
-          val_b: 306,
+          value_a: 560,
+          value_b: 306,
           diff: 254,
           n_a: 70,
           n_b: 68

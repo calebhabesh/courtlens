@@ -1,7 +1,9 @@
 import { resolveStatsQuery } from "@/lib/stats-query";
 import { getWorkbenchCatalog } from "@/lib/workbench-api";
 import type { Metadata } from "next";
-import { ContextBar } from "@/components/context-bar";
+import { PageShell } from "@/components/ui/page-shell";
+import { PageHeader } from "@/components/ui/panel";
+import { GatedNote } from "@/components/ui/gated-note";
 import { TeamCompareView } from "@/components/team-compare-view";
 import {
   getTeamsResearch,
@@ -102,51 +104,12 @@ export default async function TeamComparePage({ searchParams }: TeamComparePageP
     loadError = err instanceof Error ? err.message : "Failed to load comparison data";
   }
 
-  return (
-    <>
-      <ContextBar
-        catalog={catalog ?? undefined}
-        initialReleaseId={resolvedReleaseId}
-        sampleNoun="teams"
-        initialSeason={season}
-        initialPhase={phase}
-        initialBeforeDate={beforeDate}
-        sampleSize={teamsData?.teams?.length}
-      />
-
-      <div className="workbench-content">
-        <div className="page-header mb-4">
-          <div>
-            <h1 className="page-title">Team Comparison & Four Factors Analysis</h1>
-            <p className="page-subtitle">
-              Head-to-head encounters, Dean Oliver Four Factors, Feature F18 3-point variation scenario, and rotation participation cohorts for {season} {phase.replaceAll("_", " ")}.
-            </p>
-          </div>
-        </div>
-
-        {loadError && (
-          <div className="notice-box notice-box-error mb-4">
-            <strong>Error:</strong> {loadError}
-          </div>
-        )}
-
-        <TeamCompareView
-          teamsList={teamsData?.teams ?? []}
-          teamAId={teamAId}
-          teamBId={teamBId}
-          teamADetail={teamADetail}
-          teamAFourFactors={teamAFourFactors}
-          teamASchedule={teamASchedule}
-          teamAPeers={teamAPeers}
-          teamBDetail={teamBDetail}
-          teamBFourFactors={teamBFourFactors}
-          teamBSchedule={teamBSchedule}
-          teamBPeers={teamBPeers}
-          season={season}
-          phase={phase}
-          beforeDate={beforeDate}
-        />
-      </div>
-    </>
-  );
+  return <PageShell template="compare" className="fo11-team-comparison">
+    <PageHeader title="Team Comparison" subtitle="Records, Four Factors and observed head-to-head games." />
+    {loadError && <GatedNote why={loadError}>Comparison data unavailable.</GatedNote>}
+    <TeamCompareView teamsList={teamsData?.teams ?? []} teamAId={teamAId} teamBId={teamBId}
+      teamADetail={teamADetail} teamAFourFactors={teamAFourFactors} teamASchedule={teamASchedule} teamAPeers={teamAPeers}
+      teamBDetail={teamBDetail} teamBFourFactors={teamBFourFactors} teamBSchedule={teamBSchedule} teamBPeers={teamBPeers}
+      season={season} phase={phase} beforeDate={beforeDate} catalog={catalog} releaseId={resolvedReleaseId} />
+  </PageShell>;
 }

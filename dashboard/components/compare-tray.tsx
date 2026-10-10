@@ -98,7 +98,7 @@ export function CompareTray({
   );
 }
 
-function TrayChip({ player, context, onRemove }: { player: PlayerResearchItem;
+export function TrayChip({ player, context, onRemove }: { player: PlayerResearchItem;
   context: CompareTrayProps["context"]; onRemove: (id: string) => void }) {
   const key = JSON.stringify([player.player_id, context]);
   const [resolved, setResolved] = useState<{ key: string; name: string; portrait?: string | null; error?: boolean } | null>(null);

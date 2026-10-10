@@ -2,11 +2,20 @@
 import { AssistantPageSelection } from "@/lib/assistant-page-context";
 import { Icon } from "./ui/icon";
 
-import { useState, useMemo, useRef } from "react";
+import { useState, useMemo, useRef, type ReactNode } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { TeamLogoStack } from "./team-logo";
-import { PlayerPortrait } from "./player-portrait";
+import { useRouter, useSearchParams } from "next/navigation";
+import { CompareLayout } from "./ui/page-shell";
+import { ComparisonRows } from "./ui/comparison-rows";
+import { PlayerIdentity } from "./ui/identity";
+import { GatedNote } from "./ui/gated-note";
+import { SegmentedControl } from "./ui/segmented-control";
+import { Menu, MenuItem } from "./ui/menu";
+import { PageHeader } from "./ui/panel";
+import { ContextBar } from "./context-bar";
+import { orientedPercentile } from "@/lib/percentile-display";
+import { scopeContextLine } from "@/lib/scope-labels";
+import { TrayChip } from "./compare-tray";
 import { MultiPlayerLinesView } from "./multi-player-lines-view";
 import { useWorkspace } from "@/lib/workspace-context";
 import { ALL_CATALOG_METRICS } from "@/lib/stats-presets";
@@ -19,7 +28,9 @@ import {
 import type {
   PlayerComparisonResponse,
   MetricComparisonItem,
-  AnalyticsCatalog
+  AnalyticsCatalog,
+  WorkbenchCatalog,
+  WorkbenchQueryResponse
 } from "@/lib/types";
 
 export type ComparePresetId = "overall" | "offense" | "defense" | "sixfactor" | "custom";
@@ -103,6 +114,9 @@ const PRESET_METRICS: Record<ComparePresetId, { label: string; description: stri
 interface PlayerCompareViewProps {
   comparison: PlayerComparisonResponse;
   catalog?: AnalyticsCatalog;
+  cohort?: WorkbenchQueryResponse | null;
+  workbenchCatalog?: WorkbenchCatalog | null;
+  selector?: ReactNode;
   additionalPlayerIds?: string[];
   context: {
     season: string;
@@ -115,13 +129,19 @@ interface PlayerCompareViewProps {
 
 export function PlayerCompareView({
   comparison,
+  cohort,
+  workbenchCatalog,
+  selector,
   additionalPlayerIds = [],
   context
 }: PlayerCompareViewProps) {
   const router = useRouter();
   const { compareTray, views, removeCompare, toggleCompare } = useWorkspace();
 
-  const [activeTab, setActiveTab] = useState<ComparePresetId>("overall");
+  const params = useSearchParams();
+  const requestedPreset = params.get("preset");
+  const activeTab: ComparePresetId = requestedPreset && requestedPreset in PRESET_METRICS ? requestedPreset as ComparePresetId : "overall";
+  function setActiveTab(value: ComparePresetId) { const next=new URLSearchParams(params.toString());next.set("preset",value);window.history.replaceState(null,"",`/compare?${next}`); }
   const [selectedCustomViewId, setSelectedCustomViewId] = useState<string>("");
   const [customSelectedKeys] = useState<string[]>([
     "pts_per_game",
@@ -130,7 +150,9 @@ export function PlayerCompareView({
     "ts_pct",
     "efg_pct"
   ]);
-  const [mainViewMode, setMainViewMode] = useState<"table" | "bars" | "lines">("table");
+  const requestedView = params.get("compareView");
+  const mainViewMode = requestedView === "table" || requestedView === "lines" ? requestedView : "bars";
+  function setMainViewMode(value: string) { const next=new URLSearchParams(params.toString());next.set("compareView",value);window.history.replaceState(null,"",`/compare?${next}`); }
   const [exporting, setExporting] = useState<boolean>(false);
   const [copySuccess, setCopySuccess] = useState<boolean>(false);
   const [saving, setSaving] = useState<boolean>(false);
@@ -139,23 +161,6 @@ export function PlayerCompareView({
   const barChartSvgRef = useRef<SVGSVGElement | null>(null);
 
   const { player_a, player_b, aligned_metrics, no_forced_winner_notice } = comparison;
-
-  // Swap Player A and Player B
-  const handleSwap = () => {
-    const sp = new URLSearchParams({
-      playerA: player_b.id,
-      playerB: player_a.id,
-      season: context.season,
-      phase: context.phase,
-      beforeDate: context.before_date,
-      window: context.window
-    });
-    if (context.release_id) sp.set("releaseId", context.release_id);
-    if (additionalPlayerIds.length > 0) {
-      sp.set("players", [player_b.id, player_a.id, ...additionalPlayerIds].join(","));
-    }
-    router.push(`/compare?${sp.toString()}`);
-  };
 
   // Active metrics to display based on preset
   const activeMetricsList = useMemo<MetricComparisonItem[]>(() => {
@@ -284,161 +289,11 @@ export function PlayerCompareView({
 
   return (
     <div className="player-compare-container" role="region" aria-label="Player Comparison Explorer">
-      <AssistantPageSelection route="/compare" playerIds={[player_a.id, player_b.id, ...additionalPlayerIds]} scope={context} label={`${player_a.name} / ${player_b.name}${additionalPlayerIds.length ? ` + ${additionalPlayerIds.length} more` : ""}`} />
-      {/* Zero Forced Winner Rule Notice (Key Principle & Guardrail) */}
-      <div className="notice-box notice-box-accent mb-5">
-        <strong>Temporal discipline & no forced winner:</strong>{" "}
-        {no_forced_winner_notice ||
-          "CourtLens displays aligned empirical distributions and descriptive differences. We never invent a winner probability or automated start/sit decision from overlapping ranges."}
-      </div>
-
-      {saveSuccess && (
-        <div className="notice-box notice-box-positive mb-4">
-          <strong>Saved investigation:</strong> {saveSuccess}. Inspect in{" "}
-          <Link href="/investigations" className="text-accent underline">
-            Saved Investigations
-          </Link>.
-        </div>
-      )}
-
-      {/* Side-by-Side Identity Cards */}
-      <div className="grid-2 mb-5">
-        {/* Player A Card */}
-        <div className="panel compare-card-panel">
-          <div className="compare-card-leading">
-            <PlayerPortrait playerId={player_a.id} name={player_a.name} size="md" />
-            <TeamLogoStack teams={player_a.teams ?? []} />
-            <div>
-              <span className="text-xs text-muted font-mono uppercase">
-                Player A · {player_a.teams?.join(", ") || "—"}
-              </span>
-              <h2 className="panel-title compare-card-title">
-                <Link href={`/players/${player_a.id}`} className="text-accent hover-underline">
-                  {player_a.name}
-                </Link>
-              </h2>
-              <span className="text-xs text-muted font-mono">
-                {player_a.games_played} GP · {player_a.total_minutes?.toFixed(0)} MIN
-              </span>
-            </div>
-          </div>
-          <button
-            type="button"
-            className="control-pill"
-            onClick={() => toggleCompare(player_a.id)}
-            title={compareTray.includes(player_a.id) ? "Remove from compare tray" : "Keep in compare tray"}
-          >
-            {compareTray.includes(player_a.id) ? <><Icon name="check" size={14} />In Tray</> : <><Icon name="plus" size={14} />Tray</>}
-          </button>
-        </div>
-
-        {/* Player B Card */}
-        <div className="panel compare-card-panel">
-          <div className="compare-card-leading">
-            <PlayerPortrait playerId={player_b.id} name={player_b.name} size="md" />
-            <TeamLogoStack teams={player_b.teams ?? []} />
-            <div>
-              <span className="text-xs text-muted font-mono uppercase">
-                Player B · {player_b.teams?.join(", ") || "—"}
-              </span>
-              <h2 className="panel-title compare-card-title">
-                <Link href={`/players/${player_b.id}`} className="text-accent hover-underline">
-                  {player_b.name}
-                </Link>
-              </h2>
-              <span className="text-xs text-muted font-mono">
-                {player_b.games_played} GP · {player_b.total_minutes?.toFixed(0)} MIN
-              </span>
-            </div>
-          </div>
-          <button
-            type="button"
-            className="control-pill"
-            onClick={() => toggleCompare(player_b.id)}
-            title={compareTray.includes(player_b.id) ? "Remove from compare tray" : "Keep in compare tray"}
-          >
-            {compareTray.includes(player_b.id) ? <><Icon name="check" size={14} />In Tray</> : <><Icon name="plus" size={14} />Tray</>}
-          </button>
-        </div>
-      </div>
-
-      {/* Control Bar: Swapping, Presets, View Mode & Share */}
-      <div className="filter-toolbar compare-filter-toolbar">
-        {/* Presets Segmented Buttons (F24) */}
-        <div className="control-button-group" role="tablist" aria-label="Comparison Metric Presets">
-          {(["overall", "offense", "defense", "sixfactor", "custom"] as const).map((id) => (
-            <button
-              key={id}
-              type="button"
-              role="tab"
-              aria-selected={activeTab === id}
-              onClick={() => setActiveTab(id)}
-              className={`control-pill ${activeTab === id ? "active" : ""}`}
-              title={PRESET_METRICS[id].description}
-            >
-              {PRESET_METRICS[id].label}
-            </button>
-          ))}
-        </div>
-
-        {/* View Mode Switcher: Table vs Comparative Bars vs Trend Lines */}
-        <div className="control-button-group" role="group" aria-label="Comparison View Mode">
-          <button
-            type="button"
-            onClick={() => setMainViewMode("table")}
-            className={`control-pill ${mainViewMode === "table" ? "active" : ""}`}
-            title="Display aligned descriptive data table"
-          >
-            <Icon name="table" size={14} />Table
-          </button>
-          <button
-            type="button"
-            onClick={() => setMainViewMode("bars")}
-            className={`control-pill ${mainViewMode === "bars" ? "active" : ""}`}
-            title="Display side-by-side comparative metric bars"
-          >
-            <Icon name="chart" size={14} />Visual Bars
-          </button>
-          <button
-            type="button"
-            onClick={() => setMainViewMode("lines")}
-            className={`control-pill ${mainViewMode === "lines" ? "active" : ""}`}
-            title="Display multi-player game log trend lines"
-          >
-            <Icon name="trend" size={14} />Trend Lines
-          </button>
-        </div>
-
-        {/* Quick Actions: Swap Players, Export Image, Copy URL, Save */}
-        <div className="compare-toolbar-actions">
-          <button
-            type="button"
-            onClick={handleSwap}
-            className="button button-small"
-            title="Swap Player A and Player B"
-          >
-            <Icon name="swap" size={14} />Swap A and B
-          </button>
-
-          <button
-            type="button"
-            onClick={handleExportPng}
-            disabled={exporting}
-            className="button button-small"
-            title="Export context-stamped PNG image with evidence watermark"
-          >
-            {exporting ? "Rendering…" : <><Icon name="download" />PNG</>}
-          </button>
-
-          <button
-            type="button"
-            onClick={handleExportSvg}
-            className="button button-small"
-            title="Download standalone SVG file"
-          >
-            SVG
-          </button>
-
+      <PageHeader title="Player Comparison" subtitle="Descriptive metrics under a shared scope." actions={        <div className="compare-toolbar-actions">
+          <Menu trigger={<><Icon name="download" size={16} />Export</>}>
+            <MenuItem label="Export PNG" disabled={exporting || mainViewMode !== "bars"} onClick={()=>void handleExportPng()} />
+            <MenuItem label="Export SVG" disabled={mainViewMode !== "bars"} onClick={handleExportSvg} />
+          </Menu>
           <button
             type="button"
             onClick={handleCopyLink}
@@ -457,12 +312,25 @@ export function PlayerCompareView({
           >
             {saving ? "Saving…" : <><Icon name="save" size={14} />Save</>}
           </button>
-        </div>
+        </div>} />
+      <ContextBar catalog={workbenchCatalog ?? undefined} initialReleaseId={context.release_id} initialSeason={context.season} initialPhase={context.phase} initialBeforeDate={context.before_date} initialWindow={context.window}
+        modes={
+      <div className="fo11-comparison-modes">
+        <SegmentedControl name="Comparison Metric Presets" value={activeTab} onChange={setActiveTab} options={(["overall","offense","defense","sixfactor","custom"] as const).map(value=>({value,label:PRESET_METRICS[value].label}))} />
+        <SegmentedControl name="Comparison View Mode" value={mainViewMode} onChange={setMainViewMode} options={[{value:"table",label:"Table",icon:"table"},{value:"bars",label:"Visual Bars",icon:"chart"},{value:"lines",label:"Trend Lines",icon:"trend"}]} />
       </div>
 
+} detailRows={[{label:"Resolved comparison context",value:JSON.stringify(comparison.context),mono:true},{label:"Percentile cohort",value:cohort ? `${cohort.total_eligible_players} eligible players; Stats midrank percentiles, oriented by catalog direction.` : "Unavailable"}]} />
+      {selector}
+      <AssistantPageSelection route="/compare" playerIds={[player_a.id, player_b.id, ...additionalPlayerIds]} scope={context} label={`${player_a.name} / ${player_b.name}${additionalPlayerIds.length ? ` + ${additionalPlayerIds.length} more` : ""}`} />
+      {saveSuccess && <p role="status">Saved investigation: <Link href="/investigations">{saveSuccess}</Link></p>}
+      <CompareLayout sides={[player_a,player_b].map(player => <div key={player.id} className="fo11-entity">
+        <PlayerIdentity playerId={player.id} name={player.name} team={player.teams?.[0]} size="xl" href={`/players/${player.id}`} subtitle={`${player.games_played} GP · ${player.total_minutes?.toFixed(0) ?? "—"} MIN`} />
+        <button type="button" className="button" onClick={() => toggleCompare(player.id)} aria-pressed={compareTray.includes(player.id)}><Icon name={compareTray.includes(player.id) ? "check" : "plus"} size={14} />{compareTray.includes(player.id) ? "In Tray" : "Tray"}</button>
+      </div>)}>
       {/* Custom View Options Bar (only shown when Custom tab active) */}
       {activeTab === "custom" && (
-        <div className="notice-box text-xs compare-custom-options">
+        <div className="compare-custom-options">
           <span>Use Personal Custom View:</span>
           <select
             value={selectedCustomViewId}
@@ -489,7 +357,7 @@ export function PlayerCompareView({
             <div>
               <h3 className="panel-title">{PRESET_METRICS[activeTab].label} Descriptive Metrics</h3>
               <p className="text-muted text-xs panel-subtitle-margin">
-                Side-by-side descriptive metrics under an identical cutoff ({context.before_date || "season start"}) and catalog v2 calculation formula.
+                {scopeContextLine(context.season, context.phase, context.before_date)}
               </p>
             </div>
             <span className="badge font-mono text-xs">
@@ -561,11 +429,17 @@ export function PlayerCompareView({
             <div>
               <h3 className="panel-title">Comparative Metric Bars</h3>
               <p className="text-muted text-xs panel-subtitle-margin">
-                Side-by-side descriptive comparison. Gold: {player_a.name}, Cyan: {player_b.name}.
+                {scopeContextLine(context.season, context.phase, context.before_date)}
               </p>
             </div>
           </div>
 
+          <ComparisonRows names={[player_a.name,player_b.name]} rows={activeMetricsList.map(m => ({key:m.metric,label:m.display_name,a:m.value_a,b:m.value_b,formattedA:formatVal(m.value_a,m.unit),formattedB:formatVal(m.value_b,m.unit),
+            percentileA:typeof m.value_a === "number" ? orientedPercentile(cohort?.items.find(p => p.player_id === player_a.id)?.percentiles?.[m.metric],cohort?.cohort?.good_directions[m.metric]) : null,
+            percentileB:typeof m.value_b === "number" ? orientedPercentile(cohort?.items.find(p => p.player_id === player_b.id)?.percentiles?.[m.metric],cohort?.cohort?.good_directions[m.metric]) : null,
+            support:`n=${m.n_a ?? "—"} / ${m.n_b ?? "—"}`
+          }))} />
+          <details className="fo11-export-chart"><summary>Export chart preview</summary>
           <div className="compare-svg-scroll">
             <svg
               ref={barChartSvgRef}
@@ -690,6 +564,7 @@ export function PlayerCompareView({
               })}
             </svg>
           </div>
+          </details>
         </div>
       )}
 
@@ -718,10 +593,7 @@ export function PlayerCompareView({
                 key={id}
                 className={`compare-tray-chip ${id === player_a.id ? "is-player-a" : id === player_b.id ? "is-player-b" : ""}`}
               >
-                <span className="text-xs font-semibold">
-                  {id === player_a.id ? "Player A: " : id === player_b.id ? "Player B: " : ""}
-                  {id}
-                </span>
+                <TrayChip player={{player_id:id,player_name:id === player_a.id ? player_a.name : id === player_b.id ? player_b.name : "Selected player",teams:[],stints_count:0,games_played:0,total_minutes:0,metrics:{},sample_sizes:{}}} context={context} onRemove={removeCompare} />
                 {id !== player_a.id && (
                   <button
                     type="button"
@@ -762,20 +634,18 @@ export function PlayerCompareView({
                     Set B
                   </button>
                 )}
-                <button
-                  type="button"
-                  onClick={() => removeCompare(id)}
-                  className="compare-tray-remove"
-                  title="Remove from compare tray"
-                  aria-label="Remove from compare tray"
-                >
-                  <Icon name="close" size={14} />
-                </button>
+
               </div>
             ))}
           </div>
         </div>
       )}
+      <GatedNote why={<>
+        <p>{no_forced_winner_notice || "CourtLens displays aligned empirical distributions and descriptive differences. We never invent a winner probability or automated start/sit decision from overlapping ranges."}</p>
+        <p>Bar length shows absolute magnitude, with the signed value displayed. The larger number is bold; this is not a recommendation. Percentiles use the Stats cohort and catalog direction. Missing percentiles are omitted.</p>
+      </>}>Descriptive differences under a shared scope.</GatedNote>
+
+      </CompareLayout>
     </div>
   );
 }

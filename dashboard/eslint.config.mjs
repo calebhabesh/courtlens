@@ -30,13 +30,11 @@ const baseSyntaxRules = [
 // Ratchets: files that still use the old pattern until their overhaul block rebuilds them. A block
 // that migrates a file removes it here; nothing may be added.
 const PENDING_NATIVE_DATE = [
-  "components/shared-floor-view.tsx", // FO11
   "components/shooting-view.tsx", "components/trends-investigation-view.tsx", "app/research/rapm/page.tsx", // FO12
   "components/planner-client.tsx", "components/ask-courtlens.tsx" // FO13
 ];
 // Dynamic route folders are escaped because these are glob patterns.
 const PENDING_RAW_TITLE = [
-  "app/compare/page.tsx", "app/team-compare/page.tsx", "components/shared-floor-view.tsx", // FO11
   "components/shooting-view.tsx", "components/trends-investigation-view.tsx",
   "components/distributions-investigation-view.tsx", "app/forecasts/page.tsx", "app/evaluation/page.tsx",
   "components/case-studies-view.tsx", "app/investigations/page.tsx", "components/saved-operation-detail.tsx",
