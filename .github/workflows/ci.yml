@@ -41,6 +41,14 @@ jobs:
       DBT_SCHEMA: analytics
     steps:
       - uses: actions/checkout@v4
+      - name: Use PostgreSQL 17 client tools
+        run: |
+          if ! test -x /usr/lib/postgresql/17/bin/pg_dump; then
+            sudo apt-get update
+            sudo apt-get install --yes postgresql-client-17
+          fi
+          echo "/usr/lib/postgresql/17/bin" >> "$GITHUB_PATH"
+          /usr/lib/postgresql/17/bin/pg_dump --version
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
