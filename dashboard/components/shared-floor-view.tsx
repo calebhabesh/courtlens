@@ -1,4 +1,6 @@
 "use client";
+import { preserveExample } from "@/lib/example-subject";
+import { ExampleSubjectCard, useExampleSubject } from "./example-subject";
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
@@ -29,6 +31,7 @@ function download(text: string, name: string, type: string) {
 
 export function SharedFloorView({ initialOperation = "wowy", statsPreset = false }: { initialOperation?: FloorOperation; statsPreset?: boolean }) {
   const params = useSearchParams();
+  const exampleState = useExampleSubject("together", ["apart", "exact_unit"], "duo", initialOperation === "wowy" && !statsPreset && params.get("operation") !== "on-off");
   const path = usePathname();
   const op = params.get("operation");
   const [operation, setOperation] = useState<FloorOperation>(initialOperation === "stat-shift" ? initialOperation : op === "on-off" ? op : initialOperation);
@@ -65,6 +68,7 @@ export function SharedFloorView({ initialOperation = "wowy", statsPreset = false
     }
   }
   function retainResolvedScope() {
+    exampleState.cancelDefault();
     if(!results[0])return;
     const resolved=resolvedFloorRequest(results[0]);
     setRelease(previous=>previous || resolved.release_id || "");
@@ -106,7 +110,7 @@ export function SharedFloorView({ initialOperation = "wowy", statsPreset = false
       if (controller.signal.aborted || window.location.search !== launchUrl) return;
       setResults(next);
       if (next.length === 1) {
-        const url=floorUrl(path,next[0].operation,resolvedFloorRequest(next[0]))+(statsPreset ? "&preset=onoff" : "");
+        const url=preserveExample(floorUrl(path,next[0].operation,resolvedFloorRequest(next[0]))+(statsPreset ? "&preset=onoff" : ""),window.location.search);
         setOwnUrl(url.split("?")[1] ?? "");window.history.replaceState(null,"",url);
       }
     } catch (err) { if (!controller.signal.aborted) setError(err instanceof Error ? err.message : "Shared-floor request failed"); }
@@ -121,17 +125,18 @@ export function SharedFloorView({ initialOperation = "wowy", statsPreset = false
   const issue=validateFloorRequest(mode === "leaders" ? "wowy" : operation,request);
   const ready=Boolean(team && (request.together.length || request.apart.length || request.exact_unit.length));
   useEffect(() => {
+    if (exampleState.loading) return;
     active.current?.abort();
     const timer=setTimeout(()=>{
       setResults([]);setBusy(false);setError("");
-      const url=floorUrl(path,operation,request)+(mode === "leaders" ? "&view=leaders" : "")+(statsPreset ? "&preset=onoff" : "");
+      const url=preserveExample(floorUrl(path,operation,request)+(mode === "leaders" ? "&view=leaders" : "")+(statsPreset ? "&preset=onoff" : ""),window.location.search);
       setOwnUrl(url.split("?")[1] ?? "");window.history.replaceState(null,"",url);
       if(ready && !issue)void submit();
     },200);
     return ()=>{clearTimeout(timer);active.current?.abort();};
     // The serialized key contains every request field and view mode; no identity object dependency.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[requestKey,retry]);
+  },[requestKey,retry,exampleState.loading]);
   const selectedIds=splitIds([together,apart,unit,focal].join(",")).join(",");
   useEffect(()=>{
     const controller=new AbortController();
@@ -162,6 +167,7 @@ export function SharedFloorView({ initialOperation = "wowy", statsPreset = false
         <Field label="Release"><input aria-label="Release" value={release} onChange={e=>setRelease(e.target.value)} /></Field>
         {results.length > 0 && <button className="button" onClick={()=>download(JSON.stringify({schema:"courtload-shared-floor-evidence-v1",results,pinned_comparison:pinned},null,2),"shared-floor-evidence.json","application/json")}>Save evidence JSON</button>}
       </DataDetailsButton>} />
+    <ExampleSubjectCard {...exampleState} />
     <div className="fo11-selectors">
       <EntityField {...pickerScope} label="Team" kind="team" value={team} required onChange={value=>{retainResolvedScope();setTeam(value);}} />
       {operation === "stat-shift" && <EntityField {...pickerScope} label="Focal player" value={focal} required onChange={(value,items)=>{retainResolvedScope();setFocal(value);remember(items);}} />}
@@ -172,7 +178,7 @@ export function SharedFloorView({ initialOperation = "wowy", statsPreset = false
     </div>
     {error && <div role="alert"><GatedNote why={error} action={<button className="button" onClick={()=>setRetry(value=>value+1)}>Retry</button>}>Shared-floor query unavailable.</GatedNote></div>}
     {issue && ready && <div role="alert"><GatedNote>{issue}</GatedNote></div>}
-    {!ready && <GatedNote>Choose players to compare observed floor exposure.</GatedNote>}
+    {!ready && !exampleState.loading && !exampleState.error && <GatedNote>Choose players to compare observed floor exposure.</GatedNote>}
     {busy && <TemplateSkeleton template="compare" />}
     {results.length > 1 && <GatedNote why="Selected-player leaders only, ordered by eligible NET difference. Missing differences remain unranked. This is not a league-wide or causal player-quality ranking.">Selected-player leaders · eligible NET difference.</GatedNote>}
     {results.map(result => <article className="panel floor-result" key={result.evidence_hash}>

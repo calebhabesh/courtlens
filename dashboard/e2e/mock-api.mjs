@@ -626,9 +626,10 @@ createServer(async (request, response) => {
   if (url.pathname === "/api/workbench/status") return json(response, 200, workbenchStatus);
   if (url.pathname === "/api/workbench/players") {
     const q = (url.searchParams.get("name") ?? "").toLowerCase();
-    const filtered = q
-      ? workbenchPlayers.items.filter(p => p.player_name.toLowerCase().includes(q))
-      : workbenchPlayers.items;
+    let filtered = q ? workbenchPlayers.items.filter(p => p.player_name.toLowerCase().includes(q)) : [...workbenchPlayers.items];
+    if (url.searchParams.get("sortMetric") === "min") filtered.sort((a,b) => b.total_minutes-a.total_minutes || a.player_id.localeCompare(b.player_id));
+    // Dedicated observed-team duo fixture; kept out of the normal two-row Stats cohort.
+    if (url.searchParams.get("teamId") === "TOR") filtered = filtered.map(player => ({...player,teams:["TOR"]}));
     return json(response, 200, { ...workbenchPlayers, items: filtered, total_eligible_players: filtered.length });
   }
   if (url.pathname === "/api/workbench/players/23") return json(response, 200, workbenchPlayerProfile("23"));
@@ -721,7 +722,10 @@ createServer(async (request, response) => {
       ]
     });
   }
-  if (url.pathname === "/api/workbench/metrics") return json(response, 200, { version: "v1", count: 35, metrics: [] });
+  if (url.pathname === "/api/workbench/metrics") return json(response, 200, { version: "courtlens-stats-v3", metrics: ["pts","reb","ast","stl","blk","tov","pf","min","gp","ts_pct","efg_pct","ftr"].flatMap(key => {
+    const count = !["gp","ts_pct","efg_pct","ftr"].includes(key);
+    return [key, ...(count ? [`${key}_per_game`] : [])].map(name => ({ key:name, version:"courtlens-stats-v3",short_name:key,category:count ? "counting" : "efficiency",formula:"Synthetic UI fixture",denominator:null,phase_scope:["regular_season"],default_sort_direction:"desc",limitations:["Synthetic UI fixture"],validity_definition:"Observed synthetic appearances", display_name:({pts:"Points",reb:"Rebounds",ast:"Assists",stl:"Steals",blk:"Blocks",tov:"Turnovers",pf:"Fouls",min:"Minutes",gp:"Games Played",ts_pct:"True Shooting Percentage",efg_pct:"Effective Field Goal %",ftr:"Free Throw Rate"})[key]+(name.endsWith("_per_game") ? " Per Game" : count ? " Total" : ""), unit:["ts_pct","efg_pct","ftr"].includes(key) ? "percentage" : "",good_direction:["tov","pf"].includes(key) ? "low" : ["min","gp"].includes(key) ? null : "high" }));
+  }) });
   if (url.pathname === "/api/workbench/analyses") return json(response, 200, []);
   if (url.pathname === "/api/workbench/jobs") return json(response, 200, [workbenchStatus.worker.latest_job]);
   if (url.pathname === "/api/workbench/lineage") {
@@ -958,7 +962,7 @@ createServer(async (request, response) => {
   }
   return json(response, 404, { detail: "not found" });
 
-}).listen(4100, "127.0.0.1");
+}).listen(Number(process.env.PORT || 4100), "127.0.0.1");
 
 function fixtureProfile(id, date) {
   const guard = id === "24";

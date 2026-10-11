@@ -1,0 +1,44 @@
+
+> courtlens-dashboard@0.1.0 test:browser
+> playwright test visual-baselines.spec.ts --grep PC04 parameter-free|player comparison|methodology --update-snapshots --workers=4
+
+
+Running 28 tests using 4 workers
+
+  ✓   3 e2e/visual-baselines.spec.ts:236:242 › FO13 baselines phone › methodology (1.5s)
+  ✓   1 e2e/visual-baselines.spec.ts:192:7 › FO11 baselines phone › player comparison (1.6s)
+  ✓   2 e2e/visual-baselines.spec.ts:236:242 › FO13 baselines desktop › methodology (1.7s)
+  ✓   4 e2e/visual-baselines.spec.ts:192:7 › FO11 baselines desktop › player comparison (1.7s)
+  ✓   5 e2e/visual-baselines.spec.ts:246:348 › PC04 parameter-free baselines desktop › compare (1.2s)
+/tmp/courtlens-pc04/dashboard/e2e/visual-baselines.spec.ts-snapshots/first-load-matchups-desktop-linux.png is re-generated, writing actual.
+  ✓   6 e2e/visual-baselines.spec.ts:246:348 › PC04 parameter-free baselines desktop › matchups (2.3s)
+/tmp/courtlens-pc04/dashboard/e2e/visual-baselines.spec.ts-snapshots/first-load-wowy-desktop-linux.png is re-generated, writing actual.
+/tmp/courtlens-pc04/dashboard/e2e/visual-baselines.spec.ts-snapshots/first-load-stat-shift-desktop-linux.png is re-generated, writing actual.
+  ✓   7 e2e/visual-baselines.spec.ts:246:348 › PC04 parameter-free baselines desktop › wowy (2.2s)
+  ✓   8 e2e/visual-baselines.spec.ts:246:348 › PC04 parameter-free baselines desktop › stat-shift (2.2s)
+/tmp/courtlens-pc04/dashboard/e2e/visual-baselines.spec.ts-snapshots/first-load-shot-profile-desktop-linux.png is re-generated, writing actual.
+  ✓   9 e2e/visual-baselines.spec.ts:246:348 › PC04 parameter-free baselines desktop › shot-profile (2.0s)
+/tmp/courtlens-pc04/dashboard/e2e/visual-baselines.spec.ts-snapshots/first-load-similar-players-desktop-linux.png is re-generated, writing actual.
+  ✓  11 e2e/visual-baselines.spec.ts:246:348 › PC04 parameter-free baselines desktop › similar-players (1.7s)
+/tmp/courtlens-pc04/dashboard/e2e/visual-baselines.spec.ts-snapshots/first-load-recent-games-desktop-linux.png is re-generated, writing actual.
+  ✓  12 e2e/visual-baselines.spec.ts:246:348 › PC04 parameter-free baselines desktop › recent-games (1.7s)
+/tmp/courtlens-pc04/dashboard/e2e/visual-baselines.spec.ts-snapshots/first-load-shot-aftermath-desktop-linux.png is re-generated, writing actual.
+  ✓  10 e2e/visual-baselines.spec.ts:246:348 › PC04 parameter-free baselines desktop › shot-aftermath (1.9s)
+  ✓  13 e2e/visual-baselines.spec.ts:246:348 › PC04 parameter-free baselines desktop › operation-gallery (1.2s)
+  ✓  15 e2e/visual-baselines.spec.ts:256:55 › PC04 parameter-free baselines desktop › pending contracts (1.5s)
+  ✓  14 e2e/visual-baselines.spec.ts:253:7 › PC04 parameter-free baselines desktop › live off-season (1.6s)
+  ✓  16 e2e/visual-baselines.spec.ts:256:55 › PC04 parameter-free baselines desktop › pending free-agency (1.6s)
+  ✓  17 e2e/visual-baselines.spec.ts:246:348 › PC04 parameter-free baselines phone › compare (1.4s)
+  ✓  18 e2e/visual-baselines.spec.ts:246:348 › PC04 parameter-free baselines phone › matchups (1.5s)
+  ✓  19 e2e/visual-baselines.spec.ts:246:348 › PC04 parameter-free baselines phone › wowy (1.6s)
+  ✓  20 e2e/visual-baselines.spec.ts:246:348 › PC04 parameter-free baselines phone › stat-shift (1.5s)
+  ✓  21 e2e/visual-baselines.spec.ts:246:348 › PC04 parameter-free baselines phone › shot-profile (1.6s)
+  ✓  22 e2e/visual-baselines.spec.ts:246:348 › PC04 parameter-free baselines phone › shot-aftermath (1.3s)
+  ✓  24 e2e/visual-baselines.spec.ts:246:348 › PC04 parameter-free baselines phone › recent-games (1.1s)
+  ✓  23 e2e/visual-baselines.spec.ts:246:348 › PC04 parameter-free baselines phone › similar-players (1.2s)
+  ✓  25 e2e/visual-baselines.spec.ts:246:348 › PC04 parameter-free baselines phone › operation-gallery (1.0s)
+  ✓  26 e2e/visual-baselines.spec.ts:253:7 › PC04 parameter-free baselines phone › live off-season (1.1s)
+  ✓  27 e2e/visual-baselines.spec.ts:256:55 › PC04 parameter-free baselines phone › pending contracts (1.1s)
+  ✓  28 e2e/visual-baselines.spec.ts:256:55 › PC04 parameter-free baselines phone › pending free-agency (1.1s)
+
+  28 passed (11.9s)

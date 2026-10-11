@@ -1,4 +1,5 @@
 "use client";
+import { ExampleSubjectCard, useExampleSubject } from "./example-subject";
 
 import { Button } from "./ui/button";
 import { formatDate } from "@/lib/format-date";
@@ -37,13 +38,14 @@ const DIMENSION_LABELS: Record<string, string> = {
 export function SimilarityInvestigationView() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const exampleState = useExampleSubject("playerId", ["player_id"]);
   const selectedReleaseId = searchParams.get("releaseId") ?? searchParams.get("release_id");
   const catalog = useReleaseCatalog(selectedReleaseId);
   const releaseId = selectedReleaseId ?? catalog?.release_id ?? null;
   const phase = searchParams.get("phase") ?? catalog?.default_phase ?? "regular_season";
 
   // URL state initialization
-  const initialPlayerId = searchParams.get("playerId") || searchParams.get("player_id") || "1628389";
+  const initialPlayerId = searchParams.get("playerId") || searchParams.get("player_id") || "";
   const initialSeason = searchParams.get("season") || catalog?.default_season || "";
   const initialWindow = (searchParams.get("window") as "last_10" | "season") || "last_10";
   const initialTopK = parseInt(searchParams.get("topK") || "5", 10);
@@ -79,6 +81,7 @@ export function SimilarityInvestigationView() {
   };
 
   const handleSelectPlayer = (id: string) => {
+    exampleState.cancelDefault();
     setPlayerId(id);
     updateUrl(id, windowMode, topK);
   };
@@ -199,6 +202,7 @@ export function SimilarityInvestigationView() {
       />
       {catalog === null && <GatedNote why="Explicit URL scope is retained; reload to retry." action={<Button onClick={() => window.location.reload()}>Retry</Button>}>Context catalog unavailable.</GatedNote>}
 
+      <ExampleSubjectCard {...exampleState} />
       {loading && (
         <div role="status" aria-label="Matching peers" aria-busy="true">
           <div className="trend-inv-grid-2col"><Skeleton height={440} /><Skeleton height={440} /></div>

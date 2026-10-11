@@ -42,11 +42,11 @@ export function ProfileLayout({ hero, tabs, children, className = "" }: { hero: 
 }
 
 /** Compare template body: one header per entity side by side, then per-stat rows. */
-export function CompareLayout({ sides, children, className = "" }: { sides: ReactNode[]; children: ReactNode; className?: string }) {
+export function CompareLayout({ sides, children, className = "", sidePanels = true }: { sides: ReactNode[]; children: ReactNode; className?: string; sidePanels?: boolean }) {
   return (
     <div className={`ui-compare ${className}`}>
       <div className="ui-compare-sides">
-        {sides.map((side, index) => <div className="ui-compare-side" key={index}>{side}</div>)}
+        {sides.map((side, index) => <div className={`ui-compare-side ${sidePanels ? "" : "ui-compare-side-bare"}`} key={index}>{side}</div>)}
       </div>
       <div className="ui-compare-rows">{children}</div>
     </div>

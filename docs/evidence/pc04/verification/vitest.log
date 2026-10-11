@@ -1,0 +1,12 @@
+
+> courtlens-dashboard@0.1.0 test
+> vitest run
+
+
+ RUN  v4.1.11 /tmp/courtlens-pc04/dashboard
+
+
+ Test Files  58 passed (58)
+      Tests  410 passed (410)
+   Start at  17:25:34
+   Duration  1.62s (transform 5.68s, setup 0ms, import 10.20s, tests 1.89s, environment 2.18s)

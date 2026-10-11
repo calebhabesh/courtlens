@@ -82,14 +82,16 @@ test("cancelling an abandoned request prevents stale results", async ({ page }) 
   await openWorkbench(page, "/similar-players/shot-profile?player_id=1"); await page.getByRole("button", { name: "Cancel", exact: true }).click(); await expect(page.getByText("Analysis cancelled.", { exact: true })).toBeVisible(); await expect(page.getByRole("region", { name: "Shooting result" })).toHaveCount(0); await page.waitForTimeout(650); await expect(page.getByRole("region", { name: "Shooting result" })).toHaveCount(0);
 });
 
-test("name lookup alone never runs analysis; choosing a player and a view does", async ({ page }) => {
+test("typing after the observed default never runs another analysis; selecting a player and view does", async ({ page }) => {
   let calls = 0;
   page.on("request", r => { if (r.url().includes("/operations/")) calls++; });
   await page.route("**/api/workbench/lookup?*", route => route.fulfill({ json: { items: [{ kind: "player", canonical_id: "1627751", display_name: "Fixture Shooter" }] } }));
   await openWorkbench(page, "/similar-players/shot-profile");
+  await expect(page.getByRole("heading", { name: /^Shot-profile twins · / })).toBeVisible();
+  const defaultCalls = calls;
   await page.getByRole("combobox",{name:"Player",exact:true}).fill("Shooter");
   await expect(page.getByRole("option").filter({hasText:"Fixture Shooter"})).toBeVisible();
-  expect(calls).toBe(0);
+  expect(calls).toBe(defaultCalls);
   await page.getByRole("option").filter({hasText:"Fixture Shooter"}).click();
   await expect(page.getByRole("heading", { name: "Shot-profile twins · Fixture Shooter" })).toBeVisible();
   await expect(page.getByRole("combobox",{name:"Player",exact:true})).toHaveAttribute("placeholder", "Player: Fixture Shooter");

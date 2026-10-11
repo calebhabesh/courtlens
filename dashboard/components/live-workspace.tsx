@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { acceptsDemand, createLiveSession, easternToday, gameStatus, liveRequest, shiftSlate, validSlate, type HistoricalSlate, type LiveCache, type LiveGame, type LivePlayer } from "@/lib/live";
 import { formatDate } from "@/lib/format-date";
-import { getScheduleDates } from "@/lib/workbench-api";
+import { getScheduleDates, getWorkbenchCatalog } from "@/lib/workbench-api";
 import type { ScheduleDatesResponse } from "@/lib/types";
 import { ContextBar } from "./context-bar";
 import { LiveBoardHeader } from "./live-board";
@@ -18,6 +18,7 @@ import { CountChip, FilterBar } from "./ui/filter-bar";
 import { GatedNote } from "./ui/gated-note";
 import { Icon } from "./ui/icon";
 import { PageShell } from "./ui/page-shell";
+import { PlayerIdentity } from "./ui/identity";
 
 /** Days shown either side of the selected slate in the date strip. */
 const STRIP_RADIUS = 7;
@@ -159,9 +160,11 @@ function LiveWorkspaceContent({ date, gameId }: { date?: string; gameId?: string
   const [connection, setConnection] = useState("Loading cached observations");
   const [readError, setReadError] = useState<string | null>(null);
   const [leaseError, setLeaseError] = useState<string | null>(null);
+  const [performers, setPerformers] = useState<LivePlayer[]>([]);
 
   function href(day: string, id?: string, mode = historical) {
     const search = new URLSearchParams(query);
+    for (const key of ["fallbackFrom", "fallbackReason", "nextGamesDate"]) search.delete(key);
     search.set("date", day);
     if (mode && history?.context.release_id) search.set("releaseId", history.context.release_id);
     if (mode) search.set("live_mode", "history"); else search.delete("live_mode");
@@ -230,6 +233,44 @@ function LiveWorkspaceContent({ date, gameId }: { date?: string; gameId?: string
     return () => { live = false; };
   }, [slate, historical, params]);
 
+  // Only the parameter-free landing can move automatically. Explicit dates and game links stay exact.
+  useEffect(() => {
+    if (date || gameId || params.get("date") || historical || !counts?.nearest_finals.before) return;
+    const todayCount = counts.days.find(day => day.date === slate)?.scheduled;
+    if (cache?.data?.games?.length || (!cache && todayCount !== 0)) return;
+    let active = true;
+    getWorkbenchCatalog(counts.release_id).then(catalog => {
+      if (!active) return;
+      const recent = counts.nearest_finals.before!;
+      const scope = catalog.stats_scopes?.find(scope => scope.coverage_start <= recent && scope.coverage_end >= recent);
+      if (!scope) return;
+      const next = new URLSearchParams(query);
+      next.set("date", recent); next.set("live_mode", "history"); next.set("releaseId", counts.release_id);
+      next.set("season", scope.season); next.set("phase", scope.phase); next.set("beforeDate", shiftSlate(recent,1)); next.set("fallbackFrom", slate);
+      if (counts.nearest_scheduled.after) next.set("nextGamesDate",counts.nearest_scheduled.after);
+      next.set("fallbackReason", cache?.data ? "empty" : "unavailable");
+      router.replace(`/live?${next}`, { scroll: false });
+    }).catch(() => {});
+    return () => { active = false; };
+  }, [cache, counts, date, gameId, historical, params, query, router, slate]);
+
+  useEffect(() => {
+    if (!params.get("fallbackFrom") || !history?.games.length || gameId) return;
+    let active = true;
+    const games = history.games.slice(0, 30);
+    // Bounded retained reads; no Live demand or new acquisition.
+    Promise.all(games.map(game => {
+      const next = new URLSearchParams(query); next.set("slate_date",slate); next.set("game_id",game.source_id);
+      return liveRequest<HistoricalSlate>(`/historical?${next}`).catch(() => null);
+    })).then(results => {
+      if (!active) return;
+      const players = results.flatMap(result => result?.players ?? []).filter(player => player.reported_nonappearance !== true && player.statistics.points != null && Number.isFinite(Number(player.statistics.points)));
+      players.sort((a,b) => Number(b.statistics.points)-Number(a.statistics.points) || a.source_id.localeCompare(b.source_id));
+      setPerformers(players.slice(0,3));
+    });
+    return () => { active = false; };
+  }, [history, query, slate, gameId, params]);
+
   const games = historical ? history?.games ?? [] : cache?.data?.games ?? [];
   const selected = historical ? games.find(g => g.source_id === gameId) : box?.data?.game;
   const countKey = historical ? "finals" : "scheduled";
@@ -266,7 +307,7 @@ function LiveWorkspaceContent({ date, gameId }: { date?: string; gameId?: string
     <LiveBoardHeader
       section={section}
       slate={valid ? slate : undefined}
-      subtitle={historical ? `Admitted finals for ${valid ? formatDate(slate) : "the selected date"}.` : `Provisional scores for ${valid ? formatDate(slate) : "the selected date"}, Eastern slate.`}
+      subtitle={params.get("fallbackFrom") ? `Most recent finals · ${formatDate(slate)} · ${params.get("fallbackReason") === "empty" ? "No games today" : "Live unavailable"}.` : historical ? `Admitted finals for ${valid ? formatDate(slate) : "the selected date"}.` : `Provisional scores for ${valid ? formatDate(slate) : "the selected date"}, Eastern slate.`}
       // Pausing only applies to Live demand; finalized research never polls.
       actions={historical ? undefined : <Button variant="secondary" onClick={() => setPaused(!paused)} aria-pressed={paused} icon={paused ? "play" : "pause"}>{paused ? "Resume updates" : "Pause updates"}</Button>}
     />
@@ -289,6 +330,10 @@ function LiveWorkspaceContent({ date, gameId }: { date?: string; gameId?: string
     {(readError || leaseError) && <p role="alert" className="live-alert">{readError ?? leaseError}</p>}
     {valid && <>
       <section aria-label="Game slate" className="live-game-grid">{games.map(g => <GameCard key={g.source_id} game={g} href={href(slate, g.source_id)} selected={gameId === g.source_id} />)}</section>
+      {params.get("fallbackFrom") && <>
+        <section className="pc04-performers" aria-label="Top performers"><h2>Top Performers · Points</h2>{performers.map(player => <PlayerIdentity key={player.source_id} playerId={player.canonical_id ?? undefined} name={player.name} team={games.flatMap(game=>game.teams).find(team=>team.source_id===player.team_source_id)?.canonical_id} size="lg" subtitle={`${player.statistics.points} PTS · ${formatDate(slate,"compact")}`} />)}<p className="chart-provenance">Source: admitted final player boxes · {games.length} games. Missing player points are excluded.</p></section>
+        <nav className="pc04-next-games" aria-label="Next games"><strong>Next Games</strong>{(params.get("nextGamesDate") || counts?.nearest_scheduled.after) ? <Link className="button" href={href((params.get("nextGamesDate") || counts?.nearest_scheduled.after)!,undefined,false)}>{formatDate((params.get("nextGamesDate") || counts?.nearest_scheduled.after)!)}</Link> : <span>Next retained schedule date unknown.</span>}</nav>
+      </>}
       {!games.length && (loaded || !historical) && <GatedNote
         action={loaded && nearest && (nearest.before || nearest.after) ? <span className="live-jumps">
           {nearest.before && <Link className="button button-small" href={href(nearest.before)}><Icon name="left" size={14} />{formatDate(nearest.before, "compact")}</Link>}

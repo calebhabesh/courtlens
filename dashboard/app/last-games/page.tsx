@@ -5,6 +5,7 @@ import { PageHeader } from "@/components/ui/panel";
 import { RecentGamesView } from "@/components/recent-games-view";
 import { getPlayerGameLog, getPlayerProfile, getWorkbenchCatalog } from "@/lib/workbench-api";
 import type { PlayerGameLogResponse, PlayerProfile, WorkbenchCatalog } from "@/lib/types";
+import { loadExampleSubject } from "@/lib/example-subject";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -34,10 +35,11 @@ export default async function LastGamesPage({ searchParams }: LastGamesPageProps
     // Graceful fallback if catalog fetch fails
   }
 
-  const season = params.season || catalog?.default_season || "2024-25";
+  const example = !params.playerId && !params.id || params.exampleSubject ? await loadExampleSubject(new URLSearchParams(Object.entries(params).filter((entry): entry is [string,string] => typeof entry[1] === "string")), "player").catch(() => null) : null;
+  const season = params.season || example?.scope.season || catalog?.default_season || "";
   const phase = params.phase || catalog?.default_phase || "regular_season";
-  const beforeDate = params.beforeDate || catalog?.default_before_date || "2026-06-30";
-  const playerId = params.playerId || params.id || "1628389"; // Default to Bam Adebayo
+  const beforeDate = params.beforeDate || example?.scope.beforeDate || catalog?.stats_scopes?.find(scope => scope.season === season && scope.phase === phase)?.default_before_date || catalog?.default_before_date || "";
+  const playerId = params.playerId || params.id || example?.players[0]?.player_id || "";
 
   let profile: PlayerProfile | null = null;
   let gameLog: PlayerGameLogResponse | null = null;
@@ -77,9 +79,6 @@ export default async function LastGamesPage({ searchParams }: LastGamesPageProps
             <Link className="button button-dark" href="/players">
               Browse Players Directory
             </Link>
-            <Link className="button button-small" href={`/last-games?playerId=1628389&season=${season}&phase=${phase}`}>
-              View Featured (Bam Adebayo)
-            </Link>
           </div>
         </div>
       </PageShell>
@@ -90,6 +89,7 @@ export default async function LastGamesPage({ searchParams }: LastGamesPageProps
     <RecentGamesView
       initialProfile={profile}
       initialGames={gameLog.games}
+      defaultExample={example?.players[0]?.player_id === playerId ? example : null}
     />
   );
 }

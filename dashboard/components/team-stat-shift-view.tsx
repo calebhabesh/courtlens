@@ -1,4 +1,6 @@
 "use client";
+import { preserveExample } from "@/lib/example-subject";
+import { ExampleSubjectCard, useExampleSubject } from "./example-subject";
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
@@ -33,6 +35,7 @@ function download(text: string, name: string, type: string) {
 
 export function TeamStatShiftView({ scope }: { scope: { release_id?: string; season?: string; phase?: string; before_date?: string } }) {
   const params = useSearchParams();
+  const exampleState = useExampleSubject("player_id", [], "shift");
   const read = (): FloorRequest => ({ ...scope, release_id:params.get("release_id") || params.get("releaseId") || scope.release_id, season:params.get("season") || scope.season, phase:params.get("phase") || scope.phase, before_date:params.get("before_date") || params.get("beforeDate") || scope.before_date, team_id: params.get("team_id") || "TOR", player_id: params.get("player_id") || "", together: ids(params.get("together")), apart: ids(params.get("apart")), exact_unit: [], min_games: Number(params.get("min_games") ?? 5), min_possessions: Number(params.get("min_possessions") ?? 100), lower_date: params.get("lower_date") || undefined });
   const [query, setQuery] = useState<FloorRequest>(read);
   const [teamPicker,setTeamPicker] = useState(false);
@@ -52,9 +55,10 @@ export function TeamStatShiftView({ scope }: { scope: { release_id?: string; sea
   const currentQuery = useRef(query);
   useEffect(() => {currentQuery.current = query;},[query]);
   function change(next: Partial<FloorRequest>) {
+    exampleState.cancelDefault();
     active.current?.abort(); setResult(null); setBusy(false); setError("");
     const value = { ...currentQuery.current, ...next }; currentQuery.current = value; setQuery(value);
-    const url = floorUrl("/stat-line-shift", "stat-shift", value);
+    const url = preserveExample(floorUrl("/stat-line-shift", "stat-shift", value),window.location.search);
     setOwnUrl(url.split("?")[1] ?? "");
     window.history.replaceState(null, "", url);
   }
@@ -104,6 +108,7 @@ export function TeamStatShiftView({ scope }: { scope: { release_id?: string; sea
       </DataDetailsButton>}
     />
     <Modal isOpen={teamPicker} onClose={() => setTeamPicker(false)} title="Choose a team"><TeamGrid selected={query.team_id} onSelect={team => {change({team_id:team});setTeamPicker(false);}} /></Modal>
+    <ExampleSubjectCard {...exampleState} />
     <div className="shift-players">
       <EntityField {...pickerScope} label="Focal player" value={query.player_id ?? ""} required onChange={(player_id, items) => { change({ player_id }); remember(items); }} />
       <EntityField {...pickerScope} label="Together players" value={query.together.join(",")} multiple max={5 - query.apart.length} excludedIds={query.apart} onChange={(value, items) => { change({ together: ids(value) }); remember(items); }} />

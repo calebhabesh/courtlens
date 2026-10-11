@@ -1,4 +1,6 @@
 "use client";
+import { preserveExample } from "@/lib/example-subject";
+import { ExampleSubjectCard, useExampleSubject } from "./example-subject";
 
 import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
@@ -25,12 +27,13 @@ function download(text: string, filename: string, type: string) {
 
 export function MatchupsView() {
   const params=useSearchParams();
+  const exampleState = useExampleSubject("player_id", ["playerId"]);
   const read=():ShootingInput=>({player_id:params.get("player_id") || params.get("playerId") || "",defender_id:params.get("defender_id") || null,release_id:params.get("release_id") || params.get("releaseId") || null,season:params.get("season"),phase:params.get("phase") as ShootingInput["phase"],before_date:params.get("before_date") || params.get("beforeDate"),lower_date:params.get("lower_date"),min_attempts:Number(params.get("min_attempts") ?? 100),min_games:Number(params.get("min_games") ?? 5),limit:Number(params.get("limit") ?? 10)});
   const [query,setQuery]=useState(read),[result,setResult]=useState<ShootingResponse|null>(null),[busy,setBusy]=useState(false),[error,setError]=useState(""),[retry,setRetry]=useState(0);
   const [identities,setIdentities]=useState<Record<string,LookupItem>>({});
   const [previous,setPrevious]=useState(params.toString());const [ownUrl,setOwnUrl]=useState(params.toString());const active=useRef<AbortController|null>(null);
   if(previous !== params.toString()) {setPrevious(params.toString());if(params.toString() !== ownUrl) {setQuery(read());setResult(null);setError("");}}
-  function change(next:Partial<ShootingInput>) {active.current?.abort();setResult(null);setBusy(false);setError("");setQuery(prev=>({ ...prev,
+  function change(next:Partial<ShootingInput>) {exampleState.cancelDefault();active.current?.abort();setResult(null);setBusy(false);setError("");setQuery(prev=>({ ...prev,
     release_id:prev.release_id || (result ? resolvedShooting(result).release_id : null),
     season:prev.season || (result ? resolvedShooting(result).season : null),
     phase:prev.phase || (result ? resolvedShooting(result).phase : null),
@@ -41,12 +44,12 @@ export function MatchupsView() {
 
     const controller=new AbortController();active.current=controller;
     const timer=setTimeout(()=>{
-      const url=shootingUrl("/matchups","matchups",query);setOwnUrl(url.split("?")[1] ?? "");window.history.replaceState(null,"",url);
+      const url=preserveExample(shootingUrl("/matchups","matchups",query),window.location.search);setOwnUrl(url.split("?")[1] ?? "");window.history.replaceState(null,"",url);
       if(!query.player_id || issue)return;
       setBusy(true);setError("");setResult(null);
       runShooting("matchups",query,controller.signal).then(data=>{
         if(controller.signal.aborted)return;
-        setResult(data);const resolved=shootingUrl("/matchups","matchups",resolvedShooting(data));setOwnUrl(resolved.split("?")[1] ?? "");window.history.replaceState(null,"",resolved);
+        setResult(data);const resolved=preserveExample(shootingUrl("/matchups","matchups",resolvedShooting(data)),window.location.search);setOwnUrl(resolved.split("?")[1] ?? "");window.history.replaceState(null,"",resolved);
       }).catch(err=>{if(!controller.signal.aborted)setError(err instanceof Error ? err.message : "Matchup query failed");}).finally(()=>{if(!controller.signal.aborted)setBusy(false);});
     },200);
     return()=>{clearTimeout(timer);controller.abort();};
@@ -68,8 +71,9 @@ export function MatchupsView() {
         <Field label="Release"><input aria-label="Release" value={query.release_id ?? ""} onChange={e=>change({release_id:e.target.value || null})} /></Field>
         {result && <button className="button" onClick={()=>download(JSON.stringify({schema:"courtload-shooting-evidence-v1",result,display_filters:{zone:"",team:"",shot_page:1,anchor_page:1}},null,2),"shooting-evidence.json","application/json")}>Save evidence JSON</button>}
       </DataDetailsButton>} />
+    <ExampleSubjectCard {...exampleState} />
     <div className="fo11-selectors"><EntityField {...picker} label="Offensive player" value={query.player_id} required onChange={(player_id,items)=>{change({player_id});setIdentities(prev=>({...prev,...Object.fromEntries(items.map(item=>[item.canonical_id,item]))}));}} /><EntityField {...picker} label="Defender (optional)" value={query.defender_id ?? ""} onChange={(defender_id,items)=>{change({defender_id:defender_id || null});setIdentities(prev=>({...prev,...Object.fromEntries(items.map(item=>[item.canonical_id,item]))}));}} /></div>
-    {!query.player_id && <GatedNote>Choose an offensive player to inspect source assignments.</GatedNote>}
+    {!query.player_id && !exampleState.loading && !exampleState.error && <GatedNote>Choose an offensive player to inspect source assignments.</GatedNote>}
     {query.player_id && issue && <div role="alert"><GatedNote>{issue}</GatedNote></div>}
     {error && <div role="alert"><GatedNote why={error} action={<button className="button" onClick={()=>setRetry(v=>v+1)}>Retry</button>}>Player matchups unavailable.</GatedNote></div>}
     {busy && <TemplateSkeleton template="compare" />}
