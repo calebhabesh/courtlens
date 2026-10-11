@@ -1,0 +1,22 @@
+{
+  "book_id": "f2603bd7-5890-47c5-afcb-ed6cdc58e90f",
+  "book_sha256": "09d0bf9f1f48705feef09d37d3655874b2543851c39780e7f2d58f95d27ed3f1",
+  "parent_book_id": null,
+  "created_at": "2026-10-11T23:17:41.425949Z",
+  "coverage_note": "PC06 dated provider reports; effective dates unknown; contract IDs are report scopes. Roster coverage is pinned separately, not inferred from this book.",
+  "financial_seasons": [
+    "2026-27",
+    "2027-28",
+    "2028-29",
+    "2029-30",
+    "2030-31",
+    "2031-32"
+  ],
+  "latest_observed_at": "2026-10-11T23:17:41.029434Z",
+  "player_labels": {
+    "1627783": "Pascal Siakam",
+    "1628389": "Bam Adebayo",
+    "1630567": "Scottie Barnes"
+  },
+  "label_scope": "identity display labels only; not dated financial evidence"
+}
