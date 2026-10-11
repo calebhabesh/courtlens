@@ -501,3 +501,15 @@ and moves floating lookup geometry to typed CSS custom properties. Header/search
 reduced-motion and analytical contracts are retained. No rename or frozen identifier change.
 Implementation remains `implemented_unverified` pending owner visual acceptance; this cross-reference
 does not advance prior refresh/DL milestones or unresolved data-source gates.
+
+## 2026-10-11 — Owner-requested Stats divider and uniform spacing
+
+[Measured evidence](evidence/stats-divider-spacing/README.md): removed the Stats filter bar's
+bottom hairline and vertical padding, and aligned the header, selectors, preset row and console
+with three uniform 16px gaps. Scoped foundation-layer overrides preserve shared control height.
+Real-data desktop/tablet/phone captures (1440/768/390px) show a 0px divider, 40px filter buttons,
+no page overflow and console starts at 254/346/362px. Scoped glance review passes for captured
+populated states; loading/error/missing-data states were not re-audited. Lint and production
+build/TypeScript pass; 10 existing Stats browser tests pass. Desktop/phone production Stats
+baselines refreshed for the requested visual change. Prior milestone and owner-acceptance
+statuses remain unchanged.
