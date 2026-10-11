@@ -253,9 +253,17 @@ limits as the successful local full Python run.
 
 The full CI Python run has 1,849 passes and two dump/restore failures because the runner's default
 PostgreSQL 16.15 client refuses the PostgreSQL 17.11 test server. CI now explicitly selects the
-PostgreSQL 17 client directory, installing it only if absent. A disposable database probe
+PostgreSQL 17 client directory, installing it from the official PostgreSQL repository if absent.
+Stock Ubuntu 24.04 cannot resolve that client package; a clean Ubuntu container reproduces
+the missing package and installs both 17 client tools successfully after repository setup.
+A disposable database probe
 reproduces the version mismatch with a 16 client and succeeds with a 17 client; both affected
 history/provenance and external-excerpt restore tests pass in a focused rerun.
+
+The CI demo warehouse build also attempted archive models without their required dataset ID.
+The demo build now excludes archive-tagged models; archive publication retains its dedicated
+candidate build with explicit dataset variables. A disposable PostgreSQL 17 migration, demo seed
+and corrected build pass all 221 models/tests with zero errors, warnings or skips.
 
 The container smoke job also lacked a published workbench fixture and expected an older metric
 catalog and team-response schema. CI now seeds its disposable database with the existing synthetic
