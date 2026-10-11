@@ -1,0 +1,605 @@
+{
+  "context": {
+    "dataset_id": "027dff96-a2fd-4d54-9833-f76e2bc0248f",
+    "source": "hoopr_player_index",
+    "source_url": "https://raw.githubusercontent.com/sportsdataverse/hoopR-nba-stats-raw/7f2c0afa616977bc4a747fa982c1429c2ce3e78a/nba_stats/json/playerindex/2027.json",
+    "kind": "player_index",
+    "season": "2026-27",
+    "observed_at": "2026-10-11T22:43:18.814432Z",
+    "content_sha256": "e97b097aa886c1426600e8679b3e772146aa419de1d99341e9a53d3682bfef3b",
+    "membership_sha256": "c2433da94c7a9632e73ca5eb0c517ffd19807d5693088de4272982710fc8e44c",
+    "parser_version": "courtlens-player-context-v1",
+    "coverage": {
+      "source_rows": 5240,
+      "admitted_rows": 5240,
+      "rejected": [],
+      "active_players": 622,
+      "teams": [
+        "ATL",
+        "BKN",
+        "BOS",
+        "CHA",
+        "CHI",
+        "CLE",
+        "DAL",
+        "DEN",
+        "DET",
+        "GSW",
+        "HOU",
+        "IND",
+        "LAC",
+        "LAL",
+        "MEM",
+        "MIA",
+        "MIL",
+        "MIN",
+        "NOP",
+        "NYK",
+        "OKC",
+        "ORL",
+        "PHI",
+        "PHX",
+        "POR",
+        "SAC",
+        "SAS",
+        "TOR",
+        "UTA",
+        "WAS"
+      ],
+      "unknown_positions": 59,
+      "limitations": [
+        "Current association observed at acquisition, not backdated to season start.",
+        "Listed measurements are not combine measurements; career rates excluded."
+      ]
+    }
+  },
+  "label": "2026-27 \u00b7 projected",
+  "reference_season": "2025-26",
+  "statistics_release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+  "current_season_appearances_in_release": 0,
+  "limitations": [
+    "Projected roster context; prior-season statistics are references, not forecasts.",
+    "Current team comes from the dated index, not prior-season participation.",
+    "Players without admitted reference statistics remain unknown.",
+    "No current-season minutes observed in the bound statistics release."
+  ],
+  "players": [
+    {
+      "player_id": "1627751",
+      "name": "Jakob Poeltl",
+      "team_id": "1610612761",
+      "team_tricode": "TOR",
+      "listed_position": "C",
+      "height_inches": 84,
+      "weight_pounds": 253,
+      "roster_status": "active",
+      "reference": {
+        "season": "2025-26",
+        "phase": "regular_season",
+        "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+        "before_date": "2026-07-01",
+        "metrics": {
+          "gp": 46,
+          "min": 1149.1,
+          "pts_per_game": 10.7,
+          "reb_per_game": 7,
+          "ast_per_game": 2
+        },
+        "sample_sizes": {
+          "gp": 46,
+          "min": 46,
+          "pts_per_game": 46,
+          "reb_per_game": 46,
+          "ast_per_game": 46
+        }
+      },
+      "reference_unknown_reason": null
+    },
+    {
+      "player_id": "1629628",
+      "name": "RJ Barrett",
+      "team_id": "1610612761",
+      "team_tricode": "TOR",
+      "listed_position": "F-G",
+      "height_inches": 78,
+      "weight_pounds": 214,
+      "roster_status": "active",
+      "reference": {
+        "season": "2025-26",
+        "phase": "regular_season",
+        "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+        "before_date": "2026-07-01",
+        "metrics": {
+          "gp": 57,
+          "min": 1725.8,
+          "pts_per_game": 19.3,
+          "reb_per_game": 5.3,
+          "ast_per_game": 3.3
+        },
+        "sample_sizes": {
+          "gp": 57,
+          "min": 57,
+          "pts_per_game": 57,
+          "reb_per_game": 57,
+          "ast_per_game": 57
+        }
+      },
+      "reference_unknown_reason": null
+    },
+    {
+      "player_id": "1630193",
+      "name": "Immanuel Quickley",
+      "team_id": "1610612761",
+      "team_tricode": "TOR",
+      "listed_position": "G",
+      "height_inches": 74,
+      "weight_pounds": 190,
+      "roster_status": "active",
+      "reference": {
+        "season": "2025-26",
+        "phase": "regular_season",
+        "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+        "before_date": "2026-07-01",
+        "metrics": {
+          "gp": 70,
+          "min": 2231.3,
+          "pts_per_game": 16.4,
+          "reb_per_game": 4,
+          "ast_per_game": 5.9
+        },
+        "sample_sizes": {
+          "gp": 70,
+          "min": 70,
+          "pts_per_game": 70,
+          "reb_per_game": 70,
+          "ast_per_game": 70
+        }
+      },
+      "reference_unknown_reason": null
+    },
+    {
+      "player_id": "1630567",
+      "name": "Scottie Barnes",
+      "team_id": "1610612761",
+      "team_tricode": "TOR",
+      "listed_position": "F-G",
+      "height_inches": 80,
+      "weight_pounds": 237,
+      "roster_status": "active",
+      "reference": {
+        "season": "2025-26",
+        "phase": "regular_season",
+        "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+        "before_date": "2026-07-01",
+        "metrics": {
+          "gp": 78,
+          "min": 2623.8,
+          "pts_per_game": 18.1,
+          "reb_per_game": 7.4,
+          "ast_per_game": 5.9
+        },
+        "sample_sizes": {
+          "gp": 78,
+          "min": 78,
+          "pts_per_game": 78,
+          "reb_per_game": 78,
+          "ast_per_game": 78
+        }
+      },
+      "reference_unknown_reason": null
+    },
+    {
+      "player_id": "1631218",
+      "name": "Trayce Jackson-Davis",
+      "team_id": "1610612761",
+      "team_tricode": "TOR",
+      "listed_position": "F",
+      "height_inches": 81,
+      "weight_pounds": 245,
+      "roster_status": "active",
+      "reference": {
+        "season": "2025-26",
+        "phase": "regular_season",
+        "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+        "before_date": "2026-07-01",
+        "metrics": {
+          "gp": 53,
+          "min": 496.1,
+          "pts_per_game": 3.4,
+          "reb_per_game": 2.7,
+          "ast_per_game": 0.7
+        },
+        "sample_sizes": {
+          "gp": 53,
+          "min": 53,
+          "pts_per_game": 53,
+          "reb_per_game": 53,
+          "ast_per_game": 53
+        }
+      },
+      "reference_unknown_reason": null
+    },
+    {
+      "player_id": "1641869",
+      "name": "Malachi Smith",
+      "team_id": "1610612761",
+      "team_tricode": "TOR",
+      "listed_position": "G",
+      "height_inches": 76,
+      "weight_pounds": 205,
+      "roster_status": "active",
+      "reference": {
+        "season": "2025-26",
+        "phase": "regular_season",
+        "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+        "before_date": "2026-07-01",
+        "metrics": {
+          "gp": 15,
+          "min": 358.8,
+          "pts_per_game": 8.3,
+          "reb_per_game": 3.4,
+          "ast_per_game": 3.3
+        },
+        "sample_sizes": {
+          "gp": 15,
+          "min": 15,
+          "pts_per_game": 15,
+          "reb_per_game": 15,
+          "ast_per_game": 15
+        }
+      },
+      "reference_unknown_reason": null
+    },
+    {
+      "player_id": "1641998",
+      "name": "Trey Jemison III",
+      "team_id": "1610612761",
+      "team_tricode": "TOR",
+      "listed_position": "C",
+      "height_inches": 82,
+      "weight_pounds": 270,
+      "roster_status": "active",
+      "reference": {
+        "season": "2025-26",
+        "phase": "regular_season",
+        "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+        "before_date": "2026-07-01",
+        "metrics": {
+          "gp": 13,
+          "min": 81.6,
+          "pts_per_game": 1,
+          "reb_per_game": 1.4,
+          "ast_per_game": 0.4
+        },
+        "sample_sizes": {
+          "gp": 13,
+          "min": 13,
+          "pts_per_game": 13,
+          "reb_per_game": 13,
+          "ast_per_game": 13
+        }
+      },
+      "reference_unknown_reason": null
+    },
+    {
+      "player_id": "1642266",
+      "name": "Ja'Kobe Walter",
+      "team_id": "1610612761",
+      "team_tricode": "TOR",
+      "listed_position": "G",
+      "height_inches": 76,
+      "weight_pounds": 180,
+      "roster_status": "active",
+      "reference": {
+        "season": "2025-26",
+        "phase": "regular_season",
+        "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+        "before_date": "2026-07-01",
+        "metrics": {
+          "gp": 72,
+          "min": 1473.6,
+          "pts_per_game": 7.5,
+          "reb_per_game": 2.6,
+          "ast_per_game": 1.2
+        },
+        "sample_sizes": {
+          "gp": 72,
+          "min": 72,
+          "pts_per_game": 72,
+          "reb_per_game": 72,
+          "ast_per_game": 72
+        }
+      },
+      "reference_unknown_reason": null
+    },
+    {
+      "player_id": "1642347",
+      "name": "Jamal Shead",
+      "team_id": "1610612761",
+      "team_tricode": "TOR",
+      "listed_position": "G",
+      "height_inches": 73,
+      "weight_pounds": 200,
+      "roster_status": "active",
+      "reference": {
+        "season": "2025-26",
+        "phase": "regular_season",
+        "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+        "before_date": "2026-07-01",
+        "metrics": {
+          "gp": 82,
+          "min": 1852.3,
+          "pts_per_game": 6.6,
+          "reb_per_game": 1.7,
+          "ast_per_game": 5.4
+        },
+        "sample_sizes": {
+          "gp": 82,
+          "min": 82,
+          "pts_per_game": 82,
+          "reb_per_game": 82,
+          "ast_per_game": 82
+        }
+      },
+      "reference_unknown_reason": null
+    },
+    {
+      "player_id": "1642419",
+      "name": "Jamison Battle",
+      "team_id": "1610612761",
+      "team_tricode": "TOR",
+      "listed_position": "F",
+      "height_inches": 79,
+      "weight_pounds": 220,
+      "roster_status": "active",
+      "reference": {
+        "season": "2025-26",
+        "phase": "regular_season",
+        "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+        "before_date": "2026-07-01",
+        "metrics": {
+          "gp": 61,
+          "min": 516.8,
+          "pts_per_game": 3.1,
+          "reb_per_game": 1.5,
+          "ast_per_game": 0.4
+        },
+        "sample_sizes": {
+          "gp": 61,
+          "min": 61,
+          "pts_per_game": 61,
+          "reb_per_game": 61,
+          "ast_per_game": 61
+        }
+      },
+      "reference_unknown_reason": null
+    },
+    {
+      "player_id": "1642615",
+      "name": "Tyreke Key",
+      "team_id": "1610612761",
+      "team_tricode": "TOR",
+      "listed_position": "G",
+      "height_inches": 74,
+      "weight_pounds": 207,
+      "roster_status": "active",
+      "reference": null,
+      "reference_unknown_reason": "no_admitted_reference_statistics"
+    },
+    {
+      "player_id": "1642867",
+      "name": "Collin Murray-Boyles",
+      "team_id": "1610612761",
+      "team_tricode": "TOR",
+      "listed_position": "F",
+      "height_inches": 79,
+      "weight_pounds": 245,
+      "roster_status": "active",
+      "reference": {
+        "season": "2025-26",
+        "phase": "regular_season",
+        "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+        "before_date": "2026-07-01",
+        "metrics": {
+          "gp": 57,
+          "min": 1245.6,
+          "pts_per_game": 8.5,
+          "reb_per_game": 5,
+          "ast_per_game": 1.9
+        },
+        "sample_sizes": {
+          "gp": 57,
+          "min": 57,
+          "pts_per_game": 57,
+          "reb_per_game": 57,
+          "ast_per_game": 57
+        }
+      },
+      "reference_unknown_reason": null
+    },
+    {
+      "player_id": "1642918",
+      "name": "Alijah Martin",
+      "team_id": "1610612761",
+      "team_tricode": "TOR",
+      "listed_position": "G",
+      "height_inches": 74,
+      "weight_pounds": 210,
+      "roster_status": "active",
+      "reference": {
+        "season": "2025-26",
+        "phase": "regular_season",
+        "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+        "before_date": "2026-07-01",
+        "metrics": {
+          "gp": 23,
+          "min": 145.6,
+          "pts_per_game": 2.2,
+          "reb_per_game": 0.9,
+          "ast_per_game": 0.5
+        },
+        "sample_sizes": {
+          "gp": 23,
+          "min": 23,
+          "pts_per_game": 23,
+          "reb_per_game": 23,
+          "ast_per_game": 23
+        }
+      },
+      "reference_unknown_reason": null
+    },
+    {
+      "player_id": "1642927",
+      "name": "Nate Bittle",
+      "team_id": "1610612761",
+      "team_tricode": "TOR",
+      "listed_position": "C",
+      "height_inches": 84,
+      "weight_pounds": 215,
+      "roster_status": "active",
+      "reference": null,
+      "reference_unknown_reason": "no_admitted_reference_statistics"
+    },
+    {
+      "player_id": "1642935",
+      "name": "Chucky Hepburn",
+      "team_id": "1610612761",
+      "team_tricode": "TOR",
+      "listed_position": "G",
+      "height_inches": 72,
+      "weight_pounds": 190,
+      "roster_status": "active",
+      "reference": {
+        "season": "2025-26",
+        "phase": "regular_season",
+        "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+        "before_date": "2026-07-01",
+        "metrics": {
+          "gp": 2,
+          "min": 13.2,
+          "pts_per_game": 0,
+          "reb_per_game": 0.5,
+          "ast_per_game": 1
+        },
+        "sample_sizes": {
+          "gp": 2,
+          "min": 2,
+          "pts_per_game": 2,
+          "reb_per_game": 2,
+          "ast_per_game": 2
+        }
+      },
+      "reference_unknown_reason": null
+    },
+    {
+      "player_id": "1643091",
+      "name": "Tyson Degenhart",
+      "team_id": "1610612761",
+      "team_tricode": "TOR",
+      "listed_position": "F",
+      "height_inches": 80,
+      "weight_pounds": 235,
+      "roster_status": "active",
+      "reference": null,
+      "reference_unknown_reason": "no_admitted_reference_statistics"
+    },
+    {
+      "player_id": "1643512",
+      "name": "Allen Graves",
+      "team_id": "1610612761",
+      "team_tricode": "TOR",
+      "listed_position": "F",
+      "height_inches": 81,
+      "weight_pounds": 225,
+      "roster_status": "active",
+      "reference": null,
+      "reference_unknown_reason": "no_admitted_reference_statistics"
+    },
+    {
+      "player_id": "1643558",
+      "name": "Jaden Bradley",
+      "team_id": "1610612761",
+      "team_tricode": "TOR",
+      "listed_position": "G",
+      "height_inches": 75,
+      "weight_pounds": 200,
+      "roster_status": "active",
+      "reference": null,
+      "reference_unknown_reason": "no_admitted_reference_statistics"
+    },
+    {
+      "player_id": "1643718",
+      "name": "Nimari Burnett",
+      "team_id": "1610612761",
+      "team_tricode": "TOR",
+      "listed_position": null,
+      "height_inches": null,
+      "weight_pounds": null,
+      "roster_status": "active",
+      "reference": null,
+      "reference_unknown_reason": "no_admitted_reference_statistics"
+    },
+    {
+      "player_id": "202695",
+      "name": "Kawhi Leonard",
+      "team_id": "1610612761",
+      "team_tricode": "TOR",
+      "listed_position": "F",
+      "height_inches": 78,
+      "weight_pounds": 225,
+      "roster_status": "active",
+      "reference": {
+        "season": "2025-26",
+        "phase": "regular_season",
+        "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+        "before_date": "2026-07-01",
+        "metrics": {
+          "gp": 65,
+          "min": 2084.8,
+          "pts_per_game": 27.9,
+          "reb_per_game": 6.4,
+          "ast_per_game": 3.6
+        },
+        "sample_sizes": {
+          "gp": 65,
+          "min": 65,
+          "pts_per_game": 65,
+          "reb_per_game": 65,
+          "ast_per_game": 65
+        }
+      },
+      "reference_unknown_reason": null
+    },
+    {
+      "player_id": "203937",
+      "name": "Kyle Anderson",
+      "team_id": "1610612761",
+      "team_tricode": "TOR",
+      "listed_position": "F-G",
+      "height_inches": 80,
+      "weight_pounds": 230,
+      "roster_status": "active",
+      "reference": {
+        "season": "2025-26",
+        "phase": "regular_season",
+        "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+        "before_date": "2026-07-01",
+        "metrics": {
+          "gp": 43,
+          "min": 853.2,
+          "pts_per_game": 6.2,
+          "reb_per_game": 3.5,
+          "ast_per_game": 2.9
+        },
+        "sample_sizes": {
+          "gp": 43,
+          "min": 43,
+          "pts_per_game": 43,
+          "reb_per_game": 43,
+          "ast_per_game": 43
+        }
+      },
+      "reference_unknown_reason": null
+    }
+  ]
+}

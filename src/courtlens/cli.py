@@ -49,6 +49,65 @@ app = typer.Typer(
 )
 
 
+@app.command("acquire-player-context")
+def acquire_player_context_command(
+    source: str = typer.Option("nba_player_index", help="Admitted PC05 source name."),
+    url: str = typer.Option("https://cdn.nba.com/static/json/staticData/playerIndex.json"),
+    season: str = typer.Option("2026-27"),
+    root: Path = typer.Option(Path("data/raw/player-context")),
+) -> None:
+    """Scheduled bounded fetch; retain receipts even when acquisition fails."""
+    import httpx
+
+    from courtlens.services.player_context_ingestion import ContextFetcher
+
+    with SessionLocal() as session, httpx.Client() as client:
+        receipt = ContextFetcher(session, root, client).fetch(source, url, season)
+        session.commit()
+        typer.echo(
+            json.dumps(
+                {
+                    "acquisition_id": receipt.id,
+                    "status": receipt.status,
+                    "http_status": receipt.http_status,
+                    "reason": receipt.error_summary,
+                }
+            )
+        )
+        if receipt.status != "success":
+            raise typer.Exit(1)
+
+
+@app.command("import-player-context")
+def import_player_context_command(
+    acquisition_id: str | None = typer.Option(None),
+    local_file: Path | None = typer.Option(None),
+    source: str = typer.Option("nba_player_index"),
+    url: str = typer.Option("https://cdn.nba.com/static/json/staticData/playerIndex.json"),
+    season: str = typer.Option("2026-27"),
+    root: Path = typer.Option(Path("data/raw/player-context")),
+) -> None:
+    """Admit an acquisition or dated local import; never publish historical statistics."""
+    from courtlens.services.player_context import dataset_info
+    from courtlens.services.player_context_ingestion import admit_context, capture_local
+
+    if (acquisition_id is None) == (local_file is None):
+        raise typer.BadParameter("choose exactly one of --acquisition-id or --local-file")
+    with SessionLocal() as session:
+        if local_file is not None:
+            receipt = capture_local(session, root, local_file, source, url, season)
+            session.commit()
+            acquisition_id = receipt.id
+        assert acquisition_id is not None
+        try:
+            dataset = admit_context(session, acquisition_id, root)
+            session.commit()
+        except (ValueError, KeyError, StopIteration) as error:
+            session.rollback()
+            raise typer.BadParameter(f"candidate rejected: {error}") from error
+        typer.echo(dataset_info(session, dataset).model_dump_json(indent=2))
+
+
 @app.command("acquire-archive")
 def acquire_archive_command(
     destination: Path = typer.Option(

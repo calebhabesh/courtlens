@@ -21,8 +21,8 @@ parameters**. Blocks before each owner gate also need recorded owner approval.
 | PC01 Source policy v2 | verified |
 | PC02 Page audit (G1) | implemented_unverified (G1 cleared; audit has three unmeasured items) |
 | PC03 Design Language v1.2, D21, chart kit | verified |
-| PC04 Compare and first-load defaults (G2) | implemented_unverified (G2 review pending; retained glance issues) |
-| PC05 Data: rosters, positions, injuries | planned |
+| PC04 Compare and first-load defaults (G2) | implemented_unverified (G2 cleared; retained glance issues) |
+| PC05 Data: rosters, positions, injuries | verification_blocked (roster snapshot admitted; injury/transaction source evidence pending) |
 | PC06 Data: finance | planned |
 | PC07 Data: tracking, play types, matchups, combine, on/off | planned |
 | PC08 Contracts and Free Agency views (G3) | planned |
@@ -186,3 +186,64 @@ parameters**. Blocks before each owner gate also need recorded owner approval.
   Later source/presentation blocks and G2 approval are still required. No data ingestion,
   deletion, publication pointer change, formula change or frozen-identifier rename.
 - **Stopped at G2, before PC05.** The four earlier follow-up decisions remain open and unchanged.
+
+## 2026-10-11 — G2 cleared; PC05 started
+
+- Owner instruction: “Begin the next block”, quoting PC04's commit and G2 review handoff.
+  As at G1, this authorizes the next block. Retained glance failures and unmeasured items
+  remain unresolved; approval does not promote PC04 to `verified`.
+- Scope: PC05 only. Current player metadata, rosters, transactions and dated injury observations
+  remain independent inputs, never substitutes for historical participation or injury predictions.
+
+## 2026-10-11 — PC05 roster inputs admitted; remaining source evidence blocked
+
+- [Evidence and reproduction](evidence/pc05/README.md),
+  [admitted metadata](evidence/pc05/admission.json),
+  [API measurements](evidence/pc05/api-measurements.json),
+  [source checks](evidence/pc05/source-checks.json). Implementation used the current
+  `presentation-clarity` checkout; the owner's dashboard processes on 3000/3100 were retained.
+  A separate read-only API runs on 8101. No dashboard implementation changed.
+- NBA CDN and ESPN robots.txt returned 403. The official injury host allowed its path,
+  but the requested 2026-10-11 17:00 report returned 403. Each host was stopped, with no
+  bypass/retry. The admitted hoopR fallback worked: immutable revision
+  `7f2c0afa616977bc4a747fa982c1429c2ce3e78a`, explicitly declaring `2026-27`.
+- Real admission: 5,240 index rows, no rejected rows, 622 explicitly active players across all
+  30 teams. All active NBA team IDs/abbreviations reconcile. There are 59 missing listed
+  positions in the historical identity entries; they remain null. Null roster status is unknown;
+  a historical team field does not create a current roster association. Career rates are excluded.
+- Additive migration `11b810a4f009`: independent datasets, deduplicated normalized versions and
+  composite-FK memberships, sealed against update/delete/truncate and post-admission inserts.
+  Bound raw acquisition/artifact provenance is also protected. A→B→A retains three observations
+  of two content versions; the same acquisition is idempotent. No old memberships were extended.
+- `acquire-player-context` uses exact source URL allowlists, pinned mirror revisions, host locks,
+  byte/time bounds, an identifying user agent, robots checks/crawl delays and stop-on-403/429.
+  `import-player-context` accepts an acquisition or local retained document at the actual import
+  time; it never backdates an observation or publishes statistics. The live check caught and fixed
+  double decompression of HTTP transport bytes; the failed receipt is retained and a gzip/crawl-delay
+  regression passes.
+- Official PDF adapter uses Poppler layout extraction, report timestamp/game/team columns,
+  wrapped reasons and explicit not-submitted status. Layout drift rejects the candidate.
+  ESPN remains secondary with its own identifiers. Only verified crosswalks are frozen into an
+  admission; later mapping edits cannot relabel it. Absent entries remain unknown, never healthy.
+  These adapters are tested with explicitly fictional fixtures, **not** claimed as real ingestion.
+- Official transaction JSON imports preserve announced/effective dates separately, explicit
+  unknown effective-date reasons, NBA IDs and official per-row evidence. Roster differences are
+  not transactions. No real transaction file was admitted; the primary feed remains unresolved.
+- New typed GET API under `/api/workbench/player-context`: dated catalog, paged dataset rows and
+  pinned projected rosters. The real `2026-27 · projected` view joins the existing server metric
+  engine's `2025-26` regular-season references from an explicit statistics release: 486 players
+  have references, 136 remain unknown; Toronto has 21 roster entries and 15 references. Current
+  association and prior-season participation remain distinct. No current-season appearances
+  are observed in that bound statistical release; this is not a universal availability claim.
+- API measurements: roster-all 261.6 ms / 290,659 bytes; Toronto 246.4 ms / 10,912 bytes;
+  index page 4.3 ms / 100 normalized rows. These are single local measurements, not a p95 SLA.
+  All 161 retained publication pointers match before/after ingestion; API reads also preserve
+  ingestion counts. The historical catalog is not relabeled as containing these independent inputs.
+- Checks: 33 focused checks passed (including PostgreSQL sealing, cross-wiring, frozen crosswalk,
+  unchanged earlier Stats result and frozen migration upgrade/downgrade); Ruff/format and strict
+  mypy clean. Full suite: 1,884 passed, one existing browser-prerequisite skip,
+  19 published-data deselections and one existing Google GenAI/Python 3.14 deprecation warning.
+  Dashboard checks/glance captures are not rerun for this backend-only block.
+- PC05 is `verification_blocked` until real official PDF/secondary injury ingestion and actual
+  transaction observations are evidenced. The blocked direct sources are not replaced with
+  fixtures, inferred statuses or invented transaction dates. PC06 has not started.

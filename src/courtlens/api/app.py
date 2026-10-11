@@ -15,6 +15,7 @@ from courtlens.api.routers import (
     fantasy,
     finance,
     live,
+    player_context,
     public,
     research,
     shared_floor,
@@ -61,6 +62,7 @@ def create_app() -> FastAPI:
 
     application.include_router(public.router, prefix="/api")
     application.include_router(workbench.router, prefix="/api")
+    application.include_router(player_context.router, prefix="/api")
     application.include_router(conversation.router, prefix="/api")
     application.include_router(shared_floor.router, prefix="/api")
     application.include_router(finance.router, prefix="/api")
