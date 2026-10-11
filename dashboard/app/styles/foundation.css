@@ -140,6 +140,78 @@
     text-overflow: ellipsis;
   }
 
+  /* Native select semantics, with the same panel and row treatment as the site menus.
+     Unsupported browsers retain the dark native popup from the base layer. */
+  @supports (appearance: base-select) {
+    select:not([multiple]):not([size]),
+    select:not([multiple]):not([size])::picker(select) {
+      appearance: base-select;
+    }
+
+    select:not([multiple]):not([size]) {
+      display: inline-flex;
+      align-items: center;
+      background-image: none;
+    }
+
+    .ui-select::picker-icon { display: none; }
+
+    .ui-select-chevron { transition: transform var(--dur-fast) var(--ease-out); }
+    .ui-select:open + .ui-select-chevron { transform: rotate(180deg); }
+
+    select:not([multiple]):not([size])::picker(select) {
+      min-inline-size: max(anchor-size(width), 180px);
+      max-inline-size: calc(100vw - var(--space-8));
+      max-block-size: min(320px, calc(100dvh - var(--space-8)));
+      margin-block: var(--space-1);
+      padding: var(--space-1);
+      border: 1px solid var(--color-hairline);
+      border-radius: var(--radius-md);
+      background: var(--color-surface-3);
+      color: var(--color-text);
+      box-shadow: var(--shadow-2);
+      overflow-y: auto;
+      scrollbar-width: thin;
+      animation: fadeInDropdown var(--dur-fast) var(--ease-out);
+    }
+
+    select:not([multiple]):not([size]) option {
+      min-height: var(--control-lg);
+      padding: var(--space-2) var(--space-3);
+      border: 0;
+      border-radius: var(--radius-sm);
+      background: var(--color-surface-3);
+      color: var(--color-text);
+      font-size: var(--text-sm);
+      line-height: var(--text-sm-lh);
+      cursor: pointer;
+      transition: background-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+    }
+
+    select:not([multiple]):not([size]) option:hover:not(:disabled),
+    select:not([multiple]):not([size]) option:focus-visible:not(:disabled) {
+      background: var(--color-surface-hover);
+      outline: 0;
+    }
+
+    select:not([multiple]):not([size]) option:checked {
+      background: var(--color-accent-soft);
+      color: var(--color-accent);
+    }
+
+    select:not([multiple]):not([size]) option:disabled {
+      color: var(--color-text-secondary);
+      cursor: not-allowed;
+    }
+
+    select:not([multiple]):not([size]) option::checkmark { display: none; }
+
+    @media (prefers-reduced-motion: reduce) {
+      select:not([multiple]):not([size])::picker(select) { animation-duration: var(--dur-base); }
+      .ui-select-chevron { transition-duration: var(--dur-base); }
+    }
+  }
+
   /* ---------- Filter bar (D6) ---------- */
   /* A full-width bar (a direct child of the route, not inside a padded workspace such as Stats)
    * keeps the old context-bar gutter. FO01 dropped it; found in FO03 screenshots. */

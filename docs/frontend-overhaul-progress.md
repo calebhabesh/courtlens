@@ -296,3 +296,16 @@ overflow. Lint/build/TypeScript pass, 357 unit tests pass, 82 existing browser c
 (including all 66 unchanged page baselines), and three new native-popup screenshot/contrast
 tests pass twice each with a light OS theme. Scoped glance review is recorded in the evidence;
 prior milestone and owner-acceptance statuses remain unchanged.
+
+## 2026-10-11 — Select menus styled like navigation menus
+
+[Measured evidence](evidence/select-menu-styling/README.md): standard single-select pickers use
+base-select where supported, with the navigation surface/radius/shadow/hairline/padding tokens,
+40px option rows, gold selection and hover/focus states. Native values/events remain; unsupported
+browsers keep the dark native fallback. Fifteen real-data captures at desktop, tablet, phone,
+small phone and landscape widths have contained popup rows and zero page overflow. Keyboard,
+Escape, outside dismissal, phone touch selection and 1ms reduced-motion behavior pass. Lint,
+production build/TypeScript and 357 unit tests pass; 82 existing browser checks pass including
+all 66 unchanged page baselines. Five final picker checks pass, with production opened-menu
+baselines refreshed for the requested styling. Scoped glance evidence is recorded; prior
+milestone and owner-acceptance statuses remain unchanged.
