@@ -1,0 +1,1840 @@
+{
+  "base": "http://127.0.0.1:3200",
+  "capturedAt": "2026-10-11T20:42:10.495Z",
+  "route": "/design",
+  "examples": "Illustrative geometry only; no NBA estimates",
+  "viewports": [
+    {
+      "width": 1440,
+      "status": 200,
+      "url": "/design",
+      "overflowX": 0,
+      "firstResult": {
+        "x": 40,
+        "y": 380,
+        "width": 652,
+        "height": 166
+      },
+      "chartCount": 8,
+      "controls": [
+        {
+          "label": "Ready",
+          "x": 26,
+          "y": 238,
+          "width": 62.359375,
+          "height": 32
+        },
+        {
+          "label": "Loading",
+          "x": 88.359375,
+          "y": 238,
+          "width": 72.734375,
+          "height": 32
+        },
+        {
+          "label": "Empty",
+          "x": 161.09375,
+          "y": 238,
+          "width": 63.046875,
+          "height": 32
+        },
+        {
+          "label": "Error",
+          "x": 224.140625,
+          "y": 238,
+          "width": 54.75,
+          "height": 32
+        },
+        {
+          "label": "Change values",
+          "x": 292.890625,
+          "y": 237,
+          "width": 112.78125,
+          "height": 34
+        },
+        {
+          "label": "Show small sample",
+          "x": 748,
+          "y": 639.65625,
+          "width": 124.109375,
+          "height": 28
+        }
+      ],
+      "numeric": [
+        {
+          "textAlign": "right",
+          "digits": "tabular-nums"
+        },
+        {
+          "textAlign": "right",
+          "digits": "tabular-nums"
+        },
+        {
+          "textAlign": "right",
+          "digits": "tabular-nums"
+        },
+        {
+          "textAlign": "right",
+          "digits": "tabular-nums"
+        },
+        {
+          "textAlign": "right",
+          "digits": "tabular-nums"
+        },
+        {
+          "textAlign": "right",
+          "digits": "tabular-nums"
+        },
+        {
+          "textAlign": "right",
+          "digits": "tabular-nums"
+        },
+        {
+          "textAlign": "right",
+          "digits": "tabular-nums"
+        },
+        {
+          "textAlign": "right",
+          "digits": "tabular-nums"
+        },
+        {
+          "textAlign": "right",
+          "digits": "tabular-nums"
+        },
+        {
+          "textAlign": "right",
+          "digits": "tabular-nums"
+        },
+        {
+          "textAlign": "right",
+          "digits": "tabular-nums"
+        },
+        {
+          "textAlign": "right",
+          "digits": "tabular-nums"
+        },
+        {
+          "textAlign": "right",
+          "digits": "tabular-nums"
+        },
+        {
+          "textAlign": "right",
+          "digits": "tabular-nums"
+        },
+        {
+          "textAlign": "right",
+          "digits": "tabular-nums"
+        }
+      ],
+      "panelPadding": [
+        {
+          "padding": "0px",
+          "x": 40,
+          "y": 380,
+          "width": 652,
+          "height": 166
+        },
+        {
+          "padding": "0px",
+          "x": 748,
+          "y": 380,
+          "width": 652,
+          "height": 339.65625
+        },
+        {
+          "padding": "0px",
+          "x": 40,
+          "y": 863.65625,
+          "width": 652,
+          "height": 206.15625
+        },
+        {
+          "padding": "0px",
+          "x": 748,
+          "y": 863.65625,
+          "width": 652,
+          "height": 312
+        }
+      ],
+      "contrast": [
+        {
+          "text": "+6.0Subject A: 6.0 more",
+          "ratio": 9.809
+        },
+        {
+          "text": "+0.8 fewerSubject B: 0.8 fewer",
+          "ratio": 7.579
+        },
+        {
+          "text": "—Difference unknown",
+          "ratio": 6.792
+        },
+        {
+          "text": "0Equal observed values",
+          "ratio": 6.792
+        },
+        {
+          "text": "+2.0A minus B: 2; no favorable direction declared",
+          "ratio": 6.792
+        },
+        {
+          "text": "Source: Illustrative style-guide inputs",
+          "ratio": 8.352
+        },
+        {
+          "text": "Sample: Geometry examples; no NBA estimates",
+          "ratio": 8.352
+        },
+        {
+          "text": "Source: Illustrative style-guide inputs",
+          "ratio": 8.352
+        },
+        {
+          "text": "Sample: Geometry examples; no NBA estimates",
+          "ratio": 8.352
+        },
+        {
+          "text": "Blue = Subject B",
+          "ratio": 8.352
+        },
+        {
+          "text": "0",
+          "ratio": 12.67
+        },
+        {
+          "text": "0 pct",
+          "ratio": 12.67
+        },
+        {
+          "text": "2.5",
+          "ratio": 9.557
+        },
+        {
+          "text": "25 pct",
+          "ratio": 9.557
+        },
+        {
+          "text": "5",
+          "ratio": 6.941
+        },
+        {
+          "text": "50 pct",
+          "ratio": 6.941
+        },
+        {
+          "text": "7.5",
+          "ratio": 5.096
+        },
+        {
+          "text": "75 pct",
+          "ratio": 5.096
+        },
+        {
+          "text": "10",
+          "ratio": 4.63
+        },
+        {
+          "text": "100 pct",
+          "ratio": 4.63
+        },
+        {
+          "text": "—",
+          "ratio": 15.534
+        },
+        {
+          "text": "Unknown",
+          "ratio": 15.534
+        },
+        {
+          "text": "Source: Illustrative style-guide inputs",
+          "ratio": 8.352
+        },
+        {
+          "text": "Sample: Geometry examples; no NBA estimates",
+          "ratio": 8.352
+        },
+        {
+          "text": "Source: Illustrative style-guide inputs",
+          "ratio": 8.352
+        },
+        {
+          "text": "Sample: Geometry examples; no NBA estimates",
+          "ratio": 8.352
+        },
+        {
+          "text": "Source: Illustrative style-guide inputs",
+          "ratio": 8.352
+        },
+        {
+          "text": "Sample: Geometry examples; no NBA estimates",
+          "ratio": 8.352
+        },
+        {
+          "text": "Source: Illustrative style-guide inputs",
+          "ratio": 8.352
+        },
+        {
+          "text": "Sample: Geometry examples; no NBA estimates",
+          "ratio": 8.352
+        },
+        {
+          "text": "Guaranteed",
+          "ratio": 7.579
+        },
+        {
+          "text": "Player option",
+          "ratio": 7.172
+        },
+        {
+          "text": "Unknown",
+          "ratio": 8.352
+        },
+        {
+          "text": "Unknown",
+          "ratio": 8.352
+        },
+        {
+          "text": "Team option",
+          "ratio": 8.364
+        },
+        {
+          "text": "Projected",
+          "ratio": 9.809
+        },
+        {
+          "text": "Unknown",
+          "ratio": 8.352
+        },
+        {
+          "text": "Unknown",
+          "ratio": 8.352
+        },
+        {
+          "text": "Two-way",
+          "ratio": 7.822
+        },
+        {
+          "text": "Guaranteed",
+          "ratio": 7.579
+        },
+        {
+          "text": "Unknown",
+          "ratio": 8.352
+        },
+        {
+          "text": "Unknown",
+          "ratio": 8.352
+        },
+        {
+          "text": "Source: Illustrative style-guide inputs",
+          "ratio": 8.352
+        },
+        {
+          "text": "Sample: Geometry examples; no NBA estimates",
+          "ratio": 8.352
+        },
+        {
+          "text": "Source: Illustrative style-guide inputs",
+          "ratio": 8.352
+        },
+        {
+          "text": "Sample: Geometry examples; no NBA estimates",
+          "ratio": 8.352
+        },
+        {
+          "text": "Packing primitive for PC10; Wyman diagram presentation will credit @taylormetric",
+          "ratio": 8.352
+        }
+      ],
+      "phoneFlow": "none",
+      "desktopFlow": "block",
+      "sources": [
+        "Source: Illustrative style-guide inputs\nSample: Geometry examples; no NBA estimates",
+        "Source: Illustrative style-guide inputs\nSample: Geometry examples; no NBA estimates\nBlue = Subject B",
+        "Source: Illustrative style-guide inputs\nSample: Geometry examples; no NBA estimates",
+        "Source: Illustrative style-guide inputs\nSample: Geometry examples; no NBA estimates",
+        "Source: Illustrative style-guide inputs\nSample: Geometry examples; no NBA estimates",
+        "Source: Illustrative style-guide inputs\nSample: Geometry examples; no NBA estimates",
+        "Source: Illustrative style-guide inputs\nSample: Geometry examples; no NBA estimates",
+        "Source: Illustrative style-guide inputs\nSample: Geometry examples; no NBA estimates\nPacking primitive for PC10; Wyman diagram presentation will credit @taylormetrics."
+      ],
+      "reducedMotion": [
+        {
+          "animation": "0s",
+          "transition": "0.001s, 0.001s"
+        },
+        {
+          "animation": "0s",
+          "transition": "0.001s, 0.001s"
+        },
+        {
+          "animation": "0s",
+          "transition": "0.001s, 0.001s"
+        },
+        {
+          "animation": "0s",
+          "transition": "0.001s, 0.001s"
+        },
+        {
+          "animation": "0s",
+          "transition": "0.001s, 0.001s"
+        },
+        {
+          "animation": "0.001s",
+          "transition": "0s"
+        },
+        {
+          "animation": "0.001s",
+          "transition": "0s"
+        },
+        {
+          "animation": "0s",
+          "transition": "0.001s, 0.001s"
+        },
+        {
+          "animation": "0s",
+          "transition": "0.001s, 0.001s"
+        },
+        {
+          "animation": "0s",
+          "transition": "0.001s, 0.001s"
+        },
+        {
+          "animation": "0s",
+          "transition": "0.001s, 0.001s"
+        },
+        {
+          "animation": "0s",
+          "transition": "0.001s, 0.001s"
+        },
+        {
+          "animation": "0s",
+          "transition": "0.001s, 0.001s"
+        },
+        {
+          "animation": "0.001s",
+          "transition": "0s"
+        },
+        {
+          "animation": "0.001s",
+          "transition": "0s"
+        },
+        {
+          "animation": "0.001s",
+          "transition": "0s"
+        },
+        {
+          "animation": "0.001s",
+          "transition": "0s"
+        },
+        {
+          "animation": "0.001s",
+          "transition": "0s"
+        },
+        {
+          "animation": "0.001s",
+          "transition": "0s"
+        },
+        {
+          "animation": "0.001s",
+          "transition": "0s"
+        },
+        {
+          "animation": "0.001s",
+          "transition": "0s"
+        },
+        {
+          "animation": "0.001s",
+          "transition": "0s"
+        },
+        {
+          "animation": "0.001s",
+          "transition": "0s"
+        },
+        {
+          "animation": "0.001s",
+          "transition": "0s"
+        },
+        {
+          "animation": "0.001s",
+          "transition": "0s"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "width": 390,
+      "status": 200,
+      "url": "/design",
+      "overflowX": 0,
+      "firstResult": {
+        "x": 40,
+        "y": 476,
+        "width": 310,
+        "height": 244
+      },
+      "chartCount": 8,
+      "controls": [
+        {
+          "label": "Ready",
+          "x": 26,
+          "y": 274,
+          "width": 62.359375,
+          "height": 40
+        },
+        {
+          "label": "Loading",
+          "x": 88.359375,
+          "y": 274,
+          "width": 72.734375,
+          "height": 40
+        },
+        {
+          "label": "Empty",
+          "x": 161.09375,
+          "y": 274,
+          "width": 63.046875,
+          "height": 40
+        },
+        {
+          "label": "Error",
+          "x": 224.140625,
+          "y": 274,
+          "width": 54.75,
+          "height": 40
+        },
+        {
+          "label": "Change values",
+          "x": 24,
+          "y": 328,
+          "width": 112.78125,
+          "height": 40
+        },
+        {
+          "label": "Show small sample",
+          "x": 40,
+          "y": 1211.796875,
+          "width": 124.109375,
+          "height": 40
+        }
+      ],
+      "numeric": [
+        {
+          "textAlign": "right",
+          "digits": "tabular-nums"
+        },
+        {
+          "textAlign": "right",
+          "digits": "tabular-nums"
+        },
+        {
+          "textAlign": "right",
+          "digits": "tabular-nums"
+        },
+        {
+          "textAlign": "right",
+          "digits": "tabular-nums"
+        },
+        {
+          "textAlign": "right",
+          "digits": "tabular-nums"
+        },
+        {
+          "textAlign": "right",
+          "digits": "tabular-nums"
+        },
+        {
+          "textAlign": "right",
+          "digits": "tabular-nums"
+        },
+        {
+          "textAlign": "right",
+          "digits": "tabular-nums"
+        },
+        {
+          "textAlign": "right",
+          "digits": "tabular-nums"
+        },
+        {
+          "textAlign": "right",
+          "digits": "tabular-nums"
+        },
+        {
+          "textAlign": "right",
+          "digits": "tabular-nums"
+        },
+        {
+          "textAlign": "right",
+          "digits": "tabular-nums"
+        },
+        {
+          "textAlign": "right",
+          "digits": "tabular-nums"
+        },
+        {
+          "textAlign": "right",
+          "digits": "tabular-nums"
+        },
+        {
+          "textAlign": "right",
+          "digits": "tabular-nums"
+        },
+        {
+          "textAlign": "right",
+          "digits": "tabular-nums"
+        }
+      ],
+      "panelPadding": [
+        {
+          "padding": "0px",
+          "x": 40,
+          "y": 476,
+          "width": 310,
+          "height": 244
+        },
+        {
+          "padding": "0px",
+          "x": 40,
+          "y": 864,
+          "width": 310,
+          "height": 479.796875
+        },
+        {
+          "padding": "0px",
+          "x": 40,
+          "y": 1487.796875,
+          "width": 310,
+          "height": 270.796875
+        },
+        {
+          "padding": "0px",
+          "x": 40,
+          "y": 1902.59375,
+          "width": 310,
+          "height": 544
+        }
+      ],
+      "contrast": [
+        {
+          "text": "+6.0Subject A: 6.0 more",
+          "ratio": 9.809
+        },
+        {
+          "text": "+0.8 fewerSubject B: 0.8 fewer",
+          "ratio": 7.579
+        },
+        {
+          "text": "—Difference unknown",
+          "ratio": 6.792
+        },
+        {
+          "text": "0Equal observed values",
+          "ratio": 6.792
+        },
+        {
+          "text": "+2.0A minus B: 2; no favorable direction declared",
+          "ratio": 6.792
+        },
+        {
+          "text": "Source: Illustrative style-guide inputs",
+          "ratio": 8.352
+        },
+        {
+          "text": "Sample: Geometry examples; no NBA estimates",
+          "ratio": 8.352
+        },
+        {
+          "text": "Source: Illustrative style-guide inputs",
+          "ratio": 8.352
+        },
+        {
+          "text": "Sample: Geometry examples; no NBA estimates",
+          "ratio": 8.352
+        },
+        {
+          "text": "Blue = Subject B",
+          "ratio": 8.352
+        },
+        {
+          "text": "0",
+          "ratio": 12.67
+        },
+        {
+          "text": "0 pct",
+          "ratio": 12.67
+        },
+        {
+          "text": "2.5",
+          "ratio": 9.557
+        },
+        {
+          "text": "25 pct",
+          "ratio": 9.557
+        },
+        {
+          "text": "5",
+          "ratio": 6.941
+        },
+        {
+          "text": "50 pct",
+          "ratio": 6.941
+        },
+        {
+          "text": "7.5",
+          "ratio": 5.096
+        },
+        {
+          "text": "75 pct",
+          "ratio": 5.096
+        },
+        {
+          "text": "10",
+          "ratio": 4.63
+        },
+        {
+          "text": "100 pct",
+          "ratio": 4.63
+        },
+        {
+          "text": "—",
+          "ratio": 15.534
+        },
+        {
+          "text": "Unknown",
+          "ratio": 15.534
+        },
+        {
+          "text": "Source: Illustrative style-guide inputs",
+          "ratio": 8.352
+        },
+        {
+          "text": "Sample: Geometry examples; no NBA estimates",
+          "ratio": 8.352
+        },
+        {
+          "text": "Source: Illustrative style-guide inputs",
+          "ratio": 8.352
+        },
+        {
+          "text": "Sample: Geometry examples; no NBA estimates",
+          "ratio": 8.352
+        },
+        {
+          "text": "Source: Illustrative style-guide inputs",
+          "ratio": 8.352
+        },
+        {
+          "text": "Sample: Geometry examples; no NBA estimates",
+          "ratio": 8.352
+        },
+        {
+          "text": "Source: Illustrative style-guide inputs",
+          "ratio": 8.352
+        },
+        {
+          "text": "Sample: Geometry examples; no NBA estimates",
+          "ratio": 8.352
+        },
+        {
+          "text": "Guaranteed",
+          "ratio": 7.579
+        },
+        {
+          "text": "Player option",
+          "ratio": 7.172
+        },
+        {
+          "text": "Unknown",
+          "ratio": 8.352
+        },
+        {
+          "text": "Unknown",
+          "ratio": 8.352
+        },
+        {
+          "text": "Team option",
+          "ratio": 8.364
+        },
+        {
+          "text": "Projected",
+          "ratio": 9.809
+        },
+        {
+          "text": "Unknown",
+          "ratio": 8.352
+        },
+        {
+          "text": "Unknown",
+          "ratio": 8.352
+        },
+        {
+          "text": "Two-way",
+          "ratio": 7.822
+        },
+        {
+          "text": "Guaranteed",
+          "ratio": 7.579
+        },
+        {
+          "text": "Unknown",
+          "ratio": 8.352
+        },
+        {
+          "text": "Unknown",
+          "ratio": 8.352
+        },
+        {
+          "text": "Source: Illustrative style-guide inputs",
+          "ratio": 8.352
+        },
+        {
+          "text": "Sample: Geometry examples; no NBA estimates",
+          "ratio": 8.352
+        },
+        {
+          "text": "Source: Illustrative style-guide inputs",
+          "ratio": 8.352
+        },
+        {
+          "text": "Sample: Geometry examples; no NBA estimates",
+          "ratio": 8.352
+        },
+        {
+          "text": "Packing primitive for PC10; Wyman diagram presentation will credit @taylormetric",
+          "ratio": 8.352
+        }
+      ],
+      "phoneFlow": "grid",
+      "desktopFlow": "none",
+      "sources": [
+        "Source: Illustrative style-guide inputs\nSample: Geometry examples; no NBA estimates",
+        "Source: Illustrative style-guide inputs\nSample: Geometry examples; no NBA estimates\nBlue = Subject B",
+        "Source: Illustrative style-guide inputs\nSample: Geometry examples; no NBA estimates",
+        "Source: Illustrative style-guide inputs\nSample: Geometry examples; no NBA estimates",
+        "Source: Illustrative style-guide inputs\nSample: Geometry examples; no NBA estimates",
+        "Source: Illustrative style-guide inputs\nSample: Geometry examples; no NBA estimates",
+        "Source: Illustrative style-guide inputs\nSample: Geometry examples; no NBA estimates",
+        "Source: Illustrative style-guide inputs\nSample: Geometry examples; no NBA estimates\nPacking primitive for PC10; Wyman diagram presentation will credit @taylormetrics."
+      ],
+      "reducedMotion": [
+        {
+          "animation": "0s",
+          "transition": "0.001s, 0.001s"
+        },
+        {
+          "animation": "0s",
+          "transition": "0.001s, 0.001s"
+        },
+        {
+          "animation": "0s",
+          "transition": "0.001s, 0.001s"
+        },
+        {
+          "animation": "0s",
+          "transition": "0.001s, 0.001s"
+        },
+        {
+          "animation": "0s",
+          "transition": "0.001s, 0.001s"
+        },
+        {
+          "animation": "0.001s",
+          "transition": "0s"
+        },
+        {
+          "animation": "0.001s",
+          "transition": "0s"
+        },
+        {
+          "animation": "0s",
+          "transition": "0.001s, 0.001s"
+        },
+        {
+          "animation": "0s",
+          "transition": "0.001s, 0.001s"
+        },
+        {
+          "animation": "0s",
+          "transition": "0.001s, 0.001s"
+        },
+        {
+          "animation": "0s",
+          "transition": "0.001s, 0.001s"
+        },
+        {
+          "animation": "0s",
+          "transition": "0.001s, 0.001s"
+        },
+        {
+          "animation": "0s",
+          "transition": "0.001s, 0.001s"
+        },
+        {
+          "animation": "0.001s",
+          "transition": "0s"
+        },
+        {
+          "animation": "0.001s",
+          "transition": "0s"
+        },
+        {
+          "animation": "0.001s",
+          "transition": "0s"
+        },
+        {
+          "animation": "0.001s",
+          "transition": "0s"
+        },
+        {
+          "animation": "0.001s",
+          "transition": "0s"
+        },
+        {
+          "animation": "0.001s",
+          "transition": "0s"
+        },
+        {
+          "animation": "0.001s",
+          "transition": "0s"
+        },
+        {
+          "animation": "0.001s",
+          "transition": "0s"
+        },
+        {
+          "animation": "0.001s",
+          "transition": "0s"
+        },
+        {
+          "animation": "0.001s",
+          "transition": "0s"
+        },
+        {
+          "animation": "0.001s",
+          "transition": "0s"
+        },
+        {
+          "animation": "0.001s",
+          "transition": "0s"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "width": 375,
+      "status": 200,
+      "url": "/design",
+      "overflowX": 0,
+      "firstResult": {
+        "x": 40,
+        "y": 476,
+        "width": 295,
+        "height": 244
+      },
+      "chartCount": 8,
+      "controls": [
+        {
+          "label": "Ready",
+          "x": 26,
+          "y": 274,
+          "width": 62.359375,
+          "height": 40
+        },
+        {
+          "label": "Loading",
+          "x": 88.359375,
+          "y": 274,
+          "width": 72.734375,
+          "height": 40
+        },
+        {
+          "label": "Empty",
+          "x": 161.09375,
+          "y": 274,
+          "width": 63.046875,
+          "height": 40
+        },
+        {
+          "label": "Error",
+          "x": 224.140625,
+          "y": 274,
+          "width": 54.75,
+          "height": 40
+        },
+        {
+          "label": "Change values",
+          "x": 24,
+          "y": 328,
+          "width": 112.78125,
+          "height": 40
+        },
+        {
+          "label": "Show small sample",
+          "x": 40,
+          "y": 1210.59375,
+          "width": 124.109375,
+          "height": 40
+        }
+      ],
+      "numeric": [
+        {
+          "textAlign": "right",
+          "digits": "tabular-nums"
+        },
+        {
+          "textAlign": "right",
+          "digits": "tabular-nums"
+        },
+        {
+          "textAlign": "right",
+          "digits": "tabular-nums"
+        },
+        {
+          "textAlign": "right",
+          "digits": "tabular-nums"
+        },
+        {
+          "textAlign": "right",
+          "digits": "tabular-nums"
+        },
+        {
+          "textAlign": "right",
+          "digits": "tabular-nums"
+        },
+        {
+          "textAlign": "right",
+          "digits": "tabular-nums"
+        },
+        {
+          "textAlign": "right",
+          "digits": "tabular-nums"
+        },
+        {
+          "textAlign": "right",
+          "digits": "tabular-nums"
+        },
+        {
+          "textAlign": "right",
+          "digits": "tabular-nums"
+        },
+        {
+          "textAlign": "right",
+          "digits": "tabular-nums"
+        },
+        {
+          "textAlign": "right",
+          "digits": "tabular-nums"
+        },
+        {
+          "textAlign": "right",
+          "digits": "tabular-nums"
+        },
+        {
+          "textAlign": "right",
+          "digits": "tabular-nums"
+        },
+        {
+          "textAlign": "right",
+          "digits": "tabular-nums"
+        },
+        {
+          "textAlign": "right",
+          "digits": "tabular-nums"
+        }
+      ],
+      "panelPadding": [
+        {
+          "padding": "0px",
+          "x": 40,
+          "y": 476,
+          "width": 295,
+          "height": 244
+        },
+        {
+          "padding": "0px",
+          "x": 40,
+          "y": 864,
+          "width": 295,
+          "height": 478.59375
+        },
+        {
+          "padding": "0px",
+          "x": 40,
+          "y": 1486.59375,
+          "width": 295,
+          "height": 269.59375
+        },
+        {
+          "padding": "0px",
+          "x": 40,
+          "y": 1900.1875,
+          "width": 295,
+          "height": 544
+        }
+      ],
+      "contrast": [
+        {
+          "text": "+6.0Subject A: 6.0 more",
+          "ratio": 9.809
+        },
+        {
+          "text": "+0.8 fewerSubject B: 0.8 fewer",
+          "ratio": 7.579
+        },
+        {
+          "text": "—Difference unknown",
+          "ratio": 6.792
+        },
+        {
+          "text": "0Equal observed values",
+          "ratio": 6.792
+        },
+        {
+          "text": "+2.0A minus B: 2; no favorable direction declared",
+          "ratio": 6.792
+        },
+        {
+          "text": "Source: Illustrative style-guide inputs",
+          "ratio": 8.352
+        },
+        {
+          "text": "Sample: Geometry examples; no NBA estimates",
+          "ratio": 8.352
+        },
+        {
+          "text": "Source: Illustrative style-guide inputs",
+          "ratio": 8.352
+        },
+        {
+          "text": "Sample: Geometry examples; no NBA estimates",
+          "ratio": 8.352
+        },
+        {
+          "text": "Blue = Subject B",
+          "ratio": 8.352
+        },
+        {
+          "text": "0",
+          "ratio": 12.67
+        },
+        {
+          "text": "0 pct",
+          "ratio": 12.67
+        },
+        {
+          "text": "2.5",
+          "ratio": 9.557
+        },
+        {
+          "text": "25 pct",
+          "ratio": 9.557
+        },
+        {
+          "text": "5",
+          "ratio": 6.941
+        },
+        {
+          "text": "50 pct",
+          "ratio": 6.941
+        },
+        {
+          "text": "7.5",
+          "ratio": 5.096
+        },
+        {
+          "text": "75 pct",
+          "ratio": 5.096
+        },
+        {
+          "text": "10",
+          "ratio": 4.63
+        },
+        {
+          "text": "100 pct",
+          "ratio": 4.63
+        },
+        {
+          "text": "—",
+          "ratio": 15.534
+        },
+        {
+          "text": "Unknown",
+          "ratio": 15.534
+        },
+        {
+          "text": "Source: Illustrative style-guide inputs",
+          "ratio": 8.352
+        },
+        {
+          "text": "Sample: Geometry examples; no NBA estimates",
+          "ratio": 8.352
+        },
+        {
+          "text": "Source: Illustrative style-guide inputs",
+          "ratio": 8.352
+        },
+        {
+          "text": "Sample: Geometry examples; no NBA estimates",
+          "ratio": 8.352
+        },
+        {
+          "text": "Source: Illustrative style-guide inputs",
+          "ratio": 8.352
+        },
+        {
+          "text": "Sample: Geometry examples; no NBA estimates",
+          "ratio": 8.352
+        },
+        {
+          "text": "Source: Illustrative style-guide inputs",
+          "ratio": 8.352
+        },
+        {
+          "text": "Sample: Geometry examples; no NBA estimates",
+          "ratio": 8.352
+        },
+        {
+          "text": "Guaranteed",
+          "ratio": 7.579
+        },
+        {
+          "text": "Player option",
+          "ratio": 7.172
+        },
+        {
+          "text": "Unknown",
+          "ratio": 8.352
+        },
+        {
+          "text": "Unknown",
+          "ratio": 8.352
+        },
+        {
+          "text": "Team option",
+          "ratio": 8.364
+        },
+        {
+          "text": "Projected",
+          "ratio": 9.809
+        },
+        {
+          "text": "Unknown",
+          "ratio": 8.352
+        },
+        {
+          "text": "Unknown",
+          "ratio": 8.352
+        },
+        {
+          "text": "Two-way",
+          "ratio": 7.822
+        },
+        {
+          "text": "Guaranteed",
+          "ratio": 7.579
+        },
+        {
+          "text": "Unknown",
+          "ratio": 8.352
+        },
+        {
+          "text": "Unknown",
+          "ratio": 8.352
+        },
+        {
+          "text": "Source: Illustrative style-guide inputs",
+          "ratio": 8.352
+        },
+        {
+          "text": "Sample: Geometry examples; no NBA estimates",
+          "ratio": 8.352
+        },
+        {
+          "text": "Source: Illustrative style-guide inputs",
+          "ratio": 8.352
+        },
+        {
+          "text": "Sample: Geometry examples; no NBA estimates",
+          "ratio": 8.352
+        },
+        {
+          "text": "Packing primitive for PC10; Wyman diagram presentation will credit @taylormetric",
+          "ratio": 8.352
+        }
+      ],
+      "phoneFlow": "grid",
+      "desktopFlow": "none",
+      "sources": [
+        "Source: Illustrative style-guide inputs\nSample: Geometry examples; no NBA estimates",
+        "Source: Illustrative style-guide inputs\nSample: Geometry examples; no NBA estimates\nBlue = Subject B",
+        "Source: Illustrative style-guide inputs\nSample: Geometry examples; no NBA estimates",
+        "Source: Illustrative style-guide inputs\nSample: Geometry examples; no NBA estimates",
+        "Source: Illustrative style-guide inputs\nSample: Geometry examples; no NBA estimates",
+        "Source: Illustrative style-guide inputs\nSample: Geometry examples; no NBA estimates",
+        "Source: Illustrative style-guide inputs\nSample: Geometry examples; no NBA estimates",
+        "Source: Illustrative style-guide inputs\nSample: Geometry examples; no NBA estimates\nPacking primitive for PC10; Wyman diagram presentation will credit @taylormetrics."
+      ],
+      "reducedMotion": [
+        {
+          "animation": "0s",
+          "transition": "0.001s, 0.001s"
+        },
+        {
+          "animation": "0s",
+          "transition": "0.001s, 0.001s"
+        },
+        {
+          "animation": "0s",
+          "transition": "0.001s, 0.001s"
+        },
+        {
+          "animation": "0s",
+          "transition": "0.001s, 0.001s"
+        },
+        {
+          "animation": "0s",
+          "transition": "0.001s, 0.001s"
+        },
+        {
+          "animation": "0.001s",
+          "transition": "0s"
+        },
+        {
+          "animation": "0.001s",
+          "transition": "0s"
+        },
+        {
+          "animation": "0s",
+          "transition": "0.001s, 0.001s"
+        },
+        {
+          "animation": "0s",
+          "transition": "0.001s, 0.001s"
+        },
+        {
+          "animation": "0s",
+          "transition": "0.001s, 0.001s"
+        },
+        {
+          "animation": "0s",
+          "transition": "0.001s, 0.001s"
+        },
+        {
+          "animation": "0s",
+          "transition": "0.001s, 0.001s"
+        },
+        {
+          "animation": "0s",
+          "transition": "0.001s, 0.001s"
+        },
+        {
+          "animation": "0.001s",
+          "transition": "0s"
+        },
+        {
+          "animation": "0.001s",
+          "transition": "0s"
+        },
+        {
+          "animation": "0.001s",
+          "transition": "0s"
+        },
+        {
+          "animation": "0.001s",
+          "transition": "0s"
+        },
+        {
+          "animation": "0.001s",
+          "transition": "0s"
+        },
+        {
+          "animation": "0.001s",
+          "transition": "0s"
+        },
+        {
+          "animation": "0.001s",
+          "transition": "0s"
+        },
+        {
+          "animation": "0.001s",
+          "transition": "0s"
+        },
+        {
+          "animation": "0.001s",
+          "transition": "0s"
+        },
+        {
+          "animation": "0.001s",
+          "transition": "0s"
+        },
+        {
+          "animation": "0.001s",
+          "transition": "0s"
+        },
+        {
+          "animation": "0.001s",
+          "transition": "0s"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "width": 844,
+      "status": 200,
+      "url": "/design",
+      "overflowX": 0,
+      "firstResult": {
+        "x": 40,
+        "y": 380,
+        "width": 354,
+        "height": 206
+      },
+      "chartCount": 8,
+      "controls": [
+        {
+          "label": "Ready",
+          "x": 26,
+          "y": 238,
+          "width": 62.359375,
+          "height": 32
+        },
+        {
+          "label": "Loading",
+          "x": 88.359375,
+          "y": 238,
+          "width": 72.734375,
+          "height": 32
+        },
+        {
+          "label": "Empty",
+          "x": 161.09375,
+          "y": 238,
+          "width": 63.046875,
+          "height": 32
+        },
+        {
+          "label": "Error",
+          "x": 224.140625,
+          "y": 238,
+          "width": 54.75,
+          "height": 32
+        },
+        {
+          "label": "Change values",
+          "x": 292.890625,
+          "y": 237,
+          "width": 112.78125,
+          "height": 34
+        },
+        {
+          "label": "Show small sample",
+          "x": 450,
+          "y": 731.3125,
+          "width": 124.109375,
+          "height": 28
+        }
+      ],
+      "numeric": [
+        {
+          "textAlign": "right",
+          "digits": "tabular-nums"
+        },
+        {
+          "textAlign": "right",
+          "digits": "tabular-nums"
+        },
+        {
+          "textAlign": "right",
+          "digits": "tabular-nums"
+        },
+        {
+          "textAlign": "right",
+          "digits": "tabular-nums"
+        },
+        {
+          "textAlign": "right",
+          "digits": "tabular-nums"
+        },
+        {
+          "textAlign": "right",
+          "digits": "tabular-nums"
+        },
+        {
+          "textAlign": "right",
+          "digits": "tabular-nums"
+        },
+        {
+          "textAlign": "right",
+          "digits": "tabular-nums"
+        },
+        {
+          "textAlign": "right",
+          "digits": "tabular-nums"
+        },
+        {
+          "textAlign": "right",
+          "digits": "tabular-nums"
+        },
+        {
+          "textAlign": "right",
+          "digits": "tabular-nums"
+        },
+        {
+          "textAlign": "right",
+          "digits": "tabular-nums"
+        },
+        {
+          "textAlign": "right",
+          "digits": "tabular-nums"
+        },
+        {
+          "textAlign": "right",
+          "digits": "tabular-nums"
+        },
+        {
+          "textAlign": "right",
+          "digits": "tabular-nums"
+        },
+        {
+          "textAlign": "right",
+          "digits": "tabular-nums"
+        }
+      ],
+      "panelPadding": [
+        {
+          "padding": "0px",
+          "x": 40,
+          "y": 380,
+          "width": 354,
+          "height": 206
+        },
+        {
+          "padding": "0px",
+          "x": 450,
+          "y": 380,
+          "width": 354,
+          "height": 471.3125
+        },
+        {
+          "padding": "0px",
+          "x": 40,
+          "y": 995.3125,
+          "width": 354,
+          "height": 222.3125
+        },
+        {
+          "padding": "0px",
+          "x": 450,
+          "y": 995.3125,
+          "width": 354,
+          "height": 424
+        }
+      ],
+      "contrast": [
+        {
+          "text": "+6.0Subject A: 6.0 more",
+          "ratio": 9.809
+        },
+        {
+          "text": "+0.8 fewerSubject B: 0.8 fewer",
+          "ratio": 7.579
+        },
+        {
+          "text": "—Difference unknown",
+          "ratio": 6.792
+        },
+        {
+          "text": "0Equal observed values",
+          "ratio": 6.792
+        },
+        {
+          "text": "+2.0A minus B: 2; no favorable direction declared",
+          "ratio": 6.792
+        },
+        {
+          "text": "Source: Illustrative style-guide inputs",
+          "ratio": 8.352
+        },
+        {
+          "text": "Sample: Geometry examples; no NBA estimates",
+          "ratio": 8.352
+        },
+        {
+          "text": "Source: Illustrative style-guide inputs",
+          "ratio": 8.352
+        },
+        {
+          "text": "Sample: Geometry examples; no NBA estimates",
+          "ratio": 8.352
+        },
+        {
+          "text": "Blue = Subject B",
+          "ratio": 8.352
+        },
+        {
+          "text": "0",
+          "ratio": 12.67
+        },
+        {
+          "text": "0 pct",
+          "ratio": 12.67
+        },
+        {
+          "text": "2.5",
+          "ratio": 9.557
+        },
+        {
+          "text": "25 pct",
+          "ratio": 9.557
+        },
+        {
+          "text": "5",
+          "ratio": 6.941
+        },
+        {
+          "text": "50 pct",
+          "ratio": 6.941
+        },
+        {
+          "text": "7.5",
+          "ratio": 5.096
+        },
+        {
+          "text": "75 pct",
+          "ratio": 5.096
+        },
+        {
+          "text": "10",
+          "ratio": 4.63
+        },
+        {
+          "text": "100 pct",
+          "ratio": 4.63
+        },
+        {
+          "text": "—",
+          "ratio": 15.534
+        },
+        {
+          "text": "Unknown",
+          "ratio": 15.534
+        },
+        {
+          "text": "Source: Illustrative style-guide inputs",
+          "ratio": 8.352
+        },
+        {
+          "text": "Sample: Geometry examples; no NBA estimates",
+          "ratio": 8.352
+        },
+        {
+          "text": "Source: Illustrative style-guide inputs",
+          "ratio": 8.352
+        },
+        {
+          "text": "Sample: Geometry examples; no NBA estimates",
+          "ratio": 8.352
+        },
+        {
+          "text": "Source: Illustrative style-guide inputs",
+          "ratio": 8.352
+        },
+        {
+          "text": "Sample: Geometry examples; no NBA estimates",
+          "ratio": 8.352
+        },
+        {
+          "text": "Source: Illustrative style-guide inputs",
+          "ratio": 8.352
+        },
+        {
+          "text": "Sample: Geometry examples; no NBA estimates",
+          "ratio": 8.352
+        },
+        {
+          "text": "Guaranteed",
+          "ratio": 7.579
+        },
+        {
+          "text": "Player option",
+          "ratio": 7.172
+        },
+        {
+          "text": "Unknown",
+          "ratio": 8.352
+        },
+        {
+          "text": "Unknown",
+          "ratio": 8.352
+        },
+        {
+          "text": "Team option",
+          "ratio": 8.364
+        },
+        {
+          "text": "Projected",
+          "ratio": 9.809
+        },
+        {
+          "text": "Unknown",
+          "ratio": 8.352
+        },
+        {
+          "text": "Unknown",
+          "ratio": 8.352
+        },
+        {
+          "text": "Two-way",
+          "ratio": 7.822
+        },
+        {
+          "text": "Guaranteed",
+          "ratio": 7.579
+        },
+        {
+          "text": "Unknown",
+          "ratio": 8.352
+        },
+        {
+          "text": "Unknown",
+          "ratio": 8.352
+        },
+        {
+          "text": "Source: Illustrative style-guide inputs",
+          "ratio": 8.352
+        },
+        {
+          "text": "Sample: Geometry examples; no NBA estimates",
+          "ratio": 8.352
+        },
+        {
+          "text": "Source: Illustrative style-guide inputs",
+          "ratio": 8.352
+        },
+        {
+          "text": "Sample: Geometry examples; no NBA estimates",
+          "ratio": 8.352
+        },
+        {
+          "text": "Packing primitive for PC10; Wyman diagram presentation will credit @taylormetric",
+          "ratio": 8.352
+        }
+      ],
+      "phoneFlow": "none",
+      "desktopFlow": "block",
+      "sources": [
+        "Source: Illustrative style-guide inputs\nSample: Geometry examples; no NBA estimates",
+        "Source: Illustrative style-guide inputs\nSample: Geometry examples; no NBA estimates\nBlue = Subject B",
+        "Source: Illustrative style-guide inputs\nSample: Geometry examples; no NBA estimates",
+        "Source: Illustrative style-guide inputs\nSample: Geometry examples; no NBA estimates",
+        "Source: Illustrative style-guide inputs\nSample: Geometry examples; no NBA estimates",
+        "Source: Illustrative style-guide inputs\nSample: Geometry examples; no NBA estimates",
+        "Source: Illustrative style-guide inputs\nSample: Geometry examples; no NBA estimates",
+        "Source: Illustrative style-guide inputs\nSample: Geometry examples; no NBA estimates\nPacking primitive for PC10; Wyman diagram presentation will credit @taylormetrics."
+      ],
+      "reducedMotion": [
+        {
+          "animation": "0s",
+          "transition": "0.001s, 0.001s"
+        },
+        {
+          "animation": "0s",
+          "transition": "0.001s, 0.001s"
+        },
+        {
+          "animation": "0s",
+          "transition": "0.001s, 0.001s"
+        },
+        {
+          "animation": "0s",
+          "transition": "0.001s, 0.001s"
+        },
+        {
+          "animation": "0s",
+          "transition": "0.001s, 0.001s"
+        },
+        {
+          "animation": "0.001s",
+          "transition": "0s"
+        },
+        {
+          "animation": "0.001s",
+          "transition": "0s"
+        },
+        {
+          "animation": "0s",
+          "transition": "0.001s, 0.001s"
+        },
+        {
+          "animation": "0s",
+          "transition": "0.001s, 0.001s"
+        },
+        {
+          "animation": "0s",
+          "transition": "0.001s, 0.001s"
+        },
+        {
+          "animation": "0s",
+          "transition": "0.001s, 0.001s"
+        },
+        {
+          "animation": "0s",
+          "transition": "0.001s, 0.001s"
+        },
+        {
+          "animation": "0s",
+          "transition": "0.001s, 0.001s"
+        },
+        {
+          "animation": "0.001s",
+          "transition": "0s"
+        },
+        {
+          "animation": "0.001s",
+          "transition": "0s"
+        },
+        {
+          "animation": "0.001s",
+          "transition": "0s"
+        },
+        {
+          "animation": "0.001s",
+          "transition": "0s"
+        },
+        {
+          "animation": "0.001s",
+          "transition": "0s"
+        },
+        {
+          "animation": "0.001s",
+          "transition": "0s"
+        },
+        {
+          "animation": "0.001s",
+          "transition": "0s"
+        },
+        {
+          "animation": "0.001s",
+          "transition": "0s"
+        },
+        {
+          "animation": "0.001s",
+          "transition": "0s"
+        },
+        {
+          "animation": "0.001s",
+          "transition": "0s"
+        },
+        {
+          "animation": "0.001s",
+          "transition": "0s"
+        },
+        {
+          "animation": "0.001s",
+          "transition": "0s"
+        }
+      ],
+      "errors": []
+    }
+  ]
+}

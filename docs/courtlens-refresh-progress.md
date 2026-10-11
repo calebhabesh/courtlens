@@ -538,3 +538,11 @@ production build/TypeScript and 357 unit tests pass; 82 existing browser checks 
 all 66 unchanged page baselines. Five final picker checks pass, with production opened-menu
 baselines refreshed for the requested styling. Scoped glance evidence is recorded; prior
 milestone and owner-acceptance statuses remain unchanged.
+
+## 2026-10-11 — PC03 semantic chart follow-up
+
+The [presentation clarity handoff](presentation-clarity-plan.md) supersedes the earlier chart/color
+scope. PC03 adds Design Language v1.2 and revises D21, with the eight SVG primitives, palette
+contrast checks and desktop/phone extended glance test recorded in
+[PC03 evidence](evidence/pc03/README.md). Public Compare rebuilding remains PC04. The original
+rename/identity, motion and analytical contracts remain in force.

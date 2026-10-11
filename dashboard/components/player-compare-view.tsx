@@ -14,6 +14,7 @@ import { Menu, MenuItem } from "./ui/menu";
 import { PageHeader } from "./ui/panel";
 import { ContextBar } from "./context-bar";
 import { orientedPercentile } from "@/lib/percentile-display";
+import { leadingIdentity, toneColor } from "@/components/charts/semantics";
 import { scopeContextLine } from "@/lib/scope-labels";
 import { TrayChip } from "./compare-tray";
 import { MultiPlayerLinesView } from "./multi-player-lines-view";
@@ -450,13 +451,13 @@ export function PlayerCompareView({
             >
               {/* Header Legend */}
               <g transform="translate(180, 28)">
-                <rect x={0} y={-10} width={12} height={12} fill="#ffd166" rx={2} />
-                <text x={18} y={0} fill="#ffd166" fontSize="12" fontWeight="bold" fontFamily="sans-serif">
+                <rect x={0} y={-10} width={12} height={12} fill="var(--color-identity-a)" rx={2} />
+                <text x={18} y={0} fill="var(--color-identity-a)" fontSize="12" fontWeight="bold" fontFamily="sans-serif">
                   {player_a.name} (Player A)
                 </text>
 
-                <rect x={240} y={-10} width={12} height={12} fill="#4ecdc4" rx={2} />
-                <text x={258} y={0} fill="#4ecdc4" fontSize="12" fontWeight="bold" fontFamily="sans-serif">
+                <rect x={240} y={-10} width={12} height={12} fill="var(--color-identity-b)" rx={2} />
+                <text x={258} y={0} fill="var(--color-identity-b)" fontSize="12" fontWeight="bold" fontFamily="sans-serif">
                   {player_b.name} (Player B)
                 </text>
               </g>
@@ -476,14 +477,14 @@ export function PlayerCompareView({
                   <g key={`bar-${m.metric}`} transform={`translate(0, ${yOffset})`}>
                     {/* Background row highlight */}
                     {idx % 2 === 0 && (
-                      <rect x={12} y={-12} width={776} height={44} fill="rgba(255,255,255,0.015)" rx={4} />
+                      <rect x={12} y={-12} width={776} height={44} fill="var(--color-surface-hover)" rx={4} />
                     )}
 
                     {/* Metric Label */}
                     <text
                       x={210}
                       y={8}
-                      fill="#f1f3f6"
+                      fill="var(--color-text)"
                       fontSize="12"
                       fontWeight="bold"
                       fontFamily="sans-serif"
@@ -494,7 +495,7 @@ export function PlayerCompareView({
                     <text
                       x={210}
                       y={22}
-                      fill="#7b8798"
+                      fill="var(--color-text-secondary)"
                       fontSize="10"
                       fontFamily="monospace"
                       textAnchor="end"
@@ -503,7 +504,7 @@ export function PlayerCompareView({
                     </text>
 
                     {/* Center Baseline */}
-                    <line x1={225} y1={-8} x2={225} y2={30} stroke="#323b49" strokeWidth="1" />
+                    <line x1={225} y1={-8} x2={225} y2={30} stroke="var(--color-hairline-strong)" strokeWidth="1" />
 
                     {/* Player A Bar (Gold) */}
                     <rect
@@ -511,14 +512,14 @@ export function PlayerCompareView({
                       y={-6}
                       width={widthA}
                       height={14}
-                      fill="#ffd166"
+                      fill="var(--color-identity-a)"
                       rx={2}
                       opacity="0.9"
                     />
                     <text
                       x={225 + widthA + 8}
                       y={5}
-                      fill="#ffd166"
+                      fill="var(--color-identity-a)"
                       fontSize="11"
                       fontFamily="monospace"
                       fontWeight="bold"
@@ -526,20 +527,20 @@ export function PlayerCompareView({
                       {formatVal(m.value_a, m.unit)}
                     </text>
 
-                    {/* Player B Bar (Cyan) */}
+                    {/* Player B Bar (Blue) */}
                     <rect
                       x={225}
                       y={12}
                       width={widthB}
                       height={14}
-                      fill="#4ecdc4"
+                      fill="var(--color-identity-b)"
                       rx={2}
                       opacity="0.9"
                     />
                     <text
                       x={225 + widthB + 8}
                       y={23}
-                      fill="#4ecdc4"
+                      fill="var(--color-identity-b)"
                       fontSize="11"
                       fontFamily="monospace"
                       fontWeight="bold"
@@ -551,7 +552,10 @@ export function PlayerCompareView({
                     <text
                       x={770}
                       y={14}
-                      fill={m.diff && m.diff > 0 ? "var(--color-positive)" : m.diff && m.diff < 0 ? "var(--color-negative)" : "#7b8798"}
+                      fill={(() => {
+                        const leader = leadingIdentity(typeof m.value_a === "number" ? m.value_a : null, typeof m.value_b === "number" ? m.value_b : null, cohort?.cohort?.good_directions[m.metric]);
+                        return leader ? toneColor(`identity-${leader}`) : "var(--color-text-secondary)";
+                      })()}
                       fontSize="11"
                       fontFamily="monospace"
                       fontWeight="bold"

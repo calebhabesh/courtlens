@@ -19,8 +19,8 @@ parameters**. Blocks before each owner gate also need recorded owner approval.
 | --- | --- |
 | PC00 Roster Shapes crash fix | implemented_unverified |
 | PC01 Source policy v2 | verified |
-| PC02 Page audit (G1) | implemented_unverified (awaiting G1 owner approval) |
-| PC03 Design Language v1.2, D21, chart kit | planned |
+| PC02 Page audit (G1) | implemented_unverified (G1 cleared; audit has three unmeasured items) |
+| PC03 Design Language v1.2, D21, chart kit | verified |
 | PC04 Compare and first-load defaults (G2) | planned |
 | PC05 Data: rosters, positions, injuries | planned |
 | PC06 Data: finance | planned |
@@ -98,3 +98,47 @@ parameters**. Blocks before each owner gate also need recorded owner approval.
   Decisions requested: PC12 batch order (A tables, B headline visuals, C demo hygiene, D personal
   tools), Rankings/Tier Lists example board vs menu, `/players` merge vs real directory, and an early
   wingspan fixture purge. **Stopped for G1 approval.**
+
+## 2026-10-11 — G1 cleared; PC03 started
+
+- Owner instruction: “Let's begin the next block”, quoting PC02's completed audit and PC03 scope.
+  This clears the review gate for PC03. The audit's three unmeasured glance items remain explicitly
+  unmeasured; approval is not substituted for measurements.
+- PC12 order, personal-tool examples/menu placement, Players merge/directory and early fixture
+  cleanup remain owner decisions. PC03 does not depend on them. No fixture rows were deleted;
+  retained acquisitions/releases and memberships remain immutable.
+- Implementation and production verification use an isolated worktree and separate ports; the
+  owner's dev servers on 3000 and 3100 are not stopped or rebuilt.
+
+## 2026-10-11 — PC03 Design Language v1.2, D21 and chart kit verified
+
+- [Evidence and extended glance test](evidence/pc03/README.md), [measurements](evidence/pc03/measurements.json)
+  and desktop/phone screenshots. Production build in the isolated PC03 worktree, dashboard 3200 /
+  deterministic fixture API 4100; owner dev ports 3000/3100 retained. Internal `/design` opened with
+  no URL parameters at 1440×900 and 390×844, plus 375px and 844×390 landscape checks. Eight labeled
+  geometry examples, zero page errors or sideways overflow; first result y=380 desktop / 476 phone.
+- v1.2 tokens: amber/blue A/B identity; monotonic single-blue percentile ramp; six labeled categories;
+  guaranteed/player-option/team-option/two-way/projected/unknown status palette. Unknowns are
+  muted/hatched and labeled. Actual token contrast tests plus composed browser colors: minimum
+  essential chart text contrast 4.630:1. Team colors remain identity decoration.
+- D21 revised in the overhaul handoff and design contract. Existing catalog `good_direction='low'`
+  already flags TOV/PF and per-game/per-36 variants. `comparisonFlags` consumes that metadata;
+  DeltaChip uses the leading subject's identity color, with neutral ties/missing/undeclared
+  directions and explicit “fewer” wording. No formulas, catalog versions or frozen hashes changed.
+- Exact pinned geometry modules: d3-shape 3.2.0, d3-hierarchy 3.1.2, d3-sankey 0.12.3, d3-scale 4.0.2.
+  SVG kit: DeltaChip, ValueBar, ThresholdBar, Donut, Sankey, TimelineGrid, PercentileCell, ShapePack.
+  Shared provenance, states and typed custom properties. Reduced-motion chart fades/transitions
+  ≤1ms; loading reserves the child's layout with ≤1px height change. Phone flow becomes stage bars;
+  timeline names stay fixed in a keyboard-scrollable region. Signed area sizes are rejected.
+- Raw hex palettes removed from multi-player lines, scatter and player comparison. Export token
+  attributes resolve before SVG/PNG serialization. Production verification caught SVG title arrays
+  rendering empty under prerendering; single interpolated strings fix hydration error #418. The
+  regression was run red then green; final tests assert no page errors and nonempty server SVG titles.
+- Checks: dashboard lint 0/0, typecheck and production build clean; Vitest 399 passed (40 new);
+  Playwright 14 passed, affected visual baselines 8 passed. The two `/design` baselines are refreshed
+  for the new leading v1.2 gallery. Full Python suite: 1,854 passed, 1 skipped, 19 deselected, one
+  existing third-party Python 3.14 deprecation warning; Ruff/format and strict mypy clean.
+- Glance items for analytical filters and primary subjects are explicitly N/A on the internal style
+  guide; all applicable new-gallery items pass. This is not a new pass claim for the PC02 audit.
+  Public Compare integration and first-load defaults remain PC04; minutes-qualified table cohorts
+  remain PC12; Wyman presentation/impact sizing remain PC10. No fixture deletion or data ingestion.
