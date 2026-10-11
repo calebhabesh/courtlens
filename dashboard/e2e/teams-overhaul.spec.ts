@@ -31,8 +31,10 @@ for (const width of [1440, 390]) {
     await page.getByRole("radio", { name: "Cards", exact: true }).click();
     await page.reload();
     await expect(page.getByRole("radio", { name: "Cards", exact: true })).toHaveAttribute("aria-checked", "true");
-    await expect(page.locator(".team-cards-grid")).toContainText("Boston Celtics");
-    await expect(page.locator(".team-cards-grid")).not.toContainText("Toronto Raptors");
+    const cards = page.locator(".team-cards-grid").filter({ visible: true });
+    await expect(cards).toHaveCount(1);
+    await expect(cards).toContainText("Boston Celtics");
+    await expect(cards).not.toContainText("Toronto Raptors");
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(width);
     await expect(page.getByRole("button", { name: /^Load/ })).toHaveCount(0);
   });
