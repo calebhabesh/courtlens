@@ -127,7 +127,7 @@ e2e/dl08-evidence.spec.ts:88:9 › DL08 Performance, Loading Skeletons & Action 
 [83/334] e2e/entity-selection.spec.ts:64:5 › touch selection and removal work at 375px
 [84/334] e2e/entity-selection.spec.ts:70:5 › changing lookup scope discards an obsolete response for the same text
 [85/334] e2e/entity-selection.spec.ts:87:7 › trends selection preserves release, phase, cutoff and window context
-  2) e2e/entity-selection.spec.ts:87:7 › trends selection preserves release, phase, cutoff and window context 
+  2) e2e/entity-selection.spec.ts:87:7 › trends selection preserves release, phase, cutoff and window context
 
     Test timeout of 30000ms exceeded.
 
@@ -150,7 +150,7 @@ e2e/dl08-evidence.spec.ts:88:9 › DL08 Performance, Loading Skeletons & Action 
 
 
 [86/334] e2e/entity-selection.spec.ts:87:7 › distributions selection preserves release, phase, cutoff and window context
-  3) e2e/entity-selection.spec.ts:87:7 › distributions selection preserves release, phase, cutoff and window context 
+  3) e2e/entity-selection.spec.ts:87:7 › distributions selection preserves release, phase, cutoff and window context
 
     Test timeout of 30000ms exceeded.
 
@@ -674,8 +674,8 @@ e2e/dl08-evidence.spec.ts:88:9 › DL08 Performance, Loading Skeletons & Action 
 [334/334] e2e/workspace-persistence.spec.ts:3:5 › real workspace proxy persists, conflicts, exports and restores
   15 failed
     e2e/advanced-research.spec.ts:35:5 › each unavailable model names its independent requirement ──
-    e2e/entity-selection.spec.ts:87:7 › trends selection preserves release, phase, cutoff and window context 
-    e2e/entity-selection.spec.ts:87:7 › distributions selection preserves release, phase, cutoff and window context 
+    e2e/entity-selection.spec.ts:87:7 › trends selection preserves release, phase, cutoff and window context
+    e2e/entity-selection.spec.ts:87:7 › distributions selection preserves release, phase, cutoff and window context
     e2e/visual-baselines.spec.ts:185:7 › FO12 baselines desktop › expected shots ───────────────────
     e2e/visual-baselines.spec.ts:194:381 › FO12 baselines desktop › forecasts ──────────────────────
     e2e/visual-baselines.spec.ts:194:381 › FO12 baselines desktop › evaluation ─────────────────────

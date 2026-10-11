@@ -33,7 +33,7 @@ Running 56 tests using 1 worker
 [4/56] e2e/advanced-research.spec.ts:49:5 › calculator rejects invalid scenarios and shows checked finite differences on mobile
 [5/56] e2e/advanced-research.spec.ts:60:5 › roster keeps observed and projected inputs separate and exports context
 [6/56] e2e/advanced-research.spec.ts:76:5 › measurements preserve unknown picks, null lengths and units in bounded sample
-  2) e2e/advanced-research.spec.ts:76:5 › measurements preserve unknown picks, null lengths and units in bounded sample 
+  2) e2e/advanced-research.spec.ts:76:5 › measurements preserve unknown picks, null lengths and units in bounded sample
 
     Error: expect(locator).toContainText(expected) failed
 
@@ -112,5 +112,5 @@ Running 56 tests using 1 worker
 [56/56] e2e/workbench.spec.ts:149:7 › Workbench Dark Research Interface › Ask drawer offers manual research and links to optional configuration
   2 failed
     e2e/advanced-research.spec.ts:35:5 › each unavailable model names its independent requirement ──
-    e2e/advanced-research.spec.ts:76:5 › measurements preserve unknown picks, null lengths and units in bounded sample 
+    e2e/advanced-research.spec.ts:76:5 › measurements preserve unknown picks, null lengths and units in bounded sample
   54 passed (1.0m)
