@@ -132,7 +132,7 @@ def main() -> int:
     finally:
         if container:
             subprocess.run(
-                ["docker", "rm", "-f", container],
+                ["docker", "rm", "-f", "-v", container],
                 stdout=subprocess.DEVNULL,
                 stderr=subprocess.DEVNULL,
                 check=False,
