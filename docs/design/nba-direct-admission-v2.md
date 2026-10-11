@@ -16,9 +16,9 @@ The machine-readable registry is `src/courtlens/domain/source_policy.py`. This t
 
 | Source | Host | Feeds capabilities | Minimum interval | Notes |
 | --- | --- | --- | --- | --- |
-| NBA CDN static JSON (`playerIndex.json`, scoreboard, box score, play-by-play) | `cdn.nba.com` | player index, on/off, shots | 3 s | Already used through the archive paths. Bulk play-by-play comes from mirrors where available. |
+| NBA CDN static JSON (`playerIndex.json`, scoreboard, box score, play-by-play) | `cdn.nba.com` | player index, rosters, on/off, shots | 3 s | Already used through the archive paths. Bulk play-by-play comes from mirrors where available. |
 | NBA official injury report PDFs (`/referee/injury/`) | `ak-static.cms.nba.com` | injuries | 3 s | Dated status observations only. |
-| hoopR NBA Stats raw (raw stats.nba.com JSON) | `github.com/sportsdataverse/hoopR-nba-stats-raw` | play types, tracking, defensive tracking, matchups, hustle, lineups, combine, draft | 1 s | Primary route to stats.nba.com data. Pin the revision or release tag. |
+| hoopR NBA Stats raw (raw stats.nba.com JSON) | `github.com/sportsdataverse/hoopR-nba-stats-raw` | player index, rosters, play types, tracking, defensive tracking, matchups, hustle, lineups, combine, draft | 1 s | Primary route to stats.nba.com data; fallback player index. Pin the revision or release tag. GitHub API and raw.githubusercontent.com are transport hosts for this repository only. |
 | nba_data archive (Apache-2.0) | `github.com/shufinskiy/nba_data` | play types, matchups, shots, on/off | 1 s | Fallback mirror. Already admitted for IM01 by [research source admission v2](research-source-admission-v2.md). |
 | pbpstats API (`get-totals`, lineups, `get-wowy-stats`; no key) | `api.pbpstats.com` | on/off, lineups | 5 s | Secondary cross-check for possessions and on/off. |
 | Basketball-Reference (`/contracts/{TEAM}.html`, draft pages) | `www.basketball-reference.com` | contracts, draft | 3 s (robots.txt `Crawl-delay`) | Weekly, about 30 pages. |
@@ -26,6 +26,7 @@ The machine-readable registry is `src/courtlens/domain/source_policy.py`. This t
 | HoopsHype salary pages (embedded JSON) | `hoopshype.com` | contracts | 5 s | Fallback only. |
 | ESPN injuries JSON | `site.api.espn.com` | injuries | 5 s | Secondary source. Always labeled as ESPN. |
 | Official league cap release | `nba.com` | cap thresholds | not fetched | Entered by hand, one row per season. |
+| Official NBA transaction evidence | `nba.com` | transactions | not fetched | Versioned operator imports with NBA IDs, effective dates and per-row official URLs; never inferred from roster differences. |
 
 **Not admitted:**
 
