@@ -1,0 +1,41 @@
+[
+  {
+    "name": "conditional",
+    "errorCount": 1,
+    "warningCount": 0,
+    "messages": [
+      {
+        "rule": "no-restricted-syntax",
+        "message": "Inline styles must be CSS custom properties (--*) or computed chart/virtualization geometry (design-language-v1)."
+      }
+    ]
+  },
+  {
+    "name": "assertion",
+    "errorCount": 1,
+    "warningCount": 0,
+    "messages": [
+      {
+        "rule": "no-restricted-syntax",
+        "message": "Inline styles must be CSS custom properties (--*) or computed chart/virtualization geometry (design-language-v1)."
+      }
+    ]
+  },
+  {
+    "name": "genericName",
+    "errorCount": 1,
+    "warningCount": 0,
+    "messages": [
+      {
+        "rule": "no-restricted-syntax",
+        "message": "Named generic elements need an explicit accessible role, or screen-reader text instead of aria-label (FO14)."
+      }
+    ]
+  },
+  {
+    "name": "custom",
+    "errorCount": 0,
+    "warningCount": 0,
+    "messages": []
+  }
+]

@@ -1,11 +1,28 @@
 "use client";
 
+import { Icon, type IconName } from "./ui/icon";
+import { IconButton } from "./ui/button";
+import { GatedNote } from "./ui/gated-note";
+import { TeamIdentity, teamStyle } from "./ui/identity";
+import { Menu, MenuItem } from "./ui/menu";
+import { PageShell, ProfileLayout } from "./ui/page-shell";
+import { PageHeader } from "./ui/panel";
+import { StatTile } from "./ui/stat-tile";
+import { Tabs, TabsContent, TabsList, TabTrigger } from "./ui/tabs";
+import { Tooltip } from "./ui/tooltip";
+import { SegmentedControl } from "./ui/segmented-control";
+import { humanLabel } from "@/lib/route-availability";
 import { CourtLensWordmark } from "./courtlens-wordmark";
 import { ImpactPlayerCard } from "./impact-player-card";
 
 import Link from "next/link";
 import { AssistantPageSelection } from "@/lib/assistant-page-context";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { formatDate } from "@/lib/format-date";
+import { orientedPercentile, type GoodDirection } from "@/lib/percentile-display";
+import { scopeContextLine } from "@/lib/scope-labels";
+import { RANK_PAGE_LIMIT, useCohortRanks } from "@/lib/use-cohort-ranks";
 import { PlayerPortrait } from "./player-portrait";
 import { ResearchTrendCharts } from "./research-trend-charts";
 import { LineageDrawer } from "./lineage-drawer";
@@ -15,16 +32,33 @@ import { getPlayerMeasurements } from "@/lib/workbench-api";
 import {
   formatPercent,
   scaleToPer36,
+  SHOWCASE_PRESETS,
   type CareerRollup,
   type CountingExposureMode,
   type SeasonCareerRow
 } from "@/lib/player-pages";
 import type {
+  PlayerResearchItem,
+  QuerySpec,
   PlayerGameLogItem,
   PlayerMeasurementsDetailResponse,
   PlayerProfile
 } from "@/lib/types";
 import type { ImpactResponse } from "@/lib/types";
+
+type ProfileTab = "overview" | "games" | "measurements";
+const PROFILE_TABS: ProfileTab[] = ["overview", "games", "measurements"];
+/** Placeholder for useCohortRanks when no Stats row is available; with no metrics it never queries. */
+const EMPTY_QUERY = {} as QuerySpec;
+const HERO_METRICS = SHOWCASE_PRESETS[0].metrics.filter((metric) => metric.key !== "legacy_fantasy_score_per_game");
+
+/** The player's row in the Stats query (same scope and cohort), for hero percentiles (D16). */
+export interface ProfileHeroStats {
+  item: PlayerResearchItem | null;
+  query: QuerySpec;
+  eligible: number;
+  goodDirections: Record<string, GoodDirection>;
+}
 
 interface WorkbenchPlayerProfileProps {
   profile: PlayerProfile;
@@ -32,6 +66,9 @@ interface WorkbenchPlayerProfileProps {
   careerRows?: SeasonCareerRow[];
   careerRollup?: CareerRollup;
   impact?: ImpactResponse | null;
+  hero?: ProfileHeroStats | null;
+  /** The shared filter bar, placed directly under the page header. */
+  filterBar?: ReactNode;
 }
 
 function formatInches(val: number | null | undefined): string {
@@ -48,8 +85,15 @@ export function WorkbenchPlayerProfile({
   games,
   careerRows = [],
   careerRollup,
-  impact = null
+  impact = null,
+  hero = null,
+  filterBar
 }: WorkbenchPlayerProfileProps) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const requestedTab = searchParams.get("tab") as ProfileTab | null;
+  const [tab, setTab] = useState<ProfileTab>(requestedTab && PROFILE_TABS.includes(requestedTab) ? requestedTab : "overview");
   const [selectedFact, setSelectedFact] = useState<string | null>(null);
   const [exposureMode, setExposureMode] = useState<CountingExposureMode>("per_game");
   const [exporting, setExporting] = useState(false);
@@ -77,6 +121,21 @@ export function WorkbenchPlayerProfile({
       cancelled = true;
     };
   }, [player.id]);
+
+  const heroQuery = hero?.query ?? null;
+  const heroKeys = useMemo(() => HERO_METRICS.map((metric) => metric.key), []);
+  const { ranks } = useCohortRanks(heroQuery ?? EMPTY_QUERY, heroQuery ? heroKeys : [], hero?.goodDirections ?? {});
+  // Values come from the profile's own season summary; percentiles and ranks from the Stats cohort.
+  const heroStats = HERO_METRICS.map((metric) => {
+    const value = (profile.summaries.season as Record<string, number | null | undefined> | null)?.[metric.key];
+    return {
+      key: metric.key,
+      label: metric.label,
+      value: metric.format(value ?? null),
+      percentile: hero?.item ? orientedPercentile(hero.item.percentiles?.[metric.key], hero.goodDirections[metric.key]) : null,
+      rank: hero?.item ? ranks[metric.key]?.[player.id] ?? null : null,
+    };
+  });
 
   const isFavorite = favorites.includes(player.id);
   const inTray = compareTray.includes(player.id);
@@ -123,134 +182,98 @@ export function WorkbenchPlayerProfile({
     );
   };
 
+  const scopeParams = `season=${context.season}&phase=${context.phase}&beforeDate=${context.before_date}`;
+  const contextLine = scopeContextLine(context.season, context.phase, context.before_date);
+  const explore: { label: string; href: string; icon: IconName }[] = [
+    { label: "Recent games", href: `/last-games?playerId=${player.id}&${scopeParams}`, icon: "history" },
+    { label: "Workload trends", href: `/research/trends?playerId=${player.id}&${scopeParams}`, icon: "trend" },
+    { label: "Distributions", href: `/research/distributions?playerId=${player.id}&${scopeParams}`, icon: "chart" },
+    { label: "Similar players", href: `/similar-players?playerId=${player.id}&${scopeParams}`, icon: "person" },
+    { label: "Shot profile", href: `/similar-players/shot-profile?player_id=${player.id}&release_id=${context.release_id}&season=${context.season}&phase=${context.phase}&before_date=${context.before_date}`, icon: "scatter" },
+    { label: "Compare head to head", href: `/compare?playerA=${player.id}&${scopeParams}`, icon: "swap" },
+    { label: "Wingspan", href: `/wingspan?playerId=${player.id}`, icon: "scale" },
+  ];
+
+  const selectTab = (next: string) => {
+    setTab(next as ProfileTab);
+    const params = new URLSearchParams(searchParams.toString());
+    if (next === "overview") params.delete("tab"); else params.set("tab", next);
+    router.replace(`${pathname}${params.size ? `?${params}` : ""}`, { scroll: false });
+  };
+
   return (
-    <div className="player-detail-container">
+    <PageShell template="profile" className="player-detail-container">
       <AssistantPageSelection route={`/players/${player.id}`} playerIds={[player.id]} scope={context} label={player.name} />
-      {/* Identity Card */}
-      <div className="player-identity-card">
-        <PlayerPortrait
-          playerId={player.id}
-          name={player.name}
-          portraitUrl={player.portrait_url}
-          size="lg"
-        />
-        <div className="player-identity-info">
-          <span className="text-xs text-accent font-mono uppercase">
-            NBA ID: {player.id} · {context.season} {context.phase.replace("_", " ")}
-          </span>
-          <h1 className="player-identity-name">{player.name}</h1>
-          <div className="player-identity-badges">
-            {latest_team && (
-              <span className="badge badge-accent">
-                {latest_team.tricode} · {latest_team.name}
-              </span>
-            )}
-            {last_observed_date && (
-              <span className="badge">
-                Last appearance: {last_observed_date}
-              </span>
-            )}
-            <span className="badge">
-              Window: {context.window}
-            </span>
+      <PageHeader
+        title={player.name}
+        subtitle={[latest_team?.name, contextLine, last_observed_date ? `Last game ${formatDate(last_observed_date)}` : null].filter(Boolean).join(" · ")}
+        actions={<>
+          <Tooltip content={isFavorite ? "Remove from favorites" : "Add to favorites"}>
+            <IconButton icon="star" label={isFavorite ? "Remove from favorites" : "Add to favorites"} variant="secondary"
+              aria-pressed={isFavorite} className={isFavorite ? "is-active" : ""} onClick={() => toggleFavorite(player.id)} />
+          </Tooltip>
+          <Tooltip content={inTray ? "Remove from compare tray" : "Add to compare tray"}>
+            <IconButton icon={inTray ? "check" : "plus"} label={inTray ? "Remove from compare tray" : "Add to compare tray"} variant="secondary"
+              aria-pressed={inTray} className={inTray ? "is-active" : ""} onClick={() => toggleCompare(player.id)} />
+          </Tooltip>
+          <Menu align="right" trigger={<span className="ui-button ui-button-secondary ui-button-md">Explore<Icon name="chevron-down" size={14} /></span>}>
+            {explore.map(item => <MenuItem key={item.href} icon={item.icon} label={item.label} onClick={() => router.push(item.href)} />)}
+          </Menu>
+          <Menu align="right" trigger={<span className="ui-button ui-button-primary ui-button-md">
+            <Icon name="download" size={16} />{exporting ? "Exporting…" : "Export"}<Icon name="chevron-down" size={14} />
+          </span>}>
+            <MenuItem icon="download" label="Export PNG" disabled={exporting} onClick={() => void handleExportPng()} />
+            <MenuItem icon="page" label="Export SVG" disabled={exporting} onClick={handleExportSvg} />
+          </Menu>
+        </>}
+      />
+      {filterBar}
+
+      <Tabs value={tab} onChange={selectTab}>
+      <ProfileLayout
+        hero={<div className="player-hero" style={teamStyle(latest_team?.id)}>
+          <div className="player-hero-identity">
+            <PlayerPortrait playerId={player.id} name={player.name} portraitUrl={player.portrait_url} size="lg" />
+            {latest_team
+              ? <TeamIdentity team={latest_team.id} name={latest_team.name} subtitle={`${seasonSummary?.gp ?? 0} games · ${context.season}`} size="sm" />
+              : <span className="player-hero-team">Team unknown in this scope</span>}
           </div>
-        </div>
-
-        <div className="profile-actions-column">
-          <div className="profile-actions-row">
-            <button
-              type="button"
-              className={`button button-small ${isFavorite ? "button-accent" : ""}`}
-              onClick={() => toggleFavorite(player.id)}
-              title={isFavorite ? "Remove from favorites" : "Add to favorites"}
-            >
-              {isFavorite ? "★ Favorited" : "☆ Favorite"}
-            </button>
-
-            <button
-              type="button"
-              className={`button button-small ${inTray ? "button-accent" : ""}`}
-              onClick={() => toggleCompare(player.id)}
-              title={inTray ? "Remove from Compare Tray" : "Add to Compare Tray"}
-            >
-              {inTray ? "✓ In Compare Tray" : "+ Compare Tray"}
-            </button>
-
-            <Link
-              href={`/last-games?playerId=${player.id}&season=${context.season}&phase=${context.phase}&beforeDate=${context.before_date}`}
-              className="button button-small button-dark"
-              title="Inspect recent appearances in Recent Games Explorer"
-            >
-              Recent Games →
-            </Link>
-
-            <Link
-              href={`/research/trends?playerId=${player.id}&season=${context.season}&phase=${context.phase}&beforeDate=${context.before_date}`}
-              className="button button-small"
-              title="Analyze workload and performance trends across disjoint windows"
-            >
-              Trends →
-            </Link>
-
-            <Link
-              href={`/research/distributions?playerId=${player.id}&season=${context.season}&phase=${context.phase}&beforeDate=${context.before_date}`}
-              className="button button-small"
-              title="View empirical quantiles, dispersion, and contextual splits"
-            >
-              Distributions →
-            </Link>
-
-            <Link
-              href={`/research/similarity?playerId=${player.id}&season=${context.season}&phase=${context.phase}&beforeDate=${context.before_date}`}
-              className="button button-small"
-              title="Find statistical twin players across standardized dimensions"
-            >
-              Peers →
-            </Link>
-
-            <Link
-              href={`/compare?playerA=${player.id}&season=${context.season}&phase=${context.phase}&beforeDate=${context.before_date}`}
-              className="button button-small"
-              title="Compare with peer in head-to-head PvP view"
-            >
-              Compare PvP →
-            </Link>
-
-            <Link href={`/shot-profile-twin?player_id=${player.id}&release_id=${context.release_id}&season=${context.season}&phase=${context.phase}&before_date=${context.before_date}`} className="button button-small">Shooting →</Link>
-
-            <Link
-              href={`/wingspan?playerId=${player.id}`}
-              className="button button-small"
-              title="Explore physical wingspan and draft combine anthropometry"
-            >
-              Wingspan →
-            </Link>
+          <div className="player-hero-tiles" role="group" aria-label="Season summary">
+            {heroStats.map(stat => <StatTile key={stat.key} label={stat.label} value={stat.value} percentile={stat.percentile} rank={stat.rank} rankOf={stat.rank != null ? RANK_PAGE_LIMIT : null} />)}
           </div>
-
-          <div className="profile-export-row">
-            <button
-              type="button"
-              className="button button-small"
-              onClick={handleExportPng}
-              disabled={exporting}
-              title="Export high-DPI profile card PNG"
-            >
-              {exporting ? "Exporting…" : "Export PNG"}
-            </button>
-            <button
-              type="button"
-              className="button button-small"
-              onClick={handleExportSvg}
-              title="Download profile SVG"
-            >
-              Export SVG
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* Multi-Team Stints (for Traded Players) */}
+          {hero && <p className="player-hero-note">Percentile among {hero.eligible.toLocaleString("en-US")} eligible players (the Stats cohort); ranks within the top {RANK_PAGE_LIMIT}.</p>}
+        </div>}
+        tabs={<TabsList aria-label="Profile sections">
+          <TabTrigger value="overview">Overview</TabTrigger>
+          <TabTrigger value="games">Game Log</TabTrigger>
+          <TabTrigger value="measurements">Measurements</TabTrigger>
+        </TabsList>}
+      >
+        <TabsContent value="overview" className="player-tab-body">
       <ImpactPlayerCard data={impact} />
+      {/* Season, last 10 and last 5 in one comparable table. */}
+      <section className="panel" aria-label="Production splits">
+        <h2 className="panel-title">Production Splits</h2>
+        <div className="table-wrapper" role="region" aria-label="Production splits table" tabIndex={0}>
+          <table className="data-table">
+            <thead><tr><th>Window</th><th className="num">GP</th><th className="num">MPG</th><th className="num">PPG</th><th className="num">RPG</th><th className="num">APG</th><th className="num">TS%</th><th className="num">eFG%</th></tr></thead>
+            <tbody>
+              {([["Season", seasonSummary], ["Last 10", last10Summary], ["Last 5", last5Summary]] as const).map(([label, sum]) => (
+                <tr key={label}>
+                  <th scope="row">{label}</th>
+                  <td className="num">{sum?.gp ?? "—"}</td>
+                  <td className="num">{sum?.min_per_game?.toFixed(1) ?? "—"}</td>
+                  <td className="num">{sum?.pts_per_game?.toFixed(1) ?? "—"}</td>
+                  <td className="num">{sum?.reb_total_per_game?.toFixed(1) ?? "—"}</td>
+                  <td className="num">{sum?.ast_per_game?.toFixed(1) ?? "—"}</td>
+                  <td className="num">{formatPercent(sum?.ts_pct)}</td>
+                  <td className="num">{formatPercent(sum?.efg_pct)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
 
       {stints && stints.length > 0 && (
         <div className="panel">
@@ -262,7 +285,7 @@ export function WorkbenchPlayerProfile({
               </p>
             </div>
           </div>
-          <div className="table-wrapper">
+          <div className="table-wrapper" role="region" aria-label="Participation stints table" tabIndex={0}>
             <table className="data-table">
               <thead>
                 <tr>
@@ -305,6 +328,258 @@ export function WorkbenchPlayerProfile({
         </div>
       )}
 
+      {/* Multi-Season Career View (F13) */}
+      {careerRows.length > 0 && (
+        <div className="panel mb-5">
+          <div className="panel-header">
+            <div>
+              <h2 className="panel-title">Multi-Season Career History</h2>
+              <p className="text-muted text-xs panel-subtitle-margin">
+                Observed participation across admitted snapshot seasons. Click any season row to switch active context.
+              </p>
+            </div>
+            <span className="badge font-mono">{careerRows.length} admitted seasons</span>
+          </div>
+
+          <div className="table-wrapper" role="region" aria-label="Career history table" tabIndex={0}>
+            <table className="data-table">
+              <thead>
+                <tr>
+                  <th>Season</th>
+                  <th>Team(s)</th>
+                  <th className="num">GP</th>
+                  <th className="num">MIN</th>
+                  <th className="num">MPG</th>
+                  <th className="num">PPG</th>
+                  <th className="num">RPG</th>
+                  <th className="num">APG</th>
+                  <th className="num">FG%</th>
+                  <th className="num">3P%</th>
+                  <th className="num">FT%</th>
+                  <th className="num">TS%</th>
+                  <th className="num">eFG%</th>
+                  <th className="num">Fantasy/G</th>
+                </tr>
+              </thead>
+              <tbody>
+                {careerRows.map((r) => {
+                  const isCurrent = r.season === context.season;
+                  return (
+                    <tr
+                      key={r.season}
+                      className={isCurrent ? "is-current-season" : undefined}
+                    >
+                      <td>
+                        <Link
+                          href={`/players/${player.id}?season=${r.season}&phase=${context.phase}&beforeDate=${context.before_date}`}
+                          className={`font-mono ${isCurrent ? "font-bold text-accent" : ""}`}
+                          title={`Switch view to ${r.season}`}
+                        >
+                          {r.season} {isCurrent && <><Icon name="left" size={14} /><span className="sr-only">Current season</span></>}
+                        </Link>
+                      </td>
+                      <td><strong>{r.teams}</strong></td>
+                      <td className="num font-mono">{r.gamesPlayed}</td>
+                      <td className="num font-mono">{r.minutes?.toFixed(0) ?? "—"}</td>
+                      <td className="num font-mono">{r.minPerGame?.toFixed(1) ?? "—"}</td>
+                      <td className="num font-mono font-bold">{r.ptsPerGame?.toFixed(1) ?? "—"}</td>
+                      <td className="num font-mono">{r.rebPerGame?.toFixed(1) ?? "—"}</td>
+                      <td className="num font-mono">{r.astPerGame?.toFixed(1) ?? "—"}</td>
+                      <td className="num font-mono">{formatPercent(r.fgPct)}</td>
+                      <td className="num font-mono">{formatPercent(r.fg3Pct)}</td>
+                      <td className="num font-mono">{formatPercent(r.ftPct)}</td>
+                      <td className="num font-mono font-semibold">{formatPercent(r.tsPct)}</td>
+                      <td className="num font-mono">{formatPercent(r.efgPct)}</td>
+                      <td className="num font-mono">{r.fantasyPerGame?.toFixed(1) ?? "—"}</td>
+                    </tr>
+                  );
+                })}
+
+                {/* Career Admitted Totals / Rollup Row */}
+                {careerRollup && (
+                  <tr className="career-rollup-row">
+                    <td colSpan={2}>
+                      <span className="font-mono text-xs uppercase text-accent">
+                        Admitted Career
+                      </span>
+                    </td>
+                    <td className="num font-mono">{careerRollup.totalGames}</td>
+                    <td className="num font-mono">{careerRollup.totalMinutes.toFixed(0)}</td>
+                    <td className="num font-mono">{careerRollup.avgMinutes?.toFixed(1) ?? "—"}</td>
+                    <td className="num font-mono text-accent font-bold">{careerRollup.careerPtsPerGame?.toFixed(1) ?? "—"}</td>
+                    <td className="num font-mono">{careerRollup.careerRebPerGame?.toFixed(1) ?? "—"}</td>
+                    <td className="num font-mono">{careerRollup.careerAstPerGame?.toFixed(1) ?? "—"}</td>
+                    <td className="num font-mono">—</td>
+                    <td className="num font-mono">—</td>
+                    <td className="num font-mono">—</td>
+                    <td className="num font-mono">{formatPercent(careerRollup.careerTsPct)}</td>
+                    <td className="num font-mono">{formatPercent(careerRollup.careerEfgPct)}</td>
+                    <td className="num font-mono">—</td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Strict Incomplete Career Guardrail Notice */}
+          <GatedNote why={careerRollup?.disclaimer ?? "Career data is strictly scoped to admitted dataset seasons. Historical seasons outside admitted coverage are not silently completed or inferred."}>
+            Career totals cover admitted seasons only.
+          </GatedNote>
+        </div>
+      )}
+
+      {/* Small-Multiple Trend Charts */}
+      <ResearchTrendCharts games={games} playerName={player.name} />
+
+      {/* Forecast Status Card */}
+      <div className="panel forecast-status-panel">
+        <div className="panel-header">
+          <div>
+            <h2 className="panel-title">Prospective Forecast Status</h2>
+            <p className="text-muted text-xs panel-subtitle-margin">
+              Next scheduled game points estimation under active policy conditional on appearance.
+            </p>
+          </div>
+          <span className={`badge ${forecast_status.status === "forecast_issued" ? "badge-positive" : "badge-accent"}`}>
+            {humanLabel(forecast_status.status)}
+          </span>
+        </div>
+
+        {forecast_status.status === "forecast_issued" && forecast_status.point_estimate !== undefined ? (
+          <div>
+            <div className="forecast-estimates-row">
+              <div>
+                <span className="text-xs text-muted uppercase font-mono">Point Estimate</span>
+                <div className="font-mono text-2xl font-bold text-accent">
+                  {forecast_status.point_estimate.toFixed(1)} <span className="text-sm font-normal text-muted">PTS</span>
+                </div>
+              </div>
+              <div>
+                <span className="text-xs text-muted uppercase font-mono">80% Empirical Interval</span>
+                <div className="font-mono text-lg font-semibold">
+                  [{forecast_status.interval_lower?.toFixed(1)}, {forecast_status.interval_upper?.toFixed(1)}] <span className="text-xs font-normal text-muted">PTS</span>
+                </div>
+              </div>
+              {forecast_status.target_opponent && (
+                <div>
+                  <span className="text-xs text-muted uppercase font-mono">Target Game</span>
+                  <div className="font-mono text-sm">
+                    {formatDate(forecast_status.target_game_date)} vs {forecast_status.target_opponent}
+                  </div>
+                </div>
+              )}
+            </div>
+            <p className="text-sm text-muted">
+              {forecast_status.message}
+            </p>
+          </div>
+        ) : (
+          <p className="text-sm text-muted">
+            {forecast_status.message}
+          </p>
+        )}
+
+        <GatedNote why="Empirical prediction intervals are conditional on player appearance; an absent box score row is unknown, not an injury confirmation.">
+          Forecasts assume the player appears.
+        </GatedNote>
+      </div>
+
+        </TabsContent>
+        <TabsContent value="games" className="player-tab-body">
+      {/* Reverse-Chronological Game Log with Per-Game / Per-36 Toggle */}
+      <div className="panel mb-5">
+        <div className="panel-header">
+          <div>
+            <h2 className="panel-title">Prior Appearance Game Log</h2>
+            <p className="text-muted text-xs panel-subtitle-margin">
+              {contextLine}. Lineage shows each game&apos;s source observations.
+            </p>
+          </div>
+
+          <div className="profile-toolbar-row">
+            <SegmentedControl<CountingExposureMode> name="Game log exposure" size="sm" value={exposureMode} onChange={setExposureMode}
+              options={[{ value: "per_game", label: "Per Game" }, { value: "per_36", label: "Per 36 Min" }]} />
+            <span className="badge font-mono">{games.length} games</span>
+          </div>
+        </div>
+
+        <div className="table-wrapper" role="region" aria-label="Player game log table" tabIndex={0}>
+          <table className="data-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Team</th>
+                <th>Opponent</th>
+                <th>Status</th>
+                <th className="num">MIN</th>
+                <th className="num">{exposureMode === "per_36" ? "PTS/36" : "PTS"}</th>
+                <th className="num">{exposureMode === "per_36" ? "REB/36" : "REB"}</th>
+                <th className="num">{exposureMode === "per_36" ? "AST/36" : "AST"}</th>
+                <th className="num">{exposureMode === "per_36" ? "STL/36" : "STL"}</th>
+                <th className="num">{exposureMode === "per_36" ? "BLK/36" : "BLK"}</th>
+                <th className="num">FGM/A</th>
+                <th className="num">3PM/A</th>
+                <th className="num">FTM/A</th>
+                <th className="num">Fantasy</th>
+                <th className="text-right">Provenance</th>
+              </tr>
+            </thead>
+            <tbody>
+              {games.map((g) => {
+                const mins = g.minutes;
+                const pts = exposureMode === "per_36" ? scaleToPer36(g.points, mins) : g.points;
+                const reb = exposureMode === "per_36" ? scaleToPer36(g.stats?.rebounds_total, mins) : g.stats?.rebounds_total;
+                const ast = exposureMode === "per_36" ? scaleToPer36(g.stats?.assists, mins) : g.stats?.assists;
+                const stl = exposureMode === "per_36" ? scaleToPer36(g.stats?.steals, mins) : g.stats?.steals;
+                const blk = exposureMode === "per_36" ? scaleToPer36(g.stats?.blocks, mins) : g.stats?.blocks;
+
+                return (
+                  <tr key={g.game_id}>
+                    <td className="font-mono">{formatDate(g.game_date)}</td>
+                    <td><strong>{g.team_tricode}</strong></td>
+                    <td>{g.side === "home" ? "vs" : "@"} {g.opponent_tricode}</td>
+                    <td>
+                      <span className={`badge ${g.appearance === "appeared" ? "badge-positive" : ""}`}>
+                        {g.appearance}
+                      </span>
+                    </td>
+                    <td className="num font-mono">{mins?.toFixed(1) ?? "—"}</td>
+                    <td className="num font-mono font-bold">{pts !== null ? pts : "—"}</td>
+                    <td className="num font-mono">{reb !== null ? reb : "—"}</td>
+                    <td className="num font-mono">{ast !== null ? ast : "—"}</td>
+                    <td className="num font-mono">{stl !== null ? stl : "—"}</td>
+                    <td className="num font-mono">{blk !== null ? blk : "—"}</td>
+                    <td className="num font-mono text-xs">
+                      {g.stats?.field_goals_made ?? 0}/{g.stats?.field_goals_attempted ?? 0}
+                    </td>
+                    <td className="num font-mono text-xs">
+                      {g.stats?.three_pointers_made ?? 0}/{g.stats?.three_pointers_attempted ?? 0}
+                    </td>
+                    <td className="num font-mono text-xs">
+                      {g.stats?.free_throws_made ?? 0}/{g.stats?.free_throws_attempted ?? 0}
+                    </td>
+                    <td className="num font-mono">{g.legacy_fantasy_score?.toFixed(1) ?? "—"}</td>
+                    <td className="text-right">
+                      <button
+                        type="button"
+                        className="button button-small"
+                        onClick={() => setSelectedFact(g.game_id)}
+                        title="Inspect raw cryptographic lineage"
+                      >
+                        Lineage
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+        </TabsContent>
+        <TabsContent value="measurements" className="player-tab-body">
+      {!(measurements && measurements.has_measurements) && <GatedNote why="Measurements come from the Draft Combine and team-reported roster cards; players without either have none.">No measurements recorded for {player.name}.</GatedNote>}
       {/* Physical Anthropometry & Draft Metadata (Block B14c) */}
       {measurements && measurements.has_measurements && (
         <div className="panel mb-5">
@@ -320,13 +595,11 @@ export function WorkbenchPlayerProfile({
                 Official NBA Draft Combine measurements vs. team-reported roster cards. Missing values are null, never scored as zero.
               </p>
             </div>
-            <Link href={`/shot-profile-twin?player_id=${player.id}&release_id=${context.release_id}&season=${context.season}&phase=${context.phase}&before_date=${context.before_date}`} className="button button-small">Shooting →</Link>
-
             <Link
               href={`/wingspan?playerId=${player.id}`}
-              className="button button-small button-dark"
+              className="button button-small"
             >
-              Open Wingspan Explorer →
+              Open Wingspan Explorer
             </Link>
           </div>
 
@@ -412,314 +685,13 @@ export function WorkbenchPlayerProfile({
             )}
           </div>
 
-          <div className="profile-measurements-notice">
-            <strong>Notice:</strong> {measurements.disclaimer}
-          </div>
+          <GatedNote why={measurements.disclaimer}>Roster-card and Combine measurements are not interchangeable.</GatedNote>
         </div>
       )}
 
-      {/* Production & Role Summary Grid */}
-      <div className="grid-3 mb-5">
-        <div className="stat-card">
-          <span className="stat-label">Season Production</span>
-          <span className="stat-value font-mono">
-            {seasonSummary?.pts_per_game?.toFixed(1) ?? "—"} <span className="text-sm font-normal text-muted">PPG</span>
-          </span>
-          <span className="stat-subtext">
-            {seasonSummary?.gp ?? 0} GP · {seasonSummary?.min_per_game?.toFixed(1) ?? "—"} MPG · {seasonSummary?.reb_total_per_game?.toFixed(1) ?? "—"} RPG · {seasonSummary?.ast_per_game?.toFixed(1) ?? "—"} APG
-          </span>
-          <div className="stat-card-meta">
-            TS%: {formatPercent(seasonSummary?.ts_pct)} · eFG%: {formatPercent(seasonSummary?.efg_pct)}
-          </div>
-        </div>
-
-        <div className="stat-card">
-          <span className="stat-label">Last 10 Games</span>
-          <span className="stat-value font-mono">
-            {last10Summary?.pts_per_game?.toFixed(1) ?? "—"} <span className="text-sm font-normal text-muted">PPG</span>
-          </span>
-          <span className="stat-subtext">
-            {last10Summary?.gp ?? 0} GP · {last10Summary?.min_per_game?.toFixed(1) ?? "—"} MPG · {last10Summary?.reb_total_per_game?.toFixed(1) ?? "—"} RPG · {last10Summary?.ast_per_game?.toFixed(1) ?? "—"} APG
-          </span>
-          <div className="stat-card-meta">
-            TS%: {formatPercent(last10Summary?.ts_pct)} · eFG%: {formatPercent(last10Summary?.efg_pct)}
-          </div>
-        </div>
-
-        <div className="stat-card">
-          <span className="stat-label">Last 5 Games</span>
-          <span className="stat-value font-mono">
-            {last5Summary?.pts_per_game?.toFixed(1) ?? "—"} <span className="text-sm font-normal text-muted">PPG</span>
-          </span>
-          <span className="stat-subtext">
-            {last5Summary?.gp ?? 0} GP · {last5Summary?.min_per_game?.toFixed(1) ?? "—"} MPG · {last5Summary?.reb_total_per_game?.toFixed(1) ?? "—"} RPG · {last5Summary?.ast_per_game?.toFixed(1) ?? "—"} APG
-          </span>
-          <div className="stat-card-meta">
-            TS%: {formatPercent(last5Summary?.ts_pct)} · eFG%: {formatPercent(last5Summary?.efg_pct)}
-          </div>
-        </div>
-      </div>
-
-      {/* Multi-Season Career View (F13) */}
-      {careerRows.length > 0 && (
-        <div className="panel mb-5">
-          <div className="panel-header">
-            <div>
-              <h2 className="panel-title">Multi-Season Career History</h2>
-              <p className="text-muted text-xs panel-subtitle-margin">
-                Observed participation across admitted snapshot seasons. Click any season row to switch active context.
-              </p>
-            </div>
-            <span className="badge font-mono">{careerRows.length} admitted seasons</span>
-          </div>
-
-          <div className="table-wrapper">
-            <table className="data-table">
-              <thead>
-                <tr>
-                  <th>Season</th>
-                  <th>Team(s)</th>
-                  <th className="num">GP</th>
-                  <th className="num">MIN</th>
-                  <th className="num">MPG</th>
-                  <th className="num">PPG</th>
-                  <th className="num">RPG</th>
-                  <th className="num">APG</th>
-                  <th className="num">FG%</th>
-                  <th className="num">3P%</th>
-                  <th className="num">FT%</th>
-                  <th className="num">TS%</th>
-                  <th className="num">eFG%</th>
-                  <th className="num">Fantasy/G</th>
-                </tr>
-              </thead>
-              <tbody>
-                {careerRows.map((r) => {
-                  const isCurrent = r.season === context.season;
-                  return (
-                    <tr
-                      key={r.season}
-                      className={isCurrent ? "is-current-season" : undefined}
-                    >
-                      <td>
-                        <Link
-                          href={`/players/${player.id}?season=${r.season}&phase=${context.phase}&beforeDate=${context.before_date}`}
-                          className={`font-mono ${isCurrent ? "font-bold text-accent" : ""}`}
-                          title={`Switch view to ${r.season}`}
-                        >
-                          {r.season} {isCurrent && "◀"}
-                        </Link>
-                      </td>
-                      <td><strong>{r.teams}</strong></td>
-                      <td className="num font-mono">{r.gamesPlayed}</td>
-                      <td className="num font-mono">{r.minutes?.toFixed(0) ?? "—"}</td>
-                      <td className="num font-mono">{r.minPerGame?.toFixed(1) ?? "—"}</td>
-                      <td className="num font-mono font-bold">{r.ptsPerGame?.toFixed(1) ?? "—"}</td>
-                      <td className="num font-mono">{r.rebPerGame?.toFixed(1) ?? "—"}</td>
-                      <td className="num font-mono">{r.astPerGame?.toFixed(1) ?? "—"}</td>
-                      <td className="num font-mono">{formatPercent(r.fgPct)}</td>
-                      <td className="num font-mono">{formatPercent(r.fg3Pct)}</td>
-                      <td className="num font-mono">{formatPercent(r.ftPct)}</td>
-                      <td className="num font-mono font-semibold">{formatPercent(r.tsPct)}</td>
-                      <td className="num font-mono">{formatPercent(r.efgPct)}</td>
-                      <td className="num font-mono">{r.fantasyPerGame?.toFixed(1) ?? "—"}</td>
-                    </tr>
-                  );
-                })}
-
-                {/* Career Admitted Totals / Rollup Row */}
-                {careerRollup && (
-                  <tr className="career-rollup-row">
-                    <td colSpan={2}>
-                      <span className="font-mono text-xs uppercase text-accent">
-                        Admitted Career
-                      </span>
-                    </td>
-                    <td className="num font-mono">{careerRollup.totalGames}</td>
-                    <td className="num font-mono">{careerRollup.totalMinutes.toFixed(0)}</td>
-                    <td className="num font-mono">{careerRollup.avgMinutes?.toFixed(1) ?? "—"}</td>
-                    <td className="num font-mono text-accent font-bold">{careerRollup.careerPtsPerGame?.toFixed(1) ?? "—"}</td>
-                    <td className="num font-mono">{careerRollup.careerRebPerGame?.toFixed(1) ?? "—"}</td>
-                    <td className="num font-mono">{careerRollup.careerAstPerGame?.toFixed(1) ?? "—"}</td>
-                    <td className="num font-mono">—</td>
-                    <td className="num font-mono">—</td>
-                    <td className="num font-mono">—</td>
-                    <td className="num font-mono">{formatPercent(careerRollup.careerTsPct)}</td>
-                    <td className="num font-mono">{formatPercent(careerRollup.careerEfgPct)}</td>
-                    <td className="num font-mono">—</td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
-
-          {/* Strict Incomplete Career Guardrail Notice */}
-          <div className="notice-box profile-notice-box">
-            <strong>Incomplete Career Disclosure:</strong> {careerRollup?.disclaimer ?? "Career data is strictly scoped to admitted dataset seasons. Historical seasons outside admitted coverage are not silently completed or inferred."}
-          </div>
-        </div>
-      )}
-
-      {/* Small-Multiple Trend Charts */}
-      <ResearchTrendCharts games={games} playerName={player.name} />
-
-      {/* Reverse-Chronological Game Log with Per-Game / Per-36 Toggle */}
-      <div className="panel mb-5">
-        <div className="panel-header">
-          <div>
-            <h2 className="panel-title">Prior Appearance Game Log</h2>
-            <p className="text-muted text-xs panel-subtitle-margin">
-              Strictly prior to {context.before_date}. Click Lineage to inspect contributing raw observations and SHA-256 provenance.
-            </p>
-          </div>
-
-          <div className="profile-toolbar-row">
-            <div className="segmented-control" role="group" aria-label="Game log exposure mode">
-              <button
-                type="button"
-                className={`segmented-button ${exposureMode === "per_game" ? "active" : ""}`}
-                onClick={() => setExposureMode("per_game")}
-              >
-                Per Game
-              </button>
-              <button
-                type="button"
-                className={`segmented-button ${exposureMode === "per_36" ? "active" : ""}`}
-                onClick={() => setExposureMode("per_36")}
-              >
-                Per 36 Min
-              </button>
-            </div>
-            <span className="badge font-mono">{games.length} games</span>
-          </div>
-        </div>
-
-        <div className="table-wrapper">
-          <table className="data-table">
-            <thead>
-              <tr>
-                <th>Date</th>
-                <th>Team</th>
-                <th>Opponent</th>
-                <th>Status</th>
-                <th className="num">MIN</th>
-                <th className="num">{exposureMode === "per_36" ? "PTS/36" : "PTS"}</th>
-                <th className="num">{exposureMode === "per_36" ? "REB/36" : "REB"}</th>
-                <th className="num">{exposureMode === "per_36" ? "AST/36" : "AST"}</th>
-                <th className="num">{exposureMode === "per_36" ? "STL/36" : "STL"}</th>
-                <th className="num">{exposureMode === "per_36" ? "BLK/36" : "BLK"}</th>
-                <th className="num">FGM/A</th>
-                <th className="num">3PM/A</th>
-                <th className="num">FTM/A</th>
-                <th className="num">Fantasy</th>
-                <th className="text-right">Provenance</th>
-              </tr>
-            </thead>
-            <tbody>
-              {games.map((g) => {
-                const mins = g.minutes;
-                const pts = exposureMode === "per_36" ? scaleToPer36(g.points, mins) : g.points;
-                const reb = exposureMode === "per_36" ? scaleToPer36(g.stats?.rebounds_total, mins) : g.stats?.rebounds_total;
-                const ast = exposureMode === "per_36" ? scaleToPer36(g.stats?.assists, mins) : g.stats?.assists;
-                const stl = exposureMode === "per_36" ? scaleToPer36(g.stats?.steals, mins) : g.stats?.steals;
-                const blk = exposureMode === "per_36" ? scaleToPer36(g.stats?.blocks, mins) : g.stats?.blocks;
-
-                return (
-                  <tr key={g.game_id}>
-                    <td className="font-mono">{g.game_date}</td>
-                    <td><strong>{g.team_tricode}</strong></td>
-                    <td>{g.side === "home" ? "vs" : "@"} {g.opponent_tricode}</td>
-                    <td>
-                      <span className={`badge ${g.appearance === "appeared" ? "badge-positive" : ""}`}>
-                        {g.appearance}
-                      </span>
-                    </td>
-                    <td className="num font-mono">{mins?.toFixed(1) ?? "—"}</td>
-                    <td className="num font-mono font-bold">{pts !== null ? pts : "—"}</td>
-                    <td className="num font-mono">{reb !== null ? reb : "—"}</td>
-                    <td className="num font-mono">{ast !== null ? ast : "—"}</td>
-                    <td className="num font-mono">{stl !== null ? stl : "—"}</td>
-                    <td className="num font-mono">{blk !== null ? blk : "—"}</td>
-                    <td className="num font-mono text-xs">
-                      {g.stats?.field_goals_made ?? 0}/{g.stats?.field_goals_attempted ?? 0}
-                    </td>
-                    <td className="num font-mono text-xs">
-                      {g.stats?.three_pointers_made ?? 0}/{g.stats?.three_pointers_attempted ?? 0}
-                    </td>
-                    <td className="num font-mono text-xs">
-                      {g.stats?.free_throws_made ?? 0}/{g.stats?.free_throws_attempted ?? 0}
-                    </td>
-                    <td className="num font-mono">{g.legacy_fantasy_score?.toFixed(1) ?? "—"}</td>
-                    <td className="text-right">
-                      <button
-                        type="button"
-                        className="button button-small"
-                        onClick={() => setSelectedFact(g.game_id)}
-                        title="Inspect raw cryptographic lineage"
-                      >
-                        Lineage
-                      </button>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      {/* Forecast Status Card */}
-      <div className="panel forecast-status-panel">
-        <div className="panel-header">
-          <div>
-            <h2 className="panel-title">Prospective Forecast Status</h2>
-            <p className="text-muted text-xs panel-subtitle-margin">
-              Next scheduled game points estimation under active policy conditional on appearance.
-            </p>
-          </div>
-          <span className={`badge font-mono ${forecast_status.status === "forecast_issued" ? "badge-positive" : "badge-accent"}`}>
-            {forecast_status.status}
-          </span>
-        </div>
-
-        {forecast_status.status === "forecast_issued" && forecast_status.point_estimate !== undefined ? (
-          <div>
-            <div className="forecast-estimates-row">
-              <div>
-                <span className="text-xs text-muted uppercase font-mono">Point Estimate</span>
-                <div className="font-mono text-2xl font-bold text-accent">
-                  {forecast_status.point_estimate.toFixed(1)} <span className="text-sm font-normal text-muted">PTS</span>
-                </div>
-              </div>
-              <div>
-                <span className="text-xs text-muted uppercase font-mono">80% Empirical Interval</span>
-                <div className="font-mono text-lg font-semibold">
-                  [{forecast_status.interval_lower?.toFixed(1)}, {forecast_status.interval_upper?.toFixed(1)}] <span className="text-xs font-normal text-muted">PTS</span>
-                </div>
-              </div>
-              {forecast_status.target_opponent && (
-                <div>
-                  <span className="text-xs text-muted uppercase font-mono">Target Game</span>
-                  <div className="font-mono text-sm">
-                    {forecast_status.target_game_date} vs {forecast_status.target_opponent}
-                  </div>
-                </div>
-              )}
-            </div>
-            <p className="text-sm text-muted">
-              {forecast_status.message}
-            </p>
-          </div>
-        ) : (
-          <p className="text-sm text-muted">
-            {forecast_status.message}
-          </p>
-        )}
-
-        <p className="text-xs text-muted mt-2">
-          In accordance with CourtLens principles, empirical prediction intervals are conditional on player appearance; an absent box score row is unknown, not an injury confirmation.
-        </p>
-      </div>
+        </TabsContent>
+      </ProfileLayout>
+      </Tabs>
 
       {/* Hidden Renderable SVG Card for Export */}
       <div className="hidden">
@@ -772,8 +744,8 @@ export function WorkbenchPlayerProfile({
 
           {/* Temporal Guarantee */}
           <line x1="24" y1="460" x2="436" y2="460" stroke="#323b49" strokeWidth="1" />
-          <text x="24" y="485" fill="#7b8798" fontSize="9" fontFamily="monospace">TEMPORAL DISCIPLINE: game_date &lt; {context.before_date}</text>
-          <text x="24" y="498" fill="#7b8798" fontSize="8" fontFamily="monospace">Strictly Historical Replay · Zero Inferred Claims · CourtLens Replica</text>
+          {/* D16/D20: the export carries the same context line as the screen. */}
+          <text x="24" y="485" fill="#7b8798" fontSize="10" fontFamily="monospace">{contextLine}</text>
         </svg>
       </div>
 
@@ -786,6 +758,6 @@ export function WorkbenchPlayerProfile({
           onClose={() => setSelectedFact(null)}
         />
       )}
-    </div>
+    </PageShell>
   );
 }

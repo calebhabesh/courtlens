@@ -1,0 +1,445 @@
+{
+  "base": "http://localhost:3100",
+  "measuredAt": "2026-10-09T16:11:37.733Z",
+  "totals": {
+    "routes": 54,
+    "routesWithGlyphs": 0,
+    "glyphs": 0,
+    "lucideOutsideWrapper": 0,
+    "beforeGlyphs": 382
+  },
+  "routes": {
+    "/stats": {
+      "glyphs": {},
+      "total": 0,
+      "samples": [],
+      "lucideOutsideWrapper": 0,
+      "wrapperIcons": 184,
+      "status": 200
+    },
+    "/players": {
+      "glyphs": {},
+      "total": 0,
+      "samples": [],
+      "lucideOutsideWrapper": 0,
+      "wrapperIcons": 184,
+      "status": 200
+    },
+    "/teams": {
+      "glyphs": {},
+      "total": 0,
+      "samples": [],
+      "lucideOutsideWrapper": 0,
+      "wrapperIcons": 17,
+      "status": 200
+    },
+    "/compare": {
+      "glyphs": {},
+      "total": 0,
+      "samples": [],
+      "lucideOutsideWrapper": 0,
+      "wrapperIcons": 12,
+      "status": 200
+    },
+    "/team-compare": {
+      "glyphs": {},
+      "total": 0,
+      "samples": [],
+      "lucideOutsideWrapper": 0,
+      "wrapperIcons": 21,
+      "status": 200
+    },
+    "/matchups": {
+      "glyphs": {},
+      "total": 0,
+      "samples": [],
+      "lucideOutsideWrapper": 0,
+      "wrapperIcons": 15,
+      "status": 200
+    },
+    "/wowy": {
+      "glyphs": {},
+      "total": 0,
+      "samples": [],
+      "lucideOutsideWrapper": 0,
+      "wrapperIcons": 17,
+      "status": 200
+    },
+    "/stat-line-shift": {
+      "glyphs": {},
+      "total": 0,
+      "samples": [],
+      "lucideOutsideWrapper": 0,
+      "wrapperIcons": 18,
+      "status": 200
+    },
+    "/last-games": {
+      "glyphs": {},
+      "total": 0,
+      "samples": [],
+      "lucideOutsideWrapper": 0,
+      "wrapperIcons": 21,
+      "status": 200
+    },
+    "/showcase": {
+      "glyphs": {},
+      "total": 0,
+      "samples": [],
+      "lucideOutsideWrapper": 0,
+      "wrapperIcons": 22,
+      "status": 200
+    },
+    "/rankings": {
+      "glyphs": {},
+      "total": 0,
+      "samples": [],
+      "lucideOutsideWrapper": 0,
+      "wrapperIcons": 12,
+      "status": 200
+    },
+    "/tierlist": {
+      "glyphs": {},
+      "total": 0,
+      "samples": [],
+      "lucideOutsideWrapper": 0,
+      "wrapperIcons": 11,
+      "status": 200
+    },
+    "/roster-shapes": {
+      "glyphs": {},
+      "total": 0,
+      "samples": [],
+      "lucideOutsideWrapper": 0,
+      "wrapperIcons": 14,
+      "status": 200
+    },
+    "/contracts": {
+      "glyphs": {},
+      "total": 0,
+      "samples": [],
+      "lucideOutsideWrapper": 0,
+      "wrapperIcons": 10,
+      "status": 200
+    },
+    "/free-agency": {
+      "glyphs": {},
+      "total": 0,
+      "samples": [],
+      "lucideOutsideWrapper": 0,
+      "wrapperIcons": 10,
+      "status": 200
+    },
+    "/live": {
+      "glyphs": {},
+      "total": 0,
+      "samples": [],
+      "lucideOutsideWrapper": 0,
+      "wrapperIcons": 10,
+      "status": 200
+    },
+    "/playoffs": {
+      "glyphs": {},
+      "total": 0,
+      "samples": [],
+      "lucideOutsideWrapper": 0,
+      "wrapperIcons": 16,
+      "status": 200
+    },
+    "/schedule": {
+      "glyphs": {},
+      "total": 0,
+      "samples": [],
+      "lucideOutsideWrapper": 0,
+      "wrapperIcons": 10,
+      "status": 200
+    },
+    "/planner": {
+      "glyphs": {},
+      "total": 0,
+      "samples": [],
+      "lucideOutsideWrapper": 0,
+      "wrapperIcons": 14,
+      "status": 200
+    },
+    "/data-status": {
+      "glyphs": {},
+      "total": 0,
+      "samples": [],
+      "lucideOutsideWrapper": 0,
+      "wrapperIcons": 13,
+      "status": 200
+    },
+    "/settings": {
+      "glyphs": {},
+      "total": 0,
+      "samples": [],
+      "lucideOutsideWrapper": 0,
+      "wrapperIcons": 10,
+      "status": 200
+    },
+    "/methodology": {
+      "glyphs": {},
+      "total": 0,
+      "samples": [],
+      "lucideOutsideWrapper": 0,
+      "wrapperIcons": 10,
+      "status": 200
+    },
+    "/learning": {
+      "glyphs": {},
+      "total": 0,
+      "samples": [],
+      "lucideOutsideWrapper": 0,
+      "wrapperIcons": 12,
+      "status": 200
+    },
+    "/blog": {
+      "glyphs": {},
+      "total": 0,
+      "samples": [],
+      "lucideOutsideWrapper": 0,
+      "wrapperIcons": 10,
+      "status": 200
+    },
+    "/patch-notes": {
+      "glyphs": {},
+      "total": 0,
+      "samples": [],
+      "lucideOutsideWrapper": 0,
+      "wrapperIcons": 10,
+      "status": 200
+    },
+    "/design": {
+      "glyphs": {},
+      "total": 0,
+      "samples": [],
+      "lucideOutsideWrapper": 0,
+      "wrapperIcons": 51,
+      "status": 200
+    },
+    "/calculator": {
+      "glyphs": {},
+      "total": 0,
+      "samples": [],
+      "lucideOutsideWrapper": 0,
+      "wrapperIcons": 10,
+      "status": 200
+    },
+    "/wingspan": {
+      "glyphs": {},
+      "total": 0,
+      "samples": [],
+      "lucideOutsideWrapper": 0,
+      "wrapperIcons": 10,
+      "status": 200
+    },
+    "/forecasts": {
+      "glyphs": {},
+      "total": 0,
+      "samples": [],
+      "lucideOutsideWrapper": 0,
+      "wrapperIcons": 10,
+      "status": 200
+    },
+    "/evaluation": {
+      "glyphs": {},
+      "total": 0,
+      "samples": [],
+      "lucideOutsideWrapper": 0,
+      "wrapperIcons": 10,
+      "status": 200
+    },
+    "/investigations": {
+      "glyphs": {},
+      "total": 0,
+      "samples": [],
+      "lucideOutsideWrapper": 0,
+      "wrapperIcons": 11,
+      "status": 200
+    },
+    "/research/ask": {
+      "glyphs": {},
+      "total": 0,
+      "samples": [],
+      "lucideOutsideWrapper": 0,
+      "wrapperIcons": 17,
+      "status": 200
+    },
+    "/research/case-studies": {
+      "glyphs": {},
+      "total": 0,
+      "samples": [],
+      "lucideOutsideWrapper": 0,
+      "wrapperIcons": 10,
+      "status": 200
+    },
+    "/research/trends": {
+      "glyphs": {},
+      "total": 0,
+      "samples": [],
+      "lucideOutsideWrapper": 0,
+      "wrapperIcons": 12,
+      "status": 200
+    },
+    "/research/distributions": {
+      "glyphs": {},
+      "total": 0,
+      "samples": [],
+      "lucideOutsideWrapper": 0,
+      "wrapperIcons": 12,
+      "status": 200
+    },
+    "/research/similarity": {
+      "glyphs": {},
+      "total": 0,
+      "samples": [],
+      "lucideOutsideWrapper": 0,
+      "wrapperIcons": 12,
+      "status": 200
+    },
+    "/shot-profile-twin": {
+      "glyphs": {},
+      "total": 0,
+      "samples": [],
+      "lucideOutsideWrapper": 0,
+      "wrapperIcons": 14,
+      "status": 200
+    },
+    "/research/adjusted-shooting": {
+      "glyphs": {},
+      "total": 0,
+      "samples": [],
+      "lucideOutsideWrapper": 0,
+      "wrapperIcons": 10,
+      "status": 200
+    },
+    "/research/expected-shots": {
+      "glyphs": {},
+      "total": 0,
+      "samples": [],
+      "lucideOutsideWrapper": 0,
+      "wrapperIcons": 10,
+      "status": 200
+    },
+    "/shot-aftermath": {
+      "glyphs": {},
+      "total": 0,
+      "samples": [],
+      "lucideOutsideWrapper": 0,
+      "wrapperIcons": 14,
+      "status": 200
+    },
+    "/research/rapm": {
+      "glyphs": {},
+      "total": 0,
+      "samples": [],
+      "lucideOutsideWrapper": 0,
+      "wrapperIcons": 10,
+      "status": 200
+    },
+    "/six-factor-rapm": {
+      "glyphs": {},
+      "total": 0,
+      "samples": [],
+      "lucideOutsideWrapper": 0,
+      "wrapperIcons": 10,
+      "status": 200
+    },
+    "/research/defensive-matchups": {
+      "glyphs": {},
+      "total": 0,
+      "samples": [],
+      "lucideOutsideWrapper": 0,
+      "wrapperIcons": 10,
+      "status": 200
+    },
+    "/research/epv": {
+      "glyphs": {},
+      "total": 0,
+      "samples": [],
+      "lucideOutsideWrapper": 0,
+      "wrapperIcons": 10,
+      "status": 200
+    },
+    "/research/operation": {
+      "glyphs": {},
+      "total": 0,
+      "samples": [],
+      "lucideOutsideWrapper": 0,
+      "wrapperIcons": 10,
+      "status": 200
+    },
+    "/": {
+      "glyphs": {},
+      "total": 0,
+      "samples": [],
+      "lucideOutsideWrapper": 0,
+      "wrapperIcons": 184,
+      "status": 200
+    },
+    "/live/2026-04-12": {
+      "glyphs": {},
+      "total": 0,
+      "samples": [],
+      "lucideOutsideWrapper": 0,
+      "wrapperIcons": 10,
+      "status": 200
+    },
+    "/players/1629029?season=2025-26&phase=regular_season&beforeDate=2026-04-13&window=season&releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad": {
+      "glyphs": {},
+      "total": 0,
+      "samples": [],
+      "lucideOutsideWrapper": 0,
+      "wrapperIcons": 19,
+      "status": 200
+    },
+    "/teams/1610612760?season=2025-26&phase=regular_season&beforeDate=2026-04-13": {
+      "glyphs": {},
+      "total": 0,
+      "samples": [],
+      "lucideOutsideWrapper": 0,
+      "wrapperIcons": 17,
+      "status": 200
+    },
+    "/contracts/BOS": {
+      "glyphs": {},
+      "total": 0,
+      "samples": [],
+      "lucideOutsideWrapper": 0,
+      "wrapperIcons": 10,
+      "status": 200
+    },
+    "/playoffs/2026-r1-det-orl?cutoff_date=2026-06-14": {
+      "glyphs": {},
+      "total": 0,
+      "samples": [],
+      "lucideOutsideWrapper": 0,
+      "wrapperIcons": 28,
+      "status": 200
+    },
+    "/live/games/0022501186?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&date=2026-04-12&live_mode=history": {
+      "glyphs": {},
+      "total": 0,
+      "samples": [],
+      "lucideOutsideWrapper": 0,
+      "wrapperIcons": 10,
+      "status": 200
+    },
+    "/investigations/saved/3bcb37c9-b410-44b1-be7f-c3b368fbe28c": {
+      "glyphs": {},
+      "total": 0,
+      "samples": [],
+      "lucideOutsideWrapper": 0,
+      "wrapperIcons": 10,
+      "status": 200
+    },
+    "/live/2026-10-09": {
+      "glyphs": {},
+      "total": 0,
+      "samples": [],
+      "lucideOutsideWrapper": 0,
+      "wrapperIcons": 10,
+      "status": 200
+    }
+  }
+}

@@ -142,11 +142,11 @@ export function SortHeader({
             aria-hidden="true"
           >
             {sortDirection === "asc" ? (
-              <Icon name="up" size={12} />
+              <Icon name="up" size={14} />
             ) : sortDirection === "desc" ? (
-              <Icon name="down" size={12} />
+              <Icon name="down" size={14} />
             ) : (
-              <Icon name="chevron-down" size={12} />
+              <Icon name="chevron-down" size={14} />
             )}
           </span>
         </button>

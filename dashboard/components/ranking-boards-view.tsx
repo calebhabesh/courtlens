@@ -1,4 +1,10 @@
 "use client";
+
+import { Icon } from "./ui/icon";
+import { Button } from "./ui/button";
+import { GatedNote } from "./ui/gated-note";
+import { PageShell } from "./ui/page-shell";
+import { PageHeader } from "./ui/panel";
 import { LookupInput } from "./lookup-input";
 
 import React, { useState, useMemo } from "react";
@@ -237,41 +243,21 @@ export function RankingBoardsView() {
   };
 
   return (
-    <div className="workbench-content ranking-boards-container">
-      {/* Page Header */}
-      <div className="page-header ranking-boards-header">
-        <div>
-          <h1 className="page-title">Personal Ranking Boards</h1>
-          <p className="page-subtitle">
-            F16 Personal Ranking Boards · Subjective player rankings with explicit notes, keyboard reordering, and transparent mathematical aggregation.
-          </p>
-        </div>
-        <div className="ranking-header-actions">
-          <button
-            type="button"
-            onClick={() => setShowAggSection((prev) => !prev)}
-            className={`button ${showAggSection ? "button-primary" : ""}`}
-            title="Aggregate multiple personal boards using Borda score or Average Rank"
-          >
-            ⚖ {showAggSection ? "Hide Aggregator" : "Aggregate Boards"}
-          </button>
-          <button
-            type="button"
-            onClick={() => setIsCreatingBoard(true)}
-            className="button button-primary"
-          >
-            + New Board
-          </button>
-        </div>
-      </div>
+    <PageShell template="explorer" className="ranking-boards-container">
+      <PageHeader
+        title="Ranking Boards"
+        subtitle="Your own player rankings, with notes, reordering and aggregation."
+        actions={<>
+          <Button variant="secondary" icon="scale" aria-pressed={showAggSection} onClick={() => setShowAggSection((prev) => !prev)}>
+            {showAggSection ? "Hide aggregator" : "Aggregate boards"}
+          </Button>
+          <Button variant="primary" icon="plus" onClick={() => setIsCreatingBoard(true)}>New board</Button>
+        </>}
+      />
 
-      {/* Zero Inferred Claims & Provenance Notice */}
-      <div className="notice-box notice-box-accent">
-        <strong className="text-accent text-xs">Subjective Provenance &amp; Zero Inferred Claims:</strong>
-        <p className="text-xs text-muted mt-1">
-          Ranking boards represent personal subjective evaluations. CourtLens never fabricates a &quot;global community consensus&quot; or automated public authority from subjective inputs.
-        </p>
-      </div>
+      <GatedNote why={<>Ranking boards represent personal subjective evaluations. CourtLens never fabricates a &quot;global community consensus&quot; or automated public authority from subjective inputs.</>}>
+        Boards are personal rankings, never a consensus.
+      </GatedNote>
 
       {/* CREATE NEW BOARD MODAL / DRAWER */}
       {isCreatingBoard && (
@@ -290,8 +276,9 @@ export function RankingBoardsView() {
                 type="button"
                 className="modal-close-btn"
                 onClick={() => setIsCreatingBoard(false)}
+                aria-label="Close create ranking board dialog"
               >
-                ✕
+                <Icon name="close" size={14} />
               </button>
             </div>
             <form onSubmit={handleCreateBoardSubmit} className="modal-body ranking-modal-form">
@@ -609,7 +596,7 @@ export function RankingBoardsView() {
                           className="button button-small ranking-meta-btn"
                           title={isAdded ? "Already on board" : `Add player ${favId}`}
                         >
-                          {isAdded ? "✓" : "+"} #{favId}
+                          {isAdded ? <Icon name="check" size={14} /> : <Icon name="plus" size={14} />}#{favId}
                         </button>
                       );
                     })}
@@ -688,7 +675,7 @@ export function RankingBoardsView() {
                                 title="Move up 1 rank"
                                 aria-label={`Move ${entry.player_name || entry.player_id} up`}
                               >
-                                ▲
+                                <Icon name="chevron-up" size={14} />
                               </button>
                               <button
                                 type="button"
@@ -698,7 +685,7 @@ export function RankingBoardsView() {
                                 title="Move down 1 rank"
                                 aria-label={`Move ${entry.player_name || entry.player_id} down`}
                               >
-                                ▼
+                                <Icon name="chevron-down" size={14} />
                               </button>
                             </div>
                           </td>
@@ -712,7 +699,7 @@ export function RankingBoardsView() {
                               title="Remove from board"
                               aria-label={`Remove ${entry.player_name || entry.player_id} from board`}
                             >
-                              ✕
+                              <Icon name="close" size={14} />
                             </button>
                           </td>
                         </tr>
@@ -725,6 +712,6 @@ export function RankingBoardsView() {
           )}
         </div>
       )}
-    </div>
+    </PageShell>
   );
 }

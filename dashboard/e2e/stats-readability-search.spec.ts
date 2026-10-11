@@ -2,15 +2,16 @@ import { expect, test } from "@playwright/test";
 import { openWorkbench } from "./workbench-navigation";
 test.use({ hasTouch: true });
 
-test("standard records are readable and portrait gutters center between metric values", async ({ page }) => {
+test("standard records are readable and portrait gutters center between metric columns", async ({ page }) => {
   await page.setViewportSize({ width: 2048, height: 1100 });
   await openWorkbench(page, "/stats");
   const geometry = await page.locator(".stats-table-row").first().evaluate(row => {
     const center = (element: Element) => { const box = element.getBoundingClientRect(); return box.x + box.width / 2; };
     return { height: row.getBoundingClientRect().height,
       font: getComputedStyle(row.querySelector(".stat-main-value")!).fontSize,
+      // FO14 right-aligns values; a portrait stays in the middle of the gutter between columns.
       offsets: [...row.querySelectorAll(".stats-guide-cell")].map(cell => center(cell.firstElementChild!) -
-        (center(cell.previousElementSibling!.querySelector(".stat-main-value")!) + center(cell.nextElementSibling!.querySelector(".stat-main-value")!)) / 2) };
+        (cell.previousElementSibling!.getBoundingClientRect().right + cell.nextElementSibling!.getBoundingClientRect().left) / 2) };
   });
   expect(geometry.height).toBe(52);
   expect(geometry.font).toBe("14px");
@@ -40,14 +41,16 @@ test("profile exports keep the same shared wordmark artwork", async ({ page }) =
   const brandPath = await page.locator(".brand-title path").getAttribute("d");
   expect(await page.locator(".player-detail-container .courtlens-wordmark path").getAttribute("d")).toBe(brandPath);
   const svgDownload = page.waitForEvent("download");
-  await page.getByRole("button", { name: "Export SVG", exact: true }).click();
+  await page.getByRole("button", { name: "Export", exact: true }).click();
+  await page.getByRole("menuitem", { name: "Export SVG", exact: true }).click();
   const path = await (await svgDownload).path();
   const { readFile } = await import("node:fs/promises");
   const svg = await readFile(path!, "utf8");
   expect(svg).toContain(brandPath!);
   expect(svg).not.toContain("fontshare.com/wf");
   const pngDownload = page.waitForEvent("download");
-  await page.getByRole("button", { name: "Export PNG", exact: true }).click();
+  await page.getByRole("button", { name: "Export", exact: true }).click();
+  await page.getByRole("menuitem", { name: "Export PNG", exact: true }).click();
   const png = await readFile((await (await pngDownload).path())!, "hex");
   expect(png.startsWith("89504e470d0a1a0a")).toBe(true);
 });
@@ -68,12 +71,13 @@ test("global search clear button uses the right edge and concise player captions
   await page.locator(".courtlens-search-pill").click();
   const input = page.getByRole("combobox", { name: "Search players, teams and pages", exact: true });
   await input.fill("Star");
-  const gap = await page.locator(".replica-search-container").evaluate(element =>
+  // FO02: the search modal is .ui-command-palette; .ui-command-palette on its scrim caused the 480px dim column.
+  const gap = await page.locator(".ui-command-palette").evaluate(element =>
     element.querySelector("input")!.getBoundingClientRect().right - element.querySelector(".lookup-clear-btn")!.getBoundingClientRect().right);
   expect(gap).toBeLessThanOrEqual(8);
-  await expect(page.locator(".replica-search-container").getByRole("option")).toHaveCount(3);
-  await expect(page.locator(".replica-search-container .lookup-alias-badge")).toHaveCount(0);
-  const captions = await page.locator(".replica-search-container .lookup-item-subtitle").allTextContents();
+  await expect(page.locator(".ui-command-palette").getByRole("option")).toHaveCount(3);
+  await expect(page.locator(".ui-command-palette .lookup-alias-badge")).toHaveCount(0);
+  const captions = await page.locator(".ui-command-palette .lookup-item-subtitle").allTextContents();
   expect(captions).toEqual(["TOR · 2025-26", "No stats in selected scope", "BOS · Last observed team"]);
 });
 

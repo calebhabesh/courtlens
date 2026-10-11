@@ -1,7 +1,17 @@
 "use client";
 
+import { Button } from "./ui/button";
+import { formatDate } from "@/lib/format-date";
+import { PlayerIdentity } from "./ui/identity";
+import { LookupInput } from "./lookup-input";
+import { DataDetailsButton } from "./ui/data-details";
+import { Field } from "./ui/field";
+import { CountChip, FilterBar } from "./ui/filter-bar";
+import { GatedNote } from "./ui/gated-note";
+import { Select } from "./ui/select";
+import { Skeleton } from "./ui/skeleton";
+import { buildPreservedContextUrl } from "@/lib/query-url";
 import { useReleaseCatalog } from "@/lib/use-release-catalog";
-import { EntityField } from "./entity-picker";
 import { useToast } from "./ui/toast";
 
 import { useEffect, useState } from "react";
@@ -13,15 +23,6 @@ import type {
   PeerMatchItem,
   StatisticalPeersResponse
 } from "@/lib/types";
-
-const FEATURED_PLAYERS = [
-  { id: "1628389", name: "Bam Adebayo", team: "MIA" },
-  { id: "1630567", name: "Scottie Barnes", team: "TOR" },
-  { id: "1627783", name: "Pascal Siakam", team: "IND" },
-  { id: "1628369", name: "Jayson Tatum", team: "BOS" },
-  { id: "1629630", name: "Ja Morant", team: "MEM" }
-];
-
 const DIMENSION_LABELS: Record<string, string> = {
   pts_per_36: "Points / 36m",
   reb_per_36: "Rebounds / 36m",
@@ -48,6 +49,7 @@ export function SimilarityInvestigationView() {
   const initialTopK = parseInt(searchParams.get("topK") || "5", 10);
 
   const [playerId, setPlayerId] = useState(initialPlayerId);
+  const [targetLookup, setTargetLookup] = useState("");
   const [season, setSeason] = useState(initialSeason);
   if (!season && initialSeason) setSeason(initialSeason);
   const beforeDate = searchParams.get("beforeDate") ?? searchParams.get("before_date") ?? catalog?.stats_scopes?.find(scope => scope.season === season && scope.phase === phase)?.default_before_date ?? catalog?.default_before_date ?? null;
@@ -73,7 +75,7 @@ export function SimilarityInvestigationView() {
     sp.set("season", season);
     sp.set("window", win);
     sp.set("topK", String(k));
-    router.replace(`/research/similarity?${sp.toString()}`);
+    router.replace(`/similar-players?${sp.toString()}`);
   };
 
   const handleSelectPlayer = (id: string) => {
@@ -137,152 +139,75 @@ export function SimilarityInvestigationView() {
   };
 
   return (
-    <div className="workbench-content">
-      {catalog === null && <p role="status">Context catalog unavailable. Explicit URL scope is retained; reload to retry.</p>}
-      {/* Page Header */}
-      <div className="page-header">
-        <div>
-          <div className="dist-header-meta">
-            <span className="font-mono text-xs text-muted">F14</span>
-            <span
-              className="replica-badge-gated dist-badge-positive"
-            >
-              Statistical Twin Modeling
-            </span>
-
-          </div>
-          <h1 className="page-title">Statistical Peers & Profile Twins</h1>
-          <p className="page-subtitle">
-            Multidimensional Euclidean distance matching across 8 standardized workload and production dimensions. Standardized z-score calculation relative to the active league cohort.
-          </p>
-        </div>
-
-        <div className="page-actions dist-actions">
-          <button
-            type="button"
-            className="button button-secondary text-xs"
-            onClick={handleCopyUrl}
-            title="Copy shareable link with current similarity parameters"
-          >
-            {copiedUrl ? "✓ Copied!" : "Share Link"}
-          </button>
-          <Link href="/stats" className="button button-primary text-xs">
-            Open in Stats
-          </Link>
-        </div>
-      </div>
-
-      {/* Control Bar */}
-      <div className="filter-bar dist-filter-bar">
-        {/* Quick Player Selectors */}
-        <div className="dist-field-group">
-          <label className="text-xs font-mono text-muted uppercase">Featured Targets</label>
-          <div className="dist-quick-pills">
-            {FEATURED_PLAYERS.map((p) => (
-              <button
-                key={p.id}
-                type="button"
-                className={`filter-pill ${playerId === p.id ? "active" : ""}`}
-                onClick={() => handleSelectPlayer(p.id)}
-              >
-                {p.name} ({p.team})
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Custom Player ID Form */}
-        <EntityField label="Target player" value={playerId} releaseId={releaseId} season={season} phase={phase} beforeDate={beforeDate} onChange={id => { if(id) handleSelectPlayer(id); else setPlayerId(""); }} />
-
-        {/* Window Selector */}
-        <div className="dist-field-group">
-          <label className="text-xs font-mono text-muted uppercase">Window Mode</label>
-          <select
-            value={windowMode}
-            onChange={(e) => {
+    <div className="similarity-view">
+      <FilterBar
+        label="Similar players controls"
+        summary={`${season || "Season"} · ${windowMode === "season" ? "Season" : "Last 10"}`}
+        scope={<>
+          <Field label="Season" layout="inline">
+            <Select value={season} onChange={(e) => setSeason(e.target.value)} aria-label="Season">
+              {season && !catalog?.seasons.includes(season) && <option value={season}>{season} · availability unverified</option>}
+              {catalog?.seasons.map(value => <option key={value} value={value}>{value}</option>)}
+            </Select>
+          </Field>
+          <Field label="Window" layout="inline">
+            <Select value={windowMode} aria-label="Window" onChange={(e) => {
               const val = e.target.value as "last_10" | "season";
               setWindowMode(val);
               updateUrl(playerId, val, topK);
-            }}
-            className="input text-xs dist-select-compact"
-          >
-            <option value="last_10">Recent Form (Last 10 Games)</option>
-            <option value="season">Full Season Aggregate</option>
-          </select>
-        </div>
-
-        {/* Top K */}
-        <div className="dist-field-group">
-          <label className="text-xs font-mono text-muted uppercase">Top Twins (K)</label>
-          <select
-            value={topK}
-            onChange={(e) => {
+            }}>
+              <option value="last_10">Last 10 games</option>
+              <option value="season">Full season</option>
+            </Select>
+          </Field>
+        </>}
+        filters={<>
+          {/* Always reachable, even when the current target has no result; one 40px field. */}
+          <div className="similarity-target-lookup">
+            <LookupInput label="Target player" value={targetLookup} onChange={setTargetLookup} kinds={["player"]} portalDropdown
+              releaseId={releaseId} season={season} placeholder={data?.target.player_name ? `Target: ${data.target.player_name}` : "Choose a target player…"}
+              onSelect={(item) => { setTargetLookup(""); if (item.kind === "player") handleSelectPlayer(item.canonical_id); }} />
+          </div>
+          <Field label="Peers" layout="inline">
+            <Select value={String(topK)} aria-label="Number of peers" onChange={(e) => {
               const val = parseInt(e.target.value, 10);
               setTopK(val);
               updateUrl(playerId, windowMode, val);
-            }}
-            className="input text-xs dist-select-compact"
-          >
-            <option value={3}>Top 3</option>
-            <option value={5}>Top 5 (Default)</option>
-            <option value={8}>Top 8</option>
-            <option value={10}>Top 10</option>
-          </select>
-        </div>
-
-        {/* Min Appearances */}
-        <div className="dist-field-group">
-          <label className="text-xs font-mono text-muted uppercase">Min Games</label>
-          <select
-            value={minAppearances}
-            onChange={(e) => setMinAppearances(parseInt(e.target.value, 10))}
-            className="input text-xs dist-select-compact"
-          >
-            <option value={5}>≥ 5 games</option>
-            <option value={10}>≥ 10 games (Default)</option>
-            <option value={15}>≥ 15 games</option>
-            <option value={20}>≥ 20 games</option>
-          </select>
-        </div>
-
-        {/* Min Minutes */}
-        <div className="dist-field-group">
-          <label className="text-xs font-mono text-muted uppercase">Min Minutes</label>
-          <select
-            value={minMinutes}
-            onChange={(e) => setMinMinutes(parseFloat(e.target.value))}
-            className="input text-xs dist-select-compact"
-          >
-            <option value={50}>≥ 50 min</option>
-            <option value={100}>≥ 100 min</option>
-            <option value={150}>≥ 150 min (Default)</option>
-            <option value={200}>≥ 200 min</option>
-          </select>
-        </div>
-
-        {/* Season */}
-        <div className="dist-field-group">
-          <label className="text-xs font-mono text-muted uppercase">Season</label>
-          <select
-            value={season}
-            onChange={(e) => setSeason(e.target.value)}
-            className="input text-xs dist-select-compact"
-          >
-            {season && !catalog?.seasons.includes(season) && <option value={season}>{season} · availability unverified</option>}{catalog?.seasons.map(value => <option key={value} value={value}>{value}</option>)}
-          </select>
-        </div>
-      </div>
+            }}>
+              {[3, 5, 8, 10].map(k => <option key={k} value={k}>Top {k}</option>)}
+            </Select>
+          </Field>
+          <Field label="Min games" layout="inline">
+            <Select value={String(minAppearances)} aria-label="Minimum games" onChange={(e) => setMinAppearances(parseInt(e.target.value, 10))}>
+              {[5, 10, 15, 20].map(n => <option key={n} value={n}>{n}+</option>)}
+            </Select>
+          </Field>
+          <Field label="Min minutes" layout="inline">
+            <Select value={String(minMinutes)} aria-label="Minimum minutes" onChange={(e) => setMinMinutes(parseFloat(e.target.value))}>
+              {[50, 100, 150, 200].map(n => <option key={n} value={n}>{n}+</option>)}
+            </Select>
+          </Field>
+        </>}
+        count={data ? <CountChip>{data.cohort.cohort_size.toLocaleString("en-US")} in cohort</CountChip> : undefined}
+        details={<DataDetailsButton
+          scope={{ releaseId, season, phase, beforeDate, window: windowMode }}
+          rows={data ? [
+            { label: "Evidence SHA-256", value: data.evidence_hash, mono: true },
+            ...data.disclosures.map((text: string, i: number) => ({ label: i ? "" : "Disclosures", value: text })),
+          ] : []}
+        />}
+      />
+      {catalog === null && <GatedNote why="Explicit URL scope is retained; reload to retry." action={<Button onClick={() => window.location.reload()}>Retry</Button>}>Context catalog unavailable.</GatedNote>}
 
       {loading && (
-        <div className="table-card dist-loading-card">
-          <div className="text-muted">Standardizing cohort z-scores and evaluating Euclidean distances...</div>
+        <div role="status" aria-label="Matching peers" aria-busy="true">
+          <div className="trend-inv-grid-2col"><Skeleton height={440} /><Skeleton height={440} /></div>
+          <Skeleton height={240} />
         </div>
       )}
 
       {error && (
-        <div className="notice-box dist-notice-error">
-          <strong>Peer Matching Error:</strong> {error}
-        </div>
+        <GatedNote tone="warning" why={error} action={<Button onClick={() => window.location.reload()}>Retry</Button>}>Peers could not be matched for this scope.</GatedNote>
       )}
 
       {data && !loading && (
@@ -297,7 +222,12 @@ export function SimilarityInvestigationView() {
                   {data.target.team_tricode || "TOT"} · {data.target.games_played} GP · {data.target.total_minutes} MIN
                 </span>
               </div>
-              <h2 className="section-title mb-3">{data.target.player_name}</h2>
+              <div className="similarity-target-head">
+                <h2 className="section-title">
+                  <PlayerIdentity playerId={data.target.player_id} name={data.target.player_name}
+                    team={data.target.team_tricode && data.target.team_tricode !== "TOT" ? data.target.team_tricode : null} size="lg" />
+                </h2>
+              </div>
 
               {/* 8 Dimensions Grid */}
               <div className="similarity-dim-grid">
@@ -339,10 +269,11 @@ export function SimilarityInvestigationView() {
                 <span className="text-xs font-mono text-muted">{data.cohort.cohort_size} Eligible Candidates</span>
               </div>
               <h3 className="section-title mb-2">
-                Active Standardization Cohort ({data.cohort.window_description})
+                {/* The API's description carries ISO dates and window codes; show them in the display format (D11). */}
+                Active Standardization Cohort ({data.cohort.window_description.replace(/\b\d{4}-\d{2}-\d{2}\b/g, (iso) => formatDate(iso)).replaceAll("last_10", "last 10")})
               </h3>
               <p className="text-xs text-muted mb-3">
-                Filtered strictly to candidates with $\ge {data.cohort.min_appearances}$ games and $\ge {data.cohort.min_minutes}$ minutes. Requires $\ge 6$ overlapping dimensions.
+                Candidates with at least {data.cohort.min_appearances} games and {data.cohort.min_minutes} minutes, sharing at least 6 dimensions.
               </p>
 
               <div className="trend-inv-meta-col text-sm">
@@ -367,9 +298,10 @@ export function SimilarityInvestigationView() {
               <h3 className="dist-table-title">
                 Closest Statistical Peers (Top {data.peers.length})
               </h3>
-              <span className="text-xs text-muted">
-                Ranked by weighted Euclidean distance (D = sqrt(sum(w * (zA - zB)^2) / sum(w))). Lower distance indicates a closer statistical shape match.
-              </span>
+              <div className="similarity-actions">
+                <Button variant="secondary" size="sm" icon={copiedUrl ? "check" : "copy"} onClick={handleCopyUrl}>{copiedUrl ? "Copied" : "Share link"}</Button>
+                <Link href={buildPreservedContextUrl("/stats", searchParams)} className="ui-button ui-button-secondary ui-button-sm">Open in Stats</Link>
+              </div>
             </div>
 
             <div className="trend-inv-meta-col p-5">
@@ -388,12 +320,9 @@ export function SimilarityInvestigationView() {
                         >
                           #{idx + 1}
                         </span>
-                        <div>
-                          <div className="font-bold text-md">{peer.player_name}</div>
-                          <span className="text-xs font-mono text-muted">
-                            {peer.team_tricode || "TOT"} · {peer.games_played} GP · {peer.total_minutes} MIN · {peer.overlapping_dimensions_count} dims
-                          </span>
-                        </div>
+                        {/* "TOT" (several teams) has no single logo, so no team badge is guessed. */}
+                        <PlayerIdentity playerId={peer.player_id} name={peer.player_name} team={peer.team_tricode && peer.team_tricode !== "TOT" ? peer.team_tricode : null}
+                          subtitle={`${peer.team_tricode === "TOT" ? "Multiple teams · " : ""}${peer.games_played} GP · ${peer.total_minutes} MIN · ${peer.overlapping_dimensions_count} dims`} />
                       </div>
 
                       {/* Distance Score Badge and PvP compare link */}
@@ -457,20 +386,9 @@ export function SimilarityInvestigationView() {
             </div>
           </div>
 
-          {/* Cryptographic Lineage Footer */}
-          <div className="table-card dist-provenance-box">
-            <div className="dist-provenance-header">
-              <span className="font-mono text-muted uppercase text-xs">Cryptographic Lineage & Invariants</span>
-              <span className="font-mono text-xs text-muted">
-                SHA-256: <code>{data.evidence_hash}</code>
-              </span>
-            </div>
-            <ul className="dist-provenance-list">
-              {data.disclosures.map((disc: string, idx: number) => (
-                <li key={idx}>{disc}</li>
-              ))}
-            </ul>
-          </div>
+          <GatedNote why={<>Ranked by weighted Euclidean distance over 8 standardized workload and production dimensions, z-scored against the active league cohort: D = sqrt(sum(w · (zA − zB)²) / sum(w)). Lower distance means a closer statistical shape. Evidence hash and disclosures are in Data details.</>}>
+            Peers are the closest standardized stat profiles, not a judgement of quality.
+          </GatedNote>
         </>
       )}
     </div>

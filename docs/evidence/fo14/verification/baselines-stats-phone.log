@@ -1,0 +1,7 @@
+
+Running 1 test using 1 worker
+
+A snapshot doesn't exist at /home/ethioking/dev/courtlens/dashboard/e2e/visual-baselines.spec.ts-snapshots/stats-phone-linux.png, writing actual.
+  ✓  1 e2e/visual-baselines.spec.ts:174:7 › FO14 baselines phone › stats (1.0s)
+
+  1 passed (1.5s)

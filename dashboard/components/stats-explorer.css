@@ -1,3 +1,5 @@
+/* FO14: Stats participates in the shared cascade so foundation controls keep their contracts. */
+@layer pages {
 /* Owner-confirmed Stats reference realignment. Design Language v1 tokens. */
 .stats-workspace {
   --bg: var(--color-bg);
@@ -11,18 +13,17 @@
   background: var(--color-bg);
   min-height: calc(100dvh - var(--header-height));
 }
-.stats-workspace .workbench-content { padding: var(--space-4) var(--space-4) var(--space-6); }
-.stats-workspace .page-header { margin-bottom: var(--space-3); }
-.stats-workspace .page-title { display: flex; align-items: center; gap: var(--space-2); font-size: var(--text-2xl); }
-.stats-workspace .page-title svg { color: var(--color-accent); }
-.stats-workspace .page-subtitle { font-size: var(--text-xs); margin-top: var(--space-1); color: var(--color-text-secondary); }
+/* FO13: the desktop gutter matches the header and every other page (24px); phones keep the dense 8px. */
+.stats-workspace .workbench-content { padding: var(--space-4) var(--space-6) var(--space-6); }
+.stats-workspace .ui-page-header { margin-bottom: var(--space-3); }
 .stats-workspace .context-bar { position: static; padding: var(--space-1) 0; min-height: var(--control-lg); margin-bottom: var(--space-2); background: transparent; border: 0; }
 .stats-workspace .context-select, .stats-workspace .context-input { border-color: transparent; font-size: var(--text-xs); min-height: var(--control-md); padding-block: var(--space-1); }
 .stats-workspace .context-label { font-size: var(--text-xs); }
 .stats-workspace .context-meta { font-size: var(--text-xs); }
+.stats-workspace .player-explorer-container { margin-top: var(--space-4); }
 .stats-workspace .stats-preset-tabs-wrapper { display: flex; align-items: center; flex-wrap: wrap; gap: var(--space-2); border: 0; overflow: visible; margin-bottom: var(--space-2); }
 .stats-workspace .stats-preset-tabs { min-width: 0; max-width: 100%; overflow-x: auto; padding: var(--space-0-5); gap: 0; background: var(--color-surface-2); border-radius: var(--radius-sm); scrollbar-width: thin; }
-.stats-workspace .stats-preset-tab { min-height: var(--control-sm); padding: var(--space-1) var(--space-2); border: 0; border-radius: var(--radius-xs); background: transparent; font-size: var(--text-xs); gap: var(--space-1); }
+.stats-workspace .stats-preset-tab { flex: none; white-space: nowrap; min-height: var(--control-sm); padding: var(--space-1) var(--space-2); border: 0; border-radius: var(--radius-xs); background: transparent; font-size: var(--text-xs); gap: var(--space-1); }
 .stats-workspace .stats-preset-tab { position: relative; isolation: isolate; }
 .stats-workspace .stats-preset-tab.active { background: transparent; box-shadow: none; color: var(--color-accent); }
 .stats-workspace .stats-preset-tab > span:not(.stats-preset-indicator) { position: relative; z-index: var(--z-base); }
@@ -62,8 +63,8 @@
   scroll-padding-top: 70px;
 }
 .stats-default-view-star { margin-left: var(--space-1); color: var(--color-accent); }
-.stats-preset-manage-wrapper { display: flex; gap: var(--space-1); align-items: center; margin-left: var(--space-2); flex-shrink: 0; }
-.stats-manage-views-btn { font-size: var(--text-xs); padding: var(--space-1) var(--space-2); white-space: nowrap; }
+.stats-preset-manage-wrapper { display: flex; gap: var(--space-1); align-items: center; flex-shrink: 0; }
+.stats-workspace .stats-manage-views-btn { min-height: var(--control-md); font-size: var(--text-xs); padding: var(--space-1) var(--space-2); white-space: nowrap; }
 .notice-box-success { border-left-color: var(--color-positive); margin-bottom: var(--space-4); }
 .stats-filter-num-sm { width: 70px; }
 .stats-filter-num-md { width: 100px; }
@@ -91,7 +92,7 @@
 .stats-workspace .dense-stats-table .stats-header-tier-1 th { height: 26px; padding: var(--space-1) var(--space-2); font-size: var(--text-xs); letter-spacing: 0.02em; border: 0; color: var(--color-text); }
 .stats-workspace .dense-stats-table .stats-header-tier-1 .pinned-col-group { box-shadow: none; }
 .stats-workspace .dense-stats-table .stats-header-tier-2 th { top: 26px; height: 40px; padding: var(--space-1) var(--space-2); border: 0; font-size: var(--text-xs); letter-spacing: 0; }
-.stats-workspace .dense-stats-table .table-sort-button { min-height: var(--control-sm); font-size: var(--text-xs); justify-content: center; width: 100%; gap: var(--space-0-5); }
+.stats-workspace .dense-stats-table .table-sort-button { min-height: var(--control-sm); font-size: var(--text-xs); justify-content: flex-end; width: 100%; gap: var(--space-0-5); }
 .stats-workspace .dense-stats-table tbody td { height: 52px; padding: var(--space-1) var(--space-2); font-size: var(--text-md); border-bottom: 1px solid var(--color-hairline); }
 .stats-workspace .density-compact .dense-stats-table tbody td { height: 42px; padding: var(--space-1) var(--space-2); font-size: var(--text-sm); }
 .stats-workspace .dense-stats-table .player-cell { display: flex; gap: var(--space-1); min-width: 0; }
@@ -111,12 +112,13 @@
 .stats-workspace .dense-stats-table tbody tr.row-previewed td { background: var(--color-surface-hover); }
 .stats-workspace .dense-stats-table tbody tr.row-selected td { background: var(--color-surface-3); }
 .stats-workspace .dense-stats-table tbody tr.row-previewed .player-cell-name { color: var(--color-accent); }
-.stats-workspace .dense-stats-table .stat-cell-content { align-items: center; gap: var(--space-0-5); line-height: var(--text-sm-lh); }
+.stats-workspace .dense-stats-table .stat-cell-content { align-items: flex-end; gap: var(--space-0-5); line-height: var(--text-sm-lh); }
 .stats-workspace .dense-stats-table .stat-main-value { font-family: var(--font-sans), sans-serif; font-weight: 500; }
 .stats-workspace .dense-stats-table .stat-pct-sublabel { font-size: var(--text-xs); color: var(--color-text-secondary); font-weight: 400; }
 .stats-workspace .dense-stats-table .pct-elite, .stats-workspace .dense-stats-table .pct-good { color: var(--color-accent); }
 .stats-workspace .stats-header-search { position: relative; display: inline-flex; width: calc(100% - 22px); }
-.stats-workspace .stats-header-search input { width: 100%; min-width: 0; min-height: 26px; padding: var(--space-1) var(--space-6) var(--space-1) var(--space-6); font-size: var(--text-xs); background: var(--color-surface-2); border: 0; border-radius: var(--radius-sm); }
+.stats-workspace .stats-header-search .lookup-input-wrapper { min-height: 26px; padding-inline: var(--space-2) 0; gap: var(--space-1); background: var(--color-surface-2); border: 0; }
+.stats-workspace .stats-header-search input { width: 100%; min-width: 0; min-height: 26px; padding: 0; font-size: var(--text-xs); background: transparent; border: 0; border-radius: 0; }
 .stats-workspace .stats-header-search input::-webkit-search-cancel-button { display: none; }
 .stats-workspace .stats-name-sort { width: 22px; height: 26px; vertical-align: middle; color: var(--color-text-secondary); }
 .stats-workspace .stats-row-actions { text-align: center; white-space: nowrap; }
@@ -165,16 +167,15 @@
   .stats-workspace .stats-scroll-region { --identity-name-width: 220px; }
   .stats-workspace .stats-controls-row, .stats-workspace .stats-table-tools { flex-wrap: wrap; }
   .stats-workspace .workbench-content { padding: var(--space-3) var(--space-2) var(--space-6); }
-  .stats-workspace .page-title { font-size: var(--text-2xl); }
   .stats-workspace .stats-sort-caption { display: block; margin-left: 0; }
   .stats-workspace .stats-scroll-region { height: 480px; }
   .stats-workspace .stats-table-tools .control-pill { min-height: var(--control-md); }
 }
 
-.stats-workspace .stats-metric-cell, .stats-workspace .stats-header-tier-2 .num { text-align: center; }
+.stats-workspace .stats-metric-cell, .stats-workspace .stats-header-tier-2 .num { text-align: right; font-variant-numeric: tabular-nums; }
 .stats-workspace .stats-guide-cell > * { display: block; margin-inline: auto; }
-.stats-workspace .stats-header-search .lookup-search-icon { left: var(--space-2); width: 14px; height: 14px; }
-.stats-workspace .stats-header-search .lookup-clear-btn { right: var(--space-1); }
+.stats-workspace .stats-header-search .lookup-search-icon { width: 14px; height: 14px; }
+.stats-workspace .stats-header-search .lookup-clear-btn { min-width: 24px; min-height: 24px; }
 .stats-workspace .density-compact .stat-pct-sublabel { font-size: var(--text-xs); }
 .stats-workspace .density-compact .player-cell-name { font-size: var(--text-sm); }
 .stats-workspace .density-compact .player-cell-teams { font-size: var(--text-xs); }
@@ -212,3 +213,5 @@
 .stats-workspace .stats-table-frame .dense-stats-table tbody td { border-bottom: 0; }
 .stats-workspace .stats-table-frame .stats-guide-cell .player-portrait,
 .stats-workspace .stats-table-frame .stats-guide-cell .player-portrait-fallback { border: 0; border-radius: var(--radius-pill); background-color: var(--table-surface); overflow: hidden; }
+
+}

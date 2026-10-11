@@ -1,0 +1,267 @@
+{
+  "version": "roster-minute-allocation-v1",
+  "context": {
+    "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+    "snapshot_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+    "dataset_id": "17251a08-a4eb-4f46-b356-999fcf37c65d",
+    "dataset_type": "workbench",
+    "semantic_signature": "67c5a695749aa4303c1fafefa1f4d43c5ff39539dd78af0466592cd8f6040666",
+    "mode": "workbench_recent",
+    "source": "sportsdataverse",
+    "season": "2025-26",
+    "phase": "regular_season",
+    "before_date": "2026-04-13",
+    "cutoff_utc": "2026-04-13T04:00:00+00:00",
+    "window": "season",
+    "coverage_start": "2023-10-24",
+    "coverage_end": "2026-06-13",
+    "metric_version": "v2",
+    "published_at": null
+  },
+  "team": {
+    "id": "1610612738",
+    "tricode": "BOS",
+    "name": "Boston Celtics"
+  },
+  "source": "team-detail-player-game-boxes",
+  "basis": "projected",
+  "position_source": "user_assigned",
+  "units": "projected_minutes_per_game",
+  "allocations": [
+    {
+      "player_id": "1630202",
+      "player_name": "Payton Pritchard",
+      "games_played": 79,
+      "total_minutes": 2555.6,
+      "pts_per_game": 17,
+      "reb_per_game": 3.9,
+      "ast_per_game": 5.2,
+      "allocation_position": "SG",
+      "allocation_minutes": 30
+    },
+    {
+      "player_id": "1630573",
+      "player_name": "Sam Hauser",
+      "games_played": 78,
+      "total_minutes": 1934.2,
+      "pts_per_game": 9.2,
+      "reb_per_game": 3.8,
+      "ast_per_game": 1.5,
+      "allocation_position": "PF",
+      "allocation_minutes": 26
+    },
+    {
+      "player_id": "1628401",
+      "player_name": "Derrick White",
+      "games_played": 77,
+      "total_minutes": 2625,
+      "pts_per_game": 16.5,
+      "reb_per_game": 4.4,
+      "ast_per_game": 5.4,
+      "allocation_position": "PG",
+      "allocation_minutes": 34
+    },
+    {
+      "player_id": "1631248",
+      "player_name": "Baylor Scheierman",
+      "games_played": 76,
+      "total_minutes": 1416.3,
+      "pts_per_game": 5.6,
+      "reb_per_game": 3.5,
+      "ast_per_game": 1.5,
+      "allocation_position": "SF",
+      "allocation_minutes": 18
+    },
+    {
+      "player_id": "1629674",
+      "player_name": "Neemias Queta",
+      "games_played": 75,
+      "total_minutes": 1898.2,
+      "pts_per_game": 10.2,
+      "reb_per_game": 8.4,
+      "ast_per_game": 1.6,
+      "allocation_position": "C",
+      "allocation_minutes": 26
+    },
+    {
+      "player_id": "1642864",
+      "player_name": "Hugo González",
+      "games_played": 74,
+      "total_minutes": 1083.9,
+      "pts_per_game": 3.9,
+      "reb_per_game": 3.3,
+      "ast_per_game": 0.5,
+      "allocation_position": "Unassigned",
+      "allocation_minutes": null
+    },
+    {
+      "player_id": "1627759",
+      "player_name": "Jaylen Brown",
+      "games_played": 70,
+      "total_minutes": 2410.8,
+      "pts_per_game": 28.7,
+      "reb_per_game": 7,
+      "ast_per_game": 5.1,
+      "allocation_position": "SF",
+      "allocation_minutes": 35
+    },
+    {
+      "player_id": "1630568",
+      "player_name": "Luka Garza",
+      "games_played": 68,
+      "total_minutes": 1089.9,
+      "pts_per_game": 8,
+      "reb_per_game": 4.1,
+      "ast_per_game": 1,
+      "allocation_position": "C",
+      "allocation_minutes": 14
+    },
+    {
+      "player_id": "1641775",
+      "player_name": "Jordan Walsh",
+      "games_played": 68,
+      "total_minutes": 1212,
+      "pts_per_game": 5.4,
+      "reb_per_game": 4,
+      "ast_per_game": 0.8,
+      "allocation_position": "SG",
+      "allocation_minutes": null
+    },
+    {
+      "player_id": "1629014",
+      "player_name": "Anfernee Simons",
+      "games_played": 49,
+      "total_minutes": 1201.8,
+      "pts_per_game": 14.2,
+      "reb_per_game": 2.4,
+      "ast_per_game": 2.4,
+      "allocation_position": "PG",
+      "allocation_minutes": 22
+    },
+    {
+      "player_id": "1631169",
+      "player_name": "Josh Minott",
+      "games_played": 33,
+      "total_minutes": 525.7,
+      "pts_per_game": 5.8,
+      "reb_per_game": 3.6,
+      "ast_per_game": 1,
+      "allocation_position": "Unassigned",
+      "allocation_minutes": null
+    },
+    {
+      "player_id": "1631199",
+      "player_name": "Ron Harper Jr.",
+      "games_played": 29,
+      "total_minutes": 317.5,
+      "pts_per_game": 4.2,
+      "reb_per_game": 1.7,
+      "ast_per_game": 0.8,
+      "allocation_position": "Unassigned",
+      "allocation_minutes": null
+    },
+    {
+      "player_id": "1642873",
+      "player_name": "Amari Williams",
+      "games_played": 22,
+      "total_minutes": 145.7,
+      "pts_per_game": 1.4,
+      "reb_per_game": 1.8,
+      "ast_per_game": 0.5,
+      "allocation_position": "Unassigned",
+      "allocation_minutes": null
+    },
+    {
+      "player_id": "1628369",
+      "player_name": "Jayson Tatum",
+      "games_played": 16,
+      "total_minutes": 521.8,
+      "pts_per_game": 21.8,
+      "reb_per_game": 10,
+      "ast_per_game": 5.3,
+      "allocation_position": "Unassigned",
+      "allocation_minutes": null
+    },
+    {
+      "player_id": "202696",
+      "player_name": "Nikola Vučević",
+      "games_played": 16,
+      "total_minutes": 337.8,
+      "pts_per_game": 9.7,
+      "reb_per_game": 6.6,
+      "ast_per_game": 2,
+      "allocation_position": "Unassigned",
+      "allocation_minutes": null
+    },
+    {
+      "player_id": "1630214",
+      "player_name": "Xavier Tillman",
+      "games_played": 14,
+      "total_minutes": 111.4,
+      "pts_per_game": 2.2,
+      "reb_per_game": 1.8,
+      "ast_per_game": 0.4,
+      "allocation_position": "Unassigned",
+      "allocation_minutes": null
+    },
+    {
+      "player_id": "1642917",
+      "player_name": "Max Shulga",
+      "games_played": 11,
+      "total_minutes": 36.3,
+      "pts_per_game": 0.6,
+      "reb_per_game": 0.5,
+      "ast_per_game": 0.2,
+      "allocation_position": "Unassigned",
+      "allocation_minutes": null
+    },
+    {
+      "player_id": "1628449",
+      "player_name": "Chris Boucher",
+      "games_played": 9,
+      "total_minutes": 94.2,
+      "pts_per_game": 2.3,
+      "reb_per_game": 2,
+      "ast_per_game": 0.3,
+      "allocation_position": "Unassigned",
+      "allocation_minutes": null
+    },
+    {
+      "player_id": "1642910",
+      "player_name": "John Tonje",
+      "games_played": 6,
+      "total_minutes": 41.9,
+      "pts_per_game": 2.5,
+      "reb_per_game": 1,
+      "ast_per_game": 0.3,
+      "allocation_position": "Unassigned",
+      "allocation_minutes": null
+    },
+    {
+      "player_id": "1629646",
+      "player_name": "Charles Bassey",
+      "games_played": 5,
+      "total_minutes": 17.1,
+      "pts_per_game": 2.8,
+      "reb_per_game": 1.2,
+      "ast_per_game": 0,
+      "allocation_position": "Unassigned",
+      "allocation_minutes": null
+    },
+    {
+      "player_id": "1630625",
+      "player_name": "Dalano Banton",
+      "games_played": 4,
+      "total_minutes": 52,
+      "pts_per_game": 1.5,
+      "reb_per_game": 1,
+      "ast_per_game": 2.2,
+      "allocation_position": "Unassigned",
+      "allocation_minutes": null
+    }
+  ],
+  "warnings": [
+    "Historical reconstruction from completed records.",
+    "Prior-day boundary: game_date < before_date is strictly enforced."
+  ]
+}

@@ -1,0 +1,331 @@
+[
+  {
+    "name": "directory",
+    "route": "/players",
+    "width": 1440,
+    "status": 200,
+    "consoleErrors": [],
+    "h1": [
+      "Player Directory"
+    ],
+    "subtitleLines": 0,
+    "filterBar": true,
+    "controlHeights": [
+      40
+    ],
+    "loadButtons": 0,
+    "nativeDateInputs": 0,
+    "uuidsVisible": 0,
+    "codeRulesVisible": 0,
+    "isoDatesVisible": 0,
+    "noticeBoxes": 0,
+    "firstResultTop": 299,
+    "pageOverflow": false,
+    "screenshot": "directory-1440.png"
+  },
+  {
+    "name": "profile",
+    "route": "/players/1628389",
+    "width": 1440,
+    "status": 200,
+    "consoleErrors": [],
+    "h1": [
+      "Bam Adebayo"
+    ],
+    "subtitleLines": 1,
+    "filterBar": true,
+    "controlHeights": [
+      40
+    ],
+    "loadButtons": 0,
+    "nativeDateInputs": 0,
+    "uuidsVisible": 0,
+    "codeRulesVisible": 0,
+    "isoDatesVisible": 0,
+    "noticeBoxes": 0,
+    "firstResultTop": 227,
+    "pageOverflow": false,
+    "screenshot": "profile-1440.png"
+  },
+  {
+    "name": "profile-games",
+    "route": "/players/1628389?tab=games",
+    "width": 1440,
+    "status": 200,
+    "consoleErrors": [],
+    "h1": [
+      "Bam Adebayo"
+    ],
+    "subtitleLines": 1,
+    "filterBar": true,
+    "controlHeights": [
+      40
+    ],
+    "loadButtons": 0,
+    "nativeDateInputs": 0,
+    "uuidsVisible": 0,
+    "codeRulesVisible": 0,
+    "isoDatesVisible": 0,
+    "noticeBoxes": 0,
+    "firstResultTop": 227,
+    "pageOverflow": false,
+    "screenshot": "profile-games-1440.png"
+  },
+  {
+    "name": "recent-games",
+    "route": "/last-games",
+    "width": 1440,
+    "status": 200,
+    "consoleErrors": [],
+    "h1": [
+      "Recent Games"
+    ],
+    "subtitleLines": 1,
+    "filterBar": true,
+    "controlHeights": [
+      36,
+      40
+    ],
+    "loadButtons": 0,
+    "nativeDateInputs": 0,
+    "uuidsVisible": 0,
+    "codeRulesVisible": 0,
+    "isoDatesVisible": 0,
+    "noticeBoxes": 0,
+    "firstResultTop": 227,
+    "pageOverflow": false,
+    "screenshot": "recent-games-1440.png"
+  },
+  {
+    "name": "rankings",
+    "route": "/rankings",
+    "width": 1440,
+    "status": 200,
+    "consoleErrors": [],
+    "h1": [
+      "Ranking Boards"
+    ],
+    "subtitleLines": 1,
+    "filterBar": false,
+    "controlHeights": [],
+    "loadButtons": 0,
+    "nativeDateInputs": 0,
+    "uuidsVisible": 0,
+    "codeRulesVisible": 0,
+    "isoDatesVisible": 0,
+    "noticeBoxes": 0,
+    "firstResultTop": 198,
+    "pageOverflow": false,
+    "screenshot": "rankings-1440.png"
+  },
+  {
+    "name": "tierlist",
+    "route": "/tierlist",
+    "width": 1440,
+    "status": 200,
+    "consoleErrors": [],
+    "h1": [
+      "Tier Lists"
+    ],
+    "subtitleLines": 1,
+    "filterBar": false,
+    "controlHeights": [],
+    "loadButtons": 0,
+    "nativeDateInputs": 0,
+    "uuidsVisible": 0,
+    "codeRulesVisible": 0,
+    "isoDatesVisible": 0,
+    "noticeBoxes": 0,
+    "firstResultTop": 198,
+    "pageOverflow": false,
+    "screenshot": "tierlist-1440.png"
+  },
+  {
+    "name": "similar",
+    "route": "/similar-players",
+    "width": 1440,
+    "status": 200,
+    "consoleErrors": [],
+    "h1": [
+      "Similar Players"
+    ],
+    "subtitleLines": 1,
+    "filterBar": true,
+    "controlHeights": [
+      40
+    ],
+    "loadButtons": 0,
+    "nativeDateInputs": 0,
+    "uuidsVisible": 0,
+    "codeRulesVisible": 0,
+    "isoDatesVisible": 0,
+    "noticeBoxes": 0,
+    "firstResultTop": 268,
+    "pageOverflow": false,
+    "screenshot": "similar-1440.png"
+  },
+  {
+    "name": "directory",
+    "route": "/players",
+    "width": 390,
+    "status": 200,
+    "consoleErrors": [],
+    "h1": [
+      "Player Directory"
+    ],
+    "subtitleLines": 0,
+    "filterBar": true,
+    "controlHeights": [
+      40
+    ],
+    "loadButtons": 0,
+    "nativeDateInputs": 0,
+    "uuidsVisible": 0,
+    "codeRulesVisible": 0,
+    "isoDatesVisible": 0,
+    "noticeBoxes": 0,
+    "firstResultTop": 529,
+    "pageOverflow": false,
+    "screenshot": "directory-390.png"
+  },
+  {
+    "name": "profile",
+    "route": "/players/1628389",
+    "width": 390,
+    "status": 200,
+    "consoleErrors": [],
+    "h1": [
+      "Bam Adebayo"
+    ],
+    "subtitleLines": 1,
+    "filterBar": true,
+    "controlHeights": [
+      40
+    ],
+    "loadButtons": 0,
+    "nativeDateInputs": 0,
+    "uuidsVisible": 0,
+    "codeRulesVisible": 0,
+    "isoDatesVisible": 0,
+    "noticeBoxes": 0,
+    "firstResultTop": 253,
+    "pageOverflow": false,
+    "screenshot": "profile-390.png"
+  },
+  {
+    "name": "profile-games",
+    "route": "/players/1628389?tab=games",
+    "width": 390,
+    "status": 200,
+    "consoleErrors": [],
+    "h1": [
+      "Bam Adebayo"
+    ],
+    "subtitleLines": 1,
+    "filterBar": true,
+    "controlHeights": [
+      40
+    ],
+    "loadButtons": 0,
+    "nativeDateInputs": 0,
+    "uuidsVisible": 0,
+    "codeRulesVisible": 0,
+    "isoDatesVisible": 0,
+    "noticeBoxes": 0,
+    "firstResultTop": 253,
+    "pageOverflow": false,
+    "screenshot": "profile-games-390.png"
+  },
+  {
+    "name": "recent-games",
+    "route": "/last-games",
+    "width": 390,
+    "status": 200,
+    "consoleErrors": [],
+    "h1": [
+      "Recent Games"
+    ],
+    "subtitleLines": 1,
+    "filterBar": true,
+    "controlHeights": [
+      40
+    ],
+    "loadButtons": 0,
+    "nativeDateInputs": 0,
+    "uuidsVisible": 0,
+    "codeRulesVisible": 0,
+    "isoDatesVisible": 0,
+    "noticeBoxes": 0,
+    "firstResultTop": 353,
+    "pageOverflow": false,
+    "screenshot": "recent-games-390.png"
+  },
+  {
+    "name": "rankings",
+    "route": "/rankings",
+    "width": 390,
+    "status": 200,
+    "consoleErrors": [],
+    "h1": [
+      "Ranking Boards"
+    ],
+    "subtitleLines": 1,
+    "filterBar": false,
+    "controlHeights": [],
+    "loadButtons": 0,
+    "nativeDateInputs": 0,
+    "uuidsVisible": 0,
+    "codeRulesVisible": 0,
+    "isoDatesVisible": 0,
+    "noticeBoxes": 0,
+    "firstResultTop": 246,
+    "pageOverflow": false,
+    "screenshot": "rankings-390.png"
+  },
+  {
+    "name": "tierlist",
+    "route": "/tierlist",
+    "width": 390,
+    "status": 200,
+    "consoleErrors": [],
+    "h1": [
+      "Tier Lists"
+    ],
+    "subtitleLines": 1,
+    "filterBar": false,
+    "controlHeights": [],
+    "loadButtons": 0,
+    "nativeDateInputs": 0,
+    "uuidsVisible": 0,
+    "codeRulesVisible": 0,
+    "isoDatesVisible": 0,
+    "noticeBoxes": 0,
+    "firstResultTop": 224,
+    "pageOverflow": false,
+    "screenshot": "tierlist-390.png"
+  },
+  {
+    "name": "similar",
+    "route": "/similar-players",
+    "width": 390,
+    "status": 200,
+    "consoleErrors": [],
+    "h1": [
+      "Similar Players"
+    ],
+    "subtitleLines": 1,
+    "filterBar": true,
+    "controlHeights": [
+      40
+    ],
+    "loadButtons": 0,
+    "nativeDateInputs": 0,
+    "uuidsVisible": 0,
+    "codeRulesVisible": 0,
+    "isoDatesVisible": 0,
+    "noticeBoxes": 0,
+    "firstResultTop": 264,
+    "pageOverflow": false,
+    "screenshot": "similar-390.png"
+  }
+]

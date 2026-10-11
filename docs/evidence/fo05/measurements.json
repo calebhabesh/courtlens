@@ -1,0 +1,516 @@
+{
+  "base": "http://localhost:3100",
+  "measuredAt": "2026-10-09T16:58:00.424Z",
+  "views": {
+    "picker-1440": {
+      "viewport": 1440,
+      "header": "Roster Shapes",
+      "subtitleLines": 1,
+      "actionsOnTitleRow": false,
+      "pickerTop": 227,
+      "teamTiles": 30,
+      "boardTop": null,
+      "lanes": [],
+      "laneColumnsLeft": [],
+      "chipHeights": [],
+      "menuTargets": [],
+      "chipHeadshots": 0,
+      "chips": 0,
+      "teamLogo": false,
+      "gauge": null,
+      "gaugeText": null,
+      "horizontalScroll": false,
+      "glyphs": 0,
+      "codeRulesInMain": false,
+      "loadButtons": 0,
+      "releaseInputs": 0,
+      "notesInMainFlow": 0,
+      "filterControlHeights": [
+        40,
+        40,
+        40,
+        40,
+        40
+      ]
+    },
+    "observed-1440": {
+      "viewport": 1440,
+      "header": "Roster Shapes",
+      "subtitleLines": 1,
+      "actionsOnTitleRow": true,
+      "pickerTop": null,
+      "teamTiles": 0,
+      "boardTop": 375,
+      "lanes": [
+        {
+          "lane": "Unassigned",
+          "chips": 21,
+          "share": "100"
+        },
+        {
+          "lane": "PG",
+          "chips": 0,
+          "share": "0"
+        },
+        {
+          "lane": "SG",
+          "chips": 0,
+          "share": "0"
+        },
+        {
+          "lane": "SF",
+          "chips": 0,
+          "share": "0"
+        },
+        {
+          "lane": "PF",
+          "chips": 0,
+          "share": "0"
+        },
+        {
+          "lane": "C",
+          "chips": 0,
+          "share": "0"
+        }
+      ],
+      "laneColumnsLeft": [
+        24,
+        304,
+        584,
+        864,
+        1144
+      ],
+      "chipHeights": [
+        48
+      ],
+      "menuTargets": [
+        28
+      ],
+      "chipHeadshots": 21,
+      "chips": 21,
+      "teamLogo": true,
+      "gauge": "roster-gauge is-observed",
+      "gaugeText": "19,629 observed minutes 82 team games",
+      "horizontalScroll": false,
+      "glyphs": 0,
+      "codeRulesInMain": false,
+      "loadButtons": 0,
+      "releaseInputs": 0,
+      "notesInMainFlow": 1,
+      "filterControlHeights": [
+        40,
+        40,
+        40,
+        40,
+        40
+      ],
+      "tableExpanded": "false"
+    },
+    "assigned-1440": {
+      "viewport": 1440,
+      "header": "Roster Shapes",
+      "subtitleLines": 1,
+      "actionsOnTitleRow": true,
+      "pickerTop": null,
+      "teamTiles": 0,
+      "boardTop": 375,
+      "lanes": [
+        {
+          "lane": "Unassigned",
+          "chips": 13,
+          "share": "22.9"
+        },
+        {
+          "lane": "PG",
+          "chips": 2,
+          "share": "19.5"
+        },
+        {
+          "lane": "SG",
+          "chips": 1,
+          "share": "13"
+        },
+        {
+          "lane": "SF",
+          "chips": 2,
+          "share": "19.5"
+        },
+        {
+          "lane": "PF",
+          "chips": 1,
+          "share": "9.9"
+        },
+        {
+          "lane": "C",
+          "chips": 2,
+          "share": "15.2"
+        }
+      ],
+      "laneColumnsLeft": [
+        24,
+        304,
+        584,
+        864,
+        1144
+      ],
+      "chipHeights": [
+        48
+      ],
+      "menuTargets": [
+        28
+      ],
+      "chipHeadshots": 21,
+      "chips": 21,
+      "teamLogo": true,
+      "gauge": "roster-gauge is-observed",
+      "gaugeText": "19,629 observed minutes 82 team games",
+      "horizontalScroll": false,
+      "glyphs": 0,
+      "codeRulesInMain": false,
+      "loadButtons": 0,
+      "releaseInputs": 0,
+      "notesInMainFlow": 1,
+      "filterControlHeights": [
+        40,
+        40,
+        40,
+        40,
+        40
+      ],
+      "tableExpanded": "false"
+    },
+    "projected-1440": {
+      "viewport": 1440,
+      "header": "Roster Shapes",
+      "subtitleLines": 1,
+      "actionsOnTitleRow": true,
+      "pickerTop": null,
+      "teamTiles": 0,
+      "boardTop": 375,
+      "lanes": [
+        {
+          "lane": "Unassigned",
+          "chips": 13,
+          "share": "0"
+        },
+        {
+          "lane": "PG",
+          "chips": 2,
+          "share": "27.3"
+        },
+        {
+          "lane": "SG",
+          "chips": 1,
+          "share": "14.6"
+        },
+        {
+          "lane": "SF",
+          "chips": 2,
+          "share": "25.9"
+        },
+        {
+          "lane": "PF",
+          "chips": 1,
+          "share": "12.7"
+        },
+        {
+          "lane": "C",
+          "chips": 2,
+          "share": "19.5"
+        }
+      ],
+      "laneColumnsLeft": [
+        24,
+        304,
+        584,
+        864,
+        1144
+      ],
+      "chipHeights": [
+        48
+      ],
+      "menuTargets": [
+        28
+      ],
+      "chipHeadshots": 21,
+      "chips": 21,
+      "teamLogo": true,
+      "gauge": "roster-gauge is-under",
+      "gaugeText": "205.0 / 240 min per game 35.0 under · 13 blank",
+      "horizontalScroll": false,
+      "glyphs": 0,
+      "codeRulesInMain": false,
+      "loadButtons": 0,
+      "releaseInputs": 0,
+      "notesInMainFlow": 1,
+      "filterControlHeights": [
+        40,
+        40,
+        40,
+        40,
+        40
+      ],
+      "tableExpanded": "false"
+    },
+    "dragToSG": true,
+    "gaugeOver": "roster-gauge is-over",
+    "whyHasCodeRules": false,
+    "dataDetailsWarnings": true,
+    "emptyState": "No minutes for Boston Celtics in this scope.\nChange team",
+    "errors-1440": [],
+    "picker-390": {
+      "viewport": 390,
+      "header": "Roster Shapes",
+      "subtitleLines": 1,
+      "actionsOnTitleRow": false,
+      "pickerTop": 223,
+      "teamTiles": 30,
+      "boardTop": null,
+      "lanes": [],
+      "laneColumnsLeft": [],
+      "chipHeights": [],
+      "menuTargets": [],
+      "chipHeadshots": 0,
+      "chips": 0,
+      "teamLogo": false,
+      "gauge": null,
+      "gaugeText": null,
+      "horizontalScroll": false,
+      "glyphs": 0,
+      "codeRulesInMain": false,
+      "loadButtons": 0,
+      "releaseInputs": 0,
+      "notesInMainFlow": 0,
+      "filterControlHeights": [
+        40,
+        40
+      ]
+    },
+    "observed-390": {
+      "viewport": 390,
+      "header": "Roster Shapes",
+      "subtitleLines": 1,
+      "actionsOnTitleRow": false,
+      "pickerTop": null,
+      "teamTiles": 0,
+      "boardTop": 499,
+      "lanes": [
+        {
+          "lane": "Unassigned",
+          "chips": 21,
+          "share": "100"
+        },
+        {
+          "lane": "PG",
+          "chips": 0,
+          "share": "0"
+        },
+        {
+          "lane": "SG",
+          "chips": 0,
+          "share": "0"
+        },
+        {
+          "lane": "SF",
+          "chips": 0,
+          "share": "0"
+        },
+        {
+          "lane": "PF",
+          "chips": 0,
+          "share": "0"
+        },
+        {
+          "lane": "C",
+          "chips": 0,
+          "share": "0"
+        }
+      ],
+      "laneColumnsLeft": [
+        12,
+        12,
+        12,
+        12,
+        12
+      ],
+      "chipHeights": [
+        48
+      ],
+      "menuTargets": [
+        40
+      ],
+      "chipHeadshots": 21,
+      "chips": 21,
+      "teamLogo": true,
+      "gauge": "roster-gauge is-observed",
+      "gaugeText": "19,629 observed minutes 82 team games",
+      "horizontalScroll": false,
+      "glyphs": 0,
+      "codeRulesInMain": false,
+      "loadButtons": 0,
+      "releaseInputs": 0,
+      "notesInMainFlow": 1,
+      "filterControlHeights": [
+        40,
+        40
+      ],
+      "tableExpanded": "false"
+    },
+    "assigned-390": {
+      "viewport": 390,
+      "header": "Roster Shapes",
+      "subtitleLines": 1,
+      "actionsOnTitleRow": false,
+      "pickerTop": null,
+      "teamTiles": 0,
+      "boardTop": 499,
+      "lanes": [
+        {
+          "lane": "Unassigned",
+          "chips": 13,
+          "share": "22.9"
+        },
+        {
+          "lane": "PG",
+          "chips": 2,
+          "share": "19.5"
+        },
+        {
+          "lane": "SG",
+          "chips": 1,
+          "share": "13"
+        },
+        {
+          "lane": "SF",
+          "chips": 2,
+          "share": "19.5"
+        },
+        {
+          "lane": "PF",
+          "chips": 1,
+          "share": "9.9"
+        },
+        {
+          "lane": "C",
+          "chips": 2,
+          "share": "15.2"
+        }
+      ],
+      "laneColumnsLeft": [
+        12,
+        12,
+        12,
+        12,
+        12
+      ],
+      "chipHeights": [
+        48
+      ],
+      "menuTargets": [
+        40
+      ],
+      "chipHeadshots": 21,
+      "chips": 21,
+      "teamLogo": true,
+      "gauge": "roster-gauge is-observed",
+      "gaugeText": "19,629 observed minutes 82 team games",
+      "horizontalScroll": false,
+      "glyphs": 0,
+      "codeRulesInMain": false,
+      "loadButtons": 0,
+      "releaseInputs": 0,
+      "notesInMainFlow": 1,
+      "filterControlHeights": [
+        40,
+        40
+      ],
+      "tableExpanded": "false"
+    },
+    "projected-390": {
+      "viewport": 390,
+      "header": "Roster Shapes",
+      "subtitleLines": 1,
+      "actionsOnTitleRow": false,
+      "pickerTop": null,
+      "teamTiles": 0,
+      "boardTop": 511,
+      "lanes": [
+        {
+          "lane": "Unassigned",
+          "chips": 13,
+          "share": "0"
+        },
+        {
+          "lane": "PG",
+          "chips": 2,
+          "share": "27.3"
+        },
+        {
+          "lane": "SG",
+          "chips": 1,
+          "share": "14.6"
+        },
+        {
+          "lane": "SF",
+          "chips": 2,
+          "share": "25.9"
+        },
+        {
+          "lane": "PF",
+          "chips": 1,
+          "share": "12.7"
+        },
+        {
+          "lane": "C",
+          "chips": 2,
+          "share": "19.5"
+        }
+      ],
+      "laneColumnsLeft": [
+        12,
+        12,
+        12,
+        12,
+        12
+      ],
+      "chipHeights": [
+        48
+      ],
+      "menuTargets": [
+        40
+      ],
+      "chipHeadshots": 21,
+      "chips": 21,
+      "teamLogo": true,
+      "gauge": "roster-gauge is-under",
+      "gaugeText": "205.0 / 240 min per game 35.0 under · 13 blank",
+      "horizontalScroll": false,
+      "glyphs": 0,
+      "codeRulesInMain": false,
+      "loadButtons": 0,
+      "releaseInputs": 0,
+      "notesInMainFlow": 1,
+      "filterControlHeights": [
+        40,
+        40
+      ],
+      "tableExpanded": "false"
+    },
+    "errors-390": []
+  },
+  "export": {
+    "bytes": 7190,
+    "keys": [
+      "version",
+      "context",
+      "team",
+      "source",
+      "basis",
+      "position_source",
+      "units",
+      "allocations",
+      "warnings"
+    ],
+    "byteIdenticalToLegacyFormula": true
+  }
+}

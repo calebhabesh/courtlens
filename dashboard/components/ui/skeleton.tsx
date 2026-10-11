@@ -2,10 +2,13 @@ import type { HTMLAttributes } from "react";
 
 export type SkeletonVariant = "text" | "rect" | "circle";
 
-export interface SkeletonProps extends HTMLAttributes<HTMLDivElement> {
+type SkeletonStyle = Partial<Record<`--${string}`, string | number>>;
+
+export interface SkeletonProps extends Omit<HTMLAttributes<HTMLDivElement>, "style"> {
   variant?: SkeletonVariant;
   width?: string | number;
   height?: string | number;
+  style?: SkeletonStyle;
 }
 
 export function Skeleton({
@@ -16,7 +19,7 @@ export function Skeleton({
   style,
   ...props
 }: SkeletonProps) {
-  const customStyles: Record<string, string | number> = {};
+  const customStyles: SkeletonStyle = {};
 
   if (width !== undefined) {
     customStyles["--skeleton-width"] = typeof width === "number" ? `${width}px` : width;

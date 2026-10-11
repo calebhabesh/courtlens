@@ -1,0 +1,2931 @@
+{
+  "capturedAt": "2026-10-10T02:50:54.134Z",
+  "base": "http://localhost:3103",
+  "api": "http://localhost:8001",
+  "releaseId": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+  "measurements": [
+    {
+      "name": "rapm",
+      "url": "/research/rapm?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13",
+      "width": 1440,
+      "title": "RAPM Research",
+      "subtitleLines": 1,
+      "template": "research",
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "findingsTop": 284,
+      "mainTop": 284,
+      "filterBottom": 268,
+      "controls": [
+        {
+          "label": "Filter by season",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Filter by competition phase",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Through date: Apr 12, 2026",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": false,
+      "numbersNotTabularRight": 0,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "six-factor",
+      "url": "/research/rapm/six-factor",
+      "width": 1440,
+      "title": "RAPM Research",
+      "subtitleLines": 1,
+      "template": "research",
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "findingsTop": 284,
+      "mainTop": 284,
+      "filterBottom": 268,
+      "controls": [
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": false,
+      "numbersNotTabularRight": 0,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "expected-shots",
+      "url": "/research/shooting",
+      "width": 1440,
+      "title": "Shooting",
+      "subtitleLines": 1,
+      "template": "research",
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "findingsTop": 284,
+      "mainTop": 284,
+      "filterBottom": 268,
+      "controls": [
+        {
+          "label": "Registered run",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": false,
+      "numbersNotTabularRight": 0,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "adjusted-shooting",
+      "url": "/research/shooting/adjusted",
+      "width": 1440,
+      "title": "Shooting",
+      "subtitleLines": 1,
+      "template": "research",
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "findingsTop": 284,
+      "mainTop": 284,
+      "filterBottom": 268,
+      "controls": [
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": false,
+      "numbersNotTabularRight": 0,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "aftermath",
+      "url": "/research/shooting/aftermath?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&player_id=1628389",
+      "width": 1440,
+      "title": "Shooting",
+      "subtitleLines": 1,
+      "template": "research",
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "findingsTop": 304,
+      "mainTop": 304,
+      "filterBottom": 288,
+      "controls": [
+        {
+          "label": "Season",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Phase",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Through date: Apr 12, 2026",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Player",
+          "height": 38,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Lower date (inclusive): Select a date",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Minimum attempts",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Minimum games",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": false,
+      "numbersNotTabularRight": 0,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "aftermath-empty",
+      "url": "/research/shooting/aftermath?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13",
+      "width": 1440,
+      "title": "Shooting",
+      "subtitleLines": 1,
+      "template": "research",
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "findingsTop": null,
+      "mainTop": 304,
+      "filterBottom": 288,
+      "controls": [
+        {
+          "label": "Season",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Phase",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Through date: Apr 12, 2026",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Player",
+          "height": 38,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Lower date (inclusive): Select a date",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Minimum attempts",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Minimum games",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": false,
+      "numbersNotTabularRight": 0,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "trends",
+      "url": "/research/trends?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&playerId=1628389",
+      "width": 1440,
+      "title": "Workload Trends",
+      "subtitleLines": 1,
+      "template": "research",
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "findingsTop": 279,
+      "mainTop": 279,
+      "filterBottom": 263,
+      "controls": [
+        {
+          "label": "Filter by season",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Filter by competition phase",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Through date: Apr 12, 2026",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Target player",
+          "height": 38,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Slicing mode",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Period A",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Period B",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Player Periods",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "League Shifts",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": false,
+      "numbersNotTabularRight": 0,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "trends-shifts",
+      "url": "/research/trends?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&view=rank",
+      "width": 1440,
+      "title": "Workload Trends",
+      "subtitleLines": 1,
+      "template": "research",
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "findingsTop": 227,
+      "mainTop": 227,
+      "filterBottom": 211,
+      "controls": [
+        {
+          "label": "Filter by season",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Filter by competition phase",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Through date: Apr 12, 2026",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Metric",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Direction",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Player Periods",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "League Shifts",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": false,
+      "numbersNotTabularRight": 0,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "distributions-distribution",
+      "url": "/research/distributions?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&playerId=1628389&tab=distribution",
+      "width": 1440,
+      "title": "Distributions & Splits",
+      "subtitleLines": 1,
+      "template": "research",
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "findingsTop": 279,
+      "mainTop": 279,
+      "filterBottom": 263,
+      "controls": [
+        {
+          "label": "Filter by season",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Filter by competition phase",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Through date: Apr 12, 2026",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Target player",
+          "height": 38,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Metric",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Window (games)",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Distribution",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Venue & Rest",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Opponent Context",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Dispersion Ranking",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": false,
+      "numbersNotTabularRight": 0,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "distributions-splits",
+      "url": "/research/distributions?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&playerId=1628389&tab=splits",
+      "width": 1440,
+      "title": "Distributions & Splits",
+      "subtitleLines": 1,
+      "template": "research",
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "findingsTop": 279,
+      "mainTop": 279,
+      "filterBottom": 263,
+      "controls": [
+        {
+          "label": "Filter by season",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Filter by competition phase",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Through date: Apr 12, 2026",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Target player",
+          "height": 38,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Distribution",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Venue & Rest",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Opponent Context",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Dispersion Ranking",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": false,
+      "numbersNotTabularRight": 0,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "distributions-opponent",
+      "url": "/research/distributions?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&playerId=1628389&tab=opponent",
+      "width": 1440,
+      "title": "Distributions & Splits",
+      "subtitleLines": 1,
+      "template": "research",
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "findingsTop": 227,
+      "mainTop": 227,
+      "filterBottom": 211,
+      "controls": [
+        {
+          "label": "Filter by season",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Filter by competition phase",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Through date: Apr 12, 2026",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Distribution",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Venue & Rest",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Opponent Context",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Dispersion Ranking",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": false,
+      "numbersNotTabularRight": 0,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "distributions-rank",
+      "url": "/research/distributions?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&playerId=1628389&tab=rank",
+      "width": 1440,
+      "title": "Distributions & Splits",
+      "subtitleLines": 1,
+      "template": "research",
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "findingsTop": 279,
+      "mainTop": 279,
+      "filterBottom": 263,
+      "controls": [
+        {
+          "label": "Filter by season",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Filter by competition phase",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Through date: Apr 12, 2026",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Metric",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Dispersion measure",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Sort order",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Distribution",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Venue & Rest",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Opponent Context",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Dispersion Ranking",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": false,
+      "numbersNotTabularRight": 0,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "defensive-matchups",
+      "url": "/research/defensive-matchups?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13",
+      "width": 1440,
+      "title": "Defensive Matchups",
+      "subtitleLines": 1,
+      "template": "research",
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "findingsTop": 154,
+      "mainTop": 154,
+      "filterBottom": null,
+      "controls": [],
+      "filtersButton": false,
+      "numbersNotTabularRight": 0,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "spatial-epv",
+      "url": "/research/epv?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13",
+      "width": 1440,
+      "title": "Spatial EPV",
+      "subtitleLines": 1,
+      "template": "research",
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "findingsTop": 154,
+      "mainTop": 154,
+      "filterBottom": null,
+      "controls": [],
+      "filtersButton": false,
+      "numbersNotTabularRight": 0,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "forecasts",
+      "url": "/forecasts",
+      "width": 1440,
+      "title": "Points Forecasts",
+      "subtitleLines": 1,
+      "template": "research",
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "findingsTop": 227,
+      "mainTop": 227,
+      "filterBottom": 211,
+      "controls": [
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": false,
+      "numbersNotTabularRight": 0,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "evaluation",
+      "url": "/evaluation",
+      "width": 1440,
+      "title": "Evaluation Archive",
+      "subtitleLines": 1,
+      "template": "research",
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "findingsTop": null,
+      "mainTop": 154,
+      "filterBottom": null,
+      "controls": [],
+      "filtersButton": false,
+      "numbersNotTabularRight": 0,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "case-studies",
+      "url": "/research/case-studies",
+      "width": 1440,
+      "title": "Case Studies",
+      "subtitleLines": 1,
+      "template": "research",
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "findingsTop": 227,
+      "mainTop": 227,
+      "filterBottom": 211,
+      "controls": [
+        {
+          "label": "Case 1: Pascal Siakam",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Case 2: Scottie Barnes",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Case 3: Toronto Raptors",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": false,
+      "numbersNotTabularRight": 0,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "case-studies-team",
+      "url": "/research/case-studies?case=raptors-defense-guardrails",
+      "width": 1440,
+      "title": "Case Studies",
+      "subtitleLines": 1,
+      "template": "research",
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "findingsTop": 227,
+      "mainTop": 227,
+      "filterBottom": 211,
+      "controls": [
+        {
+          "label": "Case 1: Pascal Siakam",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Case 2: Scottie Barnes",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Case 3: Toronto Raptors",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": false,
+      "numbersNotTabularRight": 0,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "investigations",
+      "url": "/investigations",
+      "width": 1440,
+      "title": "Saved Investigations",
+      "subtitleLines": 1,
+      "template": "research",
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "findingsTop": 227,
+      "mainTop": 227,
+      "filterBottom": 211,
+      "controls": [],
+      "filtersButton": false,
+      "numbersNotTabularRight": 0,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "saved-investigation",
+      "url": "/investigations/saved/3bcb37c9-b410-44b1-be7f-c3b368fbe28c",
+      "width": 1440,
+      "title": "B35b production-browser: scoring distribution",
+      "subtitleLines": 1,
+      "template": "research",
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "findingsTop": 227,
+      "mainTop": 227,
+      "filterBottom": 211,
+      "controls": [
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": false,
+      "numbersNotTabularRight": 0,
+      "rawDates": 5,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "calculator",
+      "url": "/calculator",
+      "width": 1440,
+      "title": "Hypothetical Calculator",
+      "subtitleLines": 1,
+      "template": "research",
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "findingsTop": 227,
+      "mainTop": 227,
+      "filterBottom": 211,
+      "controls": [
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": false,
+      "numbersNotTabularRight": 0,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "wingspan",
+      "url": "/wingspan",
+      "width": 1440,
+      "title": "Combine & Wingspan",
+      "subtitleLines": 1,
+      "template": "research",
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "findingsTop": 279,
+      "mainTop": 279,
+      "filterBottom": 263,
+      "controls": [
+        {
+          "label": "Measurement source",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Draft year",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Minimum wingspan (inches)",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Maximum wingspan (inches)",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Search returned records",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Inches",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Centimeters",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": false,
+      "numbersNotTabularRight": 0,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "rapm",
+      "url": "/research/rapm?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13",
+      "width": 768,
+      "title": "RAPM Research",
+      "subtitleLines": 1,
+      "template": "research",
+      "documentWidth": 768,
+      "viewportWidth": 768,
+      "findingsTop": 336,
+      "mainTop": 336,
+      "filterBottom": 320,
+      "controls": [
+        {
+          "label": "Filter by season",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Filter by competition phase",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Through date: Apr 12, 2026",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": false,
+      "numbersNotTabularRight": 0,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "six-factor",
+      "url": "/research/rapm/six-factor",
+      "width": 768,
+      "title": "RAPM Research",
+      "subtitleLines": 1,
+      "template": "research",
+      "documentWidth": 768,
+      "viewportWidth": 768,
+      "findingsTop": 284,
+      "mainTop": 284,
+      "filterBottom": 268,
+      "controls": [
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": false,
+      "numbersNotTabularRight": 0,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "expected-shots",
+      "url": "/research/shooting",
+      "width": 768,
+      "title": "Shooting",
+      "subtitleLines": 1,
+      "template": "research",
+      "documentWidth": 768,
+      "viewportWidth": 768,
+      "findingsTop": 336,
+      "mainTop": 336,
+      "filterBottom": 320,
+      "controls": [
+        {
+          "label": "Registered run",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": false,
+      "numbersNotTabularRight": 0,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "adjusted-shooting",
+      "url": "/research/shooting/adjusted",
+      "width": 768,
+      "title": "Shooting",
+      "subtitleLines": 1,
+      "template": "research",
+      "documentWidth": 768,
+      "viewportWidth": 768,
+      "findingsTop": 284,
+      "mainTop": 284,
+      "filterBottom": 268,
+      "controls": [
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": false,
+      "numbersNotTabularRight": 0,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "aftermath",
+      "url": "/research/shooting/aftermath?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&player_id=1628389",
+      "width": 768,
+      "title": "Shooting",
+      "subtitleLines": 1,
+      "template": "research",
+      "documentWidth": 768,
+      "viewportWidth": 768,
+      "findingsTop": 448,
+      "mainTop": 448,
+      "filterBottom": 432,
+      "controls": [
+        {
+          "label": "Season",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Phase",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Through date: Apr 12, 2026",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Player",
+          "height": 38,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Lower date (inclusive): Select a date",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Minimum attempts",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Minimum games",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": false,
+      "numbersNotTabularRight": 0,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "aftermath-empty",
+      "url": "/research/shooting/aftermath?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13",
+      "width": 768,
+      "title": "Shooting",
+      "subtitleLines": 1,
+      "template": "research",
+      "documentWidth": 768,
+      "viewportWidth": 768,
+      "findingsTop": null,
+      "mainTop": 448,
+      "filterBottom": 432,
+      "controls": [
+        {
+          "label": "Season",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Phase",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Through date: Apr 12, 2026",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Player",
+          "height": 38,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Lower date (inclusive): Select a date",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Minimum attempts",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Minimum games",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": false,
+      "numbersNotTabularRight": 0,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "trends",
+      "url": "/research/trends?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&playerId=1628389",
+      "width": 768,
+      "title": "Workload Trends",
+      "subtitleLines": 1,
+      "template": "research",
+      "documentWidth": 768,
+      "viewportWidth": 768,
+      "findingsTop": 487,
+      "mainTop": 487,
+      "filterBottom": 471,
+      "controls": [
+        {
+          "label": "Filter by season",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Filter by competition phase",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Through date: Apr 12, 2026",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Target player",
+          "height": 38,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Slicing mode",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Period A",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Period B",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Player Periods",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "League Shifts",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": false,
+      "numbersNotTabularRight": 0,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "trends-shifts",
+      "url": "/research/trends?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&view=rank",
+      "width": 768,
+      "title": "Workload Trends",
+      "subtitleLines": 1,
+      "template": "research",
+      "documentWidth": 768,
+      "viewportWidth": 768,
+      "findingsTop": 383,
+      "mainTop": 383,
+      "filterBottom": 367,
+      "controls": [
+        {
+          "label": "Filter by season",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Filter by competition phase",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Through date: Apr 12, 2026",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Metric",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Direction",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Player Periods",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "League Shifts",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": false,
+      "numbersNotTabularRight": 0,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "distributions-distribution",
+      "url": "/research/distributions?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&playerId=1628389&tab=distribution",
+      "width": 768,
+      "title": "Distributions & Splits",
+      "subtitleLines": 1,
+      "template": "research",
+      "documentWidth": 768,
+      "viewportWidth": 768,
+      "findingsTop": 487,
+      "mainTop": 487,
+      "filterBottom": 471,
+      "controls": [
+        {
+          "label": "Filter by season",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Filter by competition phase",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Through date: Apr 12, 2026",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Target player",
+          "height": 38,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Metric",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Window (games)",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Distribution",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Venue & Rest",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Opponent Context",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Dispersion Ranking",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": false,
+      "numbersNotTabularRight": 0,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "distributions-splits",
+      "url": "/research/distributions?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&playerId=1628389&tab=splits",
+      "width": 768,
+      "title": "Distributions & Splits",
+      "subtitleLines": 1,
+      "template": "research",
+      "documentWidth": 768,
+      "viewportWidth": 768,
+      "findingsTop": 383,
+      "mainTop": 383,
+      "filterBottom": 367,
+      "controls": [
+        {
+          "label": "Filter by season",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Filter by competition phase",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Through date: Apr 12, 2026",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Target player",
+          "height": 38,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Distribution",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Venue & Rest",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Opponent Context",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Dispersion Ranking",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": false,
+      "numbersNotTabularRight": 0,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "distributions-opponent",
+      "url": "/research/distributions?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&playerId=1628389&tab=opponent",
+      "width": 768,
+      "title": "Distributions & Splits",
+      "subtitleLines": 1,
+      "template": "research",
+      "documentWidth": 768,
+      "viewportWidth": 768,
+      "findingsTop": 331,
+      "mainTop": 331,
+      "filterBottom": 315,
+      "controls": [
+        {
+          "label": "Filter by season",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Filter by competition phase",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Through date: Apr 12, 2026",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Distribution",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Venue & Rest",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Opponent Context",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Dispersion Ranking",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": false,
+      "numbersNotTabularRight": 0,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "distributions-rank",
+      "url": "/research/distributions?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&playerId=1628389&tab=rank",
+      "width": 768,
+      "title": "Distributions & Splits",
+      "subtitleLines": 1,
+      "template": "research",
+      "documentWidth": 768,
+      "viewportWidth": 768,
+      "findingsTop": 487,
+      "mainTop": 487,
+      "filterBottom": 471,
+      "controls": [
+        {
+          "label": "Filter by season",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Filter by competition phase",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Through date: Apr 12, 2026",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Metric",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Dispersion measure",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Sort order",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Distribution",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Venue & Rest",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Opponent Context",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Dispersion Ranking",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": false,
+      "numbersNotTabularRight": 0,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "defensive-matchups",
+      "url": "/research/defensive-matchups?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13",
+      "width": 768,
+      "title": "Defensive Matchups",
+      "subtitleLines": 1,
+      "template": "research",
+      "documentWidth": 768,
+      "viewportWidth": 768,
+      "findingsTop": 154,
+      "mainTop": 154,
+      "filterBottom": null,
+      "controls": [],
+      "filtersButton": false,
+      "numbersNotTabularRight": 0,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "spatial-epv",
+      "url": "/research/epv?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13",
+      "width": 768,
+      "title": "Spatial EPV",
+      "subtitleLines": 1,
+      "template": "research",
+      "documentWidth": 768,
+      "viewportWidth": 768,
+      "findingsTop": 154,
+      "mainTop": 154,
+      "filterBottom": null,
+      "controls": [],
+      "filtersButton": false,
+      "numbersNotTabularRight": 0,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "forecasts",
+      "url": "/forecasts",
+      "width": 768,
+      "title": "Points Forecasts",
+      "subtitleLines": 1,
+      "template": "research",
+      "documentWidth": 768,
+      "viewportWidth": 768,
+      "findingsTop": 227,
+      "mainTop": 227,
+      "filterBottom": 211,
+      "controls": [
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": false,
+      "numbersNotTabularRight": 0,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "evaluation",
+      "url": "/evaluation",
+      "width": 768,
+      "title": "Evaluation Archive",
+      "subtitleLines": 1,
+      "template": "research",
+      "documentWidth": 768,
+      "viewportWidth": 768,
+      "findingsTop": null,
+      "mainTop": 154,
+      "filterBottom": null,
+      "controls": [],
+      "filtersButton": false,
+      "numbersNotTabularRight": 0,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "case-studies",
+      "url": "/research/case-studies",
+      "width": 768,
+      "title": "Case Studies",
+      "subtitleLines": 1,
+      "template": "research",
+      "documentWidth": 768,
+      "viewportWidth": 768,
+      "findingsTop": 285,
+      "mainTop": 285,
+      "filterBottom": 269,
+      "controls": [
+        {
+          "label": "Case 1: Pascal Siakam",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Case 2: Scottie Barnes",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Case 3: Toronto Raptors",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": false,
+      "numbersNotTabularRight": 0,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "case-studies-team",
+      "url": "/research/case-studies?case=raptors-defense-guardrails",
+      "width": 768,
+      "title": "Case Studies",
+      "subtitleLines": 1,
+      "template": "research",
+      "documentWidth": 768,
+      "viewportWidth": 768,
+      "findingsTop": 285,
+      "mainTop": 285,
+      "filterBottom": 269,
+      "controls": [
+        {
+          "label": "Case 1: Pascal Siakam",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Case 2: Scottie Barnes",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Case 3: Toronto Raptors",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": false,
+      "numbersNotTabularRight": 0,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "investigations",
+      "url": "/investigations",
+      "width": 768,
+      "title": "Saved Investigations",
+      "subtitleLines": 1,
+      "template": "research",
+      "documentWidth": 768,
+      "viewportWidth": 768,
+      "findingsTop": 227,
+      "mainTop": 227,
+      "filterBottom": 211,
+      "controls": [],
+      "filtersButton": false,
+      "numbersNotTabularRight": 0,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "saved-investigation",
+      "url": "/investigations/saved/3bcb37c9-b410-44b1-be7f-c3b368fbe28c",
+      "width": 768,
+      "title": "B35b production-browser: scoring distribution",
+      "subtitleLines": 1,
+      "template": "research",
+      "documentWidth": 768,
+      "viewportWidth": 768,
+      "findingsTop": 267,
+      "mainTop": 267,
+      "filterBottom": 251,
+      "controls": [
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": false,
+      "numbersNotTabularRight": 0,
+      "rawDates": 5,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "calculator",
+      "url": "/calculator",
+      "width": 768,
+      "title": "Hypothetical Calculator",
+      "subtitleLines": 1,
+      "template": "research",
+      "documentWidth": 768,
+      "viewportWidth": 768,
+      "findingsTop": 227,
+      "mainTop": 227,
+      "filterBottom": 211,
+      "controls": [
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": false,
+      "numbersNotTabularRight": 0,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "wingspan",
+      "url": "/wingspan",
+      "width": 768,
+      "title": "Combine & Wingspan",
+      "subtitleLines": 1,
+      "template": "research",
+      "documentWidth": 768,
+      "viewportWidth": 768,
+      "findingsTop": 435,
+      "mainTop": 435,
+      "filterBottom": 419,
+      "controls": [
+        {
+          "label": "Measurement source",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Draft year",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Minimum wingspan (inches)",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Maximum wingspan (inches)",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Search returned records",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Inches",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Centimeters",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": false,
+      "numbersNotTabularRight": 0,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "rapm",
+      "url": "/research/rapm?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13",
+      "width": 390,
+      "title": "RAPM Research",
+      "subtitleLines": 1,
+      "template": "research",
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "findingsTop": 280,
+      "mainTop": 280,
+      "filterBottom": 264,
+      "controls": [
+        {
+          "label": "Filters2025-26 · Regular Season · Apr 12",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": true,
+      "numbersNotTabularRight": 0,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "six-factor",
+      "url": "/research/rapm/six-factor",
+      "width": 390,
+      "title": "RAPM Research",
+      "subtitleLines": 1,
+      "template": "research",
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "findingsTop": 280,
+      "mainTop": 280,
+      "filterBottom": 264,
+      "controls": [
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": false,
+      "numbersNotTabularRight": 0,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "expected-shots",
+      "url": "/research/shooting",
+      "width": 390,
+      "title": "Shooting",
+      "subtitleLines": 1,
+      "template": "research",
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "findingsTop": 280,
+      "mainTop": 280,
+      "filterBottom": 264,
+      "controls": [
+        {
+          "label": "FiltersExpected-Shot Experiment",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": true,
+      "numbersNotTabularRight": 0,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "adjusted-shooting",
+      "url": "/research/shooting/adjusted",
+      "width": 390,
+      "title": "Shooting",
+      "subtitleLines": 1,
+      "template": "research",
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "findingsTop": 280,
+      "mainTop": 280,
+      "filterBottom": 264,
+      "controls": [
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": false,
+      "numbersNotTabularRight": 0,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "aftermath",
+      "url": "/research/shooting/aftermath?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&player_id=1628389",
+      "width": 390,
+      "title": "Shooting",
+      "subtitleLines": 1,
+      "template": "research",
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "findingsTop": 280,
+      "mainTop": 280,
+      "filterBottom": 264,
+      "controls": [
+        {
+          "label": "Filters2025-26",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": true,
+      "numbersNotTabularRight": 0,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "aftermath-empty",
+      "url": "/research/shooting/aftermath?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13",
+      "width": 390,
+      "title": "Shooting",
+      "subtitleLines": 1,
+      "template": "research",
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "findingsTop": null,
+      "mainTop": 280,
+      "filterBottom": 264,
+      "controls": [
+        {
+          "label": "Filters2025-26",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": true,
+      "numbersNotTabularRight": 0,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "trends",
+      "url": "/research/trends?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&playerId=1628389",
+      "width": 390,
+      "title": "Workload Trends",
+      "subtitleLines": 1,
+      "template": "research",
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "findingsTop": 311,
+      "mainTop": 311,
+      "filterBottom": 295,
+      "controls": [
+        {
+          "label": "Player Periods",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "League Shifts",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Filters2025-26 · Regular Season · Apr 12",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": true,
+      "numbersNotTabularRight": 0,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "trends-shifts",
+      "url": "/research/trends?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&view=rank",
+      "width": 390,
+      "title": "Workload Trends",
+      "subtitleLines": 1,
+      "template": "research",
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "findingsTop": 311,
+      "mainTop": 311,
+      "filterBottom": 295,
+      "controls": [
+        {
+          "label": "Player Periods",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "League Shifts",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Filters2025-26 · Regular Season · Apr 12",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": true,
+      "numbersNotTabularRight": 0,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "distributions-distribution",
+      "url": "/research/distributions?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&playerId=1628389&tab=distribution",
+      "width": 390,
+      "title": "Distributions & Splits",
+      "subtitleLines": 1,
+      "template": "research",
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "findingsTop": 311,
+      "mainTop": 311,
+      "filterBottom": 295,
+      "controls": [
+        {
+          "label": "Distribution",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Venue & Rest",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Opponent Context",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Dispersion Ranking",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Filters2025-26 · Regular Season · Apr 12",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": true,
+      "numbersNotTabularRight": 0,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "distributions-splits",
+      "url": "/research/distributions?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&playerId=1628389&tab=splits",
+      "width": 390,
+      "title": "Distributions & Splits",
+      "subtitleLines": 1,
+      "template": "research",
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "findingsTop": 311,
+      "mainTop": 311,
+      "filterBottom": 295,
+      "controls": [
+        {
+          "label": "Distribution",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Venue & Rest",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Opponent Context",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Dispersion Ranking",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Filters2025-26 · Regular Season · Apr 12",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": true,
+      "numbersNotTabularRight": 0,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "distributions-opponent",
+      "url": "/research/distributions?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&playerId=1628389&tab=opponent",
+      "width": 390,
+      "title": "Distributions & Splits",
+      "subtitleLines": 1,
+      "template": "research",
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "findingsTop": 311,
+      "mainTop": 311,
+      "filterBottom": 295,
+      "controls": [
+        {
+          "label": "Distribution",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Venue & Rest",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Opponent Context",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Dispersion Ranking",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Filters2025-26 · Regular Season · Apr 12",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": true,
+      "numbersNotTabularRight": 0,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "distributions-rank",
+      "url": "/research/distributions?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&playerId=1628389&tab=rank",
+      "width": 390,
+      "title": "Distributions & Splits",
+      "subtitleLines": 1,
+      "template": "research",
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "findingsTop": 311,
+      "mainTop": 311,
+      "filterBottom": 295,
+      "controls": [
+        {
+          "label": "Distribution",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Venue & Rest",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Opponent Context",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Dispersion Ranking",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Filters2025-26 · Regular Season · Apr 12",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": true,
+      "numbersNotTabularRight": 0,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "defensive-matchups",
+      "url": "/research/defensive-matchups?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13",
+      "width": 390,
+      "title": "Defensive Matchups",
+      "subtitleLines": 1,
+      "template": "research",
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "findingsTop": 174,
+      "mainTop": 174,
+      "filterBottom": null,
+      "controls": [],
+      "filtersButton": false,
+      "numbersNotTabularRight": 0,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "spatial-epv",
+      "url": "/research/epv?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13",
+      "width": 390,
+      "title": "Spatial EPV",
+      "subtitleLines": 1,
+      "template": "research",
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "findingsTop": 174,
+      "mainTop": 174,
+      "filterBottom": null,
+      "controls": [],
+      "filtersButton": false,
+      "numbersNotTabularRight": 0,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "forecasts",
+      "url": "/forecasts",
+      "width": 390,
+      "title": "Points Forecasts",
+      "subtitleLines": 1,
+      "template": "research",
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "findingsTop": 259,
+      "mainTop": 259,
+      "filterBottom": 243,
+      "controls": [
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": false,
+      "numbersNotTabularRight": 0,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "evaluation",
+      "url": "/evaluation",
+      "width": 390,
+      "title": "Evaluation Archive",
+      "subtitleLines": 1,
+      "template": "research",
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "findingsTop": null,
+      "mainTop": 150,
+      "filterBottom": null,
+      "controls": [],
+      "filtersButton": false,
+      "numbersNotTabularRight": 0,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "case-studies",
+      "url": "/research/case-studies",
+      "width": 390,
+      "title": "Case Studies",
+      "subtitleLines": 1,
+      "template": "research",
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "findingsTop": 311,
+      "mainTop": 311,
+      "filterBottom": 295,
+      "controls": [
+        {
+          "label": "Case 1: Pascal Siakam",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Case 2: Scottie Barnes",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Case 3: Toronto Raptors",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": false,
+      "numbersNotTabularRight": 0,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "case-studies-team",
+      "url": "/research/case-studies?case=raptors-defense-guardrails",
+      "width": 390,
+      "title": "Case Studies",
+      "subtitleLines": 1,
+      "template": "research",
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "findingsTop": 311,
+      "mainTop": 311,
+      "filterBottom": 295,
+      "controls": [
+        {
+          "label": "Case 1: Pascal Siakam",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Case 2: Scottie Barnes",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Case 3: Toronto Raptors",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": false,
+      "numbersNotTabularRight": 0,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "investigations",
+      "url": "/investigations",
+      "width": 390,
+      "title": "Saved Investigations",
+      "subtitleLines": 1,
+      "template": "research",
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "findingsTop": 259,
+      "mainTop": 259,
+      "filterBottom": 243,
+      "controls": [],
+      "filtersButton": false,
+      "numbersNotTabularRight": 0,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "saved-investigation",
+      "url": "/investigations/saved/3bcb37c9-b410-44b1-be7f-c3b368fbe28c",
+      "width": 390,
+      "title": "B35b production-browser: scoring distribution",
+      "subtitleLines": 1,
+      "template": "research",
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "findingsTop": 383,
+      "mainTop": 383,
+      "filterBottom": 367,
+      "controls": [
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": false,
+      "numbersNotTabularRight": 0,
+      "rawDates": 5,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "calculator",
+      "url": "/calculator",
+      "width": 390,
+      "title": "Hypothetical Calculator",
+      "subtitleLines": 1,
+      "template": "research",
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "findingsTop": 307,
+      "mainTop": 307,
+      "filterBottom": 291,
+      "controls": [
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": false,
+      "numbersNotTabularRight": 0,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "wingspan",
+      "url": "/wingspan",
+      "width": 390,
+      "title": "Combine & Wingspan",
+      "subtitleLines": 1,
+      "template": "research",
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "findingsTop": 311,
+      "mainTop": 311,
+      "filterBottom": 295,
+      "controls": [
+        {
+          "label": "Inches",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Centimeters",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "FiltersAll measurements",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": true,
+      "numbersNotTabularRight": 0,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    }
+  ]
+}

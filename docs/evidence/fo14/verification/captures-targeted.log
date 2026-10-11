@@ -1,0 +1,6 @@
+contracts desktop:overflow=0,targets=8,axe=0,errors=0 phone:overflow=0,targets=0,axe=0,errors=0
+design desktop:overflow=0,targets=78,axe=0,errors=0 phone:overflow=0,targets=0,axe=0,errors=1
+free-agency desktop:overflow=0,targets=8,axe=0,errors=0 phone:overflow=0,targets=0,axe=0,errors=0
+players__id_ desktop:overflow=0,targets=21,axe=0,errors=0 phone:overflow=0,targets=0,axe=0,errors=0
+research_ask desktop:overflow=0,targets=22,axe=0,errors=0 phone:overflow=0,targets=0,axe=0,errors=0
+stats desktop:overflow=0,targets=206,axe=0,errors=0 phone:overflow=0,targets=0,axe=0,errors=0

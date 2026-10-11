@@ -1,0 +1,4140 @@
+{
+  "capturedAt": "2026-10-10T04:18:09.542Z",
+  "base": "http://localhost:3103",
+  "api": "http://localhost:8001",
+  "releaseId": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+  "measurements": [
+    {
+      "name": "settings",
+      "url": "/settings",
+      "width": 1440,
+      "finalPath": "/settings",
+      "title": "Settings",
+      "subtitleLines": 1,
+      "template": "article",
+      "contentLeft": 24,
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "findingsTop": null,
+      "mainTop": 154,
+      "filterBottom": null,
+      "afterBarGap": null,
+      "controls": [],
+      "phoneControls": [
+        {
+          "label": "Display",
+          "height": 32
+        },
+        {
+          "label": "Assistant",
+          "height": 32
+        },
+        {
+          "label": "History and privacy",
+          "height": 32
+        },
+        {
+          "label": "Player portraits",
+          "height": 32
+        },
+        {
+          "label": "Install",
+          "height": 32
+        },
+        {
+          "label": "Background worker",
+          "height": 32
+        },
+        {
+          "label": "Sources and terms",
+          "height": 32
+        },
+        {
+          "label": "",
+          "height": 20
+        },
+        {
+          "label": "Configuration details",
+          "height": 28
+        },
+        {
+          "label": "Clear history",
+          "height": 34
+        },
+        {
+          "label": "Acquire more portraits",
+          "height": 28
+        },
+        {
+          "label": "Source and storage",
+          "height": 28
+        },
+        {
+          "label": "Local service requirements",
+          "height": 28
+        },
+        {
+          "label": "Open Data Status",
+          "height": 28
+        }
+      ],
+      "filtersButton": false,
+      "numbersNotTabularRight": 0,
+      "tocLinks": 7,
+      "articleMeasure": 720,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "data-status",
+      "url": "/data-status",
+      "width": 1440,
+      "finalPath": "/data-status",
+      "title": "Data Status",
+      "subtitleLines": 1,
+      "template": "research",
+      "contentLeft": 24,
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "findingsTop": 227,
+      "mainTop": 227,
+      "filterBottom": 211,
+      "afterBarGap": 16,
+      "controls": [
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "phoneControls": [
+        {
+          "label": "Refresh workbench",
+          "height": 28
+        },
+        {
+          "label": "More jobs",
+          "height": 28
+        },
+        {
+          "label": "More jobs",
+          "height": 28
+        },
+        {
+          "label": "Data details",
+          "height": 40
+        },
+        {
+          "label": "Details",
+          "height": 28
+        },
+        {
+          "label": "Details",
+          "height": 28
+        },
+        {
+          "label": "Details",
+          "height": 28
+        },
+        {
+          "label": "Details",
+          "height": 28
+        },
+        {
+          "label": "Details",
+          "height": 28
+        },
+        {
+          "label": "Details",
+          "height": 28
+        },
+        {
+          "label": "Details",
+          "height": 28
+        },
+        {
+          "label": "Details",
+          "height": 28
+        },
+        {
+          "label": "Details",
+          "height": 28
+        },
+        {
+          "label": "Details",
+          "height": 28
+        },
+        {
+          "label": "Details",
+          "height": 28
+        },
+        {
+          "label": "Details",
+          "height": 28
+        },
+        {
+          "label": "Details",
+          "height": 28
+        },
+        {
+          "label": "Details",
+          "height": 28
+        },
+        {
+          "label": "Details",
+          "height": 28
+        },
+        {
+          "label": "Details",
+          "height": 28
+        },
+        {
+          "label": "Details",
+          "height": 28
+        },
+        {
+          "label": "Details",
+          "height": 28
+        },
+        {
+          "label": "Details",
+          "height": 28
+        },
+        {
+          "label": "Details",
+          "height": 28
+        }
+      ],
+      "filtersButton": false,
+      "numbersNotTabularRight": 0,
+      "tocLinks": 0,
+      "articleMeasure": null,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "methodology",
+      "url": "/methodology",
+      "width": 1440,
+      "finalPath": "/methodology",
+      "title": "Methodology",
+      "subtitleLines": 1,
+      "template": "article",
+      "contentLeft": 24,
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "findingsTop": null,
+      "mainTop": 211,
+      "filterBottom": null,
+      "afterBarGap": null,
+      "controls": [],
+      "phoneControls": [
+        {
+          "label": "Principles",
+          "height": 32
+        },
+        {
+          "label": "Impact metrics",
+          "height": 32
+        },
+        {
+          "label": "Metric catalog",
+          "height": 32
+        },
+        {
+          "label": "Historical and prospective",
+          "height": 32
+        },
+        {
+          "label": "Related pages",
+          "height": 32
+        }
+      ],
+      "filtersButton": false,
+      "numbersNotTabularRight": 0,
+      "tocLinks": 5,
+      "articleMeasure": 720,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "methodology-catalog",
+      "url": "/methodology#catalog",
+      "width": 1440,
+      "finalPath": "/methodology",
+      "title": "Methodology",
+      "subtitleLines": 1,
+      "template": "article",
+      "contentLeft": 24,
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "findingsTop": null,
+      "mainTop": 208,
+      "filterBottom": null,
+      "afterBarGap": null,
+      "controls": [],
+      "phoneControls": [
+        {
+          "label": "Principles",
+          "height": 32
+        },
+        {
+          "label": "Impact metrics",
+          "height": 32
+        },
+        {
+          "label": "Metric catalog",
+          "height": 32
+        },
+        {
+          "label": "Historical and prospective",
+          "height": 32
+        },
+        {
+          "label": "Related pages",
+          "height": 32
+        }
+      ],
+      "filtersButton": false,
+      "numbersNotTabularRight": 0,
+      "tocLinks": 5,
+      "articleMeasure": 720,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "learning",
+      "url": "/methodology/learning",
+      "width": 1440,
+      "finalPath": "/methodology/learning",
+      "title": "Methodology",
+      "subtitleLines": 1,
+      "template": "article",
+      "contentLeft": 24,
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "findingsTop": null,
+      "mainTop": 211,
+      "filterBottom": null,
+      "afterBarGap": null,
+      "controls": [],
+      "phoneControls": [
+        {
+          "label": "True shooting",
+          "height": 32
+        },
+        {
+          "label": "Scoring variation",
+          "height": 32
+        },
+        {
+          "label": "Intervals and evidence",
+          "height": 32
+        },
+        {
+          "label": "Retain and reproduce",
+          "height": 32
+        },
+        {
+          "label": "Remove Scottie Barnes from Lesson player",
+          "height": 40
+        },
+        {
+          "label": "Run this pinned distribution without AI",
+          "height": 34
+        }
+      ],
+      "filtersButton": false,
+      "numbersNotTabularRight": 0,
+      "tocLinks": 4,
+      "articleMeasure": 720,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "whats-new",
+      "url": "/whats-new",
+      "width": 1440,
+      "finalPath": "/whats-new",
+      "title": "What's New",
+      "subtitleLines": 1,
+      "template": "article",
+      "contentLeft": 24,
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "findingsTop": null,
+      "mainTop": 211,
+      "filterBottom": null,
+      "afterBarGap": null,
+      "controls": [],
+      "phoneControls": [
+        {
+          "label": "Patch notes: retained analytical operations",
+          "height": 44
+        },
+        {
+          "label": "B35a verified backend boundary",
+          "height": 44
+        },
+        {
+          "label": "B35b interface changes",
+          "height": 32
+        },
+        {
+          "label": "Open gates",
+          "height": 32
+        }
+      ],
+      "filtersButton": false,
+      "numbersNotTabularRight": 0,
+      "tocLinks": 4,
+      "articleMeasure": 720,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "blog",
+      "url": "/whats-new/blog",
+      "width": 1440,
+      "finalPath": "/whats-new/blog",
+      "title": "What's New",
+      "subtitleLines": 1,
+      "template": "article",
+      "contentLeft": 24,
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "findingsTop": null,
+      "mainTop": 211,
+      "filterBottom": null,
+      "afterBarGap": null,
+      "controls": [],
+      "phoneControls": [
+        {
+          "label": "Evidence before narrative",
+          "height": 32
+        },
+        {
+          "label": "What a saved investigation retains",
+          "height": 44
+        },
+        {
+          "label": "Missingness and precision",
+          "height": 32
+        },
+        {
+          "label": "Reproduction under uncertainty",
+          "height": 44
+        },
+        {
+          "label": "Local evidence and provider records",
+          "height": 44
+        }
+      ],
+      "filtersButton": false,
+      "numbersNotTabularRight": 0,
+      "tocLinks": 5,
+      "articleMeasure": 720,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "planner",
+      "url": "/planner",
+      "width": 1440,
+      "finalPath": "/planner",
+      "title": "Planner",
+      "subtitleLines": 1,
+      "template": "board",
+      "contentLeft": 24,
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "findingsTop": 227,
+      "mainTop": 227,
+      "filterBottom": 211,
+      "afterBarGap": 16,
+      "controls": [
+        {
+          "label": "League",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Week starts: Feb 3, 2025",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "phoneControls": [
+        {
+          "label": "Week starts: Feb 3, 2025",
+          "height": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40
+        },
+        {
+          "label": "Remove Maya Chen from Drop",
+          "height": 40
+        },
+        {
+          "label": "Remove Sam Okafor from Add candidate",
+          "height": 40
+        },
+        {
+          "label": "Effective date: Feb 3, 2025",
+          "height": 40
+        },
+        {
+          "label": "Compare scenario",
+          "height": 34
+        }
+      ],
+      "filtersButton": false,
+      "numbersNotTabularRight": 0,
+      "tocLinks": 0,
+      "articleMeasure": null,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "stats",
+      "url": "/stats?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13",
+      "width": 1440,
+      "finalPath": "/stats",
+      "title": "Stats",
+      "subtitleLines": 1,
+      "template": null,
+      "contentLeft": 52,
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "findingsTop": null,
+      "mainTop": 219,
+      "filterBottom": 203,
+      "afterBarGap": 16,
+      "controls": [
+        {
+          "label": "Filter by season",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Filter by competition phase",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Through date: Apr 12, 2026",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Analysis window",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "phoneControls": [
+        {
+          "label": "Through date: Apr 12, 2026",
+          "height": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40
+        },
+        {
+          "label": "Overview",
+          "height": 28
+        },
+        {
+          "label": "Shooting",
+          "height": 28
+        },
+        {
+          "label": "Defense",
+          "height": 28
+        },
+        {
+          "label": "True Shooting",
+          "height": 28
+        },
+        {
+          "label": "Rates (Per 36)",
+          "height": 28
+        },
+        {
+          "label": "Playmaking",
+          "height": 28
+        },
+        {
+          "label": "Rebounding",
+          "height": 28
+        },
+        {
+          "label": "Impact",
+          "height": 28
+        },
+        {
+          "label": "On-Off",
+          "height": 28
+        },
+        {
+          "label": "Six Factor",
+          "height": 28
+        },
+        {
+          "label": "Photos",
+          "height": 28
+        },
+        {
+          "label": "Logos",
+          "height": 28
+        },
+        {
+          "label": "Initials",
+          "height": 28
+        },
+        {
+          "label": "None",
+          "height": 28
+        },
+        {
+          "label": "Manage Views",
+          "height": 32
+        },
+        {
+          "label": "Per Game",
+          "height": 28
+        },
+        {
+          "label": "Totals",
+          "height": 28
+        },
+        {
+          "label": "Per 36",
+          "height": 28
+        },
+        {
+          "label": "Per 75",
+          "height": 28
+        },
+        {
+          "label": "Per 100",
+          "height": 28
+        },
+        {
+          "label": "Table",
+          "height": 28
+        },
+        {
+          "label": "Scatter Plot",
+          "height": 28
+        },
+        {
+          "label": "Trend Lines",
+          "height": 28
+        },
+        {
+          "label": "%iles On",
+          "height": 28
+        },
+        {
+          "label": "Favorites",
+          "height": 28
+        },
+        {
+          "label": "Filters",
+          "height": 28
+        },
+        {
+          "label": "Hotkeys",
+          "height": 28
+        },
+        {
+          "label": "Save legacy scope",
+          "height": 28
+        },
+        {
+          "label": "Sort by Player",
+          "height": 26
+        },
+        {
+          "label": "Sort by GP",
+          "height": 28
+        },
+        {
+          "label": "Sort by MIN",
+          "height": 28
+        },
+        {
+          "label": "Sort by MPG",
+          "height": 28
+        },
+        {
+          "label": "Sort by PPG",
+          "height": 28
+        },
+        {
+          "label": "Sort by RPG",
+          "height": 28
+        },
+        {
+          "label": "Sort by APG",
+          "height": 28
+        },
+        {
+          "label": "Sort by SPG",
+          "height": 28
+        },
+        {
+          "label": "Sort by BPG",
+          "height": 28
+        },
+        {
+          "label": "Sort by FG%",
+          "height": 28
+        },
+        {
+          "label": "Sort by 3P%",
+          "height": 28
+        },
+        {
+          "label": "Sort by FT%",
+          "height": 28
+        },
+        {
+          "label": "Sort by TS%",
+          "height": 28
+        },
+        {
+          "label": "Sort by eFG%",
+          "height": 28
+        },
+        {
+          "label": "Add Luka Dončić to favorites",
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Luka Dončić",
+          "height": 28
+        },
+        {
+          "label": "Open details for Luka Dončić",
+          "height": 28
+        },
+        {
+          "label": "Add Shai Gilgeous-Alexander to favorites",
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Shai Gilgeous-Alexander",
+          "height": 28
+        },
+        {
+          "label": "Open details for Shai Gilgeous-Alexander",
+          "height": 28
+        },
+        {
+          "label": "Add Anthony Edwards to favorites",
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Anthony Edwards",
+          "height": 28
+        },
+        {
+          "label": "Open details for Anthony Edwards",
+          "height": 28
+        },
+        {
+          "label": "Add Jaylen Brown to favorites",
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Jaylen Brown",
+          "height": 28
+        },
+        {
+          "label": "Open details for Jaylen Brown",
+          "height": 28
+        },
+        {
+          "label": "Add Tyrese Maxey to favorites",
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Tyrese Maxey",
+          "height": 28
+        },
+        {
+          "label": "Open details for Tyrese Maxey",
+          "height": 28
+        },
+        {
+          "label": "Add Donovan Mitchell to favorites",
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Donovan Mitchell",
+          "height": 28
+        },
+        {
+          "label": "Open details for Donovan Mitchell",
+          "height": 28
+        },
+        {
+          "label": "Add Kawhi Leonard to favorites",
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Kawhi Leonard",
+          "height": 28
+        },
+        {
+          "label": "Open details for Kawhi Leonard",
+          "height": 28
+        },
+        {
+          "label": "Add Nikola Jokić to favorites",
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Nikola Jokić",
+          "height": 28
+        },
+        {
+          "label": "Open details for Nikola Jokić",
+          "height": 28
+        },
+        {
+          "label": "Add Giannis Antetokounmpo to favorites",
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Giannis Antetokounmpo",
+          "height": 28
+        },
+        {
+          "label": "Open details for Giannis Antetokounmpo",
+          "height": 28
+        },
+        {
+          "label": "Add Lauri Markkanen to favorites",
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Lauri Markkanen",
+          "height": 28
+        },
+        {
+          "label": "Open details for Lauri Markkanen",
+          "height": 28
+        },
+        {
+          "label": "Add Joel Embiid to favorites",
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Joel Embiid",
+          "height": 28
+        },
+        {
+          "label": "Open details for Joel Embiid",
+          "height": 28
+        },
+        {
+          "label": "Add Stephen Curry to favorites",
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Stephen Curry",
+          "height": 28
+        },
+        {
+          "label": "Open details for Stephen Curry",
+          "height": 28
+        },
+        {
+          "label": "Add Devin Booker to favorites",
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Devin Booker",
+          "height": 28
+        },
+        {
+          "label": "Open details for Devin Booker",
+          "height": 28
+        },
+        {
+          "label": "Add Jalen Brunson to favorites",
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Jalen Brunson",
+          "height": 28
+        },
+        {
+          "label": "Open details for Jalen Brunson",
+          "height": 28
+        },
+        {
+          "label": "Add Kevin Durant to favorites",
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Kevin Durant",
+          "height": 28
+        },
+        {
+          "label": "Open details for Kevin Durant",
+          "height": 28
+        },
+        {
+          "label": "Add Jamal Murray to favorites",
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Jamal Murray",
+          "height": 28
+        },
+        {
+          "label": "Open details for Jamal Murray",
+          "height": 28
+        },
+        {
+          "label": "Add Victor Wembanyama to favorites",
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Victor Wembanyama",
+          "height": 28
+        },
+        {
+          "label": "Open details for Victor Wembanyama",
+          "height": 28
+        },
+        {
+          "label": "Add Michael Porter Jr. to favorites",
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Michael Porter Jr.",
+          "height": 28
+        },
+        {
+          "label": "Open details for Michael Porter Jr.",
+          "height": 28
+        },
+        {
+          "label": "Add Deni Avdija to favorites",
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Deni Avdija",
+          "height": 28
+        },
+        {
+          "label": "Open details for Deni Avdija",
+          "height": 28
+        },
+        {
+          "label": "Add Pascal Siakam to favorites",
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Pascal Siakam",
+          "height": 28
+        },
+        {
+          "label": "Open details for Pascal Siakam",
+          "height": 28
+        },
+        {
+          "label": "Add Cade Cunningham to favorites",
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Cade Cunningham",
+          "height": 28
+        },
+        {
+          "label": "Open details for Cade Cunningham",
+          "height": 28
+        },
+        {
+          "label": "Add Keyonte George to favorites",
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Keyonte George",
+          "height": 28
+        },
+        {
+          "label": "Open details for Keyonte George",
+          "height": 28
+        },
+        {
+          "label": "Add James Harden to favorites",
+          "height": 26
+        },
+        {
+          "label": "Pin preview for James Harden",
+          "height": 28
+        },
+        {
+          "label": "Open details for James Harden",
+          "height": 28
+        },
+        {
+          "label": "Add Austin Reaves to favorites",
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Austin Reaves",
+          "height": 28
+        },
+        {
+          "label": "Open details for Austin Reaves",
+          "height": 28
+        },
+        {
+          "label": "Add Jalen Johnson to favorites",
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Jalen Johnson",
+          "height": 28
+        },
+        {
+          "label": "Open details for Jalen Johnson",
+          "height": 28
+        },
+        {
+          "label": "Add Paolo Banchero to favorites",
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Paolo Banchero",
+          "height": 28
+        },
+        {
+          "label": "Open details for Paolo Banchero",
+          "height": 28
+        },
+        {
+          "label": "Add Jayson Tatum to favorites",
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Jayson Tatum",
+          "height": 28
+        },
+        {
+          "label": "Open details for Jayson Tatum",
+          "height": 28
+        },
+        {
+          "label": "Add Norman Powell to favorites",
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Norman Powell",
+          "height": 28
+        },
+        {
+          "label": "Open details for Norman Powell",
+          "height": 28
+        },
+        {
+          "label": "Add Trey Murphy III to favorites",
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Trey Murphy III",
+          "height": 28
+        },
+        {
+          "label": "Open details for Trey Murphy III",
+          "height": 28
+        },
+        {
+          "label": "Add Brandon Ingram to favorites",
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Brandon Ingram",
+          "height": 28
+        },
+        {
+          "label": "Open details for Brandon Ingram",
+          "height": 28
+        },
+        {
+          "label": "Add Julius Randle to favorites",
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Julius Randle",
+          "height": 28
+        },
+        {
+          "label": "Open details for Julius Randle",
+          "height": 28
+        },
+        {
+          "label": "Add Zion Williamson to favorites",
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Zion Williamson",
+          "height": 28
+        },
+        {
+          "label": "Open details for Zion Williamson",
+          "height": 28
+        },
+        {
+          "label": "Add Cooper Flagg to favorites",
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Cooper Flagg",
+          "height": 28
+        },
+        {
+          "label": "Open details for Cooper Flagg",
+          "height": 28
+        },
+        {
+          "label": "Add LeBron James to favorites",
+          "height": 26
+        },
+        {
+          "label": "Pin preview for LeBron James",
+          "height": 28
+        },
+        {
+          "label": "Open details for LeBron James",
+          "height": 28
+        },
+        {
+          "label": "Add Nickeil Alexander-Walker to favorites",
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Nickeil Alexander-Walker",
+          "height": 28
+        },
+        {
+          "label": "Open details for Nickeil Alexander-Walker",
+          "height": 28
+        },
+        {
+          "label": "Add Shaedon Sharpe to favorites",
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Shaedon Sharpe",
+          "height": 28
+        },
+        {
+          "label": "Open details for Shaedon Sharpe",
+          "height": 28
+        },
+        {
+          "label": "Add Franz Wagner to favorites",
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Franz Wagner",
+          "height": 28
+        },
+        {
+          "label": "Open details for Franz Wagner",
+          "height": 28
+        },
+        {
+          "label": "Add Tyler Herro to favorites",
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Tyler Herro",
+          "height": 28
+        },
+        {
+          "label": "Open details for Tyler Herro",
+          "height": 28
+        },
+        {
+          "label": "Add Alperen Sengun to favorites",
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Alperen Sengun",
+          "height": 28
+        },
+        {
+          "label": "Open details for Alperen Sengun",
+          "height": 28
+        },
+        {
+          "label": "Add Anthony Davis to favorites",
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Anthony Davis",
+          "height": 28
+        },
+        {
+          "label": "Open details for Anthony Davis",
+          "height": 28
+        },
+        {
+          "label": "Add Dillon Brooks to favorites",
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Dillon Brooks",
+          "height": 28
+        },
+        {
+          "label": "Open details for Dillon Brooks",
+          "height": 28
+        },
+        {
+          "label": "Add Brandon Miller to favorites",
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Brandon Miller",
+          "height": 28
+        },
+        {
+          "label": "Open details for Brandon Miller",
+          "height": 28
+        },
+        {
+          "label": "Add Karl-Anthony Towns to favorites",
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Karl-Anthony Towns",
+          "height": 28
+        },
+        {
+          "label": "Open details for Karl-Anthony Towns",
+          "height": 28
+        },
+        {
+          "label": "Add Bam Adebayo to favorites",
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Bam Adebayo",
+          "height": 28
+        },
+        {
+          "label": "Open details for Bam Adebayo",
+          "height": 28
+        },
+        {
+          "label": "Add LaMelo Ball to favorites",
+          "height": 26
+        },
+        {
+          "label": "Pin preview for LaMelo Ball",
+          "height": 28
+        },
+        {
+          "label": "Open details for LaMelo Ball",
+          "height": 28
+        },
+        {
+          "label": "Add Desmond Bane to favorites",
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Desmond Bane",
+          "height": 28
+        },
+        {
+          "label": "Open details for Desmond Bane",
+          "height": 28
+        },
+        {
+          "label": "Add Jimmy Butler III to favorites",
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Jimmy Butler III",
+          "height": 28
+        },
+        {
+          "label": "Open details for Jimmy Butler III",
+          "height": 28
+        },
+        {
+          "label": "Add Ty Jerome to favorites",
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Ty Jerome",
+          "height": 28
+        },
+        {
+          "label": "Open details for Ty Jerome",
+          "height": 28
+        },
+        {
+          "label": "Add Ja Morant to favorites",
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Ja Morant",
+          "height": 28
+        },
+        {
+          "label": "Open details for Ja Morant",
+          "height": 28
+        },
+        {
+          "label": "Add Jalen Duren to favorites",
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Jalen Duren",
+          "height": 28
+        },
+        {
+          "label": "Open details for Jalen Duren",
+          "height": 28
+        },
+        {
+          "label": "Collapse player preview",
+          "height": 28
+        },
+        {
+          "label": "Standard Density",
+          "height": 28
+        },
+        {
+          "label": "Expand Table (T)",
+          "height": 28
+        },
+        {
+          "label": "First Page",
+          "height": 28
+        },
+        {
+          "label": "Next Page",
+          "height": 28
+        }
+      ],
+      "filtersButton": false,
+      "numbersNotTabularRight": 40,
+      "tocLinks": 0,
+      "articleMeasure": null,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "ask-manual",
+      "url": "/research/ask?experience=manual",
+      "width": 1440,
+      "finalPath": "/research/ask",
+      "title": "Ask CourtLens",
+      "subtitleLines": 1,
+      "template": "research",
+      "contentLeft": 24,
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "findingsTop": null,
+      "mainTop": 154,
+      "filterBottom": null,
+      "afterBarGap": null,
+      "controls": [],
+      "phoneControls": [
+        {
+          "label": "Open assistant",
+          "height": 28
+        },
+        {
+          "label": "Clear conversation",
+          "height": 40
+        },
+        {
+          "label": "Before date (exclusive): Jun 30, 2026",
+          "height": 40
+        },
+        {
+          "label": "Whose minutes increased recently without scoring increasing?",
+          "height": 40
+        },
+        {
+          "label": "Which players have produced similarly to Scottie Barnes over their last ten appe",
+          "height": 40
+        },
+        {
+          "label": "How variable has Scottie Barnes’s scoring been, and did his minutes vary too?",
+          "height": 40
+        },
+        {
+          "label": "Ask CourtLens",
+          "height": 40
+        }
+      ],
+      "filtersButton": false,
+      "numbersNotTabularRight": 0,
+      "tocLinks": 0,
+      "articleMeasure": null,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "schedule-redirect",
+      "url": "/schedule",
+      "width": 1440,
+      "finalPath": "/live",
+      "title": "Live",
+      "subtitleLines": 1,
+      "template": "board",
+      "contentLeft": 24,
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "findingsTop": null,
+      "mainTop": 374,
+      "filterBottom": 268,
+      "afterBarGap": 16,
+      "controls": [
+        {
+          "label": "Slate date: Oct 10, 2026",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "phoneControls": [
+        {
+          "label": "Pause updates",
+          "height": 34
+        },
+        {
+          "label": "Slate date: Oct 10, 2026",
+          "height": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40
+        },
+        {
+          "label": "Why?",
+          "height": 28
+        },
+        {
+          "label": "Why?",
+          "height": 28
+        }
+      ],
+      "filtersButton": false,
+      "numbersNotTabularRight": 0,
+      "tocLinks": 0,
+      "articleMeasure": null,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "settings",
+      "url": "/settings",
+      "width": 768,
+      "finalPath": "/settings",
+      "title": "Settings",
+      "subtitleLines": 1,
+      "template": "article",
+      "contentLeft": 24,
+      "documentWidth": 768,
+      "viewportWidth": 768,
+      "findingsTop": null,
+      "mainTop": 210,
+      "filterBottom": null,
+      "afterBarGap": null,
+      "controls": [],
+      "phoneControls": [
+        {
+          "label": "Display",
+          "height": 40
+        },
+        {
+          "label": "Assistant",
+          "height": 40
+        },
+        {
+          "label": "History and privacy",
+          "height": 40
+        },
+        {
+          "label": "Player portraits",
+          "height": 40
+        },
+        {
+          "label": "Install",
+          "height": 40
+        },
+        {
+          "label": "Background worker",
+          "height": 40
+        },
+        {
+          "label": "Sources and terms",
+          "height": 40
+        },
+        {
+          "label": "",
+          "height": 20
+        },
+        {
+          "label": "Configuration details",
+          "height": 28
+        },
+        {
+          "label": "Clear history",
+          "height": 34
+        },
+        {
+          "label": "Acquire more portraits",
+          "height": 28
+        },
+        {
+          "label": "Source and storage",
+          "height": 28
+        },
+        {
+          "label": "Local service requirements",
+          "height": 28
+        },
+        {
+          "label": "Open Data Status",
+          "height": 28
+        }
+      ],
+      "filtersButton": false,
+      "numbersNotTabularRight": 0,
+      "tocLinks": 7,
+      "articleMeasure": 720,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "data-status",
+      "url": "/data-status",
+      "width": 768,
+      "finalPath": "/data-status",
+      "title": "Data Status",
+      "subtitleLines": 1,
+      "template": "research",
+      "contentLeft": 24,
+      "documentWidth": 768,
+      "viewportWidth": 768,
+      "findingsTop": 227,
+      "mainTop": 227,
+      "filterBottom": 211,
+      "afterBarGap": 16,
+      "controls": [
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "phoneControls": [
+        {
+          "label": "Refresh workbench",
+          "height": 28
+        },
+        {
+          "label": "More jobs",
+          "height": 28
+        },
+        {
+          "label": "More jobs",
+          "height": 28
+        },
+        {
+          "label": "Data details",
+          "height": 40
+        },
+        {
+          "label": "Details",
+          "height": 28
+        },
+        {
+          "label": "Details",
+          "height": 28
+        },
+        {
+          "label": "Details",
+          "height": 28
+        },
+        {
+          "label": "Details",
+          "height": 28
+        },
+        {
+          "label": "Details",
+          "height": 28
+        },
+        {
+          "label": "Details",
+          "height": 28
+        },
+        {
+          "label": "Details",
+          "height": 28
+        },
+        {
+          "label": "Details",
+          "height": 28
+        },
+        {
+          "label": "Details",
+          "height": 28
+        },
+        {
+          "label": "Details",
+          "height": 28
+        },
+        {
+          "label": "Details",
+          "height": 28
+        },
+        {
+          "label": "Details",
+          "height": 28
+        },
+        {
+          "label": "Details",
+          "height": 28
+        },
+        {
+          "label": "Details",
+          "height": 28
+        },
+        {
+          "label": "Details",
+          "height": 28
+        },
+        {
+          "label": "Details",
+          "height": 28
+        },
+        {
+          "label": "Details",
+          "height": 28
+        },
+        {
+          "label": "Details",
+          "height": 28
+        },
+        {
+          "label": "Details",
+          "height": 28
+        },
+        {
+          "label": "Details",
+          "height": 28
+        }
+      ],
+      "filtersButton": false,
+      "numbersNotTabularRight": 0,
+      "tocLinks": 0,
+      "articleMeasure": null,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "methodology",
+      "url": "/methodology",
+      "width": 768,
+      "finalPath": "/methodology",
+      "title": "Methodology",
+      "subtitleLines": 1,
+      "template": "article",
+      "contentLeft": 24,
+      "documentWidth": 768,
+      "viewportWidth": 768,
+      "findingsTop": null,
+      "mainTop": 267,
+      "filterBottom": null,
+      "afterBarGap": null,
+      "controls": [],
+      "phoneControls": [
+        {
+          "label": "Principles",
+          "height": 40
+        },
+        {
+          "label": "Impact metrics",
+          "height": 40
+        },
+        {
+          "label": "Metric catalog",
+          "height": 40
+        },
+        {
+          "label": "Historical and prospective",
+          "height": 40
+        },
+        {
+          "label": "Related pages",
+          "height": 40
+        }
+      ],
+      "filtersButton": false,
+      "numbersNotTabularRight": 0,
+      "tocLinks": 5,
+      "articleMeasure": 720,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "methodology-catalog",
+      "url": "/methodology#catalog",
+      "width": 768,
+      "finalPath": "/methodology",
+      "title": "Methodology",
+      "subtitleLines": 1,
+      "template": "article",
+      "contentLeft": 24,
+      "documentWidth": 768,
+      "viewportWidth": 768,
+      "findingsTop": null,
+      "mainTop": 208,
+      "filterBottom": null,
+      "afterBarGap": null,
+      "controls": [],
+      "phoneControls": [
+        {
+          "label": "Principles",
+          "height": 40
+        },
+        {
+          "label": "Impact metrics",
+          "height": 40
+        },
+        {
+          "label": "Metric catalog",
+          "height": 40
+        },
+        {
+          "label": "Historical and prospective",
+          "height": 40
+        },
+        {
+          "label": "Related pages",
+          "height": 40
+        }
+      ],
+      "filtersButton": false,
+      "numbersNotTabularRight": 0,
+      "tocLinks": 5,
+      "articleMeasure": 720,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "learning",
+      "url": "/methodology/learning",
+      "width": 768,
+      "finalPath": "/methodology/learning",
+      "title": "Methodology",
+      "subtitleLines": 1,
+      "template": "article",
+      "contentLeft": 24,
+      "documentWidth": 768,
+      "viewportWidth": 768,
+      "findingsTop": null,
+      "mainTop": 267,
+      "filterBottom": null,
+      "afterBarGap": null,
+      "controls": [],
+      "phoneControls": [
+        {
+          "label": "True shooting",
+          "height": 40
+        },
+        {
+          "label": "Scoring variation",
+          "height": 40
+        },
+        {
+          "label": "Intervals and evidence",
+          "height": 40
+        },
+        {
+          "label": "Retain and reproduce",
+          "height": 40
+        },
+        {
+          "label": "Remove Scottie Barnes from Lesson player",
+          "height": 40
+        },
+        {
+          "label": "Run this pinned distribution without AI",
+          "height": 34
+        }
+      ],
+      "filtersButton": false,
+      "numbersNotTabularRight": 0,
+      "tocLinks": 4,
+      "articleMeasure": 720,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "whats-new",
+      "url": "/whats-new",
+      "width": 768,
+      "finalPath": "/whats-new",
+      "title": "What's New",
+      "subtitleLines": 1,
+      "template": "article",
+      "contentLeft": 24,
+      "documentWidth": 768,
+      "viewportWidth": 768,
+      "findingsTop": null,
+      "mainTop": 267,
+      "filterBottom": null,
+      "afterBarGap": null,
+      "controls": [],
+      "phoneControls": [
+        {
+          "label": "Patch notes: retained analytical operations",
+          "height": 40
+        },
+        {
+          "label": "B35a verified backend boundary",
+          "height": 40
+        },
+        {
+          "label": "B35b interface changes",
+          "height": 40
+        },
+        {
+          "label": "Open gates",
+          "height": 40
+        }
+      ],
+      "filtersButton": false,
+      "numbersNotTabularRight": 0,
+      "tocLinks": 4,
+      "articleMeasure": 720,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "blog",
+      "url": "/whats-new/blog",
+      "width": 768,
+      "finalPath": "/whats-new/blog",
+      "title": "What's New",
+      "subtitleLines": 1,
+      "template": "article",
+      "contentLeft": 24,
+      "documentWidth": 768,
+      "viewportWidth": 768,
+      "findingsTop": null,
+      "mainTop": 267,
+      "filterBottom": null,
+      "afterBarGap": null,
+      "controls": [],
+      "phoneControls": [
+        {
+          "label": "Evidence before narrative",
+          "height": 40
+        },
+        {
+          "label": "What a saved investigation retains",
+          "height": 40
+        },
+        {
+          "label": "Missingness and precision",
+          "height": 40
+        },
+        {
+          "label": "Reproduction under uncertainty",
+          "height": 40
+        },
+        {
+          "label": "Local evidence and provider records",
+          "height": 40
+        }
+      ],
+      "filtersButton": false,
+      "numbersNotTabularRight": 0,
+      "tocLinks": 5,
+      "articleMeasure": 720,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "planner",
+      "url": "/planner",
+      "width": 768,
+      "finalPath": "/planner",
+      "title": "Planner",
+      "subtitleLines": 1,
+      "template": "board",
+      "contentLeft": 24,
+      "documentWidth": 768,
+      "viewportWidth": 768,
+      "findingsTop": 227,
+      "mainTop": 227,
+      "filterBottom": 211,
+      "afterBarGap": 16,
+      "controls": [
+        {
+          "label": "League",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Week starts: Feb 3, 2025",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "phoneControls": [
+        {
+          "label": "Week starts: Feb 3, 2025",
+          "height": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40
+        },
+        {
+          "label": "Remove Maya Chen from Drop",
+          "height": 40
+        },
+        {
+          "label": "Remove Sam Okafor from Add candidate",
+          "height": 40
+        },
+        {
+          "label": "Effective date: Feb 3, 2025",
+          "height": 40
+        },
+        {
+          "label": "Compare scenario",
+          "height": 34
+        }
+      ],
+      "filtersButton": false,
+      "numbersNotTabularRight": 0,
+      "tocLinks": 0,
+      "articleMeasure": null,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "stats",
+      "url": "/stats?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13",
+      "width": 768,
+      "finalPath": "/stats",
+      "title": "Stats",
+      "subtitleLines": 1,
+      "template": null,
+      "contentLeft": 52,
+      "documentWidth": 768,
+      "viewportWidth": 768,
+      "findingsTop": null,
+      "mainTop": 271,
+      "filterBottom": 255,
+      "afterBarGap": 16,
+      "controls": [
+        {
+          "label": "Filter by season",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Filter by competition phase",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Through date: Apr 12, 2026",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Analysis window",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "phoneControls": [
+        {
+          "label": "Through date: Apr 12, 2026",
+          "height": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40
+        },
+        {
+          "label": "Overview",
+          "height": 28
+        },
+        {
+          "label": "Shooting",
+          "height": 28
+        },
+        {
+          "label": "Defense",
+          "height": 28
+        },
+        {
+          "label": "True Shooting",
+          "height": 28
+        },
+        {
+          "label": "Rates (Per 36)",
+          "height": 28
+        },
+        {
+          "label": "Playmaking",
+          "height": 28
+        },
+        {
+          "label": "Rebounding",
+          "height": 28
+        },
+        {
+          "label": "Impact",
+          "height": 28
+        },
+        {
+          "label": "On-Off",
+          "height": 28
+        },
+        {
+          "label": "Six Factor",
+          "height": 28
+        },
+        {
+          "label": "Photos",
+          "height": 28
+        },
+        {
+          "label": "Logos",
+          "height": 28
+        },
+        {
+          "label": "Initials",
+          "height": 28
+        },
+        {
+          "label": "None",
+          "height": 28
+        },
+        {
+          "label": "Manage Views",
+          "height": 32
+        },
+        {
+          "label": "Per Game",
+          "height": 28
+        },
+        {
+          "label": "Totals",
+          "height": 28
+        },
+        {
+          "label": "Per 36",
+          "height": 28
+        },
+        {
+          "label": "Per 75",
+          "height": 28
+        },
+        {
+          "label": "Per 100",
+          "height": 28
+        },
+        {
+          "label": "Table",
+          "height": 28
+        },
+        {
+          "label": "Scatter Plot",
+          "height": 28
+        },
+        {
+          "label": "Trend Lines",
+          "height": 28
+        },
+        {
+          "label": "%iles On",
+          "height": 28
+        },
+        {
+          "label": "Favorites",
+          "height": 28
+        },
+        {
+          "label": "Filters",
+          "height": 28
+        },
+        {
+          "label": "Hotkeys",
+          "height": 28
+        },
+        {
+          "label": "Save legacy scope",
+          "height": 28
+        },
+        {
+          "label": "Sort by Player",
+          "height": 26
+        },
+        {
+          "label": "Sort by GP",
+          "height": 28
+        },
+        {
+          "label": "Sort by MIN",
+          "height": 28
+        },
+        {
+          "label": "Sort by MPG",
+          "height": 28
+        },
+        {
+          "label": "Sort by PPG",
+          "height": 28
+        },
+        {
+          "label": "Sort by RPG",
+          "height": 28
+        },
+        {
+          "label": "Sort by APG",
+          "height": 28
+        },
+        {
+          "label": "Sort by SPG",
+          "height": 28
+        },
+        {
+          "label": "Sort by BPG",
+          "height": 28
+        },
+        {
+          "label": "Sort by FG%",
+          "height": 28
+        },
+        {
+          "label": "Sort by 3P%",
+          "height": 28
+        },
+        {
+          "label": "Sort by FT%",
+          "height": 28
+        },
+        {
+          "label": "Sort by TS%",
+          "height": 28
+        },
+        {
+          "label": "Sort by eFG%",
+          "height": 28
+        },
+        {
+          "label": "Add Luka Dončić to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Luka Dončić",
+          "height": 28
+        },
+        {
+          "label": "Add Shai Gilgeous-Alexander to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Shai Gilgeous-Alexander",
+          "height": 28
+        },
+        {
+          "label": "Add Anthony Edwards to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Anthony Edwards",
+          "height": 28
+        },
+        {
+          "label": "Add Jaylen Brown to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Jaylen Brown",
+          "height": 28
+        },
+        {
+          "label": "Add Tyrese Maxey to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Tyrese Maxey",
+          "height": 28
+        },
+        {
+          "label": "Add Donovan Mitchell to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Donovan Mitchell",
+          "height": 28
+        },
+        {
+          "label": "Add Kawhi Leonard to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Kawhi Leonard",
+          "height": 28
+        },
+        {
+          "label": "Add Nikola Jokić to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Nikola Jokić",
+          "height": 28
+        },
+        {
+          "label": "Add Giannis Antetokounmpo to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Giannis Antetokounmpo",
+          "height": 28
+        },
+        {
+          "label": "Add Lauri Markkanen to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Lauri Markkanen",
+          "height": 28
+        },
+        {
+          "label": "Add Joel Embiid to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Joel Embiid",
+          "height": 28
+        },
+        {
+          "label": "Add Stephen Curry to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Stephen Curry",
+          "height": 28
+        },
+        {
+          "label": "Add Devin Booker to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Devin Booker",
+          "height": 28
+        },
+        {
+          "label": "Add Jalen Brunson to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Jalen Brunson",
+          "height": 28
+        },
+        {
+          "label": "Add Kevin Durant to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Kevin Durant",
+          "height": 28
+        },
+        {
+          "label": "Add Jamal Murray to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Jamal Murray",
+          "height": 28
+        },
+        {
+          "label": "Add Victor Wembanyama to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Victor Wembanyama",
+          "height": 28
+        },
+        {
+          "label": "Add Michael Porter Jr. to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Michael Porter Jr.",
+          "height": 28
+        },
+        {
+          "label": "Add Deni Avdija to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Deni Avdija",
+          "height": 28
+        },
+        {
+          "label": "Add Pascal Siakam to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Pascal Siakam",
+          "height": 28
+        },
+        {
+          "label": "Add Cade Cunningham to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Cade Cunningham",
+          "height": 28
+        },
+        {
+          "label": "Add Keyonte George to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Keyonte George",
+          "height": 28
+        },
+        {
+          "label": "Add James Harden to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for James Harden",
+          "height": 28
+        },
+        {
+          "label": "Add Austin Reaves to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Austin Reaves",
+          "height": 28
+        },
+        {
+          "label": "Add Jalen Johnson to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Jalen Johnson",
+          "height": 28
+        },
+        {
+          "label": "Add Paolo Banchero to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Paolo Banchero",
+          "height": 28
+        },
+        {
+          "label": "Add Jayson Tatum to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Jayson Tatum",
+          "height": 28
+        },
+        {
+          "label": "Add Norman Powell to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Norman Powell",
+          "height": 28
+        },
+        {
+          "label": "Add Trey Murphy III to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Trey Murphy III",
+          "height": 28
+        },
+        {
+          "label": "Add Brandon Ingram to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Brandon Ingram",
+          "height": 28
+        },
+        {
+          "label": "Add Julius Randle to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Julius Randle",
+          "height": 28
+        },
+        {
+          "label": "Add Zion Williamson to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Zion Williamson",
+          "height": 28
+        },
+        {
+          "label": "Add Cooper Flagg to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Cooper Flagg",
+          "height": 28
+        },
+        {
+          "label": "Add LeBron James to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for LeBron James",
+          "height": 28
+        },
+        {
+          "label": "Add Nickeil Alexander-Walker to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Nickeil Alexander-Walker",
+          "height": 28
+        },
+        {
+          "label": "Add Shaedon Sharpe to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Shaedon Sharpe",
+          "height": 28
+        },
+        {
+          "label": "Add Franz Wagner to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Franz Wagner",
+          "height": 28
+        },
+        {
+          "label": "Add Tyler Herro to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Tyler Herro",
+          "height": 28
+        },
+        {
+          "label": "Add Alperen Sengun to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Alperen Sengun",
+          "height": 28
+        },
+        {
+          "label": "Add Anthony Davis to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Anthony Davis",
+          "height": 28
+        },
+        {
+          "label": "Add Dillon Brooks to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Dillon Brooks",
+          "height": 28
+        },
+        {
+          "label": "Add Brandon Miller to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Brandon Miller",
+          "height": 28
+        },
+        {
+          "label": "Add Karl-Anthony Towns to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Karl-Anthony Towns",
+          "height": 28
+        },
+        {
+          "label": "Add Bam Adebayo to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Bam Adebayo",
+          "height": 28
+        },
+        {
+          "label": "Add LaMelo Ball to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for LaMelo Ball",
+          "height": 28
+        },
+        {
+          "label": "Add Desmond Bane to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Desmond Bane",
+          "height": 28
+        },
+        {
+          "label": "Add Jimmy Butler III to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Jimmy Butler III",
+          "height": 28
+        },
+        {
+          "label": "Add Ty Jerome to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Ty Jerome",
+          "height": 28
+        },
+        {
+          "label": "Add Ja Morant to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Ja Morant",
+          "height": 28
+        },
+        {
+          "label": "Add Jalen Duren to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Jalen Duren",
+          "height": 28
+        },
+        {
+          "label": "Standard Density",
+          "height": 28
+        },
+        {
+          "label": "Expand Table (T)",
+          "height": 28
+        },
+        {
+          "label": "First Page",
+          "height": 28
+        },
+        {
+          "label": "Next Page",
+          "height": 28
+        }
+      ],
+      "filtersButton": false,
+      "numbersNotTabularRight": 40,
+      "tocLinks": 0,
+      "articleMeasure": null,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "ask-manual",
+      "url": "/research/ask?experience=manual",
+      "width": 768,
+      "finalPath": "/research/ask",
+      "title": "Ask CourtLens",
+      "subtitleLines": 1,
+      "template": "research",
+      "contentLeft": 24,
+      "documentWidth": 768,
+      "viewportWidth": 768,
+      "findingsTop": null,
+      "mainTop": 154,
+      "filterBottom": null,
+      "afterBarGap": null,
+      "controls": [],
+      "phoneControls": [
+        {
+          "label": "Open assistant",
+          "height": 28
+        },
+        {
+          "label": "Clear conversation",
+          "height": 40
+        },
+        {
+          "label": "Before date (exclusive): Jun 30, 2026",
+          "height": 40
+        },
+        {
+          "label": "Whose minutes increased recently without scoring increasing?",
+          "height": 40
+        },
+        {
+          "label": "Which players have produced similarly to Scottie Barnes over their last ten appe",
+          "height": 40
+        },
+        {
+          "label": "How variable has Scottie Barnes’s scoring been, and did his minutes vary too?",
+          "height": 40
+        },
+        {
+          "label": "Ask CourtLens",
+          "height": 40
+        }
+      ],
+      "filtersButton": false,
+      "numbersNotTabularRight": 0,
+      "tocLinks": 0,
+      "articleMeasure": null,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "schedule-redirect",
+      "url": "/schedule",
+      "width": 768,
+      "finalPath": "/live",
+      "title": "Live",
+      "subtitleLines": 1,
+      "template": "board",
+      "contentLeft": 24,
+      "documentWidth": 768,
+      "viewportWidth": 768,
+      "findingsTop": null,
+      "mainTop": 374,
+      "filterBottom": 268,
+      "afterBarGap": 16,
+      "controls": [
+        {
+          "label": "Slate date: Oct 10, 2026",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "phoneControls": [
+        {
+          "label": "Pause updates",
+          "height": 34
+        },
+        {
+          "label": "Slate date: Oct 10, 2026",
+          "height": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40
+        },
+        {
+          "label": "Why?",
+          "height": 28
+        },
+        {
+          "label": "Why?",
+          "height": 28
+        }
+      ],
+      "filtersButton": false,
+      "numbersNotTabularRight": 0,
+      "tocLinks": 0,
+      "articleMeasure": null,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "settings",
+      "url": "/settings",
+      "width": 390,
+      "finalPath": "/settings",
+      "title": "Settings",
+      "subtitleLines": 1,
+      "template": "article",
+      "contentLeft": 12,
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "findingsTop": null,
+      "mainTop": 206,
+      "filterBottom": null,
+      "afterBarGap": null,
+      "controls": [],
+      "phoneControls": [
+        {
+          "label": "Display",
+          "height": 40
+        },
+        {
+          "label": "Assistant",
+          "height": 40
+        },
+        {
+          "label": "History and privacy",
+          "height": 40
+        },
+        {
+          "label": "Player portraits",
+          "height": 40
+        },
+        {
+          "label": "Install",
+          "height": 40
+        },
+        {
+          "label": "Background worker",
+          "height": 40
+        },
+        {
+          "label": "Sources and terms",
+          "height": 40
+        },
+        {
+          "label": "",
+          "height": 40
+        },
+        {
+          "label": "Configuration details",
+          "height": 40
+        },
+        {
+          "label": "Clear history",
+          "height": 40
+        },
+        {
+          "label": "Acquire more portraits",
+          "height": 40
+        },
+        {
+          "label": "Source and storage",
+          "height": 40
+        },
+        {
+          "label": "Local service requirements",
+          "height": 40
+        },
+        {
+          "label": "Open Data Status",
+          "height": 40
+        }
+      ],
+      "filtersButton": false,
+      "numbersNotTabularRight": 0,
+      "tocLinks": 7,
+      "articleMeasure": 366,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "data-status",
+      "url": "/data-status",
+      "width": 390,
+      "finalPath": "/data-status",
+      "title": "Data Status",
+      "subtitleLines": 1,
+      "template": "research",
+      "contentLeft": 12,
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "findingsTop": 259,
+      "mainTop": 259,
+      "filterBottom": 243,
+      "afterBarGap": 16,
+      "controls": [
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "phoneControls": [
+        {
+          "label": "Refresh workbench",
+          "height": 40
+        },
+        {
+          "label": "More jobs",
+          "height": 40
+        },
+        {
+          "label": "More jobs",
+          "height": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40
+        },
+        {
+          "label": "Details",
+          "height": 40
+        },
+        {
+          "label": "Details",
+          "height": 40
+        },
+        {
+          "label": "Details",
+          "height": 40
+        },
+        {
+          "label": "Details",
+          "height": 40
+        },
+        {
+          "label": "Details",
+          "height": 40
+        },
+        {
+          "label": "Details",
+          "height": 40
+        },
+        {
+          "label": "Details",
+          "height": 40
+        },
+        {
+          "label": "Details",
+          "height": 40
+        },
+        {
+          "label": "Details",
+          "height": 40
+        },
+        {
+          "label": "Details",
+          "height": 40
+        },
+        {
+          "label": "Details",
+          "height": 40
+        },
+        {
+          "label": "Details",
+          "height": 40
+        },
+        {
+          "label": "Details",
+          "height": 40
+        },
+        {
+          "label": "Details",
+          "height": 40
+        },
+        {
+          "label": "Details",
+          "height": 40
+        },
+        {
+          "label": "Details",
+          "height": 40
+        },
+        {
+          "label": "Details",
+          "height": 40
+        },
+        {
+          "label": "Details",
+          "height": 40
+        },
+        {
+          "label": "Details",
+          "height": 40
+        },
+        {
+          "label": "Details",
+          "height": 40
+        }
+      ],
+      "filtersButton": false,
+      "numbersNotTabularRight": 0,
+      "tocLinks": 0,
+      "articleMeasure": null,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "methodology",
+      "url": "/methodology",
+      "width": 390,
+      "finalPath": "/methodology",
+      "title": "Methodology",
+      "subtitleLines": 1,
+      "template": "article",
+      "contentLeft": 12,
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "findingsTop": null,
+      "mainTop": 263,
+      "filterBottom": null,
+      "afterBarGap": null,
+      "controls": [],
+      "phoneControls": [
+        {
+          "label": "Principles",
+          "height": 40
+        },
+        {
+          "label": "Impact metrics",
+          "height": 40
+        },
+        {
+          "label": "Metric catalog",
+          "height": 40
+        },
+        {
+          "label": "Historical and prospective",
+          "height": 40
+        },
+        {
+          "label": "Related pages",
+          "height": 40
+        }
+      ],
+      "filtersButton": false,
+      "numbersNotTabularRight": 0,
+      "tocLinks": 5,
+      "articleMeasure": 366,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "methodology-catalog",
+      "url": "/methodology#catalog",
+      "width": 390,
+      "finalPath": "/methodology",
+      "title": "Methodology",
+      "subtitleLines": 1,
+      "template": "article",
+      "contentLeft": 12,
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "findingsTop": null,
+      "mainTop": 208,
+      "filterBottom": null,
+      "afterBarGap": null,
+      "controls": [],
+      "phoneControls": [
+        {
+          "label": "Principles",
+          "height": 40
+        },
+        {
+          "label": "Impact metrics",
+          "height": 40
+        },
+        {
+          "label": "Metric catalog",
+          "height": 40
+        },
+        {
+          "label": "Historical and prospective",
+          "height": 40
+        },
+        {
+          "label": "Related pages",
+          "height": 40
+        }
+      ],
+      "filtersButton": false,
+      "numbersNotTabularRight": 0,
+      "tocLinks": 5,
+      "articleMeasure": 366,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "learning",
+      "url": "/methodology/learning",
+      "width": 390,
+      "finalPath": "/methodology/learning",
+      "title": "Methodology",
+      "subtitleLines": 1,
+      "template": "article",
+      "contentLeft": 12,
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "findingsTop": null,
+      "mainTop": 263,
+      "filterBottom": null,
+      "afterBarGap": null,
+      "controls": [],
+      "phoneControls": [
+        {
+          "label": "True shooting",
+          "height": 40
+        },
+        {
+          "label": "Scoring variation",
+          "height": 40
+        },
+        {
+          "label": "Intervals and evidence",
+          "height": 40
+        },
+        {
+          "label": "Retain and reproduce",
+          "height": 40
+        },
+        {
+          "label": "Remove Scottie Barnes from Lesson player",
+          "height": 44
+        },
+        {
+          "label": "Run this pinned distribution without AI",
+          "height": 40
+        }
+      ],
+      "filtersButton": false,
+      "numbersNotTabularRight": 0,
+      "tocLinks": 4,
+      "articleMeasure": 366,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "whats-new",
+      "url": "/whats-new",
+      "width": 390,
+      "finalPath": "/whats-new",
+      "title": "What's New",
+      "subtitleLines": 1,
+      "template": "article",
+      "contentLeft": 12,
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "findingsTop": null,
+      "mainTop": 263,
+      "filterBottom": null,
+      "afterBarGap": null,
+      "controls": [],
+      "phoneControls": [
+        {
+          "label": "Patch notes: retained analytical operations",
+          "height": 40
+        },
+        {
+          "label": "B35a verified backend boundary",
+          "height": 40
+        },
+        {
+          "label": "B35b interface changes",
+          "height": 40
+        },
+        {
+          "label": "Open gates",
+          "height": 40
+        }
+      ],
+      "filtersButton": false,
+      "numbersNotTabularRight": 0,
+      "tocLinks": 4,
+      "articleMeasure": 366,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "blog",
+      "url": "/whats-new/blog",
+      "width": 390,
+      "finalPath": "/whats-new/blog",
+      "title": "What's New",
+      "subtitleLines": 1,
+      "template": "article",
+      "contentLeft": 12,
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "findingsTop": null,
+      "mainTop": 263,
+      "filterBottom": null,
+      "afterBarGap": null,
+      "controls": [],
+      "phoneControls": [
+        {
+          "label": "Evidence before narrative",
+          "height": 40
+        },
+        {
+          "label": "What a saved investigation retains",
+          "height": 40
+        },
+        {
+          "label": "Missingness and precision",
+          "height": 40
+        },
+        {
+          "label": "Reproduction under uncertainty",
+          "height": 40
+        },
+        {
+          "label": "Local evidence and provider records",
+          "height": 40
+        }
+      ],
+      "filtersButton": false,
+      "numbersNotTabularRight": 0,
+      "tocLinks": 5,
+      "articleMeasure": 366,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "planner",
+      "url": "/planner",
+      "width": 390,
+      "finalPath": "/planner",
+      "title": "Planner",
+      "subtitleLines": 1,
+      "template": "board",
+      "contentLeft": 12,
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "findingsTop": 223,
+      "mainTop": 223,
+      "filterBottom": 207,
+      "afterBarGap": 16,
+      "controls": [
+        {
+          "label": "FiltersFixture Points League · Week of Feb 3, 2025",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "phoneControls": [
+        {
+          "label": "FiltersFixture Points League · Week of Feb 3, 2025",
+          "height": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40
+        },
+        {
+          "label": "Remove Maya Chen from Drop",
+          "height": 44
+        },
+        {
+          "label": "Remove Sam Okafor from Add candidate",
+          "height": 44
+        },
+        {
+          "label": "Effective date: Feb 3, 2025",
+          "height": 40
+        },
+        {
+          "label": "Compare scenario",
+          "height": 34
+        }
+      ],
+      "filtersButton": true,
+      "numbersNotTabularRight": 0,
+      "tocLinks": 0,
+      "articleMeasure": null,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "stats",
+      "url": "/stats?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13",
+      "width": 390,
+      "finalPath": "/stats",
+      "title": "Stats",
+      "subtitleLines": 1,
+      "template": null,
+      "contentLeft": 36,
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "findingsTop": null,
+      "mainTop": 215,
+      "filterBottom": 199,
+      "afterBarGap": 16,
+      "controls": [
+        {
+          "label": "Filters2025-26 · Regular Season · Apr 12",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "phoneControls": [
+        {
+          "label": "Filters2025-26 · Regular Season · Apr 12",
+          "height": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40
+        },
+        {
+          "label": "Overview",
+          "height": 28
+        },
+        {
+          "label": "Shooting",
+          "height": 28
+        },
+        {
+          "label": "Defense",
+          "height": 28
+        },
+        {
+          "label": "True Shooting",
+          "height": 28
+        },
+        {
+          "label": "Rates (Per 36)",
+          "height": 28
+        },
+        {
+          "label": "Playmaking",
+          "height": 28
+        },
+        {
+          "label": "Rebounding",
+          "height": 28
+        },
+        {
+          "label": "Impact",
+          "height": 28
+        },
+        {
+          "label": "On-Off",
+          "height": 28
+        },
+        {
+          "label": "Six Factor",
+          "height": 28
+        },
+        {
+          "label": "Photos",
+          "height": 28
+        },
+        {
+          "label": "Logos",
+          "height": 28
+        },
+        {
+          "label": "Initials",
+          "height": 28
+        },
+        {
+          "label": "None",
+          "height": 28
+        },
+        {
+          "label": "Manage Views",
+          "height": 32
+        },
+        {
+          "label": "Per Game",
+          "height": 28
+        },
+        {
+          "label": "Totals",
+          "height": 28
+        },
+        {
+          "label": "Per 36",
+          "height": 28
+        },
+        {
+          "label": "Per 75",
+          "height": 28
+        },
+        {
+          "label": "Per 100",
+          "height": 28
+        },
+        {
+          "label": "Table",
+          "height": 28
+        },
+        {
+          "label": "Scatter Plot",
+          "height": 28
+        },
+        {
+          "label": "Trend Lines",
+          "height": 28
+        },
+        {
+          "label": "%iles On",
+          "height": 32
+        },
+        {
+          "label": "Favorites",
+          "height": 32
+        },
+        {
+          "label": "Filters",
+          "height": 32
+        },
+        {
+          "label": "Hotkeys",
+          "height": 32
+        },
+        {
+          "label": "Save legacy scope",
+          "height": 32
+        },
+        {
+          "label": "Sort by Player",
+          "height": 26
+        },
+        {
+          "label": "Sort by GP",
+          "height": 28
+        },
+        {
+          "label": "Sort by MIN",
+          "height": 28
+        },
+        {
+          "label": "Sort by MPG",
+          "height": 28
+        },
+        {
+          "label": "Sort by PPG",
+          "height": 28
+        },
+        {
+          "label": "Sort by RPG",
+          "height": 28
+        },
+        {
+          "label": "Sort by APG",
+          "height": 28
+        },
+        {
+          "label": "Sort by SPG",
+          "height": 28
+        },
+        {
+          "label": "Sort by BPG",
+          "height": 28
+        },
+        {
+          "label": "Sort by FG%",
+          "height": 28
+        },
+        {
+          "label": "Sort by 3P%",
+          "height": 28
+        },
+        {
+          "label": "Sort by FT%",
+          "height": 28
+        },
+        {
+          "label": "Sort by TS%",
+          "height": 28
+        },
+        {
+          "label": "Sort by eFG%",
+          "height": 28
+        },
+        {
+          "label": "Add Luka Dončić to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Luka Dončić",
+          "height": 28
+        },
+        {
+          "label": "Add Shai Gilgeous-Alexander to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Shai Gilgeous-Alexander",
+          "height": 28
+        },
+        {
+          "label": "Add Anthony Edwards to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Anthony Edwards",
+          "height": 28
+        },
+        {
+          "label": "Add Jaylen Brown to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Jaylen Brown",
+          "height": 28
+        },
+        {
+          "label": "Add Tyrese Maxey to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Tyrese Maxey",
+          "height": 28
+        },
+        {
+          "label": "Add Donovan Mitchell to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Donovan Mitchell",
+          "height": 28
+        },
+        {
+          "label": "Add Kawhi Leonard to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Kawhi Leonard",
+          "height": 28
+        },
+        {
+          "label": "Add Nikola Jokić to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Nikola Jokić",
+          "height": 28
+        },
+        {
+          "label": "Add Giannis Antetokounmpo to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Giannis Antetokounmpo",
+          "height": 28
+        },
+        {
+          "label": "Add Lauri Markkanen to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Lauri Markkanen",
+          "height": 28
+        },
+        {
+          "label": "Add Joel Embiid to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Joel Embiid",
+          "height": 28
+        },
+        {
+          "label": "Add Stephen Curry to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Stephen Curry",
+          "height": 28
+        },
+        {
+          "label": "Add Devin Booker to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Devin Booker",
+          "height": 28
+        },
+        {
+          "label": "Add Jalen Brunson to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Jalen Brunson",
+          "height": 28
+        },
+        {
+          "label": "Add Kevin Durant to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Kevin Durant",
+          "height": 28
+        },
+        {
+          "label": "Add Jamal Murray to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Jamal Murray",
+          "height": 28
+        },
+        {
+          "label": "Add Victor Wembanyama to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Victor Wembanyama",
+          "height": 28
+        },
+        {
+          "label": "Add Michael Porter Jr. to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Michael Porter Jr.",
+          "height": 28
+        },
+        {
+          "label": "Add Deni Avdija to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Deni Avdija",
+          "height": 28
+        },
+        {
+          "label": "Add Pascal Siakam to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Pascal Siakam",
+          "height": 28
+        },
+        {
+          "label": "Add Cade Cunningham to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Cade Cunningham",
+          "height": 28
+        },
+        {
+          "label": "Add Keyonte George to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Keyonte George",
+          "height": 28
+        },
+        {
+          "label": "Add James Harden to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for James Harden",
+          "height": 28
+        },
+        {
+          "label": "Add Austin Reaves to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Austin Reaves",
+          "height": 28
+        },
+        {
+          "label": "Add Jalen Johnson to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Jalen Johnson",
+          "height": 28
+        },
+        {
+          "label": "Add Paolo Banchero to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Paolo Banchero",
+          "height": 28
+        },
+        {
+          "label": "Add Jayson Tatum to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Jayson Tatum",
+          "height": 28
+        },
+        {
+          "label": "Add Norman Powell to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Norman Powell",
+          "height": 28
+        },
+        {
+          "label": "Add Trey Murphy III to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Trey Murphy III",
+          "height": 28
+        },
+        {
+          "label": "Add Brandon Ingram to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Brandon Ingram",
+          "height": 28
+        },
+        {
+          "label": "Add Julius Randle to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Julius Randle",
+          "height": 28
+        },
+        {
+          "label": "Add Zion Williamson to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Zion Williamson",
+          "height": 28
+        },
+        {
+          "label": "Add Cooper Flagg to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Cooper Flagg",
+          "height": 28
+        },
+        {
+          "label": "Add LeBron James to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for LeBron James",
+          "height": 28
+        },
+        {
+          "label": "Add Nickeil Alexander-Walker to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Nickeil Alexander-Walker",
+          "height": 28
+        },
+        {
+          "label": "Add Shaedon Sharpe to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Shaedon Sharpe",
+          "height": 28
+        },
+        {
+          "label": "Add Franz Wagner to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Franz Wagner",
+          "height": 28
+        },
+        {
+          "label": "Add Tyler Herro to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Tyler Herro",
+          "height": 28
+        },
+        {
+          "label": "Add Alperen Sengun to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Alperen Sengun",
+          "height": 28
+        },
+        {
+          "label": "Add Anthony Davis to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Anthony Davis",
+          "height": 28
+        },
+        {
+          "label": "Add Dillon Brooks to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Dillon Brooks",
+          "height": 28
+        },
+        {
+          "label": "Add Brandon Miller to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Brandon Miller",
+          "height": 28
+        },
+        {
+          "label": "Add Karl-Anthony Towns to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Karl-Anthony Towns",
+          "height": 28
+        },
+        {
+          "label": "Add Bam Adebayo to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Bam Adebayo",
+          "height": 28
+        },
+        {
+          "label": "Add LaMelo Ball to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for LaMelo Ball",
+          "height": 28
+        },
+        {
+          "label": "Add Desmond Bane to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Desmond Bane",
+          "height": 28
+        },
+        {
+          "label": "Add Jimmy Butler III to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Jimmy Butler III",
+          "height": 28
+        },
+        {
+          "label": "Add Ty Jerome to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Ty Jerome",
+          "height": 28
+        },
+        {
+          "label": "Add Ja Morant to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Ja Morant",
+          "height": 28
+        },
+        {
+          "label": "Add Jalen Duren to favorites",
+          "height": 26
+        },
+        {
+          "label": "Open details for Jalen Duren",
+          "height": 28
+        },
+        {
+          "label": "Standard Density",
+          "height": 28
+        },
+        {
+          "label": "Expand Table (T)",
+          "height": 28
+        },
+        {
+          "label": "First Page",
+          "height": 28
+        },
+        {
+          "label": "Next Page",
+          "height": 28
+        }
+      ],
+      "filtersButton": true,
+      "numbersNotTabularRight": 40,
+      "tocLinks": 0,
+      "articleMeasure": null,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "ask-manual",
+      "url": "/research/ask?experience=manual",
+      "width": 390,
+      "finalPath": "/research/ask",
+      "title": "Ask CourtLens",
+      "subtitleLines": 1,
+      "template": "research",
+      "contentLeft": 12,
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "findingsTop": null,
+      "mainTop": 174,
+      "filterBottom": null,
+      "afterBarGap": null,
+      "controls": [],
+      "phoneControls": [
+        {
+          "label": "Open assistant",
+          "height": 28
+        },
+        {
+          "label": "Clear conversation",
+          "height": 40
+        },
+        {
+          "label": "Before date (exclusive): Jun 30, 2026",
+          "height": 40
+        },
+        {
+          "label": "Whose minutes increased recently without scoring increasing?",
+          "height": 46
+        },
+        {
+          "label": "Which players have produced similarly to Scottie Barnes over their last ten appe",
+          "height": 46
+        },
+        {
+          "label": "How variable has Scottie Barnes’s scoring been, and did his minutes vary too?",
+          "height": 46
+        },
+        {
+          "label": "Ask CourtLens",
+          "height": 40
+        }
+      ],
+      "filtersButton": false,
+      "numbersNotTabularRight": 0,
+      "tocLinks": 0,
+      "articleMeasure": null,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    },
+    {
+      "name": "schedule-redirect",
+      "url": "/schedule",
+      "width": 390,
+      "finalPath": "/live",
+      "title": "Live",
+      "subtitleLines": 1,
+      "template": "board",
+      "contentLeft": 12,
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "findingsTop": null,
+      "mainTop": 400,
+      "filterBottom": 294,
+      "afterBarGap": 16,
+      "controls": [
+        {
+          "label": "FiltersOct 10",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "phoneControls": [
+        {
+          "label": "Pause updates",
+          "height": 34
+        },
+        {
+          "label": "FiltersOct 10",
+          "height": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40
+        },
+        {
+          "label": "Why?",
+          "height": 28
+        },
+        {
+          "label": "Why?",
+          "height": 28
+        }
+      ],
+      "filtersButton": true,
+      "numbersNotTabularRight": 0,
+      "tocLinks": 0,
+      "articleMeasure": null,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "loadButtons": 0,
+      "errors": []
+    }
+  ]
+}

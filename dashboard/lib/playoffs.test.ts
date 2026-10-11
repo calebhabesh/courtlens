@@ -59,6 +59,10 @@ describe("Playoffs UI Utilities", () => {
     const inProgressSeries = { ...sweepSeries, is_sweep: false, status: "in_progress" };
     expect(getSeriesStatusBadge(inProgressSeries).label).toBe("IN PROGRESS");
 
+    // Regression (FO08): the API sends "finished" for decided series; they were shown as SCHEDULED.
+    expect(getSeriesStatusBadge({ ...sweepSeries, is_sweep: false, status: "finished" }).label).toBe("FINAL");
+    expect(getSeriesStatusBadge({ ...sweepSeries, status: "finished" }).label).toBe("SWEEP");
+
     const scheduledSeries = { ...sweepSeries, is_sweep: false, status: "scheduled" };
     expect(getSeriesStatusBadge(scheduledSeries).label).toBe("SCHEDULED");
   });

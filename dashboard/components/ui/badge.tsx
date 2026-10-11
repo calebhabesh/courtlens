@@ -25,7 +25,7 @@ export function Badge({
       className={`ui-badge ui-badge-${variant} ${pill ? "ui-badge-pill" : ""} ${onRemove ? "ui-badge-removable" : ""} ${className}`}
       {...props}
     >
-      {icon && <Icon name={icon} size={12} />}
+      {icon && <Icon name={icon} size={14} />}
       <span>{children}</span>
       {onRemove && (
         <button
@@ -37,7 +37,7 @@ export function Badge({
           className="ui-badge-remove"
           aria-label="Remove"
         >
-          <Icon name="close" size={10} />
+          <Icon name="close" size={14} />
         </button>
       )}
     </span>

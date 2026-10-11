@@ -3,7 +3,6 @@
 import { readStoredValue, storageKeys } from "@/lib/storage-keys";
 
 import Link from "next/link";
-import { ChartNoAxesCombined, ChartScatter, CircleHelp, Maximize2, Minimize2, Pin, Save, SlidersHorizontal, Table2 } from "lucide-react";
 import { LookupInput } from "./lookup-input";
 import { CourtLensWordmark } from "./courtlens-wordmark";
 import { StatsPreviewRail } from "./stats-preview-rail";
@@ -448,27 +447,16 @@ export function WorkbenchPlayerExplorer({
               >
                 {isActive && <SlidingIndicator layoutId="stats-preset-indicator" className="stats-preset-indicator" />}
                 <span>{v.name}</span>
-                {isDefault && <span className="stats-default-view-star">★</span>}
+                {isDefault && <span className="stats-default-view-star"><Icon name="star" size={14} filled /><span className="sr-only">Default view</span></span>}
                 {hasUnavailable && <span className="stats-preset-gated-tag">Unavailable: {v.unavailable_columns?.length}</span>}
               </button>
             );
           })}
         </div>
 
-        {/* Manage Views Button (F04) */}
-        <div className="stats-preset-manage-wrapper">
-          <button
-            type="button"
-            onClick={() => setIsManageViewsOpen(true)}
-            className="button button-small stats-manage-views-btn"
-            title="Manage custom views, default view, and import/export"
-          >
-            <Icon name="settings" /> Manage Views
-          </button>
-        </div>
         {/* Identity Density Mode Buttons (F03) */}
         <div className="control-button-group" role="group" aria-label="Group guides">
-          <span className="control-group-label">Group guides:</span>
+          <span className="control-group-label">Group Guides:</span>
           {IDENTITY_MODES.map((im) => (
             <button
               key={im.id}
@@ -481,6 +469,18 @@ export function WorkbenchPlayerExplorer({
               {im.label}
             </button>
           ))}
+        </div>
+
+        {/* Manage Views Button (F04) */}
+        <div className="stats-preset-manage-wrapper">
+          <button
+            type="button"
+            onClick={() => setIsManageViewsOpen(true)}
+            className="button button-small stats-manage-views-btn"
+            title="Manage custom views, default view, and import/export"
+          >
+            <Icon name="settings" /> Manage Views
+          </button>
         </div>
 
       </div>
@@ -524,9 +524,9 @@ export function WorkbenchPlayerExplorer({
           </button>)}
         </div>
         <div className="control-button-group stats-view-controls" role="group" aria-label="Explorer View Mode">
-          <button type="button" onClick={() => setViewMode("table")} className={`control-pill ${viewMode === "table" ? "active" : ""}`} aria-pressed={viewMode === "table"}><Table2 size={15} aria-hidden="true" /> Table</button>
-          <button type="button" onClick={() => setViewMode("scatter")} className={`control-pill ${viewMode === "scatter" ? "active" : ""}`} aria-pressed={viewMode === "scatter"}><ChartScatter size={15} aria-hidden="true" /> Scatter Plot</button>
-          <button type="button" onClick={() => setViewMode("lines")} className={`control-pill ${viewMode === "lines" ? "active" : ""}`} aria-pressed={viewMode === "lines"}><ChartNoAxesCombined size={15} aria-hidden="true" /> Trend Lines</button>
+          <button type="button" onClick={() => setViewMode("table")} className={`control-pill ${viewMode === "table" ? "active" : ""}`} aria-pressed={viewMode === "table"}><Icon name="table" size={14} /> Table</button>
+          <button type="button" onClick={() => setViewMode("scatter")} className={`control-pill ${viewMode === "scatter" ? "active" : ""}`} aria-pressed={viewMode === "scatter"}><Icon name="scatter" size={14} /> Scatter Plot</button>
+          <button type="button" onClick={() => setViewMode("lines")} className={`control-pill ${viewMode === "lines" ? "active" : ""}`} aria-pressed={viewMode === "lines"}><Icon name="chart-line" size={14} /> Trend Lines</button>
         </div>
         <div className="control-button-group stats-table-tools">
           <button type="button" onClick={() => setShowPercentiles(value => !value)}
@@ -539,12 +539,12 @@ export function WorkbenchPlayerExplorer({
           </button>
           <button type="button" className={`control-pill ${filtersOpen || hasActiveFilters ? "active" : ""}`}
             onClick={() => setFiltersOpen(value => !value)} aria-expanded={filtersOpen} aria-controls="stats-filters">
-            <SlidersHorizontal size={15} aria-hidden="true" /> Filters{hasActiveFilters ? " · Active" : ""}
+            <Icon name="sliders" size={14} /> Filters{hasActiveFilters ? " · Active" : ""}
           </button>
-          <button type="button" onClick={() => setIsHotkeysOpen(true)} className="control-pill" title="Open keyboard shortcuts guide (?)"><CircleHelp size={15} aria-hidden="true" /> Hotkeys</button>
+          <button type="button" onClick={() => setIsHotkeysOpen(true)} className="control-pill" title="Open keyboard shortcuts guide (?)"><Icon name="help" size={14} /> Hotkeys</button>
           <button type="button" onClick={handleSaveInvestigation} disabled={saving || !legacySaveAvailable}
             className="control-pill" title="Save this scope using retained legacy arithmetic. Favorites and cohort percentiles are excluded; advanced query filters cannot be saved here.">
-            <Save size={15} aria-hidden="true" /> {saving ? "Saving…" : "Save legacy scope"}
+            <Icon name="save" size={14} /> {saving ? "Saving…" : "Save legacy scope"}
           </button>
         </div>
       </div>
@@ -705,7 +705,7 @@ export function WorkbenchPlayerExplorer({
                 }}
                 aria-label="Clear player search"
               >
-                ✕
+                <Icon name="close" size={14} />
               </button>
             )}
           </div>
@@ -780,12 +780,12 @@ export function WorkbenchPlayerExplorer({
                 className="pinned-col pinned-col-select text-center"
                 title="Select players for comparison (max 8)"
               >
-                ✓
+                <Icon name="check" size={14} />
               </th>
 
               {/* Pinned Col 2: Rank # */}
               <th
-                className="pinned-col pinned-col-rank text-center"
+                className="pinned-col pinned-col-rank num"
               >
                 #
               </th>
@@ -891,7 +891,7 @@ export function WorkbenchPlayerExplorer({
                     </td>
 
                     {/* Pinned Col 2: Rank # */}
-                    <td className="pinned-col pinned-col-rank font-mono text-muted text-xs text-center">
+                    <td className="pinned-col pinned-col-rank num font-mono text-muted text-xs">
                       {(data.output_offset ?? 0) + idx + 1}
                     </td>
 
@@ -904,10 +904,10 @@ export function WorkbenchPlayerExplorer({
                         <div className="stats-identity-copy"><Link href={`/players/${player.player_id}?${new URLSearchParams({
                           season: query.season, phase: query.phase, beforeDate: query.before_date,
                           window: query.window, ...(query.release_id ? { releaseId: query.release_id } : {})
-                        })}`} title={player.player_name} className="player-cell-name font-semibold">
-                          {player.player_name}
-                        </Link>
+                        })}`} title={player.player_name} aria-label={player.player_name} className="stats-player-link">
+                          <span className="player-cell-name font-semibold">{player.player_name}</span>
                         <span className="player-cell-teams">{player.teams?.join(" / ") || "Team unknown"} · {query.season}</span>
+                        </Link>
                         </div>
                         <button
                           type="button"
@@ -961,6 +961,7 @@ export function WorkbenchPlayerExplorer({
                                     : ""
                                 }`}
                                 tabIndex={0}
+                                role="group"
                                 aria-label={`Percentile ${pct}; ${player.cohort_sample_sizes?.[metricKey] ?? "unknown"} valid players; ${data.total_eligible_players} eligible players${direction ? `; ${direction === "low" ? "Lower" : "Higher"} values preferred` : ""}`}
                                 title={`Cohort midrank percentile: ${pct}% · ${player.cohort_sample_sizes?.[metricKey] ?? "unknown"} valid players · ${data.total_eligible_players} eligible players${direction ? ` · ${direction === "low" ? "Lower" : "Higher"} values preferred` : ""}`}
                               >
@@ -977,7 +978,7 @@ export function WorkbenchPlayerExplorer({
                     <td className="stats-row-actions">
                       <button type="button" className="stats-icon-action stats-row-pin"
                         onClick={() => { setPreviewPlayer(player); setPreviewPinned(true); setPreviewCollapsed(false); }}
-                        aria-label={`Pin preview for ${player.player_name}`} title="Pin player preview"><Pin size={14} aria-hidden="true" /></button>
+                        aria-label={`Pin preview for ${player.player_name}`} title="Pin player preview"><Icon name="pin" size={14} /></button>
                       <button
                         type="button"
                         onClick={() => setSelectedPlayerForDrawer(player)}
@@ -1014,7 +1015,7 @@ export function WorkbenchPlayerExplorer({
         </div>
         <div className="control-button-group" role="group" aria-label="Table Layout and Density">
           <button type="button" onClick={() => handleDensityChange(tableDensity === "compact" ? "standard" : "compact")} className="control-pill" title="W: compact rows, E: standard rows">{tableDensity === "compact" ? "Compact Density" : "Standard Density"}</button>
-          <button type="button" onClick={() => setIsExpanded(value => !value)} className={`control-pill ${isExpanded ? "active" : ""}`} aria-pressed={isExpanded} title="Toggle expanded table height (T)">{isExpanded ? <Minimize2 size={14} aria-hidden="true" /> : <Maximize2 size={14} aria-hidden="true" />}{isExpanded ? "Standard Height" : "Expand Table (T)"}</button>
+          <button type="button" onClick={() => setIsExpanded(value => !value)} className={`control-pill ${isExpanded ? "active" : ""}`} aria-pressed={isExpanded} title="Toggle expanded table height (T)">{isExpanded ? <Icon name="collapse" size={14} /> : <Icon name="expand" size={14} />}{isExpanded ? "Standard Height" : "Expand Table (T)"}</button>
         </div>
         <div className="stats-pagination-actions">
           <button
@@ -1027,7 +1028,7 @@ export function WorkbenchPlayerExplorer({
             disabled={!searchParams?.get("cursor")}
             className="button button-small"
           >
-            ← First Page
+            <Icon name="left" size={14} />First Page
           </button>
 
           {data.has_more && data.next_cursor && (
@@ -1036,7 +1037,7 @@ export function WorkbenchPlayerExplorer({
               onClick={() => updateParam({ cursor: data.next_cursor })}
               className="button button-small button-primary"
             >
-              Next Page →
+              Next Page<Icon name="right" size={14} />
             </button>
           )}
         </div>

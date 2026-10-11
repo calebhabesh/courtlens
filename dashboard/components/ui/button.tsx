@@ -42,13 +42,13 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
       {...props}
     >
       {loading ? (
-        <Icon name="loader" className="ui-spinner" size={size === "sm" ? 14 : size === "lg" ? 18 : 16} />
+        <Icon name="loader" className="ui-spinner" size={size === "sm" ? 14 : size === "lg" ? 20 : 16} />
       ) : icon ? (
-        <Icon name={icon} size={size === "sm" ? 14 : size === "lg" ? 18 : 16} />
+        <Icon name={icon} size={size === "sm" ? 14 : size === "lg" ? 20 : 16} />
       ) : null}
       {children}
       {!loading && iconAfter ? (
-        <Icon name={iconAfter} size={size === "sm" ? 14 : size === "lg" ? 18 : 16} />
+        <Icon name={iconAfter} size={size === "sm" ? 14 : size === "lg" ? 20 : 16} />
       ) : null}
     </button>
   );
@@ -72,7 +72,7 @@ export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(functio
       size={size}
       {...props}
     >
-      <Icon name={icon} size={size === "sm" ? 14 : size === "lg" ? 18 : 16} />
+      <Icon name={icon} size={size === "sm" ? 14 : size === "lg" ? 20 : 16} />
     </Button>
   );
 });

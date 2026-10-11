@@ -1,15 +1,16 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
+import { TemplateSkeleton } from "@/components/ui/template-skeleton";
 import { TrendsInvestigationView } from "@/components/trends-investigation-view";
 
 export const metadata: Metadata = {
-  title: "Workload & Performance Trends · CourtLens Research",
-  description: "Disjoint window delta analysis across consecutive appearance slices and calendar periods."
+  title: "Workload Trends",
+  description: "A player's recent stretch against the one before it, or the league's largest shifts."
 };
 
 export default function TrendsPage() {
   return (
-    <Suspense fallback={null}>
+    <Suspense fallback={<TemplateSkeleton template="research" />}>
       <TrendsInvestigationView />
     </Suspense>
   );

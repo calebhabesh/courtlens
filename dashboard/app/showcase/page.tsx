@@ -1,94 +1,83 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { ContextBar } from "@/components/context-bar";
 import { PlayerShowcaseView } from "@/components/player-showcase-view";
-import { getWorkbenchCatalog, queryPlayerResearch } from "@/lib/workbench-api";
-import type { PlayerResearchResponse, WorkbenchCatalog } from "@/lib/types";
+import { EmptyState } from "@/components/ui/empty-state";
+import { resolveStatsQuery } from "@/lib/stats-query";
+import { executeWorkbenchQuery, getWorkbenchCatalog } from "@/lib/workbench-api";
+import type { GoodDirection } from "@/lib/percentile-display";
+import type { PlayerResearchItem, WorkbenchCatalog, WorkbenchQueryResponse } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
-  title: "Player Showcase & Cards · CourtLens"
+  title: "Player Showcase · CourtLens"
 };
 
+const ROSTER_SIZE = 25;
+
 interface ShowcasePageProps {
-  searchParams: Promise<{
-    playerId?: string;
-    id?: string;
-    season?: string;
-    phase?: string;
-    beforeDate?: string;
-    releaseId?: string;
-    [key: string]: string | string[] | undefined;
-  }>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }
 
 export default async function ShowcasePage({ searchParams }: ShowcasePageProps) {
   const params = await searchParams;
+  const releaseId = typeof params.releaseId === "string" ? params.releaseId : undefined;
+  const requested = typeof params.playerId === "string" ? params.playerId : typeof params.id === "string" ? params.id : undefined;
 
   let catalog: WorkbenchCatalog | null = null;
   try {
-    catalog = await getWorkbenchCatalog(params.releaseId);
+    catalog = await getWorkbenchCatalog(releaseId);
   } catch {
-    // Graceful fallback
+    catalog = null;
   }
 
-  const season = params.season || catalog?.default_season || "2024-25";
-  const phase = params.phase || catalog?.default_phase || "regular_season";
-  const beforeDate = params.beforeDate || catalog?.default_before_date || "2026-06-30";
-
-  let researchData: PlayerResearchResponse | null = null;
-  let loadError: string | null = null;
-
-  try {
-    researchData = await queryPlayerResearch({
-      season,
-      phase,
-      before_date: beforeDate,
-      release_id: params.releaseId,
-      sort_metric: "pts",
-      sort_direction: "desc",
-      limit: 25
-    });
-  } catch (err) {
-    loadError = err instanceof Error ? err.message : "Failed to load players for showcase";
+  let result: WorkbenchQueryResponse | null = null;
+  let players: PlayerResearchItem[] = [];
+  let query = null;
+  if (catalog) {
+    // Same scope resolution, eligibility and cohort percentiles as Stats (D16: no new formula).
+    query = resolveStatsQuery(params, catalog, "per_game");
+    // Season-to-date cards; the Window control is hidden on this page (D6), so a window inherited
+    // from another page's URL must not silently change the cohort.
+    query.window = { kind: "season" };
+    query.sort = [{ field: "pts_per_game", direction: "desc", nulls_last: true }];
+    query.page = { limit: ROSTER_SIZE };
+    try {
+      result = await executeWorkbenchQuery(query, { player_ids: null });
+      players = result.items;
+      if (requested && !players.some((player) => player.player_id === requested)) {
+        // A searched player outside the top 25 joins the roster; the cohort is unchanged.
+        const single = await executeWorkbenchQuery({ ...query, page: { limit: 1 } }, { player_ids: [requested] });
+        players = [...single.items, ...players];
+      }
+    } catch {
+      result = null;
+    }
   }
 
-  if (!researchData || researchData.items.length === 0) {
+  if (!query || !result || players.length === 0) {
     return (
-      <section className="page shell">
-        <div className="empty-state tall" role="alert">
-          <span className="empty-code">SHOWCASE CARDS</span>
-          <h1>Showcase players unavailable</h1>
-          <p>{loadError ?? `Could not find confirmed player performances for ${season} before ${beforeDate}.`}</p>
-          <Link className="button button-dark" href="/players">
-            Browse Players Directory
-          </Link>
-        </div>
-      </section>
+      <div className="ui-page ui-page-board">
+        <EmptyState
+          icon="alert"
+          title="No players to showcase for this scope."
+          description="Try another season or phase in Stats."
+          action={<a className="ui-button ui-button-secondary ui-button-md" href="/stats">Open Stats</a>}
+        />
+      </div>
     );
   }
 
-  return (
-    <>
-      <ContextBar
-        sampleNoun="eligible players"
-        initialSeason={season}
-        initialPhase={phase}
-        initialBeforeDate={beforeDate}
-        initialReleaseId={params.releaseId}
-        sampleSize={researchData.total_eligible_players}
-        lastIncludedDate={researchData.context?.last_included_date}
-      />
+  const initialIndex = Math.max(0, players.findIndex((player) => player.player_id === requested));
+  const context = result.context as { last_included_date?: string | null };
 
-      <div className="workbench-content">
-        <PlayerShowcaseView
-          initialPlayers={researchData.items}
-          season={season}
-          phase={phase}
-          beforeDate={beforeDate}
-          releaseId={params.releaseId}
-        />
-      </div>
-    </>
+  return (
+    <PlayerShowcaseView
+      players={players}
+      initialIndex={initialIndex}
+      query={query}
+      catalog={catalog}
+      eligiblePlayers={result.cohort?.eligible_players ?? result.total_eligible_players}
+      goodDirections={(result.cohort?.good_directions ?? {}) as Record<string, GoodDirection>}
+      lastIncludedDate={context.last_included_date ?? null}
+    />
   );
 }

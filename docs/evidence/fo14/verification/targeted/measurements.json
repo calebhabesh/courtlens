@@ -1,0 +1,3950 @@
+{
+  "capturedAt": "2026-10-10T05:00:26.563Z",
+  "base": "http://localhost:3103",
+  "api": "http://localhost:8001",
+  "releaseId": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+  "measurements": [
+    {
+      "name": "contracts",
+      "url": "/contracts?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&finance_book_id=256f66b1-129d-4904-be30-7b946f6e92fc&finance_financial_season=2025-26&finance_known_at=2026-10-03T16%3A53%3A28.617539Z&finance_effective_on=2025-02-12",
+      "view": "desktop",
+      "width": 1440,
+      "finalPath": "/contracts",
+      "screenshot": "after/contracts--desktop.png",
+      "title": "Contracts & Payroll",
+      "h1Count": 1,
+      "template": "explorer",
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "mainTop": 279,
+      "afterBarGap": 16,
+      "smallTargets": [
+        {
+          "label": "Live",
+          "class": "courtlens-nav-dropdown-btn ",
+          "width": 58.671875,
+          "height": 27.5
+        },
+        {
+          "label": "Players",
+          "class": "courtlens-nav-dropdown-btn ",
+          "width": 79.390625,
+          "height": 27.5
+        },
+        {
+          "label": "Teams",
+          "class": "courtlens-nav-dropdown-btn active",
+          "width": 73.71875,
+          "height": 27.5
+        },
+        {
+          "label": "Compare",
+          "class": "courtlens-nav-dropdown-btn ",
+          "width": 89.203125,
+          "height": 27.5
+        },
+        {
+          "label": "Research",
+          "class": "courtlens-nav-dropdown-btn ",
+          "width": 90.859375,
+          "height": 27.5
+        },
+        {
+          "label": "Search players, teams and pages",
+          "class": "courtlens-search-pill",
+          "width": 380,
+          "height": 32
+        },
+        {
+          "label": "Ask",
+          "class": "ui-button ui-button-ghost ui-button-sm button   courtlens-ask-btn",
+          "width": 61.34375,
+          "height": 32
+        },
+        {
+          "label": "More options",
+          "class": "ui-button ui-button-ghost ui-button-sm button   ui-icon-button icon-button ",
+          "width": 32,
+          "height": 32
+        }
+      ],
+      "badNumbers": [],
+      "numericCells": 2,
+      "filtersButton": false,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "loadButtons": [],
+      "brokenImages": [],
+      "inlineStyles": [
+        {
+          "tag": "SPAN",
+          "class": "courtlens-nav-indicator",
+          "style": "opacity: 1;"
+        },
+        {
+          "tag": "NEXT-ROUTE-ANNOUNCER",
+          "class": "",
+          "style": "position: absolute;"
+        }
+      ],
+      "audit": {
+        "violations": [],
+        "incomplete": [],
+        "passes": 30
+      },
+      "skipFocusedMain": true,
+      "keyboard": [
+        {
+          "tag": "A",
+          "label": "Contracts",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 76,
+          "bottom": 116
+        },
+        {
+          "tag": "A",
+          "label": "Free Agency",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 76,
+          "bottom": 116
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Refresh",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 76,
+          "bottom": 116
+        },
+        {
+          "tag": "SELECT",
+          "label": "Immutable finance book",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 162,
+          "bottom": 202
+        },
+        {
+          "tag": "INPUT",
+          "label": "Financial season",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 162,
+          "bottom": 202
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Known date (UTC): Oct 3, 2026",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 162,
+          "bottom": 202
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Effective on (inclusive): Feb 12, 2025",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 162,
+          "bottom": 202
+        },
+        {
+          "tag": "SELECT",
+          "label": "Explicit contract team",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 214,
+          "bottom": 254
+        },
+        {
+          "tag": "SELECT",
+          "label": "Seasonal amount kind",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 214,
+          "bottom": 254
+        },
+        {
+          "tag": "SELECT",
+          "label": "Status scope",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 214,
+          "bottom": 254
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Data details",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 188,
+          "bottom": 228
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "Why?",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 418,
+          "bottom": 458
+        }
+      ],
+      "errors": []
+    },
+    {
+      "name": "contracts",
+      "url": "/contracts?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&finance_book_id=256f66b1-129d-4904-be30-7b946f6e92fc&finance_financial_season=2025-26&finance_known_at=2026-10-03T16%3A53%3A28.617539Z&finance_effective_on=2025-02-12",
+      "view": "phone",
+      "width": 390,
+      "finalPath": "/contracts",
+      "screenshot": "after/contracts--phone.png",
+      "title": "Contracts & Payroll",
+      "h1Count": 1,
+      "template": "explorer",
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "mainTop": 259,
+      "afterBarGap": 16,
+      "smallTargets": [],
+      "badNumbers": [],
+      "numericCells": 2,
+      "filtersButton": true,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "loadButtons": [],
+      "brokenImages": [],
+      "inlineStyles": [
+        {
+          "tag": "SPAN",
+          "class": "courtlens-nav-indicator",
+          "style": "opacity: 1;"
+        },
+        {
+          "tag": "NEXT-ROUTE-ANNOUNCER",
+          "class": "",
+          "style": "position: absolute;"
+        }
+      ],
+      "audit": {
+        "violations": [],
+        "incomplete": [],
+        "passes": 31
+      },
+      "skipFocusedMain": true,
+      "keyboard": [
+        {
+          "tag": "A",
+          "label": "Contracts",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 108,
+          "bottom": 148
+        },
+        {
+          "tag": "A",
+          "label": "Free Agency",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 108,
+          "bottom": 148
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Refresh",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 108,
+          "bottom": 148
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Filters2025-26",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 194,
+          "bottom": 234
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Data details",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 194,
+          "bottom": 234
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "Why?",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 545,
+          "bottom": 585
+        },
+        {
+          "tag": "INPUT",
+          "label": "Search player, team, or source note",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 621,
+          "bottom": 661
+        },
+        {
+          "tag": "SELECT",
+          "label": "Observed term family",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 693,
+          "bottom": 733
+        },
+        {
+          "tag": "SELECT",
+          "label": "Small vs Big group",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 765,
+          "bottom": 805
+        },
+        {
+          "tag": "SELECT",
+          "label": "Sort contracts",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 804,
+          "bottom": 844
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "Why?",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 470,
+          "bottom": 510
+        },
+        {
+          "tag": "DIV",
+          "label": "Contracts and status table",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 433,
+          "bottom": 845
+        }
+      ],
+      "errors": []
+    },
+    {
+      "name": "design",
+      "url": "/design?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13",
+      "view": "desktop",
+      "width": 1440,
+      "finalPath": "/design",
+      "screenshot": "after/design--desktop.png",
+      "title": "CourtLens Design Language v1",
+      "h1Count": 2,
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "mainTop": 783,
+      "afterBarGap": 1096,
+      "smallTargets": [
+        {
+          "label": "Live",
+          "class": "courtlens-nav-dropdown-btn ",
+          "width": 58.671875,
+          "height": 27.5
+        },
+        {
+          "label": "Players",
+          "class": "courtlens-nav-dropdown-btn ",
+          "width": 79.390625,
+          "height": 27.5
+        },
+        {
+          "label": "Teams",
+          "class": "courtlens-nav-dropdown-btn ",
+          "width": 73.375,
+          "height": 27.5
+        },
+        {
+          "label": "Compare",
+          "class": "courtlens-nav-dropdown-btn ",
+          "width": 89.203125,
+          "height": 27.5
+        },
+        {
+          "label": "Research",
+          "class": "courtlens-nav-dropdown-btn ",
+          "width": 90.859375,
+          "height": 27.5
+        },
+        {
+          "label": "Search players, teams and pages",
+          "class": "courtlens-search-pill",
+          "width": 380,
+          "height": 32
+        },
+        {
+          "label": "Ask",
+          "class": "ui-button ui-button-ghost ui-button-sm button   courtlens-ask-btn",
+          "width": 61.34375,
+          "height": 32
+        },
+        {
+          "label": "More options",
+          "class": "ui-button ui-button-ghost ui-button-sm button   ui-icon-button icon-button ",
+          "width": 32,
+          "height": 32
+        },
+        {
+          "label": "Command Palette (⌘K)",
+          "class": "ui-button ui-button-secondary ui-button-md button   ",
+          "width": 189.140625,
+          "height": 34
+        },
+        {
+          "label": "Test Toast",
+          "class": "ui-button ui-button-primary ui-button-md button button-primary  ",
+          "width": 110.0625,
+          "height": 34
+        },
+        {
+          "label": "Find player",
+          "class": "ui-button ui-button-secondary ui-button-sm button   ",
+          "width": 100.609375,
+          "height": 28
+        },
+        {
+          "label": "Export",
+          "class": "ui-button ui-button-primary ui-button-sm button button-primary  ",
+          "width": 75.625,
+          "height": 28
+        },
+        {
+          "label": "Guards",
+          "class": "ui-chip-option is-selected",
+          "width": 86.390625,
+          "height": 32
+        },
+        {
+          "label": "Forwards",
+          "class": "ui-chip-option ",
+          "width": 80.625,
+          "height": 32
+        },
+        {
+          "label": "Centers",
+          "class": "ui-chip-option ",
+          "width": 71.390625,
+          "height": 32
+        },
+        {
+          "label": "Observed",
+          "class": "ui-segmented-item ui-segmented-item-active",
+          "width": 82.734375,
+          "height": 36
+        },
+        {
+          "label": "Projected",
+          "class": "ui-segmented-item ",
+          "width": 82.671875,
+          "height": 36
+        },
+        {
+          "label": "Overall Impact",
+          "class": "ui-segmented-item ui-segmented-item-active",
+          "width": 113.53125,
+          "height": 32
+        },
+        {
+          "label": "Scoring & Shooting",
+          "class": "ui-segmented-item ",
+          "width": 142.0625,
+          "height": 32
+        },
+        {
+          "label": "Playmaking",
+          "class": "ui-segmented-item ",
+          "width": 95.3125,
+          "height": 32
+        },
+        {
+          "label": "Defense",
+          "class": "ui-segmented-item ",
+          "width": 74.296875,
+          "height": 32
+        },
+        {
+          "label": "Season",
+          "class": "ui-chip-option is-selected",
+          "width": 69.1875,
+          "height": 32
+        },
+        {
+          "label": "Last 10",
+          "class": "ui-chip-option ",
+          "width": 66.3125,
+          "height": 32
+        },
+        {
+          "label": "Last 55",
+          "class": "ui-chip-option ",
+          "width": 85.390625,
+          "height": 32
+        },
+        {
+          "label": "Jump to Apr 12",
+          "class": "ui-button ui-button-secondary ui-button-sm button   ",
+          "width": 98.03125,
+          "height": 28
+        },
+        {
+          "label": "Why?",
+          "class": "ui-why-summary",
+          "width": 46.875,
+          "height": 28
+        },
+        {
+          "label": "Remove Luka Dončić",
+          "class": "ui-entity-chip-remove",
+          "width": 24,
+          "height": 24
+        },
+        {
+          "label": "Explorer",
+          "class": "ui-segmented-item ",
+          "width": 75.921875,
+          "height": 32
+        },
+        {
+          "label": "Profile",
+          "class": "ui-segmented-item ",
+          "width": 64.125,
+          "height": 32
+        },
+        {
+          "label": "Compare",
+          "class": "ui-segmented-item ",
+          "width": 79.203125,
+          "height": 32
+        },
+        {
+          "label": "Board",
+          "class": "ui-segmented-item ui-segmented-item-active",
+          "width": 60.546875,
+          "height": 32
+        },
+        {
+          "label": "Research",
+          "class": "ui-segmented-item ",
+          "width": 80.859375,
+          "height": 32
+        },
+        {
+          "label": "Article",
+          "class": "ui-segmented-item ",
+          "width": 64.828125,
+          "height": 32
+        },
+        {
+          "label": "",
+          "class": "ui-switch-track",
+          "width": 40,
+          "height": 20
+        },
+        {
+          "label": "0px",
+          "class": "ui-button ui-button-secondary ui-button-sm button   ",
+          "width": 37.0625,
+          "height": 28
+        },
+        {
+          "label": "80px",
+          "class": "ui-button ui-button-secondary ui-button-sm button   ",
+          "width": 44.828125,
+          "height": 28
+        },
+        {
+          "label": "160px",
+          "class": "ui-button ui-button-secondary ui-button-sm button   ",
+          "width": 49.53125,
+          "height": 28
+        },
+        {
+          "label": "240px",
+          "class": "ui-button ui-button-secondary ui-button-sm button   ",
+          "width": 51.96875,
+          "height": 28
+        },
+        {
+          "label": "Primary SM",
+          "class": "ui-button ui-button-primary ui-button-sm button button-primary  ",
+          "width": 81.71875,
+          "height": 28
+        },
+        {
+          "label": "Primary MD",
+          "class": "ui-button ui-button-primary ui-button-md button button-primary  ",
+          "width": 95.546875,
+          "height": 34
+        },
+        {
+          "label": "Secondary SM",
+          "class": "ui-button ui-button-secondary ui-button-sm button   ",
+          "width": 98.140625,
+          "height": 28
+        },
+        {
+          "label": "Secondary MD",
+          "class": "ui-button ui-button-secondary ui-button-md button   ",
+          "width": 113.34375,
+          "height": 34
+        },
+        {
+          "label": "Ghost SM",
+          "class": "ui-button ui-button-ghost ui-button-sm button   ",
+          "width": 71.09375,
+          "height": 28
+        },
+        {
+          "label": "Ghost MD",
+          "class": "ui-button ui-button-ghost ui-button-md button   ",
+          "width": 84.03125,
+          "height": 34
+        },
+        {
+          "label": "Danger SM",
+          "class": "ui-button ui-button-danger ui-button-sm button   ",
+          "width": 78.625,
+          "height": 28
+        },
+        {
+          "label": "Danger MD",
+          "class": "ui-button ui-button-danger ui-button-md button   ",
+          "width": 92.203125,
+          "height": 34
+        },
+        {
+          "label": "Click for Loading State",
+          "class": "ui-button ui-button-secondary ui-button-md button   ",
+          "width": 163.3125,
+          "height": 34
+        },
+        {
+          "label": "Disabled Button",
+          "class": "ui-button ui-button-secondary ui-button-md button   ",
+          "width": 120.921875,
+          "height": 34
+        },
+        {
+          "label": "Favorite player",
+          "class": "ui-button ui-button-secondary ui-button-md button   ui-icon-button icon-button ",
+          "width": 32,
+          "height": 32
+        },
+        {
+          "label": "Export CSV",
+          "class": "ui-button ui-button-ghost ui-button-md button   ui-icon-button icon-button ",
+          "width": 32,
+          "height": 32
+        },
+        {
+          "label": "",
+          "class": "ui-switch-track",
+          "width": 40,
+          "height": 20
+        },
+        {
+          "label": "",
+          "class": "ui-switch-track",
+          "width": 40,
+          "height": 20
+        },
+        {
+          "label": "Shot Chart",
+          "class": "ui-segmented-item ui-segmented-item-active",
+          "width": 108.3125,
+          "height": 32
+        },
+        {
+          "label": "Trends",
+          "class": "ui-segmented-item ",
+          "width": 83.921875,
+          "height": 32
+        },
+        {
+          "label": "Similarity",
+          "class": "ui-segmented-item ",
+          "width": 100.703125,
+          "height": 32
+        },
+        {
+          "label": "Overview",
+          "class": "ui-tab-trigger ui-tab-trigger-active ",
+          "width": 80.59375,
+          "height": 34
+        },
+        {
+          "label": "Advanced Metrics",
+          "class": "ui-tab-trigger  ",
+          "width": 133.40625,
+          "height": 34
+        },
+        {
+          "label": "Data Lineage",
+          "class": "ui-tab-trigger  ",
+          "width": 103.828125,
+          "height": 34
+        },
+        {
+          "label": "Remove",
+          "class": "ui-badge-remove",
+          "width": 14,
+          "height": 14
+        },
+        {
+          "label": "Remove",
+          "class": "ui-badge-remove",
+          "width": 14,
+          "height": 14
+        },
+        {
+          "label": "Default Density",
+          "class": "ui-segmented-item ui-segmented-item-active",
+          "width": 111.953125,
+          "height": 28
+        },
+        {
+          "label": "Compact Density",
+          "class": "ui-segmented-item ",
+          "width": 119.9375,
+          "height": 28
+        },
+        {
+          "label": "PTS / G",
+          "class": "ui-table-sort-button",
+          "width": 63.6875,
+          "height": 18
+        },
+        {
+          "label": "Open Actions Menu",
+          "class": "ui-menu-trigger",
+          "width": 164.34375,
+          "height": 34
+        },
+        {
+          "label": "Open Actions Menu",
+          "class": "ui-button ui-button-secondary ui-button-md",
+          "width": 164.34375,
+          "height": 34
+        },
+        {
+          "label": "Popover Info",
+          "class": "ui-popover-trigger",
+          "width": 122.328125,
+          "height": 34
+        },
+        {
+          "label": "Popover Info",
+          "class": "ui-button ui-button-secondary ui-button-md",
+          "width": 122.328125,
+          "height": 34
+        },
+        {
+          "label": "Hover for Tooltip",
+          "class": "ui-button ui-button-ghost ui-button-md button   ",
+          "width": 149.390625,
+          "height": 34
+        },
+        {
+          "label": "Open Modal Dialog",
+          "class": "ui-button ui-button-secondary ui-button-md button   ",
+          "width": 139.15625,
+          "height": 34
+        },
+        {
+          "label": "Open Drawer (Right)",
+          "class": "ui-button ui-button-secondary ui-button-md button   ",
+          "width": 146.90625,
+          "height": 34
+        },
+        {
+          "label": "Open Bottom Sheet",
+          "class": "ui-button ui-button-secondary ui-button-md button   ",
+          "width": 142.671875,
+          "height": 34
+        },
+        {
+          "label": "None",
+          "class": "ui-segmented-item ui-segmented-item-active",
+          "width": 56.34375,
+          "height": 32
+        },
+        {
+          "label": "Stats",
+          "class": "ui-segmented-item ",
+          "width": 56.421875,
+          "height": 32
+        },
+        {
+          "label": "Player",
+          "class": "ui-segmented-item ",
+          "width": 62.78125,
+          "height": 32
+        },
+        {
+          "label": "Live",
+          "class": "ui-segmented-item ",
+          "width": 48.671875,
+          "height": 32
+        },
+        {
+          "label": "Root",
+          "class": "ui-segmented-item ",
+          "width": 52.296875,
+          "height": 32
+        },
+        {
+          "label": "Toggle Animated Presence",
+          "class": "ui-button ui-button-secondary ui-button-sm button   ",
+          "width": 166.4375,
+          "height": 28
+        },
+        {
+          "label": "Reset Filters",
+          "class": "ui-button ui-button-secondary ui-button-sm button   ",
+          "width": 86.9375,
+          "height": 28
+        }
+      ],
+      "badNumbers": [],
+      "numericCells": 0,
+      "filtersButton": false,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "loadButtons": [],
+      "brokenImages": [],
+      "inlineStyles": [
+        {
+          "tag": "SPAN",
+          "class": "ui-segmented-indicator",
+          "style": "opacity: 1;"
+        },
+        {
+          "tag": "SPAN",
+          "class": "ui-segmented-indicator",
+          "style": "opacity: 1;"
+        },
+        {
+          "tag": "SPAN",
+          "class": "ui-segmented-indicator",
+          "style": "opacity: 1;"
+        },
+        {
+          "tag": "DIV",
+          "class": "ui-spring-box",
+          "style": "transform: none;"
+        },
+        {
+          "tag": "SPAN",
+          "class": "ui-segmented-indicator",
+          "style": "opacity: 1;"
+        },
+        {
+          "tag": "SPAN",
+          "class": "ui-tab-indicator",
+          "style": "opacity: 1;"
+        },
+        {
+          "tag": "DIV",
+          "class": "",
+          "style": "opacity: 1;"
+        },
+        {
+          "tag": "SPAN",
+          "class": "ui-segmented-indicator",
+          "style": "opacity: 1;"
+        },
+        {
+          "tag": "SPAN",
+          "class": "ui-segmented-indicator",
+          "style": "opacity: 1;"
+        },
+        {
+          "tag": "DIV",
+          "class": "ui-presence-card",
+          "style": "opacity: 1; transform: none;"
+        },
+        {
+          "tag": "NEXT-ROUTE-ANNOUNCER",
+          "class": "",
+          "style": "position: absolute;"
+        }
+      ],
+      "audit": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "aria-prohibited-attr",
+            "nodes": 2
+          }
+        ],
+        "passes": 39
+      },
+      "skipFocusedMain": true,
+      "keyboard": [
+        {
+          "tag": "BUTTON",
+          "label": "Command Palette (⌘K)",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 83,
+          "bottom": 117
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Test Toast",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 83,
+          "bottom": 117
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Find player",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 398,
+          "bottom": 426
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Export",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 398,
+          "bottom": 426
+        },
+        {
+          "tag": "SELECT",
+          "label": "Example season",
+          "visible": true,
+          "focusIndicator": false,
+          "top": 598,
+          "bottom": 638
+        },
+        {
+          "tag": "SELECT",
+          "label": "Example phase",
+          "visible": true,
+          "focusIndicator": false,
+          "top": 598,
+          "bottom": 638
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Example through date: Apr 12, 2026",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 598,
+          "bottom": 638
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Guards",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 602,
+          "bottom": 634
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Forwards",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 602,
+          "bottom": 634
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Centers",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 602,
+          "bottom": 634
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Observed",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 600,
+          "bottom": 636
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Data details",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 598,
+          "bottom": 638
+        }
+      ],
+      "errors": []
+    },
+    {
+      "name": "design",
+      "url": "/design?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13",
+      "view": "phone",
+      "width": 390,
+      "finalPath": "/design",
+      "screenshot": "after/design--phone.png",
+      "title": "CourtLens Design Language v1",
+      "h1Count": 2,
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "mainTop": 1676,
+      "afterBarGap": 2436,
+      "smallTargets": [],
+      "badNumbers": [],
+      "numericCells": 0,
+      "filtersButton": true,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "loadButtons": [],
+      "brokenImages": [],
+      "inlineStyles": [
+        {
+          "tag": "SPAN",
+          "class": "ui-segmented-indicator",
+          "style": "opacity: 1;"
+        },
+        {
+          "tag": "SPAN",
+          "class": "ui-segmented-indicator",
+          "style": "opacity: 1;"
+        },
+        {
+          "tag": "SPAN",
+          "class": "ui-segmented-indicator",
+          "style": "opacity: 1;"
+        },
+        {
+          "tag": "DIV",
+          "class": "ui-spring-box",
+          "style": "transform: none;"
+        },
+        {
+          "tag": "SPAN",
+          "class": "ui-segmented-indicator",
+          "style": "opacity: 1;"
+        },
+        {
+          "tag": "SPAN",
+          "class": "ui-tab-indicator",
+          "style": "opacity: 1;"
+        },
+        {
+          "tag": "DIV",
+          "class": "",
+          "style": "opacity: 1;"
+        },
+        {
+          "tag": "SPAN",
+          "class": "ui-segmented-indicator",
+          "style": "opacity: 1;"
+        },
+        {
+          "tag": "SPAN",
+          "class": "ui-segmented-indicator",
+          "style": "opacity: 1;"
+        },
+        {
+          "tag": "DIV",
+          "class": "ui-presence-card",
+          "style": "opacity: 1; transform: none;"
+        },
+        {
+          "tag": "NEXT-ROUTE-ANNOUNCER",
+          "class": "",
+          "style": "position: absolute;"
+        }
+      ],
+      "audit": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "aria-prohibited-attr",
+            "nodes": 2
+          },
+          {
+            "id": "color-contrast",
+            "nodes": 2
+          }
+        ],
+        "passes": 39
+      },
+      "skipFocusedMain": true,
+      "keyboard": [
+        {
+          "tag": "BUTTON",
+          "label": "Command Palette (⌘K)",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 116,
+          "bottom": 156
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Test Toast",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 116,
+          "bottom": 156
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Find player",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 481,
+          "bottom": 521
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Export",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 481,
+          "bottom": 521
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Observed",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 761,
+          "bottom": 801
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Filters2025-26 · Regular Season · Apr 12",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 711,
+          "bottom": 751
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Data details",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 711,
+          "bottom": 751
+        },
+        {
+          "tag": "INPUT",
+          "label": "Example team search",
+          "visible": true,
+          "focusIndicator": false,
+          "top": 470,
+          "bottom": 510
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Example game day: Apr 10, 2026",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 706,
+          "bottom": 746
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Overall Impact",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 470,
+          "bottom": 510
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Season",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 524,
+          "bottom": 564
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Jump to Apr 12",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 700,
+          "bottom": 740
+        }
+      ],
+      "errors": [
+        "Minified React error #418; visit https://react.dev/errors/418?args[]=text&args[]= for the full message or use the non-minified dev environment for full errors and additional helpful warnings."
+      ]
+    },
+    {
+      "name": "free-agency",
+      "url": "/free-agency?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&finance_book_id=256f66b1-129d-4904-be30-7b946f6e92fc&finance_financial_season=2025-26&finance_known_at=2026-10-03T16%3A53%3A28.617539Z&finance_effective_on=2025-02-12",
+      "view": "desktop",
+      "width": 1440,
+      "finalPath": "/free-agency",
+      "screenshot": "after/free-agency--desktop.png",
+      "title": "Free Agency Tracker",
+      "h1Count": 1,
+      "template": "explorer",
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "mainTop": 279,
+      "afterBarGap": 16,
+      "smallTargets": [
+        {
+          "label": "Live",
+          "class": "courtlens-nav-dropdown-btn ",
+          "width": 58.671875,
+          "height": 27.5
+        },
+        {
+          "label": "Players",
+          "class": "courtlens-nav-dropdown-btn ",
+          "width": 79.390625,
+          "height": 27.5
+        },
+        {
+          "label": "Teams",
+          "class": "courtlens-nav-dropdown-btn active",
+          "width": 73.71875,
+          "height": 27.5
+        },
+        {
+          "label": "Compare",
+          "class": "courtlens-nav-dropdown-btn ",
+          "width": 89.203125,
+          "height": 27.5
+        },
+        {
+          "label": "Research",
+          "class": "courtlens-nav-dropdown-btn ",
+          "width": 90.859375,
+          "height": 27.5
+        },
+        {
+          "label": "Search players, teams and pages",
+          "class": "courtlens-search-pill",
+          "width": 380,
+          "height": 32
+        },
+        {
+          "label": "Ask",
+          "class": "ui-button ui-button-ghost ui-button-sm button   courtlens-ask-btn",
+          "width": 61.34375,
+          "height": 32
+        },
+        {
+          "label": "More options",
+          "class": "ui-button ui-button-ghost ui-button-sm button   ui-icon-button icon-button ",
+          "width": 32,
+          "height": 32
+        }
+      ],
+      "badNumbers": [],
+      "numericCells": 2,
+      "filtersButton": false,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "loadButtons": [],
+      "brokenImages": [],
+      "inlineStyles": [
+        {
+          "tag": "SPAN",
+          "class": "courtlens-nav-indicator",
+          "style": "opacity: 1;"
+        },
+        {
+          "tag": "NEXT-ROUTE-ANNOUNCER",
+          "class": "",
+          "style": "position: absolute;"
+        }
+      ],
+      "audit": {
+        "violations": [],
+        "incomplete": [],
+        "passes": 30
+      },
+      "skipFocusedMain": true,
+      "keyboard": [
+        {
+          "tag": "A",
+          "label": "Contracts",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 76,
+          "bottom": 116
+        },
+        {
+          "tag": "A",
+          "label": "Free Agency",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 76,
+          "bottom": 116
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Refresh",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 76,
+          "bottom": 116
+        },
+        {
+          "tag": "SELECT",
+          "label": "Immutable finance book",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 162,
+          "bottom": 202
+        },
+        {
+          "tag": "INPUT",
+          "label": "Financial season",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 162,
+          "bottom": 202
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Known date (UTC): Oct 3, 2026",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 162,
+          "bottom": 202
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Effective on (inclusive): Feb 12, 2025",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 162,
+          "bottom": 202
+        },
+        {
+          "tag": "SELECT",
+          "label": "Explicit contract team",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 214,
+          "bottom": 254
+        },
+        {
+          "tag": "SELECT",
+          "label": "Seasonal amount kind",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 214,
+          "bottom": 254
+        },
+        {
+          "tag": "SELECT",
+          "label": "Status scope",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 214,
+          "bottom": 254
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Data details",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 188,
+          "bottom": 228
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "Why?",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 418,
+          "bottom": 458
+        }
+      ],
+      "errors": []
+    },
+    {
+      "name": "free-agency",
+      "url": "/free-agency?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&finance_book_id=256f66b1-129d-4904-be30-7b946f6e92fc&finance_financial_season=2025-26&finance_known_at=2026-10-03T16%3A53%3A28.617539Z&finance_effective_on=2025-02-12",
+      "view": "phone",
+      "width": 390,
+      "finalPath": "/free-agency",
+      "screenshot": "after/free-agency--phone.png",
+      "title": "Free Agency Tracker",
+      "h1Count": 1,
+      "template": "explorer",
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "mainTop": 259,
+      "afterBarGap": 16,
+      "smallTargets": [],
+      "badNumbers": [],
+      "numericCells": 2,
+      "filtersButton": true,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "loadButtons": [],
+      "brokenImages": [],
+      "inlineStyles": [
+        {
+          "tag": "SPAN",
+          "class": "courtlens-nav-indicator",
+          "style": "opacity: 1;"
+        },
+        {
+          "tag": "NEXT-ROUTE-ANNOUNCER",
+          "class": "",
+          "style": "position: absolute;"
+        }
+      ],
+      "audit": {
+        "violations": [],
+        "incomplete": [],
+        "passes": 31
+      },
+      "skipFocusedMain": true,
+      "keyboard": [
+        {
+          "tag": "A",
+          "label": "Contracts",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 108,
+          "bottom": 148
+        },
+        {
+          "tag": "A",
+          "label": "Free Agency",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 108,
+          "bottom": 148
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Refresh",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 108,
+          "bottom": 148
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Filters2025-26",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 194,
+          "bottom": 234
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Data details",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 194,
+          "bottom": 234
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "Why?",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 545,
+          "bottom": 585
+        },
+        {
+          "tag": "INPUT",
+          "label": "Search player, team, or source note",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 621,
+          "bottom": 661
+        },
+        {
+          "tag": "SELECT",
+          "label": "Observed term family",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 693,
+          "bottom": 733
+        },
+        {
+          "tag": "SELECT",
+          "label": "Small vs Big group",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 765,
+          "bottom": 805
+        },
+        {
+          "tag": "SELECT",
+          "label": "Sort contracts",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 804,
+          "bottom": 844
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "Why?",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 470,
+          "bottom": 510
+        },
+        {
+          "tag": "DIV",
+          "label": "Contracts and status table",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 433,
+          "bottom": 845
+        }
+      ],
+      "errors": []
+    },
+    {
+      "name": "players__id_",
+      "url": "/players/1629029?season=2025-26&phase=regular_season&beforeDate=2026-04-13&window=season&releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+      "view": "desktop",
+      "width": 1440,
+      "finalPath": "/players/1629029",
+      "screenshot": "after/players__id_--desktop.png",
+      "title": "Luka Dončić",
+      "h1Count": 1,
+      "template": "profile",
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "mainTop": 227,
+      "afterBarGap": 16,
+      "smallTargets": [
+        {
+          "label": "Live",
+          "class": "courtlens-nav-dropdown-btn ",
+          "width": 58.671875,
+          "height": 27.5
+        },
+        {
+          "label": "Players",
+          "class": "courtlens-nav-dropdown-btn active",
+          "width": 79.859375,
+          "height": 27.5
+        },
+        {
+          "label": "Teams",
+          "class": "courtlens-nav-dropdown-btn ",
+          "width": 73.375,
+          "height": 27.5
+        },
+        {
+          "label": "Compare",
+          "class": "courtlens-nav-dropdown-btn ",
+          "width": 89.203125,
+          "height": 27.5
+        },
+        {
+          "label": "Research",
+          "class": "courtlens-nav-dropdown-btn ",
+          "width": 90.859375,
+          "height": 27.5
+        },
+        {
+          "label": "Search players, teams and pages",
+          "class": "courtlens-search-pill",
+          "width": 380,
+          "height": 32
+        },
+        {
+          "label": "Ask",
+          "class": "ui-button ui-button-ghost ui-button-sm button   courtlens-ask-btn",
+          "width": 61.34375,
+          "height": 32
+        },
+        {
+          "label": "More options",
+          "class": "ui-button ui-button-ghost ui-button-sm button   ui-icon-button icon-button ",
+          "width": 32,
+          "height": 32
+        },
+        {
+          "label": "Add to favorites",
+          "class": "ui-button ui-button-secondary ui-button-md button   ui-icon-button icon-button ",
+          "width": 32,
+          "height": 32
+        },
+        {
+          "label": "Add to compare tray",
+          "class": "ui-button ui-button-secondary ui-button-md button   ui-icon-button icon-button ",
+          "width": 32,
+          "height": 32
+        },
+        {
+          "label": "Explore",
+          "class": "ui-menu-trigger",
+          "width": 92.765625,
+          "height": 34
+        },
+        {
+          "label": "Explore",
+          "class": "ui-button ui-button-secondary ui-button-md",
+          "width": 92.765625,
+          "height": 34
+        },
+        {
+          "label": "Export",
+          "class": "ui-menu-trigger",
+          "width": 110.765625,
+          "height": 34
+        },
+        {
+          "label": "Export",
+          "class": "ui-button ui-button-primary ui-button-md",
+          "width": 110.765625,
+          "height": 34
+        },
+        {
+          "label": "Overview",
+          "class": "ui-tab-trigger ui-tab-trigger-active ",
+          "width": 80.59375,
+          "height": 34
+        },
+        {
+          "label": "Game Log",
+          "class": "ui-tab-trigger  ",
+          "width": 85.359375,
+          "height": 34
+        },
+        {
+          "label": "Measurements",
+          "class": "ui-tab-trigger  ",
+          "width": 114.640625,
+          "height": 34
+        },
+        {
+          "label": "Impact samples and artifact identity",
+          "class": "",
+          "width": 1352,
+          "height": 21
+        },
+        {
+          "label": "Why?",
+          "class": "ui-why-summary",
+          "width": 46.875,
+          "height": 28
+        },
+        {
+          "label": "Why?",
+          "class": "ui-why-summary",
+          "width": 46.875,
+          "height": 28
+        },
+        {
+          "label": "Why?",
+          "class": "ui-why-summary",
+          "width": 46.875,
+          "height": 28
+        }
+      ],
+      "badNumbers": [],
+      "numericCells": 69,
+      "filtersButton": false,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "loadButtons": [],
+      "brokenImages": [],
+      "inlineStyles": [
+        {
+          "tag": "SPAN",
+          "class": "courtlens-nav-indicator",
+          "style": "opacity: 1;"
+        },
+        {
+          "tag": "SPAN",
+          "class": "ui-tab-indicator",
+          "style": "opacity: 1;"
+        },
+        {
+          "tag": "DIV",
+          "class": "",
+          "style": "opacity: 1;"
+        },
+        {
+          "tag": "NEXT-ROUTE-ANNOUNCER",
+          "class": "",
+          "style": "position: absolute;"
+        }
+      ],
+      "audit": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "aria-prohibited-attr",
+            "nodes": 1
+          }
+        ],
+        "passes": 35
+      },
+      "skipFocusedMain": true,
+      "keyboard": [
+        {
+          "tag": "BUTTON",
+          "label": "Add to favorites",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 80,
+          "bottom": 112
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Add to compare tray",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 80,
+          "bottom": 112
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Explore",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 79,
+          "bottom": 113
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Export",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 79,
+          "bottom": 113
+        },
+        {
+          "tag": "SELECT",
+          "label": "Filter by season",
+          "visible": true,
+          "focusIndicator": false,
+          "top": 162,
+          "bottom": 202
+        },
+        {
+          "tag": "SELECT",
+          "label": "Filter by competition phase",
+          "visible": true,
+          "focusIndicator": false,
+          "top": 162,
+          "bottom": 202
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Through date: Apr 12, 2026",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 162,
+          "bottom": 202
+        },
+        {
+          "tag": "SELECT",
+          "label": "Analysis window",
+          "visible": true,
+          "focusIndicator": false,
+          "top": 162,
+          "bottom": 202
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Data details",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 162,
+          "bottom": 202
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Overview",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 435,
+          "bottom": 469
+        },
+        {
+          "tag": "DIV",
+          "label": "Player impact1Y RAPM3.221Y ORAPM3.441Y DRAPM-0.231Y BPR4.632Y RAPM4.183Y RAPM4.2",
+          "visible": true,
+          "focusIndicator": false,
+          "top": 136,
+          "bottom": 1550
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "Impact samples and artifact identity",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 295,
+          "bottom": 316
+        }
+      ],
+      "errors": []
+    },
+    {
+      "name": "players__id_",
+      "url": "/players/1629029?season=2025-26&phase=regular_season&beforeDate=2026-04-13&window=season&releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+      "view": "phone",
+      "width": 390,
+      "finalPath": "/players/1629029",
+      "screenshot": "after/players__id_--phone.png",
+      "title": "Luka Dončić",
+      "h1Count": 1,
+      "template": "profile",
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "mainTop": 259,
+      "afterBarGap": 16,
+      "smallTargets": [],
+      "badNumbers": [],
+      "numericCells": 69,
+      "filtersButton": true,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "loadButtons": [],
+      "brokenImages": [],
+      "inlineStyles": [
+        {
+          "tag": "SPAN",
+          "class": "courtlens-nav-indicator",
+          "style": "opacity: 1;"
+        },
+        {
+          "tag": "SPAN",
+          "class": "ui-tab-indicator",
+          "style": "opacity: 1;"
+        },
+        {
+          "tag": "DIV",
+          "class": "",
+          "style": "opacity: 1;"
+        },
+        {
+          "tag": "NEXT-ROUTE-ANNOUNCER",
+          "class": "",
+          "style": "position: absolute;"
+        }
+      ],
+      "audit": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "aria-prohibited-attr",
+            "nodes": 1
+          },
+          {
+            "id": "color-contrast",
+            "nodes": 3
+          }
+        ],
+        "passes": 34
+      },
+      "skipFocusedMain": true,
+      "keyboard": [
+        {
+          "tag": "BUTTON",
+          "label": "Add to favorites",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 108,
+          "bottom": 148
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Add to compare tray",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 108,
+          "bottom": 148
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Explore",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 108,
+          "bottom": 148
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Export",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 108,
+          "bottom": 148
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Filters2025-26 · Regular Season · Apr 12",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 194,
+          "bottom": 234
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Data details",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 194,
+          "bottom": 234
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Overview",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 717,
+          "bottom": 757
+        },
+        {
+          "tag": "DIV",
+          "label": "Player impact1Y RAPM3.221Y ORAPM3.441Y DRAPM-0.231Y BPR4.632Y RAPM4.183Y RAPM4.2",
+          "visible": true,
+          "focusIndicator": false,
+          "top": 136,
+          "bottom": 2090
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "Impact samples and artifact identity",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 441,
+          "bottom": 481
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "Why?",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 537,
+          "bottom": 577
+        },
+        {
+          "tag": "DIV",
+          "label": "Production splits table",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 669,
+          "bottom": 817
+        },
+        {
+          "tag": "DIV",
+          "label": "Career history table",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 398,
+          "bottom": 582
+        }
+      ],
+      "errors": []
+    },
+    {
+      "name": "research_ask",
+      "url": "/research/ask?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13",
+      "view": "desktop",
+      "width": 1440,
+      "finalPath": "/research/ask",
+      "screenshot": "after/research_ask--desktop.png",
+      "title": "Ask CourtLens",
+      "h1Count": 1,
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "mainTop": null,
+      "afterBarGap": null,
+      "smallTargets": [
+        {
+          "label": "Live",
+          "class": "courtlens-nav-dropdown-btn ",
+          "width": 58.671875,
+          "height": 27.5
+        },
+        {
+          "label": "Players",
+          "class": "courtlens-nav-dropdown-btn ",
+          "width": 79.390625,
+          "height": 27.5
+        },
+        {
+          "label": "Teams",
+          "class": "courtlens-nav-dropdown-btn ",
+          "width": 73.375,
+          "height": 27.5
+        },
+        {
+          "label": "Compare",
+          "class": "courtlens-nav-dropdown-btn ",
+          "width": 89.203125,
+          "height": 27.5
+        },
+        {
+          "label": "Research",
+          "class": "courtlens-nav-dropdown-btn active",
+          "width": 91.3125,
+          "height": 27.5
+        },
+        {
+          "label": "Search players, teams and pages",
+          "class": "courtlens-search-pill",
+          "width": 380,
+          "height": 32
+        },
+        {
+          "label": "Ask",
+          "class": "ui-button ui-button-ghost ui-button-sm button   courtlens-ask-btn",
+          "width": 61.34375,
+          "height": 32
+        },
+        {
+          "label": "More options",
+          "class": "ui-button ui-button-ghost ui-button-sm button   ui-icon-button icon-button ",
+          "width": 32,
+          "height": 32
+        },
+        {
+          "label": "New chat",
+          "class": "ask-history-item",
+          "width": 247,
+          "height": 37
+        },
+        {
+          "label": "Who is the best defender in the NBA?",
+          "class": "ask-history-item",
+          "width": 247,
+          "height": 37
+        },
+        {
+          "label": "Which player had the most blocks last season.a",
+          "class": "ask-history-item",
+          "width": 247,
+          "height": 37
+        },
+        {
+          "label": "What was Victor Wembanyama's RAPM last season?",
+          "class": "ask-history-item",
+          "width": 247,
+          "height": 37
+        },
+        {
+          "label": "Who won mvp last season?",
+          "class": "ask-history-item",
+          "width": 247,
+          "height": 37
+        },
+        {
+          "label": "Who were the top 10 centers in ppg last season",
+          "class": "ask-history-item",
+          "width": 247,
+          "height": 37
+        },
+        {
+          "label": "Who won mvp last season",
+          "class": "ask-history-item",
+          "width": 247,
+          "height": 37
+        },
+        {
+          "label": "Who won mvp last season",
+          "class": "ask-history-item",
+          "width": 247,
+          "height": 37
+        },
+        {
+          "label": "Conversations",
+          "class": "ui-button ui-button-secondary ui-button-md button   ui-icon-button icon-button button-quiet",
+          "width": 32,
+          "height": 32
+        },
+        {
+          "label": "New chat",
+          "class": "ui-button ui-button-ghost ui-button-md button button-quiet  ",
+          "width": 104.796875,
+          "height": 34
+        },
+        {
+          "label": "Delete chat",
+          "class": "ui-button ui-button-secondary ui-button-md button   ui-icon-button icon-button button-quiet",
+          "width": 32,
+          "height": 32
+        },
+        {
+          "label": "",
+          "class": "",
+          "width": 662,
+          "height": 37
+        },
+        {
+          "label": "Send question",
+          "class": "ui-button ui-button-primary ui-button-md button button-primary  ask-send",
+          "width": 36,
+          "height": 36
+        },
+        {
+          "label": "Scope: 2025-26 · Regular season · before 2026-04-13 · Edit scope for the next question",
+          "class": "",
+          "width": 308.984375,
+          "height": 18
+        }
+      ],
+      "badNumbers": [],
+      "numericCells": 0,
+      "filtersButton": false,
+      "rawDates": 1,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "loadButtons": [],
+      "brokenImages": [],
+      "inlineStyles": [
+        {
+          "tag": "SPAN",
+          "class": "courtlens-nav-indicator",
+          "style": "opacity: 1;"
+        },
+        {
+          "tag": "NEXT-ROUTE-ANNOUNCER",
+          "class": "",
+          "style": "position: absolute;"
+        }
+      ],
+      "audit": {
+        "violations": [],
+        "incomplete": [],
+        "passes": 26
+      },
+      "skipFocusedMain": true,
+      "keyboard": [
+        {
+          "tag": "BUTTON",
+          "label": "New chat",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 134,
+          "bottom": 171
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Who is the best defender in the NBA?",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 171,
+          "bottom": 208
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Which player had the most blocks last season.a",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 208,
+          "bottom": 245
+        },
+        {
+          "tag": "BUTTON",
+          "label": "What was Victor Wembanyama's RAPM last season?",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 245,
+          "bottom": 282
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Who won mvp last season?",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 282,
+          "bottom": 319
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Who were the top 10 centers in ppg last season",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 319,
+          "bottom": 356
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Who won mvp last season",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 356,
+          "bottom": 393
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Who won mvp last season",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 393,
+          "bottom": 430
+        },
+        {
+          "tag": "A",
+          "label": "Open manual research",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 841,
+          "bottom": 861
+        },
+        {
+          "tag": "A",
+          "label": "History and privacy settings",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 869,
+          "bottom": 888
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Conversations",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 65,
+          "bottom": 97
+        },
+        {
+          "tag": "BUTTON",
+          "label": "New chat",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 64,
+          "bottom": 98
+        }
+      ],
+      "errors": []
+    },
+    {
+      "name": "research_ask",
+      "url": "/research/ask?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13",
+      "view": "phone",
+      "width": 390,
+      "finalPath": "/research/ask",
+      "screenshot": "after/research_ask--phone.png",
+      "title": "Ask CourtLens",
+      "h1Count": 1,
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "mainTop": null,
+      "afterBarGap": null,
+      "smallTargets": [],
+      "badNumbers": [],
+      "numericCells": 0,
+      "filtersButton": false,
+      "rawDates": 1,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "loadButtons": [],
+      "brokenImages": [],
+      "inlineStyles": [
+        {
+          "tag": "SPAN",
+          "class": "courtlens-nav-indicator",
+          "style": "opacity: 1;"
+        },
+        {
+          "tag": "NEXT-ROUTE-ANNOUNCER",
+          "class": "",
+          "style": "position: absolute;"
+        }
+      ],
+      "audit": {
+        "violations": [],
+        "incomplete": [],
+        "passes": 27
+      },
+      "skipFocusedMain": true,
+      "keyboard": [
+        {
+          "tag": "BUTTON",
+          "label": "Conversations",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 64,
+          "bottom": 104
+        },
+        {
+          "tag": "BUTTON",
+          "label": "New chat",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 64,
+          "bottom": 104
+        },
+        {
+          "tag": "TEXTAREA",
+          "label": "",
+          "visible": true,
+          "focusIndicator": false,
+          "top": 314,
+          "bottom": 354
+        },
+        {
+          "tag": "BUTTON",
+          "label": "ImpactWhat was Victor Wembanyama's RAPM last season?",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 393,
+          "bottom": 483
+        },
+        {
+          "tag": "BUTTON",
+          "label": "DefenseWho is the best defender in the NBA?",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 491,
+          "bottom": 560
+        },
+        {
+          "tag": "BUTTON",
+          "label": "AwardsWho won MVP last season?",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 568,
+          "bottom": 637
+        },
+        {
+          "tag": "BUTTON",
+          "label": "League leadersWho led the league in assists per game last season?",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 645,
+          "bottom": 735
+        },
+        {
+          "tag": "BUTTON",
+          "label": "ForecastShow the registered points forecast for Nikola Jokić.",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 674,
+          "bottom": 764
+        },
+        {
+          "tag": "BUTTON",
+          "label": "CompareCompare Nikola Jokić and Victor Wembanyama last season.",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 452,
+          "bottom": 542
+        },
+        {
+          "tag": "BUTTON",
+          "label": "ConceptsExplain pick and roll",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 550,
+          "bottom": 619
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Using CourtLensHow do I compare two players here?",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 627,
+          "bottom": 696
+        },
+        {
+          "tag": "SUMMARY",
+          "label": "Scope: 2025-26 · Regular season · before 2026-04-13 · Edit scope for the next qu",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 780,
+          "bottom": 820
+        }
+      ],
+      "errors": []
+    },
+    {
+      "name": "stats",
+      "url": "/stats?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13",
+      "view": "desktop",
+      "width": 1440,
+      "finalPath": "/stats",
+      "screenshot": "after/stats--desktop.png",
+      "title": "Stats",
+      "h1Count": 1,
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "mainTop": 207,
+      "afterBarGap": 16,
+      "smallTargets": [
+        {
+          "label": "Live",
+          "class": "courtlens-nav-dropdown-btn ",
+          "width": 58.671875,
+          "height": 27.5
+        },
+        {
+          "label": "Players",
+          "class": "courtlens-nav-dropdown-btn ",
+          "width": 79.390625,
+          "height": 27.5
+        },
+        {
+          "label": "Teams",
+          "class": "courtlens-nav-dropdown-btn ",
+          "width": 73.375,
+          "height": 27.5
+        },
+        {
+          "label": "Compare",
+          "class": "courtlens-nav-dropdown-btn ",
+          "width": 89.203125,
+          "height": 27.5
+        },
+        {
+          "label": "Research",
+          "class": "courtlens-nav-dropdown-btn ",
+          "width": 90.859375,
+          "height": 27.5
+        },
+        {
+          "label": "Search players, teams and pages",
+          "class": "courtlens-search-pill",
+          "width": 380,
+          "height": 32
+        },
+        {
+          "label": "Ask",
+          "class": "ui-button ui-button-ghost ui-button-sm button   courtlens-ask-btn",
+          "width": 61.34375,
+          "height": 32
+        },
+        {
+          "label": "More options",
+          "class": "ui-button ui-button-ghost ui-button-sm button   ui-icon-button icon-button ",
+          "width": 32,
+          "height": 32
+        },
+        {
+          "label": "Overview",
+          "class": "stats-preset-tab active",
+          "width": 68.234375,
+          "height": 28
+        },
+        {
+          "label": "Shooting",
+          "class": "stats-preset-tab ",
+          "width": 67.21875,
+          "height": 28
+        },
+        {
+          "label": "Defense",
+          "class": "stats-preset-tab ",
+          "width": 62.765625,
+          "height": 28
+        },
+        {
+          "label": "True Shooting",
+          "class": "stats-preset-tab ",
+          "width": 95.71875,
+          "height": 28
+        },
+        {
+          "label": "Rates (Per 36)",
+          "class": "stats-preset-tab ",
+          "width": 96.3125,
+          "height": 28
+        },
+        {
+          "label": "Playmaking",
+          "class": "stats-preset-tab ",
+          "width": 82.421875,
+          "height": 28
+        },
+        {
+          "label": "Rebounding",
+          "class": "stats-preset-tab ",
+          "width": 84.09375,
+          "height": 28
+        },
+        {
+          "label": "Impact",
+          "class": "stats-preset-tab ",
+          "width": 55.1875,
+          "height": 28
+        },
+        {
+          "label": "On-Off",
+          "class": "stats-preset-tab ",
+          "width": 54.828125,
+          "height": 28
+        },
+        {
+          "label": "Six Factor",
+          "class": "stats-preset-tab ",
+          "width": 73.53125,
+          "height": 28
+        },
+        {
+          "label": "Photos",
+          "class": "control-pill ",
+          "width": 54.390625,
+          "height": 28
+        },
+        {
+          "label": "Logos",
+          "class": "control-pill active",
+          "width": 49.921875,
+          "height": 28
+        },
+        {
+          "label": "Initials",
+          "class": "control-pill ",
+          "width": 53.109375,
+          "height": 28
+        },
+        {
+          "label": "None",
+          "class": "control-pill ",
+          "width": 45.484375,
+          "height": 28
+        },
+        {
+          "label": "Manage Views",
+          "class": "button button-small stats-manage-views-btn",
+          "width": 123.53125,
+          "height": 32
+        },
+        {
+          "label": "Per Game",
+          "class": "control-pill active",
+          "width": 71.203125,
+          "height": 28
+        },
+        {
+          "label": "Totals",
+          "class": "control-pill ",
+          "width": 49.59375,
+          "height": 28
+        },
+        {
+          "label": "Per 36",
+          "class": "control-pill ",
+          "width": 52.90625,
+          "height": 28
+        },
+        {
+          "label": "Per 75",
+          "class": "control-pill ",
+          "width": 52.84375,
+          "height": 28
+        },
+        {
+          "label": "Per 100",
+          "class": "control-pill ",
+          "width": 57.4375,
+          "height": 28
+        },
+        {
+          "label": "Table",
+          "class": "control-pill active",
+          "width": 64.84375,
+          "height": 28
+        },
+        {
+          "label": "Scatter Plot",
+          "class": "control-pill ",
+          "width": 100,
+          "height": 28
+        },
+        {
+          "label": "Trend Lines",
+          "class": "control-pill ",
+          "width": 98.859375,
+          "height": 28
+        },
+        {
+          "label": "%iles On",
+          "class": "control-pill active",
+          "width": 65.375,
+          "height": 28
+        },
+        {
+          "label": "Favorites",
+          "class": "control-pill ",
+          "width": 87.171875,
+          "height": 28
+        },
+        {
+          "label": "Filters",
+          "class": "control-pill ",
+          "width": 69.390625,
+          "height": 28
+        },
+        {
+          "label": "Hotkeys",
+          "class": "control-pill",
+          "width": 79.84375,
+          "height": 28
+        },
+        {
+          "label": "Save legacy scope",
+          "class": "control-pill",
+          "width": 137.046875,
+          "height": 28
+        },
+        {
+          "label": "Filter players by name",
+          "class": "lookup-input",
+          "width": 200.03125,
+          "height": 38
+        },
+        {
+          "label": "Sort by Player",
+          "class": "stats-name-sort",
+          "width": 22,
+          "height": 26
+        },
+        {
+          "label": "Sort by GP",
+          "class": "table-sort-button",
+          "width": 67.984375,
+          "height": 28
+        },
+        {
+          "label": "Sort by MIN",
+          "class": "table-sort-button",
+          "width": 67.984375,
+          "height": 28
+        },
+        {
+          "label": "Sort by MPG",
+          "class": "table-sort-button",
+          "width": 67.984375,
+          "height": 28
+        },
+        {
+          "label": "Sort by PPG",
+          "class": "table-sort-button",
+          "width": 67.984375,
+          "height": 28
+        },
+        {
+          "label": "Sort by RPG",
+          "class": "table-sort-button",
+          "width": 67.984375,
+          "height": 28
+        },
+        {
+          "label": "Sort by APG",
+          "class": "table-sort-button",
+          "width": 67.984375,
+          "height": 28
+        },
+        {
+          "label": "Sort by SPG",
+          "class": "table-sort-button",
+          "width": 67.984375,
+          "height": 28
+        },
+        {
+          "label": "Sort by BPG",
+          "class": "table-sort-button",
+          "width": 67.984375,
+          "height": 28
+        },
+        {
+          "label": "Sort by FG%",
+          "class": "table-sort-button",
+          "width": 67.984375,
+          "height": 28
+        },
+        {
+          "label": "Sort by 3P%",
+          "class": "table-sort-button",
+          "width": 67.984375,
+          "height": 28
+        },
+        {
+          "label": "Sort by FT%",
+          "class": "table-sort-button",
+          "width": 67.984375,
+          "height": 28
+        },
+        {
+          "label": "Sort by TS%",
+          "class": "table-sort-button",
+          "width": 67.984375,
+          "height": 28
+        },
+        {
+          "label": "Sort by eFG%",
+          "class": "table-sort-button",
+          "width": 68.15625,
+          "height": 28
+        },
+        {
+          "label": "Add Luka Dončić to favorites",
+          "class": "stats-favorite-button ",
+          "width": 20,
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Luka Dončić",
+          "class": "stats-icon-action stats-row-pin",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Open details for Luka Dončić",
+          "class": "stats-icon-action",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Add Shai Gilgeous-Alexander to favorites",
+          "class": "stats-favorite-button ",
+          "width": 20,
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Shai Gilgeous-Alexander",
+          "class": "stats-icon-action stats-row-pin",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Open details for Shai Gilgeous-Alexander",
+          "class": "stats-icon-action",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Add Anthony Edwards to favorites",
+          "class": "stats-favorite-button ",
+          "width": 20,
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Anthony Edwards",
+          "class": "stats-icon-action stats-row-pin",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Open details for Anthony Edwards",
+          "class": "stats-icon-action",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Add Jaylen Brown to favorites",
+          "class": "stats-favorite-button ",
+          "width": 20,
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Jaylen Brown",
+          "class": "stats-icon-action stats-row-pin",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Open details for Jaylen Brown",
+          "class": "stats-icon-action",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Add Tyrese Maxey to favorites",
+          "class": "stats-favorite-button ",
+          "width": 20,
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Tyrese Maxey",
+          "class": "stats-icon-action stats-row-pin",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Open details for Tyrese Maxey",
+          "class": "stats-icon-action",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Add Donovan Mitchell to favorites",
+          "class": "stats-favorite-button ",
+          "width": 20,
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Donovan Mitchell",
+          "class": "stats-icon-action stats-row-pin",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Open details for Donovan Mitchell",
+          "class": "stats-icon-action",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Add Kawhi Leonard to favorites",
+          "class": "stats-favorite-button ",
+          "width": 20,
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Kawhi Leonard",
+          "class": "stats-icon-action stats-row-pin",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Open details for Kawhi Leonard",
+          "class": "stats-icon-action",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Add Nikola Jokić to favorites",
+          "class": "stats-favorite-button ",
+          "width": 20,
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Nikola Jokić",
+          "class": "stats-icon-action stats-row-pin",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Open details for Nikola Jokić",
+          "class": "stats-icon-action",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Add Giannis Antetokounmpo to favorites",
+          "class": "stats-favorite-button ",
+          "width": 20,
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Giannis Antetokounmpo",
+          "class": "stats-icon-action stats-row-pin",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Open details for Giannis Antetokounmpo",
+          "class": "stats-icon-action",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Add Lauri Markkanen to favorites",
+          "class": "stats-favorite-button ",
+          "width": 20,
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Lauri Markkanen",
+          "class": "stats-icon-action stats-row-pin",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Open details for Lauri Markkanen",
+          "class": "stats-icon-action",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Add Joel Embiid to favorites",
+          "class": "stats-favorite-button ",
+          "width": 20,
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Joel Embiid",
+          "class": "stats-icon-action stats-row-pin",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Open details for Joel Embiid",
+          "class": "stats-icon-action",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Add Stephen Curry to favorites",
+          "class": "stats-favorite-button ",
+          "width": 20,
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Stephen Curry",
+          "class": "stats-icon-action stats-row-pin",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Open details for Stephen Curry",
+          "class": "stats-icon-action",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Add Devin Booker to favorites",
+          "class": "stats-favorite-button ",
+          "width": 20,
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Devin Booker",
+          "class": "stats-icon-action stats-row-pin",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Open details for Devin Booker",
+          "class": "stats-icon-action",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Add Jalen Brunson to favorites",
+          "class": "stats-favorite-button ",
+          "width": 20,
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Jalen Brunson",
+          "class": "stats-icon-action stats-row-pin",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Open details for Jalen Brunson",
+          "class": "stats-icon-action",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Add Kevin Durant to favorites",
+          "class": "stats-favorite-button ",
+          "width": 20,
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Kevin Durant",
+          "class": "stats-icon-action stats-row-pin",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Open details for Kevin Durant",
+          "class": "stats-icon-action",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Add Jamal Murray to favorites",
+          "class": "stats-favorite-button ",
+          "width": 20,
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Jamal Murray",
+          "class": "stats-icon-action stats-row-pin",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Open details for Jamal Murray",
+          "class": "stats-icon-action",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Add Victor Wembanyama to favorites",
+          "class": "stats-favorite-button ",
+          "width": 20,
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Victor Wembanyama",
+          "class": "stats-icon-action stats-row-pin",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Open details for Victor Wembanyama",
+          "class": "stats-icon-action",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Add Michael Porter Jr. to favorites",
+          "class": "stats-favorite-button ",
+          "width": 20,
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Michael Porter Jr.",
+          "class": "stats-icon-action stats-row-pin",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Open details for Michael Porter Jr.",
+          "class": "stats-icon-action",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Add Deni Avdija to favorites",
+          "class": "stats-favorite-button ",
+          "width": 20,
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Deni Avdija",
+          "class": "stats-icon-action stats-row-pin",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Open details for Deni Avdija",
+          "class": "stats-icon-action",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Add Pascal Siakam to favorites",
+          "class": "stats-favorite-button ",
+          "width": 20,
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Pascal Siakam",
+          "class": "stats-icon-action stats-row-pin",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Open details for Pascal Siakam",
+          "class": "stats-icon-action",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Add Cade Cunningham to favorites",
+          "class": "stats-favorite-button ",
+          "width": 20,
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Cade Cunningham",
+          "class": "stats-icon-action stats-row-pin",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Open details for Cade Cunningham",
+          "class": "stats-icon-action",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Add Keyonte George to favorites",
+          "class": "stats-favorite-button ",
+          "width": 20,
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Keyonte George",
+          "class": "stats-icon-action stats-row-pin",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Open details for Keyonte George",
+          "class": "stats-icon-action",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Add James Harden to favorites",
+          "class": "stats-favorite-button ",
+          "width": 20,
+          "height": 26
+        },
+        {
+          "label": "Pin preview for James Harden",
+          "class": "stats-icon-action stats-row-pin",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Open details for James Harden",
+          "class": "stats-icon-action",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Add Austin Reaves to favorites",
+          "class": "stats-favorite-button ",
+          "width": 20,
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Austin Reaves",
+          "class": "stats-icon-action stats-row-pin",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Open details for Austin Reaves",
+          "class": "stats-icon-action",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Add Jalen Johnson to favorites",
+          "class": "stats-favorite-button ",
+          "width": 20,
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Jalen Johnson",
+          "class": "stats-icon-action stats-row-pin",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Open details for Jalen Johnson",
+          "class": "stats-icon-action",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Add Paolo Banchero to favorites",
+          "class": "stats-favorite-button ",
+          "width": 20,
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Paolo Banchero",
+          "class": "stats-icon-action stats-row-pin",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Open details for Paolo Banchero",
+          "class": "stats-icon-action",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Add Jayson Tatum to favorites",
+          "class": "stats-favorite-button ",
+          "width": 20,
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Jayson Tatum",
+          "class": "stats-icon-action stats-row-pin",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Open details for Jayson Tatum",
+          "class": "stats-icon-action",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Add Norman Powell to favorites",
+          "class": "stats-favorite-button ",
+          "width": 20,
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Norman Powell",
+          "class": "stats-icon-action stats-row-pin",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Open details for Norman Powell",
+          "class": "stats-icon-action",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Add Trey Murphy III to favorites",
+          "class": "stats-favorite-button ",
+          "width": 20,
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Trey Murphy III",
+          "class": "stats-icon-action stats-row-pin",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Open details for Trey Murphy III",
+          "class": "stats-icon-action",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Add Brandon Ingram to favorites",
+          "class": "stats-favorite-button ",
+          "width": 20,
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Brandon Ingram",
+          "class": "stats-icon-action stats-row-pin",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Open details for Brandon Ingram",
+          "class": "stats-icon-action",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Add Julius Randle to favorites",
+          "class": "stats-favorite-button ",
+          "width": 20,
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Julius Randle",
+          "class": "stats-icon-action stats-row-pin",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Open details for Julius Randle",
+          "class": "stats-icon-action",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Add Zion Williamson to favorites",
+          "class": "stats-favorite-button ",
+          "width": 20,
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Zion Williamson",
+          "class": "stats-icon-action stats-row-pin",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Open details for Zion Williamson",
+          "class": "stats-icon-action",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Add Cooper Flagg to favorites",
+          "class": "stats-favorite-button ",
+          "width": 20,
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Cooper Flagg",
+          "class": "stats-icon-action stats-row-pin",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Open details for Cooper Flagg",
+          "class": "stats-icon-action",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Add LeBron James to favorites",
+          "class": "stats-favorite-button ",
+          "width": 20,
+          "height": 26
+        },
+        {
+          "label": "Pin preview for LeBron James",
+          "class": "stats-icon-action stats-row-pin",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Open details for LeBron James",
+          "class": "stats-icon-action",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Add Nickeil Alexander-Walker to favorites",
+          "class": "stats-favorite-button ",
+          "width": 20,
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Nickeil Alexander-Walker",
+          "class": "stats-icon-action stats-row-pin",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Open details for Nickeil Alexander-Walker",
+          "class": "stats-icon-action",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Add Shaedon Sharpe to favorites",
+          "class": "stats-favorite-button ",
+          "width": 20,
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Shaedon Sharpe",
+          "class": "stats-icon-action stats-row-pin",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Open details for Shaedon Sharpe",
+          "class": "stats-icon-action",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Add Franz Wagner to favorites",
+          "class": "stats-favorite-button ",
+          "width": 20,
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Franz Wagner",
+          "class": "stats-icon-action stats-row-pin",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Open details for Franz Wagner",
+          "class": "stats-icon-action",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Add Tyler Herro to favorites",
+          "class": "stats-favorite-button ",
+          "width": 20,
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Tyler Herro",
+          "class": "stats-icon-action stats-row-pin",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Open details for Tyler Herro",
+          "class": "stats-icon-action",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Add Alperen Sengun to favorites",
+          "class": "stats-favorite-button ",
+          "width": 20,
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Alperen Sengun",
+          "class": "stats-icon-action stats-row-pin",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Open details for Alperen Sengun",
+          "class": "stats-icon-action",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Add Anthony Davis to favorites",
+          "class": "stats-favorite-button ",
+          "width": 20,
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Anthony Davis",
+          "class": "stats-icon-action stats-row-pin",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Open details for Anthony Davis",
+          "class": "stats-icon-action",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Add Dillon Brooks to favorites",
+          "class": "stats-favorite-button ",
+          "width": 20,
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Dillon Brooks",
+          "class": "stats-icon-action stats-row-pin",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Open details for Dillon Brooks",
+          "class": "stats-icon-action",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Add Brandon Miller to favorites",
+          "class": "stats-favorite-button ",
+          "width": 20,
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Brandon Miller",
+          "class": "stats-icon-action stats-row-pin",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Open details for Brandon Miller",
+          "class": "stats-icon-action",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Add Karl-Anthony Towns to favorites",
+          "class": "stats-favorite-button ",
+          "width": 20,
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Karl-Anthony Towns",
+          "class": "stats-icon-action stats-row-pin",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Open details for Karl-Anthony Towns",
+          "class": "stats-icon-action",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Add Bam Adebayo to favorites",
+          "class": "stats-favorite-button ",
+          "width": 20,
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Bam Adebayo",
+          "class": "stats-icon-action stats-row-pin",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Open details for Bam Adebayo",
+          "class": "stats-icon-action",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Add LaMelo Ball to favorites",
+          "class": "stats-favorite-button ",
+          "width": 20,
+          "height": 26
+        },
+        {
+          "label": "Pin preview for LaMelo Ball",
+          "class": "stats-icon-action stats-row-pin",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Open details for LaMelo Ball",
+          "class": "stats-icon-action",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Add Desmond Bane to favorites",
+          "class": "stats-favorite-button ",
+          "width": 20,
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Desmond Bane",
+          "class": "stats-icon-action stats-row-pin",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Open details for Desmond Bane",
+          "class": "stats-icon-action",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Add Jimmy Butler III to favorites",
+          "class": "stats-favorite-button ",
+          "width": 20,
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Jimmy Butler III",
+          "class": "stats-icon-action stats-row-pin",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Open details for Jimmy Butler III",
+          "class": "stats-icon-action",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Add Ty Jerome to favorites",
+          "class": "stats-favorite-button ",
+          "width": 20,
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Ty Jerome",
+          "class": "stats-icon-action stats-row-pin",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Open details for Ty Jerome",
+          "class": "stats-icon-action",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Add Ja Morant to favorites",
+          "class": "stats-favorite-button ",
+          "width": 20,
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Ja Morant",
+          "class": "stats-icon-action stats-row-pin",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Open details for Ja Morant",
+          "class": "stats-icon-action",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Add Jalen Duren to favorites",
+          "class": "stats-favorite-button ",
+          "width": 20,
+          "height": 26
+        },
+        {
+          "label": "Pin preview for Jalen Duren",
+          "class": "stats-icon-action stats-row-pin",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Open details for Jalen Duren",
+          "class": "stats-icon-action",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Collapse player preview",
+          "class": "stats-icon-action",
+          "width": 24,
+          "height": 28
+        },
+        {
+          "label": "Standard Density",
+          "class": "control-pill",
+          "width": 112.578125,
+          "height": 28
+        },
+        {
+          "label": "Expand Table (T)",
+          "class": "control-pill ",
+          "width": 126.609375,
+          "height": 28
+        },
+        {
+          "label": "First Page",
+          "class": "button button-small",
+          "width": 97.515625,
+          "height": 28
+        },
+        {
+          "label": "Next Page",
+          "class": "button button-small button-primary",
+          "width": 98.421875,
+          "height": 28
+        }
+      ],
+      "badNumbers": [],
+      "numericCells": 650,
+      "filtersButton": false,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "loadButtons": [],
+      "brokenImages": [],
+      "inlineStyles": [
+        {
+          "tag": "SPAN",
+          "class": "courtlens-nav-indicator",
+          "style": "opacity: 1;"
+        },
+        {
+          "tag": "SPAN",
+          "class": "ui-sliding-indicator stats-preset-indicator",
+          "style": "opacity: 1;"
+        },
+        {
+          "tag": "NEXT-ROUTE-ANNOUNCER",
+          "class": "",
+          "style": "position: absolute;"
+        }
+      ],
+      "audit": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "aria-prohibited-attr",
+            "nodes": 699
+          },
+          {
+            "id": "color-contrast",
+            "nodes": 1
+          }
+        ],
+        "passes": 34
+      },
+      "skipFocusedMain": true,
+      "keyboard": [
+        {
+          "tag": "SELECT",
+          "label": "Filter by season",
+          "visible": true,
+          "focusIndicator": false,
+          "top": 142,
+          "bottom": 182
+        },
+        {
+          "tag": "SELECT",
+          "label": "Filter by competition phase",
+          "visible": true,
+          "focusIndicator": false,
+          "top": 142,
+          "bottom": 182
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Through date: Apr 12, 2026",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 142,
+          "bottom": 182
+        },
+        {
+          "tag": "SELECT",
+          "label": "Analysis window",
+          "visible": true,
+          "focusIndicator": false,
+          "top": 142,
+          "bottom": 182
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Data details",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 142,
+          "bottom": 182
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Overview",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 209,
+          "bottom": 237
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Shooting",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 209,
+          "bottom": 237
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Defense",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 209,
+          "bottom": 237
+        },
+        {
+          "tag": "BUTTON",
+          "label": "True Shooting",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 209,
+          "bottom": 237
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Rates (Per 36)",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 209,
+          "bottom": 237
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Playmaking",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 209,
+          "bottom": 237
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Rebounding",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 209,
+          "bottom": 237
+        }
+      ],
+      "errors": []
+    },
+    {
+      "name": "stats",
+      "url": "/stats?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13",
+      "view": "phone",
+      "width": 390,
+      "finalPath": "/stats",
+      "screenshot": "after/stats--phone.png",
+      "title": "Stats",
+      "h1Count": 1,
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "mainTop": 203,
+      "afterBarGap": 16,
+      "smallTargets": [],
+      "badNumbers": [],
+      "numericCells": 650,
+      "filtersButton": true,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "loadButtons": [],
+      "brokenImages": [],
+      "inlineStyles": [
+        {
+          "tag": "SPAN",
+          "class": "courtlens-nav-indicator",
+          "style": "opacity: 1;"
+        },
+        {
+          "tag": "SPAN",
+          "class": "ui-sliding-indicator stats-preset-indicator",
+          "style": "opacity: 1;"
+        },
+        {
+          "tag": "NEXT-ROUTE-ANNOUNCER",
+          "class": "",
+          "style": "position: absolute;"
+        }
+      ],
+      "audit": {
+        "violations": [],
+        "incomplete": [
+          {
+            "id": "aria-prohibited-attr",
+            "nodes": 699
+          },
+          {
+            "id": "color-contrast",
+            "nodes": 6
+          }
+        ],
+        "passes": 33
+      },
+      "skipFocusedMain": true,
+      "keyboard": [
+        {
+          "tag": "BUTTON",
+          "label": "Filters2025-26 · Regular Season · Apr 12",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 138,
+          "bottom": 178
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Data details",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 138,
+          "bottom": 178
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Overview",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 205,
+          "bottom": 245
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Shooting",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 205,
+          "bottom": 245
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Defense",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 205,
+          "bottom": 245
+        },
+        {
+          "tag": "BUTTON",
+          "label": "True Shooting",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 205,
+          "bottom": 245
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Rates (Per 36)",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 205,
+          "bottom": 245
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Playmaking",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 205,
+          "bottom": 245
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Rebounding",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 205,
+          "bottom": 245
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Impact",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 205,
+          "bottom": 245
+        },
+        {
+          "tag": "BUTTON",
+          "label": "On-Off",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 205,
+          "bottom": 245
+        },
+        {
+          "tag": "BUTTON",
+          "label": "Six Factor",
+          "visible": true,
+          "focusIndicator": true,
+          "top": 205,
+          "bottom": 245
+        }
+      ],
+      "errors": []
+    }
+  ]
+}

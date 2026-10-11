@@ -1,7 +1,10 @@
+import Link from "next/link";
 import { resolveStatsQuery } from "@/lib/stats-query";
 import { getWorkbenchCatalog } from "@/lib/workbench-api";
 import type { Metadata } from "next";
-import { ContextBar } from "@/components/context-bar";
+import { PageShell } from "@/components/ui/page-shell";
+import { PageHeader } from "@/components/ui/panel";
+import { GatedNote } from "@/components/ui/gated-note";
 import { TeamExplorerView } from "@/components/team-explorer-view";
 import { getTeamsResearch } from "@/lib/workbench-api";
 import type { TeamResearchResponse } from "@/lib/types";
@@ -48,44 +51,13 @@ export default async function TeamsPage({ searchParams }: TeamsPageProps) {
   }
 
   return (
-    <>
-      <ContextBar
-        catalog={catalog ?? undefined}
-        initialReleaseId={resolvedReleaseId}
-        sampleNoun="teams"
-        initialSeason={season}
-        initialPhase={phase}
-        initialBeforeDate={beforeDate}
-        sampleSize={teamsData?.teams?.length}
-      />
-
-      <div className="workbench-content">
-        <div className="page-header mb-4">
-          <div>
-            <h1 className="page-title">Team Explorer</h1>
-            <p className="page-subtitle">
-              Verified franchise standings, Dean Oliver Four Factors, offensive/defensive ratings, and pace distributions across {season} {phase.replaceAll("_", " ")}.
-            </p>
-          </div>
-        </div>
-
-        {loadError && (
-          <div className="notice-box notice-box-error mb-4">
-            <strong>Error:</strong> {loadError}
-          </div>
-        )}
-
-        {teamsData && (
-          <TeamExplorerView
-            initialTeams={teamsData.teams}
-            season={season}
-            phase={phase}
-            beforeDate={beforeDate}
-            orderNotice={teamsData.order_notice}
-            leagueAverages={teamsData.league_averages}
-          />
-        )}
-      </div>
-    </>
+    <PageShell template="explorer" className="teams-page">
+      {loadError && <><PageHeader title="Team Stats & Cohorts" subtitle="Standings, scoring and Four Factors." /><GatedNote action={<Link className="button" href="/teams">Retry</Link>} why={loadError}>Team research is unavailable.</GatedNote></>}
+      {teamsData && <TeamExplorerView
+        initialTeams={teamsData.teams} catalog={catalog ?? undefined} releaseId={resolvedReleaseId}
+        season={season} phase={phase} beforeDate={beforeDate}
+        orderNotice={teamsData.order_notice} leagueAverages={teamsData.league_averages}
+      />}
+    </PageShell>
   );
 }

@@ -1,0 +1,285 @@
+{
+  "previous_unchanged": 54,
+  "new": [
+    "data-status-desktop-linux.png",
+    "data-status-phone-linux.png",
+    "methodology-desktop-linux.png",
+    "methodology-phone-linux.png",
+    "settings-desktop-linux.png",
+    "settings-phone-linux.png",
+    "whats-new-desktop-linux.png",
+    "whats-new-phone-linux.png"
+  ],
+  "previous_files": [
+    {
+      "file": "calculator-desktop-linux.png",
+      "sha256": "dd1e71059ce5710db974c27f7386af5b87b524dc62224b85c0d9353537ab9911",
+      "parent_sha256": "dd1e71059ce5710db974c27f7386af5b87b524dc62224b85c0d9353537ab9911"
+    },
+    {
+      "file": "calculator-phone-linux.png",
+      "sha256": "02507b812b8b0179f34c69f320bc636b67264544cd0aa22f5927b017ec01d541",
+      "parent_sha256": "02507b812b8b0179f34c69f320bc636b67264544cd0aa22f5927b017ec01d541"
+    },
+    {
+      "file": "case-studies-desktop-linux.png",
+      "sha256": "fb6a75c18b4b3e91ef38194e90fc3fdb178334200608179daa66043571e7b73c",
+      "parent_sha256": "fb6a75c18b4b3e91ef38194e90fc3fdb178334200608179daa66043571e7b73c"
+    },
+    {
+      "file": "case-studies-phone-linux.png",
+      "sha256": "07410df4cd1bc578f98b4fb4549dfef0d5d45098e2e08cbfd66a9b10aa0db1e0",
+      "parent_sha256": "07410df4cd1bc578f98b4fb4549dfef0d5d45098e2e08cbfd66a9b10aa0db1e0"
+    },
+    {
+      "file": "contracts-TOR-desktop-linux.png",
+      "sha256": "63d763414b44691b2360075b8fed545633f45b53ca914f0c2b88e92ac4ebb2e0",
+      "parent_sha256": "63d763414b44691b2360075b8fed545633f45b53ca914f0c2b88e92ac4ebb2e0"
+    },
+    {
+      "file": "contracts-TOR-phone-linux.png",
+      "sha256": "e25af9f9ccee60e4281fff4bb8b04c09b49b400c3ca7db89027a1b6ef7be2373",
+      "parent_sha256": "e25af9f9ccee60e4281fff4bb8b04c09b49b400c3ca7db89027a1b6ef7be2373"
+    },
+    {
+      "file": "contracts-desktop-linux.png",
+      "sha256": "267a7750a7949f52fdd0dffe79fca8740a444430d14d08fe3dd836b35617b08a",
+      "parent_sha256": "267a7750a7949f52fdd0dffe79fca8740a444430d14d08fe3dd836b35617b08a"
+    },
+    {
+      "file": "contracts-phone-linux.png",
+      "sha256": "fe5cc17248d16e725b8603662a42ef4a891efcd916bf43f27751373068f70631",
+      "parent_sha256": "fe5cc17248d16e725b8603662a42ef4a891efcd916bf43f27751373068f70631"
+    },
+    {
+      "file": "design-desktop-linux.png",
+      "sha256": "c930ffd1fc57cb87b5bdf18e30461b1b05b1903489b05a0a5955b429ef95f6ee",
+      "parent_sha256": "c930ffd1fc57cb87b5bdf18e30461b1b05b1903489b05a0a5955b429ef95f6ee"
+    },
+    {
+      "file": "design-phone-linux.png",
+      "sha256": "3d996f0363fc45de1e226f4e106ebde825f4aad94851248784b1e959a0784b32",
+      "parent_sha256": "3d996f0363fc45de1e226f4e106ebde825f4aad94851248784b1e959a0784b32"
+    },
+    {
+      "file": "evaluation-desktop-linux.png",
+      "sha256": "a7d203d4c3910f85027fb7836b7034ca29093ce63589843abf1e8b21362fba5b",
+      "parent_sha256": "a7d203d4c3910f85027fb7836b7034ca29093ce63589843abf1e8b21362fba5b"
+    },
+    {
+      "file": "evaluation-phone-linux.png",
+      "sha256": "9dbf74814f61f966f12e695fbc3557f1520c5d5abef0673b17d9bdb569785e17",
+      "parent_sha256": "9dbf74814f61f966f12e695fbc3557f1520c5d5abef0673b17d9bdb569785e17"
+    },
+    {
+      "file": "expected-shots-desktop-linux.png",
+      "sha256": "93e93911ba91b01432485b07b86f406aadf6815a9f48d798a54f798f5ab1dd28",
+      "parent_sha256": "93e93911ba91b01432485b07b86f406aadf6815a9f48d798a54f798f5ab1dd28"
+    },
+    {
+      "file": "expected-shots-phone-linux.png",
+      "sha256": "598c6b2dd47b2b77c5b79306b4f4a310b102da7839d98f6d3caa5c7aaa439d8c",
+      "parent_sha256": "598c6b2dd47b2b77c5b79306b4f4a310b102da7839d98f6d3caa5c7aaa439d8c"
+    },
+    {
+      "file": "forecasts-desktop-linux.png",
+      "sha256": "f296338f449428289605a0e8e00ed77532266e7631a9c5a354c2f4f8ecd00f18",
+      "parent_sha256": "f296338f449428289605a0e8e00ed77532266e7631a9c5a354c2f4f8ecd00f18"
+    },
+    {
+      "file": "forecasts-phone-linux.png",
+      "sha256": "2f3c2d3bfc894e0bc87eb0cd7b9311e6ab8c8917a2c206a2b6077da150cbed2a",
+      "parent_sha256": "2f3c2d3bfc894e0bc87eb0cd7b9311e6ab8c8917a2c206a2b6077da150cbed2a"
+    },
+    {
+      "file": "free-agency-desktop-linux.png",
+      "sha256": "4fa9eb59332f9e6c8f3b0b836229f117f2333e6fa5ae5d5b1a700385cb4d3cf5",
+      "parent_sha256": "4fa9eb59332f9e6c8f3b0b836229f117f2333e6fa5ae5d5b1a700385cb4d3cf5"
+    },
+    {
+      "file": "free-agency-phone-linux.png",
+      "sha256": "8c27dd79ae4c78fa8646fb23d3060eed6a58ccdbad4fc61582c162a5f1d13b85",
+      "parent_sha256": "8c27dd79ae4c78fa8646fb23d3060eed6a58ccdbad4fc61582c162a5f1d13b85"
+    },
+    {
+      "file": "live-finals-desktop-linux.png",
+      "sha256": "f49625fd49b9afb5377cd26675d913adc34ef62607822284fb533dbb150de7dd",
+      "parent_sha256": "f49625fd49b9afb5377cd26675d913adc34ef62607822284fb533dbb150de7dd"
+    },
+    {
+      "file": "live-finals-phone-linux.png",
+      "sha256": "2a0ad0853047642b571fa8c1b5d5156bb0f4e1ea4ace552e1c611334f4cb66ac",
+      "parent_sha256": "2a0ad0853047642b571fa8c1b5d5156bb0f4e1ea4ace552e1c611334f4cb66ac"
+    },
+    {
+      "file": "matchups-desktop-linux.png",
+      "sha256": "398ba38127a2e4cb6f24b98799d4b7f9bb9c572375635ebe10583412dda38858",
+      "parent_sha256": "398ba38127a2e4cb6f24b98799d4b7f9bb9c572375635ebe10583412dda38858"
+    },
+    {
+      "file": "matchups-phone-linux.png",
+      "sha256": "c9a1eea4da2364a0af4cb147d984fa4345cae3c5683dfcdfb980b0fd0117e98a",
+      "parent_sha256": "c9a1eea4da2364a0af4cb147d984fa4345cae3c5683dfcdfb980b0fd0117e98a"
+    },
+    {
+      "file": "player-comparison-desktop-linux.png",
+      "sha256": "472cbe98d9c39036d5672be9fd799e077ff204a817f60c720850812eeded7f81",
+      "parent_sha256": "472cbe98d9c39036d5672be9fd799e077ff204a817f60c720850812eeded7f81"
+    },
+    {
+      "file": "player-comparison-phone-linux.png",
+      "sha256": "b5e25342af4c6317c513d396439b85ff9afdbd7429a9ded68b2bb064dbb11308",
+      "parent_sha256": "b5e25342af4c6317c513d396439b85ff9afdbd7429a9ded68b2bb064dbb11308"
+    },
+    {
+      "file": "player-profile-desktop-linux.png",
+      "sha256": "dfae6076d87f8f218c89bf20a93b043274450066a92a4f9853fb9feae5ea62bb",
+      "parent_sha256": "dfae6076d87f8f218c89bf20a93b043274450066a92a4f9853fb9feae5ea62bb"
+    },
+    {
+      "file": "player-profile-phone-linux.png",
+      "sha256": "460c9bf9abd994ad332632e8f6577fec60ad63f8fa768549205f868ab749079b",
+      "parent_sha256": "460c9bf9abd994ad332632e8f6577fec60ad63f8fa768549205f868ab749079b"
+    },
+    {
+      "file": "playoffs-desktop-linux.png",
+      "sha256": "6861be417bb4521b8d08b187043b1856db5994b8bad377500070981ded89f291",
+      "parent_sha256": "6861be417bb4521b8d08b187043b1856db5994b8bad377500070981ded89f291"
+    },
+    {
+      "file": "playoffs-phone-linux.png",
+      "sha256": "1095cdcd87dfa192553be2047417faded2da24f111c1c1933719e25d98ce1a4a",
+      "parent_sha256": "1095cdcd87dfa192553be2047417faded2da24f111c1c1933719e25d98ce1a4a"
+    },
+    {
+      "file": "recent-games-desktop-linux.png",
+      "sha256": "fe865b7ec79a8eb5158c952fad7edd79ed89e434239e04de74b3cfe1ffc28ee8",
+      "parent_sha256": "fe865b7ec79a8eb5158c952fad7edd79ed89e434239e04de74b3cfe1ffc28ee8"
+    },
+    {
+      "file": "recent-games-phone-linux.png",
+      "sha256": "cb00e2ab45ad38d1b39941fdf2a70c74fffa8e9f3ec4499a7548c88ec11df142",
+      "parent_sha256": "cb00e2ab45ad38d1b39941fdf2a70c74fffa8e9f3ec4499a7548c88ec11df142"
+    },
+    {
+      "file": "roster-chart-desktop-linux.png",
+      "sha256": "0f64b56e121cd2103dd91e83470e4a92a8c472b052a0a2ed3856fbf75762aba1",
+      "parent_sha256": "0f64b56e121cd2103dd91e83470e4a92a8c472b052a0a2ed3856fbf75762aba1"
+    },
+    {
+      "file": "roster-chart-phone-linux.png",
+      "sha256": "41a1d3c90c5bdea288d28afd2b8c776c7d66964be5f9ffcb73ceb822a6c9a120",
+      "parent_sha256": "41a1d3c90c5bdea288d28afd2b8c776c7d66964be5f9ffcb73ceb822a6c9a120"
+    },
+    {
+      "file": "roster-picker-desktop-linux.png",
+      "sha256": "3b0403f9655b12f943815c66b3179012cdf2454d68f29ead7bbe833a3718a2e1",
+      "parent_sha256": "3b0403f9655b12f943815c66b3179012cdf2454d68f29ead7bbe833a3718a2e1"
+    },
+    {
+      "file": "roster-picker-phone-linux.png",
+      "sha256": "2c5f80d47233979eea15557070cffa9d06715e120d5c1efa6b88756b0d1eedbe",
+      "parent_sha256": "2c5f80d47233979eea15557070cffa9d06715e120d5c1efa6b88756b0d1eedbe"
+    },
+    {
+      "file": "search-desktop-linux.png",
+      "sha256": "511623ce041950f00e1739a4c77ef5400e6339a02188ec08b99daf13a8e5ceff",
+      "parent_sha256": "511623ce041950f00e1739a4c77ef5400e6339a02188ec08b99daf13a8e5ceff"
+    },
+    {
+      "file": "search-phone-linux.png",
+      "sha256": "9fff49efc40c4f4420f139174f453b3e1fa8f0156863125c4bd0ce4b7367740a",
+      "parent_sha256": "9fff49efc40c4f4420f139174f453b3e1fa8f0156863125c4bd0ce4b7367740a"
+    },
+    {
+      "file": "showcase-desktop-linux.png",
+      "sha256": "172b38b98970401846cf63edc96dedada8f7fcd22476dd9fe6cff353c7a97da0",
+      "parent_sha256": "172b38b98970401846cf63edc96dedada8f7fcd22476dd9fe6cff353c7a97da0"
+    },
+    {
+      "file": "showcase-phone-linux.png",
+      "sha256": "1ff7307552aa1e08e8308c34112fdacec76d3acac765ed138f4f8253cc973113",
+      "parent_sha256": "1ff7307552aa1e08e8308c34112fdacec76d3acac765ed138f4f8253cc973113"
+    },
+    {
+      "file": "spatial-epv-desktop-linux.png",
+      "sha256": "8b8a3701888e8d7ba063adf48535f20cae5f10089e8cefdbcdbf2e9d5d09a064",
+      "parent_sha256": "8b8a3701888e8d7ba063adf48535f20cae5f10089e8cefdbcdbf2e9d5d09a064"
+    },
+    {
+      "file": "spatial-epv-phone-linux.png",
+      "sha256": "afb75920e5b179c72f4c0ecb2fb20a84dade46389a5198522555fe125eea68e5",
+      "parent_sha256": "afb75920e5b179c72f4c0ecb2fb20a84dade46389a5198522555fe125eea68e5"
+    },
+    {
+      "file": "stat-shift-desktop-linux.png",
+      "sha256": "9526ffb152fcd975b461578b8c2c94a66d0a4fdb99f9744637340abf6620ab62",
+      "parent_sha256": "9526ffb152fcd975b461578b8c2c94a66d0a4fdb99f9744637340abf6620ab62"
+    },
+    {
+      "file": "stat-shift-phone-linux.png",
+      "sha256": "5731d9891a1ff2334be20e050bdf02ab3a012e826f962e1de6a1326a220abf5b",
+      "parent_sha256": "5731d9891a1ff2334be20e050bdf02ab3a012e826f962e1de6a1326a220abf5b"
+    },
+    {
+      "file": "team-comparison-factors-desktop-linux.png",
+      "sha256": "ae096e5970d6b17ad17fa9ace9da60f05cae47df57aaf218c84c5c279562941b",
+      "parent_sha256": "ae096e5970d6b17ad17fa9ace9da60f05cae47df57aaf218c84c5c279562941b"
+    },
+    {
+      "file": "team-comparison-factors-phone-linux.png",
+      "sha256": "b34f3e0fad142d379f9933c1ee9aa5bb68eb52e08235b348b76d75b0adc7c1a1",
+      "parent_sha256": "b34f3e0fad142d379f9933c1ee9aa5bb68eb52e08235b348b76d75b0adc7c1a1"
+    },
+    {
+      "file": "team-comparison-overview-desktop-linux.png",
+      "sha256": "38c1e214800d763d3b2439cce0e4f6283eb8247838bb9a836cf16c07f897960a",
+      "parent_sha256": "38c1e214800d763d3b2439cce0e4f6283eb8247838bb9a836cf16c07f897960a"
+    },
+    {
+      "file": "team-comparison-overview-phone-linux.png",
+      "sha256": "60f5b5cea4833dd3cca91ffea833eefcdee5dd29471ad9cc4ed5ddd089657854",
+      "parent_sha256": "60f5b5cea4833dd3cca91ffea833eefcdee5dd29471ad9cc4ed5ddd089657854"
+    },
+    {
+      "file": "team-profile-desktop-linux.png",
+      "sha256": "e1d80440050d43f694341699db7e1e90ce6a6ef17f614bccd489478910027435",
+      "parent_sha256": "e1d80440050d43f694341699db7e1e90ce6a6ef17f614bccd489478910027435"
+    },
+    {
+      "file": "team-profile-phone-linux.png",
+      "sha256": "b5fb5405d7ffa6b793d0536fcb40c5b27c11f763f32241cd109ee4a3da920291",
+      "parent_sha256": "b5fb5405d7ffa6b793d0536fcb40c5b27c11f763f32241cd109ee4a3da920291"
+    },
+    {
+      "file": "team-stats-desktop-linux.png",
+      "sha256": "e85528ef58cb023d0e88576597e27c28f10d8b9544cdee7fefcbfb1d6c46cd1f",
+      "parent_sha256": "e85528ef58cb023d0e88576597e27c28f10d8b9544cdee7fefcbfb1d6c46cd1f"
+    },
+    {
+      "file": "team-stats-phone-linux.png",
+      "sha256": "7b1a44102bdc64aae87edfa5a6b08244ed43280ba4cdbfdf6339b579620b77e3",
+      "parent_sha256": "7b1a44102bdc64aae87edfa5a6b08244ed43280ba4cdbfdf6339b579620b77e3"
+    },
+    {
+      "file": "wowy-team-desktop-linux.png",
+      "sha256": "3f85d031d6fb3717679c35197f5e1dac13e5982ce7730d0f90365234c5625270",
+      "parent_sha256": "3f85d031d6fb3717679c35197f5e1dac13e5982ce7730d0f90365234c5625270"
+    },
+    {
+      "file": "wowy-team-phone-linux.png",
+      "sha256": "0b1420bf13faf0c059d9b84482b1ed174f2712c80ed9730a23d03a09f4ed3535",
+      "parent_sha256": "0b1420bf13faf0c059d9b84482b1ed174f2712c80ed9730a23d03a09f4ed3535"
+    },
+    {
+      "file": "wowy-unit-desktop-linux.png",
+      "sha256": "2067683a4233c4319abcca875ed0eb41223bc9563025f66bcbae28e2543c0daf",
+      "parent_sha256": "2067683a4233c4319abcca875ed0eb41223bc9563025f66bcbae28e2543c0daf"
+    },
+    {
+      "file": "wowy-unit-phone-linux.png",
+      "sha256": "1742ad0c3766daa2ae03dcf35fde3f30ac19c15a36a210ea360a163aed911274",
+      "parent_sha256": "1742ad0c3766daa2ae03dcf35fde3f30ac19c15a36a210ea360a163aed911274"
+    }
+  ]
+}

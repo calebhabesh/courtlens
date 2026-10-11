@@ -29,7 +29,8 @@ export function getSeriesStatusBadge(series: PlayoffSeriesSummary): {
   label: string;
   badgeClass: string;
 } {
-  if (series.status === "final") {
+  // The API reports a decided series as "finished"; "final" is the older fixture spelling.
+  if (series.status === "finished" || series.status === "final") {
     if (series.is_sweep) {
       return { label: "SWEEP", badgeClass: "badge-positive" };
     }

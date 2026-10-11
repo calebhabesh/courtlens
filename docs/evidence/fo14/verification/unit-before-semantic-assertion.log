@@ -1,0 +1,110 @@
+
+> courtlens-dashboard@0.1.0 test
+> vitest run
+
+
+ RUN  v4.1.11 /home/ethioking/dev/courtlens/dashboard
+
+ ❯ components/ui/foundation.test.tsx (14 tests | 1 failed) 138ms
+     × shows value, rank and a percentile meter, and an em dash for unknown values 7ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  components/ui/foundation.test.tsx > PageHeader and StatTile > shows value, rank and a percentile meter, and an em dash for unknown values
+TestingLibraryElementError: Unable to find a label with the text of: Steals unavailable
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"ui-stat-tile ui-stat-tile-md "[39m
+    [36m>[39m
+      [36m<span[39m
+        [33mclass[39m=[32m"ui-stat-tile-label"[39m
+      [36m>[39m
+        [0mPoints[0m
+      [36m</span>[39m
+      [36m<span[39m
+        [33mclass[39m=[32m"ui-stat-tile-value-row"[39m
+      [36m>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"ui-stat-tile-value"[39m
+        [36m>[39m
+          [0m33.5[0m
+          [36m<span[39m
+            [33mclass[39m=[32m"ui-stat-tile-unit"[39m
+          [36m>[39m
+            [0mPPG[0m
+          [36m</span>[39m
+        [36m</span>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"ui-stat-tile-rank"[39m
+          [33mtitle[39m=[32m"1st of 591"[39m
+        [36m>[39m
+          [0m1st[0m
+        [36m</span>[39m
+      [36m</span>[39m
+      [36m<span[39m
+        [33maria-label[39m=[32m"Points percentile"[39m
+        [33maria-valuemax[39m=[32m"100"[39m
+        [33maria-valuemin[39m=[32m"0"[39m
+        [33maria-valuenow[39m=[32m"100"[39m
+        [33maria-valuetext[39m=[32m"100th percentile"[39m
+        [33mclass[39m=[32m"ui-stat-tile-bar"[39m
+        [33mrole[39m=[32m"meter"[39m
+        [33mstyle[39m=[32m"--pct: 100%;"[39m
+      [36m>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"ui-stat-tile-bar-fill"[39m
+        [36m/>[39m
+      [36m</span>[39m
+    [36m</div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"ui-stat-tile ui-stat-tile-md "[39m
+    [36m>[39m
+      [36m<span[39m
+        [33mclass[39m=[32m"ui-stat-tile-label"[39m
+      [36m>[39m
+        [0mSteals[0m
+      [36m</span>[39m
+      [36m<span[39m
+        [33mclass[39m=[32m"ui-stat-tile-value-row"[39m
+      [36m>[39m
+        [36m<span[39m
+          [33mclass[39m=[32m"ui-stat-tile-value"[39m
+        [36m>[39m
+          [36m<span[39m
+            [33maria-hidden[39m=[32m"true"[39m
+          [36m>[39m
+            [0m—[0m
+          [36m</span>[39m
+          [36m<span[39m
+            [33mclass[39m=[32m"sr-only"[39m
+          [36m>[39m
+            [0mSteals[0m
+            [0m unavailable[0m
+          [36m</span>[39m
+        [36m</span>[39m
+      [36m</span>[39m
+    [36m</div>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ getAllByLabelText node_modules/@testing-library/dom/dist/queries/label-text.js:111:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ components/ui/foundation.test.tsx:166:19
+    164|     expect(screen.getByText("1st").getAttribute("title")).toBe("1st of…
+    165|     expect(screen.getByRole("meter", { name: "Points percentile" }).ge…
+    166|     expect(screen.getByLabelText("Steals unavailable").textContent).to…
+       |                   ^
+    167|   });
+    168| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 53 passed (54)
+      Tests  1 failed | 356 passed (357)
+   Start at  01:40:03
+   Duration  1.25s (transform 3.86s, setup 0ms, import 7.15s, tests 1.33s, environment 1.50s)

@@ -1,0 +1,533 @@
+{
+  "routeStates": 72,
+  "captures": 288,
+  "overflows": [],
+  "errors": [],
+  "axeViolations": [],
+  "incompleteChecks": [
+    {
+      "name": "contracts__team_",
+      "view": "desktop",
+      "id": "th-has-data-cells",
+      "nodes": 1
+    },
+    {
+      "name": "contracts__team_",
+      "view": "tablet",
+      "id": "th-has-data-cells",
+      "nodes": 1
+    },
+    {
+      "name": "contracts__team_",
+      "view": "phone",
+      "id": "th-has-data-cells",
+      "nodes": 1
+    },
+    {
+      "name": "contracts__team_",
+      "view": "zoom",
+      "id": "th-has-data-cells",
+      "nodes": 1
+    },
+    {
+      "name": "investigations",
+      "view": "phone",
+      "id": "color-contrast",
+      "nodes": 1
+    },
+    {
+      "name": "investigations_saved__id_",
+      "view": "desktop",
+      "id": "color-contrast",
+      "nodes": 2
+    },
+    {
+      "name": "investigations_saved__id_",
+      "view": "tablet",
+      "id": "color-contrast",
+      "nodes": 2
+    },
+    {
+      "name": "investigations_saved__id_",
+      "view": "phone",
+      "id": "color-contrast",
+      "nodes": 18
+    },
+    {
+      "name": "investigations_saved__id_",
+      "view": "zoom",
+      "id": "color-contrast",
+      "nodes": 7
+    },
+    {
+      "name": "last-games",
+      "view": "desktop",
+      "id": "color-contrast",
+      "nodes": 21
+    },
+    {
+      "name": "last-games",
+      "view": "tablet",
+      "id": "color-contrast",
+      "nodes": 21
+    },
+    {
+      "name": "last-games",
+      "view": "phone",
+      "id": "color-contrast",
+      "nodes": 21
+    },
+    {
+      "name": "last-games",
+      "view": "zoom",
+      "id": "color-contrast",
+      "nodes": 21
+    },
+    {
+      "name": "live_games__id_",
+      "view": "tablet",
+      "id": "color-contrast",
+      "nodes": 6
+    },
+    {
+      "name": "live_games__id_",
+      "view": "phone",
+      "id": "color-contrast",
+      "nodes": 13
+    },
+    {
+      "name": "live_games__id_",
+      "view": "zoom",
+      "id": "color-contrast",
+      "nodes": 6
+    },
+    {
+      "name": "live",
+      "view": "tablet",
+      "id": "color-contrast",
+      "nodes": 6
+    },
+    {
+      "name": "live",
+      "view": "phone",
+      "id": "color-contrast",
+      "nodes": 6
+    },
+    {
+      "name": "live",
+      "view": "zoom",
+      "id": "color-contrast",
+      "nodes": 6
+    },
+    {
+      "name": "methodology",
+      "view": "desktop",
+      "id": "th-has-data-cells",
+      "nodes": 1
+    },
+    {
+      "name": "methodology",
+      "view": "tablet",
+      "id": "th-has-data-cells",
+      "nodes": 1
+    },
+    {
+      "name": "methodology",
+      "view": "phone",
+      "id": "th-has-data-cells",
+      "nodes": 1
+    },
+    {
+      "name": "methodology",
+      "view": "zoom",
+      "id": "th-has-data-cells",
+      "nodes": 1
+    },
+    {
+      "name": "root",
+      "view": "desktop",
+      "id": "color-contrast",
+      "nodes": 1
+    },
+    {
+      "name": "root",
+      "view": "tablet",
+      "id": "color-contrast",
+      "nodes": 1
+    },
+    {
+      "name": "root",
+      "view": "phone",
+      "id": "color-contrast",
+      "nodes": 1
+    },
+    {
+      "name": "root",
+      "view": "zoom",
+      "id": "color-contrast",
+      "nodes": 1
+    },
+    {
+      "name": "planner",
+      "view": "phone",
+      "id": "color-contrast",
+      "nodes": 37
+    },
+    {
+      "name": "planner",
+      "view": "zoom",
+      "id": "color-contrast",
+      "nodes": 13
+    },
+    {
+      "name": "players",
+      "view": "desktop",
+      "id": "color-contrast",
+      "nodes": 1
+    },
+    {
+      "name": "players",
+      "view": "tablet",
+      "id": "color-contrast",
+      "nodes": 1
+    },
+    {
+      "name": "players",
+      "view": "phone",
+      "id": "color-contrast",
+      "nodes": 1
+    },
+    {
+      "name": "players",
+      "view": "zoom",
+      "id": "color-contrast",
+      "nodes": 1
+    },
+    {
+      "name": "research_distributions",
+      "view": "tablet",
+      "id": "color-contrast",
+      "nodes": 4
+    },
+    {
+      "name": "research_shooting_aftermath",
+      "view": "desktop",
+      "id": "color-contrast",
+      "nodes": 4
+    },
+    {
+      "name": "research_shooting_aftermath",
+      "view": "tablet",
+      "id": "color-contrast",
+      "nodes": 16
+    },
+    {
+      "name": "research_shooting_aftermath",
+      "view": "phone",
+      "id": "color-contrast",
+      "nodes": 33
+    },
+    {
+      "name": "research_shooting_aftermath",
+      "view": "zoom",
+      "id": "color-contrast",
+      "nodes": 16
+    },
+    {
+      "name": "roster-shapes",
+      "view": "desktop",
+      "id": "color-contrast",
+      "nodes": 5
+    },
+    {
+      "name": "roster-shapes",
+      "view": "tablet",
+      "id": "color-contrast",
+      "nodes": 5
+    },
+    {
+      "name": "roster-shapes",
+      "view": "phone",
+      "id": "color-contrast",
+      "nodes": 5
+    },
+    {
+      "name": "roster-shapes",
+      "view": "zoom",
+      "id": "color-contrast",
+      "nodes": 5
+    },
+    {
+      "name": "showcase",
+      "view": "desktop",
+      "id": "color-contrast",
+      "nodes": 40
+    },
+    {
+      "name": "showcase",
+      "view": "tablet",
+      "id": "color-contrast",
+      "nodes": 42
+    },
+    {
+      "name": "showcase",
+      "view": "phone",
+      "id": "color-contrast",
+      "nodes": 40
+    },
+    {
+      "name": "showcase",
+      "view": "zoom",
+      "id": "color-contrast",
+      "nodes": 40
+    },
+    {
+      "name": "similar-players",
+      "view": "phone",
+      "id": "color-contrast",
+      "nodes": 4
+    },
+    {
+      "name": "stat-line-shift",
+      "view": "tablet",
+      "id": "color-contrast",
+      "nodes": 21
+    },
+    {
+      "name": "stat-line-shift",
+      "view": "phone",
+      "id": "color-contrast",
+      "nodes": 29
+    },
+    {
+      "name": "stat-line-shift",
+      "view": "zoom",
+      "id": "color-contrast",
+      "nodes": 21
+    },
+    {
+      "name": "stats",
+      "view": "desktop",
+      "id": "color-contrast",
+      "nodes": 1
+    },
+    {
+      "name": "stats",
+      "view": "tablet",
+      "id": "color-contrast",
+      "nodes": 1
+    },
+    {
+      "name": "stats",
+      "view": "phone",
+      "id": "color-contrast",
+      "nodes": 1
+    },
+    {
+      "name": "stats",
+      "view": "zoom",
+      "id": "color-contrast",
+      "nodes": 1
+    },
+    {
+      "name": "team-compare",
+      "view": "tablet",
+      "id": "color-contrast",
+      "nodes": 4
+    },
+    {
+      "name": "team-compare",
+      "view": "zoom",
+      "id": "color-contrast",
+      "nodes": 1
+    },
+    {
+      "name": "tierlist",
+      "view": "desktop",
+      "id": "color-contrast",
+      "nodes": 1
+    },
+    {
+      "name": "tierlist",
+      "view": "tablet",
+      "id": "color-contrast",
+      "nodes": 1
+    },
+    {
+      "name": "tierlist",
+      "view": "phone",
+      "id": "color-contrast",
+      "nodes": 1
+    },
+    {
+      "name": "tierlist",
+      "view": "zoom",
+      "id": "color-contrast",
+      "nodes": 1
+    },
+    {
+      "name": "wingspan",
+      "view": "desktop",
+      "id": "color-contrast",
+      "nodes": 2
+    },
+    {
+      "name": "wingspan",
+      "view": "tablet",
+      "id": "color-contrast",
+      "nodes": 2
+    },
+    {
+      "name": "wingspan",
+      "view": "phone",
+      "id": "color-contrast",
+      "nodes": 2
+    },
+    {
+      "name": "wingspan",
+      "view": "zoom",
+      "id": "color-contrast",
+      "nodes": 2
+    },
+    {
+      "name": "wowy",
+      "view": "desktop",
+      "id": "color-contrast",
+      "nodes": 2
+    },
+    {
+      "name": "wowy",
+      "view": "tablet",
+      "id": "color-contrast",
+      "nodes": 9
+    },
+    {
+      "name": "wowy",
+      "view": "phone",
+      "id": "color-contrast",
+      "nodes": 17
+    },
+    {
+      "name": "wowy",
+      "view": "zoom",
+      "id": "color-contrast",
+      "nodes": 9
+    },
+    {
+      "name": "ask-manual",
+      "view": "desktop",
+      "id": "color-contrast",
+      "nodes": 2
+    },
+    {
+      "name": "ask-manual",
+      "view": "tablet",
+      "id": "color-contrast",
+      "nodes": 2
+    },
+    {
+      "name": "ask-manual",
+      "view": "phone",
+      "id": "color-contrast",
+      "nodes": 2
+    },
+    {
+      "name": "ask-manual",
+      "view": "zoom",
+      "id": "color-contrast",
+      "nodes": 2
+    },
+    {
+      "name": "schedule",
+      "view": "tablet",
+      "id": "color-contrast",
+      "nodes": 6
+    },
+    {
+      "name": "schedule",
+      "view": "phone",
+      "id": "color-contrast",
+      "nodes": 6
+    },
+    {
+      "name": "schedule",
+      "view": "zoom",
+      "id": "color-contrast",
+      "nodes": 6
+    },
+    {
+      "name": "research_similarity",
+      "view": "phone",
+      "id": "color-contrast",
+      "nodes": 4
+    },
+    {
+      "name": "live_2026-04-12",
+      "view": "tablet",
+      "id": "color-contrast",
+      "nodes": 6
+    },
+    {
+      "name": "live_2026-04-12",
+      "view": "phone",
+      "id": "color-contrast",
+      "nodes": 13
+    },
+    {
+      "name": "live_2026-04-12",
+      "view": "zoom",
+      "id": "color-contrast",
+      "nodes": 6
+    },
+    {
+      "name": "live_games_0022501186",
+      "view": "tablet",
+      "id": "color-contrast",
+      "nodes": 6
+    },
+    {
+      "name": "live_games_0022501186",
+      "view": "phone",
+      "id": "color-contrast",
+      "nodes": 13
+    },
+    {
+      "name": "live_games_0022501186",
+      "view": "zoom",
+      "id": "color-contrast",
+      "nodes": 6
+    },
+    {
+      "name": "investigations_saved_3bcb37c9-b410-44b1-be7f-c3b368fbe28c",
+      "view": "desktop",
+      "id": "color-contrast",
+      "nodes": 2
+    },
+    {
+      "name": "investigations_saved_3bcb37c9-b410-44b1-be7f-c3b368fbe28c",
+      "view": "tablet",
+      "id": "color-contrast",
+      "nodes": 2
+    },
+    {
+      "name": "investigations_saved_3bcb37c9-b410-44b1-be7f-c3b368fbe28c",
+      "view": "phone",
+      "id": "color-contrast",
+      "nodes": 18
+    },
+    {
+      "name": "investigations_saved_3bcb37c9-b410-44b1-be7f-c3b368fbe28c",
+      "view": "zoom",
+      "id": "color-contrast",
+      "nodes": 7
+    }
+  ],
+  "shortPhoneTargets": [],
+  "clippedLabels": [],
+  "misalignedNumbers": [],
+  "skipFailures": [],
+  "invisibleFocus": [],
+  "exposedTechnicalText": [],
+  "lateMainResults": [],
+  "shortBarGaps": []
+}

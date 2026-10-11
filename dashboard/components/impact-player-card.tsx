@@ -1,13 +1,14 @@
 import type { ImpactResponse } from "@/lib/types";
 import { IMPACT_COLUMNS, formatStatValue } from "@/lib/stats-presets";
 import { ImpactDisclosure } from "./impact-disclosure";
+import { GatedNote } from "./ui/gated-note";
 
 export function ImpactPlayerCard({ data }: { data: ImpactResponse | null }) {
   const player = data?.players[0];
   return <section className="panel impact-player-card" aria-label="Player impact">
     <h2>Player impact</h2>
     {!data ? <p role="status">Impact serving is unavailable. Restore the local API connection.</p> : <>
-      <ImpactDisclosure data={data} />
+      {/* Values lead; fit windows, coverage and limits sit behind Why? (D4, glance item 6). */}
       {!player ? <p>No accepted impact sample for this player and cutoff.</p> : <>
         <dl className="impact-values">{["rapm", "orapm", "drapm", "bpr", "rapm_2y", "rapm_3y"].map(key => <div key={key}>
           <dt>{IMPACT_COLUMNS[key].label}</dt><dd>{formatStatValue(player.metrics[key], 2)}</dd>
@@ -23,6 +24,7 @@ export function ImpactPlayerCard({ data }: { data: ImpactResponse | null }) {
           <p>RAPM units: points per 100 counted controls. {player.support.rapm?.artifact_sha256}</p>
         </details>
       </>}
+      <GatedNote why={<ImpactDisclosure data={data} />}>CourtLens model: descriptive estimates under lineup confounding.</GatedNote>
     </>}
   </section>;
 }

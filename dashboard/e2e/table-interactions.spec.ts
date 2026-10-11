@@ -93,7 +93,7 @@ test("playoff player table shares native keyboard sorting", async ({ page }) => 
 
 test("a larger tray names the two-player comparison action accurately", async ({ page }) => {
   await personalFixture(page, ["23", "24", "1630567"]); await openWorkbench(page, "/stats"); await page.waitForLoadState("networkidle");
-  const action = page.getByRole("link", { name: "Compare first 2 →", exact: true });
+  const action = page.getByRole("link", { name: "Compare first 2", exact: true });
   await expect(action).toBeVisible();
   const target = new URL((await action.getAttribute("href"))!, "http://localhost");
   expect(target.searchParams.get("playerA")).toBe("23"); expect(target.searchParams.get("playerB")).toBe("24");

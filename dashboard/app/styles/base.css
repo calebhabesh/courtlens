@@ -5,6 +5,7 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--header-height) + var(--space-4));
   background-color: var(--color-bg);
   color: var(--color-text);
 }
@@ -132,4 +133,15 @@ samp {
   select:not([multiple]):not([size]) { appearance: auto; background-image: none; }
   .button, input, select, textarea { border: 1px solid ButtonText; }
 }
+
+/* D26 icons: an icon beside a label gets one gap and shares its centre line. In the base layer so
+   any component rule that sets its own display or gap still wins. */
+:where(a, button, .badge, [class*="badge"], .scatter-tooltip-outlier, .empty-icon):has(> .ui-icon) {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+/* Active state of an outline glyph (a favorited star); never decoration. */
+.ui-icon-filled { fill: currentColor; }
 }

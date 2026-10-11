@@ -1,0 +1,3232 @@
+{
+  "capturedAt": "2026-10-10T00:32:56.515Z",
+  "base": "http://localhost:3103",
+  "api": "http://localhost:8001",
+  "releaseId": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+  "measurements": [
+    {
+      "name": "players-bars",
+      "url": "/compare?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&playerA=1630567&playerB=1627742",
+      "width": 1440,
+      "title": "Player Comparison",
+      "template": "compare",
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "mainTop": 396,
+      "filterBottom": 239,
+      "controls": [
+        {
+          "label": "Filter by season",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Filter by competition phase",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Through date: Apr 12, 2026",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Analysis window",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Overall",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Offense",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Defense",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Six Factor",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Custom",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Table",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Visual Bars",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Trend Lines",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Remove Scottie Barnes from Player A",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Player A",
+          "height": 38,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Remove Brandon Ingram from Player B",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Player B",
+          "height": 38,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Swap players",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": false,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "errors": []
+    },
+    {
+      "name": "players-table",
+      "url": "/compare?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&playerA=1630567&playerB=1627742&compareView=table",
+      "width": 1440,
+      "title": "Player Comparison",
+      "template": "compare",
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "mainTop": 396,
+      "filterBottom": 239,
+      "controls": [
+        {
+          "label": "Filter by season",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Filter by competition phase",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Through date: Apr 12, 2026",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Analysis window",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Overall",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Offense",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Defense",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Six Factor",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Custom",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Table",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Visual Bars",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Trend Lines",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Remove Scottie Barnes from Player A",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Player A",
+          "height": 38,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Remove Brandon Ingram from Player B",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Player B",
+          "height": 38,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Swap players",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": false,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "errors": []
+    },
+    {
+      "name": "players-empty",
+      "url": "/compare?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13",
+      "width": 1440,
+      "title": "Player Comparison",
+      "template": "compare",
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "mainTop": 344,
+      "filterBottom": 211,
+      "controls": [
+        {
+          "label": "Filter by season",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Filter by competition phase",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Through date: Apr 12, 2026",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Analysis window",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Player A",
+          "height": 38,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Player B",
+          "height": 38,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Swap players",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": false,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "errors": []
+    },
+    {
+      "name": "teams-overview",
+      "url": "/team-compare?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&teamA=1610612761&teamB=1610612738&tab=overview",
+      "width": 1440,
+      "title": "Team Comparison",
+      "template": "compare",
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "mainTop": 384,
+      "filterBottom": 211,
+      "controls": [
+        {
+          "label": "Filter by season",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Filter by competition phase",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Through date: Apr 12, 2026",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Overview & H2H",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Four Factors",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "3P Variation",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Participation Cohorts",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Similar Peers",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Remove Toronto Raptors from Team A",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Team A",
+          "height": 38,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Remove Boston Celtics from Team B",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Team B",
+          "height": 38,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Swap Teams",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": false,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "errors": []
+    },
+    {
+      "name": "teams-factors",
+      "url": "/team-compare?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&teamA=1610612761&teamB=1610612738&tab=factors",
+      "width": 1440,
+      "title": "Team Comparison",
+      "template": "compare",
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "mainTop": 384,
+      "filterBottom": 211,
+      "controls": [
+        {
+          "label": "Filter by season",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Filter by competition phase",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Through date: Apr 12, 2026",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Overview & H2H",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Four Factors",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "3P Variation",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Participation Cohorts",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Similar Peers",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Remove Toronto Raptors from Team A",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Team A",
+          "height": 38,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Remove Boston Celtics from Team B",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Team B",
+          "height": 38,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Swap Teams",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": false,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "errors": []
+    },
+    {
+      "name": "teams-three_point",
+      "url": "/team-compare?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&teamA=1610612761&teamB=1610612738&tab=three_point",
+      "width": 1440,
+      "title": "Team Comparison",
+      "template": "compare",
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "mainTop": 384,
+      "filterBottom": 211,
+      "controls": [
+        {
+          "label": "Filter by season",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Filter by competition phase",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Through date: Apr 12, 2026",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Overview & H2H",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Four Factors",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "3P Variation",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Participation Cohorts",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Similar Peers",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Remove Toronto Raptors from Team A",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Team A",
+          "height": 38,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Remove Boston Celtics from Team B",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Team B",
+          "height": 38,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Swap Teams",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": false,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "errors": []
+    },
+    {
+      "name": "teams-roster",
+      "url": "/team-compare?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&teamA=1610612761&teamB=1610612738&tab=roster",
+      "width": 1440,
+      "title": "Team Comparison",
+      "template": "compare",
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "mainTop": 384,
+      "filterBottom": 211,
+      "controls": [
+        {
+          "label": "Filter by season",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Filter by competition phase",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Through date: Apr 12, 2026",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Overview & H2H",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Four Factors",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "3P Variation",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Participation Cohorts",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Similar Peers",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Remove Toronto Raptors from Team A",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Team A",
+          "height": 38,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Remove Boston Celtics from Team B",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Team B",
+          "height": 38,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Swap Teams",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": false,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "errors": []
+    },
+    {
+      "name": "teams-peers",
+      "url": "/team-compare?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&teamA=1610612761&teamB=1610612738&tab=peers",
+      "width": 1440,
+      "title": "Team Comparison",
+      "template": "compare",
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "mainTop": 384,
+      "filterBottom": 211,
+      "controls": [
+        {
+          "label": "Filter by season",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Filter by competition phase",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Through date: Apr 12, 2026",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Overview & H2H",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Four Factors",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "3P Variation",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Participation Cohorts",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Similar Peers",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Remove Toronto Raptors from Team A",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Team A",
+          "height": 38,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Remove Boston Celtics from Team B",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Team B",
+          "height": 38,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Swap Teams",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": false,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "errors": []
+    },
+    {
+      "name": "wowy",
+      "url": "/wowy?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&team_id=TOR&together=1630567",
+      "width": 1440,
+      "title": "WOWY",
+      "template": "compare",
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "mainTop": 396,
+      "filterBottom": 231,
+      "controls": [
+        {
+          "label": "Season",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Phase",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Through date: Apr 12, 2026",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "From date (inclusive): Select a date",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Minimum possessions",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Minimum games",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Operation",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "View",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Remove Toronto Raptors from Team",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Team",
+          "height": 38,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Remove Scottie Barnes from Together players",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Together players",
+          "height": 38,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Apart players",
+          "height": 38,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": false,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "errors": []
+    },
+    {
+      "name": "wowy-unit",
+      "url": "/wowy?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&team_id=TOR&exact_unit=1630567,1627742",
+      "width": 1440,
+      "title": "WOWY",
+      "template": "compare",
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "mainTop": 396,
+      "filterBottom": 231,
+      "controls": [
+        {
+          "label": "Season",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Phase",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Through date: Apr 12, 2026",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "From date (inclusive): Select a date",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Minimum possessions",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Minimum games",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Operation",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "View",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Remove Toronto Raptors from Team",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Team",
+          "height": 38,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Remove Scottie Barnes from Exact unit",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Remove Brandon Ingram from Exact unit",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Exact unit",
+          "height": 38,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": false,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "errors": []
+    },
+    {
+      "name": "wowy-empty",
+      "url": "/wowy?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13",
+      "width": 1440,
+      "title": "WOWY",
+      "template": "compare",
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "mainTop": 396,
+      "filterBottom": 231,
+      "controls": [
+        {
+          "label": "Season",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Phase",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Through date: Apr 12, 2026",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "From date (inclusive): Select a date",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Minimum possessions",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Minimum games",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Operation",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "View",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Remove Toronto Raptors from Team",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Team",
+          "height": 38,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Together players",
+          "height": 38,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Apart players",
+          "height": 38,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": false,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "errors": []
+    },
+    {
+      "name": "matchups",
+      "url": "/matchups?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&player_id=1630567&defender_id=1627742",
+      "width": 1440,
+      "title": "Player Matchups",
+      "template": "compare",
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "mainTop": 396,
+      "filterBottom": 231,
+      "controls": [
+        {
+          "label": "Season",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Phase",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Through date: Apr 12, 2026",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Lower date (inclusive): Select a date",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Minimum attempts",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Minimum games",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Remove Scottie Barnes from Offensive player",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Offensive player",
+          "height": 38,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Remove Brandon Ingram from Defender (optional)",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Defender (optional)",
+          "height": 38,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": false,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "errors": []
+    },
+    {
+      "name": "matchups-empty",
+      "url": "/matchups?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13",
+      "width": 1440,
+      "title": "Player Matchups",
+      "template": "compare",
+      "documentWidth": 1440,
+      "viewportWidth": 1440,
+      "mainTop": 340,
+      "filterBottom": 231,
+      "controls": [
+        {
+          "label": "Season",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Phase",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Through date: Apr 12, 2026",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Lower date (inclusive): Select a date",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Minimum attempts",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Minimum games",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Offensive player",
+          "height": 38,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Defender (optional)",
+          "height": 38,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": false,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "errors": []
+    },
+    {
+      "name": "players-bars",
+      "url": "/compare?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&playerA=1630567&playerB=1627742",
+      "width": 768,
+      "title": "Player Comparison",
+      "template": "compare",
+      "documentWidth": 768,
+      "viewportWidth": 768,
+      "mainTop": 525.5,
+      "filterBottom": 351,
+      "controls": [
+        {
+          "label": "Filter by season",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Filter by competition phase",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Through date: Apr 12, 2026",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Analysis window",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Overall",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Offense",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Defense",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Six Factor",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Custom",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Table",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Visual Bars",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Trend Lines",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Remove Scottie Barnes from Player A",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Player A",
+          "height": 38,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Remove Brandon Ingram from Player B",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Player B",
+          "height": 38,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Swap players",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": false,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "errors": []
+    },
+    {
+      "name": "players-table",
+      "url": "/compare?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&playerA=1630567&playerB=1627742&compareView=table",
+      "width": 768,
+      "title": "Player Comparison",
+      "template": "compare",
+      "documentWidth": 768,
+      "viewportWidth": 768,
+      "mainTop": 525.5,
+      "filterBottom": 351,
+      "controls": [
+        {
+          "label": "Filter by season",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Filter by competition phase",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Through date: Apr 12, 2026",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Analysis window",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Overall",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Offense",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Defense",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Six Factor",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Custom",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Table",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Visual Bars",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Trend Lines",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Remove Scottie Barnes from Player A",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Player A",
+          "height": 38,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Remove Brandon Ingram from Player B",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Player B",
+          "height": 38,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Swap players",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": false,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "errors": []
+    },
+    {
+      "name": "players-empty",
+      "url": "/compare?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13",
+      "width": 768,
+      "title": "Player Comparison",
+      "template": "compare",
+      "documentWidth": 768,
+      "viewportWidth": 768,
+      "mainTop": 396,
+      "filterBottom": 263,
+      "controls": [
+        {
+          "label": "Filter by season",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Filter by competition phase",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Through date: Apr 12, 2026",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Analysis window",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Player A",
+          "height": 38,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Player B",
+          "height": 38,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Swap players",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": false,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "errors": []
+    },
+    {
+      "name": "teams-overview",
+      "url": "/team-compare?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&teamA=1610612761&teamB=1610612738&tab=overview",
+      "width": 768,
+      "title": "Team Comparison",
+      "template": "compare",
+      "documentWidth": 768,
+      "viewportWidth": 768,
+      "mainTop": 488,
+      "filterBottom": 315,
+      "controls": [
+        {
+          "label": "Filter by season",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Filter by competition phase",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Through date: Apr 12, 2026",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Overview & H2H",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Four Factors",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "3P Variation",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Participation Cohorts",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Similar Peers",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Remove Toronto Raptors from Team A",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Team A",
+          "height": 38,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Remove Boston Celtics from Team B",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Team B",
+          "height": 38,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Swap Teams",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": false,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "errors": []
+    },
+    {
+      "name": "teams-factors",
+      "url": "/team-compare?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&teamA=1610612761&teamB=1610612738&tab=factors",
+      "width": 768,
+      "title": "Team Comparison",
+      "template": "compare",
+      "documentWidth": 768,
+      "viewportWidth": 768,
+      "mainTop": 488,
+      "filterBottom": 315,
+      "controls": [
+        {
+          "label": "Filter by season",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Filter by competition phase",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Through date: Apr 12, 2026",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Overview & H2H",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Four Factors",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "3P Variation",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Participation Cohorts",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Similar Peers",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Remove Toronto Raptors from Team A",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Team A",
+          "height": 38,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Remove Boston Celtics from Team B",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Team B",
+          "height": 38,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Swap Teams",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": false,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "errors": []
+    },
+    {
+      "name": "teams-three_point",
+      "url": "/team-compare?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&teamA=1610612761&teamB=1610612738&tab=three_point",
+      "width": 768,
+      "title": "Team Comparison",
+      "template": "compare",
+      "documentWidth": 768,
+      "viewportWidth": 768,
+      "mainTop": 488,
+      "filterBottom": 315,
+      "controls": [
+        {
+          "label": "Filter by season",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Filter by competition phase",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Through date: Apr 12, 2026",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Overview & H2H",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Four Factors",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "3P Variation",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Participation Cohorts",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Similar Peers",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Remove Toronto Raptors from Team A",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Team A",
+          "height": 38,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Remove Boston Celtics from Team B",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Team B",
+          "height": 38,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Swap Teams",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": false,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "errors": []
+    },
+    {
+      "name": "teams-roster",
+      "url": "/team-compare?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&teamA=1610612761&teamB=1610612738&tab=roster",
+      "width": 768,
+      "title": "Team Comparison",
+      "template": "compare",
+      "documentWidth": 768,
+      "viewportWidth": 768,
+      "mainTop": 488,
+      "filterBottom": 315,
+      "controls": [
+        {
+          "label": "Filter by season",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Filter by competition phase",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Through date: Apr 12, 2026",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Overview & H2H",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Four Factors",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "3P Variation",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Participation Cohorts",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Similar Peers",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Remove Toronto Raptors from Team A",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Team A",
+          "height": 38,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Remove Boston Celtics from Team B",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Team B",
+          "height": 38,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Swap Teams",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": false,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "errors": []
+    },
+    {
+      "name": "teams-peers",
+      "url": "/team-compare?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&teamA=1610612761&teamB=1610612738&tab=peers",
+      "width": 768,
+      "title": "Team Comparison",
+      "template": "compare",
+      "documentWidth": 768,
+      "viewportWidth": 768,
+      "mainTop": 488,
+      "filterBottom": 315,
+      "controls": [
+        {
+          "label": "Filter by season",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Filter by competition phase",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Through date: Apr 12, 2026",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Overview & H2H",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Four Factors",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "3P Variation",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Participation Cohorts",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Similar Peers",
+          "height": 36,
+          "fieldHeight": 36
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Remove Toronto Raptors from Team A",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Team A",
+          "height": 38,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Remove Boston Celtics from Team B",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Team B",
+          "height": 38,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Swap Teams",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": false,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "errors": []
+    },
+    {
+      "name": "wowy",
+      "url": "/wowy?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&team_id=TOR&together=1630567",
+      "width": 768,
+      "title": "WOWY",
+      "template": "compare",
+      "documentWidth": 768,
+      "viewportWidth": 768,
+      "mainTop": 769,
+      "filterBottom": 519,
+      "controls": [
+        {
+          "label": "Season",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Phase",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Through date: Apr 12, 2026",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "From date (inclusive): Select a date",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Minimum possessions",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Minimum games",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Operation",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "View",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Remove Toronto Raptors from Team",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Team",
+          "height": 38,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Remove Scottie Barnes from Together players",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Together players",
+          "height": 38,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Apart players",
+          "height": 38,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": false,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "errors": []
+    },
+    {
+      "name": "wowy-unit",
+      "url": "/wowy?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&team_id=TOR&exact_unit=1630567,1627742",
+      "width": 768,
+      "title": "WOWY",
+      "template": "compare",
+      "documentWidth": 768,
+      "viewportWidth": 768,
+      "mainTop": 825,
+      "filterBottom": 519,
+      "controls": [
+        {
+          "label": "Season",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Phase",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Through date: Apr 12, 2026",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "From date (inclusive): Select a date",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Minimum possessions",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Minimum games",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Operation",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "View",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Remove Toronto Raptors from Team",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Team",
+          "height": 38,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Remove Scottie Barnes from Exact unit",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Remove Brandon Ingram from Exact unit",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Exact unit",
+          "height": 38,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": false,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "errors": []
+    },
+    {
+      "name": "wowy-empty",
+      "url": "/wowy?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13",
+      "width": 768,
+      "title": "WOWY",
+      "template": "compare",
+      "documentWidth": 768,
+      "viewportWidth": 768,
+      "mainTop": 684,
+      "filterBottom": 519,
+      "controls": [
+        {
+          "label": "Season",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Phase",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Through date: Apr 12, 2026",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "From date (inclusive): Select a date",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Minimum possessions",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Minimum games",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Operation",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "View",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Remove Toronto Raptors from Team",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Team",
+          "height": 38,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Together players",
+          "height": 38,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Apart players",
+          "height": 38,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": false,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "errors": []
+    },
+    {
+      "name": "matchups",
+      "url": "/matchups?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&player_id=1630567&defender_id=1627742",
+      "width": 768,
+      "title": "Player Matchups",
+      "template": "compare",
+      "documentWidth": 768,
+      "viewportWidth": 768,
+      "mainTop": 468,
+      "filterBottom": 303,
+      "controls": [
+        {
+          "label": "Season",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Phase",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Through date: Apr 12, 2026",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Lower date (inclusive): Select a date",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Minimum attempts",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Minimum games",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Remove Scottie Barnes from Offensive player",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Offensive player",
+          "height": 38,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Remove Brandon Ingram from Defender (optional)",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Defender (optional)",
+          "height": 38,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": false,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "errors": []
+    },
+    {
+      "name": "matchups-empty",
+      "url": "/matchups?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13",
+      "width": 768,
+      "title": "Player Matchups",
+      "template": "compare",
+      "documentWidth": 768,
+      "viewportWidth": 768,
+      "mainTop": 412,
+      "filterBottom": 303,
+      "controls": [
+        {
+          "label": "Season",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Phase",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Through date: Apr 12, 2026",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Lower date (inclusive): Select a date",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Minimum attempts",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Minimum games",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Offensive player",
+          "height": 38,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Defender (optional)",
+          "height": 38,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": false,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "errors": []
+    },
+    {
+      "name": "players-bars",
+      "url": "/compare?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&playerA=1630567&playerB=1627742",
+      "width": 390,
+      "title": "Player Comparison",
+      "template": "compare",
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "mainTop": 681,
+      "filterBottom": 327,
+      "controls": [
+        {
+          "label": "Overall",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Offense",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Defense",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Six Factor",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Custom",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Table",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Visual Bars",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Trend Lines",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Filters2025-26 · Regular Season · Apr 12",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Remove Scottie Barnes from Player A",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Player A",
+          "height": 38,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Remove Brandon Ingram from Player B",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Player B",
+          "height": 38,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Swap players",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": true,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "errors": []
+    },
+    {
+      "name": "players-table",
+      "url": "/compare?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&playerA=1630567&playerB=1627742&compareView=table",
+      "width": 390,
+      "title": "Player Comparison",
+      "template": "compare",
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "mainTop": 681,
+      "filterBottom": 327,
+      "controls": [
+        {
+          "label": "Overall",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Offense",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Defense",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Six Factor",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Custom",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Table",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Visual Bars",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Trend Lines",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Filters2025-26 · Regular Season · Apr 12",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Remove Scottie Barnes from Player A",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Player A",
+          "height": 38,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Remove Brandon Ingram from Player B",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Player B",
+          "height": 38,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Swap players",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": true,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "errors": []
+    },
+    {
+      "name": "players-empty",
+      "url": "/compare?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13",
+      "width": 390,
+      "title": "Player Comparison",
+      "template": "compare",
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "mainTop": 481,
+      "filterBottom": 207,
+      "controls": [
+        {
+          "label": "Filters2025-26 · Regular Season · Apr 12",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Player A",
+          "height": 38,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Player B",
+          "height": 38,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Swap players",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": true,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "errors": []
+    },
+    {
+      "name": "teams-overview",
+      "url": "/team-compare?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&teamA=1610612761&teamB=1610612738&tab=overview",
+      "width": 390,
+      "title": "Team Comparison",
+      "template": "compare",
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "mainTop": 629,
+      "filterBottom": 259,
+      "controls": [
+        {
+          "label": "Overview & H2H",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Four Factors",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "3P Variation",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Participation Cohorts",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Similar Peers",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Filters2025-26 · Regular Season · Apr 12",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Remove Toronto Raptors from Team A",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Team A",
+          "height": 38,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Remove Boston Celtics from Team B",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Team B",
+          "height": 38,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Swap Teams",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": true,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "errors": []
+    },
+    {
+      "name": "teams-factors",
+      "url": "/team-compare?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&teamA=1610612761&teamB=1610612738&tab=factors",
+      "width": 390,
+      "title": "Team Comparison",
+      "template": "compare",
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "mainTop": 629,
+      "filterBottom": 259,
+      "controls": [
+        {
+          "label": "Overview & H2H",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Four Factors",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "3P Variation",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Participation Cohorts",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Similar Peers",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Filters2025-26 · Regular Season · Apr 12",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Remove Toronto Raptors from Team A",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Team A",
+          "height": 38,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Remove Boston Celtics from Team B",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Team B",
+          "height": 38,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Swap Teams",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": true,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "errors": []
+    },
+    {
+      "name": "teams-three_point",
+      "url": "/team-compare?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&teamA=1610612761&teamB=1610612738&tab=three_point",
+      "width": 390,
+      "title": "Team Comparison",
+      "template": "compare",
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "mainTop": 629,
+      "filterBottom": 259,
+      "controls": [
+        {
+          "label": "Overview & H2H",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Four Factors",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "3P Variation",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Participation Cohorts",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Similar Peers",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Filters2025-26 · Regular Season · Apr 12",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Remove Toronto Raptors from Team A",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Team A",
+          "height": 38,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Remove Boston Celtics from Team B",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Team B",
+          "height": 38,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Swap Teams",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": true,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "errors": []
+    },
+    {
+      "name": "teams-roster",
+      "url": "/team-compare?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&teamA=1610612761&teamB=1610612738&tab=roster",
+      "width": 390,
+      "title": "Team Comparison",
+      "template": "compare",
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "mainTop": 629,
+      "filterBottom": 259,
+      "controls": [
+        {
+          "label": "Overview & H2H",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Four Factors",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "3P Variation",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Participation Cohorts",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Similar Peers",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Filters2025-26 · Regular Season · Apr 12",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Remove Toronto Raptors from Team A",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Team A",
+          "height": 38,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Remove Boston Celtics from Team B",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Team B",
+          "height": 38,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Swap Teams",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": true,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "errors": []
+    },
+    {
+      "name": "teams-peers",
+      "url": "/team-compare?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&teamA=1610612761&teamB=1610612738&tab=peers",
+      "width": 390,
+      "title": "Team Comparison",
+      "template": "compare",
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "mainTop": 629,
+      "filterBottom": 259,
+      "controls": [
+        {
+          "label": "Overview & H2H",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Four Factors",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "3P Variation",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Participation Cohorts",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Similar Peers",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Filters2025-26 · Regular Season · Apr 12",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Remove Toronto Raptors from Team A",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Team A",
+          "height": 38,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Remove Boston Celtics from Team B",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Team B",
+          "height": 38,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Swap Teams",
+          "height": 40,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": true,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "errors": []
+    },
+    {
+      "name": "wowy",
+      "url": "/wowy?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&team_id=TOR&together=1630567",
+      "width": 390,
+      "title": "WOWY",
+      "template": "compare",
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "mainTop": 702,
+      "filterBottom": 311,
+      "controls": [
+        {
+          "label": "Operation",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "View",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Filters2025-26",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Remove Toronto Raptors from Team",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Team",
+          "height": 38,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Remove Scottie Barnes from Together players",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Together players",
+          "height": 38,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Apart players",
+          "height": 38,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": true,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "errors": []
+    },
+    {
+      "name": "wowy-unit",
+      "url": "/wowy?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&team_id=TOR&exact_unit=1630567,1627742",
+      "width": 390,
+      "title": "WOWY",
+      "template": "compare",
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "mainTop": 673,
+      "filterBottom": 311,
+      "controls": [
+        {
+          "label": "Operation",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "View",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Filters2025-26",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Remove Toronto Raptors from Team",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Team",
+          "height": 38,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Remove Scottie Barnes from Exact unit",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Remove Brandon Ingram from Exact unit",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Exact unit",
+          "height": 38,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": true,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "errors": []
+    },
+    {
+      "name": "wowy-empty",
+      "url": "/wowy?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13",
+      "width": 390,
+      "title": "WOWY",
+      "template": "compare",
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "mainTop": 646,
+      "filterBottom": 311,
+      "controls": [
+        {
+          "label": "Operation",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "View",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Filters2025-26",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Remove Toronto Raptors from Team",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Team",
+          "height": 38,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Together players",
+          "height": 38,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Apart players",
+          "height": 38,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": true,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "errors": []
+    },
+    {
+      "name": "matchups",
+      "url": "/matchups?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&player_id=1630567&defender_id=1627742",
+      "width": 390,
+      "title": "Player Matchups",
+      "template": "compare",
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "mainTop": 549,
+      "filterBottom": 243,
+      "controls": [
+        {
+          "label": "Filters2025-26",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Remove Scottie Barnes from Offensive player",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Offensive player",
+          "height": 38,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Remove Brandon Ingram from Defender (optional)",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Defender (optional)",
+          "height": 38,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": true,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "errors": []
+    },
+    {
+      "name": "matchups-empty",
+      "url": "/matchups?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13",
+      "width": 390,
+      "title": "Player Matchups",
+      "template": "compare",
+      "documentWidth": 390,
+      "viewportWidth": 390,
+      "mainTop": 401,
+      "filterBottom": 207,
+      "controls": [
+        {
+          "label": "Filters2025-26",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Data details",
+          "height": 40,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Offensive player",
+          "height": 38,
+          "fieldHeight": 40
+        },
+        {
+          "label": "Defender (optional)",
+          "height": 38,
+          "fieldHeight": 40
+        }
+      ],
+      "filtersButton": true,
+      "rawDates": 0,
+      "uuids": 0,
+      "hashes": 0,
+      "cutoffRules": 0,
+      "nativeDates": 0,
+      "noticeBoxes": 0,
+      "errors": []
+    }
+  ]
+}

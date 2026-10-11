@@ -1,6 +1,7 @@
+import { TemplateSkeleton } from "@/components/ui/template-skeleton";
 import { Suspense } from "react";
-import { ShootingView } from "@/components/shooting-view";
+import { MatchupsView } from "@/components/matchups-view";
 
 export default function Page() {
-  return <Suspense fallback={null}><ShootingView initialOperation="matchups" /></Suspense>;
+  return <Suspense fallback={<TemplateSkeleton template="compare" />}><MatchupsView /></Suspense>;
 }

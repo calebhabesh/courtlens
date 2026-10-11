@@ -160,6 +160,13 @@ export function Menu({
             animate="animate"
             exit="exit"
             className={`ui-menu-panel ui-menu-align-${align}`}
+            onClick={(event) => {
+              // Choosing an item closes the menu and returns focus to the trigger.
+              if ((event.target as HTMLElement).closest('[role="menuitem"]:not(:disabled)')) {
+                closeMenu();
+                triggerRef.current?.focus();
+              }
+            }}
           >
             {children}
           </motion.div>

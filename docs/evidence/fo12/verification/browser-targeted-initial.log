@@ -1,0 +1,116 @@
+
+Running 56 tests using 1 worker
+
+[1/56] e2e/advanced-research.spec.ts:16:5 › completed negative report shows amended identity, honest horizons, metrics and export
+[2/56] e2e/advanced-research.spec.ts:35:5 › each unavailable model names its independent requirement
+  1) e2e/advanced-research.spec.ts:35:5 › each unavailable model names its independent requirement ─
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: locator('.research-view')
+    Expected substring: "stint and possession"
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toContainText" locator('.research-view') with timeout 5000ms
+      - waiting for locator('.research-view')
+
+
+      36 |   await researchRoutes(page);
+      37 |   for(const [path,requirement] of [["/research/rapm","stint and possession"],["/research/rapm/six-factor","turnover and rebound"],["/research/shooting/adjusted","playtypes and foul trips"]]) {
+    > 38 |     await page.goto(path); await expect(page.locator(".research-view")).toContainText(requirement);
+         |                                                                         ^
+      39 |     await expect(page.getByRole("region",{name:"Registered research result"})).toHaveCount(0);
+      40 |   }
+      41 | });
+        at <isolated copy>/dashboard/e2e/advanced-research.spec.ts:38:73
+
+    Error Context: test-results/advanced-research-each-una-20ed3-its-independent-requirement/error-context.md
+
+
+[3/56] e2e/advanced-research.spec.ts:42:5 › integrity rejection hides numerical outputs and retry recovers
+[4/56] e2e/advanced-research.spec.ts:49:5 › calculator rejects invalid scenarios and shows checked finite differences on mobile
+[5/56] e2e/advanced-research.spec.ts:60:5 › roster keeps observed and projected inputs separate and exports context
+[6/56] e2e/advanced-research.spec.ts:76:5 › measurements preserve unknown picks, null lengths and units in bounded sample
+  2) e2e/advanced-research.spec.ts:76:5 › measurements preserve unknown picks, null lengths and units in bounded sample
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: getByRole('region', { name: 'Measurement records' })
+    Expected substring: "Unknown pick"
+    Error: strict mode violation: getByRole('region', { name: 'Measurement records' }) resolved to 2 elements:
+        1) <section class="research-section" aria-label="Measurement records">…</section> aka getByRole('region', { name: 'Measurement records', exact: true })
+        2) <div tabindex="0" role="region" class="table-wrapper research-table" aria-label="Measurement records table">…</div> aka getByRole('region', { name: 'Measurement records table' })
+
+    Call log:
+      - Expect "toContainText" getByRole('region', { name: 'Measurement records' }) with timeout 5000ms
+      - waiting for getByRole('region', { name: 'Measurement records' })
+
+
+      76 | test("measurements preserve unknown picks, null lengths and units in bounded sample",async ({page}) => {
+      77 |   await page.route("**/api/workbench/measurements?*",route => route.fulfill({json:{items:[{player_id:"fixture",display_name:"Fixture Player",measurement_type:"combine",source_name:"fixture-combine",draft_year:2021,pick_overall:null,drafting_team_id:null,height_no_shoes_inches:80,height_shoes_inches:null,wingspan_inches:86,standing_reach_inches:null,weight_lbs:200,body_fat_pct:null,wingspan_to_height_ratio:null}],count:1,disclaimer:"Fixture only"}}));
+    > 78 |   await page.goto("/wingspan");await expect(page.getByRole("region",{name:"Measurement records"})).toContainText("Unknown pick");
+         |                                                                                                    ^
+      79 |   await page.getByRole("radio",{name:"Centimeters"}).click();await expect(page.getByRole("region",{name:"Measurement records"})).toContainText("218.44 cm");
+      80 |   await page.getByLabel("Compare Fixture Player combine").check();await expect(page.getByRole("region",{name:"Measurement comparison"})).toContainText("fixture-combine");
+      81 |   await page.setViewportSize({width:390,height:844});expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+        at <isolated copy>/dashboard/e2e/advanced-research.spec.ts:78:100
+
+    Error Context: test-results/advanced-research-measurem-d3daf-and-units-in-bounded-sample/error-context.md
+
+
+[7/56] e2e/comparison-evaluation.spec.ts:12:5 › shared-cutoff comparison keeps different target dates and missing context visible
+[8/56] e2e/comparison-evaluation.spec.ts:30:5 › evaluation presents the no-promotion decision and failed build state
+[9/56] e2e/comparison-evaluation.spec.ts:38:5 › comparison controls work by keyboard and fit a 375px viewport
+[10/56] e2e/comparison-evaluation.spec.ts:58:5 › invalid date preserves selections and recovers to sparse history
+[11/56] e2e/route-consolidation.spec.ts:13:7 › FO07 route consolidation › every removed URL redirects to its tab and keeps the query
+[12/56] e2e/route-consolidation.spec.ts:24:7 › FO07 route consolidation › an old link opens the merged page with its tab selected
+[13/56] e2e/route-consolidation.spec.ts:38:7 › FO07 route consolidation › tabs switch in place and carry the scope and player
+[14/56] e2e/route-consolidation.spec.ts:51:7 › FO07 route consolidation › the Research menu lists each merged page once
+[15/56] e2e/route-consolidation.spec.ts:63:7 › FO07 route consolidation › tabs fit a phone without page overflow
+[16/56] e2e/route-polish.spec.ts:4:5 › release availability agrees across desktop and mobile and preserves context
+[17/56] e2e/route-polish.spec.ts:20:5 › catalog scope options keep unavailable context explicit and synchronize navigation
+[18/56] e2e/route-polish.spec.ts:33:5 › settings distinguishes configured key from provider health and hides operator details
+[19/56] e2e/route-polish.spec.ts:48:5 › partial source keeps tools primary; service failure remains a distinct availability state
+[20/56] e2e/route-polish.spec.ts:72:5 › distribution subtools retain release, postseason and exclusive cutoff
+[21/56] e2e/route-polish.spec.ts:87:5 › research without a catalog explains the missing context
+[22/56] e2e/saved-operations.spec.ts:29:5 › explicit save excludes question by default, reuses identity after failure and survives clearing
+[23/56] e2e/saved-operations.spec.ts:37:5 › question opt-in is independent from execution and title
+[24/56] e2e/saved-operations.spec.ts:40:5 › combined library keeps legacy section and opens exact retained namespace
+[25/56] e2e/saved-operations.spec.ts:43:39 › query retained result exposes evidence, pinned reopening, exports and reproduction
+[26/56] e2e/saved-operations.spec.ts:43:39 › definition retained result exposes evidence, pinned reopening, exports and reproduction
+[27/56] e2e/saved-operations.spec.ts:43:39 › profile retained result exposes evidence, pinned reopening, exports and reproduction
+[28/56] e2e/saved-operations.spec.ts:43:39 › compare retained result exposes evidence, pinned reopening, exports and reproduction
+[29/56] e2e/saved-operations.spec.ts:43:39 › team retained result exposes evidence, pinned reopening, exports and reproduction
+[30/56] e2e/saved-operations.spec.ts:43:39 › forecast retained result exposes evidence, pinned reopening, exports and reproduction
+[31/56] e2e/saved-operations.spec.ts:43:39 › distribution retained result exposes evidence, pinned reopening, exports and reproduction
+[32/56] e2e/saved-operations.spec.ts:43:39 › compare_periods retained result exposes evidence, pinned reopening, exports and reproduction
+[33/56] e2e/saved-operations.spec.ts:43:39 › splits retained result exposes evidence, pinned reopening, exports and reproduction
+[34/56] e2e/saved-operations.spec.ts:43:39 › similarity retained result exposes evidence, pinned reopening, exports and reproduction
+[35/56] e2e/saved-operations.spec.ts:43:39 › workload_shifts retained result exposes evidence, pinned reopening, exports and reproduction
+[36/56] e2e/saved-operations.spec.ts:43:39 › finance retained result exposes evidence, pinned reopening, exports and reproduction
+[37/56] e2e/saved-operations.spec.ts:49:5 › reproduction mismatch keeps exports and retained evidence usable on narrow screens
+[38/56] e2e/saved-operations.spec.ts:52:5 › original content, live catalog version and installation metadata are local and truthful
+[39/56] e2e/saved-operations.spec.ts:60:5 › saved-operation pagination preserves boundaries and failed pages stay explicit
+[40/56] e2e/saved-operations.spec.ts:69:5 › install prompt accepts a browser event and exposes installed state
+[41/56] e2e/shooting.spec.ts:14:5 › blocked source exports complete evidence and pins resolved links
+[42/56] e2e/shooting.spec.ts:27:5 › court and table preserve zero versus unknown; exports and peer zones agree
+[43/56] e2e/shooting.spec.ts:49:5 › assignment matrix shows fractional exposure and null pooled rates at 375px
+[44/56] e2e/shooting.spec.ts:62:5 › aftermath keeps branch samples, unknown membership and censoring distinct
+[45/56] e2e/shooting.spec.ts:76:5 › query overflow is actionable and cannot export a partial result
+[46/56] e2e/shooting.spec.ts:80:5 › cancelling an abandoned request prevents stale results
+[47/56] e2e/shooting.spec.ts:85:5 › name lookup alone never runs analysis; choosing a player and a view does
+[48/56] e2e/shooting.spec.ts:101:5 › shot pagination bounds the court/table while exports retain all facts
+[49/56] e2e/workbench.spec.ts:5:7 › Workbench Dark Research Interface › home opens Stats with dark theme, horizontal navigation, context and data
+[50/56] e2e/workbench.spec.ts:30:7 › Workbench Dark Research Interface › player explorer allows filtering and links to detail view
+[51/56] e2e/workbench.spec.ts:53:7 › Workbench Dark Research Interface › player detail presents profile summaries, game logs, and lineage trigger
+[52/56] e2e/workbench.spec.ts:73:7 › Workbench Dark Research Interface › team research lists cohorts and navigates to team detail
+[53/56] e2e/workbench.spec.ts:92:7 › Workbench Dark Research Interface › comparison view displays head-to-head metrics without declaring forced winners
+[54/56] e2e/workbench.spec.ts:105:7 › Workbench Dark Research Interface › forecasts view displays active policy, promotion decision, gates, and prespecified slices
+[55/56] e2e/workbench.spec.ts:136:7 › Workbench Dark Research Interface › dense dark research layout fits a 375px mobile viewport without horizontal overflow
+[56/56] e2e/workbench.spec.ts:149:7 › Workbench Dark Research Interface › Ask drawer offers manual research and links to optional configuration
+  2 failed
+    e2e/advanced-research.spec.ts:35:5 › each unavailable model names its independent requirement ──
+    e2e/advanced-research.spec.ts:76:5 › measurements preserve unknown picks, null lengths and units in bounded sample
+  54 passed (1.0m)

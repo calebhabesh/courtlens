@@ -1,5 +1,19 @@
 # CourtLens refresh progress
 
+## 2026-10-09 — Stats filter-divider spacing repair
+
+Follow-up: Manage Views follows the guide group, its 32px height matches the adjacent selectors,
+and the visible label is `Group Guides:`. Live-browser checks at 1440/2048/390px verify sizing,
+order, dialog interaction and no document overflow. Dashboard lint/types and 344 unit tests pass.
+[Evidence](evidence/stats-manage-views/README.md).
+
+The owner-reported hairline touching Manage Views and Group guides is corrected with a scoped
+16px (`--space-4`) top margin before the explorer, per Design Language v1.1. Measured at
+1440/2048/390px with working controls and no page overflow. Dashboard lint/types and 344 Vitest
+tests pass; 10 existing fixture browser cases pass across initial and isolated rerun.
+[Evidence and browser-environment limits](evidence/stats-divider-fix/README.md).
+This does not advance a refresh or overhaul milestone.
+
 Parent: [refresh handoff](courtlens-refresh-plan.md). Design contract:
 [design-language-v1](design/design-language-v1.md). Plans are not runtime evidence.
 
@@ -461,3 +475,29 @@ repair, not a repeat of DL milestones or their sealed screenshot capture.
   IM06 real-data cases retain sealed evidence. Dashboard unit tests: 286 passed;
   lint/types and production build pass. Full Python evidence is recorded in the linked
   report. No raw inline styles or new motion mechanism was introduced.
+
+
+## 2026-10-09 — FO10 Teams and finance presentation
+
+The subsequent [frontend overhaul FO10 block](evidence/fo10/README.md) rebuilds Team Stats,
+Team Profile, Teammate Stat Shift, Contracts, team contracts and Free Agency on the shared
+v1.1 templates. Shared controls, logo/headshot identity, styled dates, loading skeletons,
+phone table containment and Data details preserve existing analytical and finance contracts.
+No rename, source acquisition or frozen identifier change; prior DL/AR/AG evidence is retained.
+
+Measured: 27 real-data captures at 1440/768/390px, desktop results at 227–389px, no page overflow
+or visible UUID/hash/cutoff rules; lint 0, typecheck and production build pass, 344 Vitest tests,
+full fixture browser suite **284 passed / 15 skipped / 0 failed**, 30 stable baselines including
+12 new FO10 views. The [FO progress log](frontend-overhaul-progress.md) records implementation
+without claiming owner visual acceptance. The current shared-floor and financial source gates
+remain unresolved. This entry does not advance older refresh/DL milestones.
+
+## 2026-10-11 — FO14 final presentation sweep
+
+The subsequent [frontend-overhaul FO14 evidence](evidence/fo14/README.md) records route-wide
+responsive, keyboard, accessible-label, reflow, contrast and glance checks. It closes the FO13
+numeric-alignment, Article skeleton and phone-target follow-ups, empties the title/date ratchets,
+and moves floating lookup geometry to typed CSS custom properties. Header/search, token, identity,
+reduced-motion and analytical contracts are retained. No rename or frozen identifier change.
+Implementation remains `implemented_unverified` pending owner visual acceptance; this cross-reference
+does not advance prior refresh/DL milestones or unresolved data-source gates.

@@ -1989,7 +1989,7 @@ export interface PlayoffSeriesSummary {
   team1: TeamSeriesHeader;
   team2: TeamSeriesHeader;
   series_score: string;
-  status: "final" | "in_progress" | "scheduled" | string;
+  status: "finished" | "final" | "in_progress" | "scheduled" | string;
   winner_team_id: string | null;
   winner_tricode: string | null;
   games_count: number;
@@ -2102,7 +2102,7 @@ export interface PlayoffSeriesDetailResponse {
   round_name: string;
   conference: string | null;
   matchup_index: number;
-  status: "final" | "in_progress" | "scheduled" | string;
+  status: "finished" | "final" | "in_progress" | "scheduled" | string;
   series_score: string;
   winner_team_id: string | null;
   winner_tricode: string | null;
@@ -2114,4 +2114,27 @@ export interface PlayoffSeriesDetailResponse {
   team2_players: PlayerSeriesStats[];
   capabilities: Record<string, string>;
   disclaimers: string[];
+}
+
+/** Per-date counts from a release's retained schedule and admitted finals (FO08 Live date strip). */
+export interface ScheduleDateCount {
+  date: string;
+  /** Null when the dataset retains no schedule (unknown, not zero). */
+  scheduled: number | null;
+  /** Null when finals are unknown for the phase (archive non-regular season). */
+  finals: number | null;
+}
+export interface NearestGameDates { before: string | null; after: string | null }
+export interface ScheduleDatesResponse {
+  release_id: string;
+  dataset_id: string;
+  start: string;
+  end: string;
+  phase: string | null;
+  before_date: string | null;
+  focus: string;
+  days: ScheduleDateCount[];
+  nearest_scheduled: NearestGameDates;
+  nearest_finals: NearestGameDates;
+  warnings: string[];
 }
