@@ -1,0 +1,12 @@
+{
+  "schema_version": "finance-thresholds-v1",
+  "season": "2026-27",
+  "source_url": "https://www.nba.com/news/nba-salary-cap-2026-27-season",
+  "effective_date": "2026-07-01",
+  "cap_cents": "16496100000",
+  "tax_cents": "20042800000",
+  "first_apron_cents": "20901500000",
+  "second_apron_cents": "22168600000",
+  "minimum_cents": "14846500000",
+  "capture_method": "manual_official_release"
+}

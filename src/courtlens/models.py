@@ -304,6 +304,7 @@ from courtlens import (  # noqa: E402,F401
     assignment_models,
     assistant_history_models,
     conversation_models,
+    finance_context_models,
     finance_models,
     live_models,
     player_context_models,
