@@ -1,0 +1,542 @@
+[
+  {
+    "width": 1440,
+    "height": 900,
+    "name": "season",
+    "appearance": "base-select",
+    "picker": {
+      "background": "rgb(31, 35, 42)",
+      "radius": "10px",
+      "shadow": "rgba(0, 0, 0, 0.35) 0px 4px 16px 0px, rgba(255, 255, 255, 0.03) 0px 1px 0px 0px inset",
+      "maxHeight": "320px"
+    },
+    "rows": [
+      {
+        "x": 78.71875,
+        "y": 199,
+        "width": 170,
+        "height": 40
+      },
+      {
+        "x": 78.71875,
+        "y": 239,
+        "width": 170,
+        "height": 40
+      },
+      {
+        "x": 78.71875,
+        "y": 279,
+        "width": 170,
+        "height": 40
+      }
+    ],
+    "rowsWithinViewport": true,
+    "pageOverflow": false
+  },
+  {
+    "width": 1440,
+    "height": 900,
+    "name": "phase",
+    "appearance": "base-select",
+    "picker": {
+      "background": "rgb(31, 35, 42)",
+      "radius": "10px",
+      "shadow": "rgba(0, 0, 0, 0.35) 0px 4px 16px 0px, rgba(255, 255, 255, 0.03) 0px 1px 0px 0px inset",
+      "maxHeight": "320px"
+    },
+    "rows": [
+      {
+        "x": 229.71875,
+        "y": 199,
+        "width": 170,
+        "height": 40
+      },
+      {
+        "x": 229.71875,
+        "y": 239,
+        "width": 170,
+        "height": 40
+      },
+      {
+        "x": 229.71875,
+        "y": 279,
+        "width": 170,
+        "height": 40
+      },
+      {
+        "x": 229.71875,
+        "y": 319,
+        "width": 170,
+        "height": 40
+      }
+    ],
+    "rowsWithinViewport": true,
+    "pageOverflow": false
+  },
+  {
+    "width": 1440,
+    "height": 900,
+    "name": "window",
+    "appearance": "base-select",
+    "picker": {
+      "background": "rgb(31, 35, 42)",
+      "radius": "10px",
+      "shadow": "rgba(0, 0, 0, 0.35) 0px 4px 16px 0px, rgba(255, 255, 255, 0.03) 0px 1px 0px 0px inset",
+      "maxHeight": "320px"
+    },
+    "rows": [
+      {
+        "x": 636.421875,
+        "y": 199,
+        "width": 170,
+        "height": 40
+      },
+      {
+        "x": 636.421875,
+        "y": 239,
+        "width": 170,
+        "height": 40
+      },
+      {
+        "x": 636.421875,
+        "y": 279,
+        "width": 170,
+        "height": 40
+      }
+    ],
+    "rowsWithinViewport": true,
+    "pageOverflow": false
+  },
+  {
+    "width": 768,
+    "height": 900,
+    "name": "season",
+    "appearance": "base-select",
+    "picker": {
+      "background": "rgb(31, 35, 42)",
+      "radius": "10px",
+      "shadow": "rgba(0, 0, 0, 0.35) 0px 4px 16px 0px, rgba(255, 255, 255, 0.03) 0px 1px 0px 0px inset",
+      "maxHeight": "320px"
+    },
+    "rows": [
+      {
+        "x": 78.71875,
+        "y": 199,
+        "width": 170,
+        "height": 40
+      },
+      {
+        "x": 78.71875,
+        "y": 239,
+        "width": 170,
+        "height": 40
+      },
+      {
+        "x": 78.71875,
+        "y": 279,
+        "width": 170,
+        "height": 40
+      }
+    ],
+    "rowsWithinViewport": true,
+    "pageOverflow": false
+  },
+  {
+    "width": 768,
+    "height": 900,
+    "name": "phase",
+    "appearance": "base-select",
+    "picker": {
+      "background": "rgb(31, 35, 42)",
+      "radius": "10px",
+      "shadow": "rgba(0, 0, 0, 0.35) 0px 4px 16px 0px, rgba(255, 255, 255, 0.03) 0px 1px 0px 0px inset",
+      "maxHeight": "320px"
+    },
+    "rows": [
+      {
+        "x": 229.71875,
+        "y": 199,
+        "width": 170,
+        "height": 40
+      },
+      {
+        "x": 229.71875,
+        "y": 239,
+        "width": 170,
+        "height": 40
+      },
+      {
+        "x": 229.71875,
+        "y": 279,
+        "width": 170,
+        "height": 40
+      },
+      {
+        "x": 229.71875,
+        "y": 319,
+        "width": 170,
+        "height": 40
+      }
+    ],
+    "rowsWithinViewport": true,
+    "pageOverflow": false
+  },
+  {
+    "width": 768,
+    "height": 900,
+    "name": "window",
+    "appearance": "base-select",
+    "picker": {
+      "background": "rgb(31, 35, 42)",
+      "radius": "10px",
+      "shadow": "rgba(0, 0, 0, 0.35) 0px 4px 16px 0px, rgba(255, 255, 255, 0.03) 0px 1px 0px 0px inset",
+      "maxHeight": "320px"
+    },
+    "rows": [
+      {
+        "x": 284.421875,
+        "y": 251,
+        "width": 170,
+        "height": 40
+      },
+      {
+        "x": 284.421875,
+        "y": 291,
+        "width": 170,
+        "height": 40
+      },
+      {
+        "x": 284.421875,
+        "y": 331,
+        "width": 170,
+        "height": 40
+      }
+    ],
+    "rowsWithinViewport": true,
+    "pageOverflow": false
+  },
+  {
+    "width": 390,
+    "height": 844,
+    "name": "season",
+    "appearance": "base-select",
+    "picker": {
+      "background": "rgb(31, 35, 42)",
+      "radius": "10px",
+      "shadow": "rgba(0, 0, 0, 0.35) 0px 4px 16px 0px, rgba(255, 255, 255, 0.03) 0px 1px 0px 0px inset",
+      "maxHeight": "320px"
+    },
+    "rows": [
+      {
+        "x": 21,
+        "y": 431,
+        "width": 348,
+        "height": 40
+      },
+      {
+        "x": 21,
+        "y": 471,
+        "width": 348,
+        "height": 40
+      },
+      {
+        "x": 21,
+        "y": 511,
+        "width": 348,
+        "height": 40
+      }
+    ],
+    "rowsWithinViewport": true,
+    "pageOverflow": false
+  },
+  {
+    "width": 390,
+    "height": 844,
+    "name": "phase",
+    "appearance": "base-select",
+    "picker": {
+      "background": "rgb(31, 35, 42)",
+      "radius": "10px",
+      "shadow": "rgba(0, 0, 0, 0.35) 0px 4px 16px 0px, rgba(255, 255, 255, 0.03) 0px 1px 0px 0px inset",
+      "maxHeight": "320px"
+    },
+    "rows": [
+      {
+        "x": 21,
+        "y": 467,
+        "width": 348,
+        "height": 40
+      },
+      {
+        "x": 21,
+        "y": 507,
+        "width": 348,
+        "height": 40
+      },
+      {
+        "x": 21,
+        "y": 547,
+        "width": 348,
+        "height": 40
+      },
+      {
+        "x": 21,
+        "y": 587,
+        "width": 348,
+        "height": 40
+      }
+    ],
+    "rowsWithinViewport": true,
+    "pageOverflow": false
+  },
+  {
+    "width": 390,
+    "height": 844,
+    "name": "window",
+    "appearance": "base-select",
+    "picker": {
+      "background": "rgb(31, 35, 42)",
+      "radius": "10px",
+      "shadow": "rgba(0, 0, 0, 0.35) 0px 4px 16px 0px, rgba(255, 255, 255, 0.03) 0px 1px 0px 0px inset",
+      "maxHeight": "320px"
+    },
+    "rows": [
+      {
+        "x": 21,
+        "y": 659,
+        "width": 348,
+        "height": 40
+      },
+      {
+        "x": 21,
+        "y": 699,
+        "width": 348,
+        "height": 40
+      },
+      {
+        "x": 21,
+        "y": 739,
+        "width": 348,
+        "height": 40
+      }
+    ],
+    "rowsWithinViewport": true,
+    "pageOverflow": false
+  },
+  {
+    "width": 375,
+    "height": 812,
+    "name": "season",
+    "appearance": "base-select",
+    "picker": {
+      "background": "rgb(31, 35, 42)",
+      "radius": "10px",
+      "shadow": "rgba(0, 0, 0, 0.35) 0px 4px 16px 0px, rgba(255, 255, 255, 0.03) 0px 1px 0px 0px inset",
+      "maxHeight": "320px"
+    },
+    "rows": [
+      {
+        "x": 21,
+        "y": 399,
+        "width": 333,
+        "height": 40
+      },
+      {
+        "x": 21,
+        "y": 439,
+        "width": 333,
+        "height": 40
+      },
+      {
+        "x": 21,
+        "y": 479,
+        "width": 333,
+        "height": 40
+      }
+    ],
+    "rowsWithinViewport": true,
+    "pageOverflow": false
+  },
+  {
+    "width": 375,
+    "height": 812,
+    "name": "phase",
+    "appearance": "base-select",
+    "picker": {
+      "background": "rgb(31, 35, 42)",
+      "radius": "10px",
+      "shadow": "rgba(0, 0, 0, 0.35) 0px 4px 16px 0px, rgba(255, 255, 255, 0.03) 0px 1px 0px 0px inset",
+      "maxHeight": "320px"
+    },
+    "rows": [
+      {
+        "x": 21,
+        "y": 435,
+        "width": 333,
+        "height": 40
+      },
+      {
+        "x": 21,
+        "y": 475,
+        "width": 333,
+        "height": 40
+      },
+      {
+        "x": 21,
+        "y": 515,
+        "width": 333,
+        "height": 40
+      },
+      {
+        "x": 21,
+        "y": 555,
+        "width": 333,
+        "height": 40
+      }
+    ],
+    "rowsWithinViewport": true,
+    "pageOverflow": false
+  },
+  {
+    "width": 375,
+    "height": 812,
+    "name": "window",
+    "appearance": "base-select",
+    "picker": {
+      "background": "rgb(31, 35, 42)",
+      "radius": "10px",
+      "shadow": "rgba(0, 0, 0, 0.35) 0px 4px 16px 0px, rgba(255, 255, 255, 0.03) 0px 1px 0px 0px inset",
+      "maxHeight": "320px"
+    },
+    "rows": [
+      {
+        "x": 21,
+        "y": 627,
+        "width": 333,
+        "height": 40
+      },
+      {
+        "x": 21,
+        "y": 667,
+        "width": 333,
+        "height": 40
+      },
+      {
+        "x": 21,
+        "y": 707,
+        "width": 333,
+        "height": 40
+      }
+    ],
+    "rowsWithinViewport": true,
+    "pageOverflow": false
+  },
+  {
+    "width": 844,
+    "height": 390,
+    "name": "season",
+    "appearance": "base-select",
+    "picker": {
+      "background": "rgb(31, 35, 42)",
+      "radius": "10px",
+      "shadow": "rgba(0, 0, 0, 0.35) 0px 4px 16px 0px, rgba(255, 255, 255, 0.03) 0px 1px 0px 0px inset",
+      "maxHeight": "320px"
+    },
+    "rows": [
+      {
+        "x": 78.71875,
+        "y": 199,
+        "width": 170,
+        "height": 40
+      },
+      {
+        "x": 78.71875,
+        "y": 239,
+        "width": 170,
+        "height": 40
+      },
+      {
+        "x": 78.71875,
+        "y": 279,
+        "width": 170,
+        "height": 40
+      }
+    ],
+    "rowsWithinViewport": true,
+    "pageOverflow": false
+  },
+  {
+    "width": 844,
+    "height": 390,
+    "name": "phase",
+    "appearance": "base-select",
+    "picker": {
+      "background": "rgb(31, 35, 42)",
+      "radius": "10px",
+      "shadow": "rgba(0, 0, 0, 0.35) 0px 4px 16px 0px, rgba(255, 255, 255, 0.03) 0px 1px 0px 0px inset",
+      "maxHeight": "320px"
+    },
+    "rows": [
+      {
+        "x": 229.71875,
+        "y": 199,
+        "width": 170,
+        "height": 40
+      },
+      {
+        "x": 229.71875,
+        "y": 239,
+        "width": 170,
+        "height": 40
+      },
+      {
+        "x": 229.71875,
+        "y": 279,
+        "width": 170,
+        "height": 40
+      },
+      {
+        "x": 229.71875,
+        "y": 319,
+        "width": 170,
+        "height": 40
+      }
+    ],
+    "rowsWithinViewport": true,
+    "pageOverflow": false
+  },
+  {
+    "width": 844,
+    "height": 390,
+    "name": "window",
+    "appearance": "base-select",
+    "picker": {
+      "background": "rgb(31, 35, 42)",
+      "radius": "10px",
+      "shadow": "rgba(0, 0, 0, 0.35) 0px 4px 16px 0px, rgba(255, 255, 255, 0.03) 0px 1px 0px 0px inset",
+      "maxHeight": "320px"
+    },
+    "rows": [
+      {
+        "x": 284.421875,
+        "y": 73,
+        "width": 170,
+        "height": 40
+      },
+      {
+        "x": 284.421875,
+        "y": 113,
+        "width": 170,
+        "height": 40
+      },
+      {
+        "x": 284.421875,
+        "y": 153,
+        "width": 170,
+        "height": 40
+      }
+    ],
+    "rowsWithinViewport": true,
+    "pageOverflow": false
+  }
+]
