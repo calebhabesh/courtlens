@@ -234,6 +234,15 @@ all six frozen-identifier/rename tests pass. Fresh uncached mypy passes all 208 
 GitHub's unconstrained installation selected newer SQLAlchemy/Pydantic releases and reported
 71 type errors; installing those versions locally reproduces the same 71 errors. CI and both
 Python Docker images now use the existing dependency lock as constraints.
+The lock's stale WebSocket pin is corrected to the installed 16.1.1 version, satisfying the
+locked Gemini SDK's declared `<17` requirement.
+The complete fresh Python rerun passes: 1,851 tests, one optional isolated-panel browser skip,
+19 published-data checks deselected and one third-party SDK deprecation warning on Python 3.14.
+
+The default browser harness used a development server despite the production baseline contract.
+A development replay matches 65 baselines but differs by 4% on the phone roster chart; production
+matches all 66. The default harness now builds production webpack output and starts the standalone
+server with its public/static assets, using the same fixture endpoints as before.
 
 The container smoke job also lacked a published workbench fixture and expected an older metric
 catalog and team-response schema. CI now seeds its disposable database with the existing synthetic

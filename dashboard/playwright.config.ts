@@ -28,8 +28,15 @@ export default defineConfig({
         },
         {
           command:
-            "COURTLENS_API_INTERNAL_URL=http://localhost:4100 NEXT_PUBLIC_COURTLENS_API_URL=http://localhost:4100 npm run dev -- -p 3100",
+            "npm run build -- --webpack && node e2e/start-dashboard.mjs",
+          env: {
+            COURTLENS_API_INTERNAL_URL: "http://localhost:4100",
+            NEXT_PUBLIC_COURTLENS_API_URL: "http://localhost:4100",
+            HOSTNAME: "127.0.0.1",
+            PORT: "3100"
+          },
           port: 3100,
+          timeout: 120_000,
           reuseExistingServer: false
         }
       ]
