@@ -29,7 +29,7 @@ ADMITTED_SOURCES: tuple[AdmittedSource, ...] = (
         "NBA CDN static JSON",
         "cdn.nba.com",
         "primary",
-        ("player_index", "on_off", "shots"),
+        ("player_index", "rosters", "on_off", "shots"),
         3,
         "NBA.com",
     ),
@@ -48,6 +48,8 @@ ADMITTED_SOURCES: tuple[AdmittedSource, ...] = (
         "github.com/sportsdataverse/hoopR-nba-stats-raw",
         "primary",
         (
+            "player_index",
+            "rosters",
             "play_types",
             "tracking",
             "defensive_tracking",
@@ -59,6 +61,15 @@ ADMITTED_SOURCES: tuple[AdmittedSource, ...] = (
         ),
         1,
         "NBA Stats via SportsDataverse hoopR",
+    ),
+    AdmittedSource(
+        "league_transactions",
+        "Official NBA transactions (versioned operator import)",
+        "nba.com",
+        "manual",
+        ("transactions",),
+        None,
+        "NBA",
     ),
     AdmittedSource(
         "shufinskiy_nba_data",
@@ -129,6 +140,8 @@ ADMITTED_SOURCES: tuple[AdmittedSource, ...] = (
 # (shots, on/off, matchups, contracts, draft) are declared from measured coverage instead.
 NOT_YET_INGESTED: tuple[str, ...] = (
     "player_index",
+    "rosters",
+    "transactions",
     "injuries",
     "play_types",
     "tracking",
