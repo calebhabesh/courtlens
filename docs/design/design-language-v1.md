@@ -1,4 +1,4 @@
-# CourtLens design language v1.1
+# CourtLens design language v1.2
 
 Owner-confirmed direction (2026-10-07): smooth and modern, no stiff or abrupt changes, no bright
 outline borders. Use this contract for every dashboard change after DL01 lands. The block plan and
@@ -10,6 +10,11 @@ missing-data and technical-detail patterns), identity and date rules, the Board 
 approved at gate 2 (Player Showcase, Roster Shapes, search), the glance test, and new lint and
 screenshot enforcement. The header section now describes the shipped FO02/FO06 header. Tokens,
 motion and icon rules are unchanged. The file keeps its `-v1` name so existing links still work.
+
+**v1.2 (2026-10-11, PC03):** adds the semantic chart palettes and reusable SVG kit from
+[presentation clarity](../presentation-clarity-plan.md). Revises D21: per-metric difference chips
+use the leading subject's identity color, respecting the catalog's lower-is-better flags. Existing
+analytical definitions, temporal cutoffs and hashes are unchanged. The file keeps its `-v1` name.
 
 ## Principles
 
@@ -87,6 +92,71 @@ DL01 verified this with `scripts/verify-contrast.py`; measured ratios:
 | `--color-info (#67aaf9)` | `surface-2 (#181b21)` | 7.14:1 | Pass | Pass |
 | `--color-info (#67aaf9)` | `surface-3 (#1f232a)` | 6.53:1 | Pass | Pass |
 
+
+### Chart color semantics (v1.2, PC03)
+
+| Tokens | Values | Meaning |
+| --- | --- | --- |
+| `--color-identity-a` / `--color-identity-b` | `#ffd166` / `#80bfff` | Subject A / B; no good/bad meaning |
+| `--color-identity-a-soft` / `--color-identity-b-soft` | 12% of the corresponding identity color | Identity backgrounds |
+| `--color-percentile-1` … `-5` | `#172d43`, `#20415e`, `#2b567c`, `#386b96`, `#3e729b` | Increasing already-oriented percentile, five bands of 20; 100 uses band 5 |
+| `--color-category-1` … `-6` | `#ffd166`, `#80bfff`, `#c5a3ff`, `#79d4c6`, `#f6a5c0`, `#d0d788` | Labeled categories such as archetypes; no rank |
+| `--color-status-guaranteed` | `#80bfff` | Guaranteed contract |
+| `--color-status-player-option` | `#c5a3ff` | Player option |
+| `--color-status-team-option` | `#79d4c6` | Team option |
+| `--color-status-two-way` | `#f6a5c0` | Two-way contract |
+| `--color-status-projected` | `#ffd166` | Projected amount/status |
+| `--color-status-unknown` / `--color-status-unknown-soft` | `#a9afb9` / 10% | Unknown: hatch/mute, label and em dash; never zero |
+
+Colors encode one declared meaning per view. Legends and direct labels explain every encoding;
+exact values remain readable without color. Category palettes above six groups repeat only with an
+additional shape/dash identity. Team colors remain identity decoration (headshots, logos, team
+chips and card borders), never analytical encodings. Positive/negative tokens remain available for
+explicit signed change and gauge status, but percentile rank and Compare never use red/green.
+
+`components/charts/contrast.test.ts` measures palette text on all four surfaces (AA 4.5:1), text on
+each percentile band, and monotonic blue luminance from the actual token file. New chip/status
+backgrounds use 12% tint over surface-1; composed colors are checked in the PC03 browser evidence.
+
+### Chart kit and revised Compare rule (v1.2, PC03)
+
+Geometry only: exact pinned `d3-shape` 3.2.0, `d3-hierarchy` 3.1.2, `d3-sankey` 0.12.3 and
+`d3-scale` 4.0.2. React renders the SVG; no D3 DOM selection, transition system or chart library.
+
+`components/charts/` exports:
+
+- `DeltaChip`: magnitude of a per-metric difference in the leading subject's A/B color. The
+  existing catalog `good_direction='low'` is the lower-is-better flag for TOV/PF, including per-game
+  and per-36 variants; `comparisonFlags` exposes `lowerIsBetter` without duplicating metadata.
+  `high` selects the larger value; `low` selects the smaller value. A tie, missing value or undeclared
+  direction stays neutral. The visible chip says “fewer” for lower-is-better; accessible text names
+  the subject. **No overall verdict, composite score or winner label.**
+- `ValueBar`: signed value against a visible zero baseline, explicit scale endpoints and clipping
+  disclosure. Unknown gets no bar; an observed zero remains an observed zero.
+- `ThresholdBar`: known total against individually labeled thresholds; nearby markers retain
+  separate labels below the bar. Missing amounts are excluded and disclosed.
+- `Donut`: shares of known nonnegative values, direct labels, exact amounts and unknown count.
+  More than six nonzero slices use labeled share bars; zero/unknown totals get no invented area.
+- `Sankey`: cloned inputs, validated acyclic references and nonnegative flows; exact link table.
+  Below 768px it renders stacked bars by stage. Missing edges stay in the table as Unknown and
+  have no flow geometry.
+- `TimelineGrid`: labeled status colors, hatched absent/unknown cells, sticky name column and
+  keyboard-scrollable table region. A real zero is distinct from an unknown amount.
+- `PercentileCell`: supplied **already-oriented** cohort percentile; no client rank calculation.
+  The caller supplies cohort and qualification. Unqualified values say “Small sample” and are muted.
+  C10's cohort qualification is implemented with the tables in PC12, not inferred by this primitive.
+- `ShapePack`: positive nonnegative area, labeled categories and solid/dashed/dotted fit outlines,
+  full item list including zero/unknown values. An optional capacity leaves unused space. Negative
+  signed impact is rejected: PC10 must declare its sizing transform. PC10's Wyman presentation
+  credits @taylormetrics; this primitive is not an impact model or a roster fit computation.
+
+Every chart takes a title, source and sample label, plus optional note/state/action. States show
+skeleton, one-line empty/error and a useful caller-provided action. Initial SVG and data changes
+fade to final values using motion tokens; values never interpolate or redraw through zero.
+Reduced motion collapses chart transitions to 1ms. Dynamic styles use typed `--chart-*` properties.
+`/design` shows all eight components and their ready/loading/empty/error and data-change behavior
+with **explicitly illustrative geometry inputs**, never synthetic NBA estimates. SVG/PNG exports
+resolve token attributes before leaving the page's CSS cascade.
 
 ### Elevation
 
@@ -269,7 +339,7 @@ Every page uses exactly one template through `<PageShell template=…>`: the fiv
 | --- | --- | --- |
 | **Explorer** | Filter bar, then one dense table (sticky header, first column fixed on phones) with an optional preview rail | Stats, Rankings, Team Stats, Players directory |
 | **Profile** | `ProfileLayout`: hero (large headshot or logo, team color, `StatTile` row), tabs, tab body | Player and team pages |
-| **Compare** | `CompareLayout`: one entity header per side, then one row per stat with a bar per side and percentile chips. The larger value may be bold; no winner, verdict or composite score (D21) | Player, Team, Matchups, WOWY |
+| **Compare** | `CompareLayout`: one entity header per side, then one row per stat with a bar per side and percentile chips. Per-metric difference chip in the leading subject’s A/B identity color, with catalog direction; no winner, verdict or composite score (D21, PC03) | Player, Team, Matchups, WOWY |
 | **Board** | `BoardLayout`: one main surface (card, board, date strip) plus an optional 320px rail; one column below 1280px | Player Showcase, Roster Shapes, Tier List, Live |
 | **Research** | `ResearchLayout`: a key-findings row leads, then charts and tables; method notes go to Data details | RAPM, Shooting, Trends, Distributions, Forecasts, Evaluation, Data Status and the rest of Research |
 | **Article** (FO13, owner decision 2026-10-09) | `ArticleLayout`: a 200px table of contents ("On this page", sticky under the header) beside one readable column of at most 720px; each `ArticleSection` is an anchored `h2`. A section marked `wide` (a definitions table) uses the full body width | Settings, Methodology (+ Learning), What's New |

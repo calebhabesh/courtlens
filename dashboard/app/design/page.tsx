@@ -44,6 +44,7 @@ import {
   Presence,
 } from "@/components/ui";
 import { DesignFoundationShowcase } from "@/components/design-foundation-showcase";
+import { DesignChartShowcase } from "@/components/charts/design-chart-showcase";
 import { motion, DURATIONS, SPRING } from "@/lib/motion";
 import RootLoading from "@/app/loading";
 import StatsLoading from "@/app/stats/loading";
@@ -94,8 +95,8 @@ function DesignShowcase() {
     <div className="ui-design-page" style={{ "--page-gutter": "var(--space-6)" } as React.CSSProperties}>
       <PageHeader
         icon="sparkles"
-        title="CourtLens Design Language v1"
-        subtitle="Living style guide, component primitive catalogue, token inspection, and motion testbed."
+        title="Design Language v1.2"
+        subtitle="Tokens, components and chart states."
         actions={
           <div className="ui-design-header-actions">
             <Button
@@ -123,6 +124,10 @@ function DesignShowcase() {
       />
 
       <div className="ui-design-grid">
+        <section className="chart-guide-section">
+          <div className="chart-guide-heading"><h2>Chart Toolkit · v1.2</h2><p>Illustrative geometry inputs · no NBA estimates.</p></div>
+          <DesignChartShowcase />
+        </section>
         {/* SECTION 1: DESIGN TOKENS */}
         <Section title="0. Foundation (frontend overhaul FO01)" description="Page header, filter bar, fields, date picker, chips, gated notes, Data details, identity, stat tiles and template skeletons.">
           <DesignFoundationShowcase />
