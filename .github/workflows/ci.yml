@@ -29,6 +29,9 @@ jobs:
       COURTLENS_DATABASE_URL: postgresql+psycopg://courtlens:courtlens@localhost:5432/courtlens
       COURTLENS_TEST_POSTGRES_URL: postgresql+psycopg://courtlens:courtlens@localhost:5432/courtlens
       COURTLENS_REQUIRE_POSTGRES_TESTS: "true"
+      OMP_NUM_THREADS: "1"
+      OPENBLAS_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
       COURTLENS_JWT_SECRET: ci-only-secret-with-more-than-thirty-two-characters
       DBT_HOST: localhost
       DBT_PORT: 5432
