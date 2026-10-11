@@ -18,7 +18,7 @@ parameters**. Blocks before each owner gate also need recorded owner approval.
 | Block | State |
 | --- | --- |
 | PC00 Roster Shapes crash fix | implemented_unverified |
-| PC01 Source policy v2 | planned |
+| PC01 Source policy v2 | verified |
 | PC02 Page audit (G1) | planned |
 | PC03 Design Language v1.2, D21, chart kit | planned |
 | PC04 Compare and first-load defaults (G2) | planned |
@@ -49,3 +49,26 @@ parameters**. Blocks before each owner gate also need recorded owner approval.
   with `PLAYWRIGHT_EXTERNAL_SERVER=true`.
 - Not yet run: the production-build visual baselines (port 3100 was held by the owner's
   `next dev`). The team detail baseline will change because of the column fix.
+
+## 2026-10-11 — PC01 Source policy v2
+
+- [Source policy v2](design/nba-direct-admission-v2.md) admits the handoff's source plan for the
+  non-commercial demo, with per-host minimum intervals (BRef 3 s, Spotrac 5 s, pbpstats 5 s,
+  GitHub mirrors 1 s), robots.txt obedience, scheduled fetches only, retained raw bytes and
+  derived-views-only serving. Direct `stats.nba.com`, Databallr data, paid APIs and RealGM stay out.
+- v1 is unchanged: IM08 receipts bind its SHA-256 (`verify_receipt` checks `policy_sha256`), so
+  IM08 and `scripts/verify_im08_sources.py` stay a frozen diagnostic.
+- Registry `src/courtlens/domain/source_policy.py`; a unit test checks that every registered host
+  appears in the doc table. The workbench catalog now declares `player_index`, `injuries`,
+  `play_types`, `tracking`, `defensive_tracking`, `hustle` and `combine` as `not_yet_observed`,
+  with "Source admitted (…); not yet ingested in this release." Measured entries always take
+  precedence (`setdefault`).
+- Left for measured coverage: `shots` (657,432 research shot members exist), `on_off`, `matchups`,
+  contracts and free agency (finance releases exist). PC02 audits them; PC05–PC07 declare them.
+  Data-gap `source_blocked` results (for example zero reconciled stints) are data status, not
+  policy, and stay until PC07/PC11 populate them.
+- AGENTS.md already carried the Databallr sentence; it now links v2.
+- Checks: Ruff and format clean, strict mypy clean, full Python suite 1,854 passed / 1 skipped
+  (disposable PostgreSQL, including the catalog integration assertion). Dashboard lint 0/0,
+  typecheck clean, Vitest 359 passed (new route-availability case). Real-database catalog:
+  0 `source_blocked` capabilities.
