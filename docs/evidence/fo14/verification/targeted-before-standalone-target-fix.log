@@ -1,0 +1,55 @@
+
+Running 24 tests using 2 workers
+
+  ✓   2 e2e/fo14-accessibility.spec.ts:15:7 › Stats values, percentiles and sort headers align right at 1440 (486ms)
+  ✓   1 e2e/fo14-accessibility.spec.ts:4:5 › skip link moves focus into the page before its controls (822ms)
+  ✓   3 e2e/fo14-accessibility.spec.ts:15:7 › Stats values, percentiles and sort headers align right at 390 (298ms)
+  ✓   5 e2e/fo14-accessibility.spec.ts:30:7 › retained controls meet the phone target on /planner (760ms)
+  ✓   4 e2e/fo14-accessibility.spec.ts:30:7 › retained controls meet the phone target on /stats (897ms)
+  ✘   7 e2e/fo14-accessibility.spec.ts:30:7 › retained controls meet the phone target on /research/ask?experience=manual (742ms)
+  ✓   8 e2e/fo14-accessibility.spec.ts:47:5 › Article loading contents match the horizontal phone pill strip (1.8s)
+  ✓   9 e2e/fo14-accessibility.spec.ts:62:5 › phone table links meet the target without stretching Stats rows (493ms)
+  ✓  10 e2e/fo14-accessibility.spec.ts:73:5 › 404 uses the shared header and a keyboard reachable return action (251ms)
+  ✓  11 e2e/fo14-accessibility.spec.ts:81:5 › 200% desktop reflow keeps the filter sheet usable by keyboard (585ms)
+  ✓  12 e2e/fo14-accessibility.spec.ts:99:5 › reduced-motion status hydrates without replacing the style guide (231ms)
+  ✓  13 e2e/fo14-accessibility.spec.ts:110:5 › phone segmented controls keep every label inside its target (286ms)
+  ✓  14 e2e/fo14-accessibility.spec.ts:117:5 › switch keeps its compact track inside a full phone target (501ms)
+  ✓  15 e2e/fo14-accessibility.spec.ts:128:5 › tab panels and the Ask composer show their keyboard focus (283ms)
+  ✓  16 e2e/fo14-accessibility.spec.ts:138:5 › clustered distribution values keep distinct readable labels on phones (202ms)
+  ✓  17 e2e/fo14-accessibility.spec.ts:159:5 › floating player lookup keeps viewport geometry in CSS variables (559ms)
+  ✓  18 e2e/fo14-accessibility.spec.ts:181:5 › summary groups, percentile labels and portrait fallbacks have accessible semantics (585ms)
+  ✓  19 e2e/stats-readability-search.spec.ts:5:5 › standard records are readable and portrait gutters center between metric columns (283ms)
+  ✓  20 e2e/stats-readability-search.spec.ts:26:5 › header branding and secondary navigation align (274ms)
+  ✓  21 e2e/stats-readability-search.spec.ts:39:5 › profile exports keep the same shared wordmark artwork (1.2s)
+  ✓  22 e2e/stats-readability-search.spec.ts:58:5 › global search clear button uses the right edge and concise player captions (679ms)
+  ✓  23 e2e/stats-readability-search.spec.ts:84:5 › table suggestions remain visible outside the scroll region and filter in place (649ms)
+  ✓   6 e2e/fo14-accessibility.spec.ts:30:7 › retained controls meet the phone target on /live (10.7s)
+  ✓  24 e2e/stats-readability-search.spec.ts:107:5 › touch can pick a table suggestion and Escape preserves the draft (887ms)
+
+
+  1) e2e/fo14-accessibility.spec.ts:30:7 › retained controls meet the phone target on /research/ask?experience=manual
+
+    Error: expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 1
+    + Received  + 3
+
+    - Array []
+    + Array [
+    +   "Saved investigations",
+    + ]
+
+      36 |       return r.width > 0 && (r.height < 39.5 || r.width < 39.5);
+      37 |     }).map(e => e.getAttribute("aria-label") || e.textContent));
+    > 38 |     expect(short).toEqual([]);
+         |                   ^
+      39 |     if (route === "/stats") {
+      40 |       expect(await page.locator(".stats-preset-tab").evaluateAll(tabs => tabs.filter(tab => tab.scrollWidth > tab.clientWidth + 1).map(tab => tab.textContent))).toEqual([]);
+      41 |     }
+        at /home/ethioking/.cache/courtlens-fo14/dashboard/e2e/fo14-accessibility.spec.ts:38:19
+
+    Error Context: test-results/fo14-accessibility-retaine-d5161-earch-ask-experience-manual/error-context.md
+
+  1 failed
+    e2e/fo14-accessibility.spec.ts:30:7 › retained controls meet the phone target on /research/ask?experience=manual
+  23 passed (13.3s)

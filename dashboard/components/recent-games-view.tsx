@@ -223,7 +223,7 @@ export function RecentGamesView({
           <PlayerIdentity playerId={player.id} name={player.name} team={latest_team?.id} portraitUrl={player.portrait_url}
             href={`/players/${player.id}?${scopeParams}`} subtitle={`${windowLabel} · ${summary.sampleSize} games`} size="lg" />
         </div>
-        <div className="player-hero-tiles" aria-label="Window summary">
+        <div className="player-hero-tiles" role="group" aria-label="Window summary">
           <StatTile label={`PTS${exposureSuffix}`} value={summary.ptsPerGame?.toFixed(1)} />
           <StatTile label={`REB${exposureSuffix}`} value={summary.rebPerGame?.toFixed(1)} />
           <StatTile label={`AST${exposureSuffix}`} value={summary.astPerGame?.toFixed(1)} />

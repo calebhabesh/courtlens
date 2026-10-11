@@ -52,9 +52,10 @@ function Strip({ data }: { data: DistributionResponse }) {
       <div className="dist-strip-iqr-box" style={{ "--iqr-left": `${p25}%`, "--iqr-width": `${Math.max(1, p75 - p25)}%` } as CSSProperties} />
       <div className="dist-strip-median-line" style={{ "--med-left": `${med}%` } as CSSProperties} />
       {data.samples.map((sample, index) => sample.value === null ? null : <div key={index} className="dist-strip-dot" title={`${formatDate(sample.game_date)} vs ${sample.opponent_tricode}: ${sample.value} ${data.metric} (${sample.minutes} min)`} style={{ "--dot-left": `${x(sample.value)}%` } as CSSProperties} />)}
-      <div className="dist-strip-label" style={{ "--label-left": `${p10}%` } as CSSProperties}>p10: {s.p10}</div>
-      <div className="dist-strip-label median" style={{ "--label-left": `${med}%` } as CSSProperties}>Med: {s.median}</div>
-      <div className="dist-strip-label" style={{ "--label-left": `${p90}%` } as CSSProperties}>p90: {s.p90}</div>
+    </div><div className="dist-strip-labels">
+      <span className="dist-strip-label">p10: {s.p10 ?? "—"}</span>
+      <span className="dist-strip-label median">Median: {s.median ?? "—"}</span>
+      <span className="dist-strip-label">p90: {s.p90 ?? "—"}</span>
     </div></div>
   </figure>;
 }

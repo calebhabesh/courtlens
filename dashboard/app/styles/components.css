@@ -2445,7 +2445,16 @@ textarea, input, select { max-width: 100%; }
 /* Concise navigation/table suggestions; entity forms keep their detailed identities. */
 .lookup-compact-results .lookup-item-subtitle { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .lookup-compact-results .lookup-option { padding-block: var(--space-3); align-items: center; }
-.lookup-floating-dropdown { min-width: 0; max-width: none; z-index: var(--z-modal); }
+.lookup-floating-dropdown {
+  position: fixed;
+  left: var(--lookup-left);
+  top: var(--lookup-top);
+  width: var(--lookup-width);
+  max-height: var(--lookup-max-height);
+  min-width: 0;
+  max-width: none;
+  z-index: var(--z-modal);
+}
 
 .lookup-compact-results .player-portrait, .lookup-compact-results .player-portrait-fallback { width: 38px; height: 38px; min-width: 38px; min-height: 38px; }
 
@@ -2699,7 +2708,7 @@ textarea, input, select { max-width: 100%; }
   font-family: var(--font-mono), monospace;
   font-size: var(--text-xs);
   line-height: var(--text-xs-lh);
-  color: var(--color-text-tertiary);
+  color: var(--color-text-secondary);
   background-color: var(--color-surface-3);
   padding-block: var(--space-0-5);
   padding-inline: var(--space-1);
@@ -2832,13 +2841,17 @@ textarea, input, select { max-width: 100%; }
 }
 
 .ui-switch-track {
+  --switch-track-color: var(--color-surface-2);
+  --switch-track-border: var(--color-hairline);
+  position: relative;
   display: inline-flex;
   align-items: center;
   width: var(--space-10);
-  height: var(--space-5);
+  min-height: var(--control-md);
+  height: var(--control-md);
   border-radius: var(--radius-pill);
-  background-color: var(--color-surface-2);
-  border: 1px solid var(--color-hairline);
+  background-color: transparent;
+  border: 0;
   padding: 0;
   padding-inline: var(--space-0-5);
   cursor: pointer;
@@ -2846,16 +2859,30 @@ textarea, input, select { max-width: 100%; }
   outline: 0;
 }
 
+/* A compact 20px track inside the full button hit area (32px desktop, 40px phone). */
+.ui-switch-track::before {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  top: 50%;
+  height: var(--space-5);
+  transform: translateY(-50%);
+  border-radius: inherit;
+  background-color: var(--switch-track-color);
+  border: 1px solid var(--switch-track-border);
+}
+
 .ui-switch-track:focus-visible {
   box-shadow: var(--focus-ring);
 }
 
 .ui-switch-track[data-checked=true] {
-  background-color: var(--color-accent);
-  border-color: var(--color-accent);
+  --switch-track-color: var(--color-accent);
+  --switch-track-border: var(--color-accent);
 }
 
 .ui-switch-thumb {
+  position: relative;
   display: block;
   width: var(--space-4);
   height: var(--space-4);
@@ -3608,6 +3635,7 @@ textarea, input, select { max-width: 100%; }
   width: var(--skeleton-width, 100%);
   height: var(--skeleton-height, var(--space-4));
   background: linear-gradient(90deg, var(--color-surface-2) 25%, var(--color-surface-3) 50%, var(--color-surface-2) 75%);
+  background-color: var(--color-surface-2);
   background-size: 200% 100%;
   animation: shimmer calc(var(--dur-slow) * 4) linear infinite;
   border-radius: var(--radius-sm);

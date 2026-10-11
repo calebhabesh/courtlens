@@ -351,7 +351,7 @@ function SummaryCard({ label, summary }: { label: string; summary: AnalyticsSumm
 
 function GameLog({ games }: { games: Awaited<ReturnType<typeof getAnalyticsGames>>["games"] }) {
   return (
-    <div className="game-log-scroll" tabIndex={0} aria-label="Player game log, scroll horizontally">
+    <div className="game-log-scroll" role="region" tabIndex={0} aria-label="Player game log, scroll horizontally">
       <table className="analytics-game-log">
         <thead><tr><th>Date</th><th>Matchup</th><th>MIN</th><th>PTS</th><th>REB</th><th>AST</th><th>FGA</th><th>FTA</th><th>Reference</th><th>Source</th></tr></thead>
         <tbody>{games.map((game) => (

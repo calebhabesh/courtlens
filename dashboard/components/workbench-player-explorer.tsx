@@ -785,7 +785,7 @@ export function WorkbenchPlayerExplorer({
 
               {/* Pinned Col 2: Rank # */}
               <th
-                className="pinned-col pinned-col-rank text-center"
+                className="pinned-col pinned-col-rank num"
               >
                 #
               </th>
@@ -891,7 +891,7 @@ export function WorkbenchPlayerExplorer({
                     </td>
 
                     {/* Pinned Col 2: Rank # */}
-                    <td className="pinned-col pinned-col-rank font-mono text-muted text-xs text-center">
+                    <td className="pinned-col pinned-col-rank num font-mono text-muted text-xs">
                       {(data.output_offset ?? 0) + idx + 1}
                     </td>
 
@@ -904,10 +904,10 @@ export function WorkbenchPlayerExplorer({
                         <div className="stats-identity-copy"><Link href={`/players/${player.player_id}?${new URLSearchParams({
                           season: query.season, phase: query.phase, beforeDate: query.before_date,
                           window: query.window, ...(query.release_id ? { releaseId: query.release_id } : {})
-                        })}`} title={player.player_name} className="player-cell-name font-semibold">
-                          {player.player_name}
-                        </Link>
+                        })}`} title={player.player_name} aria-label={player.player_name} className="stats-player-link">
+                          <span className="player-cell-name font-semibold">{player.player_name}</span>
                         <span className="player-cell-teams">{player.teams?.join(" / ") || "Team unknown"} · {query.season}</span>
+                        </Link>
                         </div>
                         <button
                           type="button"
@@ -961,6 +961,7 @@ export function WorkbenchPlayerExplorer({
                                     : ""
                                 }`}
                                 tabIndex={0}
+                                role="group"
                                 aria-label={`Percentile ${pct}; ${player.cohort_sample_sizes?.[metricKey] ?? "unknown"} valid players; ${data.total_eligible_players} eligible players${direction ? `; ${direction === "low" ? "Lower" : "Higher"} values preferred` : ""}`}
                                 title={`Cohort midrank percentile: ${pct}% · ${player.cohort_sample_sizes?.[metricKey] ?? "unknown"} valid players · ${data.total_eligible_players} eligible players${direction ? ` · ${direction === "low" ? "Lower" : "Higher"} values preferred` : ""}`}
                               >

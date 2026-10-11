@@ -68,7 +68,7 @@ export function useShareLink() {
 
 /** In-page loading state shaped like a Research body: a findings row, then the main table. */
 export function ResearchBodySkeleton({ tiles = 4 }: { tiles?: number }) {
-  return <div className="ui-research" aria-busy="true" aria-label="Loading">
+  return <div className="ui-research" role="status" aria-busy="true" aria-label="Loading">
     <div className="ui-findings">{Array.from({ length: tiles }, (_, index) => <Skeleton key={index} height={88} />)}</div>
     <Skeleton height={360} />
   </div>;

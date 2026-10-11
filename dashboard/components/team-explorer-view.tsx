@@ -242,7 +242,7 @@ export function TeamExplorerView({
                 <table className="data-table" aria-label={`${group.groupName} table`}>
                   <thead>
                     <tr>
-                      <th className="team-col-num">#</th>
+                      <th className="team-col-num num">#</th>
                       <th>Franchise</th>
                       <SortHeader className="num" label="W-L" metric="wins" active={sortField === "wins"} direction={sortDirection} onSort={handleSort} />
                       <SortHeader className="num" label="Win%" metric="win_pct" active={sortField === "win_pct"} direction={sortDirection} onSort={handleSort} />
@@ -312,7 +312,7 @@ export function TeamExplorerView({
 
                       return (
                         <tr key={t.team_id}>
-                          <td className="font-mono text-muted text-xs">{idx + 1}</td>
+                          <td className="num font-mono text-muted text-xs">{idx + 1}</td>
                           <td>
                             <div className="team-cell-identity">
                               <TeamLogo team={t.tricode} size={20} />

@@ -491,3 +491,13 @@ full fixture browser suite **284 passed / 15 skipped / 0 failed**, 30 stable bas
 12 new FO10 views. The [FO progress log](frontend-overhaul-progress.md) records implementation
 without claiming owner visual acceptance. The current shared-floor and financial source gates
 remain unresolved. This entry does not advance older refresh/DL milestones.
+
+## 2026-10-11 — FO14 final presentation sweep
+
+The subsequent [frontend-overhaul FO14 evidence](evidence/fo14/README.md) records route-wide
+responsive, keyboard, accessible-label, reflow, contrast and glance checks. It closes the FO13
+numeric-alignment, Article skeleton and phone-target follow-ups, empties the title/date ratchets,
+and moves floating lookup geometry to typed CSS custom properties. Header/search, token, identity,
+reduced-motion and analytical contracts are retained. No rename or frozen identifier change.
+Implementation remains `implemented_unverified` pending owner visual acceptance; this cross-reference
+does not advance prior refresh/DL milestones or unresolved data-source gates.

@@ -13,7 +13,7 @@ describe("AR06 chat helpers", () => {
 
   it("labels the next-question scope from explicit selections only", () => {
     expect(scopeChipLabel({})).toBe("Default scope");
-    expect(scopeChipLabel({ season: "2025-26", phase: "regular_season", window: "last_10", before_date: "2026-01-15" })).toBe("2025-26 · Regular season · Last 10 · before 2026-01-15");
+    expect(scopeChipLabel({ season: "2025-26", phase: "regular_season", window: "last_10", before_date: "2026-01-15" })).toBe("2025-26 · Regular season · Last 10 · Through Jan 14, 2026");
   });
 
   it("groups threads newest first by local day", () => {

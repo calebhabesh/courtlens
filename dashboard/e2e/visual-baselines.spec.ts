@@ -36,9 +36,20 @@ async function stableWorkspace(page: Page) {
 async function settle(page: Page) {
   await page.waitForLoadState("networkidle");
   await page.evaluate(() => document.fonts.ready);
-  // Images in the captured viewport (logos, headshots) must finish; lazy ones below it never load.
+  // Intersect the viewport and every clipping ancestor: lazy logos in offscreen table columns
+  // do not load even when their un-clipped boxes overlap the viewport.
   await page.waitForFunction(() => [...document.images]
-    .filter((image) => { const r = image.getBoundingClientRect(); return r.bottom > 0 && r.top < innerHeight && r.width > 0; })
+    .filter((image) => {
+      if (!image.checkVisibility()) return false;
+      const r = image.getBoundingClientRect();
+      let left = Math.max(0, r.left), right = Math.min(innerWidth, r.right), top = Math.max(0, r.top), bottom = Math.min(innerHeight, r.bottom);
+      for (let p = image.parentElement; p; p = p.parentElement) {
+        const s = getComputedStyle(p), b = p.getBoundingClientRect();
+        if (/^(auto|scroll|hidden|clip)$/.test(s.overflowX)) { left = Math.max(left, b.left); right = Math.min(right, b.right); }
+        if (/^(auto|scroll|hidden|clip)$/.test(s.overflowY)) { top = Math.max(top, b.top); bottom = Math.min(bottom, b.bottom); }
+      }
+      return right > left && bottom > top;
+    })
     .every((image) => image.complete));
 }
 
@@ -153,6 +164,26 @@ for (const view of WIDTHS) {
     });
   });
 }
+
+// FO14: numerical alignment, phone targets and the final shared 404 header.
+for (const view of WIDTHS) test.describe(`FO14 baselines ${view.name}`, () => {
+  test.beforeEach(async ({ page }) => {
+    await page.setViewportSize({ width: view.width, height: view.height });
+    await stableWorkspace(page);
+  });
+  test("stats", async ({ page }) => {
+    await openWorkbench(page, "/stats");
+    await expect(page.locator("td.stats-metric-cell.num").first()).toBeVisible();
+    await settle(page);
+    await expect(page).toHaveScreenshot(`stats-${view.name}.png`, shot);
+  });
+  test("not found", async ({ page }) => {
+    await page.goto("/fo14-missing-page");
+    await expect(page.getByRole("heading", { name: "Page Not Found" })).toBeVisible();
+    await settle(page);
+    await expect(page).toHaveScreenshot(`not-found-${view.name}.png`, shot);
+  });
+});
 
 // FO11: four Compare routes, including team factors and WOWY's exact-unit view.
 for (const view of WIDTHS) test.describe(`FO11 baselines ${view.name}`,()=>{

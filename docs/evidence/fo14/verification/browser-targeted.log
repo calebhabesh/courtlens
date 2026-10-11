@@ -1,0 +1,47 @@
+
+Running 10 tests using 2 workers
+
+  ✓   2 e2e/fo14-accessibility.spec.ts:15:7 › Stats values, percentiles and sort headers align right at 1440 (427ms)
+  ✓   3 e2e/fo14-accessibility.spec.ts:15:7 › Stats values, percentiles and sort headers align right at 390 (265ms)
+  ✓   1 e2e/fo14-accessibility.spec.ts:4:5 › skip link moves focus into the page before its controls (732ms)
+  ✓   5 e2e/fo14-accessibility.spec.ts:30:7 › retained controls meet the phone target on /planner (682ms)
+  ✓   4 e2e/fo14-accessibility.spec.ts:30:7 › retained controls meet the phone target on /stats (800ms)
+  ✓   7 e2e/fo14-accessibility.spec.ts:30:7 › retained controls meet the phone target on /research/ask?experience=manual (692ms)
+  ✓   8 e2e/fo14-accessibility.spec.ts:44:5 › Article loading contents match the horizontal phone pill strip (1.7s)
+  ✘   9 e2e/fo14-accessibility.spec.ts:59:5 › 404 uses the shared header and a keyboard reachable return action (5.2s)
+  ✓  10 e2e/fo14-accessibility.spec.ts:67:5 › 200% desktop reflow keeps the filter sheet usable by keyboard (498ms)
+  ✓   6 e2e/fo14-accessibility.spec.ts:30:7 › retained controls meet the phone target on /live (10.7s)
+
+
+  1) e2e/fo14-accessibility.spec.ts:59:5 › 404 uses the shared header and a keyboard reachable return action
+
+    Error: expect(page).toHaveURL(expected) failed
+
+    Expected pattern: /\/stats$/
+    Received string:  "http://localhost:3102/stats?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-06-30&window=season&countingMode=per_game"
+    Timeout: 5000ms
+
+    Call log:
+      - Expect "toHaveURL" with timeout 5000ms
+        - locator resolved to <html lang="en" data-scroll-behavior="smooth" class="__variable_39053e __variable_21e7a0">…</html>
+        - unexpected value "http://localhost:3102/fo14-missing-page"
+        - locator resolved to <html lang="en" data-scroll-behavior="smooth" class="__variable_39053e __variable_21e7a0">…</html>
+        - unexpected value "http://localhost:3102/"
+        12 × locator resolved to <html lang="en" data-scroll-behavior="smooth" class="__variable_39053e __variable_21e7a0">…</html>
+           - unexpected value "http://localhost:3102/stats?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-06-30&window=season&countingMode=per_game"
+
+
+      62 |   await page.getByRole("link", { name: "Return home" }).focus();
+      63 |   await page.keyboard.press("Enter");
+    > 64 |   await expect(page).toHaveURL(/\/stats$/);
+         |                      ^
+      65 | });
+      66 |
+      67 | test("200% desktop reflow keeps the filter sheet usable by keyboard", async ({ page }) => {
+        at /home/ethioking/dev/courtlens/dashboard/e2e/fo14-accessibility.spec.ts:64:22
+
+    Error Context: test-results/fo14-accessibility-404-use-62847-ard-reachable-return-action/error-context.md
+
+  1 failed
+    e2e/fo14-accessibility.spec.ts:59:5 › 404 uses the shared header and a keyboard reachable return action
+  9 passed (12.5s)

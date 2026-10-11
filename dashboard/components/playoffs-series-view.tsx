@@ -338,7 +338,7 @@ export function PlayoffsSeriesView({ detail, filterBar }: PlayoffsSeriesViewProp
           <table className="data-table">
             <thead>
               <tr>
-                <th className="playoffs-seed-cell-center">#</th>
+                <th className="num">#</th>
                 <SortHeader className="" label="Player" metric="player_name" active={sortField === "player_name"} direction={sortDir} onSort={() => handleSort("player_name")} />
                 <th>Team</th>
                 <SortHeader className="num" label="GP" metric="games_played" active={sortField === "games_played"} direction={sortDir} onSort={() => handleSort("games_played")} />
@@ -360,7 +360,7 @@ export function PlayoffsSeriesView({ detail, filterBar }: PlayoffsSeriesViewProp
             <tbody>
               {displayedPlayers.map((p, idx) => (
                 <tr key={p.player_id}>
-                  <td className="font-mono text-muted text-xs">{idx + 1}</td>
+                  <td className="num font-mono text-muted text-xs">{idx + 1}</td>
                   <td>
                     <div className="player-cell">
                       <PlayerPortrait playerId={p.player_id} name={p.player_name} size="sm" />

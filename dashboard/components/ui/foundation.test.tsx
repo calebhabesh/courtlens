@@ -163,6 +163,9 @@ describe("PageHeader and StatTile", () => {
     render(<><StatTile label="Points" value="33.5" unit="PPG" rank={1} rankOf={591} percentile={100} /><StatTile label="Steals" value={null} /></>);
     expect(screen.getByText("1st").getAttribute("title")).toBe("1st of 591");
     expect(screen.getByRole("meter", { name: "Points percentile" }).getAttribute("aria-valuenow")).toBe("100");
-    expect(screen.getByLabelText("Steals unavailable").textContent).toBe("—");
+    const unavailable = screen.getByText("Steals unavailable");
+    expect(unavailable.className).toBe("sr-only");
+    expect(unavailable.previousElementSibling?.textContent).toBe("—");
+    expect(unavailable.previousElementSibling?.getAttribute("aria-hidden")).toBe("true");
   });
 });

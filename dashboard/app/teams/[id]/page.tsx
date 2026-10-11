@@ -144,7 +144,7 @@ export default async function TeamDetailPage({
             <div className="table-wrapper" role="region" aria-label="Team analytical values" tabIndex={0}><table className="data-table">
               <thead>
                 <tr>
-                  <th className="col-idx">#</th>
+                  <th className="col-idx num">#</th>
                   <th>Player</th>
                   <th className="num">Stint Games</th>
                   <th className="num">Stint Minutes</th>
@@ -156,7 +156,7 @@ export default async function TeamDetailPage({
               <tbody>
                 {player_cohort.map((p, idx) => (
                   <tr key={p.player_id}>
-                    <td className="font-mono text-muted text-xs">{idx + 1}</td>
+                    <td className="num font-mono text-muted text-xs">{idx + 1}</td>
                     <td>
                       <div className="player-cell">
                         <TeamLogo team={team.tricode} size={20} />
@@ -208,7 +208,7 @@ export default async function TeamDetailPage({
               <div className="table-wrapper" role="region" aria-label="Team analytical values" tabIndex={0}><table className="data-table">
                 <thead>
                   <tr>
-                    <th className="col-idx">#</th>
+                    <th className="col-idx num">#</th>
                     <th>Peer Franchise</th>
                     <th className="num">Similarity Score</th>
                     <th className="num">Euclidean Distance</th>
@@ -218,7 +218,7 @@ export default async function TeamDetailPage({
                 <tbody>
                   {peers.peers.map((peer, pIdx) => (
                     <tr key={peer.team_id}>
-                      <td className="font-mono text-muted text-xs">{pIdx + 1}</td>
+                      <td className="num font-mono text-muted text-xs">{pIdx + 1}</td>
                       <td>
                         <div className="peer-cell">
                           <TeamLogo team={peer.tricode} size={20} /><span>{peer.tricode}</span>

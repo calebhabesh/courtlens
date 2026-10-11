@@ -53,6 +53,7 @@ export function PlayerPortrait({
       <div
         className={`player-portrait-fallback ${sizeClass} ${className}`}
         title={name}
+        role="img"
         aria-label={alt ?? `${name} portrait placeholder`}
       >
         {initials || <Icon name="person" size={16} />}
