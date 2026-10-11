@@ -1,0 +1,22 @@
+
+> courtlens-dashboard@0.1.0 test:browser
+> playwright test e2e/visual-baselines.spec.ts --grep FO13 baselines --update-snapshots --workers=1 --reporter=line
+
+
+Running 8 tests using 1 worker
+
+[1/8] e2e/visual-baselines.spec.ts:204:242 › FO13 baselines desktop › settings
+[2/8] e2e/visual-baselines.spec.ts:204:242 › FO13 baselines desktop › data-status
+[3/8] e2e/visual-baselines.spec.ts:204:242 › FO13 baselines desktop › methodology
+[4/8] e2e/visual-baselines.spec.ts:204:242 › FO13 baselines desktop › whats-new
+[5/8] e2e/visual-baselines.spec.ts:204:242 › FO13 baselines phone › settings
+e2e/visual-baselines.spec.ts:204:242 › FO13 baselines phone › settings
+/home/ethioking/.cache/courtlens-fo13/dashboard/e2e/visual-baselines.spec.ts-snapshots/settings-phone-linux.png is re-generated, writing actual.
+
+[6/8] e2e/visual-baselines.spec.ts:204:242 › FO13 baselines phone › data-status
+e2e/visual-baselines.spec.ts:204:242 › FO13 baselines phone › data-status
+/home/ethioking/.cache/courtlens-fo13/dashboard/e2e/visual-baselines.spec.ts-snapshots/data-status-phone-linux.png is re-generated, writing actual.
+
+[7/8] e2e/visual-baselines.spec.ts:204:242 › FO13 baselines phone › methodology
+[8/8] e2e/visual-baselines.spec.ts:204:242 › FO13 baselines phone › whats-new
+  8 passed (6.7s)

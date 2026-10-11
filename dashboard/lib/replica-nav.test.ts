@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { buildPreservedContextUrl } from "./query-url";
+import { COMPATIBILITY_REDIRECTS, CONSOLIDATED_REDIRECTS } from "./route-consolidation";
 
 describe("ReplicaNav context-preserving navigation links", () => {
   it("preserves active context parameters across routes", () => {
@@ -78,6 +79,7 @@ describe("ReplicaNav context-preserving navigation links", () => {
 });
 
 describe("Replica navigation route inventory and compatibility redirects", () => {
+  // FO07 merged several replica routes into tabs; their old URLs redirect (lib/route-consolidation.ts).
   const CANONICAL_ROUTES = [
     "/stats",
     "/wowy",
@@ -85,8 +87,8 @@ describe("Replica navigation route inventory and compatibility redirects", () =>
     "/last-games",
     "/showcase",
     "/players",
-    "/research/similarity",
-    "/shot-profile-twin",
+    "/similar-players",
+    "/similar-players/shot-profile",
     "/rankings",
     "/teams",
     "/roster-shapes",
@@ -104,32 +106,22 @@ describe("Replica navigation route inventory and compatibility redirects", () =>
     "/research/case-studies",
     "/research/trends",
     "/research/distributions",
-    "/research/adjusted-shooting",
-    "/six-factor-rapm",
-    "/research/expected-shots",
-    "/shot-aftermath",
+    "/research/shooting/adjusted",
+    "/research/rapm/six-factor",
+    "/research/shooting",
+    "/research/shooting/aftermath",
     "/research/defensive-matchups",
     "/research/epv",
     "/wingspan",
     "/calculator",
     "/methodology",
-    "/learning",
-    "/patch-notes",
-    "/blog",
+    "/methodology/learning",
+    "/whats-new",
+    "/whats-new/blog",
     "/playoffs",
     "/data-status",
     "/settings"
   ];
-
-  const COMPATIBILITY_REDIRECTS: Record<string, string> = {
-    "/pvp": "/compare",
-    "/StatLineShift": "/stat-line-shift",
-    "/zts": "/research/adjusted-shooting",
-    "/shotquality": "/research/expected-shots",
-    "/d-shotquality": "/research/defensive-matchups",
-    "/kawhifiles": "/research/case-studies",
-    "/dashboard": "/players"
-  };
 
   it("contains all 40 canonical replica routes without duplicates", () => {
     const set = new Set(CANONICAL_ROUTES);
@@ -137,10 +129,10 @@ describe("Replica navigation route inventory and compatibility redirects", () =>
     expect(CANONICAL_ROUTES.length).toBe(40);
   });
 
-  it("maps all compatibility redirects to valid canonical routes", () => {
-    for (const [source, dest] of Object.entries(COMPATIBILITY_REDIRECTS)) {
-      expect(CANONICAL_ROUTES).toContain(dest);
-      expect(source).not.toBe(dest);
+  it("maps all compatibility and consolidation redirects to valid canonical routes", () => {
+    for (const { source, destination } of [...COMPATIBILITY_REDIRECTS, ...CONSOLIDATED_REDIRECTS]) {
+      expect(CANONICAL_ROUTES).toContain(destination);
+      expect(source).not.toBe(destination);
     }
   });
 });

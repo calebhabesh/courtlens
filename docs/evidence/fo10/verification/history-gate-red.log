@@ -1,0 +1,33 @@
+
+> courtlens-dashboard@0.1.0 test:browser
+> playwright test e2e/threaded-assistant.spec.ts --grep composer waits --workers=1
+
+
+Running 1 test using 1 worker
+
+  ✘  1 e2e/threaded-assistant.spec.ts:579:5 › composer waits for history initialization before accepting input (5.1s)
+
+
+  1) e2e/threaded-assistant.spec.ts:579:5 › composer waits for history initialization before accepting input
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: 1
+    Received: 0
+
+    Call Log:
+    - Timeout 5000ms exceeded while waiting on the predicate
+
+      589 |   });
+      590 |   await openPage(page, path);
+    > 591 |   await expect.poll(() => blockedRequests).toBe(1);
+          |                                            ^
+      592 |   await expect(composer(page)).toBeDisabled();
+      593 |   release();
+      594 |   await expect(composer(page)).toBeEnabled();
+        at /home/ethioking/.cache/courtlens-fo10/workspace/dashboard/e2e/threaded-assistant.spec.ts:591:44
+
+    Error Context: test-results/threaded-assistant-compose-058ad-tion-before-accepting-input/error-context.md
+
+  1 failed
+    e2e/threaded-assistant.spec.ts:579:5 › composer waits for history initialization before accepting input

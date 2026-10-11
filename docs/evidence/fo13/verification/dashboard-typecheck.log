@@ -1,0 +1,7 @@
+$ npm --prefix dashboard run typecheck
+
+> courtlens-dashboard@0.1.0 typecheck
+> tsc --noEmit
+
+
+exit 0

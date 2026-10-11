@@ -1,468 +1,245 @@
 "use client";
 
-import { CourtLensWordmark } from "./courtlens-wordmark";
-import { Icon } from "./ui/icon";
-
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { PlayerPortrait } from "./player-portrait";
-import { buildPreservedContextUrl } from "@/lib/query-url";
+import { ContextBar } from "./context-bar";
 import { LookupInput } from "./lookup-input";
+import { PlayerPortrait } from "./player-portrait";
+import { ShowcaseCard, type ShowcaseCardStat } from "./showcase-card";
+import { TeamLogo } from "./team-logo";
+import { Button, IconButton } from "./ui/button";
+import { Icon } from "./ui/icon";
+import { PlayerIdentity } from "./ui/identity";
+import { Menu, MenuItem } from "./ui/menu";
+import { PageHeader } from "./ui/panel";
+import { BoardLayout, PageShell } from "./ui/page-shell";
+import { SegmentedControl } from "./ui/segmented-control";
+import { Tooltip } from "./ui/tooltip";
+import { buildPreservedContextUrl } from "@/lib/query-url";
+import { exportSvgAsPng, exportSvgFile, inlineSvgImages } from "@/lib/image-export";
+import { orientedPercentile, type GoodDirection } from "@/lib/percentile-display";
+import { SHOWCASE_PRESETS, type ShowcasePresetId } from "@/lib/player-pages";
+import { scopeContextLine } from "@/lib/scope-labels";
+import { RANK_PAGE_LIMIT, useCohortRanks } from "@/lib/use-cohort-ranks";
 import { useWorkspace } from "@/lib/workspace-context";
-import { exportSvgAsPng, exportSvgFile } from "@/lib/image-export";
-import {
-  SHOWCASE_PRESETS,
-  type ShowcasePresetId
-} from "@/lib/player-pages";
-import type { PlayerResearchItem } from "@/lib/types";
+import type { PlayerResearchItem, QuerySpec, WorkbenchCatalog } from "@/lib/types";
 
-interface PlayerShowcaseViewProps {
-  initialPlayers: PlayerResearchItem[];
-  season: string;
-  phase: string;
-  beforeDate: string;
-  releaseId?: string;
+const FOCUS_LABELS: Record<ShowcasePresetId, string> = {
+  overall: "Overall",
+  scoring: "Scoring",
+  playmaking_defense: "Playmaking & Defense",
+  per_36: "Per 36"
+};
+
+export interface PlayerShowcaseViewProps {
+  players: PlayerResearchItem[];
+  initialIndex: number;
+  query: QuerySpec;
+  catalog: WorkbenchCatalog | null;
+  eligiblePlayers: number;
+  goodDirections: Record<string, GoodDirection>;
+  lastIncludedDate?: string | null;
+}
+
+function slug(name: string): string {
+  return name.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_|_$/g, "");
+}
+
+/** Arrow and Space shortcuts must not steal keys from controls that use them. */
+function ownsKeys(target: EventTarget | null): boolean {
+  return target instanceof Element && Boolean(target.closest(
+    "input, textarea, select, [contenteditable='true'], [role='radiogroup'], [role='menu'], [role='listbox'], [role='dialog']"
+  ));
 }
 
 export function PlayerShowcaseView({
-  initialPlayers,
-  season,
-  phase,
-  beforeDate,
-  releaseId
+  players, initialIndex, query, catalog, eligiblePlayers, goodDirections, lastIncludedDate
 }: PlayerShowcaseViewProps) {
-  const searchParams = useSearchParams();
-  const [lookupText, setLookupText] = useState("");
   const router = useRouter();
-  const [playersList] = useState<PlayerResearchItem[]>(initialPlayers);
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [activePresetId, setActivePresetId] = useState<ShowcasePresetId>("overall");
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [exporting, setExporting] = useState(false);
-
-  const cardSvgRef = useRef<SVGSVGElement | null>(null);
-
+  const searchParams = useSearchParams();
   const { favorites, toggleFavorite, compareTray, toggleCompare } = useWorkspace();
+  const [index, setIndex] = useState(initialIndex);
+  const [focus, setFocus] = useState<ShowcasePresetId>("overall");
+  const [playing, setPlaying] = useState(false);
+  const [lookupText, setLookupText] = useState("");
+  const [exporting, setExporting] = useState(false);
+  const cardRef = useRef<SVGSVGElement | null>(null);
 
-  const currentPlayer = playersList[currentIndex] || playersList[0];
-  const isFavorite = currentPlayer ? favorites.includes(currentPlayer.player_id) : false;
-  const inTray = currentPlayer ? compareTray.includes(currentPlayer.player_id) : false;
+  const count = players.length;
+  const player = players[Math.min(index, count - 1)];
+  const preset = SHOWCASE_PRESETS.find((entry) => entry.id === focus) ?? SHOWCASE_PRESETS[0];
+  const metrics = useMemo(() => preset.metrics.slice(0, 6), [preset]);
+  const metricKeys = useMemo(() => metrics.map((metric) => metric.key), [metrics]);
+  const { ranks } = useCohortRanks(query, metricKeys, goodDirections);
+  const contextLine = scopeContextLine(query.season, query.phase, query.before_date);
+  const season = query.season;
+  const scopeParams = `season=${query.season}&phase=${query.phase}&beforeDate=${query.before_date ?? ""}`;
 
-  const activePreset = useMemo(() => {
-    return SHOWCASE_PRESETS.find((p) => p.id === activePresetId) || SHOWCASE_PRESETS[0];
-  }, [activePresetId]);
+  const step = (delta: number) => setIndex((current) => (current + delta + count) % count);
 
-  // Keyboard navigation (ArrowLeft / ArrowRight)
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) {
-        return;
-      }
-      if (e.key === "ArrowLeft") {
-        setCurrentIndex((prev) => (prev > 0 ? prev - 1 : playersList.length - 1));
-      } else if (e.key === "ArrowRight") {
-        setCurrentIndex((prev) => (prev < playersList.length - 1 ? prev + 1 : 0));
-      } else if (e.key === " " && !e.repeat) {
-        e.preventDefault();
-        setIsPlaying((prev) => !prev);
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.defaultPrevented || ownsKeys(event.target)) return;
+      if (event.key === "ArrowLeft") step(-1);
+      else if (event.key === "ArrowRight") step(1);
+      else if (event.key === " " && !(event.target instanceof HTMLButtonElement) && !event.repeat) {
+        event.preventDefault();
+        setPlaying((value) => !value);
       }
     };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+    // step only depends on count
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [count]);
 
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [playersList.length]);
-
-  // Slideshow timer (auto-advance every 5s if playing)
+  // Manually started slideshow (F12); under reduced motion it still never starts by itself.
   useEffect(() => {
-    if (!isPlaying || playersList.length <= 1) return;
+    if (!playing || count <= 1) return;
+    const timer = setInterval(() => setIndex((current) => (current + 1) % count), 5000);
+    return () => clearInterval(timer);
+  }, [playing, count]);
 
-    // Honor prefers-reduced-motion
-    if (typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      return;
-    }
+  if (!player) return null;
 
-    const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev < playersList.length - 1 ? prev + 1 : 0));
-    }, 5000);
+  const stats: ShowcaseCardStat[] = metrics.map((metric) => {
+    const direction = goodDirections[metric.key];
+    return {
+      key: metric.key,
+      label: metric.label,
+      value: metric.format(player.metrics[metric.key]),
+      percentile: orientedPercentile(player.percentiles?.[metric.key], direction),
+      rank: ranks[metric.key]?.[player.player_id] ?? null
+    };
+  });
 
-    return () => clearInterval(interval);
-  }, [isPlaying, playersList.length]);
+  const isFavorite = favorites.includes(player.player_id);
+  const inTray = compareTray.includes(player.player_id);
+  const currentTeam = player.teams[player.teams.length - 1];
+  const fileBase = `${slug(player.player_name)}-showcase-${focus}`;
+  const exportContext = { season: query.season, phase: query.phase, before_date: query.before_date ?? undefined, release_id: query.release_id ?? undefined };
 
-  const handlePrev = () => {
-    setCurrentIndex((prev) => (prev > 0 ? prev - 1 : playersList.length - 1));
-  };
-
-  const handleNext = () => {
-    setCurrentIndex((prev) => (prev < playersList.length - 1 ? prev + 1 : 0));
-  };
-
-  const handleExportPng = async () => {
-    if (!cardSvgRef.current || !currentPlayer) return;
+  const exportCard = async (format: "png" | "svg") => {
+    if (!cardRef.current) return;
     setExporting(true);
     try {
-      await exportSvgAsPng(cardSvgRef.current, {
-        title: `${currentPlayer.player_name} — CourtLens Showcase Card`,
-        subtitle: `${activePreset.label} · ${currentPlayer.teams.join("/")} · ${season} ${phase}`,
-        context: {
-          season,
-          phase,
-          before_date: beforeDate,
-          release_id: releaseId
-        },
-        filename: `${currentPlayer.player_name.toLowerCase().replace(/\s+/g, "_")}-showcase-card.png`
-      });
+      const prepared = await inlineSvgImages(cardRef.current);
+      const options = { title: `${player.player_name} · Player Showcase`, subtitle: `${FOCUS_LABELS[focus]} · ${contextLine}`, context: exportContext, filename: `${fileBase}.${format}` };
+      if (format === "png") await exportSvgAsPng(prepared, options);
+      else exportSvgFile(prepared, `${fileBase}.svg`, options);
     } finally {
       setExporting(false);
     }
   };
 
-  const handleExportSvg = () => {
-    if (!cardSvgRef.current || !currentPlayer) return;
-    exportSvgFile(
-      cardSvgRef.current,
-      `${currentPlayer.player_name.toLowerCase().replace(/\s+/g, "_")}-showcase-card.svg`,
-      {
-        title: `${currentPlayer.player_name} — Showcase Card`,
-        context: {
-          season,
-          phase,
-          before_date: beforeDate,
-          release_id: releaseId
-        },
-        filename: `${currentPlayer.player_name.toLowerCase().replace(/\s+/g, "_")}-showcase-card.svg`
-      }
-    );
-  };
-
-  if (!currentPlayer) {
-    return (
-      <div className="empty-panel">
-        <p className="text-muted">No players available in this showcase view.</p>
-      </div>
-    );
-  }
+  const linkButton = (href: string, label: string, icon: "history" | "user" | "swap") => (
+    <Tooltip content={label}>
+      <Link href={buildPreservedContextUrl(href, searchParams)} aria-label={label}
+        className="ui-button ui-button-secondary ui-button-md ui-icon-button showcase-rail-action">
+        <Icon name={icon} size={16} />
+      </Link>
+    </Tooltip>
+  );
 
   return (
-    <div className="showcase-container">
-      {/* Header & Controls Toolbar */}
-      <div className="panel showcase-header-panel">
-        <div className="showcase-header-row">
-          <div>
-            <h1 className="panel-title showcase-header-title">
-              Player Showcase & Cards
-            </h1>
-            <p className="text-muted text-xs panel-subtitle-margin">
-              High-density statistical player cards with manually controlled slideshow and context-stamped export.
-            </p>
-          </div>
-
-          {/* Quick Lookup to Add Player */}
-          <div className="showcase-lookup-wrap">
-            <LookupInput label="Add or jump to player" value={lookupText} onChange={setLookupText}
-              kinds={["player"]}
-              releaseId={releaseId}
-              season={season}
-              placeholder="Add or jump to player..."
+    <PageShell template="board" className="showcase-page">
+      <PageHeader
+        title="Player Showcase"
+        subtitle="Shareable stat cards with league percentiles and ranks."
+        actions={<>
+          <div className="showcase-search">
+            <LookupInput label="Find player" value={lookupText} onChange={setLookupText} kinds={["player"]}
+              releaseId={query.release_id ?? undefined} season={season} placeholder="Find player" compactResults portalDropdown
               onSelect={(item) => {
                 setLookupText("");
-                if (item.kind === "player") {
-                  router.push(buildPreservedContextUrl(
-                    `/showcase?playerId=${item.canonical_id}&season=${season}&phase=${phase}&beforeDate=${beforeDate}`, searchParams)
-                  );
-                }
-              }}
-            />
+                if (item.kind !== "player") return;
+                const known = players.findIndex((entry) => entry.player_id === item.canonical_id);
+                if (known >= 0) setIndex(known);
+                else router.push(buildPreservedContextUrl(`/showcase?playerId=${item.canonical_id}`, searchParams));
+              }} />
           </div>
-        </div>
+          <Menu align="right" className="showcase-export" trigger={<span className="ui-button ui-button-primary ui-button-md">
+            <Icon name="download" size={16} />{exporting ? "Exporting…" : "Export"}<Icon name="chevron-down" size={14} />
+          </span>}>
+            <MenuItem icon="download" label="PNG image" disabled={exporting} onClick={() => void exportCard("png")} />
+            <MenuItem icon="page" label="SVG file" disabled={exporting} onClick={() => void exportCard("svg")} />
+          </Menu>
+        </>}
+      />
 
-        {/* Preset & Carousel Toolbar */}
-        <div className="showcase-toolbar-row">
-          {/* Preset Focus Selector */}
-          <div className="showcase-focus-group">
-            <span className="text-xs text-muted uppercase font-mono font-semibold">Focus:</span>
-            <div className="segmented-control showcase-focus" role="group" aria-label="Showcase metric focus">
-              {SHOWCASE_PRESETS.map((preset) => (
-                <button
-                  key={preset.id}
-                  type="button"
-                  className={`segmented-button ${activePresetId === preset.id ? "active" : ""}`}
-                  onClick={() => setActivePresetId(preset.id)}
-                >
-                  {preset.label}
-                </button>
-              ))}
+      <ContextBar
+        catalog={catalog ?? undefined}
+        sampleNoun="eligible players"
+        initialSeason={query.season}
+        initialPhase={query.phase}
+        initialBeforeDate={query.before_date ?? undefined}
+        initialReleaseId={query.release_id ?? undefined}
+        sampleSize={eligiblePlayers}
+        lastIncludedDate={lastIncludedDate}
+        showWindow={false}
+        modes={<SegmentedControl<ShowcasePresetId> name="showcase-focus" value={focus} onChange={setFocus}
+          options={SHOWCASE_PRESETS.map((entry) => ({ value: entry.id, label: FOCUS_LABELS[entry.id] }))} />}
+      />
+
+      <BoardLayout
+        className="showcase-board"
+        main={<div className="showcase-stage">
+          <div className="showcase-card-frame">
+            <ShowcaseCard ref={cardRef} player={player} focusLabel={FOCUS_LABELS[focus]} stats={stats} contextLine={contextLine} />
+          </div>
+          <dl className="sr-only" aria-label={`${player.player_name} ${FOCUS_LABELS[focus]} stats`}>
+            {stats.map((stat) => <div key={stat.key}>
+              <dt>{stat.label}</dt>
+              <dd>{stat.value}{stat.rank ? `, rank ${stat.rank} of ${eligiblePlayers}` : ""}{stat.percentile !== null ? `, ${Math.round(stat.percentile)}th percentile` : ""}</dd>
+            </div>)}
+          </dl>
+          <div className="showcase-playback" role="group" aria-label="Card playback">
+            <IconButton icon="left" label="Previous player" variant="secondary" onClick={() => step(-1)} />
+            <Button variant={playing ? "primary" : "secondary"} icon={playing ? "pause" : "play"} aria-pressed={playing}
+              onClick={() => setPlaying((value) => !value)}>{playing ? "Pause" : "Play"}</Button>
+            <IconButton icon="right" label="Next player" variant="secondary" onClick={() => step(1)} />
+            <span className="showcase-counter" aria-live="polite">{index + 1} / {count}</span>
+          </div>
+          <p className="showcase-footnote">Percentile among {eligiblePlayers.toLocaleString("en-US")} eligible players, the Stats cohort. Ranks shown within the top {RANK_PAGE_LIMIT}.</p>
+        </div>}
+        rail={<>
+          <section className="showcase-rail-card" aria-label="Current player">
+            <PlayerIdentity size="lg" playerId={player.player_id} name={player.player_name} team={currentTeam}
+              portraitUrl={player.portrait_url} subtitle={`${player.games_played} games`}
+              href={buildPreservedContextUrl(`/players/${player.player_id}`, searchParams)} />
+            <div className="showcase-rail-actions">
+              <Tooltip content={isFavorite ? "Remove from favorites" : "Add to favorites"}>
+                <IconButton icon="star" label={isFavorite ? "Remove from favorites" : "Add to favorites"} variant="secondary"
+                  aria-pressed={isFavorite} className={`showcase-fav ${isFavorite ? "is-active" : ""}`} onClick={() => toggleFavorite(player.player_id)} />
+              </Tooltip>
+              <Tooltip content={inTray ? "Remove from compare tray" : "Add to compare tray"}>
+                <IconButton icon={inTray ? "check" : "plus"} label={inTray ? "Remove from compare tray" : "Add to compare tray"} variant="secondary"
+                  aria-pressed={inTray} className={inTray ? "is-active" : ""} onClick={() => toggleCompare(player.player_id)} />
+              </Tooltip>
+              {linkButton(`/last-games?playerId=${player.player_id}&${scopeParams}`, "Recent games", "history")}
+              {linkButton(`/players/${player.player_id}?${scopeParams}`, "Player profile", "user")}
+              {linkButton(`/compare?playerA=${player.player_id}&${scopeParams}`, "Compare head to head", "swap")}
             </div>
-          </div>
-
-          {/* Carousel Controls */}
-          <div className="showcase-carousel-controls">
-            <button
-              type="button"
-              className="button button-small"
-              onClick={handlePrev}
-              aria-label="Previous player card (ArrowLeft)"
-              title="Previous card (ArrowLeft)"
-            >
-              <Icon name="left" />Previous
-            </button>
-
-            <button
-              type="button"
-              className={`button button-small ${isPlaying ? "button-accent" : ""}`}
-              onClick={() => setIsPlaying(!isPlaying)}
-              aria-label={isPlaying ? "Pause slideshow" : "Play auto-advance slideshow"}
-              title="Auto-advance slideshow (Spacebar to toggle)"
-            >
-              <Icon name={isPlaying ? "pause" : "play"} />{isPlaying ? "Pause" : "Play"}
-            </button>
-
-            <button
-              type="button"
-              className="button button-small"
-              onClick={handleNext}
-              aria-label="Next player card (ArrowRight)"
-              title="Next card (ArrowRight)"
-            >
-              Next<Icon name="right" />
-            </button>
-
-            <span className="text-xs font-mono text-muted showcase-counter">
-              {currentIndex + 1} / {playersList.length}
-            </span>
-          </div>
-
-          {/* Export Actions */}
-          <div className="showcase-export-group">
-            <button
-              type="button"
-              className="button button-small"
-              onClick={handleExportPng}
-              disabled={exporting}
-              title="Export high-DPI card PNG"
-            >
-              {exporting ? "Exporting…" : "Export PNG"}
-            </button>
-
-            <button
-              type="button"
-              className="button button-small"
-              onClick={handleExportSvg}
-              title="Export SVG card"
-            >
-              Export SVG
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* Main Showcase Stage */}
-      <div className="responsive-pair showcase-main-grid">
-        {/* Visual SVG Card Stage */}
-        <div className="showcase-card-column">
-          <div className="showcase-card-container">
-            {/* Embedded Rendered SVG Card (Used for presentation & pure client-side rasterization) */}
-            <svg
-              ref={cardSvgRef}
-              viewBox="0 0 460 580"
-              className="showcase-card-svg"
-              role="img"
-              aria-label={`Showcase card for ${currentPlayer.player_name}`}
-            >
-              {/* Card Canvas Background */}
-              <rect width="460" height="580" fill="#282f3b" rx="10" />
-              <rect width="460" height="580" fill="none" stroke="#465160" strokeWidth="1.5" rx="10" />
-
-              {/* Card Header Top Pattern */}
-              <path d="M 0 10 Q 0 0 10 0 L 450 0 Q 460 0 460 10 L 460 90 L 0 90 Z" fill="#20252e" />
-              <line x1="0" y1="90" x2="460" y2="90" stroke="#ffd166" strokeWidth="2" />
-
-              {/* Brand & Kicker */}
-              <CourtLensWordmark x={24} y={15} height={13} color="#ffd166" />
-              <text x="140" y="28" fill="#b4bdca" fontSize="11" fontFamily="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">
-                SHOWCASE · {season} {phase.replace("_", " ")}
-              </text>
-
-              {/* Player Name & Team */}
-              <text x="24" y="58" fill="#f1f3f6" fontSize="22" fontWeight="bold" fontFamily="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">
-                {currentPlayer.player_name}
-              </text>
-              <text x="24" y="78" fill="#ffd166" fontSize="12" fontFamily="monospace" fontWeight="bold">
-                {currentPlayer.teams.join(" / ")} · NBA ID: {currentPlayer.player_id}
-              </text>
-
-              {/* Badge Pills */}
-              <rect x="330" y="44" width="105" height="26" fill="#323b49" rx="13" stroke="#465160" strokeWidth="1" />
-              <text x="382" y="61" fill="#f1f3f6" fontSize="11" fontFamily="monospace" fontWeight="bold" textAnchor="middle">
-                {currentPlayer.games_played} GAMES
-              </text>
-
-              {/* Focus Preset Banner */}
-              <rect x="24" y="105" width="412" height="28" fill="#323b49" rx="4" />
-              <text x="36" y="123" fill="#b4bdca" fontSize="11" fontFamily="monospace" textAnchor="start">
-                FOCUS:
-              </text>
-              <text x="85" y="123" fill="#ffd166" fontSize="11" fontFamily="monospace" fontWeight="bold">
-                {activePreset.label.toUpperCase()}
-              </text>
-              <text x="424" y="123" fill="#b4bdca" fontSize="10" fontFamily="monospace" textAnchor="end">
-                MIN: {currentPlayer.total_minutes.toFixed(0)}
-              </text>
-
-              {/* Metric Grid Tiles (2 columns x 3 rows) */}
-              {activePreset.metrics.slice(0, 6).map((metric, i) => {
-                const col = i % 2;
-                const row = Math.floor(i / 2);
-                const tileX = 24 + col * 212;
-                const tileY = 145 + row * 92;
-                const val = currentPlayer.metrics[metric.key];
-                const formatted = metric.format(val);
-
-                return (
-                  <g key={metric.key}>
-                    <rect
-                      x={tileX}
-                      y={tileY}
-                      width="200"
-                      height="80"
-                      fill="#20252e"
-                      rx="6"
-                      stroke="#323b49"
-                      strokeWidth="1"
-                    />
-                    <text
-                      x={tileX + 16}
-                      y={tileY + 24}
-                      fill="#b4bdca"
-                      fontSize="10"
-                      fontFamily="monospace"
-                      fontWeight="bold"
-                      letterSpacing="0.05em"
-                    >
-                      {metric.label}
-                    </text>
-                    <text
-                      x={tileX + 16}
-                      y={tileY + 60}
-                      fill="#f1f3f6"
-                      fontSize="24"
-                      fontFamily="monospace"
-                      fontWeight="bold"
-                    >
-                      {formatted}
-                    </text>
-                  </g>
-                );
-              })}
-
-              {/* Card Footer With Temporal Rule & Proof */}
-              <line x1="24" y1="435" x2="436" y2="435" stroke="#323b49" strokeWidth="1" />
-
-              {/* Stint / Traded Note */}
-              <text x="24" y="460" fill="#b4bdca" fontSize="11" fontFamily="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">
-                {currentPlayer.stints_count > 1
-                  ? `Observed ${currentPlayer.stints_count} team stints (${currentPlayer.teams.join(", ")}) during ${season}.`
-                  : `Single team affiliation (${currentPlayer.teams[0]}) observed in ${season}.`}
-              </text>
-
-              {/* Temporal Guarantee Notice */}
-              <rect x="24" y="480" width="412" height="42" fill="#20252e" rx="4" stroke="#465160" strokeWidth="0.5" />
-              <text x="34" y="497" fill="#7b8798" fontSize="10" fontFamily="monospace">
-                TEMPORAL DISCIPLINE: game_date &lt; {beforeDate}
-              </text>
-              <text x="34" y="512" fill="#7b8798" fontSize="9" fontFamily="monospace">
-                Strictly historical replay · Zero inferred claims · Admitted coverage
-              </text>
-
-              {/* Watermark Bottom */}
-              <CourtLensWordmark x={95} y={545} height={10} color="#465160" />
-              <text x="177" y="555" fill="#465160" fontSize="10" fontFamily="monospace">NBA REPLICA · VERIFIED RECORD</text>
-            </svg>
-          </div>
-        </div>
-
-        {/* Side Details & Actions Sidebar */}
-        <div>
-          <div className="panel showcase-sidebar-panel">
-            <div className="showcase-identity-header">
-              <PlayerPortrait
-                playerId={currentPlayer.player_id}
-                name={currentPlayer.player_name}
-                portraitUrl={currentPlayer.portrait_url}
-                size="md"
-              />
-              <div>
-                <strong className="block showcase-player-title">{currentPlayer.player_name}</strong>
-                <span className="text-xs text-muted font-mono">{currentPlayer.teams.join(" / ")}</span>
-              </div>
-            </div>
-
-            <div className="showcase-actions-column">
-              <button
-                type="button"
-                className={`button showcase-action-btn ${isFavorite ? "button-accent" : ""}`}
-                onClick={() => toggleFavorite(currentPlayer.player_id)}
-              >
-                {isFavorite ? "★ In Workspace Favorites" : "☆ Add to Favorites"}
-              </button>
-
-              <button
-                type="button"
-                className={`button showcase-action-btn ${inTray ? "button-accent" : ""}`}
-                onClick={() => toggleCompare(currentPlayer.player_id)}
-              >
-                {inTray ? "✓ In Compare Tray" : "+ Add to Compare Tray"}
-              </button>
-
-              <Link
-                href={`/last-games?playerId=${currentPlayer.player_id}&season=${season}&phase=${phase}&beforeDate=${beforeDate}`}
-                className="button button-dark showcase-action-btn"
-              >
-                Recent Games Log →
-              </Link>
-
-              <Link
-                href={`/players/${currentPlayer.player_id}?season=${season}&phase=${phase}&beforeDate=${beforeDate}`}
-                className="button button-dark showcase-action-btn"
-              >
-                Full Player Dashboard →
-              </Link>
-
-              <Link
-                href={`/compare?playerA=${currentPlayer.player_id}&season=${season}&phase=${phase}&beforeDate=${beforeDate}`}
-                className="button showcase-action-btn"
-              >
-                Compare in PvP →
-              </Link>
-            </div>
-          </div>
-
-          {/* Roster Thumbnail Strip */}
-          <div className="panel showcase-roster-panel">
-            <h3 className="panel-title showcase-roster-title">
-              Showcase Roster ({playersList.length})
-            </h3>
-            <div className="showcase-roster-list">
-              {playersList.map((p, idx) => {
-                const active = idx === currentIndex;
-                return (
-                  <button
-                    key={p.player_id}
-                    type="button"
-                    onClick={() => setCurrentIndex(idx)}
-                    className={`showcase-roster-item ${active ? "active" : ""}`}
-                  >
-                    <span className={`showcase-roster-name ${active ? "font-bold" : ""}`}>
-                      {p.player_name}
-                    </span>
-                    <span className="font-mono text-xs text-muted">{p.teams.join("/")}</span>
+          </section>
+          <section className="showcase-roster" aria-label="Showcase roster">
+            <h2 className="showcase-roster-title">Roster <span>{count}</span></h2>
+            <ol className="showcase-roster-list">
+              {players.map((entry, position) => {
+                const team = entry.teams[entry.teams.length - 1];
+                return <li key={entry.player_id}>
+                  <button type="button" className={`showcase-roster-item ${position === index ? "is-active" : ""}`}
+                    aria-current={position === index ? "true" : undefined} onClick={() => setIndex(position)}>
+                    <PlayerPortrait playerId={entry.player_id} name={entry.player_name} portraitUrl={entry.portrait_url} size="sm" />
+                    <span className="showcase-roster-name">{entry.player_name}</span>
+                    {team && <TeamLogo team={team} size={16} />}
                   </button>
-                );
+                </li>;
               })}
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+            </ol>
+          </section>
+        </>}
+      />
+    </PageShell>
   );
 }

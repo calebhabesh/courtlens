@@ -1,9 +1,21 @@
 "use client";
 
+import { Icon } from "./ui/icon";
 import { useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { PlayerPortrait } from "./player-portrait";
+import { ContextBar } from "./context-bar";
+import { IconButton } from "./ui/button";
+import { GatedNote } from "./ui/gated-note";
+import { PlayerIdentity, teamStyle } from "./ui/identity";
+import { Menu, MenuItem } from "./ui/menu";
+import { PageShell } from "./ui/page-shell";
+import { PageHeader } from "./ui/panel";
+import { SegmentedControl } from "./ui/segmented-control";
+import { StatTile } from "./ui/stat-tile";
+import { Tooltip } from "./ui/tooltip";
+import { formatDate } from "@/lib/format-date";
+import { scopeContextLine } from "@/lib/scope-labels";
 import { LineageDrawer } from "./lineage-drawer";
 import { buildPreservedContextUrl } from "@/lib/query-url";
 import { LookupInput } from "./lookup-input";
@@ -138,46 +150,16 @@ export function RecentGamesView({
     );
   };
 
+  const scopeParams = `season=${context.season}&phase=${context.phase}&beforeDate=${context.before_date}`;
+  const exposureSuffix = exposureMode === "per_36" ? "/36" : "";
+  const windowLabel = windowSelection === "all" ? "All season" : windowSelection.replace("last_", "Last ");
+
   return (
-    <div className="recent-games-container">
-      {/* Player Identity Hero */}
-      <div className="player-identity-card">
-        <PlayerPortrait
-          playerId={player.id}
-          name={player.name}
-          portraitUrl={player.portrait_url}
-          size="lg"
-        />
-
-        <div className="player-identity-info">
-          <div className="player-identity-meta">
-            <span className="text-xs text-accent font-mono uppercase">
-              Recent Games Explorer · {context.season} {context.phase.replace("_", " ")}
-            </span>
-            <span className="badge font-mono text-xs">ID: {player.id}</span>
-          </div>
-
-          <h1 className="player-identity-name">
-            {player.name}
-          </h1>
-
-          <div className="player-identity-badges">
-            {latest_team && (
-              <span className="badge badge-accent">
-                {latest_team.tricode} · {latest_team.name}
-              </span>
-            )}
-            {last_observed_date && (
-              <span className="badge">Last appearance: {last_observed_date}</span>
-            )}
-            <span className="badge font-mono">
-              Window: {windowSelection.replace("_", " ").toUpperCase()} ({summary.sampleSize} GP)
-            </span>
-          </div>
-        </div>
-
-        {/* Global Lookup & Quick Actions */}
-        <div className="player-identity-actions">
+    <PageShell template="profile" className="recent-games-container">
+      <PageHeader
+        title="Recent Games"
+        subtitle={[player.name, latest_team?.name, last_observed_date ? `Last game ${formatDate(last_observed_date)}` : null].filter(Boolean).join(" · ")}
+        actions={<>
           <div className="player-lookup-box">
             <LookupInput label="Switch player" value={lookupText} onChange={setLookupText}
               kinds={["player"]}
@@ -187,223 +169,68 @@ export function RecentGamesView({
               onSelect={(item) => {
                 setLookupText("");
                 if (item.kind === "player") {
-                  router.push(buildPreservedContextUrl(
-                    `/last-games?playerId=${item.canonical_id}&season=${context.season}&phase=${context.phase}&beforeDate=${context.before_date}`, searchParams)
-                  );
+                  router.push(buildPreservedContextUrl(`/last-games?playerId=${item.canonical_id}&${scopeParams}`, searchParams));
                 }
               }}
             />
           </div>
+          <Tooltip content={isFavorite ? "Remove from favorites" : "Add to favorites"}>
+            <IconButton icon="star" label={isFavorite ? "Remove from favorites" : "Add to favorites"} variant="secondary"
+              aria-pressed={isFavorite} className={isFavorite ? "is-active" : ""} onClick={() => toggleFavorite(player.id)} />
+          </Tooltip>
+          <Tooltip content={inTray ? "Remove from compare tray" : "Add to compare tray"}>
+            <IconButton icon={inTray ? "check" : "plus"} label={inTray ? "Remove from compare tray" : "Add to compare tray"} variant="secondary"
+              aria-pressed={inTray} className={inTray ? "is-active" : ""} onClick={() => toggleCompare(player.id)} />
+          </Tooltip>
+          <Link href={`/players/${player.id}?${scopeParams}`} className="ui-button ui-button-secondary ui-button-md">Profile</Link>
+          <Menu align="right" trigger={<span className="ui-button ui-button-primary ui-button-md">
+            <Icon name="download" size={16} />{exporting ? "Exporting…" : "Export"}<Icon name="chevron-down" size={14} />
+          </span>}>
+            <MenuItem icon="table" label="CSV game log" onClick={handleExportCsv} />
+            <MenuItem icon="download" label="Export PNG" disabled={exporting} onClick={() => void handleExportPng()} />
+            <MenuItem icon="page" label="Export SVG" onClick={handleExportSvg} />
+            <MenuItem icon={copiedUrl ? "check" : "copy"} label={copiedUrl ? "Copied" : "Copy link"} onClick={() => void handleCopyUrl()} />
+          </Menu>
+        </>}
+      />
 
-          <div className="player-action-buttons">
-            <button
-              type="button"
-              className={`button button-small ${isFavorite ? "button-accent" : ""}`}
-              onClick={() => toggleFavorite(player.id)}
-              title={isFavorite ? "Remove from favorites" : "Add to favorites"}
-            >
-              {isFavorite ? "★ Favorited" : "☆ Favorite"}
-            </button>
+      <ContextBar
+        initialSeason={context.season}
+        initialPhase={context.phase}
+        initialBeforeDate={context.before_date}
+        initialReleaseId={context.release_id}
+        showWindow={false}
+        sampleSize={initialGames.length}
+        lastIncludedDate={last_observed_date}
+        detailRows={[{ label: "Player", value: player.id, mono: true }]}
+        filters={<SegmentedControl<RecentGamesWindow> name="Appearance window" value={windowSelection} onChange={setWindowSelection} options={[
+          { value: "last_5", label: "Last 5" }, { value: "last_10", label: "Last 10" }, { value: "last_20", label: "Last 20" },
+          { value: "all", label: `All (${initialGames.length})` }
+        ]} />}
+        modes={<>
+          <SegmentedControl<CountingExposureMode> name="Exposure" value={exposureMode} onChange={setExposureMode} options={[
+            { value: "per_game", label: "Per Game" }, { value: "per_36", label: "Per 36" }
+          ]} />
+          <SegmentedControl<RecentGamesViewMode> name="Layout" value={viewMode} onChange={setViewMode} options={[
+            { value: "table", label: "Table", icon: "table" }, { value: "cards", label: "Cards", icon: "cards" }
+          ]} />
+        </>}
+      />
 
-            <button
-              type="button"
-              className={`button button-small ${inTray ? "button-accent" : ""}`}
-              onClick={() => toggleCompare(player.id)}
-              title={inTray ? "Remove from Compare Tray" : "Add to Compare Tray"}
-            >
-              {inTray ? "✓ In Compare Tray" : "+ Compare Tray"}
-            </button>
-
-            <Link
-              href={`/compare?playerA=${player.id}&season=${context.season}&phase=${context.phase}&beforeDate=${context.before_date}`}
-              className="button button-small"
-              title="Compare in head-to-head PvP view"
-            >
-              PvP Head-to-Head →
-            </Link>
-
-            <Link
-              href={`/players/${player.id}?season=${context.season}&phase=${context.phase}&beforeDate=${context.before_date}`}
-              className="button button-small button-dark"
-              title="Open full player profile"
-            >
-              Full Profile →
-            </Link>
-          </div>
+      {/* Hero: who, then the window's averages. */}
+      <div className="player-hero" style={teamStyle(latest_team?.id)}>
+        <div className="player-hero-identity">
+          <PlayerIdentity playerId={player.id} name={player.name} team={latest_team?.id} portraitUrl={player.portrait_url}
+            href={`/players/${player.id}?${scopeParams}`} subtitle={`${windowLabel} · ${summary.sampleSize} games`} size="lg" />
         </div>
-      </div>
-
-      {/* Toolbar & Filter Controls */}
-      <div className="panel recent-games-toolbar-panel">
-        <div className="recent-games-toolbar">
-          {/* Appearance Window Selector */}
-          <div className="recent-games-control-group">
-            <span className="text-xs text-muted uppercase font-mono font-semibold">Window:</span>
-            <div className="segmented-control" role="group" aria-label="Recent appearance window">
-              <button
-                type="button"
-                className={`segmented-button ${windowSelection === "last_5" ? "active" : ""}`}
-                onClick={() => setWindowSelection("last_5")}
-              >
-                Last 5
-              </button>
-              <button
-                type="button"
-                className={`segmented-button ${windowSelection === "last_10" ? "active" : ""}`}
-                onClick={() => setWindowSelection("last_10")}
-              >
-                Last 10
-              </button>
-              <button
-                type="button"
-                className={`segmented-button ${windowSelection === "last_20" ? "active" : ""}`}
-                onClick={() => setWindowSelection("last_20")}
-              >
-                Last 20
-              </button>
-              <button
-                type="button"
-                className={`segmented-button ${windowSelection === "all" ? "active" : ""}`}
-                onClick={() => setWindowSelection("all")}
-              >
-                All Season ({initialGames.length})
-              </button>
-            </div>
-          </div>
-
-          {/* Exposure Mode (Per Game vs Per 36) */}
-          <div className="recent-games-control-group">
-            <span className="text-xs text-muted uppercase font-mono font-semibold">Exposure:</span>
-            <div className="segmented-control" role="group" aria-label="Counting exposure mode">
-              <button
-                type="button"
-                className={`segmented-button ${exposureMode === "per_game" ? "active" : ""}`}
-                onClick={() => setExposureMode("per_game")}
-                title="Display actual totals per appearance"
-              >
-                Per Game
-              </button>
-              <button
-                type="button"
-                className={`segmented-button ${exposureMode === "per_36" ? "active" : ""}`}
-                onClick={() => setExposureMode("per_36")}
-                title="Normalize counting stats to per 36 minutes"
-              >
-                Per 36 Min
-              </button>
-            </div>
-          </div>
-
-          {/* View Mode (Table vs Cards) */}
-          <div className="recent-games-control-group">
-            <span className="text-xs text-muted uppercase font-mono font-semibold">Format:</span>
-            <div className="segmented-control" role="group" aria-label="View layout mode">
-              <button
-                type="button"
-                className={`segmented-button ${viewMode === "table" ? "active" : ""}`}
-                onClick={() => setViewMode("table")}
-              >
-                ☷ Table
-              </button>
-              <button
-                type="button"
-                className={`segmented-button ${viewMode === "cards" ? "active" : ""}`}
-                onClick={() => setViewMode("cards")}
-              >
-                🂡 Cards
-              </button>
-            </div>
-          </div>
-
-          {/* Export Actions */}
-          <div className="recent-games-export-group">
-            <button
-              type="button"
-              className="button button-small"
-              onClick={handleExportCsv}
-              title="Download recent game log as CSV"
-            >
-              CSV
-            </button>
-            <button
-              type="button"
-              className="button button-small"
-              onClick={handleExportPng}
-              disabled={exporting}
-              title="Export trajectory chart as high-DPI PNG"
-            >
-              {exporting ? "Exporting…" : "Export PNG"}
-            </button>
-            <button
-              type="button"
-              className="button button-small"
-              onClick={handleExportSvg}
-              title="Download trajectory SVG"
-            >
-              SVG
-            </button>
-            <button
-              type="button"
-              className="button button-small"
-              onClick={handleCopyUrl}
-              title="Copy local query URL"
-            >
-              {copiedUrl ? "✓ Copied" : "Copy URL"}
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* Recent Form Summary Grid */}
-      <div className="grid-4">
-        <div className="stat-card">
-          <span className="stat-label">Scoring Production</span>
-          <span className="stat-value font-mono">
-            {summary.ptsPerGame !== null ? summary.ptsPerGame.toFixed(1) : "—"}
-            <span className="text-sm font-normal text-muted"> {exposureMode === "per_36" ? "PTS/36" : "PPG"}</span>
-          </span>
-          <span className="stat-subtext">
-            TS%: {formatPercent(summary.tsPct)} · eFG%: {formatPercent(summary.efgPct)}
-          </span>
-        </div>
-
-        <div className="stat-card">
-          <span className="stat-label">Rebounds & Assists</span>
-          <span className="stat-value font-mono">
-            {summary.rebPerGame?.toFixed(1) ?? "—"} <span className="text-xs text-muted">RPG</span> · {summary.astPerGame?.toFixed(1) ?? "—"} <span className="text-xs text-muted">APG</span>
-          </span>
-          <span className="stat-subtext">
-            STL: {summary.stlPerGame?.toFixed(1) ?? "—"} · BLK: {summary.blkPerGame?.toFixed(1) ?? "—"}
-          </span>
-        </div>
-
-        <div className="stat-card">
-          <span className="stat-label">Minutes & Exposure</span>
-          <span className="stat-value font-mono">
-            {summary.avgMinutes?.toFixed(1) ?? "—"} <span className="text-sm font-normal text-muted">MPG</span>
-          </span>
-          <span className="stat-subtext">
-            {summary.sampleSize} appearances · {summary.totalMinutes} total min
-          </span>
-        </div>
-
-        <div className="stat-card">
-          <span className="stat-label">Window Statistical Highs</span>
-          {summary.highGamePoints ? (
-            <div className="stat-high-box">
-              <span className="font-mono text-sm font-bold text-accent">
-                {summary.highGamePoints.points} PTS
-              </span>
-              <span className="text-xs text-muted"> vs {summary.highGamePoints.opponent} ({summary.highGamePoints.date})</span>
-              {summary.highGameRebounds && (
-                <div className="text-xs text-muted font-mono stat-high-sub">
-                  {summary.highGameRebounds.rebounds} REB vs {summary.highGameRebounds.opponent}
-                </div>
-              )}
-            </div>
-          ) : (
-            <span className="text-sm text-muted">No appearances in window</span>
-          )}
+        <div className="player-hero-tiles" role="group" aria-label="Window summary">
+          <StatTile label={`PTS${exposureSuffix}`} value={summary.ptsPerGame?.toFixed(1)} />
+          <StatTile label={`REB${exposureSuffix}`} value={summary.rebPerGame?.toFixed(1)} />
+          <StatTile label={`AST${exposureSuffix}`} value={summary.astPerGame?.toFixed(1)} />
+          <StatTile label="MPG" value={summary.avgMinutes?.toFixed(1)} />
+          <StatTile label="TS%" value={formatPercent(summary.tsPct)} />
+          <StatTile label="High" value={summary.highGamePoints ? `${summary.highGamePoints.points} PTS` : null}
+            footnote={summary.highGamePoints ? `vs ${summary.highGamePoints.opponent} · ${formatDate(summary.highGamePoints.date)}` : "No appearances in window"} />
         </div>
       </div>
 
@@ -464,8 +291,9 @@ export function RecentGamesView({
                     {avgY !== null && (
                       <g>
                         <line x1="40" y1={avgY} x2="720" y2={avgY} stroke="var(--color-text-secondary)" strokeDasharray="4 4" strokeWidth="1" />
-                        <text x="724" y={avgY + 4} fill="var(--color-text-secondary)" fontSize="10" fontFamily="monospace">
-                          Avg: {summary.ptsPerGame}
+                        {/* Right-aligned above the line so it stays inside the 760-wide viewBox. */}
+                        <text x="720" y={avgY - 4} textAnchor="end" fill="var(--color-text-secondary)" fontSize="10" fontFamily="monospace">
+                          Avg: {summary.ptsPerGame?.toFixed(1)}
                         </text>
                       </g>
                     )}
@@ -524,7 +352,7 @@ export function RecentGamesView({
             <div>
               <h2 className="panel-title">Appearance Game Log</h2>
               <p className="text-muted text-xs panel-subtitle-tight">
-                Strict chronological order prior to {context.before_date}. Click Lineage to inspect contributing raw observation hash.
+                Newest first · {scopeContextLine(context.season, context.phase, context.before_date)}. Lineage shows each game&apos;s source observations.
               </p>
             </div>
             <span className="badge font-mono">{visibleGames.length} appearances</span>
@@ -576,7 +404,7 @@ export function RecentGamesView({
 
                   return (
                     <tr key={g.game_id}>
-                      <td className="font-mono">{g.game_date}</td>
+                      <td className="font-mono">{formatDate(g.game_date)}</td>
                       <td><strong>{g.team_tricode}</strong></td>
                       <td>{g.side === "home" ? "vs" : "@"} {g.opponent_tricode}</td>
                       <td>
@@ -633,7 +461,7 @@ export function RecentGamesView({
                 className={isHigh ? "recent-game-card-high" : "recent-game-card"}
               >
                 <div className="recent-game-card-header">
-                  <span className="font-mono text-xs text-muted">{g.game_date}</span>
+                  <span className="font-mono text-xs text-muted">{formatDate(g.game_date)}</span>
                   <span className="badge badge-accent font-mono text-xs">
                     {g.team_tricode} {g.side === "home" ? "vs" : "@"} {g.opponent_tricode}
                   </span>
@@ -685,9 +513,9 @@ export function RecentGamesView({
       )}
 
       {/* Strict Guardrail Notice */}
-      <div className="notice-box recent-games-notice">
-        <strong>Temporal Discipline & Provenance:</strong> Only games strictly prior to cutoff ({context.before_date}) are evaluated. Changing future records never alters prior feature hashes. Unobserved dates are unknown, not confirmed DNPs or zero outcomes.
-      </div>
+      <GatedNote why={`Only games strictly prior to the cutoff (${formatDate(context.before_date)}) are evaluated. Changing future records never alters prior feature hashes. Unobserved dates are unknown, not confirmed DNPs or zero outcomes.`}>
+        Missing games are unknown, not zero.
+      </GatedNote>
 
       {/* Cryptographic Lineage Modal */}
       {selectedFact && (
@@ -698,6 +526,6 @@ export function RecentGamesView({
           onClose={() => setSelectedFact(null)}
         />
       )}
-    </div>
+    </PageShell>
   );
 }

@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ContextBar } from "@/components/context-bar";
+import { PageShell } from "@/components/ui/page-shell";
+import { PageHeader } from "@/components/ui/panel";
 import { RecentGamesView } from "@/components/recent-games-view";
 import { getPlayerGameLog, getPlayerProfile, getWorkbenchCatalog } from "@/lib/workbench-api";
 import type { PlayerGameLogResponse, PlayerProfile, WorkbenchCatalog } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
-  title: "Recent Games Explorer · CourtLens"
+  title: "Recent Games"
 };
 
 interface LastGamesPageProps {
@@ -66,10 +67,11 @@ export default async function LastGamesPage({ searchParams }: LastGamesPageProps
 
   if (!profile || !gameLog) {
     return (
-      <section className="page shell">
+      <PageShell template="profile">
+        <PageHeader title="Recent Games" />
         <div className="empty-state tall" role="alert">
           <span className="empty-code">RECENT GAMES</span>
-          <h1>Player not found in this snapshot</h1>
+          <h2>Player not found in this snapshot</h2>
           <p>{loadError ?? `Could not find confirmed appearances for player ID ${playerId}.`}</p>
           <div className="empty-state-actions">
             <Link className="button button-dark" href="/players">
@@ -80,28 +82,14 @@ export default async function LastGamesPage({ searchParams }: LastGamesPageProps
             </Link>
           </div>
         </div>
-      </section>
+      </PageShell>
     );
   }
 
   return (
-    <>
-      <ContextBar
-        initialSeason={season}
-        initialPhase={phase}
-        initialBeforeDate={beforeDate}
-        initialWindow={params.window || "last_10"}
-        initialReleaseId={params.releaseId}
-        sampleSize={gameLog.games.length}
-        lastIncludedDate={profile.last_observed_date}
-      />
-
-      <div className="workbench-content">
-        <RecentGamesView
-          initialProfile={profile}
-          initialGames={gameLog.games}
-        />
-      </div>
-    </>
+    <RecentGamesView
+      initialProfile={profile}
+      initialGames={gameLog.games}
+    />
   );
 }

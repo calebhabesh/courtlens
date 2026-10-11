@@ -1,0 +1,1298 @@
+[
+  {
+    "name": "calculator",
+    "route": "/calculator",
+    "mainTop": 227,
+    "checks": {
+      "header": "pass",
+      "filters": "pass",
+      "firstScreen": "pass",
+      "alignment": "pass",
+      "identity": "pass",
+      "missingData": "pass",
+      "icons": "pass",
+      "states": "pass",
+      "phone": "pass",
+      "dates": "pass"
+    },
+    "notes": ""
+  },
+  {
+    "name": "compare",
+    "route": "/compare",
+    "mainTop": 396,
+    "checks": {
+      "header": "pass",
+      "filters": "pass",
+      "firstScreen": "pass",
+      "alignment": "pass",
+      "identity": "pass",
+      "missingData": "pass",
+      "icons": "pass",
+      "states": "pass",
+      "phone": "pass",
+      "dates": "pass"
+    },
+    "notes": ""
+  },
+  {
+    "name": "contracts__team_",
+    "route": "/contracts/BOS",
+    "mainTop": 279,
+    "checks": {
+      "header": "pass",
+      "filters": "pass",
+      "firstScreen": "pass",
+      "alignment": "pass",
+      "identity": "pass",
+      "missingData": "pass",
+      "icons": "pass",
+      "states": "pass",
+      "phone": "pass",
+      "dates": "pass"
+    },
+    "notes": ""
+  },
+  {
+    "name": "contracts",
+    "route": "/contracts",
+    "mainTop": 279,
+    "checks": {
+      "header": "pass",
+      "filters": "pass",
+      "firstScreen": "pass",
+      "alignment": "pass",
+      "identity": "pass",
+      "missingData": "pass",
+      "icons": "pass",
+      "states": "pass",
+      "phone": "pass",
+      "dates": "pass"
+    },
+    "notes": ""
+  },
+  {
+    "name": "data-status",
+    "route": "/data-status",
+    "mainTop": 227,
+    "checks": {
+      "header": "pass",
+      "filters": "pass",
+      "firstScreen": "pass",
+      "alignment": "pass",
+      "identity": "pass",
+      "missingData": "pass",
+      "icons": "pass",
+      "states": "pass",
+      "phone": "pass",
+      "dates": "pass"
+    },
+    "notes": ""
+  },
+  {
+    "name": "design",
+    "route": "/design",
+    "mainTop": 174,
+    "checks": {
+      "header": "partial",
+      "filters": "partial",
+      "firstScreen": "pass",
+      "alignment": "pass",
+      "identity": "n/a",
+      "missingData": "pass",
+      "icons": "pass",
+      "states": "pass",
+      "phone": "pass",
+      "dates": "pass"
+    },
+    "notes": "Living style guide deliberately demonstrates multiple headers and filter bars."
+  },
+  {
+    "name": "evaluation",
+    "route": "/evaluation",
+    "mainTop": 154,
+    "checks": {
+      "header": "pass",
+      "filters": "n/a",
+      "firstScreen": "pass",
+      "alignment": "pass",
+      "identity": "pass",
+      "missingData": "pass",
+      "icons": "pass",
+      "states": "pass",
+      "phone": "pass",
+      "dates": "pass"
+    },
+    "notes": ""
+  },
+  {
+    "name": "forecasts",
+    "route": "/forecasts",
+    "mainTop": 227,
+    "checks": {
+      "header": "pass",
+      "filters": "pass",
+      "firstScreen": "pass",
+      "alignment": "pass",
+      "identity": "pass",
+      "missingData": "pass",
+      "icons": "pass",
+      "states": "pass",
+      "phone": "pass",
+      "dates": "pass"
+    },
+    "notes": ""
+  },
+  {
+    "name": "free-agency",
+    "route": "/free-agency",
+    "mainTop": 279,
+    "checks": {
+      "header": "pass",
+      "filters": "pass",
+      "firstScreen": "pass",
+      "alignment": "pass",
+      "identity": "pass",
+      "missingData": "pass",
+      "icons": "pass",
+      "states": "pass",
+      "phone": "pass",
+      "dates": "pass"
+    },
+    "notes": ""
+  },
+  {
+    "name": "investigations",
+    "route": "/investigations",
+    "mainTop": 227,
+    "checks": {
+      "header": "pass",
+      "filters": "pass",
+      "firstScreen": "pass",
+      "alignment": "pass",
+      "identity": "pass",
+      "missingData": "pass",
+      "icons": "pass",
+      "states": "pass",
+      "phone": "pass",
+      "dates": "pass"
+    },
+    "notes": ""
+  },
+  {
+    "name": "investigations_saved__id_",
+    "route": "/investigations/saved/3bcb37c9-b410-44b1-be7f-c3b368fbe28c",
+    "mainTop": 227,
+    "checks": {
+      "header": "pass",
+      "filters": "pass",
+      "firstScreen": "pass",
+      "alignment": "pass",
+      "identity": "pass",
+      "missingData": "pass",
+      "icons": "pass",
+      "states": "pass",
+      "phone": "pass",
+      "dates": "pass"
+    },
+    "notes": ""
+  },
+  {
+    "name": "last-games",
+    "route": "/last-games",
+    "mainTop": 227,
+    "checks": {
+      "header": "pass",
+      "filters": "pass",
+      "firstScreen": "pass",
+      "alignment": "pass",
+      "identity": "pass",
+      "missingData": "pass",
+      "icons": "pass",
+      "states": "pass",
+      "phone": "pass",
+      "dates": "pass"
+    },
+    "notes": ""
+  },
+  {
+    "name": "live__date_",
+    "route": "/live/2026-10-09",
+    "mainTop": 0,
+    "checks": {
+      "header": "pass",
+      "filters": "pass",
+      "firstScreen": "pass",
+      "alignment": "pass",
+      "identity": "pass",
+      "missingData": "pass",
+      "icons": "pass",
+      "states": "pass",
+      "phone": "pass",
+      "dates": "pass"
+    },
+    "notes": ""
+  },
+  {
+    "name": "live_games__id_",
+    "route": "/live/games/0022501186",
+    "mainTop": 374,
+    "checks": {
+      "header": "pass",
+      "filters": "pass",
+      "firstScreen": "pass",
+      "alignment": "pass",
+      "identity": "pass",
+      "missingData": "pass",
+      "icons": "pass",
+      "states": "pass",
+      "phone": "pass",
+      "dates": "pass"
+    },
+    "notes": ""
+  },
+  {
+    "name": "live",
+    "route": "/live",
+    "mainTop": 0,
+    "checks": {
+      "header": "pass",
+      "filters": "pass",
+      "firstScreen": "pass",
+      "alignment": "pass",
+      "identity": "pass",
+      "missingData": "pass",
+      "icons": "pass",
+      "states": "pass",
+      "phone": "pass",
+      "dates": "pass"
+    },
+    "notes": ""
+  },
+  {
+    "name": "matchups",
+    "route": "/matchups",
+    "mainTop": 396,
+    "checks": {
+      "header": "pass",
+      "filters": "pass",
+      "firstScreen": "pass",
+      "alignment": "pass",
+      "identity": "pass",
+      "missingData": "pass",
+      "icons": "pass",
+      "states": "pass",
+      "phone": "pass",
+      "dates": "pass"
+    },
+    "notes": ""
+  },
+  {
+    "name": "methodology_learning",
+    "route": "/methodology/learning",
+    "mainTop": 211,
+    "checks": {
+      "header": "pass",
+      "filters": "n/a",
+      "firstScreen": "pass",
+      "alignment": "pass",
+      "identity": "n/a",
+      "missingData": "pass",
+      "icons": "pass",
+      "states": "pass",
+      "phone": "pass",
+      "dates": "pass"
+    },
+    "notes": ""
+  },
+  {
+    "name": "methodology",
+    "route": "/methodology",
+    "mainTop": 211,
+    "checks": {
+      "header": "pass",
+      "filters": "n/a",
+      "firstScreen": "pass",
+      "alignment": "pass",
+      "identity": "n/a",
+      "missingData": "pass",
+      "icons": "pass",
+      "states": "pass",
+      "phone": "pass",
+      "dates": "pass"
+    },
+    "notes": ""
+  },
+  {
+    "name": "root",
+    "route": "/stats",
+    "mainTop": 207,
+    "checks": {
+      "header": "pass",
+      "filters": "pass",
+      "firstScreen": "pass",
+      "alignment": "pass",
+      "identity": "pass",
+      "missingData": "pass",
+      "icons": "pass",
+      "states": "pass",
+      "phone": "pass",
+      "dates": "pass"
+    },
+    "notes": ""
+  },
+  {
+    "name": "planner",
+    "route": "/planner",
+    "mainTop": 227,
+    "checks": {
+      "header": "pass",
+      "filters": "pass",
+      "firstScreen": "pass",
+      "alignment": "pass",
+      "identity": "pass",
+      "missingData": "pass",
+      "icons": "pass",
+      "states": "pass",
+      "phone": "pass",
+      "dates": "pass"
+    },
+    "notes": ""
+  },
+  {
+    "name": "players__id_",
+    "route": "/players/1629029",
+    "mainTop": 227,
+    "checks": {
+      "header": "pass",
+      "filters": "pass",
+      "firstScreen": "pass",
+      "alignment": "pass",
+      "identity": "pass",
+      "missingData": "pass",
+      "icons": "pass",
+      "states": "pass",
+      "phone": "pass",
+      "dates": "pass"
+    },
+    "notes": ""
+  },
+  {
+    "name": "players",
+    "route": "/players",
+    "mainTop": 207,
+    "checks": {
+      "header": "pass",
+      "filters": "pass",
+      "firstScreen": "pass",
+      "alignment": "pass",
+      "identity": "pass",
+      "missingData": "pass",
+      "icons": "pass",
+      "states": "pass",
+      "phone": "pass",
+      "dates": "pass"
+    },
+    "notes": ""
+  },
+  {
+    "name": "playoffs__seriesId_",
+    "route": "/playoffs/2026-r1-det-orl",
+    "mainTop": 235,
+    "checks": {
+      "header": "pass",
+      "filters": "pass",
+      "firstScreen": "pass",
+      "alignment": "pass",
+      "identity": "pass",
+      "missingData": "pass",
+      "icons": "pass",
+      "states": "pass",
+      "phone": "pass",
+      "dates": "pass"
+    },
+    "notes": ""
+  },
+  {
+    "name": "playoffs",
+    "route": "/playoffs",
+    "mainTop": 340,
+    "checks": {
+      "header": "pass",
+      "filters": "pass",
+      "firstScreen": "pass",
+      "alignment": "pass",
+      "identity": "pass",
+      "missingData": "pass",
+      "icons": "pass",
+      "states": "pass",
+      "phone": "pass",
+      "dates": "pass"
+    },
+    "notes": ""
+  },
+  {
+    "name": "rankings",
+    "route": "/rankings",
+    "mainTop": 154,
+    "checks": {
+      "header": "pass",
+      "filters": "n/a",
+      "firstScreen": "pass",
+      "alignment": "pass",
+      "identity": "pass",
+      "missingData": "pass",
+      "icons": "pass",
+      "states": "pass",
+      "phone": "pass",
+      "dates": "pass"
+    },
+    "notes": ""
+  },
+  {
+    "name": "research_ask",
+    "route": "/research/ask",
+    "mainTop": 145,
+    "checks": {
+      "header": "pass",
+      "filters": "n/a",
+      "firstScreen": "pass",
+      "alignment": "pass",
+      "identity": "n/a",
+      "missingData": "pass",
+      "icons": "pass",
+      "states": "pass",
+      "phone": "pass",
+      "dates": "pass"
+    },
+    "notes": ""
+  },
+  {
+    "name": "research_case-studies",
+    "route": "/research/case-studies",
+    "mainTop": 227,
+    "checks": {
+      "header": "pass",
+      "filters": "pass",
+      "firstScreen": "pass",
+      "alignment": "pass",
+      "identity": "pass",
+      "missingData": "pass",
+      "icons": "pass",
+      "states": "pass",
+      "phone": "pass",
+      "dates": "pass"
+    },
+    "notes": ""
+  },
+  {
+    "name": "research_defensive-matchups",
+    "route": "/research/defensive-matchups",
+    "mainTop": 154,
+    "checks": {
+      "header": "pass",
+      "filters": "n/a",
+      "firstScreen": "pass",
+      "alignment": "pass",
+      "identity": "pass",
+      "missingData": "pass",
+      "icons": "pass",
+      "states": "pass",
+      "phone": "pass",
+      "dates": "pass"
+    },
+    "notes": ""
+  },
+  {
+    "name": "research_distributions",
+    "route": "/research/distributions",
+    "mainTop": 279,
+    "checks": {
+      "header": "pass",
+      "filters": "pass",
+      "firstScreen": "pass",
+      "alignment": "pass",
+      "identity": "pass",
+      "missingData": "pass",
+      "icons": "pass",
+      "states": "pass",
+      "phone": "pass",
+      "dates": "pass"
+    },
+    "notes": ""
+  },
+  {
+    "name": "research_epv",
+    "route": "/research/epv",
+    "mainTop": 154,
+    "checks": {
+      "header": "pass",
+      "filters": "n/a",
+      "firstScreen": "pass",
+      "alignment": "pass",
+      "identity": "pass",
+      "missingData": "pass",
+      "icons": "pass",
+      "states": "pass",
+      "phone": "pass",
+      "dates": "pass"
+    },
+    "notes": ""
+  },
+  {
+    "name": "research_operation",
+    "route": "/research/operation",
+    "mainTop": 56,
+    "checks": {
+      "header": "pass",
+      "filters": "pass",
+      "firstScreen": "pass",
+      "alignment": "pass",
+      "identity": "pass",
+      "missingData": "pass",
+      "icons": "pass",
+      "states": "pass",
+      "phone": "pass",
+      "dates": "pass"
+    },
+    "notes": ""
+  },
+  {
+    "name": "research_rapm",
+    "route": "/research/rapm",
+    "mainTop": 284,
+    "checks": {
+      "header": "pass",
+      "filters": "pass",
+      "firstScreen": "pass",
+      "alignment": "pass",
+      "identity": "pass",
+      "missingData": "pass",
+      "icons": "pass",
+      "states": "pass",
+      "phone": "pass",
+      "dates": "pass"
+    },
+    "notes": ""
+  },
+  {
+    "name": "research_rapm_six-factor",
+    "route": "/research/rapm/six-factor",
+    "mainTop": 284,
+    "checks": {
+      "header": "pass",
+      "filters": "pass",
+      "firstScreen": "pass",
+      "alignment": "pass",
+      "identity": "pass",
+      "missingData": "pass",
+      "icons": "pass",
+      "states": "pass",
+      "phone": "pass",
+      "dates": "pass"
+    },
+    "notes": ""
+  },
+  {
+    "name": "research_shooting_adjusted",
+    "route": "/research/shooting/adjusted",
+    "mainTop": 284,
+    "checks": {
+      "header": "pass",
+      "filters": "pass",
+      "firstScreen": "pass",
+      "alignment": "pass",
+      "identity": "pass",
+      "missingData": "pass",
+      "icons": "pass",
+      "states": "pass",
+      "phone": "pass",
+      "dates": "pass"
+    },
+    "notes": ""
+  },
+  {
+    "name": "research_shooting_aftermath",
+    "route": "/research/shooting/aftermath",
+    "mainTop": 304,
+    "checks": {
+      "header": "pass",
+      "filters": "pass",
+      "firstScreen": "pass",
+      "alignment": "pass",
+      "identity": "pass",
+      "missingData": "pass",
+      "icons": "pass",
+      "states": "pass",
+      "phone": "pass",
+      "dates": "pass"
+    },
+    "notes": ""
+  },
+  {
+    "name": "research_shooting",
+    "route": "/research/shooting",
+    "mainTop": 284,
+    "checks": {
+      "header": "pass",
+      "filters": "pass",
+      "firstScreen": "pass",
+      "alignment": "pass",
+      "identity": "pass",
+      "missingData": "pass",
+      "icons": "pass",
+      "states": "pass",
+      "phone": "pass",
+      "dates": "pass"
+    },
+    "notes": ""
+  },
+  {
+    "name": "research_trends",
+    "route": "/research/trends",
+    "mainTop": 279,
+    "checks": {
+      "header": "pass",
+      "filters": "pass",
+      "firstScreen": "pass",
+      "alignment": "pass",
+      "identity": "pass",
+      "missingData": "pass",
+      "icons": "pass",
+      "states": "pass",
+      "phone": "pass",
+      "dates": "pass"
+    },
+    "notes": ""
+  },
+  {
+    "name": "roster-shapes",
+    "route": "/roster-shapes",
+    "mainTop": 331,
+    "checks": {
+      "header": "pass",
+      "filters": "pass",
+      "firstScreen": "pass",
+      "alignment": "pass",
+      "identity": "pass",
+      "missingData": "pass",
+      "icons": "pass",
+      "states": "pass",
+      "phone": "pass",
+      "dates": "pass"
+    },
+    "notes": ""
+  },
+  {
+    "name": "settings",
+    "route": "/settings",
+    "mainTop": 154,
+    "checks": {
+      "header": "pass",
+      "filters": "n/a",
+      "firstScreen": "pass",
+      "alignment": "pass",
+      "identity": "n/a",
+      "missingData": "pass",
+      "icons": "pass",
+      "states": "pass",
+      "phone": "pass",
+      "dates": "pass"
+    },
+    "notes": ""
+  },
+  {
+    "name": "showcase",
+    "route": "/showcase",
+    "mainTop": 227,
+    "checks": {
+      "header": "pass",
+      "filters": "pass",
+      "firstScreen": "pass",
+      "alignment": "pass",
+      "identity": "pass",
+      "missingData": "pass",
+      "icons": "pass",
+      "states": "pass",
+      "phone": "pass",
+      "dates": "pass"
+    },
+    "notes": ""
+  },
+  {
+    "name": "similar-players",
+    "route": "/similar-players",
+    "mainTop": 284,
+    "checks": {
+      "header": "pass",
+      "filters": "pass",
+      "firstScreen": "pass",
+      "alignment": "pass",
+      "identity": "pass",
+      "missingData": "pass",
+      "icons": "pass",
+      "states": "pass",
+      "phone": "pass",
+      "dates": "pass"
+    },
+    "notes": ""
+  },
+  {
+    "name": "similar-players_shot-profile",
+    "route": "/similar-players/shot-profile",
+    "mainTop": 376,
+    "checks": {
+      "header": "pass",
+      "filters": "pass",
+      "firstScreen": "pass",
+      "alignment": "pass",
+      "identity": "pass",
+      "missingData": "pass",
+      "icons": "pass",
+      "states": "pass",
+      "phone": "pass",
+      "dates": "pass"
+    },
+    "notes": ""
+  },
+  {
+    "name": "stat-line-shift",
+    "route": "/stat-line-shift",
+    "mainTop": 368,
+    "checks": {
+      "header": "pass",
+      "filters": "pass",
+      "firstScreen": "pass",
+      "alignment": "pass",
+      "identity": "pass",
+      "missingData": "pass",
+      "icons": "pass",
+      "states": "pass",
+      "phone": "pass",
+      "dates": "pass"
+    },
+    "notes": ""
+  },
+  {
+    "name": "stats",
+    "route": "/stats",
+    "mainTop": 207,
+    "checks": {
+      "header": "pass",
+      "filters": "pass",
+      "firstScreen": "pass",
+      "alignment": "pass",
+      "identity": "pass",
+      "missingData": "pass",
+      "icons": "pass",
+      "states": "pass",
+      "phone": "pass",
+      "dates": "pass"
+    },
+    "notes": ""
+  },
+  {
+    "name": "team-compare",
+    "route": "/team-compare",
+    "mainTop": 384,
+    "checks": {
+      "header": "pass",
+      "filters": "pass",
+      "firstScreen": "pass",
+      "alignment": "pass",
+      "identity": "pass",
+      "missingData": "pass",
+      "icons": "pass",
+      "states": "pass",
+      "phone": "pass",
+      "dates": "pass"
+    },
+    "notes": ""
+  },
+  {
+    "name": "teams__id_",
+    "route": "/teams/1610612760",
+    "mainTop": 227,
+    "checks": {
+      "header": "pass",
+      "filters": "pass",
+      "firstScreen": "pass",
+      "alignment": "pass",
+      "identity": "pass",
+      "missingData": "pass",
+      "icons": "pass",
+      "states": "pass",
+      "phone": "pass",
+      "dates": "pass"
+    },
+    "notes": ""
+  },
+  {
+    "name": "teams",
+    "route": "/teams",
+    "mainTop": 279,
+    "checks": {
+      "header": "pass",
+      "filters": "pass",
+      "firstScreen": "pass",
+      "alignment": "pass",
+      "identity": "pass",
+      "missingData": "pass",
+      "icons": "pass",
+      "states": "pass",
+      "phone": "pass",
+      "dates": "pass"
+    },
+    "notes": ""
+  },
+  {
+    "name": "tierlist",
+    "route": "/tierlist",
+    "mainTop": 154,
+    "checks": {
+      "header": "pass",
+      "filters": "n/a",
+      "firstScreen": "pass",
+      "alignment": "pass",
+      "identity": "pass",
+      "missingData": "pass",
+      "icons": "pass",
+      "states": "pass",
+      "phone": "pass",
+      "dates": "pass"
+    },
+    "notes": ""
+  },
+  {
+    "name": "whats-new_blog",
+    "route": "/whats-new/blog",
+    "mainTop": 211,
+    "checks": {
+      "header": "pass",
+      "filters": "n/a",
+      "firstScreen": "pass",
+      "alignment": "pass",
+      "identity": "n/a",
+      "missingData": "pass",
+      "icons": "pass",
+      "states": "pass",
+      "phone": "pass",
+      "dates": "pass"
+    },
+    "notes": ""
+  },
+  {
+    "name": "whats-new",
+    "route": "/whats-new",
+    "mainTop": 211,
+    "checks": {
+      "header": "pass",
+      "filters": "n/a",
+      "firstScreen": "pass",
+      "alignment": "pass",
+      "identity": "n/a",
+      "missingData": "pass",
+      "icons": "pass",
+      "states": "pass",
+      "phone": "pass",
+      "dates": "pass"
+    },
+    "notes": ""
+  },
+  {
+    "name": "wingspan",
+    "route": "/wingspan",
+    "mainTop": 279,
+    "checks": {
+      "header": "pass",
+      "filters": "pass",
+      "firstScreen": "pass",
+      "alignment": "pass",
+      "identity": "pass",
+      "missingData": "pass",
+      "icons": "pass",
+      "states": "pass",
+      "phone": "pass",
+      "dates": "pass"
+    },
+    "notes": ""
+  },
+  {
+    "name": "wowy",
+    "route": "/wowy",
+    "mainTop": 396,
+    "checks": {
+      "header": "pass",
+      "filters": "pass",
+      "firstScreen": "pass",
+      "alignment": "pass",
+      "identity": "pass",
+      "missingData": "pass",
+      "icons": "pass",
+      "states": "pass",
+      "phone": "pass",
+      "dates": "pass"
+    },
+    "notes": ""
+  },
+  {
+    "name": "not-found",
+    "route": "/fo14-missing-page",
+    "mainTop": null,
+    "checks": {
+      "header": "pass",
+      "filters": "n/a",
+      "firstScreen": "n/a",
+      "alignment": "pass",
+      "identity": "n/a",
+      "missingData": "pass",
+      "icons": "pass",
+      "states": "pass",
+      "phone": "pass",
+      "dates": "pass"
+    },
+    "notes": "Recovery action is in the header; there is no analytical result or subject."
+  },
+  {
+    "name": "ask-manual",
+    "route": "/research/ask",
+    "mainTop": 154,
+    "checks": {
+      "header": "pass",
+      "filters": "partial",
+      "firstScreen": "partial",
+      "alignment": "pass",
+      "identity": "n/a",
+      "missingData": "partial",
+      "icons": "pass",
+      "states": "partial",
+      "phone": "pass",
+      "dates": "pass"
+    },
+    "notes": "Retained manual assistant form/provider disclosure; FO13/FO14 shared pickup preserves the assistant layout."
+  },
+  {
+    "name": "schedule",
+    "route": "/live",
+    "mainTop": 0,
+    "checks": {
+      "header": "pass",
+      "filters": "pass",
+      "firstScreen": "pass",
+      "alignment": "pass",
+      "identity": "pass",
+      "missingData": "pass",
+      "icons": "pass",
+      "states": "pass",
+      "phone": "pass",
+      "dates": "pass"
+    },
+    "notes": ""
+  },
+  {
+    "name": "learning",
+    "route": "/methodology/learning",
+    "mainTop": 211,
+    "checks": {
+      "header": "pass",
+      "filters": "n/a",
+      "firstScreen": "pass",
+      "alignment": "pass",
+      "identity": "n/a",
+      "missingData": "pass",
+      "icons": "pass",
+      "states": "pass",
+      "phone": "pass",
+      "dates": "pass"
+    },
+    "notes": ""
+  },
+  {
+    "name": "blog",
+    "route": "/whats-new/blog",
+    "mainTop": 211,
+    "checks": {
+      "header": "pass",
+      "filters": "n/a",
+      "firstScreen": "pass",
+      "alignment": "pass",
+      "identity": "n/a",
+      "missingData": "pass",
+      "icons": "pass",
+      "states": "pass",
+      "phone": "pass",
+      "dates": "pass"
+    },
+    "notes": ""
+  },
+  {
+    "name": "patch-notes",
+    "route": "/whats-new",
+    "mainTop": 211,
+    "checks": {
+      "header": "pass",
+      "filters": "n/a",
+      "firstScreen": "pass",
+      "alignment": "pass",
+      "identity": "n/a",
+      "missingData": "pass",
+      "icons": "pass",
+      "states": "pass",
+      "phone": "pass",
+      "dates": "pass"
+    },
+    "notes": ""
+  },
+  {
+    "name": "research_similarity",
+    "route": "/similar-players",
+    "mainTop": 284,
+    "checks": {
+      "header": "pass",
+      "filters": "pass",
+      "firstScreen": "pass",
+      "alignment": "pass",
+      "identity": "pass",
+      "missingData": "pass",
+      "icons": "pass",
+      "states": "pass",
+      "phone": "pass",
+      "dates": "pass"
+    },
+    "notes": ""
+  },
+  {
+    "name": "shot-profile-twin",
+    "route": "/similar-players/shot-profile",
+    "mainTop": 376,
+    "checks": {
+      "header": "pass",
+      "filters": "pass",
+      "firstScreen": "pass",
+      "alignment": "pass",
+      "identity": "pass",
+      "missingData": "pass",
+      "icons": "pass",
+      "states": "pass",
+      "phone": "pass",
+      "dates": "pass"
+    },
+    "notes": ""
+  },
+  {
+    "name": "research_adjusted-shooting",
+    "route": "/research/shooting/adjusted",
+    "mainTop": 284,
+    "checks": {
+      "header": "pass",
+      "filters": "pass",
+      "firstScreen": "pass",
+      "alignment": "pass",
+      "identity": "pass",
+      "missingData": "pass",
+      "icons": "pass",
+      "states": "pass",
+      "phone": "pass",
+      "dates": "pass"
+    },
+    "notes": ""
+  },
+  {
+    "name": "research_expected-shots",
+    "route": "/research/shooting",
+    "mainTop": 284,
+    "checks": {
+      "header": "pass",
+      "filters": "pass",
+      "firstScreen": "pass",
+      "alignment": "pass",
+      "identity": "pass",
+      "missingData": "pass",
+      "icons": "pass",
+      "states": "pass",
+      "phone": "pass",
+      "dates": "pass"
+    },
+    "notes": ""
+  },
+  {
+    "name": "shot-aftermath",
+    "route": "/research/shooting/aftermath",
+    "mainTop": 304,
+    "checks": {
+      "header": "pass",
+      "filters": "pass",
+      "firstScreen": "pass",
+      "alignment": "pass",
+      "identity": "pass",
+      "missingData": "pass",
+      "icons": "pass",
+      "states": "pass",
+      "phone": "pass",
+      "dates": "pass"
+    },
+    "notes": ""
+  },
+  {
+    "name": "six-factor-rapm",
+    "route": "/research/rapm/six-factor",
+    "mainTop": 284,
+    "checks": {
+      "header": "pass",
+      "filters": "pass",
+      "firstScreen": "pass",
+      "alignment": "pass",
+      "identity": "pass",
+      "missingData": "pass",
+      "icons": "pass",
+      "states": "pass",
+      "phone": "pass",
+      "dates": "pass"
+    },
+    "notes": ""
+  },
+  {
+    "name": "live_2026-04-12",
+    "route": "/live/2026-04-12",
+    "mainTop": 374,
+    "checks": {
+      "header": "pass",
+      "filters": "pass",
+      "firstScreen": "pass",
+      "alignment": "pass",
+      "identity": "pass",
+      "missingData": "pass",
+      "icons": "pass",
+      "states": "pass",
+      "phone": "pass",
+      "dates": "pass"
+    },
+    "notes": ""
+  },
+  {
+    "name": "players_1629029",
+    "route": "/players/1629029",
+    "mainTop": 227,
+    "checks": {
+      "header": "pass",
+      "filters": "pass",
+      "firstScreen": "pass",
+      "alignment": "pass",
+      "identity": "pass",
+      "missingData": "pass",
+      "icons": "pass",
+      "states": "pass",
+      "phone": "pass",
+      "dates": "pass"
+    },
+    "notes": ""
+  },
+  {
+    "name": "teams_1610612760",
+    "route": "/teams/1610612760",
+    "mainTop": 227,
+    "checks": {
+      "header": "pass",
+      "filters": "pass",
+      "firstScreen": "pass",
+      "alignment": "pass",
+      "identity": "pass",
+      "missingData": "pass",
+      "icons": "pass",
+      "states": "pass",
+      "phone": "pass",
+      "dates": "pass"
+    },
+    "notes": ""
+  },
+  {
+    "name": "contracts_BOS",
+    "route": "/contracts/BOS",
+    "mainTop": 279,
+    "checks": {
+      "header": "pass",
+      "filters": "pass",
+      "firstScreen": "pass",
+      "alignment": "pass",
+      "identity": "pass",
+      "missingData": "pass",
+      "icons": "pass",
+      "states": "pass",
+      "phone": "pass",
+      "dates": "pass"
+    },
+    "notes": ""
+  },
+  {
+    "name": "playoffs_2026-r1-det-orl",
+    "route": "/playoffs/2026-r1-det-orl",
+    "mainTop": 235,
+    "checks": {
+      "header": "pass",
+      "filters": "pass",
+      "firstScreen": "pass",
+      "alignment": "pass",
+      "identity": "pass",
+      "missingData": "pass",
+      "icons": "pass",
+      "states": "pass",
+      "phone": "pass",
+      "dates": "pass"
+    },
+    "notes": ""
+  },
+  {
+    "name": "live_games_0022501186",
+    "route": "/live/games/0022501186",
+    "mainTop": 374,
+    "checks": {
+      "header": "pass",
+      "filters": "pass",
+      "firstScreen": "pass",
+      "alignment": "pass",
+      "identity": "pass",
+      "missingData": "pass",
+      "icons": "pass",
+      "states": "pass",
+      "phone": "pass",
+      "dates": "pass"
+    },
+    "notes": ""
+  },
+  {
+    "name": "investigations_saved_3bcb37c9-b410-44b1-be7f-c3b368fbe28c",
+    "route": "/investigations/saved/3bcb37c9-b410-44b1-be7f-c3b368fbe28c",
+    "mainTop": 227,
+    "checks": {
+      "header": "pass",
+      "filters": "pass",
+      "firstScreen": "pass",
+      "alignment": "pass",
+      "identity": "pass",
+      "missingData": "pass",
+      "icons": "pass",
+      "states": "pass",
+      "phone": "pass",
+      "dates": "pass"
+    },
+    "notes": ""
+  },
+  {
+    "name": "live_2026-10-09",
+    "route": "/live/2026-10-09",
+    "mainTop": 0,
+    "checks": {
+      "header": "pass",
+      "filters": "pass",
+      "firstScreen": "pass",
+      "alignment": "pass",
+      "identity": "pass",
+      "missingData": "pass",
+      "icons": "pass",
+      "states": "pass",
+      "phone": "pass",
+      "dates": "pass"
+    },
+    "notes": ""
+  }
+]

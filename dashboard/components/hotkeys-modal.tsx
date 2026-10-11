@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { Modal } from "./ui/modal";
 
 interface HotkeysModalProps {
   isOpen: boolean;
@@ -29,24 +29,6 @@ const SHORTCUTS: ShortcutItem[] = [
 ];
 
 export function HotkeysModal({ isOpen, onClose }: HotkeysModalProps) {
-  const modalRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (!isOpen) return;
-
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        e.preventDefault();
-        onClose();
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isOpen, onClose]);
-
-  if (!isOpen) return null;
-
   const categories: Array<"Global" | "Navigation" | "Stats & Table"> = [
     "Global",
     "Navigation",
@@ -54,62 +36,36 @@ export function HotkeysModal({ isOpen, onClose }: HotkeysModalProps) {
   ];
 
   return (
-    <div
-      className="modal-backdrop"
-      onClick={(e) => {
-        if (e.target === e.currentTarget) onClose();
-      }}
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="hotkeys-modal-title"
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      title="Keyboard Shortcuts"
+      description="Quick keyboard access across the CourtLens replica workspace."
+      className="hotkeys-modal"
     >
-      <div className="modal-card" ref={modalRef} tabIndex={-1}>
-        <div className="modal-header">
-          <div>
-            <h2 id="hotkeys-modal-title" className="modal-title">
-              Keyboard Shortcuts
-            </h2>
-            <p className="modal-subtitle">
-              Quick keyboard access across the CourtLens replica workspace.
-            </p>
-          </div>
-          <button
-            type="button"
-            className="modal-close-btn"
-            onClick={onClose}
-            aria-label="Close keyboard shortcuts dialog"
-          >
-            ✕
-          </button>
+      {categories.map((cat) => (
+        <div key={cat} className="hotkeys-section">
+          <h3 className="hotkeys-section-title">{cat}</h3>
+          <dl className="hotkeys-list">
+            {SHORTCUTS.filter((s) => s.category === cat).map((item) => (
+              <div key={item.key} className="hotkeys-row">
+                <dt className="hotkeys-key">
+                  <kbd>{item.key}</kbd>
+                </dt>
+                <dd className="hotkeys-desc">{item.description}</dd>
+              </div>
+            ))}
+          </dl>
         </div>
-
-        <div className="modal-body">
-          {categories.map((cat) => (
-            <div key={cat} className="hotkeys-section">
-              <h3 className="hotkeys-section-title">{cat}</h3>
-              <dl className="hotkeys-list">
-                {SHORTCUTS.filter((s) => s.category === cat).map((item) => (
-                  <div key={item.key} className="hotkeys-row">
-                    <dt className="hotkeys-key">
-                      <kbd>{item.key}</kbd>
-                    </dt>
-                    <dd className="hotkeys-desc">{item.description}</dd>
-                  </div>
-                ))}
-              </dl>
-            </div>
-          ))}
-        </div>
-
-        <div className="modal-footer">
-          <span className="text-xs text-muted">
-            Table shortcuts (T, C, Z, W/E, A/D) require focus on the table container.
-          </span>
-          <button type="button" className="button button-small" onClick={onClose}>
-            Got it (Esc)
-          </button>
-        </div>
+      ))}
+      <div className="modal-footer">
+        <span className="text-xs text-muted">
+          Table shortcuts (T, C, Z, W/E, A/D) require focus on the table container.
+        </span>
+        <button type="button" className="button button-small" onClick={onClose}>
+          Got it (Esc)
+        </button>
       </div>
-    </div>
+    </Modal>
   );
 }

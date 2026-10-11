@@ -39,10 +39,15 @@ test("offline retains last observation; capacity and disabled acquisition stay u
   await context.setOffline(true);await expect(page.getByRole("status").filter({hasText:"Offline"})).toBeVisible();await expect(page.getByRole("region",{name:"Game slate"})).toContainText("Boston Celtics");await context.setOffline(false);
 });
 
+async function expectReleaseInDetails(page: Page, release: string) {
+  // D5: the research release lives in Data details, not the main flow.
+  await page.getByRole("button",{name:"Data details"}).click();const details=page.getByRole("dialog");await expect(details).toContainText(release);await page.keyboard.press("Escape");
+}
+
 test("historical final detail has no demand and pins resolved release in links",async({page})=>{
-  const calls=await mock(page);await page.goto("/live/2025-04-15?season=2024-25");await expect(page.getByText(/Research release: sealed-history/)).toBeVisible();expect(calls.some(c=>c.method==="POST")).toBe(false);
+  const calls=await mock(page);await page.goto("/live/2025-04-15?season=2024-25");await expect(page.getByRole("region",{name:"Game slate"}).getByRole("link")).toHaveCount(1);await expectReleaseInDetails(page,"sealed-history");expect(calls.some(c=>c.method==="POST")).toBe(false);
   await page.getByRole("region",{name:"Game slate"}).getByRole("link").click();await expect.poll(()=>new URL(page.url()).searchParams.get("releaseId")).toBe("sealed-history");await expect(page.getByRole("region",{name:"Selected game details"})).toContainText("Finalized research");await expect(page.getByRole("region",{name:"Selected game details"})).toContainText("Player boxes unknown");expect(calls.some(c=>c.method==="POST")).toBe(false);
-  await page.reload();await expect(page.getByText(/Research release: sealed-history/)).toBeVisible();
+  await page.reload();await expect(page.getByRole("region",{name:"Selected game details"})).toContainText("Finalized research");await expectReleaseInDetails(page,"sealed-history");
 });
 
 test("mobile and landscape source box regions contain overflow and keyboard focus",async({page})=>{
@@ -52,18 +57,35 @@ test("mobile and landscape source box regions contain overflow and keyboard focu
 
 test("a delayed old selection cannot overwrite new date observations",async({page})=>{
   await mock(page);let resolveOld:()=>void=()=>{};await page.route(`**/api/live?slate_date=${slate}`,async route=>{await new Promise<void>(r=>{resolveOld=r;});await route.fulfill({json:cache}).catch(()=>{});});
-  await page.goto(`/live/${slate}`);await expect(page.getByRole("status").filter({hasText:"Visible"})).toBeVisible();await page.getByLabel("Slate date",{exact:true}).fill(shiftSlate(slate,1));await expect(page.getByRole("region",{name:"Game slate"})).toContainText("Boston Celtics");resolveOld();await expect(page.getByLabel("Slate date",{exact:true})).toHaveValue(shiftSlate(slate,1));
+  await page.goto(`/live/${slate}`);await expect(page.getByRole("status").filter({hasText:"Visible"})).toBeVisible();const next=shiftSlate(slate,1);await page.getByRole("navigation",{name:"Live dates"}).locator(`a[href^="/live/${next}"]`).click();await expect(page).toHaveURL(new RegExp(`/live/${next}`));await expect(page.getByRole("region",{name:"Game slate"})).toContainText("Boston Celtics");resolveOld();await expect(page).toHaveURL(new RegExp(`/live/${next}`));await expect(page.getByRole("button",{name:/^Slate date:/})).toHaveAttribute("data-value",next);
 });
 
 test("disabled acquisition, observed empty slate and invalid dates stay distinct", async({page}) => {
+  // Unknown is never zero: an unobserved slate shows no game count.
   const calls = await mock(page);
   await page.route("**/api/live?slate_date=*", route => route.fulfill({json:{...cache,status:"not_configured",capability:"not_configured",paused:true,data:null,age_seconds:null}}));
   await page.goto(`/live/${slate}`);
   await expect(page.locator("main")).toContainText("not configured");
   await expect(page.locator("main")).toContainText("Awaiting a cached slate");
+  await expect(page.locator(".ui-count-chip")).toHaveCount(0);
   await page.unroute("**/api/live?slate_date=*");
   await page.route("**/api/live?slate_date=*", route => route.fulfill({json:{...cache,data:{games:[]}}}));
   await page.reload(); await expect(page.locator("main")).toContainText("No games in the observed source slate");
+  await expect(page.locator(".ui-count-chip")).toHaveText("0 games");
   await page.goto("/live/2026-02-30");await expect(page.getByRole("status").filter({hasText:"Invalid date"})).toBeVisible();
   const count=calls.length; await page.getByRole("button",{name:"Pause updates"}).click();expect(calls.length).toBe(count);
+});
+
+test("FO08 board: one title, Live tabs, date strip counts and nearest-date jumps",async({page})=>{
+  await mock(page);await page.route("**/api/live?slate_date=*", route => route.fulfill({json:{...cache,data:{games:[]}}}));
+  await page.setViewportSize({width:1440,height:900});await page.goto(`/live/${slate}`);
+  await expect(page.locator("h1")).toHaveText("Live");
+  const tabs=page.getByRole("navigation",{name:"Live sections"});await expect(tabs.getByRole("link")).toHaveText(["Live","Finals","Playoffs"]);await expect(tabs.locator('[aria-current="page"]')).toHaveText("Live");
+  const strip=page.getByRole("navigation",{name:"Live dates"});await expect(strip.locator(".live-date")).toHaveCount(15);await expect(strip.locator('[aria-current="date"]')).toContainText("Today");
+  expect(await strip.locator(".live-date").evaluateAll(links=>links.every(link=>(link.getAttribute("data-empty")!==null)===(link.querySelector(".live-date-count")?.textContent==="0")))).toBe(true);
+  await expect(page.getByRole("button",{name:/^Load/})).toHaveCount(0);await expect(page.locator('input[type="date"]')).toHaveCount(0);
+  const empty=page.getByRole("note").filter({hasText:"No games on"});await expect(empty.getByRole("link")).toHaveCount(2);
+  await empty.getByRole("link").last().click();await expect(page).toHaveURL(new RegExp(`/live/${shiftSlate(slate,1)}`));
+  await tabs.getByRole("link",{name:"Finals"}).click();await expect(page).toHaveURL(/live_mode=history/);await expect(tabs.locator('[aria-current="page"]')).toHaveText("Finals");
+  await page.setViewportSize({width:390,height:844});expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
 });

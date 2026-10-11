@@ -58,7 +58,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
             <Suspense fallback={<div className="header-suspense-fallback" />}>
               <ReplicaNav />
             </Suspense>
-            <main id="content" className="replica-main">
+            <main id="content" className="replica-main" tabIndex={-1}>
               <Suspense fallback={null}>
                 {children}
               </Suspense>

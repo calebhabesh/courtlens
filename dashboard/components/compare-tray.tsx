@@ -90,7 +90,7 @@ export function CompareTray({
             tabIndex={canCompare ? 0 : -1}
             title={canCompare ? "Compare the first two selected players (Z)" : "Select at least 2 players to compare"}
           >
-            {canCompare ? selectedPlayers.length > 2 ? "Compare first 2 →" : "Compare (2) →" : "Select 2+ players"}
+            {canCompare ? selectedPlayers.length > 2 ? "Compare first 2" : "Compare (2)" : "Select 2+ players"}
           </Link>
         </div>
       </div>
@@ -98,7 +98,7 @@ export function CompareTray({
   );
 }
 
-function TrayChip({ player, context, onRemove }: { player: PlayerResearchItem;
+export function TrayChip({ player, context, onRemove }: { player: PlayerResearchItem;
   context: CompareTrayProps["context"]; onRemove: (id: string) => void }) {
   const key = JSON.stringify([player.player_id, context]);
   const [resolved, setResolved] = useState<{ key: string; name: string; portrait?: string | null; error?: boolean } | null>(null);

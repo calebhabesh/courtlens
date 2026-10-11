@@ -1,0 +1,854 @@
+[
+  {
+    "name": "stats",
+    "small": [
+      {
+        "text": "Luka Dončić",
+        "class": "player-cell-name font-semibold",
+        "height": 17.5,
+        "parent": "DIV",
+        "parentClass": "stats-identity-copy"
+      },
+      {
+        "text": "Shai Gilgeous-Alexander",
+        "class": "player-cell-name font-semibold",
+        "height": 17.5,
+        "parent": "DIV",
+        "parentClass": "stats-identity-copy"
+      },
+      {
+        "text": "Anthony Edwards",
+        "class": "player-cell-name font-semibold",
+        "height": 17.5,
+        "parent": "DIV",
+        "parentClass": "stats-identity-copy"
+      },
+      {
+        "text": "Jaylen Brown",
+        "class": "player-cell-name font-semibold",
+        "height": 17.5,
+        "parent": "DIV",
+        "parentClass": "stats-identity-copy"
+      },
+      {
+        "text": "Tyrese Maxey",
+        "class": "player-cell-name font-semibold",
+        "height": 17.5,
+        "parent": "DIV",
+        "parentClass": "stats-identity-copy"
+      },
+      {
+        "text": "Donovan Mitchell",
+        "class": "player-cell-name font-semibold",
+        "height": 17.5,
+        "parent": "DIV",
+        "parentClass": "stats-identity-copy"
+      },
+      {
+        "text": "Kawhi Leonard",
+        "class": "player-cell-name font-semibold",
+        "height": 17.5,
+        "parent": "DIV",
+        "parentClass": "stats-identity-copy"
+      },
+      {
+        "text": "Nikola Jokić",
+        "class": "player-cell-name font-semibold",
+        "height": 17.5,
+        "parent": "DIV",
+        "parentClass": "stats-identity-copy"
+      },
+      {
+        "text": "Giannis Antetokounmpo",
+        "class": "player-cell-name font-semibold",
+        "height": 17.5,
+        "parent": "DIV",
+        "parentClass": "stats-identity-copy"
+      },
+      {
+        "text": "Lauri Markkanen",
+        "class": "player-cell-name font-semibold",
+        "height": 17.5,
+        "parent": "DIV",
+        "parentClass": "stats-identity-copy"
+      },
+      {
+        "text": "Joel Embiid",
+        "class": "player-cell-name font-semibold",
+        "height": 17.5,
+        "parent": "DIV",
+        "parentClass": "stats-identity-copy"
+      },
+      {
+        "text": "Stephen Curry",
+        "class": "player-cell-name font-semibold",
+        "height": 17.5,
+        "parent": "DIV",
+        "parentClass": "stats-identity-copy"
+      },
+      {
+        "text": "Devin Booker",
+        "class": "player-cell-name font-semibold",
+        "height": 17.5,
+        "parent": "DIV",
+        "parentClass": "stats-identity-copy"
+      },
+      {
+        "text": "Jalen Brunson",
+        "class": "player-cell-name font-semibold",
+        "height": 17.5,
+        "parent": "DIV",
+        "parentClass": "stats-identity-copy"
+      },
+      {
+        "text": "Kevin Durant",
+        "class": "player-cell-name font-semibold",
+        "height": 17.5,
+        "parent": "DIV",
+        "parentClass": "stats-identity-copy"
+      },
+      {
+        "text": "Jamal Murray",
+        "class": "player-cell-name font-semibold",
+        "height": 17.5,
+        "parent": "DIV",
+        "parentClass": "stats-identity-copy"
+      },
+      {
+        "text": "Victor Wembanyama",
+        "class": "player-cell-name font-semibold",
+        "height": 17.5,
+        "parent": "DIV",
+        "parentClass": "stats-identity-copy"
+      },
+      {
+        "text": "Michael Porter Jr.",
+        "class": "player-cell-name font-semibold",
+        "height": 17.5,
+        "parent": "DIV",
+        "parentClass": "stats-identity-copy"
+      },
+      {
+        "text": "Deni Avdija",
+        "class": "player-cell-name font-semibold",
+        "height": 17.5,
+        "parent": "DIV",
+        "parentClass": "stats-identity-copy"
+      },
+      {
+        "text": "Pascal Siakam",
+        "class": "player-cell-name font-semibold",
+        "height": 17.5,
+        "parent": "DIV",
+        "parentClass": "stats-identity-copy"
+      },
+      {
+        "text": "Cade Cunningham",
+        "class": "player-cell-name font-semibold",
+        "height": 17.5,
+        "parent": "DIV",
+        "parentClass": "stats-identity-copy"
+      },
+      {
+        "text": "Keyonte George",
+        "class": "player-cell-name font-semibold",
+        "height": 17.5,
+        "parent": "DIV",
+        "parentClass": "stats-identity-copy"
+      },
+      {
+        "text": "James Harden",
+        "class": "player-cell-name font-semibold",
+        "height": 17.5,
+        "parent": "DIV",
+        "parentClass": "stats-identity-copy"
+      },
+      {
+        "text": "Austin Reaves",
+        "class": "player-cell-name font-semibold",
+        "height": 17.5,
+        "parent": "DIV",
+        "parentClass": "stats-identity-copy"
+      },
+      {
+        "text": "Jalen Johnson",
+        "class": "player-cell-name font-semibold",
+        "height": 17.5,
+        "parent": "DIV",
+        "parentClass": "stats-identity-copy"
+      },
+      {
+        "text": "Paolo Banchero",
+        "class": "player-cell-name font-semibold",
+        "height": 17.5,
+        "parent": "DIV",
+        "parentClass": "stats-identity-copy"
+      },
+      {
+        "text": "Jayson Tatum",
+        "class": "player-cell-name font-semibold",
+        "height": 17.5,
+        "parent": "DIV",
+        "parentClass": "stats-identity-copy"
+      },
+      {
+        "text": "Norman Powell",
+        "class": "player-cell-name font-semibold",
+        "height": 17.5,
+        "parent": "DIV",
+        "parentClass": "stats-identity-copy"
+      },
+      {
+        "text": "Trey Murphy III",
+        "class": "player-cell-name font-semibold",
+        "height": 17.5,
+        "parent": "DIV",
+        "parentClass": "stats-identity-copy"
+      },
+      {
+        "text": "Brandon Ingram",
+        "class": "player-cell-name font-semibold",
+        "height": 17.5,
+        "parent": "DIV",
+        "parentClass": "stats-identity-copy"
+      },
+      {
+        "text": "Julius Randle",
+        "class": "player-cell-name font-semibold",
+        "height": 17.5,
+        "parent": "DIV",
+        "parentClass": "stats-identity-copy"
+      },
+      {
+        "text": "Zion Williamson",
+        "class": "player-cell-name font-semibold",
+        "height": 17.5,
+        "parent": "DIV",
+        "parentClass": "stats-identity-copy"
+      },
+      {
+        "text": "Cooper Flagg",
+        "class": "player-cell-name font-semibold",
+        "height": 17.5,
+        "parent": "DIV",
+        "parentClass": "stats-identity-copy"
+      },
+      {
+        "text": "LeBron James",
+        "class": "player-cell-name font-semibold",
+        "height": 17.5,
+        "parent": "DIV",
+        "parentClass": "stats-identity-copy"
+      },
+      {
+        "text": "Nickeil Alexander-Walker",
+        "class": "player-cell-name font-semibold",
+        "height": 17.5,
+        "parent": "DIV",
+        "parentClass": "stats-identity-copy"
+      },
+      {
+        "text": "Shaedon Sharpe",
+        "class": "player-cell-name font-semibold",
+        "height": 17.5,
+        "parent": "DIV",
+        "parentClass": "stats-identity-copy"
+      },
+      {
+        "text": "Franz Wagner",
+        "class": "player-cell-name font-semibold",
+        "height": 17.5,
+        "parent": "DIV",
+        "parentClass": "stats-identity-copy"
+      },
+      {
+        "text": "Tyler Herro",
+        "class": "player-cell-name font-semibold",
+        "height": 17.5,
+        "parent": "DIV",
+        "parentClass": "stats-identity-copy"
+      },
+      {
+        "text": "Alperen Sengun",
+        "class": "player-cell-name font-semibold",
+        "height": 17.5,
+        "parent": "DIV",
+        "parentClass": "stats-identity-copy"
+      },
+      {
+        "text": "Anthony Davis",
+        "class": "player-cell-name font-semibold",
+        "height": 17.5,
+        "parent": "DIV",
+        "parentClass": "stats-identity-copy"
+      },
+      {
+        "text": "Dillon Brooks",
+        "class": "player-cell-name font-semibold",
+        "height": 17.5,
+        "parent": "DIV",
+        "parentClass": "stats-identity-copy"
+      },
+      {
+        "text": "Brandon Miller",
+        "class": "player-cell-name font-semibold",
+        "height": 17.5,
+        "parent": "DIV",
+        "parentClass": "stats-identity-copy"
+      },
+      {
+        "text": "Karl-Anthony Towns",
+        "class": "player-cell-name font-semibold",
+        "height": 17.5,
+        "parent": "DIV",
+        "parentClass": "stats-identity-copy"
+      },
+      {
+        "text": "Bam Adebayo",
+        "class": "player-cell-name font-semibold",
+        "height": 17.5,
+        "parent": "DIV",
+        "parentClass": "stats-identity-copy"
+      },
+      {
+        "text": "LaMelo Ball",
+        "class": "player-cell-name font-semibold",
+        "height": 17.5,
+        "parent": "DIV",
+        "parentClass": "stats-identity-copy"
+      },
+      {
+        "text": "Desmond Bane",
+        "class": "player-cell-name font-semibold",
+        "height": 17.5,
+        "parent": "DIV",
+        "parentClass": "stats-identity-copy"
+      },
+      {
+        "text": "Jimmy Butler III",
+        "class": "player-cell-name font-semibold",
+        "height": 17.5,
+        "parent": "DIV",
+        "parentClass": "stats-identity-copy"
+      },
+      {
+        "text": "Ty Jerome",
+        "class": "player-cell-name font-semibold",
+        "height": 17.5,
+        "parent": "DIV",
+        "parentClass": "stats-identity-copy"
+      },
+      {
+        "text": "Ja Morant",
+        "class": "player-cell-name font-semibold",
+        "height": 17.5,
+        "parent": "DIV",
+        "parentClass": "stats-identity-copy"
+      },
+      {
+        "text": "Jalen Duren",
+        "class": "player-cell-name font-semibold",
+        "height": 17.5,
+        "parent": "DIV",
+        "parentClass": "stats-identity-copy"
+      }
+    ]
+  },
+  {
+    "name": "teams",
+    "small": [
+      {
+        "text": "Oklahoma City Thunder",
+        "class": "font-semibold text-accent",
+        "height": 19.5,
+        "parent": "DIV",
+        "parentClass": "team-cell-identity"
+      },
+      {
+        "text": "San Antonio Spurs",
+        "class": "font-semibold text-accent",
+        "height": 19.5,
+        "parent": "DIV",
+        "parentClass": "team-cell-identity"
+      },
+      {
+        "text": "Detroit Pistons",
+        "class": "font-semibold text-accent",
+        "height": 19.5,
+        "parent": "DIV",
+        "parentClass": "team-cell-identity"
+      },
+      {
+        "text": "Boston Celtics",
+        "class": "font-semibold text-accent",
+        "height": 19.5,
+        "parent": "DIV",
+        "parentClass": "team-cell-identity"
+      },
+      {
+        "text": "Denver Nuggets",
+        "class": "font-semibold text-accent",
+        "height": 19.5,
+        "parent": "DIV",
+        "parentClass": "team-cell-identity"
+      },
+      {
+        "text": "New York Knicks",
+        "class": "font-semibold text-accent",
+        "height": 19.5,
+        "parent": "DIV",
+        "parentClass": "team-cell-identity"
+      },
+      {
+        "text": "Los Angeles Lakers",
+        "class": "font-semibold text-accent",
+        "height": 19.5,
+        "parent": "DIV",
+        "parentClass": "team-cell-identity"
+      },
+      {
+        "text": "Houston Rockets",
+        "class": "font-semibold text-accent",
+        "height": 19.5,
+        "parent": "DIV",
+        "parentClass": "team-cell-identity"
+      },
+      {
+        "text": "Cleveland Cavaliers",
+        "class": "font-semibold text-accent",
+        "height": 19.5,
+        "parent": "DIV",
+        "parentClass": "team-cell-identity"
+      },
+      {
+        "text": "Minnesota Timberwolves",
+        "class": "font-semibold text-accent",
+        "height": 19.5,
+        "parent": "DIV",
+        "parentClass": "team-cell-identity"
+      },
+      {
+        "text": "Toronto Raptors",
+        "class": "font-semibold text-accent",
+        "height": 19.5,
+        "parent": "DIV",
+        "parentClass": "team-cell-identity"
+      },
+      {
+        "text": "Atlanta Hawks",
+        "class": "font-semibold text-accent",
+        "height": 19.5,
+        "parent": "DIV",
+        "parentClass": "team-cell-identity"
+      },
+      {
+        "text": "Phoenix Suns",
+        "class": "font-semibold text-accent",
+        "height": 19.5,
+        "parent": "DIV",
+        "parentClass": "team-cell-identity"
+      },
+      {
+        "text": "Orlando Magic",
+        "class": "font-semibold text-accent",
+        "height": 19.5,
+        "parent": "DIV",
+        "parentClass": "team-cell-identity"
+      },
+      {
+        "text": "Philadelphia 76ers",
+        "class": "font-semibold text-accent",
+        "height": 19.5,
+        "parent": "DIV",
+        "parentClass": "team-cell-identity"
+      },
+      {
+        "text": "Charlotte Hornets",
+        "class": "font-semibold text-accent",
+        "height": 19.5,
+        "parent": "DIV",
+        "parentClass": "team-cell-identity"
+      },
+      {
+        "text": "Miami Heat",
+        "class": "font-semibold text-accent",
+        "height": 19.5,
+        "parent": "DIV",
+        "parentClass": "team-cell-identity"
+      },
+      {
+        "text": "LA Clippers",
+        "class": "font-semibold text-accent",
+        "height": 19.5,
+        "parent": "DIV",
+        "parentClass": "team-cell-identity"
+      },
+      {
+        "text": "Portland Trail Blazers",
+        "class": "font-semibold text-accent",
+        "height": 19.5,
+        "parent": "DIV",
+        "parentClass": "team-cell-identity"
+      },
+      {
+        "text": "Golden State Warriors",
+        "class": "font-semibold text-accent",
+        "height": 19.5,
+        "parent": "DIV",
+        "parentClass": "team-cell-identity"
+      },
+      {
+        "text": "Milwaukee Bucks",
+        "class": "font-semibold text-accent",
+        "height": 19.5,
+        "parent": "DIV",
+        "parentClass": "team-cell-identity"
+      },
+      {
+        "text": "Chicago Bulls",
+        "class": "font-semibold text-accent",
+        "height": 19.5,
+        "parent": "DIV",
+        "parentClass": "team-cell-identity"
+      },
+      {
+        "text": "New Orleans Pelicans",
+        "class": "font-semibold text-accent",
+        "height": 19.5,
+        "parent": "DIV",
+        "parentClass": "team-cell-identity"
+      },
+      {
+        "text": "Dallas Mavericks",
+        "class": "font-semibold text-accent",
+        "height": 19.5,
+        "parent": "DIV",
+        "parentClass": "team-cell-identity"
+      },
+      {
+        "text": "Memphis Grizzlies",
+        "class": "font-semibold text-accent",
+        "height": 19.5,
+        "parent": "DIV",
+        "parentClass": "team-cell-identity"
+      },
+      {
+        "text": "Utah Jazz",
+        "class": "font-semibold text-accent",
+        "height": 19.5,
+        "parent": "DIV",
+        "parentClass": "team-cell-identity"
+      },
+      {
+        "text": "Sacramento Kings",
+        "class": "font-semibold text-accent",
+        "height": 19.5,
+        "parent": "DIV",
+        "parentClass": "team-cell-identity"
+      },
+      {
+        "text": "Brooklyn Nets",
+        "class": "font-semibold text-accent",
+        "height": 19.5,
+        "parent": "DIV",
+        "parentClass": "team-cell-identity"
+      },
+      {
+        "text": "Indiana Pacers",
+        "class": "font-semibold text-accent",
+        "height": 19.5,
+        "parent": "DIV",
+        "parentClass": "team-cell-identity"
+      },
+      {
+        "text": "Washington Wizards",
+        "class": "font-semibold text-accent",
+        "height": 19.5,
+        "parent": "DIV",
+        "parentClass": "team-cell-identity"
+      }
+    ]
+  },
+  {
+    "name": "players__id_",
+    "small": [
+      {
+        "text": "2023-24",
+        "class": "font-mono ",
+        "height": 17,
+        "parent": "TD",
+        "parentClass": ""
+      },
+      {
+        "text": "2024-25",
+        "class": "font-mono ",
+        "height": 17,
+        "parent": "TD",
+        "parentClass": ""
+      },
+      {
+        "text": "2025-26 Current season",
+        "class": "font-mono font-bold text-accent",
+        "height": 19.5,
+        "parent": "TD",
+        "parentClass": ""
+      }
+    ]
+  },
+  {
+    "name": "team-compare",
+    "small": []
+  },
+  {
+    "name": "contracts",
+    "small": []
+  },
+  {
+    "name": "investigations",
+    "small": [
+      {
+        "text": "B35b production-browser: scoring distribution",
+        "class": "",
+        "height": 15,
+        "parent": "TH",
+        "parentClass": ""
+      },
+      {
+        "text": "B35a verification: finance",
+        "class": "",
+        "height": 15,
+        "parent": "TH",
+        "parentClass": ""
+      },
+      {
+        "text": "B35a verification: workload_shifts",
+        "class": "",
+        "height": 15,
+        "parent": "TH",
+        "parentClass": ""
+      },
+      {
+        "text": "B35a verification: similarity",
+        "class": "",
+        "height": 15,
+        "parent": "TH",
+        "parentClass": ""
+      },
+      {
+        "text": "B35a verification: splits",
+        "class": "",
+        "height": 15,
+        "parent": "TH",
+        "parentClass": ""
+      },
+      {
+        "text": "B35a verification: compare_periods",
+        "class": "",
+        "height": 15,
+        "parent": "TH",
+        "parentClass": ""
+      },
+      {
+        "text": "B35a verification: distribution",
+        "class": "",
+        "height": 15,
+        "parent": "TH",
+        "parentClass": ""
+      },
+      {
+        "text": "B35a verification: forecast",
+        "class": "",
+        "height": 15,
+        "parent": "TH",
+        "parentClass": ""
+      },
+      {
+        "text": "B35a verification: team",
+        "class": "",
+        "height": 15,
+        "parent": "TH",
+        "parentClass": ""
+      },
+      {
+        "text": "B35a verification: compare",
+        "class": "",
+        "height": 15,
+        "parent": "TH",
+        "parentClass": ""
+      },
+      {
+        "text": "B35a verification: profile",
+        "class": "",
+        "height": 15,
+        "parent": "TH",
+        "parentClass": ""
+      },
+      {
+        "text": "B35a verification: definition",
+        "class": "",
+        "height": 15,
+        "parent": "TH",
+        "parentClass": ""
+      },
+      {
+        "text": "B35a verification: query",
+        "class": "",
+        "height": 15,
+        "parent": "TH",
+        "parentClass": ""
+      },
+      {
+        "text": "B35a verification: finance",
+        "class": "",
+        "height": 15,
+        "parent": "TH",
+        "parentClass": ""
+      },
+      {
+        "text": "B35a verification: workload_shifts",
+        "class": "",
+        "height": 15,
+        "parent": "TH",
+        "parentClass": ""
+      },
+      {
+        "text": "B35a verification: similarity",
+        "class": "",
+        "height": 15,
+        "parent": "TH",
+        "parentClass": ""
+      },
+      {
+        "text": "B35a verification: splits",
+        "class": "",
+        "height": 15,
+        "parent": "TH",
+        "parentClass": ""
+      },
+      {
+        "text": "B35a verification: compare_periods",
+        "class": "",
+        "height": 15,
+        "parent": "TH",
+        "parentClass": ""
+      },
+      {
+        "text": "B35a verification: distribution",
+        "class": "",
+        "height": 15,
+        "parent": "TH",
+        "parentClass": ""
+      },
+      {
+        "text": "B35a verification: forecast",
+        "class": "",
+        "height": 15,
+        "parent": "TH",
+        "parentClass": ""
+      },
+      {
+        "text": "B35a verification: team",
+        "class": "",
+        "height": 15,
+        "parent": "TH",
+        "parentClass": ""
+      },
+      {
+        "text": "B35a verification: compare",
+        "class": "",
+        "height": 15,
+        "parent": "TH",
+        "parentClass": ""
+      },
+      {
+        "text": "B35a verification: profile",
+        "class": "",
+        "height": 15,
+        "parent": "TH",
+        "parentClass": ""
+      },
+      {
+        "text": "B35a verification: definition",
+        "class": "",
+        "height": 15,
+        "parent": "TH",
+        "parentClass": ""
+      },
+      {
+        "text": "B35a verification: query",
+        "class": "",
+        "height": 15,
+        "parent": "TH",
+        "parentClass": ""
+      },
+      {
+        "text": "B35a verification: compare_periods",
+        "class": "",
+        "height": 15,
+        "parent": "TH",
+        "parentClass": ""
+      },
+      {
+        "text": "B35a verification: distribution",
+        "class": "",
+        "height": 15,
+        "parent": "TH",
+        "parentClass": ""
+      },
+      {
+        "text": "B35a verification: forecast",
+        "class": "",
+        "height": 15,
+        "parent": "TH",
+        "parentClass": ""
+      },
+      {
+        "text": "B35a verification: team",
+        "class": "",
+        "height": 15,
+        "parent": "TH",
+        "parentClass": ""
+      },
+      {
+        "text": "B35a verification: compare",
+        "class": "",
+        "height": 15,
+        "parent": "TH",
+        "parentClass": ""
+      },
+      {
+        "text": "B35a verification: profile",
+        "class": "",
+        "height": 15,
+        "parent": "TH",
+        "parentClass": ""
+      },
+      {
+        "text": "B35a verification: definition",
+        "class": "",
+        "height": 15,
+        "parent": "TH",
+        "parentClass": ""
+      },
+      {
+        "text": "B35a verification: query",
+        "class": "",
+        "height": 15,
+        "parent": "TH",
+        "parentClass": ""
+      }
+    ]
+  },
+  {
+    "name": "settings",
+    "small": []
+  },
+  {
+    "name": "research_ask",
+    "small": []
+  },
+  {
+    "name": "live_2026-04-12",
+    "small": []
+  }
+]

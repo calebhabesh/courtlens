@@ -1,5 +1,7 @@
 import { AskCourtLens } from "@/components/ask-courtlens";
 import Link from "next/link";
+import { PageShell } from "@/components/ui/page-shell";
+import { PageHeader } from "@/components/ui/panel";
 
 interface AskPageProps {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
@@ -16,24 +18,18 @@ export default async function AskPage({ searchParams }: AskPageProps) {
 
   if (threaded) return (
     <div className="ask-page">
-      <h1 className="sr-only">Ask CourtLens</h1>
+      <PageHeader title="Ask CourtLens" className="sr-only" />
       <AskCourtLens initialReleaseId={releaseId} initialSeason={season} initialPhase={phase} initialBeforeDate={beforeDate} initialWindow={windowParam} />
     </div>
   );
 
   return (
-    <div className="workbench-content">
-      <div className="page-header">
-        <div>
-          <h1 className="page-title">Ask CourtLens</h1>
-          <p className="page-subtitle">
-            Ask follow-up questions or run manual research against a pinned release, with exact results and evidence.
-          </p>
-        </div>
-      </div>
-
-      <p><Link href="/research/ask">Open assistant</Link></p>
-
+    <PageShell template="research" className="ask-manual-page">
+      <PageHeader
+        title="Ask CourtLens"
+        subtitle="Ask follow-up questions or run manual research against a pinned release, with exact results and evidence."
+        actions={<Link href="/research/ask" className="ui-button ui-button-secondary ui-button-sm">Open assistant</Link>}
+      />
       <AskCourtLens
         initialReleaseId={releaseId}
         initialSeason={season}
@@ -41,6 +37,6 @@ export default async function AskPage({ searchParams }: AskPageProps) {
         initialBeforeDate={beforeDate}
         initialWindow={windowParam}
       />
-    </div>
+    </PageShell>
   );
 }

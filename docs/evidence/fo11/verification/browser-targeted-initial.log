@@ -1,0 +1,55 @@
+
+Running 47 tests using 1 worker
+
+  ✘   1 e2e/comparison-evaluation.spec.ts:11:5 › shared-cutoff comparison keeps different target dates and missing context visible (30.0s)
+  ✓   2 e2e/comparison-evaluation.spec.ts:31:5 › evaluation presents the no-promotion decision and failed build state (187ms)
+  ✘   3 e2e/comparison-evaluation.spec.ts:39:5 › comparison controls work by keyboard and fit a 375px viewport (10.5s)
+
+
+  1) e2e/comparison-evaluation.spec.ts:11:5 › shared-cutoff comparison keeps different target dates and missing context visible
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.click: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for getByRole('button', { name: 'Compare players' })
+
+
+      16 |   await page.getByRole("combobox",{name:"Player B",exact:true}).fill("Fixture");
+      17 |   await page.getByRole("option").filter({hasText:"Fixture Guard"}).click();
+    > 18 |
+         | ^
+      19 |   await expect(page).toHaveURL(/playerA=23&playerB=24/);
+      20 |   const evidence = page.getByRole("region", { name: "Side by side" });
+      21 |   await expect(evidence.getByText(/Jan 11, 2023 · TOR/)).toBeVisible();
+        at /home/ethioking/.cache/courtlens-fo11/dashboard/e2e/comparison-evaluation.spec.ts:18:63
+
+    Error Context: test-results/comparison-evaluation-shar-575b9-and-missing-context-visible/error-context.md
+
+  2) e2e/comparison-evaluation.spec.ts:39:5 › comparison controls work by keyboard and fit a 375px viewport
+
+    Test was interrupted.
+
+    Error: locator.evaluate: Test ended.
+    Call log:
+      - waiting for locator('button[type="submit"]')
+
+
+      4 |   for (let attempt = 0; attempt < 30; attempt += 1) {
+      5 |     await page.keyboard.press("Tab");
+    > 6 |     if (await page.locator(selector).evaluate((element) => element === document.activeElement)) return;
+        |                                      ^
+      7 |   }
+      8 |   throw new Error(`Keyboard focus did not reach ${selector}`);
+      9 | }
+        at tabTo (/home/ethioking/.cache/courtlens-fo11/dashboard/e2e/comparison-evaluation.spec.ts:6:38)
+        at /home/ethioking/.cache/courtlens-fo11/dashboard/e2e/comparison-evaluation.spec.ts:50:3
+
+    Error Context: test-results/comparison-evaluation-comp-7bc16-rd-and-fit-a-375px-viewport/error-context.md
+
+  1 failed
+    e2e/comparison-evaluation.spec.ts:11:5 › shared-cutoff comparison keeps different target dates and missing context visible
+  1 interrupted
+    e2e/comparison-evaluation.spec.ts:39:5 › comparison controls work by keyboard and fit a 375px viewport
+  44 did not run
+  1 passed (41.7s)

@@ -2,29 +2,146 @@
 
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { acceptsDemand, createLiveSession, easternToday, gameStatus, liveRequest, shiftSlate, validSlate, type HistoricalSlate, type LiveCache, type LiveGame, type LivePlayer } from "@/lib/live";
+import { formatDate } from "@/lib/format-date";
+import { getScheduleDates } from "@/lib/workbench-api";
+import type { ScheduleDatesResponse } from "@/lib/types";
+import { ContextBar } from "./context-bar";
+import { LiveBoardHeader } from "./live-board";
+import { TeamLogo } from "./team-logo";
+import { Button } from "./ui/button";
+import { DataDetailsButton, type DataDetailRow } from "./ui/data-details";
+import { DatePicker } from "./ui/date-picker";
+import { Field } from "./ui/field";
+import { CountChip, FilterBar } from "./ui/filter-bar";
+import { GatedNote } from "./ui/gated-note";
+import { Icon } from "./ui/icon";
+import { PageShell } from "./ui/page-shell";
+
+/** Days shown either side of the selected slate in the date strip. */
+const STRIP_RADIUS = 7;
 
 function displayTime(value: string | null) { return value ? value : "Unknown"; }
-function Observation({ cache }: { cache: LiveCache }) {
-  return <div className="live-observation">
-    <strong>{cache.status.replaceAll("_", " ")}{cache.stale ? " · Stale" : ""}{cache.paused ? " · Shared feed idle" : ""}</strong>
-    <span>Observation age: {cache.age_seconds == null ? "Unknown" : `${Math.floor(cache.age_seconds)} seconds at last read`}</span>
-    <span>Acquired: {displayTime(cache.acquired_at)} · Last successful fetch: {displayTime(cache.last_success_at)}</span>
-    <span>Source time: {displayTime(cache.source_time)} · Next allowed fetch: {displayTime(cache.next_poll_at)}</span>
-    {cache.error && <span role="alert">{cache.error}</span>}
-    <details><summary>Observation provenance</summary><p>Namespace: {cache.namespace} · Observation: {cache.observation_id ?? "Unknown"}</p><p>SHA-256: {cache.content_sha256 ?? "Unknown"}</p><p>HTTP date: {cache.http_date ?? "Unknown"} · Last poll: {cache.last_poll_at ?? "Unknown"}</p></details>
-  </div>;
+
+/** Tipoff in the slate's Eastern frame, e.g. "7:30 PM ET". The full UTC value stays in the title. */
+function tipoff(value: string | null): string {
+  if (!value) return "Time unknown";
+  const parsed = new Date(value);
+  if (!Number.isFinite(parsed.getTime())) return "Time unknown";
+  return `${new Intl.DateTimeFormat("en-US", { hour: "numeric", minute: "2-digit", timeZone: "America/New_York" }).format(parsed)} ET`;
 }
+
+function weekday(day: string) {
+  return new Intl.DateTimeFormat("en-US", { weekday: "short", timeZone: "UTC" }).format(new Date(`${day}T12:00:00Z`));
+}
+
+/** One line of observation state; provenance rows go to Data details. */
+function observationLine(cache: LiveCache) {
+  const age = cache.age_seconds == null ? "Age unknown" : `${Math.floor(cache.age_seconds)}s old at last read`;
+  return `${cache.status.replaceAll("_", " ")}${cache.stale ? " · Stale" : ""}${cache.paused ? " · Shared feed idle" : ""} · ${age}`;
+}
+
+function observationRows(cache: LiveCache, prefix = ""): DataDetailRow[] {
+  return [
+    { label: `${prefix}Acquired`, value: displayTime(cache.acquired_at) },
+    { label: `${prefix}Last successful fetch`, value: displayTime(cache.last_success_at) },
+    { label: `${prefix}Source time`, value: displayTime(cache.source_time) },
+    { label: `${prefix}Next allowed fetch`, value: displayTime(cache.next_poll_at) },
+    { label: `${prefix}Namespace`, value: cache.namespace, mono: true },
+    { label: `${prefix}Observation`, value: cache.observation_id ?? "Unknown", mono: true },
+    { label: `${prefix}SHA-256`, value: cache.content_sha256 ?? "Unknown", mono: true },
+    { label: `${prefix}HTTP date`, value: displayTime(cache.http_date) },
+    { label: `${prefix}Last poll`, value: displayTime(cache.last_poll_at) },
+  ];
+}
+
+function Observation({ cache }: { cache: LiveCache }) {
+  return <p className="live-observation-line">
+    <span>{observationLine(cache)}</span>
+    {cache.error && <span role="alert" className="live-observation-error">{cache.error}</span>}
+  </p>;
+}
+
 function PlayerBoxes({ players, games }: { players: LivePlayer[] | null | undefined; games: LiveGame[] }) {
-  if (!players?.length) return <p className="notice-box">Player boxes unknown. Missing rows do not establish nonappearance or injury.</p>;
+  if (!players?.length) return <GatedNote why="Missing rows do not establish nonappearance or injury.">Player boxes unknown.</GatedNote>;
   const teamIds = [...new Set(players.map(p => p.team_source_id))];
   return <>{teamIds.map(id => {
     const rows = players.filter(p => p.team_source_id === id);
     const columns = [...new Set(rows.flatMap(p => Object.keys(p.statistics)))];
     const team = games.flatMap(g => g.teams).find(t => t.source_id === id);
-    return <section key={id}><h3>{team?.name ?? `Source team ${id}`} · Player boxes</h3><div className="live-table-scroll" role="region" aria-label={`${team?.name ?? id} player box table`} tabIndex={0}><table className="data-table"><thead><tr><th scope="col">Player</th><th scope="col">Appearance / identity</th>{columns.map(c => <th scope="col" key={c}>{c}</th>)}</tr></thead><tbody>{rows.map((p,i) => <tr key={`${p.source_id}-${i}`}><th scope="row">{p.name}</th><td>{p.appearance_label ?? (p.reported_nonappearance === true ? "Reported nonappearance" : p.reported_nonappearance === false ? "Reported participation" : "Appearance unknown")} · {p.identity_status}</td>{columns.map(c => <td key={c}>{p.reported_nonappearance === true ? "—" : p.statistics[c] ?? "—"}</td>)}</tr>)}</tbody></table></div></section>;
+    return <section key={id} className="live-box-section"><h3>{team?.name ?? `Source team ${id}`} · Player boxes</h3><div className="live-table-scroll" role="region" aria-label={`${team?.name ?? id} player box table`} tabIndex={0}><table className="data-table live-box-table"><thead><tr><th scope="col">Player</th><th scope="col">Appearance / identity</th>{columns.map(c => <th scope="col" key={c}>{c}</th>)}</tr></thead><tbody>{rows.map((p,i) => <tr key={`${p.source_id}-${i}`}><th scope="row">{p.name}</th><td>{p.appearance_label ?? (p.reported_nonappearance === true ? "Reported nonappearance" : p.reported_nonappearance === false ? "Reported participation" : "Appearance unknown")} · {p.identity_status}</td>{columns.map(c => <td key={c}>{p.reported_nonappearance === true ? "—" : p.statistics[c] ?? "—"}</td>)}</tr>)}</tbody></table></div></section>;
   })}</>;
+}
+
+/** Logo only through a verified canonical ID; unmapped source teams never get a guessed logo. */
+function TeamMark({ team }: { team: LiveGame["teams"][number] }) {
+  return team.canonical_id
+    ? <TeamLogo team={team.canonical_id} size={24} />
+    : <span className="live-team-initials" aria-hidden="true">{team.name.split(/\s+/).map(word => word[0]).join("").slice(0, 2)}</span>;
+}
+
+function awayFirst(game: LiveGame) {
+  return [...game.teams].sort((a,b) => a.side === b.side ? 0 : a.side === "away" ? -1 : 1);
+}
+
+function GameCard({ game, href, selected }: { game: LiveGame; href: string; selected: boolean }) {
+  const teams = awayFirst(game);
+  const label = `${teams.map(t => `${t.name} ${t.score ?? "score unknown"}`).join(" at ")} · ${gameStatus(game)} · ${tipoff(game.event_time)}`;
+  return <Link className="live-game-card" href={href} aria-current={selected ? "page" : undefined} aria-label={label}>
+    <span className="live-game-meta">
+      <span className="live-game-status">{game.status === "in_progress" && <span className="live-status-dot" aria-hidden="true" />}{gameStatus(game)}</span>
+      {/* Finalized research rows often carry no tipoff; the unknown time stays in the card's label. */}
+      {game.event_time && <span className="live-game-time" title={game.event_time}>{tipoff(game.event_time)}</span>}
+    </span>
+    {teams.map(t => <span className="live-score-row" key={t.source_id}>
+      <TeamMark team={t} />
+      <span className="live-team-name">{t.name}</span>
+      <strong className="live-team-score">{t.score ?? "—"}</strong>
+    </span>)}
+  </Link>;
+}
+
+function DateStrip({ slate, counts, countKey, href }: {
+  slate: string;
+  counts: ScheduleDatesResponse | null;
+  countKey: "scheduled" | "finals";
+  href: (day: string) => string;
+}) {
+  const days = Array.from({ length: STRIP_RADIUS * 2 + 1 }, (_, i) => shiftSlate(slate, i - STRIP_RADIUS));
+  const today = easternToday();
+  const listRef = useRef<HTMLOListElement>(null);
+  // On narrow screens the strip scrolls; centre the selected day inside it without moving the page.
+  useEffect(() => {
+    const list = listRef.current;
+    const current = list?.querySelector<HTMLElement>('[aria-current="date"]');
+    if (!list || !current) return;
+    const box = list.getBoundingClientRect(), item = current.getBoundingClientRect();
+    list.scrollLeft += item.left - box.left - (box.width - item.width) / 2;
+  }, [slate]);
+  return <nav className="live-date-strip" aria-label="Live dates">
+    <Link className="live-date-step" href={href(shiftSlate(slate, -STRIP_RADIUS))} aria-label="Earlier dates"><Icon name="left" size={16} /></Link>
+    <ol className="live-date-list" ref={listRef}>
+      {days.map(day => {
+        const count = counts?.days.find(d => d.date === day)?.[countKey];
+        const empty = count === 0;
+        return <li key={day}>
+          <Link
+            href={href(day)}
+            className="live-date"
+            aria-current={day === slate ? "date" : undefined}
+            data-empty={empty || undefined}
+            aria-label={`${formatDate(day)}${count == null ? "" : ` · ${count} ${count === 1 ? "game" : "games"}`}`}
+          >
+            <span className="live-date-weekday">{day === today ? "Today" : weekday(day)}</span>
+            <span className="live-date-day">{formatDate(day, "compact")}</span>
+            <span className="live-date-count" aria-hidden="true">{count == null ? "" : count}</span>
+          </Link>
+        </li>;
+      })}
+    </ol>
+    <Link className="live-date-step" href={href(shiftSlate(slate, STRIP_RADIUS))} aria-label="Later dates"><Icon name="right" size={16} /></Link>
+  </nav>;
 }
 
 function LiveWorkspaceContent({ date, gameId }: { date?: string; gameId?: string }) {
@@ -38,6 +155,7 @@ function LiveWorkspaceContent({ date, gameId }: { date?: string; gameId?: string
   const [cache, setCache] = useState<LiveCache | null>(null);
   const [box, setBox] = useState<LiveCache | null>(null);
   const [history, setHistory] = useState<HistoricalSlate | null>(null);
+  const [counts, setCounts] = useState<ScheduleDatesResponse | null>(null);
   const [connection, setConnection] = useState("Loading cached observations");
   const [readError, setReadError] = useState<string | null>(null);
   const [leaseError, setLeaseError] = useState<string | null>(null);
@@ -73,7 +191,7 @@ function LiveWorkspaceContent({ date, gameId }: { date?: string; gameId?: string
           const [next, selected] = await Promise.all([liveRequest<LiveCache>(`?slate_date=${slate}`), gameId ? liveRequest<LiveCache>(`/games/${gameId}?slate_date=${slate}`) : Promise.resolve(null)]);
           if (active(value)) { setCache(next); setBox(selected); setReadError(null); }
         }
-      } catch { if (active(value)) setReadError("Offline or service unavailable. Last observation retained; its acquisition time is shown below."); }
+      } catch { if (active(value)) setReadError("Offline or service unavailable. Last observation retained; its acquisition time is in Data details."); }
     }
     function update() {
       stop?.(); stop = undefined;
@@ -96,27 +214,109 @@ function LiveWorkspaceContent({ date, gameId }: { date?: string; gameId?: string
     return () => { disposed = true; ++generation; stop?.(); document.removeEventListener("visibilitychange", update); window.removeEventListener("online", update); window.removeEventListener("offline", update); window.removeEventListener("pagehide", updateOnPageHide); window.removeEventListener("pageshow", update); };
   }, [slate, gameId, paused, historical, query, valid, router]);
 
+  // Date-strip counts come from the release's retained schedule and finals; they never create Live
+  // demand. In Finals the research scope (release, phase, explicit cutoff) narrows them too.
+  useEffect(() => {
+    if (!validSlate(slate)) return;
+    let live = true;
+    getScheduleDates({
+      start: shiftSlate(slate, -STRIP_RADIUS),
+      end: shiftSlate(slate, STRIP_RADIUS),
+      focus: slate,
+      releaseId: params.get("releaseId") ?? undefined,
+      phase: historical ? params.get("phase") ?? "regular_season" : undefined,
+      beforeDate: historical ? params.get("beforeDate") ?? undefined : undefined,
+    }).then(value => { if (live) setCounts(value); }).catch(() => { if (live) setCounts(null); });
+    return () => { live = false; };
+  }, [slate, historical, params]);
+
   const games = historical ? history?.games ?? [] : cache?.data?.games ?? [];
   const selected = historical ? games.find(g => g.source_id === gameId) : box?.data?.game;
-  return <div className="workbench-content live-workspace">
-    <div className="page-header"><div><h1 className="page-title">Live games</h1><p className="page-subtitle">{historical ? "Retained finalized research facts" : "Provisional ESPN observations"} · Eastern slate dates · UTC event times</p></div><button type="button" className="button button-secondary" onClick={() => setPaused(!paused)} disabled={historical} aria-pressed={paused}>{paused ? "Resume updates" : "Pause updates"}</button></div>
-    <nav className="live-date-strip" aria-label="Live dates"><Link href={href(easternToday(), undefined, false)}>Today</Link>{valid && [-2,-1,0,1,2].map(offset => { const day = shiftSlate(slate, offset); return <Link key={day} href={href(day)} aria-current={day === slate ? "date" : undefined}>{day}</Link>; })}<label>Slate date<input type="date" value={valid ? slate : ""} onChange={e => { if (validSlate(e.target.value)) router.push(href(e.target.value)); }} /></label></nav>
-    <nav className="live-mode" aria-label="Game data source"><Link href={href(valid ? slate : easternToday(), undefined, false)}>Provisional Live cache</Link><Link href={href(valid ? slate : easternToday(), undefined, true)}>Admitted historical finals</Link><Link href={`/playoffs?${query}`}>Playoff series explorer</Link></nav>
-    {historical && <form className="live-history-context" onSubmit={e => {
-      e.preventDefault(); const form = new FormData(e.currentTarget); const sp = new URLSearchParams(query);
-      for (const key of ["releaseId", "season", "phase", "beforeDate"]) { const value = String(form.get(key) ?? ""); if (value) sp.set(key, value); else sp.delete(key); }
-      sp.set("date", slate); sp.set("live_mode", "history"); router.push(`/live/${gameId ? `games/${gameId}` : slate}?${sp}`);
-    }}><label>Research release<input name="releaseId" defaultValue={params.get("releaseId") ?? history?.context.release_id ?? ""} placeholder="Public pointer on first read" /></label><label>Research season<input name="season" defaultValue={params.get("season") ?? ""} placeholder="Season containing slate date" /></label><label>Research phase<select name="phase" defaultValue={params.get("phase") ?? "regular_season"}><option value="regular_season">Regular season</option><option value="playoffs">Playoffs</option><option value="preseason">Preseason</option></select></label><label>Research exclusive cutoff<input name="beforeDate" type="date" defaultValue={params.get("beforeDate") ?? ""} /></label><button type="submit" className="button button-secondary">Load finalized research</button></form>}
-    <p role="status">{connection}</p>
-    {!historical && <p className="notice-box">Live scores and player boxes are provisional source observations. Cached finals require independent admission and reconciliation. Several tabs share one bounded worker feed.</p>}
-    {(readError || leaseError) && <p role="alert" className="notice-box">{readError ?? leaseError}</p>}
+  const countKey = historical ? "finals" : "scheduled";
+  const nearest = counts ? (historical ? counts.nearest_finals : counts.nearest_scheduled) : null;
+  // A slate is known only once observed: a cache without data is unknown, never "0 games".
+  const loaded = historical ? history != null : cache?.data != null;
+  const section = historical ? "finals" : "live";
+
+  const detailRows: DataDetailRow[] = [
+    { label: "Mode", value: historical ? "Finalized research (admitted finals, no Live demand)" : "Provisional ESPN observations" },
+    { label: "Slate", value: `${slate} (Eastern)`, mono: true },
+    ...(gameId ? [{ label: "Selected source game", value: gameId, mono: true }] : []),
+    ...(historical && history ? [
+      { label: "Research release", value: history.context.release_id, mono: true },
+      { label: "Dataset", value: history.context.dataset_id, mono: true },
+      { label: "Season / phase", value: `${history.context.season} / ${history.context.phase}` },
+      { label: "Exclusive cutoff", value: history.context.before_date, mono: true },
+      { label: "Status", value: history.status.replaceAll("_", " ") },
+      ...history.warnings.map((warning, i) => ({ label: i ? "" : "Warnings", value: warning })),
+    ] : []),
+    ...(!historical && cache ? observationRows(cache) : []),
+    ...(!historical && box ? observationRows(box, "Selected game · ") : []),
+    ...(counts ? [{ label: "Date counts", value: `${historical ? "Admitted finals" : "Retained schedule"} · dataset ${counts.dataset_id}`, mono: true }] : []),
+  ];
+
+  const statusLine = <p role="status" className="live-connection">{connection}{!historical && cache ? ` · ${observationLine(cache)}` : ""}</p>;
+  const datePicker = <Field label="Date" layout="inline">
+    <DatePicker label="Slate date" value={valid ? slate : ""} onChange={day => { if (validSlate(day)) router.push(href(day)); }} />
+  </Field>;
+  // A selected-game read returns only that game, so the slate size is not known there.
+  const countChip = loaded && !gameId ? <CountChip>{games.length} {games.length === 1 ? "game" : "games"}</CountChip> : undefined;
+
+  return <PageShell template="board" className="live-workspace">
+    <LiveBoardHeader
+      section={section}
+      slate={valid ? slate : undefined}
+      subtitle={historical ? `Admitted finals for ${valid ? formatDate(slate) : "the selected date"}.` : `Provisional scores for ${valid ? formatDate(slate) : "the selected date"}, Eastern slate.`}
+      // Pausing only applies to Live demand; finalized research never polls.
+      actions={historical ? undefined : <Button variant="secondary" onClick={() => setPaused(!paused)} aria-pressed={paused} icon={paused ? "play" : "pause"}>{paused ? "Resume updates" : "Pause updates"}</Button>}
+    />
+    {historical
+      ? <ContextBar
+          showWindow={false}
+          showThrough={false}
+          initialSeason={history?.context.season}
+          initialPhase="regular_season"
+          initialBeforeDate={valid ? shiftSlate(slate, 1) : undefined}
+          sampleSize={loaded && !gameId ? games.length : undefined}
+          filters={datePicker}
+          detailRows={detailRows}
+        />
+      : <FilterBar label="Live controls" scope={datePicker} summary={valid ? formatDate(slate, "compact") : undefined} count={countChip} details={<DataDetailsButton rows={detailRows} />} />}
+    {/* An invalid date has no slate; its status still says why. */}
+    {!valid && statusLine}
+    {valid && <DateStrip slate={slate} counts={counts} countKey={countKey} href={day => href(day)} />}
+    {!historical && cache?.error && <p role="alert" className="live-alert">{cache.error}</p>}
+    {(readError || leaseError) && <p role="alert" className="live-alert">{readError ?? leaseError}</p>}
     {valid && <>
-      {historical ? history && <div className="live-observation"><strong>{history.status.replaceAll("_", " ")}</strong><span>Research release: {history.context.release_id} · Dataset: {history.context.dataset_id} · {history.context.season} / {history.context.phase} · Exclusive cutoff: {history.context.before_date}</span>{history.warnings.map(w => <span key={w}>{w}</span>)}</div> : cache && <Observation cache={cache} />}
-      <section aria-label="Game slate" className="live-game-grid">{games.map(g => <Link key={g.source_id} className="live-game-card" href={href(slate, g.source_id)} aria-current={gameId === g.source_id ? "page" : undefined}><span className="live-game-status">{g.status === "in_progress" && <span className="live-status-dot" aria-hidden="true" />}{gameStatus(g)}</span>{[...g.teams].sort((a,b) => a.side === b.side ? 0 : a.side === "away" ? -1 : 1).map(t => <span className="live-score-row" key={t.source_id}><span>{t.name}<small>{t.side} · {t.identity_status}</small></span><strong>{t.score ?? "—"}</strong></span>)}<small>Event UTC: {g.event_time ?? "Unknown"} · Actual slate: {g.slate_date}</small></Link>)}</section>
-      {!games.length && <p className="notice-box">{historical ? "No admitted finals in this release, phase and date. Coverage is unknown outside retained facts." : cache?.data ? "No games in the observed source slate." : "Awaiting a cached slate. Acquisition may be disabled or the worker may be idle."}</p>}
-      {gameId && <section aria-label="Selected game details" className="live-selected"><h2>Selected game {gameId}</h2>{!historical && box && <Observation cache={box} />}{selected ? <><h3>{selected.teams.map(t => t.name).join(" vs ")} · <span className="live-game-status inline-status">{selected.status === "in_progress" && <span className="live-status-dot" aria-hidden="true" />}{gameStatus(selected)}</span></h3><p>Actual slate: {selected.slate_date} · Event UTC: {selected.event_time ?? "Unknown"} · {selected.provisional ? "Provisional" : "Finalized research"} · Game identity: {selected.identity_status}</p><div className="live-team-boxes">{selected.teams.map(t => <div key={t.source_id}><strong>{t.name}: {t.score ?? "Unknown"}</strong><p>{historical ? "Admitted team score" : "Provisional observed team score"}</p>{historical && t.statistics && <details><summary>Finalized team box statistics</summary><dl>{Object.entries(t.statistics).map(([key,value]) => <div key={key}><dt>{key}</dt><dd>{value ?? "—"}</dd></div>)}</dl></details>}</div>)}</div>{!historical && (box?.data?.team_sections?.length ? box.data.team_sections.map((section,i) => <div key={i} className="live-table-scroll" role="region" aria-label={`${section.team.displayName ?? section.team.id} team statistics`} tabIndex={0}><table className="data-table"><caption>{section.team.displayName ?? section.team.id} · Source-labelled team box</caption><tbody>{section.statistics?.map((stat,j) => <tr key={j}><th scope="row">{stat.label ?? stat.name ?? "Unknown statistic"}</th><td>{stat.displayValue ?? "—"}</td></tr>)}</tbody></table></div>) : <p>Additional team box statistics unknown.</p>)}<PlayerBoxes players={historical ? history?.players : box?.data?.players} games={[selected]} /></> : <p>Selected game detail unknown in this cache or finalized research context.</p>}</section>}
+      <section aria-label="Game slate" className="live-game-grid">{games.map(g => <GameCard key={g.source_id} game={g} href={href(slate, g.source_id)} selected={gameId === g.source_id} />)}</section>
+      {!games.length && (loaded || !historical) && <GatedNote
+        action={loaded && nearest && (nearest.before || nearest.after) ? <span className="live-jumps">
+          {nearest.before && <Link className="button button-small" href={href(nearest.before)}><Icon name="left" size={14} />{formatDate(nearest.before, "compact")}</Link>}
+          {nearest.after && <Link className="button button-small" href={href(nearest.after)}>{formatDate(nearest.after, "compact")}<Icon name="right" size={14} /></Link>}
+        </span> : undefined}
+        why={historical
+          ? "No admitted finals in this release, phase and date. Coverage is unknown outside retained facts."
+          : cache?.data ? "No games in the observed source slate." : "Awaiting a cached slate. Acquisition may be disabled or the worker may be idle."}
+      >{historical ? `No admitted finals on ${formatDate(slate, "compact")}.` : cache?.data ? `No games on ${formatDate(slate, "compact")}.` : "Awaiting a cached slate."}</GatedNote>}
+      {/* Glance item 3: the slate starts directly under the strip; connection state follows it. */}
+      {statusLine}
+      {!historical && <GatedNote why="Live scores and player boxes are provisional source observations. Cached finals require independent admission and reconciliation. Several tabs share one bounded worker feed.">Scores are provisional until finals are admitted.</GatedNote>}
+      {gameId && <section aria-label="Selected game details" className="live-selected">
+        <h2>{selected ? awayFirst(selected).map(t => t.name).join(" at ") : "Selected game"}</h2>
+        {!historical && box && <Observation cache={box} />}
+        {selected ? <>
+          <p className="live-selected-meta"><span className="live-game-status inline-status">{selected.status === "in_progress" && <span className="live-status-dot" aria-hidden="true" />}{gameStatus(selected)}</span> · Actual slate: {formatDate(selected.slate_date)} · {tipoff(selected.event_time)} · {selected.provisional ? "Provisional" : "Finalized research"} · Game identity: {selected.identity_status}</p>
+          <div className="live-team-boxes">{awayFirst(selected).map(t => <div key={t.source_id} className="live-team-box">
+            <span className="live-team-box-head"><TeamMark team={t} /><strong>{t.name}</strong><strong className="live-team-score">{t.score ?? "Unknown"}</strong></span>
+            <p>{historical ? "Admitted team score" : "Provisional observed team score"}</p>
+            {historical && t.statistics && <details><summary>Finalized team box statistics</summary><dl>{Object.entries(t.statistics).map(([key,value]) => <div key={key}><dt>{key}</dt><dd>{value ?? "—"}</dd></div>)}</dl></details>}
+          </div>)}</div>
+          {!historical && (box?.data?.team_sections?.length ? box.data.team_sections.map((section,i) => <div key={i} className="live-table-scroll" role="region" aria-label={`${section.team.displayName ?? section.team.id} team statistics`} tabIndex={0}><table className="data-table"><caption>{section.team.displayName ?? section.team.id} · Source-labelled team box</caption><tbody>{section.statistics?.map((stat,j) => <tr key={j}><th scope="row">{stat.label ?? stat.name ?? "Unknown statistic"}</th><td>{stat.displayValue ?? "—"}</td></tr>)}</tbody></table></div>) : <p className="live-muted">Additional team box statistics unknown.</p>)}
+          <PlayerBoxes players={historical ? history?.players : box?.data?.players} games={[selected]} />
+        </> : <GatedNote>Selected game detail unknown in this cache or finalized research context.</GatedNote>}
+      </section>}
     </>}
-  </div>;
+  </PageShell>;
 }
 
 export function LiveWorkspace(props: { date?: string; gameId?: string }) {

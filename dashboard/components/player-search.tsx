@@ -77,7 +77,7 @@ export function PlayerSearch({ catalog }: { catalog: AnalyticsCatalog }) {
                   <strong>{player.name}</strong>
                   <small>Last archive row {player.last_observed_date}</small>
                 </span>
-                <span aria-hidden="true">→</span>
+
               </Link>
             </li>
           ))}

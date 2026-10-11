@@ -51,7 +51,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(function Che
         {indeterminate ? (
           <span className="ui-checkbox-indeterminate-mark" />
         ) : checked ? (
-          <Icon name="check" size={12} />
+          <Icon name="check" size={14} />
         ) : null}
       </span>
       {label && <span className="ui-checkbox-label">{label}</span>}

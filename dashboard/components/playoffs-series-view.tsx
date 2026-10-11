@@ -1,7 +1,16 @@
 "use client";
 
+import { Icon } from "./ui/icon";
 import { useState, useMemo } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import { formatDate } from "@/lib/format-date";
+import { buildPreservedContextUrl } from "@/lib/query-url";
+import { hasTeamLogo } from "@/lib/team-colors";
+import { TeamLogo } from "./team-logo";
+import { GatedNote } from "./ui/gated-note";
+import { TeamIdentity } from "./ui/identity";
+import { PageHeader } from "./ui/panel";
 import { SortHeader } from "./table-ui";
 import { PlayerPortrait } from "@/components/player-portrait";
 import type { PlayoffSeriesDetailResponse, PlayerSeriesStats } from "@/lib/types";
@@ -16,11 +25,13 @@ import {
 
 interface PlayoffsSeriesViewProps {
   detail: PlayoffSeriesDetailResponse;
-  cutoffDate?: string;
+  /** The shared filter bar, placed directly under the page header. */
+  filterBar?: React.ReactNode;
 }
 
-export function PlayoffsSeriesView({ detail, cutoffDate }: PlayoffsSeriesViewProps) {
+export function PlayoffsSeriesView({ detail, filterBar }: PlayoffsSeriesViewProps) {
   const { team1, team2, game_cards, team1_players, team2_players } = detail;
+  const searchParams = useSearchParams();
 
   // Player roster tab
   const [playerTab, setPlayerTab] = useState<"all" | "team1" | "team2">("all");
@@ -86,123 +97,58 @@ export function PlayoffsSeriesView({ detail, cutoffDate }: PlayoffsSeriesViewPro
     summary_text: `${team1.tricode} vs ${team2.tricode}`
   });
 
-  const isTeam1Winner = detail.winner_team_id === team1.team_id;
-  const isTeam2Winner = detail.winner_team_id === team2.team_id;
+
+  const renderTeam = (team: typeof team1, side: "left" | "right") => {
+    const winner = detail.winner_team_id === team.team_id;
+    return (
+      <div className={`playoff-series-team-card ${winner ? "winner" : ""}`} data-side={side}>
+        <TeamIdentity
+          team={team.team_id}
+          name={team.team_name}
+          href={`/teams/${team.team_id}?season=${detail.season}&phase=playoffs`}
+          subtitle={`Seed ${team.seed ?? "—"} · ${team.wins}–${team.losses}`}
+          size="lg"
+        />
+        <span className={`playoff-series-team-score ${winner ? "winner" : ""}`}>{team.wins}</span>
+      </div>
+    );
+  };
 
   return (
     <div className="playoffs-view-container">
-      {/* Top Navigation Bar */}
-      <div className="playoff-series-header-row">
-        <Link
-          href={`/playoffs?season=${encodeURIComponent(detail.season)}${cutoffDate ? `&cutoff_date=${encodeURIComponent(cutoffDate)}` : ""}`}
-          className="button button-small"
-        >
-          ← Back to Playoff Bracket
-        </Link>
-        <div className="playoff-series-header-actions">
+      <PageHeader
+        title={`${team1.team_name} vs ${team2.team_name}`}
+        subtitle={`${detail.season} Postseason · ${detail.round_name}${detail.conference ? ` · ${detail.conference}` : ""}`}
+        actions={<>
+          <Link href={buildPreservedContextUrl("/playoffs", searchParams)} className="button button-small">
+            <Icon name="left" size={14} />Playoffs
+          </Link>
           <Link
             href={`/team-compare?teamA=${team1.team_id}&teamB=${team2.team_id}&season=${detail.season}&phase=playoffs`}
-            className="button button-small button-accent"
+            className="button button-small"
           >
-            Compare Franchises ⇄
+            Compare teams
           </Link>
-        </div>
-      </div>
+        </>}
+      />
+      {filterBar}
 
-      {/* Series Hero Matchup Card */}
+      {/* Series hero: both teams with logo and team color, series score between them. */}
       <div className="panel playoff-series-hero-panel">
-        <div className="playoff-series-hero-top">
-          <div>
-            <span className="text-xs text-muted font-mono uppercase">
-              {detail.season} Postseason · {detail.round_name}
-              {detail.conference ? ` (${detail.conference})` : ""} · Series ID: {detail.series_id}
-            </span>
-            <h1 className="page-title playoff-series-hero-title">
-              {team1.team_name} vs {team2.team_name}
-            </h1>
-          </div>
-          <div className="playoff-series-hero-badge-wrap">
-            <span className={`badge ${statusBadge.badgeClass} font-mono playoff-series-hero-badge`}>
-              {statusBadge.label}: {detail.series_score}
-            </span>
-            {detail.cutoff_date && (
-              <span className="badge badge-warning font-mono text-xs">
-                Cutoff: {detail.cutoff_date}
-              </span>
-            )}
-          </div>
-        </div>
-
-        {/* Matchup Teams Banner */}
         <div className="responsive-pair playoff-series-hero-grid">
-          {/* Team 1 Card */}
-          <div className={`playoff-series-team-card ${isTeam1Winner ? "winner" : ""}`}>
-            <div className="playoff-series-team-logo">
-              <span className="font-mono font-bold text-accent text-md">
-                {team1.tricode}
-              </span>
-            </div>
-            <div>
-              <div className="text-xs text-muted font-mono">Seed #{team1.seed ?? "—"}</div>
-              <Link
-                href={`/teams/${team1.team_id}?season=${detail.season}&phase=playoffs`}
-                className="font-bold text-accent playoff-series-team-title"
-              >
-                {team1.team_name}
-              </Link>
-              <div className="text-xs text-muted font-mono playoffs-round-subtitle">
-                {team1.wins}W - {team1.losses}L · {team1.games_played} Games
-              </div>
-            </div>
-            <div className="playoff-series-score-right">
-              <span className={`font-mono font-bold playoff-series-team-score ${isTeam1Winner ? "winner" : ""}`}>
-                {team1.wins}
-              </span>
-            </div>
-          </div>
-
-          {/* VS Center Divider */}
+          {renderTeam(team1, "left")}
           <div className="playoff-series-score-center">
-            <span className="text-muted font-mono font-bold playoff-series-vs-title">
-              VS
-            </span>
-            <div className="text-xs text-muted font-mono playoffs-round-subtitle">
-              Best of 7
-            </div>
+            <span className={`badge ${statusBadge.badgeClass} playoff-series-hero-badge`}>{statusBadge.label}</span>
+            <span className="text-xs text-muted">Best of 7 · {team1.games_played} played</span>
           </div>
-
-          {/* Team 2 Card */}
-          <div className={`playoff-series-team-card ${isTeam2Winner ? "winner" : ""}`}>
-            <div className="playoff-series-score-left">
-              <span className={`font-mono font-bold playoff-series-team-score ${isTeam2Winner ? "winner" : ""}`}>
-                {team2.wins}
-              </span>
-            </div>
-            <div className="playoff-series-score-right">
-              <div className="text-xs text-muted font-mono">Seed #{team2.seed ?? "—"}</div>
-              <Link
-                href={`/teams/${team2.team_id}?season=${detail.season}&phase=playoffs`}
-                className="font-bold text-accent playoff-series-team-title"
-              >
-                {team2.team_name}
-              </Link>
-              <div className="text-xs text-muted font-mono playoffs-round-subtitle">
-                {team2.wins}W - {team2.losses}L · {team2.games_played} Games
-              </div>
-            </div>
-            <div className="playoff-series-team-logo">
-              <span className="font-mono font-bold text-accent text-md">
-                {team2.tricode}
-              </span>
-            </div>
-          </div>
+          {renderTeam(team2, "right")}
         </div>
       </div>
 
       {/* Disclaimers & Zero Inferred Forecasts */}
-      <div className="notice-box">
-        <strong>Descriptive Postseason Facts Only:</strong> CourtLens strictly reports verified completed-game box scores and series facts. Automated series winner projections and subjective win probabilities are prohibited. Unplayed placeholder games (Games 6–7) are excluded from team ratings and player denominators.
-      </div>
+      <GatedNote why="CourtLens strictly reports verified completed-game box scores and series facts. Automated series winner projections and subjective win probabilities are prohibited. Unplayed placeholder games (Games 6–7) are excluded from team ratings and player denominators.">
+        Completed games only; no winner projections.
+      </GatedNote>
 
       {/* 7-Game Cards Grid */}
       <div className="panel">
@@ -240,8 +186,8 @@ export function PlayoffsSeriesView({ detail, cutoffDate }: PlayoffsSeriesViewPro
                 <div className="playoff-game-card-teams">
                   {/* Away team */}
                   <div className={`playoff-game-card-team-row ${isAwayWinner ? "winner" : ""}`}>
-                    <span className="font-mono text-xs">
-                      {card.away_team_tricode} <span className="text-muted">(Away)</span>
+                    <span className="playoff-game-card-team">
+                      {hasTeamLogo(card.away_team_id) && <TeamLogo team={card.away_team_id} size={16} />}{card.away_team_tricode} <span className="text-muted">(Away)</span>
                     </span>
                     <span className="font-mono font-bold playoff-game-card-score">
                       {card.away_score !== null ? card.away_score : "—"}
@@ -250,8 +196,8 @@ export function PlayoffsSeriesView({ detail, cutoffDate }: PlayoffsSeriesViewPro
 
                   {/* Home team */}
                   <div className={`playoff-game-card-team-row ${isHomeWinner ? "winner" : ""}`}>
-                    <span className="font-mono text-xs">
-                      {card.home_team_tricode} <span className="text-muted">(Home)</span>
+                    <span className="playoff-game-card-team">
+                      {hasTeamLogo(card.home_team_id) && <TeamLogo team={card.home_team_id} size={16} />}{card.home_team_tricode} <span className="text-muted">(Home)</span>
                     </span>
                     <span className="font-mono font-bold playoff-game-card-score">
                       {card.home_score !== null ? card.home_score : "—"}
@@ -261,7 +207,7 @@ export function PlayoffsSeriesView({ detail, cutoffDate }: PlayoffsSeriesViewPro
 
                 {/* Footer notes */}
                 <div className="playoff-game-card-footer">
-                  <div className="text-muted font-mono">{card.game_date || "Date TBD"}</div>
+                  <div className="text-muted">{card.game_date ? formatDate(card.game_date) : "Date TBD"}</div>
                   {display.note && (
                     <div className="text-muted text-xs playoffs-round-subtitle">
                       {display.note}
@@ -328,12 +274,12 @@ export function PlayoffsSeriesView({ detail, cutoffDate }: PlayoffsSeriesViewPro
                     <td className="playoff-factors-adv-cell">
                       {isT1Adv && (
                         <span className="badge badge-accent text-xs font-mono">
-                          ◀ {team1.tricode}
+                          <Icon name="left" size={14} />{team1.tricode}<span className="sr-only"> advantage</span>
                         </span>
                       )}
                       {isT2Adv && (
                         <span className="badge badge-accent text-xs font-mono">
-                          {team2.tricode} ▶
+                          {team2.tricode}<span className="sr-only"> advantage</span><Icon name="right" size={14} />
                         </span>
                       )}
                       {r.advantage === "tied" && (
@@ -392,7 +338,7 @@ export function PlayoffsSeriesView({ detail, cutoffDate }: PlayoffsSeriesViewPro
           <table className="data-table">
             <thead>
               <tr>
-                <th className="playoffs-seed-cell-center">#</th>
+                <th className="num">#</th>
                 <SortHeader className="" label="Player" metric="player_name" active={sortField === "player_name"} direction={sortDir} onSort={() => handleSort("player_name")} />
                 <th>Team</th>
                 <SortHeader className="num" label="GP" metric="games_played" active={sortField === "games_played"} direction={sortDir} onSort={() => handleSort("games_played")} />
@@ -414,7 +360,7 @@ export function PlayoffsSeriesView({ detail, cutoffDate }: PlayoffsSeriesViewPro
             <tbody>
               {displayedPlayers.map((p, idx) => (
                 <tr key={p.player_id}>
-                  <td className="font-mono text-muted text-xs">{idx + 1}</td>
+                  <td className="num font-mono text-muted text-xs">{idx + 1}</td>
                   <td>
                     <div className="player-cell">
                       <PlayerPortrait playerId={p.player_id} name={p.player_name} size="sm" />
@@ -447,7 +393,7 @@ export function PlayoffsSeriesView({ detail, cutoffDate }: PlayoffsSeriesViewPro
                       href={`/players/${p.player_id}?season=${detail.season}&phase=playoffs`}
                       className="button button-small button-primary"
                     >
-                      Profile →
+                      Profile
                     </Link>
                   </td>
                 </tr>

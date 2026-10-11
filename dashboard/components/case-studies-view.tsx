@@ -1,7 +1,16 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { FilterBar } from "./ui/filter-bar";
+import { DataDetailsButton } from "./ui/data-details";
+import { GatedNote } from "./ui/gated-note";
+import { PlayerIdentity, TeamIdentity } from "./ui/identity";
+import { PageShell, ResearchLayout } from "./ui/page-shell";
+import { PageHeader } from "./ui/panel";
+import { SegmentedControl } from "./ui/segmented-control";
+import { StatTile } from "./ui/stat-tile";
+import { TeamLogo } from "./team-logo";
 
 interface CaseStudy {
   id: string;
@@ -9,6 +18,11 @@ interface CaseStudy {
   title: string;
   subtitle: string;
   subject: string;
+  /** Canonical player ID, or the team tricode for a team subject. */
+  subjectId: string;
+  subjectKind: "player" | "team";
+  /** Team for the identity accent and logo badge. */
+  subjectTeam: string;
   season: string;
   evidenceHash: string;
   problemSummary: string;
@@ -36,6 +50,9 @@ const CASE_STUDIES: CaseStudy[] = [
     title: "Mid-Season Trade & Jersey Stint Tracking",
     subtitle: "Tracking multi-team stints without team total cross-wiring or formula discrepancy.",
     subject: "Pascal Siakam",
+    subjectId: "1627783",
+    subjectKind: "player",
+    subjectTeam: "IND",
     season: "2023–24",
     evidenceHash: "5b14b7ed353b499db92e21b79f2ea69d27f8a7e0a8b94f1c1f4e1d3b0a9e2f4a",
     problemSummary:
@@ -100,6 +117,9 @@ const CASE_STUDIES: CaseStudy[] = [
     title: "Prospective Forecasting & DNP Conditionality",
     subtitle: "Calibrated dispersion intervals and truthful non-appearance (DNP) handling.",
     subject: "Scottie Barnes",
+    subjectId: "1630567",
+    subjectKind: "player",
+    subjectTeam: "TOR",
     season: "2025–26",
     evidenceHash: "bbf90110097c4421865841b158c83b8b17251a08a4eb4f46b356999fcf37c65d",
     problemSummary:
@@ -143,7 +163,7 @@ const CASE_STUDIES: CaseStudy[] = [
       }
     ],
     guarantees: [
-      "Strict Cutoff Discipline: Prospective issuance occurs strictly prior to game date (game_date < replay_date). Point estimate: 19.4 PTS; 80% Calibrated Interval: [12.0, 26.8] PTS.",
+      "Strict Cutoff Discipline: Prospective issuance occurs strictly before the game date. Point estimate: 19.4 PTS; 80% Calibrated Interval: [12.0, 26.8] PTS.",
       "Scored Appearance: Barnes played 35:12, scoring 22 PTS. Absolute Error = |22.0 - 19.4| = 2.6 PTS. Covered in [12.0, 26.8]. Status: scored_appearance.",
       "Truthful DNP Segregation: In a subsequent game vs ORL (sidelined with injury), Barnes was absent from the box score. Recorded as status: unscored_dnp, reason: absent_from_box_score_unknown. Never scored as 0 PTS."
     ],
@@ -164,6 +184,9 @@ const CASE_STUDIES: CaseStudy[] = [
     title: "Defensive Box Events vs. Inferred Placement Guardrails",
     subtitle: "Server guardrails answering subjective and out-of-scope inquiries with verified facts.",
     subject: "Toronto Raptors",
+    subjectId: "TOR",
+    subjectKind: "team",
+    subjectTeam: "TOR",
     season: "2023–24",
     evidenceHash: "17251a08a4eb4f46b356999fcf37c65d6f7af9e63f27aada910d3cf4ae8eb331",
     problemSummary:
@@ -224,196 +247,62 @@ const CASE_STUDIES: CaseStudy[] = [
   }
 ];
 
+const ruleRow = { label: "Cutoff rule", value: "Prospective issuance and every feature use only games dated before the target (game_date < replay_date)." };
+
+/** Case Studies on the Research template: one sealed case at a time, chosen in the URL. */
 export function CaseStudiesView() {
-  const [selectedCase, setSelectedCase] = useState<CaseStudy>(CASE_STUDIES[0]);
-
+  const params = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+  const selected = CASE_STUDIES.find(c => c.id === params.get("case")) ?? CASE_STUDIES[0];
+  const choose = (id: string) => {
+    const next = new URLSearchParams(params.toString());
+    if (id === CASE_STUDIES[0].id) next.delete("case"); else next.set("case", id);
+    router.replace(`${pathname}${next.size ? `?${next}` : ""}`, { scroll: false });
+  };
+  const known = (value: number) => value > 0 ? value : "—";
   return (
-    <div className="workbench-content">
-      {/* Header */}
-      <div className="page-header">
-        <div>
-          <div className="dist-header-meta">
-            <span className="font-mono text-xs text-muted">F37</span>
-            <span
-              className="replica-badge-gated dist-badge-positive"
-            >
-              Reproducible Case Studies
-            </span>
-
+    <PageShell template="research" className="research-view case-studies-view">
+      <PageHeader title="Case Studies" subtitle="Reproducible investigations of stints, forecast conditionality and defensive guardrails." actions={<>
+        <Link href="/investigations" className="button">Saved Investigations</Link>
+        <Link href="/stats" className="button button-primary">Open in Stats</Link>
+      </>} />
+      <FilterBar collapsible={false} label="Case study" summary={`Case ${selected.number}: ${selected.subject}`} scope={<span className="research-scope-label">Sealed case studies · CourtLens release evidence</span>}
+        modes={<SegmentedControl name="Case study" value={selected.id} onChange={choose} options={CASE_STUDIES.map(c => ({ value: c.id, label: `Case ${c.number}: ${c.subject}` }))} />}
+        details={<DataDetailsButton rows={[{ label: "Case", value: `${selected.number} · ${selected.id}`, mono: true }, { label: "Artifact hash", value: selected.evidenceHash, mono: true }, ruleRow, { label: "Provenance", value: "Sealed under CourtLens temporal verification contracts. Recomputed from frozen source acquisitions; reconciled fact rows from PostgreSQL 17 materialized marts." }]} />} />
+      <ResearchLayout findings={selected.dataEvidence.map(row => <StatTile key={row.label} label={row.label} value={known(row.ptsG)} unit={row.ptsG > 0 ? (row.games > 1 ? " PTS/G" : " PTS") : undefined} footnote={`${row.games} ${row.games === 1 ? "game" : "games"} · ${row.team}`} />)}>
+        <section className="panel research-section case-study-hero" aria-label={`Case ${selected.number}`}>
+          {selected.subjectKind === "player"
+            ? <PlayerIdentity playerId={selected.subjectId} name={selected.subject} team={selected.subjectTeam} subtitle={selected.season} size="lg" href={`/players/${selected.subjectId}`} />
+            : <TeamIdentity team={selected.subjectId} name={selected.subject} subtitle={selected.season} size="lg" />}
+          <div className="case-study-heading">
+            <h2>{selected.title}</h2>
+            <p className="research-caption">{selected.subtitle}</p>
           </div>
-          <h1 className="page-title">Flagship Research Case Studies</h1>
-          <p className="page-subtitle">
-            Empirical investigations demonstrating CourtLens&apos;s data integrity guarantees: mid-season stint reconciliation, prospective forecast conditionality, and zero-inferred defensive guardrails.
-          </p>
+          <div className="research-result-actions">{selected.actionLinks.map(link => <Link key={link.label} href={link.href} className={`button ${link.primary ? "button-primary" : ""}`}>{link.label}</Link>)}</div>
+        </section>
+        <div className="table-wrapper research-table" role="region" aria-label="Case study observations" tabIndex={0}>
+          <table className="data-table"><caption>Observed real-data evidence</caption>
+            <thead><tr><th>Observation Scope</th><th>Team</th><th className="num">Games</th><th className="num">MIN/G</th><th className="num">PTS/G</th><th className="num">REB/G</th><th className="num">AST/G</th><th className="num">FG%</th><th className="num">3P%</th><th className="num">FT%</th></tr></thead>
+            <tbody>{selected.dataEvidence.map(row => <tr key={row.label}>
+              <th scope="row">{row.label}</th>
+              <td><span className="research-team">{/^[A-Z]{3}$/.test(row.team.slice(0, 3)) && row.team !== "TOT" && <TeamLogo team={row.team.slice(0, 3)} size={16} />}{row.team}</span></td>
+              <td className="num">{row.games}</td><td className="num">{known(row.minG)}</td><td className="num">{known(row.ptsG)}</td><td className="num">{known(row.rebG)}</td><td className="num">{known(row.astG)}</td>
+              <td className="num">{row.fgPct}</td><td className="num">{row.threePct}</td><td className="num">{row.ftPct}</td>
+            </tr>)}</tbody>
+          </table>
         </div>
-
-        <div className="page-actions dist-actions">
-          <Link href="/investigations" className="button button-secondary text-xs">
-            Saved Investigations
-          </Link>
-          <Link href="/stats" className="button button-primary text-xs">
-            Open in Stats
-          </Link>
-        </div>
-      </div>
-
-      {/* Case Study Selector Tabs */}
-      <div className="toolbar case-study-toolbar">
-        {CASE_STUDIES.map((c) => (
-          <button
-            key={c.id}
-            type="button"
-            className={`tab-button ${selectedCase.id === c.id ? "active" : ""}`}
-            onClick={() => setSelectedCase(c)}
-          >
-            Case {c.number}: {c.subject} ({c.season})
-          </button>
-        ))}
-      </div>
-
-      {/* Selected Case Study Container */}
-      <div className="case-study-container">
-        {/* Title and Metadata Banner */}
-        <div className="table-card case-study-hero">
-          <div className="dist-provenance-header">
-            <div>
-              <span className="font-mono text-xs text-muted uppercase">Case Study {selectedCase.number}</span>
-              <h2 className="section-title">{selectedCase.title}</h2>
-              <p className="text-muted text-sm">
-                {selectedCase.subtitle}
-              </p>
-            </div>
-
-            <div className="dist-actions">
-              {selectedCase.actionLinks.map((link) => (
-                <Link
-                  key={link.label}
-                  href={link.href}
-                  className={`button ${link.primary ? "button-primary" : "button-secondary"} text-xs`}
-                >
-                  {link.label} →
-                </Link>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Problem Statement */}
-        <div className="table-card case-study-card">
-          <h3 className="case-study-card-title">1. Context & Problem Statement</h3>
-          <p className="case-study-problem-text">
-            {selectedCase.problemSummary}
-          </p>
-        </div>
-
-        {/* Real Data Evidence Table */}
-        <div className="table-card">
-          <div className="case-study-table-header">
-            <h3 className="case-study-card-title">2. Observed Real-Data Evidence</h3>
-            <span className="text-xs text-muted">
-              Reconciled fact rows from PostgreSQL 17 materialized marts.
-            </span>
-          </div>
-
-          <div className="table-wrapper" role="region" aria-label="Case study observations" tabIndex={0}>
-            <table className="data-table">
-              <thead>
-                <tr>
-                  <th>Observation Scope</th>
-                  <th>Team</th>
-                  <th className="text-center">Games</th>
-                  <th className="num">Minutes/G</th>
-                  <th className="num">PTS/G</th>
-                  <th className="num">REB/G</th>
-                  <th className="num">AST/G</th>
-                  <th className="num">FG%</th>
-                  <th className="num">3P%</th>
-                  <th className="num">FT%</th>
-                </tr>
-              </thead>
-              <tbody>
-                {selectedCase.dataEvidence.map((row, idx) => (
-                  <tr key={idx} className="dist-table-row">
-                    <td><strong>{row.label}</strong></td>
-                    <td>
-                      <span className="filter-pill pointer-events-none">
-                        {row.team}
-                      </span>
-                    </td>
-                    <td className="text-center">{row.games}</td>
-                    <td className="num font-mono">
-                      {row.minG > 0 ? row.minG : "—"}
-                    </td>
-                    <td className="num font-mono text-accent">
-                      {row.ptsG > 0 ? row.ptsG : "—"}
-                    </td>
-                    <td className="num font-mono">
-                      {row.rebG > 0 ? row.rebG : "—"}
-                    </td>
-                    <td className="num font-mono">
-                      {row.astG > 0 ? row.astG : "—"}
-                    </td>
-                    <td className="num font-mono">
-                      {row.fgPct}
-                    </td>
-                    <td className="num font-mono">
-                      {row.threePct}
-                    </td>
-                    <td className="num font-mono">
-                      {row.ftPct}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        {/* Architectural Guarantees & Invariants */}
-        <div className="table-card case-study-card">
-          <h3 className="case-study-card-title">3. Architectural Guarantees & Invariants</h3>
-          <div className="case-study-guarantees-list">
-            {selectedCase.guarantees.map((g, idx) => (
-              <div
-                key={idx}
-                className="case-study-guarantee-item"
-              >
-                {g}
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* How to Reproduce / Answer Manually */}
-        <div className="table-card case-study-card">
-          <h3 className="case-study-card-title">
-            4. Manual Verification & Reproducibility Guide
-          </h3>
-          <p className="text-xs text-muted mb-2">
-            Every finding can be reproduced and verified manually without calling third-party LLMs or AI providers:
-          </p>
-          <ol className="case-study-steps-list">
-            {selectedCase.manualAnswerSteps.map((step, idx) => (
-              <li key={idx}>
-                {step}
-              </li>
-            ))}
-          </ol>
-        </div>
-
-        {/* Cryptographic Lineage Footer */}
-        <div className="table-card case-study-provenance-box">
-          <div className="dist-provenance-header">
-            <span className="font-mono text-muted uppercase text-xs">Immutable Provenance</span>
-            <span className="font-mono text-xs text-muted">
-              Artifact Hash: <code>{selectedCase.evidenceHash}</code>
-            </span>
-          </div>
-          <span className="text-muted text-xs">
-            Sealed under CourtLens temporal verification contracts. Recomputed from frozen source acquisitions.
-          </span>
-        </div>
-      </div>
-    </div>
+        <GatedNote why={<p>{selected.problemSummary}</p>}>The problem this case guards against.</GatedNote>
+        <section className="panel research-section" aria-label="Architectural guarantees">
+          <h3>Guarantees</h3>
+          <ul className="case-study-guarantees-list">{selected.guarantees.map(text => <li key={text} className="case-study-guarantee-item">{text}</li>)}</ul>
+        </section>
+        <section className="panel research-section" aria-label="Manual verification">
+          <h3>Verify It Yourself</h3>
+          <p className="research-caption">Every finding can be reproduced without calling third-party LLMs or AI providers.</p>
+          <ol className="case-study-steps-list">{selected.manualAnswerSteps.map(step => <li key={step}>{step}</li>)}</ol>
+        </section>
+      </ResearchLayout>
+    </PageShell>
   );
 }
