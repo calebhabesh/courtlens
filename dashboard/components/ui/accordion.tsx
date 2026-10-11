@@ -56,6 +56,7 @@ export function AccordionItem({
         role="region"
         aria-labelledby={`${id}-trigger`}
         data-expanded={isExpanded}
+        inert={!isExpanded}
         className="ui-accordion-content"
       >
         <div className="ui-accordion-content-inner">{children}</div>

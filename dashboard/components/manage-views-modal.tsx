@@ -1,5 +1,6 @@
 "use client";
 
+import { Icon } from "./ui/icon";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useWorkspace } from "@/lib/workspace-context";
 import { ALL_CATALOG_METRICS, IMPACT_COLUMNS } from "@/lib/stats-presets";
@@ -366,7 +367,7 @@ export function ManageViewsModal({
             onClick={onClose}
             aria-label="Close manage views modal"
           >
-            ✕
+            <Icon name="close" size={14} />
           </button>
         </div>
 
@@ -405,7 +406,7 @@ export function ManageViewsModal({
             disabled={views.length >= MAX_CUSTOM_VIEWS && !editingViewId}
             title={views.length >= MAX_CUSTOM_VIEWS ? "Maximum 10 custom views reached" : "Add or edit custom view"}
           >
-            {editingViewId ? "Edit View" : "+ Add View"}
+            {editingViewId ? "Edit View" : <><Icon name="plus" size={14} />Add View</>}
           </button>
           <button
             type="button"
@@ -434,7 +435,7 @@ export function ManageViewsModal({
                   disabled={views.length >= MAX_CUSTOM_VIEWS}
                   className="button button-small button-primary"
                 >
-                  + Create View
+                  <Icon name="plus" size={14} />Create View
                 </button>
               </div>
 
@@ -472,12 +473,12 @@ export function ManageViewsModal({
                           </strong>
                           {isDefault && (
                             <span className="replica-badge-active" title="Default view on Stats explorer">
-                              ★ Default
+                              <Icon name="star" size={14} filled />Default
                             </span>
                           )}
                           {hasUnavailable && (
                             <span className="replica-badge-gated" title="Contains unavailable metrics (preserved)">
-                              🔒 {view.unavailable_columns?.length} unavailable
+                              <Icon name="lock" size={14} />{view.unavailable_columns?.length} unavailable
                             </span>
                           )}
                           <span className="text-xs text-muted font-mono">
@@ -495,7 +496,7 @@ export function ManageViewsModal({
                             title="Move view up"
                             aria-label={`Move ${view.name} up`}
                           >
-                            ▲
+                            <Icon name="chevron-up" size={14} />
                           </button>
                           <button
                             type="button"
@@ -505,7 +506,7 @@ export function ManageViewsModal({
                             title="Move view down"
                             aria-label={`Move ${view.name} down`}
                           >
-                            ▼
+                            <Icon name="chevron-down" size={14} />
                           </button>
 
                           {/* Set Default */}
@@ -551,7 +552,7 @@ export function ManageViewsModal({
                             title="Delete custom view"
                             aria-label={`Delete ${view.name}`}
                           >
-                            ✕
+                            <Icon name="close" size={14} />
                           </button>
                         </div>
                       </div>
@@ -712,15 +713,16 @@ export function ManageViewsModal({
                           key={colKey}
                           className={`views-modal-metric-chip ${isUnavail ? "is-unavail" : ""}`}
                         >
-                          {isUnavail && "🔒 "}
+                          {isUnavail && <Icon name="lock" size={14} />}
                           {label}
                           <button
                             type="button"
                             onClick={() => handleToggleColumn(colKey, isUnavail)}
                             className="views-modal-metric-chip-remove"
                             title={`Remove ${label}`}
+                            aria-label={`Remove ${label}`}
                           >
-                            ✕
+                            <Icon name="close" size={14} />
                           </button>
                         </span>
                       );
@@ -753,7 +755,7 @@ export function ManageViewsModal({
                                 onChange={() => handleToggleColumn(col.key, col.unavailable)}
                               />
                               <span className={isSelected ? "font-semibold" : "font-normal"}>
-                                {col.unavailable ? "🔒 " : ""}
+                                {col.unavailable && <Icon name="lock" size={14} />}
                                 {col.label}
                               </span>
                             </label>
@@ -802,7 +804,7 @@ export function ManageViewsModal({
                   onClick={handleExport}
                   className="button button-small button-primary"
                 >
-                  ⬇ Export Bundle (.json)
+                  <Icon name="download" size={14} />Export Bundle (.json)
                 </button>
               </div>
 
@@ -876,7 +878,7 @@ export function ManageViewsModal({
                   onClick={handleReset}
                   className="button button-small text-negative border-negative"
                 >
-                  ⚠ Reset to Defaults
+                  <Icon name="reset" size={14} />Reset to Defaults
                 </button>
               </div>
             </div>

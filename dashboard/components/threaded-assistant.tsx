@@ -308,7 +308,7 @@ export function ThreadedAssistant({ initialContext = {}, variant = "page", pageC
         {threads.length === 0 && <p className="text-muted">No saved conversations yet.</p>}
         {threadCursor && <Button className="button-small" disabled={blocked} onClick={() => void refreshThreads(threadCursor).catch(cause => setError(messageOf(cause)))}>Load more conversations</Button>}
       </nav>
-      <div className="ask-sidebar-foot"><Link href="/research/ask?experience=manual">Open manual research</Link><Link href="/settings">History and privacy settings</Link></div>
+      <div className="ask-sidebar-foot"><Link href="/research/ask?experience=manual">Open manual research</Link><Link href="/settings#history">History and privacy settings</Link></div>
     </aside>
     <div className={`ask-main${isEmpty ? " is-empty" : ""}`}>
       <div className="ask-topbar">
@@ -327,7 +327,7 @@ export function ThreadedAssistant({ initialContext = {}, variant = "page", pageC
             {composer}
             <div className="ask-examples">{examplePrompts.map(example => <button type="button" key={example.prompt} className="ask-example" disabled={blocked} onClick={() => void submit(example.prompt)}><span>{example.label}</span>{example.prompt}</button>)}</div>
           </div>}
-          <div aria-label="Messages" className="ask-messages">{turns.map(turn => <article key={turn.turn_id} className="ask-turn">
+          <div role="region" aria-label="Messages" className="ask-messages">{turns.map(turn => <article key={turn.turn_id} className="ask-turn">
             <div className="ask-user"><p className="ask-bubble"><span className="sr-only">You: </span>{turn.request.message}</p></div>
             <div className="ask-assistant"><span className="ask-avatar"><BrandMark size={28} /></span><div className="ask-reply">{turn.response
               ? "answer" in turn.response
@@ -341,7 +341,7 @@ export function ThreadedAssistant({ initialContext = {}, variant = "page", pageC
       <div className="ask-dock">
         {confirmDelete && <div role="alert" className="ask-notice"><p>Delete this local conversation? Saved findings remain available.</p><Button disabled={blocked} onClick={() => void remove()}>Confirm deletion</Button> <Button onClick={() => setConfirmDelete(false)}>Keep history</Button></div>}
         {error && <div role="alert" className="ask-notice"><p>{error}</p>{transportRetry && <Button disabled={blocked} onClick={() => void execute(transportRetry)}>Check or replay request</Button>}<Button disabled={blocked} onClick={() => { if (thread) void openThread(thread); else void refreshThreads().then(() => setError(null)).catch(cause => setError(messageOf(cause))); }}>Reload history</Button></div>}
-        {attachedPage && <div className="ask-composer-meta"><div className="ask-page-context" aria-label="Attached page context"><span>{pageContextLabel(attachedPage, pageLabel)}</span><button type="button" className="button button-quiet" aria-label="Remove page context" disabled={blocked} onClick={() => setRemovedPage(pageKey)}>×</button></div></div>}
+        {attachedPage && <div className="ask-composer-meta"><div className="ask-page-context" role="group" aria-label="Attached page context"><span>{pageContextLabel(attachedPage, pageLabel)}</span><button type="button" className="button button-quiet" aria-label="Remove page context" disabled={blocked} onClick={() => setRemovedPage(pageKey)}>×</button></div></div>}
             <details className="ask-scope"><summary>Scope: {scopeChipLabel(shownContext)}{scopeEdited ? " · edited" : ""}<span className="sr-only"> · Edit scope for the next question</span></summary><div className="ask-scope-pop"><p className="text-muted">Applies to the next question. Earlier answers keep their scope, and relative dates in your question are resolved by the assistant.</p><fieldset disabled={blocked} className="conversation-controls"><legend>Next question scope</legend><CatalogScopeFields release={shownContext.release_id ?? undefined} season={shownContext.season ?? ""} phase={shownContext.phase ?? ""} before={shownContext.before_date ?? ""} onSeason={season => editScope({ season: season || null })} onPhase={phase => editScope({ phase: (phase || undefined) as ConversationContext["phase"] })} onBefore={before_date => editScope({ before_date: before_date || null })} /><label>Window<select value={shownContext.window ?? ""} onChange={event => editScope({ window: (event.target.value || undefined) as ConversationContext["window"] })}><option value="">Inherit or use default</option><option value="season">Season to date</option><option value="last_10">Last 10 appearances</option><option value="last_5">Last 5 appearances</option></select></label></fieldset></div></details>
         {!isEmpty && composer}
         <p role="status" aria-live="polite" aria-atomic="true" className="sr-only">{busy || pending ? live?.step?.label ?? (live?.phase ? phaseLabels[live.phase] : "Question retained; verifying the answer…") : "Ready"}</p>

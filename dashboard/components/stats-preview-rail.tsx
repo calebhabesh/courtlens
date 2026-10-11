@@ -1,6 +1,8 @@
 "use client";
 
-import { ChevronLeft, ChevronRight, Pin, PinOff, UserRound } from "lucide-react";
+import { Icon } from "./ui/icon";
+import { favorablePercentile, type GoodDirection } from "@/lib/percentile-display";
+
 import { PlayerPortrait } from "./player-portrait";
 import { TeamLogoStack } from "./team-logo";
 import { formatColumnValue, type ColumnDefinition } from "@/lib/stats-presets";
@@ -25,12 +27,12 @@ export function StatsPreviewRail({ player, columns, season, eligiblePlayers, goo
       <button type="button" onClick={onToggleCollapse} className="stats-icon-action"
         aria-label={collapsed ? "Expand player preview" : "Collapse player preview"} aria-expanded={!collapsed}
         title={collapsed ? "Expand player preview" : "Collapse player preview"}>
-        {collapsed ? <ChevronLeft size={15} aria-hidden="true" /> : <ChevronRight size={15} aria-hidden="true" />}
+        {collapsed ? <Icon name="left" size={14} /> : <Icon name="right" size={14} />}
       </button>
       {!collapsed && <><span>Player preview</span>{player && <button type="button" className="stats-icon-action"
         onClick={onTogglePin} aria-pressed={pinned} aria-label={pinned ? "Unpin player preview" : "Pin player preview"}
         title={pinned ? "Unpin to resume hover previews" : "Keep this player in the preview"}>
-        {pinned ? <PinOff size={15} aria-hidden="true" /> : <Pin size={15} aria-hidden="true" />}
+        {pinned ? <Icon name="unpin" size={14} /> : <Icon name="pin" size={14} />}
       </button>}</>}
     </div>
     {!collapsed && (player ? <>
@@ -46,7 +48,7 @@ export function StatsPreviewRail({ player, columns, season, eligiblePlayers, goo
         {columns.map(column => {
           const percentile = player.percentiles?.[column.key];
           const direction = goodDirections?.[column.key];
-          const favorable = percentile == null ? null : direction === "low" ? 100 - percentile : direction === "high" ? percentile : null;
+          const favorable = favorablePercentile(percentile, direction as GoodDirection);
           return <div key={column.key} className="stats-preview-metric">
             <dt title={column.tooltip}>{column.label}</dt>
             <dd><strong>{formatColumnValue(column, player)}</strong>{showPercentiles && <span
@@ -69,7 +71,7 @@ export function StatsPreviewRail({ player, columns, season, eligiblePlayers, goo
         <span><kbd>A / D</kbd> Scroll table</span><span><kbd>C</kbd> Compare focused row</span>
         <span>Shortcuts work with the table focused.</span>
       </div>
-      <UserRound size={38} strokeWidth={1.5} aria-hidden="true" />
+      <Icon name="person" size={20} />
       <p>Hover over a player<span>or focus a row to see their stats</span></p>
     </div>)}
   </aside>;

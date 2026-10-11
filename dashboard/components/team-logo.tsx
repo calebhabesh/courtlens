@@ -26,15 +26,15 @@ export function TeamLogo({ team, size = 24 }: { team: string; size?: number }) {
 }
 
 /** Every represented team remains visible and named, independent of array order. */
-export function TeamLogoStack({ teams, label = "Teams represented in selected scope", decorative = false }: {
-  teams: string[]; label?: string; decorative?: boolean;
+export function TeamLogoStack({ teams, label = "Teams represented in selected scope", decorative = false, size }: {
+  teams: string[]; label?: string; decorative?: boolean; size?: number;
 }) {
   const represented = [...new Set(teams)].sort();
   if (represented.length === 0) return null;
   return (
-    <span className="team-logo-stack" tabIndex={decorative ? undefined : 0}
+    <span className="team-logo-stack" role="group" aria-hidden={decorative || undefined} tabIndex={decorative ? undefined : 0}
       aria-label={`${label}: ${represented.join(", ")}`} title={`${label}: ${represented.join(", ")}`}>
-      {represented.map((team) => <TeamLogo key={team} team={team} />)}
+      {represented.map((team) => <TeamLogo key={team} team={team} size={size} />)}
     </span>
   );
 }

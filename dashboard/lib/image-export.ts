@@ -47,6 +47,44 @@ export function formatContextBanner(context: AnalyticalContextMetadata): string 
   return parts.join(" · ");
 }
 
+async function toDataUrl(url: string): Promise<string | null> {
+  try {
+    // no-store: the on-screen <image> already cached this URL from a no-CORS load; reusing that
+    // entry fails the CORS check, so the export would silently lose the headshot.
+    const response = await fetch(url, { mode: "cors", cache: "no-store" });
+    if (!response.ok) return null;
+    const blob = await response.blob();
+    return await new Promise<string>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(String(reader.result));
+      reader.onerror = () => reject(reader.error);
+      reader.readAsDataURL(blob);
+    });
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Clone an SVG with every <image> inlined as a data URL. An SVG rendered through <img> (PNG
+ * export) or opened as a file cannot load external images, so a headshot or logo would vanish.
+ * Only the card's own images (portrait endpoint, local logo assets) are fetched; an image that
+ * fails to load is removed rather than exported as a broken link.
+ */
+export async function inlineSvgImages(svgElement: SVGSVGElement): Promise<SVGSVGElement> {
+  const clone = svgElement.cloneNode(true) as SVGSVGElement;
+  const images = Array.from(clone.querySelectorAll("image"));
+  await Promise.all(images.map(async (image) => {
+    const href = image.getAttribute("href") ?? image.getAttribute("xlink:href");
+    if (!href || href.startsWith("data:")) return;
+    const absolute = new URL(href, window.location.href).toString();
+    const data = await toDataUrl(absolute);
+    if (data) image.setAttribute("href", data);
+    else image.remove();
+  }));
+  return clone;
+}
+
 /**
  * Export an SVG DOM element as a context-stamped PNG image using HTML5 Canvas.
  * No external network requests or AI generation.

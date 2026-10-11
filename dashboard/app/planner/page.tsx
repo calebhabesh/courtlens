@@ -1,22 +1,22 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { PlannerClient } from "@/components/planner-client";
-import { getDataStatus } from "@/lib/api";
+import { PageShell } from "@/components/ui/page-shell";
+import { PageHeader } from "@/components/ui/panel";
+import { getDataStatus, mondayFor } from "@/lib/api";
 
-export const metadata: Metadata = { title: "Weekly roster planner" };
+export const metadata: Metadata = { title: "Planner · CourtLens" };
 export const dynamic = "force-dynamic";
 
 export default async function PlannerPage() {
   const status = await getDataStatus();
+  const fixtureMode = status.classification === "fixture";
   return (
-    <section className="advanced-research legacy-planner">
-      <div className="page-heading">
-        <div>
-          <p className="kicker">Private decision workspace</p>
-          <h1>Weekly roster planner</h1>
-          <p>Count the games your slots can use, then compare one explainable roster change.</p>
-        </div>
-      </div>
-      <PlannerClient fixtureMode={status.classification === "fixture"} />
-    </section>
+    <PageShell template="board" className="legacy-planner planner-page">
+      <PageHeader title="Planner" subtitle="Count the games your lineup slots can use, then compare one roster change." />
+      <Suspense fallback={null}>
+        <PlannerClient fixtureMode={fixtureMode} defaultWeek={fixtureMode ? "2025-02-03" : mondayFor()} />
+      </Suspense>
+    </PageShell>
   );
 }

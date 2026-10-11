@@ -1,12 +1,16 @@
+import { Icon } from "@/components/ui/icon";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ContextBar } from "@/components/context-bar";
 import { PlayoffsSeriesView } from "@/components/playoffs-series-view";
+import { GatedNote } from "@/components/ui/gated-note";
+import { PageShell } from "@/components/ui/page-shell";
+import { PageHeader } from "@/components/ui/panel";
 import { getPlayoffSeriesDetail } from "@/lib/workbench-api";
 import type { PlayoffSeriesDetailResponse } from "@/lib/types";
 
 export const metadata: Metadata = {
-  title: "Playoff Series Detail · CourtLens",
+  title: "Playoff Series",
   description:
     "Postseason 7-game cards, Dean Oliver Four Factors, player box-score averages, and matchup breakdown."
 };
@@ -28,7 +32,8 @@ export default async function PlayoffSeriesDetailPage({
   searchParams
 }: PlayoffSeriesDetailPageProps) {
   const [{ seriesId }, sp] = await Promise.all([params, searchParams]);
-  const cutoffDate = sp.cutoff_date || sp.cutoffDate || sp.beforeDate;
+  // The shared filter bar writes `beforeDate`; older links used `cutoff_date`.
+  const cutoffDate = sp.beforeDate || sp.cutoff_date || sp.cutoffDate;
 
   let detail: PlayoffSeriesDetailResponse | null = null;
   let loadError: string | null = null;
@@ -44,30 +49,34 @@ export default async function PlayoffSeriesDetailPage({
 
   if (loadError || !detail) {
     return (
-      <div className="workbench-content">
-        <div className="notice-box error-notice" role="alert">
-          <strong>Error loading playoff series:</strong> {loadError || "Series not found."}
-        </div>
-        <Link href="/playoffs" className="button button-small">
-          ← Return to Playoff Bracket
-        </Link>
-      </div>
+      <PageShell template="board">
+        <PageHeader title="Playoff series" />
+        <GatedNote
+          tone="warning"
+          why={loadError ?? undefined}
+          action={<Link href="/playoffs" className="button button-small"><Icon name="left" size={14} />Playoffs</Link>}
+        >
+          This series could not be loaded.
+        </GatedNote>
+      </PageShell>
     );
   }
 
   return (
-    <>
-      <ContextBar
-        allowedPhases={["playoffs"]}
-        initialSeason={detail.season}
-        initialPhase="playoffs"
-        initialBeforeDate={cutoffDate || detail.cutoff_date || undefined}
-        sampleSize={detail.team1.games_played}
+    <PageShell template="board">
+      <PlayoffsSeriesView
+        detail={detail}
+        filterBar={<ContextBar
+          key="filter-bar"
+          allowedPhases={["playoffs"]}
+          initialSeason={detail.season}
+          initialPhase="playoffs"
+          initialBeforeDate={cutoffDate || detail.cutoff_date || undefined}
+          showWindow={false}
+          sampleSize={detail.team1.games_played}
+          detailRows={[{ label: "Series", value: detail.series_id, mono: true }]}
+        />}
       />
-
-      <div className="workbench-content">
-        <PlayoffsSeriesView detail={detail} cutoffDate={cutoffDate} />
-      </div>
-    </>
+    </PageShell>
   );
 }

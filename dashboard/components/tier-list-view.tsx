@@ -1,4 +1,10 @@
 "use client";
+
+import { Icon } from "./ui/icon";
+import { Button } from "./ui/button";
+import { GatedNote } from "./ui/gated-note";
+import { PageShell } from "./ui/page-shell";
+import { PageHeader } from "./ui/panel";
 import { LookupInput } from "./lookup-input";
 
 import React, { useState, useMemo } from "react";
@@ -348,43 +354,19 @@ export function TierListView() {
   };
 
   return (
-    <div className="workbench-content tier-workspace-wrapper">
-      {/* Header */}
-      <div className="page-header tier-header">
-        <div>
-          <h1 className="page-title">Tier List Builder</h1>
-          <p className="page-subtitle">
-            F27 Tier Lists · Interactive personal tier lists with drag-and-drop, full keyboard accessibility, and local persistence.
-          </p>
-        </div>
-        <div className="tier-header-actions">
-          {activeList && (
-            <button
-              type="button"
-              onClick={handleAddTierRow}
-              className="button button-small"
-              title="Add a new tier row"
-            >
-              + Add Tier Row
-            </button>
-          )}
-          <button
-            type="button"
-            onClick={() => setIsCreatingList(true)}
-            className="button button-primary button-small"
-          >
-            + New Tier List
-          </button>
-        </div>
-      </div>
+    <PageShell template="board" className="tier-workspace-wrapper">
+      <PageHeader
+        title="Tier Lists"
+        subtitle="Your own player tiers, arranged by drag and drop or keyboard."
+        actions={<>
+          {activeList && <Button variant="secondary" icon="plus" onClick={handleAddTierRow}>Add tier row</Button>}
+          <Button variant="primary" icon="plus" onClick={() => setIsCreatingList(true)}>New tier list</Button>
+        </>}
+      />
 
-      {/* Notice */}
-      <div className="notice-box tier-notice">
-        <strong className="text-accent text-xs">Subjective Categorization Notice:</strong>
-        <p className="text-xs text-muted tier-notice-text">
-          Tier allocations reflect personal subjective categorizations. Cards support HTML5 drag-and-drop as well as accessible keyboard controls (▲/▼ or tier dropdown).
-        </p>
-      </div>
+      <GatedNote why="Tier allocations reflect personal subjective categorizations. Cards support HTML5 drag-and-drop as well as accessible keyboard controls (move up/down buttons or tier dropdown).">
+        Tiers are personal categorizations.
+      </GatedNote>
 
       {/* CREATE MODAL */}
       {isCreatingList && (
@@ -403,8 +385,9 @@ export function TierListView() {
                 type="button"
                 className="modal-close-btn"
                 onClick={() => setIsCreatingList(false)}
+                aria-label="Close create tier list dialog"
               >
-                ✕
+                <Icon name="close" size={14} />
               </button>
             </div>
             <form onSubmit={handleCreateListSubmit} className="modal-body tier-modal-body">
@@ -557,7 +540,7 @@ export function TierListView() {
                           className="button button-small tier-quick-fav-btn"
                           title={isAssigned ? "Already in a tier" : `Add to ${activeList.tiers[0]?.label || "first tier"}`}
                         >
-                          {isAssigned ? "✓" : "+"} #{favId}
+                          {isAssigned ? <Icon name="check" size={14} /> : <Icon name="plus" size={14} />}#{favId}
                         </button>
                       );
                     })}
@@ -597,7 +580,7 @@ export function TierListView() {
                             title="Move tier row up"
                             aria-label={`Move tier ${tier.label} up`}
                           >
-                            ▲
+                            <Icon name="chevron-up" size={14} />
                           </button>
                           <button
                             type="button"
@@ -607,7 +590,7 @@ export function TierListView() {
                             title="Move tier row down"
                             aria-label={`Move tier ${tier.label} down`}
                           >
-                            ▼
+                            <Icon name="chevron-down" size={14} />
                           </button>
                           <button
                             type="button"
@@ -616,7 +599,7 @@ export function TierListView() {
                             title="Delete this tier row"
                             aria-label={`Delete tier ${tier.label}`}
                           >
-                            ✕
+                            <Icon name="close" size={14} />
                           </button>
                         </div>
                       </div>
@@ -668,7 +651,7 @@ export function TierListView() {
                                 title="Remove player from tier list"
                                 aria-label={`Remove Player #${pid} from tier list`}
                               >
-                                ✕
+                                <Icon name="close" size={14} />
                               </button>
                             </div>
                           ))
@@ -682,6 +665,6 @@ export function TierListView() {
           )}
         </div>
       )}
-    </div>
+    </PageShell>
   );
 }

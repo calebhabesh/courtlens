@@ -7,11 +7,13 @@ import {
 import { useRouter, useSearchParams } from "next/navigation";
 import { motion, AnimatePresence, modalVariants, scrimVariants } from "../../lib/motion";
 import { Icon, type IconName } from "./icon";
+import { OverlayPortal } from "./overlay-portal";
 import { PlayerPortrait } from "../player-portrait";
 import { TeamLogo, TeamLogoStack } from "../team-logo";
 import { queryLookup } from "@/lib/workbench-api";
 import { buildPreservedContextUrl } from "@/lib/query-url";
 import { defaultLookupCache, buildLookupCacheKey } from "@/lib/lookup-cache";
+import { rememberRecentSearch, useRecentSearches } from "@/lib/recent-searches";
 import type { LookupItem, LookupAvailability } from "@/lib/types";
 
 export interface CommandItem {
@@ -115,90 +117,94 @@ export function CommandPalette({
   let globalIndexCounter = 0;
 
   return (
-    <AnimatePresence>
-      {isOpen && (
-        <motion.div
-          variants={scrimVariants}
-          initial="initial"
-          animate="animate"
-          exit="exit"
-          className="ui-scrim ui-command-palette-scrim"
-          onClick={handleClose}
-        >
+    <OverlayPortal>
+      <AnimatePresence>
+        {isOpen && (
           <motion.div
-            role="dialog"
-            aria-modal="true"
-            aria-label="Command palette"
-            tabIndex={-1}
-            variants={modalVariants}
+            variants={scrimVariants}
             initial="initial"
             animate="animate"
             exit="exit"
-            className={`ui-command-palette ${className}`}
-            onClick={e => e.stopPropagation()}
-            onKeyDown={handleKeyDown}
+            className="ui-scrim ui-command-palette-scrim"
+            onClick={handleClose}
           >
-            <div className="ui-command-input-wrapper">
-              <Icon name="search" size={18} className="ui-command-search-icon" />
-              <input
-                ref={inputRef}
-                type="text"
-                role="combobox"
-                aria-expanded="true"
-                aria-autocomplete="list"
-                aria-controls="ui-command-listbox"
-                value={query}
-                onChange={e => handleQueryChange(e.target.value)}
-                placeholder={placeholder}
-                className="ui-command-input"
-              />
-              <kbd className="ui-command-shortcut">ESC</kbd>
-            </div>
+            <motion.div
+              role="dialog"
+              aria-modal="true"
+              aria-label="Command palette"
+              tabIndex={-1}
+              variants={modalVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+              className={`ui-command-palette ${className}`}
+              onClick={e => e.stopPropagation()}
+              onKeyDown={handleKeyDown}
+            >
+              <div className="ui-command-input-wrapper">
+                <Icon name="search" size={20} className="ui-command-search-icon" />
+                <input
+                  ref={inputRef}
+                  type="text"
+                  role="combobox"
+                  aria-expanded="true"
+                  aria-autocomplete="list"
+                  aria-controls="ui-command-listbox"
+                  value={query}
+                  onChange={e => handleQueryChange(e.target.value)}
+                  placeholder={placeholder}
+                  className="ui-command-input"
+                />
+                <kbd className="ui-command-shortcut">Esc</kbd>
+              </div>
 
-            <div id="ui-command-listbox" ref={listRef} className="ui-command-list" role="listbox">
-              {filteredGroups.length === 0 ? (
-                <div className="ui-command-empty">No results found for &ldquo;{query}&rdquo;</div>
-              ) : (
-                filteredGroups.map(group => (
-                  <div key={group.name} className="ui-command-group">
-                    <div className="ui-command-group-heading">{group.name}</div>
-                    {group.items.map(item => {
-                      const itemIndex = globalIndexCounter++;
-                      const isSelected = itemIndex === activeIndex;
-                      return (
-                        <div
-                          key={item.id}
-                          role="option"
-                          aria-selected={isSelected}
-                          onClick={() => {
-                            item.onSelect();
-                            handleClose();
-                          }}
-                          onMouseEnter={() => setSelectedIndex(itemIndex)}
-                          className={`ui-command-item ${isSelected ? "ui-command-item-active" : ""}`}
-                        >
-                          {item.icon && <Icon name={item.icon} size={16} />}
-                          <div className="ui-command-item-text">
-                            <span className="ui-command-item-label">{item.label}</span>
-                            {item.subtitle && (
-                              <span className="ui-command-item-subtitle text-muted">
-                                {item.subtitle}
-                              </span>
-                            )}
+              <div id="ui-command-listbox" ref={listRef} className="ui-command-list" role="listbox">
+                {filteredGroups.length === 0 ? (
+                  <div className="ui-command-empty">No results found for &ldquo;{query}&rdquo;</div>
+                ) : (
+                  filteredGroups.map(group => (
+                    <div key={group.name} className="ui-command-group">
+                      <div className="ui-command-group-heading">{group.name}</div>
+                      {group.items.map(item => {
+                        const itemIndex = globalIndexCounter++;
+                        const isSelected = itemIndex === activeIndex;
+                        return (
+                          <div
+                            key={item.id}
+                            role="option"
+                            aria-selected={isSelected}
+                            onClick={() => {
+                              item.onSelect();
+                              handleClose();
+                            }}
+                            onMouseEnter={() => setSelectedIndex(itemIndex)}
+                            className={`ui-command-item ${isSelected ? "ui-command-item-active" : ""}`}
+                          >
+                            {item.icon && <Icon name={item.icon} size={16} />}
+                            <div className="ui-command-item-text">
+                              <span className="ui-command-item-label">{item.label}</span>
+                              {item.subtitle && (
+                                <span className="ui-command-item-subtitle text-muted">
+                                  {item.subtitle}
+                                </span>
+                              )}
+                            </div>
                           </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                ))
-              )}
-            </div>
+                        );
+                      })}
+                    </div>
+                  ))
+                )}
+              </div>
+            </motion.div>
           </motion.div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+        )}
+      </AnimatePresence>
+    </OverlayPortal>
   );
 }
+
+const KIND_LABEL: Record<LookupItem["kind"], string> = { player: "Player", team: "Team", page: "Page" };
 
 /** Formats compact player captions */
 function compactCaption(item: LookupItem) {
@@ -427,22 +433,28 @@ export function GlobalCommandPalette({
 
   // Result groupings
   const isQueryEmpty = query.trim() === "";
+  const recents = useRecentSearches();
   const players = items.filter(i => i.kind === "player");
   const teams = items.filter(i => i.kind === "team");
   const pages = items.filter(i => i.kind === "page");
 
-  const displayGroups = isQueryEmpty
-    ? [{ name: "Quick Actions & Recent", items: DEFAULT_QUICK_ACTIONS }]
+  // D8: one search with grouped results. The empty state shows bounded local recents, then pages.
+  const displayGroups: { name: string; recent?: boolean; items: LookupItem[] }[] = isQueryEmpty
+    ? [
+        ...(recents.length > 0 ? [{ name: "Recent", recent: true, items: recents }] : []),
+        { name: "Pages", items: DEFAULT_QUICK_ACTIONS },
+      ]
     : [
         ...(players.length > 0 ? [{ name: "Players", items: players }] : []),
         ...(teams.length > 0 ? [{ name: "Teams", items: teams }] : []),
-        ...(pages.length > 0 ? [{ name: "Pages and tools", items: pages }] : []),
+        ...(pages.length > 0 ? [{ name: "Pages", items: pages }] : []),
       ];
 
   const flatItems = displayGroups.flatMap(g => g.items);
   const activeIndex = flatItems.length > 0 ? Math.min(selectedIndex, flatItems.length - 1) : -1;
 
   const handleSelect = (item: LookupItem) => {
+    rememberRecentSearch(item);
     onClose();
     setQuery("");
     const url = buildPreservedContextUrl(item.destination_url, searchParams);
@@ -493,123 +505,135 @@ export function GlobalCommandPalette({
   let globalCounter = 0;
 
   return (
-    <AnimatePresence>
-      {isOpen && (
-        <motion.div
-          variants={scrimVariants}
-          initial="initial"
-          animate="animate"
-          exit="exit"
-          className="ui-scrim ui-command-palette-scrim replica-search-container"
-          onClick={() => {
-            onClose();
-            setQuery("");
-          }}
-        >
+    <OverlayPortal>
+      <AnimatePresence>
+        {isOpen && (
           <motion.div
-            role="dialog"
-            aria-modal="true"
-            aria-label="CourtLens global command palette"
-            tabIndex={-1}
-            variants={modalVariants}
+            variants={scrimVariants}
             initial="initial"
             animate="animate"
             exit="exit"
-            className="ui-command-palette"
-            onClick={e => e.stopPropagation()}
-            onKeyDown={handleKeyDown}
+            className="ui-scrim ui-command-palette-scrim"
+            onClick={() => {
+              onClose();
+              setQuery("");
+            }}
           >
-            <div className="ui-command-input-wrapper lookup-input-wrapper">
-              <Icon name="search" size={18} className="ui-command-search-icon lookup-search-icon" />
-              <input
-                ref={inputRef}
-                type="text"
-                role="combobox"
-                aria-label="Search players, teams and pages"
-                aria-expanded="true"
-                aria-autocomplete="list"
-                aria-controls="global-command-list"
-                aria-activedescendant={activeIndex >= 0 ? `global-cmd-opt-${activeIndex}` : undefined}
-                value={query}
-                onChange={e => {
-                  const val = e.target.value;
-                  setQuery(val);
-                  setSelectedIndex(0);
-                  if (!val.trim()) {
-                    setItems([]);
-                    setLoading(false);
-                    setError(null);
-                  }
-                }}
-                placeholder="Search players, teams, leaderboards, or research tools…"
-                className="ui-command-input lookup-input"
-              />
-              {query && (
+            <motion.div
+              role="dialog"
+              aria-modal="true"
+              aria-label="CourtLens global command palette"
+              tabIndex={-1}
+              variants={modalVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+              className="ui-command-palette"
+              onClick={e => e.stopPropagation()}
+              onKeyDown={handleKeyDown}
+            >
+              <div className="ui-command-input-wrapper lookup-input-wrapper">
+                <Icon name="search" size={20} className="ui-command-search-icon lookup-search-icon" />
+                <input
+                  ref={inputRef}
+                  type="text"
+                  role="combobox"
+                  aria-label="Search players, teams and pages"
+                  aria-expanded="true"
+                  aria-autocomplete="list"
+                  aria-controls="global-command-list"
+                  aria-activedescendant={activeIndex >= 0 ? `global-cmd-opt-${activeIndex}` : undefined}
+                  value={query}
+                  onChange={e => {
+                    const val = e.target.value;
+                    setQuery(val);
+                    setSelectedIndex(0);
+                    if (!val.trim()) {
+                      setItems([]);
+                      setLoading(false);
+                      setError(null);
+                    }
+                  }}
+                  placeholder="Search players, teams, leaderboards, or research tools…"
+                  className="ui-command-input lookup-input"
+                />
+                {query && (
+                  <button
+                    type="button"
+                    className="lookup-clear-btn"
+                    aria-label="Clear search"
+                    onClick={() => {
+                      setQuery("");
+                      setItems([]);
+                      setSelectedIndex(0);
+                      inputRef.current?.focus();
+                    }}
+                  >
+                    <Icon name="close" size={14} />
+                  </button>
+                )}
+                {!query && <kbd className="ui-command-shortcut">Esc</kbd>}
                 <button
                   type="button"
-                  className="lookup-clear-btn"
-                  aria-label="Clear search"
+                  className="ui-command-close"
+                  aria-label="Close search"
                   onClick={() => {
+                    onClose();
                     setQuery("");
-                    setItems([]);
-                    setSelectedIndex(0);
-                    inputRef.current?.focus();
                   }}
                 >
-                  <Icon name="close" size={14} />
+                  Cancel
                 </button>
-              )}
-              {!query && <kbd className="ui-command-shortcut">ESC</kbd>}
-            </div>
+              </div>
 
-            <div
-              id="global-command-list"
-              className="ui-command-list lookup-listbox"
-              role="listbox"
-              aria-label="Search suggestions"
-            >
-              {loading && <div className="lookup-status-message">Searching…</div>}
+              <div
+                id="global-command-list"
+                className="ui-command-list lookup-listbox"
+                role="listbox"
+                aria-label="Search suggestions"
+              >
+                {loading && <div className="lookup-status-message">Searching…</div>}
 
-              {error && (
-                <div className="lookup-status-message error">
-                  {error}
-                </div>
-              )}
+                {error && (
+                  <div className="lookup-status-message error">
+                    {error}
+                  </div>
+                )}
 
-              {!loading && !error && !isQueryEmpty && flatItems.length === 0 && (
-                <div className="lookup-status-message">
-                  No matches for &ldquo;{query}&rdquo;. Try another spelling or tricode.
-                </div>
-              )}
+                {!loading && !error && !isQueryEmpty && flatItems.length === 0 && (
+                  <div className="lookup-status-message">
+                    No matches for &ldquo;{query}&rdquo;. Try another spelling or tricode.
+                  </div>
+                )}
 
-              {!loading &&
-                !error &&
-                displayGroups.map(group => (
-                  <div key={group.name} className="ui-command-group">
-                    <div className="lookup-group-header ui-command-group-heading">
-                      {group.name}
-                    </div>
-                    {group.items.map(item => {
-                      const itemIndex = globalCounter++;
-                      const isSelected = itemIndex === activeIndex;
+                {!loading &&
+                  !error &&
+                  displayGroups.map(group => (
+                    <div key={group.name} className="ui-command-group">
+                      <div className="lookup-group-header ui-command-group-heading">
+                        {group.name}
+                      </div>
+                      {group.items.map(item => {
+                        const itemIndex = globalCounter++;
+                        const isSelected = itemIndex === activeIndex;
+                        const caption = group.recent ? KIND_LABEL[item.kind] : compactCaption(item) ?? KIND_LABEL[item.kind];
 
-                      return (
-                        <div
-                          key={`${item.kind}:${item.canonical_id}`}
-                          id={`global-cmd-opt-${itemIndex}`}
-                          role="option"
-                          tabIndex={-1}
-                          aria-selected={isSelected}
-                          data-active={isSelected}
-                          onClick={() => handleSelect(item)}
-                          onMouseEnter={() => setSelectedIndex(itemIndex)}
-                          className={`ui-command-item lookup-option ${
-                            isSelected ? "ui-command-item-active selected" : ""
-                          }`}
-                        >
-                          <span className="lookup-item-leading">
-                            {item.kind === "player" ? (
-                              <>
+                        return (
+                          <div
+                            key={`${group.name}:${item.kind}:${item.canonical_id}`}
+                            id={`global-cmd-opt-${itemIndex}`}
+                            role="option"
+                            tabIndex={-1}
+                            aria-selected={isSelected}
+                            data-active={isSelected}
+                            onClick={() => handleSelect(item)}
+                            onMouseEnter={() => setSelectedIndex(itemIndex)}
+                            className={`ui-command-item lookup-option ${
+                              isSelected ? "ui-command-item-active selected" : ""
+                            }`}
+                          >
+                            <span className="lookup-item-leading">
+                              {item.kind === "player" ? (
                                 <PlayerPortrait
                                   playerId={
                                     item.metadata?.identity_namespace === "planner"
@@ -620,58 +644,60 @@ export function GlobalCommandPalette({
                                   portraitUrl={item.portrait_url}
                                   size="sm"
                                 />
-                                <TeamLogoStack
-                                  teams={item.team_association?.teams ?? []}
-                                  label={
-                                    item.team_association?.basis === "last_observed"
-                                      ? "Last observed team"
-                                      : "Teams observed in selected scope"
+                              ) : item.kind === "team" ? (
+                                <TeamLogo team={item.portrait_fallback ?? item.canonical_id} size={28} />
+                              ) : (
+                                <Icon
+                                  name={
+                                    group.recent
+                                      ? "history"
+                                      : item.id.includes("ask")
+                                      ? "message"
+                                      : item.id.includes("live")
+                                      ? "play"
+                                      : "page"
                                   }
+                                  size={16}
                                 />
-                              </>
-                            ) : item.kind === "team" ? (
-                              <TeamLogo team={item.portrait_fallback ?? item.canonical_id} size={28} />
-                            ) : (
-                              <Icon
-                                name={
-                                  item.id.includes("ask")
-                                    ? "message"
-                                    : item.id.includes("live")
-                                    ? "play"
-                                    : "search"
-                                }
-                                size={16}
-                              />
-                            )}
-                          </span>
-
-                          <span className="lookup-item-content ui-command-item-text">
-                            <span className="lookup-item-name ui-command-item-label">
-                              {item.display_name}
+                              )}
                             </span>
-                            <span className="lookup-item-subtitle ui-command-item-subtitle">
-                              {compactCaption(item)}
+
+                            <span className="lookup-item-content ui-command-item-text">
+                              <span className="lookup-item-name ui-command-item-label">
+                                {item.display_name}
+                              </span>
+                              <span className="lookup-item-subtitle ui-command-item-subtitle">
+                                {item.kind === "player" && !group.recent && (
+                                  <TeamLogoStack
+                                    decorative
+                                    size={16}
+                                    teams={item.team_association?.teams ?? []}
+                                    label={
+                                      item.team_association?.basis === "last_observed"
+                                        ? "Last observed team"
+                                        : "Teams observed in selected scope"
+                                    }
+                                  />
+                                )}
+                                {caption}
+                              </span>
                             </span>
-                          </span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  ))}
+              </div>
 
-                          <span className="lookup-item-arrow" aria-hidden="true">
-                            →
-                          </span>
-                        </div>
-                      );
-                    })}
-                  </div>
-                ))}
-            </div>
-
-            <div className="ui-command-footer">
-              <span>↑↓ Navigate</span>
-              <span>↵ Open</span>
-              <span>ESC Close</span>
-            </div>
+              <div className="ui-command-footer" aria-hidden="true">
+                <span><kbd><Icon name="up" size={14} /></kbd><kbd><Icon name="down" size={14} /></kbd> Navigate</span>
+                <span><kbd><Icon name="enter" size={14} /></kbd> Open</span>
+                <span><kbd>Esc</kbd> Close</span>
+              </div>
+            </motion.div>
           </motion.div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+        )}
+      </AnimatePresence>
+    </OverlayPortal>
   );
 }

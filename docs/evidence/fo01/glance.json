@@ -1,0 +1,94 @@
+{
+ "desktop /stats": {
+  "barControlHeights": [
+   40
+  ],
+  "labelMisaligned": 0,
+  "lookupIconOverlaps": 0,
+  "selectChevronOverlaps": 0,
+  "hOverflow": false,
+  "strictlyPrior": false
+ },
+ "desktop /teams": {
+  "barControlHeights": [
+   40
+  ],
+  "labelMisaligned": 0,
+  "lookupIconOverlaps": 0,
+  "selectChevronOverlaps": 0,
+  "hOverflow": false,
+  "strictlyPrior": false
+ },
+ "desktop /design": {
+  "barControlHeights": [
+   40
+  ],
+  "labelMisaligned": 0,
+  "lookupIconOverlaps": 0,
+  "selectChevronOverlaps": 0,
+  "hOverflow": false,
+  "strictlyPrior": false
+ },
+ "desktop /roster-shapes": {
+  "barControlHeights": [],
+  "labelMisaligned": null,
+  "lookupIconOverlaps": 0,
+  "selectChevronOverlaps": 0,
+  "hOverflow": false,
+  "strictlyPrior": false
+ },
+ "desktop /wowy": {
+  "barControlHeights": [],
+  "labelMisaligned": null,
+  "lookupIconOverlaps": 0,
+  "selectChevronOverlaps": 0,
+  "hOverflow": false,
+  "strictlyPrior": false
+ },
+ "phone /stats": {
+  "barControlHeights": [
+   40
+  ],
+  "labelMisaligned": 0,
+  "lookupIconOverlaps": 0,
+  "selectChevronOverlaps": 0,
+  "hOverflow": false,
+  "strictlyPrior": false
+ },
+ "phone /teams": {
+  "barControlHeights": [
+   40
+  ],
+  "labelMisaligned": 0,
+  "lookupIconOverlaps": 0,
+  "selectChevronOverlaps": 0,
+  "hOverflow": false,
+  "strictlyPrior": false
+ },
+ "phone /design": {
+  "barControlHeights": [
+   40
+  ],
+  "labelMisaligned": 0,
+  "lookupIconOverlaps": 0,
+  "selectChevronOverlaps": 0,
+  "hOverflow": false,
+  "strictlyPrior": false
+ },
+ "phone /roster-shapes": {
+  "barControlHeights": [],
+  "labelMisaligned": null,
+  "lookupIconOverlaps": 0,
+  "selectChevronOverlaps": 0,
+  "hOverflow": false,
+  "strictlyPrior": false
+ },
+ "phone /wowy": {
+  "barControlHeights": [],
+  "labelMisaligned": null,
+  "lookupIconOverlaps": 0,
+  "selectChevronOverlaps": 0,
+  "hOverflow": false,
+  "strictlyPrior": false
+ }
+}

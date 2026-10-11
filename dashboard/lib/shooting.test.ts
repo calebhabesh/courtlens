@@ -25,7 +25,7 @@ describe("B24 shooting evidence semantics", () => {
   });
   it("resolved URLs pin release, phase, bounds and sample controls", () => {
     const resolved = resolvedShooting({ ...response, request: { ...response.request, lower_date: "2024-01-01", release_id: null } });
-    const url = new URL(shootingUrl("/shot-profile-twin", "shot-profile-peers", resolved), "http://localhost");
+    const url = new URL(shootingUrl("/similar-players/shot-profile", "shot-profile-peers", resolved), "http://localhost");
     expect(url.searchParams.get("release_id")).toBe(response.context.release_id);
     expect(url.searchParams.get("phase")).toBe("regular_season"); expect(url.searchParams.get("lower_date")).toBe("2024-01-01"); expect(url.searchParams.get("before_date")).toBe("2024-04-15"); expect(url.searchParams.get("min_attempts")).toBe("100");
   });

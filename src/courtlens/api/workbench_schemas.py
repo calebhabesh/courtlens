@@ -1288,3 +1288,30 @@ class PlayoffSeriesDetailResponse(BaseModel):
     team2_players: list[PlayerSeriesStats] = Field(default_factory=list)
     capabilities: dict[str, str] = Field(default_factory=dict)
     disclaimers: list[str] = Field(default_factory=list)
+
+
+class ScheduleDateCount(BaseModel):
+    date: date
+    scheduled: int | None
+    finals: int | None
+
+
+class NearestGameDates(BaseModel):
+    before: date | None
+    after: date | None
+
+
+class ScheduleDatesResponse(BaseModel):
+    """Per-date counts from a release's retained schedule and admitted finals (FO08)."""
+
+    release_id: str
+    dataset_id: str
+    start: date
+    end: date
+    phase: str | None
+    before_date: date | None
+    focus: date
+    days: list[ScheduleDateCount]
+    nearest_scheduled: NearestGameDates
+    nearest_finals: NearestGameDates
+    warnings: list[str] = Field(default_factory=list)

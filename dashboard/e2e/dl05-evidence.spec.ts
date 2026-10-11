@@ -121,26 +121,6 @@ test.describe("DL05 Evidence Screenshot Capture", () => {
     });
   });
 
-  test("captures schedule at 1440px and 375px", async ({ page }) => {
-    // Desktop
-    await page.setViewportSize({ width: 1440, height: 900 });
-    await openWorkbench(page, "/schedule");
-    await page.waitForTimeout(500);
-    await page.screenshot({
-      path: path.join(evidenceDir, "schedule-1440.png"),
-      fullPage: true
-    });
-
-    // Mobile
-    await page.setViewportSize({ width: 375, height: 812 });
-    await openWorkbench(page, "/schedule");
-    await page.waitForTimeout(500);
-    await page.screenshot({
-      path: path.join(evidenceDir, "schedule-375.png"),
-      fullPage: true
-    });
-  });
-
   test("captures last games explorer at 1440px and 375px", async ({ page }) => {
     // Desktop
     await page.setViewportSize({ width: 1440, height: 900 });

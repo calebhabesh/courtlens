@@ -22,7 +22,7 @@ assert res.get('semantic_signature'), 'Workbench catalog has no semantic_signatu
 python3 -c "
 import urllib.request, json
 res = json.load(urllib.request.urlopen('${api_url}/api/workbench/metrics'))
-assert res.get('version') == 'v1', f'Expected metric version v1, got {res.get(\"version\")}'
+assert res.get('version') == 'v2', f'Expected metric version v2, got {res.get(\"version\")}'
 assert len(res.get('metrics', [])) >= 30, 'Metric catalog missing required metrics'
 "
 
@@ -47,10 +47,10 @@ assert 'pts' in player['metrics'], 'Player metrics missing pts'
 python3 -c "
 import urllib.request, json
 res = json.load(urllib.request.urlopen('${api_url}/api/workbench/teams'))
-items = res.get('items', [])
+items = res.get('teams', [])
 assert len(items) > 0, 'No teams found in published analytics'
 team = items[0]
-assert 'team_id' in team and 'games_finalized' in team, 'Team record malformed'
+assert 'team_id' in team and 'games_played' in team, 'Team record malformed'
 "
 
 # 4. Dashboard views

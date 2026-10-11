@@ -20,7 +20,7 @@ export function EmptyState({
     <div className={`ui-empty-state ${className}`}>
       {icon && (
         <div className="ui-empty-state-icon" aria-hidden="true">
-          <Icon name={icon} size={24} />
+          <Icon name={icon} size={20} />
         </div>
       )}
       <div className="ui-empty-state-text">

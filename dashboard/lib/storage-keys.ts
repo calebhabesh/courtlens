@@ -3,7 +3,9 @@ export const storageKeys = {
   density: "courtlens_table_density",
   sidebar: "courtlens-ask-sidebar-collapsed-v1",
   historyChange: "courtlens-assistant-history-change-v2",
-  activeThread: "courtlens-assistant-active-thread-v2"
+  activeThread: "courtlens-assistant-active-thread-v2",
+  advancedMode: "courtlens-advanced-mode-v1",
+  recentSearches: "courtlens-recent-searches-v1"
 } as const;
 
 const legacyKeys: ReadonlyArray<readonly [string, string]> = [

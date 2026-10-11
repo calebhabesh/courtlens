@@ -1,0 +1,274 @@
+[
+  {
+    "state": "header/search",
+    "width": 1280,
+    "header": {
+      "visible": true,
+      "offset": 198.84375,
+      "width": 380
+    },
+    "modal": {
+      "width": 639.32373046875,
+      "offset": 0.000030517578125
+    }
+  },
+  {
+    "state": "header/search",
+    "width": 1440,
+    "header": {
+      "visible": true,
+      "offset": 118.84375,
+      "width": 380
+    },
+    "modal": {
+      "width": 639.7485961914062,
+      "offset": -0.000030517578125
+    }
+  },
+  {
+    "state": "header/search",
+    "width": 1920,
+    "header": {
+      "visible": true,
+      "offset": 0,
+      "width": 380
+    },
+    "modal": {
+      "width": 639.32373046875,
+      "offset": 0
+    }
+  },
+  {
+    "state": "header/search",
+    "width": 768,
+    "header": {
+      "visible": true,
+      "offset": 0,
+      "width": 380
+    },
+    "modal": {
+      "width": 638.5343017578125,
+      "offset": 0
+    }
+  },
+  {
+    "state": "header/search",
+    "width": 390,
+    "header": {
+      "visible": false,
+      "offset": null,
+      "width": 0
+    },
+    "modal": {
+      "width": 387.6162109375,
+      "offset": 0.0000152587890625
+    }
+  },
+  {
+    "state": "loading-explorer",
+    "width": 1440,
+    "geometry": {
+      "width": 1320,
+      "filters": true,
+      "tocDirection": null
+    }
+  },
+  {
+    "state": "loading-profile",
+    "width": 1440,
+    "geometry": {
+      "width": 1320,
+      "filters": true,
+      "tocDirection": null
+    }
+  },
+  {
+    "state": "loading-compare",
+    "width": 1440,
+    "geometry": {
+      "width": 1320,
+      "filters": true,
+      "tocDirection": null
+    }
+  },
+  {
+    "state": "loading-board",
+    "width": 1440,
+    "geometry": {
+      "width": 1320,
+      "filters": true,
+      "tocDirection": null
+    }
+  },
+  {
+    "state": "loading-research",
+    "width": 1440,
+    "geometry": {
+      "width": 1320,
+      "filters": true,
+      "tocDirection": null
+    }
+  },
+  {
+    "state": "loading-article",
+    "width": 1440,
+    "geometry": {
+      "width": 1320,
+      "filters": false,
+      "tocDirection": "column"
+    }
+  },
+  {
+    "state": "loading-explorer",
+    "width": 768,
+    "geometry": {
+      "width": 648,
+      "filters": true,
+      "tocDirection": null
+    }
+  },
+  {
+    "state": "loading-profile",
+    "width": 768,
+    "geometry": {
+      "width": 648,
+      "filters": true,
+      "tocDirection": null
+    }
+  },
+  {
+    "state": "loading-compare",
+    "width": 768,
+    "geometry": {
+      "width": 648,
+      "filters": true,
+      "tocDirection": null
+    }
+  },
+  {
+    "state": "loading-board",
+    "width": 768,
+    "geometry": {
+      "width": 648,
+      "filters": true,
+      "tocDirection": null
+    }
+  },
+  {
+    "state": "loading-research",
+    "width": 768,
+    "geometry": {
+      "width": 648,
+      "filters": true,
+      "tocDirection": null
+    }
+  },
+  {
+    "state": "loading-article",
+    "width": 768,
+    "geometry": {
+      "width": 648,
+      "filters": false,
+      "tocDirection": "row"
+    }
+  },
+  {
+    "state": "loading-explorer",
+    "width": 390,
+    "geometry": {
+      "width": 278,
+      "filters": true,
+      "tocDirection": null
+    }
+  },
+  {
+    "state": "loading-profile",
+    "width": 390,
+    "geometry": {
+      "width": 278,
+      "filters": true,
+      "tocDirection": null
+    }
+  },
+  {
+    "state": "loading-compare",
+    "width": 390,
+    "geometry": {
+      "width": 278,
+      "filters": true,
+      "tocDirection": null
+    }
+  },
+  {
+    "state": "loading-board",
+    "width": 390,
+    "geometry": {
+      "width": 278,
+      "filters": true,
+      "tocDirection": null
+    }
+  },
+  {
+    "state": "loading-research",
+    "width": 390,
+    "geometry": {
+      "width": 278,
+      "filters": true,
+      "tocDirection": null
+    }
+  },
+  {
+    "state": "loading-article",
+    "width": 390,
+    "geometry": {
+      "width": 278,
+      "filters": false,
+      "tocDirection": "row"
+    }
+  },
+  {
+    "state": "similarity-loading",
+    "width": 1440,
+    "skeletons": 3
+  },
+  {
+    "state": "similarity-error",
+    "width": 1440,
+    "retry": {
+      "x": 311.796875,
+      "y": 284,
+      "width": 57.296875,
+      "height": 34
+    }
+  },
+  {
+    "state": "similarity-loading",
+    "width": 768,
+    "skeletons": 3
+  },
+  {
+    "state": "similarity-error",
+    "width": 768,
+    "retry": {
+      "x": 311.796875,
+      "y": 388,
+      "width": 57.296875,
+      "height": 34
+    }
+  },
+  {
+    "state": "similarity-loading",
+    "width": 390,
+    "skeletons": 3
+  },
+  {
+    "state": "similarity-error",
+    "width": 390,
+    "retry": {
+      "x": 299.796875,
+      "y": 280,
+      "width": 57.296875,
+      "height": 40
+    }
+  }
+]

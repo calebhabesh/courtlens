@@ -18,11 +18,11 @@ test.describe("Workbench Dark Research Interface", () => {
     }
     const moreBtn = page.getByRole("button", { name: "More options" });
     await moreBtn.click();
-    await expect(page.getByRole("menuitem", { name: "Data status" })).toBeVisible();
+    await expect(page.getByRole("menuitem", { name: "Data Status" })).toBeVisible();
     await expect(page.getByRole("menuitem", { name: "Settings" })).toBeVisible();
     await page.keyboard.press("Escape");
     await expect(page.getByLabel("Filter by season")).toHaveValue("2025-26");
-    await expect(page.getByRole("heading", { name: "Stats Explorer" })).toBeVisible();
+    await expect(page.getByRole("heading", { level: 1, name: "Stats", exact: true })).toBeVisible();
     await expect(page.getByText("Fixture Star", { exact: true })).toBeVisible();
     await expect(page.getByText("Fixture Guard", { exact: true })).toBeVisible();
   });
@@ -31,7 +31,7 @@ test.describe("Workbench Dark Research Interface", () => {
     await openWorkbench(page, "/players");
     await page.waitForLoadState("networkidle");
 
-    await expect(page.locator("h1.page-title")).toHaveText("Player Explorer");
+    await expect(page.locator("h1")).toHaveText("Player Directory");
     await expect(page.getByRole("link", { name: "Fixture Star", exact: true })).toBeVisible();
 
     // Filter by name
@@ -45,21 +45,23 @@ test.describe("Workbench Dark Research Interface", () => {
 
     // Navigate to player detail
     await page.getByRole("button", { name: "Open details for Fixture Guard" }).click();
-    await page.getByRole("link", { name: "View Full Profile →" }).click();
+    await page.getByRole("link", { name: "View Full Profile" }).click();
     await page.waitForURL("**/players/24**");
-    await expect(page.locator("h1.player-identity-name")).toContainText("Fixture Guard");
+    await expect(page.locator("h1")).toContainText("Fixture Guard");
   });
 
   test("player detail presents profile summaries, game logs, and lineage trigger", async ({ page }) => {
     await openWorkbench(page, "/players/23");
     await page.waitForLoadState("networkidle");
 
-    await expect(page.locator("h1.player-identity-name")).toContainText("Fixture Star");
+    await expect(page.locator("h1")).toContainText("Fixture Star");
     await expect(page.getByText("Toronto Raptors").first()).toBeVisible();
 
-    // Verify summaries tabs or panels
+    // FO09: the game log is its own profile tab and the URL keeps the tab.
+    await page.getByRole("tab", { name: "Game Log" }).click();
+    await expect(page).toHaveURL(/tab=games/);
     await expect(page.getByText("Prior Appearance Game Log")).toBeVisible();
-    await expect(page.locator("td.font-mono:has-text('2026-04-12')")).toBeVisible();
+    await expect(page.locator("td.font-mono:has-text('Apr 12, 2026')")).toBeVisible();
 
     // Verify lineage drawer button exists and opens drawer
     const lineageButton = page.locator("button:has-text('Lineage')").first();
@@ -72,24 +74,26 @@ test.describe("Workbench Dark Research Interface", () => {
     await page.goto("/teams");
     await page.waitForLoadState("networkidle");
 
-    await expect(page.locator("h1.page-title")).toHaveText("Team Explorer");
+    await expect(page.getByRole("heading", { level: 1 })).toHaveText("Team Stats & Cohorts");
     await expect(page.getByText("Toronto Raptors")).toBeVisible();
     await expect(page.getByText("Boston Celtics")).toBeVisible();
 
     // Standings notice
-    await expect(page.getByText("Official standings notice:")).toBeVisible();
+    await expect(page.getByText("Record order is descriptive; ties have no official placement.")).toBeVisible();
+    await page.getByText("Why?", { exact: true }).click();
+    await expect(page.getByText(/Ties in record ordering/)).toBeVisible();
 
     // Navigate to team detail
     await page.locator("a[href*='/teams/100']").first().click();
     await page.waitForURL("**/teams/100**");
-    await expect(page.locator("h1.player-identity-name")).toContainText("Toronto Raptors");
+    await expect(page.getByRole("heading", { level: 1 })).toHaveText("Toronto Raptors");
   });
 
   test("comparison view displays head-to-head metrics without declaring forced winners", async ({ page }) => {
     await openWorkbench(page, "/compare?playerA=23&playerB=24");
     await page.waitForLoadState("networkidle");
 
-    await expect(page.locator("h1.page-title")).toHaveText("Compare Players");
+    await expect(page.getByRole("heading", {level:1})).toHaveText("Player Comparison");
     await expect(page.getByRole("link", { name: "Fixture Star" })).toBeVisible();
     await expect(page.getByRole("link", { name: "Fixture Guard" })).toBeVisible();
 
@@ -101,9 +105,11 @@ test.describe("Workbench Dark Research Interface", () => {
   test("forecasts view displays active policy, promotion decision, gates, and prespecified slices", async ({ page }) => {
     await page.goto("/forecasts");
 
-    await expect(page.locator("h1.page-title")).toHaveText("Points Forecasts & Protocol");
-    await expect(page.locator("main").getByRole("heading", { name: "Active Forecast Policy" })).toBeVisible();
-    await expect(page.locator(".panel-header .badge:has-text('points-v1-prior_blend')").filter({ visible: true })).toBeVisible();
+    // FO12: the title matches the nav label; the policy leads the key-findings row.
+    await expect(page.getByRole("heading", { level: 1 })).toHaveText("Points Forecasts");
+    const findings = page.getByRole("region", { name: "Key findings" });
+    await expect(findings).toContainText("Active Forecast Policy");
+    await expect(findings).toContainText("prior_blend");
 
     // Verify promotion decision banner and gates
     await expect(page.getByText("Promotion Decision:").filter({ visible: true })).toBeVisible();

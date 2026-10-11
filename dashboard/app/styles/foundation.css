@@ -1,0 +1,1006 @@
+/*
+ * Frontend overhaul FO01 shared foundation (docs/frontend-overhaul-plan.md).
+ * This layer is ordered after `pages` so page-level element rules (for example
+ * `.research-links input { padding }`) cannot break primitive structure. It holds only `ui-*`
+ * primitives and the lookup-field structure. Visual patterns are lifted from Stats Explorer
+ * (D2): surface-2 tracks, accent-soft selected states with an inset accent ring, xs labels.
+ */
+@layer foundation {
+  /* ---------- Page templates (D22) ---------- */
+  .ui-page {
+    --page-pad-inline: var(--space-6);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    width: 100%;
+    min-width: 0;
+    padding: var(--space-5) var(--page-pad-inline) var(--space-12);
+  }
+
+  .ui-page > * { min-width: 0; }
+
+  .ui-board {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 320px;
+    gap: var(--space-4);
+    align-items: start;
+  }
+
+  .ui-board-no-rail { grid-template-columns: minmax(0, 1fr); }
+  .ui-board-main, .ui-board-rail { min-width: 0; }
+
+  .ui-board-rail {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    padding: var(--space-4);
+    background: var(--color-surface-1);
+    border-radius: var(--radius-md);
+  }
+
+  .ui-profile, .ui-research { display: flex; flex-direction: column; gap: var(--space-4); }
+  .ui-profile-hero { min-width: 0; }
+
+  .ui-compare { display: flex; flex-direction: column; gap: var(--space-3); }
+  .ui-compare-sides { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--space-3); }
+
+  .ui-compare-side {
+    padding: var(--space-4);
+    background: var(--color-surface-1);
+    border-radius: var(--radius-md);
+  }
+
+  .ui-findings {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--space-3);
+  }
+
+  /* ---------- Page header (D7) ---------- */
+  .ui-page-header {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    min-width: 0;
+    max-width: 100%;
+    gap: var(--space-1);
+    padding: 0;
+    margin: 0;
+  }
+
+  .ui-page-header-title-row {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: var(--control-lg);
+    flex-wrap: wrap;
+  }
+
+  .ui-page-header-icon { display: inline-flex; color: var(--color-accent); }
+
+  .ui-page-header-title {
+    margin: 0;
+    font-size: var(--text-2xl);
+    line-height: var(--text-2xl-lh);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--color-text);
+  }
+
+  .ui-page-header-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin-left: auto;
+    /* D7: actions share the title row on desktop; they wrap under the title only on phones. */
+    flex-wrap: nowrap;
+  }
+
+  .ui-page-header-subtitle {
+    margin: 0;
+    max-width: 100%;
+    font-size: var(--text-sm);
+    line-height: var(--text-sm-lh);
+    color: var(--color-text-secondary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* ---------- Field ---------- */
+  .ui-field { display: flex; min-width: 0; gap: var(--space-2); }
+  .ui-field-stacked { flex-direction: column; gap: var(--space-1); }
+  .ui-field-inline { align-items: center; }
+
+  .ui-field-label {
+    font-size: var(--text-xs);
+    line-height: var(--text-xs-lh);
+    font-weight: 600;
+    color: var(--color-text-secondary);
+    white-space: nowrap;
+  }
+
+  .ui-field-control { min-width: 0; display: flex; align-items: center; }
+  .ui-field-stacked .ui-field-control > * { width: 100%; }
+  .ui-field-hint { font-size: var(--text-xs); color: var(--color-text-tertiary); }
+
+  .ui-field .ui-select-wrapper { min-height: var(--control-lg); }
+  .ui-field .ui-select { min-height: var(--control-lg); }
+
+  /* Select structure: the chevron's space is reserved here so page padding rules cannot run
+     option text under it (same failure mode as the lookup icon). */
+  .ui-select-wrapper .ui-select {
+    padding: 0 var(--space-8) 0 var(--space-3);
+    border: 0;
+    background: transparent;
+    font-size: var(--text-sm);
+    line-height: var(--text-sm-lh);
+    text-overflow: ellipsis;
+  }
+
+  /* ---------- Filter bar (D6) ---------- */
+  /* A full-width bar (a direct child of the route, not inside a padded workspace such as Stats)
+   * keeps the old context-bar gutter. FO01 dropped it; found in FO03 screenshots. */
+  .route-enter > .ui-filter-bar { padding-inline: var(--space-6); }
+  @media (max-width: 767px) { .route-enter > .ui-filter-bar { padding-inline: var(--space-4); } }
+
+  .ui-filter-bar {
+    position: sticky;
+    top: var(--header-height);
+    z-index: var(--z-sticky);
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    min-height: calc(var(--control-lg) + var(--space-4));
+    padding-block: var(--space-2);
+    background: var(--color-bg);
+    border-bottom: 1px solid var(--color-hairline);
+  }
+
+  .ui-filter-bar-controls, .ui-filter-bar-scope, .ui-filter-bar-page {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+    min-width: 0;
+  }
+
+  .ui-filter-bar-page, .ui-filter-bar-modes { padding-left: var(--space-3); border-left: 1px solid var(--color-hairline); }
+  /* Modes never clip on desktop; scope and filters wrap first. Below 768px they take their own row. */
+  .ui-filter-bar-modes { display: flex; flex-shrink: 0; align-items: center; gap: var(--space-2); min-width: 0; }
+  .ui-filter-bar-scope .ui-select-wrapper { width: auto; }
+
+  .ui-filter-bar-meta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin-left: auto;
+    flex-shrink: 0;
+  }
+
+  .ui-filter-bar-toggle { display: none; }
+  .ui-filter-bar-meta .ui-button { min-height: var(--control-lg); }
+  .ui-filter-bar-summary { margin-left: var(--space-2); color: var(--color-text-secondary); font-weight: 400; }
+
+  .ui-count-chip {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--control-sm);
+    padding: 0 var(--space-3);
+    border-radius: var(--radius-pill);
+    background: var(--color-surface-2);
+    color: var(--color-text-secondary);
+    font-size: var(--text-xs);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  .ui-filter-sheet-body { display: flex; flex-direction: column; gap: var(--space-4); }
+  .ui-filter-sheet-body .ui-field-inline { flex-direction: column; align-items: stretch; gap: var(--space-1); }
+  .ui-filter-sheet-body .ui-select-wrapper, .ui-filter-sheet-body .ui-date-picker, .ui-filter-sheet-body .ui-date-trigger { width: 100%; }
+
+  /* ---------- Date picker (D11) ---------- */
+  .ui-date-picker { position: relative; display: inline-flex; }
+
+  .ui-date-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: var(--control-lg);
+    padding: 0 var(--space-3);
+    border: 0;
+    border-radius: var(--radius-sm);
+    background: var(--color-surface-2);
+    color: var(--color-text);
+    font: inherit;
+    font-size: var(--text-sm);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+
+  .ui-date-trigger:hover { background: var(--color-surface-3); }
+  .ui-date-trigger:focus-visible { outline: 0; box-shadow: var(--focus-ring); }
+  .ui-date-trigger .ui-icon { color: var(--color-text-secondary); }
+  .ui-date-placeholder { color: var(--color-text-secondary); }
+
+  .ui-date-popover {
+    position: absolute;
+    top: calc(100% + var(--space-1));
+    left: 0;
+    z-index: var(--z-dropdown);
+    width: 296px;
+    padding: var(--space-3);
+    background: var(--color-surface-3);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-3);
+  }
+
+  .ui-date-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-2); }
+  .ui-date-title { font-size: var(--text-sm); font-weight: 600; }
+
+  .ui-date-nav, .ui-date-day {
+    display: inline-grid;
+    place-items: center;
+    border: 0;
+    background: transparent;
+    color: var(--color-text);
+    font: inherit;
+    cursor: pointer;
+  }
+
+  .ui-date-nav { width: var(--control-md); height: var(--control-md); border-radius: var(--radius-sm); }
+  .ui-date-nav:hover:not(:disabled) { background: var(--color-surface-hover); }
+  .ui-date-nav:disabled { color: var(--color-text-tertiary); cursor: default; }
+  .ui-date-grid { display: flex; flex-direction: column; gap: var(--space-0-5); }
+  .ui-date-row { display: grid; grid-template-columns: repeat(7, 1fr); gap: var(--space-0-5); }
+  .ui-date-row > [role=gridcell] { display: grid; }
+  .ui-date-weekday { text-align: center; font-size: var(--text-xs); color: var(--color-text-tertiary); padding-block: var(--space-1); }
+
+  .ui-date-day {
+    height: var(--control-lg);
+    border-radius: var(--radius-sm);
+    font-size: var(--text-sm);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .ui-date-day:hover:not(.is-disabled) { background: var(--color-surface-hover); }
+  .ui-date-day:focus-visible { outline: 0; box-shadow: inset 0 0 0 2px var(--color-accent); }
+  .ui-date-day.is-outside { color: var(--color-text-tertiary); }
+  .ui-date-day.is-disabled { color: var(--color-text-tertiary); opacity: 0.45; cursor: not-allowed; text-decoration: line-through; }
+  .ui-date-day.is-selected { background: var(--color-accent); color: var(--color-on-accent); font-weight: 700; }
+
+  /* ---------- Segmented control and chips (Stats pattern) ---------- */
+  .ui-segmented-control { max-width: 100%; overflow-x: auto; scrollbar-width: none; border-radius: var(--radius-sm); }
+  .ui-segmented-control-stretch { display: flex; width: 100%; overflow-x: auto; scrollbar-width: none; }
+  .ui-segmented-item { flex-shrink: 0; white-space: nowrap; }
+  .ui-segmented-control-stretch .ui-segmented-item { flex: 1 0 auto; justify-content: center; }
+
+  .ui-segmented-item {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--control-sm);
+    border-radius: var(--radius-xs);
+  }
+
+  .ui-segmented-control-md .ui-segmented-item { min-height: var(--control-md); font-size: var(--text-sm); }
+  /* Inside the filter bar a segmented control matches the 40px fields (glance item 2). */
+  .ui-filter-bar .ui-segmented-control-md .ui-segmented-item { min-height: calc(var(--control-lg) - var(--space-1)); }
+  .ui-segmented-item[data-active=true] { color: var(--color-accent); }
+  .ui-segmented-item:focus-visible { outline: 0; box-shadow: inset 0 0 0 2px var(--color-accent); }
+
+  .ui-segmented-indicator {
+    border-radius: inherit;
+    background-color: var(--color-accent-soft);
+    box-shadow: inset 0 0 0 1px var(--color-accent);
+  }
+
+  .ui-chip-group { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+
+  .ui-chip-option {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    min-height: var(--control-md);
+    padding: 0 var(--space-3);
+    border: 0;
+    border-radius: var(--radius-pill);
+    background: var(--color-surface-2);
+    color: var(--color-text-secondary);
+    font: inherit;
+    font-size: var(--text-sm);
+    cursor: pointer;
+    transition: background-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+  }
+
+  .ui-chip-option:hover:not(:disabled) { background: var(--color-surface-3); color: var(--color-text); }
+  .ui-chip-option:focus-visible { outline: 0; box-shadow: var(--focus-ring); }
+  .ui-chip-option:disabled { opacity: 0.45; cursor: not-allowed; }
+
+  .ui-chip-option.is-selected {
+    background: var(--color-accent-soft);
+    color: var(--color-accent);
+    box-shadow: inset 0 0 0 1px var(--color-accent);
+    font-weight: 600;
+  }
+
+  .ui-chip-count {
+    min-width: var(--space-5);
+    padding: 0 var(--space-1);
+    border-radius: var(--radius-pill);
+    background: var(--color-surface-3);
+    font-size: var(--text-xs);
+    font-variant-numeric: tabular-nums;
+    text-align: center;
+  }
+
+  /* ---------- Gated note and Why? (D4/D14) ---------- */
+  .ui-gated-note {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-1) var(--space-3);
+    min-width: 0;
+    color: var(--color-text-secondary);
+    font-size: var(--text-sm);
+    line-height: var(--text-sm-lh);
+  }
+
+  .ui-gated-note-line { display: flex; align-items: center; gap: var(--space-2); min-width: 0; }
+  .ui-gated-note-icon { flex-shrink: 0; color: var(--color-text-tertiary); }
+  .ui-gated-note-warning .ui-gated-note-icon { color: var(--color-accent); }
+  .ui-gated-note-text { color: var(--color-text); }
+  .ui-why { display: block; min-width: 0; }
+  .ui-why[open] { flex-basis: 100%; }
+
+  .ui-why-summary {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--control-sm);
+    padding: 0 var(--space-2);
+    border-radius: var(--radius-xs);
+    color: var(--color-text-secondary);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    text-decoration: underline dotted;
+    text-underline-offset: 3px;
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .ui-why-summary::-webkit-details-marker { display: none; }
+  .ui-why-summary:hover { color: var(--color-text); }
+  .ui-why-summary:focus-visible { outline: 0; box-shadow: var(--focus-ring); }
+
+  .ui-why-body {
+    max-width: 80ch;
+    margin-top: var(--space-1);
+    padding: var(--space-3);
+    background: var(--color-surface-1);
+    border-radius: var(--radius-sm);
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+  }
+
+  .ui-why-body > :first-child { margin-top: 0; }
+  .ui-why-body > :last-child { margin-bottom: 0; }
+
+  /* ---------- Data details (D5) ---------- */
+  .ui-data-details-kicker {
+    display: block;
+    margin-bottom: var(--space-0-5);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    color: var(--color-text-tertiary);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .ui-data-details .ui-drawer-body { display: flex; flex-direction: column; gap: var(--space-5); }
+  .ui-data-details-section { display: flex; flex-direction: column; gap: var(--space-2); }
+
+  .ui-data-details-heading {
+    margin: 0;
+    font-size: var(--text-xs);
+    font-weight: 600;
+    color: var(--color-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .ui-data-details-list { display: flex; flex-direction: column; margin: 0; }
+
+  .ui-data-details-row {
+    display: grid;
+    grid-template-columns: 128px minmax(0, 1fr);
+    gap: var(--space-3);
+    padding-block: var(--space-2);
+    border-bottom: 1px solid var(--color-hairline);
+    font-size: var(--text-sm);
+  }
+
+  .ui-data-details-row dt { color: var(--color-text-secondary); }
+  .ui-data-details-row dd { margin: 0; min-width: 0; overflow-wrap: anywhere; }
+  .ui-data-details-status { margin: 0; color: var(--color-text-secondary); font-size: var(--text-sm); }
+
+  /* ---------- Identity (D10) ---------- */
+  .ui-identity {
+    --team-color: var(--color-text-tertiary);
+    --identity-media: 48px;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3);
+    min-width: 0;
+  }
+
+  .ui-identity-sm { --identity-media: 30px; gap: var(--space-2); }
+  .ui-identity-lg { --identity-media: 80px; gap: var(--space-4); }
+  .ui-identity-xl { --identity-media: 144px; gap: var(--space-5); }
+  .ui-identity-media { position: relative; flex-shrink: 0; display: inline-flex; }
+
+  .ui-identity-media .player-portrait, .ui-identity-media .player-portrait-fallback {
+    width: var(--identity-media);
+    height: var(--identity-media);
+    min-width: var(--identity-media);
+    min-height: var(--identity-media);
+    border: 0;
+    border-radius: var(--radius-pill);
+    object-fit: cover;
+    background: color-mix(in srgb, var(--team-color) 22%, var(--color-surface-2));
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--team-color) 70%, transparent);
+  }
+
+  /* A broken image never shows its alt text inside the circle. */
+  .ui-identity-media .player-portrait { overflow: hidden; color: transparent; font-size: 0; }
+
+  .ui-identity-media .player-portrait-fallback {
+    display: grid;
+    place-items: center;
+    color: var(--color-text);
+    font-weight: 700;
+    font-size: calc(var(--identity-media) * 0.36);
+  }
+
+  .ui-identity-badge {
+    position: absolute;
+    right: calc(var(--space-1) * -1);
+    bottom: calc(var(--space-1) * -1);
+    display: inline-grid;
+    place-items: center;
+    padding: var(--space-0-5);
+    border-radius: var(--radius-pill);
+    background: var(--color-surface-3);
+    box-shadow: var(--shadow-1);
+  }
+
+  .ui-identity-text { display: flex; flex-direction: column; min-width: 0; }
+
+  .ui-identity-name {
+    color: var(--color-text);
+    font-weight: 600;
+    font-size: var(--text-md);
+    line-height: var(--text-md-lh);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-decoration: none;
+  }
+
+  a.ui-identity-name:hover { text-decoration: underline; }
+  .ui-identity-lg .ui-identity-name { font-size: var(--text-xl); line-height: var(--text-xl-lh); }
+  .ui-identity-xl .ui-identity-name { font-size: var(--text-3xl); line-height: var(--text-3xl-lh); letter-spacing: -0.02em; }
+
+  .ui-identity-subtitle {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    font-size: var(--text-xs);
+    color: var(--color-text-secondary);
+  }
+
+  .ui-identity-lg .ui-identity-subtitle, .ui-identity-xl .ui-identity-subtitle { font-size: var(--text-sm); }
+
+  .ui-identity-team .ui-identity-media {
+    padding: var(--space-1);
+    border-radius: var(--radius-md);
+    background: color-mix(in srgb, var(--team-color) 16%, transparent);
+  }
+
+  .ui-entity-chip {
+    --team-color: var(--color-text-tertiary);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    max-width: 100%;
+    min-height: var(--control-md);
+    padding: var(--space-0-5) var(--space-2) var(--space-0-5) var(--space-0-5);
+    border-radius: var(--radius-pill);
+    background: var(--color-surface-2);
+    box-shadow: inset 2px 0 0 var(--team-color);
+    font-size: var(--text-sm);
+  }
+
+  .ui-entity-chip .ui-identity-name { font-size: var(--text-sm); font-weight: 500; }
+
+  .ui-entity-chip .player-portrait, .ui-entity-chip .player-portrait-fallback {
+    width: var(--space-6);
+    height: var(--space-6);
+    min-width: var(--space-6);
+    min-height: var(--space-6);
+    border: 0;
+    border-radius: var(--radius-pill);
+    font-size: var(--text-xs);
+    background: color-mix(in srgb, var(--team-color) 25%, var(--color-surface-3));
+  }
+
+  .ui-entity-chip-remove {
+    display: inline-grid;
+    place-items: center;
+    width: var(--space-6);
+    height: var(--space-6);
+    border: 0;
+    border-radius: var(--radius-pill);
+    background: transparent;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+  }
+
+  .ui-entity-chip-remove:hover { background: var(--color-surface-hover); color: var(--color-text); }
+
+  /* ---------- Stat tile (D16) ---------- */
+  .ui-stat-tile {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    min-width: 0;
+    padding: var(--space-3) var(--space-4);
+    background: var(--color-surface-1);
+    border-radius: var(--radius-md);
+  }
+
+  .ui-stat-tile-label { font-size: var(--text-xs); color: var(--color-text-secondary); font-weight: 600; }
+  .ui-stat-tile-value-row { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-2); }
+
+  .ui-stat-tile-value {
+    font-size: var(--text-xl);
+    line-height: var(--text-xl-lh);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: var(--color-text);
+  }
+
+  .ui-stat-tile-lg .ui-stat-tile-value { font-size: var(--text-3xl); line-height: var(--text-3xl-lh); }
+  .ui-stat-tile-unit { margin-left: var(--space-1); font-size: var(--text-xs); font-weight: 500; color: var(--color-text-secondary); }
+  .ui-stat-tile-rank { font-size: var(--text-sm); font-weight: 600; color: var(--color-accent); font-variant-numeric: tabular-nums; }
+
+  .ui-stat-tile-bar {
+    position: relative;
+    display: block;
+    height: var(--space-1);
+    border-radius: var(--radius-pill);
+    background: var(--color-surface-3);
+    overflow: hidden;
+  }
+
+  .ui-stat-tile-bar-fill {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: var(--pct);
+    border-radius: inherit;
+    background: var(--color-accent);
+  }
+
+  .ui-stat-tile-footnote { font-size: var(--text-xs); color: var(--color-text-tertiary); }
+
+  /* ---------- Template skeletons (D11) ---------- */
+  .ui-skeleton-header, .ui-skeleton-stack { display: flex; flex-direction: column; gap: var(--space-2); }
+  .ui-skeleton-header .ui-skeleton { max-width: 100%; }
+  .ui-skeleton-header .ui-skeleton:first-child { max-width: 60%; }
+  .ui-skeleton-filters { display: flex; gap: var(--space-3); }
+  .ui-skeleton-filters .ui-skeleton { width: 160px; }
+  .ui-skeleton-table { display: flex; flex-direction: column; gap: var(--space-0-5); }
+  .ui-skeleton-hero { display: flex; align-items: center; gap: var(--space-4); }
+  .ui-skeleton-hero .ui-skeleton-stack { flex: 1; }
+  .ui-skeleton-tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: var(--space-3); }
+
+  /* ---------- Lookup field structure ----------
+   * The icon and clear button sit in the flow beside the input inside one styled box, so no
+   * page padding rule can slide input text under the icon (FO00 finding: Roster Shapes). */
+  .lookup-input-wrapper {
+    gap: var(--space-2);
+    min-height: var(--control-lg);
+    padding-inline: var(--space-3) var(--space-1);
+    background: var(--color-surface-2);
+    border: 1px solid var(--color-hairline-strong);
+    border-radius: var(--radius-sm);
+  }
+
+  .lookup-input-wrapper:focus-within { border-color: var(--color-accent); box-shadow: var(--focus-ring); }
+  .lookup-input-wrapper .lookup-search-icon { position: static; flex-shrink: 0; width: var(--space-4); height: var(--space-4); }
+
+  .lookup-input-wrapper .lookup-input {
+    flex: 1;
+    min-width: 0;
+    height: auto;
+    min-height: calc(var(--control-lg) - 2px);
+    padding: 0;
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    outline: 0;
+  }
+
+  .lookup-input-wrapper .lookup-clear-btn {
+    position: static;
+    flex-shrink: 0;
+    display: inline-grid;
+    place-items: center;
+    min-width: var(--control-md);
+    min-height: var(--control-md);
+    padding: 0;
+  }
+
+  /* ---------- Drawer stacking ----------
+   * Root cause of the unreadable drawer (FO01, confirmed in browser): inside .ui-drawer-root the
+   * scrim used --z-modal (60) and the panel --z-drawer (50), so the scrim's blur was painted over
+   * the panel. Within the root's stacking context the panel must sit above its own scrim. */
+  .ui-drawer-root > .ui-scrim { z-index: var(--z-base); }
+  .ui-drawer-root > .ui-drawer-panel { z-index: var(--z-sticky); }
+
+  /* ---------- Header, search and drawer (FO02, D8/D9) ----------
+   * Desktop (>=1280px): nav + centred search pill + Ask + More. Below 1280px the nav and More
+   * move into the drawer behind the hamburger. Below 768px the pill becomes one search icon.
+   * The palette, drawer and dialogs render at document.body (OverlayPortal), so the header's
+   * backdrop-filter can no longer become their containing block. */
+  .courtlens-header .courtlens-mobile-toggle,
+  .courtlens-header .courtlens-mobile-search-btn { display: none; }
+  .courtlens-header-right .ui-button { height: var(--control-md); }
+  .courtlens-header-right .ui-icon-button { width: var(--control-md); }
+
+  .ui-command-palette-scrim { align-items: flex-start; padding: 12vh var(--space-4) var(--space-4); }
+  .ui-command-palette { width: min(640px, 100%); max-height: min(600px, 76vh); }
+  /* Inside the modal the input is a flat row: the modal is the box, so no second border or ring. */
+  .ui-command-palette .lookup-input-wrapper,
+  .ui-command-palette .lookup-input-wrapper:focus-within {
+    height: auto;
+    min-height: var(--header-height);
+    padding-inline: var(--space-4) var(--space-2);
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid var(--color-hairline);
+    border-radius: 0;
+  }
+  .ui-command-palette .ui-command-input { padding: 0; font-size: var(--text-md); }
+  .ui-command-palette .lookup-clear-btn { transform: none; }
+  .ui-command-palette .lookup-group-header { background: transparent; }
+  .ui-command-close { display: none; }
+  .ui-command-palette .ui-command-list { flex: 1; min-height: 0; }
+  .ui-command-palette .lookup-option { min-height: var(--control-lg); }
+  /* One fixed leading column (headshot, logo or icon) so every name starts at the same x; a
+   * player's team logos sit in the caption line beside the team text. */
+  .ui-command-palette .lookup-item-leading {
+    display: inline-grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: var(--space-8);
+    color: var(--color-text-secondary);
+  }
+  .ui-command-palette .lookup-item-subtitle { display: flex; align-items: center; gap: var(--space-1); }
+  .ui-command-footer kbd {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: var(--space-5);
+    height: var(--space-5);
+    margin-inline-end: var(--space-1);
+    padding: 0 var(--space-1);
+    border-radius: var(--radius-xs);
+    background: var(--color-surface-3);
+    font-family: var(--font-mono), monospace;
+  }
+
+  /* A collapsed accordion keeps a 0fr row, but its inner padding still showed a sliver of the
+   * first link. Collapse the padding with the row; `inert` (accordion.tsx) removes it from Tab. */
+  .ui-accordion-content-inner { min-height: 0; transition: padding var(--dur-slow) var(--ease-out); }
+  .ui-accordion-content[data-expanded="false"] > .ui-accordion-content-inner { padding-block-end: 0; }
+
+  /* Menu group titles: one quiet line, never wrapped (Research has five groups). */
+  .courtlens-dropdown-section-title {
+    padding: var(--space-1) var(--space-3);
+    font-family: inherit;
+    font-size: var(--text-xs);
+    font-weight: 600;
+    letter-spacing: 0;
+    text-transform: none;
+    white-space: nowrap;
+    color: var(--color-text-tertiary);
+  }
+
+  .replica-mobile-drawer .ui-drawer-body { padding: 0; }
+  .courtlens-mobile-group { display: flex; flex-direction: column; gap: var(--space-0-5); }
+  .courtlens-mobile-group + .courtlens-mobile-group { margin-top: var(--space-2); }
+  .courtlens-mobile-group-title {
+    padding: var(--space-1) var(--space-3);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    color: var(--color-text-tertiary);
+  }
+  .courtlens-mobile-link,
+  .courtlens-mobile-sublink { min-height: var(--control-lg); }
+  .courtlens-mobile-sublink.active { color: var(--color-accent); font-weight: 600; }
+
+  @media (max-width: 1279px) {
+    .courtlens-header .courtlens-nav,
+    .courtlens-header .courtlens-more { display: none; }
+    .courtlens-header .courtlens-mobile-toggle { display: inline-flex; }
+    .courtlens-header-right .ui-button { height: var(--control-lg); }
+    .courtlens-header-right .ui-icon-button { width: var(--control-lg); }
+  }
+
+  @media (max-width: 767px) {
+    .courtlens-header { grid-template-columns: minmax(0, 1fr) auto; padding: 0 var(--space-4); }
+    .courtlens-header .courtlens-header-center { display: none; }
+    .courtlens-header .courtlens-mobile-search-btn { display: inline-flex; }
+    .ui-command-palette-scrim { padding: 0; }
+    .ui-command-palette { width: 100%; height: 100dvh; max-height: 100dvh; border-radius: 0; }
+    .ui-command-palette .ui-command-shortcut,
+    .ui-command-footer { display: none; }
+    .ui-command-close {
+      display: inline-grid;
+      place-items: center;
+      flex-shrink: 0;
+      height: var(--control-lg);
+      padding: 0 var(--space-2);
+      border: 0;
+      font-size: var(--text-sm);
+      border-radius: var(--radius-sm);
+      background: transparent;
+      color: var(--color-text-secondary);
+    }
+  }
+
+  /* ---------- Responsive (D25) ---------- */
+  @media (max-width: 1279px) {
+    .ui-board { grid-template-columns: minmax(0, 1fr); }
+  }
+
+  @media (max-width: 767px) {
+    .ui-page { --page-pad-inline: var(--space-3); padding-top: var(--space-4); }
+    .ui-filter-bar-controls { display: none; }
+    .ui-filter-bar { flex-wrap: nowrap; gap: var(--space-2); }
+    .ui-filter-bar-toggle { display: inline-flex; flex: 1; min-width: 0; min-height: var(--control-lg); justify-content: flex-start; }
+    .ui-filter-bar-toggle > span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .ui-filter-bar-summary { overflow: hidden; text-overflow: ellipsis; }
+    .ui-filter-bar-meta { gap: var(--space-1); }
+    .ui-filter-bar-meta .ui-button { min-width: var(--control-lg); min-height: var(--control-lg); }
+    /* A fixed scope has nothing to choose, so its one-line label stays in the bar. */
+    .ui-filter-bar.is-fixed-scope .ui-filter-bar-controls { display: flex; flex: 1; min-width: 0; }
+    .ui-filter-bar.is-fixed-scope .ui-filter-bar-scope { flex-wrap: nowrap; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    /* Key findings pair up so a four-tile row stays on the first screen. */
+    .ui-findings { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    /* Mode switches stay visible as a full-width second row (gate 2). */
+    .ui-filter-bar.has-modes { flex-wrap: wrap; }
+    .ui-filter-bar-modes { order: 10; flex: 1 0 100%; padding-left: 0; border-left: 0; }
+    .ui-filter-bar-modes .ui-segmented-control { display: flex; width: 100%; overflow-x: auto; scrollbar-width: none; }
+    /* Long labels ("Playmaking & Defense") wrap to two lines instead of clipping off the row. */
+    .ui-filter-bar .ui-filter-bar-modes .ui-segmented-item {
+      flex: 1 1 auto;
+      justify-content: center;
+      min-height: var(--control-lg);
+      padding-inline: var(--space-2);
+      white-space: normal;
+      text-align: center;
+      line-height: var(--text-xs-lh);
+    }
+    .ui-hide-narrow { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+    .ui-page-header-title { font-size: var(--text-xl); line-height: var(--text-xl-lh); }
+    .ui-page-header-actions { width: 100%; flex-wrap: wrap; margin-left: 0; }
+    .ui-identity-xl { --identity-media: 96px; }
+    .ui-data-details-row { grid-template-columns: minmax(0, 1fr); gap: var(--space-0-5); }
+    /* Skeletons mirror the collapsed phone filter bar: one full-width "Filters" control. */
+    .ui-skeleton-filters .ui-skeleton:not(:first-child) { display: none; }
+    .ui-skeleton-filters .ui-skeleton:first-child { width: 100%; }
+  }
+}
+
+/* /design catalogue layout for the FO01 section. */
+@layer foundation {
+  .ui-design-page { min-width: 0; width: 100%; }
+  .ui-design-foundation { display: flex; flex-direction: column; gap: var(--space-4); min-width: 0; }
+  .ui-design-foundation > *, .ui-design-foundation .ui-panel-body > * { min-width: 0; max-width: 100%; }
+  .ui-design-foundation .ui-filter-bar { position: static; }
+  .ui-design-foundation .ui-panel-body { display: flex; flex-direction: column; gap: var(--space-3); }
+  .ui-design-foundation-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: var(--space-4); }
+  .ui-design-identity-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-8); }
+  .ui-design-chip-row { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+  .ui-design-tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: var(--space-3); }
+  .ui-design-skeleton-frame { max-height: 480px; overflow: hidden; border-radius: var(--radius-md); background: var(--color-bg); }
+}
+
+/* FO07 route tabs: tabs that are links to separate URLs on merged pages. */
+@layer foundation {
+  .ui-route-tabs { min-width: 0; max-width: 100%; overflow-x: auto; scrollbar-width: none; }
+  .ui-route-tabs::-webkit-scrollbar { display: none; }
+  .ui-route-tabs-list { display: flex; width: 100%; min-height: 40px; margin: 0; padding: 0; list-style: none; }
+  .ui-route-tabs-list > li { display: flex; flex: none; }
+  .ui-route-tab {
+    display: inline-flex;
+    align-items: center;
+    min-height: 40px;
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .ui-route-tab:hover { color: var(--color-text); text-decoration: none; }
+  .ui-route-tab[data-active=true] { color: var(--color-accent); }
+  .ui-route-tab[data-secondary=true]:not([data-active=true]) { color: var(--color-text-tertiary); }
+  .ui-tabbed-page-body { display: flex; flex-direction: column; gap: var(--space-4); min-width: 0; }
+  .ui-tabbed-page-body > * { min-width: 0; }
+}
+
+/* FO13 Article template: contents beside one readable column (Methodology, What's New, Settings). */
+@layer foundation {
+  .ui-article {
+    --article-measure: 720px;
+    display: grid;
+    grid-template-columns: 200px minmax(0, 1fr);
+    gap: var(--space-8);
+    align-items: start;
+  }
+  .ui-article-no-toc { grid-template-columns: minmax(0, 1fr); }
+  .ui-skeleton-article-toc { display: flex; flex-direction: column; gap: var(--space-2); min-width: 0; }
+  .ui-article-body { display: flex; flex-direction: column; gap: var(--space-8); min-width: 0; }
+  .ui-article-toc {
+    position: sticky;
+    top: calc(var(--header-height) + var(--space-4));
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    min-width: 0;
+  }
+  .ui-article-toc-title {
+    margin: 0;
+    font-size: var(--text-xs);
+    line-height: var(--text-xs-lh);
+    font-weight: 600;
+    color: var(--color-text-tertiary);
+  }
+  .ui-article-toc-list {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-left: 1px solid var(--color-hairline);
+  }
+  .ui-article-toc-link {
+    display: flex;
+    align-items: center;
+    min-height: var(--control-md);
+    margin-left: -1px;
+    padding: var(--space-1) var(--space-3);
+    border-left: 2px solid transparent;
+    font-size: var(--text-sm);
+    line-height: var(--text-sm-lh);
+    color: var(--color-text-secondary);
+    text-decoration: none;
+  }
+  .ui-article-toc-link:hover { color: var(--color-text); text-decoration: none; }
+  .ui-article-toc-link[aria-current=location] { color: var(--color-accent); border-left-color: var(--color-accent); }
+  .ui-article-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    max-width: var(--article-measure);
+    min-width: 0;
+    scroll-margin-top: calc(var(--header-height) + var(--space-4));
+  }
+  .ui-article-section.is-wide { max-width: none; }
+  .ui-article-section > * { min-width: 0; margin: 0; }
+  .ui-article-section-head { display: flex; align-items: center; gap: var(--space-3); min-height: var(--control-lg); }
+  .ui-article-section-title { margin: 0; font-size: var(--text-xl); line-height: var(--text-xl-lh); font-weight: 600; }
+  .ui-article-section-actions { display: flex; align-items: center; gap: var(--space-2); margin-left: auto; }
+  .ui-article-section p, .ui-article-section li { font-size: var(--text-md); line-height: 1.65; color: var(--color-text-secondary); }
+  .ui-article-section h3 { margin: var(--space-2) 0 0; font-size: var(--text-lg); line-height: var(--text-lg-lh); font-weight: 600; }
+  .ui-article-section strong { color: var(--color-text); }
+  .ui-article-section :where(p, li, dd) a:not(.ui-button) {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-decoration-color: color-mix(in srgb, var(--color-accent) 40%, transparent);
+    text-underline-offset: 3px;
+  }
+  .ui-article-section :where(p, li, dd) a:not(.ui-button):hover { text-decoration-color: var(--color-accent); }
+  .ui-article-section ul, .ui-article-section ol { display: flex; flex-direction: column; gap: var(--space-2); padding-left: var(--space-5); }
+  .ui-article-section pre {
+    padding: var(--space-4);
+    overflow-x: auto;
+    background: var(--color-surface-1);
+    border-radius: var(--radius-md);
+    font-size: var(--text-sm);
+    line-height: var(--text-sm-lh);
+  }
+  /* A labelled list of settings or facts: label left, value or control right. */
+  .ui-article-facts { display: flex; flex-direction: column; margin: 0; }
+  .ui-article-facts > div {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: var(--space-4);
+    min-height: var(--control-lg);
+    padding-block: var(--space-2);
+    border-bottom: 1px solid var(--color-hairline);
+  }
+  .ui-article-facts dt { font-size: var(--text-md); color: var(--color-text-secondary); }
+  .ui-article-facts dd { margin: 0; font-size: var(--text-md); color: var(--color-text); text-align: right; font-variant-numeric: tabular-nums; }
+  .ui-article-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
+
+  @media (max-width: 1023px) {
+    .ui-article { grid-template-columns: minmax(0, 1fr); gap: var(--space-4); }
+    .ui-skeleton-article-toc { flex-direction: row; overflow: hidden; }
+    .ui-skeleton-article-toc .ui-skeleton { flex: 0 0 120px; border-radius: var(--radius-pill); }
+    .ui-article-toc { position: static; flex-direction: row; align-items: center; overflow-x: auto; scrollbar-width: none; }
+    .ui-article-toc::-webkit-scrollbar { display: none; }
+    .ui-article-toc-title { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+    /* Pills, not tabs: on merged pages the route tabs sit directly above this row. */
+    .ui-article-toc-list { flex-direction: row; gap: var(--space-2); border-left: 0; }
+    .ui-article-toc-link {
+      min-height: var(--control-lg);
+      margin: 0;
+      padding-inline: var(--space-3);
+      border: 0;
+      border-radius: var(--radius-pill);
+      background: var(--color-surface-1);
+      font-size: var(--text-xs);
+      white-space: nowrap;
+    }
+    .ui-article-toc-link[aria-current=location] { color: var(--color-accent); background: var(--color-accent-soft); }
+  }
+  @media (max-width: 767px) {
+    .ui-article-facts > div { grid-template-columns: minmax(0, 1fr); gap: var(--space-1); }
+    .ui-article-facts dd { text-align: left; }
+    .ui-article :is(.ui-button, .ui-switch, .ui-why-summary) { min-height: var(--control-lg); }
+    .data-status-view :is(.ui-button, .ui-menu-trigger) { min-height: var(--control-lg); }
+  }
+}
+
+@layer foundation {
+  .ui-design-article-frame .ui-article-toc { position: static; }
+  [tabindex="0"]:focus-visible { outline: 0; box-shadow: var(--focus-ring); }
+  .ask-composer:focus-within { box-shadow: var(--focus-ring); }
+  .similarity-view { display: flex; flex-direction: column; gap: var(--space-4); min-width: 0; }
+  .similarity-view > * { margin-block: 0; }
+  /* CSS resolves the OS preference without rendering different server and hydration text. */
+  .ui-motion-status-reduced { display: none; }
+  @media (prefers-reduced-motion: reduce) {
+    .ui-motion-status-normal { display: none; }
+    .ui-motion-status-reduced { display: inline; }
+  }
+}
+
+/* FO14: the same phone hit area for retained controls, menus and shared primitives. Inline prose
+   links keep their text geometry; checkbox/radio hit areas belong to their enclosing label. */
+@layer foundation {
+  @media (max-width: 767px) {
+    body :is(button, summary, .ui-button, [role="tab"], [role="menuitem"], .control-pill, .ui-switch,
+      input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]), select, textarea) {
+      min-height: var(--control-lg);
+      min-width: var(--control-lg);
+    }
+    .stats-workspace .dense-stats-table .table-sort-button { min-height: var(--control-lg); }
+    main a:not(p a):not(li a), .data-table a:not(.ui-button) {
+      display: inline-flex;
+      align-items: center;
+      min-height: var(--control-lg);
+      min-width: var(--control-lg);
+    }
+    .stats-workspace .stats-identity-copy .stats-player-link {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      justify-content: center;
+    }
+  }
+}

@@ -13,7 +13,7 @@ test("release availability agrees across desktop and mobile and preserves contex
   await page.getByRole("button", { name: "Toggle navigation drawer" }).click();
   const section = page.locator(".replica-mobile-section").filter({ has: page.getByText("Availability", { exact: true }) });
   expect(await section.locator("a").evaluateAll(items => items.map(item => item.getAttribute("href")))).toEqual(links);
-  await expect(page.locator(".replica-mobile-drawer").getByRole("link", { name: "Expected Shots", exact: true })).toBeVisible();
+  await expect(page.locator(".replica-mobile-drawer").getByRole("link", { name: "Shooting", exact: true })).toBeVisible();
   expect(links.every(href => href?.includes("beforeDate=2026-06-30"))).toBe(true);
 });
 
@@ -24,9 +24,10 @@ test("catalog scope options keep unavailable context explicit and synchronize na
   await expect(season.locator("option:checked")).toContainText("unavailable");
   await season.selectOption("2025-26");
   await expect(page.getByLabel("Phase", { exact: true })).toHaveValue("regular_season");
-  await expect(page.getByLabel("Before date", { exact: true })).toHaveValue("2026-06-30");
+  // The picker shows the last included day; the URL keeps the exclusive cutoff (2026-06-30).
+  await expect(page.getByRole("button", { name: /^Through date:/ })).toHaveAttribute("data-value", "2026-06-29");
   await openWorkbench(page, "/wowy?season=2025-26&phase=regular_season&beforeDate=2026-04-01");
-  await expect(page.getByLabel("Before date", { exact: true })).toHaveValue("2026-04-01");
+  await expect(page.getByRole("button", { name: /^Through date:/ })).toHaveAttribute("data-value", "2026-03-31");
 });
 
 test("settings distinguishes configured key from provider health and hides operator details", async ({ page }) => {

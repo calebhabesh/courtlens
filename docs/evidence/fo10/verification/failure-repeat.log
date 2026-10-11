@@ -1,0 +1,25 @@
+
+> courtlens-dashboard@0.1.0 test:browser
+> playwright test e2e/threaded-assistant.spec.ts e2e/workbench.spec.ts --grep composer waits|team research lists --workers=1 --repeat-each=8
+
+
+Running 16 tests using 1 worker
+
+  ✓   1 e2e/threaded-assistant.spec.ts:579:5 › composer waits for history initialization before accepting input (302ms)
+  ✓   2 e2e/workbench.spec.ts:73:7 › Workbench Dark Research Interface › team research lists cohorts and navigates to team detail (803ms)
+  ✓   3 e2e/threaded-assistant.spec.ts:579:5 › composer waits for history initialization before accepting input (272ms)
+  ✓   4 e2e/workbench.spec.ts:73:7 › Workbench Dark Research Interface › team research lists cohorts and navigates to team detail (839ms)
+  ✓   5 e2e/threaded-assistant.spec.ts:579:5 › composer waits for history initialization before accepting input (352ms)
+  ✓   6 e2e/workbench.spec.ts:73:7 › Workbench Dark Research Interface › team research lists cohorts and navigates to team detail (831ms)
+  ✓   7 e2e/threaded-assistant.spec.ts:579:5 › composer waits for history initialization before accepting input (499ms)
+  ✓   8 e2e/workbench.spec.ts:73:7 › Workbench Dark Research Interface › team research lists cohorts and navigates to team detail (822ms)
+  ✓   9 e2e/threaded-assistant.spec.ts:579:5 › composer waits for history initialization before accepting input (330ms)
+  ✓  10 e2e/workbench.spec.ts:73:7 › Workbench Dark Research Interface › team research lists cohorts and navigates to team detail (821ms)
+  ✓  11 e2e/threaded-assistant.spec.ts:579:5 › composer waits for history initialization before accepting input (327ms)
+  ✓  12 e2e/workbench.spec.ts:73:7 › Workbench Dark Research Interface › team research lists cohorts and navigates to team detail (809ms)
+  ✓  13 e2e/threaded-assistant.spec.ts:579:5 › composer waits for history initialization before accepting input (336ms)
+  ✓  14 e2e/workbench.spec.ts:73:7 › Workbench Dark Research Interface › team research lists cohorts and navigates to team detail (797ms)
+  ✓  15 e2e/threaded-assistant.spec.ts:579:5 › composer waits for history initialization before accepting input (332ms)
+  ✓  16 e2e/workbench.spec.ts:73:7 › Workbench Dark Research Interface › team research lists cohorts and navigates to team detail (808ms)
+
+  16 passed (12.7s)

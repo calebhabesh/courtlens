@@ -1,0 +1,38 @@
+[
+  {
+    "width": 1440,
+    "filterBottom": 199.64138793945312,
+    "tabsTop": 215.64138793945312,
+    "gap": 16,
+    "manageTop": 217.64138793945312,
+    "guidesTop": 215.64138793945312,
+    "tableTop": 255.64138793945312,
+    "documentWidth": 1440,
+    "manageViews": "pass",
+    "groupGuides": "pass"
+  },
+  {
+    "width": 2048,
+    "filterBottom": 199.92440795898438,
+    "tabsTop": 215.92440795898438,
+    "gap": 16,
+    "manageTop": 217.92440795898438,
+    "guidesTop": 215.92440795898438,
+    "tableTop": 255.92440795898438,
+    "documentWidth": 2048,
+    "manageViews": "pass",
+    "groupGuides": "pass"
+  },
+  {
+    "width": 390,
+    "filterBottom": 213.92430114746094,
+    "tabsTop": 229.92430114746094,
+    "gap": 16,
+    "manageTop": 269.92431640625,
+    "guidesTop": 305.92431640625,
+    "tableTop": 345.92431640625,
+    "documentWidth": 390,
+    "manageViews": "pass",
+    "groupGuides": "pass"
+  }
+]

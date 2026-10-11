@@ -580,12 +580,16 @@ test("composer waits for history initialization before accepting input", async (
   await mock(page);
   let release!: () => void;
   const gate = new Promise<void>(resolve => { release = resolve; });
-  await page.route("**/api/assistant-v2/threads", async route => {
+  let blockedRequests = 0;
+  // Match the paginated URL too; an exact glob never held threads?limit=20.
+  await page.route(url => url.pathname === "/api/assistant-v2/threads", async route => {
     if (route.request().method() !== "GET") return route.fallback();
+    blockedRequests++;
     await gate;
     return route.fallback();
   });
   await openPage(page, path);
+  await expect.poll(() => blockedRequests).toBeGreaterThan(0);
   await expect(composer(page)).toBeDisabled();
   release();
   await expect(composer(page)).toBeEnabled();
