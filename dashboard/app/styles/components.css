@@ -2738,7 +2738,7 @@ textarea, input, select { max-width: 100%; }
 .ui-select {
   appearance: none;
   width: 100%;
-  background: transparent;
+  background: var(--color-surface-2);
   border: 0;
   color: var(--color-text);
   font-family: inherit;

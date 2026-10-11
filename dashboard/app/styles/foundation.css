@@ -134,7 +134,7 @@
   .ui-select-wrapper .ui-select {
     padding: 0 var(--space-8) 0 var(--space-3);
     border: 0;
-    background: transparent;
+    background: var(--color-surface-2);
     font-size: var(--text-sm);
     line-height: var(--text-sm-lh);
     text-overflow: ellipsis;

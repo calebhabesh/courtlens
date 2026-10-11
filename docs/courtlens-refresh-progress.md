@@ -513,3 +513,15 @@ populated states; loading/error/missing-data states were not re-audited. Lint an
 build/TypeScript pass; 10 existing Stats browser tests pass. Desktop/phone production Stats
 baselines refreshed for the requested visual change. Prior milestone and owner-acceptance
 statuses remain unchanged.
+
+## 2026-10-11 — Native dropdown dark-theme correction
+
+[Measured evidence](evidence/native-select-theme/README.md): reproduced white native dropdowns
+with unreadable light text despite the dark color scheme. Shared Select backgrounds were
+transparent in both CSS layers; an opaque surface-token probe resolved the popup. Both layers
+now use that surface; native options/option groups get explicit surface/text tokens site-wide.
+Six real-data desktop/phone opened-menu captures show 15.53:1 option contrast and no page
+overflow. Lint/build/TypeScript pass, 357 unit tests pass, 82 existing browser checks pass
+(including all 66 unchanged page baselines), and three new native-popup screenshot/contrast
+tests pass twice each with a light OS theme. Scoped glance review is recorded in the evidence;
+prior milestone and owner-acceptance statuses remain unchanged.

@@ -1,0 +1,150 @@
+[
+  {
+    "width": 1440,
+    "name": "season",
+    "background": "rgb(24, 27, 33)",
+    "options": [
+      {
+        "label": "2023-24",
+        "background": "rgb(24, 27, 33)",
+        "color": "rgb(242, 243, 245)"
+      },
+      {
+        "label": "2024-25",
+        "background": "rgb(24, 27, 33)",
+        "color": "rgb(242, 243, 245)"
+      },
+      {
+        "label": "2025-26",
+        "background": "rgb(24, 27, 33)",
+        "color": "rgb(242, 243, 245)"
+      }
+    ],
+    "overflow": false
+  },
+  {
+    "width": 1440,
+    "name": "phase",
+    "background": "rgb(24, 27, 33)",
+    "options": [
+      {
+        "label": "NBA Cup final",
+        "background": "rgb(24, 27, 33)",
+        "color": "rgb(242, 243, 245)"
+      },
+      {
+        "label": "Play-in",
+        "background": "rgb(24, 27, 33)",
+        "color": "rgb(242, 243, 245)"
+      },
+      {
+        "label": "Playoffs",
+        "background": "rgb(24, 27, 33)",
+        "color": "rgb(242, 243, 245)"
+      },
+      {
+        "label": "Regular Season",
+        "background": "rgb(24, 27, 33)",
+        "color": "rgb(242, 243, 245)"
+      }
+    ],
+    "overflow": false
+  },
+  {
+    "width": 1440,
+    "name": "window",
+    "background": "rgb(24, 27, 33)",
+    "options": [
+      {
+        "label": "Season-to-date",
+        "background": "rgb(24, 27, 33)",
+        "color": "rgb(242, 243, 245)"
+      },
+      {
+        "label": "Last 10 appearances",
+        "background": "rgb(24, 27, 33)",
+        "color": "rgb(242, 243, 245)"
+      },
+      {
+        "label": "Last 5 appearances",
+        "background": "rgb(24, 27, 33)",
+        "color": "rgb(242, 243, 245)"
+      }
+    ],
+    "overflow": false
+  },
+  {
+    "width": 390,
+    "name": "season",
+    "background": "rgb(24, 27, 33)",
+    "options": [
+      {
+        "label": "2023-24",
+        "background": "rgb(24, 27, 33)",
+        "color": "rgb(242, 243, 245)"
+      },
+      {
+        "label": "2024-25",
+        "background": "rgb(24, 27, 33)",
+        "color": "rgb(242, 243, 245)"
+      },
+      {
+        "label": "2025-26",
+        "background": "rgb(24, 27, 33)",
+        "color": "rgb(242, 243, 245)"
+      }
+    ],
+    "overflow": false
+  },
+  {
+    "width": 390,
+    "name": "phase",
+    "background": "rgb(24, 27, 33)",
+    "options": [
+      {
+        "label": "NBA Cup final",
+        "background": "rgb(24, 27, 33)",
+        "color": "rgb(242, 243, 245)"
+      },
+      {
+        "label": "Play-in",
+        "background": "rgb(24, 27, 33)",
+        "color": "rgb(242, 243, 245)"
+      },
+      {
+        "label": "Playoffs",
+        "background": "rgb(24, 27, 33)",
+        "color": "rgb(242, 243, 245)"
+      },
+      {
+        "label": "Regular Season",
+        "background": "rgb(24, 27, 33)",
+        "color": "rgb(242, 243, 245)"
+      }
+    ],
+    "overflow": false
+  },
+  {
+    "width": 390,
+    "name": "window",
+    "background": "rgb(24, 27, 33)",
+    "options": [
+      {
+        "label": "Season-to-date",
+        "background": "rgb(24, 27, 33)",
+        "color": "rgb(242, 243, 245)"
+      },
+      {
+        "label": "Last 10 appearances",
+        "background": "rgb(24, 27, 33)",
+        "color": "rgb(242, 243, 245)"
+      },
+      {
+        "label": "Last 5 appearances",
+        "background": "rgb(24, 27, 33)",
+        "color": "rgb(242, 243, 245)"
+      }
+    ],
+    "overflow": false
+  }
+]
