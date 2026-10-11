@@ -15,9 +15,9 @@ const roster = {
   record: { games_played: 82, wins: 56, losses: 26, win_pct: 0.683 },
   production: {}, allowance: {}, recent_games: [],
   player_cohort: [
-    { player_id: "11", player_name: "Fixture Guard", games_played: 80, total_minutes: 2400, points: 1600, points_per_game: 20 },
-    { player_id: "12", player_name: "Fixture Wing", games_played: 70, total_minutes: 1400, points: 700, points_per_game: 10 },
-    { player_id: "13", player_name: "Fixture Big", games_played: 60, total_minutes: 1200, points: 480, points_per_game: 8 }
+    { player_id: "11", player_name: "Fixture Guard", games_played: 80, total_minutes: 2400, pts_per_game: 20, reb_per_game: 4, ast_per_game: 6 },
+    { player_id: "12", player_name: "Fixture Wing", games_played: 70, total_minutes: 1400, pts_per_game: 10, reb_per_game: 5, ast_per_game: 2 },
+    { player_id: "13", player_name: "Fixture Big", games_played: 60, total_minutes: 1200, pts_per_game: 8, reb_per_game: 9, ast_per_game: 1 }
   ],
   warnings: []
 };

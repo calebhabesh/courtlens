@@ -10,8 +10,10 @@ const data = {
   record: { games_played: 1, wins: 1, losses: 0, win_pct: 1 },
   production: {}, allowance: {},
   player_cohort: [
-    { player_id: "1", player_name: "A", games_played: 2, total_minutes: 60, points: 10, points_per_game: 5 },
-    { player_id: "2", player_name: "B", games_played: 1, total_minutes: 20, points: null, points_per_game: null }
+    { player_id: "1", player_name: "A", games_played: 2, total_minutes: 60, pts_per_game: 5, reb_per_game: 3, ast_per_game: 1 },
+    { player_id: "2", player_name: "B", games_played: 1, total_minutes: 20, pts_per_game: null, reb_per_game: null, ast_per_game: null },
+    // Reported non-appearances only: minutes are unknown (null), never zero.
+    { player_id: "3", player_name: "C", games_played: 0, total_minutes: null, pts_per_game: null, reb_per_game: null, ast_per_game: null }
   ],
   recent_games: [],
   warnings: ["Fixture scope only"]
@@ -40,7 +42,14 @@ describe("roster allocation", () => {
     expect(parseProjected("0")).toBe(0);
     const summary = summarize(buildAllocations(data.player_cohort, "projected", {}, { "1": "30" }));
     expect(summary.total).toBe(30);
-    expect(summary.unknown).toBe(1);
+    expect(summary.unknown).toBe(2);
+  });
+
+  it("observed rows without recorded minutes stay unknown, not zero", () => {
+    const observed = summarize(buildAllocations(data.player_cohort, "observed", {}, {}));
+    expect(observed.total).toBe(80);
+    expect(observed.unknown).toBe(1);
+    expect(observed.invalid).toBe(false);
   });
 
   it("lane shares use the known total and flag invalid minutes", () => {

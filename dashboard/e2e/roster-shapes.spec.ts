@@ -11,9 +11,9 @@ const detail = {
   record: { games_played: 82, wins: 56, losses: 26, win_pct: 0.683 },
   production: {}, allowance: {}, recent_games: [],
   player_cohort: [
-    { player_id: "11", player_name: "Fixture Guard", games_played: 80, total_minutes: 2400, points: 1600, points_per_game: 20 },
-    { player_id: "12", player_name: "Fixture Wing", games_played: 70, total_minutes: 1400, points: 700, points_per_game: 10 },
-    { player_id: "13", player_name: "Fixture Big", games_played: 60, total_minutes: 1200, points: 480, points_per_game: 8 }
+    { player_id: "11", player_name: "Fixture Guard", games_played: 80, total_minutes: 2400, pts_per_game: 20, reb_per_game: 4, ast_per_game: 6 },
+    { player_id: "12", player_name: "Fixture Wing", games_played: 70, total_minutes: 1400, pts_per_game: 10, reb_per_game: 5, ast_per_game: 2 },
+    { player_id: "13", player_name: "Fixture Big", games_played: 60, total_minutes: 1200, pts_per_game: 8, reb_per_game: 9, ast_per_game: 1 }
   ],
   warnings: ["Fixture scope only"]
 };
@@ -127,5 +127,17 @@ test.describe("FO05 Roster Shapes", () => {
     expect(Math.min(...heights)).toBeGreaterThanOrEqual(39.99);
     await page.getByRole("button", { name: "Change team" }).click();
     await expect(page.getByRole("dialog", { name: "Choose a team" }).getByRole("button", { name: "Boston Celtics" })).toHaveAttribute("aria-pressed", "true");
+  });
+
+  test("players with only reported non-appearances render unknown minutes, not a crash", async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    const inactive = { player_id: "14", player_name: "Fixture Inactive", games_played: 0, total_minutes: null, pts_per_game: null, reb_per_game: null, ast_per_game: null };
+    await page.route(`**/api/workbench/teams/${BOS}?*`, (route) => route.fulfill({ json: { ...detail, player_cohort: [...detail.player_cohort, inactive] } }));
+    await openWorkbench(page, `/roster-shapes?team=${BOS}`);
+    const unassigned = page.getByRole("region", { name: "Roster allocations" }).getByRole("region", { name: "Unassigned lane" });
+    await expect(unassigned.locator(".roster-chip")).toHaveCount(4);
+    await expect(unassigned.locator(".roster-chip", { hasText: "Fixture Inactive" })).toContainText("— min · 0 GP");
+    await page.getByRole("radio", { name: "Projected" }).click();
+    await expect(unassigned.locator(".roster-chip", { hasText: "Fixture Inactive" })).toContainText("— min · 0 GP");
   });
 });

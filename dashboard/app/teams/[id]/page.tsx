@@ -148,8 +148,9 @@ export default async function TeamDetailPage({
                   <th>Player</th>
                   <th className="num">Stint Games</th>
                   <th className="num">Stint Minutes</th>
-                  <th className="num">Stint Points</th>
                   <th className="num">PPG</th>
+                  <th className="num">RPG</th>
+                  <th className="num">APG</th>
                   <th className="text-right">Actions</th>
                 </tr>
               </thead>
@@ -172,10 +173,9 @@ export default async function TeamDetailPage({
                     <td className="num font-mono">
                       {p.total_minutes !== undefined && p.total_minutes !== null ? p.total_minutes.toFixed(0) : "—"}
                     </td>
-                    <td className="num font-mono font-bold">{p.points ?? "—"}</td>
-                    <td className="num font-mono font-semibold">
-                      {p.points_per_game !== undefined && p.points_per_game !== null ? p.points_per_game.toFixed(1) : "—"}
-                    </td>
+                    <td className="num font-mono font-bold">{p.pts_per_game?.toFixed(1) ?? "—"}</td>
+                    <td className="num font-mono">{p.reb_per_game?.toFixed(1) ?? "—"}</td>
+                    <td className="num font-mono">{p.ast_per_game?.toFixed(1) ?? "—"}</td>
                     <td className="text-right">
                       <Link
                         href={`/players/${p.player_id}?season=${season}&phase=${phase}&beforeDate=${beforeDate}&releaseId=${resolvedReleaseId || ""}` }
