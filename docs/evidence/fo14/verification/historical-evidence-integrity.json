@@ -1,0 +1,517 @@
+[
+  {
+    "path": "docs/evidence/dl03/command-palette-1440.png",
+    "sha256": "ad43d8d730bbb49fdea4505045e19b07efc707a91bf11d9d0eb1dfae6e2a479f",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl03/drawer-375.png",
+    "sha256": "9ada5074529686041dcb527ea8cd72fbb8022d693d9282829d718332aa6d7b36",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl03/header-1440.png",
+    "sha256": "004ab0dfa03ab6ba39ba9fd51b636095ca4dfa26d6e31e8753233d1a383f8332",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl03/header-375.png",
+    "sha256": "0490ad4366276b1f61f2231b9e8e4d4b7ef1e40ddc17882b09a57d0072577776",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl04/compare-1440.png",
+    "sha256": "e5c643c4910a3cd5a4bbdbf9f30ae6c57880a1c1c06e860376fcd4115a8452bc",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl04/compare-375.png",
+    "sha256": "40d3bac82430a3c4fe771d3e9e7765658c3c4010e511ba0c974a07dcf1714169",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl04/player-profile-1440.png",
+    "sha256": "ebf82f613806be589d4c6e39ff5f286ddba8a434af6515f4216cf7d0a7eae653",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl04/player-profile-375.png",
+    "sha256": "c916ed7ad104fdf41e139ded9141be51d6d6e7ad71107c599e113f17a0ec7944",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl04/players-1440.png",
+    "sha256": "40352a347fff469b2e1ac3e094f7ad01e9c2543b8df9136bc3a35d3e8a74ff2f",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl04/players-375.png",
+    "sha256": "32bcb9ca3bd60c9c27b24742961ff681f38d8c73dccbb73da0657fc3dc6bafc6",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl04/stats-1440.png",
+    "sha256": "b9d603921a1d524bd302c505d3c308d69ced79c4c2665d1c6c076b70e4ab4b19",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl04/stats-375.png",
+    "sha256": "b9edef26fcde53bee2460d5c38de41272ca612191fb682897d96ae9404ba7bb0",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl04/team-compare-1440.png",
+    "sha256": "51231ddc44fcfebd19cdd467633d6ae1c29ddedbf7eb1da55f2072b9df0cb34a",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl04/team-compare-375.png",
+    "sha256": "a0fe4691862108031899bdcef86843dfcb873dd4def9d3ddfff9f7c62a06037d",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl04/team-detail-1440.png",
+    "sha256": "7a54657cb459a5592e52e322f9081d5b0c97f01c54d64748b7788d984fa5776e",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl04/team-detail-375.png",
+    "sha256": "823f1e30606d0c48c114bcdb175534746d86f84883165fbff095380ae8ae219a",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl04/teams-1440.png",
+    "sha256": "02f91746ef17bf9eb7d6f0f06b725eafcee775841f5bddb2dcbef666ece10c50",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl04/teams-375.png",
+    "sha256": "dfd0768d545163b1b8ac4294797c41a6dac247a3cec3e07d1dbf8041c080b5bf",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl05/last-games-1440.png",
+    "sha256": "c2e9b1d74000158b689179c5ea15dd24b401618e952ae247d133daa3b0de2397",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl05/last-games-375.png",
+    "sha256": "627a3fa09855933e2a3008a1eac31f8e7bd48b9dfcebdeb63f7b7bce62bf4451",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl05/live-1440.png",
+    "sha256": "9ce2e6d59e27b8291b5bede60c24cb4fa646efbe66c2766c4fe22e407ca3035f",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl05/live-375.png",
+    "sha256": "279ec1e30e12fab2da9910ef78010aecb663e4b68bddfe6a8b20bbad37047c53",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl05/live-game-1440.png",
+    "sha256": "dcbfc3a17bb58f4e6c979abff310a43b43bfb607f8f409bd6572a2fbe8e30bc2",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl05/live-game-375.png",
+    "sha256": "05a34a4b6cf1447753fd10b27922961d6499f944bd013e5890c182a39e31e3ef",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl05/playoffs-1440.png",
+    "sha256": "f32246dc9aee0b7a8b72e5a6e625ef529345c2491a40ce666e63fd327c241ea2",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl05/playoffs-375.png",
+    "sha256": "83116571d15129b8a2abb1297aa931eb1ae441e02f141393b73860d43772f43e",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl05/playoffs-series-1440.png",
+    "sha256": "ed8c9c11137ec2da8793f0af31506cc3f7919cc034ca50f120787740d148718f",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl05/playoffs-series-375.png",
+    "sha256": "d36deefc522293dd5888c857ddf01dcfca13536ed401e28c4545945dbb0bd899",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl06/case-studies-1440.png",
+    "sha256": "416ae0635e8ffafa8745de0339b2a74bc0799897a107f7a87f894779164f9f5d",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl06/case-studies-375.png",
+    "sha256": "6811c36d4b8934acb48836b435a350c270e9e8eb94af50ed983df2c6069e9405",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl06/distributions-1440.png",
+    "sha256": "59b1dc64bcc804e26e0f813a77740fad74ee14ebad760f9e7573e218b8d1672d",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl06/distributions-375.png",
+    "sha256": "5080389f9b08a0a0589e64441f795a6960c184790cf91aac4ebb0be566ec8fa9",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl06/investigations-1440.png",
+    "sha256": "128aac85696e24744966968121b893af5645ed605d86ecc42645eac88a2ed6c8",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl06/investigations-375.png",
+    "sha256": "f6076cbda3d72b445db75f2f00f8039dafe1b638fa3138d8fae907446abf614f",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl06/matchups-1440.png",
+    "sha256": "f71aa77e402363ac2cdef7ea75fd3366e24fc4a0ba7cf97174fc888c0cf4bbb6",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl06/matchups-375.png",
+    "sha256": "72d2fc8d8795b0ab1e4ffec31b30466a5e95d05ca98514689f2b35247da28f5f",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl06/rankings-1440.png",
+    "sha256": "ad1492639478bc86a0c74ada614869f32cd2087a973e3ccf7330c11cd359b810",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl06/rankings-375.png",
+    "sha256": "83a97fbb1f6c191ff1381b93219c9157c219cc70d49426568baeb3f54dd126b7",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl06/shot-aftermath-1440.png",
+    "sha256": "ff58b78ebe364b61b7c342403fbeffd7b544117582f14f76540d4d2b7f9ee5e8",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl06/shot-aftermath-375.png",
+    "sha256": "dd77f43fd81960724b040f9727e75ff90a64651e784d65938df0a9dba6008168",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl06/shot-profile-twin-1440.png",
+    "sha256": "a8368d788943e483ba04577234cde37f37528a1cd9891cf36afd048514aaa222",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl06/shot-profile-twin-375.png",
+    "sha256": "faa572387e756e21aa4d63dacfce185678157cfd92b090e834b55da8821ae1ca",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl06/similarity-1440.png",
+    "sha256": "18c8b9c349bac7fa3623bfc6bfc353d1a6e752a9d3ffe61227189e18a76f0e6c",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl06/similarity-375.png",
+    "sha256": "1fd9667e19795e71ee19b9cf89d0528838bcf00a28cb4ea6561fda7d5ab2635c",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl06/stat-line-shift-1440.png",
+    "sha256": "3bc8e7712ff478d480b570014638a2c78b6c0ef77f7a2a89b6e7344eaac96765",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl06/stat-line-shift-375.png",
+    "sha256": "1d9635f48f2c9a8cb371ecdee684c1d870e11759fe242861d81ae61cb7dfabf1",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl06/trends-1440.png",
+    "sha256": "fd54a60ed3f905167f6b7cab5780e02700b5eb0cbe8f1e952fa84eab5fbd5b17",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl06/trends-375.png",
+    "sha256": "a97082a98a7357b13498234ca5bd7222d5c5ba5a9bd3d67f82b0ea32437387d6",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl06/wingspan-1440.png",
+    "sha256": "5f84cde7ae46b81e98b5b1c670c816e9012ef2ec72b74f0f057cd688e8bafd74",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl06/wingspan-375.png",
+    "sha256": "319dd1d4c093ce1ecf574c120f426832e53a4b6fd26d908f91da5d116df40a21",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl06/wowy-1440.png",
+    "sha256": "ccb380f5a95ab1a8a2a32a6ca1f784652969c50baf23bbb20a1f5d771e722c54",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl06/wowy-375.png",
+    "sha256": "a581331ab24b77708c10286fc45919b3c836b0a3cd3357663d3f2f86edbf18b3",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl07/ask-1440.png",
+    "sha256": "b2ee6533a4fcc38b456a0a2948c0c2443c02e48d611d92855e68825b89565955",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl07/ask-375.png",
+    "sha256": "02235d8aff0572c9ec1b77a81dfda2c75ccf5f93400626d601a357454b8a5058",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl07/ask-drawer-1440.png",
+    "sha256": "93bed146446e216677080f66b0b571ee060ffe43282a5b1e48acb7ca17a7b454",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl07/ask-drawer-375.png",
+    "sha256": "e437fd6b9e8cb9d82396a014ecdaa81c1e5cf093652abb71c5aa05436bd70a0c",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl07/blog-1440.png",
+    "sha256": "e3d684d73cbb1a6b1786582958341f5c57ada6ea29c7c1b1225900d2d60bf739",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl07/blog-375.png",
+    "sha256": "ffcc6a1ebd369e1e275d5d895061f8bb0c1548664f332b9d002baf3588059e48",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl07/calculator-1440.png",
+    "sha256": "77db4c3d6635f3cec299fdb9d209ffeb38348be6d8dc05c0e792f1de292162c4",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl07/calculator-375.png",
+    "sha256": "332cd3993b9acffaf84de9bc677921d890ab1ef73f3f2f04650bd2e0635aade3",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl07/contracts-1440.png",
+    "sha256": "7335c25559468caffe7cd2ffac0865ddaa832632a8b10f26600facd437f8aea0",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl07/contracts-375.png",
+    "sha256": "ebe673369fe8497f6bd4c77e17a0c855c1fde83910d056861625aa7100cb0404",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl07/data-status-1440.png",
+    "sha256": "4aabc5ea9ee6f9d99229bdb6affd91c3cabb471f90653a88c0011043a0da080d",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl07/data-status-375.png",
+    "sha256": "815d08d2733db6755e637748b8be72763c1f1233dba602e3309f8b8d224b6308",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl07/forecasts-1440.png",
+    "sha256": "e9f347b5328dcbb1bd1bf76aef591d7ccf1feb125a804688c944b003038e82a7",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl07/forecasts-375.png",
+    "sha256": "18e010fcaad7dab77b4b28cdf75318e5b398a877888423363cd150ebc1177c7c",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl07/free-agency-1440.png",
+    "sha256": "dfdb95ebe275901964b5a39ae593ef70700ae4e6b372ca4d713e4865c0a36f59",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl07/free-agency-375.png",
+    "sha256": "ee74c61e8e61e07dcf3155d574575242f95c82e755f79f1af31263b4f4309e24",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl07/learning-1440.png",
+    "sha256": "a106c1636814214a0246c91b414ec4c6dcf496c8559290c1cc7e28da5f0039a1",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl07/learning-375.png",
+    "sha256": "9213e4540993ef55ca3f12ab9c306ed09f6bf732e8aa6579c7dafec10abc68df",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl07/methodology-1440.png",
+    "sha256": "2ade3607db40fafcac5cc59de298ec32c1bdef0766efe4d5cad360571bb8f45e",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl07/methodology-375.png",
+    "sha256": "e2166ca0b91a49cbac4bb7362a0339c965efebeb90f7ca4342be04c99b76e8a1",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl07/patch-notes-1440.png",
+    "sha256": "99088089bf9598c3badd71f0000d93d3e24f922d8430c58480753936dd0847c4",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl07/patch-notes-375.png",
+    "sha256": "ce9d14f97723f8e0ed3d880f87b86f6cc5c87463719a340c639549908406585d",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl07/settings-1440.png",
+    "sha256": "3d5cac2ff5dd0b516ef67000e301ffad541ce28b19e8d57df48b03275bf82008",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl07/settings-375.png",
+    "sha256": "f071330c1578e0a57d3b0dd17a5bced6f22d24cab6ec1e3ad8f0825e44184899",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl07/tierlist-1440.png",
+    "sha256": "88e9d988163aba041cc202b9d77bbfc4f452a02e69c5ab71f01cdb592014562c",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl07/tierlist-375.png",
+    "sha256": "66a855a24ecbc1dfb732105e928e87596388efb93fcce16dfa2d0e1df90f612f",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl08/ask-1440.png",
+    "sha256": "fad097b6859759d9ce07f68de1377f57489000fdc6fe1b62b7c063a7e53946b0",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl08/ask-375.png",
+    "sha256": "207dd32d418cf85821ff377d504251d9f106104c441ed3b0b55a612a154a274b",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl08/ask-perf.json",
+    "sha256": "5592d6e465ca2626cc14c80f4c84e474232db30cf226212ccd35cc11a8da4ae6",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl08/performance-report.json",
+    "sha256": "91b44afb8e65cf497c342a72dfbdbf657ee56f8113e1c16c10b263f6f5ba4c21",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl08/player-profile-1440.png",
+    "sha256": "440565944677b66a88731a5cf0e1975d574a405bba6ed23e0bdd12e9af88fb4c",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl08/player-profile-375.png",
+    "sha256": "14b0088b9a02788662a10db491c0c8b9bc1c03d2e97153627d7605397f79c726",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl08/player-profile-perf.json",
+    "sha256": "183a944f8ef7b694616f4050718406e6d741371b571daad8f0ae6dc7789ff8f0",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl08/skeleton-live-1440.png",
+    "sha256": "0b8199b1cce52d8f62482d0032b48dec4920382b460b3afa9a22e4467567ea10",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl08/skeleton-live-375.png",
+    "sha256": "67a43385b7c5c3373705f32e9fc4762a75d4eedb14008633ee4c997b62e92cb6",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl08/skeleton-player-1440.png",
+    "sha256": "2e006f492dec367c01795466c8b80e28aa60f5fd656c92461b4b25e59065e0b7",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl08/skeleton-player-375.png",
+    "sha256": "d6bbf41085a86efa08d6989abea7886b1f323ec6767468237bb53a076272e7af",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl08/skeleton-root-1440.png",
+    "sha256": "c0284c09adb5ad90791744a870bf839cbe051ea6525382ee7826bf3d5d09d6fc",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl08/skeleton-root-375.png",
+    "sha256": "4aa91ff9c5af058a4bab047f56a2b65800a3067ec44b3f737b2fbbaca8ae9331",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl08/skeleton-stats-1440.png",
+    "sha256": "9015326d3f28277a17ea8427449aece6b5f868affae03ac8b175da73fead6403",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl08/skeleton-stats-375.png",
+    "sha256": "3ecccc58ff4078f63aecd2f4b0375ab1e2ed5d36e568d5be05056f0a4a5adf05",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl08/stats-1440.png",
+    "sha256": "ef78ff990cc6707fe9085d8709d7648e78237438761ae7ec8a895ac99beaf1e4",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl08/stats-375.png",
+    "sha256": "d7e1d36d3a228026c6337a5c98c76a35c675ad1cf11fe7dcffb4249656fa4088",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl08/stats-perf.json",
+    "sha256": "aedf20563fc4dd9d28670e37859bff37b5e09b2453b022dfbc5177780e4bda38",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl08/team-detail-1440.png",
+    "sha256": "27d870620790e4acee325654845198b33ecd394bacbac48d237e08f7b517e05d",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl08/team-detail-375.png",
+    "sha256": "058039f0ba7506ed290836bd173d0841e158aa1dbfbf8041fc3be8770a1d6dc3",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl08/team-detail-perf.json",
+    "sha256": "ecaf0075cfa78fab5db018066053b9d62ed52ccf989d69b178cb4ce47c392556",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl08/toast-action-1440.png",
+    "sha256": "2de27d571ec31b5795dc550d802f284a5dd960cf9c3d0bd68d6b93bed54bbf3a",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/dl08/toast-action-375.png",
+    "sha256": "8061868686fd858cca10ee210bed6de161c438ea3d2ab676d1384dc14572ac63",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/im07/screenshots/warehouse-rapm-1440.png",
+    "sha256": "bff14bf199e5c1e7da7d0ee370b76d72e0da102bf5cac1052440935cb96e8119",
+    "restored": true
+  },
+  {
+    "path": "docs/evidence/im07/screenshots/warehouse-rapm-375.png",
+    "sha256": "146c91df1be40bb8c5f7667b220f3d6105e475ff4ab80048cb294630f2122d16",
+    "restored": true
+  }
+]

@@ -222,7 +222,7 @@ export function PlannerClient({ fixtureMode, defaultWeek }: { fixtureMode: boole
           ) : null}
         </>
       ) : busy ? (
-        <div className="planner-loading" aria-busy="true" aria-label="Loading plan"><div className="ui-findings">{[0, 1, 2, 3].map(i => <Skeleton key={i} height={88} />)}</div><Skeleton height={320} /></div>
+        <div className="planner-loading" role="status" aria-busy="true" aria-label="Loading plan"><div className="ui-findings">{[0, 1, 2, 3].map(i => <Skeleton key={i} height={88} />)}</div><Skeleton height={320} /></div>
       ) : !error ? (
         <GatedNote>No plan for this week yet.</GatedNote>
       ) : null}

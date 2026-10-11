@@ -463,8 +463,11 @@ pass/fail per item in the block evidence.
   (use `DatePicker`) and raw `<h1>` (page titles come from `PageHeader`; `components/ui/panel.tsx`
   is the only exception). Files not yet rebuilt are listed in `PENDING_NATIVE_DATE` and
   `PENDING_RAW_TITLE` in `dashboard/eslint.config.mjs`, each tagged with the FO block that removes
-  them. These lists only shrink; adding a file is not allowed. After FO13 the native-date list is
-  empty and only `app/not-found.tsx` (FO14) keeps a raw title.
+  them. These lists only shrink; adding a file is not allowed. After FO14 both lists are empty,
+  including the shared header on the 404 page. The inline-style selector also checks objects
+  nested in conditional expressions and type assertions; floating lookup geometry uses typed
+  CSS custom properties. A named generic `div`, `span` or `p` needs an explicit accessible role;
+  unavailable StatTiles use screen-reader text beside a decorative em dash.
 - **Visual baselines:** `dashboard/e2e/visual-baselines.spec.ts` captures Player Showcase, the
   Roster Shapes picker and depth chart, the search modal and `/design` at 1440×900 and 390×844
   against the mock API, with a fixed empty workspace, fonts and visible images loaded, animations

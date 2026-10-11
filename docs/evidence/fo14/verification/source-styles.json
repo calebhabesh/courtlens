@@ -1,0 +1,457 @@
+{
+  "attributes": 49,
+  "nonCustomProperties": [],
+  "unresolved": [],
+  "assignments": [
+    {
+      "file": "dashboard/app/design/page.tsx",
+      "line": 94,
+      "properties": [
+        "--page-gutter"
+      ],
+      "allowlist": [],
+      "expression": "{{ \"--page-gutter\": \"var(--space-6)\" } as React.CSSProperties}"
+    },
+    {
+      "file": "dashboard/app/design/page.tsx",
+      "line": 137,
+      "properties": [
+        "--swatch-color"
+      ],
+      "allowlist": [],
+      "expression": "{{ \"--swatch-color\": \"var(--color-bg)\" } as React.CSSProperties}"
+    },
+    {
+      "file": "dashboard/app/design/page.tsx",
+      "line": 142,
+      "properties": [
+        "--swatch-color"
+      ],
+      "allowlist": [],
+      "expression": "{{ \"--swatch-color\": \"var(--color-surface-1)\" } as React.CSSProperties}"
+    },
+    {
+      "file": "dashboard/app/design/page.tsx",
+      "line": 147,
+      "properties": [
+        "--swatch-color"
+      ],
+      "allowlist": [],
+      "expression": "{{ \"--swatch-color\": \"var(--color-surface-2)\" } as React.CSSProperties}"
+    },
+    {
+      "file": "dashboard/app/design/page.tsx",
+      "line": 152,
+      "properties": [
+        "--swatch-color"
+      ],
+      "allowlist": [],
+      "expression": "{{ \"--swatch-color\": \"var(--color-surface-3)\" } as React.CSSProperties}"
+    },
+    {
+      "file": "dashboard/app/design/page.tsx",
+      "line": 157,
+      "properties": [
+        "--swatch-color"
+      ],
+      "allowlist": [],
+      "expression": "{{ \"--swatch-color\": \"var(--color-accent)\" } as React.CSSProperties}"
+    },
+    {
+      "file": "dashboard/app/design/page.tsx",
+      "line": 162,
+      "properties": [
+        "--swatch-color"
+      ],
+      "allowlist": [],
+      "expression": "{{ \"--swatch-color\": \"var(--color-positive)\" } as React.CSSProperties}"
+    },
+    {
+      "file": "dashboard/app/design/page.tsx",
+      "line": 167,
+      "properties": [
+        "--swatch-color"
+      ],
+      "allowlist": [],
+      "expression": "{{ \"--swatch-color\": \"var(--color-negative)\" } as React.CSSProperties}"
+    },
+    {
+      "file": "dashboard/app/design/page.tsx",
+      "line": 172,
+      "properties": [
+        "--swatch-color"
+      ],
+      "allowlist": [],
+      "expression": "{{ \"--swatch-color\": \"var(--color-info)\" } as React.CSSProperties}"
+    },
+    {
+      "file": "dashboard/app/design/page.tsx",
+      "line": 182,
+      "properties": [
+        "--card-shadow"
+      ],
+      "allowlist": [],
+      "expression": "{{ \"--card-shadow\": \"var(--shadow-1)\" } as React.CSSProperties}"
+    },
+    {
+      "file": "dashboard/app/design/page.tsx",
+      "line": 186,
+      "properties": [
+        "--card-shadow"
+      ],
+      "allowlist": [],
+      "expression": "{{ \"--card-shadow\": \"var(--shadow-2)\" } as React.CSSProperties}"
+    },
+    {
+      "file": "dashboard/app/design/page.tsx",
+      "line": 190,
+      "properties": [
+        "--card-shadow"
+      ],
+      "allowlist": [],
+      "expression": "{{ \"--card-shadow\": \"var(--shadow-3)\" } as React.CSSProperties}"
+    },
+    {
+      "file": "dashboard/app/design/page.tsx",
+      "line": 200,
+      "properties": [
+        "--box-radius"
+      ],
+      "allowlist": [],
+      "expression": "{{ \"--box-radius\": \"var(--radius-xs)\" } as React.CSSProperties}"
+    },
+    {
+      "file": "dashboard/app/design/page.tsx",
+      "line": 203,
+      "properties": [
+        "--box-radius"
+      ],
+      "allowlist": [],
+      "expression": "{{ \"--box-radius\": \"var(--radius-sm)\" } as React.CSSProperties}"
+    },
+    {
+      "file": "dashboard/app/design/page.tsx",
+      "line": 206,
+      "properties": [
+        "--box-radius"
+      ],
+      "allowlist": [],
+      "expression": "{{ \"--box-radius\": \"var(--radius-md)\" } as React.CSSProperties}"
+    },
+    {
+      "file": "dashboard/app/design/page.tsx",
+      "line": 209,
+      "properties": [
+        "--box-radius"
+      ],
+      "allowlist": [],
+      "expression": "{{ \"--box-radius\": \"var(--radius-lg)\" } as React.CSSProperties}"
+    },
+    {
+      "file": "dashboard/app/design/page.tsx",
+      "line": 212,
+      "properties": [
+        "--box-radius"
+      ],
+      "allowlist": [],
+      "expression": "{{ \"--box-radius\": \"var(--radius-pill)\" } as React.CSSProperties}"
+    },
+    {
+      "file": "dashboard/app/design/page.tsx",
+      "line": 384,
+      "properties": [
+        "--mt"
+      ],
+      "allowlist": [],
+      "expression": "{{ \"--mt\": \"var(--space-2)\" } as React.CSSProperties}"
+    },
+    {
+      "file": "dashboard/app/design/page.tsx",
+      "line": 480,
+      "properties": [
+        "--c"
+      ],
+      "allowlist": [],
+      "expression": "{{ \"--c\": \"var(--color-positive)\" } as React.CSSProperties}"
+    },
+    {
+      "file": "dashboard/app/design/page.tsx",
+      "line": 514,
+      "properties": [
+        "--p"
+      ],
+      "allowlist": [],
+      "expression": "{{ \"--p\": \"var(--space-3)\" } as React.CSSProperties}"
+    },
+    {
+      "file": "dashboard/app/design/page.tsx",
+      "line": 516,
+      "properties": [
+        "--mt"
+      ],
+      "allowlist": [],
+      "expression": "{{ \"--mt\": \"var(--space-1)\" } as React.CSSProperties}"
+    },
+    {
+      "file": "dashboard/app/design/page.tsx",
+      "line": 574,
+      "properties": [
+        "--flex"
+      ],
+      "allowlist": [],
+      "expression": "{{ \"--flex\": \"1\" } as React.CSSProperties}"
+    },
+    {
+      "file": "dashboard/app/design/page.tsx",
+      "line": 656,
+      "properties": [
+        "--mt"
+      ],
+      "allowlist": [],
+      "expression": "{{ \"--mt\": \"var(--space-2)\" } as React.CSSProperties}"
+    },
+    {
+      "file": "dashboard/app/design/page.tsx",
+      "line": 675,
+      "properties": [
+        "--mt"
+      ],
+      "allowlist": [],
+      "expression": "{{ \"--mt\": \"var(--space-4)\" } as React.CSSProperties}"
+    },
+    {
+      "file": "dashboard/app/teams/[id]/page.tsx",
+      "line": 116,
+      "properties": [
+        "--team-color"
+      ],
+      "allowlist": [],
+      "expression": "{{\"--team-color\":teamAccent(team.tricode) ?? \"var(--color-accent)\"} as CSSProperties}"
+    },
+    {
+      "file": "dashboard/components/distributions-investigation-view.tsx",
+      "line": 51,
+      "properties": [
+        "--span-left",
+        "--span-width"
+      ],
+      "allowlist": [],
+      "expression": "{{ \"--span-left\": `${p10}%`, \"--span-width\": `${Math.max(1, p90 - p10)}%` } as CSSProperties}"
+    },
+    {
+      "file": "dashboard/components/distributions-investigation-view.tsx",
+      "line": 52,
+      "properties": [
+        "--iqr-left",
+        "--iqr-width"
+      ],
+      "allowlist": [],
+      "expression": "{{ \"--iqr-left\": `${p25}%`, \"--iqr-width\": `${Math.max(1, p75 - p25)}%` } as CSSProperties}"
+    },
+    {
+      "file": "dashboard/components/distributions-investigation-view.tsx",
+      "line": 53,
+      "properties": [
+        "--med-left"
+      ],
+      "allowlist": [],
+      "expression": "{{ \"--med-left\": `${med}%` } as CSSProperties}"
+    },
+    {
+      "file": "dashboard/components/distributions-investigation-view.tsx",
+      "line": 54,
+      "properties": [
+        "--dot-left"
+      ],
+      "allowlist": [],
+      "expression": "{{ \"--dot-left\": `${x(sample.value)}%` } as CSSProperties}"
+    },
+    {
+      "file": "dashboard/components/lookup-input.tsx",
+      "line": 156,
+      "properties": [
+        "--lookup-left",
+        "--lookup-top",
+        "--lookup-width",
+        "--lookup-max-height"
+      ],
+      "allowlist": [],
+      "expression": "{floatingStyle}"
+    },
+    {
+      "file": "dashboard/components/multi-player-lines-view.tsx",
+      "line": 696,
+      "properties": [
+        "--tooltip-left",
+        "--tooltip-top"
+      ],
+      "allowlist": [],
+      "expression": "{{\n                \"--tooltip-left\": `${Math.min(hoveredPoint.x + 12, width - 200)}px`,\n                \"--tooltip-top\": `${Math.max(hoveredPoint.y - 50, 10)}px`\n              } as React.CSSProperties}"
+    },
+    {
+      "file": "dashboard/components/multi-player-lines-view.tsx",
+      "line": 728,
+      "properties": [
+        "--series-color"
+      ],
+      "allowlist": [],
+      "expression": "{{ \"--series-color\": series.color } as React.CSSProperties}"
+    },
+    {
+      "file": "dashboard/components/multi-player-lines-view.tsx",
+      "line": 767,
+      "properties": [
+        "--series-color"
+      ],
+      "allowlist": [],
+      "expression": "{{ \"--series-color\": s.color } as React.CSSProperties}"
+    },
+    {
+      "file": "dashboard/components/recent-games-view.tsx",
+      "line": 221,
+      "properties": [],
+      "allowlist": [
+        "teamStyle: lib/team-colors.ts returns only --team-color"
+      ],
+      "expression": "{teamStyle(latest_team?.id)}"
+    },
+    {
+      "file": "dashboard/components/roster-allocation-view.tsx",
+      "line": 165,
+      "properties": [
+        "--share"
+      ],
+      "allowlist": [],
+      "expression": "{{ \"--share\": `${(totals.share ?? 0) * 100}%` } as CSSProperties}"
+    },
+    {
+      "file": "dashboard/components/roster-allocation-view.tsx",
+      "line": 182,
+      "properties": [
+        "--fill"
+      ],
+      "allowlist": [],
+      "expression": "{{ \"--fill\": `${Math.min(summary.total / REGULATION_TEAM_MINUTES, 1) * 100}%` } as CSSProperties}"
+    },
+    {
+      "file": "dashboard/components/roster-allocation-view.tsx",
+      "line": 241,
+      "properties": [
+        "--team-color"
+      ],
+      "allowlist": [],
+      "expression": "{accent ? ({ \"--team-color\": accent } as CSSProperties) : undefined}"
+    },
+    {
+      "file": "dashboard/components/scatter-plot-view.tsx",
+      "line": 536,
+      "properties": [
+        "--tooltip-left",
+        "--tooltip-top"
+      ],
+      "allowlist": [],
+      "expression": "{{\n              \"--tooltip-left\": `${Math.min(projectX(activePoint.x, xDomain, width, padLeft, padRight) + 12, width - 220)}px`,\n              \"--tooltip-top\": `${Math.max(projectY(activePoint.y, yDomain, height, padTop, padBottom) - 60, 10)}px`\n            } as React.CSSProperties}"
+    },
+    {
+      "file": "dashboard/components/team-grid.tsx",
+      "line": 38,
+      "properties": [
+        "--team-color"
+      ],
+      "allowlist": [],
+      "expression": "{{ \"--team-color\": teamAccent(team.team_id) ?? \"var(--color-text-tertiary)\" } as CSSProperties}"
+    },
+    {
+      "file": "dashboard/components/team-logo.tsx",
+      "line": 13,
+      "properties": [
+        "--logo-size"
+      ],
+      "allowlist": [],
+      "expression": "{{ \"--logo-size\": `${size}px` } as React.CSSProperties}"
+    },
+    {
+      "file": "dashboard/components/tier-list-view.tsx",
+      "line": 565,
+      "properties": [
+        "--tier-color"
+      ],
+      "allowlist": [],
+      "expression": "{{ \"--tier-color\": tier.color || \"#323b49\" } as React.CSSProperties}"
+    },
+    {
+      "file": "dashboard/components/ui/comparison-rows.tsx",
+      "line": 35,
+      "properties": [
+        "--comparison-width"
+      ],
+      "allowlist": [],
+      "expression": "{{ \"--comparison-width\": `${known ? Math.abs(value as number) / scale * 100 : 0}%` } as CSSProperties}"
+    },
+    {
+      "file": "dashboard/components/ui/identity.tsx",
+      "line": 51,
+      "properties": [],
+      "allowlist": [
+        "teamStyle: lib/team-colors.ts returns only --team-color"
+      ],
+      "expression": "{teamStyle(team)}"
+    },
+    {
+      "file": "dashboard/components/ui/identity.tsx",
+      "line": 84,
+      "properties": [],
+      "allowlist": [
+        "teamStyle: lib/team-colors.ts returns only --team-color"
+      ],
+      "expression": "{teamStyle(team)}"
+    },
+    {
+      "file": "dashboard/components/ui/identity.tsx",
+      "line": 108,
+      "properties": [],
+      "allowlist": [
+        "teamStyle: lib/team-colors.ts returns only --team-color"
+      ],
+      "expression": "{teamStyle(kind === \"team\" ? id : team)}"
+    },
+    {
+      "file": "dashboard/components/ui/skeleton.tsx",
+      "line": 34,
+      "properties": [],
+      "allowlist": [
+        "customStyles: SkeletonStyle is Partial<Record<`--${string}`, string | number>>",
+        "style: SkeletonStyle is Partial<Record<`--${string}`, string | number>>"
+      ],
+      "expression": "{{\n        ...customStyles,\n        ...style,\n      }}"
+    },
+    {
+      "file": "dashboard/components/ui/stat-tile.tsx",
+      "line": 52,
+      "properties": [
+        "--pct"
+      ],
+      "allowlist": [],
+      "expression": "{{ \"--pct\": `${pct}%` } as React.CSSProperties}"
+    },
+    {
+      "file": "dashboard/components/workbench-player-explorer.tsx",
+      "line": 741,
+      "properties": [
+        "--table-min-width",
+        "--table-width"
+      ],
+      "allowlist": [],
+      "expression": "{{\n                \"--table-min-width\": `calc(114px + var(--identity-name-width) + ${preset.columns.length * 84 + guideCount * 40}px)`,\n                \"--table-width\": `min(100%, calc(114px + var(--identity-name-width) + ${preset.columns.length * 140 + guideCount * 40}px))`\n              } as React.CSSProperties}"
+    },
+    {
+      "file": "dashboard/components/workbench-player-profile.tsx",
+      "line": 234,
+      "properties": [],
+      "allowlist": [
+        "teamStyle: lib/team-colors.ts returns only --team-color"
+      ],
+      "expression": "{teamStyle(latest_team?.id)}"
+    }
+  ]
+}

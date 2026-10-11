@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment, useEffect, useId, useMemo, useRef, useState } from "react";
+import { Fragment, useEffect, useId, useMemo, useRef, useState, type CSSProperties } from "react";
 import { createPortal } from "react-dom";
 import { useSearchParams } from "next/navigation";
 import type { LookupItem } from "@/lib/types";
@@ -16,6 +16,12 @@ export interface LookupScope {
   phase?: string | null;
   beforeDate?: string | null;
 }
+type FloatingLookupStyle = CSSProperties & {
+  "--lookup-left": string;
+  "--lookup-top": string;
+  "--lookup-width": string;
+  "--lookup-max-height": string;
+};
 export function useLookupScope(scope: LookupScope) {
   const params = useSearchParams();
   return {
@@ -140,9 +146,15 @@ export function LookupInput({ label, value, onChange, onSelect, onSubmitText, ki
   const blur: React.FocusEventHandler<HTMLDivElement> = event => {
     if (!rootRef.current?.contains(event.relatedTarget) && !dropdownRef.current?.contains(event.relatedTarget)) close();
   };
+  const floatingStyle: FloatingLookupStyle | undefined = portalDropdown && position ? {
+    "--lookup-left": `${position.left}px`,
+    "--lookup-top": `${position.top}px`,
+    "--lookup-width": `${position.width}px`,
+    "--lookup-max-height": `${position.maxHeight}px`,
+  } : undefined;
   const dropdown = open && !disabled && <div ref={dropdownRef} onBlur={blur}
     className={`lookup-dropdown ${compactResults ? "lookup-compact-results" : ""} ${portalDropdown ? "lookup-floating-dropdown" : ""}`}
-    style={portalDropdown && position ? { ...position, position: "fixed" } : undefined}>
+    style={floatingStyle}>
       {loading && <p className="lookup-status-message">Searching…</p>}
       {error && <div className="lookup-status-message error">{error}<button type="button" className="button button-small" onClick={() => {invalidate(); setState(null); setRetry(n=>n+1); ref.current?.focus();}}>Retry search</button></div>}
       {!loading && !ime && !error && !items.length && <p className="lookup-status-message">{value ? `No matches for “${value}”. Try a shorter name or another spelling.` : "Type a player or team name to see suggestions."}</p>}

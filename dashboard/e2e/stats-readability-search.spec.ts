@@ -2,15 +2,16 @@ import { expect, test } from "@playwright/test";
 import { openWorkbench } from "./workbench-navigation";
 test.use({ hasTouch: true });
 
-test("standard records are readable and portrait gutters center between metric values", async ({ page }) => {
+test("standard records are readable and portrait gutters center between metric columns", async ({ page }) => {
   await page.setViewportSize({ width: 2048, height: 1100 });
   await openWorkbench(page, "/stats");
   const geometry = await page.locator(".stats-table-row").first().evaluate(row => {
     const center = (element: Element) => { const box = element.getBoundingClientRect(); return box.x + box.width / 2; };
     return { height: row.getBoundingClientRect().height,
       font: getComputedStyle(row.querySelector(".stat-main-value")!).fontSize,
+      // FO14 right-aligns values; a portrait stays in the middle of the gutter between columns.
       offsets: [...row.querySelectorAll(".stats-guide-cell")].map(cell => center(cell.firstElementChild!) -
-        (center(cell.previousElementSibling!.querySelector(".stat-main-value")!) + center(cell.nextElementSibling!.querySelector(".stat-main-value")!)) / 2) };
+        (cell.previousElementSibling!.getBoundingClientRect().right + cell.nextElementSibling!.getBoundingClientRect().left) / 2) };
   });
   expect(geometry.height).toBe(52);
   expect(geometry.font).toBe("14px");

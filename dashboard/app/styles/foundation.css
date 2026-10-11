@@ -275,8 +275,8 @@
   /* ---------- Segmented control and chips (Stats pattern) ---------- */
   .ui-segmented-control { max-width: 100%; overflow-x: auto; scrollbar-width: none; border-radius: var(--radius-sm); }
   .ui-segmented-control-stretch { display: flex; width: 100%; overflow-x: auto; scrollbar-width: none; }
-  .ui-segmented-item { white-space: nowrap; }
-  .ui-segmented-control-stretch .ui-segmented-item { flex: 1; justify-content: center; }
+  .ui-segmented-item { flex-shrink: 0; white-space: nowrap; }
+  .ui-segmented-control-stretch .ui-segmented-item { flex: 1 0 auto; justify-content: center; }
 
   .ui-segmented-item {
     display: inline-flex;
@@ -617,7 +617,7 @@
     border-radius: var(--radius-sm);
   }
 
-  .lookup-input-wrapper:focus-within { border-color: var(--color-accent); }
+  .lookup-input-wrapper:focus-within { border-color: var(--color-accent); box-shadow: var(--focus-ring); }
   .lookup-input-wrapper .lookup-search-icon { position: static; flex-shrink: 0; width: var(--space-4); height: var(--space-4); }
 
   .lookup-input-wrapper .lookup-input {
@@ -851,6 +851,7 @@
     align-items: start;
   }
   .ui-article-no-toc { grid-template-columns: minmax(0, 1fr); }
+  .ui-skeleton-article-toc { display: flex; flex-direction: column; gap: var(--space-2); min-width: 0; }
   .ui-article-body { display: flex; flex-direction: column; gap: var(--space-8); min-width: 0; }
   .ui-article-toc {
     position: sticky;
@@ -938,6 +939,8 @@
 
   @media (max-width: 1023px) {
     .ui-article { grid-template-columns: minmax(0, 1fr); gap: var(--space-4); }
+    .ui-skeleton-article-toc { flex-direction: row; overflow: hidden; }
+    .ui-skeleton-article-toc .ui-skeleton { flex: 0 0 120px; border-radius: var(--radius-pill); }
     .ui-article-toc { position: static; flex-direction: row; align-items: center; overflow-x: auto; scrollbar-width: none; }
     .ui-article-toc::-webkit-scrollbar { display: none; }
     .ui-article-toc-title { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
@@ -965,4 +968,39 @@
 
 @layer foundation {
   .ui-design-article-frame .ui-article-toc { position: static; }
+  [tabindex="0"]:focus-visible { outline: 0; box-shadow: var(--focus-ring); }
+  .ask-composer:focus-within { box-shadow: var(--focus-ring); }
+  .similarity-view { display: flex; flex-direction: column; gap: var(--space-4); min-width: 0; }
+  .similarity-view > * { margin-block: 0; }
+  /* CSS resolves the OS preference without rendering different server and hydration text. */
+  .ui-motion-status-reduced { display: none; }
+  @media (prefers-reduced-motion: reduce) {
+    .ui-motion-status-normal { display: none; }
+    .ui-motion-status-reduced { display: inline; }
+  }
+}
+
+/* FO14: the same phone hit area for retained controls, menus and shared primitives. Inline prose
+   links keep their text geometry; checkbox/radio hit areas belong to their enclosing label. */
+@layer foundation {
+  @media (max-width: 767px) {
+    body :is(button, summary, .ui-button, [role="tab"], [role="menuitem"], .control-pill, .ui-switch,
+      input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]), select, textarea) {
+      min-height: var(--control-lg);
+      min-width: var(--control-lg);
+    }
+    .stats-workspace .dense-stats-table .table-sort-button { min-height: var(--control-lg); }
+    main a:not(p a):not(li a), .data-table a:not(.ui-button) {
+      display: inline-flex;
+      align-items: center;
+      min-height: var(--control-lg);
+      min-width: var(--control-lg);
+    }
+    .stats-workspace .stats-identity-copy .stats-player-link {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      justify-content: center;
+    }
+  }
 }

@@ -35,8 +35,8 @@ export function StatTile({ label, value, unit, percentile, rank, rankOf, footnot
     <div className={`ui-stat-tile ui-stat-tile-${size} ${className}`}>
       <span className="ui-stat-tile-label">{label}</span>
       <span className="ui-stat-tile-value-row">
-        <span className="ui-stat-tile-value" aria-label={known ? undefined : `${label} unavailable`}>
-          {known ? value : "—"}
+        <span className="ui-stat-tile-value">
+          {known ? value : <><span aria-hidden="true">—</span><span className="sr-only">{label} unavailable</span></>}
           {known && unit && <span className="ui-stat-tile-unit">{unit}</span>}
         </span>
         {rankText && <span className="ui-stat-tile-rank" title={rankTitle}>{rankText}</span>}

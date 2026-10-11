@@ -290,3 +290,12 @@ and all assistant product code are unchanged. The corrected case passes 8/8 repe
 [FO10 evidence](evidence/fo10/README.md) retains the initial full-run failure, deterministic
 red probe and green repeats. No provider calls, corpus changes, sealed evidence changes or
 assistant milestone/status changes. Final broad verification is recorded in the FO10 log.
+
+## 2026-10-11 — FO14 shared accessibility and presentation pickup
+
+[FO14 evidence](evidence/fo14/README.md) records supported named regions/groups, visible composer
+focus, full phone controls, Through-date scope chips and right-aligned numeric result columns.
+ID cells, exclusive cutoffs, zero/unknown values, thread/panel layout, streaming transport, provider
+routing and analytical contracts are preserved. Final unit/browser evidence is linked there.
+No provider questions, eval corpus changes or sealed assistant artifacts were introduced. This
+cross-reference does not advance AG source/evaluation statuses or claim owner visual acceptance.

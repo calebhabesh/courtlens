@@ -238,7 +238,7 @@ export function WorkbenchPlayerProfile({
               ? <TeamIdentity team={latest_team.id} name={latest_team.name} subtitle={`${seasonSummary?.gp ?? 0} games · ${context.season}`} size="sm" />
               : <span className="player-hero-team">Team unknown in this scope</span>}
           </div>
-          <div className="player-hero-tiles" aria-label="Season summary">
+          <div className="player-hero-tiles" role="group" aria-label="Season summary">
             {heroStats.map(stat => <StatTile key={stat.key} label={stat.label} value={stat.value} percentile={stat.percentile} rank={stat.rank} rankOf={stat.rank != null ? RANK_PAGE_LIMIT : null} />)}
           </div>
           {hero && <p className="player-hero-note">Percentile among {hero.eligible.toLocaleString("en-US")} eligible players (the Stats cohort); ranks within the top {RANK_PAGE_LIMIT}.</p>}
@@ -254,7 +254,7 @@ export function WorkbenchPlayerProfile({
       {/* Season, last 10 and last 5 in one comparable table. */}
       <section className="panel" aria-label="Production splits">
         <h2 className="panel-title">Production Splits</h2>
-        <div className="table-wrapper">
+        <div className="table-wrapper" role="region" aria-label="Production splits table" tabIndex={0}>
           <table className="data-table">
             <thead><tr><th>Window</th><th className="num">GP</th><th className="num">MPG</th><th className="num">PPG</th><th className="num">RPG</th><th className="num">APG</th><th className="num">TS%</th><th className="num">eFG%</th></tr></thead>
             <tbody>
@@ -285,7 +285,7 @@ export function WorkbenchPlayerProfile({
               </p>
             </div>
           </div>
-          <div className="table-wrapper">
+          <div className="table-wrapper" role="region" aria-label="Participation stints table" tabIndex={0}>
             <table className="data-table">
               <thead>
                 <tr>
@@ -341,7 +341,7 @@ export function WorkbenchPlayerProfile({
             <span className="badge font-mono">{careerRows.length} admitted seasons</span>
           </div>
 
-          <div className="table-wrapper">
+          <div className="table-wrapper" role="region" aria-label="Career history table" tabIndex={0}>
             <table className="data-table">
               <thead>
                 <tr>
@@ -503,7 +503,7 @@ export function WorkbenchPlayerProfile({
           </div>
         </div>
 
-        <div className="table-wrapper">
+        <div className="table-wrapper" role="region" aria-label="Player game log table" tabIndex={0}>
           <table className="data-table">
             <thead>
               <tr>
