@@ -244,6 +244,13 @@ A development replay matches 65 baselines but differs by 4% on the phone roster 
 matches all 66. The default harness now builds production webpack output and starts the standalone
 server with its public/static assets, using the same fixture endpoints as before.
 
+The first production CI browser run passes 354 cases and all baselines, but its Team Stats desktop
+reload assertion matches both the displayed cards and a hidden React streaming copy. The assertion
+now requires exactly one visible card grid and keeps the same Boston/filtered-Toronto checks.
+An injected hidden-copy probe fails at both widths before the fix and passes 40 repeated cases
+after it; injected visible duplicates still fail. CI also uses the same one-thread BLAS/OpenMP
+limits as the successful local full Python run.
+
 The container smoke job also lacked a published workbench fixture and expected an older metric
 catalog and team-response schema. CI now seeds its disposable database with the existing synthetic
 test cohort, and smoke checks the active v2 catalog and current team fields. An isolated migrated
