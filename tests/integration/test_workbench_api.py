@@ -579,6 +579,10 @@ def test_workbench_catalog_capabilities(client: TestClient) -> None:
     assert isinstance(data["capabilities"], dict)
     assert "core_stats" in data["capabilities"]
     assert "status" in data["capabilities"]["core_stats"]
+    # Source policy v2: admitted but not yet ingested sources are never source_blocked.
+    tracking = data["capabilities"]["defensive_tracking"]
+    assert tracking["status"] == "not_yet_observed"
+    assert "hoopR" in tracking["limitations"][0]
 
 
 def test_workbench_players_snake_and_camel_case_parity(client: TestClient) -> None:
