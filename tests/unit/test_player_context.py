@@ -293,7 +293,7 @@ def test_fetch_decodes_transport_once_and_obeys_crawl_delay(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     delays = []
-    monkeypatch.setattr("courtlens.services.player_context_ingestion.time.sleep", delays.append)
+    monkeypatch.setattr("courtlens.services.source_acquisition.time.sleep", delays.append)
 
     def respond(request: httpx.Request) -> httpx.Response:
         body = (

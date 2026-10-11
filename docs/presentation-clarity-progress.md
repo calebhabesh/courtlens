@@ -23,7 +23,7 @@ parameters**. Blocks before each owner gate also need recorded owner approval.
 | PC03 Design Language v1.2, D21, chart kit | verified |
 | PC04 Compare and first-load defaults (G2) | implemented_unverified (G2 cleared; retained glance issues) |
 | PC05 Data: rosters, positions, injuries | verification_blocked (roster snapshot admitted; injury/transaction source evidence pending) |
-| PC06 Data: finance | planned |
+| PC06 Data: finance | verification_blocked (BRef captured; three canonical salaries; Spotrac / broad identity coverage pending) |
 | PC07 Data: tracking, play types, matchups, combine, on/off | planned |
 | PC08 Contracts and Free Agency views (G3) | planned |
 | PC09 Value metric and archetypes | planned |
@@ -247,3 +247,61 @@ parameters**. Blocks before each owner gate also need recorded owner approval.
 - PC05 is `verification_blocked` until real official PDF/secondary injury ingestion and actual
   transaction observations are evidenced. The blocked direct sources are not replaced with
   fixtures, inferred statuses or invented transaction dates. PC06 has not started.
+
+## 2026-10-11 — PC06 finance inputs admitted; identity and Spotrac coverage blocked
+
+- Owner instruction: “Begin the next block”, quoting PC05 commit `186dc5c` on
+  `presentation-clarity`. Scope is PC06 only; PC05's injury/transaction evidence remains blocked.
+  The handoff permits PC05–PC07 data work to overlap after PC01. No G3 review is inferred.
+- [Evidence and reproduction](evidence/pc06/README.md),
+  [finance refresh contract](design/finance-refresh-v1.md),
+  [source checks](evidence/pc06/source-checks.json),
+  [source measurements](evidence/pc06/source-measurements.json),
+  [admission](evidence/pc06/admission.json),
+  [read-only and pointer verification](evidence/pc06/read-only-check.json).
+- Real acquisition: all 30 Basketball-Reference team pages returned HTTP 200, with permitted
+  robots paths, the identifying user agent and minimum three-second spacing. Captured
+  4,731,016 raw bytes; 618 team/player entries represent 608 distinct provider IDs and 4,692
+  parsed reports. Raw bytes stay in the ignored server store, never a public download.
+- Spotrac robots returned 403. Its cap page was not requested; the host then stayed stopped
+  for the run, including the FA candidate. Receipts distinguish the denial from the stopped
+  candidate. No retry/bypass/browser transport was used. Cap/FA adapters have fictional fixture
+  verification only; no real Spotrac cap components or current FA observations were admitted.
+- Admission pins the explicit PC05 index and an independent book with 22 observations
+  (21 amounts, one option) for three canonically mapped players. Four verified BRef mappings
+  exist; only three appear in these captures. The other 4,670 source reports are unresolved;
+  names never establish cross-provider identity. Frozen mapping notes are retained in the book.
+- All 622 active players in the pinned index, across 30 teams, have coverage entries: three
+  reported current-season salaries and 619 explicit unknown reasons. Source-listed team must
+  match current roster association; historical participation never supplies it. Zero/null,
+  independent amount kinds, option exercise state and guarantees preserve their meanings.
+- The five official 2026–27 threshold values were verified against the NBA release and entered
+  by hand as exact cents strings. Their actual import time is retained; no publication date
+  becomes an earlier known-at boundary. They supply chart markers, not exact legal cap/tax room.
+- Migration `12b810a4f010` adds three isolated immutable finance-context tables. Completed
+  acquisition memberships, roster/threshold seasons and source scope are validated; SQL rejects
+  update/delete/truncate and membership extension. Bound source/artifact/robots provenance is
+  protected. New acquisitions append new refreshes/books; the same explicit input set reuses
+  its admission. Original finance-query-v1 and its correction/import contracts remain intact.
+- The shared policy-v2 fetcher preserves PC05's existing adapters and adds finance URL allowlists.
+  Extra robots sealing exposed a PL/pgSQL artifact-field reference on acquisition records;
+  the corrected table-specific branch passes fresh PostgreSQL and frozen migration checks.
+  An intermediate full run was interrupted after that finding and is retained as failed evidence.
+- New typed GET endpoints provide finance refreshes, pinned detail, thresholds and aware known-at
+  filtering. Reads never acquire or publish. Source contract effective dates remain unknown;
+  finance-query-v1 excludes that undated money from known subtotals and retains pending legal
+  threshold status. Independent current-roster/report views do not relabel old research releases.
+- Latest single local API measurements: detail 5.0 ms / 182,434 bytes; catalog 3.5 ms;
+  thresholds 2.6 ms; book detail 3.5 ms. These are single requests, not p95 claims. All 161
+  publication pointers and source/finance ingestion counts match before/after reads; real SQL
+  mutation attempts reject. The owner's 3000/3100/8101 processes were preserved.
+- Focused checks: 67 passed, including disposable PostgreSQL sealing/truncate/cross-scope
+  rejection, source drift, decimal/unknown/zero semantics, provider precedence, frozen mappings,
+  temporal API reads, unchanged earlier Stats output and frozen migration upgrade/downgrade.
+  Ruff/format and strict mypy pass. [Final full suite](evidence/pc06/verification/python.log):
+  1,932 passed, one existing browser-prerequisite skip, 19 published-data deselections and one
+  existing Google GenAI/Python 3.14 deprecation warning. Dashboard checks/glance captures are not
+  rerun for this backend-only block. The temporary PC06 API on 8102 was stopped after verification.
+- PC06 remains `verification_blocked`: broad canonical salary mapping and real Spotrac cap/FA
+  ingestion are pending. Missing values and market status are not invented to fill the gap.
+  PC07 and PC08 have not started; finance first-load defaults are not promoted and G3 is not cleared.

@@ -1,0 +1,17 @@
+{
+  "schema_version": "finance-thresholds-v1",
+  "season": "2026-27",
+  "source_url": "https://www.nba.com/news/nba-salary-cap-2026-27-season",
+  "effective_date": "2026-07-01",
+  "cap_cents": "16496100000",
+  "tax_cents": "20042800000",
+  "first_apron_cents": "20901500000",
+  "second_apron_cents": "22168600000",
+  "minimum_cents": "14846500000",
+  "capture_method": "manual_official_release",
+  "threshold_id": "bac24901-a5ba-45c3-9bd4-b99b803a9910",
+  "observed_at": "2026-10-11T23:17:40.309275Z",
+  "content_sha256": "60d1d4ef37531ec047e24d8da8e60cfc9ec54f5f3cfba7b61e771e532be2bd43",
+  "attribution": "NBA",
+  "limitation": "Official markers only; no exact cap room, tax or apron compliance claim."
+}

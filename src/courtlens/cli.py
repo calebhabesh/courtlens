@@ -1164,6 +1164,86 @@ def finance_template_command(destination: Path) -> None:
     typer.echo(str(destination))
 
 
+@app.command("acquire-finance")
+def acquire_finance_command(
+    source: str = typer.Option(...),
+    url: list[str] = typer.Option(...),
+    season: str = "2026-27",
+    root: Path = Path("data/raw/finance"),
+) -> None:
+    """Serial scheduled fetches; stop a rejected host and retain every receipt."""
+    import httpx
+
+    from courtlens.services.finance_refresh import FinanceFetcher
+
+    if not 1 <= len(url) <= 64:
+        raise typer.BadParameter("provide 1-64 admitted URLs")
+    results = []
+    with SessionLocal() as session, httpx.Client() as client:
+        fetcher = FinanceFetcher(session, root, client)
+        for value in url:
+            receipt = fetcher.fetch(source, value, season)
+            session.commit()
+            results.append(
+                {
+                    "acquisition_id": receipt.id,
+                    "status": receipt.status,
+                    "http_status": receipt.http_status,
+                    "reason": receipt.error_summary,
+                }
+            )
+    typer.echo(json.dumps(results, indent=2))
+    if any(r["status"] != "success" for r in results):
+        raise typer.Exit(1)
+
+
+@app.command("import-finance-thresholds")
+def import_finance_thresholds_command(path: Path) -> None:
+    """Hand-enter an official season release; record actual import time."""
+    from courtlens.services.finance_refresh import import_thresholds, threshold_info
+
+    with SessionLocal() as session:
+        record = import_thresholds(session, path)
+        session.commit()
+        typer.echo(threshold_info(record).model_dump_json(indent=2))
+
+
+@app.command("import-finance-refresh")
+def import_finance_refresh_command(
+    acquisition_id: list[str] = typer.Option(...),
+    roster_dataset_id: str = typer.Option(...),
+    threshold_id: str | None = None,
+    root: Path = Path("data/raw/finance"),
+) -> None:
+    """Seal a bounded run, a separate book and explicit roster salary coverage."""
+    from courtlens.services.finance_refresh import admit_refresh, refresh_info
+
+    with SessionLocal() as session:
+        try:
+            record = admit_refresh(
+                session,
+                acquisition_id,
+                roster_dataset_id,
+                threshold_id,
+                root,
+                get_settings().artifacts_root,
+            )
+            session.commit()
+        except ValueError as error:
+            session.rollback()
+            raise typer.BadParameter(f"finance candidate rejected: {error}") from error
+        typer.echo(refresh_info(session, record.id).model_dump_json(indent=2))
+
+
+@app.command("verify-finance-refresh")
+def verify_finance_refresh_command(refresh_id: str, root: Path = Path("data/raw/finance")) -> None:
+    """Reconcile source bytes, book membership and roster coverage without fetching."""
+    from courtlens.services.finance_refresh import verify_refresh
+
+    with SessionLocal() as session:
+        typer.echo(json.dumps(verify_refresh(session, refresh_id, root), indent=2))
+
+
 @app.command("finance-preview")
 def finance_preview_command(bundle: Path) -> None:
     """Validate retained source bytes, crosswalks and corrections without writes."""
