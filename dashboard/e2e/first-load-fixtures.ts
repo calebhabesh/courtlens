@@ -1,0 +1,29 @@
+import type { Page } from "@playwright/test";
+import { readFileSync } from "node:fs";
+const floor=JSON.parse(readFileSync("../docs/evidence/b21-api-smoke.json","utf8")).response;
+const shooting=JSON.parse(readFileSync("../docs/evidence/b23-api-smoke.json","utf8")).operations.matchups.response;
+/** UI test inputs only; real database evidence is captured separately. */
+export async function firstLoadFixtures(page: Page) {
+  await page.route("**/api/workbench/operations/*",route=>{
+    const operation=new URL(route.request().url()).pathname.split("/").at(-1);
+    const request=route.request().postDataJSON();
+    if(operation === "similarity") return route.fulfill({json:{operation_version:"fixture",evidence_hash:"fixture",target:{player_id:request.target_player_id,player_name:"Fixture Star",games_played:70,total_minutes:2500,team_tricode:"TOR",raw_values:{pts_per_36:28.2},standardized_values:{pts_per_36:1}},cohort:{cohort_size:2,min_appearances:10,min_minutes:150,window_description:"Last 10 appearances",dimensions:[]},peers:[],disclosures:["Synthetic UI test inputs"]}});
+    if(operation === "wowy" || operation === "stat-shift") return route.fulfill({json:{...floor,operation,request:{...floor.request,...request},context:{...floor.context,...request}}});
+    return route.fulfill({json:{...shooting,operation,request:{...shooting.request,...request},context:{...shooting.context,...request},profile:null,peers:[],shots:[],anchors:[],aftermath_summary:[],assignments:[]}});
+  });
+}
+
+export async function offSeasonFixtures(page: Page) {
+  await page.route("**/api/workbench/schedule/dates?*",route=>{
+    const url=new URL(route.request().url()),focus=url.searchParams.get("focus")!;
+    return route.fulfill({json:{release_id:"fixture-release",dataset_id:"fixture-dataset",start:focus,end:focus,focus,phase:null,before_date:null,days:[{date:focus,scheduled:0,finals:0}],nearest_scheduled:{before:"2026-04-12",after:"2026-10-20"},nearest_finals:{before:"2026-04-12",after:null},warnings:[]}});
+  });
+  const game={source_id:"0022501190",canonical_id:"0022501190",identity_status:"admitted_research",namespace:"nba",slate_date:"2026-04-12",event_time:null,status:"final",period:null,clock:null,provisional:false,teams:[{source_id:"100",canonical_id:"1610612761",identity_status:"admitted_research",name:"Toronto Raptors",side:"home",score:110},{source_id:"200",canonical_id:"1610612738",identity_status:"admitted_research",name:"Boston Celtics",side:"away",score:101}]};
+  await page.route("**/api/live**",route=>{
+    const url=new URL(route.request().url());
+    if(url.pathname.endsWith("/historical")) return route.fulfill({json:{context:{release_id:"fixture-release",season:"2025-26",phase:"regular_season",before_date:"2026-04-13"},games:[game],players:url.searchParams.get("game_id") ? [{source_id:"23",canonical_id:"23",team_source_id:"100",identity_status:"admitted_research",name:"Fixture Star",reported_nonappearance:false,statistics:{points:"28"}},{source_id:"24",canonical_id:"24",team_source_id:"200",identity_status:"admitted_research",name:"Fixture Guard",reported_nonappearance:true,statistics:{points:null}}] : null,status:"admitted_finals",warnings:[]}});
+    if(route.request().method()==="DELETE")return route.fulfill({status:204});
+    if(url.pathname.includes("subscriptions"))return route.fulfill({json:{id:"fixture-lease",expires_at:"2099-01-01",heartbeat_seconds:60}});
+    return route.fulfill({json:{namespace:"espn",status:"observed",data:{games:[]},paused:false,stale:false,age_seconds:0,error:null}});
+  });
+}

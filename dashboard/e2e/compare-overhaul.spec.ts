@@ -8,7 +8,7 @@ test("player comparison uses shared scope, signed values and contextual URL mode
   await openWorkbench(page,"/compare?playerA=23&playerB=24&players=23,24,1&releaseId=fixture-release&season=2025-26&phase=regular_season&beforeDate=2026-04-13&window=last_10");
   await expect(page.getByRole("heading",{level:1})).toHaveText("Player Comparison");
   await expect(page.getByRole("table",{name:"Descriptive comparison"})).toContainText("28.0");
-  await page.getByRole("radio",{name:"Table",exact:true}).click();await expect(page).toHaveURL(/compareView=table/);
+  await expect(page.getByRole("table",{name:"Descriptive comparison"})).toBeVisible();
   await page.getByRole("radio",{name:"Offense",exact:true}).click();await expect(page).toHaveURL(/preset=offense/);
   await page.reload();await expect(page.getByRole("radio",{name:"Offense",exact:true})).toHaveAttribute("aria-checked","true");
   await page.getByRole("button",{name:"Swap players",exact:true}).click();

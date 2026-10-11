@@ -15,6 +15,18 @@ import { PageShell, ResearchLayout } from "./ui/page-shell";
 import { PageHeader } from "./ui/panel";
 import { StatTile } from "./ui/stat-tile";
 import { ResearchBodySkeleton } from "./research-investigation";
+import { Icon } from "./ui/icon";
+
+const OPERATION_PAGES = [
+  { title: "Player Comparison", href: "/compare", icon: "swap" as const, description: "Aligned production, efficiency and per-metric differences." },
+  { title: "Similar Players", href: "/similar-players", icon: "person" as const, description: "Closest observed production profiles and their sample support." },
+  { title: "Shot Profile", href: "/similar-players/shot-profile", icon: "chart" as const, description: "Observed shooting zones and profile peers." },
+  { title: "Shot Aftermath", href: "/research/shooting/aftermath", icon: "trend" as const, description: "Possession outcomes following mapped shots." },
+  { title: "WOWY", href: "/wowy", icon: "person" as const, description: "Team exposure with and without selected players." },
+  { title: "Teammate Stat Shift", href: "/stat-line-shift", icon: "table" as const, description: "Observed production across teammate conditions." },
+  { title: "Player Matchups", href: "/matchups", icon: "swap" as const, description: "Explicit source assignments between offense and defense." },
+  { title: "Recent Games", href: "/last-games", icon: "calendar" as const, description: "Confirmed appearances, trends and game logs." },
+];
 
 /** Deep-link target that reruns one exact manual operation against its retained release, without AI. */
 export function ResearchOperationView() {
@@ -32,6 +44,7 @@ export function ResearchOperationView() {
     };
   }, []);
   useEffect(() => {
+    if (!new URLSearchParams(serialized).get("operation")) return;
     let active = true;
     if (pending.current?.url !== serialized) {
       if (pending.current) void pending.current.promise.then(turn => clearConversation(turn.conversation_id)).catch(() => {});
@@ -51,6 +64,9 @@ export function ResearchOperationView() {
   }, [serialized]);
   const current = state?.url === serialized ? state : null;
   const turn = current?.turn;
+  if (!params.get("operation")) return <PageShell template="research"><PageHeader title="Research Operation" subtitle="Choose an operation to explore published observations." actions={<Link className="button" href="/investigations">Saved Investigations</Link>} />
+    <section className="pc04-operation-gallery" aria-label="Available research operations">{OPERATION_PAGES.map(operation => <Link className="pc04-operation-card" href={operation.href} key={operation.href}><Icon name={operation.icon} size={20} /><h2>{operation.title}</h2><p>{operation.description}</p></Link>)}</section>
+  </PageShell>;
   return <PageShell template="research" className="research-view conversation research-operation">
     <PageHeader title="Research Operation" subtitle="One exact manual operation, rerun against its retained release without AI." actions={<Link className="button" href="/investigations">Saved Investigations</Link>} />
     <FilterBar collapsible={false} label="Operation scope" summary="Retained scope" scope={<span className="research-scope-label">{turn ? contextLine(turn.context) : "Retained release and arguments are preserved"}</span>}

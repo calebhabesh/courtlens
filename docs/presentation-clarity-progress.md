@@ -21,7 +21,7 @@ parameters**. Blocks before each owner gate also need recorded owner approval.
 | PC01 Source policy v2 | verified |
 | PC02 Page audit (G1) | implemented_unverified (G1 cleared; audit has three unmeasured items) |
 | PC03 Design Language v1.2, D21, chart kit | verified |
-| PC04 Compare and first-load defaults (G2) | planned |
+| PC04 Compare and first-load defaults (G2) | implemented_unverified (G2 review pending; retained glance issues) |
 | PC05 Data: rosters, positions, injuries | planned |
 | PC06 Data: finance | planned |
 | PC07 Data: tracking, play types, matchups, combine, on/off | planned |
@@ -142,3 +142,47 @@ parameters**. Blocks before each owner gate also need recorded owner approval.
   guide; all applicable new-gallery items pass. This is not a new pass claim for the PC02 audit.
   Public Compare integration and first-load defaults remain PC04; minutes-qualified table cohorts
   remain PC12; Wyman presentation/impact sizing remain PC10. No fixture deletion or data ingestion.
+
+## 2026-10-11 — PC04 implemented; G2 review pending
+
+- [G2 before/after review](http://localhost:3500/pc04/review.html),
+  [evidence and reproduction](evidence/pc04/README.md),
+  [full-page glance judgments](evidence/pc04/glance.md),
+  [real-data measurements](evidence/pc04/measurements.json). Local production build on 3400,
+  separate API on 8100; fixture verification on 3300/4101. Owner ports 3000/3100 and gallery
+  3200 retained. Isolated worktree from `35d7027`; no push.
+- Compare C5–C7: silhouette landing, observed minutes suggestion, team-tinted identities and GP,
+  five presets, three-column metric rows and catalog-directed A/B difference chips. Totals and
+  per-game values use matching server keys; per-75/100 stays disabled without actual exposure.
+  Custom picks persist in the URL (validated, deduplicated, max 25). Share image and SVG use the
+  current preview; ties/unknown/undeclared directions remain neutral, lower metrics say “fewer.”
+  Position leaders depends on PC05; local recently-viewed needs two players. No winner/composite.
+- Seven subject entries select observed season minutes leaders, pin resolved scope and show a
+  named Example with Change, headshot, real box-score tiles/bar, source and per-player samples.
+  WOWY uses the leader's observed team's top duo; Stat Shift uses a focal/condition pair. Explicit
+  subjects stay exact. Delayed requests cannot override manual typing/view selection; clearing
+  stays manual. Measured loading/ready default-card height change: 0px at 1440 and 390.
+- Parameter-free Research Operation is an eight-link menu with no conversation request. Live
+  resolves the latest admitted finals from an empty/unavailable landing, shows observed points
+  leaders and next retained scheduled date, and preserves explicit dated/game routes. Game-box
+  reads are bounded at 30; non-appearance/missing points are excluded, never inferred.
+- Real production captures: 12 entries at 1440×900 / 390×844 with no parameters on entry, plus
+  two selected Compare captures via the suggestion. 0 page errors and page overflow. All ten
+  non-finance default/headline cards start within 400px on desktop; this measures example context,
+  not populated PBP output. Canceled Next prefetch/lease requests are retained in the JSON;
+  a zero-failed-request claim is not made.
+- Checks: lint 0/0; typecheck and real/fixture production builds clean; Vitest 410 passed;
+  affected Playwright 72 passed; complete visual-baseline file 90 passed (24 new parameter-free
+  checks). SVG content/token resolution, PNG signature, Back/Forward, manual/default races and
+  retained operation scopes checked. Geometry probes: 16px padding/gap, 40px Change, A/B fills,
+  keyboard/focus behavior, 0px comparison-center error and tabular right-aligned numbers.
+  Backend Python unchanged; pytest not rerun. Whole-repository Ruff/format and strict mypy pass,
+  including formatting the new documentation review builder; PC03 pytest evidence stays sealed.
+- Finance defaults remain explicitly deferred to PC06. Real PBP/shot/assignment coverage remains
+  absent in the selected scope, as measured; the box-score context is labeled separate. Existing
+  technical coverage copy, repeated unavailable detail, legacy color/touch-target work and some
+  unmeasured page states keep the conservative 14-item glance scores partial. PC04 remains
+  `implemented_unverified`; no full-page verification is inferred from the new default cards.
+  Later source/presentation blocks and G2 approval are still required. No data ingestion,
+  deletion, publication pointer change, formula change or frozen-identifier rename.
+- **Stopped at G2, before PC05.** The four earlier follow-up decisions remain open and unchanged.

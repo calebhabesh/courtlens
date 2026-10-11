@@ -89,9 +89,10 @@ test("stat shifts reject focal contradictions and request per-possession product
 test("bounded leaders pin a resolved release across candidates", async ({ page }) => {
   const requests: Record<string, unknown>[] = [];
   page.on("request", req => { if (req.url().endsWith("/operations/on-off")) requests.push(req.postDataJSON()); });
-  await openWorkbench(page, "/wowy");
+  await openWorkbench(page, "/wowy?team_id=TOR&together=1");
+  await expect(page.locator(".floor-result")).toBeVisible();
   await page.getByRole("combobox", { name: "View", exact: true }).selectOption("leaders");
-  await pick(page,"Candidate players","1,2,3");
+  await pick(page,"Candidate players","1,2,3",true);
   await expect(page.getByRole("heading", { name: /On\/Off ·/ })).toHaveCount(3);
   expect(requests.slice(-3)).toHaveLength(3);
   expect(requests.at(-2)!.release_id).toBe("fixture-release");
