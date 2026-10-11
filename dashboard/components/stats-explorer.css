@@ -1,3 +1,5 @@
+/* FO14: Stats participates in the shared cascade so foundation controls keep their contracts. */
+@layer pages {
 /* Owner-confirmed Stats reference realignment. Design Language v1 tokens. */
 .stats-workspace {
   --bg: var(--color-bg);
@@ -21,7 +23,7 @@
 .stats-workspace .player-explorer-container { margin-top: var(--space-4); }
 .stats-workspace .stats-preset-tabs-wrapper { display: flex; align-items: center; flex-wrap: wrap; gap: var(--space-2); border: 0; overflow: visible; margin-bottom: var(--space-2); }
 .stats-workspace .stats-preset-tabs { min-width: 0; max-width: 100%; overflow-x: auto; padding: var(--space-0-5); gap: 0; background: var(--color-surface-2); border-radius: var(--radius-sm); scrollbar-width: thin; }
-.stats-workspace .stats-preset-tab { min-height: var(--control-sm); padding: var(--space-1) var(--space-2); border: 0; border-radius: var(--radius-xs); background: transparent; font-size: var(--text-xs); gap: var(--space-1); }
+.stats-workspace .stats-preset-tab { flex: none; white-space: nowrap; min-height: var(--control-sm); padding: var(--space-1) var(--space-2); border: 0; border-radius: var(--radius-xs); background: transparent; font-size: var(--text-xs); gap: var(--space-1); }
 .stats-workspace .stats-preset-tab { position: relative; isolation: isolate; }
 .stats-workspace .stats-preset-tab.active { background: transparent; box-shadow: none; color: var(--color-accent); }
 .stats-workspace .stats-preset-tab > span:not(.stats-preset-indicator) { position: relative; z-index: var(--z-base); }
@@ -90,7 +92,7 @@
 .stats-workspace .dense-stats-table .stats-header-tier-1 th { height: 26px; padding: var(--space-1) var(--space-2); font-size: var(--text-xs); letter-spacing: 0.02em; border: 0; color: var(--color-text); }
 .stats-workspace .dense-stats-table .stats-header-tier-1 .pinned-col-group { box-shadow: none; }
 .stats-workspace .dense-stats-table .stats-header-tier-2 th { top: 26px; height: 40px; padding: var(--space-1) var(--space-2); border: 0; font-size: var(--text-xs); letter-spacing: 0; }
-.stats-workspace .dense-stats-table .table-sort-button { min-height: var(--control-sm); font-size: var(--text-xs); justify-content: center; width: 100%; gap: var(--space-0-5); }
+.stats-workspace .dense-stats-table .table-sort-button { min-height: var(--control-sm); font-size: var(--text-xs); justify-content: flex-end; width: 100%; gap: var(--space-0-5); }
 .stats-workspace .dense-stats-table tbody td { height: 52px; padding: var(--space-1) var(--space-2); font-size: var(--text-md); border-bottom: 1px solid var(--color-hairline); }
 .stats-workspace .density-compact .dense-stats-table tbody td { height: 42px; padding: var(--space-1) var(--space-2); font-size: var(--text-sm); }
 .stats-workspace .dense-stats-table .player-cell { display: flex; gap: var(--space-1); min-width: 0; }
@@ -110,7 +112,7 @@
 .stats-workspace .dense-stats-table tbody tr.row-previewed td { background: var(--color-surface-hover); }
 .stats-workspace .dense-stats-table tbody tr.row-selected td { background: var(--color-surface-3); }
 .stats-workspace .dense-stats-table tbody tr.row-previewed .player-cell-name { color: var(--color-accent); }
-.stats-workspace .dense-stats-table .stat-cell-content { align-items: center; gap: var(--space-0-5); line-height: var(--text-sm-lh); }
+.stats-workspace .dense-stats-table .stat-cell-content { align-items: flex-end; gap: var(--space-0-5); line-height: var(--text-sm-lh); }
 .stats-workspace .dense-stats-table .stat-main-value { font-family: var(--font-sans), sans-serif; font-weight: 500; }
 .stats-workspace .dense-stats-table .stat-pct-sublabel { font-size: var(--text-xs); color: var(--color-text-secondary); font-weight: 400; }
 .stats-workspace .dense-stats-table .pct-elite, .stats-workspace .dense-stats-table .pct-good { color: var(--color-accent); }
@@ -170,7 +172,7 @@
   .stats-workspace .stats-table-tools .control-pill { min-height: var(--control-md); }
 }
 
-.stats-workspace .stats-metric-cell, .stats-workspace .stats-header-tier-2 .num { text-align: center; }
+.stats-workspace .stats-metric-cell, .stats-workspace .stats-header-tier-2 .num { text-align: right; font-variant-numeric: tabular-nums; }
 .stats-workspace .stats-guide-cell > * { display: block; margin-inline: auto; }
 .stats-workspace .stats-header-search .lookup-search-icon { width: 14px; height: 14px; }
 .stats-workspace .stats-header-search .lookup-clear-btn { min-width: 24px; min-height: 24px; }
@@ -211,3 +213,5 @@
 .stats-workspace .stats-table-frame .dense-stats-table tbody td { border-bottom: 0; }
 .stats-workspace .stats-table-frame .stats-guide-cell .player-portrait,
 .stats-workspace .stats-table-frame .stats-guide-cell .player-portrait-fallback { border: 0; border-radius: var(--radius-pill); background-color: var(--table-surface); overflow: hidden; }
+
+}

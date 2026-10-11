@@ -121,6 +121,8 @@
 
 .trend-card-header {
   display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
   justify-content: space-between;
   align-items: center;
   font-size: var(--text-sm);
@@ -2799,11 +2801,16 @@
   cursor: pointer;
 }
 
+.dist-strip-labels {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
 .dist-strip-label {
-  position: absolute;
-  top: 62px;
-  left: var(--label-left, 0%);
-  transform: translateX(-50%);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
   font-size: var(--text-xs);
   color: var(--color-text-secondary);
 }
@@ -4480,6 +4487,7 @@
 .finance-row-filters { display: grid; grid-template-columns: minmax(0, 2fr) repeat(3, minmax(0, 1fr)); gap: var(--space-3); }
 .finance-row-filters input, .finance-row-filters select { min-height: var(--control-lg); }
 .finance-team-link { display: inline-flex; gap: var(--space-2); align-items: center; white-space: nowrap; min-height: var(--control-lg); }
+.finance-workspace .data-table a { display: inline-flex; align-items: center; min-height: var(--control-lg); }
 .finance-team-hero { display: grid; grid-template-columns: minmax(200px, 1fr) minmax(0, 3fr); align-items: center; gap: var(--space-4); }
 .finance-workspace summary { display: flex; align-items: center; min-height: var(--control-lg); cursor: pointer; }
 .finance-dialog .ui-date-picker { min-width: 0; }

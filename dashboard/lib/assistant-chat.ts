@@ -1,6 +1,7 @@
 import type { DurableThreadHeader } from "./assistant-v2.generated";
 import { tableRow, type Context } from "./conversation";
 import { humanLabel } from "./route-availability";
+import { throughLabel } from "./format-date";
 
 // AR06 presentation helpers for the /ask chat layout. Values are never altered here: compact
 // views only choose which returned cells to show first; the full result stays in "How I got this".
@@ -27,7 +28,7 @@ export function scopeChipLabel(context: Context): string {
     context.season,
     context.phase ? humanLabel(context.phase) : null,
     context.window ? windowLabels[context.window] ?? humanLabel(context.window) : null,
-    context.before_date ? `before ${context.before_date}` : null,
+    context.before_date ? throughLabel(context.before_date) || "Through date unavailable" : null,
   ].filter(Boolean);
   return parts.length ? parts.join(" · ") : "Default scope";
 }

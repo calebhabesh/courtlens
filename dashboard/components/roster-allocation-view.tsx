@@ -253,7 +253,7 @@ export function RosterAllocationView({ catalog, teamId, scope }: RosterAllocatio
             <GatedNote tone="warning" action={<Button size="sm" variant="secondary" icon="refresh" onClick={() => setAttempt((value) => value + 1)}>Retry</Button>}
               why={<p>{load.message}</p>}>Couldn’t load {teamName} minutes.</GatedNote>
           ) : load.status !== "ready" ? (
-            <BoardLayout className="roster-board" main={<div className="roster-skeleton" aria-busy="true" aria-label="Loading minutes">
+            <BoardLayout className="roster-board" main={<div className="roster-skeleton" role="status" aria-busy="true" aria-label="Loading minutes">
               <Skeleton height={168} />
               <div className="roster-lanes">{POSITION_LANES.map((name) => <Skeleton key={name} height={200} />)}</div>
             </div>} />

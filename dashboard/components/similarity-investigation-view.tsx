@@ -9,6 +9,7 @@ import { Field } from "./ui/field";
 import { CountChip, FilterBar } from "./ui/filter-bar";
 import { GatedNote } from "./ui/gated-note";
 import { Select } from "./ui/select";
+import { Skeleton } from "./ui/skeleton";
 import { buildPreservedContextUrl } from "@/lib/query-url";
 import { useReleaseCatalog } from "@/lib/use-release-catalog";
 import { useToast } from "./ui/toast";
@@ -138,7 +139,7 @@ export function SimilarityInvestigationView() {
   };
 
   return (
-    <div>
+    <div className="similarity-view">
       <FilterBar
         label="Similar players controls"
         summary={`${season || "Season"} · ${windowMode === "season" ? "Season" : "Last 10"}`}
@@ -196,14 +197,17 @@ export function SimilarityInvestigationView() {
           ] : []}
         />}
       />
-      {catalog === null && <GatedNote why="Explicit URL scope is retained; reload to retry.">Context catalog unavailable.</GatedNote>}
+      {catalog === null && <GatedNote why="Explicit URL scope is retained; reload to retry." action={<Button onClick={() => window.location.reload()}>Retry</Button>}>Context catalog unavailable.</GatedNote>}
 
       {loading && (
-        <p role="status" className="text-muted">Matching peers…</p>
+        <div role="status" aria-label="Matching peers" aria-busy="true">
+          <div className="trend-inv-grid-2col"><Skeleton height={440} /><Skeleton height={440} /></div>
+          <Skeleton height={240} />
+        </div>
       )}
 
       {error && (
-        <GatedNote tone="warning" why={error}>Peers could not be matched for this scope.</GatedNote>
+        <GatedNote tone="warning" why={error} action={<Button onClick={() => window.location.reload()}>Retry</Button>}>Peers could not be matched for this scope.</GatedNote>
       )}
 
       {data && !loading && (

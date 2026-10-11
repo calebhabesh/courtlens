@@ -1,0 +1,405 @@
+{
+  "counts": {
+    "new": 4,
+    "changed": 32,
+    "unchanged": 30
+  },
+  "baselines": [
+    {
+      "path": "dashboard/e2e/visual-baselines.spec.ts-snapshots/calculator-desktop-linux.png",
+      "before": "dd1e71059ce5710db974c27f7386af5b87b524dc62224b85c0d9353537ab9911",
+      "after": "dd1e71059ce5710db974c27f7386af5b87b524dc62224b85c0d9353537ab9911",
+      "status": "unchanged"
+    },
+    {
+      "path": "dashboard/e2e/visual-baselines.spec.ts-snapshots/calculator-phone-linux.png",
+      "before": "02507b812b8b0179f34c69f320bc636b67264544cd0aa22f5927b017ec01d541",
+      "after": "02507b812b8b0179f34c69f320bc636b67264544cd0aa22f5927b017ec01d541",
+      "status": "unchanged"
+    },
+    {
+      "path": "dashboard/e2e/visual-baselines.spec.ts-snapshots/case-studies-desktop-linux.png",
+      "before": "fb6a75c18b4b3e91ef38194e90fc3fdb178334200608179daa66043571e7b73c",
+      "after": "fb6a75c18b4b3e91ef38194e90fc3fdb178334200608179daa66043571e7b73c",
+      "status": "unchanged"
+    },
+    {
+      "path": "dashboard/e2e/visual-baselines.spec.ts-snapshots/case-studies-phone-linux.png",
+      "before": "07410df4cd1bc578f98b4fb4549dfef0d5d45098e2e08cbfd66a9b10aa0db1e0",
+      "after": "3a4bea764bfe2c9a03786847d194eba6628fb616a0627c91c58d0273e3c47967",
+      "status": "changed"
+    },
+    {
+      "path": "dashboard/e2e/visual-baselines.spec.ts-snapshots/contracts-TOR-desktop-linux.png",
+      "before": "63d763414b44691b2360075b8fed545633f45b53ca914f0c2b88e92ac4ebb2e0",
+      "after": "38df7222fd91642d31756905817e6324117f918c2bcd3c790cad05aeb3840a71",
+      "status": "changed"
+    },
+    {
+      "path": "dashboard/e2e/visual-baselines.spec.ts-snapshots/contracts-TOR-phone-linux.png",
+      "before": "e25af9f9ccee60e4281fff4bb8b04c09b49b400c3ca7db89027a1b6ef7be2373",
+      "after": "42c52b7035234f99e977fcbcde40112a6b6f7479c9e6db203073834bacebf0c0",
+      "status": "changed"
+    },
+    {
+      "path": "dashboard/e2e/visual-baselines.spec.ts-snapshots/contracts-desktop-linux.png",
+      "before": "267a7750a7949f52fdd0dffe79fca8740a444430d14d08fe3dd836b35617b08a",
+      "after": "594580cf49c8c1c741f5c0dc51acec2dd8a6e18849c864c1b240dd2c26829bef",
+      "status": "changed"
+    },
+    {
+      "path": "dashboard/e2e/visual-baselines.spec.ts-snapshots/contracts-phone-linux.png",
+      "before": "fe5cc17248d16e725b8603662a42ef4a891efcd916bf43f27751373068f70631",
+      "after": "0ad08b027a08a9d6ed84f6690cad98943984325f6699edc0299884e53ba4661c",
+      "status": "changed"
+    },
+    {
+      "path": "dashboard/e2e/visual-baselines.spec.ts-snapshots/data-status-desktop-linux.png",
+      "before": "5494abbd94ff0046699e46c2009c74ac34bd38bec049229863031dd8e5080213",
+      "after": "5494abbd94ff0046699e46c2009c74ac34bd38bec049229863031dd8e5080213",
+      "status": "unchanged"
+    },
+    {
+      "path": "dashboard/e2e/visual-baselines.spec.ts-snapshots/data-status-phone-linux.png",
+      "before": "ef7351ae6009556e8a49be869d0e30eea099cd65dd321475dd4068f2117f9e60",
+      "after": "ef7351ae6009556e8a49be869d0e30eea099cd65dd321475dd4068f2117f9e60",
+      "status": "unchanged"
+    },
+    {
+      "path": "dashboard/e2e/visual-baselines.spec.ts-snapshots/design-desktop-linux.png",
+      "before": "c930ffd1fc57cb87b5bdf18e30461b1b05b1903489b05a0a5955b429ef95f6ee",
+      "after": "c930ffd1fc57cb87b5bdf18e30461b1b05b1903489b05a0a5955b429ef95f6ee",
+      "status": "unchanged"
+    },
+    {
+      "path": "dashboard/e2e/visual-baselines.spec.ts-snapshots/design-phone-linux.png",
+      "before": "3d996f0363fc45de1e226f4e106ebde825f4aad94851248784b1e959a0784b32",
+      "after": "d607ff884679b33c10005bd16e5f323552a08c788fdd2d5805731dc9d80251ac",
+      "status": "changed"
+    },
+    {
+      "path": "dashboard/e2e/visual-baselines.spec.ts-snapshots/evaluation-desktop-linux.png",
+      "before": "a7d203d4c3910f85027fb7836b7034ca29093ce63589843abf1e8b21362fba5b",
+      "after": "a7d203d4c3910f85027fb7836b7034ca29093ce63589843abf1e8b21362fba5b",
+      "status": "unchanged"
+    },
+    {
+      "path": "dashboard/e2e/visual-baselines.spec.ts-snapshots/evaluation-phone-linux.png",
+      "before": "9dbf74814f61f966f12e695fbc3557f1520c5d5abef0673b17d9bdb569785e17",
+      "after": "9dbf74814f61f966f12e695fbc3557f1520c5d5abef0673b17d9bdb569785e17",
+      "status": "unchanged"
+    },
+    {
+      "path": "dashboard/e2e/visual-baselines.spec.ts-snapshots/expected-shots-desktop-linux.png",
+      "before": "93e93911ba91b01432485b07b86f406aadf6815a9f48d798a54f798f5ab1dd28",
+      "after": "93e93911ba91b01432485b07b86f406aadf6815a9f48d798a54f798f5ab1dd28",
+      "status": "unchanged"
+    },
+    {
+      "path": "dashboard/e2e/visual-baselines.spec.ts-snapshots/expected-shots-phone-linux.png",
+      "before": "598c6b2dd47b2b77c5b79306b4f4a310b102da7839d98f6d3caa5c7aaa439d8c",
+      "after": "598c6b2dd47b2b77c5b79306b4f4a310b102da7839d98f6d3caa5c7aaa439d8c",
+      "status": "unchanged"
+    },
+    {
+      "path": "dashboard/e2e/visual-baselines.spec.ts-snapshots/forecasts-desktop-linux.png",
+      "before": "f296338f449428289605a0e8e00ed77532266e7631a9c5a354c2f4f8ecd00f18",
+      "after": "f296338f449428289605a0e8e00ed77532266e7631a9c5a354c2f4f8ecd00f18",
+      "status": "unchanged"
+    },
+    {
+      "path": "dashboard/e2e/visual-baselines.spec.ts-snapshots/forecasts-phone-linux.png",
+      "before": "2f3c2d3bfc894e0bc87eb0cd7b9311e6ab8c8917a2c206a2b6077da150cbed2a",
+      "after": "2f3c2d3bfc894e0bc87eb0cd7b9311e6ab8c8917a2c206a2b6077da150cbed2a",
+      "status": "unchanged"
+    },
+    {
+      "path": "dashboard/e2e/visual-baselines.spec.ts-snapshots/free-agency-desktop-linux.png",
+      "before": "4fa9eb59332f9e6c8f3b0b836229f117f2333e6fa5ae5d5b1a700385cb4d3cf5",
+      "after": "6b51e92e420a078be0633868858802184ea70bdc31a1ad1d6fb1359cc0d6d15d",
+      "status": "changed"
+    },
+    {
+      "path": "dashboard/e2e/visual-baselines.spec.ts-snapshots/free-agency-phone-linux.png",
+      "before": "8c27dd79ae4c78fa8646fb23d3060eed6a58ccdbad4fc61582c162a5f1d13b85",
+      "after": "786a33082eea3614e706a7cdb6960819afb36feff60d90c7896312af030d29a3",
+      "status": "changed"
+    },
+    {
+      "path": "dashboard/e2e/visual-baselines.spec.ts-snapshots/live-finals-desktop-linux.png",
+      "before": "f49625fd49b9afb5377cd26675d913adc34ef62607822284fb533dbb150de7dd",
+      "after": "f49625fd49b9afb5377cd26675d913adc34ef62607822284fb533dbb150de7dd",
+      "status": "unchanged"
+    },
+    {
+      "path": "dashboard/e2e/visual-baselines.spec.ts-snapshots/live-finals-phone-linux.png",
+      "before": "2a0ad0853047642b571fa8c1b5d5156bb0f4e1ea4ace552e1c611334f4cb66ac",
+      "after": "465e8d28d243aaa170ea7e6a92a4551830803109e4f7b0064f2f29e94c533abf",
+      "status": "changed"
+    },
+    {
+      "path": "dashboard/e2e/visual-baselines.spec.ts-snapshots/matchups-desktop-linux.png",
+      "before": "398ba38127a2e4cb6f24b98799d4b7f9bb9c572375635ebe10583412dda38858",
+      "after": "398ba38127a2e4cb6f24b98799d4b7f9bb9c572375635ebe10583412dda38858",
+      "status": "unchanged"
+    },
+    {
+      "path": "dashboard/e2e/visual-baselines.spec.ts-snapshots/matchups-phone-linux.png",
+      "before": "c9a1eea4da2364a0af4cb147d984fa4345cae3c5683dfcdfb980b0fd0117e98a",
+      "after": "2bf1db6bb9d2cc9b8ace495dba6687768a69744c27288ebb8a023a5b8afba08e",
+      "status": "changed"
+    },
+    {
+      "path": "dashboard/e2e/visual-baselines.spec.ts-snapshots/methodology-desktop-linux.png",
+      "before": "613e39c3e670129d293e183c9d2e3407f009475d24cc53377183d82ea7d1275b",
+      "after": "613e39c3e670129d293e183c9d2e3407f009475d24cc53377183d82ea7d1275b",
+      "status": "unchanged"
+    },
+    {
+      "path": "dashboard/e2e/visual-baselines.spec.ts-snapshots/methodology-phone-linux.png",
+      "before": "016c8350d975caa5cea5a80bd70873a3c4eb1422fcb92d436916f4fea389bab1",
+      "after": "016c8350d975caa5cea5a80bd70873a3c4eb1422fcb92d436916f4fea389bab1",
+      "status": "unchanged"
+    },
+    {
+      "path": "dashboard/e2e/visual-baselines.spec.ts-snapshots/not-found-desktop-linux.png",
+      "before": null,
+      "after": "ed8d1a0c63bc9b362c42284cc7de2453dcc14b33e41dba619f2a7cf60ee37f41",
+      "status": "new"
+    },
+    {
+      "path": "dashboard/e2e/visual-baselines.spec.ts-snapshots/not-found-phone-linux.png",
+      "before": null,
+      "after": "4544b985d7a195799481da4982dcdff0d4d3eae11572326c527b0edfd15eb3cb",
+      "status": "new"
+    },
+    {
+      "path": "dashboard/e2e/visual-baselines.spec.ts-snapshots/player-comparison-desktop-linux.png",
+      "before": "472cbe98d9c39036d5672be9fd799e077ff204a817f60c720850812eeded7f81",
+      "after": "472cbe98d9c39036d5672be9fd799e077ff204a817f60c720850812eeded7f81",
+      "status": "unchanged"
+    },
+    {
+      "path": "dashboard/e2e/visual-baselines.spec.ts-snapshots/player-comparison-phone-linux.png",
+      "before": "b5e25342af4c6317c513d396439b85ff9afdbd7429a9ded68b2bb064dbb11308",
+      "after": "714b54a6de3a0b541166c555b645d05960863cf3860923eaeee8ce3abf44b981",
+      "status": "changed"
+    },
+    {
+      "path": "dashboard/e2e/visual-baselines.spec.ts-snapshots/player-profile-desktop-linux.png",
+      "before": "dfae6076d87f8f218c89bf20a93b043274450066a92a4f9853fb9feae5ea62bb",
+      "after": "dfae6076d87f8f218c89bf20a93b043274450066a92a4f9853fb9feae5ea62bb",
+      "status": "unchanged"
+    },
+    {
+      "path": "dashboard/e2e/visual-baselines.spec.ts-snapshots/player-profile-phone-linux.png",
+      "before": "460c9bf9abd994ad332632e8f6577fec60ad63f8fa768549205f868ab749079b",
+      "after": "39cb04dd6b6ac62ce73abe2af13b578791c9aa46a17398e377cb9377fc656423",
+      "status": "changed"
+    },
+    {
+      "path": "dashboard/e2e/visual-baselines.spec.ts-snapshots/playoffs-desktop-linux.png",
+      "before": "6861be417bb4521b8d08b187043b1856db5994b8bad377500070981ded89f291",
+      "after": "6861be417bb4521b8d08b187043b1856db5994b8bad377500070981ded89f291",
+      "status": "unchanged"
+    },
+    {
+      "path": "dashboard/e2e/visual-baselines.spec.ts-snapshots/playoffs-phone-linux.png",
+      "before": "1095cdcd87dfa192553be2047417faded2da24f111c1c1933719e25d98ce1a4a",
+      "after": "746bb4bef11478fb5c407c41f358492c9d5736bb2ace3c2687f7ba3d5cb0c508",
+      "status": "changed"
+    },
+    {
+      "path": "dashboard/e2e/visual-baselines.spec.ts-snapshots/recent-games-desktop-linux.png",
+      "before": "fe865b7ec79a8eb5158c952fad7edd79ed89e434239e04de74b3cfe1ffc28ee8",
+      "after": "fe865b7ec79a8eb5158c952fad7edd79ed89e434239e04de74b3cfe1ffc28ee8",
+      "status": "unchanged"
+    },
+    {
+      "path": "dashboard/e2e/visual-baselines.spec.ts-snapshots/recent-games-phone-linux.png",
+      "before": "cb00e2ab45ad38d1b39941fdf2a70c74fffa8e9f3ec4499a7548c88ec11df142",
+      "after": "de39013697004fbdc1f28dbeed7aeed1ce6f203a8c135b60530c9d309d18fec7",
+      "status": "changed"
+    },
+    {
+      "path": "dashboard/e2e/visual-baselines.spec.ts-snapshots/roster-chart-desktop-linux.png",
+      "before": "0f64b56e121cd2103dd91e83470e4a92a8c472b052a0a2ed3856fbf75762aba1",
+      "after": "0f64b56e121cd2103dd91e83470e4a92a8c472b052a0a2ed3856fbf75762aba1",
+      "status": "unchanged"
+    },
+    {
+      "path": "dashboard/e2e/visual-baselines.spec.ts-snapshots/roster-chart-phone-linux.png",
+      "before": "41a1d3c90c5bdea288d28afd2b8c776c7d66964be5f9ffcb73ceb822a6c9a120",
+      "after": "c63c3c7dbba81cd488e81f7c4d6a10f634e8cab802582da0d3a4e231e4348e11",
+      "status": "changed"
+    },
+    {
+      "path": "dashboard/e2e/visual-baselines.spec.ts-snapshots/roster-picker-desktop-linux.png",
+      "before": "3b0403f9655b12f943815c66b3179012cdf2454d68f29ead7bbe833a3718a2e1",
+      "after": "3b0403f9655b12f943815c66b3179012cdf2454d68f29ead7bbe833a3718a2e1",
+      "status": "unchanged"
+    },
+    {
+      "path": "dashboard/e2e/visual-baselines.spec.ts-snapshots/roster-picker-phone-linux.png",
+      "before": "2c5f80d47233979eea15557070cffa9d06715e120d5c1efa6b88756b0d1eedbe",
+      "after": "2c5f80d47233979eea15557070cffa9d06715e120d5c1efa6b88756b0d1eedbe",
+      "status": "unchanged"
+    },
+    {
+      "path": "dashboard/e2e/visual-baselines.spec.ts-snapshots/search-desktop-linux.png",
+      "before": "511623ce041950f00e1739a4c77ef5400e6339a02188ec08b99daf13a8e5ceff",
+      "after": "5cc46c6ae99a492d67b4ed8d74464a78fbb1638cef617a18d2f9626f411beb83",
+      "status": "changed"
+    },
+    {
+      "path": "dashboard/e2e/visual-baselines.spec.ts-snapshots/search-phone-linux.png",
+      "before": "9fff49efc40c4f4420f139174f453b3e1fa8f0156863125c4bd0ce4b7367740a",
+      "after": "2877723561e763da194d0d0ad6e256cd537719427b180a2ef8c95294d822bf0b",
+      "status": "changed"
+    },
+    {
+      "path": "dashboard/e2e/visual-baselines.spec.ts-snapshots/settings-desktop-linux.png",
+      "before": "6dfcd6146ce94a9604c7be3058be776cbbcce59a1977fac3d22c0669af7f0a76",
+      "after": "00f61bf31365b0c243d141867c7662623037b2131505e2620b8656d7246b83c6",
+      "status": "changed"
+    },
+    {
+      "path": "dashboard/e2e/visual-baselines.spec.ts-snapshots/settings-phone-linux.png",
+      "before": "2b8a59f88c195082c319d9749bd4b63ee69146c82352440290c7c62f80bed50a",
+      "after": "70796136dfb99edc6fec9ccf1a6f184f4ba0a7ef8deeecafcc06b269af140cf0",
+      "status": "changed"
+    },
+    {
+      "path": "dashboard/e2e/visual-baselines.spec.ts-snapshots/showcase-desktop-linux.png",
+      "before": "172b38b98970401846cf63edc96dedada8f7fcd22476dd9fe6cff353c7a97da0",
+      "after": "500449cc9130736a92c9e5d788dd6c418df6ec2865db7719ad429876acf4adfc",
+      "status": "changed"
+    },
+    {
+      "path": "dashboard/e2e/visual-baselines.spec.ts-snapshots/showcase-phone-linux.png",
+      "before": "1ff7307552aa1e08e8308c34112fdacec76d3acac765ed138f4f8253cc973113",
+      "after": "bc4dbdeb154c6c350a2a779cec321aa94aa18862a386a871ddd657e53ddd8aa8",
+      "status": "changed"
+    },
+    {
+      "path": "dashboard/e2e/visual-baselines.spec.ts-snapshots/spatial-epv-desktop-linux.png",
+      "before": "8b8a3701888e8d7ba063adf48535f20cae5f10089e8cefdbcdbf2e9d5d09a064",
+      "after": "8b8a3701888e8d7ba063adf48535f20cae5f10089e8cefdbcdbf2e9d5d09a064",
+      "status": "unchanged"
+    },
+    {
+      "path": "dashboard/e2e/visual-baselines.spec.ts-snapshots/spatial-epv-phone-linux.png",
+      "before": "afb75920e5b179c72f4c0ecb2fb20a84dade46389a5198522555fe125eea68e5",
+      "after": "4e95b94d4cc549adb693b493e15d1ef0bae357a0712dc65ab30c1af6da0f18e3",
+      "status": "changed"
+    },
+    {
+      "path": "dashboard/e2e/visual-baselines.spec.ts-snapshots/stat-shift-desktop-linux.png",
+      "before": "9526ffb152fcd975b461578b8c2c94a66d0a4fdb99f9744637340abf6620ab62",
+      "after": "9526ffb152fcd975b461578b8c2c94a66d0a4fdb99f9744637340abf6620ab62",
+      "status": "unchanged"
+    },
+    {
+      "path": "dashboard/e2e/visual-baselines.spec.ts-snapshots/stat-shift-phone-linux.png",
+      "before": "5731d9891a1ff2334be20e050bdf02ab3a012e826f962e1de6a1326a220abf5b",
+      "after": "9a93c709d2f6e2b3233c48a2ad9ef782461113e809658979dcc00849db4e5c02",
+      "status": "changed"
+    },
+    {
+      "path": "dashboard/e2e/visual-baselines.spec.ts-snapshots/stats-desktop-linux.png",
+      "before": null,
+      "after": "acb9474ba943bfb38ce5371b877b0c7a02c174f19340a1fc3b5212cfd5ac2b2d",
+      "status": "new"
+    },
+    {
+      "path": "dashboard/e2e/visual-baselines.spec.ts-snapshots/stats-phone-linux.png",
+      "before": null,
+      "after": "456311fa08213c3db157e938fe0a3b38dde88454c96aa5704668e769436959fd",
+      "status": "new"
+    },
+    {
+      "path": "dashboard/e2e/visual-baselines.spec.ts-snapshots/team-comparison-factors-desktop-linux.png",
+      "before": "ae096e5970d6b17ad17fa9ace9da60f05cae47df57aaf218c84c5c279562941b",
+      "after": "74328810cbdedca46aa5d883a925795dee7fc5685e24e9bb5dece19caa569a1c",
+      "status": "changed"
+    },
+    {
+      "path": "dashboard/e2e/visual-baselines.spec.ts-snapshots/team-comparison-factors-phone-linux.png",
+      "before": "b34f3e0fad142d379f9933c1ee9aa5bb68eb52e08235b348b76d75b0adc7c1a1",
+      "after": "31436899880a2dc28cb645de29eb69bb4a09a82a3b12e5fb7c2606adb2606717",
+      "status": "changed"
+    },
+    {
+      "path": "dashboard/e2e/visual-baselines.spec.ts-snapshots/team-comparison-overview-desktop-linux.png",
+      "before": "38c1e214800d763d3b2439cce0e4f6283eb8247838bb9a836cf16c07f897960a",
+      "after": "38c1e214800d763d3b2439cce0e4f6283eb8247838bb9a836cf16c07f897960a",
+      "status": "unchanged"
+    },
+    {
+      "path": "dashboard/e2e/visual-baselines.spec.ts-snapshots/team-comparison-overview-phone-linux.png",
+      "before": "60f5b5cea4833dd3cca91ffea833eefcdee5dd29471ad9cc4ed5ddd089657854",
+      "after": "4066e299bfa033916ee5c4663ccf7580b88702d8107c9aeb1df7a05b93651410",
+      "status": "changed"
+    },
+    {
+      "path": "dashboard/e2e/visual-baselines.spec.ts-snapshots/team-profile-desktop-linux.png",
+      "before": "e1d80440050d43f694341699db7e1e90ce6a6ef17f614bccd489478910027435",
+      "after": "4de93b791cb48b6ca99da1e3cea9d1dbdcd6a9305601805e33ba74bcd5a83914",
+      "status": "changed"
+    },
+    {
+      "path": "dashboard/e2e/visual-baselines.spec.ts-snapshots/team-profile-phone-linux.png",
+      "before": "b5fb5405d7ffa6b793d0536fcb40c5b27c11f763f32241cd109ee4a3da920291",
+      "after": "b5fb5405d7ffa6b793d0536fcb40c5b27c11f763f32241cd109ee4a3da920291",
+      "status": "unchanged"
+    },
+    {
+      "path": "dashboard/e2e/visual-baselines.spec.ts-snapshots/team-stats-desktop-linux.png",
+      "before": "e85528ef58cb023d0e88576597e27c28f10d8b9544cdee7fefcbfb1d6c46cd1f",
+      "after": "88a2d361226fdeab220aebbee47882de59b3c044f9a2633ba1005307c47b84c9",
+      "status": "changed"
+    },
+    {
+      "path": "dashboard/e2e/visual-baselines.spec.ts-snapshots/team-stats-phone-linux.png",
+      "before": "7b1a44102bdc64aae87edfa5a6b08244ed43280ba4cdbfdf6339b579620b77e3",
+      "after": "18f392b2b31bd0be091aafcd6473daa8ff2c97835b6a12617696b23b7202d6fc",
+      "status": "changed"
+    },
+    {
+      "path": "dashboard/e2e/visual-baselines.spec.ts-snapshots/whats-new-desktop-linux.png",
+      "before": "c30ab7cc8b648f0128a6f3a87b26858c901a7f3ad5bedc845601e1182734c60b",
+      "after": "49aa855eeb88012ce6a408c2f449e80ab68f4ccfc42ccf8b9dc67a0e237dfbbf",
+      "status": "changed"
+    },
+    {
+      "path": "dashboard/e2e/visual-baselines.spec.ts-snapshots/whats-new-phone-linux.png",
+      "before": "4b34239b085ec333766c3ae073f65f0500c49adda2bf391668e20f11a5027162",
+      "after": "4b34239b085ec333766c3ae073f65f0500c49adda2bf391668e20f11a5027162",
+      "status": "unchanged"
+    },
+    {
+      "path": "dashboard/e2e/visual-baselines.spec.ts-snapshots/wowy-team-desktop-linux.png",
+      "before": "3f85d031d6fb3717679c35197f5e1dac13e5982ce7730d0f90365234c5625270",
+      "after": "3f85d031d6fb3717679c35197f5e1dac13e5982ce7730d0f90365234c5625270",
+      "status": "unchanged"
+    },
+    {
+      "path": "dashboard/e2e/visual-baselines.spec.ts-snapshots/wowy-team-phone-linux.png",
+      "before": "0b1420bf13faf0c059d9b84482b1ed174f2712c80ed9730a23d03a09f4ed3535",
+      "after": "2fb3141c2f945dbcbde57e270c1b7bb258afa9bac0ec0e1cd995cdda58052e68",
+      "status": "changed"
+    },
+    {
+      "path": "dashboard/e2e/visual-baselines.spec.ts-snapshots/wowy-unit-desktop-linux.png",
+      "before": "2067683a4233c4319abcca875ed0eb41223bc9563025f66bcbae28e2543c0daf",
+      "after": "2067683a4233c4319abcca875ed0eb41223bc9563025f66bcbae28e2543c0daf",
+      "status": "unchanged"
+    },
+    {
+      "path": "dashboard/e2e/visual-baselines.spec.ts-snapshots/wowy-unit-phone-linux.png",
+      "before": "1742ad0c3766daa2ae03dcf35fde3f30ac19c15a36a210ea360a163aed911274",
+      "after": "1cbd6848a44f032f4ca5a6db0cd65bbcc4d7e14f6e599d18a1074e6a621271c1",
+      "status": "changed"
+    }
+  ]
+}

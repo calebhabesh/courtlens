@@ -44,14 +44,13 @@ import {
   Presence,
 } from "@/components/ui";
 import { DesignFoundationShowcase } from "@/components/design-foundation-showcase";
-import { motion, DURATIONS, SPRING, useReducedMotion } from "@/lib/motion";
+import { motion, DURATIONS, SPRING } from "@/lib/motion";
 import RootLoading from "@/app/loading";
 import StatsLoading from "@/app/stats/loading";
 import PlayerProfileLoading from "@/app/players/[id]/loading";
 import LiveLoading from "@/app/live/loading";
 
 function DesignShowcase() {
-  const isReducedMotion = useReducedMotion();
   const { toast } = useToast();
 
   // State controls for interactive demos
@@ -232,7 +231,7 @@ function DesignShowcase() {
                   <div><code>--dur-chart (450ms)</code> — First chart draw only</div>
                 </div>
                 <div className="ui-motion-status">
-                  Reduced Motion: <strong>{isReducedMotion ? "Active (Overrides applied)" : "Normal"}</strong>
+                  Reduced Motion: <strong><span className="ui-motion-status-normal">Normal</span><span className="ui-motion-status-reduced">Active (Overrides applied)</span></strong>
                 </div>
               </div>
 
@@ -331,12 +330,12 @@ function DesignShowcase() {
 
             <Panel title="Select, Checkbox & Switch" compact>
               <div className="ui-design-column">
-                <Select defaultValue="regular_season">
+                <Select aria-label="Example season select" defaultValue="regular_season">
                   <option value="regular_season">Regular Season (2025-26)</option>
                   <option value="playoffs">Playoffs Bracket</option>
                   <option value="play_in">Play-In Tournament</option>
                 </Select>
-                <Select disabled defaultValue="disabled">
+                <Select aria-label="Disabled example select" disabled defaultValue="disabled">
                   <option value="disabled">Disabled Select Option</option>
                 </Select>
                 <div className="ui-design-cluster">
