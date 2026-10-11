@@ -104,6 +104,7 @@ from courtlens.domain.metrics import (
 from courtlens.domain.personal_state import CANONICAL_BUILTIN_VIEWS
 from courtlens.domain.query_spec import ALLOWED_METADATA_FIELDS, QuerySpec, WindowKind
 from courtlens.domain.query_url import deserialize_params_to_query, query_spec_to_research_query
+from courtlens.domain.source_policy import pending_capabilities
 from courtlens.services.analytical_ops import (
     compare_periods_service,
     distribution_service,
@@ -299,6 +300,8 @@ def get_catalog(
             status=CapabilityStatus.NOT_IMPLEMENTED,
         ),
     }
+    for name, entry in pending_capabilities().items():
+        capabilities.setdefault(name, entry)
     return WorkbenchCatalogResponse(
         release_id=context.release_id,
         snapshot_id=context.snapshot_id,
