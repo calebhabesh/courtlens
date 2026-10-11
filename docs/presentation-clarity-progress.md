@@ -19,7 +19,7 @@ parameters**. Blocks before each owner gate also need recorded owner approval.
 | --- | --- |
 | PC00 Roster Shapes crash fix | implemented_unverified |
 | PC01 Source policy v2 | verified |
-| PC02 Page audit (G1) | planned |
+| PC02 Page audit (G1) | implemented_unverified (awaiting G1 owner approval) |
 | PC03 Design Language v1.2, D21, chart kit | planned |
 | PC04 Compare and first-load defaults (G2) | planned |
 | PC05 Data: rosters, positions, injuries | planned |
@@ -72,3 +72,29 @@ parameters**. Blocks before each owner gate also need recorded owner approval.
   (disposable PostgreSQL, including the catalog integration assertion). Dashboard lint 0/0,
   typecheck clean, Vitest 359 passed (new route-availability case). Real-database catalog:
   0 `source_blocked` capabilities.
+
+## 2026-10-11 — PC02 Page audit (gate G1)
+
+- Production build (`next build --webpack`, standalone) in a detached worktree at `978d804`, served
+  on port 3200 against the real API (port 8100, owner database). The owner's dev servers were not touched.
+- Every static route plus five reachable dynamic routes were opened **with no URL parameters** at
+  1440×900 and 390×844 ([capture script](evidence/pc02/capture.mjs),
+  [measurements](evidence/pc02/measurements.json), [screens](evidence/pc02/screens/)). Every screen
+  was then reviewed by eye and scored ([glance table](evidence/pc02/glance.md),
+  [glance JSON](evidence/pc02/glance.json)).
+- 52 routes: 23 real content, 9 open on a prompt, 6 on a gate notice, 4 broken or unreachable, 2 show
+  fixture data, 2 empty personal tools, 6 text pages. 0 page errors, 0 console errors, 0 failed
+  requests and 0 sideways overflow across all captures.
+- Correctness findings: Wingspan reads 336 `draft_combine` rows for 4 players (about 85 copies each,
+  test-fixture data in the real database). Planner renders a fixture league with invented players.
+  `/playoffs` is titled "Live". The team page title truncates, and its opponent FG% (—) disagrees
+  with the Teams table. Team Comparison clips a team name on phone. Defensive Matchups copy still
+  says "Not admitted". `/evaluation` is unavailable for the published snapshot.
+  `/research/operation` opens on an error. `/live/games/[id]` and `/contracts/[team]` have no
+  first-load link.
+- Not measured: glance items 4 (alignment), 7 (icons) and 8 (loading/error states). Each later block
+  runs its own glance test.
+- Review artifact for the owner (private link): https://claude.ai/artifact/RVH8yQWC8D89wUvpqUtQeq.
+  Decisions requested: PC12 batch order (A tables, B headline visuals, C demo hygiene, D personal
+  tools), Rankings/Tier Lists example board vs menu, `/players` merge vs real directory, and an early
+  wingspan fixture purge. **Stopped for G1 approval.**
