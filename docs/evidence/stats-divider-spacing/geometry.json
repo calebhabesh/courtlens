@@ -1,0 +1,44 @@
+[
+  {
+    "width": 1440,
+    "border": "0px",
+    "padding": "0px",
+    "headerGap": 16,
+    "scopeGap": 16,
+    "consoleGap": 16,
+    "tableTop": 254,
+    "overflow": false,
+    "controlHeights": [
+      40,
+      40
+    ]
+  },
+  {
+    "width": 768,
+    "border": "0px",
+    "padding": "0px",
+    "headerGap": 16,
+    "scopeGap": 16,
+    "consoleGap": 16,
+    "tableTop": 346,
+    "overflow": false,
+    "controlHeights": [
+      40,
+      40
+    ]
+  },
+  {
+    "width": 390,
+    "border": "0px",
+    "padding": "0px",
+    "headerGap": 16,
+    "scopeGap": 16,
+    "consoleGap": 16,
+    "tableTop": 362,
+    "overflow": false,
+    "controlHeights": [
+      40,
+      40
+    ]
+  }
+]
