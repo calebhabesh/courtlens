@@ -42,8 +42,9 @@ type Load = { status: "idle" | "loading" } | Result;
 const DRAG_TYPE = "application/x-courtlens-player";
 const LANE_LABELS: Record<Lane, string> = { PG: "Point guard", SG: "Shooting guard", SF: "Small forward", PF: "Power forward", C: "Center", Unassigned: "Unassigned" };
 
-const wholeMinutes = (value: number) => value.toLocaleString("en-US", { maximumFractionDigits: 0 });
-const tenthMinutes = (value: number) => value.toLocaleString("en-US", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+// Unknown minutes render as an em dash, never as zero.
+const wholeMinutes = (value: number | null) => (value === null ? "—" : value.toLocaleString("en-US", { maximumFractionDigits: 0 }));
+const tenthMinutes = (value: number | null) => (value === null ? "—" : value.toLocaleString("en-US", { minimumFractionDigits: 1, maximumFractionDigits: 1 }));
 const percent = (share: number | null) => (share === null ? "—" : `${(share * 100).toFixed(1)}%`);
 
 export function RosterAllocationView({ catalog, teamId, scope }: RosterAllocationViewProps) {
@@ -79,7 +80,7 @@ export function RosterAllocationView({ catalog, teamId, scope }: RosterAllocatio
   const summary = useMemo(() => summarize(allocations), [allocations]);
   // Chips keep a stable order (observed minutes) so typing projections never moves the chip in use.
   const byLane = useMemo(() => {
-    const ordered = [...allocations].sort((a, b) => b.total_minutes - a.total_minutes);
+    const ordered = [...allocations].sort((a, b) => (b.total_minutes ?? -1) - (a.total_minutes ?? -1));
     return Object.fromEntries(LANES.map((lane) => [lane, ordered.filter((row) => row.allocation_position === lane)])) as Record<Lane, Allocation[]>;
   }, [allocations]);
 
@@ -129,7 +130,7 @@ export function RosterAllocationView({ catalog, teamId, scope }: RosterAllocatio
         <PlayerPortrait playerId={row.player_id} name={row.player_name} size="sm" />
         <span className="roster-chip-text">
           <span className="roster-chip-name" title={row.player_name}>{row.player_name}</span>
-          <span className="roster-chip-meta">{mode === "projected" && row.games_played > 0
+          <span className="roster-chip-meta">{mode === "projected" && row.games_played > 0 && row.total_minutes !== null
             ? `${tenthMinutes(row.total_minutes / row.games_played)} obs/g`
             : `${wholeMinutes(row.total_minutes)} min · ${row.games_played} GP`}</span>
         </span>

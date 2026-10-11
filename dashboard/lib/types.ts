@@ -862,9 +862,11 @@ export type TeamDetailResponse = {
     player_id: string;
     player_name: string;
     games_played: number;
-    total_minutes: number;
-    points: number | null;
-    points_per_game: number | null;
+    /** Null when the player has no appeared game with recorded minutes (unknown, never zero). */
+    total_minutes: number | null;
+    pts_per_game: number | null;
+    reb_per_game: number | null;
+    ast_per_game: number | null;
   }>;
   recent_games: Array<{
     game_id: string;
