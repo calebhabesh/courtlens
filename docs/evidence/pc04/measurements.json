@@ -1,0 +1,992 @@
+{
+  "base": "http://localhost:3400",
+  "verification": "Real published database; no query parameters on entry. Personal state read is stubbed empty.",
+  "rows": [
+    {
+      "path": "/compare",
+      "width": 1440,
+      "status": 200,
+      "errors": [],
+      "failures": [
+        {
+          "url": "http://localhost:3400/?_rsc=1SfzXOvHUThkSklk",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        },
+        {
+          "url": "http://localhost:3400/stats?_rsc=1SfzXOvHUThkSklk",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        },
+        {
+          "url": "http://localhost:3400/?_rsc=vr_qeDxs4XL1cRl5",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        },
+        {
+          "url": "http://localhost:3400/compare?playerA=1641708&playerB=201142&season=2025-26&phase=regular_season&beforeDate=2026-04-13&releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&window=season&_rsc=1PbMALbIV_Fn6T9y",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        },
+        {
+          "url": "http://localhost:3400/players/1641708?_rsc=1SfzXOvHUThkSklk",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        }
+      ],
+      "overflow": false,
+      "resultY": 227,
+      "title": "Player Comparison",
+      "alerts": [],
+      "scope": "",
+      "tabular": null
+    },
+    {
+      "path": "/compare (suggestion)",
+      "width": 1440,
+      "overflow": false,
+      "errors": [],
+      "chips": [
+        {
+          "label": "+7.7Kevin Durant: 7.7 points more",
+          "identity": "b",
+          "color": "rgb(128, 191, 255)"
+        },
+        {
+          "label": "+2.3Amen Thompson: 2.3 rebounds more",
+          "identity": "a",
+          "color": "rgb(255, 209, 102)"
+        },
+        {
+          "label": "+0.5Amen Thompson: 0.5 assists more",
+          "identity": "a",
+          "color": "rgb(255, 209, 102)"
+        },
+        {
+          "label": "+0.7Amen Thompson: 0.7 steals more",
+          "identity": "a",
+          "color": "rgb(255, 209, 102)"
+        },
+        {
+          "label": "+0.3Kevin Durant: 0.3 blocks more",
+          "identity": "b",
+          "color": "rgb(128, 191, 255)"
+        },
+        {
+          "label": "+0.8 fewerAmen Thompson: 0.8 turnovers fewer",
+          "identity": "a",
+          "color": "rgb(255, 209, 102)"
+        },
+        {
+          "label": "+1.0Amen Thompson minus Kevin Durant: 1 minutes; no favorable direction declared",
+          "identity": "neutral",
+          "color": "rgb(169, 175, 185)"
+        },
+        {
+          "label": "+1.0Amen Thompson minus Kevin Durant: 1 games; no favorable direction declared",
+          "identity": "neutral",
+          "color": "rgb(169, 175, 185)"
+        },
+        {
+          "label": "+4.7Kevin Durant: 4.7 pp more",
+          "identity": "b",
+          "color": "rgb(128, 191, 255)"
+        },
+        {
+          "label": "+4.2Kevin Durant: 4.2 pp more",
+          "identity": "b",
+          "color": "rgb(128, 191, 255)"
+        },
+        {
+          "label": "+3.4Amen Thompson: 3.4 pp more",
+          "identity": "a",
+          "color": "rgb(255, 209, 102)"
+        }
+      ]
+    },
+    {
+      "path": "/matchups",
+      "width": 1440,
+      "status": 200,
+      "errors": [],
+      "failures": [],
+      "overflow": false,
+      "resultY": 263,
+      "title": "Player Matchups",
+      "example": "Example: Amen ThompsonChange",
+      "alerts": [],
+      "scope": "?operation=matchups&release_id=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&before_date=2026-04-13&player_id=1641708&min_attempts=100&min_games=5&limit=10&exampleSubject=1641708",
+      "tabular": null
+    },
+    {
+      "path": "/wowy",
+      "width": 1440,
+      "status": 200,
+      "errors": [],
+      "failures": [
+        {
+          "url": "http://localhost:3400/stat-line-shift?_rsc=CTtFcLdPtl7x52cO",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        }
+      ],
+      "overflow": false,
+      "resultY": 263,
+      "title": "WOWY",
+      "example": "Example: Amen Thompson · Kevin DurantChange",
+      "alerts": [],
+      "scope": "?operation=wowy&team_id=1610612745&release_id=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&before_date=2026-04-13&together=1641708%2C201142&min_possessions=100&min_games=5&exampleSubject=1641708%2C201142",
+      "tabular": null
+    },
+    {
+      "path": "/stat-line-shift",
+      "width": 1440,
+      "status": 200,
+      "errors": [],
+      "failures": [
+        {
+          "url": "http://localhost:3400/?_rsc=217TnWc6N67RpMoz",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        },
+        {
+          "url": "http://localhost:3400/?_rsc=fnnVWSkjrohG-xaC",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        }
+      ],
+      "overflow": false,
+      "resultY": 243,
+      "title": "Teammate Stat Shift",
+      "example": "Example: Amen Thompson · Kevin DurantChange",
+      "alerts": [],
+      "scope": "?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&player_id=1641708&team_id=HOU&together=201142&exampleSubject=1641708",
+      "tabular": null
+    },
+    {
+      "path": "/similar-players/shot-profile",
+      "width": 1440,
+      "status": 200,
+      "errors": [],
+      "failures": [],
+      "overflow": false,
+      "resultY": 392,
+      "title": "Similar Players",
+      "example": "Example: Amen ThompsonChange",
+      "alerts": [],
+      "scope": "?operation=shot-profile-peers&release_id=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&before_date=2026-04-13&player_id=1641708&min_attempts=100&min_games=5&limit=10&exampleSubject=1641708",
+      "tabular": null
+    },
+    {
+      "path": "/research/shooting/aftermath",
+      "width": 1440,
+      "status": 200,
+      "errors": [],
+      "failures": [
+        {
+          "url": "http://localhost:3400/?_rsc=wggwUF0kMuq--Rki",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        }
+      ],
+      "overflow": false,
+      "resultY": 320,
+      "title": "Shooting",
+      "example": "Example: Amen ThompsonChange",
+      "alerts": [],
+      "scope": "?operation=shot-aftermath&release_id=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&before_date=2026-04-13&player_id=1641708&min_attempts=100&min_games=5&limit=10&exampleSubject=1641708",
+      "tabular": null
+    },
+    {
+      "path": "/similar-players",
+      "width": 1440,
+      "status": 200,
+      "errors": [],
+      "failures": [],
+      "overflow": false,
+      "resultY": 300,
+      "title": "Similar Players",
+      "example": "Example: Amen ThompsonChange",
+      "alerts": [],
+      "scope": "?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&playerId=1641708&exampleSubject=1641708",
+      "tabular": null
+    },
+    {
+      "path": "/last-games",
+      "width": 1440,
+      "status": 200,
+      "errors": [],
+      "failures": [
+        {
+          "url": "http://localhost:3400/?_rsc=25tNN9o_qIkCs99y",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        },
+        {
+          "url": "http://localhost:3400/stats?_rsc=25tNN9o_qIkCs99y",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        },
+        {
+          "url": "http://localhost:3400/?_rsc=9AF7FgMtKCx_M6O2",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        },
+        {
+          "url": "http://localhost:3400/players/1641708?season=2025-26&phase=regular_season&beforeDate=2026-04-13&_rsc=25tNN9o_qIkCs99y",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        },
+        {
+          "url": "http://localhost:3400/players/1641708?season=2025-26&phase=regular_season&beforeDate=2026-04-13&_rsc=YemLsRAKEyPq9Q3J",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        }
+      ],
+      "overflow": false,
+      "resultY": 243,
+      "title": "Recent Games",
+      "example": "Example: Amen ThompsonChange",
+      "alerts": [],
+      "scope": "?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&playerId=1641708&exampleSubject=1641708",
+      "tabular": null
+    },
+    {
+      "path": "/research/operation",
+      "width": 1440,
+      "status": 200,
+      "errors": [],
+      "failures": [
+        {
+          "url": "http://localhost:3400/?_rsc=f2nkcGg1FINGadX6",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        },
+        {
+          "url": "http://localhost:3400/investigations?_rsc=YkXlNQLXqxjKVNpC",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        },
+        {
+          "url": "http://localhost:3400/compare?_rsc=YkXlNQLXqxjKVNpC",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        },
+        {
+          "url": "http://localhost:3400/stat-line-shift?_rsc=YkXlNQLXqxjKVNpC",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        },
+        {
+          "url": "http://localhost:3400/last-games?_rsc=YkXlNQLXqxjKVNpC",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        },
+        {
+          "url": "http://localhost:3400/compare?_rsc=qReqjdh1zGd2GHYN",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        },
+        {
+          "url": "http://localhost:3400/stat-line-shift?_rsc=f2nkcGg1FINGadX6",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        },
+        {
+          "url": "http://localhost:3400/last-games?_rsc=f2nkcGg1FINGadX6",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        }
+      ],
+      "overflow": false,
+      "resultY": 154,
+      "title": "Research Operation",
+      "alerts": [],
+      "scope": "",
+      "tabular": null
+    },
+    {
+      "path": "/live",
+      "width": 1440,
+      "status": 200,
+      "errors": [],
+      "failures": [
+        {
+          "url": "http://localhost:3400/live/2026-10-11?_rsc=MTj2NC-7G28rXwox",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        },
+        {
+          "url": "http://localhost:3400/live/2026-10-11?live_mode=history&_rsc=MTj2NC-7G28rXwox",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        },
+        {
+          "url": "http://localhost:3400/playoffs?_rsc=MTj2NC-7G28rXwox",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        },
+        {
+          "url": "http://localhost:3400/live/2026-10-04?date=2026-10-04&_rsc=MTj2NC-7G28rXwox",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        },
+        {
+          "url": "http://localhost:3400/live/2026-10-04?date=2026-10-04&_rsc=IvqPl1cgWbJb_-8V",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        },
+        {
+          "url": "http://localhost:3400/live/2026-10-11?_rsc=IvqPl1cgWbJb_-8V",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        },
+        {
+          "url": "http://localhost:3400/live/2026-10-11?live_mode=history&_rsc=IvqPl1cgWbJb_-8V",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        },
+        {
+          "url": "http://localhost:3400/playoffs?_rsc=X5RmtabK5dZvqmiX",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        },
+        {
+          "url": "http://localhost:3400/live/2026-10-07?date=2026-10-07&_rsc=IvqPl1cgWbJb_-8V",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        },
+        {
+          "url": "http://localhost:3400/live/2026-10-06?date=2026-10-06&_rsc=IvqPl1cgWbJb_-8V",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        },
+        {
+          "url": "http://localhost:3400/live/2026-10-05?date=2026-10-05&_rsc=IvqPl1cgWbJb_-8V",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        },
+        {
+          "url": "http://localhost:3400/live/2026-10-12?date=2026-10-12&_rsc=IvqPl1cgWbJb_-8V",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        },
+        {
+          "url": "http://localhost:3400/live/2026-10-09?date=2026-10-09&_rsc=IvqPl1cgWbJb_-8V",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        },
+        {
+          "url": "http://localhost:3400/live/2026-10-10?date=2026-10-10&_rsc=IvqPl1cgWbJb_-8V",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        },
+        {
+          "url": "http://localhost:3400/live/2026-10-15?date=2026-10-15&_rsc=IvqPl1cgWbJb_-8V",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        },
+        {
+          "url": "http://localhost:3400/live/2026-10-16?date=2026-10-16&_rsc=IvqPl1cgWbJb_-8V",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        },
+        {
+          "url": "http://localhost:3400/live/2026-10-14?date=2026-10-14&_rsc=IvqPl1cgWbJb_-8V",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        },
+        {
+          "url": "http://localhost:3400/live/2026-10-18?date=2026-10-18&_rsc=IvqPl1cgWbJb_-8V",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        },
+        {
+          "url": "http://localhost:3400/api/live/subscriptions/15c0482b-e859-429d-a064-46c253ab5735",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        },
+        {
+          "url": "http://localhost:3400/live/2026-06-06?date=2026-06-06&live_mode=history&releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=playoffs&beforeDate=2026-06-14&_rsc=IvqPl1cgWbJb_-8V",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        },
+        {
+          "url": "http://localhost:3400/live/2026-06-13?live_mode=history&season=2025-26&phase=playoffs&beforeDate=2026-06-14&releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&_rsc=IvqPl1cgWbJb_-8V",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        },
+        {
+          "url": "http://localhost:3400/live/2026-06-07?date=2026-06-07&live_mode=history&releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=playoffs&beforeDate=2026-06-14&_rsc=IvqPl1cgWbJb_-8V",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        },
+        {
+          "url": "http://localhost:3400/live/2026-06-10?date=2026-06-10&live_mode=history&releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=playoffs&beforeDate=2026-06-14&_rsc=IvqPl1cgWbJb_-8V",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        },
+        {
+          "url": "http://localhost:3400/live/2026-06-08?date=2026-06-08&live_mode=history&releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=playoffs&beforeDate=2026-06-14&_rsc=IvqPl1cgWbJb_-8V",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        },
+        {
+          "url": "http://localhost:3400/live/2026-06-09?date=2026-06-09&live_mode=history&releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=playoffs&beforeDate=2026-06-14&_rsc=IvqPl1cgWbJb_-8V",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        },
+        {
+          "url": "http://localhost:3400/live/2026-06-14?date=2026-06-14&live_mode=history&releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=playoffs&beforeDate=2026-06-14&_rsc=IvqPl1cgWbJb_-8V",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        },
+        {
+          "url": "http://localhost:3400/live/2026-06-15?date=2026-06-15&live_mode=history&releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=playoffs&beforeDate=2026-06-14&_rsc=IvqPl1cgWbJb_-8V",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        },
+        {
+          "url": "http://localhost:3400/live/2026-06-12?date=2026-06-12&live_mode=history&releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=playoffs&beforeDate=2026-06-14&_rsc=IvqPl1cgWbJb_-8V",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        },
+        {
+          "url": "http://localhost:3400/live/2026-06-18?date=2026-06-18&live_mode=history&releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=playoffs&beforeDate=2026-06-14&_rsc=IvqPl1cgWbJb_-8V",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        },
+        {
+          "url": "http://localhost:3400/live/2026-06-17?date=2026-06-17&live_mode=history&releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=playoffs&beforeDate=2026-06-14&_rsc=IvqPl1cgWbJb_-8V",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        },
+        {
+          "url": "http://localhost:3400/live/2026-06-20?date=2026-06-20&live_mode=history&releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=playoffs&beforeDate=2026-06-14&_rsc=IvqPl1cgWbJb_-8V",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        },
+        {
+          "url": "http://localhost:3400/live/2026-06-19?date=2026-06-19&live_mode=history&releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=playoffs&beforeDate=2026-06-14&_rsc=IvqPl1cgWbJb_-8V",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        }
+      ],
+      "overflow": false,
+      "resultY": 374,
+      "title": "Live",
+      "alerts": [],
+      "scope": "?date=2026-06-13&live_mode=history&releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=playoffs&beforeDate=2026-06-14&fallbackFrom=2026-10-11&nextGamesDate=2026-10-12&fallbackReason=unavailable",
+      "tabular": null
+    },
+    {
+      "path": "/contracts",
+      "width": 1440,
+      "status": 200,
+      "errors": [],
+      "failures": [
+        {
+          "url": "http://localhost:3400/?_rsc=DzmfcRRfJeItXkgz",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        },
+        {
+          "url": "http://localhost:3400/?_rsc=2Ju2sngZl13OvaTN",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        },
+        {
+          "url": "http://localhost:3400/stats?_rsc=CH3kk_XQs68o213w",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        }
+      ],
+      "overflow": false,
+      "resultY": null,
+      "title": "Contracts & Payroll",
+      "alerts": [],
+      "scope": "?finance_operation_version=finance-query-v1&finance_book_id=&finance_financial_season=2025-26&finance_known_at=&finance_effective_on=&finance_amount_kind=base_salary&finance_small_big_threshold_cents=1200000000&finance_unknown_dates=include_labelled&finance_scenario=reported-v1",
+      "tabular": null
+    },
+    {
+      "path": "/free-agency",
+      "width": 1440,
+      "status": 200,
+      "errors": [],
+      "failures": [
+        {
+          "url": "http://localhost:3400/?_rsc=d8ubO1PDo4tKUkIk",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        },
+        {
+          "url": "http://localhost:3400/stats?_rsc=sYUfuYWRNGVxAMhD",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        }
+      ],
+      "overflow": false,
+      "resultY": null,
+      "title": "Free Agency Tracker",
+      "alerts": [],
+      "scope": "?finance_operation_version=finance-query-v1&finance_book_id=&finance_financial_season=2025-26&finance_known_at=&finance_effective_on=&finance_amount_kind=base_salary&finance_small_big_threshold_cents=1200000000&finance_unknown_dates=include_labelled&finance_scenario=reported-v1",
+      "tabular": null
+    },
+    {
+      "path": "/compare",
+      "width": 390,
+      "status": 200,
+      "errors": [],
+      "failures": [
+        {
+          "url": "http://localhost:3400/compare?playerA=1641708&playerB=201142&season=2025-26&phase=regular_season&beforeDate=2026-04-13&releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&window=season&_rsc=1PbMALbIV_Fn6T9y",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        },
+        {
+          "url": "http://localhost:3400/players/1641708?_rsc=1SfzXOvHUThkSklk",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        },
+        {
+          "url": "http://localhost:3400/players/201142?_rsc=1SfzXOvHUThkSklk",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        },
+        {
+          "url": "http://localhost:3400/players/1641708?_rsc=6xKNy6HZDQzOdFjX",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        }
+      ],
+      "overflow": false,
+      "resultY": 223,
+      "title": "Player Comparison",
+      "alerts": [],
+      "scope": "",
+      "tabular": null
+    },
+    {
+      "path": "/compare (suggestion)",
+      "width": 390,
+      "overflow": false,
+      "errors": [],
+      "chips": [
+        {
+          "label": "+7.7Kevin Durant: 7.7 points more",
+          "identity": "b",
+          "color": "rgb(128, 191, 255)"
+        },
+        {
+          "label": "+2.3Amen Thompson: 2.3 rebounds more",
+          "identity": "a",
+          "color": "rgb(255, 209, 102)"
+        },
+        {
+          "label": "+0.5Amen Thompson: 0.5 assists more",
+          "identity": "a",
+          "color": "rgb(255, 209, 102)"
+        },
+        {
+          "label": "+0.7Amen Thompson: 0.7 steals more",
+          "identity": "a",
+          "color": "rgb(255, 209, 102)"
+        },
+        {
+          "label": "+0.3Kevin Durant: 0.3 blocks more",
+          "identity": "b",
+          "color": "rgb(128, 191, 255)"
+        },
+        {
+          "label": "+0.8 fewerAmen Thompson: 0.8 turnovers fewer",
+          "identity": "a",
+          "color": "rgb(255, 209, 102)"
+        },
+        {
+          "label": "+1.0Amen Thompson minus Kevin Durant: 1 minutes; no favorable direction declared",
+          "identity": "neutral",
+          "color": "rgb(169, 175, 185)"
+        },
+        {
+          "label": "+1.0Amen Thompson minus Kevin Durant: 1 games; no favorable direction declared",
+          "identity": "neutral",
+          "color": "rgb(169, 175, 185)"
+        },
+        {
+          "label": "+4.7Kevin Durant: 4.7 pp more",
+          "identity": "b",
+          "color": "rgb(128, 191, 255)"
+        },
+        {
+          "label": "+4.2Kevin Durant: 4.2 pp more",
+          "identity": "b",
+          "color": "rgb(128, 191, 255)"
+        },
+        {
+          "label": "+3.4Amen Thompson: 3.4 pp more",
+          "identity": "a",
+          "color": "rgb(255, 209, 102)"
+        }
+      ]
+    },
+    {
+      "path": "/matchups",
+      "width": 390,
+      "status": 200,
+      "errors": [],
+      "failures": [],
+      "overflow": false,
+      "resultY": 275,
+      "title": "Player Matchups",
+      "example": "Example: Amen ThompsonChange",
+      "alerts": [],
+      "scope": "?operation=matchups&release_id=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&before_date=2026-04-13&player_id=1641708&min_attempts=100&min_games=5&limit=10&exampleSubject=1641708",
+      "tabular": null
+    },
+    {
+      "path": "/wowy",
+      "width": 390,
+      "status": 200,
+      "errors": [],
+      "failures": [],
+      "overflow": false,
+      "resultY": 343,
+      "title": "WOWY",
+      "example": "Example: Amen Thompson · Kevin DurantChange",
+      "alerts": [],
+      "scope": "?operation=wowy&team_id=1610612745&release_id=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&before_date=2026-04-13&together=1641708%2C201142&min_possessions=100&min_games=5&exampleSubject=1641708%2C201142",
+      "tabular": null
+    },
+    {
+      "path": "/stat-line-shift",
+      "width": 390,
+      "status": 200,
+      "errors": [],
+      "failures": [],
+      "overflow": false,
+      "resultY": 275,
+      "title": "Teammate Stat Shift",
+      "example": "Example: Amen Thompson · Kevin DurantChange",
+      "alerts": [],
+      "scope": "?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&player_id=1641708&team_id=HOU&together=201142&exampleSubject=1641708",
+      "tabular": null
+    },
+    {
+      "path": "/similar-players/shot-profile",
+      "width": 390,
+      "status": 200,
+      "errors": [],
+      "failures": [],
+      "overflow": false,
+      "resultY": 348,
+      "title": "Similar Players",
+      "example": "Example: Amen ThompsonChange",
+      "alerts": [],
+      "scope": "?operation=shot-profile-peers&release_id=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&before_date=2026-04-13&player_id=1641708&min_attempts=100&min_games=5&limit=10&exampleSubject=1641708",
+      "tabular": null
+    },
+    {
+      "path": "/research/shooting/aftermath",
+      "width": 390,
+      "status": 200,
+      "errors": [],
+      "failures": [],
+      "overflow": false,
+      "resultY": 296,
+      "title": "Shooting",
+      "example": "Example: Amen ThompsonChange",
+      "alerts": [],
+      "scope": "?operation=shot-aftermath&release_id=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&before_date=2026-04-13&player_id=1641708&min_attempts=100&min_games=5&limit=10&exampleSubject=1641708",
+      "tabular": null
+    },
+    {
+      "path": "/similar-players",
+      "width": 390,
+      "status": 200,
+      "errors": [],
+      "failures": [],
+      "overflow": false,
+      "resultY": 296,
+      "title": "Similar Players",
+      "example": "Example: Amen ThompsonChange",
+      "alerts": [],
+      "scope": "?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&playerId=1641708&exampleSubject=1641708",
+      "tabular": null
+    },
+    {
+      "path": "/last-games",
+      "width": 390,
+      "status": 200,
+      "errors": [],
+      "failures": [],
+      "overflow": false,
+      "resultY": 377,
+      "title": "Recent Games",
+      "example": "Example: Amen ThompsonChange",
+      "alerts": [],
+      "scope": "?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&playerId=1641708&exampleSubject=1641708",
+      "tabular": null
+    },
+    {
+      "path": "/research/operation",
+      "width": 390,
+      "status": 200,
+      "errors": [],
+      "failures": [
+        {
+          "url": "http://localhost:3400/investigations?_rsc=YkXlNQLXqxjKVNpC",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        },
+        {
+          "url": "http://localhost:3400/compare?_rsc=YkXlNQLXqxjKVNpC",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        },
+        {
+          "url": "http://localhost:3400/investigations?_rsc=ZX2alQbS3xh-sACD",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        },
+        {
+          "url": "http://localhost:3400/stat-line-shift?_rsc=YkXlNQLXqxjKVNpC",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        },
+        {
+          "url": "http://localhost:3400/compare?_rsc=qReqjdh1zGd2GHYN",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        },
+        {
+          "url": "http://localhost:3400/stat-line-shift?_rsc=f2nkcGg1FINGadX6",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        }
+      ],
+      "overflow": false,
+      "resultY": 186,
+      "title": "Research Operation",
+      "alerts": [],
+      "scope": "",
+      "tabular": null
+    },
+    {
+      "path": "/live",
+      "width": 390,
+      "status": 200,
+      "errors": [],
+      "failures": [
+        {
+          "url": "http://localhost:3400/live/2026-10-11?_rsc=MTj2NC-7G28rXwox",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        },
+        {
+          "url": "http://localhost:3400/live/2026-10-11?live_mode=history&_rsc=MTj2NC-7G28rXwox",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        },
+        {
+          "url": "http://localhost:3400/playoffs?_rsc=MTj2NC-7G28rXwox",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        },
+        {
+          "url": "http://localhost:3400/live/2026-10-04?date=2026-10-04&_rsc=MTj2NC-7G28rXwox",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        },
+        {
+          "url": "http://localhost:3400/live/2026-10-10?date=2026-10-10&_rsc=IvqPl1cgWbJb_-8V",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        },
+        {
+          "url": "http://localhost:3400/live/2026-10-09?date=2026-10-09&_rsc=IvqPl1cgWbJb_-8V",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        },
+        {
+          "url": "http://localhost:3400/playoffs?_rsc=X5RmtabK5dZvqmiX",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        },
+        {
+          "url": "http://localhost:3400/live/2026-10-04?date=2026-10-04&_rsc=IvqPl1cgWbJb_-8V",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        },
+        {
+          "url": "http://localhost:3400/live/2026-10-13?date=2026-10-13&_rsc=IvqPl1cgWbJb_-8V",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        },
+        {
+          "url": "http://localhost:3400/live/2026-10-11?_rsc=IvqPl1cgWbJb_-8V",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        },
+        {
+          "url": "http://localhost:3400/live/2026-10-18?date=2026-10-18&_rsc=IvqPl1cgWbJb_-8V",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        },
+        {
+          "url": "http://localhost:3400/live/2026-06-13?live_mode=history&season=2025-26&phase=playoffs&beforeDate=2026-06-14&releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&_rsc=IvqPl1cgWbJb_-8V",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        },
+        {
+          "url": "http://localhost:3400/live/2026-06-06?date=2026-06-06&live_mode=history&releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=playoffs&beforeDate=2026-06-14&_rsc=IvqPl1cgWbJb_-8V",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        },
+        {
+          "url": "http://localhost:3400/live/2026-06-11?date=2026-06-11&live_mode=history&releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=playoffs&beforeDate=2026-06-14&_rsc=IvqPl1cgWbJb_-8V",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        },
+        {
+          "url": "http://localhost:3400/live/2026-06-12?date=2026-06-12&live_mode=history&releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=playoffs&beforeDate=2026-06-14&_rsc=IvqPl1cgWbJb_-8V",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        },
+        {
+          "url": "http://localhost:3400/live/2026-06-14?date=2026-06-14&live_mode=history&releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=playoffs&beforeDate=2026-06-14&_rsc=IvqPl1cgWbJb_-8V",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        },
+        {
+          "url": "http://localhost:3400/live/2026-06-15?date=2026-06-15&live_mode=history&releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=playoffs&beforeDate=2026-06-14&_rsc=IvqPl1cgWbJb_-8V",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        },
+        {
+          "url": "http://localhost:3400/api/live/subscriptions/32af0d0d-b511-419a-8ca3-a0a951348236",
+          "failure": {
+            "errorText": "net::ERR_ABORTED"
+          }
+        }
+      ],
+      "overflow": false,
+      "resultY": 370,
+      "title": "Live",
+      "alerts": [],
+      "scope": "?date=2026-06-13&live_mode=history&releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=playoffs&beforeDate=2026-06-14&fallbackFrom=2026-10-11&nextGamesDate=2026-10-12&fallbackReason=unavailable",
+      "tabular": null
+    },
+    {
+      "path": "/contracts",
+      "width": 390,
+      "status": 200,
+      "errors": [],
+      "failures": [],
+      "overflow": false,
+      "resultY": null,
+      "title": "Contracts & Payroll",
+      "alerts": [],
+      "scope": "?finance_operation_version=finance-query-v1&finance_book_id=&finance_financial_season=2025-26&finance_known_at=&finance_effective_on=&finance_amount_kind=base_salary&finance_small_big_threshold_cents=1200000000&finance_unknown_dates=include_labelled&finance_scenario=reported-v1",
+      "tabular": null
+    },
+    {
+      "path": "/free-agency",
+      "width": 390,
+      "status": 200,
+      "errors": [],
+      "failures": [],
+      "overflow": false,
+      "resultY": null,
+      "title": "Free Agency Tracker",
+      "alerts": [],
+      "scope": "?finance_operation_version=finance-query-v1&finance_book_id=&finance_financial_season=2025-26&finance_known_at=&finance_effective_on=&finance_amount_kind=base_salary&finance_small_big_threshold_cents=1200000000&finance_unknown_dates=include_labelled&finance_scenario=reported-v1",
+      "tabular": null
+    }
+  ]
+}

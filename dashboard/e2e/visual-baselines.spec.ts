@@ -1,6 +1,7 @@
 import { test, expect, type Page } from "@playwright/test";
 import { mockFinance, initial as financeInitial } from "./finance-fixture";
 import { readFileSync } from "node:fs";
+import { firstLoadFixtures, offSeasonFixtures } from "./first-load-fixtures";
 import { openWorkbench } from "./workbench-navigation";
 import research from "./fixtures/research-negative-result.json";
 
@@ -237,4 +238,20 @@ for (const view of WIDTHS) test.describe(`FO13 baselines ${view.name}`, () => {
     await expect(page.getByRole("heading", { name: ready, exact: true })).toBeVisible();
     await settle(page); await expect(page).toHaveScreenshot(`${name}-${view.name}.png`, shot);
   });
+});
+
+// PC04: every entry is opened without parameters; canonical defaults are written by the page.
+for (const view of WIDTHS) test.describe(`PC04 parameter-free baselines ${view.name}`, () => {
+  test.beforeEach(async ({page}) => {await page.setViewportSize({width:view.width,height:view.height});await stableWorkspace(page);await firstLoadFixtures(page);});
+  for (const [name,path] of [["compare","/compare"],["matchups","/matchups"],["wowy","/wowy"],["stat-shift","/stat-line-shift"],["shot-profile","/similar-players/shot-profile"],["shot-aftermath","/research/shooting/aftermath"],["similar-players","/similar-players"],["recent-games","/last-games"],["operation-gallery","/research/operation"]]) test(name,async({page})=>{
+    await openWorkbench(page,path);
+    if(path === "/compare") await expect(page.locator(".pc04-identity-card[data-placeholder]")).toHaveCount(2);
+    else if(path === "/research/operation") await expect(page.getByRole("region",{name:"Available research operations"})).toBeVisible();
+    else await expect(page.getByRole("region",{name:"Observed example context"})).toBeVisible();
+    await settle(page);await expect(page).toHaveScreenshot(`first-load-${name}-${view.name}.png`,shot);
+  });
+  test("live off-season",async({page})=>{await offSeasonFixtures(page);await openWorkbench(page,"/live");await expect(page.getByRole("region",{name:"Top performers"})).toContainText("28 PTS");await settle(page);await expect(page).toHaveScreenshot(`first-load-live-${view.name}.png`,shot);});
+  // Finance first-load defaults are explicitly dependent on PC06's admitted books. Record the
+  // current entry without fabricating a book; these snapshots are not finance completion claims.
+  for(const route of ["contracts","free-agency"]) test(`pending ${route}`,async({page})=>{await mockFinance(page);await openWorkbench(page,`/${route}`);await expect(page.getByRole("heading",{level:1})).toBeVisible();await settle(page);await expect(page).toHaveScreenshot(`first-load-${route}-${view.name}.png`,shot);});
 });

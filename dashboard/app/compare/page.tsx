@@ -3,6 +3,7 @@ import { ComparisonRows } from "@/components/ui/comparison-rows";
 import { TeamLogo } from "@/components/team-logo";
 import type { Metadata } from "next";
 import Link from "next/link";
+import { CompareSuggestions } from "@/components/compare-suggestions";
 import { CompareSelector } from "@/components/compare-selector";
 import { PlayerCompareView } from "@/components/player-compare-view";
 import { AnalyticsApiError, getAnalyticsCatalog, getAnalyticsCompare } from "@/lib/api";
@@ -13,7 +14,7 @@ import { GatedNote } from "@/components/ui/gated-note";
 import { PlayerIdentity } from "@/components/ui/identity";
 import { formatDate } from "@/lib/format-date";
 import { resolveStatsQuery } from "@/lib/stats-query";
-import { getWorkbenchCatalog, executeWorkbenchQuery } from "@/lib/workbench-api";
+import { getMetricCatalog, queryPlayerResearch, getWorkbenchCatalog, executeWorkbenchQuery } from "@/lib/workbench-api";
 import { comparePlayers } from "@/lib/workbench-api";
 import type { AnalyticsCompare, AnalyticsProfile, AnalyticsSummary, PlayerComparisonResponse } from "@/lib/types";
 
@@ -40,7 +41,7 @@ export default async function ComparePage({ searchParams }: {
   const selected = { ...rawSelected, releaseId: rawSelected.releaseId ?? rawSelected.release_id, beforeDate: rawSelected.beforeDate ?? rawSelected.before_date };
   const loaded = await loadComparison(selected);
   if (!loaded) return <PageShell template="compare"><PageHeader title="Player Comparison" /><GatedNote action={<Link className="button" href="/players">Open players</Link>}>Comparison unavailable.</GatedNote></PageShell>;
-  const { catalog, workbenchCatalog, date, comparison, wbComparison, error, targetA, targetB, additionalPlayerIds, cohort } = loaded;
+  const { catalog, workbenchCatalog, date, comparison, wbComparison, error, targetA, targetB, additionalPlayerIds, cohort, metricDefinitions, leaders } = loaded;
   const context = {
     season: String(wbComparison?.context?.season ?? selected.season ?? workbenchCatalog?.default_season ?? ""),
     phase: String(wbComparison?.context?.phase ?? selected.phase ?? workbenchCatalog?.default_phase ?? "regular_season"),
@@ -51,15 +52,15 @@ export default async function ComparePage({ searchParams }: {
   const selector = (    <CompareSelector catalog={catalog} date={date} legacy={Boolean(selected.snapshotId === "snapshot-browser-fixture" || comparison && !wbComparison)}
       initialA={wbComparison ? { id: wbComparison.player_a.id, name: wbComparison.player_a.name } : comparison ? comparison.player_a.player : targetA ? {id:targetA,name:`Player ${targetA}`} : null}
       initialB={wbComparison ? { id: wbComparison.player_b.id, name: wbComparison.player_b.name } : comparison ? comparison.player_b.player : targetB ? {id:targetB,name:`Player ${targetB}`} : null} />);
-  if(wbComparison) return <PageShell template="compare" className="fo11-player-comparison"><PlayerCompareView comparison={wbComparison} catalog={catalog} workbenchCatalog={workbenchCatalog} selector={selector} additionalPlayerIds={additionalPlayerIds} context={context} cohort={cohort} /></PageShell>;
+  if(wbComparison) return <PageShell template="compare" className="fo11-player-comparison"><PlayerCompareView comparison={wbComparison} catalog={catalog} workbenchCatalog={workbenchCatalog} selector={selector} additionalPlayerIds={additionalPlayerIds} context={context} cohort={cohort} metricDefinitions={metricDefinitions} /></PageShell>;
   return <PageShell template="compare" className="fo11-player-comparison">
     <PageHeader title="Player Comparison" subtitle="Descriptive metrics under a shared scope." />
     <ContextBar catalog={workbenchCatalog ?? undefined} initialReleaseId={context.release_id} initialSeason={context.season} initialPhase={context.phase} initialBeforeDate={context.before_date} initialWindow={context.window}
       detailRows={[{label:"Legacy snapshot",value:catalog.snapshot_id,mono:true},{label:"Source",value:catalog.source}, ...(cohort ? [{label:"Percentile cohort",value:`${cohort.total_eligible_players} eligible players; Stats midrank percentiles, oriented by catalog direction.`}] : [])]} />
-    {selector}
+    {!comparison && !error ? <CompareSuggestions leaders={leaders} scope={context} selector={selector} /> : selector}
     {error && <div role="alert"><GatedNote why={error} action={<Link className="button" href="/compare">Choose players</Link>}>Unable to compare.</GatedNote></div>}
     {comparison && !wbComparison && <ComparisonView comparison={comparison} />}
-    {!comparison && !wbComparison && !error && <GatedNote>Select two players to compare.</GatedNote>}
+
   </PageShell>;
 }
 
@@ -129,7 +130,10 @@ async function loadComparison(selected: {
       }
     }
     const cohort = wbComparison && scope ? await executeWorkbenchQuery({...scope,page:{limit:2}}, {player_ids:[wbComparison.player_a.id,wbComparison.player_b.id]}).catch(() => null) : null;
+    const [metrics, suggested] = await Promise.all([getMetricCatalog().catch(() => null), !targetA && !targetB && scope ? queryPlayerResearch({ release_id:scope.release_id ?? undefined, season:scope.season, phase:scope.phase, before_date:scope.before_date ?? undefined, window:"season", sort_metric:"min", sort_direction:"desc", min_games:1, limit:2 }).catch(() => null) : Promise.resolve(null)]);
     return {
+      metricDefinitions: metrics?.metrics ?? [],
+      leaders: suggested?.items.slice(0,2) ?? [],
       catalog,
       workbenchCatalog,
       cohort,
