@@ -417,3 +417,28 @@ parameters**. Blocks before each owner gate also need recorded owner approval.
   Vitest 415 passed.
 - Next: owner review of the archetype names (rename = names file + new serving manifest, same
   fit). Then PC10 Roster Shapes to gate G4.
+
+## 2026-10-11 — PC10 Roster Shapes (gate G4: stop for approval)
+
+- Owner instruction: “Begin PC10, I agree with the proposed names”. Archetype names are
+  `confirmed` unchanged; new serving manifest `5caeb935…` (names status only; fit `91a5a7d3…`
+  unchanged). Scope is PC10 only. **G4 approval is pending; PC11 has not started.**
+- [Evidence, glance test and checks](evidence/pc10/README.md); contract
+  [Roster Shapes v1](design/roster-shapes-v1.md).
+- `/roster-shapes` opens on real data with no parameters: pins the 2026-27 player index in the
+  URL, then KPI tiles, a shared legend, Fullest / Best fit / A–Z and 30 team shape cards.
+  `/roster-shapes/[team]` has tiles, a large diagram beside the legend and a roster table; the
+  FO05 depth chart is its Depth chart tab, and old `?team=` links redirect there.
+- Size = value over replacement, (BPR + 2.0) × share of a full season's 2025-26 minutes. Color =
+  primary derived archetype. Outline = continuity (returning / new arrival / no 2025-26 sample);
+  "Best fit" sorts by the returning share of value. White space = gap to the fullest roster.
+  139 unknown players are listed, never drawn as zero. @taylormetrics credited.
+- **Not built:** the Regular season vs Playoff-adjusted toggle. The only sealed playoff BPR is
+  2025-26 alone (230 players, 5 meeting the 20-game rule). Owner decision at G4.
+- Read-only: 161 publication pointers and 1,031 identities unchanged. Real result: OKC, SAS, HOU,
+  BOS, DET fullest; glance test 9/13 on both pages.
+- Checks: Python 2,007 passed (9 new), Ruff/format/mypy clean; dashboard lint 0/0, typecheck,
+  Vitest 422 passed; roster, contracts and all 88 visual-baseline Playwright tests pass. In a broad single-worker
+  run, the remaining failures predate PC10 or come from the owner's uncommitted Stats changes
+  (details in the evidence).
+- Next: owner review at G4. After approval, PC11 (populate or remove gated pages).
