@@ -51,6 +51,7 @@ services:
       COURTLENS_ASSISTANT_TURN_TIMEOUT_SECONDS: ${COURTLENS_ASSISTANT_TURN_TIMEOUT_SECONDS:-60}
       COURTLENS_ASSISTANT_PRICES_FILE: ${COURTLENS_ASSISTANT_PRICES_FILE:-config/assistant-prices.yaml}
       COURTLENS_IMPACT_SERVING_MANIFEST: ${COURTLENS_IMPACT_SERVING_MANIFEST:-data/derived/impact-serving-v1/2cd9c98b2594d948edc2c574e082e1b8b06ff4d6bfeca294f87e8062eae76d48.json}
+      COURTLENS_VALUE_ARCHETYPES_MANIFEST: ${COURTLENS_VALUE_ARCHETYPES_MANIFEST:-data/derived/value-archetypes-v1/serving/5caeb935e21fce5842fb5ebb33c7ad515cb550eb2021b88886ca3e7b5b6e2f7e.json}
     ports:
       - "127.0.0.1:8000:8000"
     volumes:
@@ -59,6 +60,7 @@ services:
       - courtlens-cache:/app/data/cache
       - ./data/artifacts/evaluation:/app/data/artifacts/evaluation:ro
       - ./data/derived/impact-serving-v1:/app/data/derived/impact-serving-v1:ro
+      - ./data/derived/value-archetypes-v1/serving:/app/data/derived/value-archetypes-v1/serving:ro
     depends_on:
       migrate:
         condition: service_completed_successfully

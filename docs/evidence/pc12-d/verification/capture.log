@@ -1,0 +1,46 @@
+[
+  {
+    "name": "rankings",
+    "viewport": "desktop",
+    "first_result_top": 271,
+    "table_top": 381.5,
+    "groups_top": null,
+    "overflow_px": 0,
+    "errors": [],
+    "failed": [],
+    "mutations": []
+  },
+  {
+    "name": "rankings",
+    "viewport": "phone",
+    "first_result_top": 315,
+    "table_top": 565.5,
+    "groups_top": null,
+    "overflow_px": 0,
+    "errors": [],
+    "failed": [],
+    "mutations": []
+  },
+  {
+    "name": "tierlist",
+    "viewport": "desktop",
+    "first_result_top": null,
+    "table_top": null,
+    "groups_top": null,
+    "overflow_px": 0,
+    "errors": [],
+    "failed": [],
+    "mutations": []
+  },
+  {
+    "name": "tierlist",
+    "viewport": "phone",
+    "first_result_top": null,
+    "table_top": null,
+    "groups_top": null,
+    "overflow_px": 0,
+    "errors": [],
+    "failed": [],
+    "mutations": []
+  }
+]

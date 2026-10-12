@@ -1,4 +1,5 @@
 import { assertCurrentEnvironment } from "./server-env";
+import type { SavedDetail } from "./saved-operations";
 
 assertCurrentEnvironment();
 
@@ -99,6 +100,10 @@ async function wbFetch<T>(path: string, options?: RequestInit): Promise<T> {
   }
 
   return (await response.json()) as T;
+}
+
+export function getRetainedOperation(id: string): Promise<SavedDetail> {
+  return wbFetch(`/api/workbench/assistant/investigations/${encodeURIComponent(id)}`);
 }
 
 export async function getWorkbenchCatalog(releaseId?: string): Promise<WorkbenchCatalog> {

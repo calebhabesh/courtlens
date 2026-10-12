@@ -152,12 +152,14 @@ export function LookupInput({ label, value, onChange, onSelect, onSubmitText, ki
     "--lookup-width": `${position.width}px`,
     "--lookup-max-height": `${position.maxHeight}px`,
   } : undefined;
-  const dropdown = open && !disabled && <div ref={dropdownRef} onBlur={blur}
+  // Before typing, show the dropdown only when there are real suggestions (pages, teams).
+  const idleEmpty = !value.trim() && !error && !items.length;
+  const dropdown = open && !disabled && !idleEmpty && <div ref={dropdownRef} onBlur={blur}
     className={`lookup-dropdown ${compactResults ? "lookup-compact-results" : ""} ${portalDropdown ? "lookup-floating-dropdown" : ""}`}
     style={floatingStyle}>
       {loading && <p className="lookup-status-message">Searching…</p>}
       {error && <div className="lookup-status-message error">{error}<button type="button" className="button button-small" onClick={() => {invalidate(); setState(null); setRetry(n=>n+1); ref.current?.focus();}}>Retry search</button></div>}
-      {!loading && !ime && !error && !items.length && <p className="lookup-status-message">{value ? `No matches for “${value}”. Try a shorter name or another spelling.` : "Type a player or team name to see suggestions."}</p>}
+      {!loading && !ime && !error && !items.length && <p className="lookup-status-message">{`No matches for “${value}”. Try a shorter name or another spelling.`}</p>}
       <ul id={`${id}-list`} role="listbox" aria-label={`${label} suggestions`} className="lookup-listbox">
         {items.map((item,index) => <Fragment key={`${item.kind}:${item.canonical_id}`}>{(index === 0 || items[index-1].kind !== item.kind) && <li role="presentation" className="lookup-group-header">{item.kind === "player" ? "Players" : item.kind === "team" ? "Teams" : "Pages and tools"}</li>}<li id={`${id}-option-${index}`} role="option" tabIndex={-1} aria-selected={index === currentActive} className={`lookup-option ${index === currentActive ? "selected" : ""}`} onPointerDown={event=>{if(event.pointerType === "mouse") event.preventDefault();}} onClick={()=>choose(item)} onMouseEnter={()=>setActive(index)}><LookupIdentity item={item} compact={compactResults} /></li></Fragment>)}
       </ul>
@@ -165,7 +167,7 @@ export function LookupInput({ label, value, onChange, onSelect, onSubmitText, ki
   return <div ref={rootRef} className="lookup-combobox" onBlur={blur}>
     <div className="lookup-input-wrapper">
       <Icon name="search" className="lookup-search-icon" />
-      <input ref={ref} role="combobox" aria-label={label} aria-autocomplete="list" aria-expanded={open && !disabled} aria-controls={open ? `${id}-list` : undefined} aria-activedescendant={currentActive >= 0 ? `${id}-option-${currentActive}` : undefined} aria-describedby={`${id}-status`} autoComplete="off" spellCheck={false} className="lookup-input" value={value} placeholder={placeholder} required={required} disabled={disabled} autoFocus={autoFocus}
+      <input ref={ref} role="combobox" aria-label={label} aria-autocomplete="list" aria-expanded={Boolean(dropdown)} aria-controls={dropdown ? `${id}-list` : undefined} aria-activedescendant={currentActive >= 0 ? `${id}-option-${currentActive}` : undefined} aria-describedby={`${id}-status`} autoComplete="off" spellCheck={false} className="lookup-input" value={value} placeholder={placeholder} required={required} disabled={disabled} autoFocus={autoFocus}
         onChange={event => change(event.target.value)} onFocus={() => { setOpen(true); setActive(-1); }}
         onCompositionStart={() => { composing.current = true; invalidate(); setIme(true); }} onCompositionEnd={() => { composing.current = false; setIme(false); }}
         onKeyDown={event => {

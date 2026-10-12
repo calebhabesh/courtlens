@@ -29,6 +29,24 @@ export interface ImageExportOptions {
   units?: string;
 }
 
+/** Resolve token-valued SVG attributes before detaching from the dashboard's CSS cascade. */
+export function resolveSvgTokens(svgElement: SVGSVGElement): SVGSVGElement {
+  const clone = svgElement.cloneNode(true) as SVGSVGElement;
+  const tokens = getComputedStyle(document.documentElement);
+  const originals = [svgElement, ...svgElement.querySelectorAll("*")];
+  const copies = [clone, ...clone.querySelectorAll("*")];
+  originals.forEach((original, index) => {
+    const computed = getComputedStyle(original);
+    for (const name of ["fill", "stroke", "stop-color", "color"]) {
+      const value = original.getAttribute(name);
+      if (!value?.includes("var(")) continue;
+      const resolved = value.replace(/var\((--[\w-]+)\)/g, (_, token: string) => computed.getPropertyValue(token).trim() || tokens.getPropertyValue(token).trim());
+      if (resolved && !resolved.includes("var(")) copies[index].setAttribute(name, resolved);
+    }
+  });
+  return clone;
+}
+
 /**
  * Cleanly format context metadata into a human-readable banner string.
  */
@@ -72,7 +90,7 @@ async function toDataUrl(url: string): Promise<string | null> {
  * fails to load is removed rather than exported as a broken link.
  */
 export async function inlineSvgImages(svgElement: SVGSVGElement): Promise<SVGSVGElement> {
-  const clone = svgElement.cloneNode(true) as SVGSVGElement;
+  const clone = resolveSvgTokens(svgElement);
   const images = Array.from(clone.querySelectorAll("image"));
   await Promise.all(images.map(async (image) => {
     const href = image.getAttribute("href") ?? image.getAttribute("xlink:href");
@@ -157,7 +175,7 @@ export async function exportSvgAsPng(
   ctx.stroke();
 
   // 3. Render SVG onto canvas
-  const svgXml = new XMLSerializer().serializeToString(svgElement);
+  const svgXml = new XMLSerializer().serializeToString(resolveSvgTokens(svgElement));
   const svgBlob = new Blob([svgXml], { type: "image/svg+xml;charset=utf-8" });
   const url = URL.createObjectURL(svgBlob);
 
@@ -224,7 +242,7 @@ export function exportSvgFile(
   filename: string,
   options?: ImageExportOptions
 ): void {
-  let svgXml = new XMLSerializer().serializeToString(svgElement);
+  let svgXml = new XMLSerializer().serializeToString(resolveSvgTokens(svgElement));
 
   if (options) {
     const metaComment = `<!--

@@ -1,0 +1,38 @@
+{
+  "version": "courtlens-archetype-names-v1",
+  "archetypes_sha256": "91a5a7d3f2b5a71c9c33f4caea2833027588b9da979fbc40c19e5e4ca5b00b00",
+  "status": "confirmed",
+  "review": "Proposed by inspection of cluster means and 2025-26 exemplars (PC09); confirmed unchanged by the owner on 2026-10-11 at the start of PC10.",
+  "clusters": [
+    {
+      "name": "Lead creator",
+      "short": "creator",
+      "description": "High usage and assist share with a balanced shot diet; guards and wings who run the offense (Brunson, Maxey, Durant)."
+    },
+    {
+      "name": "Spacing wing",
+      "short": "spacer",
+      "description": "Moderate usage, low assist share, most shots from three (Camara, Knueppel, Miles Bridges)."
+    },
+    {
+      "name": "Two-way connector",
+      "short": "connector",
+      "description": "Low usage, some playmaking, highest steal rate and above-average rim attempts (Derrick White, Dyson Daniels, Anunoby)."
+    },
+    {
+      "name": "Stretch big",
+      "short": "stretch big",
+      "description": "Big-man rebounding and blocks with a real three-point share (Holmgren, Mobley, Myles Turner)."
+    },
+    {
+      "name": "Interior hub",
+      "short": "hub",
+      "description": "High usage and assist share, few threes, rim-heavy and strong defensive rebounding (Jokić, Sengun, Scottie Barnes)."
+    },
+    {
+      "name": "Rim runner",
+      "short": "rim runner",
+      "description": "Almost no threes, three in four shots at the rim, elite offensive rebounding and blocks (Gobert, Jarrett Allen, Zubac)."
+    }
+  ]
+}

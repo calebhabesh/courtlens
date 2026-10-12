@@ -59,6 +59,10 @@ for (const label of ["Filter by season", "Filter by competition phase", "Analysi
     await expect(page.locator("select:open")).toBeVisible();
     // The UA picker animation is not exposed by Element.getAnimations(); settle its 140ms enter.
     await page.waitForTimeout(200);
+    // Table changes can make Chromium scroll the document when focusing the picker.
+    // Capture one fixed page position while retaining the open top-layer picker.
+    await page.evaluate(() => window.scrollTo(0, 0));
+    await expect(page.locator("select:open")).toBeVisible();
     // The styled picker stays in the browser's top layer, including in a Filters drawer.
     expect(await page.screenshot({ caret: "hide" })).toMatchSnapshot(`${label.toLowerCase().replaceAll(" ", "-")}-popup.png`);
     await page.keyboard.press("Escape");

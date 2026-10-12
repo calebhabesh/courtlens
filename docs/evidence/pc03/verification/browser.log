@@ -1,0 +1,23 @@
+
+> courtlens-dashboard@0.1.0 test:browser
+> playwright test e2e/chart-kit.spec.ts e2e/compare-overhaul.spec.ts --workers=2
+
+
+Running 14 tests using 2 workers
+
+  ✓   2 e2e/chart-kit.spec.ts:51:7 › PC03 chart kit 1440px › reduced motion collapses every chart fade and semantic transition (453ms)
+  ✓   1 e2e/chart-kit.spec.ts:16:7 › PC03 chart kit 1440px › first load, data changes, state actions and phone forms (1.5s)
+  ✓   4 e2e/chart-kit.spec.ts:51:7 › PC03 chart kit 390px › reduced motion collapses every chart fade and semantic transition (341ms)
+  ✓   3 e2e/chart-kit.spec.ts:16:7 › PC03 chart kit 390px › first load, data changes, state actions and phone forms (2.7s)
+  ✓   6 e2e/chart-kit.spec.ts:51:7 › PC03 chart kit 375px › reduced motion collapses every chart fade and semantic transition (316ms)
+  ✓   7 e2e/chart-kit.spec.ts:64:5 › PC03 prerendered SVG titles contain a single descriptive string (132ms)
+  ✓   5 e2e/chart-kit.spec.ts:16:7 › PC03 chart kit 375px › first load, data changes, state actions and phone forms (2.7s)
+  ✓   9 e2e/compare-overhaul.spec.ts:7:5 › player comparison uses shared scope, signed values and contextual URL modes (1.1s)
+  ✓  10 e2e/compare-overhaul.spec.ts:22:5 › team comparison preserves unknown versus zero, unknown outcomes and scope across tabs (362ms)
+  ✓   8 e2e/chart-kit.spec.ts:74:5 › PC03 Compare exports retain resolved token colors in SVG and PNG (2.7s)
+  ✓  12 e2e/compare-overhaul.spec.ts:51:5 › Matchups applies scoped changes automatically and shows fractional assignments without inventing rates (804ms)
+  ✓  11 e2e/compare-overhaul.spec.ts:36:5 › WOWY cancels an old context and a late response cannot replace the new result (1.4s)
+  ✓  13 e2e/compare-overhaul.spec.ts:67:5 › an initially default WOWY query retains its resolved release and cutoff when a gate changes (859ms)
+  ✓  14 e2e/compare-overhaul.spec.ts:79:5 › an initially default Matchups query retains its resolved release and cutoff when a gate changes (860ms)
+
+  14 passed (8.8s)

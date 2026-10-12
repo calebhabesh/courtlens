@@ -23,6 +23,30 @@
     --color-info: #67aaf9;
     --color-scrim: rgb(0 0 0 / 55%);
     --color-white: #ffffff;
+    /* v1.2: identity, rank, categories and contract status are separate encodings. */
+    --color-identity-a: #ffd166;
+    --color-identity-b: #80bfff;
+    --color-identity-a-soft: rgb(255 209 102 / 12%);
+    --color-identity-b-soft: rgb(128 191 255 / 12%);
+    --color-percentile-1: #172d43;
+    --color-percentile-2: #20415e;
+    --color-percentile-3: #2b567c;
+    --color-percentile-4: #386b96;
+    --color-percentile-5: #3e729b;
+    --color-category-1: #ffd166;
+    --color-category-2: #80bfff;
+    --color-category-3: #c5a3ff;
+    --color-category-4: #79d4c6;
+    --color-category-5: #f6a5c0;
+    --color-category-6: #d0d788;
+    --color-status-guaranteed: #80bfff;
+    --color-status-reported: #d0d788;
+    --color-status-player-option: #c5a3ff;
+    --color-status-team-option: #79d4c6;
+    --color-status-two-way: #f6a5c0;
+    --color-status-projected: #ffd166;
+    --color-status-unknown: #a9afb9;
+    --color-status-unknown-soft: rgb(169 175 185 / 10%);
     --focus-ring: 0 0 0 2px var(--color-bg), 0 0 0 4px var(--color-accent);
 
     /* Elevation Tokens */

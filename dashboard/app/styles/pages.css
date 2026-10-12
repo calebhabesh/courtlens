@@ -3616,7 +3616,7 @@
   width: 9px;
   height: 9px;
   border-radius: var(--radius-pill);
-  background: var(--color-text-tertiary);
+  background: var(--color-text-secondary);
   display: inline-block;
 }
 
@@ -3624,7 +3624,7 @@
   width: 11px;
   height: 11px;
   border-radius: var(--radius-pill);
-  background: var(--color-info);
+  background: var(--color-category-2);
   display: inline-block;
 }
 
@@ -3632,7 +3632,7 @@
   width: 11px;
   height: 11px;
   border-radius: var(--radius-pill);
-  background: var(--color-accent);
+  background: var(--color-identity-a);
   display: inline-block;
 }
 
@@ -3640,7 +3640,7 @@
   width: 13px;
   height: 13px;
   border-radius: var(--radius-pill);
-  background: var(--color-negative);
+  background: var(--color-category-3);
   border: 1.5px solid var(--color-accent);
   display: inline-block;
 }

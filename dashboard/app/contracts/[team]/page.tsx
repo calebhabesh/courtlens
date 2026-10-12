@@ -1,3 +1,3 @@
 import { Suspense } from "react";
-import { FinanceWorkspace } from "@/components/finance-workspace";
-export default async function Page({ params }: { params: Promise<{ team: string }> }) { const {team} = await params; return <Suspense fallback={null}><FinanceWorkspace mode="contracts" team={team} /></Suspense>; }
+import { ContractsTeam } from "@/components/contracts-view";
+export default async function Page({ params }: { params: Promise<{ team: string }> }) { const { team } = await params; return <Suspense fallback={null}><ContractsTeam team={team} /></Suspense>; }

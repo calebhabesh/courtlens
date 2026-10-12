@@ -1,2 +1,2 @@
 import { TemplateSkeleton } from "@/components/ui/template-skeleton";
-export default function Loading() { return <TemplateSkeleton template="explorer" />; }
+export default function Loading() { return <TemplateSkeleton template="research" />; }

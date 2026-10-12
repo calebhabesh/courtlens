@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { listOperations, type SavedSummary } from "@/lib/saved-operations";
 import { formatDate, throughLabel } from "@/lib/format-date";
 import { humanLabel } from "@/lib/route-availability";
+import { publicInvestigation } from "@/lib/public-investigations";
 import type { SavedInvestigation } from "@/lib/types";
 import { WorkbenchInvestigationsList } from "./workbench-investigations-list";
 import { CountChip, FilterBar } from "./ui/filter-bar";
@@ -56,7 +57,7 @@ export function SavedOperationLibrary({ legacy, legacyError }: { legacy: SavedIn
           <table className="data-table">
             <thead><tr><th>Title</th><th>Operations</th><th>Scope</th><th>Saved</th><th>Question</th><th><span className="sr-only">Details</span></th></tr></thead>
             <tbody>{items.map(item => <tr key={item.id}>
-              <th scope="row"><Link href={`/investigations/saved/${item.id}`}>{item.title}</Link></th>
+              <th scope="row"><Link href={`/investigations/saved/${item.id}`}>{publicInvestigation(item)?.title ?? item.title}</Link></th>
               <td>{item.operations.map(humanLabel).join(" · ")}</td>
               <td>{contextLine(item.context)}</td>
               <td>{day(item.created_at)}</td>

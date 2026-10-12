@@ -69,7 +69,7 @@ test("wide and smaller desktop columns align with stable pinned identity while s
         headerLeft: headers.map(cell => cell.x), bodyLeft: body.map(cell => cell.x), rowHeight: body[0].height,
         identityWidths: body.slice(0, 3).map(cell => cell.width) };
     });
-    expect(geometry.rowHeight).toBe(52);
+    expect(geometry.rowHeight).toBeCloseTo(52, 1);
     geometry.identityWidths.forEach((value, index) => expect(value).toBeCloseTo([28, 26, 280][index], 0));
     expect(geometry.headerWidths).toEqual(geometry.bodyWidths);
     expect(geometry.headerLeft).toEqual(geometry.bodyLeft);

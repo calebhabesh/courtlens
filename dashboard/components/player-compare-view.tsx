@@ -1,651 +1,108 @@
 "use client";
-import { AssistantPageSelection } from "@/lib/assistant-page-context";
-import { Icon } from "./ui/icon";
 
-import { useState, useMemo, useRef, type ReactNode } from "react";
+import { useRef, useState, type ReactNode } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
+import { AssistantPageSelection } from "@/lib/assistant-page-context";
+import { COMPARE_PRESETS, CUSTOM_DEFAULT, customMetricKeys, comparisonRows, formatComparisonValue, type CompareCountingMode, type ComparePresetId } from "@/lib/comparison-metrics";
+import { comparisonFlags, leadingIdentity, toneColor } from "./charts/semantics";
+import { DeltaChip } from "./charts";
+import { CompareIdentityCard } from "./compare-identity-card";
 import { CompareLayout } from "./ui/page-shell";
-import { ComparisonRows } from "./ui/comparison-rows";
-import { PlayerIdentity } from "./ui/identity";
+import { PageHeader } from "./ui/panel";
 import { GatedNote } from "./ui/gated-note";
 import { SegmentedControl } from "./ui/segmented-control";
 import { Menu, MenuItem } from "./ui/menu";
-import { PageHeader } from "./ui/panel";
+import { Icon } from "./ui/icon";
 import { ContextBar } from "./context-bar";
-import { orientedPercentile } from "@/lib/percentile-display";
-import { scopeContextLine } from "@/lib/scope-labels";
-import { TrayChip } from "./compare-tray";
 import { MultiPlayerLinesView } from "./multi-player-lines-view";
 import { useWorkspace } from "@/lib/workspace-context";
-import { ALL_CATALOG_METRICS } from "@/lib/stats-presets";
 import { saveInvestigation } from "@/lib/workbench-api";
-import {
-  exportSvgAsPng,
-  exportSvgFile,
-  copyCanonicalQueryUrl
-} from "@/lib/image-export";
-import type {
-  PlayerComparisonResponse,
-  MetricComparisonItem,
-  AnalyticsCatalog,
-  WorkbenchCatalog,
-  WorkbenchQueryResponse
-} from "@/lib/types";
+import { exportSvgAsPng, exportSvgFile } from "@/lib/image-export";
+import { scopeContextLine } from "@/lib/scope-labels";
+import type { AnalyticsCatalog, MetricDefinition, PlayerComparisonResponse, WorkbenchCatalog, WorkbenchQueryResponse } from "@/lib/types";
+export type { ComparePresetId } from "@/lib/comparison-metrics";
 
-export type ComparePresetId = "overall" | "offense" | "defense" | "sixfactor" | "custom";
-
-const PRESET_METRICS: Record<ComparePresetId, { label: string; description: string; metrics: string[] }> = {
-  overall: {
-    label: "Overall",
-    description: "Core descriptive per-game production, workload, and fundamental efficiency.",
-    metrics: [
-      "pts_per_game",
-      "reb_per_game",
-      "ast_per_game",
-      "stl_per_game",
-      "blk_per_game",
-      "tov_per_game",
-      "min_per_game",
-      "gp",
-      "ts_pct",
-      "efg_pct",
-      "ftr"
-    ]
-  },
-  offense: {
-    label: "Offense",
-    description: "Scoring volume, playmaking, shot creation, and shooting splits.",
-    metrics: [
-      "pts_per_game",
-      "pts_per_36",
-      "ast_per_game",
-      "ast_per_36",
-      "tov_per_game",
-      "tov_per_36",
-      "ts_pct",
-      "efg_pct",
-      "fg3m_per_game",
-      "fg3a_per_game",
-      "fg3_pct",
-      "ftm_per_game",
-      "fta_per_game",
-      "ft_pct",
-      "ftr",
-      "oreb_per_game"
-    ]
-  },
-  defense: {
-    label: "Defense",
-    description: "Defensive activity events, defensive rebounding, and foul discipline.",
-    metrics: [
-      "stl_per_game",
-      "stl_per_36",
-      "blk_per_game",
-      "blk_per_36",
-      "dreb_per_game",
-      "dreb_per_36",
-      "pf_per_game",
-      "pf_per_36"
-    ]
-  },
-  sixfactor: {
-    label: "Six Factor",
-    description: "Box-score factor proxies across shooting, turnovers, and rebounding opportunities.",
-    metrics: [
-      "ts_pct",
-      "efg_pct",
-      "ftr",
-      "tov_per_game",
-      "tov_per_36",
-      "oreb_per_game",
-      "oreb_per_36",
-      "dreb_per_game",
-      "dreb_per_36"
-    ]
-  },
-  custom: {
-    label: "Custom",
-    description: "User-defined selection of up to 25 catalog metrics or personal saved custom views.",
-    metrics: []
+export function PlayerCompareView({ comparison, cohort, metricDefinitions = [], workbenchCatalog, selector, additionalPlayerIds = [], context }: {
+  comparison: PlayerComparisonResponse; catalog?: AnalyticsCatalog; cohort?: WorkbenchQueryResponse | null;
+  metricDefinitions?: MetricDefinition[]; workbenchCatalog?: WorkbenchCatalog | null; selector?: ReactNode; additionalPlayerIds?: string[];
+  context: { season: string; phase: string; before_date: string; window: string; release_id?: string };
+}) {
+  const router = useRouter(), params = useSearchParams();
+  const { views } = useWorkspace();
+  const [exporting, setExporting] = useState(false), [notice, setNotice] = useState("");
+  const svgRef = useRef<SVGSVGElement>(null);
+  const preset = params.get("preset");
+  const active: ComparePresetId = preset && Object.hasOwn(COMPARE_PRESETS, preset) ? preset as ComparePresetId : "overall";
+  const requestedMode = params.get("countingMode");
+  const mode: CompareCountingMode = requestedMode === "raw" || requestedMode === "per_75" || requestedMode === "per_100" ? requestedMode : "per_game";
+  const custom = customMetricKeys(params.get("customMetrics"), metricDefinitions);
+  const keys = active === "custom" ? custom : COMPARE_PRESETS[active].metrics;
+  const rows = comparisonRows(keys, mode, comparison, metricDefinitions, cohort);
+  const { player_a: a, player_b: b } = comparison;
+  const names: [string, string] = [a.name, b.name];
+  const lines = params.get("compareView") === "lines";
+  function change(key: string, value: string, server = false) {
+    const next = new URLSearchParams(params.toString()); next.set(key, value);
+    if (server) router.push(`/compare?${next}`, { scroll: false });
+    else window.history.pushState(null, "", `/compare?${next}`);
   }
-};
-
-interface PlayerCompareViewProps {
-  comparison: PlayerComparisonResponse;
-  catalog?: AnalyticsCatalog;
-  cohort?: WorkbenchQueryResponse | null;
-  workbenchCatalog?: WorkbenchCatalog | null;
-  selector?: ReactNode;
-  additionalPlayerIds?: string[];
-  context: {
-    season: string;
-    phase: string;
-    before_date: string;
-    window: string;
-    release_id?: string;
-  };
-}
-
-export function PlayerCompareView({
-  comparison,
-  cohort,
-  workbenchCatalog,
-  selector,
-  additionalPlayerIds = [],
-  context
-}: PlayerCompareViewProps) {
-  const router = useRouter();
-  const { compareTray, views, removeCompare, toggleCompare } = useWorkspace();
-
-  const params = useSearchParams();
-  const requestedPreset = params.get("preset");
-  const activeTab: ComparePresetId = requestedPreset && requestedPreset in PRESET_METRICS ? requestedPreset as ComparePresetId : "overall";
-  function setActiveTab(value: ComparePresetId) { const next=new URLSearchParams(params.toString());next.set("preset",value);window.history.replaceState(null,"",`/compare?${next}`); }
-  const [selectedCustomViewId, setSelectedCustomViewId] = useState<string>("");
-  const [customSelectedKeys] = useState<string[]>([
-    "pts_per_game",
-    "ast_per_game",
-    "reb_per_game",
-    "ts_pct",
-    "efg_pct"
-  ]);
-  const requestedView = params.get("compareView");
-  const mainViewMode = requestedView === "table" || requestedView === "lines" ? requestedView : "bars";
-  function setMainViewMode(value: string) { const next=new URLSearchParams(params.toString());next.set("compareView",value);window.history.replaceState(null,"",`/compare?${next}`); }
-  const [exporting, setExporting] = useState<boolean>(false);
-  const [copySuccess, setCopySuccess] = useState<boolean>(false);
-  const [saving, setSaving] = useState<boolean>(false);
-  const [saveSuccess, setSaveSuccess] = useState<string | null>(null);
-
-  const barChartSvgRef = useRef<SVGSVGElement | null>(null);
-
-  const { player_a, player_b, aligned_metrics, no_forced_winner_notice } = comparison;
-
-  // Active metrics to display based on preset
-  const activeMetricsList = useMemo<MetricComparisonItem[]>(() => {
-    let targetKeys: string[] = [];
-
-    if (activeTab === "custom") {
-      if (selectedCustomViewId) {
-        const found = views.find((v) => v.id === selectedCustomViewId);
-        if (found) targetKeys = found.columns;
-      }
-      if (targetKeys.length === 0) targetKeys = customSelectedKeys;
-    } else {
-      targetKeys = PRESET_METRICS[activeTab].metrics;
-    }
-
-    // Filter aligned_metrics preserving order of targetKeys
-    const metricMap = new Map<string, MetricComparisonItem>();
-    for (const m of aligned_metrics) {
-      metricMap.set(m.metric, m);
-    }
-
-    const result: MetricComparisonItem[] = [];
-    for (const key of targetKeys) {
-      const found = metricMap.get(key);
-      if (found) {
-        result.push(found);
-      } else {
-        const catDef = ALL_CATALOG_METRICS[key];
-        if (catDef) {
-          result.push({
-            metric: key,
-            display_name: catDef.label,
-            unit: catDef.group === "Efficiency" ? "%" : "",
-            value_a: null,
-            value_b: null,
-            diff: null,
-            n_a: player_a.games_played,
-            n_b: player_b.games_played
-          });
-        }
-      }
-    }
-
-    // If preset resulted in empty (e.g. initial load), fall back to aligned_metrics
-    return result.length > 0 ? result : aligned_metrics.slice(0, 15);
-  }, [activeTab, selectedCustomViewId, customSelectedKeys, views, aligned_metrics, player_a, player_b]);
-
-  // Format metric value helper
-  const formatVal = (val: number | string | null, unit: string) => {
-    if (val === null || val === undefined || val === "") return "—";
-    if (typeof val === "number") {
-      if (unit === "%") {
-        return `${(val > 1 ? val : val * 100).toFixed(1)}%`;
-      }
-      return val.toFixed(1);
-    }
-    return String(val);
-  };
-
-  // Image Export handlers
-  const handleExportPng = async () => {
-    if (!barChartSvgRef.current) return;
-    try {
-      setExporting(true);
-      await exportSvgAsPng(barChartSvgRef.current, {
-        title: `CourtLens Comparison: ${player_a.name} vs ${player_b.name}`,
-        subtitle: `${PRESET_METRICS[activeTab].label} Metrics · ${context.season} (${context.phase.replaceAll("_", " ")})`,
-        context,
-        evidenceId: context.release_id,
-        filename: `courtlens-compare-${player_a.id}-vs-${player_b.id}-${context.before_date || "cutoff"}`
-      });
-    } catch (err) {
-      alert(err instanceof Error ? err.message : "Failed to export PNG");
-    } finally {
-      setExporting(false);
-    }
-  };
-
-  const handleExportSvg = () => {
-    if (!barChartSvgRef.current) return;
-    exportSvgFile(barChartSvgRef.current, `courtlens-compare-${player_a.id}-vs-${player_b.id}.svg`, {
-      title: `CourtLens Comparison: ${player_a.name} vs ${player_b.name}`,
-      context,
-      filename: `courtlens-compare-${player_a.id}-vs-${player_b.id}`
-    });
-  };
-
-  const handleCopyLink = async () => {
-    const ok = await copyCanonicalQueryUrl("/compare", {
-      playerA: player_a.id,
-      playerB: player_b.id,
-      season: context.season,
-      phase: context.phase,
-      beforeDate: context.before_date,
-      window: context.window,
-      releaseId: context.release_id
-    });
-    if (ok) {
-      setCopySuccess(true);
-      setTimeout(() => setCopySuccess(false), 2500);
-    }
-  };
-
-  const handleSaveInvestigation = async () => {
-    try {
-      setSaving(true);
-      const title = `Player Comparison: ${player_a.name} vs ${player_b.name} (${context.season})`;
-      const saved = await saveInvestigation(title, {
-        type: "player_comparison",
-        playerA: player_a.id,
-        playerB: player_b.id,
-        season: context.season,
-        phase: context.phase,
-        beforeDate: context.before_date,
-        window: context.window,
-        preset: activeTab
-      });
-      setSaveSuccess(saved.title);
-      setTimeout(() => setSaveSuccess(null), 5000);
-    } catch (err) {
-      alert(err instanceof Error ? err.message : "Failed to save investigation");
-    } finally {
-      setSaving(false);
-    }
-  };
-
-  return (
-    <div className="player-compare-container" role="region" aria-label="Player Comparison Explorer">
-      <PageHeader title="Player Comparison" subtitle="Descriptive metrics under a shared scope." actions={        <div className="compare-toolbar-actions">
-          <Menu trigger={<><Icon name="download" size={16} />Export</>}>
-            <MenuItem label="Export PNG" disabled={exporting || mainViewMode !== "bars"} onClick={()=>void handleExportPng()} />
-            <MenuItem label="Export SVG" disabled={mainViewMode !== "bars"} onClick={handleExportSvg} />
-          </Menu>
-          <button
-            type="button"
-            onClick={handleCopyLink}
-            className="button button-small"
-            title="Copy local query link to clipboard"
-          >
-            {copySuccess ? <><Icon name="check" size={14} />Copied</> : <><Icon name="copy" />Copy local URL</>}
-          </button>
-
-          <button
-            type="button"
-            onClick={handleSaveInvestigation}
-            disabled={saving}
-            className="button button-small"
-            title="Save this comparison to immutable investigations"
-          >
-            {saving ? "Saving…" : <><Icon name="save" size={14} />Save</>}
-          </button>
-        </div>} />
-      <ContextBar catalog={workbenchCatalog ?? undefined} initialReleaseId={context.release_id} initialSeason={context.season} initialPhase={context.phase} initialBeforeDate={context.before_date} initialWindow={context.window}
-        modes={
-      <div className="fo11-comparison-modes">
-        <SegmentedControl name="Comparison Metric Presets" value={activeTab} onChange={setActiveTab} options={(["overall","offense","defense","sixfactor","custom"] as const).map(value=>({value,label:PRESET_METRICS[value].label}))} />
-        <SegmentedControl name="Comparison View Mode" value={mainViewMode} onChange={setMainViewMode} options={[{value:"table",label:"Table",icon:"table"},{value:"bars",label:"Visual Bars",icon:"chart"},{value:"lines",label:"Trend Lines",icon:"trend"}]} />
-      </div>
-
-} detailRows={[{label:"Resolved comparison context",value:JSON.stringify(comparison.context),mono:true},{label:"Percentile cohort",value:cohort ? `${cohort.total_eligible_players} eligible players; Stats midrank percentiles, oriented by catalog direction.` : "Unavailable"}]} />
+  function direction(metric: string) { return comparisonFlags(metricDefinitions.find(definition => definition.key === metric) ?? {}).direction; }
+  async function share() {
+    if (!svgRef.current) return;
+    setExporting(true);
+    try { await exportSvgAsPng(svgRef.current, { title: `${a.name} vs ${b.name}`, subtitle: `${COMPARE_PRESETS[active].label} · ${mode === "raw" ? "Totals" : mode.replaceAll("_", " ")}`, context, evidenceId: context.release_id, filename: `courtlens-compare-${a.id}-vs-${b.id}` }); }
+    catch (error) { setNotice(error instanceof Error ? error.message : "Image export unavailable."); }
+    finally { setExporting(false); }
+  }
+  return <div className="player-compare-container" role="region" aria-label="Player Comparison Explorer">
+    <PageHeader title="Player Comparison" subtitle={`Source: ${workbenchCatalog?.source ?? "published box scores"} · ${a.games_played} / ${b.games_played} GP`} actions={<>
+      <button className="button" disabled={exporting} onClick={() => void share()}><Icon name="download" size={16} />{exporting ? "Exporting…" : "Share image"}</button>
+      <Menu trigger="More"><MenuItem label="Export SVG" onClick={() => {if (svgRef.current) exportSvgFile(svgRef.current, `courtlens-compare-${a.id}-vs-${b.id}.svg`, {title:`${a.name} vs ${b.name}`,context,filename:"courtlens-compare"});}} />
+        <MenuItem label="Copy link" onClick={() => {void navigator.clipboard.writeText(window.location.href).then(() => setNotice("Link copied.")).catch(() => setNotice("Clipboard unavailable."));}} />
+        <MenuItem label="Save investigation" onClick={() => {void saveInvestigation(`${a.name} vs ${b.name}`, {type:"player_comparison", ...Object.fromEntries(params), ...context, preset:active, customMetrics:custom}).then(() => setNotice("Investigation saved.")).catch(() => setNotice("Save unavailable."));}} />
+      </Menu>
+    </>} />
+    <ContextBar catalog={workbenchCatalog ?? undefined} initialReleaseId={context.release_id} initialSeason={context.season} initialPhase={context.phase} initialBeforeDate={context.before_date} initialWindow={context.window}
+      detailRows={[{label:"Resolved comparison context",value:JSON.stringify(comparison.context),mono:true},{label:"Metric definitions",value:"Registered catalog directions; unavailable metrics stay unknown."}]}/>
+    <AssistantPageSelection route="/compare" playerIds={[a.id,b.id,...additionalPlayerIds]} scope={context} label={`${a.name} / ${b.name}`} />
+    <CompareLayout sidePanels={false} className="pc04-compare" sides={[<CompareIdentityCard key="a" player={a} side="a" />,<CompareIdentityCard key="b" player={b} side="b" />]}>
       {selector}
-      <AssistantPageSelection route="/compare" playerIds={[player_a.id, player_b.id, ...additionalPlayerIds]} scope={context} label={`${player_a.name} / ${player_b.name}${additionalPlayerIds.length ? ` + ${additionalPlayerIds.length} more` : ""}`} />
-      {saveSuccess && <p role="status">Saved investigation: <Link href="/investigations">{saveSuccess}</Link></p>}
-      <CompareLayout sides={[player_a,player_b].map(player => <div key={player.id} className="fo11-entity">
-        <PlayerIdentity playerId={player.id} name={player.name} team={player.teams?.[0]} size="xl" href={`/players/${player.id}`} subtitle={`${player.games_played} GP · ${player.total_minutes?.toFixed(0) ?? "—"} MIN`} />
-        <button type="button" className="button" onClick={() => toggleCompare(player.id)} aria-pressed={compareTray.includes(player.id)}><Icon name={compareTray.includes(player.id) ? "check" : "plus"} size={14} />{compareTray.includes(player.id) ? "In Tray" : "Tray"}</button>
-      </div>)}>
-      {/* Custom View Options Bar (only shown when Custom tab active) */}
-      {activeTab === "custom" && (
-        <div className="compare-custom-options">
-          <span>Use Personal Custom View:</span>
-          <select
-            value={selectedCustomViewId}
-            onChange={(e) => setSelectedCustomViewId(e.target.value)}
-            className="w-auto"
-          >
-            <option value="">Default Custom Selection ({customSelectedKeys.length} metrics)</option>
-            {views.map((v) => (
-              <option key={v.id} value={v.id}>
-                {v.name} ({v.columns.length} columns)
-              </option>
-            ))}
-          </select>
-          <Link href="/stats" className="text-accent underline ml-auto">
-            <Icon name="settings" size={14} />Manage Views in Stats
-          </Link>
-        </div>
-      )}
-
-      {/* Main View Mode 1: Aligned Descriptive Table */}
-      {mainViewMode === "table" && (
-        <div className="panel">
-          <div className="panel-header">
-            <div>
-              <h3 className="panel-title">{PRESET_METRICS[activeTab].label} Descriptive Metrics</h3>
-              <p className="text-muted text-xs panel-subtitle-margin">
-                {scopeContextLine(context.season, context.phase, context.before_date)}
-              </p>
-            </div>
-            <span className="badge font-mono text-xs">
-              {activeMetricsList.length} metrics
-            </span>
-          </div>
-
-          <div className="table-wrapper">
-            <table className="data-table" aria-label="Player comparison aligned metrics table">
-              <thead>
-                <tr>
-                  <th>Metric</th>
-                  <th>Unit</th>
-                  <th className="num text-player-a">
-                    {player_a.name}
-                  </th>
-                  <th className="num text-player-b">
-                    {player_b.name}
-                  </th>
-                  <th className="num">Difference (A - B)</th>
-                  <th className="num text-muted">N (A)</th>
-                  <th className="num text-muted">N (B)</th>
-                </tr>
-              </thead>
-              <tbody>
-                {activeMetricsList.map((m) => {
-                  const diffNum = m.diff;
-                  return (
-                    <tr key={m.metric}>
-                      <td>
-                        <strong>{m.display_name}</strong>
-                        <span className="text-xs text-muted font-mono compare-metric-key">
-                          ({m.metric})
-                        </span>
-                      </td>
-                      <td className="text-muted text-xs">{m.unit || "—"}</td>
-                      <td className="num font-mono font-semibold">
-                        {formatVal(m.value_a, m.unit)}
-                      </td>
-                      <td className="num font-mono font-semibold">
-                        {formatVal(m.value_b, m.unit)}
-                      </td>
-                      <td
-                        className={`num font-mono font-bold ${
-                          diffNum && diffNum > 0 ? "text-positive" : diffNum && diffNum < 0 ? "text-negative" : ""
-                        }`}
-                      >
-                        {diffNum !== null && diffNum !== undefined
-                          ? diffNum > 0
-                            ? `+${diffNum.toFixed(m.unit === "%" ? 1 : 1)}`
-                            : diffNum.toFixed(m.unit === "%" ? 1 : 1)
-                          : "—"}
-                      </td>
-                      <td className="num font-mono text-muted text-xs">{m.n_a}</td>
-                      <td className="num font-mono text-muted text-xs">{m.n_b}</td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      )}
-
-      {/* Main View Mode 2: Visual Comparison Bars */}
-      {mainViewMode === "bars" && (
-        <div className="panel">
-          <div className="panel-header">
-            <div>
-              <h3 className="panel-title">Comparative Metric Bars</h3>
-              <p className="text-muted text-xs panel-subtitle-margin">
-                {scopeContextLine(context.season, context.phase, context.before_date)}
-              </p>
-            </div>
-          </div>
-
-          <ComparisonRows names={[player_a.name,player_b.name]} rows={activeMetricsList.map(m => ({key:m.metric,label:m.display_name,a:m.value_a,b:m.value_b,formattedA:formatVal(m.value_a,m.unit),formattedB:formatVal(m.value_b,m.unit),
-            percentileA:typeof m.value_a === "number" ? orientedPercentile(cohort?.items.find(p => p.player_id === player_a.id)?.percentiles?.[m.metric],cohort?.cohort?.good_directions[m.metric]) : null,
-            percentileB:typeof m.value_b === "number" ? orientedPercentile(cohort?.items.find(p => p.player_id === player_b.id)?.percentiles?.[m.metric],cohort?.cohort?.good_directions[m.metric]) : null,
-            support:`n=${m.n_a ?? "—"} / ${m.n_b ?? "—"}`
-          }))} />
-          <details className="fo11-export-chart"><summary>Export chart preview</summary>
-          <div className="compare-svg-scroll">
-            <svg
-              ref={barChartSvgRef}
-              viewBox={`0 0 800 ${Math.max(activeMetricsList.length * 48 + 70, 240)}`}
-              className="compare-bar-svg"
-              role="img"
-              aria-label={`Comparative metric bars for ${player_a.name} versus ${player_b.name}`}
-            >
-              {/* Header Legend */}
-              <g transform="translate(180, 28)">
-                <rect x={0} y={-10} width={12} height={12} fill="#ffd166" rx={2} />
-                <text x={18} y={0} fill="#ffd166" fontSize="12" fontWeight="bold" fontFamily="sans-serif">
-                  {player_a.name} (Player A)
-                </text>
-
-                <rect x={240} y={-10} width={12} height={12} fill="#4ecdc4" rx={2} />
-                <text x={258} y={0} fill="#4ecdc4" fontSize="12" fontWeight="bold" fontFamily="sans-serif">
-                  {player_b.name} (Player B)
-                </text>
-              </g>
-
-              {/* Metric Rows */}
-              {activeMetricsList.map((m, idx) => {
-                const yOffset = 64 + idx * 48;
-                const vA = typeof m.value_a === "number" ? m.value_a : 0;
-                const vB = typeof m.value_b === "number" ? m.value_b : 0;
-                const maxVal = Math.max(Math.abs(vA), Math.abs(vB), 1);
-                const barMaxWidth = 220;
-
-                const widthA = Math.min((Math.abs(vA) / maxVal) * barMaxWidth, barMaxWidth);
-                const widthB = Math.min((Math.abs(vB) / maxVal) * barMaxWidth, barMaxWidth);
-
-                return (
-                  <g key={`bar-${m.metric}`} transform={`translate(0, ${yOffset})`}>
-                    {/* Background row highlight */}
-                    {idx % 2 === 0 && (
-                      <rect x={12} y={-12} width={776} height={44} fill="rgba(255,255,255,0.015)" rx={4} />
-                    )}
-
-                    {/* Metric Label */}
-                    <text
-                      x={210}
-                      y={8}
-                      fill="#f1f3f6"
-                      fontSize="12"
-                      fontWeight="bold"
-                      fontFamily="sans-serif"
-                      textAnchor="end"
-                    >
-                      {m.display_name}
-                    </text>
-                    <text
-                      x={210}
-                      y={22}
-                      fill="#7b8798"
-                      fontSize="10"
-                      fontFamily="monospace"
-                      textAnchor="end"
-                    >
-                      {m.unit || ""}
-                    </text>
-
-                    {/* Center Baseline */}
-                    <line x1={225} y1={-8} x2={225} y2={30} stroke="#323b49" strokeWidth="1" />
-
-                    {/* Player A Bar (Gold) */}
-                    <rect
-                      x={225}
-                      y={-6}
-                      width={widthA}
-                      height={14}
-                      fill="#ffd166"
-                      rx={2}
-                      opacity="0.9"
-                    />
-                    <text
-                      x={225 + widthA + 8}
-                      y={5}
-                      fill="#ffd166"
-                      fontSize="11"
-                      fontFamily="monospace"
-                      fontWeight="bold"
-                    >
-                      {formatVal(m.value_a, m.unit)}
-                    </text>
-
-                    {/* Player B Bar (Cyan) */}
-                    <rect
-                      x={225}
-                      y={12}
-                      width={widthB}
-                      height={14}
-                      fill="#4ecdc4"
-                      rx={2}
-                      opacity="0.9"
-                    />
-                    <text
-                      x={225 + widthB + 8}
-                      y={23}
-                      fill="#4ecdc4"
-                      fontSize="11"
-                      fontFamily="monospace"
-                      fontWeight="bold"
-                    >
-                      {formatVal(m.value_b, m.unit)}
-                    </text>
-
-                    {/* Difference Label */}
-                    <text
-                      x={770}
-                      y={14}
-                      fill={m.diff && m.diff > 0 ? "var(--color-positive)" : m.diff && m.diff < 0 ? "var(--color-negative)" : "#7b8798"}
-                      fontSize="11"
-                      fontFamily="monospace"
-                      fontWeight="bold"
-                      textAnchor="end"
-                    >
-                      Δ {m.diff !== null && m.diff !== undefined ? (m.diff > 0 ? `+${m.diff.toFixed(1)}` : m.diff.toFixed(1)) : "—"}
-                    </text>
-                  </g>
-                );
-              })}
-            </svg>
-          </div>
-          </details>
-        </div>
-      )}
-
-      {/* Main View Mode 3: Multi-Player Game Log Trend Lines */}
-      {mainViewMode === "lines" && (
-        <MultiPlayerLinesView
-          playerIds={[player_a.id, player_b.id, ...additionalPlayerIds]}
-          context={context}
-        />
-      )}
-
-      {/* Retained Comparison Tray Quick Links */}
-      {compareTray.length > 2 && (
-        <div className="panel compare-tray-panel">
-          <div className="panel-header mb-2">
-            <h4 className="panel-title compare-tray-title">
-              Compare Tray ({compareTray.length} Players Selected)
-            </h4>
-            <span className="text-xs text-muted">
-              Click any player to swap into Player A or B
-            </span>
-          </div>
-          <div className="compare-tray-chips">
-            {compareTray.map((id) => (
-              <div
-                key={id}
-                className={`compare-tray-chip ${id === player_a.id ? "is-player-a" : id === player_b.id ? "is-player-b" : ""}`}
-              >
-                <TrayChip player={{player_id:id,player_name:id === player_a.id ? player_a.name : id === player_b.id ? player_b.name : "Selected player",teams:[],stints_count:0,games_played:0,total_minutes:0,metrics:{},sample_sizes:{}}} context={context} onRemove={removeCompare} />
-                {id !== player_a.id && (
-                  <button
-                    type="button"
-                    onClick={() => {
-                      const sp = new URLSearchParams({
-                        playerA: id,
-                        playerB: player_b.id,
-                        season: context.season,
-                        phase: context.phase,
-                        beforeDate: context.before_date,
-                        window: context.window
-                      });
-                      if (context.release_id) sp.set("releaseId", context.release_id);
-                      router.push(`/compare?${sp.toString()}`);
-                    }}
-                    className="button button-small compare-tray-btn"
-                  >
-                    Set A
-                  </button>
-                )}
-                {id !== player_b.id && (
-                  <button
-                    type="button"
-                    onClick={() => {
-                      const sp = new URLSearchParams({
-                        playerA: player_a.id,
-                        playerB: id,
-                        season: context.season,
-                        phase: context.phase,
-                        beforeDate: context.before_date,
-                        window: context.window
-                      });
-                      if (context.release_id) sp.set("releaseId", context.release_id);
-                      router.push(`/compare?${sp.toString()}`);
-                    }}
-                    className="button button-small compare-tray-btn"
-                  >
-                    Set B
-                  </button>
-                )}
-
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-      <GatedNote why={<>
-        <p>{no_forced_winner_notice || "CourtLens displays aligned empirical distributions and descriptive differences. We never invent a winner probability or automated start/sit decision from overlapping ranges."}</p>
-        <p>Bar length shows absolute magnitude, with the signed value displayed. The larger number is bold; this is not a recommendation. Percentiles use the Stats cohort and catalog direction. Missing percentiles are omitted.</p>
-      </>}>Descriptive differences under a shared scope.</GatedNote>
-
-      </CompareLayout>
-    </div>
-  );
+      <div className="pc04-modes">
+        <SegmentedControl name="Comparison Metric Presets" value={active} onChange={value => change("preset",value)} options={Object.entries(COMPARE_PRESETS).map(([value,preset]) => ({value:value as ComparePresetId,label:preset.label}))}/>
+        <SegmentedControl name="Counting mode" value={mode} onChange={value => change("countingMode",value,true)} options={[{value:"per_game",label:"Per Game"},{value:"per_75",label:"Per 75",disabled:!workbenchCatalog?.stats_normalizations?.includes("per_75")},{value:"per_100",label:"Per 100",disabled:!workbenchCatalog?.stats_normalizations?.includes("per_100")},{value:"raw",label:"Totals"}]}/>
+      </div>
+      {!workbenchCatalog?.stats_normalizations?.includes("per_75") && <GatedNote why="Per 75 and Per 100 require compatible actual on-court possession exposure. No box-score estimate replaces it.">Possession rates unavailable in this release.</GatedNote>}
+      {active === "sixfactor" && <GatedNote why="These are descriptive box-score proxies, not six-factor RAPM coefficients or defensive impact.">Box-score factor proxies.</GatedNote>}
+      {active === "custom" && <details className="pc04-custom" open><summary>Choose metrics · {custom.length} / 25</summary>
+        <label>Saved view <select aria-label="Personal custom view" value="" onChange={event => {const view=views.find(view=>view.id===event.target.value);if(view)change("customMetrics",view.columns.slice(0,25).join(","));}}><option value="">Choose a saved view</option>{views.map(view=><option key={view.id} value={view.id}>{view.name}</option>)}</select></label>
+        <div className="pc04-custom-grid">{metricDefinitions.map(metric=><label key={metric.key}><input type="checkbox" checked={custom.includes(metric.key)} disabled={!custom.includes(metric.key) && custom.length >= 25} onChange={event => change("customMetrics", (event.target.checked ? [...custom,metric.key] : custom.filter(key=>key!==metric.key)).join(","))}/>{metric.display_name}</label>)}</div>
+        <button className="button" onClick={()=>change("customMetrics",CUSTOM_DEFAULT.join(","))}>Reset metrics</button>
+      </details>}
+      <p className="pc04-legend"><span className="text-player-a">A · {a.name}</span><span className="text-player-b">B · {b.name}</span><span>Chip = per-metric difference · fewer for lower-is-better</span></p>
+      <div className="pc04-table-wrap"><table className="pc04-metric-table" aria-label="Descriptive comparison"><thead><tr><th scope="col">{a.name}</th><th scope="col">Metric · difference</th><th scope="col">{b.name}</th></tr></thead><tbody>{rows.map(row => {
+        const valueA = typeof row.value_a === "number" ? row.value_a : null, valueB = typeof row.value_b === "number" ? row.value_b : null;
+        const percentage = ["percentage","%","ratio","ratio difference"].includes(row.unit);
+        const leader = leadingIdentity(valueA,valueB,direction(row.metric));
+        return <tr key={row.metric}><td className="num" data-leading={leader === "a" || undefined}>{formatComparisonValue(row.value_a,row.unit)}</td>
+          <th scope="row"><span>{row.display_name}</span><DeltaChip a={percentage && valueA != null ? valueA*100 : valueA} b={percentage && valueB != null ? valueB*100 : valueB} names={names} direction={direction(row.metric)} unit={percentage ? "pp" : row.unit}/><small>n={row.n_a} / {row.n_b}</small></th>
+          <td className="num" data-leading={leader === "b" || undefined}>{formatComparisonValue(row.value_b,row.unit)}</td></tr>;
+      })}</tbody></table></div>
+      {!rows.length && <GatedNote action={<button className="button" onClick={()=>change("customMetrics",CUSTOM_DEFAULT.join(","))}>Reset metrics</button>}>No custom metrics selected.</GatedNote>}
+      <p className="chart-provenance">Source: {workbenchCatalog?.source ?? "published box scores"} · {a.games_played} / {b.games_played} GP · {scopeContextLine(context.season,context.phase,context.before_date)} · Missing values: —</p>
+      {notice && <p role="status">{notice} {notice === "Investigation saved." && <Link href="/investigations">Open saved investigations</Link>}</p>}
+      <details className="fo11-export-chart"><summary>Export chart preview</summary><svg ref={svgRef} className="compare-bar-svg" role="img" aria-label={`Comparative metric bars for ${a.name} versus ${b.name}`} viewBox={`0 0 800 ${Math.max(180,rows.length*56+100)}`}>
+        <title>{`${a.name} vs ${b.name} · ${COMPARE_PRESETS[active].label}`}</title>
+        <text x="24" y="28" fill="var(--color-identity-a)">{a.name}</text><text x="776" y="28" textAnchor="end" fill="var(--color-identity-b)">{b.name}</text>
+        {rows.map((row,i) => {const va=typeof row.value_a === "number" ? row.value_a : null,vb=typeof row.value_b === "number" ? row.value_b : null;const scale=Math.max(Math.abs(va??0),Math.abs(vb??0),1);const leader=leadingIdentity(va,vb,direction(row.metric));return <g key={row.metric} transform={`translate(0,${i*56+60})`}>
+          <text x="400" y="0" textAnchor="middle" fill="var(--color-text)" fontSize="12">{row.display_name}</text>
+          {va != null && <rect x={350-Math.abs(va)/scale*280} y="12" width={Math.abs(va)/scale*280} height="8" fill={toneColor("identity-a")}/>}{vb != null && <rect x="450" y="12" width={Math.abs(vb)/scale*280} height="8" fill={toneColor("identity-b")}/>}
+          <text x="24" y="20" fill="var(--color-identity-a)" fontSize="12">{formatComparisonValue(row.value_a,row.unit)}</text><text x="776" y="20" textAnchor="end" fill="var(--color-identity-b)" fontSize="12">{formatComparisonValue(row.value_b,row.unit)}</text>
+          <text x="400" y="20" textAnchor="middle" fill={leader ? toneColor(`identity-${leader}`) : "var(--color-text-secondary)"} fontSize="12">{row.diff == null ? "—" : `${Math.abs(row.diff*(row.unit === "percentage" || row.unit === "ratio" ? 100 : 1)).toFixed(1)}${direction(row.metric)==="low" ? " fewer" : ""}`}</text>
+        </g>;})}<text x="24" y={rows.length*56+85} fill="var(--color-text-secondary)" fontSize="12">{`Source: ${workbenchCatalog?.source ?? "published boxes"} · ${a.games_played}/${b.games_played} GP · ${context.season}`}</text>
+      </svg></details>
+      <details open={lines}><summary onClick={event=>{event.preventDefault();change("compareView",lines ? "table" : "lines");}}>Trend lines</summary>{lines && <MultiPlayerLinesView playerIds={[a.id,b.id,...additionalPlayerIds]} context={context}/>}</details>
+      <GatedNote why={<><p>{comparison.no_forced_winner_notice}</p><p>Identity colors apply to each declared metric direction; neutral chips mean ties, missing values or no declared direction. No composite score is calculated. Image bars show magnitude; signed values remain visible.</p></>}>Descriptive differences under a shared scope.</GatedNote>
+    </CompareLayout>
+  </div>;
 }

@@ -1,0 +1,14 @@
+{
+  "team_pages": 30,
+  "provider_rows": 618,
+  "parsed_reports": 4692,
+  "source_bytes": 4731016,
+  "unique_provider_identities": 608,
+  "admitted_rows": 22,
+  "admitted_kind_counts": {
+    "amount": 21,
+    "option": 1
+  },
+  "admitted_players": 3,
+  "unresolved_source_rows": 4670
+}

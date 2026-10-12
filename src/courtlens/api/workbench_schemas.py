@@ -307,6 +307,9 @@ class PlayerResearchItem(BaseModel):
     percentiles: dict[str, float | None] | None = None
     cohort_sample_sizes: dict[str, int] | None = None
     impact_support: dict[str, Any] | None = None
+    table_qualified: bool | None = None
+    table_percentiles: dict[str, float | None] | None = None
+    table_cohort_sample_sizes: dict[str, int] | None = None
 
 
 class PlayerResearchResponse(BaseModel):
@@ -335,6 +338,7 @@ class WorkbenchQueryResponse(BaseModel):
     total_output_players: int | None = None
     output_offset: int | None = None
     cohort: StatsCohort | None = None
+    table_cohort: dict[str, Any] | None = None
     items: list[PlayerResearchItem]
     next_cursor: str | None = None
     has_more: bool
@@ -362,6 +366,178 @@ class ImpactResponse(BaseModel):
     unavailable_columns: dict[str, str]
     reason: str | None = None
     players: list[ImpactPlayerResponse]
+    total_players: int
+
+
+class ValueArchetypePlayerResponse(BaseModel):
+    player_id: str
+    player_name: str
+    value: dict[str, Any] | None
+    value_reason: str | None
+    archetype: dict[str, Any] | None
+    archetype_reason: str | None
+
+
+class RosterShapePlayerResponse(BaseModel):
+    player_id: str
+    player_name: str
+    listed_position: str | None
+    value: float | None
+    value_qualified: bool
+    value_percentile: float | None
+    reference_minutes: float | None
+    reference_games: int | None
+    vor: float | None
+    archetype: dict[str, Any] | None
+    fit: Literal["returning", "new", "unknown"]
+    previous_teams: list[str]
+    unknown_reasons: list[str]
+
+
+class RosterShapeTeamResponse(BaseModel):
+    team_id: str
+    team_tricode: str
+    team_name: str
+    players: int
+    sized_players: int
+    below_replacement_players: int
+    unknown_players: int
+    total_vor: float
+    returning_share: float | None
+    archetype_mix: list[dict[str, Any]]
+    roster: list[RosterShapePlayerResponse]
+
+
+class RosterShapesResponse(BaseModel):
+    version: str
+    season: str
+    label: str
+    projected_note: str
+    reference_season: str
+    phase: Literal["regular_season"]
+    replacement_level: float
+    full_season_minutes: int
+    capacity: float
+    value: dict[str, Any]
+    archetypes: dict[str, Any]
+    roster_context: dict[str, Any]
+    statistics_release_id: str | None
+    credit: str
+    limitations: list[str]
+    teams: list[RosterShapeTeamResponse]
+
+
+class StatsFeedSource(BaseModel):
+    dataset_id: str
+    feed: str
+    variant: str
+    season: str
+    season_type: str
+    observed_at: str
+    upstream_revision: str | None
+    content_sha256: str
+
+
+class StatsFeedScopeView(BaseModel):
+    """PC11 envelope shared by the season-level NBA Stats feed views."""
+
+    version: str
+    season: str
+    phase: Literal["regular_season", "playoffs"]
+    label: str
+    scopes: list[dict[str, str]]
+    source: str
+    qualification: dict[str, int]
+    limitations: list[str]
+    sources: list[StatsFeedSource]
+
+
+class DefenseViewResponse(StatsFeedScopeView):
+    category: str
+    categories: list[dict[str, str]]
+    matchups_observed: bool
+    focus_rule: str | None
+    players: list[dict[str, Any]]
+    detail: dict[str, Any] | None
+
+
+class MatchupsViewResponse(StatsFeedScopeView):
+    side: Literal["offense", "defense"]
+    focus_rule: str | None
+    detail: dict[str, Any]
+
+
+class PlayTypesViewResponse(StatsFeedScopeView):
+    side: Literal["offensive", "defensive"]
+    focus_player_id: str | None
+    focus_rule: str | None
+    focus: dict[str, Any] | None
+    league: list[dict[str, Any]]
+    players: list[dict[str, Any]]
+
+
+class TrackingViewResponse(StatsFeedScopeView):
+    group: str
+    groups: list[dict[str, str]]
+    columns: list[dict[str, Any]]
+    players: list[dict[str, Any]]
+
+
+class PlayerTrackingResponse(StatsFeedScopeView):
+    player_id: str
+    observed: bool
+    player: dict[str, Any] | None
+    groups: list[dict[str, Any]]
+
+
+class WowyViewResponse(BaseModel):
+    version: str
+    season: str
+    phase: Literal["regular_season", "playoffs"]
+    scopes: list[dict[str, str]]
+    games: int
+    last_game_date: str
+    team: dict[str, str]
+    teams: list[dict[str, str]]
+    players: list[dict[str, Any]]
+    team_total: dict[str, Any]
+    selected: dict[str, Any] | None
+    pairs: list[dict[str, Any]]
+    default_rule: str | None
+    min_possessions: int
+    artifact_sha256: str
+    inputs: dict[str, Any]
+    source: str
+    limitations: list[str]
+
+
+class CombineViewResponse(BaseModel):
+    version: str
+    source: str
+    draft_year: int | None
+    draft_years: list[dict[str, int]]
+    cohort: dict[str, int]
+    default_rule: str | None
+    selected_player_id: str | None
+    limitations: list[str]
+    rows: list[dict[str, Any]]
+    sources: list[StatsFeedSource]
+
+
+class ValueArchetypesResponse(BaseModel):
+    status: Literal["available", "unavailable"]
+    source: str
+    version: str
+    methodology_url: str
+    manifest_sha256: str | None
+    limitations: list[str]
+    catalog: list[dict[str, Any]]
+    credit: str
+    reason: str | None = None
+    value: dict[str, Any] | None = None
+    evaluation: dict[str, Any] | None = None
+    archetypes: dict[str, Any] | None = None
+    players: list[ValueArchetypePlayerResponse]
     total_players: int
 
 
@@ -428,6 +604,8 @@ class TeamResearchItem(BaseModel):
     division: str | None = None
     ratings: dict[str, Any] | None = None
     four_factors: dict[str, Any] | None = None
+    table_percentiles: dict[str, float | None] | None = None
+    table_cohort_sample_sizes: dict[str, int] | None = None
 
 
 class TeamResearchResponse(BaseModel):

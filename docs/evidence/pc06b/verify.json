@@ -1,0 +1,15 @@
+{
+  "refresh_id": "95b5fe42-79b2-4be5-bb8c-187b66e10634",
+  "status": "verified",
+  "state": "verification_blocked",
+  "book": {
+    "release_id": "26961333-31f3-420e-a86f-203a0fbd1f29",
+    "content_sha256": "8d6c09ac06bffb1763cd99ae7a70889f9e80999c8724e83f6e368bc9141a8963",
+    "selected_rows": 4558,
+    "source_bytes_verified": 5074138,
+    "status": "verified"
+  },
+  "acquisitions": 30,
+  "expected_players": 622,
+  "salary_observed_players": 464
+}

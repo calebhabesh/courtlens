@@ -1,0 +1,76 @@
+{
+  "base": "http://localhost:3300",
+  "verification": "Deterministic UI fixtures; no real-data claims from these states.",
+  "rows": [
+    {
+      "width": 1440,
+      "loadingBox": {
+        "x": 24,
+        "y": 263,
+        "width": 1392,
+        "height": 293
+      },
+      "finalBox": {
+        "x": 24,
+        "y": 263,
+        "width": 1392,
+        "height": 293
+      },
+      "layout": {
+        "padding": "16px",
+        "gap": "16px",
+        "headshots": 2,
+        "colors": [
+          "rgb(255, 209, 102)",
+          "rgb(128, 191, 255)"
+        ],
+        "changeHeight": 40
+      },
+      "changeFocus": "combobox"
+    },
+    {
+      "width": 1440,
+      "errorText": "Example unavailable.RetryWhy?Example unavailable. Choose a player or retry.",
+      "retryEnabled": true
+    },
+    {
+      "width": 390,
+      "loadingBox": {
+        "x": 12,
+        "y": 343,
+        "width": 366,
+        "height": 772.4375
+      },
+      "finalBox": {
+        "x": 12,
+        "y": 343,
+        "width": 366,
+        "height": 772.4375
+      },
+      "layout": {
+        "padding": "16px",
+        "gap": "16px",
+        "headshots": 2,
+        "colors": [
+          "rgb(255, 209, 102)",
+          "rgb(128, 191, 255)"
+        ],
+        "changeHeight": 40
+      },
+      "changeFocus": "combobox"
+    },
+    {
+      "width": 390,
+      "errorText": "Example unavailable.RetryWhy?Example unavailable. Choose a player or retry.",
+      "retryEnabled": true
+    },
+    {
+      "keyboardPreset": "offense",
+      "table": {
+        "centerError": 0,
+        "numericFont": "tabular-nums",
+        "alignment": "right"
+      }
+    }
+  ]
+}

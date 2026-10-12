@@ -30,10 +30,11 @@ export function BoardLayout({ main, rail, className = "" }: { main: ReactNode; r
   );
 }
 
-/** Profile template body: hero, then tabs, then the selected tab's content. */
-export function ProfileLayout({ hero, tabs, children, className = "" }: { hero: ReactNode; tabs?: ReactNode; children: ReactNode; className?: string }) {
+/** Profile template body: optional headline, hero, tabs and the selected tab content. */
+export function ProfileLayout({ headline, hero, tabs, children, className = "" }: { headline?: ReactNode; hero: ReactNode; tabs?: ReactNode; children: ReactNode; className?: string }) {
   return (
     <div className={`ui-profile ${className}`}>
+      {headline && <section className="pc12-headline" aria-label="Headline result">{headline}</section>}
       <div className="ui-profile-hero">{hero}</div>
       {tabs && <div className="ui-profile-tabs">{tabs}</div>}
       <div className="ui-profile-body">{children}</div>
@@ -42,21 +43,22 @@ export function ProfileLayout({ hero, tabs, children, className = "" }: { hero: 
 }
 
 /** Compare template body: one header per entity side by side, then per-stat rows. */
-export function CompareLayout({ sides, children, className = "" }: { sides: ReactNode[]; children: ReactNode; className?: string }) {
+export function CompareLayout({ sides, children, className = "", sidePanels = true }: { sides: ReactNode[]; children: ReactNode; className?: string; sidePanels?: boolean }) {
   return (
     <div className={`ui-compare ${className}`}>
       <div className="ui-compare-sides">
-        {sides.map((side, index) => <div className="ui-compare-side" key={index}>{side}</div>)}
+        {sides.map((side, index) => <div className={`ui-compare-side ${sidePanels ? "" : "ui-compare-side-bare"}`} key={index}>{side}</div>)}
       </div>
       <div className="ui-compare-rows">{children}</div>
     </div>
   );
 }
 
-/** Research template body: a key-findings row leads, then charts and tables. */
-export function ResearchLayout({ findings, children, className = "" }: { findings?: ReactNode; children: ReactNode; className?: string }) {
+/** Research template body: optional headline visual, key findings, then detail charts and tables. */
+export function ResearchLayout({ headline, findings, children, className = "" }: { headline?: ReactNode; findings?: ReactNode; children: ReactNode; className?: string }) {
   return (
     <div className={`ui-research ${className}`}>
+      {headline && <section className="pc12-headline" aria-label="Headline result">{headline}</section>}
       {findings && <section className="ui-findings" aria-label="Key findings">{findings}</section>}
       <div className="ui-research-body">{children}</div>
     </div>

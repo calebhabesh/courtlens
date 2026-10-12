@@ -538,3 +538,68 @@ production build/TypeScript and 357 unit tests pass; 82 existing browser checks 
 all 66 unchanged page baselines. Five final picker checks pass, with production opened-menu
 baselines refreshed for the requested styling. Scoped glance evidence is recorded; prior
 milestone and owner-acceptance statuses remain unchanged.
+
+## 2026-10-11 — PC03 semantic chart follow-up
+
+The [presentation clarity handoff](presentation-clarity-plan.md) supersedes the earlier chart/color
+scope. PC03 adds Design Language v1.2 and revises D21, with the eight SVG primitives, palette
+contrast checks and desktop/phone extended glance test recorded in
+[PC03 evidence](evidence/pc03/README.md). Public Compare rebuilding remains PC04. The original
+rename/identity, motion and analytical contracts remain in force.
+
+## 2026-10-11 — Owner-requested Stats group-guide centering
+
+[Measured evidence](evidence/stats-group-guide-centering/README.md): recurring guides now
+have separate cells in the group-header tier, rather than belonging to the following group.
+Real-data measurements improve from a 20px offset to 0px across four widths and all guide
+modes. Gutters remain 40px, header/body columns match and there is no page overflow.
+Lint, TypeScript, production build, 415 unit tests, 16 Stats browser checks and both unchanged
+Stats screenshot baselines pass. Scoped glance review is recorded; prior milestone and
+owner-acceptance statuses remain unchanged.
+
+## 2026-10-11 — Visible Stats divider alignment and stronger initials
+
+The owner's annotated screenshot clarified that the previous header-only correction did not
+satisfy the request. [Corrected evidence](evidence/stats-visible-guide-centering/README.md)
+measures visible metric gaps: guide offsets improve from 16–27px to 0px; initials move from
+6px above circle centers to within 0.008px. Guides/background bands track the actual divider
+through resizing, all modes and multi-team logos. Initials are semibold with primary text
+color per the owner's follow-up. Sixteen real-data desktop/tablet/phone cases, scoped glance
+review, lint, TypeScript, production build, 415 unit tests and 18 production Stats browser
+checks pass. Earlier milestone/owner-review statuses remain unchanged.
+
+## 2026-10-12 — PC12 batch A table presentation
+
+The presentation-clarity handoff owns this batch. Added semantic percentile cells, grouped Team
+headers, 500-minute league qualification and Small sample badges, a focused Player Directory and
+statistical reference columns on saved Rankings. Stats preview agrees with its cells. Tokens and
+frozen identifiers stay unchanged. [Evidence, glance judgments and checks](evidence/pc12-a/README.md)
+record desktop/phone production first loads and retained limitations. Python, lint/types/Vitest,
+35 affected browser checks and seven baselines pass; the pre-existing Compare export check remains.
+PC12 B–D are pending. This entry does not mark the remaining page-wide glance gaps verified.
+
+## 2026-10-12 — PC12 B headline visual presentation
+
+- Presentation-clarity supersedes older layout scope for this batch. [Evidence](evidence/pc12-b/README.md)
+  and [contract](design/headline-visuals-v1.md): nine routes show labeled main visuals with real
+  support/source on first load; Contracts cap graphic precedes KPIs, payroll flows group Others,
+  phone ranked identities stack and player trajectories retain unknown gaps.
+- Owner Stats/guide changes are preserved and excluded from the batch/export. Real 1440/390 first
+  loads have no errors or sideways overflow; glance 12/14 per page, with exhaustive alignment
+  and per-page service-state injection still partial. No verified-all-pages claim.
+- Python 2,032 pass; Ruff/format/mypy clean; dashboard lint 0/0, types clean, 436 unit tests,
+  43 affected browser checks and 16 existing baselines pass, plus 18 new first-load baselines.
+  Existing Compare export failure reproduced separately. Publication pointers/source counts unchanged.
+- PC12 C/D remain pending; no owner gate is added by this log.
+
+
+## 2026-10-12 — PC12 C presentation follow-through
+
+- [Demo hygiene evidence](evidence/pc12-c/README.md) and [contract](design/demo-hygiene-v1.md):
+  frozen Evaluation archive/error graphic, readable curated saved findings, labeled observed-sample
+  plots and the Playoffs title. Original artifacts, titles, exports and analytical contracts remain.
+- Real parameter-free desktop/phone captures have no page errors or overflow. Extended glance
+  judgments retain alignment/state and non-distribution saved-layout limits; no all-page verification
+  claim. Dashboard lint/types clean, 439 unit tests, 54 affected browser checks and ten screenshot
+  captures pass; Python 2,036 pass, Ruff/mypy clean. Hosted-menu checks pass separately.
+- Owner Stats/guide edits are preserved. PC12 D and PC13 remain pending.

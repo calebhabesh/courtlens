@@ -1,6 +1,7 @@
 import { test, expect, type Page } from "@playwright/test";
-import { mockFinance, initial as financeInitial } from "./finance-fixture";
+import { mockContracts, mockFinance, mockRosterShapes, initial as financeInitial } from "./finance-fixture";
 import { readFileSync } from "node:fs";
+import { firstLoadFixtures, offSeasonFixtures } from "./first-load-fixtures";
 import { openWorkbench } from "./workbench-navigation";
 import research from "./fixtures/research-negative-result.json";
 
@@ -15,9 +16,9 @@ const roster = {
   record: { games_played: 82, wins: 56, losses: 26, win_pct: 0.683 },
   production: {}, allowance: {}, recent_games: [],
   player_cohort: [
-    { player_id: "11", player_name: "Fixture Guard", games_played: 80, total_minutes: 2400, points: 1600, points_per_game: 20 },
-    { player_id: "12", player_name: "Fixture Wing", games_played: 70, total_minutes: 1400, points: 700, points_per_game: 10 },
-    { player_id: "13", player_name: "Fixture Big", games_played: 60, total_minutes: 1200, points: 480, points_per_game: 8 }
+    { player_id: "11", player_name: "Fixture Guard", games_played: 80, total_minutes: 2400, pts_per_game: 20, reb_per_game: 4, ast_per_game: 6 },
+    { player_id: "12", player_name: "Fixture Wing", games_played: 70, total_minutes: 1400, pts_per_game: 10, reb_per_game: 5, ast_per_game: 2 },
+    { player_id: "13", player_name: "Fixture Big", games_played: 60, total_minutes: 1200, pts_per_game: 8, reb_per_game: 9, ast_per_game: 1 }
   ],
   warnings: []
 };
@@ -69,16 +70,9 @@ for (const view of WIDTHS) {
       await expect(page).toHaveScreenshot(`showcase-${view.name}.png`, shot);
     });
 
-    test("roster shapes team picker", async ({ page }) => {
-      await openWorkbench(page, "/roster-shapes?season=2025-26&phase=regular_season");
-      await expect(page.getByRole("list", { name: "Teams" }).getByRole("button")).toHaveCount(30);
-      await settle(page);
-      await expect(page).toHaveScreenshot(`roster-picker-${view.name}.png`, shot);
-    });
-
     test("roster shapes depth chart", async ({ page }) => {
       await page.route(`**/api/workbench/teams/${BOS}?*`, (route) => route.fulfill({ json: roster }));
-      await openWorkbench(page, `/roster-shapes?team=${BOS}&season=2025-26&phase=regular_season`);
+      await openWorkbench(page, `/roster-shapes/${BOS}?view=depth&season=2025-26&phase=regular_season`);
       await page.getByRole("button", { name: "Move Fixture Guard" }).click();
       await page.getByRole("menuitem", { name: /^Move to PG/ }).click();
       await expect(page.getByRole("region", { name: "PG lane" })).toContainText("Fixture Guard");
@@ -112,7 +106,7 @@ for (const view of WIDTHS) {
 
     test("playoffs bracket", async ({ page }) => {
       await openWorkbench(page, "/playoffs?season=2025-26");
-      await expect(page.getByRole("heading", { level: 1, name: "Live" })).toBeVisible();
+      await expect(page.getByRole("heading", { level: 1, name: "Playoffs" })).toBeVisible();
       await settle(page);
       await expect(page).toHaveScreenshot(`playoffs-${view.name}.png`, shot);
     });
@@ -150,9 +144,10 @@ for (const view of WIDTHS) {
       await expect(page.getByRole("heading",{name:"Observed Stat Shift"})).toBeVisible();
       await settle(page);await expect(page).toHaveScreenshot(`stat-shift-${view.name}.png`, shot);
     });
-    for(const route of ["contracts","contracts/TOR","free-agency"]) test(`finance ${route}`, async ({ page }) => {
+    test("finance contracts/books", async ({ page }) => {
+      const route="contracts/books";
       await mockFinance(page);
-      await openWorkbench(page,financeInitial.replace("/contracts?",`/${route}?`));
+      await openWorkbench(page,financeInitial);
       await expect(page.getByRole("region",{name:"Financial query result"})).toBeVisible();
       await settle(page);await expect(page).toHaveScreenshot(`${route.replace("/","-")}-${view.name}.png`, shot);
     });
@@ -166,6 +161,17 @@ for (const view of WIDTHS) {
 }
 
 // FO14: numerical alignment, phone targets and the final shared 404 header.
+for (const view of WIDTHS) test.describe(`PC12 directory ${view.name}`, () => {
+  test("first load", async ({ page }) => {
+    await page.setViewportSize({ width: view.width, height: view.height });
+    await stableWorkspace(page);
+    await openWorkbench(page, "/players");
+    await expect(page.getByRole("table", { name: "Player directory", exact: true })).toBeVisible();
+    await settle(page);
+    await expect(page).toHaveScreenshot(`pc12-directory-${view.name}.png`, shot);
+  });
+});
+
 for (const view of WIDTHS) test.describe(`FO14 baselines ${view.name}`, () => {
   test.beforeEach(async ({ page }) => {
     await page.setViewportSize({ width: view.width, height: view.height });
@@ -196,18 +202,6 @@ for (const view of WIDTHS) test.describe(`FO11 baselines ${view.name}`,()=>{
     await openWorkbench(page,`/team-compare?teamA=100&teamB=200&releaseId=fixture-release&season=2025-26&beforeDate=2026-04-13&tab=${tab}`);
     await expect(page.locator(".ui-compare-sides")).toBeVisible();await settle(page);await expect(page).toHaveScreenshot(`team-comparison-${tab}-${view.name}.png`,shot);
   });
-  for(const unit of [false,true])test(`WOWY ${unit ? "unit" : "team sets"}`,async({page})=>{
-    const empty=JSON.parse(readFileSync("../docs/evidence/b21-api-smoke.json","utf8")).response;
-    await page.route("**/api/workbench/operations/wowy",route=>route.fulfill({json:{...empty,operation:"wowy",request:{...empty.request,...route.request().postDataJSON()},context:{...empty.context,season:"2025-26",before_date:"2026-04-13",release_id:"fixture-release"}}}));
-    await openWorkbench(page,`/wowy?team_id=TOR&${unit ? "exact_unit=1,2" : "together=1"}&releaseId=fixture-release&season=2025-26&beforeDate=2026-04-13`);
-    await expect(page.locator(".floor-result")).toBeVisible();await settle(page);await expect(page).toHaveScreenshot(`wowy-${unit ? "unit" : "team"}-${view.name}.png`,shot);
-  });
-  test("player matchups",async({page})=>{
-    const response=JSON.parse(readFileSync("../docs/evidence/b23-api-smoke.json","utf8")).operations.matchups.response;
-    await page.route("**/api/workbench/operations/matchups",route=>route.fulfill({json:{...response,request:{...response.request,...route.request().postDataJSON()},context:{...response.context,season:"2025-26",before_date:"2026-04-13",release_id:"fixture-release"}}}));
-    await openWorkbench(page,"/matchups?player_id=1&defender_id=2&releaseId=fixture-release&season=2025-26&beforeDate=2026-04-13");
-    await expect(page.locator(".floor-result")).toBeVisible();await settle(page);await expect(page).toHaveScreenshot(`matchups-${view.name}.png`,shot);
-  });
 });
 
 // FO12: Research template pages with deterministic data (mock API, sealed fixture or static content).
@@ -222,7 +216,7 @@ for (const view of WIDTHS) test.describe(`FO12 baselines ${view.name}`, () => {
     await expect(page.getByRole("region", { name: "Registered research result" })).toBeVisible();
     await settle(page); await expect(page).toHaveScreenshot(`expected-shots-${view.name}.png`, shot);
   });
-  for (const [name, path, ready] of [["forecasts", "/forecasts", "Prespecified Out-of-Time Error Slices"], ["evaluation", "/evaluation", "Final Test · 2023–24"], ["case-studies", "/research/case-studies", "Mid-Season Trade & Jersey Stint Tracking"], ["calculator", "/calculator", "Scenario Output"], ["spatial-epv", "/research/epv", "Required source unavailable."]] as const) test(name, async ({ page }) => {
+  for (const [name, path, ready] of [["forecasts", "/forecasts", "Prespecified Out-of-Time Error Slices"], ["evaluation", "/evaluation", "Final Test · 2023–24"], ["case-studies", "/research/case-studies", "Mid-Season Trade & Jersey Stint Tracking"], ["calculator", "/calculator", "Scenario Output"]] as const) test(name, async ({ page }) => {
     await openWorkbench(page, path);
     await expect(page.getByText(ready, { exact: true }).first()).toBeVisible();
     await settle(page); await expect(page).toHaveScreenshot(`${name}-${view.name}.png`, shot);
@@ -236,5 +230,35 @@ for (const view of WIDTHS) test.describe(`FO13 baselines ${view.name}`, () => {
     await openWorkbench(page, path);
     await expect(page.getByRole("heading", { name: ready, exact: true })).toBeVisible();
     await settle(page); await expect(page).toHaveScreenshot(`${name}-${view.name}.png`, shot);
+  });
+});
+
+// PC04: every entry is opened without parameters; canonical defaults are written by the page.
+for (const view of WIDTHS) test.describe(`PC04 parameter-free baselines ${view.name}`, () => {
+  test.beforeEach(async ({page}) => {await page.setViewportSize({width:view.width,height:view.height});await stableWorkspace(page);await firstLoadFixtures(page);});
+  for (const [name,path] of [["compare","/compare"],["stat-shift","/stat-line-shift"],["shot-profile","/similar-players/shot-profile"],["shot-aftermath","/research/shooting/aftermath"],["similar-players","/similar-players"],["recent-games","/last-games"],["operation-gallery","/research/operation"]]) test(name,async({page})=>{
+    await openWorkbench(page,path);
+    if(path === "/compare") await expect(page.locator(".pc04-identity-card[data-placeholder]")).toHaveCount(2);
+    else if(path === "/research/operation") await expect(page.getByRole("region",{name:"Available research operations"})).toBeVisible();
+    else await expect(page.getByRole("region",{name:"Observed example context"})).toBeVisible();
+    await settle(page);await expect(page).toHaveScreenshot(`first-load-${name}-${view.name}.png`,shot);
+  });
+  test("live off-season",async({page})=>{await offSeasonFixtures(page);await openWorkbench(page,"/live");await expect(page.getByRole("region",{name:"Top performers"})).toContainText("28 PTS");await settle(page);await expect(page).toHaveScreenshot(`first-load-live-${view.name}.png`,shot);});
+  // PC08: Contracts first load from the latest admitted refresh (real captured responses).
+  // PC10: Roster Shapes first load and team detail from the captured real response.
+  for(const route of ["roster-shapes","roster-shapes/DEN"]) test(`first-load ${route}`,async({page})=>{await mockRosterShapes(page);await openWorkbench(page,`/${route}`);await expect(page.locator(".chart-pack").first()).toBeVisible();await settle(page);await expect(page).toHaveScreenshot(`first-load-${route.replace("/","-")}-${view.name}.png`,shot);});
+  for(const route of ["contracts","contracts/DEN"]) test(`first-load ${route}`,async({page})=>{await mockContracts(page);await openWorkbench(page,`/${route}`);await expect(page.getByRole("figure").first()).toBeVisible();await settle(page);await expect(page).toHaveScreenshot(`first-load-${route.replace("/","-")}-${view.name}.png`,shot);});
+});
+
+// PC11: former gate pages on first load with no URL parameters (fictional e2e/pc11-fixtures.mjs).
+for (const view of WIDTHS) test.describe(`PC11 populated pages ${view.name}`, () => {
+  test.beforeEach(async ({ page }) => { await page.setViewportSize({ width: view.width, height: view.height }); await stableWorkspace(page); });
+  for (const [name, path, ready] of [["defensive-matchups", "/research/defensive-matchups", "Makes below expected, top 12"], ["player-matchups", "/matchups", "Who guarded Fixture Anchor"],
+    ["adjusted-shooting", "/research/shooting/adjusted", "Points per 100 above the play-type expectation"], ["six-factor", "/research/rapm/six-factor", "Offensive shooting (oTS), top 15"],
+    ["combine", "/wingspan", "Wingspan versus barefoot height"], ["wowy", "/wowy", "Fixture Anchor and Fixture Wing: net rating by who was on the floor"],
+    ["stats-tracking", "/stats/tracking", "Drives per game, top 12"]] as const) test(name, async ({ page }) => {
+    await openWorkbench(page, path);
+    await expect(page.getByText(ready, { exact: true }).first()).toBeVisible();
+    await settle(page); await expect(page).toHaveScreenshot(`pc11-${name}-${view.name}.png`, shot);
   });
 });

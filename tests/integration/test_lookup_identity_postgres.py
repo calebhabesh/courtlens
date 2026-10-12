@@ -101,8 +101,12 @@ def test_future_facts_do_not_change_prior_association(facts: Session):
 
 
 def test_empty_scope_suggestions_and_no_scope_fallback(facts: Session):
-    result = lookup_entities(
+    empty = lookup_entities(
         facts, query="", kinds=["player"], dataset_id="dataset", season="2026-27"
+    )
+    assert empty.items == []  # players are never suggested before typing
+    result = lookup_entities(
+        facts, query="Player", kinds=["player"], dataset_id="dataset", season="2026-27"
     )
     item = result.items[0]
     assert item.team_association.teams == []
