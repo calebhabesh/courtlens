@@ -3,7 +3,7 @@ import { Icon } from "./ui/icon";
 
 import { useState, useMemo, useRef, useCallback } from "react";
 import type { PlayerResearchItem } from "@/lib/types";
-import { ALL_CATALOG_METRICS } from "@/lib/stats-presets";
+import { ALL_CATALOG_METRICS, axisTitle } from "@/lib/stats-presets";
 import { useWorkspace } from "@/lib/workspace-context";
 import {
   buildScatterDataset,
@@ -513,7 +513,8 @@ export function ScatterPlotView({
             fontFamily="sans-serif"
             textAnchor="middle"
           >
-            {xDef.label} {xDef.tooltip ? `(${xDef.tooltip})` : ""}
+            {axisTitle(xDef)}
+            {xDef.tooltip && <title>{xDef.tooltip}</title>}
           </text>
 
           <text
@@ -526,7 +527,8 @@ export function ScatterPlotView({
             fontFamily="sans-serif"
             textAnchor="middle"
           >
-            {yDef.label} {yDef.tooltip ? `(${yDef.tooltip})` : ""}
+            {axisTitle(yDef)}
+            {yDef.tooltip && <title>{yDef.tooltip}</title>}
           </text>
         </svg>
 

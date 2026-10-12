@@ -5,7 +5,7 @@ import {
   CornerDownLeft, History, FileText, ArrowLeftRight, Lock, Plus, User, Table2, BarChart3, TrendingUp, LayoutGrid,
   Save, Scale, RefreshCw, Camera, Zap, RotateCcw, ExternalLink, HelpCircle, Maximize2, Keyboard, Eye, EyeOff, Columns3,
   ChartNoAxesColumn, ChartNoAxesCombined, ChartScatter, Minimize2, Pin, PinOff, UserRound, Users, CirclePlus, CircleCheck,
-  GraduationCap
+  GraduationCap, ArrowDownAZ, ArrowDownZA
 } from "lucide-react";
 
 // D26: Lucide only, always through this wrapper (lint bans `lucide-react` elsewhere). One stroke
@@ -23,7 +23,8 @@ const icons = {
   external: ExternalLink, help: HelpCircle, expand: Maximize2, keyboard: Keyboard, eye: Eye, "eye-off": EyeOff,
   columns: Columns3, "chart-column": ChartNoAxesColumn, "chart-line": ChartNoAxesCombined, scatter: ChartScatter,
   collapse: Minimize2, pin: Pin, unpin: PinOff, person: UserRound, users: Users, "circle-plus": CirclePlus,
-  "circle-check": CircleCheck, graduation: GraduationCap
+  "circle-check": CircleCheck, graduation: GraduationCap,
+  "sort-az": ArrowDownAZ, "sort-za": ArrowDownZA
 };
 
 export type IconName = keyof typeof icons;

@@ -23,7 +23,8 @@ export function StatsHeaderTip({ tip }: { tip: HeaderTip | null }) {
     <OverlayPortal>
       <div className="stats-header-tip" role="tooltip" style={tipGeometry(tip)}>
         <strong>{tip.label}</strong>
-        <span>{tip.description ? `${tip.name}: ${tip.description}` : tip.name}</span>
+        {tip.name !== tip.label && <span className="stats-header-tip-name">{tip.name}</span>}
+        {tip.description && <span>{tip.description}</span>}
         {tip.sortable && <em>Click to sort</em>}
       </div>
     </OverlayPortal>

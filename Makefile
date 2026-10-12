@@ -1,4 +1,4 @@
-.PHONY: install install-dashboard dev up down migrate seed evaluate evaluate-final eval-assistant test test-python test-published lint typecheck dbt-build build refresh clean acquire import publish backup restore verify-restore benchmark clean-scratch install-scratch-cleanup test-kernel-limits
+.PHONY: install install-dashboard dev up down migrate seed evaluate evaluate-final eval-assistant test test-python test-published lint typecheck dbt-build build refresh clean acquire import publish backup restore verify-restore benchmark clean-scratch install-scratch-cleanup test-kernel-limits preview
 
 # Scratch goes to disk, not RAM-backed /tmp (tmpfs); see scripts/clean_scratch.sh.
 export TMPDIR ?= $(HOME)/.cache/courtlens-tmp
@@ -20,6 +20,10 @@ install-dashboard:
 
 dev:
 	uvicorn courtlens.api.app:create_app --factory --reload
+
+# Production-mode build on ports 3300 (dashboard) and 8001 (API) beside the dev servers.
+preview:
+	scripts/preview.sh
 
 up:
 	docker compose up --build -d db migrate api dashboard

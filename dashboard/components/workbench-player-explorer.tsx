@@ -5,7 +5,7 @@ import { readStoredValue, storageKeys } from "@/lib/storage-keys";
 import Link from "next/link";
 import { LookupInput } from "./lookup-input";
 import { CourtLensWordmark } from "./courtlens-wordmark";
-import { StatsPreviewRail } from "./stats-preview-rail";
+import { StatsPreviewRail, STATS_CELL_HOVER } from "./stats-preview-rail";
 import { STATS_SCOPE_PENDING } from "./stats-page-controls";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { useState, useMemo, useCallback, useTransition, useEffect, useRef, Fragment, type KeyboardEvent } from "react";
@@ -308,12 +308,16 @@ export function WorkbenchPlayerExplorer({
     }
   };
 
-  // Reset returns the table to how the page first loads: default sort, no name search, page one.
-  const tableChanged = ["sortMetric", "sort_metric", "sortDirection", "sort_direction", "sort", "name", "cursor"]
-    .some(key => searchParams?.has(key));
+  // Universal reset: every table sort and filter returns to how the page first loads (default
+  // sort, no search, minimums, team, positions, draft class or favorites, page one). Season,
+  // phase, view and counting mode are scope, not filters, and stay. Always enabled: a sort that
+  // is still loading has not reached the URL yet.
+  const nameSorted = currentSortMetric === "player_name" || currentSortMetric === "name";
   const resetTable = () => {
     setLocalName("");
-    updateParam({ sortMetric: null, sortDirection: null, sort: null, name: null, cursor: null });
+    updateParam({ sortMetric: null, sortDirection: null, sort: null, name: null, cursor: null,
+      minGames: null, minMinutes: null, minAvgMinutes: null, teamId: null, positions: null,
+      draftYear: null, favorites: null, predicates: null });
   };
 
   const handleToggleCompare = useCallback(
@@ -463,28 +467,50 @@ export function WorkbenchPlayerExplorer({
   const tableRef = useRef<HTMLTableElement>(null);
 
   // Right-aligned values leave asymmetric space around the structural guide column.
-  // Databallr: the table frame reaches just above the bottom of the unscrolled page. Measure
-  // the region's page offset and the frame chrome below it; rows scroll inside.
+  // Databallr: hovering or focusing a stat cell highlights that stat in the preview rail. One
+  // delegated listener; only the rail re-renders.
   useEffect(() => {
-    const region = scrollRef.current;
-    const frame = region?.closest<HTMLElement>(".stats-table-frame");
-    if (!region || !frame) return;
-    const fit = () => {
-      const top = region.getBoundingClientRect().top + window.scrollY;
-      const below = frame.getBoundingClientRect().bottom - region.getBoundingClientRect().bottom;
-      // The region's bottom edge snaps to a whole pixel, so the footer and rail always render the
-      // same however sub-pixel offsets above it settle.
-      const regionTop = region.getBoundingClientRect().top;
-      const bottom = Math.round(regionTop + window.innerHeight - top - below - 16);
-      region.style.setProperty("--stats-fill-height", `${Math.max(320, bottom - regionTop)}px`);
+    const table = tableRef.current;
+    if (!table) return;
+    let current: string | null = null;
+    const announce = (column: string | null) => {
+      if (column === current) return;
+      current = column;
+      window.dispatchEvent(new CustomEvent(STATS_CELL_HOVER, { detail: column }));
     };
-    // Controls above the table can settle after mount (fonts, menus); re-measure on any resize.
-    // Setting the same height again is a no-op, so the observer converges.
+    const fromEvent = (event: Event) => announce((event.target as Element | null)?.closest<HTMLElement>("tbody td[data-column]")?.dataset.column ?? null);
+    const clear = () => announce(null);
+    table.addEventListener("mouseover", fromEvent);
+    table.addEventListener("focusin", fromEvent);
+    table.addEventListener("mouseleave", clear);
+    table.addEventListener("focusout", clear);
+    return () => {
+      table.removeEventListener("mouseover", fromEvent);
+      table.removeEventListener("focusin", fromEvent);
+      table.removeEventListener("mouseleave", clear);
+      table.removeEventListener("focusout", clear);
+      announce(null);
+    };
+  }, [viewMode, loadingRows]);
+
+  // Databallr: the table frame reaches just above the bottom of the unscrolled page. Only the
+  // frame's height is measured (from its own page offset); inside it a flex column gives the rows
+  // whatever the toolbar, footer and compare tray leave, so in-frame changes need no re-measure.
+  useEffect(() => {
+    const frame = scrollRef.current?.closest<HTMLElement>(".stats-table-frame");
+    if (!frame) return;
+    const fit = () => {
+      const top = frame.getBoundingClientRect().top + window.scrollY;
+      // The bottom edge lands on a whole pixel (16px above the fold) whatever the top's fraction.
+      frame.style.setProperty("--stats-frame-height", `${window.innerHeight - 16 - top}px`);
+    };
+    // Controls above the table can settle after mount (fonts, menus).
     const observer = new ResizeObserver(fit);
-    observer.observe(region.closest(".stats-workspace") ?? document.body);
+    observer.observe(frame.closest(".stats-workspace") ?? document.body);
     window.addEventListener("resize", fit);
     void document.fonts.ready.then(fit);
-    return () => { observer.disconnect(); window.removeEventListener("resize", fit); };
+    fit();
+    return () => { observer.disconnect(); window.removeEventListener("resize", fit); frame.style.removeProperty("--stats-frame-height"); };
   }, [viewMode]);
 
   // Use the visible metric bounds to keep one straight divider per group, including
@@ -637,7 +663,7 @@ export function WorkbenchPlayerExplorer({
       )}
 
       <div className={`stats-frame-layout ${viewMode === "table" ? "has-rail" : ""} ${previewCollapsed ? "preview-collapsed" : ""}`}>
-      <div className="stats-table-frame">
+      <div className={`stats-table-frame ${viewMode === "table" ? "is-table" : ""}`}>
       <div className="stats-controls-row">
         <strong className="stats-table-brand"><CourtLensWordmark height={16} /></strong>
         <div className="control-button-group stats-counting-modes" role="group" aria-label="Counting Mode">
@@ -676,8 +702,15 @@ export function WorkbenchPlayerExplorer({
             aria-label="Filters" title={hasActiveFilters ? "Filters (active) · F" : "Filters · F"}>
             <Icon name="filter" />
           </button>
-          <button type="button" className="stats-tool-button" onClick={resetTable} disabled={!tableChanged}
-            aria-label="Reset table" title="Reset to the default sort and the first page">
+          {/* Alphabetical order lives with the table tools; the search then spans the cards. */}
+          <button type="button" className="stats-tool-button" aria-pressed={nameSorted}
+            onClick={() => nameSorted ? updateParam({ sortMetric: "player_name", sortDirection: currentSortDirection === "asc" ? "desc" : "asc" })
+              : updateParam({ sortMetric: "player_name", sortDirection: "asc" })}
+            aria-label="Sort by Player" title={nameSorted && currentSortDirection === "asc" ? "Sort players Z–A" : "Sort players A–Z"}>
+            <Icon name={nameSorted && currentSortDirection === "asc" ? "sort-za" : "sort-az"} />
+          </button>
+          <button type="button" className="stats-tool-button" onClick={resetTable}
+            aria-label="Reset table" title="Reset sort and filters">
             <Icon name="reset" />
           </button>
         </div>
@@ -906,7 +939,6 @@ export function WorkbenchPlayerExplorer({
                     onSelect={item => { setLocalName(item.display_name); updateParam({ name: item.display_name }); }}
                     onSubmitText={text => updateParam({ name: text.trim() || null })}
                     clearLabel="Clear player search" onClear={() => updateParam({ name: null })} />
-                  <button type="button" className="stats-name-sort" onClick={() => handleSort("player_name")} aria-label="Sort by Player" title="Sort by player name"><Icon name={currentSortDirection === "asc" ? "up" : "down"} /></button>
                 </div>
               </th>
 
@@ -1038,7 +1070,7 @@ export function WorkbenchPlayerExplorer({
                           {identityMode !== "none" && guideStarts.has(index) && <td className="stats-guide-cell" data-guide-index={index} style={guideGeometry(index)} aria-hidden="true">
                             <span className="stats-guide-marker"><GroupGuide mode={identityMode} player={player} /></span>
                           </td>}
-                        <td
+                        <td data-column={col.key}
                           className={`stats-metric-cell stats-group-${headerGroups.findIndex(group => index >= group.start && index < group.start + group.colSpan) % 2} ${col.num ? "num" : ""}`}
                         >
                           <button type="button" className="stats-cell-button" onClick={() => setTrendTarget({ player, columnKey: col.key })}
@@ -1134,6 +1166,13 @@ export function WorkbenchPlayerExplorer({
       </>
       )}
 
+      {/* Compare tray (F05) sits inside the frame: the rows give up the space, the frame keeps its height. */}
+      <CompareTray
+        selectedPlayers={comparedPlayers}
+        onRemovePlayer={handleRemoveCompare}
+        onClearAll={handleClearCompare}
+        context={contextBundle}
+      />
       </div>
       {viewMode === "table" && <StatsPreviewRail player={previewPlayer} columns={preset.columns} season={query.season}
         eligiblePlayers={data.total_eligible_players} goodDirections={data.cohort?.good_directions}
@@ -1168,13 +1207,6 @@ export function WorkbenchPlayerExplorer({
         }
       />
 
-      {/* Compare Tray (F05) */}
-      <CompareTray
-        selectedPlayers={comparedPlayers}
-        onRemovePlayer={handleRemoveCompare}
-        onClearAll={handleClearCompare}
-        context={contextBundle}
-      />
 
       <StatsHeaderTip tip={headerTip} />
       {querySpec && <StatsTrendDialog target={trendTarget} columns={preset.columns} querySpec={querySpec} catalog={catalog}

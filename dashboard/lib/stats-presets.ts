@@ -149,6 +149,21 @@ export const IMPACT_COLUMNS: Record<string, ColumnDefinition> = Object.fromEntri
   }])
 );
 
+/**
+ * A column's plain full name for chart titles ("True Shooting %"), without the formula or sample
+ * notes its tooltip carries; formulas stay in hover text and the glossary.
+ */
+export function columnName(column: Pick<ColumnDefinition, "label" | "tooltip">): string {
+  const name = (column.tooltip ?? "").split(":")[0].replace(/\s*\([^)]*\)\s*$/, "").trim();
+  return name && name !== column.label ? name : column.label;
+}
+
+/** Chart axis title: abbreviation plus its plain name, e.g. "TS% (True Shooting %)". */
+export function axisTitle(column: Pick<ColumnDefinition, "label" | "tooltip">): string {
+  const name = columnName(column);
+  return name === column.label ? column.label : `${column.label} (${name})`;
+}
+
 /** Signed one-decimal impact estimate, as Databallr shows its DPM family (+1.9). */
 export function formatSignedValue(val: number | null | undefined): string {
   if (val === null || val === undefined || isNaN(val)) return "—";
