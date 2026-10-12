@@ -39,6 +39,9 @@ import {
   type TableDensity
 } from "@/lib/stats-presets";
 import { normalizedColumn, normalizedSortMetric } from "@/lib/stats-query";
+import type { MetricHint } from "@/lib/stats-glossary";
+import { StatsHeaderTip, type HeaderTip } from "./stats-header-tip";
+import { StatsTrendDialog, type TrendTarget } from "./stats-trend-dialog";
 import type { QuerySpec, WorkbenchCatalog, PlayerResearchResponse, PlayerResearchItem } from "@/lib/types";
 
 interface WorkbenchPlayerExplorerProps {
@@ -48,6 +51,8 @@ interface WorkbenchPlayerExplorerProps {
   catalog?: WorkbenchCatalog;
   currentSortMetric?: string;
   currentSortDirection?: string;
+  /** Full name and description per metric key, shown when a column header is hovered. */
+  metricHints?: Record<string, MetricHint>;
 }
 
 const LOCAL_STORAGE_DENSITY_KEY = storageKeys.density;
@@ -72,7 +77,8 @@ export function WorkbenchPlayerExplorer({
   countingMode: resolvedCountingMode,
   catalog,
   currentSortMetric = "pts",
-  currentSortDirection = "desc"
+  currentSortDirection = "desc",
+  metricHints = {}
 }: WorkbenchPlayerExplorerProps) {
   const router = useRouter();
   const pathname = usePathname();
@@ -325,6 +331,20 @@ export function WorkbenchPlayerExplorer({
     const ids = [...ORDERED_PRESETS.map(p => p.id), ...views.map(v => v.id as PresetId)];
     const index = ids.indexOf(activePresetId);
     handlePresetSelect(ids[(index + direction + ids.length) % ids.length]);
+  };
+
+  const [headerTip, setHeaderTip] = useState<HeaderTip | null>(null);
+  const [trendTarget, setTrendTarget] = useState<TrendTarget | null>(null);
+  const showHeaderTip = (event: React.SyntheticEvent<HTMLTableRowElement>) => {
+    const cell = (event.target as HTMLElement).closest<HTMLElement>("th[data-column]");
+    const column = preset.columns.find(entry => entry.key === cell?.dataset.column);
+    if (!cell || !column) { setHeaderTip(null); return; }
+    if (headerTip?.key === column.key) return;
+    const hint = metricHints[column.key];
+    const rect = cell.getBoundingClientRect();
+    setHeaderTip({ key: column.key, label: column.label, name: hint?.name ?? column.tooltip ?? column.label,
+      description: hint?.description ?? null, x: rect.left + rect.width / 2, y: rect.top,
+      sortable: !catalog?.stats_sort_fields || catalog.stats_sort_fields.includes(column.sortMetric) });
   };
 
   const openComparison = () => {
@@ -826,7 +846,8 @@ export function WorkbenchPlayerExplorer({
             </tr>
 
             {/* Tier 2 Header: Individual Metrics */}
-            <tr className="stats-header-tier-2">
+            <tr className="stats-header-tier-2" onMouseOver={showHeaderTip} onFocus={showHeaderTip}
+              onMouseLeave={() => setHeaderTip(null)} onBlur={() => setHeaderTip(null)}>
               {/* Pinned Col 1: Select Checkbox */}
               <th
                 className="pinned-col pinned-col-select text-center"
@@ -850,7 +871,7 @@ export function WorkbenchPlayerExplorer({
               {/* Scrollable Metric Column Headers */}
               {preset.columns.map((col, index) => <Fragment key={col.key}>
                 {identityMode !== "none" && guideStarts.has(index) && <th className="stats-guide-cell" aria-hidden="true" />}
-                <SortHeader label={col.label} metric={col.sortMetric} onSort={handleSort}
+                <SortHeader column={col.key} label={col.label} metric={col.sortMetric} onSort={handleSort}
                   active={currentSortMetric === col.sortMetric} direction={currentSortDirection}
                   sortable={!catalog?.stats_sort_fields || catalog.stats_sort_fields.includes(col.sortMetric)}
                   description={col.tooltip} className={col.num ? "num" : ""} />
@@ -978,10 +999,13 @@ export function WorkbenchPlayerExplorer({
                         <td
                           className={`stats-metric-cell stats-group-${headerGroups.findIndex(group => index >= group.start && index < group.start + group.colSpan) % 2} ${col.num ? "num" : ""}`}
                         >
-                          <PercentileCell variant="text" showPercentile={showPercentiles}
-                            value={player.metrics[metricKey] == null ? null : formatted}
-                            percentile={pct} qualified={qualified} label={col.label}
-                            cohort={`${player.table_cohort_sample_sizes?.[metricKey] ?? "Unknown"} valid league players; ${data.table_cohort?.min_season_minutes ?? 500}+ season minutes`} />
+                          <button type="button" className="stats-cell-button" onClick={() => setTrendTarget({ player, columnKey: col.key })}
+                            aria-label={`${col.label} ${player.metrics[metricKey] == null ? "unknown" : formatted} for ${player.player_name}. Open ${col.label} trend`}>
+                            <PercentileCell variant="text" showPercentile={showPercentiles}
+                              value={player.metrics[metricKey] == null ? null : formatted}
+                              percentile={pct} qualified={qualified} label={col.label}
+                              cohort={`${player.table_cohort_sample_sizes?.[metricKey] ?? "Unknown"} valid league players; ${data.table_cohort?.min_season_minutes ?? 500}+ season minutes`} />
+                          </button>
                         </td>
                         </Fragment>
                       );
@@ -1009,7 +1033,7 @@ export function WorkbenchPlayerExplorer({
         <div className="stats-results-meta">
           <span className="stats-record-dot" aria-hidden="true" />
           <span className="stats-record-count">{(data.total_output_players ?? data.total_eligible_players).toLocaleString("en-US")} records</span>
-          <span className="stats-sort-caption">{(data.output_offset ?? 0) + 1}–{(data.output_offset ?? 0) + items.length}</span>
+          <span className="stats-sort-caption">{(data.output_offset ?? 0) + 1}–{(data.output_offset ?? 0) + items.length}{data.total_output_players != null && data.total_output_players !== data.total_eligible_players ? ` · of ${data.total_eligible_players.toLocaleString("en-US")} eligible` : ""}</span>
           <span className="stats-sort-caption" title="Same season, phase and window. Search, team and sample filters, favorites and paging do not change the league reference. Lower is better for turnovers, fouls and opponent allowance.">
             Percentiles vs {data.table_cohort?.qualified_players ?? "unknown number of"} players · {data.table_cohort?.min_season_minutes ?? 500}+ min
           </span>
@@ -1109,6 +1133,10 @@ export function WorkbenchPlayerExplorer({
         onClearAll={handleClearCompare}
         context={contextBundle}
       />
+
+      <StatsHeaderTip tip={headerTip} />
+      {querySpec && <StatsTrendDialog target={trendTarget} columns={preset.columns} querySpec={querySpec} catalog={catalog}
+        hints={metricHints} onClose={() => setTrendTarget(null)} />}
 
       {/* Keyboard Shortcuts Modal */}
       <HotkeysModal isOpen={isHotkeysOpen} onClose={() => setIsHotkeysOpen(false)} />

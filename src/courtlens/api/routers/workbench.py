@@ -165,6 +165,7 @@ from courtlens.services.personal_state import (
     update_preferences_service,
     update_workspace_state,
 )
+from courtlens.services.player_context import listed_position_player_ids
 from courtlens.services.roster_shapes import roster_shapes
 from courtlens.services.schedule_dates import schedule_dates
 from courtlens.services.stats_catalog import stats_catalog_scope
@@ -597,6 +598,19 @@ def execute_query_endpoint(
         requested_before_date=spec.before_date,
         requested_window=spec.window.kind.value,
     )
+
+    if payload.presentation is not None and payload.presentation.positions:
+        # Positions narrow the displayed players like favorites; the cohort is unchanged.
+        listed = listed_position_player_ids(session, payload.presentation.positions)
+        if payload.presentation.player_ids is not None:
+            listed &= set(payload.presentation.player_ids)
+        payload = payload.model_copy(
+            update={
+                "presentation": payload.presentation.model_copy(
+                    update={"player_ids": sorted(listed), "positions": None}
+                )
+            }
+        )
 
     items_raw, total_count, next_cursor, has_more = execute_stats_query(
         session, context, spec, presentation=payload.presentation

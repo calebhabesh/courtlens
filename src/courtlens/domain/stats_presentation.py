@@ -17,6 +17,9 @@ class StatsPresentation(BaseModel):
     version: str = "pf01a-v1"
     player_ids: list[str] | None = Field(default=None, max_length=2000)
     table_percentiles: bool = False
+    # NBA listed roster positions (current player index, not backdated); a hyphenated listing
+    # such as G-F matches both. Resolved to player IDs before execution; None means all.
+    positions: list[Literal["G", "F", "C"]] | None = Field(default=None, max_length=3)
 
     @field_validator("version")
     @classmethod
@@ -33,6 +36,13 @@ class StatsPresentation(BaseModel):
         if any(not item.strip() or len(item) > 128 for item in value):
             raise ValueError("player IDs must be nonempty and at most 128 characters")
         return sorted({item.strip() for item in value})
+
+    @field_validator("positions")
+    @classmethod
+    def canonical_positions(
+        cls, value: list[Literal["G", "F", "C"]] | None
+    ) -> list[Literal["G", "F", "C"]] | None:
+        return None if value is None else sorted(set(value), key="GFC".index)
 
 
 class StatsCohort(BaseModel):

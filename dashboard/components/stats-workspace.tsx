@@ -4,14 +4,15 @@ import "./stats-explorer.css";
 import { redirect } from "next/navigation";
 import { ContextBar } from "@/components/context-bar";
 import { WorkbenchPlayerExplorer } from "@/components/workbench-player-explorer";
-import { executeWorkbenchQuery, getWorkbenchCatalog } from "@/lib/workbench-api";
+import { executeWorkbenchQuery, getMetricCatalog, getWorkbenchCatalog } from "@/lib/workbench-api";
+import { metricHints, type MetricHint } from "@/lib/stats-glossary";
 import { querySpecToLegacyQuery } from "@/lib/query-url";
 import { resolveStatsQuery, normalizedColumn } from "@/lib/stats-query";
 import { getPresetById, IMPACT_COLUMNS, type CountingMode } from "@/lib/stats-presets";
 import { getWorkspace } from "@/lib/workspace-client";
 import type { PlayerResearchResponse, WorkbenchCatalog } from "@/lib/types";
 import { PlayerDirectory } from "./player-directory";
-import { StatsHelpRow, StatsTeamSelect } from "./stats-page-controls";
+import { StatsHelpRow, StatsPositionChips, StatsTeamSelect } from "./stats-page-controls";
 import { Icon } from "./ui/icon";
 import { readPublication } from "@/lib/original-content";
 import Link from "next/link";
@@ -64,6 +65,13 @@ export async function StatsWorkspace({ params: rawParams, basePath = "/stats", t
   }
 
 
+  const positions = String(params.positions ?? "").split(",").filter((value): value is "G" | "F" | "C" => ["G", "F", "C"].includes(value));
+  // Header hover text; the table still works when the catalog request fails.
+  let hints: Record<string, MetricHint> = {};
+  if (!directory) {
+    try { hints = metricHints((await getMetricCatalog()).metrics); } catch { /* headers keep their short labels */ }
+  }
+
   let researchData: PlayerResearchResponse | null = null;
   let loadError: string | null = null;
 
@@ -72,7 +80,8 @@ export async function StatsWorkspace({ params: rawParams, basePath = "/stats", t
     if (!catalog.stats_scopes?.some((scope) => scope.season === querySpec.season && scope.phase === querySpec.phase)) throw new Error(`No observed Stats coverage for ${querySpec.season} / ${querySpec.phase}.`);
     const result = await executeWorkbenchQuery(querySpec, {
       table_percentiles: true,
-      player_ids: params.favorites === "1" ? workspace?.favorites ?? [] : null
+      player_ids: params.favorites === "1" ? workspace?.favorites ?? [] : null,
+      positions: positions.length ? positions : null
     });
     researchData = {
       ...result,
@@ -102,10 +111,9 @@ export async function StatsWorkspace({ params: rawParams, basePath = "/stats", t
           initialPhase={researchQuery.phase}
           initialBeforeDate={researchQuery.before_date}
           initialWindow={researchQuery.window}
-          sampleSize={researchData?.total_eligible_players}
           lastIncludedDate={researchData?.context?.last_included_date}
           steppedScope
-          filters={<StatsTeamSelect />}
+          filters={<><StatsTeamSelect /><StatsPositionChips /></>}
         />}
 
         {loadError && (
@@ -117,13 +125,14 @@ export async function StatsWorkspace({ params: rawParams, basePath = "/stats", t
         {researchData && directory && <PlayerDirectory catalog={catalog} data={researchData} />}
         {researchData && !directory && (
           <WorkbenchPlayerExplorer
-            key={JSON.stringify({ querySpec, favorites: params.favorites })}
+            key={JSON.stringify({ querySpec, favorites: params.favorites, positions: params.positions })}
             querySpec={querySpec}
             countingMode={countingMode}
             catalog={catalog}
             data={researchData}
             currentSortMetric={researchQuery.sort_metric}
             currentSortDirection={researchQuery.sort_direction}
+            metricHints={hints}
           />
         )}
       </div>

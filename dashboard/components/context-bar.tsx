@@ -44,7 +44,7 @@ interface ContextBarProps {
   steppedScope?: boolean;
 }
 
-const SHORT_PHASES: Record<string, string> = { regular_season: "Regular", playoffs: "Playoffs", play_in: "Play-In" };
+const SHORT_PHASES: Record<string, string> = { regular_season: "Regular", playoffs: "Playoffs", play_in: "Play-In", cup_final: "Cup Final" };
 
 const WINDOWS = [
   { value: "season", label: "Season-to-date" },

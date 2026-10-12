@@ -14,7 +14,7 @@ for (const width of [1440, 390]) {
     const high = tones.find(tone => tone.pct >= 90), low = tones.find(tone => tone.pct <= 30);
     if (high && low) expect(high.color).not.toBe(low.color);
     await expect(page.getByRole("group", { name: "Percentile shading from low to high" })).toHaveCount(0);
-    await expect(page.locator(".stats-group-th")).toHaveCount(4);
+    await expect(page.locator(".stats-group-th")).toHaveCount(6);
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(width);
   });
 

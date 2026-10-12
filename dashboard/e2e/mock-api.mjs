@@ -630,7 +630,9 @@ createServer(async (request, response) => {
       } : {})
     }));
     const selected = rows.filter((row) => (!query.name || row.player_name.toLowerCase().includes(query.name.toLowerCase())) &&
-      (body.presentation?.player_ids == null || body.presentation.player_ids.includes(row.player_id)));
+      (body.presentation?.player_ids == null || body.presentation.player_ids.includes(row.player_id)) &&
+      // Listed roster positions for the two fixture players (server resolves these from the index).
+      (!body.presentation?.positions?.length || body.presentation.positions.includes({ 23: "F", 24: "G" }[row.player_id])));
     const sort = query.sort?.[0];
     if (sort) selected.sort((a, b) => (sort.field === "player_name" ? a.player_name.localeCompare(b.player_name) : (a.metrics[sort.field] ?? 0) - (b.metrics[sort.field] ?? 0)) * (sort.direction === "asc" ? 1 : -1));
     return json(response, 200, { context: workbenchContext, query, total_eligible_players: rows.length,

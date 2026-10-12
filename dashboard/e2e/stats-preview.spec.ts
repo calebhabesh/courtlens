@@ -99,7 +99,8 @@ test("mobile details, collapsed filters and submitted search remain accessible",
   // The team picker sits with the scope controls, which collapse into the Filters sheet on phones.
   await page.locator(".ui-filter-bar-toggle").click();
   const sheet = page.getByRole("dialog", { name: "Filters", exact: true });
-  await expect(sheet.getByLabel("Filter by NBA team")).toBeVisible();
+  await expect(sheet.getByRole("button", { name: "Select Team", exact: true })).toBeVisible();
+  await expect(sheet.getByRole("group", { name: "Positions" })).toBeVisible();
   await page.keyboard.press("Escape");
   await expect(sheet).toHaveCount(0);
   const search = page.getByRole("combobox", { name: "Filter players by name", exact: true });

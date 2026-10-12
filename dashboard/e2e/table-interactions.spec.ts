@@ -31,7 +31,7 @@ test("recurring guide modes preserve primary identity, header alignment and relo
   for (const mode of ["Photos", "Logos", "Initials", "None"]) {
     await guides.getByRole("button", { name: mode, exact: true }).click();
     await page.waitForURL(url => url.searchParams.get("identityMode") === mode.toLowerCase());
-    await expect(row.locator(".stats-guide-cell")).toHaveCount(mode === "None" ? 0 : 3);
+    await expect(row.locator(".stats-guide-cell")).toHaveCount(mode === "None" ? 0 : 5);
     await expect(row.locator(".stats-primary-portrait")).toHaveCount(1);
     await expect(row.getByRole("link", { name: "Fixture Star", exact: true })).toBeVisible();
     expect(await row.locator(".stats-guide-cell [tabindex]").count()).toBe(0);
@@ -61,7 +61,7 @@ test("recurring guide modes preserve primary identity, header alignment and relo
 
 test("keyboard sorting, single compare shortcut and drawer focus stay scoped", async ({ page }) => {
   const fixture = await personalFixture(page); await openWorkbench(page, "/stats"); await page.waitForLoadState("networkidle");
-  const sort = page.getByRole("button", { name: "Sort by PPG", exact: true });
+  const sort = page.getByRole("button", { name: "Sort by PTS", exact: true });
   await sort.focus(); await sort.press("Space"); await page.waitForURL(/sortDirection=asc/);
   await expect(sort.locator("..")).toHaveAttribute("aria-sort", "ascending");
   const row = page.locator(".dense-stats-table tbody tr[data-player-id='23']");

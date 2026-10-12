@@ -37,6 +37,11 @@
     --color-percentile-text-high: #ffd166;
     --color-percentile-text-mid: #8a919c;
     --color-percentile-text-low: #5d9cf0;
+    /* Stats trend series: dataviz reference dark slots 1-4, validated on surface-2 (CVD ΔE ≥ 8.4). */
+    --color-trend-1: #3987e5;
+    --color-trend-2: #d95926;
+    --color-trend-3: #199e70;
+    --color-trend-4: #c98500;
     --color-category-1: #ffd166;
     --color-category-2: #80bfff;
     --color-category-3: #c5a3ff;

@@ -16,7 +16,9 @@ export function normalizedSortMetric(field: string, mode: CountingMode): string 
 
 export function normalizedColumn(column: ColumnDefinition, mode: CountingMode): ColumnDefinition {
   const key = column.countingModeKeys?.[mode] ?? normalizedSortMetric(column.key, mode);
-  return { ...(ALL_CATALOG_METRICS[key] ?? column), key, sortMetric: key, group: column.group };
+  const base = ALL_CATALOG_METRICS[key] ?? column;
+  const kept = column.keepLabel ? { label: column.label, format: column.format ?? base.format } : {};
+  return { ...base, ...kept, key, sortMetric: key, group: column.group };
 }
 
 export function resolveStatsQuery(
