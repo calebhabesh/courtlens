@@ -51,7 +51,6 @@ export const NAV_MENUS: NavMenu[] = [
       { label: "Roster Shapes", href: "/roster-shapes" },
       { label: "Teammate Stat Shift", href: "/stat-line-shift" },
       { label: "Contracts & Payroll", href: "/contracts" },
-      { label: "Free Agency Tracker", href: "/free-agency" },
     ] }],
   },
   {

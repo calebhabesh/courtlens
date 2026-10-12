@@ -361,3 +361,30 @@ parameters**. Blocks before each owner gate also need recorded owner approval.
   the evidence. 161 publication pointers unchanged.
 - Next: PC08 (Contracts views, Free Agency removal) to gate G3.
 
+
+## 2026-10-12 — PC08 Contracts views and Free Agency removal (gate G3: stop for approval)
+
+- Owner instruction: “Let's begin the next block” (PC08 after the D1–D5 unblock). Scope is PC08 only.
+  PC09 has not started. **G3 approval is pending; PC08 is not verified until the owner approves.**
+- [Evidence, glance test and reproduction](evidence/pc08/README.md); contracts updated:
+  [finance refresh v1 (PC08 views)](design/finance-refresh-v1.md#pc08-contracts-views),
+  [finance UI v1 note](design/finance-ui-v1.md), [Design Language v1.2](design/design-language-v1.md).
+- `/contracts` now opens on real data with no parameters: it pins the latest 2026-27 refresh in the
+  URL, then shows a 30-team payroll board against cap/tax/apron lines, KPI tiles and a team table.
+  `/contracts/[team]` adds cap utilization, payroll flow, position and earner donuts, a 2026-27 →
+  2031-32 contract timeline and a roster table with 2025-26 references and sealed RAPM.
+- Free Agency removed per D3 (route, navigation, search); `/free-agency` redirects to `/contracts`.
+  The B30 book explorer is unchanged in behavior and moved to `/contracts/books` (linked from
+  Data details), keeping its import/correction workflow.
+- New status `reported` (`#d0d788`): a BRef salary without an option marker is not claimed as
+  guaranteed. `TimelineGrid` gains opt-in "Not listed" cells for seasons after a contract ends.
+- Unknown salaries are excluded from all totals and charts and never shown as $0; totals are labeled
+  lower bounds; threshold lines are markers, not compliance. 10 source-listed players on other
+  index rosters (e.g. Lillard/MIL) are shown separately.
+- Read-only on the real database: 161 publication pointers (same hash) and finance/identity row
+  counts unchanged. Glance test 11/13 (`/contracts`) and 11/14 (`/contracts/[team]`), up from 3/12.
+- Checks: Python 1,988 passed (7 new), Ruff/format/mypy clean; dashboard lint 0/0, typecheck,
+  Vitest 415 passed; Contracts and finance Playwright specs pass. The full browser suite was memory
+  constrained; after single-worker reruns, three failures remain, and all three also fail on HEAD
+  `2c6c2c3`. The full browser run overwrote 101 sealed DL evidence screenshots; all were restored.
+- Next: owner review at G3. After approval, PC09 (value metric and archetypes).

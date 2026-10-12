@@ -94,7 +94,6 @@ describe("Replica navigation route inventory and compatibility redirects", () =>
     "/roster-shapes",
     "/stat-line-shift",
     "/contracts",
-    "/free-agency",
     "/compare",
     "/team-compare",
     "/matchups",
@@ -126,7 +125,7 @@ describe("Replica navigation route inventory and compatibility redirects", () =>
   it("contains all 40 canonical replica routes without duplicates", () => {
     const set = new Set(CANONICAL_ROUTES);
     expect(set.size).toBe(CANONICAL_ROUTES.length);
-    expect(CANONICAL_ROUTES.length).toBe(40);
+    expect(CANONICAL_ROUTES.length).toBe(39);
   });
 
   it("maps all compatibility and consolidation redirects to valid canonical routes", () => {

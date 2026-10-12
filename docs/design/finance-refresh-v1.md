@@ -105,9 +105,30 @@ never acquire, admit, publish or serve raw documents. Catalogs are bounded to te
 and do not bind these independent inputs into an older basketball release. `verify-finance-refresh`
 checks retained source/robots bytes, threshold and refresh hashes, book membership and coverage.
 
+## PC08 Contracts views
+
+Read-only `GET /api/workbench/operations/finance/refreshes/{id}/teams` (league payroll board) and
+`/refreshes/{id}/teams/{NBA ID or tricode}` (team view; optional `statisticsReleaseId`) read only the
+pinned refresh, its book, its pinned NBA index and its threshold record. They never acquire, admit
+or publish. The dashboard defaults to the latest observed refresh for the season (the catalog's
+first row) and pins it in the URL as `refresh`; the B30 rule of no automatic book selection still
+applies to `/contracts/books`.
+
+- Roster players are the refresh's coverage rows for the team (pinned index), with their stored
+  salary or unknown reason. Seasons, options and remaining guaranteed totals come from the book's
+  BRef rows for the same player and source-listed team. A later season with no salary and no option
+  is "not listed", not unknown.
+- Book rows for a source-listed team whose player is on another roster in the index (for example
+  waived players) are returned separately. The team's `source_page_known_cents` includes their
+  reported current-season amounts; roster counts and flow/donut charts do not.
+- Position group is the index's first listed position (G/F/C), else `unlisted`.
+- Optional references: 2025-26 regular-season box references through the existing projected-roster
+  service, and the sealed impact-serving RAPM. Both are prior-season descriptions, not forecasts.
+- Known totals are lower bounds of reported base salary; no cap hit, tax or apron status is derived.
+
 ## Completion evidence
 
-See [PC06 measured evidence](../evidence/pc06/README.md) and the
-[PC06 unblock evidence](../evidence/pc06b/README.md). An implementation/fixture pass is not real
+See [PC06 measured evidence](../evidence/pc06/README.md), the
+[PC06 unblock evidence](../evidence/pc06b/README.md) and [PC08 views evidence](../evidence/pc08/README.md). An implementation/fixture pass is not real
 source coverage. Spotrac stays unused (robots 403); HoopsHype's robots.txt disallows Anthropic
 agents, so it is not used for this project's development.

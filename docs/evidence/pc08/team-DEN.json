@@ -1,0 +1,1093 @@
+{
+    "context": {
+        "refresh_id": "95b5fe42-79b2-4be5-bb8c-187b66e10634",
+        "season": "2026-27",
+        "observed_at": "2026-10-12T00:33:42.414183Z",
+        "state": "verification_blocked",
+        "book_id": "26961333-31f3-420e-a86f-203a0fbd1f29",
+        "roster_dataset_id": "027dff96-a2fd-4d54-9833-f76e2bc0248f",
+        "thresholds": {
+            "schema_version": "finance-thresholds-v1",
+            "season": "2026-27",
+            "source_url": "https://www.nba.com/news/nba-salary-cap-2026-27-season",
+            "effective_date": "2026-07-01",
+            "cap_cents": "16496100000",
+            "tax_cents": "20042800000",
+            "first_apron_cents": "20901500000",
+            "second_apron_cents": "22168600000",
+            "minimum_cents": "14846500000",
+            "capture_method": "manual_official_release",
+            "threshold_id": "bac24901-a5ba-45c3-9bd4-b99b803a9910",
+            "observed_at": "2026-10-11T23:17:40.309275Z",
+            "content_sha256": "60d1d4ef37531ec047e24d8da8e60cfc9ec54f5f3cfba7b61e771e532be2bd43",
+            "attribution": "NBA",
+            "limitation": "Official markers only; no exact cap room, tax or apron compliance claim."
+        },
+        "source": "Basketball-Reference contracts pages; NBA player index; NBA salary cap release",
+        "label": "2026-27 \u00b7 reported salaries"
+    },
+    "team_id": "1610612743",
+    "team_tricode": "DEN",
+    "team_name": "Denver Nuggets",
+    "seasons": [
+        "2026-27",
+        "2027-28",
+        "2028-29",
+        "2029-30",
+        "2030-31",
+        "2031-32"
+    ],
+    "roster_players": 21,
+    "roster_known_players": 14,
+    "roster_known_cents": "22106914800",
+    "other_source_rows": 0,
+    "other_source_known_cents": "0",
+    "source_page_known_cents": "22106914800",
+    "players": [
+        {
+            "player_id": "203999",
+            "name": "Nikola Joki\u0107",
+            "on_index_roster": true,
+            "listed_position": "C",
+            "position_group": "C",
+            "current_salary_cents": "5903311400",
+            "unknown_reason": null,
+            "remaining_guaranteed_cents": "5903311400",
+            "seasons": [
+                {
+                    "season": "2026-27",
+                    "salary_cents": "5903311400",
+                    "option": null
+                },
+                {
+                    "season": "2027-28",
+                    "salary_cents": "6284170200",
+                    "option": "player"
+                },
+                {
+                    "season": "2028-29",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2029-30",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2030-31",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2031-32",
+                    "salary_cents": null,
+                    "option": null
+                }
+            ],
+            "source_url": "https://www.basketball-reference.com/contracts/DEN.html",
+            "source_locator": "table#contracts/tbody/tr[1]/y1",
+            "reference": {
+                "season": "2025-26",
+                "games": 65,
+                "minutes_per_game": 34.8,
+                "points_per_game": 27.7,
+                "rebounds_per_game": 12.9,
+                "assists_per_game": 10.7,
+                "rapm": 6.891275049286575
+            }
+        },
+        {
+            "player_id": "1627750",
+            "name": "Jamal Murray",
+            "on_index_roster": true,
+            "listed_position": "G",
+            "position_group": "G",
+            "current_salary_cents": "5010562800",
+            "unknown_reason": null,
+            "remaining_guaranteed_cents": "16145146800",
+            "seasons": [
+                {
+                    "season": "2026-27",
+                    "salary_cents": "5010562800",
+                    "option": null
+                },
+                {
+                    "season": "2027-28",
+                    "salary_cents": "5381715600",
+                    "option": null
+                },
+                {
+                    "season": "2028-29",
+                    "salary_cents": "5752868400",
+                    "option": null
+                },
+                {
+                    "season": "2029-30",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2030-31",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2031-32",
+                    "salary_cents": null,
+                    "option": null
+                }
+            ],
+            "source_url": "https://www.basketball-reference.com/contracts/DEN.html",
+            "source_locator": "table#contracts/tbody/tr[2]/y1",
+            "reference": {
+                "season": "2025-26",
+                "games": 75,
+                "minutes_per_game": 35.4,
+                "points_per_game": 25.4,
+                "rebounds_per_game": 4.4,
+                "assists_per_game": 7.1,
+                "rapm": 1.5650693993253504
+            }
+        },
+        {
+            "player_id": "203932",
+            "name": "Aaron Gordon",
+            "on_index_roster": true,
+            "listed_position": "F",
+            "position_group": "F",
+            "current_salary_cents": "3365803700",
+            "unknown_reason": null,
+            "remaining_guaranteed_cents": "7000871700",
+            "seasons": [
+                {
+                    "season": "2026-27",
+                    "salary_cents": "3365803700",
+                    "option": null
+                },
+                {
+                    "season": "2027-28",
+                    "salary_cents": "3635068000",
+                    "option": null
+                },
+                {
+                    "season": "2028-29",
+                    "salary_cents": "3904332300",
+                    "option": "player"
+                },
+                {
+                    "season": "2029-30",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2030-31",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2031-32",
+                    "salary_cents": null,
+                    "option": null
+                }
+            ],
+            "source_url": "https://www.basketball-reference.com/contracts/DEN.html",
+            "source_locator": "table#contracts/tbody/tr[3]/y1",
+            "reference": {
+                "season": "2025-26",
+                "games": 36,
+                "minutes_per_game": 27.9,
+                "points_per_game": 16.2,
+                "rebounds_per_game": 5.8,
+                "assists_per_game": 2.7,
+                "rapm": 3.5158057830701073
+            }
+        },
+        {
+            "player_id": "1629661",
+            "name": "Cameron Johnson",
+            "on_index_roster": true,
+            "listed_position": "F",
+            "position_group": "F",
+            "current_salary_cents": "2306250000",
+            "unknown_reason": null,
+            "remaining_guaranteed_cents": "2306250000",
+            "seasons": [
+                {
+                    "season": "2026-27",
+                    "salary_cents": "2306250000",
+                    "option": null
+                },
+                {
+                    "season": "2027-28",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2028-29",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2029-30",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2030-31",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2031-32",
+                    "salary_cents": null,
+                    "option": null
+                }
+            ],
+            "source_url": "https://www.basketball-reference.com/contracts/DEN.html",
+            "source_locator": "table#contracts/tbody/tr[4]/y1",
+            "reference": {
+                "season": "2025-26",
+                "games": 54,
+                "minutes_per_game": 30.5,
+                "points_per_game": 12.2,
+                "rebounds_per_game": 3.8,
+                "assists_per_game": 2.4,
+                "rapm": 2.466654775831217
+            }
+        },
+        {
+            "player_id": "1631128",
+            "name": "Christian Braun",
+            "on_index_roster": true,
+            "listed_position": "G",
+            "position_group": "G",
+            "current_salary_cents": "2155172600",
+            "unknown_reason": null,
+            "remaining_guaranteed_cents": "12500000000",
+            "seasons": [
+                {
+                    "season": "2026-27",
+                    "salary_cents": "2155172600",
+                    "option": null
+                },
+                {
+                    "season": "2027-28",
+                    "salary_cents": "2327586300",
+                    "option": null
+                },
+                {
+                    "season": "2028-29",
+                    "salary_cents": "2500000000",
+                    "option": null
+                },
+                {
+                    "season": "2029-30",
+                    "salary_cents": "2672413700",
+                    "option": null
+                },
+                {
+                    "season": "2030-31",
+                    "salary_cents": "2844827400",
+                    "option": null
+                },
+                {
+                    "season": "2031-32",
+                    "salary_cents": null,
+                    "option": null
+                }
+            ],
+            "source_url": "https://www.basketball-reference.com/contracts/DEN.html",
+            "source_locator": "table#contracts/tbody/tr[5]/y1",
+            "reference": {
+                "season": "2025-26",
+                "games": 44,
+                "minutes_per_game": 31.8,
+                "points_per_game": 12.0,
+                "rebounds_per_game": 4.8,
+                "assists_per_game": 2.7,
+                "rapm": 2.3767737842809424
+            }
+        },
+        {
+            "player_id": "1630192",
+            "name": "Zeke Nnaji",
+            "on_index_roster": true,
+            "listed_position": "F-C",
+            "position_group": "F",
+            "current_salary_cents": "746666700",
+            "unknown_reason": null,
+            "remaining_guaranteed_cents": "746666700",
+            "seasons": [
+                {
+                    "season": "2026-27",
+                    "salary_cents": "746666700",
+                    "option": null
+                },
+                {
+                    "season": "2027-28",
+                    "salary_cents": "746666700",
+                    "option": "player"
+                },
+                {
+                    "season": "2028-29",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2029-30",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2030-31",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2031-32",
+                    "salary_cents": null,
+                    "option": null
+                }
+            ],
+            "source_url": "https://www.basketball-reference.com/contracts/DEN.html",
+            "source_locator": "table#contracts/tbody/tr[6]/y1",
+            "reference": {
+                "season": "2025-26",
+                "games": 52,
+                "minutes_per_game": 12.0,
+                "points_per_game": 3.7,
+                "rebounds_per_game": 2.6,
+                "assists_per_game": 0.6,
+                "rapm": -3.841392022357841
+            }
+        },
+        {
+            "player_id": "1642461",
+            "name": "Spencer Jones",
+            "on_index_roster": true,
+            "listed_position": "F",
+            "position_group": "F",
+            "current_salary_cents": "600000000",
+            "unknown_reason": null,
+            "remaining_guaranteed_cents": "1175000000",
+            "seasons": [
+                {
+                    "season": "2026-27",
+                    "salary_cents": "600000000",
+                    "option": null
+                },
+                {
+                    "season": "2027-28",
+                    "salary_cents": "575000000",
+                    "option": null
+                },
+                {
+                    "season": "2028-29",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2029-30",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2030-31",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2031-32",
+                    "salary_cents": null,
+                    "option": null
+                }
+            ],
+            "source_url": "https://www.basketball-reference.com/contracts/DEN.html",
+            "source_locator": "table#contracts/tbody/tr[7]/y1",
+            "reference": {
+                "season": "2025-26",
+                "games": 64,
+                "minutes_per_game": 22.1,
+                "points_per_game": 5.5,
+                "rebounds_per_game": 3.3,
+                "assists_per_game": 0.8,
+                "rapm": 0.08013535648562575
+            }
+        },
+        {
+            "player_id": "1631124",
+            "name": "Julian Strawther",
+            "on_index_roster": true,
+            "listed_position": "G",
+            "position_group": "G",
+            "current_salary_cents": "482693100",
+            "unknown_reason": null,
+            "remaining_guaranteed_cents": "482693100",
+            "seasons": [
+                {
+                    "season": "2026-27",
+                    "salary_cents": "482693100",
+                    "option": "team"
+                },
+                {
+                    "season": "2027-28",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2028-29",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2029-30",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2030-31",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2031-32",
+                    "salary_cents": null,
+                    "option": null
+                }
+            ],
+            "source_url": "https://www.basketball-reference.com/contracts/DEN.html",
+            "source_locator": "table#contracts/tbody/tr[8]/y1",
+            "reference": {
+                "season": "2025-26",
+                "games": 57,
+                "minutes_per_game": 15.1,
+                "points_per_game": 7.2,
+                "rebounds_per_game": 2.0,
+                "assists_per_game": 1.1,
+                "rapm": -1.1274053746843178
+            }
+        },
+        {
+            "player_id": "1641747",
+            "name": "DaRon Holmes II",
+            "on_index_roster": true,
+            "listed_position": "F",
+            "position_group": "F",
+            "current_salary_cents": "337212000",
+            "unknown_reason": null,
+            "remaining_guaranteed_cents": "337212000",
+            "seasons": [
+                {
+                    "season": "2026-27",
+                    "salary_cents": "337212000",
+                    "option": "team"
+                },
+                {
+                    "season": "2027-28",
+                    "salary_cents": "554713800",
+                    "option": "team"
+                },
+                {
+                    "season": "2028-29",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2029-30",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2030-31",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2031-32",
+                    "salary_cents": null,
+                    "option": null
+                }
+            ],
+            "source_url": "https://www.basketball-reference.com/contracts/DEN.html",
+            "source_locator": "table#contracts/tbody/tr[9]/y1",
+            "reference": {
+                "season": "2025-26",
+                "games": 25,
+                "minutes_per_game": 8.4,
+                "points_per_game": 3.7,
+                "rebounds_per_game": 1.4,
+                "assists_per_game": 0.6,
+                "rapm": null
+            }
+        },
+        {
+            "player_id": "1629022",
+            "name": "Lonnie Walker IV",
+            "on_index_roster": true,
+            "listed_position": "G-F",
+            "position_group": "G",
+            "current_salary_cents": "328639900",
+            "unknown_reason": null,
+            "remaining_guaranteed_cents": null,
+            "seasons": [
+                {
+                    "season": "2026-27",
+                    "salary_cents": "328639900",
+                    "option": null
+                },
+                {
+                    "season": "2027-28",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2028-29",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2029-30",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2030-31",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2031-32",
+                    "salary_cents": null,
+                    "option": null
+                }
+            ],
+            "source_url": "https://www.basketball-reference.com/contracts/DEN.html",
+            "source_locator": "table#contracts/tbody/tr[10]/y1",
+            "reference": null
+        },
+        {
+            "player_id": "201942",
+            "name": "DeMar DeRozan",
+            "on_index_roster": true,
+            "listed_position": "G-F",
+            "position_group": "G",
+            "current_salary_cents": "244942100",
+            "unknown_reason": null,
+            "remaining_guaranteed_cents": "244942100",
+            "seasons": [
+                {
+                    "season": "2026-27",
+                    "salary_cents": "244942100",
+                    "option": null
+                },
+                {
+                    "season": "2027-28",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2028-29",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2029-30",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2030-31",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2031-32",
+                    "salary_cents": null,
+                    "option": null
+                }
+            ],
+            "source_url": "https://www.basketball-reference.com/contracts/DEN.html",
+            "source_locator": "table#contracts/tbody/tr[11]/y1",
+            "reference": {
+                "season": "2025-26",
+                "games": 76,
+                "minutes_per_game": 31.1,
+                "points_per_game": 18.3,
+                "rebounds_per_game": 2.9,
+                "assists_per_game": 4.1,
+                "rapm": -3.0949491398288673
+            }
+        },
+        {
+            "player_id": "1628963",
+            "name": "Marvin Bagley III",
+            "on_index_roster": true,
+            "listed_position": "F",
+            "position_group": "F",
+            "current_salary_cents": "244942100",
+            "unknown_reason": null,
+            "remaining_guaranteed_cents": "244942100",
+            "seasons": [
+                {
+                    "season": "2026-27",
+                    "salary_cents": "244942100",
+                    "option": null
+                },
+                {
+                    "season": "2027-28",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2028-29",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2029-30",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2030-31",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2031-32",
+                    "salary_cents": null,
+                    "option": null
+                }
+            ],
+            "source_url": "https://www.basketball-reference.com/contracts/DEN.html",
+            "source_locator": "table#contracts/tbody/tr[13]/y1",
+            "reference": {
+                "season": "2025-26",
+                "games": 60,
+                "minutes_per_game": 20.0,
+                "points_per_game": 10.5,
+                "rebounds_per_game": 6.1,
+                "assists_per_game": 1.4,
+                "rapm": -0.5351778904874207
+            }
+        },
+        {
+            "player_id": "1626145",
+            "name": "Tyus Jones",
+            "on_index_roster": true,
+            "listed_position": "G",
+            "position_group": "G",
+            "current_salary_cents": "244942100",
+            "unknown_reason": null,
+            "remaining_guaranteed_cents": "244942100",
+            "seasons": [
+                {
+                    "season": "2026-27",
+                    "salary_cents": "244942100",
+                    "option": null
+                },
+                {
+                    "season": "2027-28",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2028-29",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2029-30",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2030-31",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2031-32",
+                    "salary_cents": null,
+                    "option": null
+                }
+            ],
+            "source_url": "https://www.basketball-reference.com/contracts/DEN.html",
+            "source_locator": "table#contracts/tbody/tr[12]/y1",
+            "reference": {
+                "season": "2025-26",
+                "games": 66,
+                "minutes_per_game": 14.6,
+                "points_per_game": 3.0,
+                "rebounds_per_game": 1.1,
+                "assists_per_game": 2.3,
+                "rapm": -4.097790407532338
+            }
+        },
+        {
+            "player_id": "1642350",
+            "name": "Trevon Brazile",
+            "on_index_roster": true,
+            "listed_position": "F",
+            "position_group": "F",
+            "current_salary_cents": "135776300",
+            "unknown_reason": null,
+            "remaining_guaranteed_cents": "135776300",
+            "seasons": [
+                {
+                    "season": "2026-27",
+                    "salary_cents": "135776300",
+                    "option": null
+                },
+                {
+                    "season": "2027-28",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2028-29",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2029-30",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2030-31",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2031-32",
+                    "salary_cents": null,
+                    "option": null
+                }
+            ],
+            "source_url": "https://www.basketball-reference.com/contracts/DEN.html",
+            "source_locator": "table#contracts/tbody/tr[14]/y1",
+            "reference": null
+        },
+        {
+            "player_id": "1643813",
+            "name": "Alpha Diallo",
+            "on_index_roster": true,
+            "listed_position": "G",
+            "position_group": "G",
+            "current_salary_cents": null,
+            "unknown_reason": "salary_missing_or_identity_unresolved",
+            "remaining_guaranteed_cents": null,
+            "seasons": [],
+            "source_url": null,
+            "source_locator": null,
+            "reference": null
+        },
+        {
+            "player_id": "1643624",
+            "name": "Bryce Hopkins",
+            "on_index_roster": true,
+            "listed_position": "F",
+            "position_group": "F",
+            "current_salary_cents": null,
+            "unknown_reason": "salary_blank_in_source",
+            "remaining_guaranteed_cents": null,
+            "seasons": [
+                {
+                    "season": "2026-27",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2027-28",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2028-29",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2029-30",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2030-31",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2031-32",
+                    "salary_cents": null,
+                    "option": null
+                }
+            ],
+            "source_url": "https://www.basketball-reference.com/contracts/DEN.html",
+            "source_locator": "table#contracts/tbody/tr[17]/y1",
+            "reference": null
+        },
+        {
+            "player_id": "1641715",
+            "name": "Cam Whitmore",
+            "on_index_roster": true,
+            "listed_position": "F",
+            "position_group": "F",
+            "current_salary_cents": null,
+            "unknown_reason": "salary_blank_in_source",
+            "remaining_guaranteed_cents": null,
+            "seasons": [
+                {
+                    "season": "2026-27",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2027-28",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2028-29",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2029-30",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2030-31",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2031-32",
+                    "salary_cents": null,
+                    "option": null
+                }
+            ],
+            "source_url": "https://www.basketball-reference.com/contracts/DEN.html",
+            "source_locator": "table#contracts/tbody/tr[20]/y1",
+            "reference": {
+                "season": "2025-26",
+                "games": 21,
+                "minutes_per_game": 16.9,
+                "points_per_game": 9.2,
+                "rebounds_per_game": 2.8,
+                "assists_per_game": 0.7,
+                "rapm": null
+            }
+        },
+        {
+            "player_id": "1641746",
+            "name": "Coleman Hawkins",
+            "on_index_roster": true,
+            "listed_position": "F",
+            "position_group": "F",
+            "current_salary_cents": null,
+            "unknown_reason": "salary_blank_in_source",
+            "remaining_guaranteed_cents": null,
+            "seasons": [
+                {
+                    "season": "2026-27",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2027-28",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2028-29",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2029-30",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2030-31",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2031-32",
+                    "salary_cents": null,
+                    "option": null
+                }
+            ],
+            "source_url": "https://www.basketball-reference.com/contracts/DEN.html",
+            "source_locator": "table#contracts/tbody/tr[16]/y1",
+            "reference": null
+        },
+        {
+            "player_id": "1641863",
+            "name": "Dane Goodwin",
+            "on_index_roster": true,
+            "listed_position": "G",
+            "position_group": "G",
+            "current_salary_cents": null,
+            "unknown_reason": "salary_blank_in_source",
+            "remaining_guaranteed_cents": null,
+            "seasons": [
+                {
+                    "season": "2026-27",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2027-28",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2028-29",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2029-30",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2030-31",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2031-32",
+                    "salary_cents": null,
+                    "option": null
+                }
+            ],
+            "source_url": "https://www.basketball-reference.com/contracts/DEN.html",
+            "source_locator": "table#contracts/tbody/tr[15]/y1",
+            "reference": null
+        },
+        {
+            "player_id": "1641801",
+            "name": "Emanuel Miller",
+            "on_index_roster": true,
+            "listed_position": "F",
+            "position_group": "F",
+            "current_salary_cents": null,
+            "unknown_reason": "salary_blank_in_source",
+            "remaining_guaranteed_cents": null,
+            "seasons": [
+                {
+                    "season": "2026-27",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2027-28",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2028-29",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2029-30",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2030-31",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2031-32",
+                    "salary_cents": null,
+                    "option": null
+                }
+            ],
+            "source_url": "https://www.basketball-reference.com/contracts/DEN.html",
+            "source_locator": "table#contracts/tbody/tr[18]/y1",
+            "reference": {
+                "season": "2025-26",
+                "games": 5,
+                "minutes_per_game": 6.6,
+                "points_per_game": 3.0,
+                "rebounds_per_game": 0.6,
+                "assists_per_game": 0.8,
+                "rapm": null
+            }
+        },
+        {
+            "player_id": "1642948",
+            "name": "Ryan Nembhard",
+            "on_index_roster": true,
+            "listed_position": "G",
+            "position_group": "G",
+            "current_salary_cents": null,
+            "unknown_reason": "salary_blank_in_source",
+            "remaining_guaranteed_cents": null,
+            "seasons": [
+                {
+                    "season": "2026-27",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2027-28",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2028-29",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2029-30",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2030-31",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2031-32",
+                    "salary_cents": null,
+                    "option": null
+                }
+            ],
+            "source_url": "https://www.basketball-reference.com/contracts/DEN.html",
+            "source_locator": "table#contracts/tbody/tr[19]/y1",
+            "reference": {
+                "season": "2025-26",
+                "games": 60,
+                "minutes_per_game": 19.5,
+                "points_per_game": 6.6,
+                "rebounds_per_game": 2.2,
+                "assists_per_game": 5.3,
+                "rapm": 1.6368582302218715
+            }
+        }
+    ],
+    "reference_season": "2025-26",
+    "statistics_release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+    "impact_version": "courtlens-impact-serving-v1",
+    "limitations": [
+        "Reported base salaries from each team's Basketball-Reference page; not cap hits, cash or complete legal cap accounting.",
+        "Effective dates are not on the source page and stay unknown.",
+        "Option markers do not establish exercise or guarantee state; a salary without an option marker is reported, not confirmed guaranteed.",
+        "Threshold lines are official markers; no cap room, tax bill or apron compliance is claimed.",
+        "An unknown salary is excluded from known totals and is never zero.",
+        "Players on a team's source page but on another roster in the index (for example waived players) are listed separately."
+    ]
+}

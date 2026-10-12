@@ -1,5 +1,5 @@
 import { test, expect, type Page } from "@playwright/test";
-import { mockFinance, initial as financeInitial } from "./finance-fixture";
+import { mockContracts, mockFinance, initial as financeInitial } from "./finance-fixture";
 import { readFileSync } from "node:fs";
 import { firstLoadFixtures, offSeasonFixtures } from "./first-load-fixtures";
 import { openWorkbench } from "./workbench-navigation";
@@ -151,9 +151,10 @@ for (const view of WIDTHS) {
       await expect(page.getByRole("heading",{name:"Observed Stat Shift"})).toBeVisible();
       await settle(page);await expect(page).toHaveScreenshot(`stat-shift-${view.name}.png`, shot);
     });
-    for(const route of ["contracts","contracts/TOR","free-agency"]) test(`finance ${route}`, async ({ page }) => {
+    test("finance contracts/books", async ({ page }) => {
+      const route="contracts/books";
       await mockFinance(page);
-      await openWorkbench(page,financeInitial.replace("/contracts?",`/${route}?`));
+      await openWorkbench(page,financeInitial);
       await expect(page.getByRole("region",{name:"Financial query result"})).toBeVisible();
       await settle(page);await expect(page).toHaveScreenshot(`${route.replace("/","-")}-${view.name}.png`, shot);
     });
@@ -251,7 +252,6 @@ for (const view of WIDTHS) test.describe(`PC04 parameter-free baselines ${view.n
     await settle(page);await expect(page).toHaveScreenshot(`first-load-${name}-${view.name}.png`,shot);
   });
   test("live off-season",async({page})=>{await offSeasonFixtures(page);await openWorkbench(page,"/live");await expect(page.getByRole("region",{name:"Top performers"})).toContainText("28 PTS");await settle(page);await expect(page).toHaveScreenshot(`first-load-live-${view.name}.png`,shot);});
-  // Finance first-load defaults are explicitly dependent on PC06's admitted books. Record the
-  // current entry without fabricating a book; these snapshots are not finance completion claims.
-  for(const route of ["contracts","free-agency"]) test(`pending ${route}`,async({page})=>{await mockFinance(page);await openWorkbench(page,`/${route}`);await expect(page.getByRole("heading",{level:1})).toBeVisible();await settle(page);await expect(page).toHaveScreenshot(`first-load-${route}-${view.name}.png`,shot);});
+  // PC08: Contracts first load from the latest admitted refresh (real captured responses).
+  for(const route of ["contracts","contracts/DEN"]) test(`first-load ${route}`,async({page})=>{await mockContracts(page);await openWorkbench(page,`/${route}`);await expect(page.getByRole("figure").first()).toBeVisible();await settle(page);await expect(page).toHaveScreenshot(`first-load-${route.replace("/","-")}-${view.name}.png`,shot);});
 });
