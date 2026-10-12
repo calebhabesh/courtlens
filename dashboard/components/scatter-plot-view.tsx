@@ -4,6 +4,7 @@ import { Icon } from "./ui/icon";
 import { useState, useMemo, useRef, useCallback } from "react";
 import type { PlayerResearchItem } from "@/lib/types";
 import { ALL_CATALOG_METRICS, axisTitle } from "@/lib/stats-presets";
+import { anchoredTooltip } from "@/lib/chart-anchor";
 import { useWorkspace } from "@/lib/workspace-context";
 import {
   buildScatterDataset,
@@ -307,6 +308,8 @@ export function ScatterPlotView({
 
       {/* SVG Chart Container */}
       <div className="scatter-svg-container">
+        {/* The frame matches the SVG box, so hover cards anchor to their point at any scale. */}
+        <div className="chart-hover-frame">
         <svg
           ref={svgRef}
           viewBox={`0 0 ${width} ${height}`}
@@ -536,10 +539,8 @@ export function ScatterPlotView({
         {activePoint && (
           <div
             className="scatter-tooltip"
-            style={{
-              "--tooltip-left": `${Math.min(projectX(activePoint.x, xDomain, width, padLeft, padRight) + 12, width - 220)}px`,
-              "--tooltip-top": `${Math.max(projectY(activePoint.y, yDomain, height, padTop, padBottom) - 60, 10)}px`
-            } as React.CSSProperties}
+            {...anchoredTooltip(projectX(activePoint.x, xDomain, width, padLeft, padRight),
+              projectY(activePoint.y, yDomain, height, padTop, padBottom), width, height)}
           >
             <div className="scatter-tooltip-title">
               {activePoint.playerName}
@@ -563,6 +564,7 @@ export function ScatterPlotView({
             </div>
           </div>
         )}
+        </div>
       </div>
 
       {/* Chart Legend */}

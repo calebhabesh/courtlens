@@ -504,13 +504,27 @@ export function WorkbenchPlayerExplorer({
       // The bottom edge lands on a whole pixel (16px above the fold) whatever the top's fraction.
       frame.style.setProperty("--stats-frame-height", `${window.innerHeight - 16 - top}px`);
     };
-    // Controls above the table can settle after mount (fonts, menus).
+    // Anything above the frame can settle after mount (fonts, menus, notices). The workspace has a
+    // min-height that hides such changes, so watch each ancestor and everything before it instead.
     const observer = new ResizeObserver(fit);
-    observer.observe(frame.closest(".stats-workspace") ?? document.body);
+    for (let node: Element | null = frame; node && !node.classList.contains("stats-workspace"); node = node.parentElement) {
+      if (node !== frame) observer.observe(node);
+      for (let sibling = node.previousElementSibling; sibling; sibling = sibling.previousElementSibling) observer.observe(sibling);
+    }
     window.addEventListener("resize", fit);
+    // An entering page slides in with a transform, which moves the frame without resizing anything;
+    // measure again once any animation or transition settles.
+    document.addEventListener("animationend", fit);
+    document.addEventListener("transitionend", fit);
     void document.fonts.ready.then(fit);
     fit();
-    return () => { observer.disconnect(); window.removeEventListener("resize", fit); frame.style.removeProperty("--stats-frame-height"); };
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("resize", fit);
+      document.removeEventListener("animationend", fit);
+      document.removeEventListener("transitionend", fit);
+      frame.style.removeProperty("--stats-frame-height");
+    };
   }, [viewMode]);
 
   // Use the visible metric bounds to keep one straight divider per group, including

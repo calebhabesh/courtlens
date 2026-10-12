@@ -1,6 +1,7 @@
 "use client";
 import { Icon } from "./ui/icon";
 
+import { anchoredTooltip } from "@/lib/chart-anchor";
 import { useState, useEffect, useMemo, useRef, useCallback } from "react";
 import type { PlayerGameLogItem, PlayerResearchItem } from "@/lib/types";
 import { getPlayerGameLog } from "@/lib/workbench-api";
@@ -521,6 +522,7 @@ export function MultiPlayerLinesView({
       {/* SVG Chart */}
       {!loading && !error && (
         <div className="lines-svg-container">
+          <div className="chart-hover-frame">
           <svg
             ref={svgRef}
             viewBox={`0 0 ${width} ${height}`}
@@ -692,13 +694,7 @@ export function MultiPlayerLinesView({
 
           {/* Floating Tooltip */}
           {hoveredPoint && (
-            <div
-              className="lines-tooltip"
-              style={{
-                "--tooltip-left": `${Math.min(hoveredPoint.x + 12, width - 200)}px`,
-                "--tooltip-top": `${Math.max(hoveredPoint.y - 50, 10)}px`
-              } as React.CSSProperties}
-            >
+            <div className="lines-tooltip" {...anchoredTooltip(hoveredPoint.x, hoveredPoint.y, width, height)}>
               <div className="lines-tooltip-title">
                 {hoveredPoint.playerName}
               </div>
@@ -717,6 +713,7 @@ export function MultiPlayerLinesView({
               </div>
             </div>
           )}
+          </div>
         </div>
       )}
 
