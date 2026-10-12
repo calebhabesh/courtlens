@@ -1,0 +1,12 @@
+
+> courtlens-dashboard@0.1.0 test
+> vitest run
+
+
+ RUN  v4.1.11 /home/ethioking/dev/courtlens/dashboard
+
+
+ Test Files  62 passed (62)
+      Tests  431 passed (431)
+   Start at  01:53:35
+   Duration  1.46s (transform 4.63s, setup 0ms, import 8.75s, tests 1.80s, environment 2.13s)

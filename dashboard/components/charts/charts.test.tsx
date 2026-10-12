@@ -167,6 +167,12 @@ describe("PercentileCell", () => {
     const { container } = render(<PercentileCell value={4} percentile={99} qualified={false} label="PTS" cohort="500 minutes" />);
     expect(screen.getByText("Small sample")).toBeTruthy(); expect(container.innerHTML).not.toContain("--color-percentile-5");
   });
+  it("keeps the numeric percentile muted in compact tables", () => {
+    const { container } = render(<PercentileCell compact value={4} percentile={99} qualified={false} label="PTS" cohort="500 season minutes" />);
+    expect(screen.getByText("99 pct · small")).toBeTruthy();
+    expect(container.querySelector(".stat-main-value")?.textContent).toBe("4");
+    expect(container.innerHTML).not.toContain("--color-percentile-5");
+  });
   it.each([-1, 101, NaN, null])("rejects invalid percentile %s", p => expect(percentileBand(p)).toBeNull());
 });
 

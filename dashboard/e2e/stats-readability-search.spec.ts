@@ -13,7 +13,7 @@ test("standard records are readable and portrait gutters center between metric c
       offsets: [...row.querySelectorAll(".stats-guide-cell")].map(cell => center(cell.firstElementChild!) -
         (cell.previousElementSibling!.getBoundingClientRect().right + cell.nextElementSibling!.getBoundingClientRect().left) / 2) };
   });
-  expect(geometry.height).toBe(52);
+  expect(geometry.height).toBeCloseTo(52, 1);
   expect(geometry.font).toBe("14px");
   geometry.offsets.forEach(offset => expect(Math.abs(offset)).toBeLessThan(1));
   const portraits = await page.locator(".stats-table-row").first().evaluate(row => ({

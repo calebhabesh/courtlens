@@ -546,3 +546,13 @@ scope. PC03 adds Design Language v1.2 and revises D21, with the eight SVG primit
 contrast checks and desktop/phone extended glance test recorded in
 [PC03 evidence](evidence/pc03/README.md). Public Compare rebuilding remains PC04. The original
 rename/identity, motion and analytical contracts remain in force.
+
+## 2026-10-12 — PC12 batch A table presentation
+
+The presentation-clarity handoff owns this batch. Added semantic percentile cells, grouped Team
+headers, 500-minute league qualification and Small sample badges, a focused Player Directory and
+statistical reference columns on saved Rankings. Stats preview agrees with its cells. Tokens and
+frozen identifiers stay unchanged. [Evidence, glance judgments and checks](evidence/pc12-a/README.md)
+record desktop/phone production first loads and retained limitations. Python, lint/types/Vitest,
+35 affected browser checks and seven baselines pass; the pre-existing Compare export check remains.
+PC12 B–D are pending. This entry does not mark the remaining page-wide glance gaps verified.

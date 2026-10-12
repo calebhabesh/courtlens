@@ -29,7 +29,7 @@ parameters**. Blocks before each owner gate also need recorded owner approval.
 | PC09 Value metric and archetypes | planned |
 | PC10 Roster Shapes (G4) | planned |
 | PC11 Populate or remove gated pages | planned |
-| PC12 Remaining audit batches | planned |
+| PC12 Remaining audit batches | in_progress (A implemented/tested; B–D pending; glance limits recorded) |
 | PC13 Hosting, schedules, Ask demo mode | planned |
 
 ## 2026-10-11 — PC00 Roster Shapes crash fix
@@ -480,3 +480,32 @@ parameters**. Blocks before each owner gate also need recorded owner approval.
 - Not done: WOWY shows the team logo but not the two players' headshots; loading states are
   generic skeletons; PC13 must ship `data/derived/wowy-v1` with the other derived artifacts.
 - Next: PC12 remaining audit batches (no owner gate between PC11 and PC12 in the plan).
+
+## 2026-10-12 — PC12 batch A: table presentation
+
+- Owner accepted defaults and authorized PC12: A → B → C → D; fixed-rule example boards; keep
+  Players as a directory; retain the 340 unused measurement rows. Recorded in the plan. Scope of
+  this commit is A only; no owner gate applies before the remaining batches.
+- [Evidence and fresh glance test](evidence/pc12-a/README.md),
+  [contract](design/table-percentiles-v1.md). Stats and its preview use the same server-calculated,
+  minutes-qualified league reference; Players becomes a focused directory; all four Team table
+  presets have shaded cells/group headers/game counts; saved Rankings has GP/MPG/PPG reference
+  columns distinct from subjective order. Small samples keep muted numeric ranks and a badge.
+- C10 rule is fixed at 500 season minutes through the cutoff. Recent windows use season
+  qualification. League ranks survive search, favorites, team/sample filters, predicates and paging;
+  nulls, ties, singleton cohorts, sealed impact qualification and future exclusion are tested.
+  Existing metric values, retained PF01a percentiles and frozen hashes are not redefined.
+- Isolated production first loads, real API, desktop/phone: no errors or sideways page scroll. Glance
+  scores: Stats 10/14, Directory 12/14, Teams 11/14, fresh empty Rankings 4/9 applicable. These are
+  measured limits, not all-page verification: dense Stats controls/phone fold, Team headline and
+  exhaustive alignment/states remain; Rankings' empty first load is D.
+- Read-only: 161 publication pointers with PC11 digest unchanged; 1,031 identities; 205 feed
+  datasets / 200,690 versions; all 340 measurement rows retained. No acquisition or fit ran.
+- Checks: full Python 2,031 pass (existing skip/deprecation warning), final focused PostgreSQL/unit
+  30 pass; Ruff/format/mypy clean; dashboard lint 0/0, types clean, Vitest 431 pass; affected
+  Playwright 35 pass and seven baselines pass. Broad browser run 405 pass / 15 skip / 8 failures
+  before fixes: seven batch changes now pass; existing Compare export failure remains as PC08–PC11.
+- Baselines refreshed for shading/legend and directory layout. 52px DOMRect checks allow 0.05px
+  floating-point variation. Popup captures fix document scroll while retaining the native picker.
+- Existing owner edits are excluded from the commit and production verification. Next: B headline
+  visuals, including Contracts Others; C demo hygiene; D personal-tool example boards.

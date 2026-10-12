@@ -16,6 +16,7 @@ class StatsPresentation(BaseModel):
 
     version: str = "pf01a-v1"
     player_ids: list[str] | None = Field(default=None, max_length=2000)
+    table_percentiles: bool = False
 
     @field_validator("version")
     @classmethod
