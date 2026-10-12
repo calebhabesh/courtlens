@@ -7,32 +7,36 @@ import { PageShell } from "./ui/page-shell";
 import { PageHeader } from "./ui/panel";
 import { LookupInput } from "./lookup-input";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import { useWorkspace } from "@/lib/workspace-context";
 import { PlayerPortrait } from "./player-portrait";
 import { useToast } from "./ui/toast";
-import type { TierGroup } from "@/lib/types";
+import type { TierGroup, WorkbenchCatalog, WorkbenchQueryResponse } from "@/lib/types";
+import { ExampleBoardsView } from "./example-boards-view";
+import { EXAMPLE_BOARD_ID, exampleTierCopy } from "@/lib/example-boards";
+import { executeWorkbenchQuery, getWorkbenchCatalog } from "@/lib/workbench-api";
+import { resolveStatsQuery } from "@/lib/stats-query";
 
 const DEFAULT_TIER_COLORS = [
-  "#ff4d4f", // S - Red
-  "#fa8c16", // A - Orange
-  "#fadb14", // B - Yellow
-  "#52c41a", // C - Green
-  "#1890ff", // D - Blue
-  "#722ed1"  // F / Custom - Purple
+  "var(--color-category-1)", "var(--color-category-2)", "var(--color-category-3)",
+  "var(--color-category-4)", "var(--color-category-5)", "var(--color-category-6)"
 ];
 
-export function TierListView() {
+export function TierListView({ catalog, example = null }: { catalog?: WorkbenchCatalog | null; example?: WorkbenchQueryResponse | null } = {}) {
   const {
     tierLists,
     saveTierList,
     deleteTierList,
-    favorites
+    favorites,
+    isLoading,
+    error: workspaceError
   } = useWorkspace();
   const { toast } = useToast();
 
   const [activeTierListId, setActiveTierListId] = useState<string | null>(null);
+  const [copying, setCopying] = useState(false);
+  const [copyError, setCopyError] = useState<string | null>(null);
   const [isCreatingList, setIsCreatingList] = useState(false);
   const [newTitle, setNewTitle] = useState("");
   const [newDescription, setNewDescription] = useState("");
@@ -47,6 +51,7 @@ export function TierListView() {
 
   // Active Tier List
   const activeList = useMemo(() => {
+    if (activeTierListId === EXAMPLE_BOARD_ID) return null;
     if (tierLists.length === 0) return null;
     if (activeTierListId) {
       const found = tierLists.find((t) => t.id === activeTierListId);
@@ -55,38 +60,41 @@ export function TierListView() {
     return tierLists[0];
   }, [tierLists, activeTierListId]);
 
-  // Create default tier list if none exists
-  const handleCreateDefaultList = async () => {
+  const assignedIds = JSON.stringify((activeList?.tiers.flatMap(tier => tier.player_ids) ?? []).sort());
+  const [identities, setIdentities] = useState<{ key: string; names: Record<string, string> } | null>(null);
+  useEffect(() => {
+    const ids: string[] = JSON.parse(assignedIds);
+    if (!ids.length) return;
+    let active = true;
+    void (async () => {
+      const resolved = catalog ?? await getWorkbenchCatalog();
+      const query = resolveStatsQuery({ window: "season" }, resolved, "raw");
+      query.page = { limit: 100 };
+      let response = await executeWorkbenchQuery(query, { player_ids: ids });
+      const players = [...response.items];
+      while (active && response.has_more && response.next_cursor) {
+        query.page = { limit: 100, cursor: response.next_cursor };
+        response = await executeWorkbenchQuery(query, { player_ids: ids });
+        players.push(...response.items);
+      }
+      if (active) setIdentities({ key: assignedIds, names: Object.fromEntries(players.map(player => [player.player_id, player.player_name])) });
+    })().catch(() => {});
+    return () => { active = false; };
+  }, [assignedIds, catalog]);
+  const playerName = (id: string) => (identities?.key === assignedIds ? identities.names[id] : undefined) ?? example?.items.find(player => player.player_id === id)?.player_name ?? `Player #${id}`;
+
+  const handleCopyExample = async () => {
+    if (!example || copying || isLoading || workspaceError) return;
+    setCopying(true);
+    setCopyError(null);
     try {
-      const defaultTiers: TierGroup[] = [
-        { tier_id: "tier-s", label: "S", color: "#ff4d4f", player_ids: [] },
-        { tier_id: "tier-a", label: "A", color: "#fa8c16", player_ids: [] },
-        { tier_id: "tier-b", label: "B", color: "#fadb14", player_ids: [] },
-        { tier_id: "tier-c", label: "C", color: "#52c41a", player_ids: [] },
-        { tier_id: "tier-d", label: "D", color: "#1890ff", player_ids: [] }
-      ];
-
-      const res = await saveTierList({
-        title: "2024-25 Player Tiers",
-        description: "Personal subjective tier ranking of NBA players across tiers S through D.",
-        tiers: defaultTiers
-      });
-
+      const res = await saveTierList(exampleTierCopy(example));
       if (res.tier_lists.length > 0) {
         setActiveTierListId(res.tier_lists[res.tier_lists.length - 1].id);
       }
-      toast({
-        title: "Default Tiers Created",
-        description: "Created default 2024-25 player tiers.",
-        variant: "positive",
-      });
-    } catch (err) {
-      toast({
-        title: "Creation Error",
-        description: err instanceof Error ? err.message : "Failed to create default tier list",
-        variant: "negative",
-      });
-    }
+    } catch (error) {
+      setCopyError(error instanceof Error ? error.message : "Could not copy example. Try again.");
+    } finally { setCopying(false); }
   };
 
   // Create new tier list
@@ -96,11 +104,7 @@ export function TierListView() {
 
     try {
       const defaultTiers: TierGroup[] = [
-        { tier_id: "tier-s", label: "S", color: "#ff4d4f", player_ids: [] },
-        { tier_id: "tier-a", label: "A", color: "#fa8c16", player_ids: [] },
-        { tier_id: "tier-b", label: "B", color: "#fadb14", player_ids: [] },
-        { tier_id: "tier-c", label: "C", color: "#52c41a", player_ids: [] },
-        { tier_id: "tier-d", label: "D", color: "#1890ff", player_ids: [] }
+        ...["S", "A", "B", "C", "D"].map((label, index) => ({ tier_id: `tier-${label.toLowerCase()}`, label, color: DEFAULT_TIER_COLORS[index], player_ids: [] }))
       ];
 
       const res = await saveTierList({
@@ -364,9 +368,10 @@ export function TierListView() {
         </>}
       />
 
-      <GatedNote why="Tier allocations reflect personal subjective categorizations. Cards support HTML5 drag-and-drop as well as accessible keyboard controls (move up/down buttons or tier dropdown).">
+      {tierLists.length > 0 && <Button variant="secondary" aria-pressed={!activeList} onClick={() => setActiveTierListId(activeList ? EXAMPLE_BOARD_ID : null)}>{activeList ? "View minutes example" : "My tier lists"}</Button>}
+      {activeList && <GatedNote why="Tier allocations reflect personal subjective categorizations. Cards support HTML5 drag-and-drop as well as accessible keyboard controls (move up/down buttons or tier dropdown).">
         Tiers are personal categorizations.
-      </GatedNote>
+      </GatedNote>}
 
       {/* CREATE MODAL */}
       {isCreatingList && (
@@ -442,20 +447,8 @@ export function TierListView() {
       )}
 
       {/* TIER LIST TABS & CONTENT */}
-      {tierLists.length === 0 ? (
-        <div className="tier-empty-box">
-          <h3 className="tier-empty-title">No Tier Lists Created Yet</h3>
-          <p className="tier-empty-desc">
-            Create an S/A/B/C/D tier list to categorize NBA players with local persistence, drag-and-drop, and accessible keyboard assignment.
-          </p>
-          <button
-            type="button"
-            onClick={handleCreateDefaultList}
-            className="button button-primary"
-          >
-            Create Default S/A/B/C/D Tier List
-          </button>
-        </div>
+      {!activeList ? (
+        <ExampleBoardsView data={example} kind="tiers" onCopy={() => void handleCopyExample()} copying={copying} copyError={copyError ?? workspaceError} copyDisabled={isLoading || !!workspaceError} />
       ) : (
         <div className="tier-list-container">
           {/* Tabs Row */}
@@ -563,7 +556,7 @@ export function TierListView() {
                       {/* Tier Label Box */}
                       <div
                         className="tier-label-box"
-                        style={{ "--tier-color": tier.color || "#323b49" } as React.CSSProperties}
+                        style={{ "--tier-color": tier.color || "var(--color-status-unknown)" } as React.CSSProperties}
                       >
                         <span>{tier.label}</span>
                         <span className="tier-label-count">
@@ -618,20 +611,20 @@ export function TierListView() {
                               onDragStart={() => handleDragStart(pid, tier.tier_id)}
                               className="tier-player-chip"
                             >
-                              <PlayerPortrait playerId={pid} name={`#${pid}`} size="sm" />
+                              <PlayerPortrait playerId={pid} name={playerName(pid)} size="sm" />
                               <div>
                                 <Link
                                   href={`/players/${pid}`}
                                   className="tier-player-link"
                                   onClick={(e) => e.stopPropagation()}
                                 >
-                                  Player #{pid}
+                                  {playerName(pid)}
                                 </Link>
                               </div>
 
                               {/* Accessible Keyboard Move Selector */}
                               <select
-                                aria-label={`Move Player #${pid} to tier`}
+                                aria-label={`Move ${playerName(pid)} to tier`}
                                 value={tier.tier_id}
                                 onChange={(e) => handleMovePlayer(pid, tier.tier_id, e.target.value)}
                                 className="tier-move-select"
@@ -649,7 +642,7 @@ export function TierListView() {
                                 onClick={() => handleRemovePlayer(pid, tier.tier_id)}
                                 className="tier-remove-btn"
                                 title="Remove player from tier list"
-                                aria-label={`Remove Player #${pid} from tier list`}
+                                aria-label={`Remove ${playerName(pid)} from tier list`}
                               >
                                 <Icon name="close" size={14} />
                               </button>
