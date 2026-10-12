@@ -442,3 +442,41 @@ parameters**. Blocks before each owner gate also need recorded owner approval.
   run, the remaining failures predate PC10 or come from the owner's uncommitted Stats changes
   (details in the evidence).
 - Next: owner review at G4. After approval, PC11 (populate or remove gated pages).
+
+## 2026-10-12 — PC11 Populate or remove gated pages
+
+- Owner instruction: "I approve, you can begin the next block" on the G4 report, read as G4
+  approval with its defaults: **D6** the Regular season vs Playoff-adjusted toggle is dropped (only
+  2025-26 playoff BPR exists; 5 players meet the 20-game rule) and **D7** PC10's fit and white-space
+  definitions stay. Both recorded in the [plan](presentation-clarity-plan.md#owner-decisions-at-g4-2026-10-12).
+  Scope is PC11 only; PC12 has not started.
+- [Evidence, glance test and reproduction](evidence/pc11/README.md); contract
+  [gated pages v1](design/gated-pages-v1.md); Design Language v1.2 gains `RankedBars`.
+- Populated with no URL parameters, from data already held (no fetches): Defensive Matchups
+  (NBA tracking defended shots vs expected, hustle, season matchups), Player Matchups (was
+  `source_blocked`), play-type-adjusted shooting (points per 100 vs the league rate for the same
+  play-type mix), Six-Factor RAPM (sealed IM04 factors, `sortMetric` on `/impact`), Combine &
+  Wingspan (official combine 2000–2026, replacing a seed row repeated 100 times), a Stats Tracking
+  tab and a player profile Tracking tab (8 groups, minutes-qualified percentiles). Feeds stay
+  season totals on their own pages, never joined into date-windowed Stats.
+- WOWY (D4) is derived from the sealed, event-accepted IM03 stints through the IM04 hash-checked
+  binding: every pair of each team's top ten players, four splits that sum exactly to the team
+  total (0 conservation failures over 6,201 pairs). Artifact `89ebf089…` reproduces in two runs and
+  is re-hashed on every read. The old `/wowy` operation form (source-blocked in every scope) is
+  retired; Teammate Stat Shift keeps the operation.
+- Removed: Spatial EPV (redirects to RAPM Research) and, on the hosted build only, Planner
+  (`NEXT_PUBLIC_COURTLENS_HOSTED_DEMO=1`). The gate notice, the old Matchups view and the seeded
+  Combine explorer are deleted; legacy measurement GETs no longer write seed rows.
+- Two real defects found and fixed during verification: a profile without a combine record could
+  match a null-identity combine row (null === null), and duplicate region labels on Defensive
+  Matchups.
+- Read-only: 161 publication pointers, 1,031 identities, 205 feed datasets / 200,690 versions and
+  340 legacy measurement rows unchanged. Glance test 11–12 of 13–14 applicable on every page
+  (PC02: all failed first load).
+- Checks: Python 2,018 passed (11 new), Ruff/format/mypy clean; dashboard lint 0/0, typecheck,
+  Vitest 430 passed; Playwright on a clean export of the commit 403 passed / 4 failed before
+  refreshing baselines that the new Stats tabs shift (3 popup + 2 Stats, regenerated from the clean
+  build); `chart-kit.spec.ts:74` remains the PC08/PC10 failure. New PC11 spec (9) and 14 baselines.
+- Not done: WOWY shows the team logo but not the two players' headshots; loading states are
+  generic skeletons; PC13 must ship `data/derived/wowy-v1` with the other derived artifacts.
+- Next: PC12 remaining audit batches (no owner gate between PC11 and PC12 in the plan).

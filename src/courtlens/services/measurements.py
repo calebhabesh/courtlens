@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import logging
 from datetime import UTC, datetime
 from typing import Any
 
@@ -17,8 +16,6 @@ from courtlens.workbench_models import (
     WorkbenchPlayerMeasurement,
     allow_admin_mutation,
 )
-
-logger = logging.getLogger(__name__)
 
 MEASUREMENT_DISCLOSURE = (
     "Listed measurements (roster cards) reflect unverified team-reported values and are not "
@@ -348,24 +345,11 @@ def seed_flagship_measurements(session: Session) -> dict[str, int]:
     return {"measurements_seeded": m_count, "drafts_seeded": d_count}
 
 
-def ensure_measurements_seeded(session: Session) -> None:
-    """Ensure flagship measurements and draft records are seeded if table is empty."""
-    try:
-        from sqlalchemy import func
-
-        count = session.scalar(select(func.count()).select_from(WorkbenchPlayerMeasurement)) or 0
-        if count == 0:
-            seed_flagship_measurements(session)
-    except Exception as exc:
-        logger.debug("Skipping measurements auto-seed check: %s", exc)
-
-
 def get_player_measurements_detail_service(
     session: Session,
     player_id: str,
 ) -> dict[str, Any]:
     """Retrieve full physical measurements and draft profile for a player."""
-    ensure_measurements_seeded(session)
     ident = session.scalar(
         select(WorkbenchIdentity).where(
             WorkbenchIdentity.external_id == player_id,
@@ -451,7 +435,6 @@ def query_measurements_service(
     limit: int = 50,
 ) -> dict[str, Any]:
     """Query physical measurements across cohort with filtering."""
-    ensure_measurements_seeded(session)
     query = (
         select(
             WorkbenchPlayerMeasurement,

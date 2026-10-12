@@ -42,6 +42,9 @@ class Settings(BaseSettings):
     value_archetypes_manifest: Path | None = Path(
         "data/derived/value-archetypes-v1/serving/5caeb935e21fce5842fb5ebb33c7ad515cb550eb2021b88886ca3e7b5b6e2f7e.json"
     )
+    wowy_manifest: Path | None = Path(
+        "data/derived/wowy-v1/89ebf089f98a06422ccb51b3a0cb253a4b09eb355b0f758c6a2b067192ad49f4.json"
+    )
     portraits_cache_path: Path = Path("data/cache/portraits")
     operator_token: SecretStr = SecretStr("local-operator-secret-change-before-deploy")
     live_enabled: bool = False

@@ -1,5 +1,8 @@
 import { GatedNote } from "./ui/gated-note";
+import { Suspense } from "react";
 import { PageHeader } from "./ui/panel";
+import { RouteTabs } from "./ui/route-tabs";
+import { STATS_TABS } from "@/lib/route-consolidation";
 import "./stats-explorer.css";
 import { redirect } from "next/navigation";
 import { ContextBar } from "@/components/context-bar";
@@ -82,6 +85,9 @@ export async function StatsWorkspace({ params: rawParams, basePath = "/stats", t
     <section className="stats-workspace">
       <div className="workbench-content">
         <PageHeader icon="chart-column" title={title} subtitle="NBA player statistics. Explore production, shooting and efficiency within your selected scope." />
+        <Suspense fallback={<div className="ui-route-tabs" aria-hidden="true" />}>
+          <RouteTabs tabs={STATS_TABS} aria-label="Stats sections" />
+        </Suspense>
 
         <ContextBar
           catalog={catalog}

@@ -423,6 +423,103 @@ class RosterShapesResponse(BaseModel):
     teams: list[RosterShapeTeamResponse]
 
 
+class StatsFeedSource(BaseModel):
+    dataset_id: str
+    feed: str
+    variant: str
+    season: str
+    season_type: str
+    observed_at: str
+    upstream_revision: str | None
+    content_sha256: str
+
+
+class StatsFeedScopeView(BaseModel):
+    """PC11 envelope shared by the season-level NBA Stats feed views."""
+
+    version: str
+    season: str
+    phase: Literal["regular_season", "playoffs"]
+    label: str
+    scopes: list[dict[str, str]]
+    source: str
+    qualification: dict[str, int]
+    limitations: list[str]
+    sources: list[StatsFeedSource]
+
+
+class DefenseViewResponse(StatsFeedScopeView):
+    category: str
+    categories: list[dict[str, str]]
+    matchups_observed: bool
+    focus_rule: str | None
+    players: list[dict[str, Any]]
+    detail: dict[str, Any] | None
+
+
+class MatchupsViewResponse(StatsFeedScopeView):
+    side: Literal["offense", "defense"]
+    focus_rule: str | None
+    detail: dict[str, Any]
+
+
+class PlayTypesViewResponse(StatsFeedScopeView):
+    side: Literal["offensive", "defensive"]
+    focus_player_id: str | None
+    focus_rule: str | None
+    focus: dict[str, Any] | None
+    league: list[dict[str, Any]]
+    players: list[dict[str, Any]]
+
+
+class TrackingViewResponse(StatsFeedScopeView):
+    group: str
+    groups: list[dict[str, str]]
+    columns: list[dict[str, Any]]
+    players: list[dict[str, Any]]
+
+
+class PlayerTrackingResponse(StatsFeedScopeView):
+    player_id: str
+    observed: bool
+    player: dict[str, Any] | None
+    groups: list[dict[str, Any]]
+
+
+class WowyViewResponse(BaseModel):
+    version: str
+    season: str
+    phase: Literal["regular_season", "playoffs"]
+    scopes: list[dict[str, str]]
+    games: int
+    last_game_date: str
+    team: dict[str, str]
+    teams: list[dict[str, str]]
+    players: list[dict[str, Any]]
+    team_total: dict[str, Any]
+    selected: dict[str, Any] | None
+    pairs: list[dict[str, Any]]
+    default_rule: str | None
+    min_possessions: int
+    artifact_sha256: str
+    inputs: dict[str, Any]
+    source: str
+    limitations: list[str]
+
+
+class CombineViewResponse(BaseModel):
+    version: str
+    source: str
+    draft_year: int | None
+    draft_years: list[dict[str, int]]
+    cohort: dict[str, int]
+    default_rule: str | None
+    selected_player_id: str | None
+    limitations: list[str]
+    rows: list[dict[str, Any]]
+    sources: list[StatsFeedSource]
+
+
 class ValueArchetypesResponse(BaseModel):
     status: Literal["available", "unavailable"]
     source: str

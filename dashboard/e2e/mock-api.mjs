@@ -1,4 +1,5 @@
 import { createServer } from "node:http";
+import { pc11Response } from "./pc11-fixtures.mjs";
 
 const snapshotId = "snapshot-browser-fixture";
 const catalog = {
@@ -546,6 +547,8 @@ createServer(async (request, response) => {
     response.end();
     return;
   }
+  const pc11 = pc11Response(url);
+  if (pc11) return json(response, 200, pc11);
   if (url.pathname === "/api/workbench/lookup") {
     const q = (url.searchParams.get("q") || "").toLowerCase();
     const kinds = (url.searchParams.get("kinds") || "player,team,page").split(",");

@@ -1,6 +1,7 @@
 export * from "./chart-frame";
 export * from "./delta-chip";
 export * from "./value-bar";
+export * from "./ranked-bars";
 export * from "./threshold-bar";
 export * from "./donut";
 export * from "./sankey";

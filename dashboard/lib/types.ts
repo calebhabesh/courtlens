@@ -674,6 +674,9 @@ export type ImpactArtifact = {
 };
 export type ImpactSupport = {
   qualified: boolean;
+  /** Oriented percentiles among qualified players (six factors: offense for o_*, defense for d_*). */
+  offense_percentile?: number | null;
+  defense_percentile?: number | null;
   covered_games?: number;
   total_games?: number;
   games?: number;

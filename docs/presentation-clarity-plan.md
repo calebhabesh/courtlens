@@ -93,6 +93,15 @@ Confirmed by the owner on 2026-10-12 after PC06/PC07 source evidence. These amen
 | D4 WOWY | Derived in PC11 from lineup data (existing stints or hoopR lineups); pbpstats WOWY is not ingested. |
 | D5 Seasons | Season feeds beyond 2025-26 are fetched only when PC09 needs them. |
 
+## Owner decisions at G4 (2026-10-12)
+
+The owner approved G4 with the recommended defaults ("I approve, you can begin the next block").
+
+| # | Decision |
+| --- | --- |
+| D6 Playoff toggle | **Dropped.** PC10's Regular season vs Playoff-adjusted toggle is not built: the only sealed playoff BPR is 2025-26 alone (230 players, 5 meeting the 20-game rule). Roster Shapes stay regular-season. |
+| D7 Fit and white space | Kept as built in PC10: outline = continuity (returning / new arrival / no 2025-26 sample); Best fit sorts by the returning share of value; white space is the gap to the league's fullest roster. |
+
 ## Source plan (checked 2026-10-11)
 
 Every source below returned HTTP 200 from the development machine with a browser User-Agent,
@@ -231,6 +240,11 @@ The overhaul's 10-item glance test still applies. Add:
 | Planner | **Remove from the hosted demo** (empty without a signed-in league) |
 
 Removed routes redirect, and leave navigation, `lib/route-availability.ts` and search.
+
+As built (contract: [gated pages v1](design/gated-pages-v1.md)): Player Matchups (`/matchups`) is
+populated from the same season matchups; Planner leaves the hosted build through
+`NEXT_PUBLIC_COURTLENS_HOSTED_DEMO=1` (nav link hidden, `/planner` redirects to `/`) and stays
+available locally; EPV redirects to RAPM Research.
 
 ### PC12 Remaining audit batches
 
