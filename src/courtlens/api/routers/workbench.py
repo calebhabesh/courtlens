@@ -84,6 +84,7 @@ from courtlens.api.workbench_schemas import (
     UpdateCustomViewRequest,
     UpdateFavoritesRequest,
     UpdatePreferencesRequest,
+    ValueArchetypesResponse,
     WorkbenchCatalogResponse,
     WorkbenchQueryRequest,
     WorkbenchQueryResponse,
@@ -169,6 +170,13 @@ from courtlens.services.team_analytics import (
     get_team_peers,
     get_team_schedule,
     get_team_three_point_variation,
+)
+from courtlens.services.value_archetypes import (
+    load_value_store,
+    unknown_row,
+    value_archetype_rows,
+    value_archetypes_capability,
+    value_archetypes_summary,
 )
 from courtlens.services.workbench_analytics import (
     ResearchQuery,
@@ -301,6 +309,7 @@ def get_catalog(
             status=CapabilityStatus.NOT_IMPLEMENTED,
         ),
     }
+    capabilities["value_archetypes_pc09"] = value_archetypes_capability(load_value_store())
     # Measured PC07 feed coverage first; admitted-but-unobserved placeholders last.
     for name, entry in feed_capabilities(session).items():
         capabilities.setdefault(name, entry)
@@ -388,6 +397,45 @@ def get_impact(
             {"player_id": pid, "player_name": names.get(pid) or f"NBA player {pid}", **players[pid]}
             for pid in ids
             if pid in players
+        ],
+    )
+
+
+@router.get("/value-archetypes", response_model=ValueArchetypesResponse)
+def get_value_archetypes(
+    player_ids: list[str] | None = Query(None, alias="playerId", max_length=64),
+    limit: int = Query(50, ge=1, le=1000),
+    session: Session = Depends(get_db),
+) -> ValueArchetypesResponse:
+    """Sealed PC09 value (BPR) and derived archetypes; no fitting or raw source export."""
+    store = load_value_store()
+    summary = value_archetypes_summary(store)
+    rows = value_archetype_rows(store) if store else {}
+    total = len(rows)
+    if player_ids:
+        ids = list(dict.fromkeys(player_ids))
+        rows |= {pid: unknown_row(pid) for pid in ids if pid not in rows}
+    else:
+        # Known values first, highest first; unknown values keep a stable id order.
+        ids = sorted(
+            rows,
+            key=lambda pid: (
+                rows[pid]["value"] is None,
+                -(rows[pid]["value"] or {}).get("value", 0.0),
+                pid,
+            ),
+        )[:limit]
+    identities = session.execute(
+        select(WorkbenchIdentity.external_id, WorkbenchIdentity.display_name).where(
+            WorkbenchIdentity.kind == "player", WorkbenchIdentity.external_id.in_(ids)
+        )
+    ).all()
+    names = {pid: name for pid, name in identities}
+    return ValueArchetypesResponse(
+        **summary,
+        total_players=total,
+        players=[
+            {"player_name": names.get(pid) or f"NBA player {pid}", **rows[pid]} for pid in ids
         ],
     )
 

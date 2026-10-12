@@ -365,6 +365,32 @@ class ImpactResponse(BaseModel):
     total_players: int
 
 
+class ValueArchetypePlayerResponse(BaseModel):
+    player_id: str
+    player_name: str
+    value: dict[str, Any] | None
+    value_reason: str | None
+    archetype: dict[str, Any] | None
+    archetype_reason: str | None
+
+
+class ValueArchetypesResponse(BaseModel):
+    status: Literal["available", "unavailable"]
+    source: str
+    version: str
+    methodology_url: str
+    manifest_sha256: str | None
+    limitations: list[str]
+    catalog: list[dict[str, Any]]
+    credit: str
+    reason: str | None = None
+    value: dict[str, Any] | None = None
+    evaluation: dict[str, Any] | None = None
+    archetypes: dict[str, Any] | None = None
+    players: list[ValueArchetypePlayerResponse]
+    total_players: int
+
+
 class PlayerProfileStint(BaseModel):
     team_id: str
     team_tricode: str
