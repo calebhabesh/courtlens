@@ -12,14 +12,14 @@ test.beforeEach(async ({ page }) => {
   } }));
 });
 
-for (const label of ["Filter by season", "Filter by competition phase", "Analysis window"]) {
+// Phase is a segmented control on Stats (Databallr alignment); the team picker is the third select.
+for (const label of ["Filter by season", "Filter by NBA team", "Analysis window"]) {
   test(`${label} popup stays readable with a light OS theme`, async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.emulateMedia({ colorScheme: "light" });
     // The fixture has one admitted season/phase; retained unavailable context gives each
     // menu an unselected row as well, without inventing additional source coverage.
-    const path = label === "Filter by season" ? "/stats?season=2024-25"
-      : label === "Filter by competition phase" ? "/stats?phase=playoffs" : "/stats";
+    const path = label === "Filter by season" ? "/stats?season=2024-25" : "/stats";
     await openWorkbench(page, path);
     const select = page.getByRole("combobox", { name: label, exact: true });
     const colors = await select.evaluate(element => {
@@ -86,7 +86,7 @@ test("styled picker preserves keyboard selection, Escape and outside dismissal",
   await page.waitForURL(url => url.searchParams.get("window") === "last_10");
   await expect(page.getByRole("combobox", { name: "Analysis window", exact: true })).toHaveValue("last_10");
   await page.getByRole("combobox", { name: "Analysis window", exact: true }).click();
-  await page.getByRole("heading", { name: "Stats", exact: true }).click();
+  await page.getByRole("heading", { name: "NBA Player Statistics", exact: true }).click();
   await expect(page.locator("select:open")).toHaveCount(0);
 });
 

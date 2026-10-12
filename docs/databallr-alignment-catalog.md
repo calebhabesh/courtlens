@@ -13,7 +13,7 @@ Rows are in working order.
 | # | Databallr | CourtLens | Status | Notes |
 |---|---|---|---|---|
 | 0 | App shell (nav rows, search, page title block) | `app/layout.tsx` | ⬜ | Done with the Stats pass |
-| 1 | Stats | `/stats` | ⬜ | Regressed vs Databallr (owner screenshots, 2026-10-12) |
+| 1 | Stats | `/stats` | 👀 | Regressed vs Databallr (owner screenshots, 2026-10-12) |
 | 2 | Dashboard (player) | `/players/[id]` | ⬜ | |
 | 3 | PvP | `/compare` | ⬜ | Compare Export failure is a known gap |
 | 4 | Teams | `/teams` | ⬜ | |
@@ -52,3 +52,55 @@ Instructions (owner, <date>):
 Data-blocked: <Databallr elements we can't source>
 Evidence: docs/evidence/alignment/<page>/
 ```
+
+### 1 Stats — 👀 ready for review
+Instructions (owner, 2026-10-12):
+1. [x] Integrate Databallr's Stats buttons (where applicable) and their layout. Reference: owner
+   screenshot of Databallr's NBA Player Statistics page, 2026-10-12. — interpreted as the rows below.
+   - 1a [x] Help row under the page title: How to Use This Page · Stats Glossary · Hotkeys. — how-to modal, glossary link, hotkeys modal
+   - 1b [x] Scope row: ‹ season › stepper with calendar icon · Regular | Playoffs segmented ·
+     Select Team. CourtLens-only scope controls (Through, Window, eligible count, Data details) stay
+     in the same row after them. — `ContextBar steppedScope` (opt-in, other pages unchanged); team moved
+     out of the table Filters panel. Observed NBA Cup / Play-In phases stay as extra segments.
+   - 1c [x] View row: presets in Databallr order (Overview, Shooting, Impact, On-Off, Six Factor,
+     Advanced/Rates, Defense, True Shooting, then CourtLens extras) · Add View · Manage ·
+     Photos | Logos | Initials | None (no "Group Guides:" label).
+   - 1d [x] Table toolbar: wordmark · Per Game, Per 36, Per 75, Per 100, Totals · icon buttons
+     (scatter, trend lines, compare players) · icon buttons (table settings, favorites, help,
+     filters) · expand at the far right. Percentile toggle and Save legacy scope move into the
+     settings menu. — compare button opens /compare for the first two selected players (Z).
+   - 1e [x] Rows: a circular + compare toggle replaces the checkbox; the open-details button sits
+     next to the name. — row favorite star moved to the preview rail header (and the details drawer).
+   - 1f [x] Footer: record count · −W density meter E+ · ‹ View › · ‹ Scroll › · Filters (F) ·
+     expand (T), with pagination kept at the right. Quick hotkeys list gains F. — F now toggles filters.
+2. [x] Make the layout more identical to Databallr in format and in the sizing of the
+   containers (owner screenshots of Databallr Stats, 2026-10-12). — title "NBA Player Statistics" + What's New
+   line; 40px scope/view blocks; 36px toolbar icons; rank column and percentile legend removed; 42px
+   rows, 64–88px centred metric columns, 236px name column, sorted header in accent; preview rail is
+   its own panel beside the table frame; one-row footer.
+3. [x] Drop the Box Score / Tracking split on Stats; use what Databallr uses (no sub-tabs). — tabs gone
+   from /stats; /stats/tracking still exists (linked from player pages, keeps its own tabs).
+4. [x] Remove the blue/white percentile blocks from the table cells. Use Databallr's small
+   coloured percentile number under each stat, yellow → gray → blue (high → low). — `PercentileCell
+   variant="text"` (other pages keep shading); continuous colour from `--pct`; new `--text-2xs` (10px) and
+   `--color-percentile-text-*` tokens; small samples show no number; cohort moved to the footer.
+5. [x] Stats Glossary: readable descriptions like Databallr's glossary cards (clarified: accurate
+   descriptions per established standard/consensus definitions, not dumbed-down layman copy);
+   pressing a description reveals the mathematical/back-end definition. Replace the snake_case
+   key under each metric name with its short form (Points per game → PPG, not pts_per_game). — new
+   /stats/glossary (back link, search, category chips, cards; description toggles formula, unit,
+   validity, limitations); copy in `lib/stats-glossary.ts`, play-type wording matches
+   `impact_extras.play_bucket`; /methodology catalog shows short names instead of keys.
+6. [x] Remove the thin white divider line above the season / Regular-Playoffs / Through /
+   Window scope row. — went with the sub-tabs; scope bar keeps no border.
+Not applicable (no data or feature): position chips PG/SG/SF/PF/C and Draft Class (the Stats
+query has no position or draft predicate; needs backend work first), the video and trophy
+(Leaders) toolbar buttons. Tab/Shift+Tab view cycling is exposed as buttons only, so Tab keeps
+normal keyboard focus order.
+Data-blocked: DPM, ODPM, DDPM, rTS%, cTOV%, Pts Created, OnBall % (Databallr metrics we can't compute).
+Evidence: docs/evidence/alignment/stats/ (stats and glossary at 1440 and 390, live local data).
+Verification 2026-10-12: dashboard lint, typecheck, Vitest 448/448; Stats Playwright set 76/78 at 3
+workers plus the new glossary spec 2/2. Remaining failures are not Stats regressions: workbench Teams
+"Toronto Raptors" strict-mode match (Teams page, from PC12 D) and the known Compare Export gap; the
+skip-link and streaming checks flake only under parallel load (6/6 serial). Stats desktop/phone and
+select-popup baselines regenerated.

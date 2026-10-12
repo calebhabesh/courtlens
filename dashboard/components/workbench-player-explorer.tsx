@@ -12,7 +12,6 @@ import { SortHeader, GroupGuide } from "./table-ui";
 import { Icon } from "./ui/icon";
 import { useToast } from "./ui/toast";
 import { PercentileCell } from "./charts/percentile-cell";
-import { TablePercentileLegend } from "./table-percentile-legend";
 import { Skeleton } from "./ui/skeleton";
 import { SlidingIndicator } from "./ui/sliding-indicator";
 import { TeamLogoStack } from "./team-logo";
@@ -21,6 +20,7 @@ import { StatsDetailDrawer } from "./stats-detail-drawer";
 import { CompareTray } from "./compare-tray";
 import { HotkeysModal } from "./hotkeys-modal";
 import { ManageViewsModal } from "./manage-views-modal";
+import { Menu, MenuItem } from "./ui/menu";
 import { ScatterPlotView } from "./scatter-plot-view";
 import { MultiPlayerLinesView } from "./multi-player-lines-view";
 import { useWorkspace } from "@/lib/workspace-context";
@@ -31,7 +31,6 @@ import {
   getPresetById,
   tableGroups,
   formatColumnValue,
-  NBA_TEAMS,
   COUNTING_MODES,
   IDENTITY_MODES,
   type PresetId,
@@ -54,6 +53,13 @@ interface WorkbenchPlayerExplorerProps {
 const LOCAL_STORAGE_DENSITY_KEY = storageKeys.density;
 
 const SKELETON_ROW_COUNT = 12;
+
+// Databallr's view order; CourtLens-only presets follow.
+const PRESET_ORDER: PresetId[] = ["overview", "shooting", "impact", "onoff", "sixfactor", "advanced", "defense", "trueshooting"];
+const ORDERED_PRESETS = [...STATS_PRESETS].sort((a, b) =>
+  (PRESET_ORDER.indexOf(a.id) + 1 || PRESET_ORDER.length + 1) - (PRESET_ORDER.indexOf(b.id) + 1 || PRESET_ORDER.length + 1));
+// Display order of the counting-mode buttons: Totals last, as on Databallr.
+const ORDERED_COUNTING_MODES = [...COUNTING_MODES.filter(mode => mode.id !== "raw"), ...COUNTING_MODES.filter(mode => mode.id === "raw")];
 
 type GuideGeometry = React.CSSProperties & { "--guide-offset": string };
 const guideGeometry = (index: number): GuideGeometry => ({
@@ -150,6 +156,7 @@ export function WorkbenchPlayerExplorer({
 
   // Manage Views Modal state (F04)
   const [isManageViewsOpen, setIsManageViewsOpen] = useState(false);
+  const [manageStartsNew, setManageStartsNew] = useState(false);
 
   // Favorites-only filter state (F05)
   const favoritesOnly = searchParams?.get("favorites") === "1";
@@ -312,6 +319,23 @@ export function WorkbenchPlayerExplorer({
     }
   };
 
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const scrollTable = (direction: -1 | 1) => scrollRef.current?.scrollBy({ left: direction * 240 });
+  const stepView = (direction: -1 | 1) => {
+    const ids = [...ORDERED_PRESETS.map(p => p.id), ...views.map(v => v.id as PresetId)];
+    const index = ids.indexOf(activePresetId);
+    handlePresetSelect(ids[(index + direction + ids.length) % ids.length]);
+  };
+
+  const openComparison = () => {
+    if (comparedPlayers.length < 2) return;
+    const params = new URLSearchParams({ season: query.season, phase: query.phase,
+      beforeDate: query.before_date, window: query.window,
+      playerA: comparedPlayers[0].player_id, playerB: comparedPlayers[1].player_id });
+    if (query.release_id) params.set("releaseId", query.release_id);
+    router.push(`/compare?${params}`);
+  };
+
   // One handler in the focused table region; editable/modified/IME events keep native behavior.
   const handleTableKey = (e: KeyboardEvent<HTMLDivElement>) => {
     const target = e.target as HTMLElement;
@@ -325,14 +349,8 @@ export function WorkbenchPlayerExplorer({
     else if (key === "t") { e.preventDefault(); setIsExpanded(value => !value); }
     else if (key === "w" || key === "e") { e.preventDefault(); handleDensityChange(key === "w" ? "compact" : "standard"); }
     else if (key === "a" || key === "d") { e.preventDefault(); e.currentTarget.scrollBy({ left: key === "a" ? -240 : 240 }); }
-    else if (key === "z" && comparedPlayers.length >= 2) {
-      e.preventDefault();
-      const params = new URLSearchParams({ season: query.season, phase: query.phase,
-        beforeDate: query.before_date, window: query.window,
-        playerA: comparedPlayers[0].player_id, playerB: comparedPlayers[1].player_id });
-      if (query.release_id) params.set("releaseId", query.release_id);
-      router.push(`/compare?${params}`);
-    }
+    else if (key === "f") { e.preventDefault(); setFiltersOpen(value => !value); }
+    else if (key === "z" && comparedPlayers.length >= 2) { e.preventDefault(); openComparison(); }
   };
 
   const closeDetailDrawer = useCallback(() => setSelectedPlayerForDrawer(null), []);
@@ -456,7 +474,7 @@ export function WorkbenchPlayerExplorer({
       {/* Preset Tabs Row (F02 & F04) */}
       <div className="stats-preset-tabs-wrapper">
         <div className="stats-preset-tabs" role="tablist" aria-label="Stats Explorer Presets">
-          {STATS_PRESETS.map((p) => {
+          {ORDERED_PRESETS.map((p) => {
             const isActive = p.id === activePresetId;
             return (
               <button
@@ -497,9 +515,19 @@ export function WorkbenchPlayerExplorer({
           })}
         </div>
 
+        <div className="control-button-group stats-view-actions">
+          <button type="button" onClick={() => { setManageStartsNew(true); setIsManageViewsOpen(true); }}
+            className="control-pill" title="Create a personal view from any catalog columns">
+            <Icon name="columns" size={14} /> Add View
+          </button>
+          <button type="button" onClick={() => { setManageStartsNew(false); setIsManageViewsOpen(true); }}
+            className="control-pill" title="Manage custom views, default view, and import/export">
+            <Icon name="settings" size={14} /> Manage
+          </button>
+        </div>
+
         {/* Identity Density Mode Buttons (F03) */}
         <div className="control-button-group" role="group" aria-label="Group guides">
-          <span className="control-group-label">Group Guides:</span>
           {IDENTITY_MODES.map((im) => (
             <button
               key={im.id}
@@ -513,19 +541,6 @@ export function WorkbenchPlayerExplorer({
             </button>
           ))}
         </div>
-
-        {/* Manage Views Button (F04) */}
-        <div className="stats-preset-manage-wrapper">
-          <button
-            type="button"
-            onClick={() => setIsManageViewsOpen(true)}
-            className="button button-small stats-manage-views-btn"
-            title="Manage custom views, default view, and import/export"
-          >
-            <Icon name="settings" /> Manage Views
-          </button>
-        </div>
-
       </div>
 
       {/* Gated Preset Capability Notice */}
@@ -555,41 +570,51 @@ export function WorkbenchPlayerExplorer({
         </div>
       )}
 
+      <div className={`stats-frame-layout ${viewMode === "table" ? "has-rail" : ""} ${previewCollapsed ? "preview-collapsed" : ""}`}>
       <div className="stats-table-frame">
       <div className="stats-controls-row">
         <strong className="stats-table-brand"><CourtLensWordmark height={16} /></strong>
-        <div className="control-button-group" role="group" aria-label="Counting Mode">
-          {COUNTING_MODES.map(cm => <button key={cm.id} type="button"
+        <div className="control-button-group stats-counting-modes" role="group" aria-label="Counting Mode">
+          {ORDERED_COUNTING_MODES.map(cm => <button key={cm.id} type="button"
             onClick={() => handleCountingModeSelect(cm.id)}
             disabled={catalog?.stats_normalizations ? !catalog.stats_normalizations.includes(cm.id) : cm.gated}
             className={`control-pill ${countingMode === cm.id ? "active" : ""}`}
             title={cm.tooltip} aria-pressed={countingMode === cm.id}>{cm.label}
           </button>)}
         </div>
-        <div className="control-button-group stats-view-controls" role="group" aria-label="Explorer View Mode">
-          <button type="button" onClick={() => setViewMode("table")} className={`control-pill ${viewMode === "table" ? "active" : ""}`} aria-pressed={viewMode === "table"}><Icon name="table" size={14} /> Table</button>
-          <button type="button" onClick={() => setViewMode("scatter")} className={`control-pill ${viewMode === "scatter" ? "active" : ""}`} aria-pressed={viewMode === "scatter"}><Icon name="scatter" size={14} /> Scatter Plot</button>
-          <button type="button" onClick={() => setViewMode("lines")} className={`control-pill ${viewMode === "lines" ? "active" : ""}`} aria-pressed={viewMode === "lines"}><Icon name="chart-line" size={14} /> Trend Lines</button>
+        <div className="stats-tool-group" role="group" aria-label="Explorer View Mode">
+          <button type="button" onClick={() => setViewMode(viewMode === "scatter" ? "table" : "scatter")}
+            className="stats-tool-button" aria-pressed={viewMode === "scatter"} aria-label="Scatter plot" title="Scatter plot"><Icon name="scatter" /></button>
+          <button type="button" onClick={() => setViewMode(viewMode === "lines" ? "table" : "lines")}
+            className="stats-tool-button" aria-pressed={viewMode === "lines"} aria-label="Trend lines" title="Trend lines"><Icon name="trend" /></button>
+          <button type="button" onClick={openComparison} disabled={comparedPlayers.length < 2}
+            className="stats-tool-button" aria-label="Compare selected players (Z)"
+            title={comparedPlayers.length < 2 ? "Add two players with + to compare them" : "Compare the first two selected players (Z)"}><Icon name="users" /></button>
         </div>
-        <div className="control-button-group stats-table-tools">
-          <button type="button" onClick={() => setShowPercentiles(value => !value)}
-            className={`control-pill ${showPercentiles ? "active" : ""}`} aria-pressed={showPercentiles}
-            title="Toggle qualified league percentile labels">%iles {showPercentiles ? "On" : "Off"}</button>
+        <div className="stats-tool-group" role="group" aria-label="Table tools">
+          <Menu className="stats-tool-menu" trigger={<span className="stats-tool-button" title="Table settings"><Icon name="settings" /><span className="sr-only">Table settings</span></span>}>
+            <MenuItem icon={showPercentiles ? "eye-off" : "eye"} label={showPercentiles ? "Hide percentiles" : "Show percentiles"}
+              onClick={() => setShowPercentiles(value => !value)} />
+            <MenuItem icon="save" label={saving ? "Saving…" : "Save legacy scope"} disabled={saving || !legacySaveAvailable}
+              onClick={handleSaveInvestigation} />
+          </Menu>
           <button type="button" onClick={() => updateParam({ favorites: favoritesOnly ? null : "1" })}
-            className={`control-pill ${favoritesOnly ? "active" : ""}`} aria-pressed={favoritesOnly}
+            className="stats-tool-button" aria-pressed={favoritesOnly}
+            aria-label={favoritesOnly ? "Show all players" : `Favorites only${favorites.length ? ` (${favorites.length})` : ""}`}
             title={favoritesOnly ? "Show all players" : "Filter to favorite players only"}>
-            <Icon name="star" /> Favorites {favorites.length > 0 ? `(${favorites.length})` : ""}
+            <Icon name="star" filled={favoritesOnly} />
           </button>
-          <button type="button" className={`control-pill ${filtersOpen || hasActiveFilters ? "active" : ""}`}
-            onClick={() => setFiltersOpen(value => !value)} aria-expanded={filtersOpen} aria-controls="stats-filters">
-            <Icon name="sliders" size={14} /> Filters{hasActiveFilters ? " · Active" : ""}
-          </button>
-          <button type="button" onClick={() => setIsHotkeysOpen(true)} className="control-pill" title="Open keyboard shortcuts guide (?)"><Icon name="help" size={14} /> Hotkeys</button>
-          <button type="button" onClick={handleSaveInvestigation} disabled={saving || !legacySaveAvailable}
-            className="control-pill" title="Save this scope using retained legacy arithmetic. Favorites and cohort percentiles are excluded; advanced query filters cannot be saved here.">
-            <Icon name="save" size={14} /> {saving ? "Saving…" : "Save legacy scope"}
+          <button type="button" onClick={() => setIsHotkeysOpen(true)} className="stats-tool-button" aria-label="Hotkeys" title="Keyboard shortcuts (?)"><Icon name="help" /></button>
+          <button type="button" className={`stats-tool-button ${hasActiveFilters ? "has-active" : ""}`} aria-pressed={filtersOpen}
+            onClick={() => setFiltersOpen(value => !value)} aria-expanded={filtersOpen} aria-controls="stats-filters"
+            aria-label="Filters" title={hasActiveFilters ? "Filters (active) · F" : "Filters · F"}>
+            <Icon name="filter" />
           </button>
         </div>
+        <button type="button" onClick={() => setIsExpanded(value => !value)} className="stats-tool-button stats-expand-button"
+          aria-pressed={isExpanded} aria-label={isExpanded ? "Standard height" : "Expand table"} title="Expand table (T)">
+          <Icon name={isExpanded ? "collapse" : "expand"} />
+        </button>
       </div>
 
       {actionError && <div role="alert" className="notice-box stats-action-error">
@@ -607,24 +632,6 @@ export function WorkbenchPlayerExplorer({
       )}
 
       {filtersOpen && <div className="filter-toolbar" id="stats-filters" role="region" aria-label="Statistics filters">
-        {/* Team filter dropdown */}
-        <div className="filter-group">
-          <label htmlFor="stats-team-filter">Team</label>
-          <select
-            id="stats-team-filter"
-            value={searchParams?.get("teamId") || searchParams?.get("team_id") || ""}
-            onChange={(e) => updateParam({ teamId: e.target.value || null })}
-            aria-label="Filter by NBA team"
-          >
-            <option value="">All Teams (30)</option>
-            {NBA_TEAMS.map((t) => (
-              <option key={t.tricode} value={t.tricode}>
-                {t.tricode} — {t.name}
-              </option>
-            ))}
-          </select>
-        </div>
-
         {/* Min Games Played */}
         <div className="filter-group">
           <label htmlFor="min-games-filter">Min GP</label>
@@ -779,16 +786,15 @@ export function WorkbenchPlayerExplorer({
       {/* Dense Stats Table with Two-Tier Grouped Headers & Sticky Pinned Identity */}
       {viewMode === "table" && (
         <>
-          <TablePercentileLegend cohort={data.table_cohort} />
-          <div className={`stats-table-layout ${previewCollapsed ? "preview-collapsed" : ""}`}>
-          <div role="region" aria-label="Player statistics scroll area" aria-busy={loadingRows} tabIndex={0} onKeyDown={handleTableKey} className={`table-wrapper stats-scroll-region ${tableDensity === "compact" ? "density-compact" : "density-standard"}`}>
+          <div className="stats-table-layout">
+          <div ref={scrollRef} role="region" aria-label="Player statistics scroll area" aria-busy={loadingRows} tabIndex={0} onKeyDown={handleTableKey} className={`table-wrapper stats-scroll-region ${tableDensity === "compact" ? "density-compact" : "density-standard"}`}>
             <table ref={tableRef} className="data-table dense-stats-table" aria-label="Dense player statistics explorer"
               style={{
-                "--table-min-width": `calc(114px + var(--identity-name-width) + ${preset.columns.length * 84 + guideCount * 40}px)`,
-                "--table-width": `min(100%, calc(114px + var(--identity-name-width) + ${preset.columns.length * 140 + guideCount * 40}px))`
+                "--table-min-width": `calc(88px + var(--identity-name-width) + ${preset.columns.length * 64 + guideCount * 40}px)`,
+                "--table-width": `min(100%, calc(88px + var(--identity-name-width) + ${preset.columns.length * 88 + guideCount * 40}px))`
               } as React.CSSProperties}>
               <colgroup>
-                <col className="col-select" /><col className="col-rank" />
+                <col className="col-select" />
                 <col className="stats-name-column" />
                 {preset.columns.map((col, index) => <Fragment key={col.key}>
                   {identityMode !== "none" && guideStarts.has(index) && <col className="col-guide" />}
@@ -800,10 +806,10 @@ export function WorkbenchPlayerExplorer({
                 {/* Tier 1 Header: Group Categories */}
                 <tr className="stats-header-tier-1">
               <th
-                colSpan={3}
+                colSpan={2}
                 className="pinned-col-group text-left pl-3"
               >
-                Players
+                <span className="sr-only">Players</span>
               </th>
               {headerGroups.map((group, gIdx) => (
                 <Fragment key={`${group.label}-${gIdx}`}>
@@ -824,17 +830,11 @@ export function WorkbenchPlayerExplorer({
               {/* Pinned Col 1: Select Checkbox */}
               <th
                 className="pinned-col pinned-col-select text-center"
-                title="Select players for comparison (max 8)"
+                title="Add players to comparison (max 8)"
               >
-                <Icon name="check" size={14} />
+                <span className="sr-only">Compare</span>
               </th>
 
-              {/* Pinned Col 2: Rank # */}
-              <th
-                className="pinned-col pinned-col-rank num"
-              >
-                #
-              </th>
 
               <th className="pinned-col pinned-col-name" scope="col" aria-sort={currentSortMetric === "name" || currentSortMetric === "player_name" ? currentSortDirection === "asc" ? "ascending" : "descending" : "none"}>
                 <div className="stats-header-search">
@@ -856,7 +856,7 @@ export function WorkbenchPlayerExplorer({
                   description={col.tooltip} className={col.num ? "num" : ""} />
               </Fragment>)}
 
-              <th className="stats-detail-header text-center">Detail</th>
+              <th className="stats-detail-header text-center">Pin</th>
             </tr>
           </thead>
 
@@ -865,7 +865,6 @@ export function WorkbenchPlayerExplorer({
               {Array.from({ length: SKELETON_ROW_COUNT }, (_, rowIndex) => (
                 <tr key={rowIndex} className="stats-table-row stats-skeleton-row">
                   <td className="pinned-col pinned-col-select" />
-                  <td className="pinned-col pinned-col-rank" />
                   <td className="pinned-col pinned-col-name">
                     <div className="player-cell">
                       <Skeleton variant="circle" width={40} height={40} />
@@ -892,7 +891,7 @@ export function WorkbenchPlayerExplorer({
             {items.length === 0 ? (
               <tr>
                 <td
-                  colSpan={preset.columns.length + guideCount + 4}
+                  colSpan={preset.columns.length + guideCount + 3}
                   className="stats-empty-cell text-muted text-center"
                 >
                   <p className="stats-empty-title">
@@ -908,7 +907,7 @@ export function WorkbenchPlayerExplorer({
                 </td>
               </tr>
             ) : (
-              items.map((player, idx) => {
+              items.map((player) => {
                 const isCompared = comparedPlayers.some((p) => p.player_id === player.player_id);
 
                 return (
@@ -928,18 +927,12 @@ export function WorkbenchPlayerExplorer({
                   >
                     {/* Pinned Col 1: Select Checkbox */}
                     <td className="pinned-col pinned-col-select text-center">
-                      <input
-                        type="checkbox"
-                        checked={isCompared}
-                        onChange={() => handleToggleCompare(player)}
-                        aria-label={`Select ${player.player_name} for comparison`}
-                        className="stats-compare-checkbox"
-                      />
-                    </td>
-
-                    {/* Pinned Col 2: Rank # */}
-                    <td className="pinned-col pinned-col-rank num font-mono text-muted text-xs">
-                      {(data.output_offset ?? 0) + idx + 1}
+                      <button type="button" className="stats-compare-toggle" aria-pressed={isCompared}
+                        onClick={() => handleToggleCompare(player)}
+                        aria-label={isCompared ? `Remove ${player.player_name} from comparison` : `Add ${player.player_name} to comparison`}
+                        title={isCompared ? "Remove from comparison (C)" : "Add to comparison (C)"}>
+                        <Icon name={isCompared ? "circle-check" : "circle-plus"} />
+                      </button>
                     </td>
 
                     {/* Pinned Col 3: Players */}
@@ -959,22 +952,13 @@ export function WorkbenchPlayerExplorer({
                         </div>
                         <button
                           type="button"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleFavorite(player.player_id);
-                          }}
-                          className={`stats-favorite-button ${isFavorite(player.player_id) ? "is-favorite" : ""}`}
-                          aria-pressed={isFavorite(player.player_id)}
-                          title={isFavorite(player.player_id) ? "Remove from favorites" : "Add to favorites"}
-                          aria-label={
-                            isFavorite(player.player_id)
-                              ? `Remove ${player.player_name} from favorites`
-                              : `Add ${player.player_name} to favorites`
-                          }
+                          onClick={() => setSelectedPlayerForDrawer(player)}
+                          className="stats-icon-action stats-details-button"
+                          aria-label={`Open details for ${player.player_name}`}
+                          title="Open full player details"
                         >
-                          <Icon name="star" />
+                          <Icon name="cards" size={14} />
                         </button>
-
                       </div>
                     </td>
 
@@ -994,7 +978,7 @@ export function WorkbenchPlayerExplorer({
                         <td
                           className={`stats-metric-cell stats-group-${headerGroups.findIndex(group => index >= group.start && index < group.start + group.colSpan) % 2} ${col.num ? "num" : ""}`}
                         >
-                          <PercentileCell compact showPercentile={showPercentiles}
+                          <PercentileCell variant="text" showPercentile={showPercentiles}
                             value={player.metrics[metricKey] == null ? null : formatted}
                             percentile={pct} qualified={qualified} label={col.label}
                             cohort={`${player.table_cohort_sample_sizes?.[metricKey] ?? "Unknown"} valid league players; ${data.table_cohort?.min_season_minutes ?? 500}+ season minutes`} />
@@ -1008,15 +992,6 @@ export function WorkbenchPlayerExplorer({
                       <button type="button" className="stats-icon-action stats-row-pin"
                         onClick={() => { setPreviewPlayer(player); setPreviewPinned(true); setPreviewCollapsed(false); }}
                         aria-label={`Pin preview for ${player.player_name}`} title="Pin player preview"><Icon name="pin" size={14} /></button>
-                      <button
-                        type="button"
-                        onClick={() => setSelectedPlayerForDrawer(player)}
-                        className="stats-icon-action"
-                        aria-label={`Open details for ${player.player_name}`}
-                        title="Open full player details"
-                      >
-                        <Icon name="search" />
-                      </button>
                     </td>
                   </tr>
                 );
@@ -1027,24 +1002,42 @@ export function WorkbenchPlayerExplorer({
         </table>
       </div>
 
-      <StatsPreviewRail player={previewPlayer} columns={preset.columns} season={query.season}
-        eligiblePlayers={data.total_eligible_players} goodDirections={data.cohort?.good_directions}
-        showPercentiles={showPercentiles} pinned={previewPinned} collapsed={previewCollapsed}
-        onTogglePin={() => setPreviewPinned(value => !value)}
-        onToggleCollapse={() => setPreviewCollapsed(value => !value)}
-        onOpenDetails={setSelectedPlayerForDrawer} />
       </div>
 
-      {/* Pagination Footer */}
+      {/* Footer: records, density, view and scroll steppers, filters, expand, paging */}
       <div className="stats-pagination-footer">
         <div className="stats-results-meta">
           <span className="stats-record-dot" aria-hidden="true" />
-          <span>Showing {items.length} of {data.total_output_players ?? data.total_eligible_players} matching players · {data.total_eligible_players} eligible players</span>
-          <span className="stats-sort-caption">Sorted by {preset.columns.find(column => column.sortMetric === currentSortMetric)?.label || "Player"} ({currentSortDirection.toUpperCase()})</span>
+          <span className="stats-record-count">{(data.total_output_players ?? data.total_eligible_players).toLocaleString("en-US")} records</span>
+          <span className="stats-sort-caption">{(data.output_offset ?? 0) + 1}–{(data.output_offset ?? 0) + items.length}</span>
+          <span className="stats-sort-caption" title="Same season, phase and window. Search, team and sample filters, favorites and paging do not change the league reference. Lower is better for turnovers, fouls and opponent allowance.">
+            Percentiles vs {data.table_cohort?.qualified_players ?? "unknown number of"} players · {data.table_cohort?.min_season_minutes ?? 500}+ min
+          </span>
         </div>
-        <div className="control-button-group" role="group" aria-label="Table Layout and Density">
-          <button type="button" onClick={() => handleDensityChange(tableDensity === "compact" ? "standard" : "compact")} className="control-pill" title="W: compact rows, E: standard rows">{tableDensity === "compact" ? "Compact Density" : "Standard Density"}</button>
-          <button type="button" onClick={() => setIsExpanded(value => !value)} className={`control-pill ${isExpanded ? "active" : ""}`} aria-pressed={isExpanded} title="Toggle expanded table height (T)">{isExpanded ? <Icon name="collapse" size={14} /> : <Icon name="expand" size={14} />}{isExpanded ? "Standard Height" : "Expand Table (T)"}</button>
+        <div className="stats-footer-controls">
+          <div className="stats-footer-group" role="group" aria-label="Row density">
+            <button type="button" className="stats-footer-button" onClick={() => handleDensityChange("compact")}
+              disabled={tableDensity === "compact"} aria-label="Compact rows (W)"><span aria-hidden="true">−W</span></button>
+            <span className="stats-density-meter" role="img" aria-label={tableDensity === "compact" ? "Compact density" : "Standard density"}>
+              <span className="is-on" /><span className={tableDensity === "standard" ? "is-on" : ""} />
+            </span>
+            <button type="button" className="stats-footer-button" onClick={() => handleDensityChange("standard")}
+              disabled={tableDensity === "standard"} aria-label="Standard rows (E)"><span aria-hidden="true">E+</span></button>
+          </div>
+          <div className="stats-footer-group" role="group" aria-label="View">
+            <button type="button" className="stats-footer-button" onClick={() => stepView(-1)} aria-label="Previous view"><Icon name="left" size={14} /></button>
+            <span className="stats-footer-label" aria-hidden="true">View</span>
+            <button type="button" className="stats-footer-button" onClick={() => stepView(1)} aria-label="Next view"><Icon name="right" size={14} /></button>
+          </div>
+          <div className="stats-footer-group" role="group" aria-label="Scroll">
+            <button type="button" className="stats-footer-button" onClick={() => scrollTable(-1)} aria-label="Scroll table left (A)"><kbd aria-hidden="true">A</kbd><Icon name="left" size={14} /></button>
+            <span className="stats-footer-label" aria-hidden="true">Scroll</span>
+            <button type="button" className="stats-footer-button" onClick={() => scrollTable(1)} aria-label="Scroll table right (D)"><Icon name="right" size={14} /><kbd aria-hidden="true">D</kbd></button>
+          </div>
+          <button type="button" className={`stats-footer-button stats-footer-group ${filtersOpen ? "is-active" : ""}`} onClick={() => setFiltersOpen(value => !value)}
+            aria-pressed={filtersOpen} aria-label="Toggle filters (F)"><Icon name="filter" size={14} /><span aria-hidden="true">Filters</span><kbd aria-hidden="true">F</kbd></button>
+          <button type="button" className={`stats-footer-button stats-footer-group ${isExpanded ? "is-active" : ""}`} onClick={() => setIsExpanded(value => !value)}
+            aria-pressed={isExpanded} aria-label={isExpanded ? "Standard height (T)" : "Expand table (T)"}><Icon name={isExpanded ? "collapse" : "expand"} size={14} /><kbd aria-hidden="true">T</kbd></button>
         </div>
         <div className="stats-pagination-actions">
           <button
@@ -1075,6 +1068,15 @@ export function WorkbenchPlayerExplorer({
       </>
       )}
 
+      </div>
+      {viewMode === "table" && <StatsPreviewRail player={previewPlayer} columns={preset.columns} season={query.season}
+        eligiblePlayers={data.total_eligible_players} goodDirections={data.cohort?.good_directions}
+        showPercentiles={showPercentiles} pinned={previewPinned} collapsed={previewCollapsed}
+        onTogglePin={() => setPreviewPinned(value => !value)}
+        onToggleCollapse={() => setPreviewCollapsed(value => !value)}
+        onOpenDetails={setSelectedPlayerForDrawer}
+        isFavorite={previewPlayer ? isFavorite(previewPlayer.player_id) : false}
+        onToggleFavorite={previewPlayer ? () => handleFavorite(previewPlayer.player_id) : undefined} />}
       </div>
 
       {/* Detail Slide-out Drawer */}
@@ -1116,6 +1118,7 @@ export function WorkbenchPlayerExplorer({
         isOpen={isManageViewsOpen}
         onClose={() => setIsManageViewsOpen(false)}
         activeViewId={activePresetId}
+        startWithNewView={manageStartsNew}
         onSelectView={(viewId) => {
           handlePresetSelect(viewId as PresetId);
         }}

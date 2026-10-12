@@ -12,17 +12,18 @@ test("skip link moves focus into the page before its controls", async ({ page })
 });
 
 for (const width of [1440, 390]) {
-  test(`Stats values, percentiles and sort headers align right at ${width}`, async ({ page }) => {
+  // Databallr alignment (Stats instructions 2 and 4): values, percentile numbers and headers are centred.
+  test(`Stats values, percentiles and sort headers centre at ${width}`, async ({ page }) => {
     await page.setViewportSize({ width, height: 900 });
     await openWorkbench(page, "/stats");
     await expect(page.locator("td.stats-metric-cell.num").first()).toBeVisible();
     const alignment = await page.locator("td.stats-metric-cell.num,.stats-header-tier-2 .num").evaluateAll(cells => cells.map(cell => {
       const s = getComputedStyle(cell);
-      const content = cell.querySelector(".stat-cell-content");
-      return { right: s.textAlign === "right", tabular: s.fontVariantNumeric.includes("tabular-nums"), contentRight: !content || getComputedStyle(content).alignItems === "flex-end" };
+      const content = cell.querySelector(".chart-percentile-text");
+      return { center: s.textAlign === "center", tabular: s.fontVariantNumeric.includes("tabular-nums"), contentCenter: !content || getComputedStyle(content).justifyItems === "center" };
     }));
     expect(alignment.length).toBeGreaterThan(5);
-    expect(alignment.every(cell => cell.right && cell.tabular && cell.contentRight)).toBe(true);
+    expect(alignment.every(cell => cell.center && cell.tabular && cell.contentCenter)).toBe(true);
   });
 }
 
@@ -71,7 +72,7 @@ test("phone table links meet the target without stretching Stats rows", async ({
     const links = page.locator(".data-table a");
     const short = await links.evaluateAll(elements => elements.filter(e => e.checkVisibility()).filter(e => e.getBoundingClientRect().height < 39.5).map(e => e.textContent));
     expect(short).toEqual([]);
-    if (route === "/stats") expect(await page.locator(".stats-table-row").first().evaluate(e => e.getBoundingClientRect().height)).toBe(52);
+    if (route === "/stats") expect(await page.locator(".stats-table-row").first().evaluate(e => e.getBoundingClientRect().height)).toBe(42);
   }
 });
 
@@ -185,7 +186,8 @@ test("floating player lookup keeps viewport geometry in CSS variables", async ({
 
 test("summary groups, percentile labels and portrait fallbacks have accessible semantics", async ({ page }) => {
   await openWorkbench(page, "/stats");
-  await expect(page.getByRole("group", { name: /^Percentile/ }).first()).toBeVisible();
+  // Percentile numbers carry their meaning in each cell's screen-reader text (no shading legend).
+  await expect(page.locator(".stats-table-row").first().locator(".chart-percentile-text .sr-only").first()).toContainText(/percentile|not ranked|unknown/);
   await openWorkbench(page, "/players/23");
   await expect(page.getByRole("group", { name: "Season summary", exact: true })).toBeVisible();
   await openWorkbench(page, "/design");

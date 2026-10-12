@@ -22,7 +22,7 @@ test.describe("Workbench Dark Research Interface", () => {
     await expect(page.getByRole("menuitem", { name: "Settings" })).toBeVisible();
     await page.keyboard.press("Escape");
     await expect(page.getByLabel("Filter by season")).toHaveValue("2025-26");
-    await expect(page.getByRole("heading", { level: 1, name: "Stats", exact: true })).toBeVisible();
+    await expect(page.getByRole("heading", { level: 1, name: "NBA Player Statistics", exact: true })).toBeVisible();
     await expect(page.getByText("Fixture Star", { exact: true })).toBeVisible();
     await expect(page.getByText("Fixture Guard", { exact: true })).toBeVisible();
   });

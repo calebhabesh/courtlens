@@ -1,8 +1,5 @@
 import { GatedNote } from "./ui/gated-note";
-import { Suspense } from "react";
 import { PageHeader } from "./ui/panel";
-import { RouteTabs } from "./ui/route-tabs";
-import { STATS_TABS } from "@/lib/route-consolidation";
 import "./stats-explorer.css";
 import { redirect } from "next/navigation";
 import { ContextBar } from "@/components/context-bar";
@@ -14,6 +11,9 @@ import { getPresetById, IMPACT_COLUMNS, type CountingMode } from "@/lib/stats-pr
 import { getWorkspace } from "@/lib/workspace-client";
 import type { PlayerResearchResponse, WorkbenchCatalog } from "@/lib/types";
 import { PlayerDirectory } from "./player-directory";
+import { StatsHelpRow, StatsTeamSelect } from "./stats-page-controls";
+import { Icon } from "./ui/icon";
+import { readPublication } from "@/lib/original-content";
 import Link from "next/link";
 import { buildPreservedContextUrl } from "@/lib/query-url";
 
@@ -90,10 +90,9 @@ export async function StatsWorkspace({ params: rawParams, basePath = "/stats", t
   return (
     <section className="stats-workspace">
       <div className="workbench-content">
-        <PageHeader icon="chart-column" title={title} subtitle={directory ? "Find a player, open a profile or browse season production." : "NBA player statistics. Explore production, shooting and efficiency within your selected scope."} actions={directory ? <Link className="button" href={buildPreservedContextUrl("/stats", new URLSearchParams(Object.entries(params).filter((entry): entry is [string, string] => typeof entry[1] === "string")))}>Explore all stats</Link> : undefined} />
-        {!directory && <Suspense fallback={<div className="ui-route-tabs" aria-hidden="true" />}>
-          <RouteTabs tabs={STATS_TABS} aria-label="Stats sections" />
-        </Suspense>}
+        <PageHeader icon="chart-column" title={directory ? title : "NBA Player Statistics"} subtitle={directory ? "Find a player, open a profile or browse season production." : undefined} actions={directory ? <Link className="button" href={buildPreservedContextUrl("/stats", new URLSearchParams(Object.entries(params).filter((entry): entry is [string, string] => typeof entry[1] === "string")))}>Explore all stats</Link> : undefined} />
+        {!directory && <WhatsNewLine />}
+        {!directory && <StatsHelpRow />}
 
         {!directory && <ContextBar
           catalog={catalog}
@@ -105,6 +104,8 @@ export async function StatsWorkspace({ params: rawParams, basePath = "/stats", t
           initialWindow={researchQuery.window}
           sampleSize={researchData?.total_eligible_players}
           lastIncludedDate={researchData?.context?.last_included_date}
+          steppedScope
+          filters={<StatsTeamSelect />}
         />}
 
         {loadError && (
@@ -128,4 +129,22 @@ export async function StatsWorkspace({ params: rawParams, basePath = "/stats", t
       </div>
     </section>
   );
+}
+
+/** Databallr's "What's New" line: the latest patch note's date and title, linking to the notes. */
+async function WhatsNewLine() {
+  let note = "";
+  try {
+    const source = await readPublication("patch-notes");
+    const heading = source.match(/^# (?:Patch notes: )?(.+)$/m)?.[1] ?? "";
+    const date = source.match(/^(\d{4}-\d{2}-\d{2}) ·/m)?.[1];
+    const when = date ? new Date(`${date}T12:00:00Z`).toLocaleDateString("en-US", { month: "short", day: "numeric", timeZone: "UTC" }) : "";
+    note = [when, heading.charAt(0).toUpperCase() + heading.slice(1)].filter(Boolean).join(": ");
+  } catch {
+    // The link alone still leads to the notes.
+  }
+  return <p className="stats-whats-new">
+    <Link href="/whats-new"><Icon name="sparkles" size={14} />What&apos;s New</Link>
+    {note && <span className="stats-whats-new-note">· {note}</span>}
+  </p>;
 }
