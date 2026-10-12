@@ -1,0 +1,16 @@
+{
+ "pointers_match_pc07_baseline": true,
+ "pointer_count": 161,
+ "bref_crosswalks": [
+  [
+   "verified",
+   "verified_manual_crosswalk",
+   "4"
+  ],
+  [
+   "name_team_unique",
+   "exact_name_current_team",
+   "587"
+  ]
+ ]
+}

@@ -49,10 +49,26 @@ the new ledger. Raw bytes and the frozen mapping note used by the book also stay
   salary is allocated from a total. These dated observations live in the refresh's immutable
   payload independently of contract calculations. This adapter also lacks real ingestion evidence.
 
-Source names are labels, never a crosswalk. Only an explicit provider NBA ID or an unambiguous
-`verified` registry crosswalk available at acquisition can map a row to an existing canonical NBA
-identity. The selected mapping evidence is frozen into the book; later registry edits cannot
-relabel it. Unresolved rows remain retained in private source bytes and are counted explicitly.
+Source names alone are labels, never a crosswalk. A row maps to a canonical NBA identity only
+through an explicit provider NBA ID, or an unambiguous registry crosswalk that existed **before
+the page was acquired** and has confidence `verified` or `name_team_unique`. The selected mapping
+evidence is frozen into the book; later registry edits cannot relabel it. Unresolved rows remain
+retained in private source bytes and are counted explicitly.
+
+**Name-and-team rule** (owner-approved 2026-10-12, `services/bref_identity.py`,
+`courtlens map-bref-identities`): a BRef player maps to an NBA person only when the normalized
+name (case, accents, periods/apostrophes and trailing generational suffixes removed) **and** the
+current team agree between a retained BRef contract page and the pinned NBA player index, unique
+on both sides. Ties, a BRef id matching different NBA ids, or an NBA id matching several BRef ids
+stay unresolved. Nicknames are not equated. Mappings are recorded with confidence
+`name_team_unique` (never `verified`) and their evidence, apply only to later acquisitions, and
+never overwrite an existing mapping. Books label them `name_team_crosswalk`. Active index players
+missing from the identity registry are registered from the pinned index with its dataset ID and
+hash as provenance.
+
+**Refresh state:** Free Agency was cut (owner decision 2026-10-12; Spotrac 403, no admitted free
+FA source), so refreshes admitted after this change are `partial` when salaries and thresholds
+are observed; free-agent observations no longer gate it. Earlier refreshes keep their state.
 
 BRef is the named primary for base salary when Spotrac reports the same mapped team/player/year
 grain. Spotrac's distinct amount kinds remain independent. Same-provider overlaps reject.
@@ -91,6 +107,7 @@ checks retained source/robots bytes, threshold and refresh hashes, book membersh
 
 ## Completion evidence
 
-See [PC06 measured evidence](../evidence/pc06/README.md). An implementation/fixture pass is not
-real source coverage. PC06 stays `verification_blocked` while Spotrac and the broad canonical
-salary crosswalk remain unresolved; finance defaults and the PC08 UI are not promoted by it.
+See [PC06 measured evidence](../evidence/pc06/README.md) and the
+[PC06 unblock evidence](../evidence/pc06b/README.md). An implementation/fixture pass is not real
+source coverage. Spotrac stays unused (robots 403); HoopsHype's robots.txt disallows Anthropic
+agents, so it is not used for this project's development.

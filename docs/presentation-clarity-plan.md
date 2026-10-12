@@ -81,6 +81,18 @@ desktop and phone width. A page that opens on a prompt, a gate notice or a singl
 | C23 Ask on the demo | **Replay mode** by default: 10–15 curated real threads recorded locally, replayed with streaming and tool calls. An opt-in "Try a live question" uses a free-tier LLM (Gemini or Groq free) with hard per-visitor and daily caps, falling back to replays. Web search on the hosted site only through a free tier, otherwise off. Cost stays at $0. |
 | C24 Reviews | Each gate gets a shareable artifact page: before/after screenshots at 1440px and 390px, a glance-test score per page, plus a local run to click through. The next block starts only after owner approval. |
 
+## Owner decisions after PC07 (2026-10-12)
+
+Confirmed by the owner on 2026-10-12 after PC06/PC07 source evidence. These amend the plan below.
+
+| # | Decision |
+| --- | --- |
+| D1 Identity | Basketball-Reference players map to NBA ids by the **name-and-team rule**: exact normalized name plus same current team in the pinned NBA index, unique on both sides, recorded as `name_team_unique` with evidence ([finance refresh v1](design/finance-refresh-v1.md)). Nicknames, ties and collisions stay unresolved. |
+| D2 Spotrac/HoopsHype | Spotrac stays stopped (robots 403). HoopsHype was probed once: its robots.txt disallows Anthropic agents, so it is not used. BRef remains the only contract source. |
+| D3 Free Agency | **Removed** under C14: no admitted free source. Players with expiring contracts are never labeled free agents. PC08 removes the page with a redirect to Contracts. |
+| D4 WOWY | Derived in PC11 from lineup data (existing stints or hoopR lineups); pbpstats WOWY is not ingested. |
+| D5 Seasons | Season feeds beyond 2025-26 are fetched only when PC09 needs them. |
+
 ## Source plan (checked 2026-10-11)
 
 Every source below returned HTTP 200 from the development machine with a browser User-Agent,
@@ -186,8 +198,8 @@ The overhaul's 10-item glance test still applies. Add:
 - Contracts: team header, known payroll tile, cap utilization `ThresholdBar` (cap/tax/aprons),
   payroll `Sankey` (total → position group → player), contract `TimelineGrid` with status colors and
   legend, payroll and high-earner `Donut`s, team roster table with impact columns.
-- Free Agency: 2026 class board (signed vs pending, UFA/RFA, AAV, previous team), filters, and
-  per-team cap context.
+- ~~Free Agency: 2026 class board~~ — **removed** (D3): drop navigation, route, availability entry
+  and search, redirect to Contracts.
 - Phone forms per C20. **Stop for approval.**
 
 ### PC09 Value metric and archetypes
@@ -213,7 +225,7 @@ The overhaul's 10-item glance test still applies. Add:
 | Playtype-adjusted shooting | Populate (hoopR Synergy play types) |
 | Six-Factor RAPM | Populate, following the [impact metrics handoff](impact-metrics-plan.md) |
 | Combine & Wingspan | Populate (hoopR combine, through 2027) |
-| WOWY / on-off | Populate (pbpstats WOWY, hoopR lineups) |
+| WOWY / on-off | Populate (derived from lineups per D4) |
 | Tracking (drives, catch-and-shoot, touches) | Populate as new tabs on player and Stats pages |
 | EPV | **Remove** (needs non-public player-location tracking) |
 | Planner | **Remove from the hosted demo** (empty without a signed-in league) |

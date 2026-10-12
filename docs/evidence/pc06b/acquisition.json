@@ -1,0 +1,182 @@
+[
+  {
+    "acquisition_id": "833e954e-068a-41b8-8771-826a89bc1b19",
+    "status": "success",
+    "http_status": 200,
+    "reason": null
+  },
+  {
+    "acquisition_id": "bdec51de-25a8-43d4-b732-ba9e6725ff2e",
+    "status": "success",
+    "http_status": 200,
+    "reason": null
+  },
+  {
+    "acquisition_id": "d252fd3e-ff0b-446a-b08b-f3d4de0be5a7",
+    "status": "success",
+    "http_status": 200,
+    "reason": null
+  },
+  {
+    "acquisition_id": "c674973f-6287-4dfd-80d0-c2310a77d99c",
+    "status": "success",
+    "http_status": 200,
+    "reason": null
+  },
+  {
+    "acquisition_id": "4c983539-85e8-48bc-a89f-d981dcfa9e7b",
+    "status": "success",
+    "http_status": 200,
+    "reason": null
+  },
+  {
+    "acquisition_id": "60a0fe82-0098-4737-a510-1731b7901911",
+    "status": "success",
+    "http_status": 200,
+    "reason": null
+  },
+  {
+    "acquisition_id": "46f22f05-8503-4b5a-8c06-608a4ca1c34f",
+    "status": "success",
+    "http_status": 200,
+    "reason": null
+  },
+  {
+    "acquisition_id": "7bd8ac10-4733-453e-9942-41a22f90c530",
+    "status": "success",
+    "http_status": 200,
+    "reason": null
+  },
+  {
+    "acquisition_id": "eaf82d18-58d9-4a5f-8332-428ca747de6a",
+    "status": "success",
+    "http_status": 200,
+    "reason": null
+  },
+  {
+    "acquisition_id": "f2df1cb8-55a1-4706-809f-99d5cd942e34",
+    "status": "success",
+    "http_status": 200,
+    "reason": null
+  },
+  {
+    "acquisition_id": "7c084df8-34cd-4a7a-949a-9e8f36f22e4e",
+    "status": "success",
+    "http_status": 200,
+    "reason": null
+  },
+  {
+    "acquisition_id": "63a56e26-dbbb-45ef-a22b-505ad14cd68d",
+    "status": "success",
+    "http_status": 200,
+    "reason": null
+  },
+  {
+    "acquisition_id": "50beaed6-f2d3-413f-8119-14649604fd29",
+    "status": "success",
+    "http_status": 200,
+    "reason": null
+  },
+  {
+    "acquisition_id": "fc9e0fba-3382-491f-a1ce-257c8a0ba818",
+    "status": "success",
+    "http_status": 200,
+    "reason": null
+  },
+  {
+    "acquisition_id": "57dce6a1-4ca0-4888-a259-0a2ae2a1caa5",
+    "status": "success",
+    "http_status": 200,
+    "reason": null
+  },
+  {
+    "acquisition_id": "e09c981a-024d-4bcf-9a07-8854f0049f1c",
+    "status": "success",
+    "http_status": 200,
+    "reason": null
+  },
+  {
+    "acquisition_id": "718239b6-b741-4f16-9a7f-eb76ffa850a4",
+    "status": "success",
+    "http_status": 200,
+    "reason": null
+  },
+  {
+    "acquisition_id": "758474da-7aa8-4533-8e98-694a53cb7467",
+    "status": "success",
+    "http_status": 200,
+    "reason": null
+  },
+  {
+    "acquisition_id": "3563d064-d333-49d0-99aa-fc36e2f5fd01",
+    "status": "success",
+    "http_status": 200,
+    "reason": null
+  },
+  {
+    "acquisition_id": "2f2e3013-db6e-4087-8110-48c595706ff2",
+    "status": "success",
+    "http_status": 200,
+    "reason": null
+  },
+  {
+    "acquisition_id": "0e938007-b16d-476c-ba6b-4bb88485dae4",
+    "status": "success",
+    "http_status": 200,
+    "reason": null
+  },
+  {
+    "acquisition_id": "4f88b7ff-3190-433a-b22a-517368a6733b",
+    "status": "success",
+    "http_status": 200,
+    "reason": null
+  },
+  {
+    "acquisition_id": "39ea784e-8d05-45f8-b614-ba1719a35432",
+    "status": "success",
+    "http_status": 200,
+    "reason": null
+  },
+  {
+    "acquisition_id": "9ecbab04-a649-499d-b935-cceb299de16e",
+    "status": "success",
+    "http_status": 200,
+    "reason": null
+  },
+  {
+    "acquisition_id": "2e6184c4-8fe1-42d3-8885-6c54842d0291",
+    "status": "success",
+    "http_status": 200,
+    "reason": null
+  },
+  {
+    "acquisition_id": "48725374-e70c-477d-ac5c-3b6f828285eb",
+    "status": "success",
+    "http_status": 200,
+    "reason": null
+  },
+  {
+    "acquisition_id": "dd698571-09fc-4093-a2eb-be0a01494815",
+    "status": "success",
+    "http_status": 200,
+    "reason": null
+  },
+  {
+    "acquisition_id": "fd2b21ea-3e2c-4657-a01f-2ceeb1cd6285",
+    "status": "success",
+    "http_status": 200,
+    "reason": null
+  },
+  {
+    "acquisition_id": "91a4d5b0-eeb6-4360-8713-d74a087dc183",
+    "status": "success",
+    "http_status": 200,
+    "reason": null
+  },
+  {
+    "acquisition_id": "31706690-6ee4-4de6-b22d-7bb85630d817",
+    "status": "success",
+    "http_status": 200,
+    "reason": null
+  }
+]
