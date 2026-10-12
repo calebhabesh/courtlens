@@ -1,0 +1,56 @@
+{
+ "before": {
+  "pointers": 161,
+  "pointer_sha256": "ac7b1db614f666d9eb0d3f1b8fae68f787f6925aafc8bd378e90ac7206008fdf",
+  "finance_releases": 4,
+  "finance_observations": 4588,
+  "finance_members": 4592,
+  "finance_refreshes": 2,
+  "finance_thresholds": 1,
+  "workbench_identities": 1031
+ },
+ "after": {
+  "pointers": 161,
+  "pointer_sha256": "ac7b1db614f666d9eb0d3f1b8fae68f787f6925aafc8bd378e90ac7206008fdf",
+  "finance_releases": 4,
+  "finance_observations": 4588,
+  "finance_members": 4592,
+  "finance_refreshes": 2,
+  "finance_thresholds": 1,
+  "workbench_identities": 1031
+ },
+ "unchanged": true,
+ "timing_5_sequential_requests": {
+  "league": {
+   "ms": [
+    117.2,
+    91.0,
+    182.6,
+    93.4,
+    94.7
+   ],
+   "bytes": 9299
+  },
+  "team_DEN": {
+   "ms": [
+    574.7,
+    461.4,
+    549.4,
+    481.4,
+    623.2
+   ],
+   "bytes": 18703
+  },
+  "team_MIL_no_stats": {
+   "ms": [
+    173.2,
+    184.3,
+    277.5,
+    178.9,
+    171.7
+   ],
+   "bytes": 19619
+  }
+ },
+ "note": "Single-machine sequential local measurements; not p95 claims."
+}

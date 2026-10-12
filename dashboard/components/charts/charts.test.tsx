@@ -123,6 +123,12 @@ describe("TimelineGrid", () => {
     expect(container.querySelector(".chart-hatched")?.textContent).toBe("—Unknown");
     expect(screen.getByRole("region", { name: "Observed result by period" }).tabIndex).toBe(0);
   });
+  it("can show a period the source does not list as neutral, while a listed blank stays unknown", () => {
+    const { container } = render(<TimelineGrid {...meta} absent="not-listed" periods={["2026-27", "2027-28"]} rows={[{ id: "a", label: "A", cells: [{ period: "2026-27", value: null, status: "reported" }] }]} />);
+    expect(container.querySelector(".chart-hatched")?.textContent).toBe("—Unknown");
+    expect(container.querySelector(".chart-timeline-absent")?.textContent).toBe("—Not listed");
+    expect(screen.getByText("Not listed", { selector: "li" })).toBeTruthy();
+  });
 });
 
 describe("PercentileCell", () => {

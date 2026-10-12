@@ -4,11 +4,11 @@ import type { MetricDefinition } from "@/lib/types";
 
 export type Identity = "a" | "b";
 export type Category = 1 | 2 | 3 | 4 | 5 | 6;
-export type ContractStatus = "guaranteed" | "player-option" | "team-option" | "two-way" | "projected" | "unknown";
+export type ContractStatus = "guaranteed" | "reported" | "player-option" | "team-option" | "two-way" | "projected" | "unknown";
 export type ChartTone = `identity-${Identity}` | `category-${Category}` | `status-${ContractStatus}`;
 export const CATEGORIES: Category[] = [1, 2, 3, 4, 5, 6];
 export const STATUS_LABELS: Record<ContractStatus, string> = {
-  guaranteed: "Guaranteed", "player-option": "Player option", "team-option": "Team option",
+  guaranteed: "Guaranteed", reported: "Reported salary", "player-option": "Player option", "team-option": "Team option",
   "two-way": "Two-way", projected: "Projected", unknown: "Unknown"
 };
 export const toneColor = (tone: ChartTone): string => `var(--color-${tone})`;

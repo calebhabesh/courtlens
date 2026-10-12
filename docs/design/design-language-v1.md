@@ -102,6 +102,7 @@ DL01 verified this with `scripts/verify-contrast.py`; measured ratios:
 | `--color-percentile-1` … `-5` | `#172d43`, `#20415e`, `#2b567c`, `#386b96`, `#3e729b` | Increasing already-oriented percentile, five bands of 20; 100 uses band 5 |
 | `--color-category-1` … `-6` | `#ffd166`, `#80bfff`, `#c5a3ff`, `#79d4c6`, `#f6a5c0`, `#d0d788` | Labeled categories such as archetypes; no rank |
 | `--color-status-guaranteed` | `#80bfff` | Guaranteed contract |
+| `--color-status-reported` | `#d0d788` | Reported salary without an option marker; guarantee state unknown (PC08) |
 | `--color-status-player-option` | `#c5a3ff` | Player option |
 | `--color-status-team-option` | `#79d4c6` | Team option |
 | `--color-status-two-way` | `#f6a5c0` | Two-way contract |
@@ -141,7 +142,10 @@ Geometry only: exact pinned `d3-shape` 3.2.0, `d3-hierarchy` 3.1.2, `d3-sankey` 
   Below 768px it renders stacked bars by stage. Missing edges stay in the table as Unknown and
   have no flow geometry.
 - `TimelineGrid`: labeled status colors, hatched absent/unknown cells, sticky name column and
-  keyboard-scrollable table region. A real zero is distinct from an unknown amount.
+  keyboard-scrollable table region. A real zero is distinct from an unknown amount. PC08 adds an
+  opt-in `absent="not-listed"`: a period with no cell renders a neutral "Not listed" cell (legend
+  entry included) for sources that list nothing after a contract ends; a supplied cell with a null
+  value stays hatched Unknown. The default remains hatched Unknown.
 - `PercentileCell`: supplied **already-oriented** cohort percentile; no client rank calculation.
   The caller supplies cohort and qualification. Unqualified values say “Small sample” and are muted.
   C10's cohort qualification is implemented with the tables in PC12, not inferred by this primitive.
