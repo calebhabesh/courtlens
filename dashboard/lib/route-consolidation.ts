@@ -94,6 +94,8 @@ export const COMPATIBILITY_REDIRECTS: { source: string; destination: string }[] 
  */
 export const HIDDEN_REDIRECTS: { source: string; destination: string }[] = [
   { source: "/schedule", destination: "/live" },
+  // PC08 (D3, 2026-10-12): no admitted free free-agent source; the tracker is removed, not gated.
+  { source: "/free-agency", destination: "/contracts" },
 ];
 
 /** The path of the merged page that owns `pathname` when it is one of its tabs, else the pathname. */

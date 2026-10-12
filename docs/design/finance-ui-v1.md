@@ -1,5 +1,10 @@
 # B30 financial interface v1
 
+> **PC08 (2026-10-12):** `/contracts` and `/contracts/[team]` now serve the presentation-clarity
+> Contracts views over a pinned finance refresh ([finance refresh v1](finance-refresh-v1.md#pc08-contracts-views)).
+> This B30 workspace is unchanged in behavior and moved to `/contracts/books` ("Retained source
+> books"). `/free-agency` was removed under owner decision D3 and redirects to `/contracts`.
+
 The contracts workspace at `/contracts` and `/contracts/[NBA ID or tricode]`, and the book-scoped tracker at `/free-agency`, consume B29 `finance-query-v1`. Implementation choice: this bounded UI and its additive discovery endpoints were implemented in the current Codex session, without delegated agents or a model override, instead of the handoff's Flash assignment.
 
 ## Selection and context

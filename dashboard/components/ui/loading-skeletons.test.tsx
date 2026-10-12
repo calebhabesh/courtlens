@@ -15,7 +15,7 @@ import PlayoffsLoading from "@/app/playoffs/loading";
 import AskLoading from "@/app/research/ask/loading";
 import WowyLoading from "@/app/wowy/loading";
 import ContractsLoading from "@/app/contracts/loading";
-import FreeAgencyLoading from "@/app/free-agency/loading";
+import ContractsBooksLoading from "@/app/contracts/books/loading";
 import DataStatusLoading from "@/app/data-status/loading";
 import ForecastsLoading from "@/app/forecasts/loading";
 import SettingsLoading from "@/app/settings/loading";
@@ -37,7 +37,7 @@ describe("Route Loading Skeletons", () => {
     { name: "AskLoading", component: AskLoading },
     { name: "WowyLoading", component: WowyLoading },
     { name: "ContractsLoading", component: ContractsLoading },
-    { name: "FreeAgencyLoading", component: FreeAgencyLoading },
+    { name: "ContractsBooksLoading", component: ContractsBooksLoading },
     { name: "DataStatusLoading", component: DataStatusLoading },
     { name: "ForecastsLoading", component: ForecastsLoading },
     { name: "SettingsLoading", component: SettingsLoading },

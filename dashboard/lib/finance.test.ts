@@ -27,7 +27,7 @@ describe("financial context and exact money", () => {
     const params=new URLSearchParams({season:"2024-25",releaseId:"basketball",finance_book_id:"book",finance_financial_season:"2025-26",finance_known_at:"2026-10-03T10:00:00Z",finance_effective_on:"2025-02-12",finance_amount_kind:"cash",finance_scenario:"include-unexercised-options-v1",finance_statuses:"signed,two_way",finance_player_ids:"1,2"});
     const query=readFinanceParams(params);expect(query.financial_season).toBe("2025-26");expect(query.amount_kind).toBe("cash");
     const encoded=financeParams(query,params);expect(readFinanceParams(encoded)).toEqual(query);expect(encoded.get("season")).toBe("2024-25");
-    const link=new URL(buildPreservedContextUrl("/free-agency",encoded),"http://local");expect(readFinanceParams(link.searchParams)).toEqual(query);
+    const link=new URL(buildPreservedContextUrl("/contracts/books",encoded),"http://local");expect(readFinanceParams(link.searchParams)).toEqual(query);
     expect(readFinanceParams(encoded,"1610612761").team_id).toBe("1610612761");
   });
   it("sorts big exact amounts and keeps unknown separate", () => {

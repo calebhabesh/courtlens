@@ -3,13 +3,14 @@
 from datetime import datetime
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi import APIRouter, Depends, HTTPException, Path, Query
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from courtlens.database import get_db
 from courtlens.domain.finance_context import RefreshInfo, ThresholdInfo
 from courtlens.domain.finance_query import FinanceQuery, FinanceResult
+from courtlens.domain.finance_views import LeaguePayrollResponse, TeamContractsResponse
 from courtlens.finance_context_models import FinanceRefresh, FinanceThreshold
 from courtlens.ingestion.player_context import valid_season
 from courtlens.services.finance_catalog import (
@@ -20,6 +21,7 @@ from courtlens.services.finance_catalog import (
 )
 from courtlens.services.finance_query import finance_query
 from courtlens.services.finance_refresh import refresh_info, threshold_info
+from courtlens.services.finance_views import league_payrolls, team_contracts
 
 router = APIRouter(prefix="/workbench/operations", tags=["finance"])
 
@@ -62,6 +64,24 @@ def finance_refresh(
     session: Session = Depends(get_db),
 ) -> RefreshInfo:
     return refresh_info(session, str(refresh_id), known_at)
+
+
+@router.get("/finance/refreshes/{refresh_id}/teams", response_model=LeaguePayrollResponse)
+def finance_league_payrolls(
+    refresh_id: UUID, session: Session = Depends(get_db)
+) -> LeaguePayrollResponse:
+    return league_payrolls(session, str(refresh_id))
+
+
+@router.get("/finance/refreshes/{refresh_id}/teams/{team}", response_model=TeamContractsResponse)
+def finance_team_contracts(
+    refresh_id: UUID,
+    team: str = Path(max_length=16),
+    statistics_release_id: UUID | None = Query(None, alias="statisticsReleaseId"),
+    session: Session = Depends(get_db),
+) -> TeamContractsResponse:
+    release = str(statistics_release_id) if statistics_release_id else None
+    return team_contracts(session, str(refresh_id), team, release)
 
 
 @router.get("/finance/thresholds", response_model=tuple[ThresholdInfo, ...])

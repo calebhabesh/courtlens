@@ -48,6 +48,9 @@
   .chart-timeline th:first-child { position: sticky; left: 0; z-index: var(--z-sticky); min-width: 128px; max-width: 160px; overflow-wrap: anywhere; }
   .chart-timeline-cell { min-width: 120px; color: var(--color-text); background: color-mix(in srgb, var(--chart-tone) 12%, var(--color-surface-1)); }
   .chart-timeline-cell small { display: block; color: var(--chart-tone); font-size: var(--text-xs); line-height: var(--text-xs-lh); margin-top: var(--space-1); }
+  .chart-timeline-absent { background: var(--color-surface-1); color: var(--color-text-tertiary); }
+  .chart-timeline-absent small { color: var(--color-text-tertiary); }
+  .chart-key-absent { background: var(--color-surface-1); box-shadow: inset 0 0 0 1px var(--color-hairline-strong); }
   .chart-timeline-cell.chart-hatched { background: repeating-linear-gradient(135deg, var(--color-surface-1) 0 4px, var(--color-status-unknown-soft) 4px 8px); }
   .chart-showcase { display: grid; gap: var(--space-6); min-width: 0; }
   .chart-guide-section { display: grid; gap: var(--space-4); min-width: 0; }
