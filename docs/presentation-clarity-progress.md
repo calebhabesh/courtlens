@@ -388,3 +388,32 @@ parameters**. Blocks before each owner gate also need recorded owner approval.
   constrained; after single-worker reruns, three failures remain, and all three also fail on HEAD
   `2c6c2c3`. The full browser run overwrote 101 sealed DL evidence screenshots; all were restored.
 - Next: owner review at G3. After approval, PC09 (value metric and archetypes).
+
+## 2026-10-11 — PC09 value metric and derived archetypes (names pending owner review)
+
+- Owner instruction: “Let's begin the next block” after the PC08 G3 report, read as G3 approval
+  with the report's recommended defaults: league board stays the `/contracts` first load, the
+  `/contracts/books` operator tool stays, "Others" grouping is deferred to PC12, and the
+  "Known salary minus cap" tile stays. Scope is PC09 only; PC10 has not started.
+- [Evidence and reproduction](evidence/pc09/README.md); contract
+  [value and archetypes v1](design/value-archetypes-v1.md); names
+  [archetype-names-v1.json](design/archetype-names-v1.json).
+- Value (C16) = sealed IM04 Box-Prior RAPM, selected by a fixed rule (latest completed regular
+  season, longest window with a BPR: 2Y 2024-25 + 2025-26); no refit. Out-of-time folds on 1Y
+  RAPM targets: for 2025-26, BPR 1Y Pearson 0.442 vs RAPM 1Y 0.397 and RAPM 2Y 0.481; the box
+  prior alone has the lowest RMSE (2.888 vs zero 3.217). Diagnostic only.
+- Archetypes (C17): GMM over nine regular-season rates (2023-24 to 2025-26, 1,112 player-seasons
+  with ≥500 minutes). BIC chose K = 6 from {6, 7, 8}, matching the six categorical tokens. Proposed
+  names: Lead creator, Spacing wing, Two-way connector, Stretch big, Interior hub, Rim runner.
+  No source fetched (D5).
+- Two independent runs reproduce the value `239bab91…`, evaluation `966d8181…` and archetype
+  `91a5a7d3…` hashes. Serving manifest `765d55f1…` is served at
+  `/api/workbench/value-archetypes` and declared as catalog capability `value_archetypes_pc09`.
+  Unknown players return null with reasons. Methodology section added.
+- 2026-27 coverage: of 622 active index players, 501 have a value, 504 an archetype, and 118
+  neither (mostly rookies). PC10 must show these as unknown.
+- Read-only on the real database; 161 publication pointers unchanged. Checks: 9 new tests;
+  full Python suite 1,997 passed (one existing skip); Ruff/format/mypy clean; dashboard lint 0/0, typecheck,
+  Vitest 415 passed.
+- Next: owner review of the archetype names (rename = names file + new serving manifest, same
+  fit). Then PC10 Roster Shapes to gate G4.

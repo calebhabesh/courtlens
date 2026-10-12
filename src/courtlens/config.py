@@ -39,6 +39,9 @@ class Settings(BaseSettings):
     impact_serving_manifest: Path | None = Path(
         "data/derived/impact-serving-v1/6e162489a53a8af673aa5b9108a60e62940ad6119c5d228a956ad01fbf218717.json"
     )
+    value_archetypes_manifest: Path | None = Path(
+        "data/derived/value-archetypes-v1/serving/765d55f1d576306e365d0e7324397c4168947fa57ab640f2dcd1c0a15f6da9ce.json"
+    )
     portraits_cache_path: Path = Path("data/cache/portraits")
     operator_token: SecretStr = SecretStr("local-operator-secret-change-before-deploy")
     live_enabled: bool = False
