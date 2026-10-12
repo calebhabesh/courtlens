@@ -1,0 +1,300 @@
+[
+  {
+    "name": "rankings",
+    "path": "/rankings",
+    "viewport": "desktop",
+    "title": "Ranking Boards",
+    "resolved_url": "/rankings?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13",
+    "first_result_top": 271,
+    "table_top": 381.5,
+    "groups_top": null,
+    "overflow_px": 0,
+    "small_targets": [
+      {
+        "text": "Aggregate boards",
+        "height": 34
+      },
+      {
+        "text": "New board",
+        "height": 34
+      },
+      {
+        "text": "Copy to my boards",
+        "height": 34
+      },
+      {
+        "text": "Amen Thompson",
+        "height": 20
+      },
+      {
+        "text": "Kevin Durant",
+        "height": 20
+      },
+      {
+        "text": "Desmond Bane",
+        "height": 20
+      },
+      {
+        "text": "Toumani Camara",
+        "height": 20
+      },
+      {
+        "text": "Jabari Smith Jr.",
+        "height": 20
+      },
+      {
+        "text": "Mikal Bridges",
+        "height": 20
+      },
+      {
+        "text": "Tyrese Maxey",
+        "height": 20
+      },
+      {
+        "text": "Jamal Murray",
+        "height": 20
+      },
+      {
+        "text": "Derrick White",
+        "height": 20
+      },
+      {
+        "text": "Scottie Barnes",
+        "height": 20
+      },
+      {
+        "text": "VJ Edgecombe",
+        "height": 20
+      },
+      {
+        "text": "Brandon Ingram",
+        "height": 20
+      },
+      {
+        "text": "Nickeil Alexander-Walker",
+        "height": 20
+      },
+      {
+        "text": "Julius Randle",
+        "height": 20
+      },
+      {
+        "text": "Payton Pritchard",
+        "height": 20
+      }
+    ],
+    "players": [
+      "Amen Thompson",
+      "Kevin Durant",
+      "Desmond Bane",
+      "Toumani Camara",
+      "Jabari Smith Jr.",
+      "Mikal Bridges",
+      "Tyrese Maxey",
+      "Jamal Murray",
+      "Derrick White",
+      "Scottie Barnes",
+      "VJ Edgecombe",
+      "Brandon Ingram",
+      "Nickeil Alexander-Walker",
+      "Julius Randle",
+      "Payton Pritchard"
+    ],
+    "groups": [],
+    "minutes": [
+      "2,953.2",
+      "2,839.8",
+      "2,756.1",
+      "2,731.2",
+      "2,705.4",
+      "2,664",
+      "2,661.2",
+      "2,651.9",
+      "2,625",
+      "2,623.8",
+      "2,623.3",
+      "2,603.9",
+      "2,603.2",
+      "2,577.3",
+      "2,555.6"
+    ],
+    "iso_dates": 0,
+    "hashes": 0,
+    "text": "Ranking Boards\nAggregate boards\nNew board\n\nYour own player rankings, with notes, reordering and aggregation.\n\n2025-26 Regular Season · Through Apr 12, 2026\n15 players\nData details\nExample: season minutes leaders · Read-only\nWhy?\nSeason Minutes Leaders\n\nSource: published box scores · 15 of 582 observed players\n\nCopy to my boards\nPercentile\n0–19\n20–39\n40–59\n60–79\n80–100\n378 league players · 500+ season minutes · Source: published box scores\nRules\nOrdered by observed season minutes. Reference shading is league percentile, not a personal rating.\nMINUTES ORDER\tPARTICIPATION\tSCORING REFERENCE\n#\tPLAYER\tMIN\tGP\tMPG\tPPG\n1\t\nAmen Thompson\nHOU\n\t\n2,953.2\n99 pct\nmin; 378 valid league players; 500+ season minutes; qualified. Higher oriented percentile has stronger blue shading.\n\t\n79\n94 pct\ngp; 378 valid league players; 500+ season minutes; qualified. Higher oriented percentile has stronger blue shading.\n\t\n37.4\n99 pct\nmin_per_game; 378 valid league players; 500+ season minutes; qualified. Higher oriented percentile has stronger blue shading.\n\t\n18.3\n85 pct\npts_per_game; 378 valid league players; 500+ season minutes; qualified. Higher oriented percentile has stronger blue shading.\n\n2\t\nKevin Durant\nHOU\n\t\n2,839.8\n99 pct\nmin; 378 valid league players; 500+ season minutes; qualified. Higher oriented percentile has stronger blue shading.\n\t\n78\n92 pct\ngp; 378 valid league players; 500+ season minutes; qualified. Higher oriented percentile has stronger blue shading.\n\t\n36.4\n99 pct\nmin_per_game; 378 valid league players; 500+ season minutes; qualified. Higher oriented percentile has stronger blue shading.\n\t\n26\n96 pct\npts_per_game; 378 valid league players; 500+ season minutes; qualified. Higher oriented percentile has stronger blue shading.\n\n3\t\nDesmond Bane\nORL\n\t\n2,756.1\n99 pct\nmin; 378 valid league players; 500+ season minutes; qualified. Higher oriented percentile has stronger blue shading.\n\t\n82\n98 pct\ngp; 378 valid league players; 500+ season minutes; qualified. Higher oriented percentile has stronger blue shading.\n\t\n33.6\n94 pct\nmin_per_game; 378 valid league players; 500+ season minutes; qualified. Higher oriented percentile has stronger blue shading.\n\t\n20.1\n88 pct\npts_per_game; 378 valid league players; 500+ season minutes; qualified. Higher oriented percentile has stronger blue shading.\n\n4\t\nToumani Camara\nPOR\n\t\n2,731.2\n99 pct\nmin; 378 valid league players; 500+ season minutes; qualified. Higher oriented percentile has stronger blue shading.\n\t\n82\n98 pct\ngp; 378 valid league players; 500+ season minutes; qualified. Higher oriented percentile has stronger blue shading.\n\t\n33.3\n92 pct\nmin_per_game; 378 valid league players; 500+ season minutes; qualified. Higher oriented percentile has stronger blue shading.\n\t\n13.4\n66 pct\npts_per_game; 378 valid league players; 500+ season minutes; qualified. Higher oriented percentile has stronger blue shading.\n\n5\t\nJabari Smith Jr.\nHOU\n\t\n2,705.4\n99 pct\nmin; 378 valid league players; 500+ season minutes; qualified. Higher oriented percentile has stronger blue shading.\n\t\n77\n90 pct\ngp; 378 valid league players; 500+ season minutes; qualified. Higher oriented percentile has stronger blue shading.\n\t\n35.1\n98 pct\nmin_per_game; 378 valid league players; 500+ season minutes; qualified. Higher oriented percentile has stronger blue shading.\n\t\n15.8\n77 pct\npts_per_game; 378 valid league players; 500+ season minutes; qualified. Higher oriented percentile has stronger blue shading.\n\n6\t\nMikal Bridges\nNYK\n\t\n2,664\n99 pct\nmin; 378 valid league players; 500+ season minutes; qualified. Higher oriented percentile has stronger blue shading.\n\t\n81\n96 pct\ngp; 378 valid league players; 500+ season minutes; qualified. Higher oriented percentile has stronger blue shading.\n\t\n32.9\n90 pct\nmin_per_game; 378 valid league players; 500+ season minutes; qualified. Higher oriented percentile has stronger blue shading.\n\t\n14.5\n73 pct\npts_per_game; 378 valid league players; 500+ season minutes; qualified. Higher oriented percentile has stronger blue shading.\n\n7\t\nTyrese Maxey\nPHI\n\t\n2,661.2\n98 pct\nmin; 378 valid league players; 500+ season minutes; qualified. Higher oriented percentile has stronger blue shading.\n\t\n70\n71 pct\ngp; 378 valid league players; 500+ season minutes; qualified. Higher oriented percentile has stronger blue shading.\n\t\n38\n99 pct\nmin_per_game; 378 valid league players; 500+ season minutes; qualified. Higher oriented percentile has stronger blue shading.\n\t\n28.3\n99 pct\npts_per_game; 378 valid league players; 500+ season minutes; quali",
+    "errors": [],
+    "failed": [],
+    "mutations": []
+  },
+  {
+    "name": "rankings",
+    "path": "/rankings",
+    "viewport": "phone",
+    "title": "Ranking Boards",
+    "resolved_url": "/rankings?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13",
+    "first_result_top": 315,
+    "table_top": 565.5,
+    "groups_top": null,
+    "overflow_px": 0,
+    "small_targets": [],
+    "players": [
+      "Amen Thompson",
+      "Kevin Durant",
+      "Desmond Bane",
+      "Toumani Camara",
+      "Jabari Smith Jr.",
+      "Mikal Bridges",
+      "Tyrese Maxey",
+      "Jamal Murray",
+      "Derrick White",
+      "Scottie Barnes",
+      "VJ Edgecombe",
+      "Brandon Ingram",
+      "Nickeil Alexander-Walker",
+      "Julius Randle",
+      "Payton Pritchard"
+    ],
+    "groups": [],
+    "minutes": [
+      "2,953.2",
+      "2,839.8",
+      "2,756.1",
+      "2,731.2",
+      "2,705.4",
+      "2,664",
+      "2,661.2",
+      "2,651.9",
+      "2,625",
+      "2,623.8",
+      "2,623.3",
+      "2,603.9",
+      "2,603.2",
+      "2,577.3",
+      "2,555.6"
+    ],
+    "iso_dates": 0,
+    "hashes": 0,
+    "text": "Ranking Boards\nAggregate boards\nNew board\n\nYour own player rankings, with notes, reordering and aggregation.\n\n2025-26 Regular Season · Through Apr 12, 2026\n15 players\nData details\nExample: season minutes leaders · Read-only\nWhy?\nSeason Minutes Leaders\n\nSource: published box scores · 15 of 582 observed players\n\nCopy to my boards\nPercentile\n0–19\n20–39\n40–59\n60–79\n80–100\n378 league players · 500+ season minutes · Source: published box scores\nRules\nOrdered by observed season minutes. Reference shading is league percentile, not a personal rating.\nMINUTES ORDER\tPARTICIPATION\tSCORING REFERENCE\n#\tPLAYER\tMIN\tGP\tMPG\tPPG\n1\t\nAmen Thompson\nHOU\n\t\n2,953.2\n99 pct\nmin; 378 valid league players; 500+ season minutes; qualified. Higher oriented percentile has stronger blue shading.\n\t\n79\n94 pct\ngp; 378 valid league players; 500+ season minutes; qualified. Higher oriented percentile has stronger blue shading.\n\t\n37.4\n99 pct\nmin_per_game; 378 valid league players; 500+ season minutes; qualified. Higher oriented percentile has stronger blue shading.\n\t\n18.3\n85 pct\npts_per_game; 378 valid league players; 500+ season minutes; qualified. Higher oriented percentile has stronger blue shading.\n\n2\t\nKevin Durant\nHOU\n\t\n2,839.8\n99 pct\nmin; 378 valid league players; 500+ season minutes; qualified. Higher oriented percentile has stronger blue shading.\n\t\n78\n92 pct\ngp; 378 valid league players; 500+ season minutes; qualified. Higher oriented percentile has stronger blue shading.\n\t\n36.4\n99 pct\nmin_per_game; 378 valid league players; 500+ season minutes; qualified. Higher oriented percentile has stronger blue shading.\n\t\n26\n96 pct\npts_per_game; 378 valid league players; 500+ season minutes; qualified. Higher oriented percentile has stronger blue shading.\n\n3\t\nDesmond Bane\nORL\n\t\n2,756.1\n99 pct\nmin; 378 valid league players; 500+ season minutes; qualified. Higher oriented percentile has stronger blue shading.\n\t\n82\n98 pct\ngp; 378 valid league players; 500+ season minutes; qualified. Higher oriented percentile has stronger blue shading.\n\t\n33.6\n94 pct\nmin_per_game; 378 valid league players; 500+ season minutes; qualified. Higher oriented percentile has stronger blue shading.\n\t\n20.1\n88 pct\npts_per_game; 378 valid league players; 500+ season minutes; qualified. Higher oriented percentile has stronger blue shading.\n\n4\t\nToumani Camara\nPOR\n\t\n2,731.2\n99 pct\nmin; 378 valid league players; 500+ season minutes; qualified. Higher oriented percentile has stronger blue shading.\n\t\n82\n98 pct\ngp; 378 valid league players; 500+ season minutes; qualified. Higher oriented percentile has stronger blue shading.\n\t\n33.3\n92 pct\nmin_per_game; 378 valid league players; 500+ season minutes; qualified. Higher oriented percentile has stronger blue shading.\n\t\n13.4\n66 pct\npts_per_game; 378 valid league players; 500+ season minutes; qualified. Higher oriented percentile has stronger blue shading.\n\n5\t\nJabari Smith Jr.\nHOU\n\t\n2,705.4\n99 pct\nmin; 378 valid league players; 500+ season minutes; qualified. Higher oriented percentile has stronger blue shading.\n\t\n77\n90 pct\ngp; 378 valid league players; 500+ season minutes; qualified. Higher oriented percentile has stronger blue shading.\n\t\n35.1\n98 pct\nmin_per_game; 378 valid league players; 500+ season minutes; qualified. Higher oriented percentile has stronger blue shading.\n\t\n15.8\n77 pct\npts_per_game; 378 valid league players; 500+ season minutes; qualified. Higher oriented percentile has stronger blue shading.\n\n6\t\nMikal Bridges\nNYK\n\t\n2,664\n99 pct\nmin; 378 valid league players; 500+ season minutes; qualified. Higher oriented percentile has stronger blue shading.\n\t\n81\n96 pct\ngp; 378 valid league players; 500+ season minutes; qualified. Higher oriented percentile has stronger blue shading.\n\t\n32.9\n90 pct\nmin_per_game; 378 valid league players; 500+ season minutes; qualified. Higher oriented percentile has stronger blue shading.\n\t\n14.5\n73 pct\npts_per_game; 378 valid league players; 500+ season minutes; qualified. Higher oriented percentile has stronger blue shading.\n\n7\t\nTyrese Maxey\nPHI\n\t\n2,661.2\n98 pct\nmin; 378 valid league players; 500+ season minutes; qualified. Higher oriented percentile has stronger blue shading.\n\t\n70\n71 pct\ngp; 378 valid league players; 500+ season minutes; qualified. Higher oriented percentile has stronger blue shading.\n\t\n38\n99 pct\nmin_per_game; 378 valid league players; 500+ season minutes; qualified. Higher oriented percentile has stronger blue shading.\n\t\n28.3\n99 pct\npts_per_game; 378 valid league players; 500+ season minutes; quali",
+    "errors": [],
+    "failed": [],
+    "mutations": []
+  },
+  {
+    "name": "tierlist",
+    "path": "/tierlist",
+    "viewport": "desktop",
+    "title": "Tier Lists",
+    "resolved_url": "/tierlist",
+    "first_result_top": null,
+    "table_top": null,
+    "groups_top": null,
+    "overflow_px": 0,
+    "small_targets": [
+      {
+        "text": "Add tier row",
+        "height": 34
+      },
+      {
+        "text": "New tier list",
+        "height": 34
+      },
+      {
+        "text": "View minutes example",
+        "height": 34
+      },
+      {
+        "text": "",
+        "height": 38
+      },
+      {
+        "text": "",
+        "height": 20
+      },
+      {
+        "text": "",
+        "height": 20
+      },
+      {
+        "text": "",
+        "height": 20
+      },
+      {
+        "text": "",
+        "height": 20
+      },
+      {
+        "text": "",
+        "height": 20
+      },
+      {
+        "text": "",
+        "height": 20
+      },
+      {
+        "text": "",
+        "height": 20
+      },
+      {
+        "text": "",
+        "height": 20
+      },
+      {
+        "text": "",
+        "height": 20
+      },
+      {
+        "text": "",
+        "height": 20
+      },
+      {
+        "text": "",
+        "height": 20
+      },
+      {
+        "text": "",
+        "height": 20
+      },
+      {
+        "text": "",
+        "height": 20
+      },
+      {
+        "text": "",
+        "height": 20
+      },
+      {
+        "text": "",
+        "height": 20
+      }
+    ],
+    "players": [],
+    "groups": [],
+    "minutes": [],
+    "iso_dates": 0,
+    "hashes": 0,
+    "text": "Tier Lists\nAdd tier row\nNew tier list\n\nYour own player tiers, arranged by drag and drop or keyboard.\n\nView minutes example\nTiers are personal categorizations.\nWhy?\n2024-25 Player Tiers\n(0)\nDelete List\n2024-25 Player Tiers\n\nPersonal subjective tier ranking of NBA players across tiers S through D.\n\n0 total assigned player(s)\nAssign to tier\nS\nA\nB\nC\nD\nS\n(0)\nDrag players here or use keyboard controls from search.\nA\n(0)\nDrag players here or use keyboard controls from search.\nB\n(0)\nDrag players here or use keyboard controls from search.\nC\n(0)\nDrag players here or use keyboard controls from search.\nD\n(0)\nDrag players here or use keyboard controls from search.",
+    "errors": [],
+    "failed": [],
+    "mutations": []
+  },
+  {
+    "name": "tierlist",
+    "path": "/tierlist",
+    "viewport": "phone",
+    "title": "Tier Lists",
+    "resolved_url": "/tierlist",
+    "first_result_top": null,
+    "table_top": null,
+    "groups_top": null,
+    "overflow_px": 0,
+    "small_targets": [],
+    "players": [],
+    "groups": [],
+    "minutes": [],
+    "iso_dates": 0,
+    "hashes": 0,
+    "text": "Tier Lists\nAdd tier row\nNew tier list\n\nYour own player tiers, arranged by drag and drop or keyboard.\n\nView minutes example\nTiers are personal categorizations.\nWhy?\n2024-25 Player Tiers\n(0)\nDelete List\n2024-25 Player Tiers\n\nPersonal subjective tier ranking of NBA players across tiers S through D.\n\n0 total assigned player(s)\nAssign to tier\nS\nA\nB\nC\nD\nS\n(0)\nDrag players here or use keyboard controls from search.\nA\n(0)\nDrag players here or use keyboard controls from search.\nB\n(0)\nDrag players here or use keyboard controls from search.\nC\n(0)\nDrag players here or use keyboard controls from search.\nD\n(0)\nDrag players here or use keyboard controls from search.",
+    "errors": [],
+    "failed": [],
+    "mutations": []
+  }
+]
