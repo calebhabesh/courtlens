@@ -11,8 +11,11 @@ import {
   NBA_TEAMS,
   COUNTING_MODES,
   IDENTITY_MODES,
-  buildCustomViewPreset
+  buildCustomViewPreset,
+  isV4Column,
+  usesImpactManifest
 } from "./stats-presets";
+import { normalizedColumn } from "./stats-query";
 import type { PlayerResearchItem, CustomViewDefinition } from "./types";
 
 describe("stats-presets", () => {
@@ -220,15 +223,25 @@ describe("stats-presets", () => {
 });
 
 describe("table guide boundaries", () => {
-  it("groups Overview in Databallr's section order", () => {
+  it("groups Overview in Databallr's section order with Counting ahead of Impact", () => {
     expect(tableGroups(getPresetById("overview"))).toEqual([
-      { label: "Profile", start: 0, colSpan: 3 },
-      { label: "Impact", start: 3, colSpan: 3 },
-      { label: "Counting", start: 6, colSpan: 4 },
-      { label: "Eff", start: 10, colSpan: 3 },
-      { label: "Shooting", start: 13, colSpan: 3 },
-      { label: "Other", start: 16, colSpan: 4 }
+      { label: "Profile", start: 0, colSpan: 4 },
+      { label: "Counting", start: 4, colSpan: 6 },
+      { label: "Impact", start: 10, colSpan: 3 },
+      { label: "Eff", start: 13, colSpan: 4 },
+      { label: "Shooting", start: 17, colSpan: 5 },
+      { label: "Other", start: 22, colSpan: 4 }
     ]);
+  });
+  it("routes v4 Overview columns through every counting mode", () => {
+    const overview = getPresetById("overview");
+    const keys = (mode: "per_game" | "raw" | "per_36") => overview.columns.map(column => normalizedColumn(column, mode).key);
+    expect(keys("per_game")).toEqual(expect.arrayContaining(["pts_created_per_game", "rim_ast_per_game", "fg3a_per_game", "fta_per_game", "on_ball_pct", "ctov_pct", "fg2_pct"]));
+    expect(keys("raw")).toEqual(expect.arrayContaining(["pts_created", "pbp_rim_assists", "fg3a", "fta"]));
+    expect(keys("per_36")).toEqual(expect.arrayContaining(["pts_created_per_36", "rim_ast_per_36", "fg3a_per_36", "fta_per_36"]));
+    expect(usesImpactManifest("rim_ast_per_game")).toBe(true);
+    expect(usesImpactManifest("on_ball_pct")).toBe(false);
+    expect(isV4Column("ctov_pct")).toBe(true);
   });
   it("preserves noncontiguous custom groups and selected column order", () => {
     const view = buildCustomViewPreset({ id: "custom", name: "Reordered", columns: ["pts", "fg_pct", "pts_per_36", "fga"], unavailable_columns: [] });

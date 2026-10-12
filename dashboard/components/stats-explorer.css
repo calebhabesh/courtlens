@@ -53,9 +53,11 @@
 .stats-workspace .stats-frame-layout.has-rail.preview-collapsed { grid-template-columns: minmax(0, 1fr) var(--control-md); }
 .stats-workspace .stats-table-frame { min-width: 0; }
 .stats-workspace .stats-scroll-region {
-  --identity-name-width: 236px;
-  /* Databallr keeps the whole table frame inside the viewport; rows scroll inside it. */
-  height: clamp(320px, calc(100dvh - 470px), 760px);
+  /* Wide enough for the longest names (Shai Gilgeous-Alexander) beside logos and a portrait. */
+  --identity-name-width: 300px;
+  /* Databallr fills the unscrolled page to just above its bottom; rows scroll inside. The
+     explorer measures --stats-fill-height; the clamp is the pre-measure fallback. */
+  height: var(--stats-fill-height, clamp(320px, calc(100dvh - 470px), 760px));
   max-height: none;
   min-width: 0;
   border: 0;
@@ -87,6 +89,7 @@
 .text-center { text-align: center; }
 .pl-3 { padding-left: var(--space-3); }
 .stats-workspace .stats-metric-column { width: auto; }
+.stats-workspace .stats-metric-column.is-wide { width: 80px; }
 .stats-workspace .dense-stats-table .pinned-col { border-right: 0; box-shadow: none; }
 .stats-workspace .dense-stats-table .pinned-col-select { left: 0; width: 28px; min-width: 28px; max-width: 28px; }
 .stats-workspace .dense-stats-table .pinned-col-name { left: 28px; width: var(--identity-name-width); min-width: var(--identity-name-width); max-width: var(--identity-name-width); }
@@ -117,9 +120,13 @@
 .stats-workspace .dense-stats-table .stat-cell-content { align-items: flex-end; gap: var(--space-0-5); line-height: var(--text-sm-lh); }
 .stats-workspace .dense-stats-table .stat-main-value { font-family: var(--font-sans), sans-serif; font-weight: 500; line-height: var(--text-sm-lh); }
 .stats-workspace .dense-stats-table .pct-elite, .stats-workspace .dense-stats-table .pct-good { color: var(--color-accent); }
-.stats-workspace .stats-header-search { position: relative; display: inline-flex; width: calc(100% - 22px); }
-.stats-workspace .stats-header-search .lookup-input-wrapper { min-height: 26px; padding-inline: var(--space-2) 0; gap: var(--space-1); background: var(--color-surface-2); border: 0; }
-.stats-workspace .stats-header-search input { width: 100%; min-width: 0; min-height: 26px; padding: 0; font-size: var(--text-xs); background: transparent; border: 0; border-radius: 0; }
+/* The search spans the card width (compare + name columns), left-aligned with the rows. */
+.stats-workspace .dense-stats-table .pinned-col-search { left: 0; padding: var(--space-1) var(--space-1) var(--space-1) var(--space-2); width: calc(28px + var(--identity-name-width)); min-width: calc(28px + var(--identity-name-width)); max-width: calc(28px + var(--identity-name-width)); text-align: left; text-transform: none; }
+.stats-workspace .stats-header-search { position: relative; display: flex; align-items: center; gap: var(--space-1); width: 100%; }
+.stats-workspace .stats-header-search .lookup-combobox, .stats-workspace .stats-header-search > div:first-child { flex: 1; min-width: 0; }
+.stats-workspace .stats-header-search .lookup-input-wrapper { min-height: var(--control-md); padding-inline: var(--space-3) 0; gap: var(--space-2); background: var(--color-surface-2); border: 1px solid var(--color-hairline); border-radius: var(--radius-sm); transition: border-color var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out); }
+.stats-workspace .stats-header-search .lookup-input-wrapper:focus-within { border-color: var(--color-accent); box-shadow: 0 0 0 1px var(--color-accent); }
+.stats-workspace .stats-header-search input { width: 100%; min-width: 0; min-height: var(--control-sm); padding: 0; font-size: var(--text-sm); background: transparent; border: 0; border-radius: 0; }
 .stats-workspace .stats-header-search input::-webkit-search-cancel-button { display: none; }
 .stats-workspace .stats-name-sort { width: 22px; height: 26px; vertical-align: middle; color: var(--color-text-secondary); }
 .stats-workspace .stats-row-actions { text-align: center; white-space: nowrap; }
@@ -160,6 +167,7 @@
 .stats-workspace .stats-preview-shortcuts strong { font-size: var(--text-xs); text-transform: uppercase; margin-bottom: var(--space-1); }
 .stats-workspace .stats-preview-shortcuts kbd { display: inline-block; min-width: 44px; background: var(--color-surface-1); color: var(--color-accent); border-radius: var(--radius-xs); text-align: center; font-size: var(--text-xs); margin-right: var(--space-1); }
 .stats-workspace .table-expanded .stats-scroll-region { height: calc(100dvh - 160px); }
+.stats-workspace .player-cell-teams abbr { text-decoration: none; }
 @media (max-width: 1199px) {
   .stats-workspace .stats-frame-layout.has-rail, .stats-workspace .stats-frame-layout.has-rail.preview-collapsed { grid-template-columns: minmax(0, 1fr); }
   .stats-workspace .stats-preview-rail, .stats-workspace .stats-row-pin { display: none; }
@@ -171,6 +179,7 @@
   .stats-workspace .dense-stats-table .pinned-col-select,
   .stats-workspace .dense-stats-table .stats-header-tier-1 .pinned-col-group { position: static; }
   .stats-workspace .stats-scroll-region { --identity-name-width: 196px; }
+  .stats-workspace .dense-stats-table .pinned-col-search { width: calc(var(--control-lg) + var(--identity-name-width)); min-width: calc(var(--control-lg) + var(--identity-name-width)); max-width: calc(var(--control-lg) + var(--identity-name-width)); }
   .stats-workspace .stats-controls-row, .stats-workspace .stats-table-tools { flex-wrap: wrap; }
   .stats-workspace .workbench-content { padding: var(--space-3) var(--space-2) var(--space-6); }
   .stats-workspace .stats-sort-caption { display: block; margin-left: 0; }
@@ -376,8 +385,6 @@
   .stats-trend-series[data-series="4"], .stats-trend-player[data-series="4"] { --series: var(--color-trend-4); }
   .stats-trend-player { --series: var(--color-trend-1); }
   .stats-trend-series polyline { fill: none; stroke: var(--series); stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
-  .stats-trend-point circle { fill: var(--series); stroke: var(--color-surface-2); stroke-width: 2; }
-  .stats-trend-point text { fill: var(--color-text); font-size: var(--text-xs); font-weight: 600; pointer-events: none; }
   .stats-trend-players { display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start; gap: var(--space-4); padding-top: var(--space-2); border-top: 1px solid var(--color-hairline); }
   .stats-trend-player { position: relative; display: grid; justify-items: center; gap: var(--space-1); width: 96px; text-align: center; font-size: var(--text-sm); }
   .stats-trend-player .player-portrait, .stats-trend-player .player-portrait-fallback { width: 64px; height: 64px; border-radius: var(--radius-sm); box-shadow: inset 0 0 0 2px var(--series); }
@@ -396,4 +403,34 @@
   .stats-workspace .context-season-picker .ui-select,
   .stats-workspace .context-season-picker .ui-select:hover,
   .stats-workspace .context-season-picker .ui-select:focus { background: var(--color-surface-3); box-shadow: none; }
+}
+
+/* Stats third review: Draft Class menu, two-line headers and the wrapped scope row. */
+@layer pages {
+  .stats-workspace .stats-draft-menu .ui-menu-trigger { display: inline-flex; align-items: center; gap: var(--space-2); min-height: var(--control-lg); padding: 0 var(--space-4); border: 0; border-radius: var(--radius-sm); background: var(--color-surface-2); color: var(--color-text-secondary); font-size: var(--text-md); font-weight: 500; }
+  .stats-workspace .stats-draft-menu .ui-menu-trigger:hover { background: var(--color-surface-hover); color: var(--color-text); }
+  .stats-workspace .stats-draft-menu.is-selected .ui-menu-trigger { color: var(--color-accent); background: var(--color-accent-soft); box-shadow: inset 0 0 0 1px var(--color-accent); font-weight: 600; }
+  .stats-workspace .stats-draft-menu .ui-menu-panel { max-height: 320px; overflow-y: auto; min-width: 160px; }
+  .stats-workspace .stats-draft-menu .ui-menu-item.is-active { color: var(--color-accent); }
+  /* Long labels (PTS Created, Rim AST/36) wrap to two lines instead of clipping. */
+  .stats-workspace .dense-stats-table .stats-header-tier-2 .table-sort-button { white-space: normal; text-align: center; line-height: var(--text-2xs-lh); overflow-wrap: normal; }
+}
+@layer foundation {
+  /* When the scope row wraps, Data details stays on its first line. */
+  .stats-workspace .ui-filter-bar:has(.context-season-stepper) { align-items: flex-start; }
+}
+
+/* Stats fourth review: motion on the table's filters, menus, hints and rows. Durations are
+   tokens, so reduced motion collapses them (Design Language v1). */
+@layer pages {
+  .stats-workspace .filter-toolbar { animation: fadeInDropdown var(--dur-base) var(--ease-out); }
+  .stats-workspace .stats-table-row:not(.stats-skeleton-row) { animation: chart-crossfade var(--dur-base) var(--ease-out); }
+  .stats-header-tip { animation: chart-crossfade var(--dur-fast) var(--ease-out); }
+  .stats-workspace :is(.stats-position-chip, .stats-team-button, .stats-draft-menu .ui-menu-trigger, .stats-tool-button, .stats-help-button, .stats-footer-button) {
+    transition: background-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+  }
+  .stats-workspace :is(.stats-position-chip, .stats-team-button, .stats-draft-menu .ui-menu-trigger):active { transform: scale(0.96); }
+  .stats-team-option .team-logo { transition: transform var(--dur-fast) var(--ease-out); }
+  .stats-team-option:hover .team-logo { transform: scale(1.08); }
+  .stats-trend-dialog .chart-value-dot, .stats-trend-dialog .stats-trend-series polyline { animation: chart-crossfade var(--dur-slow) var(--ease-out); }
 }

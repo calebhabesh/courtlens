@@ -310,6 +310,18 @@ class PlayerResearchItem(BaseModel):
     table_qualified: bool | None = None
     table_percentiles: dict[str, float | None] | None = None
     table_cohort_sample_sizes: dict[str, int] | None = None
+    # Estimated five-position label for the queried season (position-estimates-v1).
+    position: Literal["PG", "SG", "SF", "PF", "C"] | None = None
+
+
+class DraftClass(BaseModel):
+    year: int
+    players: int
+
+
+class DraftClassesResponse(BaseModel):
+    source: str = "NBA draft history via the hoopR-nba-stats-raw mirror (CC BY 4.0)"
+    classes: list[DraftClass]
 
 
 class PlayerResearchResponse(BaseModel):
@@ -1121,7 +1133,7 @@ class LookupResponse(BaseModel):
 
 class CreateCustomViewRequest(BaseModel):
     model_config = ConfigDict(extra="forbid")
-    metric_version: Literal["v2", "courtlens-stats-v3"] = "v2"
+    metric_version: Literal["v2", "courtlens-stats-v3", "courtlens-stats-v4"] = "v2"
 
     unavailable_columns: list[str] = Field(default_factory=list)
 
@@ -1134,7 +1146,7 @@ class CreateCustomViewRequest(BaseModel):
 
 class UpdateCustomViewRequest(BaseModel):
     model_config = ConfigDict(extra="forbid")
-    metric_version: Literal["v2", "courtlens-stats-v3"] | None = None
+    metric_version: Literal["v2", "courtlens-stats-v3", "courtlens-stats-v4"] | None = None
 
     unavailable_columns: list[str] | None = None
 

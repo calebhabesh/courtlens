@@ -11,3 +11,4 @@ export * from "./timeline-grid";
 export * from "./percentile-cell";
 export * from "./shape-pack";
 export * from "./semantics";
+export * from "./value-dot";

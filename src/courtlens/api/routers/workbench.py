@@ -33,6 +33,7 @@ from courtlens.api.workbench_schemas import (
     DistributionMeasure,
     DistributionRequest,
     DistributionResponse,
+    DraftClassesResponse,
     ForecastIssuanceDetailResponse,
     ForecastsListResponse,
     ImpactResponse,
@@ -103,9 +104,8 @@ from courtlens.api.workbench_schemas import (
 from courtlens.config import get_settings
 from courtlens.database import get_db
 from courtlens.domain.context import CapabilityEntry, CapabilityStatus
-from courtlens.domain.impact_catalog import RATING_METRICS
+from courtlens.domain.impact_catalog import RATING_METRICS, SERVING_VERSIONS
 from courtlens.domain.impact_catalog import SERVING_CATALOG as METRIC_CATALOG
-from courtlens.domain.impact_catalog import VERSION as SERVING_VERSION
 from courtlens.domain.metrics import (
     METRIC_CATALOG_VERSION,
     SUPPORTED_PHASES,
@@ -165,10 +165,16 @@ from courtlens.services.personal_state import (
     update_preferences_service,
     update_workspace_state,
 )
-from courtlens.services.player_context import listed_position_player_ids
+from courtlens.services.position_estimates import (
+    draft_class_player_ids,
+    draft_classes,
+    position_player_ids,
+    season_positions,
+)
 from courtlens.services.roster_shapes import roster_shapes
 from courtlens.services.schedule_dates import schedule_dates
 from courtlens.services.stats_catalog import stats_catalog_scope
+from courtlens.services.stats_cohort_cache import presentation_page
 from courtlens.services.stats_engine import (
     decode_cursor,
     execute_stats_query,
@@ -363,8 +369,8 @@ def get_metrics(version: str | None = None) -> MetricCatalogResponse:
     definitions = [
         MetricDefinitionSchema(**m.to_dict())
         for m in (
-            METRIC_CATALOG.values()
-            if target_version == SERVING_VERSION
+            SERVING_VERSIONS[target_version].values()
+            if target_version in SERVING_VERSIONS
             else list_metric_definitions(version=target_version)
         )
     ]
@@ -524,6 +530,12 @@ def get_combine(
     return CombineViewResponse.model_validate(rounded(combine_view(session, draft_year, player_id)))
 
 
+@router.get("/draft-classes", response_model=DraftClassesResponse)
+def get_draft_classes(session: Session = Depends(get_db)) -> DraftClassesResponse:
+    """NBA draft years available to the Stats draft-class filter (official draft history)."""
+    return DraftClassesResponse(classes=draft_classes(session))
+
+
 @router.get("/value-archetypes", response_model=ValueArchetypesResponse)
 def get_value_archetypes(
     player_ids: list[str] | None = Query(None, alias="playerId", max_length=64),
@@ -599,24 +611,50 @@ def execute_query_endpoint(
         requested_window=spec.window.kind.value,
     )
 
-    if payload.presentation is not None and payload.presentation.positions:
-        # Positions narrow the displayed players like favorites; the cohort is unchanged.
-        listed = listed_position_player_ids(session, payload.presentation.positions)
-        if payload.presentation.player_ids is not None:
-            listed &= set(payload.presentation.player_ids)
+    presentation = payload.presentation
+    if presentation is not None and (presentation.positions or presentation.draft_year):
+        # Positions and draft classes narrow the displayed players like favorites; the
+        # analytical cohort and its percentiles are unchanged.
+        shown = set(presentation.player_ids) if presentation.player_ids is not None else None
+        for ids in (
+            position_player_ids(spec.season or context.season, presentation.positions)
+            if presentation.positions
+            else None,
+            draft_class_player_ids(session, presentation.draft_year)
+            if presentation.draft_year
+            else None,
+        ):
+            if ids is not None:
+                shown = ids if shown is None else shown & ids
         payload = payload.model_copy(
             update={
-                "presentation": payload.presentation.model_copy(
-                    update={"player_ids": sorted(listed), "positions": None}
+                "presentation": presentation.model_copy(
+                    update={
+                        "player_ids": sorted(shown or set()),
+                        "positions": None,
+                        "draft_year": None,
+                    }
                 )
             }
         )
+    positions = season_positions(spec.season or context.season)
 
-    items_raw, total_count, next_cursor, has_more = execute_stats_query(
-        session, context, spec, presentation=payload.presentation
+    # Presentation queries page through a cached whole cohort: display filters never re-run
+    # the analytics (services/stats_cohort_cache.py).
+    cached = (
+        presentation_page(session, context, spec, payload.presentation)
+        if payload.presentation is not None
+        else None
     )
+    eligible: int | None = None
+    if cached is not None:
+        items_raw, total_count, next_cursor, has_more, eligible = cached
+    else:
+        items_raw, total_count, next_cursor, has_more = execute_stats_query(
+            session, context, spec, presentation=payload.presentation
+        )
     cohort = (
-        stats_cohort_summary(session, context, spec, payload.presentation)
+        stats_cohort_summary(session, context, spec, payload.presentation, eligible)
         if payload.presentation is not None
         else None
     )
@@ -643,6 +681,7 @@ def execute_query_endpoint(
             table_qualified=r.get("table_qualified"),
             table_percentiles=r.get("table_percentiles"),
             table_cohort_sample_sizes=r.get("table_cohort_sample_sizes"),
+            position=positions.get(r["player_id"]),
         )
         for r in items_raw
     ]

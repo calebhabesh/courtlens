@@ -6,6 +6,7 @@ import Link from "next/link";
 import { LookupInput } from "./lookup-input";
 import { CourtLensWordmark } from "./courtlens-wordmark";
 import { StatsPreviewRail } from "./stats-preview-rail";
+import { STATS_SCOPE_PENDING } from "./stats-page-controls";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { useState, useMemo, useCallback, useTransition, useEffect, useRef, Fragment, type KeyboardEvent } from "react";
 import { SortHeader, GroupGuide } from "./table-ui";
@@ -71,6 +72,11 @@ const guideGeometry = (index: number): GuideGeometry => ({
   "--guide-offset": `var(--group-guide-offset-${index}, 0px)`
 });
 
+/** Headers with a 7+ letter word (PTS CREATED) need more than the 64px column minimum. */
+function isWideLabel(label: string): boolean {
+  return label.split(/[\s/]+/).some(word => word.length >= 7);
+}
+
 export function WorkbenchPlayerExplorer({
   data,
   querySpec,
@@ -107,7 +113,14 @@ export function WorkbenchPlayerExplorer({
   const [isNavigating, startNavigation] = useTransition();
   const [pendingNav, setPendingNav] = useState<{ presetId: PresetId | null; data: boolean } | null>(null);
   const activePresetId: PresetId = (isNavigating && pendingNav?.presetId) || urlPresetId;
-  const loadingRows = isNavigating && Boolean(pendingNav?.data);
+  // Scope filters above the table (positions, draft class, team) navigate on their own.
+  const [scopePending, setScopePending] = useState(false);
+  useEffect(() => {
+    const onPending = (event: Event) => setScopePending(Boolean((event as CustomEvent<boolean>).detail));
+    window.addEventListener(STATS_SCOPE_PENDING, onPending);
+    return () => window.removeEventListener(STATS_SCOPE_PENDING, onPending);
+  }, []);
+  const loadingRows = (isNavigating && Boolean(pendingNav?.data)) || scopePending;
 
   // Counting Mode derived from URL or workspace preferences
   const countingMode: CountingMode = resolvedCountingMode ||
@@ -295,6 +308,14 @@ export function WorkbenchPlayerExplorer({
     }
   };
 
+  // Reset returns the table to how the page first loads: default sort, no name search, page one.
+  const tableChanged = ["sortMetric", "sort_metric", "sortDirection", "sort_direction", "sort", "name", "cursor"]
+    .some(key => searchParams?.has(key));
+  const resetTable = () => {
+    setLocalName("");
+    updateParam({ sortMetric: null, sortDirection: null, sort: null, name: null, cursor: null });
+  };
+
   const handleToggleCompare = useCallback(
     async (player: PlayerResearchItem) => {
       setActionError(null);
@@ -438,9 +459,34 @@ export function WorkbenchPlayerExplorer({
 
   const guideStarts = new Set(headerGroups.slice(1).map(group => group.start));
   const guideCount = identityMode === "none" ? 0 : guideStarts.size;
+  const wideColumns = preset.columns.filter(column => isWideLabel(column.label)).length;
   const tableRef = useRef<HTMLTableElement>(null);
 
   // Right-aligned values leave asymmetric space around the structural guide column.
+  // Databallr: the table frame reaches just above the bottom of the unscrolled page. Measure
+  // the region's page offset and the frame chrome below it; rows scroll inside.
+  useEffect(() => {
+    const region = scrollRef.current;
+    const frame = region?.closest<HTMLElement>(".stats-table-frame");
+    if (!region || !frame) return;
+    const fit = () => {
+      const top = region.getBoundingClientRect().top + window.scrollY;
+      const below = frame.getBoundingClientRect().bottom - region.getBoundingClientRect().bottom;
+      // The region's bottom edge snaps to a whole pixel, so the footer and rail always render the
+      // same however sub-pixel offsets above it settle.
+      const regionTop = region.getBoundingClientRect().top;
+      const bottom = Math.round(regionTop + window.innerHeight - top - below - 16);
+      region.style.setProperty("--stats-fill-height", `${Math.max(320, bottom - regionTop)}px`);
+    };
+    // Controls above the table can settle after mount (fonts, menus); re-measure on any resize.
+    // Setting the same height again is a no-op, so the observer converges.
+    const observer = new ResizeObserver(fit);
+    observer.observe(region.closest(".stats-workspace") ?? document.body);
+    window.addEventListener("resize", fit);
+    void document.fonts.ready.then(fit);
+    return () => { observer.disconnect(); window.removeEventListener("resize", fit); };
+  }, [viewMode]);
+
   // Use the visible metric bounds to keep one straight divider per group, including
   // rows with shorter values. Recalculate after fonts, rows or column widths change.
   useEffect(() => {
@@ -630,6 +676,10 @@ export function WorkbenchPlayerExplorer({
             aria-label="Filters" title={hasActiveFilters ? "Filters (active) · F" : "Filters · F"}>
             <Icon name="filter" />
           </button>
+          <button type="button" className="stats-tool-button" onClick={resetTable} disabled={!tableChanged}
+            aria-label="Reset table" title="Reset to the default sort and the first page">
+            <Icon name="reset" />
+          </button>
         </div>
         <button type="button" onClick={() => setIsExpanded(value => !value)} className="stats-tool-button stats-expand-button"
           aria-pressed={isExpanded} aria-label={isExpanded ? "Standard height" : "Expand table"} title="Expand table (T)">
@@ -810,7 +860,7 @@ export function WorkbenchPlayerExplorer({
           <div ref={scrollRef} role="region" aria-label="Player statistics scroll area" aria-busy={loadingRows} tabIndex={0} onKeyDown={handleTableKey} className={`table-wrapper stats-scroll-region ${tableDensity === "compact" ? "density-compact" : "density-standard"}`}>
             <table ref={tableRef} className="data-table dense-stats-table" aria-label="Dense player statistics explorer"
               style={{
-                "--table-min-width": `calc(88px + var(--identity-name-width) + ${preset.columns.length * 64 + guideCount * 40}px)`,
+                "--table-min-width": `calc(88px + var(--identity-name-width) + ${preset.columns.length * 64 + wideColumns * 16 + guideCount * 40}px)`,
                 "--table-width": `min(100%, calc(88px + var(--identity-name-width) + ${preset.columns.length * 88 + guideCount * 40}px))`
               } as React.CSSProperties}>
               <colgroup>
@@ -818,7 +868,7 @@ export function WorkbenchPlayerExplorer({
                 <col className="stats-name-column" />
                 {preset.columns.map((col, index) => <Fragment key={col.key}>
                   {identityMode !== "none" && guideStarts.has(index) && <col className="col-guide" />}
-                  <col className="stats-metric-column" />
+                  <col className={`stats-metric-column ${isWideLabel(col.label) ? "is-wide" : ""}`} />
                 </Fragment>)}
                 <col className="col-actions" />
               </colgroup>
@@ -848,24 +898,16 @@ export function WorkbenchPlayerExplorer({
             {/* Tier 2 Header: Individual Metrics */}
             <tr className="stats-header-tier-2" onMouseOver={showHeaderTip} onFocus={showHeaderTip}
               onMouseLeave={() => setHeaderTip(null)} onBlur={() => setHeaderTip(null)}>
-              {/* Pinned Col 1: Select Checkbox */}
-              <th
-                className="pinned-col pinned-col-select text-center"
-                title="Add players to comparison (max 8)"
-              >
-                <span className="sr-only">Compare</span>
-              </th>
-
-
-              <th className="pinned-col pinned-col-name" scope="col" aria-sort={currentSortMetric === "name" || currentSortMetric === "player_name" ? currentSortDirection === "asc" ? "ascending" : "descending" : "none"}>
+              {/* Databallr: one search field spans the compare and name columns, flush with the cards. */}
+              <th colSpan={2} className="pinned-col pinned-col-search" scope="col" aria-sort={currentSortMetric === "name" || currentSortMetric === "player_name" ? currentSortDirection === "asc" ? "ascending" : "descending" : "none"}>
                 <div className="stats-header-search">
                   <LookupInput label="Filter players by name" placeholder="Search players…" value={localName}
                     onChange={setLocalName} kinds={["player"]} limit={8} compactResults portalDropdown
                     onSelect={item => { setLocalName(item.display_name); updateParam({ name: item.display_name }); }}
                     onSubmitText={text => updateParam({ name: text.trim() || null })}
                     clearLabel="Clear player search" onClear={() => updateParam({ name: null })} />
+                  <button type="button" className="stats-name-sort" onClick={() => handleSort("player_name")} aria-label="Sort by Player" title="Sort by player name"><Icon name={currentSortDirection === "asc" ? "up" : "down"} /></button>
                 </div>
-                <button type="button" className="stats-name-sort" onClick={() => handleSort("player_name")} aria-label="Sort by Player" title="Sort by player name"><Icon name={currentSortDirection === "asc" ? "up" : "down"} /></button>
               </th>
 
               {/* Scrollable Metric Column Headers */}
@@ -967,7 +1009,7 @@ export function WorkbenchPlayerExplorer({
                           window: query.window, ...(query.release_id ? { releaseId: query.release_id } : {})
                         })}`} title={player.player_name} aria-label={player.player_name} className="stats-player-link">
                           <span className="player-cell-name font-semibold">{player.player_name}</span>
-                        <span className="player-cell-teams">{player.teams?.join(" / ") || "Team unknown"} · {query.season}</span>
+                        <span className="player-cell-teams">{player.teams?.join(" / ") || "Team unknown"}{player.position && <> · <abbr title="Estimated position">{player.position}</abbr></>} · {query.season}</span>
                         </Link>
                         {player.table_qualified === false && <span className="table-small-sample">Small sample</span>}
                         </div>

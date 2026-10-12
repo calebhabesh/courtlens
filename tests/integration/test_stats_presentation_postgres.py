@@ -450,3 +450,37 @@ def test_catalog_observed_pairs_and_exclusive_defaults(
         ("2024-25", "playoffs"),
     ]
     assert "pts_per_36" in catalog["stats_sort_fields"]
+
+
+def test_v4_box_shooting_splits_and_per_game_volumes(
+    facts: tuple[Session, ResolvedContext],
+) -> None:
+    session, context = facts
+    # E: 2 games, 10/20 FG with 4/10 3P and 6/8 FT; the second game misses its 3P split.
+    for gid, stats in (
+        (
+            "e-1",
+            '{"field_goals_made": 6, "field_goals_attempted": 12, '
+            '"three_pointers_made": 2, "three_pointers_attempted": 6, '
+            '"free_throws_made": 4, "free_throws_attempted": 5}',
+        ),
+        (
+            "e-2",
+            '{"field_goals_made": 4, "field_goals_attempted": 8, '
+            '"free_throws_made": 2, "free_throws_attempted": 3}',
+        ),
+    ):
+        session.execute(
+            text("""INSERT INTO workbench_player_games VALUES ('dataset', 'e', 'TOR', :gid,
+                '2024-01-05', '2023-24', 'regular_season', 'appeared', 1800, 14,
+                CAST(:stats AS jsonb))"""),
+            {"gid": gid, "stats": stats},
+        )
+    query = QuerySpec(season="2023-24", sort=[SortSpec(field="fg2_pct")], page=PagingSpec(limit=10))
+    rows, _, _, _ = execute_stats_query(session, context, query, presentation=StatsPresentation())
+    e = next(row for row in rows if row["player_id"] == "e")["metrics"]
+    # 2-point splits use only rows where all four shooting fields are known (game e-1).
+    assert (e["fg2m"], e["fg2a"], e["fg2_pct"]) == (4, 6, 0.6667)
+    assert (e["fga_per_game"], e["fg3a_per_game"], e["fta_per_game"]) == (10, 6, 4)
+    assert (e["fgm_per_game"], e["fg3m_per_game"], e["ftm_per_game"]) == (5, 2, 3)
+    assert next(row for row in rows if row["player_id"] == "a")["metrics"]["fg2_pct"] is None

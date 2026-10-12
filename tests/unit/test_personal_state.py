@@ -89,7 +89,10 @@ def test_stats_presentation_positions_are_canonical_and_bounded() -> None:
 
     from courtlens.domain.stats_presentation import StatsPresentation
 
-    assert StatsPresentation(positions=["C", "G", "G"]).positions == ["G", "C"]
+    assert StatsPresentation(positions=["C", "PG", "PG", "SF"]).positions == ["PG", "SF", "C"]
     assert StatsPresentation().positions is None
     with pytest.raises(ValidationError):
-        StatsPresentation.model_validate({"positions": ["PG"]})
+        StatsPresentation.model_validate({"positions": ["G"]})
+    assert StatsPresentation(draft_year=2018).draft_year == 2018
+    with pytest.raises(ValidationError):
+        StatsPresentation.model_validate({"draft_year": 1900})

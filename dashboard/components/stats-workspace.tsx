@@ -4,15 +4,17 @@ import "./stats-explorer.css";
 import { redirect } from "next/navigation";
 import { ContextBar } from "@/components/context-bar";
 import { WorkbenchPlayerExplorer } from "@/components/workbench-player-explorer";
-import { executeWorkbenchQuery, getMetricCatalog, getWorkbenchCatalog } from "@/lib/workbench-api";
+import { executeWorkbenchQuery, getDraftClasses, getMetricCatalog, getWorkbenchCatalog } from "@/lib/workbench-api";
 import { metricHints, type MetricHint } from "@/lib/stats-glossary";
 import { querySpecToLegacyQuery } from "@/lib/query-url";
 import { resolveStatsQuery, normalizedColumn } from "@/lib/stats-query";
-import { getPresetById, IMPACT_COLUMNS, type CountingMode } from "@/lib/stats-presets";
+import { getPresetById, usesImpactManifest, type CountingMode } from "@/lib/stats-presets";
 import { getWorkspace } from "@/lib/workspace-client";
-import type { PlayerResearchResponse, WorkbenchCatalog } from "@/lib/types";
+import type { DraftClassesResponse, EstimatedPosition, PlayerResearchResponse, WorkbenchCatalog } from "@/lib/types";
 import { PlayerDirectory } from "./player-directory";
-import { StatsHelpRow, StatsPositionChips, StatsTeamSelect } from "./stats-page-controls";
+import { StatsDraftClassSelect, StatsHelpRow, StatsPositionChips, StatsTeamSelect } from "./stats-page-controls";
+
+const ESTIMATED_POSITIONS: EstimatedPosition[] = ["PG", "SG", "SF", "PF", "C"];
 import { Icon } from "./ui/icon";
 import { readPublication } from "@/lib/original-content";
 import Link from "next/link";
@@ -43,7 +45,7 @@ export async function StatsWorkspace({ params: rawParams, basePath = "/stats", t
   const preset = getPresetById(presetId, workspace?.views);
   querySpec.view_state = { ...querySpec.view_state, view_id: directory ? "directory" : presetId,
     columns: directory ? ["gp", "min_per_game", "pts_per_game", "reb_per_game", "ast_per_game", "ts_pct"] : preset.columns.map(column => normalizedColumn(column, countingMode).key) };
-  if (!directory && preset.columns.some(column => column.key in IMPACT_COLUMNS) && catalog.impact?.manifest_sha256) {
+  if (!directory && preset.columns.some(column => usesImpactManifest(normalizedColumn(column, countingMode).key)) && catalog.impact?.manifest_sha256) {
     querySpec.impact_manifest_sha256 = querySpec.impact_manifest_sha256 || catalog.impact.manifest_sha256;
   }
   const researchQuery = querySpecToLegacyQuery(querySpec);
@@ -65,7 +67,12 @@ export async function StatsWorkspace({ params: rawParams, basePath = "/stats", t
   }
 
 
-  const positions = String(params.positions ?? "").split(",").filter((value): value is "G" | "F" | "C" => ["G", "F", "C"].includes(value));
+  const positions = String(params.positions ?? "").split(",").filter((value): value is EstimatedPosition => ESTIMATED_POSITIONS.includes(value as EstimatedPosition));
+  const draftYear = Number(params.draftYear) || null;
+  let draftClasses: DraftClassesResponse["classes"] = [];
+  if (!directory) {
+    try { draftClasses = (await getDraftClasses()).classes; } catch { /* the Draft Class menu stays hidden */ }
+  }
   // Header hover text; the table still works when the catalog request fails.
   let hints: Record<string, MetricHint> = {};
   if (!directory) {
@@ -81,7 +88,8 @@ export async function StatsWorkspace({ params: rawParams, basePath = "/stats", t
     const result = await executeWorkbenchQuery(querySpec, {
       table_percentiles: true,
       player_ids: params.favorites === "1" ? workspace?.favorites ?? [] : null,
-      positions: positions.length ? positions : null
+      positions: positions.length ? positions : null,
+      draft_year: draftYear
     });
     researchData = {
       ...result,
@@ -113,7 +121,7 @@ export async function StatsWorkspace({ params: rawParams, basePath = "/stats", t
           initialWindow={researchQuery.window}
           lastIncludedDate={researchData?.context?.last_included_date}
           steppedScope
-          filters={<><StatsTeamSelect /><StatsPositionChips /></>}
+          filters={<><StatsTeamSelect /><StatsPositionChips /><StatsDraftClassSelect classes={draftClasses} /></>}
         />}
 
         {loadError && (
@@ -125,7 +133,7 @@ export async function StatsWorkspace({ params: rawParams, basePath = "/stats", t
         {researchData && directory && <PlayerDirectory catalog={catalog} data={researchData} />}
         {researchData && !directory && (
           <WorkbenchPlayerExplorer
-            key={JSON.stringify({ querySpec, favorites: params.favorites, positions: params.positions })}
+            key={JSON.stringify({ querySpec, favorites: params.favorites, positions: params.positions, draftYear })}
             querySpec={querySpec}
             countingMode={countingMode}
             catalog={catalog}

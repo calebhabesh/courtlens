@@ -37,7 +37,7 @@ class CustomViewDefinition(BaseModel):
 
     id: str = Field(default_factory=lambda: str(uuid4()), min_length=1, max_length=100)
     name: str = Field(min_length=1, max_length=100)
-    metric_version: Literal["v2", "courtlens-stats-v3"] = "v2"
+    metric_version: Literal["v2", "courtlens-stats-v3", "courtlens-stats-v4"] = "v2"
     unavailable_columns: list[str] = Field(default_factory=list)
     columns: list[str] = Field(default_factory=list)
     sort_field: str | None = None

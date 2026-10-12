@@ -96,14 +96,14 @@ Instructions (owner, 2026-10-12):
 Follow-up instructions (owner, 2026-10-12, second review):
 7. [x] The player statistics table is too tall; limit its height like Databallr. — scroll area
    `clamp(320px, 100dvh − 470px, 760px)`: the whole frame fits a 1000px viewport; rows scroll inside.
-8. [~] Add the stats Databallr's Stats table shows that ours is missing, where possible (owner
+8. [x] Add the stats Databallr's Stats table shows that ours is missing, where possible (owner
    screenshots of Databallr's Overview columns: Profile GP, MIN(mpg), OnBall%; Impact DPM, ODPM,
    DDPM; Counting PTS, PTS Created, AST, Rim AST, REB, TOV; Eff TS%, rTS%, cTOV%; Location 2P%, 3P%,
    3PA, FT%, FTA; Other OREB, DREB, STL, BLK). — Overview regrouped Profile · Impact · Counting · Eff ·
    Shooting · Other with GP MIN MPG | BPR OBPR DBPR (CourtLens Box Prior RAPM in the DPM slots) | PTS
    AST REB TOV | TS% rTS% eFG% | FG% 3P% FT% | OREB DREB STL BLK. Not added: OnBall%, PTS Created,
    cTOV% (no source/model); 2P%, 3PA/G, FTA/G and per-game Rim AST need new metrics in a new stats
-   catalog version (v3 is frozen) — awaiting owner go-ahead.
+   catalog version (v3 is frozen) — awaiting owner go-ahead. Completed by instruction 14.
 9. [x] Select Team opens a grid of team logos (Databallr's "Select Team" dialog) instead of a dropdown.
    — 5×6 logo grid dialog with tricodes; the selected team shows on the button; Show all teams.
 10. [x] Stat cells are clickable: open a pop-up trend graph for that stat and player, with other
@@ -113,15 +113,54 @@ Follow-up instructions (owner, 2026-10-12, second review):
     never zero. Series colours = dataviz reference dark slots 1–4, validated (CVD ΔE ≥ 8.4).
 11. [x] Hovering a stat column header shows that stat's name and description ("Click to sort").
     — overlay hint from the metric catalog plus glossary copy.
-12. [x] Add Databallr's position selector filter (PG SG SF PF C). — G / F / C chips: the free NBA roster
+12. [x] Add Databallr's position selector filter (PG SG SF PF C). — superseded by instruction 18; was G / F / C chips: the free NBA roster
     index lists only G, F, C (hybrids such as G-F match both). Backend `StatsPresentation.positions`
     resolves to player IDs from the latest index (current listing, not backdated; disclosed on hover);
     a display filter only, league percentiles unchanged.
 13. [x] Fix the uneven shading on the season selector. — select surface set in the foundation layer.
-Not applicable (no data or feature): Draft Class (no draft predicate yet), the video and trophy
+Follow-up instructions (owner, 2026-10-12, third review):
+14. [x] Add the v4 catalog metrics, and the others if sources can be found. — new
+    `courtlens-stats-v4` serving catalog (v3 unchanged; `domain/stats_v4_catalog.py`): 2PM/2PA/2P%,
+    per-game FGM/FGA/3PM/3PA/FTM/FTA; Rim AST per game / per 36 / per 100 from sealed extras support;
+    Offensive Load and cTOV% (TOV / Offensive Load, Ben Taylor's Box Creation per 100 offensive
+    possessions); OnBall% (tracking time of possession / minutes) and PTS Created (PTS + NBA tracking
+    assist points; per game / per 36 / total). Tracking possessions + passing totals for 2023-24 and
+    2024-25 admitted from the pinned hoopR mirror (8 files) so all three seasons have values. Impact
+    and tracking columns stay null outside full single-season scopes (no team filter). DPM family
+    remains CourtLens BPR (DARKO outputs are not admitted).
+15. [x] The table extends to just above the bottom of the unscrolled page. — measured fill height
+    (`--stats-fill-height`, re-measured on resize) instead of a fixed clamp.
+16. [x] Counting before Impact in Overview. — Profile · Counting · Impact · Eff · Shooting · Other.
+17. [x] Values inside graph data points (Databallr trend). — `charts/value-dot.tsx`; the trend dialog
+    and the recent-games points chart. Profile small multiples (90px tall) and the 8-player game
+    lines keep plain markers: labels would collide there.
+18. [x] Bucket players into PG/SG/SF/PF/C and show the position beside the team. — no free source lists
+    five positions for everyone, so CourtLens estimates them (`docs/design/position-estimates-v1.md`):
+    logistic regression on NBA Draft Combine labels from listed position/size and same-season box
+    rates, bounded by the NBA listing. Out of sample by player: 67.9% exact, 99.0% within one position
+    (listing/size baseline 63.8%). Rows read "LAL · PG · 2025-26"; chips filter by the estimate.
+19. [x] Draft Class selector. — menu of NBA draft years (official draft history mart); display filter.
+Follow-up instructions (owner, 2026-10-12, fourth review):
+20. [x] Counting leads with PTS, REB, AST, then PTS Created, Rim AST, TOV.
+21. [x] Table search sits above the player cards like Databallr. — one search cell spans the compare
+    and name columns, flush with the cards; name-sort arrow beside it.
+22. [x] Animations for the table's filter drop-downs and similar. — filters panel and search results
+    slide in, header hint and new rows fade, chips/buttons transition and press, team logos lift,
+    trend values fade; all on duration tokens (reduced motion collapses them).
+23. [x] Player cards fit long names. — name column 300px (Shai Gilgeous-Alexander fits).
+24. [x] Search results drop straight from the search field. — floating results anchor to the whole
+    field (icon included) instead of the input; applies to every floating lookup.
+25. [x] Position filter errors, slowness, no skeleton. — each toggle re-ran the whole cohort query
+    (~4 s of SQL on one worker) and stacked toggles hit the 8 s client timeout. Presentation queries
+    now page a cached whole cohort (`services/stats_cohort_cache.py`, JSON, 10 min TTL, 12 entries):
+    positions, draft class, favorites, name and paging filter in memory (~0.4 s); the league reference
+    for table percentiles is cached the same way. Stats SQL also runs with JIT off and 32 MB work_mem
+    (JIT cost more than the query). Scope filters show skeleton rows and press state at once.
+26. [x] Reset button returning the table to its default sort. — toolbar Reset (sort, name, page).
+Not applicable (no data or feature): the video and trophy
 (Leaders) toolbar buttons. Tab/Shift+Tab view cycling is exposed as buttons only, so Tab keeps
 normal keyboard focus order.
-Data-blocked: DPM, ODPM, DDPM, rTS%, cTOV%, Pts Created, OnBall % (Databallr metrics we can't compute).
+Data-blocked: DPM, ODPM, DDPM (DARKO outputs are not admitted; BPR fills the slots).
 Evidence: docs/evidence/alignment/stats/ (stats and glossary at 1440 and 390, live local data).
 Verification 2026-10-12: dashboard lint, typecheck, Vitest 448/448; Stats Playwright set 76/78 at 3
 workers plus the new glossary spec 2/2. Remaining failures are not Stats regressions: workbench Teams
@@ -131,3 +170,11 @@ select-popup baselines regenerated.
 Verification (follow-ups 7–13): dashboard lint, typecheck, Vitest 448/448; backend ruff, mypy and full
 pytest 2038 passed; Stats Playwright set plus the new `stats-followups` spec pass (the Teams strict-mode
 and Compare Export failures are unchanged and unrelated). Evidence adds team grid, header hint and trend.
+Verification (third and fourth reviews, 14–26): dashboard lint, typecheck, Vitest 449/449; backend
+ruff, mypy and full pytest 2042 passed (new `tests/unit/test_stats_v4.py`, v4 box splits in the
+PostgreSQL presentation test); Stats Playwright set 123/124 three runs in a row at 3 workers (only the
+unrelated Teams strict-mode failure). Live: full Overview first load 3.7 s, position/draft toggles
+0.4 s at the API (1.1 s through the dev server). Baselines regenerated: Stats desktop/phone, select
+popups (now clipped to the scope rows, so table layout no longer flakes them) and the /players
+directory, which already failed on HEAD from earlier shared Stats styles. Evidence: stats, trend with
+value dots, draft class menu and aligned search (1440), stats (390).
