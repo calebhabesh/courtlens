@@ -2,7 +2,7 @@
 import React from "react";
 import { afterEach, describe, expect, it } from "vitest";
 import { cleanup, render, screen } from "@testing-library/react";
-import { ChartFrame, DeltaChip, Donut, PercentileCell, Sankey, ShapePack, ThresholdBar, TimelineGrid, ValueBar, comparisonFlags, leadingIdentity, percentileBand, validFlow, type Category } from "./index";
+import { ChartFrame, DeltaChip, Donut, PercentileCell, Sankey, ShapeGlyph, ShapePack, ThresholdBar, TimelineGrid, ValueBar, comparisonFlags, leadingIdentity, percentileBand, validFlow, type Category } from "./index";
 import { resolveSvgTokens } from "@/lib/image-export";
 
 afterEach(cleanup);
@@ -155,6 +155,14 @@ describe("ShapePack", () => {
     const { container } = render(<><ShapePack {...meta} sizeLabel="units" categoryLabels={labels} items={items} /><ShapePack {...meta} sizeLabel="units" categoryLabels={labels} items={items} /></>);
     const ids = Array.from(container.querySelectorAll("pattern")).map(p => p.id);
     expect(new Set(ids).size).toBe(2); expect(container.innerHTML).not.toMatch(/NaN|Infinity/);
+  });
+  it("compact glyph draws only positive rows, keeps custom fit wording and leaves white space", () => {
+    const items = [{ id: "a", label: "A", value: 4, category: 1 as const, fit: "observed" as const }, { id: "b", label: "B", value: 0, category: 2 as const, fit: "projected" as const }, { id: "c", label: "C", value: null, category: null, fit: "unknown" as const }];
+    const { container } = render(<ShapeGlyph items={items} label="Team" sizeLabel="units" categoryLabels={labels} capacity={16} fitLabels={{ observed: "returning", projected: "new", unknown: "no sample" }} />);
+    expect(container.querySelectorAll("[data-shape-id]")).toHaveLength(1);
+    expect(container.querySelector("title")?.textContent).toContain("returning");
+    expect(container.querySelector("svg")?.getAttribute("aria-label")).toContain("known total 4 units of 16; 2 players without positive area");
+    expect(container.querySelector("g")?.getAttribute("transform")).toBe("translate(80 80) scale(0.5)");
   });
   it("rejects negative size rather than silently transforming impact", () => {
     render(<ShapePack {...meta} sizeLabel="signed impact" categoryLabels={labels} items={[{ id: "a", label: "A", value: -2, category: 1, fit: "observed" }]} />);

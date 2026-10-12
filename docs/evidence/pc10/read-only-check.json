@@ -1,0 +1,18 @@
+{
+ "published_snapshots": {
+  "rows": 161,
+  "sha256": "e2051d32e3950a14b89da5f20f49a30f74e3be6709835cc06a50eddcd8b55ddc"
+ },
+ "player_context_datasets": 1,
+ "workbench_identities": 1031,
+ "timing_5_sequential_requests": {
+  "ms": [
+   359.8,
+   445.1,
+   348.3,
+   350.7,
+   348.4
+  ],
+  "bytes": 335971
+ }
+}
