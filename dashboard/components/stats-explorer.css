@@ -172,7 +172,8 @@
 }
 
 .stats-workspace .stats-metric-cell, .stats-workspace .stats-header-tier-2 .num { text-align: right; font-variant-numeric: tabular-nums; }
-.stats-workspace .stats-guide-cell > * { display: block; margin-inline: auto; }
+.stats-workspace .stats-guide-marker { position: relative; display: grid; grid-template-columns: minmax(0, 1fr); place-items: center; transform: translateX(var(--guide-offset, 0px)); }
+.stats-workspace .stats-guide-initials { display: grid; place-items: center; line-height: 1; font-weight: 600; color: var(--color-text); }
 .stats-workspace .stats-header-search .lookup-search-icon { width: 14px; height: 14px; }
 .stats-workspace .stats-header-search .lookup-clear-btn { min-width: 24px; min-height: 24px; }
 .stats-workspace .density-compact .stat-pct-sublabel { font-size: var(--text-xs); }
@@ -200,10 +201,11 @@
 .stats-workspace .stats-table-frame .dense-stats-table tbody tr:hover td,
 .stats-workspace .stats-table-frame .dense-stats-table tbody tr.row-previewed td { background: var(--table-row-hover); }
 .stats-workspace .stats-table-frame .dense-stats-table tbody td { border-bottom-color: var(--color-hairline); }
-.stats-workspace .stats-table-frame .dense-stats-table .stats-guide-cell,
+.stats-workspace .stats-table-frame .dense-stats-table .stats-guide-cell { background: var(--table-surface); border-bottom-color: transparent; }
+.stats-workspace .stats-table-frame .dense-stats-table tbody .stats-guide-cell { position: relative; background: var(--table-data); }
 .stats-workspace .stats-table-frame .dense-stats-table tbody tr:hover .stats-guide-cell,
-.stats-workspace .stats-table-frame .dense-stats-table tbody tr.row-previewed .stats-guide-cell,
-.stats-workspace .stats-table-frame .dense-stats-table tbody tr.row-selected .stats-guide-cell { background: var(--table-surface); border-bottom-color: transparent; }
+.stats-workspace .stats-table-frame .dense-stats-table tbody tr.row-previewed .stats-guide-cell { background: var(--table-data-hover); }
+.stats-workspace .stats-table-frame .dense-stats-table tbody .stats-guide-cell::before { content: ""; position: absolute; inset: 0; background: var(--table-surface); transform: translateX(var(--guide-offset, 0px)); }
 /* Data cells sit in the darker inner well; identity, header and guide columns share the outer surface. */
 .stats-workspace .stats-table-frame .dense-stats-table tbody td.stats-metric-cell { background: var(--table-data); }
 .stats-workspace .stats-table-frame .dense-stats-table tbody tr:hover td.stats-metric-cell,

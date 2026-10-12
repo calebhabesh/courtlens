@@ -7,7 +7,7 @@ import { LookupInput } from "./lookup-input";
 import { CourtLensWordmark } from "./courtlens-wordmark";
 import { StatsPreviewRail } from "./stats-preview-rail";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
-import { useState, useMemo, useCallback, useTransition, Fragment, type KeyboardEvent } from "react";
+import { useState, useMemo, useCallback, useTransition, useEffect, useRef, Fragment, type KeyboardEvent } from "react";
 import { SortHeader, GroupGuide } from "./table-ui";
 import { Icon } from "./ui/icon";
 import { useToast } from "./ui/toast";
@@ -54,6 +54,11 @@ interface WorkbenchPlayerExplorerProps {
 const LOCAL_STORAGE_DENSITY_KEY = storageKeys.density;
 
 const SKELETON_ROW_COUNT = 12;
+
+type GuideGeometry = React.CSSProperties & { "--guide-offset": string };
+const guideGeometry = (index: number): GuideGeometry => ({
+  "--guide-offset": `var(--group-guide-offset-${index}, 0px)`
+});
 
 export function WorkbenchPlayerExplorer({
   data,
@@ -395,6 +400,46 @@ export function WorkbenchPlayerExplorer({
 
   const guideStarts = new Set(headerGroups.slice(1).map(group => group.start));
   const guideCount = identityMode === "none" ? 0 : guideStarts.size;
+  const tableRef = useRef<HTMLTableElement>(null);
+
+  // Right-aligned values leave asymmetric space around the structural guide column.
+  // Use the visible metric bounds to keep one straight divider per group, including
+  // rows with shorter values. Recalculate after fonts, rows or column widths change.
+  useEffect(() => {
+    const table = tableRef.current;
+    if (!table || identityMode === "none" || loadingRows) return;
+    let active = true;
+    const centerGuides = () => {
+      if (!active) return;
+      const rows = [...(table.tBodies[0]?.rows ?? [])];
+      const first = rows[0];
+      if (!first?.classList.contains("stats-table-row")) return;
+      const offsets: [string, number][] = [];
+      for (const guide of first.querySelectorAll<HTMLTableCellElement>(".stats-guide-cell")) {
+        const before = guide.previousElementSibling?.querySelector(".stat-main-value");
+        if (!before) continue;
+        const leadingValues = rows.flatMap(row => {
+          const value = row.cells[guide.cellIndex + 1]?.querySelector(".stat-main-value");
+          return value ? [value.getBoundingClientRect().left] : [];
+        });
+        if (!leadingValues.length) continue;
+        const cell = guide.getBoundingClientRect();
+        const divider = (before.getBoundingClientRect().right + Math.min(...leadingValues)) / 2;
+        offsets.push([`--group-guide-offset-${guide.dataset.guideIndex}`, divider - cell.left - cell.width / 2]);
+      }
+      for (const [variable, offset] of offsets) table.style.setProperty(variable, `${offset}px`);
+    };
+    const observer = new ResizeObserver(centerGuides);
+    observer.observe(table);
+    centerGuides();
+    void document.fonts.ready.then(centerGuides);
+    document.fonts.addEventListener("loadingdone", centerGuides);
+    return () => {
+      active = false;
+      observer.disconnect();
+      document.fonts.removeEventListener("loadingdone", centerGuides);
+    };
+  }, [items, preset, identityMode, loadingRows, viewMode]);
 
   // Context bundle for subcomponents
   const contextBundle = {
@@ -737,7 +782,7 @@ export function WorkbenchPlayerExplorer({
           <TablePercentileLegend cohort={data.table_cohort} />
           <div className={`stats-table-layout ${previewCollapsed ? "preview-collapsed" : ""}`}>
           <div role="region" aria-label="Player statistics scroll area" aria-busy={loadingRows} tabIndex={0} onKeyDown={handleTableKey} className={`table-wrapper stats-scroll-region ${tableDensity === "compact" ? "density-compact" : "density-standard"}`}>
-            <table className="data-table dense-stats-table" aria-label="Dense player statistics explorer"
+            <table ref={tableRef} className="data-table dense-stats-table" aria-label="Dense player statistics explorer"
               style={{
                 "--table-min-width": `calc(114px + var(--identity-name-width) + ${preset.columns.length * 84 + guideCount * 40}px)`,
                 "--table-width": `min(100%, calc(114px + var(--identity-name-width) + ${preset.columns.length * 140 + guideCount * 40}px))`
@@ -761,13 +806,15 @@ export function WorkbenchPlayerExplorer({
                 Players
               </th>
               {headerGroups.map((group, gIdx) => (
-                <th
-                  key={`${group.label}-${gIdx}`}
-                  colSpan={group.colSpan + (identityMode !== "none" && gIdx > 0 ? 1 : 0)}
-                  className="stats-group-th" scope="colgroup"
-                >
-                  {group.label}
-                </th>
+                <Fragment key={`${group.label}-${gIdx}`}>
+                  {identityMode !== "none" && gIdx > 0 && <th className="stats-guide-cell" aria-hidden="true" />}
+                  <th
+                    colSpan={group.colSpan}
+                    className="stats-group-th" scope="colgroup"
+                  >
+                    {group.label}
+                  </th>
+                </Fragment>
               ))}
               <th className="stats-actions-header">Actions</th>
             </tr>
@@ -829,7 +876,9 @@ export function WorkbenchPlayerExplorer({
                     </div>
                   </td>
                   {preset.columns.map((col, index) => <Fragment key={col.key}>
-                    {identityMode !== "none" && guideStarts.has(index) && <td className="stats-guide-cell"><Skeleton variant="circle" width={30} height={30} /></td>}
+                    {identityMode !== "none" && guideStarts.has(index) && <td className="stats-guide-cell" style={guideGeometry(index)}>
+                      <span className="stats-guide-marker"><Skeleton variant="circle" width={30} height={30} /></span>
+                    </td>}
                     <td className={`stats-metric-cell stats-group-${headerGroups.findIndex(group => index >= group.start && index < group.start + group.colSpan) % 2}`}>
                       <Skeleton variant="text" width={40} className="stats-skeleton-value" />
                     </td>
@@ -939,8 +988,8 @@ export function WorkbenchPlayerExplorer({
 
                       return (
                         <Fragment key={col.key}>
-                          {identityMode !== "none" && guideStarts.has(index) && <td className="stats-guide-cell" aria-hidden="true">
-                            <GroupGuide mode={identityMode} player={player} />
+                          {identityMode !== "none" && guideStarts.has(index) && <td className="stats-guide-cell" data-guide-index={index} style={guideGeometry(index)} aria-hidden="true">
+                            <span className="stats-guide-marker"><GroupGuide mode={identityMode} player={player} /></span>
                           </td>}
                         <td
                           className={`stats-metric-cell stats-group-${headerGroups.findIndex(group => index >= group.start && index < group.start + group.colSpan) % 2} ${col.num ? "num" : ""}`}
