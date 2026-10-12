@@ -35,6 +35,20 @@ test("recurring guide modes preserve primary identity, header alignment and relo
     await expect(row.locator(".stats-primary-portrait")).toHaveCount(1);
     await expect(row.getByRole("link", { name: "Fixture Star", exact: true })).toBeVisible();
     expect(await row.locator(".stats-guide-cell [tabindex]").count()).toBe(0);
+    if (mode === "Initials") {
+      const offsets = await row.locator(".stats-guide-initials").evaluateAll(circles => circles.map(circle => {
+        const range = document.createRange();
+        range.selectNodeContents(circle);
+        const text = range.getBoundingClientRect();
+        const box = circle.getBoundingClientRect();
+        return { x: text.x + text.width / 2 - box.x - box.width / 2,
+          y: text.y + text.height / 2 - box.y - box.height / 2 };
+      }));
+      offsets.forEach(offset => {
+        expect(Math.abs(offset.x)).toBeLessThan(1);
+        expect(Math.abs(offset.y)).toBeLessThan(2);
+      });
+    }
     const alignment = await page.locator(".dense-stats-table").evaluate(table => {
       const t = table as HTMLTableElement;
       return { headers: [...t.tHead!.rows].map(r => [...r.cells].reduce((n, c) => n + c.colSpan, 0)), body: t.tBodies[0].rows[0].cells.length };

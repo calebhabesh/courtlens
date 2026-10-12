@@ -547,6 +547,27 @@ contrast checks and desktop/phone extended glance test recorded in
 [PC03 evidence](evidence/pc03/README.md). Public Compare rebuilding remains PC04. The original
 rename/identity, motion and analytical contracts remain in force.
 
+## 2026-10-11 — Owner-requested Stats group-guide centering
+
+[Measured evidence](evidence/stats-group-guide-centering/README.md): recurring guides now
+have separate cells in the group-header tier, rather than belonging to the following group.
+Real-data measurements improve from a 20px offset to 0px across four widths and all guide
+modes. Gutters remain 40px, header/body columns match and there is no page overflow.
+Lint, TypeScript, production build, 415 unit tests, 16 Stats browser checks and both unchanged
+Stats screenshot baselines pass. Scoped glance review is recorded; prior milestone and
+owner-acceptance statuses remain unchanged.
+
+## 2026-10-11 — Visible Stats divider alignment and stronger initials
+
+The owner's annotated screenshot clarified that the previous header-only correction did not
+satisfy the request. [Corrected evidence](evidence/stats-visible-guide-centering/README.md)
+measures visible metric gaps: guide offsets improve from 16–27px to 0px; initials move from
+6px above circle centers to within 0.008px. Guides/background bands track the actual divider
+through resizing, all modes and multi-team logos. Initials are semibold with primary text
+color per the owner's follow-up. Sixteen real-data desktop/tablet/phone cases, scoped glance
+review, lint, TypeScript, production build, 415 unit tests and 18 production Stats browser
+checks pass. Earlier milestone/owner-review statuses remain unchanged.
+
 ## 2026-10-12 — PC12 batch A table presentation
 
 The presentation-clarity handoff owns this batch. Added semantic percentile cells, grouped Team

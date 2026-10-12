@@ -2,23 +2,25 @@ import { expect, test } from "@playwright/test";
 import { openWorkbench } from "./workbench-navigation";
 test.use({ hasTouch: true });
 
-test("standard records are readable and portrait gutters center between metric columns", async ({ page }) => {
+test("standard records are readable and portrait gutters center between metric groups", async ({ page }) => {
   await page.setViewportSize({ width: 2048, height: 1100 });
   await openWorkbench(page, "/stats");
   const geometry = await page.locator(".stats-table-row").first().evaluate(row => {
     const center = (element: Element) => { const box = element.getBoundingClientRect(); return box.x + box.width / 2; };
     return { height: row.getBoundingClientRect().height,
       font: getComputedStyle(row.querySelector(".stat-main-value")!).fontSize,
-      // FO14 right-aligns values; a portrait stays in the middle of the gutter between columns.
-      offsets: [...row.querySelectorAll(".stats-guide-cell")].map(cell => center(cell.firstElementChild!) -
-        (cell.previousElementSibling!.getBoundingClientRect().right + cell.nextElementSibling!.getBoundingClientRect().left) / 2) };
+      // Measure the visible gap the owner marked, rather than the structural spacer cell.
+      offsets: [...row.querySelectorAll(".stats-guide-cell")].map(cell => center(cell.querySelector(".stats-guide-marker > *")!) -
+        (cell.previousElementSibling!.querySelector(".stat-main-value")!.getBoundingClientRect().right +
+         cell.nextElementSibling!.querySelector(".stat-main-value")!.getBoundingClientRect().left) / 2) };
   });
   expect(geometry.height).toBeCloseTo(52, 1);
   expect(geometry.font).toBe("14px");
   geometry.offsets.forEach(offset => expect(Math.abs(offset)).toBeLessThan(1));
+  expect(geometry.offsets).toHaveLength(3);
   const portraits = await page.locator(".stats-table-row").first().evaluate(row => ({
     main: row.querySelector(".stats-primary-portrait")!.getBoundingClientRect().width,
-    guides: [...row.querySelectorAll(".stats-guide-cell > *")].map(image => image.getBoundingClientRect().width)
+    guides: [...row.querySelectorAll(".stats-guide-marker > *")].map(image => image.getBoundingClientRect().width)
   }));
   expect(portraits).toEqual({ main: 40, guides: [34, 34, 34] });
 });
