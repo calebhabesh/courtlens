@@ -533,6 +533,8 @@ export type StatsPresentation = {
   // null/omitted selects all; [] selects none. Does not redefine the cohort.
   player_ids?: string[] | null;
   table_percentiles?: boolean;
+  // NBA listed roster positions (current index, not backdated); hyphenated listings match both.
+  positions?: ("G" | "F" | "C")[] | null;
 };
 
 export type TableCohort = {

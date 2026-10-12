@@ -220,12 +220,14 @@ describe("stats-presets", () => {
 });
 
 describe("table guide boundaries", () => {
-  it("combines Overview counting metrics into one section", () => {
+  it("groups Overview in Databallr's section order", () => {
     expect(tableGroups(getPresetById("overview"))).toEqual([
       { label: "Profile", start: 0, colSpan: 3 },
-      { label: "Counting", start: 3, colSpan: 3 },
-      { label: "Defense", start: 6, colSpan: 2 },
-      { label: "Efficiency", start: 8, colSpan: 5 }
+      { label: "Impact", start: 3, colSpan: 3 },
+      { label: "Counting", start: 6, colSpan: 4 },
+      { label: "Eff", start: 10, colSpan: 3 },
+      { label: "Shooting", start: 13, colSpan: 3 },
+      { label: "Other", start: 16, colSpan: 4 }
     ]);
   });
   it("preserves noncontiguous custom groups and selected column order", () => {

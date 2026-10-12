@@ -12,8 +12,8 @@ test.beforeEach(async ({ page }) => {
   } }));
 });
 
-// Phase is a segmented control on Stats (Databallr alignment); the team picker is the third select.
-for (const label of ["Filter by season", "Filter by NBA team", "Analysis window"]) {
+// Phase is a segmented control and the team picker a logo grid on Stats (Databallr alignment).
+for (const label of ["Filter by season", "Analysis window"]) {
   test(`${label} popup stays readable with a light OS theme`, async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await page.emulateMedia({ colorScheme: "light" });
