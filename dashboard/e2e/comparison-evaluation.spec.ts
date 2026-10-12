@@ -31,7 +31,7 @@ test("evaluation presents the no-promotion decision and failed build state", asy
   await page.goto("/evaluation");
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Evaluation Archive");
   await expect(page.getByText("No challenger promoted").filter({ visible: true })).toBeVisible();
-  await expect(page.getByText("7.82", { exact: true }).filter({ visible: true })).toBeVisible();
+  await expect(page.getByRole("region", { name: "Key findings" }).getByText("7.82 ref pts", { exact: true }).filter({ visible: true })).toBeVisible();
   await expect(page.getByText(/failed · Sep 21, 2026/).filter({ visible: true })).toBeVisible();
 });
 

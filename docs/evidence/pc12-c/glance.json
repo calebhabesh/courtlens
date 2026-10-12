@@ -1,0 +1,243 @@
+{
+  "items": [
+    "Header",
+    "Filters",
+    "First screen",
+    "Alignment",
+    "Identity",
+    "Missing data",
+    "Icons",
+    "States",
+    "Phone",
+    "Dates",
+    "First load without parameters",
+    "Labeled main visual",
+    "Color semantics",
+    "Sample and source"
+  ],
+  "legend": {
+    "P": "pass",
+    "~": "partial or not fully measured",
+    "F": "fail",
+    "-": "not applicable"
+  },
+  "pages": [
+    {
+      "route": "/evaluation",
+      "passes": 11,
+      "applicable": 13,
+      "results": {
+        "Header": "P",
+        "Filters": "P",
+        "First screen": "P",
+        "Alignment": "~",
+        "Identity": "-",
+        "Missing data": "P",
+        "Icons": "P",
+        "States": "~",
+        "Phone": "P",
+        "Dates": "P",
+        "First load without parameters": "P",
+        "Labeled main visual": "P",
+        "Color semantics": "P",
+        "Sample and source": "P"
+      },
+      "notes": {
+        "Alignment": "Token spacing and graph axes reviewed; exhaustive page-wide alignment is not measured.",
+        "States": "Unit tests cover plot unknowns/zeros; browser checks cover missing examples, incompatible snapshot recovery, detail/reproduction failures and personal pagination. Every real service state is not injected.",
+        "Identity": "The subject is an experiment, not a player/team.",
+        "First load without parameters": "Both real production captures enter with no query parameters.",
+        "Missing data": "Captured main flow has no ISO dates, hashes, verification titles or cutoff code rules. Technical details remain available in Data details."
+      },
+      "desktop": "screenshots/evaluation-desktop.png",
+      "phone": "screenshots/evaluation-phone.png"
+    },
+    {
+      "route": "/investigations",
+      "passes": 10,
+      "applicable": 13,
+      "results": {
+        "Header": "P",
+        "Filters": "~",
+        "First screen": "P",
+        "Alignment": "~",
+        "Identity": "P",
+        "Missing data": "P",
+        "Icons": "P",
+        "States": "~",
+        "Phone": "P",
+        "Dates": "P",
+        "First load without parameters": "P",
+        "Labeled main visual": "-",
+        "Color semantics": "P",
+        "Sample and source": "P"
+      },
+      "notes": {
+        "Alignment": "Token spacing and graph axes reviewed; exhaustive page-wide alignment is not measured.",
+        "States": "Unit tests cover plot unknowns/zeros; browser checks cover missing examples, incompatible snapshot recovery, detail/reproduction failures and personal pagination. Every real service state is not injected.",
+        "Labeled main visual": "This is a curated finding menu, not an analytical result. Its four labeled identity cards link to the actual results.",
+        "Filters": "Immutable menu context is clipped on phone; each card keeps its full retained scope.",
+        "First load without parameters": "Both real production captures enter with no query parameters.",
+        "Missing data": "Captured main flow has no ISO dates, hashes, verification titles or cutoff code rules. Technical details remain available in Data details."
+      },
+      "desktop": "screenshots/public-investigations-desktop.png",
+      "phone": "screenshots/public-investigations-phone.png"
+    },
+    {
+      "route": "/investigations/saved/3bcb37c9-b410-44b1-be7f-c3b368fbe28c",
+      "passes": 12,
+      "applicable": 14,
+      "results": {
+        "Header": "P",
+        "Filters": "P",
+        "First screen": "P",
+        "Alignment": "~",
+        "Identity": "P",
+        "Missing data": "P",
+        "Icons": "P",
+        "States": "~",
+        "Phone": "P",
+        "Dates": "P",
+        "First load without parameters": "P",
+        "Labeled main visual": "P",
+        "Color semantics": "P",
+        "Sample and source": "P"
+      },
+      "notes": {
+        "Alignment": "Token spacing and graph axes reviewed; exhaustive page-wide alignment is not measured.",
+        "States": "Unit tests cover plot unknowns/zeros; browser checks cover missing examples, incompatible snapshot recovery, detail/reproduction failures and personal pagination. Every real service state is not injected.",
+        "First load without parameters": "Both real production captures enter with no query parameters.",
+        "Missing data": "Captured main flow has no ISO dates, hashes, verification titles or cutoff code rules. Technical details remain available in Data details."
+      },
+      "desktop": "screenshots/saved-distribution-desktop.png",
+      "phone": "screenshots/saved-distribution-phone.png"
+    },
+    {
+      "route": "/investigations/saved/ed0c4c82-9b31-4527-962e-012d180ec2ba",
+      "passes": 8,
+      "applicable": 13,
+      "results": {
+        "Header": "P",
+        "Filters": "P",
+        "First screen": "F",
+        "Alignment": "~",
+        "Identity": "P",
+        "Missing data": "P",
+        "Icons": "P",
+        "States": "~",
+        "Phone": "P",
+        "Dates": "P",
+        "First load without parameters": "P",
+        "Labeled main visual": "F",
+        "Color semantics": "-",
+        "Sample and source": "~"
+      },
+      "notes": {
+        "Alignment": "Token spacing and graph axes reviewed; exhaustive page-wide alignment is not measured.",
+        "States": "Unit tests cover plot unknowns/zeros; browser checks cover missing examples, incompatible snapshot recovery, detail/reproduction failures and personal pagination. Every real service state is not injected.",
+        "First screen": "Operational metadata tiles start at 293px desktop, but the actual analytical table starts below 400px. C changes labels and retained evidence presentation; it does not rebuild these analytical views.",
+        "Labeled main visual": "The retained analytical table has no leading chart; preserved limitation.",
+        "Sample and source": "Retained release scope and returned rows are visible; per-operation sample/source are deeper in the result/evidence.",
+        "First load without parameters": "Both real production captures enter with no query parameters.",
+        "Missing data": "Captured main flow has no ISO dates, hashes, verification titles or cutoff code rules. Technical details remain available in Data details."
+      },
+      "desktop": "screenshots/saved-periods-desktop.png",
+      "phone": "screenshots/saved-periods-phone.png"
+    },
+    {
+      "route": "/investigations/saved/be611173-e250-44cc-bd72-7e64f24341ec",
+      "passes": 8,
+      "applicable": 13,
+      "results": {
+        "Header": "P",
+        "Filters": "P",
+        "First screen": "F",
+        "Alignment": "~",
+        "Identity": "P",
+        "Missing data": "P",
+        "Icons": "P",
+        "States": "~",
+        "Phone": "P",
+        "Dates": "P",
+        "First load without parameters": "P",
+        "Labeled main visual": "F",
+        "Color semantics": "-",
+        "Sample and source": "~"
+      },
+      "notes": {
+        "Alignment": "Token spacing and graph axes reviewed; exhaustive page-wide alignment is not measured.",
+        "States": "Unit tests cover plot unknowns/zeros; browser checks cover missing examples, incompatible snapshot recovery, detail/reproduction failures and personal pagination. Every real service state is not injected.",
+        "First screen": "Operational metadata tiles start at 293px desktop, but the actual analytical table starts below 400px. C changes labels and retained evidence presentation; it does not rebuild these analytical views.",
+        "Labeled main visual": "The retained analytical table has no leading chart; preserved limitation.",
+        "Sample and source": "Retained release scope and returned rows are visible; per-operation sample/source are deeper in the result/evidence.",
+        "First load without parameters": "Both real production captures enter with no query parameters.",
+        "Missing data": "Captured main flow has no ISO dates, hashes, verification titles or cutoff code rules. Technical details remain available in Data details."
+      },
+      "desktop": "screenshots/saved-venue-desktop.png",
+      "phone": "screenshots/saved-venue-phone.png"
+    },
+    {
+      "route": "/investigations/saved/fff8adb1-f205-4fdf-a353-8618ac567440",
+      "passes": 8,
+      "applicable": 13,
+      "results": {
+        "Header": "P",
+        "Filters": "P",
+        "First screen": "F",
+        "Alignment": "~",
+        "Identity": "P",
+        "Missing data": "P",
+        "Icons": "P",
+        "States": "~",
+        "Phone": "P",
+        "Dates": "P",
+        "First load without parameters": "P",
+        "Labeled main visual": "F",
+        "Color semantics": "-",
+        "Sample and source": "~"
+      },
+      "notes": {
+        "Alignment": "Token spacing and graph axes reviewed; exhaustive page-wide alignment is not measured.",
+        "States": "Unit tests cover plot unknowns/zeros; browser checks cover missing examples, incompatible snapshot recovery, detail/reproduction failures and personal pagination. Every real service state is not injected.",
+        "First screen": "Operational metadata tiles start at 293px desktop, but the actual analytical table starts below 400px. C changes labels and retained evidence presentation; it does not rebuild these analytical views.",
+        "Labeled main visual": "The retained analytical table has no leading chart; preserved limitation.",
+        "Sample and source": "Retained release scope and returned rows are visible; per-operation sample/source are deeper in the result/evidence.",
+        "First load without parameters": "Both real production captures enter with no query parameters.",
+        "Missing data": "Captured main flow has no ISO dates, hashes, verification titles or cutoff code rules. Technical details remain available in Data details."
+      },
+      "desktop": "screenshots/saved-peers-desktop.png",
+      "phone": "screenshots/saved-peers-phone.png"
+    },
+    {
+      "route": "/playoffs",
+      "passes": 10,
+      "applicable": 14,
+      "results": {
+        "Header": "P",
+        "Filters": "P",
+        "First screen": "P",
+        "Alignment": "~",
+        "Identity": "P",
+        "Missing data": "P",
+        "Icons": "P",
+        "States": "~",
+        "Phone": "P",
+        "Dates": "P",
+        "First load without parameters": "P",
+        "Labeled main visual": "~",
+        "Color semantics": "P",
+        "Sample and source": "~"
+      },
+      "notes": {
+        "Alignment": "Token spacing and graph axes reviewed; exhaustive page-wide alignment is not measured.",
+        "States": "Unit tests cover plot unknowns/zeros; browser checks cover missing examples, incompatible snapshot recovery, detail/reproduction failures and personal pagination. Every real service state is not injected.",
+        "Labeled main visual": "Bracket cards have team identity and observed series outcomes. No new score/margin graphic is added.",
+        "Sample and source": "Series count is visible; detailed source/coverage remains in its existing disclosure/tab.",
+        "First load without parameters": "Both real production captures enter with no query parameters.",
+        "Missing data": "Captured main flow has no ISO dates, hashes, verification titles or cutoff code rules. Technical details remain available in Data details."
+      },
+      "desktop": "screenshots/playoffs-desktop.png",
+      "phone": "screenshots/playoffs-phone.png"
+    }
+  ]
+}

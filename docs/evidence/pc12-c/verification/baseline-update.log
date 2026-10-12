@@ -1,0 +1,11 @@
+
+Running 4 tests using 2 workers
+
+  ✓  2 e2e/visual-baselines.spec.ts:107:9 › FO06 baselines phone › playoffs bracket (860ms)
+  ✓  1 e2e/visual-baselines.spec.ts:107:9 › FO06 baselines desktop › playoffs bracket (896ms)
+/home/ethioking/dev/courtlens/data/pc12-c-verify-temp/dashboard/e2e/visual-baselines.spec.ts-snapshots/evaluation-phone-linux.png is re-generated, writing actual.
+  ✓  4 e2e/visual-baselines.spec.ts:219:315 › FO12 baselines phone › evaluation (949ms)
+/home/ethioking/dev/courtlens/data/pc12-c-verify-temp/dashboard/e2e/visual-baselines.spec.ts-snapshots/evaluation-desktop-linux.png is re-generated, writing actual.
+  ✓  3 e2e/visual-baselines.spec.ts:219:315 › FO12 baselines desktop › evaluation (1.2s)
+
+  4 passed (2.4s)
