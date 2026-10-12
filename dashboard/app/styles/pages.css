@@ -3536,11 +3536,18 @@
   border: 1px solid var(--color-hairline);
 }
 
+/* Hover cards anchor to their data point inside a frame the size of the SVG (lib/chart-anchor). */
+.chart-hover-frame {
+  position: relative;
+  min-width: 480px;
+}
+
 .scatter-tooltip,
 .lines-tooltip {
   position: absolute;
   left: var(--tooltip-left, 0px);
   top: var(--tooltip-top, 0px);
+  transform: translate(var(--tooltip-dx, 14px), var(--tooltip-dy, -50%));
   pointer-events: none;
   z-index: var(--z-dropdown);
   background: var(--color-surface-3);
@@ -3552,6 +3559,10 @@
   color: var(--color-text);
   min-width: 180px;
 }
+
+.scatter-tooltip[data-side="left"], .lines-tooltip[data-side="left"] { --tooltip-dx: calc(-100% - 14px); }
+.scatter-tooltip[data-align="below"], .lines-tooltip[data-align="below"] { --tooltip-dy: 10px; }
+.scatter-tooltip[data-align="above"], .lines-tooltip[data-align="above"] { --tooltip-dy: calc(-100% - 10px); }
 
 .scatter-tooltip-title,
 .lines-tooltip-title {

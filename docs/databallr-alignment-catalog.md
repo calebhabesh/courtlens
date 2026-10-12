@@ -180,6 +180,15 @@ Follow-up instructions (owner, 2026-10-12, fifth review):
     detail drawer shooting cards show a short caption (formula on hover). Glossary, methodology and
     Data details keep formulas.
 36. [x] Selects keep no outline after a mouse pick. — focus ring on keyboard focus only (`:focus-visible`).
+Follow-up instructions (owner, 2026-10-12, sixth review):
+37. [x] Chart hover cards sit next to their data point. — scatter and trend-lines cards were placed in
+    viewBox units as if pixels, so they drifted as the SVG scaled; now anchored in percentages of the
+    plot (`lib/chart-anchor.ts`), right or left of the point and flipped near edges (~13 px gap).
+    Also: the frame height re-measures after animations settle (an entering page's transform could
+    leave it a pixel or two short).
+38. [ ] DPM / ODPM / DDPM. — DARKO (darko.app) offers a leaderboard CSV but states no licence; source
+    policy v2 excludes external model outputs (B25). Feasible as a weekly operator import credited to
+    DARKO if the owner admits the source; awaiting the owner's decision.
 Not applicable (no data or feature): the video and trophy
 (Leaders) toolbar buttons. Tab/Shift+Tab view cycling is exposed as buttons only, so Tab keeps
 normal keyboard focus order.
