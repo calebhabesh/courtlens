@@ -132,6 +132,13 @@ Geometry only: exact pinned `d3-shape` 3.2.0, `d3-hierarchy` 3.1.2, `d3-sankey` 
   `high` selects the larger value; `low` selects the smaller value. A tie, missing value or undeclared
   direction stays neutral. The visible chip says “fewer” for lower-is-better; accessible text names
   the subject. **No overall verdict, composite score or winner label.**
+- `PairedBars` (PC12 B): A/B bars share a zero-based scale per metric; signed values keep their
+  zero baseline. Names, exact values and endpoints remain visible; unknown has no geometry.
+  Optional catalog-direction difference chips describe one metric only. Fixed domains support
+  observed interval coverage against a declared nominal target.
+- `ReliabilityPlot` (PC12 B): measured nonempty probability bins, predicted mean against observed
+  rate. Circles/squares supplement A/B color; labeled diagonal and axes; no bin interpolation or
+  invented uncertainty. Selection bins remain selection evidence, not final-test performance.
 - `ValueBar`: signed value against a visible zero baseline, explicit scale endpoints and clipping
   disclosure. Unknown gets no bar; an observed zero remains an observed zero.
 - `ThresholdBar`: known total against individually labeled thresholds; nearby markers retain

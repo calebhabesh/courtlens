@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { Button, Panel, SegmentedControl } from "@/components/ui";
-import { ChartFrame, DeltaChip, Donut, PercentileCell, Sankey, ShapePack, ThresholdBar, TimelineGrid, ValueBar, comparisonFlags, type Category, type ChartMeta } from "./index";
+import { ChartFrame, PairedBars, ReliabilityPlot, DeltaChip, Donut, PercentileCell, Sankey, ShapePack, ThresholdBar, TimelineGrid, ValueBar, comparisonFlags, type Category, type ChartMeta } from "./index";
 
 const categoryLabels: Record<Category, string> = { 1: "Category one", 2: "Category two", 3: "Category three", 4: "Category four", 5: "Category five", 6: "Category six" };
 const periods = ["2026-27", "2027-28", "2028-29", "2029-30"];
@@ -42,6 +42,8 @@ export function DesignChartShowcase() {
       <Panel compact title="ThresholdBar"><ThresholdBar {...meta} title="Labeled thresholds" value={amount} maximum={100} thresholds={[{ label: "Threshold one", value: 65 }, { label: "Threshold two", value: 82 }, { label: "Threshold three", value: 95 }]} /></Panel>
       <Panel compact title="Donut"><Donut {...meta} title="Known shares with an unknown row" items={[{ id: "1", label: "Category one", value: amount }, { id: "2", label: "Category two", value: 25 }, { id: "3", label: "Category three", value: 15 }, { id: "4", label: "Not observed", value: null }]} /></Panel>
     </div>
+    <Panel compact title="PairedBars · shared scale per metric"><PairedBars {...meta} title="Two subjects, signed observations" names={["Subject A", "Subject B"]} rows={[{key: "signed", label: "Signed value", a: -2, b: 3}, {key: "missing", label: "Unknown versus zero", a: null, b: 0}]} /></Panel>
+    <Panel compact title="ReliabilityPlot · measured bins"><ReliabilityPlot {...meta} title="Illustrative selection reliability" series={[{name: "Baseline", bins: [{lower: 0, upper: .5, rows: 10, mean_probability: .25, observed_rate: .3}]}, {name: "Candidate", bins: [{lower: .5, upper: 1, rows: 10, mean_probability: .7, observed_rate: .6}]}]} /></Panel>
     <Panel compact title="Sankey · stacked stage bars on phones"><Sankey {...meta} title="Known flow" nodes={[{ id: "total", label: "Known total", tone: "identity-a" }, { id: "one", label: "Category one", tone: "category-1" }, { id: "two", label: "Category two", tone: "category-2" }, { id: "a", label: "Subject A", tone: "category-1" }, { id: "b", label: "Subject B", tone: "category-2" }]} links={[{ source: "total", target: "one", value: amount }, { source: "total", target: "two", value: 40 }, { source: "one", target: "a", value: amount }, { source: "two", target: "b", value: 40 }, { source: "total", target: "a", value: null }]} /></Panel>
     <Panel compact title="TimelineGrid · sticky names and labeled statuses"><TimelineGrid {...meta} title="Contract status palette" periods={periods} rows={[
       { id: "a", label: "Subject A", cells: [{ period: "2026-27", value: amount, status: "guaranteed" }, { period: "2027-28", value: 62, status: "player-option" }, { period: "2028-29", value: null, status: "unknown" }] },

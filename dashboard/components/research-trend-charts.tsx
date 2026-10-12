@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import { formatDate } from "@/lib/format-date";
 import type { PlayerGameLogItem } from "@/lib/types";
 
@@ -25,25 +25,27 @@ export function ResearchTrendCharts({ games, playerName }: ResearchTrendChartsPr
   }
 
   // Compute stats for series
-  const minutesSeries = validGames.map((g) => g.minutes ?? 0);
+  const minutesSeries = validGames.map((g) => g.minutes ?? null);
   const attemptsSeries = validGames.map((g) => {
     const fga = g.stats?.field_goals_attempted;
-    return typeof fga === "number" ? fga : 0;
+    return typeof fga === "number" ? fga : null;
   });
-  const pointsSeries = validGames.map((g) => g.points ?? 0);
+  const pointsSeries = validGames.map((g) => g.points ?? null);
 
-  const avgMinutes = (minutesSeries.reduce((a, b) => a + b, 0) / minutesSeries.length).toFixed(1);
-  const avgAttempts = (attemptsSeries.reduce((a, b) => a + b, 0) / attemptsSeries.length).toFixed(1);
-  const avgPoints = (pointsSeries.reduce((a, b) => a + b, 0) / pointsSeries.length).toFixed(1);
+  const average = (series: (number | null)[]) => {
+    const known = series.filter((v): v is number => v !== null);
+    return known.length ? (known.reduce((a, b) => a + b, 0) / known.length).toFixed(1) : "—";
+  };
+  const avgMinutes = average(minutesSeries), avgAttempts = average(attemptsSeries), avgPoints = average(pointsSeries);
 
   const renderSmallMultiple = (
     title: string,
-    series: number[],
+    series: (number | null)[],
     color: string,
     avg: string,
     unit: string
   ) => {
-    const maxVal = Math.max(...series, 1);
+    const maxVal = Math.max(...series.filter((v): v is number => v !== null), 1);
     const width = 320;
     const height = 90;
     const padding = 16;
@@ -52,20 +54,18 @@ export function ResearchTrendCharts({ games, playerName }: ResearchTrendChartsPr
 
     const points = series.map((val, i) => {
       const x = padding + (series.length > 1 ? (i / (series.length - 1)) * chartW : chartW / 2);
-      const y = height - padding - (val / maxVal) * chartH;
+      const y = val === null ? null : height - padding - (val / maxVal) * chartH;
       return { x, y, val };
     });
 
-    const pathD = points.length > 0
-      ? `M ${points.map((p) => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(" L ")}`
-      : "";
+    const pathD = points.map((p, i) => p.y === null ? "" : `${i === 0 || points[i - 1].y === null ? "M" : "L"} ${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(" ");
 
     return (
       <div className="trend-card">
         <div className="trend-card-header">
           <span className="trend-card-title">{title}</span>
           <span className="trend-card-avg font-mono">
-            Avg: <strong>{avg}</strong> {unit}
+            Avg: <strong>{avg}</strong> {unit} · {series.filter(v => v !== null).length} known
           </span>
         </div>
 
@@ -85,6 +85,8 @@ export function ResearchTrendCharts({ games, playerName }: ResearchTrendChartsPr
             strokeWidth="1"
           />
 
+          <text x={padding} y="12" fill="var(--color-text-secondary)" fontSize="12">{maxVal} {unit}</text>
+          <text x={padding} y={height - 2} fill="var(--color-text-secondary)" fontSize="12">0</text>
           {/* Average reference line */}
           {parseFloat(avg) > 0 && (
             <line
@@ -108,7 +110,7 @@ export function ResearchTrendCharts({ games, playerName }: ResearchTrendChartsPr
           />
 
           {/* Discrete points for actual observations */}
-          {points.map((p, idx) => (
+          {points.map((p, idx) => p.y !== null && (
             <circle
               key={idx}
               cx={p.x}
@@ -139,7 +141,7 @@ export function ResearchTrendCharts({ games, playerName }: ResearchTrendChartsPr
         <div>
           <h3 className="section-title">Production Trajectory</h3>
           <p className="section-note">
-            Empirical observations across {validGames.length} appeared games. Dashed line denotes sample mean; no synthetic smoothing applied.
+            Source: CourtLens admitted player box scores · {validGames.length} appeared games. Color = labeled metric; dashed = mean of known values. Gaps stay unknown.
           </p>
         </div>
         <button
@@ -158,9 +160,7 @@ export function ResearchTrendCharts({ games, playerName }: ResearchTrendChartsPr
         {renderSmallMultiple("Points", pointsSeries, "var(--color-accent)", avgPoints, "pts")}
       </div>
 
-      <p className="trend-narrative">
-        <strong>Interpretation:</strong> Over the last {validGames.length} appearances for {playerName}, scoring peaked at {Math.max(...pointsSeries)} points ({formatDate(validGames[pointsSeries.indexOf(Math.max(...pointsSeries))].game_date)}) while averaging {avgMinutes} minutes and {avgAttempts} field goal attempts.
-      </p>
+      <p className="trend-narrative">{playerName} · average {avgPoints} points, {avgMinutes} minutes and {avgAttempts} attempts over known observations. These are past games, not a forecast.</p>
 
       {showTable && (
         <div className="trend-data-table-wrapper">
