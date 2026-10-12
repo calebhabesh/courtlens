@@ -110,3 +110,98 @@ models:
           - accepted_values:
               arguments:
                 values: [clean, patched]
+  - name: mart_stats_player_play_types
+    description: Synergy play types per player-team; season totals.
+    config:
+      tags: [stats_feed]
+    columns:
+      - name: row_key
+        data_tests: [unique, not_null]
+      - name: player_id
+        data_tests: [not_null]
+      - name: play_type
+        data_tests: [not_null]
+  - name: mart_stats_player_tracking
+    description: Tracking dashboards in long form; omitted values are unknown.
+    config:
+      tags: [stats_feed]
+    columns:
+      - name: row_key
+        data_tests: [unique, not_null]
+      - name: player_id
+        data_tests: [not_null]
+      - name: measure
+        data_tests: [not_null]
+      - name: stat
+        data_tests: [not_null]
+  - name: mart_stats_player_defense
+    description: Closest-defender opponent shooting by category.
+    config:
+      tags: [stats_feed]
+    columns:
+      - name: row_key
+        data_tests: [unique, not_null]
+      - name: player_id
+        data_tests: [not_null]
+      - name: category
+        data_tests: [not_null]
+  - name: mart_stats_player_hustle
+    description: Hustle season totals per player-team.
+    config:
+      tags: [stats_feed]
+    columns:
+      - name: row_key
+        data_tests: [unique, not_null]
+      - name: player_id
+        data_tests: [not_null]
+  - name: mart_stats_season_matchups
+    description: Season matchup totals by offensive/defensive player.
+    config:
+      tags: [stats_feed]
+    columns:
+      - name: row_key
+        data_tests: [unique, not_null]
+      - name: off_player_id
+        data_tests: [not_null]
+      - name: def_player_id
+        data_tests: [not_null]
+  - name: mart_stats_lineups
+    description: Five-man lineup ratings; dataset_truncated marks the 2,000-row cap.
+    config:
+      tags: [stats_feed]
+    columns:
+      - name: row_key
+        data_tests: [unique, not_null]
+      - name: team_id
+        data_tests: [not_null]
+      - name: lineup_id
+        data_tests: [not_null]
+  - name: mart_stats_draft_combine
+    description: Draft combine measurements; never listed roster values.
+    config:
+      tags: [stats_feed]
+    columns:
+      - name: row_key
+        data_tests: [unique, not_null]
+      - name: draft_year
+        data_tests: [not_null]
+      - name: entity_key
+        data_tests: [not_null]
+  - name: mart_stats_draft_history
+    description: Draft history by draft year.
+    config:
+      tags: [stats_feed]
+    columns:
+      - name: row_key
+        data_tests: [unique, not_null]
+      - name: draft_year
+        data_tests: [not_null]
+  - name: mart_stats_pbpstats_player_totals
+    description: pbpstats secondary possessions/plus-minus; 500-row cap.
+    config:
+      tags: [stats_feed]
+    columns:
+      - name: row_key
+        data_tests: [unique, not_null]
+      - name: player_id
+        data_tests: [not_null]

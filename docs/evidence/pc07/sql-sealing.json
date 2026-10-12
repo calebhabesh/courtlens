@@ -1,0 +1,7 @@
+{
+ "update_dataset": "stats feeds are append-only",
+ "delete_versions": "stats feeds are append-only",
+ "truncate_members": "stats feeds are append-only",
+ "extend_membership": "stats feed membership is sealed",
+ "update_acquisition": "stats feed provenance is append-only"
+}

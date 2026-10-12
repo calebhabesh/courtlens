@@ -266,3 +266,28 @@ sources:
           - name: game_id
             data_tests: [not_null]
 
+      - name: stats_feed_datasets
+        description: PC07 append-only season-level feed observations (hoopR raw, pbpstats).
+        columns:
+          - name: id
+            data_tests: [unique, not_null]
+          - name: observation_order
+            data_tests: [unique, not_null]
+      - name: stats_feed_versions
+        columns:
+          - name: id
+            data_tests: [unique, not_null]
+      - name: stats_feed_members
+        columns:
+          - name: dataset_id
+            data_tests:
+              - relationships:
+                  arguments:
+                    to: source('operational', 'stats_feed_datasets')
+                    field: id
+          - name: version_id
+            data_tests:
+              - relationships:
+                  arguments:
+                    to: source('operational', 'stats_feed_versions')
+                    field: id

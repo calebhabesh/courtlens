@@ -24,7 +24,7 @@ parameters**. Blocks before each owner gate also need recorded owner approval.
 | PC04 Compare and first-load defaults (G2) | implemented_unverified (G2 cleared; retained glance issues) |
 | PC05 Data: rosters, positions, injuries | verification_blocked (roster snapshot admitted; injury/transaction source evidence pending) |
 | PC06 Data: finance | verification_blocked (BRef captured; three canonical salaries; Spotrac / broad identity coverage pending) |
-| PC07 Data: tracking, play types, matchups, combine, on/off | planned |
+| PC07 Data: tracking, play types, matchups, combine, on/off | verified (2025-26 feeds, 2000–26 drafts; pbpstats WOWY not ingested; capabilities partial) |
 | PC08 Contracts and Free Agency views (G3) | planned |
 | PC09 Value metric and archetypes | planned |
 | PC10 Roster Shapes (G4) | planned |
@@ -305,3 +305,39 @@ parameters**. Blocks before each owner gate also need recorded owner approval.
 - PC06 remains `verification_blocked`: broad canonical salary mapping and real Spotrac cap/FA
   ingestion are pending. Missing values and market status are not invented to fill the gap.
   PC07 and PC08 have not started; finance first-load defaults are not promoted and G3 is not cleared.
+
+## 2026-10-11 — PC07 season-level stats feeds verified
+
+- Owner instruction: “Can you begin the next block”, noting data-source issues and quoting PC06
+  commit `858b5ab`. Scope is PC07 only. PC05/PC06 stay `verification_blocked`; PC08 has not started.
+- [Evidence and reproduction](evidence/pc07/README.md), [stats feeds contract](design/stats-feeds-v1.md),
+  [run report](evidence/pc07/run-report.json), [coverage](evidence/pc07/coverage.json),
+  [catalog capabilities](evidence/pc07/catalog-capabilities.json).
+- Sources were checked before any code: the hoopR NBA Stats raw mirror is live and CC BY 4.0;
+  pbpstats `get-totals` answers without robots.txt. Probing found three issues, all now encoded as
+  rules: NBA Stats lineups stop at 2,000 rows and pbpstats at 500 (flagged `truncated`); some feeds
+  are observed empty (2025-26 playoff matchups; four defensive play types), stored as empty, never
+  zero; and hoopR's file labels run one year ahead for draft/combine, so scope comes from each
+  payload's declared parameters.
+- Real run (pinned commit `7f2c0afa…`): 205 fetches, all HTTP 200, 73,132,186 retained bytes. The
+  first pass admitted 194 and rejected 11. Ten were early combine files with one `PLAYER_ID -1`
+  placeholder each; that row is now kept with unknown identity, never name-matched. One was the
+  2025-26 regular-season matchup file, which declares `"2025"`; it is accepted only because all
+  147,303 rows carry `SEASON_ID 22025`. Every earlier dataset re-verified unchanged before the
+  11 were re-admitted from retained bytes. Re-admission also exposed and fixed a bind-parameter
+  overflow in the version lookup (rolled back, nothing written).
+- Final: 205 immutable datasets, 200,690 row versions; 205/205 verify. Migration `13b810a4f011`
+  adds three isolated tables; SQL rejects update/delete/truncate, membership extension and
+  provenance edits on the real database. 161 publication pointers unchanged.
+- dbt `tag:stats_feed`: 44/44 pass. Nine marts (play types, long-form tracking, defense, hustle,
+  season matchups, lineups, draft combine, draft history, pbpstats totals). Spot checks match
+  known facts (SGA isolation leader; 2025 draft order; Maluach widest 2025 wingspan), and pbpstats
+  and NBA tracking minutes agree exactly for the top five players.
+- The workbench catalog declares the eight observed capabilities `partial`, with seasons, phases,
+  empty and truncated feeds. Placeholders remain for capabilities without observations.
+- Checks: 37 focused unit/PostgreSQL checks; [full suite](evidence/pc07/verification/python.log)
+  1,969 passed, one existing browser-prerequisite skip, 19 published-data deselections and the
+  existing Google GenAI/Python 3.14 deprecation warning. Ruff/format and strict mypy clean.
+- Not done: pbpstats WOWY (proposed: derive in PC11 from lineups, or record the gap); seasons other
+  than 2025-26. Views wait for PC08/PC11. Dashboard checks are not rerun for this backend-only block.
+

@@ -1,0 +1,163 @@
+{
+ "row_counts": {
+  "mart_stats_player_play_types": 6886,
+  "mart_stats_player_tracking": 170725,
+  "mart_stats_player_defense": 4771,
+  "mart_stats_player_hustle": 803,
+  "mart_stats_season_matchups": 147303,
+  "mart_stats_lineups": 3442,
+  "mart_stats_draft_combine": 1873,
+  "mart_stats_draft_history": 1602,
+  "mart_stats_pbpstats_player_totals": 730
+ },
+ "samples": {
+  "top_isolation_possessions": [
+   {
+    "player_id": "1628983",
+    "source_player_name": "Shai Gilgeous-Alexander",
+    "team_id": "1610612760",
+    "possessions": "449",
+    "points": "522",
+    "points_per_possession": "1.163"
+   },
+   {
+    "player_id": "201935",
+    "source_player_name": "James Harden",
+    "team_id": "1610612746",
+    "possessions": "419",
+    "points": "443",
+    "points_per_possession": "1.057"
+   },
+   {
+    "player_id": "1627759",
+    "source_player_name": "Jaylen Brown",
+    "team_id": "1610612738",
+    "possessions": "394",
+    "points": "399",
+    "points_per_possession": "1.013"
+   },
+   {
+    "player_id": "1630162",
+    "source_player_name": "Anthony Edwards",
+    "team_id": "1610612750",
+    "possessions": "357",
+    "points": "370",
+    "points_per_possession": "1.036"
+   },
+   {
+    "player_id": "201142",
+    "source_player_name": "Kevin Durant",
+    "team_id": "1610612745",
+    "possessions": "336",
+    "points": "344",
+    "points_per_possession": "1.024"
+   }
+  ],
+  "combine_2025_top_wingspan": [
+   {
+    "player_id": "1642863",
+    "source_player_name": "Khaman Maluach",
+    "wingspan_inches": "90.75",
+    "height_no_shoes_inches": "84.75",
+    "weight_lbs": "252.80"
+   },
+   {
+    "player_id": "1641750",
+    "source_player_name": "Ryan Kalkbrenner",
+    "wingspan_inches": "90.0",
+    "height_no_shoes_inches": "85.0",
+    "weight_lbs": "257.40"
+   },
+   {
+    "player_id": "1642850",
+    "source_player_name": "Thomas Sorber",
+    "wingspan_inches": "90.0",
+    "height_no_shoes_inches": "81.25",
+    "weight_lbs": "262.80"
+   },
+   {
+    "player_id": "1642884",
+    "source_player_name": "Vladislav Goldin",
+    "wingspan_inches": "89.25",
+    "height_no_shoes_inches": "84.0",
+    "weight_lbs": "253.40"
+   },
+   {
+    "player_id": "1642853",
+    "source_player_name": "Rasheer Fleming",
+    "wingspan_inches": "89.25",
+    "height_no_shoes_inches": "80.25",
+    "weight_lbs": "232.40"
+   }
+  ],
+  "draft_2025_top_picks": [
+   {
+    "overall_pick": 1,
+    "player_id": "1642843",
+    "source_player_name": "Cooper Flagg",
+    "drafting_team_id": "1610612742"
+   },
+   {
+    "overall_pick": 2,
+    "player_id": "1642844",
+    "source_player_name": "Dylan Harper",
+    "drafting_team_id": "1610612759"
+   },
+   {
+    "overall_pick": 3,
+    "player_id": "1642845",
+    "source_player_name": "VJ Edgecombe",
+    "drafting_team_id": "1610612755"
+   },
+   {
+    "overall_pick": 4,
+    "player_id": "1642851",
+    "source_player_name": "Kon Knueppel",
+    "drafting_team_id": "1610612766"
+   },
+   {
+    "overall_pick": 5,
+    "player_id": "1642846",
+    "source_player_name": "Ace Bailey",
+    "drafting_team_id": "1610612762"
+   }
+  ],
+  "possession_crosscheck": [
+   {
+    "player_id": "1641708",
+    "source_player_name": "Amen Thompson",
+    "pbpstats_minutes": "2953",
+    "nba_minutes": "2953.0",
+    "offensive_possessions": "5880"
+   },
+   {
+    "player_id": "201142",
+    "source_player_name": "Kevin Durant",
+    "pbpstats_minutes": "2840",
+    "nba_minutes": "2840.0",
+    "offensive_possessions": "5727"
+   },
+   {
+    "player_id": "1630217",
+    "source_player_name": "Desmond Bane",
+    "pbpstats_minutes": "2756",
+    "nba_minutes": "2756.0",
+    "offensive_possessions": "5740"
+   },
+   {
+    "player_id": "1641739",
+    "source_player_name": "Toumani Camara",
+    "pbpstats_minutes": "2731",
+    "nba_minutes": "2731.0",
+    "offensive_possessions": "5714"
+   },
+   {
+    "player_id": "1631095",
+    "source_player_name": "Jabari Smith Jr.",
+    "pbpstats_minutes": "2705",
+    "nba_minutes": "2705.0",
+    "offensive_possessions": "5377"
+   }
+  ]
+ }
+}

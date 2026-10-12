@@ -163,6 +163,7 @@ from courtlens.services.stats_engine import (
     stats_cohort_summary,
     stats_presentation_hash,
 )
+from courtlens.services.stats_feed_ingestion import feed_capabilities
 from courtlens.services.team_analytics import (
     get_team_four_factors,
     get_team_peers,
@@ -300,6 +301,9 @@ def get_catalog(
             status=CapabilityStatus.NOT_IMPLEMENTED,
         ),
     }
+    # Measured PC07 feed coverage first; admitted-but-unobserved placeholders last.
+    for name, entry in feed_capabilities(session).items():
+        capabilities.setdefault(name, entry)
     for name, entry in pending_capabilities().items():
         capabilities.setdefault(name, entry)
     return WorkbenchCatalogResponse(
