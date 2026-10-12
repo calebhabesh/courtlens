@@ -7,10 +7,12 @@ import { LookupInput } from "./lookup-input";
 import { CourtLensWordmark } from "./courtlens-wordmark";
 import { StatsPreviewRail } from "./stats-preview-rail";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
-import { useState, useMemo, useCallback, useTransition, Fragment, type KeyboardEvent } from "react";
+import { useState, useMemo, useCallback, useTransition, useEffect, useRef, Fragment, type KeyboardEvent } from "react";
 import { SortHeader, GroupGuide } from "./table-ui";
 import { Icon } from "./ui/icon";
 import { useToast } from "./ui/toast";
+import { PercentileCell } from "./charts/percentile-cell";
+import { TablePercentileLegend } from "./table-percentile-legend";
 import { Skeleton } from "./ui/skeleton";
 import { SlidingIndicator } from "./ui/sliding-indicator";
 import { TeamLogoStack } from "./team-logo";
@@ -52,6 +54,11 @@ interface WorkbenchPlayerExplorerProps {
 const LOCAL_STORAGE_DENSITY_KEY = storageKeys.density;
 
 const SKELETON_ROW_COUNT = 12;
+
+type GuideGeometry = React.CSSProperties & { "--guide-offset": string };
+const guideGeometry = (index: number): GuideGeometry => ({
+  "--guide-offset": `var(--group-guide-offset-${index}, 0px)`
+});
 
 export function WorkbenchPlayerExplorer({
   data,
@@ -211,10 +218,6 @@ export function WorkbenchPlayerExplorer({
     },
     [updatePreferences, router, pathname, searchParams]
   );
-
-  const cohortPercentiles = useMemo(() => Object.fromEntries(
-    items.map((item) => [item.player_id, item.percentiles ?? {}])
-  ), [items]);
 
   // URL updater preserving context parameters
   const updateParam = useCallback(
@@ -397,6 +400,46 @@ export function WorkbenchPlayerExplorer({
 
   const guideStarts = new Set(headerGroups.slice(1).map(group => group.start));
   const guideCount = identityMode === "none" ? 0 : guideStarts.size;
+  const tableRef = useRef<HTMLTableElement>(null);
+
+  // Right-aligned values leave asymmetric space around the structural guide column.
+  // Use the visible metric bounds to keep one straight divider per group, including
+  // rows with shorter values. Recalculate after fonts, rows or column widths change.
+  useEffect(() => {
+    const table = tableRef.current;
+    if (!table || identityMode === "none" || loadingRows) return;
+    let active = true;
+    const centerGuides = () => {
+      if (!active) return;
+      const rows = [...(table.tBodies[0]?.rows ?? [])];
+      const first = rows[0];
+      if (!first?.classList.contains("stats-table-row")) return;
+      const offsets: [string, number][] = [];
+      for (const guide of first.querySelectorAll<HTMLTableCellElement>(".stats-guide-cell")) {
+        const before = guide.previousElementSibling?.querySelector(".stat-main-value");
+        if (!before) continue;
+        const leadingValues = rows.flatMap(row => {
+          const value = row.cells[guide.cellIndex + 1]?.querySelector(".stat-main-value");
+          return value ? [value.getBoundingClientRect().left] : [];
+        });
+        if (!leadingValues.length) continue;
+        const cell = guide.getBoundingClientRect();
+        const divider = (before.getBoundingClientRect().right + Math.min(...leadingValues)) / 2;
+        offsets.push([`--group-guide-offset-${guide.dataset.guideIndex}`, divider - cell.left - cell.width / 2]);
+      }
+      for (const [variable, offset] of offsets) table.style.setProperty(variable, `${offset}px`);
+    };
+    const observer = new ResizeObserver(centerGuides);
+    observer.observe(table);
+    centerGuides();
+    void document.fonts.ready.then(centerGuides);
+    document.fonts.addEventListener("loadingdone", centerGuides);
+    return () => {
+      active = false;
+      observer.disconnect();
+      document.fonts.removeEventListener("loadingdone", centerGuides);
+    };
+  }, [items, preset, identityMode, loadingRows, viewMode]);
 
   // Context bundle for subcomponents
   const contextBundle = {
@@ -531,7 +574,7 @@ export function WorkbenchPlayerExplorer({
         <div className="control-button-group stats-table-tools">
           <button type="button" onClick={() => setShowPercentiles(value => !value)}
             className={`control-pill ${showPercentiles ? "active" : ""}`} aria-pressed={showPercentiles}
-            title="Toggle midrank cohort percentile sublabels">%iles {showPercentiles ? "On" : "Off"}</button>
+            title="Toggle qualified league percentile labels">%iles {showPercentiles ? "On" : "Off"}</button>
           <button type="button" onClick={() => updateParam({ favorites: favoritesOnly ? null : "1" })}
             className={`control-pill ${favoritesOnly ? "active" : ""}`} aria-pressed={favoritesOnly}
             title={favoritesOnly ? "Show all players" : "Filter to favorite players only"}>
@@ -736,9 +779,10 @@ export function WorkbenchPlayerExplorer({
       {/* Dense Stats Table with Two-Tier Grouped Headers & Sticky Pinned Identity */}
       {viewMode === "table" && (
         <>
+          <TablePercentileLegend cohort={data.table_cohort} />
           <div className={`stats-table-layout ${previewCollapsed ? "preview-collapsed" : ""}`}>
           <div role="region" aria-label="Player statistics scroll area" aria-busy={loadingRows} tabIndex={0} onKeyDown={handleTableKey} className={`table-wrapper stats-scroll-region ${tableDensity === "compact" ? "density-compact" : "density-standard"}`}>
-            <table className="data-table dense-stats-table" aria-label="Dense player statistics explorer"
+            <table ref={tableRef} className="data-table dense-stats-table" aria-label="Dense player statistics explorer"
               style={{
                 "--table-min-width": `calc(114px + var(--identity-name-width) + ${preset.columns.length * 84 + guideCount * 40}px)`,
                 "--table-width": `min(100%, calc(114px + var(--identity-name-width) + ${preset.columns.length * 140 + guideCount * 40}px))`
@@ -762,13 +806,15 @@ export function WorkbenchPlayerExplorer({
                 Players
               </th>
               {headerGroups.map((group, gIdx) => (
-                <th
-                  key={`${group.label}-${gIdx}`}
-                  colSpan={group.colSpan + (identityMode !== "none" && gIdx > 0 ? 1 : 0)}
-                  className="stats-group-th" scope="colgroup"
-                >
-                  {group.label}
-                </th>
+                <Fragment key={`${group.label}-${gIdx}`}>
+                  {identityMode !== "none" && gIdx > 0 && <th className="stats-guide-cell" aria-hidden="true" />}
+                  <th
+                    colSpan={group.colSpan}
+                    className="stats-group-th" scope="colgroup"
+                  >
+                    {group.label}
+                  </th>
+                </Fragment>
               ))}
               <th className="stats-actions-header">Actions</th>
             </tr>
@@ -830,7 +876,9 @@ export function WorkbenchPlayerExplorer({
                     </div>
                   </td>
                   {preset.columns.map((col, index) => <Fragment key={col.key}>
-                    {identityMode !== "none" && guideStarts.has(index) && <td className="stats-guide-cell"><Skeleton variant="circle" width={30} height={30} /></td>}
+                    {identityMode !== "none" && guideStarts.has(index) && <td className="stats-guide-cell" style={guideGeometry(index)}>
+                      <span className="stats-guide-marker"><Skeleton variant="circle" width={30} height={30} /></span>
+                    </td>}
                     <td className={`stats-metric-cell stats-group-${headerGroups.findIndex(group => index >= group.start && index < group.start + group.colSpan) % 2}`}>
                       <Skeleton variant="text" width={40} className="stats-skeleton-value" />
                     </td>
@@ -862,7 +910,6 @@ export function WorkbenchPlayerExplorer({
             ) : (
               items.map((player, idx) => {
                 const isCompared = comparedPlayers.some((p) => p.player_id === player.player_id);
-                const playerPercentiles = cohortPercentiles[player.player_id] ?? {};
 
                 return (
                   <tr
@@ -908,6 +955,7 @@ export function WorkbenchPlayerExplorer({
                           <span className="player-cell-name font-semibold">{player.player_name}</span>
                         <span className="player-cell-teams">{player.teams?.join(" / ") || "Team unknown"} · {query.season}</span>
                         </Link>
+                        {player.table_qualified === false && <span className="table-small-sample">Small sample</span>}
                         </div>
                         <button
                           type="button"
@@ -935,40 +983,21 @@ export function WorkbenchPlayerExplorer({
                       const metricKey = col.key;
                       const formatted = formatColumnValue(col, player);
 
-                      const pct = playerPercentiles[metricKey];
-                      const direction = data.cohort?.good_directions[metricKey];
-                      const favorable = pct == null || !direction ? null : direction === "low" ? 100 - pct : pct;
+                      const pct = player.table_percentiles?.[metricKey] ?? null;
+                      const qualified = player.table_qualified === true && player.impact_support?.[metricKey]?.qualified !== false;
 
                       return (
                         <Fragment key={col.key}>
-                          {identityMode !== "none" && guideStarts.has(index) && <td className="stats-guide-cell" aria-hidden="true">
-                            <GroupGuide mode={identityMode} player={player} />
+                          {identityMode !== "none" && guideStarts.has(index) && <td className="stats-guide-cell" data-guide-index={index} style={guideGeometry(index)} aria-hidden="true">
+                            <span className="stats-guide-marker"><GroupGuide mode={identityMode} player={player} /></span>
                           </td>}
                         <td
                           className={`stats-metric-cell stats-group-${headerGroups.findIndex(group => index >= group.start && index < group.start + group.colSpan) % 2} ${col.num ? "num" : ""}`}
                         >
-                          <div className="stat-cell-content">
-                            <span className="stat-main-value">{formatted}</span>
-                            {showPercentiles && pct !== null && pct !== undefined && (
-                              <span
-                                className={`stat-pct-sublabel ${
-                                  favorable !== null && favorable >= 85
-                                    ? "pct-elite"
-                                    : favorable !== null && favorable >= 65
-                                    ? "pct-good"
-                                    : favorable !== null && favorable <= 20
-                                    ? "pct-low"
-                                    : ""
-                                }`}
-                                tabIndex={0}
-                                role="group"
-                                aria-label={`Percentile ${pct}; ${player.cohort_sample_sizes?.[metricKey] ?? "unknown"} valid players; ${data.total_eligible_players} eligible players${direction ? `; ${direction === "low" ? "Lower" : "Higher"} values preferred` : ""}`}
-                                title={`Cohort midrank percentile: ${pct}% · ${player.cohort_sample_sizes?.[metricKey] ?? "unknown"} valid players · ${data.total_eligible_players} eligible players${direction ? ` · ${direction === "low" ? "Lower" : "Higher"} values preferred` : ""}`}
-                              >
-                                {pct}
-                              </span>
-                            )}
-                          </div>
+                          <PercentileCell compact showPercentile={showPercentiles}
+                            value={player.metrics[metricKey] == null ? null : formatted}
+                            percentile={pct} qualified={qualified} label={col.label}
+                            cohort={`${player.table_cohort_sample_sizes?.[metricKey] ?? "Unknown"} valid league players; ${data.table_cohort?.min_season_minutes ?? 500}+ season minutes`} />
                         </td>
                         </Fragment>
                       );

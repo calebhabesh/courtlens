@@ -93,14 +93,14 @@ const LINE_METRIC_OPTIONS: MetricOption[] = [
 // symbol is data encoding (it names the series' marker shape), not an icon (D26 exception).
 /* eslint-disable no-restricted-syntax */
 const PLAYER_STYLES = [
-  { color: "#ffd166", marker: "circle", dash: "none", symbol: "●" },
-  { color: "#4ecdc4", marker: "square", dash: "none", symbol: "■" },
-  { color: "#ff6b6b", marker: "triangle", dash: "6 3", symbol: "▲" },
-  { color: "#a06cd5", marker: "diamond", dash: "none", symbol: "◆" },
-  { color: "#62d2a2", marker: "inverted-triangle", dash: "4 2", symbol: "▼" },
-  { color: "#e056fd", marker: "hexagon", dash: "none", symbol: "⬡" },
-  { color: "#f0932b", marker: "cross", dash: "8 3 2 3", symbol: "✚" },
-  { color: "#70a1ff", marker: "star", dash: "2 2", symbol: "★" }
+  { color: "var(--color-identity-a)", marker: "circle", dash: "none", symbol: "●" },
+  { color: "var(--color-identity-b)", marker: "square", dash: "none", symbol: "■" },
+  { color: "var(--color-category-3)", marker: "triangle", dash: "6 3", symbol: "▲" },
+  { color: "var(--color-category-4)", marker: "diamond", dash: "none", symbol: "◆" },
+  { color: "var(--color-category-5)", marker: "inverted-triangle", dash: "4 2", symbol: "▼" },
+  { color: "var(--color-category-6)", marker: "hexagon", dash: "none", symbol: "⬡" },
+  { color: "var(--color-category-1)", marker: "cross", dash: "8 3 2 3", symbol: "✚" },
+  { color: "var(--color-category-2)", marker: "star", dash: "2 2", symbol: "★" }
 ];
 /* eslint-enable no-restricted-syntax */
 
@@ -322,13 +322,13 @@ export function MultiPlayerLinesView({
   ) => {
     switch (marker) {
       case "square":
-        return <rect x={x - size} y={y - size} width={size * 2} height={size * 2} fill={color} stroke="#20252e" strokeWidth="1" />;
+        return <rect x={x - size} y={y - size} width={size * 2} height={size * 2} fill={color} stroke="var(--color-surface-2)" strokeWidth="1" />;
       case "triangle":
-        return <polygon points={`${x},${y - size * 1.3} ${x - size * 1.1},${y + size} ${x + size * 1.1},${y + size}`} fill={color} stroke="#20252e" strokeWidth="1" />;
+        return <polygon points={`${x},${y - size * 1.3} ${x - size * 1.1},${y + size} ${x + size * 1.1},${y + size}`} fill={color} stroke="var(--color-surface-2)" strokeWidth="1" />;
       case "inverted-triangle":
-        return <polygon points={`${x},${y + size * 1.3} ${x - size * 1.1},${y - size} ${x + size * 1.1},${y - size}`} fill={color} stroke="#20252e" strokeWidth="1" />;
+        return <polygon points={`${x},${y + size * 1.3} ${x - size * 1.1},${y - size} ${x + size * 1.1},${y - size}`} fill={color} stroke="var(--color-surface-2)" strokeWidth="1" />;
       case "diamond":
-        return <polygon points={`${x},${y - size * 1.3} ${x + size * 1.1},${y} ${x},${y + size * 1.3} ${x - size * 1.1},${y}`} fill={color} stroke="#20252e" strokeWidth="1" />;
+        return <polygon points={`${x},${y - size * 1.3} ${x + size * 1.1},${y} ${x},${y + size * 1.3} ${x - size * 1.1},${y}`} fill={color} stroke="var(--color-surface-2)" strokeWidth="1" />;
       case "cross":
         return (
           <g stroke={color} strokeWidth="2.5">
@@ -338,7 +338,7 @@ export function MultiPlayerLinesView({
         );
       case "circle":
       default:
-        return <circle cx={x} cy={y} r={size} fill={color} stroke="#20252e" strokeWidth="1.5" />;
+        return <circle cx={x} cy={y} r={size} fill={color} stroke="var(--color-surface-2)" strokeWidth="1.5" />;
     }
   };
 
@@ -540,14 +540,14 @@ export function MultiPlayerLinesView({
                     y1={yPos}
                     x2={width - padRight}
                     y2={yPos}
-                    stroke="#2d3542"
+                    stroke="var(--color-hairline-strong)"
                     strokeWidth="1"
                     strokeDasharray="2 2"
                   />
                   <text
                     x={padLeft - 8}
                     y={yPos + 4}
-                    fill="#7b8798"
+                    fill="var(--color-text-secondary)"
                     fontSize="11"
                     fontFamily="monospace"
                     textAnchor="end"
@@ -570,7 +570,7 @@ export function MultiPlayerLinesView({
             <text
               x={padLeft}
               y={height - padBottom + 16}
-              fill="#7b8798"
+              fill="var(--color-text-secondary)"
               fontSize="11"
               fontFamily="monospace"
               textAnchor="start"
@@ -581,7 +581,7 @@ export function MultiPlayerLinesView({
             <text
               x={width - padRight}
               y={height - padBottom + 16}
-              fill="#7b8798"
+              fill="var(--color-text-secondary)"
               fontSize="11"
               fontFamily="monospace"
               textAnchor="end"
@@ -667,7 +667,7 @@ export function MultiPlayerLinesView({
             <text
               x={padLeft + plotWidth / 2}
               y={height - 12}
-              fill="#f1f3f6"
+              fill="var(--color-text)"
               fontSize="12"
               fontWeight="bold"
               fontFamily="sans-serif"
@@ -680,7 +680,7 @@ export function MultiPlayerLinesView({
               x={-(padTop + plotHeight / 2)}
               y={18}
               transform="rotate(-90)"
-              fill="#f1f3f6"
+              fill="var(--color-text)"
               fontSize="12"
               fontWeight="bold"
               fontFamily="sans-serif"

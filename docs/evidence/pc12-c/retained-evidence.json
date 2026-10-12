@@ -1,0 +1,51 @@
+{
+  "findings": [
+    {
+      "id": "3bcb37c9-b410-44b1-be7f-c3b368fbe28c",
+      "original_title": "B35b production-browser: scoring distribution",
+      "manifest_sha256": "d57b681befad0017f83b5ca57af3a55bf4dded71403bc7af3d48a4c30c8c85c3",
+      "export_sha256": "017767adf2e752f02714824e6ee88a3c15b818d9e8fa54e2a2e9670a26d951de",
+      "question_saved": false,
+      "result_hashes": [
+        "33a373903d18eb68ea3aa86c6399e9a7faa5326d3bf547a132456c621af64460"
+      ]
+    },
+    {
+      "id": "ed0c4c82-9b31-4527-962e-012d180ec2ba",
+      "original_title": "B35a verification: compare_periods",
+      "manifest_sha256": "a69b64a20e03f6e1e0214ee16b908e0549e97a94126c8fa879d7d28545e67429",
+      "export_sha256": "aa79e539be731b2c2122ef4458daf50a2267289c0d04d30beeefaee5e0132556",
+      "question_saved": false,
+      "result_hashes": [
+        "68133a7711dc44e3c168a801c85f65c3f20ca0fcca9a4d005248663f4d9939a1"
+      ]
+    },
+    {
+      "id": "be611173-e250-44cc-bd72-7e64f24341ec",
+      "original_title": "B35a verification: splits",
+      "manifest_sha256": "e85533a41c3a5c0a8dad522cb9cdfcf3903266a8c43fc4140c56cd674fe5c56f",
+      "export_sha256": "585b18f10211906f390ec804754d99ffc498315fb1c8adfb677602db3397632b",
+      "question_saved": false,
+      "result_hashes": [
+        "79ad6b90171638a921660ee86907d99b054ff1ba09af75d2cc560537e968905c"
+      ]
+    },
+    {
+      "id": "fff8adb1-f205-4fdf-a353-8618ac567440",
+      "original_title": "B35a verification: similarity",
+      "manifest_sha256": "25539cd248c0fa43be506070f1eb9db46f0f3afcf0dc1a7801521edba3d61236",
+      "export_sha256": "8eb50de60a6c972ab2920e459949207f7eccc255e50400b2f44cd1cfca321971",
+      "question_saved": false,
+      "result_hashes": [
+        "3aafc235ba63b996155359c2e8d1556bc59bc620dfd0be90619d71a6b9889c0b"
+      ]
+    }
+  ],
+  "evaluation": {
+    "snapshot_id": "5b14b7ed-353b-499d-a37a-6887b5f6c715",
+    "dataset_id": "2e99f37c-231a-4748-9f48-5b9ffa99f228",
+    "run_id": "6f7af9e63f27aada910d",
+    "report_sha256": "84d5443326c03bfdffdfac2c01ca72b17943ff1f3b0a733f6023e5924aa5de4b",
+    "source": "github:NocturneBear/NBA-Data-2010-2024@a5f108b5b1f08074d78b9e8e901926a9ce4c06c5"
+  }
+}

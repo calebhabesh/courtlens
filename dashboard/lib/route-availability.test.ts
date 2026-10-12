@@ -15,6 +15,15 @@ describe("release-bound route availability", () => {
     expect(routeAvailability("/stats", catalog, "2020-21").reason).toContain("season or phase");
     expect(routeAvailability("/stats", null).reason).toContain("could not be verified");
   });
+  it("reports admitted-but-pending sources by their limitation, not as blocked", () => {
+    const pending = { ...catalog, capabilities: { ...catalog.capabilities, defensive_tracking: {
+      status: "not_yet_observed", seasons: [], phases: [],
+      limitations: ["Source admitted (hoopR NBA Stats raw); not yet ingested in this release."] } } } as unknown as WorkbenchCatalog;
+    const result = routeAvailability("/research/defensive-matchups", pending);
+    expect(result.secondary).toBe(true);
+    expect(result.reason).toContain("not yet ingested");
+    expect(result.reason).not.toContain("unavailable");
+  });
   it("maps enum labels without changing canonical values", () => {
     expect(humanLabel("regular_season")).toBe("Regular season");
     expect(humanLabel("selection_failed_negative_result")).toContain("negative result");

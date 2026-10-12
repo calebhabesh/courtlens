@@ -4,6 +4,7 @@ import json
 import tempfile
 from datetime import date, timedelta
 from pathlib import Path
+from typing import Any
 
 import typer
 from sqlalchemy import Connection, Engine, func, select
@@ -47,6 +48,65 @@ app = typer.Typer(
     no_args_is_help=True,
     help="Ingest source data, seed labeled fixtures, and verify CourtLens's warehouse.",
 )
+
+
+@app.command("acquire-player-context")
+def acquire_player_context_command(
+    source: str = typer.Option("nba_player_index", help="Admitted PC05 source name."),
+    url: str = typer.Option("https://cdn.nba.com/static/json/staticData/playerIndex.json"),
+    season: str = typer.Option("2026-27"),
+    root: Path = typer.Option(Path("data/raw/player-context")),
+) -> None:
+    """Scheduled bounded fetch; retain receipts even when acquisition fails."""
+    import httpx
+
+    from courtlens.services.player_context_ingestion import ContextFetcher
+
+    with SessionLocal() as session, httpx.Client() as client:
+        receipt = ContextFetcher(session, root, client).fetch(source, url, season)
+        session.commit()
+        typer.echo(
+            json.dumps(
+                {
+                    "acquisition_id": receipt.id,
+                    "status": receipt.status,
+                    "http_status": receipt.http_status,
+                    "reason": receipt.error_summary,
+                }
+            )
+        )
+        if receipt.status != "success":
+            raise typer.Exit(1)
+
+
+@app.command("import-player-context")
+def import_player_context_command(
+    acquisition_id: str | None = typer.Option(None),
+    local_file: Path | None = typer.Option(None),
+    source: str = typer.Option("nba_player_index"),
+    url: str = typer.Option("https://cdn.nba.com/static/json/staticData/playerIndex.json"),
+    season: str = typer.Option("2026-27"),
+    root: Path = typer.Option(Path("data/raw/player-context")),
+) -> None:
+    """Admit an acquisition or dated local import; never publish historical statistics."""
+    from courtlens.services.player_context import dataset_info
+    from courtlens.services.player_context_ingestion import admit_context, capture_local
+
+    if (acquisition_id is None) == (local_file is None):
+        raise typer.BadParameter("choose exactly one of --acquisition-id or --local-file")
+    with SessionLocal() as session:
+        if local_file is not None:
+            receipt = capture_local(session, root, local_file, source, url, season)
+            session.commit()
+            acquisition_id = receipt.id
+        assert acquisition_id is not None
+        try:
+            dataset = admit_context(session, acquisition_id, root)
+            session.commit()
+        except (ValueError, KeyError, StopIteration) as error:
+            session.rollback()
+            raise typer.BadParameter(f"candidate rejected: {error}") from error
+        typer.echo(dataset_info(session, dataset).model_dump_json(indent=2))
 
 
 @app.command("acquire-archive")
@@ -1103,6 +1163,234 @@ def finance_template_command(destination: Path) -> None:
     with destination.open("xb") as stream:
         stream.write(export_csv(()))
     typer.echo(str(destination))
+
+
+@app.command("acquire-finance")
+def acquire_finance_command(
+    source: str = typer.Option(...),
+    url: list[str] = typer.Option(...),
+    season: str = "2026-27",
+    root: Path = Path("data/raw/finance"),
+) -> None:
+    """Serial scheduled fetches; stop a rejected host and retain every receipt."""
+    import httpx
+
+    from courtlens.services.finance_refresh import FinanceFetcher
+
+    if not 1 <= len(url) <= 64:
+        raise typer.BadParameter("provide 1-64 admitted URLs")
+    results = []
+    with SessionLocal() as session, httpx.Client() as client:
+        fetcher = FinanceFetcher(session, root, client)
+        for value in url:
+            receipt = fetcher.fetch(source, value, season)
+            session.commit()
+            results.append(
+                {
+                    "acquisition_id": receipt.id,
+                    "status": receipt.status,
+                    "http_status": receipt.http_status,
+                    "reason": receipt.error_summary,
+                }
+            )
+    typer.echo(json.dumps(results, indent=2))
+    if any(r["status"] != "success" for r in results):
+        raise typer.Exit(1)
+
+
+@app.command("acquire-stats-feeds")
+def acquire_stats_feeds_command(
+    revision: str = typer.Option(..., help="Pinned 40-hex hoopR-nba-stats-raw commit."),
+    season: str = typer.Option("2025-26"),
+    draft_year: list[int] = typer.Option([], help="Draft/combine years to include."),
+    pbpstats: bool = typer.Option(True, help="Include pbpstats secondary totals."),
+    pbpstats_lineups: bool = typer.Option(True, help="Include per-team pbpstats lineups."),
+    root: Path = typer.Option(Path("data/raw/stats-feeds")),
+    report: Path | None = typer.Option(None, help="Write the run summary JSON here."),
+) -> None:
+    """One bounded scheduled run: fetch, retain and admit each feed in its own transaction."""
+    import httpx
+
+    from courtlens.services.stats_feed_ingestion import FeedFetcher, admit_feed, run_plan
+
+    plan = run_plan(
+        revision, season, draft_year, pbpstats=pbpstats, pbpstats_lineups=pbpstats_lineups
+    )
+    results = []
+    with SessionLocal() as session, httpx.Client() as client:
+        fetcher = FeedFetcher(session, root, client)
+        for source, url, scope_season in plan:
+            receipt = fetcher.fetch(source, url, scope_season)
+            session.commit()
+            result: dict[str, Any] = {
+                "url": url,
+                "acquisition_id": receipt.id,
+                "status": receipt.status,
+                "http_status": receipt.http_status,
+                "bytes": receipt.bytes,
+                "reason": receipt.error_summary,
+            }
+            if receipt.status == "success":
+                try:
+                    dataset = admit_feed(session, receipt.id, root)
+                    session.commit()
+                    result |= {
+                        "dataset_id": dataset.id,
+                        "rows": dataset.coverage_json["rows"],
+                        "empty": dataset.coverage_json["empty"],
+                        "truncated": dataset.coverage_json["truncated"],
+                    }
+                except (ValueError, KeyError) as error:
+                    session.rollback()
+                    result |= {"status": "rejected", "reason": str(error)[:300]}
+            results.append(result)
+            typer.echo(json.dumps(result))
+    summary = {
+        "revision": revision,
+        "season": season,
+        "draft_years": draft_year,
+        "planned": len(plan),
+        "admitted": sum("dataset_id" in r for r in results),
+        "failed": sum(r["status"] == "failed" for r in results),
+        "rejected": sum(r["status"] == "rejected" for r in results),
+        "results": results,
+    }
+    if report is not None:
+        report.write_text(json.dumps(summary, indent=2) + "\n")
+    if summary["admitted"] != len(plan):
+        raise typer.Exit(1)
+
+
+@app.command("import-stats-feed")
+def import_stats_feed_command(
+    acquisition_id: str, root: Path = typer.Option(Path("data/raw/stats-feeds"))
+) -> None:
+    """Admit one retained acquisition; re-admitting returns the same dataset."""
+    from courtlens.services.stats_feed_ingestion import admit_feed
+
+    with SessionLocal() as session:
+        try:
+            dataset = admit_feed(session, acquisition_id, root)
+            session.commit()
+        except (ValueError, KeyError) as error:
+            session.rollback()
+            raise typer.BadParameter(f"stats feed rejected: {error}") from error
+        typer.echo(json.dumps({"dataset_id": dataset.id, **dataset.coverage_json}, indent=2))
+
+
+@app.command("verify-stats-feeds")
+def verify_stats_feeds_command(
+    dataset_id: list[str] = typer.Option([], help="Default: every latest dataset."),
+    root: Path = typer.Option(Path("data/raw/stats-feeds")),
+) -> None:
+    """Re-parse retained bytes and recompute membership/row hashes without fetching."""
+    from courtlens.services.stats_feed_ingestion import latest_datasets, verify_feed
+
+    with SessionLocal() as session:
+        ids = dataset_id or [d.id for d in latest_datasets(session)]
+        results = [verify_feed(session, value, root) for value in ids]
+    typer.echo(
+        json.dumps(
+            {
+                "checked": len(results),
+                "verified": sum(r["verified"] for r in results),
+                "failures": [r for r in results if not r["verified"]],
+            },
+            indent=2,
+        )
+    )
+    if not all(r["verified"] for r in results):
+        raise typer.Exit(1)
+
+
+@app.command("stats-feed-coverage")
+def stats_feed_coverage_command() -> None:
+    """Latest admitted observation per feed scope, with empty/truncated flags."""
+    from courtlens.services.stats_feed_ingestion import coverage_summary
+
+    with SessionLocal() as session:
+        typer.echo(json.dumps(coverage_summary(session), indent=2))
+
+
+@app.command("map-bref-identities")
+def map_bref_identities_command(
+    acquisition_id: list[str] = typer.Option(..., help="Retained BRef contract acquisitions."),
+    roster_dataset_id: str = typer.Option(..., help="Pinned PC05 NBA player index dataset."),
+    root: Path = typer.Option(Path("data/raw/finance")),
+    report: Path | None = typer.Option(None),
+) -> None:
+    """Owner-approved name-and-team rule; record mappings before the next acquisition."""
+    from courtlens.services.bref_identity import (
+        propose_mappings,
+        record_mappings,
+        register_index_identities,
+    )
+
+    with SessionLocal() as session:
+        proposal = propose_mappings(session, acquisition_id, roster_dataset_id, root)
+        proposal["recorded"] = record_mappings(session, proposal)
+        proposal["registry"] = register_index_identities(session, roster_dataset_id)
+        session.commit()
+    if report is not None:
+        report.write_text(json.dumps(proposal, indent=1, sort_keys=True) + "\n")
+    typer.echo(
+        json.dumps(
+            {
+                "bref_players": proposal["bref_players"],
+                "mapped": len(proposal["mappings"]),
+                "unresolved": len(proposal["unresolved"]),
+                "recorded": proposal["recorded"],
+                "registry": proposal["registry"],
+            }
+        )
+    )
+
+
+@app.command("import-finance-thresholds")
+def import_finance_thresholds_command(path: Path) -> None:
+    """Hand-enter an official season release; record actual import time."""
+    from courtlens.services.finance_refresh import import_thresholds, threshold_info
+
+    with SessionLocal() as session:
+        record = import_thresholds(session, path)
+        session.commit()
+        typer.echo(threshold_info(record).model_dump_json(indent=2))
+
+
+@app.command("import-finance-refresh")
+def import_finance_refresh_command(
+    acquisition_id: list[str] = typer.Option(...),
+    roster_dataset_id: str = typer.Option(...),
+    threshold_id: str | None = None,
+    root: Path = Path("data/raw/finance"),
+) -> None:
+    """Seal a bounded run, a separate book and explicit roster salary coverage."""
+    from courtlens.services.finance_refresh import admit_refresh, refresh_info
+
+    with SessionLocal() as session:
+        try:
+            record = admit_refresh(
+                session,
+                acquisition_id,
+                roster_dataset_id,
+                threshold_id,
+                root,
+                get_settings().artifacts_root,
+            )
+            session.commit()
+        except ValueError as error:
+            session.rollback()
+            raise typer.BadParameter(f"finance candidate rejected: {error}") from error
+        typer.echo(refresh_info(session, record.id).model_dump_json(indent=2))
+
+
+@app.command("verify-finance-refresh")
+def verify_finance_refresh_command(refresh_id: str, root: Path = Path("data/raw/finance")) -> None:
+    """Reconcile source bytes, book membership and roster coverage without fetching."""
+    from courtlens.services.finance_refresh import verify_refresh
+
+    with SessionLocal() as session:
+        typer.echo(json.dumps(verify_refresh(session, refresh_id, root), indent=2))
 
 
 @app.command("finance-preview")

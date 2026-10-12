@@ -19,6 +19,7 @@ from courtlens.api.workbench_schemas import (
     AssistantStatusResponse,
     BackfillStatusResponse,
     BoardAggregationResult,
+    CombineViewResponse,
     ComparePeriodsRequest,
     ComparePeriodsResponse,
     CreateCustomViewRequest,
@@ -28,6 +29,7 @@ from courtlens.api.workbench_schemas import (
     CrosswalkItem,
     CrosswalkResponse,
     CustomViewDefinition,
+    DefenseViewResponse,
     DistributionMeasure,
     DistributionRequest,
     DistributionResponse,
@@ -40,6 +42,7 @@ from courtlens.api.workbench_schemas import (
     JobResponse,
     LineageResponse,
     LookupResponse,
+    MatchupsViewResponse,
     MeasurementsQueryResponse,
     MetricCatalogResponse,
     MetricComparisonItem,
@@ -56,14 +59,17 @@ from courtlens.api.workbench_schemas import (
     PlayerProfileStint,
     PlayerResearchItem,
     PlayerResearchResponse,
+    PlayerTrackingResponse,
     PlayoffBracketResponse,
     PlayoffSeriesDetailResponse,
+    PlayTypesViewResponse,
     PointsForecastEvaluationResponse,
     RankingBoardDefinition,
     RankOperationRequest,
     RankOperationResponse,
     ReorderViewsRequest,
     ResearchQuerySchema,
+    RosterShapesResponse,
     SavedInvestigationResponse,
     SaveInvestigationRequest,
     ScheduleDatesResponse,
@@ -80,20 +86,24 @@ from courtlens.api.workbench_schemas import (
     TeamScheduleResponse,
     ThreePointVariationResponse,
     TierListDefinition,
+    TrackingViewResponse,
     UpdateCompareTrayRequest,
     UpdateCustomViewRequest,
     UpdateFavoritesRequest,
     UpdatePreferencesRequest,
+    ValueArchetypesResponse,
     WorkbenchCatalogResponse,
     WorkbenchQueryRequest,
     WorkbenchQueryResponse,
     WorkbenchStatusResponse,
     WorkspaceBundle,
     WorkspacePreferences,
+    WowyViewResponse,
 )
 from courtlens.config import get_settings
 from courtlens.database import get_db
 from courtlens.domain.context import CapabilityEntry, CapabilityStatus
+from courtlens.domain.impact_catalog import RATING_METRICS
 from courtlens.domain.impact_catalog import SERVING_CATALOG as METRIC_CATALOG
 from courtlens.domain.impact_catalog import VERSION as SERVING_VERSION
 from courtlens.domain.metrics import (
@@ -104,6 +114,7 @@ from courtlens.domain.metrics import (
 from courtlens.domain.personal_state import CANONICAL_BUILTIN_VIEWS
 from courtlens.domain.query_spec import ALLOWED_METADATA_FIELDS, QuerySpec, WindowKind
 from courtlens.domain.query_url import deserialize_params_to_query, query_spec_to_research_query
+from courtlens.domain.source_policy import pending_capabilities
 from courtlens.services.analytical_ops import (
     compare_periods_service,
     distribution_service,
@@ -154,6 +165,7 @@ from courtlens.services.personal_state import (
     update_preferences_service,
     update_workspace_state,
 )
+from courtlens.services.roster_shapes import roster_shapes
 from courtlens.services.schedule_dates import schedule_dates
 from courtlens.services.stats_catalog import stats_catalog_scope
 from courtlens.services.stats_engine import (
@@ -162,11 +174,28 @@ from courtlens.services.stats_engine import (
     stats_cohort_summary,
     stats_presentation_hash,
 )
+from courtlens.services.stats_feed_ingestion import feed_capabilities
+from courtlens.services.stats_feed_views import (
+    combine_view,
+    defense_view,
+    matchups_view,
+    play_types_view,
+    player_tracking,
+    rounded,
+    tracking_view,
+)
 from courtlens.services.team_analytics import (
     get_team_four_factors,
     get_team_peers,
     get_team_schedule,
     get_team_three_point_variation,
+)
+from courtlens.services.value_archetypes import (
+    load_value_store,
+    unknown_row,
+    value_archetype_rows,
+    value_archetypes_capability,
+    value_archetypes_summary,
 )
 from courtlens.services.workbench_analytics import (
     ResearchQuery,
@@ -193,6 +222,7 @@ from courtlens.services.workbench_playoffs import (
     get_playoff_bracket,
     get_playoff_series_detail,
 )
+from courtlens.services.wowy_serving import wowy_capability, wowy_view
 from courtlens.workbench_models import (
     ModelPolicyActivation,
     PlayerPortrait,
@@ -299,6 +329,13 @@ def get_catalog(
             status=CapabilityStatus.NOT_IMPLEMENTED,
         ),
     }
+    capabilities["value_archetypes_pc09"] = value_archetypes_capability(load_value_store())
+    capabilities["wowy"] = wowy_capability()
+    # Measured PC07 feed coverage first; admitted-but-unobserved placeholders last.
+    for name, entry in feed_capabilities(session).items():
+        capabilities.setdefault(name, entry)
+    for name, entry in pending_capabilities().items():
+        capabilities.setdefault(name, entry)
     return WorkbenchCatalogResponse(
         release_id=context.release_id,
         snapshot_id=context.snapshot_id,
@@ -342,6 +379,7 @@ def get_impact(
     team_id: str | None = Query(None, alias="teamId", max_length=128),
     limit: int = Query(20, ge=1, le=100),
     window: WindowKind = WindowKind.SEASON,
+    sort_metric: str = Query("rapm", alias="sortMetric", max_length=40),
     session: Session = Depends(get_db),
 ) -> ImpactResponse:
     """Bounded descriptive coefficients; no acquisition, fitting or raw source export."""
@@ -356,16 +394,15 @@ def get_impact(
     )
     result = impact_for_query(query, before_date.isoformat())
     players = result.pop("players")
+    # PC11: Six-Factor ranks by one factor; only sealed rating coefficients are sortable.
+    if sort_metric not in RATING_METRICS:
+        raise HTTPException(422, f"sortMetric must be a served rating, not {sort_metric!r}.")
     ids = (
         [player_id]
         if player_id
         else sorted(
-            [pid for pid in players if players[pid]["metrics"].get("rapm") is not None],
-            key=lambda pid: (
-                players[pid]["metrics"].get("rapm") is None,
-                -(players[pid]["metrics"].get("rapm") or 0),
-                pid,
-            ),
+            [pid for pid in players if players[pid]["metrics"].get(sort_metric) is not None],
+            key=lambda pid: (-(players[pid]["metrics"][sort_metric]), pid),
         )[:limit]
     )
     identities = session.execute(
@@ -381,6 +418,146 @@ def get_impact(
             {"player_id": pid, "player_name": names.get(pid) or f"NBA player {pid}", **players[pid]}
             for pid in ids
             if pid in players
+        ],
+    )
+
+
+@router.get("/roster-shapes", response_model=RosterShapesResponse)
+def get_roster_shapes(
+    dataset_id: str | None = Query(None, alias="datasetId"),
+    release_id: str | None = Query(None, alias="releaseId"),
+    session: Session = Depends(get_db),
+) -> RosterShapesResponse:
+    """PC10: 2026-27 projected rosters sized by sealed BPR value over replacement."""
+    return RosterShapesResponse.model_validate(roster_shapes(session, dataset_id, release_id))
+
+
+SEASON_PATTERN = r"^\d{4}-\d{2}$"
+FeedPhase = Literal["regular_season", "playoffs"]
+
+
+@router.get("/defense", response_model=DefenseViewResponse)
+def get_defense_view(
+    season: str | None = Query(None, pattern=SEASON_PATTERN),
+    phase: FeedPhase | None = None,
+    category: str = Query("overall", max_length=40),
+    player_id: str | None = Query(None, alias="playerId", max_length=20),
+    session: Session = Depends(get_db),
+) -> DefenseViewResponse:
+    """PC11 Defensive Matchups: NBA tracking defended shots, hustle and matchup exposure."""
+    view = defense_view(session, season, phase, category, player_id)
+    return DefenseViewResponse.model_validate(rounded(view))
+
+
+@router.get("/season-matchups", response_model=MatchupsViewResponse)
+def get_season_matchups(
+    season: str | None = Query(None, pattern=SEASON_PATTERN),
+    phase: FeedPhase | None = None,
+    player_id: str | None = Query(None, alias="playerId", max_length=20),
+    side: Literal["offense", "defense"] = "offense",
+    session: Session = Depends(get_db),
+) -> MatchupsViewResponse:
+    """PC11 Player Matchups from NBA tracking season matchups (who guarded whom)."""
+    view = matchups_view(session, season, phase, player_id, side)
+    return MatchupsViewResponse.model_validate(rounded(view))
+
+
+@router.get("/play-types", response_model=PlayTypesViewResponse)
+def get_play_types(
+    season: str | None = Query(None, pattern=SEASON_PATTERN),
+    phase: FeedPhase | None = None,
+    side: Literal["offensive", "defensive"] = "offensive",
+    player_id: str | None = Query(None, alias="playerId", max_length=20),
+    session: Session = Depends(get_db),
+) -> PlayTypesViewResponse:
+    """PC11 play-type-adjusted scoring from NBA Synergy play types."""
+    view = play_types_view(session, season, phase, side, player_id)
+    return PlayTypesViewResponse.model_validate(rounded(view))
+
+
+@router.get("/tracking", response_model=TrackingViewResponse)
+def get_tracking(
+    season: str | None = Query(None, pattern=SEASON_PATTERN),
+    phase: FeedPhase | None = None,
+    group: str = Query("drives", max_length=40),
+    session: Session = Depends(get_db),
+) -> TrackingViewResponse:
+    """PC11 league tracking table (season totals; never joined into date-windowed Stats)."""
+    view = tracking_view(session, season, phase, group)
+    return TrackingViewResponse.model_validate(rounded(view))
+
+
+@router.get("/players/{player_id}/tracking", response_model=PlayerTrackingResponse)
+def get_player_tracking(
+    player_id: str,
+    season: str | None = Query(None, pattern=SEASON_PATTERN),
+    phase: FeedPhase | None = None,
+    session: Session = Depends(get_db),
+) -> PlayerTrackingResponse:
+    """PC11 player profile Tracking tab: every group with league percentiles."""
+    view = player_tracking(session, player_id, season, phase)
+    return PlayerTrackingResponse.model_validate(rounded(view))
+
+
+@router.get("/wowy", response_model=WowyViewResponse)
+def get_wowy(
+    season: str | None = Query(None, pattern=SEASON_PATTERN),
+    phase: FeedPhase | None = None,
+    team_id: str | None = Query(None, alias="teamId", max_length=20),
+    a: str | None = Query(None, max_length=20),
+    b: str | None = Query(None, max_length=20),
+    session: Session = Depends(get_db),
+) -> WowyViewResponse:
+    """PC11 WOWY pair splits derived from sealed IM03 stints (D4); read-only."""
+    view = wowy_view(session, season, phase, team_id, a, b)
+    return WowyViewResponse.model_validate(rounded(view))
+
+
+@router.get("/combine", response_model=CombineViewResponse)
+def get_combine(
+    draft_year: int | None = Query(None, alias="draftYear", ge=1947, le=2100),
+    player_id: str | None = Query(None, alias="playerId", max_length=20),
+    session: Session = Depends(get_db),
+) -> CombineViewResponse:
+    """PC11 Combine & Wingspan from the official NBA Draft Combine feeds."""
+    return CombineViewResponse.model_validate(rounded(combine_view(session, draft_year, player_id)))
+
+
+@router.get("/value-archetypes", response_model=ValueArchetypesResponse)
+def get_value_archetypes(
+    player_ids: list[str] | None = Query(None, alias="playerId", max_length=64),
+    limit: int = Query(50, ge=1, le=1000),
+    session: Session = Depends(get_db),
+) -> ValueArchetypesResponse:
+    """Sealed PC09 value (BPR) and derived archetypes; no fitting or raw source export."""
+    store = load_value_store()
+    summary = value_archetypes_summary(store)
+    rows = value_archetype_rows(store) if store else {}
+    total = len(rows)
+    if player_ids:
+        ids = list(dict.fromkeys(player_ids))
+        rows |= {pid: unknown_row(pid) for pid in ids if pid not in rows}
+    else:
+        # Known values first, highest first; unknown values keep a stable id order.
+        ids = sorted(
+            rows,
+            key=lambda pid: (
+                rows[pid]["value"] is None,
+                -(rows[pid]["value"] or {}).get("value", 0.0),
+                pid,
+            ),
+        )[:limit]
+    identities = session.execute(
+        select(WorkbenchIdentity.external_id, WorkbenchIdentity.display_name).where(
+            WorkbenchIdentity.kind == "player", WorkbenchIdentity.external_id.in_(ids)
+        )
+    ).all()
+    names = {pid: name for pid, name in identities}
+    return ValueArchetypesResponse(
+        **summary,
+        total_players=total,
+        players=[
+            {"player_name": names.get(pid) or f"NBA player {pid}", **rows[pid]} for pid in ids
         ],
     )
 
@@ -430,6 +607,12 @@ def execute_query_endpoint(
         else None
     )
 
+    table_cohort = None
+    if payload.presentation is not None and payload.presentation.table_percentiles:
+        from courtlens.services.table_percentiles import annotate_players
+
+        table_cohort = annotate_players(session, context, spec, items_raw)
+
     items = [
         PlayerResearchItem(
             player_id=r["player_id"],
@@ -443,6 +626,9 @@ def execute_query_endpoint(
             percentiles=r.get("percentiles"),
             cohort_sample_sizes=r.get("cohort_sample_sizes"),
             impact_support=r.get("impact_support"),
+            table_qualified=r.get("table_qualified"),
+            table_percentiles=r.get("table_percentiles"),
+            table_cohort_sample_sizes=r.get("table_cohort_sample_sizes"),
         )
         for r in items_raw
     ]
@@ -460,6 +646,7 @@ def execute_query_endpoint(
             else (0 if payload.presentation is not None else None)
         ),
         cohort=cohort,
+        table_cohort=table_cohort,
         items=items,
         next_cursor=next_cursor,
         has_more=has_more,
@@ -727,6 +914,9 @@ def get_teams(
     )
 
     teams_data, league_averages = get_teams_research(session, context)
+    from courtlens.services.table_percentiles import annotate_teams
+
+    annotate_teams(teams_data)
     teams = [TeamResearchItem(**t) for t in teams_data]
 
     return TeamResearchResponse(

@@ -1,0 +1,10 @@
+
+Running 5 tests using 1 worker
+
+  ✓  1 e2e/native-select-theme.spec.ts:16:7 › Filter by season popup stays readable with a light OS theme (1.0s)
+  ✓  2 e2e/native-select-theme.spec.ts:16:7 › Filter by competition phase popup stays readable with a light OS theme (885ms)
+  ✓  3 e2e/native-select-theme.spec.ts:16:7 › Analysis window popup stays readable with a light OS theme (986ms)
+  ✓  4 e2e/native-select-theme.spec.ts:73:5 › styled picker preserves keyboard selection, Escape and outside dismissal (1.5s)
+  ✓  5 e2e/native-select-theme.spec.ts:93:5 › phone picker stays above the Filters drawer and accepts touch selection (762ms)
+
+  5 passed (5.6s)

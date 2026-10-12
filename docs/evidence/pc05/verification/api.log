@@ -1,0 +1,12 @@
+INFO:     Started server process [1439839]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8101 (Press CTRL+C to quit)
+INFO:     127.0.0.1:44106 - "GET /api/workbench/player-context/catalog HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44106 - "GET /api/workbench/player-context/rosters?datasetId=027dff96-a2fd-4d54-9833-f76e2bc0248f&statisticsReleaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44106 - "GET /api/workbench/player-context/rosters?datasetId=027dff96-a2fd-4d54-9833-f76e2bc0248f&teamId=TOR&statisticsReleaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44106 - "GET /api/workbench/player-context/datasets/027dff96-a2fd-4d54-9833-f76e2bc0248f?limit=100 HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [1439839]

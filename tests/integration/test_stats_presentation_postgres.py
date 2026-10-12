@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import os
 from collections.abc import Iterator
+from dataclasses import replace
 from datetime import date
 from unittest.mock import patch
 
@@ -31,6 +32,7 @@ from courtlens.services.stats_engine import (
     stats_cohort_summary,
     stats_presentation_hash,
 )
+from courtlens.services.table_percentiles import annotate_players
 from courtlens.services.workbench_analytics import ResolvedContext
 
 
@@ -171,6 +173,83 @@ def test_independent_arithmetic_across_pages(
         if not more:
             break
     assert seen == expected
+
+
+def test_pc12_reference_is_invariant_to_search_team_samples_and_paging(
+    facts: tuple[Session, ResolvedContext],
+) -> None:
+    session, context = facts
+    for pid, games, points in (("a", 22, 20), ("b", 24, 30)):
+        session.execute(
+            text("""INSERT INTO workbench_player_games
+            SELECT 'dataset', :pid, 'BOS', 'qualification-' || :pid || '-' || i,
+                   '2024-01-03'::date, '2023-24', 'regular_season', 'appeared',
+                   1200, :points, '{}'::jsonb FROM generate_series(1, :games) i"""),
+            {"pid": pid, "games": games, "points": points},
+        )
+    base = QuerySpec(season="2023-24", page=PagingSpec(limit=100))
+    rows, _, _, _ = execute_stats_query(session, context, base, presentation=StatsPresentation())
+    retained = {row["player_id"]: dict(row["percentiles"]) for row in rows}
+    cohort = annotate_players(session, context, base, rows)
+    indexed = {row["player_id"]: row for row in rows}
+    assert cohort["qualified_players"] == 2
+    assert indexed["a"]["table_qualified"] is True  # exactly 500 season minutes
+    assert indexed["b"]["table_percentiles"]["pts_per_game"] == 75
+    assert indexed["c"]["table_qualified"] is False
+    assert indexed["c"]["table_percentiles"]["pts_per_game"] == 25  # muted, still numeric
+    assert indexed["d"]["table_percentiles"]["pts_per_game"] is None
+    assert retained == {row["player_id"]: row["percentiles"] for row in rows}
+
+    filtered = base.model_copy(
+        update={
+            "name": "Player B",
+            "team_scope": TeamScope(team_id="TOR"),
+            "sample_filters": SampleFilter(min_games=1),
+            "page": PagingSpec(limit=1),
+        }
+    )
+    selected, _, _, _ = execute_stats_query(
+        session, context, filtered, presentation=StatsPresentation(player_ids=["b"])
+    )
+    filtered_cohort = annotate_players(session, context, filtered, selected)
+    assert filtered_cohort["scope_hash"] == cohort["scope_hash"]
+    assert selected[0]["table_percentiles"]["pts_per_game"] == 75
+    assert selected[0]["table_cohort_sample_sizes"]["pts_per_game"] == 2
+
+    # Future minutes cannot qualify a historical small sample or change its reference.
+    session.execute(
+        text("""INSERT INTO workbench_player_games VALUES
+       ('dataset', 'c', 'TOR', 'future-c', '2024-02-01', '2023-24',
+        'regular_season', 'appeared', 60000, 999, '{}')""")
+    )
+    after = [dict(row) for row in rows]
+    assert annotate_players(session, context, base, after) == cohort
+    assert after == rows
+    changed_context = replace(context, semantic_signature="different-meaning")
+    assert (
+        annotate_players(session, changed_context, base, after)["scope_hash"]
+        != cohort["scope_hash"]
+    )
+
+
+def test_pc12_recent_window_qualifies_on_season_minutes(
+    facts: tuple[Session, ResolvedContext],
+) -> None:
+    session, context = facts
+    session.execute(
+        text("""INSERT INTO workbench_player_games
+       SELECT 'dataset', 'b', 'TOR', 'season-b-' || i, '2024-01-03'::date,
+              '2023-24', 'regular_season', 'appeared', 1800, 30, '{}'::jsonb
+       FROM generate_series(1, 20) i""")
+    )
+    query = QuerySpec(season="2023-24", window=WindowSpec(kind="last_5"))
+    rows, _, _, _ = execute_stats_query(session, context, query, presentation=StatsPresentation())
+    cohort = annotate_players(session, context, query, rows)
+    player = next(row for row in rows if row["player_id"] == "b")
+    assert player["total_minutes"] == 150
+    assert player["table_qualified"] is True
+    assert player["table_percentiles"]["pts_per_game"] is None  # only one qualified reference
+    assert cohort["qualified_players"] == 1
 
 
 def test_search_favorites_empty_and_analytical_cohort(

@@ -51,7 +51,6 @@ export const NAV_MENUS: NavMenu[] = [
       { label: "Roster Shapes", href: "/roster-shapes" },
       { label: "Teammate Stat Shift", href: "/stat-line-shift" },
       { label: "Contracts & Payroll", href: "/contracts" },
-      { label: "Free Agency Tracker", href: "/free-agency" },
     ] }],
   },
   {
@@ -71,7 +70,6 @@ export const NAV_MENUS: NavMenu[] = [
         { label: "RAPM Research", href: "/research/rapm" },
         { label: "WOWY", href: "/wowy" },
         { label: "Defensive Matchups", href: "/research/defensive-matchups" },
-        { label: "Spatial EPV", href: "/research/epv" },
       ] },
       { title: "Shooting", items: [
         { label: "Shooting", href: "/research/shooting" },
@@ -94,15 +92,26 @@ export const NAV_MENUS: NavMenu[] = [
   },
 ];
 
+/** Pages that exist locally but not on the hosted demo (PC11). Their routes redirect there too. */
+export const HOSTED_DEMO_HIDDEN = new Set(["/planner"]);
+
+/** Inlined at build time; set only by the hosted-demo build (PC13). */
+export const HOSTED_DEMO = process.env.NEXT_PUBLIC_COURTLENS_HOSTED_DEMO === "1";
+
 /**
  * The desktop `⋯` menu (D9); Schedule was hidden in FO13 (owner decision). Below the desktop breakpoint the same links sit at the end of the drawer. */
-export const MORE_LINKS: NavItem[] = [
-  { label: "Settings", href: "/settings" },
-  { label: "Data Status", href: "/data-status" },
-  { label: "Methodology", href: "/methodology" },
-  { label: "What's New", href: "/whats-new" },
-  { label: "Planner", href: "/planner" },
-];
+export function moreLinks(hosted = HOSTED_DEMO): NavItem[] {
+  return [
+    { label: "Settings", href: "/settings" },
+    { label: "Data Status", href: "/data-status" },
+    { label: "Methodology", href: "/methodology" },
+    { label: "What's New", href: "/whats-new" },
+    // Planner is empty without a signed-in league, so the hosted demo drops it (PC11).
+    { label: "Planner", href: "/planner" },
+  ].filter(item => !(hosted && HOSTED_DEMO_HIDDEN.has(item.href)));
+}
+
+export const MORE_LINKS: NavItem[] = moreLinks();
 
 /** Every analytical destination whose availability is checked against the catalog. */
 export function analyticalNavItems(): NavItem[] {
@@ -115,7 +124,7 @@ function pathOf(href: string): string {
 
 /** The top-level entry that owns a pathname: "stats", a menu id, or "" when none does. */
 export function activeNavSection(pathname: string): string {
-  if (pathname === "/" || pathname === "/stats") return "stats";
+  if (pathname === "/" || pathname === "/stats" || pathname.startsWith("/stats/")) return "stats";
   for (const menu of NAV_MENUS) {
     for (const group of menu.groups) {
       // A merged page's tabs live under its path (FO07), so they belong to the same menu.

@@ -1,5 +1,8 @@
 import { GatedNote } from "./ui/gated-note";
+import { Suspense } from "react";
 import { PageHeader } from "./ui/panel";
+import { RouteTabs } from "./ui/route-tabs";
+import { STATS_TABS } from "@/lib/route-consolidation";
 import "./stats-explorer.css";
 import { redirect } from "next/navigation";
 import { ContextBar } from "@/components/context-bar";
@@ -10,6 +13,9 @@ import { resolveStatsQuery, normalizedColumn } from "@/lib/stats-query";
 import { getPresetById, IMPACT_COLUMNS, type CountingMode } from "@/lib/stats-presets";
 import { getWorkspace } from "@/lib/workspace-client";
 import type { PlayerResearchResponse, WorkbenchCatalog } from "@/lib/types";
+import { PlayerDirectory } from "./player-directory";
+import Link from "next/link";
+import { buildPreservedContextUrl } from "@/lib/query-url";
 
 export async function StatsWorkspace({ params: rawParams, basePath = "/stats", title = "Stats" }: {
   params: Record<string, string | string[] | undefined>;
@@ -17,6 +23,7 @@ export async function StatsWorkspace({ params: rawParams, basePath = "/stats", t
   title?: string;
 }) {
   const params = Object.fromEntries(Object.entries(rawParams).map(([key, value]) => [key, Array.isArray(value) ? value[0] : value]));
+  const directory = basePath === "/players";
   let catalog: WorkbenchCatalog;
   try {
     catalog = await getWorkbenchCatalog(String(params.releaseId || params.release_id || "") || undefined);
@@ -28,13 +35,14 @@ export async function StatsWorkspace({ params: rawParams, basePath = "/stats", t
     // A favorites request must never silently become an unfiltered query.
     if (params.favorites === "1") return <div role="alert">Favorites unavailable. Try again.</div>;
   }
-  const countingMode = (params.countingMode || params.counting_mode || workspace?.preferences.counting_mode || "per_game") as CountingMode;
+  const countingMode = (directory ? "per_game" : params.countingMode || params.counting_mode || workspace?.preferences.counting_mode || "per_game") as CountingMode;
   const querySpec = resolveStatsQuery(params, catalog, countingMode);
+  if (directory && !params.sortMetric && !params.sort_metric && !params.sort) querySpec.sort = [{ field: "player_name", direction: "asc" }];
   const presetId = params.viewId || params.view_id || params.preset || workspace?.preferences.default_view_id || "overview";
   const preset = getPresetById(presetId, workspace?.views);
-  querySpec.view_state = { ...querySpec.view_state, view_id: presetId,
-    columns: preset.columns.map(column => normalizedColumn(column, countingMode).key) };
-  if (preset.columns.some(column => column.key in IMPACT_COLUMNS) && catalog.impact?.manifest_sha256) {
+  querySpec.view_state = { ...querySpec.view_state, view_id: directory ? "directory" : presetId,
+    columns: directory ? ["gp", "min_per_game", "pts_per_game", "reb_per_game", "ast_per_game", "ts_pct"] : preset.columns.map(column => normalizedColumn(column, countingMode).key) };
+  if (!directory && preset.columns.some(column => column.key in IMPACT_COLUMNS) && catalog.impact?.manifest_sha256) {
     querySpec.impact_manifest_sha256 = querySpec.impact_manifest_sha256 || catalog.impact.manifest_sha256;
   }
   const researchQuery = querySpecToLegacyQuery(querySpec);
@@ -63,6 +71,7 @@ export async function StatsWorkspace({ params: rawParams, basePath = "/stats", t
     if (!catalog.stats_normalizations?.includes(countingMode)) throw new Error(`Counting mode ${countingMode} is unavailable for these Stats queries.`);
     if (!catalog.stats_scopes?.some((scope) => scope.season === querySpec.season && scope.phase === querySpec.phase)) throw new Error(`No observed Stats coverage for ${querySpec.season} / ${querySpec.phase}.`);
     const result = await executeWorkbenchQuery(querySpec, {
+      table_percentiles: true,
       player_ids: params.favorites === "1" ? workspace?.favorites ?? [] : null
     });
     researchData = {
@@ -81,9 +90,12 @@ export async function StatsWorkspace({ params: rawParams, basePath = "/stats", t
   return (
     <section className="stats-workspace">
       <div className="workbench-content">
-        <PageHeader icon="chart-column" title={title} subtitle="NBA player statistics. Explore production, shooting and efficiency within your selected scope." />
+        <PageHeader icon="chart-column" title={title} subtitle={directory ? "Find a player, open a profile or browse season production." : "NBA player statistics. Explore production, shooting and efficiency within your selected scope."} actions={directory ? <Link className="button" href={buildPreservedContextUrl("/stats", new URLSearchParams(Object.entries(params).filter((entry): entry is [string, string] => typeof entry[1] === "string")))}>Explore all stats</Link> : undefined} />
+        {!directory && <Suspense fallback={<div className="ui-route-tabs" aria-hidden="true" />}>
+          <RouteTabs tabs={STATS_TABS} aria-label="Stats sections" />
+        </Suspense>}
 
-        <ContextBar
+        {!directory && <ContextBar
           catalog={catalog}
           sampleNoun="eligible players"
           initialReleaseId={querySpec.release_id ?? undefined}
@@ -93,7 +105,7 @@ export async function StatsWorkspace({ params: rawParams, basePath = "/stats", t
           initialWindow={researchQuery.window}
           sampleSize={researchData?.total_eligible_players}
           lastIncludedDate={researchData?.context?.last_included_date}
-        />
+        />}
 
         {loadError && (
           <GatedNote tone="warning" action={<a href={`${basePath}?${new URLSearchParams(Object.entries(params).filter((entry): entry is [string, string] => typeof entry[1] === "string"))}`} className="ui-button ui-button-secondary ui-button-sm">Retry</a>}>
@@ -101,7 +113,8 @@ export async function StatsWorkspace({ params: rawParams, basePath = "/stats", t
           </GatedNote>
         )}
 
-        {researchData && (
+        {researchData && directory && <PlayerDirectory catalog={catalog} data={researchData} />}
+        {researchData && !directory && (
           <WorkbenchPlayerExplorer
             key={JSON.stringify({ querySpec, favorites: params.favorites })}
             querySpec={querySpec}

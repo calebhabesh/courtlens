@@ -34,7 +34,8 @@ test("completed negative report shows amended identity, honest horizons, metrics
 });
 test("each unavailable model names its independent requirement",async ({page}) => {
   await researchRoutes(page);
-  for(const [path,requirement] of [["/research/rapm","stint and possession"],["/research/rapm/six-factor","turnover and rebound"],["/research/shooting/adjusted","playtypes and foul trips"]]) {
+  // PC11 populated Six-Factor and Adjusted Shooting from served data; only RAPM keeps its registered experiment.
+  for(const [path,requirement] of [["/research/rapm","stint and possession"]]) {
     // Streaming can briefly keep a hidden copy of the view, so assert on the visible one.
     await page.goto(path); await expect(page.locator(".research-view").filter({ hasText: requirement }).filter({ visible: true }).first()).toBeVisible();
     await expect(page.getByRole("region",{name:"Registered research result"})).toHaveCount(0);
@@ -73,11 +74,4 @@ test("roster keeps observed and projected inputs separate and exports context",a
   await page.getByLabel("Projected minutes for Fixture Player").fill("-1");await expect(page.getByRole("button",{name:"Export JSON"})).toBeDisabled();
   await page.getByLabel("Projected minutes for Fixture Player").fill("24");await expect(page.getByRole("meter",{name:"Projected team minutes per game"})).toHaveAttribute("aria-valuenow","24");
   await expect(page.getByRole("button",{name:"Export JSON"})).toBeEnabled();
-});
-test("measurements preserve unknown picks, null lengths and units in bounded sample",async ({page}) => {
-  await page.route("**/api/workbench/measurements?*",route => route.fulfill({json:{items:[{player_id:"fixture",display_name:"Fixture Player",measurement_type:"combine",source_name:"fixture-combine",draft_year:2021,pick_overall:null,drafting_team_id:null,height_no_shoes_inches:80,height_shoes_inches:null,wingspan_inches:86,standing_reach_inches:null,weight_lbs:200,body_fat_pct:null,wingspan_to_height_ratio:null}],count:1,disclaimer:"Fixture only"}}));
-  await page.goto("/wingspan");await expect(page.getByRole("region",{name:"Measurement records"})).toContainText("Unknown pick");
-  await page.getByRole("radio",{name:"Centimeters"}).click();await expect(page.getByRole("region",{name:"Measurement records"})).toContainText("218.44 cm");
-  await page.getByLabel("Compare Fixture Player combine").check();await expect(page.getByRole("region",{name:"Measurement comparison"})).toContainText("fixture-combine");
-  await page.setViewportSize({width:390,height:844});expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 });

@@ -1,0 +1,210 @@
+{
+ "http_status": 200,
+ "elapsed_ms": 439.0,
+ "capabilities": {
+  "play_types": {
+   "name": "play_types",
+   "status": "partial",
+   "seasons": [
+    "2025-26"
+   ],
+   "phases": [
+    "playoffs",
+    "regular_season"
+   ],
+   "coverage_start": null,
+   "coverage_end": null,
+   "expected_grains": [],
+   "metric_requirements": [],
+   "source_freshness": null,
+   "limitations": [
+    "Observed: 2025-26 playoffs, 2025-26 regular_season (hoopr_nba_stats_raw).",
+    "Source returned zero rows (unknown, not zero): play_types cut_defensive 2025-26 playoffs; play_types cut_defensive 2025-26 regular_season; play_types misc_defensive 2025-26 playoffs; play_types misc_defensive 2025-26 regular_season; play_types offrebound_defensive 2025-26 playoffs; play_types offrebound_defensive 2025-26 regular_season; play_types transition_defensive 2025-26 playoffs; play_types transition_defensive 2025-26 regular_season.",
+    "Season totals only; unlisted seasons are not observed."
+   ]
+  },
+  "tracking": {
+   "name": "tracking",
+   "status": "partial",
+   "seasons": [
+    "2025-26"
+   ],
+   "phases": [
+    "playoffs",
+    "regular_season"
+   ],
+   "coverage_start": null,
+   "coverage_end": null,
+   "expected_grains": [],
+   "metric_requirements": [],
+   "source_freshness": null,
+   "limitations": [
+    "Observed: 2025-26 playoffs, 2025-26 regular_season (hoopr_nba_stats_raw).",
+    "Season totals only; unlisted seasons are not observed."
+   ]
+  },
+  "defensive_tracking": {
+   "name": "defensive_tracking",
+   "status": "partial",
+   "seasons": [
+    "2025-26"
+   ],
+   "phases": [
+    "playoffs",
+    "regular_season"
+   ],
+   "coverage_start": null,
+   "coverage_end": null,
+   "expected_grains": [],
+   "metric_requirements": [],
+   "source_freshness": null,
+   "limitations": [
+    "Observed: 2025-26 playoffs, 2025-26 regular_season (hoopr_nba_stats_raw).",
+    "Season totals only; unlisted seasons are not observed."
+   ]
+  },
+  "hustle": {
+   "name": "hustle",
+   "status": "partial",
+   "seasons": [
+    "2025-26"
+   ],
+   "phases": [
+    "playoffs",
+    "regular_season"
+   ],
+   "coverage_start": null,
+   "coverage_end": null,
+   "expected_grains": [],
+   "metric_requirements": [],
+   "source_freshness": null,
+   "limitations": [
+    "Observed: 2025-26 playoffs, 2025-26 regular_season (hoopr_nba_stats_raw).",
+    "Season totals only; unlisted seasons are not observed."
+   ]
+  },
+  "matchups": {
+   "name": "matchups",
+   "status": "partial",
+   "seasons": [
+    "2025-26"
+   ],
+   "phases": [
+    "playoffs",
+    "regular_season"
+   ],
+   "coverage_start": null,
+   "coverage_end": null,
+   "expected_grains": [],
+   "metric_requirements": [],
+   "source_freshness": null,
+   "limitations": [
+    "Observed: 2025-26 playoffs, 2025-26 regular_season (hoopr_nba_stats_raw).",
+    "Source returned zero rows (unknown, not zero): matchups all 2025-26 playoffs.",
+    "Season totals only; unlisted seasons are not observed."
+   ]
+  },
+  "lineups": {
+   "name": "lineups",
+   "status": "partial",
+   "seasons": [
+    "2025-26"
+   ],
+   "phases": [
+    "playoffs",
+    "regular_season"
+   ],
+   "coverage_start": null,
+   "coverage_end": null,
+   "expected_grains": [],
+   "metric_requirements": [],
+   "source_freshness": null,
+   "limitations": [
+    "Observed: 2025-26 playoffs, 2025-26 regular_season (hoopr_nba_stats_raw, pbpstats).",
+    "Truncated at the source row cap: lineups advanced 2025-26 regular_season; lineups base 2025-26 regular_season; lineups four-factors 2025-26 regular_season; pbpstats_lineup 1610612737 2025-26 regular_season; pbpstats_lineup 1610612738 2025-26 regular_season; pbpstats_lineup 1610612739 2025-26 regular_season; pbpstats_lineup 1610612740 2025-26 regular_season; pbpstats_lineup 1610612741 2025-26 regular_season; pbpstats_lineup 1610612742 2025-26 regular_season; pbpstats_lineup 1610612744 2025-26 regular_season; pbpstats_lineup 1610612746 2025-26 regular_season; pbpstats_lineup 1610612747 2025-26 regular_season; pbpstats_lineup 1610612749 2025-26 regular_season; pbpstats_lineup 1610612751 2025-26 regular_season; pbpstats_lineup 1610612752 2025-26 regular_season; pbpstats_lineup 1610612753 2025-26 regular_season; pbpstats_lineup 1610612754 2025-26 regular_season; pbpstats_lineup 1610612755 2025-26 regular_season; pbpstats_lineup 1610612756 2025-26 regular_season; pbpstats_lineup 1610612757 2025-26 regular_season; pbpstats_lineup 1610612758 2025-26 regular_season; pbpstats_lineup 1610612759 2025-26 regular_season; pbpstats_lineup 1610612760 2025-26 regular_season; pbpstats_lineup 1610612761 2025-26 regular_season; pbpstats_lineup 1610612762 2025-26 regular_season; pbpstats_lineup 1610612763 2025-26 regular_season; pbpstats_lineup 1610612764 2025-26 regular_season; pbpstats_lineup 1610612765 2025-26 regular_season; pbpstats_lineup 1610612766 2025-26 regular_season.",
+    "Season totals only; unlisted seasons are not observed."
+   ]
+  },
+  "combine": {
+   "name": "combine",
+   "status": "partial",
+   "seasons": [
+    "2000",
+    "2001",
+    "2002",
+    "2003",
+    "2004",
+    "2005",
+    "2006",
+    "2007",
+    "2008",
+    "2009",
+    "2010",
+    "2011",
+    "2012",
+    "2013",
+    "2014",
+    "2015",
+    "2016",
+    "2017",
+    "2018",
+    "2019",
+    "2020",
+    "2021",
+    "2022",
+    "2023",
+    "2024",
+    "2025",
+    "2026"
+   ],
+   "phases": [
+    "draft"
+   ],
+   "coverage_start": null,
+   "coverage_end": null,
+   "expected_grains": [],
+   "metric_requirements": [],
+   "source_freshness": null,
+   "limitations": [
+    "Observed: 2000 draft, 2001 draft, 2002 draft, 2003 draft, 2004 draft, 2005 draft, 2006 draft, 2007 draft, 2008 draft, 2009 draft, 2010 draft, 2011 draft, 2012 draft, 2013 draft, 2014 draft, 2015 draft, 2016 draft, 2017 draft, 2018 draft, 2019 draft, 2020 draft, 2021 draft, 2022 draft, 2023 draft, 2024 draft, 2025 draft, 2026 draft (hoopr_nba_stats_raw).",
+    "Season totals only; unlisted seasons are not observed."
+   ]
+  },
+  "draft_metadata": {
+   "name": "draft_metadata",
+   "status": "available",
+   "seasons": [],
+   "phases": [],
+   "coverage_start": null,
+   "coverage_end": null,
+   "expected_grains": [],
+   "metric_requirements": [],
+   "source_freshness": null,
+   "limitations": [
+    "Undrafted players have draft_type='undrafted' with null round/pick."
+   ]
+  },
+  "on_off": {
+   "name": "on_off",
+   "status": "partial",
+   "seasons": [
+    "2025-26"
+   ],
+   "phases": [
+    "playoffs",
+    "regular_season"
+   ],
+   "coverage_start": null,
+   "coverage_end": null,
+   "expected_grains": [],
+   "metric_requirements": [],
+   "source_freshness": null,
+   "limitations": [
+    "Observed: 2025-26 playoffs, 2025-26 regular_season (pbpstats).",
+    "Truncated at the source row cap: pbpstats_player all 2025-26 regular_season.",
+    "pbpstats season totals (possessions, plus-minus) are a secondary cross-check; they are not on/off splits.",
+    "Season totals only; unlisted seasons are not observed."
+   ]
+  }
+ }
+}

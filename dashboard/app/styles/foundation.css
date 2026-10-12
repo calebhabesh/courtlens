@@ -42,6 +42,7 @@
   .ui-profile-hero { min-width: 0; }
 
   .ui-compare { display: flex; flex-direction: column; gap: var(--space-3); }
+  .ui-compare-side.ui-compare-side-bare { padding: 0; background: transparent; }
   .ui-compare-sides { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--space-3); }
 
   .ui-compare-side {

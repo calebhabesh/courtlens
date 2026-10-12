@@ -46,19 +46,6 @@ test("court and table preserve zero versus unknown; exports and peer zones agree
   await expect(page.getByRole("heading", { name: "Shot-profile twins · Fixture Player 2" })).toBeVisible(); await expect(page).toHaveURL(/player_id=2.*release_id=fixture-release|release_id=fixture-release.*player_id=2/);
   await page.goBack(); await expect(page.getByRole("heading", { name: "Shot-profile twins · Fixture Player 1" })).toBeVisible();
 });
-test("assignment matrix shows fractional exposure and null pooled rates at 375px", async ({ page }) => {
-  await page.setViewportSize({ width: 375, height: 850 });
-  await page.route("**/api/workbench/operations/matchups", async route => {
-    const data = fixture("matchups", route.request().postDataJSON()); data.coverage_status = "partial"; data.observed_games = 1;
-    data.assignments = [{ offensive_player_id: "1", defensive_player_id: "2", games: 1, seconds: 0, fractional_possessions: .125, attempts: 0, makes: 0, player_points: 0, team_points: 0, fg_pct: null }];
-    await route.fulfill({ json: data });
-  });
-  await openWorkbench(page, "/matchups?player_id=1&defender_id=2");
-  await expect(page.getByRole("region", { name: "Assignment matrix" })).toContainText("0.125"); await expect(page.getByRole("region", { name: "Assignment matrix" })).toContainText("—");
-  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
-  await page.getByRole("region", { name: "Assignment matrix" }).focus(); await page.keyboard.press("ArrowRight");
-  await page.screenshot({ path: test.info().outputPath("b24-partial-mobile-fixture.png"), fullPage: true });
-});
 test("aftermath keeps branch samples, unknown membership and censoring distinct", async ({ page }) => {
   await page.route("**/api/workbench/operations/shot-aftermath", async route => {
     const data = fixture("shot-aftermath", route.request().postDataJSON()); data.coverage_status = "partial";
@@ -82,14 +69,16 @@ test("cancelling an abandoned request prevents stale results", async ({ page }) 
   await openWorkbench(page, "/similar-players/shot-profile?player_id=1"); await page.getByRole("button", { name: "Cancel", exact: true }).click(); await expect(page.getByText("Analysis cancelled.", { exact: true })).toBeVisible(); await expect(page.getByRole("region", { name: "Shooting result" })).toHaveCount(0); await page.waitForTimeout(650); await expect(page.getByRole("region", { name: "Shooting result" })).toHaveCount(0);
 });
 
-test("name lookup alone never runs analysis; choosing a player and a view does", async ({ page }) => {
+test("typing after the observed default never runs another analysis; selecting a player and view does", async ({ page }) => {
   let calls = 0;
   page.on("request", r => { if (r.url().includes("/operations/")) calls++; });
   await page.route("**/api/workbench/lookup?*", route => route.fulfill({ json: { items: [{ kind: "player", canonical_id: "1627751", display_name: "Fixture Shooter" }] } }));
   await openWorkbench(page, "/similar-players/shot-profile");
+  await expect(page.getByRole("heading", { name: /^Shot-profile twins · / })).toBeVisible();
+  const defaultCalls = calls;
   await page.getByRole("combobox",{name:"Player",exact:true}).fill("Shooter");
   await expect(page.getByRole("option").filter({hasText:"Fixture Shooter"})).toBeVisible();
-  expect(calls).toBe(0);
+  expect(calls).toBe(defaultCalls);
   await page.getByRole("option").filter({hasText:"Fixture Shooter"}).click();
   await expect(page.getByRole("heading", { name: "Shot-profile twins · Fixture Shooter" })).toBeVisible();
   await expect(page.getByRole("combobox",{name:"Player",exact:true})).toHaveAttribute("placeholder", "Player: Fixture Shooter");

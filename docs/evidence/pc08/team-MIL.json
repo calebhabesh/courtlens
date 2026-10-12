@@ -1,0 +1,1154 @@
+{
+    "context": {
+        "refresh_id": "95b5fe42-79b2-4be5-bb8c-187b66e10634",
+        "season": "2026-27",
+        "observed_at": "2026-10-12T00:33:42.414183Z",
+        "state": "verification_blocked",
+        "book_id": "26961333-31f3-420e-a86f-203a0fbd1f29",
+        "roster_dataset_id": "027dff96-a2fd-4d54-9833-f76e2bc0248f",
+        "thresholds": {
+            "schema_version": "finance-thresholds-v1",
+            "season": "2026-27",
+            "source_url": "https://www.nba.com/news/nba-salary-cap-2026-27-season",
+            "effective_date": "2026-07-01",
+            "cap_cents": "16496100000",
+            "tax_cents": "20042800000",
+            "first_apron_cents": "20901500000",
+            "second_apron_cents": "22168600000",
+            "minimum_cents": "14846500000",
+            "capture_method": "manual_official_release",
+            "threshold_id": "bac24901-a5ba-45c3-9bd4-b99b803a9910",
+            "observed_at": "2026-10-11T23:17:40.309275Z",
+            "content_sha256": "60d1d4ef37531ec047e24d8da8e60cfc9ec54f5f3cfba7b61e771e532be2bd43",
+            "attribution": "NBA",
+            "limitation": "Official markers only; no exact cap room, tax or apron compliance claim."
+        },
+        "source": "Basketball-Reference contracts pages; NBA player index; NBA salary cap release",
+        "label": "2026-27 \u00b7 reported salaries"
+    },
+    "team_id": "1610612749",
+    "team_tricode": "MIL",
+    "team_name": "Milwaukee Bucks",
+    "seasons": [
+        "2026-27",
+        "2027-28",
+        "2028-29",
+        "2029-30",
+        "2030-31",
+        "2031-32"
+    ],
+    "roster_players": 21,
+    "roster_known_players": 17,
+    "roster_known_cents": "16817559600",
+    "other_source_rows": 1,
+    "other_source_known_cents": "2251660300",
+    "source_page_known_cents": "19069219900",
+    "players": [
+        {
+            "player_id": "1629639",
+            "name": "Tyler Herro",
+            "on_index_roster": true,
+            "listed_position": "G",
+            "position_group": "G",
+            "current_salary_cents": "3300000000",
+            "unknown_reason": null,
+            "remaining_guaranteed_cents": "3300000000",
+            "seasons": [
+                {
+                    "season": "2026-27",
+                    "salary_cents": "3300000000",
+                    "option": null
+                },
+                {
+                    "season": "2027-28",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2028-29",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2029-30",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2030-31",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2031-32",
+                    "salary_cents": null,
+                    "option": null
+                }
+            ],
+            "source_url": "https://www.basketball-reference.com/contracts/MIL.html",
+            "source_locator": "table#contracts/tbody/tr[1]/y1",
+            "reference": {
+                "season": "2025-26",
+                "games": 33,
+                "minutes_per_game": 31.3,
+                "points_per_game": 20.5,
+                "rebounds_per_game": 4.8,
+                "assists_per_game": 4.1,
+                "rapm": -3.2982149586894924
+            }
+        },
+        {
+            "player_id": "1626167",
+            "name": "Myles Turner",
+            "on_index_roster": true,
+            "listed_position": "C-F",
+            "position_group": "C",
+            "current_salary_cents": "2658416400",
+            "unknown_reason": null,
+            "remaining_guaranteed_cents": "5443424100",
+            "seasons": [
+                {
+                    "season": "2026-27",
+                    "salary_cents": "2658416400",
+                    "option": null
+                },
+                {
+                    "season": "2027-28",
+                    "salary_cents": "2785007700",
+                    "option": null
+                },
+                {
+                    "season": "2028-29",
+                    "salary_cents": "2911599000",
+                    "option": "player"
+                },
+                {
+                    "season": "2029-30",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2030-31",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2031-32",
+                    "salary_cents": null,
+                    "option": null
+                }
+            ],
+            "source_url": "https://www.basketball-reference.com/contracts/MIL.html",
+            "source_locator": "table#contracts/tbody/tr[2]/y1",
+            "reference": {
+                "season": "2025-26",
+                "games": 71,
+                "minutes_per_game": 26.9,
+                "points_per_game": 11.9,
+                "rebounds_per_game": 5.3,
+                "assists_per_game": 1.5,
+                "rapm": -3.361031037642733
+            }
+        },
+        {
+            "player_id": "1628398",
+            "name": "Kyle Kuzma",
+            "on_index_roster": true,
+            "listed_position": "F",
+            "position_group": "F",
+            "current_salary_cents": "2034515200",
+            "unknown_reason": null,
+            "remaining_guaranteed_cents": "2034515200",
+            "seasons": [
+                {
+                    "season": "2026-27",
+                    "salary_cents": "2034515200",
+                    "option": null
+                },
+                {
+                    "season": "2027-28",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2028-29",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2029-30",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2030-31",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2031-32",
+                    "salary_cents": null,
+                    "option": null
+                }
+            ],
+            "source_url": "https://www.basketball-reference.com/contracts/MIL.html",
+            "source_locator": "table#contracts/tbody/tr[3]/y1",
+            "reference": {
+                "season": "2025-26",
+                "games": 69,
+                "minutes_per_game": 26.2,
+                "points_per_game": 13.0,
+                "rebounds_per_game": 4.5,
+                "assists_per_game": 2.7,
+                "rapm": -2.9739454238886713
+            }
+        },
+        {
+            "player_id": "1629018",
+            "name": "Gary Trent Jr.",
+            "on_index_roster": true,
+            "listed_position": "G",
+            "position_group": "G",
+            "current_salary_cents": "1520000000",
+            "unknown_reason": null,
+            "remaining_guaranteed_cents": "6400000000",
+            "seasons": [
+                {
+                    "season": "2026-27",
+                    "salary_cents": "1520000000",
+                    "option": null
+                },
+                {
+                    "season": "2027-28",
+                    "salary_cents": "1640000000",
+                    "option": null
+                },
+                {
+                    "season": "2028-29",
+                    "salary_cents": "1640000000",
+                    "option": null
+                },
+                {
+                    "season": "2029-30",
+                    "salary_cents": "1600000000",
+                    "option": null
+                },
+                {
+                    "season": "2030-31",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2031-32",
+                    "salary_cents": null,
+                    "option": null
+                }
+            ],
+            "source_url": "https://www.basketball-reference.com/contracts/MIL.html",
+            "source_locator": "table#contracts/tbody/tr[4]/y1",
+            "reference": {
+                "season": "2025-26",
+                "games": 65,
+                "minutes_per_game": 21.2,
+                "points_per_game": 8.1,
+                "rebounds_per_game": 1.0,
+                "assists_per_game": 1.2,
+                "rapm": -7.557528410928651
+            }
+        },
+        {
+            "player_id": "1627747",
+            "name": "Caris LeVert",
+            "on_index_roster": true,
+            "listed_position": "G",
+            "position_group": "G",
+            "current_salary_cents": "1480920000",
+            "unknown_reason": null,
+            "remaining_guaranteed_cents": "1480920000",
+            "seasons": [
+                {
+                    "season": "2026-27",
+                    "salary_cents": "1480920000",
+                    "option": null
+                },
+                {
+                    "season": "2027-28",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2028-29",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2029-30",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2030-31",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2031-32",
+                    "salary_cents": null,
+                    "option": null
+                }
+            ],
+            "source_url": "https://www.basketball-reference.com/contracts/MIL.html",
+            "source_locator": "table#contracts/tbody/tr[5]/y1",
+            "reference": {
+                "season": "2025-26",
+                "games": 60,
+                "minutes_per_game": 19.2,
+                "points_per_game": 7.4,
+                "rebounds_per_game": 2.0,
+                "assists_per_game": 2.7,
+                "rapm": -4.415984031902958
+            }
+        },
+        {
+            "player_id": "1631260",
+            "name": "AJ Green",
+            "on_index_roster": true,
+            "listed_position": "G",
+            "position_group": "G",
+            "current_salary_cents": "1004464400",
+            "unknown_reason": null,
+            "remaining_guaranteed_cents": "4500000000",
+            "seasons": [
+                {
+                    "season": "2026-27",
+                    "salary_cents": "1004464400",
+                    "option": null
+                },
+                {
+                    "season": "2027-28",
+                    "salary_cents": "1084821500",
+                    "option": null
+                },
+                {
+                    "season": "2028-29",
+                    "salary_cents": "1165178600",
+                    "option": null
+                },
+                {
+                    "season": "2029-30",
+                    "salary_cents": "1245535500",
+                    "option": null
+                },
+                {
+                    "season": "2030-31",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2031-32",
+                    "salary_cents": null,
+                    "option": null
+                }
+            ],
+            "source_url": "https://www.basketball-reference.com/contracts/MIL.html",
+            "source_locator": "table#contracts/tbody/tr[6]/y1",
+            "reference": {
+                "season": "2025-26",
+                "games": 78,
+                "minutes_per_game": 29.1,
+                "points_per_game": 10.4,
+                "rebounds_per_game": 2.7,
+                "assists_per_game": 1.9,
+                "rapm": 0.9120045067163154
+            }
+        },
+        {
+            "player_id": "1643415",
+            "name": "Brayden Burries",
+            "on_index_roster": true,
+            "listed_position": "G",
+            "position_group": "G",
+            "current_salary_cents": "641736000",
+            "unknown_reason": null,
+            "remaining_guaranteed_cents": "1315536000",
+            "seasons": [
+                {
+                    "season": "2026-27",
+                    "salary_cents": "641736000",
+                    "option": null
+                },
+                {
+                    "season": "2027-28",
+                    "salary_cents": "673800000",
+                    "option": null
+                },
+                {
+                    "season": "2028-29",
+                    "salary_cents": "705852000",
+                    "option": "team"
+                },
+                {
+                    "season": "2029-30",
+                    "salary_cents": "899961400",
+                    "option": "team"
+                },
+                {
+                    "season": "2030-31",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2031-32",
+                    "salary_cents": null,
+                    "option": null
+                }
+            ],
+            "source_url": "https://www.basketball-reference.com/contracts/MIL.html",
+            "source_locator": "table#contracts/tbody/tr[7]/y1",
+            "reference": null
+        },
+        {
+            "player_id": "1631170",
+            "name": "Jaime Jaquez Jr.",
+            "on_index_roster": true,
+            "listed_position": "G",
+            "position_group": "G",
+            "current_salary_cents": "593914100",
+            "unknown_reason": null,
+            "remaining_guaranteed_cents": "593914100",
+            "seasons": [
+                {
+                    "season": "2026-27",
+                    "salary_cents": "593914100",
+                    "option": "team"
+                },
+                {
+                    "season": "2027-28",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2028-29",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2029-30",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2030-31",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2031-32",
+                    "salary_cents": null,
+                    "option": null
+                }
+            ],
+            "source_url": "https://www.basketball-reference.com/contracts/MIL.html",
+            "source_locator": "table#contracts/tbody/tr[8]/y1",
+            "reference": {
+                "season": "2025-26",
+                "games": 75,
+                "minutes_per_game": 28.3,
+                "points_per_game": 15.4,
+                "rebounds_per_game": 5.0,
+                "assists_per_game": 4.7,
+                "rapm": 2.2313525483394305
+            }
+        },
+        {
+            "player_id": "1631172",
+            "name": "Ousmane Dieng",
+            "on_index_roster": true,
+            "listed_position": "F",
+            "position_group": "F",
+            "current_salary_cents": "575000000",
+            "unknown_reason": null,
+            "remaining_guaranteed_cents": "1150000000",
+            "seasons": [
+                {
+                    "season": "2026-27",
+                    "salary_cents": "575000000",
+                    "option": null
+                },
+                {
+                    "season": "2027-28",
+                    "salary_cents": "575000000",
+                    "option": null
+                },
+                {
+                    "season": "2028-29",
+                    "salary_cents": "575000000",
+                    "option": "team"
+                },
+                {
+                    "season": "2029-30",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2030-31",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2031-32",
+                    "salary_cents": null,
+                    "option": null
+                }
+            ],
+            "source_url": "https://www.basketball-reference.com/contracts/MIL.html",
+            "source_locator": "table#contracts/tbody/tr[9]/y1",
+            "reference": {
+                "season": "2025-26",
+                "games": 57,
+                "minutes_per_game": 19.3,
+                "points_per_game": 7.6,
+                "rebounds_per_game": 3.2,
+                "assists_per_game": 2.4,
+                "rapm": -6.783056156550664
+            }
+        },
+        {
+            "player_id": "1643417",
+            "name": "Nate Ament",
+            "on_index_roster": true,
+            "listed_position": "F",
+            "position_group": "F",
+            "current_salary_cents": "550200000",
+            "unknown_reason": null,
+            "remaining_guaranteed_cents": "1127928000",
+            "seasons": [
+                {
+                    "season": "2026-27",
+                    "salary_cents": "550200000",
+                    "option": null
+                },
+                {
+                    "season": "2027-28",
+                    "salary_cents": "577728000",
+                    "option": null
+                },
+                {
+                    "season": "2028-29",
+                    "salary_cents": "605220000",
+                    "option": "team"
+                },
+                {
+                    "season": "2029-30",
+                    "salary_cents": "864859400",
+                    "option": "team"
+                },
+                {
+                    "season": "2030-31",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2031-32",
+                    "salary_cents": null,
+                    "option": null
+                }
+            ],
+            "source_url": "https://www.basketball-reference.com/contracts/MIL.html",
+            "source_locator": "table#contracts/tbody/tr[10]/y1",
+            "reference": null
+        },
+        {
+            "player_id": "1629645",
+            "name": "Kevin Porter Jr.",
+            "on_index_roster": true,
+            "listed_position": "G-F",
+            "position_group": "G",
+            "current_salary_cents": "539070000",
+            "unknown_reason": null,
+            "remaining_guaranteed_cents": "539070000",
+            "seasons": [
+                {
+                    "season": "2026-27",
+                    "salary_cents": "539070000",
+                    "option": "player"
+                },
+                {
+                    "season": "2027-28",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2028-29",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2029-30",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2030-31",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2031-32",
+                    "salary_cents": null,
+                    "option": null
+                }
+            ],
+            "source_url": "https://www.basketball-reference.com/contracts/MIL.html",
+            "source_locator": "table#contracts/tbody/tr[11]/y1",
+            "reference": {
+                "season": "2025-26",
+                "games": 38,
+                "minutes_per_game": 33.2,
+                "points_per_game": 17.4,
+                "rebounds_per_game": 5.2,
+                "assists_per_game": 7.4,
+                "rapm": 1.0031217501846912
+            }
+        },
+        {
+            "player_id": "1642276",
+            "name": "Kel'el Ware",
+            "on_index_roster": true,
+            "listed_position": "C",
+            "position_group": "C",
+            "current_salary_cents": "465492000",
+            "unknown_reason": null,
+            "remaining_guaranteed_cents": "465492000",
+            "seasons": [
+                {
+                    "season": "2026-27",
+                    "salary_cents": "465492000",
+                    "option": "team"
+                },
+                {
+                    "season": "2027-28",
+                    "salary_cents": "713599200",
+                    "option": "team"
+                },
+                {
+                    "season": "2028-29",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2029-30",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2030-31",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2031-32",
+                    "salary_cents": null,
+                    "option": null
+                }
+            ],
+            "source_url": "https://www.basketball-reference.com/contracts/MIL.html",
+            "source_locator": "table#contracts/tbody/tr[12]/y1",
+            "reference": {
+                "season": "2025-26",
+                "games": 77,
+                "minutes_per_game": 22.1,
+                "points_per_game": 11.1,
+                "rebounds_per_game": 9.0,
+                "assists_per_game": 0.7,
+                "rapm": -2.025257855901039
+            }
+        },
+        {
+            "player_id": "1631157",
+            "name": "Ryan Rollins",
+            "on_index_roster": true,
+            "listed_position": "G",
+            "position_group": "G",
+            "current_salary_cents": "400000000",
+            "unknown_reason": null,
+            "remaining_guaranteed_cents": "400000000",
+            "seasons": [
+                {
+                    "season": "2026-27",
+                    "salary_cents": "400000000",
+                    "option": null
+                },
+                {
+                    "season": "2027-28",
+                    "salary_cents": "400000000",
+                    "option": "player"
+                },
+                {
+                    "season": "2028-29",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2029-30",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2030-31",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2031-32",
+                    "salary_cents": null,
+                    "option": null
+                }
+            ],
+            "source_url": "https://www.basketball-reference.com/contracts/MIL.html",
+            "source_locator": "table#contracts/tbody/tr[13]/y1",
+            "reference": {
+                "season": "2025-26",
+                "games": 74,
+                "minutes_per_game": 32.1,
+                "points_per_game": 17.3,
+                "rebounds_per_game": 4.6,
+                "assists_per_game": 5.6,
+                "rapm": 3.134597618075854
+            }
+        },
+        {
+            "player_id": "1642857",
+            "name": "Kasparas Jaku\u010dionis",
+            "on_index_roster": true,
+            "listed_position": "G",
+            "position_group": "G",
+            "current_salary_cents": "384168000",
+            "unknown_reason": null,
+            "remaining_guaranteed_cents": "384168000",
+            "seasons": [
+                {
+                    "season": "2026-27",
+                    "salary_cents": "384168000",
+                    "option": null
+                },
+                {
+                    "season": "2027-28",
+                    "salary_cents": "402444000",
+                    "option": "team"
+                },
+                {
+                    "season": "2028-29",
+                    "salary_cents": "620568700",
+                    "option": "team"
+                },
+                {
+                    "season": "2029-30",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2030-31",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2031-32",
+                    "salary_cents": null,
+                    "option": null
+                }
+            ],
+            "source_url": "https://www.basketball-reference.com/contracts/MIL.html",
+            "source_locator": "table#contracts/tbody/tr[14]/y1",
+            "reference": {
+                "season": "2025-26",
+                "games": 53,
+                "minutes_per_game": 17.8,
+                "points_per_game": 6.2,
+                "rebounds_per_game": 2.6,
+                "assists_per_game": 2.6,
+                "rapm": -0.9878360390394608
+            }
+        },
+        {
+            "player_id": "1630579",
+            "name": "Jericho Sims",
+            "on_index_roster": true,
+            "listed_position": "C",
+            "position_group": "C",
+            "current_salary_cents": "280134600",
+            "unknown_reason": null,
+            "remaining_guaranteed_cents": "280134600",
+            "seasons": [
+                {
+                    "season": "2026-27",
+                    "salary_cents": "280134600",
+                    "option": "player"
+                },
+                {
+                    "season": "2027-28",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2028-29",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2029-30",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2030-31",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2031-32",
+                    "salary_cents": null,
+                    "option": null
+                }
+            ],
+            "source_url": "https://www.basketball-reference.com/contracts/MIL.html",
+            "source_locator": "table#contracts/tbody/tr[15]/y1",
+            "reference": {
+                "season": "2025-26",
+                "games": 66,
+                "minutes_per_game": 19.6,
+                "points_per_game": 5.0,
+                "rebounds_per_game": 5.5,
+                "assists_per_game": 1.5,
+                "rapm": -3.5604660225902123
+            }
+        },
+        {
+            "player_id": "1631250",
+            "name": "Pete Nance",
+            "on_index_roster": true,
+            "listed_position": "F",
+            "position_group": "F",
+            "current_salary_cents": "253752600",
+            "unknown_reason": null,
+            "remaining_guaranteed_cents": "253752600",
+            "seasons": [
+                {
+                    "season": "2026-27",
+                    "salary_cents": "253752600",
+                    "option": null
+                },
+                {
+                    "season": "2027-28",
+                    "salary_cents": "275691200",
+                    "option": "team"
+                },
+                {
+                    "season": "2028-29",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2029-30",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2030-31",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2031-32",
+                    "salary_cents": null,
+                    "option": null
+                }
+            ],
+            "source_url": "https://www.basketball-reference.com/contracts/MIL.html",
+            "source_locator": "table#contracts/tbody/tr[16]/y1",
+            "reference": {
+                "season": "2025-26",
+                "games": 45,
+                "minutes_per_game": 15.5,
+                "points_per_game": 5.5,
+                "rebounds_per_game": 2.7,
+                "assists_per_game": 1.0,
+                "rapm": 0.214177477112796
+            }
+        },
+        {
+            "player_id": "1642881",
+            "name": "Bogoljub Markovi\u0107",
+            "on_index_roster": true,
+            "listed_position": "F",
+            "position_group": "F",
+            "current_salary_cents": "135776300",
+            "unknown_reason": null,
+            "remaining_guaranteed_cents": "634649600",
+            "seasons": [
+                {
+                    "season": "2026-27",
+                    "salary_cents": "135776300",
+                    "option": null
+                },
+                {
+                    "season": "2027-28",
+                    "salary_cents": "229437000",
+                    "option": null
+                },
+                {
+                    "season": "2028-29",
+                    "salary_cents": "269436300",
+                    "option": null
+                },
+                {
+                    "season": "2029-30",
+                    "salary_cents": "291815200",
+                    "option": "team"
+                },
+                {
+                    "season": "2030-31",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2031-32",
+                    "salary_cents": null,
+                    "option": null
+                }
+            ],
+            "source_url": "https://www.basketball-reference.com/contracts/MIL.html",
+            "source_locator": "table#contracts/tbody/tr[17]/y1",
+            "reference": null
+        },
+        {
+            "player_id": "1642504",
+            "name": "Cormac Ryan",
+            "on_index_roster": true,
+            "listed_position": "G",
+            "position_group": "G",
+            "current_salary_cents": null,
+            "unknown_reason": "salary_missing_or_identity_unresolved",
+            "remaining_guaranteed_cents": null,
+            "seasons": [],
+            "source_url": null,
+            "source_locator": null,
+            "reference": {
+                "season": "2025-26",
+                "games": 11,
+                "minutes_per_game": 24.6,
+                "points_per_game": 14.3,
+                "rebounds_per_game": 2.5,
+                "assists_per_game": 1.7,
+                "rapm": null
+            }
+        },
+        {
+            "player_id": "1641868",
+            "name": "Jake Stephens",
+            "on_index_roster": true,
+            "listed_position": "C",
+            "position_group": "C",
+            "current_salary_cents": null,
+            "unknown_reason": "salary_blank_in_source",
+            "remaining_guaranteed_cents": null,
+            "seasons": [
+                {
+                    "season": "2026-27",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2027-28",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2028-29",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2029-30",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2030-31",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2031-32",
+                    "salary_cents": null,
+                    "option": null
+                }
+            ],
+            "source_url": "https://www.basketball-reference.com/contracts/MIL.html",
+            "source_locator": "table#contracts/tbody/tr[19]/y1",
+            "reference": null
+        },
+        {
+            "player_id": "1641780",
+            "name": "Johni Broome",
+            "on_index_roster": true,
+            "listed_position": "F",
+            "position_group": "F",
+            "current_salary_cents": null,
+            "unknown_reason": "salary_blank_in_source",
+            "remaining_guaranteed_cents": null,
+            "seasons": [
+                {
+                    "season": "2026-27",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2027-28",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2028-29",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2029-30",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2030-31",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2031-32",
+                    "salary_cents": null,
+                    "option": null
+                }
+            ],
+            "source_url": "https://www.basketball-reference.com/contracts/MIL.html",
+            "source_locator": "table#contracts/tbody/tr[18]/y1",
+            "reference": {
+                "season": "2025-26",
+                "games": 11,
+                "minutes_per_game": 5.0,
+                "points_per_game": 0.9,
+                "rebounds_per_game": 1.5,
+                "assists_per_game": 0.4,
+                "rapm": null
+            }
+        },
+        {
+            "player_id": "1642880",
+            "name": "Kam Jones",
+            "on_index_roster": true,
+            "listed_position": "G",
+            "position_group": "G",
+            "current_salary_cents": null,
+            "unknown_reason": "salary_blank_in_source",
+            "remaining_guaranteed_cents": null,
+            "seasons": [
+                {
+                    "season": "2026-27",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2027-28",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2028-29",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2029-30",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2030-31",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2031-32",
+                    "salary_cents": null,
+                    "option": null
+                }
+            ],
+            "source_url": "https://www.basketball-reference.com/contracts/MIL.html",
+            "source_locator": "table#contracts/tbody/tr[20]/y1",
+            "reference": {
+                "season": "2025-26",
+                "games": 37,
+                "minutes_per_game": 16.7,
+                "points_per_game": 4.4,
+                "rebounds_per_game": 1.6,
+                "assists_per_game": 3.2,
+                "rapm": -4.162779311705373
+            }
+        },
+        {
+            "player_id": "203081",
+            "name": "Damian Lillard",
+            "on_index_roster": false,
+            "listed_position": "G",
+            "position_group": "G",
+            "current_salary_cents": "2251660300",
+            "unknown_reason": null,
+            "remaining_guaranteed_cents": "9006641200",
+            "seasons": [
+                {
+                    "season": "2026-27",
+                    "salary_cents": "2251660300",
+                    "option": null
+                },
+                {
+                    "season": "2027-28",
+                    "salary_cents": "2251660300",
+                    "option": null
+                },
+                {
+                    "season": "2028-29",
+                    "salary_cents": "2251660300",
+                    "option": null
+                },
+                {
+                    "season": "2029-30",
+                    "salary_cents": "2251660300",
+                    "option": null
+                },
+                {
+                    "season": "2030-31",
+                    "salary_cents": null,
+                    "option": null
+                },
+                {
+                    "season": "2031-32",
+                    "salary_cents": null,
+                    "option": null
+                }
+            ],
+            "source_url": "https://www.basketball-reference.com/contracts/MIL.html",
+            "source_locator": "table#contracts/tbody/tr[22]/y1",
+            "reference": null
+        }
+    ],
+    "reference_season": "2025-26",
+    "statistics_release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+    "impact_version": "courtlens-impact-serving-v1",
+    "limitations": [
+        "Reported base salaries from each team's Basketball-Reference page; not cap hits, cash or complete legal cap accounting.",
+        "Effective dates are not on the source page and stay unknown.",
+        "Option markers do not establish exercise or guarantee state; a salary without an option marker is reported, not confirmed guaranteed.",
+        "Threshold lines are official markers; no cap room, tax bill or apron compliance is claimed.",
+        "An unknown salary is excluded from known totals and is never zero.",
+        "Players on a team's source page but on another roster in the index (for example waived players) are listed separately."
+    ]
+}

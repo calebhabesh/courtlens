@@ -1,0 +1,10 @@
+
+> courtlens-dashboard@0.1.0 test:browser
+> playwright test e2e/chart-kit.spec.ts -g 1440px.*first load --workers=1
+
+
+Running 1 test using 1 worker
+
+  ✓  1 e2e/chart-kit.spec.ts:16:7 › PC03 chart kit 1440px › first load, data changes, state actions and phone forms (1.4s)
+
+  1 passed (1.8s)

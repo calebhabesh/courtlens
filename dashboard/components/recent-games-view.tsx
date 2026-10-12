@@ -1,7 +1,9 @@
 "use client";
 
 import { Icon } from "./ui/icon";
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { exampleParams, type ExampleSubject } from "@/lib/example-subject";
+import { ExampleSubjectCard } from "./example-subject";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ContextBar } from "./context-bar";
@@ -36,9 +38,11 @@ import type { PlayerGameLogItem, PlayerProfile } from "@/lib/types";
 interface RecentGamesViewProps {
   initialProfile: PlayerProfile;
   initialGames: PlayerGameLogItem[];
+  defaultExample?: ExampleSubject | null;
 }
 
 export function RecentGamesView({
+  defaultExample,
   initialProfile,
   initialGames
 }: RecentGamesViewProps) {
@@ -46,6 +50,12 @@ export function RecentGamesView({
   const [lookupText, setLookupText] = useState("");
   const router = useRouter();
   const { player, context, latest_team, last_observed_date } = initialProfile;
+  const serialized = searchParams.toString();
+  useEffect(() => {
+    if (!defaultExample) return;
+    const source = new URLSearchParams(serialized);
+    if (!source.get("playerId") && !source.get("id")) window.history.replaceState(null, "", `/last-games?${exampleParams(source,defaultExample,"playerId","player")}`);
+  }, [serialized, defaultExample]);
 
   const [windowSelection, setWindowSelection] = useState<RecentGamesWindow>("last_10");
   const [exposureMode, setExposureMode] = useState<CountingExposureMode>("per_game");
@@ -217,6 +227,7 @@ export function RecentGamesView({
         </>}
       />
 
+      {defaultExample && <ExampleSubjectCard example={defaultExample} />}
       {/* Hero: who, then the window's averages. */}
       <div className="player-hero" style={teamStyle(latest_team?.id)}>
         <div className="player-hero-identity">

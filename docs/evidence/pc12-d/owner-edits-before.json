@@ -1,0 +1,11 @@
+{
+  "TODO.md": "9687f20d610eeee9597fca49107d2d536fee0f88b05c115a495c183c5b2eddcd",
+  "dashboard/components/stats-explorer.css": "0b4c7b38d0292fab89c7b1fee18654f26e85db56ba21bddb3f3cff351128f7e9",
+  "dashboard/components/workbench-player-explorer.tsx": "fab6a3df586d879cf1609ae173b9be17874a8d6ae92a9341ce2f72c6310e5b62",
+  "dashboard/e2e/stats-readability-search.spec.ts": "1393550524c036fb018e5bc5e5b53175cc86a44acf314bb2907701c33b96aefb",
+  "dashboard/e2e/table-interactions.spec.ts": "102b1e78ee7a32933135c8439819f592d7b970fadb3d811917101bfb51710150",
+  "dashboard/next-env.d.ts": "1862ac4bbbc5192d4bf562161df66ea547ed3e67173100656ab606ae9797db2b",
+  "docs/courtlens-refresh-progress.md": "1a9ff12969ba103e4c2dd358a857a14e4ffe1780b76bc0e488f8699608b9d588",
+  "docs/frontend-overhaul-progress.md": "cf49910f5db3a6d4edfc5ae44520e3347aa68295edcfaceb388d5658d61b0ab2",
+  "docs/polish-freeze-implementation-progress.md": "d380287e5d78aac3e8466cf374ee51af1437b3caa25bd83972df27d0990755a1"
+}

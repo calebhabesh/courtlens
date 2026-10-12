@@ -1,6 +1,7 @@
 # Project Checklist
 ## Immediate Tasks
 - [ ] drop down selectors not using site wide theme and are white
+- [ ] padding
 - [ ] End up hosting on subdomain of calebhabesh.com
 - [ ] remove the weird aka in team/player search
 - [ ] Make human readable/understanble laymans terms for advanced statistics

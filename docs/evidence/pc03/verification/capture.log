@@ -1,0 +1,38 @@
+[
+  {
+    "width": 1440,
+    "status": 200,
+    "overflow": 0,
+    "charts": 8,
+    "firstResultY": 380,
+    "minimumContrast": 4.63,
+    "errors": []
+  },
+  {
+    "width": 390,
+    "status": 200,
+    "overflow": 0,
+    "charts": 8,
+    "firstResultY": 476,
+    "minimumContrast": 4.63,
+    "errors": []
+  },
+  {
+    "width": 375,
+    "status": 200,
+    "overflow": 0,
+    "charts": 8,
+    "firstResultY": 476,
+    "minimumContrast": 4.63,
+    "errors": []
+  },
+  {
+    "width": 844,
+    "status": 200,
+    "overflow": 0,
+    "charts": 8,
+    "firstResultY": 380,
+    "minimumContrast": 4.63,
+    "errors": []
+  }
+]

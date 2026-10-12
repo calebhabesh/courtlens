@@ -1,7 +1,7 @@
 import { readdirSync, statSync } from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
-import { MORE_LINKS, NAV_MENUS, activeNavSection, analyticalNavItems } from "./nav-model";
+import { HOSTED_DEMO_HIDDEN, MORE_LINKS, NAV_MENUS, activeNavSection, analyticalNavItems, moreLinks } from "./nav-model";
 
 const appDir = path.resolve(__dirname, "../app");
 function routeExists(href: string): boolean {
@@ -26,7 +26,7 @@ describe("navigation model (FO02, D9 and FO07 groups)", () => {
   it("groups Research by the FO07 targets and moves Tier Lists under Players", () => {
     const research = NAV_MENUS.find(menu => menu.id === "research")!;
     expect(research.groups.map(group => group.title)).toEqual(["Impact", "Shooting", "Trends & Distributions", "Forecasts & Evaluation", "Tools"]);
-    expect(research.groups[0].items.map(item => item.href)).toEqual(["/research/rapm", "/wowy", "/research/defensive-matchups", "/research/epv"]);
+    expect(research.groups[0].items.map(item => item.href)).toEqual(["/research/rapm", "/wowy", "/research/defensive-matchups"]);
     expect(research.groups[1].items.map(item => item.href)).toEqual(["/research/shooting"]);
     expect(research.groups[3].items.map(item => item.label)).toEqual(["Points Forecasts", "Evaluation Archive", "Case Studies", "Saved Investigations"]);
     const players = NAV_MENUS.find(menu => menu.id === "players")!.groups.flatMap(group => group.items.map(item => item.href));
@@ -35,6 +35,12 @@ describe("navigation model (FO02, D9 and FO07 groups)", () => {
 
   it("keeps the D9 support links in the More menu", () => {
     expect(MORE_LINKS.map(item => item.label)).toEqual(["Settings", "Data Status", "Methodology", "What's New", "Planner"]);
+  });
+
+  it("drops Planner from the hosted demo only (PC11)", () => {
+    expect(moreLinks(true).map(item => item.href)).not.toContain("/planner");
+    expect(moreLinks(false).map(item => item.href)).toContain("/planner");
+    for (const href of HOSTED_DEMO_HIDDEN) expect(analyticalNavItems().map(item => item.href)).not.toContain(href);
   });
 
   it("resolves the active top-level entry from the pathname", () => {

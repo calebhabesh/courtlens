@@ -1,4 +1,10 @@
 import { createServer } from "node:http";
+import { readFileSync } from "node:fs";
+import { pc11Response, sixFactor } from "./pc11-fixtures.mjs";
+
+// Recorded real retained finding, no question/provider prose. Other public examples stay
+// unavailable in this fixture, exercising the partial-library state without fabricated results.
+const retainedDistribution = JSON.parse(readFileSync(new URL("./fixtures/pc12-retained-distribution.json", import.meta.url), "utf8"));
 
 const snapshotId = "snapshot-browser-fixture";
 const catalog = {
@@ -536,6 +542,7 @@ const mockPlayoffSeriesDetail = {
 
 createServer(async (request, response) => {
   const url = new URL(request.url ?? "/", "http://127.0.0.1:4100");
+  if (url.pathname === `/api/workbench/assistant/investigations/${retainedDistribution.id}`) return json(response, 200, retainedDistribution);
   // Browser JSON POSTs (for example Showcase rank queries) send a CORS preflight, as the real API allows.
   if (request.method === "OPTIONS") {
     response.writeHead(204, {
@@ -546,6 +553,9 @@ createServer(async (request, response) => {
     response.end();
     return;
   }
+  if (url.pathname === "/api/workbench/impact" && !url.searchParams.get("sortMetric")) return json(response, 200, sixFactor(url));
+  const pc11 = pc11Response(url);
+  if (pc11) return json(response, 200, pc11);
   if (url.pathname === "/api/workbench/lookup") {
     const q = (url.searchParams.get("q") || "").toLowerCase();
     const kinds = (url.searchParams.get("kinds") || "player,team,page").split(",");
@@ -612,23 +622,30 @@ createServer(async (request, response) => {
     const body = JSON.parse(raw);
     const query = body.query;
     const rows = workbenchPlayers.items.map((row, index) => ({ ...row,
-      percentiles: Object.fromEntries(Object.keys(row.metrics).map((key) => [key, index === 0 ? 75 : 25]))
+      percentiles: Object.fromEntries(Object.keys(row.metrics).map((key) => [key, index === 0 ? 75 : 25])),
+      ...(body.presentation?.table_percentiles ? {
+        table_qualified: true,
+        table_percentiles: Object.fromEntries(Object.keys(row.metrics).map(key => [key, index === 0 ? 75 : 25])),
+        table_cohort_sample_sizes: Object.fromEntries(Object.keys(row.metrics).map(key => [key, 2]))
+      } : {})
     }));
     const selected = rows.filter((row) => (!query.name || row.player_name.toLowerCase().includes(query.name.toLowerCase())) &&
       (body.presentation?.player_ids == null || body.presentation.player_ids.includes(row.player_id)));
     const sort = query.sort?.[0];
-    if (sort) selected.sort((a, b) => ((a.metrics[sort.field] ?? 0) - (b.metrics[sort.field] ?? 0)) * (sort.direction === "asc" ? 1 : -1));
+    if (sort) selected.sort((a, b) => (sort.field === "player_name" ? a.player_name.localeCompare(b.player_name) : (a.metrics[sort.field] ?? 0) - (b.metrics[sort.field] ?? 0)) * (sort.direction === "asc" ? 1 : -1));
     return json(response, 200, { context: workbenchContext, query, total_eligible_players: rows.length,
       total_output_players: selected.length, output_offset: 0,
       cohort: { version: "pf01a-v1", scope_hash: "fixture-cohort", eligible_players: rows.length, formula: "midrank", good_directions: {} },
+      ...(body.presentation?.table_percentiles ? { table_cohort: { version: "courtlens-table-percentiles-v1", scope_hash: "fixture-table-cohort", qualified_players: 2, min_season_minutes: 500, reference: "League", formula: "midrank" } } : {}),
       items: selected, next_cursor: null, has_more: false, warnings: [] });
   }
   if (url.pathname === "/api/workbench/status") return json(response, 200, workbenchStatus);
   if (url.pathname === "/api/workbench/players") {
     const q = (url.searchParams.get("name") ?? "").toLowerCase();
-    const filtered = q
-      ? workbenchPlayers.items.filter(p => p.player_name.toLowerCase().includes(q))
-      : workbenchPlayers.items;
+    let filtered = q ? workbenchPlayers.items.filter(p => p.player_name.toLowerCase().includes(q)) : [...workbenchPlayers.items];
+    if (url.searchParams.get("sortMetric") === "min") filtered.sort((a,b) => b.total_minutes-a.total_minutes || a.player_id.localeCompare(b.player_id));
+    // Dedicated observed-team duo fixture; kept out of the normal two-row Stats cohort.
+    if (url.searchParams.get("teamId") === "TOR") filtered = filtered.map(player => ({...player,teams:["TOR"]}));
     return json(response, 200, { ...workbenchPlayers, items: filtered, total_eligible_players: filtered.length });
   }
   if (url.pathname === "/api/workbench/players/23") return json(response, 200, workbenchPlayerProfile("23"));
@@ -638,7 +655,7 @@ createServer(async (request, response) => {
   // FO10: bounded synthetic detail fixtures cover tabs, known zero and unknown outcomes.
   if (["/api/workbench/teams/100/four-factors", "/api/workbench/teams/200/four-factors"].includes(url.pathname)) return json(response, 200, {
     team:workbenchTeamDetail.team,context:workbenchContext,games_played:72,pace:99.4,off_rating:115.4,def_rating:110.2,net_rating:5.2,
-    ratings:[], shooting_percentages:{},league_averages:{},warnings:[],
+    ratings:[["off_rating","Offensive Rating",115.4,113.0],["def_rating","Defensive Rating",110.2,113.0],["net_rating","Net Rating",5.2,0]].map(([key,display_name,value,league_avg]) => ({key,display_name,value,league_avg,unit:"rating",formula:"Synthetic UI fixture",total_teams:30})), shooting_percentages:{opp_fg_pct:0.437},league_averages:{},warnings:[],
     offense_factors:[{key:"efg_pct",display_name:"Effective Field Goal %",value:0.54,league_avg:0.53,rank:8,percentile:74,total_teams:30,good_direction:"high",unit:"percentage",formula:"Synthetic fixture",weight:0.4}],
     defense_factors:[{key:"opp_efg_pct",display_name:"Opponent eFG%",value:url.pathname.includes("/200/") ? 0.5 : null,league_avg:0.53,rank:url.pathname.includes("/200/") ? 4 : null,percentile:url.pathname.includes("/200/") ? 88.3 : null,total_teams:30,good_direction:"low",unit:"percentage",formula:"Synthetic fixture",weight:0.4}],
     three_point_scenario:{observed_fg3m:12,observed_fg3a:32,observed_3p_pct:0.375,league_3p_pct:0.375,hypothetical_fg3m:12,delta_points:0,actual_ppg:115.4,hypothetical_ppg:115.4,delta_off_rating:0,delta_net_rating:0,disclaimer:"Synthetic what-if accounting fixture, not a causal effect."}
@@ -650,7 +667,7 @@ createServer(async (request, response) => {
     games:[{game_id:"fo10-unknown",game_date:"2026-03-01",opponent_tricode:"BOS",opponent_name:"Boston Celtics",side:"home",team_points:0,opponent_points:null,is_win:null,rest_days:0,is_back_to_back:true,rest_bucket:"0_days_rest"}]
   });
   if (url.pathname === "/api/workbench/teams/100/peers") return json(response,200,{team:workbenchTeamDetail.team,context:workbenchContext,dimensions:[],warnings:[],peers:[{team_id:"200",tricode:"BOS",name:"Boston Celtics",similarity_score:0.95,distance:0.1,conference:"Eastern"}]});
-  if (url.pathname === "/api/workbench/teams") return json(response, 200, workbenchTeams);
+  if (url.pathname === "/api/workbench/teams") return json(response, 200, { ...workbenchTeams, teams: workbenchTeams.teams.map((team, index) => ({ ...team, table_percentiles: { wins: index ? 75 : 25, win_pct: index ? 75 : 25, ppg: index ? 75 : 25, opp_ppg: index ? 75 : 25, net_margin: index ? 75 : 25 }, table_cohort_sample_sizes: { wins: 2, win_pct: 2, ppg: 2, opp_ppg: 2, net_margin: 2 } })) });
   if (url.pathname === "/api/workbench/teams/1610612761") return json(response, 200, { ...workbenchTeamDetail, team: { ...workbenchTeamDetail.team, id: "1610612761" } });
   // FO11: one deliberately missing-data opponent for descriptive comparison guards.
   if (url.pathname === "/api/workbench/teams/200") return json(response,200,{
@@ -721,7 +738,10 @@ createServer(async (request, response) => {
       ]
     });
   }
-  if (url.pathname === "/api/workbench/metrics") return json(response, 200, { version: "v1", count: 35, metrics: [] });
+  if (url.pathname === "/api/workbench/metrics") return json(response, 200, { version: "courtlens-stats-v3", metrics: ["pts","reb","ast","stl","blk","tov","pf","min","gp","ts_pct","efg_pct","ftr"].flatMap(key => {
+    const count = !["gp","ts_pct","efg_pct","ftr"].includes(key);
+    return [key, ...(count ? [`${key}_per_game`] : [])].map(name => ({ key:name, version:"courtlens-stats-v3",short_name:key,category:count ? "counting" : "efficiency",formula:"Synthetic UI fixture",denominator:null,phase_scope:["regular_season"],default_sort_direction:"desc",limitations:["Synthetic UI fixture"],validity_definition:"Observed synthetic appearances", display_name:({pts:"Points",reb:"Rebounds",ast:"Assists",stl:"Steals",blk:"Blocks",tov:"Turnovers",pf:"Fouls",min:"Minutes",gp:"Games Played",ts_pct:"True Shooting Percentage",efg_pct:"Effective Field Goal %",ftr:"Free Throw Rate"})[key]+(name.endsWith("_per_game") ? " Per Game" : count ? " Total" : ""), unit:["ts_pct","efg_pct","ftr"].includes(key) ? "percentage" : "",good_direction:["tov","pf"].includes(key) ? "low" : ["min","gp"].includes(key) ? null : "high" }));
+  }) });
   if (url.pathname === "/api/workbench/analyses") return json(response, 200, []);
   if (url.pathname === "/api/workbench/jobs") return json(response, 200, [workbenchStatus.worker.latest_job]);
   if (url.pathname === "/api/workbench/lineage") {
@@ -813,6 +833,7 @@ createServer(async (request, response) => {
     return json(response, 200, { ...catalog, replay_date: date, player_a: first, player_b: second, estimate_gap: first.estimate.point != null && second.estimate.point != null ? first.estimate.point - second.estimate.point : null });
   }
   if (url.pathname === "/api/analytics/evaluations") {
+    if (url.searchParams.has("snapshotId") && url.searchParams.get("snapshotId") !== snapshotId) return json(response, 404, { detail: { reason: "evaluation_snapshot_mismatch" } });
     const metric = (mae, rmse) => ({ forecast_rows: 39988, mae, rmse });
     const interval = (coverage, mean_width) => ({ coverage, mean_width, rows: 39988 });
     return json(response, 200, { ...catalog, run_id: "fixture-run", report_sha256: "fixture-hash", validation: {
@@ -958,7 +979,7 @@ createServer(async (request, response) => {
   }
   return json(response, 404, { detail: "not found" });
 
-}).listen(4100, "127.0.0.1");
+}).listen(Number(process.env.PORT || 4100), "127.0.0.1");
 
 function fixtureProfile(id, date) {
   const guard = id === "24";

@@ -1,4 +1,6 @@
 "use client";
+import { preserveExample } from "@/lib/example-subject";
+import { ExampleSubjectCard, useExampleSubject } from "./example-subject";
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
@@ -51,6 +53,7 @@ const SHOOTING_LIMITS = <>
  */
 export function ShootingView({ initialOperation = "shot-profile-peers" }: { initialOperation?: ShootingOperation; embedded?: boolean }) {
   const params = useSearchParams(), path = usePathname();
+  const exampleState = useExampleSubject("player_id", ["playerId"]);
   const toggles = initialOperation === "shot-profile-peers";
   const readOperation = (): ShootingOperation => toggles && params.get("operation") === "shot-profile" ? "shot-profile" : initialOperation;
   const [operation, setOperation] = useState<ShootingOperation>(readOperation);
@@ -78,6 +81,7 @@ export function ShootingView({ initialOperation = "shot-profile-peers" }: { init
   const active = useRef<AbortController | null>(null);
   const court = useRef<SVGSVGElement | null>(null);
   function change(next: Partial<ShootingInput>, nextOperation = operation) {
+    exampleState.cancelDefault();
     active.current?.abort(); setResult(null); setBusy(false); setError(""); setCancelled(false); setOperation(nextOperation);
     // Keep the scope an initially default query resolved to, so a later filter change cannot
     // silently move it to another release or cutoff.
@@ -88,13 +92,13 @@ export function ShootingView({ initialOperation = "shot-profile-peers" }: { init
   useEffect(() => {
     const controller = new AbortController(); active.current = controller;
     const timer = setTimeout(() => {
-      const url = shootingUrl(path, operation, query); setOwnUrl(url.split("?")[1] ?? ""); window.history.replaceState(null, "", url);
+      const url = preserveExample(shootingUrl(path, operation, query),window.location.search); setOwnUrl(url.split("?")[1] ?? ""); window.history.replaceState(null, "", url);
       if (!query.player_id || issue || cancelled) return;
       setBusy(true); setError(""); setResult(null);
       runShooting(operation, query, controller.signal).then(data => {
         if (controller.signal.aborted) return;
         setResult(data); setZone(""); setTeam(""); setSelectedPeer(""); setSelectedShot(null); setShotPage(0); setAnchorPage(0);
-        const resolved = shootingUrl(path, data.operation, resolvedShooting(data)); setOwnUrl(resolved.split("?")[1] ?? ""); window.history.replaceState(null, "", resolved);
+        const resolved = preserveExample(shootingUrl(path, data.operation, resolvedShooting(data)),window.location.search); setOwnUrl(resolved.split("?")[1] ?? ""); window.history.replaceState(null, "", resolved);
       }).catch(err => { if (!controller.signal.aborted) setError(err instanceof Error ? err.message : "Shooting request failed"); })
         .finally(() => { if (!controller.signal.aborted) setBusy(false); });
     }, 200);
@@ -172,8 +176,9 @@ export function ShootingView({ initialOperation = "shot-profile-peers" }: { init
       ] : []}>
         <Field label="Release"><input aria-label="Release" value={query.release_id ?? ""} onChange={e => change({ release_id: e.target.value || null })} /></Field>
       </DataDetailsButton>} />
-    {!query.player_id && <GatedNote why={SHOOTING_LIMITS}>Choose a player to see their {operation === "shot-aftermath" ? "shot aftermath" : "shooting profile"}.</GatedNote>}
+    {!query.player_id && !exampleState.loading && <GatedNote why={SHOOTING_LIMITS}>Choose a player to see their {operation === "shot-aftermath" ? "shot aftermath" : "shooting profile"}.</GatedNote>}
     {query.player_id && issue && <div role="alert"><GatedNote>{issue}</GatedNote></div>}
+    <ExampleSubjectCard {...exampleState} />
     {error && <div role="alert"><GatedNote tone="warning" action={<button className="button" onClick={() => setRetry(v => v + 1)}>Retry</button>}>Shooting analysis unavailable: {error}</GatedNote></div>}
     {cancelled && !busy && !result && <GatedNote action={<button className="button" onClick={() => setCancelled(false)}>Run again</button>}>Analysis cancelled.</GatedNote>}
     {busy && <><GatedNote action={<button type="button" className="button" onClick={() => { active.current?.abort(); setBusy(false); setCancelled(true); }}>Cancel</button>}>Running the shooting analysis…</GatedNote><TemplateSkeleton template="research" /></>}

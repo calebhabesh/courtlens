@@ -1,0 +1,26 @@
+[
+  {
+    "name": "refresh-detail",
+    "http_status": 200,
+    "milliseconds": 5.0,
+    "bytes": 182434
+  },
+  {
+    "name": "refresh-catalog",
+    "http_status": 200,
+    "milliseconds": 3.5,
+    "bytes": 182436
+  },
+  {
+    "name": "thresholds",
+    "http_status": 200,
+    "milliseconds": 2.6,
+    "bytes": 647
+  },
+  {
+    "name": "book-detail",
+    "http_status": 200,
+    "milliseconds": 3.5,
+    "bytes": 670
+  }
+]

@@ -34,6 +34,8 @@ export interface RosterAllocationViewProps {
   catalog: WorkbenchCatalog | null;
   teamId: string | null;
   scope: { releaseId?: string; season?: string; phase?: string; beforeDate?: string };
+  /** PC10: rendered as the Depth chart tab inside a Roster Shapes team page. */
+  embedded?: boolean;
 }
 
 type Result = { key: string } & ({ status: "error"; message: string } | { status: "ready"; data: TeamDetailResponse });
@@ -42,11 +44,12 @@ type Load = { status: "idle" | "loading" } | Result;
 const DRAG_TYPE = "application/x-courtlens-player";
 const LANE_LABELS: Record<Lane, string> = { PG: "Point guard", SG: "Shooting guard", SF: "Small forward", PF: "Power forward", C: "Center", Unassigned: "Unassigned" };
 
-const wholeMinutes = (value: number) => value.toLocaleString("en-US", { maximumFractionDigits: 0 });
-const tenthMinutes = (value: number) => value.toLocaleString("en-US", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+// Unknown minutes render as an em dash, never as zero.
+const wholeMinutes = (value: number | null) => (value === null ? "—" : value.toLocaleString("en-US", { maximumFractionDigits: 0 }));
+const tenthMinutes = (value: number | null) => (value === null ? "—" : value.toLocaleString("en-US", { minimumFractionDigits: 1, maximumFractionDigits: 1 }));
 const percent = (share: number | null) => (share === null ? "—" : `${(share * 100).toFixed(1)}%`);
 
-export function RosterAllocationView({ catalog, teamId, scope }: RosterAllocationViewProps) {
+export function RosterAllocationView({ catalog, teamId, scope, embedded = false }: RosterAllocationViewProps) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -79,7 +82,7 @@ export function RosterAllocationView({ catalog, teamId, scope }: RosterAllocatio
   const summary = useMemo(() => summarize(allocations), [allocations]);
   // Chips keep a stable order (observed minutes) so typing projections never moves the chip in use.
   const byLane = useMemo(() => {
-    const ordered = [...allocations].sort((a, b) => b.total_minutes - a.total_minutes);
+    const ordered = [...allocations].sort((a, b) => (b.total_minutes ?? -1) - (a.total_minutes ?? -1));
     return Object.fromEntries(LANES.map((lane) => [lane, ordered.filter((row) => row.allocation_position === lane)])) as Record<Lane, Allocation[]>;
   }, [allocations]);
 
@@ -129,7 +132,7 @@ export function RosterAllocationView({ catalog, teamId, scope }: RosterAllocatio
         <PlayerPortrait playerId={row.player_id} name={row.player_name} size="sm" />
         <span className="roster-chip-text">
           <span className="roster-chip-name" title={row.player_name}>{row.player_name}</span>
-          <span className="roster-chip-meta">{mode === "projected" && row.games_played > 0
+          <span className="roster-chip-meta">{mode === "projected" && row.games_played > 0 && row.total_minutes !== null
             ? `${tenthMinutes(row.total_minutes / row.games_played)} obs/g`
             : `${wholeMinutes(row.total_minutes)} min · ${row.games_played} GP`}</span>
         </span>
@@ -199,17 +202,22 @@ export function RosterAllocationView({ catalog, teamId, scope }: RosterAllocatio
 
   const exportDisabled = !data || !rows.length || summary.invalid;
 
-  return (
-    <PageShell template="board" className="roster-page">
-      <PageHeader
+  const actions = teamId ? <>
+    <Button variant="secondary" icon="swap" onClick={() => setPickerOpen(true)}>Change team</Button>
+    <Button variant="primary" icon="download" disabled={exportDisabled}
+      onClick={() => data && downloadResearch(ALLOCATION_EXPORT_FILENAME, allocationExport(data, mode, allocations))}>Export JSON</Button>
+  </> : undefined;
+  const content = (
+    <>
+      {embedded ? <div className="roster-embedded-actions">
+        <p className="roster-embedded-intro">Place players into a depth chart and see how {scope.season ?? "observed"} minutes split by position.</p>
+        <Button variant="primary" icon="download" disabled={exportDisabled}
+          onClick={() => data && downloadResearch(ALLOCATION_EXPORT_FILENAME, allocationExport(data, mode, allocations))}>Export JSON</Button>
+      </div> : <PageHeader
         title="Roster Shapes"
         subtitle="Place a team's players into a depth chart and see how minutes split by position."
-        actions={teamId ? <>
-          <Button variant="secondary" icon="swap" onClick={() => setPickerOpen(true)}>Change team</Button>
-          <Button variant="primary" icon="download" disabled={exportDisabled}
-            onClick={() => data && downloadResearch(ALLOCATION_EXPORT_FILENAME, allocationExport(data, mode, allocations))}>Export JSON</Button>
-        </> : undefined}
-      />
+        actions={actions}
+      />}
 
       <ContextBar
         catalog={catalog ?? undefined}
@@ -305,9 +313,12 @@ export function RosterAllocationView({ catalog, teamId, scope }: RosterAllocatio
         </>
       )}
 
-      <Modal isOpen={pickerOpen} onClose={() => setPickerOpen(false)} title="Choose a team" className="roster-picker-modal">
+      {!embedded && <Modal isOpen={pickerOpen} onClose={() => setPickerOpen(false)} title="Choose a team" className="roster-picker-modal">
         <TeamGrid selected={data?.team.id ?? teamId} onSelect={selectTeam} />
-      </Modal>
-    </PageShell>
+      </Modal>}
+    </>
   );
+  return embedded
+    ? <div className="roster-page roster-embedded">{content}</div>
+    : <PageShell template="board" className="roster-page">{content}</PageShell>;
 }
