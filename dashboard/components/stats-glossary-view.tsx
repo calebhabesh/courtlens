@@ -54,12 +54,15 @@ export function StatsGlossaryView({ entries, available }: { entries: GlossaryEnt
             <article key={entry.key} className="glossary-card" aria-labelledby={`glossary-${entry.key}`}>
               <div className="glossary-card-head">
                 <span className="glossary-card-icon" aria-hidden="true"><Icon name={GROUP_ICONS[entry.group]} size={16} /></span>
-                <h2 id={`glossary-${entry.key}`}>{entry.short}</h2>
+                <div className="glossary-card-title">
+                  <h2 id={`glossary-${entry.key}`}>{entry.short}</h2>
+                  {entry.name !== entry.short && <p className="glossary-card-name">{entry.name}</p>}
+                </div>
                 <span className="glossary-card-group">{entry.group}</span>
               </div>
               <button type="button" className="glossary-card-description" aria-expanded={expanded} aria-controls={`glossary-detail-${entry.key}`}
                 onClick={() => setOpen(expanded ? null : entry.key)}>
-                <span>{entry.name !== entry.short ? `${entry.name}: ` : ""}{entry.plain}</span>
+                <span>{entry.plain}</span>
                 <span className="glossary-card-more">{expanded ? "Hide calculation" : "How it's calculated"}<Icon name={expanded ? "chevron-up" : "chevron-down"} size={14} /></span>
               </button>
               {expanded && (

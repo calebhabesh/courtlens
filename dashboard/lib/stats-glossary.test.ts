@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { glossaryEntries, glossaryPlain, glossaryShortName } from "./stats-glossary";
+import { glossaryEntries, glossaryName, glossaryPlain, glossaryShortName } from "./stats-glossary";
 import type { MetricDefinition } from "./types";
 
 const metric = (key: string, short_name = key.toUpperCase(), display_name = short_name, formula = key): MetricDefinition => ({
@@ -26,5 +26,23 @@ describe("stats glossary copy", () => {
   it("collapses catalog aliases with the same meaning", () => {
     const entries = glossaryEntries([metric("reb", "REB", "Total Rebounds", "sum(r)"), metric("reb_total", "REB", "Total Rebounds", "sum(r)")]);
     expect(entries).toHaveLength(1);
+  });
+});
+
+describe("glossary structure: abbreviation, full name, definition", () => {
+  it("spells abbreviations out as full names", () => {
+    expect(glossaryName(metric("impact_three_point_rate", "3PR", "3PR"))).toBe("Three-Point Attempt Rate");
+    expect(glossaryName(metric("bpr_2y", "2Y BPR", "2Y BPR"))).toBe("Box Prior RAPM (2 seasons)");
+    expect(glossaryName(metric("pbp_create_ts", "Create analogue ts", "Create analogue ts"))).toBe("Self-Created True Shooting Percentage");
+    expect(glossaryName(metric("on_net_rating", "Net on", "Net on"))).toBe("Net Rating On Court");
+  });
+  it("never opens a definition by restating its name", () => {
+    for (const [key, name] of [["ctov_pct", "Creation-Adjusted Turnover Percentage"], ["on_ball_pct", "On-Ball Percentage"],
+      ["pts_created", "Points Created"], ["offensive_load", "Offensive Load"], ["impact_rts", "rTS"], ["bpr", "1Y BPR"], ["o_ts", "oTS"]]) {
+      const entry = metric(key, name, name);
+      const plain = glossaryPlain(entry).toLowerCase();
+      expect(plain.startsWith(glossaryName(entry).toLowerCase())).toBe(false);
+      expect(plain.startsWith(name.toLowerCase())).toBe(false);
+    }
   });
 });

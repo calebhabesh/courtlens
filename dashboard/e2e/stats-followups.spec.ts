@@ -74,20 +74,75 @@ test("the name search spans the player cards and its results drop from the field
   const field = (await page.locator(".stats-header-search .lookup-input-wrapper").boundingBox())!;
   const card = (await rows(page).first().locator("td").first().boundingBox())!;
   expect(Math.abs(field.x - card.x)).toBeLessThanOrEqual(12);
+  // The search spans the cards: its right edge reaches the details buttons below.
+  const details = (await rows(page).first().getByRole("button", { name: /^Open details for / }).boundingBox())!;
+  expect(Math.abs(field.x + field.width - (details.x + details.width))).toBeLessThanOrEqual(8);
+  // Alphabetical order is a table tool (A–Z icon), toggling to Z–A.
+  const az = page.getByRole("group", { name: "Table tools" }).getByRole("button", { name: "Sort by Player" });
+  await az.click();
+  await page.waitForURL(url => url.searchParams.get("sortMetric") === "player_name" && url.searchParams.get("sortDirection") === "asc");
+  await expect(az).toHaveAttribute("aria-pressed", "true");
+  await expect(az).toHaveAttribute("title", "Sort players Z–A");
   await page.getByRole("combobox", { name: "Filter players by name" }).fill("fix");
   const results = page.locator(".lookup-floating-dropdown");
   await expect(results).toBeVisible();
   expect(Math.abs((await results.boundingBox())!.x - field.x)).toBeLessThanOrEqual(1);
 });
 
-test("Reset table returns to the default sort and first page", async ({ page }) => {
-  await openWorkbench(page, "/stats");
-  const reset = page.getByRole("button", { name: "Reset table" });
-  await expect(reset).toBeDisabled();
+test("Reset table clears every sort and filter, even mid-navigation", async ({ page }) => {
+  await openWorkbench(page, "/stats?positions=PG&draftYear=2020&minGames=5");
   await page.getByRole("button", { name: "Sort by AST" }).click();
   await page.waitForURL(url => url.searchParams.has("sortMetric"));
-  await expect(reset).toBeEnabled();
-  await reset.click();
-  await page.waitForURL(url => !url.searchParams.has("sortMetric"));
-  await expect(reset).toBeDisabled();
+  await page.getByRole("button", { name: "Reset table" }).click();
+  await page.waitForURL(url => ["sortMetric", "positions", "draftYear", "minGames"].every(key => !url.searchParams.has(key)));
+  await expect(rows(page)).toHaveCount(2);
+});
+
+test("hovering a stat cell highlights that stat in the player preview", async ({ page }) => {
+  await openWorkbench(page, "/stats");
+  const row = rows(page).first();
+  await row.hover();
+  await row.locator("td[data-column='ast_per_game']").hover();
+  const metric = page.locator(".stats-preview-metric[data-column='ast_per_game']");
+  await expect(metric).toHaveClass(/is-highlighted/);
+  await expect(page.locator(".stats-preview-metric.is-highlighted")).toHaveCount(1);
+  await page.mouse.move(5, 5);
+  await expect(page.locator(".stats-preview-metric.is-highlighted")).toHaveCount(0);
+});
+
+test("table and preview keep one height; selected players fit inside the frame", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await openWorkbench(page, "/stats");
+  const frame = page.locator(".stats-table-frame").filter({ visible: true });
+  const rail = page.getByRole("complementary", { name: "Player preview" });
+  await expect(rail).toContainText("Player Preview");
+  // The frame ends 16px above the viewport bottom and the rail matches it, tray or not.
+  const fits = async () => {
+    const f = (await frame.boundingBox())!, r = (await rail.boundingBox())!;
+    // Page coordinates: the frame fills the unscrolled page, whatever the scroll position now.
+    const scrollY = await page.evaluate(() => window.scrollY);
+    return Math.abs(f.y + scrollY + f.height - 984) <= 1 && Math.abs(f.height - r.height) < 1;
+  };
+  await expect.poll(fits).toBe(true);
+  await rows(page).first().getByRole("button", { name: /^Add .* to comparison$/ }).click();
+  const tray = frame.getByRole("region", { name: "Comparison selection tray" });
+  await expect(tray).toBeVisible();
+  await expect.poll(fits).toBe(true);
+  await rows(page).first().getByRole("button", { name: /^Remove .* from comparison$/ }).click();
+  await expect(tray).toHaveCount(0);
+});
+
+test("trend points stay clear of the axes", async ({ page }) => {
+  await openWorkbench(page, "/stats");
+  await rows(page).first().getByRole("button", { name: /^PTS .* Open PTS trend$/ }).click();
+  const chart = page.getByRole("dialog", { name: "PTS Trend" }).locator(".stats-trend-figure svg");
+  await expect(chart.locator(".chart-value-dot").first()).toBeVisible();
+  const gap = await chart.evaluate(svg => {
+    const axisEnd = Math.max(...[...svg.querySelectorAll(".stats-trend-grid text")].map(t => t.getBoundingClientRect().right));
+    const gridBottom = Math.max(...[...svg.querySelectorAll(".stats-trend-grid line")].map(l => l.getBoundingClientRect().bottom));
+    const dots = [...svg.querySelectorAll(".chart-value-dot rect")].map(r => r.getBoundingClientRect());
+    return { left: Math.min(...dots.map(d => d.left)) - axisEnd, bottom: gridBottom - Math.max(...dots.map(d => d.bottom)) };
+  });
+  expect(gap.left).toBeGreaterThan(8);
+  expect(gap.bottom).toBeGreaterThan(0);
 });

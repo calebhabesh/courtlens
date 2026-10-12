@@ -256,19 +256,19 @@ export function StatsDetailDrawer({
                 <span className="stats-card-value font-semibold text-positive">
                   {formatPctValue(m.ts_pct)}
                 </span>
-                <span className="stats-card-sub">PTS / (2*(FGA+0.44*FTA))</span>
+                <span className="stats-card-sub" title="PTS / (2*(FGA+0.44*FTA))">Points per shooting chance</span>
               </div>
               <div className="stats-card">
                 <span className="stats-card-label">Effective FG %</span>
                 <span className="stats-card-value font-semibold">
                   {formatPctValue(m.efg_pct)}
                 </span>
-                <span className="stats-card-sub">(FGM+0.5*3PM) / FGA</span>
+                <span className="stats-card-sub" title="(FGM+0.5*3PM) / FGA">Threes weighted 1.5×</span>
               </div>
               <div className="stats-card">
                 <span className="stats-card-label">Free Throw Rate</span>
                 <span className="stats-card-value">{formatStatValue(m.ftr, 3)}</span>
-                <span className="stats-card-sub">FTA / FGA</span>
+                <span className="stats-card-sub" title="FTA / FGA">Free throws per field goal try</span>
               </div>
               <div className="stats-card">
                 <span className="stats-card-label">Field Goals</span>

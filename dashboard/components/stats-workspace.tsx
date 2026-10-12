@@ -27,17 +27,18 @@ export async function StatsWorkspace({ params: rawParams, basePath = "/stats", t
 }) {
   const params = Object.fromEntries(Object.entries(rawParams).map(([key, value]) => [key, Array.isArray(value) ? value[0] : value]));
   const directory = basePath === "/players";
-  let catalog: WorkbenchCatalog;
-  try {
-    catalog = await getWorkbenchCatalog(String(params.releaseId || params.release_id || "") || undefined);
-  } catch {
+  // Independent reads run together; every sort or filter re-renders this page.
+  const [catalogResult, workspaceResult] = await Promise.allSettled([
+    getWorkbenchCatalog(String(params.releaseId || params.release_id || "") || undefined),
+    getWorkspace()
+  ]);
+  if (catalogResult.status === "rejected") {
     return <div className="workbench-content"><GatedNote tone="warning">Stats catalog unavailable. Try again.</GatedNote></div>;
   }
-  let workspace;
-  try { workspace = await getWorkspace(); } catch {
-    // A favorites request must never silently become an unfiltered query.
-    if (params.favorites === "1") return <div role="alert">Favorites unavailable. Try again.</div>;
-  }
+  const catalog: WorkbenchCatalog = catalogResult.value;
+  const workspace = workspaceResult.status === "fulfilled" ? workspaceResult.value : undefined;
+  // A favorites request must never silently become an unfiltered query.
+  if (!workspace && params.favorites === "1") return <div role="alert">Favorites unavailable. Try again.</div>;
   const countingMode = (directory ? "per_game" : params.countingMode || params.counting_mode || workspace?.preferences.counting_mode || "per_game") as CountingMode;
   const querySpec = resolveStatsQuery(params, catalog, countingMode);
   if (directory && !params.sortMetric && !params.sort_metric && !params.sort) querySpec.sort = [{ field: "player_name", direction: "asc" }];
@@ -69,15 +70,9 @@ export async function StatsWorkspace({ params: rawParams, basePath = "/stats", t
 
   const positions = String(params.positions ?? "").split(",").filter((value): value is EstimatedPosition => ESTIMATED_POSITIONS.includes(value as EstimatedPosition));
   const draftYear = Number(params.draftYear) || null;
-  let draftClasses: DraftClassesResponse["classes"] = [];
-  if (!directory) {
-    try { draftClasses = (await getDraftClasses()).classes; } catch { /* the Draft Class menu stays hidden */ }
-  }
-  // Header hover text; the table still works when the catalog request fails.
-  let hints: Record<string, MetricHint> = {};
-  if (!directory) {
-    try { hints = metricHints((await getMetricCatalog()).metrics); } catch { /* headers keep their short labels */ }
-  }
+  // Draft classes and header hints load beside the table query; either failing only hides
+  // the Draft Class menu or the header hover text.
+  const extras = directory ? null : Promise.allSettled([getDraftClasses(), getMetricCatalog()]);
 
   let researchData: PlayerResearchResponse | null = null;
   let loadError: string | null = null;
@@ -102,6 +97,13 @@ export async function StatsWorkspace({ params: rawParams, basePath = "/stats", t
     };
   } catch (err) {
     loadError = err instanceof Error ? err.message : "Failed to load player stats from workbench";
+  }
+  let draftClasses: DraftClassesResponse["classes"] = [];
+  let hints: Record<string, MetricHint> = {};
+  if (extras) {
+    const [classes, metrics] = await extras;
+    if (classes.status === "fulfilled") draftClasses = classes.value.classes;
+    if (metrics.status === "fulfilled") hints = metricHints(metrics.value.metrics);
   }
 
   return (

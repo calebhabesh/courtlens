@@ -2728,7 +2728,7 @@ textarea, input, select { max-width: 100%; }
   transition: box-shadow var(--dur-fast) var(--ease-out);
 }
 
-.ui-select-wrapper:focus-within {
+.ui-select-wrapper:has(select:focus-visible) {
   box-shadow: var(--focus-ring);
 }
 
