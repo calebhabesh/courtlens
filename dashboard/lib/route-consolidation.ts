@@ -59,6 +59,12 @@ export const TABBED_PAGES = {
   },
 } satisfies Record<string, TabbedPage>;
 
+/** PC11: Stats keeps its own header; Tracking is a second route tab (season totals, separate query). */
+export const STATS_TABS: readonly RouteTab[] = [
+  { label: "Box Score", href: "/stats" },
+  { label: "Tracking", href: "/stats/tracking" },
+];
+
 /**
  * Every URL removed by FO07 and the tab that replaced it. Next.js redirects pass the query string
  * through, so saved links and evidence links keep their scope. Older aliases point straight at the
@@ -94,6 +100,15 @@ export const COMPATIBILITY_REDIRECTS: { source: string; destination: string }[] 
  */
 export const HIDDEN_REDIRECTS: { source: string; destination: string }[] = [
   { source: "/schedule", destination: "/live" },
+  // PC08 (D3, 2026-10-12): no admitted free free-agent source; the tracker is removed, not gated.
+  { source: "/free-agency", destination: "/contracts" },
+  // PC11 (C14): EPV needs non-public player-location tracking, so the page is removed, not gated.
+  { source: "/research/epv", destination: "/research/rapm" },
+];
+
+/** PC11: removed from the hosted demo only (see HOSTED_DEMO_HIDDEN in lib/nav-model.ts). */
+export const HOSTED_DEMO_REDIRECTS: { source: string; destination: string }[] = [
+  { source: "/planner", destination: "/" },
 ];
 
 /** The path of the merged page that owns `pathname` when it is one of its tabs, else the pathname. */

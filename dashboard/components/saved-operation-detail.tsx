@@ -5,6 +5,8 @@ import { useEffect, useRef, useState } from "react";
 import { getSavedOperation, operationExportUrl, reproduceOperation, type SavedDetail, type SavedReproduction } from "@/lib/saved-operations";
 import { formatDate } from "@/lib/format-date";
 import { humanLabel } from "@/lib/route-availability";
+import { publicInvestigation } from "@/lib/public-investigations";
+import { PlayerIdentity } from "./ui/identity";
 import { ConversationResult } from "./conversation-result";
 import { contextLine } from "./saved-operation-library";
 import { FilterBar } from "./ui/filter-bar";
@@ -45,7 +47,7 @@ export function SavedOperationDetail({ id }: { id: string }) {
       busy.current = false; setVerifying(false);
     }
   }
-  const back = <Link className="button" href="/investigations">All saved investigations</Link>;
+  const back = <Link className="button" href="/investigations">All Investigations</Link>;
   if (error) return <PageShell template="research" className="research-view saved-operation-detail">
     <PageHeader title="Saved Investigation" actions={back} />
     <div role="alert"><GatedNote tone="warning" action={<button className="button" onClick={() => { setError(null); setRetry(value => value + 1); }}>Retry saved detail</button>}>{error}</GatedNote></div>
@@ -53,15 +55,18 @@ export function SavedOperationDetail({ id }: { id: string }) {
   if (!detail) return <><p role="status" className="sr-only">Loading retained evidence…</p><TemplateSkeleton template="research" /></>;
   const manifest = detail.manifest;
   const context = manifest.context;
+  const entry = publicInvestigation(detail);
+  const primary = manifest.results.find(result => result.operation === "distribution");
   return <PageShell template="research" className="research-view saved-operation-detail">
-    <PageHeader title={detail.title} subtitle={`Saved ${formatDate(detail.created_at.slice(0, 10))} · immutable analytical evidence`} actions={<>
+    <PageHeader title={entry?.title ?? detail.title} subtitle={`Saved ${formatDate(detail.created_at.slice(0, 10))} · retained analytical evidence`} actions={<>
       {back}
-      <button className="button button-primary" disabled={verifying} onClick={() => void verify()}>{verifying ? "Reproducing…" : "Verify reproduction without AI"}</button>
+      <button className="button button-primary" aria-label="Verify reproduction without AI" disabled={verifying} onClick={() => void verify()}>{verifying ? "Reproducing…" : "Verify Without AI"}</button>
       <a className="button" href={operationExportUrl(id, "json")}>Export JSON</a>
       <a className="button" href={operationExportUrl(id, "csv")}>Export CSV</a>
     </>} />
     <FilterBar collapsible={false} label="Retained scope" summary={String(context.season ?? "Retained scope")} scope={<span className="research-scope-label">{contextLine(context)}{typeof context.window === "string" ? ` · ${humanLabel(context.window)}` : ""}</span>}
       details={<DataDetailsButton rows={[
+        { label: "Original title", value: detail.title },
         { label: "Release", value: String(context.release_id ?? "—"), mono: true },
         { label: "Manifest SHA-256", value: detail.manifest_sha256, mono: true },
         { label: "Context fingerprint", value: manifest.context_fingerprint, mono: true },
@@ -70,6 +75,8 @@ export function SavedOperationDetail({ id }: { id: string }) {
         { label: "Lineage", value: <Link href="/data-status">Data lineage and operations</Link> },
         ...(report ? report.operations.map(step => ({ label: `${step.step_id} result hashes`, value: `Saved ${step.saved_result_sha256} · recomputed ${step.recomputed_result_sha256}`, mono: true })) : [])
       ]}><details className="ui-data-details-section"><summary>Canonical manifest, original plan and retained plan</summary><pre className="research-document">{JSON.stringify(manifest, null, 2)}</pre></details></DataDetailsButton>} />
+    {entry && <PlayerIdentity playerId="1630567" name="Scottie Barnes" team="TOR" size="sm" />}
+    {primary && <ConversationResult result={primary} retained />}
     <ResearchLayout findings={<>
       <StatTile label="Operations" value={manifest.results.length} footnote={manifest.results.map(result => humanLabel(result.operation)).join(" · ") || "None retained"} />
       <StatTile label="Season" value={String(context.season ?? "—")} footnote={typeof context.phase === "string" ? humanLabel(context.phase) : undefined} />
@@ -88,7 +95,7 @@ export function SavedOperationDetail({ id }: { id: string }) {
         <p>JSON retains exact types and precision. CSV includes chunked manifest JSON and exact evidence cells with formula escaping. Zero and null differ; large manifests are better read as JSON. Exports and reproduction need the local API and retained inputs.</p>
         {manifest.limitations.length > 0 && <ul>{manifest.limitations.map((text, index) => <li key={index}>{text}</li>)}</ul>}
       </>}>Retained results reopen against their pinned release; zero and unknown stay distinct.</GatedNote>
-      {manifest.results.map(result => <ConversationResult key={result.step_id} result={result} />)}
+      {manifest.results.filter(result => result !== primary).map(result => <ConversationResult key={result.step_id} result={result} retained />)}
     </ResearchLayout>
   </PageShell>;
 }

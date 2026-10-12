@@ -35,7 +35,7 @@ test.describe("Workbench Dark Research Interface", () => {
     await expect(page.getByRole("link", { name: "Fixture Star", exact: true })).toBeVisible();
 
     // Filter by name
-    const searchInput = page.getByRole("combobox", { name: "Filter players by name", exact: true });
+    const searchInput = page.getByRole("searchbox", { name: "Find player", exact: true });
     await searchInput.fill("Guard");
     await searchInput.press("Enter");
     await expect(page).toHaveURL(/name=Guard/);
@@ -44,8 +44,7 @@ test.describe("Workbench Dark Research Interface", () => {
     await expect(page.getByRole("link", { name: "Fixture Guard", exact: true })).toBeVisible();
 
     // Navigate to player detail
-    await page.getByRole("button", { name: "Open details for Fixture Guard" }).click();
-    await page.getByRole("link", { name: "View Full Profile" }).click();
+    await page.getByRole("link", { name: "Fixture Guard", exact: true }).click();
     await page.waitForURL("**/players/24**");
     await expect(page.locator("h1")).toContainText("Fixture Guard");
   });

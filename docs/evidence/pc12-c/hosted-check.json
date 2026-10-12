@@ -1,0 +1,34 @@
+[
+  {
+    "width": 1440,
+    "path": "/investigations",
+    "public_examples": 1,
+    "personal_link": 0,
+    "legacy_library": 0,
+    "overflow": 0
+  },
+  {
+    "width": 1440,
+    "path": "/investigations?view=personal",
+    "public_examples": 1,
+    "personal_link": 0,
+    "legacy_library": 0,
+    "overflow": 0
+  },
+  {
+    "width": 390,
+    "path": "/investigations",
+    "public_examples": 1,
+    "personal_link": 0,
+    "legacy_library": 0,
+    "overflow": 0
+  },
+  {
+    "width": 390,
+    "path": "/investigations?view=personal",
+    "public_examples": 1,
+    "personal_link": 0,
+    "legacy_library": 0,
+    "overflow": 0
+  }
+]

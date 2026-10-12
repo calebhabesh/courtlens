@@ -422,7 +422,9 @@ def lookup_entities(
 
     # 1. Empty query -> Navigation suggestions
     if not norm_q:
-        suggestion_entities = [e for e in index if e.kind in allowed_kinds]
+        # Players have no meaningful order before typing (identity rows would surface in
+        # storage order), so empty input suggests only pages and teams.
+        suggestion_entities = [e for e in index if e.kind in allowed_kinds and e.kind != "player"]
         # Prefer pages and prominent entities for empty suggestions
         suggestion_entities.sort(
             key=lambda e: 0 if e.kind == "page" else 1 if e.kind == "team" else 2

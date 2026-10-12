@@ -1,0 +1,22 @@
+[
+ {
+  "refresh_id": "95b5fe42-79b2-4be5-bb8c-187b66e10634",
+  "season": "2026-27",
+  "observed_at": "2026-10-12T00:33:42.414183Z",
+  "state": "verification_blocked",
+  "book_id": "26961333-31f3-420e-a86f-203a0fbd1f29",
+  "threshold_id": "bac24901-a5ba-45c3-9bd4-b99b803a9910",
+  "expected_players": 622,
+  "salary_observed_players": 464
+ },
+ {
+  "refresh_id": "ac1db552-60a9-43bd-a70a-177b280457ba",
+  "season": "2026-27",
+  "observed_at": "2026-10-11T23:17:41.029434Z",
+  "state": "verification_blocked",
+  "book_id": "f2603bd7-5890-47c5-afcb-ed6cdc58e90f",
+  "threshold_id": "bac24901-a5ba-45c3-9bd4-b99b803a9910",
+  "expected_players": 622,
+  "salary_observed_players": 3
+ }
+]

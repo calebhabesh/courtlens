@@ -1,3 +1,3 @@
 import { Suspense } from "react";
-import { FinanceWorkspace } from "@/components/finance-workspace";
-export default function Page() { return <Suspense fallback={null}><FinanceWorkspace mode="contracts" /></Suspense>; }
+import { ContractsLeague } from "@/components/contracts-view";
+export default function Page() { return <Suspense fallback={null}><ContractsLeague /></Suspense>; }

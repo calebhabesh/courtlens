@@ -1,0 +1,375 @@
+
+> courtlens-dashboard@0.1.0 test:browser
+> playwright test e2e/pc12-example-boards.spec.ts e2e/pc12-tables.spec.ts e2e/players-fo09.spec.ts e2e/entity-selection.spec.ts e2e/workspace-persistence.spec.ts e2e/native-select-theme.spec.ts
+
+
+Running 42 tests using 8 workers
+
+  ✓   1 e2e/entity-selection.spec.ts:13:5 › two mounted pickers have distinct active descendants; ambiguous Enter never commits (1.3s)
+  ✓   6 e2e/entity-selection.spec.ts:66:5 › touch selection and removal work at 375px (1.3s)
+  ✓   7 e2e/entity-selection.spec.ts:50:5 › API failure preserves text; retry and no-match states are distinct (1.4s)
+  ✓   3 e2e/entity-selection.spec.ts:34:5 › debounce and cache-hit paths reject delayed responses; empty input clears stale options (1.4s)
+  ✓   5 e2e/entity-selection.spec.ts:72:5 › changing lookup scope discards an obsolete response for the same text (1.6s)
+  ✓   2 e2e/entity-selection.spec.ts:44:5 › IME composition suppresses lookup and Enter; Tab closes and keeps natural focus (1.7s)
+  ✓   4 e2e/entity-selection.spec.ts:26:5 › editing and clear invalidate committed single ID; form never submits draft text (1.8s)
+  ✓   9 e2e/entity-selection.spec.ts:89:7 › trends selection preserves release, phase, cutoff and window context (747ms)
+  ✓  10 e2e/entity-selection.spec.ts:89:7 › distributions selection preserves release, phase, cutoff and window context (1.1s)
+  ✓  11 e2e/entity-selection.spec.ts:89:7 › similarity selection preserves release, phase, cutoff and window context (1.0s)
+  ✓  12 e2e/entity-selection.spec.ts:101:7 › rankings picker adds canonical named selection to its explicit personal target (1.1s)
+  ✓   8 e2e/entity-selection.spec.ts:58:5 › multi-player chips remove by name, prevent duplicates and enforce the five-player maximum without IDs (2.7s)
+  ✓  13 e2e/entity-selection.spec.ts:101:7 › tierlist picker adds canonical named selection to its explicit personal target (1.1s)
+  ✓  15 e2e/native-select-theme.spec.ts:16:7 › Filter by season popup stays readable with a light OS theme (1.5s)
+  ✓  16 e2e/native-select-theme.spec.ts:16:7 › Filter by competition phase popup stays readable with a light OS theme (1.4s)
+  ✓  18 e2e/native-select-theme.spec.ts:73:5 › styled picker preserves keyboard selection, Escape and outside dismissal (1.1s)
+  ✓  14 e2e/entity-selection.spec.ts:120:5 › planner selections stay within roster/watchlist and never query the public catalog (2.0s)
+  ✓  17 e2e/native-select-theme.spec.ts:16:7 › Analysis window popup stays readable with a light OS theme (1.6s)
+  ✓  19 e2e/native-select-theme.spec.ts:93:5 › phone picker stays above the Filters drawer and accepts touch selection (1.7s)
+  ✘  20 e2e/pc12-example-boards.spec.ts:26:7 › rankings example first load at 1440px pins real scope without creating personal state (5.6s)
+  ✘  21 e2e/pc12-example-boards.spec.ts:26:7 › tierlist example first load at 1440px pins real scope without creating personal state (5.6s)
+  ✘  22 e2e/pc12-example-boards.spec.ts:26:7 › rankings example first load at 768px pins real scope without creating personal state (5.4s)
+  ✘  23 e2e/pc12-example-boards.spec.ts:26:7 › tierlist example first load at 768px pins real scope without creating personal state (5.4s)
+  ✘  24 e2e/pc12-example-boards.spec.ts:26:7 › rankings example first load at 390px pins real scope without creating personal state (5.5s)
+  ✘  25 e2e/pc12-example-boards.spec.ts:26:7 › tierlist example first load at 390px pins real scope without creating personal state (5.4s)
+  ✘  26 e2e/pc12-example-boards.spec.ts:26:7 › rankings example first load at 375px pins real scope without creating personal state (5.3s)
+  ✘  27 e2e/pc12-example-boards.spec.ts:26:7 › tierlist example first load at 375px pins real scope without creating personal state (5.3s)
+  ✘  29 e2e/pc12-example-boards.spec.ts:76:7 › rankings failed copy keeps the example and useful retry (904ms)
+  ✘  28 e2e/pc12-example-boards.spec.ts:47:7 › rankings explicit copy preserves existing records and can be edited and reopened (1.0s)
+  ✘  31 e2e/pc12-example-boards.spec.ts:76:7 › tierlist failed copy keeps the example and useful retry (724ms)
+  ✓  32 e2e/pc12-tables.spec.ts:5:7 › PC12 Stats uses labeled percentile shading at 1440px (895ms)
+  ✓  34 e2e/pc12-tables.spec.ts:5:7 › PC12 Stats uses labeled percentile shading at 390px (756ms)
+  ✓  37 e2e/pc12-tables.spec.ts:60:5 › PC12 saved Rankings show a muted small sample beside statistical references (606ms)
+  ✓  33 e2e/pc12-tables.spec.ts:16:7 › PC12 directory search preserves scope and keeps the identity column at 1440px (1.4s)
+  ✓  36 e2e/pc12-tables.spec.ts:44:5 › PC12 team filtering retains league percentiles and each metric preset has group headers (799ms)
+  ✓  38 e2e/players-fo09.spec.ts:33:7 › FO09 Players › recent games: window, exposure and layout are separate 40px controls (812ms)
+  -  42 e2e/workspace-persistence.spec.ts:3:5 › real workspace proxy persists, conflicts, exports and restores
+  ✓  40 e2e/players-fo09.spec.ts:49:7 › FO09 Players › ranking boards and tier lists use the nav labels and one-line notes (649ms)
+  ✓  41 e2e/players-fo09.spec.ts:58:7 › FO09 Players › similar players: a 40px filter bar and the evidence hash only in Data details (339ms)
+  ✓  39 e2e/players-fo09.spec.ts:10:7 › FO09 Players › profile: one title, hero tiles, tabs in the URL, one Export menu (869ms)
+  ✓  35 e2e/pc12-tables.spec.ts:16:7 › PC12 directory search preserves scope and keeps the identity column at 390px (1.6s)
+  ✘  30 e2e/pc12-example-boards.spec.ts:47:7 › tierlist explicit copy preserves existing records and can be edited and reopened (5.7s)
+
+
+  1) e2e/pc12-example-boards.spec.ts:26:7 › rankings example first load at 1440px pins real scope without creating personal state 
+
+    Error: expect(page).toHaveURL(expected) failed
+
+    Expected pattern: /releaseId=fixture-release.*season=2025-26.*beforeDate=/
+    Received string:  "http://localhost:3424/rankings?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-06-30"
+    Timeout: 5000ms
+
+    Call log:
+      - Expect "toHaveURL" with timeout 5000ms
+        14 × locator resolved to <html lang="en" data-scroll-behavior="smooth" class="__variable_39053e __variable_21e7a0">…</html>
+           - unexpected value "http://localhost:3424/rankings?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-06-30"
+
+
+      29 |     await openWorkbench(page, `/${route}`);
+      30 |     await expect(page.getByRole("region", { name: "Season minutes example board", exact: true })).toBeVisible();
+    > 31 |     await expect(page).toHaveURL(/releaseId=fixture-release.*season=2025-26.*beforeDate=/);
+         |                        ^
+      32 |     await expect(page.getByRole("button", { name: "Copy to my boards" })).toBeEnabled();
+      33 |     await expect(page.getByText("Fixture Star", { exact: true }).first()).toBeVisible();
+      34 |     await expect(page.getByRole("button", { name: /Delete (Board|List)/ })).toHaveCount(0);
+        at /home/ethioking/dev/courtlens/dashboard/e2e/pc12-example-boards.spec.ts:31:24
+
+    Error Context: test-results/pc12-example-boards-rankin-37eb5-out-creating-personal-state/error-context.md
+
+  2) e2e/pc12-example-boards.spec.ts:26:7 › tierlist example first load at 1440px pins real scope without creating personal state 
+
+    Error: expect(page).toHaveURL(expected) failed
+
+    Expected pattern: /releaseId=fixture-release.*season=2025-26.*beforeDate=/
+    Received string:  "http://localhost:3424/tierlist?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-06-30"
+    Timeout: 5000ms
+
+    Call log:
+      - Expect "toHaveURL" with timeout 5000ms
+        14 × locator resolved to <html lang="en" data-scroll-behavior="smooth" class="__variable_39053e __variable_21e7a0">…</html>
+           - unexpected value "http://localhost:3424/tierlist?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-06-30"
+
+
+      29 |     await openWorkbench(page, `/${route}`);
+      30 |     await expect(page.getByRole("region", { name: "Season minutes example board", exact: true })).toBeVisible();
+    > 31 |     await expect(page).toHaveURL(/releaseId=fixture-release.*season=2025-26.*beforeDate=/);
+         |                        ^
+      32 |     await expect(page.getByRole("button", { name: "Copy to my boards" })).toBeEnabled();
+      33 |     await expect(page.getByText("Fixture Star", { exact: true }).first()).toBeVisible();
+      34 |     await expect(page.getByRole("button", { name: /Delete (Board|List)/ })).toHaveCount(0);
+        at /home/ethioking/dev/courtlens/dashboard/e2e/pc12-example-boards.spec.ts:31:24
+
+    Error Context: test-results/pc12-example-boards-tierli-0ca33-out-creating-personal-state/error-context.md
+
+  3) e2e/pc12-example-boards.spec.ts:26:7 › rankings example first load at 768px pins real scope without creating personal state 
+
+    Error: expect(page).toHaveURL(expected) failed
+
+    Expected pattern: /releaseId=fixture-release.*season=2025-26.*beforeDate=/
+    Received string:  "http://localhost:3424/rankings?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-06-30"
+    Timeout: 5000ms
+
+    Call log:
+      - Expect "toHaveURL" with timeout 5000ms
+        14 × locator resolved to <html lang="en" data-scroll-behavior="smooth" class="__variable_39053e __variable_21e7a0">…</html>
+           - unexpected value "http://localhost:3424/rankings?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-06-30"
+
+
+      29 |     await openWorkbench(page, `/${route}`);
+      30 |     await expect(page.getByRole("region", { name: "Season minutes example board", exact: true })).toBeVisible();
+    > 31 |     await expect(page).toHaveURL(/releaseId=fixture-release.*season=2025-26.*beforeDate=/);
+         |                        ^
+      32 |     await expect(page.getByRole("button", { name: "Copy to my boards" })).toBeEnabled();
+      33 |     await expect(page.getByText("Fixture Star", { exact: true }).first()).toBeVisible();
+      34 |     await expect(page.getByRole("button", { name: /Delete (Board|List)/ })).toHaveCount(0);
+        at /home/ethioking/dev/courtlens/dashboard/e2e/pc12-example-boards.spec.ts:31:24
+
+    Error Context: test-results/pc12-example-boards-rankin-417cc-out-creating-personal-state/error-context.md
+
+  4) e2e/pc12-example-boards.spec.ts:26:7 › tierlist example first load at 768px pins real scope without creating personal state 
+
+    Error: expect(page).toHaveURL(expected) failed
+
+    Expected pattern: /releaseId=fixture-release.*season=2025-26.*beforeDate=/
+    Received string:  "http://localhost:3424/tierlist?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-06-30"
+    Timeout: 5000ms
+
+    Call log:
+      - Expect "toHaveURL" with timeout 5000ms
+        14 × locator resolved to <html lang="en" data-scroll-behavior="smooth" class="__variable_39053e __variable_21e7a0">…</html>
+           - unexpected value "http://localhost:3424/tierlist?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-06-30"
+
+
+      29 |     await openWorkbench(page, `/${route}`);
+      30 |     await expect(page.getByRole("region", { name: "Season minutes example board", exact: true })).toBeVisible();
+    > 31 |     await expect(page).toHaveURL(/releaseId=fixture-release.*season=2025-26.*beforeDate=/);
+         |                        ^
+      32 |     await expect(page.getByRole("button", { name: "Copy to my boards" })).toBeEnabled();
+      33 |     await expect(page.getByText("Fixture Star", { exact: true }).first()).toBeVisible();
+      34 |     await expect(page.getByRole("button", { name: /Delete (Board|List)/ })).toHaveCount(0);
+        at /home/ethioking/dev/courtlens/dashboard/e2e/pc12-example-boards.spec.ts:31:24
+
+    Error Context: test-results/pc12-example-boards-tierli-31a00-out-creating-personal-state/error-context.md
+
+  5) e2e/pc12-example-boards.spec.ts:26:7 › rankings example first load at 390px pins real scope without creating personal state 
+
+    Error: expect(page).toHaveURL(expected) failed
+
+    Expected pattern: /releaseId=fixture-release.*season=2025-26.*beforeDate=/
+    Received string:  "http://localhost:3424/rankings?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-06-30"
+    Timeout: 5000ms
+
+    Call log:
+      - Expect "toHaveURL" with timeout 5000ms
+        14 × locator resolved to <html lang="en" data-scroll-behavior="smooth" class="__variable_39053e __variable_21e7a0">…</html>
+           - unexpected value "http://localhost:3424/rankings?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-06-30"
+
+
+      29 |     await openWorkbench(page, `/${route}`);
+      30 |     await expect(page.getByRole("region", { name: "Season minutes example board", exact: true })).toBeVisible();
+    > 31 |     await expect(page).toHaveURL(/releaseId=fixture-release.*season=2025-26.*beforeDate=/);
+         |                        ^
+      32 |     await expect(page.getByRole("button", { name: "Copy to my boards" })).toBeEnabled();
+      33 |     await expect(page.getByText("Fixture Star", { exact: true }).first()).toBeVisible();
+      34 |     await expect(page.getByRole("button", { name: /Delete (Board|List)/ })).toHaveCount(0);
+        at /home/ethioking/dev/courtlens/dashboard/e2e/pc12-example-boards.spec.ts:31:24
+
+    Error Context: test-results/pc12-example-boards-rankin-ec9bd-out-creating-personal-state/error-context.md
+
+  6) e2e/pc12-example-boards.spec.ts:26:7 › tierlist example first load at 390px pins real scope without creating personal state 
+
+    Error: expect(page).toHaveURL(expected) failed
+
+    Expected pattern: /releaseId=fixture-release.*season=2025-26.*beforeDate=/
+    Received string:  "http://localhost:3424/tierlist?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-06-30"
+    Timeout: 5000ms
+
+    Call log:
+      - Expect "toHaveURL" with timeout 5000ms
+        14 × locator resolved to <html lang="en" data-scroll-behavior="smooth" class="__variable_39053e __variable_21e7a0">…</html>
+           - unexpected value "http://localhost:3424/tierlist?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-06-30"
+
+
+      29 |     await openWorkbench(page, `/${route}`);
+      30 |     await expect(page.getByRole("region", { name: "Season minutes example board", exact: true })).toBeVisible();
+    > 31 |     await expect(page).toHaveURL(/releaseId=fixture-release.*season=2025-26.*beforeDate=/);
+         |                        ^
+      32 |     await expect(page.getByRole("button", { name: "Copy to my boards" })).toBeEnabled();
+      33 |     await expect(page.getByText("Fixture Star", { exact: true }).first()).toBeVisible();
+      34 |     await expect(page.getByRole("button", { name: /Delete (Board|List)/ })).toHaveCount(0);
+        at /home/ethioking/dev/courtlens/dashboard/e2e/pc12-example-boards.spec.ts:31:24
+
+    Error Context: test-results/pc12-example-boards-tierli-876b2-out-creating-personal-state/error-context.md
+
+  7) e2e/pc12-example-boards.spec.ts:26:7 › rankings example first load at 375px pins real scope without creating personal state 
+
+    Error: expect(page).toHaveURL(expected) failed
+
+    Expected pattern: /releaseId=fixture-release.*season=2025-26.*beforeDate=/
+    Received string:  "http://localhost:3424/rankings?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-06-30"
+    Timeout: 5000ms
+
+    Call log:
+      - Expect "toHaveURL" with timeout 5000ms
+        14 × locator resolved to <html lang="en" data-scroll-behavior="smooth" class="__variable_39053e __variable_21e7a0">…</html>
+           - unexpected value "http://localhost:3424/rankings?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-06-30"
+
+
+      29 |     await openWorkbench(page, `/${route}`);
+      30 |     await expect(page.getByRole("region", { name: "Season minutes example board", exact: true })).toBeVisible();
+    > 31 |     await expect(page).toHaveURL(/releaseId=fixture-release.*season=2025-26.*beforeDate=/);
+         |                        ^
+      32 |     await expect(page.getByRole("button", { name: "Copy to my boards" })).toBeEnabled();
+      33 |     await expect(page.getByText("Fixture Star", { exact: true }).first()).toBeVisible();
+      34 |     await expect(page.getByRole("button", { name: /Delete (Board|List)/ })).toHaveCount(0);
+        at /home/ethioking/dev/courtlens/dashboard/e2e/pc12-example-boards.spec.ts:31:24
+
+    Error Context: test-results/pc12-example-boards-rankin-6e9c9-out-creating-personal-state/error-context.md
+
+  8) e2e/pc12-example-boards.spec.ts:26:7 › tierlist example first load at 375px pins real scope without creating personal state 
+
+    Error: expect(page).toHaveURL(expected) failed
+
+    Expected pattern: /releaseId=fixture-release.*season=2025-26.*beforeDate=/
+    Received string:  "http://localhost:3424/tierlist?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-06-30"
+    Timeout: 5000ms
+
+    Call log:
+      - Expect "toHaveURL" with timeout 5000ms
+        14 × locator resolved to <html lang="en" data-scroll-behavior="smooth" class="__variable_39053e __variable_21e7a0">…</html>
+           - unexpected value "http://localhost:3424/tierlist?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-06-30"
+
+
+      29 |     await openWorkbench(page, `/${route}`);
+      30 |     await expect(page.getByRole("region", { name: "Season minutes example board", exact: true })).toBeVisible();
+    > 31 |     await expect(page).toHaveURL(/releaseId=fixture-release.*season=2025-26.*beforeDate=/);
+         |                        ^
+      32 |     await expect(page.getByRole("button", { name: "Copy to my boards" })).toBeEnabled();
+      33 |     await expect(page.getByText("Fixture Star", { exact: true }).first()).toBeVisible();
+      34 |     await expect(page.getByRole("button", { name: /Delete (Board|List)/ })).toHaveCount(0);
+        at /home/ethioking/dev/courtlens/dashboard/e2e/pc12-example-boards.spec.ts:31:24
+
+    Error Context: test-results/pc12-example-boards-tierli-77a5c-out-creating-personal-state/error-context.md
+
+  9) e2e/pc12-example-boards.spec.ts:47:7 › rankings explicit copy preserves existing records and can be edited and reopened 
+
+    Error: expect(received).toMatchObject(expected)
+
+    - Expected  - 1
+    + Received  + 1
+
+    @@ -15,9 +15,9 @@
+            "tags": Array [],
+          },
+        ],
+        "scope": Object {
+          "phase": "regular_season",
+    -     "release_id": "fixture-release",
+    +     "release_id": "5bbb6035-6794-4bb0-b894-7208f52ef7ad",
+          "season": "2025-26",
+        },
+      }
+
+      56 |     if (kind === "rankings") {
+      57 |       await expect(page.getByRole("table", { name: /Rankings for .*Minutes Leaders/ })).toBeVisible();
+    > 58 |       expect(writes[0]).toMatchObject({ scope: { release_id: "fixture-release", season: "2025-26", phase: "regular_season" }, entries: [{ rank: 1, player_id: "23", player_name: "Fixture Star", notes: null, tags: [] }, { rank: 2, player_id: "24", player_name: "Fixture Guard", notes: null, tags: [] }] });
+         |                         ^
+      59 |       await page.getByRole("button", { name: "Move Fixture Guard up", exact: true }).focus();
+      60 |       await page.keyboard.press("Enter");
+      61 |       await expect(page.locator(".rankings-table tbody tr").first()).toContainText("Fixture Guard");
+        at /home/ethioking/dev/courtlens/dashboard/e2e/pc12-example-boards.spec.ts:58:25
+
+    Error Context: test-results/pc12-example-boards-rankin-585b3--can-be-edited-and-reopened/error-context.md
+
+  10) e2e/pc12-example-boards.spec.ts:76:7 › rankings failed copy keeps the example and useful retry 
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: getByRole('alert')
+    Expected substring: "Copy unavailable"
+    Error: strict mode violation: getByRole('alert') resolved to 2 elements:
+        1) <p role="alert">Copy unavailable; try again.</p> aka getByText('Copy unavailable; try again.')
+        2) <div role="alert" aria-live="assertive" id="__next-route-announcer__"></div> aka locator('[id="__next-route-announcer__"]')
+
+    Call log:
+      - Expect "toContainText" getByRole('alert') with timeout 5000ms
+      - waiting for getByRole('alert')
+
+
+      78 |     await openWorkbench(page, `/${kind}`);
+      79 |     await page.getByRole("button", { name: "Copy to my boards" }).click();
+    > 80 |     await expect(page.getByRole("alert")).toContainText("Copy unavailable");
+         |                                           ^
+      81 |     await expect(page.getByRole("button", { name: "Copy to my boards" })).toBeEnabled();
+      82 |     await expect(page.getByRole("region", { name: "Season minutes example board", exact: true })).toBeVisible();
+      83 |     expect(writes).toHaveLength(1);
+        at /home/ethioking/dev/courtlens/dashboard/e2e/pc12-example-boards.spec.ts:80:43
+
+    Error Context: test-results/pc12-example-boards-rankin-898ea-he-example-and-useful-retry/error-context.md
+
+  11) e2e/pc12-example-boards.spec.ts:47:7 › tierlist explicit copy preserves existing records and can be edited and reopened 
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: locator('.tier-row-card').nth(1)
+    Expected substring: "Fixture Star"
+    Received string:    "Minutes ranks 6–10(0)Drag players here or use keyboard controls from search."
+    Timeout: 5000ms
+
+    Call log:
+      - Expect "toContainText" locator('.tier-row-card').nth(1) with timeout 5000ms
+      - waiting for locator('.tier-row-card').nth(1)
+        14 × locator resolved to <div class="tier-row-card ">…</div>
+           - unexpected value "Minutes ranks 6–10(0)Drag players here or use keyboard controls from search."
+
+
+      64 |       expect(writes[0]).toMatchObject({ tiers: [{ tier_id: "minutes-1", player_ids: ["23", "24"], color: "var(--color-category-1)" }, { tier_id: "minutes-2", player_ids: [] }, { tier_id: "minutes-3", player_ids: [] }] });
+      65 |       await page.getByRole("combobox", { name: "Move Fixture Star to tier", exact: true }).selectOption("minutes-2");
+    > 66 |       await expect(page.locator(".tier-row-card").nth(1)).toContainText("Fixture Star");
+         |                                                           ^
+      67 |       await page.setViewportSize({ width: 390, height: 844 });
+      68 |       expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBe(0);
+      69 |     }
+        at /home/ethioking/dev/courtlens/dashboard/e2e/pc12-example-boards.spec.ts:66:59
+
+    Error Context: test-results/pc12-example-boards-tierli-293dd--can-be-edited-and-reopened/error-context.md
+
+  12) e2e/pc12-example-boards.spec.ts:76:7 › tierlist failed copy keeps the example and useful retry 
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: getByRole('alert')
+    Expected substring: "Copy unavailable"
+    Error: strict mode violation: getByRole('alert') resolved to 2 elements:
+        1) <p role="alert">Copy unavailable; try again.</p> aka getByText('Copy unavailable; try again.')
+        2) <div role="alert" aria-live="assertive" id="__next-route-announcer__"></div> aka locator('[id="__next-route-announcer__"]')
+
+    Call log:
+      - Expect "toContainText" getByRole('alert') with timeout 5000ms
+      - waiting for getByRole('alert')
+
+
+      78 |     await openWorkbench(page, `/${kind}`);
+      79 |     await page.getByRole("button", { name: "Copy to my boards" }).click();
+    > 80 |     await expect(page.getByRole("alert")).toContainText("Copy unavailable");
+         |                                           ^
+      81 |     await expect(page.getByRole("button", { name: "Copy to my boards" })).toBeEnabled();
+      82 |     await expect(page.getByRole("region", { name: "Season minutes example board", exact: true })).toBeVisible();
+      83 |     expect(writes).toHaveLength(1);
+        at /home/ethioking/dev/courtlens/dashboard/e2e/pc12-example-boards.spec.ts:80:43
+
+    Error Context: test-results/pc12-example-boards-tierli-f3e59-he-example-and-useful-retry/error-context.md
+
+  12 failed
+    e2e/pc12-example-boards.spec.ts:26:7 › rankings example first load at 1440px pins real scope without creating personal state 
+    e2e/pc12-example-boards.spec.ts:26:7 › tierlist example first load at 1440px pins real scope without creating personal state 
+    e2e/pc12-example-boards.spec.ts:26:7 › rankings example first load at 768px pins real scope without creating personal state 
+    e2e/pc12-example-boards.spec.ts:26:7 › tierlist example first load at 768px pins real scope without creating personal state 
+    e2e/pc12-example-boards.spec.ts:26:7 › rankings example first load at 390px pins real scope without creating personal state 
+    e2e/pc12-example-boards.spec.ts:26:7 › tierlist example first load at 390px pins real scope without creating personal state 
+    e2e/pc12-example-boards.spec.ts:26:7 › rankings example first load at 375px pins real scope without creating personal state 
+    e2e/pc12-example-boards.spec.ts:26:7 › tierlist example first load at 375px pins real scope without creating personal state 
+    e2e/pc12-example-boards.spec.ts:47:7 › rankings explicit copy preserves existing records and can be edited and reopened 
+    e2e/pc12-example-boards.spec.ts:76:7 › rankings failed copy keeps the example and useful retry ─
+    e2e/pc12-example-boards.spec.ts:47:7 › tierlist explicit copy preserves existing records and can be edited and reopened 
+    e2e/pc12-example-boards.spec.ts:76:7 › tierlist failed copy keeps the example and useful retry ─
+  1 skipped
+  29 passed (15.9s)

@@ -13,7 +13,6 @@ test.describe("DL07 Evidence Screenshot Capture", () => {
   const routes = [
     { name: "ask", path: "/research/ask" },
     { name: "contracts", path: "/contracts" },
-    { name: "free-agency", path: "/free-agency" },
     { name: "settings", path: "/settings" },
     { name: "data-status", path: "/data-status" },
     { name: "methodology", path: "/methodology" },

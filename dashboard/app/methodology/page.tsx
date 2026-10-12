@@ -9,6 +9,8 @@ export const dynamic = "force-dynamic";
 const TOC = [
   { id: "principles", label: "Principles" },
   { id: "impact", label: "Impact metrics" },
+  { id: "value-archetypes", label: "Value and archetypes" },
+  { id: "tracking-feeds", label: "Tracking, play types and WOWY" },
   { id: "catalog", label: "Metric catalog" },
   { id: "prospective", label: "Historical and prospective" },
   { id: "related", label: "Related pages" },
@@ -50,6 +52,22 @@ export default async function MethodologyPage() {
         <p>Coverage and patch rates accompany every fit. Reconstruction retains source disagreement, minute and plus-minus limitations. The unchanged box-estimate ±2 distribution is a diagnostic under the event acceptance contract. RAPM omits zero-control observations; on/off retains their scoring. No impact output enters forecasting features, and descriptive serving leaves B26 experiment status unchanged.</p>
         <p>Inputs: NBA public play-by-play, shots and matchups via the admitted Apache-licensed shufinskiy archive, with SportsDataverse independent boxes and schedule. Exclusive cutoffs and SHA-256 artifact identities retain reproducibility.</p>
         <p><Link href="/research/rapm">Served ratings and registered experiment status</Link></p>
+      </ArticleSection>
+
+      <ArticleSection id="value-archetypes" title="Value and derived archetypes" label="Value and archetype methodology">
+        <p>Value is Box-Prior RAPM (BPR) from the sealed regular-season fit for 2024-25 and 2025-26: a box-score regression trained only on earlier seasons is the ridge prior, and the window&apos;s RAPM is refit around it. The window is fixed by rule (latest completed season, longest window with a BPR), not chosen by scores. Units are points per 100 possessions relative to a minutes-weighted average player. Players without stints in the window, such as new rookies, have no value; it is never shown as zero.</p>
+        <p>An out-of-time check predicts each season&apos;s one-year RAPM using only earlier seasons. Correlations are modest (about 0.3 to 0.5), as expected for noisy one-year RAPM. Treat value as a descriptive estimate under lineup confounding, not a ranking verdict or forecast.</p>
+        <p>Derived archetypes come from a Gaussian mixture over nine regular-season rates: usage, assist share, three-point and rim attempt shares, offensive and defensive rebound shares, block and steal shares, and free-throw rate. It is fitted on player-seasons with at least 500 minutes from 2023-24 to 2025-26, with the number of clusters chosen by BIC. Membership is soft (for example 68% creator · 32% hub). Color follows the primary archetype. An archetype describes one season&apos;s statistical style, not a listed position or role, and is always labeled &quot;derived archetype&quot;.</p>
+        <p>Inputs: sealed IM04 ratings, the served box-score dataset and the admitted shot-location dataset. Every artifact is content-addressed and reproducible.</p>
+        <p>Roster Shapes draw each 2026-27 roster from the NBA player index. Circle size is value over replacement: (BPR + 2.0) × the player&apos;s share of a full season&apos;s 2025-26 minutes. Color is the primary derived archetype. A solid outline means the player appeared for the same team in 2025-26, dashed means a new arrival, dotted means no 2025-26 sample; this is continuity, not a measure of how players complement each other. White space is the gap to the fullest roster. Players without a value or minutes are listed as unknown and never drawn as zero. The diagrams follow Wyman diagrams by @taylormetrics.</p>
+      </ArticleSection>
+
+      <ArticleSection id="tracking-feeds" title="Tracking, play types, matchups and WOWY" label="Tracking and WOWY methodology">
+        <p>Tracking, defended shots, hustle, Synergy play types, season matchups and the Draft Combine are NBA Stats season totals read from the public hoopR mirror (CC BY 4.0) and stored as immutable datasets. They have no per-game dates, so they are shown on their own pages and never joined into date-windowed Stats or forecasting features. CourtLens has no frame-level tracking data; Spatial EPV was removed for that reason.</p>
+        <p>Defensive Matchups compares the shots a player defended (NBA tracking&apos;s closest defender at the shot) with the shooters&apos; normal FG% on those shots. Makes below expected = expected makes minus actual makes. Matchup points are the offensive player&apos;s points per 100 partial possessions while that defender was the tracked matchup. All three describe results, not blame or causal defense.</p>
+        <p>Play-type-adjusted scoring is points per 100 play-type possessions above or below what the whole league scored on the same mix of play types. Play types under the source&apos;s minimum are not listed for a player.</p>
+        <p>WOWY splits each team&apos;s possessions into four groups for a pair of players (both on, either one without the other, neither on) using the sealed, event-accepted public play-by-play stints. The four groups always add up to the team total. A group under 200 possessions at either end is a small sample and is not compared. Splits are descriptive: teammates, opponents and game state differ between them.</p>
+        <p>Percentiles on these pages compare qualified players in the same season and phase (for example 500 minutes for tracking, 250 play-type possessions, 20 games and 100 defended shots). Columns that describe style or volume, such as turnovers per game, are not shaded as better or worse.</p>
       </ArticleSection>
 
       <ArticleSection

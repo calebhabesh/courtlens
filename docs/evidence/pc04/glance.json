@@ -1,0 +1,348 @@
+{
+  "legend": {
+    "P": "pass",
+    "~": "partial / retained issue",
+    "F": "fail",
+    "?": "not measured",
+    "-": "not applicable"
+  },
+  "scope": "Conservative full-page review. New default context is not proof of a populated PBP operation. A score is passes / applicable items; partial and unmeasured items are not passes.",
+  "rows": [
+    {
+      "title": "Compare",
+      "route": "/compare",
+      "after": "compare",
+      "before": "compare",
+      "glance": {
+        "Header": "P",
+        "Filters": "P",
+        "First screen": "P",
+        "Alignment": "P",
+        "Identity": "-",
+        "Missing data": "P",
+        "Icons": "P",
+        "States": "?",
+        "Phone": "P",
+        "Dates": "P",
+        "First load": "P",
+        "Labeled visual": "-",
+        "Color meaning": "-",
+        "Sample + source": "P"
+      },
+      "score": "10/11",
+      "note": "C5 exception: two silhouettes and an observed suggested matchup. Position leaders waits for PC05. Selected comparison has A/B chips, per-field n, source/GP and a centered table; its screenshots are additional interaction evidence.",
+      "resultY": {
+        "1440": 227,
+        "390": 223
+      }
+    },
+    {
+      "title": "Player Matchups",
+      "route": "/matchups",
+      "after": "matchups",
+      "before": "matchups",
+      "glance": {
+        "Header": "P",
+        "Filters": "P",
+        "First screen": "~",
+        "Alignment": "~",
+        "Identity": "P",
+        "Missing data": "F",
+        "Icons": "P",
+        "States": "P",
+        "Phone": "~",
+        "Dates": "P",
+        "First load": "P",
+        "Labeled visual": "~",
+        "Color meaning": "~",
+        "Sample + source": "P"
+      },
+      "score": "8/14",
+      "note": "Real season-minutes example and source/GP context. Remaining page geometry and touch targets are not fully re-audited. Headline box-score context starts within 400px; the requested PBP/shot/assignment result has no admitted exposure in this scope and remains below it. Technical coverage codes and repeated missing-data details are retained issues for PC07/PC11/PC12.",
+      "resultY": {
+        "1440": 263,
+        "390": 275
+      }
+    },
+    {
+      "title": "WOWY",
+      "route": "/wowy",
+      "after": "wowy",
+      "before": "wowy",
+      "glance": {
+        "Header": "P",
+        "Filters": "P",
+        "First screen": "~",
+        "Alignment": "~",
+        "Identity": "P",
+        "Missing data": "F",
+        "Icons": "P",
+        "States": "P",
+        "Phone": "~",
+        "Dates": "P",
+        "First load": "P",
+        "Labeled visual": "~",
+        "Color meaning": "~",
+        "Sample + source": "P"
+      },
+      "score": "8/14",
+      "note": "Real season-minutes example and source/GP context. Remaining page geometry and touch targets are not fully re-audited. Headline box-score context starts within 400px; the requested PBP/shot/assignment result has no admitted exposure in this scope and remains below it. Technical coverage codes and repeated missing-data details are retained issues for PC07/PC11/PC12.",
+      "resultY": {
+        "1440": 263,
+        "390": 343
+      }
+    },
+    {
+      "title": "Teammate Stat Shift",
+      "route": "/stat-line-shift",
+      "after": "stat-shift",
+      "before": "stat-line-shift",
+      "glance": {
+        "Header": "P",
+        "Filters": "P",
+        "First screen": "~",
+        "Alignment": "~",
+        "Identity": "P",
+        "Missing data": "F",
+        "Icons": "P",
+        "States": "?",
+        "Phone": "~",
+        "Dates": "P",
+        "First load": "P",
+        "Labeled visual": "~",
+        "Color meaning": "~",
+        "Sample + source": "P"
+      },
+      "score": "7/14",
+      "note": "Real season-minutes example and source/GP context. Remaining page geometry and touch targets are not fully re-audited. Headline box-score context starts within 400px; the requested PBP/shot/assignment result has no admitted exposure in this scope and remains below it. Technical coverage codes and repeated missing-data details are retained issues for PC07/PC11/PC12.",
+      "resultY": {
+        "1440": 243,
+        "390": 275
+      }
+    },
+    {
+      "title": "Shot Profile",
+      "route": "/similar-players/shot-profile",
+      "after": "shot-profile",
+      "before": "similar-players_shot-profile",
+      "glance": {
+        "Header": "P",
+        "Filters": "P",
+        "First screen": "~",
+        "Alignment": "~",
+        "Identity": "P",
+        "Missing data": "F",
+        "Icons": "P",
+        "States": "?",
+        "Phone": "~",
+        "Dates": "P",
+        "First load": "P",
+        "Labeled visual": "~",
+        "Color meaning": "~",
+        "Sample + source": "P"
+      },
+      "score": "7/14",
+      "note": "Real season-minutes example and source/GP context. Remaining page geometry and touch targets are not fully re-audited. Headline box-score context starts within 400px; the requested PBP/shot/assignment result has no admitted exposure in this scope and remains below it. Technical coverage codes and repeated missing-data details are retained issues for PC07/PC11/PC12.",
+      "resultY": {
+        "1440": 392,
+        "390": 348
+      }
+    },
+    {
+      "title": "Shot Aftermath",
+      "route": "/research/shooting/aftermath",
+      "after": "shot-aftermath",
+      "before": "research_shooting_aftermath",
+      "glance": {
+        "Header": "P",
+        "Filters": "P",
+        "First screen": "~",
+        "Alignment": "~",
+        "Identity": "P",
+        "Missing data": "F",
+        "Icons": "P",
+        "States": "?",
+        "Phone": "~",
+        "Dates": "P",
+        "First load": "P",
+        "Labeled visual": "~",
+        "Color meaning": "~",
+        "Sample + source": "P"
+      },
+      "score": "7/14",
+      "note": "Real season-minutes example and source/GP context. Remaining page geometry and touch targets are not fully re-audited. Headline box-score context starts within 400px; the requested PBP/shot/assignment result has no admitted exposure in this scope and remains below it. Technical coverage codes and repeated missing-data details are retained issues for PC07/PC11/PC12.",
+      "resultY": {
+        "1440": 320,
+        "390": 296
+      }
+    },
+    {
+      "title": "Similar Players",
+      "route": "/similar-players",
+      "after": "similar-players",
+      "before": "similar-players",
+      "glance": {
+        "Header": "P",
+        "Filters": "P",
+        "First screen": "~",
+        "Alignment": "~",
+        "Identity": "P",
+        "Missing data": "P",
+        "Icons": "P",
+        "States": "?",
+        "Phone": "~",
+        "Dates": "P",
+        "First load": "P",
+        "Labeled visual": "P",
+        "Color meaning": "F",
+        "Sample + source": "P"
+      },
+      "score": "9/14",
+      "note": "Real season-minutes example and source/GP context. Remaining page geometry and touch targets are not fully re-audited. Existing standardized-profile red/green z-scores still need PC12 presentation work; the main similarity result follows the new context card.",
+      "resultY": {
+        "1440": 300,
+        "390": 296
+      }
+    },
+    {
+      "title": "Recent Games",
+      "route": "/last-games",
+      "after": "recent-games",
+      "before": "last-games",
+      "glance": {
+        "Header": "P",
+        "Filters": "P",
+        "First screen": "P",
+        "Alignment": "~",
+        "Identity": "P",
+        "Missing data": "P",
+        "Icons": "P",
+        "States": "?",
+        "Phone": "~",
+        "Dates": "P",
+        "First load": "P",
+        "Labeled visual": "P",
+        "Color meaning": "~",
+        "Sample + source": "P"
+      },
+      "score": "10/14",
+      "note": "Real season-minutes example and source/GP context. Remaining page geometry and touch targets are not fully re-audited. Existing trajectory uses its own labeled metric colors; full v1.2 conversion is not claimed.",
+      "resultY": {
+        "1440": 243,
+        "390": 377
+      }
+    },
+    {
+      "title": "Research Operation",
+      "route": "/research/operation",
+      "after": "operation-gallery",
+      "before": "research_operation",
+      "glance": {
+        "Header": "P",
+        "Filters": "-",
+        "First screen": "P",
+        "Alignment": "~",
+        "Identity": "-",
+        "Missing data": "P",
+        "Icons": "P",
+        "States": "-",
+        "Phone": "P",
+        "Dates": "-",
+        "First load": "P",
+        "Labeled visual": "-",
+        "Color meaning": "-",
+        "Sample + source": "-"
+      },
+      "score": "6/7",
+      "note": "Eight labeled operation links; static menu with no analytical result or conversation request. No subject, date filter, chart, data sample or asynchronous state applies to this menu.",
+      "resultY": {
+        "1440": 154,
+        "390": 186
+      }
+    },
+    {
+      "title": "Live",
+      "route": "/live",
+      "after": "live",
+      "before": "live",
+      "glance": {
+        "Header": "P",
+        "Filters": "P",
+        "First screen": "P",
+        "Alignment": "~",
+        "Identity": "P",
+        "Missing data": "P",
+        "Icons": "P",
+        "States": "~",
+        "Phone": "~",
+        "Dates": "P",
+        "First load": "P",
+        "Labeled visual": "~",
+        "Color meaning": "~",
+        "Sample + source": "P"
+      },
+      "score": "9/14",
+      "note": "Parameter-free unavailable Live landing resolves the last admitted finals day, scores, observed points leaders and next retained schedule date. Explicit dated routes remain exact. Full loading geometry and presentation of the score board remain outside this default integration audit.",
+      "resultY": {
+        "1440": 374,
+        "390": 370
+      }
+    },
+    {
+      "title": "Contracts",
+      "route": "/contracts",
+      "after": "contracts",
+      "before": "contracts",
+      "glance": {
+        "Header": "P",
+        "Filters": "~",
+        "First screen": "F",
+        "Alignment": "?",
+        "Identity": "-",
+        "Missing data": "~",
+        "Icons": "P",
+        "States": "?",
+        "Phone": "~",
+        "Dates": "P",
+        "First load": "F",
+        "Labeled visual": "F",
+        "Color meaning": "-",
+        "Sample + source": "F"
+      },
+      "score": "3/12",
+      "note": "Still opens on book/date selection. The PC04 handoff explicitly defers financial defaults until admitted finance books land in PC06. Captured as a dependency, not a pass.",
+      "resultY": {
+        "1440": null,
+        "390": null
+      }
+    },
+    {
+      "title": "Free Agency",
+      "route": "/free-agency",
+      "after": "free-agency",
+      "before": "free-agency",
+      "glance": {
+        "Header": "P",
+        "Filters": "~",
+        "First screen": "F",
+        "Alignment": "?",
+        "Identity": "-",
+        "Missing data": "~",
+        "Icons": "P",
+        "States": "?",
+        "Phone": "~",
+        "Dates": "P",
+        "First load": "F",
+        "Labeled visual": "F",
+        "Color meaning": "-",
+        "Sample + source": "F"
+      },
+      "score": "3/12",
+      "note": "Still opens on book/date selection. The PC04 handoff explicitly defers financial defaults until admitted finance books land in PC06. Captured as a dependency, not a pass.",
+      "resultY": {
+        "1440": null,
+        "390": null
+      }
+    }
+  ]
+}

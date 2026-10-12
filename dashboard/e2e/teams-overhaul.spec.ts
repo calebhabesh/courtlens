@@ -4,7 +4,7 @@ import { openWorkbench } from "./workbench-navigation";
 test("missing ratings stay last in both sort directions and the plot supports keyboard access", async ({ page }) => {
   await openWorkbench(page, "/teams?metrics=all_ratings&sort=off_rating&direction=asc");
   await expect(page.locator("tbody tr").first()).toContainText("Toronto Raptors");
-  await expect(page.locator("tbody tr").last().locator("td").nth(4)).toHaveText("—");
+  await expect(page.locator("tbody tr").last().locator("[data-metric=off_rating] .stat-main-value")).toHaveText("—");
   await page.getByRole("button", { name: "Sort by ORTG", exact: true }).click();
   await expect(page.locator("tbody tr").last()).toContainText("Boston Celtics");
   await page.getByRole("radio", { name: "Efficiency Plot", exact: true }).click();

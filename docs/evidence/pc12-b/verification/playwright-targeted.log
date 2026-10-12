@@ -1,0 +1,75 @@
+
+Running 41 tests using 2 workers
+
+  ✓   1 e2e/chart-kit.spec.ts:51:7 › PC03 chart kit 1440px › reduced motion collapses every chart fade and semantic transition (436ms)
+  ✓   2 e2e/chart-kit.spec.ts:16:7 › PC03 chart kit 1440px › first load, data changes, state actions and phone forms (1.5s)
+  ✓   4 e2e/chart-kit.spec.ts:51:7 › PC03 chart kit 390px › reduced motion collapses every chart fade and semantic transition (328ms)
+  ✓   3 e2e/chart-kit.spec.ts:16:7 › PC03 chart kit 390px › first load, data changes, state actions and phone forms (2.7s)
+  ✓   6 e2e/chart-kit.spec.ts:51:7 › PC03 chart kit 375px › reduced motion collapses every chart fade and semantic transition (308ms)
+  ✓   7 e2e/chart-kit.spec.ts:64:5 › PC03 prerendered SVG titles contain a single descriptive string (126ms)
+  ✓   5 e2e/chart-kit.spec.ts:16:7 › PC03 chart kit 375px › first load, data changes, state actions and phone forms (2.7s)
+  ✓   9 e2e/contracts.spec.ts:5:5 › first load pins the latest refresh and shows the league payroll board (490ms)
+  ✓  10 e2e/contracts.spec.ts:17:5 › team view keeps unknown salaries out of totals and labels options (335ms)
+  ✓  11 e2e/contracts.spec.ts:33:5 › free agency is removed and redirects to contracts (196ms)
+  ✓  12 e2e/contracts.spec.ts:39:5 › phone width has no page overflow on the team view (342ms)
+/home/ethioking/dev/courtlens/data/pc12-b-verify-temp/dashboard/e2e/pc12-headlines.spec.ts-snapshots/pc12-b-teams-1440-linux.png is re-generated, writing actual.
+  ✓  13 e2e/pc12-headlines.spec.ts:17:9 › PC12 Teams headline on first load at 1440px (721ms)
+  ✓  14 e2e/pc12-headlines.spec.ts:17:9 › PC12 Team profile headline on first load at 1440px (341ms)
+  ✓  15 e2e/pc12-headlines.spec.ts:17:9 › PC12 Team Compare headline on first load at 1440px (315ms)
+  ✓  16 e2e/pc12-headlines.spec.ts:17:9 › PC12 Forecasts headline on first load at 1440px (579ms)
+  ✓  17 e2e/pc12-headlines.spec.ts:17:9 › PC12 Player trajectory headline on first load at 1440px (406ms)
+  ✓  18 e2e/pc12-headlines.spec.ts:17:9 › PC12 Shooting headline on first load at 1440px (301ms)
+/home/ethioking/dev/courtlens/data/pc12-b-verify-temp/dashboard/e2e/pc12-headlines.spec.ts-snapshots/pc12-b-rapm-1440-linux.png is re-generated, writing actual.
+  ✓  19 e2e/pc12-headlines.spec.ts:17:9 › PC12 RAPM headline on first load at 1440px (736ms)
+  ✓  20 e2e/pc12-headlines.spec.ts:17:9 › PC12 Trends headline on first load at 1440px (304ms)
+/home/ethioking/dev/courtlens/data/pc12-b-verify-temp/dashboard/e2e/pc12-headlines.spec.ts-snapshots/pc12-b-contracts-1440-linux.png is re-generated, writing actual.
+  ✓  21 e2e/pc12-headlines.spec.ts:44:7 › PC12 Others preserves the full Contracts roster at 1440px (658ms)
+/home/ethioking/dev/courtlens/data/pc12-b-verify-temp/dashboard/e2e/pc12-headlines.spec.ts-snapshots/pc12-b-teams-390-linux.png is re-generated, writing actual.
+  ✓  22 e2e/pc12-headlines.spec.ts:17:9 › PC12 Teams headline on first load at 390px (409ms)
+  ✓  23 e2e/pc12-headlines.spec.ts:17:9 › PC12 Team profile headline on first load at 390px (241ms)
+  ✓  24 e2e/pc12-headlines.spec.ts:17:9 › PC12 Team Compare headline on first load at 390px (274ms)
+  ✓  25 e2e/pc12-headlines.spec.ts:17:9 › PC12 Forecasts headline on first load at 390px (244ms)
+  ✓  26 e2e/pc12-headlines.spec.ts:17:9 › PC12 Player trajectory headline on first load at 390px (260ms)
+  ✓  27 e2e/pc12-headlines.spec.ts:17:9 › PC12 Shooting headline on first load at 390px (246ms)
+/home/ethioking/dev/courtlens/data/pc12-b-verify-temp/dashboard/e2e/pc12-headlines.spec.ts-snapshots/pc12-b-rapm-390-linux.png is re-generated, writing actual.
+  ✓  28 e2e/pc12-headlines.spec.ts:17:9 › PC12 RAPM headline on first load at 390px (437ms)
+  ✓  29 e2e/pc12-headlines.spec.ts:17:9 › PC12 Trends headline on first load at 390px (275ms)
+/home/ethioking/dev/courtlens/data/pc12-b-verify-temp/dashboard/e2e/pc12-headlines.spec.ts-snapshots/pc12-b-contracts-390-linux.png is re-generated, writing actual.
+  ✓  30 e2e/pc12-headlines.spec.ts:44:7 › PC12 Others preserves the full Contracts roster at 390px (478ms)
+  ✓  31 e2e/player-profile.spec.ts:3:5 › search opens a snapshot-pinned real route and changes replay date (707ms)
+  ✓  32 e2e/player-profile.spec.ts:19:5 › unsupported replay date keeps the input and offers recovery (165ms)
+  ✓  33 e2e/research-fo12.spec.ts:10:5 › trends runs from the URL, formats shooting percentages and keeps the evidence hash in Data details (527ms)
+  ✓  34 e2e/research-fo12.spec.ts:38:5 › distributions keeps the selected view in the URL and states the sample gate in one line (587ms)
+  ✓  35 e2e/research-fo12.spec.ts:57:5 › a research operation deep link reruns without AI and keeps its context in Data details (438ms)
+  ✓  36 e2e/research-fo12.spec.ts:71:5 › saved investigations list scope in words and keep each record's hash behind Details (528ms)
+  ✓  37 e2e/teams-overhaul.spec.ts:4:5 › missing ratings stay last in both sort directions and the plot supports keyboard access (1.2s)
+  ✓  38 e2e/teams-overhaul.spec.ts:20:7 › Team Stats scope, views and filters survive reload at 1440px (559ms)
+  ✓  39 e2e/teams-overhaul.spec.ts:42:7 › Team profile tabs preserve unknowns and have keyboard access at 1440px (959ms)
+  ✓  40 e2e/teams-overhaul.spec.ts:20:7 › Team Stats scope, views and filters survive reload at 390px (1.1s)
+  ✓  41 e2e/teams-overhaul.spec.ts:42:7 › Team profile tabs preserve unknowns and have keyboard access at 390px (1.6s)
+  ✘   8 e2e/chart-kit.spec.ts:74:5 › PC03 Compare exports retain resolved token colors in SVG and PNG (30.0s)
+
+
+  1) e2e/chart-kit.spec.ts:74:5 › PC03 Compare exports retain resolved token colors in SVG and PNG ─
+
+    Test timeout of 30000ms exceeded.
+
+    Error: locator.click: Test timeout of 30000ms exceeded.
+    Call log:
+      - waiting for getByRole('button', { name: 'Export', exact: true })
+
+
+      76 |   await page.getByText("Export chart preview", { exact: true }).click();
+      77 |   const exportButton = page.getByRole("button", { name: "Export", exact: true });
+    > 78 |   await exportButton.click();
+         |                      ^
+      79 |   const pendingSvg = page.waitForEvent("download");
+      80 |   await page.getByRole("menuitem", { name: /SVG/ }).click();
+      81 |   const svg = readFileSync((await (await pendingSvg).path())!, "utf8");
+        at /home/ethioking/dev/courtlens/data/pc12-b-verify-temp/dashboard/e2e/chart-kit.spec.ts:78:22
+
+    Error Context: test-results/chart-kit-PC03-Compare-exp-25505-token-colors-in-SVG-and-PNG/error-context.md
+
+  1 failed
+    e2e/chart-kit.spec.ts:74:5 › PC03 Compare exports retain resolved token colors in SVG and PNG ──
+  40 passed (34.1s)

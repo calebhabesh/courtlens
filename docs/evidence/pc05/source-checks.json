@@ -1,0 +1,31 @@
+{
+  "checks": [
+    {
+      "source": "nba_player_index",
+      "host": "cdn.nba.com",
+      "robots_status": 403,
+      "robots_sha256": "af9ed82203ba37fe3d3f1eff44478611eb2f1317b1aee0f94bd5d7a7f0f5076e",
+      "retained_file_mtime_utc": "2026-10-11T22:28:30.709115+00:00",
+      "action": "stopped after robots 403"
+    },
+    {
+      "source": "espn_injuries",
+      "host": "site.api.espn.com",
+      "robots_status": 403,
+      "robots_sha256": "bd25ee3657f781b98aa1c3797112b2f69d6a87aaeb10ff27f43aea2ae4264bc4",
+      "retained_file_mtime_utc": "2026-10-11T22:28:30.948342+00:00",
+      "action": "stopped after robots 403"
+    },
+    {
+      "source": "nba_injury_report",
+      "host": "ak-static.cms.nba.com",
+      "robots_status": 200,
+      "robots_sha256": "6fb025d97f620db9c0d437cf760f4e772b4da61a94b49bb82ee5d370eaf94565",
+      "retained_file_mtime_utc": "2026-10-11T22:28:31.222532+00:00",
+      "action": "path allowed; target PDF returned 403; stopped",
+      "target_url": "https://ak-static.cms.nba.com/referee/injury/Injury-Report_2026-10-11_05_00PM.pdf",
+      "target_status": 403
+    }
+  ],
+  "note": "Initial bounded preflight, before the reusable fetcher. Times are retained file mtimes, not recreated acquisition timestamps. Raw responses stay outside Git."
+}

@@ -1,13 +1,13 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
-import { WingspanExplorerView } from "@/components/wingspan-explorer-view";
+import { CombineView } from "@/components/combine-view";
 import { TemplateSkeleton } from "@/components/ui/template-skeleton";
 
 export const metadata: Metadata = {
   title: "Combine & Wingspan",
-  description: "Official NBA Draft Combine anthropometric measurements, wingspan-to-height ratios, and draft metadata."
+  description: "Official NBA Draft Combine measurements, wingspan over height and draft picks, 2000 to the latest class."
 };
 
 export default function WingspanPage() {
-  return <Suspense fallback={<TemplateSkeleton template="research" />}><WingspanExplorerView /></Suspense>;
+  return <Suspense fallback={<TemplateSkeleton template="research" />}><CombineView /></Suspense>;
 }

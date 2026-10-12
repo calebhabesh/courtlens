@@ -10,8 +10,7 @@ test("retained historical terms stay unknown, drawer sources and financial conte
   await page.getByRole("button",{name:"Brandon Ingram",exact:true}).click();await expect(page.getByRole("dialog")).toContainText("reported total / documented years");
   await expect(page.getByRole("dialog").getByRole("link").first()).toHaveAttribute("href",/^https:/);
   await page.keyboard.press("Escape");await expect(page.getByRole("dialog")).toHaveCount(0);await expect(page.getByRole("button",{name:"Brandon Ingram",exact:true})).toBeFocused();
-  await page.getByRole("navigation",{name:"Finance views"}).getByRole("link",{name:"Free Agency",exact:true}).click();
-  await expect(page.getByRole("heading",{level:1})).toHaveText("Free Agency Tracker");expect(new URL(page.url()).searchParams.get("season")).toBe("2024-25");
+  await expect(page.getByRole("heading",{level:1})).toHaveText("Retained source books");expect(new URL(page.url()).searchParams.get("season")).toBe("2024-25");
   await expect(page.getByLabel("Financial season",{exact:true})).toHaveValue("2025-26");await expect(page.getByRole("region",{name:"Financial query result"})).toContainText("40000000");
   await page.reload();await expect(page.getByRole("region",{name:"Financial query result"})).toContainText("40000000");
 });
@@ -31,7 +30,7 @@ test("option scenario stays separate from reported money and groups",async({page
 });
 
 test("query rejection has retry, and book chooser never silently chooses newest",async({page}) => {
-  await mock(page);await page.goto("/contracts");await page.getByRole("button",{name:"Data details",exact:true}).click();await expect(page.getByLabel("Explicit book UUID")).toHaveValue("");await expect(page.getByRole("region",{name:"Financial query result"})).toHaveCount(0);
+  await mock(page);await page.goto("/contracts/books");await page.getByRole("button",{name:"Data details",exact:true}).click();await expect(page.getByLabel("Explicit book UUID")).toHaveValue("");await expect(page.getByRole("region",{name:"Financial query result"})).toHaveCount(0);
   await page.route("**/api/workbench/operations/finance",r=>r.fulfill({status:503,json:{detail:"Book integrity unavailable"}}));await page.goto(initial);await waitForStreamedPage(page);
   await expect(page.getByRole("alert").filter({hasText:"Finance unavailable"})).toContainText("Book integrity unavailable");
   await page.unroute("**/api/workbench/operations/finance");await mock(page);await page.getByRole("button",{name:"Retry query"}).click();await expect(page.getByRole("region",{name:"Financial query result"})).toContainText("40000000");
@@ -47,7 +46,7 @@ test("mobile and landscape table/drawer preserve keyboard access without body ov
 test("Refresh staged import returns a tracked job and exposes failed worker state",async({page}) => {
   await mock(page);await page.route("**/api/finance-import",r => {expect(r.request().postDataJSON()).toEqual({bundle_hash:"a".repeat(64)});return r.fulfill({status:202,json:{job_id:"job-finance",status:"queued",stage:"queued",output_refs:{}}});});
   await page.route("**/api/jobs/job-finance",r=>r.fulfill({json:{job_id:"job-finance",status:"failed",stage:"finance_import",error_summary:"Staged bundle not found",output_refs:{}}}));
-  await page.goto("/free-agency");await page.getByRole("button",{name:"Data details",exact:true}).click();await page.getByText("Refresh / import / correction workflow",{exact:true}).click();await page.getByLabel("Operator-staged bundle SHA-256").fill("a".repeat(64));await page.getByRole("button",{name:"Refresh staged import"}).click();
+  await page.goto("/contracts/books");await page.getByRole("button",{name:"Data details",exact:true}).click();await page.getByText("Refresh / import / correction workflow",{exact:true}).click();await page.getByLabel("Operator-staged bundle SHA-256").fill("a".repeat(64));await page.getByRole("button",{name:"Refresh staged import"}).click();
   await expect(page.getByRole("status").filter({hasText:"job-finance"})).toContainText("queued");await page.getByRole("button",{name:"Check import job"}).click();await expect(page.getByRole("status").filter({hasText:"job-finance"})).toContainText("Staged bundle not found");
 });
 

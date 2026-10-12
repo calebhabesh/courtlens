@@ -1,4 +1,5 @@
 "use client";
+import { ReliabilityPlot } from "./charts";
 import { humanLabel } from "@/lib/route-availability";
 import { formatDate } from "@/lib/format-date";
 import { useEffect, useState } from "react";
@@ -81,6 +82,10 @@ export function ResearchResultsView({ experiment = "courtload-expected-shot-retr
   const runPicker = runs.length > 1 && <Field label="Run" layout="inline"><Select aria-label="Registered run" value={runId} onChange={e => { setResult(null); setError(null); setRunId(e.target.value); }}>{runs.map((r, index) => <option key={r.run_id} value={r.run_id}>Run {runs.length - index} · {humanLabel(r.status)}</option>)}</Select></Field>;
   const status = result ? (result.run.status === "selection_failed_negative_result" ? "Completed negative result" : humanLabel(result.run.status)) : entry ? humanLabel(entry.status) : null;
 
+  const headline = selection && experiment === "courtload-expected-shot-retrospective-v2" ? <ReliabilityPlot title="Selection reliability" source="Sealed expected-shot retrospective v2 selection report"
+    sample={`${selection.baseline.rows.toLocaleString("en-US")} baseline / ${selection.candidate.rows.toLocaleString("en-US")} candidate shots`}
+    note="Selection evidence only; not final-test performance. Fixed bins, no uncertainty intervals served; exact bins below."
+    series={[{name: "Baseline", bins: selection.baseline.calibration_bins}, {name: "Candidate", bins: selection.candidate.calibration_bins}]} /> : undefined;
   let findings: React.ReactNode = null;
   let body: React.ReactNode;
   if (error) {
@@ -134,6 +139,6 @@ export function ResearchResultsView({ experiment = "courtload-expected-shot-retr
     <FilterBar collapsible={Boolean(runPicker)} label="Experiment controls" summary={title} scope={<span className="research-scope-label">{title}</span>} filters={runPicker || undefined}
       count={registry ? <CountChip>{runs.length} {runs.length === 1 ? "run" : "runs"}</CountChip> : undefined}
       details={details} />
-    <ResearchLayout findings={findings}>{body}</ResearchLayout>
+    <ResearchLayout headline={headline} findings={findings}>{body}</ResearchLayout>
   </div>;
 }

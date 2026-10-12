@@ -1,0 +1,34 @@
+[
+  {
+    "name": "catalog",
+    "http_status": 200,
+    "milliseconds": 116.9,
+    "bytes": 1883,
+    "rows": 0,
+    "with_reference": 0
+  },
+  {
+    "name": "roster-all",
+    "http_status": 200,
+    "milliseconds": 261.6,
+    "bytes": 290659,
+    "rows": 622,
+    "with_reference": 486
+  },
+  {
+    "name": "roster-tor",
+    "http_status": 200,
+    "milliseconds": 246.4,
+    "bytes": 10912,
+    "rows": 21,
+    "with_reference": 15
+  },
+  {
+    "name": "index-page",
+    "http_status": 200,
+    "milliseconds": 4.3,
+    "bytes": 40236,
+    "rows": 100,
+    "with_reference": 0
+  }
+]

@@ -377,15 +377,6 @@ STATIC_NAVIGATION_PAGES: list[dict[str, Any]] = [
         "aliases": ["contracts", "salaries", "payroll", "finance", "cap", "salary timeline"],
     },
     {
-        "id": "page_free_agency",
-        "canonical_id": "free-agency",
-        "display_name": "Free Agency Tracker",
-        "subtitle": "Navigation · Free agents, movements, and deal terms",
-        "base_destination": "/free-agency",
-        "portrait_fallback": "FA",
-        "aliases": ["free agency", "free agents", "fa", "deal tracker"],
-    },
-    {
         "id": "page_playoffs",
         "canonical_id": "playoffs",
         "display_name": "Playoffs & Series",

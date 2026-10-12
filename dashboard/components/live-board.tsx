@@ -28,7 +28,7 @@ export function LiveBoardHeader({ section, slate, subtitle, actions }: {
   const tabs = liveTabs(slate);
   return (
     <>
-      <PageHeader title="Live" subtitle={subtitle} actions={actions} />
+      <PageHeader title={section === "playoffs" ? "Playoffs" : "Live"} subtitle={subtitle} actions={actions} />
       <Suspense fallback={<div className="ui-route-tabs" aria-hidden="true" />}>
         <RouteTabs tabs={[tabs.live, tabs.finals, tabs.playoffs]} active={tabs[section].href} aria-label="Live sections" />
       </Suspense>

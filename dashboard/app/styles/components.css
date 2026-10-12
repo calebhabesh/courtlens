@@ -4969,11 +4969,11 @@ textarea, input, select { max-width: 100%; }
   width: var(--comparison-width, 0%);
   height: 100%;
   border-radius: inherit;
-  background: var(--color-accent);
+  background: var(--color-identity-a);
 }
 
 .ui-comparison-value-b .ui-comparison-track > span {
-  background: var(--color-text-secondary);
+  background: var(--color-identity-b);
 }
 
 .ui-comparison-percentile {

@@ -1,0 +1,11 @@
+
+Running 4 tests using 1 worker
+
+/home/ethioking/dev/.courtlens-pc12-a/dashboard/e2e/visual-baselines.spec.ts-snapshots/team-stats-desktop-linux.png is re-generated, writing actual.
+  ✓  1 e2e/visual-baselines.spec.ts:130:9 › FO06 baselines desktop › team stats (1.2s)
+/home/ethioking/dev/.courtlens-pc12-a/dashboard/e2e/visual-baselines.spec.ts-snapshots/team-stats-phone-linux.png is re-generated, writing actual.
+  ✓  2 e2e/visual-baselines.spec.ts:130:9 › FO06 baselines phone › team stats (964ms)
+  ✓  3 e2e/visual-baselines.spec.ts:165:7 › PC12 directory desktop › first load (1.0s)
+  ✓  4 e2e/visual-baselines.spec.ts:165:7 › PC12 directory phone › first load (872ms)
+
+  4 passed (4.6s)

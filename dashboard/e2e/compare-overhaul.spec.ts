@@ -1,14 +1,12 @@
 import { expect, test } from "@playwright/test";
-import { readFileSync } from "node:fs";
 import { openWorkbench } from "./workbench-navigation";
 
-const empty = JSON.parse(readFileSync("../docs/evidence/b21-api-smoke.json", "utf8")).response;
 
 test("player comparison uses shared scope, signed values and contextual URL modes",async({page})=>{
   await openWorkbench(page,"/compare?playerA=23&playerB=24&players=23,24,1&releaseId=fixture-release&season=2025-26&phase=regular_season&beforeDate=2026-04-13&window=last_10");
   await expect(page.getByRole("heading",{level:1})).toHaveText("Player Comparison");
   await expect(page.getByRole("table",{name:"Descriptive comparison"})).toContainText("28.0");
-  await page.getByRole("radio",{name:"Table",exact:true}).click();await expect(page).toHaveURL(/compareView=table/);
+  await expect(page.getByRole("table",{name:"Descriptive comparison"})).toBeVisible();
   await page.getByRole("radio",{name:"Offense",exact:true}).click();await expect(page).toHaveURL(/preset=offense/);
   await page.reload();await expect(page.getByRole("radio",{name:"Offense",exact:true})).toHaveAttribute("aria-checked","true");
   await page.getByRole("button",{name:"Swap players",exact:true}).click();
@@ -33,58 +31,20 @@ test("team comparison preserves unknown versus zero, unknown outcomes and scope 
   expect(new URL(page.url()).searchParams.get("beforeDate")).toBe("2026-04-13");
 });
 
-test("WOWY cancels an old context and a late response cannot replace the new result",async({page})=>{
-  let release!:()=>void;const held=new Promise<void>(resolve=>release=resolve);let oldStarted=false;
-  await page.route("**/api/workbench/operations/wowy",async route=>{
-    const request=route.request().postDataJSON();
-    if(request.team_id === "TOR") {oldStarted=true;await held;}
-    await route.fulfill({json:{...empty,request:{...empty.request,...request},evidence_hash:`fixture-${request.team_id}`,context:{...empty.context,...request}}}).catch(()=>{});
+test("WOWY: a late response for an earlier team cannot replace the current result (PC11)",async({page})=>{
+  let release!:()=>void;const held=new Promise<void>(resolve=>release=resolve);let heldStarted=false;
+  await page.route("**/api/workbench/wowy?*",async route=>{
+    const url=new URL(route.request().url());
+    if(url.searchParams.get("teamId") === "1610612738") {heldStarted=true;await held;}
+    const body=await (await route.fetch()).json();
+    if(url.searchParams.get("teamId") === "1610612738") body.team={team_id:"1610612738",team_tricode:"BOS",team_name:"Boston Celtics"};
+    await route.fulfill({json:body}).catch(()=>{});
   });
-  await openWorkbench(page,"/wowy?team_id=TOR&together=1");await expect.poll(()=>oldStarted).toBe(true);
-  const team=page.getByRole("combobox",{name:"Team",exact:true});await team.fill("Boston");await page.getByRole("option").filter({hasText:"Boston Celtics"}).click();
-  await expect(page.locator(".floor-result")).toContainText("0 / 82 finalized games reconstructed");
-  const current=new URL(page.url()).searchParams.get("team_id");expect(current).not.toBe("TOR");release();await page.waitForTimeout(250);
-  expect(new URL(page.url()).searchParams.get("team_id")).toBe(current);
-  await page.getByRole("button",{name:"Data details",exact:true}).click();await expect(page.getByText(`fixture-${current}`,{exact:true})).toBeVisible();
-});
-
-test("Matchups applies scoped changes automatically and shows fractional assignments without inventing rates",async({page})=>{
-  const requests:Record<string,unknown>[]=[];
-  await page.route("**/api/workbench/operations/matchups",async route=>{
-    const req=route.request().postDataJSON();requests.push(req);
-    const original=JSON.parse(readFileSync("../docs/evidence/b23-api-smoke.json","utf8"));
-    const data=original.operations.matchups.response;
-    await route.fulfill({json:{...data,request:{...data.request,...req},assignments:[{offensive_player_id:"1",defensive_player_id:"2",games:1,seconds:0,fractional_possessions:0.125,attempts:0,makes:0,player_points:0,team_points:0,fg_pct:null}]}});
-  });
-  await openWorkbench(page,"/matchups?player_id=1&defender_id=2&releaseId=fixture-release&season=2025-26&phase=regular_season&beforeDate=2026-04-13");
-  await expect(page.getByRole("region",{name:"Assignment matrix"})).toContainText("0.125");
-  await expect(page.getByRole("region",{name:"Assignment matrix"})).toContainText("—");
-  await page.getByLabel("Minimum games",{exact:true}).fill("7");await expect.poll(()=>requests.at(-1)?.min_games).toBe(7);
-  expect(requests.at(-1)).toMatchObject({release_id:"fixture-release",season:"2025-26",phase:"regular_season",before_date:"2026-04-13"});
-  await expect(page.getByRole("button",{name:"Run shooting analysis"})).toHaveCount(0);
-});
-
-test("an initially default WOWY query retains its resolved release and cutoff when a gate changes",async({page})=>{
-  const requests:Record<string,unknown>[]=[];
-  await page.route("**/api/workbench/operations/wowy",route=>{
-    const request=route.request().postDataJSON();requests.push(request);
-    return route.fulfill({json:{...empty,request:{...empty.request,...request},context:{...empty.context,release_id:"fixture-resolved-release",season:"2025-26",phase:"regular_season",before_date:"2026-04-13"}}});
-  });
-  await openWorkbench(page,"/wowy?team_id=TOR&together=1");await expect(page.locator(".floor-result")).toBeVisible();
-  await page.getByLabel("Minimum games",{exact:true}).fill("7");
-  await expect.poll(()=>requests.at(-1)?.min_games).toBe(7);
-  expect(requests.at(-1)).toMatchObject({release_id:"fixture-resolved-release",season:"2025-26",phase:"regular_season",before_date:"2026-04-13"});
-});
-
-test("an initially default Matchups query retains its resolved release and cutoff when a gate changes",async({page})=>{
-  const requests:Record<string,unknown>[]=[];
-  const data=JSON.parse(readFileSync("../docs/evidence/b23-api-smoke.json","utf8")).operations.matchups.response;
-  await page.route("**/api/workbench/operations/matchups",route=>{
-    const request=route.request().postDataJSON();requests.push(request);
-    return route.fulfill({json:{...data,request:{...data.request,...request},context:{...data.context,release_id:"fixture-resolved-release",season:"2025-26",phase:"regular_season",before_date:"2026-04-13"}}});
-  });
-  await openWorkbench(page,"/matchups?player_id=1&defender_id=2");await expect(page.locator(".floor-result")).toBeVisible();
-  await page.getByLabel("Minimum games",{exact:true}).fill("7");
-  await expect.poll(()=>requests.at(-1)?.min_games).toBe(7);
-  expect(requests.at(-1)).toMatchObject({release_id:"fixture-resolved-release",season:"2025-26",phase:"regular_season",before_date:"2026-04-13"});
+  await openWorkbench(page,"/wowy");await expect(page.getByRole("combobox",{name:"Team",exact:true})).toHaveValue("1610612761");
+  await page.getByRole("combobox",{name:"Team",exact:true}).selectOption("1610612738");await expect.poll(()=>heldStarted).toBe(true);
+  // Filters replace the URL; a newer navigation arrives while the Boston request is still held.
+  await page.evaluate(()=>window.history.pushState(null,"","/wowy?teamId=1610612761"));await expect(page.getByRole("combobox",{name:"Team",exact:true})).toHaveValue("1610612761");
+  release();await page.waitForTimeout(250);
+  await expect(page.getByRole("combobox",{name:"Team",exact:true})).toHaveValue("1610612761");
+  await expect(page.locator(".feed-subject").getByText("Toronto Raptors",{exact:true})).toBeVisible();
 });

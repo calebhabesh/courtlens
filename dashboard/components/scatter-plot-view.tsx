@@ -324,14 +324,14 @@ export function ScatterPlotView({
                   y1={padTop}
                   x2={xPos}
                   y2={height - padBottom}
-                  stroke="#2d3542"
+                  stroke="var(--color-hairline-strong)"
                   strokeWidth="1"
                   strokeDasharray="2 2"
                 />
                 <text
                   x={xPos}
                   y={height - padBottom + 16}
-                  fill="#7b8798"
+                  fill="var(--color-text-secondary)"
                   fontSize="11"
                   fontFamily="monospace"
                   textAnchor="middle"
@@ -351,14 +351,14 @@ export function ScatterPlotView({
                   y1={yPos}
                   x2={width - padRight}
                   y2={yPos}
-                  stroke="#2d3542"
+                  stroke="var(--color-hairline-strong)"
                   strokeWidth="1"
                   strokeDasharray="2 2"
                 />
                 <text
                   x={padLeft - 10}
                   y={yPos + 4}
-                  fill="#7b8798"
+                  fill="var(--color-text-secondary)"
                   fontSize="11"
                   fontFamily="monospace"
                   textAnchor="end"
@@ -430,27 +430,27 @@ export function ScatterPlotView({
 
             // Marker appearance
             let r = 4.5;
-            let fill = "#637287";
-            let stroke = "#20252e";
+            let fill = "var(--color-text-secondary)";
+            let stroke = "var(--color-surface-2)";
             let strokeWidth = 1;
 
             if (pt.isOutlier) {
-              fill = "#4ecdc4"; // Cyan for statistical outliers
+              fill = "var(--color-category-2)"; // Category two: statistical outliers
               r = 5.5;
             }
             if (isFav) {
-              fill = "#ffd166"; // Gold for favorites
+              fill = "var(--color-identity-a)"; // Identity A: favorites
               r = 6;
             }
             if (isCompared) {
-              fill = "#ff6b6b"; // Coral for compare tray
-              stroke = "#ffd166";
+              fill = "var(--color-category-3)"; // Category three: compare tray
+              stroke = "var(--color-identity-a)";
               strokeWidth = 2;
               r = 7;
             }
             if (isHovered) {
               r = 9;
-              stroke = "#ffffff";
+              stroke = "var(--color-text)";
               strokeWidth = 2.5;
             }
 
@@ -489,7 +489,7 @@ export function ScatterPlotView({
                   <text
                     x={cx + (cx > width - 120 ? -8 : 8)}
                     y={cy - 6}
-                    fill={isCompared ? "#ffd166" : isHovered ? "#ffffff" : "#b4bdca"}
+                    fill={isCompared ? "var(--color-identity-a)" : isHovered ? "var(--color-text)" : "var(--color-text-secondary)"}
                     fontSize={isHovered ? "12" : "10"}
                     fontWeight={isHovered || isCompared ? "bold" : "normal"}
                     fontFamily="sans-serif"
@@ -507,7 +507,7 @@ export function ScatterPlotView({
           <text
             x={padLeft + (width - padLeft - padRight) / 2}
             y={height - 12}
-            fill="#f1f3f6"
+            fill="var(--color-text)"
             fontSize="13"
             fontWeight="bold"
             fontFamily="sans-serif"
@@ -520,7 +520,7 @@ export function ScatterPlotView({
             x={-(padTop + (height - padTop - padBottom) / 2)}
             y={20}
             transform="rotate(-90)"
-            fill="#f1f3f6"
+            fill="var(--color-text)"
             fontSize="13"
             fontWeight="bold"
             fontFamily="sans-serif"

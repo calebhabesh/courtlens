@@ -661,3 +661,23 @@ accessible name and centered mark alignment; recorded source/license hashes and 
 kerning. Five real-service Chromium checks at three widths and exports pass with zero page
 errors. Lint, TypeScript and isolated production webpack build pass.
 [Evidence and inspected screenshots](evidence/red-hat-display-wordmark/README.md).
+
+## PF05 — owner-requested Stats group-guide centering, 2026-10-11
+
+[Measured evidence](evidence/stats-group-guide-centering/README.md): group-header spans
+exclude the decorative guide columns, which now have separate header cells. Real-data
+guide offsets improve from 20px to 0px at desktop/tablet/phone widths across all modes;
+40px gutters and header/body alignment remain. Lint, TypeScript, production build,
+415 unit tests, 16 Stats browser checks and both unchanged Stats screenshot baselines
+pass. Scoped glance review is recorded without advancing earlier acceptance statuses.
+
+## PF05 — visible Stats dividers and stronger initials, 2026-10-11
+
+The owner rejected header-only centering and marked the divider between visible metric
+sections. [Corrected evidence](evidence/stats-visible-guide-centering/README.md): recurring
+guides and their bands now sit on that divider, with 0px offsets across four widths and all
+modes. Initials use centered grid layout (text offsets under 0.008px), semibold weight and
+primary text color. Resizing and multi-team logos retain straight guide columns. Lint,
+TypeScript, production build, 415 unit tests and 18 production Stats browser checks pass;
+scoped glance review is recorded. This supersedes the earlier centering claim without
+advancing older milestone/owner-review statuses.

@@ -1,3 +1,4 @@
+import { PairedBars } from "@/components/charts";
 import { Icon } from "@/components/ui/icon";
 import { AssistantPageSelection } from "@/lib/assistant-page-context";
 import { resolveStatsQuery } from "@/lib/stats-query";
@@ -97,6 +98,8 @@ export default async function TeamDetailPage({
   const ppg = production.pts_per_game ?? null;
   const oppPpg = allowance.pts_allowed_per_game ?? null;
   const netMargin = ppg !== null && oppPpg !== null ? (ppg - oppPpg).toFixed(1) : null;
+  const opponentFg = allowance.fg_pct_allowed ?? fourFactors?.shooting_percentages.opp_fg_pct ?? null;
+  const opponentEfg = allowance.efg_pct_allowed ?? fourFactors?.defense_factors.find(f => f.key === "opp_efg_pct")?.value ?? null;
   const currentStreak = detail.current_streak || schedule?.overall_record?.current_streak;
 
   return (
@@ -114,12 +117,18 @@ export default async function TeamDetailPage({
         ]}
       />
       <TeamProfileTabs hero={<section className="team-profile-hero" style={{"--team-color":teamAccent(team.tricode) ?? "var(--color-accent)"} as CSSProperties} aria-label="Team summary">
+        <section className="pc12-headline team-rating-headline" aria-label="Headline result">
+          <PairedBars title={`${team.tricode} against the league`} source="CourtLens admitted team box scores · estimated possessions"
+            sample={`${record.games_played} team games · ${season}`} names={[team.tricode, "League average"]}
+            note="Amber = team, blue = league. Offensive rating measures scoring; defensive rating measures allowance. Descriptive, no overall verdict."
+            rows={(fourFactors?.ratings ?? []).filter(f => ["off_rating", "def_rating", "net_rating"].includes(f.key)).map(f => ({key: f.key, label: f.display_name, a: f.value, b: f.league_avg, formattedA: f.value?.toFixed(1), formattedB: f.league_avg?.toFixed(1)}))} />
+        </section>
         <TeamIdentity team={team.tricode} name={team.name} size="xl" subtitle={`${record.wins}W · ${record.losses}L${currentStreak ? ` · ${currentStreak}` : ""}`} />
         <div className="team-profile-tiles">
           <StatTile label="Points Per Game" value={ppg?.toFixed(1)} />
           <StatTile label="Opponent PPG" value={oppPpg?.toFixed(1)} />
           <StatTile label="Field Goal %" value={production.fg_pct != null ? `${(production.fg_pct * 100).toFixed(1)}%` : null} footnote={production.efg_pct != null ? `eFG ${(production.efg_pct * 100).toFixed(1)}%` : "eFG unknown"} />
-          <StatTile label="Opponent FG %" value={allowance.fg_pct_allowed != null ? `${(allowance.fg_pct_allowed * 100).toFixed(1)}%` : null} footnote={allowance.efg_pct_allowed != null ? `eFG ${(allowance.efg_pct_allowed * 100).toFixed(1)}%` : "eFG unknown"} />
+          <StatTile label="Opponent FG %" value={opponentFg != null ? `${(opponentFg * 100).toFixed(1)}%` : null} footnote={opponentEfg != null ? `eFG ${(opponentEfg * 100).toFixed(1)}%` : "eFG unknown"} />
           <StatTile label="Net Margin" value={netMargin} />
           <StatTile label="Win Percentage" value={record.win_pct?.toFixed(3)} />
           <StatTile label="Offensive Rating" value={fourFactors?.off_rating?.toFixed(1)} />
@@ -148,8 +157,9 @@ export default async function TeamDetailPage({
                   <th>Player</th>
                   <th className="num">Stint Games</th>
                   <th className="num">Stint Minutes</th>
-                  <th className="num">Stint Points</th>
                   <th className="num">PPG</th>
+                  <th className="num">RPG</th>
+                  <th className="num">APG</th>
                   <th className="text-right">Actions</th>
                 </tr>
               </thead>
@@ -172,10 +182,9 @@ export default async function TeamDetailPage({
                     <td className="num font-mono">
                       {p.total_minutes !== undefined && p.total_minutes !== null ? p.total_minutes.toFixed(0) : "—"}
                     </td>
-                    <td className="num font-mono font-bold">{p.points ?? "—"}</td>
-                    <td className="num font-mono font-semibold">
-                      {p.points_per_game !== undefined && p.points_per_game !== null ? p.points_per_game.toFixed(1) : "—"}
-                    </td>
+                    <td className="num font-mono font-bold">{p.pts_per_game?.toFixed(1) ?? "—"}</td>
+                    <td className="num font-mono">{p.reb_per_game?.toFixed(1) ?? "—"}</td>
+                    <td className="num font-mono">{p.ast_per_game?.toFixed(1) ?? "—"}</td>
                     <td className="text-right">
                       <Link
                         href={`/players/${p.player_id}?season=${season}&phase=${phase}&beforeDate=${beforeDate}&releaseId=${resolvedReleaseId || ""}` }

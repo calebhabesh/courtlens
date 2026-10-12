@@ -1,3 +1,5 @@
+import { RankedBars } from "@/components/charts";
+import { PlayerIdentity } from "@/components/ui/identity";
 import { Suspense } from "react";
 import Link from "next/link";
 import { ResearchResultsView } from "@/components/research-results-view";
@@ -37,7 +39,9 @@ export default async function Page({ searchParams }: {
       <ContextBar initialSeason={season} initialPhase={phase} initialBeforeDate={beforeDate} showWindow={false} sampleNoun="players" sampleSize={data?.total_players} detailRows={detailRows} />
     </Suspense>
     {!data ? <div role="alert"><GatedNote tone="warning" action={<Link className="button" href={`/research/rapm?${scope}`}>Retry</Link>}>Impact serving unavailable. Restore the local API connection.</GatedNote></div> :
-      <ResearchLayout findings={data.status === "available" ? <>
+      <ResearchLayout headline={data.status === "available" && <RankedBars title="Qualified 1Y RAPM leaders" source="CourtLens sealed IM04 lineup model" sample={`${data.total_players} served players · ${coverage?.admitted_games ?? "unknown"} admitted games`}
+        measure="points per 100 counted controls" tone="identity-b" note="Blue = 1Y RAPM; descriptive under lineup confounding. No uncertainty interval is served."
+        items={data.players.filter(p => p.metrics.rapm != null).slice(0, 5).map(p => ({key: p.player_id, name: p.player_name, label: <PlayerIdentity playerId={p.player_id} name={p.player_name} href={`/players/${p.player_id}?${scope}`} size="sm" />, value: p.metrics.rapm!, formatted: formatStatValue(p.metrics.rapm, 2), detail: `${p.support.rapm?.games ?? "unknown"} games · ${p.support.rapm?.seconds == null ? "unknown" : Math.round(p.support.rapm.seconds / 60)} minutes`}))} />} findings={data.status === "available" ? <>
         <StatTile label="Top 1Y RAPM" value={leader ? formatStatValue(leader.metrics.rapm, 2) : null} footnote={leader?.player_name} />
         <StatTile label="Rated Players" value={data.total_players.toLocaleString("en-US")} footnote="In the served impact cohort" />
         <StatTile label="Admitted Games" value={coverage ? `${coverage.admitted_games.toLocaleString("en-US")} / ${coverage.scheduled_games.toLocaleString("en-US")}` : null} footnote="Scheduled games in this scope" />
@@ -47,7 +51,7 @@ export default async function Page({ searchParams }: {
         <div className="table-wrapper research-table" role="region" aria-label="Served impact ratings" tabIndex={0}>
           <table className="data-table"><thead><tr><th>Player</th>{METRICS.map(key => <th key={key} className="num" title={IMPACT_COLUMNS[key].tooltip}>{IMPACT_COLUMNS[key].label}</th>)}<th className="num">1Y Games</th><th className="num">1Y Minutes</th></tr></thead>
             <tbody>{data.players.length ? data.players.map(player => <tr key={player.player_id}>
-              <th><Link href={`/players/${player.player_id}?${scope}`}>{player.player_name}</Link></th>
+              <th><PlayerIdentity playerId={player.player_id} name={player.player_name} href={`/players/${player.player_id}?${scope}`} size="sm" /></th>
               {METRICS.map(key => <td key={key} className="num">{formatStatValue(player.metrics[key], 2)}</td>)}
               <td className="num">{player.support.rapm?.games ?? "—"}</td><td className="num">{player.support.rapm?.seconds == null ? "—" : (player.support.rapm.seconds / 60).toFixed(1)}</td>
             </tr>) : <tr><td colSpan={9}>No qualified rating sample for this scope.</td></tr>}</tbody>

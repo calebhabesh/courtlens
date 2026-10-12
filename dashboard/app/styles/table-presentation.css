@@ -1,0 +1,48 @@
+@layer foundation {
+  .table-percentile-legend { display: flex; flex-wrap: wrap; align-items: center; column-gap: var(--space-4); row-gap: var(--space-2); color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); }
+  .table-percentile-key { display: flex; align-items: center; gap: var(--space-1); }
+  .table-percentile-key > span:first-child { margin-right: var(--space-1); }
+  .table-percentile-band { display: grid; place-items: center; min-width: var(--space-8); padding: var(--space-1); border-radius: var(--radius-xs); color: var(--color-text); font-variant-numeric: tabular-nums; }
+  .table-percentile-band-1 { background: var(--color-percentile-1); }
+  .table-percentile-band-2 { background: var(--color-percentile-2); }
+  .table-percentile-band-3 { background: var(--color-percentile-3); }
+  .table-percentile-band-4 { background: var(--color-percentile-4); }
+  .table-percentile-band-5 { background: var(--color-percentile-5); }
+  .table-small-sample { display: inline-block; width: fit-content; padding: 0 var(--space-1); border-radius: var(--radius-xs); background: var(--color-status-unknown-soft); color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-weight: 500; }
+  .chart-percentile-cell.table-percentile-compact { position: relative; min-width: var(--space-12); gap: 0; padding: var(--space-1) var(--space-2); font-size: var(--text-sm); line-height: var(--text-sm-lh); }
+  .stats-workspace .chart-percentile-cell .stat-pct-sublabel { color: inherit; }
+  .chart-percentile-cell.table-percentile-compact .stat-pct-sublabel { color: inherit; }
+  .stats-workspace .chart-percentile-cell .stat-main-value { font-size: var(--text-md); line-height: var(--text-md-lh); }
+  .chart-percentile-cell.table-percentile-compact .stat-main-value { font-weight: 500; }
+  .stats-workspace .table-percentile-legend { margin-block: var(--space-3); }
+  .percentile-table caption { text-align: left; color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); padding-block: 0 var(--space-2); }
+  .percentile-table .table-column-groups th { background: var(--color-surface-2); color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-weight: 600; border-bottom: 1px solid var(--color-hairline-strong); }
+  .percentile-table thead tr:nth-child(2) th { top: var(--space-8); }
+  .percentile-table th[scope="row"] { text-align: left; font-weight: 500; text-transform: none; letter-spacing: normal; font-size: var(--text-sm); line-height: var(--text-sm-lh); }
+  .directory-identity { display: flex; align-items: center; gap: var(--space-2); }
+  .directory-identity > div { display: grid; gap: var(--space-1); }
+  .directory-identity small { color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-weight: 400; }
+  .player-directory { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-4); min-width: 0; }
+  .player-directory > * { min-width: 0; }
+  .directory-filters { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); }
+  .directory-filters .ui-field { margin: 0; }
+  .directory-filters .ui-input, .directory-filters .ui-select { min-height: var(--control-lg); }
+  .directory-table { min-width: 800px; }
+  .directory-table tbody tr { height: calc(var(--space-16) + var(--space-2)); }
+  .directory-player { min-width: 240px; }
+  .team-statistics-table { min-width: 1040px; }
+  .rankings-table { min-width: 960px; }
+  .rankings-table th:nth-child(2), .rankings-table td:nth-child(2) { min-width: 200px; }
+  .ranking-board-panel .table-percentile-legend { padding: var(--space-3); }
+  @media (width < 768px) {
+    .directory-filters { gap: var(--space-2); }
+    .directory-filters .ui-field:first-child { flex: 1; }
+    .directory-filters .ui-field:first-child { flex-basis: 100%; min-width: 0; }
+    .directory-filters .ui-field:first-child .ui-field-control { min-width: 0; flex: 1; }
+    .directory-filters .ui-field:first-child .ui-input { min-width: 0; width: 100%; }
+    .directory-player { min-width: 184px; max-width: 200px; }
+    .directory-player, .team-table-identity, .rankings-table td:nth-child(2) { position: sticky; left: 0; z-index: var(--z-base); background: var(--color-surface-1); }
+    .directory-identity a { white-space: normal; }
+    .player-directory .button, .rankings-table .button { min-height: var(--control-lg); }
+  }
+}

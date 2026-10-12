@@ -1,0 +1,30 @@
+{
+ "/contracts desktop": {
+  "headlineTop": 154,
+  "firstChartTop": 278,
+  "pageOverflowPx": 0,
+  "controlsUnder40px": [
+   "button:Data details:28"
+  ]
+ },
+ "/contracts/DEN desktop": {
+  "headlineTop": 154,
+  "firstChartTop": 382,
+  "pageOverflowPx": 0,
+  "controlsUnder40px": [
+   "button:Data details:28"
+  ]
+ },
+ "/contracts phone": {
+  "headlineTop": 186,
+  "firstChartTop": 472,
+  "pageOverflowPx": 0,
+  "controlsUnder40px": []
+ },
+ "/contracts/DEN phone": {
+  "headlineTop": 234,
+  "firstChartTop": 786,
+  "pageOverflowPx": 0,
+  "controlsUnder40px": []
+ }
+}

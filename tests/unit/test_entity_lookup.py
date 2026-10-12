@@ -469,3 +469,11 @@ def test_retained_canonical_selections_resolve_without_name_input(test_db_sessio
     assert player.items[0].display_name == "Nikola Jokić"
     team = lookup_entities(test_db_session, query="1610612761", kinds=["team"], limit=1)
     assert team.items[0].display_name == "Toronto Raptors"
+
+
+def test_empty_query_never_suggests_players(test_db_session: Session):
+    """Players have no meaningful order before typing; only pages and teams are suggested."""
+    assert all(i.kind != "player" for i in lookup_entities(test_db_session, query="").items)
+    players_only = lookup_entities(test_db_session, query="", kinds=["player"])
+    assert players_only.items == [] and players_only.total_matches == 0
+    assert lookup_entities(test_db_session, query="jok", kinds=["player"]).items

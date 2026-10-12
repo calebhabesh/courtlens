@@ -1,0 +1,15 @@
+
+Running 10 tests using 3 workers
+
+  ✓   2 e2e/pc12-demo-hygiene.spec.ts:6:7 › PC12 C populated demo entries at 768px (567ms)
+  ✓   3 e2e/pc12-demo-hygiene.spec.ts:6:7 › PC12 C populated demo entries at 390px (727ms)
+  ✓   1 e2e/pc12-demo-hygiene.spec.ts:6:7 › PC12 C populated demo entries at 1440px (815ms)
+  ✓   5 e2e/pc12-demo-hygiene.spec.ts:46:5 › PC12 C an altered curated manifest keeps its original title and evidence (204ms)
+  ✓   4 e2e/pc12-demo-hygiene.spec.ts:6:7 › PC12 C populated demo entries at 375px (766ms)
+  ✓   6 e2e/pc12-demo-hygiene.spec.ts:53:5 › PC12 C explicit incompatible Evaluation stays selected until archive recovery (583ms)
+  ✓   7 e2e/visual-baselines.spec.ts:107:9 › FO06 baselines desktop › playoffs bracket (754ms)
+  ✓   8 e2e/visual-baselines.spec.ts:107:9 › FO06 baselines phone › playoffs bracket (746ms)
+  ✓   9 e2e/visual-baselines.spec.ts:219:315 › FO12 baselines desktop › evaluation (741ms)
+  ✓  10 e2e/visual-baselines.spec.ts:219:315 › FO12 baselines phone › evaluation (698ms)
+
+  10 passed (2.8s)

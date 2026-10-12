@@ -1,0 +1,128 @@
+[
+  {
+    "name": "evaluation",
+    "viewport": "desktop",
+    "title": "Evaluation Archive",
+    "first_result_top": 227,
+    "overflow_px": 0,
+    "errors": [],
+    "failed": []
+  },
+  {
+    "name": "evaluation",
+    "viewport": "phone",
+    "title": "Evaluation Archive",
+    "first_result_top": 277.5,
+    "overflow_px": 0,
+    "errors": [],
+    "failed": []
+  },
+  {
+    "name": "public-investigations",
+    "viewport": "desktop",
+    "title": "Saved Investigations",
+    "first_result_top": 227,
+    "overflow_px": 0,
+    "errors": [],
+    "failed": []
+  },
+  {
+    "name": "public-investigations",
+    "viewport": "phone",
+    "title": "Saved Investigations",
+    "first_result_top": 259,
+    "overflow_px": 0,
+    "errors": [],
+    "failed": []
+  },
+  {
+    "name": "saved-distribution",
+    "viewport": "desktop",
+    "title": "Scottie Barnes: Scoring Distribution",
+    "first_result_top": 351,
+    "overflow_px": 0,
+    "errors": [],
+    "failed": []
+  },
+  {
+    "name": "saved-distribution",
+    "viewport": "phone",
+    "title": "Scottie Barnes: Scoring Distribution",
+    "first_result_top": 431,
+    "overflow_px": 0,
+    "errors": [],
+    "failed": []
+  },
+  {
+    "name": "saved-periods",
+    "viewport": "desktop",
+    "title": "Scottie Barnes: Recent vs Prior Games",
+    "first_result_top": 293,
+    "overflow_px": 0,
+    "errors": [],
+    "failed": []
+  },
+  {
+    "name": "saved-periods",
+    "viewport": "phone",
+    "title": "Scottie Barnes: Recent vs Prior Games",
+    "first_result_top": 373,
+    "overflow_px": 0,
+    "errors": [],
+    "failed": []
+  },
+  {
+    "name": "saved-venue",
+    "viewport": "desktop",
+    "title": "Scottie Barnes: Home and Away",
+    "first_result_top": 293,
+    "overflow_px": 0,
+    "errors": [],
+    "failed": []
+  },
+  {
+    "name": "saved-venue",
+    "viewport": "phone",
+    "title": "Scottie Barnes: Home and Away",
+    "first_result_top": 373,
+    "overflow_px": 0,
+    "errors": [],
+    "failed": []
+  },
+  {
+    "name": "saved-peers",
+    "viewport": "desktop",
+    "title": "Scottie Barnes: Statistical Peers",
+    "first_result_top": 293,
+    "overflow_px": 0,
+    "errors": [],
+    "failed": []
+  },
+  {
+    "name": "saved-peers",
+    "viewport": "phone",
+    "title": "Scottie Barnes: Statistical Peers",
+    "first_result_top": 373,
+    "overflow_px": 0,
+    "errors": [],
+    "failed": []
+  },
+  {
+    "name": "playoffs",
+    "viewport": "desktop",
+    "title": "Playoffs",
+    "first_result_top": 388,
+    "overflow_px": 0,
+    "errors": [],
+    "failed": []
+  },
+  {
+    "name": "playoffs",
+    "viewport": "phone",
+    "title": "Playoffs",
+    "first_result_top": 396,
+    "overflow_px": 0,
+    "errors": [],
+    "failed": []
+  }
+]

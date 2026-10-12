@@ -299,3 +299,13 @@ ID cells, exclusive cutoffs, zero/unknown values, thread/panel layout, streaming
 routing and analytical contracts are preserved. Final unit/browser evidence is linked there.
 No provider questions, eval corpus changes or sealed assistant artifacts were introduced. This
 cross-reference does not advance AG source/evaluation statuses or claim owner visual acceptance.
+
+
+## 2026-10-12 — PC12 C shared legacy-result presentation
+
+- [C evidence](evidence/pc12-c/README.md): the shared legacy result renderer gains labeled observed
+  distribution axes/source/counts. Saved pages put exact definitions and technical limitations in
+  Data details; the legacy manual conversation keeps its evidence disclosure. Current agent
+  planning, prose, streaming, threads and provider behavior remain unchanged. No provider call ran.
+- Dashboard 439 unit tests and 54 affected browser checks pass, including legacy conversations,
+  manual Research Operation, saved exports/reproduction and failure states. This is PC12 C only.

@@ -29,7 +29,7 @@ from courtlens.models import (
     RawObject,
     Team,
 )
-from courtlens.services.evaluation_public import public_evaluation
+from courtlens.services.evaluation_public import public_evaluation, resolve_archive_context
 from courtlens.services.planner import NON_SCHEDULED_STATES
 from courtlens.services.player_analytics import (
     catalog as analytics_catalog,
@@ -62,9 +62,14 @@ router = APIRouter(tags=["public data"])
 def published_analytics_evaluations(
     run_id: Annotated[str | None, Query(alias="runId", max_length=32)] = None,
     snapshot_id: Annotated[str | None, Query(alias="snapshotId", max_length=36)] = None,
+    archive: bool = False,
     session: Session = Depends(get_db),
 ) -> dict[str, Any]:
-    context = resolve_snapshot(session, snapshot_id)
+    context = (
+        resolve_archive_context(session)
+        if archive and snapshot_id is None
+        else resolve_snapshot(session, snapshot_id)
+    )
     return public_evaluation(session, context, run_id)
 
 

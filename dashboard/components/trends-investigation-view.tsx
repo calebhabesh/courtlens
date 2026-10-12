@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useExampleSubject } from "./example-subject";
+import { PairedBars, RankedBars } from "./charts";
 import { comparePeriods, getRankOperation } from "@/lib/workbench-api";
 import { formatDate } from "@/lib/format-date";
 import type { ComparePeriodsResponse, PeriodMode, PeriodSummary, RankOperationResponse } from "@/lib/types";
@@ -40,7 +42,8 @@ function PeriodCard({ title, period }: { title: string; period: PeriodSummary })
 export function TrendsInvestigationView() {
   const { params, catalog, releaseId, season, phase, beforeDate, set } = useInvestigationScope();
   const view: View = params.get("view") === "rank" ? "rank" : "player";
-  const playerId = params.get("playerId") || params.get("player_id") || "1628389";
+  const exampleState = useExampleSubject("playerId", ["player_id"], "player", view === "player");
+  const playerId = params.get("playerId") || params.get("player_id") || "";
   const mode: PeriodMode = params.get("mode") === "date_range" ? "date_range" : "appearances";
   const periodAN = Number(params.get("periodAN") || params.get("period_a_n") || 10);
   const periodBN = Number(params.get("periodBN") || params.get("period_b_n") || 10);
@@ -91,7 +94,7 @@ export function TrendsInvestigationView() {
     <Field label="to" layout="inline"><DatePicker label={`${label} to`} value={range[to === "periodATo" ? "aTo" : "bTo"]} onChange={v => set({ [to]: v })} placeholder="End" /></Field>
   </>;
   const filters = view === "player" ? <>
-    <PlayerLookup label="Target player" prefix="Target" name={data?.value?.player_name} releaseId={releaseId} season={season} phase={phase} beforeDate={beforeDate} onSelect={id => set({ playerId: id, player_id: null })} />
+    <PlayerLookup label="Target player" prefix="Target" name={data?.value?.player_name} releaseId={releaseId} season={season} phase={phase} beforeDate={beforeDate} onSelect={id => { exampleState.cancelDefault(); set({ playerId: id, player_id: null, exampleSubject: null }); }} />
     <Field label="Windows" layout="inline"><Select aria-label="Slicing mode" value={mode} onChange={e => set({ mode: e.target.value })}><option value="appearances">Consecutive appearances</option><option value="date_range">Calendar dates</option></Select></Field>
     {mode === "appearances" ? <>{periodSelect("Period A", "periodAN", periodAN, "Last")}{periodSelect("Period B", "periodBN", periodBN, "Prior")}</> : <>{rangePicker("Period A", "periodAFrom", "periodATo")}{rangePicker("Period B", "periodBFrom", "periodBTo")}</>}
   </> : <>
@@ -114,10 +117,26 @@ export function TrendsInvestigationView() {
       detailRows={view === "player" ? evidenceRows(result, "Period comparison") : evidenceRows(ranked?.value, "Cohort ranking")} />
     {catalog === null && <div role="status"><GatedNote>Context catalog unavailable. Explicit URL scope is retained; reload to retry.</GatedNote></div>}
     {view === "player" ? <>
-      {!current && playerId && <ResearchBodySkeleton />}
+      {(!current && playerId || exampleState.loading) && <ResearchBodySkeleton />}
+      {exampleState.error && <GatedNote why={exampleState.error} action={<button className="button" onClick={() => window.location.reload()}>Retry</button>}>Example unavailable. Choose a player.</GatedNote>}
       {current?.error && <div role="alert"><GatedNote tone="warning" action={<button className="button" onClick={() => setRetry(v => v + 1)}>Retry</button>}>Period comparison unavailable: {current.error}</GatedNote></div>}
-      {result && <ResearchLayout findings={highlights.map(d => <StatTile key={d.metric_key} label={d.display_name} value={d.period_a_value === null ? null : value(d.period_a_value, d.metric_key)}
-        footnote={<>from {value(d.period_b_value, d.metric_key)} · <span className={deltaClass(d.absolute_delta)}>{change(d.absolute_delta, d.metric_key)}</span></>} />)}>
+      {result && <ResearchLayout headline={<>
+        {exampleState.example && <div className="pc12-example-label"><PlayerIdentity playerId={result.player_id} name={`Example: ${result.player_name}`} team={team} size="sm" subtitle="Season minutes rule" />
+          <button className="button button-small" onClick={() => {
+            const toggle = document.querySelector<HTMLButtonElement>(".ui-filter-bar-toggle");
+            const focusLookup = () => Array.from(document.querySelectorAll<HTMLInputElement>('input[aria-label="Target player"]')).find(input => input.checkVisibility())?.focus();
+            if (toggle?.checkVisibility()) {
+              toggle.click();
+              // The drawer focuses its panel on its first frame; focus its visible lookup after that.
+              requestAnimationFrame(() => requestAnimationFrame(focusLookup));
+            } else focusLookup();
+          }}>Change</button>
+        </div>}
+        <PairedBars title={`${result.player_name} · target against baseline`} source="CourtLens admitted player box scores"
+        sample={`${result.period_a.appearances_count} target / ${result.period_b.appearances_count} baseline games · ${result.period_a.total_minutes} / ${result.period_b.total_minutes} minutes`}
+        names={["Period A · target", "Period B · baseline"]} note="Amber = target, blue = baseline. Each metric has its own scale; differences are descriptive, not causal."
+        rows={highlights.map(d => ({key: d.metric_key, label: d.display_name, a: isPct(d.metric_key) && d.period_a_value != null ? d.period_a_value * 100 : d.period_a_value, b: isPct(d.metric_key) && d.period_b_value != null ? d.period_b_value * 100 : d.period_b_value, formattedA: value(d.period_a_value, d.metric_key), formattedB: value(d.period_b_value, d.metric_key), direction: "high"}))} /></>} findings={highlights.map(d => <StatTile key={d.metric_key} label={d.display_name} value={d.period_a_value === null ? null : value(d.period_a_value, d.metric_key)}
+        footnote={<>from {value(d.period_b_value, d.metric_key)} · <span className="pc12-trend-change">{change(d.absolute_delta, d.metric_key)}</span></>} />)}>
         <section className="research-periods" aria-label="Compared periods">
           <PlayerIdentity playerId={result.player_id} name={result.player_name} team={team} subtitle={`${result.season}`} size="lg" href={`/players/${result.player_id}`} />
           <PeriodCard title="Period A · Target" period={result.period_a} />
@@ -141,7 +160,9 @@ export function TrendsInvestigationView() {
     </> : <>
       {!ranked && <ResearchBodySkeleton tiles={3} />}
       {ranked?.error && <div role="alert"><GatedNote tone="warning" action={<button className="button" onClick={() => setRetry(v => v + 1)}>Retry</button>}>Cohort ranking unavailable: {ranked.error}</GatedNote></div>}
-      {ranked?.value && <ResearchLayout findings={<>
+      {ranked?.value && <ResearchLayout headline={<RankedBars title="Largest period shifts" source="CourtLens admitted player box scores" sample={`${ranked.value.total_eligible} eligible players · at least 10 appearances`}
+        measure={RANK_METRICS.find(([key]) => key === rankMetric)?.[1] ?? rankMetric} tone="identity-b" note="Blue = signed recent-minus-prior change; zero baseline. Descriptive, not causal."
+        items={ranked.value.items.slice(0, 5).map(item => ({key: item.player_id, name: item.player_name, label: item.player_name, value: item.delta_value, detail: `${item.games_played} games`}))} />} findings={<>
         <StatTile label="Eligible Players" value={ranked.value.total_eligible} footnote="At least 10 appearances" />
         <StatTile label={rankDirection === "desc" ? "Largest Increase" : "Largest Drop"} value={leader ? signed(leader.delta_value) : null} footnote={leader?.player_name} />
         <StatTile label="Windows" value="Last 10 vs prior 10" footnote={RANK_METRICS.find(([key]) => key === rankMetric)?.[1]} />

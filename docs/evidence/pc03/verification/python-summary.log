@@ -1,0 +1,8 @@
+Command: /home/ethioking/dev/courtlens/.venv/bin/python scripts/test_python.py
+Environment: isolated worktree; disposable PostgreSQL 17, no owner dotenv/database/provider keys.
+Exit code: 0
+Collected 1874 items / 19 deselected / 1855 selected.
+1854 passed, 1 skipped, 19 deselected, 1 warning in 263.10s.
+Skip: tests/integration/test_assistant_panel_browser.py:27: isolated Next browser server required.
+Warning: existing third-party google.genai _UnionGenericAlias deprecation under Python 3.14.
+Catalog metadata cases passed: tests/unit/test_metrics_v2.py (22 tests).

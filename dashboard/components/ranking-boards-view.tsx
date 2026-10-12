@@ -7,16 +7,24 @@ import { PageShell } from "./ui/page-shell";
 import { PageHeader } from "./ui/panel";
 import { LookupInput } from "./lookup-input";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import { useWorkspace } from "@/lib/workspace-context";
 import { PlayerPortrait } from "./player-portrait";
 import { aggregateRankingBoards } from "@/lib/workspace-client";
+import { executeWorkbenchQuery, getWorkbenchCatalog } from "@/lib/workbench-api";
+import { resolveStatsQuery } from "@/lib/stats-query";
+import { scopeContextLine } from "@/lib/scope-labels";
+import { PercentileCell } from "./charts/percentile-cell";
+import { TablePercentileLegend } from "./table-percentile-legend";
+import { Skeleton } from "./ui/skeleton";
+import { ExampleBoardsView } from "./example-boards-view";
+import { EXAMPLE_BOARD_ID, exampleRankingCopy } from "@/lib/example-boards";
 import type {
   AggregationMethod,
   BoardAggregationResult,
   RankingBoardType,
-  RankingEntry
+  RankingEntry, WorkbenchCatalog, WorkbenchQueryResponse
 } from "@/lib/types";
 
 const BOARD_TYPES: Array<{ id: RankingBoardType; label: string }> = [
@@ -27,15 +35,19 @@ const BOARD_TYPES: Array<{ id: RankingBoardType; label: string }> = [
   { id: "custom", label: "Custom" }
 ];
 
-export function RankingBoardsView() {
+export function RankingBoardsView({ catalog, example = null }: { catalog?: WorkbenchCatalog | null; example?: WorkbenchQueryResponse | null } = {}) {
   const {
     rankingBoards,
     saveRankingBoard,
     deleteRankingBoard,
-    favorites
+    favorites,
+    isLoading,
+    error: workspaceError
   } = useWorkspace();
 
   const [activeBoardId, setActiveBoardId] = useState<string | null>(null);
+  const [copying, setCopying] = useState(false);
+  const [copyError, setCopyError] = useState<string | null>(null);
   const [isCreatingBoard, setIsCreatingBoard] = useState(false);
   const [newTitle, setNewTitle] = useState("");
   const [newBoardType, setNewBoardType] = useState<RankingBoardType>("overall");
@@ -54,6 +66,7 @@ export function RankingBoardsView() {
 
   // Active board
   const activeBoard = useMemo(() => {
+    if (activeBoardId === EXAMPLE_BOARD_ID) return null;
     if (rankingBoards.length === 0) return null;
     if (activeBoardId) {
       const found = rankingBoards.find((b) => b.id === activeBoardId);
@@ -61,6 +74,48 @@ export function RankingBoardsView() {
     }
     return rankingBoards[0];
   }, [rankingBoards, activeBoardId]);
+
+  const referenceIds = JSON.stringify({ ids: (activeBoard?.entries.map(entry => entry.player_id) ?? []).sort(), scope: activeBoard?.scope ?? null });
+  const [reference, setReference] = useState<{ key: string; data?: WorkbenchQueryResponse; error?: boolean } | null>(null);
+  const [retryReference, setRetryReference] = useState(0);
+  useEffect(() => {
+    const { ids, scope } = JSON.parse(referenceIds) as { ids: string[]; scope: Record<string, unknown> | null };
+    if (!ids.length) return;
+    let active = true;
+    void (async () => {
+      const release = typeof scope?.release_id === "string" ? scope.release_id : undefined;
+      const resolved = catalog && (!release || catalog.release_id === release) ? catalog : await getWorkbenchCatalog(release);
+      const params: Record<string, string> = { window: "season" };
+      for (const key of ["season", "phase", "before_date", "release_id"]) if (typeof scope?.[key] === "string") params[key] = scope[key];
+      const query = resolveStatsQuery(params, resolved, "per_game");
+      query.view_state = { columns: ["gp", "min_per_game", "pts_per_game"] };
+      query.page = { limit: 100 };
+      let result = await executeWorkbenchQuery(query, { table_percentiles: true, player_ids: ids });
+      const items = [...result.items];
+      while (result.has_more && result.next_cursor && active) {
+        query.page = { limit: 100, cursor: result.next_cursor };
+        result = await executeWorkbenchQuery(query, { table_percentiles: true, player_ids: ids });
+        items.push(...result.items);
+      }
+      if (active) setReference({ key: referenceIds, data: { ...result, items } });
+    })().catch(() => { if (active) setReference({ key: referenceIds, error: true }); });
+    return () => { active = false; };
+  }, [catalog, referenceIds, retryReference]);
+  const referenceData = reference?.key === referenceIds ? reference.data : undefined;
+  const referenceError = reference?.key === referenceIds && reference.error;
+  const referencePlayers = new Map(referenceData?.items.map(player => [player.player_id, player]) ?? []);
+
+  const handleCopyExample = async () => {
+    if (!example || copying || isLoading || workspaceError) return;
+    setCopying(true);
+    setCopyError(null);
+    try {
+      const updated = await saveRankingBoard(exampleRankingCopy(example));
+      setActiveBoardId(updated.ranking_boards[updated.ranking_boards.length - 1].id);
+    } catch (error) {
+      setCopyError(error instanceof Error ? error.message : "Could not copy example. Try again.");
+    } finally { setCopying(false); }
+  };
 
   // Handle Search Input
 
@@ -255,9 +310,10 @@ export function RankingBoardsView() {
         </>}
       />
 
-      <GatedNote why={<>Ranking boards represent personal subjective evaluations. CourtLens never fabricates a &quot;global community consensus&quot; or automated public authority from subjective inputs.</>}>
+      {rankingBoards.length > 0 && <Button variant="secondary" aria-pressed={!activeBoard} onClick={() => setActiveBoardId(activeBoard ? EXAMPLE_BOARD_ID : null)}>{activeBoard ? "View minutes example" : "My ranking boards"}</Button>}
+      {activeBoard && <GatedNote why={<>Ranking boards represent personal subjective evaluations. CourtLens never fabricates a &quot;global community consensus&quot; or automated public authority from subjective inputs.</>}>
         Boards are personal rankings, never a consensus.
-      </GatedNote>
+      </GatedNote>}
 
       {/* CREATE NEW BOARD MODAL / DRAWER */}
       {isCreatingBoard && (
@@ -495,21 +551,8 @@ export function RankingBoardsView() {
       )}
 
       {/* BOARDS TABS & SELECTOR */}
-      {rankingBoards.length === 0 ? (
-        <div className="ranking-empty-state">
-          <h3 className="ranking-empty-title">No Ranking Boards Yet</h3>
-          <p className="text-muted text-xs ranking-empty-desc">
-            Create personal boards to rank NBA players overall, by defense, offense, or custom categories.
-            All boards persist locally with atomic version protection.
-          </p>
-          <button
-            type="button"
-            onClick={() => setIsCreatingBoard(true)}
-            className="button button-primary"
-          >
-            Create Your First Board
-          </button>
-        </div>
+      {!activeBoard ? (
+        <ExampleBoardsView data={example} kind="rankings" onCopy={() => void handleCopyExample()} copying={copying} copyError={copyError ?? workspaceError} copyDisabled={isLoading || !!workspaceError} />
       ) : (
         <div className="ranking-active-container">
           {/* Boards Tabs */}
@@ -605,12 +648,17 @@ export function RankingBoardsView() {
               </div>
 
               {/* Table of Entries */}
-              <div className="table-wrapper density-standard">
-                <table className="data-table" aria-label={`Rankings for ${activeBoard.title}`}>
+              <TablePercentileLegend cohort={referenceData?.table_cohort} />
+              {referenceError && <GatedNote action={<Button variant="secondary" onClick={() => setRetryReference(value => value + 1)}>Retry reference</Button>}>Statistical reference unavailable.</GatedNote>}
+              <div className="table-wrapper density-standard research-table-scroll" role="region" aria-label="Ranking table scroll area" tabIndex={0}>
+                <table className="data-table percentile-table rankings-table" aria-label={`Rankings for ${activeBoard.title}`}>
+                  <caption>{referenceData ? `Statistical reference: ${scopeContextLine(referenceData.query.season, referenceData.query.phase, referenceData.query.before_date)}. Personal board order remains subjective.` : "Statistical reference uses the latest published season. Personal board order remains subjective."}</caption>
                   <thead>
+                    <tr className="table-column-groups"><th scope="colgroup" colSpan={2}>Personal order</th><th scope="colgroup" colSpan={2}>Participation</th><th scope="colgroup">Scoring</th><th scope="colgroup" colSpan={3}>Your notes & controls</th></tr>
                     <tr>
                       <th className="th-rank-center">#</th>
                       <th className="th-player-col">Player</th>
+                      <th scope="col" className="num">GP</th><th scope="col" className="num">MPG</th><th scope="col" className="num">PPG</th>
                       <th className="th-notes-col">Evaluation Notes</th>
                       <th className="th-reorder-col">Reorder</th>
                       <th className="th-action-col">Action</th>
@@ -619,7 +667,7 @@ export function RankingBoardsView() {
                   <tbody>
                     {activeBoard.entries.length === 0 ? (
                       <tr>
-                        <td colSpan={5} className="text-center p-8 text-muted">
+                        <td colSpan={8} className="text-center p-8 text-muted">
                           No players ranked on this board yet. Use the search bar above to add players.
                         </td>
                       </tr>
@@ -646,12 +694,16 @@ export function RankingBoardsView() {
                                 >
                                   {entry.player_name || `Player #${entry.player_id}`}
                                 </Link>
-                                <span className="font-mono text-xs text-muted block">
-                                  ID: {entry.player_id}
-                                </span>
+                                {referencePlayers.get(entry.player_id)?.table_qualified === false && <span className="table-small-sample">Small sample</span>}
                               </div>
                             </div>
                           </td>
+
+                          {["gp", "min_per_game", "pts_per_game"].map(key => {
+                            const player = referencePlayers.get(entry.player_id);
+                            const value = player?.metrics[key];
+                            return <td key={key} className="num">{!referenceData && !referenceError ? <Skeleton variant="text" width={60} /> : <PercentileCell compact value={value == null ? null : key === "gp" ? value : value.toFixed(1)} percentile={player?.table_percentiles?.[key] ?? null} qualified={player?.table_qualified === true} label={key} cohort={`${player?.table_cohort_sample_sizes?.[key] ?? "Unknown"} valid league players; 500+ season minutes`} />}</td>;
+                          })}
 
                           {/* Notes input */}
                           <td>

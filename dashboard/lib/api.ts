@@ -87,9 +87,10 @@ export function getAnalyticsCompare(
   return analyticsFetch<AnalyticsCompare>(`/api/analytics/compare?${query}`);
 }
 
-export function getAnalyticsEvaluation(snapshotId: string): Promise<AnalyticsEvaluation> {
+export function getAnalyticsEvaluation(snapshotId?: string): Promise<AnalyticsEvaluation> {
+  const query = snapshotId ? `snapshotId=${encodeURIComponent(snapshotId)}` : "archive=true";
   return analyticsFetch<AnalyticsEvaluation>(
-    `/api/analytics/evaluations?snapshotId=${encodeURIComponent(snapshotId)}`
+    `/api/analytics/evaluations?${query}`
   );
 }
 

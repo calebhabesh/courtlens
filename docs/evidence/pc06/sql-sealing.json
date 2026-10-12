@@ -1,0 +1,14 @@
+[
+  {
+    "statement": "UPDATE finance_refreshes SET payload_json='{}' WHERE id=:id",
+    "rejected": true
+  },
+  {
+    "statement": "DELETE FROM finance_refresh_sources WHERE refresh_id=:id",
+    "rejected": true
+  },
+  {
+    "statement": "UPDATE workbench_artifacts SET source_attribution='modified' WHERE resource='finance_robots'",
+    "rejected": true
+  }
+]

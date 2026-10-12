@@ -1,0 +1,16 @@
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import { exampleParams, loadExampleSubject } from "./example-subject";
+import { queryPlayerResearch } from "./workbench-api";
+import { getSharedCatalog } from "./route-availability";
+import type { PlayerResearchItem, PlayerResearchResponse, WorkbenchCatalog } from "./types";
+vi.mock("./route-availability",()=>({getSharedCatalog:vi.fn()}));
+vi.mock("./workbench-api",()=>({queryPlayerResearch:vi.fn()}));
+const player=(id:string,team="HOU")=>({player_id:id,player_name:`Player ${id}`,teams:[team],games_played:80,total_minutes:3000,metrics:{},sample_sizes:{}} as PlayerResearchItem);
+beforeEach(()=>{vi.resetAllMocks();vi.mocked(getSharedCatalog).mockResolvedValue({release_id:"sealed",default_season:"2025-26",default_phase:"regular_season",default_before_date:"2026-04-13",stats_scopes:[{season:"2024-25",phase:"playoffs",default_before_date:"2025-06-23"}]} as WorkbenchCatalog);});
+describe("PC04 fixed observed subject rule",()=>{
+  it("queries season minutes within the selected phase and cutoff, not a hardcoded player or today's roster",async()=>{vi.mocked(queryPlayerResearch).mockResolvedValue({items:[player("a")]} as PlayerResearchResponse);const result=await loadExampleSubject(new URLSearchParams("season=2024-25&phase=playoffs&beforeDate=2025-05-01&window=last_10"),"player");expect(queryPlayerResearch).toHaveBeenCalledWith(expect.objectContaining({release_id:"sealed",season:"2024-25",phase:"playoffs",before_date:"2025-05-01",window:"season",sort_metric:"min",sort_direction:"desc",limit:2}));expect(result?.players[0].player_id).toBe("a");});
+  it("uses the selected season/phase's own catalog cutoff",async()=>{vi.mocked(queryPlayerResearch).mockResolvedValue({items:[player("a")]} as PlayerResearchResponse);await loadExampleSubject(new URLSearchParams("season=2024-25&phase=playoffs"),"player");expect(queryPlayerResearch).toHaveBeenCalledWith(expect.objectContaining({before_date:"2025-06-23"}));});
+  it("resolves the leader's observed team then that team's top duo",async()=>{vi.mocked(queryPlayerResearch).mockResolvedValueOnce({items:[player("a")]} as PlayerResearchResponse).mockResolvedValueOnce({items:[player("a"),player("b")]} as PlayerResearchResponse);const result=await loadExampleSubject(new URLSearchParams(),"duo");expect(queryPlayerResearch).toHaveBeenLastCalledWith(expect.objectContaining({team_id:"HOU"}));expect(result?.players.map(p=>p.player_id)).toEqual(["a","b"]);const params=exampleParams(new URLSearchParams("min_games=7"),result!,"together","duo");expect(params.get("together")).toBe("a,b");expect(params.get("releaseId")).toBe("sealed");expect(params.get("min_games")).toBe("7");});
+  it("honors an explicit team and refuses to invent a missing teammate",async()=>{vi.mocked(queryPlayerResearch).mockResolvedValue({items:[player("a","TOR")]} as PlayerResearchResponse);expect(await loadExampleSubject(new URLSearchParams("team_id=TOR"),"shift")).toBeNull();expect(queryPlayerResearch).toHaveBeenCalledTimes(1);});
+  it("returns no example for an empty observed scope",async()=>{vi.mocked(queryPlayerResearch).mockResolvedValue({items:[]} as unknown as PlayerResearchResponse);expect(await loadExampleSubject(new URLSearchParams(),"player")).toBeNull();});
+});

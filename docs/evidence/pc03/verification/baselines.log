@@ -1,0 +1,17 @@
+
+> courtlens-dashboard@0.1.0 test:browser
+> playwright test e2e/visual-baselines.spec.ts -g design style guide|player comparison|team comparison --workers=2
+
+
+Running 8 tests using 2 workers
+
+  ✓  2 e2e/visual-baselines.spec.ts:160:9 › FO06 baselines phone › design style guide (876ms)
+  ✓  1 e2e/visual-baselines.spec.ts:160:9 › FO06 baselines desktop › design style guide (924ms)
+  ✓  3 e2e/visual-baselines.spec.ts:191:7 › FO11 baselines desktop › player comparison (844ms)
+  ✓  4 e2e/visual-baselines.spec.ts:195:47 › FO11 baselines desktop › team comparison overview (811ms)
+  ✓  6 e2e/visual-baselines.spec.ts:191:7 › FO11 baselines phone › player comparison (804ms)
+  ✓  5 e2e/visual-baselines.spec.ts:195:47 › FO11 baselines desktop › team comparison factors (829ms)
+  ✓  8 e2e/visual-baselines.spec.ts:195:47 › FO11 baselines phone › team comparison factors (760ms)
+  ✓  7 e2e/visual-baselines.spec.ts:195:47 › FO11 baselines phone › team comparison overview (770ms)
+
+  8 passed (3.7s)

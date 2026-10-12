@@ -6,7 +6,7 @@ const evidence=JSON.parse(fs.readFileSync(path.resolve(process.cwd(),"../docs/ev
 export const retained=evidence.cases.corrected.result;
 export const bookId=retained.context.book_id;
 export const known=retained.context.known_at;
-export const initial=`/contracts?finance_book_id=${bookId}&finance_financial_season=2025-26&finance_known_at=${encodeURIComponent(known)}&finance_effective_on=2025-02-12&finance_team_id=1610612761&season=2024-25&beforeDate=2025-04-15`;
+export const initial=`/contracts/books?finance_book_id=${bookId}&finance_financial_season=2025-26&finance_known_at=${encodeURIComponent(known)}&finance_effective_on=2025-02-12&finance_team_id=1610612761&season=2024-25&beforeDate=2025-04-15`;
 export async function mockFinance(page:Page, variant="retained") {
   await page.route("**/api/workbench/operations/finance/books",r => r.fulfill({json:[{book_id:bookId,book_sha256:retained.book_sha256,parent_book_id:"original",created_at:known,coverage_note:retained.coverage_note}]}));
   await page.route(`**/api/workbench/operations/finance/books/${bookId}`,r => r.fulfill({json:{book_id:bookId,book_sha256:retained.book_sha256,parent_book_id:"original",created_at:known,coverage_note:retained.coverage_note,financial_seasons:["2025-26"],latest_observed_at:known,player_labels:{"1627742":"Brandon Ingram"},label_scope:"Identity display labels only"}}));
@@ -17,4 +17,22 @@ export async function mockFinance(page:Page, variant="retained") {
     if(variant==="scenario" && query.scenario!=="reported-v1") {data.subtotal.scenario_subtotal_cents="1200000001";data.subtotal.scenario_contracts=1;data.contracts[0].scenario_amount_cents="1200000001";}
     await r.fulfill({json:data});
   });
+}
+
+// PC08: real responses captured from the pinned refresh (docs/evidence/pc08), not fabricated values.
+const pc08=(name:string)=>JSON.parse(fs.readFileSync(path.resolve(process.cwd(),`../docs/evidence/pc08/${name}.json`),"utf8"));
+export const contractsRefresh=pc08("refreshes")[0].refresh_id as string;
+export async function mockContracts(page:Page) {
+  await page.route("**/api/workbench/operations/finance/refreshes?*",r => r.fulfill({json:pc08("refreshes")}));
+  await page.route(`**/api/workbench/operations/finance/refreshes/${contractsRefresh}/teams`,r => r.fulfill({json:pc08("league")}));
+  await page.route(`**/api/workbench/operations/finance/refreshes/${contractsRefresh}/teams/*`,r => {
+    const team=new URL(r.request().url()).pathname.split("/").at(-1)!;
+    return ["DEN","MIL"].includes(team) ? r.fulfill({json:pc08(`team-${team}`)}) : r.fulfill({status:422,json:{detail:"unknown NBA team"}});
+  });
+}
+
+// PC10: the real Roster Shapes response captured from the local API (docs/evidence/pc10).
+const shapes=JSON.parse(fs.readFileSync(path.resolve(process.cwd(),"../docs/evidence/pc10/roster-shapes.json"),"utf8"));
+export async function mockRosterShapes(page:Page) {
+  await page.route("**/api/workbench/roster-shapes*",r => r.fulfill({json:shapes}));
 }

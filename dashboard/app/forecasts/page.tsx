@@ -1,3 +1,4 @@
+import { PairedBars } from "@/components/charts";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getPointsForecastEvaluation, getProspectiveForecasts, getWorkbenchStatus } from "@/lib/workbench-api";
@@ -110,7 +111,10 @@ export default async function ForecastsPage() {
           { label: "Protocol rule", value: "Feature computations exclude the target date and every later outcome (game_date < replay_date)." },
         ]} />} />
       {!evaluation ? <div role="alert"><GatedNote tone="warning" action={<Link className="button" href="/forecasts">Retry</Link>}>Forecast evaluation unavailable. Restore the local API connection.</GatedNote></div> :
-      <ResearchLayout findings={<>
+      <ResearchLayout headline={intervals && <PairedBars title="Holdout interval coverage" source="Sealed basketball-points-v1 final test · 2025-26"
+        sample={`${(baseline?.forecast_rows ?? 0).toLocaleString("en-US")} scored forecasts · conditional on appearance`} names={["Observed coverage", "Nominal 80%"]} domain={[0, 100]}
+        note="Amber = observed share inside the interval; blue = nominal target. Width and promotion gates remain separate."
+        rows={[baselineKey, challengerKey].flatMap(name => (["core", "early_season"] as const).map(group => ({key: `${name}-${group}`, label: `${name} · ${group === "core" ? "core" : "early season"}`, a: intervals[name]?.[group]?.coverage == null ? null : intervals[name][group].coverage * 100, b: 80, formattedA: share(intervals[name]?.[group]?.coverage), formattedB: "80.0%", detail: `${intervals[name]?.[group]?.rows?.toLocaleString("en-US") ?? "unknown"} forecasts · width ${fixed(intervals[name]?.[group]?.mean_width, 1)} pts`})))} />} findings={<>
         <StatTile label="Active Forecast Policy" value={policy === "no_policy_registered" ? "None" : (evaluation.active_policy?.estimator_identity ?? baselineKey)} footnote={policy === "no_policy_registered" ? "No policy activated" : "Calibrated 80% intervals"} />
         <StatTile label="Promotion Decision" value={promo ? (promo.decision === "promote" ? "Promote" : "Do not promote") : null} footnote={promo ? `Challenger ${challengerKey}` : undefined} />
         <StatTile label="Holdout MAE" value={fixed(baseline?.mae)} unit=" pts" footnote={`${baselineKey} · ${metrics?.[challengerKey] ? `${challengerKey} ${fixed(metrics[challengerKey].mae)}` : "no challenger"}`} />

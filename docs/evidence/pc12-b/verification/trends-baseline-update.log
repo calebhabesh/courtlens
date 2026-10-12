@@ -1,0 +1,8 @@
+
+Running 2 tests using 1 worker
+
+  ✓  1 e2e/pc12-headlines.spec.ts:17:9 › PC12 Trends headline on first load at 1440px (439ms)
+/home/ethioking/dev/courtlens/data/pc12-b-verify-temp/dashboard/e2e/pc12-headlines.spec.ts-snapshots/pc12-b-trends-390-linux.png is re-generated, writing actual.
+  ✓  2 e2e/pc12-headlines.spec.ts:17:9 › PC12 Trends headline on first load at 390px (1.2s)
+
+  2 passed (2.1s)
