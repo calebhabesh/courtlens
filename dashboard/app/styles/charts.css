@@ -52,6 +52,13 @@
   .chart-timeline-absent small { color: var(--color-text-tertiary); }
   .chart-key-absent { background: var(--color-surface-1); box-shadow: inset 0 0 0 1px var(--color-hairline-strong); }
   .chart-timeline-cell.chart-hatched { background: repeating-linear-gradient(135deg, var(--color-surface-1) 0 4px, var(--color-status-unknown-soft) 4px 8px); }
+  .chart-ranked { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-2); }
+  .chart-ranked li { display: grid; grid-template-columns: minmax(120px, 280px) minmax(0, 1fr) max-content; align-items: center; column-gap: var(--space-3); font-size: var(--text-sm); line-height: var(--text-sm-lh); }
+  .chart-ranked li[data-muted="true"] { color: var(--color-text-secondary); }
+  .chart-ranked-label { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .chart-ranked-label small { display: block; color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); overflow: hidden; text-overflow: ellipsis; }
+  .chart-ranked-bar { display: block; width: 100%; height: 16px; }
+  .chart-ranked-value { min-width: 48px; text-align: right; font-variant-numeric: tabular-nums; }
   .chart-showcase { display: grid; gap: var(--space-6); min-width: 0; }
   .chart-guide-section { display: grid; gap: var(--space-4); min-width: 0; }
   .chart-guide-heading h2 { margin: 0; font-size: var(--text-lg); line-height: var(--text-lg-lh); font-weight: 600; }
@@ -67,6 +74,7 @@
     .chart-donut-layout, .chart-pack-layout { grid-template-columns: minmax(0, 1fr); gap: var(--space-4); }
     .chart-donut { max-width: 224px; }
     .chart-flow-desktop { display: none; }
+    .chart-ranked li { grid-template-columns: minmax(80px, 128px) minmax(0, 1fr) max-content; column-gap: var(--space-2); }
     .chart-flow-phone { display: grid; gap: var(--space-4); }
     .chart-flow-phone h4 { margin: 0 0 var(--space-2); font-size: var(--text-sm); font-weight: 500; }
     .chart-flow-phone .chart-legend { margin-top: var(--space-2); }

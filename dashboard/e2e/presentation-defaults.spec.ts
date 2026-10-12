@@ -39,7 +39,8 @@ test("Custom picks and exact counting units survive reload and Back/Forward; SVG
   expect(png.subarray(0,8).toString("hex")).toBe("89504e470d0a1a0a");
 });
 
-for(const [path,parameter] of [["/matchups","player_id"],["/wowy","together"],["/stat-line-shift","player_id"],["/similar-players/shot-profile","player_id"],["/research/shooting/aftermath","player_id"],["/similar-players","playerId"],["/last-games","playerId"]]) test(`parameter-free ${path} resolves a named observed example`,async({page})=>{
+// PC11: /matchups and /wowy resolve their example server-side by a labeled rule (e2e/pc11-gated-pages.spec.ts).
+for(const [path,parameter] of [["/stat-line-shift","player_id"],["/similar-players/shot-profile","player_id"],["/research/shooting/aftermath","player_id"],["/similar-players","playerId"],["/last-games","playerId"]]) test(`parameter-free ${path} resolves a named observed example`,async({page})=>{
   await firstLoadFixtures(page);await openWorkbench(page,path);
   await expect(page.getByRole("region",{name:"Observed example context"})).toContainText("Example: Fixture Star");
   await expect.poll(()=>new URL(page.url()).searchParams.get(parameter)).toBeTruthy();
@@ -48,7 +49,7 @@ for(const [path,parameter] of [["/matchups","player_id"],["/wowy","together"],["
 });
 
 test("explicit subject is retained and the operation menu issues no conversation request",async({page})=>{
-  await firstLoadFixtures(page);await openWorkbench(page,"/matchups?player_id=24&season=2025-26&beforeDate=2026-04-13");
+  await firstLoadFixtures(page);await openWorkbench(page,"/stat-line-shift?player_id=24&together=23&season=2025-26&beforeDate=2026-04-13");
   await expect(page.locator(".floor-result")).toBeVisible();expect(new URL(page.url()).searchParams.get("player_id")).toBe("24");await expect(page.getByText(/^Example:/)).toHaveCount(0);
   const requests:string[]=[];page.on("request",request=>{if(request.method()==="POST")requests.push(request.url());});
   await openWorkbench(page,"/research/operation");await expect(page.getByRole("region",{name:"Available research operations"}).getByRole("link")).toHaveCount(8);expect(requests).toEqual([]);
@@ -62,41 +63,6 @@ test("Live empty landing resolves the latest final day, points leaders and next 
   await expect(page.getByRole("navigation",{name:"Next games"})).toContainText("Oct 20, 2026");
   expect(new URL(page.url()).searchParams.get("date")).toBe("2026-04-12");
   await page.goto("/live/2026-10-11");await expect(page.getByRole("navigation",{name:"Next games"})).toHaveCount(0);
-});
-
-test("a slow default lookup cannot let WOWY's old team default override the minutes rule, and clearing stays manual",async({page})=>{
-  await firstLoadFixtures(page);
-  await page.route("**/api/workbench/players?*",async route=>{
-    const response=await route.fetch();const data=await response.json();
-    await new Promise(resolve=>setTimeout(resolve,350));
-    await route.fulfill({json:{...data,items:data.items.map((player:Record<string,unknown>)=>({...player,teams:["HOU"]}))}});
-  });
-  await openWorkbench(page,"/wowy");
-  await expect(page.getByRole("region",{name:"Observed example context"})).toContainText("Fixture Star");
-  await expect(page.locator(".floor-result")).toBeVisible();
-  expect(new URL(page.url()).searchParams.get("team_id")).toBe("HOU");
-  expect(new URL(page.url()).searchParams.get("exampleSubject")).toBe("23,24");
-  await page.getByRole("button",{name:"Remove Fixture Star from Together players",exact:true}).click();
-  await page.getByRole("button",{name:"Remove Fixture Guard from Together players",exact:true}).click();
-  await expect(page.getByRole("button",{name:/Remove .* from Together players/})).toHaveCount(0);
-  await page.waitForTimeout(800);expect(new URL(page.url()).searchParams.get("together")).toBeNull();
-  await expect(page.getByRole("region",{name:"Observed example context"})).toHaveCount(0);
-});
-
-test("changing WOWY's view during a pending default keeps the manual view",async({page})=>{
-  await firstLoadFixtures(page);
-  await page.route("**/api/workbench/players?*",async route=>{
-    const response=await route.fetch();await new Promise(resolve=>setTimeout(resolve,800));
-    await route.fulfill({response});
-  });
-  await openWorkbench(page,"/wowy");
-  await expect(page.getByRole("status",{name:"Loading observed example"})).toBeVisible();
-  await page.getByRole("combobox",{name:"View",exact:true}).selectOption("unit");
-  await expect(page.getByRole("combobox",{name:"Exact unit",exact:true})).toBeVisible();
-  await page.waitForTimeout(1000);
-  await expect(page.getByRole("combobox",{name:"View",exact:true})).toHaveValue("unit");
-  expect(new URL(page.url()).searchParams.get("together")).toBeNull();
-  await expect(page.getByRole("region",{name:"Observed example context"})).toHaveCount(0);
 });
 
 test("typing a focal selection cancels a pending default without losing the lookup",async({page})=>{

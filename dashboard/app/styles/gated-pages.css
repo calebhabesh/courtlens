@@ -1,0 +1,39 @@
+/* PC11: populated former gate pages (Defensive Matchups, Player Matchups, play types, Six-Factor,
+   Combine, WOWY, Stats · Tracking, profile Tracking/Measurements). Tokens only (Design Language v1.2). */
+@layer foundation {
+  .feed-page .ui-research-body, .ui-tabbed-page-body .ui-research-body { display: flex; flex-direction: column; gap: var(--space-4); min-width: 0; }
+  .feed-page .ui-research-body > *, .ui-tabbed-page-body .ui-research-body > * { min-width: 0; }
+  .feed-loading { display: grid; gap: var(--space-4); }
+  .feed-limitations { display: grid; gap: var(--space-2); margin: 0; padding-left: var(--space-4); }
+  .feed-example { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-3); margin: 0; font-size: var(--text-sm); line-height: var(--text-sm-lh); }
+  .feed-example-rule { color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); }
+  .feed-inline-controls, .feed-section-head { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); }
+  .feed-section-head { justify-content: space-between; }
+  .feed-section-head h2 { margin: 0; }
+  .feed-subject { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-3); }
+  .feed-detail-stats { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-6); font-size: var(--text-sm); line-height: var(--text-sm-lh); color: var(--color-text-secondary); }
+  .feed-detail-stats strong { color: var(--color-text); font-variant-numeric: tabular-nums; }
+  .feed-cell-note { display: block; color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-weight: 400; }
+  .feed-percentile-table td.num { padding-block: var(--space-1); }
+  .feed-percentile-table .chart-percentile-cell { min-width: 72px; }
+  .feed-page tr[data-selected="true"] > *, .ui-tabbed-page-body tr[data-selected="true"] > * { background: var(--color-surface-2); }
+  .feed-page tr[data-muted="true"] { color: var(--color-text-secondary); }
+  .feed-link-button { padding: 0; border: 0; background: none; color: var(--color-accent); font: inherit; cursor: pointer; text-align: inherit; }
+  .feed-link-button:hover { text-decoration: underline; }
+  .feed-link-button:focus-visible { outline: 0; box-shadow: var(--focus-ring); border-radius: var(--radius-xs); }
+  .feed-scatter { max-height: calc(var(--space-16) * 6); }
+  .feed-key-line { width: var(--space-4); height: 0; border-top: 2px dashed var(--color-text-secondary); }
+  .feed-profile { display: grid; gap: var(--space-4); }
+  .feed-tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: var(--space-3); }
+  .feed-group-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: var(--space-4); }
+  .feed-group { padding: var(--space-4); }
+  .feed-group h3 { margin: 0 0 var(--space-3); font-size: var(--text-md); line-height: var(--text-md-lh); font-weight: 600; }
+  .feed-group dl { display: grid; gap: var(--space-2); margin: 0; }
+  .feed-group dl > div { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); font-size: var(--text-sm); line-height: var(--text-sm-lh); }
+  .feed-group dt { color: var(--color-text-secondary); }
+  .feed-group dd { margin: 0; font-variant-numeric: tabular-nums; }
+  @media (max-width: 767px) {
+    .feed-group-grid { grid-template-columns: minmax(0, 1fr); }
+    .feed-subject { align-items: flex-start; }
+  }
+}

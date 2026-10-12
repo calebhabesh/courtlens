@@ -52,7 +52,8 @@ variant). Marts: `mart_stats_player_play_types`, `mart_stats_player_tracking` (l
 The workbench catalog declares each observed capability as `partial`, with its observed seasons,
 phases, empty feeds and truncated feeds. Capabilities with no observation stay `not_yet_observed`.
 pbpstats totals are labeled a secondary cross-check, not on/off splits. WOWY and on/off splits are
-not ingested from pbpstats in v1; PC11 derives them or records the gap.
+not ingested from pbpstats in v1; PC11 derives WOWY from sealed IM03 stints (owner decision D4) and
+serves these marts read-only ([gated pages v1](gated-pages-v1.md)).
 
 ## Operations
 

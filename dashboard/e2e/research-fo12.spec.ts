@@ -79,14 +79,4 @@ test("saved investigations list scope in words and keep each record's hash behin
   await expect(page.getByRole("dialog")).toContainText(hash);
 });
 
-test("gated research pages are one line with Why? and next steps, at desktop and phone widths", async ({ page }) => {
-  for (const [path, title] of [["/research/defensive-matchups", "Defensive Matchups"], ["/research/epv", "Spatial EPV"]]) {
-    await openWorkbench(page, `${path}?${scope}`);
-    await expect(page.getByRole("heading", { level: 1 })).toHaveText(title);
-    await expect(page.getByRole("note")).toContainText("Required source unavailable.");
-    await expect(page.getByRole("navigation", { name: "Continue your research" }).getByRole("link", { name: "Stats Explorer" })).toHaveAttribute("href", /season=2025-26/);
-    await page.setViewportSize({ width: 390, height: 844 });
-    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
-    await page.setViewportSize({ width: 1440, height: 900 });
-  }
-});
+// PC11 retired the last gate notices: Defensive Matchups is populated and EPV redirects (e2e/pc11-gated-pages.spec.ts).

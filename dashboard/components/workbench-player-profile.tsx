@@ -9,6 +9,7 @@ import { PageShell, ProfileLayout } from "./ui/page-shell";
 import { PageHeader } from "./ui/panel";
 import { StatTile } from "./ui/stat-tile";
 import { Tabs, TabsContent, TabsList, TabTrigger } from "./ui/tabs";
+import { PlayerCombinePanel, PlayerTrackingPanel } from "./player-feed-panels";
 import { Tooltip } from "./ui/tooltip";
 import { SegmentedControl } from "./ui/segmented-control";
 import { humanLabel } from "@/lib/route-availability";
@@ -17,7 +18,7 @@ import { ImpactPlayerCard } from "./impact-player-card";
 
 import Link from "next/link";
 import { AssistantPageSelection } from "@/lib/assistant-page-context";
-import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { useMemo, useRef, useState, type ReactNode } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { formatDate } from "@/lib/format-date";
 import { orientedPercentile, type GoodDirection } from "@/lib/percentile-display";
@@ -28,7 +29,6 @@ import { ResearchTrendCharts } from "./research-trend-charts";
 import { LineageDrawer } from "./lineage-drawer";
 import { useWorkspace } from "@/lib/workspace-context";
 import { exportSvgAsPng, exportSvgFile } from "@/lib/image-export";
-import { getPlayerMeasurements } from "@/lib/workbench-api";
 import {
   formatPercent,
   scaleToPer36,
@@ -41,13 +41,12 @@ import type {
   PlayerResearchItem,
   QuerySpec,
   PlayerGameLogItem,
-  PlayerMeasurementsDetailResponse,
   PlayerProfile
 } from "@/lib/types";
 import type { ImpactResponse } from "@/lib/types";
 
-type ProfileTab = "overview" | "games" | "measurements";
-const PROFILE_TABS: ProfileTab[] = ["overview", "games", "measurements"];
+type ProfileTab = "overview" | "games" | "tracking" | "measurements";
+const PROFILE_TABS: ProfileTab[] = ["overview", "games", "tracking", "measurements"];
 /** Placeholder for useCohortRanks when no Stats row is available; with no metrics it never queries. */
 const EMPTY_QUERY = {} as QuerySpec;
 const HERO_METRICS = SHOWCASE_PRESETS[0].metrics.filter((metric) => metric.key !== "legacy_fantasy_score_per_game");
@@ -71,15 +70,6 @@ interface WorkbenchPlayerProfileProps {
   filterBar?: ReactNode;
 }
 
-function formatInches(val: number | null | undefined): string {
-  if (val == null) return "—";
-  const feet = Math.floor(val / 12);
-  const rem = val % 12;
-  const remStr =
-    rem === 0 ? "0" : rem % 1 === 0 ? rem.toString() : rem.toFixed(2).replace(/\.?0+$/, "");
-  return `${feet}'${remStr}" (${val}")`;
-}
-
 export function WorkbenchPlayerProfile({
   profile,
   games,
@@ -97,8 +87,6 @@ export function WorkbenchPlayerProfile({
   const [selectedFact, setSelectedFact] = useState<string | null>(null);
   const [exposureMode, setExposureMode] = useState<CountingExposureMode>("per_game");
   const [exporting, setExporting] = useState(false);
-  const [measurements, setMeasurements] =
-    useState<PlayerMeasurementsDetailResponse | null>(null);
 
   const cardSvgRef = useRef<SVGSVGElement | null>(null);
 
@@ -107,20 +95,6 @@ export function WorkbenchPlayerProfile({
 
   const { player, context, summaries, stints, latest_team, last_observed_date, forecast_status } =
     profile;
-
-  useEffect(() => {
-    let cancelled = false;
-    getPlayerMeasurements(player.id)
-      .then((res) => {
-        if (!cancelled) setMeasurements(res);
-      })
-      .catch(() => {
-        // Non-blocking
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, [player.id]);
 
   const heroQuery = hero?.query ?? null;
   const heroKeys = useMemo(() => HERO_METRICS.map((metric) => metric.key), []);
@@ -246,6 +220,7 @@ export function WorkbenchPlayerProfile({
         tabs={<TabsList aria-label="Profile sections">
           <TabTrigger value="overview">Overview</TabTrigger>
           <TabTrigger value="games">Game Log</TabTrigger>
+          <TabTrigger value="tracking">Tracking</TabTrigger>
           <TabTrigger value="measurements">Measurements</TabTrigger>
         </TabsList>}
       >
@@ -578,117 +553,11 @@ export function WorkbenchPlayerProfile({
       </div>
 
         </TabsContent>
+        <TabsContent value="tracking" className="player-tab-body">
+          {tab === "tracking" && <PlayerTrackingPanel playerId={player.id} name={player.name} season={context.season} phase={context.phase} />}
+        </TabsContent>
         <TabsContent value="measurements" className="player-tab-body">
-      {!(measurements && measurements.has_measurements) && <GatedNote why="Measurements come from the Draft Combine and team-reported roster cards; players without either have none.">No measurements recorded for {player.name}.</GatedNote>}
-      {/* Physical Anthropometry & Draft Metadata (Block B14c) */}
-      {measurements && measurements.has_measurements && (
-        <div className="panel mb-5">
-          <div className="panel-header profile-section-header-wrap">
-            <div>
-              <div className="profile-section-title-wrap">
-                <h2 className="panel-title">Physical Anthropometry &amp; Draft Metadata</h2>
-                <span className="badge badge-accent">Source-reported measurements</span>
-                {measurements.combine && <span className="badge">Draft Combine</span>}
-                {measurements.listed && <span className="badge badge-outline">Listed Roster</span>}
-              </div>
-              <p className="text-muted text-xs panel-subtitle-margin">
-                Official NBA Draft Combine measurements vs. team-reported roster cards. Missing values are null, never scored as zero.
-              </p>
-            </div>
-            <Link
-              href={`/wingspan?playerId=${player.id}`}
-              className="button button-small"
-            >
-              Open Wingspan Explorer
-            </Link>
-          </div>
-
-          <div className="profile-measurements-grid">
-            {measurements.combine?.wingspan_inches != null && (
-              <div className="stat-card stat-card-compact">
-                <span className="stat-label">Wingspan (Combine)</span>
-                <span className="stat-value font-mono stat-value-lg text-accent">
-                  {formatInches(measurements.combine.wingspan_inches)}
-                </span>
-                <span className="stat-subtext">
-                  Ratio:{" "}
-                  {measurements.combine.wingspan_to_height_ratio
-                    ? `${measurements.combine.wingspan_to_height_ratio.toFixed(2)}x`
-                    : "—"}
-                </span>
-              </div>
-            )}
-
-            {measurements.combine?.height_no_shoes_inches != null && (
-              <div className="stat-card stat-card-compact">
-                <span className="stat-label">Height Without Shoes</span>
-                <span className="stat-value font-mono stat-value-lg">
-                  {formatInches(measurements.combine.height_no_shoes_inches)}
-                </span>
-                <span className="stat-subtext">
-                  Shoes: {formatInches(measurements.combine.height_shoes_inches)}
-                </span>
-              </div>
-            )}
-
-            {measurements.combine?.standing_reach_inches != null && (
-              <div className="stat-card stat-card-compact">
-                <span className="stat-label">Standing Reach</span>
-                <span className="stat-value font-mono stat-value-lg">
-                  {formatInches(measurements.combine.standing_reach_inches)}
-                </span>
-                <span className="stat-subtext">
-                  Weight: {measurements.combine.weight_lbs ?? "—"} lbs
-                </span>
-              </div>
-            )}
-
-            {measurements.combine?.max_vertical_inches != null && (
-              <div className="stat-card stat-card-compact">
-                <span className="stat-label">Max Vertical Leap</span>
-                <span className="stat-value font-mono stat-value-lg">
-                  {measurements.combine.max_vertical_inches}&quot;
-                </span>
-                <span className="stat-subtext">
-                  Standing: {measurements.combine.standing_vertical_inches ?? "—"}&quot;
-                </span>
-              </div>
-            )}
-
-            {measurements.listed && (
-              <div className="stat-card stat-card-compact">
-                <span className="stat-label">Listed Roster Card</span>
-                <span className="stat-value font-mono stat-value-lg">
-                  {formatInches(measurements.listed.height_shoes_inches)}
-                </span>
-                <span className="stat-subtext">
-                  {measurements.listed.weight_lbs ?? "—"} lbs ·{" "}
-                  {measurements.listed.season ?? "Roster"}
-                </span>
-              </div>
-            )}
-
-            {measurements.draft && (
-              <div className="stat-card stat-card-compact">
-                <span className="stat-label">Draft Pedigree</span>
-                <span className="stat-value font-mono stat-value-md">
-                  {measurements.draft.draft_type === "undrafted"
-                    ? `Undrafted (${measurements.draft.draft_year})`
-                    : `${measurements.draft.draft_year} · Pick #${measurements.draft.pick_overall}`}
-                </span>
-                <span className="stat-subtext">
-                  {measurements.draft.drafting_team_name ??
-                    measurements.draft.college_or_prior_team ??
-                    "NBA"}
-                </span>
-              </div>
-            )}
-          </div>
-
-          <GatedNote why={measurements.disclaimer}>Roster-card and Combine measurements are not interchangeable.</GatedNote>
-        </div>
-      )}
-
+          {tab === "measurements" && <PlayerCombinePanel playerId={player.id} name={player.name} />}
         </TabsContent>
       </ProfileLayout>
       </Tabs>

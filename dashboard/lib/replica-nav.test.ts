@@ -1,6 +1,8 @@
+import { existsSync } from "node:fs";
+import path from "node:path";
 import { describe, expect, it } from "vitest";
 import { buildPreservedContextUrl } from "./query-url";
-import { COMPATIBILITY_REDIRECTS, CONSOLIDATED_REDIRECTS } from "./route-consolidation";
+import { COMPATIBILITY_REDIRECTS, CONSOLIDATED_REDIRECTS, HIDDEN_REDIRECTS, HOSTED_DEMO_REDIRECTS } from "./route-consolidation";
 
 describe("ReplicaNav context-preserving navigation links", () => {
   it("preserves active context parameters across routes", () => {
@@ -110,7 +112,6 @@ describe("Replica navigation route inventory and compatibility redirects", () =>
     "/research/shooting",
     "/research/shooting/aftermath",
     "/research/defensive-matchups",
-    "/research/epv",
     "/wingspan",
     "/calculator",
     "/methodology",
@@ -122,16 +123,24 @@ describe("Replica navigation route inventory and compatibility redirects", () =>
     "/settings"
   ];
 
-  it("contains all 40 canonical replica routes without duplicates", () => {
+  it("contains every canonical replica route once (EPV removed in PC11)", () => {
     const set = new Set(CANONICAL_ROUTES);
     expect(set.size).toBe(CANONICAL_ROUTES.length);
-    expect(CANONICAL_ROUTES.length).toBe(39);
+    expect(CANONICAL_ROUTES.length).toBe(38);
   });
 
   it("maps all compatibility and consolidation redirects to valid canonical routes", () => {
     for (const { source, destination } of [...COMPATIBILITY_REDIRECTS, ...CONSOLIDATED_REDIRECTS]) {
       expect(CANONICAL_ROUTES).toContain(destination);
       expect(source).not.toBe(destination);
+    }
+  });
+
+  it("sends removed and hosted-demo routes to pages that exist (PC08, PC11)", () => {
+    for (const { source, destination } of [...HIDDEN_REDIRECTS, ...HOSTED_DEMO_REDIRECTS]) {
+      const page = destination === "/" ? "app/page.tsx" : `app${destination}/page.tsx`;
+      expect(existsSync(path.resolve(__dirname, "..", page)), `${source} → ${destination}`).toBe(true);
+      expect(existsSync(path.resolve(__dirname, "..", `app${source}/page.tsx`)), `${source} still has a page`).toBe(source === "/planner");
     }
   });
 });
