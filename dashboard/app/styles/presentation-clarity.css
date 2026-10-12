@@ -211,3 +211,39 @@
     .pc12-profile-trajectory .trend-cards-grid { grid-template-columns: minmax(0, 1fr); }
   }
 }
+/* PC12 D: read-only workload examples, copied only by an explicit action. */
+.pc12-example-board { min-width: 0; display: grid; gap: var(--space-4); }
+.pc12-example-header { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); }
+.pc12-example-header h2 { margin: 0; font-size: var(--text-xl); font-weight: 600; }
+.pc12-example-header p, .pc12-example-rule { margin: 0; font-size: var(--text-sm); color: var(--color-text-secondary); }
+.pc12-example-header .button { flex-shrink: 0; }
+.pc12-example-table { isolation: isolate; }
+.pc12-example-table table { min-width: 640px; }
+.pc12-example-table tr > :nth-child(2) { position: sticky; left: 0; background: var(--color-surface-1); z-index: var(--z-base); }
+.pc12-example-table thead tr > :nth-child(2) { z-index: var(--z-sticky-corner); }
+.pc12-example-tiers { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-4); }
+.pc12-example-tier { min-width: 0; background: var(--color-surface-1); border-radius: var(--radius-md); overflow: hidden; }
+.pc12-example-category-1 { --example-category: var(--color-category-1); }
+.pc12-example-category-2 { --example-category: var(--color-category-2); }
+.pc12-example-category-3 { --example-category: var(--color-category-3); }
+.pc12-example-tier h3 { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-2); padding: var(--space-4); margin: 0; background: var(--color-surface-2); color: var(--example-category); font-size: var(--text-lg); font-weight: 600; }
+.pc12-example-tier h3 span { font-size: var(--text-xs); color: var(--color-text-secondary); }
+.pc12-example-tier > div { display: grid; gap: var(--space-2); padding: var(--space-4); }
+.pc12-example-player { display: grid; gap: var(--space-2); padding: var(--space-3); border-radius: var(--radius-sm); background: var(--color-surface-2); }
+.pc12-example-player > span { font-size: var(--text-sm); color: var(--color-text-secondary); font-variant-numeric: tabular-nums; }
+.pc12-example-player .ui-identity-name { min-height: var(--control-lg); display: flex; align-items: center; }
+.tier-workspace-wrapper .tier-label-box { width: 144px; min-width: 144px; font-size: var(--text-lg); font-weight: 600; text-align: center; overflow-wrap: anywhere; }
+.tier-workspace-wrapper .tier-reorder-btn { color: var(--color-on-accent); }
+
+@media (max-width: 767px) {
+  .pc12-example-header { align-items: flex-start; flex-direction: column; }
+  .pc12-example-tiers { grid-template-columns: minmax(0, 1fr); }
+  .pc12-example-table .ui-identity-name { min-height: var(--control-lg); display: flex; align-items: center; }
+  .tier-workspace-wrapper .tier-row-card { flex-direction: column; }
+  .tier-workspace-wrapper .tier-label-box { width: auto; min-width: 0; padding: var(--space-3); }
+  .tier-workspace-wrapper .tier-row-controls { justify-content: center; }
+  .tier-workspace-wrapper .tier-reorder-btn, .tier-workspace-wrapper .tier-remove-btn, .tier-workspace-wrapper .tier-move-select { min-width: var(--control-lg); min-height: var(--control-lg); }
+  .tier-workspace-wrapper .tier-player-chip { flex-wrap: wrap; max-width: 100%; }
+  .tier-workspace-wrapper .tier-player-link { display: flex; align-items: center; min-height: var(--control-lg); }
+  .tier-workspace-wrapper .tier-add-input-wrap { flex-wrap: wrap; min-width: 0; }
+}

@@ -18,6 +18,8 @@ import { scopeContextLine } from "@/lib/scope-labels";
 import { PercentileCell } from "./charts/percentile-cell";
 import { TablePercentileLegend } from "./table-percentile-legend";
 import { Skeleton } from "./ui/skeleton";
+import { ExampleBoardsView } from "./example-boards-view";
+import { EXAMPLE_BOARD_ID, exampleRankingCopy } from "@/lib/example-boards";
 import type {
   AggregationMethod,
   BoardAggregationResult,
@@ -33,15 +35,19 @@ const BOARD_TYPES: Array<{ id: RankingBoardType; label: string }> = [
   { id: "custom", label: "Custom" }
 ];
 
-export function RankingBoardsView({ catalog }: { catalog?: WorkbenchCatalog | null } = {}) {
+export function RankingBoardsView({ catalog, example = null }: { catalog?: WorkbenchCatalog | null; example?: WorkbenchQueryResponse | null } = {}) {
   const {
     rankingBoards,
     saveRankingBoard,
     deleteRankingBoard,
-    favorites
+    favorites,
+    isLoading,
+    error: workspaceError
   } = useWorkspace();
 
   const [activeBoardId, setActiveBoardId] = useState<string | null>(null);
+  const [copying, setCopying] = useState(false);
+  const [copyError, setCopyError] = useState<string | null>(null);
   const [isCreatingBoard, setIsCreatingBoard] = useState(false);
   const [newTitle, setNewTitle] = useState("");
   const [newBoardType, setNewBoardType] = useState<RankingBoardType>("overall");
@@ -60,6 +66,7 @@ export function RankingBoardsView({ catalog }: { catalog?: WorkbenchCatalog | nu
 
   // Active board
   const activeBoard = useMemo(() => {
+    if (activeBoardId === EXAMPLE_BOARD_ID) return null;
     if (rankingBoards.length === 0) return null;
     if (activeBoardId) {
       const found = rankingBoards.find((b) => b.id === activeBoardId);
@@ -68,16 +75,19 @@ export function RankingBoardsView({ catalog }: { catalog?: WorkbenchCatalog | nu
     return rankingBoards[0];
   }, [rankingBoards, activeBoardId]);
 
-  const referenceIds = JSON.stringify((activeBoard?.entries.map(entry => entry.player_id) ?? []).sort());
+  const referenceIds = JSON.stringify({ ids: (activeBoard?.entries.map(entry => entry.player_id) ?? []).sort(), scope: activeBoard?.scope ?? null });
   const [reference, setReference] = useState<{ key: string; data?: WorkbenchQueryResponse; error?: boolean } | null>(null);
   const [retryReference, setRetryReference] = useState(0);
   useEffect(() => {
-    const ids: string[] = JSON.parse(referenceIds);
+    const { ids, scope } = JSON.parse(referenceIds) as { ids: string[]; scope: Record<string, unknown> | null };
     if (!ids.length) return;
     let active = true;
     void (async () => {
-      const resolved = catalog ?? await getWorkbenchCatalog();
-      const query = resolveStatsQuery({ window: "season" }, resolved, "per_game");
+      const release = typeof scope?.release_id === "string" ? scope.release_id : undefined;
+      const resolved = catalog && (!release || catalog.release_id === release) ? catalog : await getWorkbenchCatalog(release);
+      const params: Record<string, string> = { window: "season" };
+      for (const key of ["season", "phase", "before_date", "release_id"]) if (typeof scope?.[key] === "string") params[key] = scope[key];
+      const query = resolveStatsQuery(params, resolved, "per_game");
       query.view_state = { columns: ["gp", "min_per_game", "pts_per_game"] };
       query.page = { limit: 100 };
       let result = await executeWorkbenchQuery(query, { table_percentiles: true, player_ids: ids });
@@ -94,6 +104,18 @@ export function RankingBoardsView({ catalog }: { catalog?: WorkbenchCatalog | nu
   const referenceData = reference?.key === referenceIds ? reference.data : undefined;
   const referenceError = reference?.key === referenceIds && reference.error;
   const referencePlayers = new Map(referenceData?.items.map(player => [player.player_id, player]) ?? []);
+
+  const handleCopyExample = async () => {
+    if (!example || copying || isLoading || workspaceError) return;
+    setCopying(true);
+    setCopyError(null);
+    try {
+      const updated = await saveRankingBoard(exampleRankingCopy(example));
+      setActiveBoardId(updated.ranking_boards[updated.ranking_boards.length - 1].id);
+    } catch (error) {
+      setCopyError(error instanceof Error ? error.message : "Could not copy example. Try again.");
+    } finally { setCopying(false); }
+  };
 
   // Handle Search Input
 
@@ -288,9 +310,10 @@ export function RankingBoardsView({ catalog }: { catalog?: WorkbenchCatalog | nu
         </>}
       />
 
-      <GatedNote why={<>Ranking boards represent personal subjective evaluations. CourtLens never fabricates a &quot;global community consensus&quot; or automated public authority from subjective inputs.</>}>
+      {rankingBoards.length > 0 && <Button variant="secondary" aria-pressed={!activeBoard} onClick={() => setActiveBoardId(activeBoard ? EXAMPLE_BOARD_ID : null)}>{activeBoard ? "View minutes example" : "My ranking boards"}</Button>}
+      {activeBoard && <GatedNote why={<>Ranking boards represent personal subjective evaluations. CourtLens never fabricates a &quot;global community consensus&quot; or automated public authority from subjective inputs.</>}>
         Boards are personal rankings, never a consensus.
-      </GatedNote>
+      </GatedNote>}
 
       {/* CREATE NEW BOARD MODAL / DRAWER */}
       {isCreatingBoard && (
@@ -528,21 +551,8 @@ export function RankingBoardsView({ catalog }: { catalog?: WorkbenchCatalog | nu
       )}
 
       {/* BOARDS TABS & SELECTOR */}
-      {rankingBoards.length === 0 ? (
-        <div className="ranking-empty-state">
-          <h3 className="ranking-empty-title">No Ranking Boards Yet</h3>
-          <p className="text-muted text-xs ranking-empty-desc">
-            Create personal boards to rank NBA players overall, by defense, offense, or custom categories.
-            All boards persist locally with atomic version protection.
-          </p>
-          <button
-            type="button"
-            onClick={() => setIsCreatingBoard(true)}
-            className="button button-primary"
-          >
-            Create Your First Board
-          </button>
-        </div>
+      {!activeBoard ? (
+        <ExampleBoardsView data={example} kind="rankings" onCopy={() => void handleCopyExample()} copying={copying} copyError={copyError ?? workspaceError} copyDisabled={isLoading || !!workspaceError} />
       ) : (
         <div className="ranking-active-container">
           {/* Boards Tabs */}
