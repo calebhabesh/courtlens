@@ -150,8 +150,8 @@ def test_no_unexplained_legacy_brand_references() -> None:
         if relative == "TODO.md":
             # Preserve the owner's pre-RN01, uncommitted rename instruction verbatim.
             content = content.replace("- [ ] Rename env vars to CourtLens instead of CourtLoad", "")
-        if relative == "docs/frontend-overhaul-progress.md":
-            # FO09 records retained pre-rename scratch directories, not current branding.
+        if relative in {"docs/frontend-overhaul-progress.md", "scripts/clean_scratch.sh"}:
+            # Pre-rename scratch directories (FO09 record, scratch cleanup), not branding.
             content = content.replace("/tmp/courtload-*", "")
         for identifier in sorted(FROZEN_IDENTIFIERS, key=len, reverse=True):
             content = content.replace(identifier, "")

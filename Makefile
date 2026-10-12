@@ -1,4 +1,8 @@
-.PHONY: install install-dashboard dev up down migrate seed evaluate evaluate-final eval-assistant test test-python test-published lint typecheck dbt-build build refresh clean acquire import publish backup restore verify-restore benchmark
+.PHONY: install install-dashboard dev up down migrate seed evaluate evaluate-final eval-assistant test test-python test-published lint typecheck dbt-build build refresh clean acquire import publish backup restore verify-restore benchmark clean-scratch install-scratch-cleanup test-kernel-limits
+
+# Scratch goes to disk, not RAM-backed /tmp (tmpfs); see scripts/clean_scratch.sh.
+export TMPDIR ?= $(HOME)/.cache/courtlens-tmp
+$(shell mkdir -p $(TMPDIR))
 
 install:
 	python3 -m venv .venv
@@ -71,6 +75,10 @@ PYTEST_ARGS ?=
 test-python:
 	$(PYTHON) scripts/test_python.py --cov=courtlens --cov-report=term-missing $(PYTEST_ARGS)
 
+# Deliberately OOM-kills tiny capped systemd units; KDE/GNOME show "low memory" notices.
+test-kernel-limits:
+	.venv/bin/pytest -m kernel_limits tests/integration/test_research_limits.py
+
 test-published:
 	$(PYTHON) scripts/test_python.py --published $(PYTEST_ARGS)
 
@@ -92,6 +100,12 @@ build:
 
 refresh:
 	./scripts/refresh.sh
+
+clean-scratch:
+	scripts/clean_scratch.sh
+
+install-scratch-cleanup:
+	scripts/install_scratch_cleanup.sh
 
 clean:
 	rm -rf .pytest_cache .ruff_cache .mypy_cache htmlcov warehouse/target warehouse/logs dashboard/.next
