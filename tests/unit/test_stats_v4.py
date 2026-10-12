@@ -221,3 +221,40 @@ def test_listing_bounds_the_estimate() -> None:
     # A listed center is never estimated as a forward, however guard-like the rates.
     probs = bounded(np.asarray([[0.1, 0.1, 0.1, 0.6, 0.1]]), mask[:1])
     assert probs.tolist() == [[0.0, 0.0, 0.0, 0.0, 1.0]]
+
+
+def _row(pid: str, name: str, **metrics: object) -> dict:
+    support = metrics.pop("support", {})
+    return {"player_id": pid, "player_name": name, "metrics": metrics, "impact_support": support}
+
+
+def test_cached_cohorts_sort_like_sql() -> None:
+    from courtlens.domain.query_spec import SortSpec
+    from courtlens.services.stats_cohort_cache import sort_rows
+
+    rows = [
+        _row("3", "Aaron", ast_per_game=5.0, bpr=2.0, support={"bpr": {"qualified": False}}),
+        _row("1", "AJ", ast_per_game=None, bpr=1.0, support={"bpr": {"qualified": True}}),
+        _row("2", "Zed", ast_per_game=5.0, bpr=3.0, support={"bpr": {"qualified": True}}),
+    ]
+    ids = lambda sort: [r["player_id"] for r in sort_rows(rows, sort)]  # noqa: E731
+    # Ties break by player_id; unknown values sort last unless declared otherwise.
+    assert ids([SortSpec(field="ast_per_game")]) == ["2", "3", "1"]
+    assert ids([SortSpec(field="ast_per_game", nulls_last=False)]) == ["1", "2", "3"]
+    # An unqualified impact value orders as unknown, as the SQL CASE does.
+    assert ids([SortSpec(field="bpr")]) == ["2", "1", "3"]
+    # Code-point name order matches the database's C collation.
+    assert ids([SortSpec(field="player_name", direction="asc")]) == ["1", "3", "2"]
+
+
+def test_views_and_sorts_of_one_scope_share_a_cohort() -> None:
+    from courtlens.services.stats_cohort_cache import cohort_query
+
+    overview = QuerySpec(
+        season="2025-26", view_state={"columns": ["bpr", "pts_per_game"]}, sort=[{"field": "pts"}]
+    )
+    impact = QuerySpec(season="2025-26", view_state={"columns": ["rapm"]}, sort=[{"field": "rapm"}])
+    box = QuerySpec(season="2025-26", view_state={"columns": ["reb_per_game"]})
+    assert cohort_query(overview) == cohort_query(impact)
+    assert cohort_query(box) != cohort_query(overview)
+    assert cohort_query(box).view_state is None

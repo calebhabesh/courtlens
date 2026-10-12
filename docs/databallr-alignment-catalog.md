@@ -157,6 +157,29 @@ Follow-up instructions (owner, 2026-10-12, fourth review):
     for table percentiles is cached the same way. Stats SQL also runs with JIT off and 32 MB work_mem
     (JIT cost more than the query). Scope filters show skeleton rows and press state at once.
 26. [x] Reset button returning the table to its default sort. — toolbar Reset (sort, name, page).
+Follow-up instructions (owner, 2026-10-12, fifth review):
+27. [x] Hovering a stat cell highlights that stat in the preview sidebar. — delegated listener; only the
+    rail re-renders; its metric list scrolls while the player header stays.
+28. [x] Reset is universal and works mid-load. — clears sort, search, page, minimums, team, positions,
+    draft class and favorites (scope, view and counting mode stay); always enabled.
+29. [x] Sort and filter load times with skeletons. — cohorts now cache without their sort and with every
+    joined column (all impact-joined views of a scope share one), sorting runs in memory with SQL's
+    exact order (verified on live data, C-collation names); league reference cached slim; the impact
+    store is re-hashed only when its file changes; responses carry only the view's impact support;
+    page data loads in parallel. Header sorts ~0.6-0.7 s on a production build (`make preview`).
+30. [x] Table and preview share one fixed height; Selected Players fits inside the frame. — the frame
+    height comes from its page offset; a flex column gives the rows what toolbar, footer and tray
+    leave. Heading "Player Preview".
+31. [x] Trend points never touch the axes. — round ("nice") ticks with headroom; points inset 40px.
+32. [x] Name-sort arrow aligned with the card buttons → superseded by 33.
+33. [x] A–Z sort as a table tool (A–Z / Z–A icon); the search spans the full card width.
+34. [x] Glossary reads abbreviation → full name → definition. — full names for every abbreviation-only
+    or field-like name (3PR = Three-Point Attempt Rate, Box Prior RAPM (2 seasons), Self-Created True
+    Shooting Percentage, …); definitions never restate the name; header hints use the same order.
+35. [x] No formulas front and centre. — scatter axis titles show the stat's name (formula on hover);
+    detail drawer shooting cards show a short caption (formula on hover). Glossary, methodology and
+    Data details keep formulas.
+36. [x] Selects keep no outline after a mouse pick. — focus ring on keyboard focus only (`:focus-visible`).
 Not applicable (no data or feature): the video and trophy
 (Leaders) toolbar buttons. Tab/Shift+Tab view cycling is exposed as buttons only, so Tab keeps
 normal keyboard focus order.
@@ -178,3 +201,8 @@ unrelated Teams strict-mode failure). Live: full Overview first load 3.7 s, posi
 popups (now clipped to the scope rows, so table layout no longer flakes them) and the /players
 directory, which already failed on HEAD from earlier shared Stats styles. Evidence: stats, trend with
 value dots, draft class menu and aligned search (1440), stats (390).
+Verification (fifth review, 27–36): dashboard lint, typecheck, Vitest 451/451; backend ruff, mypy, full
+pytest 2044 passed; Stats Playwright set passes (Teams strict-mode unrelated). Full browser suite:
+pre-existing failures reproduced on HEAD and unrelated to Stats: pc12 example boards (13, they read
+the real catalog release in this environment), chart-kit reduced motion and Compare Export, Teams.
+Fixed on the way: pinned identity cells sat under scrolled metric values (z-index).

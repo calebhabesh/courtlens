@@ -133,6 +133,14 @@ export function StatsTrendDialog({ target, columns, querySpec, catalog, hints, o
 
 type Point = { season: string; x: number; y: number; value: number; label: string };
 
+/** 1, 2, 2.5 or 5 times a power of ten: the round step nearest the raw step. */
+function niceStep(raw: number): number {
+  if (!(raw > 0)) return 1;
+  const power = 10 ** Math.floor(Math.log10(raw));
+  const fraction = raw / power;
+  return power * (fraction <= 1 ? 1 : fraction <= 2 ? 2 : fraction <= 2.5 ? 2.5 : fraction <= 5 ? 5 : 10);
+}
+
 function TrendChart({ column, players, rows }: { column: ColumnDefinition; players: TrendPlayer[]; rows: SeasonRows[] }) {
   const width = 640, height = 260, left = 64, right = 40, top = 40, bottom = 32;
   const series = players.map(player => rows.map(row => {
@@ -143,11 +151,16 @@ function TrendChart({ column, players, rows }: { column: ColumnDefinition; playe
   const values = series.flat().map(point => point.value).filter((value): value is number => value !== null);
   if (values.length === 0) return <p className="stats-trend-note">No games for these players in the loaded seasons.</p>;
   const low = Math.min(...values), high = Math.max(...values);
-  const pad = (high - low || Math.abs(high) || 1) * 0.15;
-  const min = low - pad, max = high + pad;
-  const x = (index: number) => left + (rows.length === 1 ? (width - left - right) / 2 : index * (width - left - right) / (rows.length - 1));
+  // Databallr: round tick steps with headroom, and points inset from both axes, so no value
+  // marker sits on an axis line or over the tick labels.
+  const pad = (high - low || Math.abs(high) || 1) * 0.2;
+  const step = niceStep((high - low + 2 * pad) / 4);
+  const min = Math.floor((low - pad) / step) * step, max = Math.ceil((high + pad) / step) * step;
+  const inset = 40;
+  const plotLeft = left + inset, plotRight = width - right - inset;
+  const x = (index: number) => plotLeft + (rows.length === 1 ? (plotRight - plotLeft) / 2 : index * (plotRight - plotLeft) / (rows.length - 1));
   const y = (value: number) => top + (max - value) / (max - min) * (height - top - bottom);
-  const ticks = Array.from({ length: 4 }, (_, index) => min + (max - min) * index / 3);
+  const ticks = Array.from({ length: Math.round((max - min) / step) + 1 }, (_, index) => min + step * index);
   const tickLabel = (value: number) => column.format ? column.format(value) : value.toFixed(1);
   const single = players.length === 1;
 

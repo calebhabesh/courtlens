@@ -12,7 +12,7 @@ from courtlens.domain.impact_catalog import SERVING_CATALOG
 from courtlens.domain.metrics import TABLE_PERCENTILE_MIN_MINUTES
 from courtlens.domain.query_spec import QuerySpec, SampleFilter, SortSpec, TeamScope, WindowSpec
 from courtlens.domain.stats_presentation import StatsPresentation
-from courtlens.services.stats_cohort_cache import cached_rows, cohort_key
+from courtlens.services.stats_cohort_cache import cached_rows, cohort_key, cohort_query
 from courtlens.services.stats_engine import execute_stats_query, stats_presentation_hash
 from courtlens.services.workbench_analytics import ResolvedContext, canonical_hash
 
@@ -54,7 +54,10 @@ def annotate_players(
         }
     )
 
-    def league_rows(scope: QuerySpec) -> tuple[list[dict[str, Any]], int]:
+    def league_rows(requested: QuerySpec) -> tuple[list[dict[str, Any]], int]:
+        # Every joined view of a scope shares one reference carrying all joined columns.
+        scope = cohort_query(requested)
+
         # The league reference ignores display filters; cache it with the cohort.
         def compute() -> tuple[list[dict[str, Any]], int]:
             rows, total, _, _ = execute_stats_query(
@@ -66,10 +69,23 @@ def annotate_players(
                 presentation=StatsPresentation(),
                 cohort_percentiles=False,
             )
-            return rows, total
+            # The reference reads only values and qualification; keep the cached copy small.
+            keep = ("player_id", "metrics")
+            slim = [
+                {key: row[key] for key in keep}
+                | {
+                    "impact_support": {
+                        name: {"qualified": entry.get("qualified")}
+                        for name, entry in (row.get("impact_support") or {}).items()
+                    }
+                }
+                for row in rows
+            ]
+            return slim, total
 
         scope_hash = stats_presentation_hash(context, scope, StatsPresentation(), cohort=True)
-        return cached_rows(cohort_key("table-league", scope_hash, scope), compute)
+        # Read-only: the reference rows are never modified below.
+        return cached_rows(cohort_key("table-league", scope_hash, scope), compute, shared=True)
 
     league, count = league_rows(league_query)
     if count > len(league):

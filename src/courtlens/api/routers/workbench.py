@@ -134,6 +134,7 @@ from courtlens.services.identity_crosswalk import resolve_crosswalk
 from courtlens.services.impact_serving import (
     impact_catalog_scope,
     impact_for_query,
+    impact_query_fields,
     query_uses_impact,
 )
 from courtlens.services.measurements import (
@@ -638,6 +639,7 @@ def execute_query_endpoint(
             }
         )
     positions = season_positions(spec.season or context.season)
+    view_impact = impact_query_fields(spec)
 
     # Presentation queries page through a cached whole cohort: display filters never re-run
     # the analytics (services/stats_cohort_cache.py).
@@ -677,7 +679,14 @@ def execute_query_endpoint(
             sample_sizes=r["sample_sizes"],
             percentiles=r.get("percentiles"),
             cohort_sample_sizes=r.get("cohort_sample_sizes"),
-            impact_support=r.get("impact_support"),
+            # Support for the view's own impact columns, not every sealed metric (~26 KB a row).
+            impact_support={
+                key: value
+                for key, value in (r.get("impact_support") or {}).items()
+                if key in view_impact
+            }
+            if r.get("impact_support") is not None
+            else None,
             table_qualified=r.get("table_qualified"),
             table_percentiles=r.get("table_percentiles"),
             table_cohort_sample_sizes=r.get("table_cohort_sample_sizes"),

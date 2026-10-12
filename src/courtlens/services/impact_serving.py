@@ -5,6 +5,7 @@ from __future__ import annotations
 import hashlib
 import json
 from functools import lru_cache
+from pathlib import Path
 from typing import Any
 
 from fastapi import HTTPException
@@ -36,6 +37,9 @@ def _decode(raw: bytes) -> dict[str, Any]:
     return body
 
 
+_verified: dict[Path, tuple[tuple[int, int, int], dict[str, Any]]] = {}
+
+
 def load_impact_store(manifest_sha256: str | None = None) -> dict[str, Any] | None:
     path = get_settings().impact_serving_manifest
     if manifest_sha256 and path:
@@ -43,11 +47,19 @@ def load_impact_store(manifest_sha256: str | None = None) -> dict[str, Any] | No
     if path is None or not path.exists():
         return None
     try:
+        # A Stats request reads the store several times; the 47 MB file is re-read and re-hashed
+        # whenever its identity (inode, size, modification time) changes, not on every call.
+        stat = path.stat()
+        signature = (stat.st_ino, stat.st_size, stat.st_mtime_ns)
+        cached = _verified.get(path)
+        if cached and cached[0] == signature:
+            return cached[1]
         raw = path.read_bytes()
         body = _decode(raw)
         # File name is the external content address, not a self-reported success flag.
         if hashlib.sha256(raw).hexdigest() != path.stem:
             raise ValueError("impact serving content address changed")
+        _verified[path] = (signature, body)
         return body
     except (ValueError, OSError) as exc:
         raise HTTPException(

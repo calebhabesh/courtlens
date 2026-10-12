@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import { Icon } from "./ui/icon";
 
 import { PlayerPortrait } from "./player-portrait";
@@ -9,6 +10,9 @@ import type { PlayerResearchItem } from "@/lib/types";
 
 type PercentileVars = React.CSSProperties & { "--pct": number };
 const percentileVars = (percentile: number): PercentileVars => ({ "--pct": Math.round(percentile) });
+
+/** The table announces the stat column under the pointer or focus (null when it leaves). */
+export const STATS_CELL_HOVER = "stats-cell-hover";
 
 export function StatsPreviewRail({ player, columns, season, eligiblePlayers,
   showPercentiles, pinned, collapsed, onTogglePin, onToggleCollapse, onOpenDetails, isFavorite = false, onToggleFavorite }: {
@@ -26,6 +30,17 @@ export function StatsPreviewRail({ player, columns, season, eligiblePlayers,
   isFavorite?: boolean;
   onToggleFavorite?: () => void;
 }) {
+  const [highlight, setHighlight] = useState<string | null>(null);
+  const metricsRef = useRef<HTMLDListElement>(null);
+  useEffect(() => {
+    const onHover = (event: Event) => setHighlight((event as CustomEvent<string | null>).detail);
+    window.addEventListener(STATS_CELL_HOVER, onHover);
+    return () => window.removeEventListener(STATS_CELL_HOVER, onHover);
+  }, []);
+  useEffect(() => {
+    if (!highlight) return;
+    metricsRef.current?.querySelector<HTMLElement>(`[data-column="${CSS.escape(highlight)}"]`)?.scrollIntoView({ block: "nearest" });
+  }, [highlight]);
   return <aside className={`stats-preview-rail ${collapsed ? "is-collapsed" : ""}`} aria-label="Player preview">
     <div className="stats-preview-heading">
       <button type="button" onClick={onToggleCollapse} className="stats-icon-action"
@@ -33,7 +48,7 @@ export function StatsPreviewRail({ player, columns, season, eligiblePlayers,
         title={collapsed ? "Expand player preview" : "Collapse player preview"}>
         {collapsed ? <Icon name="left" size={14} /> : <Icon name="right" size={14} />}
       </button>
-      {!collapsed && <><span>Player preview</span>{player && onToggleFavorite && <button type="button" className="stats-icon-action"
+      {!collapsed && <><span>Player Preview</span>{player && onToggleFavorite && <button type="button" className="stats-icon-action"
         onClick={onToggleFavorite} aria-pressed={isFavorite}
         aria-label={isFavorite ? `Remove ${player.player_name} from favorites` : `Add ${player.player_name} to favorites`}
         title={isFavorite ? "Remove from favorites" : "Add to favorites"}>
@@ -53,12 +68,13 @@ export function StatsPreviewRail({ player, columns, season, eligiblePlayers,
           {player.teams?.join(" / ") || "Team unknown"} · {season}
         </span></div>
       </div>
-      <dl className="stats-preview-metrics">
+      <dl className="stats-preview-metrics" ref={metricsRef}>
         {columns.map(column => {
           const percentile = player.table_percentiles?.[column.key];
           const qualified = player.table_qualified === true && player.impact_support?.[column.key]?.qualified !== false;
           const ranked = qualified && player.metrics[column.key] != null && percentile != null;
-          return <div key={column.key} className="stats-preview-metric">
+          return <div key={column.key} data-column={column.key}
+            className={`stats-preview-metric ${highlight === column.key ? "is-highlighted" : ""}`}>
             <dt title={column.tooltip}>{column.label}</dt>
             <dd><strong>{formatColumnValue(column, player)}</strong>{showPercentiles && <span
               className="stats-preview-percentile" style={ranked ? percentileVars(percentile) : undefined}
