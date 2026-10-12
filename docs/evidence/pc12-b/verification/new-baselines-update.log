@@ -1,0 +1,25 @@
+
+Running 18 tests using 2 workers
+
+  ✓   1 e2e/pc12-headlines.spec.ts:17:9 › PC12 Team profile headline on first load at 1440px (524ms)
+  ✓   2 e2e/pc12-headlines.spec.ts:17:9 › PC12 Teams headline on first load at 1440px (724ms)
+  ✓   3 e2e/pc12-headlines.spec.ts:17:9 › PC12 Team Compare headline on first load at 1440px (386ms)
+  ✓   4 e2e/pc12-headlines.spec.ts:17:9 › PC12 Forecasts headline on first load at 1440px (524ms)
+  ✓   5 e2e/pc12-headlines.spec.ts:17:9 › PC12 Player trajectory headline on first load at 1440px (350ms)
+  ✓   6 e2e/pc12-headlines.spec.ts:17:9 › PC12 Shooting headline on first load at 1440px (356ms)
+  ✓   7 e2e/pc12-headlines.spec.ts:17:9 › PC12 RAPM headline on first load at 1440px (523ms)
+  ✓   8 e2e/pc12-headlines.spec.ts:17:9 › PC12 Trends headline on first load at 1440px (350ms)
+  ✓   9 e2e/pc12-headlines.spec.ts:44:7 › PC12 Others preserves the full Contracts roster at 1440px (392ms)
+  ✓  11 e2e/pc12-headlines.spec.ts:17:9 › PC12 Team profile headline on first load at 390px (333ms)
+/home/ethioking/dev/courtlens/data/pc12-b-verify-temp/dashboard/e2e/pc12-headlines.spec.ts-snapshots/pc12-b-teams-390-linux.png is re-generated, writing actual.
+  ✓  10 e2e/pc12-headlines.spec.ts:17:9 › PC12 Teams headline on first load at 390px (671ms)
+  ✓  12 e2e/pc12-headlines.spec.ts:17:9 › PC12 Team Compare headline on first load at 390px (310ms)
+  ✓  14 e2e/pc12-headlines.spec.ts:17:9 › PC12 Player trajectory headline on first load at 390px (283ms)
+  ✓  13 e2e/pc12-headlines.spec.ts:17:9 › PC12 Forecasts headline on first load at 390px (562ms)
+  ✓  15 e2e/pc12-headlines.spec.ts:17:9 › PC12 Shooting headline on first load at 390px (310ms)
+/home/ethioking/dev/courtlens/data/pc12-b-verify-temp/dashboard/e2e/pc12-headlines.spec.ts-snapshots/pc12-b-rapm-390-linux.png is re-generated, writing actual.
+  ✓  16 e2e/pc12-headlines.spec.ts:17:9 › PC12 RAPM headline on first load at 390px (494ms)
+  ✓  17 e2e/pc12-headlines.spec.ts:17:9 › PC12 Trends headline on first load at 390px (298ms)
+  ✓  18 e2e/pc12-headlines.spec.ts:44:7 › PC12 Others preserves the full Contracts roster at 390px (331ms)
+
+  18 passed (4.5s)

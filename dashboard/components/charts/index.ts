@@ -2,6 +2,8 @@ export * from "./chart-frame";
 export * from "./delta-chip";
 export * from "./value-bar";
 export * from "./ranked-bars";
+export * from "./paired-bars";
+export * from "./reliability-plot";
 export * from "./threshold-bar";
 export * from "./donut";
 export * from "./sankey";

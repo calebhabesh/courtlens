@@ -42,4 +42,17 @@ describe("payroll shares", () => {
     const earners = earnerDonut(players);
     expect(earners.at(-1)).toMatchObject({ id: "unknown", value: null, label: "1 unknown salaries" });
   });
+  it("conserves known payroll when smaller earners become Others, with deterministic ties", () => {
+    const roster = Array.from({length: 9}, (_, i) => player(String(i), "10000", i % 2 ? "F" : "G"));
+    roster.push(player("unknown", null, "C"), player("elsewhere", "990000", "G", [], false));
+    const flow = payrollFlow([...roster].reverse());
+    expect(flow.nodes.filter(n => n.id.startsWith("player:")).map(n => n.id).sort()).toEqual(["player:0", "player:1", "player:2", "player:3", "player:4"]);
+    expect(flow.nodes.filter(n => n.id.startsWith("others:")).map(n => n.label)).toEqual(["Others · Guards (2)", "Others · Forwards (2)"]);
+    expect(flow.nodes.some(n => /unknown|elsewhere/.test(n.id))).toBe(false);
+    const groupLinks = flow.links.filter(l => l.source === "total");
+    expect(groupLinks.reduce((total, l) => total + l.value!, 0)).toBe(900);
+    for (const group of groupLinks) {
+      expect(flow.links.filter(l => l.source === group.target).reduce((total, l) => total + l.value!, 0)).toBe(group.value);
+    }
+  });
 });

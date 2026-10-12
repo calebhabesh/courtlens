@@ -30,10 +30,11 @@ export function BoardLayout({ main, rail, className = "" }: { main: ReactNode; r
   );
 }
 
-/** Profile template body: hero, then tabs, then the selected tab's content. */
-export function ProfileLayout({ hero, tabs, children, className = "" }: { hero: ReactNode; tabs?: ReactNode; children: ReactNode; className?: string }) {
+/** Profile template body: optional headline, hero, tabs and the selected tab content. */
+export function ProfileLayout({ headline, hero, tabs, children, className = "" }: { headline?: ReactNode; hero: ReactNode; tabs?: ReactNode; children: ReactNode; className?: string }) {
   return (
     <div className={`ui-profile ${className}`}>
+      {headline && <section className="pc12-headline" aria-label="Headline result">{headline}</section>}
       <div className="ui-profile-hero">{hero}</div>
       {tabs && <div className="ui-profile-tabs">{tabs}</div>}
       <div className="ui-profile-body">{children}</div>
@@ -53,10 +54,11 @@ export function CompareLayout({ sides, children, className = "", sidePanels = tr
   );
 }
 
-/** Research template body: a key-findings row leads, then charts and tables. */
-export function ResearchLayout({ findings, children, className = "" }: { findings?: ReactNode; children: ReactNode; className?: string }) {
+/** Research template body: optional headline visual, key findings, then detail charts and tables. */
+export function ResearchLayout({ headline, findings, children, className = "" }: { headline?: ReactNode; findings?: ReactNode; children: ReactNode; className?: string }) {
   return (
     <div className={`ui-research ${className}`}>
+      {headline && <section className="pc12-headline" aria-label="Headline result">{headline}</section>}
       {findings && <section className="ui-findings" aria-label="Key findings">{findings}</section>}
       <div className="ui-research-body">{children}</div>
     </div>

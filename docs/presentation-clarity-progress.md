@@ -29,7 +29,7 @@ parameters**. Blocks before each owner gate also need recorded owner approval.
 | PC09 Value metric and archetypes | planned |
 | PC10 Roster Shapes (G4) | planned |
 | PC11 Populate or remove gated pages | planned |
-| PC12 Remaining audit batches | in_progress (A implemented/tested; B–D pending; glance limits recorded) |
+| PC12 Remaining audit batches | in_progress (A/B implemented/tested; C/D pending; glance limits recorded) |
 | PC13 Hosting, schedules, Ask demo mode | planned |
 
 ## 2026-10-11 — PC00 Roster Shapes crash fix
@@ -509,3 +509,30 @@ parameters**. Blocks before each owner gate also need recorded owner approval.
   floating-point variation. Popup captures fix document scroll while retaining the native picker.
 - Existing owner edits are excluded from the commit and production verification. Next: B headline
   visuals, including Contracts Others; C demo hygiene; D personal-tool example boards.
+
+## 2026-10-12 — PC12 batch B: headline visuals
+
+- Owner instruction: “Batch B is next” after A `3b0422e`. Scope is B only; C/D are pending and no
+  owner gate applies between batches. Existing owner Stats/guide edits are preserved and excluded.
+- [Evidence, first-load screenshots and fresh glance test](evidence/pc12-b/README.md);
+  [headline contract](design/headline-visuals-v1.md). Teams, team profiles, Team Compare, RAPM,
+  Forecasts, shooting research and Trends gain labeled main visuals with support/source. Player
+  profiles show three trajectories on phone as well as desktop. Contracts cap graphic leads the
+  KPI tiles; flows name five known earners and group Others by position without changing totals.
+- Correctness: missing trajectory observations no longer become zeros or depress averages;
+  signed comparisons preserve zero; empty reliability bins have no points. Team opponent shooting
+  uses the already fetched same-scope Four Factors read when omitted from detail. Trends now uses
+  the shared season-minutes example rule, pins its URL and provides a phone Change/focus control.
+- Real production entry without parameters at 1440/390: 18 captures plus full-page versions,
+  zero page/console errors, failed requests, sideways overflow, visible ISO dates or hashes.
+  Headline sections begin at 154–284px desktop / 234–311px phone. Glance: 12/14 each;
+  exhaustive alignment and per-page service-state injection remain partial, not marked verified.
+- Read-only: 161 publication pointers (same before/after SHA-256), 1,031 identities, 205 feed
+  datasets / 200,690 versions/members; all 340 legacy measurement rows retained. No fetch or fit.
+- Checks: Python 2,032 pass (existing skip/deprecation warning); Ruff/format/mypy clean; dashboard
+  lint 0/0, types clean, Vitest 436 pass (five new cases). Final affected Playwright 43 pass;
+  18 new first-load baselines and 16 refreshed existing baselines pass. A separate affected run
+  reproduces the existing Compare Export failure at `chart-kit.spec.ts:74`; no all-browser-green claim.
+- Next: C demo hygiene (Evaluation availability, public investigations/saved-plot labels and
+  Playoffs title), then D personal-tool example boards. Batch A's dense Stats/phone-fold limitation
+  and page-wide alignment/loading-state limits remain recorded.

@@ -13,6 +13,8 @@ import { buildPreservedContextUrl } from "@/lib/query-url";
 import Link from "next/link";
 import { TeamStatisticsTable } from "./team-statistics-table";
 import { TablePercentileLegend } from "./table-percentile-legend";
+import { RankedBars } from "./charts";
+import { StatTile } from "./ui/stat-tile";
 import { TeamLogo } from "./team-logo";
 import type { TeamResearchItem, WorkbenchCatalog } from "@/lib/types";
 
@@ -225,6 +227,21 @@ export function TeamExplorerView({
         </>}
         modes={<SegmentedControl name="Team view" value={viewMode} onChange={value => {setViewMode(value); preference("view", value);}} options={[{value:"table",label:"Table"},{value:"cards",label:"Cards"},{value:"scatter",label:"Efficiency Plot"}]} />}
       />
+      <section className="pc12-headline" aria-label="Headline result">
+        <RankedBars title="Net rating leaders" source="CourtLens admitted team box scores · estimated possessions"
+          sample={`${filteredTeams.length} teams · ${season} · ${phase.replaceAll("_", " ")}`} measure="points per 100 estimated possessions" tone="identity-b"
+          note="Blue bars show net rating; the zero line separates scoring from allowance. Descriptive estimates, not a forecast."
+          items={[...filteredTeams].filter(t => t.ratings?.net_rating != null).sort((a, b) => b.ratings!.net_rating! - a.ratings!.net_rating! || a.name.localeCompare(b.name)).slice(0, 5).map(t => ({
+            key: t.team_id, name: t.name, label: <Link className="pc12-ranked-identity" href={link(`/teams/${t.team_id}`)}><TeamLogo team={t.team_id} size={20} />{t.name}</Link>,
+            value: t.ratings!.net_rating!, formatted: `${t.ratings!.net_rating! > 0 ? "+" : ""}${t.ratings!.net_rating!.toFixed(1)}`,
+            detail: `${t.games_played} games`,
+          }))} />
+      </section>
+      <div className="pc12-kpis">
+        <StatTile label="Teams in view" value={filteredTeams.length} />
+        <StatTile label="League offense" value={leagueAverages?.off_rating?.toFixed(1)} footnote="Points per 100 estimated possessions" />
+        <StatTile label="Teams without net rating" value={filteredTeams.filter(t => t.ratings?.net_rating == null).length} footnote="Unknown values are excluded from the chart" />
+      </div>
       <GatedNote why={orderNotice || "Ties in record ordering do not establish official conference placement. Standings are presented by win percentage without tiebreaker resolution."}>Record order is descriptive; ties have no official placement.</GatedNote>
       {!filteredTeams.length && <GatedNote action={<button className="button" onClick={() => {setSearchQuery(""); preference("search", "");}}>Clear search</button>}>No teams match this search.</GatedNote>}
       {/* VIEW 1: TABLE VIEW */}
@@ -376,6 +393,10 @@ export function TeamExplorerView({
           </div>
 
           <div className="team-scatter-chart-wrap">
+            <ul className="chart-legend chart-legend-inline">
+              <li><span className="chart-key chart-key-a" aria-hidden="true" />Eastern conference</li>
+              <li><span className="chart-key chart-key-b" aria-hidden="true" />Western conference</li>
+            </ul>
             {/* SVG Plot */}
             <svg
               viewBox="0 0 600 450"
@@ -468,7 +489,7 @@ export function TeamExplorerView({
                       cx={cx}
                       cy={cy}
                       r={isHovered ? r + 3 : r}
-                      fill={isEast ? "var(--color-accent)" : "var(--color-positive)"}
+                      fill={isEast ? "var(--color-category-1)" : "var(--color-category-2)"}
                       opacity={isHovered ? 1 : 0.8}
                       stroke="var(--background)"
                       strokeWidth="1.5"

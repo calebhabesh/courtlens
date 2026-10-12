@@ -132,3 +132,11 @@ See [PC06 measured evidence](../evidence/pc06/README.md), the
 [PC06 unblock evidence](../evidence/pc06b/README.md) and [PC08 views evidence](../evidence/pc08/README.md). An implementation/fixture pass is not real
 source coverage. Spotrac stays unused (robots 403); HoopsHype's robots.txt disallows Anthropic
 agents, so it is not used for this project's development.
+
+## PC12 B presentation refinement
+
+Payroll flow names the five highest known current-roster salaries (ties by player id); other known
+players aggregate within position as “Others” with counts. It conserves the existing known roster
+salary through each stage; unknowns and players on other index rosters stay outside the flow.
+Cap utilization precedes the KPI tiles on first load, including phone. Sources, book binding and
+financial meanings are unchanged. [Headline contract](headline-visuals-v1.md).

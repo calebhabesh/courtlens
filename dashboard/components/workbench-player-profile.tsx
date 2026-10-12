@@ -202,6 +202,7 @@ export function WorkbenchPlayerProfile({
         </>}
       />
       {filterBar}
+      {tab === "overview" && <section className="pc12-profile-trajectory" aria-label="Headline result"><ResearchTrendCharts games={games} playerName={player.name} /></section>}
 
       <Tabs value={tab} onChange={selectTab}>
       <ProfileLayout
@@ -403,8 +404,6 @@ export function WorkbenchPlayerProfile({
         </div>
       )}
 
-      {/* Small-Multiple Trend Charts */}
-      <ResearchTrendCharts games={games} playerName={player.name} />
 
       {/* Forecast Status Card */}
       <div className="panel forecast-status-panel">

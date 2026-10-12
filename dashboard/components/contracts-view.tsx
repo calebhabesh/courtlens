@@ -185,7 +185,8 @@ export function ContractsTeam({ team }: { team: string }) {
       </DataDetailsButton>}</>} />
     {failure && <Failure error={failure} />}
     {!data && !failure && <Loading />}
-    {data && <ProfileLayout hero={<div className="contracts-hero">
+    {data && <ProfileLayout headline={<ThresholdBar title="Cap utilization" source={SOURCE} sample={sample} value={known} maximum={Math.max(known ?? 0, ...lines.map(l => l.value)) * 1.08 || 1}
+      thresholds={lines.map(l => ({ label: l.label, value: l.value }))} format={money} note="Known salaries only; official markers, not compliance" />} hero={<div className="contracts-hero">
       <TeamIdentity team={data.team_id} name={data.team_name} size="xl" subtitle={`${data.roster_players} players on the 2026-27 index roster`} />
       <div className="contracts-tiles">
         <StatTile size="lg" label="Known salary, 2026-27" value={money(known)} footnote="Reported base salaries; a lower bound" />
@@ -194,11 +195,9 @@ export function ContractsTeam({ team }: { team: string }) {
         <StatTile label="Known salary minus cap" value={known !== null && lines[0] ? `${known > lines[0].value ? "+" : ""}${money(known - lines[0].value)}` : null} footnote="Arithmetic on known salaries; not cap room" />
       </div>
     </div>}>
-      <ThresholdBar title="Cap utilization" source={SOURCE} sample={sample} value={known} maximum={Math.max(known ?? 0, ...lines.map(l => l.value)) * 1.08 || 1}
-        thresholds={lines.map(l => ({ label: l.label, value: l.value }))} format={money} note="Known salaries only; official markers, not compliance" />
       {data.roster_known_players < data.roster_players && <GatedNote why={<Limitations items={data.limitations} />}>{data.roster_players - data.roster_known_players} roster salaries are unknown and excluded from every total and chart.</GatedNote>}
       <div className="contracts-grid">
-        {flow && <Sankey title="Where the known salary goes" source={SOURCE} sample={sample} nodes={flow.nodes} links={flow.links} format={money} note="Position group from the NBA index's first listed position" />}
+        {flow && <Sankey title="Where the known salary goes" source={SOURCE} sample={sample} nodes={flow.nodes} links={flow.links} format={money} note="Top five known roster salaries named; Others grouped by first listed NBA position. Full roster and exact flows below." />}
         <div className="contracts-donuts">
           <Donut title="Known salary by position" source={SOURCE} sample={sample} items={positionDonut(data.players)} format={money} />
           <Donut title="High earners' share" source={SOURCE} sample={sample} items={earnerDonut(data.players)} format={money} />

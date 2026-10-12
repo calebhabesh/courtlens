@@ -10,7 +10,7 @@ for (const width of [1440, 390, 375]) test.describe(`PC03 chart kit ${width}px`,
     page.on("pageerror", e => errors.push(e.message));
     await page.setViewportSize({ width, height: width === 1440 ? 900 : 844 });
     await page.goto("/design");
-    await expect(page.locator("#chart-kit .chart-frame")).toHaveCount(8);
+    await expect(page.locator("#chart-kit .chart-frame")).toHaveCount(10);
   });
   test.afterEach(async ({ page }) => expect(errorsByPage.get(page)).toEqual([]));
   test("first load, data changes, state actions and phone forms", async ({ page }) => {
@@ -35,18 +35,18 @@ for (const width of [1440, 390, 375]) test.describe(`PC03 chart kit ${width}px`,
     }
     const readyHeights = await kit.locator(".chart-content").evaluateAll(es => es.map(e => e.getBoundingClientRect().height));
     await kit.getByRole("radio", { name: "Loading", exact: true }).click();
-    await expect(kit.locator('[data-skeleton="true"]')).toHaveCount(8);
-    await expect(kit.locator(".chart-meta")).toHaveCount(8);
+    await expect(kit.locator('[data-skeleton="true"]')).toHaveCount(10);
+    await expect(kit.locator(".chart-meta")).toHaveCount(10);
     await expect(kit.locator(".chart-loading-layout").first()).toBeHidden();
-    await expect(kit.locator(".chart-loading-layout")).toHaveCount(8);
+    await expect(kit.locator(".chart-loading-layout")).toHaveCount(10);
     const loadingHeights = await kit.locator(".chart-content").evaluateAll(es => es.map(e => e.getBoundingClientRect().height));
     loadingHeights.forEach((height, i) => expect(Math.abs(height - readyHeights[i])).toBeLessThanOrEqual(1));
     await kit.getByRole("radio", { name: "Error", exact: true }).click();
-    await expect(kit.getByRole("alert")).toHaveCount(8);
+    await expect(kit.getByRole("alert")).toHaveCount(10);
     await kit.getByRole("button", { name: "Show example" }).first().click();
-    await expect(kit.locator('[data-state="ready"]')).toHaveCount(8);
+    await expect(kit.locator('[data-state="ready"]')).toHaveCount(10);
     await kit.getByRole("radio", { name: "Empty", exact: true }).click();
-    await expect(kit.getByText("No observed values.", { exact: false })).toHaveCount(8);
+    await expect(kit.getByText("No observed values.", { exact: false })).toHaveCount(10);
   });
   test("reduced motion collapses every chart fade and semantic transition", async ({ page }) => {
     await page.emulateMedia({ reducedMotion: "reduce" });

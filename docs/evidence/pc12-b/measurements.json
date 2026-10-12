@@ -1,0 +1,536 @@
+{
+  "captured_at": "2026-10-12T06:43:43.015Z",
+  "base": "http://localhost:3412",
+  "results": [
+    {
+      "route": "/teams",
+      "name": "teams",
+      "viewport": "desktop",
+      "ready_ms": 1884,
+      "errors": [],
+      "failed_requests": [],
+      "h1": "Team Stats & Cohorts",
+      "url": "/teams",
+      "headline_top": 279,
+      "first_visual_top": 369,
+      "first_table_top": 895,
+      "overflow_px": 0,
+      "chart_count": 1,
+      "small_targets": [
+        {
+          "text": "Table",
+          "height": 36
+        },
+        {
+          "text": "Cards",
+          "height": 36
+        },
+        {
+          "text": "Efficiency Plot",
+          "height": 36
+        }
+      ],
+      "iso_dates": 0,
+      "hashes": 0,
+      "headline": "Net rating leadersOklahoma City Thunder82 games+11.3San Antonio Spurs82 games+8.3Detroit Pistons82 games+7.8Boston Celtics82 games+7.5New York Knicks82 games+7.00points per 100 estimated possessions11.3Source: CourtLens admitted team box scores · estimated possessionsSample: 30 teams · 2025-26 · regular seasonBlue bars show net rating; the zero line separates scoring from allowance. Descriptive estimates, not a forecast.",
+      "others_groups": [],
+      "trajectories_visible": 0,
+      "provenance": "Source: CourtLens admitted team box scores · estimated possessionsSample: 30 teams · 2025-26 · regular seasonBlue bars show net rating; the zero line separates scoring from allowance. Descriptive estimates, not a forecast."
+    },
+    {
+      "route": "/teams",
+      "name": "teams",
+      "viewport": "phone",
+      "ready_ms": 1685,
+      "errors": [],
+      "failed_requests": [],
+      "h1": "Team Stats & Cohorts",
+      "url": "/teams",
+      "headline_top": 311,
+      "first_visual_top": 512,
+      "first_table_top": 1407,
+      "overflow_px": 0,
+      "chart_count": 1,
+      "small_targets": [],
+      "iso_dates": 0,
+      "hashes": 0,
+      "headline": "Net rating leadersOklahoma City Thunder82 games+11.3San Antonio Spurs82 games+8.3Detroit Pistons82 games+7.8Boston Celtics82 games+7.5New York Knicks82 games+7.00points per 100 estimated possessions11.3Source: CourtLens admitted team box scores · estimated possessionsSample: 30 teams · 2025-26 · regular seasonBlue bars show net rating; the zero line separates scoring from allowance. Descriptive estimates, not a forecast.",
+      "others_groups": [],
+      "trajectories_visible": 0,
+      "provenance": "Source: CourtLens admitted team box scores · estimated possessionsSample: 30 teams · 2025-26 · regular seasonBlue bars show net rating; the zero line separates scoring from allowance. Descriptive estimates, not a forecast."
+    },
+    {
+      "route": "/teams/1610612760",
+      "name": "team-profile",
+      "viewport": "desktop",
+      "ready_ms": 1620,
+      "errors": [],
+      "failed_requests": [],
+      "h1": "Oklahoma City Thunder",
+      "url": "/teams/1610612760",
+      "headline_top": 247,
+      "first_visual_top": 346.75,
+      "first_table_top": 1028,
+      "overflow_px": 0,
+      "chart_count": 1,
+      "small_targets": [],
+      "iso_dates": 0,
+      "hashes": 0,
+      "headline": "OKC against the leagueOKCLeague averageOffensive Rating117.0113.50Shared scale · zero baseline116.97Defensive Rating105.7113.50Shared scale · zero baseline113.5Net Rating11.30.00Shared scale · zero baseline11.3Source: CourtLens admitted team box scores · estimated possessionsSample: 82 team games · 2025-26Amber = team, blue = league. Offensive rating measures scoring; defensive rating measures allowance. Descriptive, no overall verdict.",
+      "others_groups": [],
+      "trajectories_visible": 0,
+      "provenance": "Source: CourtLens admitted team box scores · estimated possessionsSample: 82 team games · 2025-26Amber = team, blue = league. Offensive rating measures scoring; defensive rating measures allowance. Descriptive, no overall verdict."
+    },
+    {
+      "route": "/teams/1610612760",
+      "name": "team-profile",
+      "viewport": "phone",
+      "ready_ms": 1515,
+      "errors": [],
+      "failed_requests": [],
+      "h1": "Oklahoma City Thunder",
+      "url": "/teams/1610612760",
+      "headline_top": 275,
+      "first_visual_top": 496.75,
+      "first_table_top": 1613.5,
+      "overflow_px": 0,
+      "chart_count": 1,
+      "small_targets": [],
+      "iso_dates": 0,
+      "hashes": 0,
+      "headline": "OKC against the leagueOKCLeague averageOffensive Rating117.0113.50Shared scale · zero baseline116.97Defensive Rating105.7113.50Shared scale · zero baseline113.5Net Rating11.30.00Shared scale · zero baseline11.3Source: CourtLens admitted team box scores · estimated possessionsSample: 82 team games · 2025-26Amber = team, blue = league. Offensive rating measures scoring; defensive rating measures allowance. Descriptive, no overall verdict.",
+      "others_groups": [],
+      "trajectories_visible": 0,
+      "provenance": "Source: CourtLens admitted team box scores · estimated possessionsSample: 82 team games · 2025-26Amber = team, blue = league. Offensive rating measures scoring; defensive rating measures allowance. Descriptive, no overall verdict."
+    },
+    {
+      "route": "/team-compare",
+      "name": "team-compare",
+      "viewport": "desktop",
+      "ready_ms": 1881,
+      "errors": [],
+      "failed_requests": [],
+      "h1": "Team Comparison",
+      "url": "/team-compare",
+      "headline_top": 231,
+      "first_visual_top": 346.75,
+      "first_table_top": 1660.8125,
+      "overflow_px": 0,
+      "chart_count": 1,
+      "small_targets": [
+        {
+          "text": "Overview & H2H",
+          "height": 36
+        },
+        {
+          "text": "Four Factors",
+          "height": 36
+        },
+        {
+          "text": "3P Variation",
+          "height": 36
+        },
+        {
+          "text": "Participation Cohorts",
+          "height": 36
+        },
+        {
+          "text": "Similar Peers",
+          "height": 36
+        },
+        {
+          "text": "",
+          "height": 38
+        },
+        {
+          "text": "",
+          "height": 1
+        },
+        {
+          "text": "",
+          "height": 38
+        },
+        {
+          "text": "",
+          "height": 1
+        }
+      ],
+      "iso_dates": 0,
+      "hashes": 0,
+      "headline": "Scoring and allowanceBoston CelticsDallas MavericksPoints Per Game114.9114.10Shared scale · zero baseline114.9Opponent PPG Allowed107.2119.60Shared scale · zero baseline119.6Net Scoring Margin7.7-5.5-5.5Shared scale · zero baseline7.7Source: CourtLens admitted team box scoresSample: Boston Celtics 82 games · Dallas Mavericks 82 gamesAmber = Team A, blue = Team B. Scoring and allowance use separate shared scales; no overall verdict.",
+      "others_groups": [],
+      "trajectories_visible": 0,
+      "provenance": "Source: CourtLens admitted team box scoresSample: Boston Celtics 82 games · Dallas Mavericks 82 gamesAmber = Team A, blue = Team B. Scoring and allowance use separate shared scales; no overall verdict."
+    },
+    {
+      "route": "/team-compare",
+      "name": "team-compare",
+      "viewport": "phone",
+      "ready_ms": 1681,
+      "errors": [],
+      "failed_requests": [],
+      "h1": "Team Comparison",
+      "url": "/team-compare",
+      "headline_top": 279,
+      "first_visual_top": 500.75,
+      "first_table_top": 2402.625,
+      "overflow_px": 0,
+      "chart_count": 1,
+      "small_targets": [],
+      "iso_dates": 0,
+      "hashes": 0,
+      "headline": "Scoring and allowanceBoston CelticsDallas MavericksPoints Per Game114.9114.10Shared scale · zero baseline114.9Opponent PPG Allowed107.2119.60Shared scale · zero baseline119.6Net Scoring Margin7.7-5.5-5.5Shared scale · zero baseline7.7Source: CourtLens admitted team box scoresSample: Boston Celtics 82 games · Dallas Mavericks 82 gamesAmber = Team A, blue = Team B. Scoring and allowance use separate shared scales; no overall verdict.",
+      "others_groups": [],
+      "trajectories_visible": 0,
+      "provenance": "Source: CourtLens admitted team box scoresSample: Boston Celtics 82 games · Dallas Mavericks 82 gamesAmber = Team A, blue = Team B. Scoring and allowance use separate shared scales; no overall verdict."
+    },
+    {
+      "route": "/research/rapm",
+      "name": "rapm",
+      "viewport": "desktop",
+      "ready_ms": 1549,
+      "errors": [],
+      "failed_requests": [],
+      "h1": "RAPM Research",
+      "url": "/research/rapm",
+      "headline_top": 284,
+      "first_visual_top": 379,
+      "first_table_top": 833,
+      "overflow_px": 0,
+      "chart_count": 1,
+      "small_targets": [
+        {
+          "text": "Data details",
+          "height": 28
+        }
+      ],
+      "iso_dates": 0,
+      "hashes": 0,
+      "headline": "Qualified 1Y RAPM leadersKawhi Leonard65 games · 2085 minutes9.61Victor Wembanyama63 games · 1832 minutes9.12Chet Holmgren69 games · 1997 minutes8.28Shai Gilgeous-Alexander68 games · 2259 minutes8.10Marcus Smart62 games · 1769 minutes7.100points per 100 counted controls9.6Source: CourtLens sealed IM04 lineup modelSample: 802 served players · 1227 admitted gamesBlue = 1Y RAPM; descriptive under lineup confounding. No uncertainty interval is served.",
+      "others_groups": [],
+      "trajectories_visible": 0,
+      "provenance": "Source: CourtLens sealed IM04 lineup modelSample: 802 served players · 1227 admitted gamesBlue = 1Y RAPM; descriptive under lineup confounding. No uncertainty interval is served."
+    },
+    {
+      "route": "/research/rapm",
+      "name": "rapm",
+      "viewport": "phone",
+      "ready_ms": 1449,
+      "errors": [],
+      "failed_requests": [],
+      "h1": "RAPM Research",
+      "url": "/research/rapm",
+      "headline_top": 280,
+      "first_visual_top": 475,
+      "first_table_top": 1199,
+      "overflow_px": 0,
+      "chart_count": 1,
+      "small_targets": [],
+      "iso_dates": 0,
+      "hashes": 0,
+      "headline": "Qualified 1Y RAPM leadersKawhi Leonard65 games · 2085 minutes9.61Victor Wembanyama63 games · 1832 minutes9.12Chet Holmgren69 games · 1997 minutes8.28Shai Gilgeous-Alexander68 games · 2259 minutes8.10Marcus Smart62 games · 1769 minutes7.100points per 100 counted controls9.6Source: CourtLens sealed IM04 lineup modelSample: 802 served players · 1227 admitted gamesBlue = 1Y RAPM; descriptive under lineup confounding. No uncertainty interval is served.",
+      "others_groups": [],
+      "trajectories_visible": 0,
+      "provenance": "Source: CourtLens sealed IM04 lineup modelSample: 802 served players · 1227 admitted gamesBlue = 1Y RAPM; descriptive under lineup confounding. No uncertainty interval is served."
+    },
+    {
+      "route": "/forecasts",
+      "name": "forecasts",
+      "viewport": "desktop",
+      "ready_ms": 1580,
+      "errors": [],
+      "failed_requests": [],
+      "h1": "Points Forecasts",
+      "url": "/forecasts",
+      "headline_top": 227,
+      "first_visual_top": 342.75,
+      "first_table_top": 977,
+      "overflow_px": 0,
+      "chart_count": 1,
+      "small_targets": [],
+      "iso_dates": 0,
+      "hashes": 0,
+      "headline": "Holdout interval coverageObserved coverageNominal 80%prior_blend · core41,806 forecasts · width 14.8 pts80.6%80.0%0Shared scale · zero baseline100prior_blend · early season7,064 forecasts · width 14.4 pts79.7%80.0%0Shared scale · zero baseline100player_only · core41,806 forecasts · width 14.6 pts80.4%80.0%0Shared scale · zero baseline100player_only · early season7,064 forecasts · width 14.6 pts82.1%80.0%0Shared scale · zero baseline100Source: Sealed basketball-points-v1 final test · 2025-26Sample: 48,870 scored forecasts · conditional on appearanceAmber = observed share inside the interval; blue = nominal target. Width and promotion gates remain separate.",
+      "others_groups": [],
+      "trajectories_visible": 0,
+      "provenance": "Source: Sealed basketball-points-v1 final test · 2025-26Sample: 48,870 scored forecasts · conditional on appearanceAmber = observed share inside the interval; blue = nominal target. Width and promotion gates remain separate."
+    },
+    {
+      "route": "/forecasts",
+      "name": "forecasts",
+      "viewport": "phone",
+      "ready_ms": 1452,
+      "errors": [],
+      "failed_requests": [],
+      "h1": "Points Forecasts",
+      "url": "/forecasts",
+      "headline_top": 259,
+      "first_visual_top": 500.75,
+      "first_table_top": 1491,
+      "overflow_px": 0,
+      "chart_count": 1,
+      "small_targets": [],
+      "iso_dates": 0,
+      "hashes": 0,
+      "headline": "Holdout interval coverageObserved coverageNominal 80%prior_blend · core41,806 forecasts · width 14.8 pts80.6%80.0%0Shared scale · zero baseline100prior_blend · early season7,064 forecasts · width 14.4 pts79.7%80.0%0Shared scale · zero baseline100player_only · core41,806 forecasts · width 14.6 pts80.4%80.0%0Shared scale · zero baseline100player_only · early season7,064 forecasts · width 14.6 pts82.1%80.0%0Shared scale · zero baseline100Source: Sealed basketball-points-v1 final test · 2025-26Sample: 48,870 scored forecasts · conditional on appearanceAmber = observed share inside the interval; blue = nominal target. Width and promotion gates remain separate.",
+      "others_groups": [],
+      "trajectories_visible": 0,
+      "provenance": "Source: Sealed basketball-points-v1 final test · 2025-26Sample: 48,870 scored forecasts · conditional on appearanceAmber = observed share inside the interval; blue = nominal target. Width and promotion gates remain separate."
+    },
+    {
+      "route": "/research/shooting",
+      "name": "shooting",
+      "viewport": "desktop",
+      "ready_ms": 1556,
+      "errors": [],
+      "failed_requests": [],
+      "h1": "Shooting",
+      "url": "/research/shooting",
+      "headline_top": 284,
+      "first_visual_top": 382,
+      "first_table_top": 1103.328125,
+      "overflow_px": 0,
+      "chart_count": 1,
+      "small_targets": [],
+      "iso_dates": 0,
+      "hashes": 0,
+      "headline": "Selection reliabilityBaseline · circlesCandidate · squaresDashed line: observed = predicted0%0%50%50%100%100%Predicted make probabilityObserved make rateBaseline · bin 0–0.1 · 254 shots · predicted 2.33% · observed 1.57%Baseline · bin 0.3–0.4 · 44,625 shots · predicted 36.74% · observed 36.15%Baseline · bin 0.4–0.5 · 27,278 shots · predicted 43.16% · observed 42.48%Baseline · bin 0.6–0.7 · 33,923 shots · predicted 63.85% · observed 63.56%Candidate · bin 0.2–0.3 · 1,265 shots · predicted 28.23% · observed 26.48%Candidate · bin 0.3–0.4 · 49,760 shots · predicted 36.34% · observed 36.82%Candidate · bin 0.4–0.5 · 12,558 shots · predicted 44.78% · observed 43.14%Candidate · bin 0.5–0.6 · 17,796 shots · predicted 56.57% · observed 45.65%Candidate · bin 0.6–0.7 · 24,701 shots · predicted 64.00% · observed 69.18%Source: Sealed expected-shot retrospective v2 selection reportSample: 106,080 baseline / 106,080 candidate shotsSelection evidence only; not final-test performance. Fixed bins, no uncertainty intervals served; exact bins below.",
+      "others_groups": [],
+      "trajectories_visible": 0,
+      "provenance": "Source: Sealed expected-shot retrospective v2 selection reportSample: 106,080 baseline / 106,080 candidate shotsSelection evidence only; not final-test performance. Fixed bins, no uncertainty intervals served; exact bins below."
+    },
+    {
+      "route": "/research/shooting",
+      "name": "shooting",
+      "viewport": "phone",
+      "ready_ms": 1395,
+      "errors": [],
+      "failed_requests": [],
+      "h1": "Shooting",
+      "url": "/research/shooting",
+      "headline_top": 280,
+      "first_visual_top": 488,
+      "first_table_top": 1195.828125,
+      "overflow_px": 0,
+      "chart_count": 1,
+      "small_targets": [],
+      "iso_dates": 0,
+      "hashes": 0,
+      "headline": "Selection reliabilityBaseline · circlesCandidate · squaresDashed line: observed = predicted0%0%50%50%100%100%Predicted make probabilityObserved make rateBaseline · bin 0–0.1 · 254 shots · predicted 2.33% · observed 1.57%Baseline · bin 0.3–0.4 · 44,625 shots · predicted 36.74% · observed 36.15%Baseline · bin 0.4–0.5 · 27,278 shots · predicted 43.16% · observed 42.48%Baseline · bin 0.6–0.7 · 33,923 shots · predicted 63.85% · observed 63.56%Candidate · bin 0.2–0.3 · 1,265 shots · predicted 28.23% · observed 26.48%Candidate · bin 0.3–0.4 · 49,760 shots · predicted 36.34% · observed 36.82%Candidate · bin 0.4–0.5 · 12,558 shots · predicted 44.78% · observed 43.14%Candidate · bin 0.5–0.6 · 17,796 shots · predicted 56.57% · observed 45.65%Candidate · bin 0.6–0.7 · 24,701 shots · predicted 64.00% · observed 69.18%Source: Sealed expected-shot retrospective v2 selection reportSample: 106,080 baseline / 106,080 candidate shotsSelection evidence only; not final-test performance. Fixed bins, no uncertainty intervals served; exact bins below.",
+      "others_groups": [],
+      "trajectories_visible": 0,
+      "provenance": "Source: Sealed expected-shot retrospective v2 selection reportSample: 106,080 baseline / 106,080 candidate shotsSelection evidence only; not final-test performance. Fixed bins, no uncertainty intervals served; exact bins below."
+    },
+    {
+      "route": "/research/trends",
+      "name": "trends",
+      "viewport": "desktop",
+      "ready_ms": 1782,
+      "errors": [],
+      "failed_requests": [],
+      "h1": "Workload Trends",
+      "url": "/research/trends?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&playerId=1641708&exampleSubject=1641708",
+      "headline_top": 279,
+      "first_visual_top": 446.75,
+      "first_table_top": 1036,
+      "overflow_px": 0,
+      "chart_count": 1,
+      "small_targets": [
+        {
+          "text": "",
+          "height": 38
+        },
+        {
+          "text": "Player Periods",
+          "height": 36
+        },
+        {
+          "text": "League Shifts",
+          "height": 36
+        },
+        {
+          "text": "Amen Thompson",
+          "height": 28
+        }
+      ],
+      "iso_dates": 0,
+      "hashes": 0,
+      "headline": "Example: Amen ThompsonHOU·Season minutes ruleChangeAmen Thompson · target against baselinePeriod A · targetPeriod B · baselinePoints Per Game+1.8Period B · baseline: 1.8 more19.921.70Shared scale · zero baseline21.7Minutes Per Game+1.1Period A · target: 1.1 more38.937.80Shared scale · zero baseline38.9True Shooting Percentage+1.6Period B · baseline: 1.6 more64.7%66.2%0Shared scale · zero baseline66.22Three-Point Percentage+28.9Period B · baseline: 28.9 more11.1%40.0%0Shared scale · zero baseline40Source: CourtLens admitted player box scoresSample: 10 target / 10 baseline games · 388.8 / 378.2 minutesAmber = target, blue = baseline. Each metric has its own scale; differences are descriptive, not causal.",
+      "others_groups": [],
+      "trajectories_visible": 0,
+      "provenance": "Source: CourtLens admitted player box scoresSample: 10 target / 10 baseline games · 388.8 / 378.2 minutesAmber = target, blue = baseline. Each metric has its own scale; differences are descriptive, not causal."
+    },
+    {
+      "route": "/research/trends",
+      "name": "trends",
+      "viewport": "phone",
+      "ready_ms": 1692,
+      "errors": [],
+      "failed_requests": [],
+      "h1": "Workload Trends",
+      "url": "/research/trends?releaseId=5bbb6035-6794-4bb0-b894-7208f52ef7ad&season=2025-26&phase=regular_season&beforeDate=2026-04-13&playerId=1641708&exampleSubject=1641708",
+      "headline_top": 311,
+      "first_visual_top": 614.75,
+      "first_table_top": 1756,
+      "overflow_px": 0,
+      "chart_count": 1,
+      "small_targets": [],
+      "iso_dates": 0,
+      "hashes": 0,
+      "headline": "Example: Amen ThompsonHOU·Season minutes ruleChangeAmen Thompson · target against baselinePeriod A · targetPeriod B · baselinePoints Per Game+1.8Period B · baseline: 1.8 more19.921.70Shared scale · zero baseline21.7Minutes Per Game+1.1Period A · target: 1.1 more38.937.80Shared scale · zero baseline38.9True Shooting Percentage+1.6Period B · baseline: 1.6 more64.7%66.2%0Shared scale · zero baseline66.22Three-Point Percentage+28.9Period B · baseline: 28.9 more11.1%40.0%0Shared scale · zero baseline40Source: CourtLens admitted player box scoresSample: 10 target / 10 baseline games · 388.8 / 378.2 minutesAmber = target, blue = baseline. Each metric has its own scale; differences are descriptive, not causal.",
+      "others_groups": [],
+      "trajectories_visible": 0,
+      "provenance": "Source: CourtLens admitted player box scoresSample: 10 target / 10 baseline games · 388.8 / 378.2 minutesAmber = target, blue = baseline. Each metric has its own scale; differences are descriptive, not causal."
+    },
+    {
+      "route": "/players/1629029",
+      "name": "player-profile",
+      "viewport": "desktop",
+      "ready_ms": 2606,
+      "errors": [],
+      "failed_requests": [],
+      "h1": "Luka Dončić",
+      "url": "/players/1629029",
+      "headline_top": 227,
+      "first_visual_top": 351,
+      "first_table_top": 989.6875,
+      "overflow_px": 0,
+      "chart_count": 3,
+      "small_targets": [
+        {
+          "text": "",
+          "height": 32
+        },
+        {
+          "text": "",
+          "height": 32
+        },
+        {
+          "text": "Explore",
+          "height": 34
+        },
+        {
+          "text": "Export",
+          "height": 34
+        },
+        {
+          "text": "Overview",
+          "height": 34
+        },
+        {
+          "text": "Game Log",
+          "height": 34
+        },
+        {
+          "text": "Tracking",
+          "height": 34
+        },
+        {
+          "text": "Measurements",
+          "height": 34
+        }
+      ],
+      "iso_dates": 0,
+      "hashes": 0,
+      "headline": "Production TrajectorySource: CourtLens admitted player box scores · 49 appeared games. Color = labeled metric; dashed = mean of known values. Gaps stay unknown.View Data TableMinutesAvg: 35.3 min · 49 known43 min0Dec 1, 2025: 31.6 minDec 7, 2025: 39 minDec 10, 2025: 40.9 minDec 14, 2025: 38.2 minDec 18, 2025: 39.5 minDec 20, 2025: 19.6 minDec 25, 2025: 33.9 minDec 28, 2025: 32.7 minDec 30, 2025: 35.7 minJan 2, 2026: 37.5 minJan 4, 2026: 38.9 minJan 6, 2026: 37.5 minJan 7, 2026: 38.3 minJan 9, 2026: 36.1 minJan 12, 2026: 36.9 minJan 13, 2026: 33.3 minJan 15, 2026: 35.6 minJan 18, 2026: 33.7 minJan 20, 2026: 35.6 minJan 22, 2026: 39.2 minJan 24, 2026: 39.1 minJan 26, 2026: 38.1 minJan 28, 2026: 29.8 minJan 30, 2026: 30.5 minFeb 1, 2026: 36.9 minFeb 3, 2026: 28.8 minFeb 5, 2026: 15.9 minFeb 20, 2026: 37.9 minFeb 22, 2026: 32.5 minFeb 24, 2026: 37.9 minFeb 26, 2026: 39.3 minFeb 28, 2026: 29.2 minMar 1, 2026: 29.2 minMar 3, 2026: 37.7 minMar 5, 2026: 40.4 minMar 6, 2026: 31.7 minMar 8, 2026: 38.4 minMar 10, 2026: 34.9 minMar 12, 2026: 36.7 minMar 14, 2026: 43 minMar 16, 2026: 39.6 minMar 18, 2026: 37.7 minMar 19, 2026: 37.6 minMar 21, 2026: 38.2 minMar 23, 2026: 38.8 minMar 25, 2026: 37.5 minMar 27, 2026: 38.7 minMar 31, 2026: 34 minApr 2, 2026: 25.7 minDec 1, 2025Apr 2, 2026FG AttemptsAvg: 22.8 fga · 49 known31 fga0Dec 1, 2025: 26 fgaDec 7, 2025: 24 fgaDec 10, 2025: 24 fgaDec 14, 2025: 25 fgaDec 18, 2025: 28 fgaDec 20, 2025: 13 fgaDec 25, 2025: 17 fgaDec 28, 2025: 23 fgaDec 30, 2025: 22 fgaJan 2, 2026: 18 fgaJan 4, 2026: 20 fgaJan 6, 2026: 22 fgaJan 7, 2026: 26 fgaJan 9, 2026: 25 fgaJan 12, 2026: 25 fgaJan 13, 2026: 16 fgaJan 15, 2026: 26 fgaJan 18, 2026: 23 fgaJan 20, 2026: 21 fgaJan 22, 2026: 27 fgaJan 24, 2026: 15 fgaJan 26, 2026: 25 fgaJan 28, 2026: 20 fgaJan 30, 2026: 21 fgaFeb 1, 2026: 23 fgaFeb 3, 2026: 18 fgaFeb 5, 2026: 10 fgaFeb 20, 2026: 25 fgaFeb 22, 2026: 22 fgaFeb 24, 2026: 24 fgaFeb 26, 2026: 21 fgaFeb 28, 2026: 17 fgaMar 1, 2026: 16 fgaMar 3, 2026: 22 fgaMar 5, 2026: 24 fgaMar 6, 2026: 25 fgaMar 8, 2026: 25 fgaMar 10, 2026: 24 fgaMar 12, 2026: 31 fgaMar 14, 2026: 26 fgaMar 16, 2026: 27 fgaMar 18, 2026: 25 fgaMar 19, 2026: 30 fgaMar 21, 2026: 30 fgaMar 23, 2026: 29 fgaMar 25, 2026: 30 fgaMar 27, 2026: 25 fgaMar 31, 2026: 26 fgaApr 2, 2026: 10 fgaDec 1, 2025Apr 2, 2026PointsAvg: 33.0 pts · 49 known60 pts0Dec 1, 2025: 38 ptsDec 7, 2025: 31 ptsDec 10, 2025: 35 ptsDec 14, 2025: 29 ptsDec 18, 2025: 45 ptsDec 20, 2025: 12 ptsDec 25, 2025: 25 ptsDec 28, 2025: 34 ptsDec 30, 2025: 30 ptsJan 2, 2026: 34 ptsJan 4, 2026: 36 ptsJan 6, 2026: 30 ptsJan 7, 2026: 38 ptsJan 9, 2026: 24 ptsJan 12, 2026: 42 ptsJan 13, 2026: 27 ptsJan 15, 2026: 39 ptsJan 18, 2026: 25 ptsJan 20, 2026: 38 ptsJan 22, 2026: 32 ptsJan 24, 2026: 33 ptsJan 26, 2026: 46 ptsJan 28, 2026: 29 ptsJan 30, 2026: 37 ptsFeb 1, 2026: 30 ptsFeb 3, 2026: 24 ptsFeb 5, 2026: 10 ptsFeb 20, 2026: 38 ptsFeb 22, 2026: 25 ptsFeb 24, 2026: 22 ptsFeb 26, 2026: 41 ptsFeb 28, 2026: 26 ptsMar 1, 2026: 28 ptsMar 3, 2026: 27 ptsMar 5, 2026: 27 ptsMar 6, 2026: 44 ptsMar 8, 2026: 35 ptsMar 10, 2026: 31 ptsMar 12, 2026: 51 ptsMar 14, 2026: 30 ptsMar 16, 2026: 36 ptsMar 18, 2026: 40 ptsMar 19, 2026: 60 ptsMar 21, 2026: 33 ptsMar 23, 2026: 32 ptsMar 25, 2026: 43 ptsMar 27, 2026: 41 ptsMar 31, 2026: 42 ptsApr 2, 2026: 12 ptsDec 1, 2025Apr 2, 2026Luka Dončić · average 33.0 points, 35.3 minutes and 22.8 attempts over known observations. These are past games, not a forecast.",
+      "others_groups": [],
+      "trajectories_visible": 3,
+      "provenance": "Source: CourtLens admitted player box scores · 49 appeared games. Color = labeled metric; dashed = mean of known values. Gaps stay unknown."
+    },
+    {
+      "route": "/players/1629029",
+      "name": "player-profile",
+      "viewport": "phone",
+      "ready_ms": 2518,
+      "errors": [],
+      "failed_requests": [],
+      "h1": "Luka Dončić",
+      "url": "/players/1629029",
+      "headline_top": 259,
+      "first_visual_top": 470,
+      "first_table_top": 1965.0625,
+      "overflow_px": 0,
+      "chart_count": 3,
+      "small_targets": [],
+      "iso_dates": 0,
+      "hashes": 0,
+      "headline": "Production TrajectorySource: CourtLens admitted player box scores · 49 appeared games. Color = labeled metric; dashed = mean of known values. Gaps stay unknown.View Data TableMinutesAvg: 35.3 min · 49 known43 min0Dec 1, 2025: 31.6 minDec 7, 2025: 39 minDec 10, 2025: 40.9 minDec 14, 2025: 38.2 minDec 18, 2025: 39.5 minDec 20, 2025: 19.6 minDec 25, 2025: 33.9 minDec 28, 2025: 32.7 minDec 30, 2025: 35.7 minJan 2, 2026: 37.5 minJan 4, 2026: 38.9 minJan 6, 2026: 37.5 minJan 7, 2026: 38.3 minJan 9, 2026: 36.1 minJan 12, 2026: 36.9 minJan 13, 2026: 33.3 minJan 15, 2026: 35.6 minJan 18, 2026: 33.7 minJan 20, 2026: 35.6 minJan 22, 2026: 39.2 minJan 24, 2026: 39.1 minJan 26, 2026: 38.1 minJan 28, 2026: 29.8 minJan 30, 2026: 30.5 minFeb 1, 2026: 36.9 minFeb 3, 2026: 28.8 minFeb 5, 2026: 15.9 minFeb 20, 2026: 37.9 minFeb 22, 2026: 32.5 minFeb 24, 2026: 37.9 minFeb 26, 2026: 39.3 minFeb 28, 2026: 29.2 minMar 1, 2026: 29.2 minMar 3, 2026: 37.7 minMar 5, 2026: 40.4 minMar 6, 2026: 31.7 minMar 8, 2026: 38.4 minMar 10, 2026: 34.9 minMar 12, 2026: 36.7 minMar 14, 2026: 43 minMar 16, 2026: 39.6 minMar 18, 2026: 37.7 minMar 19, 2026: 37.6 minMar 21, 2026: 38.2 minMar 23, 2026: 38.8 minMar 25, 2026: 37.5 minMar 27, 2026: 38.7 minMar 31, 2026: 34 minApr 2, 2026: 25.7 minDec 1, 2025Apr 2, 2026FG AttemptsAvg: 22.8 fga · 49 known31 fga0Dec 1, 2025: 26 fgaDec 7, 2025: 24 fgaDec 10, 2025: 24 fgaDec 14, 2025: 25 fgaDec 18, 2025: 28 fgaDec 20, 2025: 13 fgaDec 25, 2025: 17 fgaDec 28, 2025: 23 fgaDec 30, 2025: 22 fgaJan 2, 2026: 18 fgaJan 4, 2026: 20 fgaJan 6, 2026: 22 fgaJan 7, 2026: 26 fgaJan 9, 2026: 25 fgaJan 12, 2026: 25 fgaJan 13, 2026: 16 fgaJan 15, 2026: 26 fgaJan 18, 2026: 23 fgaJan 20, 2026: 21 fgaJan 22, 2026: 27 fgaJan 24, 2026: 15 fgaJan 26, 2026: 25 fgaJan 28, 2026: 20 fgaJan 30, 2026: 21 fgaFeb 1, 2026: 23 fgaFeb 3, 2026: 18 fgaFeb 5, 2026: 10 fgaFeb 20, 2026: 25 fgaFeb 22, 2026: 22 fgaFeb 24, 2026: 24 fgaFeb 26, 2026: 21 fgaFeb 28, 2026: 17 fgaMar 1, 2026: 16 fgaMar 3, 2026: 22 fgaMar 5, 2026: 24 fgaMar 6, 2026: 25 fgaMar 8, 2026: 25 fgaMar 10, 2026: 24 fgaMar 12, 2026: 31 fgaMar 14, 2026: 26 fgaMar 16, 2026: 27 fgaMar 18, 2026: 25 fgaMar 19, 2026: 30 fgaMar 21, 2026: 30 fgaMar 23, 2026: 29 fgaMar 25, 2026: 30 fgaMar 27, 2026: 25 fgaMar 31, 2026: 26 fgaApr 2, 2026: 10 fgaDec 1, 2025Apr 2, 2026PointsAvg: 33.0 pts · 49 known60 pts0Dec 1, 2025: 38 ptsDec 7, 2025: 31 ptsDec 10, 2025: 35 ptsDec 14, 2025: 29 ptsDec 18, 2025: 45 ptsDec 20, 2025: 12 ptsDec 25, 2025: 25 ptsDec 28, 2025: 34 ptsDec 30, 2025: 30 ptsJan 2, 2026: 34 ptsJan 4, 2026: 36 ptsJan 6, 2026: 30 ptsJan 7, 2026: 38 ptsJan 9, 2026: 24 ptsJan 12, 2026: 42 ptsJan 13, 2026: 27 ptsJan 15, 2026: 39 ptsJan 18, 2026: 25 ptsJan 20, 2026: 38 ptsJan 22, 2026: 32 ptsJan 24, 2026: 33 ptsJan 26, 2026: 46 ptsJan 28, 2026: 29 ptsJan 30, 2026: 37 ptsFeb 1, 2026: 30 ptsFeb 3, 2026: 24 ptsFeb 5, 2026: 10 ptsFeb 20, 2026: 38 ptsFeb 22, 2026: 25 ptsFeb 24, 2026: 22 ptsFeb 26, 2026: 41 ptsFeb 28, 2026: 26 ptsMar 1, 2026: 28 ptsMar 3, 2026: 27 ptsMar 5, 2026: 27 ptsMar 6, 2026: 44 ptsMar 8, 2026: 35 ptsMar 10, 2026: 31 ptsMar 12, 2026: 51 ptsMar 14, 2026: 30 ptsMar 16, 2026: 36 ptsMar 18, 2026: 40 ptsMar 19, 2026: 60 ptsMar 21, 2026: 33 ptsMar 23, 2026: 32 ptsMar 25, 2026: 43 ptsMar 27, 2026: 41 ptsMar 31, 2026: 42 ptsApr 2, 2026: 12 ptsDec 1, 2025Apr 2, 2026Luka Dončić · average 33.0 points, 35.3 minutes and 22.8 attempts over known observations. These are past games, not a forecast.",
+      "others_groups": [],
+      "trajectories_visible": 3,
+      "provenance": "Source: CourtLens admitted player box scores · 49 appeared games. Color = labeled metric; dashed = mean of known values. Gaps stay unknown."
+    },
+    {
+      "route": "/contracts/DEN",
+      "name": "contracts",
+      "viewport": "desktop",
+      "ready_ms": 2098,
+      "errors": [],
+      "failed_requests": [],
+      "h1": "Contracts & Payroll",
+      "url": "/contracts/DEN?refresh=95b5fe42-79b2-4be5-bb8c-187b66e10634",
+      "headline_top": 154,
+      "first_visual_top": 252,
+      "first_table_top": 1115.03125,
+      "overflow_px": 0,
+      "chart_count": 5,
+      "small_targets": [
+        {
+          "text": "Data details",
+          "height": 28
+        }
+      ],
+      "iso_dates": 0,
+      "hashes": 0,
+      "headline": "Cap utilizationKnown total$221.1MSalary cap: $165.0MLuxury tax: $200.4MFirst apron: $209.0MSecond apron: $221.7MSalary cap$165.0MLuxury tax$200.4MFirst apron$209.0MSecond apron$221.7MAmber = known total. Lines = labeled thresholds. Unknown amounts are excluded.Source: Basketball-Reference contracts · NBA player index · NBA salary cap releaseSample: 14 of 21 roster salaries knownKnown salaries only; official markers, not compliance",
+      "others_groups": [
+        "Others · Guards (4): ",
+        "Others · Forwards (5): ",
+        "Others · Guards (…Others · Guards (4): ",
+        "Others · Forwards…Others · Forwards (5): ",
+        "Others · Guards (4): ",
+        "Others · Forwards (5): ",
+        "Others · Guards (4)",
+        "Others · Forwards (5)",
+        "Others · Guards (4)",
+        "Others · Forwards (5)",
+        "Others grouped by first listed NBA position. Full roster and exact flows below."
+      ],
+      "trajectories_visible": 0,
+      "provenance": "Source: Basketball-Reference contracts · NBA player index · NBA salary cap releaseSample: 14 of 21 roster salaries knownKnown salaries only; official markers, not compliance"
+    },
+    {
+      "route": "/contracts/DEN",
+      "name": "contracts",
+      "viewport": "phone",
+      "ready_ms": 2114,
+      "errors": [],
+      "failed_requests": [],
+      "h1": "Contracts & Payroll",
+      "url": "/contracts/DEN?refresh=95b5fe42-79b2-4be5-bb8c-187b66e10634",
+      "headline_top": 234,
+      "first_visual_top": 396,
+      "first_table_top": 1866.859375,
+      "overflow_px": 0,
+      "chart_count": 5,
+      "small_targets": [],
+      "iso_dates": 0,
+      "hashes": 0,
+      "headline": "Cap utilizationKnown total$221.1MSalary cap: $165.0MLuxury tax: $200.4MFirst apron: $209.0MSecond apron: $221.7MSalary cap$165.0MLuxury tax$200.4MFirst apron$209.0MSecond apron$221.7MAmber = known total. Lines = labeled thresholds. Unknown amounts are excluded.Source: Basketball-Reference contracts · NBA player index · NBA salary cap releaseSample: 14 of 21 roster salaries knownKnown salaries only; official markers, not compliance",
+      "others_groups": [
+        "Others · Guards (4): ",
+        "Others · Forwards (5): ",
+        "Others · Guards (…Others · Guards (4): ",
+        "Others · Forwards…Others · Forwards (5): ",
+        "Others · Guards (4): ",
+        "Others · Forwards (5): ",
+        "Others · Guards (4)",
+        "Others · Forwards (5)",
+        "Others · Guards (4)",
+        "Others · Forwards (5)",
+        "Others grouped by first listed NBA position. Full roster and exact flows below."
+      ],
+      "trajectories_visible": 0,
+      "provenance": "Source: Basketball-Reference contracts · NBA player index · NBA salary cap releaseSample: 14 of 21 roster salaries knownKnown salaries only; official markers, not compliance"
+    }
+  ]
+}

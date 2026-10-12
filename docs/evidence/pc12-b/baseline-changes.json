@@ -1,0 +1,40 @@
+{
+  "refreshed": [
+    "dashboard/e2e/visual-baselines.spec.ts-snapshots/team-profile-desktop-linux.png",
+    "dashboard/e2e/visual-baselines.spec.ts-snapshots/expected-shots-desktop-linux.png",
+    "dashboard/e2e/visual-baselines.spec.ts-snapshots/first-load-contracts-DEN-desktop-linux.png",
+    "dashboard/e2e/visual-baselines.spec.ts-snapshots/first-load-contracts-DEN-phone-linux.png",
+    "dashboard/e2e/visual-baselines.spec.ts-snapshots/team-stats-desktop-linux.png",
+    "dashboard/e2e/visual-baselines.spec.ts-snapshots/forecasts-phone-linux.png",
+    "dashboard/e2e/visual-baselines.spec.ts-snapshots/team-comparison-overview-phone-linux.png",
+    "dashboard/e2e/visual-baselines.spec.ts-snapshots/player-profile-desktop-linux.png",
+    "dashboard/e2e/visual-baselines.spec.ts-snapshots/team-stats-phone-linux.png",
+    "dashboard/e2e/visual-baselines.spec.ts-snapshots/team-profile-phone-linux.png",
+    "dashboard/e2e/visual-baselines.spec.ts-snapshots/player-profile-phone-linux.png",
+    "dashboard/e2e/visual-baselines.spec.ts-snapshots/expected-shots-phone-linux.png",
+    "dashboard/e2e/visual-baselines.spec.ts-snapshots/team-comparison-overview-desktop-linux.png",
+    "dashboard/e2e/visual-baselines.spec.ts-snapshots/forecasts-desktop-linux.png",
+    "dashboard/e2e/visual-baselines.spec.ts-snapshots/team-comparison-factors-phone-linux.png",
+    "dashboard/e2e/visual-baselines.spec.ts-snapshots/team-comparison-factors-desktop-linux.png"
+  ],
+  "new": [
+    "dashboard/e2e/pc12-headlines.spec.ts-snapshots/pc12-b-contracts-1440-linux.png",
+    "dashboard/e2e/pc12-headlines.spec.ts-snapshots/pc12-b-contracts-390-linux.png",
+    "dashboard/e2e/pc12-headlines.spec.ts-snapshots/pc12-b-forecasts-1440-linux.png",
+    "dashboard/e2e/pc12-headlines.spec.ts-snapshots/pc12-b-forecasts-390-linux.png",
+    "dashboard/e2e/pc12-headlines.spec.ts-snapshots/pc12-b-player-trajectory-1440-linux.png",
+    "dashboard/e2e/pc12-headlines.spec.ts-snapshots/pc12-b-player-trajectory-390-linux.png",
+    "dashboard/e2e/pc12-headlines.spec.ts-snapshots/pc12-b-rapm-1440-linux.png",
+    "dashboard/e2e/pc12-headlines.spec.ts-snapshots/pc12-b-rapm-390-linux.png",
+    "dashboard/e2e/pc12-headlines.spec.ts-snapshots/pc12-b-shooting-1440-linux.png",
+    "dashboard/e2e/pc12-headlines.spec.ts-snapshots/pc12-b-shooting-390-linux.png",
+    "dashboard/e2e/pc12-headlines.spec.ts-snapshots/pc12-b-team-compare-1440-linux.png",
+    "dashboard/e2e/pc12-headlines.spec.ts-snapshots/pc12-b-team-compare-390-linux.png",
+    "dashboard/e2e/pc12-headlines.spec.ts-snapshots/pc12-b-team-profile-1440-linux.png",
+    "dashboard/e2e/pc12-headlines.spec.ts-snapshots/pc12-b-team-profile-390-linux.png",
+    "dashboard/e2e/pc12-headlines.spec.ts-snapshots/pc12-b-teams-1440-linux.png",
+    "dashboard/e2e/pc12-headlines.spec.ts-snapshots/pc12-b-teams-390-linux.png",
+    "dashboard/e2e/pc12-headlines.spec.ts-snapshots/pc12-b-trends-1440-linux.png",
+    "dashboard/e2e/pc12-headlines.spec.ts-snapshots/pc12-b-trends-390-linux.png"
+  ]
+}

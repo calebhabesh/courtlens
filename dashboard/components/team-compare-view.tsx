@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { buildPreservedContextUrl } from "@/lib/query-url";
 import { formatDate } from "@/lib/format-date";
 import type { TeamDetailResponse, TeamFourFactorsResponse, TeamScheduleResponse, TeamPeersResponse, TeamResearchItem, WorkbenchCatalog } from "@/lib/types";
+import { PairedBars } from "./charts";
 import { ContextBar } from "./context-bar";
 import { EntityField } from "./entity-picker";
 import { TeamLogo } from "./team-logo";
@@ -54,7 +55,7 @@ export function TeamCompareView(p: TeamCompareViewProps) {
     {key:"winpct",label:"Win Percentage",a:p.teamADetail?.record.win_pct,b:p.teamBDetail?.record.win_pct,formattedA:percentage(p.teamADetail?.record.win_pct),formattedB:percentage(p.teamBDetail?.record.win_pct)},
     ...[["pts_per_game","Points Per Game"],["fg_pct","Field Goal %"],["fg3_pct","Three-Point %"],["ft_pct","Free Throw %"]].map(([key,label]) => ({key,label,a:p.teamADetail?.production[key],b:p.teamBDetail?.production[key],formattedA:key.endsWith("pct") ? percentage(p.teamADetail?.production[key]) : number(p.teamADetail?.production[key]),formattedB:key.endsWith("pct") ? percentage(p.teamBDetail?.production[key]) : number(p.teamBDetail?.production[key])})),
     {key:"allowed",label:"Opponent PPG Allowed",a:p.teamADetail?.allowance.pts_allowed_per_game,b:p.teamBDetail?.allowance.pts_allowed_per_game,formattedA:number(p.teamADetail?.allowance.pts_allowed_per_game),formattedB:number(p.teamBDetail?.allowance.pts_allowed_per_game)},
-    {key:"oppfg",label:"Opponent FG % Allowed",a:p.teamADetail?.allowance.fg_pct_allowed,b:p.teamBDetail?.allowance.fg_pct_allowed,formattedA:percentage(p.teamADetail?.allowance.fg_pct_allowed),formattedB:percentage(p.teamBDetail?.allowance.fg_pct_allowed)},
+    {key:"oppfg",label:"Opponent FG % Allowed",a:p.teamADetail?.allowance.fg_pct_allowed ?? p.teamAFourFactors?.shooting_percentages.opp_fg_pct,b:p.teamBDetail?.allowance.fg_pct_allowed ?? p.teamBFourFactors?.shooting_percentages.opp_fg_pct,formattedA:percentage(p.teamADetail?.allowance.fg_pct_allowed ?? p.teamAFourFactors?.shooting_percentages.opp_fg_pct),formattedB:percentage(p.teamBDetail?.allowance.fg_pct_allowed ?? p.teamBFourFactors?.shooting_percentages.opp_fg_pct)},
     {key:"margin",label:"Net Scoring Margin",a:margin(p.teamADetail),b:margin(p.teamBDetail),formattedA:number(margin(p.teamADetail)),formattedB:number(margin(p.teamBDetail))}
   ];
   function factorRows(group: "ratings" | "offense_factors" | "defense_factors"): ComparisonRow[] {
@@ -71,6 +72,12 @@ export function TeamCompareView(p: TeamCompareViewProps) {
     <ContextBar catalog={p.catalog ?? undefined} initialReleaseId={p.releaseId} initialSeason={p.season} initialPhase={p.phase} initialBeforeDate={p.beforeDate} showWindow={false}
       modes={<SegmentedControl name="Comparison tabs" value={activeTab} onChange={tab} options={[{value:"overview",label:"Overview & H2H"},{value:"factors",label:"Four Factors"},{value:"three_point",label:"3P Variation"},{value:"roster",label:"Participation Cohorts"},{value:"peers",label:"Similar Peers"}]} />}
       detailRows={[{label:"Team A identity",value:p.teamAId},{label:"Team B identity",value:p.teamBId},...details.filter(Boolean).map(d => ({label:"Resolved context",value:JSON.stringify(d!.context),mono:true})),...[p.teamADetail,p.teamBDetail,p.teamASchedule,p.teamBSchedule,p.teamAPeers,p.teamBPeers].filter(Boolean).flatMap(source => (source!.warnings ?? []).map(value=>({label:"Source warning",value}))),...factors.filter(Boolean).flatMap(f => [...f!.warnings.map(value => ({label:"Source warning",value})),...f!.offense_factors.concat(f!.defense_factors).map(m => ({label:m.display_name,value:`${m.formula}; weight ${m.weight == null ? "unknown" : m.weight * 100 + "%"}; rank ${m.rank ?? "unknown"}; cohort ${m.total_teams} teams`}))])]} />
+    <section className="pc12-headline" aria-label="Headline result">
+      <PairedBars title="Scoring and allowance" source="CourtLens admitted team box scores"
+        sample={`${names[0]} ${p.teamADetail?.record.games_played ?? "unknown"} games · ${names[1]} ${p.teamBDetail?.record.games_played ?? "unknown"} games`}
+        names={names} note="Amber = Team A, blue = Team B. Scoring and allowance use separate shared scales; no overall verdict."
+        rows={rows.filter(row => ["pts_per_game", "allowed", "margin"].includes(row.key)).map(row => ({...row, a: typeof row.a === "number" ? row.a : null, b: typeof row.b === "number" ? row.b : null}))} />
+    </section>
     <div className="fo11-selectors">
       <EntityField {...scope} label="Team A" kind="team" value={a} initialName={p.teamADetail?.team.name} excludedIds={[b]} onChange={id=>change(id,b)} />
       <EntityField {...scope} label="Team B" kind="team" value={b} initialName={p.teamBDetail?.team.name} excludedIds={[a]} onChange={id=>change(a,id)} />

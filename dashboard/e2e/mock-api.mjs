@@ -1,5 +1,5 @@
 import { createServer } from "node:http";
-import { pc11Response } from "./pc11-fixtures.mjs";
+import { pc11Response, sixFactor } from "./pc11-fixtures.mjs";
 
 const snapshotId = "snapshot-browser-fixture";
 const catalog = {
@@ -547,6 +547,7 @@ createServer(async (request, response) => {
     response.end();
     return;
   }
+  if (url.pathname === "/api/workbench/impact" && !url.searchParams.get("sortMetric")) return json(response, 200, sixFactor(url));
   const pc11 = pc11Response(url);
   if (pc11) return json(response, 200, pc11);
   if (url.pathname === "/api/workbench/lookup") {
@@ -648,7 +649,7 @@ createServer(async (request, response) => {
   // FO10: bounded synthetic detail fixtures cover tabs, known zero and unknown outcomes.
   if (["/api/workbench/teams/100/four-factors", "/api/workbench/teams/200/four-factors"].includes(url.pathname)) return json(response, 200, {
     team:workbenchTeamDetail.team,context:workbenchContext,games_played:72,pace:99.4,off_rating:115.4,def_rating:110.2,net_rating:5.2,
-    ratings:[], shooting_percentages:{},league_averages:{},warnings:[],
+    ratings:[["off_rating","Offensive Rating",115.4,113.0],["def_rating","Defensive Rating",110.2,113.0],["net_rating","Net Rating",5.2,0]].map(([key,display_name,value,league_avg]) => ({key,display_name,value,league_avg,unit:"rating",formula:"Synthetic UI fixture",total_teams:30})), shooting_percentages:{opp_fg_pct:0.437},league_averages:{},warnings:[],
     offense_factors:[{key:"efg_pct",display_name:"Effective Field Goal %",value:0.54,league_avg:0.53,rank:8,percentile:74,total_teams:30,good_direction:"high",unit:"percentage",formula:"Synthetic fixture",weight:0.4}],
     defense_factors:[{key:"opp_efg_pct",display_name:"Opponent eFG%",value:url.pathname.includes("/200/") ? 0.5 : null,league_avg:0.53,rank:url.pathname.includes("/200/") ? 4 : null,percentile:url.pathname.includes("/200/") ? 88.3 : null,total_teams:30,good_direction:"low",unit:"percentage",formula:"Synthetic fixture",weight:0.4}],
     three_point_scenario:{observed_fg3m:12,observed_fg3a:32,observed_3p_pct:0.375,league_3p_pct:0.375,hypothetical_fg3m:12,delta_points:0,actual_ppg:115.4,hypothetical_ppg:115.4,delta_off_rating:0,delta_net_rating:0,disclaimer:"Synthetic what-if accounting fixture, not a causal effect."}

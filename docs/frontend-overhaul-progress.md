@@ -327,3 +327,17 @@ frozen identifiers stay unchanged. [Evidence, glance judgments and checks](evide
 record desktop/phone production first loads and retained limitations. Python, lint/types/Vitest,
 35 affected browser checks and seven baselines pass; the pre-existing Compare export check remains.
 PC12 B–D are pending. This entry does not mark the remaining page-wide glance gaps verified.
+
+## 2026-10-12 — PC12 B headline visual presentation
+
+- Presentation-clarity supersedes older layout scope for this batch. [Evidence](evidence/pc12-b/README.md)
+  and [contract](design/headline-visuals-v1.md): nine routes show labeled main visuals with real
+  support/source on first load; Contracts cap graphic precedes KPIs, payroll flows group Others,
+  phone ranked identities stack and player trajectories retain unknown gaps.
+- Owner Stats/guide changes are preserved and excluded from the batch/export. Real 1440/390 first
+  loads have no errors or sideways overflow; glance 12/14 per page, with exhaustive alignment
+  and per-page service-state injection still partial. No verified-all-pages claim.
+- Python 2,032 pass; Ruff/format/mypy clean; dashboard lint 0/0, types clean, 436 unit tests,
+  43 affected browser checks and 16 existing baselines pass, plus 18 new first-load baselines.
+  Existing Compare export failure reproduced separately. Publication pointers/source counts unchanged.
+- PC12 C/D remain pending; no owner gate is added by this log.
