@@ -30,3 +30,9 @@ export async function mockContracts(page:Page) {
     return ["DEN","MIL"].includes(team) ? r.fulfill({json:pc08(`team-${team}`)}) : r.fulfill({status:422,json:{detail:"unknown NBA team"}});
   });
 }
+
+// PC10: the real Roster Shapes response captured from the local API (docs/evidence/pc10).
+const shapes=JSON.parse(fs.readFileSync(path.resolve(process.cwd(),"../docs/evidence/pc10/roster-shapes.json"),"utf8"));
+export async function mockRosterShapes(page:Page) {
+  await page.route("**/api/workbench/roster-shapes*",r => r.fulfill({json:shapes}));
+}

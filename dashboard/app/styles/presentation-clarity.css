@@ -111,3 +111,61 @@
     .contracts-page .ui-page-header-actions { flex-wrap: wrap; }
   }
 }
+
+/* PC10 Roster Shapes: 30-team small multiples, shared legend, team hero and roster table. */
+@layer foundation {
+  .shapes-page .ui-research-body, .shapes-page .ui-profile-body { display: flex; flex-direction: column; gap: var(--space-4); min-width: 0; }
+  .shapes-page .ui-research-body > *, .shapes-page .ui-profile-body > * { min-width: 0; }
+  .shapes-loading { display: grid; gap: var(--space-4); }
+  .shapes-legend { display: grid; gap: var(--space-2); padding: var(--space-3) var(--space-4); background: var(--color-surface-1); border-radius: var(--radius-md); }
+  .shapes-legend li[title] { cursor: help; }
+  .shapes-outline-key svg { width: var(--space-4); height: var(--space-4); flex-shrink: 0; }
+  .shapes-outline { fill: var(--color-surface-3); stroke: var(--color-text); stroke-width: 1.5; }
+  .shapes-outline-projected { stroke-dasharray: 3 2; }
+  .shapes-outline-unknown { stroke-dasharray: 1 2; }
+  .shapes-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); }
+  .shapes-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(208px, 1fr)); gap: var(--space-3); margin: 0; padding: 0; list-style: none; }
+  .shapes-card { --team-color: var(--color-text-tertiary); border-radius: var(--radius-md); background: var(--color-surface-1); box-shadow: inset 0 3px 0 var(--team-color); transition: background var(--dur-fast) var(--ease-out); }
+  .shapes-card:hover, .shapes-card:focus-within { background: var(--color-surface-2); }
+  .shapes-card-link { display: grid; gap: var(--space-2); padding: var(--space-4) var(--space-3) var(--space-3); color: var(--color-text); text-decoration: none; }
+  .shapes-card-head { display: flex; align-items: center; gap: var(--space-2); min-width: 0; font-size: var(--text-sm); line-height: var(--text-sm-lh); }
+  .shapes-card-head strong { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .shapes-card-rank { color: var(--color-text-secondary); font-variant-numeric: tabular-nums; }
+  .chart-pack-glyph { width: 100%; max-width: 240px; justify-self: center; }
+  .chart-pack-capacity { fill: var(--color-surface-2); }
+  .shapes-card:hover .chart-pack-capacity, .shapes-card:focus-within .chart-pack-capacity { fill: var(--color-surface-3); }
+  .shapes-card-stats { display: flex; justify-content: space-between; gap: var(--space-2); color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-variant-numeric: tabular-nums; }
+  .shapes-card-stats strong { color: var(--color-text); }
+  .chart-pack-solo { grid-template-columns: minmax(0, 1fr); }
+  .chart-pack-solo .chart-pack { width: 100%; max-width: 480px; }
+  .shapes-hero { display: grid; gap: var(--space-4); }
+  .shapes-tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr)); gap: var(--space-3); }
+  .shapes-section { display: grid; gap: var(--space-3); }
+  .shapes-section h2 { font-size: var(--text-lg); line-height: var(--text-lg-lh); }
+  .shapes-table { font-variant-numeric: tabular-nums; }
+  .shapes-table caption { text-align: left; color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); padding-bottom: var(--space-2); }
+  .shapes-table th[scope="row"] { position: sticky; left: 0; z-index: var(--z-sticky); background: var(--color-surface-1); text-align: left; }
+  .shapes-table small { display: block; color: var(--color-text-secondary); font-size: var(--text-xs); line-height: var(--text-xs-lh); }
+  .shapes-archetype { display: inline-flex; align-items: flex-start; gap: var(--space-2); }
+  .shapes-archetype .chart-key { margin-top: var(--space-1); }
+  .shapes-unknown { color: var(--color-text-secondary); }
+  .shapes-limitations { display: grid; gap: var(--space-2); margin: 0; padding-left: var(--space-4); }
+  .roster-embedded { display: grid; gap: var(--space-4); }
+  .roster-embedded-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-3); }
+  .roster-embedded-intro { color: var(--color-text-secondary); }
+  @media (max-width: 767px) {
+    .shapes-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-2); }
+    .shapes-card-link { padding: var(--space-3) var(--space-2) var(--space-2); }
+    .shapes-card-stats { flex-direction: column; gap: 0; }
+    .shapes-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-2); }
+    .shapes-page .ui-page-header-actions { flex-wrap: wrap; }
+  }
+}
+
+@layer foundation {
+  .shapes-page .ui-profile-hero:empty { display: none; }
+  .shapes-detail { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: var(--space-4); align-items: start; }
+  .shapes-detail-side { display: grid; gap: var(--space-4); }
+  .shapes-detail .chart-pack-solo .chart-pack { max-width: 440px; }
+  @media (max-width: 1023px) { .shapes-detail { grid-template-columns: minmax(0, 1fr); } }
+}

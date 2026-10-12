@@ -1,8 +1,8 @@
 {
   "version": "courtlens-archetype-names-v1",
   "archetypes_sha256": "91a5a7d3f2b5a71c9c33f4caea2833027588b9da979fbc40c19e5e4ca5b00b00",
-  "status": "proposed",
-  "review": "Proposed by inspection of cluster means and 2025-26 exemplars; awaiting owner review (PC09).",
+  "status": "confirmed",
+  "review": "Proposed by inspection of cluster means and 2025-26 exemplars (PC09); confirmed unchanged by the owner on 2026-10-11 at the start of PC10.",
   "clusters": [
     {
       "name": "Lead creator",

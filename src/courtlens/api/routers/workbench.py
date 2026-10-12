@@ -64,6 +64,7 @@ from courtlens.api.workbench_schemas import (
     RankOperationResponse,
     ReorderViewsRequest,
     ResearchQuerySchema,
+    RosterShapesResponse,
     SavedInvestigationResponse,
     SaveInvestigationRequest,
     ScheduleDatesResponse,
@@ -156,6 +157,7 @@ from courtlens.services.personal_state import (
     update_preferences_service,
     update_workspace_state,
 )
+from courtlens.services.roster_shapes import roster_shapes
 from courtlens.services.schedule_dates import schedule_dates
 from courtlens.services.stats_catalog import stats_catalog_scope
 from courtlens.services.stats_engine import (
@@ -399,6 +401,16 @@ def get_impact(
             if pid in players
         ],
     )
+
+
+@router.get("/roster-shapes", response_model=RosterShapesResponse)
+def get_roster_shapes(
+    dataset_id: str | None = Query(None, alias="datasetId"),
+    release_id: str | None = Query(None, alias="releaseId"),
+    session: Session = Depends(get_db),
+) -> RosterShapesResponse:
+    """PC10: 2026-27 projected rosters sized by sealed BPR value over replacement."""
+    return RosterShapesResponse.model_validate(roster_shapes(session, dataset_id, release_id))
 
 
 @router.get("/value-archetypes", response_model=ValueArchetypesResponse)

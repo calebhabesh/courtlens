@@ -1,5 +1,5 @@
 import { test, expect, type Page } from "@playwright/test";
-import { mockContracts, mockFinance, initial as financeInitial } from "./finance-fixture";
+import { mockContracts, mockFinance, mockRosterShapes, initial as financeInitial } from "./finance-fixture";
 import { readFileSync } from "node:fs";
 import { firstLoadFixtures, offSeasonFixtures } from "./first-load-fixtures";
 import { openWorkbench } from "./workbench-navigation";
@@ -70,16 +70,9 @@ for (const view of WIDTHS) {
       await expect(page).toHaveScreenshot(`showcase-${view.name}.png`, shot);
     });
 
-    test("roster shapes team picker", async ({ page }) => {
-      await openWorkbench(page, "/roster-shapes?season=2025-26&phase=regular_season");
-      await expect(page.getByRole("list", { name: "Teams" }).getByRole("button")).toHaveCount(30);
-      await settle(page);
-      await expect(page).toHaveScreenshot(`roster-picker-${view.name}.png`, shot);
-    });
-
     test("roster shapes depth chart", async ({ page }) => {
       await page.route(`**/api/workbench/teams/${BOS}?*`, (route) => route.fulfill({ json: roster }));
-      await openWorkbench(page, `/roster-shapes?team=${BOS}&season=2025-26&phase=regular_season`);
+      await openWorkbench(page, `/roster-shapes/${BOS}?view=depth&season=2025-26&phase=regular_season`);
       await page.getByRole("button", { name: "Move Fixture Guard" }).click();
       await page.getByRole("menuitem", { name: /^Move to PG/ }).click();
       await expect(page.getByRole("region", { name: "PG lane" })).toContainText("Fixture Guard");
@@ -253,5 +246,7 @@ for (const view of WIDTHS) test.describe(`PC04 parameter-free baselines ${view.n
   });
   test("live off-season",async({page})=>{await offSeasonFixtures(page);await openWorkbench(page,"/live");await expect(page.getByRole("region",{name:"Top performers"})).toContainText("28 PTS");await settle(page);await expect(page).toHaveScreenshot(`first-load-live-${view.name}.png`,shot);});
   // PC08: Contracts first load from the latest admitted refresh (real captured responses).
+  // PC10: Roster Shapes first load and team detail from the captured real response.
+  for(const route of ["roster-shapes","roster-shapes/DEN"]) test(`first-load ${route}`,async({page})=>{await mockRosterShapes(page);await openWorkbench(page,`/${route}`);await expect(page.locator(".chart-pack").first()).toBeVisible();await settle(page);await expect(page).toHaveScreenshot(`first-load-${route.replace("/","-")}-${view.name}.png`,shot);});
   for(const route of ["contracts","contracts/DEN"]) test(`first-load ${route}`,async({page})=>{await mockContracts(page);await openWorkbench(page,`/${route}`);await expect(page.getByRole("figure").first()).toBeVisible();await settle(page);await expect(page).toHaveScreenshot(`first-load-${route.replace("/","-")}-${view.name}.png`,shot);});
 });

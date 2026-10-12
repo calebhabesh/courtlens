@@ -374,6 +374,55 @@ class ValueArchetypePlayerResponse(BaseModel):
     archetype_reason: str | None
 
 
+class RosterShapePlayerResponse(BaseModel):
+    player_id: str
+    player_name: str
+    listed_position: str | None
+    value: float | None
+    value_qualified: bool
+    value_percentile: float | None
+    reference_minutes: float | None
+    reference_games: int | None
+    vor: float | None
+    archetype: dict[str, Any] | None
+    fit: Literal["returning", "new", "unknown"]
+    previous_teams: list[str]
+    unknown_reasons: list[str]
+
+
+class RosterShapeTeamResponse(BaseModel):
+    team_id: str
+    team_tricode: str
+    team_name: str
+    players: int
+    sized_players: int
+    below_replacement_players: int
+    unknown_players: int
+    total_vor: float
+    returning_share: float | None
+    archetype_mix: list[dict[str, Any]]
+    roster: list[RosterShapePlayerResponse]
+
+
+class RosterShapesResponse(BaseModel):
+    version: str
+    season: str
+    label: str
+    projected_note: str
+    reference_season: str
+    phase: Literal["regular_season"]
+    replacement_level: float
+    full_season_minutes: int
+    capacity: float
+    value: dict[str, Any]
+    archetypes: dict[str, Any]
+    roster_context: dict[str, Any]
+    statistics_release_id: str | None
+    credit: str
+    limitations: list[str]
+    teams: list[RosterShapeTeamResponse]
+
+
 class ValueArchetypesResponse(BaseModel):
     status: Literal["available", "unavailable"]
     source: str
