@@ -3,7 +3,7 @@
 import { Icon } from "./ui/icon";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useWorkspace } from "@/lib/workspace-context";
-import { ALL_CATALOG_METRICS, IMPACT_COLUMNS } from "@/lib/stats-presets";
+import { ALL_CATALOG_METRICS, IMPACT_COLUMNS, isV4Column } from "@/lib/stats-presets";
 import { computeClientBundleChecksum, getWorkspacePresets } from "@/lib/workspace-client";
 import type {
   CustomViewDefinition,
@@ -156,8 +156,9 @@ export function ManageViewsModal({
     setErrorMessage(null);
 
     try {
-      const metricVersion = formColumns.some(key => key in IMPACT_COLUMNS) ? "courtlens-stats-v3" : "v2";
-      const unavailable = formUnavailable.filter(key => !(key in IMPACT_COLUMNS));
+      const metricVersion = formColumns.some(isV4Column) ? "courtlens-stats-v4"
+        : formColumns.some(key => key in IMPACT_COLUMNS) ? "courtlens-stats-v3" : "v2";
+      const unavailable = formUnavailable.filter(key => !(key in IMPACT_COLUMNS) && !isV4Column(key));
       if (editingViewId) {
         await updateCustomView(editingViewId, {
           name: formName.trim(),

@@ -53,6 +53,14 @@ for (const label of ["Filter by season", "Analysis window"]) {
       const background = luminance(option.background);
       expect((Math.max(foreground, background) + 0.05) / (Math.min(foreground, background) + 0.05)).toBeGreaterThanOrEqual(4.5);
     }
+    // The Stats table measures its fill height after layout settles; capture a settled page.
+    let last = -1;
+    await expect.poll(async () => {
+      const bottom = await page.evaluate(() => document.querySelector(".stats-table-frame")?.getBoundingClientRect().bottom ?? 0);
+      const settled = bottom === last;
+      last = bottom;
+      return settled;
+    }, { intervals: [150] }).toBe(true);
     const value = await select.inputValue();
     await select.click();
     await expect(select).toHaveCSS("appearance", "base-select");
@@ -64,7 +72,8 @@ for (const label of ["Filter by season", "Analysis window"]) {
     await page.evaluate(() => window.scrollTo(0, 0));
     await expect(page.locator("select:open")).toBeVisible();
     // The styled picker stays in the browser's top layer, including in a Filters drawer.
-    expect(await page.screenshot({ caret: "hide" })).toMatchSnapshot(`${label.toLowerCase().replaceAll(" ", "-")}-popup.png`);
+    // The scope pickers open above the table: capture the scope rows and popup, not table layout.
+    expect(await page.screenshot({ caret: "hide", animations: "disabled", clip: { x: 0, y: 0, width: 1440, height: 380 } })).toMatchSnapshot(`${label.toLowerCase().replaceAll(" ", "-")}-popup.png`);
     await page.keyboard.press("Escape");
     await expect(select).toHaveValue(value);
   });

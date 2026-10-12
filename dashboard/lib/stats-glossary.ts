@@ -78,6 +78,15 @@ const PLAIN: Record<string, string> = {
   pbp_team_miss_orb_pct: "Share of teammates' missed shots, while the player is on the court, that the player rebounds.",
   pbp_charges_drawn: "Offensive fouls drawn by taking a charge.",
   pbp_credited_ftov_per100: "Steals plus charges drawn per 100 defensive possessions.",
+  fg2m: "Two-point field goals made (all makes inside the three-point line).",
+  fg2a: "Two-point field goal attempts.",
+  fg2_pct: "Two-point field goal percentage: two-pointers made divided by two-pointers attempted.",
+  rim_ast: "Assists on made shots in the restricted area.",
+  rim_ast_per100: "Assists on made shots in the restricted area, per 100 offensive possessions played.",
+  offensive_load: "Offensive Load (Ben Taylor): the share of a player's offensive possessions in which they shoot, draw free throws, create a shot for a teammate or turn the ball over, per 100 possessions.",
+  ctov_pct: "Creation-adjusted Turnover Percentage: turnovers divided by Offensive Load, so heavy creators are not penalised for the volume of plays they run.",
+  on_ball_pct: "On-Ball Percentage: the share of the player's court time spent holding the ball (NBA tracking time of possession divided by minutes).",
+  pts_created: "Points Created: points scored plus points from the player's assists (NBA tracking assist points).",
 };
 
 const RAPM: Record<string, string> = {
@@ -94,6 +103,7 @@ const SPAN: Record<string, string> = { "": "Fit on one season.", "_2y": "Fit on 
 const PER_36: Record<string, string> = {
   pts: "Points", reb: "Rebounds", ast: "Assists", stl: "Steals", blk: "Blocks", tov: "Turnovers", pf: "Personal fouls",
   oreb: "Offensive rebounds", dreb: "Defensive rebounds", fga: "Field goal attempts", fg3a: "Three-point attempts", fta: "Free throw attempts",
+  rim_ast: "Rim assists", pts_created: "Points created",
 };
 
 const BUCKETS: Record<string, string> = {
@@ -118,6 +128,8 @@ const SHORT: Record<string, string> = {
   team_oreb_pct: "Team OREB%", team_ftr: "Team FTR", pbp_foul_frequency: "Foul rate",
   pbp_block_recovered_pct: "BLK REC%", matchup_fga_per100: "Matchup FGA/100",
   pbp_credited_ftov_per100: "Forced TOV/100", pbp_charges_drawn: "Charges",
+  fgm_per_game: "FGM/G", fga_per_game: "FGA/G", fg3m_per_game: "3PM/G", fg3a_per_game: "3PA/G", ftm_per_game: "FTM/G",
+  fta_per_game: "FTA/G", rim_ast_per_36: "Rim AST/36", pts_created_per_36: "PTS Created/36",
 };
 
 const BUCKET_SHORT: Record<string, string> = { create: "Create", space: "Space", trans: "Transition", finish: "Rim", unknown: "Unclassified" };
@@ -152,16 +164,17 @@ export function glossaryGroup(metric: MetricDefinition): GlossaryGroup {
     case "rebounding": return key.startsWith("pbp_") ? "Rebounding" : "Counting Stats";
     case "playmaking": return "Counting Stats";
     case "defense": return "Counting Stats";
-    case "efficiency": return ["fgm", "fga", "fg3m", "fg3a", "ftm", "fta"].includes(key) ? "Counting Stats" : "Shooting";
+    case "efficiency": return ["fgm", "fga", "fg3m", "fg3a", "ftm", "fta"].includes(key.replace(/_per_game$/, "")) ? "Counting Stats" : "Shooting";
     case "impact": return "Impact Metrics";
     case "on_off": return "On-Off";
     case "team_factors": return "Team";
+    case "tracking": return key.startsWith("pts_created") ? "Counting Stats" : "Playmaking";
     case "impact_extras":
       if (["o_ts", "d_ts", "o_tov", "d_tov", "o_reb", "d_reb"].includes(key)) return "Impact Metrics";
       if (key.startsWith("impact_") && key !== "impact_ast_per100") return "Shooting";
       if (/stl|blk|foul|block|matchup|charges|ftov/.test(key)) return "Defense";
       if (/orb|drb/.test(key)) return "Rebounding";
-      if (/ast|pass/.test(key)) return "Playmaking";
+      if (/ast|pass|load|ctov/.test(key)) return "Playmaking";
       return "Other";
     default: return "Other";
   }

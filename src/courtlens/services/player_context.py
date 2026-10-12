@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-from collections.abc import Sequence
 from datetime import UTC, date, datetime
 from typing import Any
 
@@ -76,30 +75,6 @@ def dataset_rows(
     if limit is not None:
         query = query.limit(limit)
     return [dict(p) for p in session.scalars(query).all()]
-
-
-def listed_position_player_ids(session: Session, positions: Sequence[str]) -> set[str]:
-    """Players whose latest NBA roster-index listing includes any requested G/F/C position.
-
-    Listings are current at the index observation, not backdated to the season shown; an
-    unlisted position is unknown and never matches.
-    """
-    dataset = session.scalars(
-        select(PlayerContextDataset)
-        .where(PlayerContextDataset.kind == "player_index")
-        .order_by(
-            PlayerContextDataset.observed_at.desc(), PlayerContextDataset.observation_order.desc()
-        )
-        .limit(1)
-    ).first()
-    if dataset is None:
-        return set()
-    wanted = set(positions)
-    return {
-        str(row["player_id"])
-        for row in dataset_rows(session, dataset)
-        if wanted & set(str(row.get("listed_position") or "").split("-"))
-    }
 
 
 def context_catalog(

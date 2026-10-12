@@ -39,6 +39,9 @@ class Settings(BaseSettings):
     impact_serving_manifest: Path | None = Path(
         "data/derived/impact-serving-v1/6e162489a53a8af673aa5b9108a60e62940ad6119c5d228a956ad01fbf218717.json"
     )
+    position_estimates_manifest: Path | None = Path(
+        "data/derived/position-estimates-v1/2b6a25129557c18fa8366d599869fae8bb1b9f57c0f3e1900a707efa4c4a71bf.json"
+    )
     value_archetypes_manifest: Path | None = Path(
         "data/derived/value-archetypes-v1/serving/5caeb935e21fce5842fb5ebb33c7ad515cb550eb2021b88886ca3e7b5b6e2f7e.json"
     )

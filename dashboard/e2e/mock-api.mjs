@@ -621,7 +621,9 @@ createServer(async (request, response) => {
     for await (const chunk of request) raw += chunk;
     const body = JSON.parse(raw);
     const query = body.query;
-    const rows = workbenchPlayers.items.map((row, index) => ({ ...row,
+    // Estimated positions and draft classes the server would resolve for the fixture players.
+    const fixturePositions = { 23: "SF", 24: "PG" }, fixtureDrafts = { 23: 2018, 24: 2020 };
+    const rows = workbenchPlayers.items.map((row, index) => ({ ...row, position: fixturePositions[row.player_id] ?? null,
       percentiles: Object.fromEntries(Object.keys(row.metrics).map((key) => [key, index === 0 ? 75 : 25])),
       ...(body.presentation?.table_percentiles ? {
         table_qualified: true,
@@ -631,8 +633,8 @@ createServer(async (request, response) => {
     }));
     const selected = rows.filter((row) => (!query.name || row.player_name.toLowerCase().includes(query.name.toLowerCase())) &&
       (body.presentation?.player_ids == null || body.presentation.player_ids.includes(row.player_id)) &&
-      // Listed roster positions for the two fixture players (server resolves these from the index).
-      (!body.presentation?.positions?.length || body.presentation.positions.includes({ 23: "F", 24: "G" }[row.player_id])));
+      (!body.presentation?.positions?.length || body.presentation.positions.includes(fixturePositions[row.player_id])) &&
+      (!body.presentation?.draft_year || body.presentation.draft_year === fixtureDrafts[row.player_id]));
     const sort = query.sort?.[0];
     if (sort) selected.sort((a, b) => (sort.field === "player_name" ? a.player_name.localeCompare(b.player_name) : (a.metrics[sort.field] ?? 0) - (b.metrics[sort.field] ?? 0)) * (sort.direction === "asc" ? 1 : -1));
     return json(response, 200, { context: workbenchContext, query, total_eligible_players: rows.length,
@@ -641,6 +643,9 @@ createServer(async (request, response) => {
       ...(body.presentation?.table_percentiles ? { table_cohort: { version: "courtlens-table-percentiles-v1", scope_hash: "fixture-table-cohort", qualified_players: 2, min_season_minutes: 500, reference: "League", formula: "midrank" } } : {}),
       items: selected, next_cursor: null, has_more: false, warnings: [] });
   }
+  if (url.pathname === "/api/workbench/draft-classes") return json(response, 200, {
+    source: "NBA draft history (fixture)", classes: [2020, 2019, 2018].map(year => ({ year, players: 58 }))
+  });
   if (url.pathname === "/api/workbench/status") return json(response, 200, workbenchStatus);
   if (url.pathname === "/api/workbench/players") {
     const q = (url.searchParams.get("name") ?? "").toLowerCase();

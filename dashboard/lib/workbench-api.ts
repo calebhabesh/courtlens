@@ -10,6 +10,7 @@ import type {
   BackfillStatusResponse,
   ComparePeriodsRequest,
   ComparePeriodsResponse,
+  DraftClassesResponse,
   CrosswalkResponse,
   DistributionRequest,
   DistributionResponse,
@@ -112,7 +113,11 @@ export async function getWorkbenchCatalog(releaseId?: string): Promise<Workbench
 }
 
 export async function getMetricCatalog(): Promise<MetricCatalog> {
-  return wbFetch<MetricCatalog>("/api/workbench/metrics?version=courtlens-stats-v3");
+  return wbFetch<MetricCatalog>("/api/workbench/metrics?version=courtlens-stats-v4");
+}
+
+export async function getDraftClasses(): Promise<DraftClassesResponse> {
+  return wbFetch<DraftClassesResponse>("/api/workbench/draft-classes");
 }
 
 export async function getImpact(params: {

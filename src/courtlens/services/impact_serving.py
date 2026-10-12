@@ -10,7 +10,7 @@ from typing import Any
 from fastapi import HTTPException
 
 from courtlens.config import get_settings
-from courtlens.domain.impact_catalog import IMPACT_CATALOG
+from courtlens.domain.impact_catalog import IMPACT_COLUMNS
 from courtlens.domain.impact_extras_catalog import WAVE_TWO
 from courtlens.domain.query_spec import QuerySpec
 from courtlens.domain.teams import get_team_info
@@ -70,7 +70,8 @@ def impact_catalog_scope() -> dict[str, Any]:
     }
 
 
-def impact_query_fields(query: QuerySpec) -> set[str]:
+def query_fields(query: QuerySpec) -> set[str]:
+    """Every field a query sorts, selects, shows or filters by."""
     fields = {s.field for s in query.sort} | {s.key for s in query.metric_selectors}
     if query.view_state:
         fields.update(query.view_state.columns)
@@ -85,7 +86,11 @@ def impact_query_fields(query: QuerySpec) -> set[str]:
                 visit(child)
 
     visit(query.predicates)
-    return fields & IMPACT_CATALOG.keys()
+    return fields
+
+
+def impact_query_fields(query: QuerySpec) -> set[str]:
+    return query_fields(query) & IMPACT_COLUMNS.keys()
 
 
 def query_uses_impact(query: QuerySpec) -> bool:
@@ -143,6 +148,8 @@ def impact_for_query(query: QuerySpec, cutoff: str) -> dict[str, Any]:
             row = result["players"].setdefault(pid, {"metrics": {}, "support": {}, "on_off": {}})
             row["metrics"].update(source["metrics"])
             row["support"].update(source["support"])
+            if entry["kind"] == "extras":
+                derive_extras(row)
             if entry["kind"] == "ratings" and entry["scope"]["years"] == 1:
                 records = source["on_off"]
                 row["on_off"] = records
@@ -178,6 +185,34 @@ def impact_for_query(query: QuerySpec, cutoff: str) -> dict[str, Any]:
             "Ratings retain the full league fit; extras are unavailable in a team-filtered scope.",
         ]
     return result
+
+
+def derive_extras(row: dict[str, Any]) -> None:
+    """v4 rates from sealed extras support: rim assists per game and per 100 possessions.
+
+    Offensive load and cTOV% are computed in SQL from box totals; they share the possession
+    support (and its qualification) of AST/100, whose denominator is offensive possessions.
+    """
+    support = row["support"]
+    rim, possessions = support.get("pbp_rim_assists"), support.get("impact_ast_per100")
+    if rim is None or possessions is None:
+        return
+    games, controls = rim.get("covered_games") or 0, possessions.get("denominator") or 0
+    rim_count = rim.get("numerator")
+    per_game = rim_count / games if rim_count is not None and games > 0 else None
+    per100 = 100 * rim_count / controls if rim_count is not None and controls > 0 else None
+    row["metrics"]["rim_ast_per_game"] = per_game
+    row["metrics"]["rim_ast_per100"] = per100
+    support["rim_ast_per_game"] = {**rim, "value": per_game, "denominator": games or None}
+    support["rim_ast_per100"] = {
+        **rim,
+        "value": per100,
+        "denominator": controls or None,
+        "qualified": bool(rim.get("qualified") and possessions.get("qualified")),
+    }
+    for key in ("offensive_load", "ctov_pct"):
+        support[key] = {**possessions, "value": None, "numerator": None}
+    support["rim_ast_per_36"] = {**rim, "value": None, "denominator": None}
 
 
 def impact_sql_rows(impact: dict[str, Any]) -> str:

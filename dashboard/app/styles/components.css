@@ -2446,6 +2446,7 @@ textarea, input, select { max-width: 100%; }
 .lookup-compact-results .lookup-item-subtitle { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .lookup-compact-results .lookup-option { padding-block: var(--space-3); align-items: center; }
 .lookup-floating-dropdown {
+  animation: fadeInDropdown var(--dur-fast) var(--ease-out);
   position: fixed;
   left: var(--lookup-left);
   top: var(--lookup-top);

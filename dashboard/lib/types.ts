@@ -533,9 +533,15 @@ export type StatsPresentation = {
   // null/omitted selects all; [] selects none. Does not redefine the cohort.
   player_ids?: string[] | null;
   table_percentiles?: boolean;
-  // NBA listed roster positions (current index, not backdated); hyphenated listings match both.
-  positions?: ("G" | "F" | "C")[] | null;
+  // Estimated five-position labels for the queried season (position-estimates-v1).
+  positions?: EstimatedPosition[] | null;
+  // NBA draft class (draft year); undrafted players never match.
+  draft_year?: number | null;
 };
+
+export type EstimatedPosition = "PG" | "SG" | "SF" | "PF" | "C";
+
+export type DraftClassesResponse = { source: string; classes: { year: number; players: number }[] };
 
 export type TableCohort = {
   version: string;
@@ -583,6 +589,8 @@ export type PlayerResearchItem = {
   portrait_url?: string | null;
   percentiles?: Record<string, number | null> | null;
   cohort_sample_sizes?: Record<string, number> | null;
+  // Estimated position for the queried season (Stats query only).
+  position?: EstimatedPosition | null;
 };
 
 export type LookupAvailability = {
@@ -1486,7 +1494,7 @@ export type AggregationMethod = "borda" | "average_rank";
 export interface CustomViewDefinition {
   id: string;
   name: string;
-  metric_version?: "v2" | "courtlens-stats-v3";
+  metric_version?: "v2" | "courtlens-stats-v3" | "courtlens-stats-v4";
   unavailable_columns?: string[];
   columns: string[];
   sort_field?: string | null;

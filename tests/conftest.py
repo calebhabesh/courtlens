@@ -33,6 +33,16 @@ def close_application_pool() -> Generator[None, None, None]:
     engine.dispose()
 
 
+@pytest.fixture(autouse=True)
+def fresh_stats_cohort_cache() -> Generator[None, None, None]:
+    """Tests reuse synthetic dataset IDs; never serve one test's cohort to another."""
+    from courtlens.services import stats_cohort_cache
+
+    stats_cohort_cache.clear()
+    yield
+    stats_cohort_cache.clear()
+
+
 @pytest.fixture
 def test_engine() -> Generator[Engine, None, None]:
     engine = create_engine(

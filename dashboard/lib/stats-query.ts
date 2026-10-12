@@ -10,7 +10,7 @@ export function normalizedSortMetric(field: string, mode: CountingMode): string 
   if (COUNTING_FAMILIES.includes(base)) {
     return mode === "raw" ? base : `${base}_${mode}`;
   }
-  if (["fga", "fg3a", "fta"].includes(base)) return mode === "per_36" ? `${base}_per_36` : base;
+  if (["fga", "fg3a", "fta"].includes(base)) return mode === "raw" ? base : `${base}_${mode}`;
   return field;
 }
 
