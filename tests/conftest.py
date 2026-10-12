@@ -130,6 +130,44 @@ def api_client(session: Session) -> Generator[TestClient, None, None]:
         yield client
 
 
+def pytest_sessionstart(session: pytest.Session) -> None:
+    """Refuse to write test fixtures into a database that holds published data.
+
+    Disposable test databases start empty. A ``published_snapshots`` row means the URL
+    points at a real database (for example the local development one), where tests
+    would leave permanent rows in append-only tables. Published-data runs
+    (``-m requires_published_data``) are explicit and exempt.
+    """
+    import os
+
+    from sqlalchemy import text
+    from sqlalchemy.exc import SQLAlchemyError
+
+    url = os.environ.get("COURTLENS_TEST_POSTGRES_URL")
+    markers = session.config.getoption("markexpr", default="") or ""
+    if not url or markers.strip() == "requires_published_data":
+        return
+    guard = create_engine(url)
+    try:
+        with guard.connect() as connection:
+            table = connection.execute(text("SELECT to_regclass('public.published_snapshots')"))
+            populated = table.scalar() is not None and bool(
+                connection.execute(
+                    text("SELECT EXISTS (SELECT 1 FROM published_snapshots)")
+                ).scalar()
+            )
+    except SQLAlchemyError:
+        return  # Unreachable databases fail in the tests that need them.
+    finally:
+        guard.dispose()
+    if populated:
+        pytest.exit(
+            "COURTLENS_TEST_POSTGRES_URL points at a database with published snapshots; "
+            "use make test-python for a disposable database.",
+            returncode=4,
+        )
+
+
 @pytest.fixture
 def workbench_db(request: pytest.FixtureRequest) -> Generator[Session, None, None]:
     """Serve HTTP and SQL from the same isolated seeded schema (or an explicit backup)."""
