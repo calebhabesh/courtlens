@@ -615,15 +615,21 @@ createServer(async (request, response) => {
     const body = JSON.parse(raw);
     const query = body.query;
     const rows = workbenchPlayers.items.map((row, index) => ({ ...row,
-      percentiles: Object.fromEntries(Object.keys(row.metrics).map((key) => [key, index === 0 ? 75 : 25]))
+      percentiles: Object.fromEntries(Object.keys(row.metrics).map((key) => [key, index === 0 ? 75 : 25])),
+      ...(body.presentation?.table_percentiles ? {
+        table_qualified: true,
+        table_percentiles: Object.fromEntries(Object.keys(row.metrics).map(key => [key, index === 0 ? 75 : 25])),
+        table_cohort_sample_sizes: Object.fromEntries(Object.keys(row.metrics).map(key => [key, 2]))
+      } : {})
     }));
     const selected = rows.filter((row) => (!query.name || row.player_name.toLowerCase().includes(query.name.toLowerCase())) &&
       (body.presentation?.player_ids == null || body.presentation.player_ids.includes(row.player_id)));
     const sort = query.sort?.[0];
-    if (sort) selected.sort((a, b) => ((a.metrics[sort.field] ?? 0) - (b.metrics[sort.field] ?? 0)) * (sort.direction === "asc" ? 1 : -1));
+    if (sort) selected.sort((a, b) => (sort.field === "player_name" ? a.player_name.localeCompare(b.player_name) : (a.metrics[sort.field] ?? 0) - (b.metrics[sort.field] ?? 0)) * (sort.direction === "asc" ? 1 : -1));
     return json(response, 200, { context: workbenchContext, query, total_eligible_players: rows.length,
       total_output_players: selected.length, output_offset: 0,
       cohort: { version: "pf01a-v1", scope_hash: "fixture-cohort", eligible_players: rows.length, formula: "midrank", good_directions: {} },
+      ...(body.presentation?.table_percentiles ? { table_cohort: { version: "courtlens-table-percentiles-v1", scope_hash: "fixture-table-cohort", qualified_players: 2, min_season_minutes: 500, reference: "League", formula: "midrank" } } : {}),
       items: selected, next_cursor: null, has_more: false, warnings: [] });
   }
   if (url.pathname === "/api/workbench/status") return json(response, 200, workbenchStatus);
@@ -654,7 +660,7 @@ createServer(async (request, response) => {
     games:[{game_id:"fo10-unknown",game_date:"2026-03-01",opponent_tricode:"BOS",opponent_name:"Boston Celtics",side:"home",team_points:0,opponent_points:null,is_win:null,rest_days:0,is_back_to_back:true,rest_bucket:"0_days_rest"}]
   });
   if (url.pathname === "/api/workbench/teams/100/peers") return json(response,200,{team:workbenchTeamDetail.team,context:workbenchContext,dimensions:[],warnings:[],peers:[{team_id:"200",tricode:"BOS",name:"Boston Celtics",similarity_score:0.95,distance:0.1,conference:"Eastern"}]});
-  if (url.pathname === "/api/workbench/teams") return json(response, 200, workbenchTeams);
+  if (url.pathname === "/api/workbench/teams") return json(response, 200, { ...workbenchTeams, teams: workbenchTeams.teams.map((team, index) => ({ ...team, table_percentiles: { wins: index ? 75 : 25, win_pct: index ? 75 : 25, ppg: index ? 75 : 25, opp_ppg: index ? 75 : 25, net_margin: index ? 75 : 25 }, table_cohort_sample_sizes: { wins: 2, win_pct: 2, ppg: 2, opp_ppg: 2, net_margin: 2 } })) });
   if (url.pathname === "/api/workbench/teams/1610612761") return json(response, 200, { ...workbenchTeamDetail, team: { ...workbenchTeamDetail.team, id: "1610612761" } });
   // FO11: one deliberately missing-data opponent for descriptive comparison guards.
   if (url.pathname === "/api/workbench/teams/200") return json(response,200,{

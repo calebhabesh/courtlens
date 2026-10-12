@@ -11,6 +11,8 @@ import { useState, useMemo, useCallback, useTransition, Fragment, type KeyboardE
 import { SortHeader, GroupGuide } from "./table-ui";
 import { Icon } from "./ui/icon";
 import { useToast } from "./ui/toast";
+import { PercentileCell } from "./charts/percentile-cell";
+import { TablePercentileLegend } from "./table-percentile-legend";
 import { Skeleton } from "./ui/skeleton";
 import { SlidingIndicator } from "./ui/sliding-indicator";
 import { TeamLogoStack } from "./team-logo";
@@ -211,10 +213,6 @@ export function WorkbenchPlayerExplorer({
     },
     [updatePreferences, router, pathname, searchParams]
   );
-
-  const cohortPercentiles = useMemo(() => Object.fromEntries(
-    items.map((item) => [item.player_id, item.percentiles ?? {}])
-  ), [items]);
 
   // URL updater preserving context parameters
   const updateParam = useCallback(
@@ -531,7 +529,7 @@ export function WorkbenchPlayerExplorer({
         <div className="control-button-group stats-table-tools">
           <button type="button" onClick={() => setShowPercentiles(value => !value)}
             className={`control-pill ${showPercentiles ? "active" : ""}`} aria-pressed={showPercentiles}
-            title="Toggle midrank cohort percentile sublabels">%iles {showPercentiles ? "On" : "Off"}</button>
+            title="Toggle qualified league percentile labels">%iles {showPercentiles ? "On" : "Off"}</button>
           <button type="button" onClick={() => updateParam({ favorites: favoritesOnly ? null : "1" })}
             className={`control-pill ${favoritesOnly ? "active" : ""}`} aria-pressed={favoritesOnly}
             title={favoritesOnly ? "Show all players" : "Filter to favorite players only"}>
@@ -736,6 +734,7 @@ export function WorkbenchPlayerExplorer({
       {/* Dense Stats Table with Two-Tier Grouped Headers & Sticky Pinned Identity */}
       {viewMode === "table" && (
         <>
+          <TablePercentileLegend cohort={data.table_cohort} />
           <div className={`stats-table-layout ${previewCollapsed ? "preview-collapsed" : ""}`}>
           <div role="region" aria-label="Player statistics scroll area" aria-busy={loadingRows} tabIndex={0} onKeyDown={handleTableKey} className={`table-wrapper stats-scroll-region ${tableDensity === "compact" ? "density-compact" : "density-standard"}`}>
             <table className="data-table dense-stats-table" aria-label="Dense player statistics explorer"
@@ -862,7 +861,6 @@ export function WorkbenchPlayerExplorer({
             ) : (
               items.map((player, idx) => {
                 const isCompared = comparedPlayers.some((p) => p.player_id === player.player_id);
-                const playerPercentiles = cohortPercentiles[player.player_id] ?? {};
 
                 return (
                   <tr
@@ -908,6 +906,7 @@ export function WorkbenchPlayerExplorer({
                           <span className="player-cell-name font-semibold">{player.player_name}</span>
                         <span className="player-cell-teams">{player.teams?.join(" / ") || "Team unknown"} · {query.season}</span>
                         </Link>
+                        {player.table_qualified === false && <span className="table-small-sample">Small sample</span>}
                         </div>
                         <button
                           type="button"
@@ -935,9 +934,8 @@ export function WorkbenchPlayerExplorer({
                       const metricKey = col.key;
                       const formatted = formatColumnValue(col, player);
 
-                      const pct = playerPercentiles[metricKey];
-                      const direction = data.cohort?.good_directions[metricKey];
-                      const favorable = pct == null || !direction ? null : direction === "low" ? 100 - pct : pct;
+                      const pct = player.table_percentiles?.[metricKey] ?? null;
+                      const qualified = player.table_qualified === true && player.impact_support?.[metricKey]?.qualified !== false;
 
                       return (
                         <Fragment key={col.key}>
@@ -947,28 +945,10 @@ export function WorkbenchPlayerExplorer({
                         <td
                           className={`stats-metric-cell stats-group-${headerGroups.findIndex(group => index >= group.start && index < group.start + group.colSpan) % 2} ${col.num ? "num" : ""}`}
                         >
-                          <div className="stat-cell-content">
-                            <span className="stat-main-value">{formatted}</span>
-                            {showPercentiles && pct !== null && pct !== undefined && (
-                              <span
-                                className={`stat-pct-sublabel ${
-                                  favorable !== null && favorable >= 85
-                                    ? "pct-elite"
-                                    : favorable !== null && favorable >= 65
-                                    ? "pct-good"
-                                    : favorable !== null && favorable <= 20
-                                    ? "pct-low"
-                                    : ""
-                                }`}
-                                tabIndex={0}
-                                role="group"
-                                aria-label={`Percentile ${pct}; ${player.cohort_sample_sizes?.[metricKey] ?? "unknown"} valid players; ${data.total_eligible_players} eligible players${direction ? `; ${direction === "low" ? "Lower" : "Higher"} values preferred` : ""}`}
-                                title={`Cohort midrank percentile: ${pct}% · ${player.cohort_sample_sizes?.[metricKey] ?? "unknown"} valid players · ${data.total_eligible_players} eligible players${direction ? ` · ${direction === "low" ? "Lower" : "Higher"} values preferred` : ""}`}
-                              >
-                                {pct}
-                              </span>
-                            )}
-                          </div>
+                          <PercentileCell compact showPercentile={showPercentiles}
+                            value={player.metrics[metricKey] == null ? null : formatted}
+                            percentile={pct} qualified={qualified} label={col.label}
+                            cohort={`${player.table_cohort_sample_sizes?.[metricKey] ?? "Unknown"} valid league players; ${data.table_cohort?.min_season_minutes ?? 500}+ season minutes`} />
                         </td>
                         </Fragment>
                       );

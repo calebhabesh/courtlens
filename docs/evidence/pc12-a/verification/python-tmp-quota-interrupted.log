@@ -1,0 +1,897 @@
+INFO  [alembic.runtime.migration] Context impl PostgresqlImpl.
+INFO  [alembic.runtime.migration] Will assume transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade  -> 0001, Create the initial CourtLoad operational schema.
+INFO  [alembic.runtime.migration] Running upgrade 0001 -> 8ffd4c5912e2, archive lineage and facts
+INFO  [alembic.runtime.migration] Running upgrade 8ffd4c5912e2 -> 4b19f0a2c7de, warehouse publication state and immutable serving rows
+INFO  [alembic.runtime.migration] Running upgrade 4b19f0a2c7de -> 882c8b450cb3, workbench_contracts_and_tables
+INFO  [alembic.runtime.migration] Running upgrade 882c8b450cb3 -> 1b66214e7c08, personal_workspace_state
+INFO  [alembic.runtime.migration] Running upgrade 1b66214e7c08 -> c7e21a084f91, identity_crosswalk_and_measurements
+INFO  [alembic.runtime.migration] Running upgrade c7e21a084f91 -> e8b19a084f92, rich_source_admission_tables
+INFO  [alembic.runtime.migration] Running upgrade e8b19a084f92 -> f9c31a084f93, possession_and_stint_warehouse_tables
+INFO  [alembic.runtime.migration] Running upgrade f9c31a084f93 -> 0af4286cb194, Append-only independent research inputs; no release publication or retained-row changes.
+INFO  [alembic.runtime.migration] Running upgrade 0af4286cb194 -> 27b810a4f001, B28 immutable financial source books and correction lineage.
+INFO  [alembic.runtime.migration] Running upgrade 27b810a4f001 -> 31b810a4f002, B31 bounded Live demand, provisional observations and reconciliation evidence.
+INFO  [alembic.runtime.migration] Running upgrade 31b810a4f002 -> 35b810a4f003, B35a explicit retained conversational analytical manifests.
+INFO  [alembic.runtime.migration] Running upgrade 35b810a4f003 -> 19b810a4f004, B19b independent assignment datasets and transaction-sealed memberships.
+INFO  [alembic.runtime.migration] Running upgrade 19b810a4f004 -> 07b810a4f005, PF07b durable local assistant history, isolated from saved findings.
+INFO  [alembic.runtime.migration] Running upgrade 07b810a4f005 -> 08b810a4f006, AG03 server-owned provider transcripts; existing turn/history payloads stay valid.
+INFO  [alembic.runtime.migration] Running upgrade 08b810a4f006 -> 09b810a4f007, RN02 rename PostgreSQL functions and the administrative mutation namespace.
+INFO  [alembic.runtime.migration] Running upgrade 09b810a4f007 -> 10b810a4f008, Seal IM03 memberships at the admitting transaction, including ordinary inserts.
+INFO  [alembic.runtime.migration] Running upgrade 10b810a4f008 -> 11b810a4f009, Dated player context inputs, isolated from sealed analytical releases.
+INFO  [alembic.runtime.migration] Running upgrade 11b810a4f009 -> 12b810a4f010, Independent finance refreshes and manual threshold observations.
+INFO  [alembic.runtime.migration] Running upgrade 12b810a4f010 -> 13b810a4f011, Independent season-level stats feeds (PC07), isolated from sealed analytical releases.
+........................................................................ [  3%]
+.......FF..................EEEEEEEEFFFFFFFFFF.............F....sEEEEE... [  7%]
+.F...................................................................... [ 10%]
+........................................................................ [ 14%]
+........................................................................ [ 17%]
+........................................................................ [ 21%]
+........................................
+==================================== ERRORS ====================================
+_ ERROR at setup of test_public_data_status_exposes_failure_type_but_redacts_detail _
+OSError: [Errno 122] Disk quota exceeded
+
+During handling of the above exception, another exception occurred:
+
+session = <sqlalchemy.orm.session.Session object at 0x7fcf0a8c2f50>
+tmp_path = PosixPath('/tmp/pytest-of-ethioking/pytest-346/test_public_data_status_expose0')
+
+    @pytest.fixture
+    def demo_league(session: Session, tmp_path: Path) -> FantasyLeague:
+>       return load_demo(session, tmp_path)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+/home/ethioking/dev/courtlens/tests/conftest.py:118:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+/home/ethioking/dev/courtlens/tests/conftest.py:59: in load_demo
+    path.write_text(json.dumps(document), encoding="utf-8")
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = PosixPath('/tmp/pytest-of-ethioking/pytest-346/test_public_data_status_expose0/00-teams.json')
+data = '{"resource": "teams", "data": [{"id": 9001, "conference": "East", "division": "Fixture", "city": "North", "name": "St...", "division": "Fixture", "city": "Capital", "name": "Arrows", "full_name": "Capital Arrows", "abbreviation": "CAP"}]}'
+encoding = 'utf-8', errors = None, newline = None
+
+    def write_text(self, data, encoding=None, errors=None, newline=None):
+        """
+        Open the file in text mode, write to it, and close the file.
+        """
+        # Call io.text_encoding() here to ensure any warning is raised at an
+        # appropriate stack level.
+        encoding = io.text_encoding(encoding)
+        if not isinstance(data, str):
+            raise TypeError('data must be str, not %s' %
+                            data.__class__.__name__)
+>       with self.open(mode='w', encoding=encoding, errors=errors, newline=newline) as f:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       OSError: [Errno 122] Disk quota exceeded
+
+/usr/lib/python3.14/pathlib/__init__.py:809: OSError
+__ ERROR at setup of test_schedule_excludes_postponed_games_from_slate_counts __
+OSError: [Errno 122] Disk quota exceeded
+
+During handling of the above exception, another exception occurred:
+
+session = <sqlalchemy.orm.session.Session object at 0x7fcf0acd9350>
+tmp_path = PosixPath('/tmp/pytest-of-ethioking/pytest-346/test_schedule_excludes_postpon0')
+
+    @pytest.fixture
+    def demo_league(session: Session, tmp_path: Path) -> FantasyLeague:
+>       return load_demo(session, tmp_path)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+/home/ethioking/dev/courtlens/tests/conftest.py:118:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+/home/ethioking/dev/courtlens/tests/conftest.py:59: in load_demo
+    path.write_text(json.dumps(document), encoding="utf-8")
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = PosixPath('/tmp/pytest-of-ethioking/pytest-346/test_schedule_excludes_postpon0/00-teams.json')
+data = '{"resource": "teams", "data": [{"id": 9001, "conference": "East", "division": "Fixture", "city": "North", "name": "St...", "division": "Fixture", "city": "Capital", "name": "Arrows", "full_name": "Capital Arrows", "abbreviation": "CAP"}]}'
+encoding = 'utf-8', errors = None, newline = None
+
+    def write_text(self, data, encoding=None, errors=None, newline=None):
+        """
+        Open the file in text mode, write to it, and close the file.
+        """
+        # Call io.text_encoding() here to ensure any warning is raised at an
+        # appropriate stack level.
+        encoding = io.text_encoding(encoding)
+        if not isinstance(data, str):
+            raise TypeError('data must be str, not %s' %
+                            data.__class__.__name__)
+>       with self.open(mode='w', encoding=encoding, errors=errors, newline=newline) as f:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       OSError: [Errno 122] Disk quota exceeded
+
+/usr/lib/python3.14/pathlib/__init__.py:809: OSError
+_ ERROR at setup of test_schedule_flags_back_to_back_from_day_before_selected_week _
+OSError: [Errno 122] Disk quota exceeded
+
+During handling of the above exception, another exception occurred:
+
+session = <sqlalchemy.orm.session.Session object at 0x7fcf0acd9b50>
+tmp_path = PosixPath('/tmp/pytest-of-ethioking/pytest-346/test_schedule_flags_back_to_ba0')
+
+    @pytest.fixture
+    def demo_league(session: Session, tmp_path: Path) -> FantasyLeague:
+>       return load_demo(session, tmp_path)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+/home/ethioking/dev/courtlens/tests/conftest.py:118:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+/home/ethioking/dev/courtlens/tests/conftest.py:59: in load_demo
+    path.write_text(json.dumps(document), encoding="utf-8")
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = PosixPath('/tmp/pytest-of-ethioking/pytest-346/test_schedule_flags_back_to_ba0/00-teams.json')
+data = '{"resource": "teams", "data": [{"id": 9001, "conference": "East", "division": "Fixture", "city": "North", "name": "St...", "division": "Fixture", "city": "Capital", "name": "Arrows", "full_name": "Capital Arrows", "abbreviation": "CAP"}]}'
+encoding = 'utf-8', errors = None, newline = None
+
+    def write_text(self, data, encoding=None, errors=None, newline=None):
+        """
+        Open the file in text mode, write to it, and close the file.
+        """
+        # Call io.text_encoding() here to ensure any warning is raised at an
+        # appropriate stack level.
+        encoding = io.text_encoding(encoding)
+        if not isinstance(data, str):
+            raise TypeError('data must be str, not %s' %
+                            data.__class__.__name__)
+>       with self.open(mode='w', encoding=encoding, errors=errors, newline=newline) as f:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       OSError: [Errno 122] Disk quota exceeded
+
+/usr/lib/python3.14/pathlib/__init__.py:809: OSError
+____ ERROR at setup of test_player_form_links_to_non_payload_lineage_trace _____
+OSError: [Errno 122] Disk quota exceeded
+
+During handling of the above exception, another exception occurred:
+
+session = <sqlalchemy.orm.session.Session object at 0x7fcf0acdb350>
+tmp_path = PosixPath('/tmp/pytest-of-ethioking/pytest-346/test_player_form_links_to_non_0')
+
+    @pytest.fixture
+    def demo_league(session: Session, tmp_path: Path) -> FantasyLeague:
+>       return load_demo(session, tmp_path)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+/home/ethioking/dev/courtlens/tests/conftest.py:118:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+/home/ethioking/dev/courtlens/tests/conftest.py:59: in load_demo
+    path.write_text(json.dumps(document), encoding="utf-8")
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = PosixPath('/tmp/pytest-of-ethioking/pytest-346/test_player_form_links_to_non_0/00-teams.json')
+data = '{"resource": "teams", "data": [{"id": 9001, "conference": "East", "division": "Fixture", "city": "North", "name": "St...", "division": "Fixture", "city": "Capital", "name": "Arrows", "full_name": "Capital Arrows", "abbreviation": "CAP"}]}'
+encoding = 'utf-8', errors = None, newline = None
+
+    def write_text(self, data, encoding=None, errors=None, newline=None):
+        """
+        Open the file in text mode, write to it, and close the file.
+        """
+        # Call io.text_encoding() here to ensure any warning is raised at an
+        # appropriate stack level.
+        encoding = io.text_encoding(encoding)
+        if not isinstance(data, str):
+            raise TypeError('data must be str, not %s' %
+                            data.__class__.__name__)
+>       with self.open(mode='w', encoding=encoding, errors=errors, newline=newline) as f:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       OSError: [Errno 122] Disk quota exceeded
+
+/usr/lib/python3.14/pathlib/__init__.py:809: OSError
+_____ ERROR at setup of test_private_planner_requires_owner_and_reconciles _____
+OSError: [Errno 122] Disk quota exceeded
+
+During handling of the above exception, another exception occurred:
+
+session = <sqlalchemy.orm.session.Session object at 0x7fcf0a88c050>
+tmp_path = PosixPath('/tmp/pytest-of-ethioking/pytest-346/test_private_planner_requires_0')
+
+    @pytest.fixture
+    def demo_league(session: Session, tmp_path: Path) -> FantasyLeague:
+>       return load_demo(session, tmp_path)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+/home/ethioking/dev/courtlens/tests/conftest.py:118:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+/home/ethioking/dev/courtlens/tests/conftest.py:59: in load_demo
+    path.write_text(json.dumps(document), encoding="utf-8")
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = PosixPath('/tmp/pytest-of-ethioking/pytest-346/test_private_planner_requires_0/00-teams.json')
+data = '{"resource": "teams", "data": [{"id": 9001, "conference": "East", "division": "Fixture", "city": "North", "name": "St...", "division": "Fixture", "city": "Capital", "name": "Arrows", "full_name": "Capital Arrows", "abbreviation": "CAP"}]}'
+encoding = 'utf-8', errors = None, newline = None
+
+    def write_text(self, data, encoding=None, errors=None, newline=None):
+        """
+        Open the file in text mode, write to it, and close the file.
+        """
+        # Call io.text_encoding() here to ensure any warning is raised at an
+        # appropriate stack level.
+        encoding = io.text_encoding(encoding)
+        if not isinstance(data, str):
+            raise TypeError('data must be str, not %s' %
+                            data.__class__.__name__)
+>       with self.open(mode='w', encoding=encoding, errors=errors, newline=newline) as f:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       OSError: [Errno 122] Disk quota exceeded
+
+/usr/lib/python3.14/pathlib/__init__.py:809: OSError
+_______ ERROR at setup of test_weekly_lock_league_is_rejected_explicitly _______
+OSError: [Errno 122] Disk quota exceeded
+
+During handling of the above exception, another exception occurred:
+
+session = <sqlalchemy.orm.session.Session object at 0x7fcf0a88c850>
+tmp_path = PosixPath('/tmp/pytest-of-ethioking/pytest-346/test_weekly_lock_league_is_rej0')
+
+    @pytest.fixture
+    def demo_league(session: Session, tmp_path: Path) -> FantasyLeague:
+>       return load_demo(session, tmp_path)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+/home/ethioking/dev/courtlens/tests/conftest.py:118:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+/home/ethioking/dev/courtlens/tests/conftest.py:59: in load_demo
+    path.write_text(json.dumps(document), encoding="utf-8")
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = PosixPath('/tmp/pytest-of-ethioking/pytest-346/test_weekly_lock_league_is_rej0/00-teams.json')
+data = '{"resource": "teams", "data": [{"id": 9001, "conference": "East", "division": "Fixture", "city": "North", "name": "St...", "division": "Fixture", "city": "Capital", "name": "Arrows", "full_name": "Capital Arrows", "abbreviation": "CAP"}]}'
+encoding = 'utf-8', errors = None, newline = None
+
+    def write_text(self, data, encoding=None, errors=None, newline=None):
+        """
+        Open the file in text mode, write to it, and close the file.
+        """
+        # Call io.text_encoding() here to ensure any warning is raised at an
+        # appropriate stack level.
+        encoding = io.text_encoding(encoding)
+        if not isinstance(data, str):
+            raise TypeError('data must be str, not %s' %
+                            data.__class__.__name__)
+>       with self.open(mode='w', encoding=encoding, errors=errors, newline=newline) as f:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       OSError: [Errno 122] Disk quota exceeded
+
+/usr/lib/python3.14/pathlib/__init__.py:809: OSError
+__________ ERROR at setup of test_cross_owner_league_is_not_disclosed __________
+OSError: [Errno 122] Disk quota exceeded
+
+During handling of the above exception, another exception occurred:
+
+session = <sqlalchemy.orm.session.Session object at 0x7fcf0a88d450>
+tmp_path = PosixPath('/tmp/pytest-of-ethioking/pytest-346/test_cross_owner_league_is_not0')
+
+    @pytest.fixture
+    def demo_league(session: Session, tmp_path: Path) -> FantasyLeague:
+>       return load_demo(session, tmp_path)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+/home/ethioking/dev/courtlens/tests/conftest.py:118:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+/home/ethioking/dev/courtlens/tests/conftest.py:59: in load_demo
+    path.write_text(json.dumps(document), encoding="utf-8")
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = PosixPath('/tmp/pytest-of-ethioking/pytest-346/test_cross_owner_league_is_not0/00-teams.json')
+data = '{"resource": "teams", "data": [{"id": 9001, "conference": "East", "division": "Fixture", "city": "North", "name": "St...", "division": "Fixture", "city": "Capital", "name": "Arrows", "full_name": "Capital Arrows", "abbreviation": "CAP"}]}'
+encoding = 'utf-8', errors = None, newline = None
+
+    def write_text(self, data, encoding=None, errors=None, newline=None):
+        """
+        Open the file in text mode, write to it, and close the file.
+        """
+        # Call io.text_encoding() here to ensure any warning is raised at an
+        # appropriate stack level.
+        encoding = io.text_encoding(encoding)
+        if not isinstance(data, str):
+            raise TypeError('data must be str, not %s' %
+                            data.__class__.__name__)
+>       with self.open(mode='w', encoding=encoding, errors=errors, newline=newline) as f:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       OSError: [Errno 122] Disk quota exceeded
+
+/usr/lib/python3.14/pathlib/__init__.py:809: OSError
+_ ERROR at setup of test_acquisition_exhaustion_returns_explained_invalid_state _
+OSError: [Errno 122] Disk quota exceeded
+
+During handling of the above exception, another exception occurred:
+
+session = <sqlalchemy.orm.session.Session object at 0x7fcf0acdbd50>
+tmp_path = PosixPath('/tmp/pytest-of-ethioking/pytest-346/test_acquisition_exhaustion_re0')
+
+    @pytest.fixture
+    def demo_league(session: Session, tmp_path: Path) -> FantasyLeague:
+>       return load_demo(session, tmp_path)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+/home/ethioking/dev/courtlens/tests/conftest.py:118:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+/home/ethioking/dev/courtlens/tests/conftest.py:59: in load_demo
+    path.write_text(json.dumps(document), encoding="utf-8")
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = PosixPath('/tmp/pytest-of-ethioking/pytest-346/test_acquisition_exhaustion_re0/00-teams.json')
+data = '{"resource": "teams", "data": [{"id": 9001, "conference": "East", "division": "Fixture", "city": "North", "name": "St...", "division": "Fixture", "city": "Capital", "name": "Arrows", "full_name": "Capital Arrows", "abbreviation": "CAP"}]}'
+encoding = 'utf-8', errors = None, newline = None
+
+    def write_text(self, data, encoding=None, errors=None, newline=None):
+        """
+        Open the file in text mode, write to it, and close the file.
+        """
+        # Call io.text_encoding() here to ensure any warning is raised at an
+        # appropriate stack level.
+        encoding = io.text_encoding(encoding)
+        if not isinstance(data, str):
+            raise TypeError('data must be str, not %s' %
+                            data.__class__.__name__)
+>       with self.open(mode='w', encoding=encoding, errors=errors, newline=newline) as f:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       OSError: [Errno 122] Disk quota exceeded
+
+/usr/lib/python3.14/pathlib/__init__.py:809: OSError
+____ ERROR at setup of test_center_ranking_uses_majority_starting_position _____
+OSError: [Errno 122] Disk quota exceeded
+
+During handling of the above exception, another exception occurred:
+
+postgres_conversation = (<sqlalchemy.orm.session.Session object at 0x7fcf0b1fe550>, ResolvedContext(release_id='e6f474a2-9732-4fa7-b16c-353166...torical reconstruction from completed records.', 'Prior-day boundary: game_date < before_date is strictly enforced.']))
+tmp_path = PosixPath('/tmp/pytest-of-ethioking/pytest-346/test_center_ranking_uses_major0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7fcf09d6ce50>
+
+>   ???
+E   OSError: [Errno 122] Disk quota exceeded
+
+/tmp/courtlens-python-edtds83g/tests/integration/test_assistant_positions_postgres.py:53: OSError
+______ ERROR at setup of test_narrower_position_is_labelled_as_its_group _______
+OSError: [Errno 122] Disk quota exceeded
+
+During handling of the above exception, another exception occurred:
+
+postgres_conversation = (<sqlalchemy.orm.session.Session object at 0x7fcf09e35b50>, ResolvedContext(release_id='d779cae1-d33d-4b93-86a8-1e6381...torical reconstruction from completed records.', 'Prior-day boundary: game_date < before_date is strictly enforced.']))
+tmp_path = PosixPath('/tmp/pytest-of-ethioking/pytest-346/test_narrower_position_is_labe0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7fcf09c58c90>
+
+>   ???
+E   OSError: [Errno 122] Disk quota exceeded
+
+/tmp/courtlens-python-edtds83g/tests/integration/test_assistant_positions_postgres.py:53: OSError
+_ ERROR at setup of test_position_step_is_canonical_and_rejects_unknown_fields _
+OSError: [Errno 122] Disk quota exceeded
+
+During handling of the above exception, another exception occurred:
+
+postgres_conversation = (<sqlalchemy.orm.session.Session object at 0x7fcf0b1fe550>, ResolvedContext(release_id='23a91a05-e080-409f-95b2-121cd9...torical reconstruction from completed records.', 'Prior-day boundary: game_date < before_date is strictly enforced.']))
+tmp_path = PosixPath('/tmp/pytest-of-ethioking/pytest-346/test_position_step_is_canonica0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7fcf09c5a740>
+
+>   ???
+E   OSError: [Errno 122] Disk quota exceeded
+
+/tmp/courtlens-python-edtds83g/tests/integration/test_assistant_positions_postgres.py:53: OSError
+_ ERROR at setup of test_unverifiable_positions_answer_unfiltered_with_label[changed_bytes] _
+OSError: [Errno 122] Disk quota exceeded
+
+During handling of the above exception, another exception occurred:
+
+postgres_conversation = (<sqlalchemy.orm.session.Session object at 0x7fcf0b1fe550>, ResolvedContext(release_id='50b91242-3af2-4d1f-8349-e4f31a...torical reconstruction from completed records.', 'Prior-day boundary: game_date < before_date is strictly enforced.']))
+tmp_path = PosixPath('/tmp/pytest-of-ethioking/pytest-346/test_unverifiable_positions_an0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7fcf09b099b0>
+
+>   ???
+E   OSError: [Errno 122] Disk quota exceeded
+
+/tmp/courtlens-python-edtds83g/tests/integration/test_assistant_positions_postgres.py:53: OSError
+_ ERROR at setup of test_unverifiable_positions_answer_unfiltered_with_label[no_manifest] _
+OSError: [Errno 122] Disk quota exceeded
+
+During handling of the above exception, another exception occurred:
+
+postgres_conversation = (<sqlalchemy.orm.session.Session object at 0x7fcf0b1fe550>, ResolvedContext(release_id='e89e43ac-7dec-4e0b-b57c-475ff1...torical reconstruction from completed records.', 'Prior-day boundary: game_date < before_date is strictly enforced.']))
+tmp_path = PosixPath('/tmp/pytest-of-ethioking/pytest-346/test_unverifiable_positions_an1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7fcf09c5b1c0>
+
+>   ???
+E   OSError: [Errno 122] Disk quota exceeded
+
+/tmp/courtlens-python-edtds83g/tests/integration/test_assistant_positions_postgres.py:53: OSError
+=================================== FAILURES ===================================
+_ test_finance_is_book_bound_without_basketball_scope[123456789.01-12345678901] _
+
+tool_data = (<sqlalchemy.orm.session.Session object at 0x7fcf1b55ab50>, ConversationContext(release_id='17bc3c50-c27a-4c9d-87c8-9b876a8968d4', season=None, phase='regular_season', before_date=None, window='season'))
+tmp_path = PosixPath('/tmp/pytest-of-ethioking/pytest-346/test_finance_is_book_bound_wit0')
+value = '123456789.01', expected = '12345678901'
+
+>   ???
+
+/tmp/courtlens-python-edtds83g/tests/integration/test_agent_tools_postgres.py:250:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = PosixPath('/tmp/pytest-of-ethioking/pytest-346/test_finance_is_book_bound_wit0/observations.csv')
+data = b'row_id,kind,source_namespace,source_entity_id,nba_player_id,contract_id,financial_season,team_id,effective_date,anno...571e82ff4764a16833f21bee01af2cfb96ef6c41553bbe9370d,synthetic,synthetic salary,base_salary,USD,123456789.01,,,,,,,\r\n'
+
+    def write_bytes(self, data):
+        """
+        Open the file in bytes mode, write to it, and close the file.
+        """
+        # type-check for the buffer interface before truncating the file
+        view = memoryview(data)
+>       with self.open(mode='wb') as f:
+             ^^^^^^^^^^^^^^^^^^^^
+E       OSError: [Errno 122] Disk quota exceeded
+
+/usr/lib/python3.14/pathlib/__init__.py:796: OSError
+________ test_finance_is_book_bound_without_basketball_scope[None-None] ________
+
+tool_data = (<sqlalchemy.orm.session.Session object at 0x7fcf1b6b2650>, ConversationContext(release_id='3392d1a0-6fe3-4974-8f99-31fa93ab91d3', season=None, phase='regular_season', before_date=None, window='season'))
+tmp_path = PosixPath('/tmp/pytest-of-ethioking/pytest-346/test_finance_is_book_bound_wit1')
+value = None, expected = None
+
+>   ???
+
+/tmp/courtlens-python-edtds83g/tests/integration/test_agent_tools_postgres.py:250:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = PosixPath('/tmp/pytest-of-ethioking/pytest-346/test_finance_is_book_bound_wit1/observations.csv')
+data = b'row_id,kind,source_namespace,source_entity_id,nba_player_id,contract_id,financial_season,team_id,effective_date,anno...605ee4621710571e82ff4764a16833f21bee01af2cfb96ef6c41553bbe9370d,synthetic,synthetic salary,base_salary,USD,,,,,,,,\r\n'
+
+    def write_bytes(self, data):
+        """
+        Open the file in bytes mode, write to it, and close the file.
+        """
+        # type-check for the buffer interface before truncating the file
+        view = memoryview(data)
+>       with self.open(mode='wb') as f:
+             ^^^^^^^^^^^^^^^^^^^^
+E       OSError: [Errno 122] Disk quota exceeded
+
+/usr/lib/python3.14/pathlib/__init__.py:796: OSError
+__________ test_atomic_rollback_exact_precision_and_immutable_replay ___________
+OSError: [Errno 122] Disk quota exceeded
+
+During handling of the above exception, another exception occurred:
+
+assignment_database = <sqlalchemy.engine.base.Connection object at 0x7fcf0a8ea7b0>
+tmp_path = PosixPath('/tmp/pytest-of-ethioking/pytest-346/test_atomic_rollback_exact_pre0')
+
+>   ???
+
+/tmp/courtlens-python-edtds83g/tests/integration/test_assignment_admission_postgres.py:54:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests/assignment_fakes.py:29: in make_assignment_inputs
+    method.write_text("Fixture provider denominator reference")
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = PosixPath('/tmp/pytest-of-ethioking/pytest-346/test_atomic_rollback_exact_pre0/methodology.md')
+data = 'Fixture provider denominator reference', encoding = 'locale'
+errors = None, newline = None
+
+    def write_text(self, data, encoding=None, errors=None, newline=None):
+        """
+        Open the file in text mode, write to it, and close the file.
+        """
+        # Call io.text_encoding() here to ensure any warning is raised at an
+        # appropriate stack level.
+        encoding = io.text_encoding(encoding)
+        if not isinstance(data, str):
+            raise TypeError('data must be str, not %s' %
+                            data.__class__.__name__)
+>       with self.open(mode='w', encoding=encoding, errors=errors, newline=newline) as f:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       OSError: [Errno 122] Disk quota exceeded
+
+/usr/lib/python3.14/pathlib/__init__.py:809: OSError
+_ test_sql_guards_cannot_be_bypassed_by_admin_setting[UPDATE assignment_datasets SET content_sha256='changed'] _
+OSError: [Errno 122] Disk quota exceeded
+
+During handling of the above exception, another exception occurred:
+
+assignment_database = <sqlalchemy.engine.base.Connection object at 0x7fcf0a8ea210>
+tmp_path = PosixPath('/tmp/pytest-of-ethioking/pytest-346/test_sql_guards_cannot_be_bypa0')
+statement = "UPDATE assignment_datasets SET content_sha256='changed'"
+
+>   ???
+
+/tmp/courtlens-python-edtds83g/tests/integration/test_assignment_admission_postgres.py:107:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests/assignment_fakes.py:29: in make_assignment_inputs
+    method.write_text("Fixture provider denominator reference")
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = PosixPath('/tmp/pytest-of-ethioking/pytest-346/test_sql_guards_cannot_be_bypa0/methodology.md')
+data = 'Fixture provider denominator reference', encoding = 'locale'
+errors = None, newline = None
+
+    def write_text(self, data, encoding=None, errors=None, newline=None):
+        """
+        Open the file in text mode, write to it, and close the file.
+        """
+        # Call io.text_encoding() here to ensure any warning is raised at an
+        # appropriate stack level.
+        encoding = io.text_encoding(encoding)
+        if not isinstance(data, str):
+            raise TypeError('data must be str, not %s' %
+                            data.__class__.__name__)
+>       with self.open(mode='w', encoding=encoding, errors=errors, newline=newline) as f:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       OSError: [Errno 122] Disk quota exceeded
+
+/usr/lib/python3.14/pathlib/__init__.py:809: OSError
+_ test_sql_guards_cannot_be_bypassed_by_admin_setting[DELETE FROM assignment_games] _
+OSError: [Errno 122] Disk quota exceeded
+
+During handling of the above exception, another exception occurred:
+
+assignment_database = <sqlalchemy.engine.base.Connection object at 0x7fcf0a8eb2f0>
+tmp_path = PosixPath('/tmp/pytest-of-ethioking/pytest-346/test_sql_guards_cannot_be_bypa1')
+statement = 'DELETE FROM assignment_games'
+
+>   ???
+
+/tmp/courtlens-python-edtds83g/tests/integration/test_assignment_admission_postgres.py:107:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests/assignment_fakes.py:29: in make_assignment_inputs
+    method.write_text("Fixture provider denominator reference")
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = PosixPath('/tmp/pytest-of-ethioking/pytest-346/test_sql_guards_cannot_be_bypa1/methodology.md')
+data = 'Fixture provider denominator reference', encoding = 'locale'
+errors = None, newline = None
+
+    def write_text(self, data, encoding=None, errors=None, newline=None):
+        """
+        Open the file in text mode, write to it, and close the file.
+        """
+        # Call io.text_encoding() here to ensure any warning is raised at an
+        # appropriate stack level.
+        encoding = io.text_encoding(encoding)
+        if not isinstance(data, str):
+            raise TypeError('data must be str, not %s' %
+                            data.__class__.__name__)
+>       with self.open(mode='w', encoding=encoding, errors=errors, newline=newline) as f:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       OSError: [Errno 122] Disk quota exceeded
+
+/usr/lib/python3.14/pathlib/__init__.py:809: OSError
+_ test_sql_guards_cannot_be_bypassed_by_admin_setting[UPDATE assignment_members SET matchup_seconds=0] _
+OSError: [Errno 122] Disk quota exceeded
+
+During handling of the above exception, another exception occurred:
+
+assignment_database = <sqlalchemy.engine.base.Connection object at 0x7fcf0aaeef30>
+tmp_path = PosixPath('/tmp/pytest-of-ethioking/pytest-346/test_sql_guards_cannot_be_bypa2')
+statement = 'UPDATE assignment_members SET matchup_seconds=0'
+
+>   ???
+
+/tmp/courtlens-python-edtds83g/tests/integration/test_assignment_admission_postgres.py:107:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests/assignment_fakes.py:29: in make_assignment_inputs
+    method.write_text("Fixture provider denominator reference")
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = PosixPath('/tmp/pytest-of-ethioking/pytest-346/test_sql_guards_cannot_be_bypa2/methodology.md')
+data = 'Fixture provider denominator reference', encoding = 'locale'
+errors = None, newline = None
+
+    def write_text(self, data, encoding=None, errors=None, newline=None):
+        """
+        Open the file in text mode, write to it, and close the file.
+        """
+        # Call io.text_encoding() here to ensure any warning is raised at an
+        # appropriate stack level.
+        encoding = io.text_encoding(encoding)
+        if not isinstance(data, str):
+            raise TypeError('data must be str, not %s' %
+                            data.__class__.__name__)
+>       with self.open(mode='w', encoding=encoding, errors=errors, newline=newline) as f:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       OSError: [Errno 122] Disk quota exceeded
+
+/usr/lib/python3.14/pathlib/__init__.py:809: OSError
+_ test_sql_guards_cannot_be_bypassed_by_admin_setting[DELETE FROM assignment_observations] _
+OSError: [Errno 122] Disk quota exceeded
+
+During handling of the above exception, another exception occurred:
+
+assignment_database = <sqlalchemy.engine.base.Connection object at 0x7fcf0aaeee40>
+tmp_path = PosixPath('/tmp/pytest-of-ethioking/pytest-346/test_sql_guards_cannot_be_bypa3')
+statement = 'DELETE FROM assignment_observations'
+
+>   ???
+
+/tmp/courtlens-python-edtds83g/tests/integration/test_assignment_admission_postgres.py:107:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests/assignment_fakes.py:29: in make_assignment_inputs
+    method.write_text("Fixture provider denominator reference")
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = PosixPath('/tmp/pytest-of-ethioking/pytest-346/test_sql_guards_cannot_be_bypa3/methodology.md')
+data = 'Fixture provider denominator reference', encoding = 'locale'
+errors = None, newline = None
+
+    def write_text(self, data, encoding=None, errors=None, newline=None):
+        """
+        Open the file in text mode, write to it, and close the file.
+        """
+        # Call io.text_encoding() here to ensure any warning is raised at an
+        # appropriate stack level.
+        encoding = io.text_encoding(encoding)
+        if not isinstance(data, str):
+            raise TypeError('data must be str, not %s' %
+                            data.__class__.__name__)
+>       with self.open(mode='w', encoding=encoding, errors=errors, newline=newline) as f:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       OSError: [Errno 122] Disk quota exceeded
+
+/usr/lib/python3.14/pathlib/__init__.py:809: OSError
+_ test_sql_guards_cannot_be_bypassed_by_admin_setting[TRUNCATE assignment_datasets CASCADE] _
+OSError: [Errno 122] Disk quota exceeded
+
+During handling of the above exception, another exception occurred:
+
+assignment_database = <sqlalchemy.engine.base.Connection object at 0x7fcf0aaec7d0>
+tmp_path = PosixPath('/tmp/pytest-of-ethioking/pytest-346/test_sql_guards_cannot_be_bypa4')
+statement = 'TRUNCATE assignment_datasets CASCADE'
+
+>   ???
+
+/tmp/courtlens-python-edtds83g/tests/integration/test_assignment_admission_postgres.py:107:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests/assignment_fakes.py:29: in make_assignment_inputs
+    method.write_text("Fixture provider denominator reference")
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = PosixPath('/tmp/pytest-of-ethioking/pytest-346/test_sql_guards_cannot_be_bypa4/methodology.md')
+data = 'Fixture provider denominator reference', encoding = 'locale'
+errors = None, newline = None
+
+    def write_text(self, data, encoding=None, errors=None, newline=None):
+        """
+        Open the file in text mode, write to it, and close the file.
+        """
+        # Call io.text_encoding() here to ensure any warning is raised at an
+        # appropriate stack level.
+        encoding = io.text_encoding(encoding)
+        if not isinstance(data, str):
+            raise TypeError('data must be str, not %s' %
+                            data.__class__.__name__)
+>       with self.open(mode='w', encoding=encoding, errors=errors, newline=newline) as f:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       OSError: [Errno 122] Disk quota exceeded
+
+/usr/lib/python3.14/pathlib/__init__.py:809: OSError
+_ test_sql_guards_cannot_be_bypassed_by_admin_setting[TRUNCATE assignment_members] _
+OSError: [Errno 122] Disk quota exceeded
+
+During handling of the above exception, another exception occurred:
+
+assignment_database = <sqlalchemy.engine.base.Connection object at 0x7fcf0ac9b020>
+tmp_path = PosixPath('/tmp/pytest-of-ethioking/pytest-346/test_sql_guards_cannot_be_bypa5')
+statement = 'TRUNCATE assignment_members'
+
+>   ???
+
+/tmp/courtlens-python-edtds83g/tests/integration/test_assignment_admission_postgres.py:107:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests/assignment_fakes.py:29: in make_assignment_inputs
+    method.write_text("Fixture provider denominator reference")
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = PosixPath('/tmp/pytest-of-ethioking/pytest-346/test_sql_guards_cannot_be_bypa5/methodology.md')
+data = 'Fixture provider denominator reference', encoding = 'locale'
+errors = None, newline = None
+
+    def write_text(self, data, encoding=None, errors=None, newline=None):
+        """
+        Open the file in text mode, write to it, and close the file.
+        """
+        # Call io.text_encoding() here to ensure any warning is raised at an
+        # appropriate stack level.
+        encoding = io.text_encoding(encoding)
+        if not isinstance(data, str):
+            raise TypeError('data must be str, not %s' %
+                            data.__class__.__name__)
+>       with self.open(mode='w', encoding=encoding, errors=errors, newline=newline) as f:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       OSError: [Errno 122] Disk quota exceeded
+
+/usr/lib/python3.14/pathlib/__init__.py:809: OSError
+_ test_sql_guards_cannot_be_bypassed_by_admin_setting[INSERT INTO assignment_games SELECT dataset_id,'0022500002',game_date,row_count,membership_sha256 FROM assignment_games] _
+OSError: [Errno 122] Disk quota exceeded
+
+During handling of the above exception, another exception occurred:
+
+assignment_database = <sqlalchemy.engine.base.Connection object at 0x7fcf0ac9af30>
+tmp_path = PosixPath('/tmp/pytest-of-ethioking/pytest-346/test_sql_guards_cannot_be_bypa6')
+statement = "INSERT INTO assignment_games SELECT dataset_id,'0022500002',game_date,row_count,membership_sha256 FROM assignment_games"
+
+>   ???
+
+/tmp/courtlens-python-edtds83g/tests/integration/test_assignment_admission_postgres.py:107:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests/assignment_fakes.py:29: in make_assignment_inputs
+    method.write_text("Fixture provider denominator reference")
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = PosixPath('/tmp/pytest-of-ethioking/pytest-346/test_sql_guards_cannot_be_bypa6/methodology.md')
+data = 'Fixture provider denominator reference', encoding = 'locale'
+errors = None, newline = None
+
+    def write_text(self, data, encoding=None, errors=None, newline=None):
+        """
+        Open the file in text mode, write to it, and close the file.
+        """
+        # Call io.text_encoding() here to ensure any warning is raised at an
+        # appropriate stack level.
+        encoding = io.text_encoding(encoding)
+        if not isinstance(data, str):
+            raise TypeError('data must be str, not %s' %
+                            data.__class__.__name__)
+>       with self.open(mode='w', encoding=encoding, errors=errors, newline=newline) as f:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       OSError: [Errno 122] Disk quota exceeded
+
+/usr/lib/python3.14/pathlib/__init__.py:809: OSError
+_ test_sql_guards_cannot_be_bypassed_by_admin_setting[INSERT INTO assignment_members SELECT dataset_id,2,game_id,off_person_id,'99',off_team_id,def_team_id,matchup_seconds,partial_possessions,row_sha256,payload_json FROM assignment_members] _
+OSError: [Errno 122] Disk quota exceeded
+
+During handling of the above exception, another exception occurred:
+
+assignment_database = <sqlalchemy.engine.base.Connection object at 0x7fcf0ac98140>
+tmp_path = PosixPath('/tmp/pytest-of-ethioking/pytest-346/test_sql_guards_cannot_be_bypa7')
+statement = "INSERT INTO assignment_members SELECT dataset_id,2,game_id,off_person_id,'99',off_team_id,def_team_id,matchup_seconds,partial_possessions,row_sha256,payload_json FROM assignment_members"
+
+>   ???
+
+/tmp/courtlens-python-edtds83g/tests/integration/test_assignment_admission_postgres.py:107:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests/assignment_fakes.py:29: in make_assignment_inputs
+    method.write_text("Fixture provider denominator reference")
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = PosixPath('/tmp/pytest-of-ethioking/pytest-346/test_sql_guards_cannot_be_bypa7/methodology.md')
+data = 'Fixture provider denominator reference', encoding = 'locale'
+errors = None, newline = None
+
+    def write_text(self, data, encoding=None, errors=None, newline=None):
+        """
+        Open the file in text mode, write to it, and close the file.
+        """
+        # Call io.text_encoding() here to ensure any warning is raised at an
+        # appropriate stack level.
+        encoding = io.text_encoding(encoding)
+        if not isinstance(data, str):
+            raise TypeError('data must be str, not %s' %
+                            data.__class__.__name__)
+>       with self.open(mode='w', encoding=encoding, errors=errors, newline=newline) as f:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       OSError: [Errno 122] Disk quota exceeded
+
+/usr/lib/python3.14/pathlib/__init__.py:809: OSError
+___________ test_mid_admission_failure_rolls_back_parent_and_members ___________
+OSError: [Errno 122] Disk quota exceeded
+
+During handling of the above exception, another exception occurred:
+
+assignment_database = <sqlalchemy.engine.base.Connection object at 0x7fcf0ac9ae40>
+tmp_path = PosixPath('/tmp/pytest-of-ethioking/pytest-346/test_mid_admission_failure_rol0')
+
+>   ???
+
+/tmp/courtlens-python-edtds83g/tests/integration/test_assignment_admission_postgres.py:119:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests/assignment_fakes.py:29: in make_assignment_inputs
+    method.write_text("Fixture provider denominator reference")
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = PosixPath('/tmp/pytest-of-ethioking/pytest-346/test_mid_admission_failure_rol0/methodology.md')
+data = 'Fixture provider denominator reference', encoding = 'locale'
+errors = None, newline = None
+
+    def write_text(self, data, encoding=None, errors=None, newline=None):
+        """
+        Open the file in text mode, write to it, and close the file.
+        """
+        # Call io.text_encoding() here to ensure any warning is raised at an
+        # appropriate stack level.
+        encoding = io.text_encoding(encoding)
+        if not isinstance(data, str):
+            raise TypeError('data must be str, not %s' %
+                            data.__class__.__name__)
+>       with self.open(mode='w', encoding=encoding, errors=errors, newline=newline) as f:
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       OSError: [Errno 122] Disk quota exceeded
+
+/usr/lib/python3.14/pathlib/__init__.py:809: OSError
+___________________ test_dump_restore_history_and_provenance ___________________
+
+postgres_conversation = (<sqlalchemy.orm.session.Session object at 0x7fcf0acdbc50>, ResolvedContext(release_id='a3700858-69ff-4aff-97a2-451c4a...torical reconstruction from completed records.', 'Prior-day boundary: game_date < before_date is strictly enforced.']))
+tmp_path = PosixPath('/tmp/pytest-of-ethioking/pytest-346/test_dump_restore_history_and_0')
+
+>   ???
+
+/tmp/courtlens-python-edtds83g/tests/integration/test_assistant_history_postgres.py:389:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = PosixPath('/tmp/pytest-of-ethioking/pytest-346/test_dump_restore_history_and_0/history.sql')
+data = b'--\n-- PostgreSQL database dump\n--\n\n\\restrict CtZecSvMIHbhwdbF2lY55ESE5weBbndbOXeaAmHSgfvT7AT2EcABRWaYoaQWzj2\n\...tgreSQL database dump complete\n--\n\n\\unrestrict CtZecSvMIHbhwdbF2lY55ESE5weBbndbOXeaAmHSgfvT7AT2EcABRWaYoaQWzj2\n\n'
+
+    def write_bytes(self, data):
+        """
+        Open the file in bytes mode, write to it, and close the file.
+        """
+        # type-check for the buffer interface before truncating the file
+        view = memoryview(data)
+        with self.open(mode='wb') as f:
+>           return f.write(view)
+                   ^^^^^^^^^^^^^
+E           OSError: [Errno 122] Disk quota exceeded
+
+/usr/lib/python3.14/pathlib/__init__.py:797: OSError
+________ test_external_excerpt_and_binding_survive_actual_dump_restore _________
+
+postgres_conversation = (<sqlalchemy.orm.session.Session object at 0x7fcf09fa0a50>, ResolvedContext(release_id='5f698ad6-719f-4688-a0c7-21a73e...torical reconstruction from completed records.', 'Prior-day boundary: game_date < before_date is strictly enforced.']))
+tmp_path = PosixPath('/tmp/pytest-of-ethioking/pytest-346/test_external_excerpt_and_bind0')
+
+>   ???
+
+/tmp/courtlens-python-edtds83g/tests/integration/test_assistant_retrieval_postgres.py:141:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = PosixPath('/tmp/pytest-of-ethioking/pytest-346/test_external_excerpt_and_bind0/external-history.sql')
+data = b'--\n-- PostgreSQL database dump\n--\n\n\\restrict CcLeereijeR3mxTlXrjddlevamTUcasqZtjjfUdnf8Rnq9muKx43ZgjfS1Y6aHQ\n\...tgreSQL database dump complete\n--\n\n\\unrestrict CcLeereijeR3mxTlXrjddlevamTUcasqZtjjfUdnf8Rnq9muKx43ZgjfS1Y6aHQ\n\n'
+
+    def write_bytes(self, data):
+        """
+        Open the file in bytes mode, write to it, and close the file.
+        """
+        # type-check for the buffer interface before truncating the file
+        view = memoryview(data)
+        with self.open(mode='wb') as f:
+>           return f.write(view)
+                   ^^^^^^^^^^^^^
+E           OSError: [Errno 122] Disk quota exceeded
+
+/usr/lib/python3.14/pathlib/__init__.py:797: OSError
+=============================== warnings summary ===============================
+../../home/ethioking/dev/courtlens/.venv/lib/python3.14/site-packages/google/genai/types.py:42
+  /home/ethioking/dev/courtlens/.venv/lib/python3.14/site-packages/google/genai/types.py:42: DeprecationWarning: '_UnionGenericAlias' is deprecated and slated for removal in Python 3.17
+    VersionedUnionType = Union[builtin_types.UnionType, _UnionGenericAlias]
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+SKIPPED [1] ../courtlens-python-p9x6rob5/tests/integration/test_assistant_panel_browser.py:27: isolated Next browser server required
+ERROR tests/integration/test_api.py::test_public_data_status_exposes_failure_type_but_redacts_detail
+ERROR tests/integration/test_api.py::test_schedule_excludes_postponed_games_from_slate_counts
+ERROR tests/integration/test_api.py::test_schedule_flags_back_to_back_from_day_before_selected_week
+ERROR tests/integration/test_api.py::test_player_form_links_to_non_payload_lineage_trace
+ERROR tests/integration/test_api.py::test_private_planner_requires_owner_and_reconciles
+ERROR tests/integration/test_api.py::test_weekly_lock_league_is_rejected_explicitly
+ERROR tests/integration/test_api.py::test_cross_owner_league_is_not_disclosed
+ERROR tests/integration/test_api.py::test_acquisition_exhaustion_returns_explained_invalid_state
+ERROR tests/integration/test_assistant_positions_postgres.py::test_center_ranking_uses_majority_starting_position
+ERROR tests/integration/test_assistant_positions_postgres.py::test_narrower_position_is_labelled_as_its_group
+ERROR tests/integration/test_assistant_positions_postgres.py::test_position_step_is_canonical_and_rejects_unknown_fields
+ERROR tests/integration/test_assistant_positions_postgres.py::test_unverifiable_positions_answer_unfiltered_with_label[changed_bytes]
+ERROR tests/integration/test_assistant_positions_postgres.py::test_unverifiable_positions_answer_unfiltered_with_label[no_manifest]
+FAILED tests/integration/test_agent_tools_postgres.py::test_finance_is_book_bound_without_basketball_scope[123456789.01-12345678901]
+FAILED tests/integration/test_agent_tools_postgres.py::test_finance_is_book_bound_without_basketball_scope[None-None]
+FAILED tests/integration/test_assignment_admission_postgres.py::test_atomic_rollback_exact_precision_and_immutable_replay
+FAILED tests/integration/test_assignment_admission_postgres.py::test_sql_guards_cannot_be_bypassed_by_admin_setting[UPDATE assignment_datasets SET content_sha256='changed']
+FAILED tests/integration/test_assignment_admission_postgres.py::test_sql_guards_cannot_be_bypassed_by_admin_setting[DELETE FROM assignment_games]
+FAILED tests/integration/test_assignment_admission_postgres.py::test_sql_guards_cannot_be_bypassed_by_admin_setting[UPDATE assignment_members SET matchup_seconds=0]
+FAILED tests/integration/test_assignment_admission_postgres.py::test_sql_guards_cannot_be_bypassed_by_admin_setting[DELETE FROM assignment_observations]
+FAILED tests/integration/test_assignment_admission_postgres.py::test_sql_guards_cannot_be_bypassed_by_admin_setting[TRUNCATE assignment_datasets CASCADE]
+FAILED tests/integration/test_assignment_admission_postgres.py::test_sql_guards_cannot_be_bypassed_by_admin_setting[TRUNCATE assignment_members]
+FAILED tests/integration/test_assignment_admission_postgres.py::test_sql_guards_cannot_be_bypassed_by_admin_setting[INSERT INTO assignment_games SELECT dataset_id,'0022500002',game_date,row_count,membership_sha256 FROM assignment_games]
+FAILED tests/integration/test_assignment_admission_postgres.py::test_sql_guards_cannot_be_bypassed_by_admin_setting[INSERT INTO assignment_members SELECT dataset_id,2,game_id,off_person_id,'99',off_team_id,def_team_id,matchup_seconds,partial_possessions,row_sha256,payload_json FROM assignment_members]
+FAILED tests/integration/test_assignment_admission_postgres.py::test_mid_admission_failure_rolls_back_parent_and_members
+FAILED tests/integration/test_assistant_history_postgres.py::test_dump_restore_history_and_provenance
+FAILED tests/integration/test_assistant_retrieval_postgres.py::test_external_excerpt_and_binding_survive_actual_dump_restore
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! KeyboardInterrupt !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+/usr/lib/python3.14/selectors.py:398: KeyboardInterrupt
+(to show a full traceback on KeyboardInterrupt use --full-trace)
+14 failed, 444 passed, 1 skipped, 19 deselected, 1 warning, 13 errors in 221.01s (0:03:41)

@@ -1,0 +1,8 @@
+
+Running 2 tests using 1 worker
+
+  ✓  1 e2e/visual-baselines.spec.ts:165:7 › PC12 directory desktop › first load (1.0s)
+/home/ethioking/dev/.courtlens-pc12-a/dashboard/e2e/visual-baselines.spec.ts-snapshots/pc12-directory-phone-linux.png is re-generated, writing actual.
+  ✓  2 e2e/visual-baselines.spec.ts:165:7 › PC12 directory phone › first load (1.1s)
+
+  2 passed (2.6s)

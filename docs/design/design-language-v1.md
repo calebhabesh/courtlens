@@ -148,7 +148,10 @@ Geometry only: exact pinned `d3-shape` 3.2.0, `d3-hierarchy` 3.1.2, `d3-sankey` 
   value stays hatched Unknown. The default remains hatched Unknown.
 - `PercentileCell`: supplied **already-oriented** cohort percentile; no client rank calculation.
   The caller supplies cohort and qualification. Unqualified values say “Small sample” and are muted.
-  C10's cohort qualification is implemented with the tables in PC12, not inferred by this primitive.
+  PC12 A implements C10's qualification in the server ([table percentiles v1](table-percentiles-v1.md)):
+  500 season minutes through the cutoff, league ranks independent of display filters. Compact
+  tables keep a numeric muted percentile and a player-level Small sample badge; Stats' preview
+  uses the same reference. The primitive never infers qualification.
 - `ShapePack`: positive nonnegative area, labeled categories and solid/dashed/dotted fit outlines,
   full item list including zero/unknown values. An optional capacity leaves unused space. Negative
   signed impact is rejected: PC10 must declare its sizing transform. PC10's Wyman presentation

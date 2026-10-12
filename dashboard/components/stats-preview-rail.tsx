@@ -1,14 +1,13 @@
 "use client";
 
 import { Icon } from "./ui/icon";
-import { favorablePercentile, type GoodDirection } from "@/lib/percentile-display";
 
 import { PlayerPortrait } from "./player-portrait";
 import { TeamLogoStack } from "./team-logo";
 import { formatColumnValue, type ColumnDefinition } from "@/lib/stats-presets";
 import type { PlayerResearchItem } from "@/lib/types";
 
-export function StatsPreviewRail({ player, columns, season, eligiblePlayers, goodDirections,
+export function StatsPreviewRail({ player, columns, season, eligiblePlayers,
   showPercentiles, pinned, collapsed, onTogglePin, onToggleCollapse, onOpenDetails }: {
   player: PlayerResearchItem | null;
   columns: ColumnDefinition[];
@@ -46,21 +45,20 @@ export function StatsPreviewRail({ player, columns, season, eligiblePlayers, goo
       </div>
       <dl className="stats-preview-metrics">
         {columns.map(column => {
-          const percentile = player.percentiles?.[column.key];
-          const direction = goodDirections?.[column.key];
-          const favorable = favorablePercentile(percentile, direction as GoodDirection);
+          const percentile = player.table_percentiles?.[column.key];
+          const qualified = player.table_qualified === true && player.impact_support?.[column.key]?.qualified !== false;
           return <div key={column.key} className="stats-preview-metric">
             <dt title={column.tooltip}>{column.label}</dt>
             <dd><strong>{formatColumnValue(column, player)}</strong>{showPercentiles && <span
-              className={`stats-preview-percentile ${favorable != null && favorable >= 65 ? "is-favorable" : ""}`}
-              title={percentile == null ? "No cohort percentile available" : `Cohort midrank percentile: ${percentile}% · ${player.cohort_sample_sizes?.[column.key] ?? "unknown"} valid players · ${eligiblePlayers} eligible players${direction ? ` · ${direction === "low" ? "Lower" : "Higher"} values preferred` : ""}`}>
-              {percentile ?? "—"}
+              className="stats-preview-percentile"
+              title={`League percentile: ${percentile ?? "unknown"} · ${player.table_cohort_sample_sizes?.[column.key] ?? "unknown"} valid players · 500+ season minutes`}>
+              {player.metrics[column.key] == null ? "Unknown" : !qualified ? `${percentile ?? "—"} pct · small` : percentile == null ? "Rank unknown" : `${percentile} pct`}
             </span>}</dd>
           </div>;
         })}
       </dl>
       <div className="stats-preview-footer">
-        <span>Percentiles within the eligible cohort</span>
+        <span>League reference · 500+ season minutes · {eligiblePlayers} players in view{player.table_qualified === false ? " · Small sample" : ""}</span>
         <button type="button" className="button button-small" onClick={() => onOpenDetails(player)}>
           Full player details
         </button>

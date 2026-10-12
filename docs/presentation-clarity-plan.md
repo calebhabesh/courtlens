@@ -248,6 +248,9 @@ available locally; EPV redirects to RAPM Research.
 
 ### PC12 Remaining audit batches
 
+- Owner confirmed on 2026-10-12: A tables → B headline visuals → C demo hygiene → D personal
+  tools; example boards by a fixed rule; keep Players as a directory; leave the 340 unused legacy
+  measurement rows. Contracts' deferred Others grouping belongs to B. No gate before PC12.
 - Work through PC02's batches in the owner's order: percentile-shaded tables (C10), headline
   visuals (C4), KPI tiles and legends on every page.
 - One commit per batch, with screenshots and the extended glance test.
