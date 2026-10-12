@@ -569,3 +569,16 @@ parameters**. Blocks before each owner gate also need recorded owner approval.
   checkout and failed the repository brand scan; the corrected external-scratch full run passes.
 - Next: D fixed-rule Rankings/Tier Lists example boards. Existing Compare Export, page-wide
   alignment/service-state checks and injury/transaction source verification remain independent gaps.
+
+## 2026-10-12 — Handoff closed; PC12 D partial, PC13 parked
+
+The owner closed this handoff in favour of the page-by-page
+[Databallr alignment handoff](databallr-alignment-plan.md).
+
+- PC12 D stopped mid-way and was committed as a checkpoint (`53ee4d6`): example boards on
+  Rankings/Tier List. Lint, types and 445 Vitest tests pass; its browser specs were not run
+  and no D evidence README was written. Both pages are re-done in the alignment catalog.
+- PC13 (hosting, schedulers, backups, Ask demo mode, Data Sources page) is **parked, not
+  cancelled**. Resume it once the first alignment pages are approved.
+- Remaining known gaps carry over unchanged: Compare Export, injury/transaction source
+  verification.

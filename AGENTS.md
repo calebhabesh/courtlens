@@ -20,6 +20,8 @@ For any page layout, page structure, filter bar, header/search/drawer, copy dens
 
 For chart/graphic presentation, color semantics, first-load default states, new free data sources (contracts, rosters, injuries, tracking, play types), Roster Shapes, Contracts/Free Agency, gated-page removal, or hosting the demo, read the [presentation clarity handoff](docs/presentation-clarity-plan.md) first. It supersedes the overhaul for data presentation, D21 and page existence, and supersedes earlier source gates through its [source policy v2](docs/design/nba-direct-admission-v2.md); it keeps every analytical contract. CourtLens is a non-commercial portfolio demo: zero recurring costs, and pages without free data are removed, not gated. Record evidence in the [presentation clarity progress log](docs/presentation-clarity-progress.md).
 
+For any work that makes a CourtLens page look or behave like its Databallr counterpart (the app shell, Stats, Players, Compare, Teams, WOWY and every other row in the catalog), read the [Databallr alignment handoff](docs/databallr-alignment-plan.md) first. It supersedes the overhaul, refresh, freeze and presentation-clarity handoffs for the layout and presentation of catalogued pages, and keeps every analytical, data and source contract. Work one page at a time, from the owner's instructions recorded in the [alignment catalog](docs/databallr-alignment-catalog.md). Only the owner marks a page aligned. The presentation-clarity handoff is closed, and its PC13 hosting block is parked.
+
 ## Architecture and Stack
 
 - **Backend:** Python 3.12+ / FastAPI with typed Pydantic models and SQLAlchemy 2.0.
