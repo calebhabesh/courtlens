@@ -232,11 +232,11 @@ describe("table guide boundaries", () => {
     expect(impact[0].format?.(7.35021)).toBe("+7.4");
     expect(ALL_CATALOG_METRICS.bpr.label).toBe("1Y BPR");
   });
-  it("groups Overview in Databallr's section order with Counting ahead of Impact", () => {
+  it("groups Overview in the owner's section order with Impact ahead of Counting", () => {
     expect(tableGroups(getPresetById("overview"))).toEqual([
       { label: "Profile", start: 0, colSpan: 4 },
-      { label: "Counting", start: 4, colSpan: 6 },
-      { label: "Impact", start: 10, colSpan: 3 },
+      { label: "Impact", start: 4, colSpan: 3 },
+      { label: "Counting", start: 7, colSpan: 6 },
       { label: "Eff", start: 13, colSpan: 4 },
       { label: "Shooting", start: 17, colSpan: 5 },
       { label: "Other", start: 22, colSpan: 4 }

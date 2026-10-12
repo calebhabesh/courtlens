@@ -245,9 +245,9 @@ function impactColumns(keys: string[], group: string): ColumnDefinition[] {
 export const STATS_PRESETS: PresetDefinition[] = [
   {
     id: "overview",
-    // Databallr's Overview groups with Counting ahead of Impact (owner, 2026-10-12); DPM-family
-    // slots use the explicitly dated DARKO forecast (owner admitted source policy v3).
-    groupLabels: { Participation: "Profile", Counting: "Counting", Impact: "Impact", Efficiency: "Eff", Shooting: "Shooting", Other: "Other" },
+    // Owner order (2026-10-12): Profile, Impact, Counting, Efficiency, Shooting, Other.
+    // DPM-family slots use the explicitly dated DARKO forecast (source policy v3).
+    groupLabels: { Participation: "Profile", Impact: "Impact", Counting: "Counting", Efficiency: "Eff", Shooting: "Shooting", Other: "Other" },
     label: "Overview",
     description: "Core box-score volume, impact estimates and efficiency benchmarks.",
     columns: [
@@ -255,6 +255,9 @@ export const STATS_PRESETS: PresetDefinition[] = [
       { key: "min", label: "MIN", group: "Participation", num: true, sortMetric: "min", format: formatIntValue, tooltip: "Total Minutes Played" },
       { key: "min_per_game", label: "MPG", group: "Participation", num: true, sortMetric: "min_per_game", format: (v) => formatStatValue(v, 1), tooltip: "Minutes Per Game" },
       { ...TRACKING_COLUMNS.on_ball_pct, group: "Participation", keepLabel: true },
+      DARKO_COLUMNS.dpm,
+      DARKO_COLUMNS.o_dpm,
+      DARKO_COLUMNS.d_dpm,
       // The three headline counts first, then creation (points created, rim assists) and TOV.
       countingColumn("pts", "PTS", "Counting", "Points"),
       countingColumn("reb", "REB", "Counting", "Total Rebounds"),
@@ -262,9 +265,6 @@ export const STATS_PRESETS: PresetDefinition[] = [
       countingColumn("pts_created", "PTS Created", "Counting", "Points created", "pts_created"),
       countingColumn("rim_ast", "Rim AST", "Counting", "Rim assists", "pbp_rim_assists"),
       countingColumn("tov", "TOV", "Counting", "Turnovers"),
-      DARKO_COLUMNS.dpm,
-      DARKO_COLUMNS.o_dpm,
-      DARKO_COLUMNS.d_dpm,
       { key: "ts_pct", label: "TS%", group: "Efficiency", num: true, sortMetric: "ts_pct", format: formatPctValue, tooltip: "True Shooting %: PTS / (2 * (FGA + 0.44 * FTA))" },
       { ...IMPACT_COLUMNS.impact_rts, label: "rTS%", group: "Efficiency", format: formatSignedPctPoints, keepLabel: true },
       { key: "efg_pct", label: "eFG%", group: "Efficiency", num: true, sortMetric: "efg_pct", format: formatPctValue, tooltip: "Effective Field Goal %: (FGM + 0.5 * 3PM) / FGA" },

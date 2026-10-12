@@ -13,7 +13,7 @@ Rows are in working order.
 | # | Databallr | CourtLens | Status | Notes |
 |---|---|---|---|---|
 | 0 | App shell (nav rows, search, page title block) | `app/layout.tsx` | ⬜ | Done with the Stats pass |
-| 1 | Stats | `/stats` | 👀 | DARKO integration and highlighted source credits ready for owner review |
+| 1 | Stats | `/stats` | 👀 | Overview reordered: Profile → Impact → Counting → Eff → Shooting → Other |
 | 2 | Dashboard (player) | `/players/[id]` | ⬜ | |
 | 3 | PvP | `/compare` | ⬜ | Compare Export failure is a known gap |
 | 4 | Teams | `/teams` | ⬜ | |
@@ -196,6 +196,11 @@ Follow-up instructions (owner, 2026-10-12, sixth review):
 39. [x] Add a blue hyperlink to the DARKO stats in the hover state or wherever used to credit the
     source, and highlight it. — shared highlighted blue source link in header hover cards (clickable),
     footer, preview metric labels, trend dialog, glossary, methodology and Data details.
+40. [x] Rearrange Overview to Profile → Impact → Counting → Efficiency → Shooting → Other. — owner,
+    2026-10-12: "Okay let's do that rearranging." Supersedes instruction 16's Counting-first order.
+    Overview and preview reordered; DPM visible on first desktop load. Lint/typecheck, Vitest 453,
+    affected browser specs 24/24 and Stats baselines 2/2 pass. Real-data desktop/phone screenshots and
+    glance test: [Impact-first evidence](evidence/alignment/stats/impact-first/README.md).
 Not applicable (no data or feature): the video and trophy
 (Leaders) toolbar buttons. Tab/Shift+Tab view cycling is exposed as buttons only, so Tab keeps
 normal keyboard focus order.
