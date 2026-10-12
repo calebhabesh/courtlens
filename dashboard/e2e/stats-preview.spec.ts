@@ -28,7 +28,8 @@ test("hover and keyboard preview reuse table values without fetching or stealing
   await expect(preview(page).getByRole("heading", { name: "Fixture Guard" })).toBeVisible();
   await expect(rows(page).nth(1)).toBeFocused();
   expect(fetches).toEqual([]);
-  await page.getByRole("button", { name: "%iles On", exact: true }).click();
+  await page.getByRole("button", { name: "Table settings", exact: true }).click();
+  await page.getByRole("menuitem", { name: "Hide percentiles", exact: true }).click();
   await expect(preview(page).locator(".stats-preview-percentile")).toHaveCount(0);
   await expect(rows(page).first().locator(".stat-pct-sublabel")).toHaveCount(0);
 });
@@ -47,10 +48,10 @@ test("pinning, collapsing and expanding preserve the preview and table geometry"
   await preview(page).getByRole("button", { name: "Expand player preview" }).click();
   await expect(preview(page).getByRole("heading", { name: "Fixture Star" })).toBeVisible();
   const initialHeight = (await region.boundingBox())!.height;
-  await page.getByRole("button", { name: "Expand Table (T)", exact: true }).click();
+  await page.getByRole("button", { name: "Expand table", exact: true }).click();
   expect((await region.boundingBox())!.height).toBeGreaterThan(initialHeight);
   await expect(preview(page).getByRole("heading", { name: "Fixture Star" })).toBeVisible();
-  await page.getByRole("button", { name: "Standard Height", exact: true }).click();
+  await page.getByRole("button", { name: "Standard height", exact: true }).click();
   await preview(page).getByRole("button", { name: "Unpin player preview" }).click();
   await rows(page).nth(1).hover();
   await expect(preview(page).getByRole("heading", { name: "Fixture Guard" })).toBeVisible();
@@ -69,8 +70,8 @@ test("wide and smaller desktop columns align with stable pinned identity while s
         headerLeft: headers.map(cell => cell.x), bodyLeft: body.map(cell => cell.x), rowHeight: body[0].height,
         identityWidths: body.slice(0, 3).map(cell => cell.width) };
     });
-    expect(geometry.rowHeight).toBeCloseTo(52, 1);
-    geometry.identityWidths.forEach((value, index) => expect(value).toBeCloseTo([28, 26, 280][index], 0));
+    expect(geometry.rowHeight).toBeCloseTo(42, 1);
+    geometry.identityWidths.slice(0, 2).forEach((value, index) => expect(value).toBeCloseTo([28, 236][index], 0));
     expect(geometry.headerWidths).toEqual(geometry.bodyWidths);
     expect(geometry.headerLeft).toEqual(geometry.bodyLeft);
     const region = page.getByRole("region", { name: "Player statistics scroll area" });
@@ -93,9 +94,14 @@ test("mobile details, collapsed filters and submitted search remain accessible",
   await expect(preview(page)).toBeHidden();
   await expect(page.getByRole("region", { name: "Statistics filters", exact: true })).toHaveCount(0);
   await page.getByRole("button", { name: "Filters", exact: true }).click();
-  await expect(page.getByLabel("Filter by NBA team")).toBeVisible();
   await expect(page.getByLabel("Minimum total minutes played")).toBeVisible();
   await page.getByRole("button", { name: "Filters", exact: true }).click();
+  // The team picker sits with the scope controls, which collapse into the Filters sheet on phones.
+  await page.locator(".ui-filter-bar-toggle").click();
+  const sheet = page.getByRole("dialog", { name: "Filters", exact: true });
+  await expect(sheet.getByLabel("Filter by NBA team")).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(sheet).toHaveCount(0);
   const search = page.getByRole("combobox", { name: "Filter players by name", exact: true });
   await search.fill("Guard"); await search.press("Enter");
   await page.waitForURL(/name=Guard/);

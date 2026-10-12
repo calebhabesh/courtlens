@@ -90,7 +90,7 @@ export default async function MethodologyPage() {
                 <tr className="methodology-group-row"><th scope="colgroup" colSpan={5}>{categoryLabel(category)}</th></tr>
                 {metrics.filter(metric => metric.category === category).map(metric => (
                   <tr key={metric.key}>
-                    <th scope="row"><span className="methodology-metric-name">{metric.display_name}</span><span className="methodology-metric-key">{metric.key}</span></th>
+                    <th scope="row"><span className="methodology-metric-name">{metric.display_name}</span><span className="methodology-metric-key">{metric.short_name}</span></th>
                     <td>{metric.unit}</td>
                     <td className="methodology-code">{metric.formula}</td>
                     <td className="methodology-code">{metric.validity_definition || "—"}{metric.denominator ? <span className="methodology-denominator">Denominator: {metric.denominator}</span> : null}</td>
