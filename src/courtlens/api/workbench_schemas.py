@@ -307,6 +307,9 @@ class PlayerResearchItem(BaseModel):
     percentiles: dict[str, float | None] | None = None
     cohort_sample_sizes: dict[str, int] | None = None
     impact_support: dict[str, Any] | None = None
+    table_qualified: bool | None = None
+    table_percentiles: dict[str, float | None] | None = None
+    table_cohort_sample_sizes: dict[str, int] | None = None
 
 
 class PlayerResearchResponse(BaseModel):
@@ -335,6 +338,7 @@ class WorkbenchQueryResponse(BaseModel):
     total_output_players: int | None = None
     output_offset: int | None = None
     cohort: StatsCohort | None = None
+    table_cohort: dict[str, Any] | None = None
     items: list[PlayerResearchItem]
     next_cursor: str | None = None
     has_more: bool
@@ -600,6 +604,8 @@ class TeamResearchItem(BaseModel):
     division: str | None = None
     ratings: dict[str, Any] | None = None
     four_factors: dict[str, Any] | None = None
+    table_percentiles: dict[str, float | None] | None = None
+    table_cohort_sample_sizes: dict[str, int] | None = None
 
 
 class TeamResearchResponse(BaseModel):

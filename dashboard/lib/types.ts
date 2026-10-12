@@ -532,9 +532,20 @@ export type StatsPresentation = {
   version?: "pf01a-v1";
   // null/omitted selects all; [] selects none. Does not redefine the cohort.
   player_ids?: string[] | null;
+  table_percentiles?: boolean;
+};
+
+export type TableCohort = {
+  version: string;
+  scope_hash: string;
+  qualified_players: number;
+  min_season_minutes: number;
+  reference: string;
+  formula: string;
 };
 
 export type WorkbenchQueryResponse = {
+  table_cohort?: TableCohort | null;
   impact?: ImpactDisclosureData | null;
   context: Record<string, unknown>;
   query: QuerySpec;
@@ -555,6 +566,9 @@ export type WorkbenchQueryResponse = {
 };
 
 export type PlayerResearchItem = {
+  table_qualified?: boolean | null;
+  table_percentiles?: Record<string, number | null> | null;
+  table_cohort_sample_sizes?: Record<string, number> | null;
   impact_support?: Record<string, ImpactSupport> | null;
   player_id: string;
   player_name: string;
@@ -641,6 +655,7 @@ export type PlayerResearchQuery = {
 };
 
 export type PlayerResearchResponse = {
+  table_cohort?: TableCohort | null;
   impact?: ImpactDisclosureData | null;
   total_output_players?: number | null;
   output_offset?: number | null;
@@ -791,6 +806,8 @@ export type PlayerGameLogResponse = {
 };
 
 export type TeamResearchItem = {
+  table_percentiles?: Record<string, number | null> | null;
+  table_cohort_sample_sizes?: Record<string, number> | null;
   team_id: string;
   tricode: string;
   name: string;

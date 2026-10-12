@@ -10,6 +10,9 @@ METRIC_CATALOG_V1_VERSION = "v1"
 METRIC_CATALOG_V2_VERSION = "v2"
 METRIC_CATALOG_VERSION = METRIC_CATALOG_V2_VERSION
 
+# PC12 display cohort; independent of retained metric arithmetic and validity.
+TABLE_PERCENTILE_MIN_MINUTES = 500
+
 SUPPORTED_PHASES = [
     "regular_season",
     "preseason",

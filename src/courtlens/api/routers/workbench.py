@@ -607,6 +607,12 @@ def execute_query_endpoint(
         else None
     )
 
+    table_cohort = None
+    if payload.presentation is not None and payload.presentation.table_percentiles:
+        from courtlens.services.table_percentiles import annotate_players
+
+        table_cohort = annotate_players(session, context, spec, items_raw)
+
     items = [
         PlayerResearchItem(
             player_id=r["player_id"],
@@ -620,6 +626,9 @@ def execute_query_endpoint(
             percentiles=r.get("percentiles"),
             cohort_sample_sizes=r.get("cohort_sample_sizes"),
             impact_support=r.get("impact_support"),
+            table_qualified=r.get("table_qualified"),
+            table_percentiles=r.get("table_percentiles"),
+            table_cohort_sample_sizes=r.get("table_cohort_sample_sizes"),
         )
         for r in items_raw
     ]
@@ -637,6 +646,7 @@ def execute_query_endpoint(
             else (0 if payload.presentation is not None else None)
         ),
         cohort=cohort,
+        table_cohort=table_cohort,
         items=items,
         next_cursor=next_cursor,
         has_more=has_more,
@@ -904,6 +914,9 @@ def get_teams(
     )
 
     teams_data, league_averages = get_teams_research(session, context)
+    from courtlens.services.table_percentiles import annotate_teams
+
+    annotate_teams(teams_data)
     teams = [TeamResearchItem(**t) for t in teams_data]
 
     return TeamResearchResponse(

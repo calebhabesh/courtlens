@@ -1,0 +1,118 @@
+{
+  "items": [
+    "Header",
+    "Filters",
+    "First screen",
+    "Alignment",
+    "Identity",
+    "Missing data",
+    "Icons",
+    "States",
+    "Phone",
+    "Dates",
+    "First load without parameters",
+    "Labeled main visual",
+    "Color semantics",
+    "Sample and source"
+  ],
+  "legend": {
+    "P": "pass",
+    "~": "partial or not fully measured",
+    "F": "fail",
+    "-": "not applicable"
+  },
+  "pages": [
+    {
+      "route": "/stats",
+      "passes": 10,
+      "applicable": 14,
+      "results": {
+        "Header": "P",
+        "Filters": "~",
+        "First screen": "P",
+        "Alignment": "~",
+        "Identity": "P",
+        "Missing data": "P",
+        "Icons": "P",
+        "States": "~",
+        "Phone": "P",
+        "Dates": "P",
+        "First load without parameters": "P",
+        "Labeled main visual": "~",
+        "Color semantics": "P",
+        "Sample and source": "P"
+      }
+    },
+    {
+      "route": "/players",
+      "passes": 12,
+      "applicable": 14,
+      "results": {
+        "Header": "P",
+        "Filters": "P",
+        "First screen": "P",
+        "Alignment": "~",
+        "Identity": "P",
+        "Missing data": "P",
+        "Icons": "P",
+        "States": "~",
+        "Phone": "P",
+        "Dates": "P",
+        "First load without parameters": "P",
+        "Labeled main visual": "P",
+        "Color semantics": "P",
+        "Sample and source": "P"
+      }
+    },
+    {
+      "route": "/teams",
+      "passes": 11,
+      "applicable": 14,
+      "results": {
+        "Header": "P",
+        "Filters": "P",
+        "First screen": "~",
+        "Alignment": "~",
+        "Identity": "P",
+        "Missing data": "P",
+        "Icons": "P",
+        "States": "~",
+        "Phone": "P",
+        "Dates": "P",
+        "First load without parameters": "P",
+        "Labeled main visual": "P",
+        "Color semantics": "P",
+        "Sample and source": "P"
+      }
+    },
+    {
+      "route": "/rankings",
+      "passes": 4,
+      "applicable": 9,
+      "results": {
+        "Header": "P",
+        "Filters": "-",
+        "First screen": "F",
+        "Alignment": "~",
+        "Identity": "-",
+        "Missing data": "P",
+        "Icons": "P",
+        "States": "~",
+        "Phone": "P",
+        "Dates": "-",
+        "First load without parameters": "F",
+        "Labeled main visual": "-",
+        "Color semantics": "-",
+        "Sample and source": "F"
+      }
+    }
+  ],
+  "notes": [
+    "Stats retains dense desktop controls below 38px; phone first-load numeric cells start below the fold despite a populated table. This is an explicitly retained glance limitation.",
+    "Team table starts below 400px; the All Teams result panel starts within 400px. A headline visual remains batch B.",
+    "Full-page 4px alignment is not measured. Right-aligned tabular digits, 52px Stats rows, guide placement and sticky phone identity are tested.",
+    "Loading/error/empty states have not been exhaustively injected on the real API. Directory navigation uses a table-shaped skeleton; generic first-route skeletons remain.",
+    "Rankings first load is empty without saved boards; example boards remain batch D. Its shaded statistical-reference columns are tested with a saved-board fixture and real query transport.",
+    "All eight production captures enter with no parameters and show zero page errors, failed HTTP responses, horizontal page overflow, visible ISO dates or visible hashes."
+  ]
+}

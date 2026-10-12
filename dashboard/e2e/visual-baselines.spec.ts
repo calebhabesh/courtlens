@@ -161,6 +161,17 @@ for (const view of WIDTHS) {
 }
 
 // FO14: numerical alignment, phone targets and the final shared 404 header.
+for (const view of WIDTHS) test.describe(`PC12 directory ${view.name}`, () => {
+  test("first load", async ({ page }) => {
+    await page.setViewportSize({ width: view.width, height: view.height });
+    await stableWorkspace(page);
+    await openWorkbench(page, "/players");
+    await expect(page.getByRole("table", { name: "Player directory", exact: true })).toBeVisible();
+    await settle(page);
+    await expect(page).toHaveScreenshot(`pc12-directory-${view.name}.png`, shot);
+  });
+});
+
 for (const view of WIDTHS) test.describe(`FO14 baselines ${view.name}`, () => {
   test.beforeEach(async ({ page }) => {
     await page.setViewportSize({ width: view.width, height: view.height });
