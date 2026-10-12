@@ -6,7 +6,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { HotkeysModal } from "./hotkeys-modal";
 import { Icon } from "./ui/icon";
 import { Modal } from "./ui/modal";
-import { Select } from "./ui/select";
+import { TeamLogo } from "./team-logo";
 import { NBA_TEAMS } from "@/lib/stats-presets";
 
 /** Databallr's help row under the page title: how-to, glossary and hotkeys. */
@@ -37,23 +37,74 @@ export function StatsHelpRow() {
   );
 }
 
-/** Team filter in the scope row; the URL keeps the analytical query as the single source of truth. */
-export function StatsTeamSelect() {
+/** Replace scope-row URL filters; any change returns to the first page. */
+function useScopeFilter() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const set = (updates: Record<string, string | null>) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete("cursor");
+    for (const [key, value] of Object.entries(updates)) {
+      if (value) params.set(key, value); else params.delete(key);
+    }
+    router.push(`${pathname}?${params}`);
+  };
+  return { searchParams, set };
+}
+
+/** Databallr's "Select Team": a dialog with a grid of the 30 team logos. */
+export function StatsTeamSelect() {
+  const { searchParams, set } = useScopeFilter();
+  const [open, setOpen] = useState(false);
   const team = searchParams.get("teamId") || searchParams.get("team_id") || "";
+  const selected = NBA_TEAMS.find(entry => entry.tricode === team);
+  const choose = (tricode: string | null) => { setOpen(false); set({ teamId: tricode, team_id: null }); };
   return (
-    <Select className="stats-team-select" value={team} aria-label="Filter by NBA team"
-      onChange={(event) => {
-        const params = new URLSearchParams(searchParams.toString());
-        params.delete("team_id");
-        params.delete("cursor");
-        if (event.target.value) params.set("teamId", event.target.value); else params.delete("teamId");
-        router.push(`${pathname}?${params}`);
-      }}>
-      <option value="">Select Team</option>
-      {NBA_TEAMS.map((t) => <option key={t.tricode} value={t.tricode}>{t.tricode} · {t.name}</option>)}
-    </Select>
+    <>
+      <button type="button" className={`stats-team-button ${selected ? "is-selected" : ""}`} onClick={() => setOpen(true)}
+        aria-haspopup="dialog" aria-label={selected ? `Team: ${selected.name}. Change team` : "Select Team"}>
+        {selected ? <><TeamLogo team={selected.tricode} size={20} />{selected.tricode}</> : "Select Team"}
+      </button>
+      <Modal isOpen={open} onClose={() => setOpen(false)} title="Select Team" description="30 NBA teams" className="stats-team-dialog">
+        <div className="stats-team-grid" role="group" aria-label="NBA teams">
+          {NBA_TEAMS.map(entry => (
+            <button key={entry.tricode} type="button" className="stats-team-option" aria-pressed={entry.tricode === team}
+              aria-label={entry.name} onClick={() => choose(entry.tricode)}>
+              <TeamLogo team={entry.tricode} size={40} />
+              <span>{entry.tricode}</span>
+            </button>
+          ))}
+        </div>
+        {selected && <button type="button" className="stats-team-clear" onClick={() => choose(null)}>Show all teams</button>}
+      </Modal>
+    </>
+  );
+}
+
+const POSITIONS = [
+  { value: "G", label: "Guards" }, { value: "F", label: "Forwards" }, { value: "C", label: "Centers" }
+] as const;
+
+/**
+ * Position chips. The free NBA roster index lists G, F and C (G-F counts for both), so these stand
+ * in for Databallr's five positions; listings are current, not backdated to past seasons.
+ */
+export function StatsPositionChips() {
+  const { searchParams, set } = useScopeFilter();
+  const active = new Set((searchParams.get("positions") ?? "").split(",").filter(Boolean));
+  const toggle = (value: string) => {
+    const next = new Set(active);
+    if (next.has(value)) next.delete(value); else next.add(value);
+    set({ positions: POSITIONS.map(p => p.value).filter(p => next.has(p)).join(",") || null });
+  };
+  return (
+    <div className="stats-position-chips" role="group" aria-label="Positions"
+      title="NBA listed roster positions (G, F, C) as currently listed; hybrid listings such as G-F match both. Not backdated to past seasons.">
+      {POSITIONS.map(position => (
+        <button key={position.value} type="button" className="stats-position-chip" aria-pressed={active.has(position.value)}
+          aria-label={position.label} onClick={() => toggle(position.value)}>{position.value}</button>
+      ))}
+    </div>
   );
 }

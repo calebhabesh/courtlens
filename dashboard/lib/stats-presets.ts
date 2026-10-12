@@ -26,6 +26,8 @@ export interface ColumnDefinition {
   sortMetric: string;
   format?: (val: number | null | undefined, item?: PlayerResearchItem) => string;
   countingModeKeys?: Partial<Record<CountingMode, string>>;
+  /** Keep this label and format under every counting mode instead of the catalog entry's (Overview). */
+  keepLabel?: boolean;
 }
 
 /** Table and preview must display the same server-owned value and normalization. */
@@ -147,6 +149,29 @@ export const IMPACT_COLUMNS: Record<string, ColumnDefinition> = Object.fromEntri
   }])
 );
 
+/** Signed one-decimal impact estimate, as Databallr shows its DPM family (+1.9). */
+export function formatSignedValue(val: number | null | undefined): string {
+  if (val === null || val === undefined || isNaN(val)) return "—";
+  return `${val > 0 ? "+" : ""}${val.toFixed(1)}`;
+}
+
+/** A ratio difference shown as signed percentage points (rTS +8.9). */
+export function formatSignedPctPoints(val: number | null | undefined): string {
+  if (val === null || val === undefined || isNaN(val)) return "—";
+  return formatSignedValue(val * 100);
+}
+
+/** A box-score count that follows the counting mode: per game, totals or per 36. */
+function countingColumn(base: string, label: string, group: string, name: string): ColumnDefinition {
+  return {
+    key: `${base}_per_game`, label, group, num: true, sortMetric: `${base}_per_game`,
+    format: (v, it) => (v !== undefined ? formatStatValue(v, 1) : formatIntValue(it?.metrics[base])),
+    countingModeKeys: { raw: base, per_game: `${base}_per_game`, per_36: `${base}_per_36` },
+    tooltip: `${name} (respects counting mode)`,
+    keepLabel: true
+  };
+}
+
 function impactColumns(keys: string[], group: string): ColumnDefinition[] {
   return keys.map(key => ({ ...IMPACT_COLUMNS[key], group }));
 }
@@ -154,68 +179,32 @@ function impactColumns(keys: string[], group: string): ColumnDefinition[] {
 export const STATS_PRESETS: PresetDefinition[] = [
   {
     id: "overview",
-    groupLabels: { Participation: "Profile", Scoring: "Counting", Rebounding: "Counting", Playmaking: "Counting" },
+    // Databallr's Overview group order (Profile, Impact, Counting, Eff, Location, Other) with the
+    // CourtLens metrics that exist for each; DPM-family slots use CourtLens Box Prior RAPM.
+    groupLabels: { Participation: "Profile", Impact: "Impact", Counting: "Counting", Efficiency: "Eff", Shooting: "Shooting", Other: "Other" },
     label: "Overview",
-    description: "Core box-score volume, conventional averages, and efficiency benchmarks.",
+    description: "Core box-score volume, impact estimates and efficiency benchmarks.",
     columns: [
       { key: "gp", label: "GP", group: "Participation", num: true, sortMetric: "gp", format: formatIntValue, tooltip: "Games Played (confirmed appearances)" },
       { key: "min", label: "MIN", group: "Participation", num: true, sortMetric: "min", format: formatIntValue, tooltip: "Total Minutes Played" },
       { key: "min_per_game", label: "MPG", group: "Participation", num: true, sortMetric: "min_per_game", format: (v) => formatStatValue(v, 1), tooltip: "Minutes Per Game" },
-      {
-        key: "pts_per_game",
-        label: "PTS",
-        group: "Scoring",
-        num: true,
-        sortMetric: "pts_per_game",
-        format: (v, it) => (v !== undefined ? formatStatValue(v, 1) : formatIntValue(it?.metrics.pts)),
-        countingModeKeys: { raw: "pts", per_game: "pts_per_game", per_36: "pts_per_36" },
-        tooltip: "Points (respects counting mode)"
-      },
-      {
-        key: "reb_per_game",
-        label: "REB",
-        group: "Rebounding",
-        num: true,
-        sortMetric: "reb_per_game",
-        format: (v, it) => (v !== undefined ? formatStatValue(v, 1) : formatIntValue(it?.metrics.reb)),
-        countingModeKeys: { raw: "reb", per_game: "reb_per_game", per_36: "reb_per_36" },
-        tooltip: "Total Rebounds (respects counting mode)"
-      },
-      {
-        key: "ast_per_game",
-        label: "AST",
-        group: "Playmaking",
-        num: true,
-        sortMetric: "ast_per_game",
-        format: (v, it) => (v !== undefined ? formatStatValue(v, 1) : formatIntValue(it?.metrics.ast)),
-        countingModeKeys: { raw: "ast", per_game: "ast_per_game", per_36: "ast_per_36" },
-        tooltip: "Assists (respects counting mode)"
-      },
-      {
-        key: "stl_per_game",
-        label: "STL",
-        group: "Defense",
-        num: true,
-        sortMetric: "stl_per_game",
-        format: (v, it) => (v !== undefined ? formatStatValue(v, 1) : formatIntValue(it?.metrics.stl)),
-        countingModeKeys: { raw: "stl", per_game: "stl_per_game", per_36: "stl_per_36" },
-        tooltip: "Steals (respects counting mode)"
-      },
-      {
-        key: "blk_per_game",
-        label: "BLK",
-        group: "Defense",
-        num: true,
-        sortMetric: "blk_per_game",
-        format: (v, it) => (v !== undefined ? formatStatValue(v, 1) : formatIntValue(it?.metrics.blk)),
-        countingModeKeys: { raw: "blk", per_game: "blk_per_game", per_36: "blk_per_36" },
-        tooltip: "Blocks (respects counting mode)"
-      },
-      { key: "fg_pct", label: "FG%", group: "Efficiency", num: true, sortMetric: "fg_pct", format: formatPctValue, tooltip: "Field Goal Percentage (FGM / FGA)" },
-      { key: "fg3_pct", label: "3P%", group: "Efficiency", num: true, sortMetric: "fg3_pct", format: formatPctValue, tooltip: "3-Point Field Goal Percentage (3PM / 3PA)" },
-      { key: "ft_pct", label: "FT%", group: "Efficiency", num: true, sortMetric: "ft_pct", format: formatPctValue, tooltip: "Free Throw Percentage (FTM / FTA)" },
+      { ...IMPACT_COLUMNS.bpr, label: "BPR", group: "Impact", format: formatSignedValue, keepLabel: true },
+      { ...IMPACT_COLUMNS.obpr, label: "OBPR", group: "Impact", format: formatSignedValue, keepLabel: true },
+      { ...IMPACT_COLUMNS.dbpr, label: "DBPR", group: "Impact", format: formatSignedValue, keepLabel: true },
+      countingColumn("pts", "PTS", "Counting", "Points"),
+      countingColumn("ast", "AST", "Counting", "Assists"),
+      countingColumn("reb", "REB", "Counting", "Total Rebounds"),
+      countingColumn("tov", "TOV", "Counting", "Turnovers"),
       { key: "ts_pct", label: "TS%", group: "Efficiency", num: true, sortMetric: "ts_pct", format: formatPctValue, tooltip: "True Shooting %: PTS / (2 * (FGA + 0.44 * FTA))" },
-      { key: "efg_pct", label: "eFG%", group: "Efficiency", num: true, sortMetric: "efg_pct", format: formatPctValue, tooltip: "Effective Field Goal %: (FGM + 0.5 * 3PM) / FGA" }
+      { ...IMPACT_COLUMNS.impact_rts, label: "rTS%", group: "Efficiency", format: formatSignedPctPoints, keepLabel: true },
+      { key: "efg_pct", label: "eFG%", group: "Efficiency", num: true, sortMetric: "efg_pct", format: formatPctValue, tooltip: "Effective Field Goal %: (FGM + 0.5 * 3PM) / FGA" },
+      { key: "fg_pct", label: "FG%", group: "Shooting", num: true, sortMetric: "fg_pct", format: formatPctValue, tooltip: "Field Goal Percentage (FGM / FGA)" },
+      { key: "fg3_pct", label: "3P%", group: "Shooting", num: true, sortMetric: "fg3_pct", format: formatPctValue, tooltip: "3-Point Field Goal Percentage (3PM / 3PA)" },
+      { key: "ft_pct", label: "FT%", group: "Shooting", num: true, sortMetric: "ft_pct", format: formatPctValue, tooltip: "Free Throw Percentage (FTM / FTA)" },
+      countingColumn("oreb", "OREB", "Other", "Offensive Rebounds"),
+      countingColumn("dreb", "DREB", "Other", "Defensive Rebounds"),
+      countingColumn("stl", "STL", "Other", "Steals"),
+      countingColumn("blk", "BLK", "Other", "Blocks")
     ]
   },
   {

@@ -12,7 +12,7 @@ The work queue and status of every page is the [alignment catalog](databallr-ali
 - **Supersedes** the frontend overhaul, refresh, freeze and presentation-clarity handoffs for the
   layout, structure, styling and presentation of **catalogued pages and the app shell**.
 - **Keeps** every analytical, temporal, identity, data, source-policy (v2) and zero-cost contract,
-  the frozen `courtload-…-vN` hashes, and Design Language v1's lint-enforced mechanics (no inline
+  the frozen pre-rename `…-vN` hash identifiers, and Design Language v1's lint-enforced mechanics (no inline
   styles, tokens, reduced motion). Where an owner instruction conflicts with a Design Language
   token or rule, follow the instruction and update the token/rule in the same block.
 - **Layout and visuals only.** Databallr metrics we cannot compute from our own pipelines (DPM,

@@ -17,12 +17,12 @@ test("standard records are readable and portrait gutters center between metric g
   expect(geometry.height).toBeCloseTo(42, 1);
   expect(geometry.font).toBe("14px");
   geometry.offsets.forEach(offset => expect(Math.abs(offset)).toBeLessThan(1));
-  expect(geometry.offsets).toHaveLength(3);
+  expect(geometry.offsets).toHaveLength(5);
   const portraits = await page.locator(".stats-table-row").first().evaluate(row => ({
     main: row.querySelector(".stats-primary-portrait")!.getBoundingClientRect().width,
     guides: [...row.querySelectorAll(".stats-guide-marker > *")].map(image => image.getBoundingClientRect().width)
   }));
-  expect(portraits).toEqual({ main: 32, guides: [30, 30, 30] });
+  expect(portraits).toEqual({ main: 32, guides: [30, 30, 30, 30, 30] });
 });
 
 test("header branding and secondary navigation align", async ({ page }) => {

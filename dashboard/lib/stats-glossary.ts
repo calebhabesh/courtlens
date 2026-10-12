@@ -167,6 +167,13 @@ export function glossaryGroup(metric: MetricDefinition): GlossaryGroup {
   }
 }
 
+export type MetricHint = { name: string; description: string };
+
+/** Header hover text for every catalog metric: full name and the glossary definition. */
+export function metricHints(metrics: MetricDefinition[]): Record<string, MetricHint> {
+  return Object.fromEntries(metrics.map(metric => [metric.key, { name: metric.display_name, description: glossaryPlain(metric) }]));
+}
+
 export type GlossaryEntry = {
   key: string;
   short: string;
