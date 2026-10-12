@@ -1,5 +1,10 @@
 import { createServer } from "node:http";
+import { readFileSync } from "node:fs";
 import { pc11Response, sixFactor } from "./pc11-fixtures.mjs";
+
+// Recorded real retained finding, no question/provider prose. Other public examples stay
+// unavailable in this fixture, exercising the partial-library state without fabricated results.
+const retainedDistribution = JSON.parse(readFileSync(new URL("./fixtures/pc12-retained-distribution.json", import.meta.url), "utf8"));
 
 const snapshotId = "snapshot-browser-fixture";
 const catalog = {
@@ -537,6 +542,7 @@ const mockPlayoffSeriesDetail = {
 
 createServer(async (request, response) => {
   const url = new URL(request.url ?? "/", "http://127.0.0.1:4100");
+  if (url.pathname === `/api/workbench/assistant/investigations/${retainedDistribution.id}`) return json(response, 200, retainedDistribution);
   // Browser JSON POSTs (for example Showcase rank queries) send a CORS preflight, as the real API allows.
   if (request.method === "OPTIONS") {
     response.writeHead(204, {
@@ -827,6 +833,7 @@ createServer(async (request, response) => {
     return json(response, 200, { ...catalog, replay_date: date, player_a: first, player_b: second, estimate_gap: first.estimate.point != null && second.estimate.point != null ? first.estimate.point - second.estimate.point : null });
   }
   if (url.pathname === "/api/analytics/evaluations") {
+    if (url.searchParams.has("snapshotId") && url.searchParams.get("snapshotId") !== snapshotId) return json(response, 404, { detail: { reason: "evaluation_snapshot_mismatch" } });
     const metric = (mae, rmse) => ({ forecast_rows: 39988, mae, rmse });
     const interval = (coverage, mean_width) => ({ coverage, mean_width, rows: 39988 });
     return json(response, 200, { ...catalog, run_id: "fixture-run", report_sha256: "fixture-hash", validation: {

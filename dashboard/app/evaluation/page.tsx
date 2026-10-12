@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { browserApi, getAnalyticsCatalog, getAnalyticsEvaluation } from "@/lib/api";
+import { browserApi, getAnalyticsEvaluation } from "@/lib/api";
+import { PairedBars } from "@/components/charts";
 import { formatDate } from "@/lib/format-date";
 import type { AnalyticsEvaluation } from "@/lib/types";
 import { CountChip, FilterBar } from "@/components/ui/filter-bar";
@@ -26,7 +27,7 @@ const estimators = [
   ["player_plus_context", "Player + context"]
 ] as const;
 const TITLE = "Evaluation Archive";
-const SUBTITLE = "The frozen M6 experiment: did a context model improve next-game points estimates?";
+const SUBTITLE = "Frozen reference-points experiment · final test 2023–24.";
 
 export default async function EvaluationPage({ searchParams }: {
   searchParams: Promise<{ snapshotId?: string }>;
@@ -36,14 +37,13 @@ export default async function EvaluationPage({ searchParams }: {
   if (report) return <EvaluationView report={report} />;
   return <PageShell template="research" className="research-view evaluation-page">
     <PageHeader title={TITLE} subtitle={SUBTITLE} />
-    <div role="alert"><GatedNote action={<Link className="button" href="/players">Explore players</Link>} why={<p>The published snapshot has no matching, verified evaluation artifact. Historical profiles remain available.</p>}>Evaluation unavailable for the published snapshot.</GatedNote></div>
+    <div role="alert"><GatedNote action={<Link className="button" href={snapshotId ? "/evaluation" : "/forecasts"}>{snapshotId ? "Open Evaluation Archive" : "Points Forecasts"}</Link>} why={<p>{snapshotId ? "The requested snapshot has no matching, verified evaluation artifact. Its selection is preserved; the archive uses the frozen experiment's own inputs." : "The frozen experiment's retained inputs or verified report are unavailable. Points Forecasts has the separate basketball-points experiment."}</p>}>{snapshotId ? "Evaluation unavailable for the selected snapshot." : "Evaluation archive is unavailable."}</GatedNote></div>
   </PageShell>;
 }
 
 async function loadEvaluation(snapshotId?: string) {
   try {
-    const catalog = await getAnalyticsCatalog(snapshotId);
-    return await getAnalyticsEvaluation(catalog.snapshot_id);
+    return await getAnalyticsEvaluation(snapshotId);
   } catch {
     return null;
   }
@@ -70,15 +70,17 @@ function EvaluationView({ report }: { report: AnalyticsEvaluation }) {
         { label: "Model card", value: "docs/evidence/model-evaluation.md", mono: true },
         { label: "Source", value: report.source }
       ]} />} />
+    <PairedBars title="Final-Test Error" source="Frozen M6 archive · registered, hash-verified report" sample={`${ewma?.forecast_rows.toLocaleString("en-US") ?? "Unknown"} scored core forecasts · 2023–24`} note="Reference points = PTS + 1.2 REB + 1.5 AST + 3 STL + 3 BLK − TOV; lower error is better."
+      names={["EWMA-20", "Player + context"]} rows={[{ key: "mae", label: "Mean Absolute Error · reference points", a: ewma?.mae, b: context?.mae, formattedA: ewma?.mae.toFixed(2), formattedB: context?.mae.toFixed(2) }]} />
     <ResearchLayout findings={<>
       <StatTile label="Decision" value="No challenger promoted" footnote="EWMA-20 remains the replay estimator" />
-      <StatTile label="EWMA-20 MAE" value={ewma ? ewma.mae.toFixed(2) : null} unit=" pts" footnote="Final test, lower is better" />
-      <StatTile label="Context Model MAE" value={context ? context.mae.toFixed(2) : null} unit=" pts" footnote={gap === null ? undefined : `${gap >= 0 ? "+" : ""}${gap.toFixed(2)} against EWMA`} />
+      <StatTile label="EWMA-20 MAE" value={ewma ? ewma.mae.toFixed(2) : null} unit=" ref pts" footnote="Final test, lower is better" />
+      <StatTile label="Context Model MAE" value={context ? context.mae.toFixed(2) : null} unit=" ref pts" footnote={gap === null ? undefined : `${gap >= 0 ? "+" : ""}${gap.toFixed(2)} against EWMA`} />
       <StatTile label="Paired 95% Interval" value={`+${report.final_test.paired_uncertainty.lower.toFixed(2)} to +${report.final_test.paired_uncertainty.upper.toFixed(2)}`} footnote="Context minus EWMA MAE" />
     </>}>
       <GatedNote why={<>
         <p>EWMA-20 remains the historical replay estimator. The player + context finalist was worse on the final season. The seven-day calendar-block 95% interval for that difference was +{report.final_test.paired_uncertainty.lower.toFixed(2)} to +{report.final_test.paired_uncertainty.upper.toFixed(2)}.</p>
-        <p>EWMA is the served policy. No winner probability or future live performance claim follows from this historical test.</p>
+        <p>EWMA is the archived reference-points replay policy. Points Forecasts is a separate basketball-points experiment. No winner probability or future live performance claim follows from this historical test.</p>
       </>}>The context model did not beat EWMA-20 on the final season.</GatedNote>
       <section className="panel research-section" aria-labelledby="result-heading">
         <h2 id="result-heading">Final Test · 2023–24</h2>
