@@ -65,8 +65,10 @@ class ScheduledFetcher:
         resource: str,
         kinds: dict[str, str],
         validate_url: Callable[[str, str, str], float],
+        max_bytes: int = MAX_BYTES,
     ) -> None:
         self.session, self.root, self.client = session, root, client
+        self.max_bytes = max_bytes
         self.resource, self.kinds, self.validate_url = resource, kinds, validate_url
         self.last_start: dict[str, float] = {}
         self.stopped: set[str] = set()
@@ -86,7 +88,7 @@ class ScheduledFetcher:
                 self.stopped.add(host)
             for chunk in response.iter_bytes():
                 size += len(chunk)
-                if size > MAX_BYTES or time.monotonic() - self.last_start[host] > 60:
+                if size > self.max_bytes or time.monotonic() - self.last_start[host] > 60:
                     raise ValueError("source response exceeds byte/time bound")
                 chunks.append(chunk)
             return httpx.Response(
