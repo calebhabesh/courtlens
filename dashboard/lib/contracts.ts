@@ -106,17 +106,30 @@ export function yearsListed(player: ContractPlayer): number {
 const known = (players: ContractPlayer[]) => players.filter(p => p.current_salary_cents !== null);
 const sum = (players: ContractPlayer[]) => players.reduce((total, p) => total + (dollars(p.current_salary_cents) ?? 0), 0);
 
-/** Known salary → position group → player. Unknown salaries stay out of the flow and in the table. */
+/** Top five known roster earners retain names; the rest aggregate by position, conserving the existing known-dollar totals. */
 export function payrollFlow(players: ContractPlayer[]): { nodes: FlowNode[]; links: FlowLink[] } {
-  const roster = known(players.filter(p => p.on_index_roster));
+  const roster = known(players.filter(p => p.on_index_roster)).sort((a, b) => {
+    const aCents = BigInt(a.current_salary_cents!), bCents = BigInt(b.current_salary_cents!);
+    return aCents === bCents ? a.player_id.localeCompare(b.player_id) : aCents > bCents ? -1 : 1;
+  });
   const groups = (["G", "F", "C", "unlisted"] as const).filter(g => roster.some(p => p.position_group === g));
+  const leaders = new Set(roster.slice(0, 5).map(p => p.player_id));
   const nodes: FlowNode[] = [{ id: "total", label: "Known roster salary", tone: "status-reported" },
-    ...groups.map(g => ({ id: `group:${g}`, label: POSITION_LABELS[g], tone: POSITION_TONES[g] })),
-    ...roster.map(p => ({ id: `player:${p.player_id}`, label: p.name, tone: POSITION_TONES[p.position_group] }))];
-  const links: FlowLink[] = [
-    ...groups.map(g => ({ source: "total", target: `group:${g}`, value: sum(roster.filter(p => p.position_group === g)) })),
-    ...roster.map(p => ({ source: `group:${p.position_group}`, target: `player:${p.player_id}`, value: dollars(p.current_salary_cents) })),
-  ];
+    ...groups.map(g => ({ id: `group:${g}`, label: POSITION_LABELS[g], tone: POSITION_TONES[g] }))];
+  const links: FlowLink[] = [];
+  for (const group of groups) {
+    const members = roster.filter(p => p.position_group === group);
+    links.push({ source: "total", target: `group:${group}`, value: sum(members) });
+    for (const p of members.filter(p => leaders.has(p.player_id))) {
+      nodes.push({ id: `player:${p.player_id}`, label: p.name, tone: POSITION_TONES[group] });
+      links.push({ source: `group:${group}`, target: `player:${p.player_id}`, value: dollars(p.current_salary_cents) });
+    }
+    const rest = members.filter(p => !leaders.has(p.player_id));
+    if (rest.length) {
+      nodes.push({ id: `others:${group}`, label: `Others · ${POSITION_LABELS[group]} (${rest.length})`, tone: POSITION_TONES[group] });
+      links.push({ source: `group:${group}`, target: `others:${group}`, value: sum(rest) });
+    }
+  }
   return { nodes, links };
 }
 export function positionDonut(players: ContractPlayer[]): DonutItem[] {

@@ -169,3 +169,31 @@
   .shapes-detail .chart-pack-solo .chart-pack { max-width: 440px; }
   @media (max-width: 1023px) { .shapes-detail { grid-template-columns: minmax(0, 1fr); } }
 }
+
+/* PC12 B: headline result before detail, with provenance beside the visual. */
+@layer foundation {
+  .pc12-headline { min-width: 0; padding: var(--space-4); background: var(--color-surface-1); border-radius: var(--radius-md); }
+  .pc12-headline .chart-meta { grid-row: 2; }
+  .pc12-example-label { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); margin-bottom: var(--space-3); }
+  .pc12-ranked-identity { display: flex; align-items: center; gap: var(--space-2); min-width: 0; }
+  .pc12-headline .chart-ranked-label .ui-identity { display: flex; }
+  .pc12-headline .chart-ranked-label .ui-identity-name { font-size: var(--text-sm); }
+  .pc12-trend-change { color: var(--color-text); }
+  .pc12-kpis { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-3); }
+  .team-rating-headline { grid-column: 1 / -1; padding: 0; }
+  .team-profile-page .ui-page-header-title, .team-profile-page .ui-identity-name,
+  .fo11-team-body .ui-identity-name { white-space: normal; overflow: visible; text-overflow: clip; overflow-wrap: anywhere; }
+  .fo11-team-body .ui-comparison-value-a .ui-comparison-track > span { background: var(--color-identity-a); }
+  .fo11-team-body .ui-comparison-value-b .ui-comparison-track > span { background: var(--color-identity-b); }
+  .pc12-profile-trajectory .research-trend-section { margin: 0; padding: var(--space-4); }
+  @media (width < 768px) {
+    .pc12-headline .chart-ranked li { grid-template-columns: minmax(0, 1fr) max-content; row-gap: var(--space-1); }
+    .pc12-headline .chart-ranked-label { grid-column: 1 / -1; white-space: normal; }
+    .pc12-headline .chart-ranked-label small { white-space: normal; }
+    .pc12-headline .chart-ranked-label .ui-identity-name { white-space: normal; overflow: visible; text-overflow: clip; }
+    .chart-reliability text { font-size: var(--text-xl); }
+    .pc12-kpis { grid-template-columns: minmax(0, 1fr); }
+    .pc12-profile-trajectory .trend-section-header { flex-wrap: wrap; gap: var(--space-2); }
+    .pc12-profile-trajectory .trend-cards-grid { grid-template-columns: minmax(0, 1fr); }
+  }
+}
