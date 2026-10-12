@@ -60,6 +60,15 @@ For any work that makes a CourtLens page look or behave like its Databallr count
    - ESLint (`no-restricted-syntax`, `no-restricted-imports`) and Stylelint rules enforce Design Language v1 contracts at `error` level and must pass with 0 errors and 0 warnings (`npm --prefix dashboard run lint`).
    - Motion and physics springs (`lib/motion.ts`) must respect reduced motion (`prefers-reduced-motion` token duration collapse to 1ms).
 
+## Local Resource Hygiene
+
+`/tmp` is RAM-backed (tmpfs) on the owner's machine; abandoned workspaces there have filled RAM and swap and caused system-wide OOM kills.
+
+- Put scratch workspaces (dashboard copies, browser-test sandboxes, stage builds, logs) under `$TMPDIR`, which make targets and Claude Code point at the disk-backed `~/.cache/courtlens-tmp`. Never hard-code `/tmp/...`.
+- Delete every workspace you create when the task ends, and stop any dev servers, Playwright browsers or Postgres containers you started.
+- `make clean-scratch` removes stale scratch; `make install-scratch-cleanup` installs the hourly timer that does it automatically.
+- `make test` skips the `kernel_limits` tests, which deliberately OOM-kill tiny capped systemd units and trigger desktop "low memory" notifications. Run them only via `make test-kernel-limits` when changing `research_limits.py`.
+
 ## Common Commands
 
 ```bash
