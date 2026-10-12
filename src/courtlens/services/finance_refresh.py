@@ -105,9 +105,19 @@ def read_source(session: Session, receipt: WorkbenchAcquisition, root: Path) -> 
     return raw
 
 
+# Owner-approved 2026-10-12: verified crosswalks, or the BRef name-and-team rule
+# (services/bref_identity.py). Both must already exist when the page was acquired.
+IDENTITY_RULES = "verified+name-team-unique-v1"
+ACCEPTED_CONFIDENCE = ("verified", "name_team_unique")
+
+
 def resolve_identity(
-    session: Session, row: dict[str, Any], observed: datetime
+    session: Session,
+    row: dict[str, Any],
+    observed: datetime,
+    roster_ids: frozenset[str] = frozenset(),
 ) -> tuple[str | None, list[dict[str, Any]]]:
+    """An NBA id needs a registry identity or membership in the pinned NBA roster index."""
     if row["nba_id"] is not None:
         nba_id = row["nba_id"]
         evidence = [{"method": "provider_explicit_nba_id", "nba_player_id": nba_id}]
@@ -119,7 +129,7 @@ def resolve_identity(
                     WorkbenchIdentityCrosswalk.source_id == row["entity_id"],
                     WorkbenchIdentityCrosswalk.target_namespace == "nba",
                     WorkbenchIdentityCrosswalk.kind == "player",
-                    WorkbenchIdentityCrosswalk.confidence == "verified",
+                    WorkbenchIdentityCrosswalk.confidence.in_(ACCEPTED_CONFIDENCE),
                     WorkbenchIdentityCrosswalk.updated_at <= observed,
                 )
             ).all()
@@ -129,9 +139,16 @@ def resolve_identity(
             return None, []
         nba_id = ids.pop()
         evidence = [
-            {"id": m.id, "method": m.mapping_method, "evidence": m.evidence_json}
+            {
+                "id": m.id,
+                "method": m.mapping_method,
+                "confidence": m.confidence,
+                "evidence": m.evidence_json,
+            }
             for m in sorted(mappings, key=lambda m: m.id)
         ]
+    if nba_id in roster_ids:
+        return nba_id, evidence
     identity = session.scalar(
         select(WorkbenchIdentity).where(
             WorkbenchIdentity.namespace == "nba",
@@ -165,6 +182,7 @@ def admit_refresh(
     input_hash = digest(
         {
             "parser": PARSER_VERSION,
+            "identity_rules": IDENTITY_RULES,
             "acquisitions": sorted(acquisition_ids),
             "roster": roster.id,
             "threshold": threshold_id,
@@ -189,6 +207,9 @@ def admit_refresh(
         tuple[str, str, str | None, datetime], tuple[str | None, list[dict[str, Any]]]
     ] = {}
     receipts = []
+    roster_ids = frozenset(
+        p["player_id"] for p in dataset_rows(session, roster) if p.get("player_id")
+    )
     for acquisition_id in sorted(acquisition_ids):
         receipt = session.get(WorkbenchAcquisition, acquisition_id)
         if (
@@ -243,7 +264,7 @@ def admit_refresh(
         for row in parsed:
             identity_key = (row["namespace"], row["entity_id"], row["nba_id"], observed)
             if identity_key not in identity_cache:
-                identity_cache[identity_key] = resolve_identity(session, row, observed)
+                identity_cache[identity_key] = resolve_identity(session, row, observed, roster_ids)
             nba_id, evidence = identity_cache[identity_key]
             if nba_id:
                 identities[(row["namespace"], row["entity_id"])] = {
@@ -269,7 +290,7 @@ def admit_refresh(
                     "player_id": row["nba_id"],
                     "identity_reason": None
                     if row["nba_id"]
-                    else "No unambiguous verified NBA crosswalk at acquisition.",
+                    else "No unambiguous accepted NBA crosswalk at acquisition.",
                     "provider_id": row["entity_id"],
                     "name": row["name"],
                     "class_year": int(roster.season[:4]),
@@ -309,7 +330,10 @@ def admit_refresh(
     if selected:
         mapping_bytes = json.dumps(
             {
-                "method": "frozen verified crosswalks; never name matching",
+                "method": (
+                    "frozen crosswalks known at acquisition: verified, or exact normalized "
+                    "name plus same current team, unique on both sides (name_team_unique)"
+                ),
                 "mappings": [
                     dict(namespace=ns, entity_id=entity, **data)
                     for (ns, entity), data in sorted(identities.items())
@@ -358,7 +382,9 @@ def admit_refresh(
                     "source_entity_id": entity,
                     "nba_player_id": data["nba_player_id"],
                     "evidence_sha256": mapping_sha,
-                    "method": "reviewed_crosswalk",
+                    "method": "name_team_crosswalk"
+                    if any(e.get("confidence") == "name_team_unique" for e in data["evidence"])
+                    else "reviewed_crosswalk",
                 }
                 for (ns, entity), data in sorted(identities.items())
             ),
@@ -418,6 +444,11 @@ def admit_refresh(
             else (
                 "salary_blank_in_source"
                 if salary_row
+                else "salary_missing_in_source"
+                if any(
+                    r["nba_id"] == player["player_id"] and r["team_id"] == player["team_id"]
+                    for r in normalized
+                )
                 else "salary_missing_or_identity_unresolved"
                 if team_ok
                 else "team_salary_source_unavailable"
@@ -457,13 +488,16 @@ def admit_refresh(
         "free_agents": sorted(fa, key=lambda r: r["provider_id"]),
         "attempts": attempts,
         "unresolved_source_rows": sum(r["nba_id"] is None for r in normalized),
-        "state": "partial" if known and fa and threshold else "verification_blocked",
+        # Free Agency was cut (owner decision 2026-10-12: no admitted free FA source), so
+        # free-agent observations no longer gate this state; refreshes before keep theirs.
+        "state": "partial" if known and threshold else "verification_blocked",
         "limitations": [
             "Dated salary reports; no realized cash or complete legal cap accounting claim.",
             "Unknown effective dates remain null and excluded from finance-query-v1 subtotals.",
             "Option markers do not establish exercise or guarantee state.",
             "Roster membership is independent of the provider contract association.",
-            "Provider identities without verified crosswalks remain unresolved.",
+            "Provider identities without an accepted crosswalk (verified, or unique exact "
+            "name plus current team) remain unresolved; names alone never resolve identity.",
             "Missing free-agent observations do not imply signed or unsigned status.",
         ],
     }

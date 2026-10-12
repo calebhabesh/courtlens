@@ -1312,6 +1312,40 @@ def stats_feed_coverage_command() -> None:
         typer.echo(json.dumps(coverage_summary(session), indent=2))
 
 
+@app.command("map-bref-identities")
+def map_bref_identities_command(
+    acquisition_id: list[str] = typer.Option(..., help="Retained BRef contract acquisitions."),
+    roster_dataset_id: str = typer.Option(..., help="Pinned PC05 NBA player index dataset."),
+    root: Path = typer.Option(Path("data/raw/finance")),
+    report: Path | None = typer.Option(None),
+) -> None:
+    """Owner-approved name-and-team rule; record mappings before the next acquisition."""
+    from courtlens.services.bref_identity import (
+        propose_mappings,
+        record_mappings,
+        register_index_identities,
+    )
+
+    with SessionLocal() as session:
+        proposal = propose_mappings(session, acquisition_id, roster_dataset_id, root)
+        proposal["recorded"] = record_mappings(session, proposal)
+        proposal["registry"] = register_index_identities(session, roster_dataset_id)
+        session.commit()
+    if report is not None:
+        report.write_text(json.dumps(proposal, indent=1, sort_keys=True) + "\n")
+    typer.echo(
+        json.dumps(
+            {
+                "bref_players": proposal["bref_players"],
+                "mapped": len(proposal["mappings"]),
+                "unresolved": len(proposal["unresolved"]),
+                "recorded": proposal["recorded"],
+                "registry": proposal["registry"],
+            }
+        )
+    )
+
+
 @app.command("import-finance-thresholds")
 def import_finance_thresholds_command(path: Path) -> None:
     """Hand-enter an official season release; record actual import time."""

@@ -23,7 +23,7 @@ parameters**. Blocks before each owner gate also need recorded owner approval.
 | PC03 Design Language v1.2, D21, chart kit | verified |
 | PC04 Compare and first-load defaults (G2) | implemented_unverified (G2 cleared; retained glance issues) |
 | PC05 Data: rosters, positions, injuries | verification_blocked (roster snapshot admitted; injury/transaction source evidence pending) |
-| PC06 Data: finance | verification_blocked (BRef captured; three canonical salaries; Spotrac / broad identity coverage pending) |
+| PC06 Data: finance | verified (BRef-only scope per D2/D3; 464/622 salaries, 158 explicit unknowns) |
 | PC07 Data: tracking, play types, matchups, combine, on/off | verified (2025-26 feeds, 2000–26 drafts; pbpstats WOWY not ingested; capabilities partial) |
 | PC08 Contracts and Free Agency views (G3) | planned |
 | PC09 Value metric and archetypes | planned |
@@ -340,4 +340,24 @@ parameters**. Blocks before each owner gate also need recorded owner approval.
   existing Google GenAI/Python 3.14 deprecation warning. Ruff/format and strict mypy clean.
 - Not done: pbpstats WOWY (proposed: derive in PC11 from lineups, or record the gap); seasons other
   than 2025-26. Views wait for PC08/PC11. Dashboard checks are not rerun for this backend-only block.
+
+## 2026-10-12 — Owner decisions D1–D5; PC06 unblocked
+
+- Owner instruction: “Yes, implement the recommended decisions.” Decisions D1–D5 are recorded in
+  the [plan](presentation-clarity-plan.md#owner-decisions-after-pc07-2026-10-12): BRef name-and-team
+  identity rule; Spotrac stays stopped and HoopsHype unused; Free Agency removed; WOWY derived from
+  lineups in PC11; further seasons only when PC09 needs them.
+- [Evidence](evidence/pc06b/README.md). `map-bref-identities` mapped 590 of 608 BRef players with no
+  ties or conflicts, reproducing the three manually verified mappings; 18 stay unresolved. 115
+  active index players were registered from the pinned index. Mappings apply only to acquisitions
+  made after them, so BRef was re-fetched (30/30 HTTP 200).
+- Refresh `95b5fe42…`: 464 of 622 active players have a reported salary (was 3); 126 blank in source
+  and 32 unlisted/unresolved keep explicit reasons. Verified. Its stored state stays
+  `verification_blocked` (admitted before the state rule dropped the free-agent requirement).
+- HoopsHype's robots.txt disallows Anthropic agents; after one probe no further requests were made.
+- A first admission attempt rolled back but left staged files; they were kept and a fresh
+  acquisition admitted, as the importer contract requires.
+- Checks: 13 new identity tests and all PC06 finance tests pass (60); full suite, Ruff and mypy in
+  the evidence. 161 publication pointers unchanged.
+- Next: PC08 (Contracts views, Free Agency removal) to gate G3.
 

@@ -69,7 +69,7 @@ class IdentityMapping(StrictModel):
     source_entity_id: str = Field(min_length=1, max_length=100)
     nba_player_id: str = Field(pattern=r"^[0-9]{1,12}$")
     evidence_sha256: str = Field(pattern=r"^[a-f0-9]{64}$")
-    method: Literal["direct_nba_id", "reviewed_crosswalk"]
+    method: Literal["direct_nba_id", "reviewed_crosswalk", "name_team_crosswalk"]
 
 
 class FinanceManifest(StrictModel):
