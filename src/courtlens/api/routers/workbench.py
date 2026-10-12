@@ -125,6 +125,7 @@ from courtlens.services.analytical_ops import (
 )
 from courtlens.services.assistant.service import run_assistant_query
 from courtlens.services.assistant.status import get_assistant_status
+from courtlens.services.darko import darko_catalog_scope, darko_disclosure
 from courtlens.services.entity_lookup import (
     lookup_entities,
     resolve_lookup_binding,
@@ -177,6 +178,7 @@ from courtlens.services.schedule_dates import schedule_dates
 from courtlens.services.stats_catalog import stats_catalog_scope
 from courtlens.services.stats_cohort_cache import presentation_page
 from courtlens.services.stats_engine import (
+    darko_query_fields,
     decode_cursor,
     execute_stats_query,
     stats_cohort_summary,
@@ -360,6 +362,7 @@ def get_catalog(
         warnings=context.warnings,
         capabilities=capabilities,
         impact=impact_catalog_scope(),
+        darko=darko_catalog_scope(),
     )
 
 
@@ -720,6 +723,7 @@ def execute_query_endpoint(
         }
         if query_uses_impact(spec)
         else None,
+        darko=darko_disclosure(spec, context.before_date) if darko_query_fields(spec) else None,
     )
 
 
@@ -1249,6 +1253,14 @@ def create_saved_analysis(
     if query_uses_impact(spec) and spec.impact_manifest_sha256 is None:
         digest = impact_for_query(spec, context.before_date.isoformat())["manifest_sha256"]
         spec = spec.model_copy(update={"impact_manifest_sha256": digest})
+    if darko_query_fields(spec) and spec.darko_manifest_sha256 is None:
+        digest = darko_disclosure(spec, context.before_date)["manifest_sha256"]
+        if digest is None:
+            raise HTTPException(
+                status_code=422,
+                detail="No sealed DARKO bundle is available to retain this investigation.",
+            )
+        spec = spec.model_copy(update={"darko_manifest_sha256": digest})
     query = query_spec_to_research_query(spec)
     inv = save_investigation(session, context, title=payload.title, query=query)
     inv_data = get_investigation(session, inv.id)

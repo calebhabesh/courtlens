@@ -8,7 +8,8 @@ import { Modal } from "./ui/modal";
 import { Select } from "./ui/select";
 import { ValueDot } from "./charts/value-dot";
 import { executeWorkbenchQuery } from "@/lib/workbench-api";
-import { formatColumnValue, TRACKING_COLUMNS, usesImpactManifest, type ColumnDefinition } from "@/lib/stats-presets";
+import { DARKO_COLUMNS, formatColumnValue, TRACKING_COLUMNS, usesImpactManifest, type ColumnDefinition } from "@/lib/stats-presets";
+import { DarkoSourceLink } from "./darko-source-link";
 import type { MetricHint } from "@/lib/stats-glossary";
 import { phaseLabel } from "@/lib/scope-labels";
 import type { PlayerResearchItem, QuerySpec, WorkbenchCatalog } from "@/lib/types";
@@ -126,6 +127,7 @@ export function StatsTrendDialog({ target, columns, querySpec, catalog, hints, o
           </div>}
         </div>
         {hint && <p className="stats-trend-definition"><strong>{column.label}:</strong> {hint.name}: {hint.description}</p>}
+        {column.key in DARKO_COLUMNS && <DarkoSourceLink>DARKO · Kostya Medvedovsky</DarkoSourceLink>}
       </div>
     </Modal>
   );

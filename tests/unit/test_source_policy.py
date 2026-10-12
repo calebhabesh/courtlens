@@ -21,8 +21,9 @@ def test_crawl_delays_and_exclusions() -> None:
     assert by_key["basketball_reference"].min_interval_seconds == 3
     assert by_key["spotrac"].min_interval_seconds == 5
     hosts = " ".join(s.host for s in ADMITTED_SOURCES)
-    for excluded in ("databallr", "stats.nba.com", "balldontlie", "realgm"):
-        assert excluded not in hosts
+    # Policy v3: cost is the only exclusion (BallDontLie's data tier is paid).
+    assert "balldontlie" not in hosts
+    assert "www.darko.app" in hosts
     assert all(s.min_interval_seconds is None for s in ADMITTED_SOURCES if s.role == "manual")
 
 

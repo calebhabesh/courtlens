@@ -6,6 +6,8 @@ import { Icon, type IconName } from "./ui/icon";
 import { PageHeader } from "./ui/panel";
 import "./stats-glossary.css";
 import { GLOSSARY_GROUPS, type GlossaryEntry, type GlossaryGroup } from "@/lib/stats-glossary";
+import { DARKO_COLUMNS } from "@/lib/stats-presets";
+import { DarkoSourceLink } from "./darko-source-link";
 
 const GROUP_ICONS: Record<GlossaryGroup, IconName> = {
   "Counting Stats": "chart-column", Shooting: "zap", Rates: "trend", "Impact Metrics": "sparkles", "On-Off": "swap",
@@ -55,7 +57,8 @@ export function StatsGlossaryView({ entries, available }: { entries: GlossaryEnt
               <div className="glossary-card-head">
                 <span className="glossary-card-icon" aria-hidden="true"><Icon name={GROUP_ICONS[entry.group]} size={16} /></span>
                 <div className="glossary-card-title">
-                  <h2 id={`glossary-${entry.key}`}>{entry.short}</h2>
+                  <h2 id={`glossary-${entry.key}`}>{entry.key in DARKO_COLUMNS
+                    ? <DarkoSourceLink>{entry.short}</DarkoSourceLink> : entry.short}</h2>
                   {entry.name !== entry.short && <p className="glossary-card-name">{entry.name}</p>}
                 </div>
                 <span className="glossary-card-group">{entry.group}</span>

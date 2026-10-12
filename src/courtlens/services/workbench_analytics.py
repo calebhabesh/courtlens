@@ -108,6 +108,7 @@ class ResearchQuery:
     limit: int = 50
     cursor: str | None = None
     impact_manifest_sha256: str | None = None
+    darko_manifest_sha256: str | None = None
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -128,6 +129,11 @@ class ResearchQuery:
             **(
                 {"impact_manifest_sha256": self.impact_manifest_sha256}
                 if self.impact_manifest_sha256
+                else {}
+            ),
+            **(
+                {"darko_manifest_sha256": self.darko_manifest_sha256}
+                if self.darko_manifest_sha256
                 else {}
             ),
         }
@@ -1288,19 +1294,25 @@ def save_investigation(
         limit=MAX_EXPORT_ROWS,
         cursor=None,
         impact_manifest_sha256=query.impact_manifest_sha256,
+        darko_manifest_sha256=query.darko_manifest_sha256,
     )
     items, _, _, _ = execute_player_research_query(session, context, unbounded_query)
 
     result_payload = items
     result_sha256 = canonical_hash(result_payload)
+    metric_version = (
+        "courtlens-stats-v4"
+        if query.darko_manifest_sha256
+        else "courtlens-stats-v3"
+        if query.impact_manifest_sha256
+        else METRIC_CATALOG_VERSION
+    )
 
     manifest_payload = {
         "title": title,
         "query": query.to_dict(),
         "context": context.to_dict(),
-        "metric_version": "courtlens-stats-v3"
-        if query.impact_manifest_sha256
-        else METRIC_CATALOG_VERSION,
+        "metric_version": metric_version,
         "total_rows": len(result_payload),
         "result_sha256": result_sha256,
         "timestamp": utc_now().isoformat(),
@@ -1317,9 +1329,7 @@ def save_investigation(
         title=title,
         query_json=query.to_dict(),
         context_json=context.to_dict(),
-        metric_version="courtlens-stats-v3"
-        if query.impact_manifest_sha256
-        else METRIC_CATALOG_VERSION,
+        metric_version=metric_version,
         result_sha256=result_sha256,
         result_artifact_path=str(artifact_path),
         warnings_json=list(context.warnings),
@@ -1395,6 +1405,7 @@ def reproduce_investigation(session: Session, investigation_id: str) -> dict[str
         name=q_dict.get("name"),
         metrics=q_dict.get("metrics"),
         impact_manifest_sha256=q_dict.get("impact_manifest_sha256"),
+        darko_manifest_sha256=q_dict.get("darko_manifest_sha256"),
         min_games=q_dict.get("min_games"),
         min_minutes=q_dict.get("min_minutes"),
         min_avg_minutes=q_dict.get("min_avg_minutes"),

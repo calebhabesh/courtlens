@@ -3,6 +3,7 @@ import { ArticleLayout, ArticleSection } from "@/components/ui/article-layout";
 import { CountChip } from "@/components/ui/filter-bar";
 import { getMetricCatalog } from "@/lib/workbench-api";
 import type { MetricCatalog } from "@/lib/types";
+import { DarkoSourceLink } from "@/components/darko-source-link";
 
 export const dynamic = "force-dynamic";
 
@@ -44,6 +45,7 @@ export default async function MethodologyPage() {
       </ArticleSection>
 
       <ArticleSection id="impact" title="Impact metrics" label="Impact methodology">
+        <p>DPM, ODPM and DDPM in Stats Overview are published <DarkoSourceLink>DARKO forecasts by Kostya Medvedovsky</DarkoSourceLink>, in points per 100 possessions against an average player. Higher is better on both offense and defense. They are retrospective pregame ratings at the phase&apos;s last admitted game date, rather than season averages. Regular-season snapshots exclude playoff updates; the table shows the actual source data date when coverage stops earlier. CourtLens computes its own league percentiles. These imports never enter forecasting features, and original publication-time model revisions are unavailable.</p>
         <p>RAPM is a descriptive ridge estimate under lineup confounding. Separate offensive and defensive player indicators use actual counted controls as weights, with fixed game-grouped alpha selection. ORAPM plus favorable-sign DRAPM equals RAPM, in points per 100 counted controls. 1Y, 2Y and 3Y labels identify complete, consecutive same-phase fit windows.</p>
         <p>Box-Prior RAPM (BPR) shrinks toward box regressions trained only on prior seasons. Unsupported prior windows remain unknown. BPR is a CourtLens analogue, with no imported third-party coefficients. Six factors are separate favorable-sign percentage-point estimates for shooting, turnovers and rebounds; they are not additive and have no defined residual or PVAL.</p>
         <p>Ratings require 20 games and 1,000 relevant opportunities on each side. On/off uses actual points and separate on/off offensive and defensive controls for each observed team, including team-season games without a player appearance in its off reference. Traded-team records remain separate. Zero denominators stay unknown.</p>
