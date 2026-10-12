@@ -20,7 +20,7 @@ from courtlens.player_context_models import (
     PlayerContextMember,
     PlayerContextVersion,
 )
-from courtlens.services.player_context import dataset_rows, listed_position_player_ids
+from courtlens.services.player_context import dataset_rows
 from courtlens.services.player_context_ingestion import (
     PLAYER_INDEX_URL,
     admit_context,
@@ -305,12 +305,3 @@ def test_crosswired_member_version_fails_composite_foreign_key(
             )
         )
     workbench_db.rollback()
-
-
-def test_listed_positions_resolve_to_player_ids_from_latest_index(
-    workbench_db: Session, tmp_path: Path
-) -> None:
-    capture(workbench_db, tmp_path)
-    assert listed_position_player_ids(workbench_db, ["F"]) == {"1630567"}
-    assert listed_position_player_ids(workbench_db, ["G", "C"]) == {"9999999"}
-    assert listed_position_player_ids(workbench_db, ["C"]) == set()

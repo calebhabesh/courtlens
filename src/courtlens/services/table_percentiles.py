@@ -12,7 +12,8 @@ from courtlens.domain.impact_catalog import SERVING_CATALOG
 from courtlens.domain.metrics import TABLE_PERCENTILE_MIN_MINUTES
 from courtlens.domain.query_spec import QuerySpec, SampleFilter, SortSpec, TeamScope, WindowSpec
 from courtlens.domain.stats_presentation import StatsPresentation
-from courtlens.services.stats_engine import execute_stats_query
+from courtlens.services.stats_cohort_cache import cached_rows, cohort_key
+from courtlens.services.stats_engine import execute_stats_query, stats_presentation_hash
 from courtlens.services.workbench_analytics import ResolvedContext, canonical_hash
 
 VERSION = "courtlens-table-percentiles-v1"
@@ -52,27 +53,32 @@ def annotate_players(
             "sort": [SortSpec(field="player_id", direction="asc")],
         }
     )
-    league, count, _, _ = execute_stats_query(
-        session,
-        context,
-        league_query,
-        is_export=True,
-        max_export_rows=2000,
-        presentation=StatsPresentation(),
-    )
+
+    def league_rows(scope: QuerySpec) -> tuple[list[dict[str, Any]], int]:
+        # The league reference ignores display filters; cache it with the cohort.
+        def compute() -> tuple[list[dict[str, Any]], int]:
+            rows, total, _, _ = execute_stats_query(
+                session,
+                context,
+                scope,
+                is_export=True,
+                max_export_rows=2000,
+                presentation=StatsPresentation(),
+                cohort_percentiles=False,
+            )
+            return rows, total
+
+        scope_hash = stats_presentation_hash(context, scope, StatsPresentation(), cohort=True)
+        return cached_rows(cohort_key("table-league", scope_hash, scope), compute)
+
+    league, count = league_rows(league_query)
     if count > len(league):
         # Never rank a truncated reference population.
         raise ValueError("Table percentile reference exceeds the 2,000-player bound")
     season_rows = league
     if query.window.kind.value != "season":
-        season_rows, season_count, _, _ = execute_stats_query(
-            session,
-            context,
-            league_query.model_copy(update={"window": WindowSpec()}),
-            is_export=True,
-            max_export_rows=2000,
-            presentation=StatsPresentation(),
-        )
+        season_scope = league_query.model_copy(update={"window": WindowSpec()})
+        season_rows, season_count = league_rows(season_scope)
         if season_count > len(season_rows):
             raise ValueError("Season qualification exceeds the 2,000-player bound")
     qualified_ids = {

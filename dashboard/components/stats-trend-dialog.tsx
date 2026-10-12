@@ -6,8 +6,9 @@ import { PlayerPortrait } from "./player-portrait";
 import { Icon } from "./ui/icon";
 import { Modal } from "./ui/modal";
 import { Select } from "./ui/select";
+import { ValueDot } from "./charts/value-dot";
 import { executeWorkbenchQuery } from "@/lib/workbench-api";
-import { formatColumnValue, IMPACT_COLUMNS, type ColumnDefinition } from "@/lib/stats-presets";
+import { formatColumnValue, TRACKING_COLUMNS, usesImpactManifest, type ColumnDefinition } from "@/lib/stats-presets";
 import type { MetricHint } from "@/lib/stats-glossary";
 import { phaseLabel } from "@/lib/scope-labels";
 import type { PlayerResearchItem, QuerySpec, WorkbenchCatalog } from "@/lib/types";
@@ -61,8 +62,10 @@ export function StatsTrendDialog({ target, columns, querySpec, catalog, hints, o
     .filter(scope => scope.phase === querySpec.phase).map(scope => scope.season))].sort(), [catalog, querySpec.phase]);
   const ids = players.map(player => player.player_id);
   // Box-score stats skip the impact join, which is several times slower per season.
-  const impact = Boolean(column && column.key in IMPACT_COLUMNS);
-  const requestKey = JSON.stringify({ ids, seasons, phase: querySpec.phase, open: Boolean(target), impact });
+  const impact = Boolean(column && usesImpactManifest(column.key));
+  // Box stats arrive with every row; impact and tracking values join only for a named column.
+  const joined = column && (impact || column.key in TRACKING_COLUMNS) ? column.key : null;
+  const requestKey = JSON.stringify({ ids, seasons, phase: querySpec.phase, open: Boolean(target), joined });
 
   useEffect(() => {
     if (!target || ids.length === 0) return;
@@ -72,7 +75,8 @@ export function StatsTrendDialog({ target, columns, querySpec, catalog, hints, o
       const spec: QuerySpec = {
         release_id: querySpec.release_id, season, phase: querySpec.phase,
         before_date: scope?.default_before_date ?? null, window: querySpec.window,
-        ...(impact ? { view_state: { columns: [column.key] }, impact_manifest_sha256: querySpec.impact_manifest_sha256 } : {}),
+        ...(joined ? { view_state: { columns: [joined] } } : {}),
+        ...(impact ? { impact_manifest_sha256: querySpec.impact_manifest_sha256 } : {}),
         sort: [{ field: "pts_per_game", direction: "desc" }], page: { limit: MAX_PLAYERS }
       };
       const response = await executeWorkbenchQuery(spec, { player_ids: ids });
@@ -168,10 +172,8 @@ function TrendChart({ column, players, rows }: { column: ColumnDefinition; playe
           return <g key={players[seriesIndex].player_id} className="stats-trend-series" data-series={seriesIndex + 1}>
             {segments.filter(segment => segment.length > 1).map((segment, index) =>
               <polyline key={index} points={segment.map(point => `${point.x},${point.y}`).join(" ")} />)}
-            {plotted.map(point => <g key={point.season} className="stats-trend-point">
-              <circle cx={point.x} cy={point.y} r={5}><title>{`${players[seriesIndex].player_name}, ${point.season}: ${point.label}`}</title></circle>
-              {single && <text x={point.x} y={point.y - 12} textAnchor="middle">{point.label}</text>}
-            </g>)}
+            {plotted.map(point => <ValueDot key={point.season} x={point.x} y={point.y} label={point.label} large={single}
+              title={`${players[seriesIndex].player_name}, ${point.season}: ${point.label}`} />)}
           </g>;
         })}
       </svg>

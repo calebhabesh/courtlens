@@ -106,3 +106,10 @@
     .chart-table-scroll { min-height: var(--control-lg); }
   }
 }
+
+/* Databallr-style value markers: the number sits inside the data point. */
+@layer foundation {
+  .chart-value-dot rect { fill: var(--series, var(--color-accent)); stroke: var(--color-surface-2); stroke-width: 2; }
+  .chart-value-dot text { fill: var(--color-on-accent); font-size: var(--text-2xs); font-weight: 700; font-variant-numeric: tabular-nums; pointer-events: none; }
+  .chart-value-dot.is-large text { font-size: var(--text-xs); }
+}

@@ -71,9 +71,12 @@ test("wide and smaller desktop columns align with stable pinned identity while s
         identityWidths: body.slice(0, 3).map(cell => cell.width) };
     });
     expect(geometry.rowHeight).toBeCloseTo(42, 1);
-    geometry.identityWidths.slice(0, 2).forEach((value, index) => expect(value).toBeCloseTo([28, 236][index], 0));
-    expect(geometry.headerWidths).toEqual(geometry.bodyWidths);
-    expect(geometry.headerLeft).toEqual(geometry.bodyLeft);
+    geometry.identityWidths.slice(0, 2).forEach((value, index) => expect(value).toBeCloseTo([28, 300][index], 0));
+    // One search header spans the compare and name columns (Databallr); metric columns match 1:1.
+    expect(geometry.headerWidths[0]).toBeCloseTo(geometry.bodyWidths[0] + geometry.bodyWidths[1], 0);
+    expect(geometry.headerLeft[0]).toEqual(geometry.bodyLeft[0]);
+    expect(geometry.headerWidths.slice(1)).toEqual(geometry.bodyWidths.slice(2));
+    expect(geometry.headerLeft.slice(1)).toEqual(geometry.bodyLeft.slice(2));
     const region = page.getByRole("region", { name: "Player statistics scroll area" });
     const identity = rows(page).first().locator(".pinned-col-name");
     const before = (await identity.boundingBox())!.x;
