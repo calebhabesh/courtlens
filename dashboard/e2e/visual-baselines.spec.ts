@@ -106,7 +106,7 @@ for (const view of WIDTHS) {
 
     test("playoffs bracket", async ({ page }) => {
       await openWorkbench(page, "/playoffs?season=2025-26");
-      await expect(page.getByRole("heading", { level: 1, name: "Live" })).toBeVisible();
+      await expect(page.getByRole("heading", { level: 1, name: "Playoffs" })).toBeVisible();
       await settle(page);
       await expect(page).toHaveScreenshot(`playoffs-${view.name}.png`, shot);
     });

@@ -70,7 +70,7 @@ test("a research operation deep link reruns without AI and keeps its context in 
 
 test("saved investigations list scope in words and keep each record's hash behind Details", async ({ page }) => {
   await page.route("**/api/workbench/assistant/investigations?**", route => route.fulfill({ json: [{ id: "record-1", title: "Retained scoring", created_at: "2026-10-04T12:00:00Z", manifest_sha256: hash, context: { release_id: "retained-release", season: "2024-25", phase: "regular_season", before_date: "2025-04-15" }, operations: ["compare_periods"], question_saved: false }] }));
-  await openWorkbench(page, "/investigations");
+  await openWorkbench(page, "/investigations?view=personal");
   const table = page.getByRole("region", { name: "Saved operations table" });
   await expect(table.getByRole("row", { name: /Retained scoring/ })).toContainText("2024-25 · Regular season · Through Apr 14, 2025");
   await expect(table).toContainText("compare periods");

@@ -1,0 +1,386 @@
+[
+  {
+    "name": "evaluation",
+    "path": "/evaluation",
+    "viewport": "desktop",
+    "title": "Evaluation Archive",
+    "first_result_top": 227,
+    "first_table_top": 646,
+    "overflow_px": 0,
+    "small_targets": [],
+    "iso_dates": 0,
+    "hashes": 0,
+    "code_rules": 0,
+    "internal_titles": 0,
+    "chart": "Final-Test ErrorEWMA-20Player + contextMean Absolute Error · reference points7.827.960Shared scale · zero baseline7.96Source: Frozen M6 archive · registered, hash-verified reportSample: 39,988 scored core forecasts · 2023–24Reference points = PTS + 1.2 REB + 1.5 AST + 3 STL + 3 BLK − TOV; lower error is better.",
+    "text": "Evaluation Archive\nPoints Forecasts\n\nFrozen reference-points experiment · final test 2023–24.\n\nFrozen historical experiment · final test 2023–24\n39,988 scored forecasts\nData details\nFinal-Test Error\nEWMA-20\nPlayer + context\nMean Absolute Error · reference points\n7.82\n7.96\n0\nShared scale · zero baseline\n7.96\nSource: Frozen M6 archive · registered, hash-verified report\nSample: 39,988 scored core forecasts · 2023–24\nReference points = PTS + 1.2 REB + 1.5 AST + 3 STL + 3 BLK − TOV; lower error is better.\nDecision\nNo challenger promoted\nEWMA-20 remains the replay estimator\nEWMA-20 MAE\n7.82 ref pts\nFinal test, lower is better\nContext Model MAE\n7.96 ref pts\n+0.14 against EWMA\nPaired 95% Interval\n+0.11 to +0.18\nContext minus EWMA MAE\nThe context model did not beat EWMA-20 on the final season.\nWhy?\nFinal Test · 2023–24\nIdentical scored core forecasts; lower MAE and RMSE are better\nESTIMATOR\tMAE\tRMSE\t80% INTERVAL COVERAGE\tMEAN INTERVAL WIDTH\tROWS\nEWMA · 20 appearances\t7.82\t10.06\t80.2%\t24.8\t39,988\nPlayer only\t7.97\t10.15\t80.6%\t25.3\t39,988\nPlayer + context\t7.96\t10.12\t80.5%\t25.2\t39,988\n\nSelection used V1 and V2 in 2022–23 before the final season opened. Pooled validation MAE: EWMA 7.71, player-only 7.83, context 7.83.\n\nPromotion Gates\nFailed Final-test superiority\nPassed Interval coverage and width\nFailed Supported-slice regression limit\nFailed Required validation improvement\nData Health and Coverage\nHistorical coverage\nOct 19, 2021 – Apr 14, 2024\nLast published build\nUnavailable\nLatest build attempt\nready · Oct 1, 2026\nPublished player/game facts\n90,609\nPublished dated profiles\n220,942\nFinal-test candidates\n73,506\nWhat this historical test can and cannot establish.\nMethodology\nWhy?",
+    "circles": 0,
+    "cards": [],
+    "source": [
+      "Source: Frozen M6 archive · registered, hash-verified reportSample: 39,988 scored core forecasts · 2023–24Reference points = PTS + 1.2 REB + 1.5 AST + 3 STL + 3 BLK − TOV; lower error is better."
+    ],
+    "errors": [],
+    "failed": []
+  },
+  {
+    "name": "evaluation",
+    "path": "/evaluation",
+    "viewport": "phone",
+    "title": "Evaluation Archive",
+    "first_result_top": 277.5,
+    "first_table_top": 1023.5,
+    "overflow_px": 0,
+    "small_targets": [],
+    "iso_dates": 0,
+    "hashes": 0,
+    "code_rules": 0,
+    "internal_titles": 0,
+    "chart": "Final-Test ErrorEWMA-20Player + contextMean Absolute Error · reference points7.827.960Shared scale · zero baseline7.96Source: Frozen M6 archive · registered, hash-verified reportSample: 39,988 scored core forecasts · 2023–24Reference points = PTS + 1.2 REB + 1.5 AST + 3 STL + 3 BLK − TOV; lower error is better.",
+    "text": "Evaluation Archive\nPoints Forecasts\n\nFrozen reference-points experiment · final test 2023–24.\n\nFrozen historical experiment · final test 2023–24\n39,988 scored forecasts\nData details\nFinal-Test Error\nEWMA-20\nPlayer + context\nMean Absolute Error · reference points\n7.82\n7.96\n0\nShared scale · zero baseline\n7.96\nSource: Frozen M6 archive · registered, hash-verified report\nSample: 39,988 scored core forecasts · 2023–24\nReference points = PTS + 1.2 REB + 1.5 AST + 3 STL + 3 BLK − TOV; lower error is better.\nDecision\nNo challenger promoted\nEWMA-20 remains the replay estimator\nEWMA-20 MAE\n7.82 ref pts\nFinal test, lower is better\nContext Model MAE\n7.96 ref pts\n+0.14 against EWMA\nPaired 95% Interval\n+0.11 to +0.18\nContext minus EWMA MAE\nThe context model did not beat EWMA-20 on the final season.\nWhy?\nFinal Test · 2023–24\nIdentical scored core forecasts; lower MAE and RMSE are better\nESTIMATOR\tMAE\tRMSE\t80% INTERVAL COVERAGE\tMEAN INTERVAL WIDTH\tROWS\nEWMA · 20 appearances\t7.82\t10.06\t80.2%\t24.8\t39,988\nPlayer only\t7.97\t10.15\t80.6%\t25.3\t39,988\nPlayer + context\t7.96\t10.12\t80.5%\t25.2\t39,988\n\nSelection used V1 and V2 in 2022–23 before the final season opened. Pooled validation MAE: EWMA 7.71, player-only 7.83, context 7.83.\n\nPromotion Gates\nFailed Final-test superiority\nPassed Interval coverage and width\nFailed Supported-slice regression limit\nFailed Required validation improvement\nData Health and Coverage\nHistorical coverage\nOct 19, 2021 – Apr 14, 2024\nLast published build\nUnavailable\nLatest build attempt\nready · Oct 1, 2026\nPublished player/game facts\n90,609\nPublished dated profiles\n220,942\nFinal-test candidates\n73,506\nWhat this historical test can and cannot establish.\nMethodology\nWhy?",
+    "circles": 0,
+    "cards": [],
+    "source": [
+      "Source: Frozen M6 archive · registered, hash-verified reportSample: 39,988 scored core forecasts · 2023–24Reference points = PTS + 1.2 REB + 1.5 AST + 3 STL + 3 BLK − TOV; lower error is better."
+    ],
+    "errors": [],
+    "failed": []
+  },
+  {
+    "name": "public-investigations",
+    "path": "/investigations",
+    "viewport": "desktop",
+    "title": "Saved Investigations",
+    "first_result_top": 227,
+    "first_table_top": null,
+    "overflow_px": 0,
+    "small_targets": [
+      {
+        "text": "Data details",
+        "height": 28
+      },
+      {
+        "text": "Data details",
+        "height": 28
+      },
+      {
+        "text": "Data details",
+        "height": 28
+      },
+      {
+        "text": "Data details",
+        "height": 28
+      }
+    ],
+    "iso_dates": 0,
+    "hashes": 0,
+    "code_rules": 0,
+    "internal_titles": 0,
+    "text": "Saved Investigations\nMy Saved Investigations\n\nReopen real findings and verify their retained evidence.\n\nHistorical examples · original inputs and exact exports\n4 retained findings\nScottie Barnes\nTOR\nScottie Barnes: Scoring Distribution\n\nFive observed games, with exact points and empirical dispersion.\n\n2024-25 · Regular season · Through Jun 29, 2026\n\nSource: retained CourtLens operation · 6 returned rows\n\nOpen Finding\nData details\nScottie Barnes\nTOR\nScottie Barnes: Recent vs Prior Games\n\nPoints and minutes across two disjoint ten-game windows.\n\n2024-25 · Regular season · Through Jun 22, 2025\n\nSource: retained CourtLens operation · 2 returned rows\n\nOpen Finding\nData details\nScottie Barnes\nTOR\nScottie Barnes: Home and Away\n\nObserved production split by venue, with sample counts.\n\n2024-25 · Regular season · Through Jun 22, 2025\n\nSource: retained CourtLens operation · 2 returned rows\n\nOpen Finding\nData details\nScottie Barnes\nTOR\nScottie Barnes: Statistical Peers\n\nFive nearest profiles under the retained sample and distance rules.\n\n2024-25 · Regular season · Through Jun 22, 2025\n\nSource: retained CourtLens operation · 6 returned rows\n\nOpen Finding\nData details",
+    "circles": 0,
+    "cards": [
+      "Scottie Barnes: Scoring Distribution",
+      "Scottie Barnes: Recent vs Prior Games",
+      "Scottie Barnes: Home and Away",
+      "Scottie Barnes: Statistical Peers"
+    ],
+    "source": [],
+    "errors": [],
+    "failed": []
+  },
+  {
+    "name": "public-investigations",
+    "path": "/investigations",
+    "viewport": "phone",
+    "title": "Saved Investigations",
+    "first_result_top": 259,
+    "first_table_top": null,
+    "overflow_px": 0,
+    "small_targets": [],
+    "iso_dates": 0,
+    "hashes": 0,
+    "code_rules": 0,
+    "internal_titles": 0,
+    "text": "Saved Investigations\nMy Saved Investigations\n\nReopen real findings and verify their retained evidence.\n\nHistorical examples · original inputs and exact exports\n4 retained findings\nScottie Barnes\nTOR\nScottie Barnes: Scoring Distribution\n\nFive observed games, with exact points and empirical dispersion.\n\n2024-25 · Regular season · Through Jun 29, 2026\n\nSource: retained CourtLens operation · 6 returned rows\n\nOpen Finding\nData details\nScottie Barnes\nTOR\nScottie Barnes: Recent vs Prior Games\n\nPoints and minutes across two disjoint ten-game windows.\n\n2024-25 · Regular season · Through Jun 22, 2025\n\nSource: retained CourtLens operation · 2 returned rows\n\nOpen Finding\nData details\nScottie Barnes\nTOR\nScottie Barnes: Home and Away\n\nObserved production split by venue, with sample counts.\n\n2024-25 · Regular season · Through Jun 22, 2025\n\nSource: retained CourtLens operation · 2 returned rows\n\nOpen Finding\nData details\nScottie Barnes\nTOR\nScottie Barnes: Statistical Peers\n\nFive nearest profiles under the retained sample and distance rules.\n\n2024-25 · Regular season · Through Jun 22, 2025\n\nSource: retained CourtLens operation · 6 returned rows\n\nOpen Finding\nData details",
+    "circles": 0,
+    "cards": [
+      "Scottie Barnes: Scoring Distribution",
+      "Scottie Barnes: Recent vs Prior Games",
+      "Scottie Barnes: Home and Away",
+      "Scottie Barnes: Statistical Peers"
+    ],
+    "source": [],
+    "errors": [],
+    "failed": []
+  },
+  {
+    "name": "saved-distribution",
+    "path": "/investigations/saved/3bcb37c9-b410-44b1-be7f-c3b368fbe28c",
+    "viewport": "desktop",
+    "title": "Scottie Barnes: Scoring Distribution",
+    "first_result_top": 351,
+    "first_table_top": 814,
+    "overflow_px": 0,
+    "small_targets": [
+      {
+        "text": "Definitions, inputs and exact evidence (22 cells)",
+        "height": 28
+      }
+    ],
+    "iso_dates": 0,
+    "hashes": 0,
+    "code_rules": 0,
+    "internal_titles": 0,
+    "chart": "Total Points · Observed GamesTotal Points (points)3517.50Total Points in points; observed values with a zero baselineAppearance 1 · Apr 13, 2025: 35 pointsAppearance 2 · Apr 11, 2025: 26 pointsAppearance 3 · Apr 9, 2025: 17 pointsAppearance 4 · Apr 3, 2025: 5 pointsAppearance 5 · Apr 1, 2025: 9 points#1 · Apr 13#5 · Apr 1Returned Appearance · newest firstSource: Retained CourtLens distribution operationSample: 5 observed · 0 unknownDots show observations; no interpolation or prospective interval.",
+    "text": "Scottie Barnes: Scoring Distribution\nAll Investigations\nVerify Without AI\nExport JSON\nExport CSV\n\nSaved Oct 4, 2026 · retained analytical evidence\n\n2024-25 · Regular season · Through Jun 29, 2026 · Season to date\nData details\nScottie Barnes\nTOR\ndistribution · pts\n5 data rows\nTotal Points · Observed Games\n\nTotal Points (points)\n\n35\n17.5\n0\n#1 · Apr 13\n#5 · Apr 1\n\nReturned Appearance · newest first\n\nSource: Retained CourtLens distribution operation\nSample: 5 observed · 0 unknown\nDots show observations; no interpolation or prospective interval.\n\nLast 5 appearances; season start through the exclusive cutoff.\n\nScottie Barnes · Total Points (points)\n\nn\n5\nmean\n18.4\nmedian\n17\nmin\n5\nmax\n35\npopulation sd\n10.98\np10\n6.6\np25\n9\np75\n26\np90\n31.4\niqr\n17\nServer-computed distribution · pts results (points)\nGAME DATE\tVALUE\tMINUTES\tTEAM TRICODE\tOPPONENT TRICODE\tIS HOME\tGAME ID\nApr 13, 2025\t35\t36.6\tTOR\tSAS\tfalse\t0022401197\nApr 11, 2025\t26\t30.5\tTOR\tDAL\tfalse\t0022401178\nApr 9, 2025\t17\t20.4\tTOR\tCHA\ttrue\t0022401158\nApr 3, 2025\t5\t27\tTOR\tPOR\ttrue\t0022401116\nApr 1, 2025\t9\t24.3\tTOR\tCHI\tfalse\t0022401099\n\nTable decimals display up to four places; hover or open exact evidence for returned precision.\n\nOpen in Research\nDefinitions, inputs and exact evidence (22 cells)\nOperations\n1\ndistribution\nSeason\n2024-25\nRegular season\nSaved\nOct 4, 2026\nQuestion excluded\nReproduction\nNot run\nRuns without AI\n\nThe question was not retained.\n\nRetained results reopen against their pinned release; zero and unknown stay distinct.\nWhy?",
+    "circles": 5,
+    "cards": [],
+    "source": [
+      "Source: Retained CourtLens distribution operationSample: 5 observed · 0 unknownDots show observations; no interpolation or prospective interval."
+    ],
+    "errors": [],
+    "failed": []
+  },
+  {
+    "name": "saved-distribution",
+    "path": "/investigations/saved/3bcb37c9-b410-44b1-be7f-c3b368fbe28c",
+    "viewport": "phone",
+    "title": "Scottie Barnes: Scoring Distribution",
+    "first_result_top": 431,
+    "first_table_top": 1132.5,
+    "overflow_px": 0,
+    "small_targets": [],
+    "iso_dates": 0,
+    "hashes": 0,
+    "code_rules": 0,
+    "internal_titles": 0,
+    "chart": "Total Points · Observed GamesTotal Points (points)3517.50Total Points in points; observed values with a zero baselineAppearance 1 · Apr 13, 2025: 35 pointsAppearance 2 · Apr 11, 2025: 26 pointsAppearance 3 · Apr 9, 2025: 17 pointsAppearance 4 · Apr 3, 2025: 5 pointsAppearance 5 · Apr 1, 2025: 9 points#1 · Apr 13#5 · Apr 1Returned Appearance · newest firstSource: Retained CourtLens distribution operationSample: 5 observed · 0 unknownDots show observations; no interpolation or prospective interval.",
+    "text": "Scottie Barnes: Scoring Distribution\nAll Investigations\nVerify Without AI\nExport JSON\nExport CSV\n\nSaved Oct 4, 2026 · retained analytical evidence\n\n2024-25 · Regular season · Through Jun 29, 2026 · Season to date\nData details\nScottie Barnes\nTOR\ndistribution · pts\n5 data rows\nTotal Points · Observed Games\n\nTotal Points (points)\n\n35\n17.5\n0\n#1 · Apr 13\n#5 · Apr 1\n\nReturned Appearance · newest first\n\nSource: Retained CourtLens distribution operation\nSample: 5 observed · 0 unknown\nDots show observations; no interpolation or prospective interval.\n\nLast 5 appearances; season start through the exclusive cutoff.\n\nScottie Barnes · Total Points (points)\n\nn\n5\nmean\n18.4\nmedian\n17\nmin\n5\nmax\n35\npopulation sd\n10.98\np10\n6.6\np25\n9\np75\n26\np90\n31.4\niqr\n17\nServer-computed distribution · pts results (points)\nGAME DATE\tVALUE\tMINUTES\tTEAM TRICODE\tOPPONENT TRICODE\tIS HOME\tGAME ID\nApr 13, 2025\t35\t36.6\tTOR\tSAS\tfalse\t0022401197\nApr 11, 2025\t26\t30.5\tTOR\tDAL\tfalse\t0022401178\nApr 9, 2025\t17\t20.4\tTOR\tCHA\ttrue\t0022401158\nApr 3, 2025\t5\t27\tTOR\tPOR\ttrue\t0022401116\nApr 1, 2025\t9\t24.3\tTOR\tCHI\tfalse\t0022401099\n\nTable decimals display up to four places; hover or open exact evidence for returned precision.\n\nOpen in Research\nDefinitions, inputs and exact evidence (22 cells)\nOperations\n1\ndistribution\nSeason\n2024-25\nRegular season\nSaved\nOct 4, 2026\nQuestion excluded\nReproduction\nNot run\nRuns without AI\n\nThe question was not retained.\n\nRetained results reopen against their pinned release; zero and unknown stay distinct.\nWhy?",
+    "circles": 5,
+    "cards": [],
+    "source": [
+      "Source: Retained CourtLens distribution operationSample: 5 observed · 0 unknownDots show observations; no interpolation or prospective interval."
+    ],
+    "errors": [],
+    "failed": []
+  },
+  {
+    "name": "saved-periods",
+    "path": "/investigations/saved/ed0c4c82-9b31-4527-962e-012d180ec2ba",
+    "viewport": "desktop",
+    "title": "Scottie Barnes: Recent vs Prior Games",
+    "first_result_top": 293,
+    "first_table_top": 591.5,
+    "overflow_px": 0,
+    "small_targets": [
+      {
+        "text": "Definitions, inputs and exact evidence (150 cells)",
+        "height": 28
+      }
+    ],
+    "iso_dates": 0,
+    "hashes": 0,
+    "code_rules": 0,
+    "internal_titles": 0,
+    "text": "Scottie Barnes: Recent vs Prior Games\nAll Investigations\nVerify Without AI\nExport JSON\nExport CSV\n\nSaved Oct 4, 2026 · retained analytical evidence\n\n2024-25 · Regular season · Through Jun 22, 2025 · Season to date\nData details\nScottie Barnes\nTOR\nOperations\n1\ncompare periods\nSeason\n2024-25\nRegular season\nSaved\nOct 4, 2026\nQuestion excluded\nReproduction\nNot run\nRuns without AI\n\nThe question was not retained.\n\nRetained results reopen against their pinned release; zero and unknown stay distinct.\nWhy?\ncompare periods\n2 data rows\n\n10 recent versus 10 prior disjoint appearances.\n\nServer-computed compare periods results\nMETRIC KEY\tDISPLAY NAME\tPERIOD A VALUE\tPERIOD B VALUE\tABSOLUTE DELTA\tPERCENTAGE DELTA\tPERIOD A N\tPERIOD B N\npts_per_game\tPoints Per Game\t16.9\t18.6\t-1.7\t-9.14\t10\t10\nmin_per_game\tMinutes Per Game\t27.9\t29.6\t-1.7\t-5.74\t10\t10\n\nTable decimals display up to four places; hover or open exact evidence for returned precision.\n\nOpen in Research\nDefinitions, inputs and exact evidence (150 cells)",
+    "circles": 0,
+    "cards": [],
+    "source": [],
+    "errors": [],
+    "failed": []
+  },
+  {
+    "name": "saved-periods",
+    "path": "/investigations/saved/ed0c4c82-9b31-4527-962e-012d180ec2ba",
+    "viewport": "phone",
+    "title": "Scottie Barnes: Recent vs Prior Games",
+    "first_result_top": 373,
+    "first_table_top": 819.5,
+    "overflow_px": 0,
+    "small_targets": [],
+    "iso_dates": 0,
+    "hashes": 0,
+    "code_rules": 0,
+    "internal_titles": 0,
+    "text": "Scottie Barnes: Recent vs Prior Games\nAll Investigations\nVerify Without AI\nExport JSON\nExport CSV\n\nSaved Oct 4, 2026 · retained analytical evidence\n\n2024-25 · Regular season · Through Jun 22, 2025 · Season to date\nData details\nScottie Barnes\nTOR\nOperations\n1\ncompare periods\nSeason\n2024-25\nRegular season\nSaved\nOct 4, 2026\nQuestion excluded\nReproduction\nNot run\nRuns without AI\n\nThe question was not retained.\n\nRetained results reopen against their pinned release; zero and unknown stay distinct.\nWhy?\ncompare periods\n2 data rows\n\n10 recent versus 10 prior disjoint appearances.\n\nServer-computed compare periods results\nMETRIC KEY\tDISPLAY NAME\tPERIOD A VALUE\tPERIOD B VALUE\tABSOLUTE DELTA\tPERCENTAGE DELTA\tPERIOD A N\tPERIOD B N\npts_per_game\tPoints Per Game\t16.9\t18.6\t-1.7\t-9.14\t10\t10\nmin_per_game\tMinutes Per Game\t27.9\t29.6\t-1.7\t-5.74\t10\t10\n\nTable decimals display up to four places; hover or open exact evidence for returned precision.\n\nOpen in Research\nDefinitions, inputs and exact evidence (150 cells)",
+    "circles": 0,
+    "cards": [],
+    "source": [],
+    "errors": [],
+    "failed": []
+  },
+  {
+    "name": "saved-venue",
+    "path": "/investigations/saved/be611173-e250-44cc-bd72-7e64f24341ec",
+    "viewport": "desktop",
+    "title": "Scottie Barnes: Home and Away",
+    "first_result_top": 293,
+    "first_table_top": 591.5,
+    "overflow_px": 0,
+    "small_targets": [
+      {
+        "text": "Definitions, inputs and exact evidence (140 cells)",
+        "height": 28
+      }
+    ],
+    "iso_dates": 0,
+    "hashes": 0,
+    "code_rules": 0,
+    "internal_titles": 0,
+    "text": "Scottie Barnes: Home and Away\nAll Investigations\nVerify Without AI\nExport JSON\nExport CSV\n\nSaved Oct 4, 2026 · retained analytical evidence\n\n2024-25 · Regular season · Through Jun 22, 2025 · Season to date\nData details\nScottie Barnes\nTOR\nOperations\n1\nsplits\nSeason\n2024-25\nRegular season\nSaved\nOct 4, 2026\nQuestion excluded\nReproduction\nNot run\nRuns without AI\n\nThe question was not retained.\n\nRetained results reopen against their pinned release; zero and unknown stay distinct.\nWhy?\nsplits\n2 data rows\n\nvenue splits; season start through the exclusive cutoff.\n\nServer-computed splits results\nSPLIT\tBUCKET KEY\tBUCKET LABEL\tGAMES PLAYED\tTOTAL MINUTES\tMIN PER GAME\tAPPEARANCE GAP DAYS AVG\tMETRICS · PTS\tMETRICS · PTS PER GAME\tMETRICS · REB\tMETRICS · REB PER GAME\tMETRICS · AST\tMETRICS · AST PER GAME\tMETRICS · STL\tMETRICS · STL PER GAME\tMETRICS · BLK\tMETRICS · BLK PER GAME\tMETRICS · TOV\tMETRICS · TOV PER GAME\tMETRICS · OREB\tMETRICS · OREB PER GAME\tMETRICS · DREB\tMETRICS · DREB PER GAME\tMETRICS · PF\tMETRICS · PF PER GAME\tMETRICS · FG PCT\tMETRICS · FG3 PCT\tMETRICS · FT PCT\tMETRICS · TS PCT\tMETRICS · EFG PCT\tMETRICS · FTR\tMETRICS · MIN PER GAME\tMETRICS · PTS PER 36\tMETRICS · REB PER 36\tMETRICS · AST PER 36\tMETRICS · STL PER 36\tMETRICS · BLK PER 36\tMETRICS · TOV PER 36\tMETRICS · FG3A PER 36\tMETRICS · FTA PER 36\tSAMPLE COUNTS · PTS\tSAMPLE COUNTS · PTS PER GAME\tSAMPLE COUNTS · REB\tSAMPLE COUNTS · REB PER GAME\tSAMPLE COUNTS · AST\tSAMPLE COUNTS · AST PER GAME\tSAMPLE COUNTS · STL\tSAMPLE COUNTS · STL PER GAME\tSAMPLE COUNTS · BLK\tSAMPLE COUNTS · BLK PER GAME\tSAMPLE COUNTS · TOV\tSAMPLE COUNTS · TOV PER GAME\tSAMPLE COUNTS · OREB\tSAMPLE COUNTS · OREB PER GAME\tSAMPLE COUNTS · DREB\tSAMPLE COUNTS · DREB PER GAME\tSAMPLE COUNTS · PF\tSAMPLE COUNTS · PF PER GAME\tSAMPLE COUNTS · FG PCT\tSAMPLE COUNTS · FG",
+    "circles": 0,
+    "cards": [],
+    "source": [],
+    "errors": [],
+    "failed": []
+  },
+  {
+    "name": "saved-venue",
+    "path": "/investigations/saved/be611173-e250-44cc-bd72-7e64f24341ec",
+    "viewport": "phone",
+    "title": "Scottie Barnes: Home and Away",
+    "first_result_top": 373,
+    "first_table_top": 819.5,
+    "overflow_px": 0,
+    "small_targets": [],
+    "iso_dates": 0,
+    "hashes": 0,
+    "code_rules": 0,
+    "internal_titles": 0,
+    "text": "Scottie Barnes: Home and Away\nAll Investigations\nVerify Without AI\nExport JSON\nExport CSV\n\nSaved Oct 4, 2026 · retained analytical evidence\n\n2024-25 · Regular season · Through Jun 22, 2025 · Season to date\nData details\nScottie Barnes\nTOR\nOperations\n1\nsplits\nSeason\n2024-25\nRegular season\nSaved\nOct 4, 2026\nQuestion excluded\nReproduction\nNot run\nRuns without AI\n\nThe question was not retained.\n\nRetained results reopen against their pinned release; zero and unknown stay distinct.\nWhy?\nsplits\n2 data rows\n\nvenue splits; season start through the exclusive cutoff.\n\nServer-computed splits results\nSPLIT\tBUCKET KEY\tBUCKET LABEL\tGAMES PLAYED\tTOTAL MINUTES\tMIN PER GAME\tAPPEARANCE GAP DAYS AVG\tMETRICS · PTS\tMETRICS · PTS PER GAME\tMETRICS · REB\tMETRICS · REB PER GAME\tMETRICS · AST\tMETRICS · AST PER GAME\tMETRICS · STL\tMETRICS · STL PER GAME\tMETRICS · BLK\tMETRICS · BLK PER GAME\tMETRICS · TOV\tMETRICS · TOV PER GAME\tMETRICS · OREB\tMETRICS · OREB PER GAME\tMETRICS · DREB\tMETRICS · DREB PER GAME\tMETRICS · PF\tMETRICS · PF PER GAME\tMETRICS · FG PCT\tMETRICS · FG3 PCT\tMETRICS · FT PCT\tMETRICS · TS PCT\tMETRICS · EFG PCT\tMETRICS · FTR\tMETRICS · MIN PER GAME\tMETRICS · PTS PER 36\tMETRICS · REB PER 36\tMETRICS · AST PER 36\tMETRICS · STL PER 36\tMETRICS · BLK PER 36\tMETRICS · TOV PER 36\tMETRICS · FG3A PER 36\tMETRICS · FTA PER 36\tSAMPLE COUNTS · PTS\tSAMPLE COUNTS · PTS PER GAME\tSAMPLE COUNTS · REB\tSAMPLE COUNTS · REB PER GAME\tSAMPLE COUNTS · AST\tSAMPLE COUNTS · AST PER GAME\tSAMPLE COUNTS · STL\tSAMPLE COUNTS · STL PER GAME\tSAMPLE COUNTS · BLK\tSAMPLE COUNTS · BLK PER GAME\tSAMPLE COUNTS · TOV\tSAMPLE COUNTS · TOV PER GAME\tSAMPLE COUNTS · OREB\tSAMPLE COUNTS · OREB PER GAME\tSAMPLE COUNTS · DREB\tSAMPLE COUNTS · DREB PER GAME\tSAMPLE COUNTS · PF\tSAMPLE COUNTS · PF PER GAME\tSAMPLE COUNTS · FG PCT\tSAMPLE COUNTS · FG",
+    "circles": 0,
+    "cards": [],
+    "source": [],
+    "errors": [],
+    "failed": []
+  },
+  {
+    "name": "saved-peers",
+    "path": "/investigations/saved/fff8adb1-f205-4fdf-a353-8618ac567440",
+    "viewport": "desktop",
+    "title": "Scottie Barnes: Statistical Peers",
+    "first_result_top": 293,
+    "first_table_top": 674.5,
+    "overflow_px": 0,
+    "small_targets": [
+      {
+        "text": "Definitions, inputs and exact evidence (192 cells)",
+        "height": 28
+      }
+    ],
+    "iso_dates": 0,
+    "hashes": 0,
+    "code_rules": 0,
+    "internal_titles": 0,
+    "text": "Scottie Barnes: Statistical Peers\nAll Investigations\nVerify Without AI\nExport JSON\nExport CSV\n\nSaved Oct 4, 2026 · retained analytical evidence\n\n2024-25 · Regular season · Through Jun 22, 2025 · Season to date\nData details\nScottie Barnes\nTOR\nOperations\n1\nsimilarity\nSeason\n2024-25\nRegular season\nSaved\nOct 4, 2026\nQuestion excluded\nReproduction\nNot run\nRuns without AI\n\nThe question was not retained.\n\nRetained results reopen against their pinned release; zero and unknown stay distinct.\nWhy?\nsimilarity\n5 data rows\n\nlast_10 profile; at least 10 appearances and 150 minutes. Dimensions: registered defaults.\n\nTarget: Scottie Barnes · 10 appearances · 278.8 minutes\n\nTarget profile and cohort definitions\nServer-computed similarity results\nPLAYER NAME\tDISTANCE\tOVERLAPPING DIMENSIONS COUNT\tGAMES PLAYED\tTOTAL MINUTES\tPLAYER ID\tTEAM TRICODE\tRAW VALUES · PTS PER 36\tRAW VALUES · REB PER 36\tRAW VALUES · AST PER 36\tRAW VALUES · TOV PER 36\tRAW VALUES · FG3A PER 36\tRAW VALUES · FTA PER 36\tRAW VALUES · TS PCT\tRAW VALUES · MIN PER GAME\tSTANDARDIZED VALUES · PTS PER 36\tSTANDARDIZED VALUES · REB PER 36\tSTANDARDIZED VALUES · AST PER 36\tSTANDARDIZED VALUES · TOV PER 36\tSTANDARDIZED VALUES · FG3A PER 36\tSTANDARDIZED VALUES · FTA PER 36\tSTANDARDIZED VALUES · TS PCT\tSTANDARDIZED VALUES · MIN PER GAME\tDIMENSION CONTRIBUTIONS · PTS PER 36\tDIMENSION CONTRIBUTIONS · REB PER 36\tDIMENSION CONTRIBUTIONS · AST PER 36\tDIMENSION CONTRIBUTIONS · TOV PER 36\tDIMENSION CONTRIBUTIONS · FG3A PER 36\tDIMENSION CONTRIBUTIONS · FTA PER 36\tDIMENSION CONTRIBUTIONS · TS PCT\tDIMENSION CONTRIBUTIONS · MIN PER GAME\nDejounte Murray\t0.599\t8\t10\t312.9\t1627749\tUnknown\t23\t8.1\t7.6\t3\t7.4\t6.3\t0.54\t31.3\t1.105\t0.478\t1.68\t1.182\t0.623\t1.519\t-0.473\t0.879\t0.006\t0.015\t0.01\t0.006\t0.104\t0.143\t0.033\t0.042\nRJ Barrett\t0.615\t8\t10\t268.1\t1629628\tU",
+    "circles": 0,
+    "cards": [],
+    "source": [],
+    "errors": [],
+    "failed": []
+  },
+  {
+    "name": "saved-peers",
+    "path": "/investigations/saved/fff8adb1-f205-4fdf-a353-8618ac567440",
+    "viewport": "phone",
+    "title": "Scottie Barnes: Statistical Peers",
+    "first_result_top": 373,
+    "first_table_top": 923.5,
+    "overflow_px": 0,
+    "small_targets": [],
+    "iso_dates": 0,
+    "hashes": 0,
+    "code_rules": 0,
+    "internal_titles": 0,
+    "text": "Scottie Barnes: Statistical Peers\nAll Investigations\nVerify Without AI\nExport JSON\nExport CSV\n\nSaved Oct 4, 2026 · retained analytical evidence\n\n2024-25 · Regular season · Through Jun 22, 2025 · Season to date\nData details\nScottie Barnes\nTOR\nOperations\n1\nsimilarity\nSeason\n2024-25\nRegular season\nSaved\nOct 4, 2026\nQuestion excluded\nReproduction\nNot run\nRuns without AI\n\nThe question was not retained.\n\nRetained results reopen against their pinned release; zero and unknown stay distinct.\nWhy?\nsimilarity\n5 data rows\n\nlast_10 profile; at least 10 appearances and 150 minutes. Dimensions: registered defaults.\n\nTarget: Scottie Barnes · 10 appearances · 278.8 minutes\n\nTarget profile and cohort definitions\nServer-computed similarity results\nPLAYER NAME\tDISTANCE\tOVERLAPPING DIMENSIONS COUNT\tGAMES PLAYED\tTOTAL MINUTES\tPLAYER ID\tTEAM TRICODE\tRAW VALUES · PTS PER 36\tRAW VALUES · REB PER 36\tRAW VALUES · AST PER 36\tRAW VALUES · TOV PER 36\tRAW VALUES · FG3A PER 36\tRAW VALUES · FTA PER 36\tRAW VALUES · TS PCT\tRAW VALUES · MIN PER GAME\tSTANDARDIZED VALUES · PTS PER 36\tSTANDARDIZED VALUES · REB PER 36\tSTANDARDIZED VALUES · AST PER 36\tSTANDARDIZED VALUES · TOV PER 36\tSTANDARDIZED VALUES · FG3A PER 36\tSTANDARDIZED VALUES · FTA PER 36\tSTANDARDIZED VALUES · TS PCT\tSTANDARDIZED VALUES · MIN PER GAME\tDIMENSION CONTRIBUTIONS · PTS PER 36\tDIMENSION CONTRIBUTIONS · REB PER 36\tDIMENSION CONTRIBUTIONS · AST PER 36\tDIMENSION CONTRIBUTIONS · TOV PER 36\tDIMENSION CONTRIBUTIONS · FG3A PER 36\tDIMENSION CONTRIBUTIONS · FTA PER 36\tDIMENSION CONTRIBUTIONS · TS PCT\tDIMENSION CONTRIBUTIONS · MIN PER GAME\nDejounte Murray\t0.599\t8\t10\t312.9\t1627749\tUnknown\t23\t8.1\t7.6\t3\t7.4\t6.3\t0.54\t31.3\t1.105\t0.478\t1.68\t1.182\t0.623\t1.519\t-0.473\t0.879\t0.006\t0.015\t0.01\t0.006\t0.104\t0.143\t0.033\t0.042\nRJ Barrett\t0.615\t8\t10\t268.1\t1629628\tU",
+    "circles": 0,
+    "cards": [],
+    "source": [],
+    "errors": [],
+    "failed": []
+  },
+  {
+    "name": "playoffs",
+    "path": "/playoffs",
+    "viewport": "desktop",
+    "title": "Playoffs",
+    "first_result_top": 388,
+    "first_table_top": null,
+    "overflow_px": 0,
+    "small_targets": [
+      {
+        "text": "All rounds",
+        "height": 36
+      },
+      {
+        "text": "Round 1",
+        "height": 36
+      },
+      {
+        "text": "Semis",
+        "height": 36
+      },
+      {
+        "text": "Conf Finals",
+        "height": 36
+      },
+      {
+        "text": "Finals",
+        "height": 36
+      },
+      {
+        "text": "Both",
+        "height": 36
+      },
+      {
+        "text": "East",
+        "height": 36
+      },
+      {
+        "text": "West",
+        "height": 36
+      },
+      {
+        "text": "Bracket",
+        "height": 36
+      },
+      {
+        "text": "Seeds",
+        "height": 36
+      },
+      {
+        "text": "Coverage",
+        "height": 36
+      }
+    ],
+    "iso_dates": 0,
+    "hashes": 0,
+    "code_rules": 0,
+    "internal_titles": 0,
+    "text": "Playoffs\n\nPostseason series for 2025-26.\n\nLive\nFinals\nPlayoffs\nSeason\n2023-24\n2024-25\n2025-26\nPhase\nPlayoffs\nThrough\nJun 13, 2026\nAll rounds\nRound 1\nSemis\nConf Finals\nFinals\nBoth\nEast\nWest\nBracket\nSeeds\nCoverage\n15 series\nData details\nCompleted games only; no winner projections.\nWhy?\nFirst Round\n\nRound 1 · Best-of-7 Series (2-2-1-1-1 host sequence)\n\n8 Series\nEastern · Matchup 1\nFINAL\n#1\nDetroit Pistons\n4\n#8\nOrlando Magic\n3\nDetroit Pistons won series 4-3\nDetails\nEastern · Matchup 2\nFINAL\n#2\nBoston Celtics\n3\n#7\nPhiladelphia 76ers\n4\nPhiladelphia 76ers won series 4-3\nDetails\nEastern · Matchup 3\nFINAL\n#3\nNew York Knicks\n4\n#6\nAtlanta Hawks\n2\nNew York Knicks won series 4-2\nDetails\nEastern · Matchup 4\nFINAL\n#4\nCleveland Cavaliers\n4\n#5\nToronto Raptors\n3\nCleveland Cavaliers won series 4-3\nDetails\nWestern · Matchup 5\nSWEEP\n#1\nOklahoma City Thunder\n4\n#7\nPhoenix Suns\n0\nOklahoma City Thunder won series 4-0\nDetails\nWestern · Matchup 6\nFINAL\n#2\nSan Antonio Spurs\n4\n#8\nPortland Trail Blazers\n1\nSan Antonio Spurs won series 4-1\nDetails\nWestern · Matchup 7\nFINAL\n#3\nDenver Nuggets\n2\n#6\nMinnesota Timberwolves\n4\nMinnesota Timberwolves won series 4-2\nDetails\nWestern · Matchup 8\nFINAL\n#4\nLos Angeles Lakers\n4\n#5\nHouston Rockets\n2\nLos Angeles Lakers won series 4-2\nDetails\nConference Semifinals\n\nRound 2 · Best-of-7 Series (2-2-1-1-1 host sequence)\n\n4 Series\nEastern · Matchup 1\nFINAL\n#1\nDetroit Pistons\n3\n#4\nCleveland Cavaliers\n4\nCleveland Cavaliers won series 4-3\nDetails\nEastern · Matchup 2\nSWEEP\n#3\nNew York Knicks\n4\n#7\nPhiladelphia 76ers\n0\nNew York Knicks won series 4-0\nDetails\nWestern · Matchup 3\nSWEEP\n#1\nOklahoma City Thunder\n4\n#4\nLos Angeles Lakers\n0\nOklahoma City Thunder won series 4-0\nDetails\nWestern · Matchup 4\nFINAL\n#2\nSan Antonio Spurs\n4\n#6\nMinnesota Timberwolves\n2\nSan Antonio Spurs won ser",
+    "circles": 0,
+    "cards": [],
+    "source": [],
+    "errors": [],
+    "failed": []
+  },
+  {
+    "name": "playoffs",
+    "path": "/playoffs",
+    "viewport": "phone",
+    "title": "Playoffs",
+    "first_result_top": 396,
+    "first_table_top": null,
+    "overflow_px": 0,
+    "small_targets": [],
+    "iso_dates": 0,
+    "hashes": 0,
+    "code_rules": 0,
+    "internal_titles": 0,
+    "text": "Playoffs\n\nPostseason series for 2025-26.\n\nLive\nFinals\nPlayoffs\nBracket\nSeeds\nCoverage\nFilters\n2025-26 · Playoffs · Jun 13\n15 series\nData details\nCompleted games only; no winner projections.\nWhy?\nFirst Round\n\nRound 1 · Best-of-7 Series (2-2-1-1-1 host sequence)\n\n8 Series\nEastern · Matchup 1\nFINAL\n#1\nDetroit Pistons\n4\n#8\nOrlando Magic\n3\nDetroit Pistons won series 4-3\nDetails\nEastern · Matchup 2\nFINAL\n#2\nBoston Celtics\n3\n#7\nPhiladelphia 76ers\n4\nPhiladelphia 76ers won series 4-3\nDetails\nEastern · Matchup 3\nFINAL\n#3\nNew York Knicks\n4\n#6\nAtlanta Hawks\n2\nNew York Knicks won series 4-2\nDetails\nEastern · Matchup 4\nFINAL\n#4\nCleveland Cavaliers\n4\n#5\nToronto Raptors\n3\nCleveland Cavaliers won series 4-3\nDetails\nWestern · Matchup 5\nSWEEP\n#1\nOklahoma City Thunder\n4\n#7\nPhoenix Suns\n0\nOklahoma City Thunder won series 4-0\nDetails\nWestern · Matchup 6\nFINAL\n#2\nSan Antonio Spurs\n4\n#8\nPortland Trail Blazers\n1\nSan Antonio Spurs won series 4-1\nDetails\nWestern · Matchup 7\nFINAL\n#3\nDenver Nuggets\n2\n#6\nMinnesota Timberwolves\n4\nMinnesota Timberwolves won series 4-2\nDetails\nWestern · Matchup 8\nFINAL\n#4\nLos Angeles Lakers\n4\n#5\nHouston Rockets\n2\nLos Angeles Lakers won series 4-2\nDetails\nConference Semifinals\n\nRound 2 · Best-of-7 Series (2-2-1-1-1 host sequence)\n\n4 Series\nEastern · Matchup 1\nFINAL\n#1\nDetroit Pistons\n3\n#4\nCleveland Cavaliers\n4\nCleveland Cavaliers won series 4-3\nDetails\nEastern · Matchup 2\nSWEEP\n#3\nNew York Knicks\n4\n#7\nPhiladelphia 76ers\n0\nNew York Knicks won series 4-0\nDetails\nWestern · Matchup 3\nSWEEP\n#1\nOklahoma City Thunder\n4\n#4\nLos Angeles Lakers\n0\nOklahoma City Thunder won series 4-0\nDetails\nWestern · Matchup 4\nFINAL\n#2\nSan Antonio Spurs\n4\n#6\nMinnesota Timberwolves\n2\nSan Antonio Spurs won series 4-2\nDetails\nConference Finals\n\nRound 3 · Best-of-7 Series (2-2-1-1-1 host sequence)\n\n2",
+    "circles": 0,
+    "cards": [],
+    "source": [],
+    "errors": [],
+    "failed": []
+  }
+]

@@ -341,3 +341,15 @@ PC12 B–D are pending. This entry does not mark the remaining page-wide glance 
   43 affected browser checks and 16 existing baselines pass, plus 18 new first-load baselines.
   Existing Compare export failure reproduced separately. Publication pointers/source counts unchanged.
 - PC12 C/D remain pending; no owner gate is added by this log.
+
+
+## 2026-10-12 — PC12 C presentation follow-through
+
+- [Demo hygiene evidence](evidence/pc12-c/README.md) and [contract](design/demo-hygiene-v1.md):
+  frozen Evaluation archive/error graphic, readable curated saved findings, labeled observed-sample
+  plots and the Playoffs title. Original artifacts, titles, exports and analytical contracts remain.
+- Real parameter-free desktop/phone captures have no page errors or overflow. Extended glance
+  judgments retain alignment/state and non-distribution saved-layout limits; no all-page verification
+  claim. Dashboard lint/types clean, 439 unit tests, 54 affected browser checks and ten screenshot
+  captures pass; Python 2,036 pass, Ruff/mypy clean. Hosted-menu checks pass separately.
+- Owner Stats/guide edits are preserved. PC12 D and PC13 remain pending.

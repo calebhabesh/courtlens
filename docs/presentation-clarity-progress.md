@@ -29,7 +29,7 @@ parameters**. Blocks before each owner gate also need recorded owner approval.
 | PC09 Value metric and archetypes | planned |
 | PC10 Roster Shapes (G4) | planned |
 | PC11 Populate or remove gated pages | planned |
-| PC12 Remaining audit batches | in_progress (A/B implemented/tested; C/D pending; glance limits recorded) |
+| PC12 Remaining audit batches | in_progress (A/B/C implemented/tested; D pending; glance limits recorded) |
 | PC13 Hosting, schedules, Ask demo mode | planned |
 
 ## 2026-10-11 — PC00 Roster Shapes crash fix
@@ -536,3 +536,36 @@ parameters**. Blocks before each owner gate also need recorded owner approval.
 - Next: C demo hygiene (Evaluation availability, public investigations/saved-plot labels and
   Playoffs title), then D personal-tool example boards. Batch A's dense Stats/phone-fold limitation
   and page-wide alignment/loading-state limits remain recorded.
+
+## 2026-10-12 — PC12 batch C: demo hygiene
+
+- Owner instruction: “Begin the next block” after B `7cb48bd`, followed by “continue.” Scope is
+  C only; D and PC13 remain pending. Owner Stats/guide edits are preserved and excluded from the
+  production export and commit.
+- [Evidence, fresh screenshots and extended glance judgments](evidence/pc12-c/README.md);
+  [demo hygiene contract](design/demo-hygiene-v1.md). Evaluation now opens the frozen M6 archive
+  independently of current publication; dataset/scoring/report checks remain. Explicit incompatible
+  snapshot links keep their error and selection until the visitor chooses archive recovery.
+  Reference-points units/formula and the separate basketball-points experiment are explicit.
+- Four real saved findings have curated display titles pinned to original IDs and manifest hashes.
+  Original metadata, exact exports and reproduction remain. Personal/legacy records stay locally
+  under `view=personal`; the hosted flag always opens the public menu (four measured checks).
+  Saved distributions gain labeled axes, units, dates, sample/source and fixed round marks. Unknown
+  slots keep gaps and observed zero stays zero. Technical saved-result evidence moves into Data
+  details. Playoffs' title matches its navigation.
+- Real production first loads without parameters: seven routes at 1440/390, 14 viewport captures
+  plus full-page versions. No page/console errors, failed responses, sideways overflow, visible
+  ISO dates, hashes, cutoff code rules or verification titles. Archive/menu/distribution/bracket
+  content begins at 227/227/351/388px desktop. Fresh glance limits remain recorded; metadata-first
+  non-distribution saved details retain deeper tables and lack a leading analytical visual.
+- Read-only counts and pointer digest match: 161 publication pointers, 1,031 identities, 205 feeds /
+  200,690 versions and members, 340 measurement rows. All 33 saved analytical records and 236
+  legacy investigations remain; exact original titles, result hashes and export hashes recorded.
+  No acquisition, publication or fit ran.
+- Checks: Python 2,036 passed (four new), existing one skip / 19 published-data deselections /
+  third-party deprecation warning; Ruff/format/mypy clean. Dashboard lint 0/0, types clean, Vitest
+  439 passed (three new); final affected Playwright 54 passed; six new and four refreshed screenshot
+  baselines pass. Fixture and real builds pass. The initial Python run put scratch files in the
+  checkout and failed the repository brand scan; the corrected external-scratch full run passes.
+- Next: D fixed-rule Rankings/Tier Lists example boards. Existing Compare Export, page-wide
+  alignment/service-state checks and injury/transaction source verification remain independent gaps.
