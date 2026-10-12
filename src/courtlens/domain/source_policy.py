@@ -1,4 +1,4 @@
-"""Source policy v2 registry (docs/design/nba-direct-admission-v2.md). Policy, not coverage."""
+"""Source policy v3 registry (docs/design/source-policy-v3.md): any free source; cost excludes."""
 
 from __future__ import annotations
 
@@ -7,8 +7,8 @@ from typing import Literal
 
 from courtlens.domain.context import CapabilityEntry, CapabilityStatus
 
-POLICY_VERSION = "courtlens-source-policy-v2"
-POLICY_DOC = "docs/design/nba-direct-admission-v2.md"
+POLICY_VERSION = "courtlens-source-policy-v3"
+POLICY_DOC = "docs/design/source-policy-v3.md"
 USER_AGENT = "CourtLens/2 (+https://github.com/calebhabesh/courtlens; non-commercial portfolio)"
 
 
@@ -124,6 +124,15 @@ ADMITTED_SOURCES: tuple[AdmittedSource, ...] = (
         ("injuries",),
         5,
         "ESPN",
+    ),
+    AdmittedSource(
+        "darko",
+        "DARKO Daily Plus-Minus",
+        "www.darko.app",
+        "secondary",
+        ("external_impact",),
+        5,
+        "DARKO (darko.app, Kostya Medvedovsky)",
     ),
     AdmittedSource(
         "league_cap_release",

@@ -1,4 +1,9 @@
-"""Shared policy-v2 scheduled source acquisition; no visitor-triggered downloads."""
+"""Shared scheduled source acquisition (source policy v3); no visitor-triggered downloads.
+
+Policy v3 removes CourtLens' own source gates: robots.txt is read for pacing (Crawl-delay) and
+recorded on every receipt, but a disallow or a changed file is noted, not a refusal. A source that
+itself refuses (HTTP 403/429) still stops the run; nothing here evades a refusal.
+"""
 
 from __future__ import annotations
 
@@ -184,14 +189,17 @@ class ScheduledFetcher:
                 .order_by(WorkbenchAcquisition.finished_at.desc())
                 .limit(1)
             )
-            if previous and previous.metadata_json.get("robots_sha256") != robot_artifact.sha256:
-                self.stopped.add(host)
-                raise ValueError("robots.txt changed; host stopped for review")
             parser = RobotFileParser()
             parser.parse(robots.text.splitlines() if robots.status_code == 200 else [])
-            if not parser.can_fetch(USER_AGENT, url):
-                self.stopped.add(host)
-                raise ValueError("robots.txt disallows source path")
+            meta = {
+                **meta,
+                "robots_changed": bool(
+                    previous
+                    and previous.metadata_json.get("robots_sha256") != robot_artifact.sha256
+                ),
+                "robots_disallowed": not parser.can_fetch(USER_AGENT, url),
+            }
+            receipt.metadata_json = meta
             interval = max(interval, float(parser.crawl_delay(USER_AGENT) or 0))
             response = self._get(url, interval)
             receipt.http_status = response.status_code

@@ -1261,6 +1261,25 @@ def acquire_stats_feeds_command(
         raise typer.Exit(1)
 
 
+@app.command("refresh-darko")
+def refresh_darko_command(
+    season: list[str] = typer.Option(["2023-24", "2024-25", "2025-26"], help="Seasons to fetch."),
+    phase: list[str] = typer.Option(["regular_season", "playoffs"], help="Phases to fetch."),
+    root: Path = typer.Option(Path("data/raw/darko")),
+    output: Path = typer.Option(Path("data/derived/darko-dpm-v2")),
+) -> None:
+    """Operator run: seal dated DARKO snapshots at each phase's last admitted game date."""
+    import httpx
+
+    from courtlens.services.darko import refresh
+
+    with SessionLocal() as session, httpx.Client() as client:
+        path, results = refresh(session, root, client, season, output, phase)
+    for result in results:
+        typer.echo(json.dumps(result))
+    typer.echo(f"sealed {path}  (set COURTLENS_DARKO_MANIFEST or config.darko_manifest)")
+
+
 @app.command("import-stats-feed")
 def import_stats_feed_command(
     acquisition_id: str, root: Path = typer.Option(Path("data/raw/stats-feeds"))

@@ -275,6 +275,7 @@ class WorkbenchCatalogResponse(BaseModel):
     capabilities: dict[str, Any] = Field(default_factory=dict)
     warnings: list[str]
     impact: dict[str, Any] | None = None
+    darko: dict[str, Any] | None = None
 
 
 class ResearchQuerySchema(BaseModel):
@@ -356,6 +357,7 @@ class WorkbenchQueryResponse(BaseModel):
     has_more: bool
     warnings: list[str] = Field(default_factory=list)
     impact: dict[str, Any] | None = None
+    darko: dict[str, Any] | None = None
 
 
 class ImpactPlayerResponse(BaseModel):

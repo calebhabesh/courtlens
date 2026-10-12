@@ -277,6 +277,9 @@ class QuerySpec(BaseModel):
     impact_manifest_sha256: SkipJsonSchema[str | None] = Field(
         default=None, pattern=r"^[a-f0-9]{64}$", exclude_if=lambda value: value is None
     )
+    darko_manifest_sha256: SkipJsonSchema[str | None] = Field(
+        default=None, pattern=r"^[a-f0-9]{64}$", exclude_if=lambda value: value is None
+    )
     season: str = "2025-26"
     phase: str = "regular_season"
     before_date: date | None = None

@@ -603,3 +603,13 @@ PC12 B–D are pending. This entry does not mark the remaining page-wide glance 
   claim. Dashboard lint/types clean, 439 unit tests, 54 affected browser checks and ten screenshot
   captures pass; Python 2,036 pass, Ruff/mypy clean. Hosted-menu checks pass separately.
 - Owner Stats/guide edits are preserved. PC12 D and PC13 remain pending.
+
+### Stats alignment follow-up: dated DARKO credit (2026-10-12)
+
+Owner instruction 39 adds a highlighted blue source hyperlink wherever Stats presents DARKO.
+The alignment handoff governs this bounded change: token-based link component in the hover card,
+footer, preview, trend dialog, glossary, methodology and Data details; source links retain hover/focus
+and open DARKO. No raw inline styles or new icon system. Dashboard lint/types and 453 Vitest tests
+pass, production build passes, Stats browser/source-link checks and desktop/phone baselines pass;
+the known unrelated Teams selector failure is retained. Real-data screenshots, source dates and
+measured glance test: [DARKO evidence](evidence/alignment/stats/darko/README.md).

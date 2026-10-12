@@ -277,8 +277,42 @@ TRACKING_METRICS: dict[str, MetricDefinition] = {
     )
 }
 
+DARKO_LIMITS = [
+    "DARKO model output by Kostya Medvedovsky (darko.app), imported under source policy v3; "
+    "not a CourtLens estimate. Latest retrospective pregame forecast as of the phase's last "
+    "admitted game date, not a season average. Regular-season snapshots exclude playoff updates. "
+    "Unknown in shorter or earlier scopes. Historical publication-time revisions are unavailable; "
+    "never a forecasting feature. CourtLens computes its own league percentiles.",
+]
+DARKO_METRICS: dict[str, MetricDefinition] = {
+    m.key: m
+    for m in (
+        _metric(
+            key,
+            name,
+            short,
+            "external_impact",
+            "points per 100 possessions",
+            formula,
+            None,
+            DARKO_LIMITS,
+            recipe="external",
+            validity="Player listed on the dated DARKO leaderboard for the season and phase.",
+            capability="external_darko",
+            classification="modeled",
+            phases=["regular_season", "playoffs"],
+        )
+        for key, name, short, formula in (
+            ("dpm", "Daily Plus-Minus", "DPM", "DARKO DPM (box score and plus-minus, Bayesian)"),
+            ("o_dpm", "Offensive Daily Plus-Minus", "ODPM", "DARKO offensive DPM"),
+            ("d_dpm", "Defensive Daily Plus-Minus", "DDPM", "DARKO defensive DPM"),
+        )
+    )
+}
+
 STATS_V4_CATALOG: dict[str, MetricDefinition] = {
     **BOX_METRICS,
     **IMPACT_DERIVED,
     **TRACKING_METRICS,
+    **DARKO_METRICS,
 }

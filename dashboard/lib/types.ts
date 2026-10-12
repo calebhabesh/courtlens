@@ -334,6 +334,7 @@ export type MetricCatalog = {
 };
 
 export type WorkbenchCatalog = {
+  darko?: { status: string; manifest_sha256: string | null; scopes: { season: string; phase: string; as_of: string; data_date: string }[] } | null;
   impact?: { status: string; scopes: ImpactArtifact[]; manifest_sha256: string | null } | null;
   release_id: string;
   snapshot_id: string;
@@ -506,6 +507,7 @@ export type PagingSpec = {
 
 export type QuerySpec = {
   impact_manifest_sha256?: string | null;
+  darko_manifest_sha256?: string | null;
   release_id?: string | null;
   season: string;
   phase: string;
@@ -553,6 +555,7 @@ export type TableCohort = {
 };
 
 export type WorkbenchQueryResponse = {
+  darko?: DarkoDisclosure | null;
   table_cohort?: TableCohort | null;
   impact?: ImpactDisclosureData | null;
   context: Record<string, unknown>;
@@ -571,6 +574,19 @@ export type WorkbenchQueryResponse = {
   next_cursor: string | null;
   has_more: boolean;
   warnings: string[];
+};
+
+export type DarkoDisclosure = {
+  status: string;
+  source: string;
+  version: string;
+  manifest_sha256: string | null;
+  as_of?: string;
+  data_date?: string;
+  url?: string;
+  raw_sha256?: string;
+  observed_at?: string;
+  limitations: string[];
 };
 
 export type PlayerResearchItem = {
@@ -648,6 +664,7 @@ export type LookupResponse = {
 
 export type PlayerResearchQuery = {
   impact_manifest_sha256?: string;
+  darko_manifest_sha256?: string;
   release_id?: string;
   season: string;
   phase: string;
@@ -665,6 +682,7 @@ export type PlayerResearchQuery = {
 };
 
 export type PlayerResearchResponse = {
+  darko?: DarkoDisclosure | null;
   table_cohort?: TableCohort | null;
   impact?: ImpactDisclosureData | null;
   total_output_players?: number | null;

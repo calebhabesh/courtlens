@@ -42,6 +42,10 @@ class Settings(BaseSettings):
     position_estimates_manifest: Path | None = Path(
         "data/derived/position-estimates-v1/2b6a25129557c18fa8366d599869fae8bb1b9f57c0f3e1900a707efa4c4a71bf.json"
     )
+    # Sealed by `courtlens refresh-darko`; absent means DPM columns stay unknown.
+    darko_manifest: Path | None = Path(
+        "data/derived/darko-dpm-v2/04db0bc16838a71314708be00f15e88f6542820d3c627ccf2dad40945f924c02.json"
+    )
     value_archetypes_manifest: Path | None = Path(
         "data/derived/value-archetypes-v1/serving/5caeb935e21fce5842fb5ebb33c7ad515cb550eb2021b88886ca3e7b5b6e2f7e.json"
     )

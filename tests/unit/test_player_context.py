@@ -260,18 +260,22 @@ def test_fetch_stops_host_and_retains_failure(session: Session, tmp_path: Path, 
     assert len(requests) == 1 and first.metadata_json["robots_status"] == code
 
 
-def test_robots_disallow_prevents_source_request(session: Session, tmp_path: Path) -> None:
+def test_robots_disallow_is_recorded_not_a_refusal(session: Session, tmp_path: Path) -> None:
+    """Source policy v3: robots.txt paces and is recorded; it no longer blocks a source."""
     requests = []
 
     def respond(request: httpx.Request) -> httpx.Response:
         requests.append(str(request.url))
-        return httpx.Response(200, text="User-agent: *\nDisallow: /static/\n")
+        if request.url.path == "/robots.txt":
+            return httpx.Response(200, text="User-agent: *\nDisallow: /static/\n")
+        return httpx.Response(200, content=index_body())
 
     with httpx.Client(transport=httpx.MockTransport(respond)) as client:
         receipt = ContextFetcher(session, tmp_path, client).fetch(
             "nba_player_index", PLAYER_INDEX_URL, "2026-27"
         )
-    assert receipt.status == "failed" and len(requests) == 1
+    assert receipt.status == "success" and len(requests) == 2
+    assert receipt.metadata_json["robots_disallowed"] is True
 
 
 @pytest.mark.parametrize(

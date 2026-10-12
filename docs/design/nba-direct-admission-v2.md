@@ -1,5 +1,8 @@
 # CourtLens source policy v2
 
+> **Superseded 2026-10-12 by [source policy v3](source-policy-v3.md)** for new acquisitions: any
+> free source may be used and cost is the only exclusion. Kept for receipts recorded under v2.
+
 Adopted 2026-10-11 for [PC01](../presentation-clarity-plan.md#pc01-source-policy-v2). The owner
 made this decision for CourtLens as a **non-commercial résumé/portfolio demo** with zero recurring
 cost. It supersedes [v1](nba-direct-admission-v1.md) and the replica handoff's finance and

@@ -130,6 +130,61 @@ def facts() -> Iterator[tuple[Session, ResolvedContext]]:
     engine.dispose()
 
 
+def test_darko_phase_cutoff_sort_percentiles_and_missingness(facts, tmp_path) -> None:
+    from courtlens.config import Settings
+    from courtlens.evaluation.impact_rating_inputs import write_artifact
+    from courtlens.services.darko import VERSION
+
+    session, context = facts
+    players = {
+        "a": {"dpm": 7.0, "o_dpm": 5.0, "d_dpm": 2.0},
+        "b": {"dpm": 4.0, "o_dpm": 3.0, "d_dpm": 1.0},
+        "c": {"dpm": None, "o_dpm": None, "d_dpm": None},
+    }
+    entry = {
+        "season": "2023-24",
+        "phase": "regular_season",
+        "as_of": "2024-02-01",
+        "data_date": "2024-02-01",
+        "raw_sha256": "a" * 64,
+        "players": players,
+    }
+    path, _ = write_artifact(tmp_path, {"version": VERSION, "entries": [entry]})
+    query = QuerySpec(
+        season="2023-24",
+        sort=[SortSpec(field="dpm")],
+        view_state={"columns": ["dpm", "o_dpm", "d_dpm"]},
+    )
+    with patch("courtlens.services.darko.get_settings", return_value=Settings(darko_manifest=path)):
+        end = replace(context, before_date=date(2024, 2, 2))
+        rows, count, _, _ = execute_stats_query(
+            session, end, query, presentation=StatsPresentation()
+        )
+        assert count == 4
+        assert [row["player_id"] for row in rows] == ["a", "b", "c", "d"]
+        assert [row["metrics"]["dpm"] for row in rows] == [7, 4, None, None]
+        assert rows[0]["percentiles"]["dpm"] == 75
+        assert rows[1]["percentiles"]["dpm"] == 25
+        assert rows[2]["percentiles"]["dpm"] is None
+        # The same full-season forecast survives a team display filter.
+        team = query.model_copy(update={"team_scope": TeamScope(team_id="TOR")})
+        assert execute_stats_query(session, end, team)[0][0]["metrics"]["dpm"] == 7
+        for scope, cutoff in [
+            (query, context),
+            (query.model_copy(update={"phase": "playoffs"}), end),
+            (query.model_copy(update={"window": WindowSpec(kind="last_10")}), end),
+        ]:
+            unavailable = execute_stats_query(session, cutoff, scope)[0]
+            assert all(row["metrics"]["dpm"] is None for row in unavailable)
+        # Even an earlier source snapshot before this cutoff cannot claim to cover later facts.
+        early = {**entry, "as_of": "2024-01-01", "data_date": "2024-01-01"}
+        prior, _ = write_artifact(tmp_path, {"version": VERSION, "entries": [early]})
+        pinned = query.model_copy(update={"darko_manifest_sha256": prior.stem})
+        assert all(
+            row["metrics"]["dpm"] is None for row in execute_stats_query(session, end, pinned)[0]
+        )
+
+
 @pytest.mark.parametrize(
     "metric, expected",
     [

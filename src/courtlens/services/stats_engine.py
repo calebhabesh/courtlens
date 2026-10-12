@@ -33,8 +33,9 @@ from courtlens.domain.query_spec import (
     WindowKind,
 )
 from courtlens.domain.stats_presentation import StatsPresentation
-from courtlens.domain.stats_v4_catalog import BOX_METRICS, TRACKING_METRICS
+from courtlens.domain.stats_v4_catalog import BOX_METRICS, DARKO_METRICS, TRACKING_METRICS
 from courtlens.domain.teams import get_team_info, resolve_team_tricode
+from courtlens.services.darko import darko_binding, darko_sql_rows
 from courtlens.services.impact_serving import (
     impact_for_query,
     impact_query_fields,
@@ -110,18 +111,67 @@ COLUMN_MAP: dict[str, str] = {
 COLUMN_MAP.update({key: key for key in IMPACT_CATALOG})
 COLUMN_MAP.update({key: key for key in BOX_METRICS})
 COLUMN_MAP.update({key: key for key in TRACKING_METRICS})
+COLUMN_MAP.update({key: key for key in DARKO_METRICS})
 
 # Only implemented numeric catalog columns participate; metadata is never ranked.
 PERCENTILE_COLUMNS = {
     key: column
     for key, column in COLUMN_MAP.items()
-    if key in METRIC_CATALOG and key not in IMPACT_CATALOG and key not in TRACKING_METRICS
+    if key in METRIC_CATALOG
+    and key not in IMPACT_CATALOG
+    and key not in TRACKING_METRICS
+    and key not in DARKO_METRICS
 }
 TRACKING_MART = "analytics_marts.mart_stats_player_tracking"
 
 
 def tracking_query_fields(query: QuerySpec) -> set[str]:
     return query_fields(query) & TRACKING_METRICS.keys()
+
+
+def darko_query_fields(query: QuerySpec) -> set[str]:
+    return query_fields(query) & DARKO_METRICS.keys()
+
+
+def darko_applies(context: ResolvedContext, query: QuerySpec) -> bool:
+    """One DARKO rating per player-season: whole seasons only; a team filter keeps it."""
+    return (
+        context.dataset_type == "workbench"
+        and query.window.kind == WindowKind.SEASON
+        and not query.season_scope.seasons
+    )
+
+
+def _darko_sql(
+    params: dict[str, Any],
+    query: QuerySpec,
+    context: ResolvedContext,
+    table_name: str,
+    is_sqlite: bool,
+    applies: bool,
+) -> str:
+    """Join the sealed DARKO season ratings when every game of the season-phase is in scope."""
+    if is_sqlite or not applies:
+        nulls = ", ".join(f"CAST(NULL AS REAL) AS {key}" for key in DARKO_METRICS)
+        return f"aggregated AS (SELECT t.*, {nulls} FROM aggregated_darko t)"
+    season = query.season or context.season
+    params["darko_season"] = season
+    params["darko_rows"], params["darko_as_of"] = darko_sql_rows(query, context.before_date)
+    return f"""darko AS MATERIALIZED (
+        SELECT s.player_id, s.dpm, s.o_dpm, s.d_dpm
+        FROM jsonb_to_recordset(CAST(:darko_rows AS jsonb))
+            AS s(player_id text, dpm double precision, o_dpm double precision,
+                 d_dpm double precision)
+        WHERE CAST(:darko_as_of AS date) >= (
+            SELECT max(g.game_date) FROM {table_name} g
+            WHERE g.dataset_id = :dataset_id AND g.season = :darko_season AND g.phase = :phase
+        )
+    ),
+    aggregated AS (
+        SELECT t.*, d.dpm, d.o_dpm, d.d_dpm
+        FROM aggregated_darko t
+        LEFT JOIN darko d ON d.player_id = t.player_id
+    )"""
 
 
 def tracking_applies(context: ResolvedContext, query: QuerySpec) -> bool:
@@ -149,7 +199,10 @@ def stats_presentation_hash(
     cohort: bool = False,
 ) -> str:
     """Bind complete query semantics, independently of paging and visual preferences."""
-    spec = query.model_dump(mode="json", exclude={"page", "view_state", "impact_manifest_sha256"})
+    spec = query.model_dump(
+        mode="json",
+        exclude={"page", "view_state", "impact_manifest_sha256", "darko_manifest_sha256"},
+    )
     if cohort:
         for key in ("name", "sort", "metric_selectors"):
             spec.pop(key, None)
@@ -165,6 +218,7 @@ def stats_presentation_hash(
             "query": spec,
             "player_ids": None if cohort else presentation.player_ids,
             **impact_query_binding(context, query),
+            **(darko_binding(query, context.before_date) if darko_query_fields(query) else {}),
         }
     )
 
@@ -197,6 +251,8 @@ def compute_stats_query_context_hash(context: ResolvedContext, query: QuerySpec)
         primary_sort.direction,
     ]
     binding = impact_query_binding(context, query)
+    if darko_query_fields(query):
+        binding.update(darko_binding(query, context.before_date))
     return canonical_hash([payload, binding] if binding else payload)[:32]
 
 
@@ -869,7 +925,14 @@ def build_stats_query_sql(
             params, query, context, table_name, is_sqlite, tracking_applies(context, query)
         )
 
+    if darko_query_fields(query):
+        cte_sql = cte_sql.replace("aggregated AS (", f"aggregated_darko AS{materialized} (")
+        cte_sql += ", " + _darko_sql(
+            params, query, context, table_name, is_sqlite, darko_applies(context, query)
+        )
+
     percentile_columns = dict(PERCENTILE_COLUMNS)
+    percentile_columns.update({key: key for key in sorted(darko_query_fields(query))})
     if query_uses_impact(query):
         percentile_columns.update({key: key for key in sorted(impact_query_fields(query))})
     percentile_columns.update({key: key for key in sorted(tracking_query_fields(query))})
@@ -1044,7 +1107,7 @@ def parse_player_row(row_dict: dict[str, Any]) -> dict[str, Any]:
         metrics[key] = _cast_num(row_dict.get(key))
         n_key = "n_fg2" if key.startswith("fg2") else f"n_{key}"
         sample_sizes[key] = int(row_dict.get(n_key) or 0)
-    for key in TRACKING_METRICS:
+    for key in (*TRACKING_METRICS, *DARKO_METRICS):
         if key in row_dict:
             metrics[key] = _cast_num(row_dict.get(key))
             sample_sizes[key] = gp if metrics[key] is not None else 0
@@ -1191,7 +1254,7 @@ def execute_stats_query(
         legacy_hash = compute_query_context_hash(context, legacy_query)
         valid_hashes = (
             [context_hash]
-            if presentation is not None or query_uses_impact(query)
+            if presentation is not None or query_uses_impact(query) or darko_query_fields(query)
             else [context_hash, legacy_hash]
         )
         start_offset = decode_cursor(query.page.cursor, valid_hashes)
@@ -1205,6 +1268,9 @@ def execute_stats_query(
         # query, and the per-column percentile sorts otherwise spill to disk. Transaction-local.
         session.execute(text("SET LOCAL jit = off"))
         session.execute(text("SET LOCAL work_mem = '32MB'"))
+        # Parallel workers share hash tables through /dev/shm, which Docker caps at 64 MB; a
+        # few thousand game rows gain nothing from them.
+        session.execute(text("SET LOCAL max_parallel_workers_per_gather = 0"))
 
     # 4. Execute Count Query
     count_sql, count_params = build_stats_query_sql(
@@ -1283,6 +1349,7 @@ def stats_cohort_summary(
                 *PERCENTILE_COLUMNS,
                 *sorted(impact_query_fields(query)),
                 *sorted(tracking_query_fields(query)),
+                *sorted(darko_query_fields(query)),
             ]
         },
     }

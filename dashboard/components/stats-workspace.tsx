@@ -13,6 +13,7 @@ import { getWorkspace } from "@/lib/workspace-client";
 import type { DraftClassesResponse, EstimatedPosition, PlayerResearchResponse, WorkbenchCatalog } from "@/lib/types";
 import { PlayerDirectory } from "./player-directory";
 import { StatsDraftClassSelect, StatsHelpRow, StatsPositionChips, StatsTeamSelect } from "./stats-page-controls";
+import { DarkoSourceLink } from "./darko-source-link";
 
 const ESTIMATED_POSITIONS: EstimatedPosition[] = ["PG", "SG", "SF", "PF", "C"];
 import { Icon } from "./ui/icon";
@@ -40,14 +41,18 @@ export async function StatsWorkspace({ params: rawParams, basePath = "/stats", t
   // A favorites request must never silently become an unfiltered query.
   if (!workspace && params.favorites === "1") return <div role="alert">Favorites unavailable. Try again.</div>;
   const countingMode = (directory ? "per_game" : params.countingMode || params.counting_mode || workspace?.preferences.counting_mode || "per_game") as CountingMode;
-  const querySpec = resolveStatsQuery(params, catalog, countingMode);
-  if (directory && !params.sortMetric && !params.sort_metric && !params.sort) querySpec.sort = [{ field: "player_name", direction: "asc" }];
   const presetId = params.viewId || params.view_id || params.preset || workspace?.preferences.default_view_id || "overview";
   const preset = getPresetById(presetId, workspace?.views);
+  const querySpec = resolveStatsQuery(params, catalog, countingMode, !directory && preset.id === "overview" ? "dpm" : "pts");
+  if (directory && !params.sortMetric && !params.sort_metric && !params.sort) querySpec.sort = [{ field: "player_name", direction: "asc" }];
   querySpec.view_state = { ...querySpec.view_state, view_id: directory ? "directory" : presetId,
     columns: directory ? ["gp", "min_per_game", "pts_per_game", "reb_per_game", "ast_per_game", "ts_pct"] : preset.columns.map(column => normalizedColumn(column, countingMode).key) };
   if (!directory && preset.columns.some(column => usesImpactManifest(normalizedColumn(column, countingMode).key)) && catalog.impact?.manifest_sha256) {
     querySpec.impact_manifest_sha256 = querySpec.impact_manifest_sha256 || catalog.impact.manifest_sha256;
+  }
+  if (!directory && (preset.columns.some(column => ["dpm", "o_dpm", "d_dpm"].includes(column.key)) ||
+      querySpec.sort?.some(sort => ["dpm", "o_dpm", "d_dpm"].includes(sort.field))) && catalog.darko?.manifest_sha256) {
+    querySpec.darko_manifest_sha256 = querySpec.darko_manifest_sha256 || catalog.darko.manifest_sha256;
   }
   const researchQuery = querySpecToLegacyQuery(querySpec);
   // Bind inferred defaults into the URL so navigation, reload and cursors share one scope.
@@ -56,6 +61,7 @@ export async function StatsWorkspace({ params: rawParams, basePath = "/stats", t
     ["phase", "phase", querySpec.phase], ["beforeDate", "before_date", querySpec.before_date],
     ["window", "window", querySpec.window?.kind], ["countingMode", "counting_mode", countingMode]
   ];
+  if (querySpec.darko_manifest_sha256) required.push(["darkoManifest", "darko_manifest_sha256", querySpec.darko_manifest_sha256]);
   if (required.some(([camel, snake]) => !params[camel] && !params[snake])) {
     const canonical = new URLSearchParams();
     for (const [key, value] of Object.entries(params)) {
@@ -123,6 +129,15 @@ export async function StatsWorkspace({ params: rawParams, basePath = "/stats", t
           initialWindow={researchQuery.window}
           lastIncludedDate={researchData?.context?.last_included_date}
           steppedScope
+          detailRows={researchData?.darko ? [
+            { label: "DARKO source", value: <DarkoSourceLink>{researchData.darko.source}</DarkoSourceLink> },
+            { label: "DARKO ratings through", value: researchData.darko.data_date ?? "Unavailable in this scope" },
+            { label: "DARKO requested date", value: researchData.darko.as_of ?? "Unknown" },
+            { label: "DARKO observed at", value: researchData.darko.observed_at ?? "Unknown" },
+            { label: "DARKO bundle", value: researchData.darko.manifest_sha256, mono: true },
+            { label: "DARKO raw snapshot", value: researchData.darko.raw_sha256 ?? "Unknown", mono: true },
+            { label: "DARKO interpretation", value: researchData.darko.limitations.join(" ") }
+          ] : []}
           filters={<><StatsTeamSelect /><StatsPositionChips /><StatsDraftClassSelect classes={draftClasses} /></>}
         />}
 
