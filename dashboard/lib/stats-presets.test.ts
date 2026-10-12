@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
 import {
   STATS_PRESETS,
+  ALL_CATALOG_METRICS,
   getPresetById,
   computeHeaderGroups,
   tableGroups,
@@ -223,6 +224,14 @@ describe("stats-presets", () => {
 });
 
 describe("table guide boundaries", () => {
+  it("uses credited DARKO forecasts in Overview and keeps BPR in the impact catalog", () => {
+    const impact = getPresetById("overview").columns.filter(column => column.group === "Impact");
+    expect(impact.map(column => column.key)).toEqual(["dpm", "o_dpm", "d_dpm"]);
+    expect(impact.map(column => column.label)).toEqual(["DPM", "ODPM", "DDPM"]);
+    expect(impact.every(column => column.tooltip?.includes("darko.app"))).toBe(true);
+    expect(impact[0].format?.(7.35021)).toBe("+7.4");
+    expect(ALL_CATALOG_METRICS.bpr.label).toBe("1Y BPR");
+  });
   it("groups Overview in Databallr's section order with Counting ahead of Impact", () => {
     expect(tableGroups(getPresetById("overview"))).toEqual([
       { label: "Profile", start: 0, colSpan: 4 },

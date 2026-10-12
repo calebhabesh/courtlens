@@ -1,0 +1,170 @@
+[
+  {
+    "season": "2023-24",
+    "phase": "regular_season",
+    "rows": 586,
+    "with_dpm": 540,
+    "sql_seconds": 0.907,
+    "jokic": {
+      "dpm": 7.36787,
+      "o_dpm": 4.87925,
+      "d_dpm": 2.48863
+    },
+    "source": {
+      "status": "available",
+      "source": "DARKO Daily Plus-Minus by Kostya Medvedovsky (darko.app)",
+      "version": "courtlens-darko-dpm-v2",
+      "manifest_sha256": "04db0bc16838a71314708be00f15e88f6542820d3c627ccf2dad40945f924c02",
+      "limitations": [
+        "DARKO's retrospective pregame forecast at the phase's last admitted game date; not a season average or a CourtLens estimate. Higher is better for DPM, ODPM and DDPM.",
+        "Historical ratings are published retrospectively; original publication-time model versions are unavailable. Never used as CourtLens forecasting features.",
+        "Different dates or model revisions can differ from Databallr. Percentiles are CourtLens league ranks, not DARKO or Databallr percentiles."
+      ],
+      "as_of": "2024-04-14",
+      "data_date": "2024-04-14",
+      "url": "https://www.darko.app/__data.json?asof=2024-04-14",
+      "raw_sha256": "fc0e8e86a018c5911b41fb871f0aab22f1dc7a9b7c878727e30d7c39e53bc5eb",
+      "observed_at": "2026-10-12T21:46:00.671537+00:00"
+    }
+  },
+  {
+    "season": "2023-24",
+    "phase": "playoffs",
+    "rows": 229,
+    "with_dpm": 229,
+    "sql_seconds": 0.193,
+    "jokic": {
+      "dpm": 7.42133,
+      "o_dpm": 4.91687,
+      "d_dpm": 2.50447
+    },
+    "source": {
+      "status": "available",
+      "source": "DARKO Daily Plus-Minus by Kostya Medvedovsky (darko.app)",
+      "version": "courtlens-darko-dpm-v2",
+      "manifest_sha256": "04db0bc16838a71314708be00f15e88f6542820d3c627ccf2dad40945f924c02",
+      "limitations": [
+        "DARKO's retrospective pregame forecast at the phase's last admitted game date; not a season average or a CourtLens estimate. Higher is better for DPM, ODPM and DDPM.",
+        "Historical ratings are published retrospectively; original publication-time model versions are unavailable. Never used as CourtLens forecasting features.",
+        "Different dates or model revisions can differ from Databallr. Percentiles are CourtLens league ranks, not DARKO or Databallr percentiles."
+      ],
+      "as_of": "2024-06-17",
+      "data_date": "2024-06-17",
+      "url": "https://www.darko.app/__data.json?asof=2024-06-17",
+      "raw_sha256": "f7b183b5855e8b6272dbc78113e4e8353a79f92812c77eaf786b82bfb2631aa4",
+      "observed_at": "2026-10-12T21:46:11.170170+00:00"
+    }
+  },
+  {
+    "season": "2024-25",
+    "phase": "regular_season",
+    "rows": 577,
+    "with_dpm": 537,
+    "sql_seconds": 0.885,
+    "jokic": {
+      "dpm": 6.54928,
+      "o_dpm": 5.24457,
+      "d_dpm": 1.30471
+    },
+    "source": {
+      "status": "available",
+      "source": "DARKO Daily Plus-Minus by Kostya Medvedovsky (darko.app)",
+      "version": "courtlens-darko-dpm-v2",
+      "manifest_sha256": "04db0bc16838a71314708be00f15e88f6542820d3c627ccf2dad40945f924c02",
+      "limitations": [
+        "DARKO's retrospective pregame forecast at the phase's last admitted game date; not a season average or a CourtLens estimate. Higher is better for DPM, ODPM and DDPM.",
+        "Historical ratings are published retrospectively; original publication-time model versions are unavailable. Never used as CourtLens forecasting features.",
+        "Different dates or model revisions can differ from Databallr. Percentiles are CourtLens league ranks, not DARKO or Databallr percentiles."
+      ],
+      "as_of": "2025-04-13",
+      "data_date": "2025-04-13",
+      "url": "https://www.darko.app/__data.json?asof=2025-04-13",
+      "raw_sha256": "40e20eec44ff2d016cc850f014066d1d733c10805179b60cca5ca36fc28b10db",
+      "observed_at": "2026-10-12T21:46:21.630665+00:00"
+    }
+  },
+  {
+    "season": "2024-25",
+    "phase": "playoffs",
+    "rows": 232,
+    "with_dpm": 232,
+    "sql_seconds": 0.193,
+    "jokic": {
+      "dpm": 6.58564,
+      "o_dpm": 4.99894,
+      "d_dpm": 1.5867
+    },
+    "source": {
+      "status": "available",
+      "source": "DARKO Daily Plus-Minus by Kostya Medvedovsky (darko.app)",
+      "version": "courtlens-darko-dpm-v2",
+      "manifest_sha256": "04db0bc16838a71314708be00f15e88f6542820d3c627ccf2dad40945f924c02",
+      "limitations": [
+        "DARKO's retrospective pregame forecast at the phase's last admitted game date; not a season average or a CourtLens estimate. Higher is better for DPM, ODPM and DDPM.",
+        "Historical ratings are published retrospectively; original publication-time model versions are unavailable. Never used as CourtLens forecasting features.",
+        "Different dates or model revisions can differ from Databallr. Percentiles are CourtLens league ranks, not DARKO or Databallr percentiles."
+      ],
+      "as_of": "2025-06-22",
+      "data_date": "2025-06-22",
+      "url": "https://www.darko.app/__data.json?asof=2025-06-22",
+      "raw_sha256": "bb17ede2929dcb2a76866a398ec6fab43eca5c8440df6b344f19d9efb78e5390",
+      "observed_at": "2026-10-12T21:46:32.579013+00:00"
+    }
+  },
+  {
+    "season": "2025-26",
+    "phase": "regular_season",
+    "rows": 591,
+    "with_dpm": 542,
+    "sql_seconds": 0.906,
+    "jokic": {
+      "dpm": 7.51931,
+      "o_dpm": 5.30832,
+      "d_dpm": 2.21099
+    },
+    "source": {
+      "status": "available",
+      "source": "DARKO Daily Plus-Minus by Kostya Medvedovsky (darko.app)",
+      "version": "courtlens-darko-dpm-v2",
+      "manifest_sha256": "04db0bc16838a71314708be00f15e88f6542820d3c627ccf2dad40945f924c02",
+      "limitations": [
+        "DARKO's retrospective pregame forecast at the phase's last admitted game date; not a season average or a CourtLens estimate. Higher is better for DPM, ODPM and DDPM.",
+        "Historical ratings are published retrospectively; original publication-time model versions are unavailable. Never used as CourtLens forecasting features.",
+        "Different dates or model revisions can differ from Databallr. Percentiles are CourtLens league ranks, not DARKO or Databallr percentiles."
+      ],
+      "as_of": "2026-04-12",
+      "data_date": "2026-04-12",
+      "url": "https://www.darko.app/__data.json?asof=2026-04-12",
+      "raw_sha256": "f7e4656d4dfdb9a610231a79e5fedb85c75194fb1ea70a1a3cdfa0b7aaa62a46",
+      "observed_at": "2026-10-12T21:46:43.063044+00:00"
+    }
+  },
+  {
+    "season": "2025-26",
+    "phase": "playoffs",
+    "rows": 230,
+    "with_dpm": 230,
+    "sql_seconds": 0.205,
+    "jokic": {
+      "dpm": 7.35021,
+      "o_dpm": 5.2328,
+      "d_dpm": 2.11741
+    },
+    "source": {
+      "status": "partial",
+      "source": "DARKO Daily Plus-Minus by Kostya Medvedovsky (darko.app)",
+      "version": "courtlens-darko-dpm-v2",
+      "manifest_sha256": "04db0bc16838a71314708be00f15e88f6542820d3c627ccf2dad40945f924c02",
+      "limitations": [
+        "DARKO's retrospective pregame forecast at the phase's last admitted game date; not a season average or a CourtLens estimate. Higher is better for DPM, ODPM and DDPM.",
+        "Historical ratings are published retrospectively; original publication-time model versions are unavailable. Never used as CourtLens forecasting features.",
+        "Different dates or model revisions can differ from Databallr. Percentiles are CourtLens league ranks, not DARKO or Databallr percentiles."
+      ],
+      "as_of": "2026-06-13",
+      "data_date": "2026-06-03",
+      "url": "https://www.darko.app/__data.json?asof=2026-06-13",
+      "raw_sha256": "0cedb2c44ce317b3413228f6c6f2cc488b51357dd1867143a70c0244cfc798f5",
+      "observed_at": "2026-10-12T21:46:53.625236+00:00"
+    }
+  }
+]

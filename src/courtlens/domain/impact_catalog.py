@@ -4,7 +4,12 @@ from dataclasses import replace
 
 from courtlens.domain.impact_extras_catalog import IMPACT_EXTRAS_CATALOG
 from courtlens.domain.metrics import METRIC_CATALOG_V2, MetricDefinition
-from courtlens.domain.stats_v4_catalog import BOX_METRICS, IMPACT_DERIVED, TRACKING_METRICS
+from courtlens.domain.stats_v4_catalog import (
+    BOX_METRICS,
+    DARKO_METRICS,
+    IMPACT_DERIVED,
+    TRACKING_METRICS,
+)
 from courtlens.domain.stats_v4_catalog import VERSION as V4_VERSION
 
 VERSION = "courtlens-stats-v3"
@@ -93,5 +98,11 @@ V3_CATALOG = {**METRIC_CATALOG_V2, **IMPACT_CATALOG}
 IMPACT_COLUMNS = {**IMPACT_CATALOG, **IMPACT_DERIVED}
 # Computed in SQL from box totals and impact support, not carried in the sealed rows.
 SQL_DERIVED_IMPACT = frozenset({"offensive_load", "ctov_pct", "rim_ast_per_36"})
-SERVING_CATALOG = {**V3_CATALOG, **BOX_METRICS, **IMPACT_DERIVED, **TRACKING_METRICS}
+SERVING_CATALOG = {
+    **V3_CATALOG,
+    **BOX_METRICS,
+    **IMPACT_DERIVED,
+    **TRACKING_METRICS,
+    **DARKO_METRICS,
+}
 SERVING_VERSIONS = {VERSION: V3_CATALOG, V4_VERSION: SERVING_CATALOG}

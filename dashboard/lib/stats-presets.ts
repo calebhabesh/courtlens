@@ -189,6 +189,15 @@ function countingColumn(base: string, label: string, group: string, name: string
 
 const oneDecimal = (v: number | null | undefined) => formatStatValue(v, 1);
 
+/** Published DARKO forecasts, separate from CourtLens' descriptive BPR fits. */
+export const DARKO_COLUMNS: Record<string, ColumnDefinition> = Object.fromEntries(
+  [["dpm", "DPM", "Daily Plus-Minus"], ["o_dpm", "ODPM", "Offensive Daily Plus-Minus"],
+    ["d_dpm", "DDPM", "Defensive Daily Plus-Minus"]].map(([key, label, name]) => [key, {
+    key, label, group: "Impact", num: true, sortMetric: key, format: formatSignedValue, keepLabel: true,
+    tooltip: `${name}: DARKO by Kostya Medvedovsky (darko.app). Latest retrospective pregame forecast at the phase's last admitted game date; points per 100 possessions, higher is better. Not a season average.`
+  }])
+);
+
 /**
  * courtlens-stats-v4 columns. Impact-derived ones need the sealed impact manifest like
  * IMPACT_COLUMNS; tracking ones are full-season NBA tracking totals (null in shorter scopes).
@@ -226,7 +235,7 @@ export function usesImpactManifest(key: string): boolean {
 
 /** Columns only in courtlens-stats-v4 (custom views that use them save under v4). */
 export function isV4Column(key: string): boolean {
-  return key in V4_IMPACT_COLUMNS || key in TRACKING_COLUMNS || key in V4_BOX_COLUMNS;
+  return key in V4_IMPACT_COLUMNS || key in TRACKING_COLUMNS || key in V4_BOX_COLUMNS || key in DARKO_COLUMNS;
 }
 
 function impactColumns(keys: string[], group: string): ColumnDefinition[] {
@@ -237,7 +246,7 @@ export const STATS_PRESETS: PresetDefinition[] = [
   {
     id: "overview",
     // Databallr's Overview groups with Counting ahead of Impact (owner, 2026-10-12); DPM-family
-    // slots use CourtLens Box Prior RAPM.
+    // slots use the explicitly dated DARKO forecast (owner admitted source policy v3).
     groupLabels: { Participation: "Profile", Counting: "Counting", Impact: "Impact", Efficiency: "Eff", Shooting: "Shooting", Other: "Other" },
     label: "Overview",
     description: "Core box-score volume, impact estimates and efficiency benchmarks.",
@@ -253,9 +262,9 @@ export const STATS_PRESETS: PresetDefinition[] = [
       countingColumn("pts_created", "PTS Created", "Counting", "Points created", "pts_created"),
       countingColumn("rim_ast", "Rim AST", "Counting", "Rim assists", "pbp_rim_assists"),
       countingColumn("tov", "TOV", "Counting", "Turnovers"),
-      { ...IMPACT_COLUMNS.bpr, label: "BPR", group: "Impact", format: formatSignedValue, keepLabel: true },
-      { ...IMPACT_COLUMNS.obpr, label: "OBPR", group: "Impact", format: formatSignedValue, keepLabel: true },
-      { ...IMPACT_COLUMNS.dbpr, label: "DBPR", group: "Impact", format: formatSignedValue, keepLabel: true },
+      DARKO_COLUMNS.dpm,
+      DARKO_COLUMNS.o_dpm,
+      DARKO_COLUMNS.d_dpm,
       { key: "ts_pct", label: "TS%", group: "Efficiency", num: true, sortMetric: "ts_pct", format: formatPctValue, tooltip: "True Shooting %: PTS / (2 * (FGA + 0.44 * FTA))" },
       { ...IMPACT_COLUMNS.impact_rts, label: "rTS%", group: "Efficiency", format: formatSignedPctPoints, keepLabel: true },
       { key: "efg_pct", label: "eFG%", group: "Efficiency", num: true, sortMetric: "efg_pct", format: formatPctValue, tooltip: "Effective Field Goal %: (FGM + 0.5 * 3PM) / FGA" },
@@ -525,6 +534,7 @@ export const ALL_CATALOG_METRICS: Record<string, ColumnDefinition> = {
   ...IMPACT_COLUMNS,
   ...V4_IMPACT_COLUMNS,
   ...TRACKING_COLUMNS,
+  ...DARKO_COLUMNS,
   ...V4_BOX_COLUMNS,
 
   // Gated / Unavailable Metrics

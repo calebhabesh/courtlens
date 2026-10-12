@@ -24,9 +24,13 @@ export function normalizedColumn(column: ColumnDefinition, mode: CountingMode): 
 export function resolveStatsQuery(
   params: Record<string, string | string[] | undefined>,
   catalog: WorkbenchCatalog,
-  mode: CountingMode
+  mode: CountingMode,
+  defaultSortMetric = "pts"
 ): QuerySpec {
   const query = decodeSearchParamsToQuery(params);
+  if (!params.sortMetric && !params.sort_metric && !params.sort) {
+    query.sort = [{ field: defaultSortMetric, direction: query.sort?.[0]?.direction ?? "desc" }];
+  }
   query.release_id = query.release_id || catalog.release_id;
   query.season = typeof params.season === "string" ? params.season : catalog.default_season;
   const scopes = catalog.stats_scopes?.filter((scope) => scope.season === query.season) ?? [];

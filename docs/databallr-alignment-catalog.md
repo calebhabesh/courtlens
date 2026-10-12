@@ -13,7 +13,7 @@ Rows are in working order.
 | # | Databallr | CourtLens | Status | Notes |
 |---|---|---|---|---|
 | 0 | App shell (nav rows, search, page title block) | `app/layout.tsx` | ⬜ | Done with the Stats pass |
-| 1 | Stats | `/stats` | 👀 | Regressed vs Databallr (owner screenshots, 2026-10-12) |
+| 1 | Stats | `/stats` | 👀 | DARKO integration and highlighted source credits ready for owner review |
 | 2 | Dashboard (player) | `/players/[id]` | ⬜ | |
 | 3 | PvP | `/compare` | ⬜ | Compare Export failure is a known gap |
 | 4 | Teams | `/teams` | ⬜ | |
@@ -186,13 +186,20 @@ Follow-up instructions (owner, 2026-10-12, sixth review):
     plot (`lib/chart-anchor.ts`), right or left of the point and flipped near edges (~13 px gap).
     Also: the frame height re-measures after animations settle (an entering page's transform could
     leave it a pixel or two short).
-38. [ ] DPM / ODPM / DDPM. — DARKO (darko.app) offers a leaderboard CSV but states no licence; source
-    policy v2 excludes external model outputs (B25). Feasible as a weekly operator import credited to
-    DARKO if the owner admits the source; awaiting the owner's decision.
+38. [x] DPM / ODPM / DDPM. — Owner admitted DARKO under source policy v3. Operator import completed;
+    Overview's BPR trio replaced under Impact, credited to darko.app, with DPM descending by default.
+    Owner follow-up: DARKO and Databallr show slightly different values; integrate the correctly dated
+    DARKO values. Season-opening projections must not be presented as season-end ratings. The dated
+    leaderboard verified against player history, separately for regular season and playoffs. Six dated
+    boards sealed; 2025-26 playoffs explicitly partial (source through June 3). Saved queries pin their
+    retained bundle. Source evidence: `docs/evidence/alignment/stats/darko/`.
+39. [x] Add a blue hyperlink to the DARKO stats in the hover state or wherever used to credit the
+    source, and highlight it. — shared highlighted blue source link in header hover cards (clickable),
+    footer, preview metric labels, trend dialog, glossary, methodology and Data details.
 Not applicable (no data or feature): the video and trophy
 (Leaders) toolbar buttons. Tab/Shift+Tab view cycling is exposed as buttons only, so Tab keeps
 normal keyboard focus order.
-Data-blocked: DPM, ODPM, DDPM (DARKO outputs are not admitted; BPR fills the slots).
+Data-blocked: no DPM source gate. 2025-26 playoff DARKO data stops June 3; the actual date is shown.
 Evidence: docs/evidence/alignment/stats/ (stats and glossary at 1440 and 390, live local data).
 Verification 2026-10-12: dashboard lint, typecheck, Vitest 448/448; Stats Playwright set 76/78 at 3
 workers plus the new glossary spec 2/2. Remaining failures are not Stats regressions: workbench Teams
@@ -215,3 +222,9 @@ pytest 2044 passed; Stats Playwright set passes (Teams strict-mode unrelated). F
 pre-existing failures reproduced on HEAD and unrelated to Stats: pc12 example boards (13, they read
 the real catalog release in this environment), chart-kit reduced motion and Compare Export, Teams.
 Fixed on the way: pinned identity cells sat under scrolled metric values (z-index).
+Verification (DARKO, 38–39): Ruff/format/mypy and dashboard lint/types clean; Vitest 453/453;
+full isolated Python suite 2053 passed (one assistant-browser fixture skip, dependency warnings
+recorded); final focused runs 54 + 32 passed. Affected browser set 33/34 (only the already-recorded
+Teams strict-mode selector failure); Stats baselines regenerated and checked 2/2. Production build
+and real-data 1440/390 screenshots pass the glance test. Full measured evidence and source limits:
+[DARKO evidence](evidence/alignment/stats/darko/README.md).

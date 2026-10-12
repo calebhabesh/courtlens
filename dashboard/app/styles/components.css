@@ -1,4 +1,22 @@
 @layer components {
+  .darko-source-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--control-md);
+    padding: var(--space-0-5) var(--space-1);
+    border-radius: var(--radius-xs);
+    color: var(--color-info);
+    background: var(--color-surface-3);
+    font-size: inherit;
+    text-decoration: underline;
+    text-underline-offset: var(--space-1);
+    transition: background-color var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out);
+  }
+  .darko-source-link:hover, .darko-source-link:focus-visible {
+    color: var(--color-info);
+    background: color-mix(in srgb, var(--color-info) 16%, var(--color-surface-3));
+  }
+  @media (max-width: 640px) { .darko-source-link { min-height: var(--control-lg); } }
 /* Common Buttons */
 .button {
   background: var(--color-surface-2);

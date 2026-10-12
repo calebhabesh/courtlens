@@ -5,7 +5,8 @@ import { Icon } from "./ui/icon";
 
 import { PlayerPortrait } from "./player-portrait";
 import { TeamLogoStack } from "./team-logo";
-import { formatColumnValue, type ColumnDefinition } from "@/lib/stats-presets";
+import { DARKO_COLUMNS, formatColumnValue, type ColumnDefinition } from "@/lib/stats-presets";
+import { DarkoSourceLink } from "./darko-source-link";
 import type { PlayerResearchItem } from "@/lib/types";
 
 type PercentileVars = React.CSSProperties & { "--pct": number };
@@ -75,7 +76,8 @@ export function StatsPreviewRail({ player, columns, season, eligiblePlayers,
           const ranked = qualified && player.metrics[column.key] != null && percentile != null;
           return <div key={column.key} data-column={column.key}
             className={`stats-preview-metric ${highlight === column.key ? "is-highlighted" : ""}`}>
-            <dt title={column.tooltip}>{column.label}</dt>
+            <dt title={column.tooltip}>{column.key in DARKO_COLUMNS
+              ? <DarkoSourceLink title={column.tooltip}>{column.label}</DarkoSourceLink> : column.label}</dt>
             <dd><strong>{formatColumnValue(column, player)}</strong>{showPercentiles && <span
               className="stats-preview-percentile" style={ranked ? percentileVars(percentile) : undefined}
               title={`League percentile: ${percentile ?? "unknown"} · ${player.table_cohort_sample_sizes?.[column.key] ?? "unknown"} valid players${qualified ? "" : " · small sample, not ranked"}`}>

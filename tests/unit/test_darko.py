@@ -1,0 +1,175 @@
+"""Dated DARKO snapshots: opening ratings, phase boundaries and retained identity."""
+
+from __future__ import annotations
+
+import json
+from datetime import date
+from pathlib import Path
+from unittest.mock import patch
+
+import httpx
+import pytest
+from fastapi import HTTPException
+
+from courtlens.config import Settings
+from courtlens.domain.query_spec import QuerySpec, WindowSpec
+from courtlens.domain.query_url import (
+    deserialize_params_to_query,
+    query_spec_to_research_query,
+    research_query_to_query_spec,
+    serialize_query_to_params,
+)
+from courtlens.evaluation.impact_rating_inputs import write_artifact
+from courtlens.ingestion.darko import parse_leaderboard
+from courtlens.services import darko
+from courtlens.workbench_models import WorkbenchArtifact
+
+FIXTURE = Path(__file__).parents[1] / "fixtures/darko/asof-2025-05-18.json"
+
+
+def test_dated_leaderboard_matches_last_game_player_history() -> None:
+    # Three real rows retained from the public dated leaderboard, 2026-10-12.
+    # DARKO's player/203999 season history links 2024-25 to this date and displays +6.59.
+    board = parse_leaderboard(FIXTURE.read_bytes())
+    assert board["season"] == "2024-25"
+    assert board["as_of"] == "2025-05-18"
+    assert board["data_date"] == "2025-05-18"
+    jokic = board["players"]["203999"]
+    assert jokic["dpm"] == 6.58564
+    assert jokic["o_dpm"] + jokic["d_dpm"] == pytest.approx(jokic["dpm"], abs=1e-5)
+    assert round(jokic["dpm"], 2) == 6.59
+
+
+def test_season_opening_leaderboard_is_rejected() -> None:
+    body = json.loads(FIXTURE.read_bytes())
+    # The season-only response has no dated snapshot and must never be used by refresh.
+    body["nodes"][0]["data"][0].pop("asOf")
+    with pytest.raises(ValueError, match="dated"):
+        parse_leaderboard(json.dumps(body).encode())
+
+
+def test_store_rejects_tampering_and_retains_old_pinned_version(tmp_path: Path) -> None:
+    body = {"version": darko.VERSION, "entries": []}
+    old, _ = write_artifact(tmp_path, body)
+    new, _ = write_artifact(tmp_path, {**body, "observed_at": "later"})
+    with patch("courtlens.services.darko.get_settings", return_value=Settings(darko_manifest=new)):
+        assert darko.load_darko_store(old.stem) == body
+        assert darko.darko_disclosure(QuerySpec(), date(2026, 6, 14))["manifest_sha256"] == new.stem
+        old.write_text("{}")
+        with pytest.raises(HTTPException, match="503"):
+            darko.load_darko_store(old.stem)
+
+
+def test_unknown_is_not_zero_and_nonfinite_is_rejected() -> None:
+    body = json.loads(FIXTURE.read_bytes())
+    values = body["nodes"][0]["data"]
+    index = values.index(6.58564)
+    values[index] = None
+    assert parse_leaderboard(json.dumps(body).encode())["players"]["203999"]["dpm"] is None
+    values[index] = float("nan")
+    with pytest.raises(ValueError, match="finite"):
+        parse_leaderboard(json.dumps(body).encode())
+
+
+def test_scope_never_borrows_playoff_or_future_ratings() -> None:
+    regular = {"season": "2024-25", "phase": "regular_season", "as_of": "2025-04-13"}
+    playoff = {**regular, "phase": "playoffs", "as_of": "2025-06-22"}
+    query = QuerySpec(season="2024-25")
+    with patch(
+        "courtlens.services.darko.load_darko_store", return_value={"entries": [regular, playoff]}
+    ):
+        assert darko.darko_scope(query, date(2025, 4, 13)) is None
+        assert darko.darko_scope(query, date(2025, 4, 14)) == regular
+        assert darko.darko_scope(query, date(2025, 6, 23)) == regular
+        assert (
+            darko.darko_scope(query.model_copy(update={"phase": "playoffs"}), date(2025, 4, 14))
+            is None
+        )
+        assert (
+            darko.darko_scope(
+                query.model_copy(update={"window": WindowSpec(kind="last_10")}), date(2025, 6, 23)
+            )
+            is None
+        )
+
+
+def test_pinned_bundle_survives_url_and_saved_query_roundtrips() -> None:
+    query = QuerySpec(
+        season="2024-25",
+        darko_manifest_sha256="a" * 64,
+        sort=[{"field": "dpm"}],
+        metric_selectors=[{"key": "o_dpm"}],
+    )
+    restored = deserialize_params_to_query(serialize_query_to_params(query))
+    assert restored.darko_manifest_sha256 == query.darko_manifest_sha256
+    legacy = query_spec_to_research_query(query)
+    assert legacy.to_dict()["darko_manifest_sha256"] == "a" * 64
+    assert research_query_to_query_spec(legacy).darko_manifest_sha256 == "a" * 64
+
+
+def test_dated_urls_support_the_bubble_but_reject_opening_urls_and_wrong_years() -> None:
+    assert (
+        darko.validate_darko_url(
+            "darko", "https://www.darko.app/__data.json?asof=2020-10-11", "2019-20"
+        )
+        == 5
+    )
+    with pytest.raises(ValueError, match="dated"):
+        darko.validate_darko_url(
+            "darko", "https://www.darko.app/__data.json?season=2025", "2024-25"
+        )
+    with pytest.raises(ValueError, match="outside"):
+        darko.validate_darko_url(
+            "darko", "https://www.darko.app/__data.json?asof=2026-06-13", "2023-24"
+        )
+
+
+@pytest.mark.parametrize("status", [403, 429])
+def test_source_refusal_stops_host_and_retains_raw_receipt(
+    session, tmp_path, monkeypatch, status
+) -> None:
+    monkeypatch.setattr("courtlens.services.source_acquisition.time.sleep", lambda _: None)
+    requests = []
+
+    def respond(request: httpx.Request) -> httpx.Response:
+        requests.append(str(request.url))
+        if request.url.path == "/robots.txt":
+            return httpx.Response(200, text="User-agent: *\nDisallow: /\nCrawl-delay: 8\n")
+        return httpx.Response(status, text="fixture refusal")
+
+    with httpx.Client(transport=httpx.MockTransport(respond)) as client:
+        fetcher = darko.DarkoFetcher(session, tmp_path, client)
+        first = fetcher.fetch(
+            "darko", "https://www.darko.app/__data.json?asof=2025-04-13", "2024-25"
+        )
+        session.commit()
+        second = fetcher.fetch(
+            "darko", "https://www.darko.app/__data.json?asof=2025-06-22", "2024-25"
+        )
+    assert first.status == second.status == "failed"
+    assert first.http_status == status
+    assert first.metadata_json["robots_disallowed"] is True
+    assert len(requests) == 2
+    artifact = session.get(WorkbenchArtifact, first.artifact_id)
+    assert (tmp_path / artifact.storage_path).read_bytes() == b"fixture refusal"
+
+
+def test_acquisition_keeps_robots_disallow_as_metadata_and_obeys_delay(
+    session, tmp_path, monkeypatch
+) -> None:
+    waits = []
+    monkeypatch.setattr("courtlens.services.source_acquisition.time.sleep", waits.append)
+
+    def respond(request: httpx.Request) -> httpx.Response:
+        if request.url.path == "/robots.txt":
+            return httpx.Response(200, text="User-agent: *\nDisallow: /\nCrawl-delay: 8\n")
+        return httpx.Response(200, content=FIXTURE.read_bytes())
+
+    with httpx.Client(transport=httpx.MockTransport(respond)) as client:
+        receipt = darko.DarkoFetcher(session, tmp_path, client).fetch(
+            "darko", "https://www.darko.app/__data.json?asof=2025-05-18", "2024-25"
+        )
+    assert receipt.status == "success"
+    assert receipt.metadata_json["robots_disallowed"] is True
+    assert receipt.metadata_json["interval_seconds"] == 8
+    assert max(waits) > 7

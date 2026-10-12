@@ -29,6 +29,7 @@ import { saveInvestigation } from "@/lib/workbench-api";
 import {
   STATS_PRESETS,
   IMPACT_COLUMNS,
+  DARKO_COLUMNS,
   getPresetById,
   tableGroups,
   formatColumnValue,
@@ -40,8 +41,10 @@ import {
   type TableDensity
 } from "@/lib/stats-presets";
 import { normalizedColumn, normalizedSortMetric } from "@/lib/stats-query";
+import { formatDate } from "@/lib/format-date";
 import type { MetricHint } from "@/lib/stats-glossary";
 import { StatsHeaderTip, type HeaderTip } from "./stats-header-tip";
+import { DarkoSourceLink } from "./darko-source-link";
 import { StatsTrendDialog, type TrendTarget } from "./stats-trend-dialog";
 import type { QuerySpec, WorkbenchCatalog, PlayerResearchResponse, PlayerResearchItem } from "@/lib/types";
 
@@ -285,7 +288,7 @@ export function WorkbenchPlayerExplorer({
   };
 
   const handlePresetSelect = (id: PresetId) => {
-    const metric = id === "impact" ? "rapm" : id === "onoff" ? "onoff_net_rating" : id === "sixfactor" ? "rapm" : "pts_per_game";
+    const metric = id === "overview" ? "dpm" : id === "impact" ? "rapm" : id === "onoff" ? "onoff_net_rating" : id === "sixfactor" ? "rapm" : "pts_per_game";
     updateParam({ viewId: id === "overview" ? null : id, preset: null, view_id: null,
       sortMetric: normalizedSortMetric(metric, countingMode), sort: null, sort_metric: null, cursor: null }, { presetId: id });
   };
@@ -359,8 +362,18 @@ export function WorkbenchPlayerExplorer({
   };
 
   const [headerTip, setHeaderTip] = useState<HeaderTip | null>(null);
+  const headerTipTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const keepHeaderTip = () => {
+    if (headerTipTimer.current) clearTimeout(headerTipTimer.current);
+  };
+  const hideHeaderTip = () => {
+    keepHeaderTip();
+    headerTipTimer.current = setTimeout(() => setHeaderTip(null), 200);
+  };
+  useEffect(() => () => { if (headerTipTimer.current) clearTimeout(headerTipTimer.current); }, []);
   const [trendTarget, setTrendTarget] = useState<TrendTarget | null>(null);
   const showHeaderTip = (event: React.SyntheticEvent<HTMLTableRowElement>) => {
+    keepHeaderTip();
     const cell = (event.target as HTMLElement).closest<HTMLElement>("th[data-column]");
     const column = preset.columns.find(entry => entry.key === cell?.dataset.column);
     if (!cell || !column) { setHeaderTip(null); return; }
@@ -412,7 +425,7 @@ export function WorkbenchPlayerExplorer({
     setSaving(true);
     setSaveSuccess(null);
     try {
-      const impactMetrics = preset.columns.filter(column => column.key in IMPACT_COLUMNS).map(column => column.key);
+      const impactMetrics = preset.columns.filter(column => column.key in IMPACT_COLUMNS || column.key in DARKO_COLUMNS).map(column => column.key);
       const saveQuery = { ...query, ...(impactMetrics.length ? { metrics: impactMetrics } : {}) };
       const saved = await saveInvestigation(title.trim(), saveQuery as unknown as Record<string, unknown>);
       const msg = `Legacy analytical scope saved (retained arithmetic; Favorites and percentiles excluded), manifest SHA-256: ${saved.manifest_sha256.slice(0, 8)}...`;
@@ -944,7 +957,7 @@ export function WorkbenchPlayerExplorer({
 
             {/* Tier 2 Header: Individual Metrics */}
             <tr className="stats-header-tier-2" onMouseOver={showHeaderTip} onFocus={showHeaderTip}
-              onMouseLeave={() => setHeaderTip(null)} onBlur={() => setHeaderTip(null)}>
+              onMouseLeave={hideHeaderTip} onBlur={hideHeaderTip}>
               {/* Databallr: one search field spans the compare and name columns, flush with the cards. */}
               <th colSpan={2} className="pinned-col pinned-col-search" scope="col" aria-sort={currentSortMetric === "name" || currentSortMetric === "player_name" ? currentSortDirection === "asc" ? "ascending" : "descending" : "none"}>
                 <div className="stats-header-search">
@@ -1125,6 +1138,9 @@ export function WorkbenchPlayerExplorer({
           <span className="stats-sort-caption" title="Same season, phase and window. Search, team and sample filters, favorites and paging do not change the league reference. Lower is better for turnovers, fouls and opponent allowance.">
             Percentiles vs {data.table_cohort?.qualified_players ?? "unknown number of"} players · {data.table_cohort?.min_season_minutes ?? 500}+ min
           </span>
+          {data.darko && <DarkoSourceLink title={`DARKO by Kostya Medvedovsky. ${data.darko.limitations.join(" ")}`}>
+            DARKO · {data.darko.data_date ? `through ${formatDate(data.darko.data_date)}` : "unavailable in this scope"}
+          </DarkoSourceLink>}
         </div>
         <div className="stats-footer-controls">
           <div className="stats-footer-group" role="group" aria-label="Row density">
@@ -1222,7 +1238,7 @@ export function WorkbenchPlayerExplorer({
       />
 
 
-      <StatsHeaderTip tip={headerTip} />
+      <StatsHeaderTip tip={headerTip} onEnter={keepHeaderTip} onLeave={hideHeaderTip} onClose={() => { keepHeaderTip(); setHeaderTip(null); }} />
       {querySpec && <StatsTrendDialog target={trendTarget} columns={preset.columns} querySpec={querySpec} catalog={catalog}
         hints={metricHints} onClose={() => setTrendTarget(null)} />}
 

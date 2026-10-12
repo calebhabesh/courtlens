@@ -15,6 +15,9 @@ export const GLOSSARY_GROUPS: GlossaryGroup[] = ["Counting Stats", "Shooting", "
   "Defense", "Rebounding", "Playmaking", "Play Types", "Team", "Other"];
 
 const PLAIN: Record<string, string> = {
+  dpm: "DARKO's forecast of a player's contribution to scoring margin against an average player, in points per 100 possessions. Imported from darko.app at the phase's last admitted game date; not a season average.",
+  o_dpm: "The offensive component of DARKO's forecast, in points added per 100 possessions against an average player. By Kostya Medvedovsky (darko.app); higher is better.",
+  d_dpm: "The defensive component of DARKO's forecast, in points prevented per 100 possessions against an average player. By Kostya Medvedovsky (darko.app); higher is better.",
   gp: "Games in which the player recorded playing time.",
   min: "Minutes played.",
   min_per_game: "Minutes played per game appeared in.",
@@ -210,6 +213,7 @@ export function glossaryGroup(metric: MetricDefinition): GlossaryGroup {
     case "defense": return "Counting Stats";
     case "efficiency": return ["fgm", "fga", "fg3m", "fg3a", "ftm", "fta"].includes(key.replace(/_per_game$/, "")) ? "Counting Stats" : "Shooting";
     case "impact": return "Impact Metrics";
+    case "external_impact": return "Impact Metrics";
     case "on_off": return "On-Off";
     case "team_factors": return "Team";
     case "tracking": return key.startsWith("pts_created") ? "Counting Stats" : "Playmaking";
