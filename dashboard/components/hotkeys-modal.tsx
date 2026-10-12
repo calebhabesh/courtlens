@@ -19,12 +19,12 @@ const SHORTCUTS: ShortcutItem[] = [
   { key: "Esc", description: "Close active dropdown, drawer or modal", category: "Global" },
   { key: "?", description: "Open keyboard shortcuts guide", category: "Global" },
   { key: "Tab", description: "Move focus to next interactive control", category: "Global" },
-  { key: "F", description: "Focus context bar filters", category: "Navigation" },
   { key: "G", description: "Open definitions and glossary", category: "Navigation" },
   { key: "Z", description: "Open comparison for selected players", category: "Stats & Table" },
   { key: "W / E", description: "Compact / standard row density", category: "Stats & Table" },
   { key: "A / D", description: "Scroll table horizontally", category: "Stats & Table" },
   { key: "T", description: "Expand / collapse Stats table height", category: "Stats & Table" },
+  { key: "F", description: "Show / hide Stats table filters", category: "Stats & Table" },
   { key: "C", description: "Add focused player to comparison selection", category: "Stats & Table" },
 ];
 

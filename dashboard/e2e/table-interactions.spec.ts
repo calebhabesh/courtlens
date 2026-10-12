@@ -65,7 +65,8 @@ test("keyboard sorting, single compare shortcut and drawer focus stay scoped", a
   await sort.focus(); await sort.press("Space"); await page.waitForURL(/sortDirection=asc/);
   await expect(sort.locator("..")).toHaveAttribute("aria-sort", "ascending");
   const row = page.locator(".dense-stats-table tbody tr[data-player-id='23']");
-  await row.focus(); await page.keyboard.press("c"); await expect(row.getByRole("checkbox")).toBeChecked();
+  await row.focus(); await page.keyboard.press("c");
+  await expect(row.getByRole("button", { name: "Remove Fixture Star from comparison", exact: true })).toHaveAttribute("aria-pressed", "true");
   expect(fixture.adds()).toBe(1);
   await page.getByRole("combobox", { name: "Filter players by name", exact: true }).fill("c"); await page.getByRole("combobox", { name: "Filter players by name", exact: true }).press("c");
   await page.locator("h1").click(); await page.keyboard.press("c"); expect(fixture.adds()).toBe(1);
@@ -89,9 +90,10 @@ test("selection failure remains actionable and does not change the selected row"
   await page.route("**/api/workspace/compare-tray/**", route => route.fulfill({ status: 503, json: { detail: "Selection service unavailable. Try again." } }));
   await openWorkbench(page, "/stats"); await page.waitForLoadState("networkidle");
   const row = page.locator(".dense-stats-table tbody tr").first();
-  await row.getByRole("checkbox").click();
+  const toggle = row.locator(".stats-compare-toggle");
+  await toggle.click();
   await expect(page.locator(".stats-action-error[role=alert]")).toContainText("Selection service unavailable. Try again.");
-  await expect(row.getByRole("checkbox")).not.toBeChecked();
+  await expect(toggle).toHaveAttribute("aria-pressed", "false");
   await page.getByRole("button", { name: "Dismiss", exact: true }).click();
   await expect(page.locator(".stats-action-error")).toHaveCount(0);
 });

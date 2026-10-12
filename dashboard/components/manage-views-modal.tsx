@@ -15,6 +15,8 @@ interface ManageViewsModalProps {
   isOpen: boolean;
   onClose: () => void;
   activeViewId?: string;
+  /** Open straight into a new-view editor (the Stats "Add View" button) instead of the list. */
+  startWithNewView?: boolean;
   onSelectView?: (viewId: string) => void;
 }
 
@@ -27,6 +29,7 @@ export function ManageViewsModal({
   isOpen,
   onClose,
   activeViewId,
+  startWithNewView = false,
   onSelectView
 }: ManageViewsModalProps) {
   const {
@@ -90,6 +93,14 @@ export function ManageViewsModal({
     setErrorMessage(null);
     setActiveTab("editor");
   };
+
+  // Each opening starts on the tab its trigger asked for.
+  const [openedState, setOpenedState] = useState(false);
+  if (isOpen !== openedState) {
+    setOpenedState(isOpen);
+    if (isOpen && startWithNewView && views.length < MAX_CUSTOM_VIEWS) handleOpenAddView();
+    else if (isOpen) setActiveTab("list");
+  }
 
   const handleOpenEditView = (view: CustomViewDefinition) => {
     setEditingViewId(view.id);

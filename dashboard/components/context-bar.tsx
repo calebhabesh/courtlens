@@ -9,6 +9,8 @@ import { DataDetailsButton, type DataDetailRow } from "@/components/ui/data-deta
 import { DatePicker } from "@/components/ui/date-picker";
 import { Field } from "@/components/ui/field";
 import { Select } from "@/components/ui/select";
+import { Icon } from "@/components/ui/icon";
+import { SegmentedControl } from "@/components/ui/segmented-control";
 import { beforeDateFromThrough, formatDate, throughDateFromBefore } from "@/lib/format-date";
 import { getSharedCatalog } from "@/lib/route-availability";
 import { applyScopeChange, type ScopeKey } from "@/lib/scope-url";
@@ -38,7 +40,11 @@ interface ContextBarProps {
   modes?: React.ReactNode;
   /** Page-specific Data details rows (source routes, resolved context), after the catalog rows. */
   detailRows?: DataDetailRow[];
+  /** Stats alignment: season picker flanked by previous/next buttons, phase as a segmented control. */
+  steppedScope?: boolean;
 }
+
+const SHORT_PHASES: Record<string, string> = { regular_season: "Regular", playoffs: "Playoffs", play_in: "Play-In" };
 
 const WINDOWS = [
   { value: "season", label: "Season-to-date" },
@@ -61,7 +67,8 @@ export function ContextBar({
   showThrough = true,
   filters,
   modes,
-  detailRows = []
+  detailRows = [],
+  steppedScope = false
 }: ContextBarProps) {
   const router = useRouter();
   const pathname = usePathname();
@@ -101,20 +108,51 @@ export function ContextBar({
 
   const throughDate = /^\d{4}-\d{2}-\d{2}$/.test(beforeDate) ? throughDateFromBefore(beforeDate) : "";
 
+  const seasonSelect = (
+    <Select value={season} onChange={(e) => updateParam("season", e.target.value)} aria-label="Filter by season">
+      {!seasons.includes(season) && <option value={season}>{season} · unavailable</option>}
+      {seasons.map((s) => <option key={s} value={s}>{s}</option>)}
+    </Select>
+  );
+  const chronological = [...seasons].sort();
+  const seasonIndex = chronological.indexOf(season);
+  const previousSeason = seasonIndex > 0 ? chronological[seasonIndex - 1] : undefined;
+  const nextSeason = seasonIndex >= 0 ? chronological[seasonIndex + 1] : undefined;
+  // Regular and Playoffs always hold their places; a phase without coverage is shown disabled.
+  const phaseSegments = [...new Set([...(allowedPhases ? [] : ["regular_season", "playoffs"]), ...phases, phase])];
+
   const scope = (
     <>
-      <Field label="Season" layout="inline">
-        <Select value={season} onChange={(e) => updateParam("season", e.target.value)} aria-label="Filter by season">
-          {!seasons.includes(season) && <option value={season}>{season} · unavailable</option>}
-          {seasons.map((s) => <option key={s} value={s}>{s}</option>)}
-        </Select>
-      </Field>
-      <Field label="Phase" layout="inline">
-        <Select value={phase} onChange={(e) => updateParam("phase", e.target.value)} aria-label="Filter by competition phase">
-          {!phases.includes(phase) && <option value={phase}>{phaseLabel(phase)} · unavailable</option>}
-          {phases.map((value) => <option key={value} value={value}>{phaseLabel(value)}</option>)}
-        </Select>
-      </Field>
+      {steppedScope ? (
+        <div className="context-season-stepper" role="group" aria-label="Season">
+          <button type="button" className="context-stepper-button" disabled={!previousSeason}
+            onClick={() => previousSeason && updateParam("season", previousSeason)}
+            aria-label={previousSeason ? `Previous season, ${previousSeason}` : "No earlier season"}>
+            <Icon name="left" size={14} />
+          </button>
+          <span className="context-season-picker"><Icon name="calendar" size={14} />{seasonSelect}</span>
+          <button type="button" className="context-stepper-button" disabled={!nextSeason}
+            onClick={() => nextSeason && updateParam("season", nextSeason)}
+            aria-label={nextSeason ? `Next season, ${nextSeason}` : "No later season"}>
+            <Icon name="right" size={14} />
+          </button>
+        </div>
+      ) : (
+        <Field label="Season" layout="inline">{seasonSelect}</Field>
+      )}
+      {steppedScope ? (
+        <SegmentedControl name="Filter by competition phase" size="sm" className="context-phase-segments" value={phase}
+          onChange={(value) => updateParam("phase", value)}
+          options={phaseSegments.map((value) => ({ value, disabled: !phases.includes(value),
+            label: `${SHORT_PHASES[value] ?? phaseLabel(value)}${value === phase && !phases.includes(value) ? " · unavailable" : ""}` }))} />
+      ) : (
+        <Field label="Phase" layout="inline">
+          <Select value={phase} onChange={(e) => updateParam("phase", e.target.value)} aria-label="Filter by competition phase">
+            {!phases.includes(phase) && <option value={phase}>{phaseLabel(phase)} · unavailable</option>}
+            {phases.map((value) => <option key={value} value={value}>{phaseLabel(value)}</option>)}
+          </Select>
+        </Field>
+      )}
       {showThrough && <Field label="Through" layout="inline">
         <DatePicker
           label="Through date"
