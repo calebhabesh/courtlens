@@ -1,0 +1,15 @@
+{
+ "pointers_match": true,
+ "pointer_count": 161,
+ "feed_counts_before_reads": {
+  "stats_feed_datasets": 205,
+  "stats_feed_versions": 200690,
+  "stats_feed_members": 200690
+ },
+ "feed_counts_after_reads": {
+  "stats_feed_datasets": 205,
+  "stats_feed_versions": 200690,
+  "stats_feed_members": 200690
+ },
+ "counts_match": true
+}

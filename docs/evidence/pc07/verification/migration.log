@@ -1,0 +1,2 @@
+INFO  [alembic.runtime.migration] Will assume transactional DDL.
+INFO  [alembic.runtime.migration] Running upgrade 12b810a4f010 -> 13b810a4f011, Independent season-level stats feeds (PC07), isolated from sealed analytical releases.

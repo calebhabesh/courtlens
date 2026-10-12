@@ -4,6 +4,7 @@ import json
 import tempfile
 from datetime import date, timedelta
 from pathlib import Path
+from typing import Any
 
 import typer
 from sqlalchemy import Connection, Engine, func, select
@@ -1195,6 +1196,120 @@ def acquire_finance_command(
     typer.echo(json.dumps(results, indent=2))
     if any(r["status"] != "success" for r in results):
         raise typer.Exit(1)
+
+
+@app.command("acquire-stats-feeds")
+def acquire_stats_feeds_command(
+    revision: str = typer.Option(..., help="Pinned 40-hex hoopR-nba-stats-raw commit."),
+    season: str = typer.Option("2025-26"),
+    draft_year: list[int] = typer.Option([], help="Draft/combine years to include."),
+    pbpstats: bool = typer.Option(True, help="Include pbpstats secondary totals."),
+    pbpstats_lineups: bool = typer.Option(True, help="Include per-team pbpstats lineups."),
+    root: Path = typer.Option(Path("data/raw/stats-feeds")),
+    report: Path | None = typer.Option(None, help="Write the run summary JSON here."),
+) -> None:
+    """One bounded scheduled run: fetch, retain and admit each feed in its own transaction."""
+    import httpx
+
+    from courtlens.services.stats_feed_ingestion import FeedFetcher, admit_feed, run_plan
+
+    plan = run_plan(
+        revision, season, draft_year, pbpstats=pbpstats, pbpstats_lineups=pbpstats_lineups
+    )
+    results = []
+    with SessionLocal() as session, httpx.Client() as client:
+        fetcher = FeedFetcher(session, root, client)
+        for source, url, scope_season in plan:
+            receipt = fetcher.fetch(source, url, scope_season)
+            session.commit()
+            result: dict[str, Any] = {
+                "url": url,
+                "acquisition_id": receipt.id,
+                "status": receipt.status,
+                "http_status": receipt.http_status,
+                "bytes": receipt.bytes,
+                "reason": receipt.error_summary,
+            }
+            if receipt.status == "success":
+                try:
+                    dataset = admit_feed(session, receipt.id, root)
+                    session.commit()
+                    result |= {
+                        "dataset_id": dataset.id,
+                        "rows": dataset.coverage_json["rows"],
+                        "empty": dataset.coverage_json["empty"],
+                        "truncated": dataset.coverage_json["truncated"],
+                    }
+                except (ValueError, KeyError) as error:
+                    session.rollback()
+                    result |= {"status": "rejected", "reason": str(error)[:300]}
+            results.append(result)
+            typer.echo(json.dumps(result))
+    summary = {
+        "revision": revision,
+        "season": season,
+        "draft_years": draft_year,
+        "planned": len(plan),
+        "admitted": sum("dataset_id" in r for r in results),
+        "failed": sum(r["status"] == "failed" for r in results),
+        "rejected": sum(r["status"] == "rejected" for r in results),
+        "results": results,
+    }
+    if report is not None:
+        report.write_text(json.dumps(summary, indent=2) + "\n")
+    if summary["admitted"] != len(plan):
+        raise typer.Exit(1)
+
+
+@app.command("import-stats-feed")
+def import_stats_feed_command(
+    acquisition_id: str, root: Path = typer.Option(Path("data/raw/stats-feeds"))
+) -> None:
+    """Admit one retained acquisition; re-admitting returns the same dataset."""
+    from courtlens.services.stats_feed_ingestion import admit_feed
+
+    with SessionLocal() as session:
+        try:
+            dataset = admit_feed(session, acquisition_id, root)
+            session.commit()
+        except (ValueError, KeyError) as error:
+            session.rollback()
+            raise typer.BadParameter(f"stats feed rejected: {error}") from error
+        typer.echo(json.dumps({"dataset_id": dataset.id, **dataset.coverage_json}, indent=2))
+
+
+@app.command("verify-stats-feeds")
+def verify_stats_feeds_command(
+    dataset_id: list[str] = typer.Option([], help="Default: every latest dataset."),
+    root: Path = typer.Option(Path("data/raw/stats-feeds")),
+) -> None:
+    """Re-parse retained bytes and recompute membership/row hashes without fetching."""
+    from courtlens.services.stats_feed_ingestion import latest_datasets, verify_feed
+
+    with SessionLocal() as session:
+        ids = dataset_id or [d.id for d in latest_datasets(session)]
+        results = [verify_feed(session, value, root) for value in ids]
+    typer.echo(
+        json.dumps(
+            {
+                "checked": len(results),
+                "verified": sum(r["verified"] for r in results),
+                "failures": [r for r in results if not r["verified"]],
+            },
+            indent=2,
+        )
+    )
+    if not all(r["verified"] for r in results):
+        raise typer.Exit(1)
+
+
+@app.command("stats-feed-coverage")
+def stats_feed_coverage_command() -> None:
+    """Latest admitted observation per feed scope, with empty/truncated flags."""
+    from courtlens.services.stats_feed_ingestion import coverage_summary
+
+    with SessionLocal() as session:
+        typer.echo(json.dumps(coverage_summary(session), indent=2))
 
 
 @app.command("import-finance-thresholds")
