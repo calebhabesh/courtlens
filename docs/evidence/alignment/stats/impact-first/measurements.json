@@ -1,0 +1,96 @@
+[
+  {
+    "width": 1440,
+    "height": 900,
+    "groups": "PLAYERS\n\tPROFILE\t\tIMPACT\t\tCOUNTING\t\tEFF\t\tSHOOTING\t\tOTHER\tACTIONS",
+    "metrics": [
+      "gp",
+      "min",
+      "min_per_game",
+      "on_ball_pct",
+      "dpm",
+      "o_dpm",
+      "d_dpm",
+      "pts_per_game",
+      "reb_per_game",
+      "ast_per_game",
+      "pts_created_per_game",
+      "rim_ast_per_game",
+      "tov_per_game",
+      "ts_pct",
+      "impact_rts",
+      "efg_pct",
+      "ctov_pct",
+      "fg2_pct",
+      "fg3_pct",
+      "fg3a_per_game",
+      "ft_pct",
+      "fta_per_game",
+      "oreb_per_game",
+      "dreb_per_game",
+      "stl_per_game",
+      "blk_per_game"
+    ],
+    "frame": {
+      "x": 24,
+      "y": 371.5,
+      "width": 1120,
+      "height": 512.5
+    },
+    "dpm": {
+      "x": 663.25,
+      "y": 455,
+      "width": 64.40625,
+      "height": 48
+    },
+    "bodyOverflow": false,
+    "pageErrors": []
+  },
+  {
+    "width": 390,
+    "height": 844,
+    "groups": "PLAYERS\n\tPROFILE\t\tIMPACT\t\tCOUNTING\t\tEFF\t\tSHOOTING\t\tOTHER\tACTIONS",
+    "metrics": [
+      "gp",
+      "min",
+      "min_per_game",
+      "on_ball_pct",
+      "dpm",
+      "o_dpm",
+      "d_dpm",
+      "pts_per_game",
+      "reb_per_game",
+      "ast_per_game",
+      "pts_created_per_game",
+      "rim_ast_per_game",
+      "tov_per_game",
+      "ts_pct",
+      "impact_rts",
+      "efg_pct",
+      "ctov_pct",
+      "fg2_pct",
+      "fg3_pct",
+      "fg3a_per_game",
+      "ft_pct",
+      "fta_per_game",
+      "oreb_per_game",
+      "dreb_per_game",
+      "stl_per_game",
+      "blk_per_game"
+    ],
+    "frame": {
+      "x": 8,
+      "y": 483.5,
+      "width": 374,
+      "height": 937
+    },
+    "dpm": {
+      "x": 553.75,
+      "y": 715,
+      "width": 63.90625,
+      "height": 50
+    },
+    "bodyOverflow": false,
+    "pageErrors": []
+  }
+]

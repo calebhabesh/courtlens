@@ -613,3 +613,10 @@ and open DARKO. No raw inline styles or new icon system. Dashboard lint/types an
 pass, production build passes, Stats browser/source-link checks and desktop/phone baselines pass;
 the known unrelated Teams selector failure is retained. Real-data screenshots, source dates and
 measured glance test: [DARKO evidence](evidence/alignment/stats/darko/README.md).
+
+### Stats alignment follow-up: Impact-first Overview (2026-10-12)
+
+Owner instruction 40 reorders Overview and its preview to Profile → Impact → Counting → Efficiency
+→ Shooting → Other. Dashboard lint/types, Vitest 453/453, affected browser specs 24/24, updated Stats
+baselines 2/2 and production build pass. Real-data desktop/phone screenshots and 10/10 glance test:
+[Impact-first evidence](evidence/alignment/stats/impact-first/README.md).
