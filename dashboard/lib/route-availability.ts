@@ -9,10 +9,10 @@ const requirements: Record<string, string> = {
   "/showcase": "core_stats", "/research/trends": "core_stats",
   "/research/distributions": "core_stats", "/similar-players": "core_stats",
   "/roster-shapes": "core_stats", "/playoffs": "core_stats",
-  "/wowy": "on_off", "/stat-line-shift": "on_off",
+  "/wowy": "wowy", "/stat-line-shift": "on_off",
   "/similar-players/shot-profile": "shots", "/research/shooting/aftermath": "shots", "/matchups": "matchups",
-  "/wingspan": "measurements",
-  "/research/defensive-matchups": "defensive_tracking", "/research/epv": "tracking",
+  "/research/shooting/adjusted": "play_types", "/stats/tracking": "tracking",
+  "/research/defensive-matchups": "defensive_tracking",
 };
 export function routeAvailability(href: string, catalog: WorkbenchCatalog | null, season?: string, phase?: string) {
   const route = href.split("?")[0];

@@ -46,19 +46,6 @@ test("court and table preserve zero versus unknown; exports and peer zones agree
   await expect(page.getByRole("heading", { name: "Shot-profile twins · Fixture Player 2" })).toBeVisible(); await expect(page).toHaveURL(/player_id=2.*release_id=fixture-release|release_id=fixture-release.*player_id=2/);
   await page.goBack(); await expect(page.getByRole("heading", { name: "Shot-profile twins · Fixture Player 1" })).toBeVisible();
 });
-test("assignment matrix shows fractional exposure and null pooled rates at 375px", async ({ page }) => {
-  await page.setViewportSize({ width: 375, height: 850 });
-  await page.route("**/api/workbench/operations/matchups", async route => {
-    const data = fixture("matchups", route.request().postDataJSON()); data.coverage_status = "partial"; data.observed_games = 1;
-    data.assignments = [{ offensive_player_id: "1", defensive_player_id: "2", games: 1, seconds: 0, fractional_possessions: .125, attempts: 0, makes: 0, player_points: 0, team_points: 0, fg_pct: null }];
-    await route.fulfill({ json: data });
-  });
-  await openWorkbench(page, "/matchups?player_id=1&defender_id=2");
-  await expect(page.getByRole("region", { name: "Assignment matrix" })).toContainText("0.125"); await expect(page.getByRole("region", { name: "Assignment matrix" })).toContainText("—");
-  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
-  await page.getByRole("region", { name: "Assignment matrix" }).focus(); await page.keyboard.press("ArrowRight");
-  await page.screenshot({ path: test.info().outputPath("b24-partial-mobile-fixture.png"), fullPage: true });
-});
 test("aftermath keeps branch samples, unknown membership and censoring distinct", async ({ page }) => {
   await page.route("**/api/workbench/operations/shot-aftermath", async route => {
     const data = fixture("shot-aftermath", route.request().postDataJSON()); data.coverage_status = "partial";

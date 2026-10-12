@@ -53,23 +53,25 @@ test("API failure preserves text; retry and no-match states are distinct",async(
   await page.unroute("**/api/workbench/lookup?**");await page.getByRole("button",{name:"Retry search"}).click();await expect(page.getByText("No matches for",{exact:false})).toBeVisible();
 });
 
-test("WOWY chips remove by name, prevent duplicates and enforce unit maximum without IDs",async({page})=>{
-  await openWorkbench(page,"/wowy");await page.getByRole("combobox",{name:"View",exact:true}).selectOption("unit");
-  for(let n=1;n<=5;n++) await choose(page,"Exact unit",`Fixture Player ${n}`);
-  await expect(page.getByRole("combobox",{name:"Exact unit",exact:true})).toBeDisabled();await expect(page.getByRole("list",{name:"Selected Exact unit"}).getByRole("listitem")).toHaveCount(5);
-  await page.getByRole("button",{name:"Remove Fixture Player 3 from Exact unit"}).click();await expect(page.getByRole("combobox",{name:"Exact unit",exact:true})).toBeEnabled();await choose(page,"Exact unit","Fixture Player 3");
+// PC11 replaced the /wowy operation form; the shared chip picker is exercised on Teammate Stat Shift.
+// An explicit focal player keeps the PC04 example from pre-filling the condition players.
+test("multi-player chips remove by name, prevent duplicates and enforce the five-player maximum without IDs",async({page})=>{
+  await openWorkbench(page,"/stat-line-shift?player_id=24");
+  for(let n=1;n<=5;n++) await choose(page,"Together players",`Fixture Player ${n}`);
+  await expect(page.getByRole("combobox",{name:"Together players",exact:true})).toBeDisabled();await expect(page.getByRole("list",{name:"Selected Together players"}).getByRole("listitem")).toHaveCount(5);
+  await page.getByRole("button",{name:"Remove Fixture Player 3 from Together players"}).click();await expect(page.getByRole("combobox",{name:"Together players",exact:true})).toBeEnabled();await choose(page,"Together players","Fixture Player 3");
   await expect(page.locator("form form")).toHaveCount(0);
 });
 
 test("touch selection and removal work at 375px",async({browser})=>{
-  const context=await browser.newContext({viewport:{width:375,height:812},hasTouch:true});const page=await context.newPage();await openWorkbench(page,"/wowy");
+  const context=await browser.newContext({viewport:{width:375,height:812},hasTouch:true});const page=await context.newPage();await openWorkbench(page,"/stat-line-shift?player_id=24");
   await page.getByRole("combobox",{name:"Together players",exact:true}).fill("Fixture Star");await page.getByRole("option").filter({hasText:"Fixture Star"}).tap();await expect(page.getByRole("button",{name:"Remove Fixture Star from Together players"})).toBeVisible();await page.getByRole("button",{name:"Remove Fixture Star from Together players"}).tap();await expect(page.getByRole("list",{name:"Selected Together players"})).toHaveCount(0);
   expect(await page.evaluate(()=>document.documentElement.scrollWidth <= innerWidth)).toBe(true);await context.close();
 });
 
 test("changing lookup scope discards an obsolete response for the same text",async({page})=>{
   await page.route("**/api/workbench/catalog**",async route=>{ const response=await route.fetch();const catalog=await response.json();await route.fulfill({json:{...catalog,seasons:["2023-24","2025-26"],stats_scopes:[...catalog.stats_scopes,{season:"2023-24",phase:"regular_season",default_before_date:"2024-06-30"}]}}); });
-  await openWorkbench(page,"/wowy");
+  await openWorkbench(page,"/stat-line-shift?player_id=24");
   let release!:()=>void;const pending=new Promise<void>(resolve=>release=resolve);
   await page.route("**/api/workbench/lookup?**",async route=>{
     const url=new URL(route.request().url());if(url.searchParams.get("q") !== "scope") return route.continue();

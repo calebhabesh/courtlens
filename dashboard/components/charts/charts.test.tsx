@@ -2,7 +2,7 @@
 import React from "react";
 import { afterEach, describe, expect, it } from "vitest";
 import { cleanup, render, screen } from "@testing-library/react";
-import { ChartFrame, DeltaChip, Donut, PercentileCell, Sankey, ShapeGlyph, ShapePack, ThresholdBar, TimelineGrid, ValueBar, comparisonFlags, leadingIdentity, percentileBand, validFlow, type Category } from "./index";
+import { ChartFrame, DeltaChip, Donut, PercentileCell, RankedBars, Sankey, ShapeGlyph, ShapePack, ThresholdBar, TimelineGrid, ValueBar, comparisonFlags, leadingIdentity, percentileBand, validFlow, type Category } from "./index";
 import { resolveSvgTokens } from "@/lib/image-export";
 
 afterEach(cleanup);
@@ -51,6 +51,33 @@ describe("ValueBar", () => {
     expect(screen.getByRole("alert").textContent).toContain("unavailable");
     rerender(<ValueBar {...meta} value={12} domain={[0, 10]} />);
     expect(screen.getByText(/full value/)).toBeTruthy();
+  });
+});
+
+describe("RankedBars (PC11)", () => {
+  const items = [
+    { key: "a", name: "Alpha", label: "Alpha", value: 4.2, formatted: "+4.2" },
+    { key: "b", name: "Beta", label: "Beta", value: -1.5, formatted: "−1.5", muted: true },
+    { key: "c", name: "Gamma", label: "Gamma", value: null },
+  ];
+  it("shares one signed scale with a zero baseline and keeps unknown rows without geometry", () => {
+    const { container } = render(<RankedBars {...meta} items={items} measure="points" />);
+    const rows = container.querySelectorAll(".chart-ranked li");
+    expect(rows).toHaveLength(3);
+    expect(rows[0].querySelector("rect + rect")?.getAttribute("fill")).toBe("var(--color-identity-a)");
+    expect(rows[1].getAttribute("data-muted")).toBe("true");
+    expect(rows[1].querySelector("rect + rect")?.getAttribute("fill")).toBe("var(--color-status-unknown)");
+    expect(rows[2].querySelectorAll("rect")).toHaveLength(1);
+    expect(screen.getByRole("img", { name: "Gamma: unknown points" })).toBeTruthy();
+    expect(screen.getByRole("img", { name: "Beta: −1.5 points, small sample" })).toBeTruthy();
+    expect(container.querySelectorAll(".chart-ranked line")).toHaveLength(3);
+    expect(screen.getByText("Zero baseline")).toBeTruthy();
+    expect(screen.getByText("-1.5")).toBeTruthy();
+    expect(screen.getByText("4.2")).toBeTruthy();
+  });
+  it("renders the empty state, never an empty axis", () => {
+    render(<RankedBars {...meta} items={[]} measure="points" />);
+    expect(screen.getByText(/No observed values/)).toBeTruthy();
   });
 });
 

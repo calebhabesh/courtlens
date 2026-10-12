@@ -153,6 +153,11 @@ Geometry only: exact pinned `d3-shape` 3.2.0, `d3-hierarchy` 3.1.2, `d3-sankey` 
   full item list including zero/unknown values. An optional capacity leaves unused space. Negative
   signed impact is rejected: PC10 must declare its sizing transform. PC10's Wyman presentation
   credits @taylormetrics; this primitive is not an impact model or a roster fit computation.
+- `RankedBars` (PC11): labeled rows on one shared signed scale with an explicit zero baseline and
+  formatted end labels. Order is the caller's (a rank or a fixed category order). Unknown values
+  keep their row with no bar; `muted` rows (small samples) use the unknown status color and say so
+  in their accessible name. One measure per chart in the identity-A tone, like `ValueBar`. Below
+  768px the label column narrows; rows never scroll sideways.
 
 Every chart takes a title, source and sample label, plus optional note/state/action. States show
 skeleton, one-line empty/error and a useful caller-provided action. Initial SVG and data changes
