@@ -9,6 +9,7 @@ export const dynamic = "force-dynamic";
 const TOC = [
   { id: "principles", label: "Principles" },
   { id: "impact", label: "Impact metrics" },
+  { id: "value-archetypes", label: "Value and archetypes" },
   { id: "catalog", label: "Metric catalog" },
   { id: "prospective", label: "Historical and prospective" },
   { id: "related", label: "Related pages" },
@@ -50,6 +51,13 @@ export default async function MethodologyPage() {
         <p>Coverage and patch rates accompany every fit. Reconstruction retains source disagreement, minute and plus-minus limitations. The unchanged box-estimate ±2 distribution is a diagnostic under the event acceptance contract. RAPM omits zero-control observations; on/off retains their scoring. No impact output enters forecasting features, and descriptive serving leaves B26 experiment status unchanged.</p>
         <p>Inputs: NBA public play-by-play, shots and matchups via the admitted Apache-licensed shufinskiy archive, with SportsDataverse independent boxes and schedule. Exclusive cutoffs and SHA-256 artifact identities retain reproducibility.</p>
         <p><Link href="/research/rapm">Served ratings and registered experiment status</Link></p>
+      </ArticleSection>
+
+      <ArticleSection id="value-archetypes" title="Value and derived archetypes" label="Value and archetype methodology">
+        <p>Value is Box-Prior RAPM (BPR) from the sealed regular-season fit for 2024-25 and 2025-26: a box-score regression trained only on earlier seasons is the ridge prior, and the window&apos;s RAPM is refit around it. The window is fixed by rule (latest completed season, longest window with a BPR), not chosen by scores. Units are points per 100 possessions relative to a minutes-weighted average player. Players without stints in the window, such as new rookies, have no value; it is never shown as zero.</p>
+        <p>An out-of-time check predicts each season&apos;s one-year RAPM using only earlier seasons. Correlations are modest (about 0.3 to 0.5), as expected for noisy one-year RAPM. Treat value as a descriptive estimate under lineup confounding, not a ranking verdict or forecast.</p>
+        <p>Derived archetypes come from a Gaussian mixture over nine regular-season rates: usage, assist share, three-point and rim attempt shares, offensive and defensive rebound shares, block and steal shares, and free-throw rate. It is fitted on player-seasons with at least 500 minutes from 2023-24 to 2025-26, with the number of clusters chosen by BIC. Membership is soft (for example 68% creator · 32% hub). Color follows the primary archetype. An archetype describes one season&apos;s statistical style, not a listed position or role, and is always labeled &quot;derived archetype&quot;.</p>
+        <p>Inputs: sealed IM04 ratings, the served box-score dataset and the admitted shot-location dataset. Every artifact is content-addressed and reproducible.</p>
       </ArticleSection>
 
       <ArticleSection
