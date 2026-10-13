@@ -655,3 +655,13 @@ the font through git. Default digits and sampled accents pass. Lint/types, Vites
 production build, 13 focused browser checks and 120 visual/picker checks pass; baselines refreshed
 and verified. Five viewport sizes, blocked fonts and live Settings pass. Source/license manifest,
 screenshots and scoped glance test: [Switzer evidence](evidence/alignment/app-shell/switzer/README.md).
+
+### Stats follow-up: uniform controls with the previous layout (2026-10-13)
+
+Owner instructions 44–45 normalize above-table text and containers, mute Through/Window values,
+and label the divider modes. The final owner revision restores the original flex/wrap arrangement:
+presets → Table Divider → Add View/Manage. Switzer and the type/container changes are retained.
+Real 2048/1440/390/375 captures show consistent text, 40px outer controls and no page overflow;
+the bounded glance check passes. Dashboard lint/types, Vitest 459/459 and production build pass;
+affected browser and visual/picker checks pass. [Measured evidence](evidence/alignment/stats/control-uniformity/README.md).
+Other Stats data instructions remain pending; only the owner marks the page aligned.

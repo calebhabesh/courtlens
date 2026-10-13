@@ -267,6 +267,15 @@ Follow-up instructions (owner, 2026-10-12, sixth review):
       keeps on-accent text over the filter bar's control styling.
     - 43f [ ] PBP-derived impact (RAPM, on/off, six factor) for added seasons.
     - 43g [ ] Draft classes before 2000 so older players match the Draft Class filter.
+Follow-up instructions (owner, 2026-10-13, control uniformity):
+44. [x] Normalize the containers/buttons above the table for uniform text and container sizing.
+    Through/Window selector text should be grey, not white. Final owner revision: restore the
+    previous layout, with Add View/Manage after Table Divider; retain typography/container changes.
+    - Done: scoped 13px/18px text, 40px outer controls and grey selector values; original flex/wrap
+      layout retained, with actions after the divider. Desktop and phone measurements pass.
+45. [x] Add text beside Photos/Logos/Initials/None explaining it, akin to Through/Window:
+    "Table Divider".
+    - Done: visible inline Field label and accessible group name. [Evidence](evidence/alignment/stats/control-uniformity/README.md).
 Not applicable (no data or feature): the video and trophy
 (Leaders) toolbar buttons. Tab/Shift+Tab view cycling is exposed as buttons only, so Tab keeps
 normal keyboard focus order.

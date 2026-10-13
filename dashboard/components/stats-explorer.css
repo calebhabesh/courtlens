@@ -490,6 +490,38 @@
   .stats-workspace .stats-preview-metrics { flex: 1 1 auto; min-height: 0; overflow-y: auto; scrollbar-width: thin; }
 }
 
+/* Owner follow-up: one type scale and control height above the table. */
+@layer foundation {
+  .stats-workspace :is(.stats-help-button, .context-season-picker .ui-select, .season-scope-value,
+    .context-phase-segments .ui-segmented-item, .ui-filter-bar .ui-date-trigger, .ui-filter-bar .ui-select, .ui-filter-bar .ui-button,
+    .stats-team-button, .stats-position-chip, .stats-draft-menu .ui-menu-trigger, .stats-preset-tab,
+    .stats-view-actions .control-pill, .stats-divider-modes .control-pill) {
+    font-size: var(--text-sm);
+    line-height: var(--text-sm-lh);
+    font-weight: 500;
+    color: var(--color-text-secondary);
+  }
+  .stats-workspace :is(.stats-help-button, .ui-filter-bar .ui-date-trigger, .ui-filter-bar .ui-select, .ui-filter-bar .ui-button,
+    .stats-team-button, .stats-position-chip, .stats-draft-menu .ui-menu-trigger,
+    .stats-view-actions .control-pill) { min-height: var(--control-lg); padding-block: 0; }
+  .stats-workspace :is(.stats-help-button, .stats-view-actions .control-pill) { background: var(--color-surface-2); }
+  .stats-workspace :is(.context-phase-segments .ui-segmented-item-active, .stats-team-button.is-selected,
+    .stats-position-chip[aria-pressed=true], .stats-draft-menu.is-selected .ui-menu-trigger,
+    .stats-preset-tab.active, .stats-divider-modes .control-pill.active) { color: var(--color-accent); font-weight: 600; }
+
+  .stats-workspace .context-phase-segments .ui-segmented-item { min-height: var(--control-md); padding-block: 0; }
+  .stats-workspace .stats-preset-tab { padding-inline: var(--space-2); }
+  .stats-workspace .stats-view-actions .control-pill { padding-inline: var(--space-3); border-radius: var(--radius-sm); }
+  .stats-workspace .stats-divider-field > .ui-field-label { color: var(--color-on-bg-secondary); }
+  .stats-workspace .stats-divider-modes { min-height: var(--control-lg); padding: var(--space-1); background: var(--color-surface-2); border-radius: var(--radius-sm); }
+  .stats-workspace .stats-divider-modes .control-pill { min-height: var(--control-md); padding: 0 var(--space-3); }
+
+  @media (max-width: 700px) {
+    .stats-workspace :is(.stats-preset-tabs, .stats-divider-modes) { padding-block: 0; }
+    .stats-workspace :is(.stats-preset-tab, .stats-divider-modes .control-pill) { min-height: var(--control-lg); }
+  }
+}
+
 /* 43e: the season popover sits inside the filter bar, whose foundation-layer control rules would dim
    the primary action to secondary text and shrink the selects; restore both at the same layer. */
 @layer foundation {
