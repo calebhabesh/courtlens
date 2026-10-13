@@ -12,7 +12,7 @@ Rows are in working order.
 
 | # | Databallr | CourtLens | Status | Notes |
 |---|---|---|---|---|
-| 0 | App shell (nav rows, search, page title block) | `app/layout.tsx` | ⬜ | Done with the Stats pass |
+| 0 | App shell (nav rows, search, page title block) | `app/layout.tsx` | 👀 | Navbar spacing and favicon legibility verified; owner review pending |
 | 1 | Stats | `/stats` | 👀 | Muted NBA-blue background, charcoal containers (41); picker dead ends cut (42) |
 | 2 | Dashboard (player) | `/players/[id]` | ⬜ | |
 | 3 | PvP | `/compare` | ⬜ | Compare Export failure is a known gap |
@@ -52,6 +52,18 @@ Instructions (owner, <date>):
 Data-blocked: <Databallr elements we can't source>
 Evidence: docs/evidence/alignment/<page>/
 ```
+
+### 0 App shell — 👀 ready for review
+Instructions (owner, 2026-10-13):
+1. [x] On the site nav bar, move the wordmark closer to the actual logo so they look like one
+   wordmark + logo; they look a little far apart from each other. — navbar gap 12px → 4px
+   (`--space-1`); measured at 1440, 768 and 390, vertically centered with no page overflow.
+2. [x] The favicon is very small in the browser tab; make the logo legible in the favicon. — tight
+   frameless SVG crop, larger orange basketball and clearer seams; 16px/32px visual checks,
+   matching app/public assets and versioned favicon URL verified in the rendered page.
+Evidence: docs/evidence/alignment/app-shell/brand-spacing/
+Verification: dashboard lint/typecheck clean; Vitest 454/454; four affected browser checks pass
+(two initial dev-server streaming timeouts passed on rerun). Owner alignment remains pending.
 
 ### 1 Stats — 👀 ready for review
 Instructions (owner, 2026-10-12):
