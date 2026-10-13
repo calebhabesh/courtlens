@@ -492,7 +492,7 @@
 
 /* Owner follow-up: one type scale and control height above the table. */
 @layer foundation {
-  .stats-workspace .stats-header-search { max-width: 288px; margin-inline: auto; }
+  .stats-workspace .stats-header-search { max-width: 304px; margin-inline: auto; }
   .stats-workspace .stats-header-search .lookup-input-wrapper { min-height: var(--control-md); }
   .stats-workspace .stats-header-search .lookup-input { min-height: calc(var(--control-md) - 2px); }
   .stats-workspace .stats-header-search .lookup-clear-btn { min-width: var(--control-sm); min-height: var(--control-sm); }

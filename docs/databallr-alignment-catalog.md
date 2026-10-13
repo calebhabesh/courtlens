@@ -284,6 +284,9 @@ Follow-up instruction (owner, 2026-10-13, table search sizing):
     left aligned; Databallr does a better job of this.
     - Done: centered compact field above both identity columns, with zero measured center offset
       on desktop/phone. [Evidence](evidence/alignment/stats/search-centering/README.md).
+48. [x] Make the search bar slightly wider; it is a little too tapered.
+    - Done: cap increased from 288px to 304px, retaining centering and 32px desktop height.
+      [Evidence](evidence/alignment/stats/search-sizing/README.md#follow-up-slightly-wider-still-centered).
 Not applicable (no data or feature): the video and trophy
 (Leaders) toolbar buttons. Tab/Shift+Tab view cycling is exposed as buttons only, so Tab keeps
 normal keyboard focus order.
