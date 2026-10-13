@@ -43,3 +43,17 @@ Scoped glance test (desktop 1440×900 and phone 390×844):
 This records the bounded app-shell follow-ups, not whole-page acceptance or owner alignment.
 The UI/UX skill database returned no applicable spacing/CSS match; the owner's instruction and
 existing repository spacing tokens govern the change.
+
+## Follow-up: site-blue favicon background
+
+Owner requested the site's blue background on the favicon. Both SVG copies now have a full
+`#15325a` background matching the site's `--color-bg`, retaining the enlarged mark and tight crop.
+The icon URL is `/icon.svg?v=3` so browsers request the updated asset.
+
+- [Before/after at 16, 32 and 64px](favicon-blue-comparison.png), [browser verification](favicon-blue-verification.json).
+- Visual inspection passes at 16px and 32px. The rendered 16px corner pixel is `[21, 50, 90, 255]`,
+  exactly the opaque site blue. App/public sources match, metadata uses v3, and its endpoint
+  returns the expected SVG with status 200.
+- Dashboard lint/typecheck and all 454 Vitest tests pass after this follow-up.
+- Scoped glance: brand identity, small-size legibility and the requested background match pass;
+  page layout is outside this asset-only follow-up.
