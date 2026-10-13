@@ -692,3 +692,10 @@ production build, six search browser checks and two Stats baseline checks pass.
 Owner instruction 49 increases the cap to 312px, preserving centering and height. Real desktop/phone
 measurements and scoped glance check pass. Lint/types, Vitest 459/459, production build, six search
 browser checks and two Stats baselines pass. [Evidence](evidence/alignment/stats/search-sizing/README.md#follow-up-another-8px-of-width).
+
+### Stats follow-up: bottom-aligned headers and dark player cards (2026-10-13)
+
+Owner instructions 51–52 bottom-align the search/stat header controls and match pinned identity
+cells to the metric-cell base and hover surfaces. Real desktop/phone measurements and scoped
+glance check pass. Lint/types, Vitest 459/459, production build, 27 affected browser checks and
+two refreshed Stats baselines pass. [Evidence](evidence/alignment/stats/card-surface/README.md).

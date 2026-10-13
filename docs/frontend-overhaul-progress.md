@@ -449,3 +449,11 @@ PC12 B–D are pending. This entry does not mark the remaining page-wide glance 
 - Desktop/phone measurements and scoped glance check pass. Lint/types, Vitest 459/459, production
   build, six search browser checks and two Stats baselines pass.
 - [Evidence](evidence/alignment/stats/search-sizing/README.md#follow-up-another-8px-of-width).
+
+## 2026-10-13 — Stats header alignment and player-card surface
+
+- Owner instructions 51–52 align the second header row at the bottom and match player cards to
+  the darker metric-cell base/hover surfaces.
+- Real desktop/phone measurements and scoped glance check pass. Lint/types, Vitest 459/459,
+  production build, 27 affected browser checks and two refreshed Stats baselines pass.
+- [Evidence](evidence/alignment/stats/card-surface/README.md).
