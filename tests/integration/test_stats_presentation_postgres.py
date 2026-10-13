@@ -22,6 +22,7 @@ from courtlens.domain.query_spec import (
     PredicateLeaf,
     QuerySpec,
     SampleFilter,
+    SeasonScope,
     SortSpec,
     TeamScope,
     WindowSpec,
@@ -539,3 +540,34 @@ def test_v4_box_shooting_splits_and_per_game_volumes(
     assert (e["fga_per_game"], e["fg3a_per_game"], e["fta_per_game"]) == (10, 6, 4)
     assert (e["fgm_per_game"], e["fg3m_per_game"], e["ftm_per_game"]) == (5, 2, 3)
     assert next(row for row in rows if row["player_id"] == "a")["metrics"]["fg2_pct"] is None
+
+
+def test_season_range_sums_its_seasons_and_keeps_season_only_joins_unknown(
+    facts: tuple[Session, ResolvedContext],
+) -> None:
+    session, context = facts
+    session.execute(
+        text("""
+        INSERT INTO workbench_player_games VALUES
+        ('dataset', 'a', 'BOS', 'old-1', '2023-01-01', '2022-23',
+         'regular_season', 'appeared', 1200, 15, '{}'),
+        ('dataset', 'e', 'BOS', 'old-2', '2023-01-02', '2022-23',
+         'regular_season', 'appeared', 1800, 10, '{}')
+        """)
+    )
+    single = QuerySpec(season="2023-24", sort=[SortSpec(field="pts")])
+    ranged = single.model_copy(update={"season_scope": SeasonScope(seasons=["2022-23", "2023-24"])})
+    rows, total, _, _ = execute_stats_query(
+        session, context, ranged, presentation=StatsPresentation()
+    )
+    by_id = {row["player_id"]: row for row in rows}
+    assert total == 5  # a-d from 2023-24 plus e, seen only in 2022-23
+    assert by_id["a"]["games_played"] == 3
+    assert by_id["a"]["metrics"]["pts"] == 55
+    assert sorted(by_id["a"]["teams"]) == ["BOS", "TOR"]
+    assert by_id["a"]["metrics"].get("dpm") is None
+    single_rows = execute_stats_query(session, context, single, presentation=StatsPresentation())
+    assert {row["player_id"]: row["metrics"]["pts"] for row in single_rows[0]}["a"] == 40
+    assert stats_presentation_hash(context, ranged, StatsPresentation()) != (
+        stats_presentation_hash(context, single, StatsPresentation())
+    )

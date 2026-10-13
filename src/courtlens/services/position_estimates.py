@@ -47,16 +47,24 @@ def load_position_store() -> dict[str, Any] | None:
         ) from exc
 
 
-def season_positions(season: str) -> dict[str, str]:
-    """Player ID → estimated position for one season; empty when no estimate exists."""
+def season_positions(season: str | Sequence[str]) -> dict[str, str]:
+    """Player ID → estimated position; empty when no estimate exists.
+
+    A season range uses each player's latest estimated season inside the range.
+    """
     store = load_position_store()
     if store is None:
         return {}
-    rows = store["seasons"].get(season, {})
-    return {pid: row["position"] for pid, row in rows.items()}
+    seasons = [season] if isinstance(season, str) else sorted(season)
+    positions: dict[str, str] = {}
+    for name in seasons:
+        positions.update(
+            {pid: row["position"] for pid, row in store["seasons"].get(name, {}).items()}
+        )
+    return positions
 
 
-def position_player_ids(season: str, positions: Sequence[str]) -> set[str]:
+def position_player_ids(season: str | Sequence[str], positions: Sequence[str]) -> set[str]:
     wanted = set(positions)
     return {pid for pid, position in season_positions(season).items() if position in wanted}
 

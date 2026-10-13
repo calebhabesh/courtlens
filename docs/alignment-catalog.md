@@ -256,7 +256,10 @@ Follow-up instructions (owner, 2026-10-12, sixth review):
       reproduced and kept verbatim).
     - 43d [x] DARKO dated history 2000-01 to 2022-23, 46 boards at each phase's last game date;
       carry-forward keeps the sealed seasons verbatim. [History evidence](evidence/alignment/stats/history/README.md).
-    - 43e [ ] Multi-season mode (From/Through range, 5Y/10Y/15Y/25Y quick ranges).
+    - 43e [x] Multi-season mode (From/Through range, 5Y/10Y/15Y/25Y quick ranges). Owner, 2026-10-13:
+      "Yes, add it." — season popover with Single season / Multi-season; `seasonFrom` URL param;
+      ranges aggregate per player (DARKO, tracking, impact stay unknown); cold 25-season load 12 s.
+      [Multi-season evidence](evidence/alignment/stats/multi-season/README.md).
     - 43f [ ] PBP-derived impact (RAPM, on/off, six factor) for added seasons.
     - 43g [ ] Draft classes before 2000 so older players match the Draft Class filter.
 Not applicable (no data or feature): the video and trophy

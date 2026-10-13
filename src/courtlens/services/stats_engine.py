@@ -123,6 +123,7 @@ PERCENTILE_COLUMNS = {
     and key not in DARKO_METRICS
 }
 TRACKING_MART = "analytics_marts.mart_stats_player_tracking"
+MAX_SEASON_RANGE = 30
 
 
 def tracking_query_fields(query: QuerySpec) -> set[str]:
@@ -532,6 +533,8 @@ def build_stats_query_sql(
         key = key_wb if is_workbench else key_ar
         if is_sqlite:
             value = f"CAST(json_extract({col_name}, '$.{key}') AS INTEGER)"
+        elif col_name == "wpg.stats_json":
+            value = f"(wpg.sj->>'{key}')::int"
         else:
             value = f"({col_name}->>'{key}')::int"
         if is_workbench and legacy_nonappearance:
@@ -704,6 +707,15 @@ def build_stats_query_sql(
         f"count({col}) AS n_{col}_per_game"
         for col in ("fgm", "fga", "fg3m", "fg3a", "ftm", "fta")
     )
+    # Postgres: parse each row's json stats once (OFFSET 0 keeps the subquery from being
+    # inlined back into one parse per extracted field).
+    fact_filters = " AND ".join(f for f in candidate_filters if f.startswith("wpg."))
+    fact_source = (
+        table_name
+        if is_sqlite
+        else f"(SELECT wpg.*, wpg.stats_json::jsonb AS sj FROM {table_name} wpg "
+        f"WHERE {fact_filters} OFFSET 0)"
+    )
     cte_sql = f"""WITH ranked_games AS (
         SELECT
             wpg.player_id,
@@ -732,7 +744,7 @@ def build_stats_query_sql(
                 PARTITION BY wpg.player_id
                 ORDER BY wpg.game_date DESC, wpg.game_id DESC
             ) AS app_rank
-        FROM {table_name} wpg
+        FROM {fact_source} wpg
         {identity_join}
         WHERE {where_candidate_clause}
     ),
@@ -1169,9 +1181,20 @@ def execute_stats_query(
         (items, total_eligible_count, next_cursor, has_more)
     """
     if presentation is not None:
-        if query.entity_kind != EntityKind.PLAYER or query.season_scope.seasons:
+        if query.entity_kind != EntityKind.PLAYER:
+            raise HTTPException(status_code=422, detail="Stats presentation supports players")
+        seasons = query.season_scope.seasons
+        # A season range aggregates whole seasons ending at the query season, whose coverage
+        # sets the exclusive cutoff; season-only joins (DARKO, tracking, impact) stay unknown.
+        if seasons and (
+            len(seasons) > MAX_SEASON_RANGE
+            or len(set(seasons)) != len(seasons)
+            or max(seasons) != query.season
+        ):
             raise HTTPException(
-                status_code=422, detail="Stats presentation supports single-season players"
+                status_code=422,
+                detail=f"A season range holds at most {MAX_SEASON_RANGE} distinct seasons "
+                "and ends at the query season",
             )
         if query.team_scope.current_roster_only or not query.team_scope.participation_only:
             raise HTTPException(

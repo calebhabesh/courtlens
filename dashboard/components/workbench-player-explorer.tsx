@@ -7,6 +7,7 @@ import { LookupInput } from "./lookup-input";
 import { CourtLensWordmark } from "./courtlens-wordmark";
 import { StatsPreviewRail, STATS_CELL_HOVER } from "./stats-preview-rail";
 import { STATS_SCOPE_PENDING } from "./stats-page-controls";
+import { seasonScopeLabel } from "@/lib/season-range";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { useState, useMemo, useCallback, useTransition, useEffect, useRef, Fragment, type KeyboardEvent } from "react";
 import { SortHeader, GroupGuide } from "./table-ui";
@@ -92,6 +93,7 @@ export function WorkbenchPlayerExplorer({
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const seasonLabel = seasonScopeLabel(querySpec?.season_scope?.seasons ?? null, querySpec?.season ?? data?.context?.season ?? "");
 
   const {
     views,
@@ -1068,7 +1070,7 @@ export function WorkbenchPlayerExplorer({
                           window: query.window, ...(query.release_id ? { releaseId: query.release_id } : {})
                         })}`} title={player.player_name} aria-label={player.player_name} className="stats-player-link">
                           <span className="player-cell-name font-semibold">{player.player_name}</span>
-                        <span className="player-cell-teams">{player.teams?.join(" / ") || "Team unknown"}{player.position && <> · <abbr title="Estimated position">{player.position}</abbr></>} · {query.season}</span>
+                        <span className="player-cell-teams">{player.teams?.join(" / ") || "Team unknown"}{player.position && <> · <abbr title={querySpec?.season_scope?.seasons?.length ? "Estimated position, latest season in the range" : "Estimated position"}>{player.position}</abbr></>} · {seasonLabel}</span>
                         </Link>
                         {player.table_qualified === false && <span className="table-small-sample">Small sample</span>}
                         </div>

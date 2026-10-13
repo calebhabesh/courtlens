@@ -129,6 +129,7 @@ export async function StatsWorkspace({ params: rawParams, basePath = "/stats", t
           initialWindow={researchQuery.window}
           lastIncludedDate={researchData?.context?.last_included_date}
           steppedScope
+          allowMultiSeason
           detailRows={researchData?.darko ? [
             { label: "DARKO source", value: <DarkoSourceLink>{researchData.darko.source}</DarkoSourceLink> },
             { label: "DARKO ratings through", value: researchData.darko.data_date ?? "Unavailable in this scope" },

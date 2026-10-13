@@ -2,6 +2,10 @@ import type { CountingMode, ColumnDefinition } from "./stats-presets";
 import { ALL_CATALOG_METRICS } from "./stats-presets";
 import type { QuerySpec, WorkbenchCatalog } from "./types";
 import { decodeSearchParamsToQuery } from "./query-url";
+import { SEASON_FROM_PARAM, seasonRange } from "./season-range";
+
+// One rating per player-season: a season range cannot rank by DARKO.
+const SEASON_ONLY_SORTS = ["dpm", "o_dpm", "d_dpm"];
 
 const COUNTING_FAMILIES = ["pts", "reb", "oreb", "dreb", "ast", "stl", "blk", "tov", "pf"];
 
@@ -28,11 +32,14 @@ export function resolveStatsQuery(
   defaultSortMetric = "pts"
 ): QuerySpec {
   const query = decodeSearchParamsToQuery(params);
-  if (!params.sortMetric && !params.sort_metric && !params.sort) {
-    query.sort = [{ field: defaultSortMetric, direction: query.sort?.[0]?.direction ?? "desc" }];
-  }
   query.release_id = query.release_id || catalog.release_id;
   query.season = typeof params.season === "string" ? params.season : catalog.default_season;
+  const range = seasonRange(catalog.seasons ?? [], params[SEASON_FROM_PARAM], query.season);
+  if (range) query.season_scope = { seasons: range, aggregate_multi_season: true };
+  if (!params.sortMetric && !params.sort_metric && !params.sort) {
+    const field = range && SEASON_ONLY_SORTS.includes(defaultSortMetric) ? "pts" : defaultSortMetric;
+    query.sort = [{ field, direction: query.sort?.[0]?.direction ?? "desc" }];
+  }
   const scopes = catalog.stats_scopes?.filter((scope) => scope.season === query.season) ?? [];
   query.phase = typeof params.phase === "string" ? params.phase :
     (scopes.find((scope) => scope.phase === "regular_season")?.phase ?? scopes[0]?.phase ?? catalog.default_phase);
