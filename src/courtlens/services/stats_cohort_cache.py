@@ -24,7 +24,12 @@ from courtlens.domain.metrics import resolve_metric_alias
 from courtlens.domain.query_spec import MAX_PAGE_SIZE, PagingSpec, QuerySpec, SortSpec, ViewState
 from courtlens.domain.stats_presentation import StatsPresentation
 from courtlens.domain.stats_v4_catalog import DARKO_METRICS, TRACKING_METRICS
-from courtlens.services.impact_serving import query_fields
+from courtlens.services.impact_serving import (
+    SQL_SUPPORT_FIELDS,
+    impact_for_query,
+    query_fields,
+    query_uses_impact,
+)
 from courtlens.services.workbench_analytics import ResolvedContext, canonical_hash
 
 TTL_SECONDS = 600.0
@@ -138,6 +143,38 @@ def sort_rows(rows: list[dict[str, Any]], sort: list[SortSpec]) -> list[dict[str
     return ordered
 
 
+def presentation_cohort(
+    session: Session, context: ResolvedContext, scope: QuerySpec
+) -> tuple[list[dict[str, Any]], int]:
+    """A scope's whole presentation cohort, cached and shared read-only.
+
+    Rows keep only the impact support fields ranking reads (SQL_SUPPORT_FIELDS): full support is
+    about 22 KB a player, and encoding/decoding it for every cached row cost more than the
+    query itself. presentation_page reattaches full support to the rows it returns.
+    """
+    from courtlens.services.stats_engine import execute_stats_query, stats_presentation_hash
+
+    def compute() -> tuple[list[dict[str, Any]], int]:
+        rows, count, _, _ = execute_stats_query(
+            session,
+            context,
+            scope,
+            is_export=True,
+            max_export_rows=MAX_COHORT,
+            presentation=StatsPresentation(),
+        )
+        for row in rows:
+            if row.get("impact_support"):
+                row["impact_support"] = {
+                    key: {field: entry[field] for field in SQL_SUPPORT_FIELDS if field in entry}
+                    for key, entry in row["impact_support"].items()
+                }
+        return rows, count
+
+    scope_hash = stats_presentation_hash(context, scope, StatsPresentation())
+    return cached_rows(cohort_key("presentation", scope_hash, scope), compute, shared=True)
+
+
 def presentation_page(
     session: Session,
     context: ResolvedContext,
@@ -152,26 +189,11 @@ def presentation_page(
     from courtlens.services.stats_engine import (
         decode_cursor,
         encode_cursor,
-        execute_stats_query,
         stats_presentation_hash,
     )
 
     base = cohort_query(query)
-    scope_hash = stats_presentation_hash(context, base, StatsPresentation())
-    key = cohort_key("presentation", scope_hash, base)
-
-    def compute() -> tuple[list[dict[str, Any]], int]:
-        rows, count, _, _ = execute_stats_query(
-            session,
-            context,
-            base,
-            is_export=True,
-            max_export_rows=MAX_COHORT,
-            presentation=StatsPresentation(),
-        )
-        return rows, count
-
-    rows, eligible = cached_rows(key, compute, shared=True)
+    rows, eligible = presentation_cohort(session, context, base)
     if eligible > len(rows):
         return None
     ids = set(presentation.player_ids) if presentation.player_ids is not None else None
@@ -190,6 +212,11 @@ def presentation_page(
     limit = min(max(1, query.page.limit), MAX_PAGE_SIZE)
     # Shared rows are read-only; the page is copied because callers annotate it.
     page = json.loads(json.dumps(shown[offset : offset + limit]))
+    if query_uses_impact(base) and any("impact_support" in row for row in page):
+        full = impact_for_query(base, context.before_date.isoformat())["players"]
+        for row in page:
+            if "impact_support" in row and row["player_id"] in full:
+                row["impact_support"] = full[row["player_id"]]["support"]
     has_more = offset + len(page) < len(shown)
     next_cursor = encode_cursor(context_hash, offset + len(page)) if has_more else None
     return page, len(shown), next_cursor, has_more, eligible

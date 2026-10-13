@@ -220,6 +220,10 @@ class WorkbenchPlayerGame(Base):
     __table_args__ = (
         UniqueConstraint("dataset_id", "game_id", "player_id"),
         Index("ix_wb_player_dataset_player_date", "dataset_id", "player_id", "game_date"),
+        # Stats reads one season-phase of a multi-season dataset (migration 14b810a4f012).
+        Index(
+            "ix_wb_player_dataset_season_phase_date", "dataset_id", "season", "phase", "game_date"
+        ),
     )
 
     id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_uuid)

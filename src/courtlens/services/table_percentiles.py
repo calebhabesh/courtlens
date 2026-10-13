@@ -17,8 +17,9 @@ from courtlens.services.stats_cohort_cache import (
     cached_rows,
     cohort_key,
     cohort_query,
+    presentation_cohort,
 )
-from courtlens.services.stats_engine import execute_stats_query, stats_presentation_hash
+from courtlens.services.stats_engine import stats_presentation_hash
 from courtlens.services.workbench_analytics import ResolvedContext, canonical_hash
 
 VERSION = "courtlens-table-percentiles-v1"
@@ -66,22 +67,8 @@ def annotate_players(
         # The league reference ignores display filters. It reads the scope's whole presentation
         # cohort, the same cache entry the Stats page itself pages through, so an unfiltered view
         # aggregates its scope once instead of twice (a full multi-season range costs seconds).
-        def compute_cohort() -> tuple[list[dict[str, Any]], int]:
-            rows, total, _, _ = execute_stats_query(
-                session,
-                context,
-                scope,
-                is_export=True,
-                max_export_rows=MAX_COHORT,
-                presentation=StatsPresentation(),
-            )
-            return rows, total
-
         def compute() -> tuple[list[dict[str, Any]], int]:
-            cohort_hash = stats_presentation_hash(context, scope, StatsPresentation())
-            rows, total = cached_rows(
-                cohort_key("presentation", cohort_hash, scope), compute_cohort, shared=True
-            )
+            rows, total = presentation_cohort(session, context, scope)
             # The reference reads only values and qualification; keep the cached copy small.
             keep = ("player_id", "metrics")
             slim = [

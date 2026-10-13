@@ -8,11 +8,15 @@ from sqlalchemy.orm import Session
 
 from courtlens.archive_models import ArchivePlayerGame
 from courtlens.services.stats_engine import COLUMN_MAP
-from courtlens.services.workbench_analytics import ResolvedContext
-from courtlens.workbench_models import WorkbenchPlayerGame
+from courtlens.services.workbench_analytics import ResolvedContext, dataset_fingerprint
+from courtlens.workbench_models import WorkbenchDataset, WorkbenchPlayerGame
+
+# Coverage of a published ("ready") workbench dataset, cached: recomputing it scanned every season
+# on each catalog request. Appended rows change the fingerprint and so the key.
+_READY_SCOPES: dict[tuple[Any, ...], list[tuple[Any, ...]]] = {}
 
 
-def stats_catalog_scope(session: Session, context: ResolvedContext) -> dict[str, Any]:
+def _observed_scopes(session: Session, context: ResolvedContext) -> list[tuple[Any, ...]]:
     model = WorkbenchPlayerGame if context.dataset_type == "workbench" else ArchivePlayerGame
     phase = (
         WorkbenchPlayerGame.phase
@@ -27,6 +31,23 @@ def stats_catalog_scope(session: Session, context: ResolvedContext) -> dict[str,
     )
     if context.dataset_type == "workbench":
         statement = statement.where(WorkbenchPlayerGame.appearance == "appeared")
+    key: tuple[Any, ...] = (context.dataset_id, context.semantic_signature)
+    if context.dataset_type == "workbench":
+        key = (*key, *dataset_fingerprint(session, context.dataset_id))
+        if key in _READY_SCOPES:
+            return _READY_SCOPES[key]
+    rows = [tuple(row) for row in session.execute(statement)]
+    dataset = (
+        session.get(WorkbenchDataset, context.dataset_id)
+        if context.dataset_type == "workbench"
+        else None
+    )
+    if dataset is not None and dataset.status == "ready":
+        _READY_SCOPES[key] = rows
+    return rows
+
+
+def stats_catalog_scope(session: Session, context: ResolvedContext) -> dict[str, Any]:
     scopes = [
         {
             "season": season,
@@ -35,7 +56,7 @@ def stats_catalog_scope(session: Session, context: ResolvedContext) -> dict[str,
             "coverage_end": end.isoformat(),
             "default_before_date": (end + timedelta(days=1)).isoformat(),
         }
-        for season, observed_phase, start, end in session.execute(statement)
+        for season, observed_phase, start, end in _observed_scopes(session, context)
     ]
     seasons = sorted({scope["season"] for scope in scopes})
     phases = sorted({scope["phase"] for scope in scopes})
