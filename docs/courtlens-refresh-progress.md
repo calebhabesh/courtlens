@@ -638,3 +638,11 @@ canvas with `#15325a`, matching `--color-bg`; metadata uses URL v3. Browser chec
 bytes, source parity and an opaque `[21, 50, 90, 255]` corner pixel at 16px. 16px/32px visual
 inspection passes. Dashboard lint/typecheck and Vitest 454/454 pass.
 [Background evidence](evidence/alignment/app-shell/brand-spacing/README.md#follow-up-site-blue-favicon-background).
+
+### Favicon follow-up: smaller logo and rounded corners (2026-10-13)
+
+Owner requested a slightly smaller mark and softly rounded, squircle-like background. Artwork
+scales to 90% around the canvas center; the site-blue background has a 5-unit radius. App/public
+SVGs match; URL v4 and served bytes verified. 16px/32px visual inspection passes, including corner
+transparency and the opaque blue edge. Dashboard lint/typecheck and Vitest 454/454 pass.
+[Rounded evidence](evidence/alignment/app-shell/brand-spacing/README.md#follow-up-smaller-logo-and-softly-rounded-corners).
