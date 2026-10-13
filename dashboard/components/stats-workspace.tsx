@@ -37,6 +37,13 @@ export async function StatsWorkspace({ params: rawParams, basePath = "/stats", t
     return <div className="workbench-content"><GatedNote tone="warning">Stats catalog unavailable. Try again.</GatedNote></div>;
   }
   const catalog: WorkbenchCatalog = catalogResult.value;
+  // A link pinned to a retired release keeps working, but says so and offers the current data.
+  const pinnedRelease = String(params.releaseId || params.release_id || "");
+  const latest = pinnedRelease ? await getWorkbenchCatalog().catch(() => null) : null;
+  const staleRelease = latest && latest.release_id !== catalog.release_id ? latest : null;
+  const latestHref = staleRelease ? `${basePath}?${new URLSearchParams(Object.entries(params).filter(
+    (entry): entry is [string, string] => typeof entry[1] === "string" && !["releaseId", "release_id", "darkoManifest", "darko_manifest_sha256", "impactManifest", "impact_manifest_sha256", "cursor", "beforeDate", "before_date"].includes(entry[0])
+  ))}` : null;
   const workspace = workspaceResult.status === "fulfilled" ? workspaceResult.value : undefined;
   // A favorites request must never silently become an unfiltered query.
   if (!workspace && params.favorites === "1") return <div role="alert">Favorites unavailable. Try again.</div>;
@@ -118,6 +125,13 @@ export async function StatsWorkspace({ params: rawParams, basePath = "/stats", t
         <PageHeader icon="chart-column" title={directory ? title : "NBA Player Statistics"} subtitle={directory ? "Find a player, open a profile or browse season production." : undefined} actions={directory ? <Link className="button" href={buildPreservedContextUrl("/stats", new URLSearchParams(Object.entries(params).filter((entry): entry is [string, string] => typeof entry[1] === "string")))}>Explore all stats</Link> : undefined} />
         {!directory && <WhatsNewLine />}
         {!directory && <StatsHelpRow />}
+        {staleRelease && latestHref && (
+          <GatedNote tone="warning" className="stats-stale-release"
+            // A full load: switching releases must not reuse the pinned page's client state.
+            action={<a className="button" href={latestHref}>Switch to latest data</a>}>
+            This link is pinned to an older data release ({catalog.seasons?.length ?? 0} {catalog.seasons?.length === 1 ? "season" : "seasons"}). The latest release covers {staleRelease.seasons?.length ?? 0} seasons.
+          </GatedNote>
+        )}
 
         {!directory && <ContextBar
           catalog={catalog}
