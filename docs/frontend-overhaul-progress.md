@@ -374,3 +374,14 @@ PC12 B–D are pending. This entry does not mark the remaining page-wide glance 
   claim. Dashboard lint/types clean, 439 unit tests, 54 affected browser checks and ten screenshot
   captures pass; Python 2,036 pass, Ruff/mypy clean. Hosted-menu checks pass separately.
 - Owner Stats/guide edits are preserved. PC12 D and PC13 remain pending.
+
+## 2026-10-13 — App-shell spacing and favicon follow-ups
+
+- Owner-requested navbar logo/wordmark gap is 4px instead of 12px, using the existing spacing token.
+- The browser-tab favicon fills its frame more fully and has a larger orange basketball with
+  clearer seams; the rendered page uses a versioned SVG URL.
+- Real-data desktop/phone screenshots and 1440/768/390 measurements pass the scoped navbar glance
+  check. Favicon previews inspected at 16px/32px; metadata and served bytes verified.
+- Dashboard lint/types clean, navbar Vitest 454/454 and four affected browser checks pass (two
+  initial streamed-page setup timeouts passed on rerun). [Evidence](evidence/alignment/app-shell/brand-spacing/README.md).
+- The alignment catalog records these two bounded instructions as ready for owner review.

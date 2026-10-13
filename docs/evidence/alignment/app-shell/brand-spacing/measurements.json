@@ -1,0 +1,38 @@
+{
+  "before": {
+    "cssGap": "12px",
+    "brandWidth": 132.5
+  },
+  "after": [
+    {
+      "width": 1440,
+      "height": 900,
+      "cssGap": "4px",
+      "measuredGap": 4,
+      "verticalOffset": 0,
+      "brandWidth": 124.5,
+      "headerHeight": 56,
+      "pageOverflow": false
+    },
+    {
+      "width": 768,
+      "height": 900,
+      "cssGap": "4px",
+      "measuredGap": 4,
+      "verticalOffset": 0,
+      "brandWidth": 124.5,
+      "headerHeight": 56,
+      "pageOverflow": false
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "cssGap": "4px",
+      "measuredGap": 4,
+      "verticalOffset": 0,
+      "brandWidth": 124.5,
+      "headerHeight": 56,
+      "pageOverflow": false
+    }
+  ]
+}

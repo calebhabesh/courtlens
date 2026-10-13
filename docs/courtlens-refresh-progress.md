@@ -620,3 +620,13 @@ Owner instruction 40 reorders Overview and its preview to Profile → Impact →
 → Shooting → Other. Dashboard lint/types, Vitest 453/453, affected browser specs 24/24, updated Stats
 baselines 2/2 and production build pass. Real-data desktop/phone screenshots and 10/10 glance test:
 [Impact-first evidence](evidence/alignment/stats/impact-first/README.md).
+
+### App-shell follow-ups: navbar spacing and favicon (2026-10-13)
+
+Owner-requested navbar logo/wordmark gap reduced from 12px to `--space-1` (4px), scoped to the
+header. Real-data 1440/768/390 measurements: 4px gap, 0px vertical offset, 56px header and no page
+overflow. Browser-tab SVG uses a tighter frameless crop, larger orange ball and clearer seams;
+16px/32px previews inspected, app/public copies match, and versioned favicon metadata/endpoint
+verified. Dashboard lint/typecheck pass; navbar Vitest 454/454 and four affected browser checks
+pass (two initial streamed-page setup timeouts passed on rerun). Bounded glance evidence and
+screenshots: [app-shell evidence](evidence/alignment/app-shell/brand-spacing/README.md).
