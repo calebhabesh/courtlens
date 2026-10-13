@@ -141,22 +141,22 @@ function DesignShowcase() {
                 <div className="ui-swatch-item">
                   <div className="ui-swatch-box" style={{ "--swatch-color": "var(--color-bg)" } as React.CSSProperties} />
                   <code>--color-bg</code>
-                  <span className="text-muted">#0c0d10</span>
+                  <span className="text-muted">#15325a</span>
                 </div>
                 <div className="ui-swatch-item">
                   <div className="ui-swatch-box" style={{ "--swatch-color": "var(--color-surface-1)" } as React.CSSProperties} />
                   <code>--color-surface-1</code>
-                  <span className="text-muted">#121419</span>
+                  <span className="text-muted">#15171b</span>
                 </div>
                 <div className="ui-swatch-item">
                   <div className="ui-swatch-box" style={{ "--swatch-color": "var(--color-surface-2)" } as React.CSSProperties} />
                   <code>--color-surface-2</code>
-                  <span className="text-muted">#181b21</span>
+                  <span className="text-muted">#1c1f24</span>
                 </div>
                 <div className="ui-swatch-item">
                   <div className="ui-swatch-box" style={{ "--swatch-color": "var(--color-surface-3)" } as React.CSSProperties} />
                   <code>--color-surface-3</code>
-                  <span className="text-muted">#1f232a</span>
+                  <span className="text-muted">#24282e</span>
                 </div>
                 <div className="ui-swatch-item">
                   <div className="ui-swatch-box" style={{ "--swatch-color": "var(--color-accent)" } as React.CSSProperties} />

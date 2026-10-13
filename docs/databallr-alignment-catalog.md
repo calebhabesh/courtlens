@@ -13,7 +13,7 @@ Rows are in working order.
 | # | Databallr | CourtLens | Status | Notes |
 |---|---|---|---|---|
 | 0 | App shell (nav rows, search, page title block) | `app/layout.tsx` | ⬜ | Done with the Stats pass |
-| 1 | Stats | `/stats` | 👀 | Overview reordered: Profile → Impact → Counting → Eff → Shooting → Other |
+| 1 | Stats | `/stats` | 👀 | Muted NBA-blue background, charcoal containers (41); picker dead ends cut (42) |
 | 2 | Dashboard (player) | `/players/[id]` | ⬜ | |
 | 3 | PvP | `/compare` | ⬜ | Compare Export failure is a known gap |
 | 4 | Teams | `/teams` | ⬜ | |
@@ -201,6 +201,20 @@ Follow-up instructions (owner, 2026-10-12, sixth review):
     Overview and preview reordered; DPM visible on first desktop load. Lint/typecheck, Vitest 453,
     affected browser specs 24/24 and Stats baselines 2/2 pass. Real-data desktop/phone screenshots and
     glance test: [Impact-first evidence](evidence/alignment/stats/impact-first/README.md).
+41. [x] Try a new color scheme: the page background is the NBA blue from inside the NBA logo (not
+    the darker backdrop the logo usually sits on), and tables/containers are slightly differently
+    shaded greys/blacks that contrast well with it. Follow-ups (owner, same day): use the blue inside
+    the logo (owner image, `#01408b`); then "a bit darker and muted" so it doesn't distract from the
+    tables. — `--color-bg #15325a` (logo hue, darker/muted); neutral charcoal surfaces 0–3
+    (`#0e1013 / #15171b / #1c1f24 / #24282e`); new `--color-on-bg-secondary/-tertiary` for nav,
+    field labels and page notes on the blue; help-row buttons filled charcoal; tertiary text lifted
+    to `#858b95` to keep AA on surface-2. Design Language v1.3 token and contrast tables updated. The
+    token is global, so every page shows the blue; other pages' on-background secondary text waits
+    for their own pass. [Blue background evidence](evidence/alignment/stats/blue-background/README.md).
+42. [x] Cut the dead-end CourtLens extras from Manage Custom Views if they're not built yet (owner
+    screenshot of the analogue checkboxes). — the PBP play-type "analogue" buckets are computed but
+    implausible (Create TS 17–37%, Unknown TS 101% in live data) and the Six Factor placeholder always
+    shows "—"; both hidden from the column picker (`isPickerDeadEnd`), saved views still render.
 Not applicable (no data or feature): the video and trophy
 (Leaders) toolbar buttons. Tab/Shift+Tab view cycling is exposed as buttons only, so Tab keeps
 normal keyboard focus order.
