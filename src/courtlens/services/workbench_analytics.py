@@ -192,6 +192,47 @@ def decode_cursor(cursor: str, expected_context_hash: str) -> int:
         ) from err
 
 
+# Season list and date bounds of a published dataset, cached: recomputing them scanned the whole
+# 26-season table on every Stats request. Rows are sealed against update/delete but may still be
+# appended, so the key carries a row-count fingerprint (an index-only count, ~10 ms).
+_READY_DATASET_FACTS: dict[tuple[Any, ...], dict[str, Any]] = {}
+
+
+def dataset_fingerprint(session: Session, dataset_id: str) -> tuple[int, Any]:
+    """Row count and latest game date of a workbench dataset; any appended row changes it."""
+    row = session.execute(
+        select(func.count(), func.max(WorkbenchPlayerGame.game_date)).where(
+            WorkbenchPlayerGame.dataset_id == dataset_id
+        )
+    ).one()
+    return int(row[0]), row[1]
+
+
+def _dataset_facts(session: Session, dataset: WorkbenchDataset) -> dict[str, Any]:
+    key = (dataset.id, dataset.semantic_signature, *dataset_fingerprint(session, dataset.id))
+    if dataset.status == "ready" and key in _READY_DATASET_FACTS:
+        return _READY_DATASET_FACTS[key]
+    rows = session.execute(
+        select(
+            WorkbenchPlayerGame.season,
+            func.min(WorkbenchPlayerGame.game_date),
+            func.max(WorkbenchPlayerGame.game_date),
+        )
+        .where(WorkbenchPlayerGame.dataset_id == dataset.id)
+        .group_by(WorkbenchPlayerGame.season)
+        .order_by(WorkbenchPlayerGame.season)
+    ).all()
+    facts: dict[str, Any] = {
+        "seasons": [row[0] for row in rows],
+        "min_date": min((row[1] for row in rows), default=None),
+        "max_date": max((row[2] for row in rows), default=None),
+        "season_max": {row[0]: row[2] for row in rows},
+    }
+    if dataset.status == "ready":
+        _READY_DATASET_FACTS[key] = facts
+    return facts
+
+
 def resolve_workbench_context(
     session: Session,
     release_id: str | None = None,
@@ -270,26 +311,14 @@ def resolve_workbench_context(
         semantic_signature = wb_dataset.semantic_signature
         mode = "workbench_recent"
         source = wb_dataset.source_namespace
-        observed_seasons = session.scalars(
-            select(WorkbenchPlayerGame.season)
-            .where(WorkbenchPlayerGame.dataset_id == dataset_id)
-            .distinct()
-            .order_by(WorkbenchPlayerGame.season)
-        ).all()
+        facts = _dataset_facts(session, wb_dataset)
+        observed_seasons = facts["seasons"]
         seasons = (
             list(observed_seasons) if observed_seasons else (wb_dataset.seasons_json or ["2023-24"])
         )
         phases = wb_dataset.phases_json
-        min_date = session.scalar(
-            select(func.min(WorkbenchPlayerGame.game_date)).where(
-                WorkbenchPlayerGame.dataset_id == dataset_id
-            )
-        ) or date(2021, 10, 19)
-        max_date = session.scalar(
-            select(func.max(WorkbenchPlayerGame.game_date)).where(
-                WorkbenchPlayerGame.dataset_id == dataset_id
-            )
-        ) or date(2026, 4, 15)
+        min_date = facts["min_date"] or date(2021, 10, 19)
+        max_date = facts["max_date"] or date(2026, 4, 15)
         coverage_start = min_date
         coverage_end = max_date
         default_before_date = max_date
@@ -341,12 +370,7 @@ def resolve_workbench_context(
         from datetime import timedelta
 
         if dataset_type == "workbench":
-            season_max = session.scalar(
-                select(func.max(WorkbenchPlayerGame.game_date)).where(
-                    WorkbenchPlayerGame.dataset_id == dataset_id,
-                    WorkbenchPlayerGame.season == season,
-                )
-            )
+            season_max = facts["season_max"].get(season)
         else:
             season_max = session.scalar(
                 select(func.max(ArchivePlayerGame.game_date)).where(
