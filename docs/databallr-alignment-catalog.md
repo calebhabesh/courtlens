@@ -12,7 +12,7 @@ Rows are in working order.
 
 | # | Databallr | CourtLens | Status | Notes |
 |---|---|---|---|---|
-| 0 | App shell (nav rows, search, page title block) | `app/layout.tsx` | 👀 | Navbar spacing and favicon legibility verified; owner review pending |
+| 0 | App shell (nav rows, search, page title block) | `app/layout.tsx` | 👀 | Navbar and favicon follow-ups verified; owner review pending |
 | 1 | Stats | `/stats` | 🔧 | Seasons back to 2000-01 live (43a–d); multi-season mode next (43e) |
 | 2 | Dashboard (player) | `/players/[id]` | ⬜ | |
 | 3 | PvP | `/compare` | ⬜ | Compare Export failure is a known gap |
@@ -61,9 +61,13 @@ Instructions (owner, 2026-10-13):
 2. [x] The favicon is very small in the browser tab; make the logo legible in the favicon. — tight
    frameless SVG crop, larger orange basketball and clearer seams; 16px/32px visual checks,
    matching app/public assets and versioned favicon URL verified in the rendered page.
+3. [x] Give the favicon the same blue background color used for the site. — full SVG background
+   `#15325a`, matching `--color-bg`; versioned URL v3, served bytes and 16px background pixel verified.
 Evidence: docs/evidence/alignment/app-shell/brand-spacing/
 Verification: dashboard lint/typecheck clean; Vitest 454/454; four affected browser checks pass
 (two initial dev-server streaming timeouts passed on rerun). Owner alignment remains pending.
+Background follow-up: lint/typecheck and Vitest 454/454 pass; favicon browser check passes, with
+16px/32px visual inspection. Evidence: `favicon-blue-comparison.png`, `favicon-blue-verification.json`.
 
 ### 1 Stats — 🔧 in progress
 Instructions (owner, 2026-10-12):
