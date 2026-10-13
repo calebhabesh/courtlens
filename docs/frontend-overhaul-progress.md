@@ -401,3 +401,13 @@ PC12 B–D are pending. This entry does not mark the remaining page-wide glance 
 - 16px/32px visual inspection, browser metadata/served bytes and matching source assets pass.
   Dashboard lint/typecheck and Vitest 454/454 pass.
 - [Evidence](evidence/alignment/app-shell/brand-spacing/README.md#follow-up-smaller-logo-and-softly-rounded-corners).
+
+## 2026-10-13 — Owner-selected Switzer UI font
+
+- Switzer replaces Public Sans through the existing root font token, with the established type
+  scale and numeric rules. Original font acquired at setup/dev/build with a pinned hash; local
+  hosting and license retained, font binary excluded from git.
+- Lint/types, Vitest 454/454, production build, 13 focused browser checks and 120 visual/picker
+  checks pass. Font baselines refreshed and checked, five viewport sizes and blocked-font fallback
+  pass, and live Settings loads Switzer.
+- [Source and measured glance evidence](evidence/alignment/app-shell/switzer/README.md).

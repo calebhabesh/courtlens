@@ -7,8 +7,8 @@ import { AssistantPageProvider } from "@/lib/assistant-page-context";
 import { ToastProvider } from "@/components/ui/toast";
 import "./globals.css";
 
-const publicSans = localFont({
-  src: "../public/fonts/public-sans-variable.woff2",
+const switzer = localFont({
+  src: "../public/fonts/switzer-variable.woff2",
   weight: "100 900",
   style: "normal",
   variable: "--font-sans",
@@ -46,7 +46,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html
       lang="en"
-      className={`${publicSans.variable} ${jetBrainsMono.variable}`}
+      className={`${switzer.variable} ${jetBrainsMono.variable}`}
       data-scroll-behavior="smooth"
     >
       <body>

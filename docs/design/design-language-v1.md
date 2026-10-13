@@ -226,7 +226,10 @@ Controls: `--control-sm: 28px`, `--control-md: 32px`, `--control-lg: 40px`. Head
 
 ### Typography
 
-Fonts stay as they are (Public Sans for UI text, JetBrains Mono for code; B36 decisions).
+Switzer is the UI font (owner-selected trial, 2026-10-13); JetBrains Mono is the code font.
+The original Switzer variable file is self-hosted and acquired with a pinned SHA-256 during
+dashboard setup/dev/build. Its default lining digits have equal advance widths; retain
+`tabular-nums` on numeric cells. The CourtLens wordmark remains its separate Red Hat Display artwork.
 
 | Token | Size / line height | Weight | Use |
 | --- | --- | --- | --- |
