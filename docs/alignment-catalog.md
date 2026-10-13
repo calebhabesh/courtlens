@@ -259,7 +259,12 @@ Follow-up instructions (owner, 2026-10-12, sixth review):
     - 43e [x] Multi-season mode (From/Through range, 5Y/10Y/15Y/25Y quick ranges). Owner, 2026-10-13:
       "Yes, add it." — season popover with Single season / Multi-season; `seasonFrom` URL param;
       ranges aggregate per player (DARKO, tracking, impact stay unknown); cold 25-season load 12 s.
-      [Multi-season evidence](evidence/alignment/stats/multi-season/README.md).
+      [Multi-season evidence](evidence/alignment/stats/multi-season/README.md). Owner follow-ups, same
+      day: older seasons still missing in the picker (a tab pinned to the old 3-season release, kept
+      by the header links), single-season select should span the panel, "Show N seasons" text lacked
+      contrast. — header navigation drops release/model pins; Stats shows a notice with "Switch to
+      latest data" when a link is pinned to an older release; select spans the panel; the button
+      keeps on-accent text over the filter bar's control styling.
     - 43f [ ] PBP-derived impact (RAPM, on/off, six factor) for added seasons.
     - 43g [ ] Draft classes before 2000 so older players match the Draft Class filter.
 Not applicable (no data or feature): the video and trophy

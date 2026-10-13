@@ -489,3 +489,18 @@
   .stats-workspace .stats-frame-layout.has-rail .stats-preview-rail { overflow: hidden; }
   .stats-workspace .stats-preview-metrics { flex: 1 1 auto; min-height: 0; overflow-y: auto; scrollbar-width: thin; }
 }
+
+/* 43e: the season popover sits inside the filter bar, whose foundation-layer control rules would dim
+   the primary action to secondary text and shrink the selects; restore both at the same layer. */
+@layer foundation {
+  .season-scope-panel .ui-field-control,
+  .season-scope-panel .ui-field-control > .ui-select-wrapper,
+  .stats-workspace .season-scope-panel .ui-filter-bar .ui-select,
+  .season-scope-panel .ui-select-wrapper .ui-select { width: 100%; }
+  .season-scope-panel .ui-button.season-scope-apply,
+  .stats-workspace .season-scope-panel .ui-button.season-scope-apply,
+  .stats-workspace .season-scope-panel .ui-button.season-scope-apply:hover:not(:disabled) {
+    color: var(--color-on-accent);
+    font-weight: 600;
+  }
+}
