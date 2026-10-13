@@ -15,6 +15,7 @@ import { Icon } from "./ui/icon";
 import { useToast } from "./ui/toast";
 import { PercentileCell } from "./charts/percentile-cell";
 import { Skeleton } from "./ui/skeleton";
+import { Field } from "./ui/field";
 import { SlidingIndicator } from "./ui/sliding-indicator";
 import { TeamLogoStack } from "./team-logo";
 import { PlayerPortrait } from "./player-portrait";
@@ -636,6 +637,22 @@ export function WorkbenchPlayerExplorer({
           })}
         </div>
 
+        <Field label="Table Divider" layout="inline" className="stats-divider-field">
+          <div className="control-button-group stats-divider-modes" role="group" aria-label="Table Divider">
+            {IDENTITY_MODES.map((im) => (
+              <button
+                key={im.id}
+                type="button"
+                onClick={() => handleIdentityModeSelect(im.id)}
+                className={`control-pill ${identityMode === im.id ? "active" : ""}`}
+                title={im.tooltip}
+                aria-pressed={identityMode === im.id}
+              >
+                {im.label}
+              </button>
+            ))}
+          </div>
+        </Field>
         <div className="control-button-group stats-view-actions">
           <button type="button" onClick={() => { setManageStartsNew(true); setIsManageViewsOpen(true); }}
             className="control-pill" title="Create a personal view from any catalog columns">
@@ -645,22 +662,6 @@ export function WorkbenchPlayerExplorer({
             className="control-pill" title="Manage custom views, default view, and import/export">
             <Icon name="settings" size={14} /> Manage
           </button>
-        </div>
-
-        {/* Identity Density Mode Buttons (F03) */}
-        <div className="control-button-group" role="group" aria-label="Group guides">
-          {IDENTITY_MODES.map((im) => (
-            <button
-              key={im.id}
-              type="button"
-              onClick={() => handleIdentityModeSelect(im.id)}
-              className={`control-pill ${identityMode === im.id ? "active" : ""}`}
-              title={im.tooltip}
-              aria-pressed={identityMode === im.id}
-            >
-              {im.label}
-            </button>
-          ))}
         </div>
       </div>
 
