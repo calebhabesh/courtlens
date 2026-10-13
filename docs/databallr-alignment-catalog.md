@@ -276,6 +276,10 @@ Follow-up instructions (owner, 2026-10-13, control uniformity):
 45. [x] Add text beside Photos/Logos/Initials/None explaining it, akin to Through/Window:
     "Table Divider".
     - Done: visible inline Field label and accessible group name. [Evidence](evidence/alignment/stats/control-uniformity/README.md).
+Follow-up instruction (owner, 2026-10-13, table search sizing):
+46. [x] Our search bar is a little big compared to Databallr; scale it down a little like Databallr.
+    - Done: desktop search capped at 288px wide and 32px tall; phone touch sizing retained.
+      [Measured screenshots and verification](evidence/alignment/stats/search-sizing/README.md).
 Not applicable (no data or feature): the video and trophy
 (Leaders) toolbar buttons. Tab/Shift+Tab view cycling is exposed as buttons only, so Tab keeps
 normal keyboard focus order.
