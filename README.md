@@ -309,7 +309,9 @@ courtlens verify-restore
 
 CourtLens is open-source software licensed under the [MIT License](LICENSE).
 
-The dashboard bundles Public Sans and JetBrains Mono locally. Their font files retain
-their own copyright and license notices under [dashboard/public/fonts](dashboard/public/fonts/manifest.json).
+The dashboard uses self-hosted Switzer for UI text and JetBrains Mono for code. Dashboard
+install/dev/build hooks acquire the original, hash-pinned Switzer file from Fontshare; its FFL
+permits self-hosting but excludes redistribution through repositories. Font copyright, licenses
+and pinned sources are recorded under [dashboard/public/fonts](dashboard/public/fonts/manifest.json).
 See [B36 production typography acceptance](docs/evidence/b36b-typography-acceptance.md)
 for the selected files and measured loading/rendering checks.
