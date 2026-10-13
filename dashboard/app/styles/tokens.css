@@ -3,20 +3,28 @@
     color-scheme: dark;
 
     /* Design Language v1 Color Tokens */
-    --color-bg: #0c0d10;
-    --color-surface-1: #121419;
-    --color-surface-2: #181b21;
-    --color-surface-3: #1f232a;
+    /* v1.3 (owner, 2026-10-13): page background is a darker, muted take on the NBA-logo blue
+       (logo #01408b, same hue) so it frames the tables without competing; containers are neutral
+       charcoal steps that read as distinct slabs on it. surface-0 is the inset black for
+       tooltips and wells that used to borrow the old near-black page background. */
+    --color-bg: #15325a;
+    --color-surface-0: #0e1013;
+    --color-surface-1: #15171b;
+    --color-surface-2: #1c1f24;
+    --color-surface-3: #24282e;
     --color-surface-hover: rgb(255 255 255 / 4%);
     --color-surface-press: rgb(255 255 255 / 7%);
     --color-hairline: rgb(255 255 255 / 6%);
     --color-hairline-strong: rgb(255 255 255 / 10%);
     --color-text: #f2f3f5;
     --color-text-secondary: #a9afb9;
-    --color-text-tertiary: #7d838d;
+    --color-text-tertiary: #858b95;
+    /* Secondary/tertiary text that sits directly on the blue page background (6.5:1 and 5.5:1). */
+    --color-on-bg-secondary: #c9d3e6;
+    --color-on-bg-tertiary: #b4c2dc;
     --color-accent: #ffd166;
     --color-accent-soft: rgb(255 209 102 / 12%);
-    --color-on-accent: #0c0d10;
+    --color-on-accent: #0e1013;
     --color-brand: #ff7a2f;
     --color-positive: #60d394;
     --color-negative: #ff6b6b;
@@ -56,7 +64,7 @@
     --color-status-projected: #ffd166;
     --color-status-unknown: #a9afb9;
     --color-status-unknown-soft: rgb(169 175 185 / 10%);
-    --focus-ring: 0 0 0 2px var(--color-bg), 0 0 0 4px var(--color-accent);
+    --focus-ring: 0 0 0 2px var(--color-surface-0), 0 0 0 4px var(--color-accent);
 
     /* Elevation Tokens */
     --shadow-1: 0 1px 2px rgb(0 0 0 / 40%);

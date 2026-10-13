@@ -39,58 +39,64 @@ migration and are deleted in DL08.
 
 | Token | Value | Use |
 | --- | --- | --- |
-| `--color-bg` | `#0c0d10` | Page background |
-| `--color-surface-1` | `#121419` | Header, panels, cards |
-| `--color-surface-2` | `#181b21` | Raised elements: inputs, table header, hovered rows, menus |
-| `--color-surface-3` | `#1f232a` | Popovers, modals, drawers, selected rows |
+| `--color-bg` | `#15325a` | Page background: a darker, muted take on the NBA-logo blue (`#01408b`, same hue). v1.3, owner 2026-10-13 |
+| `--color-surface-0` | `#0e1013` | Inset black: tooltips, wells and fact grids inside containers (never the page) |
+| `--color-surface-1` | `#15171b` | Header, panels, cards |
+| `--color-surface-2` | `#1c1f24` | Raised elements: inputs, table header, hovered rows, menus |
+| `--color-surface-3` | `#24282e` | Popovers, modals, drawers, selected rows |
 | `--color-surface-hover` | `rgb(255 255 255 / 4%)` | Hover overlay on any surface |
 | `--color-surface-press` | `rgb(255 255 255 / 7%)` | Pressed overlay |
 | `--color-hairline` | `rgb(255 255 255 / 6%)` | Table row dividers, list separators |
 | `--color-hairline-strong` | `rgb(255 255 255 / 10%)` | Input outline at rest (optional), grouped controls |
 | `--color-text` | `#f2f3f5` | Primary text |
 | `--color-text-secondary` | `#a9afb9` | Labels, secondary text |
-| `--color-text-tertiary` | `#7d838d` | Placeholders, disabled text. Never for essential text below 18px. |
+| `--color-text-tertiary` | `#858b95` | Placeholders, disabled text. Never for essential text below 18px. |
+| `--color-on-bg-secondary` / `--color-on-bg-tertiary` | `#c9d3e6` / `#b4c2dc` | Secondary/tertiary text placed directly on the blue page background (nav, field labels, page notes). `--color-text-secondary/-tertiary` are for container surfaces only. |
 | `--color-accent` | `#ffd166` | Active nav, primary action, focus |
 | `--color-accent-soft` | `rgb(255 209 102 / 12%)` | Selected chip/tab background |
-| `--color-on-accent` | `#0c0d10` | Text on the accent |
+| `--color-on-accent` | `#0e1013` | Text on the accent |
 | `--color-brand` | `#ff7a2f` | Logo only |
 | `--color-positive` / `--color-negative` / `--color-info` | `#60d394` / `#ff6b6b` / `#67aaf9` | Data semantics |
-| `--focus-ring` | `0 0 0 2px var(--color-bg), 0 0 0 4px var(--color-accent)` | All focusable elements (`:focus-visible`) |
+| `--focus-ring` | `0 0 0 2px var(--color-surface-0), 0 0 0 4px var(--color-accent)` | All focusable elements (`:focus-visible`) |
 
 All text and surface pairs used for essential text must meet WCAG AA (4.5:1, or 3:1 at 18px+).
-DL01 verified this with `scripts/verify-contrast.py`; measured ratios:
+DL01 verified this with `scripts/verify-contrast.py`; v1.3 (blue background) re-measured ratios:
 
 | Text Token | Surface | Contrast Ratio | WCAG AA Normal (4.5:1) | WCAG AA Large (3:1) |
 | --- | --- | --- | --- | --- |
-| `--color-on-accent (#0c0d10)` | `--color-accent (#ffd166)` | 13.48:1 | Pass | Pass |
-| `--color-text (#f2f3f5)` | `bg (#0c0d10)` | 17.50:1 | Pass | Pass |
-| `--color-text (#f2f3f5)` | `surface-1 (#121419)` | 16.59:1 | Pass | Pass |
-| `--color-text (#f2f3f5)` | `surface-2 (#181b21)` | 15.53:1 | Pass | Pass |
-| `--color-text (#f2f3f5)` | `surface-3 (#1f232a)` | 14.20:1 | Pass | Pass |
-| `--color-text-secondary (#a9afb9)` | `bg (#0c0d10)` | 8.81:1 | Pass | Pass |
-| `--color-text-secondary (#a9afb9)` | `surface-1 (#121419)` | 8.35:1 | Pass | Pass |
-| `--color-text-secondary (#a9afb9)` | `surface-2 (#181b21)` | 7.82:1 | Pass | Pass |
-| `--color-text-secondary (#a9afb9)` | `surface-3 (#1f232a)` | 7.15:1 | Pass | Pass |
-| `--color-text-tertiary (#7d838d)` | `bg (#0c0d10)` | 5.09:1 | Pass | Pass |
-| `--color-text-tertiary (#7d838d)` | `surface-1 (#121419)` | 4.83:1 | Pass | Pass |
-| `--color-text-tertiary (#7d838d)` | `surface-2 (#181b21)` | 4.52:1 | Pass | Pass |
-| `--color-text-tertiary (#7d838d)` | `surface-3 (#1f232a)` | 4.13:1 | N/A (non-essential / >=18px) | Pass |
-| `--color-accent (#ffd166)` | `bg (#0c0d10)` | 13.48:1 | Pass | Pass |
-| `--color-accent (#ffd166)` | `surface-1 (#121419)` | 12.78:1 | Pass | Pass |
-| `--color-accent (#ffd166)` | `surface-2 (#181b21)` | 11.96:1 | Pass | Pass |
-| `--color-accent (#ffd166)` | `surface-3 (#1f232a)` | 10.93:1 | Pass | Pass |
-| `--color-positive (#60d394)` | `bg (#0c0d10)` | 10.40:1 | Pass | Pass |
-| `--color-positive (#60d394)` | `surface-1 (#121419)` | 9.86:1 | Pass | Pass |
-| `--color-positive (#60d394)` | `surface-2 (#181b21)` | 9.23:1 | Pass | Pass |
-| `--color-positive (#60d394)` | `surface-3 (#1f232a)` | 8.44:1 | Pass | Pass |
-| `--color-negative (#ff6b6b)` | `bg (#0c0d10)` | 7.00:1 | Pass | Pass |
-| `--color-negative (#ff6b6b)` | `surface-1 (#121419)` | 6.64:1 | Pass | Pass |
-| `--color-negative (#ff6b6b)` | `surface-2 (#181b21)` | 6.22:1 | Pass | Pass |
-| `--color-negative (#ff6b6b)` | `surface-3 (#1f232a)` | 5.68:1 | Pass | Pass |
-| `--color-info (#67aaf9)` | `bg (#0c0d10)` | 8.05:1 | Pass | Pass |
-| `--color-info (#67aaf9)` | `surface-1 (#121419)` | 7.63:1 | Pass | Pass |
-| `--color-info (#67aaf9)` | `surface-2 (#181b21)` | 7.14:1 | Pass | Pass |
-| `--color-info (#67aaf9)` | `surface-3 (#1f232a)` | 6.53:1 | Pass | Pass |
+| `--color-on-accent (#0e1013)` | `--color-accent (#ffd166)` | 13.21:1 | Pass | Pass |
+| `--color-text (#f2f3f5)` | `bg (#15325a)` | 11.56:1 | Pass | Pass |
+| `--color-on-bg-secondary (#c9d3e6)` | `bg (#15325a)` | 8.52:1 | Pass | Pass |
+| `--color-on-bg-tertiary (#b4c2dc)` | `bg (#15325a)` | 7.15:1 | Pass | Pass |
+| `--color-accent (#ffd166)` | `bg (#15325a)` | 8.90:1 | Pass | Pass |
+| `--color-text (#f2f3f5)` | `surface-0 (#0e1013)` | 17.16:1 | Pass | Pass |
+| `--color-text (#f2f3f5)` | `surface-1 (#15171b)` | 16.16:1 | Pass | Pass |
+| `--color-text (#f2f3f5)` | `surface-2 (#1c1f24)` | 14.88:1 | Pass | Pass |
+| `--color-text (#f2f3f5)` | `surface-3 (#24282e)` | 13.34:1 | Pass | Pass |
+| `--color-text-secondary (#a9afb9)` | `surface-0 (#0e1013)` | 8.64:1 | Pass | Pass |
+| `--color-text-secondary (#a9afb9)` | `surface-1 (#15171b)` | 8.13:1 | Pass | Pass |
+| `--color-text-secondary (#a9afb9)` | `surface-2 (#1c1f24)` | 7.49:1 | Pass | Pass |
+| `--color-text-secondary (#a9afb9)` | `surface-3 (#24282e)` | 6.71:1 | Pass | Pass |
+| `--color-text-tertiary (#858b95)` | `surface-0 (#0e1013)` | 5.56:1 | Pass | Pass |
+| `--color-text-tertiary (#858b95)` | `surface-1 (#15171b)` | 5.23:1 | Pass | Pass |
+| `--color-text-tertiary (#858b95)` | `surface-2 (#1c1f24)` | 4.82:1 | Pass | Pass |
+| `--color-text-tertiary (#858b95)` | `surface-3 (#24282e)` | 4.32:1 | N/A (non-essential / >=18px) | Pass |
+| `--color-accent (#ffd166)` | `surface-0 (#0e1013)` | 13.21:1 | Pass | Pass |
+| `--color-accent (#ffd166)` | `surface-1 (#15171b)` | 12.45:1 | Pass | Pass |
+| `--color-accent (#ffd166)` | `surface-2 (#1c1f24)` | 11.46:1 | Pass | Pass |
+| `--color-accent (#ffd166)` | `surface-3 (#24282e)` | 10.27:1 | Pass | Pass |
+| `--color-positive (#60d394)` | `surface-0 (#0e1013)` | 10.20:1 | Pass | Pass |
+| `--color-positive (#60d394)` | `surface-1 (#15171b)` | 9.61:1 | Pass | Pass |
+| `--color-positive (#60d394)` | `surface-2 (#1c1f24)` | 8.85:1 | Pass | Pass |
+| `--color-positive (#60d394)` | `surface-3 (#24282e)` | 7.93:1 | Pass | Pass |
+| `--color-negative (#ff6b6b)` | `surface-0 (#0e1013)` | 6.87:1 | Pass | Pass |
+| `--color-negative (#ff6b6b)` | `surface-1 (#15171b)` | 6.47:1 | Pass | Pass |
+| `--color-negative (#ff6b6b)` | `surface-2 (#1c1f24)` | 5.95:1 | Pass | Pass |
+| `--color-negative (#ff6b6b)` | `surface-3 (#24282e)` | 5.34:1 | Pass | Pass |
+| `--color-info (#67aaf9)` | `surface-0 (#0e1013)` | 7.89:1 | Pass | Pass |
+| `--color-info (#67aaf9)` | `surface-1 (#15171b)` | 7.43:1 | Pass | Pass |
+| `--color-info (#67aaf9)` | `surface-2 (#1c1f24)` | 6.84:1 | Pass | Pass |
+| `--color-info (#67aaf9)` | `surface-3 (#24282e)` | 6.13:1 | Pass | Pass |
 
 
 ### Chart color semantics (v1.2, PC03)

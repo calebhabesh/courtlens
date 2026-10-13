@@ -3,6 +3,7 @@ import {
   STATS_PRESETS,
   ALL_CATALOG_METRICS,
   getPresetById,
+  isPickerDeadEnd,
   computeHeaderGroups,
   tableGroups,
   calculateCohortPercentiles,
@@ -260,5 +261,15 @@ describe("table guide boundaries", () => {
       { label: "Scoring", start: 2, colSpan: 1 },
       { label: "Shooting", start: 3, colSpan: 1 }
     ]);
+  });
+});
+
+describe("custom view column picker", () => {
+  it("hides dead-end analogue buckets and the empty Six Factor placeholder", () => {
+    const analogue = Object.keys(ALL_CATALOG_METRICS).filter(key => /^pbp_(create|space|trans|finish|unknown)_/.test(key));
+    expect(analogue.length).toBeGreaterThan(0);
+    expect(analogue.every(isPickerDeadEnd)).toBe(true);
+    expect(isPickerDeadEnd("six_factor_impact")).toBe(true);
+    for (const kept of ["pts_per_game", "ts_pct", "rapm", "pbp_rim_assists"]) expect(isPickerDeadEnd(kept)).toBe(false);
   });
 });
