@@ -173,3 +173,14 @@ def test_acquisition_keeps_robots_disallow_as_metadata_and_obeys_delay(
     assert receipt.metadata_json["robots_disallowed"] is True
     assert receipt.metadata_json["interval_seconds"] == 8
     assert max(waits) > 7
+
+
+def test_history_refresh_carries_sealed_seasons_verbatim(tmp_path: Path) -> None:
+    sealed = {"season": "2025-26", "phase": "regular_season", "as_of": "2026-04-13", "dpm": 1}
+    replaced = {"season": "2000-01", "phase": "playoffs", "as_of": "2001-06-01", "dpm": 0}
+    base, _ = write_artifact(tmp_path, {"version": darko.VERSION, "entries": [sealed, replaced]})
+    fresh = {"season": "2000-01", "phase": "playoffs", "as_of": "2001-06-15", "dpm": 2}
+    assert darko.merge_carried([fresh], base) == [fresh, sealed]
+    base.write_text("{}")
+    with pytest.raises(ValueError, match="changed"):
+        darko.merge_carried([fresh], base)

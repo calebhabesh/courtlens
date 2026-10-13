@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import math
 import sqlite3
+from dataclasses import replace
 from datetime import date
 from pathlib import Path
 from unittest.mock import patch
@@ -25,6 +26,7 @@ from courtlens.evaluation.position_estimates import (
     allowed_mask,
     bounded,
     estimate,
+    extend,
     feature_matrix,
 )
 from courtlens.services import position_estimates
@@ -183,6 +185,33 @@ def test_estimate_separates_positions_and_reports_grouped_evaluation() -> None:
     season = result["seasons"]["2025-26"]
     assert {season[f"{p}-0"]["position"] for p in POSITIONS} == set(POSITIONS)
     assert all(abs(sum(row["probabilities"]) - 1) < 0.01 for row in season.values())
+
+
+def test_extension_keeps_sealed_seasons_and_labels_history_with_the_frozen_model() -> None:
+    profiles = {
+        "PG": ("G", 74, 600, 250, 10),
+        "SG": ("G", 77, 300, 300, 15),
+        "SF": ("F", 79, 220, 400, 30),
+        "PF": ("F", 81, 180, 600, 60),
+        "C": ("C", 84, 150, 800, 120),
+    }
+    current, labels = [], {}
+    for position, (listed, height, ast, reb, blk) in profiles.items():
+        for i in range(6):
+            current.append(sample(f"{position}-{i}", listed, height + i * 0.1, ast, reb, blk))
+            labels[f"{position}-{i}"] = position
+    sealed = {**estimate(current, labels), "version": "v"}
+    old = Sample("2000-01", "old-big", 2400.0, "C", 85, 290, current[-1].totals)
+    old_unlisted = Sample("2000-01", "old-x", 900.0, "X", 80, 250, current[0].totals)
+    result = extend([*current, old, old_unlisted], sealed)
+    assert result["seasons"]["2025-26"] == sealed["seasons"]["2025-26"]
+    assert result["seasons"]["2000-01"]["old-big"]["position"] == "C"
+    assert result["extension"]["added_player_seasons"] == 2
+    assert result["coefficients"] == sealed["coefficients"]
+    # Inputs that no longer reproduce the sealed labels write nothing.
+    drifted = [replace(s, listed="G") if s.player_id == "C-0" else s for s in current]
+    with pytest.raises(ValueError, match="does not reproduce"):
+        extend([*drifted, old], sealed)
 
 
 def test_position_service_reads_a_verified_artifact(tmp_path: Path) -> None:

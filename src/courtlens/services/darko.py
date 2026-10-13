@@ -74,8 +74,13 @@ def refresh(
     seasons: list[str],
     output: Path,
     phases: list[str] | None = None,
+    carry_forward: Path | None = None,
 ) -> tuple[Path, list[dict[str, Any]]]:
-    """Seal only after every requested scope succeeds; keep earlier bundles and receipts."""
+    """Seal only after every requested scope succeeds; keep earlier bundles and receipts.
+
+    `carry_forward` copies a sealed bundle's entries for scopes not fetched now, byte for byte,
+    so adding history never re-fetches (and silently revises) already-sealed seasons.
+    """
     phases = phases or list(PHASES)
     if not seasons or len(set(seasons)) != len(seasons) or not set(phases) <= set(PHASES):
         raise ValueError("unique seasons and regular_season/playoffs phases required")
@@ -132,6 +137,8 @@ def refresh(
                 "url": url,
             }
         )
+    if carry_forward is not None:
+        entries = merge_carried(entries, carry_forward)
     sealed = {
         "version": VERSION,
         "source": {
@@ -145,6 +152,20 @@ def refresh(
     }
     path, _ = write_artifact(output, sealed)
     return path, results
+
+
+def merge_carried(entries: list[dict[str, Any]], carry_forward: Path) -> list[dict[str, Any]]:
+    """Fresh entries plus the sealed bundle's entries for every other season/phase, verbatim."""
+    raw = carry_forward.read_bytes()
+    if hashlib.sha256(raw).hexdigest() != carry_forward.stem:
+        raise ValueError("carried DARKO bundle changed")
+    fetched = {(entry["season"], entry["phase"]) for entry in entries}
+    kept = [
+        entry
+        for entry in _decode(raw)["entries"]
+        if (entry["season"], entry["phase"]) not in fetched
+    ]
+    return sorted(kept + entries, key=lambda entry: (entry["season"], entry["phase"]))
 
 
 @lru_cache(maxsize=2)
