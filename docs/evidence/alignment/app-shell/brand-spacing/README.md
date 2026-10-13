@@ -57,3 +57,20 @@ The icon URL is `/icon.svg?v=3` so browsers request the updated asset.
 - Dashboard lint/typecheck and all 454 Vitest tests pass after this follow-up.
 - Scoped glance: brand identity, small-size legibility and the requested background match pass;
   page layout is outside this asset-only follow-up.
+
+## Follow-up: smaller logo and softly rounded corners
+
+Owner requested a slightly smaller logo and slightly rounded, squircle-like background corners.
+Both favicon SVGs scale the artwork to 90% around the canvas center and give the site-blue
+background a 5-unit corner radius. The icon URL is `/icon.svg?v=4`.
+
+- [Before/after at 16, 32 and 64px](favicon-rounded-comparison.png), [browser verification](favicon-rounded-verification.json).
+- Visual inspection at 16px/32px passes: the mark remains legible, with more blue around it and
+  soft corners. At 16px the four corner pixels have alpha 24/255 (antialiasing coverage), while
+  the midpoint of the top edge remains opaque site blue `[21, 50, 90, 255]`.
+- Source SVGs match; the rendered page requests v4 and its endpoint returns the matching SVG (200).
+- Dashboard lint/typecheck and Vitest 454/454 pass. The initial scratch verification used exact
+  equality for the browser's float transform and expected zero corner alpha; corrected to account
+  for browser float precision and antialiasing, without changing the asset.
+- Scoped glance: identity, small-size legibility, spacing and rounded background pass; no page
+  layout changes are included in this asset follow-up.

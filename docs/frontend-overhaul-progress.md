@@ -393,3 +393,11 @@ PC12 B–D are pending. This entry does not mark the remaining page-wide glance 
 - Browser checks pass for served bytes, metadata and the exact opaque blue pixel at 16px;
   visual legibility passes at 16px/32px. Dashboard lint/types and Vitest 454/454 pass.
 - [Evidence](evidence/alignment/app-shell/brand-spacing/README.md#follow-up-site-blue-favicon-background).
+
+## 2026-10-13 — Favicon size and rounded-corners follow-up
+
+- Owner requested a slightly smaller logo and softly rounded, squircle-like background corners.
+  Logo scale is 90%; site-blue background radius is 5 SVG units; metadata uses URL v4.
+- 16px/32px visual inspection, browser metadata/served bytes and matching source assets pass.
+  Dashboard lint/typecheck and Vitest 454/454 pass.
+- [Evidence](evidence/alignment/app-shell/brand-spacing/README.md#follow-up-smaller-logo-and-softly-rounded-corners).

@@ -63,11 +63,17 @@ Instructions (owner, 2026-10-13):
    matching app/public assets and versioned favicon URL verified in the rendered page.
 3. [x] Give the favicon the same blue background color used for the site. — full SVG background
    `#15325a`, matching `--color-bg`; versioned URL v3, served bytes and 16px background pixel verified.
+4. [x] The CourtLens icon is a little big in the favicon. Make it slightly smaller and make the
+   background corners slightly rounded, like a squircle. (Clarifies the preceding rounded-corners
+   request.) — logo scaled to 90% around the canvas center; blue background radius 5 SVG units;
+   16px/32px visual inspection passes, URL v4 and matching served/source SVGs verified.
 Evidence: docs/evidence/alignment/app-shell/brand-spacing/
 Verification: dashboard lint/typecheck clean; Vitest 454/454; four affected browser checks pass
 (two initial dev-server streaming timeouts passed on rerun). Owner alignment remains pending.
 Background follow-up: lint/typecheck and Vitest 454/454 pass; favicon browser check passes, with
 16px/32px visual inspection. Evidence: `favicon-blue-comparison.png`, `favicon-blue-verification.json`.
+Rounded follow-up: lint/typecheck and Vitest 454/454 pass; browser verification and 16px/32px
+legibility pass. Evidence: `favicon-rounded-comparison.png`, `favicon-rounded-verification.json`.
 
 ### 1 Stats — 🔧 in progress
 Instructions (owner, 2026-10-12):
