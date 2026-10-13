@@ -665,3 +665,10 @@ Real 2048/1440/390/375 captures show consistent text, 40px outer controls and no
 the bounded glance check passes. Dashboard lint/types, Vitest 459/459 and production build pass;
 affected browser and visual/picker checks pass. [Measured evidence](evidence/alignment/stats/control-uniformity/README.md).
 Other Stats data instructions remain pending; only the owner marks the page aligned.
+
+### Stats follow-up: compact table search (2026-10-13)
+
+Owner instruction 46 reduces desktop search from 320×40px to 288×32px at 1440, with existing
+phone touch sizing retained. Real 1440/390/375 captures pass the scoped glance check with no page
+overflow. Dashboard lint/types, Vitest 459/459, production build, six readability/search browser
+checks and refreshed Stats screenshot checks pass. [Evidence](evidence/alignment/stats/search-sizing/README.md).

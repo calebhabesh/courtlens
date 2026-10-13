@@ -421,3 +421,10 @@ PC12 B–D are pending. This entry does not mark the remaining page-wide glance 
 - Dashboard lint/types, Vitest 459/459, production build and affected browser/visual checks pass.
 - [Evidence](evidence/alignment/stats/control-uniformity/README.md). Remaining Stats data work and
   owner alignment approval are unchanged.
+
+## 2026-10-13 — Compact Stats table search
+
+- Owner instruction 46 reduces desktop search to 288×32px while retaining phone touch sizing.
+- Real 1440/390/375 captures and the scoped glance check pass without page overflow.
+- Dashboard lint/types, Vitest 459/459, production build, six readability/search browser checks
+  and refreshed Stats screenshot checks pass. [Evidence](evidence/alignment/stats/search-sizing/README.md).
