@@ -296,6 +296,12 @@ Follow-up instruction (owner, 2026-10-13, table search sizing):
     slim impact support through SQL and the cohort cache, cached catalog coverage for published
     datasets. Phase 3.7–6.5 s → 0.8–1.2 s, season ~7 s → 2.4 s (dev server); results byte-identical.
     [Scope speed evidence](evidence/alignment/stats/scope-speed/README.md).
+Follow-up instructions (owner, 2026-10-13, table header and card surfaces):
+51. [x] Bottom align the search bar with the stat column headers (GP, MIN, MPG, etc.).
+    - Done: second-row header controls share the search field's bottom edge on desktop/phone.
+52. [x] Make the player cards use the same black base color as the table, like Databallr's scheme.
+    - Done: pinned compare/player cells use the metric-cell base and hover surfaces.
+      [Measured screenshots and verification](evidence/alignment/stats/card-surface/README.md).
 Not applicable (no data or feature): the video and trophy
 (Leaders) toolbar buttons. Tab/Shift+Tab view cycling is exposed as buttons only, so Tab keeps
 normal keyboard focus order.
