@@ -49,6 +49,14 @@ from courtlens.workbench_models import (
 
 logger = logging.getLogger(__name__)
 PORTRAIT_SOURCE = "nba_cdn_1040x760"
+# The CDN answers 200 with a generic grey silhouette for players it has no photo of (and for ids
+# that do not exist). That is not a portrait; the dashboard keeps its initials fallback instead.
+PLACEHOLDER_PORTRAIT_SHA256 = frozenset(
+    {
+        "e366885fc4212e3a4100f49ed48ad866fd05b32e2d25898c2c24205e789e2632",
+        "b3ebe78bfd1cecb8880e51e6a48c9093c5cfb7065f981826d12fb4c01a1b0965",
+    }
+)
 
 ALLOWLISTED_JOB_TYPES = {
     "bootstrap",
@@ -190,6 +198,8 @@ def _fetch_player_portrait(
         ):
             return None
         sha256 = hashlib.sha256(content).hexdigest()
+        if sha256 in PLACEHOLDER_PORTRAIT_SHA256:
+            return None
         cache_dir.mkdir(parents=True, exist_ok=True)
         img_path = cache_dir / f"{sha256}.png"
         if not img_path.exists():

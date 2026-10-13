@@ -13,7 +13,7 @@ Rows are in working order.
 | # | Databallr | CourtLens | Status | Notes |
 |---|---|---|---|---|
 | 0 | App shell (nav rows, search, page title block) | `app/layout.tsx` | 👀 | Navbar spacing and favicon legibility verified; owner review pending |
-| 1 | Stats | `/stats` | 👀 | Muted NBA-blue background, charcoal containers (41); picker dead ends cut (42) |
+| 1 | Stats | `/stats` | 🔧 | Seasons back to 2000-01 live (43a–d); multi-season mode next (43e) |
 | 2 | Dashboard (player) | `/players/[id]` | ⬜ | |
 | 3 | PvP | `/compare` | ⬜ | Compare Export failure is a known gap |
 | 4 | Teams | `/teams` | ⬜ | |
@@ -65,7 +65,7 @@ Evidence: docs/evidence/alignment/app-shell/brand-spacing/
 Verification: dashboard lint/typecheck clean; Vitest 454/454; four affected browser checks pass
 (two initial dev-server streaming timeouts passed on rerun). Owner alignment remains pending.
 
-### 1 Stats — 👀 ready for review
+### 1 Stats — 🔧 in progress
 Instructions (owner, 2026-10-12):
 1. [x] Integrate Databallr's Stats buttons (where applicable) and their layout. Reference: owner
    screenshot of Databallr's NBA Player Statistics page, 2026-10-12. — interpreted as the rows below.
@@ -227,6 +227,22 @@ Follow-up instructions (owner, 2026-10-12, sixth review):
     screenshot of the analogue checkboxes). — the PBP play-type "analogue" buckets are computed but
     implausible (Create TS 17–37%, Unknown TS 101% in live data) and the Six Factor placeholder always
     shows "—"; both hidden from the column picker (`isPickerDeadEnd`), saved views still render.
+43. [ ] Fill out seasons back to 2000-01 like Databallr ("Databallr is able to have this data, so
+    should we", owner 2026-10-13, after the feasibility check). Order: box-score seasons first, then
+    DARKO dated history, then multi-season mode, then PBP-derived impact metrics; tracking-era columns
+    stay unknown before 2013-14. Owner follow-up: "hopefully we are also able to get the player photos
+    for those applicable added years too."
+    - 43a [x] Box-score seasons 2000-01 to 2022-23 published (one dataset, 26 seasons; current seasons
+      byte-identical). Parser v3: person_id 0 placeholders quarantined, whole-minute values parsed.
+    - 43b [x] Player photos for added years from the NBA CDN (1,835 of 2,733 players); generic
+      silhouettes rejected so the rest keep initials.
+    - 43c [x] Estimated positions for added seasons from the frozen position model (sealed seasons
+      reproduced and kept verbatim).
+    - 43d [x] DARKO dated history 2000-01 to 2022-23, 46 boards at each phase's last game date;
+      carry-forward keeps the sealed seasons verbatim. [History evidence](evidence/alignment/stats/history/README.md).
+    - 43e [ ] Multi-season mode (From/Through range, 5Y/10Y/15Y/25Y quick ranges).
+    - 43f [ ] PBP-derived impact (RAPM, on/off, six factor) for added seasons.
+    - 43g [ ] Draft classes before 2000 so older players match the Draft Class filter.
 Not applicable (no data or feature): the video and trophy
 (Leaders) toolbar buttons. Tab/Shift+Tab view cycling is exposed as buttons only, so Tab keeps
 normal keyboard focus order.
