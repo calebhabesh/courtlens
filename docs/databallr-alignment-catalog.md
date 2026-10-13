@@ -280,6 +280,10 @@ Follow-up instruction (owner, 2026-10-13, table search sizing):
 46. [x] Our search bar is a little big compared to Databallr; scale it down a little like Databallr.
     - Done: desktop search capped at 288px wide and 32px tall; phone touch sizing retained.
       [Measured screenshots and verification](evidence/alignment/stats/search-sizing/README.md).
+47. [x] The search bar should be placed centered above the player cards below. It is currently
+    left aligned; Databallr does a better job of this.
+    - Done: centered compact field above both identity columns, with zero measured center offset
+      on desktop/phone. [Evidence](evidence/alignment/stats/search-centering/README.md).
 Not applicable (no data or feature): the video and trophy
 (Leaders) toolbar buttons. Tab/Shift+Tab view cycling is exposed as buttons only, so Tab keeps
 normal keyboard focus order.
