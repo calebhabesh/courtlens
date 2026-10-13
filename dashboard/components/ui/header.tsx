@@ -67,7 +67,9 @@ export function Header() {
   );
 
   const preserveContextUrl = useCallback(
-    (targetHref: string) => buildPreservedContextUrl(targetHref, searchParams),
+    // Navigation always opens the current release; only shared or saved links stay pinned, so
+    // an old link can never trap the whole site on retired data (2026-10-13: 3-season picker).
+    (targetHref: string) => buildPreservedContextUrl(targetHref, searchParams, { dropPins: true }),
     [searchParams]
   );
 

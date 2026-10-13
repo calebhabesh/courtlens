@@ -297,9 +297,13 @@ export const CONTEXT_PARAMS = [
   "finance_amount_kind", "finance_small_big_threshold_cents", "finance_scenario"
 ] as const;
 
+/** Release and model-bundle pins: shared and saved links keep them, site navigation does not. */
+const PIN_PARAMS = new Set(["releaseId", "impactManifest", "darkoManifest"]);
+
 export function buildPreservedContextUrl(
   targetHref: string,
-  sourceParams?: URLSearchParams | null
+  sourceParams?: URLSearchParams | null,
+  { dropPins = false }: { dropPins?: boolean } = {}
 ): string {
   const [basePath, targetQuery] = targetHref.split("?");
   const targetParams = new URLSearchParams(targetQuery || "");
@@ -312,6 +316,7 @@ export function buildPreservedContextUrl(
     const normalized = new URLSearchParams();
     for (const param of CONTEXT_PARAMS) {
       const key = aliases[param] ?? param;
+      if (dropPins && PIN_PARAMS.has(key)) continue;
       const val = sourceParams.get(key) ?? sourceParams.get(param);
       if (val) normalized.set(key, val);
     }
