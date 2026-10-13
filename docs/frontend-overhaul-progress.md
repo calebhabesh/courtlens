@@ -385,3 +385,11 @@ PC12 B–D are pending. This entry does not mark the remaining page-wide glance 
 - Dashboard lint/types clean, navbar Vitest 454/454 and four affected browser checks pass (two
   initial streamed-page setup timeouts passed on rerun). [Evidence](evidence/alignment/app-shell/brand-spacing/README.md).
 - The alignment catalog records these two bounded instructions as ready for owner review.
+
+## 2026-10-13 — Favicon site-blue background follow-up
+
+- Owner requested the site's `#15325a` blue as the favicon background; both SVG copies match
+  `--color-bg`, and metadata uses URL v3.
+- Browser checks pass for served bytes, metadata and the exact opaque blue pixel at 16px;
+  visual legibility passes at 16px/32px. Dashboard lint/types and Vitest 454/454 pass.
+- [Evidence](evidence/alignment/app-shell/brand-spacing/README.md#follow-up-site-blue-favicon-background).

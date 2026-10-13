@@ -630,3 +630,11 @@ overflow. Browser-tab SVG uses a tighter frameless crop, larger orange ball and 
 verified. Dashboard lint/typecheck pass; navbar Vitest 454/454 and four affected browser checks
 pass (two initial streamed-page setup timeouts passed on rerun). Bounded glance evidence and
 screenshots: [app-shell evidence](evidence/alignment/app-shell/brand-spacing/README.md).
+
+### Favicon follow-up: site-blue background (2026-10-13)
+
+Owner requested the site's blue background for the favicon. Both SVGs now fill their cropped
+canvas with `#15325a`, matching `--color-bg`; metadata uses URL v3. Browser checks verify served
+bytes, source parity and an opaque `[21, 50, 90, 255]` corner pixel at 16px. 16px/32px visual
+inspection passes. Dashboard lint/typecheck and Vitest 454/454 pass.
+[Background evidence](evidence/alignment/app-shell/brand-spacing/README.md#follow-up-site-blue-favicon-background).
