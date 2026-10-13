@@ -679,3 +679,10 @@ Owner instruction 47 centers the compact search above the player cards. Real des
 measurements show zero center offset; the scoped glance check passes. Lint/types, Vitest 459/459,
 production build, existing search browser checks and Stats baselines pass.
 [Evidence](evidence/alignment/stats/search-centering/README.md).
+
+### Stats follow-up: slightly wider centered search (2026-10-13)
+
+Owner instruction 48 increases the cap from 288px to 304px, retaining centering and height.
+Real desktop/phone measurements and scoped glance check pass. Lint/types, Vitest 459/459,
+production build, six search browser checks and two Stats baseline checks pass.
+[Evidence](evidence/alignment/stats/search-sizing/README.md#follow-up-slightly-wider-still-centered).

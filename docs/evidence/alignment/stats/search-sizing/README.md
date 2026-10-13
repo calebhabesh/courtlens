@@ -19,3 +19,13 @@ Dashboard lint/typecheck, Vitest **459/459** and production webpack build pass. 
 readability/search browser checks pass, including keyboard selection, clearing, portal suggestion
 visibility, touch selection and Escape. Stats desktop/phone screenshot baselines refreshed and
 verified. Ready for owner review; only the owner marks the page aligned.
+
+## Follow-up: slightly wider, still centered
+
+Owner instruction 48 increases the desktop cap from 288px to 304px. Height stays 32px and
+automatic inline margins retain centering. The 328px player-card area now has 12px side insets,
+down from 20px. [Updated desktop](stats-wider-1440.png), [phone](stats-wider-390.png) and
+[measurements](wider-measurements.json) confirm zero center offset and no page overflow; phone
+dimensions remain 228×42px. The scoped glance check passes for width, centering and readability.
+Lint/types, Vitest 459/459, production build, six search browser checks and two Stats baseline
+checks pass. Desktop baseline refreshed; phone baseline retained.
