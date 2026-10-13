@@ -290,6 +290,12 @@ Follow-up instruction (owner, 2026-10-13, table search sizing):
 49. [x] Make the search bar slightly larger/wider again.
     - Done: cap increased from 304px to 312px, preserving centering and height.
       [Evidence](evidence/alignment/stats/search-sizing/README.md#follow-up-another-8px-of-width).
+50. [x] Phase (Regular/Playoffs/Cup Final/Play-In) and season changes were slow and spun up the fans;
+    make them load reasonably, like the fixed position filters (owner, 2026-10-13). — index on
+    player games by dataset/season/phase/date, no duplicate count pass, narrow percentile ranking,
+    slim impact support through SQL and the cohort cache, cached catalog coverage for published
+    datasets. Phase 3.7–6.5 s → 0.8–1.2 s, season ~7 s → 2.4 s (dev server); results byte-identical.
+    [Scope speed evidence](evidence/alignment/stats/scope-speed/README.md).
 Not applicable (no data or feature): the video and trophy
 (Leaders) toolbar buttons. Tab/Shift+Tab view cycling is exposed as buttons only, so Tab keeps
 normal keyboard focus order.

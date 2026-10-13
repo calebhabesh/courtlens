@@ -227,11 +227,27 @@ def derive_extras(row: dict[str, Any]) -> None:
     support["rim_ast_per_36"] = {**rim, "value": None, "denominator": None}
 
 
+# The only support fields SQL reads (ranking qualification, offensive-load denominator) or the
+# row parser needs; the full support is reattached in Python after the query.
+SQL_SUPPORT_FIELDS = ("qualified", "covered_games", "denominator")
+
+
 def impact_sql_rows(impact: dict[str, Any]) -> str:
-    """Bounded coefficient/support payload, never raw play-by-play or game facts."""
+    """Bounded coefficient/support payload, never raw play-by-play or game facts.
+
+    Support is slimmed to SQL_SUPPORT_FIELDS: round-tripping every player's full support (about
+    22 KB each) through the query and back dominated cold Stats requests.
+    """
     return json.dumps(
         [
-            {"player_id": pid, **row["metrics"], "support": row["support"]}
+            {
+                "player_id": pid,
+                **row["metrics"],
+                "support": {
+                    key: {field: entry[field] for field in SQL_SUPPORT_FIELDS if field in entry}
+                    for key, entry in row["support"].items()
+                },
+            }
             for pid, row in sorted(impact["players"].items())
         ],
         separators=(",", ":"),

@@ -968,8 +968,12 @@ def build_stats_query_sql(
         result_filter = "WHERE " + " AND ".join(display_filters) if display_filters else ""
         result_table = "eligible"
         if not is_count_only and cohort_percentiles:
+            # Ranks are computed on a narrow projection (player and ranked values) and joined
+            # back: every window sorts rows, and the full rows carry kilobytes of impact support
+            # each, so ranking them directly cost over a second per season with impact columns.
+            value_sql = []
             percentile_sql = []
-            for key, column in percentile_columns.items():
+            for index, (key, column) in enumerate(percentile_columns.items()):
                 if key in IMPACT_CATALOG:
                     qualified = (
                         f"json_extract(impact_support, '$.{key}.qualified') = 1"
@@ -977,16 +981,26 @@ def build_stats_query_sql(
                         else f"(impact_support->'{key}'->>'qualified')::boolean IS TRUE"
                     )
                     column = f"CASE WHEN {qualified} THEN {column} ELSE NULL END"
-                n = f"count({column}) OVER ()"
-                less = f"rank() OVER (ORDER BY {column} ASC NULLS LAST) - 1"
-                equal = f"count(*) OVER (PARTITION BY {column})"
+                value = f"pv_{index}"
+                value_sql.append(f"{column} AS {value}")
+                n = f"count({value}) OVER ()"
+                less = f"rank() OVER (ORDER BY {value} ASC NULLS LAST) - 1"
+                equal = f"count(*) OVER (PARTITION BY {value})"
                 percentile_sql.append(
-                    f"CASE WHEN ({column}) IS NULL OR {n} < 2 THEN NULL ELSE "
+                    f"CASE WHEN {value} IS NULL OR {n} < 2 THEN NULL ELSE "
                     f"least(99, greatest(1, round(100.0 * ({less} + 0.5 * {equal}) / {n}))) "
                     f"END AS pct_{key}, {n} AS cohort_n_{key}"
                 )
+            materialized = "" if is_sqlite else "MATERIALIZED "
             cte_sql += (
-                ", cohort_ranked AS (SELECT *, " + ", ".join(percentile_sql) + " FROM eligible)"
+                f", cohort_values AS {materialized}(SELECT player_id, "
+                + ", ".join(value_sql)
+                + " FROM eligible)"
+                + ", cohort_percentiles AS (SELECT player_id AS ranked_player_id, "
+                + ", ".join(percentile_sql)
+                + " FROM cohort_values)"
+                + ", cohort_ranked AS (SELECT * FROM eligible JOIN cohort_percentiles"
+                + " ON cohort_percentiles.ranked_player_id = eligible.player_id)"
             )
             result_table = "cohort_ranked"
 
@@ -1295,22 +1309,25 @@ def execute_stats_query(
         # few thousand game rows gain nothing from them.
         session.execute(text("SET LOCAL max_parallel_workers_per_gather = 0"))
 
-    # 4. Execute Count Query
-    count_sql, count_params = build_stats_query_sql(
-        context,
-        query,
-        is_count_only=True,
-        is_sqlite=is_sqlite,
-        legacy_nonappearance=legacy_nonappearance,
-        presentation=presentation,
-    )
-    total_count = session.execute(text(count_sql), count_params).scalar() or 0
+    def count_rows() -> int:
+        count_sql, count_params = build_stats_query_sql(
+            context,
+            query,
+            is_count_only=True,
+            is_sqlite=is_sqlite,
+            legacy_nonappearance=legacy_nonappearance,
+            presentation=presentation,
+        )
+        return int(session.execute(text(count_sql), count_params).scalar() or 0)
 
-    # 5. Determine limit & offset
+    # 4-5. An export reads one row past its bound instead of re-running the whole aggregation
+    # to count it: the count only runs when the bound is exceeded (count = rows otherwise).
     if is_export:
-        limit = max_export_rows
+        total_count = -1
+        limit = max_export_rows + 1
         offset = 0
     else:
+        total_count = count_rows()
         limit = min(max(1, query.page.limit), MAX_PAGE_SIZE)
         offset = start_offset
 
@@ -1328,7 +1345,17 @@ def execute_stats_query(
     )
     result_rows = session.execute(text(main_sql), main_params).mappings().all()
 
+    if is_export:
+        total_count = len(result_rows) if len(result_rows) <= max_export_rows else count_rows()
+        result_rows = result_rows[:max_export_rows]
+
     items = [parse_player_row(dict(r)) for r in result_rows]
+    if query_uses_impact(query) and any("impact_support" in item for item in items):
+        # SQL carried slim support (impact_sql_rows); serve each player's full sealed support.
+        full = impact_for_query(query, context.before_date.isoformat())["players"]
+        for item in items:
+            if "impact_support" in item and item["player_id"] in full:
+                item["impact_support"] = full[item["player_id"]]["support"]
 
     # 7. Cursor & Pagination Flags
     if is_export:
