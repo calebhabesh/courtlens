@@ -1267,14 +1267,20 @@ def refresh_darko_command(
     phase: list[str] = typer.Option(["regular_season", "playoffs"], help="Phases to fetch."),
     root: Path = typer.Option(Path("data/raw/darko")),
     output: Path = typer.Option(Path("data/derived/darko-dpm-v2")),
+    carry_forward: bool = typer.Option(
+        True,
+        "--carry-forward/--no-carry-forward",
+        help="Keep the configured bundle's other seasons verbatim in the new bundle.",
+    ),
 ) -> None:
     """Operator run: seal dated DARKO snapshots at each phase's last admitted game date."""
     import httpx
 
     from courtlens.services.darko import refresh
 
+    base = get_settings().darko_manifest if carry_forward else None
     with SessionLocal() as session, httpx.Client() as client:
-        path, results = refresh(session, root, client, season, output, phase)
+        path, results = refresh(session, root, client, season, output, phase, base)
     for result in results:
         typer.echo(json.dumps(result))
     typer.echo(f"sealed {path}  (set COURTLENS_DARKO_MANIFEST or config.darko_manifest)")

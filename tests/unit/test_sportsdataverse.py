@@ -38,6 +38,7 @@ def test_parse_minutes_strict_format() -> None:
     assert parse_minutes("45:15") == 45 * 60 + 15
     assert parse_minutes("240:00") == 240 * 60  # team minutes can exceed 60
     assert parse_minutes("290:00") == 290 * 60
+    assert parse_minutes("26") == 26 * 60  # one 2003-04 game records whole minutes
 
     # Seconds out of 0..59 range must raise ValueError
     with pytest.raises(ValueError, match="seconds_out_of_range"):
@@ -172,6 +173,13 @@ def test_parse_schedule_and_normalization_golden(tmp_path: Path) -> None:
     assert p_norm["minutes_seconds"] == 2100
     assert p_norm["stats"]["points"] == 15
     assert p_norm["player_name"] == "Luguentz Dort"
+
+    # 2000-01 era placeholder rows (person_id 0, no name) are quarantined, never a player.
+    for placeholder in ("0", ""):
+        with pytest.raises(ValueError, match="player_identity_missing"):
+            normalize_player_row(
+                {**p_raw, "person_id": placeholder, "first_name": "", "family_name": ""}, lookup
+            )
 
     # Normalize team row
     t_raw = {

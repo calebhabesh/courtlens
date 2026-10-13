@@ -12,6 +12,7 @@ Run: python -m courtlens.evaluation.position_estimates --database-url postgresql
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import platform
 from collections import Counter, defaultdict
@@ -74,12 +75,17 @@ def listed_group(listed: str | None) -> str:
     return (listed or "?").split("-")[0] or "?"
 
 
-def feature_matrix(samples: list[Sample]) -> np.ndarray:
-    """Rates shrink toward the listed group's league rate; missing size takes the group median."""
+def feature_matrix(samples: list[Sample], reference: list[Sample] | None = None) -> np.ndarray:
+    """Rates shrink toward the listed group's league rate; missing size takes the group median.
+
+    Group priors come from `reference` (default: the samples themselves), so a frozen model can
+    score new seasons against the population it was trained on.
+    """
     pooled: dict[str, Counter[str]] = defaultdict(Counter)
     minutes: dict[str, float] = defaultdict(float)
     sizes: dict[str, dict[str, list[float]]] = defaultdict(lambda: {"h": [], "w": []})
-    for s in samples:
+    population = samples if reference is None else reference
+    for s in population:
         group = listed_group(s.listed)
         minutes[group] += s.minutes
         for field in RATE_FIELDS:
@@ -88,16 +94,23 @@ def feature_matrix(samples: list[Sample]) -> np.ndarray:
             sizes[group]["h"].append(s.height)
         if s.weight is not None:
             sizes[group]["w"].append(s.weight)
-    all_heights = [s.height for s in samples if s.height is not None]
-    all_weights = [s.weight for s in samples if s.weight is not None]
+    all_heights = [s.height for s in population if s.height is not None]
+    all_weights = [s.weight for s in population if s.weight is not None]
+    # A listing group absent from the reference (only possible when scoring new seasons) shrinks
+    # toward the whole league instead of toward nothing.
+    league: Counter[str] = sum(pooled.values(), Counter())
+    league_minutes = sum(minutes.values())
     rows = []
     for s in samples:
         group = listed_group(s.listed)
         heights = sizes[group]["h"] or all_heights
         weights = sizes[group]["w"] or all_weights
+        prior, prior_minutes = (
+            (pooled[group], minutes[group]) if minutes.get(group) else (league, league_minutes)
+        )
         rates = [
             36.0
-            * (s.totals[field] + PRIOR_MINUTES * pooled[group][field] / max(minutes[group], 1.0))
+            * (s.totals[field] + PRIOR_MINUTES * prior[field] / max(prior_minutes, 1.0))
             / (s.minutes + PRIOR_MINUTES)
             for field in RATE_FIELDS
         ]
@@ -217,6 +230,64 @@ def estimate(samples: list[Sample], labels: dict[str, str]) -> dict[str, Any]:
     }
 
 
+def frozen_probabilities(
+    samples: list[Sample], reference: list[Sample], coefficients: dict[str, Any]
+) -> np.ndarray:
+    """Apply a sealed run's scaler and multinomial coefficients without refitting."""
+    x = feature_matrix(samples, reference)
+    z = (x - np.asarray(coefficients["scaler_mean"])) / np.asarray(coefficients["scaler_scale"])
+    logits = z @ np.asarray(coefficients["weights"]).T + np.asarray(coefficients["intercept"])
+    exp = np.exp(logits - logits.max(axis=1, keepdims=True))
+    return bounded(exp / exp.sum(axis=1, keepdims=True), allowed_mask([s.listed for s in samples]))
+
+
+def extend(samples: list[Sample], sealed: dict[str, Any]) -> dict[str, Any]:
+    """Label seasons a sealed run never saw with its frozen model; sealed seasons stay verbatim.
+
+    Re-scoring the sealed seasons must reproduce every sealed label first, proving the inputs and
+    priors match the original run; otherwise nothing is written.
+    """
+    sealed_seasons = sealed["seasons"]
+    reference = [s for s in samples if s.season in sealed_seasons]
+    check = frozen_probabilities(reference, reference, sealed["coefficients"])
+    mismatched = [
+        (s.season, s.player_id)
+        for s, probs in zip(reference, check, strict=True)
+        if sealed_seasons.get(s.season, {}).get(s.player_id, {}).get("position")
+        != POSITIONS[int(np.argmax(probs))]
+    ]
+    if mismatched or sum(map(len, sealed_seasons.values())) != len(reference):
+        raise ValueError(f"frozen model does not reproduce the sealed run: {mismatched[:5]}")
+    added = [s for s in samples if s.season not in sealed_seasons]
+    seasons: dict[str, dict[str, Any]] = defaultdict(dict)
+    probabilities = frozen_probabilities(added, reference, sealed["coefficients"])
+    for sample, probs in zip(added, probabilities, strict=True):
+        best = int(np.argmax(probs))
+        seasons[sample.season][sample.player_id] = {
+            "position": POSITIONS[best],
+            "probability": round(float(probs[best]), 3),
+            "probabilities": [round(float(p), 3) for p in probs],
+            "minutes": round(sample.minutes, 1),
+            "listed": sample.listed,
+        }
+    return {
+        **{key: sealed[key] for key in ("features", "prior_minutes", "training", "coefficients")},
+        "evaluation": sealed["evaluation"],
+        "seasons": {
+            season: dict(sorted(rows.items()))
+            for season, rows in sorted({**sealed_seasons, **seasons}.items())
+        },
+        "extension": {
+            "frozen_from_sha256": hashlib.sha256(
+                json.dumps(sealed, sort_keys=True, separators=(",", ":")).encode()
+            ).hexdigest(),
+            "sealed_seasons_reproduced": len(reference),
+            "added_seasons": sorted(seasons),
+            "added_player_seasons": len(added),
+        },
+    }
+
+
 def read_inputs(database_url: str) -> tuple[list[Sample], dict[str, str], dict[str, Any]]:
     """One read-only pass over the served season marts, roster index and combine mart."""
     from courtlens.player_context_models import PlayerContextDataset
@@ -302,12 +373,16 @@ def read_inputs(database_url: str) -> tuple[list[Sample], dict[str, str], dict[s
     return samples, labels, provenance
 
 
-def run(database_url: str, output: Path) -> Path:
+def run(database_url: str, output: Path, extend_from: Path | None = None) -> Path:
     if sklearn.__version__ != "1.6.1":
         raise ValueError("position estimates require pinned scikit-learn 1.6.1")
     samples, labels, provenance = read_inputs(database_url)
     with threadpool_limits(limits=1):
-        result = estimate(samples, labels)
+        result = (
+            extend(samples, json.loads(extend_from.read_bytes()))
+            if extend_from is not None
+            else estimate(samples, labels)
+        )
     artifact = {
         "version": VERSION,
         "claim": "estimated position from listed position, size and box rates; not a listing",
@@ -343,8 +418,13 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--database-url", required=True, help="Read-only PostgreSQL URL")
     parser.add_argument("--output", type=Path, default=Path("data/derived/position-estimates-v1"))
+    parser.add_argument(
+        "--extend-from",
+        type=Path,
+        help="Sealed artifact whose frozen model labels only seasons it has not seen",
+    )
     args = parser.parse_args()
-    run(args.database_url, args.output)
+    run(args.database_url, args.output, args.extend_from)
 
 
 if __name__ == "__main__":

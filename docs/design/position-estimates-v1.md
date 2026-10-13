@@ -41,3 +41,13 @@ CourtLens therefore **estimates** a five-position label from its own admitted da
 - A player-season without box minutes has no estimate (unknown, never a default position).
 - The artifact is append-only and content-addressed under `data/derived/position-estimates-v1/`;
   serving re-hashes it on every read, like the value/archetype store.
+
+## Extending to new seasons
+
+`--extend-from <sealed artifact>` labels seasons the sealed run never saw with that run's frozen
+scaler and coefficients; nothing is refit. Group priors and size medians come from the sealed
+seasons' own samples (a listing group absent there shrinks toward the whole league). Before writing,
+the frozen model re-scores every sealed player-season and must reproduce every sealed label; any
+mismatch writes nothing. Sealed seasons are copied verbatim, and `extension` records the frozen
+artifact's hash, the reproduced count and the added seasons. Used for the 2000-01 to 2022-23 Stats
+backfill (alignment instruction 43), so adding history cannot relabel a current player.
