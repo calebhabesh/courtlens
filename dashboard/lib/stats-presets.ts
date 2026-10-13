@@ -541,6 +541,13 @@ export const ALL_CATALOG_METRICS: Record<string, ColumnDefinition> = {
   six_factor_impact: { key: "six_factor_impact", label: "SIX FACTOR", group: "Impact", num: true, sortMetric: "six_factor_impact", tooltip: "Six-Factor RAPM Impact; requires admitted inputs", format: () => "—" }
 };
 
+/** Owner, 2026-10-13: the column picker hides CourtLens extras that lead nowhere yet: the PBP
+ * play-type "analogue" buckets (implausible values, e.g. TS above 100%) and the always-empty
+ * Six Factor placeholder. Saved views that already hold them still render. */
+export function isPickerDeadEnd(key: string): boolean {
+  return /^pbp_(create|space|trans|finish|unknown)_/.test(key) || key === "six_factor_impact";
+}
+
 export function buildCustomViewPreset(customView: CustomViewDefinition): PresetDefinition {
   const unavailableSet = new Set(customView.unavailable_columns ?? []);
   const columns: ColumnDefinition[] = customView.columns.map((key) => {

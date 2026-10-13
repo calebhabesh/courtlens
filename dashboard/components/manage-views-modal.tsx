@@ -3,7 +3,7 @@
 import { Icon } from "./ui/icon";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useWorkspace } from "@/lib/workspace-context";
-import { ALL_CATALOG_METRICS, IMPACT_COLUMNS, isV4Column } from "@/lib/stats-presets";
+import { ALL_CATALOG_METRICS, IMPACT_COLUMNS, isPickerDeadEnd, isV4Column } from "@/lib/stats-presets";
 import { computeClientBundleChecksum, getWorkspacePresets } from "@/lib/workspace-client";
 import type {
   CustomViewDefinition,
@@ -326,6 +326,7 @@ export function ManageViewsModal({
     const q = columnSearch.toLowerCase().trim();
 
     for (const [key, col] of Object.entries(ALL_CATALOG_METRICS)) {
+      if (isPickerDeadEnd(key)) continue;
       if (
         q &&
         !key.toLowerCase().includes(q) &&
