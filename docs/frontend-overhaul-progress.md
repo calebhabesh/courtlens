@@ -428,3 +428,10 @@ PC12 B–D are pending. This entry does not mark the remaining page-wide glance 
 - Real 1440/390/375 captures and the scoped glance check pass without page overflow.
 - Dashboard lint/types, Vitest 459/459, production build, six readability/search browser checks
   and refreshed Stats screenshot checks pass. [Evidence](evidence/alignment/stats/search-sizing/README.md).
+
+## 2026-10-13 — Centered Stats table search
+
+- Owner instruction 47 centers the compact field above the player cards without changing its size.
+- Real 1440/390 screenshots show zero center offset and no page overflow; scoped glance check passes.
+- Lint/types, Vitest 459/459, production build, existing search browser checks and Stats baselines
+  pass. [Evidence](evidence/alignment/stats/search-centering/README.md).
