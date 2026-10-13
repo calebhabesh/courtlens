@@ -435,3 +435,10 @@ PC12 B–D are pending. This entry does not mark the remaining page-wide glance 
 - Real 1440/390 screenshots show zero center offset and no page overflow; scoped glance check passes.
 - Lint/types, Vitest 459/459, production build, existing search browser checks and Stats baselines
   pass. [Evidence](evidence/alignment/stats/search-centering/README.md).
+
+## 2026-10-13 — Slightly wider centered Stats search
+
+- Owner instruction 48 increases the width cap to 304px while retaining centering and height.
+- Real desktop/phone captures and scoped glance check pass; zero center offset and page overflow.
+- Lint/types, Vitest 459/459, production build, six search browser checks and two Stats baseline
+  checks pass. [Evidence](evidence/alignment/stats/search-sizing/README.md#follow-up-slightly-wider-still-centered).
