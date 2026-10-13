@@ -27,7 +27,7 @@ async function personalFixture(page: import("@playwright/test").Page, compareTra
 test("recurring guide modes preserve primary identity, header alignment and reload", async ({ page }) => {
   await personalFixture(page); await openWorkbench(page, "/stats"); await page.waitForLoadState("networkidle");
   const row = page.locator(".dense-stats-table tbody tr").first();
-  const guides = page.getByRole("group", { name: "Group guides", exact: true });
+  const guides = page.getByRole("group", { name: "Table Divider", exact: true });
   for (const mode of ["Photos", "Logos", "Initials", "None"]) {
     await guides.getByRole("button", { name: mode, exact: true }).click();
     await page.waitForURL(url => url.searchParams.get("identityMode") === mode.toLowerCase());
@@ -60,7 +60,7 @@ test("recurring guide modes preserve primary identity, header alignment and relo
 });
 
 test("keyboard sorting, single compare shortcut and drawer focus stay scoped", async ({ page }) => {
-  const fixture = await personalFixture(page); await openWorkbench(page, "/stats"); await page.waitForLoadState("networkidle");
+  const fixture = await personalFixture(page); await openWorkbench(page, "/stats?sortMetric=pts_per_game&sortDirection=desc"); await page.waitForLoadState("networkidle");
   const sort = page.getByRole("button", { name: "Sort by PTS", exact: true });
   await sort.focus(); await sort.press("Space"); await page.waitForURL(/sortDirection=asc/);
   await expect(sort.locator("..")).toHaveAttribute("aria-sort", "ascending");

@@ -1,0 +1,700 @@
+[
+  {
+    "width": 2048,
+    "height": 1000,
+    "overflow": false,
+    "layout": "flex",
+    "actions": {
+      "x": 1159.671875,
+      "y": 271.5,
+      "width": 197.21875,
+      "height": 40
+    },
+    "divider": {
+      "x": 806.828125,
+      "y": 271.5,
+      "width": 344.84375,
+      "height": 40
+    },
+    "dividerModes": {
+      "x": 887.1875,
+      "y": 271.5,
+      "width": 264.484375,
+      "height": 40
+    },
+    "presets": {
+      "x": 24,
+      "y": 271.5,
+      "width": 774.828125,
+      "height": 40
+    },
+    "table": {
+      "x": 24,
+      "y": 327.5,
+      "width": 1728,
+      "height": 656.5
+    },
+    "through": {
+      "fontSize": "13px",
+      "lineHeight": "18px",
+      "fontWeight": "500",
+      "color": "rgb(169, 175, 185)",
+      "height": 40
+    },
+    "window": {
+      "fontSize": "13px",
+      "lineHeight": "18px",
+      "fontWeight": "500",
+      "color": "rgb(169, 175, 185)",
+      "height": 40
+    },
+    "buttons": [
+      {
+        "text": "How to Use This Page",
+        "font": "13px",
+        "height": 40
+      },
+      {
+        "text": "Stats Glossary",
+        "font": "13px",
+        "height": 40
+      },
+      {
+        "text": "Hotkeys",
+        "font": "13px",
+        "height": 40
+      },
+      {
+        "text": "Regular",
+        "font": "13px",
+        "height": 32
+      },
+      {
+        "text": "Playoffs",
+        "font": "13px",
+        "height": 32
+      },
+      {
+        "text": "Cup Final",
+        "font": "13px",
+        "height": 32
+      },
+      {
+        "text": "Play-In",
+        "font": "13px",
+        "height": 32
+      },
+      {
+        "text": "Select Team",
+        "font": "13px",
+        "height": 40
+      },
+      {
+        "text": "PG",
+        "font": "13px",
+        "height": 40
+      },
+      {
+        "text": "SG",
+        "font": "13px",
+        "height": 40
+      },
+      {
+        "text": "SF",
+        "font": "13px",
+        "height": 40
+      },
+      {
+        "text": "PF",
+        "font": "13px",
+        "height": 40
+      },
+      {
+        "text": "C",
+        "font": "13px",
+        "height": 40
+      },
+      {
+        "text": "Draft Class",
+        "font": "13px",
+        "height": 40
+      },
+      {
+        "text": "Overview",
+        "font": "13px",
+        "height": 32
+      },
+      {
+        "text": "Shooting",
+        "font": "13px",
+        "height": 32
+      },
+      {
+        "text": "Impact",
+        "font": "13px",
+        "height": 32
+      },
+      {
+        "text": "On-Off",
+        "font": "13px",
+        "height": 32
+      },
+      {
+        "text": "Six Factor",
+        "font": "13px",
+        "height": 32
+      },
+      {
+        "text": "Rates (Per 36)",
+        "font": "13px",
+        "height": 32
+      },
+      {
+        "text": "Defense",
+        "font": "13px",
+        "height": 32
+      },
+      {
+        "text": "True Shooting",
+        "font": "13px",
+        "height": 32
+      },
+      {
+        "text": "Playmaking",
+        "font": "13px",
+        "height": 32
+      },
+      {
+        "text": "Rebounding",
+        "font": "13px",
+        "height": 32
+      },
+      {
+        "text": "Photos",
+        "font": "13px",
+        "height": 32
+      },
+      {
+        "text": "Logos",
+        "font": "13px",
+        "height": 32
+      },
+      {
+        "text": "Initials",
+        "font": "13px",
+        "height": 32
+      },
+      {
+        "text": "None",
+        "font": "13px",
+        "height": 32
+      },
+      {
+        "text": "Add View",
+        "font": "13px",
+        "height": 40
+      },
+      {
+        "text": "Manage",
+        "font": "13px",
+        "height": 40
+      }
+    ]
+  },
+  {
+    "width": 1440,
+    "height": 900,
+    "overflow": false,
+    "layout": "flex",
+    "actions": {
+      "x": 1159.671875,
+      "y": 323.5,
+      "width": 197.21875,
+      "height": 40
+    },
+    "divider": {
+      "x": 806.828125,
+      "y": 323.5,
+      "width": 344.84375,
+      "height": 40
+    },
+    "dividerModes": {
+      "x": 887.1875,
+      "y": 323.5,
+      "width": 264.484375,
+      "height": 40
+    },
+    "presets": {
+      "x": 24,
+      "y": 323.5,
+      "width": 774.828125,
+      "height": 40
+    },
+    "table": {
+      "x": 24,
+      "y": 379.5,
+      "width": 1120,
+      "height": 504.5
+    },
+    "through": {
+      "fontSize": "13px",
+      "lineHeight": "18px",
+      "fontWeight": "500",
+      "color": "rgb(169, 175, 185)",
+      "height": 40
+    },
+    "window": {
+      "fontSize": "13px",
+      "lineHeight": "18px",
+      "fontWeight": "500",
+      "color": "rgb(169, 175, 185)",
+      "height": 40
+    },
+    "buttons": [
+      {
+        "text": "How to Use This Page",
+        "font": "13px",
+        "height": 40
+      },
+      {
+        "text": "Stats Glossary",
+        "font": "13px",
+        "height": 40
+      },
+      {
+        "text": "Hotkeys",
+        "font": "13px",
+        "height": 40
+      },
+      {
+        "text": "Regular",
+        "font": "13px",
+        "height": 32
+      },
+      {
+        "text": "Playoffs",
+        "font": "13px",
+        "height": 32
+      },
+      {
+        "text": "Cup Final",
+        "font": "13px",
+        "height": 32
+      },
+      {
+        "text": "Play-In",
+        "font": "13px",
+        "height": 32
+      },
+      {
+        "text": "Select Team",
+        "font": "13px",
+        "height": 40
+      },
+      {
+        "text": "PG",
+        "font": "13px",
+        "height": 40
+      },
+      {
+        "text": "SG",
+        "font": "13px",
+        "height": 40
+      },
+      {
+        "text": "SF",
+        "font": "13px",
+        "height": 40
+      },
+      {
+        "text": "PF",
+        "font": "13px",
+        "height": 40
+      },
+      {
+        "text": "C",
+        "font": "13px",
+        "height": 40
+      },
+      {
+        "text": "Draft Class",
+        "font": "13px",
+        "height": 40
+      },
+      {
+        "text": "Overview",
+        "font": "13px",
+        "height": 32
+      },
+      {
+        "text": "Shooting",
+        "font": "13px",
+        "height": 32
+      },
+      {
+        "text": "Impact",
+        "font": "13px",
+        "height": 32
+      },
+      {
+        "text": "On-Off",
+        "font": "13px",
+        "height": 32
+      },
+      {
+        "text": "Six Factor",
+        "font": "13px",
+        "height": 32
+      },
+      {
+        "text": "Rates (Per 36)",
+        "font": "13px",
+        "height": 32
+      },
+      {
+        "text": "Defense",
+        "font": "13px",
+        "height": 32
+      },
+      {
+        "text": "True Shooting",
+        "font": "13px",
+        "height": 32
+      },
+      {
+        "text": "Playmaking",
+        "font": "13px",
+        "height": 32
+      },
+      {
+        "text": "Rebounding",
+        "font": "13px",
+        "height": 32
+      },
+      {
+        "text": "Photos",
+        "font": "13px",
+        "height": 32
+      },
+      {
+        "text": "Logos",
+        "font": "13px",
+        "height": 32
+      },
+      {
+        "text": "Initials",
+        "font": "13px",
+        "height": 32
+      },
+      {
+        "text": "None",
+        "font": "13px",
+        "height": 32
+      },
+      {
+        "text": "Add View",
+        "font": "13px",
+        "height": 40
+      },
+      {
+        "text": "Manage",
+        "font": "13px",
+        "height": 40
+      }
+    ]
+  },
+  {
+    "width": 390,
+    "height": 844,
+    "overflow": false,
+    "layout": "flex",
+    "actions": {
+      "x": 8,
+      "y": 411.5,
+      "width": 197.21875,
+      "height": 40
+    },
+    "divider": {
+      "x": 8,
+      "y": 363.5,
+      "width": 344.84375,
+      "height": 40
+    },
+    "dividerModes": {
+      "x": 88.359375,
+      "y": 363.5,
+      "width": 264.484375,
+      "height": 40
+    },
+    "presets": {
+      "x": 8,
+      "y": 315.5,
+      "width": 374,
+      "height": 40
+    },
+    "table": {
+      "x": 8,
+      "y": 467.5,
+      "width": 374,
+      "height": 911
+    },
+    "through": {
+      "fontSize": "13px",
+      "lineHeight": "18px",
+      "fontWeight": "500",
+      "color": "rgb(169, 175, 185)",
+      "height": 0
+    },
+    "window": {
+      "fontSize": "13px",
+      "lineHeight": "18px",
+      "fontWeight": "500",
+      "color": "rgb(169, 175, 185)",
+      "height": 0
+    },
+    "buttons": [
+      {
+        "text": "How to Use This Page",
+        "font": "13px",
+        "height": 40
+      },
+      {
+        "text": "Stats Glossary",
+        "font": "13px",
+        "height": 40
+      },
+      {
+        "text": "Hotkeys",
+        "font": "13px",
+        "height": 40
+      },
+      {
+        "text": "Overview",
+        "font": "13px",
+        "height": 40
+      },
+      {
+        "text": "Shooting",
+        "font": "13px",
+        "height": 40
+      },
+      {
+        "text": "Impact",
+        "font": "13px",
+        "height": 40
+      },
+      {
+        "text": "On-Off",
+        "font": "13px",
+        "height": 40
+      },
+      {
+        "text": "Six Factor",
+        "font": "13px",
+        "height": 40
+      },
+      {
+        "text": "Rates (Per 36)",
+        "font": "13px",
+        "height": 40
+      },
+      {
+        "text": "Defense",
+        "font": "13px",
+        "height": 40
+      },
+      {
+        "text": "True Shooting",
+        "font": "13px",
+        "height": 40
+      },
+      {
+        "text": "Playmaking",
+        "font": "13px",
+        "height": 40
+      },
+      {
+        "text": "Rebounding",
+        "font": "13px",
+        "height": 40
+      },
+      {
+        "text": "Photos",
+        "font": "13px",
+        "height": 40
+      },
+      {
+        "text": "Logos",
+        "font": "13px",
+        "height": 40
+      },
+      {
+        "text": "Initials",
+        "font": "13px",
+        "height": 40
+      },
+      {
+        "text": "None",
+        "font": "13px",
+        "height": 40
+      },
+      {
+        "text": "Add View",
+        "font": "13px",
+        "height": 40
+      },
+      {
+        "text": "Manage",
+        "font": "13px",
+        "height": 40
+      }
+    ]
+  },
+  {
+    "width": 375,
+    "height": 812,
+    "overflow": false,
+    "layout": "flex",
+    "actions": {
+      "x": 8,
+      "y": 411.5,
+      "width": 197.21875,
+      "height": 40
+    },
+    "divider": {
+      "x": 8,
+      "y": 363.5,
+      "width": 344.84375,
+      "height": 40
+    },
+    "dividerModes": {
+      "x": 88.359375,
+      "y": 363.5,
+      "width": 264.484375,
+      "height": 40
+    },
+    "presets": {
+      "x": 8,
+      "y": 315.5,
+      "width": 359,
+      "height": 40
+    },
+    "table": {
+      "x": 8,
+      "y": 467.5,
+      "width": 359,
+      "height": 937
+    },
+    "through": {
+      "fontSize": "13px",
+      "lineHeight": "18px",
+      "fontWeight": "500",
+      "color": "rgb(169, 175, 185)",
+      "height": 0
+    },
+    "window": {
+      "fontSize": "13px",
+      "lineHeight": "18px",
+      "fontWeight": "500",
+      "color": "rgb(169, 175, 185)",
+      "height": 0
+    },
+    "buttons": [
+      {
+        "text": "How to Use This Page",
+        "font": "13px",
+        "height": 40
+      },
+      {
+        "text": "Stats Glossary",
+        "font": "13px",
+        "height": 40
+      },
+      {
+        "text": "Hotkeys",
+        "font": "13px",
+        "height": 40
+      },
+      {
+        "text": "Overview",
+        "font": "13px",
+        "height": 40
+      },
+      {
+        "text": "Shooting",
+        "font": "13px",
+        "height": 40
+      },
+      {
+        "text": "Impact",
+        "font": "13px",
+        "height": 40
+      },
+      {
+        "text": "On-Off",
+        "font": "13px",
+        "height": 40
+      },
+      {
+        "text": "Six Factor",
+        "font": "13px",
+        "height": 40
+      },
+      {
+        "text": "Rates (Per 36)",
+        "font": "13px",
+        "height": 40
+      },
+      {
+        "text": "Defense",
+        "font": "13px",
+        "height": 40
+      },
+      {
+        "text": "True Shooting",
+        "font": "13px",
+        "height": 40
+      },
+      {
+        "text": "Playmaking",
+        "font": "13px",
+        "height": 40
+      },
+      {
+        "text": "Rebounding",
+        "font": "13px",
+        "height": 40
+      },
+      {
+        "text": "Photos",
+        "font": "13px",
+        "height": 40
+      },
+      {
+        "text": "Logos",
+        "font": "13px",
+        "height": 40
+      },
+      {
+        "text": "Initials",
+        "font": "13px",
+        "height": 40
+      },
+      {
+        "text": "None",
+        "font": "13px",
+        "height": 40
+      },
+      {
+        "text": "Add View",
+        "font": "13px",
+        "height": 40
+      },
+      {
+        "text": "Manage",
+        "font": "13px",
+        "height": 40
+      }
+    ]
+  }
+]

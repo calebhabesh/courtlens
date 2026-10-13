@@ -411,3 +411,13 @@ PC12 B–D are pending. This entry does not mark the remaining page-wide glance 
   checks pass. Font baselines refreshed and checked, five viewport sizes and blocked-font fallback
   pass, and live Settings loads Switzer.
 - [Source and measured glance evidence](evidence/alignment/app-shell/switzer/README.md).
+
+## 2026-10-13 — Stats control uniformity and layout revision
+
+- Owner instructions 44–45 add Table Divider and unify above-table typography/container sizes,
+  including grey Through/Window values. The final revision restores the prior flex/wrap layout,
+  with Add View/Manage after Table Divider; Switzer and normalized styling remain.
+- Real 2048/1440/390/375 captures and the bounded control glance check pass with no page overflow.
+- Dashboard lint/types, Vitest 459/459, production build and affected browser/visual checks pass.
+- [Evidence](evidence/alignment/stats/control-uniformity/README.md). Remaining Stats data work and
+  owner alignment approval are unchanged.
