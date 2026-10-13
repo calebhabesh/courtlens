@@ -646,3 +646,12 @@ scales to 90% around the canvas center; the site-blue background has a 5-unit ra
 SVGs match; URL v4 and served bytes verified. 16px/32px visual inspection passes, including corner
 transparency and the opaque blue edge. Dashboard lint/typecheck and Vitest 454/454 pass.
 [Rounded evidence](evidence/alignment/app-shell/brand-spacing/README.md#follow-up-smaller-logo-and-softly-rounded-corners).
+
+### App-shell follow-up: Switzer UI font (2026-10-13)
+
+Owner selected Switzer for the interface. Root `--font-sans` now uses the original, self-hosted
+Switzer 1.2 variable file; setup/dev/build hooks acquire its pinned hash without redistributing
+the font through git. Default digits and sampled accents pass. Lint/types, Vitest 454/454,
+production build, 13 focused browser checks and 120 visual/picker checks pass; baselines refreshed
+and verified. Five viewport sizes, blocked fonts and live Settings pass. Source/license manifest,
+screenshots and scoped glance test: [Switzer evidence](evidence/alignment/app-shell/switzer/README.md).

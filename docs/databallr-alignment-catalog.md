@@ -12,7 +12,7 @@ Rows are in working order.
 
 | # | Databallr | CourtLens | Status | Notes |
 |---|---|---|---|---|
-| 0 | App shell (nav rows, search, page title block) | `app/layout.tsx` | 👀 | Navbar and favicon follow-ups verified; owner review pending |
+| 0 | App shell (nav rows, search, page title block) | `app/layout.tsx` | 👀 | Switzer interface font verified; owner review pending |
 | 1 | Stats | `/stats` | 🔧 | Seasons back to 2000-01 live (43a–d); multi-season mode next (43e) |
 | 2 | Dashboard (player) | `/players/[id]` | ⬜ | |
 | 3 | PvP | `/compare` | ⬜ | Compare Export failure is a known gap |
@@ -67,6 +67,9 @@ Instructions (owner, 2026-10-13):
    background corners slightly rounded, like a squircle. (Clarifies the preceding rounded-corners
    request.) — logo scaled to 90% around the canvas center; blue background radius 5 SVG units;
    16px/32px visual inspection passes, URL v4 and matching served/source SVGs verified.
+5. [x] Try Switzer instead of Public Sans for the interface. Owner: "Let's try switzer, I actually
+   used this font in another project. It's nice." — original Switzer 1.2 variable WOFF2,
+   self-hosted with pinned setup/dev/build acquisition; uniform digits and sampled accents verified.
 Evidence: docs/evidence/alignment/app-shell/brand-spacing/
 Verification: dashboard lint/typecheck clean; Vitest 454/454; four affected browser checks pass
 (two initial dev-server streaming timeouts passed on rerun). Owner alignment remains pending.
@@ -74,6 +77,9 @@ Background follow-up: lint/typecheck and Vitest 454/454 pass; favicon browser ch
 16px/32px visual inspection. Evidence: `favicon-blue-comparison.png`, `favicon-blue-verification.json`.
 Rounded follow-up: lint/typecheck and Vitest 454/454 pass; browser verification and 16px/32px
 legibility pass. Evidence: `favicon-rounded-comparison.png`, `favicon-rounded-verification.json`.
+Switzer follow-up: lint/typecheck, Vitest 454/454, production build, 13 focused browser checks and
+120 visual/picker checks pass; typography baselines refreshed and checked. Five responsive sizes,
+blocked fonts and live Settings checked. Evidence: docs/evidence/alignment/app-shell/switzer/.
 
 ### 1 Stats — 🔧 in progress
 Instructions (owner, 2026-10-12):

@@ -3,6 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "fonts:ensure": "node scripts/ensure-local-fonts.mjs",
+    "postinstall": "npm run fonts:ensure",
+    "predev": "npm run fonts:ensure",
+    "prebuild": "npm run fonts:ensure",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
