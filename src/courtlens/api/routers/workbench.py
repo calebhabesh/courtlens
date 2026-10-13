@@ -616,12 +616,13 @@ def execute_query_endpoint(
     )
 
     presentation = payload.presentation
+    position_scope: str | list[str] = spec.season_scope.seasons or spec.season or context.season
     if presentation is not None and (presentation.positions or presentation.draft_year):
         # Positions and draft classes narrow the displayed players like favorites; the
         # analytical cohort and its percentiles are unchanged.
         shown = set(presentation.player_ids) if presentation.player_ids is not None else None
         for ids in (
-            position_player_ids(spec.season or context.season, presentation.positions)
+            position_player_ids(position_scope, presentation.positions)
             if presentation.positions
             else None,
             draft_class_player_ids(session, presentation.draft_year)
@@ -641,7 +642,7 @@ def execute_query_endpoint(
                 )
             }
         )
-    positions = season_positions(spec.season or context.season)
+    positions = season_positions(position_scope)
     view_impact = impact_query_fields(spec)
 
     # Presentation queries page through a cached whole cohort: display filters never re-run

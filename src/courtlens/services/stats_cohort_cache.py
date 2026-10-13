@@ -29,7 +29,8 @@ from courtlens.services.workbench_analytics import ResolvedContext, canonical_ha
 
 TTL_SECONDS = 600.0
 MAX_ENTRIES = 8
-MAX_COHORT = 2000
+# Every player in every admitted season (2000-01 onward) fits: about 2,700 for a full range.
+MAX_COHORT = 4000
 
 _entries: OrderedDict[str, tuple[float, bytes]] = OrderedDict()
 # Decoded copies of the most recently used entries (about one season cohort plus its reference).

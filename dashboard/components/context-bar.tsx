@@ -14,6 +14,8 @@ import { SegmentedControl } from "@/components/ui/segmented-control";
 import { beforeDateFromThrough, formatDate, throughDateFromBefore } from "@/lib/format-date";
 import { getSharedCatalog } from "@/lib/route-availability";
 import { applyScopeChange, type ScopeKey } from "@/lib/scope-url";
+import { SEASON_FROM_PARAM, seasonRange, shiftRange } from "@/lib/season-range";
+import { SeasonScopePicker } from "@/components/season-scope-picker";
 import type { WorkbenchCatalog } from "@/lib/types";
 
 interface ContextBarProps {
@@ -42,6 +44,8 @@ interface ContextBarProps {
   detailRows?: DataDetailRow[];
   /** Stats alignment: season picker flanked by previous/next buttons, phase as a segmented control. */
   steppedScope?: boolean;
+  /** Stats alignment 43e: the stepped picker also offers From–Through season ranges. */
+  allowMultiSeason?: boolean;
 }
 
 const SHORT_PHASES: Record<string, string> = { regular_season: "Regular", playoffs: "Playoffs", play_in: "Play-In", cup_final: "Cup Final" };
@@ -68,7 +72,8 @@ export function ContextBar({
   filters,
   modes,
   detailRows = [],
-  steppedScope = false
+  steppedScope = false,
+  allowMultiSeason = false
 }: ContextBarProps) {
   const router = useRouter();
   const pathname = usePathname();
@@ -107,6 +112,24 @@ export function ContextBar({
   );
 
   const throughDate = /^\d{4}-\d{2}-\d{2}$/.test(beforeDate) ? throughDateFromBefore(beforeDate) : "";
+  const range = allowMultiSeason ? seasonRange(seasons, searchParams?.get(SEASON_FROM_PARAM), season) : null;
+  const seasonFrom = range ? range[0] : null;
+  const applySeasonScope = useCallback(
+    (from: string | null, through: string) => {
+      const params = applyScopeChange(searchParams?.toString() ?? "", "season", through, { catalog, season, phase, releaseId, allowedPhases });
+      if (from) {
+        params.set(SEASON_FROM_PARAM, from);
+        // DARKO ratings are per season: a range cannot keep ranking by them.
+        for (const key of ["sortMetric", "sort_metric", "sort"]) {
+          if (["dpm", "o_dpm", "d_dpm"].includes((params.get(key) ?? "").split(":")[0])) params.delete(key);
+        }
+      } else {
+        params.delete(SEASON_FROM_PARAM);
+      }
+      router.push(`${pathname}?${params.toString()}`);
+    },
+    [router, pathname, searchParams, catalog, season, phase, releaseId, allowedPhases]
+  );
 
   const seasonSelect = (
     <Select value={season} onChange={(e) => updateParam("season", e.target.value)} aria-label="Filter by season">
@@ -118,6 +141,15 @@ export function ContextBar({
   const seasonIndex = chronological.indexOf(season);
   const previousSeason = seasonIndex > 0 ? chronological[seasonIndex - 1] : undefined;
   const nextSeason = seasonIndex >= 0 ? chronological[seasonIndex + 1] : undefined;
+  // A range steps as a whole window, one season at a time.
+  const earlierRange = seasonFrom ? shiftRange(seasons, seasonFrom, season, -1) : null;
+  const laterRange = seasonFrom ? shiftRange(seasons, seasonFrom, season, 1) : null;
+  const stepBack = seasonFrom
+    ? earlierRange && (() => applySeasonScope(earlierRange.from, earlierRange.through))
+    : previousSeason && (() => updateParam("season", previousSeason));
+  const stepForward = seasonFrom
+    ? laterRange && (() => applySeasonScope(laterRange.from, laterRange.through))
+    : nextSeason && (() => updateParam("season", nextSeason));
   // Regular and Playoffs always hold their places; a phase without coverage is shown disabled.
   const phaseSegments = [...new Set([...(allowedPhases ? [] : ["regular_season", "playoffs"]), ...phases, phase])];
 
@@ -125,15 +157,23 @@ export function ContextBar({
     <>
       {steppedScope ? (
         <div className="context-season-stepper" role="group" aria-label="Season">
-          <button type="button" className="context-stepper-button" disabled={!previousSeason}
-            onClick={() => previousSeason && updateParam("season", previousSeason)}
-            aria-label={previousSeason ? `Previous season, ${previousSeason}` : "No earlier season"}>
+          <button type="button" className="context-stepper-button" disabled={!stepBack}
+            onClick={() => stepBack && stepBack()}
+            aria-label={seasonFrom
+              ? (earlierRange ? `Earlier range, ${earlierRange.from} – ${earlierRange.through}` : "No earlier range")
+              : (previousSeason ? `Previous season, ${previousSeason}` : "No earlier season")}>
             <Icon name="left" size={14} />
           </button>
-          <span className="context-season-picker"><Icon name="calendar" size={14} />{seasonSelect}</span>
-          <button type="button" className="context-stepper-button" disabled={!nextSeason}
-            onClick={() => nextSeason && updateParam("season", nextSeason)}
-            aria-label={nextSeason ? `Next season, ${nextSeason}` : "No later season"}>
+          {allowMultiSeason ? (
+            <SeasonScopePicker seasons={seasons} season={season} seasonFrom={seasonFrom} onApply={applySeasonScope} />
+          ) : (
+            <span className="context-season-picker"><Icon name="calendar" size={14} />{seasonSelect}</span>
+          )}
+          <button type="button" className="context-stepper-button" disabled={!stepForward}
+            onClick={() => stepForward && stepForward()}
+            aria-label={seasonFrom
+              ? (laterRange ? `Later range, ${laterRange.from} – ${laterRange.through}` : "No later range")
+              : (nextSeason ? `Next season, ${nextSeason}` : "No later season")}>
             <Icon name="right" size={14} />
           </button>
         </div>
@@ -178,7 +218,7 @@ export function ContextBar({
       scope={scope}
       filters={filters}
       modes={modes}
-      summary={`${season} · ${phaseLabel(phase)}${showThrough && throughDate ? ` · ${formatDate(throughDate, "compact")}` : ""}`}
+      summary={`${seasonFrom ? `${seasonFrom} – ${season}` : season} · ${phaseLabel(phase)}${showThrough && throughDate ? ` · ${formatDate(throughDate, "compact")}` : ""}`}
       count={sampleSize !== undefined ? <CountChip>{sampleSize.toLocaleString("en-US")} {sampleNoun}</CountChip> : undefined}
       details={
         <DataDetailsButton
