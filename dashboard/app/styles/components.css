@@ -143,6 +143,10 @@
   flex-shrink: 0;
 }
 
+.courtlens-header .brand {
+  gap: var(--space-1);
+}
+
 .courtlens-nav {
   display: flex;
   align-items: center;
