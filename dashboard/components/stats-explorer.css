@@ -258,12 +258,29 @@
   /* Scope row: 40px raised blocks, no divider line */
   .stats-workspace .ui-filter-bar { border: 0; box-shadow: none; margin-bottom: var(--space-2); }
   .stats-workspace .ui-filter-bar-scope, .stats-workspace .ui-filter-bar-controls { gap: var(--space-3); }
-  .stats-workspace .context-season-stepper { display: inline-flex; align-items: stretch; height: var(--control-lg); background: var(--color-surface-2); border-radius: var(--radius-sm); overflow: hidden; }
-  .stats-workspace .context-stepper-button { display: inline-grid; place-items: center; width: 36px; min-height: var(--control-lg); padding: 0; border: 0; background: transparent; color: var(--color-text-secondary); }
-  .stats-workspace .context-stepper-button:hover:not(:disabled) { background: var(--color-surface-hover); color: var(--color-text); }
+  .context-season-stepper { display: inline-flex; align-items: stretch; height: var(--control-lg); background: var(--color-surface-2); border-radius: var(--radius-sm); }
+  .context-stepper-button:first-child { border-radius: var(--radius-sm) 0 0 var(--radius-sm); }
+  .context-stepper-button:last-child { border-radius: 0 var(--radius-sm) var(--radius-sm) 0; }
+  .context-stepper-button { display: inline-grid; place-items: center; width: 36px; min-height: var(--control-lg); padding: 0; border: 0; background: transparent; color: var(--color-text-secondary); }
+  .context-stepper-button:hover:not(:disabled) { background: var(--color-surface-hover); color: var(--color-text); }
   .stats-workspace .context-season-picker { display: inline-flex; align-items: center; gap: var(--space-1); padding-left: var(--space-3); background: var(--color-surface-3); color: var(--color-accent); }
   .stats-workspace .context-season-picker .ui-select-wrapper { background: transparent; }
   .stats-workspace .context-season-picker .ui-select { min-height: var(--control-lg); background: transparent; border: 0; color: var(--color-text); font-size: var(--text-lg); font-weight: 600; padding-left: var(--space-1); }
+  /* 43e: season scope popover (single season or a From–Through range, Databallr pattern). */
+  .season-scope-popover { display: flex; }
+  .season-scope-popover > .ui-popover-trigger { display: flex; }
+  .season-scope-trigger { display: inline-flex; align-items: center; gap: var(--space-1); min-height: var(--control-lg); padding-inline: var(--space-3); background: var(--color-surface-3); color: var(--color-accent); }
+  .season-scope-value { color: var(--color-text); font-size: var(--text-lg); font-weight: 600; white-space: nowrap; }
+  .season-scope-trigger .ui-icon:last-child { color: var(--color-text-secondary); }
+  .season-scope-popover .ui-popover-panel { width: min(340px, calc(100vw - 2 * var(--space-4))); padding: var(--space-3); gap: var(--space-3); }
+  .season-scope-panel { display: grid; gap: var(--space-3); }
+  .season-scope-panel .ui-select-wrapper { width: 100%; }
+  .season-scope-range { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-2); }
+  .season-scope-quick { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-2); width: 100%; }
+  .season-scope-quick-button { min-height: var(--control-md); border: 0; border-radius: var(--radius-sm); background: var(--color-surface-2); color: var(--color-text-secondary); font-size: var(--text-sm); font-weight: 600; cursor: pointer; }
+  .season-scope-quick-button:hover { background: var(--color-surface-hover); color: var(--color-text); }
+  .season-scope-quick-button[aria-pressed=true] { background: var(--color-accent-soft); color: var(--color-accent); box-shadow: inset 0 0 0 1px var(--color-accent); }
+  .season-scope-apply { width: 100%; }
   .stats-workspace .context-phase-segments { height: var(--control-lg); background: var(--color-surface-2); padding: var(--space-1); border-radius: var(--radius-sm); }
   .stats-workspace .context-phase-segments .ui-segmented-item { min-height: var(--control-md); padding-inline: var(--space-3); font-size: var(--text-md); font-weight: 600; border-radius: var(--radius-xs); }
   .stats-workspace .context-phase-segments .ui-segmented-indicator { border-radius: var(--radius-xs); background-color: var(--color-accent-soft); box-shadow: inset 0 0 0 1px var(--color-accent); }

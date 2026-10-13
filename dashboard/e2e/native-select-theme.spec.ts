@@ -21,7 +21,9 @@ for (const label of ["Filter by season", "Analysis window"]) {
     // menu an unselected row as well, without inventing additional source coverage.
     const path = label === "Filter by season" ? "/stats?season=2024-25" : "/stats";
     await openWorkbench(page, path);
-    const select = page.getByRole("combobox", { name: label, exact: true });
+    // Stats seasons live in the season scope popover (single season or a range, 43e).
+    if (label === "Filter by season") await page.getByRole("button", { name: /^Season: / }).click();
+    const select = page.getByRole("combobox", { name: label === "Filter by season" ? "Season" : label, exact: true });
     const colors = await select.evaluate(element => {
       const control = element as HTMLSelectElement;
       return {
@@ -75,7 +77,9 @@ for (const label of ["Filter by season", "Analysis window"]) {
     // The scope pickers open above the table: capture the scope rows and popup, not table layout.
     expect(await page.screenshot({ caret: "hide", animations: "disabled", clip: { x: 0, y: 0, width: 1440, height: 380 } })).toMatchSnapshot(`${label.toLowerCase().replaceAll(" ", "-")}-popup.png`);
     await page.keyboard.press("Escape");
-    await expect(select).toHaveValue(value);
+    // Escape may also close the season popover; the applied season must not change either way.
+    if (label === "Filter by season") await expect(page.getByRole("button", { name: /^Season: / })).toContainText(value);
+    else await expect(select).toHaveValue(value);
   });
 }
 

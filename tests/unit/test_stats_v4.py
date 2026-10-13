@@ -287,3 +287,41 @@ def test_views_and_sorts_of_one_scope_share_a_cohort() -> None:
     assert cohort_query(overview) == cohort_query(impact)
     assert cohort_query(box) != cohort_query(overview)
     assert cohort_query(box).view_state is None
+
+
+def test_range_positions_use_each_players_latest_season(tmp_path: Path) -> None:
+    body = {
+        "version": position_estimates.VERSION,
+        "seasons": {
+            "2000-01": {"retired": {"position": "C"}, "moved": {"position": "SF"}},
+            "2001-02": {"moved": {"position": "PF"}},
+        },
+    }
+    path, _ = write_artifact(tmp_path, body)
+    with patch(
+        "courtlens.services.position_estimates.get_settings",
+        return_value=Settings(position_estimates_manifest=path),
+    ):
+        both = ["2001-02", "2000-01"]
+        assert position_estimates.season_positions(both) == {"retired": "C", "moved": "PF"}
+        assert position_estimates.position_player_ids(both, ["SF"]) == set()
+        assert position_estimates.season_positions("2000-01")["moved"] == "SF"
+
+
+@pytest.mark.parametrize(
+    "seasons",
+    [
+        ["2024-25", "2025-26", "2023-24"],  # ends after the query season
+        ["2024-25", "2024-25"],  # duplicate
+        [f"{y}-{(y + 1) % 100:02d}" for y in range(1990, 2025)],  # longer than 30
+    ],
+)
+def test_stats_presentation_rejects_unusable_season_ranges(seasons: list[str]) -> None:
+    from courtlens.domain.query_spec import SeasonScope
+    from courtlens.domain.stats_presentation import StatsPresentation
+    from courtlens.services.stats_engine import execute_stats_query
+
+    season = "2024-25" if len(seasons) < 30 else "2023-24"
+    query = QuerySpec(season=season, season_scope=SeasonScope(seasons=seasons))
+    with pytest.raises(HTTPException, match="season range"):
+        execute_stats_query(None, None, query, presentation=StatsPresentation())  # type: ignore[arg-type]

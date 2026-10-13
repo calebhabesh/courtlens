@@ -1,4 +1,5 @@
 import {
+  useCallback,
   useState,
   useRef,
   useEffect,
@@ -130,7 +131,7 @@ export function Menu({
     };
     document.addEventListener("mousedown", handleOutsideClick);
     return () => document.removeEventListener("mousedown", handleOutsideClick);
-  }, [isOpen]);
+  }, [isOpen, setIsOpen]);
 
   return (
     <div
@@ -180,11 +181,21 @@ export interface PopoverProps {
   trigger: ReactNode;
   align?: "left" | "right";
   className?: string;
+  /** Accessible name of the trigger when its content is not text alone. */
+  triggerLabel?: string;
+  /** Controlled mode: the owner closes the panel after applying a choice. */
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
   children: ReactNode;
 }
 
-export function Popover({ trigger, align = "left", className = "", children }: PopoverProps) {
-  const [isOpen, setIsOpen] = useState(false);
+export function Popover({ trigger, align = "left", className = "", triggerLabel, open, onOpenChange, children }: PopoverProps) {
+  const [ownOpen, setOwnOpen] = useState(false);
+  const isOpen = open ?? ownOpen;
+  const setIsOpen = useCallback((value: boolean) => {
+    if (open === undefined) setOwnOpen(value);
+    onOpenChange?.(value);
+  }, [open, onOpenChange]);
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -194,9 +205,16 @@ export function Popover({ trigger, align = "left", className = "", children }: P
         setIsOpen(false);
       }
     };
+    const handleEscape = (e: globalThis.KeyboardEvent) => {
+      if (e.key === "Escape") setIsOpen(false);
+    };
     document.addEventListener("mousedown", handleOutside);
-    return () => document.removeEventListener("mousedown", handleOutside);
-  }, [isOpen]);
+    document.addEventListener("keydown", handleEscape);
+    return () => {
+      document.removeEventListener("mousedown", handleOutside);
+      document.removeEventListener("keydown", handleEscape);
+    };
+  }, [isOpen, setIsOpen]);
 
   return (
     <div ref={containerRef} className={`ui-popover-container ${className}`}>
@@ -204,7 +222,8 @@ export function Popover({ trigger, align = "left", className = "", children }: P
         type="button"
         aria-haspopup="dialog"
         aria-expanded={isOpen}
-        onClick={() => setIsOpen(prev => !prev)}
+        aria-label={triggerLabel}
+        onClick={() => setIsOpen(!isOpen)}
         className="ui-popover-trigger"
       >
         {trigger}
