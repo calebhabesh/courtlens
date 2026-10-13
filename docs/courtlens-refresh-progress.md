@@ -672,3 +672,10 @@ Owner instruction 46 reduces desktop search from 320×40px to 288×32px at 1440,
 phone touch sizing retained. Real 1440/390/375 captures pass the scoped glance check with no page
 overflow. Dashboard lint/types, Vitest 459/459, production build, six readability/search browser
 checks and refreshed Stats screenshot checks pass. [Evidence](evidence/alignment/stats/search-sizing/README.md).
+
+### Stats follow-up: centered table search (2026-10-13)
+
+Owner instruction 47 centers the compact search above the player cards. Real desktop/phone
+measurements show zero center offset; the scoped glance check passes. Lint/types, Vitest 459/459,
+production build, existing search browser checks and Stats baselines pass.
+[Evidence](evidence/alignment/stats/search-centering/README.md).

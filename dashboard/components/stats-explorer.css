@@ -119,7 +119,7 @@
 .stats-workspace .dense-stats-table .stat-cell-content { align-items: flex-end; gap: var(--space-0-5); line-height: var(--text-sm-lh); }
 .stats-workspace .dense-stats-table .stat-main-value { font-family: var(--font-sans), sans-serif; font-weight: 500; line-height: var(--text-sm-lh); }
 .stats-workspace .dense-stats-table .pct-elite, .stats-workspace .dense-stats-table .pct-good { color: var(--color-accent); }
-/* The search spans the card width (compare + name columns), left-aligned with the rows. */
+/* The search header spans both card columns; its compact field is centered within them. */
 .stats-workspace .dense-stats-table .pinned-col-search { left: 0; padding: var(--space-1) var(--space-1) var(--space-1) var(--space-2); width: calc(28px + var(--identity-name-width)); min-width: calc(28px + var(--identity-name-width)); max-width: calc(28px + var(--identity-name-width)); text-align: left; text-transform: none; }
 .stats-workspace .stats-header-search { position: relative; display: flex; align-items: center; gap: var(--space-1); width: 100%; }
 .stats-workspace .stats-header-search .lookup-combobox, .stats-workspace .stats-header-search > div:first-child { flex: 1; min-width: 0; }
@@ -492,7 +492,7 @@
 
 /* Owner follow-up: one type scale and control height above the table. */
 @layer foundation {
-  .stats-workspace .stats-header-search { max-width: 288px; }
+  .stats-workspace .stats-header-search { max-width: 288px; margin-inline: auto; }
   .stats-workspace .stats-header-search .lookup-input-wrapper { min-height: var(--control-md); }
   .stats-workspace .stats-header-search .lookup-input { min-height: calc(var(--control-md) - 2px); }
   .stats-workspace .stats-header-search .lookup-clear-btn { min-width: var(--control-sm); min-height: var(--control-sm); }
