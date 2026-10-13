@@ -95,7 +95,7 @@
 .stats-workspace .stats-name-column { width: var(--identity-name-width); }
 .stats-workspace .dense-stats-table .stats-header-tier-1 th { height: 26px; padding: var(--space-1) var(--space-2); font-size: var(--text-sm); font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; text-align: center; border: 0; color: var(--color-text); }
 .stats-workspace .dense-stats-table .stats-header-tier-1 .pinned-col-group { box-shadow: none; }
-.stats-workspace .dense-stats-table .stats-header-tier-2 th { top: 26px; height: 36px; padding: var(--space-1); border: 0; font-size: var(--text-xs); letter-spacing: 0; text-transform: uppercase; }
+.stats-workspace .dense-stats-table .stats-header-tier-2 th { top: 26px; height: 36px; padding: var(--space-1); border: 0; font-size: var(--text-xs); letter-spacing: 0; text-transform: uppercase; vertical-align: bottom; }
 .stats-workspace .dense-stats-table .table-sort-button { min-height: var(--control-sm); font-size: var(--text-xs); font-weight: 600; justify-content: center; width: 100%; gap: var(--space-0-5); color: var(--color-text-secondary); text-transform: uppercase; }
 .stats-workspace .dense-stats-table th[aria-sort=ascending] .table-sort-button,
 .stats-workspace .dense-stats-table th[aria-sort=descending] .table-sort-button { color: var(--color-accent); }
@@ -198,8 +198,7 @@
 .stats-workspace .density-compact .player-cell-teams { font-size: var(--text-xs); }
 .stats-workspace .density-compact .stats-primary-portrait { width: 28px; height: 28px; min-width: 28px; min-height: 28px; }
 
-/* Table palette: one lifted surface across header, body, rail and footer; the photo guide
-   column is recessed so it reads as a continuous band from header to last row. */
+/* Table palette: lifted header, guide bands, rail and footer around the dark card/data surface. */
 .stats-workspace .stats-table-frame {
   --table-surface: var(--color-surface-3);
   --table-data: color-mix(in srgb, var(--color-surface-1) 55%, var(--color-surface-3));
@@ -223,8 +222,11 @@
 .stats-workspace .stats-table-frame .dense-stats-table tbody tr:hover .stats-guide-cell,
 .stats-workspace .stats-table-frame .dense-stats-table tbody tr.row-previewed .stats-guide-cell { background: var(--table-data-hover); }
 .stats-workspace .stats-table-frame .dense-stats-table tbody .stats-guide-cell::before { content: ""; position: absolute; inset: 0; background: var(--table-surface); transform: translateX(var(--guide-offset, 0px)); }
-/* Data cells sit in the darker inner well; identity, header and guide columns share the outer surface. */
+/* Player cards and metric cells share the darker inner well; header and guide bands stay lifted. */
+.stats-workspace .stats-table-frame .dense-stats-table tbody .pinned-col,
 .stats-workspace .stats-table-frame .dense-stats-table tbody td.stats-metric-cell { background: var(--table-data); }
+.stats-workspace .stats-table-frame .dense-stats-table tbody tr:hover .pinned-col,
+.stats-workspace .stats-table-frame .dense-stats-table tbody tr.row-previewed .pinned-col,
 .stats-workspace .stats-table-frame .dense-stats-table tbody tr:hover td.stats-metric-cell,
 .stats-workspace .stats-table-frame .dense-stats-table tbody tr.row-previewed td.stats-metric-cell { background: var(--table-data-hover); }
 /* Seamless rows like the reference: no row rules, so the guide band reads as part of the table. */

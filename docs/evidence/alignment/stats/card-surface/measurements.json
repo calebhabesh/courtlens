@@ -1,0 +1,252 @@
+[
+  {
+    "viewport": 1440,
+    "search": {
+      "width": 312,
+      "height": 32,
+      "bottom": 499
+    },
+    "headerBottoms": [
+      {
+        "label": "GP",
+        "bottom": 499
+      },
+      {
+        "label": "MIN",
+        "bottom": 499
+      },
+      {
+        "label": "MPG",
+        "bottom": 499
+      },
+      {
+        "label": "OnBall%",
+        "bottom": 499
+      },
+      {
+        "label": "DPM",
+        "bottom": 499
+      },
+      {
+        "label": "ODPM",
+        "bottom": 499
+      },
+      {
+        "label": "DDPM",
+        "bottom": 499
+      },
+      {
+        "label": "PTS",
+        "bottom": 499
+      },
+      {
+        "label": "REB",
+        "bottom": 499
+      },
+      {
+        "label": "AST",
+        "bottom": 499
+      },
+      {
+        "label": "PTS Created",
+        "bottom": 499
+      },
+      {
+        "label": "Rim AST",
+        "bottom": 499
+      },
+      {
+        "label": "TOV",
+        "bottom": 499
+      },
+      {
+        "label": "TS%",
+        "bottom": 499
+      },
+      {
+        "label": "rTS%",
+        "bottom": 499
+      },
+      {
+        "label": "eFG%",
+        "bottom": 499
+      },
+      {
+        "label": "cTOV%",
+        "bottom": 499
+      },
+      {
+        "label": "2P%",
+        "bottom": 499
+      },
+      {
+        "label": "3P%",
+        "bottom": 499
+      },
+      {
+        "label": "3PA",
+        "bottom": 499
+      },
+      {
+        "label": "FT%",
+        "bottom": 499
+      },
+      {
+        "label": "FTA",
+        "bottom": 499
+      },
+      {
+        "label": "OREB",
+        "bottom": 499
+      },
+      {
+        "label": "DREB",
+        "bottom": 499
+      },
+      {
+        "label": "STL",
+        "bottom": 499
+      },
+      {
+        "label": "BLK",
+        "bottom": 499
+      }
+    ],
+    "centerOffset": 0,
+    "colors": {
+      "select": "color(srgb 0.108824 0.120196 0.139412)",
+      "name": "color(srgb 0.108824 0.120196 0.139412)",
+      "metric": "color(srgb 0.108824 0.120196 0.139412)"
+    },
+    "overflow": false,
+    "hover": {
+      "name": "color(srgb 0.144471 0.155388 0.173835)",
+      "metric": "color(srgb 0.144471 0.155388 0.173835)"
+    }
+  },
+  {
+    "viewport": 390,
+    "search": {
+      "width": 228,
+      "height": 42,
+      "bottom": 745
+    },
+    "headerBottoms": [
+      {
+        "label": "GP",
+        "bottom": 745
+      },
+      {
+        "label": "MIN",
+        "bottom": 745
+      },
+      {
+        "label": "MPG",
+        "bottom": 745
+      },
+      {
+        "label": "OnBall%",
+        "bottom": 745
+      },
+      {
+        "label": "DPM",
+        "bottom": 745
+      },
+      {
+        "label": "ODPM",
+        "bottom": 745
+      },
+      {
+        "label": "DDPM",
+        "bottom": 745
+      },
+      {
+        "label": "PTS",
+        "bottom": 745
+      },
+      {
+        "label": "REB",
+        "bottom": 745
+      },
+      {
+        "label": "AST",
+        "bottom": 745
+      },
+      {
+        "label": "PTS Created",
+        "bottom": 745
+      },
+      {
+        "label": "Rim AST",
+        "bottom": 745
+      },
+      {
+        "label": "TOV",
+        "bottom": 745
+      },
+      {
+        "label": "TS%",
+        "bottom": 745
+      },
+      {
+        "label": "rTS%",
+        "bottom": 745
+      },
+      {
+        "label": "eFG%",
+        "bottom": 745
+      },
+      {
+        "label": "cTOV%",
+        "bottom": 745
+      },
+      {
+        "label": "2P%",
+        "bottom": 745
+      },
+      {
+        "label": "3P%",
+        "bottom": 745
+      },
+      {
+        "label": "3PA",
+        "bottom": 745
+      },
+      {
+        "label": "FT%",
+        "bottom": 745
+      },
+      {
+        "label": "FTA",
+        "bottom": 745
+      },
+      {
+        "label": "OREB",
+        "bottom": 745
+      },
+      {
+        "label": "DREB",
+        "bottom": 745
+      },
+      {
+        "label": "STL",
+        "bottom": 745
+      },
+      {
+        "label": "BLK",
+        "bottom": 745
+      }
+    ],
+    "centerOffset": 0,
+    "colors": {
+      "select": "color(srgb 0.108824 0.120196 0.139412)",
+      "name": "color(srgb 0.108824 0.120196 0.139412)",
+      "metric": "color(srgb 0.108824 0.120196 0.139412)"
+    },
+    "overflow": false,
+    "hover": {
+      "name": "color(srgb 0.144471 0.155388 0.173835)",
+      "metric": "color(srgb 0.144471 0.155388 0.173835)"
+    }
+  }
+]
