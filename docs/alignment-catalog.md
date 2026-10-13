@@ -287,6 +287,9 @@ Follow-up instruction (owner, 2026-10-13, table search sizing):
 48. [x] Make the search bar slightly wider; it is a little too tapered.
     - Done: cap increased from 288px to 304px, retaining centering and 32px desktop height.
       [Evidence](evidence/alignment/stats/search-sizing/README.md#follow-up-slightly-wider-still-centered).
+49. [x] Make the search bar slightly larger/wider again.
+    - Done: cap increased from 304px to 312px, preserving centering and height.
+      [Evidence](evidence/alignment/stats/search-sizing/README.md#follow-up-another-8px-of-width).
 Not applicable (no data or feature): the video and trophy
 (Leaders) toolbar buttons. Tab/Shift+Tab view cycling is exposed as buttons only, so Tab keeps
 normal keyboard focus order.

@@ -29,3 +29,12 @@ down from 20px. [Updated desktop](stats-wider-1440.png), [phone](stats-wider-390
 dimensions remain 228×42px. The scoped glance check passes for width, centering and readability.
 Lint/types, Vitest 459/459, production build, six search browser checks and two Stats baseline
 checks pass. Desktop baseline refreshed; phone baseline retained.
+
+## Follow-up: another 8px of width
+
+Owner instruction 49 increases the cap from 304px to 312px. The field stays centered and 32px
+tall, with 8px side insets over the 328px desktop player-card area. [Desktop](stats-width-312-1440.png),
+[phone](stats-width-312-390.png) and [measurements](width-312-measurements.json) verify zero center
+offset and page overflow; phone dimensions remain unchanged. The scoped glance check passes.
+Lint/types, Vitest 459/459, production build, six search browser checks and two Stats baselines
+pass. Desktop baseline refreshed; phone baseline retained.

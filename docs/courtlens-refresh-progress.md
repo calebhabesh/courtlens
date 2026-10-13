@@ -686,3 +686,9 @@ Owner instruction 48 increases the cap from 288px to 304px, retaining centering 
 Real desktop/phone measurements and scoped glance check pass. Lint/types, Vitest 459/459,
 production build, six search browser checks and two Stats baseline checks pass.
 [Evidence](evidence/alignment/stats/search-sizing/README.md#follow-up-slightly-wider-still-centered).
+
+### Stats follow-up: another small search-width increase (2026-10-13)
+
+Owner instruction 49 increases the cap to 312px, preserving centering and height. Real desktop/phone
+measurements and scoped glance check pass. Lint/types, Vitest 459/459, production build, six search
+browser checks and two Stats baselines pass. [Evidence](evidence/alignment/stats/search-sizing/README.md#follow-up-another-8px-of-width).

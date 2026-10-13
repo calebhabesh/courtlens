@@ -1,0 +1,24 @@
+[
+  {
+    "viewport": 1440,
+    "search": {
+      "x": 32,
+      "width": 312,
+      "height": 32
+    },
+    "sideInset": 8,
+    "offset": 0,
+    "overflow": false
+  },
+  {
+    "viewport": 390,
+    "search": {
+      "x": 12,
+      "width": 228,
+      "height": 42
+    },
+    "sideInset": 4,
+    "offset": 0,
+    "overflow": false
+  }
+]
