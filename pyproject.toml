@@ -19,6 +19,7 @@ dependencies = [
   "google-genai>=2.0.0,<3",
   "httpx>=0.27,<1",
   "openai>=2.54,<3",
+  "pillow>=11,<13",
   "prometheus-client>=0.21,<1",
   "psycopg[binary]>=3.2,<4",
   "pydantic-settings>=2.8,<3",

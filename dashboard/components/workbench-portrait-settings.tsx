@@ -69,8 +69,8 @@ export function WorkbenchPortraitSettings({
         <ButtonSummary>Source and storage</ButtonSummary>
         <dl className="ui-why-body ui-article-facts">
           <div><dt>Local cache path</dt><dd className="font-mono">{storagePath}</dd></div>
-          <div><dt>Source CDN</dt><dd className="font-mono">cdn.nba.com/headshots/nba/latest/260x190/</dd></div>
-          <div><dt>Serving route</dt><dd className="font-mono">/api/workbench/players/&#123;id&#125;/portrait</dd></div>
+          <div><dt>Source CDN</dt><dd className="font-mono">cdn.nba.com/headshots/nba/latest/1040x760/</dd></div>
+          <div><dt>Serving route</dt><dd className="font-mono">/api/workbench/players/&#123;id&#125;/portrait?size=64…288</dd></div>
         </dl>
       </details>
     </ArticleSection>

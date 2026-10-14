@@ -1,7 +1,7 @@
 import { forwardRef } from "react";
 import catalog from "@/lib/team-branding.json";
 import { teamAccent } from "@/lib/team-colors";
-import { browserApi } from "@/lib/workbench-api";
+import { portraitSource } from "@/lib/portrait-source";
 import { WORDMARK_HEIGHT, WORDMARK_WIDTH } from "@/lib/courtlens-wordmark";
 import { CourtLensWordmark } from "./courtlens-wordmark";
 import { ordinal } from "./ui/stat-tile";
@@ -40,10 +40,9 @@ function teamRecord(team?: string) {
   return team ? catalog.teams.find((entry) => entry.team_id === team || entry.tricode === team) : undefined;
 }
 
+// The 140px circle is also exported as a PNG at up to 2x, so it takes the largest derivative.
 function portraitHref(player: PlayerResearchItem): string {
-  const path = player.portrait_url || `/api/workbench/players/${player.player_id}/portrait`;
-  const versioned = /^\/api\/workbench\/players\/[^/]+\/portrait$/.test(path) ? `${path}?quality=1040x760` : path;
-  return versioned.startsWith("/") ? `${browserApi.replace(/\/$/, "")}${versioned}` : versioned;
+  return portraitSource(player.portrait_url, player.player_id, 288)?.src ?? "";
 }
 
 function initials(name: string): string {
