@@ -16,21 +16,13 @@
 /* FO13: the desktop gutter matches the header and every other page (24px); phones keep the dense 8px. */
 .stats-workspace .workbench-content { padding: var(--space-4) var(--space-6) var(--space-6); }
 .stats-workspace .context-bar { position: static; padding: var(--space-1) 0; min-height: var(--control-lg); margin-bottom: var(--space-2); background: transparent; border: 0; }
-.stats-workspace .context-select, .stats-workspace .context-input { border-color: transparent; font-size: var(--text-xs); min-height: var(--control-md); padding-block: var(--space-1); }
-.stats-workspace .context-label { font-size: var(--text-xs); }
-.stats-workspace .context-meta { font-size: var(--text-xs); }
 .stats-workspace .player-explorer-container { margin-top: var(--space-4); }
 .stats-workspace .stats-preset-tabs-wrapper { display: flex; align-items: center; flex-wrap: wrap; gap: var(--space-2); border: 0; overflow: visible; margin-bottom: var(--space-4); }
 .stats-workspace .stats-preset-gated-tag { border: 0; background: transparent; font-family: inherit; font-size: var(--text-xs); padding: 0; }
-.stats-workspace .control-group-label { text-transform: none; letter-spacing: 0; font-size: var(--text-xs); padding-left: var(--space-1); }
 .stats-workspace .button { border-color: transparent; background: var(--color-surface-2); }
-.stats-workspace .button-primary { background: var(--color-accent); color: var(--color-on-accent); }
-.stats-workspace .button-small { min-height: var(--control-sm); font-size: var(--text-xs); padding: var(--space-1) var(--space-2); }
 .stats-workspace .stats-table-frame { background: var(--color-surface-1); border-radius: var(--radius-md); overflow: clip; }
 .stats-workspace .stats-controls-row { justify-content: flex-start; padding: var(--space-2) var(--space-3); gap: var(--space-3); margin: 0; border: 0; border-radius: 0; background: transparent; }
 .stats-workspace .stats-table-brand { color: var(--color-accent); font-size: var(--text-lg); letter-spacing: -0.01em; }
-.stats-workspace .stats-view-controls { border-left: 1px solid var(--color-hairline); padding-left: var(--space-3); }
-.stats-workspace .stats-table-tools { margin-left: auto; flex-wrap: wrap; }
 .stats-workspace .filter-toolbar { border: 0; border-radius: 0; margin: 0; padding: var(--space-3); background: var(--color-surface-1); gap: var(--space-3); }
 .stats-workspace .filter-group label { font-size: var(--text-xs); }
 .stats-workspace .filter-toolbar input, .stats-workspace .filter-toolbar select { border-color: transparent; min-height: var(--control-md); font-size: var(--text-xs); }
@@ -57,8 +49,6 @@
   scroll-padding-top: 70px;
 }
 .stats-default-view-star { margin-left: var(--space-1); color: var(--color-accent); }
-.stats-preset-manage-wrapper { display: flex; gap: var(--space-1); align-items: center; flex-shrink: 0; }
-.stats-workspace .stats-manage-views-btn { min-height: var(--control-md); font-size: var(--text-xs); padding: var(--space-1) var(--space-2); white-space: nowrap; }
 .notice-box-success { border-left-color: var(--color-positive); margin-bottom: var(--space-4); }
 .stats-filter-num-sm { width: 70px; }
 .stats-filter-num-md { width: 100px; }
@@ -97,7 +87,6 @@
 .stats-workspace .dense-stats-table .stats-primary-portrait { width: 32px; height: 32px; min-width: 32px; min-height: 32px; border: 0; }
 .stats-workspace .dense-stats-table .team-logo-stack { flex-wrap: nowrap; flex-shrink: 0; }
 .stats-workspace .dense-stats-table .team-logo { width: 20px; height: 20px; min-width: 20px; }
-.stats-workspace .dense-stats-table input.stats-compare-checkbox { width: 13px; height: 13px; }
 .stats-workspace .dense-stats-table .stats-guide-cell { width: 38px; padding: 0; border: 0; background: var(--color-surface-3); }
 .stats-workspace .stats-guide-cell .player-portrait, .stats-workspace .stats-guide-cell .player-portrait-fallback { width: 30px; height: 30px; min-width: 30px; min-height: 30px; border: 0; font-size: var(--text-xs); }
 .stats-workspace .dense-stats-table .stats-group-1 { background: var(--color-surface-2); }
@@ -106,9 +95,7 @@
 .stats-workspace .dense-stats-table tbody tr.row-selected td { background: var(--color-surface-3); }
 .stats-workspace .dense-stats-table tbody tr:hover .player-cell-name,
 .stats-workspace .dense-stats-table tbody tr:focus-visible .player-cell-name { color: var(--color-accent); }
-.stats-workspace .dense-stats-table .stat-cell-content { align-items: flex-end; gap: var(--space-0-5); line-height: var(--text-sm-lh); }
 .stats-workspace .dense-stats-table .stat-main-value { font-family: var(--font-sans), sans-serif; font-weight: 500; line-height: var(--text-sm-lh); }
-.stats-workspace .dense-stats-table .pct-elite, .stats-workspace .dense-stats-table .pct-good { color: var(--color-accent); }
 /* The search header spans both card columns; its compact field is centered within them. */
 .stats-workspace .dense-stats-table .pinned-col-search { left: 0; padding: var(--space-1) var(--space-1) var(--space-1) var(--space-2); width: calc(28px + var(--identity-name-width)); min-width: calc(28px + var(--identity-name-width)); max-width: calc(28px + var(--identity-name-width)); text-align: left; text-transform: none; }
 .stats-workspace .stats-header-search { position: relative; display: flex; align-items: center; gap: var(--space-1); width: 100%; }
@@ -166,7 +153,6 @@
   .stats-workspace .stats-frame-layout.has-rail, .stats-workspace .stats-frame-layout.has-rail.preview-collapsed { grid-template-columns: minmax(0, 1fr); }
   .stats-workspace .stats-preview-rail, .stats-workspace .stats-row-pin { display: none; }
   .stats-workspace .stats-controls-row { gap: var(--space-2); }
-  .stats-workspace .stats-table-tools { margin-left: 0; }
 }
 @media (max-width: 700px) {
   .stats-workspace .dense-stats-table .pinned-col-name { left: 0; }
@@ -268,7 +254,6 @@
   .season-scope-range { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-2); }
   .season-scope-quick { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-2); width: 100%; }
   .stats-workspace .ui-filter-bar-page { border-left: 0; padding-left: 0; }
-  .stats-workspace .stats-team-select { min-height: var(--control-lg); background: var(--color-surface-2); border: 0; font-size: var(--text-md); padding-left: var(--space-4); }
   .stats-workspace .ui-filter-bar .context-label, .stats-workspace .ui-filter-bar .ui-field-label { font-size: var(--text-xs); }
 
   /* View row: one container per group, 40px tall */
@@ -291,7 +276,6 @@
   /* Footer */
   .stats-workspace .stats-pagination-footer { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; padding: var(--space-2) var(--space-3); }
   .stats-workspace .stats-footer-controls { justify-content: center; }
-  .stats-workspace .stats-pagination-actions .button-small { min-height: var(--control-sm); padding: 0 var(--space-2); }
   .stats-workspace .stats-record-count { text-transform: uppercase; letter-spacing: 0.04em; font-weight: 600; color: var(--color-text); }
   .stats-workspace .stats-footer-controls { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
   .stats-workspace .stats-footer-group { display: inline-flex; align-items: center; gap: var(--space-1); min-height: var(--control-sm); padding: 0 var(--space-1); border-radius: var(--radius-xs); background: var(--color-surface-2); }
@@ -426,7 +410,6 @@
   }
 }
 
-
 /* Pinned identity cells stay above scrolled metric values (whose percentile text is positioned)
    and below the sticky header row. */
 .stats-workspace .dense-stats-table tbody .pinned-col { z-index: var(--z-sticky); }
@@ -492,9 +475,6 @@
   .stats-drawer-actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-2); padding: var(--space-5) var(--drawer-padding) var(--space-3); border: 0; }
   .stats-drawer-panel .button { display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2); min-width: 0; min-height: var(--control-lg); padding: var(--space-2) var(--space-4); border: 0; border-radius: var(--radius-sm); background: var(--color-surface-3); color: var(--color-text); font-size: var(--text-sm); line-height: var(--text-sm-lh); font-weight: 500; text-decoration: none; white-space: nowrap; }
   .stats-drawer-panel .button:hover { background: color-mix(in srgb, var(--color-white) 4%, var(--color-surface-3)); }
-  .stats-drawer-panel .button-primary { background: var(--color-accent); color: var(--color-on-accent); font-weight: 600; }
-  .stats-drawer-panel .button-primary:hover { background: var(--color-accent); }
-  .stats-drawer-panel .button-active { background: var(--color-accent-soft); color: var(--color-accent); }
   .stats-drawer-shortcuts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-2); margin: 0; padding: 0 var(--drawer-padding) var(--space-5); }
   .stats-drawer-shortcuts .button { min-height: var(--control-md); padding-inline: var(--space-2); font-size: var(--text-xs); }
   .stats-drawer-body { padding: var(--space-1) var(--drawer-padding) var(--drawer-padding); gap: var(--space-6); }

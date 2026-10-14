@@ -1,0 +1,90 @@
+@layer components {
+/* Inputs & SearchField */
+.ui-input-wrapper {
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  border-radius: var(--radius-sm);
+  background-color: var(--color-surface-2);
+  transition: box-shadow var(--dur-fast) var(--ease-out), background-color var(--dur-fast) var(--ease-out);
+}
+
+.ui-input-wrapper:focus-within {
+  box-shadow: var(--focus-ring);
+}
+
+.ui-input-wrapper.ui-input-error {
+  box-shadow: 0 0 0 1px var(--color-negative);
+}
+
+.ui-input-prefix,
+.ui-input-suffix {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-secondary);
+  padding-inline: var(--space-2);
+  flex-shrink: 0;
+}
+
+.ui-input {
+  width: 100%;
+  background: transparent;
+  border: 0;
+  color: var(--color-text);
+  font-family: inherit;
+  font-size: var(--text-sm);
+  line-height: var(--text-sm-lh);
+  padding-inline: var(--space-3);
+  outline: 0;
+}
+
+.ui-input::placeholder {
+  color: var(--color-text-tertiary);
+}
+
+.ui-input-prefix ~ .ui-input {
+  padding-inline-start: 0;
+}
+
+.ui-input:has(~ .ui-input-suffix) {
+  padding-inline-end: 0;
+}
+
+.ui-input-wrapper-sm {
+  min-height: var(--control-sm);
+}
+
+.ui-input-wrapper-sm .ui-input {
+  font-size: var(--text-xs);
+  line-height: var(--text-xs-lh);
+  padding-inline: var(--space-2);
+}
+
+.ui-input-wrapper-md {
+  min-height: var(--control-md);
+}
+
+.ui-input-wrapper-lg {
+  min-height: var(--control-lg);
+}
+
+.ui-input-wrapper-lg .ui-input {
+  font-size: var(--text-md);
+  line-height: var(--text-md-lh);
+  padding-inline: var(--space-4);
+}
+
+.ui-search-shortcut {
+  font-family: var(--font-mono), monospace;
+  font-size: var(--text-xs);
+  line-height: var(--text-xs-lh);
+  color: var(--color-text-secondary);
+  background-color: var(--color-surface-3);
+  padding-block: var(--space-0-5);
+  padding-inline: var(--space-1);
+  border-radius: var(--radius-xs);
+  border: 1px solid var(--color-hairline);
+}
+}

@@ -1,0 +1,24 @@
+@layer pages {
+/* B30 finance: bounded source books, exact money and responsive evidence tables. */
+.finance-workspace { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-4); min-width: 0; }
+.finance-workspace > * { min-width: 0; }
+.finance-heading nav, .finance-statuses { display: flex; flex-wrap: wrap; gap: var(--space-3); }
+.finance-controls { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr)); gap: var(--space-3); align-items: end; }
+.finance-controls label { display: grid; gap: var(--space-2); min-width: 0; font-size: var(--text-md); }
+.finance-controls input, .finance-controls select { width: 100%; min-width: 0; min-height: 40px; padding: var(--space-2); background: var(--color-surface-1); color: var(--color-text); border: 1px solid var(--color-hairline-strong); border-radius: var(--radius-sm); }
+.finance-summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr)); gap: var(--space-3); }
+.finance-summary > div { display: grid; gap: var(--space-2); padding: var(--space-3); background: var(--color-surface-2); border: 1px solid var(--color-hairline-strong); }
+.finance-summary strong { font-family: var(--font-mono); font-size: var(--text-xl); }
+.finance-workspace .table-wrapper { max-width: 100%; overflow-x: auto; }
+.finance-workspace p, .finance-workspace details, .finance-workspace th, .finance-workspace td, .finance-dialog p, .finance-dialog td { overflow-wrap: anywhere; }
+.finance-workspace pre { white-space: pre-wrap; overflow-wrap: anywhere; }
+.finance-workspace :focus-visible, .finance-dialog :focus-visible { outline: 2px solid var(--color-accent); outline-offset: 3px; }
+.finance-dialog { width: min(980px, calc(100vw - 24px)); max-height: calc(100dvh - 32px); overflow: auto; color: var(--color-text); background: var(--color-surface-1); border: 1px solid var(--color-hairline-strong); padding: var(--space-4); border-radius: var(--radius-sm); }
+.finance-dialog::backdrop { background: var(--color-scrim); }
+.finance-dialog-head { display: flex; justify-content: space-between; flex-wrap: wrap; align-items: center; gap: var(--space-4); }
+.finance-dialog .table-wrapper { max-width: 100%; overflow: auto; }
+.finance-dialog dl, .finance-workspace dl { display: flex; flex-wrap: wrap; gap: var(--space-4); }
+.finance-workspace .data-table { min-width: 880px; }
+.finance-dialog .data-table { min-width: 740px; }
+@media (max-width: 600px) { .finance-workspace .panel { padding: var(--space-3); } .finance-statuses { font-size: var(--text-sm); } }
+}

@@ -96,34 +96,24 @@ input:focus, select:focus-visible, textarea:focus, button:focus-visible, a:focus
 .text-xs { font-size: var(--text-xs); }
 .text-sm { font-size: var(--text-sm); }
 .text-lg { font-size: var(--text-lg); }
-.text-xl { font-size: var(--text-xl); }
-.text-2xl { font-size: var(--text-2xl); }
 .text-muted { color: var(--color-text-secondary); }
 .text-accent { color: var(--color-accent); }
 .text-positive { color: var(--color-positive); }
-.text-warning { color: var(--color-accent); }
 .text-negative { color: var(--color-negative); }
 .text-right { text-align: right; }
 .text-center { text-align: center; }
 .text-left { text-align: left; }
 .hidden { display: none; }
-.mb-1 { margin-bottom: var(--space-1); }
 .mb-2 { margin-bottom: var(--space-2); }
 .mb-3 { margin-bottom: var(--space-3); }
-.mb-4 { margin-bottom: var(--space-4); }
 .mb-5 { margin-bottom: var(--space-5); }
 .mt-1 { margin-top: var(--space-1); }
 .mt-2 { margin-top: var(--space-2); }
 .mt-3 { margin-top: var(--space-3); }
 .mt-4 { margin-top: var(--space-4); }
-.mt-5 { margin-top: var(--space-5); }
-.ml-auto { margin-left: auto; }
-.mr-auto { margin-right: auto; }
-.w-auto { width: auto; }
 .ml-1 { margin-left: var(--space-1); }
 .text-base { font-size: var(--text-lg); }
 .whitespace-nowrap { white-space: nowrap; }
-
 
 /* B36: tabular interface figures and literal data/code operators. */
 /* B36: tabular interface figures and literal data/code operators. */
@@ -138,7 +128,6 @@ kbd,
 samp {
   font-variant-ligatures: none;
 }
-
 
 @media (forced-colors: active) {
   select:not([multiple]):not([size]) { appearance: auto; background-image: none; }

@@ -1,0 +1,87 @@
+@layer components {
+/* Tables */
+.ui-table-container {
+  width: 100%;
+  overflow-x: auto;
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface-1);
+}
+
+.ui-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+  line-height: var(--text-sm-lh);
+  text-align: left;
+}
+
+.ui-table th {
+  background-color: var(--color-surface-2);
+  color: var(--color-text-secondary);
+  font-weight: 600;
+  padding-block: var(--space-2);
+  padding-inline: var(--space-3);
+  border-bottom: 1px solid var(--color-hairline);
+}
+
+.ui-table td {
+  padding-block: var(--space-2);
+  padding-inline: var(--space-3);
+  border-bottom: 1px solid var(--color-hairline);
+  color: var(--color-text);
+}
+
+.ui-table-sticky th {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-sticky);
+}
+
+.ui-table-compact th,
+.ui-table-compact td {
+  padding-block: var(--space-1);
+  padding-inline: var(--space-2);
+}
+
+.ui-table-row {
+  transition: background-color var(--dur-fast) var(--ease-out);
+}
+
+.ui-table-row-hoverable:hover {
+  background-color: var(--color-surface-hover);
+}
+
+.ui-table-row-selected {
+  background-color: var(--color-surface-3);
+}
+
+.ui-table-align-right {
+  text-align: right;
+}
+
+.ui-table-align-center {
+  text-align: center;
+}
+
+.ui-table-sort-button {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  background: transparent;
+  border: 0;
+  color: inherit;
+  font: inherit;
+  font-weight: inherit;
+  cursor: pointer;
+  padding: 0;
+}
+
+.ui-table-sort-icon {
+  display: inline-flex;
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+
+.ui-table-sort-inactive {
+  opacity: 0.35;
+}
+}

@@ -1,0 +1,83 @@
+@layer pages {
+/* Trend Charts */
+.research-trend-section {
+  background: var(--color-surface-1);
+  border: 0;
+  border-radius: var(--radius-sm);
+  padding: var(--space-5);
+  margin-bottom: var(--space-5);
+}
+
+.trend-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--space-4);
+}
+
+.section-title {
+  margin: 0;
+  font-size: var(--text-lg);
+  font-weight: 600;
+}
+
+.section-note {
+  margin: var(--space-1) 0 0;
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+}
+
+.trend-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-4);
+  margin-bottom: var(--space-4);
+}
+
+.trend-card {
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-hairline-strong);
+  border-radius: var(--radius-sm);
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+}
+
+.trend-card-header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  justify-content: space-between;
+  align-items: center;
+  font-size: var(--text-sm);
+  margin-bottom: var(--space-2);
+}
+
+.trend-card-title {
+  font-weight: 600;
+}
+
+.trend-svg {
+  width: 100%;
+  height: 90px;
+}
+
+.trend-card-footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: var(--space-2);
+}
+
+.trend-narrative {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  margin: var(--space-2) 0 0;
+  line-height: 1.4;
+}
+
+.trend-data-table-wrapper {
+  margin-top: var(--space-4);
+  border-top: 1px solid var(--color-hairline-strong);
+  padding-top: var(--space-4);
+}
+}
