@@ -10,6 +10,7 @@ dev stack on published data.
 | [Kawhi Leonard, Overview 390](kawhi-overview-390.png) | Phone layout: photo beside the column, facts wrap, summary in two rows of three |
 | [Kawhi Leonard, Tracking 1440](kawhi-tracking-1440.png) | Stat rows with percentile bars on the Stats colour scale, four groups across |
 | [Kawhi Leonard, Combine 1440](kawhi-combine-1440.png) | Headline figures on the group grid; Measurements and Athletic testing rows |
+| [Shai Gilgeous-Alexander, Overview 1440](sga-overview-1440.png) | Follow-ups 29–34: glow ends inside the header, table fits its 8 seasons, even console spacing, group dividers, "68 games" badge, no rule above the season line |
 | [Dirk Nowitzki 2018-19, 1440](nowitzki-retired-1440.png) | No current listing: the header falls back to the season's team, no "games with" line |
 
 ## What changed
@@ -39,6 +40,9 @@ dev stack on published data.
   baselines were regenerated; no other baseline changed. Full suite 456 passed; the remaining
   failures are intermittent and outside this page (planner sign-in "Email" strict-mode check and the
   roster export in advanced-research; both pass when rerun alone).
+
+Follow-ups 29–34 (same day): browser set 132/132 after regenerating the two player profile
+baselines; Vitest 508/508; lint and typecheck clean.
 
 Not done, awaiting the owner: the Basketball-Reference bio crawl (honours, awards column,
 birthplace, high school, shooting hand, debut) and the "now TOR" chip on Stats rows.

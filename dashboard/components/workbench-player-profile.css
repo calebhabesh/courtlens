@@ -21,6 +21,8 @@
 
   /* TabsContent wraps its children in one motion div; the section rhythm goes on that. */
   .player-tab-body > div { display: flex; flex-direction: column; gap: var(--space-8); }
+  /* The profile layout already spaces the tabs from the panel; no second gap on top of it. */
+  .player-tab-body { padding-block-start: 0; }
 
   /* Open sections (alignment row 2, 22): a heading, one hairline, content on the page ground. */
   .player-open-section { display: flex; flex-direction: column; gap: var(--space-4); min-width: 0; }
