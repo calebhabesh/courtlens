@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { Button } from "./ui/kit";
 import { FormEvent, useState } from "react";
 import { browserApi } from "@/lib/api";
 import type { AnalyticsCatalog, AnalyticsSearch } from "@/lib/types";
@@ -58,9 +59,9 @@ export function PlayerSearch({ catalog }: { catalog: AnalyticsCatalog }) {
             ))}
           </select>
         </label>
-        <button className="button button-dark" disabled={pending} type="submit">
+        <Button size="lg" disabled={pending} type="submit">
           {pending ? "Searching…" : "Search"}
-        </button>
+        </Button>
       </form>
       <p className="form-hint" role="status">{message}</p>
       {results.length > 0 && (

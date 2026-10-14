@@ -286,42 +286,6 @@
   scrollbar-width: thin;
 }
 
-.stats-preset-tabs {
-  display: flex;
-  gap: var(--space-1);
-  padding: var(--space-0-5) 0;
-  min-width: max-content;
-}
-
-.stats-preset-tab {
-  padding: var(--space-2) var(--space-4);
-  font-size: var(--text-sm);
-  font-weight: 600;
-  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
-  background: var(--color-surface-1);
-  border: 1px solid var(--color-hairline-strong);
-  border-bottom: none;
-  color: var(--color-text-secondary);
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2);
-  transition: opacity var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
-  white-space: nowrap;
-}
-
-.stats-preset-tab:hover {
-  background: var(--color-surface-2);
-  color: var(--color-text);
-}
-
-.stats-preset-tab.active {
-  background: var(--color-surface-2);
-  color: var(--color-accent);
-  border-color: var(--color-accent);
-  border-bottom: 2px solid var(--color-accent);
-}
-
 .stats-preset-gated-tag {
   font-size: var(--text-xs);
   font-family: var(--font-mono);
@@ -4425,7 +4389,7 @@
 /* Player page (alignment row 2): bio header, then the latest-season summary without an accent edge. */
 @layer pages {
   .player-bio-header { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-3); }
-  .player-back-button kbd { margin-left: var(--space-1); padding: 0 var(--space-1); border-radius: var(--radius-xs); background: color-mix(in srgb, var(--color-black) 18%, transparent); font-size: var(--text-2xs); }
+  .player-back-kbd { padding: 0 var(--space-1); border-radius: var(--radius-xs); background: color-mix(in srgb, var(--color-black) 18%, transparent); font-size: var(--text-2xs); }
   .player-bio-main {
     display: grid; grid-template-columns: auto minmax(0, 0.9fr) minmax(0, 2fr) auto; gap: var(--space-3) var(--space-5);
     align-items: center; width: 100%;

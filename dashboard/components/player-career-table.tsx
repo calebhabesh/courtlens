@@ -5,10 +5,8 @@ import "./player-career.css";
 import { Fragment, useEffect, useMemo, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { PercentileCell } from "./charts/percentile-cell";
-import { SlidingIndicator } from "./ui/sliding-indicator";
-import { StatsChoicePills } from "./stats-choice-pills";
 import { TeamLogoStack } from "./team-logo";
-import { Icon } from "./ui/icon";
+import { IconButton, Segmented } from "./ui/kit";
 import { settleLimited } from "./stats-trend-dialog";
 import { applyScopeChange } from "@/lib/scope-url";
 import { normalizedColumn } from "@/lib/stats-query";
@@ -141,24 +139,19 @@ export function PlayerCareerTable({ playerId, catalog, season, phase, firstCover
   return (
     <section className="stats-workspace player-career" aria-label="Career by season">
       <div className="player-career-controls">
-        <div className="stats-preset-tabs" role="tablist" aria-label="Career table views">
-          {ORDERED_PRESETS.map(p => <button key={p.id} type="button" role="tab" aria-selected={p.id === presetId}
-            className={`stats-preset-tab ${p.id === presetId ? "active" : ""}`} onClick={() => setPresetId(p.id)}>
-            {p.id === presetId && <SlidingIndicator layoutId="career-preset-indicator" className="stats-preset-indicator" />}
-            <span>{p.label}</span>
-          </button>)}
-        </div>
+        <Segmented label="Career table views" size="lg" tone="console" dense value={presetId}
+          onChange={setPresetId} options={ORDERED_PRESETS.map(p => ({ value: p.id, label: p.label }))} />
       </div>
       <div className="stats-table-frame is-table">
         <div className="stats-controls-row">
-          <StatsChoicePills label="Counting Mode" className="stats-counting-modes" indicatorId="career-counting-indicator"
-            options={ORDERED_COUNTING_MODES.map(mode => ({ id: mode.id, label: mode.label, title: mode.tooltip,
+          <Segmented label="Counting Mode" size="md" deferChange
+            options={ORDERED_COUNTING_MODES.map(mode => ({ value: mode.id, label: mode.label, title: mode.tooltip,
               disabled: catalog.stats_normalizations ? !catalog.stats_normalizations.includes(mode.id) : mode.gated }))}
-            value={countingMode} onSelect={setCountingMode} />
-          <StatsChoicePills label="Phase" className="stats-counting-modes player-career-phase" indicatorId="career-phase-indicator"
-            options={PHASES.map(p => ({ id: p.id, label: p.label, title: `${p.label} games`,
+            value={countingMode} onChange={setCountingMode} />
+          <Segmented label="Phase" size="md" deferChange
+            options={PHASES.map(p => ({ value: p.id, label: p.label, title: `${p.label} games`,
               disabled: !catalog.stats_scopes?.some(scope => scope.phase === p.id) }))}
-            value={phase} onSelect={value => router.push(scopeHref("phase", value), { scroll: false })} />
+            value={phase} onChange={value => router.push(scopeHref("phase", value), { scroll: false })} />
         </div>
         <div className="table-wrapper stats-scroll-region player-career-scroll" role="region" aria-label="Career table scroll area" tabIndex={0}
           aria-busy={!seasons || seasons.some(value => !current?.rows[value])}>
@@ -191,9 +184,9 @@ export function PlayerCareerTable({ playerId, catalog, season, phase, firstCover
                         <TeamLogoStack teams={teams} size={20} />
                         <a href={scopeHref("season", value)} onClick={event => { event.preventDefault(); openSeason(value); }}
                           title={`Show ${value}`}>{value}</a>
-                        {teams.length > 1 && <button type="button" className="player-career-expand" aria-expanded={Boolean(stints)}
-                          aria-label={`${stints ? "Hide" : "Show"} ${value} team stints`} onClick={() => toggleStints(value)}>
-                          <Icon name={stints ? "chevron-up" : "chevron-down"} size={14} /></button>}
+                        {teams.length > 1 && <IconButton size="xs" className="player-career-expand-slot" aria-expanded={Boolean(stints)}
+                          icon={stints ? "chevron-up" : "chevron-down"} label={`${stints ? "Hide" : "Show"} ${value} team stints`}
+                          onClick={() => toggleStints(value)} />}
                       </span>
                     </th>
                     {row?.failed
