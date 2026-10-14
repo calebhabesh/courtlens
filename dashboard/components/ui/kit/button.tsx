@@ -127,3 +127,30 @@ export const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(functio
     </button>
   );
 });
+
+export interface IconButtonLinkProps extends Omit<ButtonLinkProps, "icon" | "iconAfter" | "children" | "dense"> {
+  icon: IconName;
+  /** Required: the accessible name and the native tooltip. */
+  label: string;
+}
+
+/** Square icon-only link (for example a rail shortcut to another page). */
+export const IconButtonLink = forwardRef<HTMLAnchorElement, IconButtonLinkProps>(function IconButtonLink(
+  { size = "md", variant = "ghost", tone, icon, label, current, className, href, ...props },
+  ref,
+) {
+  return (
+    <Link
+      ref={ref}
+      href={href}
+      aria-label={label}
+      title={label}
+      aria-current={current ? "page" : undefined}
+      data-kit="icon-button"
+      className={cx(controlClasses({ size, variant, tone, square: true }), className)}
+      {...props}
+    >
+      <Icon name={icon} size={kitIconSize[size]} />
+    </Link>
+  );
+});

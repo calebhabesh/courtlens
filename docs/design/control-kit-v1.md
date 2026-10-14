@@ -53,6 +53,7 @@ Owner decisions (2026-10-14):
 | --- | --- | --- |
 | `Button` | xs–lg | Leading `icon`, trailing `iconAfter`; `ButtonLink` renders Next `Link` with `href`, and `ButtonSummary` renders native `<summary>`, sharing the same recipe. |
 | `IconButton` | xs–lg | `label` is required and becomes the tooltip and `aria-label`. |
+| `IconButtonLink` | xs–lg | Square icon-only Next `Link` (added in UC04 batch 4 for rail shortcuts); `label` as for `IconButton`. |
 | `Select` | sm–lg | Native select with the built-in chevron (below). |
 | `Segmented` | xs–lg | Generalises `SegmentedControl` and `StatsChoicePills`; the active indicator is `SlidingIndicator`. Radio semantics and roving focus, optional `deferChange` for an expensive owner update. Existing callers migrate in UC04. |
 | `MenuTrigger` | xs–lg | Button plus trailing chevron that opens `Menu` or a popover; carries `aria-expanded`. Pass `Menu`/`Popover`'s `renderTrigger` props directly to it (one button, no nested trigger). Covers the date, season and team triggers. |
@@ -134,11 +135,11 @@ are listed last as dead CSS for UC05.
 | Kit target | Classes |
 | --- | --- |
 | `Button` | `stats-help-button` (lg, C5), `stats-footer-button` (xs ghost `dense`), `player-back-button` (xs primary), `views-modal-btn-action` (xs), `finance-detail-button` (xs ghost), `courtlens-ask-btn` (sm ghost, C6), `ui-why-summary` (xs ghost as summary) |
-| `IconButton` | `stats-tool-button`, `stats-expand-button` (md ghost); `stats-icon-action`, `stats-details-button`, `player-career-expand` (xs ghost, C9); `ranking-reorder-btn`, `ranking-meta-btn`, `tier-reorder-btn`, `tier-quick-fav-btn` (xs ghost); `ranking-delete-btn`, `tier-remove-btn`, `tier-delete-btn` (xs danger); `modal-close-btn`, `filter-clear-btn`, `lookup-clear-btn` (xs ghost); `courtlens-mobile-toggle`, `courtlens-mobile-search-btn`, `icon-button`, `ui-icon-button` (sm ghost); `context-stepper-button` (lg, attached group) |
+| `IconButton` | `stats-tool-button`, `stats-expand-button` (md ghost); `stats-icon-action`, `stats-details-button`, `player-career-expand` (xs ghost, C9); `ranking-reorder-btn` (xs ghost); `tier-reorder-btn` (xs secondary, it sits on the coloured tier label); `ranking-meta-btn`, `tier-quick-fav-btn` (`Button` xs ghost with an icon, since they carry a label); `ranking-delete-btn`, `tier-remove-btn`, `tier-delete-btn` (xs danger); `modal-close-btn`, `filter-clear-btn`, `lookup-clear-btn` (xs ghost); `courtlens-mobile-toggle`, `courtlens-mobile-search-btn`, `icon-button`, `ui-icon-button` (sm ghost); `context-stepper-button` (lg, attached group) |
 | `Select` | `ui-select`, `stats-team-select` |
 | `Segmented` | `ui-segmented-item`, `stats-preset-tab` (lg console `dense`), `ui-tab-trigger` (sm, C1), `tier-tab`, `dist-tab`, `player-tab`, `StatsChoicePills` |
 | `MenuTrigger` | `ui-menu-trigger`, `ui-popover-trigger` (lg, attached group), `ui-date-trigger` (lg, leading icon), `season-scope-trigger`, `stats-team-button` (lg, C4), `availability-trigger`, `ui-filter-bar-toggle` |
-| `Chip` | `control-pill` (sm/md/lg by measured height), `stats-position-chip` (lg), `entity-chip`/`ui-entity-chip` (lg removable), `roster-chip`, `tier-player-chip`, `ranking-chip-btn`, `filter-action-pill`, `season-scope-quick-button`, `ask-chip`, `agent-source-chip`, `glossary-chip` (sm) |
+| `Chip` | `control-pill` (sm/md/lg by measured height), `stats-position-chip` (lg), `entity-chip`/`ui-entity-chip` (lg removable), `ranking-chip-btn`, `filter-action-pill`, `season-scope-quick-button`, `ask-chip`, `agent-source-chip`, `glossary-chip` (sm) |
 
 ### Does not fit the kit, and why
 
@@ -151,6 +152,7 @@ are listed last as dead CSS for UC05.
 | `ui-accordion-trigger`, `ui-route-tab` | Full-width disclosure header; route tabs are links with `aria-current`. Both keep their components and reuse the kit's focus and selected tokens. | `Accordion`, `RouteTabs` |
 | `feed-link-button` | Inline text action inside a caption (19.5 px line box); a control size would break the sentence. | Prose link style |
 | `team-card-button` | A whole card is the link. | Card |
+| `roster-chip`, `tier-player-chip` | Draggable roster and tier cards holding a portrait, a link and an inline input or select; not a control (moved here in UC04 batch 4). | Roster Shapes, Tier List |
 | `ui-count-chip`, `ui-badge-pill`, `views-modal-metric-chip`, `stats-drawer-team-pill` | Static labels, not controls. | `Badge` |
 | `lookup-input`, `ui-input` | Text fields (30/40 px). Field sizes follow the same height scale but are outside UC02. | `Input` |
 

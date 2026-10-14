@@ -1,5 +1,5 @@
-export { Button, ButtonLink, ButtonSummary, IconButton } from "./button";
-export type { ButtonProps, ButtonLinkProps, ButtonSummaryProps, IconButtonProps } from "./button";
+export { Button, ButtonLink, ButtonSummary, IconButton, IconButtonLink } from "./button";
+export type { ButtonProps, ButtonLinkProps, ButtonSummaryProps, IconButtonProps, IconButtonLinkProps } from "./button";
 export { Select } from "./select";
 export type { SelectProps, SelectSize, SelectTone } from "./select";
 export { MenuTrigger } from "./menu-trigger";

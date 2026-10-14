@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { formatDate } from "@/lib/format-date";
 import type { PlayerGameLogItem } from "@/lib/types";
+import { Button } from "./ui/kit";
 
 interface ResearchTrendChartsProps {
   games: PlayerGameLogItem[];
@@ -144,14 +145,11 @@ export function ResearchTrendCharts({ games, playerName }: ResearchTrendChartsPr
             Source: CourtLens admitted player box scores · {validGames.length} appeared games. Color = labeled metric; dashed = mean of known values. Gaps stay unknown.
           </p>
         </div>
-        <button
-          type="button"
-          className="button button-small"
+        <Button size="lg"
           onClick={() => setShowTable(!showTable)}
-          aria-expanded={showTable}
-        >
+          aria-expanded={showTable}>
           {showTable ? "Hide Data Table" : "View Data Table"}
-        </button>
+        </Button>
       </div>
 
       <div className="trend-cards-grid">

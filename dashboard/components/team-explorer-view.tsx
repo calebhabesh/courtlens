@@ -7,7 +7,6 @@ import { PageHeader } from "./ui/panel";
 import { Field } from "./ui/field";
 import { Select } from "./ui/select";
 import { Input } from "./ui/input";
-import { SegmentedControl } from "./ui/segmented-control";
 import { GatedNote } from "./ui/gated-note";
 import { buildPreservedContextUrl } from "@/lib/query-url";
 import Link from "next/link";
@@ -17,6 +16,7 @@ import { RankedBars } from "./charts";
 import { StatTile } from "./ui/stat-tile";
 import { TeamLogo } from "./team-logo";
 import type { TeamResearchItem, WorkbenchCatalog } from "@/lib/types";
+import { Button, ButtonLink, Segmented } from "./ui/kit";
 
 export type ExplorerViewMode = "table" | "cards" | "scatter";
 export type TablePreset = "overview" | "four_factors_off" | "four_factors_def" | "all_ratings";
@@ -217,7 +217,7 @@ export function TeamExplorerView({
 
   return (
     <div className="team-explorer-container">
-      <PageHeader title="Team Stats & Cohorts" subtitle="Standings, scoring and Four Factors." actions={<Link href={link("/team-compare")} className="button">Compare Teams</Link>} />
+      <PageHeader title="Team Stats & Cohorts" subtitle="Standings, scoring and Four Factors." actions={<ButtonLink size="lg" href={link("/team-compare")}>Compare Teams</ButtonLink>} />
       <ContextBar catalog={catalog} initialReleaseId={releaseId} initialSeason={season} initialPhase={phase} initialBeforeDate={beforeDate}
         detailRows={leagueAverages ? [{label:"League averages",value:Object.entries(leagueAverages).map(([key,value]) => `${key}: ${value}`).join(" · ")}] : []} showWindow={false} sampleNoun="teams" sampleSize={filteredTeams.length}
         filters={<>
@@ -225,7 +225,7 @@ export function TeamExplorerView({
           <Field label="Group" layout="inline"><Select aria-label="Group teams" value={groupingMode} onChange={e => {setGroupingMode(e.target.value as GroupingMode); preference("group", e.target.value);}}><option value="all">League</option><option value="conference">Conference</option><option value="division">Division</option></Select></Field>
           {viewMode === "table" && <Field label="Metrics" layout="inline"><Select aria-label="Team metric set" value={tablePreset} onChange={e => {setTablePreset(e.target.value as TablePreset); preference("metrics", e.target.value);}}><option value="overview">Standings & Scoring</option><option value="four_factors_off">Offensive Four Factors</option><option value="four_factors_def">Defensive Four Factors</option><option value="all_ratings">Ratings & Factors</option></Select></Field>}
         </>}
-        modes={<SegmentedControl name="Team view" value={viewMode} onChange={value => {setViewMode(value); preference("view", value);}} options={[{value:"table",label:"Table"},{value:"cards",label:"Cards"},{value:"scatter",label:"Efficiency Plot"}]} />}
+        modes={<Segmented size="lg" label="Team view" value={viewMode} onChange={value => {setViewMode(value); preference("view", value);}} options={[{value:"table",label:"Table"},{value:"cards",label:"Cards"},{value:"scatter",label:"Efficiency Plot"}]} />}
       />
       <section className="pc12-headline" aria-label="Headline result">
         <RankedBars title="Net rating leaders" source="CourtLens admitted team box scores · estimated possessions"
@@ -243,7 +243,7 @@ export function TeamExplorerView({
         <StatTile label="Teams without net rating" value={filteredTeams.filter(t => t.ratings?.net_rating == null).length} footnote="Unknown values are excluded from the chart" />
       </div>
       <GatedNote why={orderNotice || "Ties in record ordering do not establish official conference placement. Standings are presented by win percentage without tiebreaker resolution."}>Record order is descriptive; ties have no official placement.</GatedNote>
-      {!filteredTeams.length && <GatedNote action={<button className="button" onClick={() => {setSearchQuery(""); preference("search", "");}}>Clear search</button>}>No teams match this search.</GatedNote>}
+      {!filteredTeams.length && <GatedNote action={<Button size="lg" onClick={() => {setSearchQuery(""); preference("search", "");}}>Clear search</Button>}>No teams match this search.</GatedNote>}
       {/* VIEW 1: TABLE VIEW */}
       {viewMode === "table" && (
         <div className="team-explorer-stack">
@@ -360,18 +360,12 @@ export function TeamExplorerView({
 
                       {/* Card buttons */}
                       <div className="team-card-actions">
-                        <Link
-                          href={link(`/team-compare?teamA=${t.team_id}`)}
-                          className="button button-small team-card-button"
-                        >
+                        <ButtonLink size="lg" href={link(`/team-compare?teamA=${t.team_id}`)} className="team-card-button">
                           Compare
-                        </Link>
-                        <Link
-                          href={link(`/teams/${t.team_id}`)}
-                          className="button button-small button-primary team-card-button"
-                        >
+                        </ButtonLink>
+                        <ButtonLink size="lg" variant="primary" href={link(`/teams/${t.team_id}`)} className="team-card-button">
                           Profile
-                        </Link>
+                        </ButtonLink>
                       </div>
                     </div>
                   );
