@@ -1,0 +1,38 @@
+{
+  "jokic-1440": {
+    "careerMs": 8661,
+    "errors": [],
+    "overflow": 0,
+    "facts": "AGE\n31\nLISTED\n6′11″ · 284 lb\nEXPERIENCE\n11th season\nDRAFT\n2014 · R2, #41 · DEN\nPRE-DRAFT\nKK Mega Leks (Serbia)\nCOUNTRY\nSerbia",
+    "seasons": 11,
+    "total": "CAREER",
+    "goldEdge": "none"
+  },
+  "jokic-390": {
+    "careerMs": 8249,
+    "errors": [],
+    "overflow": 0,
+    "facts": "AGE\n31\nLISTED\n6′11″ · 284 lb\nEXPERIENCE\n11th season\nDRAFT\n2014 · R2, #41 · DEN\nPRE-DRAFT\nKK Mega Leks (Serbia)\nCOUNTRY\nSerbia",
+    "seasons": 11,
+    "total": "CAREER",
+    "goldEdge": "none"
+  },
+  "lebron-1440": {
+    "careerMs": 13673,
+    "errors": [],
+    "overflow": 0,
+    "facts": "AGE\n41\nLISTED\n6′9″ · 250 lb\nEXPERIENCE\n23rd season\nDRAFT\n2003 · R1, #1 · CLE\nPRE-DRAFT\nSaint Vincent-Saint Mary\nCOUNTRY\nUSA\n2003 COMBINE\nBarefoot 6′7¼″\nWingspan 7′0¼″\nReach 8′10¼″\nWeight 245 lb",
+    "seasons": 23,
+    "total": "CAREER",
+    "goldEdge": "none"
+  },
+  "garnett-career-since-1440": {
+    "careerMs": 15150,
+    "errors": [],
+    "overflow": 0,
+    "facts": "AGE\n39 (as of Apr 13, 2016)\nLISTED\n6′11″ · 240 lb\nEXPERIENCE\n21st season\nDRAFT\n1995 · R1, #5\nPRE-DRAFT\nFarragut Academy HS (IL)\nCOUNTRY\nUSA",
+    "seasons": 16,
+    "total": "CAREER SINCE 2000-01",
+    "goldEdge": "none"
+  }
+}

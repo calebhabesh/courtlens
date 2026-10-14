@@ -12,6 +12,7 @@ import type { AnalyticsGame, AnalyticsProfile, AnalyticsSummary, PlayerGameLogRe
 
 import { ContextBar } from "@/components/context-bar";
 import { WorkbenchPlayerProfile, type ProfileHeroStats } from "@/components/workbench-player-profile";
+import { HERO_METRICS } from "@/lib/player-hero";
 import { GatedNote } from "@/components/ui/gated-note";
 import { PageShell } from "@/components/ui/page-shell";
 import { PageHeader } from "@/components/ui/panel";
@@ -19,8 +20,7 @@ import { formatDate } from "@/lib/format-date";
 import type { GoodDirection } from "@/lib/percentile-display";
 import { resolveStatsQuery } from "@/lib/stats-query";
 import type { WorkbenchCatalog } from "@/lib/types";
-import { executeWorkbenchQuery, getPlayerProfile, getPlayerGameLog, getWorkbenchCatalog, getImpact } from "@/lib/workbench-api";
-import { aggregateCareerStats, type SeasonCareerRow } from "@/lib/player-pages";
+import { executeWorkbenchQuery, getPlayerBio, getPlayerProfile, getPlayerGameLog, getWorkbenchCatalog, getImpact } from "@/lib/workbench-api";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = { title: "Player Profile" };
@@ -70,7 +70,6 @@ export default async function PlayerPage({
 
   // Modern Workbench Research Mode
   const catalog = await getWorkbenchCatalog(selected.releaseId).catch(() => null);
-  const admittedSeasons = catalog?.seasons || ["2023-24", "2024-25", "2025-26"];
 
   const season = selected.season || catalog?.default_season || "2024-25";
   const phase = selected.phase || catalog?.default_phase || "regular_season";
@@ -102,73 +101,18 @@ export default async function PlayerPage({
   }
 
   if (wbLoaded) {
-    // Fetch profiles for other admitted seasons in parallel to assemble career overview
-    const otherSeasons = admittedSeasons.filter((s) => s !== season);
-    const otherResults = await Promise.allSettled(
-      otherSeasons.map((s) =>
-        getPlayerProfile(id, {
-          season: s,
-          phase,
-          beforeDate,
-          releaseId: selected.releaseId
-        })
-      )
-    );
-
-    const careerRows: SeasonCareerRow[] = [];
-
-    // Helper to convert profile to SeasonCareerRow
-    const profileToCareerRow = (p: PlayerProfile, s: string): SeasonCareerRow => {
-      const sum = p.summaries.season;
-      const teamList = p.stints && p.stints.length > 0
-        ? p.stints.map((st) => st.team_tricode).join(" / ")
-        : p.latest_team?.tricode ?? "NBA";
-
-      return {
-        season: s,
-        teams: teamList,
-        gamesPlayed: sum?.gp ?? 0,
-        minutes: sum?.min ?? null,
-        minPerGame: sum?.min_per_game ?? null,
-        ptsPerGame: sum?.pts_per_game ?? null,
-        rebPerGame: sum?.reb_total_per_game ?? null,
-        astPerGame: sum?.ast_per_game ?? null,
-        stlPerGame: sum?.stl_per_game ?? null,
-        blkPerGame: sum?.blk_per_game ?? null,
-        fgPct: sum?.fg_pct ?? null,
-        fg3Pct: sum?.fg3_pct ?? null,
-        ftPct: sum?.ft_pct ?? null,
-        tsPct: sum?.ts_pct ?? null,
-        efgPct: sum?.efg_pct ?? null,
-        fantasyPerGame: sum?.legacy_fantasy_score_per_game ?? null
-      };
-    };
-
-    // Add current season row
-    careerRows.push(profileToCareerRow(wbLoaded.profile, season));
-
-    // Add successfully retrieved other seasons
-    for (let i = 0; i < otherResults.length; i++) {
-      const res = otherResults[i];
-      if (res.status === "fulfilled" && res.value) {
-        careerRows.push(profileToCareerRow(res.value, otherSeasons[i]));
-      }
-    }
-
-    // Sort seasons chronologically
-    careerRows.sort((a, b) => a.season.localeCompare(b.season));
-
-    // Compute aggregated career rollup with explicit incomplete career disclosures
-    const careerRollup = aggregateCareerStats(careerRows, admittedSeasons);
-    const impact = await getImpact({ season, phase, beforeDate, playerId: id, window: windowParam }).catch(() => null);
-    const hero = catalog ? await heroStats(id, selected, catalog) : null;
+    const [impact, hero, bio] = await Promise.all([
+      getImpact({ season, phase, beforeDate, playerId: id, window: windowParam }).catch(() => null),
+      catalog ? heroStats(id, selected, catalog) : null,
+      getPlayerBio(id, { season, beforeDate }).catch(() => null),
+    ]);
 
     return (
       <WorkbenchPlayerProfile
         profile={wbLoaded.profile}
         games={wbLoaded.log.games}
-        careerRows={careerRows}
-        careerRollup={careerRollup}
+        catalog={catalog}
+        bio={bio}
         impact={impact}
         hero={hero}
         filterBar={<ContextBar
@@ -217,6 +161,8 @@ async function heroStats(id: string, params: Record<string, string | undefined>,
   try {
     const query = resolveStatsQuery(params, catalog, "per_game");
     query.window = { kind: "season" };
+    query.view_state = { ...query.view_state, columns: HERO_METRICS.map(metric => metric.key) };
+    if (catalog.darko?.manifest_sha256) query.darko_manifest_sha256 = catalog.darko.manifest_sha256;
     const result = await executeWorkbenchQuery({ ...query, page: { limit: 1 } }, { player_ids: [id] });
     return {
       item: result.items[0] ?? null,

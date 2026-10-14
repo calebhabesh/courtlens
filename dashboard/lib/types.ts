@@ -2188,3 +2188,31 @@ export interface ScheduleDatesResponse {
   nearest_finals: NearestGameDates;
   warnings: string[];
 }
+
+/** Player page header listings (team-reported) and combine values (measured), as of a scope. */
+export type PlayerBio = {
+  player_id: string;
+  season: string;
+  as_of: string;
+  listing_source: "season_roster" | "player_index" | null;
+  jersey: string | null;
+  listed_position: string | null;
+  listed_height_inches: number | null;
+  listed_weight_lbs: number | null;
+  prior_seasons: number | null;
+  birth_date: string | null;
+  age: number | null;
+  country: string | null;
+  college: string | null;
+  draft: { year: number; round: number | null; pick: number | null; team_id: string | null; team_tricode: string | null; organization: string | null } | null;
+  undrafted: boolean;
+  combine: {
+    draft_year: number;
+    height_no_shoes_inches: number | null;
+    height_shoes_inches: number | null;
+    wingspan_inches: number | null;
+    standing_reach_inches: number | null;
+    weight_lbs: number | null;
+  } | null;
+  limitations: string[];
+};

@@ -1,0 +1,52 @@
+/* Player career table: the Stats table's look with seasons as rows (alignment row 2). */
+@layer pages {
+  .player-career.stats-workspace { min-height: 0; background: transparent; display: flex; flex-direction: column; gap: var(--space-2); }
+  .player-career .player-career-controls { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+  .player-career .stats-table-frame { --table-surface: var(--color-table-lift); --table-data: var(--color-table-well); }
+  .player-career .stats-controls-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; }
+  .player-career .player-career-scroll { --year-width: 132px; height: auto; max-height: min(70dvh, 760px); }
+  .player-career .player-career-table {
+    --table-min-width: calc(var(--year-width) + var(--career-columns, 20) * 68px);
+    --table-width: min(100%, calc(var(--year-width) + var(--career-columns, 20) * 88px));
+  }
+  /* Long labels (PTS Created) wrap onto two lines, as on Stats. */
+  .player-career .stats-header-tier-2 th:not(.pinned-col-year) { white-space: normal; line-height: var(--text-xs-lh); vertical-align: bottom; }
+  .player-career .pinned-col-year, .player-career .pinned-col-year-group {
+    position: sticky; left: 0; z-index: var(--z-sticky);
+    width: var(--year-width); min-width: var(--year-width); max-width: var(--year-width);
+    background: var(--color-table-lift); text-align: left;
+  }
+  .player-career thead .pinned-col-year, .player-career thead .pinned-col-year-group { z-index: var(--z-sticky-corner); }
+  .player-career tbody th.pinned-col-year, .player-career tfoot th.pinned-col-year {
+    padding: var(--space-1) var(--space-2); font-weight: 600; font-size: var(--text-sm); text-transform: none; letter-spacing: 0;
+  }
+  .player-career .player-career-year { display: flex; align-items: center; gap: var(--space-2); }
+  .player-career .player-career-year a { color: var(--color-text-primary); text-decoration: none; font-variant-numeric: tabular-nums; }
+  .player-career .player-career-year a:hover, .player-career .player-career-year a:focus-visible { color: var(--color-accent); }
+  .player-career .player-career-row { cursor: pointer; }
+  .player-career .player-career-row.row-selected th.pinned-col-year { box-shadow: inset 2px 0 0 var(--color-accent); }
+  .player-career .player-career-row.row-selected .player-career-year a { color: var(--color-accent); }
+  .player-career .player-career-expand {
+    display: inline-grid; place-items: center; width: var(--space-6); height: var(--space-6); margin-left: auto;
+    border: 0; border-radius: var(--radius-xs); background: transparent; color: var(--color-text-secondary); cursor: pointer;
+  }
+  .player-career .player-career-expand:hover { background: var(--color-table-well); color: var(--color-text-primary); }
+  .player-career .player-career-stints td { padding: var(--space-2) var(--space-3); background: var(--color-table-well); text-align: left; }
+  .player-career .player-career-stints ul { display: flex; flex-direction: column; gap: var(--space-1); margin: 0; padding: 0; list-style: none; }
+  .player-career .player-career-stints li { display: flex; align-items: center; gap: var(--space-3); font-size: var(--text-xs); color: var(--color-text-secondary); font-variant-numeric: tabular-nums; }
+  .player-career .player-career-stints strong { color: var(--color-text-primary); min-width: var(--space-8); }
+  .player-career tfoot .player-career-total th, .player-career tfoot .player-career-total td {
+    position: sticky; bottom: 0; background: var(--color-table-lift); border-top: 1px solid var(--color-hairline-strong);
+  }
+  .player-career tfoot .player-career-total th.pinned-col-year { z-index: var(--z-sticky-corner); font-size: var(--text-xs); text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-accent); }
+  .player-career .player-career-status { padding: var(--space-4); text-align: center; color: var(--color-text-secondary); font-size: var(--text-sm); }
+  .player-career .player-career-pending {
+    display: inline-block; width: 60%; height: var(--space-2); border-radius: var(--radius-xs);
+    background: var(--color-table-lift); animation: player-career-pulse var(--dur-chart) var(--ease-out) infinite alternate;
+  }
+  .player-career .player-career-footnote { margin: 0; padding: var(--space-2) var(--space-3); color: var(--color-text-tertiary); font-size: var(--text-xs); }
+  @keyframes player-career-pulse { to { opacity: 0.4; } }
+  @media (max-width: 767px) {
+    .player-career .player-career-scroll { --year-width: 104px; }
+  }
+}

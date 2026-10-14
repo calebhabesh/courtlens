@@ -325,6 +325,12 @@ class DraftClassesResponse(BaseModel):
     classes: list[DraftClass]
 
 
+class PlayerSeasonsResponse(BaseModel):
+    phase: str
+    # Seasons with at least one game row per player, ascending; a missing season is unknown.
+    seasons: dict[str, list[str]]
+
+
 class PlayerResearchResponse(BaseModel):
     context: dict[str, Any]
     query: ResearchQuerySchema | QuerySpec
@@ -522,6 +528,46 @@ class WowyViewResponse(BaseModel):
     artifact_sha256: str
     inputs: dict[str, Any]
     source: str
+    limitations: list[str]
+
+
+class PlayerBioDraft(BaseModel):
+    year: int
+    round: int | None
+    pick: int | None
+    team_id: str | None
+    team_tricode: str | None
+    organization: str | None
+
+
+class PlayerBioCombine(BaseModel):
+    draft_year: int
+    height_no_shoes_inches: float | None
+    height_shoes_inches: float | None
+    wingspan_inches: float | None
+    standing_reach_inches: float | None
+    weight_lbs: float | None
+
+
+class PlayerBioResponse(BaseModel):
+    """Profile header listings as of the page scope; combine values are measured."""
+
+    player_id: str
+    season: str
+    as_of: date
+    listing_source: Literal["season_roster", "player_index"] | None
+    jersey: str | None
+    listed_position: str | None
+    listed_height_inches: int | None
+    listed_weight_lbs: float | None
+    prior_seasons: int | None
+    birth_date: date | None
+    age: int | None
+    country: str | None
+    college: str | None
+    draft: PlayerBioDraft | None
+    undrafted: bool
+    combine: PlayerBioCombine | None
     limitations: list[str]
 
 

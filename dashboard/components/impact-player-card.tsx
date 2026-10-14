@@ -3,7 +3,8 @@ import { IMPACT_COLUMNS, formatStatValue } from "@/lib/stats-presets";
 import { ImpactDisclosure } from "./impact-disclosure";
 import { GatedNote } from "./ui/gated-note";
 
-export function ImpactPlayerCard({ data }: { data: ImpactResponse | null }) {
+/** `compact` (player page): values only, without the sample table and model note. */
+export function ImpactPlayerCard({ data, compact = false }: { data: ImpactResponse | null; compact?: boolean }) {
   const player = data?.players[0];
   return <section className="panel impact-player-card" aria-label="Player impact">
     <h2>Player impact</h2>
@@ -13,7 +14,7 @@ export function ImpactPlayerCard({ data }: { data: ImpactResponse | null }) {
         <dl className="impact-values">{["rapm", "orapm", "drapm", "bpr", "rapm_2y", "rapm_3y"].map(key => <div key={key}>
           <dt>{IMPACT_COLUMNS[key].label}</dt><dd>{formatStatValue(player.metrics[key], 2)}</dd>
         </div>)}</dl>
-        <details><summary>Impact samples and artifact identity</summary>
+        {!compact && <details><summary>Impact samples and artifact identity</summary>
           <div className="table-wrapper" role="region" aria-label="Impact sample table" tabIndex={0}>
             <table className="data-table"><thead><tr><th>Metric</th><th>Games</th><th>Minutes</th><th>Off / def opportunities</th><th>Sample</th></tr></thead>
               <tbody>{["rapm", "rapm_2y", "rapm_3y", "bpr"].map(key => { const sample = player.support[key]; return <tr key={key}>
@@ -22,9 +23,9 @@ export function ImpactPlayerCard({ data }: { data: ImpactResponse | null }) {
               </tr>; })}</tbody></table>
           </div>
           <p>RAPM units: points per 100 counted controls. {player.support.rapm?.artifact_sha256}</p>
-        </details>
+        </details>}
       </>}
-      <GatedNote why={<ImpactDisclosure data={data} />}>CourtLens model: descriptive estimates under lineup confounding.</GatedNote>
+      {!compact && <GatedNote why={<ImpactDisclosure data={data} />}>CourtLens model: descriptive estimates under lineup confounding.</GatedNote>}
     </>}
   </section>;
 }

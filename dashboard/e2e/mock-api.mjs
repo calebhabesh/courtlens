@@ -654,6 +654,10 @@ createServer(async (request, response) => {
   if (url.pathname === "/api/workbench/draft-classes") return json(response, 200, {
     source: "NBA draft history (fixture)", classes: [2020, 2019, 2018].map(year => ({ year, players: 58 }))
   });
+  if (url.pathname === "/api/workbench/player-seasons") return json(response, 200, {
+    phase: url.searchParams.get("phase") ?? "regular_season",
+    seasons: Object.fromEntries(url.searchParams.getAll("playerId").map(id => [id, ["2025-26"]]))
+  });
   if (url.pathname === "/api/workbench/status") return json(response, 200, workbenchStatus);
   if (url.pathname === "/api/workbench/players") {
     const q = (url.searchParams.get("name") ?? "").toLowerCase();
@@ -662,6 +666,15 @@ createServer(async (request, response) => {
     // Dedicated observed-team duo fixture; kept out of the normal two-row Stats cohort.
     if (url.searchParams.get("teamId") === "TOR") filtered = filtered.map(player => ({...player,teams:["TOR"]}));
     return json(response, 200, { ...workbenchPlayers, items: filtered, total_eligible_players: filtered.length });
+  }
+  const bioMatch = url.pathname.match(/^\/api\/workbench\/players\/(23|24)\/bio$/);
+  if (bioMatch) {
+    // Synthetic listings; neither fixture player attended a combine.
+    const fixture = bioMatch[1] === "23"
+      ? { jersey: "7", listed_position: "F", listed_height_inches: 80, listed_weight_lbs: 220, prior_seasons: 6, birth_date: "1998-02-10", age: 28, country: "Fixtureland", college: "Fixture State", draft: { year: 2018, round: 1, pick: 9, team_id: "100", team_tricode: "TOR", organization: "Fixture State" }, undrafted: false }
+      : { jersey: null, listed_position: "G", listed_height_inches: 75, listed_weight_lbs: 190, prior_seasons: 0, birth_date: null, age: null, country: null, college: null, draft: null, undrafted: true };
+    return json(response, 200, { player_id: bioMatch[1], season: url.searchParams.get("season") ?? "2025-26", as_of: "2026-04-12",
+      listing_source: "season_roster", combine: null, limitations: ["Synthetic UI fixture."], ...fixture });
   }
   if (url.pathname === "/api/workbench/players/23") return json(response, 200, workbenchPlayerProfile("23"));
   if (url.pathname === "/api/workbench/players/24") return json(response, 200, workbenchPlayerProfile("24"));
