@@ -1055,7 +1055,7 @@ export function WorkbenchPlayerExplorer({
                           <span className="player-cell-name font-semibold">{player.player_name}</span>
                         <span className={`player-cell-teams ${move ? "has-move" : ""}`}>{player.teams?.join(" / ") || "Team unknown"}{player.position && <span className="player-cell-position"> · <abbr title={querySpec?.season_scope?.seasons?.length ? "Estimated position, latest season in the range" : "Estimated position"}>{player.position}</abbr></span>} · {/* On a moved player's row the chip takes the season's place (every
                           row shares the season; the chip's title names it) so it is never truncated. */}
-                          {move ? <span className="stats-team-move" title={move.title}><span className="stats-team-move-label">now</span><TeamLogo team={move.tricode} size={14} />{move.tricode}</span> : seasonLabel}</span>
+                          {move ? <span className="stats-team-move" title={move.title}><span className="stats-team-move-label">now</span><TeamLogo team={move.tricode} size={14} /><span>{move.tricode}</span></span> : seasonLabel}</span>
                         </Link>
                         {player.table_qualified === false && <span className="table-small-sample">Small sample</span>}
                         </div>

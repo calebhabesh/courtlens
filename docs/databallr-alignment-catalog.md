@@ -446,6 +446,10 @@ Follow-up instruction (owner, 2026-10-14, from the player page's current team):
 73. [x] Slightly taller rows so the "now" pill is more legible and has space. — rows 42 → 46px
     (compact 34 → 38); the pill is 18px with a 14px logo, centred on the subtitle line.
 
+74. [x] Centre the "now" pill's text and logo, and give it a subtle accent-yellow outline. — symmetric
+    padding (8px, 4px on phones), every child's midpoint on the pill's (measured 0px off); a 1px
+    `--color-accent` outline at 55%; the subtitle line is pill-height so the outline is never clipped.
+
 ### 2 Dashboard (player) — 👀 ready for review
 Instructions (owner, 2026-10-13; agreed through a design interview, recommendations accepted):
 1. [x] Back to table (Esc) appears only when the player page was opened from Stats and returns to
