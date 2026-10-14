@@ -32,7 +32,7 @@ For the hosted read-only demo at courtlens.calebhabesh.com (production Compose s
 - **Database:** PostgreSQL 17 with strict foreign keys, immutable dataset memberships, and session advisory locks for publication.
 - **Warehouse:** dbt-postgres with layered staging (`stg_`), intermediate (`fct_`), and serving marts (`mart_`).
 - **Offline ML / Evaluation:** scikit-learn 1.6.1, rolling baselines (last-10, EWMA-20), out-of-time chronological validation and calibration, immutable hashed artifacts.
-- **Frontend:** Next.js 15 (App Router), TypeScript, responsive vanilla CSS.
+- **Frontend:** Next.js 16 (App Router), TypeScript; Tailwind v4 for the shared control kit and new styling (UI consolidation UC00), with remaining vanilla CSS migrating page by page.
 - **Packaging:** Docker Compose v2 for local reproducible deployment.
 
 ## Key Principles & Guardrails
