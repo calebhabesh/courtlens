@@ -3,7 +3,7 @@
 import { Icon } from "./ui/icon";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useWorkspace } from "@/lib/workspace-context";
-import { ALL_CATALOG_METRICS, IMPACT_COLUMNS } from "@/lib/stats-presets";
+import { ALL_CATALOG_METRICS, IMPACT_COLUMNS, isPickerDeadEnd, isV4Column } from "@/lib/stats-presets";
 import { computeClientBundleChecksum, getWorkspacePresets } from "@/lib/workspace-client";
 import type {
   CustomViewDefinition,
@@ -15,6 +15,8 @@ interface ManageViewsModalProps {
   isOpen: boolean;
   onClose: () => void;
   activeViewId?: string;
+  /** Open straight into a new-view editor (the Stats "Add View" button) instead of the list. */
+  startWithNewView?: boolean;
   onSelectView?: (viewId: string) => void;
 }
 
@@ -27,6 +29,7 @@ export function ManageViewsModal({
   isOpen,
   onClose,
   activeViewId,
+  startWithNewView = false,
   onSelectView
 }: ManageViewsModalProps) {
   const {
@@ -91,6 +94,14 @@ export function ManageViewsModal({
     setActiveTab("editor");
   };
 
+  // Each opening starts on the tab its trigger asked for.
+  const [openedState, setOpenedState] = useState(false);
+  if (isOpen !== openedState) {
+    setOpenedState(isOpen);
+    if (isOpen && startWithNewView && views.length < MAX_CUSTOM_VIEWS) handleOpenAddView();
+    else if (isOpen) setActiveTab("list");
+  }
+
   const handleOpenEditView = (view: CustomViewDefinition) => {
     setEditingViewId(view.id);
     setFormName(view.name);
@@ -145,8 +156,9 @@ export function ManageViewsModal({
     setErrorMessage(null);
 
     try {
-      const metricVersion = formColumns.some(key => key in IMPACT_COLUMNS) ? "courtlens-stats-v3" : "v2";
-      const unavailable = formUnavailable.filter(key => !(key in IMPACT_COLUMNS));
+      const metricVersion = formColumns.some(isV4Column) ? "courtlens-stats-v4"
+        : formColumns.some(key => key in IMPACT_COLUMNS) ? "courtlens-stats-v3" : "v2";
+      const unavailable = formUnavailable.filter(key => !(key in IMPACT_COLUMNS) && !isV4Column(key));
       if (editingViewId) {
         await updateCustomView(editingViewId, {
           name: formName.trim(),
@@ -314,6 +326,7 @@ export function ManageViewsModal({
     const q = columnSearch.toLowerCase().trim();
 
     for (const [key, col] of Object.entries(ALL_CATALOG_METRICS)) {
+      if (isPickerDeadEnd(key)) continue;
       if (
         q &&
         !key.toLowerCase().includes(q) &&

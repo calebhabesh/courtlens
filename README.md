@@ -33,7 +33,7 @@ Design rules:
 
 ```mermaid
 flowchart LR
-    A[Free public sources<br/>SportsDataverse · NBA.com · pbpstats · BBRef] --> B[(PostgreSQL 17<br/>raw + normalized)]
+    A[Free public sources<br/>SportsDataverse · NBA.com · pbpstats · BBRef · DARKO] --> B[(PostgreSQL 17<br/>raw + normalized)]
     B --> C[dbt marts]
     B --> D[Stint reconstruction<br/>RAPM · on/off · six factors]
     C --> E[Published release<br/>atomic pointer swap]
@@ -87,5 +87,7 @@ server. `make test`, `make lint` and `make typecheck` run the checks. The
 ## License
 
 [MIT](LICENSE). Bundled fonts keep their own licenses, listed in
-[`dashboard/public/fonts`](dashboard/public/fonts/manifest.json). CourtLens is
+[`dashboard/public/fonts`](dashboard/public/fonts/manifest.json). The Switzer interface font is
+not in the repository (its license excludes redistribution); install, dev and build fetch the
+hash-pinned original from Fontshare. CourtLens is
 unofficial and not affiliated with the NBA.

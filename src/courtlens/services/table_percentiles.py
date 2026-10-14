@@ -12,7 +12,14 @@ from courtlens.domain.impact_catalog import SERVING_CATALOG
 from courtlens.domain.metrics import TABLE_PERCENTILE_MIN_MINUTES
 from courtlens.domain.query_spec import QuerySpec, SampleFilter, SortSpec, TeamScope, WindowSpec
 from courtlens.domain.stats_presentation import StatsPresentation
-from courtlens.services.stats_engine import execute_stats_query
+from courtlens.services.stats_cohort_cache import (
+    MAX_COHORT,
+    cached_rows,
+    cohort_key,
+    cohort_query,
+    presentation_cohort,
+)
+from courtlens.services.stats_engine import stats_presentation_hash
 from courtlens.services.workbench_analytics import ResolvedContext, canonical_hash
 
 VERSION = "courtlens-table-percentiles-v1"
@@ -52,29 +59,44 @@ def annotate_players(
             "sort": [SortSpec(field="player_id", direction="asc")],
         }
     )
-    league, count, _, _ = execute_stats_query(
-        session,
-        context,
-        league_query,
-        is_export=True,
-        max_export_rows=2000,
-        presentation=StatsPresentation(),
-    )
+
+    def league_rows(requested: QuerySpec) -> tuple[list[dict[str, Any]], int]:
+        # Every joined view of a scope shares one reference carrying all joined columns.
+        scope = cohort_query(requested)
+
+        # The league reference ignores display filters. It reads the scope's whole presentation
+        # cohort, the same cache entry the Stats page itself pages through, so an unfiltered view
+        # aggregates its scope once instead of twice (a full multi-season range costs seconds).
+        def compute() -> tuple[list[dict[str, Any]], int]:
+            rows, total = presentation_cohort(session, context, scope)
+            # The reference reads only values and qualification; keep the cached copy small.
+            keep = ("player_id", "metrics")
+            slim = [
+                {key: row[key] for key in keep}
+                | {
+                    "impact_support": {
+                        name: {"qualified": entry.get("qualified")}
+                        for name, entry in (row.get("impact_support") or {}).items()
+                    }
+                }
+                for row in rows
+            ]
+            return slim, total
+
+        scope_hash = stats_presentation_hash(context, scope, StatsPresentation(), cohort=True)
+        # Read-only: the reference rows are never modified below.
+        return cached_rows(cohort_key("table-league", scope_hash, scope), compute, shared=True)
+
+    league, count = league_rows(league_query)
     if count > len(league):
         # Never rank a truncated reference population.
-        raise ValueError("Table percentile reference exceeds the 2,000-player bound")
+        raise ValueError(f"Table percentile reference exceeds the {MAX_COHORT:,}-player bound")
     season_rows = league
     if query.window.kind.value != "season":
-        season_rows, season_count, _, _ = execute_stats_query(
-            session,
-            context,
-            league_query.model_copy(update={"window": WindowSpec()}),
-            is_export=True,
-            max_export_rows=2000,
-            presentation=StatsPresentation(),
-        )
+        season_scope = league_query.model_copy(update={"window": WindowSpec()})
+        season_rows, season_count = league_rows(season_scope)
         if season_count > len(season_rows):
-            raise ValueError("Season qualification exceeds the 2,000-player bound")
+            raise ValueError(f"Season qualification exceeds the {MAX_COHORT:,}-player bound")
     qualified_ids = {
         row["player_id"]
         for row in season_rows
@@ -110,6 +132,8 @@ def annotate_players(
                 "dataset_id": context.dataset_id,
                 "semantic_signature": context.semantic_signature,
                 "season": query.season or context.season,
+                # Only ranges add a key, so single-season scope hashes stay unchanged.
+                **({"seasons": query.season_scope.seasons} if query.season_scope.seasons else {}),
                 "phase": query.phase or context.phase,
                 "before_date": (query.before_date or context.before_date).isoformat(),
                 "query": league_query.model_dump(mode="json", exclude={"page", "view_state"}),

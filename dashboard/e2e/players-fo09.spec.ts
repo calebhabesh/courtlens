@@ -14,12 +14,13 @@ test.describe("FO09 Players", () => {
     await expect(page.locator("h1")).toContainText("Fixture Star");
     const tiles = page.getByLabel("Season summary").locator(".ui-stat-tile");
     await expect(tiles).toHaveCount(6);
-    await expect(tiles.first()).toContainText("PPG");
-    await expect(page.getByRole("tab", { name: "Overview" })).toHaveAttribute("aria-selected", "true");
-    await page.getByRole("tab", { name: "Measurements" }).click();
-    await expect(page).toHaveURL(/tab=measurements/);
+    await expect(tiles.first()).toContainText("PTS");
+    const sections = page.getByRole("tablist", { name: "Profile sections" });
+    await expect(sections.getByRole("tab", { name: "Overview" })).toHaveAttribute("aria-selected", "true");
+    await sections.getByRole("tab", { name: "Game Log" }).click();
+    await expect(page).toHaveURL(/tab=games/);
     await page.reload();
-    await expect(page.getByRole("tab", { name: "Measurements" })).toHaveAttribute("aria-selected", "true");
+    await expect(page.getByRole("tab", { name: "Game Log" })).toHaveAttribute("aria-selected", "true");
     // Actions are icon buttons plus two menus, not a wall of buttons.
     await expect(page.getByRole("button", { name: "Export", exact: true })).toBeVisible();
     await expect(page.getByRole("button", { name: "Explore", exact: true })).toBeVisible();

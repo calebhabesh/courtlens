@@ -14,15 +14,15 @@ test("standard records are readable and portrait gutters center between metric g
         (cell.previousElementSibling!.querySelector(".stat-main-value")!.getBoundingClientRect().right +
          cell.nextElementSibling!.querySelector(".stat-main-value")!.getBoundingClientRect().left) / 2) };
   });
-  expect(geometry.height).toBeCloseTo(52, 1);
+  expect(geometry.height).toBeCloseTo(42, 1);
   expect(geometry.font).toBe("14px");
   geometry.offsets.forEach(offset => expect(Math.abs(offset)).toBeLessThan(1));
-  expect(geometry.offsets).toHaveLength(3);
+  expect(geometry.offsets).toHaveLength(5);
   const portraits = await page.locator(".stats-table-row").first().evaluate(row => ({
     main: row.querySelector(".stats-primary-portrait")!.getBoundingClientRect().width,
     guides: [...row.querySelectorAll(".stats-guide-marker > *")].map(image => image.getBoundingClientRect().width)
   }));
-  expect(portraits).toEqual({ main: 40, guides: [34, 34, 34] });
+  expect(portraits).toEqual({ main: 32, guides: [30, 30, 30, 30, 30] });
 });
 
 test("header branding and secondary navigation align", async ({ page }) => {
@@ -83,44 +83,46 @@ test("global search clear button uses the right edge and concise player captions
   expect(captions).toEqual(["TOR · 2025-26", "No stats in selected scope", "BOS · Last observed team"]);
 });
 
-test("table suggestions remain visible outside the scroll region and filter in place", async ({ page }) => {
+test("table search filters the rows as you type and keeps typing ahead of the URL", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 1100 });
   await openWorkbench(page, "/stats?season=2025-26&phase=regular_season&beforeDate=2026-04-13&window=season");
-  await expect(page.getByRole("combobox", { name: "Filter players by name" })).toBeVisible();
-  const input = page.getByRole("combobox", { name: "Filter players by name" });
-  const lookup = page.waitForRequest(request => request.url().includes("/lookup") && new URL(request.url()).searchParams.get("q") === "Star");
-  await input.fill("Star");
-  const request = new URL((await lookup).url());
-  expect(request.searchParams.get("kinds")).toBe("player");
-  expect(request.searchParams.get("season")).toBe("2025-26");
-  const option = page.getByRole("option", { name: /Fixture Star/ });
-  await expect(option).toBeVisible();
-  expect(await option.evaluate(element => { const box = element.getBoundingClientRect(); return element.contains(document.elementFromPoint(box.x + box.width / 2, box.y + box.height / 2)); })).toBe(true);
-  await input.press("ArrowDown"); await input.press("Enter");
-  await page.waitForURL(url => url.searchParams.get("name") === "Fixture Star");
-  expect(new URL(page.url()).pathname).toBe("/stats");
+  const input = page.getByRole("searchbox", { name: "Filter players by name" });
+  await expect(input).toBeVisible();
+  const lookups: string[] = [];
+  page.on("request", request => { if (request.url().includes("/lookup")) lookups.push(request.url()); });
+  const historyLength = await page.evaluate(() => history.length);
+  // Typing pauses push one debounced name; no Enter, no site-search dropdown.
+  await input.pressSequentially("Sta", { delay: 20 });
+  await page.waitForURL(url => url.searchParams.get("name") === "Sta");
   expect(new URL(page.url()).searchParams.get("beforeDate")).toBe("2026-04-13");
   await expect(page.locator(".stats-table-row")).toHaveCount(1);
+  await expect(page.locator(".stats-table-row")).toContainText("Fixture Star");
+  await expect(page.getByRole("listbox")).toHaveCount(0);
+  expect(lookups).toEqual([]);
+  // Keystrokes after a push are kept when that push lands, and typing replaces history.
+  await input.pressSequentially("r", { delay: 20 });
+  await page.waitForURL(url => url.searchParams.get("name") === "Star");
+  await expect(input).toHaveValue("Star");
+  expect(await page.evaluate(() => history.length)).toBe(historyLength);
+  // An unmatched name explains itself.
+  await input.fill("nobody");
+  await expect(page.getByText("No players match “nobody” under the current filters.")).toBeVisible();
   await page.getByRole("button", { name: "Clear player search", exact: true }).click();
   await page.waitForURL(url => !url.searchParams.has("name"));
   await expect(page.locator(".stats-table-row")).toHaveCount(2);
+  await expect(input).toBeFocused();
 });
 
-test("touch can pick a table suggestion and Escape preserves the draft", async ({ page }) => {
+test("phone table search filters immediately on Enter and Escape clears the draft", async ({ page }) => {
   await page.setViewportSize({ width: 375, height: 812 });
   await openWorkbench(page, "/stats");
-  const input = page.getByRole("combobox", { name: "Filter players by name" });
+  const input = page.getByRole("searchbox", { name: "Filter players by name" });
   await expect(input).toBeVisible();
-  await input.fill("Guard");
-  const option = page.getByRole("option", { name: /Fixture Guard/ });
-  await expect(option).toBeVisible();
+  await input.fill("Guard"); await input.press("Enter");
+  await page.waitForURL(url => url.searchParams.get("name") === "Guard");
+  await expect(page.locator(".stats-table-row")).toHaveCount(1);
   await input.press("Escape");
-  await expect(option).toBeHidden();
-  await expect(input).toHaveValue("Guard");
-  expect(new URL(page.url()).searchParams.has("name")).toBe(false);
-  await input.press("ArrowDown");
-  await expect(option).toBeVisible();
-  await option.tap();
-  await page.waitForURL(url => url.searchParams.get("name") === "Fixture Guard");
+  await expect(input).toHaveValue("");
+  await page.waitForURL(url => !url.searchParams.has("name"));
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(375);
 });

@@ -1,7 +1,9 @@
 import { describe, it, expect } from "vitest";
 import {
   STATS_PRESETS,
+  ALL_CATALOG_METRICS,
   getPresetById,
+  isPickerDeadEnd,
   computeHeaderGroups,
   tableGroups,
   calculateCohortPercentiles,
@@ -11,8 +13,11 @@ import {
   NBA_TEAMS,
   COUNTING_MODES,
   IDENTITY_MODES,
-  buildCustomViewPreset
+  buildCustomViewPreset,
+  isV4Column,
+  usesImpactManifest
 } from "./stats-presets";
+import { normalizedColumn } from "./stats-query";
 import type { PlayerResearchItem, CustomViewDefinition } from "./types";
 
 describe("stats-presets", () => {
@@ -220,13 +225,33 @@ describe("stats-presets", () => {
 });
 
 describe("table guide boundaries", () => {
-  it("combines Overview counting metrics into one section", () => {
+  it("uses credited DARKO forecasts in Overview and keeps BPR in the impact catalog", () => {
+    const impact = getPresetById("overview").columns.filter(column => column.group === "Impact");
+    expect(impact.map(column => column.key)).toEqual(["dpm", "o_dpm", "d_dpm"]);
+    expect(impact.map(column => column.label)).toEqual(["DPM", "ODPM", "DDPM"]);
+    expect(impact.every(column => column.tooltip?.includes("darko.app"))).toBe(true);
+    expect(impact[0].format?.(7.35021)).toBe("+7.4");
+    expect(ALL_CATALOG_METRICS.bpr.label).toBe("1Y BPR");
+  });
+  it("groups Overview in the owner's section order with Impact ahead of Counting", () => {
     expect(tableGroups(getPresetById("overview"))).toEqual([
-      { label: "Profile", start: 0, colSpan: 3 },
-      { label: "Counting", start: 3, colSpan: 3 },
-      { label: "Defense", start: 6, colSpan: 2 },
-      { label: "Efficiency", start: 8, colSpan: 5 }
+      { label: "Profile", start: 0, colSpan: 4 },
+      { label: "Impact", start: 4, colSpan: 3 },
+      { label: "Counting", start: 7, colSpan: 6 },
+      { label: "Eff", start: 13, colSpan: 4 },
+      { label: "Shooting", start: 17, colSpan: 5 },
+      { label: "Other", start: 22, colSpan: 4 }
     ]);
+  });
+  it("routes v4 Overview columns through every counting mode", () => {
+    const overview = getPresetById("overview");
+    const keys = (mode: "per_game" | "raw" | "per_36") => overview.columns.map(column => normalizedColumn(column, mode).key);
+    expect(keys("per_game")).toEqual(expect.arrayContaining(["pts_created_per_game", "rim_ast_per_game", "fg3a_per_game", "fta_per_game", "on_ball_pct", "ctov_pct", "fg2_pct"]));
+    expect(keys("raw")).toEqual(expect.arrayContaining(["pts_created", "pbp_rim_assists", "fg3a", "fta"]));
+    expect(keys("per_36")).toEqual(expect.arrayContaining(["pts_created_per_36", "rim_ast_per_36", "fg3a_per_36", "fta_per_36"]));
+    expect(usesImpactManifest("rim_ast_per_game")).toBe(true);
+    expect(usesImpactManifest("on_ball_pct")).toBe(false);
+    expect(isV4Column("ctov_pct")).toBe(true);
   });
   it("preserves noncontiguous custom groups and selected column order", () => {
     const view = buildCustomViewPreset({ id: "custom", name: "Reordered", columns: ["pts", "fg_pct", "pts_per_36", "fga"], unavailable_columns: [] });
@@ -236,5 +261,20 @@ describe("table guide boundaries", () => {
       { label: "Scoring", start: 2, colSpan: 1 },
       { label: "Shooting", start: 3, colSpan: 1 }
     ]);
+  });
+});
+
+describe("custom view column picker", () => {
+  it("hides the empty Six Factor placeholder", () => {
+    expect(isPickerDeadEnd("six_factor_impact")).toBe(true);
+    for (const kept of ["pts_per_game", "ts_pct", "rapm", "pbp_rim_assists"]) expect(isPickerDeadEnd(kept)).toBe(false);
+  });
+});
+
+describe("retired unsolid stats (owner, 2026-10-13)", () => {
+  it("are purged from every catalog column and built-in view", () => {
+    const retired = /^(pbp_(create|space|trans|finish|unknown)_|pbp_block_recovered_pct$|pbp_credited_ftov_per100$|impact_ts_pct$|impact_ftr$)/;
+    expect(Object.keys(ALL_CATALOG_METRICS).filter(key => retired.test(key))).toEqual([]);
+    expect(STATS_PRESETS.flatMap(preset => preset.columns.map(column => column.key)).filter(key => retired.test(key))).toEqual([]);
   });
 });

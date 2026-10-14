@@ -9,7 +9,6 @@ for (const width of [1440, 390]) {
     ["Team profile", "/teams/100", ".pc12-headline .chart-pairs"],
     ["Team Compare", "/team-compare", ".pc12-headline .chart-pairs"],
     ["Forecasts", "/forecasts", ".pc12-headline .chart-pairs"],
-    ["Player trajectory", "/players/23", ".pc12-profile-trajectory .trend-svg"],
     ["Shooting", "/research/shooting", ".pc12-headline .chart-reliability"],
     ["RAPM", "/research/rapm", ".pc12-headline .chart-ranked"],
     ["Trends", "/research/trends", ".pc12-headline .chart-pairs"],

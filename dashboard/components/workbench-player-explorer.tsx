@@ -1,38 +1,42 @@
 "use client";
 
 import { readStoredValue, storageKeys } from "@/lib/storage-keys";
+import { saveStatsReturn, STATS_RETURN_PARAM, takeStatsRestore } from "@/lib/stats-return";
 
 import Link from "next/link";
-import { LookupInput } from "./lookup-input";
 import { CourtLensWordmark } from "./courtlens-wordmark";
-import { StatsPreviewRail } from "./stats-preview-rail";
+import { StatsPreviewRail, STATS_CELL_HOVER } from "./stats-preview-rail";
+import { STATS_SCOPE_PENDING } from "./stats-page-controls";
+import { seasonScopeLabel } from "@/lib/season-range";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { useState, useMemo, useCallback, useTransition, useEffect, useRef, Fragment, type KeyboardEvent } from "react";
 import { SortHeader, GroupGuide } from "./table-ui";
 import { Icon } from "./ui/icon";
 import { useToast } from "./ui/toast";
 import { PercentileCell } from "./charts/percentile-cell";
-import { TablePercentileLegend } from "./table-percentile-legend";
 import { Skeleton } from "./ui/skeleton";
+import { Field } from "./ui/field";
 import { SlidingIndicator } from "./ui/sliding-indicator";
+import { StatsChoicePills } from "./stats-choice-pills";
 import { TeamLogoStack } from "./team-logo";
 import { PlayerPortrait } from "./player-portrait";
 import { StatsDetailDrawer } from "./stats-detail-drawer";
 import { CompareTray } from "./compare-tray";
 import { HotkeysModal } from "./hotkeys-modal";
 import { ManageViewsModal } from "./manage-views-modal";
+import { Menu, MenuItem } from "./ui/menu";
 import { ScatterPlotView } from "./scatter-plot-view";
 import { MultiPlayerLinesView } from "./multi-player-lines-view";
 import { useWorkspace } from "@/lib/workspace-context";
 import { saveInvestigation } from "@/lib/workbench-api";
 import {
-  STATS_PRESETS,
   IMPACT_COLUMNS,
+  DARKO_COLUMNS,
   getPresetById,
   tableGroups,
   formatColumnValue,
-  NBA_TEAMS,
-  COUNTING_MODES,
+  ORDERED_COUNTING_MODES,
+  ORDERED_PRESETS,
   IDENTITY_MODES,
   type PresetId,
   type CountingMode,
@@ -40,6 +44,11 @@ import {
   type TableDensity
 } from "@/lib/stats-presets";
 import { normalizedColumn, normalizedSortMetric } from "@/lib/stats-query";
+import { formatDate } from "@/lib/format-date";
+import type { MetricHint } from "@/lib/stats-glossary";
+import { StatsHeaderTip, type HeaderTip } from "./stats-header-tip";
+import { DarkoSourceLink } from "./darko-source-link";
+import { StatsTrendDialog, type TrendTarget } from "./stats-trend-dialog";
 import type { QuerySpec, WorkbenchCatalog, PlayerResearchResponse, PlayerResearchItem } from "@/lib/types";
 
 interface WorkbenchPlayerExplorerProps {
@@ -49,16 +58,28 @@ interface WorkbenchPlayerExplorerProps {
   catalog?: WorkbenchCatalog;
   currentSortMetric?: string;
   currentSortDirection?: string;
+  /** Full name and description per metric key, shown when a column header is hovered. */
+  metricHints?: Record<string, MetricHint>;
 }
 
 const LOCAL_STORAGE_DENSITY_KEY = storageKeys.density;
 
 const SKELETON_ROW_COUNT = 12;
+// Pause after the last keystroke before the table search queries the server.
+const NAME_SEARCH_DEBOUNCE_MS = 250;
+
+// Databallr's view order; CourtLens-only presets follow.
+// Display order of the counting-mode buttons: Totals last, as on Databallr.
 
 type GuideGeometry = React.CSSProperties & { "--guide-offset": string };
 const guideGeometry = (index: number): GuideGeometry => ({
   "--guide-offset": `var(--group-guide-offset-${index}, 0px)`
 });
+
+/** Headers with a 7+ letter word (PTS CREATED) need more than the 64px column minimum. */
+function isWideLabel(label: string): boolean {
+  return label.split(/[\s/]+/).some(word => word.length >= 7);
+}
 
 export function WorkbenchPlayerExplorer({
   data,
@@ -66,11 +87,13 @@ export function WorkbenchPlayerExplorer({
   countingMode: resolvedCountingMode,
   catalog,
   currentSortMetric = "pts",
-  currentSortDirection = "desc"
+  currentSortDirection = "desc",
+  metricHints = {}
 }: WorkbenchPlayerExplorerProps) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const seasonLabel = seasonScopeLabel(querySpec?.season_scope?.seasons ?? null, querySpec?.season ?? data?.context?.season ?? "");
 
   const {
     views,
@@ -93,9 +116,17 @@ export function WorkbenchPlayerExplorer({
   // Navigations run in a transition: the selected tab and column headers switch immediately,
   // and analytical changes swap the table body for skeleton rows until the server query lands.
   const [isNavigating, startNavigation] = useTransition();
-  const [pendingNav, setPendingNav] = useState<{ presetId: PresetId | null; data: boolean } | null>(null);
+  const [pendingNav, setPendingNav] = useState<{ presetId: PresetId | null; data: boolean; search?: boolean } | null>(null);
   const activePresetId: PresetId = (isNavigating && pendingNav?.presetId) || urlPresetId;
-  const loadingRows = isNavigating && Boolean(pendingNav?.data);
+  // Scope filters above the table (positions, draft class, team) navigate on their own.
+  const [scopePending, setScopePending] = useState(false);
+  useEffect(() => {
+    const onPending = (event: Event) => setScopePending(Boolean((event as CustomEvent<boolean>).detail));
+    window.addEventListener(STATS_SCOPE_PENDING, onPending);
+    return () => window.removeEventListener(STATS_SCOPE_PENDING, onPending);
+  }, []);
+  const loadingRows = (isNavigating && Boolean(pendingNav?.data)) || scopePending;
+  const searchingRows = isNavigating && Boolean(pendingNav?.search);
 
   // Counting Mode derived from URL or workspace preferences
   const countingMode: CountingMode = resolvedCountingMode ||
@@ -150,6 +181,7 @@ export function WorkbenchPlayerExplorer({
 
   // Manage Views Modal state (F04)
   const [isManageViewsOpen, setIsManageViewsOpen] = useState(false);
+  const [manageStartsNew, setManageStartsNew] = useState(false);
 
   // Favorites-only filter state (F05)
   const favoritesOnly = searchParams?.get("favorites") === "1";
@@ -171,10 +203,19 @@ export function WorkbenchPlayerExplorer({
   const [actionError, setActionError] = useState<string | null>(null);
 
   // Local filter states
+  // The header search filters the table as you type (Databallr). `pushed` holds names sent to
+  // the URL that have not landed yet, so their echoes never overwrite newer typing; any other
+  // URL change (reset, back, site search) replaces the draft.
   const urlName = searchParams?.get("name") || "";
-  const [nameDraft, setNameDraft] = useState({ scope: urlName, value: urlName });
-  const localName = nameDraft.scope === urlName ? nameDraft.value : urlName;
-  const setLocalName = (value: string) => setNameDraft({ scope: urlName, value });
+  const nameInputRef = useRef<HTMLInputElement>(null);
+  const [nameDraft, setNameDraft] = useState({ url: urlName, value: urlName, pushed: [] as string[] });
+  if (nameDraft.url !== urlName) {
+    const echo = nameDraft.pushed.indexOf(urlName);
+    setNameDraft(echo >= 0 ? { ...nameDraft, url: urlName, pushed: nameDraft.pushed.slice(echo + 1) }
+      : { url: urlName, value: urlName, pushed: [] });
+  }
+  const localName = nameDraft.value;
+  const setLocalName = (value: string) => setNameDraft(draft => ({ ...draft, value }));
 
   const query = data.query;
   const items = data.items;
@@ -221,7 +262,7 @@ export function WorkbenchPlayerExplorer({
 
   // URL updater preserving context parameters
   const updateParam = useCallback(
-    (updates: Record<string, string | null>, options?: { presetId?: PresetId }) => {
+    (updates: Record<string, string | null>, options?: { presetId?: PresetId; search?: boolean }) => {
       const params = new URLSearchParams(searchParams?.toString() ?? "");
       const aliases: Record<string, string> = { sortMetric: "sort_metric", sortDirection: "sort_direction", teamId: "team_id", minGames: "min_games", minMinutes: "min_minutes", minAvgMinutes: "min_avg_minutes", countingMode: "counting_mode", identityMode: "identity_mode", viewId: "view_id" };
       for (const [key, value] of Object.entries(updates)) {
@@ -238,11 +279,28 @@ export function WorkbenchPlayerExplorer({
       if (!("cursor" in updates) && Object.keys(updates).some(key => !presentationKeys.has(key))) params.delete("cursor");
       // Only identity/density/plot-mode changes keep the current rows; anything else refetches.
       const visualKeys = new Set(["identityMode", "identity_mode", "density", "viewMode"]);
-      setPendingNav({ presetId: options?.presetId ?? null, data: Object.keys(updates).some(key => !visualKeys.has(key)) });
-      startNavigation(() => router.push(`${pathname}?${params.toString()}`));
+      // Typed searches keep the current rows (dimmed) and replace history instead of stacking it.
+      setPendingNav({ presetId: options?.presetId ?? null, search: Boolean(options?.search),
+        data: !options?.search && Object.keys(updates).some(key => !visualKeys.has(key)) });
+      startNavigation(() => (options?.search ? router.replace : router.push)(`${pathname}?${params.toString()}`));
     },
     [router, pathname, searchParams]
   );
+
+  const typedName = localName.trim();
+  const lastName = nameDraft.pushed.at(-1) ?? urlName;
+  const pushName = (value: string) => {
+    setNameDraft(draft => ({ ...draft, pushed: [...draft.pushed, value] }));
+    updateParam({ name: value || null }, { search: true });
+  };
+  useEffect(() => {
+    if (typedName === lastName) return;
+    const timer = window.setTimeout(() => {
+      setNameDraft(draft => ({ ...draft, pushed: [...draft.pushed, typedName] }));
+      updateParam({ name: typedName || null }, { search: true });
+    }, NAME_SEARCH_DEBOUNCE_MS);
+    return () => window.clearTimeout(timer);
+  }, [typedName, lastName, updateParam]);
 
   const handleFavorite = async (playerId: string) => {
     setActionError(null);
@@ -259,7 +317,7 @@ export function WorkbenchPlayerExplorer({
   };
 
   const handlePresetSelect = (id: PresetId) => {
-    const metric = id === "impact" ? "rapm" : id === "onoff" ? "onoff_net_rating" : id === "sixfactor" ? "rapm" : "pts_per_game";
+    const metric = id === "overview" ? "dpm" : id === "impact" ? "rapm" : id === "onoff" ? "onoff_net_rating" : id === "sixfactor" ? "rapm" : "pts_per_game";
     updateParam({ viewId: id === "overview" ? null : id, preset: null, view_id: null,
       sortMetric: normalizedSortMetric(metric, countingMode), sort: null, sort_metric: null, cursor: null }, { presetId: id });
   };
@@ -280,6 +338,18 @@ export function WorkbenchPlayerExplorer({
     } else {
       updateParam({ sortMetric: metricKey, sortDirection: "desc" });
     }
+  };
+
+  // Universal reset: every table sort and filter returns to how the page first loads (default
+  // sort, no search, minimums, team, positions, draft class or favorites, page one). Season,
+  // phase, view and counting mode are scope, not filters, and stay. Always enabled: a sort that
+  // is still loading has not reached the URL yet.
+  const nameSorted = currentSortMetric === "player_name" || currentSortMetric === "name";
+  const resetTable = () => {
+    setLocalName("");
+    updateParam({ sortMetric: null, sortDirection: null, sort: null, name: null, cursor: null,
+      minGames: null, minMinutes: null, minAvgMinutes: null, teamId: null, positions: null,
+      draftYear: null, favorites: null, predicates: null });
   };
 
   const handleToggleCompare = useCallback(
@@ -312,6 +382,57 @@ export function WorkbenchPlayerExplorer({
     }
   };
 
+  const scrollRef = useRef<HTMLDivElement>(null);
+  // Back to table on the player page returns here: same URL, page and table scroll.
+  const rememberTablePosition = () => saveStatsReturn({ href: `${pathname}?${searchParams?.toString() ?? ""}`,
+    pageY: window.scrollY, tableTop: scrollRef.current?.scrollTop ?? 0, tableLeft: scrollRef.current?.scrollLeft ?? 0 });
+  useEffect(() => {
+    if (loadingRows || viewMode !== "table") return;
+    const entry = takeStatsRestore(`${pathname}?${searchParams?.toString() ?? ""}`);
+    if (!entry) return;
+    window.scrollTo({ top: entry.pageY });
+    scrollRef.current?.scrollTo({ top: entry.tableTop, left: entry.tableLeft });
+  }, [loadingRows, viewMode, pathname, searchParams]);
+  const scrollTable = (direction: -1 | 1) => scrollRef.current?.scrollBy({ left: direction * 240 });
+  const stepView = (direction: -1 | 1) => {
+    const ids = [...ORDERED_PRESETS.map(p => p.id), ...views.map(v => v.id as PresetId)];
+    const index = ids.indexOf(activePresetId);
+    handlePresetSelect(ids[(index + direction + ids.length) % ids.length]);
+  };
+
+  const [headerTip, setHeaderTip] = useState<HeaderTip | null>(null);
+  const headerTipTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const keepHeaderTip = () => {
+    if (headerTipTimer.current) clearTimeout(headerTipTimer.current);
+  };
+  const hideHeaderTip = () => {
+    keepHeaderTip();
+    headerTipTimer.current = setTimeout(() => setHeaderTip(null), 200);
+  };
+  useEffect(() => () => { if (headerTipTimer.current) clearTimeout(headerTipTimer.current); }, []);
+  const [trendTarget, setTrendTarget] = useState<TrendTarget | null>(null);
+  const showHeaderTip = (event: React.SyntheticEvent<HTMLTableRowElement>) => {
+    keepHeaderTip();
+    const cell = (event.target as HTMLElement).closest<HTMLElement>("th[data-column]");
+    const column = preset.columns.find(entry => entry.key === cell?.dataset.column);
+    if (!cell || !column) { setHeaderTip(null); return; }
+    if (headerTip?.key === column.key) return;
+    const hint = metricHints[column.key];
+    const rect = cell.getBoundingClientRect();
+    setHeaderTip({ key: column.key, label: column.label, name: hint?.name ?? column.tooltip ?? column.label,
+      description: hint?.description ?? null, x: rect.left + rect.width / 2, y: rect.top,
+      sortable: !catalog?.stats_sort_fields || catalog.stats_sort_fields.includes(column.sortMetric) });
+  };
+
+  const openComparison = () => {
+    if (comparedPlayers.length < 2) return;
+    const params = new URLSearchParams({ season: query.season, phase: query.phase,
+      beforeDate: query.before_date, window: query.window,
+      playerA: comparedPlayers[0].player_id, playerB: comparedPlayers[1].player_id });
+    if (query.release_id) params.set("releaseId", query.release_id);
+    router.push(`/compare?${params}`);
+  };
+
   // One handler in the focused table region; editable/modified/IME events keep native behavior.
   const handleTableKey = (e: KeyboardEvent<HTMLDivElement>) => {
     const target = e.target as HTMLElement;
@@ -325,14 +446,8 @@ export function WorkbenchPlayerExplorer({
     else if (key === "t") { e.preventDefault(); setIsExpanded(value => !value); }
     else if (key === "w" || key === "e") { e.preventDefault(); handleDensityChange(key === "w" ? "compact" : "standard"); }
     else if (key === "a" || key === "d") { e.preventDefault(); e.currentTarget.scrollBy({ left: key === "a" ? -240 : 240 }); }
-    else if (key === "z" && comparedPlayers.length >= 2) {
-      e.preventDefault();
-      const params = new URLSearchParams({ season: query.season, phase: query.phase,
-        beforeDate: query.before_date, window: query.window,
-        playerA: comparedPlayers[0].player_id, playerB: comparedPlayers[1].player_id });
-      if (query.release_id) params.set("releaseId", query.release_id);
-      router.push(`/compare?${params}`);
-    }
+    else if (key === "f") { e.preventDefault(); setFiltersOpen(value => !value); }
+    else if (key === "z" && comparedPlayers.length >= 2) { e.preventDefault(); openComparison(); }
   };
 
   const closeDetailDrawer = useCallback(() => setSelectedPlayerForDrawer(null), []);
@@ -349,7 +464,7 @@ export function WorkbenchPlayerExplorer({
     setSaving(true);
     setSaveSuccess(null);
     try {
-      const impactMetrics = preset.columns.filter(column => column.key in IMPACT_COLUMNS).map(column => column.key);
+      const impactMetrics = preset.columns.filter(column => column.key in IMPACT_COLUMNS || column.key in DARKO_COLUMNS).map(column => column.key);
       const saveQuery = { ...query, ...(impactMetrics.length ? { metrics: impactMetrics } : {}) };
       const saved = await saveInvestigation(title.trim(), saveQuery as unknown as Record<string, unknown>);
       const msg = `Legacy analytical scope saved (retained arithmetic; Favorites and percentiles excluded), manifest SHA-256: ${saved.manifest_sha256.slice(0, 8)}...`;
@@ -400,9 +515,70 @@ export function WorkbenchPlayerExplorer({
 
   const guideStarts = new Set(headerGroups.slice(1).map(group => group.start));
   const guideCount = identityMode === "none" ? 0 : guideStarts.size;
+  const wideColumns = preset.columns.filter(column => isWideLabel(column.label)).length;
   const tableRef = useRef<HTMLTableElement>(null);
 
   // Right-aligned values leave asymmetric space around the structural guide column.
+  // Databallr: hovering or focusing a stat cell highlights that stat in the preview rail. One
+  // delegated listener; only the rail re-renders.
+  useEffect(() => {
+    const table = tableRef.current;
+    if (!table) return;
+    let current: string | null = null;
+    const announce = (column: string | null) => {
+      if (column === current) return;
+      current = column;
+      window.dispatchEvent(new CustomEvent(STATS_CELL_HOVER, { detail: column }));
+    };
+    const fromEvent = (event: Event) => announce((event.target as Element | null)?.closest<HTMLElement>("tbody td[data-column]")?.dataset.column ?? null);
+    const clear = () => announce(null);
+    table.addEventListener("mouseover", fromEvent);
+    table.addEventListener("focusin", fromEvent);
+    table.addEventListener("mouseleave", clear);
+    table.addEventListener("focusout", clear);
+    return () => {
+      table.removeEventListener("mouseover", fromEvent);
+      table.removeEventListener("focusin", fromEvent);
+      table.removeEventListener("mouseleave", clear);
+      table.removeEventListener("focusout", clear);
+      announce(null);
+    };
+  }, [viewMode, loadingRows]);
+
+  // Databallr: the table frame reaches just above the bottom of the unscrolled page. Only the
+  // frame's height is measured (from its own page offset); inside it a flex column gives the rows
+  // whatever the toolbar, footer and compare tray leave, so in-frame changes need no re-measure.
+  useEffect(() => {
+    const frame = scrollRef.current?.closest<HTMLElement>(".stats-table-frame");
+    if (!frame) return;
+    const fit = () => {
+      const top = frame.getBoundingClientRect().top + window.scrollY;
+      // The bottom edge lands on a whole pixel (16px above the fold) whatever the top's fraction.
+      frame.style.setProperty("--stats-frame-height", `${window.innerHeight - 16 - top}px`);
+    };
+    // Anything above the frame can settle after mount (fonts, menus, notices). The workspace has a
+    // min-height that hides such changes, so watch each ancestor and everything before it instead.
+    const observer = new ResizeObserver(fit);
+    for (let node: Element | null = frame; node && !node.classList.contains("stats-workspace"); node = node.parentElement) {
+      if (node !== frame) observer.observe(node);
+      for (let sibling = node.previousElementSibling; sibling; sibling = sibling.previousElementSibling) observer.observe(sibling);
+    }
+    window.addEventListener("resize", fit);
+    // An entering page slides in with a transform, which moves the frame without resizing anything;
+    // measure again once any animation or transition settles.
+    document.addEventListener("animationend", fit);
+    document.addEventListener("transitionend", fit);
+    void document.fonts.ready.then(fit);
+    fit();
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("resize", fit);
+      document.removeEventListener("animationend", fit);
+      document.removeEventListener("transitionend", fit);
+      frame.style.removeProperty("--stats-frame-height");
+    };
+  }, [viewMode]);
+
   // Use the visible metric bounds to keep one straight divider per group, including
   // rows with shorter values. Recalculate after fonts, rows or column widths change.
   useEffect(() => {
@@ -456,7 +632,7 @@ export function WorkbenchPlayerExplorer({
       {/* Preset Tabs Row (F02 & F04) */}
       <div className="stats-preset-tabs-wrapper">
         <div className="stats-preset-tabs" role="tablist" aria-label="Stats Explorer Presets">
-          {STATS_PRESETS.map((p) => {
+          {ORDERED_PRESETS.map((p) => {
             const isActive = p.id === activePresetId;
             return (
               <button
@@ -497,35 +673,21 @@ export function WorkbenchPlayerExplorer({
           })}
         </div>
 
-        {/* Identity Density Mode Buttons (F03) */}
-        <div className="control-button-group" role="group" aria-label="Group guides">
-          <span className="control-group-label">Group Guides:</span>
-          {IDENTITY_MODES.map((im) => (
-            <button
-              key={im.id}
-              type="button"
-              onClick={() => handleIdentityModeSelect(im.id)}
-              className={`control-pill ${identityMode === im.id ? "active" : ""}`}
-              title={im.tooltip}
-              aria-pressed={identityMode === im.id}
-            >
-              {im.label}
-            </button>
-          ))}
-        </div>
-
-        {/* Manage Views Button (F04) */}
-        <div className="stats-preset-manage-wrapper">
-          <button
-            type="button"
-            onClick={() => setIsManageViewsOpen(true)}
-            className="button button-small stats-manage-views-btn"
-            title="Manage custom views, default view, and import/export"
-          >
-            <Icon name="settings" /> Manage Views
+        <Field label="Table Divider" layout="inline" className="stats-divider-field">
+          <StatsChoicePills label="Table Divider" className="stats-divider-modes" indicatorId="stats-divider-indicator"
+            options={IDENTITY_MODES.map(im => ({ id: im.id, label: im.label, title: im.tooltip }))}
+            value={identityMode} onSelect={handleIdentityModeSelect} />
+        </Field>
+        <div className="control-button-group stats-view-actions">
+          <button type="button" onClick={() => { setManageStartsNew(true); setIsManageViewsOpen(true); }}
+            className="control-pill" title="Create a personal view from any catalog columns">
+            <Icon name="columns" size={14} /> Add View
+          </button>
+          <button type="button" onClick={() => { setManageStartsNew(false); setIsManageViewsOpen(true); }}
+            className="control-pill" title="Manage custom views, default view, and import/export">
+            <Icon name="settings" size={14} /> Manage
           </button>
         </div>
-
       </div>
 
       {/* Gated Preset Capability Notice */}
@@ -555,41 +717,58 @@ export function WorkbenchPlayerExplorer({
         </div>
       )}
 
-      <div className="stats-table-frame">
+      <div className={`stats-frame-layout ${viewMode === "table" ? "has-rail" : ""} ${previewCollapsed ? "preview-collapsed" : ""}`}>
+      <div className={`stats-table-frame ${viewMode === "table" ? "is-table" : ""}`}>
       <div className="stats-controls-row">
         <strong className="stats-table-brand"><CourtLensWordmark height={16} /></strong>
-        <div className="control-button-group" role="group" aria-label="Counting Mode">
-          {COUNTING_MODES.map(cm => <button key={cm.id} type="button"
-            onClick={() => handleCountingModeSelect(cm.id)}
-            disabled={catalog?.stats_normalizations ? !catalog.stats_normalizations.includes(cm.id) : cm.gated}
-            className={`control-pill ${countingMode === cm.id ? "active" : ""}`}
-            title={cm.tooltip} aria-pressed={countingMode === cm.id}>{cm.label}
-          </button>)}
+        <StatsChoicePills label="Counting Mode" className="stats-counting-modes" indicatorId="stats-counting-indicator"
+          options={ORDERED_COUNTING_MODES.map(cm => ({ id: cm.id, label: cm.label, title: cm.tooltip,
+            disabled: catalog?.stats_normalizations ? !catalog.stats_normalizations.includes(cm.id) : cm.gated }))}
+          value={countingMode} onSelect={handleCountingModeSelect} />
+        <div className="stats-tool-group" role="group" aria-label="Explorer View Mode">
+          <button type="button" onClick={() => setViewMode(viewMode === "scatter" ? "table" : "scatter")}
+            className="stats-tool-button" aria-pressed={viewMode === "scatter"} aria-label="Scatter plot" title="Scatter plot"><Icon name="scatter" /></button>
+          <button type="button" onClick={() => setViewMode(viewMode === "lines" ? "table" : "lines")}
+            className="stats-tool-button" aria-pressed={viewMode === "lines"} aria-label="Trend lines" title="Trend lines"><Icon name="trend" /></button>
+          <button type="button" onClick={openComparison} disabled={comparedPlayers.length < 2}
+            className="stats-tool-button" aria-label="Compare selected players (Z)"
+            title={comparedPlayers.length < 2 ? "Add two players with + to compare them" : "Compare the first two selected players (Z)"}><Icon name="users" /></button>
         </div>
-        <div className="control-button-group stats-view-controls" role="group" aria-label="Explorer View Mode">
-          <button type="button" onClick={() => setViewMode("table")} className={`control-pill ${viewMode === "table" ? "active" : ""}`} aria-pressed={viewMode === "table"}><Icon name="table" size={14} /> Table</button>
-          <button type="button" onClick={() => setViewMode("scatter")} className={`control-pill ${viewMode === "scatter" ? "active" : ""}`} aria-pressed={viewMode === "scatter"}><Icon name="scatter" size={14} /> Scatter Plot</button>
-          <button type="button" onClick={() => setViewMode("lines")} className={`control-pill ${viewMode === "lines" ? "active" : ""}`} aria-pressed={viewMode === "lines"}><Icon name="chart-line" size={14} /> Trend Lines</button>
-        </div>
-        <div className="control-button-group stats-table-tools">
-          <button type="button" onClick={() => setShowPercentiles(value => !value)}
-            className={`control-pill ${showPercentiles ? "active" : ""}`} aria-pressed={showPercentiles}
-            title="Toggle qualified league percentile labels">%iles {showPercentiles ? "On" : "Off"}</button>
+        <div className="stats-tool-group" role="group" aria-label="Table tools">
+          <Menu className="stats-tool-menu" trigger={<span className="stats-tool-button" title="Table settings"><Icon name="settings" /><span className="sr-only">Table settings</span></span>}>
+            <MenuItem icon={showPercentiles ? "eye-off" : "eye"} label={showPercentiles ? "Hide percentiles" : "Show percentiles"}
+              onClick={() => setShowPercentiles(value => !value)} />
+            <MenuItem icon="save" label={saving ? "Saving…" : "Save legacy scope"} disabled={saving || !legacySaveAvailable}
+              onClick={handleSaveInvestigation} />
+          </Menu>
           <button type="button" onClick={() => updateParam({ favorites: favoritesOnly ? null : "1" })}
-            className={`control-pill ${favoritesOnly ? "active" : ""}`} aria-pressed={favoritesOnly}
+            className="stats-tool-button" aria-pressed={favoritesOnly}
+            aria-label={favoritesOnly ? "Show all players" : `Favorites only${favorites.length ? ` (${favorites.length})` : ""}`}
             title={favoritesOnly ? "Show all players" : "Filter to favorite players only"}>
-            <Icon name="star" /> Favorites {favorites.length > 0 ? `(${favorites.length})` : ""}
+            <Icon name="star" filled={favoritesOnly} />
           </button>
-          <button type="button" className={`control-pill ${filtersOpen || hasActiveFilters ? "active" : ""}`}
-            onClick={() => setFiltersOpen(value => !value)} aria-expanded={filtersOpen} aria-controls="stats-filters">
-            <Icon name="sliders" size={14} /> Filters{hasActiveFilters ? " · Active" : ""}
+          <button type="button" onClick={() => setIsHotkeysOpen(true)} className="stats-tool-button" aria-label="Hotkeys" title="Keyboard shortcuts (?)"><Icon name="help" /></button>
+          <button type="button" className={`stats-tool-button ${hasActiveFilters ? "has-active" : ""}`} aria-pressed={filtersOpen}
+            onClick={() => setFiltersOpen(value => !value)} aria-expanded={filtersOpen} aria-controls="stats-filters"
+            aria-label="Filters" title={hasActiveFilters ? "Filters (active) · F" : "Filters · F"}>
+            <Icon name="filter" />
           </button>
-          <button type="button" onClick={() => setIsHotkeysOpen(true)} className="control-pill" title="Open keyboard shortcuts guide (?)"><Icon name="help" size={14} /> Hotkeys</button>
-          <button type="button" onClick={handleSaveInvestigation} disabled={saving || !legacySaveAvailable}
-            className="control-pill" title="Save this scope using retained legacy arithmetic. Favorites and cohort percentiles are excluded; advanced query filters cannot be saved here.">
-            <Icon name="save" size={14} /> {saving ? "Saving…" : "Save legacy scope"}
+          {/* Alphabetical order lives with the table tools; the search then spans the cards. */}
+          <button type="button" className="stats-tool-button" aria-pressed={nameSorted}
+            onClick={() => nameSorted ? updateParam({ sortMetric: "player_name", sortDirection: currentSortDirection === "asc" ? "desc" : "asc" })
+              : updateParam({ sortMetric: "player_name", sortDirection: "asc" })}
+            aria-label="Sort by Player" title={nameSorted && currentSortDirection === "asc" ? "Sort players Z–A" : "Sort players A–Z"}>
+            <Icon name={nameSorted && currentSortDirection === "asc" ? "sort-za" : "sort-az"} />
+          </button>
+          <button type="button" className="stats-tool-button" onClick={resetTable}
+            aria-label="Reset table" title="Reset sort and filters">
+            <Icon name="reset" />
           </button>
         </div>
+        <button type="button" onClick={() => setIsExpanded(value => !value)} className="stats-tool-button stats-expand-button"
+          aria-pressed={isExpanded} aria-label={isExpanded ? "Standard height" : "Expand table"} title="Expand table (T)">
+          <Icon name={isExpanded ? "collapse" : "expand"} />
+        </button>
       </div>
 
       {actionError && <div role="alert" className="notice-box stats-action-error">
@@ -607,24 +786,6 @@ export function WorkbenchPlayerExplorer({
       )}
 
       {filtersOpen && <div className="filter-toolbar" id="stats-filters" role="region" aria-label="Statistics filters">
-        {/* Team filter dropdown */}
-        <div className="filter-group">
-          <label htmlFor="stats-team-filter">Team</label>
-          <select
-            id="stats-team-filter"
-            value={searchParams?.get("teamId") || searchParams?.get("team_id") || ""}
-            onChange={(e) => updateParam({ teamId: e.target.value || null })}
-            aria-label="Filter by NBA team"
-          >
-            <option value="">All Teams (30)</option>
-            {NBA_TEAMS.map((t) => (
-              <option key={t.tricode} value={t.tricode}>
-                {t.tricode} — {t.name}
-              </option>
-            ))}
-          </select>
-        </div>
-
         {/* Min Games Played */}
         <div className="filter-group">
           <label htmlFor="min-games-filter">Min GP</label>
@@ -779,20 +940,19 @@ export function WorkbenchPlayerExplorer({
       {/* Dense Stats Table with Two-Tier Grouped Headers & Sticky Pinned Identity */}
       {viewMode === "table" && (
         <>
-          <TablePercentileLegend cohort={data.table_cohort} />
-          <div className={`stats-table-layout ${previewCollapsed ? "preview-collapsed" : ""}`}>
-          <div role="region" aria-label="Player statistics scroll area" aria-busy={loadingRows} tabIndex={0} onKeyDown={handleTableKey} className={`table-wrapper stats-scroll-region ${tableDensity === "compact" ? "density-compact" : "density-standard"}`}>
+          <div className="stats-table-layout">
+          <div ref={scrollRef} role="region" aria-label="Player statistics scroll area" aria-busy={loadingRows} tabIndex={0} onKeyDown={handleTableKey} className={`table-wrapper stats-scroll-region ${tableDensity === "compact" ? "density-compact" : "density-standard"}`}>
             <table ref={tableRef} className="data-table dense-stats-table" aria-label="Dense player statistics explorer"
               style={{
-                "--table-min-width": `calc(114px + var(--identity-name-width) + ${preset.columns.length * 84 + guideCount * 40}px)`,
-                "--table-width": `min(100%, calc(114px + var(--identity-name-width) + ${preset.columns.length * 140 + guideCount * 40}px))`
+                "--table-min-width": `calc(88px + var(--identity-name-width) + ${preset.columns.length * 64 + wideColumns * 16 + guideCount * 40}px)`,
+                "--table-width": `min(100%, calc(88px + var(--identity-name-width) + ${preset.columns.length * 88 + guideCount * 40}px))`
               } as React.CSSProperties}>
               <colgroup>
-                <col className="col-select" /><col className="col-rank" />
+                <col className="col-select" />
                 <col className="stats-name-column" />
                 {preset.columns.map((col, index) => <Fragment key={col.key}>
                   {identityMode !== "none" && guideStarts.has(index) && <col className="col-guide" />}
-                  <col className="stats-metric-column" />
+                  <col className={`stats-metric-column ${isWideLabel(col.label) ? "is-wide" : ""}`} />
                 </Fragment>)}
                 <col className="col-actions" />
               </colgroup>
@@ -800,10 +960,10 @@ export function WorkbenchPlayerExplorer({
                 {/* Tier 1 Header: Group Categories */}
                 <tr className="stats-header-tier-1">
               <th
-                colSpan={3}
+                colSpan={2}
                 className="pinned-col-group text-left pl-3"
               >
-                Players
+                <span className="sr-only">Players</span>
               </th>
               {headerGroups.map((group, gIdx) => (
                 <Fragment key={`${group.label}-${gIdx}`}>
@@ -820,43 +980,36 @@ export function WorkbenchPlayerExplorer({
             </tr>
 
             {/* Tier 2 Header: Individual Metrics */}
-            <tr className="stats-header-tier-2">
-              {/* Pinned Col 1: Select Checkbox */}
-              <th
-                className="pinned-col pinned-col-select text-center"
-                title="Select players for comparison (max 8)"
-              >
-                <Icon name="check" size={14} />
-              </th>
-
-              {/* Pinned Col 2: Rank # */}
-              <th
-                className="pinned-col pinned-col-rank num"
-              >
-                #
-              </th>
-
-              <th className="pinned-col pinned-col-name" scope="col" aria-sort={currentSortMetric === "name" || currentSortMetric === "player_name" ? currentSortDirection === "asc" ? "ascending" : "descending" : "none"}>
-                <div className="stats-header-search">
-                  <LookupInput label="Filter players by name" placeholder="Search players…" value={localName}
-                    onChange={setLocalName} kinds={["player"]} limit={8} compactResults portalDropdown
-                    onSelect={item => { setLocalName(item.display_name); updateParam({ name: item.display_name }); }}
-                    onSubmitText={text => updateParam({ name: text.trim() || null })}
-                    clearLabel="Clear player search" onClear={() => updateParam({ name: null })} />
+            <tr className="stats-header-tier-2" onMouseOver={showHeaderTip} onFocus={showHeaderTip}
+              onMouseLeave={hideHeaderTip} onBlur={hideHeaderTip}>
+              {/* Databallr: one search field spans the compare and name columns, flush with the cards. */}
+              <th colSpan={2} className="pinned-col pinned-col-search" scope="col" aria-sort={currentSortMetric === "name" || currentSortMetric === "player_name" ? currentSortDirection === "asc" ? "ascending" : "descending" : "none"}>
+                <div className="stats-header-search" role="search">
+                  <div className="lookup-input-wrapper">
+                    <Icon name="search" className="lookup-search-icon" />
+                    <input ref={nameInputRef} type="search" className="lookup-input" aria-label="Filter players by name"
+                      placeholder="Search players…" autoComplete="off" spellCheck={false} value={localName}
+                      onChange={event => setLocalName(event.target.value)}
+                      onKeyDown={event => {
+                        if (event.key === "Enter") { event.preventDefault(); if (typedName !== lastName) pushName(typedName); }
+                        else if (event.key === "Escape" && localName) { event.preventDefault(); setLocalName(""); }
+                      }} />
+                    {localName && <button type="button" className="lookup-clear-btn" aria-label="Clear player search"
+                      onClick={() => { setLocalName(""); pushName(""); nameInputRef.current?.focus(); }}><Icon name="close" /></button>}
+                  </div>
                 </div>
-                <button type="button" className="stats-name-sort" onClick={() => handleSort("player_name")} aria-label="Sort by Player" title="Sort by player name"><Icon name={currentSortDirection === "asc" ? "up" : "down"} /></button>
               </th>
 
               {/* Scrollable Metric Column Headers */}
               {preset.columns.map((col, index) => <Fragment key={col.key}>
                 {identityMode !== "none" && guideStarts.has(index) && <th className="stats-guide-cell" aria-hidden="true" />}
-                <SortHeader label={col.label} metric={col.sortMetric} onSort={handleSort}
+                <SortHeader column={col.key} label={col.label} metric={col.sortMetric} onSort={handleSort}
                   active={currentSortMetric === col.sortMetric} direction={currentSortDirection}
                   sortable={!catalog?.stats_sort_fields || catalog.stats_sort_fields.includes(col.sortMetric)}
                   description={col.tooltip} className={col.num ? "num" : ""} />
               </Fragment>)}
 
-              <th className="stats-detail-header text-center">Detail</th>
+              <th className="stats-detail-header text-center">Pin</th>
             </tr>
           </thead>
 
@@ -865,7 +1018,6 @@ export function WorkbenchPlayerExplorer({
               {Array.from({ length: SKELETON_ROW_COUNT }, (_, rowIndex) => (
                 <tr key={rowIndex} className="stats-table-row stats-skeleton-row">
                   <td className="pinned-col pinned-col-select" />
-                  <td className="pinned-col pinned-col-rank" />
                   <td className="pinned-col pinned-col-name">
                     <div className="player-cell">
                       <Skeleton variant="circle" width={40} height={40} />
@@ -888,15 +1040,15 @@ export function WorkbenchPlayerExplorer({
               ))}
             </tbody>
           ) : (
-          <tbody className="stats-table-body-enter">
+          <tbody className={`stats-table-body-enter ${searchingRows ? "stats-table-body-searching" : ""}`}>
             {items.length === 0 ? (
               <tr>
                 <td
-                  colSpan={preset.columns.length + guideCount + 4}
+                  colSpan={preset.columns.length + guideCount + 3}
                   className="stats-empty-cell text-muted text-center"
                 >
                   <p className="stats-empty-title">
-                    No players matched the current query filters.
+                    {urlName ? `No players match “${urlName}” under the current filters.` : "No players matched the current query filters."}
                   </p>
                   <button
                     type="button"
@@ -908,13 +1060,13 @@ export function WorkbenchPlayerExplorer({
                 </td>
               </tr>
             ) : (
-              items.map((player, idx) => {
+              items.map((player) => {
                 const isCompared = comparedPlayers.some((p) => p.player_id === player.player_id);
 
                 return (
                   <tr
                     key={player.player_id}
-                    className={`stats-table-row ${isCompared ? "row-selected" : ""} ${previewPlayer?.player_id === player.player_id ? "row-previewed" : ""}`}
+                    className={`stats-table-row ${isCompared ? "row-selected" : ""}`}
                     onMouseEnter={() => previewRow(player)}
                     onFocus={() => previewRow(player)}
                     data-player-id={player.player_id}
@@ -928,18 +1080,12 @@ export function WorkbenchPlayerExplorer({
                   >
                     {/* Pinned Col 1: Select Checkbox */}
                     <td className="pinned-col pinned-col-select text-center">
-                      <input
-                        type="checkbox"
-                        checked={isCompared}
-                        onChange={() => handleToggleCompare(player)}
-                        aria-label={`Select ${player.player_name} for comparison`}
-                        className="stats-compare-checkbox"
-                      />
-                    </td>
-
-                    {/* Pinned Col 2: Rank # */}
-                    <td className="pinned-col pinned-col-rank num font-mono text-muted text-xs">
-                      {(data.output_offset ?? 0) + idx + 1}
+                      <button type="button" className="stats-compare-toggle" aria-pressed={isCompared}
+                        onClick={() => handleToggleCompare(player)}
+                        aria-label={isCompared ? `Remove ${player.player_name} from comparison` : `Add ${player.player_name} to comparison`}
+                        title={isCompared ? "Remove from comparison (C)" : "Add to comparison (C)"}>
+                        <Icon name={isCompared ? "circle-check" : "circle-plus"} />
+                      </button>
                     </td>
 
                     {/* Pinned Col 3: Players */}
@@ -950,31 +1096,24 @@ export function WorkbenchPlayerExplorer({
                           portraitUrl={player.portrait_url} size="sm" className="stats-primary-portrait" />
                         <div className="stats-identity-copy"><Link href={`/players/${player.player_id}?${new URLSearchParams({
                           season: query.season, phase: query.phase, beforeDate: query.before_date,
-                          window: query.window, ...(query.release_id ? { releaseId: query.release_id } : {})
-                        })}`} title={player.player_name} aria-label={player.player_name} className="stats-player-link">
+                          window: query.window, ...(query.release_id ? { releaseId: query.release_id } : {}),
+                          [STATS_RETURN_PARAM]: "stats"
+                        })}`} title={player.player_name} aria-label={player.player_name} className="stats-player-link"
+                          onClick={rememberTablePosition}>
                           <span className="player-cell-name font-semibold">{player.player_name}</span>
-                        <span className="player-cell-teams">{player.teams?.join(" / ") || "Team unknown"} · {query.season}</span>
+                        <span className="player-cell-teams">{player.teams?.join(" / ") || "Team unknown"}{player.position && <> · <abbr title={querySpec?.season_scope?.seasons?.length ? "Estimated position, latest season in the range" : "Estimated position"}>{player.position}</abbr></>} · {seasonLabel}</span>
                         </Link>
                         {player.table_qualified === false && <span className="table-small-sample">Small sample</span>}
                         </div>
                         <button
                           type="button"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleFavorite(player.player_id);
-                          }}
-                          className={`stats-favorite-button ${isFavorite(player.player_id) ? "is-favorite" : ""}`}
-                          aria-pressed={isFavorite(player.player_id)}
-                          title={isFavorite(player.player_id) ? "Remove from favorites" : "Add to favorites"}
-                          aria-label={
-                            isFavorite(player.player_id)
-                              ? `Remove ${player.player_name} from favorites`
-                              : `Add ${player.player_name} to favorites`
-                          }
+                          onClick={() => setSelectedPlayerForDrawer(player)}
+                          className="stats-icon-action stats-details-button"
+                          aria-label={`Open details for ${player.player_name}`}
+                          title="Open full player details"
                         >
-                          <Icon name="star" />
+                          <Icon name="cards" size={14} />
                         </button>
-
                       </div>
                     </td>
 
@@ -991,13 +1130,16 @@ export function WorkbenchPlayerExplorer({
                           {identityMode !== "none" && guideStarts.has(index) && <td className="stats-guide-cell" data-guide-index={index} style={guideGeometry(index)} aria-hidden="true">
                             <span className="stats-guide-marker"><GroupGuide mode={identityMode} player={player} /></span>
                           </td>}
-                        <td
+                        <td data-column={col.key}
                           className={`stats-metric-cell stats-group-${headerGroups.findIndex(group => index >= group.start && index < group.start + group.colSpan) % 2} ${col.num ? "num" : ""}`}
                         >
-                          <PercentileCell compact showPercentile={showPercentiles}
-                            value={player.metrics[metricKey] == null ? null : formatted}
-                            percentile={pct} qualified={qualified} label={col.label}
-                            cohort={`${player.table_cohort_sample_sizes?.[metricKey] ?? "Unknown"} valid league players; ${data.table_cohort?.min_season_minutes ?? 500}+ season minutes`} />
+                          <button type="button" className="stats-cell-button" onClick={() => setTrendTarget({ player, columnKey: col.key })}
+                            aria-label={`${col.label} ${player.metrics[metricKey] == null ? "unknown" : formatted} for ${player.player_name}. Open ${col.label} trend`}>
+                            <PercentileCell variant="text" showPercentile={showPercentiles}
+                              value={player.metrics[metricKey] == null ? null : formatted}
+                              percentile={pct} qualified={qualified} label={col.label}
+                              cohort={`${player.table_cohort_sample_sizes?.[metricKey] ?? "Unknown"} valid league players; ${data.table_cohort?.min_season_minutes ?? 500}+ season minutes`} />
+                          </button>
                         </td>
                         </Fragment>
                       );
@@ -1008,15 +1150,6 @@ export function WorkbenchPlayerExplorer({
                       <button type="button" className="stats-icon-action stats-row-pin"
                         onClick={() => { setPreviewPlayer(player); setPreviewPinned(true); setPreviewCollapsed(false); }}
                         aria-label={`Pin preview for ${player.player_name}`} title="Pin player preview"><Icon name="pin" size={14} /></button>
-                      <button
-                        type="button"
-                        onClick={() => setSelectedPlayerForDrawer(player)}
-                        className="stats-icon-action"
-                        aria-label={`Open details for ${player.player_name}`}
-                        title="Open full player details"
-                      >
-                        <Icon name="search" />
-                      </button>
                     </td>
                   </tr>
                 );
@@ -1027,24 +1160,45 @@ export function WorkbenchPlayerExplorer({
         </table>
       </div>
 
-      <StatsPreviewRail player={previewPlayer} columns={preset.columns} season={query.season}
-        eligiblePlayers={data.total_eligible_players} goodDirections={data.cohort?.good_directions}
-        showPercentiles={showPercentiles} pinned={previewPinned} collapsed={previewCollapsed}
-        onTogglePin={() => setPreviewPinned(value => !value)}
-        onToggleCollapse={() => setPreviewCollapsed(value => !value)}
-        onOpenDetails={setSelectedPlayerForDrawer} />
       </div>
 
-      {/* Pagination Footer */}
+      {/* Footer: records, density, view and scroll steppers, filters, expand, paging */}
       <div className="stats-pagination-footer">
         <div className="stats-results-meta">
           <span className="stats-record-dot" aria-hidden="true" />
-          <span>Showing {items.length} of {data.total_output_players ?? data.total_eligible_players} matching players · {data.total_eligible_players} eligible players</span>
-          <span className="stats-sort-caption">Sorted by {preset.columns.find(column => column.sortMetric === currentSortMetric)?.label || "Player"} ({currentSortDirection.toUpperCase()})</span>
+          <span className="stats-record-count">{(data.total_output_players ?? data.total_eligible_players).toLocaleString("en-US")} records</span>
+          <span className="stats-sort-caption">{(data.output_offset ?? 0) + 1}–{(data.output_offset ?? 0) + items.length}{data.total_output_players != null && data.total_output_players !== data.total_eligible_players ? ` · of ${data.total_eligible_players.toLocaleString("en-US")} eligible` : ""}</span>
+          <span className="stats-sort-caption" title="Same season, phase and window. Search, team and sample filters, favorites and paging do not change the league reference. Lower is better for turnovers, fouls and opponent allowance.">
+            Percentiles vs {data.table_cohort?.qualified_players ?? "unknown number of"} players · {data.table_cohort?.min_season_minutes ?? 500}+ min
+          </span>
+          {data.darko && <DarkoSourceLink title={`DARKO by Kostya Medvedovsky. ${data.darko.limitations.join(" ")}`}>
+            DARKO · {data.darko.data_date ? `through ${formatDate(data.darko.data_date)}` : "unavailable in this scope"}
+          </DarkoSourceLink>}
         </div>
-        <div className="control-button-group" role="group" aria-label="Table Layout and Density">
-          <button type="button" onClick={() => handleDensityChange(tableDensity === "compact" ? "standard" : "compact")} className="control-pill" title="W: compact rows, E: standard rows">{tableDensity === "compact" ? "Compact Density" : "Standard Density"}</button>
-          <button type="button" onClick={() => setIsExpanded(value => !value)} className={`control-pill ${isExpanded ? "active" : ""}`} aria-pressed={isExpanded} title="Toggle expanded table height (T)">{isExpanded ? <Icon name="collapse" size={14} /> : <Icon name="expand" size={14} />}{isExpanded ? "Standard Height" : "Expand Table (T)"}</button>
+        <div className="stats-footer-controls">
+          <div className="stats-footer-group" role="group" aria-label="Row density">
+            <button type="button" className="stats-footer-button" onClick={() => handleDensityChange("compact")}
+              disabled={tableDensity === "compact"} aria-label="Compact rows (W)"><span aria-hidden="true">−W</span></button>
+            <span className="stats-density-meter" role="img" aria-label={tableDensity === "compact" ? "Compact density" : "Standard density"}>
+              <span className="is-on" /><span className={tableDensity === "standard" ? "is-on" : ""} />
+            </span>
+            <button type="button" className="stats-footer-button" onClick={() => handleDensityChange("standard")}
+              disabled={tableDensity === "standard"} aria-label="Standard rows (E)"><span aria-hidden="true">E+</span></button>
+          </div>
+          <div className="stats-footer-group" role="group" aria-label="View">
+            <button type="button" className="stats-footer-button" onClick={() => stepView(-1)} aria-label="Previous view"><Icon name="left" size={14} /></button>
+            <span className="stats-footer-label" aria-hidden="true">View</span>
+            <button type="button" className="stats-footer-button" onClick={() => stepView(1)} aria-label="Next view"><Icon name="right" size={14} /></button>
+          </div>
+          <div className="stats-footer-group" role="group" aria-label="Scroll">
+            <button type="button" className="stats-footer-button" onClick={() => scrollTable(-1)} aria-label="Scroll table left (A)"><kbd aria-hidden="true">A</kbd><Icon name="left" size={14} /></button>
+            <span className="stats-footer-label" aria-hidden="true">Scroll</span>
+            <button type="button" className="stats-footer-button" onClick={() => scrollTable(1)} aria-label="Scroll table right (D)"><Icon name="right" size={14} /><kbd aria-hidden="true">D</kbd></button>
+          </div>
+          <button type="button" className={`stats-footer-button stats-footer-group ${filtersOpen ? "is-active" : ""}`} onClick={() => setFiltersOpen(value => !value)}
+            aria-pressed={filtersOpen} aria-label="Toggle filters (F)"><Icon name="filter" size={14} /><span aria-hidden="true">Filters</span><kbd aria-hidden="true">F</kbd></button>
+          <button type="button" className={`stats-footer-button stats-footer-group ${isExpanded ? "is-active" : ""}`} onClick={() => setIsExpanded(value => !value)}
+            aria-pressed={isExpanded} aria-label={isExpanded ? "Standard height (T)" : "Expand table (T)"}><Icon name={isExpanded ? "collapse" : "expand"} size={14} /><kbd aria-hidden="true">T</kbd></button>
         </div>
         <div className="stats-pagination-actions">
           <button
@@ -1075,6 +1229,22 @@ export function WorkbenchPlayerExplorer({
       </>
       )}
 
+      {/* Compare tray (F05) sits inside the frame: the rows give up the space, the frame keeps its height. */}
+      <CompareTray
+        selectedPlayers={comparedPlayers}
+        onRemovePlayer={handleRemoveCompare}
+        onClearAll={handleClearCompare}
+        context={contextBundle}
+      />
+      </div>
+      {viewMode === "table" && <StatsPreviewRail player={previewPlayer} columns={preset.columns} season={query.season}
+        eligiblePlayers={data.total_eligible_players} goodDirections={data.cohort?.good_directions}
+        showPercentiles={showPercentiles} pinned={previewPinned} collapsed={previewCollapsed}
+        onTogglePin={() => setPreviewPinned(value => !value)}
+        onToggleCollapse={() => setPreviewCollapsed(value => !value)}
+        onOpenDetails={setSelectedPlayerForDrawer}
+        isFavorite={previewPlayer ? isFavorite(previewPlayer.player_id) : false}
+        onToggleFavorite={previewPlayer ? () => handleFavorite(previewPlayer.player_id) : undefined} />}
       </div>
 
       {/* Detail Slide-out Drawer */}
@@ -1100,13 +1270,10 @@ export function WorkbenchPlayerExplorer({
         }
       />
 
-      {/* Compare Tray (F05) */}
-      <CompareTray
-        selectedPlayers={comparedPlayers}
-        onRemovePlayer={handleRemoveCompare}
-        onClearAll={handleClearCompare}
-        context={contextBundle}
-      />
+
+      <StatsHeaderTip tip={headerTip} onEnter={keepHeaderTip} onLeave={hideHeaderTip} onClose={() => { keepHeaderTip(); setHeaderTip(null); }} />
+      {querySpec && <StatsTrendDialog target={trendTarget} columns={preset.columns} querySpec={querySpec} catalog={catalog}
+        hints={metricHints} onClose={() => setTrendTarget(null)} />}
 
       {/* Keyboard Shortcuts Modal */}
       <HotkeysModal isOpen={isHotkeysOpen} onClose={() => setIsHotkeysOpen(false)} />
@@ -1116,6 +1283,7 @@ export function WorkbenchPlayerExplorer({
         isOpen={isManageViewsOpen}
         onClose={() => setIsManageViewsOpen(false)}
         activeViewId={activePresetId}
+        startWithNewView={manageStartsNew}
         onSelectView={(viewId) => {
           handlePresetSelect(viewId as PresetId);
         }}

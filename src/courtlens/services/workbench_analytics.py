@@ -108,6 +108,7 @@ class ResearchQuery:
     limit: int = 50
     cursor: str | None = None
     impact_manifest_sha256: str | None = None
+    darko_manifest_sha256: str | None = None
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -128,6 +129,11 @@ class ResearchQuery:
             **(
                 {"impact_manifest_sha256": self.impact_manifest_sha256}
                 if self.impact_manifest_sha256
+                else {}
+            ),
+            **(
+                {"darko_manifest_sha256": self.darko_manifest_sha256}
+                if self.darko_manifest_sha256
                 else {}
             ),
         }
@@ -184,6 +190,47 @@ def decode_cursor(cursor: str, expected_context_hash: str) -> int:
             status_code=422,
             detail="cursor does not match this request",
         ) from err
+
+
+# Season list and date bounds of a published dataset, cached: recomputing them scanned the whole
+# 26-season table on every Stats request. Rows are sealed against update/delete but may still be
+# appended, so the key carries a row-count fingerprint (an index-only count, ~10 ms).
+_READY_DATASET_FACTS: dict[tuple[Any, ...], dict[str, Any]] = {}
+
+
+def dataset_fingerprint(session: Session, dataset_id: str) -> tuple[int, Any]:
+    """Row count and latest game date of a workbench dataset; any appended row changes it."""
+    row = session.execute(
+        select(func.count(), func.max(WorkbenchPlayerGame.game_date)).where(
+            WorkbenchPlayerGame.dataset_id == dataset_id
+        )
+    ).one()
+    return int(row[0]), row[1]
+
+
+def _dataset_facts(session: Session, dataset: WorkbenchDataset) -> dict[str, Any]:
+    key = (dataset.id, dataset.semantic_signature, *dataset_fingerprint(session, dataset.id))
+    if dataset.status == "ready" and key in _READY_DATASET_FACTS:
+        return _READY_DATASET_FACTS[key]
+    rows = session.execute(
+        select(
+            WorkbenchPlayerGame.season,
+            func.min(WorkbenchPlayerGame.game_date),
+            func.max(WorkbenchPlayerGame.game_date),
+        )
+        .where(WorkbenchPlayerGame.dataset_id == dataset.id)
+        .group_by(WorkbenchPlayerGame.season)
+        .order_by(WorkbenchPlayerGame.season)
+    ).all()
+    facts: dict[str, Any] = {
+        "seasons": [row[0] for row in rows],
+        "min_date": min((row[1] for row in rows), default=None),
+        "max_date": max((row[2] for row in rows), default=None),
+        "season_max": {row[0]: row[2] for row in rows},
+    }
+    if dataset.status == "ready":
+        _READY_DATASET_FACTS[key] = facts
+    return facts
 
 
 def resolve_workbench_context(
@@ -264,26 +311,14 @@ def resolve_workbench_context(
         semantic_signature = wb_dataset.semantic_signature
         mode = "workbench_recent"
         source = wb_dataset.source_namespace
-        observed_seasons = session.scalars(
-            select(WorkbenchPlayerGame.season)
-            .where(WorkbenchPlayerGame.dataset_id == dataset_id)
-            .distinct()
-            .order_by(WorkbenchPlayerGame.season)
-        ).all()
+        facts = _dataset_facts(session, wb_dataset)
+        observed_seasons = facts["seasons"]
         seasons = (
             list(observed_seasons) if observed_seasons else (wb_dataset.seasons_json or ["2023-24"])
         )
         phases = wb_dataset.phases_json
-        min_date = session.scalar(
-            select(func.min(WorkbenchPlayerGame.game_date)).where(
-                WorkbenchPlayerGame.dataset_id == dataset_id
-            )
-        ) or date(2021, 10, 19)
-        max_date = session.scalar(
-            select(func.max(WorkbenchPlayerGame.game_date)).where(
-                WorkbenchPlayerGame.dataset_id == dataset_id
-            )
-        ) or date(2026, 4, 15)
+        min_date = facts["min_date"] or date(2021, 10, 19)
+        max_date = facts["max_date"] or date(2026, 4, 15)
         coverage_start = min_date
         coverage_end = max_date
         default_before_date = max_date
@@ -335,12 +370,7 @@ def resolve_workbench_context(
         from datetime import timedelta
 
         if dataset_type == "workbench":
-            season_max = session.scalar(
-                select(func.max(WorkbenchPlayerGame.game_date)).where(
-                    WorkbenchPlayerGame.dataset_id == dataset_id,
-                    WorkbenchPlayerGame.season == season,
-                )
-            )
+            season_max = facts["season_max"].get(season)
         else:
             season_max = session.scalar(
                 select(func.max(ArchivePlayerGame.game_date)).where(
@@ -1288,19 +1318,25 @@ def save_investigation(
         limit=MAX_EXPORT_ROWS,
         cursor=None,
         impact_manifest_sha256=query.impact_manifest_sha256,
+        darko_manifest_sha256=query.darko_manifest_sha256,
     )
     items, _, _, _ = execute_player_research_query(session, context, unbounded_query)
 
     result_payload = items
     result_sha256 = canonical_hash(result_payload)
+    metric_version = (
+        "courtlens-stats-v4"
+        if query.darko_manifest_sha256
+        else "courtlens-stats-v3"
+        if query.impact_manifest_sha256
+        else METRIC_CATALOG_VERSION
+    )
 
     manifest_payload = {
         "title": title,
         "query": query.to_dict(),
         "context": context.to_dict(),
-        "metric_version": "courtlens-stats-v3"
-        if query.impact_manifest_sha256
-        else METRIC_CATALOG_VERSION,
+        "metric_version": metric_version,
         "total_rows": len(result_payload),
         "result_sha256": result_sha256,
         "timestamp": utc_now().isoformat(),
@@ -1317,9 +1353,7 @@ def save_investigation(
         title=title,
         query_json=query.to_dict(),
         context_json=context.to_dict(),
-        metric_version="courtlens-stats-v3"
-        if query.impact_manifest_sha256
-        else METRIC_CATALOG_VERSION,
+        metric_version=metric_version,
         result_sha256=result_sha256,
         result_artifact_path=str(artifact_path),
         warnings_json=list(context.warnings),
@@ -1395,6 +1429,7 @@ def reproduce_investigation(session: Session, investigation_id: str) -> dict[str
         name=q_dict.get("name"),
         metrics=q_dict.get("metrics"),
         impact_manifest_sha256=q_dict.get("impact_manifest_sha256"),
+        darko_manifest_sha256=q_dict.get("darko_manifest_sha256"),
         min_games=q_dict.get("min_games"),
         min_minutes=q_dict.get("min_minutes"),
         min_avg_minutes=q_dict.get("min_avg_minutes"),

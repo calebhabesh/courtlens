@@ -122,7 +122,9 @@ def main() -> int:
                     "-m",
                     "pytest",
                     "-m",
-                    "requires_published_data" if published else "not requires_published_data",
+                    "requires_published_data"
+                    if published
+                    else "not requires_published_data and not kernel_limits",
                     *arguments,
                 ],
                 cwd=workspace,

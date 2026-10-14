@@ -56,7 +56,7 @@ test("stat shifts reject focal contradictions and request per-possession product
 
 test("Stats on/off preset opens served per-team rating columns", async ({ page }) => {
   await openWorkbench(page, "/stats?preset=onoff&together=1");
-  await expect(page.getByRole("heading", { level: 1, name: "Stats", exact: true })).toBeVisible();
+  await expect(page.getByRole("heading", { level: 1, name: "NBA Player Statistics", exact: true })).toBeVisible();
   await expect(page.getByRole("tab", { name: "On-Off", exact: true })).toHaveAttribute("aria-selected", "true");
   await expect(page.getByRole("columnheader").filter({ hasText: "Net on/off" })).toBeVisible();
 });

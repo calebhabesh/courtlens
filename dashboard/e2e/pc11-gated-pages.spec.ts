@@ -95,14 +95,13 @@ test.describe("PC11 populated pages", () => {
   });
 });
 
-test("player profile gains a Tracking tab; Measurements reads the combine and keeps a missing record unknown", async ({ page }) => {
+test("player profile gains a Tracking tab; a player with no combine record has no Combine tab", async ({ page }) => {
   await openWorkbench(page, "/players/23?tab=tracking");
   await expect(page.getByRole("tab", { name: "Tracking" })).toHaveAttribute("aria-selected", "true");
   const drives = page.getByRole("region", { name: "Drives" });
   await expect(drives).toContainText("12.0");
   await expect(drives).toContainText("80 pct");
-  await page.getByRole("tab", { name: "Measurements" }).click();
-  await expect(page.getByText("No Draft Combine record for Fixture Star.")).toBeVisible();
+  await expect(page.getByRole("tab", { name: "Combine" })).toHaveCount(0);
 });
 
 test("EPV is removed: the route redirects to RAPM Research and leaves navigation", async ({ page }) => {

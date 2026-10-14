@@ -17,6 +17,18 @@
   .chart-percentile-cell { display: inline-grid; min-width: 80px; padding: var(--space-2) var(--space-3); gap: var(--space-1); text-align: right; border-radius: var(--radius-xs); background: var(--chart-cell); color: var(--color-text); transition: color var(--dur-base), background-color var(--dur-base); }
   .chart-percentile-cell small { font-size: var(--text-xs); line-height: var(--text-xs-lh); }
   .chart-percentile-cell[data-qualified="false"] { color: var(--color-text-secondary); }
+  /* Text variant: value with a small percentile number, yellow (high) → gray (mid) → blue (low). */
+  .chart-percentile-text { position: relative; display: inline-grid; justify-items: center; gap: 0; font-variant-numeric: tabular-nums; color: var(--color-text); }
+  .chart-percentile-text[data-qualified="false"] { color: var(--color-text-secondary); }
+  .chart-percentile-text .stat-pct-sublabel {
+    --pct-high: clamp(0%, calc((var(--pct) - 50) * 2%), 100%);
+    --pct-low: clamp(0%, calc((50 - var(--pct)) * 2%), 100%);
+    font-size: var(--text-2xs);
+    line-height: var(--text-2xs-lh);
+    font-weight: 500;
+    color: color-mix(in oklab, var(--color-percentile-text-high) var(--pct-high),
+      color-mix(in oklab, var(--color-percentile-text-low) var(--pct-low), var(--color-percentile-text-mid)));
+  }
   .chart-threshold-labels { list-style: none; padding: 0; margin: var(--space-2) 0 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(96px, 1fr)); gap: var(--space-3); font-size: var(--text-xs); }
   .chart-threshold-labels li { display: grid; gap: var(--space-1); }
   .chart-threshold-labels strong { font-variant-numeric: tabular-nums; }
@@ -93,4 +105,16 @@
     .chart-flow-phone .chart-legend { margin-top: var(--space-2); }
     .chart-table-scroll { min-height: var(--control-lg); }
   }
+}
+
+/* Databallr-style value markers: the number sits inside the data point. */
+@layer foundation {
+  .chart-value-dot rect, .chart-value-dot circle { fill: var(--series, var(--color-accent)); stroke: var(--color-surface-2); stroke-width: 2; }
+  .chart-value-dot text { fill: var(--color-on-accent); font-size: var(--text-2xs); font-weight: 700; font-variant-numeric: tabular-nums; pointer-events: none; }
+  .chart-value-dot.is-large text { font-size: var(--text-xs); }
+  /* Round variant (Databallr trend): white value, thin surface ring and a soft halo. */
+  .chart-value-dot.is-round circle { stroke-width: 1.5; }
+  .chart-value-dot.is-round .chart-value-dot-halo { fill: color-mix(in srgb, var(--series, var(--color-accent)) 28%, transparent); stroke: none; }
+  .chart-value-dot.is-round text { fill: var(--color-white); }
+  .chart-value-dot.is-compact text { font-size: calc(var(--text-2xs) * 0.85); letter-spacing: -0.02em; }
 }

@@ -22,6 +22,7 @@ from courtlens.domain.query_spec import (
     PredicateLeaf,
     QuerySpec,
     SampleFilter,
+    SeasonScope,
     SortSpec,
     TeamScope,
     WindowSpec,
@@ -29,6 +30,8 @@ from courtlens.domain.query_spec import (
 from courtlens.domain.stats_presentation import StatsPresentation
 from courtlens.services.stats_engine import (
     execute_stats_query,
+    fold_name,
+    folded_name_sql,
     stats_cohort_summary,
     stats_presentation_hash,
 )
@@ -128,6 +131,61 @@ def facts() -> Iterator[tuple[Session, ResolvedContext]]:
         yield session, context
         session.rollback()
     engine.dispose()
+
+
+def test_darko_phase_cutoff_sort_percentiles_and_missingness(facts, tmp_path) -> None:
+    from courtlens.config import Settings
+    from courtlens.evaluation.impact_rating_inputs import write_artifact
+    from courtlens.services.darko import VERSION
+
+    session, context = facts
+    players = {
+        "a": {"dpm": 7.0, "o_dpm": 5.0, "d_dpm": 2.0},
+        "b": {"dpm": 4.0, "o_dpm": 3.0, "d_dpm": 1.0},
+        "c": {"dpm": None, "o_dpm": None, "d_dpm": None},
+    }
+    entry = {
+        "season": "2023-24",
+        "phase": "regular_season",
+        "as_of": "2024-02-01",
+        "data_date": "2024-02-01",
+        "raw_sha256": "a" * 64,
+        "players": players,
+    }
+    path, _ = write_artifact(tmp_path, {"version": VERSION, "entries": [entry]})
+    query = QuerySpec(
+        season="2023-24",
+        sort=[SortSpec(field="dpm")],
+        view_state={"columns": ["dpm", "o_dpm", "d_dpm"]},
+    )
+    with patch("courtlens.services.darko.get_settings", return_value=Settings(darko_manifest=path)):
+        end = replace(context, before_date=date(2024, 2, 2))
+        rows, count, _, _ = execute_stats_query(
+            session, end, query, presentation=StatsPresentation()
+        )
+        assert count == 4
+        assert [row["player_id"] for row in rows] == ["a", "b", "c", "d"]
+        assert [row["metrics"]["dpm"] for row in rows] == [7, 4, None, None]
+        assert rows[0]["percentiles"]["dpm"] == 75
+        assert rows[1]["percentiles"]["dpm"] == 25
+        assert rows[2]["percentiles"]["dpm"] is None
+        # The same full-season forecast survives a team display filter.
+        team = query.model_copy(update={"team_scope": TeamScope(team_id="TOR")})
+        assert execute_stats_query(session, end, team)[0][0]["metrics"]["dpm"] == 7
+        for scope, cutoff in [
+            (query, context),
+            (query.model_copy(update={"phase": "playoffs"}), end),
+            (query.model_copy(update={"window": WindowSpec(kind="last_10")}), end),
+        ]:
+            unavailable = execute_stats_query(session, cutoff, scope)[0]
+            assert all(row["metrics"]["dpm"] is None for row in unavailable)
+        # Even an earlier source snapshot before this cutoff cannot claim to cover later facts.
+        early = {**entry, "as_of": "2024-01-01", "data_date": "2024-01-01"}
+        prior, _ = write_artifact(tmp_path, {"version": VERSION, "entries": [early]})
+        pinned = query.model_copy(update={"darko_manifest_sha256": prior.stem})
+        assert all(
+            row["metrics"]["dpm"] is None for row in execute_stats_query(session, end, pinned)[0]
+        )
 
 
 @pytest.mark.parametrize(
@@ -250,6 +308,21 @@ def test_pc12_recent_window_qualifies_on_season_minutes(
     assert player["table_qualified"] is True
     assert player["table_percentiles"]["pts_per_game"] is None  # only one qualified reference
     assert cohort["qualified_players"] == 1
+
+
+def test_name_search_ignores_case_and_accents(facts: tuple[Session, ResolvedContext]) -> None:
+    """The table search matches "jokic" to "Jokić" in SQL and in the cached cohort alike."""
+    session, context = facts
+    assert fold_name(" Nikola JOKIĆ ") == "nikola jokic"
+    folded = session.execute(
+        text(f"SELECT {folded_name_sql(':n', False)}"), {"n": "Nikola Jokić Łukasz Šarić"}
+    ).scalar_one()
+    assert folded == fold_name("Nikola Jokić Łukasz Šarić") == "nikola jokic lukasz saric"
+    query = QuerySpec(season="2023-24", name="PLÁYER b")
+    items, count, _, _ = execute_stats_query(
+        session, context, query, presentation=StatsPresentation()
+    )
+    assert count == 1 and items[0]["player_id"] == "b"
 
 
 def test_search_favorites_empty_and_analytical_cohort(
@@ -450,3 +523,68 @@ def test_catalog_observed_pairs_and_exclusive_defaults(
         ("2024-25", "playoffs"),
     ]
     assert "pts_per_36" in catalog["stats_sort_fields"]
+
+
+def test_v4_box_shooting_splits_and_per_game_volumes(
+    facts: tuple[Session, ResolvedContext],
+) -> None:
+    session, context = facts
+    # E: 2 games, 10/20 FG with 4/10 3P and 6/8 FT; the second game misses its 3P split.
+    for gid, stats in (
+        (
+            "e-1",
+            '{"field_goals_made": 6, "field_goals_attempted": 12, '
+            '"three_pointers_made": 2, "three_pointers_attempted": 6, '
+            '"free_throws_made": 4, "free_throws_attempted": 5}',
+        ),
+        (
+            "e-2",
+            '{"field_goals_made": 4, "field_goals_attempted": 8, '
+            '"free_throws_made": 2, "free_throws_attempted": 3}',
+        ),
+    ):
+        session.execute(
+            text("""INSERT INTO workbench_player_games VALUES ('dataset', 'e', 'TOR', :gid,
+                '2024-01-05', '2023-24', 'regular_season', 'appeared', 1800, 14,
+                CAST(:stats AS jsonb))"""),
+            {"gid": gid, "stats": stats},
+        )
+    query = QuerySpec(season="2023-24", sort=[SortSpec(field="fg2_pct")], page=PagingSpec(limit=10))
+    rows, _, _, _ = execute_stats_query(session, context, query, presentation=StatsPresentation())
+    e = next(row for row in rows if row["player_id"] == "e")["metrics"]
+    # 2-point splits use only rows where all four shooting fields are known (game e-1).
+    assert (e["fg2m"], e["fg2a"], e["fg2_pct"]) == (4, 6, 0.6667)
+    assert (e["fga_per_game"], e["fg3a_per_game"], e["fta_per_game"]) == (10, 6, 4)
+    assert (e["fgm_per_game"], e["fg3m_per_game"], e["ftm_per_game"]) == (5, 2, 3)
+    assert next(row for row in rows if row["player_id"] == "a")["metrics"]["fg2_pct"] is None
+
+
+def test_season_range_sums_its_seasons_and_keeps_season_only_joins_unknown(
+    facts: tuple[Session, ResolvedContext],
+) -> None:
+    session, context = facts
+    session.execute(
+        text("""
+        INSERT INTO workbench_player_games VALUES
+        ('dataset', 'a', 'BOS', 'old-1', '2023-01-01', '2022-23',
+         'regular_season', 'appeared', 1200, 15, '{}'),
+        ('dataset', 'e', 'BOS', 'old-2', '2023-01-02', '2022-23',
+         'regular_season', 'appeared', 1800, 10, '{}')
+        """)
+    )
+    single = QuerySpec(season="2023-24", sort=[SortSpec(field="pts")])
+    ranged = single.model_copy(update={"season_scope": SeasonScope(seasons=["2022-23", "2023-24"])})
+    rows, total, _, _ = execute_stats_query(
+        session, context, ranged, presentation=StatsPresentation()
+    )
+    by_id = {row["player_id"]: row for row in rows}
+    assert total == 5  # a-d from 2023-24 plus e, seen only in 2022-23
+    assert by_id["a"]["games_played"] == 3
+    assert by_id["a"]["metrics"]["pts"] == 55
+    assert sorted(by_id["a"]["teams"]) == ["BOS", "TOR"]
+    assert by_id["a"]["metrics"].get("dpm") is None
+    single_rows = execute_stats_query(session, context, single, presentation=StatsPresentation())
+    assert {row["player_id"]: row["metrics"]["pts"] for row in single_rows[0]}["a"] == 40
+    assert stats_presentation_hash(context, ranged, StatsPresentation()) != (
+        stats_presentation_hash(context, single, StatsPresentation())
+    )
