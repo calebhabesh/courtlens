@@ -35,8 +35,8 @@ export const metadata: Metadata = {
   description:
     "Dense local NBA analytics and research workbench. Investigate player production, explore team cohorts, inspect prospective points estimates under uncertainty, and reproduce evidence-backed findings.",
   icons: {
-    icon: { url: "/icon.svg?v=4", type: "image/svg+xml", sizes: "any" },
-    apple: "/icons/courtlens-apple-180.png"
+    icon: { url: "/icon.svg?v=5", type: "image/svg+xml", sizes: "any" },
+    apple: "/icons/courtlens-apple-180.png?v=5"
   }
 };
 
