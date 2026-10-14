@@ -9,6 +9,7 @@ import { TeamLogoStack } from "./team-logo";
 import { Tabs, TabsContent, TabsList, TabTrigger } from "./ui/tabs";
 import { PlayerCombinePanel, PlayerTrackingPanel } from "./player-feed-panels";
 import { Tooltip } from "./ui/tooltip";
+import { ControlScope } from "./ui/control-scope";
 import catalogBranding from "@/lib/team-branding.json";
 import { CourtLensWordmark } from "./courtlens-wordmark";
 import { ImpactPlayerCard } from "./impact-player-card";
@@ -237,7 +238,8 @@ export function WorkbenchPlayerProfile({
           </Menu>
         </>}
       />
-      {filterBar}
+      {/* Scope controls take the console grey of the table's view tabs, as on Stats (row 2, 37). */}
+      <ControlScope tone="console">{filterBar}</ControlScope>
 
       <Tabs value={tab} onChange={selectTab}>
       <ProfileLayout

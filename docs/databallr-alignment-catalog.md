@@ -549,6 +549,11 @@ Follow-up instructions (owner, 2026-10-14, redesign review):
 36. [x] The team-colour glow circles the photo ring and is very subtle. — a halo centred on the
     avatar, 12% team colour fading out 32px beyond the ring; the header keeps that room so the halo
     has faded before the sticky filter bar.
+37. [x] The Season / Phase / Through / Window controls use the console grey of the table's view tabs.
+    — the player page's filter bar sits in `ControlScope tone="console"`, as Stats does (no page CSS).
+38. [x] More contrast between the bio labels and values, like ESPN and Basketball-Reference. — values
+    semibold white; labels medium weight in a dimmer grey (on-bg-tertiary mixed 75% toward the page,
+    about 4.7:1); second lines stay regular.
 Proposed, awaiting the owner's go-ahead: a Basketball-Reference bio crawl (honours, per-season
 awards column with ★ All-Star seasons, birthplace, high school, shooting hand, NBA debut). The
 "now TOR" chip on Stats rows was approved and built as Stats instruction 72.
