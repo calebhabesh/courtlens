@@ -32,7 +32,13 @@ for (const width of [1440, 390]) {
         await expect(page.getByRole("region", {name: "Headline result"})).toContainText("Example: Fixture Star");
         await page.getByRole("button", {name: "Change", exact: true}).click();
         await expect(page.getByRole("combobox", {name: "Target player", exact: true})).toBeFocused();
-        if (width < 768) await page.getByRole("button", {name: "Close drawer"}).click();
+        if (width < 768) {
+          // The focused lookup opens its suggestions above the field, over the sheet header; leave
+          // the field (Tab closes the list and keeps focus in the sheet) before closing the sheet.
+          await page.keyboard.press("Tab");
+          await expect(page.getByRole("listbox", {name: "Target player suggestions"})).toBeHidden();
+          await page.getByRole("button", {name: "Close drawer"}).click();
+        }
       }
       const visual = await page.locator(chart).first().boundingBox();
       expect(visual!.y).toBeLessThan(800);
