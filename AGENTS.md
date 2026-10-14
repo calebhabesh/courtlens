@@ -22,6 +22,8 @@ For chart/graphic presentation, color semantics, first-load default states, new 
 
 For any work that makes a CourtLens page look or behave like its Databallr counterpart (the app shell, Stats, Players, Compare, Teams, WOWY and every other row in the catalog), read the [Databallr alignment handoff](docs/databallr-alignment-plan.md) first. It supersedes the overhaul, refresh, freeze and presentation-clarity handoffs for the layout and presentation of catalogued pages, and keeps every analytical, data and source contract. Work one page at a time, from the owner's instructions recorded in the [alignment catalog](docs/databallr-alignment-catalog.md). Only the owner marks a page aligned. The presentation-clarity handoff is closed, and its PC13 hosting block is parked.
 
+For shared controls (buttons, icon buttons, selects, segmented groups, menu triggers, chips), control sizing, or splitting `components.css`/`pages.css`, read the [UI consolidation handoff](docs/ui-consolidation-plan.md) first. It runs between alignment pages on branch `ui-consolidation`, supersedes the alignment handoff only for how controls are implemented and where CSS lives, and requires visual parity with existing baselines. Record evidence in the [consolidation progress log](docs/ui-consolidation-progress.md).
+
 For the hosted read-only demo at courtlens.calebhabesh.com (production Compose stack, Caddy read-only boundary, arm64 images, VPS deploys and disk budget), read [the deployment guide](docs/deployment.md) first. Any new non-GET endpoint the demo should allow must be added to the Caddy allowlist there.
 
 ## Architecture and Stack
