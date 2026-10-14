@@ -45,7 +45,7 @@ jsonschema==4.26.0
 jsonschema-specifications==2025.9.1
 leather==0.4.1
 librt==0.15.0
-Mako==1.4.1
+Mako==1.4.3
 markdown-it-py==4.2.0
 MarkupSafe==3.0.3
 mashumaro==3.17
@@ -73,7 +73,7 @@ pydantic==2.13.4
 pydantic-settings==2.15.0
 pydantic_core==2.46.4
 Pygments==2.21.0
-PyJWT==2.13.0
+PyJWT==2.15.1
 pytest==8.4.2
 pytest-cov==7.1.0
 python-dateutil==2.9.0.post0
@@ -105,7 +105,7 @@ types-PyYAML==6.0.12.20260906
 truststore==0.10.4
 typing-inspection==0.4.4
 typing_extensions==4.16.0
-urllib3==2.7.0
+urllib3==2.8.0
 uvicorn==0.52.4
 uvloop==0.22.1
 watchfiles==1.2.0
