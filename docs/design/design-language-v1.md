@@ -1,4 +1,4 @@
-# CourtLens design language v1.2
+# CourtLens design language v1.3
 
 Owner-confirmed direction (2026-10-07): smooth and modern, no stiff or abrupt changes, no bright
 outline borders. Use this contract for every dashboard change after DL01 lands. The block plan and
@@ -15,6 +15,12 @@ motion and icon rules are unchanged. The file keeps its `-v1` name so existing l
 [presentation clarity](../presentation-clarity-plan.md). Revises D21: per-metric difference chips
 use the leading subject's identity color, respecting the catalog's lower-is-better flags. Existing
 analytical definitions, temporal cutoffs and hashes are unchanged. The file keeps its `-v1` name.
+
+**v1.3 (2026-10-14, UC06):** adds the [Controls](#controls-ui-consolidation) section from the
+[UI consolidation](../ui-consolidation-plan.md): one control kit with four fixed sizes, built in
+Tailwind v4, specified in [control kit v1](control-kit-v1.md) and enforced by lint with no
+exemptions. The legacy `Button`/`IconButton`, `SegmentedControl`, `ChipGroup` and `EntityChip`
+primitives are gone. Tokens, motion, chart and page rules are unchanged.
 
 ## Principles
 
@@ -221,8 +227,9 @@ Standard placements:
 
 ### Sizing
 
-Controls: `--control-sm: 28px`, `--control-md: 32px`, `--control-lg: 40px`. Header: `--header-height:
-56px`. Hit targets are at least 32px on desktop and 40px below 640px.
+Controls: four kit sizes, `xs` 28 / `sm` 32 / `md` 36 / `lg` 40 px (`--control-sm`, `--control-md`,
+`--kit-control-md`, `--control-lg`); every control is 40 px on phones. Header: `--header-height:
+56px`. Hit targets are at least 32px on desktop and 40px below 640px. See [Controls](#controls-ui-consolidation).
 
 ### Typography
 
@@ -333,12 +340,13 @@ One 56px sticky row (`components/ui/header.tsx`, nav items from `lib/nav-model.t
 
 ## Components (`dashboard/components/ui/`)
 
-DL02 builds these primitives, extending `ui/controls.tsx` and `ui/icon.tsx`. Pages compose them;
-page CSS may set layout only (grid/flex placement), never colors, spacing values or radii outside
-tokens.
+DL02 built these primitives around `ui/icon.tsx`; the controls among them are now the kit in
+`components/ui/kit` ([Controls](#controls-ui-consolidation)). Pages compose them; page CSS may set
+layout only (grid/flex placement), never colors, spacing values or radii outside tokens.
 
-`Button` (primary/secondary/ghost/danger × sm/md/lg, loading state) · `IconButton` · `Input` ·
-`SearchField` · `Select` · `Checkbox` · `Switch` · `SegmentedControl` · `Tabs` · `Chip`/`Badge` ·
+Kit controls (`Button`, `IconButton`, `Select`, `Segmented`, `MenuTrigger`, `Chip`, …) · `Input` ·
+`SearchField` · `Select` (the shared wrapper, drawn by the kit) · `Checkbox` · `Switch` · `Tabs`
+(underline section navigation) · `Badge` ·
 `Panel` (title, actions, body, compact variant) · `PageHeader` (icon, title, subtitle, actions) ·
 `Section` · `Table` primitives (sticky header, hairline rows, hover, selection, density, sort
 header, skeleton rows) · `Menu`/`Popover` · `Tooltip` · `Drawer` · `Modal` · `CommandPalette` ·
@@ -348,14 +356,36 @@ Added by the frontend overhaul (FO01–FO06), all shown on `/design`:
 
 `PageShell` + `BoardLayout` / `ProfileLayout` / `CompareLayout` / `ResearchLayout` ·
 `FilterBar` (scope, filters, modes, count, details) and `ContextBar` (the scope controls wired to
-the URL) · `Field` · `DatePicker` + `lib/format-date.ts` · `ChipGroup` · `GatedNote` ·
-`DataDetails` / `DataDetailsButton` · `PlayerIdentity` / `TeamIdentity` / `EntityChip` ·
+the URL) · `Field` · `DatePicker` + `lib/format-date.ts` · `GatedNote` ·
+`DataDetails` / `DataDetailsButton` · `PlayerIdentity` / `TeamIdentity` ·
 `StatTile` · `TemplateSkeleton` · `OverlayPortal` · `useAdvancedMode` (`lib/advanced-mode.ts`).
 Page-level building blocks approved at gate 2: `TeamGrid` (also on `/design`) and `ShowcaseCard`
 (covered by the Showcase screenshot baseline).
 
 The `foundation` CSS layer comes after `pages`, so page CSS cannot restyle a primitive. A primitive's
-defaults must already be right; change the primitive, not the page.
+defaults must already be right; change the primitive, not the page. Component and page CSS lives in
+files next to the component or route that owns it, imported from `app/globals.css` in cascade order
+inside its layer (UC05).
+
+## Controls (UI consolidation)
+
+Every button, icon button, select, segmented group, menu trigger and chip is a control-kit
+component from `dashboard/components/ui/kit`, specified in [control kit v1](control-kit-v1.md): sizes,
+variants (primary, secondary, ghost, danger), tones (`console` for the Stats workspace,
+`onBackground` for the header), states, chevron optics and the mapping of every former class.
+
+- **Sizes come from props only.** `xs` 28 / `sm` 32 / `md` 36 / `lg` 40 px; phones get 40 px targets.
+  A kit component's `className` is for layout (margin, grid or flex placement), never size, colour or
+  type.
+- **Placement defaults.** Shared controls take their size and tone from where they sit through
+  `ControlScope` (`components/ui/control-scope.tsx`): filter bars and `Field` provide `lg`, the Stats
+  workspace the console tone, the phone Filters sheet `fill`. An explicit prop wins.
+- **Menus and popovers** take one kit control through `renderTrigger`.
+- **Not controls:** table cells, header and section navigation (`RouteTabs`, `Tabs`), list rows,
+  cards (roster, tier, entity), wrapping Ask chips and inline citations keep their own components;
+  the spec lists each and why.
+- **Styling:** the kit is built with Tailwind v4 utilities under the `kit:` prefix in the
+  `utilities` layer, after `foundation`, so page CSS cannot override a control's size or states.
 
 ## Pages (v1.1)
 
@@ -542,6 +572,11 @@ pass/fail per item in the block evidence.
 
 ## Enforcement
 
+- **Control kit (UC03, closed in UC04):** ESLint `control-kit/no-control-class` rejects the legacy
+  and bespoke control classes outside `components/ui`; `control-kit/kit-layout-only` keeps size,
+  spacing, type and colour utilities off a kit component's `className`; `control-kit/kit-tokens`
+  applies the value rules below to `kit:` utilities. Stylelint's `selector-disallowed-list` stops page
+  CSS selecting kit classes or `[data-kit]`. No file is exempt, and tests keep it that way.
 - **Stylelint** (new dev dependency) over `dashboard/**/*.css`: raw colors are banned outside
   `tokens.css`; raw px/rem for `padding`, `margin`, `gap`, `border-radius`, `font-size`,
   `line-height`, `z-index` and `transition-duration` are banned except `0`, `1px` and percentages;

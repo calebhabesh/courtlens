@@ -530,3 +530,18 @@ Evidence: [UC05 evidence](evidence/ui-consolidation/uc05/README.md) (method, scr
   Playwright **457 PASS / 27 skips / 2 failures**, both the known streamed-duplicate strict-mode
   flakes (`fo13-pages:112` planner Email, `roster-shapes:108`), which pass 9/10 on rerun with the
   planner flake the one failure. No baseline changed.
+
+## UC06 — Close (2026-10-14)
+
+- Design Language is now **v1.3** with a Controls section (sizes from props, `ControlScope`
+  placement defaults, `renderTrigger`, what is not a control, the `kit:` utilities layer) that
+  points to [control kit v1](design/control-kit-v1.md); its component list, sizing and enforcement
+  sections no longer name the deleted legacy primitives. `AGENTS.md` points control work at the kit
+  and colocated CSS, and records that the consolidation is complete.
+- Exit criteria: both ratchet lists are gone (UC04 6c); `components.css`/`pages.css` hold only
+  shared layout and unlayered rules (UC05). A Turbopack production build of the split tree compiles
+  (the owner's dev server uses Turbopack; the sandbox builds use webpack).
+- Frozen identifiers **6 PASS**; relative links in the touched docs resolve.
+- Remaining owner steps: merge the PR into `main` once CI is green, then rebase or merge
+  `databallr-alignment` onto the new `main` and resume alignment there. Follow-ups recorded in the
+  spec: raw native `<select>` elements (about 25) for the alignment pages.
