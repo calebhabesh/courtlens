@@ -265,11 +265,16 @@ describe("table guide boundaries", () => {
 });
 
 describe("custom view column picker", () => {
-  it("hides dead-end analogue buckets and the empty Six Factor placeholder", () => {
-    const analogue = Object.keys(ALL_CATALOG_METRICS).filter(key => /^pbp_(create|space|trans|finish|unknown)_/.test(key));
-    expect(analogue.length).toBeGreaterThan(0);
-    expect(analogue.every(isPickerDeadEnd)).toBe(true);
+  it("hides the empty Six Factor placeholder", () => {
     expect(isPickerDeadEnd("six_factor_impact")).toBe(true);
     for (const kept of ["pts_per_game", "ts_pct", "rapm", "pbp_rim_assists"]) expect(isPickerDeadEnd(kept)).toBe(false);
+  });
+});
+
+describe("retired unsolid stats (owner, 2026-10-13)", () => {
+  it("are purged from every catalog column and built-in view", () => {
+    const retired = /^(pbp_(create|space|trans|finish|unknown)_|pbp_block_recovered_pct$|pbp_credited_ftov_per100$|impact_ts_pct$|impact_ftr$)/;
+    expect(Object.keys(ALL_CATALOG_METRICS).filter(key => retired.test(key))).toEqual([]);
+    expect(STATS_PRESETS.flatMap(preset => preset.columns.map(column => column.key)).filter(key => retired.test(key))).toEqual([]);
   });
 });

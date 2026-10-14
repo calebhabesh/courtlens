@@ -9,13 +9,16 @@ test("hover and keyboard preview reuse table values without fetching or stealing
   await openWorkbench(page, "/stats");
   await page.waitForLoadState("networkidle");
   await expect(preview(page)).toContainText("Hover over a player");
-  const search = page.getByRole("combobox", { name: "Filter players by name", exact: true });
+  const search = page.getByRole("searchbox", { name: "Filter players by name", exact: true });
   await search.focus();
   await page.waitForLoadState("networkidle");
   await search.press("Escape");
   const fetches: string[] = [];
   page.on("request", request => { if (["fetch", "xhr"].includes(request.resourceType())) fetches.push(request.url()); });
+  const identity = rows(page).first().locator(".pinned-col-name");
+  const idleBackground = await identity.evaluate(cell => getComputedStyle(cell).backgroundColor);
   await rows(page).first().hover();
+  await expect.poll(() => identity.evaluate(cell => getComputedStyle(cell).backgroundColor)).not.toBe(idleBackground);
   await expect(preview(page).getByRole("heading", { name: "Fixture Star" })).toBeVisible();
   await expect(search).toBeFocused();
   const tableValues = await rows(page).first().locator(".stat-main-value").allTextContents();
@@ -23,6 +26,7 @@ test("hover and keyboard preview reuse table values without fetching or stealing
   const tablePercentiles = await rows(page).first().locator(".stats-metric-cell").evaluateAll(cells => cells.map(cell => cell.querySelector(".stat-pct-sublabel")?.textContent?.trim() ?? "—"));
   expect(await preview(page).locator(".stats-preview-percentile").allTextContents()).toEqual(tablePercentiles);
   await page.locator("h1").hover();
+  await expect.poll(() => identity.evaluate(cell => getComputedStyle(cell).backgroundColor)).toBe(idleBackground);
   await expect(preview(page).getByRole("heading", { name: "Fixture Star" })).toBeVisible();
   await rows(page).nth(1).focus();
   await expect(preview(page).getByRole("heading", { name: "Fixture Guard" })).toBeVisible();
@@ -106,7 +110,7 @@ test("mobile details, collapsed filters and submitted search remain accessible",
   await expect(sheet.getByRole("group", { name: "Positions" })).toBeVisible();
   await page.keyboard.press("Escape");
   await expect(sheet).toHaveCount(0);
-  const search = page.getByRole("combobox", { name: "Filter players by name", exact: true });
+  const search = page.getByRole("searchbox", { name: "Filter players by name", exact: true });
   await search.fill("Guard"); await search.press("Enter");
   await page.waitForURL(/name=Guard/);
   const region = page.getByRole("region", { name: "Player statistics scroll area" });

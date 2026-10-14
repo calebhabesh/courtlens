@@ -28,7 +28,8 @@ test("recurring guide modes preserve primary identity, header alignment and relo
   await personalFixture(page); await openWorkbench(page, "/stats"); await page.waitForLoadState("networkidle");
   const row = page.locator(".dense-stats-table tbody tr").first();
   const guides = page.getByRole("group", { name: "Table Divider", exact: true });
-  for (const mode of ["Photos", "Logos", "Initials", "None"]) {
+  // Photos is the default, so an initial click on it is a no-op; start elsewhere.
+  for (const mode of ["Logos", "Photos", "Initials", "None"]) {
     await guides.getByRole("button", { name: mode, exact: true }).click();
     await page.waitForURL(url => url.searchParams.get("identityMode") === mode.toLowerCase());
     await expect(row.locator(".stats-guide-cell")).toHaveCount(mode === "None" ? 0 : 5);
@@ -68,7 +69,7 @@ test("keyboard sorting, single compare shortcut and drawer focus stay scoped", a
   await row.focus(); await page.keyboard.press("c");
   await expect(row.getByRole("button", { name: "Remove Fixture Star from comparison", exact: true })).toHaveAttribute("aria-pressed", "true");
   expect(fixture.adds()).toBe(1);
-  await page.getByRole("combobox", { name: "Filter players by name", exact: true }).fill("c"); await page.getByRole("combobox", { name: "Filter players by name", exact: true }).press("c");
+  await page.getByRole("searchbox", { name: "Filter players by name", exact: true }).fill("c"); await page.getByRole("searchbox", { name: "Filter players by name", exact: true }).press("c");
   await page.locator("h1").click(); await page.keyboard.press("c"); expect(fixture.adds()).toBe(1);
   const detail = row.getByRole("button", { name: "Open details for Fixture Star" }); await detail.click();
   const dialog = page.getByRole("dialog", { name: "Fixture Star", exact: true }); await expect(dialog).toBeVisible();

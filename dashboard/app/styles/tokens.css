@@ -12,6 +12,13 @@
     --color-surface-1: #15171b;
     --color-surface-2: #1c1f24;
     --color-surface-3: #24282e;
+    /* Stats table frame (owner, 2026-10-13): cool slate pair tinted toward the page blue, with a
+       wider lift/well step than the charcoal surfaces so header bands, guide columns and the
+       preview rail separate clearly from the data well. */
+    --color-table-lift: #1f2632;
+    --color-table-well: #11161e;
+    /* Player preview rail: its own darker slate between the lift and the well. */
+    --color-table-rail: #181e28;
     --color-surface-hover: rgb(255 255 255 / 4%);
     --color-surface-press: rgb(255 255 255 / 7%);
     --color-hairline: rgb(255 255 255 / 6%);
@@ -19,6 +26,8 @@
     --color-text: #f2f3f5;
     --color-text-secondary: #a9afb9;
     --color-text-tertiary: #858b95;
+    /* Inactive control labels (Stats toolbars): brighter than secondary text, below --color-text. */
+    --color-text-control: #d5d9e0;
     /* Secondary/tertiary text that sits directly on the blue page background (6.5:1 and 5.5:1). */
     --color-on-bg-secondary: #c9d3e6;
     --color-on-bg-tertiary: #b4c2dc;

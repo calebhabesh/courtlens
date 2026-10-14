@@ -11,7 +11,7 @@ import { DarkoSourceLink } from "./darko-source-link";
 
 const GROUP_ICONS: Record<GlossaryGroup, IconName> = {
   "Counting Stats": "chart-column", Shooting: "zap", Rates: "trend", "Impact Metrics": "sparkles", "On-Off": "swap",
-  Defense: "lock", Rebounding: "refresh", Playmaking: "users", "Play Types": "cards", Team: "scale", Other: "info",
+  Defense: "lock", Rebounding: "refresh", Playmaking: "users", Team: "scale", Other: "info",
 };
 
 export function StatsGlossaryView({ entries, available }: { entries: GlossaryEntry[]; available: boolean }) {

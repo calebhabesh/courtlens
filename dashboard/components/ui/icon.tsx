@@ -36,5 +36,5 @@ export type IconSize = 14 | 16 | 20;
  */
 export function Icon({ name, className = "", size = 16, filled = false }: { name: IconName; className?: string; size?: IconSize; filled?: boolean }) {
   const Glyph = icons[name];
-  return <Glyph className={`ui-icon ${filled ? "ui-icon-filled" : ""} ${className}`} size={size} strokeWidth={2} aria-hidden="true" focusable="false" />;
+  return <Glyph className={`ui-icon ui-icon-${size} ${filled ? "ui-icon-filled" : ""} ${className}`} size={size} strokeWidth={2} aria-hidden="true" focusable="false" />;
 }

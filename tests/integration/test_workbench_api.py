@@ -239,6 +239,18 @@ def test_traded_player_team_filters_and_stints(client: TestClient) -> None:
     assert stint_tricodes["IND"] == 41
 
 
+def test_player_seasons_lists_seasons_with_game_rows(client: TestClient) -> None:
+    """A stat trend asks only for the seasons a player appeared in; unknown players get none."""
+    response = client.get("/api/workbench/player-seasons?playerId=1630567&playerId=0")
+    assert response.status_code == 200
+    data = response.json()
+    assert data["phase"] == "regular_season"
+    assert len(data["seasons"]["1630567"]) >= 1
+    assert data["seasons"]["1630567"] == sorted(data["seasons"]["1630567"])
+    assert data["seasons"]["0"] == []
+    assert client.get("/api/workbench/player-seasons").status_code == 422
+
+
 @pytest.mark.requires_published_data
 def test_toronto_team_research_and_detail(client: TestClient) -> None:
     """Toronto team research results reconcile record, production, and player cohort."""

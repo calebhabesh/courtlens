@@ -30,6 +30,8 @@ from courtlens.domain.query_spec import (
 from courtlens.domain.stats_presentation import StatsPresentation
 from courtlens.services.stats_engine import (
     execute_stats_query,
+    fold_name,
+    folded_name_sql,
     stats_cohort_summary,
     stats_presentation_hash,
 )
@@ -306,6 +308,21 @@ def test_pc12_recent_window_qualifies_on_season_minutes(
     assert player["table_qualified"] is True
     assert player["table_percentiles"]["pts_per_game"] is None  # only one qualified reference
     assert cohort["qualified_players"] == 1
+
+
+def test_name_search_ignores_case_and_accents(facts: tuple[Session, ResolvedContext]) -> None:
+    """The table search matches "jokic" to "Jokić" in SQL and in the cached cohort alike."""
+    session, context = facts
+    assert fold_name(" Nikola JOKIĆ ") == "nikola jokic"
+    folded = session.execute(
+        text(f"SELECT {folded_name_sql(':n', False)}"), {"n": "Nikola Jokić Łukasz Šarić"}
+    ).scalar_one()
+    assert folded == fold_name("Nikola Jokić Łukasz Šarić") == "nikola jokic lukasz saric"
+    query = QuerySpec(season="2023-24", name="PLÁYER b")
+    items, count, _, _ = execute_stats_query(
+        session, context, query, presentation=StatsPresentation()
+    )
+    assert count == 1 and items[0]["player_id"] == "b"
 
 
 def test_search_favorites_empty_and_analytical_cohort(
