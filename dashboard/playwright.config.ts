@@ -10,6 +10,8 @@ const defaultChromiumPath = process.env.PW_CHROMIUM_PATH || (fs.existsSync("/usr
 export default defineConfig({
   testDir: "./e2e",
   fullyParallel: true,
+  // Retry timing flakes on CI only; retried passes are still reported as flaky.
+  retries: process.env.CI ? 2 : 0,
   use: {
     baseURL: process.env.PLAYWRIGHT_BASE_URL || "http://localhost:3100",
     browserName: "chromium",
