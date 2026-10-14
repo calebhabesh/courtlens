@@ -545,3 +545,15 @@ Evidence: [UC05 evidence](evidence/ui-consolidation/uc05/README.md) (method, scr
 - Remaining owner steps: merge the PR into `main` once CI is green, then rebase or merge
   `databallr-alignment` onto the new `main` and resume alignment there. Follow-ups recorded in the
   spec: raw native `<select>` elements (about 25) for the alignment pages.
+- **CI on PR #25, first run:** `backend-and-warehouse` failed `ruff format --check`/`ruff check` on
+  the Python evidence scripts in `uc01/` and `uc05/` (the local Python lint had not run, as no `src/`
+  file changed); they are formatted and lint-clean, and `tables.py` reproduces its output byte for
+  byte. `dashboard` failed two specs that pass locally:
+  - `pc12-headlines` Trends at 390: after "Change" focuses the Target player lookup, its suggestion
+    list opens above the field and covers the Filters sheet's close button. Locally the button's
+    centre stays 4 px clear; with CI's font metrics it is covered (this branch's 44 → 48 px phone
+    segmented groups moved the field 4 px). The test now leaves the field with Tab before closing
+    the sheet. **Follow-up:** the floating suggestion list should not cover the sheet header.
+  - `visual-baselines` phone player profile: 2% different in CI (1.9% locally by a strict pixel
+    threshold, under Playwright's tolerance) from the approved career-table changes and the
+    owner's silver header mark. Baseline regenerated; the screenshot specs pass 108/108 locally.
