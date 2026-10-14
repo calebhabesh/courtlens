@@ -3,7 +3,7 @@
 import { useEffect, useState, type CSSProperties, type ReactNode } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "./ui/kit";
-import { PlayerPortrait } from "./player-portrait";
+import { PlayerAvatar } from "./ui/identity";
 import { TeamLogo } from "./team-logo";
 import { PageHeader } from "./ui/panel";
 import { formatDate } from "@/lib/format-date";
@@ -117,13 +117,10 @@ export function PlayerBioHeader({ name, playerId, portraitUrl, team, bio, curren
         Back to table<kbd className="player-back-kbd" aria-hidden="true">Esc</kbd>
       </Button>}
       <div className={`player-bio-main ${glow ? "has-glow" : ""}`}>
-        <PlayerPortrait playerId={playerId} name={name} portraitUrl={portraitUrl ?? undefined} size="xl" className="player-bio-photo" />
+        <PlayerAvatar playerId={playerId} name={name} portraitUrl={portraitUrl} team={headerTeam?.tricode ?? null} size="xl" className="player-bio-photo" />
         <span className="player-bio-divider" aria-hidden="true" />
         <div className="player-bio-who">
-          <div className="player-bio-name">
-            <PageHeader title={name} />
-            {headerTeam && <TeamLogo team={headerTeam.tricode} size={40} />}
-          </div>
+          <PageHeader title={name} className="player-bio-name" />
           {identity.length > 0 && <p className="player-bio-identity">{identity.map(part => <span key={part}>{part}</span>)}</p>}
           <dl className="player-bio-facts">
             {facts.filter(fact => fact.value).map(fact => <div key={fact.label} title={fact.title}>
