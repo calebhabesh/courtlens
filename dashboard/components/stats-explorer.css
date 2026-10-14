@@ -132,8 +132,7 @@
 .stats-workspace .dense-stats-table tbody { transition: opacity var(--dur-fast) var(--ease-out); }
 .stats-workspace .dense-stats-table tbody.stats-table-body-searching { opacity: 0.55; }
 .stats-workspace .stats-row-actions { text-align: center; white-space: nowrap; }
-.stats-workspace .stats-icon-action { width: 24px; min-height: var(--control-sm); display: inline-grid; place-items: center; color: var(--color-text-secondary); background: transparent; border: 0; border-radius: var(--radius-xs); }
-.stats-workspace .stats-icon-action:hover, .stats-workspace .stats-icon-action[aria-pressed=true] { color: var(--color-accent); background: var(--color-accent-soft); }
+.stats-workspace .stats-row-pin { display: inline-flex; vertical-align: middle; }
 .stats-workspace .stats-pagination-footer { margin: 0; padding: var(--space-1) var(--space-3); gap: var(--space-2); background: var(--color-surface-1); border-top: 1px solid var(--color-hairline); }
 .stats-workspace .stats-results-meta { margin: 0; justify-content: flex-start; font-size: var(--text-xs); color: var(--color-text-secondary); gap: var(--space-2); }
 .stats-workspace .stats-sort-caption { margin-left: var(--space-2); }
@@ -197,7 +196,6 @@
 .stats-workspace .stats-guide-marker { position: relative; display: grid; grid-template-columns: minmax(0, 1fr); place-items: center; transform: translateX(var(--guide-offset, 0px)); }
 .stats-workspace .stats-guide-initials { display: grid; place-items: center; line-height: 1; font-weight: 600; color: var(--color-text); }
 .stats-workspace .stats-header-search .lookup-search-icon { width: 14px; height: 14px; }
-.stats-workspace .stats-header-search .lookup-clear-btn { min-width: 24px; min-height: 24px; }
 .stats-workspace .density-compact .player-cell-name { font-size: var(--text-sm); }
 .stats-workspace .density-compact .player-cell-teams { font-size: var(--text-xs); }
 .stats-workspace .density-compact .stats-primary-portrait { width: 28px; height: 28px; min-width: 28px; min-height: 28px; }
@@ -266,8 +264,6 @@
   .stats-workspace .stats-whats-new a { display: inline-flex; align-items: center; gap: var(--space-1); color: var(--color-accent); font-weight: 600; text-decoration: none; white-space: nowrap; }
   .stats-workspace .stats-whats-new-note { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .stats-workspace .stats-help-row { display: flex; flex-wrap: wrap; gap: var(--space-2); margin: 0 0 var(--space-4); }
-  .stats-workspace .stats-help-button { display: inline-flex; align-items: center; gap: var(--space-2); min-height: var(--control-md); padding: var(--space-1) var(--space-3); border: 0; border-radius: var(--radius-sm); background: var(--color-surface-1); color: var(--color-text); font-size: var(--text-sm); font-weight: 500; text-decoration: none; }
-  .stats-workspace .stats-help-button:hover { background: var(--color-surface-2); }
   .stats-how-to-list { margin: 0; padding-left: var(--space-5); display: grid; gap: var(--space-2); font-size: var(--text-sm); color: var(--color-text-secondary); }
 
   /* Scope row: 40px raised blocks, no divider line */
@@ -309,8 +305,7 @@
   .stats-workspace .stats-preset-tab { min-height: var(--control-md); padding: var(--space-1) var(--space-3); font-size: var(--text-sm); font-weight: 500; color: var(--color-text-secondary); }
   .stats-workspace .stats-preset-tab.active { color: var(--color-accent); font-weight: 600; }
   .stats-workspace .stats-preset-tabs-wrapper > .control-button-group .control-pill { min-height: var(--control-md); padding-inline: var(--space-3); font-size: var(--text-sm); }
-  .stats-workspace .stats-preset-tabs-wrapper > .stats-view-actions { background: transparent; padding: 0; gap: var(--space-2); }
-  .stats-workspace .stats-view-actions .control-pill { min-height: var(--control-lg); background: var(--color-surface-2); color: var(--color-text); font-weight: 600; border-radius: var(--radius-sm); }
+  .stats-workspace .stats-preset-tabs-wrapper > .stats-view-actions { display: inline-flex; gap: var(--space-2); }
 
   /* Table toolbar */
   .stats-workspace .stats-controls-row { padding: var(--space-3) var(--space-3) var(--space-2); gap: var(--space-4); }
@@ -318,20 +313,13 @@
   .stats-workspace .stats-counting-modes { gap: var(--space-0-5); }
   .stats-workspace .stats-counting-modes .control-pill { min-height: 22px; padding: 0 var(--space-1); font-size: var(--text-2xs); font-weight: 600; }
   .stats-workspace .stats-tool-group { display: inline-flex; align-items: center; gap: var(--space-2); padding-left: var(--space-4); border-left: 1px solid var(--color-hairline); }
-  .stats-workspace .stats-tool-button { display: inline-grid; place-items: center; width: 36px; height: 36px; padding: 0; border: 1px solid var(--color-hairline-strong); border-radius: var(--radius-sm); background: var(--color-surface-2); color: var(--color-accent); }
-  .stats-workspace .stats-tool-button:hover:not(:disabled) { background: var(--color-surface-hover); }
-  .stats-workspace .stats-tool-button[aria-pressed=true] { background: var(--color-accent-soft); box-shadow: inset 0 0 0 1px var(--color-accent); }
-  .stats-workspace .stats-tool-button:disabled { color: var(--color-text-secondary); }
-  .stats-workspace .stats-tool-button.has-active { box-shadow: inset 0 0 0 1px var(--color-accent); }
-  .stats-workspace .stats-tool-menu .ui-menu-trigger { padding: 0; border: 0; background: transparent; min-height: 0; }
   .stats-workspace .stats-tool-menu .ui-menu-panel { min-width: 200px; }
-  .stats-workspace .stats-expand-button { margin-left: auto; border: 0; background: transparent; color: var(--color-text-secondary); }
+  .stats-workspace .stats-expand-action { display: inline-flex; margin-left: auto; }
 
   /* Rows */
   .stats-workspace .stats-compare-toggle { display: inline-grid; place-items: center; width: 22px; height: 22px; padding: 0; border: 0; border-radius: var(--radius-pill); background: transparent; color: var(--color-accent); }
   .stats-workspace .stats-compare-toggle:hover { background: var(--color-accent-soft); }
   .stats-workspace .stats-compare-toggle[aria-pressed=true] { color: var(--color-on-accent); background: var(--color-accent); }
-  .stats-workspace .dense-stats-table .stats-details-button { width: 22px; min-height: 26px; flex-shrink: 0; }
   .stats-workspace .dense-stats-table .player-cell-teams { font-size: var(--text-2xs); line-height: var(--text-2xs-lh); }
 
   /* Footer */
@@ -341,11 +329,8 @@
   .stats-workspace .stats-record-count { text-transform: uppercase; letter-spacing: 0.04em; font-weight: 600; color: var(--color-text); }
   .stats-workspace .stats-footer-controls { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
   .stats-workspace .stats-footer-group { display: inline-flex; align-items: center; gap: var(--space-1); min-height: var(--control-sm); padding: 0 var(--space-1); border-radius: var(--radius-xs); background: var(--color-surface-2); }
-  .stats-workspace .stats-footer-button { display: inline-flex; align-items: center; gap: var(--space-1); min-height: var(--control-sm); min-width: var(--control-sm); justify-content: center; padding: 0 var(--space-1); border: 0; background: transparent; color: var(--color-text-secondary); font-size: var(--text-xs); }
-  .stats-workspace .stats-footer-button:hover:not(:disabled) { color: var(--color-text); }
-  .stats-workspace .stats-footer-button:disabled { opacity: 1; cursor: default; color: var(--color-accent); }
-  .stats-workspace .stats-footer-button.is-active { color: var(--color-accent); }
-  .stats-workspace .stats-footer-button kbd { font-size: var(--text-2xs); color: var(--color-text-secondary); }
+  /* A group holding one button: the button's own padding is the group's. */
+  .stats-workspace .stats-footer-group.is-single { padding: 0; }
   .stats-workspace .stats-footer-label { font-size: var(--text-xs); color: var(--color-text); }
   .stats-workspace .stats-density-meter { display: inline-flex; gap: var(--space-0-5); }
   .stats-workspace .stats-density-meter > span { width: 6px; height: 12px; border-radius: 1px; background: var(--color-hairline-strong); }
@@ -365,7 +350,7 @@
     /* 40px row buttons fill the 42px row without stretching it. */
     .stats-workspace .dense-stats-table tbody td { padding-block: 1px; }
     /* Expand lives in the footer on phones. */
-    .stats-workspace .stats-expand-button { display: none; }
+    .stats-workspace .stats-expand-action { display: none; }
     .stats-workspace .stats-pagination-footer { grid-template-columns: minmax(0, 1fr); }
     .stats-workspace .stats-footer-controls { width: 100%; justify-content: flex-start; }
   }
@@ -373,9 +358,6 @@
 
 /* Stats follow-up (instructions 9, 11, 12): team grid, header hints, position chips. */
 @layer pages {
-  .stats-workspace .stats-team-button { display: inline-flex; align-items: center; gap: var(--space-2); min-height: var(--control-lg); padding: 0 var(--space-4); border: 0; border-radius: var(--radius-sm); background: var(--color-surface-2); color: var(--color-text-secondary); font-size: var(--text-md); font-weight: 500; }
-  .stats-workspace .stats-team-button:hover { background: var(--color-surface-hover); color: var(--color-text); }
-  .stats-workspace .stats-team-button.is-selected { color: var(--color-accent); box-shadow: inset 0 0 0 1px var(--color-accent); background: var(--color-accent-soft); font-weight: 600; }
   .stats-team-dialog { max-width: 520px; }
   .stats-team-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: var(--space-2); }
   .stats-team-option { display: grid; justify-items: center; gap: var(--space-2); padding: var(--space-3) var(--space-1); border: 0; border-radius: var(--radius-sm); background: transparent; color: var(--color-text); font-size: var(--text-sm); font-weight: 700; }
@@ -383,9 +365,6 @@
   .stats-team-option[aria-pressed=true] { background: var(--color-accent-soft); color: var(--color-accent); box-shadow: inset 0 0 0 1px var(--color-accent); }
   .stats-team-clear { margin-top: var(--space-3); width: 100%; min-height: var(--control-md); border: 1px solid var(--color-hairline-strong); border-radius: var(--radius-sm); background: transparent; color: var(--color-text); font-size: var(--text-sm); }
   .stats-workspace .stats-position-chips { display: inline-flex; gap: var(--space-1); }
-  .stats-workspace .stats-position-chip { min-width: var(--control-lg); min-height: var(--control-lg); padding: 0 var(--space-3); border: 0; border-radius: var(--radius-sm); background: var(--color-surface-2); color: var(--color-text-secondary); font-size: var(--text-md); font-weight: 600; }
-  .stats-workspace .stats-position-chip:hover { background: var(--color-surface-hover); color: var(--color-text); }
-  .stats-workspace .stats-position-chip[aria-pressed=true] { background: var(--color-accent-soft); color: var(--color-accent); box-shadow: inset 0 0 0 1px var(--color-accent); }
   .stats-workspace .dense-stats-table .stats-header-tier-2 th[data-column]:hover { background: var(--color-surface-hover); }
   .stats-header-tip { position: fixed; z-index: var(--z-tooltip); left: var(--tip-x); top: var(--tip-y); transform: translate(-50%, calc(-100% - var(--space-2))); display: grid; gap: var(--space-1); max-width: 280px; padding: var(--space-2) var(--space-3); border-radius: var(--radius-sm); background: var(--color-surface-0); box-shadow: var(--shadow-2); color: var(--color-text); font-size: var(--text-xs); line-height: var(--text-xs-lh); pointer-events: none; }
   .stats-header-tip strong { font-size: var(--text-sm); }
@@ -446,9 +425,6 @@
 
 /* Stats third review: Draft Class menu, two-line headers and the wrapped scope row. */
 @layer pages {
-  .stats-workspace .stats-draft-menu .ui-menu-trigger { display: inline-flex; align-items: center; gap: var(--space-2); min-height: var(--control-lg); padding: 0 var(--space-4); border: 0; border-radius: var(--radius-sm); background: var(--color-surface-2); color: var(--color-text-secondary); font-size: var(--text-md); font-weight: 500; }
-  .stats-workspace .stats-draft-menu .ui-menu-trigger:hover { background: var(--color-surface-hover); color: var(--color-text); }
-  .stats-workspace .stats-draft-menu.is-selected .ui-menu-trigger { color: var(--color-accent); background: var(--color-accent-soft); box-shadow: inset 0 0 0 1px var(--color-accent); font-weight: 600; }
   .stats-workspace .stats-draft-menu .ui-menu-panel { max-height: 320px; overflow-y: auto; min-width: 160px; }
   .stats-workspace .stats-draft-menu .ui-menu-item.is-active { color: var(--color-accent); }
   /* Long labels (PTS Created, Rim AST/36) wrap to two lines instead of clipping. */
@@ -465,10 +441,6 @@
   .stats-workspace .filter-toolbar { animation: fadeInDropdown var(--dur-base) var(--ease-out); }
   .stats-workspace .stats-table-row:not(.stats-skeleton-row) { animation: chart-crossfade var(--dur-base) var(--ease-out); }
   .stats-header-tip { animation: chart-crossfade var(--dur-fast) var(--ease-out); }
-  .stats-workspace :is(.stats-position-chip, .stats-team-button, .stats-draft-menu .ui-menu-trigger, .stats-tool-button, .stats-help-button, .stats-footer-button) {
-    transition: background-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
-  }
-  .stats-workspace :is(.stats-position-chip, .stats-team-button, .stats-draft-menu .ui-menu-trigger):active { transform: scale(0.96); }
   .stats-team-option .team-logo { transition: transform var(--dur-fast) var(--ease-out); }
   .stats-team-option:hover .team-logo { transform: scale(1.08); }
   .stats-trend-dialog .chart-value-dot, .stats-trend-dialog .stats-trend-series path { animation: chart-crossfade var(--dur-slow) var(--ease-out); }
@@ -512,40 +484,29 @@
   .stats-workspace .stats-header-search { max-width: 312px; margin-inline: auto; }
   .stats-workspace .stats-header-search .lookup-input-wrapper { min-height: var(--control-md); }
   .stats-workspace .stats-header-search .lookup-input { min-height: calc(var(--control-md) - 2px); }
-  .stats-workspace .stats-header-search .lookup-clear-btn { min-width: var(--control-sm); min-height: var(--control-sm); }
 
-  .stats-workspace :is(.stats-help-button, .context-season-picker .ui-select, .season-scope-value,
-    .context-phase-segments .ui-segmented-item, .ui-filter-bar .ui-date-trigger, .ui-filter-bar .ui-select, .ui-filter-bar .ui-button,
-    .stats-team-button, .stats-position-chip, .stats-draft-menu .ui-menu-trigger, .stats-preset-tab,
-    .stats-view-actions .control-pill, .stats-divider-modes .control-pill) {
+  .stats-workspace :is(.context-season-picker .ui-select, .season-scope-value,
+    .context-phase-segments .ui-segmented-item, .ui-filter-bar .ui-date-trigger, .ui-filter-bar .ui-select, .ui-filter-bar .ui-button, .stats-preset-tab) {
     font-size: var(--text-sm);
     line-height: var(--text-sm-lh);
     font-weight: 500;
     color: var(--color-text-secondary);
   }
-  .stats-workspace :is(.stats-help-button, .ui-filter-bar .ui-date-trigger, .ui-filter-bar .ui-select, .ui-filter-bar .ui-button,
-    .stats-team-button, .stats-position-chip, .stats-draft-menu .ui-menu-trigger,
-    .stats-view-actions .control-pill) { min-height: var(--control-lg); padding-block: 0; }
-  .stats-workspace :is(.stats-help-button, .stats-view-actions .control-pill) { background: var(--color-surface-2); }
-  .stats-workspace :is(.context-phase-segments .ui-segmented-item-active, .stats-team-button.is-selected,
-    .stats-position-chip[aria-pressed=true], .stats-draft-menu.is-selected .ui-menu-trigger,
-    .stats-preset-tab.active, .stats-divider-modes .control-pill.active) { color: var(--color-accent); font-weight: 600; }
+  .stats-workspace :is(.ui-filter-bar .ui-date-trigger, .ui-filter-bar .ui-select, .ui-filter-bar .ui-button) { min-height: var(--control-lg); padding-block: 0; }
+  .stats-workspace :is(.context-phase-segments .ui-segmented-item-active,
+    .stats-preset-tab.active) { color: var(--color-accent); font-weight: 600; }
 
   .stats-workspace .context-phase-segments .ui-segmented-item { min-height: var(--control-md); padding-block: 0; }
   .stats-workspace .stats-preset-tab { padding-inline: var(--space-2); }
-  .stats-workspace .stats-view-actions .control-pill { padding-inline: var(--space-3); border-radius: var(--radius-sm); }
   .stats-workspace .stats-divider-field > .ui-field-label { color: var(--color-on-bg-secondary); }
-  .stats-workspace .stats-divider-modes { min-height: var(--control-lg); padding: var(--space-1); background: var(--color-surface-2); border-radius: var(--radius-sm); }
-  .stats-workspace .stats-divider-modes .control-pill { min-height: var(--control-md); padding: 0 var(--space-3); }
 
   @media (max-width: 767px) {
     .stats-workspace .stats-header-search .lookup-input-wrapper { min-height: var(--control-lg); }
     .stats-workspace .stats-header-search .lookup-input { min-height: var(--control-lg); }
-    .stats-workspace .stats-header-search .lookup-clear-btn { min-width: var(--control-lg); min-height: var(--control-lg); }
   }
   @media (max-width: 700px) {
-    .stats-workspace :is(.stats-preset-tabs, .stats-divider-modes) { padding-block: 0; }
-    .stats-workspace :is(.stats-preset-tab, .stats-divider-modes .control-pill) { min-height: var(--control-lg); }
+    .stats-workspace :is(.stats-preset-tabs) { padding-block: 0; }
+    .stats-workspace :is(.stats-preset-tab) { min-height: var(--control-lg); }
   }
 }
 
@@ -566,10 +527,8 @@
 
 /* Owner review: brighter scope controls, visible header alignment and a padded player drawer. */
 @layer foundation {
-  .stats-workspace :is(.stats-help-button, .context-season-stepper, .context-stepper-button,
-    .context-season-picker, .context-phase-segments, .stats-preset-tabs, .stats-divider-modes,
-    .stats-view-actions .control-pill, .stats-team-button, .stats-position-chip,
-    .stats-draft-menu .ui-menu-trigger, .ui-filter-bar-scope .ui-date-trigger,
+  .stats-workspace :is(.context-season-stepper, .context-stepper-button,
+    .context-season-picker, .context-phase-segments, .stats-preset-tabs, .ui-filter-bar-scope .ui-date-trigger,
     .ui-filter-bar-scope .ui-select, .ui-filter-bar-meta .ui-button, .ui-filter-bar-toggle) {
     background: var(--color-surface-3);
   }
@@ -635,43 +594,34 @@
   .stats-workspace {
     --console-hover: color-mix(in srgb, var(--color-white) 7%, var(--color-table-lift));
   }
-  .stats-workspace :is(.stats-help-button, .context-stepper-button, .context-season-picker,
-    .stats-view-actions .control-pill, .stats-team-button, .stats-position-chip,
-    .stats-draft-menu .ui-menu-trigger, .ui-filter-bar-scope .ui-date-trigger,
+  .stats-workspace :is(.context-stepper-button, .context-season-picker, .ui-filter-bar-scope .ui-date-trigger,
     .ui-filter-bar-scope .ui-select, .ui-filter-bar-meta .ui-button, .ui-filter-bar-toggle,
-    .stats-preset-tab, .stats-divider-modes .control-pill, .context-phase-segments .ui-segmented-item,
+    .stats-preset-tab, .context-phase-segments .ui-segmented-item,
     .stats-counting-modes .control-pill) {
     /* Background only: a colour fade runs on the main thread and lags the label behind the slide. */
     transition: background-color var(--dur-fast) var(--ease-out);
   }
-  .stats-workspace :is(.stats-help-button, .context-stepper-button, .context-season-picker,
-    .stats-view-actions .control-pill, .stats-team-button, .stats-position-chip,
-    .stats-draft-menu .ui-menu-trigger, .ui-filter-bar-scope .ui-date-trigger,
+  .stats-workspace :is(.context-stepper-button, .context-season-picker, .ui-filter-bar-scope .ui-date-trigger,
     .ui-filter-bar-scope .ui-select, .ui-filter-bar-meta .ui-button, .ui-filter-bar-toggle,
-    .stats-preset-tab, .stats-divider-modes .control-pill, .context-phase-segments .ui-segmented-item,
+    .stats-preset-tab, .context-phase-segments .ui-segmented-item,
     .stats-counting-modes .control-pill):hover:not(:disabled, .active, [aria-pressed="true"], [aria-checked="true"]) {
     background-color: var(--console-hover);
     color: var(--color-text);
   }
-  .stats-workspace :is(.stats-divider-modes, .stats-counting-modes) .control-pill { position: relative; }
-  .stats-workspace :is(.stats-divider-modes, .stats-counting-modes) .control-pill.active { background: transparent; box-shadow: none; }
-  .stats-workspace :is(.stats-divider-modes, .stats-counting-modes) .control-pill > span:not(.stats-preset-indicator) { position: relative; z-index: var(--z-base); }
+  .stats-workspace :is(.stats-counting-modes) .control-pill { position: relative; }
+  .stats-workspace :is(.stats-counting-modes) .control-pill.active { background: transparent; box-shadow: none; }
+  .stats-workspace :is(.stats-counting-modes) .control-pill > span:not(.stats-preset-indicator) { position: relative; z-index: var(--z-base); }
 }
 
 /* Databallr-style control contrast: inactive labels above the table read brighter and bolder.
    Active (accent) and disabled controls keep their own colors. Foundation layer, because the
    shared control colors are set there. */
 @layer foundation {
-  .stats-workspace :is(
-    .stats-help-button, .context-stepper-button, .context-phase-segments .ui-segmented-item,
-    .ui-filter-bar .ui-date-trigger, .ui-filter-bar .ui-select, .stats-team-button, .stats-position-chip,
-    .stats-draft-menu .ui-menu-trigger, .ui-filter-bar-meta .ui-button, .stats-preset-tab,
-    .stats-divider-modes .control-pill, .stats-view-actions .control-pill, .stats-counting-modes .control-pill
-  ):not(.active, .is-selected, .ui-segmented-item-active, [aria-pressed="true"], [aria-checked="true"], [aria-selected="true"], :disabled) {
+  .stats-workspace :is(.context-stepper-button, .context-phase-segments .ui-segmented-item,
+    .ui-filter-bar .ui-date-trigger, .ui-filter-bar .ui-select, .ui-filter-bar-meta .ui-button, .stats-preset-tab, .stats-counting-modes .control-pill):not(.active, .is-selected, .ui-segmented-item-active, [aria-pressed="true"], [aria-checked="true"], [aria-selected="true"], :disabled) {
     color: var(--color-text-control);
     font-weight: 600;
     &:hover { color: var(--color-text); }
   }
-  .stats-workspace .stats-draft-menu.is-selected .ui-menu-trigger { color: var(--color-accent); }
   .stats-workspace .ui-filter-bar-scope .ui-popover-trigger { font-weight: 600; }
 }

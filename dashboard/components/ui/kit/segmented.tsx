@@ -25,6 +25,8 @@ export interface SegmentedProps<T extends string> {
   disabled?: boolean;
   /** Paint the choice before starting an expensive parent update, as StatsChoicePills does. */
   deferChange?: boolean;
+  /** Abutting items with one 4 px step less inline padding, for long rows such as the Stats presets. */
+  dense?: boolean;
   /** Layout only. */
   className?: string;
 }
@@ -36,7 +38,8 @@ const sizes: Record<KitSize, string> = {
   lg: "kit:h-control-lg kit:text-sm",
 };
 
-export function Segmented<T extends string>({ label, options, value, onChange, size = "md", tone = "default", stretch = false, disabled = false, deferChange = false, className }: SegmentedProps<T>) {
+export function Segmented<T extends string>({ label, options, value, onChange, size = "md", tone = "default", stretch = false, disabled = false, deferChange = false, dense = false, className }: SegmentedProps<T>) {
+  const itemPadding = dense ? (size === "xs" ? "kit:px-1" : "kit:px-2") : (size === "xs" ? "kit:px-2" : "kit:px-3");
   const id = useId();
   const groupRef = useRef<HTMLDivElement>(null);
   const pendingFrame = useRef<number | undefined>(undefined);
@@ -90,20 +93,21 @@ export function Segmented<T extends string>({ label, options, value, onChange, s
   return (
     <div ref={groupRef} role="radiogroup" aria-label={label} aria-disabled={disabled || undefined} data-kit="segmented"
       onKeyDown={handleKeyDown}
-      className={cx("kit:inline-flex kit:max-w-full kit:items-stretch kit:gap-1 kit:rounded-sm kit:p-1 kit:overflow-x-auto kit:[scrollbar-width:none] kit:phone:h-[calc(var(--kit-control-lg)+var(--space-2))]",
-        sizes[size], tone === "console" ? "kit:bg-console" : "kit:bg-surface-2", stretch && "kit:flex kit:w-full", className)}>
+      className={cx("kit:inline-flex kit:max-w-full kit:items-stretch kit:rounded-sm kit:p-1 kit:overflow-x-auto kit:[scrollbar-width:none] kit:phone:h-[calc(var(--kit-control-lg)+var(--space-2))]",
+        dense ? "kit:gap-0" : "kit:gap-1", sizes[size], tone === "console" ? "kit:bg-console" : "kit:bg-surface-2", stretch && "kit:flex kit:w-full", className)}>
       {options.map(option => {
         const active = option.value === selected;
         return (
           <button key={option.value} type="button" role="radio" aria-checked={active} data-value={option.value}
             tabIndex={option === tabStop ? 0 : -1} disabled={disabled || option.disabled} title={option.title}
             onClick={() => select(option)}
-            className={cx("kit:relative kit:inline-flex kit:shrink-0 kit:items-center kit:justify-center kit:gap-1 kit:rounded-xs kit:border-0 kit:py-0 kit:px-3 kit:whitespace-nowrap kit:cursor-pointer kit:bg-transparent kit:font-medium kit:text-text-secondary",
+            className={cx("kit:relative kit:inline-flex kit:shrink-0 kit:items-center kit:justify-center kit:gap-1 kit:rounded-xs kit:border-0 kit:py-0 kit:whitespace-nowrap kit:cursor-pointer kit:bg-transparent",
+              // One colour per tone: two text utilities would resolve by stylesheet order, not intent.
+              tone === "console" ? "kit:font-semibold kit:text-text-control" : "kit:font-medium kit:text-text-secondary",
               "kit:transition-[color,background-color,scale] kit:duration-[var(--dur-fast),var(--dur-fast),var(--dur-instant)] kit:ease-out kit:active:not-disabled:scale-98 kit:hoverable:bg-surface-hover kit:hoverable:text-text kit:selected:text-accent kit:selected:font-semibold",
               "kit:motion-reduce:duration-(--dur-instant)",
               "kit:focus-visible:outline-none kit:focus-visible:shadow-[inset_0_0_0_2px_var(--color-accent)] kit:disabled:opacity-45 kit:disabled:pointer-events-none kit:disabled:cursor-not-allowed",
-              "kit:phone:min-h-control-lg kit:phone:min-w-control-lg kit:phone:px-2", size === "xs" && "kit:px-2", stretch && "kit:flex-1",
-              tone === "console" && !active && "kit:text-text-control kit:font-semibold")}>
+              "kit:phone:min-h-control-lg kit:phone:min-w-control-lg kit:phone:px-2", itemPadding, stretch && "kit:flex-1")}>
             {active && <SlidingIndicator layoutId={`kit-segmented-${id}`} className="kit:absolute kit:inset-0 kit:rounded-xs kit:bg-accent-soft kit:inset-ring kit:inset-ring-accent kit:pointer-events-none" />}
             <span className="kit:relative kit:inline-flex kit:items-center kit:gap-1">
               {option.icon && <Icon name={option.icon} size={kitIconSize[size]} />}

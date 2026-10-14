@@ -133,12 +133,12 @@ are listed last as dead CSS for UC05.
 
 | Kit target | Classes |
 | --- | --- |
-| `Button` | `stats-help-button` (lg, C5), `stats-footer-button` (xs, C7), `player-back-button` (xs primary), `views-modal-btn-action` (xs), `finance-detail-button` (xs ghost), `courtlens-ask-btn` (sm ghost, C6), `ui-why-summary` (xs ghost as summary) |
+| `Button` | `stats-help-button` (lg, C5), `stats-footer-button` (xs ghost `dense`), `player-back-button` (xs primary), `views-modal-btn-action` (xs), `finance-detail-button` (xs ghost), `courtlens-ask-btn` (sm ghost, C6), `ui-why-summary` (xs ghost as summary) |
 | `IconButton` | `stats-tool-button`, `stats-expand-button` (md ghost); `stats-icon-action`, `stats-details-button`, `player-career-expand` (xs ghost, C9); `ranking-reorder-btn`, `ranking-meta-btn`, `tier-reorder-btn`, `tier-quick-fav-btn` (xs ghost); `ranking-delete-btn`, `tier-remove-btn`, `tier-delete-btn` (xs danger); `modal-close-btn`, `filter-clear-btn`, `lookup-clear-btn` (xs ghost); `courtlens-mobile-toggle`, `courtlens-mobile-search-btn`, `icon-button`, `ui-icon-button` (sm ghost); `context-stepper-button` (lg, attached group) |
 | `Select` | `ui-select`, `stats-team-select` |
-| `Segmented` | `ui-segmented-item`, `stats-preset-tab` (sm, C8), `ui-tab-trigger` (sm, C1), `tier-tab`, `dist-tab`, `player-tab`, `StatsChoicePills` |
+| `Segmented` | `ui-segmented-item`, `stats-preset-tab` (lg console `dense`), `ui-tab-trigger` (sm, C1), `tier-tab`, `dist-tab`, `player-tab`, `StatsChoicePills` |
 | `MenuTrigger` | `ui-menu-trigger`, `ui-popover-trigger` (lg, attached group), `ui-date-trigger` (lg, leading icon), `season-scope-trigger`, `stats-team-button` (lg, C4), `availability-trigger`, `ui-filter-bar-toggle` |
-| `Chip` | `control-pill` (sm/md/lg by measured height), `stats-position-chip` (lg), `entity-chip`/`ui-entity-chip` (lg removable), `roster-chip`, `compare-tray-chip`, `tier-player-chip`, `ranking-chip-btn`, `filter-action-pill`, `season-scope-quick-button`, `ask-chip`, `agent-source-chip`, `glossary-chip` (sm) |
+| `Chip` | `control-pill` (sm/md/lg by measured height), `stats-position-chip` (lg), `entity-chip`/`ui-entity-chip` (lg removable), `roster-chip`, `tier-player-chip`, `ranking-chip-btn`, `filter-action-pill`, `season-scope-quick-button`, `ask-chip`, `agent-source-chip`, `glossary-chip` (sm) |
 
 ### Does not fit the kit, and why
 
@@ -178,13 +178,27 @@ before its baseline is regenerated. Heights are unchanged except C1, C9, C12 and
 | C4 | Padding 16 → 12 | Stats Select Team, Draft Class trigger |
 | C5 | Icon 14 → 16 at `lg` | Stats help buttons, Data details, season stepper, Add View |
 | C6 | Header Ask: text 12 → 13, padding 8 → 12 | every page header |
-| C7 | Stats footer buttons: padding 4 → 8 | Stats footer |
-| C8 | Stats preset tabs: padding 8 → 12 | Stats, player profile |
+| C7 | ~~Stats footer buttons: padding 4 → 8~~ Dropped 2026-10-14: wraps the footer at 1440; `dense` keeps 4 | Stats footer |
+| C8 | ~~Stats preset tabs: padding 8 → 12~~ Dropped 2026-10-14: wraps the view row at 1440; `dense` keeps 8 | Stats, player profile |
 | C9 | Row icon actions 26/24 → 28 | Stats details button, profile career expand |
 | C10 | Solid-accent `.control-pill.active` → accent outline selected | pages using `pages.css` pills |
 | C11 | `MenuTrigger` text-to-chevron gap 8 → 4 | Export, More jobs, Table settings |
 | C12 | Phone: wrapped 60 px `button-secondary` → one line at 40 | Similar Players PvP Compare |
 | C13 | Filter-bar segmented items 36 → 32 inside a 40 px group with 4 px inner padding; phone items remain 40 inside a 48 px group | Filter-bar `SegmentedControl` callers; proposed in UC02, **approved 2026-10-14**; applied with each filter-bar caller's UC04 batch |
+
+Approved with UC04 batch 1 (Stats, 2026-10-14), beyond the C list: D1 `MenuTrigger` chevron on
+Draft Class; D2 no 40 px minimum width on position chips; D3 table tool buttons as `IconButton md
+secondary` (no hairline border, text-coloured icons); D4 Counting Mode as one `Segmented md`;
+D5 footer selected states use the kit's selected look; D6 phone segmented groups 48 px with 40 px
+items on Stats too; D7 Manage Views tabs as `xs` chips; D8 `xs` buttons at weight 500; D9 neutral
+hover on compare-tray remove. Details in the progress log.
+
+**`dense`** (`Button`, `ButtonLink`, `ButtonSummary`, `Segmented`): one 4 px step less inline
+padding (xs 4, others 8), and abutting `Segmented` items. Use it only where the standard padding
+would wrap a measured row (Stats presets and footer).
+
+**`compare-tray-chip`** is a static container (portrait, name, `IconButton` remove), renamed
+`compare-tray-item`; it is not a `Chip`.
 
 Open for the owner (no change by default): `Select` uses a 16 px chevron while `MenuTrigger` uses
 14, and both sit in the Stats console row.

@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import Link from "next/link";
 import { TeamLogoStack } from "./team-logo";
 import { Icon } from "./ui/icon";
+import { Button, ButtonLink } from "./ui/kit";
 import { OverlayPortal } from "./ui/overlay-portal";
 import { PlayerPortrait } from "./player-portrait";
 import { formatStatValue, formatIntValue, formatPctValue } from "@/lib/stats-presets";
@@ -133,66 +133,32 @@ export function StatsDetailDrawer({
         <div className="stats-drawer-content">
         {/* Action Buttons */}
         <div className="stats-drawer-actions">
-          <Link
-            href={`/players/${player.player_id}?${queryString}`}
-            className="button button-primary stats-drawer-action-primary"
-          >
-            <Icon name="person" size={16} /> Full profile
-          </Link>
-          <Link
-            href={`/compare?playerA=${player.player_id}&${queryString}`}
-            className="button"
-          >
-            <Icon name="users" size={16} /> Compare
-          </Link>
+          <ButtonLink size="lg" variant="primary" icon="person" className="stats-drawer-action-primary"
+            href={`/players/${player.player_id}?${queryString}`}>Full profile</ButtonLink>
+          <ButtonLink size="lg" icon="users" href={`/compare?playerA=${player.player_id}&${queryString}`}>Compare</ButtonLink>
           {onToggleCompare && (
-            <button
-              type="button"
-              onClick={() => onToggleCompare(player)}
-              className={`button ${isCompared ? "button-active" : ""}`}
-              aria-pressed={isCompared}
-              title={isCompared ? "Remove from Compare Tray" : "Add to Compare Tray (C)"}
-            >
-              {isCompared ? <><Icon name="check" size={16} />In tray</> : <><Icon name="plus" size={16} />Add to tray</>}
-            </button>
+            <Button size="lg" icon={isCompared ? "check" : "plus"} onClick={() => onToggleCompare(player)} pressed={isCompared}
+              title={isCompared ? "Remove from Compare Tray" : "Add to Compare Tray (C)"}>
+              {isCompared ? "In tray" : "Add to tray"}
+            </Button>
           )}
           {onToggleFavorite && (
-            <button
-              type="button"
-              onClick={onToggleFavorite}
-              className={`button ${isFavorite ? "button-active text-accent" : ""}`}
+            <Button size="lg" onClick={onToggleFavorite} pressed={isFavorite}
               title={isFavorite ? "Remove from Favorites" : "Add to Favorites"}
-              aria-label={isFavorite ? "Remove from Favorites" : "Add to Favorites"}
-              aria-pressed={isFavorite}
-            >
-              {isFavorite ? <><Icon name="star" size={14} filled />Favorited</> : <><Icon name="star" size={14} />Favorite</>}
-            </button>
+              aria-label={isFavorite ? "Remove from Favorites" : "Add to Favorites"}>
+              <Icon name="star" size={16} filled={isFavorite} />{isFavorite ? "Favorited" : "Favorite"}
+            </Button>
           )}
         </div>
 
         {/* Investigation Shortcuts */}
         <nav className="stats-drawer-shortcuts" aria-label="Player research links">
-          <Link
-            href={`/research/trends?playerId=${player.player_id}&${queryString}`}
-            className="button button-small"
-            title="Analyze workload and performance trends across disjoint windows"
-          >
-            Trends
-          </Link>
-          <Link
-            href={`/research/distributions?playerId=${player.player_id}&${queryString}`}
-            className="button button-small"
-            title="View empirical quantiles, dispersion, and contextual splits"
-          >
-            Distributions
-          </Link>
-          <Link
-            href={`/similar-players?playerId=${player.player_id}&${queryString}`}
-            className="button button-small"
-            title="Find statistical twin players across standardized dimensions"
-          >
-            Peers
-          </Link>
+          <ButtonLink size="sm" href={`/research/trends?playerId=${player.player_id}&${queryString}`}
+            title="Analyze workload and performance trends across disjoint windows">Trends</ButtonLink>
+          <ButtonLink size="sm" href={`/research/distributions?playerId=${player.player_id}&${queryString}`}
+            title="View empirical quantiles, dispersion, and contextual splits">Distributions</ButtonLink>
+          <ButtonLink size="sm" href={`/similar-players?playerId=${player.player_id}&${queryString}`}
+            title="Find statistical twin players across standardized dimensions">Peers</ButtonLink>
         </nav>
 
         {/* Drawer Body Sections */}
@@ -331,9 +297,7 @@ export function StatsDetailDrawer({
           <span className="text-xs text-muted">
             Press <kbd>Esc</kbd> to dismiss drawer
           </span>
-          <button type="button" className="button button-small" onClick={onClose}>
-            Close
-          </button>
+          <Button size="lg" onClick={onClose}>Close</Button>
         </div>
       </div>
     </div>

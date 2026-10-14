@@ -1,10 +1,9 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useState, useTransition } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { HotkeysModal } from "./hotkeys-modal";
-import { Icon } from "./ui/icon";
+import { Button, ButtonLink, Chip, MenuTrigger } from "./ui/kit";
 import { Menu, MenuItem } from "./ui/menu";
 import { Modal } from "./ui/modal";
 import { TeamLogo } from "./team-logo";
@@ -16,13 +15,9 @@ export function StatsHelpRow() {
   const [hotkeysOpen, setHotkeysOpen] = useState(false);
   return (
     <div className="stats-help-row" role="group" aria-label="Page help">
-      <button type="button" className="stats-help-button" onClick={() => setHowToOpen(true)}>
-        <Icon name="help" size={14} />How to Use This Page
-      </button>
-      <Link className="stats-help-button" href="/stats/glossary"><Icon name="page" size={14} />Stats Glossary</Link>
-      <button type="button" className="stats-help-button" onClick={() => setHotkeysOpen(true)}>
-        <Icon name="keyboard" size={14} />Hotkeys
-      </button>
+      <Button size="lg" tone="console" icon="help" onClick={() => setHowToOpen(true)}>How to Use This Page</Button>
+      <ButtonLink size="lg" tone="console" icon="page" href="/stats/glossary">Stats Glossary</ButtonLink>
+      <Button size="lg" tone="console" icon="keyboard" onClick={() => setHotkeysOpen(true)}>Hotkeys</Button>
       <Modal isOpen={howToOpen} onClose={() => setHowToOpen(false)} title="How to use this page" className="stats-how-to">
         <ul className="stats-how-to-list">
           <li>Pick a season, Regular or Playoffs, and optionally a team. Through and Window narrow the dates counted.</li>
@@ -70,10 +65,10 @@ export function StatsTeamSelect() {
   const choose = (tricode: string | null) => { setOpen(false); set({ teamId: tricode, team_id: null }); };
   return (
     <>
-      <button type="button" className={`stats-team-button ${selected ? "is-selected" : ""}`} onClick={() => setOpen(true)}
+      <Button size="lg" tone="console" data-selected={selected ? "true" : undefined} onClick={() => setOpen(true)}
         aria-haspopup="dialog" aria-label={selected ? `Team: ${selected.name}. Change team` : "Select Team"}>
         {selected ? <><TeamLogo team={selected.tricode} size={20} />{selected.tricode}</> : "Select Team"}
-      </button>
+      </Button>
       <Modal isOpen={open} onClose={() => setOpen(false)} title="Select Team" description="30 NBA teams" className="stats-team-dialog">
         <div className="stats-team-grid" role="group" aria-label="NBA teams">
           {NBA_TEAMS.map(entry => (
@@ -117,8 +112,8 @@ export function StatsPositionChips() {
     <div className="stats-position-chips" role="group" aria-label="Estimated positions"
       title="Estimated positions for this season from listed position, size and box-score rates (not a roster listing).">
       {POSITIONS.map(position => (
-        <button key={position.value} type="button" className="stats-position-chip" aria-pressed={active.has(position.value)}
-          aria-label={position.label} onClick={() => toggle(position.value)}>{position.value}</button>
+        <Chip key={position.value} size="lg" tone="console" pressed={active.has(position.value)}
+          aria-label={position.label} onClick={() => toggle(position.value)}>{position.value}</Chip>
       ))}
     </div>
   );
@@ -130,8 +125,8 @@ export function StatsDraftClassSelect({ classes }: { classes: { year: number; pl
   const year = Number(searchParams.get("draftYear") || 0) || null;
   if (classes.length === 0) return null;
   return (
-    <Menu className={`stats-draft-menu ${year ? "is-selected" : ""}`}
-      trigger={<><Icon name="graduation" size={16} />{year ? `${year} Draft` : "Draft Class"}</>}>
+    <Menu className="stats-draft-menu"
+      renderTrigger={props => <MenuTrigger {...props} size="lg" tone="console" icon="graduation" selected={Boolean(year)}>{year ? `${year} Draft` : "Draft Class"}</MenuTrigger>}>
       {year && <MenuItem label="All draft classes" icon="close" onClick={() => set({ draftYear: null })} />}
       {classes.map(entry => (
         <MenuItem key={entry.year} label={String(entry.year)} className={entry.year === year ? "is-active" : ""}
