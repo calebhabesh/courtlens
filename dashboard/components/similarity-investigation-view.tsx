@@ -1,7 +1,6 @@
 "use client";
 import { ExampleSubjectCard, useExampleSubject } from "./example-subject";
 
-import { Button } from "./ui/button";
 import { formatDate } from "@/lib/format-date";
 import { PlayerIdentity } from "./ui/identity";
 import { LookupInput } from "./lookup-input";
@@ -16,9 +15,9 @@ import { useReleaseCatalog } from "@/lib/use-release-catalog";
 import { useToast } from "./ui/toast";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { getStatisticalPeers } from "@/lib/workbench-api";
+import { Button, ButtonLink } from "./ui/kit";
 import type {
   DimensionStats,
   PeerMatchItem,
@@ -200,7 +199,7 @@ export function SimilarityInvestigationView() {
           ] : []}
         />}
       />
-      {catalog === null && <GatedNote why="Explicit URL scope is retained; reload to retry." action={<Button onClick={() => window.location.reload()}>Retry</Button>}>Context catalog unavailable.</GatedNote>}
+      {catalog === null && <GatedNote why="Explicit URL scope is retained; reload to retry." action={<Button size="sm" onClick={() => window.location.reload()}>Retry</Button>}>Context catalog unavailable.</GatedNote>}
 
       <ExampleSubjectCard {...exampleState} />
       {loading && (
@@ -211,7 +210,7 @@ export function SimilarityInvestigationView() {
       )}
 
       {error && (
-        <GatedNote tone="warning" why={error} action={<Button onClick={() => window.location.reload()}>Retry</Button>}>Peers could not be matched for this scope.</GatedNote>
+        <GatedNote tone="warning" why={error} action={<Button size="sm" onClick={() => window.location.reload()}>Retry</Button>}>Peers could not be matched for this scope.</GatedNote>
       )}
 
       {data && !loading && (
@@ -303,8 +302,8 @@ export function SimilarityInvestigationView() {
                 Closest Statistical Peers (Top {data.peers.length})
               </h3>
               <div className="similarity-actions">
-                <Button variant="secondary" size="sm" icon={copiedUrl ? "check" : "copy"} onClick={handleCopyUrl}>{copiedUrl ? "Copied" : "Share link"}</Button>
-                <Link href={buildPreservedContextUrl("/stats", searchParams)} className="ui-button ui-button-secondary ui-button-sm">Open in Stats</Link>
+                <Button variant="secondary" size="xs" icon={copiedUrl ? "check" : "copy"} onClick={handleCopyUrl}>{copiedUrl ? "Copied" : "Share link"}</Button>
+                <ButtonLink size="xs" href={buildPreservedContextUrl("/stats", searchParams)}>Open in Stats</ButtonLink>
               </div>
             </div>
 
@@ -338,22 +337,15 @@ export function SimilarityInvestigationView() {
                           <span className="text-xs text-muted">Euclidean Distance</span>
                         </div>
 
-                        <Link
-                          href={`/compare?playerA=${data.target.player_id}&playerB=${peer.player_id}`}
-                          className="button button-secondary text-xs"
-                          title="Open PvP comparison table and charts for these two players"
-                        >
+                        <ButtonLink size="lg" href={`/compare?playerA=${data.target.player_id}&playerB=${peer.player_id}`}
+                          title="Open PvP comparison table and charts for these two players">
                           PvP Compare
-                        </Link>
+                        </ButtonLink>
 
-                        <button
-                          type="button"
-                          className="button button-secondary text-xs"
-                          onClick={() => handleSelectPlayer(peer.player_id)}
-                          title="Set this player as the target to find their twins"
-                        >
+                        <Button size="lg" onClick={() => handleSelectPlayer(peer.player_id)}
+                          title="Set this player as the target to find their twins">
                           Set Target
-                        </button>
+                        </Button>
                       </div>
                     </div>
 

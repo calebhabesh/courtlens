@@ -7,10 +7,10 @@ import { CatalogScopeFields } from "./catalog-scope-fields";
 import { GatedNote } from "./ui/gated-note";
 import { PlayerIdentity } from "./ui/identity";
 import { TeamLogo } from "./team-logo";
-import { Button } from "./ui/button";
 import { Skeleton } from "./ui/skeleton";
 import { formatDate, throughLabel } from "@/lib/format-date";
 import type { PlayerProfile } from "@/lib/types";
+import { Button } from "./ui/kit";
 const teamLabel = (id: string | null) => FINANCE_TEAMS.find(t => t.id === id)?.tricode ?? id ?? "Unknown association";
 const text = (value: string | null) => value ?? "Unknown";
 export function FinanceObservations({ rows }: { rows: FinanceObservation[] }) {
@@ -44,17 +44,17 @@ export function FinanceContractDrawer({ contract, result, name, onClose, params 
     return () => {active=false;clearTimeout(timer);};
   },[showStats,scope,contract.player_id]);
   useEffect(() => { const node = dialog.current; const active = document.activeElement as HTMLElement | null; node?.showModal(); return () => { node?.close(); active?.focus(); }; }, []);
-  return <dialog ref={dialog} className="finance-dialog" onCancel={onClose} aria-labelledby="contract-title"><div className="finance-dialog-head"><h2 id="contract-title">{name} · contract details</h2><button className="button" onClick={onClose}>Close details</button></div>
+  return <dialog ref={dialog} className="finance-dialog" onCancel={onClose} aria-labelledby="contract-title"><div className="finance-dialog-head"><h2 id="contract-title">{name} · contract details</h2><Button size="lg" onClick={onClose}>Close details</Button></div>
     <PlayerIdentity playerId={contract.player_id} name={name} size="lg" subtitle={<>{contract.team_id && <TeamLogo team={contract.team_id} size={20} />}{teamLabel(contract.team_id)} · {STATUS_LABELS[contract.status]}</>} />
     <p>Financial season {result.context.financial_season}. {result.context.amount_kind.replaceAll("_"," ")}: {formatCents(contract.known_amount_cents)} ({contract.amount_status}).</p>
     <p>Derived AAV: {contract.derived_aav_usd === null ? "Unknown" : `USD ${contract.derived_aav_usd}`} · {contract.aav_definition}</p>
     <p>Options, guarantees and cash/cap terms below remain separate source reports. Unreported fields are unknown.</p>
     <FinanceObservations rows={result.timeline.filter(o => o.terms.nba_player_id === contract.player_id && o.terms.contract_id === contract.contract_id)} />
-    <Button onClick={() => setShowStats(value => !value)} aria-expanded={showStats}>Player Stats</Button>
+    <Button size="sm" onClick={() => setShowStats(value => !value)} aria-expanded={showStats}>Player Stats</Button>
     {showStats && <section><h3>Embedded player Stats · separate basketball context</h3>
       <div className="finance-controls"><CatalogScopeFields release={scope.release || undefined} season={scope.season} phase={scope.phase} before={scope.before} onSeason={season => changeScope({season})} onPhase={phase => changeScope({phase})} onBefore={before => changeScope({before})} /></div>
       {loading && <div role="status"><Skeleton height={96} /><span className="sr-only">Loading player Stats…</span></div>}
-      {statsError && <div role="alert"><GatedNote why={statsError} action={<Button onClick={() => setScope(previous => ({...previous}))}>Retry Stats</Button>}>Stats unavailable.</GatedNote></div>}
+      {statsError && <div role="alert"><GatedNote why={statsError} action={<Button size="sm" onClick={() => setScope(previous => ({...previous}))}>Retry Stats</Button>}>Stats unavailable.</GatedNote></div>}
       {stats && <section aria-label="Embedded player Stats"><p>Basketball season {stats.context.season} · {stats.context.phase} · {throughLabel(stats.context.before_date)} · {stats.summaries.season.gp ?? stats.context.sample_size ?? "Unknown"} appearances</p><dl>{Object.entries(stats.summaries.season).map(([key,value]) => <div key={key}><dt>{key}</dt><dd>{value ?? "Unknown"}</dd></div>)}</dl><GatedNote why={[...(stats.warnings ?? []),...(stats.context.warnings ?? [])].join(" · ") || "Basketball participation does not establish a financial association."}>Basketball context is separate from financial terms.</GatedNote></section>}
     </section>}
     <details><summary>Data details</summary><p>Contract: {contract.contract_id}</p><label>Basketball release (blank resolves public)<input value={scope.release} onChange={e => changeScope({release:e.target.value})} /></label>{stats && <p>Basketball release: {stats.context.release_id} · exclusive cutoff: {stats.context.before_date}</p>}</details>

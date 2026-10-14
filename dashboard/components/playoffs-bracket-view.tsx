@@ -11,7 +11,7 @@ import { ContextBar } from "./context-bar";
 import { hasTeamLogo } from "@/lib/team-colors";
 import { TeamLogo } from "./team-logo";
 import { GatedNote } from "./ui/gated-note";
-import { SegmentedControl } from "./ui/segmented-control";
+import { ButtonLink, Segmented } from "./ui/kit";
 
 interface PlayoffsBracketViewProps {
   bracket: PlayoffBracketResponse | null;
@@ -57,11 +57,11 @@ export function PlayoffsBracketView({ bracket, season, cutoffDate, catalog, rele
   const westSeeds = bracket?.seeds?.West ?? [];
 
   const filters = activeTab === "bracket" ? <>
-    <SegmentedControl<RoundFilter> name="Round" value={roundFilter} onChange={setRoundFilter} options={[
+    <Segmented<RoundFilter> size="lg" label="Round" value={roundFilter} onChange={setRoundFilter} options={[
       { value: "all", label: "All rounds" }, { value: "1", label: "Round 1" }, { value: "2", label: "Semis" },
       { value: "3", label: "Conf Finals" }, { value: "4", label: "Finals" }
     ]} />
-    <SegmentedControl<ConferenceFilter> name="Conference" value={conferenceFilter} onChange={setConferenceFilter} options={[
+    <Segmented<ConferenceFilter> size="lg" label="Conference" value={conferenceFilter} onChange={setConferenceFilter} options={[
       { value: "all", label: "Both" }, { value: "East", label: "East" }, { value: "West", label: "West" }
     ]} />
   </> : undefined;
@@ -79,7 +79,7 @@ export function PlayoffsBracketView({ bracket, season, cutoffDate, catalog, rele
         showWindow={false}
         sampleSize={bracket?.rounds?.reduce((acc, r) => acc + r.series.length, 0)}
         filters={filters}
-        modes={<SegmentedControl<BracketView> name="Playoff view" value={activeTab} onChange={setActiveTab} options={[
+        modes={<Segmented<BracketView> size="lg" label="Playoff view" value={activeTab} onChange={setActiveTab} options={[
           { value: "bracket", label: "Bracket" }, { value: "seed_evidence", label: "Seeds" }, { value: "capabilities", label: "Coverage" }
         ]} />}
         detailRows={bracket?.disclaimers?.map((text, i) => ({ label: i ? "" : "Disclaimers", value: text })) ?? []}
@@ -345,9 +345,9 @@ function SeriesBracketCard({
         <span className="text-xs text-muted font-mono">
           {series.summary_text}
         </span>
-        <Link href={detailHref} className="button button-small" aria-label={`${series.team1.name} vs ${series.team2.name} series details`}>
+        <ButtonLink size="lg" href={detailHref} aria-label={`${series.team1.name} vs ${series.team2.name} series details`}>
           Details
-        </Link>
+        </ButtonLink>
       </div>
     </div>
   );

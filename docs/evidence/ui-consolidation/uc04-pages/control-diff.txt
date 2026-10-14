@@ -1,0 +1,573 @@
+== compare@1440: 4 changed
+  ~ button||Top 2 by minutes: w 142.1 → 123.3; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245)
+  ~ button||Position leaders: w 137.8 → 118.9; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved -18.8,0
+  ~ button||Recently viewed: w 141.2 → 121.8; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved -37.8,0
+  ~ button||Swap players: w 101.3 → 104.4; pad 4px 12px 4px 12px → 0px 12px 0px 12px; fs 12px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved -3.2,0
+== compare-pair@1440: 14 changed
+  ~ button||Share image: w 139.4 → 122.8; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 16.6,0
+  ~ button||Remove Fixture Guard from Player B: moved -1.6,0
+  ~ button||Swap players: w 101.3 → 104.4; pad 4px 12px 4px 12px → 0px 12px 0px 12px; fs 12px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved -3.2,0
+  ~ div|radiogroup|Comparison Metric Presets: w 368.5 → 388.5; pad 2px 2px 2px 2px → 4px 4px 4px 4px; fs 14px → 13px
+  ~ button|radio|Overall: h 32 → 28; pad 4px 12px 4px 12px → 0px 12px 0px 12px; moved 2,2
+  ~ button|radio|Offense: h 32 → 28; pad 4px 12px 4px 12px → 0px 12px 0px 12px; moved 6,2
+  ~ button|radio|Defense: h 32 → 28; pad 4px 12px 4px 12px → 0px 12px 0px 12px; moved 10,2
+  ~ button|radio|Six Factor: h 32 → 28; pad 4px 12px 4px 12px → 0px 12px 0px 12px; moved 14,2
+  ~ button|radio|Custom: h 32 → 28; pad 4px 12px 4px 12px → 0px 12px 0px 12px; moved 18,2
+  ~ div|radiogroup|Counting mode: w 278.3 → 294.3; pad 2px 2px 2px 2px → 4px 4px 4px 4px; fs 14px → 13px; moved 20,0
+  ~ button|radio|Per Game: h 32 → 28; pad 4px 12px 4px 12px → 0px 12px 0px 12px; moved 22,2
+  ~ button|radio|Per 75: h 32 → 28; pad 4px 12px 4px 12px → 0px 12px 0px 12px; moved 26,2
+  ~ button|radio|Per 100: h 32 → 28; pad 4px 12px 4px 12px → 0px 12px 0px 12px; moved 30,2
+  ~ button|radio|Totals: h 32 → 28; pad 4px 12px 4px 12px → 0px 12px 0px 12px; moved 34,2
+== compare-fixture@1440: 5 changed
+  ~ button||Top 2 by minutes: w 142.1 → 123.3; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245)
+  ~ button||Position leaders: w 137.8 → 118.9; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved -18.8,0
+  ~ button||Recently viewed: w 141.2 → 121.8; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved -37.8,0
+  ~ select||Jan 2, 2023 Jan 10, 2023: moved -3.2,0
+  ~ button||Swap players: w 101.3 → 104.4; pad 4px 12px 4px 12px → 0px 12px 0px 12px; fs 12px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved -3.2,0
+== teams@1440: 9 changed
+  ~ a||Compare Teams: w 140 → 121.5; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 18.5,0
+  ~ div|radiogroup|Team view: w 227 → 239; pad 2px 2px 2px 2px → 4px 4px 4px 4px; fs 14px → 13px; moved -12,0
+  ~ button|radio|Table: h 36 → 32; pad 4px 12px 4px 12px → 0px 12px 0px 12px; moved -10,2
+  ~ button|radio|Cards: h 36 → 32; pad 4px 12px 4px 12px → 0px 12px 0px 12px; moved -6,2
+  ~ button|radio|Efficiency Plot: h 36 → 32; pad 4px 12px 4px 12px → 0px 12px 0px 12px; moved -2,2
+  ~ a||Compare: w 77.4 → 79.2; pad 4px 12px 4px 12px → 0px 12px 0px 12px; fs 12px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245)
+  ~ a||Profile: w 61.4 → 61.6; pad 4px 12px 4px 12px → 0px 12px 0px 12px; fs 12px → 13px; fw 600 → 500; border 1px rgb(255, 209, 102) → 0px rgb(14, 16, 19); moved 1.8,0
+  ~ a||Compare: w 77.4 → 79.2; pad 4px 12px 4px 12px → 0px 12px 0px 12px; fs 12px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245)
+  ~ a||Profile: w 61.4 → 61.6; pad 4px 12px 4px 12px → 0px 12px 0px 12px; fs 12px → 13px; fw 600 → 500; border 1px rgb(255, 209, 102) → 0px rgb(14, 16, 19); moved 1.8,0
+== team@1440: 5 changed
+  ~ a||Compare Team: w 132.6 → 114.8; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 33,0
+  ~ a||All Teams: w 120.6 → 105.5; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 15.1,0
+  ~ a||Profile: w 61.4 → 61.6; pad 4px 12px 4px 12px → 0px 12px 0px 12px; fs 12px → 13px; fw 600 → 500; border 1px rgb(255, 209, 102) → 0px rgb(14, 16, 19); moved -0.2,0
+  ~ a||Compare: w 77.4 → 79.2; pad 4px 12px 4px 12px → 0px 12px 0px 12px; fs 12px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved -1.9,0
+  ~ a||Profile: w 61.4 → 61.6; pad 4px 12px 4px 12px → 0px 12px 0px 12px; fs 12px → 13px; fw 600 → 500; border 1px rgb(255, 209, 102) → 0px rgb(14, 16, 19); moved -0.2,0
+== team-compare@1440: 7 changed
+  ~ div|radiogroup|Comparison tabs: w 572.3 → 592.3; pad 2px 2px 2px 2px → 4px 4px 4px 4px; fs 14px → 13px
+  ~ button|radio|Overview & H2H: h 36 → 32; pad 4px 12px 4px 12px → 0px 12px 0px 12px; moved 2,2
+  ~ button|radio|Four Factors: h 36 → 32; pad 4px 12px 4px 12px → 0px 12px 0px 12px; moved 6,2
+  ~ button|radio|3P Variation: h 36 → 32; pad 4px 12px 4px 12px → 0px 12px 0px 12px; moved 10,2
+  ~ button|radio|Participation Cohorts: h 36 → 32; pad 4px 12px 4px 12px → 0px 12px 0px 12px; moved 14,2
+  ~ button|radio|Similar Peers: h 36 → 32; pad 4px 12px 4px 12px → 0px 12px 0px 12px; moved 18,2
+  ~ button||Swap Teams: w 139 → 124.2; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); icons 14 → 16
+== wowy@1440: 0 changed
+== last-games@1440: 17 changed
+  ~ button||Add to favorites: moved -1.8,0
+  ~ button||Add to compare tray: moved -1.8,0
+  ~ a||Profile: h 34 → 32; pad 8px 12px 8px 12px → 0px 12px 0px 12px; moved -1.8,1
+  ~ button||Export: w 106.9 → 108.7; h 34 → 32; pad 0px 0px 0px 0px → 0px 12px 0px 12px; fs 14px → 13px; fw 400 → 500; bg rgba(0, 0, 0, 0) → rgb(255, 209, 102); color rgb(242, 243, 245) → rgb(14, 16, 19); border 0px rgb(242, 243, 245) → 0px rgb(14, 16, 19); moved -1.8,1; icons 16,14 → 16,16
+  ~ div|radiogroup|Appearance window: w 255.6 → 271.6; pad 2px 2px 2px 2px → 4px 4px 4px 4px; fs 14px → 13px
+  ~ button|radio|Last 5: h 36 → 32; pad 4px 12px 4px 12px → 0px 12px 0px 12px; moved 2,2
+  ~ button|radio|Last 10: h 36 → 32; pad 4px 12px 4px 12px → 0px 12px 0px 12px; moved 6,2
+  ~ button|radio|Last 20: h 36 → 32; pad 4px 12px 4px 12px → 0px 12px 0px 12px; moved 10,2
+  ~ button|radio|All (1): h 36 → 32; pad 4px 12px 4px 12px → 0px 12px 0px 12px; moved 14,2
+  ~ div|radiogroup|Exposure: w 148.9 → 156.9; pad 2px 2px 2px 2px → 4px 4px 4px 4px; fs 14px → 13px; moved 16,0
+  ~ button|radio|Per Game: h 36 → 32; pad 4px 12px 4px 12px → 0px 12px 0px 12px; moved 18,2
+  ~ button|radio|Per 36: h 36 → 32; pad 4px 12px 4px 12px → 0px 12px 0px 12px; moved 22,2
+  ~ div|radiogroup|Layout: w 156.5 → 168.5; pad 2px 2px 2px 2px → 4px 4px 4px 4px; fs 14px → 13px; moved 24,0; icons 14,14 → 16,16
+  ~ button|radio|Table: w 74.9 → 76.9; h 36 → 32; pad 4px 12px 4px 12px → 0px 12px 0px 12px; moved 26,2; icons 14 → 16
+  ~ button|radio|Cards: w 77.6 → 79.6; h 36 → 32; pad 4px 12px 4px 12px → 0px 12px 0px 12px; moved 32,2; icons 14 → 16
+  ~ button||Change: w 69.3 → 70.5; pad 4px 12px 4px 12px → 0px 12px 0px 12px; fs 12px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved -1.2,0
+  ~ button||Lineage: w 70.5 → 71.7; pad 4px 12px 4px 12px → 0px 12px 0px 12px; fs 12px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved -1.2,0
+== last-games-player@1440: 16 changed
+  ~ button||Add to favorites: moved -1.8,0
+  ~ button||Add to compare tray: moved -1.8,0
+  ~ a||Profile: h 34 → 32; pad 8px 12px 8px 12px → 0px 12px 0px 12px; moved -1.8,1
+  ~ button||Export: w 106.9 → 108.7; h 34 → 32; pad 0px 0px 0px 0px → 0px 12px 0px 12px; fs 14px → 13px; fw 400 → 500; bg rgba(0, 0, 0, 0) → rgb(255, 209, 102); color rgb(242, 243, 245) → rgb(14, 16, 19); border 0px rgb(242, 243, 245) → 0px rgb(14, 16, 19); moved -1.8,1; icons 16,14 → 16,16
+  ~ div|radiogroup|Appearance window: w 255.6 → 271.6; pad 2px 2px 2px 2px → 4px 4px 4px 4px; fs 14px → 13px
+  ~ button|radio|Last 5: h 36 → 32; pad 4px 12px 4px 12px → 0px 12px 0px 12px; moved 2,2
+  ~ button|radio|Last 10: h 36 → 32; pad 4px 12px 4px 12px → 0px 12px 0px 12px; moved 6,2
+  ~ button|radio|Last 20: h 36 → 32; pad 4px 12px 4px 12px → 0px 12px 0px 12px; moved 10,2
+  ~ button|radio|All (1): h 36 → 32; pad 4px 12px 4px 12px → 0px 12px 0px 12px; moved 14,2
+  ~ div|radiogroup|Exposure: w 148.9 → 156.9; pad 2px 2px 2px 2px → 4px 4px 4px 4px; fs 14px → 13px; moved 16,0
+  ~ button|radio|Per Game: h 36 → 32; pad 4px 12px 4px 12px → 0px 12px 0px 12px; moved 18,2
+  ~ button|radio|Per 36: h 36 → 32; pad 4px 12px 4px 12px → 0px 12px 0px 12px; moved 22,2
+  ~ div|radiogroup|Layout: w 156.5 → 168.5; pad 2px 2px 2px 2px → 4px 4px 4px 4px; fs 14px → 13px; moved 24,0; icons 14,14 → 16,16
+  ~ button|radio|Table: w 74.9 → 76.9; h 36 → 32; pad 4px 12px 4px 12px → 0px 12px 0px 12px; moved 26,2; icons 14 → 16
+  ~ button|radio|Cards: w 77.6 → 79.6; h 36 → 32; pad 4px 12px 4px 12px → 0px 12px 0px 12px; moved 32,2; icons 14 → 16
+  ~ button||Lineage: w 70.5 → 71.7; pad 4px 12px 4px 12px → 0px 12px 0px 12px; fs 12px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved -1.2,0
+== live@1440: 1 changed
+  ~ button||Pause updates: h 34 → 32; pad 8px 12px 8px 12px → 0px 12px 0px 12px; moved 0,1
+== live-game@1440: 1 changed
+  ~ button||Pause updates: h 34 → 32; pad 8px 12px 8px 12px → 0px 12px 0px 12px; moved 0,1
+== playoffs@1440: 15 changed
+  ~ div|radiogroup|Round: w 370.1 → 390.1; pad 2px 2px 2px 2px → 4px 4px 4px 4px; fs 14px → 13px
+  ~ button|radio|All rounds: h 36 → 32; pad 4px 12px 4px 12px → 0px 12px 0px 12px; moved 2,2
+  ~ button|radio|Round 1: h 36 → 32; pad 4px 12px 4px 12px → 0px 12px 0px 12px; moved 6,2
+  ~ button|radio|Semis: h 36 → 32; pad 4px 12px 4px 12px → 0px 12px 0px 12px; moved 10,2
+  ~ button|radio|Conf Finals: h 36 → 32; pad 4px 12px 4px 12px → 0px 12px 0px 12px; moved 14,2
+  ~ button|radio|Finals: h 36 → 32; pad 4px 12px 4px 12px → 0px 12px 0px 12px; moved 18,2
+  ~ div|radiogroup|Conference: w 161.4 → 173.4; pad 2px 2px 2px 2px → 4px 4px 4px 4px; fs 14px → 13px; moved 20,0
+  ~ button|radio|Both: h 36 → 32; pad 4px 12px 4px 12px → 0px 12px 0px 12px; moved 22,2
+  ~ button|radio|East: h 36 → 32; pad 4px 12px 4px 12px → 0px 12px 0px 12px; moved 26,2
+  ~ button|radio|West: h 36 → 32; pad 4px 12px 4px 12px → 0px 12px 0px 12px; moved 30,2
+  ~ div|radiogroup|Playoff view: w 218.1 → 230.1; pad 2px 2px 2px 2px → 4px 4px 4px 4px; fs 14px → 13px; moved -12,0
+  ~ button|radio|Bracket: h 36 → 32; pad 4px 12px 4px 12px → 0px 12px 0px 12px; moved -10,2
+  ~ button|radio|Seeds: h 36 → 32; pad 4px 12px 4px 12px → 0px 12px 0px 12px; moved -6,2
+  ~ button|radio|Coverage: h 36 → 32; pad 4px 12px 4px 12px → 0px 12px 0px 12px; moved -2,2
+  ~ a||Boston Celtics vs Dallas Mavericks series detail: w 64.7 → 65.1; pad 4px 12px 4px 12px → 0px 12px 0px 12px; fs 12px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved -0.5,0
+== playoff-series@1440: 23 changed
+  ~ a||Playoffs: w 92.2 → 92.9; pad 4px 12px 4px 12px → 0px 12px 0px 12px; fs 12px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved -5.1,0
+  ~ a||Compare teams: w 114.6 → 118.9; pad 4px 12px 4px 12px → 0px 12px 0px 12px; fs 12px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved -4.3,0
+  - removed button||All Players (1) 101.8x40
+  - removed button||BOS (1) 67.8x40
+  - removed button||DAL (0) 66.5x40
+  ~ button||Sort by GP: moved -0.1,0
+  ~ button||Sort by MPG: moved -0.1,0
+  ~ button||Sort by PPG: moved -0.1,0
+  ~ button||Sort by RPG: moved -0.1,0
+  ~ button||Sort by APG: moved -0.1,0
+  ~ button||Sort by SPG: moved -0.2,0
+  ~ button||Sort by BPG: moved -0.1,0
+  ~ button||Sort by TOPG: moved -0.2,0
+  ~ button||Sort by FG%: moved -0.1,0
+  ~ button||Sort by 3P%: moved -0.2,0
+  ~ button||Sort by FT%: moved -0.1,0
+  ~ button||Sort by eFG%: moved -0.1,0
+  ~ button||Sort by TS%: moved -0.1,0
+  ~ a||Profile: w 61.4 → 61.6; pad 4px 12px 4px 12px → 0px 12px 0px 12px; fs 12px → 13px; fw 600 → 500; border 1px rgb(255, 209, 102) → 0px rgb(14, 16, 19); moved -0.2,0
+  + added div|radiogroup|Series players 258x40
+  + added button|radio|All Players (1) 106.1x32
+  + added button|radio|BOS (1) 68.7x32
+  + added button|radio|DAL (0) 67.3x32
+== playoff-series-fixture@1440: 23 changed
+  ~ a||Playoffs: w 92.2 → 92.9; pad 4px 12px 4px 12px → 0px 12px 0px 12px; fs 12px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved -5.1,0
+  ~ a||Compare teams: w 114.6 → 118.9; pad 4px 12px 4px 12px → 0px 12px 0px 12px; fs 12px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved -4.3,0
+  - removed button||All Players (1) 101.8x40
+  - removed button||BOS (1) 67.8x40
+  - removed button||DAL (0) 66.5x40
+  ~ button||Sort by GP: moved -0.1,0
+  ~ button||Sort by MPG: moved -0.1,0
+  ~ button||Sort by PPG: moved -0.1,0
+  ~ button||Sort by RPG: moved -0.1,0
+  ~ button||Sort by APG: moved -0.1,0
+  ~ button||Sort by SPG: moved -0.2,0
+  ~ button||Sort by BPG: moved -0.1,0
+  ~ button||Sort by TOPG: moved -0.2,0
+  ~ button||Sort by FG%: moved -0.1,0
+  ~ button||Sort by 3P%: moved -0.2,0
+  ~ button||Sort by FT%: moved -0.1,0
+  ~ button||Sort by eFG%: moved -0.1,0
+  ~ button||Sort by TS%: moved -0.1,0
+  ~ a||Profile: w 61.4 → 61.6; pad 4px 12px 4px 12px → 0px 12px 0px 12px; fs 12px → 13px; fw 600 → 500; border 1px rgb(255, 209, 102) → 0px rgb(14, 16, 19); moved -0.2,0
+  + added div|radiogroup|Series players 258x40
+  + added button|radio|All Players (1) 106.1x32
+  + added button|radio|BOS (1) 68.7x32
+  + added button|radio|DAL (0) 67.3x32
+== showcase@1440: 9 changed
+  ~ button||Export: w 106.9 → 108.7; h 34 → 32; pad 0px 0px 0px 0px → 0px 12px 0px 12px; fs 14px → 13px; fw 400 → 500; bg rgba(0, 0, 0, 0) → rgb(255, 209, 102); color rgb(242, 243, 245) → rgb(14, 16, 19); border 0px rgb(242, 243, 245) → 0px rgb(14, 16, 19); moved -1.8,1; icons 16,14 → 16,16
+  ~ div|radiogroup|showcase-focus: w 360.8 → 376.8; pad 2px 2px 2px 2px → 4px 4px 4px 4px; fs 14px → 13px
+  ~ button|radio|Overall: h 36 → 32; pad 4px 12px 4px 12px → 0px 12px 0px 12px; moved 2,2
+  ~ button|radio|Scoring: h 36 → 32; pad 4px 12px 4px 12px → 0px 12px 0px 12px; moved 6,2
+  ~ button|radio|Playmaking & Defense: h 36 → 32; pad 4px 12px 4px 12px → 0px 12px 0px 12px; moved 10,2
+  ~ button|radio|Per 36: h 36 → 32; pad 4px 12px 4px 12px → 0px 12px 0px 12px; moved 14,2
+  ~ button||Previous player: moved 0,-1
+  ~ button||Play: h 34 → 32; pad 8px 12px 8px 12px → 0px 12px 0px 12px
+  ~ button||Next player: moved 0,-1
+== rankings@1440: 3 changed
+  ~ button||Aggregate boards: h 34 → 32; pad 8px 12px 8px 12px → 0px 12px 0px 12px; moved 0,1
+  ~ button||New board: h 34 → 32; pad 8px 12px 8px 12px → 0px 12px 0px 12px; moved 0,1
+  ~ button||Copy to my boards: h 34 → 32; pad 8px 12px 8px 12px → 0px 12px 0px 12px; moved 0,1
+== rankings-new@1440: 7 changed
+  ~ button||Aggregate boards: h 34 → 32; pad 8px 12px 8px 12px → 0px 12px 0px 12px; moved 0,1
+  ~ button||New board: h 34 → 32; pad 8px 12px 8px 12px → 0px 12px 0px 12px; moved 0,1
+  ~ button||Close create ranking board dialog: w 30 → 28; h 22 → 28; pad 4px 8px 4px 8px → 0px 0px 0px 0px; fs 16px → 12px; fw 400 → 500; moved 2,-2
+  ~ select||Overall Offense Defense Position Custom: moved 0,2
+  ~ button||Cancel: w 64.9 → 65.7; pad 4px 12px 4px 12px → 0px 12px 0px 12px; fs 12px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved -3.9,2
+  ~ button||Create Board: w 99.5 → 102.5; pad 4px 12px 4px 12px → 0px 12px 0px 12px; fs 12px → 13px; fw 600 → 500; border 1px rgb(255, 209, 102) → 0px rgb(14, 16, 19); moved -3,2
+  ~ button||Copy to my boards: h 34 → 32; pad 8px 12px 8px 12px → 0px 12px 0px 12px; moved 0,1
+== rankings-board@1440: 25 changed
+  ~ button||Hide aggregator: w 144.3 → 145.7; h 34 → 32; pad 8px 12px 8px 12px → 0px 12px 0px 12px; fw 500 → 600; bg rgb(36, 40, 46) → rgba(255, 209, 102, 0.12); color rgb(242, 243, 245) → rgb(255, 209, 102); border 0px rgb(169, 175, 185) → 0px rgb(255, 209, 102); shadow none → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(255, 209, 102) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px; moved -1.3,1
+  ~ button||New board: h 34 → 32; pad 8px 12px 8px 12px → 0px 12px 0px 12px; moved 0,1
+  ~ button||View minutes example: h 34 → 32; pad 8px 12px 8px 12px → 0px 12px 0px 12px
+  ~ summary||Why?: moved 0,-2
+  ~ select||Borda Count (points = max_rank - rank + 1) Avera: moved 0,1
+  ~ button||Compute Aggregate: w 137.6 → 143.4; pad 4px 12px 4px 12px → 0px 12px 0px 12px; fs 12px → 13px; fw 600 → 500; border 1px rgb(255, 209, 102) → 0px rgb(14, 16, 19); moved 0,1
+  - removed button|tab|Guards(2) 71.7x21
+  - removed button|tab|Wings(0) 66.8x21
+  ~ button||Delete Board: w 90 → 100.9; pad 2px 8px 2px 8px → 0px 12px 0px 12px; fs 12px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(255, 107, 107); moved -10.9,1
+  ~ button||#23: w 62.7 → 60.5; h 40 → 28; pad 2px 8px 2px 8px → 0px 8px 0px 8px; fw 600 → 500; bg rgb(28, 31, 36) → rgba(0, 0, 0, 0); color rgb(242, 243, 245) → rgb(169, 175, 185); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(169, 175, 185); moved 0,7
+  ~ button||#24: w 62.7 → 60.5; h 40 → 28; pad 2px 8px 2px 8px → 0px 8px 0px 8px; fw 600 → 500; bg rgb(28, 31, 36) → rgba(0, 0, 0, 0); color rgb(242, 243, 245) → rgb(169, 175, 185); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(169, 175, 185); moved -2.2,7
+  ~ summary||Rules: moved 0,1
+  ~ a||Fixture Star: moved 0,1
+  ~ button||Move Fixture Star up: w 32 → 28; h 40 → 28; pad 2px 8px 2px 8px → 0px 0px 0px 0px; fw 600 → 500; bg rgb(28, 31, 36) → rgba(0, 0, 0, 0); color rgb(242, 243, 245) → rgb(169, 175, 185); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(169, 175, 185); moved 3.1,7
+  ~ button||Move Fixture Star down: w 30.3 → 28; h 40 → 28; pad 2px 8px 2px 8px → 0px 0px 0px 0px; fw 600 → 500; bg rgb(28, 31, 36) → rgba(0, 0, 0, 0); color rgb(242, 243, 245) → rgb(169, 175, 185); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(169, 175, 185); moved -0.9,7
+  ~ button||Remove Fixture Star from board: w 32 → 28; h 40 → 28; pad 2px 8px 2px 8px → 0px 0px 0px 0px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(255, 107, 107); moved 2,7
+  ~ a||Fixture Guard: moved 0,1
+  ~ button||Move Fixture Guard up: w 32 → 28; h 40 → 28; pad 2px 8px 2px 8px → 0px 0px 0px 0px; fw 600 → 500; bg rgb(28, 31, 36) → rgba(0, 0, 0, 0); color rgb(242, 243, 245) → rgb(169, 175, 185); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(169, 175, 185); moved 3.1,7
+  ~ button||Move Fixture Guard down: w 30.3 → 28; h 40 → 28; pad 2px 8px 2px 8px → 0px 0px 0px 0px; fw 600 → 500; bg rgb(28, 31, 36) → rgba(0, 0, 0, 0); color rgb(242, 243, 245) → rgb(169, 175, 185); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(169, 175, 185); moved -0.9,7
+  ~ button||Remove Fixture Guard from board: w 32 → 28; h 40 → 28; pad 2px 8px 2px 8px → 0px 0px 0px 0px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(255, 107, 107); moved 2,7
+  + added button||Guards (2) 86x32
+  + added button||Wings (0) 81.4x32
+  + added div|radiogroup|Personal Ranking Boards 193.7x40
+  + added button|radio|Guards (2) 93.5x32
+  + added button|radio|Wings (0) 88.2x32
+== tierlist@1440: 2 changed
+  ~ button||New tier list: h 34 → 32; pad 8px 12px 8px 12px → 0px 12px 0px 12px; moved 0,1
+  ~ button||Copy to my boards: h 34 → 32; pad 8px 12px 8px 12px → 0px 12px 0px 12px; moved 0,1
+== tierlist-list@1440: 22 changed
+  ~ button||Add tier row: h 34 → 32; pad 8px 12px 8px 12px → 0px 12px 0px 12px; moved 0,1
+  ~ button||New tier list: h 34 → 32; pad 8px 12px 8px 12px → 0px 12px 0px 12px; moved 0,1
+  ~ button||View minutes example: h 34 → 32; pad 8px 12px 8px 12px → 0px 12px 0px 12px
+  ~ summary||Why?: moved 0,-2
+  - removed button|tab|Starters(1) 76.2x21
+  - removed button|tab|Bench(0) 66.1x21
+  ~ button||Delete List: w 84.5 → 86.4; pad 4px 12px 4px 12px → 0px 12px 0px 12px; fs 12px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(255, 107, 107); moved -1.9,-2
+  ~ select||First tier Second tier: moved 0,-2
+  ~ button||#23: w 62.7 → 60.5; h 40 → 28; pad 2px 8px 2px 8px → 0px 8px 0px 8px; fw 600 → 500; bg rgb(28, 31, 36) → rgba(0, 0, 0, 0); color rgb(242, 243, 245) → rgb(169, 175, 185); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(169, 175, 185); moved 4.6,4
+  ~ button||#24: w 62.7 → 60.5; h 40 → 28; pad 2px 8px 2px 8px → 0px 8px 0px 8px; fw 600 → 500; bg rgb(28, 31, 36) → rgba(0, 0, 0, 0); color rgb(242, 243, 245) → rgb(169, 175, 185); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(169, 175, 185); moved 2.2,4
+  ~ button||Move tier First tier up: w 24 → 28; h 20 → 28; pad 2px 4px 2px 4px → 0px 0px 0px 0px; fw 600 → 500; radius 4px → 6px; bg rgba(255, 255, 255, 0.04) → rgb(28, 31, 36); color rgb(14, 16, 19) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.06) → 0px rgb(242, 243, 245); moved -6.9,-2
+  ~ button||Move tier First tier down: w 22.3 → 28; h 20 → 28; pad 2px 4px 2px 4px → 0px 0px 0px 0px; fw 600 → 500; radius 4px → 6px; bg rgba(255, 255, 255, 0.04) → rgb(28, 31, 36); color rgb(14, 16, 19) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.06) → 0px rgb(242, 243, 245); moved -2.9,-2
+  ~ button||Delete tier First tier: w 24 → 28; h 20 → 28; pad 2px 4px 2px 4px → 0px 0px 0px 0px; fw 600 → 500; radius 4px → 6px; bg rgba(255, 255, 255, 0.04) → rgb(28, 31, 36); color rgb(14, 16, 19) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.06) → 0px rgb(242, 243, 245); moved 2.9,-2
+  ~ a||Fixture Star: moved 0,-2
+  ~ select||Move Fixture Star to tier: moved 0,-2
+  ~ button||Remove Fixture Star from tier list: w 22 → 28; h 14 → 28; pad 0px 4px 0px 4px → 0px 0px 0px 0px; fw 400 → 500; bg rgba(0, 0, 0, 0) → rgb(28, 31, 36); color rgb(133, 139, 149) → rgb(255, 107, 107); border 0px rgb(133, 139, 149) → 0px rgb(255, 107, 107); moved 0,-9
+  ~ button||Move tier Second tier up: w 24 → 28; h 20 → 28; pad 2px 4px 2px 4px → 0px 0px 0px 0px; fw 600 → 500; radius 4px → 6px; bg rgba(255, 255, 255, 0.04) → rgb(28, 31, 36); color rgb(14, 16, 19) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.06) → 0px rgb(242, 243, 245); moved -6.9,6
+  ~ button||Move tier Second tier down: w 22.3 → 28; h 20 → 28; pad 2px 4px 2px 4px → 0px 0px 0px 0px; fw 600 → 500; radius 4px → 6px; bg rgba(255, 255, 255, 0.04) → rgb(28, 31, 36); color rgb(14, 16, 19) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.06) → 0px rgb(242, 243, 245); moved -2.9,6
+  ~ button||Delete tier Second tier: w 24 → 28; h 20 → 28; pad 2px 4px 2px 4px → 0px 0px 0px 0px; fw 600 → 500; radius 4px → 6px; bg rgba(255, 255, 255, 0.04) → rgb(28, 31, 36); color rgb(14, 16, 19) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.06) → 0px rgb(242, 243, 245); moved 2.9,6
+  + added div|radiogroup|Personal Tier Lists 206.2x40
+  + added button|radio|Starters (1) 102.6x32
+  + added button|radio|Bench (0) 91.6x32
+== roster-shapes@1440: 7 changed
+  ~ select||Choose team: moved 15.1,0
+  ~ a||All teams: w 94 → 78.9; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 15.1,0
+  ~ button||Export JSON: h 34 → 32; pad 8px 12px 8px 12px → 0px 12px 0px 12px; moved 0,1
+  ~ div|radiogroup|roster-basis: w 168.5 → 176.5; pad 2px 2px 2px 2px → 4px 4px 4px 4px; fs 14px → 13px
+  ~ button|radio|Observed: h 36 → 32; pad 4px 12px 4px 12px → 0px 12px 0px 12px; moved 2,2
+  ~ button|radio|Projected: h 36 → 32; pad 4px 12px 4px 12px → 0px 12px 0px 12px; moved 6,2
+  ~ button||Retry: pad 4px 8px 4px 8px → 0px 8px 0px 8px
+== roster-shapes-bos@1440: 4 changed
+  ~ select||Choose team: moved 15.1,0
+  ~ a||All teams: w 94 → 78.9; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 15.1,0
+  ~ button||Retry: w 69 → 55.8; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245)
+  ~ summary||Why?: moved -13.2,0
+== stat-line-shift@1440: 5 changed
+  ~ a||WOWY: w 81.9 → 68.3; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 13.6,0
+  ~ button||Change team: w 151.2 → 134.1; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245)
+  ~ button||From date (inclusive): Select a date: moved -17,0
+  ~ button||Retry: w 69 → 55.8; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245)
+  ~ summary||Why?: moved -13.2,0
+== contracts@1440: 4 changed
+  ~ select||Choose team: moved 15.1,0
+  ~ a||All teams: w 94 → 78.9; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 15.1,0
+  ~ button||Retry: w 69 → 55.8; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245)
+  ~ summary||Why?: moved -13.2,0
+== contracts-books@1440: 4 changed
+  ~ a||Contracts & Payroll: w 158.7 → 138; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 35.1,0
+  ~ button||Refresh: w 84.5 → 70; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 14.5,0
+  ~ button||Reload books: w 121 → 103.8; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245)
+  ~ summary||Why?: moved -17.2,0
+== matchups@1440: 3 changed
+  ~ div|radiogroup|Matchup side: w 184.8 → 192.8; pad 2px 2px 2px 2px → 4px 4px 4px 4px; fs 14px → 13px
+  ~ button|radio|On offense: h 36 → 32; pad 4px 12px 4px 12px → 0px 12px 0px 12px; moved 2,2
+  ~ button|radio|On defense: h 36 → 32; pad 4px 12px 4px 12px → 0px 12px 0px 12px; moved 6,2
+== similar@1440: 2 changed
+  ~ button||Retry: h 34 → 32; pad 8px 12px 8px 12px → 0px 12px 0px 12px
+  ~ summary||Why?: moved 0,-1
+== shot-profile@1440: 4 changed
+  ~ div|radiogroup|Shot profile view: w 250.4 → 258.4; pad 2px 2px 2px 2px → 4px 4px 4px 4px; fs 14px → 13px; moved -8,0
+  ~ button|radio|Shooting profile: h 36 → 44; pad 4px 12px 4px 12px → 0px 12px 0px 12px; moved -6,2
+  ~ button|radio|Shot-profile twins: h 36 → 44; pad 4px 12px 4px 12px → 0px 12px 0px 12px; moved -2,2
+  ~ button||Retry: w 69 → 55.8; h 44 → 40; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245)
+== aftermath@1440: 1 changed
+  ~ button||Retry: w 69 → 55.8; h 44 → 40; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245)
+== rapm@1440: 1 changed
+  ~ button||Retry reads: w 109 → 92.5; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245)
+== shooting@1440: 1 changed
+  ~ button||Retry reads: w 109 → 92.5; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245)
+== wingspan@1440: 0 changed
+== calculator@1440: 2 changed
+  ~ button||Reset hypothetical defaults: w 209.5 → 184.2; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 47.2,0
+  ~ button||Export scenario JSON: w 175.5 → 153.6; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgb(255, 209, 102) → 0px rgb(14, 16, 19); moved 21.9,0
+== player-games@1440: 1 changed
+  ~ button||View Data Table: w 115.5 → 119.7; pad 4px 12px 4px 12px → 0px 12px 0px 12px; fs 12px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved -4.2,0
+== compare@390: 4 changed
+  ~ button||Top 2 by minutes: w 142.1 → 123.3; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245)
+  ~ button||Position leaders: w 137.8 → 118.9; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved -18.8,0
+  ~ button||Recently viewed: w 141.2 → 121.8; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245)
+  ~ button||Swap players: pad 4px 12px 4px 12px → 0px 12px 0px 12px; fs 12px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245)
+== compare-pair@390: 18 changed
+  ~ button||Share image: w 139.4 → 122.8; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245)
+  ~ button||More: moved -16.6,0
+  ~ button||Swap players: pad 4px 12px 4px 12px → 0px 12px 0px 12px; fs 12px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245)
+  ~ div|radiogroup|Comparison Metric Presets: w 366 → 348.5; h 44 → 48; pad 2px 2px 2px 2px → 4px 4px 4px 4px; fs 14px → 13px
+  ~ button|radio|Overall: w 67.4 → 59.4; pad 4px 12px 4px 12px → 0px 8px 0px 8px; moved 2,2
+  ~ button|radio|Offense: w 70.5 → 62.5; pad 4px 12px 4px 12px → 0px 8px 0px 8px; moved -2,2
+  ~ button|radio|Defense: w 73.6 → 65.6; pad 4px 12px 4px 12px → 0px 8px 0px 8px; moved -6,2
+  ~ button|radio|Six Factor: w 82.9 → 74.9; pad 4px 12px 4px 12px → 0px 8px 0px 8px; moved -10,2
+  ~ button|radio|Custom: w 70.1 → 62.1; pad 4px 12px 4px 12px → 0px 8px 0px 8px; moved -14,2
+  ~ div|radiogroup|Counting mode: w 278.3 → 262.3; h 44 → 48; pad 2px 2px 2px 2px → 4px 4px 4px 4px; fs 14px → 13px; moved 0,4
+  ~ button|radio|Per Game: w 83 → 75; pad 4px 12px 4px 12px → 0px 8px 0px 8px; moved 2,6
+  ~ button|radio|Per 75: w 61.9 → 53.9; pad 4px 12px 4px 12px → 0px 8px 0px 8px; moved -2,6
+  ~ button|radio|Per 100: w 69.4 → 61.4; pad 4px 12px 4px 12px → 0px 8px 0px 8px; moved -6,6
+  ~ button|radio|Totals: w 59.9 → 51.9; pad 4px 12px 4px 12px → 0px 8px 0px 8px; moved -10,6
+  ~ summary||Why?: moved 0,8
+  ~ summary||Export chart preview: moved 0,8
+  ~ summary||Trend lines: moved 0,8
+  ~ summary||Why?: moved 0,8
+== compare-fixture@390: 4 changed
+  ~ button||Top 2 by minutes: w 142.1 → 123.3; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245)
+  ~ button||Position leaders: w 137.8 → 118.9; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved -18.8,0
+  ~ button||Recently viewed: w 141.2 → 121.8; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245)
+  ~ button||Swap players: pad 4px 12px 4px 12px → 0px 12px 0px 12px; fs 12px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245)
+== teams@390: 19 changed
+  ~ a||Compare Teams: w 140 → 121.5; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245)
+  ~ div|radiogroup|Team view: w 366 → 215; h 44 → 48; pad 2px 2px 2px 2px → 4px 4px 4px 4px; fs 14px → 13px
+  ~ button|radio|Table: w 103.2 → 48.9; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 2,2
+  ~ button|radio|Cards: w 106 → 51.6; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved -48.3,2
+  ~ button|radio|Efficiency Plot: w 152.8 → 98.5; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved -98.7,2
+  ~ a||100 Toronto Raptors: moved 0,4
+  ~ summary||Why?: moved 0,4
+  ~ summary||Rules: moved 0,4
+  ~ button||Sort by W-L: moved 0,4
+  ~ button||Sort by Win%: moved 0,4
+  ~ button||Sort by PPG: moved 0,4
+  ~ button||Sort by Opp PPG: moved 0,4
+  ~ button||Sort by Net Diff: moved 0,4
+  ~ a||Boston Celtics: moved 0,4
+  ~ a||Compare: w 77.4 → 79.2; pad 4px 12px 4px 12px → 0px 12px 0px 12px; fs 12px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 0,4
+  ~ a||Profile: w 61.4 → 61.6; pad 4px 12px 4px 12px → 0px 12px 0px 12px; fs 12px → 13px; fw 600 → 500; border 1px rgb(255, 209, 102) → 0px rgb(14, 16, 19); moved 1.7,4
+  ~ a||Toronto Raptors: moved 0,4
+  ~ a||Compare: w 77.4 → 79.2; pad 4px 12px 4px 12px → 0px 12px 0px 12px; fs 12px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 0,4
+  ~ a||Profile: w 61.4 → 61.6; pad 4px 12px 4px 12px → 0px 12px 0px 12px; fs 12px → 13px; fw 600 → 500; border 1px rgb(255, 209, 102) → 0px rgb(14, 16, 19); moved 1.7,4
+== team@390: 5 changed
+  ~ a||Compare Team: w 132.6 → 114.8; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245)
+  ~ a||All Teams: w 120.6 → 105.5; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved -17.8,0
+  ~ a||Profile: w 61.4 → 61.6; pad 4px 12px 4px 12px → 0px 12px 0px 12px; fs 12px → 13px; fw 600 → 500; border 1px rgb(255, 209, 102) → 0px rgb(14, 16, 19)
+  ~ a||Compare: w 77.4 → 79.2; pad 4px 12px 4px 12px → 0px 12px 0px 12px; fs 12px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245)
+  ~ a||Profile: w 61.4 → 61.6; pad 4px 12px 4px 12px → 0px 12px 0px 12px; fs 12px → 13px; fw 600 → 500; border 1px rgb(255, 209, 102) → 0px rgb(14, 16, 19); moved 1.7,0
+== team-compare@390: 10 changed
+  ~ div|radiogroup|Comparison tabs: h 44 → 48; pad 2px 2px 2px 2px → 4px 4px 4px 4px; fs 14px → 13px
+  ~ button|radio|Overview & H2H: w 78.3 → 115.1; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 2,2
+  ~ button|radio|Four Factors: w 63.1 → 90.8; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 42.8,2
+  ~ button|radio|3P Variation: w 60.8 → 87.3; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 74.5,2
+  ~ button|radio|Participation Cohorts: w 94.6 → 140.9; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 105,2
+  ~ button|radio|Similar Peers: w 65.2 → 94.2; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 155.3,2
+  ~ button||Remove Toronto Raptors from Team A: moved 0,4
+  ~ button||Remove Boston Celtics from Team B: moved 0,4
+  ~ button||Swap Teams: pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 0,4; icons 14 → 16
+  ~ summary||Why?: moved 0,4
+== wowy@390: 0 changed
+== last-games@390: 12 changed
+  ~ a||Profile: pad 8px 12px 8px 12px → 0px 12px 0px 12px
+  ~ button||Export: w 106.9 → 108.7; pad 0px 0px 0px 0px → 0px 12px 0px 12px; fs 14px → 13px; fw 400 → 500; bg rgba(0, 0, 0, 0) → rgb(255, 209, 102); color rgb(242, 243, 245) → rgb(14, 16, 19); border 0px rgb(242, 243, 245) → 0px rgb(14, 16, 19); icons 16,14 → 16,16
+  ~ div|radiogroup|Exposure: w 179 → 140.9; h 44 → 48; pad 2px 2px 2px 2px → 4px 4px 4px 4px; fs 14px → 13px
+  ~ button|radio|Per Game: w 98 → 75; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 2,2
+  ~ button|radio|Per 36: w 77 → 53.9; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved -17,2
+  ~ div|radiogroup|Layout: w 179 → 152.5; h 44 → 48; pad 2px 2px 2px 2px → 4px 4px 4px 4px; fs 14px → 13px; moved -38.1,0; icons 14,14 → 16,16
+  ~ button|radio|Table: w 86.1 → 68.9; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved -36.1,2; icons 14 → 16
+  ~ button|radio|Cards: w 88.9 → 71.6; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved -49.3,2; icons 14 → 16
+  ~ button||Change: w 69.3 → 70.5; pad 4px 12px 4px 12px → 0px 12px 0px 12px; fs 12px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved -1.2,4
+  ~ a||Fixture Star: moved 0,4
+  ~ button||Lineage: w 70.5 → 71.7; pad 4px 12px 4px 12px → 0px 12px 0px 12px; fs 12px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved -1.2,4
+  ~ summary||Why?: moved 0,4
+== last-games-player@390: 11 changed
+  ~ a||Profile: pad 8px 12px 8px 12px → 0px 12px 0px 12px
+  ~ button||Export: w 106.9 → 108.7; pad 0px 0px 0px 0px → 0px 12px 0px 12px; fs 14px → 13px; fw 400 → 500; bg rgba(0, 0, 0, 0) → rgb(255, 209, 102); color rgb(242, 243, 245) → rgb(14, 16, 19); border 0px rgb(242, 243, 245) → 0px rgb(14, 16, 19); icons 16,14 → 16,16
+  ~ div|radiogroup|Exposure: w 179 → 140.9; h 44 → 48; pad 2px 2px 2px 2px → 4px 4px 4px 4px; fs 14px → 13px
+  ~ button|radio|Per Game: w 98 → 75; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 2,2
+  ~ button|radio|Per 36: w 77 → 53.9; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved -17,2
+  ~ div|radiogroup|Layout: w 179 → 152.5; h 44 → 48; pad 2px 2px 2px 2px → 4px 4px 4px 4px; fs 14px → 13px; moved -38.1,0; icons 14,14 → 16,16
+  ~ button|radio|Table: w 86.1 → 68.9; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved -36.1,2; icons 14 → 16
+  ~ button|radio|Cards: w 88.9 → 71.6; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved -49.3,2; icons 14 → 16
+  ~ a||Fixture Star: moved 0,4
+  ~ button||Lineage: w 70.5 → 71.7; pad 4px 12px 4px 12px → 0px 12px 0px 12px; fs 12px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved -1.2,4
+  ~ summary||Why?: moved 0,4
+== live@390: 1 changed
+  ~ button||Pause updates: pad 8px 12px 8px 12px → 0px 12px 0px 12px
+== live-game@390: 1 changed
+  ~ button||Pause updates: pad 8px 12px 8px 12px → 0px 12px 0px 12px
+== playoffs@390: 6 changed
+  ~ div|radiogroup|Playoff view: w 366 → 206.1; h 44 → 48; pad 2px 2px 2px 2px → 4px 4px 4px 4px; fs 14px → 13px
+  ~ button|radio|Bracket: w 120.1 → 62.8; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 2,2
+  ~ button|radio|Seeds: w 110.6 → 53.3; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved -51.3,2
+  ~ button|radio|Coverage: w 131.3 → 74; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved -104.6,2
+  ~ summary||Why?: moved 0,4
+  ~ a||Boston Celtics vs Dallas Mavericks series detail: w 64.7 → 65.1; pad 4px 12px 4px 12px → 0px 12px 0px 12px; fs 12px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved -0.4,4
+== playoff-series@390: 25 changed
+  ~ a||Playoffs: w 92.2 → 92.9; pad 4px 12px 4px 12px → 0px 12px 0px 12px; fs 12px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245)
+  ~ a||Compare teams: w 114.6 → 118.9; pad 4px 12px 4px 12px → 0px 12px 0px 12px; fs 12px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 0.7,0
+  - removed button||All Players (1) 101.8x40
+  - removed button||BOS (1) 67.8x40
+  - removed button||DAL (0) 66.5x40
+  ~ button||Sort by Player: moved 0,8
+  ~ button||Sort by GP: moved 0,8
+  ~ button||Sort by MPG: moved 0,8
+  ~ button||Sort by PPG: moved 0,8
+  ~ button||Sort by RPG: moved 0,8
+  ~ button||Sort by APG: moved 0,8
+  ~ button||Sort by SPG: moved 0,8
+  ~ button||Sort by BPG: moved 0,8
+  ~ button||Sort by TOPG: moved 0,8
+  ~ button||Sort by FG%: moved 0,8
+  ~ button||Sort by 3P%: moved 0,8
+  ~ button||Sort by FT%: moved 0,8
+  ~ button||Sort by eFG%: moved 0,8
+  ~ button||Sort by TS%: moved 0,8
+  ~ a||Fixture Star: moved 0,8
+  ~ a||Profile: w 61.4 → 61.6; pad 4px 12px 4px 12px → 0px 12px 0px 12px; fs 12px → 13px; fw 600 → 500; border 1px rgb(255, 209, 102) → 0px rgb(14, 16, 19); moved 0,8
+  + added div|radiogroup|Series players 234x48
+  + added button|radio|All Players (1) 98.1x40
+  + added button|radio|BOS (1) 60.7x40
+  + added button|radio|DAL (0) 59.3x40
+== playoff-series-fixture@390: 25 changed
+  ~ a||Playoffs: w 92.2 → 92.9; pad 4px 12px 4px 12px → 0px 12px 0px 12px; fs 12px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245)
+  ~ a||Compare teams: w 114.6 → 118.9; pad 4px 12px 4px 12px → 0px 12px 0px 12px; fs 12px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 0.7,0
+  - removed button||All Players (1) 101.8x40
+  - removed button||BOS (1) 67.8x40
+  - removed button||DAL (0) 66.5x40
+  ~ button||Sort by Player: moved 0,8
+  ~ button||Sort by GP: moved 0,8
+  ~ button||Sort by MPG: moved 0,8
+  ~ button||Sort by PPG: moved 0,8
+  ~ button||Sort by RPG: moved 0,8
+  ~ button||Sort by APG: moved 0,8
+  ~ button||Sort by SPG: moved 0,8
+  ~ button||Sort by BPG: moved 0,8
+  ~ button||Sort by TOPG: moved 0,8
+  ~ button||Sort by FG%: moved 0,8
+  ~ button||Sort by 3P%: moved 0,8
+  ~ button||Sort by FT%: moved 0,8
+  ~ button||Sort by eFG%: moved 0,8
+  ~ button||Sort by TS%: moved 0,8
+  ~ a||Fixture Star: moved 0,8
+  ~ a||Profile: w 61.4 → 61.6; pad 4px 12px 4px 12px → 0px 12px 0px 12px; fs 12px → 13px; fw 600 → 500; border 1px rgb(255, 209, 102) → 0px rgb(14, 16, 19); moved 0,8
+  + added div|radiogroup|Series players 234x48
+  + added button|radio|All Players (1) 98.1x40
+  + added button|radio|BOS (1) 60.7x40
+  + added button|radio|DAL (0) 59.3x40
+== showcase@390: 17 changed
+  ~ button||Export: w 106.9 → 108.7; pad 0px 0px 0px 0px → 0px 12px 0px 12px; fs 14px → 13px; fw 400 → 500; bg rgba(0, 0, 0, 0) → rgb(255, 209, 102); color rgb(242, 243, 245) → rgb(14, 16, 19); border 0px rgb(242, 243, 245) → 0px rgb(14, 16, 19); moved -1.8,0; icons 16,14 → 16,16
+  ~ div|radiogroup|showcase-focus: w 366 → 344.8; h 44 → 48; pad 2px 2px 2px 2px → 4px 4px 4px 4px; fs 14px → 13px
+  ~ button|radio|Overall: w 68.7 → 59.4; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 2,2
+  ~ button|radio|Scoring: w 71.1 → 61.8; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved -3.3,2
+  ~ button|radio|Playmaking & Defense: w 159.1 → 149.8; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved -8.6,2
+  ~ button|radio|Per 36: w 63.2 → 53.9; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved -13.9,2
+  ~ button||Previous player: moved 0,4
+  ~ button||Play: pad 8px 12px 8px 12px → 0px 12px 0px 12px; moved 0,4
+  ~ button||Next player: moved 0,4
+  ~ a||Fixture Guard: moved 0,4
+  ~ button||Add to favorites: moved 0,4
+  ~ button||Add to compare tray: moved 0,4
+  ~ a||Recent games: moved 0,4
+  ~ a||Player profile: moved 0,4
+  ~ a||Compare head to head: moved 0,4
+  ~ button||FS Fixture Star: moved 0,4
+  ~ button||FG Fixture Guard: moved 0,4
+== rankings@390: 3 changed
+  ~ button||Aggregate boards: pad 8px 12px 8px 12px → 0px 12px 0px 12px
+  ~ button||New board: pad 8px 12px 8px 12px → 0px 12px 0px 12px
+  ~ button||Copy to my boards: pad 8px 12px 8px 12px → 0px 12px 0px 12px
+== rankings-new@390: 6 changed
+  ~ button||Aggregate boards: pad 8px 12px 8px 12px → 0px 12px 0px 12px
+  ~ button||New board: pad 8px 12px 8px 12px → 0px 12px 0px 12px
+  ~ button||Close create ranking board dialog: pad 4px 8px 4px 8px → 0px 0px 0px 0px; fs 16px → 12px; fw 400 → 500
+  ~ button||Cancel: w 64.9 → 65.7; pad 4px 12px 4px 12px → 0px 12px 0px 12px; fs 12px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved -3.9,0
+  ~ button||Create Board: w 99.5 → 102.5; pad 4px 12px 4px 12px → 0px 12px 0px 12px; fs 12px → 13px; fw 600 → 500; border 1px rgb(255, 209, 102) → 0px rgb(14, 16, 19); moved -3,0
+  ~ button||Copy to my boards: pad 8px 12px 8px 12px → 0px 12px 0px 12px
+== rankings-board@390: 24 changed
+  ~ button||Hide aggregator: w 144.3 → 145.7; pad 8px 12px 8px 12px → 0px 12px 0px 12px; fw 500 → 600; bg rgb(36, 40, 46) → rgba(255, 209, 102, 0.12); color rgb(242, 243, 245) → rgb(255, 209, 102); border 0px rgb(169, 175, 185) → 0px rgb(255, 209, 102); shadow none → rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgb(255, 209, 102) 0px 0px 0px 1px inset, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px
+  ~ button||New board: pad 8px 12px 8px 12px → 0px 12px 0px 12px; moved 1.4,0
+  ~ button||View minutes example: pad 8px 12px 8px 12px → 0px 12px 0px 12px
+  ~ select||Borda Count (points = max_rank - rank + 1) Avera: moved 0,22
+  ~ button||Compute Aggregate: w 137.6 → 143.4; pad 4px 12px 4px 12px → 0px 12px 0px 12px; fs 12px → 13px; fw 600 → 500; border 1px rgb(255, 209, 102) → 0px rgb(14, 16, 19); moved 0,22
+  - removed button|tab|Guards(2) 71.7x40
+  - removed button|tab|Wings(0) 66.8x40
+  ~ button||Delete Board: w 90 → 100.9; pad 2px 8px 2px 8px → 0px 12px 0px 12px; fs 12px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(255, 107, 107); moved -10.9,26
+  ~ button||#23: w 62.7 → 60.5; pad 2px 8px 2px 8px → 0px 8px 0px 8px; fw 600 → 500; bg rgb(28, 31, 36) → rgba(0, 0, 0, 0); color rgb(242, 243, 245) → rgb(169, 175, 185); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(169, 175, 185); moved 4.6,30
+  ~ button||#24: w 62.7 → 60.5; pad 2px 8px 2px 8px → 0px 8px 0px 8px; fw 600 → 500; bg rgb(28, 31, 36) → rgba(0, 0, 0, 0); color rgb(242, 243, 245) → rgb(169, 175, 185); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(169, 175, 185); moved 2.2,30
+  ~ summary||Rules: moved 0,30
+  ~ a||Fixture Star: moved 0,30
+  ~ button||Move Fixture Star up: pad 2px 8px 2px 8px → 0px 0px 0px 0px; fw 600 → 500; bg rgb(28, 31, 36) → rgba(0, 0, 0, 0); color rgb(242, 243, 245) → rgb(169, 175, 185); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(169, 175, 185); moved 0,30
+  ~ button||Move Fixture Star down: pad 2px 8px 2px 8px → 0px 0px 0px 0px; fw 600 → 500; bg rgb(28, 31, 36) → rgba(0, 0, 0, 0); color rgb(242, 243, 245) → rgb(169, 175, 185); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(169, 175, 185); moved 0,30
+  ~ button||Remove Fixture Star from board: pad 2px 8px 2px 8px → 0px 0px 0px 0px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(255, 107, 107); moved 0,30
+  ~ a||Fixture Guard: moved 0,30
+  ~ button||Move Fixture Guard up: pad 2px 8px 2px 8px → 0px 0px 0px 0px; fw 600 → 500; bg rgb(28, 31, 36) → rgba(0, 0, 0, 0); color rgb(242, 243, 245) → rgb(169, 175, 185); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(169, 175, 185); moved 0,30
+  ~ button||Move Fixture Guard down: pad 2px 8px 2px 8px → 0px 0px 0px 0px; fw 600 → 500; bg rgb(28, 31, 36) → rgba(0, 0, 0, 0); color rgb(242, 243, 245) → rgb(169, 175, 185); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(169, 175, 185); moved 0,30
+  ~ button||Remove Fixture Guard from board: pad 2px 8px 2px 8px → 0px 0px 0px 0px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(255, 107, 107); moved 0,30
+  + added button||Guards (2) 86x40
+  + added button||Wings (0) 81.4x40
+  + added div|radiogroup|Personal Ranking Boards 177.7x48
+  + added button|radio|Guards (2) 85.5x40
+  + added button|radio|Wings (0) 80.2x40
+== tierlist@390: 2 changed
+  ~ button||New tier list: pad 8px 12px 8px 12px → 0px 12px 0px 12px
+  ~ button||Copy to my boards: pad 8px 12px 8px 12px → 0px 12px 0px 12px
+== tierlist-list@390: 21 changed
+  ~ button||Add tier row: pad 8px 12px 8px 12px → 0px 12px 0px 12px
+  ~ button||New tier list: pad 8px 12px 8px 12px → 0px 12px 0px 12px
+  ~ button||View minutes example: pad 8px 12px 8px 12px → 0px 12px 0px 12px
+  - removed button|tab|Starters(1) 76.2x40
+  - removed button|tab|Bench(0) 66.1x40
+  ~ button||Delete List: w 84.5 → 86.4; pad 4px 12px 4px 12px → 0px 12px 0px 12px; fs 12px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(255, 107, 107); moved -1.9,4
+  ~ select||First tier Second tier: moved 0,8
+  ~ button||#23: w 62.7 → 60.5; pad 2px 8px 2px 8px → 0px 8px 0px 8px; fw 600 → 500; bg rgb(28, 31, 36) → rgba(0, 0, 0, 0); color rgb(242, 243, 245) → rgb(169, 175, 185); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(169, 175, 185); moved 4.6,8
+  ~ button||#24: w 62.7 → 60.5; pad 2px 8px 2px 8px → 0px 8px 0px 8px; fw 600 → 500; bg rgb(28, 31, 36) → rgba(0, 0, 0, 0); color rgb(242, 243, 245) → rgb(169, 175, 185); border 1px rgba(255, 255, 255, 0.1) → 0px rgb(169, 175, 185); moved 2.2,8
+  ~ button||Move tier First tier up: pad 2px 4px 2px 4px → 0px 0px 0px 0px; fw 600 → 500; radius 4px → 6px; bg rgba(255, 255, 255, 0.04) → rgb(28, 31, 36); color rgb(14, 16, 19) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.06) → 0px rgb(242, 243, 245); moved 0,8
+  ~ button||Move tier First tier down: pad 2px 4px 2px 4px → 0px 0px 0px 0px; fw 600 → 500; radius 4px → 6px; bg rgba(255, 255, 255, 0.04) → rgb(28, 31, 36); color rgb(14, 16, 19) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.06) → 0px rgb(242, 243, 245); moved 0,8
+  ~ button||Delete tier First tier: pad 2px 4px 2px 4px → 0px 0px 0px 0px; fw 600 → 500; radius 4px → 6px; bg rgba(255, 255, 255, 0.04) → rgb(28, 31, 36); color rgb(14, 16, 19) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.06) → 0px rgb(242, 243, 245); moved 0,8
+  ~ a||Fixture Star: moved 0,8
+  ~ select||Move Fixture Star to tier: moved 0,8
+  ~ button||Remove Fixture Star from tier list: pad 0px 4px 0px 4px → 0px 0px 0px 0px; fw 400 → 500; bg rgba(0, 0, 0, 0) → rgb(28, 31, 36); color rgb(133, 139, 149) → rgb(255, 107, 107); border 0px rgb(133, 139, 149) → 0px rgb(255, 107, 107); moved 0,8
+  ~ button||Move tier Second tier up: pad 2px 4px 2px 4px → 0px 0px 0px 0px; fw 600 → 500; radius 4px → 6px; bg rgba(255, 255, 255, 0.04) → rgb(28, 31, 36); color rgb(14, 16, 19) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.06) → 0px rgb(242, 243, 245); moved 0,8
+  ~ button||Move tier Second tier down: pad 2px 4px 2px 4px → 0px 0px 0px 0px; fw 600 → 500; radius 4px → 6px; bg rgba(255, 255, 255, 0.04) → rgb(28, 31, 36); color rgb(14, 16, 19) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.06) → 0px rgb(242, 243, 245); moved 0,8
+  ~ button||Delete tier Second tier: pad 2px 4px 2px 4px → 0px 0px 0px 0px; fw 600 → 500; radius 4px → 6px; bg rgba(255, 255, 255, 0.04) → rgb(28, 31, 36); color rgb(14, 16, 19) → rgb(242, 243, 245); border 1px rgba(255, 255, 255, 0.06) → 0px rgb(242, 243, 245); moved 0,8
+  + added div|radiogroup|Personal Tier Lists 190.2x48
+  + added button|radio|Starters (1) 94.6x40
+  + added button|radio|Bench (0) 83.6x40
+== roster-shapes@390: 7 changed
+  ~ a||All teams: w 94 → 78.9; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245)
+  ~ button||Export JSON: pad 8px 12px 8px 12px → 0px 12px 0px 12px
+  ~ div|radiogroup|roster-basis: w 366 → 160.5; h 44 → 48; pad 2px 2px 2px 2px → 4px 4px 4px 4px; fs 14px → 13px
+  ~ button|radio|Observed: w 182.1 → 75.3; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 2,2
+  ~ button|radio|Projected: w 179.9 → 73.2; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved -100.8,2
+  ~ button||Retry: pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 0,4
+  ~ summary||Why?: moved 0,4
+== roster-shapes-bos@390: 2 changed
+  ~ a||All teams: w 94 → 78.9; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245)
+  ~ button||Retry: w 69 → 55.8; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245)
+== stat-line-shift@390: 3 changed
+  ~ a||WOWY: w 81.9 → 68.3; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245)
+  ~ button||Retry: w 69 → 55.8; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245)
+  ~ summary||Why?: moved -13.2,0
+== contracts@390: 3 changed
+  ~ a||All teams: w 94 → 78.9; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245)
+  ~ button||Retry: w 69 → 55.8; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245)
+  ~ summary||Why?: moved 309,-44
+== contracts-books@390: 3 changed
+  ~ a||Contracts & Payroll: w 158.7 → 138; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245)
+  ~ button||Refresh: w 84.5 → 70; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved -20.7,0
+  ~ button||Reload books: w 121 → 103.8; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245)
+== matchups@390: 12 changed
+  ~ div|radiogroup|Matchup side: w 366 → 176.8; h 44 → 48; pad 2px 2px 2px 2px → 4px 4px 4px 4px; fs 14px → 13px
+  ~ button|radio|On offense: w 179.5 → 81; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 2,2
+  ~ button|radio|On defense: w 182.5 → 83.9; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved -92.5,2
+  ~ a||Fixture Anchor: moved 0,4
+  ~ a||Fixture Wing D: moved 0,4
+  ~ a||Fixture Guard D: moved 0,4
+  ~ a||Fixture Big D: moved 0,4
+  ~ a||Fixture Rookie D: moved 0,4
+  ~ a||FIXTURE WING D: moved 0,4
+  ~ a||FIXTURE GUARD D: moved 0,4
+  ~ a||FIXTURE BIG D: moved 0,4
+  ~ a||FIXTURE ROOKIE D: moved 0,4
+== similar@390: 1 changed
+  ~ button||Retry: pad 8px 12px 8px 12px → 0px 12px 0px 12px
+== shot-profile@390: 4 changed
+  ~ div|radiogroup|Shot profile view: w 366 → 242.4; h 44 → 48; pad 2px 2px 2px 2px → 4px 4px 4px 4px; fs 14px → 13px
+  ~ button|radio|Shooting profile: w 174.3 → 108.5; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved 2,2
+  ~ button|radio|Shot-profile twins: w 187.8 → 121.9; pad 4px 8px 4px 8px → 0px 8px 0px 8px; moved -59.8,2
+  ~ button||Retry: w 69 → 55.8; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245); moved 0,4
+== aftermath@390: 1 changed
+  ~ button||Retry: w 69 → 55.8; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245)
+== rapm@390: 1 changed
+  ~ button||Retry reads: w 109 → 92.5; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245)
+== shooting@390: 1 changed
+  ~ button||Retry reads: w 109 → 92.5; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245)
+== wingspan@390: 0 changed
+== calculator@390: 5 changed
+  ~ button||Reset hypothetical defaults: w 209.5 → 184.2; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245)
+  ~ button||Export scenario JSON: w 175.5 → 153.6; pad 8px 16px 8px 16px → 0px 12px 0px 12px; fs 14px → 13px; fw 600 → 500; border 1px rgb(255, 209, 102) → 0px rgb(14, 16, 19); moved 192.2,-48
+  ~ div||Data details: moved 0,-48
+  ~ button||Data details: moved 0,-48
+  ~ summary||Why?: moved 0,-48
+== player-games@390: 1 changed
+  ~ button||View Data Table: w 115.5 → 119.7; pad 4px 12px 4px 12px → 0px 12px 0px 12px; fs 12px → 13px; fw 600 → 500; border 1px rgba(255, 255, 255, 0.1) → 0px rgb(242, 243, 245)

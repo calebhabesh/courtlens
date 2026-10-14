@@ -13,6 +13,7 @@ import { PageHeader } from "./ui/panel";
 import { Select } from "./ui/select";
 import { StatTile } from "./ui/stat-tile";
 import { fmt, getDefense, pct, signed, sourceLabel, type Defender, type DefenseView, type FeedPhase, type MatchupDetail } from "@/lib/stats-feeds";
+import { Button } from "./ui/kit";
 
 const TABLE_LIMIT = 50;
 const COHORT = "qualified defenders in this season, phase and shot category";
@@ -94,7 +95,7 @@ function Body({ data, setFocus, scope }: { data: DefenseView; setFocus: (id: str
           </tr>)}</tbody>
         </table>
       </div>
-      {data.players.length > TABLE_LIMIT && <button className="button" onClick={() => setAll(v => !v)}>{all ? `Show first ${TABLE_LIMIT}` : `Show all ${data.players.length} defenders`}</button>}
+      {data.players.length > TABLE_LIMIT && <Button size="lg" onClick={() => setAll(v => !v)}>{all ? `Show first ${TABLE_LIMIT}` : `Show all ${data.players.length} defenders`}</Button>}
     </section>
   </ResearchLayout>;
 }

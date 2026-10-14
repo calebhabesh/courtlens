@@ -1,7 +1,5 @@
 "use client";
 
-import { Icon } from "./ui/icon";
-import { Button } from "./ui/button";
 import { GatedNote } from "./ui/gated-note";
 import { PageShell } from "./ui/page-shell";
 import { PageHeader } from "./ui/panel";
@@ -20,6 +18,7 @@ import { TablePercentileLegend } from "./table-percentile-legend";
 import { Skeleton } from "./ui/skeleton";
 import { ExampleBoardsView } from "./example-boards-view";
 import { EXAMPLE_BOARD_ID, exampleRankingCopy } from "@/lib/example-boards";
+import { Button, Chip, IconButton, Segmented } from "./ui/kit";
 import type {
   AggregationMethod,
   BoardAggregationResult,
@@ -303,14 +302,14 @@ export function RankingBoardsView({ catalog, example = null }: { catalog?: Workb
         title="Ranking Boards"
         subtitle="Your own player rankings, with notes, reordering and aggregation."
         actions={<>
-          <Button variant="secondary" icon="scale" aria-pressed={showAggSection} onClick={() => setShowAggSection((prev) => !prev)}>
+          <Button size="sm" variant="secondary" icon="scale" pressed={showAggSection} onClick={() => setShowAggSection((prev) => !prev)}>
             {showAggSection ? "Hide aggregator" : "Aggregate boards"}
           </Button>
-          <Button variant="primary" icon="plus" onClick={() => setIsCreatingBoard(true)}>New board</Button>
+          <Button size="sm" variant="primary" icon="plus" onClick={() => setIsCreatingBoard(true)}>New board</Button>
         </>}
       />
 
-      {rankingBoards.length > 0 && <Button variant="secondary" aria-pressed={!activeBoard} onClick={() => setActiveBoardId(activeBoard ? EXAMPLE_BOARD_ID : null)}>{activeBoard ? "View minutes example" : "My ranking boards"}</Button>}
+      {rankingBoards.length > 0 && <Button size="sm" variant="secondary" pressed={!activeBoard} onClick={() => setActiveBoardId(activeBoard ? EXAMPLE_BOARD_ID : null)}>{activeBoard ? "View minutes example" : "My ranking boards"}</Button>}
       {activeBoard && <GatedNote why={<>Ranking boards represent personal subjective evaluations. CourtLens never fabricates a &quot;global community consensus&quot; or automated public authority from subjective inputs.</>}>
         Boards are personal rankings, never a consensus.
       </GatedNote>}
@@ -328,14 +327,7 @@ export function RankingBoardsView({ catalog, example = null }: { catalog?: Workb
           <div className="modal-card ranking-modal-card">
             <div className="modal-header">
               <h2 className="modal-title">Create Personal Ranking Board</h2>
-              <button
-                type="button"
-                className="modal-close-btn"
-                onClick={() => setIsCreatingBoard(false)}
-                aria-label="Close create ranking board dialog"
-              >
-                <Icon name="close" size={14} />
-              </button>
+              <IconButton size="xs" icon="close" label="Close create ranking board dialog" onClick={() => setIsCreatingBoard(false)} />
             </div>
             <form onSubmit={handleCreateBoardSubmit} className="modal-body ranking-modal-form">
               <div>
@@ -386,20 +378,15 @@ export function RankingBoardsView({ catalog, example = null }: { catalog?: Workb
               </div>
 
               <div className="modal-footer ranking-modal-footer">
-                <button
-                  type="button"
-                  onClick={() => setIsCreatingBoard(false)}
-                  className="button button-small"
-                >
+                <Button size="lg"
+                  onClick={() => setIsCreatingBoard(false)}>
                   Cancel
-                </button>
-                <button
+                </Button>
+                <Button size="lg" variant="primary"
                   type="submit"
-                  className="button button-small button-primary"
-                  disabled={!newTitle.trim()}
-                >
+                  disabled={!newTitle.trim()}>
                   Create Board
-                </button>
+                </Button>
               </div>
             </form>
           </div>
@@ -426,23 +413,12 @@ export function RankingBoardsView({ catalog, example = null }: { catalog?: Workb
             {rankingBoards.map((b) => {
               const isChecked = selectedBoardsForAgg.includes(b.id);
               return (
-                <label
-                  key={b.id}
-                  className={`ranking-chip-btn ${isChecked ? "is-selected" : ""}`}
-                >
-                  <input
-                    type="checkbox"
-                    checked={isChecked}
-                    onChange={(e) => {
-                      if (e.target.checked) {
-                        setSelectedBoardsForAgg([...selectedBoardsForAgg, b.id]);
-                      } else {
-                        setSelectedBoardsForAgg(selectedBoardsForAgg.filter((id) => id !== b.id));
-                      }
-                    }}
-                  />
-                  <span>{b.title} ({b.entries.length})</span>
-                </label>
+                <Chip key={b.id} size="sm" pressed={isChecked}
+                  onClick={() => setSelectedBoardsForAgg(isChecked
+                    ? selectedBoardsForAgg.filter((id) => id !== b.id)
+                    : [...selectedBoardsForAgg, b.id])}>
+                  {b.title} ({b.entries.length})
+                </Chip>
               );
             })}
           </div>
@@ -473,14 +449,11 @@ export function RankingBoardsView({ catalog, example = null }: { catalog?: Workb
               />
             </div>
 
-            <button
-              type="button"
+            <Button size="lg" variant="primary"
               onClick={handleRunAggregation}
-              disabled={isAggregating || selectedBoardsForAgg.length === 0}
-              className="button button-small button-primary"
-            >
+              disabled={isAggregating || selectedBoardsForAgg.length === 0}>
               {isAggregating ? "Computing…" : "Compute Aggregate"}
-            </button>
+            </Button>
           </div>
 
           {/* Aggregation Results Table */}
@@ -557,39 +530,16 @@ export function RankingBoardsView({ catalog, example = null }: { catalog?: Workb
         <div className="ranking-active-container">
           {/* Boards Tabs */}
           <div className="stats-preset-tabs-wrapper ranking-tabs-wrapper">
-            <div className="stats-preset-tabs" role="tablist" aria-label="Personal Ranking Boards">
-              {rankingBoards.map((b) => {
-                const isActive = b.id === activeBoard?.id;
-                return (
-                  <button
-                    key={b.id}
-                    type="button"
-                    role="tab"
-                    aria-selected={isActive}
-                    onClick={() => setActiveBoardId(b.id)}
-                    className={`stats-preset-tab ${isActive ? "active" : ""}`}
-                    title={b.notes || b.title}
-                  >
-                    <span>{b.title}</span>
-                    <span className="font-mono text-xs text-muted ml-1">
-                      ({b.entries.length})
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
+            <Segmented size="lg" label="Personal Ranking Boards" value={activeBoard?.id ?? ""} onChange={setActiveBoardId}
+              options={rankingBoards.map((b) => ({ value: b.id, title: b.notes || b.title,
+                label: <>{b.title}<span className="font-mono text-xs text-muted">({b.entries.length})</span></> }))} />
 
             {/* Board Actions */}
             {activeBoard && (
               <div className="ranking-header-actions ml-2">
-                <button
-                  type="button"
-                  onClick={handleDeleteActiveBoard}
-                  className="button button-small ranking-delete-btn"
-                  title="Delete this ranking board"
-                >
+                <Button size="lg" variant="danger" onClick={handleDeleteActiveBoard} title="Delete this ranking board">
                   Delete Board
-                </button>
+                </Button>
               </div>
             )}
           </div>
@@ -631,16 +581,11 @@ export function RankingBoardsView({ catalog, example = null }: { catalog?: Workb
                     {favorites.slice(0, 4).map((favId) => {
                       const isAdded = activeBoard.entries.some((e) => e.player_id === favId);
                       return (
-                        <button
-                          key={favId}
-                          type="button"
-                          disabled={isAdded}
+                        <Button key={favId} size="xs" variant="ghost" icon={isAdded ? "check" : "plus"} disabled={isAdded}
                           onClick={() => handleAddPlayer({ id: favId, name: `Player #${favId}` })}
-                          className="button button-small ranking-meta-btn"
-                          title={isAdded ? "Already on board" : `Add player ${favId}`}
-                        >
-                          {isAdded ? <Icon name="check" size={14} /> : <Icon name="plus" size={14} />}#{favId}
-                        </button>
+                          title={isAdded ? "Already on board" : `Add player ${favId}`}>
+                          #{favId}
+                        </Button>
                       );
                     })}
                   </div>
@@ -649,7 +594,7 @@ export function RankingBoardsView({ catalog, example = null }: { catalog?: Workb
 
               {/* Table of Entries */}
               <TablePercentileLegend cohort={referenceData?.table_cohort} />
-              {referenceError && <GatedNote action={<Button variant="secondary" onClick={() => setRetryReference(value => value + 1)}>Retry reference</Button>}>Statistical reference unavailable.</GatedNote>}
+              {referenceError && <GatedNote action={<Button size="sm" variant="secondary" onClick={() => setRetryReference(value => value + 1)}>Retry reference</Button>}>Statistical reference unavailable.</GatedNote>}
               <div className="table-wrapper density-standard research-table-scroll" role="region" aria-label="Ranking table scroll area" tabIndex={0}>
                 <table className="data-table percentile-table rankings-table" aria-label={`Rankings for ${activeBoard.title}`}>
                   <caption>{referenceData ? `Statistical reference: ${scopeContextLine(referenceData.query.season, referenceData.query.phase, referenceData.query.before_date)}. Personal board order remains subjective.` : "Statistical reference uses the latest published season. Personal board order remains subjective."}</caption>
@@ -719,40 +664,18 @@ export function RankingBoardsView({ catalog, example = null }: { catalog?: Workb
                           {/* Accessible Reorder Controls */}
                           <td className="text-center">
                             <div className="ranking-reorder-group">
-                              <button
-                                type="button"
-                                onClick={() => handleMoveUp(idx)}
-                                disabled={idx === 0}
-                                className="button button-small ranking-reorder-btn"
-                                title="Move up 1 rank"
-                                aria-label={`Move ${entry.player_name || entry.player_id} up`}
-                              >
-                                <Icon name="chevron-up" size={14} />
-                              </button>
-                              <button
-                                type="button"
-                                onClick={() => handleMoveDown(idx)}
+                              <IconButton size="xs" icon="chevron-up" onClick={() => handleMoveUp(idx)} disabled={idx === 0}
+                                label={`Move ${entry.player_name || entry.player_id} up`} title="Move up 1 rank" />
+                              <IconButton size="xs" icon="chevron-down" onClick={() => handleMoveDown(idx)}
                                 disabled={idx === activeBoard.entries.length - 1}
-                                className="button button-small ranking-reorder-btn"
-                                title="Move down 1 rank"
-                                aria-label={`Move ${entry.player_name || entry.player_id} down`}
-                              >
-                                <Icon name="chevron-down" size={14} />
-                              </button>
+                                label={`Move ${entry.player_name || entry.player_id} down`} title="Move down 1 rank" />
                             </div>
                           </td>
 
                           {/* Remove action */}
                           <td className="text-center">
-                            <button
-                              type="button"
-                              onClick={() => handleRemoveEntry(entry.player_id)}
-                              className="button button-small ranking-delete-btn"
-                              title="Remove from board"
-                              aria-label={`Remove ${entry.player_name || entry.player_id} from board`}
-                            >
-                              <Icon name="close" size={14} />
-                            </button>
+                            <IconButton size="xs" variant="danger" icon="close" onClick={() => handleRemoveEntry(entry.player_id)}
+                              label={`Remove ${entry.player_name || entry.player_id} from board`} title="Remove from board" />
                           </td>
                         </tr>
                       ))

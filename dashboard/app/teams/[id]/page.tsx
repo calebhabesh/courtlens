@@ -1,5 +1,4 @@
 import { PairedBars } from "@/components/charts";
-import { Icon } from "@/components/ui/icon";
 import { AssistantPageSelection } from "@/lib/assistant-page-context";
 import { resolveStatsQuery } from "@/lib/stats-query";
 import { getWorkbenchCatalog } from "@/lib/workbench-api";
@@ -16,6 +15,7 @@ import { TeamProfileTabs } from "@/components/team-profile-tabs";
 import type { CSSProperties } from "react";
 import { teamAccent } from "@/lib/team-colors";
 import { formatDate, throughLabel } from "@/lib/format-date";
+import { ButtonLink } from "@/components/ui/kit";
 import {
   getTeamDetail,
   getTeamFourFactors,
@@ -92,7 +92,7 @@ export default async function TeamDetailPage({
     loadError = err instanceof Error ? err.message : "Failed to load team data";
   }
 
-  if (loadError || !detail) return <PageShell template="profile"><PageHeader title="Team Profile" /><GatedNote why={loadError || "Team not found in this release."} action={<Link href="/teams" className="button">Return to all teams</Link>}>Team details are unavailable.</GatedNote></PageShell>;
+  if (loadError || !detail) return <PageShell template="profile"><PageHeader title="Team Profile" /><GatedNote why={loadError || "Team not found in this release."} action={<ButtonLink size="lg" href="/teams">Return to all teams</ButtonLink>}>Team details are unavailable.</GatedNote></PageShell>;
 
   const { team, record, production, allowance, player_cohort, recent_games } = detail;
   const ppg = production.pts_per_game ?? null;
@@ -106,8 +106,8 @@ export default async function TeamDetailPage({
     <PageShell template="profile" className="team-profile-page">
       <AssistantPageSelection route={`/teams/${team.id}`} teamIds={[team.id]} scope={detail.context} label={team.name} />
       <PageHeader title={team.name} subtitle={`${season} · ${phase.replaceAll("_", " ")} · ${throughLabel(beforeDate)}`} actions={<>
-        <Link href={`/team-compare?teamA=${team.id}&season=${season}&phase=${phase}&beforeDate=${beforeDate}&releaseId=${resolvedReleaseId || ""}`} className="button">Compare Team</Link>
-        <Link href={`/teams?${contextParams}`} className="button"><Icon name="left" size={16} />All Teams</Link>
+        <ButtonLink size="lg" href={`/team-compare?teamA=${team.id}&season=${season}&phase=${phase}&beforeDate=${beforeDate}&releaseId=${resolvedReleaseId || ""}`}>Compare Team</ButtonLink>
+        <ButtonLink size="lg" href={`/teams?${contextParams}`} icon="left">All Teams</ButtonLink>
       </>} />
       <ContextBar catalog={catalog ?? undefined} initialReleaseId={resolvedReleaseId} initialSeason={season} initialPhase={phase} initialBeforeDate={beforeDate} showWindow={false} sampleSize={record.games_played}
         detailRows={[
@@ -186,12 +186,10 @@ export default async function TeamDetailPage({
                     <td className="num font-mono">{p.reb_per_game?.toFixed(1) ?? "—"}</td>
                     <td className="num font-mono">{p.ast_per_game?.toFixed(1) ?? "—"}</td>
                     <td className="text-right">
-                      <Link
-                        href={`/players/${p.player_id}?season=${season}&phase=${phase}&beforeDate=${beforeDate}&releaseId=${resolvedReleaseId || ""}` }
-                        className="button button-small button-primary"
-                      >
+                      <ButtonLink size="lg" variant="primary"
+                        href={`/players/${p.player_id}?season=${season}&phase=${phase}&beforeDate=${beforeDate}&releaseId=${resolvedReleaseId || ""}` }>
                         Profile
-                      </Link>
+                      </ButtonLink>
                     </td>
                   </tr>
                 ))}
@@ -246,18 +244,14 @@ export default async function TeamDetailPage({
                       <td className="num font-mono text-muted">{peer.distance.toFixed(3)}</td>
                       <td className="text-right whitespace-nowrap">
                         <div className="table-actions-group">
-                          <Link
-                            href={`/team-compare?teamA=${team.id}&teamB=${peer.team_id}&season=${season}&phase=${phase}&beforeDate=${beforeDate}&releaseId=${resolvedReleaseId || ""}` }
-                            className="button button-small"
-                          >
+                          <ButtonLink size="lg"
+                            href={`/team-compare?teamA=${team.id}&teamB=${peer.team_id}&season=${season}&phase=${phase}&beforeDate=${beforeDate}&releaseId=${resolvedReleaseId || ""}` }>
                             Compare
-                          </Link>
-                          <Link
-                            href={`/teams/${peer.team_id}?season=${season}&phase=${phase}&beforeDate=${beforeDate}&releaseId=${resolvedReleaseId || ""}` }
-                            className="button button-small button-primary"
-                          >
+                          </ButtonLink>
+                          <ButtonLink size="lg" variant="primary"
+                            href={`/teams/${peer.team_id}?season=${season}&phase=${phase}&beforeDate=${beforeDate}&releaseId=${resolvedReleaseId || ""}` }>
                             Profile
-                          </Link>
+                          </ButtonLink>
                         </div>
                       </td>
                     </tr>
@@ -414,7 +408,7 @@ export default async function TeamDetailPage({
         )}
 
 
-        {!fourFactors && <GatedNote action={<Link className="button" href={`/teams/${team.id}?${contextParams}&tab=factors`}>Retry</Link>}>Four Factors are unavailable in this scope.</GatedNote>}
+        {!fourFactors && <GatedNote action={<ButtonLink size="lg" href={`/teams/${team.id}?${contextParams}&tab=factors`}>Retry</ButtonLink>}>Four Factors are unavailable in this scope.</GatedNote>}
       </>}
       schedule={<>
         {/* Block B15a: Schedule & Rest Context Panel */}
