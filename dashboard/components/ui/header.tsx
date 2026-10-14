@@ -18,6 +18,7 @@ import type { WorkbenchCatalog } from "@/lib/types";
 import { buildPreservedContextUrl } from "@/lib/query-url";
 import { MORE_LINKS, NAV_MENUS, STATS_LINK, activeNavSection, analyticalNavItems } from "@/lib/nav-model";
 import { mergedPagePath } from "@/lib/route-consolidation";
+import { isHostedDemo } from "@/lib/hosted";
 
 export function Header() {
   const pathname = usePathname();
@@ -374,7 +375,7 @@ export function Header() {
           onClick={() => setPaletteOpen(true)}
         />
 
-        <Button
+        {!isHostedDemo && <Button
           variant="ghost"
           size="sm"
           className="courtlens-ask-btn"
@@ -387,7 +388,7 @@ export function Header() {
         >
           <Icon name="message" size={16} className="courtlens-ask-icon" />
           <span>Ask</span>
-        </Button>
+        </Button>}
 
         <div className="courtlens-nav-item courtlens-more">
           <IconButton
