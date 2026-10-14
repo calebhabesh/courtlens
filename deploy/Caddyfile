@@ -1,0 +1,47 @@
+# Origin for the hosted read-only demo. Cloudflare terminates TLS and the tunnel
+# reaches this listener on the VPS loopback (127.0.0.1:8090 -> :8080).
+{
+	admin off
+	auto_https off
+}
+
+:8080 {
+	encode zstd gzip
+
+	header {
+		X-Content-Type-Options nosniff
+		Referrer-Policy strict-origin-when-cross-origin
+		X-Frame-Options DENY
+		-Server
+	}
+
+	handle /healthz {
+		respond "ok" 200
+	}
+
+	# Route handlers owned by Next.js: reads only. Their writes would carry
+	# server-side credentials (jobs, workspace, assistant threads, live leases).
+	@nextApi path /api/assistant-v2 /api/assistant-v2/* /api/live /api/live/* /api/workspace /api/workspace/* /api/jobs /api/jobs/* /api/finance-import /api/finance-import/*
+	handle @nextApi {
+		@write not method GET HEAD
+		respond @write "The hosted demo is read-only." 403
+		reverse_proxy dashboard:3000
+	}
+
+	# FastAPI. Only read-only computations may POST; every other write is refused.
+	handle /api/* {
+		@write {
+			not method GET HEAD OPTIONS
+			not {
+				method POST
+				path /api/workbench/query /api/workbench/operations/*
+			}
+		}
+		respond @write "The hosted demo is read-only." 403
+		reverse_proxy api:8000
+	}
+
+	handle {
+		reverse_proxy dashboard:3000
+	}
+}
