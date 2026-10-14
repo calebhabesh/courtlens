@@ -28,6 +28,29 @@ function Name({ href, children }: { href?: string; children: ReactNode }) {
   return href ? <Link className="ui-identity-name" href={href}>{children}</Link> : <span className="ui-identity-name">{children}</span>;
 }
 
+function IdentityMedia({ playerId, name, team, size, portraitUrl }: { playerId?: string; name: string; team?: string | null; size: IdentitySize; portraitUrl?: string | null }) {
+  return (
+    <span className="ui-identity-media">
+      <PlayerPortrait playerId={playerId} name={name} portraitUrl={portraitUrl} size={size} className="ui-identity-portrait" />
+      {team && <span className="ui-identity-badge"><TeamLogo team={team} size={LOGO_SIZE[size]} /></span>}
+    </span>
+  );
+}
+
+/**
+ * The identity photo on its own: the team-colour ring with the team logo badge, as in Compare,
+ * for headers that lay out the name themselves.
+ */
+export function PlayerAvatar({ playerId, name, team, size = "xl", portraitUrl, className = "" }: {
+  playerId?: string; name: string; team?: string | null; size?: IdentitySize; portraitUrl?: string | null; className?: string;
+}) {
+  return (
+    <span className={`ui-identity ui-identity-${size} ${team ? "has-team" : ""} ${className}`} style={teamStyle(team)}>
+      <IdentityMedia playerId={playerId} name={name} team={team} size={size} portraitUrl={portraitUrl} />
+    </span>
+  );
+}
+
 export interface PlayerIdentityProps {
   playerId?: string;
   name: string;
@@ -47,10 +70,7 @@ export interface PlayerIdentityProps {
 export function PlayerIdentity({ playerId, name, team, subtitle, size = "md", href, portraitUrl, className = "" }: PlayerIdentityProps) {
   return (
     <div className={`ui-identity ui-identity-${size} ${team ? "has-team" : ""} ${className}`} style={teamStyle(team)}>
-      <span className="ui-identity-media">
-        <PlayerPortrait playerId={playerId} name={name} portraitUrl={portraitUrl} size={size} className="ui-identity-portrait" />
-        {team && <span className="ui-identity-badge"><TeamLogo team={team} size={LOGO_SIZE[size]} /></span>}
-      </span>
+      <IdentityMedia playerId={playerId} name={name} team={team} size={size} portraitUrl={portraitUrl} />
       <span className="ui-identity-text">
         <Name href={href}>{name}</Name>
         {(team || subtitle) && (

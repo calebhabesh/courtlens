@@ -44,5 +44,8 @@ dev stack on published data.
 Follow-ups 29–34 (same day): browser set 132/132 after regenerating the two player profile
 baselines; Vitest 508/508; lint and typecheck clean.
 
+Follow-up 35: the header photo uses Compare's ring and logo badge (shared `PlayerAvatar`); Compare
+specs and baselines unchanged, player baselines regenerated.
+
 Not done, awaiting the owner: the Basketball-Reference bio crawl (honours, awards column,
 birthplace, high school, shooting hand, debut) and the "now TOR" chip on Stats rows.

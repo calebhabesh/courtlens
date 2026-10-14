@@ -526,6 +526,9 @@ Follow-up instructions (owner, 2026-10-14, redesign review):
     the games the player appeared in for the chosen window (68 for SGA's 2025-26).
 34. [x] Remove the divider above the season line ("2025-26 Regular Season · Through …"). — the filter
     bar's bottom rule is off on the player page.
+35. [x] Header photo uses Compare's identity treatment: the team-colour ring with the team logo badge.
+    — shared `PlayerAvatar` (components/ui/identity.tsx), the same media as `PlayerIdentity`; the
+    separate logo beside the name is dropped since the badge carries it.
 Proposed, awaiting the owner's go-ahead: a Basketball-Reference bio crawl (honours, per-season
 awards column with ★ All-Star seasons, birthplace, high school, shooting hand, NBA debut) and a
 "now TOR" chip on the latest completed season's Stats rows when the current listing differs.
