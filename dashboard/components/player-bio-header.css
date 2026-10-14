@@ -23,10 +23,12 @@
   .player-bio-identity span + span::before { content: "·"; margin: 0 var(--space-2); color: var(--color-on-bg-tertiary); }
   .player-bio-facts { display: flex; flex-wrap: wrap; gap: var(--space-3) var(--space-10); margin: 0; }
   .player-bio-facts > div { display: flex; flex-direction: column; gap: var(--space-0-5); min-width: 0; }
+  /* Labels recede (dimmer, medium weight) and values lead (white, semibold), as on ESPN and
+     Basketball-Reference (row 2, 38). The label grey keeps about 4.7:1 against the page. */
   .player-bio-facts dt,
-  .player-bio-combine dt { color: var(--color-on-bg-tertiary); font-size: var(--text-2xs); line-height: var(--text-2xs-lh); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; }
-  .player-bio-facts dd { display: flex; flex-direction: column; gap: var(--space-0-5); margin: 0; color: var(--color-text); font-size: var(--text-md); line-height: var(--text-md-lh); font-variant-numeric: tabular-nums; white-space: nowrap; }
-  .player-bio-facts dd small { color: var(--color-on-bg-tertiary); font-size: var(--text-xs); line-height: var(--text-xs-lh); }
+  .player-bio-combine dt { color: color-mix(in srgb, var(--color-on-bg-tertiary) 75%, var(--color-bg)); font-size: var(--text-2xs); line-height: var(--text-2xs-lh); font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; }
+  .player-bio-facts dd { display: flex; flex-direction: column; gap: var(--space-0-5); margin: 0; color: var(--color-text); font-size: var(--text-md); line-height: var(--text-md-lh); font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .player-bio-facts dd small { color: var(--color-on-bg-tertiary); font-size: var(--text-xs); line-height: var(--text-xs-lh); font-weight: 400; }
   .player-bio-team { display: inline-flex; align-items: center; gap: var(--space-1); vertical-align: top; }
   .player-bio-combine { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--space-1) var(--space-4); margin: 0; }
   .player-bio-combine dd { margin: 0; color: var(--color-on-bg-secondary); font-size: var(--text-sm); }
