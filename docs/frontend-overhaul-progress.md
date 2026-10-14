@@ -467,3 +467,13 @@ PC12 B–D are pending. This entry does not mark the remaining page-wide glance 
 - Dashboard lint/types, Vitest 511/511, production webpack build, six header browser checks and
   served-asset/unique-paint verification pass. Owner alignment remains pending.
 - [Evidence](evidence/alignment/app-shell/silver-mark/README.md).
+
+## 2026-10-14 — More favicon lens padding
+
+- Owner requested a little more clearance around the round lens in the favicon.
+- Artwork scale 90% → 82%; metadata v6; the background and silver finish are retained.
+- Native-size 16px/32px inspection and served-asset/blue-pixel checks pass; desktop/phone have
+  no horizontal overflow. Scoped identity/glance check passes.
+- Dashboard lint/types, Vitest 511/511, four header checks and favicon browser verification pass.
+  The broader live search check has lookup/workspace timeouts, recorded in the evidence.
+- [Evidence](evidence/alignment/app-shell/favicon-padding/README.md). Owner alignment remains pending.

@@ -1,0 +1,42 @@
+{
+  "base": "http://127.0.0.1:3100",
+  "measuredAt": "2026-10-14T10:04:20.889Z",
+  "beforeScale": 0.9,
+  "afterScale": 0.82,
+  "calculatedLensTopLeftMarginAt16px": {
+    "before": 1.2266666666666668,
+    "after": 1.8287407407407419
+  },
+  "onlyScaleChanged": true,
+  "faviconCopiesMatch": true,
+  "servedAssetMatches": true,
+  "backgroundPixels": [
+    [
+      21,
+      50,
+      90,
+      255
+    ],
+    [
+      21,
+      50,
+      90,
+      255
+    ]
+  ],
+  "views": [
+    {
+      "width": 1440,
+      "favicon": "/icon.svg?v=6",
+      "siteBackground": "#15325a",
+      "noOverflow": true
+    },
+    {
+      "width": 390,
+      "favicon": "/icon.svg?v=6",
+      "siteBackground": "#15325a",
+      "noOverflow": true
+    }
+  ],
+  "pageErrors": []
+}
