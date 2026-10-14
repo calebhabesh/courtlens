@@ -1,0 +1,118 @@
+{
+  "base": "http://127.0.0.1:3196",
+  "measuredAt": "2026-10-14T09:53:32.483Z",
+  "svgGeometryUnchanged": true,
+  "faviconCopiesMatch": true,
+  "pngs": [
+    {
+      "file": "courtlens-apple-180.png",
+      "size": 180,
+      "matchesSvg": true
+    },
+    {
+      "file": "courtlens-192.png",
+      "size": 192,
+      "matchesSvg": true
+    },
+    {
+      "file": "courtlens-512.png",
+      "size": 512,
+      "matchesSvg": true
+    },
+    {
+      "file": "courtlens-maskable-512.png",
+      "size": 512,
+      "matchesSvg": true
+    }
+  ],
+  "views": [
+    {
+      "width": 1440,
+      "headerHeight": 56,
+      "brandWidth": 124.5,
+      "gap": "4px",
+      "noOverflow": true,
+      "gradientId": "_R_55db_",
+      "stops": [
+        [
+          "0",
+          "#eef3f8"
+        ],
+        [
+          "0.22",
+          "#a1adbd"
+        ],
+        [
+          "0.42",
+          "#f8fbff"
+        ],
+        [
+          "0.58",
+          "#8795a8"
+        ],
+        [
+          "0.78",
+          "#d5dfe9"
+        ],
+        [
+          "1",
+          "#a3b0c2"
+        ]
+      ],
+      "paints": [
+        "url(#_R_55db_)",
+        "url(#_R_55db_)",
+        "url(#_R_55db_)"
+      ],
+      "icon": "/icon.svg?v=5",
+      "apple": "/icons/courtlens-apple-180.png?v=5"
+    },
+    {
+      "width": 390,
+      "headerHeight": 56,
+      "brandWidth": 124.5,
+      "gap": "4px",
+      "noOverflow": true,
+      "gradientId": "_R_55db_",
+      "stops": [
+        [
+          "0",
+          "#eef3f8"
+        ],
+        [
+          "0.22",
+          "#a1adbd"
+        ],
+        [
+          "0.42",
+          "#f8fbff"
+        ],
+        [
+          "0.58",
+          "#8795a8"
+        ],
+        [
+          "0.78",
+          "#d5dfe9"
+        ],
+        [
+          "1",
+          "#a3b0c2"
+        ]
+      ],
+      "paints": [
+        "url(#_R_55db_)",
+        "url(#_R_55db_)",
+        "url(#_R_55db_)"
+      ],
+      "icon": "/icon.svg?v=5",
+      "apple": "/icons/courtlens-apple-180.png?v=5"
+    }
+  ],
+  "uniqueGradientIds": [
+    "_R_55db_",
+    "_r_2_"
+  ],
+  "servedAssetsMatch": true,
+  "pageErrors": []
+}
