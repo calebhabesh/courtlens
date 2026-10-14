@@ -699,3 +699,14 @@ Owner instructions 51–52 bottom-align the search/stat header controls and matc
 cells to the metric-cell base and hover surfaces. Real desktop/phone measurements and scoped
 glance check pass. Lint/types, Vitest 459/459, production build, 27 affected browser checks and
 two refreshed Stats baselines pass. [Evidence](evidence/alignment/stats/card-surface/README.md).
+
+### App-shell follow-up: lustrous silver magnifying glass (2026-10-14)
+
+Owner requested a cool silver analogue of Databallr's golden logo. A continuous six-stop silver
+SVG gradient now colors the magnifying-glass ring and handle across the shared logo, favicon,
+Apple touch and installable app icons. PNG variants match their SVG artwork; icon URLs use v5.
+Desktop/phone headers and 16px/32px favicons pass visual inspection. Geometry matches the before
+SVGs, simultaneous brand instances have unique paint IDs, and served assets match the sources.
+Dashboard lint/types, Vitest 511/511, production webpack build and six header browser checks pass.
+Scoped glance: identity, readability, spacing and no page overflow pass. Other page presentation
+is outside this asset-only follow-up. [Evidence](evidence/alignment/app-shell/silver-mark/README.md).
