@@ -1,5 +1,8 @@
 # CourtLens
 
+[![CI](https://github.com/calebhabesh/courtlens/actions/workflows/ci.yml/badge.svg)](https://github.com/calebhabesh/courtlens/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
 CourtLens is a self-hosted NBA analytics site. It's a versioned PostgreSQL and
 dbt warehouse, player impact ratings computed from public play-by-play,
 out-of-time forecast evaluation, and a Next.js dashboard modeled on
