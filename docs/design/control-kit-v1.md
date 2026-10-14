@@ -31,9 +31,16 @@ Owner decisions (2026-10-14):
 - **Icon-only** controls (`IconButton`) are square: width = height, no padding.
 - **Chip and Segmented** use a 4 px icon gap and a 4 px (`--radius-xs`) inner radius on segments,
   as today; their outer group radius is 6.
+- **Segmented size measures the outer group**, including 4 px inner padding on each side.
+  Desktop group/item heights are xs 28/20, sm 32/24, md 36/28 and lg 40/32. Phone groups are
+  48 px with 40 px items and 8 px inline item padding. UC01 measured individual legacy items;
+  those measurements are not outer-group heights. C13 records the filter-bar item change for
+  its UC04 owner review; no existing group changes in UC02.
 - **Weight:** 500 by default. Console controls (`secondary` at `lg`/`md`) use 600 and
   `--color-text-control` while inactive, which is the Stats/Databallr contrast rule already in
-  `stats-explorer.css`. In the kit this is the `console` tone, not a page override.
+  `stats-explorer.css`. In the kit this is the `console` tone, not a page override. Its rest
+  background is `--color-table-lift`; hover mixes 7% white into that background and uses
+  `--color-text`. `onBackground` is the ghost tone for text on the page background.
 - **Phone:** at ≤ 767 px every size resolves to a 40 px minimum height and width, matching the FO14
   rule in `foundation.css`. Padding, text and icons keep their desktop values, except Segmented
   items, which drop to 8 px padding as today. The trigger stays the viewport width, not
@@ -44,12 +51,12 @@ Owner decisions (2026-10-14):
 
 | Component | Sizes | Notes |
 | --- | --- | --- |
-| `Button` | xs–lg | Leading `icon`, trailing `iconAfter`; renders `<a>`/`Link` when given `href` and `<summary>` through `as="summary"`, so links and disclosures share the geometry. |
+| `Button` | xs–lg | Leading `icon`, trailing `iconAfter`; `ButtonLink` renders Next `Link` with `href`, and `ButtonSummary` renders native `<summary>`, sharing the same recipe. |
 | `IconButton` | xs–lg | `label` is required and becomes the tooltip and `aria-label`. |
 | `Select` | sm–lg | Native select with the built-in chevron (below). |
-| `Segmented` | xs–md | Merges `SegmentedControl` and `StatsChoicePills`; the active indicator is `SlidingIndicator`. Radio semantics and roving focus as today. |
-| `MenuTrigger` | xs–lg | Button plus trailing chevron that opens `Menu` or a popover; carries `aria-expanded`. Covers the date, season and team triggers. |
-| `Chip` | xs–lg | `toggle` (`aria-pressed`) or `removable` (trailing × button, centered in its own square hit area). |
+| `Segmented` | xs–lg | Generalises `SegmentedControl` and `StatsChoicePills`; the active indicator is `SlidingIndicator`. Radio semantics and roving focus, optional `deferChange` for an expensive owner update. Existing callers migrate in UC04. |
+| `MenuTrigger` | xs–lg | Button plus trailing chevron that opens `Menu` or a popover; carries `aria-expanded`. Pass `Menu`/`Popover`'s `renderTrigger` props directly to it (one button, no nested trigger). Covers the date, season and team triggers. |
+| `Chip` | xs–lg | `pressed` exposes a toggle (`aria-pressed`); `RemovableChip` provides a trailing remove button centered in its own square hit area. |
 
 An **attached group** (the season stepper: previous, picker, next) is a wrapper that removes the
 inner radii and gaps between kit controls of one size. The controls themselves are unchanged.
@@ -67,6 +74,15 @@ inner radii and gaps between kit controls of one size. The controls themselves a
 variant except `primary`: `--color-accent-soft` fill, `--color-accent` text, a 1 px inset accent ring,
 weight 600. This is the Stats style the owner approved during alignment; the legacy solid-accent
 `.control-pill.active` moves to it (change C10).
+
+Menu/popover triggers use `data-selected="true"` for a held choice. Expanded describes whether
+the panel is open; it does not select the trigger. Triggers do not use `aria-pressed`. Selected
+controls keep their accent look while hovered; hover styling skips disabled and selected controls.
+
+UC02 implements these recipes in Tailwind v4 with a `kit:` utility prefix, no preflight, and
+source discovery restricted to `components/ui/kit`. `tokens.css` owns every existing value;
+`@theme inline reference` maps the tokens without emitting duplicate variables. Sizes and icon
+spacing come from props; `className` is for layout only (enforced by the UC03 ratchet).
 
 ## States
 
@@ -152,7 +168,7 @@ Not controls (names matched by the search only): `player-season-summary`, `finan
 ## Deliberate changes (owner approval per UC04 batch)
 
 Adopting the spec moves these controls. Each needs before/after screenshots and owner approval
-before its baseline is regenerated. Heights are unchanged except C1, C9 and C12.
+before its baseline is regenerated. Heights are unchanged except C1, C9, C12 and C13.
 
 | # | Change | Where |
 | --- | --- | --- |
@@ -168,6 +184,7 @@ before its baseline is regenerated. Heights are unchanged except C1, C9 and C12.
 | C10 | Solid-accent `.control-pill.active` → accent outline selected | pages using `pages.css` pills |
 | C11 | `MenuTrigger` text-to-chevron gap 8 → 4 | Export, More jobs, Table settings |
 | C12 | Phone: wrapped 60 px `button-secondary` → one line at 40 | Similar Players PvP Compare |
+| C13 | Filter-bar segmented items 36 → 32 inside a 40 px group with 4 px inner padding; phone items remain 40 inside a 48 px group | Filter-bar `SegmentedControl` callers; proposed in UC02, pending owner approval in UC04 |
 
 Open for the owner (no change by default): `Select` uses a 16 px chevron while `MenuTrigger` uses
 14, and both sit in the Stats console row.

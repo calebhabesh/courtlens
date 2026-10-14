@@ -107,6 +107,16 @@
     --control-lg: 40px;
     --header-height: 56px;
 
+    /* Control kit v1 (docs/design/control-kit-v1.md): xs/sm/md/lg heights and state colours.
+       The legacy --control-sm/md/lg names keep their values until UC05. */
+    --kit-control-xs: var(--control-sm);
+    --kit-control-sm: var(--control-md);
+    --kit-control-md: 36px;
+    --kit-control-lg: var(--control-lg);
+    --kit-primary-hover: color-mix(in srgb, var(--color-accent) 88%, var(--color-white));
+    --kit-danger-hover: color-mix(in srgb, var(--color-negative) 15%, var(--color-surface-2));
+    --kit-console-hover: color-mix(in srgb, var(--color-white) 7%, var(--color-table-lift));
+
     /* Typography Tokens */
     /* 2xs: Stats percentile sublabels only (Databallr alignment, owner instruction 2026-10-12). */
     --text-2xs: 10px;

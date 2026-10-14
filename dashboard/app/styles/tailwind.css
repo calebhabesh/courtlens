@@ -1,0 +1,60 @@
+/* UC02: Tailwind v4 for the control kit (docs/design/control-kit-v1.md). tokens.css stays the
+   single source of values: this theme only names them. `reference` emits no variables and
+   `inline` writes var(--token) into each utility. There is no preflight, and only kit sources are
+   scanned. The `kit:` prefix prevents utilities from matching legacy classes on unmigrated pages.
+   Add an @source line as each area migrates (UC04). */
+@import "tailwindcss/utilities.css" layer(utilities) source(none) prefix(kit);
+@source "../../components/ui/kit";
+
+@theme inline reference prefix(kit) {
+  --*: initial;
+  --spacing: var(--space-1);
+  --spacing-control-xs: var(--kit-control-xs);
+  --spacing-control-sm: var(--kit-control-sm);
+  --spacing-control-md: var(--kit-control-md);
+  --spacing-control-lg: var(--kit-control-lg);
+
+  --color-accent: var(--color-accent);
+  --color-accent-soft: var(--color-accent-soft);
+  --color-on-accent: var(--color-on-accent);
+  --color-accent-hover: var(--kit-primary-hover);
+  --color-surface-2: var(--color-surface-2);
+  --color-surface-3: var(--color-surface-3);
+  --color-surface-hover: var(--color-surface-hover);
+  --color-text: var(--color-text);
+  --color-text-secondary: var(--color-text-secondary);
+  --color-text-control: var(--color-text-control);
+  --color-on-bg-secondary: var(--color-on-bg-secondary);
+  --color-negative: var(--color-negative);
+  --color-danger-hover: var(--kit-danger-hover);
+  --color-console: var(--color-table-lift);
+  --color-console-hover: var(--kit-console-hover);
+
+  --text-xs: var(--text-xs);
+  --text-xs--line-height: var(--text-xs-lh);
+  --text-sm: var(--text-sm);
+  --text-sm--line-height: var(--text-sm-lh);
+
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+
+  --radius-xs: var(--radius-xs);
+  --radius-sm: var(--radius-sm);
+  --radius-pill: var(--radius-pill);
+
+  --ease-out: var(--ease-out);
+}
+
+/* Phone: the FO14 hit-area breakpoint, so phone baselines keep their 40 px controls. */
+@custom-variant phone (@media (max-width: 767px));
+/* Selected: one rule for toggles, radios, tabs, the current route, and menu triggers holding a
+   choice (`data-selected`, since a trigger cannot be pressed). */
+@custom-variant selected (&:is([aria-pressed="true"], [aria-checked="true"], [aria-selected="true"], [aria-current]:not([aria-current="false"]), [data-selected="true"]));
+/* Hover for enabled, unselected controls only, so a selected control keeps its accent outline. */
+@custom-variant hoverable {
+  @media (hover: hover) {
+    &:hover:not(:disabled, [aria-disabled="true"], [aria-pressed="true"], [aria-checked="true"], [aria-selected="true"], [aria-current]:not([aria-current="false"]), [data-selected="true"]) {
+      @slot;
+    }
+  }
+}
