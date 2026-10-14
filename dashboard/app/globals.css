@@ -1,4 +1,6 @@
-@layer tokens, base, motion, components, pages, foundation;
+/* `utilities` (Tailwind, the control kit) comes last so kit sizes and states are not overridden
+   by page CSS; `properties` holds Tailwind's fallback resets for browsers without @property. */
+@layer properties, tokens, base, motion, components, pages, foundation, utilities;
 
 @import "./styles/tokens.css";
 @import "./styles/base.css";
@@ -11,3 +13,4 @@
 @import "./styles/presentation-clarity.css";
 @import "./styles/gated-pages.css";
 @import "./styles/table-presentation.css";
+@import "./styles/tailwind.css";

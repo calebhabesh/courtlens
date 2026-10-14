@@ -81,7 +81,8 @@ UC04 batch brings to the owner with before/after screenshots.
 
 ### UC02 — Kit
 
-Build or extend in `components/ui/`, each with its own CSS file:
+Build in `components/ui/kit/` with Tailwind v4 utilities and shared token recipes (UC00).
+Keep existing exports and callers until UC04 migrates them:
 
 - `Button`, `IconButton` (tooltip label required), `Select` (built-in chevron offset),
   `Segmented` (generalises `SegmentedControl` and `StatsChoicePills`, with the compositor

@@ -45,6 +45,7 @@ import {
 } from "@/components/ui";
 import { DesignFoundationShowcase } from "@/components/design-foundation-showcase";
 import { DesignChartShowcase } from "@/components/charts/design-chart-showcase";
+import { ControlKitShowcase } from "@/components/ui/kit/showcase";
 import { motion, DURATIONS, SPRING } from "@/lib/motion";
 import RootLoading from "@/app/loading";
 import StatsLoading from "@/app/stats/loading";
@@ -650,6 +651,8 @@ function DesignShowcase() {
           )}
         </Section>
       </div>
+
+      <div id="control-kit"><ControlKitShowcase /></div>
 
       {/* OVERLAY INSTANCES */}
       <Modal
