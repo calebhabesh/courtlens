@@ -22,7 +22,8 @@ for (const width of [1440,390]) test(`Compare starts on silhouette cards and a o
 test("Custom picks and exact counting units survive reload and Back/Forward; SVG carries current values",async({page})=>{
   await openWorkbench(page,"/compare?playerA=23&playerB=24&season=2025-26&phase=regular_season&releaseId=fixture-release&beforeDate=2026-04-13");
   await page.getByRole("radio",{name:"Custom",exact:true}).click();
-  await page.getByLabel("Fouls Total",{exact:true}).check();await expect(page).toHaveURL(/customMetrics=.*pf/);
+  // The checkbox is controlled by the URL, which React 19.3 applies after the click event returns.
+  await page.getByLabel("Fouls Total",{exact:true}).click();await expect(page.getByLabel("Fouls Total",{exact:true})).toBeChecked();await expect(page).toHaveURL(/customMetrics=.*pf/);
   await page.reload();await expect(page.getByLabel("Fouls Total",{exact:true})).toBeChecked();
   await page.getByRole("radio",{name:"Totals",exact:true}).click();
   await expect(page.getByRole("table",{name:"Descriptive comparison"})).toContainText("1960.0");
