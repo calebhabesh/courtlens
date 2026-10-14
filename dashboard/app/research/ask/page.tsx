@@ -2,12 +2,23 @@ import { AskCourtLens } from "@/components/ask-courtlens";
 import Link from "next/link";
 import { PageShell } from "@/components/ui/page-shell";
 import { PageHeader } from "@/components/ui/panel";
+import { GatedNote } from "@/components/ui/gated-note";
+import { isHostedDemo } from "@/lib/hosted";
 
 interface AskPageProps {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }
 
 export default async function AskPage({ searchParams }: AskPageProps) {
+  if (isHostedDemo) return (
+    <PageShell template="research">
+      <PageHeader title="Ask CourtLens" />
+      <GatedNote why={<p>Ask calls a paid language model, so it runs only in a local CourtLens install. Every page, table and chart on this site works without it.</p>}>
+        Ask is turned off on the hosted demo.
+      </GatedNote>
+    </PageShell>
+  );
+
   const params = await searchParams;
   const threaded = params.experience !== "manual";
   const season = (params.season as string) || (threaded ? undefined : "2025-26");

@@ -1,0 +1,153 @@
+# Hosted read-only demo at https://courtlens.calebhabesh.com (see docs/deployment.md).
+# Runs on the shared Oracle VPS at /home/ubuntu/apps/courtlens. Images are pulled from
+# GHCR by digest (written to release.env by scripts/deploy-vps.sh); nothing is built here.
+name: courtlens
+
+x-logging: &logging
+  driver: json-file
+  options:
+    max-size: "10m"
+    max-file: "3"
+
+x-api-environment: &api-environment
+  COURTLENS_ENVIRONMENT: production
+  COURTLENS_DATABASE_URL: postgresql+psycopg://courtlens:${COURTLENS_POSTGRES_PASSWORD:?}@db:5432/courtlens
+  COURTLENS_JWT_SECRET: ${COURTLENS_JWT_SECRET:?}
+  COURTLENS_OPERATOR_TOKEN: ${COURTLENS_OPERATOR_TOKEN:?}
+  COURTLENS_CORS_ORIGINS: '["https://courtlens.calebhabesh.com"]'
+  COURTLENS_RAW_STORE_PATH: /app/data/raw
+  COURTLENS_PROJECT_ROOT: /app
+  COURTLENS_IMPACT_SERVING_MANIFEST: ${COURTLENS_IMPACT_SERVING_MANIFEST:?}
+  COURTLENS_VALUE_ARCHETYPES_MANIFEST: ${COURTLENS_VALUE_ARCHETYPES_MANIFEST:?}
+  COURTLENS_WOWY_MANIFEST: ${COURTLENS_WOWY_MANIFEST:?}
+
+services:
+  db:
+    image: ${COURTLENS_POSTGRES_IMAGE:?}
+    restart: unless-stopped
+    mem_limit: 2g
+    cpus: 1.0
+    shm_size: 256m
+    command:
+      - postgres
+      - -c
+      - shared_buffers=512MB
+      - -c
+      - effective_cache_size=1536MB
+      - -c
+      - work_mem=16MB
+      - -c
+      - max_connections=40
+    environment:
+      POSTGRES_DB: courtlens
+      POSTGRES_USER: courtlens
+      POSTGRES_PASSWORD: ${COURTLENS_POSTGRES_PASSWORD:?}
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    logging: *logging
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U courtlens -d courtlens"]
+      interval: 10s
+      timeout: 3s
+      retries: 15
+
+  migrate:
+    image: ${COURTLENS_API_IMAGE:?}
+    profiles: [migrate]
+    environment: *api-environment
+    command: ["alembic", "upgrade", "head"]
+    mem_limit: 512m
+    logging: *logging
+    depends_on:
+      db:
+        condition: service_healthy
+
+  api:
+    image: ${COURTLENS_API_IMAGE:?}
+    restart: unless-stopped
+    mem_limit: 1536m
+    cpus: 1.5
+    environment: *api-environment
+    volumes:
+      - ./data/artifacts/evaluation:/app/data/artifacts/evaluation:ro
+      - ./data/derived/impact-serving-v1:/app/data/derived/impact-serving-v1:ro
+      - ./data/derived/value-archetypes-v1/serving:/app/data/derived/value-archetypes-v1/serving:ro
+      - ./data/derived/wowy-v1:/app/data/derived/wowy-v1:ro
+      - ./data/artifacts/analyses:/app/data/artifacts/analyses:ro
+      - ./data/cache/portraits:/app/data/cache/portraits:ro
+    logging: *logging
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/api/health')"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+
+  dashboard:
+    image: ${COURTLENS_DASHBOARD_IMAGE:?}
+    restart: unless-stopped
+    mem_limit: 768m
+    cpus: 1.0
+    # No operator token: the hosted demo cannot mutate the workspace or start jobs.
+    environment:
+      COURTLENS_API_INTERNAL_URL: http://api:8000
+    logging: *logging
+    depends_on:
+      api:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO /dev/null http://127.0.0.1:3000/ || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+
+  caddy:
+    image: ${COURTLENS_CADDY_IMAGE:?}
+    restart: unless-stopped
+    mem_limit: 128m
+    cpus: 0.5
+    ports:
+      - "127.0.0.1:8090:8080"
+    volumes:
+      - ./infra/Caddyfile:/etc/caddy/Caddyfile:ro
+    logging: *logging
+    depends_on:
+      dashboard:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:8080/healthz | grep -qx ok"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+
+  cloudflared:
+    image: ${COURTLENS_CLOUDFLARED_IMAGE:?}
+    profiles: [tunnel]
+    restart: unless-stopped
+    # The connector needs the host loopback, where the origin is published.
+    network_mode: host
+    user: "1001:1001"
+    mem_limit: 128m
+    cpus: 0.5
+    command:
+      - tunnel
+      - --no-autoupdate
+      - --metrics
+      - 127.0.0.1:20090
+      - run
+      - --token-file
+      - /run/secrets/tunnel-token
+    volumes:
+      - ./secrets:/run/secrets:ro
+    depends_on:
+      caddy:
+        condition: service_healthy
+    logging: *logging
+
+volumes:
+  postgres:
