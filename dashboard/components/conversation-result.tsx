@@ -1,10 +1,10 @@
 "use client";
 
-import Link from "next/link";
 import { displayValue, tableRow, type Result } from "@/lib/conversation";
 import { formatDate, parseIsoDate } from "@/lib/format-date";
 import { ObservedSamples } from "./charts/observed-samples";
 import { DataDetailsButton } from "./ui/data-details";
+import { ButtonLink } from "./ui/kit";
 
 // One date display format (D11); the cell title keeps the exact returned value.
 const dateText = (value: unknown) => typeof value === "string" && value.length === 10 && parseIsoDate(value) ? formatDate(value) : null;
@@ -43,7 +43,7 @@ export function ConversationResult({ result, retained = false }: {result: Result
     <div role="region" aria-label={`${result.operation} data table${metric ? ` · ${metric}` : ""}`} tabIndex={0} className="conversation-table"><table className="data-table"><caption>Server-computed {title} results{unit ? ` (${unit})` : ""}</caption><thead><tr>{columns.map(key => <th scope="col" key={key} className={numericColumns.has(key) ? "num" : undefined}>{key.replaceAll("_", " ")}</th>)}</tr></thead><tbody>{rows.map((row, index) => <tr key={index}>{columns.map(key => <td key={key} className={numericColumns.has(key) ? "num" : undefined} title={displayValue(row[key])}>{row[key] === undefined ? "—" : tableValue(row[key])}</td>)}</tr>)}</tbody></table></div>
     <p className="text-muted text-xs">Table decimals display up to four places; hover or open exact evidence for returned precision.</p>
     {!retained && result.limitations.length > 0 && <ul>{result.limitations.map((text, i) => <li key={i}>{text}</li>)}</ul>}
-    <div className="conversation-row">{safeUrl && <Link className="button button-small" href={safeUrl}>{safeUrl.startsWith("/research/") ? "Open in Research" : safeUrl.startsWith("/stats") ? "Open in Stats" : "Open equivalent view"}</Link>}{!retained && <span className="text-muted">Result {result.result_hash.slice(0, 12)}</span>}</div>
+    <div className="conversation-row">{safeUrl && <ButtonLink size="lg" href={safeUrl}>{safeUrl.startsWith("/research/") ? "Open in Research" : safeUrl.startsWith("/stats") ? "Open in Stats" : "Open equivalent view"}</ButtonLink>}{!retained && <span className="text-muted">Result {result.result_hash.slice(0, 12)}</span>}</div>
     {retained ? <DataDetailsButton label={`Definitions, inputs and exact evidence (${result.evidence.length} cells)`} rows={[{ label: "Result SHA-256", value: result.result_hash, mono: true }, { label: "Operation SHA-256", value: result.operation_hash, mono: true }, { label: "Limitations", value: <ul>{result.limitations.map((text, i) => <li key={i}>{text}</li>)}</ul> }]}>{exactEvidence}</DataDetailsButton> : <details><summary>Definitions, inputs and exact evidence ({result.evidence.length} cells)</summary>{exactEvidence}</details>}
   </section>;
 }

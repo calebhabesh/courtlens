@@ -4,7 +4,7 @@ import { useState } from "react";
 import { enqueueJob } from "@/lib/workbench-api";
 import { useToast } from "./ui/toast";
 import { ArticleSection } from "./ui/article-layout";
-import { Button } from "./ui/button";
+import { Button } from "./ui/kit";
 
 interface PortraitSettingsProps {
   available?: boolean;
@@ -56,7 +56,7 @@ export function WorkbenchPortraitSettings({
     <ArticleSection
       id="portraits"
       title="Player portraits"
-      actions={<Button size="sm" variant="primary" icon="camera" onClick={handleAcquire} loading={loading}>{loading ? "Queuing…" : "Acquire more portraits"}</Button>}
+      actions={<Button size="xs" variant="primary" icon="camera" onClick={handleAcquire} loading={loading}>{loading ? "Queuing…" : "Acquire more portraits"}</Button>}
     >
       <p>Headshots are cached locally on a best-effort basis. A missing photo never excludes a player from analytics.</p>
       <dl className="ui-article-facts">

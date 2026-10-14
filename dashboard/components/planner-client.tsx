@@ -8,7 +8,7 @@ import { formatDate, parseIsoDate } from "@/lib/format-date";
 import type { LookupItem, Plan, PrivatePlayer, Scenario } from "@/lib/types";
 import { PlanTable } from "./plan-table";
 import { BoardLayout } from "./ui/page-shell";
-import { Button } from "./ui/button";
+import { Button } from "./ui/kit";
 import { DataDetailsButton } from "./ui/data-details";
 import { DatePicker } from "./ui/date-picker";
 import { Field } from "./ui/field";
@@ -176,7 +176,7 @@ export function PlannerClient({ fixtureMode, defaultWeek }: { fixtureMode: boole
         <form onSubmit={signIn} className="planner-auth-form">
           <Field label="Email"><Input autoComplete="email" aria-label="Email" onChange={(event) => setEmail(event.target.value)} required type="email" value={email} /></Field>
           <Field label="Password"><Input autoComplete="current-password" aria-label="Password" onChange={(event) => setPassword(event.target.value)} required type="password" value={password} /></Field>
-          <Button variant="primary" loading={busy} type="submit">{busy ? "Opening…" : "Sign in"}</Button>
+          <Button size="sm" variant="primary" loading={busy} type="submit">{busy ? "Opening…" : "Sign in"}</Button>
         </form>
         {fixtureMode ? <p className="planner-note">These are local demo credentials for fictional fixture records.</p> : null}
         <p className="planner-note" role="status">{message}</p>
@@ -238,7 +238,7 @@ export function PlannerClient({ fixtureMode, defaultWeek }: { fixtureMode: boole
         <EntityField label="Add candidate" value={addId} onChange={setAddId} candidates={plannerCandidates(watchlist)} required />
         <Field label="Candidate slots"><Input aria-label="Candidate eligible slots" onChange={(event) => setAddEligibleSlots(event.target.value)} placeholder="G, UTIL" required value={addEligibleSlots} /></Field>
         <Field label="Effective date"><DatePicker label="Effective date" value={effectiveDate} min={weekStart} max={plan.week_end} onChange={setEffectiveDate} /></Field>
-        <Button variant="primary" loading={busy} disabled={!watchlist.length} type="submit">Compare scenario</Button>
+        <Button size="sm" variant="primary" loading={busy} disabled={!watchlist.length} type="submit">Compare scenario</Button>
       </form>
     </section>
   ) : undefined;

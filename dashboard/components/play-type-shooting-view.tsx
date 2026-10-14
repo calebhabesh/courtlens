@@ -7,9 +7,9 @@ import { ExampleNote, FeedDetails, FeedFailure, FeedScopeFields, FeedSkeleton, P
 import { CountChip, FilterBar } from "./ui/filter-bar";
 import { PlayerIdentity } from "./ui/identity";
 import { ResearchLayout } from "./ui/page-shell";
-import { SegmentedControl } from "./ui/segmented-control";
 import { StatTile } from "./ui/stat-tile";
 import { fmt, getPlayTypes, pct, signed, sourceLabel, type FeedPhase, type PlayTypePlayer, type PlayTypesView } from "@/lib/stats-feeds";
+import { Button, Segmented } from "./ui/kit";
 
 const TABLE_LIMIT = 50;
 
@@ -75,7 +75,7 @@ function Body({ data, scope, setFocus }: { data: PlayTypesView; scope: string; s
           </tr>)}</tbody>
         </table>
       </div>
-      {data.players.length > TABLE_LIMIT && <button className="button" onClick={() => setAll(v => !v)}>{all ? `Show first ${TABLE_LIMIT}` : `Show all ${data.players.length} players`}</button>}
+      {data.players.length > TABLE_LIMIT && <Button size="lg" onClick={() => setAll(v => !v)}>{all ? `Show first ${TABLE_LIMIT}` : `Show all ${data.players.length} players`}</Button>}
     </section>
   </ResearchLayout>;
 }
@@ -89,7 +89,7 @@ export function PlayTypeShootingView() {
   return <>
     {data && <FilterBar label="Play-type filters" summary={data.label}
       scope={<FeedScopeFields scopes={data.scopes} season={data.season} phase={data.phase} onChange={next => set({ season: next.season, phase: next.phase as FeedPhase, playerId: null })} />}
-      modes={<SegmentedControl name="Side" value={side} onChange={value => set({ side: value === "defensive" ? "defensive" : null, playerId: null })}
+      modes={<Segmented size="lg" label="Side" value={side} onChange={value => set({ side: value === "defensive" ? "defensive" : null, playerId: null })}
         options={[{ value: "offensive", label: "Offense" }, { value: "defensive", label: "Defense" }]} />}
       count={<CountChip>{data.players.length} players</CountChip>} details={<FeedDetails envelope={data} />} />}
     {error && <FeedFailure error={error} retry={retry} what="Playtype-adjusted shooting" />}
