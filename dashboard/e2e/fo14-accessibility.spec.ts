@@ -61,7 +61,7 @@ test("Article loading contents match the horizontal phone pill strip", async ({ 
   expect(await toc.locator(".ui-skeleton").first().evaluate(e => {
     const s = getComputedStyle(e);
     return { fill: s.backgroundColor, animation: s.animationName, image: s.backgroundImage };
-  })).toEqual({ fill: "rgb(24, 27, 33)", animation: "none", image: "none" });
+  })).toEqual({ fill: "rgb(28, 31, 36)", animation: "none", image: "none" });
   await expect(page.getByRole("status", { name: "Loading", exact: true })).toHaveAttribute("aria-busy", "true");
 });
 
