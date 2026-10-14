@@ -443,6 +443,9 @@ Follow-up instruction (owner, 2026-10-14, from the player page's current team):
     phones the position and the word "now" give way so the chip fits. Rows carry `current_team`
     from `mart_player_bio`; the rule is `lib/current-team.ts`.
 
+73. [x] Slightly taller rows so the "now" pill is more legible and has space. — rows 42 → 46px
+    (compact 34 → 38); the pill is 18px with a 14px logo, centred on the subtitle line.
+
 ### 2 Dashboard (player) — 👀 ready for review
 Instructions (owner, 2026-10-13; agreed through a design interview, recommendations accepted):
 1. [x] Back to table (Esc) appears only when the player page was opened from Stats and returns to

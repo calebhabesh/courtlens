@@ -74,7 +74,7 @@ test("wide and smaller desktop columns align with stable pinned identity while s
         headerLeft: headers.map(cell => cell.x), bodyLeft: body.map(cell => cell.x), rowHeight: body[0].height,
         identityWidths: body.slice(0, 3).map(cell => cell.width) };
     });
-    expect(geometry.rowHeight).toBeCloseTo(42, 1);
+    expect(geometry.rowHeight).toBeCloseTo(46, 1);
     geometry.identityWidths.slice(0, 2).forEach((value, index) => expect(value).toBeCloseTo([28, 300][index], 0));
     // One search header spans the compare and name columns (Databallr); metric columns match 1:1.
     expect(geometry.headerWidths[0]).toBeCloseTo(geometry.bodyWidths[0] + geometry.bodyWidths[1], 0);
