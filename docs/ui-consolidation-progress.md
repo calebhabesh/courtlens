@@ -91,3 +91,13 @@ prose are not runtime verification; each entry records what was run and measured
   `~/.cache/courtlens-tmp`; dependencies and historical evidence were copied. Final browser log
   is retained in the UC02 evidence. Scratch servers/browser contexts stopped and the sandbox
   was removed. The owner's 3100 dashboard and 8000 API were left running. **UC03 has not started.**
+
+## C13 approval (2026-10-14)
+
+- The owner approved C13 (filter-bar segmented items 36 → 32 inside an unchanged 40 px group with
+  4 px inner padding; phone items stay 40 inside 48), on the agent's recommendation from the
+  [desktop](evidence/ui-consolidation/uc02/c13-1440.png) and
+  [phone](evidence/ui-consolidation/uc02/c13-390.png) comparisons. Outer group height is unchanged,
+  so no row layout moves. Each UC04 batch applies C13 to its filter-bar `SegmentedControl` callers
+  and regenerates only the affected baselines, listing them in its entry.
+
