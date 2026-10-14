@@ -513,6 +513,19 @@ Combine as open sections; career figure per tile (best season for DPM, hidden fo
 players); signed impact with Off/Def; Recent form tints at the shown precision; stat rows on the
 Stats percentile scale; "N games with <team>" when the season's team differs from the header.
 Honours row awaits the crawl below. [Redesign evidence](evidence/alignment/players/redesign/README.md).
+Follow-up instructions (owner, 2026-10-14, redesign review):
+29. [x] Remove the discoloured block under Season/Phase. — the team glow ran past the header and the
+    sticky filter bar cut it off in a straight edge; the glow now ends at the header's bottom.
+30. [x] The career table's height follows its rows. — Stats' viewport-height rule won when the page was
+    opened from Stats (stylesheet order); the career rule now outranks it.
+31. [x] Even spacing above and below the view-tab console. — 16px each (the tab panel's extra top padding
+    removed; the console sits 16px above the table).
+32. [x] Simple vertical divider lines between the career table's column groups (Profile, Impact,
+    Counting, Eff, Shooting, Other).
+33. [x] The "50 games" badge beside Data details. — it counted the game log's 50-row page; it now shows
+    the games the player appeared in for the chosen window (68 for SGA's 2025-26).
+34. [x] Remove the divider above the season line ("2025-26 Regular Season · Through …"). — the filter
+    bar's bottom rule is off on the player page.
 Proposed, awaiting the owner's go-ahead: a Basketball-Reference bio crawl (honours, per-season
 awards column with ★ All-Star seasons, birthplace, high school, shooting hand, NBA debut) and a
 "now TOR" chip on the latest completed season's Stats rows when the current listing differs.

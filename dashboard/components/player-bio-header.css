@@ -10,7 +10,8 @@
   /* A faint wash of the current team's colour behind the photo, the header's one flourish. */
   .player-bio-main.has-glow::before {
     content: ""; position: absolute; pointer-events: none;
-    top: calc(var(--space-10) * -1); left: calc(var(--space-16) * -2); width: 460px; height: 280px;
+    /* Ends at the header's bottom edge, so it has faded out before the filter bar below. */
+    top: calc(var(--space-10) * -1); bottom: 0; left: calc(var(--space-16) * -2); width: 460px;
     background: radial-gradient(closest-side, color-mix(in srgb, var(--team-glow) 24%, transparent), transparent);
   }
   /* Positioned children paint above the glow, which comes first in the stacking order. */
@@ -77,8 +78,10 @@
   .similarity-target-lookup { width: 240px; min-width: 0; }
 }
 
-/* The name shares the foundation layer with PageHeader so these overrides apply. */
+/* These share the foundation layer with PageHeader and FilterBar so the overrides apply. */
 @layer foundation {
+  /* The season line below has its own rule; a second one above it would sandwich it (row 2, 34). */
+  .player-detail-container .ui-filter-bar { border-bottom: 0; }
   .player-bio-name .ui-page-header-title-row { min-height: 0; }
   .player-bio-name .ui-page-header-title { font-size: var(--text-3xl); line-height: var(--text-3xl-lh); letter-spacing: -0.01em; }
   @media (max-width: 767px) {

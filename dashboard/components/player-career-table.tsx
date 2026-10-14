@@ -55,6 +55,9 @@ export function PlayerCareerTable({ playerId, catalog, season, phase, firstCover
     return { ...base, columns: columns.filter((column, index) => columns.findIndex(c => c.key === column.key) === index) };
   }, [presetId, countingMode]);
   const groups = useMemo(() => tableGroups(preset), [preset]);
+  // A hairline opens each column group after the first (Profile | Impact | Counting …).
+  const groupStarts = useMemo(() => new Set(groups.slice(1).map(group => group.start)), [groups]);
+  const divider = (index: number) => groupStarts.has(index) ? "group-start" : "";
   const requestKey = `${playerId}|${phase}|${catalog.release_id}`;
   const serverRows = initialCareer?.player_id === playerId && initialCareer.phase === phase
     && initialCareer.release_id === catalog.release_id ? initialCareer : null;
@@ -99,7 +102,7 @@ export function PlayerCareerTable({ playerId, catalog, season, phase, firstCover
     const column = preset.columns[index];
     const value = item ? item.metrics[column.key] ?? (column.key === "gp" ? item.games_played : column.key === "min" ? item.total_minutes : null) : null;
     const group = groups.findIndex(g => index >= g.start && index < g.start + g.colSpan) % 2;
-    return <td key={column.key} data-column={column.key} className={`stats-metric-cell stats-group-${group} ${column.num ? "num" : ""}`}>
+    return <td key={column.key} data-column={column.key} className={`stats-metric-cell stats-group-${group} ${column.num ? "num" : ""} ${divider(index)}`}>
       <PercentileCell variant="text" showPercentile={!career} value={item && value != null ? formatColumnValue(column, item) : null}
         percentile={career ? null : item?.table_percentiles?.[column.key] ?? null}
         qualified={item?.table_qualified === true && item?.impact_support?.[column.key]?.qualified !== false}
@@ -131,11 +134,11 @@ export function PlayerCareerTable({ playerId, catalog, season, phase, firstCover
             <thead>
               <tr className="stats-header-tier-1">
                 <th className="pinned-col pinned-col-year-group"><span className="sr-only">Season</span></th>
-                {groups.map((group, index) => <th key={`${group.label}-${index}`} colSpan={group.colSpan} scope="colgroup" className="stats-group-th">{group.label}</th>)}
+                {groups.map((group, index) => <th key={`${group.label}-${index}`} colSpan={group.colSpan} scope="colgroup" className={`stats-group-th ${index > 0 ? "group-start" : ""}`}>{group.label}</th>)}
               </tr>
               <tr className="stats-header-tier-2">
                 <th scope="col" className="pinned-col pinned-col-year">Year</th>
-                {preset.columns.map(column => <th key={column.key} scope="col" data-column={column.key} className={column.num ? "num" : ""} title={column.tooltip ?? column.label}>{column.label}</th>)}
+                {preset.columns.map((column, index) => <th key={column.key} scope="col" data-column={column.key} className={`${column.num ? "num" : ""} ${divider(index)}`} title={column.tooltip ?? column.label}>{column.label}</th>)}
               </tr>
             </thead>
             <tbody>

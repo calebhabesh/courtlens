@@ -1,10 +1,16 @@
 /* Player career table: the Stats table's look with seasons as rows (alignment row 2). */
 @layer pages {
-  .player-career.stats-workspace { min-height: 0; background: transparent; display: flex; flex-direction: column; gap: var(--space-2); }
+  /* The view tabs sit as far above the table as the profile tabs sit above them (row 2, 31). */
+  .player-career.stats-workspace { min-height: 0; background: transparent; display: flex; flex-direction: column; gap: var(--space-4); }
   .player-career .player-career-controls { display: flex; flex-wrap: wrap; gap: var(--space-2); }
   .player-career .stats-table-frame { --table-surface: var(--color-table-lift); --table-data: var(--color-table-well); }
   .player-career .stats-controls-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; }
-  .player-career .player-career-scroll { --year-width: 132px; height: auto; max-height: min(70dvh, 760px); }
+  .player-career .player-career-scroll { --year-width: 132px; }
+  /* Outranks Stats' viewport-height rule whatever order the two stylesheets load in (client
+     navigation from Stats loads stats-explorer.css last), so the frame fits its rows. */
+  .player-career.stats-workspace .player-career-scroll.stats-scroll-region { height: auto; max-height: min(70dvh, 760px); }
+  /* Simple vertical rules between column groups (row 2, 32), in place of Stats' guide gutters. */
+  .player-career .player-career-table .group-start { border-left: 1px solid var(--color-hairline-strong); }
   .player-career .player-career-table {
     --table-min-width: calc(var(--year-width) + var(--career-columns, 20) * 68px);
     --table-width: min(100%, calc(var(--year-width) + var(--career-columns, 20) * 88px));

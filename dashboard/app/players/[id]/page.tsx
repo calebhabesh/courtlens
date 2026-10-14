@@ -128,7 +128,8 @@ export default async function PlayerPage({
           initialPhase={phase}
           initialBeforeDate={beforeDate}
           initialWindow={windowParam}
-          sampleSize={wbLoaded.log.games.length}
+          // Games the player appeared in for the chosen window, not the game log's 50-row page.
+          sampleSize={windowGames(wbLoaded.profile, windowParam)}
           lastIncludedDate={wbLoaded.profile.last_observed_date}
           detailRows={[{ label: "Player", value: id, mono: true }]}
         />}
@@ -158,6 +159,11 @@ export default async function PlayerPage({
   }
 
   return <PlayerError error={loadError} id={id} date={selected.date} />;
+}
+
+function windowGames(profile: PlayerProfile, window: string): number | undefined {
+  const summary = window === "last_10" ? profile.summaries.last_10 : window === "last_5" ? profile.summaries.last_5 : profile.summaries.season;
+  return summary?.gp ?? undefined;
 }
 
 /**
